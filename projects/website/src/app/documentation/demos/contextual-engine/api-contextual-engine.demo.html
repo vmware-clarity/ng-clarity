@@ -76,6 +76,87 @@
   </tbody>
 </table>
 
+<h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrContextTrackerService</code></h3>
+<p class="clr-mt-16px" cds-text="body">
+  Root-provided. Turns the pull-based engine into a stream for consumers that always want the current page.
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Member</th>
+      <th class="left clr-hidden-xs-down">Type</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">context$</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">Observable&lt;ClrPageContext&gt;</code></td>
+      <td class="left">
+        Emits whenever the page context actually changes, replaying the most recent snapshot to new subscribers until
+        the service is destroyed.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">currentContext</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ClrPageContext | null</code></td>
+      <td class="left">The most recent snapshot, or <code cds-text="code">null</code> before tracking starts.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">isTracking</b></td>
+      <td class="left clr-hidden-xs-down">Boolean</td>
+      <td class="left">
+        Whether the tracker is watching the page. The tracker is shared: a consumer that only wants to look can check
+        this and leave starting and stopping to whoever owns tracking.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">track(options?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">Observable&lt;ClrPageContext&gt;</code></td>
+      <td class="left">
+        The page context, tracked for as long as anyone subscribes: the first subscription starts tracking when nothing
+        else has, and the last one to end stops it, so consumers that come and go share one tracker without stopping
+        each other's. With options, tracking restarts with them; without, running tracking is joined as it is. There is
+        one tracker, so its options apply to every consumer.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">start(options?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
+      <td class="left">
+        Takes a snapshot immediately, then watches the DOM for changes and <code cds-text="code">input</code> /
+        <code cds-text="code">change</code> for typing. Calling it again restarts with the new options. Each snapshot
+        walks the page, taken once the page has been quiet for <code cds-text="code">debounceMs</code> and at most every
+        <code cds-text="code">maxWaitMs</code> while it keeps changing; on a large page, narrow it with
+        <code cds-text="code">rootSelector</code> or a smaller preset. <code cds-text="code">debounceMs</code> (default
+        300) is at least 10: <code cds-text="code">0</code> becomes 10 and a value that is not a number falls back to
+        the default. <code cds-text="code">maxWaitMs</code> (default 2000) is never shorter than
+        <code cds-text="code">debounceMs</code>.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">stop()</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
+      <td class="left">Stops tracking. The last emitted context stays available.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">refresh()</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
+      <td class="left">Takes a snapshot immediately and emits it.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">changes$</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">Observable&lt;ClrContextChange&gt;</code></td>
+      <td class="left">
+        Emits, alongside every <code cds-text="code">context$</code> emission, what changed since the previous one —
+        nodes added, removed and changed, and whether the route, title or annotations moved — so a conversation can send
+        the difference rather than the whole page. <code cds-text="code">clrDiffContext(previous, current)</code> is the
+        same comparison as a function.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 <h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrContextRegistryService</code></h3>
 <p class="clr-mt-16px" cds-text="body">
   Root-provided. Holds whatever can contribute application knowledge to a snapshot. Providers are asked at snapshot time
@@ -354,13 +435,14 @@
 <h3 cds-text="section" class="clr-mt-32px">Application-wide options and presets</h3>
 <p class="clr-mt-16px" cds-text="body">
   <code cds-text="code">provideClrContextOptions(preset | options, overrides?)</code> sets the options every snapshot
-  starts from — the engine and the global accessor both read the <code cds-text="code">CLR_CONTEXT_OPTIONS</code> token
-  — with per-call options applied over them. Presets: <code cds-text="code">'full'</code> (the defaults),
-  <code cds-text="code">'interactive'</code> (no prose, no layout: navigation, banner, footer and side panels) and
-  <code cds-text="code">'minimal'</code> (no prose or layout, summary collections, shorter text, a lower budget, modal
-  focus). <code cds-text="code">clrContextPreset(name, overrides?)</code> returns a preset with overrides for a single
-  call; exclusion lists in the overrides add to the preset's, so an override can only narrow it further. Both throw for
-  a name that is not a preset.
+  starts from — the engine, the tracker and the global accessor all read the
+  <code cds-text="code">CLR_CONTEXT_OPTIONS</code> token — with per-call options applied over them. Presets:
+  <code cds-text="code">'full'</code> (the defaults), <code cds-text="code">'interactive'</code> (no prose, no layout:
+  navigation, banner, footer and side panels) and <code cds-text="code">'minimal'</code> (no prose or layout, summary
+  collections, shorter text, a lower budget, modal focus).
+  <code cds-text="code">clrContextPreset(name, overrides?)</code> returns a preset with overrides for a single call;
+  exclusion lists in the overrides add to the preset's, so an override can only narrow it further. Both throw for a name
+  that is not a preset.
 </p>
 
 <h2 id="context-shape" cds-text="title" class="clr-mt-48px">Context shape</h2>
@@ -630,13 +712,6 @@
         <code cds-text="code">ClrContextRegistryService.collect(options?)</code> takes: for the element a region is
         anchored to (or <code cds-text="code">null</code>), whether to <code cds-text="code">keep</code> it,
         <code cds-text="code">drop</code> it or <code cds-text="code">redact</code> its state.
-      </td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">clrDiffContext(previous, current)</b></td>
-      <td class="left">
-        What changed between two snapshots: nodes added, removed and changed, and whether the route, title or
-        annotations moved. <code cds-text="code">clrIsEmptyContextChange(change)</code> tells whether anything did.
       </td>
     </tr>
     <tr>

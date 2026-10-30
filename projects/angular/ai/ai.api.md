@@ -192,6 +192,32 @@ export interface ClrContextSnapshotOptions {
 }
 
 // @public
+export class ClrContextTrackerService implements OnDestroy {
+    constructor();
+    readonly changes$: Observable<ClrContextChange>;
+    readonly context$: Observable<ClrPageContext>;
+    get currentContext(): ClrPageContext | null;
+    get isTracking(): boolean;
+    // (undocumented)
+    ngOnDestroy(): void;
+    refresh(): void;
+    start(options?: ClrContextTrackingOptions): void;
+    stop(): void;
+    track(options?: ClrContextTrackingOptions): Observable<ClrPageContext>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextTrackerService, never>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<ClrContextTrackerService>;
+}
+
+// @public
+export interface ClrContextTrackingOptions {
+    debounceMs?: number;
+    maxWaitMs?: number;
+    snapshot?: ClrContextSnapshotOptions;
+}
+
+// @public
 export function clrDiffContext(previous: ClrPageContext | null, current: ClrPageContext): ClrContextChange;
 
 // @public

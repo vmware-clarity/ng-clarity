@@ -17,8 +17,9 @@ import { ContextPlaygroundComponent } from './context-playground.component';
 const INSTALL_EXAMPLE = `npm install @clr/angular --save`;
 
 const QUICKSTART_EXAMPLE = `
-import { Component, inject } from '@angular/core';
-import { ClrContextEngineService } from '@clr/angular/ai';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ClrContextEngineService, ClrContextTrackerService } from '@clr/angular/ai';
 
 @Component({
   selector: 'app-assistant',
@@ -26,9 +27,18 @@ import { ClrContextEngineService } from '@clr/angular/ai';
 })
 export class AssistantComponent {
   private readonly engine = inject(ClrContextEngineService);
+  private readonly tracker = inject(ClrContextTrackerService);
+
+  constructor() {
+    // The current page, kept up to date: emits whenever what is on screen changes.
+    this.tracker
+      .track()
+      .pipe(takeUntilDestroyed(inject(DestroyRef)))
+      .subscribe(context => console.log(context.components));
+  }
 
   ask(question: string) {
-    // One snapshot, taken now. Send it to your model as data, delimited from your prompt.
+    // Or one snapshot, taken now. Send it to your model as data, delimited from your prompt.
     return { question, page: this.engine.getSnapshot() };
   }
 }
@@ -75,8 +85,32 @@ const SNAPSHOT_SHAPE_EXAMPLE = `
 }
 `;
 
+const TRACKER_EXAMPLE = `
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ClrContextTrackerService } from '@clr/angular/ai';
+
+@Component({
+  // ...
+})
+export class AssistantPanelComponent implements OnInit {
+  private readonly tracker = inject(ClrContextTrackerService);
+  private readonly destroyRef = inject(DestroyRef);
+
+  ngOnInit() {
+    // The tracker is shared: track() starts it if nobody has, and stops it once the
+    // last consumer that asked for it is gone.
+    this.tracker
+      .track({ snapshot: { maxComponents: 50 } })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(context => this.setPageContext(context));
+  }
+}
+`;
+
 const IGNORE_EXAMPLE = `
-<!-- The assistant panel renders the context, so the engine must not describe it. -->
+<!-- The assistant panel renders the context, so the engine must not describe it
+     and the tracker must not react to its re-renders. -->
 <aside class="assistant-panel" data-clr-context-ignore>...</aside>
 `;
 
@@ -199,18 +233,22 @@ providers: [provideClrContextOptions('interactive', { excludeSelectors: ['clr-he
 providers: [provideClrContextOptions({ maxComponents: 200, includeText: false })];
 
 // a preset with overrides, for a single call
-this.contextEngine.getSnapshot(clrContextPreset('minimal', { maxComponents: 200 }));
+this.contextTracker.start({ snapshot: clrContextPreset('minimal', { maxComponents: 200 }) });
 `;
 
 const CHANGES_EXAMPLE = `
+this.contextTracker.changes$.subscribe(change => {
+  // change.added   — nodes that were not there before, with their subtrees
+  // change.removed — nodes that are gone
+  // change.changed — nodes whose own state differs: { before, after }
+  // change.routeChanged / titleChanged / regionsChanged
+  if (!clrIsEmptyContextChange(change)) {
+    assistant.send({ pageChanged: change });
+  }
+});
+
+// The same comparison for snapshots obtained any other way:
 const change = clrDiffContext(previousSnapshot, currentSnapshot);
-// change.added   — nodes that were not there before, with their subtrees
-// change.removed — nodes that are gone
-// change.changed — nodes whose own state differs: { before, after }
-// change.routeChanged / titleChanged / regionsChanged
-if (!clrIsEmptyContextChange(change)) {
-  assistant.send({ pageChanged: change });
-}
 `;
 
 const BUDGETS_EXAMPLE = `
@@ -242,6 +280,7 @@ export class ContextualEngineDemo extends ClarityDocComponent {
   quickstartExample = QUICKSTART_EXAMPLE;
   snapshotExample = SNAPSHOT_EXAMPLE;
   snapshotShapeExample = SNAPSHOT_SHAPE_EXAMPLE;
+  trackerExample = TRACKER_EXAMPLE;
   ignoreExample = IGNORE_EXAMPLE;
   directiveExample = DIRECTIVE_EXAMPLE;
   directiveStandaloneExample = DIRECTIVE_STANDALONE_EXAMPLE;
