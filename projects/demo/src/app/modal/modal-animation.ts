@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 
 @Component({
   selector: 'clr-modal-animation-demo',
@@ -14,10 +14,12 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
   standalone: false,
 })
 export class ModalAnimationDemo implements OnInit {
-  animatedExampleIn = false;
+  readonly animatedExampleIn = signal(false);
+  private readonly destroyRef = inject(DestroyRef);
 
   ngOnInit(): void {
     // If you want interactivity, go to the Angular component demo. :-P
-    setInterval(() => (this.animatedExampleIn = !this.animatedExampleIn), 2000);
+    const interval = setInterval(() => this.animatedExampleIn.update(visible => !visible), 2000);
+    this.destroyRef.onDestroy(() => clearInterval(interval));
   }
 }

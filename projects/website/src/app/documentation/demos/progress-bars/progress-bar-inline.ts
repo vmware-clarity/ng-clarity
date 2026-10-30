@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnDestroy } from '@angular/core';
 import { ClrCommonFormsModule } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -112,6 +112,7 @@ export class ProgressBarInlineDemo implements OnDestroy {
   staticLabeledProgbarValue = 60;
 
   example = EXAMPLE;
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   getNewValue(): number {
     const random: number = Math.floor(Math.random() * 98) + 1;
@@ -151,6 +152,7 @@ export class ProgressBarInlineDemo implements OnDestroy {
       if (newProgressValue > 99) {
         this.stopProgressBar();
       }
+      this.changeDetectorRef.markForCheck();
     }, 300);
   }
 

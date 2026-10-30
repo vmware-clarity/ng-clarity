@@ -5,19 +5,28 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { signal } from '@angular/core';
+
 let id = 0;
 
 export class ProgBarExample {
   intervalId: any;
   demoId: string = 'prog-example-toggle-' + id++;
-  value = 0;
   intervalTimeInMs = 100;
+  private readonly progress = signal(0);
 
   constructor(
     private label: string = 'demo',
     public title: string = 'Progress Bar',
     public isLabeled: boolean = false
   ) {}
+
+  get value() {
+    return this.progress();
+  }
+  set value(value: number) {
+    this.progress.set(value);
+  }
 
   cssClassnames(): string {
     return ['progress', this.label].join(' ');

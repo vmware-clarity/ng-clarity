@@ -6,7 +6,7 @@
  */
 
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ClarityIcons, ClrIcon, copyIcon, downloadIcon } from '@clr/angular';
 
@@ -30,7 +30,7 @@ const AI_DOCS = RAW_AI_DOCS as Record<string, (typeof RAW_AI_DOCS)[keyof typeof 
         <div cds-layout="m-t:md">
           <button type="button" class="btn btn-sm btn-outline" (click)="copySkill(skill.raw)">
             <clr-icon shape="copy"></clr-icon>
-            {{ copied ? 'Copied!' : 'Copy SKILL.md' }}
+            {{ copied() ? 'Copied!' : 'Copy SKILL.md' }}
           </button>
           <a class="btn btn-sm btn-link" [href]="skill.url" download="SKILL.md">
             <clr-icon shape="download"></clr-icon>
@@ -49,7 +49,7 @@ export class AiSkillComponent {
 
   readonly AI_DOCS = AI_DOCS;
 
-  protected copied = false;
+  protected readonly copied = signal(false);
 
   constructor(private readonly liveAnnouncer: LiveAnnouncer) {
     ClarityIcons.addIcons(copyIcon, downloadIcon);
@@ -57,8 +57,10 @@ export class AiSkillComponent {
 
   protected async copySkill(raw: string) {
     await navigator.clipboard.writeText(raw);
-    this.copied = true;
+    this.copied.set(true);
     await this.liveAnnouncer.announce(`${this.skillName} SKILL.md copied to clipboard`);
-    setTimeout(() => (this.copied = false), 3000);
+    setTimeout(() => {
+      this.copied.set(false);
+    }, 3000);
   }
 }

@@ -6,7 +6,7 @@
  */
 
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { ChangeDetectionStrategy, Component, input, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, Input, signal } from '@angular/core';
 import { ClarityIcons, ClrIcon, copyIcon } from '@clr/angular';
 import prismjs from 'prismjs';
 
@@ -29,7 +29,7 @@ type ESModuleImport = { default: string };
       <div class="addons">
         <button class="btn btn-link" (click)="copyCode()" [attr.aria-label]="'Copy example code to clipboard'">
           <clr-icon shape="copy"></clr-icon>
-          {{ copied ? 'Copied!' : 'Copy Code' }}
+          {{ copied() ? 'Copied!' : 'Copy Code' }}
         </button>
       </div>
     } `,
@@ -45,7 +45,7 @@ export class CodeSnippetComponent {
   readonly copy = input(false);
 
   protected highlightedCode: string | undefined;
-  protected copied = false;
+  protected readonly copied = signal(false);
 
   private _code: string | undefined;
   private _language = 'html';
@@ -84,10 +84,10 @@ export class CodeSnippetComponent {
       navigator.clipboard.writeText(code);
       this.liveAnnouncer.announce(`example code is copied to clipboard`);
 
-      this.copied = true;
+      this.copied.set(true);
 
       setTimeout(() => {
-        this.copied = false;
+        this.copied.set(false);
       }, 2000);
     }
   }

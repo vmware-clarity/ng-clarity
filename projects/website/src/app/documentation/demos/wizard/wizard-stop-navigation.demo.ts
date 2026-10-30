@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClrCommonFormsModule, ClrInputModule, ClrWizard, ClrWizardModule } from '@clr/angular';
 
@@ -199,6 +199,7 @@ export class WizardStopNavigation {
     too: '',
     tree: '',
   };
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   get readyToFinish(): boolean {
     return !this.untouched && !this.loading;
@@ -232,6 +233,7 @@ export class WizardStopNavigation {
           this.loading = false;
           clearInterval(timer);
         }
+        this.changeDetectorRef.markForCheck();
       }, 1000);
     } else {
       this.wizard()?.forceFinish();

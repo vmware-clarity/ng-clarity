@@ -30,13 +30,13 @@ const EXAMPLE = `
     <clr-stack-label>Label 1</clr-stack-label>
     <clr-stack-content>Content 1</clr-stack-content>
 
-    @if (children.length === 0) {
+    @if (children().length === 0) {
       <clr-stack-block [clrStackViewLevel]="2">
         <clr-spinner clrAssertive clrInline>Loading...</clr-spinner>
       </clr-stack-block>
     }
 
-    @for (child of children; track $index) {
+    @for (child of children(); track $index) {
       <clr-stack-block [clrStackViewLevel]="2">
         <clr-stack-label>{{ child.title }}</clr-stack-label>
         <clr-stack-content>{{ child.content }}</clr-stack-content>
@@ -52,7 +52,7 @@ const EXAMPLE = `
 `;
 
 const CODE = `
-import { Component, ViewChild, ChangeDetectorRef, inject } from '@angular/core';
+import { Component, ViewChild, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClrModalModule, ClrSpinnerModule, ClrStackBlock, ClrStackViewModule } from '@clr/angular';
 
@@ -64,7 +64,6 @@ import { ClrModalModule, ClrSpinnerModule, ClrStackBlock, ClrStackViewModule } f
   imports: [FormsModule, ClrStackViewModule, ClrModalModule, ClrSpinnerModule],
 })
 export class ExampleComponent {
-  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   @ViewChild('lazyBlock', { static: true }) lazyBlock!: ClrStackBlock;
 
@@ -82,25 +81,23 @@ export class ExampleComponent {
     },
     { title: 'Label 3', content: 'Content 3' },
   ];
-  children: any[] = [];
+  readonly children = signal<any[]>([]);
 
   resetChildren(): void {
     this.lazyBlock.expanded = false;
-    this.children = [];
+    this.children.set([]);
   }
 
   fetchChildren(): void {
-    if (this.children.length > 0) {
+    if (this.children().length > 0) {
       return;
     }
     setTimeout(() => {
-      this.children = [
+      this.children.set([
         { title: 'Sub-label 1', content: 'Sub-content 1' },
         { title: 'Sub-label 2', content: 'Sub-content 2' },
         { title: 'Sub-label 3', content: 'Sub-content 3' },
-      ];
-
-      this.changeDetectorRef.markForCheck();
+      ]);
     }, 2000);
   }
 }
@@ -125,6 +122,6 @@ export class StackViewAngularLazyloadDemo extends StackViewNgDemo {
       lazyBlock.expanded = false;
     }
 
-    this.children = [];
+    this.children.set([]);
   }
 }

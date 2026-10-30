@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 
 @Component({
   selector: 'clr-progress-bar-component',
@@ -40,6 +40,7 @@ export class ProgressBarComponentDemo {
       setup: { flash: true, fade: true },
     },
   ];
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   toggle(name: string) {
     const example = this.examples.find(expl => expl.name === name);
@@ -55,6 +56,7 @@ export class ProgressBarComponentDemo {
         if (example.value >= 100) {
           clearInterval(example.interval);
         }
+        this.changeDetectorRef.markForCheck();
       }, 1000);
     }
 

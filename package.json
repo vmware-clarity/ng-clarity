@@ -76,7 +76,10 @@
     "figma:push:preview": "npm-run-all _test:figma _figma:push:preview",
     "figma:push:dry-run": "node figma/index.mjs --dry-run",
     "figma:extract": "node figma/index.mjs --extract figma-tokens.extract.json",
-    "_test:scripts": "node --test scripts/*.test.js"
+    "_test:scripts": "node --test scripts/*.test.js",
+    "_build:consumer-smoke": "ng build clr-consumer-smoke && ng build clr-consumer-smoke --configuration=zone",
+    "test:consumer-smoke": "playwright test --config playwright.consumer.config.ts",
+    "test:applications-smoke": "playwright test --config playwright.applications.config.ts"
   },
   "devDependencies": {
     "@amanda-mitchell/semantic-release-npm-multiple": "3.17.0",

@@ -6,7 +6,16 @@
  */
 
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  inject,
+  OnDestroy,
+  OnInit,
+  viewChild,
+} from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Route, Router, RouterLink, RouterOutlet } from '@angular/router';
 import {
   angleIcon,
@@ -631,6 +640,7 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
   replace = false;
 
   private _subscriptions: Subscription[] = [];
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   constructor(
     private route: ActivatedRoute,
@@ -673,6 +683,7 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
             this.initializePagination(change.url);
           }
         }
+        this.changeDetectorRef.markForCheck();
       })
     );
     this.initializePagination('/documentation/datagrid/code/' + this.route.children[0].routeConfig?.path);

@@ -1486,10 +1486,10 @@ describe('DatagridComponent', () => {
             { displayName: 'Name', field: 'name', sortAndFilterByField: 'name' },
             { displayName: 'State', field: 'powerState' },
           ] as Array<ColumnDefinition<any>>);
-          setHidden(this.fixture, 'State', true);
         });
 
         it('keeps an applied filter', function (this: DatagridSpecContext) {
+          setHidden(this.fixture, 'State', true);
           const gridHelper = new GridHelper(this.fixture.debugElement);
           gridHelper.openFilter('Name');
           this.fixture.detectChanges();
@@ -1515,6 +1515,8 @@ describe('DatagridComponent', () => {
           const resizedWidth = columnElementByTitle(this.fixture, 'Name').style.width;
           expect(resizedWidth).not.toBe('');
 
+          // Resize while Name has a following scrollable column, then rebuild the views.
+          setHidden(this.fixture, 'State', true);
           setHidden(this.fixture, 'State', false);
 
           expect(columnElementByTitle(this.fixture, 'Name').style.width).toBe(resizedWidth);

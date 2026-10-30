@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, ViewChild } from '@angular/core';
+import { Directive, signal, ViewChild } from '@angular/core';
 import { ClrStackBlock } from '@clr/angular';
 
 @Directive()
@@ -33,23 +33,24 @@ export class StackViewNgDemo {
   ];
 
   editModal = false;
-  children: any[] = [];
+  /* Lazy loading demo */
+  readonly children = signal<any[]>([]);
 
   fetchChildren(): void {
-    if (this.children.length > 0) {
+    if (this.children().length > 0) {
       return;
     }
     setTimeout(() => {
-      this.children = [
+      this.children.set([
         { title: 'Sub-label 1', content: 'Sub-content 1' },
         { title: 'Sub-label 2', content: 'Sub-content 2' },
         { title: 'Sub-label 3', content: 'Sub-content 3' },
-      ];
+      ]);
     }, 2000);
   }
 
   resetChildren(): void {
     this.lazyBlock.expanded = false;
-    this.children = [];
+    this.children.set([]);
   }
 }
