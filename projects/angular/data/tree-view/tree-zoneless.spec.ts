@@ -15,7 +15,10 @@ import {
   signal,
 } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
+
+import { ClrTreeNode } from './tree-node';
 
 import { ClrTreeViewModule } from './tree-view.module';
 
@@ -124,9 +127,15 @@ for (const zoneless of [true, false]) {
     it('ignores promise completion after the tree is destroyed', async () => {
       host.kind = 'promise';
       await open();
+      const model = fixture.debugElement.query(By.directive(ClrTreeNode)).componentInstance._model;
+      const children = model._loadedChildren;
+      const loading = spyOn(model.loading$, 'next').and.callThrough();
       host.show.set(false);
       await fixture.whenStable();
+      loading.calls.reset();
       await completeOutsideAngular();
+      expect(model._loadedChildren).toBe(children);
+      expect(loading).not.toHaveBeenCalled();
       expect(fixture.nativeElement.querySelector('clr-tree')).toBeNull();
     });
   });
