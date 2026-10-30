@@ -10,10 +10,13 @@ import {
   Component,
   provideCheckNoChangesConfig,
   provideZonelessChangeDetection,
+  QueryList,
   signal,
+  ViewChildren,
 } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { ClrDatagridColumn } from './datagrid-column';
 import { ClrDatagridModule } from './datagrid.module';
 
 @Component({
@@ -39,9 +42,10 @@ class SeparatorHost {
     { id: 'Third', pinned: false },
   ]);
   readonly items = [1];
+  @ViewChildren(ClrDatagridColumn) columnComponents: QueryList<ClrDatagridColumn>;
 }
 
-describe('Column separators (zoneless, OnPush host)', () => {
+describe(`column separators in a zoneless OnPush host`, () => {
   let fixture: ComponentFixture<SeparatorHost>;
 
   beforeEach(async () => {
@@ -85,6 +89,25 @@ describe('Column separators (zoneless, OnPush host)', () => {
     expect(separator('Second')).toBe(false);
     pin('Third', false);
     await fixture.whenStable();
+    expect(separator('Third')).toBe(false);
+    expect(separator('Second')).toBe(true);
+  });
+
+  it('moves a column and its cells when pinned directly from code', async () => {
+    const column = fixture.componentInstance.columnComponents.last;
+    column.pinned = true;
+    await fixture.whenStable();
+    expect(
+      fixture.nativeElement.querySelector('.datagrid-header .datagrid-pinned-cells > clr-dg-column').textContent
+    ).toContain('Third');
+    expect(
+      fixture.nativeElement.querySelector('clr-dg-row .datagrid-pinned-cells > clr-dg-cell').textContent
+    ).toContain('Third');
+    expect(separator('Third')).toBe(true);
+    expect(separator('Second')).toBe(false);
+    column.pinned = false;
+    await fixture.whenStable();
+    expect(fixture.nativeElement.querySelector('.datagrid-header .datagrid-pinned-cells > clr-dg-column')).toBeNull();
     expect(separator('Third')).toBe(false);
     expect(separator('Second')).toBe(true);
   });
