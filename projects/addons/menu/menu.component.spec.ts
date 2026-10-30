@@ -13,6 +13,7 @@ import { ClrDropdownModule } from '@clr/angular/popover/dropdown';
 import { renderFixture } from '@clr/angular/utils/testing';
 
 import { MenuComponent } from './menu.component';
+import { useTestTimers } from '../../test-timers';
 import { MenuActionComponent } from './model/menu-action.component';
 
 describe('MenuComponent', () => {
@@ -116,7 +117,7 @@ describe('MenuComponent', () => {
   });
 
   it('should throw an error when menu items change', async () => {
-    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+    useTestTimers();
     component.menuItems.reset([{} as any]);
 
     await expect(async () => {

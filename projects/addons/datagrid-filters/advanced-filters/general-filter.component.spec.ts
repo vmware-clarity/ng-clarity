@@ -184,7 +184,7 @@ describe('GeneralFilterComponent', () => {
       expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(1);
       expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(propertyFilter1);
     });
-    it('updates comparison operators on property change ', () => {
+    it('updates comparison operators on property change ', async () => {
       const testProperty = 'vmIpAddress';
       const testPropertyDisplayName = 'Ip Address';
       const testComparisonOperators = [ComparisonOperator.Contains, ComparisonOperator.IsEmpty];
@@ -196,7 +196,7 @@ describe('GeneralFilterComponent', () => {
 
       expect(testContext.component.comparisonOperators).toEqual(comparisonOperators);
       testContext.fixture.componentRef.setInput('filterProperty', testStringProperty);
-      testContext.component.ngOnChanges();
+      await testContext.fixture.whenStable();
       expect(testContext.component.comparisonOperators).toEqual(testComparisonOperators);
     });
   });

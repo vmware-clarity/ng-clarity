@@ -13,7 +13,9 @@ import {
   signal,
 } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 
+import { ClrDatagridColumn } from './datagrid-column';
 import { ClrDatagridModule } from './datagrid.module';
 
 @Component({
@@ -76,10 +78,17 @@ describe('Column action labels (zoneless, OnPush host)', () => {
   });
 
   it('stops updating when the datagrid is destroyed', async () => {
+    const column = fixture.debugElement.query(By.directive(ClrDatagridColumn)).componentInstance as ClrDatagridColumn;
+    const read = vi.spyOn(column.titleContainer.nativeElement, 'textContent', 'get');
+    fixture.componentInstance.title.set('Before destroy');
+    await fixture.whenStable();
+    expect(read).toHaveBeenCalled();
     fixture.componentInstance.show.set(false);
     await fixture.whenStable();
+    read.mockClear();
     fixture.componentInstance.title.set('After destroy');
     await fixture.whenStable();
+    expect(read).not.toHaveBeenCalled();
     expect(label()).toBeUndefined();
   });
 });

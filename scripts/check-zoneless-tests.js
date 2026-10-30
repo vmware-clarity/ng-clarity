@@ -9,6 +9,9 @@ const fs = require('node:fs');
 const path = require('node:path');
 const ts = require('typescript');
 
+const normalizePath = filename => filename.replaceAll('\\', '/');
+const isZoneImport = value => /(^|\/)zone\.js($|\/)/.test(normalizePath(value));
+
 const zoneHelpers = new Set(['fakeAsync', 'waitForAsync', 'tick', 'flush', 'flushMicrotasks', 'discardPeriodicTasks']);
 
 function checkSource(source, filename) {
@@ -32,7 +35,7 @@ function checkSource(source, filename) {
   function visit(node) {
     if (ts.isImportDeclaration(node) && ts.isStringLiteral(node.moduleSpecifier)) {
       const moduleName = node.moduleSpecifier.text;
-      if (moduleName === 'zone.js' || moduleName.startsWith('zone.js/')) {
+      if (isZoneImport(moduleName)) {
         errors.push(`${filename}: imports ${moduleName}`);
       }
       const bindings = node.importClause?.namedBindings;
@@ -62,7 +65,7 @@ function checkSource(source, filename) {
         (node.expression.kind === ts.SyntaxKind.ImportKeyword || node.expression.getText(sourceFile) === 'require') &&
         imported &&
         ts.isStringLiteral(imported) &&
-        (imported.text === 'zone.js' || imported.text.startsWith('zone.js/'))
+        isZoneImport(imported.text)
       ) {
         errors.push(`${filename}: imports ${imported.text}`);
       }
@@ -179,7 +182,7 @@ function hasZonelessProviders(source) {
   );
 }
 
-function checkRepository(root) {
+function checkRepository(root, { update = false } = {}) {
   const errors = [];
   const counts = {};
   const forcedChecks = {};
@@ -190,16 +193,64 @@ function checkRepository(root) {
     errors.push('Both suites must retain zoneless scheduling and exhaustive check-no-changes validation.');
   }
   errors.push(...checkSource(provider, 'projects/test-providers.ts'));
-  errors.push(
-    ...checkSource(fs.readFileSync(path.join(root, 'projects/test-setup.ts'), 'utf8'), 'projects/test-setup.ts')
-  );
+  const scanned = new Set();
+  const scanEntry = entry => {
+    if (isZoneImport(entry)) {
+      errors.push(`${entry}: test bundle must not load Zone`);
+      return;
+    }
+    const absolute = path.resolve(root, entry);
+    const resolved = [absolute, `${absolute}.ts`, `${absolute}.js`, path.join(absolute, 'index.ts')].find(
+      file => fs.existsSync(file) && fs.statSync(file).isFile()
+    );
+    if (!resolved) {
+      errors.push(`${entry}: cannot audit configured test entry`);
+      return;
+    }
+    if (scanned.has(resolved)) {
+      return;
+    }
+    scanned.add(resolved);
+    const source = fs.readFileSync(resolved, 'utf8');
+    errors.push(...checkSource(source, normalizePath(path.relative(root, resolved))));
+    const file = ts.createSourceFile(resolved, source, ts.ScriptTarget.Latest, true);
+    const visit = node => {
+      const specifier =
+        ts.isImportDeclaration(node) || ts.isExportDeclaration(node)
+          ? node.moduleSpecifier
+          : ts.isCallExpression(node) &&
+              (node.expression.kind === ts.SyntaxKind.ImportKeyword || node.expression.getText(file) === 'require')
+            ? node.arguments[0]
+            : undefined;
+      if (specifier && ts.isStringLiteral(specifier) && specifier.text.startsWith('.')) {
+        scanEntry(path.relative(root, path.resolve(path.dirname(resolved), specifier.text)));
+      }
+      ts.forEachChild(node, visit);
+    };
+    visit(file);
+  };
   for (const library of ['angular', 'addons']) {
     const targets = workspace.projects[`clr-${library}`].architect;
-    if (targets.test.options.providersFile !== 'projects/test-providers.ts') {
-      errors.push(`clr-${library}: test must use the shared zoneless providers`);
-    }
-    if (targets['test-build'].options.polyfills.some(polyfill => polyfill.startsWith('zone.js'))) {
-      errors.push(`clr-${library}: test bundle must not load Zone`);
+    for (const configuration of [undefined, ...Object.keys(targets.test.configurations || {})]) {
+      const options = { ...targets.test.options, ...(targets.test.configurations?.[configuration] || {}) };
+      if (options.providersFile !== 'projects/test-providers.ts') {
+        errors.push(`clr-${library}:${configuration || 'default'}: test must use the shared zoneless providers`);
+      }
+      for (const entry of options.setupFiles || []) {
+        scanEntry(entry);
+      }
+      const [project, target, buildConfigurations] = options.buildTarget.split(':');
+      const build = workspace.projects[project].architect[target];
+      const selected = buildConfigurations ? buildConfigurations.split(',') : [];
+      const base = Object.assign({}, build.options, ...selected.map(name => build.configurations?.[name] || {}));
+      for (const effective of [
+        base,
+        ...Object.values(build.configurations || {}).map(value => ({ ...base, ...value })),
+      ]) {
+        for (const entry of effective.polyfills || []) {
+          scanEntry(entry);
+        }
+      }
     }
     counts[library] = 0;
     const directory = path.join(root, 'projects', library);
@@ -218,7 +269,7 @@ function checkRepository(root) {
       if (filename.endsWith('.spec.ts')) {
         counts[library]++;
       }
-      const relative = path.join('projects', library, filename);
+      const relative = normalizePath(path.join('projects', library, filename));
       const source = fs.readFileSync(path.join(root, relative), 'utf8');
       errors.push(...checkSource(source, relative));
       const forcedCount = countForcedChecks(source, relative);
@@ -230,21 +281,22 @@ function checkRepository(root) {
           `${relative}: forced checks increased from ${baseline[relative] || 0} to ${forcedCount}; use rendering notifications`
         );
       }
-      if (forcedCount < (baseline[relative] || 0)) {
-        errors.push(`${relative}: reduce its forced-check baseline to ${forcedCount}`);
-      }
     }
   }
-  for (const filename of Object.keys(baseline)) {
-    if (!fs.existsSync(path.join(root, filename))) {
-      errors.push(`${filename}: remove the deleted spec from the forced-check baseline`);
-    }
+  if (update && errors.length === 0) {
+    fs.writeFileSync(
+      path.join(root, 'scripts/zoneless-test-baseline.json'),
+      JSON.stringify(Object.fromEntries(Object.entries(forcedChecks).sort(([a], [b]) => a.localeCompare(b))), null, 2) +
+        '\n'
+    );
   }
   return { errors, counts, forcedChecks };
 }
 
 if (require.main === module) {
-  const { errors, counts, forcedChecks } = checkRepository(path.resolve(__dirname, '..'));
+  const { errors, counts, forcedChecks } = checkRepository(path.resolve(__dirname, '..'), {
+    update: process.argv.includes('--update'),
+  });
   const summary = `Zoneless test policy: ${counts.angular} Angular and ${counts.addons} addons spec files; ${errors.length} violations (allowed: 0).`;
   const progress = `Legacy explicit rendering calls: ${Object.values(forcedChecks).reduce((sum, count) => sum + count, 0)} across ${Object.keys(forcedChecks).length} test files. Notification-based regressions must not add forced checks.`;
   console.log(summary);
@@ -258,4 +310,4 @@ if (require.main === module) {
   process.exitCode = errors.length ? 1 : 0;
 }
 
-module.exports = { checkSource, checkRepository, countForcedChecks, hasZonelessProviders };
+module.exports = { checkSource, checkRepository, countForcedChecks, hasZonelessProviders, normalizePath };

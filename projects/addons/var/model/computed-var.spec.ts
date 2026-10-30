@@ -9,6 +9,7 @@ import { of, Subject, throwError } from 'rxjs';
 import { delay, take, tap } from 'rxjs/operators';
 
 import { ComputedVar, ComputeStrategy, SimpleVar, Var } from './var';
+import { useTestTimers } from '../../../test-timers';
 
 const fnResult = 'fn result:';
 
@@ -415,7 +416,7 @@ describe('computed-var.spec', () => {
 
   describe('eager evaluation', () => {
     it('when there is a second subscription, compute function should not be invoked again', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+      useTestTimers();
       const model = new MockWorkflowModel();
       model.delay = Var.of<boolean>();
       model.delayedVar = Var.from(model.delay)

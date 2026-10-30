@@ -11,6 +11,7 @@ import { By } from '@angular/platform-browser';
 import { ClrDropdownModule } from '@clr/angular/popover/dropdown';
 import { renderFixture } from '@clr/angular/utils/testing';
 
+import { useTestTimers } from '../../../test-timers';
 import { MockPropertyViewStrings } from '../../testing';
 import { PropertyViewStrings } from '../property-view-strings.service';
 import {
@@ -516,7 +517,7 @@ describe('PropertyViewSectionComponent', () => {
       });
 
       it("should invoke action's clickHandler() when action element is clicked", async () => {
-        vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+        useTestTimers();
         const action1 = {
           title: 'action-1',
           isEnabled: true,

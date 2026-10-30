@@ -15,6 +15,7 @@ import { ClrPopoverContent } from './popover-content';
 import { ClrPopoverModuleNext } from './popover.module';
 import { ClrPopoverService } from './providers/popover.service';
 import { ClrPopoverPosition } from './utils/popover-positions';
+import { useTestTimers } from '../../../test-timers';
 
 @Component({
   selector: 'test-host',
@@ -772,7 +773,7 @@ describe('ClrPopover', () => {
       });
 
       it('opens a popover at a specific point origin', async () => {
-        vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+        useTestTimers();
         const fixture = TestBed.createComponent(PointContent);
         renderFixture(fixture);
 
@@ -796,7 +797,7 @@ describe('ClrPopover', () => {
       });
 
       it('opens via popoverService.openAtPoint without errors', async () => {
-        vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+        useTestTimers();
         const fixture = TestBed.createComponent(PointContent);
         renderFixture(fixture);
 
@@ -855,7 +856,7 @@ describe('ClrPopover', () => {
       });
 
       it('closes a point-based popover on a click dispatched inside the foreign-realm document CDK cannot see', async () => {
-        vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+        useTestTimers();
         // Mirrors the element-based cross-window outside-click fix: pointTargetElement
         // (the right-clicked element a context menu is anchored to) can itself live
         // inside a foreign iframe document, invisible to CDK's outsidePointerEvents().

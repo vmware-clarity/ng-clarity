@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DebugElement, Directive, ElementRef, Host, Input, Self, SimpleChange } from '@angular/core';
+import { DebugElement, Directive, ElementRef, Host, Input, Self } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
@@ -550,9 +550,6 @@ describe('Appfx Tabs', () => {
       testContext.fixture.componentRef.setInput('tabs', testContext.steps);
       testContext.fixture.componentRef.setInput('tabLayout', TabLayout.vertical);
       renderFixture(testContext.fixture);
-      testContext.component.ngOnChanges({
-        tabLayout: new SimpleChange({} as TabLayout, TabLayout.vertical, true),
-      });
       queryTabLinks = () => testContext.fixture.debugElement.query(By.css('appfx-tab-links'));
     });
 

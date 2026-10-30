@@ -12,6 +12,7 @@ import { renderFixture } from '@clr/angular/utils/testing';
 import { RecursiveTreeNodeModel } from './models/recursive-tree-node.model';
 import { ClrRecursiveForOf, ClrRecursiveForOfContext } from './recursive-for-of';
 import { TreeFeaturesService } from './tree-features.service';
+import { useTestTimers } from '../../../test-timers';
 
 /*
  * Some utilities for this spec
@@ -103,7 +104,7 @@ describe('Tree View', () => {
       });
 
       it('refreshes the tree once per burst of fetched children, in a microtask', async () => {
-        vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+        useTestTimers();
         // Children fetched while the tree renders arrive in bursts, one notification per node.
         const detectChanges = vi
           .spyOn((testContext.clarityDirective as any).cdr, 'detectChanges')

@@ -60,25 +60,13 @@ export class TestContext<D, C> {
     return this.clarityDebugElement.injector.get(token, notFoundValue);
   }
 
-  /** Wait for Angular's scheduled rendering without forcing a change detection pass. */
-  stable(): Promise<void> {
-    return this.fixture.whenStable();
-  }
-
-  /** Set a host component input through Angular so OnPush views receive a notification. */
-  async setInput(name: string, value: unknown): Promise<void> {
-    this.fixture.componentRef.setInput(name, value);
-    await this.stable();
-  }
-
   /**
    * Delegate method to avoid verbosity
    */
   detectChanges() {
     // Legacy unit tests explicitly request a render after mutating plain host fields. Preserve that intent
-    // under zoneless scheduling; notification-based integration tests must await stable() instead.
-    this.fixture.changeDetectorRef.markForCheck();
-    this.fixture.detectChanges();
+    // under zoneless scheduling; notification-based integration tests must await fixture.whenStable() instead.
+    renderFixture(this.fixture);
   }
 }
 /**

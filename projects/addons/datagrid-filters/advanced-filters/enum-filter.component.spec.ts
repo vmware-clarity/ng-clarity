@@ -13,6 +13,7 @@ import { ClrIcon } from '@clr/angular/icon';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
 import type { Mock } from 'vitest';
 
+import { useTestTimers } from '../../../test-timers';
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
 import { EnumFilterComponent } from './enum-filter.component';
 import { FilterFormComponent } from './filter-form.component';
@@ -92,6 +93,7 @@ describe('EnumFilterComponent', () => {
     component = fixture.componentInstance;
     // Default setup
     fixture.componentRef.setInput('filterProperty', enumPropertySmall);
+    useTestTimers();
   });
 
   afterEach(() => {
@@ -100,7 +102,6 @@ describe('EnumFilterComponent', () => {
 
   describe('Initialization (Small Data)', () => {
     it('should initialize correctly with default values', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       await fixture.whenStable();
       await vi.advanceTimersByTimeAsync(50); // Allow initial async load
       fixture.detectChanges();
@@ -113,7 +114,6 @@ describe('EnumFilterComponent', () => {
     });
 
     it('should initialize in Edit Mode (pre-selected values)', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       fixture.componentRef.setInput('propertyFilter', propertyFilter);
       // Input changes are delivered through Angular.
       await vi.advanceTimersByTimeAsync(50);
@@ -129,7 +129,6 @@ describe('EnumFilterComponent', () => {
     });
 
     it('should sync "DoesNotEqual" operator correctly from PropertyFilter', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       const filterAnd = new PropertyFilter();
       filterAnd.criteria = [predicateRed];
       filterAnd.operator = LogicalOperator.And; // Implies DoesNotEqual
@@ -149,7 +148,6 @@ describe('EnumFilterComponent', () => {
     });
 
     it('should handle large datasets by showing loading indicator and splicing results', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       await fixture.whenStable();
       expect(component.isProcessing).toBe(false);
       // Should only show maxInitiallyShownItems (50)
@@ -159,7 +157,6 @@ describe('EnumFilterComponent', () => {
     });
 
     it('should load more items when loadMore() is called', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       await fixture.whenStable();
       await vi.advanceTimersByTimeAsync(50);
 
@@ -178,7 +175,6 @@ describe('EnumFilterComponent', () => {
 
   describe('Search Logic', () => {
     beforeEach(async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       fixture.componentRef.setInput('filterProperty', enumPropertySmall); // red, green, blue
       await fixture.whenStable();
       await vi.advanceTimersByTimeAsync(50);
@@ -191,7 +187,6 @@ describe('EnumFilterComponent', () => {
     }
 
     it('should filter options by value (case insensitive)', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       enterSearch('alert');
 
       await vi.advanceTimersByTimeAsync(200); // Debounce
@@ -202,7 +197,6 @@ describe('EnumFilterComponent', () => {
     });
 
     it('should filter options by key', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       enterSearch('gree'); // matches 'green'
 
       await vi.advanceTimersByTimeAsync(200);
@@ -213,7 +207,6 @@ describe('EnumFilterComponent', () => {
     });
 
     it('should clear search and restore full list', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       enterSearch('alert');
       await vi.advanceTimersByTimeAsync(250);
       expect(component.filteredOptions.length).toBe(1);
@@ -229,14 +222,12 @@ describe('EnumFilterComponent', () => {
 
   describe('Interaction: Search + Selection', () => {
     beforeEach(async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       fixture.componentRef.setInput('filterProperty', enumPropertySmall);
       await fixture.whenStable();
       await vi.advanceTimersByTimeAsync(50);
     });
 
     it('Select All should only select filtered (visible) options', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       // 1. Search for "Alert" (red)
       const input: HTMLInputElement = fixture.nativeElement.querySelector('input[formControlName="searchTerm"]');
       input.value = 'Alert';
@@ -283,7 +274,6 @@ describe('EnumFilterComponent', () => {
 
   describe('Operators & Validation', () => {
     beforeEach(async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       fixture.componentRef.setInput('filterProperty', enumPropertySmall);
       await fixture.whenStable();
       await vi.advanceTimersByTimeAsync(50);
@@ -324,7 +314,6 @@ describe('EnumFilterComponent', () => {
 
   describe('Single Select Mode', () => {
     beforeEach(async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       fixture.componentRef.setInput('filterProperty', singleSelectEnumProperty);
       await fixture.whenStable();
       await vi.advanceTimersByTimeAsync(50);
@@ -350,7 +339,6 @@ describe('EnumFilterComponent', () => {
 
   describe('Apply & Cancel Actions', () => {
     beforeEach(async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       fixture.componentRef.setInput('filterProperty', enumPropertySmall);
       await fixture.whenStable();
       await vi.advanceTimersByTimeAsync(50);
@@ -380,7 +368,6 @@ describe('EnumFilterComponent', () => {
   });
   describe('Additional Coverage: Branch & Input Logic', () => {
     it('should verify performSearch logic and update options when filterProperty input is changed', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       // 1. Initialize with Small Property (3 items)
       fixture.componentRef.setInput('filterProperty', enumPropertySmall);
       await fixture.whenStable();
@@ -402,7 +389,6 @@ describe('EnumFilterComponent', () => {
     });
 
     it('should auto-check "Select All" if propertyFilter contains ALL options (updateForm branch)', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       // Create a filter that includes every single option available in 'enumPropertySmall'
       const allSelectedFilter = new PropertyFilter();
       allSelectedFilter.criteria = [
@@ -442,7 +428,6 @@ describe('EnumFilterComponent', () => {
       });
 
       it('should set singleSelectOption to the specific value from propertyFilter (If branch)', async () => {
-        vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
         // Define a filter for 'green' to hit the 'if (this.propertyFilter)' block
         const greenFilter = new PropertyFilter();
         greenFilter.criteria = [

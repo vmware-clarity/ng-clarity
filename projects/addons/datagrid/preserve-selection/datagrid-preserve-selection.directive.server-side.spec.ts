@@ -22,6 +22,7 @@ import {
 import { SelectionType } from '@clr/angular/data/datagrid';
 import { renderFixture } from '@clr/angular/utils/testing';
 
+import { useTestTimers } from '../../../test-timers';
 import { DatagridColumnsOrderModule } from '../addons/column-ordering/datagrid-columns-order.module';
 import { ExportProviderService } from '../addons/export/export-provider.service';
 import { DatagridComponent } from '../datagrid.component';
@@ -291,7 +292,7 @@ describe('datagrid-preserve-selection-directive.server-side', () => {
 
   describe('when the grid is with multi-selection', () => {
     it('selection is preserve when move between pages', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+      useTestTimers();
       await testContext.selectRows([0, 1]);
       testContext.verifySelectedRows([0, 1]);
       //Move to second page
@@ -322,7 +323,7 @@ describe('datagrid-preserve-selection-directive.server-side', () => {
     });
 
     it('selection is preserve when refresh data', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+      useTestTimers();
       await testContext.selectRows([0, 1]);
       testContext.verifySelectedRows([0, 1]);
       await testContext.moveToTheNextPageAndSelectRows([0]);
@@ -355,7 +356,7 @@ describe('datagrid-preserve-selection-directive.server-side', () => {
 
   describe('when the grid is with single selection', () => {
     beforeEach(async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+      useTestTimers();
       testContext.appfxDatagridHostComponent.datagridComponent.selectionType = SelectionType.Single;
       testContext.appfxDatagridHostComponent.datagridComponent.onModelChange();
       renderFixture(testContext.fixture);
@@ -363,7 +364,7 @@ describe('datagrid-preserve-selection-directive.server-side', () => {
     });
 
     it('selection is preserve when move between pages', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+      useTestTimers();
       const gridHelper = new GridHelper(testContext.fixture.debugElement);
       expect(gridHelper.getRows()[1].isRowSingleSelectable()).toBeTruthy();
       await testContext.selectRows([0]);
@@ -397,7 +398,7 @@ describe('datagrid-preserve-selection-directive.server-side', () => {
     });
 
     it('selection is preserve when refresh data', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+      useTestTimers();
       await testContext.selectRows([1]);
       testContext.verifySelectedRows([1]);
       await testContext.moveToTheNextPageAndSelectRows([]);

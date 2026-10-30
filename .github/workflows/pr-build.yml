@@ -17,16 +17,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Read repository Angular version
         id: version
-        run: |
-          node <<'NODE'
-          const fs = require('node:fs');
-          const version = require('./package.json').devDependencies['@angular/core'];
-          const major = Number(version.match(/\d+/)[0]);
-          if (![21, 22].includes(major)) throw new Error(`Update the supported Angular CI matrix for ${version}`);
-          const matrix = [{ angular: `Angular v${major}`, primary: true }];
-          if (major === 21) matrix.push({ angular: 'Angular v22', primary: false });
-          fs.appendFileSync(process.env.GITHUB_OUTPUT, `major=${major}\nmatrix=${JSON.stringify(matrix)}\n`);
-          NODE
+        run: node scripts/angular-ci-matrix.js
   pr-build:
     name: PR Build (${{matrix.angular}})
     needs: angular-version

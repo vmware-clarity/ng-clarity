@@ -16,6 +16,7 @@ import { renderFixture } from '@clr/angular/utils/testing';
 import { Observable, of, Subject } from 'rxjs';
 
 import { DatagridActionBarComponent } from './datagrid-action-bar.component';
+import { useTestTimers } from '../../../../test-timers';
 import { AppfxDatagridModule } from '../../datagrid.module';
 import { ActionDefinition } from '../../shared/action/action-definition';
 
@@ -269,7 +270,7 @@ describe('DatagridActionBarComponent', () => {
 
     describe("AND the container's width has decreased due to a browser window resize", () => {
       beforeEach(async () => {
-        vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+        useTestTimers();
         testContext.containerComponent.width = testContext.containerComponent.smallSize;
         renderFixture(testContext.fixture);
         testContext.resizeService.resize$.next();
@@ -315,7 +316,7 @@ describe('DatagridActionBarComponent', () => {
 
       describe('AND the container is resized back to its original size', () => {
         beforeEach(async () => {
-          vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+          useTestTimers();
           testContext.containerComponent.width = testContext.containerComponent.normalSize;
           renderFixture(testContext.fixture);
           testContext.resizeService.resize$.next();
@@ -421,7 +422,7 @@ describe('DatagridActionBarComponent', () => {
 
       describe('AND the browser window is being resized', () => {
         beforeEach(async () => {
-          vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+          useTestTimers();
           testContext.resizeService.resize$.next();
           await vi.advanceTimersByTimeAsync(10);
           renderFixture(testContext.fixture);
@@ -459,7 +460,7 @@ describe('DatagridActionBarComponent', () => {
   });
 
   it('NOT all actions should be visible', async () => {
-    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+    useTestTimers();
     const visibleActionSelector = `button[data-test-id='${testContext.actionsWithVisibility[0].id}']`;
     const hiddenActionSelector = `button[data-test-id='${testContext.actionsWithVisibility[1].id}']`;
     const dropDownSelector = 'clr-dropdown.dropdown button.dropdown-toggle';

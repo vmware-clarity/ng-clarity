@@ -65,14 +65,12 @@ describe('AppfxCardComponent', () => {
     expect(component).toBeDefined();
   });
 
-  it('should throw error when card id is missing', () => {
+  it('should throw error when card id is missing', async () => {
     fixture.componentRef.setInput('card', {} as AppfxCardInternal);
-    expect(() => {
-      component.ngOnInit();
-    }).toThrowError('Missing Input property for card - id');
+    await expect(fixture.whenStable()).rejects.toThrowError('Missing Input property for card - id');
   });
 
-  it('should create component card when id and componentClass is present', () => {
+  it('should create component card when id and componentClass is present', async () => {
     const cardViewContainer = (component as any).cardViewContainer;
     vi.spyOn(cardViewContainer, 'createComponent');
 
@@ -81,17 +79,17 @@ describe('AppfxCardComponent', () => {
       componentClass: SampleCardComponent,
       context: {},
     } as unknown as AppfxCardInternal);
-    component.ngOnInit();
+    await fixture.whenStable();
 
     expect(cardViewContainer.createComponent).toHaveBeenCalledWith(SampleCardComponent);
   });
 
-  it('should not create component card when id and componentClass is not present', () => {
+  it('should not create component card when id and componentClass is not present', async () => {
     const cardViewContainer = (component as any).cardViewContainer;
     vi.spyOn(cardViewContainer, 'createComponent');
 
     fixture.componentRef.setInput('card', { id: sampleCardId } as AppfxCardInternal);
-    component.ngOnInit();
+    await fixture.whenStable();
 
     expect(cardViewContainer.createComponent).not.toHaveBeenCalled();
   });
@@ -116,7 +114,7 @@ describe('AppfxCardComponent', () => {
     expect(layoutService.updateCardSize).toHaveBeenCalled();
   });
 
-  it('when zoom level is change and cardZoomSize is define the updateCardSize method of layoutService is called', () => {
+  it('when zoom level is change and cardZoomSize is define the updateCardSize method of layoutService is called', async () => {
     fixture.componentRef.setInput('card', {
       id: sampleCardId,
       componentClass: SampleCardComponent,
@@ -130,13 +128,13 @@ describe('AppfxCardComponent', () => {
         },
       },
     } as unknown as AppfxCardInternal);
-    component.ngOnInit();
+    await fixture.whenStable();
     vi.spyOn(layoutService, 'updateCardSize');
     zoomLevelService['resizeSubject'].next(ZoomLevel.x2);
     expect(layoutService.updateCardSize).toHaveBeenCalled();
   });
 
-  it('when zoom level is change and cardZoomSize is not define the updateCardSize method of layoutService is not called', () => {
+  it('when zoom level is change and cardZoomSize is not define the updateCardSize method of layoutService is not called', async () => {
     fixture.componentRef.setInput('card', {
       id: sampleCardId,
       componentClass: SampleCardComponent,
@@ -150,7 +148,7 @@ describe('AppfxCardComponent', () => {
         },
       },
     } as unknown as AppfxCardInternal);
-    component.ngOnInit();
+    await fixture.whenStable();
     vi.spyOn(layoutService, 'updateCardSize');
     zoomLevelService['resizeSubject'].next(ZoomLevel.x2);
     expect(layoutService.updateCardSize).not.toHaveBeenCalled();

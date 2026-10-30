@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, NgModule, SimpleChange } from '@angular/core';
+import { ChangeDetectionStrategy, Component, NgModule } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { renderFixture } from '@clr/angular/utils/testing';
@@ -49,22 +49,18 @@ describe('PropertyViewPropertyValueContainerComponent', () => {
     });
   });
 
-  it('on componentModel changes, should change model', () => {
+  it('on componentModel changes, should change model', async () => {
     testContext.fixture.componentRef.setInput('componentModel', { text: 'text2' });
-    testContext.component.ngOnChanges({
-      componentModel: new SimpleChange({ text: 'text' }, { text: 'text2' }, false),
-    });
+    await testContext.fixture.whenStable();
     expect(testContext.fixture.debugElement.query(By.directive(MockComponent)).componentInstance.model).toEqual({
       text: 'text2',
     });
   });
 
-  it('on componentType changes, should recreate component', () => {
+  it('on componentType changes, should recreate component', async () => {
     testContext.fixture.componentRef.setInput('componentType', Mock2Component);
     testContext.fixture.componentRef.setInput('componentModel', { text: 'text2' });
-    testContext.component.ngOnChanges({
-      componentType: new SimpleChange(MockComponent, Mock2Component, false),
-    });
+    await testContext.fixture.whenStable();
     expect(testContext.fixture.debugElement.query(By.directive(Mock2Component)).componentInstance.model).toEqual({
       text: 'text2',
     });

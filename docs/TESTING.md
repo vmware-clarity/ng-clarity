@@ -43,14 +43,16 @@ Shared configuration:
 - `projects/test-providers.ts`: zoneless scheduling and exhaustive check-no-changes validation for both library suites.
 - `angular.json`: browser viewport, coverage, setup files, and CI targets.
 
-The browser test bundles do not load `zone.js`, its testing support, or its Vitest patch. Use native `async` tests and await every assertion-bearing callback. For scheduled component rendering, use `await fixture.whenStable()` (or `await context.stable()`) after changing signals, setting inputs through `fixture.componentRef.setInput()`, or dispatching DOM events. `context.setInput()` sets a host input and waits for rendering. A direct assignment to an OnPush component's plain field is not a rendering notification; model the application's input or event instead.
+The browser test bundles do not load `zone.js`, its testing support, or its Vitest patch. Use native `async` tests and await every assertion-bearing callback. For scheduled component rendering, use `await fixture.whenStable()` after changing signals, setting inputs through `fixture.componentRef.setInput()`, or dispatching DOM events. A direct assignment to an OnPush component's plain field is not a rendering notification; model the application's input or event instead.
 
-Use explicit `detectChanges()` for initial fixture setup or tests specifically exercising change detection. The legacy `TestContext.detectChanges()` and `renderFixture(fixture)` helpers mark their host for checking before the existing render pass, preserving unit tests that explicitly mutate plain host fields. It is an intentional forced check, not proof that application rendering was notified; notification-based integration tests must use `stable()` instead. The policy baseline counts these legacy forced checks per spec file and must shrink as they are removed. Do not add extra forced passes to make a missing notification disappear. Exhaustive validation must stay enabled, and neither suite may opt back into Zone scheduling.
+New specs should use `fixture.autoDetectChanges()` for setup and await `fixture.whenStable()`. Explicit `detectChanges()` remains allowed only in the recorded legacy baseline; do not introduce it in new notification regressions. The legacy `TestContext.detectChanges()` and `renderFixture(fixture)` helpers mark their host for checking before the existing render pass, preserving unit tests that explicitly mutate plain host fields. It is an intentional forced check, not proof that application rendering was notified; notification-based integration tests must use `fixture.whenStable()` instead. The policy baseline counts these legacy forced checks per spec file. Reductions pass immediately; run `node scripts/check-zoneless-tests.js --update` to record reductions and deleted specs. This command refuses increases or policy violations and never raises the allowance. Do not add extra forced passes to make a missing notification disappear. Exhaustive validation must stay enabled, and neither suite may opt back into Zone scheduling.
 
 When testing debounce or timeout behavior, use Vitest timers and await advancement:
 
 ```typescript
-vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+import { useTestTimers } from '../test-timers'; // Adjust the relative path for the spec.
+
+useTestTimers();
 // Trigger the behavior under test.
 await vi.advanceTimersByTimeAsync(300);
 await fixture.whenStable();

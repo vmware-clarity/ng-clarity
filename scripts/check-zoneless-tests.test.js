@@ -132,3 +132,86 @@ test('rejects test-local exhaustive opt-outs, including an aliased provider', ()
     []
   );
 });
+
+test('normalizes Windows baseline keys', () => {
+  const { normalizePath } = require('./check-zoneless-tests');
+  assert.equal(normalizePath('projects\\angular\\example.spec.ts'), 'projects/angular/example.spec.ts');
+});
+
+function policyFixture(t) {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const os = require('node:os');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'clarity-zoneless-policy-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const write = (file, value) => {
+    fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+    fs.writeFileSync(path.join(root, file), typeof value === 'string' ? value : JSON.stringify(value));
+  };
+  const workspace = { projects: {} };
+  for (const library of ['angular', 'addons']) {
+    workspace.projects[`clr-${library}`] = {
+      architect: {
+        test: {
+          options: {
+            providersFile: 'projects/test-providers.ts',
+            setupFiles: ['projects/test-setup.ts'],
+            buildTarget: `clr-${library}:test-build`,
+          },
+          configurations: { ci: {} },
+        },
+        'test-build': { options: { polyfills: [] } },
+      },
+    };
+    write(
+      `projects/${library}/example.spec.ts`,
+      library === 'angular' ? 'fixture.detectChanges();' : 'await fixture.whenStable();'
+    );
+  }
+  write(
+    'projects/test-providers.ts',
+    `import { provideZonelessChangeDetection, provideCheckNoChangesConfig } from '@angular/core'; export default [provideZonelessChangeDetection(), provideCheckNoChangesConfig({exhaustive:true})];`
+  );
+  write('projects/test-setup.ts', '');
+  write('scripts/zoneless-test-baseline.json', { 'projects/angular/example.spec.ts': 1 });
+  write('angular.json', workspace);
+  return { root, write, workspace };
+}
+
+test('audits effective CI overrides and path polyfills', t => {
+  const { checkRepository } = require('./check-zoneless-tests');
+  const { root, write, workspace } = policyFixture(t);
+  workspace.projects['clr-angular'].architect.test.configurations.ci.providersFile = 'other.ts';
+  workspace.projects['clr-angular'].architect['test-build'].configurations = {
+    ci: { polyfills: ['node_modules/zone.js/fesm2015/zone.js'] },
+  };
+  write('angular.json', workspace);
+  const errors = checkRepository(root).errors.join('\n');
+  assert.match(errors, /shared zoneless providers/);
+  assert.match(errors, /must not load Zone/);
+});
+
+test('audits additional setup files and transitive local imports', t => {
+  const { checkRepository } = require('./check-zoneless-tests');
+  const { root, write, workspace } = policyFixture(t);
+  workspace.projects['clr-addons'].architect.test.configurations.ci.setupFiles = ['projects/extra-setup.ts'];
+  write('projects/extra-setup.ts', "import './nested-setup';");
+  write('projects/nested-setup.ts', "import '../node_modules/zone.js/testing';");
+  write('angular.json', workspace);
+  assert.match(checkRepository(root).errors.join('\n'), /imports .*zone.js/);
+});
+
+test('allows reductions and updates their baseline without accepting increases', t => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const { checkRepository } = require('./check-zoneless-tests');
+  const { root, write } = policyFixture(t);
+  write('projects/angular/example.spec.ts', 'await fixture.whenStable();');
+  assert.deepEqual(checkRepository(root).errors, []);
+  assert.deepEqual(checkRepository(root, { update: true }).errors, []);
+  const baselineFile = path.join(root, 'scripts/zoneless-test-baseline.json');
+  assert.deepEqual(JSON.parse(fs.readFileSync(baselineFile, 'utf8')), {});
+  write('projects/angular/example.spec.ts', 'fixture.detectChanges();');
+  assert.match(checkRepository(root, { update: true }).errors.join('\n'), /forced checks increased/);
+  assert.deepEqual(JSON.parse(fs.readFileSync(baselineFile, 'utf8')), {});
+});

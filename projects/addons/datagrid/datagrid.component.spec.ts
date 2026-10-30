@@ -52,6 +52,7 @@ import { ClrIcon } from '@clr/angular/icon';
 import { renderFixture } from '@clr/angular/utils/testing';
 import { Observable, Subject } from 'rxjs';
 
+import { useTestTimers } from '../../test-timers';
 import { DatagridColumnsOrderModule } from './addons/column-ordering/datagrid-columns-order.module';
 import { DatagridColumnToggleComponent } from './addons/column-toggle/datagrid-column-toggle.component';
 import { ExportProviderService } from './addons/export/export-provider.service';
@@ -1562,6 +1563,15 @@ describe('DatagridComponent', () => {
           expect(new GridHelper(testContext.fixture.debugElement).getRows().length).toBe(1);
         });
 
+        it('omits the resize handle from the last scrollable column', () => {
+          setHidden(testContext.fixture, 'State', true);
+          expect(columnElementByTitle(testContext.fixture, 'Name').querySelector('.datagrid-column-handle')).toBeNull();
+          setHidden(testContext.fixture, 'State', false);
+          expect(
+            columnElementByTitle(testContext.fixture, 'Name').querySelector('.datagrid-column-handle')
+          ).not.toBeNull();
+        });
+
         // Reproduced with a real keyboard resize, since calling onColumnResize only reports a width.
         it('keeps a resized width', () => {
           const handle = columnElementByTitle(testContext.fixture, 'Name').querySelector<HTMLElement>(
@@ -1989,7 +1999,7 @@ describe('DatagridComponent', () => {
     });
 
     it('when returns false', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+      useTestTimers();
       const untypedContext: any = testContext;
       vi.spyOn(untypedContext.component, 'isRowLocked').mockReturnValue(false);
       renderFixture(untypedContext.fixture);
@@ -2007,7 +2017,7 @@ describe('DatagridComponent', () => {
     });
 
     it('when returns true', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+      useTestTimers();
       const untypedContext: any = testContext;
       vi.spyOn(untypedContext.component, 'isRowLocked').mockReturnValue(true);
       renderFixture(untypedContext.fixture);
@@ -2038,7 +2048,7 @@ describe('DatagridComponent', () => {
     });
 
     it('is set by default', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+      useTestTimers();
       renderFixture(testContext.fixture);
 
       const gridHelper = new GridHelper(testContext.fixture.debugElement);
@@ -2063,7 +2073,7 @@ describe('DatagridComponent', () => {
     });
 
     it('let the user to select only one item', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+      useTestTimers();
       renderFixture(testContext.fixture);
       renderFixture(testContext.fixture);
       await vi.advanceTimersByTimeAsync(0);
@@ -2088,7 +2098,7 @@ describe('DatagridComponent', () => {
     });
 
     it('can be changed to multi-selection mode and reset to single selection mode', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+      useTestTimers();
       renderFixture(testContext.fixture);
       await vi.advanceTimersByTimeAsync(0);
       renderFixture(testContext.fixture);
@@ -2124,7 +2134,7 @@ describe('DatagridComponent', () => {
     });
 
     it('allows selected items to be changed from the host component', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+      useTestTimers();
       testContext.component.appfxDatagridComponent.selectionType = SelectionType.Single;
 
       renderFixture(testContext.fixture);
@@ -2164,7 +2174,7 @@ describe('DatagridComponent', () => {
     });
 
     it('the user can not select an item', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+      useTestTimers();
       renderFixture(testContext.fixture);
       await vi.advanceTimersByTimeAsync(0);
       renderFixture(testContext.fixture);
@@ -2333,7 +2343,7 @@ describe('DatagridComponent', () => {
     });
 
     it('is set by default', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+      useTestTimers();
       renderFixture(testContext.fixture);
       await vi.advanceTimersByTimeAsync(0);
       renderFixture(testContext.fixture);
@@ -2347,7 +2357,7 @@ describe('DatagridComponent', () => {
     });
 
     it('can be disabled', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+      useTestTimers();
       const detectChanges = async () => {
         await vi.advanceTimersByTimeAsync(0);
         renderFixture(testContext.fixture);
@@ -2955,7 +2965,7 @@ describe('DatagridComponent', () => {
     });
 
     it('should preserve detail state and not recreate row when items are updated by reference but trackByProperty matches', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+      useTestTimers();
       class TestItem {
         constructor(
           public name: string,

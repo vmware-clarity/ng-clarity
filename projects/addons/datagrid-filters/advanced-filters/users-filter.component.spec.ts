@@ -15,6 +15,7 @@ import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
 import { renderFixture } from '@clr/angular/utils/testing';
 import { of, throwError } from 'rxjs';
 
+import { useTestTimers } from '../../../test-timers';
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
 import { DatagridFiltersUserService } from '../datagrid-filters-user-service';
 import { FilterFormComponent } from './filter-form.component';
@@ -76,7 +77,7 @@ describe('UsersFilterComponent', () => {
   });
 
   beforeEach(async () => {
-    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+    useTestTimers();
     fixture = TestBed.createComponent(UsersFilterComponent);
     component = fixture.componentInstance;
     fixture.componentRef.setInput('filterProperty', mockFilterProperty);
@@ -198,7 +199,6 @@ describe('UsersFilterComponent', () => {
 
   describe('Search Logic', () => {
     it('should search users when searchTerm changes (debounced)', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       const searchTerm = 'al';
       userServiceMock.searchUsers.mockClear();
       component.usersSelectionForm.get('searchTerm')?.setValue(searchTerm);
@@ -214,7 +214,6 @@ describe('UsersFilterComponent', () => {
     });
 
     it('should handle search errors gracefully by returning search term as fallback', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       userServiceMock.searchUsers.mockReturnValue(throwError({ status: 500 }));
       const searchTerm = 'unknown_user';
 
@@ -234,7 +233,6 @@ describe('UsersFilterComponent', () => {
     });
 
     it('should re-trigger search when domain changes', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       userServiceMock.searchUsers.mockClear();
 
       // Change domain
@@ -247,7 +245,6 @@ describe('UsersFilterComponent', () => {
 
   describe('Selection & Checkbox Logic', () => {
     beforeEach(async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       // Setup: Search returns alice, bob, charlie
       component.usersSelectionForm.get('searchTerm')?.setValue('');
       await vi.advanceTimersByTimeAsync(200);
@@ -336,7 +333,6 @@ describe('UsersFilterComponent', () => {
 
   describe('Custom Search Term Logic', () => {
     it('should display search term as an option if it is not in the results', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       // Scenario: User searches for "frank", API returns empty or other users.
       // The code forces "frank" to appear as a selectable option if not matched.
       userServiceMock.searchUsers.mockReturnValue(of([]));
@@ -350,7 +346,6 @@ describe('UsersFilterComponent', () => {
     });
 
     it('should NOT duplicate search term if it IS in the results', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       // Search "alice", API returns "alice"
       userServiceMock.searchUsers.mockReturnValue(of(['alice']));
       const term = 'alice';
@@ -396,12 +391,16 @@ describe('UsersFilterComponent', () => {
 
   describe('Error Handling', () => {
     it('should handle domain loading error', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       userServiceMock.getDomains.mockReturnValue(throwError('Network Error'));
-      // Trigger ngOnInit again to test the flow
-      component.ngOnInit();
+      // A fresh fixture runs initialization once with the failing service.
+      fixture.destroy();
+      fixture = TestBed.createComponent(UsersFilterComponent);
+      component = fixture.componentInstance;
+      fixture.componentRef.setInput('filterProperty', mockFilterProperty);
+      fixture.componentRef.setInput('propertyFilter', null);
       // domains stream is subscribed in loadDomains
       await vi.advanceTimersByTimeAsync(200);
+      await fixture.whenStable();
 
       expect(component.errorRetrievingDomains).toBe(datagridFiltersStrings.errorLoadingDomains);
       expect(component.isLoading).toBe(false);
@@ -426,7 +425,6 @@ describe('UsersFilterComponent', () => {
     });
 
     it('should filter selected values when a search term is present', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       // 1. Setup Selected Values
       component.selectedValues.add('Alice'); // Partial Match
       component.selectedValues.add('Bob'); // No Match
@@ -470,7 +468,6 @@ describe('UsersFilterComponent', () => {
     });
 
     it('should return empty array if error occurs and search term is empty', async () => {
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       // Mock error
       userServiceMock.searchUsers.mockReturnValue(throwError('Error'));
 

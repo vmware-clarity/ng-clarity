@@ -16,6 +16,7 @@ import { renderFixture } from '@clr/angular/utils/testing';
 import { CompositeFiltersComponent } from './composite-filters.component';
 import { DatagridFiltersStrings } from './datagrid-filters-strings.service';
 import { DataGridFiltersComponent } from './datagrid-filters.component';
+import { useTestTimers } from '../../test-timers';
 import { DismissableDirective } from './manage-filters/dismissable.directive';
 import { FilterMode } from './model/datagrid-filters.enums';
 
@@ -84,7 +85,7 @@ describe('DataGridFiltersComponent', () => {
     expect(testContext.component.propertyFiltersChange.emit).toHaveBeenCalledWith([]);
   });
   it('emits an event on search term change', async () => {
-    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+    useTestTimers();
     vi.spyOn(testContext.component, 'onSearchTermChanged');
     vi.spyOn(testContext.component.searchTermChange, 'emit').mockImplementation(() => undefined);
     renderFixture(testContext.fixture);

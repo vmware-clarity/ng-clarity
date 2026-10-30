@@ -629,7 +629,7 @@ export const TOOLTIP_POSITIONS: ClrPopoverPosition[];
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-popover-dropdown.d.ts:87:191 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-popover.d.ts
+// projects/angular/popover/dropdown/dropdown.ts:36:25 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-popover.d.ts
 
 // (No @packageDocumentation comment for this package)
 
