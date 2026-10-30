@@ -32,6 +32,9 @@ export interface ColumnFilterHandle {
  */
 @Injectable()
 export class ColumnActionsService {
+  /** Projected title, refreshed by the owning column and shared by its accessible labels. */
+  readonly title = signal('');
+
   /**
    * Whether the filter keeps its own toggle in the column header. An actions menu turns this off and
    * opens the filter itself, so the header keeps a single control per column - unless

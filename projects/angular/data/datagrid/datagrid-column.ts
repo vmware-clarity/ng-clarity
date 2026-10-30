@@ -202,7 +202,7 @@ export class ClrDatagridColumn<T = any>
   // consumer directly so it refreshes even when that view was already checked in the current render.
   private readonly _showSeparator = signal(true);
 
-  private _pinned = false;
+  private readonly _pinned = signal(false);
 
   constructor(
     private el: ElementRef<HTMLElement>,
@@ -247,14 +247,14 @@ export class ClrDatagridColumn<T = any>
    */
   @Input({ alias: 'clrDgPinned', transform: booleanAttribute })
   get pinned(): boolean {
-    return this._pinned;
+    return this._pinned();
   }
   set pinned(value: boolean) {
-    if (this._pinned === value) {
+    if (this._pinned() === value) {
       return;
     }
 
-    this._pinned = value;
+    this._pinned.set(value);
 
     // The column state is what the header and the rows read to decide where to project the
     // column and its cells. It is optional only so the column keeps working when it is used
@@ -420,7 +420,11 @@ export class ClrDatagridColumn<T = any>
   }
 
   ngAfterViewInit() {
-    this.setFilterToggleAriaLabel();
+    this.updateTitle();
+  }
+
+  ngAfterViewChecked() {
+    this.updateTitle();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -507,11 +511,16 @@ export class ClrDatagridColumn<T = any>
     });
   }
 
+  private updateTitle() {
+    this.columnActions.title.set(this.titleContainer?.nativeElement.textContent?.trim() ?? '');
+    this.setFilterToggleAriaLabel();
+  }
+
   private setFilterToggleAriaLabel() {
     const filterToggle = this.el.nativeElement.querySelector('.datagrid-filter-toggle');
     if (filterToggle) {
       filterToggle.ariaLabel = this.commonStrings.parse(this.commonStrings.keys.datagridFilterAriaLabel, {
-        COLUMN: this?.titleContainer?.nativeElement.textContent.trim().toLocaleLowerCase(),
+        COLUMN: this.columnActions.title().toLocaleLowerCase(),
       });
     }
   }
