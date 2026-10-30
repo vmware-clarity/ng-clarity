@@ -145,3 +145,10 @@ test('website: the resize observer initializes the table of contents', async ({ 
   await expect(page.locator('app-table-of-contents')).toBeVisible();
   await expect(page.locator('app-table-of-contents a').first()).toBeVisible();
 });
+
+test('website: API renderer code is highlighted without bootstrap timing', async ({ page }) => {
+  await openZoneless(page, 'http://localhost:8083/documentation/advanced-datagrid/api');
+  const example = page.locator('app-code-snippet').filter({ hasText: 'class DemoTextRendererComponent' });
+  await expect(example.locator('.token.keyword').filter({ hasText: 'class' })).toBeVisible();
+  await expect(example).toContainText('{{ displayText }} cell custom HTML');
+});

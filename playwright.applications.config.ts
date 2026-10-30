@@ -16,6 +16,7 @@ export default defineConfig({
   timeout: 30000,
   expect: { timeout: 10000 },
   reporter: 'list',
+  outputDir: 'test-results/applications',
   use: { ...devices['Desktop Chrome'], channel: 'chromium', trace: 'retain-on-failure' },
   webServer: [
     {
