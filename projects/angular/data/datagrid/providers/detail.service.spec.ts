@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { computed } from '@angular/core';
 import { ModalStackService } from '@clr/angular/modal';
 import { expectActiveElementToBe } from '@clr/angular/testing';
 import { Subscription } from 'rxjs';
@@ -72,6 +73,44 @@ export default function (): void {
       expect(provider.enabled).toBeFalse();
       provider.enabled = true;
       expect(provider.enabled).toBeTrue();
+    });
+
+    it('exposes enabled as reactive (signal-backed) state', () => {
+      const enabled = computed(() => provider.enabled);
+      expect(enabled()).toBeFalse();
+      provider.enabled = true;
+      expect(enabled()).toBeTrue();
+      provider.enabled = false;
+      expect(enabled()).toBeFalse();
+    });
+
+    it('keeps a replacement pane enabled and open when an older pane is removed', () => {
+      const removeOld = provider.register();
+      const removeNew = provider.register();
+      provider.open('replacement');
+      removeOld();
+      removeOld(); // Releasing the same registration twice must not remove the replacement.
+      expect(provider.enabled).toBeTrue();
+      expect(provider.isRowOpen('replacement')).toBeTrue();
+      removeNew();
+      expect(provider.enabled).toBeFalse();
+      expect(provider.isOpen).toBeFalse();
+      expect(provider.state).toBeUndefined();
+    });
+
+    it('returns focus and leaves the modal stack when the last open pane is removed', () => {
+      const stack = new ModalStackService(PLATFORM_SERVER_ID);
+      spyOn(stack, 'trackModalClose').and.callThrough();
+      provider = new DetailService(stack);
+      const remove = provider.register();
+      const button = document.createElement('button');
+      spyOn(button, 'focus');
+      provider.open('value', button);
+      remove();
+      expect(button.focus).toHaveBeenCalled();
+      expect(stack.trackModalClose).toHaveBeenCalledWith(provider);
+      expect(provider.isOpen).toBeFalse();
+      expect(provider.enabled).toBeFalse();
     });
 
     it('can detect if a row is open', () => {
