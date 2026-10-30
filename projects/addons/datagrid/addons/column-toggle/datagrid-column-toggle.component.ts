@@ -15,7 +15,6 @@ import {
   Input,
   OnDestroy,
   Output,
-  signal,
   ViewChild,
 } from '@angular/core';
 
@@ -54,18 +53,10 @@ export class DatagridColumnToggleComponent implements OnDestroy {
   ];
 
   openState = false;
+  viewId: string | undefined;
   overlay: CdkConnectedOverlay;
 
-  private readonly renderedViewId = signal<string | undefined>(undefined);
-
   constructor(public dgStrings: DatagridStrings) {}
-
-  get viewId(): string | undefined {
-    return this.renderedViewId();
-  }
-  set viewId(value: string | undefined) {
-    this.renderedViewId.set(value);
-  }
 
   get hasOnlyOneVisibleColumn(): boolean {
     const hideableColumns = this.hideableColumns();

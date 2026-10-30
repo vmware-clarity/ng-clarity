@@ -39,7 +39,7 @@ import {
   SelectionType,
   selectionTypeAttribute,
 } from '@clr/angular/data/datagrid';
-import { Subject, Subscription, timer } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { ColumnMoveDirection } from './addons/column-ordering/datagrid-columns-order.directive';
@@ -1277,9 +1277,9 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
 
     // @ts-ignore
     if (this.trackByGridItemProperty || this.trackByFunction) {
-      timer(0)
-        .pipe(takeUntil(this.#unsubscribeSubject))
-        .subscribe(() => this.clrDatagrid?.rows?.notifyOnChanges());
+      setTimeout(() => {
+        this.clrDatagrid?.rows?.notifyOnChanges();
+      }, 0);
     }
   }
 

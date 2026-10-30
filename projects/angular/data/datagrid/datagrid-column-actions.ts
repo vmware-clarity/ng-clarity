@@ -6,7 +6,6 @@
  */
 
 import {
-  afterEveryRender,
   afterNextRender,
   AfterViewInit,
   booleanAttribute,
@@ -21,7 +20,6 @@ import {
   OnDestroy,
   Optional,
   QueryList,
-  signal,
   SkipSelf,
   ViewChild,
 } from '@angular/core';
@@ -193,7 +191,6 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
   private subs: Subscription[] = [];
   private projectedItemsSubscription: Subscription;
   private readonly columnActionsFocusHandler = inject(ColumnActionsFocusHandler);
-  private readonly columnTitle = signal('');
 
   constructor(
     protected column: ClrDatagridColumn,
@@ -214,12 +211,6 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
     super(parent, popoverService, focusHandler, changeDetectorRef, dropdownService);
 
     this.isMenuClosable = false;
-
-    // The projected title settles after this view has been checked. Read it after rendering,
-    // then notify this OnPush view only when its text changes.
-    afterEveryRender({
-      read: () => this.columnTitle.set(column.titleContainer?.nativeElement.textContent?.trim() ?? ''),
-    });
 
     // Tells the filter to drop its own toggle - from here on this menu is the only way to open it,
     // unless clrDgKeepFilterInHeader asked to keep both. Reading the backing field rather than the
@@ -248,7 +239,7 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
    * The title follows projected content changes while staying stable throughout each render pass.
    */
   protected get triggerLabel(): string {
-    const title = this.columnTitle();
+    const title = this.columnActions.title();
 
     return title
       ? this.commonStrings.parse(this.commonStrings.keys.datagridColumnActionsAriaLabel, { COLUMN: title })

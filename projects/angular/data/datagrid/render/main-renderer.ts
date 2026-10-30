@@ -310,6 +310,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
               // the `clrDgPinned` input setter runs in.
               this.columnsSizesStable = false;
               this.shouldStabilizeColumns = true;
+              this.changeDetectorRef.markForCheck();
             }
             break;
           }
