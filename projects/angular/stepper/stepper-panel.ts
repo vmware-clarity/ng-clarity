@@ -62,10 +62,13 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
     public commonStrings: ClrCommonStringsService,
     @Optional() private formGroupName: FormGroupName,
     @Optional() private ngModelGroup: NgModelGroup,
-    private stepperService: StepperService,
+    @Optional() private stepperService: StepperService,
     ifExpandService: IfExpandService,
     cdr: ChangeDetectorRef
   ) {
+    if (!stepperService) {
+      throw new Error('clr-stepper-panel should only be used inside of clrStepper');
+    }
     super(stepperService, ifExpandService, cdr);
   }
 

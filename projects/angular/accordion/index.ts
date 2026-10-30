@@ -14,5 +14,3 @@ export * from './accordion.module';
 export * from './enums/accordion-strategy.enum';
 export * from './models/accordion.model';
 export * from './providers/accordion.service';
-export * from './chocolate/accordion-willy-wonka';
-export * from './chocolate/accordion-oompa-loompa';
