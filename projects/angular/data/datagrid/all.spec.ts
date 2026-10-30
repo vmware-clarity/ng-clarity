@@ -30,10 +30,14 @@ import DatagridColumnSeparatorSpecs from './datagrid-column-separator.spec';
 import DatagridColumnToggleButtonSpecs from './datagrid-column-toggle-button.spec';
 import DatagridColumnToggleSpecs from './datagrid-column-toggle.spec';
 import DatagridColumnSpecs from './datagrid-column.spec';
+import DatagridDetailBodySpecs from './datagrid-detail-body.spec';
+import DatagridDetailHeaderSpecs from './datagrid-detail-header.spec';
 import DatagridDetailSpecs from './datagrid-detail.spec';
 import DatagridFilterSpecs from './datagrid-filter.spec';
 import DatagridFooterSpecs from './datagrid-footer.spec';
 import DatagridHideableColumnDirectiveSpec from './datagrid-hideable-column.spec';
+import DatagridIfDetailSpecs from './datagrid-if-detail.spec';
+import DatagridIfExpandServiceSpecs from './datagrid-if-expanded.service.spec';
 import DatagridItemsSpecs from './datagrid-items.spec';
 import DatagridPageSizeSpecs from './datagrid-page-size.spec';
 import DatagridPaginationIntegrationSpecs from './datagrid-pagination.integration.spec';
@@ -46,6 +50,9 @@ import DatagridSingleSelectionDirectiveSpec from './datagrid-single-selection.di
 import DatagridVirtualScrollSpec from './datagrid-virtual-scroll.directive.spec';
 import DatagridSpecs from './datagrid.spec';
 import ColumnResizerServiceSpecs from './providers/column-resizer.service.spec';
+import ColumnsServiceSpecs from './providers/columns.service.spec';
+import DatagridDetailRegistererSpecs from './providers/datagrid-detail-registerer.spec';
+import DetailServiceSpecs from './providers/detail.service.spec';
 import DisplayModeServiceSpecs from './providers/display-mode.service.spec';
 import FiltersProviderSpecs from './providers/filters.spec';
 import ItemsProviderSpecs from './providers/items.spec';
@@ -78,6 +85,9 @@ describe('Datagrid', function () {
     DisplayModeServiceSpecs();
     TableSizeServiceSpec();
     ColumnResizerServiceSpecs();
+    ColumnsServiceSpecs();
+    DetailServiceSpecs();
+    DatagridIfExpandServiceSpecs();
   });
 
   describe('Components', function () {
@@ -87,6 +97,10 @@ describe('Datagrid', function () {
     DatagridFilterSpecs();
     DatagridColumnSpecs();
     DatagridDetailSpecs();
+    DatagridDetailHeaderSpecs();
+    DatagridDetailBodySpecs();
+    DatagridIfDetailSpecs();
+    DatagridDetailRegistererSpecs();
     DatagridColumnSeparatorSpecs();
     DatagridItemsSpecs();
     DatagridRowSpecs();

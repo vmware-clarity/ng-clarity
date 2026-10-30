@@ -28,6 +28,7 @@ export class ClrIfDetail implements OnInit, OnDestroy {
   @Output('clrIfDetailChange') stateChange = new EventEmitter<any>(null);
 
   private subscriptions: Subscription[] = [];
+  private readonly unregister: () => void;
   private skip = false; // This keeps us from resetting the input and calling the toggle twice
   private embeddedViewRef: EmbeddedViewRef<any>;
 
@@ -36,7 +37,7 @@ export class ClrIfDetail implements OnInit, OnDestroy {
     private viewContainer: ViewContainerRef,
     private detailService: DetailService
   ) {
-    detailService.enabled = true;
+    this.unregister = detailService.register();
   }
 
   @Input('clrIfDetail')
@@ -65,6 +66,7 @@ export class ClrIfDetail implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.unregister();
   }
 
   private togglePanel(showPanel: boolean) {
