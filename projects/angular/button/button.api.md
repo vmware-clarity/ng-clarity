@@ -205,7 +205,7 @@ export class ClrLoadingButtonModule {
 
 // Warnings were encountered during analysis:
 //
-// projects/angular/button/button-group/button-group.ts:51:28 - (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-angular-button.d.ts
+// dist/clr-angular/types/clr-angular-button.d.ts:162:283 - (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-angular-button.d.ts
 
 // (No @packageDocumentation comment for this package)
 

@@ -641,7 +641,7 @@ export class ResponsiveNavigationService {
 
 // Warnings were encountered during analysis:
 //
-// projects/angular/layout/tabs/tabs.ts:101:21 - (ae-forgotten-export) The symbol "i1_3" needs to be exported by the entry point clr-angular-layout.d.ts
+// dist/clr-angular/types/clr-angular-layout-tabs.d.ts:115:194 - (ae-forgotten-export) The symbol "i1_3" needs to be exported by the entry point clr-angular-layout.d.ts
 
 // (No @packageDocumentation comment for this package)
 

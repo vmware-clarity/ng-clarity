@@ -9,7 +9,6 @@ import { ChangeDetectorRef, QueryList, SimpleChange } from '@angular/core';
 import { ClrDatagrid, SelectionType } from '@clr/angular/data/datagrid';
 
 import { useTestTimers } from '../../test-timers';
-
 import { ExportProviderService } from './addons/export/export-provider.service';
 import { DatagridComponent } from './datagrid.component';
 import { DatagridStrings } from './i18n/datagrid-strings.service';
