@@ -73,6 +73,21 @@ for (const zoneless of [false, true]) {
       expect(trigger.getAttribute('aria-expanded')).toBe('false');
     });
 
+    it('clears expanded state and ARIA relationships after native Escape', async () => {
+      trigger.click();
+      await fixture.whenStable();
+      const id = trigger.getAttribute('aria-controls');
+      expect(id).toBeTruthy();
+      document
+        .getElementById(id)
+        .dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', code: 'Escape', keyCode: 27, bubbles: true }));
+      await fixture.whenStable();
+      expect(trigger.getAttribute('aria-expanded')).toBe('false');
+      expect(trigger.getAttribute('aria-controls')).toBeNull();
+      expect(trigger.getAttribute('aria-owns')).toBeNull();
+      expect(document.getElementById(id)?.querySelector('[role="dialog"]')).toBeFalsy();
+    });
+
     it('clears the overlay relationship after a native backdrop click', async () => {
       trigger.click();
       await fixture.whenStable();
