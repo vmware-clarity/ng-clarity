@@ -90,3 +90,12 @@ export class HostComponent {
   generatedCss = '';
 }
 ```
+
+### Restoring a saved theme
+
+`applyPreset()` and `importCSS()` can be called from a host's first `ngAfterViewInit`.
+The preview reads its computed colors after rendering; requests made before that
+initialization are retained, and the latest valid preset or CSS request is applied
+when the preview is ready. `importCSS()` returns `true` for accepted CSS, including
+an early request, and `false` for malformed CSS. Rejected CSS does not replace an
+already pending request. The `generatedCSS` output reports the resulting theme.
