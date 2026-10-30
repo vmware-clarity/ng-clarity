@@ -25,30 +25,35 @@ import { ResponsiveNavCodes } from './responsive-nav-codes';
 })
 class TestComponent {}
 
-describe('NavLevelDirective', function () {
-  spec(ClrNavLevel, TestComponent, ClrNavigationModule, null, true);
+describe('NavLevelDirective', () => {
+  let testContext: any;
 
-  it('#level is set to 1', function () {
-    const navLevel = this.clarityDirective;
+  const getContext = spec(ClrNavLevel, TestComponent, ClrNavigationModule, null, true);
+  beforeEach(() => {
+    testContext = getContext();
+  });
+
+  it('#level is set to 1', () => {
+    const navLevel = testContext.clarityDirective;
     expect(navLevel.level).toBe(ResponsiveNavCodes.NAV_LEVEL_1);
   });
 
-  it('#level is set to 2', async function () {
-    const navLevel = this.clarityDirective;
+  it('#level is set to 2', async () => {
+    const navLevel = testContext.clarityDirective;
     navLevel._level = 2;
     expect(navLevel.level).toBe(ResponsiveNavCodes.NAV_LEVEL_2);
   });
-  it('should set [attr.hidden] when called hideNavigation()', function () {
-    const navLevel = this.clarityDirective;
+  it('should set [attr.hidden] when called hideNavigation()', () => {
+    const navLevel = testContext.clarityDirective;
     navLevel.hideNavigation();
-    const element = this.fixture.nativeElement.querySelector('nav');
+    const element = testContext.fixture.nativeElement.querySelector('nav');
     expect(element.getAttribute('aria-hidden')).toBe('true');
     expect(element.getAttribute('hidden')).toBe('true');
   });
 
-  it('should remove [attr.hidden] when called showNavigation()', function () {
-    const navLevel = this.clarityDirective;
-    const element = this.fixture.nativeElement.querySelector('nav');
+  it('should remove [attr.hidden] when called showNavigation()', () => {
+    const navLevel = testContext.clarityDirective;
+    const element = testContext.fixture.nativeElement.querySelector('nav');
     navLevel.hideNavigation();
     expect(element.getAttribute('hidden')).toBe('true');
     navLevel.showNavigation();
@@ -56,17 +61,17 @@ describe('NavLevelDirective', function () {
     expect(element.getAttribute('hidden')).toBeNull();
   });
 
-  it('should set [attr.hidden] when called hideCloseButton()', function () {
-    const navLevel = this.clarityDirective;
-    const element = this.fixture.nativeElement.querySelector('.clr-nav-close');
+  it('should set [attr.hidden] when called hideCloseButton()', () => {
+    const navLevel = testContext.clarityDirective;
+    const element = testContext.fixture.nativeElement.querySelector('.clr-nav-close');
     navLevel.hideCloseButton();
     expect(element.getAttribute('aria-hidden')).toBe('true');
     expect(element.getAttribute('hidden')).toBe('true');
   });
 
-  it('should remove [attr.hidden] when called showCloseButton()', function () {
-    const navLevel = this.clarityDirective;
-    const element = this.fixture.nativeElement.querySelector('.clr-nav-close');
+  it('should remove [attr.hidden] when called showCloseButton()', () => {
+    const navLevel = testContext.clarityDirective;
+    const element = testContext.fixture.nativeElement.querySelector('.clr-nav-close');
     navLevel.hideCloseButton();
     expect(element.getAttribute('aria-hidden')).toBe('true');
     expect(element.getAttribute('hidden')).toBe('true');
@@ -75,23 +80,23 @@ describe('NavLevelDirective', function () {
     expect(element.getAttribute('hidden')).toBeNull();
   });
 
-  it('should hide the navigation when document client width is smaller than LARGE_BREAKPOINT', function () {
-    this.clarityDirective.onResize({
+  it('should hide the navigation when document client width is smaller than LARGE_BREAKPOINT', () => {
+    testContext.clarityDirective.onResize({
       target: {
         innerWidth: LARGE_BREAKPOINT - 1,
       },
     });
 
-    expect(this.clarityDirective.isOpen).toBe(false);
+    expect(testContext.clarityDirective.isOpen).toBe(false);
   });
 
-  it('should disable focus trap by default', function () {
-    const cdkTrapFocus = getCdkTrapFocus(this.clarityDirective);
+  it('should disable focus trap by default', () => {
+    const cdkTrapFocus = getCdkTrapFocus(testContext.clarityDirective);
     expect(cdkTrapFocus.enabled).toBe(false);
   });
 
-  describe('ResponsiveNavLevel intergration:', function () {
-    it('#registers nav on init. sends the registration code on registerNavSubject in the service', function () {
+  describe('ResponsiveNavLevel intergration:', () => {
+    it('#registers nav on init. sends the registration code on registerNavSubject in the service', () => {
       const service = new ResponsiveNavigationService();
 
       service.registerNav(ResponsiveNavCodes.NAV_LEVEL_1);
@@ -100,27 +105,27 @@ describe('NavLevelDirective', function () {
       });
     });
 
-    it('#sends the open code on controlNavSubject in the service when open() is called', function () {
-      const navLevel = this.clarityDirective;
-      const service = this.clarityDirective.responsiveNavService;
+    it('#sends the open code on controlNavSubject in the service when open() is called', () => {
+      const navLevel = testContext.clarityDirective;
+      const service = testContext.clarityDirective.responsiveNavService;
       service.navControl.subscribe(controlMessage => {
         expect(controlMessage.controlCode).toBe(ResponsiveNavCodes.NAV_OPEN);
       });
       navLevel.open();
     });
 
-    it('#sends the close code on controlNavSubject when close() is called', function () {
-      const navLevel = this.clarityDirective;
-      const service = this.clarityDirective.responsiveNavService;
+    it('#sends the close code on controlNavSubject when close() is called', () => {
+      const navLevel = testContext.clarityDirective;
+      const service = testContext.clarityDirective.responsiveNavService;
       service.navControl.subscribe(controlMessage => {
         expect(controlMessage.controlCode).toBe(ResponsiveNavCodes.NAV_CLOSE);
       });
       navLevel.close();
     });
 
-    it('#unregisters itself from the registerNavSubject when ngOnDestroy() is called', function () {
-      const navLevel = this.clarityDirective;
-      const service = this.clarityDirective.responsiveNavService;
+    it('#unregisters itself from the registerNavSubject when ngOnDestroy() is called', () => {
+      const navLevel = testContext.clarityDirective;
+      const service = testContext.clarityDirective.responsiveNavService;
       navLevel.ngOnDestroy();
       service.registeredNavs.subscribe(navArray => {
         expect(navArray.length).toBe(0);
@@ -128,83 +133,83 @@ describe('NavLevelDirective', function () {
     });
   });
 
-  describe('Open/Close functionality: ', function () {
-    it('should be open', function () {
-      this.clarityDirective.open();
-      expect(this.clarityDirective.isOpen).toBe(true);
+  describe('Open/Close functionality: ', () => {
+    it('should be open', () => {
+      testContext.clarityDirective.open();
+      expect(testContext.clarityDirective.isOpen).toBe(true);
     });
 
-    describe('Open', function () {
-      it('should not be open by default', function () {
-        expect(this.clarityDirective.isOpen).toBe(false);
+    describe('Open', () => {
+      it('should not be open by default', () => {
+        expect(testContext.clarityDirective.isOpen).toBe(false);
       });
 
-      it('should call showNavigation()', function () {
-        spyOn(this.clarityDirective, 'showNavigation');
-        this.clarityDirective.open();
-        expect(this.clarityDirective.showNavigation).toHaveBeenCalled();
+      it('should call showNavigation()', () => {
+        vi.spyOn(testContext.clarityDirective, 'showNavigation').mockImplementation(() => undefined);
+        testContext.clarityDirective.open();
+        expect(testContext.clarityDirective.showNavigation).toHaveBeenCalled();
       });
 
-      it('should enable focus trap', function () {
-        const cdkTrapFocus = getCdkTrapFocus(this.clarityDirective);
-        this.clarityDirective.open();
+      it('should enable focus trap', () => {
+        const cdkTrapFocus = getCdkTrapFocus(testContext.clarityDirective);
+        testContext.clarityDirective.open();
         expect(cdkTrapFocus.enabled).toBe(true);
       });
 
-      it('should call showCloseButton()', function () {
-        spyOn(this.clarityDirective, 'showCloseButton');
-        this.clarityDirective.open();
-        expect(this.clarityDirective.showCloseButton).toHaveBeenCalled();
+      it('should call showCloseButton()', () => {
+        vi.spyOn(testContext.clarityDirective, 'showCloseButton').mockImplementation(() => undefined);
+        testContext.clarityDirective.open();
+        expect(testContext.clarityDirective.showCloseButton).toHaveBeenCalled();
       });
     });
 
-    it('should be closed', function () {
-      this.clarityDirective.close();
-      expect(this.clarityDirective.isOpen).toBe(false);
+    it('should be closed', () => {
+      testContext.clarityDirective.close();
+      expect(testContext.clarityDirective.isOpen).toBe(false);
     });
 
-    describe('Close', function () {
-      it('should be closed by default', function () {
-        expect(this.clarityDirective.isOpen).toBe(false);
+    describe('Close', () => {
+      it('should be closed by default', () => {
+        expect(testContext.clarityDirective.isOpen).toBe(false);
       });
 
-      it('should call hideNavigation()', function () {
-        const spy = spyOn(this.clarityDirective, 'hideNavigation');
-        this.clarityDirective.close();
+      it('should call hideNavigation()', () => {
+        const spy = vi.spyOn(testContext.clarityDirective, 'hideNavigation').mockImplementation(() => undefined);
+        testContext.clarityDirective.close();
         expect(spy).toHaveBeenCalled();
       });
 
-      it('should call removeFocusTrap()', function () {
-        const cdkTrapFocus = getCdkTrapFocus(this.clarityDirective);
-        this.clarityDirective.close();
-        expect(cdkTrapFocus.enabled).toBeFalse();
+      it('should call removeFocusTrap()', () => {
+        const cdkTrapFocus = getCdkTrapFocus(testContext.clarityDirective);
+        testContext.clarityDirective.close();
+        expect(cdkTrapFocus.enabled).toBe(false);
       });
 
-      it('should call hideCloseButton()', function () {
-        const spy = spyOn(this.clarityDirective, 'hideCloseButton');
-        this.clarityDirective.close();
+      it('should call hideCloseButton()', () => {
+        const spy = vi.spyOn(testContext.clarityDirective, 'hideCloseButton').mockImplementation(() => undefined);
+        testContext.clarityDirective.close();
         expect(spy).toHaveBeenCalled();
       });
     });
   });
 
-  describe('ngAfterViewInit: ', function () {
-    it('should add close button to the host element', function () {
-      const closeButtons = this.fixture.elementRef.nativeElement.querySelectorAll('.clr-nav-close');
+  describe('ngAfterViewInit: ', () => {
+    it('should add close button to the host element', () => {
+      const closeButtons = testContext.fixture.elementRef.nativeElement.querySelectorAll('.clr-nav-close');
       expect(closeButtons.length).toBe(1);
       expect(closeButtons[0]).toBeInstanceOf(HTMLButtonElement);
     });
   });
 
-  describe('Close button:', function () {
-    it('should hide navigation when the close button is clicked', function () {
+  describe('Close button:', () => {
+    it('should hide navigation when the close button is clicked', () => {
       /**
        * Tried to spyOn on the 'close` function but since we are using `this.close.bind(this)` the spy is not working.
        */
-      const closeButton = this.fixture.elementRef.nativeElement.querySelector('.clr-nav-close');
-      this.clarityDirective._isOpen = false;
+      const closeButton = testContext.fixture.elementRef.nativeElement.querySelector('.clr-nav-close');
+      testContext.clarityDirective._isOpen = false;
       closeButton.click();
-      expect(this.clarityDirective.isOpen).toBe(false);
+      expect(testContext.clarityDirective.isOpen).toBe(false);
     });
   });
 });

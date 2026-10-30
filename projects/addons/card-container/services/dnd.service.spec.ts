@@ -41,8 +41,8 @@ describe('#DragDropService', () => {
 
   describe('when call onDragStart', () => {
     it(' with default order then should not set dragOrder order', () => {
-      spyOn(containerService, 'getCardOrder').and.callFake((id: string) => cardIdToOrder[id]);
-      spyOn(containerService, 'moveCard');
+      vi.spyOn(containerService, 'getCardOrder').mockImplementation((id: string) => cardIdToOrder[id]);
+      vi.spyOn(containerService, 'moveCard').mockImplementation(() => undefined);
       dragDropService.onDragStart('cardWithDefaultOrder');
       dragDropService.onDragDrop(sampleCards[1].id);
       expect(containerService.moveCard).toHaveBeenCalledWith(undefined as any, 1);
@@ -50,8 +50,8 @@ describe('#DragDropService', () => {
     });
 
     it(' with order then should set dragOrder order', () => {
-      spyOn(containerService, 'getCardOrder').and.callFake((id: string) => cardIdToOrder[id]);
-      spyOn(containerService, 'moveCard');
+      vi.spyOn(containerService, 'getCardOrder').mockImplementation((id: string) => cardIdToOrder[id]);
+      vi.spyOn(containerService, 'moveCard').mockImplementation(() => undefined);
       dragDropService.onDragStart(sampleCards[0].id);
       dragDropService.onDragDrop(sampleCards[1].id);
       expect(containerService.moveCard).toHaveBeenCalledWith(0, 1);
@@ -61,16 +61,16 @@ describe('#DragDropService', () => {
 
   describe('when call onDragDrop', () => {
     it(' with default order then should not move card', () => {
-      spyOn(containerService, 'getCardOrder').and.callFake((id: string) => cardIdToOrder[id]);
-      spyOn(containerService, 'moveCard');
+      vi.spyOn(containerService, 'getCardOrder').mockImplementation((id: string) => cardIdToOrder[id]);
+      vi.spyOn(containerService, 'moveCard').mockImplementation(() => undefined);
       dragDropService.onDragDrop('cardWithDefaultOrder');
       expect(containerService.moveCard).not.toHaveBeenCalled();
       expect(containerService.getCardOrder).toHaveBeenCalled();
     });
 
     it(' with order then should move card', () => {
-      spyOn(containerService, 'getCardOrder').and.callFake((id: string) => cardIdToOrder[id]);
-      spyOn(containerService, 'moveCard');
+      vi.spyOn(containerService, 'getCardOrder').mockImplementation((id: string) => cardIdToOrder[id]);
+      vi.spyOn(containerService, 'moveCard').mockImplementation(() => undefined);
       dragDropService.onDragStart(sampleCards[1].id);
       dragDropService.onDragDrop(sampleCards[2].id);
       expect(containerService.moveCard).toHaveBeenCalledWith(1, 2);

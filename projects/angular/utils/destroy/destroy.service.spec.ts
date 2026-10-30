@@ -12,41 +12,39 @@ import { finalize, takeUntil } from 'rxjs/operators';
 
 import { ClrDestroyService } from './destroy.service';
 
-export default function (): void {
-  describe('ClrDestroyService', () => {
-    it('should teardown subscription once the view is destroyed', () => {
-      // Arrange
-      const finalizeSpy = jasmine.createSpy();
+describe('ClrDestroyService', () => {
+  it('should teardown subscription once the view is destroyed', () => {
+    // Arrange
+    const finalizeSpy = vi.fn();
 
-      @Component({
-        changeDetection: ChangeDetectionStrategy.Eager,
-        template: '',
-        providers: [ClrDestroyService],
-        standalone: false,
-      })
-      class TestComponent implements OnInit {
-        subject$ = new Subject<void>();
+    @Component({
+      changeDetection: ChangeDetectionStrategy.Eager,
+      template: '',
+      providers: [ClrDestroyService],
+      standalone: false,
+    })
+    class TestComponent implements OnInit {
+      subject$ = new Subject<void>();
 
-        constructor(private destroy$: ClrDestroyService) {}
+      constructor(private destroy$: ClrDestroyService) {}
 
-        ngOnInit(): void {
-          this.subject$.pipe(takeUntil(this.destroy$), finalize(finalizeSpy)).subscribe();
-        }
+      ngOnInit(): void {
+        this.subject$.pipe(takeUntil(this.destroy$), finalize(finalizeSpy)).subscribe();
       }
+    }
 
-      TestBed.configureTestingModule({
-        declarations: [TestComponent],
-      });
-
-      // Act
-      const fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges();
-
-      fixture.destroy();
-
-      // Assert
-      expect(finalizeSpy).toHaveBeenCalled();
-      expect(fixture.componentInstance.subject$.observers.length).toEqual(0);
+    TestBed.configureTestingModule({
+      declarations: [TestComponent],
     });
+
+    // Act
+    const fixture = TestBed.createComponent(TestComponent);
+    fixture.detectChanges();
+
+    fixture.destroy();
+
+    // Assert
+    expect(finalizeSpy).toHaveBeenCalled();
+    expect(fixture.componentInstance.subject$.observers.length).toEqual(0);
   });
-}
+});

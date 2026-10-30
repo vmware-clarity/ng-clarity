@@ -9,7 +9,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrPopoverPosition, ClrPopoverService } from '@clr/angular/popover/common';
-import { TestContext } from '@clr/angular/testing';
 
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { ClrTooltipContent } from './tooltip-content';
@@ -60,15 +59,10 @@ class SimpleTest {
   size: string;
 }
 
-interface TooltipContext<H> extends TestContext<ClrTooltipContent, H> {
-  popoverService: ClrPopoverService;
-  tooltipIdService: TooltipIdService;
-}
-
-export default function (): void {
-  describe('TooltipContent component', function () {
-    describe('Template API', function () {
-      describe('defaults', function () {
+describe('Tooltip', () => {
+  describe('TooltipContent component', () => {
+    describe('Template API', () => {
+      describe('defaults', () => {
         let fixture: ComponentFixture<DefaultTest>;
         let popoverService: ClrPopoverService;
         let tooltipContent: HTMLElement;
@@ -93,14 +87,14 @@ export default function (): void {
           fixture.destroy();
         });
 
-        it('sets the correct default classes', function (this: TooltipContext<DefaultTest>) {
+        it('sets the correct default classes', () => {
           expect(tooltipContent.classList).toContain('tooltip-content');
           expect(tooltipContent.classList).toContain('tooltip-sm');
           expect(tooltipContent.parentElement.classList).toContain('right');
         });
       });
 
-      describe('handles values for custom id', function () {
+      describe('handles values for custom id', () => {
         let fixture: ComponentFixture<IdTest>;
         let popoverService: ClrPopoverService;
         let tooltipContent: HTMLElement;
@@ -121,31 +115,31 @@ export default function (): void {
           tooltipContent = document.body.querySelector('clr-tooltip-content') as HTMLElement;
         });
 
-        it('accepts an [id] when an undefined id is provided', function () {
+        it('accepts an [id] when an undefined id is provided', () => {
           // IdTest component starts with idValue undefined
           expect(tooltipContent.getAttribute('id')).toEqual('');
         });
 
-        it('accepts an [id] when a null id is provided', function () {
+        it('accepts an [id] when a null id is provided', () => {
           fixture.componentInstance.idValue = null;
           fixture.detectChanges();
           expect(tooltipContent.getAttribute('id')).toEqual('');
         });
 
-        it('accepts an [id] when an empty string id is provided', function () {
+        it('accepts an [id] when an empty string id is provided', () => {
           fixture.componentInstance.idValue = '';
           fixture.detectChanges();
           expect(tooltipContent.getAttribute('id')).toEqual('');
         });
 
-        it('accepts an [id] when an custom string id is provided', function () {
+        it('accepts an [id] when an custom string id is provided', () => {
           fixture.componentInstance.idValue = 'custom-id';
           fixture.detectChanges();
           expect(tooltipContent.getAttribute('id')).toEqual('custom-id');
         });
       });
 
-      describe('handles inputs for position and size', function () {
+      describe('handles inputs for position and size', () => {
         let fixture: ComponentFixture<SimpleTest>;
         let popoverService: ClrPopoverService;
         let tooltipContent: HTMLElement;
@@ -166,14 +160,14 @@ export default function (): void {
           tooltipContent = document.body.querySelector('clr-tooltip-content') as HTMLElement;
         });
 
-        it('sets an id when no id is provided', function () {
+        it('sets an id when no id is provided', () => {
           const clrTooltipContent = fixture.debugElement
             .query(By.directive(ClrTooltipContent))
             .injector.get(ClrTooltipContent);
           expect(clrTooltipContent.id).toEqual(tooltipContent.getAttribute('id'));
         });
 
-        it('accepts a [clrPosition] input', function () {
+        it('accepts a [clrPosition] input', () => {
           const tooltipContainer = tooltipContent.parentElement;
           // Default is right
           expect(tooltipContainer.classList).toContain(ClrPopoverPosition.RIGHT);
@@ -191,7 +185,7 @@ export default function (): void {
           expect(tooltipContainer.classList).toContain(ClrPopoverPosition.TOP_LEFT);
         });
 
-        it('accepts a [clrSize] input', function () {
+        it('accepts a [clrSize] input', () => {
           const clrTooltipContent = fixture.debugElement
             .query(By.directive(ClrTooltipContent))
             .injector.get(ClrTooltipContent);
@@ -209,7 +203,7 @@ export default function (): void {
       });
     });
 
-    describe('View basics', function () {
+    describe('View basics', () => {
       let fixture: ComponentFixture<SimpleTest>;
       let popoverService: ClrPopoverService;
       let tooltipContent: HTMLElement;
@@ -230,21 +224,21 @@ export default function (): void {
         tooltipContent = document.body.querySelector('clr-tooltip-content') as HTMLElement;
       });
 
-      it('projects content', function () {
+      it('projects content', () => {
         expect(tooltipContent.textContent.trim()).toMatch('Hello world');
       });
 
-      it('adds the .tooltip-content class to the host', function () {
+      it('adds the .tooltip-content class to the host', () => {
         expect(tooltipContent.classList).toContain('tooltip-content');
       });
 
-      it('has the correct role', function () {
+      it('has the correct role', () => {
         expect(tooltipContent.getAttribute('role')).toBe('tooltip');
       });
 
-      it('has an id', function () {
+      it('has an id', () => {
         expect(tooltipContent.getAttribute('id')).toBeTruthy();
       });
     });
   });
-}
+});

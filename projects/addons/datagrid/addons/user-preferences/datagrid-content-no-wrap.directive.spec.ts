@@ -12,6 +12,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ClrDatagridModule } from '@clr/angular/data/datagrid';
 import { of } from 'rxjs';
+import type { Mock } from 'vitest';
 
 import { appfxDatagridUserPreferencesToken } from './appfx-datagrid-user-preferences.token';
 import { DatagridContentNoWrapDirective } from './datagrid-content-no-wrap.directive';
@@ -23,8 +24,7 @@ import { DatagridStrings } from '../../i18n/datagrid-strings.service';
 import { CsvHelperService } from '../export/csv-helper.service';
 import { ExportProviderService } from '../export/export-provider.service';
 
-import Spy = jasmine.Spy;
-import createSpyObj = jasmine.createSpyObj;
+type Spy<T extends (...args: any[]) => any = (...args: any[]) => any> = Mock<T>;
 
 describe('DatagridContentNoWrapDirective', () => {
   let userPreferencesService: DatagridUserPreferencesService;
@@ -34,11 +34,11 @@ describe('DatagridContentNoWrapDirective', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ClrDatagridModule, FormsModule, DragDropModule, OverlayModule],
-      declarations: [DatagridContentNoWrapDirective, MockDatagridColumnToggleComponent],
+      declarations: [MockDatagridColumnToggleComponent],
       providers: [
         {
           provide: appfxDatagridUserPreferencesToken,
-          useValue: createSpyObj(['getWrapGridCellTextPreference$']),
+          useValue: { getWrapGridCellTextPreference$: vi.fn() },
         },
         {
           provide: DatagridStrings,
@@ -48,7 +48,7 @@ describe('DatagridContentNoWrapDirective', () => {
       ],
     }).overrideProvider(ExportProviderService, {
       useValue: {
-        exportUIOnlyData: jasmine.createSpy('exportUIOnlyData'),
+        exportUIOnlyData: vi.fn(),
       },
     });
 
@@ -56,7 +56,7 @@ describe('DatagridContentNoWrapDirective', () => {
   });
 
   it('calls getWrapGridCellTextPreference$ method of datagrid user preferences service', () => {
-    (userPreferencesService.getWrapGridCellTextPreference$ as Spy).and.returnValue(of(true));
+    (userPreferencesService.getWrapGridCellTextPreference$ as Spy).mockReturnValue(of(true));
     fixture = TestBed.createComponent(DatagridHostComponent);
     appfxDatagridHostComponent = fixture.componentInstance;
     fixture.detectChanges(false);
@@ -66,7 +66,7 @@ describe('DatagridContentNoWrapDirective', () => {
   });
 
   it('sets return value from datagrid user preferences service to wrapText datagrid field', () => {
-    (userPreferencesService.getWrapGridCellTextPreference$ as Spy).and.returnValue(of(false));
+    (userPreferencesService.getWrapGridCellTextPreference$ as Spy).mockReturnValue(of(false));
     fixture = TestBed.createComponent(DatagridHostComponent);
     appfxDatagridHostComponent = fixture.componentInstance;
     fixture.detectChanges(false);
@@ -75,7 +75,7 @@ describe('DatagridContentNoWrapDirective', () => {
     expect(appfxDatagridHostComponent.appfxDatagridComponent.wrapText).toEqual(false);
   });
 
-  afterEach(function (this: any) {
+  afterEach(() => {
     fixture.destroy();
   });
 });

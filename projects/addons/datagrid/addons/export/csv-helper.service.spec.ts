@@ -10,12 +10,17 @@ import { inject, TestBed } from '@angular/core/testing';
 import { CsvHelperService } from './csv-helper.service';
 
 describe('ExportProviderService', () => {
-  beforeEach(function (this: any) {
+  let testContext: any;
+  beforeEach(() => {
+    testContext = {};
+  });
+
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [CsvHelperService],
     });
 
-    this.serialKeyLicenseItems = [
+    testContext.serialKeyLicenseItems = [
       {
         name: 'License 1',
         usage: '0 CPUs',
@@ -34,7 +39,7 @@ describe('ExportProviderService', () => {
       },
     ];
 
-    this.columnDef = [
+    testContext.columnDef = [
       {
         field: 'name',
         displayName: 'Name',
@@ -46,67 +51,67 @@ describe('ExportProviderService', () => {
     ];
   });
 
-  it('getData returns the correct csv', inject(
-    [CsvHelperService],
-    function (this: any, csvHelperService: CsvHelperService) {
-      const columnNames: string[] = [
-        csvHelperService.toCsvFormat(this.columnDef[0].displayName.toString()),
-        csvHelperService.toCsvFormat(this.columnDef[1].displayName.toString()),
-      ];
-      const rows: string[] = [
-        csvHelperService.toCsvFormat(this.serialKeyLicenseItems[0].name.toString()) +
-          ',' +
-          csvHelperService.toCsvFormat(this.serialKeyLicenseItems[0].usage.toString()),
-        csvHelperService.toCsvFormat(this.serialKeyLicenseItems[1].name.toString()) +
-          ',' +
-          csvHelperService.toCsvFormat(this.serialKeyLicenseItems[1].usage.toString()),
-        csvHelperService.toCsvFormat(this.serialKeyLicenseItems[2].name.toString()) +
-          ',' +
-          csvHelperService.toCsvFormat(this.serialKeyLicenseItems[2].usage.toString()),
-        csvHelperService.toCsvFormat(this.serialKeyLicenseItems[3].name.toString()) +
-          ',' +
-          csvHelperService.toCsvFormat(this.serialKeyLicenseItems[3].usage.toString()),
-      ];
-      const expectedCsvData = columnNames.join(',') + '\n' + rows.join('\n') + '\n';
+  it('getData returns the correct csv', inject([CsvHelperService], (csvHelperService: CsvHelperService) => {
+    const columnNames: string[] = [
+      csvHelperService.toCsvFormat(testContext.columnDef[0].displayName.toString()),
+      csvHelperService.toCsvFormat(testContext.columnDef[1].displayName.toString()),
+    ];
+    const rows: string[] = [
+      csvHelperService.toCsvFormat(testContext.serialKeyLicenseItems[0].name.toString()) +
+        ',' +
+        csvHelperService.toCsvFormat(testContext.serialKeyLicenseItems[0].usage.toString()),
+      csvHelperService.toCsvFormat(testContext.serialKeyLicenseItems[1].name.toString()) +
+        ',' +
+        csvHelperService.toCsvFormat(testContext.serialKeyLicenseItems[1].usage.toString()),
+      csvHelperService.toCsvFormat(testContext.serialKeyLicenseItems[2].name.toString()) +
+        ',' +
+        csvHelperService.toCsvFormat(testContext.serialKeyLicenseItems[2].usage.toString()),
+      csvHelperService.toCsvFormat(testContext.serialKeyLicenseItems[3].name.toString()) +
+        ',' +
+        csvHelperService.toCsvFormat(testContext.serialKeyLicenseItems[3].usage.toString()),
+    ];
+    const expectedCsvData = columnNames.join(',') + '\n' + rows.join('\n') + '\n';
 
-      const csvData = csvHelperService.getData(this.serialKeyLicenseItems, this.columnDef);
-      expect(csvData).toEqual(expectedCsvData);
-    }
-  ));
+    const csvData = csvHelperService.getData(testContext.serialKeyLicenseItems, testContext.columnDef);
+    expect(csvData).toEqual(expectedCsvData);
+  }));
 
   it('getColumnDataFromColumnDef returns the correct column csv', inject(
     [CsvHelperService],
-    function (this: any, csvHelperService: CsvHelperService) {
+    (csvHelperService: CsvHelperService) => {
       const columnNames: string[] = [
-        csvHelperService.toCsvFormat(this.columnDef[0].displayName.toString()),
-        csvHelperService.toCsvFormat(this.columnDef[1].displayName.toString()),
+        csvHelperService.toCsvFormat(testContext.columnDef[0].displayName.toString()),
+        csvHelperService.toCsvFormat(testContext.columnDef[1].displayName.toString()),
       ];
       const expectedCsvData: string = columnNames.join(',') + '\n';
-      const csvData = csvHelperService.getColumnDataFromColumnDef(this.columnDef);
+      const csvData = csvHelperService.getColumnDataFromColumnDef(testContext.columnDef);
       expect(csvData).toEqual(expectedCsvData);
     }
   ));
 
   it('getRowDataFromColumnDef returns the correct row csv', inject(
     [CsvHelperService],
-    function (this: any, csvHelperService: CsvHelperService) {
+    (csvHelperService: CsvHelperService) => {
       const rows: string[] = [
-        csvHelperService.toCsvFormat(this.serialKeyLicenseItems[0].name.toString()) +
+        csvHelperService.toCsvFormat(testContext.serialKeyLicenseItems[0].name.toString()) +
           ',' +
-          csvHelperService.toCsvFormat(this.serialKeyLicenseItems[0].usage.toString()),
-        csvHelperService.toCsvFormat(this.serialKeyLicenseItems[1].name.toString()) +
+          csvHelperService.toCsvFormat(testContext.serialKeyLicenseItems[0].usage.toString()),
+        csvHelperService.toCsvFormat(testContext.serialKeyLicenseItems[1].name.toString()) +
           ',' +
-          csvHelperService.toCsvFormat(this.serialKeyLicenseItems[1].usage.toString()),
-        csvHelperService.toCsvFormat(this.serialKeyLicenseItems[2].name.toString()) +
+          csvHelperService.toCsvFormat(testContext.serialKeyLicenseItems[1].usage.toString()),
+        csvHelperService.toCsvFormat(testContext.serialKeyLicenseItems[2].name.toString()) +
           ',' +
-          csvHelperService.toCsvFormat(this.serialKeyLicenseItems[2].usage.toString()),
-        csvHelperService.toCsvFormat(this.serialKeyLicenseItems[3].name.toString()) +
+          csvHelperService.toCsvFormat(testContext.serialKeyLicenseItems[2].usage.toString()),
+        csvHelperService.toCsvFormat(testContext.serialKeyLicenseItems[3].name.toString()) +
           ',' +
-          csvHelperService.toCsvFormat(this.serialKeyLicenseItems[3].usage.toString()),
+          csvHelperService.toCsvFormat(testContext.serialKeyLicenseItems[3].usage.toString()),
       ];
       const expectedCsvData = rows.join('\n') + '\n';
 
-      const csvData = csvHelperService.getRowDataFromColumnDef(this.serialKeyLicenseItems, this.columnDef);
+      const csvData = csvHelperService.getRowDataFromColumnDef(
+        testContext.serialKeyLicenseItems,
+        testContext.columnDef
+      );
       expect(csvData).toEqual(expectedCsvData);
     }
   ));

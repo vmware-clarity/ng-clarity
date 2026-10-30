@@ -27,7 +27,12 @@ interface ThisTest {
 })
 class DummyComponent {}
 describe('ZoomLevelIndicatorDirective', () => {
-  beforeEach(function (this: ThisTest) {
+  let testContext: ThisTest;
+  beforeEach(() => {
+    testContext = {} as ThisTest;
+  });
+
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         {
@@ -38,22 +43,22 @@ describe('ZoomLevelIndicatorDirective', () => {
       declarations: [ZoomLevelIndicatorDirective, DummyComponent],
     });
 
-    this.fixture = TestBed.createComponent(DummyComponent);
-    this.service = TestBed.inject(ZoomLevelService);
+    testContext.fixture = TestBed.createComponent(DummyComponent);
+    testContext.service = TestBed.inject(ZoomLevelService);
   });
 
-  afterEach(function (this: ThisTest) {
-    this.fixture.destroy();
+  afterEach(() => {
+    testContext.fixture.destroy();
   });
 
   describe('When applied on element', () => {
-    beforeEach(function (this: ThisTest) {
-      (this.service as any).resizeSubject.next(ZoomLevel.none);
-      this.fixture.detectChanges();
+    beforeEach(() => {
+      (testContext.service as any).resizeSubject.next(ZoomLevel.none);
+      testContext.fixture.detectChanges();
     });
 
-    it('Then emitted class is applied on the DOM element', function (this: ThisTest) {
-      expect(this.fixture.debugElement.query(By.css('.no-zoom'))).toBeTruthy();
+    it('Then emitted class is applied on the DOM element', () => {
+      expect(testContext.fixture.debugElement.query(By.css('.no-zoom'))).toBeTruthy();
     });
   });
 });

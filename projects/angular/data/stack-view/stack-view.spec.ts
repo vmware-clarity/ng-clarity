@@ -25,7 +25,7 @@ import { ClrStackViewModule } from './stack-view.module';
 })
 class TestComponent {}
 
-export default function (): void {
+describe('Stack View directives', () => {
   'use strict';
   describe('StackView', () => {
     let fixture: ComponentFixture<any>;
@@ -59,4 +59,4 @@ export default function (): void {
       expect(compiled.textContent).toMatch(/Content/);
     });
   });
-}
+});

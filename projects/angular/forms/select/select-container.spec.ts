@@ -10,7 +10,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ClrSelect } from './select';
 import { ClrSelectContainer } from './select-container';
-import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
+import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container';
 
 @Component({
   template: `
@@ -119,7 +119,7 @@ class ReactiveMultipleTest {
   });
 }
 
-export default function (): void {
+describe('Select component', () => {
   describe('ClrSelectContainer', () => {
     ContainerNoLabelSpec(ClrSelectContainer, ClrSelect, NoLabelTest);
 
@@ -138,4 +138,4 @@ export default function (): void {
       ReactiveSpec(ClrSelectContainer, ClrSelect, ReactiveMultipleTest, '.clr-multiselect-wrapper [clrSelect]');
     });
   });
-}
+});

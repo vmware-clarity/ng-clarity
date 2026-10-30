@@ -16,7 +16,6 @@ const tsPlugin = require('@typescript-eslint/eslint-plugin');
 
 // Plugins
 const importPlugin = require('eslint-plugin-import');
-const jasminePlugin = require('eslint-plugin-jasmine');
 const unusedImports = require('eslint-plugin-unused-imports');
 const decoratorPosition = require('eslint-plugin-decorator-position');
 const licenseHeader = require('eslint-plugin-license-header');
@@ -65,7 +64,7 @@ module.exports = [
       globals: {
         ...globals.browser,
         ...globals.node,
-        ...globals.jasmine,
+        ...globals.vitest,
       },
     },
     plugins: {
@@ -84,7 +83,7 @@ module.exports = [
 
   // TypeScript files
   {
-    files: ['**/*.ts'],
+    files: ['**/*.{ts,mts}'],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
@@ -94,12 +93,11 @@ module.exports = [
       globals: {
         ...globals.browser,
         ...globals.node,
-        ...globals.jasmine,
+        ...globals.vitest,
       },
     },
     plugins: {
       '@typescript-eslint': tsPlugin,
-      jasmine: jasminePlugin,
       'unused-imports': unusedImports,
       'decorator-position': decoratorPosition,
       'ng-clarity-eslint-rules': ngClarityRules,
@@ -154,8 +152,14 @@ module.exports = [
       // Decorators
       'decorator-position/decorator-position': 'error',
 
-      // Jasmine
-      'jasmine/no-focused-tests': 'error',
+      // Focused tests must not reach CI.
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: 'MemberExpression[property.name="only"][object.name=/^(it|test|describe|suite)$/]',
+          message: 'Remove focused tests before committing.',
+        },
+      ],
 
       // Custom rules
       'ng-clarity-eslint-rules/no-parameter-property-this-in-constructor': 'error',

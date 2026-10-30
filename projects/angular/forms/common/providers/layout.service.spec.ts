@@ -7,7 +7,7 @@
 
 import { ClrFormLayout, LayoutService } from './layout.service';
 
-export default function (): void {
+describe('Forms common utilities', () => {
   describe('LayoutService', function () {
     let service;
 
@@ -20,27 +20,27 @@ export default function (): void {
     });
 
     it('handles checking isVertical based on current layout', function () {
-      expect(service.isVertical()).toBeFalse();
+      expect(service.isVertical()).toBe(false);
       service.layout = ClrFormLayout.VERTICAL;
-      expect(service.isVertical()).toBeTrue();
+      expect(service.isVertical()).toBe(true);
       service.layout = ClrFormLayout.COMPACT;
-      expect(service.isVertical()).toBeFalse();
+      expect(service.isVertical()).toBe(false);
     });
 
     it('handles checking isCompact based on current layout', function () {
-      expect(service.isCompact()).toBeFalse();
+      expect(service.isCompact()).toBe(false);
       service.layout = ClrFormLayout.VERTICAL;
-      expect(service.isCompact()).toBeFalse();
+      expect(service.isCompact()).toBe(false);
       service.layout = ClrFormLayout.COMPACT;
-      expect(service.isCompact()).toBeTrue();
+      expect(service.isCompact()).toBe(true);
     });
 
     it('handles checking isHorizontal based on current layout', function () {
-      expect(service.isHorizontal()).toBeTrue();
+      expect(service.isHorizontal()).toBe(true);
       service.layout = ClrFormLayout.VERTICAL;
-      expect(service.isHorizontal()).toBeFalse();
+      expect(service.isHorizontal()).toBe(false);
       service.layout = ClrFormLayout.COMPACT;
-      expect(service.isHorizontal()).toBeFalse();
+      expect(service.isHorizontal()).toBe(false);
     });
 
     it('provides the class name', function () {
@@ -50,10 +50,10 @@ export default function (): void {
     });
 
     it('can validate layouts by string value', () => {
-      expect(service.isValid('vertical')).toBeTrue();
-      expect(service.isValid('horizontal')).toBeTrue();
-      expect(service.isValid('compact')).toBeTrue();
-      expect(service.isValid('asdf')).toBeFalse();
+      expect(service.isValid('vertical')).toBe(true);
+      expect(service.isValid('horizontal')).toBe(true);
+      expect(service.isValid('compact')).toBe(true);
+      expect(service.isValid('asdf')).toBe(false);
     });
   });
-}
+});

@@ -18,75 +18,77 @@ import { ClrVerticalNavGroup } from './vertical-nav-group';
 import { ClrVerticalNavLink } from './vertical-nav-link';
 import { ClrVerticalNavModule } from './vertical-nav.module';
 
-export default function (): void {
-  describe('Vertical Nav Links', () => {
-    let fixture: ComponentFixture<any>;
-    let compiled: HTMLElement;
+describe('Vertical Nav', () => {
+  describe('Directives', () => {
+    describe('Vertical Nav Links', () => {
+      let fixture: ComponentFixture<any>;
+      let compiled: HTMLElement;
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [ClrVerticalNavModule, ClrIcon],
-        declarations: [TestComponent, TestComponentWithGroup],
-      });
-    });
-
-    describe('View Basics', () => {
       beforeEach(() => {
-        fixture = TestBed.createComponent(TestComponent);
-        fixture.detectChanges();
-        compiled = fixture.nativeElement;
+        TestBed.configureTestingModule({
+          imports: [ClrVerticalNavModule, ClrIcon],
+          declarations: [TestComponent, TestComponentWithGroup],
+        });
       });
 
-      afterEach(() => {
-        fixture.destroy();
+      describe('View Basics', () => {
+        beforeEach(() => {
+          fixture = TestBed.createComponent(TestComponent);
+          fixture.detectChanges();
+          compiled = fixture.nativeElement;
+        });
+
+        afterEach(() => {
+          fixture.destroy();
+        });
+
+        it('adds the .nav-link class on the links', () => {
+          const navLinks = compiled.querySelectorAll('a');
+
+          expect(navLinks[0].classList.contains('nav-link')).toBeTruthy();
+          expect(navLinks[1].classList.contains('nav-link')).toBeTruthy();
+        });
+
+        it('projects the text in .nav-text', () => {
+          const navText = compiled.querySelectorAll('.nav-text');
+
+          expect(navText[0].textContent).toMatch(/Text/);
+        });
+
+        it('projects the icon directly under it and the text in .nav-text', () => {
+          const navText = compiled.querySelectorAll('.nav-text');
+
+          expect(navText[1].textContent).toMatch(/Icon Text/);
+
+          const icon = compiled.querySelector('cds-icon');
+
+          expect(icon).not.toBeNull();
+
+          // expect(icon.parentElement).toBe(compiled.querySelector("#link2"));
+        });
+
+        it('should not add `click` listener if the `[clrVerticalNavLink]` is not located within the `clr-vertical-nav-group`', () => {
+          const vertinalNavLink = fixture.debugElement.query(By.directive(ClrVerticalNavLink));
+          expect(() => vertinalNavLink.injector.get(VerticalNavGroupService)).toThrow();
+          expect(vertinalNavLink.nativeElement.eventListeners()).toEqual([]);
+        });
       });
 
-      it('adds the .nav-link class on the links', () => {
-        const navLinks = compiled.querySelectorAll('a');
+      describe('Nav Link Interactions with Nav Group', () => {
+        beforeEach(() => {
+          fixture = TestBed.createComponent(TestComponentWithGroup);
+          fixture.detectChanges();
+          compiled = fixture.nativeElement;
+        });
 
-        expect(navLinks[0].classList.contains('nav-link')).toBeTruthy();
-        expect(navLinks[1].classList.contains('nav-link')).toBeTruthy();
-      });
-
-      it('projects the text in .nav-text', () => {
-        const navText = compiled.querySelectorAll('.nav-text');
-
-        expect(navText[0].textContent).toMatch(/Text/);
-      });
-
-      it('projects the icon directly under it and the text in .nav-text', () => {
-        const navText = compiled.querySelectorAll('.nav-text');
-
-        expect(navText[1].textContent).toMatch(/Icon Text/);
-
-        const icon = compiled.querySelector('cds-icon');
-
-        expect(icon).not.toBeNull();
-
-        // expect(icon.parentElement).toBe(compiled.querySelector("#link2"));
-      });
-
-      it('should not add `click` listener if the `[clrVerticalNavLink]` is not located within the `clr-vertical-nav-group`', () => {
-        const vertinalNavLink = fixture.debugElement.query(By.directive(ClrVerticalNavLink));
-        expect(() => vertinalNavLink.injector.get(VerticalNavGroupService)).toThrow();
-        expect(vertinalNavLink.nativeElement.eventListeners()).toEqual([]);
-      });
-    });
-
-    describe('Nav Link Interactions with Nav Group', () => {
-      beforeEach(() => {
-        fixture = TestBed.createComponent(TestComponentWithGroup);
-        fixture.detectChanges();
-        compiled = fixture.nativeElement;
-      });
-
-      it('should add `click` listener if the `[clrVerticalNavLink]` is located within the `clr-vertical-nav-group`', () => {
-        const vertinalNavLink = fixture.debugElement.query(By.css('#link1'));
-        expect(vertinalNavLink.nativeElement.eventListeners().length).toEqual(1);
+        it('should add `click` listener if the `[clrVerticalNavLink]` is located within the `clr-vertical-nav-group`', () => {
+          const vertinalNavLink = fixture.debugElement.query(By.css('#link1'));
+          expect(vertinalNavLink.nativeElement.eventListeners().length).toEqual(1);
+        });
       });
     });
   });
-}
+});
 
 @Component({
   template: `

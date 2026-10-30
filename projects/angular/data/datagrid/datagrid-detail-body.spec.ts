@@ -6,32 +6,32 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestContext } from '@clr/angular/testing';
+import { createTestHelpers, TestContext } from '@clr/angular/testing';
 
 import { ClrDatagridDetailBody } from './datagrid-detail-body';
 
 const content = 'Detail Pane';
 
-export default function (): void {
-  describe('ClrDatagridDetailBody component', function () {
-    describe('View', function () {
-      let context: TestContext<ClrDatagridDetailBody, FullTest>;
+describe('ClrDatagridDetailBody component', () => {
+  const helpers = createTestHelpers();
 
-      beforeEach(function () {
-        context = this.create(ClrDatagridDetailBody, FullTest);
-        context.detectChanges();
-      });
+  describe('View', () => {
+    let context: TestContext<ClrDatagridDetailBody, FullTest>;
 
-      it('should wire up host bindings', () => {
-        expect(context.clarityElement.className).toContain('datagrid-detail-body');
-      });
+    beforeEach(() => {
+      context = helpers.create(ClrDatagridDetailBody, FullTest);
+      context.detectChanges();
+    });
 
-      it('projects content into the detail pane ', () => {
-        expect(context.clarityElement.innerHTML).toContain(content);
-      });
+    it('should wire up host bindings', () => {
+      expect(context.clarityElement.className).toContain('datagrid-detail-body');
+    });
+
+    it('projects content into the detail pane ', () => {
+      expect(context.clarityElement.innerHTML).toContain(content);
     });
   });
-}
+});
 
 @Component({
   template: `<clr-dg-detail-body>${content}</clr-dg-detail-body>`,

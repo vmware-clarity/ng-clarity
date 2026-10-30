@@ -7,6 +7,7 @@
 
 import { DOCUMENT } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
+import { firstValueFrom } from 'rxjs';
 
 import { ZoomLevel } from './zoom-level.model';
 import { ZoomLevelService } from './zoom-level.service';
@@ -17,7 +18,12 @@ import { ZoomLevelService } from './zoom-level.service';
 //
 // Possible root cause is this: https://github.com/angular/angular/issues/31695
 describe('ZoomLevelService', () => {
-  beforeEach(function (this: any) {
+  let testContext: any;
+  beforeEach(() => {
+    testContext = {};
+  });
+
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         ZoomLevelService,
@@ -28,79 +34,49 @@ describe('ZoomLevelService', () => {
       ],
     });
 
-    this.zoomLevelService = TestBed.inject(ZoomLevelService);
+    testContext.zoomLevelService = TestBed.inject(ZoomLevelService);
+  });
+
+  afterEach(() => {
+    document.documentElement.style.width = '';
   });
 
   describe('when initialized', () => {
-    it('starts observing document body size changes.', function (this: any, done: DoneFn) {
-      let zoomLevel: ZoomLevel;
-
-      const subscription = this.zoomLevelService.onChange.subscribe((newZoomLevel: ZoomLevel) => {
-        zoomLevel = newZoomLevel;
-
-        expect(zoomLevel).toBeDefined();
-        subscription.unsubscribe();
-        done();
-      });
+    it('starts observing document body size changes.', async () => {
+      const nextZoomLevel = firstValueFrom(testContext.zoomLevelService.onChange);
+      expect(await nextZoomLevel).toBeDefined();
     });
   });
 
   describe('when document body size is less than 576 px', () => {
-    it('zoom level is `4x`', function (this: any, done: DoneFn) {
-      let zoomLevel = ZoomLevel.none;
-
-      const subscription = this.zoomLevelService.onChange.subscribe((newZoomLevel: ZoomLevel) => {
-        zoomLevel = newZoomLevel;
-
-        expect(zoomLevel).toEqual(ZoomLevel.x4);
-
-        subscription.unsubscribe();
-        done();
-      });
-
+    it('zoom level is `4x`', async () => {
+      const nextZoomLevel = firstValueFrom(testContext.zoomLevelService.onChange);
       document.documentElement.style.width = '575px';
+      expect(await nextZoomLevel).toEqual(ZoomLevel.x4);
     });
   });
 
   describe('when document body size is greater than 575 px and less than 1200 px', () => {
-    it('zoom level is `2x`', function (this: any, done: DoneFn) {
-      let zoomLevel = ZoomLevel.none;
-
-      const subscription = this.zoomLevelService.onChange.subscribe((newZoomLevel: ZoomLevel) => {
-        zoomLevel = newZoomLevel;
-
-        expect(zoomLevel).toEqual(ZoomLevel.x2);
-
-        subscription.unsubscribe();
-        done();
-      });
-
-      document.documentElement.style.width = '576px';
+    it.each([576, 1199])('zoom level is `2x` at %i px', async width => {
+      const nextZoomLevel = firstValueFrom(testContext.zoomLevelService.onChange);
+      document.documentElement.style.width = `${width}px`;
+      expect(await nextZoomLevel).toEqual(ZoomLevel.x2);
     });
   });
 
   describe('when document body size is greater than or equal to 1200 px', () => {
-    it('zoom level is `none`', function (this: any, done: DoneFn) {
-      let zoomLevel = ZoomLevel.x2;
-
-      const subscription = this.zoomLevelService.onChange.subscribe((newZoomLevel: ZoomLevel) => {
-        zoomLevel = newZoomLevel;
-
-        expect(zoomLevel).toEqual(ZoomLevel.none);
-
-        subscription.unsubscribe();
-        done();
-      });
-
+    it('zoom level is `none`', async () => {
+      const nextZoomLevel = firstValueFrom(testContext.zoomLevelService.onChange);
       document.documentElement.style.width = '1200px';
+      expect(await nextZoomLevel).toEqual(ZoomLevel.none);
     });
   });
 
   describe('#ngOnDestroy', () => {
-    it('unobserves the document element for resize and completes the `onChange` observable', function (this: any) {
+    it('unobserves the document element for resize and completes the `onChange` observable', () => {
       let onChangeObservableCompleted = false;
-      spyOn(this.zoomLevelService['observer'], 'unobserve');
-      this.zoomLevelService.onChange.subscribe(
+      vi.spyOn(testContext.zoomLevelService['observer'], 'unobserve').mockImplementation(() => undefined);
+      testContext.zoomLevelService.onChange.subscribe(
         () => {
           // no action
         },
@@ -112,9 +88,9 @@ describe('ZoomLevelService', () => {
         }
       );
 
-      this.zoomLevelService.ngOnDestroy();
+      testContext.zoomLevelService.ngOnDestroy();
 
-      expect(this.zoomLevelService['observer'].unobserve).toHaveBeenCalledWith(document.documentElement);
+      expect(testContext.zoomLevelService['observer'].unobserve).toHaveBeenCalledWith(document.documentElement);
       expect(onChangeObservableCompleted).toBeTruthy();
     });
   });

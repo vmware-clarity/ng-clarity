@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClrCheckboxModule, ClrInputModule, ClrRadioModule, ClrSelectModule } from '@clr/angular/forms';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
+import type { Mock } from 'vitest';
 
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
 import { EnumFilterComponent } from './enum-filter.component';
@@ -107,7 +108,7 @@ describe('EnumFilterComponent', () => {
       expect(component.filteredOptions.length).toBe(3);
       expect(component.enumFilterForm).toBeDefined();
       expect(component.enumFilterForm.get('enumOperator')?.value).toBe(ComparisonOperator.DoesNotEqual);
-      expect(component.additionalOperators).toBeTrue(); // Because allowNotInOperator is true
+      expect(component.additionalOperators).toBe(true); // Because allowNotInOperator is true
     }));
 
     it('should initialize in Edit Mode (pre-selected values)', fakeAsync(() => {
@@ -119,8 +120,8 @@ describe('EnumFilterComponent', () => {
       const redControl = component.optionsFormArray.controls[0]; // red
       const greenControl = component.optionsFormArray.controls[1]; // green
 
-      expect(redControl.value).toBeTrue();
-      expect(greenControl.value).toBeFalse();
+      expect(redControl.value).toBe(true);
+      expect(greenControl.value).toBe(false);
       // Operator sync check
       expect(component.enumFilterForm.get('enumOperator')?.value).toBe(ComparisonOperator.Equals);
     }));
@@ -146,7 +147,7 @@ describe('EnumFilterComponent', () => {
 
     it('should handle large datasets by showing loading indicator and splicing results', fakeAsync(() => {
       component.ngOnInit();
-      expect(component.isProcessing).toBeFalse();
+      expect(component.isProcessing).toBe(false);
       // Should only show maxInitiallyShownItems (50)
       expect(component.filteredOptions.length).toBe(50);
       // But total searchable length is 150
@@ -160,13 +161,13 @@ describe('EnumFilterComponent', () => {
       expect(component.filteredOptions.length).toBe(50);
 
       component.loadMore();
-      expect(component.isProcessing).toBeTrue();
+      expect(component.isProcessing).toBe(true);
 
       tick(50); // Wait for loadMore async
 
       // 50 + 100 step
       expect(component.filteredOptions.length).toBe(150);
-      expect(component.isProcessing).toBeFalse();
+      expect(component.isProcessing).toBe(false);
     }));
   });
 
@@ -236,9 +237,9 @@ describe('EnumFilterComponent', () => {
 
       // 3. Assert "red" is selected, "green/blue" are NOT
       // red is index 0, green is 1, blue is 2
-      expect(component.optionsFormArray.at(0).value).toBeTrue();
-      expect(component.optionsFormArray.at(1).value).toBeFalse();
-      expect(component.optionsFormArray.at(2).value).toBeFalse();
+      expect(component.optionsFormArray.at(0).value).toBe(true);
+      expect(component.optionsFormArray.at(1).value).toBe(false);
+      expect(component.optionsFormArray.at(2).value).toBe(false);
     }));
 
     it('should update "selectedCount" correctly when individual options change', () => {
@@ -257,12 +258,12 @@ describe('EnumFilterComponent', () => {
       // Select all manually
       component.optionsFormArray.controls.forEach(c => c.setValue(true));
       component.onOptionChange();
-      expect(component.enumFilterForm.get('selectAll')?.value).toBeTrue();
+      expect(component.enumFilterForm.get('selectAll')?.value).toBe(true);
 
       // Deselect one
       component.optionsFormArray.at(0).setValue(false);
       component.onOptionChange();
-      expect(component.enumFilterForm.get('selectAll')?.value).toBeFalse();
+      expect(component.enumFilterForm.get('selectAll')?.value).toBe(false);
     });
   });
 
@@ -274,7 +275,7 @@ describe('EnumFilterComponent', () => {
     }));
 
     it('should update filter criteria operator when form operator changes', () => {
-      spyOn(component.filterCriteriaChange, 'emit');
+      vi.spyOn(component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
       const opControl = component.enumFilterForm.get('enumOperator');
 
       // Change to DoesNotEqual and verify via emitted filter
@@ -282,15 +283,13 @@ describe('EnumFilterComponent', () => {
       component.optionsFormArray.at(0).setValue(true);
       component.onOptionChange();
       component.onApplyButtonClick();
-      const emittedAnd = (component.filterCriteriaChange.emit as jasmine.Spy).calls.mostRecent()
-        .args[0] as PropertyFilter;
+      const emittedAnd = vi.mocked(component.filterCriteriaChange.emit as Mock).mock.lastCall[0] as PropertyFilter;
       expect(emittedAnd.operator).toBe(LogicalOperator.And);
 
       // Change back to Equals
       opControl?.setValue(ComparisonOperator.Equals);
       component.onApplyButtonClick();
-      const emittedOr = (component.filterCriteriaChange.emit as jasmine.Spy).calls.mostRecent()
-        .args[0] as PropertyFilter;
+      const emittedOr = vi.mocked(component.filterCriteriaChange.emit as Mock).mock.lastCall[0] as PropertyFilter;
       expect(emittedOr.operator).toBe(LogicalOperator.Or);
     });
 
@@ -299,12 +298,12 @@ describe('EnumFilterComponent', () => {
       component.optionsFormArray.controls.forEach(c => c.setValue(false));
       component.onOptionChange(); // updates validation
 
-      expect(component.enumFilterForm.valid).toBeFalse();
+      expect(component.enumFilterForm.valid).toBe(false);
 
       // Select one
       component.optionsFormArray.at(0).setValue(true);
       component.onOptionChange();
-      expect(component.enumFilterForm.valid).toBeTrue();
+      expect(component.enumFilterForm.valid).toBe(true);
     });
   });
 
@@ -317,17 +316,17 @@ describe('EnumFilterComponent', () => {
 
     it('should create valid form without requiring array selection', () => {
       // Single select uses 'singleSelectOption' control, not the array checkboxes
-      expect(component.enumFilterForm.valid).toBeTrue();
+      expect(component.enumFilterForm.valid).toBe(true);
     });
 
     it('onApply should emit correct single value criteria', () => {
-      spyOn(component.filterCriteriaChange, 'emit');
+      vi.spyOn(component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
 
       component.enumFilterForm.get('singleSelectOption')?.setValue('green');
       component.onApplyButtonClick();
 
-      const emitSpy = component.filterCriteriaChange.emit as jasmine.Spy;
-      const emittedCriteria = emitSpy.calls.mostRecent().args[0] as PropertyFilter;
+      const emitSpy = component.filterCriteriaChange.emit as Mock;
+      const emittedCriteria = vi.mocked(emitSpy).mock.lastCall[0] as PropertyFilter;
       expect(emittedCriteria.criteria.length).toBe(1);
       expect(emittedCriteria.criteria[0].value).toBe('green');
     });
@@ -341,7 +340,7 @@ describe('EnumFilterComponent', () => {
     }));
 
     it('onApply (multiselect) should collect all checked values', () => {
-      spyOn(component.filterCriteriaChange, 'emit');
+      vi.spyOn(component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
 
       // Select 1 and 3 (Alert and Info)
       component.optionsFormArray.at(0).setValue(true); // red
@@ -349,15 +348,15 @@ describe('EnumFilterComponent', () => {
 
       component.onApplyButtonClick();
 
-      const emitSpy = component.filterCriteriaChange.emit as jasmine.Spy;
-      const emittedCriteria = emitSpy.calls.mostRecent().args[0] as PropertyFilter;
+      const emitSpy = component.filterCriteriaChange.emit as Mock;
+      const emittedCriteria = vi.mocked(emitSpy).mock.lastCall[0] as PropertyFilter;
       expect(emittedCriteria.criteria.length).toBe(2);
       expect(emittedCriteria.criteria[0].value).toBe('red');
       expect(emittedCriteria.criteria[1].value).toBe('blue');
     });
 
     it('onCancel should emit empty event', () => {
-      spyOn(component.filterCriteriaChange, 'emit');
+      vi.spyOn(component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
       component.onCancelButtonClick();
       expect(component.filterCriteriaChange.emit).toHaveBeenCalledWith();
     });
@@ -412,10 +411,10 @@ describe('EnumFilterComponent', () => {
       tick(50); // wait for async init
 
       // This hits the branch: if (selectedOptions.length === this.optionsData.length)
-      expect(component.enumFilterForm.get('selectAll')?.value).toBeTrue();
+      expect(component.enumFilterForm.get('selectAll')?.value).toBe(true);
 
       // Verify individual controls are also checked
-      component.optionsFormArray.controls.forEach(c => expect(c.value).toBeTrue());
+      component.optionsFormArray.controls.forEach(c => expect(c.value).toBe(true));
     }));
 
     describe('Single Select Initialization Logic', () => {

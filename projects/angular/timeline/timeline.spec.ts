@@ -14,7 +14,7 @@ import { ClrTimeline } from './timeline';
 import { ClrTimelineStep } from './timeline-step';
 import { ClrTimelineModule } from './timeline.module';
 
-export default function (): void {
+describe('Timeline', () => {
   describe('ClrTimeline component', () => {
     describe('Template API', () => {
       let fixture: ComponentFixture<TestTimeline>;
@@ -87,7 +87,7 @@ export default function (): void {
       });
     });
   });
-}
+});
 
 @Component({
   template: `

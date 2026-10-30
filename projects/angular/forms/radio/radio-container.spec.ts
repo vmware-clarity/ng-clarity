@@ -15,7 +15,7 @@ import { ClrIcon } from '@clr/angular/icon';
 import { ClrRadio } from './radio';
 import { ClrRadioContainer } from './radio-container';
 import { ClrRadioWrapper } from './radio-wrapper';
-import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
+import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container';
 
 @Component({
   template: `
@@ -108,7 +108,7 @@ class ReactiveTest {
   });
 }
 
-export default function (): void {
+describe('Radio component', () => {
   describe('ClrRadioContainer', () => {
     ContainerNoLabelSpec(ClrRadioContainer, [ClrRadio, ClrRadioWrapper], NoLabelTest);
     TemplateDrivenSpec(
@@ -183,4 +183,4 @@ export default function (): void {
       });
     });
   });
-}
+});

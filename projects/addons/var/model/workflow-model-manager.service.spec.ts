@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { of, throwError } from 'rxjs';
 import { take } from 'rxjs/operators';
+import type { Mock } from 'vitest';
 
 import { StepInternal } from './step';
 import { ModelChanges } from './step-interfaces';
@@ -185,8 +186,8 @@ interface ThisTest {
   step3Model: MockStep3Model;
   step3: StepInternal;
   wizardModel: WorkflowModel;
-  onModelChangeSpy: jasmine.Spy;
-  onStepChangeSpy: jasmine.Spy;
+  onModelChangeSpy: Mock;
+  onStepChangeSpy: Mock;
 }
 
 function createWorkflowModel(): WorkflowModel {
@@ -199,14 +200,19 @@ function createWorkflowModel(): WorkflowModel {
 }
 
 describe('appfx-workflow-model-manager.service.spec', () => {
-  beforeEach(function (this: ThisTest) {
-    this.mgr = new WorkflowModelManager();
-    this.mgr.steps = [];
+  let testContext: ThisTest;
+  beforeEach(() => {
+    testContext = {} as ThisTest;
+  });
 
-    this.step1Model = new MockStep1Model();
-    this.step1 = {
+  beforeEach(() => {
+    testContext.mgr = new WorkflowModelManager();
+    testContext.mgr.steps = [];
+
+    testContext.step1Model = new MockStep1Model();
+    testContext.step1 = {
       title: 'title 1',
-      model: this.step1Model,
+      model: testContext.step1Model,
       componentClass: MockComponent,
       mappings: new Mappings<MockStep1Model, WorkflowModel>()
         .mapStepProp('var5')
@@ -214,31 +220,33 @@ describe('appfx-workflow-model-manager.service.spec', () => {
         .mapStepProp('var6')
         .to('var1'),
     };
-    this.step2Model = new MockStep2Model();
-    this.step2 = {
+    testContext.step2Model = new MockStep2Model();
+    testContext.step2 = {
       title: 'title 2',
-      model: this.step2Model,
+      model: testContext.step2Model,
       componentClass: MockComponent,
     };
-    this.onModelChangeSpy = spyOn(this.mgr.onModelChange$, 'next').and.callThrough();
-    this.onStepChangeSpy = spyOn(this.mgr.onStepChange$, 'next').and.callThrough();
+    testContext.onModelChangeSpy = vi.spyOn(testContext.mgr.onModelChange$, 'next');
+    testContext.onStepChangeSpy = vi.spyOn(testContext.mgr.onStepChange$, 'next');
   });
 
-  afterEach(function (this: ThisTest) {
-    this.mgr.destroy();
+  afterEach(() => {
+    testContext.mgr.destroy();
   });
 
   describe('processWorkflowModel()', () => {
-    it("'value' is set immediately when dependency is changed", function (this: ThisTest) {
+    it("'value' is set immediately when dependency is changed", () => {
       const model = createWorkflowModel();
 
       let modelChanges: ModelChange[] = [];
-      const subscription = this.mgr.onModelChange$.subscribe((changes: ModelChange[]) => (modelChanges = changes));
+      const subscription = testContext.mgr.onModelChange$.subscribe(
+        (changes: ModelChange[]) => (modelChanges = changes)
+      );
       expect(modelChanges.length).toEqual(0);
 
       // Set the model. At this point a subscription to eager computed vars is done.
       // Since the dependent Var (v1) already has a value, c1 will be set immediately.
-      this.mgr.model = model;
+      testContext.mgr.model = model;
 
       expect(model.c1.value).toEqual(11);
       expect(modelChanges).toBeDefined();
@@ -260,28 +268,28 @@ describe('appfx-workflow-model-manager.service.spec', () => {
       subscription.unsubscribe();
     });
 
-    it('test unsubscribe on new model', function (this: ThisTest) {
+    it('test unsubscribe on new model', () => {
       const model = createWorkflowModel();
-      this.mgr.model = model;
+      testContext.mgr.model = model;
 
       expect(model.c1.value).toEqual(11);
 
       // Set new model
-      this.mgr.model = {};
+      testContext.mgr.model = {};
 
       // Change the dependent Var's value. Verify that computed var is NOT recalculated.
       model.v1.value = 1;
       expect(model.c1.value).toEqual(11);
     });
 
-    it('test unsubscribe on destroy', function (this: ThisTest) {
+    it('test unsubscribe on destroy', () => {
       const model = createWorkflowModel();
-      this.mgr.model = model;
+      testContext.mgr.model = model;
 
       expect(model.c1.value).toEqual(11);
 
       // Destroy the manager should unsubscribe the eager computed vars.
-      this.mgr.destroy();
+      testContext.mgr.destroy();
 
       // Change the dependent Var's value. Verify that computed var is NOT recalculated.
       model.v1.value = 1;
@@ -291,45 +299,45 @@ describe('appfx-workflow-model-manager.service.spec', () => {
 
   describe('input and output mappings', () => {
     describe('WHEN there is no wizardModel', () => {
-      beforeEach(function (this: ThisTest) {
-        this.mgr.steps = [this.step1, this.step2];
+      beforeEach(() => {
+        testContext.mgr.steps = [testContext.step1, testContext.step2];
       });
 
-      it('THEN onStepChange$ and onModelChange$ is never called', function (this: ThisTest) {
+      it('THEN onStepChange$ and onModelChange$ is never called', () => {
         let result: InjectPropertiesResult | undefined;
-        this.mgr.ejectPropertiesFromCurrentStep(undefined);
-        this.mgr
-          .injectPropertiesToPendingStep(this.step1)
+        testContext.mgr.ejectPropertiesFromCurrentStep(undefined);
+        testContext.mgr
+          .injectPropertiesToPendingStep(testContext.step1)
           .pipe(take(1))
           .subscribe(
             pendingStep => {
               result = pendingStep;
             },
             () => {
-              fail('should never reach here');
+              throw new Error('should never reach here');
             }
           );
-        expect(result).toEqual({ pendingStep: this.step1 });
-        expect(this.mgr.onModelChange$.next).not.toHaveBeenCalled();
-        expect(this.mgr.onStepChange$.next).not.toHaveBeenCalled();
+        expect(result).toEqual({ pendingStep: testContext.step1 });
+        expect(testContext.mgr.onModelChange$.next).not.toHaveBeenCalled();
+        expect(testContext.mgr.onStepChange$.next).not.toHaveBeenCalled();
       });
     });
 
     describe('WHEN there is wizardModel', () => {
-      beforeEach(function (this: ThisTest) {
-        this.mgr.model = this.wizardModel = new WorkflowModel();
-        this.mgr.steps = [this.step1, this.step2];
+      beforeEach(() => {
+        testContext.mgr.model = testContext.wizardModel = new WorkflowModel();
+        testContext.mgr.steps = [testContext.step1, testContext.step2];
       });
 
-      it('injectPropertiesToPendingStep injects the properties on the first step', function (this: ThisTest) {
+      it('injectPropertiesToPendingStep injects the properties on the first step', () => {
         let result: InjectPropertiesResult | undefined;
-        this.wizardModel.var3.value = 'var3';
-        this.mgr
-          .injectPropertiesToPendingStep(this.step1)
+        testContext.wizardModel.var3.value = 'var3';
+        testContext.mgr
+          .injectPropertiesToPendingStep(testContext.step1)
           .pipe(take(1))
           .subscribe(
             res => (result = res),
-            () => fail('should never reach here')
+            () => expect.fail('should never reach here')
           );
         const stepModelChanges: ModelChanges = {
           var1: new ModelChange('var1', '', 'var1'),
@@ -338,56 +346,56 @@ describe('appfx-workflow-model-manager.service.spec', () => {
           var6: new ModelChange('var6', undefined, 'var1'),
         };
         expect(result).toEqual({
-          pendingStep: this.step1,
+          pendingStep: testContext.step1,
           stepModelChanges: stepModelChanges,
           recreateComponent: undefined,
         });
         const changes = [new ModelChange('cp1', undefined, 'cp1')];
-        expect(this.mgr.onModelChange$.next).toHaveBeenCalledWith(changes);
-        expect(this.mgr.onStepChange$.next).toHaveBeenCalledWith({
-          step: this.step1,
+        expect(testContext.mgr.onModelChange$.next).toHaveBeenCalledWith(changes);
+        expect(testContext.mgr.onStepChange$.next).toHaveBeenCalledWith({
+          step: testContext.step1,
           changes: changes,
         });
-        expect(this.step1Model.var1).toEqual('var1');
-        expect(this.step1Model.cp1.value).toEqual('cp1');
+        expect(testContext.step1Model.var1).toEqual('var1');
+        expect(testContext.step1Model.cp1.value).toEqual('cp1');
       });
 
       it(`ejectPropertiesFromCurrentStep ejects the properties from first step and
-               injectPropertiesToPendingStep injects the properties on the second step`, function (this: ThisTest) {
+               injectPropertiesToPendingStep injects the properties on the second step`, () => {
         let result: InjectPropertiesResult | undefined;
         // transition to step1
-        this.mgr.ejectPropertiesFromCurrentStep(undefined);
-        this.mgr
-          .injectPropertiesToPendingStep(this.step1)
+        testContext.mgr.ejectPropertiesFromCurrentStep(undefined);
+        testContext.mgr
+          .injectPropertiesToPendingStep(testContext.step1)
           .pipe(take(1))
           .subscribe(
             pendingStep => {
               result = pendingStep;
             },
             () => {
-              fail('should never reach here');
+              throw new Error('should never reach here');
             }
           );
-        expect(this.step1Model.var6.value).toEqual('var1'); // verify @out external mapping
+        expect(testContext.step1Model.var6.value).toEqual('var1'); // verify @out external mapping
         // transition to step2
-        this.onModelChangeSpy.calls.reset();
-        this.onStepChangeSpy.calls.reset();
-        this.step1Model.var2.value = 'var2';
-        this.step1Model.var4.value = 'var4';
-        this.step1Model.var5.value = this.step1Model.var1;
-        this.step1Model.nestedVar.value = { var1: 'var1' };
-        this.mgr.ejectPropertiesFromCurrentStep(this.step1);
-        expect(this.wizardModel.var3.value).toEqual('var1'); // verify @in external mapping
-        expect(this.wizardModel.nestedVar.value).toEqual({ var1: 'var1' });
-        this.mgr
-          .injectPropertiesToPendingStep(this.step2)
+        testContext.onModelChangeSpy.mockClear();
+        testContext.onStepChangeSpy.mockClear();
+        testContext.step1Model.var2.value = 'var2';
+        testContext.step1Model.var4.value = 'var4';
+        testContext.step1Model.var5.value = testContext.step1Model.var1;
+        testContext.step1Model.nestedVar.value = { var1: 'var1' };
+        testContext.mgr.ejectPropertiesFromCurrentStep(testContext.step1);
+        expect(testContext.wizardModel.var3.value).toEqual('var1'); // verify @in external mapping
+        expect(testContext.wizardModel.nestedVar.value).toEqual({ var1: 'var1' });
+        testContext.mgr
+          .injectPropertiesToPendingStep(testContext.step2)
           .pipe(take(1))
           .subscribe(
             pendingStep => {
               result = pendingStep;
             },
             () => {
-              fail('should never reach here');
+              throw new Error('should never reach here');
             }
           );
         const stepModelChanges: ModelChanges = {
@@ -395,44 +403,46 @@ describe('appfx-workflow-model-manager.service.spec', () => {
           nestedVar1: new ModelChange('nestedVar1', undefined, 'var1'),
         };
         expect(result).toEqual({
-          pendingStep: this.step2,
+          pendingStep: testContext.step2,
           stepModelChanges: stepModelChanges,
           recreateComponent: undefined,
         });
-        expect(this.wizardModel.var2.value).toEqual('var2');
-        expect(this.step2Model.cp2).toEqual('var2cp2');
+        expect(testContext.wizardModel.var2.value).toEqual('var2');
+        expect(testContext.step2Model.cp2).toEqual('var2cp2');
         let changes = [new ModelChange('cp2', undefined, 'var2cp2'), new ModelChange('nestedVar1', undefined, 'var1')];
-        expect(this.mgr.onStepChange$.next).toHaveBeenCalledTimes(1);
-        expect(this.mgr.onStepChange$.next).toHaveBeenCalledWith({
-          step: this.step2,
+        expect(testContext.mgr.onStepChange$.next).toHaveBeenCalledTimes(1);
+        expect(testContext.mgr.onStepChange$.next).toHaveBeenCalledWith({
+          step: testContext.step2,
           changes: changes,
         });
-        expect(this.mgr.onModelChange$.next).toHaveBeenCalledTimes(5);
-        expect(this.mgr.onModelChange$.next).toHaveBeenCalledWith(changes);
+        expect(testContext.mgr.onModelChange$.next).toHaveBeenCalledTimes(5);
+        expect(testContext.mgr.onModelChange$.next).toHaveBeenCalledWith(changes);
         changes = [new ModelChange('var2', '', 'var2')];
-        expect(this.mgr.onModelChange$.next).toHaveBeenCalledWith(changes);
+        expect(testContext.mgr.onModelChange$.next).toHaveBeenCalledWith(changes);
         changes = [new ModelChange('var3', 'default', 'var1')];
-        expect(this.mgr.onModelChange$.next).toHaveBeenCalledWith(changes);
+        expect(testContext.mgr.onModelChange$.next).toHaveBeenCalledWith(changes);
         changes = [new ModelChange('var4', 'var1', 'var4')];
-        expect(this.wizardModel.var3.value).toEqual('var1');
-        expect(this.wizardModel.var4.value).toEqual('var4');
+        expect(testContext.wizardModel.var3.value).toEqual('var1');
+        expect(testContext.wizardModel.var4.value).toEqual('var4');
       });
 
       it(`WHEN going back to previous step and modifying the output,
-               THEN injectPropertiesToPendingStep correctly identifies changes`, function (this: ThisTest) {
+               THEN injectPropertiesToPendingStep correctly identifies changes`, () => {
         const step1Model = new MockStepModelWithNestedObjectOutput();
         const step2Model = new MockStepModelWithNestedObjectInput();
-        this.step1.mappings = undefined;
-        this.step1.model = step1Model;
-        this.step2.model = step2Model;
-        this.mgr.steps = [this.step1, this.step2];
+        testContext.step1.mappings = undefined;
+        testContext.step1.model = step1Model;
+        testContext.step2.model = step2Model;
+        testContext.mgr.steps = [testContext.step1, testContext.step2];
 
         let modelChanges: ModelChange[] = [];
-        const subscription = this.mgr.onModelChange$.subscribe((changes: ModelChange[]) => (modelChanges = changes));
+        const subscription = testContext.mgr.onModelChange$.subscribe(
+          (changes: ModelChange[]) => (modelChanges = changes)
+        );
 
         // Transition to step1.
-        this.mgr.ejectPropertiesFromCurrentStep(undefined);
-        this.mgr.injectPropertiesToPendingStep(this.step1).pipe(take(1)).subscribe();
+        testContext.mgr.ejectPropertiesFromCurrentStep(undefined);
+        testContext.mgr.injectPropertiesToPendingStep(testContext.step1).pipe(take(1)).subscribe();
 
         step1Model.var1 = 'value-1';
         const nestedObject1 = 'nested-object-1';
@@ -440,25 +450,25 @@ describe('appfx-workflow-model-manager.service.spec', () => {
         step1Model.nestedVar.value = { var1: 'nested_var-1' };
 
         // Transition to step2.
-        this.mgr.ejectPropertiesFromCurrentStep(this.step1);
+        testContext.mgr.ejectPropertiesFromCurrentStep(testContext.step1);
         // 2 not 3 changes, because 'nestedVar' is Var and is copied instantaneously to the wizard model.
         let wizardModelChanges: ModelChange[] = [
           new ModelChange('var1', undefined, 'value-1'),
           new ModelChange('nt', undefined, { var1: nestedObject1 }),
         ];
         expect(modelChanges).toEqual(wizardModelChanges);
-        this.mgr.injectPropertiesToPendingStep(this.step2).pipe(take(1)).subscribe();
+        testContext.mgr.injectPropertiesToPendingStep(testContext.step2).pipe(take(1)).subscribe();
 
         // Transition back to step1 and modify the outputs. When 'Back' is clicked,
         // 'WorkflowModelManager.ejectPropertiesFromCurrentStep' is not invoked.
-        this.mgr.injectPropertiesToPendingStep(this.step1).pipe(take(1)).subscribe();
+        testContext.mgr.injectPropertiesToPendingStep(testContext.step1).pipe(take(1)).subscribe();
         step1Model.var1 = 'value-2';
         const nestedObject2 = 'nested-object-2';
         step1Model.nt.var1 = nestedObject2; // modify the reference
         step1Model.nestedVar.value.var1 = 'nested_var-2'; // modify the reference
 
         // Transition to step2.
-        this.mgr.ejectPropertiesFromCurrentStep(this.step1);
+        testContext.mgr.ejectPropertiesFromCurrentStep(testContext.step1);
         wizardModelChanges = [
           new ModelChange('var1', 'value-1', 'value-2'),
           new ModelChange('nt', { var1: nestedObject1 }, { var1: nestedObject2 }),
@@ -466,8 +476,8 @@ describe('appfx-workflow-model-manager.service.spec', () => {
         expect(modelChanges).toEqual(wizardModelChanges);
 
         let result: InjectPropertiesResult | undefined;
-        this.mgr
-          .injectPropertiesToPendingStep(this.step2)
+        testContext.mgr
+          .injectPropertiesToPendingStep(testContext.step2)
           .pipe(take(1))
           .subscribe((pendingStep: InjectPropertiesResult) => (result = pendingStep));
 
@@ -481,18 +491,18 @@ describe('appfx-workflow-model-manager.service.spec', () => {
       });
 
       it(`WHEN going back to previous step with optional inputs,
-               THEN injectPropertiesToPendingStep correctly identifies changes`, function (this: ThisTest) {
+               THEN injectPropertiesToPendingStep correctly identifies changes`, () => {
         const step1Model = new StepModelWithOptionalInputs();
-        this.step1.mappings = undefined;
-        this.step1.model = step1Model;
-        this.step2.model = new EmptyStepModel();
-        this.mgr.steps = [this.step1, this.step2];
-        this.mgr.model = this.wizardModel = new WorkflowModel();
+        testContext.step1.mappings = undefined;
+        testContext.step1.model = step1Model;
+        testContext.step2.model = new EmptyStepModel();
+        testContext.mgr.steps = [testContext.step1, testContext.step2];
+        testContext.mgr.model = testContext.wizardModel = new WorkflowModel();
 
         // Transition to step1.
         let injectResult: InjectPropertiesResult = {};
-        this.mgr
-          .injectPropertiesToPendingStep(this.step1)
+        testContext.mgr
+          .injectPropertiesToPendingStep(testContext.step1)
           .pipe(take(1))
           .subscribe((result: InjectPropertiesResult) => (injectResult = result));
 
@@ -503,13 +513,13 @@ describe('appfx-workflow-model-manager.service.spec', () => {
         expect(stepModelChanges).toEqual(injectResult.stepModelChanges as ModelChanges);
 
         // Transition to step2.
-        this.mgr.ejectPropertiesFromCurrentStep(this.step1);
-        this.mgr.injectPropertiesToPendingStep(this.step2).pipe(take(1)).subscribe();
+        testContext.mgr.ejectPropertiesFromCurrentStep(testContext.step1);
+        testContext.mgr.injectPropertiesToPendingStep(testContext.step2).pipe(take(1)).subscribe();
 
         // Transition back to step1. When 'Back' is clicked,
         // 'WorkflowModelManager.ejectPropertiesFromCurrentStep' is not invoked.
-        this.mgr
-          .injectPropertiesToPendingStep(this.step1)
+        testContext.mgr
+          .injectPropertiesToPendingStep(testContext.step1)
           .pipe(take(1))
           .subscribe((result: InjectPropertiesResult) => (injectResult = result));
 
@@ -519,35 +529,35 @@ describe('appfx-workflow-model-manager.service.spec', () => {
       });
 
       it(`WHEN there is change in Var with @outputMapping Mapping,
-               THEN ejectPropertiesFromCurrentStep should emit changes`, function (this: ThisTest) {
-        this.onModelChangeSpy.calls.reset();
-        this.step1Model.var2.value = 'var2';
-        expect(this.onModelChangeSpy).toHaveBeenCalledWith([new ModelChange('var2', '', 'var2')]);
-        this.mgr.ejectPropertiesFromCurrentStep(this.step1);
-        expect(this.wizardModel.var2.value).toEqual('var2');
+               THEN ejectPropertiesFromCurrentStep should emit changes`, () => {
+        testContext.onModelChangeSpy.mockClear();
+        testContext.step1Model.var2.value = 'var2';
+        expect(testContext.onModelChangeSpy).toHaveBeenCalledWith([new ModelChange('var2', '', 'var2')]);
+        testContext.mgr.ejectPropertiesFromCurrentStep(testContext.step1);
+        expect(testContext.wizardModel.var2.value).toEqual('var2');
       });
 
       it(`ejectPropertiesFromCurrentStep should update the wizard model with correct value
-               when nested properties have changed without calling var value setter`, function (this: ThisTest) {
-        expect(this.wizardModel.nestedVar.value).toBeUndefined();
-        expect(this.wizardModel.nestedVar1.value).toBeUndefined();
-        const subscription = (<SimpleVar<string>>this.wizardModel.nestedVar1).value$.subscribe();
-        this.step1Model.nestedVar.value = { var1: 'var1' };
-        expect(this.wizardModel.nestedVar.value).toEqual({ var1: 'var1' });
-        this.step1Model.nestedVar.value.var1 = 'updatedVar1';
-        this.mgr.ejectPropertiesFromCurrentStep(this.step1);
-        expect(this.wizardModel.nestedVar.value).toEqual({ var1: 'updatedVar1' });
-        expect(this.wizardModel.nestedVar1.value).toEqual('updatedVar1');
+               when nested properties have changed without calling var value setter`, () => {
+        expect(testContext.wizardModel.nestedVar.value).toBeUndefined();
+        expect(testContext.wizardModel.nestedVar1.value).toBeUndefined();
+        const subscription = (<SimpleVar<string>>testContext.wizardModel.nestedVar1).value$.subscribe();
+        testContext.step1Model.nestedVar.value = { var1: 'var1' };
+        expect(testContext.wizardModel.nestedVar.value).toEqual({ var1: 'var1' });
+        testContext.step1Model.nestedVar.value.var1 = 'updatedVar1';
+        testContext.mgr.ejectPropertiesFromCurrentStep(testContext.step1);
+        expect(testContext.wizardModel.nestedVar.value).toEqual({ var1: 'updatedVar1' });
+        expect(testContext.wizardModel.nestedVar1.value).toEqual('updatedVar1');
         subscription.unsubscribe();
       });
 
-      it(`ejectPropertiesFromCurrentStep should throw error WHEN wizard property is ComputedVar`, function (this: ThisTest) {
-        this.step1.mappings = undefined;
-        this.step1.model = new MockStepWithOutToComputedVar();
-        this.mgr.steps = [this.step1];
+      it(`ejectPropertiesFromCurrentStep should throw error WHEN wizard property is ComputedVar`, () => {
+        testContext.step1.mappings = undefined;
+        testContext.step1.model = new MockStepWithOutToComputedVar();
+        testContext.mgr.steps = [testContext.step1];
         let isError = false;
         try {
-          this.mgr.ejectPropertiesFromCurrentStep(this.step1);
+          testContext.mgr.ejectPropertiesFromCurrentStep(testContext.step1);
         } catch {
           isError = true;
         }
@@ -555,128 +565,128 @@ describe('appfx-workflow-model-manager.service.spec', () => {
       });
     });
 
-    it('wizard model should get updated with initial value of step model var', function (this: ThisTest) {
-      this.mgr.model = this.wizardModel = new WorkflowModel();
-      expect(this.wizardModel.var3.value).toBeUndefined();
-      this.mgr.model = this.wizardModel = new WorkflowModel();
-      this.mgr.steps = [this.step1, this.step2];
+    it('wizard model should get updated with initial value of step model var', () => {
+      testContext.mgr.model = testContext.wizardModel = new WorkflowModel();
+      expect(testContext.wizardModel.var3.value).toBeUndefined();
+      testContext.mgr.model = testContext.wizardModel = new WorkflowModel();
+      testContext.mgr.steps = [testContext.step1, testContext.step2];
 
       // without changing the value of step model, wizard model gets updated from undefined to "default" (initial value)
-      expect(this.wizardModel.var3.value).toEqual('default');
+      expect(testContext.wizardModel.var3.value).toEqual('default');
     });
 
     describe('WHEN a ComputedVar throws an error of type', () => {
-      beforeEach(function (this: ThisTest) {
-        this.step3Model = new MockStep3Model();
-        this.step3 = {
+      beforeEach(() => {
+        testContext.step3Model = new MockStep3Model();
+        testContext.step3 = {
           title: 'title 3',
-          model: this.step3Model,
+          model: testContext.step3Model,
           componentClass: MockComponent,
         };
-        this.mgr.steps = [this.step1, this.step2, this.step3];
-        this.mgr.model = this.wizardModel = new WorkflowModel();
+        testContext.mgr.steps = [testContext.step1, testContext.step2, testContext.step3];
+        testContext.mgr.model = testContext.wizardModel = new WorkflowModel();
       });
 
-      it('Error Object, THEN injectPropertiesToPendingStep will return error object', function (this: ThisTest) {
+      it('Error Object, THEN injectPropertiesToPendingStep will return error object', () => {
         let result: InjectPropertiesResult | undefined;
-        this.step2Model.var3.value = 'var3';
-        this.mgr.ejectPropertiesFromCurrentStep(this.step2);
-        this.mgr
-          .injectPropertiesToPendingStep(this.step3)
+        testContext.step2Model.var3.value = 'var3';
+        testContext.mgr.ejectPropertiesFromCurrentStep(testContext.step2);
+        testContext.mgr
+          .injectPropertiesToPendingStep(testContext.step3)
           .pipe(take(1))
           .subscribe(pendingStep => {
             result = pendingStep;
           });
-        expect(result?.pendingStep).toEqual(this.step3);
+        expect(result?.pendingStep).toEqual(testContext.step3);
         expect(result?.error?.data.message).toEqual('cp3');
         expect(result?.error?.data.stackTrace).toBeTruthy();
       });
 
-      it('string, THEN injectPropertiesToPendingStep will return error string', function (this: ThisTest) {
-        this.wizardModel.cp3 = Var.from(this.wizardModel.var3).by(() => {
+      it('string, THEN injectPropertiesToPendingStep will return error string', () => {
+        testContext.wizardModel.cp3 = Var.from(testContext.wizardModel.var3).by(() => {
           return throwError(() => 'cp3');
         });
         let result: InjectPropertiesResult | undefined;
-        this.step2Model.var3.value = 'var3';
-        this.mgr.ejectPropertiesFromCurrentStep(this.step2);
-        this.mgr
-          .injectPropertiesToPendingStep(this.step3)
+        testContext.step2Model.var3.value = 'var3';
+        testContext.mgr.ejectPropertiesFromCurrentStep(testContext.step2);
+        testContext.mgr
+          .injectPropertiesToPendingStep(testContext.step3)
           .pipe(take(1))
           .subscribe(pendingStep => {
             result = pendingStep;
           });
-        expect(result?.pendingStep).toEqual(this.step3);
+        expect(result?.pendingStep).toEqual(testContext.step3);
         expect(result?.error?.data.message).toEqual('cp3');
         expect(result?.error?.data.stackTrace).toBeUndefined();
       });
 
-      it('http backend error, THEN injectPropertiesToPendingStep will return error', function (this: ThisTest) {
-        this.wizardModel.cp3 = Var.from(this.wizardModel.var3).by(() => {
+      it('http backend error, THEN injectPropertiesToPendingStep will return error', () => {
+        testContext.wizardModel.cp3 = Var.from(testContext.wizardModel.var3).by(() => {
           return throwError({ data: { message: 'cp3', stackTrace: 'cp3stacktrace' } });
         });
         let result: InjectPropertiesResult | undefined;
-        this.step2Model.var3.value = 'var3';
-        this.mgr.ejectPropertiesFromCurrentStep(this.step2);
-        this.mgr
-          .injectPropertiesToPendingStep(this.step3)
+        testContext.step2Model.var3.value = 'var3';
+        testContext.mgr.ejectPropertiesFromCurrentStep(testContext.step2);
+        testContext.mgr
+          .injectPropertiesToPendingStep(testContext.step3)
           .pipe(take(1))
           .subscribe(pendingStep => {
             result = pendingStep;
           });
-        expect(result?.pendingStep).toEqual(this.step3);
+        expect(result?.pendingStep).toEqual(testContext.step3);
         expect(result?.error?.data.message).toEqual('cp3');
         expect(result?.error?.data.stackTrace).toEqual('cp3stacktrace');
       });
 
-      it('custom error, THEN injectPropertiesToPendingStep will return error with json stringify', function (this: ThisTest) {
+      it('custom error, THEN injectPropertiesToPendingStep will return error with json stringify', () => {
         const customObj = { error: 'customError' };
-        this.wizardModel.cp3 = Var.from(this.wizardModel.var3).by(() => {
+        testContext.wizardModel.cp3 = Var.from(testContext.wizardModel.var3).by(() => {
           return throwError(() => customObj);
         });
         let result: InjectPropertiesResult | undefined;
-        this.step2Model.var3.value = 'var3';
-        this.mgr.ejectPropertiesFromCurrentStep(this.step2);
-        this.mgr
-          .injectPropertiesToPendingStep(this.step3)
+        testContext.step2Model.var3.value = 'var3';
+        testContext.mgr.ejectPropertiesFromCurrentStep(testContext.step2);
+        testContext.mgr
+          .injectPropertiesToPendingStep(testContext.step3)
           .pipe(take(1))
           .subscribe(pendingStep => {
             result = pendingStep;
           });
-        expect(result?.pendingStep).toEqual(this.step3);
+        expect(result?.pendingStep).toEqual(testContext.step3);
         expect(result?.error?.data.message).toEqual(JSON.stringify(customObj));
         expect(result?.error?.data.stackTrace).toBeUndefined();
       });
     });
 
     describe('WHEN there are missing dependencies', () => {
-      beforeEach(function (this: ThisTest) {
-        this.mgr.model = this.wizardModel = new WorkflowModel();
-        this.mgr.steps = [this.step1, this.step2];
+      beforeEach(() => {
+        testContext.mgr.model = testContext.wizardModel = new WorkflowModel();
+        testContext.mgr.steps = [testContext.step1, testContext.step2];
       });
 
-      it('WHEN ComputeVar dependency is not satisfied, injectPropertiesToPendingStep should throw error', function (this: ThisTest) {
+      it('WHEN ComputeVar dependency is not satisfied, injectPropertiesToPendingStep should throw error', () => {
         const var2 = Var.of<string>() as SimpleVar<string>;
         var2.name = 'var2';
-        this.wizardModel.var2 = var2;
-        const cp2 = Var.from<string>(this.wizardModel.var2).by(() => of('var2')) as ComputedVar<string>;
+        testContext.wizardModel.var2 = var2;
+        const cp2 = Var.from<string>(testContext.wizardModel.var2).by(() => of('var2')) as ComputedVar<string>;
         cp2.name = 'cp2';
-        this.wizardModel.cp2 = cp2;
+        testContext.wizardModel.cp2 = cp2;
         let result = '';
         try {
-          this.mgr.injectPropertiesToPendingStep(this.step2).pipe(take(1)).subscribe();
+          testContext.mgr.injectPropertiesToPendingStep(testContext.step2).pipe(take(1)).subscribe();
         } catch (e) {
           result = (e as Error).message;
         }
         expect(result).toEqual('Dependencies not satisfied for Var: cp2 --> var2');
       });
 
-      it('WHEN SimpleVar value is not initialised, injectPropertiesToPendingStep should throw error', function (this: ThisTest) {
+      it('WHEN SimpleVar value is not initialised, injectPropertiesToPendingStep should throw error', () => {
         const var3 = Var.of<string>() as SimpleVar<string>;
         var3.name = 'var3';
-        this.wizardModel.var3 = var3;
+        testContext.wizardModel.var3 = var3;
         let result = '';
         try {
-          this.mgr.injectPropertiesToPendingStep(this.step1).pipe(take(1)).subscribe();
+          testContext.mgr.injectPropertiesToPendingStep(testContext.step1).pipe(take(1)).subscribe();
         } catch (e) {
           result = (e as Error).message;
         }
@@ -684,7 +694,7 @@ describe('appfx-workflow-model-manager.service.spec', () => {
       });
 
       describe('optional inputs', () => {
-        it('WHEN input property does not exist in wizard model', function (this: ThisTest) {
+        it('WHEN input property does not exist in wizard model', () => {
           class StepModelWithOptionalInput implements StepModel {
             loading = false;
             @In({ optional: true }) notExisting: string;
@@ -697,13 +707,13 @@ describe('appfx-workflow-model-manager.service.spec', () => {
             model: model,
             componentClass: MockComponent,
           };
-          this.mgr.steps = [step];
-          this.mgr.injectPropertiesToPendingStep(step).pipe(take(1)).subscribe();
+          testContext.mgr.steps = [step];
+          testContext.mgr.injectPropertiesToPendingStep(step).pipe(take(1)).subscribe();
           expect(model.notExisting).toBeUndefined();
           expect(model.var1).toEqual('var1');
         });
 
-        it('WHEN input property maps to SimpleVar that is unset', function (this: ThisTest) {
+        it('WHEN input property maps to SimpleVar that is unset', () => {
           class StepModelWithOptionalInput implements StepModel {
             loading = false;
             @In() var1: string;
@@ -717,14 +727,14 @@ describe('appfx-workflow-model-manager.service.spec', () => {
             model: model,
             componentClass: MockComponent,
           };
-          this.wizardModel.var2 = Var.of<string>();
-          this.mgr.steps = [step];
-          this.mgr.injectPropertiesToPendingStep(step).pipe(take(1)).subscribe();
+          testContext.wizardModel.var2 = Var.of<string>();
+          testContext.mgr.steps = [step];
+          testContext.mgr.injectPropertiesToPendingStep(step).pipe(take(1)).subscribe();
           expect(model.var1).toEqual('var1');
           expect(model.var2).toBeUndefined();
         });
 
-        it('WHEN input property maps to ComputedVar with missing dependencies', function (this: ThisTest) {
+        it('WHEN input property maps to ComputedVar with missing dependencies', () => {
           class StepModelWithOptionalInput implements StepModel {
             loading = false;
             @In() var1: string;
@@ -738,10 +748,10 @@ describe('appfx-workflow-model-manager.service.spec', () => {
             model: model,
             componentClass: MockComponent,
           };
-          this.wizardModel.var2 = Var.of<string>();
-          this.wizardModel.cp2 = Var.from(this.wizardModel.var2).by(() => of('cp2'));
-          this.mgr.steps = [step];
-          this.mgr.injectPropertiesToPendingStep(step).pipe(take(1)).subscribe();
+          testContext.wizardModel.var2 = Var.of<string>();
+          testContext.wizardModel.cp2 = Var.from(testContext.wizardModel.var2).by(() => of('cp2'));
+          testContext.mgr.steps = [step];
+          testContext.mgr.injectPropertiesToPendingStep(step).pipe(take(1)).subscribe();
           expect(model.var1).toEqual('var1');
           expect(model.cp2).toBeUndefined();
         });
@@ -749,102 +759,104 @@ describe('appfx-workflow-model-manager.service.spec', () => {
     });
 
     describe('WHEN both @In() and @Out() are declared on same Property', () => {
-      beforeEach(function (this: ThisTest) {
-        this.step1.model = new MockStep2WayBindingModel();
-        this.step1.mappings = undefined;
-        this.mgr.model = this.wizardModel = new WorkflowModel();
-        this.mgr.steps = [this.step1];
+      beforeEach(() => {
+        testContext.step1.model = new MockStep2WayBindingModel();
+        testContext.step1.mappings = undefined;
+        testContext.mgr.model = testContext.wizardModel = new WorkflowModel();
+        testContext.mgr.steps = [testContext.step1];
       });
 
-      it('injectPropertiesToPendingStep injects the properties to step Model', function (this: ThisTest) {
-        const step1Model: MockStep2WayBindingModel = this.step1.modelInstance as MockStep2WayBindingModel;
+      it('injectPropertiesToPendingStep injects the properties to step Model', () => {
+        const step1Model: MockStep2WayBindingModel = testContext.step1.modelInstance as MockStep2WayBindingModel;
         let loading = true;
-        const subscription = this.mgr.loading$.subscribe(l => (loading = l));
+        const subscription = testContext.mgr.loading$.subscribe(l => (loading = l));
         expect(loading).toEqual(false);
-        this.mgr.injectPropertiesToPendingStep(this.step1).pipe(take(1)).subscribe();
+        testContext.mgr.injectPropertiesToPendingStep(testContext.step1).pipe(take(1)).subscribe();
         expect(step1Model.v1.value).toEqual(10);
         expect(loading).toEqual(false);
         step1Model.v1.value = 20;
-        expect(this.wizardModel.v1.value).toEqual(20);
+        expect(testContext.wizardModel.v1.value).toEqual(20);
         subscription.unsubscribe();
       });
     });
 
     describe('WHEN wizard model has property with Getter and setter', () => {
-      beforeEach(function (this: ThisTest) {
-        this.step1.model = new MockStepWithGetterSetter();
-        this.step1.mappings = undefined;
-        this.mgr.model = this.wizardModel = new WorkflowModel();
-        this.mgr.steps = [this.step1];
+      beforeEach(() => {
+        testContext.step1.model = new MockStepWithGetterSetter();
+        testContext.step1.mappings = undefined;
+        testContext.mgr.model = testContext.wizardModel = new WorkflowModel();
+        testContext.mgr.steps = [testContext.step1];
       });
 
       it(`injectPropertiesToPendingStep injects the properties to step Model and
-               ejectPropertiesFromCurrentStep ejects the properties to Wizard Model`, function (this: ThisTest) {
-        const step1Model: MockStepWithGetterSetter = this.step1.modelInstance as MockStepWithGetterSetter;
-        this.mgr.injectPropertiesToPendingStep(this.step1).pipe(take(1)).subscribe();
+               ejectPropertiesFromCurrentStep ejects the properties to Wizard Model`, () => {
+        const step1Model: MockStepWithGetterSetter = testContext.step1.modelInstance as MockStepWithGetterSetter;
+        testContext.mgr.injectPropertiesToPendingStep(testContext.step1).pipe(take(1)).subscribe();
         expect(step1Model.prop1).toEqual('prop1');
         step1Model.prop1 = 'prop1Changed';
-        this.mgr.ejectPropertiesFromCurrentStep(this.step1);
-        expect(this.wizardModel.prop1).toEqual('prop1Changed');
+        testContext.mgr.ejectPropertiesFromCurrentStep(testContext.step1);
+        expect(testContext.wizardModel.prop1).toEqual('prop1Changed');
       });
     });
 
     describe('WHEN Same Step model used in different Step with different External Mappings', () => {
-      beforeEach(function (this: ThisTest) {
-        this.step1.model = new StepModelForExternalMappings();
-        this.step2.model = new StepModelForExternalMappings();
-        this.step1.mappings = new Mappings<StepModelForExternalMappings, WorkflowModel>()
+      beforeEach(() => {
+        testContext.step1.model = new StepModelForExternalMappings();
+        testContext.step2.model = new StepModelForExternalMappings();
+        testContext.step1.mappings = new Mappings<StepModelForExternalMappings, WorkflowModel>()
           .mapStepProp('defaultInVar')
           .to('var1')
           .mapStepProp('defaultOutVar')
           .to('var2');
-        this.step2.mappings = new Mappings<StepModelForExternalMappings, WorkflowModel>()
+        testContext.step2.mappings = new Mappings<StepModelForExternalMappings, WorkflowModel>()
           .mapStepProp('defaultInVar')
           .to('cp1')
           .mapStepProp('defaultOutVar')
           .to('var3');
-        this.step1.componentClass = MockComponent;
-        this.step2.componentClass = MockComponent;
-        this.mgr.model = this.wizardModel = new WorkflowModel();
-        this.mgr.steps = [this.step1, this.step2];
+        testContext.step1.componentClass = MockComponent;
+        testContext.step2.componentClass = MockComponent;
+        testContext.mgr.model = testContext.wizardModel = new WorkflowModel();
+        testContext.mgr.steps = [testContext.step1, testContext.step2];
       });
 
-      it(`injectPropertiesToPendingStep injects the properties to step Model from correct wizard model properties`, function (this: ThisTest) {
-        const step1Model: StepModelForExternalMappings = this.step1.modelInstance as StepModelForExternalMappings;
-        this.mgr.injectPropertiesToPendingStep(this.step1).pipe(take(1)).subscribe();
+      it(`injectPropertiesToPendingStep injects the properties to step Model from correct wizard model properties`, () => {
+        const step1Model: StepModelForExternalMappings = testContext.step1
+          .modelInstance as StepModelForExternalMappings;
+        testContext.mgr.injectPropertiesToPendingStep(testContext.step1).pipe(take(1)).subscribe();
         expect(step1Model.defaultInVar.value).toEqual('var1');
-        const step2Model: StepModelForExternalMappings = this.step2.modelInstance as StepModelForExternalMappings;
-        this.mgr.injectPropertiesToPendingStep(this.step2).pipe(take(1)).subscribe();
+        const step2Model: StepModelForExternalMappings = testContext.step2
+          .modelInstance as StepModelForExternalMappings;
+        testContext.mgr.injectPropertiesToPendingStep(testContext.step2).pipe(take(1)).subscribe();
         expect(step2Model.defaultInVar.value).toEqual('cp1');
 
         // verify that actual inputMappings is not changed
-        const inputMappings1 = getInputMappings(this.step1.modelInstance);
+        const inputMappings1 = getInputMappings(testContext.step1.modelInstance);
         expect(inputMappings1['defaultInVar'].propertyName).toEqual('defaultInVar');
-        const inputMappings2 = getInputMappings(this.step2.modelInstance);
+        const inputMappings2 = getInputMappings(testContext.step2.modelInstance);
         expect(inputMappings2['defaultInVar'].propertyName).toEqual('defaultInVar');
       });
 
-      it(`ejectPropertiesFromCurrentStep ejects the properties to correct Wizard Model properties`, function (this: ThisTest) {
-        this.mgr.ejectPropertiesFromCurrentStep(this.step1);
-        expect(this.wizardModel.var2.value).toEqual('defaultOutVar');
-        this.mgr.ejectPropertiesFromCurrentStep(this.step2);
-        expect(this.wizardModel.var3.value).toEqual('defaultOutVar');
+      it(`ejectPropertiesFromCurrentStep ejects the properties to correct Wizard Model properties`, () => {
+        testContext.mgr.ejectPropertiesFromCurrentStep(testContext.step1);
+        expect(testContext.wizardModel.var2.value).toEqual('defaultOutVar');
+        testContext.mgr.ejectPropertiesFromCurrentStep(testContext.step2);
+        expect(testContext.wizardModel.var3.value).toEqual('defaultOutVar');
 
         // verify that actual outputMappings is not changed
-        const outputMappings1 = getOutputMappings(this.step1.modelInstance);
+        const outputMappings1 = getOutputMappings(testContext.step1.modelInstance);
         expect(outputMappings1['defaultOutVar'].propertyName).toEqual('defaultOutVar');
-        const outputMappings2 = getOutputMappings(this.step2.modelInstance);
+        const outputMappings2 = getOutputMappings(testContext.step2.modelInstance);
         expect(outputMappings2['defaultOutVar'].propertyName).toEqual('defaultOutVar');
       });
     });
   });
 
   describe('when recreateComponent=true', () => {
-    it('AND step model is not function, THEN error should be thrown', function (this: ThisTest) {
-      this.step2.recreateComponent = () => true;
+    it('AND step model is not function, THEN error should be thrown', () => {
+      testContext.step2.recreateComponent = () => true;
       let error = false;
       try {
-        this.mgr.steps = [this.step2];
+        testContext.mgr.steps = [testContext.step2];
       } catch {
         error = true;
       }
@@ -852,72 +864,72 @@ describe('appfx-workflow-model-manager.service.spec', () => {
     });
 
     describe('AND step model is function', () => {
-      beforeEach(function (this: ThisTest) {
-        this.mgr.model = this.wizardModel = new WorkflowModel();
-        this.step2.recreateComponent = () => true;
-        this.step2.model = () => new MockStep2Model();
-        this.mgr.steps = [this.step2];
+      beforeEach(() => {
+        testContext.mgr.model = testContext.wizardModel = new WorkflowModel();
+        testContext.step2.recreateComponent = () => true;
+        testContext.step2.model = () => new MockStep2Model();
+        testContext.mgr.steps = [testContext.step2];
       });
 
-      it('modelInstance should be assigned', function (this: ThisTest) {
-        expect(this.step2.modelInstance).toBeDefined();
+      it('modelInstance should be assigned', () => {
+        expect(testContext.step2.modelInstance).toBeDefined();
       });
 
-      it('wizard model should get updated with initial value of step model var', function (this: ThisTest) {
+      it('wizard model should get updated with initial value of step model var', () => {
         // This verifies the bindings to step model @out property created by step model factory.
-        expect(this.wizardModel.var3.value).toEqual('default');
+        expect(testContext.wizardModel.var3.value).toEqual('default');
       });
 
-      it(`injectPropertiesToPendingStep should re-create modelInstance and inject properties to new model`, function (this: ThisTest) {
-        this.mgr.model = this.wizardModel = new WorkflowModel();
-        this.mgr.steps = [this.step2];
-        let step2Model = <MockStep2Model>this.step2.modelInstance;
+      it(`injectPropertiesToPendingStep should re-create modelInstance and inject properties to new model`, () => {
+        testContext.mgr.model = testContext.wizardModel = new WorkflowModel();
+        testContext.mgr.steps = [testContext.step2];
+        let step2Model = <MockStep2Model>testContext.step2.modelInstance;
         expect(step2Model.modelProperty).toEqual('defaultModelPropertyValue');
-        this.wizardModel.var2.value = 'var2';
-        this.wizardModel.nestedVar.value = {
+        testContext.wizardModel.var2.value = 'var2';
+        testContext.wizardModel.nestedVar.value = {
           var1: 'var1',
         };
         step2Model.modelProperty = 'modifiedModelVarValue';
-        this.wizardModel.var3.value = 'changed';
-        this.mgr.injectPropertiesToPendingStep(this.step2).pipe(take(1)).subscribe();
-        step2Model = <MockStep2Model>this.step2.modelInstance;
+        testContext.wizardModel.var3.value = 'changed';
+        testContext.mgr.injectPropertiesToPendingStep(testContext.step2).pipe(take(1)).subscribe();
+        step2Model = <MockStep2Model>testContext.step2.modelInstance;
         expect(step2Model.nestedVar1.value).toEqual('var1');
         // change
-        this.wizardModel.nestedVar.value = {
+        testContext.wizardModel.nestedVar.value = {
           var1: 'modifiedVar',
         };
         step2Model.modelProperty = 'modifiedModelVarValue';
-        this.mgr.injectPropertiesToPendingStep(this.step2).pipe(take(1)).subscribe();
-        step2Model = <MockStep2Model>this.step2.modelInstance;
+        testContext.mgr.injectPropertiesToPendingStep(testContext.step2).pipe(take(1)).subscribe();
+        step2Model = <MockStep2Model>testContext.step2.modelInstance;
         expect(step2Model.modelProperty).toEqual('defaultModelPropertyValue');
         expect(step2Model.nestedVar1.value).toEqual('modifiedVar');
       });
 
       describe('WHEN there is no @In properties in step model', () => {
-        beforeEach(function (this: ThisTest) {
-          this.step2.recreateComponent = () => true;
-          this.step2.model = () => new MockStepModelWithoutInputProperties();
-          this.mgr.model = this.wizardModel = new WorkflowModel();
-          this.mgr.steps = [this.step2];
+        beforeEach(() => {
+          testContext.step2.recreateComponent = () => true;
+          testContext.step2.model = () => new MockStepModelWithoutInputProperties();
+          testContext.mgr.model = testContext.wizardModel = new WorkflowModel();
+          testContext.mgr.steps = [testContext.step2];
         });
 
-        it(`injectPropertiesToPendingStep should re-create modelInstance`, function (this: ThisTest) {
-          let step2Model = <MockStepModelWithoutInputProperties>this.step2.modelInstance;
+        it(`injectPropertiesToPendingStep should re-create modelInstance`, () => {
+          let step2Model = <MockStepModelWithoutInputProperties>testContext.step2.modelInstance;
           expect(step2Model.modelProperty.value).toEqual('defaultModelPropertyValue');
           step2Model.modelProperty.value = 'modifiedModelVarValue';
-          this.mgr.injectPropertiesToPendingStep(this.step2).pipe(take(1)).subscribe();
-          step2Model = <MockStepModelWithoutInputProperties>this.step2.modelInstance;
+          testContext.mgr.injectPropertiesToPendingStep(testContext.step2).pipe(take(1)).subscribe();
+          step2Model = <MockStepModelWithoutInputProperties>testContext.step2.modelInstance;
           expect(step2Model.modelProperty.value).toEqual('defaultModelPropertyValue');
         });
 
-        it(`Should bind to re-created modelInstance's Out Var`, function (this: ThisTest) {
-          let step2Model = <MockStepModelWithoutInputProperties>this.step2.modelInstance;
+        it(`Should bind to re-created modelInstance's Out Var`, () => {
+          let step2Model = <MockStepModelWithoutInputProperties>testContext.step2.modelInstance;
           expect(step2Model.modelProperty.value).toEqual('defaultModelPropertyValue');
           step2Model.modelProperty.value = 'modifiedModelVarValue';
-          this.mgr.injectPropertiesToPendingStep(this.step2).pipe(take(1)).subscribe();
-          step2Model = <MockStepModelWithoutInputProperties>this.step2.modelInstance;
+          testContext.mgr.injectPropertiesToPendingStep(testContext.step2).pipe(take(1)).subscribe();
+          step2Model = <MockStepModelWithoutInputProperties>testContext.step2.modelInstance;
           step2Model.modelProperty.value = 'modifiedModelVarValue2';
-          expect(this.wizardModel.modelProperty.value).toEqual('modifiedModelVarValue2');
+          expect(testContext.wizardModel.modelProperty.value).toEqual('modifiedModelVarValue2');
         });
       });
     });
@@ -925,65 +937,65 @@ describe('appfx-workflow-model-manager.service.spec', () => {
 
   describe('when recreateComponent=false', () => {
     describe('AND step model is function', () => {
-      beforeEach(function (this: ThisTest) {
-        this.step2.recreateComponent = () => false;
-        this.step2.model = () => new MockStep2Model();
-        this.step2.mappings = new Mappings<MockStep2Model, WorkflowModel>();
+      beforeEach(() => {
+        testContext.step2.recreateComponent = () => false;
+        testContext.step2.model = () => new MockStep2Model();
+        testContext.step2.mappings = new Mappings<MockStep2Model, WorkflowModel>();
       });
 
-      it('modelInstance should be assigned', function (this: ThisTest) {
-        this.mgr.steps = [this.step2];
-        expect(this.step2.modelInstance).toBeDefined();
+      it('modelInstance should be assigned', () => {
+        testContext.mgr.steps = [testContext.step2];
+        expect(testContext.step2.modelInstance).toBeDefined();
       });
 
       describe('WHEN there is no @In properties in step model', () => {
-        beforeEach(function (this: ThisTest) {
-          this.step2.recreateComponent = () => false;
-          this.step2.model = () => new MockStepModelWithoutInputProperties();
-          this.mgr.model = this.wizardModel = new WorkflowModel();
-          this.mgr.steps = [this.step2];
+        beforeEach(() => {
+          testContext.step2.recreateComponent = () => false;
+          testContext.step2.model = () => new MockStepModelWithoutInputProperties();
+          testContext.mgr.model = testContext.wizardModel = new WorkflowModel();
+          testContext.mgr.steps = [testContext.step2];
         });
 
-        it(`injectPropertiesToPendingStep should NOT re-create modelInstance`, function (this: ThisTest) {
-          let step2Model = <MockStepModelWithoutInputProperties>this.step2.modelInstance;
+        it(`injectPropertiesToPendingStep should NOT re-create modelInstance`, () => {
+          let step2Model = <MockStepModelWithoutInputProperties>testContext.step2.modelInstance;
           expect(step2Model.modelProperty.value).toEqual('defaultModelPropertyValue');
           step2Model.modelProperty.value = 'modifiedModelVarValue';
-          this.mgr.injectPropertiesToPendingStep(this.step2).pipe(take(1)).subscribe();
-          step2Model = <MockStepModelWithoutInputProperties>this.step2.modelInstance;
+          testContext.mgr.injectPropertiesToPendingStep(testContext.step2).pipe(take(1)).subscribe();
+          step2Model = <MockStepModelWithoutInputProperties>testContext.step2.modelInstance;
           expect(step2Model.modelProperty.value).toEqual('modifiedModelVarValue');
         });
       });
 
       describe('when there is wizard model', () => {
-        it('wizard model should get updated with initial value of step model var', function (this: ThisTest) {
-          this.mgr.model = this.wizardModel = new WorkflowModel();
-          expect(this.wizardModel.var3.value).toBeUndefined();
-          this.mgr.steps = [this.step2];
-          expect(this.wizardModel.var3.value).toEqual('default');
+        it('wizard model should get updated with initial value of step model var', () => {
+          testContext.mgr.model = testContext.wizardModel = new WorkflowModel();
+          expect(testContext.wizardModel.var3.value).toBeUndefined();
+          testContext.mgr.steps = [testContext.step2];
+          expect(testContext.wizardModel.var3.value).toEqual('default');
         });
 
         it(`injectPropertiesToPendingStep should NOT re-create modelInstance
-                  and inject properties to old model`, function (this: ThisTest) {
-          this.mgr.model = this.wizardModel = new WorkflowModel();
-          this.mgr.steps = [this.step2];
-          let step2Model = <MockStep2Model>this.step2.modelInstance;
+                  and inject properties to old model`, () => {
+          testContext.mgr.model = testContext.wizardModel = new WorkflowModel();
+          testContext.mgr.steps = [testContext.step2];
+          let step2Model = <MockStep2Model>testContext.step2.modelInstance;
           expect(step2Model.modelProperty).toEqual('defaultModelPropertyValue');
-          this.wizardModel.var2.value = 'var2';
-          this.wizardModel.nestedVar.value = {
+          testContext.wizardModel.var2.value = 'var2';
+          testContext.wizardModel.nestedVar.value = {
             var1: 'var1',
           };
           step2Model.modelProperty = 'modifiedModelVarValue';
-          this.wizardModel.var3.value = 'changed';
-          this.mgr.injectPropertiesToPendingStep(this.step2).pipe(take(1)).subscribe();
-          step2Model = <MockStep2Model>this.step2.modelInstance;
+          testContext.wizardModel.var3.value = 'changed';
+          testContext.mgr.injectPropertiesToPendingStep(testContext.step2).pipe(take(1)).subscribe();
+          step2Model = <MockStep2Model>testContext.step2.modelInstance;
           expect(step2Model.nestedVar1.value).toEqual('var1');
           // change
-          this.wizardModel.nestedVar.value = {
+          testContext.wizardModel.nestedVar.value = {
             var1: 'modifiedVar',
           };
           step2Model.modelProperty = 'modifiedModelVarValue';
-          this.mgr.injectPropertiesToPendingStep(this.step2).pipe(take(1)).subscribe();
-          step2Model = <MockStep2Model>this.step2.modelInstance;
+          testContext.mgr.injectPropertiesToPendingStep(testContext.step2).pipe(take(1)).subscribe();
+          step2Model = <MockStep2Model>testContext.step2.modelInstance;
           expect(step2Model.modelProperty).toEqual('modifiedModelVarValue');
           expect(step2Model.nestedVar1.value).toEqual('modifiedVar');
         });
@@ -992,10 +1004,10 @@ describe('appfx-workflow-model-manager.service.spec', () => {
   });
 
   describe('WorkflowModel', () => {
-    it('WHEN model is function, THEN it should throw error', function (this: ThisTest) {
+    it('WHEN model is function, THEN it should throw error', () => {
       let errorMessage = '';
       try {
-        this.mgr.model = () => {
+        testContext.mgr.model = () => {
           // no action
         };
       } catch (e) {
@@ -1004,10 +1016,10 @@ describe('appfx-workflow-model-manager.service.spec', () => {
       expect(errorMessage).toEqual('Workflow model cannot be a function or array.');
     });
 
-    it('WHEN model is array, THEN it should throw error', function (this: ThisTest) {
+    it('WHEN model is array, THEN it should throw error', () => {
       let errorMessage = '';
       try {
-        this.mgr.model = [];
+        testContext.mgr.model = [];
       } catch (e) {
         errorMessage = (e as Error).message;
       }

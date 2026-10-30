@@ -22,34 +22,41 @@ import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './provide
 })
 class SimpleTest {}
 
-export default function (): void {
-  describe('DropdownTrigger directive', function () {
-    /*
-     * Most tests for this directive are apparently jammed in the main dropdown.spec.ts,
-     * but moving them isn't relevant to this commit.
-     */
+describe('Dropdown', () => {
+  describe('Components', () => {
+    describe('DropdownTrigger directive', () => {
+      let testContext: Context;
 
-    type Context = TestContext<ClrDropdownTrigger, SimpleTest>;
-    spec(ClrDropdownTrigger, SimpleTest, null, {
-      providers: [{ provide: ClrDropdown, useValue: {} }, ClrPopoverService],
-    });
+      /*
+       * Most tests for this directive are apparently jammed in the main dropdown.spec.ts,
+       * but moving them isn't relevant to this commit.
+       */
 
-    it('adds the aria-haspopup attribute to the host', function (this: Context) {
-      expect(this.clarityElement.getAttribute('aria-haspopup')).toBe('menu');
-    });
+      type Context = TestContext<ClrDropdownTrigger, SimpleTest>;
+      const getContext = spec(ClrDropdownTrigger, SimpleTest, null, {
+        providers: [{ provide: ClrDropdown, useValue: {} }, ClrPopoverService],
+      });
+      beforeEach(() => {
+        testContext = getContext() as Context;
+      });
 
-    it('adds the aria-expanded attribute to the host', function (this: Context) {
-      const popoverService = this.getProvider(ClrPopoverService);
-      popoverService.open = false;
-      this.detectChanges();
-      expect(this.clarityElement.getAttribute('aria-expanded')).toBe('false');
-      popoverService.open = true;
-      this.detectChanges();
-      expect(this.clarityElement.getAttribute('aria-expanded')).toBe('true');
-    });
+      it('adds the aria-haspopup attribute to the host', () => {
+        expect(testContext.clarityElement.getAttribute('aria-haspopup')).toBe('menu');
+      });
 
-    it('declares itself to the DropdownFocusHandler', function (this: Context) {
-      expect(this.getClarityProvider(DropdownFocusHandler).trigger).toBe(this.clarityElement);
+      it('adds the aria-expanded attribute to the host', () => {
+        const popoverService = testContext.getProvider(ClrPopoverService);
+        popoverService.open = false;
+        testContext.detectChanges();
+        expect(testContext.clarityElement.getAttribute('aria-expanded')).toBe('false');
+        popoverService.open = true;
+        testContext.detectChanges();
+        expect(testContext.clarityElement.getAttribute('aria-expanded')).toBe('true');
+      });
+
+      it('declares itself to the DropdownFocusHandler', () => {
+        expect(testContext.getClarityProvider(DropdownFocusHandler).trigger).toBe(testContext.clarityElement);
+      });
     });
   });
-}
+});

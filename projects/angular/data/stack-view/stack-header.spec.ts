@@ -27,7 +27,7 @@ class TestComponent {
   headingLevel: HeadingLevel = null;
 }
 
-export default function (): void {
+describe('Stack View directives', () => {
   'use strict';
   describe('StackHeader', () => {
     let fixture: ComponentFixture<any>;
@@ -79,4 +79,4 @@ export default function (): void {
       expect(stackTitle.getAttribute('aria-level')).toBe('1');
     });
   });
-}
+});

@@ -61,7 +61,7 @@ describe('ClrLabel component', () => {
       const htmlElement = fixture.nativeElement.querySelector('.label');
       expect(htmlElement).not.toBeNull();
 
-      expect(htmlElement.textContent.trim()).toBeEmptyString();
+      expect(htmlElement.textContent.trim()).toBe('');
 
       const newText = 'Hello World';
       fixture.componentInstance.projectedContent = newText;
@@ -101,7 +101,7 @@ describe('ClrLabel component', () => {
       fixture.componentInstance.badgeText = badgeText;
       fixture.detectChanges();
 
-      expect(htmlElement.textContent.trim()).toEndWith(projectedText);
+      expect(htmlElement.textContent.trim().endsWith(projectedText)).toBe(true);
 
       const textElement = fixture.nativeElement.querySelector('.text');
       expect(textElement.textContent).toBe(newText);

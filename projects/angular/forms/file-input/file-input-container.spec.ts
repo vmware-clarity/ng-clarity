@@ -16,7 +16,7 @@ import { ClrFileInput } from './file-input';
 import { ClrFileInputContainer } from './file-input-container';
 import { ClrFileInputValueAccessor } from './file-input-value-accessor';
 import { selectFiles } from './file-input.helpers';
-import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
+import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container';
 
 interface TestComponent {
   buttonLabel: string;
@@ -127,20 +127,20 @@ describe('ClrFileInputContainer', () => {
         fixture.componentInstance.form.get('model').disable();
         fixture.detectChanges();
 
-        expect(browseButtonElement.disabled).toBeTrue();
-        expect(fileInputElement.disabled).toBeTrue();
+        expect(browseButtonElement.disabled).toBe(true);
+        expect(fileInputElement.disabled).toBe(true);
       });
 
       it('should enable the browse button after disable() then enable()', () => {
         const control = fixture.componentInstance.form.get('model');
         control.disable();
         fixture.detectChanges();
-        expect(browseButtonElement.disabled).toBeTrue();
+        expect(browseButtonElement.disabled).toBe(true);
 
         control.enable();
         fixture.detectChanges();
-        expect(browseButtonElement.disabled).toBeFalse();
-        expect(fileInputElement.disabled).toBeFalse();
+        expect(browseButtonElement.disabled).toBe(false);
+        expect(fileInputElement.disabled).toBe(false);
       });
     });
   });
@@ -171,20 +171,20 @@ describe('ClrFileInputContainer', () => {
         ngModel.control.disable();
         fixture.detectChanges();
 
-        expect(browseButtonElement.disabled).toBeTrue();
-        expect(fileInputElement.disabled).toBeTrue();
+        expect(browseButtonElement.disabled).toBe(true);
+        expect(fileInputElement.disabled).toBe(true);
       });
 
       it('should enable the browse button after disable() then enable() on the NgModel FormControl', () => {
         const ngModel = fixture.debugElement.query(By.directive(NgModel)).injector.get(NgModel);
         ngModel.control.disable();
         fixture.detectChanges();
-        expect(browseButtonElement.disabled).toBeTrue();
+        expect(browseButtonElement.disabled).toBe(true);
 
         ngModel.control.enable();
         fixture.detectChanges();
-        expect(browseButtonElement.disabled).toBeFalse();
-        expect(fileInputElement.disabled).toBeFalse();
+        expect(browseButtonElement.disabled).toBe(false);
+        expect(fileInputElement.disabled).toBe(false);
       });
     });
   });
@@ -211,7 +211,7 @@ describe('ClrFileInputContainer', () => {
       fileInputElement.disabled = true;
       fixture.detectChanges();
 
-      expect(browseButtonElement.disabled).toBeTrue();
+      expect(browseButtonElement.disabled).toBe(true);
     });
   });
 });

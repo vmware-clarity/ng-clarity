@@ -55,31 +55,40 @@ const PROVIDERS_NEEDED = [
   ColumnsService,
 ];
 
-export default function (): void {
-  describe('TableSizeService', function () {
-    beforeEach(function (this: TestContext) {
-      TestBed.configureTestingModule({
-        imports: [ClrDatagridModule],
-        declarations: [TestComponent],
-        providers: [PROVIDERS_NEEDED],
+describe('Datagrid', () => {
+  describe('Providers', () => {
+    describe('TableSizeService', () => {
+      let testContext: TestContext;
+      beforeEach(() => {
+        testContext = {} as TestContext;
       });
-      this.fixture = TestBed.createComponent(TestComponent);
-      this.sizeService = this.fixture.debugElement.injector.get(TableSizeService);
-      this.fixture.detectChanges();
-      this.table = this.fixture.elementRef.nativeElement.children[0]; // reference to the TestComponnt table
-      this.sizeService.tableRef = this.table; // setting service up with the component table for testing
-    });
 
-    it('sets a tableRef property with an elementReference', function () {
-      // sizeService.tableRef is set in beforeEach
-      expect(this.sizeService.tableRef).toBeDefined();
-    });
+      beforeEach(() => {
+        TestBed.configureTestingModule({
+          imports: [ClrDatagridModule],
+          declarations: [TestComponent],
+          providers: [PROVIDERS_NEEDED],
+        });
+        testContext.fixture = TestBed.createComponent(TestComponent);
+        testContext.sizeService = testContext.fixture.debugElement.injector.get(TableSizeService);
+        testContext.fixture.detectChanges();
+        testContext.table = testContext.fixture.elementRef.nativeElement.children[0]; // reference to the TestComponnt table
+        testContext.sizeService.tableRef = testContext.table; // setting service up with the component table for testing
+      });
 
-    it('calculates the correct column drag height', function (this: TestContext) {
-      expect(this.sizeService.getColumnDragHeight()).toEqual('300px');
-      this.fixture.componentInstance.height = 422;
-      this.fixture.detectChanges();
-      expect(this.sizeService.getColumnDragHeight()).toEqual('422px');
+      it('sets a tableRef property with an elementReference', () => {
+        const untypedContext: any = testContext;
+
+        // sizeService.tableRef is set in beforeEach
+        expect(untypedContext.sizeService.tableRef).toBeDefined();
+      });
+
+      it('calculates the correct column drag height', () => {
+        expect(testContext.sizeService.getColumnDragHeight()).toEqual('300px');
+        testContext.fixture.componentInstance.height = 422;
+        testContext.fixture.detectChanges();
+        expect(testContext.sizeService.getColumnDragHeight()).toEqual('422px');
+      });
     });
   });
-}
+});

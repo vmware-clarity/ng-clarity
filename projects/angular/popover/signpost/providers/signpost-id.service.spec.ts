@@ -13,25 +13,30 @@ interface TestContext {
   idService: SignpostIdService;
 }
 
-export default function (): void {
-  describe('Signpost Id Service', function () {
-    beforeEach(function (this: TestContext) {
-      this.idService = new SignpostIdService();
+describe('Signpost', () => {
+  describe('Signpost Id Service', () => {
+    let testContext: TestContext;
+    beforeEach(() => {
+      testContext = {} as TestContext;
     });
 
-    it('should set an id', function (this: TestContext) {
+    beforeEach(() => {
+      testContext.idService = new SignpostIdService();
+    });
+
+    it('should set an id', () => {
       let currentId;
-      this.idService.id.subscribe(newId => {
+      testContext.idService.id.subscribe(newId => {
         currentId = newId;
       });
-      this.idService.setId('clr-id-1');
+      testContext.idService.setId('clr-id-1');
       expect(currentId).toBe('clr-id-1');
     });
 
-    it('exposes and observable for latest id', function (this: TestContext) {
-      const idObservable = this.idService.id;
+    it('exposes and observable for latest id', () => {
+      const idObservable = testContext.idService.id;
       expect(idObservable).toBeDefined();
       expect(idObservable instanceof Observable).toBe(true);
     });
   });
-}
+});

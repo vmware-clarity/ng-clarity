@@ -23,9 +23,9 @@ const firstName = 'First Name';
 
 // A pinned column is projected into the datagrid's sticky container, so reading it back is how these
 // tests tell a real pinned column from one that only has `pinned` set on its definition.
-function pinnedHeaders(this: any): string[] {
+function pinnedHeaders(context: any): string[] {
   return Array.from(
-    (this.fixture.nativeElement as HTMLElement).querySelectorAll('.datagrid-pinned-cells clr-dg-column')
+    (context.fixture.nativeElement as HTMLElement).querySelectorAll('.datagrid-pinned-cells clr-dg-column')
   ).map((column: HTMLElement) => column.querySelector('.datagrid-column-title')?.textContent.trim());
 }
 
@@ -58,104 +58,111 @@ const columnDefsMock = [
 ];
 
 describe('DatagridColumnsOrderDirective', () => {
+  let testContext: any;
+  beforeEach(() => {
+    testContext = {};
+  });
+
   let service: DatagridColumnsOrderService;
   let columns: ColumnDefinition<any>[];
 
-  beforeEach(function (this: any) {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [CommonModule, ClrDatagridModule, DragDropModule, TestClrDatagridHostComponent],
     });
     columns = [];
     columnDefsMock.forEach(val => columns.push(Object.assign({}, val)));
-    this.fixture = TestBed.createComponent(TestClrDatagridHostComponent);
-    service = this.fixture.debugElement
+    testContext.fixture = TestBed.createComponent(TestClrDatagridHostComponent);
+    service = testContext.fixture.debugElement
       .query(By.directive(DatagridColumnsOrderDirective))
       .injector.get(DatagridColumnsOrderService);
-    this.datagridHostComponent = this.fixture.componentInstance;
-    this.datagridHostComponent.columns = columns;
+    testContext.datagridHostComponent = testContext.fixture.componentInstance;
+    testContext.datagridHostComponent.columns = columns;
   });
 
   describe('when moveVisibleColumn event is received for a column', () => {
-    beforeEach(function (this: any) {
-      this.fixture.detectChanges();
-      service.grabbedColumn.next(this.datagridHostComponent.columns[1]);
+    beforeEach(() => {
+      testContext.fixture.detectChanges();
+      service.grabbedColumn.next(testContext.datagridHostComponent.columns[1]);
     });
 
-    it('it moves with one position left', function (this: any) {
-      let gridHelper = new GridHelper(this.fixture.debugElement);
+    it('it moves with one position left', () => {
+      let gridHelper = new GridHelper(testContext.fixture.debugElement);
       expect(gridHelper.getHeaders()[0]).toEqual('Name');
       expect(gridHelper.getHeaders()[1]).toEqual('State');
 
       service.moveVisibleColumn.next({ visibleColumnIndex: 1, moveLeft: true });
-      this.fixture.detectChanges();
-      gridHelper = new GridHelper(this.fixture.debugElement);
+      testContext.fixture.detectChanges();
+      gridHelper = new GridHelper(testContext.fixture.debugElement);
       expect(gridHelper.getHeaders()[0]).toEqual('State');
       expect(gridHelper.getHeaders()[1]).toEqual('Name');
     });
 
-    it('it moves with one position right', function (this: any) {
-      let gridHelper = new GridHelper(this.fixture.debugElement);
+    it('it moves with one position right', () => {
+      let gridHelper = new GridHelper(testContext.fixture.debugElement);
       expect(gridHelper.getHeaders()[1]).toEqual('State');
       expect(gridHelper.getHeaders()[2]).toEqual('Status');
 
       service.moveVisibleColumn.next({ visibleColumnIndex: 1, moveLeft: false });
-      this.fixture.detectChanges();
-      gridHelper = new GridHelper(this.fixture.debugElement);
+      testContext.fixture.detectChanges();
+      gridHelper = new GridHelper(testContext.fixture.debugElement);
       expect(gridHelper.getHeaders()[1]).toEqual('Status');
       expect(gridHelper.getHeaders()[2]).toEqual('State');
     });
 
-    it('it does not move left if the column is the first column in the column order', function (this: any) {
-      service.grabbedColumn.next(this.datagridHostComponent.columns[0]);
-      let gridHelper = new GridHelper(this.fixture.debugElement);
+    it('it does not move left if the column is the first column in the column order', () => {
+      service.grabbedColumn.next(testContext.datagridHostComponent.columns[0]);
+      let gridHelper = new GridHelper(testContext.fixture.debugElement);
       expect(gridHelper.getHeaders()[0]).toEqual('Name');
 
       service.moveVisibleColumn.next({ visibleColumnIndex: 0, moveLeft: true });
-      this.fixture.detectChanges();
-      gridHelper = new GridHelper(this.fixture.debugElement);
+      testContext.fixture.detectChanges();
+      gridHelper = new GridHelper(testContext.fixture.debugElement);
       expect(gridHelper.getHeaders().length).toEqual(3);
       expect(gridHelper.getHeaders()[0]).toEqual('Name');
     });
 
-    it('it does not move right if the column is the last column in the column order', function (this: any) {
-      service.grabbedColumn.next(this.datagridHostComponent.columns[2]);
-      let gridHelper = new GridHelper(this.fixture.debugElement);
+    it('it does not move right if the column is the last column in the column order', () => {
+      service.grabbedColumn.next(testContext.datagridHostComponent.columns[2]);
+      let gridHelper = new GridHelper(testContext.fixture.debugElement);
       expect(gridHelper.getHeaders()[2]).toEqual('Status');
 
       service.moveVisibleColumn.next({ visibleColumnIndex: 2, moveLeft: false });
-      this.fixture.detectChanges();
-      gridHelper = new GridHelper(this.fixture.debugElement);
+      testContext.fixture.detectChanges();
+      gridHelper = new GridHelper(testContext.fixture.debugElement);
       expect(gridHelper.getHeaders().length).toEqual(3);
       expect(gridHelper.getHeaders()[2]).toEqual('Status');
     });
 
-    it('which can be moved the focusGrabbedColumn event is emitted', function (this: any) {
+    it('which can be moved the focusGrabbedColumn event is emitted', () => {
       let receivedFocusGrabbed = false;
       service.focusGrabbedColumn.subscribe(() => {
         receivedFocusGrabbed = true;
       });
       service.moveVisibleColumn.next({ visibleColumnIndex: 1, moveLeft: true });
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
       expect(receivedFocusGrabbed).toEqual(true);
 
       receivedFocusGrabbed = false;
       service.moveVisibleColumn.next({ visibleColumnIndex: 0, moveLeft: true });
 
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
       expect(receivedFocusGrabbed).toEqual(false);
     });
 
-    it('which can be moved the ColumnOrderChanged event is emitted', function (this: any) {
+    it('which can be moved the ColumnOrderChanged event is emitted', () => {
       let receivedData: ColumnOrderChanged = {} as ColumnOrderChanged;
-      this.datagridHostComponent.dgColumnsOrderDirective.dgColumnsOrderChange.subscribe((data: ColumnOrderChanged) => {
-        receivedData = data;
-      });
+      testContext.datagridHostComponent.dgColumnsOrderDirective.dgColumnsOrderChange.subscribe(
+        (data: ColumnOrderChanged) => {
+          receivedData = data;
+        }
+      );
       //Provided column index is the
       service.moveVisibleColumn.next({ visibleColumnIndex: 1, moveLeft: false });
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
       expect(receivedData.previousIndex).toEqual(2);
       expect(receivedData.currentIndex).toEqual(4);
-      expect(receivedData.columns).toEqual(this.datagridHostComponent.columns);
+      expect(receivedData.columns).toEqual(testContext.datagridHostComponent.columns);
     });
   });
 
@@ -163,278 +170,290 @@ describe('DatagridColumnsOrderDirective', () => {
   // column's own group. Dropping a column across a pinned one would not change which container it is
   // rendered in, so it would land somewhere the user did not aim for, and is refused.
   describe('when a column is pinned', () => {
-    function dropOnto(this: any, draggedIndex: number, targetIndex: number) {
-      const sortedItems = this.datagridHostComponent.cdkDropListDirective.getSortedItems();
+    function dropOnto(context: any, draggedIndex: number, targetIndex: number) {
+      const sortedItems = context.datagridHostComponent.cdkDropListDirective.getSortedItems();
       const currentIndex = sortedItems.findIndex(
-        (item: any) => item.data === this.datagridHostComponent.visibleColumns[targetIndex]
+        (item: any) => item.data === context.datagridHostComponent.visibleColumns[targetIndex]
       );
 
-      this.datagridHostComponent.cdkDropListDirective.dropped.next({
-        item: { data: this.datagridHostComponent.visibleColumns[draggedIndex] },
+      context.datagridHostComponent.cdkDropListDirective.dropped.next({
+        item: { data: context.datagridHostComponent.visibleColumns[draggedIndex] },
         currentIndex: currentIndex,
       });
-      this.fixture.detectChanges();
+      context.fixture.detectChanges();
     }
 
-    beforeEach(function (this: any) {
+    beforeEach(() => {
       // The visible columns are Name, State and Status. Name is the pinned one.
-      this.datagridHostComponent.columns[0].pinned = true;
-      this.fixture.detectChanges();
+      testContext.datagridHostComponent.columns[0].pinned = true;
+      testContext.fixture.detectChanges();
     });
 
-    it('refuses a drop that would move a column across it', function (this: any) {
-      expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['Name', 'State', 'Status']);
+    it('refuses a drop that would move a column across it', () => {
+      expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['Name', 'State', 'Status']);
 
       // 'Status' dropped onto the pinned 'Name'.
-      dropOnto.call(this, 2, 0);
+      dropOnto(testContext, 2, 0);
 
-      expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['Name', 'State', 'Status']);
+      expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['Name', 'State', 'Status']);
     });
 
-    it('refuses a keyboard move that would cross it', function (this: any) {
-      service.grabbedColumn.next(this.datagridHostComponent.visibleColumns[1]);
+    it('refuses a keyboard move that would cross it', () => {
+      service.grabbedColumn.next(testContext.datagridHostComponent.visibleColumns[1]);
 
       // 'State' moved left would put it in front of the pinned 'Name'.
       service.moveVisibleColumn.next({ visibleColumnIndex: 1, moveLeft: true });
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
 
-      expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['Name', 'State', 'Status']);
+      expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['Name', 'State', 'Status']);
     });
 
-    it('does not emit dgColumnsOrderChange for a refused reorder', function (this: any) {
+    it('does not emit dgColumnsOrderChange for a refused reorder', () => {
       let emitted = false;
-      this.datagridHostComponent.dgColumnsOrderDirective.dgColumnsOrderChange.subscribe(() => (emitted = true));
+      testContext.datagridHostComponent.dgColumnsOrderDirective.dgColumnsOrderChange.subscribe(() => (emitted = true));
 
-      dropOnto.call(this, 2, 0);
+      dropOnto(testContext, 2, 0);
 
-      expect(emitted).toBeFalse();
+      expect(emitted).toBe(false);
     });
 
-    it('still reorders the columns that stay on the same side of it', function (this: any) {
+    it('still reorders the columns that stay on the same side of it', () => {
       // 'State' and 'Status' are both after the pinned column, so they can still swap.
-      service.grabbedColumn.next(this.datagridHostComponent.visibleColumns[2]);
+      service.grabbedColumn.next(testContext.datagridHostComponent.visibleColumns[2]);
 
       service.moveVisibleColumn.next({ visibleColumnIndex: 2, moveLeft: true });
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
 
-      expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['Name', 'Status', 'State']);
+      expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['Name', 'Status', 'State']);
     });
   });
 
   // canMoveColumn/moveColumnTo back the menu's Move Left and Move Right actions, and mirror the
   // moveVisibleColumn suite above.
   describe('canMoveColumn / moveColumnTo', () => {
-    beforeEach(function (this: any) {
-      this.fixture.detectChanges();
+    beforeEach(() => {
+      testContext.fixture.detectChanges();
     });
 
-    it('moves left and right by one step, the same as the keyboard path', function (this: any) {
-      const directive = this.datagridHostComponent.dgColumnsOrderDirective;
+    it('moves left and right by one step, the same as the keyboard path', () => {
+      const directive = testContext.datagridHostComponent.dgColumnsOrderDirective;
 
-      expect(directive.canMoveColumn(1, ColumnMoveDirection.Left)).toBeTrue();
+      expect(directive.canMoveColumn(1, ColumnMoveDirection.Left)).toBe(true);
       directive.moveColumnTo(1, ColumnMoveDirection.Left);
-      this.fixture.detectChanges();
-      expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['State', 'Name', 'Status']);
+      testContext.fixture.detectChanges();
+      expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['State', 'Name', 'Status']);
 
-      expect(directive.canMoveColumn(0, ColumnMoveDirection.Right)).toBeTrue();
+      expect(directive.canMoveColumn(0, ColumnMoveDirection.Right)).toBe(true);
       directive.moveColumnTo(0, ColumnMoveDirection.Right);
-      this.fixture.detectChanges();
-      expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['Name', 'State', 'Status']);
+      testContext.fixture.detectChanges();
+      expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['Name', 'State', 'Status']);
     });
 
-    it('cannot move left from the start, or right from the end', function (this: any) {
-      const directive = this.datagridHostComponent.dgColumnsOrderDirective;
+    it('cannot move left from the start, or right from the end', () => {
+      const directive = testContext.datagridHostComponent.dgColumnsOrderDirective;
 
-      expect(directive.canMoveColumn(0, ColumnMoveDirection.Left)).toBeFalse();
-      expect(directive.canMoveColumn(2, ColumnMoveDirection.Right)).toBeFalse();
+      expect(directive.canMoveColumn(0, ColumnMoveDirection.Left)).toBe(false);
+      expect(directive.canMoveColumn(2, ColumnMoveDirection.Right)).toBe(false);
       // A refused move must not silently reorder anything.
       directive.moveColumnTo(0, ColumnMoveDirection.Left);
       directive.moveColumnTo(2, ColumnMoveDirection.Right);
-      this.fixture.detectChanges();
-      expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['Name', 'State', 'Status']);
+      testContext.fixture.detectChanges();
+      expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['Name', 'State', 'Status']);
     });
 
-    it('emits dgColumnsOrderChange for a move', function (this: any) {
+    it('emits dgColumnsOrderChange for a move', () => {
       let receivedData: ColumnOrderChanged = {} as ColumnOrderChanged;
-      this.datagridHostComponent.dgColumnsOrderDirective.dgColumnsOrderChange.subscribe((data: ColumnOrderChanged) => {
-        receivedData = data;
-      });
+      testContext.datagridHostComponent.dgColumnsOrderDirective.dgColumnsOrderChange.subscribe(
+        (data: ColumnOrderChanged) => {
+          receivedData = data;
+        }
+      );
 
-      this.datagridHostComponent.dgColumnsOrderDirective.moveColumnTo(1, ColumnMoveDirection.Right);
-      this.fixture.detectChanges();
+      testContext.datagridHostComponent.dgColumnsOrderDirective.moveColumnTo(1, ColumnMoveDirection.Right);
+      testContext.fixture.detectChanges();
 
       // 'State' (absolute index 2) steps past the hidden 'Options' and lands on 'Status' (absolute index 4).
       expect(receivedData.previousIndex).toEqual(2);
       expect(receivedData.currentIndex).toEqual(4);
-      expect(receivedData.columns).toEqual(this.datagridHostComponent.columns);
+      expect(receivedData.columns).toEqual(testContext.datagridHostComponent.columns);
     });
 
     describe('when a column is pinned', () => {
-      beforeEach(function (this: any) {
+      beforeEach(() => {
         // The visible columns are Name, State and Status. Name is the pinned one.
-        this.datagridHostComponent.columns[0].pinned = true;
-        this.fixture.detectChanges();
+        testContext.datagridHostComponent.columns[0].pinned = true;
+        testContext.fixture.detectChanges();
       });
 
       // A pinned column used to wall off its array neighbours: the neighbour was read off the full
       // column list, so the column next to a pinned one had the pinned column as its target and the
       // move was refused - even though the neighbour the user actually sees is on its own side.
-      it('steps past a pinned column that sits between two loose ones in the array', function (this: any) {
-        const directive = this.datagridHostComponent.dgColumnsOrderDirective;
+      it('steps past a pinned column that sits between two loose ones in the array', () => {
+        const directive = testContext.datagridHostComponent.dgColumnsOrderDirective;
 
         // Name is pinned and rendered first, so the rendered order is Name | State Status. State's
         // own neighbour to the right is Status, and that step has to be offered.
-        expect(directive.canMoveColumn(1, ColumnMoveDirection.Right)).toBeTrue();
+        expect(directive.canMoveColumn(1, ColumnMoveDirection.Right)).toBe(true);
         directive.moveColumnTo(1, ColumnMoveDirection.Right);
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
 
-        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['Name', 'Status', 'State']);
+        expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['Name', 'Status', 'State']);
       });
 
-      it('never offers a step that would cross out of the pinned group', function (this: any) {
-        const directive = this.datagridHostComponent.dgColumnsOrderDirective;
+      it('never offers a step that would cross out of the pinned group', () => {
+        const directive = testContext.datagridHostComponent.dgColumnsOrderDirective;
 
         // State is the first loose column, so there is nothing to its left on its own side.
-        expect(directive.canMoveColumn(1, ColumnMoveDirection.Left)).toBeFalse();
+        expect(directive.canMoveColumn(1, ColumnMoveDirection.Left)).toBe(false);
         // Name is pinned, so it has no move to make.
-        expect(directive.canMoveColumn(0, ColumnMoveDirection.Left)).toBeFalse();
-        expect(directive.canMoveColumn(0, ColumnMoveDirection.Right)).toBeFalse();
+        expect(directive.canMoveColumn(0, ColumnMoveDirection.Left)).toBe(false);
+        expect(directive.canMoveColumn(0, ColumnMoveDirection.Right)).toBe(false);
       });
 
       // A pinned column cannot be moved at all, not even inside the sticky container next to another
       // pinned one - the only way to change where it sits is to unpin it.
-      it('never moves a pinned column, even next to another pinned one', function (this: any) {
-        this.datagridHostComponent.columns[2].pinned = true;
-        this.fixture.detectChanges();
-        expect(pinnedHeaders.call(this)).toEqual(['Name', 'State']);
+      it('never moves a pinned column, even next to another pinned one', () => {
+        testContext.datagridHostComponent.columns[2].pinned = true;
+        testContext.fixture.detectChanges();
+        expect(pinnedHeaders(testContext)).toEqual(['Name', 'State']);
 
-        const directive = this.datagridHostComponent.dgColumnsOrderDirective;
+        const directive = testContext.datagridHostComponent.dgColumnsOrderDirective;
         [ColumnMoveDirection.Left, ColumnMoveDirection.Right].forEach(direction => {
-          expect(directive.canMoveColumn(0, direction)).withContext(`Name ${direction}`).toBeFalse();
-          expect(directive.canMoveColumn(1, direction)).withContext(`State ${direction}`).toBeFalse();
+          expect(directive.canMoveColumn(0, direction), `Name ${direction}`).toBe(false);
+          expect(directive.canMoveColumn(1, direction), `State ${direction}`).toBe(false);
         });
 
-        expect(directive.moveColumnTo(1, ColumnMoveDirection.Left)).toBeFalse();
-        this.fixture.detectChanges();
+        expect(directive.moveColumnTo(1, ColumnMoveDirection.Left)).toBe(false);
+        testContext.fixture.detectChanges();
 
-        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['Name', 'State', 'Status']);
-        expect(pinnedHeaders.call(this)).toEqual(['Name', 'State']);
+        expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['Name', 'State', 'Status']);
+        expect(pinnedHeaders(testContext)).toEqual(['Name', 'State']);
       });
 
       // Status is the only column left in the scrollable container, so it has nothing to step past
       // even though the array has columns on both sides of it.
-      it('refuses both steps for the only column in its group', function (this: any) {
-        this.datagridHostComponent.columns[2].pinned = true;
-        this.fixture.detectChanges();
+      it('refuses both steps for the only column in its group', () => {
+        testContext.datagridHostComponent.columns[2].pinned = true;
+        testContext.fixture.detectChanges();
 
-        const directive = this.datagridHostComponent.dgColumnsOrderDirective;
-        expect(directive.canMoveColumn(2, ColumnMoveDirection.Left)).toBeFalse();
-        expect(directive.canMoveColumn(2, ColumnMoveDirection.Right)).toBeFalse();
+        const directive = testContext.datagridHostComponent.dgColumnsOrderDirective;
+        expect(directive.canMoveColumn(2, ColumnMoveDirection.Left)).toBe(false);
+        expect(directive.canMoveColumn(2, ColumnMoveDirection.Right)).toBe(false);
       });
     });
   });
 
   describe('when dropped event is received', () => {
-    beforeEach(function (this: any) {
-      this.fixture.detectChanges();
+    beforeEach(() => {
+      testContext.fixture.detectChanges();
     });
 
-    it('column is moved', function (this: any) {
-      let gridHelper = new GridHelper(this.fixture.debugElement);
+    it('column is moved', () => {
+      let gridHelper = new GridHelper(testContext.fixture.debugElement);
       expect(gridHelper.getHeaders()[0]).toEqual('Name');
       expect(gridHelper.getHeaders()[1]).toEqual('State');
       expect(gridHelper.getHeaders()[2]).toEqual('Status');
 
       //Move first column after the next one
-      let newColumnIndex = this.datagridHostComponent.cdkDropListDirective.getSortedItems().findIndex((item: any) => {
-        return item.data === this.datagridHostComponent.visibleColumns[1];
-      });
+      let newColumnIndex = testContext.datagridHostComponent.cdkDropListDirective
+        .getSortedItems()
+        .findIndex((item: any) => {
+          return item.data === testContext.datagridHostComponent.visibleColumns[1];
+        });
       let droppedData = {
         item: {
-          data: this.datagridHostComponent.visibleColumns[0],
+          data: testContext.datagridHostComponent.visibleColumns[0],
         },
         currentIndex: newColumnIndex,
       };
-      this.datagridHostComponent.cdkDropListDirective.dropped.next(droppedData);
-      this.fixture.detectChanges();
+      testContext.datagridHostComponent.cdkDropListDirective.dropped.next(droppedData);
+      testContext.fixture.detectChanges();
 
-      gridHelper = new GridHelper(this.fixture.debugElement);
+      gridHelper = new GridHelper(testContext.fixture.debugElement);
       expect(gridHelper.getHeaders()[0]).toEqual('State');
       expect(gridHelper.getHeaders()[1]).toEqual('Name');
       expect(gridHelper.getHeaders()[2]).toEqual('Status');
-      expect(this.datagridHostComponent.columns[0].displayName).toEqual(firstName);
-      expect(this.datagridHostComponent.columns[0].hidden).toEqual(true);
-      expect(this.datagridHostComponent.columns[1].displayName).toEqual('State');
-      expect(this.datagridHostComponent.columns[1].hidden).toEqual(false);
+      expect(testContext.datagridHostComponent.columns[0].displayName).toEqual(firstName);
+      expect(testContext.datagridHostComponent.columns[0].hidden).toEqual(true);
+      expect(testContext.datagridHostComponent.columns[1].displayName).toEqual('State');
+      expect(testContext.datagridHostComponent.columns[1].hidden).toEqual(false);
 
       //Move first column after the last on
-      newColumnIndex = this.datagridHostComponent.cdkDropListDirective.getSortedItems().findIndex((item: any) => {
-        return item.data === this.datagridHostComponent.visibleColumns[2];
-      });
+      newColumnIndex = testContext.datagridHostComponent.cdkDropListDirective
+        .getSortedItems()
+        .findIndex((item: any) => {
+          return item.data === testContext.datagridHostComponent.visibleColumns[2];
+        });
       droppedData = {
         item: {
-          data: this.datagridHostComponent.visibleColumns[0],
+          data: testContext.datagridHostComponent.visibleColumns[0],
         },
         currentIndex: newColumnIndex,
       };
-      this.datagridHostComponent.cdkDropListDirective.dropped.next(droppedData);
-      this.fixture.detectChanges();
+      testContext.datagridHostComponent.cdkDropListDirective.dropped.next(droppedData);
+      testContext.fixture.detectChanges();
 
-      gridHelper = new GridHelper(this.fixture.debugElement);
+      gridHelper = new GridHelper(testContext.fixture.debugElement);
       expect(gridHelper.getHeaders()[0]).toEqual('Name');
       expect(gridHelper.getHeaders()[1]).toEqual('Status');
       expect(gridHelper.getHeaders()[2]).toEqual('State');
 
-      expect(this.datagridHostComponent.columns[0].displayName).toEqual(firstName);
-      expect(this.datagridHostComponent.columns[0].hidden).toEqual(true);
-      expect(this.datagridHostComponent.columns[1].displayName).toEqual('Name');
-      expect(this.datagridHostComponent.columns[1].hidden).toEqual(false);
-      expect(this.datagridHostComponent.columns[4].displayName).toEqual('State');
-      expect(this.datagridHostComponent.columns[4].hidden).toEqual(false);
+      expect(testContext.datagridHostComponent.columns[0].displayName).toEqual(firstName);
+      expect(testContext.datagridHostComponent.columns[0].hidden).toEqual(true);
+      expect(testContext.datagridHostComponent.columns[1].displayName).toEqual('Name');
+      expect(testContext.datagridHostComponent.columns[1].hidden).toEqual(false);
+      expect(testContext.datagridHostComponent.columns[4].displayName).toEqual('State');
+      expect(testContext.datagridHostComponent.columns[4].hidden).toEqual(false);
 
       //Move last column before the first one
-      newColumnIndex = this.datagridHostComponent.cdkDropListDirective.getSortedItems().findIndex((item: any) => {
-        return item.data === this.datagridHostComponent.visibleColumns[0];
-      });
+      newColumnIndex = testContext.datagridHostComponent.cdkDropListDirective
+        .getSortedItems()
+        .findIndex((item: any) => {
+          return item.data === testContext.datagridHostComponent.visibleColumns[0];
+        });
       droppedData = {
         item: {
-          data: this.datagridHostComponent.visibleColumns[2],
+          data: testContext.datagridHostComponent.visibleColumns[2],
         },
         currentIndex: newColumnIndex,
       };
-      this.datagridHostComponent.cdkDropListDirective.dropped.next(droppedData);
-      this.fixture.detectChanges();
+      testContext.datagridHostComponent.cdkDropListDirective.dropped.next(droppedData);
+      testContext.fixture.detectChanges();
 
-      gridHelper = new GridHelper(this.fixture.debugElement);
+      gridHelper = new GridHelper(testContext.fixture.debugElement);
       expect(gridHelper.getHeaders()[0]).toEqual('State');
       expect(gridHelper.getHeaders()[1]).toEqual('Name');
       expect(gridHelper.getHeaders()[2]).toEqual('Status');
     });
 
-    it('the ColumnOrderChanged event is emitted', function (this: any) {
+    it('the ColumnOrderChanged event is emitted', () => {
       let receivedData: ColumnOrderChanged = {} as ColumnOrderChanged;
-      this.datagridHostComponent.dgColumnsOrderDirective.dgColumnsOrderChange.subscribe((data: ColumnOrderChanged) => {
-        receivedData = data;
-      });
-      const newColumnIndex = this.datagridHostComponent.cdkDropListDirective.getSortedItems().findIndex((item: any) => {
-        return item.data === this.datagridHostComponent.visibleColumns[2];
-      });
+      testContext.datagridHostComponent.dgColumnsOrderDirective.dgColumnsOrderChange.subscribe(
+        (data: ColumnOrderChanged) => {
+          receivedData = data;
+        }
+      );
+      const newColumnIndex = testContext.datagridHostComponent.cdkDropListDirective
+        .getSortedItems()
+        .findIndex((item: any) => {
+          return item.data === testContext.datagridHostComponent.visibleColumns[2];
+        });
       const droppedData = {
         item: {
-          data: this.datagridHostComponent.visibleColumns[1],
+          data: testContext.datagridHostComponent.visibleColumns[1],
         },
         currentIndex: newColumnIndex,
       };
-      this.datagridHostComponent.cdkDropListDirective.dropped.next(droppedData);
-      this.fixture.detectChanges();
+      testContext.datagridHostComponent.cdkDropListDirective.dropped.next(droppedData);
+      testContext.fixture.detectChanges();
       expect(receivedData.previousIndex).toEqual(2);
       expect(receivedData.currentIndex).toEqual(4);
-      expect(receivedData.columns).toEqual(this.datagridHostComponent.columns);
+      expect(receivedData.columns).toEqual(testContext.datagridHostComponent.columns);
     });
   });
 
-  afterEach(function (this: any) {
-    this.fixture.destroy();
+  afterEach(() => {
+    testContext.fixture.destroy();
   });
 });
 

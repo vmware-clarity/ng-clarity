@@ -56,17 +56,17 @@ describe('Outside click', () => {
   });
 
   it('should not run change detection if the click event happened on the host element', () => {
-    const spy = spyOn(outslideClickDirective.outsideClick, 'emit').and.callThrough();
+    const spy = vi.spyOn(outslideClickDirective.outsideClick, 'emit');
 
     host.click();
     host.click();
     host.click();
 
-    expect(spy.calls.count()).toEqual(0);
+    expect(vi.mocked(spy).mock.calls.length).toEqual(0);
 
     outside.click();
 
-    expect(spy.calls.count()).toEqual(1);
+    expect(vi.mocked(spy).mock.calls.length).toEqual(1);
     expect(testComponent.nbClicks).toEqual(1);
   });
 });

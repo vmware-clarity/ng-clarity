@@ -194,7 +194,7 @@ describe('ClrCard', () => {
       it('emits a value without a [clrCardExpanded] binding present', () => {
         const noBindingFixture = TestBed.createComponent(TestNoBindingComponent);
         const component = noBindingFixture.componentInstance;
-        spyOn(component, 'change');
+        vi.spyOn(component, 'change').mockImplementation(() => undefined);
 
         noBindingFixture.detectChanges();
         const card = noBindingFixture.debugElement.query(By.directive(ClrCard)).componentInstance as ClrCard;
@@ -207,7 +207,7 @@ describe('ClrCard', () => {
       });
 
       it('does not emit when the input is changed programmatically', () => {
-        spyOn(testComponent, 'change');
+        vi.spyOn(testComponent, 'change').mockImplementation(() => undefined);
         testComponent.expanded = false;
         fixture.detectChanges();
         expect(testComponent.change).not.toHaveBeenCalled();

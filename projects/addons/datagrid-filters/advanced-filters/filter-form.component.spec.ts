@@ -39,45 +39,53 @@ export interface ThisTest {
 }
 
 describe('FilterFormComponent', () => {
-  beforeEach(function (this: ThisTest) {
+  let testContext: ThisTest;
+  beforeEach(() => {
+    testContext = {} as ThisTest;
+  });
+
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [CommonModule, FormsModule, ReactiveFormsModule, FilterFormHostComponent],
       providers: [DatagridFiltersStrings],
     });
-    this.fixture = TestBed.createComponent(FilterFormHostComponent);
-    this.component = this.fixture.componentInstance;
-    this.fixture.detectChanges();
+    testContext.fixture = TestBed.createComponent(FilterFormHostComponent);
+    testContext.component = testContext.fixture.componentInstance;
+    testContext.fixture.detectChanges();
   });
 
-  afterEach(function (this: ThisTest) {
-    this.fixture.destroy();
+  afterEach(() => {
+    testContext.fixture.destroy();
   });
-  it('is properly initialized', function (this: ThisTest) {
-    const formActionButtons: HTMLInputElement[] = this.fixture.debugElement.nativeElement.querySelectorAll('button');
+  it('is properly initialized', () => {
+    const formActionButtons: HTMLInputElement[] =
+      testContext.fixture.debugElement.nativeElement.querySelectorAll('button');
     expect(formActionButtons).toBeTruthy();
     expect(formActionButtons.length).toEqual(2);
     expect(formActionButtons[0].innerText).toEqual('APPLY');
     expect(formActionButtons[1].innerText).toEqual('CANCEL');
     expect(formActionButtons[0].disabled).toBeTruthy();
   });
-  it('emits cancel event on cancel button click', function (this: ThisTest) {
-    spyOn(this.component, 'onCancelButtonClick');
-    const formActionButtons: HTMLInputElement[] = this.fixture.debugElement.nativeElement.querySelectorAll('button');
+  it('emits cancel event on cancel button click', () => {
+    vi.spyOn(testContext.component, 'onCancelButtonClick').mockImplementation(() => undefined);
+    const formActionButtons: HTMLInputElement[] =
+      testContext.fixture.debugElement.nativeElement.querySelectorAll('button');
     formActionButtons[1].click();
-    this.fixture.detectChanges();
-    expect(this.component.onCancelButtonClick).toHaveBeenCalledTimes(1);
+    testContext.fixture.detectChanges();
+    expect(testContext.component.onCancelButtonClick).toHaveBeenCalledTimes(1);
   });
-  it('emits apply event on apply button click ', function (this: ThisTest) {
-    spyOn(this.component, 'onApplyButtonClick');
-    const formActionButtons: HTMLInputElement[] = this.fixture.debugElement.nativeElement.querySelectorAll('button');
+  it('emits apply event on apply button click ', () => {
+    vi.spyOn(testContext.component, 'onApplyButtonClick').mockImplementation(() => undefined);
+    const formActionButtons: HTMLInputElement[] =
+      testContext.fixture.debugElement.nativeElement.querySelectorAll('button');
     formActionButtons[0].click();
-    this.fixture.detectChanges();
-    expect(this.component.onApplyButtonClick).toHaveBeenCalledTimes(0);
+    testContext.fixture.detectChanges();
+    expect(testContext.component.onApplyButtonClick).toHaveBeenCalledTimes(0);
 
-    this.component.isFormValid = true;
-    this.fixture.detectChanges();
+    testContext.component.isFormValid = true;
+    testContext.fixture.detectChanges();
     formActionButtons[0].click();
-    this.fixture.detectChanges();
-    expect(this.component.onApplyButtonClick).toHaveBeenCalledTimes(1);
+    testContext.fixture.detectChanges();
+    expect(testContext.component.onApplyButtonClick).toHaveBeenCalledTimes(1);
   });
 });

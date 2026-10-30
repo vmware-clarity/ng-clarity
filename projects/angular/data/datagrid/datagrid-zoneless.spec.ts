@@ -129,8 +129,8 @@ hosts.forEach(([iterator, hostType]) => {
 
     it('renders no fixed columns initially', () => {
       expect(rows().length).toBe(3);
-      expect(headerHas('datagrid-row-actions')).toBeFalse();
-      expect(headerHas('datagrid-expandable-caret')).toBeFalse();
+      expect(headerHas('datagrid-row-actions')).toBe(false);
+      expect(headerHas('datagrid-expandable-caret')).toBe(false);
       expect(rowsWith('datagrid-row-actions')).toBe(0);
       expect(rowsWith('datagrid-expandable-caret')).toBe(0);
       expect(rowsWith('datagrid-detail-caret')).toBe(0);
@@ -140,14 +140,14 @@ hosts.forEach(([iterator, hostType]) => {
       host.actions.set(true);
       await fixture.whenStable();
 
-      expect(headerHas('datagrid-row-actions')).toBeTrue();
+      expect(headerHas('datagrid-row-actions')).toBe(true);
       expect(rowsWith('datagrid-row-actions')).toBe(3);
       expect(fixture.nativeElement.querySelectorAll('clr-dg-action-overflow').length).toBe(3);
 
       host.actions.set(false);
       await fixture.whenStable();
 
-      expect(headerHas('datagrid-row-actions')).toBeFalse();
+      expect(headerHas('datagrid-row-actions')).toBe(false);
       expect(rowsWith('datagrid-row-actions')).toBe(0);
     });
 
@@ -157,13 +157,13 @@ hosts.forEach(([iterator, hostType]) => {
       await fixture.whenStable();
 
       expect(rows().length).toBe(0);
-      expect(headerHas('datagrid-row-actions')).toBeFalse();
+      expect(headerHas('datagrid-row-actions')).toBe(false);
 
       host.items.set([4, 5]);
       await fixture.whenStable();
 
       expect(rows().length).toBe(2);
-      expect(headerHas('datagrid-row-actions')).toBeTrue();
+      expect(headerHas('datagrid-row-actions')).toBe(true);
       expect(rowsWith('datagrid-row-actions')).toBe(2);
     });
 
@@ -171,14 +171,14 @@ hosts.forEach(([iterator, hostType]) => {
       host.details.set(true);
       await fixture.whenStable();
 
-      expect(headerHas('datagrid-expandable-caret')).toBeTrue();
+      expect(headerHas('datagrid-expandable-caret')).toBe(true);
       expect(rowsWith('datagrid-expandable-caret')).toBe(3);
       expect(fixture.nativeElement.querySelectorAll('.datagrid-expandable-caret-button').length).toBe(3);
 
       host.details.set(false);
       await fixture.whenStable();
 
-      expect(headerHas('datagrid-expandable-caret')).toBeFalse();
+      expect(headerHas('datagrid-expandable-caret')).toBe(false);
       expect(rowsWith('datagrid-expandable-caret')).toBe(0);
     });
 
@@ -187,8 +187,8 @@ hosts.forEach(([iterator, hostType]) => {
       host.details.set(true);
       await fixture.whenStable();
 
-      expect(headerHas('datagrid-row-actions')).toBeTrue();
-      expect(headerHas('datagrid-expandable-caret')).toBeTrue();
+      expect(headerHas('datagrid-row-actions')).toBe(true);
+      expect(headerHas('datagrid-expandable-caret')).toBe(true);
       expect(rowsWith('datagrid-row-actions')).toBe(3);
       expect(rowsWith('datagrid-expandable-caret')).toBe(3);
     });
@@ -202,7 +202,7 @@ hosts.forEach(([iterator, hostType]) => {
       host.detailPane.set(true);
       await fixture.whenStable();
 
-      expect(headerHas('datagrid-expandable-caret')).toBeTrue();
+      expect(headerHas('datagrid-expandable-caret')).toBe(true);
       expect(rowsWith('datagrid-expandable-caret')).toBe(0);
       expect(rowsWith('datagrid-detail-caret')).toBe(3);
 
@@ -210,14 +210,14 @@ hosts.forEach(([iterator, hostType]) => {
       host.detailPane.set(false);
       await fixture.whenStable();
 
-      expect(headerHas('datagrid-expandable-caret')).toBeTrue();
+      expect(headerHas('datagrid-expandable-caret')).toBe(true);
       expect(rowsWith('datagrid-expandable-caret')).toBe(3);
       expect(rowsWith('datagrid-detail-caret')).toBe(0);
 
       host.details.set(false);
       await fixture.whenStable();
 
-      expect(headerHas('datagrid-expandable-caret')).toBeFalse();
+      expect(headerHas('datagrid-expandable-caret')).toBe(false);
       expect(rowsWith('datagrid-expandable-caret')).toBe(0);
     });
 
@@ -237,7 +237,7 @@ hosts.forEach(([iterator, hostType]) => {
       host.replacementPane.set(false);
       await fixture.whenStable();
       expect(rowsWith('datagrid-detail-caret')).toBe(0);
-      expect(fixture.nativeElement.querySelector('.datagrid').hasAttribute('aria-hidden')).toBeFalse();
+      expect(fixture.nativeElement.querySelector('.datagrid').hasAttribute('aria-hidden')).toBe(false);
     });
 
     it('restores the grid when an open detail pane is removed', async () => {
@@ -251,10 +251,10 @@ hosts.forEach(([iterator, hostType]) => {
       host.detailPane.set(false);
       await fixture.whenStable();
       expect(fixture.nativeElement.querySelector('clr-dg-detail')).toBeNull();
-      expect(fixture.nativeElement.querySelector('.datagrid').hasAttribute('aria-hidden')).toBeFalse();
-      expect(
-        fixture.nativeElement.querySelector('clr-datagrid').classList.contains('datagrid-detail-open')
-      ).toBeFalse();
+      expect(fixture.nativeElement.querySelector('.datagrid').hasAttribute('aria-hidden')).toBe(false);
+      expect(fixture.nativeElement.querySelector('clr-datagrid').classList.contains('datagrid-detail-open')).toBe(
+        false
+      );
       expect(rowsWith('datagrid-expandable-caret')).toBe(3);
     });
 
@@ -262,7 +262,7 @@ hosts.forEach(([iterator, hostType]) => {
       host.detailPane.set(true);
       await fixture.whenStable();
 
-      expect(headerHas('datagrid-expandable-caret')).toBeTrue();
+      expect(headerHas('datagrid-expandable-caret')).toBe(true);
       expect(rowsWith('datagrid-detail-caret')).toBe(3);
 
       rows()[1].querySelector<HTMLButtonElement>('.datagrid-detail-caret-button').click();
@@ -280,7 +280,7 @@ hosts.forEach(([iterator, hostType]) => {
       host.detailPane.set(false);
       await fixture.whenStable();
 
-      expect(headerHas('datagrid-expandable-caret')).toBeFalse();
+      expect(headerHas('datagrid-expandable-caret')).toBe(false);
       expect(rowsWith('datagrid-detail-caret')).toBe(0);
     });
   });

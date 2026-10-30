@@ -10,61 +10,63 @@ import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 
 import { DatepickerFocusService } from './datepicker-focus.service';
 
-export default function () {
-  describe('Calendar View Service', () => {
-    let fixture: ComponentFixture<any>;
-    let mockNgZone: MockNgZone;
+describe('Datepicker', () => {
+  describe('Providers', () => {
+    describe('Calendar View Service', () => {
+      let fixture: ComponentFixture<any>;
+      let mockNgZone: MockNgZone;
 
-    beforeEach(() => {
-      mockNgZone = new MockNgZone();
-      TestBed.configureTestingModule({ declarations: [TestComponent] });
-      fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges();
-    });
-
-    it('Focuses on the button if the button has a tabindex of 0', inject([PLATFORM_ID], platformId => {
-      const datepickerViewService: DatepickerFocusService = new DatepickerFocusService(mockNgZone, platformId);
-      const compInstance = fixture.debugElement.componentInstance;
-
-      datepickerViewService.focusCell(compInstance.elementRef);
-
-      mockNgZone.stabilizeZone();
-
-      expect(document.activeElement.innerHTML).toBe('Test Button');
-      expect(document.activeElement.id).toBe('1');
-    }));
-
-    it('Does not focus on the button if the button does not have a tab index of 0', inject(
-      [PLATFORM_ID],
-      platformId => {
-        const datepickerFocusService: DatepickerFocusService = new DatepickerFocusService(mockNgZone, platformId);
-        const compInstance = fixture.debugElement.componentInstance;
-        compInstance.tabIndex = '-1';
-
+      beforeEach(() => {
+        mockNgZone = new MockNgZone();
+        TestBed.configureTestingModule({ declarations: [TestComponent] });
+        fixture = TestBed.createComponent(TestComponent);
         fixture.detectChanges();
+      });
 
-        datepickerFocusService.focusCell(compInstance.elementRef);
+      it('Focuses on the button if the button has a tabindex of 0', inject([PLATFORM_ID], platformId => {
+        const datepickerViewService: DatepickerFocusService = new DatepickerFocusService(mockNgZone, platformId);
+        const compInstance = fixture.debugElement.componentInstance;
+
+        datepickerViewService.focusCell(compInstance.elementRef);
 
         mockNgZone.stabilizeZone();
 
-        expect(document.activeElement.innerHTML).not.toBe('Test Button');
-        expect(document.activeElement.id).not.toBe('1');
-      }
-    ));
+        expect(document.activeElement.innerHTML).toBe('Test Button');
+        expect(document.activeElement.id).toBe('1');
+      }));
 
-    it('should focus given input element', inject([PLATFORM_ID], platformId => {
-      const datepickerFocusService: DatepickerFocusService = new DatepickerFocusService(mockNgZone, platformId);
-      const input: HTMLInputElement = fixture.debugElement.nativeElement.querySelector('input');
+      it('Does not focus on the button if the button does not have a tab index of 0', inject(
+        [PLATFORM_ID],
+        platformId => {
+          const datepickerFocusService: DatepickerFocusService = new DatepickerFocusService(mockNgZone, platformId);
+          const compInstance = fixture.debugElement.componentInstance;
+          compInstance.tabIndex = '-1';
 
-      mockNgZone.stabilizeZone();
-      expect(datepickerFocusService.elementIsFocused(input)).toBe(false);
+          fixture.detectChanges();
 
-      datepickerFocusService.focusInput(input);
-      mockNgZone.stabilizeZone();
-      expect(datepickerFocusService.elementIsFocused(input)).toBe(true);
-    }));
+          datepickerFocusService.focusCell(compInstance.elementRef);
+
+          mockNgZone.stabilizeZone();
+
+          expect(document.activeElement.innerHTML).not.toBe('Test Button');
+          expect(document.activeElement.id).not.toBe('1');
+        }
+      ));
+
+      it('should focus given input element', inject([PLATFORM_ID], platformId => {
+        const datepickerFocusService: DatepickerFocusService = new DatepickerFocusService(mockNgZone, platformId);
+        const input: HTMLInputElement = fixture.debugElement.nativeElement.querySelector('input');
+
+        mockNgZone.stabilizeZone();
+        expect(datepickerFocusService.elementIsFocused(input)).toBe(false);
+
+        datepickerFocusService.focusInput(input);
+        mockNgZone.stabilizeZone();
+        expect(datepickerFocusService.elementIsFocused(input)).toBe(true);
+      }));
+    });
   });
-}
+});
 
 class MockNgZone extends NgZone {
   onStable = new EventEmitter<any>(false);

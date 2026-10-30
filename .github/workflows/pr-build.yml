@@ -59,8 +59,14 @@ jobs:
           npm run _build:storybook
           npm run _build:demo
           npm run _build:website
+      - name: Install Unit Test Browser
+        run: npx playwright install --with-deps chromium
       - name: Test
-        run: npm run test
+        env:
+          VITEST_SEED: ${{ github.run_id }}
+        run: |
+          echo "Vitest shuffle seed: ${VITEST_SEED}"
+          npm run test
       - name: Public Api Check
         if: ${{ matrix.primary }}
         run: npm run public-api:check

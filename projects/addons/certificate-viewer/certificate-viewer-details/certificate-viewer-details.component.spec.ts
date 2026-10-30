@@ -81,7 +81,7 @@ describe('CertificateViewerDetailsComponent', () => {
       ...leafCertificate,
     } as Certificate;
     const mockCertificate = {
-      nextCertificateInChain: jasmine.createSpy('nextCertificateInChain').and.returnValue(nextCertificate),
+      nextCertificateInChain: vi.fn().mockReturnValue(nextCertificate),
     } as unknown as CertificateChain;
 
     expect(component.getNextCertificate(undefined)).toEqual([]);

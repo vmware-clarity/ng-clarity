@@ -118,7 +118,7 @@ class ControlIdTest {}
 })
 class ExplicitControlIdTest {}
 
-export default function (): void {
+describe('Forms common utilities', () => {
   describe('ClrControlLabel', () => {
     it("doesn't crash if it is not used in an Angular form", function () {
       TestBed.configureTestingModule({ declarations: [ClrControlLabel, NoForTest] });
@@ -132,9 +132,9 @@ export default function (): void {
       TestBed.configureTestingModule({ declarations: [ClrControlLabel, NoForTest] });
       const fixture = TestBed.createComponent(NoForTest);
       fixture.detectChanges();
-      expect(
-        fixture.debugElement.query(By.css('label')).nativeElement.classList.contains('clr-control-label')
-      ).toBeFalse();
+      expect(fixture.debugElement.query(By.css('label')).nativeElement.classList.contains('clr-control-label')).toBe(
+        false
+      );
     });
 
     it('does set the the class when its inside of a container', function () {
@@ -144,9 +144,9 @@ export default function (): void {
       });
       const fixture = TestBed.createComponent(ContainerizedTest);
       fixture.detectChanges();
-      expect(
-        fixture.debugElement.query(By.css('label')).nativeElement.classList.contains('clr-control-label')
-      ).toBeTrue();
+      expect(fixture.debugElement.query(By.css('label')).nativeElement.classList.contains('clr-control-label')).toBe(
+        true
+      );
     });
 
     it('does set the class when its inside of a wrapper', function () {
@@ -156,9 +156,9 @@ export default function (): void {
       });
       const fixture = TestBed.createComponent(WrapperTest);
       fixture.detectChanges();
-      expect(
-        fixture.debugElement.query(By.css('label')).nativeElement.classList.contains('clr-control-label')
-      ).toBeTrue();
+      expect(fixture.debugElement.query(By.css('label')).nativeElement.classList.contains('clr-control-label')).toBe(
+        true
+      );
     });
 
     it('sets the for attribute to the id given by the service', function () {
@@ -184,8 +184,8 @@ export default function (): void {
       layoutService.layout = ClrFormLayout.HORIZONTAL;
       fixture.detectChanges();
       const label = fixture.nativeElement.querySelector('label');
-      expect(label.classList.contains('clr-col-md-2')).toBeTrue();
-      expect(label.classList.contains('clr-col-12')).toBeTrue();
+      expect(label.classList.contains('clr-col-md-2')).toBe(true);
+      expect(label.classList.contains('clr-col-12')).toBe(true);
     });
 
     it('adds the grid classes for non-vertical non-default layouts', function () {
@@ -200,8 +200,8 @@ export default function (): void {
       layoutService.labelSize = 3;
       fixture.detectChanges();
       const label = fixture.nativeElement.querySelector('label');
-      expect(label.classList.contains('clr-col-md-3')).toBeTrue();
-      expect(label.classList.contains('clr-col-12')).toBeTrue();
+      expect(label.classList.contains('clr-col-md-3')).toBe(true);
+      expect(label.classList.contains('clr-col-12')).toBe(true);
     });
 
     it('disables adding the grid classes when manually disabled', function () {
@@ -216,8 +216,8 @@ export default function (): void {
       fixture.componentInstance.label.disableGrid();
       fixture.detectChanges();
       const label = fixture.nativeElement.querySelector('label');
-      expect(label.classList.contains('clr-col-md-2')).toBeFalse();
-      expect(label.classList.contains('clr-col-12')).toBeFalse();
+      expect(label.classList.contains('clr-col-md-2')).toBe(false);
+      expect(label.classList.contains('clr-col-12')).toBe(false);
     });
 
     it('leaves the grid classes untouched if they exist', function () {
@@ -321,4 +321,4 @@ export default function (): void {
       expectActiveElementToBe(input);
     });
   });
-}
+});

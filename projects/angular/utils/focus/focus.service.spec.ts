@@ -36,16 +36,21 @@ interface TestContext {
   focusService: FocusService;
 }
 
-export default function (): void {
-  describe('Focus service', function () {
-    describe('FOCUS_SERVICE_PROVIDER', function () {
-      it('declares itself as a FocusService provider', function () {
+describe('Focus management', () => {
+  describe('Focus service', () => {
+    let testContext: TestContext;
+    beforeEach(() => {
+      testContext = {} as TestContext;
+    });
+
+    describe('FOCUS_SERVICE_PROVIDER', () => {
+      it('declares itself as a FocusService provider', () => {
         TestBed.configureTestingModule({ declarations: [SimpleHost] });
         const fixture = TestBed.createComponent(SimpleHost);
         expect(fixture.debugElement.injector.get(FocusService, null)).not.toBeNull();
       });
 
-      it('creates a single instance for nested components declaring it as a provider', function () {
+      it('creates a single instance for nested components declaring it as a provider', () => {
         TestBed.configureTestingModule({ declarations: [SimpleHost, NestedHost] });
         const fixture = TestBed.createComponent(NestedHost);
         const parentService = fixture.debugElement.injector.get(FocusService, null);
@@ -54,11 +59,11 @@ export default function (): void {
       });
     });
 
-    describe('API', function () {
-      beforeEach(function (this: TestContext) {
+    describe('API', () => {
+      beforeEach(() => {
         TestBed.configureTestingModule({ declarations: [SimpleHost] });
         const fixture = TestBed.createComponent(SimpleHost);
-        this.focusService = fixture.debugElement.injector.get(FocusService, null);
+        testContext.focusService = fixture.debugElement.injector.get(FocusService, null);
       });
 
       function setupContainer(context: TestContext) {
@@ -67,97 +72,97 @@ export default function (): void {
         return container;
       }
 
-      it('can be reset to a specific currently focused item', function (this: TestContext) {
+      it('can be reset to a specific currently focused item', () => {
         const item = new MockFocusableItem('');
-        this.focusService.reset(item);
-        expect(this.focusService.current).toBe(item);
+        testContext.focusService.reset(item);
+        expect(testContext.focusService.current).toBe(item);
       });
 
-      it('can activate the currently focused item', function (this: TestContext) {
+      it('can activate the currently focused item', () => {
         const item = new MockFocusableItem('');
-        const spy = spyOn(item, 'activate');
-        this.focusService.reset(item);
-        this.focusService.activateCurrent();
+        const spy = vi.spyOn(item, 'activate').mockImplementation(() => undefined);
+        testContext.focusService.reset(item);
+        testContext.focusService.activateCurrent();
         expect(spy).toHaveBeenCalled();
       });
 
-      it('calls the focus() method of the new focused item', function (this: TestContext) {
-        setupContainer(this);
+      it('calls the focus() method of the new focused item', () => {
+        setupContainer(testContext);
         const item = new MockFocusableItem('');
-        const spy = spyOn(item, 'focus');
-        this.focusService.moveTo(item);
+        const spy = vi.spyOn(item, 'focus').mockImplementation(() => undefined);
+        testContext.focusService.moveTo(item);
         expect(spy).toHaveBeenCalled();
       });
 
-      it('calls the blur() method of the previously focused item', function (this: TestContext) {
-        setupContainer(this);
+      it('calls the blur() method of the previously focused item', () => {
+        setupContainer(testContext);
         const first = new MockFocusableItem('1');
         const second = new MockFocusableItem('2');
-        this.focusService.reset(first);
-        const spy = spyOn(first, 'blur');
-        this.focusService.moveTo(second);
+        testContext.focusService.reset(first);
+        const spy = vi.spyOn(first, 'blur').mockImplementation(() => undefined);
+        testContext.focusService.moveTo(second);
         expect(spy).toHaveBeenCalled();
       });
 
-      it('can move in all directions', function (this: TestContext) {
-        const spy = spyOn(this.focusService, 'moveTo');
+      it('can move in all directions', () => {
+        const spy = vi.spyOn(testContext.focusService, 'moveTo').mockImplementation(() => undefined);
         const current = new MockFocusableItem('center');
         for (const direction of Object.values(ArrowKeyDirection)) {
           const target = new MockFocusableItem(direction);
           current[direction] = target;
-          this.focusService.reset(current);
-          this.focusService.move(direction);
+          testContext.focusService.reset(current);
+          testContext.focusService.move(direction);
           expect(spy).toHaveBeenCalledWith(target);
         }
       });
 
-      it('focuses on disabled item in navigation', function (this: TestContext) {
+      it('focuses on disabled item in navigation', () => {
         const current = new MockFocusableItem('1');
         const nope = new MockFocusableItem('2');
         nope.disabled = true;
         current.down = nope;
-        const spy = spyOn(this.focusService, 'moveTo');
-        this.focusService.reset(current);
-        this.focusService.move(ArrowKeyDirection.DOWN);
+        const spy = vi.spyOn(testContext.focusService, 'moveTo').mockImplementation(() => undefined);
+        testContext.focusService.reset(current);
+        testContext.focusService.move(ArrowKeyDirection.DOWN);
         expect(spy).toHaveBeenCalledWith(nope);
       });
 
-      it('does not move focus to another item if current is undefined', function (this: TestContext) {
-        const spy = spyOn(this.focusService, 'moveTo');
-        const result = this.focusService.move(ArrowKeyDirection.DOWN);
+      it('does not move focus to another item if current is undefined', () => {
+        const spy = vi.spyOn(testContext.focusService, 'moveTo').mockImplementation(() => undefined);
+        const result = testContext.focusService.move(ArrowKeyDirection.DOWN);
         expect(spy).not.toHaveBeenCalled();
         expect(result).toBe(false);
       });
 
-      it('waits for the next item if it is an Observable', function (this: TestContext) {
+      it('waits for the next item if it is an Observable', () => {
         const first = new MockFocusableItem('1');
         const second = new MockFocusableItem('2');
         const delayed = new Subject<FocusableItem>();
         first.down = delayed;
-        const spy = spyOn(this.focusService, 'moveTo');
-        this.focusService.reset(first);
-        this.focusService.move(ArrowKeyDirection.DOWN);
+        const spy = vi.spyOn(testContext.focusService, 'moveTo').mockImplementation(() => undefined);
+        testContext.focusService.reset(first);
+        testContext.focusService.move(ArrowKeyDirection.DOWN);
         expect(spy).not.toHaveBeenCalled();
         delayed.next(second);
         expect(spy).toHaveBeenCalledWith(second);
       });
 
-      it('should return boolean state dependend on the focus', function (this: TestContext) {
+      it('should return boolean state dependend on the focus', () => {
         const current = new MockFocusableItem('1');
         const down = new MockFocusableItem('2');
         current.down = down;
-        this.focusService.reset(current);
-        const result = this.focusService.move(ArrowKeyDirection.DOWN);
-        const result2 = this.focusService.move(ArrowKeyDirection.DOWN);
+        testContext.focusService.reset(current);
+        const result = testContext.focusService.move(ArrowKeyDirection.DOWN);
+        const result2 = testContext.focusService.move(ArrowKeyDirection.DOWN);
 
         expect(result).toBe(true);
         expect(result2).toBe(false);
       });
 
-      it('can listen to arrow keys on an element', function (this: TestContext) {
-        const spy = spyOn(this.focusService, 'move');
+      it('can listen to arrow keys on an element', () => {
+        const spy = vi.spyOn(testContext.focusService, 'move').mockImplementation(() => undefined);
         const el = document.createElement('div');
-        this.focusService.registerContainer(el);
+        testContext.focusService.registerContainer(el);
         el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp' }));
         expect(spy).toHaveBeenCalledWith(ArrowKeyDirection.UP);
         el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown' }));
@@ -168,19 +173,19 @@ export default function (): void {
         // expect(spy).toHaveBeenCalledWith(ArrowKeyDirection.RIGHT);
       });
 
-      it('activates the current item when pressing Enter on the container', function (this: TestContext) {
-        const spy = spyOn(this.focusService, 'activateCurrent');
-        const container = setupContainer(this);
+      it('activates the current item when pressing Enter on the container', () => {
+        const spy = vi.spyOn(testContext.focusService, 'activateCurrent').mockImplementation(() => undefined);
+        const container = setupContainer(testContext);
         container.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
         expect(spy).toHaveBeenCalled();
       });
 
-      it('activates the current item when pressing Space on the container', function (this: TestContext) {
-        const spy = spyOn(this.focusService, 'activateCurrent');
-        const container = setupContainer(this);
+      it('activates the current item when pressing Space on the container', () => {
+        const spy = vi.spyOn(testContext.focusService, 'activateCurrent').mockImplementation(() => undefined);
+        const container = setupContainer(testContext);
         container.dispatchEvent(new KeyboardEvent('keydown', { key: ' ' }));
         expect(spy).toHaveBeenCalled();
       });
     });
   });
-}
+});

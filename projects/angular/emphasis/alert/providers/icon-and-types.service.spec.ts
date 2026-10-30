@@ -9,7 +9,7 @@ import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { AlertIconAndTypesService } from './icon-and-types.service';
 
-export default function (): void {
+describe('Alert Tests', () => {
   describe('Alert Icon and Types Service', function () {
     let testMe: AlertIconAndTypesService;
 
@@ -144,4 +144,4 @@ export default function (): void {
       });
     });
   });
-}
+});

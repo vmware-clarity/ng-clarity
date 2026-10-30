@@ -16,586 +16,588 @@ import { VerticalNavService } from './providers/vertical-nav.service';
 import { ClrVerticalNav } from './vertical-nav';
 import { ClrVerticalNavModule } from './vertical-nav.module';
 
-export default function (): void {
-  describe('Vertical Nav', () => {
-    let fixture: ComponentFixture<any>;
-    let compiled: HTMLElement;
-
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [ClrVerticalNavModule, ClrIcon],
-        declarations: [
-          NoIconsNoNavGroupTestComponent,
-          IconsButNoNavGroupTestComponent,
-          IconsAndNavGroupTestComponent,
-          OnlyNavGroupTestComponent,
-          ViewBasicsTestComponent,
-          APITestComponent,
-          ResponsiveVerticalNavTestComponent,
-        ],
-      });
-    });
-
-    describe('Nav Internals', () => {
-      let vertNavService: VerticalNavService;
+describe('Vertical Nav', () => {
+  describe('Directives', () => {
+    describe('Vertical Nav', () => {
+      let fixture: ComponentFixture<any>;
+      let compiled: HTMLElement;
 
       beforeEach(() => {
-        fixture = TestBed.createComponent(NoIconsNoNavGroupTestComponent);
-        fixture.detectChanges();
-        compiled = fixture.nativeElement;
-        vertNavService = fixture.debugElement.query(By.directive(ClrVerticalNav)).injector.get(VerticalNavService);
+        TestBed.configureTestingModule({
+          imports: [ClrVerticalNavModule, ClrIcon],
+          declarations: [
+            NoIconsNoNavGroupTestComponent,
+            IconsButNoNavGroupTestComponent,
+            IconsAndNavGroupTestComponent,
+            OnlyNavGroupTestComponent,
+            ViewBasicsTestComponent,
+            APITestComponent,
+            ResponsiveVerticalNavTestComponent,
+          ],
+        });
       });
 
-      afterEach(() => {
-        fixture.destroy();
+      describe('Nav Internals', () => {
+        let vertNavService: VerticalNavService;
+
+        beforeEach(() => {
+          fixture = TestBed.createComponent(NoIconsNoNavGroupTestComponent);
+          fixture.detectChanges();
+          compiled = fixture.nativeElement;
+          vertNavService = fixture.debugElement.query(By.directive(ClrVerticalNav)).injector.get(VerticalNavService);
+        });
+
+        afterEach(() => {
+          fixture.destroy();
+        });
+
+        it('hides the .nav-trigger when the nav is not collapsible', () => {
+          expect(vertNavService.collapsible).toBe(false);
+
+          expect(compiled.querySelector('.nav-trigger')).toBeNull();
+        });
+
+        it('shows the .nav-trigger when the nav is collapsible', () => {
+          expect(vertNavService.collapsible).toBe(false);
+
+          expect(compiled.querySelector('.nav-trigger')).toBeNull();
+
+          vertNavService.collapsible = true;
+          fixture.detectChanges();
+
+          expect(compiled.querySelector('.nav-trigger')).not.toBeNull();
+        });
+
+        it('should display the .nav-btn button when the nav is collapsed', () => {
+          expect(vertNavService.collapsible).toBe(false);
+
+          expect(compiled.querySelector('.nav-btn')).toBeNull();
+
+          vertNavService.collapsible = true;
+
+          fixture.detectChanges();
+
+          expect(compiled.querySelector('.nav-btn')).toBeNull();
+
+          vertNavService.collapsed = true;
+
+          fixture.detectChanges();
+
+          expect(compiled.querySelector('.nav-btn')).not.toBeNull();
+        });
+
+        it('opens the vertical nav when the .nav-btn is clicked', () => {
+          vertNavService.collapsible = true;
+          vertNavService.collapsed = true;
+
+          fixture.detectChanges();
+
+          const vertNav: HTMLElement = compiled.querySelector('.nav-btn');
+          vertNav.click();
+
+          fixture.detectChanges();
+
+          expect(vertNavService.collapsed).toBe(false);
+        });
+
+        it('updates the  aria-expanded attribute when the vertical nav is expanded/collapsed', () => {
+          vertNavService.collapsible = true;
+          vertNavService.collapsed = true;
+          fixture.detectChanges();
+
+          const toggleVertNavBtn: HTMLElement = compiled.querySelector('.nav-trigger');
+
+          expect(toggleVertNavBtn.getAttribute('aria-expanded')).toBe('false');
+
+          vertNavService.collapsed = false;
+          fixture.detectChanges();
+
+          expect(toggleVertNavBtn.getAttribute('aria-expanded')).toBe('true');
+        });
+
+        it('should add tabindex=-1 and aria-hidden to helper button inside .nav-content to prevent focusing', () => {
+          vertNavService.collapsible = true;
+          vertNavService.collapsed = true;
+          fixture.detectChanges();
+          const toggleVertNavBtnHelper: HTMLElement = compiled.querySelector('.nav-btn');
+          expect(toggleVertNavBtnHelper.getAttribute('tabindex')).toBe('-1');
+          expect(toggleVertNavBtnHelper.getAttribute('aria-hidden')).toBe('true');
+        });
       });
 
-      it('hides the .nav-trigger when the nav is not collapsible', () => {
-        expect(vertNavService.collapsible).toBe(false);
+      describe('Nav Internals - No Icons + No Nav Groups', () => {
+        let vertNavService: VerticalNavService;
 
-        expect(compiled.querySelector('.nav-trigger')).toBeNull();
+        beforeEach(() => {
+          fixture = TestBed.createComponent(NoIconsNoNavGroupTestComponent);
+          fixture.detectChanges();
+          compiled = fixture.nativeElement;
+          vertNavService = fixture.debugElement.query(By.directive(ClrVerticalNav)).injector.get(VerticalNavService);
+        });
+
+        afterEach(() => {
+          fixture.destroy();
+        });
+
+        it('shows the .nav-links when the nav is expanded', () => {
+          expect(compiled.querySelector('.nav-link')).not.toBeNull();
+        });
+
+        it('hides the .nav-links when the nav is collapsed', () => {
+          vertNavService.collapsible = true;
+
+          vertNavService.collapsed = true;
+          fixture.detectChanges();
+
+          const displayStyle: string = window
+            .getComputedStyle(compiled.querySelector('.nav-link') as HTMLElement)
+            .getPropertyValue('display');
+
+          expect(displayStyle).toBe('none');
+        });
       });
 
-      it('shows the .nav-trigger when the nav is collapsible', () => {
-        expect(vertNavService.collapsible).toBe(false);
+      describe('Nav Internals - Icons + No Nav Groups', () => {
+        let vertNavService: VerticalNavService;
 
-        expect(compiled.querySelector('.nav-trigger')).toBeNull();
+        beforeEach(() => {
+          fixture = TestBed.createComponent(IconsButNoNavGroupTestComponent);
+          fixture.detectChanges();
+          compiled = fixture.nativeElement;
+          vertNavService = fixture.debugElement.query(By.directive(ClrVerticalNav)).injector.get(VerticalNavService);
+        });
 
-        vertNavService.collapsible = true;
-        fixture.detectChanges();
+        afterEach(() => {
+          fixture.destroy();
+        });
 
-        expect(compiled.querySelector('.nav-trigger')).not.toBeNull();
+        it('shows the .nav-links & icons when the nav is expanded', () => {
+          expect(compiled.querySelector('.nav-link')).not.toBeNull();
+          expect(compiled.querySelector('cds-icon')).not.toBeNull();
+        });
+
+        it('shows the cds-icon when the nav is collapsed', () => {
+          vertNavService.collapsible = true;
+          vertNavService.collapsed = true;
+
+          fixture.detectChanges();
+
+          expect(compiled.querySelector('cds-icon')).not.toBeNull();
+        });
       });
 
-      it('should display the .nav-btn button when the nav is collapsed', () => {
-        expect(vertNavService.collapsible).toBe(false);
+      describe('Nav Internals - Only Nav Groups', () => {
+        let vertNavService: VerticalNavService;
 
-        expect(compiled.querySelector('.nav-btn')).toBeNull();
+        beforeEach(() => {
+          fixture = TestBed.createComponent(OnlyNavGroupTestComponent);
+          fixture.detectChanges();
+          compiled = fixture.nativeElement;
+          vertNavService = fixture.debugElement.query(By.directive(ClrVerticalNav)).injector.get(VerticalNavService);
+        });
 
-        vertNavService.collapsible = true;
+        afterEach(() => {
+          fixture.destroy();
+        });
 
-        fixture.detectChanges();
+        it('does not show .nav-group when nav is collapsed', () => {
+          vertNavService.collapsible = true;
+          vertNavService.collapsed = true;
 
-        expect(compiled.querySelector('.nav-btn')).toBeNull();
+          fixture.detectChanges();
 
-        vertNavService.collapsed = true;
+          const displayStyle: string = window
+            .getComputedStyle(compiled.querySelector('.nav-group') as HTMLElement)
+            .getPropertyValue('display');
 
-        fixture.detectChanges();
-
-        expect(compiled.querySelector('.nav-btn')).not.toBeNull();
+          expect(displayStyle).toBe('none');
+        });
       });
 
-      it('opens the vertical nav when the .nav-btn is clicked', () => {
-        vertNavService.collapsible = true;
-        vertNavService.collapsed = true;
+      describe('Nav Internals - Icons + Nav Groups', () => {
+        let vertNavService: VerticalNavService;
 
-        fixture.detectChanges();
+        beforeEach(() => {
+          fixture = TestBed.createComponent(IconsAndNavGroupTestComponent);
+          fixture.detectChanges();
+          compiled = fixture.nativeElement;
+          vertNavService = fixture.debugElement.query(By.directive(ClrVerticalNav)).injector.get(VerticalNavService);
+        });
 
-        const vertNav: HTMLElement = compiled.querySelector('.nav-btn');
-        vertNav.click();
+        afterEach(() => {
+          fixture.destroy();
+        });
 
-        fixture.detectChanges();
+        it('shows the .nav-groups when the nav is expanded', () => {
+          expect(compiled.querySelector('.nav-group')).not.toBeNull();
+        });
 
-        expect(vertNavService.collapsed).toBe(false);
+        it('shows the .nav-groups when the nav is collapsed', () => {
+          vertNavService.collapsible = true;
+          vertNavService.collapsed = true;
+
+          fixture.detectChanges();
+
+          expect(compiled.querySelector('.nav-group')).not.toBeNull();
+        });
+
+        it('clicking on .nav-group when nav is collapsed, expands the nav', () => {
+          vertNavService.collapsible = true;
+          vertNavService.collapsed = true;
+
+          fixture.detectChanges();
+
+          const navGroupTrigger: HTMLElement = compiled.querySelector('.nav-group-trigger');
+          navGroupTrigger.click();
+
+          fixture.detectChanges();
+
+          expect(vertNavService.collapsed).toBe(false);
+        });
       });
 
-      it('updates the  aria-expanded attribute when the vertical nav is expanded/collapsed', () => {
-        vertNavService.collapsible = true;
-        vertNavService.collapsed = true;
-        fixture.detectChanges();
+      describe('Responsive Nav Compatibility', () => {
+        let vertNavService: VerticalNavService;
 
-        const toggleVertNavBtn: HTMLElement = compiled.querySelector('.nav-trigger');
+        beforeEach(() => {
+          fixture = TestBed.createComponent(ResponsiveVerticalNavTestComponent);
+          fixture.detectChanges();
+          compiled = fixture.nativeElement;
+          vertNavService = fixture.debugElement.query(By.directive(ClrVerticalNav)).injector.get(VerticalNavService);
+        });
 
-        expect(toggleVertNavBtn.getAttribute('aria-expanded')).toBe('false');
+        afterEach(() => {
+          fixture.destroy();
+        });
 
-        vertNavService.collapsed = false;
-        fixture.detectChanges();
+        it('shows the .nav-links when the nav is expanded', () => {
+          expect(compiled.querySelector('.nav-link')).not.toBeNull();
+        });
 
-        expect(toggleVertNavBtn.getAttribute('aria-expanded')).toBe('true');
+        it('hides the .nav-links when the nav is collapsed', () => {
+          vertNavService.collapsible = true;
+
+          vertNavService.collapsed = true;
+          fixture.detectChanges();
+
+          const displayStyle: string = window
+            .getComputedStyle(compiled.querySelector('.nav-link') as HTMLElement)
+            .getPropertyValue('display');
+
+          expect(displayStyle).toBe('none');
+        });
+
+        it('shows the .nav-links in responsive mode - level 1', () => {
+          vertNavService.collapsible = true;
+
+          vertNavService.collapsed = true;
+          fixture.componentInstance.hamburgerMenu = true;
+
+          fixture.detectChanges();
+
+          const displayStyle: string = window
+            .getComputedStyle(compiled.querySelector('.nav-link') as HTMLElement)
+            .getPropertyValue('display');
+
+          expect(displayStyle).not.toBe('none');
+        });
+
+        it('shows the .nav-links in responsive mode - level 2', () => {
+          vertNavService.collapsible = true;
+
+          vertNavService.collapsed = true;
+          fixture.componentInstance.overflowMenu = true;
+
+          fixture.detectChanges();
+
+          const displayStyle: string = window
+            .getComputedStyle(compiled.querySelector('.nav-link') as HTMLElement)
+            .getPropertyValue('display');
+
+          expect(displayStyle).not.toBe('none');
+        });
       });
 
-      it('should add tabindex=-1 and aria-hidden to helper button inside .nav-content to prevent focusing', () => {
-        vertNavService.collapsible = true;
-        vertNavService.collapsed = true;
-        fixture.detectChanges();
-        const toggleVertNavBtnHelper: HTMLElement = compiled.querySelector('.nav-btn');
-        expect(toggleVertNavBtnHelper.getAttribute('tabindex')).toBe('-1');
-        expect(toggleVertNavBtnHelper.getAttribute('aria-hidden')).toBe('true');
-      });
-    });
+      describe('View Basics', () => {
+        let vertNavService: VerticalNavService;
 
-    describe('Nav Internals - No Icons + No Nav Groups', () => {
-      let vertNavService: VerticalNavService;
+        beforeEach(() => {
+          fixture = TestBed.createComponent(ViewBasicsTestComponent);
+          fixture.detectChanges();
+          compiled = fixture.nativeElement;
+          vertNavService = fixture.debugElement.query(By.directive(ClrVerticalNav)).injector.get(VerticalNavService);
+        });
 
-      beforeEach(() => {
-        fixture = TestBed.createComponent(NoIconsNoNavGroupTestComponent);
-        fixture.detectChanges();
-        compiled = fixture.nativeElement;
-        vertNavService = fixture.debugElement.query(By.directive(ClrVerticalNav)).injector.get(VerticalNavService);
-      });
+        afterEach(() => {
+          fixture.destroy();
+        });
 
-      afterEach(() => {
-        fixture.destroy();
-      });
+        it('adds the .is-collapsed class when the nav is collapsed', () => {
+          vertNavService.collapsible = true;
+          vertNavService.collapsed = true;
 
-      it('shows the .nav-links when the nav is expanded', () => {
-        expect(compiled.querySelector('.nav-link')).not.toBeNull();
-      });
+          fixture.detectChanges();
 
-      it('hides the .nav-links when the nav is collapsed', () => {
-        vertNavService.collapsible = true;
+          const nav: HTMLElement = compiled.querySelector('clr-vertical-nav');
 
-        vertNavService.collapsed = true;
-        fixture.detectChanges();
+          expect(nav.classList.contains('is-collapsed')).toBe(true);
+        });
 
-        const displayStyle: string = window
-          .getComputedStyle(compiled.querySelector('.nav-link') as HTMLElement)
-          .getPropertyValue('display');
+        it('removes the .is-collapsed class when the nav is expanded', () => {
+          vertNavService.collapsible = true;
+          vertNavService.collapsed = true;
 
-        expect(displayStyle).toBe('none');
-      });
-    });
+          fixture.detectChanges();
 
-    describe('Nav Internals - Icons + No Nav Groups', () => {
-      let vertNavService: VerticalNavService;
+          const nav: HTMLElement = compiled.querySelector('clr-vertical-nav');
 
-      beforeEach(() => {
-        fixture = TestBed.createComponent(IconsButNoNavGroupTestComponent);
-        fixture.detectChanges();
-        compiled = fixture.nativeElement;
-        vertNavService = fixture.debugElement.query(By.directive(ClrVerticalNav)).injector.get(VerticalNavService);
-      });
+          expect(nav.classList.contains('is-collapsed')).toBe(true);
 
-      afterEach(() => {
-        fixture.destroy();
-      });
+          vertNavService.collapsed = false;
 
-      it('shows the .nav-links & icons when the nav is expanded', () => {
-        expect(compiled.querySelector('.nav-link')).not.toBeNull();
-        expect(compiled.querySelector('cds-icon')).not.toBeNull();
-      });
+          fixture.detectChanges();
 
-      it('shows the cds-icon when the nav is collapsed', () => {
-        vertNavService.collapsible = true;
-        vertNavService.collapsed = true;
+          expect(nav.classList.contains('is-collapsed')).toBe(false);
+        });
 
-        fixture.detectChanges();
+        it('adds the .has-icons class when the nav has icons', () => {
+          const nav: HTMLElement = compiled.querySelector('clr-vertical-nav');
 
-        expect(compiled.querySelector('cds-icon')).not.toBeNull();
-      });
-    });
+          expect(nav.classList.contains('has-icons')).toBe(true);
+        });
 
-    describe('Nav Internals - Only Nav Groups', () => {
-      let vertNavService: VerticalNavService;
+        it('removes the .has-icons class when the nav has icons', () => {
+          const nav: HTMLElement = compiled.querySelector('clr-vertical-nav');
 
-      beforeEach(() => {
-        fixture = TestBed.createComponent(OnlyNavGroupTestComponent);
-        fixture.detectChanges();
-        compiled = fixture.nativeElement;
-        vertNavService = fixture.debugElement.query(By.directive(ClrVerticalNav)).injector.get(VerticalNavService);
-      });
+          expect(nav.classList.contains('has-icons')).toBe(true);
 
-      afterEach(() => {
-        fixture.destroy();
+          fixture.componentInstance.groupToggle = false;
+          fixture.componentInstance.iconToggle = false;
+
+          fixture.detectChanges();
+
+          expect(nav.classList.contains('has-icons')).toBe(false);
+        });
+
+        it('adds the .has-nav-groups class when the nav has icons', () => {
+          const nav: HTMLElement = compiled.querySelector('clr-vertical-nav');
+
+          expect(nav.classList.contains('has-nav-groups')).toBe(true);
+        });
+
+        it('removes the .has-nav-groups class when the nav has icons', () => {
+          const nav: HTMLElement = compiled.querySelector('clr-vertical-nav');
+
+          expect(nav.classList.contains('has-nav-groups')).toBe(true);
+
+          fixture.componentInstance.groupToggle = false;
+
+          fixture.detectChanges();
+
+          expect(nav.classList.contains('groups')).toBe(false);
+        });
       });
 
-      it('does not show .nav-group when nav is collapsed', () => {
-        vertNavService.collapsible = true;
-        vertNavService.collapsed = true;
+      describe('Typescript API', () => {
+        let vertNavService: VerticalNavService;
 
-        fixture.detectChanges();
+        beforeEach(() => {
+          fixture = TestBed.createComponent(ViewBasicsTestComponent);
+          fixture.detectChanges();
+          compiled = fixture.nativeElement;
+          vertNavService = fixture.debugElement.query(By.directive(ClrVerticalNav)).injector.get(VerticalNavService);
+        });
 
-        const displayStyle: string = window
-          .getComputedStyle(compiled.querySelector('.nav-group') as HTMLElement)
-          .getPropertyValue('display');
+        afterEach(() => {
+          fixture.destroy();
+        });
 
-        expect(displayStyle).toBe('none');
-      });
-    });
+        it('supports a toggle method which toggles the collapsed state in a collapsible nav', () => {
+          vertNavService.collapsible = true;
+          fixture.componentInstance.nav.toggleByButton();
 
-    describe('Nav Internals - Icons + Nav Groups', () => {
-      let vertNavService: VerticalNavService;
+          fixture.detectChanges();
 
-      beforeEach(() => {
-        fixture = TestBed.createComponent(IconsAndNavGroupTestComponent);
-        fixture.detectChanges();
-        compiled = fixture.nativeElement;
-        vertNavService = fixture.debugElement.query(By.directive(ClrVerticalNav)).injector.get(VerticalNavService);
-      });
+          expect(vertNavService.collapsed).toBe(true);
 
-      afterEach(() => {
-        fixture.destroy();
-      });
+          fixture.componentInstance.nav.toggleByButton();
 
-      it('shows the .nav-groups when the nav is expanded', () => {
-        expect(compiled.querySelector('.nav-group')).not.toBeNull();
-      });
+          fixture.detectChanges();
 
-      it('shows the .nav-groups when the nav is collapsed', () => {
-        vertNavService.collapsible = true;
-        vertNavService.collapsed = true;
+          expect(vertNavService.collapsed).toBe(false);
+        });
 
-        fixture.detectChanges();
+        it("toggle method doesn't update collapsed state if nav is not collapsible", () => {
+          expect(vertNavService.collapsed).toBe(false);
 
-        expect(compiled.querySelector('.nav-group')).not.toBeNull();
-      });
+          fixture.componentInstance.nav.toggleByButton();
 
-      it('clicking on .nav-group when nav is collapsed, expands the nav', () => {
-        vertNavService.collapsible = true;
-        vertNavService.collapsed = true;
+          fixture.detectChanges();
 
-        fixture.detectChanges();
+          expect(vertNavService.collapsed).toBe(false);
 
-        const navGroupTrigger: HTMLElement = compiled.querySelector('.nav-group-trigger');
-        navGroupTrigger.click();
+          fixture.componentInstance.nav.toggleByButton();
 
-        fixture.detectChanges();
+          fixture.detectChanges();
 
-        expect(vertNavService.collapsed).toBe(false);
-      });
-    });
+          expect(vertNavService.collapsed).toBe(false);
+        });
 
-    describe('Responsive Nav Compatibility', () => {
-      let vertNavService: VerticalNavService;
+        it('supports the hasIcons method', () => {
+          expect(fixture.componentInstance.nav.hasIcons).toBe(true);
 
-      beforeEach(() => {
-        fixture = TestBed.createComponent(ResponsiveVerticalNavTestComponent);
-        fixture.detectChanges();
-        compiled = fixture.nativeElement;
-        vertNavService = fixture.debugElement.query(By.directive(ClrVerticalNav)).injector.get(VerticalNavService);
-      });
+          fixture.componentInstance.iconToggle = false;
 
-      afterEach(() => {
-        fixture.destroy();
-      });
+          fixture.detectChanges();
 
-      it('shows the .nav-links when the nav is expanded', () => {
-        expect(compiled.querySelector('.nav-link')).not.toBeNull();
+          expect(fixture.componentInstance.nav.hasIcons).toBe(true);
+
+          fixture.componentInstance.groupToggle = false;
+
+          fixture.detectChanges();
+
+          expect(fixture.componentInstance.nav.hasIcons).toBe(false);
+        });
+
+        it('supports the hasNavGroups method', () => {
+          expect(fixture.componentInstance.nav.hasNavGroups).toBe(true);
+
+          fixture.componentInstance.groupToggle = false;
+
+          fixture.detectChanges();
+
+          expect(fixture.componentInstance.nav.hasNavGroups).toBe(false);
+        });
       });
 
-      it('hides the .nav-links when the nav is collapsed', () => {
-        vertNavService.collapsible = true;
+      describe('Template API', () => {
+        let vertNavService: VerticalNavService;
 
-        vertNavService.collapsed = true;
-        fixture.detectChanges();
+        beforeEach(() => {
+          fixture = TestBed.createComponent(APITestComponent);
+          fixture.detectChanges();
+          compiled = fixture.nativeElement;
+          vertNavService = fixture.debugElement.query(By.directive(ClrVerticalNav)).injector.get(VerticalNavService);
+        });
 
-        const displayStyle: string = window
-          .getComputedStyle(compiled.querySelector('.nav-link') as HTMLElement)
-          .getPropertyValue('display');
+        afterEach(() => {
+          fixture.destroy();
+        });
 
-        expect(displayStyle).toBe('none');
+        it('supports an input to change aria-label on collapsible vertical nav toggle', () => {
+          fixture.componentInstance.collapsible = true;
+          fixture.componentInstance.collapsed = true;
+          fixture.detectChanges();
+
+          const trigger: HTMLElement = compiled.querySelector('.nav-trigger');
+          const vertNav: HTMLElement = compiled.querySelector('.nav-btn');
+
+          expect(trigger.getAttribute('aria-label')).toBe(commonStringsDefault.verticalNavToggle);
+          expect(vertNav.getAttribute('aria-label')).toBe(commonStringsDefault.verticalNavToggle);
+
+          const verticalNavTriggerLabel = 'Changed label string';
+          fixture.componentInstance.toggleLabel = verticalNavTriggerLabel;
+          fixture.detectChanges();
+
+          expect(trigger.getAttribute('aria-label')).toBe(verticalNavTriggerLabel);
+          expect(vertNav.getAttribute('aria-label')).toBe(verticalNavTriggerLabel);
+        });
+
+        it('collapsible vertical nav toggle buttons should have aria-control pointing to nav content id', () => {
+          fixture.componentInstance.collapsible = true;
+          fixture.componentInstance.collapsed = true;
+          fixture.detectChanges();
+
+          const trigger: HTMLElement = compiled.querySelector('.nav-trigger');
+          const vertNav: HTMLElement = compiled.querySelector('.nav-btn');
+          const content: HTMLElement = compiled.querySelector('.nav-content');
+
+          expect(trigger.getAttribute('aria-controls')).toBe(content.id);
+          expect(vertNav.getAttribute('aria-controls')).toBe(content.id);
+        });
+
+        it('supports an input to enable the collapsible behavior of the nav', () => {
+          expect(vertNavService.collapsible).toBe(false);
+
+          fixture.componentInstance.collapsible = true;
+          fixture.detectChanges();
+
+          expect(vertNavService.collapsible).toBe(true);
+        });
+
+        it('does not set the collapsed state when the nav is not collapsible', () => {
+          expect(vertNavService.collapsible).toBe(false);
+
+          fixture.componentInstance.collapsed = true;
+          fixture.detectChanges();
+
+          expect(vertNavService.collapsed).toBe(false);
+        });
+
+        it('supports an input to set the collapsed behavior of the nav', () => {
+          vertNavService.collapsible = true;
+          expect(vertNavService.collapsed).toBe(false);
+
+          fixture.componentInstance.collapsed = true;
+          fixture.detectChanges();
+
+          expect(vertNavService.collapsed).toBe(true);
+        });
+
+        it('emits the collapsed state', async function () {
+          expect(fixture.componentInstance.collapsedChange).toBeUndefined();
+          vertNavService.collapsible = true;
+
+          fixture.detectChanges();
+
+          const trigger: HTMLElement = compiled.querySelector('.nav-trigger');
+          trigger.click();
+
+          fixture.detectChanges();
+          await delay();
+
+          expect(fixture.componentInstance.collapsedChange).toBe(true);
+
+          trigger.click();
+
+          fixture.detectChanges();
+          await delay();
+
+          expect(fixture.componentInstance.collapsedChange).toBe(false);
+        });
       });
 
-      it('shows the .nav-links in responsive mode - level 1', () => {
-        vertNavService.collapsible = true;
+      describe('Accessibility', () => {
+        let vertNavService: VerticalNavService;
 
-        vertNavService.collapsed = true;
-        fixture.componentInstance.hamburgerMenu = true;
+        beforeEach(() => {
+          fixture = TestBed.createComponent(NoIconsNoNavGroupTestComponent);
+          fixture.detectChanges();
 
-        fixture.detectChanges();
+          compiled = fixture.nativeElement;
+          vertNavService = fixture.debugElement.query(By.directive(ClrVerticalNav)).injector.get(VerticalNavService);
+        });
 
-        const displayStyle: string = window
-          .getComputedStyle(compiled.querySelector('.nav-link') as HTMLElement)
-          .getPropertyValue('display');
+        afterEach(() => {
+          fixture.destroy();
+        });
 
-        expect(displayStyle).not.toBe('none');
-      });
+        it('expect buttons to have correct aria-label', () => {
+          vertNavService.collapsible = true;
+          vertNavService.collapsed = true;
 
-      it('shows the .nav-links in responsive mode - level 2', () => {
-        vertNavService.collapsible = true;
+          fixture.detectChanges();
 
-        vertNavService.collapsed = true;
-        fixture.componentInstance.overflowMenu = true;
+          const toggleVertNavBtn: HTMLElement = compiled.querySelector('.nav-trigger');
+          const navBtn: HTMLElement = compiled.querySelector('.nav-btn');
 
-        fixture.detectChanges();
-
-        const displayStyle: string = window
-          .getComputedStyle(compiled.querySelector('.nav-link') as HTMLElement)
-          .getPropertyValue('display');
-
-        expect(displayStyle).not.toBe('none');
-      });
-    });
-
-    describe('View Basics', () => {
-      let vertNavService: VerticalNavService;
-
-      beforeEach(() => {
-        fixture = TestBed.createComponent(ViewBasicsTestComponent);
-        fixture.detectChanges();
-        compiled = fixture.nativeElement;
-        vertNavService = fixture.debugElement.query(By.directive(ClrVerticalNav)).injector.get(VerticalNavService);
-      });
-
-      afterEach(() => {
-        fixture.destroy();
-      });
-
-      it('adds the .is-collapsed class when the nav is collapsed', () => {
-        vertNavService.collapsible = true;
-        vertNavService.collapsed = true;
-
-        fixture.detectChanges();
-
-        const nav: HTMLElement = compiled.querySelector('clr-vertical-nav');
-
-        expect(nav.classList.contains('is-collapsed')).toBe(true);
-      });
-
-      it('removes the .is-collapsed class when the nav is expanded', () => {
-        vertNavService.collapsible = true;
-        vertNavService.collapsed = true;
-
-        fixture.detectChanges();
-
-        const nav: HTMLElement = compiled.querySelector('clr-vertical-nav');
-
-        expect(nav.classList.contains('is-collapsed')).toBe(true);
-
-        vertNavService.collapsed = false;
-
-        fixture.detectChanges();
-
-        expect(nav.classList.contains('is-collapsed')).toBe(false);
-      });
-
-      it('adds the .has-icons class when the nav has icons', () => {
-        const nav: HTMLElement = compiled.querySelector('clr-vertical-nav');
-
-        expect(nav.classList.contains('has-icons')).toBe(true);
-      });
-
-      it('removes the .has-icons class when the nav has icons', () => {
-        const nav: HTMLElement = compiled.querySelector('clr-vertical-nav');
-
-        expect(nav.classList.contains('has-icons')).toBe(true);
-
-        fixture.componentInstance.groupToggle = false;
-        fixture.componentInstance.iconToggle = false;
-
-        fixture.detectChanges();
-
-        expect(nav.classList.contains('has-icons')).toBe(false);
-      });
-
-      it('adds the .has-nav-groups class when the nav has icons', () => {
-        const nav: HTMLElement = compiled.querySelector('clr-vertical-nav');
-
-        expect(nav.classList.contains('has-nav-groups')).toBe(true);
-      });
-
-      it('removes the .has-nav-groups class when the nav has icons', () => {
-        const nav: HTMLElement = compiled.querySelector('clr-vertical-nav');
-
-        expect(nav.classList.contains('has-nav-groups')).toBe(true);
-
-        fixture.componentInstance.groupToggle = false;
-
-        fixture.detectChanges();
-
-        expect(nav.classList.contains('groups')).toBe(false);
-      });
-    });
-
-    describe('Typescript API', () => {
-      let vertNavService: VerticalNavService;
-
-      beforeEach(() => {
-        fixture = TestBed.createComponent(ViewBasicsTestComponent);
-        fixture.detectChanges();
-        compiled = fixture.nativeElement;
-        vertNavService = fixture.debugElement.query(By.directive(ClrVerticalNav)).injector.get(VerticalNavService);
-      });
-
-      afterEach(() => {
-        fixture.destroy();
-      });
-
-      it('supports a toggle method which toggles the collapsed state in a collapsible nav', () => {
-        vertNavService.collapsible = true;
-        fixture.componentInstance.nav.toggleByButton();
-
-        fixture.detectChanges();
-
-        expect(vertNavService.collapsed).toBe(true);
-
-        fixture.componentInstance.nav.toggleByButton();
-
-        fixture.detectChanges();
-
-        expect(vertNavService.collapsed).toBe(false);
-      });
-
-      it("toggle method doesn't update collapsed state if nav is not collapsible", () => {
-        expect(vertNavService.collapsed).toBe(false);
-
-        fixture.componentInstance.nav.toggleByButton();
-
-        fixture.detectChanges();
-
-        expect(vertNavService.collapsed).toBe(false);
-
-        fixture.componentInstance.nav.toggleByButton();
-
-        fixture.detectChanges();
-
-        expect(vertNavService.collapsed).toBe(false);
-      });
-
-      it('supports the hasIcons method', () => {
-        expect(fixture.componentInstance.nav.hasIcons).toBe(true);
-
-        fixture.componentInstance.iconToggle = false;
-
-        fixture.detectChanges();
-
-        expect(fixture.componentInstance.nav.hasIcons).toBe(true);
-
-        fixture.componentInstance.groupToggle = false;
-
-        fixture.detectChanges();
-
-        expect(fixture.componentInstance.nav.hasIcons).toBe(false);
-      });
-
-      it('supports the hasNavGroups method', () => {
-        expect(fixture.componentInstance.nav.hasNavGroups).toBe(true);
-
-        fixture.componentInstance.groupToggle = false;
-
-        fixture.detectChanges();
-
-        expect(fixture.componentInstance.nav.hasNavGroups).toBe(false);
-      });
-    });
-
-    describe('Template API', () => {
-      let vertNavService: VerticalNavService;
-
-      beforeEach(() => {
-        fixture = TestBed.createComponent(APITestComponent);
-        fixture.detectChanges();
-        compiled = fixture.nativeElement;
-        vertNavService = fixture.debugElement.query(By.directive(ClrVerticalNav)).injector.get(VerticalNavService);
-      });
-
-      afterEach(() => {
-        fixture.destroy();
-      });
-
-      it('supports an input to change aria-label on collapsible vertical nav toggle', () => {
-        fixture.componentInstance.collapsible = true;
-        fixture.componentInstance.collapsed = true;
-        fixture.detectChanges();
-
-        const trigger: HTMLElement = compiled.querySelector('.nav-trigger');
-        const vertNav: HTMLElement = compiled.querySelector('.nav-btn');
-
-        expect(trigger.getAttribute('aria-label')).toBe(commonStringsDefault.verticalNavToggle);
-        expect(vertNav.getAttribute('aria-label')).toBe(commonStringsDefault.verticalNavToggle);
-
-        const verticalNavTriggerLabel = 'Changed label string';
-        fixture.componentInstance.toggleLabel = verticalNavTriggerLabel;
-        fixture.detectChanges();
-
-        expect(trigger.getAttribute('aria-label')).toBe(verticalNavTriggerLabel);
-        expect(vertNav.getAttribute('aria-label')).toBe(verticalNavTriggerLabel);
-      });
-
-      it('collapsible vertical nav toggle buttons should have aria-control pointing to nav content id', () => {
-        fixture.componentInstance.collapsible = true;
-        fixture.componentInstance.collapsed = true;
-        fixture.detectChanges();
-
-        const trigger: HTMLElement = compiled.querySelector('.nav-trigger');
-        const vertNav: HTMLElement = compiled.querySelector('.nav-btn');
-        const content: HTMLElement = compiled.querySelector('.nav-content');
-
-        expect(trigger.getAttribute('aria-controls')).toBe(content.id);
-        expect(vertNav.getAttribute('aria-controls')).toBe(content.id);
-      });
-
-      it('supports an input to enable the collapsible behavior of the nav', () => {
-        expect(vertNavService.collapsible).toBe(false);
-
-        fixture.componentInstance.collapsible = true;
-        fixture.detectChanges();
-
-        expect(vertNavService.collapsible).toBe(true);
-      });
-
-      it('does not set the collapsed state when the nav is not collapsible', () => {
-        expect(vertNavService.collapsible).toBe(false);
-
-        fixture.componentInstance.collapsed = true;
-        fixture.detectChanges();
-
-        expect(vertNavService.collapsed).toBe(false);
-      });
-
-      it('supports an input to set the collapsed behavior of the nav', () => {
-        vertNavService.collapsible = true;
-        expect(vertNavService.collapsed).toBe(false);
-
-        fixture.componentInstance.collapsed = true;
-        fixture.detectChanges();
-
-        expect(vertNavService.collapsed).toBe(true);
-      });
-
-      it('emits the collapsed state', async function () {
-        expect(fixture.componentInstance.collapsedChange).toBeUndefined();
-        vertNavService.collapsible = true;
-
-        fixture.detectChanges();
-
-        const trigger: HTMLElement = compiled.querySelector('.nav-trigger');
-        trigger.click();
-
-        fixture.detectChanges();
-        await delay();
-
-        expect(fixture.componentInstance.collapsedChange).toBe(true);
-
-        trigger.click();
-
-        fixture.detectChanges();
-        await delay();
-
-        expect(fixture.componentInstance.collapsedChange).toBe(false);
-      });
-    });
-
-    describe('Accessibility', () => {
-      let vertNavService: VerticalNavService;
-
-      beforeEach(() => {
-        fixture = TestBed.createComponent(NoIconsNoNavGroupTestComponent);
-        fixture.detectChanges();
-
-        compiled = fixture.nativeElement;
-        vertNavService = fixture.debugElement.query(By.directive(ClrVerticalNav)).injector.get(VerticalNavService);
-      });
-
-      afterEach(() => {
-        fixture.destroy();
-      });
-
-      it('expect buttons to have correct aria-label', () => {
-        vertNavService.collapsible = true;
-        vertNavService.collapsed = true;
-
-        fixture.detectChanges();
-
-        const toggleVertNavBtn: HTMLElement = compiled.querySelector('.nav-trigger');
-        const navBtn: HTMLElement = compiled.querySelector('.nav-btn');
-
-        expect(toggleVertNavBtn.getAttribute('aria-label')).toBe('Toggle vertical navigation');
-        expect(navBtn.getAttribute('aria-label')).toBe('Toggle vertical navigation');
+          expect(toggleVertNavBtn.getAttribute('aria-label')).toBe('Toggle vertical navigation');
+          expect(navBtn.getAttribute('aria-label')).toBe('Toggle vertical navigation');
+        });
       });
     });
   });
-}
+});
 
 @Component({
   template: `
