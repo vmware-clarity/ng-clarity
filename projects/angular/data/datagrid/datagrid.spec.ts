@@ -349,7 +349,7 @@ class ExpandedOnInitTest {
   changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
-class ChocolateClrDgItemsTest {
+class LateRowFeaturesClrDgItemsTest {
   items = [1, 2, 3];
   action = false;
   expandable = false;
@@ -382,7 +382,7 @@ class ChocolateClrDgItemsTest {
   changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
-class ChocolateNgForTest {
+class LateRowFeaturesForTest {
   items = [
     { id: 1, value: 1 },
     { id: 2, value: 2 },
@@ -845,7 +845,7 @@ describe('Datagrid', () => {
             ]);
           });
 
-          it('emits early enough to avoid chocolate errors on the loading input', () => {
+          it('emits early enough to avoid expression changed errors on the loading input', () => {
             context.testComponent.fakeLoad = true;
             const page: Page = context.getClarityProvider(Page);
             page.current = 2;
@@ -1468,42 +1468,54 @@ describe('Datagrid', () => {
         });
       });
 
-      describe('Chocolate', () => {
-        describe('clrDgItems', () => {
-          it("doesn't taunt with chocolate on actionable rows", () => {
-            const context = helpers.create(ClrDatagrid, ChocolateClrDgItemsTest);
+      describe('Rows becoming actionable or expandable late', function () {
+        function expectFixedColumns(context: TestContext<ClrDatagrid, any>, actions: boolean, expandable: boolean) {
+          const header = context.clarityElement.querySelector('.datagrid-header');
+          expect(!!header.querySelector('.datagrid-row-actions')).toBe(actions);
+          expect(!!header.querySelector('.datagrid-expandable-caret')).toBe(expandable);
+        }
+
+        describe('clrDgItems', function () {
+          it('renders the action column when a row gets an action overflow', function () {
+            const context = helpers.create(ClrDatagrid, LateRowFeaturesClrDgItemsTest);
+            expectFixedColumns(context, false, false);
             context.testComponent.action = true;
             expect(() => context.detectChanges()).not.toThrow();
+            expectFixedColumns(context, true, false);
           });
 
-          it("doesn't taunt with chocolate on expandable rows", () => {
-            const context = helpers.create(ClrDatagrid, ChocolateClrDgItemsTest);
+          it('renders the expand column when a row gets a row detail', function () {
+            const context = helpers.create(ClrDatagrid, LateRowFeaturesClrDgItemsTest);
             context.testComponent.expandable = true;
             expect(() => context.detectChanges()).not.toThrow();
+            expectFixedColumns(context, false, true);
           });
         });
 
-        describe('ngFor', () => {
-          it("doesn't taunt with chocolate on actionable rows", () => {
-            const context = helpers.create(ClrDatagrid, ChocolateNgForTest);
+        describe('ngFor', function () {
+          it('renders the action column when a row gets an action overflow', function () {
+            const context = helpers.create(ClrDatagrid, LateRowFeaturesForTest);
+            expectFixedColumns(context, false, false);
             context.testComponent.action = true;
             expect(() => context.detectChanges()).not.toThrow();
+            expectFixedColumns(context, true, false);
           });
 
-          it("doesn't taunt with chocolate on expandable rows", () => {
-            const context = helpers.create(ClrDatagrid, ChocolateNgForTest);
+          it('renders the expand column when a row gets a row detail', function () {
+            const context = helpers.create(ClrDatagrid, LateRowFeaturesForTest);
             context.testComponent.expandable = true;
             expect(() => context.detectChanges()).not.toThrow();
+            expectFixedColumns(context, false, true);
           });
         });
 
-        describe('column hidden by default', () => {
-          it("doesn't taunt with chocolate on columns hidden by default", () => {
+        describe('column hidden by default', function () {
+          it('renders columns hidden by default without errors', function () {
             const context = helpers.create(ClrDatagrid, HiddenColumnTest);
             expect(() => context.detectChanges()).not.toThrow();
           });
 
-          it('hides the separator on the last visible column', () => {
+          it('hides the separator on the last visible column', function () {
             const context = helpers.create(ClrDatagrid, HiddenColumnTest);
             context.detectChanges();
             const visibleHeaders = context.clarityElement.querySelectorAll(

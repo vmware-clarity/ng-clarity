@@ -46,9 +46,6 @@ import {
 
 import { DatagridNumericFilter } from './built-in/filters/datagrid-numeric-filter';
 import { DatagridStringFilter } from './built-in/filters/datagrid-string-filter';
-import { ActionableOompaLoompa } from './chocolate/actionable-oompa-loompa';
-import { DatagridWillyWonka } from './chocolate/datagrid-willy-wonka';
-import { ExpandableOompaLoompa } from './chocolate/expandable-oompa-loompa';
 import { ClrDatagrid } from './datagrid';
 import { ClrDatagridActionBar } from './datagrid-action-bar';
 import { ClrDatagridActionOverflow } from './datagrid-action-overflow';
@@ -121,11 +118,6 @@ export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
   DatagridMainRenderer,
   DatagridRowDetailRenderer,
   DatagridRowRenderer,
-
-  // Chocolate
-  ActionableOompaLoompa,
-  DatagridWillyWonka,
-  ExpandableOompaLoompa,
 
   // Built-in shortcuts
   DatagridNumericFilter,

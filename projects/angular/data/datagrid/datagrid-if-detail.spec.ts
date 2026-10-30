@@ -41,10 +41,10 @@ describe('ClrIfDetail Directive', function () {
     });
 
     it('should project input state', () => {
-      const input = `${content}${content}`;
+      const input = 'projected state';
       testComponent.detailState = input;
       fixture.detectChanges();
-      expect(testElement.querySelector('.detail-model').textContent).toBe(input);
+      expect(testElement.querySelector('.state').textContent).toBe(input);
     });
 
     it('should emit changes', () => {
@@ -89,8 +89,8 @@ describe('ClrIfDetail Directive', function () {
 });
 
 @Component({
-  template: `<ng-template [(clrIfDetail)]="detailState" let-state
-    >${content}<span class="detail-model">{{ state }}</span></ng-template
+  template: `<ng-template [(clrIfDetail)]="detailState" let-detail
+    >${content}<span class="state">{{ detail }}</span></ng-template
   >`,
   changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,

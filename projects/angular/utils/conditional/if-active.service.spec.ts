@@ -5,6 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { computed } from '@angular/core';
+
 import { IfActiveService } from './if-active.service';
 
 describe('Conditional Utils', () => {
@@ -41,6 +43,29 @@ describe('Conditional Utils', () => {
           ifActiveService.current = 11;
           expect(nbChanges).toEqual(2);
           expect(currentChange).toEqual(11);
+        });
+
+        it('exposes current as reactive (signal-backed) state', function () {
+          const isFiveActive = computed(() => ifActiveService.current === 5);
+          expect(isFiveActive()).toBe(false);
+          ifActiveService.current = 5;
+          expect(isFiveActive()).toBe(true);
+          ifActiveService.current = 6;
+          expect(isFiveActive()).toBe(false);
+        });
+
+        it('emits synchronously, once per change, with the getter already updated', function () {
+          const seen: number[] = [];
+          ifActiveService.currentChange.subscribe(value => {
+            expect(ifActiveService.current).toBe(value);
+            seen.push(value);
+          });
+          ifActiveService.current = 1;
+          expect(seen).toEqual([1]);
+          ifActiveService.current = 1;
+          expect(seen).toEqual([1]);
+          ifActiveService.current = 2;
+          expect(seen).toEqual([1, 2]);
         });
 
         it('tracks the current active value in the service', function () {

@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { computed } from '@angular/core';
 import { ModalStackService } from '@clr/angular/modal';
 import { expectActiveElementToBe } from '@clr/angular/testing';
 import { Subscription } from 'rxjs';
@@ -71,6 +72,44 @@ describe('DetailService provider', function () {
     expect(provider.enabled).toBe(false);
     provider.enabled = true;
     expect(provider.enabled).toBe(true);
+  });
+
+  it('exposes enabled as reactive (signal-backed) state', () => {
+    const enabled = computed(() => provider.enabled);
+    expect(enabled()).toBe(false);
+    provider.enabled = true;
+    expect(enabled()).toBe(true);
+    provider.enabled = false;
+    expect(enabled()).toBe(false);
+  });
+
+  it('keeps a replacement pane enabled and open when an older pane is removed', () => {
+    const removeOld = provider.register();
+    const removeNew = provider.register();
+    provider.open('replacement');
+    removeOld();
+    removeOld(); // Releasing the same registration twice must not remove the replacement.
+    expect(provider.enabled).toBe(true);
+    expect(provider.isRowOpen('replacement')).toBe(true);
+    removeNew();
+    expect(provider.enabled).toBe(false);
+    expect(provider.isOpen).toBe(false);
+    expect(provider.state).toBeUndefined();
+  });
+
+  it('returns focus and leaves the modal stack when the last open pane is removed', () => {
+    const stack = new ModalStackService(PLATFORM_SERVER_ID);
+    vi.spyOn(stack, 'trackModalClose');
+    provider = new DetailService(stack);
+    const remove = provider.register();
+    const button = document.createElement('button');
+    vi.spyOn(button, 'focus').mockImplementation(() => undefined);
+    provider.open('value', button);
+    remove();
+    expect(button.focus).toHaveBeenCalled();
+    expect(stack.trackModalClose).toHaveBeenCalledWith(provider);
+    expect(provider.isOpen).toBe(false);
+    expect(provider.enabled).toBe(false);
   });
 
   it('can detect if a row is open', () => {
