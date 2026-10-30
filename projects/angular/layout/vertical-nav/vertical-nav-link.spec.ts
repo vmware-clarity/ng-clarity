@@ -5,10 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrIcon } from '@clr/angular/icon';
 
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
@@ -27,7 +26,7 @@ describe('Vertical Nav', () => {
 
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [ClrVerticalNavModule, ClrIcon, NoopAnimationsModule],
+          imports: [ClrVerticalNavModule, ClrIcon],
           declarations: [TestComponent, TestComponentWithGroup],
         });
       });
@@ -100,6 +99,7 @@ describe('Vertical Nav', () => {
     </a>
   `,
   providers: [VerticalNavService, VerticalNavIconService, VerticalNavGroupRegistrationService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {}
@@ -114,6 +114,7 @@ class TestComponent {}
     <a href="#" clrVerticalNavLink id="link3">Link 3</a>
   `,
   providers: [VerticalNavService, VerticalNavIconService, VerticalNavGroupRegistrationService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponentWithGroup {

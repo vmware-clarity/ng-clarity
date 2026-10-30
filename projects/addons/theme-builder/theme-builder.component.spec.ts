@@ -5,9 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ThemeBuilderComponent } from './theme-builder.component';
 import { Color } from './utils/color';
@@ -34,7 +33,7 @@ describe('ThemeBuilderComponent', () => {
     testContext = {} as ThisTest;
   });
   beforeEach(() => {
-    TestBed.configureTestingModule({ imports: [ThemeBuilderComponent, NoopAnimationsModule] });
+    TestBed.configureTestingModule({ imports: [ThemeBuilderComponent] });
     testContext.fixture = TestBed.createComponent(ThemeBuilderComponent);
     testContext.component = testContext.fixture.componentInstance;
   });
@@ -394,6 +393,7 @@ describe('ThemeBuilderComponent', () => {
 });
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ThemeBuilderComponent],
   template: `
     <clr-theme-builder>
@@ -409,7 +409,7 @@ describe('ThemeBuilderComponent with projected content', () => {
   let fixture: ComponentFixture<ProjectedContentHostComponent>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ imports: [ProjectedContentHostComponent, NoopAnimationsModule] });
+    TestBed.configureTestingModule({ imports: [ProjectedContentHostComponent] });
     fixture = TestBed.createComponent(ProjectedContentHostComponent);
   });
 

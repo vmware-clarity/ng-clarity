@@ -21,14 +21,8 @@
     }
   },
   "angularCompilerOptions": {
-    "annotateForClosureCompiler": false,
-    "preserveWhitespaces": true,
-    "enableResourceInlining": true,
     "strictTemplates": true,
-    "strictInjectionParameters": true,
-    "skipTemplateCodegen": true,
-    "strictMetadataEmit": true,
-    "skipMetadataEmit": false
+    "strictInjectionParameters": true
   },
   "include": ["**/*.ts"],
   "exclude": ["**/*.spec.ts"]

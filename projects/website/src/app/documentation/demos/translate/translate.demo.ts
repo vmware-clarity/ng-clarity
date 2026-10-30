@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   AppfxLocale,
@@ -31,6 +31,7 @@ import {
   successStandardIcon,
 } from '@clr/angular';
 
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { LinkCardsLink } from '../../../shared/link-cards/link-cards.component';
@@ -69,6 +70,7 @@ const DefaultTs = require('!raw-loader!./ng/default.ts').default;
       },
     },
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DocTabsComponent,
     DocTabComponent,
@@ -80,6 +82,7 @@ const DefaultTs = require('!raw-loader!./ng/default.ts').default;
     FormsModule,
     StackblitzExampleComponent,
     AppfxTranslateModule,
+    AiSkillComponent,
   ],
 })
 export class TranslateAddonDemo extends ClarityDocComponent {

@@ -5,11 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Injectable, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injectable, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { StepperService } from './providers/stepper.service';
 import { ClrStepButton, ClrStepButtonType } from './step-button';
@@ -23,6 +22,7 @@ import { ClrStepperModule } from './stepper.module';
       </clr-stepper-panel>
     </form>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {
@@ -39,6 +39,7 @@ class TestComponent {
       </clr-stepper-panel>
     </form>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestPreviousButtonComponent {
@@ -65,7 +66,7 @@ describe('ClrStepButton Next', () => {
     TestBed.configureTestingModule({
       declarations: [TestComponent],
       providers: [StepperService, { provide: StepperService, useClass: MockStepperService }],
-      imports: [ReactiveFormsModule, NoopAnimationsModule, ClrStepperModule],
+      imports: [ReactiveFormsModule, ClrStepperModule],
     });
 
     fixture = TestBed.createComponent(TestComponent);
@@ -97,7 +98,7 @@ describe('ClrStepButton Previous', () => {
     TestBed.configureTestingModule({
       declarations: [TestPreviousButtonComponent],
       providers: [StepperService, { provide: StepperService, useClass: MockStepperService }],
-      imports: [ReactiveFormsModule, NoopAnimationsModule, ClrStepperModule],
+      imports: [ReactiveFormsModule, ClrStepperModule],
     });
 
     fixture = TestBed.createComponent(TestPreviousButtonComponent);

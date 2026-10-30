@@ -5,13 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClarityIcons, ClrIcon, windowCloseIcon } from '@clr/angular/icon';
 
 import { DismissableDirective } from './dismissable.directive';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     @if (show) {
       <span class="badge" dismissable [dismissAriaLabel]="ariaLabel" (dismiss)="dismissed = dismissed + 1">

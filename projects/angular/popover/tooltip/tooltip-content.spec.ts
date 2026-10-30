@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrPopoverPosition, ClrPopoverService } from '@clr/angular/popover/common';
@@ -22,6 +22,7 @@ import { ClrTooltipModule } from './tooltip.module';
       <clr-tooltip-content>Hello world</clr-tooltip-content>
     </clr-tooltip>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class DefaultTest {}
@@ -33,6 +34,7 @@ class DefaultTest {}
       <clr-tooltip-content [id]="idValue">Hello world</clr-tooltip-content>
     </clr-tooltip>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class IdTest {
@@ -49,6 +51,7 @@ class IdTest {
       </clr-tooltip>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SimpleTest {

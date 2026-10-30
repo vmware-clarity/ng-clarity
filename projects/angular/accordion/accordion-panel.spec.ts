@@ -5,12 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { CollapsiblePanelModel, CollapsiblePanelService } from '@clr/angular/collapsible-panel';
+import { delay } from '@clr/angular/testing';
 import { HeadingLevel, IfExpandService } from '@clr/angular/utils';
 
 import { ClrAccordionPanel } from './accordion-panel';
@@ -33,6 +34,7 @@ import { ClrAccordionModule } from './accordion.module';
       </clr-accordion-panel>
     </clr-accordion>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {
@@ -61,6 +63,7 @@ class TestComponent {
       </clr-accordion-panel>
     </clr-accordion>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestNestedAccordionComponent {}
@@ -75,6 +78,7 @@ class TestNestedAccordionComponent {}
       </clr-accordion-panel>
     </clr-accordion>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestNoBindingComponent {
@@ -92,7 +96,7 @@ describe('ClrAccordionPanel', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         providers: [CollapsiblePanelService, IfExpandService],
-        imports: [ClrAccordionModule, ReactiveFormsModule, NoopAnimationsModule],
+        imports: [ClrAccordionModule, ReactiveFormsModule],
       });
 
       fixture = TestBed.createComponent(ClrAccordionPanel);
@@ -133,7 +137,7 @@ describe('ClrAccordionPanel', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [TestComponent, TestNoBindingComponent],
-        imports: [ClrAccordionModule, ReactiveFormsModule, NoopAnimationsModule],
+        imports: [ClrAccordionModule, ReactiveFormsModule],
       });
 
       fixture = TestBed.createComponent(TestComponent);
@@ -211,7 +215,7 @@ describe('ClrAccordionPanel', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [TestComponent, TestNoBindingComponent, TestNestedAccordionComponent],
-        imports: [ClrAccordionModule, ReactiveFormsModule, NoopAnimationsModule],
+        imports: [ClrAccordionModule, ReactiveFormsModule],
       });
 
       fixture = TestBed.createComponent(TestComponent);
@@ -319,5 +323,81 @@ describe('ClrAccordionPanel', () => {
 
       expect(nestedPanelHeading).toBeNull();
     });
+  });
+});
+
+describe('ClrAccordionPanel animations', () => {
+  let fixture: ComponentFixture<TestComponent>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [TestComponent],
+      imports: [ClrAccordionModule],
+      animationsEnabled: true,
+    });
+    fixture = TestBed.createComponent(TestComponent);
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+  });
+
+  function content(): HTMLElement | null {
+    return fixture.nativeElement.querySelector('.clr-accordion-content');
+  }
+
+  async function render(open: boolean) {
+    fixture.componentInstance.open = open;
+    fixture.detectChanges();
+    await delay();
+  }
+
+  it('does not animate the content open on the first render', async () => {
+    await render(true);
+
+    expect(content().getAnimations().length).toBe(0);
+  });
+
+  it('expands the content when the panel opens', async () => {
+    await render(false);
+    await render(true);
+
+    const [animation] = content().getAnimations();
+    expect((animation.effect as KeyframeEffect).getKeyframes()[0].height).toBe('0px');
+  });
+
+  it('expands the content of a panel open on the first render when it opens again', async () => {
+    await render(true);
+    await render(false);
+    await render(true);
+
+    expect(content().getAnimations().length).toBe(1);
+  });
+
+  it('removes the content as soon as the panel closes', async () => {
+    await render(true);
+    await render(false);
+
+    expect(content()).toBeNull();
+  });
+});
+
+describe('ClrAccordionPanel with Noop animations', () => {
+  it('does not expand the content', async () => {
+    TestBed.configureTestingModule({
+      declarations: [TestComponent],
+      imports: [ClrAccordionModule],
+      providers: [provideNoopAnimations()],
+      animationsEnabled: true,
+    });
+    const fixture = TestBed.createComponent(TestComponent);
+    fixture.detectChanges();
+    await delay();
+    fixture.componentInstance.open = true;
+    fixture.detectChanges();
+    await delay();
+
+    expect(fixture.nativeElement.querySelector('.clr-accordion-content').getAnimations().length).toBe(0);
+    fixture.destroy();
   });
 });

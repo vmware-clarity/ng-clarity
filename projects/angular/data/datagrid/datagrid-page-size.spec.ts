@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { createTestHelpers, TestContext } from '@clr/angular/testing';
 
 import { ClrDatagridPageSize } from './datagrid-page-size';
@@ -130,6 +130,7 @@ describe('Datagrid', () => {
 
 @Component({
   template: `<clr-dg-page-size>Hello world</clr-dg-page-size>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SimpleTest {}
@@ -140,6 +141,7 @@ class SimpleTest {}
       <clr-dg-page-size>Hello world</clr-dg-page-size>
     </form>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class FormTest {}
@@ -150,6 +152,7 @@ class FormTest {}
       Hello world
     </clr-dg-page-size>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class FullTest {

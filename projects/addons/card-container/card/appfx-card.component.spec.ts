@@ -8,7 +8,7 @@
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { a11ykeys, ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
 import { DragAndDropGroupService } from '@clr/addons/drag-and-drop';
 import {
@@ -21,6 +21,7 @@ import {
 } from '@clr/addons/testing';
 import { AppfxTranslateModule } from '@clr/addons/translate';
 import { ClrIcon } from '@clr/angular/icon';
+import { enableCssAnimations } from '@clr/angular/testing';
 
 import { AppfxCardInternal } from '../appfx-card-container.interface';
 import { AppfxCardComponent } from './appfx-card.component';
@@ -39,7 +40,7 @@ describe('AppfxCardComponent', () => {
   let zoomLevelService: ZoomLevelService;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CommonModule, ClrIcon, NoopAnimationsModule, DragDropModule, AppfxTranslateModule],
+      imports: [CommonModule, ClrIcon, DragDropModule, AppfxTranslateModule],
       declarations: [AppfxCardComponent],
       providers: [
         DragAndDropGroupService,
@@ -200,5 +201,41 @@ describe('AppfxCardComponent', () => {
     });
     component.onDropHandleKeyUp(keyEvent);
     expect(a11yService.selectCard).toHaveBeenCalled();
+  });
+});
+
+describe('AppfxCardComponent animations', () => {
+  let restoreAnimations: () => void;
+
+  beforeEach(() => (restoreAnimations = enableCssAnimations()));
+  afterEach(() => restoreAnimations());
+
+  function renderCard(noop: boolean): HTMLElement {
+    TestBed.configureTestingModule({
+      imports: [CommonModule, ClrIcon, DragDropModule, AppfxTranslateModule],
+      declarations: [AppfxCardComponent],
+      providers: [
+        DragAndDropGroupService,
+        { provide: LayoutService, useClass: MockLayoutService },
+        { provide: DragDropService, useClass: MockDragDropService },
+        { provide: A11yService, useClass: MockA11yService },
+        { provide: ZoomLevelService, useClass: ZoomLevelServiceMock },
+        noop ? provideNoopAnimations() : [],
+      ],
+      animationsEnabled: true,
+    });
+    const fixture = TestBed.createComponent(AppfxCardComponent);
+    fixture.componentInstance.card = sampleCards[0];
+    fixture.componentInstance.dropGroup = 'container-1';
+    fixture.detectChanges();
+    return fixture.nativeElement.querySelector('.droppable');
+  }
+
+  it('slides the card in', () => {
+    expect(renderCard(false).classList).toContain('clr-fade-slide-right-enter');
+  });
+
+  it('does not animate the card with Noop animations', () => {
+    expect(renderCard(true).classList).not.toContain('clr-fade-slide-right-enter');
   });
 });

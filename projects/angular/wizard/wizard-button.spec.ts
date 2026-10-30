@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, DebugElement } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -30,6 +30,7 @@ import { ClrWizardModule } from './wizard.module';
       </clr-wizard-button>
     }
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ViewTestComponent {
@@ -62,6 +63,7 @@ describe('New Wizard Tests', () => {
       let buttonHub: ButtonHubMock;
 
       @Component({
+        changeDetection: ChangeDetectionStrategy.Eager,
         template: `<clr-wizard-button></clr-wizard-button>`,
         standalone: false,
       })

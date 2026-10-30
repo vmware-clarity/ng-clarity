@@ -5,10 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, DebugElement, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrAlert, ClrAlertModule } from '@clr/angular/emphasis/alert';
 import { ClrIcon } from '@clr/angular/icon';
 import { delay } from '@clr/angular/testing';
@@ -52,6 +51,7 @@ class MyPageCollectionMock extends PageCollectionMock {
       </ng-template>
     </clr-wizard-page>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TypescriptTestComponent {
@@ -75,6 +75,7 @@ class TypescriptTestComponent {
       <ng-template clrPageTitle>Other template API tests</ng-template>
     </clr-wizard-page>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TemplateTestComponent {
@@ -196,6 +197,7 @@ class TemplateTestComponent {
       </clr-wizard-page>
     </clr-wizard>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ViewTestComponent {
@@ -239,6 +241,7 @@ class ViewTestComponent {
       <clr-wizard-page [id]="3 === page ? 'lastpage' : page">Content for page {{ page }}</clr-wizard-page>
     }
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class IdTestComponent {
@@ -267,7 +270,7 @@ describe('New Wizard Tests', () => {
 
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [ClrWizardModule, ClrAlertModule, NoopAnimationsModule],
+          imports: [ClrWizardModule, ClrAlertModule],
           declarations: [IdTestComponent],
           providers: [
             WizardNavigationService,
@@ -374,7 +377,7 @@ describe('New Wizard Tests', () => {
     describe('Typescript API', () => {
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [ClrWizardModule, NoopAnimationsModule],
+          imports: [ClrWizardModule],
           declarations: [TypescriptTestComponent],
           providers: [
             WizardNavigationService,
@@ -662,7 +665,7 @@ describe('New Wizard Tests', () => {
     describe('Template API', () => {
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [ClrWizardModule, NoopAnimationsModule],
+          imports: [ClrWizardModule],
           declarations: [TemplateTestComponent],
           providers: [
             WizardNavigationService,
@@ -927,7 +930,7 @@ describe('New Wizard Tests', () => {
     describe('View and Behavior', () => {
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [ClrWizardModule, ClrIcon, ClrAlertModule, NoopAnimationsModule],
+          imports: [ClrWizardModule, ClrIcon, ClrAlertModule],
           declarations: [ViewTestComponent],
           providers: [WizardNavigationService, PageCollectionService, ButtonHubService],
         });

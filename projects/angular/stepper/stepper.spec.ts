@@ -5,11 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { StepperService } from './providers/stepper.service';
 import { ClrStepper } from './stepper';
@@ -25,6 +24,7 @@ import { ClrStepperModule } from './stepper.module';
       </clr-stepper-panel>
     </form>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class MultiFieldReactiveFormsTestComponent {
@@ -47,6 +47,7 @@ class MultiFieldReactiveFormsTestComponent {
       }
     </form>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ReactiveFormsTestComponent {
@@ -76,6 +77,7 @@ class ReactiveFormsTestComponent {
       }
     </form>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TemplateFormsTestComponent {
@@ -96,7 +98,7 @@ describe('ClrStepper', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [ReactiveFormsTestComponent],
-        imports: [ReactiveFormsModule, NoopAnimationsModule, ClrStepperModule],
+        imports: [ReactiveFormsModule, ClrStepperModule],
       });
 
       fixture = TestBed.createComponent(ReactiveFormsTestComponent);
@@ -217,7 +219,7 @@ describe('ClrStepper', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [MultiFieldReactiveFormsTestComponent],
-        imports: [ReactiveFormsModule, NoopAnimationsModule, ClrStepperModule],
+        imports: [ReactiveFormsModule, ClrStepperModule],
       });
 
       fixture = TestBed.createComponent(MultiFieldReactiveFormsTestComponent);
@@ -278,7 +280,7 @@ describe('ClrStepper', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [ReactiveFormsTestComponent],
-        imports: [ReactiveFormsModule, NoopAnimationsModule, ClrStepperModule],
+        imports: [ReactiveFormsModule, ClrStepperModule],
       });
 
       fixture = TestBed.createComponent(ReactiveFormsTestComponent);
@@ -337,7 +339,7 @@ describe('ClrStepper Template Forms', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [TemplateFormsTestComponent],
-        imports: [FormsModule, NoopAnimationsModule, ClrStepperModule],
+        imports: [FormsModule, ClrStepperModule],
       });
 
       fixture = TestBed.createComponent(TemplateFormsTestComponent);
@@ -366,7 +368,7 @@ describe('ClrStepper Error Handling', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [],
-      imports: [NoopAnimationsModule, ClrStepperModule],
+      imports: [ClrStepperModule],
     });
   });
 

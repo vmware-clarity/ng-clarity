@@ -6,9 +6,8 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, Input, NgModule, SimpleChange, Type } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, NgModule, SimpleChange, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import type { Mock } from 'vitest';
 
 import { PropertyViewConfigProvider } from '../property-view-config-provider';
@@ -157,7 +156,7 @@ describe('PropertyViewPropertyComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, TestModule],
+      imports: [TestModule],
       declarations: [PropertyViewPropertyComponent, PropertyViewPropertyValueContainerMockComponent],
     });
 
@@ -688,6 +687,7 @@ interface MockModel {
 @Component({
   selector: 'mock-component',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `{{ model.text }}`,
 })
 class MockComponent implements PropertyViewPropertyValueComponent<MockModel> {
@@ -697,6 +697,7 @@ class MockComponent implements PropertyViewPropertyValueComponent<MockModel> {
 @Component({
   selector: 'appfx-property-view-property-value-component',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '',
 })
 class PropertyViewPropertyValueContainerMockComponent<T> {

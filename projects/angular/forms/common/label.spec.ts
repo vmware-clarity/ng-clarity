@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrInput, ClrInputContainer } from '@clr/angular/forms/input';
@@ -20,12 +20,14 @@ import { NgControlService } from './providers/ng-control.service';
 
 @Component({
   template: `<label></label>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NoForTest {}
 
 @Component({
   template: `<label [for]="forValue"></label>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ExplicitForTest {
@@ -35,6 +37,7 @@ class ExplicitForTest {
 @Component({
   template: `<div><label for="hello"></label></div>`,
   providers: [ControlIdService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ContainerizedTest {
@@ -44,12 +47,14 @@ class ContainerizedTest {
 @Component({
   template: `<div><label for="hello"></label></div>`,
   providers: [NgControlService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class WrapperTest {}
 
 @Component({
   template: `<label for="hello" class="clr-col-12 clr-col-md-3"></label>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ExistingGridTest {}
@@ -63,6 +68,7 @@ class ExistingGridTest {}
       </clr-signpost>
     </label>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SignpostTest {
@@ -76,12 +82,14 @@ class SignpostTest {
       <input type="text" />
     </label>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class DefaultClickBehaviorTest {}
 
 @Component({
   template: `<label id="explicit-label"></label>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ExplicitIdTest {}
@@ -93,6 +101,7 @@ class ExplicitIdTest {}
       <input clrInput />
     </clr-input-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ControlIdTest {}
@@ -104,6 +113,7 @@ class ControlIdTest {}
       <input id="explicit-control" clrInput />
     </clr-input-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ExplicitControlIdTest {}

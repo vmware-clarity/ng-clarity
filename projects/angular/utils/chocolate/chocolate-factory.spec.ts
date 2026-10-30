@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -77,6 +77,7 @@ describe('Chocolate factory', () => {
       }
     </parent>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ChocolateTest extends WillyWonka {
@@ -94,6 +95,7 @@ class ChocolateTest extends WillyWonka {
     {{ incrementChange() }}
   `,
   providers: [{ provide: WillyWonka, useExisting: ChocolateParent }],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ChocolateParent extends WillyWonka {
@@ -108,6 +110,7 @@ class ChocolateParent extends WillyWonka {
 @Component({
   selector: 'child',
   template: '{{last}} {{incrementChange()}}',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ChocolateChild extends OompaLoompa implements OnInit, OnDestroy {

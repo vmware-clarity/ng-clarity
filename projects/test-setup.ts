@@ -10,3 +10,11 @@ afterEach(() => {
 });
 
 document.body.setAttribute('cds-theme', '');
+
+// Match the native-animation defaults from the upstream test bootstrap.
+if (!document.getElementById('clr-test-no-animations')) {
+  const noAnimationsStyle = document.createElement('style');
+  noAnimationsStyle.id = 'clr-test-no-animations';
+  noAnimationsStyle.textContent = `*, *::before, *::after { animation: none !important; transition: none !important; }`;
+  document.head.appendChild(noAnimationsStyle);
+}

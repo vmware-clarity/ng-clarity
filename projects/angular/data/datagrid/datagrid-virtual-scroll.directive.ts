@@ -156,6 +156,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   }
 
   get totalContentHeight() {
+    // TODO(CDE-3230): `_totalContentHeight` is private CDK API and may change in any CDK release.
     return this.virtualScrollViewport?._totalContentHeight() || '';
   }
 
@@ -444,6 +445,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     );
 
     const virtualScrollViewport = injector.get(CdkVirtualScrollViewport);
+    // TODO(CDE-3230): `_contentWrapper` is private CDK API and may change in any CDK release.
     virtualScrollViewport._contentWrapper = contentWrapper;
 
     // Registered before the caller creates anything else, so a half-finished init still tears down

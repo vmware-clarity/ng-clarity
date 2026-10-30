@@ -5,8 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Directive } from '@angular/core';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ChangeDetectionStrategy, Component, Directive } from '@angular/core';
 import { spec, TestContext } from '@clr/angular/testing';
 
 import { ClrDatagridPagination } from './datagrid-pagination';
@@ -27,6 +26,7 @@ import { Page } from './providers/page';
       </clr-dg-footer>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class IntegrationTest {
@@ -60,7 +60,7 @@ describe('Datagrid', () => {
         ClrDatagridPagination,
         IntegrationTest,
         ClrDatagridModule,
-        { declarations: [InstantiationCounter], imports: [NoopAnimationsModule] },
+        { declarations: [InstantiationCounter], imports: [] },
         false
       );
       beforeEach(() => {

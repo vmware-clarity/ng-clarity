@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { AppfxDatagridModule, ColumnDefinition, ExportProviderService } from '@clr/addons/datagrid';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import { SelectionType } from '@clr/angular/data/datagrid';
@@ -18,6 +18,7 @@ import { FetchResult, Inventory, VmItem } from './inventory/inventory';
   imports: [AppfxDatagridModule, GridConfigFormComponent],
   standalone: true,
   templateUrl: './server-driven.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ExportProviderService, Inventory],
 })
 export class ServerDrivenGridDemoComponent {
@@ -82,7 +83,7 @@ export class ServerDrivenGridDemoComponent {
 
   protected onRefreshGridData(state: ClrDatagridStateInterface): void {
     console.log('#refreshGridData emitted:', state);
-    this.options.loading = true;
+    this.options = { ...this.options, loading: true };
     this.cdr.detectChanges();
     const pageSize = state.page?.size || 20;
     const currentPage = state.page?.current || 1;
@@ -93,7 +94,9 @@ export class ServerDrivenGridDemoComponent {
       .subscribe((result: FetchResult) => {
         console.log('result', result);
         this.vmItems = result.vms;
-        this.options.loading = false;
+        this.options = { ...this.options, loading: false };
+
+        this.cdr.markForCheck();
       });
   }
 
@@ -118,14 +121,18 @@ export class ServerDrivenGridDemoComponent {
       .subscribe((data: FetchResult) => {
         this.vmItems = data.vms;
         this.resetting = false;
+
+        this.cdr.markForCheck();
       });
   }
 
   protected refresh(): void {
-    this.options.loading = true;
+    this.options = { ...this.options, loading: true };
     setTimeout(() => {
-      this.options.loading = false;
+      this.options = { ...this.options, loading: false };
       this.vmItems = [...this.vmItems];
+
+      this.cdr.markForCheck();
     }, this.inventory.latency);
   }
 }

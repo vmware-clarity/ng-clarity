@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ClrDatagridModule } from '@clr/angular/data/datagrid';
 import { expect as assert } from 'vitest';
@@ -13,6 +13,7 @@ import { expect as assert } from 'vitest';
 import { GridHelper, GridRowTestHelper } from './grid-helper';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `<clr-datagrid><clr-dg-column>Name</clr-dg-column></clr-datagrid>`,
   standalone: false,
 })

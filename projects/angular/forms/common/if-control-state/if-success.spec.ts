@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, Validators } from '@angular/forms';
 import { ClrInput, ClrInputContainer } from '@clr/angular/forms/input';
@@ -19,6 +19,7 @@ const successMessage = 'SUCCESS_MESSAGE';
 
 @Component({
   template: `<div *clrIfSuccess></div>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class InvalidUseTest {}
@@ -26,6 +27,7 @@ class InvalidUseTest {}
 @Component({
   template: `<clr-control-success *clrIfSuccess>${successMessage}</clr-control-success>`,
   providers: [NgControlService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class GeneralSuccessTest {}

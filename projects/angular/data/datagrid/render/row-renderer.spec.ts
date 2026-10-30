@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, DebugElement } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { createTestHelpers, TestContext } from '@clr/angular/testing';
 import { BehaviorSubject } from 'rxjs';
@@ -88,6 +88,7 @@ describe('Datagrid', () => {
       }
     </clr-dg-row>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SimpleTest {

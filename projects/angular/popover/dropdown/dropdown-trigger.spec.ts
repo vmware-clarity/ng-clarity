@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { spec, TestContext } from '@clr/angular/testing';
 import { FocusService } from '@clr/angular/utils';
@@ -17,6 +17,7 @@ import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './provide
   template: `<button clrDropdownTrigger>Hello world</button>`,
   // These services are declared here because they need the renderer
   providers: [FocusService, DROPDOWN_FOCUS_HANDLER_PROVIDER],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SimpleTest {}

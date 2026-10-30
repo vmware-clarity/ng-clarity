@@ -7,11 +7,6 @@
     "noImplicitOverride": true,
     "types": []
   },
-  "angularCompilerOptions": {
-    "enableResourceInlining": true,
-    "skipTemplateCodegen": true,
-    "strictMetadataEmit": true
-  },
   "exclude": [
     "**/*.spec.ts",
     "**/*.mock.ts",

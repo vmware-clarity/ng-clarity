@@ -6,7 +6,6 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { PropertyViewMessageModel, PropertyViewModelType } from '../property-view.model';
 import { PropertyViewMessageComponent } from './property-view-message.component';
@@ -47,7 +46,6 @@ describe('PropertyViewMessageComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule],
       declarations: [PropertyViewMessageComponent],
       providers: [],
     });

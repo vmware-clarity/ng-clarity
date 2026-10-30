@@ -5,11 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { DefaultButton } from '@clr/addons/dialog';
 import { CloseHandler, ModelChange, Step, TabLayout, WorkflowModel } from '@clr/addons/var';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'appfx-dialog',
   standalone: false,
   template: '',
@@ -37,6 +38,7 @@ export class MockAppfxDialogComponent {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'appfx-dialog',
   standalone: true,
   template: '',

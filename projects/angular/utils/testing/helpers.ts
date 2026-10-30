@@ -8,7 +8,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement, InjectionToken, Type } from '@angular/core';
 import { ComponentFixture, TestBed, TestModuleMetadata } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClarityModule } from '@clr/angular';
 
 export class TestContext<D, C> {
@@ -123,7 +122,7 @@ export function createTestHelpers() {
     extraDirectives: Type<any>[] = []
   ) => {
     TestBed.configureTestingModule({
-      imports: [ClarityModule, NoopAnimationsModule],
+      imports: [ClarityModule],
       declarations: [testComponent, ...extraDirectives],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: providers,
@@ -157,7 +156,7 @@ export function createTestHelpers() {
     serviceOverrides: any[]
   ) => {
     TestBed.configureTestingModule({
-      imports: [ClarityModule, NoopAnimationsModule],
+      imports: [ClarityModule],
       declarations: [testComponent, ...extraDirectives],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: providers,
@@ -179,7 +178,7 @@ export function createTestHelpers() {
     serviceOverrides: any[]
   ) => {
     TestBed.configureTestingModule({
-      imports: [ClarityModule, NoopAnimationsModule],
+      imports: [ClarityModule],
       declarations: [testComponent, ...extraDirectives],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: providers,
@@ -211,6 +210,31 @@ export function assertEqualDates(date1: Date, date2: Date): boolean {
 }
 export function delay(ms = 0): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/**
+ * Turns the CSS animations and transitions back on (`test.ts` turns them off for all the specs). Returns the function
+ * turning them off again; call it in an `afterEach`.
+ */
+export function enableCssAnimations(): () => void {
+  const noAnimationsStyle = document.getElementById('clr-test-no-animations') as HTMLStyleElement | null;
+  if (noAnimationsStyle) {
+    noAnimationsStyle.disabled = true;
+  }
+  return () => {
+    if (noAnimationsStyle) {
+      noAnimationsStyle.disabled = false;
+    }
+  };
+}
+
+/** Finishes the running animations (CSS or Web Animations) of the element and of its descendants. */
+export function finishAnimations(element: Element) {
+  element.getAnimations({ subtree: true }).forEach(animation => {
+    if (animation.effect?.getComputedTiming().iterations !== Infinity) {
+      animation.finish();
+    }
+  });
 }
 
 /**

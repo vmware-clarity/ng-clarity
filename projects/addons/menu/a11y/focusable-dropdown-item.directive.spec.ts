@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClrDropdownItem } from '@clr/angular/popover/dropdown';
 
@@ -15,6 +15,7 @@ import { FocusableItemProvider } from './focusable-item-provider';
 @Component({
   selector: 'test-dropdown-item',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '<div clrDropdownItem appfxFocusableDropdownItem></div>',
 })
 class TestDropdownItemComponent {}
@@ -22,6 +23,7 @@ class TestDropdownItemComponent {}
 @Component({
   selector: 'clr-dropdown-item',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `<ng-content></ng-content>`,
 })
 class MockClrDropdownItemComponent {

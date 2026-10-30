@@ -1,7 +1,8 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "types": ["vitest/globals"]
+    "types": ["vitest/globals"],
+    "rootDir": "../.."
   },
   "include": ["**/*.spec.ts", "**/*.d.ts"],
   "exclude": ["schematics/**"],

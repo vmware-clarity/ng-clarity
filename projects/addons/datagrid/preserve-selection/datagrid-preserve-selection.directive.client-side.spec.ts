@@ -7,10 +7,9 @@
 
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CdkConnectedOverlay, CdkOverlayOrigin, OverlayModule } from '@angular/cdk/overlay';
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ZoomLevelService } from '@clr/addons/a11y';
 import {
   GridHelper,
@@ -123,6 +122,7 @@ const columns = [
       [columns]="columnsDefs"
     ></appfx-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 class DatagridForClientSideGridHostComponent {
@@ -188,7 +188,6 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
     TestBed.configureTestingModule({
       imports: [
         FormsModule,
-        NoopAnimationsModule,
         OverlayModule,
         DatagridColumnsOrderModule,
         DragDropModule,

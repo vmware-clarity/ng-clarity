@@ -6,19 +6,15 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, DebugElement, NgModule } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, NgModule } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { WorkflowStrings } from '@clr/addons/workflow/strings';
-import { ClrStackViewModule } from '@clr/angular/data/stack-view';
 import { ClrAlertModule } from '@clr/angular/emphasis/alert';
-import { ClrIcon } from '@clr/angular/icon';
 import { Observable, of } from 'rxjs';
 import type { Mock } from 'vitest';
 
 import { StepContainerComponent } from './step-container.component';
-import { ErrorComponent } from '../error/error.component';
 import { ActivationError } from '../error/interfaces';
 import { OnStepActivate, OnStepValidate, StepModelHolder } from '../model/step-interfaces';
 import { StepValidationState } from '../model/step-validation-state';
@@ -41,6 +37,7 @@ class MockPageModel implements StepModel {
 
 @Component({
   selector: 'mock-page-component',
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `<div>Mock Page Content</div>`,
 })
 class MockPageComponent implements OnStepActivate, OnStepValidate, StepModelHolder {
@@ -81,13 +78,8 @@ describe('wizard-page-container.component.spec', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CommonModule, ClrIcon, ClrStackViewModule, ClrAlertModule, NoopAnimationsModule, ThisTestModule],
-      declarations: [
-        ErrorComponent,
-        StepContainerComponent,
-        ValidationBannerComponent,
-        ValidationBannerInternalComponent,
-      ],
+      imports: [ClrAlertModule, ThisTestModule],
+      declarations: [StepContainerComponent, ValidationBannerComponent, ValidationBannerInternalComponent],
     });
 
     testContext.fixture = TestBed.createComponent(StepContainerComponent);

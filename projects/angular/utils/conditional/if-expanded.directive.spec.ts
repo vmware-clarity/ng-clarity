@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Inject, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { ClrIfExpanded } from './if-expanded.directive';
@@ -142,6 +142,7 @@ describe('IfExpanded directive', () => {
 @Component({
   template: `<test-counter *clrIfExpanded></test-counter>`,
   providers: [{ provide: 'counter', useFactory: () => ({ total: 0 }) }],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SimpleTest {
@@ -158,6 +159,7 @@ class SimpleTest {
 @Component({
   template: `<test-counter [clrIfExpanded]></test-counter>`,
   providers: [{ provide: 'counter', useFactory: () => ({ total: 0 }) }],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SimpleTemplateTest {
@@ -174,6 +176,7 @@ class SimpleTemplateTest {
 @Component({
   selector: 'test-counter',
   template: `{{ count }}`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestCounter {
@@ -195,6 +198,7 @@ class TestCounter {
       <div *clrIfExpanded>Hello World</div>
     }
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NgIfTest {

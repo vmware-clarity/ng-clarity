@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -18,6 +18,7 @@ function customTestComponentFactory(
   labelSize: any = 2
 ) {
   @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     template: `<div clrForm clrLayout="${layout}" ${hasLabelSize ? `clrLabelSize="${labelSize}"` : ''}></div>`,
     providers: [LayoutService],
     standalone: false,

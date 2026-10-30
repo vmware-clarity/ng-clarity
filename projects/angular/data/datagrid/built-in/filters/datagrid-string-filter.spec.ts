@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { animationFrameTick, createTestHelpers, delay, TestContext } from '@clr/angular/testing';
@@ -151,6 +151,7 @@ class TestFilter implements ClrDatagridStringFilterInterface<string> {
   template: `
     <clr-dg-string-filter [clrDgStringFilter]="filter" [(clrFilterValue)]="filterValue"></clr-dg-string-filter>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class FullTest {
@@ -168,6 +169,7 @@ class FullTest {
       [clrFilterPlaceholder]="clrFilterPlaceholder"
     ></clr-dg-string-filter>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class AccessibilityTest {

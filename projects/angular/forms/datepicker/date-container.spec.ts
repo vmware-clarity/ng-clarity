@@ -7,7 +7,7 @@
 
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
-import { Component, LOCALE_ID } from '@angular/core';
+import { ChangeDetectionStrategy, Component, LOCALE_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import {
@@ -334,6 +334,7 @@ describe('Datepicker', () => {
     </clr-date-container>
   `,
   providers: [FormsFocusService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {
@@ -349,6 +350,7 @@ class TestComponent {
     </clr-date-container>
   `,
   providers: [FormsFocusService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponentWithFirstDay {

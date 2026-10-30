@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { bookmarkIcon, ClarityIcons, ClrAlertModule } from '@clr/angular';
 
@@ -96,6 +96,7 @@ const UI_CDS_USE_SCSS_VARIABLES = `
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [DocTabsComponent, DocTabComponent, ThemedImageComponent, RouterLink, ClrAlertModule, CodeSnippetComponent],
 })
 export class ThemesDemo extends ClarityDocComponent {

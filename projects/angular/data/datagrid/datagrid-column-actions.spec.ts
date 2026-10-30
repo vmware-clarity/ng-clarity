@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ApplicationRef, Component, getDebugNode } from '@angular/core';
+import { ApplicationRef, ChangeDetectionStrategy, Component, getDebugNode } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrPopoverService } from '@clr/angular/popover/common';
@@ -71,6 +71,7 @@ function menuIsOpen(): boolean {
       </clr-dg-row>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ColumnActionsTest {
@@ -96,6 +97,7 @@ class ColumnActionsTest {
       </clr-dg-row>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ProjectedActionTest {
@@ -124,6 +126,7 @@ class ProjectedActionTest {
       </clr-dg-row>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ProjectedOrderTest {
@@ -144,6 +147,7 @@ class ProjectedOrderTest {
       </clr-dg-row>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class AutoFilterTest {
@@ -165,6 +169,7 @@ class AutoFilterTest {
       </clr-dg-row>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NoFilterTest {
@@ -183,6 +188,7 @@ class NoFilterTest {
       </clr-dg-row>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class KeepFilterInHeaderTest {

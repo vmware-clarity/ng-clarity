@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrIcon, ClrIconModule, ClrModalModule } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -96,6 +96,7 @@ const FULL_SCREEN_EXAMPLE = `
 @Component({
   selector: 'clr-modal-sizes-demo',
   templateUrl: './modal-sizes.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrIcon, ClrIconModule, ClrModalModule, StackblitzExampleComponent],
 })
 export class ModalSizesDemo {

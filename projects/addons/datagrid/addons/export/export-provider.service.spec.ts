@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ClrDatagrid, ClrDatagridModule, ClrDatagridSortOrder } from '@clr/angular/data/datagrid';
@@ -22,6 +22,7 @@ import { appfxDatagridErrorNotifiableToken } from '../../interfaces/tokens';
   imports: [ClrDatagridModule, FormsModule],
   template: ` <clr-datagrid></clr-datagrid> `,
   providers: [ExportProviderService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 class ClrDatagridHostComponent {

@@ -46,11 +46,6 @@ jobs:
           FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
           FIGMA_FILE_KEY: ${{ secrets.FIGMA_FILE_KEY }}
         run: npm run figma:push
-      - name: Update Website StackBlitz Versions
-        run: |
-          RELEASED_VERSION=$(node -p "require('./dist/clr-angular/package.json').version")
-          echo "Patching StackBlitz template with released version: $RELEASED_VERSION"
-          find dist/website -name '*.js' -exec sed -i "s/CLARITY_VERSION_PLACEHOLDER/$RELEASED_VERSION/g" {} +
       - name: Deploy Docs
         continue-on-error: true
         timeout-minutes: 5

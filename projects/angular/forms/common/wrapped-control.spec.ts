@@ -5,7 +5,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Directive, ElementRef, Injector, NgModule, Renderer2, Type, ViewContainerRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Directive,
+  ElementRef,
+  Injector,
+  NgModule,
+  Renderer2,
+  Type,
+  ViewContainerRef,
+} from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -31,6 +41,7 @@ import { WrappedFormControl } from './wrapped-control';
   selector: 'test-wrapper',
   template: `<ng-content></ng-content>`,
   providers: [ControlIdService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestWrapper {}
@@ -52,6 +63,7 @@ class TestControl extends WrappedFormControl<TestWrapper> {
     <div id="second"><ng-content></ng-content></div>
   `,
   providers: [ControlIdService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestWrapper2 {}
@@ -70,6 +82,7 @@ class TestControl2 extends WrappedFormControl<TestWrapper2> {
   selector: 'test-wrapper3',
   template: `<div id="wrapper"><ng-content></ng-content></div>`,
   providers: [ControlIdService, NgControlService, ControlClassService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestWrapper3 extends ClrAbstractContainer {}
@@ -94,6 +107,7 @@ class TestControl3 extends WrappedFormControl<TestWrapper3> {
   selector: 'form-wrapper',
   template: `<div id="form-wrapper"><ng-content></ng-content></div>`,
   providers: [MarkControlService, LayoutService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class FormWrapper {}
@@ -110,30 +124,35 @@ class WrappedFormControlTestModule {}
  */
 @Component({
   template: `<input testControl />`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NoWrapperNoId {}
 
 @Component({
   template: `<input testControl id="hello" />`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NoWrapperWithId {}
 
 @Component({
   template: `<test-wrapper><input testControl /></test-wrapper>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class WithWrapperNoId {}
 
 @Component({
   template: `<test-wrapper><input testControl id="hello" /></test-wrapper>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class WithWrapperWithId {}
 
 @Component({
   template: `<test-wrapper2><input testControl id="hello" /></test-wrapper2>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class WithMultipleNgContent {}
@@ -146,6 +165,7 @@ class WithMultipleNgContent {}
       </test-wrapper3>
     </form-wrapper>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class WithControl {
@@ -159,6 +179,7 @@ class WithControl {
       <test-wrapper3><input type="number" testControl3 [(ngModel)]="model" required id="control2" /></test-wrapper3>
     </form-wrapper>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class WithNumberControl {
@@ -174,6 +195,7 @@ class WithNumberControl {
       </test-wrapper3>
     </form-wrapper>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class WithControlAndHelper {
@@ -189,6 +211,7 @@ class WithControlAndHelper {
       </test-wrapper3>
     </form-wrapper>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class WithControlAndError {
@@ -204,6 +227,7 @@ class WithControlAndError {
       </test-wrapper3>
     </form-wrapper>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class WithControlAndSuccess {
@@ -220,6 +244,7 @@ class WithControlAndSuccess {
       </test-wrapper3>
     </form-wrapper>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class WithDynamicFormControl {
@@ -242,6 +267,7 @@ class WithDynamicFormControl {
       </test-wrapper3>
     </form-wrapper>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class WithDynamicNgControl {

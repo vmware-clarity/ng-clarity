@@ -310,7 +310,7 @@
         <ul class="list">
           @for (route of childRoutes; track route) {
           <li>
-            <a [routerLink]="[route?.path]">{{ route?.data?.demoName }}</a>
+            <a [routerLink]="[(route?.path ?? null)]">{{ route?.data?.demoName }}</a>
           </li>
           }
         </ul>
@@ -444,5 +444,9 @@
     </table>
 
     <app-style-docs styleDocsKey="Vertical Nav"></app-style-docs>
+  </app-doc-tab>
+
+  <app-doc-tab tab="ai">
+    <app-ai-skill skillName="clr-vertical-nav"></app-ai-skill>
   </app-doc-tab>
 </app-doc-tabs>

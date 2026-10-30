@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { createTestHelpers, TestContext } from '@clr/angular/testing';
 import { Keys } from '@clr/angular/utils';
@@ -278,6 +278,7 @@ describe('Datepicker', () => {
 
 @Component({
   template: `<clr-monthpicker></clr-monthpicker>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {}

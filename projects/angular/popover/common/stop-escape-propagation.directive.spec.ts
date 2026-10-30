@@ -5,9 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, HostListener, Input, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostListener, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrModal, ClrModalModule } from '@clr/angular/modal';
 import { Keys } from '@clr/angular/utils';
 
@@ -21,7 +20,7 @@ describe('ClrPopover', () => {
 
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [NoopAnimationsModule, ClrModalModule],
+          imports: [ClrModalModule],
           declarations: [TestComponent, TestPopoverHostComponent],
         });
 
@@ -74,6 +73,7 @@ async function pressEscapeKey(fixture: ComponentFixture<TestComponent>, element:
   template: '',
   providers: [ClrPopoverService],
   hostDirectives: [ClrStopEscapePropagationDirective],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestPopoverHostComponent {
@@ -96,6 +96,7 @@ class TestPopoverHostComponent {
       </div>
     </clr-modal>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {

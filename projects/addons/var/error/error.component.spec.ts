@@ -9,7 +9,6 @@ import { CommonModule } from '@angular/common';
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { WorkflowStrings } from '@clr/addons/workflow/strings';
 import { ClrStackViewModule } from '@clr/angular/data/stack-view';
 import { ClrIcon } from '@clr/angular/icon';
@@ -39,7 +38,7 @@ describe('ErrorComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ClrStackViewModule, ClrIcon, CommonModule, NoopAnimationsModule],
+      imports: [ClrStackViewModule, ClrIcon, CommonModule],
       declarations: [ErrorComponent],
       providers: [WorkflowStrings],
     });

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Directive, Injectable } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Directive, Injectable } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import type { Mock } from 'vitest';
 
@@ -24,6 +24,7 @@ class TestService {
 class TestDirective {}
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'helper-test-host',
   template: '<span helperTest>{{ value }}</span>',
   providers: [TestService],
@@ -34,12 +35,16 @@ class TestHost {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '<helper-test-host />',
   standalone: false,
 })
 class TestWrapper {}
 
-@Component({ template: '' })
+@Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
+  template: '',
+})
 class TeardownTestHost {
   destroyed = false;
 

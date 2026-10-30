@@ -7,10 +7,17 @@
 
 import { CdkDrag, DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
-import { Component, ContentChildren, Directive, ElementRef, QueryList, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ContentChildren,
+  Directive,
+  ElementRef,
+  QueryList,
+  ViewChild,
+} from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrDatagridModule } from '@clr/angular/data/datagrid';
 
 import { ColumnOrderDirective } from './column-order.directive';
@@ -28,7 +35,7 @@ describe('ColumnOrderDirective', () => {
   let service: DatagridColumnsOrderService;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, CommonModule, ClrDatagridModule, DragDropModule, TestClrDatagridHostComponent],
+      imports: [CommonModule, ClrDatagridModule, DragDropModule, TestClrDatagridHostComponent],
     });
 
     testContext.fixture = TestBed.createComponent(TestClrDatagridHostComponent);
@@ -267,6 +274,7 @@ class TestDirective {
 @Component({
   selector: 'clr-datagrid-host-component',
   imports: [ClrDatagridModule, DatagridColumnsOrderModule, DragDropModule, TestDirective],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-datagrid cdkDropList appfxDgColumnsOrder [dgColumnsOrderColumns]="columns" testDirectives>
       @for (column of columns; track trackByColumnId(index, column); let index = $index) {

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -794,6 +794,7 @@ describe('Datepicker', () => {
     />
   `,
   providers: [FormsFocusService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {
@@ -810,6 +811,7 @@ class TestComponent {
     <input type="date" clrDate [(ngModel)]="dateValue" #picker="ngModel" />
     <button id="reset" (click)="picker.reset()">Reset</button>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponentWithNgModel {
@@ -820,6 +822,7 @@ class TestComponentWithNgModel {
 
 @Component({
   template: `<input type="date" [(clrDate)]="date" [disabled]="disabled" />`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponentWithClrDate {
@@ -834,6 +837,7 @@ class TestComponentWithClrDate {
     </form>
   `,
   providers: [FormsFocusService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponentWithReactiveForms {
@@ -853,6 +857,7 @@ class TestComponentWithReactiveForms {
       <input type="date" clrDate (clrDateChange)="dateChanged($event)" [(ngModel)]="dateInput" name="date" />
     </form>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponentWithTemplateDrivenForms {

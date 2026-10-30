@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TabsHelper } from '@clr/addons/testing';
 import { ClrTabsModule } from '@clr/angular/layout/tabs';
@@ -18,6 +18,7 @@ describe('Directive: IfTabActive', () => {
   let tabHelper: TabsHelper;
 
   @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [AppfxTabsModule, ClrTabsModule],
     template: `<clr-tabs>
       <clr-tab id="tab1" appfxIfTabActive [activateTab]="activate === 'first'" [activeClass]="'activeTab'">

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Optional } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Optional } from '@angular/core';
 import {
   ClrAbstractContainer,
   ControlClassService,
@@ -50,6 +50,7 @@ import { DatalistIdService } from './providers/datalist-id.service';
   },
   providers: [ControlClassService, ControlIdService, FormsFocusService, NgControlService, DatalistIdService],
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDatalistContainer extends ClrAbstractContainer {
   focus = false;

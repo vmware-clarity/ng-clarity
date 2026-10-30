@@ -5,10 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AppfxCardContainerModule } from '@clr/addons/card-container';
 import { ClarityModule } from '@clr/angular';
 
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -39,6 +40,7 @@ export class MyModule {}
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ClarityModule,
     AppfxCardContainerModule,
@@ -50,6 +52,7 @@ export class MyModule {}
     NotesCardComponent,
     TagsCardComponent,
     DynamicCardComponent,
+    AiSkillComponent,
   ],
 })
 export class CardContainerDemoComponent extends ClarityDocComponent {

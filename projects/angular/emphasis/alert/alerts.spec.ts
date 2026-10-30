@@ -246,6 +246,7 @@ describe('Alert Tests', () => {
 
   describe('with an initially-closed alert', () => {
     @Component({
+      changeDetection: ChangeDetectionStrategy.Eager,
       template: `
         <clr-alerts>
           <clr-alert [clrAlertClosed]="true">
@@ -300,6 +301,7 @@ describe('Alert Tests', () => {
       </clr-alert>
     </clr-alerts>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {
@@ -334,6 +336,7 @@ class TestComponent {
       </clr-alert>
     </clr-alerts>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestAlertInstance {
@@ -357,7 +360,7 @@ class TestAlertInstance {
       }
     </clr-alerts>
   `,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class DynamicAlerts {

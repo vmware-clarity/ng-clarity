@@ -511,7 +511,7 @@
         <ul class="list demo-list">
           @for (route of childRoutes; track route) {
           <li>
-            <a [routerLink]="[route?.path]">{{ route?.data?.demoName }}</a>
+            <a [routerLink]="[(route?.path ?? null)]">{{ route?.data?.demoName }}</a>
           </li>
           }
         </ul>
@@ -572,6 +572,10 @@
     </clr-accordion>
 
     <app-style-docs styleDocsKey="Datagrid"></app-style-docs>
+  </app-doc-tab>
+
+  <app-doc-tab tab="ai">
+    <app-ai-skill skillName="clr-datagrid"></app-ai-skill>
   </app-doc-tab>
 
   <app-doc-tab tab="accessibility">

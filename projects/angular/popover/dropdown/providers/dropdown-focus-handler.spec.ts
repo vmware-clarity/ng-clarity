@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrPopoverService } from '@clr/angular/popover/common';
@@ -25,6 +25,7 @@ import { DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler } from './dropdow
   selector: 'simple-host',
   template: '',
   providers: [ClrPopoverService, FOCUS_SERVICE_PROVIDER, DROPDOWN_FOCUS_HANDLER_PROVIDER],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SimpleHost {}
@@ -32,6 +33,7 @@ class SimpleHost {}
 @Component({
   template: '<simple-host></simple-host>',
   providers: [ClrPopoverService, FOCUS_SERVICE_PROVIDER, DROPDOWN_FOCUS_HANDLER_PROVIDER],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NestedHost {}

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
@@ -19,6 +19,7 @@ import { MockFocusableItem } from './focusable-item/focusable-item.mock';
   selector: 'simple-host',
   template: '',
   providers: [FOCUS_SERVICE_PROVIDER],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SimpleHost {}
@@ -26,6 +27,7 @@ class SimpleHost {}
 @Component({
   template: '<simple-host></simple-host>',
   providers: [FOCUS_SERVICE_PROVIDER],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NestedHost {}

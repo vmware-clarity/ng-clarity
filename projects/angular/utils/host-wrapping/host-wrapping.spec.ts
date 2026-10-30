@@ -5,10 +5,18 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Directive, InjectionToken, NgModule, OnInit, Type, ViewContainerRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Directive,
+  InjectionToken,
+  NgModule,
+  OnInit,
+  Type,
+  ViewContainerRef,
+} from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { HostWrapper } from './host-wrapper';
 import { ClrHostWrappingModule } from './host-wrapping.module';
@@ -19,6 +27,7 @@ const WRAPPER_SERVICE = new InjectionToken<number>('WrapperService');
   selector: 'wrapper-component',
   template: `Hello <ng-content></ng-content>!`,
   providers: [{ provide: WRAPPER_SERVICE, useValue: 42 }],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class WrapperComponent {}
@@ -45,12 +54,14 @@ class HostWrappingTestModule {}
 
 @Component({
   template: `<span wrappedDirective>World</span>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class WrappingTest {}
 
 @Component({
   template: `<wrapper-component><span wrappedDirective>World</span></wrapper-component>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ExplicitTest {}
@@ -59,6 +70,7 @@ class ExplicitTest {}
   template: `@if (show) {
     <span wrappedDirective>World</span>
   }`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NgIfTest {
@@ -79,7 +91,7 @@ describe('Host wrapping', () => {
 
   function setupTest<T>(testContext: TestContext<T>, testComponent: Type<T>) {
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, ClrHostWrappingModule, HostWrappingTestModule],
+      imports: [ClrHostWrappingModule, HostWrappingTestModule],
       declarations: [testComponent],
     });
     testContext.fixture = TestBed.createComponent(testComponent);

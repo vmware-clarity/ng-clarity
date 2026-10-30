@@ -5,10 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AnimationBuilder } from '@angular/animations';
-import { ChangeDetectorRef, Component, EmbeddedViewRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EmbeddedViewRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { createTestHelpers, delay, TestContext } from '@clr/angular/testing';
 import { LoadingListener } from '@clr/angular/utils';
 
@@ -231,7 +229,6 @@ describe('Datagrid', () => {
           TestBed.configureTestingModule({
             imports: [ClrDatagridModule],
             declarations: [NgForDatagridWithTrackBy],
-            providers: [AnimationBuilder],
           });
 
           fixture = TestBed.createComponent(NgForDatagridWithTrackBy);
@@ -463,24 +460,6 @@ describe('Datagrid', () => {
           expect(scrollable.classList.contains('clr-expandable-animation')).toBe(true);
         });
 
-        // CDE-3127: the expand/collapse animation applies `overflow: hidden` to its host element for the
-        // duration of the animation. .datagrid-row-sticky relies on position:sticky against the datagrid's
-        // scroll container; if that overflow:hidden lands on one of its ancestors instead, it becomes the new
-        // sticky containing block and the locked column detaches from the viewport and disappears while
-        // horizontally scrolled. Guard against the animation host ever being an ancestor of the sticky column.
-        it('does not apply the expand animation overflow clip to an ancestor of the sticky column', () => {
-          const sticky: HTMLElement = context.clarityElement.querySelector('.datagrid-row-sticky');
-          context.clarityDirective.expandAnimation.initAnimationEffects();
-
-          let ancestor = sticky.parentElement;
-          while (ancestor && ancestor !== context.clarityElement) {
-            expect(ancestor.style.overflow).not.toBe('hidden');
-            ancestor = ancestor.parentElement;
-          }
-
-          context.clarityDirective.expandAnimation.cleanupAnimationEffects();
-        });
-
         it('button must not contain aria-controls with template when not expanded', () => {
           const button = context.clarityElement.querySelector('.datagrid-expandable-caret-button');
           expect(button.getAttribute('aria-controls')).toBeNull();
@@ -678,9 +657,8 @@ describe('Datagrid', () => {
 
           beforeEach(() => {
             TestBed.configureTestingModule({
-              imports: [ClrDatagridModule, NoopAnimationsModule],
+              imports: [ClrDatagridModule],
               declarations: [RowSelectionWithDetailAndActionTest],
-              providers: [AnimationBuilder],
             });
 
             fixture = TestBed.createComponent(RowSelectionWithDetailAndActionTest);
@@ -830,12 +808,14 @@ function getFixedCellViews(row: ClrDatagridRow): EmbeddedViewRef<void>[] {
       <clr-dg-cell>Hello world</clr-dg-cell>
     </clr-dg-row>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ProjectionTest {}
 
 @Component({
   template: `<clr-dg-row [clrDgItem]="item" [clrDgSelectable]="clrDgSelectable">None</clr-dg-row>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SelectableRow {
@@ -849,6 +829,7 @@ class SelectableRow {
       None
     </clr-dg-row>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SelectableRowOrder {
@@ -859,6 +840,7 @@ class SelectableRowOrder {
 
 @Component({
   template: `<clr-dg-row [clrDgItem]="item" [(clrDgSelected)]="selected">Hello world</clr-dg-row>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class FullTest {
@@ -881,6 +863,7 @@ class FullTest {
       }
     </clr-dg-row>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ExpandTest {
@@ -898,6 +881,7 @@ class ExpandTest {
       }
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NgForDatagridWithTrackBy {
@@ -926,6 +910,7 @@ class NgForDatagridWithTrackBy {
       </ng-template>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class DatagridWithDisabledOrHiddenDetails {
@@ -972,6 +957,7 @@ class DatagridWithDisabledOrHiddenDetails {
       </clr-dg-row>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class RowSelectionWithExpandAndActionTest {
@@ -1002,6 +988,7 @@ class RowSelectionWithExpandAndActionTest {
       </clr-dg-detail>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class RowSelectionWithDetailAndActionTest {

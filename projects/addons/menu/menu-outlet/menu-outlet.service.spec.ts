@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ComponentRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ComponentRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
@@ -16,6 +16,7 @@ import { MenuOutletService } from './menu-outlet.service';
 @Component({
   selector: 'appfx-menu-outlet',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '',
 })
 class MockMenuOutletComponent {

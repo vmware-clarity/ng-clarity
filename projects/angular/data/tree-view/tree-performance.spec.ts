@@ -5,9 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { spec, TestContext } from '@clr/angular/testing';
 
 import { ClrTree } from './tree';
@@ -53,6 +52,7 @@ const LOG_TIMINGS = false;
       </clr-tree-node>
     </clr-tree>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class PerformanceTestComponent {
@@ -102,13 +102,7 @@ describe('Tree View', () => {
 
       const totalNodes = countNodes(generateTree(ROOTS, BRANCHING, DEPTH));
 
-      const getContext = spec(
-        ClrTree,
-        PerformanceTestComponent,
-        ClrTreeViewModule,
-        { imports: [NoopAnimationsModule] },
-        false
-      );
+      const getContext = spec(ClrTree, PerformanceTestComponent, ClrTreeViewModule, { imports: [] }, false);
       beforeEach(() => {
         testContext = getContext() as Context;
       });

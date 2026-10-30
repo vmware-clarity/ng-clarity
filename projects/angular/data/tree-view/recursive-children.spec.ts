@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild } from '@angular/core';
 import { spec, TestContext } from '@clr/angular/testing';
 import { IfExpandService } from '@clr/angular/utils';
 
@@ -32,6 +32,7 @@ function getChildren(node: TestNode) {
     <clr-recursive-children [parent]="parent" [children]="children"></clr-recursive-children>
     <ng-template #template let-node>{{ node.name }}</ng-template>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {

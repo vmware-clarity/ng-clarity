@@ -5,11 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ClrIcon } from '@clr/angular/icon';
 
 import { IconShapesComponent } from './icon-shapes/icon-shapes.component';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -227,6 +228,7 @@ export class ExampleComponent {
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DocTabsComponent,
     DocTabComponent,
@@ -235,6 +237,7 @@ export class ExampleComponent {
     ClrIcon,
     IconShapesComponent,
     StackblitzExampleComponent,
+    AiSkillComponent,
   ],
 })
 export class IconsDemo extends ClarityDocComponent {

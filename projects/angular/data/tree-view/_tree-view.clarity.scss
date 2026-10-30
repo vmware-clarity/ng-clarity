@@ -253,8 +253,19 @@
   .clr-treenode-children {
     //Dimensions
     margin-left: tree-view-variables.$clr-tree-node-children-margin;
-    will-change: height;
-    overflow-y: hidden;
+
+    // Collapsed children are clipped vertically only (wide children still overflow the tree) and skipped by the
+    // browser; they are inert (see the template). The height animates between both states (see `ClrTreeNode`).
+    height: 0;
+    overflow: visible clip;
+    content-visibility: hidden;
+
+    // Not clipped once expanded, so that content overflowing a node (dropdowns, tooltips...) is not cut off.
+    &.is-expanded {
+      height: auto;
+      overflow: visible;
+      content-visibility: visible;
+    }
   }
 
   .clr-treenode-link {
