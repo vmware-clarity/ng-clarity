@@ -89,6 +89,13 @@ describe('ariaState', () => {
     expect(state.step).toBe(2);
   });
 
+  it('reports the bounds a custom slider or spinbutton states through ARIA', () => {
+    const slider = stateOf('<div role="slider" aria-valuemin="1" aria-valuemax="5" aria-valuenow="3"></div>');
+    expect(slider.min).toBe(1);
+    expect(slider.max).toBe(5);
+    expect(stateOf('<div role="spinbutton" aria-valuemin="0"></div>').min).toBe(0);
+  });
+
   it('reports the value of a number or range field as a number, and an empty one as none', () => {
     expect(stateOf('<input type="number" value="2" />').value).toBe(2);
     expect(stateOf('<input type="range" min="0" max="10" value="4" />').value).toBe(4);

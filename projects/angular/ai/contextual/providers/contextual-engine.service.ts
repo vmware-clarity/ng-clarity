@@ -26,6 +26,8 @@ import {
   ClrRouteContext,
 } from '../interfaces/context.interface';
 import { jsonSafe, REGION_DEPTH, ROUTE_DATA_DEPTH } from '../json-safe';
+import { ContextRefRegistryService } from '../mutation/context-ref-registry.service';
+import { CLR_MUTATION_POLICY } from '../mutation/mutation.interface';
 import { availableRoutes, routePatternFor } from '../routes';
 import { CLR_PAGE_CONTEXT_SCHEMA_VERSION } from '../schema';
 import { capSnapshotOptions, resolveSnapshotOptions, withCallOptions } from '../snapshot-options';
@@ -56,6 +58,9 @@ export class ClrContextEngineService implements OnDestroy {
   private readonly customExtractors: ClrContextDomExtractor[] = [];
   private readonly applicationOptions = inject(CLR_CONTEXT_OPTIONS, { optional: true });
   private readonly application = inject(CLR_CONTEXT_APPLICATION, { optional: true });
+  // Refs are handed out only under a policy, so readers who never write pay nothing.
+  private readonly mutationPolicy = inject(CLR_MUTATION_POLICY, { optional: true });
+  private readonly refs = inject(ContextRefRegistryService);
   private readonly locationStrategy = inject(LocationStrategy, { optional: true });
   private readonly platformId = inject(PLATFORM_ID);
   private readonly document = inject(DOCUMENT);
@@ -67,7 +72,10 @@ export class ClrContextEngineService implements OnDestroy {
     this.disableGlobalAccess();
   }
 
-  /** Takes a fresh snapshot, applying `options` over the application-wide ones; pending providers are reported as loading. */
+  /**
+   * Takes a fresh snapshot, applying `options` over the application-wide ones; pending providers are reported as loading.
+   * With a mutation policy, writable nodes carry a stable `ref`.
+   */
   getSnapshot(options?: ClrContextSnapshotOptions): ClrPageContext {
     return this.snapshot(options, false);
   }
@@ -227,7 +235,10 @@ export class ClrContextEngineService implements OnDestroy {
       snapshot.availableRoutes = availableRoutes(this.router.config, limit);
     }
     if (isPlatformBrowser(this.platformId) && resolved.includeDomComponents) {
-      const tree = collectContextTreeWithin(this.document, resolved, this.customExtractors, untrusted);
+      // Untrusted callers never get refs: they cannot write.
+      const refs = !untrusted && this.mutationPolicy ? this.refs.begin() : null;
+      const tree = collectContextTreeWithin(this.document, resolved, this.customExtractors, refs, untrusted);
+      refs?.commit(tree.components);
       snapshot.components = tree.components;
       if (tree.truncated) {
         snapshot.truncated = true;

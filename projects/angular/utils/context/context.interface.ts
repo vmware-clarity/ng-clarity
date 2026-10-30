@@ -17,6 +17,8 @@ export interface ClrComponentContext {
   state?: Record<string, unknown>;
   /** Nested contexts; controls here are as invocable as top-level ones. */
   children?: ClrComponentContext[];
+  /** A random, stable handle the mutation engine accepts for this node, present only when mutations are enabled. */
+  ref?: string;
 }
 
 /**

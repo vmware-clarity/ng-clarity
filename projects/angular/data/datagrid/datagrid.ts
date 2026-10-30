@@ -38,9 +38,12 @@ import {
   CLR_CONTEXT_WITHHELD_SELECTOR,
   ClrCommonStringsService,
   ClrContextSnapshotOptions,
+  ClrElementMutation,
   ClrPublishedContext,
   contextText,
+  normalizeContextText,
   publishElementContext,
+  publishElementMutator,
   uniqueIdFactory,
   usableSelectors,
 } from '@clr/angular/utils';
@@ -174,6 +177,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   SELECTION_TYPE = SelectionType;
 
   private teardownElementContext?: () => void;
+  private teardownElementMutator?: () => void;
+  private rowCellsCache: Map<ClrDatagridRow<T>, { excluded: string; cells: string[] }> | null = null;
+  private contentInitialized = false;
 
   @ViewChild('selectAllCheckbox') private selectAllCheckbox: ElementRef<HTMLInputElement>;
   @ViewChild('rowControls', { read: ElementRef }) private rowControls: ElementRef<HTMLElement>;
@@ -255,6 +261,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   }
   set selectionType(value: SelectionType) {
     this.selection.selectionType = value;
+    if (this.contentInitialized) {
+      this.updateMutator();
+    }
   }
 
   /**
@@ -320,8 +329,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
   ngAfterContentInit() {
     this.teardownElementContext = publishElementContext(this.el.nativeElement, snapshotOptions =>
-      this.describeForContext(snapshotOptions)
+      this.withRowCells(() => this.describeForContext(snapshotOptions))
     );
+
+    this.contentInitialized = true;
+    this.updateMutator();
 
     if (!this.items.smart) {
       this.items.all = this.rows.map((row: ClrDatagridRow<T>) => row.item);
@@ -511,6 +523,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
   ngOnDestroy() {
     this.teardownElementContext?.();
+    this.teardownElementMutator?.();
     this.destroyFixedColumnViews();
     this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
     this._virtualScrollSubscriptions.forEach((sub: Subscription) => sub.unsubscribe());
@@ -687,6 +700,119 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     }
   }
 
+  /**
+   * Mutator for row selection, published only while the grid is selectable. The rows on this page
+   * become exactly the rows named; locked rows and other pages keep their state.
+   */
+  private updateMutator() {
+    if (!this.selection.selectable) {
+      this.teardownElementMutator?.();
+      this.teardownElementMutator = undefined;
+      return;
+    }
+    if (this.teardownElementMutator) {
+      return;
+    }
+    this.teardownElementMutator = publishElementMutator(this.el.nativeElement, {
+      // `coerce` judges a write without making it, so a plan sees the refusal the write would meet.
+      coerce: (proposed, options): ClrElementMutation =>
+        this.withRowCells(() => {
+          const excluded = this.excludedBy(options);
+          const resolved = this.resolveSelection(proposed, excluded);
+          if ('refused' in resolved) {
+            return resolved;
+          }
+          const labels = resolved.rows.map(row => this.rowLabel(row, excluded));
+          return { value: resolved.single ? (labels[0] ?? null) : labels };
+        }),
+      write: (proposed, options): ClrElementMutation =>
+        this.withRowCells(() => this.writeSelection(proposed, this.excludedBy(options), this.budgetOf(options))),
+      read: options => this.withRowCells(() => this.readSelection(this.excludedBy(options), this.budgetOf(options))),
+    });
+  }
+
+  private resolveSelection(
+    proposed: unknown,
+    excluded: string
+  ): { rows: ClrDatagridRow<T>[]; single: boolean; replacing: boolean } | { refused: string } {
+    if (!this.selection.selectable) {
+      return { refused: 'The datagrid does not offer row selection.' };
+    }
+    const wanted = proposed === null || proposed === undefined || proposed === '' ? [] : [proposed].flat();
+    const single = this.selection.selectionType === SelectionType.Single;
+    if (single && wanted.length > 1) {
+      return { refused: 'The datagrid selects one row at a time.' };
+    }
+    const rows: ClrDatagridRow<T>[] = [];
+    for (const label of wanted) {
+      const found = this.findRow(label, excluded);
+      if ('refused' in found) {
+        return { refused: found.refused };
+      }
+      // Writing back the value a write returned must not be refused.
+      if (this.selection.isLocked(found.row.item) && !this.selection.isSelected(found.row.item)) {
+        return {
+          refused: `The row "${this.rowLabel(found.row, excluded)}" is locked and cannot be selected or deselected.`,
+        };
+      }
+      rows.push(found.row);
+    }
+    let replacing = false;
+    if (single) {
+      const current = this.selection.currentSingle ?? null;
+      replacing = current !== null && (!rows.length || this.identify(rows[0].item) !== this.identify(current));
+      if (replacing && this.selection.isLocked(current)) {
+        return { refused: 'The selected row is locked and cannot be deselected.' };
+      }
+      if (replacing && this.isWithheldRow(current, excluded)) {
+        return { refused: 'The selected row is kept from agents, and cannot be deselected by one.' };
+      }
+      // A row selected on another page was never shown to the agent, so only the user changes it.
+      if (replacing && !this.rows.some(row => this.identify(row.item) === this.identify(current))) {
+        return { refused: 'The selected row is not on this page, and cannot be deselected by an agent.' };
+      }
+    }
+    return { rows, single, replacing };
+  }
+
+  private writeSelection(proposed: unknown, excluded: string, limit: number): ClrElementMutation {
+    const resolved = this.resolveSelection(proposed, excluded);
+    if ('refused' in resolved) {
+      return resolved;
+    }
+    const { rows, single, replacing } = resolved;
+    if (single) {
+      const current = this.selection.currentSingle ?? null;
+      const unchanged = rows.length ? current !== null && !replacing : current === null;
+      // Repeating a write changes nothing, so it does not tell the application it did.
+      if (unchanged) {
+        return { value: this.readSelection(excluded, limit) };
+      }
+      if (rows.length) {
+        this.selection.setSelected(rows[0].item, true);
+      } else {
+        this.selection.clearSelection();
+      }
+    } else {
+      const onPage = new Set(this.rows.map(row => this.identify(row.item)));
+      const kept = (this.selection.current ?? []).filter(
+        item => !onPage.has(this.identify(item)) || this.selection.isLocked(item) || this.isWithheldRow(item, excluded)
+      );
+      const next = [...kept];
+      for (const row of rows) {
+        if (!next.some(item => this.identify(item) === this.identify(row.item))) {
+          next.push(row.item);
+        }
+      }
+      const current = this.selection.current ?? [];
+      const selected = new Set(current.map(item => this.identify(item)));
+      if (next.length !== current.length || next.some(item => !selected.has(this.identify(item)))) {
+        this.selection.current = next;
+      }
+    }
+    return { value: this.readSelection(excluded, limit) };
+  }
+
   /** What the grid publishes beyond its ARIA: the total, the rows and selection, filters and hidden columns. */
   private describeForContext(snapshotOptions?: ClrContextSnapshotOptions): Partial<ClrPublishedContext> | null {
     const state: Record<string, unknown> = {};
@@ -701,26 +827,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
     if (this.selection.selectable) {
       state.selectionMode = this.selection.selectionType === SelectionType.Single ? 'single' : 'multi';
-      const maxItems = snapshotOptions?.maxItemsPerCollection ?? CLR_CONTEXT_DEFAULT_MAX_ITEMS;
-      // Labelling a row reads the style of everything in it, so each row is read at most once.
-      const labels = new Map<ClrDatagridRow<T>, string>();
-      const label = (row: ClrDatagridRow<T>) => {
-        let text = labels.get(row);
-        if (text === undefined) {
-          text = this.readRowCells(row, excluded).join(' | ');
-          labels.set(row, text);
-        }
-        return text;
-      };
-      const rows = this.rows.toArray();
+      const maxItems = this.budgetOf(snapshotOptions);
       if (snapshotOptions?.collectionItems !== 'summary') {
-        state.rows = firstRowLabels(rows, label, maxItems);
+        state.rows = firstRowLabels(this.rows.toArray(), row => this.rowLabel(row, excluded), maxItems);
       }
-      const selected = firstRowLabels(
-        rows.filter(row => this.selection.isSelected(row.item)),
-        label,
-        maxItems
-      );
+      const selected = this.selectedRowLabels(excluded, maxItems);
       if (selected.length) {
         state.selection = selected;
       }
@@ -768,6 +879,66 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     return hasWithheldText ? null : column.field || null;
   }
 
+  private budgetOf(options: { maxItemsPerCollection?: number } | null | undefined): number {
+    return options?.maxItemsPerCollection ?? CLR_CONTEXT_DEFAULT_MAX_ITEMS;
+  }
+
+  private isWithheldRow(item: T, excluded: string): boolean {
+    const row = this.rows.find(candidate => this.identify(candidate.item) === this.identify(item));
+    return !!row && !this.rowLabel(row, excluded);
+  }
+
+  private identify(item: T): unknown {
+    return this.items.identifyBy(item);
+  }
+
+  /** By whole label, else by one cell; refused when that fits more than one row. */
+  private findRow(label: unknown, excluded: string): { row: ClrDatagridRow<T> } | { refused: string } {
+    const rows = this.rows.toArray().filter(row => !!this.rowLabel(row, excluded));
+    const wanted =
+      typeof label === 'string' || typeof label === 'number' || typeof label === 'boolean'
+        ? normalizeContextText(String(label))
+        : '';
+    if (!wanted) {
+      return { refused: 'A row is named by its content, as the published rows list it.' };
+    }
+    const byLabel = rows.filter(row => normalizeContextText(this.rowLabel(row, excluded)) === wanted);
+    const matches = byLabel.length
+      ? byLabel
+      : rows.filter(row => this.rowCells(row, excluded).some(cell => normalizeContextText(cell) === wanted));
+    if (matches.length === 1) {
+      return { row: matches[0] };
+    }
+    const quote = (candidates: ClrDatagridRow<T>[]) =>
+      candidates
+        .slice(0, CLR_CONTEXT_DEFAULT_MAX_ITEMS)
+        .map(row => `"${this.rowLabel(row, excluded)}"`)
+        .join(', ');
+    if (matches.length > 1) {
+      return {
+        refused: `"${String(label)}" fits ${matches.length} rows: ${quote(matches)}. Name the row by more of its content.`,
+      };
+    }
+    return { refused: `No such row on this page. The rows are: ${quote(rows)}.` };
+  }
+
+  private readSelection(excluded: string, limit = CLR_CONTEXT_DEFAULT_MAX_ITEMS): string | string[] | null {
+    const selected = this.selectedRowLabels(excluded, limit);
+    return this.selection.selectionType === SelectionType.Single ? (selected[0] ?? null) : selected;
+  }
+
+  private selectedRowLabels(excluded: string, limit: number): string[] {
+    return firstRowLabels(
+      this.rows.toArray().filter(row => this.selection.isSelected(row.item)),
+      row => this.rowLabel(row, excluded),
+      limit
+    );
+  }
+
+  private rowLabel(row: ClrDatagridRow<T>, excluded: string): string {
+    return this.rowCells(row, excluded).join(' | ');
+  }
+
   /** Only marks up to the grid count: the grid hides itself from AT while a detail pane is open. */
   private columnKeptOut(title: Element, excluded: string): boolean {
     const column = title.closest('clr-dg-column');
@@ -787,6 +958,29 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   }
 
   /** The row's content cells as the user sees them, without grid-added, hidden, detail or withheld cells. */
+  private rowCells(row: ClrDatagridRow<T>, excluded: string): string[] {
+    const cached = this.rowCellsCache?.get(row);
+    if (cached && cached.excluded === excluded) {
+      return cached.cells;
+    }
+    const cells = this.readRowCells(row, excluded);
+    this.rowCellsCache?.set(row, { excluded, cells });
+    return cells;
+  }
+
+  /** Reads each row's cells at most once, since a write names, matches and reports rows several times. */
+  private withRowCells<R>(read: () => R): R {
+    if (this.rowCellsCache) {
+      return read();
+    }
+    this.rowCellsCache = new Map();
+    try {
+      return read();
+    } finally {
+      this.rowCellsCache = null;
+    }
+  }
+
   private readRowCells(row: ClrDatagridRow<T>, excluded: string): string[] {
     const host: HTMLElement = row.el.nativeElement;
     const withheld = selectorList(CLR_CONTEXT_WITHHELD_SELECTOR, excluded);
