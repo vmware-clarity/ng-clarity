@@ -8,6 +8,7 @@
 import {
   afterNextRender,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChild,
   ElementRef,
@@ -80,6 +81,7 @@ export class ClrModal implements OnChanges, OnDestroy {
   @ViewChild('dialog') private readonly dialogElementRef: ElementRef<HTMLElement>;
 
   private readonly injector = inject(Injector);
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
   private readonly noopAnimations = noopAnimations();
   private destroyed = false;
   /** Set when the modal closes, until it opens again: identifies the closing to notify. */
@@ -145,6 +147,10 @@ export class ClrModal implements OnChanges, OnDestroy {
     }
     this._open = true;
     this.closeRequest = null;
+    if (!this.bypassScrollService) {
+      this._scrollingService.stopScrolling();
+    }
+    this.changeDetectorRef.markForCheck();
     this._openChanged.emit(true);
     this.modalStackService.trackModalOpen(this);
   }
@@ -166,6 +172,10 @@ export class ClrModal implements OnChanges, OnDestroy {
       return;
     }
     this._open = false;
+    this.changeDetectorRef.markForCheck();
+    if (!this.bypassScrollService) {
+      this._scrollingService.resumeScrolling();
+    }
     this.notifyClosing();
   }
 
@@ -184,7 +194,11 @@ export class ClrModal implements OnChanges, OnDestroy {
    * Once per closing, and not when the modal was not rendered, opens again in between, or is destroyed.
    */
   private notifyClosing() {
-    if (this.closeRequest || !this.dialogElementRef) {
+    if (!this.dialogElementRef) {
+      this.modalStackService.trackModalClose(this);
+      return;
+    }
+    if (this.closeRequest) {
       return;
     }
     const closeRequest = (this.closeRequest = {});
