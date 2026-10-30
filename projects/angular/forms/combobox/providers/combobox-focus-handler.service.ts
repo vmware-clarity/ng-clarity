@@ -6,9 +6,10 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID, Renderer2, RendererFactory2 } from '@angular/core';
+import { Inject, Injectable, OnDestroy, PLATFORM_ID, Renderer2, RendererFactory2 } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { ArrowKeyDirection, customFocusableItemProvider, Keys } from '@clr/angular/utils';
+import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { OptionSelectionService } from './option-selection.service';
@@ -16,9 +17,11 @@ import { PseudoFocusModel } from '../model/pseudo-focus.model';
 import { SELECT_ALL_ID } from '../options';
 
 @Injectable()
-export class ComboboxFocusHandler<T> {
+export class ComboboxFocusHandler<T> implements OnDestroy {
   pseudoFocus: PseudoFocusModel<OptionData<T>> = new PseudoFocusModel<OptionData<T>>();
 
+  private readonly subscriptions = new Subscription();
+  private readonly unlisteners: (() => void)[] = [];
   private renderer: Renderer2;
   private _trigger: HTMLElement;
   private _listbox: HTMLElement;
@@ -57,8 +60,13 @@ export class ComboboxFocusHandler<T> {
   }
   set textInput(el: HTMLElement) {
     this._textInput = el;
-    this.renderer.listen(el, 'keydown', event => !this.handleTextInput(event));
+    this.unlisteners.push(this.renderer.listen(el, 'keydown', event => !this.handleTextInput(event)));
     this.addFocusOnBlurListener(el);
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+    this.unlisteners.forEach(unlisten => unlisten());
   }
 
   focusInput() {
@@ -100,11 +108,13 @@ export class ComboboxFocusHandler<T> {
   }
 
   private handleFocusSubscription() {
-    this.popoverService.openChange.subscribe(open => {
-      if (!open) {
-        this.pseudoFocus.model = null;
-      }
-    });
+    this.subscriptions.add(
+      this.popoverService.openChange.subscribe(open => {
+        if (!open) {
+          this.pseudoFocus.model = null;
+        }
+      })
+    );
   }
 
   private moveFocusTo(direction: ArrowKeyDirection) {
@@ -128,11 +138,13 @@ export class ComboboxFocusHandler<T> {
 
   private openAndMoveTo(direction: ArrowKeyDirection) {
     if (!this.popoverService.open) {
-      this.popoverService.openChange.pipe(take(1)).subscribe(open => {
-        if (open) {
-          this.moveFocusTo(direction);
-        }
-      });
+      this.subscriptions.add(
+        this.popoverService.openChange.pipe(take(1)).subscribe(open => {
+          if (open) {
+            this.moveFocusTo(direction);
+          }
+        })
+      );
       this.popoverService.open = true;
     } else {
       this.moveFocusTo(direction);
@@ -204,17 +216,19 @@ export class ComboboxFocusHandler<T> {
 
   private addFocusOnBlurListener(el: HTMLElement) {
     if (isPlatformBrowser(this.platformId)) {
-      this.renderer.listen(el, 'blur', event => {
-        if (this.focusOutOfComponent(event)) {
-          this.popoverService.open = false;
-        }
-      });
+      this.unlisteners.push(
+        this.renderer.listen(el, 'blur', event => {
+          if (this.focusOutOfComponent(event)) {
+            this.popoverService.open = false;
+          }
+        })
+      );
     }
   }
 
   private focusOutOfComponent(event: FocusEvent): boolean {
     const target = event.relatedTarget as Node;
-    return !(this.textInput.contains(target) || this.trigger.contains(target) || this.listbox.contains(target));
+    return !(this.textInput?.contains(target) || this.trigger?.contains(target) || this.listbox?.contains(target));
   }
 }
 

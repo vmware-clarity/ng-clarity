@@ -17,11 +17,15 @@ import {
 import { DomPortal } from '@angular/cdk/portal';
 import { isPlatformBrowser } from '@angular/common';
 import {
+  afterNextRender,
+  AfterRenderRef,
   AfterViewInit,
   Directive,
   ElementRef,
   EmbeddedViewRef,
   Inject,
+  inject,
+  Injector,
   Input,
   NgZone,
   OnDestroy,
@@ -71,6 +75,9 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     panelClass: ClrPopoverPosition.LEFT_TOP,
   };
   private intersectionObserver: IntersectionObserver;
+  private readonly injector = inject(Injector);
+  private pendingRender: AfterRenderRef;
+  private viewInitialized = false;
 
   constructor(
     element: ElementRef,
@@ -91,6 +98,20 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     if (!template) {
       this.elementRef = element;
     }
+
+    // A structural popover can close again before its first view initialization.
+    // Subscribe now so that close also disposes the pending embedded view.
+    this.openCloseSubscription = popoverService.openChange.subscribe(change => {
+      if (change) {
+        if (this.viewInitialized) {
+          this.showOverlay();
+        }
+      } else if (!this.viewInitialized) {
+        popoverService.popoverVisibleEmit(false);
+      } else {
+        this.closePopover();
+      }
+    });
   }
 
   @Input('clrPopoverContent')
@@ -183,17 +204,10 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    this.viewInitialized = true;
     if (this.popoverService.open) {
       this.showOverlay();
     }
-
-    this.openCloseSubscription = this.popoverService.openChange.subscribe(change => {
-      if (change) {
-        this.showOverlay();
-      } else {
-        this.closePopover();
-      }
-    });
   }
 
   ngOnDestroy() {
@@ -476,19 +490,26 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       this.setupIntersectionObserver();
     }
 
-    setTimeout(() => {
-      // Get Scrollable Parents
-      this.listenToScrollEvents();
+    this.pendingRender?.destroy();
+    this.pendingRender = afterNextRender(
+      () => {
+        this.pendingRender = null;
+        // Get Scrollable Parents
+        this.listenToScrollEvents();
 
-      this.popoverService.popoverVisibleEmit(true);
+        this.popoverService.popoverVisibleEmit(true);
 
-      if (this.elementRef?.nativeElement?.focus) {
-        this.elementRef.nativeElement.focus();
-      }
-    });
+        if (this.elementRef?.nativeElement?.focus) {
+          this.elementRef.nativeElement.focus();
+        }
+      },
+      { injector: this.injector }
+    );
   }
 
   private removeOverlay(): void {
+    this.pendingRender?.destroy();
+    this.pendingRender = null;
     this.subscriptions.forEach(s => s.unsubscribe());
     this.subscriptions = [];
 

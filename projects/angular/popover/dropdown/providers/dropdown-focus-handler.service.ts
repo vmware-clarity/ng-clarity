@@ -17,7 +17,7 @@ import {
   uniqueIdFactory,
   wrapObservable,
 } from '@clr/angular/utils';
-import { Observable, of, ReplaySubject } from 'rxjs';
+import { Observable, of, ReplaySubject, Subscription } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 @Injectable()
 export class DropdownFocusHandler implements OnDestroy, FocusableItem {
@@ -31,6 +31,9 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
   private _container: HTMLElement;
   private children: ReplaySubject<FocusableItem[]>;
   private _unlistenFuncs: (() => void)[] = [];
+  private initialFocusTimeout: ReturnType<typeof setTimeout>;
+  private recoveryTimeout: ReturnType<typeof setTimeout>;
+  private recoverySubscription: Subscription;
 
   constructor(
     private renderer: Renderer2,
@@ -97,6 +100,7 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
   }
 
   ngOnDestroy() {
+    this.cancelPendingFocus();
     this._unlistenFuncs.forEach((unlisten: () => void) => unlisten());
 
     this.focusService.detachListeners(this.container);
@@ -107,10 +111,10 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
    */
   moveToFirstItemWhenOpen() {
     const subscription = this.popoverService.openChange.subscribe(open => {
+      this.cancelPendingFocus();
       if (open && this.popoverService.openEvent) {
-        // Even if we properly waited for ngAfterViewInit, the container still wouldn't be attached to the DOM.
-        // So setTimeout is the only way to wait for the container to be ready to move focus to first item.
-        setTimeout(() => {
+        // Wait until the menu has rendered and its container is attached before moving focus.
+        this.initialFocusTimeout = setTimeout(() => {
           this.focusService.moveTo(this);
           if (this.parent) {
             this.focusService.move(ArrowKeyDirection.RIGHT);
@@ -179,15 +183,23 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
   }
 
   private recoverFocusIfLost() {
-    setTimeout(() => {
+    clearTimeout(this.recoveryTimeout);
+    this.recoveryTimeout = setTimeout(() => {
       if (!this.popoverService.open || document.activeElement !== document.body) {
         return;
       }
 
       const firstItem = this.parent ? this.right : this.down;
 
-      firstItem?.pipe(take(1)).subscribe(item => item && this.focusService.moveTo(item));
+      this.recoverySubscription?.unsubscribe();
+      this.recoverySubscription = firstItem?.pipe(take(1)).subscribe(item => item && this.focusService.moveTo(item));
     });
+  }
+
+  private cancelPendingFocus() {
+    clearTimeout(this.initialFocusTimeout);
+    clearTimeout(this.recoveryTimeout);
+    this.recoverySubscription?.unsubscribe();
   }
 
   private openAndGetChildren() {

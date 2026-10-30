@@ -115,6 +115,9 @@ export class ClrCombobox<T>
   protected isTotalSelection = false;
 
   private resizeObserver: ResizeObserver;
+  private focusTimeout: ReturnType<typeof setTimeout>;
+  private resetPositionTimeout: ReturnType<typeof setTimeout>;
+  private updatePositionTimeout: ReturnType<typeof setTimeout>;
   private containerWidthChange = new Subject();
   @ContentChild(ClrOptions) private options: ClrOptions<T>;
 
@@ -301,6 +304,9 @@ export class ClrCombobox<T>
 
   override ngOnDestroy(): void {
     super.ngOnDestroy();
+    clearTimeout(this.focusTimeout);
+    clearTimeout(this.resetPositionTimeout);
+    clearTimeout(this.updatePositionTimeout);
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
     }
@@ -347,7 +353,8 @@ export class ClrCombobox<T>
     this.optionSelectionService.loading = state === ClrLoadingState.LOADING;
 
     if (state !== ClrLoadingState.LOADING && isPlatformBrowser(this.platformId)) {
-      setTimeout(() => {
+      clearTimeout(this.resetPositionTimeout);
+      this.resetPositionTimeout = setTimeout(() => {
         this.popoverService?.resetPositions();
       });
       this.focusFirstActive();
@@ -391,7 +398,8 @@ export class ClrCombobox<T>
   }
 
   focusFirstActive() {
-    setTimeout(() => {
+    clearTimeout(this.focusTimeout);
+    this.focusTimeout = setTimeout(() => {
       this.focusHandler.focusFirstActive();
     });
   }
@@ -536,7 +544,8 @@ export class ClrCombobox<T>
         }
 
         if (this.multiSelect) {
-          setTimeout(() => {
+          clearTimeout(this.updatePositionTimeout);
+          this.updatePositionTimeout = setTimeout(() => {
             this.popoverService?.updatePosition();
           });
         }
@@ -545,6 +554,10 @@ export class ClrCombobox<T>
 
     this.subscriptions.push(
       this.popoverService.openChange.subscribe(open => {
+        this.cdr.markForCheck();
+        if (!open) {
+          clearTimeout(this.focusTimeout);
+        }
         if (this.editable && !this.multiSelect) {
           if (this.searchText) {
             this.optionSelectionService.showAllOptions = false;

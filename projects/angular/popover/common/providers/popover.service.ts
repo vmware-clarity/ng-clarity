@@ -6,7 +6,7 @@
  */
 
 import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
-import { ElementRef, Injectable } from '@angular/core';
+import { ElementRef, Injectable, signal } from '@angular/core';
 import { preventArrowKeyScroll } from '@clr/angular/utils';
 import { Observable, Subject } from 'rxjs';
 
@@ -27,7 +27,7 @@ export class ClrPopoverService {
   closeButtonRef: ElementRef;
   panelClass: string[] = [];
 
-  private _open = false;
+  private readonly _open = signal(false);
   private _openChange = new Subject<boolean>();
   private _openEvent: Event;
   private _openEventChange = new Subject<Event>();
@@ -61,12 +61,12 @@ export class ClrPopoverService {
   }
 
   get open(): boolean {
-    return this._open;
+    return this._open();
   }
   set open(value: boolean) {
     value = !!value;
-    if (this._open !== value) {
-      this._open = value;
+    if (this._open() !== value) {
+      this._open.set(value);
       this._openChange.next(value);
     }
   }
@@ -107,8 +107,8 @@ export class ClrPopoverService {
    * Useful for context menus where the popover should appear at the cursor position.
    */
   openAtPoint(point: ClrPopoverPoint, targetElement?: HTMLElement) {
-    if (this._open) {
-      this._open = false;
+    if (this._open()) {
+      this._open.set(false);
       this._openChange.next(false);
     }
 

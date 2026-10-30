@@ -90,6 +90,7 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
   _items: QueryList<ClrOption<T>>;
 
   private subscriptions: Subscription[] = [];
+  private focusTimeout: ReturnType<typeof setTimeout>;
   private _selectAllOption: OptionData<T>;
 
   constructor(
@@ -187,12 +188,18 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
 
     this.subscriptions.push(
       this.items.changes.subscribe(items => {
+        clearTimeout(this.focusTimeout);
         if (items.length) {
-          setTimeout(() => {
+          this.focusTimeout = setTimeout(() => {
             this.focusHandler.focusFirstActive();
           });
         } else {
           this.focusHandler.pseudoFocus.pop();
+        }
+      }),
+      this.popoverService.openChange.subscribe(open => {
+        if (!open) {
+          clearTimeout(this.focusTimeout);
         }
       }),
       this.optionSelectionService.selectAllRequested.subscribe(() => {
@@ -202,6 +209,7 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
   }
 
   ngOnDestroy() {
+    clearTimeout(this.focusTimeout);
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
