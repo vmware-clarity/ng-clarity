@@ -71,8 +71,11 @@ export class ClrModal implements OnChanges, OnDestroy {
 
   @Input('clrModalLabelledById') labelledBy: string;
 
-  // presently this is only used by inline wizards
+  // Legacy inline wizards bypass both scrolling and stack participation unless inOverlay is explicit.
   @Input('clrModalOverrideScrollService') bypassScrollService = false;
+
+  /** Whether this modal participates in overlay Escape handling, independently of scroll locking. */
+  @Input('clrModalInOverlay') inOverlay: boolean | undefined;
 
   // Provide raw modal content. This is used by the wizard so that the same template can be rendered with and without a modal.
   @ContentChild('clrInternalModalContentTemplate') protected readonly modalContentTemplate: TemplateRef<any>;
@@ -119,19 +122,13 @@ export class ClrModal implements OnChanges, OnDestroy {
   // clrModalOpenChange(false) notification (emitted on an input-driven close too, as before).
   ngOnChanges(changes: { [propName: string]: SimpleChange }): void {
     if (changes && Object.prototype.hasOwnProperty.call(changes, '_open')) {
-      if (changes._open.currentValue) {
+      if (this._open) {
         this.closeRequest = null;
-        if (!this.bypassScrollService) {
-          this._scrollingService.stopScrolling();
-          this.modalStackService.trackModalOpen(this);
-        }
       } else {
         this.notifyClosing();
-        if (!this.bypassScrollService) {
-          this._scrollingService.resumeScrolling();
-        }
       }
     }
+    this.updateOverlayState();
   }
 
   ngOnDestroy(): void {
@@ -147,12 +144,9 @@ export class ClrModal implements OnChanges, OnDestroy {
     }
     this._open = true;
     this.closeRequest = null;
-    if (!this.bypassScrollService) {
-      this._scrollingService.stopScrolling();
-    }
+    this.updateOverlayState();
     this.changeDetectorRef.markForCheck();
     this._openChanged.emit(true);
-    this.modalStackService.trackModalOpen(this);
   }
 
   backdropClick(): void {
@@ -176,9 +170,7 @@ export class ClrModal implements OnChanges, OnDestroy {
     }
     this._open = false;
     this.changeDetectorRef.markForCheck();
-    if (!this.bypassScrollService) {
-      this._scrollingService.resumeScrolling();
-    }
+    this._scrollingService.resumeScrolling();
     this.notifyClosing();
   }
 
@@ -189,6 +181,19 @@ export class ClrModal implements OnChanges, OnDestroy {
 
   scrollTop() {
     this.bodyElementRef.nativeElement.scrollTo(0, 0);
+  }
+
+  private updateOverlayState(): void {
+    if (this._open && !this.bypassScrollService) {
+      this._scrollingService.stopScrolling();
+    } else {
+      this._scrollingService.resumeScrolling();
+    }
+    if (this._open && (this.inOverlay ?? !this.bypassScrollService)) {
+      this.modalStackService.trackModalOpen(this);
+    } else {
+      this.modalStackService.trackModalClose(this);
+    }
   }
 
   /**

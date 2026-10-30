@@ -12,7 +12,6 @@ import {
   EventEmitter,
   HostBinding,
   HostListener,
-  inject,
   Input,
   OnDestroy,
   OnInit,
@@ -23,7 +22,6 @@ import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { ClrModal } from './modal';
 import { ClrModalConfigurationService } from './modal-configuration.service';
-import { ModalStackService } from './modal-stack.service';
 
 @Component({
   selector: 'clr-side-panel',
@@ -44,7 +42,6 @@ export class ClrSidePanel implements OnInit, OnDestroy {
   @Input('clrSidePanelPreventClose') preventClose = false;
   @Output('clrSidePanelAlternateClose') altClose = new EventEmitter<boolean>(false);
 
-  private readonly modalStackService = inject(ModalStackService);
   private _pinnable = false;
   private _pinned = false;
   private originalStopClose: boolean;
@@ -67,9 +64,6 @@ export class ClrSidePanel implements OnInit, OnDestroy {
   set _open(open: boolean) {
     if (open !== this.__open) {
       this.__open = open;
-      if (open && this.modal) {
-        this.modalStackService.trackModalOpen(this.modal);
-      }
       if (this.pinned) {
         this.updateModalState();
       }
@@ -149,9 +143,6 @@ export class ClrSidePanel implements OnInit, OnDestroy {
   private set modal(modal: ClrModal) {
     this._modal = modal;
     this.originalStopClose = this.modal.stopClose;
-    if (this.__open) {
-      this.modalStackService.trackModalOpen(this.modal);
-    }
     this.updateModalState();
   }
 
