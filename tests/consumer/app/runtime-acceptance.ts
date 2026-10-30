@@ -5,10 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, signal, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, QueryList, signal, ViewChild, ViewChildren } from '@angular/core';
 import { AppfxDatagridModule } from '@clr/addons/datagrid';
 import { ThemeBuilderComponent } from '@clr/addons/theme-builder';
-import { ClarityModule, ClrTreeNode } from '@clr/angular';
+import { ClarityModule, ClrDatagridColumn, ClrTreeNode } from '@clr/angular';
 import { Observable } from 'rxjs';
 
 interface Node {
@@ -102,9 +102,17 @@ export class RuntimeAcceptance {
   retainedTreeModel: ClrTreeNode<Node>['_model'];
   loadingEmissions = 0;
   @ViewChild(ClrTreeNode) private treeNode: ClrTreeNode<Node>;
+  @ViewChild(ThemeBuilderComponent) private themeBuilder: ThemeBuilderComponent;
+  @ViewChildren(ClrDatagridColumn) private gridColumns: QueryList<ClrDatagridColumn>;
 
   constructor() {
     Object.assign(window, { runtimeAcceptance: this });
+  }
+
+  ngAfterViewInit() {
+    if (this.enabled && new URLSearchParams(location.search).get('restoreTheme') === 'preset') {
+      this.themeBuilder.applyPreset(this.themeBuilder.presets[1]);
+    }
   }
 
   readonly getChildren = (node: Node): Observable<Node[]> | Promise<Node[]> => {
@@ -124,6 +132,10 @@ export class RuntimeAcceptance {
   rename(title: string) {
     this.columns.update(columns => columns.map((column, index) => (index === 0 ? { ...column, title } : column)));
   }
+  pinThirdDirect(pinned: boolean) {
+    this.gridColumns.last.pinned = pinned;
+  }
+
   pinThird(pinned: boolean) {
     this.columns.update(columns => columns.map((column, index) => (index === 2 ? { ...column, pinned } : column)));
   }

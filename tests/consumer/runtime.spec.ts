@@ -75,6 +75,17 @@ for (const mode of ['zone', 'zoneless']) {
       await expect(second.locator('clr-dg-column-separator')).toHaveCount(1);
     });
 
+    test('direct component pinning moves the column and row cells without a host signal update', async ({ page }) => {
+      await external(page, 'app.pinThirdDirect(true)');
+      const pinnedHeader = page.locator('.runtime-columns .datagrid-header .datagrid-pinned-cells > clr-dg-column');
+      const pinnedCell = page.locator('.runtime-columns clr-dg-row .datagrid-pinned-cells > clr-dg-cell');
+      await expect(pinnedHeader).toContainText('Third runtime');
+      await expect(pinnedCell).toHaveText('Third runtime');
+      await external(page, 'app.pinThirdDirect(false)');
+      await expect(pinnedHeader).toHaveCount(0);
+      await expect(pinnedCell).toHaveCount(0);
+    });
+
     test('column picker ARIA points to the attached overlay and clears on close', async ({ page }) => {
       const trigger = page.locator('#runtime-acceptance appfx-dg-column-toggle .column-toggle-action');
       await trigger.click();
@@ -87,6 +98,17 @@ for (const mode of ['zone', 'zoneless']) {
       await expect(trigger).not.toHaveAttribute('aria-controls');
       await expect(trigger).not.toHaveAttribute('aria-owns');
       await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    });
+
+    test('native Escape clears column picker expanded state and ARIA relationships', async ({ page }) => {
+      const trigger = page.locator('#runtime-acceptance appfx-dg-column-toggle .column-toggle-action');
+      await trigger.click();
+      await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+      await page.keyboard.press('Escape');
+      await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+      await expect(trigger).not.toHaveAttribute('aria-controls');
+      await expect(trigger).not.toHaveAttribute('aria-owns');
+      await expect(page.locator('.column-switch')).toHaveCount(0);
     });
 
     test('column picker backdrop and destruction remove the overlay', async ({ page }) => {
@@ -110,6 +132,14 @@ for (const mode of ['zone', 'zoneless']) {
       await expect(page.getByTestId('theme-css')).toContainText('--cds-alias-primary:');
       await external(page, 'app.themeMounted.set(false)');
       await expect(theme).toHaveCount(0);
+    });
+
+    test('restores a theme from the host initialization before the preview is ready', async ({ page }) => {
+      await page.goto(`/${mode}/?mode=${mode}&suite=runtime&restoreTheme=preset`);
+      const theme = page.locator('#runtime-acceptance clr-theme-builder');
+      await expect(theme.locator('.tb-preset-card').nth(1)).toHaveClass(/tb-preset-card-active/);
+      await expect(page.getByTestId('theme-css')).toContainText('--cds-alias-primary:');
+      await expect(theme.locator('.tb-preview-sandbox').first()).toHaveAttribute('style', /--cds-alias-primary:/);
     });
 
     for (const kind of ['observable', 'promise']) {

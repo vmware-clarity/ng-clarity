@@ -230,8 +230,6 @@ export class ThemeBuilderComponent implements OnDestroy {
     } catch {
       // clipboard not available — silently ignore
     }
-
-    this.cd.markForCheck();
   }
 
   private validateCssToImport(css: string): void {
