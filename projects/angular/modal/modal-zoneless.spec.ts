@@ -218,6 +218,29 @@ for (const zoneless of [false, true]) {
       expect(document.body.classList.contains('no-scrolling')).toBeFalse();
     });
 
+    it('does not reopen a destroyed instance or reacquire its scroll lock', () => {
+      const modal = fixture.debugElement
+        .queryAll(By.directive(ClrModal))
+        .find(el => el.nativeElement.classList.contains('imperative')).componentInstance as ClrModal;
+      const emit = spyOn(modal._openChanged, 'emit');
+      fixture.destroy();
+      expect(() => modal.open()).not.toThrow();
+      expect(emit).not.toHaveBeenCalled();
+      expect(document.body.classList.contains('no-scrolling')).toBeFalse();
+      expect(modal._open).toBeFalse();
+    });
+
+    it('ignores a late close request after the modal has been destroyed', async () => {
+      host.first.set(true);
+      await fixture.whenStable();
+      const modal = fixture.debugElement.query(By.directive(ClrModal)).componentInstance as ClrModal;
+      const emit = spyOn(modal._openChanged, 'emit');
+      fixture.destroy();
+      expect(() => modal.close()).not.toThrow();
+      expect(emit).not.toHaveBeenCalled();
+      expect(document.body.classList.contains('no-scrolling')).toBeFalse();
+    });
+
     it('releases stack registrations and scroll locks when destroyed while open', async () => {
       host.first.set(true);
       host.panel.set(true);
