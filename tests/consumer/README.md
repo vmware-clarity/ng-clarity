@@ -22,5 +22,6 @@ The smoke covers tabs, accordion, datagrid sorting and asynchronous signal updat
 forms and validation, modal and dropdown actions, and the property-view addon. It also
 checks datepicker focus, native overlay callbacks, nested modal/menu focus, rapid close
 and destruction, column labels and separators, column-picker ARIA state, theme-builder
-initialization, and Promise/Observable recursive-tree loading. Tests use public package
+initialization and early restoration, direct component pinning, native column-picker Escape,
+and Promise/Observable recursive-tree loading. Tests use public package
 exports and ordinary UI actions without forcing Angular rendering.
