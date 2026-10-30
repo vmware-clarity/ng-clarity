@@ -9,7 +9,7 @@ import { Injectable } from '@angular/core';
 import { ClrContextSnapshotOptions } from '@clr/angular/utils';
 import { Observable, Subject } from 'rxjs';
 
-import { attempt } from '../attempt';
+import { attempt, TIMED_OUT, usableTimeout, withTimeout } from '../attempt';
 import { ClrComponentContext, ClrContextProvider, ClrPublishedContext } from '../interfaces/context.interface';
 import { jsonSafe, REGION_DEPTH } from '../json-safe';
 import { publicState } from '../public-keys';
@@ -26,6 +26,8 @@ export class ClrContextRegistryService {
   private readonly providers: ClrContextProvider[] = [];
   private readonly elements = new WeakMap<ClrContextProvider, Element>();
   private readonly changesSubject = new Subject<void>();
+  /** Answers still pending, shared by every snapshot taken until they settle. */
+  private readonly pending = new Map<ClrContextProvider, Promise<ClrPublishedContext | null>>();
 
   constructor() {
     this.changes$ = this.changesSubject.asObservable();
@@ -48,6 +50,7 @@ export class ClrContextRegistryService {
     const index = this.providers.indexOf(provider);
     if (index > -1) {
       this.providers.splice(index, 1);
+      this.pending.delete(provider);
       this.changesSubject.next();
     }
   }
@@ -57,21 +60,89 @@ export class ClrContextRegistryService {
     this.changesSubject.next();
   }
 
-  /** Polls live providers, skipping ones that return `null` or throw. */
+  /** Polls live providers, skipping ones that return `null` or throw; a pending one is reported as loading. */
   collect(options: ClrContextCollectOptions = {}): ClrComponentContext[] {
-    const collected: ClrComponentContext[] = [];
+    return this.poll(options.filter).flatMap(({ result, verdict }) =>
+      isPromise(result) ? [{ type: CLR_CONTEXT_LOADING_TYPE }] : listOf(reported(result, verdict, options))
+    );
+  }
+
+  /**
+   * Like {@link collect}, awaiting each pending provider for up to `timeoutMs` (2 seconds by default).
+   * One that fails or takes longer is reported as unavailable. The filter is applied again once every
+   * provider has answered, as an element may have moved or been redacted meanwhile.
+   */
+  async collectAsync(options: ClrContextAsyncCollectOptions = {}): Promise<ClrComponentContext[]> {
+    const { filter } = options;
+    const timeoutMs = usableTimeout(options.timeoutMs, DEFAULT_TIMEOUT_MS);
+    const polled = this.poll(filter);
+    const answers = await Promise.all(
+      polled.map(({ provider, result }) => (isPromise(result) ? this.settle(provider, result, timeoutMs) : result))
+    );
+    return polled.flatMap(({ provider }, index) => {
+      const verdict = !this.providers.includes(provider)
+        ? 'drop'
+        : filter
+          ? attempt(() => filter(this.elements.get(provider) ?? null), 'drop')
+          : 'keep';
+      const answer = answers[index];
+      if (verdict === 'drop') {
+        return [];
+      }
+      return answer === TIMED_OUT
+        ? [{ type: CLR_CONTEXT_UNAVAILABLE_TYPE }]
+        : listOf(reported(answer, verdict, options));
+    });
+  }
+
+  private async settle(
+    provider: ClrContextProvider,
+    result: Promise<ClrPublishedContext | null>,
+    timeoutMs: number
+  ): Promise<ClrPublishedContext | null | typeof TIMED_OUT> {
+    const answer = await withTimeout(result, timeoutMs).catch((): typeof TIMED_OUT => TIMED_OUT);
+    // Asked again next time: an answer that never settles must not stand for every later one.
+    if (answer === TIMED_OUT && this.pending.get(provider) === result) {
+      this.pending.delete(provider);
+    }
+    return answer;
+  }
+
+  private poll(filter?: ClrContextRegionFilter): PolledProvider[] {
+    const polled: PolledProvider[] = [];
     for (const provider of this.providers) {
       try {
-        const verdict = options.filter ? options.filter(this.elements.get(provider) ?? null) : 'keep';
-        const context = verdict === 'drop' ? null : reported(provider.getClrContext(), verdict, options);
-        if (context) {
-          collected.push(context);
+        const verdict = filter ? filter(this.elements.get(provider) ?? null) : 'keep';
+        if (verdict !== 'drop') {
+          polled.push({ provider, result: this.ask(provider), verdict });
         }
       } catch {
         // A faulty provider must not break the whole snapshot.
       }
     }
-    return collected;
+    return polled;
+  }
+
+  /** The provider's answer; while an earlier answer is pending, that one, so a slow provider is not asked again. */
+  private ask(provider: ClrContextProvider): ClrPublishedContext | null | Promise<ClrPublishedContext | null> {
+    const waiting = this.pending.get(provider);
+    if (waiting) {
+      return waiting;
+    }
+    const result = provider.getClrContext();
+    if (!isPromise(result)) {
+      return result;
+    }
+    // `Promise.resolve` adopts any thenable, including one without `catch` or with a throwing `then`.
+    // Only its own entry: once it timed out, a newer answer may be pending in its place.
+    const answer: Promise<ClrPublishedContext | null> = Promise.resolve(result).finally(() => {
+      if (this.pending.get(provider) === answer) {
+        this.pending.delete(provider);
+      }
+    });
+    answer.catch(() => undefined);
+    this.pending.set(provider, answer);
+    return answer;
   }
 }
 
@@ -85,11 +156,35 @@ export interface ClrContextCollectOptions {
   untrusted?: boolean;
 }
 
+/** How {@link ClrContextRegistryService.collectAsync} collects. */
+export interface ClrContextAsyncCollectOptions extends ClrContextCollectOptions {
+  /** How long to wait for each pending provider. Default `2000`. */
+  timeoutMs?: number;
+}
+
 /** How long text and lists in a provider's report may be. */
 export type ClrContextRegionLimits = Pick<
   Required<ClrContextSnapshotOptions>,
   'maxTextLength' | 'maxItemsPerCollection'
 >;
+
+/** Type of the placeholder region reported for a provider whose answer is pending. */
+export const CLR_CONTEXT_LOADING_TYPE = 'clr-loading';
+
+/** Type of the placeholder region reported for a provider that failed or did not answer in time. */
+export const CLR_CONTEXT_UNAVAILABLE_TYPE = 'clr-unavailable';
+
+const DEFAULT_TIMEOUT_MS = 2000;
+
+interface PolledProvider {
+  provider: ClrContextProvider;
+  result: ClrPublishedContext | null | Promise<ClrPublishedContext | null>;
+  verdict: 'keep' | 'redact';
+}
+
+function isPromise<T>(value: T | Promise<T>): value is Promise<T> {
+  return typeof (value as Promise<T> | null)?.then === 'function';
+}
 
 function reported(
   context: ClrPublishedContext | null,
@@ -98,6 +193,9 @@ function reported(
 ): ClrComponentContext | null {
   const copy = attempt(() => copied(context, options), null);
   return copy && verdict === 'redact' ? withheldState(copy) : copy;
+}
+function listOf(context: ClrComponentContext | null): ClrComponentContext[] {
+  return context ? [context] : [];
 }
 
 function copied(context: ClrPublishedContext | null, options: ClrContextCollectOptions): ClrComponentContext | null {

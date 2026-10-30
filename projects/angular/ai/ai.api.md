@@ -26,6 +26,9 @@ export const CLR_CONTEXT_DIRECTIVES: Type<any>[];
 export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
 
 // @public
+export const CLR_CONTEXT_LOADING_TYPE = "clr-loading";
+
+// @public
 export const CLR_CONTEXT_OPTIONS: InjectionToken<ClrContextSnapshotOptions>;
 
 // @public
@@ -33,6 +36,9 @@ export const CLR_CONTEXT_PRESETS: Readonly<Record<ClrContextPreset, Readonly<Clr
 
 // @public
 export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
+
+// @public
+export const CLR_CONTEXT_UNAVAILABLE_TYPE = "clr-unavailable";
 
 // @public
 export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: readonly (keyof ClrContextSnapshotOptions)[];
@@ -82,6 +88,16 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
 }
 
 // @public
+export interface ClrContextAsyncCollectOptions extends ClrContextCollectOptions {
+    timeoutMs?: number;
+}
+
+// @public
+export interface ClrContextAsyncSnapshotOptions extends ClrContextSnapshotOptions {
+    timeoutMs?: number;
+}
+
+// @public
 export type ClrContextCategory = 'layout' | 'actions' | 'forms' | 'headings' | 'collections' | 'dialogs' | 'status' | 'images' | 'text' | 'frames';
 
 // @public
@@ -117,6 +133,7 @@ export class ClrContextEngineService implements OnDestroy {
     disableGlobalAccess(): void;
     enableGlobalAccess(propertyName?: string, hostOptions?: ClrContextGlobalAccessOptions): void;
     getSnapshot(options?: ClrContextSnapshotOptions): ClrPageContext;
+    getSnapshotAsync(asyncOptions?: ClrContextAsyncSnapshotOptions): Promise<ClrPageContext>;
     // (undocumented)
     ngOnDestroy(): void;
     registerDomExtractor(extractor: ClrContextDomExtractor): () => void;
@@ -150,7 +167,7 @@ export function clrContextPreset(preset: ClrContextPreset, overrides?: ClrContex
 
 // @public
 export interface ClrContextProvider {
-    getClrContext(): ClrPublishedContext | null;
+    getClrContext(): ClrPublishedContext | null | Promise<ClrPublishedContext | null>;
 }
 
 // @public
@@ -164,6 +181,7 @@ export class ClrContextRegistryService {
     constructor();
     readonly changes$: Observable<void>;
     collect(options?: ClrContextCollectOptions): ClrComponentContext[];
+    collectAsync(options?: ClrContextAsyncCollectOptions): Promise<ClrComponentContext[]>;
     notifyChanged(): void;
     register(provider: ClrContextProvider, element?: Element): () => void;
     unregister(provider: ClrContextProvider): void;

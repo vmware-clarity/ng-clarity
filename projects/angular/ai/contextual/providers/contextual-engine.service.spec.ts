@@ -838,3 +838,233 @@ describe('ClrContextEngineService, what the global accessor keeps back', () => {
     expect(after?.some(route => route.lazy)).toBe(false);
   });
 });
+
+describe('ClrContextEngineService, asynchronous providers', () => {
+  let engine: ClrContextEngineService;
+  let registry: ClrContextRegistryService;
+  const quiet = { includeDomComponents: false };
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    engine = TestBed.inject(ClrContextEngineService);
+    registry = TestBed.inject(ClrContextRegistryService);
+  });
+
+  it('reports a pending provider as loading in a synchronous snapshot', () => {
+    registry.register({ getClrContext: () => new Promise<null>(() => undefined) });
+
+    expect(engine.getSnapshot(quiet).regions).toEqual([{ type: 'clr-loading' }]);
+  });
+
+  it('merges what an asynchronous provider resolves to', async () => {
+    registry.register({ getClrContext: () => ({ type: 'region', label: 'sync' }) });
+    registry.register({ getClrContext: async () => ({ type: 'region', label: 'async' }) });
+
+    const snapshot = await engine.getSnapshotAsync(quiet);
+
+    expect(snapshot.regions).toEqual([
+      { type: 'region', label: 'sync' },
+      { type: 'region', label: 'async' },
+    ]);
+  });
+
+  it('reports a provider that does not answer in time as unavailable', async () => {
+    registry.register({ getClrContext: () => new Promise<null>(() => undefined) });
+
+    const snapshot = await engine.getSnapshotAsync({ ...quiet, timeoutMs: 10 });
+
+    expect(snapshot.regions).toEqual([{ type: 'clr-unavailable' }]);
+  });
+
+  it('holds what providers report to the snapshot budgets', () => {
+    const rows = Array.from({ length: 5000 }, (_, index) => ({ type: 'row', label: `${index} ${'x'.repeat(2000)}` }));
+    registry.register({ getClrContext: () => ({ type: 'region', label: 'Hosts', children: rows }) });
+
+    const snapshot = engine.getSnapshot({ ...quiet, maxComponents: 20, maxItemsPerCollection: 100, maxTextLength: 50 });
+
+    expect(snapshot.truncated).toBeTrue();
+    expect(snapshot.regions[0].children?.length).toBe(19);
+    expect(snapshot.regions[0].children?.[0].label?.length).toBeLessThanOrEqual(50);
+    expect(JSON.stringify(snapshot).length).toBeLessThan(5000);
+  });
+
+  it('stops at a cycle in what a provider reports', () => {
+    const region: Record<string, unknown> = { type: 'region', label: 'Hosts', state: { count: 1 } };
+    (region['state'] as Record<string, unknown>)['parent'] = region;
+    region['children'] = [{ type: 'row', label: 'esx-01', state: { owner: region } }];
+    registry.register({ getClrContext: () => region as unknown as ClrComponentContext });
+
+    expect(engine.getSnapshot(quiet).regions).toEqual([
+      { type: 'region', label: 'Hosts', state: { count: 1 }, children: [{ type: 'row', label: 'esx-01' }] },
+    ]);
+  });
+
+  it('asks again a provider whose answer did not arrive in time', async () => {
+    const getClrContext = jasmine.createSpy('getClrContext').and.returnValue(new Promise<null>(() => undefined));
+    registry.register({ getClrContext });
+
+    await engine.getSnapshotAsync({ ...quiet, timeoutMs: 10 });
+    await engine.getSnapshotAsync({ ...quiet, timeoutMs: 10 });
+
+    expect(getClrContext).toHaveBeenCalledTimes(2);
+  });
+
+  it('asks again a provider that rejected', async () => {
+    const getClrContext = jasmine.createSpy('getClrContext').and.callFake(() => Promise.reject(new Error('down')));
+    registry.register({ getClrContext });
+
+    await engine.getSnapshotAsync(quiet);
+    await engine.getSnapshotAsync(quiet);
+
+    expect(getClrContext).toHaveBeenCalledTimes(2);
+  });
+
+  it('forgets a pending answer when its provider is unregistered', () => {
+    const getClrContext = jasmine.createSpy('getClrContext').and.returnValue(new Promise<null>(() => undefined));
+    const provider = { getClrContext };
+    registry.register(provider);
+    engine.getSnapshot(quiet);
+
+    registry.unregister(provider);
+    registry.register(provider);
+    engine.getSnapshot(quiet);
+
+    expect(getClrContext).toHaveBeenCalledTimes(2);
+  });
+
+  it('reports a provider that rejects as unavailable, like one that does not answer in time', async () => {
+    registry.register({ getClrContext: () => Promise.reject(new Error('offline')) });
+
+    expect((await engine.getSnapshotAsync(quiet)).regions).toEqual([{ type: 'clr-unavailable' }]);
+  });
+
+  it('accepts thenables without catch, and ignores a provider whose then throws', async () => {
+    const thenable = { then: (resolve: (value: unknown) => void) => resolve({ type: 'region', label: 'thenable' }) };
+    const broken = Object.defineProperty({}, 'then', {
+      get: () => {
+        throw new Error('broken');
+      },
+    });
+    registry.register({ getClrContext: () => thenable as unknown as Promise<ClrComponentContext> });
+    registry.register({ getClrContext: () => broken as Promise<ClrComponentContext> });
+
+    expect(() => engine.getSnapshot(quiet)).not.toThrow();
+    expect((await engine.getSnapshotAsync(quiet)).regions).toContain({ type: 'region', label: 'thenable' });
+  });
+
+  it('asks a pending provider once, however many snapshots wait for it', async () => {
+    const getClrContext = jasmine
+      .createSpy('getClrContext')
+      .and.callFake(() => new Promise(resolve => setTimeout(() => resolve({ type: 'region', label: 'late' }), 10)));
+    registry.register({ getClrContext });
+
+    engine.getSnapshot(quiet);
+    const [first, second] = await Promise.all([engine.getSnapshotAsync(quiet), engine.getSnapshotAsync(quiet)]);
+
+    expect(getClrContext).toHaveBeenCalledTimes(1);
+    expect(first.regions).toEqual([{ type: 'region', label: 'late' }]);
+    expect(second.regions).toEqual(first.regions);
+  });
+
+  it('withholds the state of an answer whose element is in a redacted region by the time it arrives', async () => {
+    const section = document.createElement('section');
+    document.body.appendChild(section);
+    let answer: (context: ClrComponentContext) => void = () => undefined;
+    registry.register({ getClrContext: () => new Promise(resolve => (answer = resolve)) }, section);
+    try {
+      const snapshot = engine.getSnapshotAsync(quiet);
+      section.setAttribute('data-clr-context-redact', '');
+      answer({ type: 'region', label: 'Payment', state: { card: '4111111111111111' } });
+
+      expect((await snapshot).regions).toEqual([{ type: 'region', label: 'Payment', state: { redacted: true } }]);
+    } finally {
+      section.remove();
+    }
+  });
+
+  it('withholds an answer whose element is redacted while another provider is still pending', async () => {
+    const section = document.createElement('section');
+    document.body.appendChild(section);
+    let answerSlow: (context: ClrComponentContext) => void = () => undefined;
+    registry.register(
+      { getClrContext: async () => ({ type: 'region', label: 'Payment', state: { card: '4111' } }) },
+      section
+    );
+    registry.register({ getClrContext: () => new Promise(resolve => (answerSlow = resolve)) });
+    try {
+      const snapshot = engine.getSnapshotAsync(quiet);
+      await new Promise(resolve => setTimeout(resolve));
+      section.setAttribute('data-clr-context-redact', '');
+      answerSlow({ type: 'region', label: 'Hosts' });
+
+      expect(JSON.stringify((await snapshot).regions)).not.toContain('4111');
+    } finally {
+      section.remove();
+    }
+  });
+
+  it('reads the page once providers have answered, so a region redacted meanwhile is withheld', async () => {
+    const page = document.createElement('section');
+    page.innerHTML = '<label>Card <input value="4111" /></label>';
+    document.body.appendChild(page);
+    let answer: (context: ClrComponentContext | null) => void = () => undefined;
+    registry.register({ getClrContext: () => new Promise(resolve => (answer = resolve)) });
+    try {
+      const snapshot = engine.getSnapshotAsync({ timeoutMs: 1000 });
+      page.setAttribute('data-clr-context-redact', '');
+      answer(null);
+
+      expect(JSON.stringify((await snapshot).components)).not.toContain('4111');
+    } finally {
+      page.remove();
+    }
+  });
+
+  it('does not let a late answer forget a newer one that is still pending', async () => {
+    let resolveFirst: (context: ClrComponentContext | null) => void = () => undefined;
+    const getClrContext = jasmine
+      .createSpy('getClrContext')
+      .and.returnValues(
+        new Promise(resolve => (resolveFirst = resolve)),
+        new Promise<null>(() => undefined),
+        new Promise<null>(() => undefined)
+      );
+    registry.register({ getClrContext });
+
+    await engine.getSnapshotAsync({ ...quiet, timeoutMs: 10 });
+    engine.getSnapshot(quiet);
+    resolveFirst(null);
+    await new Promise(resolve => setTimeout(resolve));
+    engine.getSnapshot(quiet);
+
+    expect(getClrContext).toHaveBeenCalledTimes(2);
+  });
+
+  it('keeps only the fields a component context has', () => {
+    registry.register({
+      getClrContext: () =>
+        ({
+          type: 'region',
+          label: 'Hosts',
+          extra: true,
+          children: [{ type: 'button', label: 'Add', onClick: 'x' }],
+        }) as unknown as ClrComponentContext,
+    });
+
+    expect(engine.getSnapshot(quiet).regions).toEqual([
+      { type: 'region', label: 'Hosts', children: [{ type: 'button', label: 'Add' }] },
+    ]);
+  });
+
+  it('treats a timeout that is not a usable delay as the longest one or the default', async () => {
+    registry.register({
+      getClrContext: () => new Promise(resolve => setTimeout(() => resolve({ type: 'region', label: 'late' }), 20)),
+    });
+
+    for (const timeoutMs of [Infinity, NaN, 2 ** 40]) {
+      expect((await engine.getSnapshotAsync({ ...quiet, timeoutMs })).regions)
+        .withContext(String(timeoutMs))
+        .toEqual([{ type: 'region', label: 'late' }]);
+    }
+  });
+});

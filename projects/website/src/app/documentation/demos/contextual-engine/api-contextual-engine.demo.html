@@ -28,6 +28,20 @@
       </td>
     </tr>
     <tr>
+      <td class="left"><b cds-text="medium">getSnapshotAsync(options?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">Promise&lt;ClrPageContext&gt;</code></td>
+      <td class="left">
+        Like <code cds-text="code">getSnapshot</code>, but waits for providers that answer with a promise, for up to
+        <code cds-text="code">timeoutMs</code> (2 seconds by default). <code cds-text="code">options</code> is a
+        <code cds-text="code">ClrContextAsyncSnapshotOptions</code>: the snapshot options plus
+        <code cds-text="code">timeoutMs</code>, as in
+        <code cds-text="code">getSnapshotAsync(&#123; maxComponents: 50, timeoutMs: 500 &#125;)</code>. A provider that
+        rejects or does not answer in time is reported as a region of type
+        <code cds-text="code">'clr-unavailable'</code>. The page is read once the providers have answered; a provider
+        unregistered meanwhile is left out, and one registered meanwhile is asked by the next snapshot.
+      </td>
+    </tr>
+    <tr>
       <td class="left"><b cds-text="medium">registerDomExtractor(extractor)</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; void</code></td>
       <td class="left">
@@ -160,7 +174,12 @@
 <h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrContextRegistryService</code></h3>
 <p class="clr-mt-16px" cds-text="body">
   Root-provided. Holds whatever can contribute application knowledge to a snapshot. Providers are asked at snapshot time
-  and nothing is stored, so an annotation cannot go stale. Only
+  and nothing is stored, so an annotation cannot go stale. A provider may answer with a promise:
+  <code cds-text="code">getSnapshotAsync</code> and the tracker wait for it, while
+  <code cds-text="code">getSnapshot</code> reports it as a region of type
+  <code cds-text="code">'clr-loading'</code> (<code cds-text="code">CLR_CONTEXT_LOADING_TYPE</code>). A pending promise
+  is not asked for again; a rejected or late one is reported as a region of type
+  <code cds-text="code">'clr-unavailable'</code> (<code cds-text="code">CLR_CONTEXT_UNAVAILABLE_TYPE</code>). Only
   <code cds-text="code">type</code>, <code cds-text="code">element</code>, <code cds-text="code">label</code>,
   <code cds-text="code">state</code> and <code cds-text="code">children</code> are kept from an answer. A provider
   answers with a <code cds-text="code">ClrPublishedContext</code>: callers the application does not control see only the

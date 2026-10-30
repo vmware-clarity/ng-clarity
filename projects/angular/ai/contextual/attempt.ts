@@ -14,6 +14,15 @@ export function attempt<T, F>(fn: () => T, fallback: F): T | F {
   }
 }
 
+export const TIMED_OUT = Symbol('timed out');
+
+/** `promise`, or {@link TIMED_OUT} when it has not settled after `timeoutMs`. */
+export function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T | typeof TIMED_OUT> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<typeof TIMED_OUT>(resolve => (timer = setTimeout(() => resolve(TIMED_OUT), timeoutMs)));
+  return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
+}
+
 /** The longest delay `setTimeout` honours; longer ones, `Infinity` included, fire at once. */
 const MAX_TIMEOUT_MS = 2 ** 31 - 1;
 
