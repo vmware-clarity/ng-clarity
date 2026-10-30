@@ -8,6 +8,8 @@
 import { ChangeDetectorRef, QueryList, SimpleChange } from '@angular/core';
 import { ClrDatagrid, SelectionType } from '@clr/angular/data/datagrid';
 
+import { useTestTimers } from '../../test-timers';
+
 import { ExportProviderService } from './addons/export/export-provider.service';
 import { DatagridComponent } from './datagrid.component';
 import { DatagridStrings } from './i18n/datagrid-strings.service';
@@ -45,6 +47,18 @@ describe('Datagrid deferred row notifications', () => {
     expect(notify).not.toHaveBeenCalled();
     await new Promise<void>(resolve => setTimeout(resolve));
     expect(notify).toHaveBeenCalledTimes(1);
+  });
+
+  it('drains queued row notifications with the runner timers', async () => {
+    useTestTimers();
+    try {
+      updateItems();
+      expect(notify).not.toHaveBeenCalled();
+      await vi.runAllTimersAsync();
+      expect(notify).toHaveBeenCalledTimes(1);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('cancels every pending row notification when destroyed', async () => {
