@@ -1,0 +1,181 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { readScope } from './read-scope';
+
+/** Where ids resolve and labels are found: the element's shadow root, or its document. */
+export type IdScope = Document | ShadowRoot;
+
+/** Hosts described by their own role and name, whose shadow roots are neither walked nor watched. */
+const LEAF_HOST_SELECTOR = 'clr-icon, cds-icon';
+
+/**
+ * The nodes that render inside `parent`: an open shadow root's content instead of the light DOM, and for
+ * a slot in a shadow root, what is assigned to it or else its fallback. Slots stay in the result, so a
+ * marker on a slot applies to what it shows.
+ */
+export function renderedChildNodes(parent: ParentNode): ChildNode[] {
+  if (isShadowSlot(parent)) {
+    const assigned = parent.assignedNodes() as ChildNode[];
+    return assigned.length ? assigned : Array.from(parent.childNodes);
+  }
+  const source = parent.nodeType === Node.ELEMENT_NODE ? walkedShadowRoot(parent as Element) : null;
+  return Array.from((source ?? parent).childNodes);
+}
+
+/** The parent in the rendered tree: the slot the element is assigned to, its parent, or its shadow root's host. */
+export function parentAcrossShadow(element: Element): Element | null {
+  return element.assignedSlot ?? element.parentElement ?? shadowRootOf(element)?.host ?? null;
+}
+
+/** `element.closest(selector)` along the rendered tree, through slots and shadow root hosts. */
+export function closestAcrossShadow(element: Element, selector: string): Element | null {
+  for (let current: Element | null = element; current; current = parentAcrossShadow(current)) {
+    if (current.matches(selector)) {
+      return current;
+    }
+  }
+  return null;
+}
+
+/** `ancestor.contains(node)` along the rendered tree, through slots and shadow root hosts. */
+export function containsAcrossShadow(ancestor: Element, node: Element): boolean {
+  for (let current: Element | null = node; current; current = parentAcrossShadow(current)) {
+    if (current === ancestor) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/** Whether `root.querySelector(selector)` would find something, looking inside open shadow roots and slots too. */
+export function hasRendered(root: ParentNode, selector: string): boolean {
+  return !!root.querySelector(selector) || (!rendersLightDomOnly(root) && queryRendered(root, selector).length > 0);
+}
+
+/** No open shadow root below `root` and no slot in it that projects, so plain queries see all it renders. */
+function rendersLightDomOnly(root: ParentNode): boolean {
+  const inShadowTree = root.nodeType === Node.ELEMENT_NODE ? !!shadowRootOf(root as Element) : 'host' in root;
+  return !inShadowTree && !openShadowRoots(root).length;
+}
+
+/**
+ * `root.querySelectorAll(selector)`, also inside the open shadow roots under `root` and what their slots show,
+ * in the order they render.
+ */
+export function queryRendered(root: ParentNode, selector: string): Element[] {
+  if (rendersLightDomOnly(root)) {
+    return Array.from(root.querySelectorAll(selector));
+  }
+  const found = new Set<Element>();
+  for (const scope of [root, ...openShadowRoots(root)]) {
+    scope.querySelectorAll(selector).forEach(element => {
+      if (!isReplacedFallback(element)) {
+        found.add(element);
+      }
+    });
+    for (const slot of Array.from(scope.querySelectorAll('slot')).filter(isShadowSlot)) {
+      for (const slotted of slot.assignedElements()) {
+        if (slotted.matches(selector)) {
+          found.add(slotted);
+        }
+        queryRendered(slotted, selector).forEach(element => found.add(element));
+      }
+    }
+  }
+  return inRenderedOrder(Array.from(found));
+}
+
+/** Sorts elements as they render: a shadow root's content where its host is, slotted elements where their slot is. */
+function inRenderedOrder(elements: Element[]): Element[] {
+  const paths = new Map(elements.map(element => [element, renderedPath(element)]));
+  return elements.sort((a, b) => compareRendered(paths.get(a) ?? [], paths.get(b) ?? []));
+}
+
+function renderedPath(element: Element): Element[] {
+  const path: Element[] = [];
+  for (let current: Element | null = element; current; current = parentAcrossShadow(current)) {
+    path.unshift(current);
+  }
+  return path;
+}
+
+function compareRendered(a: Element[], b: Element[]): number {
+  let shared = 0;
+  while (shared < a.length && shared < b.length && a[shared] === b[shared]) {
+    shared++;
+  }
+  // An ancestor renders before what it holds.
+  if (shared === a.length || shared === b.length) {
+    return a.length - b.length;
+  }
+  const [first, second] = [a[shared], b[shared]];
+  // Only a host's shadow root content and its unassigned light DOM have the host as their shared parent.
+  if (first.getRootNode() !== second.getRootNode()) {
+    return first.getRootNode() === a[shared - 1]?.shadowRoot ? -1 : 1;
+  }
+  return first.compareDocumentPosition(second) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
+}
+
+export function idScope(element: Element): IdScope {
+  return shadowRootOf(element) ?? element.ownerDocument;
+}
+
+/** Every open shadow root under `root` (its own included) that the walk reads, nested ones too; cached for the walk. */
+export function openShadowRoots(root: ParentNode): ShadowRoot[] {
+  const cache = readScope()?.shadowRoots;
+  const cached = cache?.get(root);
+  if (cached) {
+    return cached;
+  }
+  // The nearest scanned ancestor tells when there is nothing below it, which spares a scan per level.
+  for (let ancestor = root.parentNode; cache && ancestor; ancestor = ancestor.parentNode) {
+    const scanned = cache.get(ancestor);
+    if (scanned?.length === 0) {
+      cache.set(root, scanned);
+      return scanned;
+    }
+    if (scanned) {
+      break;
+    }
+  }
+  const own = root.nodeType === Node.ELEMENT_NODE ? walkedShadowRoot(root as Element) : null;
+  const roots: ShadowRoot[] = own ? [own, ...openShadowRoots(own)] : [];
+  for (const element of Array.from(root.querySelectorAll('*'))) {
+    const shadowRoot = walkedShadowRoot(element);
+    if (shadowRoot) {
+      roots.push(shadowRoot, ...openShadowRoots(shadowRoot));
+    }
+  }
+  cache?.set(root, roots);
+  return roots;
+}
+
+/** The element's open shadow root, unless the element is described as a leaf. */
+export function walkedShadowRoot(element: Element): ShadowRoot | null {
+  return element.shadowRoot && !element.matches(LEAF_HOST_SELECTOR) ? element.shadowRoot : null;
+}
+
+function shadowRootOf(element: Element): ShadowRoot | null {
+  const root = element.getRootNode();
+  return root.nodeType === Node.DOCUMENT_FRAGMENT_NODE && 'host' in root ? (root as ShadowRoot) : null;
+}
+
+/** Whether the element is a slot's fallback content, which what is assigned to the slot replaces. */
+function isReplacedFallback(element: Element): boolean {
+  for (let parent = element.parentElement; parent; parent = parent.parentElement) {
+    if (isShadowSlot(parent) && parent.assignedNodes().length) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/** A slot that projects light DOM; a `<slot>` outside a shadow root is an ordinary element. */
+function isShadowSlot(node: ParentNode): node is HTMLSlotElement {
+  return node.nodeType === Node.ELEMENT_NODE && (node as Element).tagName === 'SLOT' && !!shadowRootOf(node as Element);
+}

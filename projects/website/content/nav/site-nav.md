@@ -58,6 +58,10 @@ groups:
     links:
       - label: Overview
         url: /pages/addons
+  - label: AI
+    links:
+      - label: Contextual Engine
+        url: /documentation/contextual-engine
   - label: Updating
     links:
       - label: Update v18 to v19
