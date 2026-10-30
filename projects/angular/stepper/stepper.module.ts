@@ -9,8 +9,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { angleIcon, ClarityIcons, ClrIcon, errorStandardIcon, successStandardIcon } from '@clr/angular/icon';
 
-import { StepperOompaLoompa } from './chocolate/stepper-oompa-loompa';
-import { StepperWillyWonka } from './chocolate/stepper-willy-wonka';
 import { ClrStepButton } from './step-button';
 import { ClrStepContent } from './step-content';
 import { ClrStepDescription } from './step-description';
@@ -18,16 +16,7 @@ import { ClrStepTitle } from './step-title';
 import { ClrStepper } from './stepper';
 import { ClrStepperPanel } from './stepper-panel';
 
-const declarations = [
-  ClrStepper,
-  ClrStepButton,
-  ClrStepTitle,
-  ClrStepDescription,
-  ClrStepContent,
-  ClrStepperPanel,
-  StepperOompaLoompa,
-  StepperWillyWonka,
-];
+const declarations = [ClrStepper, ClrStepButton, ClrStepTitle, ClrStepDescription, ClrStepContent, ClrStepperPanel];
 
 @NgModule({
   imports: [CommonModule, ClrIcon],

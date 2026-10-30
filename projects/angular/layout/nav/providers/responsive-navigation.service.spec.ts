@@ -5,6 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { computed } from '@angular/core';
+
 // Isolated tests for services: https://angular.io/docs/ts/latest/guide/testing.html#!#isolated-service-tests
 import { ResponsiveNavCodes } from '../responsive-nav-codes';
 import { ResponsiveNavControlMessage } from '../responsive-nav-control-message';
@@ -70,5 +72,28 @@ describe('ResponsiveNavigationService', () => {
     service.sendControlMessage('control_code', 1);
     expect(controlMessage.controlCode).toBe('control_code');
     expect(controlMessage.navLevel).toBe(1);
+  });
+
+  it('exposes responsiveNavList as reactive (signal-backed) state', () => {
+    const navLevelSum = computed(() => service.responsiveNavList.reduce((sum, navLevel) => sum + navLevel, 0));
+    expect(navLevelSum()).toBe(0);
+    service.registerNav(ResponsiveNavCodes.NAV_LEVEL_1);
+    expect(navLevelSum()).toBe(ResponsiveNavCodes.NAV_LEVEL_1);
+    service.registerNav(ResponsiveNavCodes.NAV_LEVEL_2);
+    expect(navLevelSum()).toBe(ResponsiveNavCodes.NAV_LEVEL_1 + ResponsiveNavCodes.NAV_LEVEL_2);
+    service.unregisterNav(ResponsiveNavCodes.NAV_LEVEL_1);
+    expect(navLevelSum()).toBe(ResponsiveNavCodes.NAV_LEVEL_2);
+  });
+
+  it('emits registered navs synchronously, once per change, with the same list instance', () => {
+    const emissions: number[][] = [];
+    service.registeredNavs.subscribe(navs => emissions.push([...navs]));
+    service.registerNav(ResponsiveNavCodes.NAV_LEVEL_1);
+    expect(emissions).toEqual([[ResponsiveNavCodes.NAV_LEVEL_1]]);
+    service.registerNav(ResponsiveNavCodes.NAV_LEVEL_1); // duplicate, ignored
+    service.unregisterNav(ResponsiveNavCodes.NAV_LEVEL_2); // not registered, ignored
+    expect(emissions.length).toBe(1);
+    service.unregisterNav(ResponsiveNavCodes.NAV_LEVEL_1);
+    expect(emissions).toEqual([[ResponsiveNavCodes.NAV_LEVEL_1], []]);
   });
 });
