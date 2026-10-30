@@ -232,7 +232,9 @@ export default function (): void {
         expect(headerCell.querySelector('.datagrid-column-title clr-dg-column-actions')).toBeNull();
       });
 
-      it('labels the trigger with the column it belongs to', function () {
+      it('labels the trigger with the column it belongs to', async function () {
+        context.fixture.autoDetectChanges();
+        await context.fixture.whenStable();
         const commonStrings = new ClrCommonStringsService();
 
         expect(element.querySelector(TOGGLE).getAttribute('aria-label')).toBe(
