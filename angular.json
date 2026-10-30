@@ -270,6 +270,41 @@
           }
         }
       }
+    },
+    "clr-benchmarks": {
+      "projectType": "application",
+      "root": "projects/benchmarks",
+      "sourceRoot": "projects/benchmarks/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "outputPath": {
+              "base": "dist/benchmarks/head",
+              "browser": ""
+            },
+            "index": "projects/benchmarks/src/index.html",
+            "browser": "projects/benchmarks/src/main.ts",
+            "tsConfig": "projects/benchmarks/tsconfig.app.json",
+            "styles": ["projects/angular/main.scss"],
+            "optimization": true,
+            "outputHashing": "none",
+            "sourceMap": false,
+            "extractLicenses": false
+          },
+          "configurations": {
+            "base-library": {
+              "outputPath": {
+                "base": "dist/benchmarks/base",
+                "browser": ""
+              },
+              "tsConfig": "projects/benchmarks/tsconfig.base-library.json",
+              "styles": [".benchmark-base/projects/angular/main.scss"]
+            }
+          }
+        }
+      }
     }
   },
   "schematics": {

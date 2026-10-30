@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": {
+    "paths": {
+      "@clr/angular": ["../../.benchmark-base/projects/angular/index.ts"],
+      "@clr/angular/*": ["../../.benchmark-base/projects/angular/*"],
+      "@clr/addons": ["../../.benchmark-base/projects/addons/index.ts"],
+      "@clr/addons/*": ["../../.benchmark-base/projects/addons/*"]
+    }
+  }
+}

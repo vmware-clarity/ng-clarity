@@ -64,3 +64,4 @@ projects/website/src/assets/clarity-icons.zip
 
 #Storybook
 debug-storybook.log
+/.benchmark-base
