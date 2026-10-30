@@ -22,6 +22,7 @@ import {
   OnInit,
   Optional,
   Output,
+  signal,
   SimpleChanges,
   ViewChild,
   ViewContainerRef,
@@ -197,7 +198,9 @@ export class ClrDatagridColumn<T = any>
    */
   private subscriptions: Subscription[] = [];
 
-  private _showSeparator = true;
+  // The renderer updates separators while pinning or relocating column views. Track the template
+  // consumer directly so it refreshes even when that view was already checked in the current render.
+  private readonly _showSeparator = signal(true);
 
   private _pinned = false;
 
@@ -231,11 +234,10 @@ export class ClrDatagridColumn<T = any>
   }
 
   get showSeparator() {
-    return this._showSeparator;
+    return this._showSeparator();
   }
   set showSeparator(value: boolean) {
-    this._showSeparator = value;
-    this.changeDetectorRef.markForCheck();
+    this._showSeparator.set(value);
   }
 
   /**
