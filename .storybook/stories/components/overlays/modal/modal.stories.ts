@@ -17,6 +17,7 @@ import { action } from 'storybook/actions';
  * methods whose docs rows the `argTypes` suppress are, so those are picked off `ClrModal`.
  */
 type ModalArgs = Pick<ClrModal, 'fadeDone' | 'open' | 'close'> & {
+  clrModalAriaModal: boolean;
   clrModalClosable: boolean;
   clrModalCloseButtonAriaLabel: string;
   clrModalLabelledById: string;
@@ -62,6 +63,7 @@ const meta = {
     clrModalSize: 'md',
     clrModalSkipAnimation: false,
     clrModalClosable: true,
+    clrModalAriaModal: true,
     // outputs
     clrModalAlternateClose: action('clrModalAlternateClose'),
     clrModalOpenChange: action('clrModalOpenChange'),
@@ -95,6 +97,7 @@ const meta = {
         </div>
       }
       <clr-modal
+        [clrModalAriaModal]="clrModalAriaModal"
         [clrModalClosable]="clrModalClosable"
         [clrModalCloseButtonAriaLabel]="clrModalCloseButtonAriaLabel"
         [clrModalLabelledById]="clrModalLabelledById"

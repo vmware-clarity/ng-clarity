@@ -47,6 +47,13 @@ const meta = {
       description: 'Adds a close button and allows the user to dismiss this alert',
       control: { type: 'boolean' },
     },
+    clrAlertRole: {
+      description:
+        'The live-region role of the alert: `alert` interrupts, `status` waits its turn, `none` renders no live region. Left at Default, the alert chooses.',
+      control: { type: 'radio' },
+      options: ['Default', 'alert', 'status', 'none'],
+      mapping: { Default: undefined, none: null },
+    },
     // methods
     close: { control: { disable: true } },
     open: { control: { disable: true } },

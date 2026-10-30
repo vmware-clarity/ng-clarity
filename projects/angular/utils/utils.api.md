@@ -4,6 +4,7 @@
 
 ```ts
 
+import { AbstractControl } from '@angular/forms';
 import { AfterViewInit } from '@angular/core';
 import { AnimationCallbackEvent } from '@angular/core';
 import { CdkDrag } from '@angular/cdk/drag-drop';
@@ -401,6 +402,7 @@ export interface ClrCommonStrings {
     unpinColumn: string;
     // (undocumented)
     unselectedTreeNode: string;
+    verticalNavLabel: string;
     // (undocumented)
     verticalNavToggle: string;
     warning: string;
@@ -523,6 +525,16 @@ export class ClrFocusOnViewInitModule {
 
 // @public (undocumented)
 export function clrFocusServiceFactory(existing: FocusService, renderer: Renderer2): FocusService;
+
+// @public
+export function clrHasRequiredValidator(control: AbstractControl | null | undefined): boolean;
+
+// @public
+export class ClrHostAttribute {
+    constructor(element: Element | null | undefined, name: string);
+    get current(): string | null;
+    value(computed: string | boolean | null): string | null;
+}
 
 // @public
 export class ClrHostWrappingModule {

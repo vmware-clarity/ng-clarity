@@ -299,6 +299,8 @@ export interface ClrCommonStrings {
   responsiveNavOverflowClose: string;
   // Vertical Nav
   verticalNavToggle: string;
+  /** Name of the vertical nav landmark. Screen readers add the role, so do not repeat "navigation". */
+  verticalNavLabel: string;
   /**
    * Timeline Steps
    */
