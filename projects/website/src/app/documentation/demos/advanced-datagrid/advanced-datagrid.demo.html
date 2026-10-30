@@ -1332,34 +1332,7 @@
     </table>
 
     <h4 cds-text="subsection" class="clr-mt-24px">Example Custom Renderer</h4>
-    <pre><code class="language-typescript">
-&#64;Component({{ '{' }}
-    selector: 'demo-text-renderer',
-    template: `
-        &lt;cds-icon shape="exclamation-circle" class="is-error" size="24"&gt;&lt;/cds-icon&gt;
-        &lt;span&gt;{{ '{' }}{{ '{' }} displayText {{ '}' }}{{ '}' }} cell custom HTML&lt;/span&gt;
-    `,
-{{ '}' }})
-class DemoTextRendererComponent implements ColumnRenderer&lt;unknown&gt;, OnInit {{ '{' }}
-    protected displayText: string;
-    public item: unknown;
-    public column: ColumnDefinition&lt;unknown&gt;;
-
-    public ngOnInit(): void {{ '{' }}
-        this.updateData();
-    {{ '}' }}
-
-    public onChange(item: unknown, column: ColumnDefinition&lt;unknown&gt;): void {{ '{' }}
-        this.item = item;
-        this.column = column;
-        this.updateData();
-    {{ '}' }}
-
-    private updateData(): void {{ '{' }}
-        this.displayText = this.item[this.column.field];
-    {{ '}' }}
-{{ '}' }}
-    </code></pre>
+    <app-code-snippet [code]="customRendererCode" language="typescript"></app-code-snippet>
 
     <h3 data-toc-item id="action-definition" cds-text="section" class="clr-mt-32px">ActionDefinition</h3>
     <table class="table">

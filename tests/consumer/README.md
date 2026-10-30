@@ -18,6 +18,8 @@ only for the first mode. Every scenario checks the actual presence or absence of
 browser `Zone` global and fails on browser errors. No test forces Angular rendering.
 
 The smoke covers tabs, accordion, datagrid sorting and asynchronous signal updates,
-forms and validation, modal and dropdown actions, and the property-view addon. Tests
-use ordinary UI actions and public package exports; detailed native callback, Escape,
-observer and destruction regressions remain in the component suites.
+forms and validation, modal and dropdown actions, and the property-view addon. It also
+checks datepicker focus, native overlay callbacks, nested modal/menu focus, rapid close
+and destruction, column labels and separators, column-picker ARIA state, theme-builder
+initialization, and Promise/Observable recursive-tree loading. Tests use public package
+exports and ordinary UI actions without forcing Angular rendering.

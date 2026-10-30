@@ -265,6 +265,33 @@ const additionalFiles = {
   ],
 })
 export class AdvancedDatagridDemo extends ClarityDocComponent {
+  readonly customRendererCode = `@Component({
+    selector: 'demo-text-renderer',
+    template: \`
+        <cds-icon shape="exclamation-circle" class="is-error" size="24"></cds-icon>
+        <span>{{ displayText }} cell custom HTML</span>
+    \`,
+})
+class DemoTextRendererComponent implements ColumnRenderer<unknown>, OnInit {
+    protected displayText: string;
+    public item: unknown;
+    public column: ColumnDefinition<unknown>;
+
+    public ngOnInit(): void {
+        this.updateData();
+    }
+
+    public onChange(item: unknown, column: ColumnDefinition<unknown>): void {
+        this.item = item;
+        this.column = column;
+        this.updateData();
+    }
+
+    private updateData(): void {
+        this.displayText = this.item[this.column.field];
+    }
+}`;
+
   additionalFiles = additionalFiles;
 
   clientSideHtml = ClientSideHtml;
