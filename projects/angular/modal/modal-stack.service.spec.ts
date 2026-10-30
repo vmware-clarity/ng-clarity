@@ -61,6 +61,7 @@ describe('ModalStackService', () => {
 
     // ensure the keyup event listener is not removed (there is still an open modal)
     expect(removeEventListenerSpy).not.toHaveBeenCalled();
+    modalStackService.trackModalClose(modal1);
   });
 
   it('should close two open modals when the escape key is pressed twice', () => {
