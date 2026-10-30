@@ -5,18 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ClrInputModule, ClrRadioModule, ClrSelectModule } from '@clr/angular/forms';
-import { ClrIcon } from '@clr/angular/icon';
-import { ClrSignpostModule } from '@clr/angular/popover/signpost';
 
-import { DismissableDirective } from './dismissable.directive';
 import { ManageFilterComponent } from './manage-filter.component';
-import { FilterFormComponent } from '../advanced-filters/filter-form.component';
-import { GeneralFilterComponent } from '../advanced-filters/general-filter.component';
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
+import { AppfxDatagridFiltersModule } from '../datagrid-filters.module';
 import { ComparisonOperator, LogicalOperator, PropertyType, TimeSpan, Unit } from '../model/datagrid-filters.enums';
 import {
   DateTimePropertyDefinition,
@@ -122,8 +115,6 @@ const dateTimePropertyFilter: PropertyFilter = new PropertyFilter();
 dateTimePropertyFilter.criteria = [dateTimePredicate1];
 dateTimePropertyFilter.operator = LogicalOperator.And;
 
-const removeFilterSelector = '.remove-filter';
-
 export interface ThisTest {
   fixture: ComponentFixture<ManageFilterComponent>;
   component: ManageFilterComponent;
@@ -132,17 +123,7 @@ export interface ThisTest {
 describe('ManageFilterComponent', () => {
   beforeEach(function (this: ThisTest) {
     TestBed.configureTestingModule({
-      imports: [
-        ClrInputModule,
-        ClrRadioModule,
-        ClrSignpostModule,
-        ClrSelectModule,
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        ClrIcon,
-      ],
-      declarations: [DismissableDirective, FilterFormComponent, ManageFilterComponent, GeneralFilterComponent],
+      imports: [AppfxDatagridFiltersModule],
       providers: [DatagridFiltersStrings],
     });
     this.fixture = TestBed.createComponent(ManageFilterComponent);
@@ -164,16 +145,12 @@ describe('ManageFilterComponent', () => {
     expect(this.component.secondaryConditionDisplayText).toEqual('Is empty');
     expect(this.component.filterStrings.getConjoinerDisplayName).toHaveBeenCalledWith(stringPropertyFilter.operator);
 
-    const editFilterSignpostTrigger: HTMLSpanElement[] =
-      this.fixture.debugElement.nativeElement.querySelectorAll('.edit-filter');
-    expect(editFilterSignpostTrigger.length).toEqual(2);
-
-    editFilterSignpostTrigger[0].click();
+    const trigger: HTMLButtonElement = this.fixture.nativeElement.querySelector('.filter-pill');
+    expect(trigger.textContent).toContain('vm 1');
+    expect(trigger.textContent).toContain('+1');
+    trigger.click();
     this.fixture.detectChanges();
-    expect(this.component.openPrimaryConditionSignPost).toBeTruthy();
-    editFilterSignpostTrigger[1].click();
-    this.fixture.detectChanges();
-    expect(this.component.openSecondaryConditionSignPost).toBeTruthy();
+    expect(this.component.open).toBeTrue();
   });
   it('manages enum property filter', function (this: ThisTest) {
     this.component.propertyFilter = enumPropertyFilter;
@@ -198,68 +175,124 @@ describe('ManageFilterComponent', () => {
     expect(this.component.secondaryConditionDisplayText).toEqual('Greater than: 50 GB');
     expect(this.component.filterStrings.getConjoinerDisplayName).toHaveBeenCalledWith(numericPropertyFilter.operator);
   });
-  it('renders the remove filter icons with their SVG content', function (this: ThisTest) {
-    this.component.propertyFilter = stringPropertyFilter;
-    stringPropertyFilter.criteria = [stringPredicate1, stringPredicate2];
+  it('shows the field name without an active style or count when empty', function (this: ThisTest) {
+    this.component.filterProperty = stringProperty;
+    this.component.predefined = true;
     this.fixture.detectChanges();
-    const removeFilterIcons: NodeListOf<HTMLElement> =
-      this.fixture.debugElement.nativeElement.querySelectorAll(removeFilterSelector);
-    expect(removeFilterIcons.length).toEqual(2);
-    removeFilterIcons.forEach(icon => {
-      expect(icon.tagName.toLowerCase()).toEqual('cds-icon');
-      expect(icon.getAttribute('shape')).toEqual('window-close');
-      expect(icon.closest('.badge')).toBeTruthy();
-      const svg = (icon.shadowRoot ?? icon).querySelector('svg');
-      expect(svg).toBeTruthy();
-      expect(svg.innerHTML).toContain('path');
+    const trigger: HTMLButtonElement = this.fixture.nativeElement.querySelector('.filter-pill');
+    expect(trigger.tagName).toBe('BUTTON');
+    expect(trigger.closest('clr-label').classList.contains('label-info')).toBeFalse();
+    expect(trigger.textContent.trim()).toBe(stringProperty.displayName);
+    expect(trigger.classList.contains('filter-pill-active')).toBeFalse();
+    expect(trigger.querySelector('.filter-pill-count')).toBeNull();
+    expect(trigger.querySelector('cds-icon').getAttribute('direction')).toBe('down');
+  });
+
+  it('shows the first value and counts all additional selections', function (this: ThisTest) {
+    this.component.propertyFilter = {
+      operator: LogicalOperator.Or,
+      criteria: [enumPredicate1, enumPredicate2, enumPredicate2, enumPredicate2],
+    };
+    this.fixture.detectChanges();
+    const trigger: HTMLButtonElement = this.fixture.nativeElement.querySelector('.filter-pill');
+    expect(trigger.classList.contains('filter-pill-active')).toBeTrue();
+    expect(trigger.closest('clr-label').classList.contains('label-info')).toBeTrue();
+    expect(trigger.querySelector('clr-badge').textContent).toBe('+3');
+    expect(trigger.querySelector('.filter-pill-text').textContent).toBe('Alert');
+    expect(trigger.querySelector('.filter-pill-count').textContent).toBe('+3');
+    expect(trigger.getAttribute('aria-label')).toContain('Equals: Normal');
+  });
+
+  it('keeps exclusion operators in the pill text', function (this: ThisTest) {
+    this.component.propertyFilter = {
+      operator: LogicalOperator.And,
+      criteria: [{ ...enumPredicate1, operator: ComparisonOperator.DoesNotEqual }],
+    };
+    this.fixture.detectChanges();
+    expect(this.component.pillText).toBe('Does not equal: Alert');
+  });
+
+  it('updates an existing pill when its criteria are replaced or cleared', function (this: ThisTest) {
+    this.fixture.componentRef.setInput('filterProperty', stringProperty);
+    this.fixture.componentRef.setInput('propertyFilter', stringPropertyFilter);
+    this.fixture.detectChanges();
+    const trigger = this.fixture.nativeElement.querySelector('.filter-pill');
+    this.fixture.componentRef.setInput('propertyFilter', {
+      operator: LogicalOperator.And,
+      criteria: [{ ...stringPredicate1, value: 'new name' }],
     });
+    this.fixture.detectChanges();
+    expect(trigger.textContent.trim()).toBe('new name');
+    this.fixture.componentRef.setInput('propertyFilter', undefined);
+    this.fixture.detectChanges();
+    expect(trigger.textContent.trim()).toBe(stringProperty.displayName);
+    expect(trigger.classList.contains('filter-pill-active')).toBeFalse();
   });
-  it('removes string property filter', function (this: ThisTest) {
-    spyOn(this.component.filterCriteriaChange, 'emit');
+
+  it('clears a predefined filter from the popover without mutating its defaults', async function (this: ThisTest) {
     this.component.propertyFilter = stringPropertyFilter;
-    stringPropertyFilter.criteria = [stringPredicate1, stringPredicate2];
+    this.component.predefined = true;
+    spyOn(this.component.filterRemoved, 'emit');
     this.fixture.detectChanges();
-    let removeFilterIcon: HTMLElement[] =
-      this.fixture.debugElement.nativeElement.querySelectorAll(removeFilterSelector);
-    expect(removeFilterIcon.length).toEqual(2);
-
-    const modifiedPropertyFilter = new PropertyFilter();
-    modifiedPropertyFilter.criteria = [stringPredicate2];
-    modifiedPropertyFilter.operator = LogicalOperator.And;
-    removeFilterIcon[0].click();
+    const trigger: HTMLButtonElement = this.fixture.nativeElement.querySelector('.filter-pill');
+    trigger.click();
     this.fixture.detectChanges();
-    expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(modifiedPropertyFilter);
-
-    modifiedPropertyFilter.criteria = [];
-    removeFilterIcon = this.fixture.debugElement.nativeElement.querySelectorAll(removeFilterSelector);
-    expect(removeFilterIcon.length).toEqual(1);
-    removeFilterIcon[0].click();
+    await this.fixture.whenStable();
     this.fixture.detectChanges();
-    expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(modifiedPropertyFilter);
+    const clear: HTMLButtonElement = document.querySelector('[data-test-id="clear-filter"]');
+    expect(clear.textContent.trim()).toBe('Clear filter');
+    clear.click();
+    this.fixture.detectChanges();
+    expect(this.component.filterRemoved.emit).toHaveBeenCalledTimes(1);
+    expect(stringPropertyFilter.criteria).toEqual([stringPredicate1, stringPredicate2]);
+    expect(this.component.open).toBeFalse();
+    expect(document.activeElement).toBe(trigger);
   });
-  it('removes numeric property filter', function (this: ThisTest) {
-    spyOn(this.component.filterCriteriaChange, 'emit');
+
+  it('offers removal for a user-added filter', async function (this: ThisTest) {
     this.component.propertyFilter = numericPropertyFilter;
-    numericPropertyFilter.criteria = [numericPredicate1, numericPredicate2];
+    spyOn(this.component.filterRemoved, 'emit');
     this.fixture.detectChanges();
-    const removeFilterIcon: HTMLElement[] =
-      this.fixture.debugElement.nativeElement.querySelectorAll(removeFilterSelector);
-    expect(removeFilterIcon.length).toEqual(2);
-
-    const modifiedPropertyFilter = new PropertyFilter();
-    modifiedPropertyFilter.criteria = [numericPredicate2];
-    modifiedPropertyFilter.operator = LogicalOperator.Or;
-    removeFilterIcon[0].click();
+    this.fixture.nativeElement.querySelector('.filter-pill').click();
     this.fixture.detectChanges();
-    expect(numericProperty.selectedValue).toEqual([50]);
-    expect(numericProperty.selectedUnit).toEqual([Unit.GB]);
-    expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(modifiedPropertyFilter);
-
-    removeFilterIcon[0].click();
+    await this.fixture.whenStable();
     this.fixture.detectChanges();
-    modifiedPropertyFilter.criteria = [];
-    expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(modifiedPropertyFilter);
+    const remove: HTMLButtonElement = document.querySelector('[data-test-id="clear-filter"]');
+    expect(remove.textContent.trim()).toBe(this.component.filterStrings.removeFilterText);
+    remove.click();
+    expect(this.component.filterRemoved.emit).toHaveBeenCalledTimes(1);
+    expect(numericProperty.selectedValue).toEqual([176, 50]);
   });
+
+  for (const dismiss of ['escape', 'outside', 'cancel']) {
+    it('discards unapplied edits on ' + dismiss, async function (this: ThisTest) {
+      this.component.propertyFilter = { operator: LogicalOperator.And, criteria: [stringPredicate1] };
+      spyOn(this.component.filterCriteriaChange, 'emit');
+      this.fixture.detectChanges();
+      const trigger: HTMLButtonElement = this.fixture.nativeElement.querySelector('.filter-pill');
+      trigger.click();
+      this.fixture.detectChanges();
+      await this.fixture.whenStable();
+      this.fixture.detectChanges();
+      const input: HTMLInputElement = document.querySelector('input[formControlName="primaryValue"]');
+      input.value = 'unsaved';
+      input.dispatchEvent(new Event('input'));
+      if (dismiss === 'escape') {
+        document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      } else if (dismiss === 'outside') {
+        document.body.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      } else {
+        document.querySelector<HTMLButtonElement>('[data-test-id="cancelBtn"]').click();
+      }
+      this.fixture.detectChanges();
+      await this.fixture.whenStable();
+      this.fixture.detectChanges();
+      expect(this.component.open).toBeFalse();
+      expect(this.component.propertyFilter.criteria[0].value).toBe('vm 1');
+      expect(this.component.filterCriteriaChange.emit).not.toHaveBeenCalled();
+    });
+  }
+
   it('manages date-time property filter normal operator', function (this: ThisTest) {
     this.component.propertyFilter = dateTimePropertyFilter;
     dateTimeProperty.selectedOperator = ComparisonOperator.BeforeOrEqualTo;

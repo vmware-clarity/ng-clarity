@@ -5,7 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import {
+  ClrPopoverHostDirective,
+  ClrPopoverPosition,
+  ClrPopoverService,
+  ClrPopoverType,
+} from '@clr/angular/popover/common';
+import { uniqueIdFactory } from '@clr/angular/utils';
 
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
 import { ComparisonOperator, PropertyType, TimeSpan } from '../model/datagrid-filters.enums';
@@ -19,19 +26,25 @@ import {
   UserPropertyDefinition,
 } from '../model/datagrid-filters.interfaces';
 
-const enterKey = 'Enter';
-const spaceKey = 'Space';
-
 @Component({
   selector: 'appfx-manage-filter',
   standalone: false,
   templateUrl: 'manage-filter.component.html',
   styleUrls: ['manage-filter.component.scss', '../common-styles.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [ClrPopoverHostDirective],
 })
-export class ManageFilterComponent implements OnInit {
+export class ManageFilterComponent implements OnInit, OnChanges {
   // The filter to be managed
   @Input() propertyFilter: PropertyFilter;
+  @Input() filterProperty: FilterablePropertyDefinition;
+  @Input() predefined = false;
+
+  @Output() filterRemoved = new EventEmitter<void>();
+
+  readonly popoverId = uniqueIdFactory();
+  readonly popoverPosition = ClrPopoverPosition.BOTTOM_LEFT;
+  readonly popoverType = ClrPopoverType.DROPDOWN;
   managedProperty: FilterablePropertyDefinition;
 
   /**
@@ -51,8 +64,6 @@ export class ManageFilterComponent implements OnInit {
   enumProperty: EnumPropertyDefinition;
   dateTimeProperty: DateTimePropertyDefinition;
   userProperty: UserPropertyDefinition;
-  openPrimaryConditionSignPost = false;
-  openSecondaryConditionSignPost = false;
   primaryConditionDisplayText = '';
   secondaryConditionDisplayText = '';
   editFilterAriaLabel = '';
@@ -65,10 +76,38 @@ export class ManageFilterComponent implements OnInit {
     ComparisonOperator.LastYear,
   ];
 
-  constructor(public filterStrings: DatagridFiltersStrings) {}
+  constructor(
+    public filterStrings: DatagridFiltersStrings,
+    private popoverService: ClrPopoverService
+  ) {}
+
+  get open(): boolean {
+    return this.popoverService.open;
+  }
+
+  get active(): boolean {
+    return !!this.propertyFilter?.criteria.length;
+  }
+
+  get additionalConditions(): number {
+    return this.managedPropertyType === PropertyType.DateTime
+      ? 0
+      : Math.max(0, (this.propertyFilter?.criteria.length || 0) - 1);
+  }
+
+  get pillText(): string {
+    if (!this.active) {
+      return this.managedProperty.displayName;
+    }
+    return this.displayFilterValue(0, true);
+  }
+
+  ngOnChanges(): void {
+    this.ngOnInit();
+  }
 
   ngOnInit() {
-    this.managedProperty = this.propertyFilter.criteria[0].filterableProperty;
+    this.managedProperty = this.propertyFilter?.criteria[0]?.filterableProperty || this.filterProperty;
     if (this.isStringProperty(this.managedProperty)) {
       this.managedPropertyType = PropertyType.String;
       this.stringProperty = this.castStringProperty();
@@ -88,47 +127,34 @@ export class ManageFilterComponent implements OnInit {
     this.updateDisplayValues();
   }
 
-  onEditFilterKeyPress(event: KeyboardEvent, index: number) {
-    if (event.target instanceof Element) {
-      const targetElement: Element = event.target as Element;
-      if (targetElement.classList.contains('edit-filter') && (event.key === enterKey || event.key === spaceKey)) {
-        if (index === 0) {
-          this.openPrimaryConditionSignPost = !this.openPrimaryConditionSignPost;
-        } else if (index === 1) {
-          this.openSecondaryConditionSignPost = !this.openSecondaryConditionSignPost;
-        }
-      }
-    }
-  }
-
-  removeFilter(index: number): void {
-    // 3 or more criteria are displayed as one group
-    // For this reason, they are removed together
-    if (this.propertyFilter.criteria.length > 2 || this.managedPropertyType === PropertyType.DateTime) {
-      this.propertyFilter.criteria = [];
-    } else {
-      this.propertyFilter.criteria.splice(index, 1);
-      if (this.propertyFilter.criteria.length > 0) {
-        const property = this.propertyFilter.criteria[0].filterableProperty;
-        if (this.isNumericUnitFilterProperty(property)) {
-          property.selectedValue.splice(index, 1);
-          property.selectedUnit.splice(index, 1);
-        }
-        this.updateDisplayValues();
-      }
-    }
-    this.filterCriteriaChange.emit(this.propertyFilter);
+  removeFilter(): void {
+    this.close();
+    this.filterRemoved.emit();
   }
 
   onFilterCriteriaChange(propertyFilter: PropertyFilter) {
+    this.close();
     if (propertyFilter) {
-      this.filterCriteriaChange.emit(propertyFilter);
+      if (propertyFilter.criteria.length) {
+        this.filterCriteriaChange.emit(propertyFilter);
+      } else {
+        this.filterRemoved.emit();
+      }
     }
-    this.openPrimaryConditionSignPost = false;
-    this.openSecondaryConditionSignPost = false;
+  }
+
+  private close(): void {
+    this.popoverService.open = false;
+    this.popoverService.focusOrigin();
   }
 
   private updateDisplayValues(): void {
+    if (!this.active) {
+      this.primaryConditionDisplayText = '';
+      this.secondaryConditionDisplayText = '';
+      this.editFilterAriaLabel = this.filterStrings.editFilterText + ' ' + this.managedProperty.displayName;
+      return;
+    }
     this.primaryConditionDisplayText = this.displayFilterValue(0);
     this.editFilterAriaLabel =
       this.filterStrings.editFilterText +
@@ -136,23 +162,22 @@ export class ManageFilterComponent implements OnInit {
       this.managedProperty.displayName +
       ' ' +
       this.primaryConditionDisplayText;
-    if (this.propertyFilter.criteria.length === 2) {
+    this.secondaryConditionDisplayText = '';
+    if (this.propertyFilter.criteria.length > 1 && this.managedPropertyType !== PropertyType.DateTime) {
       this.secondaryConditionDisplayText = this.displayFilterValue(1);
+      const conjoiner = ' ' + this.filterStrings.getConjoinerDisplayName(this.propertyFilter.operator) + ' ';
       this.editFilterAriaLabel +=
-        ' ' +
-        this.filterStrings.getConjoinerDisplayName(this.propertyFilter.operator) +
-        ' ' +
-        this.secondaryConditionDisplayText;
+        conjoiner +
+        this.propertyFilter.criteria
+          .slice(1)
+          .map((_, index) => this.displayFilterValue(index + 1))
+          .join(conjoiner);
     }
   }
 
-  private displayFilterValue(index: number): string {
+  private displayFilterValue(index: number, compact = false): string {
     if (this.isDateTimeProperty(this.managedProperty)) {
       return this.displayDateTimeFilter();
-    }
-    const appliedConditions: number = this.propertyFilter.criteria.length;
-    if (appliedConditions > 2) {
-      return appliedConditions + ' ' + this.filterStrings.appliedText;
     }
     if (this.propertyFilter.criteria[index].operator === ComparisonOperator.IsEmpty) {
       return this.operatorDisplayName(this.propertyFilter.criteria[index].operator);
@@ -161,11 +186,13 @@ export class ManageFilterComponent implements OnInit {
     let value = this.propertyFilter.criteria[index].value;
     if (this.isEnumProperty(property)) {
       const enumProperty: EnumPropertyDefinition = property as EnumPropertyDefinition;
-      value = enumProperty.values.get(this.propertyFilter.criteria[index].value);
+      value = enumProperty.values.get(this.propertyFilter.criteria[index].value) ?? value;
     } else if (this.isNumericUnitFilterProperty(property)) {
       value = property.selectedValue[index] + ' ' + this.filterStrings.getUnitDisplayName(property.selectedUnit[index]);
     }
-    return this.operatorDisplayName(this.propertyFilter.criteria[index].operator) + ': ' + value;
+    return compact && this.propertyFilter.criteria[index].operator === ComparisonOperator.Equals
+      ? String(value)
+      : this.operatorDisplayName(this.propertyFilter.criteria[index].operator) + ': ' + value;
   }
 
   private displayDateTimeFilter(): string {

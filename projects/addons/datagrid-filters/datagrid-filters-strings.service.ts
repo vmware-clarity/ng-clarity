@@ -31,6 +31,9 @@ import { ComparisonOperator, LogicalOperator, TimeSpan, Unit } from './model/dat
  */
 @Injectable()
 export class DatagridFiltersStrings {
+  /** Clears the current filter's values while retaining a predefined pill. */
+  readonly clearFilter: string = 'Clear filter';
+
   /**
    * Filter type label.
    */

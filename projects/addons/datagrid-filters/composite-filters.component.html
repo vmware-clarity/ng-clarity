@@ -5,95 +5,110 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 <div class="composite-filter-container">
-  <clr-signpost class="height-standard">
-    <button
-      clrSignpostTrigger
-      class="btn btn-sm btn-link btn-compact"
-      data-test-id="add-button"
-      [attr.aria-label]="filterStrings.addNewAriaLabel"
-      [disabled]="filterableProperties.length === propertyFilters.length"
-    >
-      <cds-icon size="20" shape="filter-grid" class="is-solid"></cds-icon>
-      {{ filterStrings.addNew }}
-    </button>
-    <ng-template [(clrIfOpen)]="signPostOpened">
-      <clr-signpost-content
-        cdkTrapFocus
-        [cdkTrapFocusAutoCapture]="true"
-        [clrPosition]="'bottom-middle'"
-        filterPopoverReposition
-      >
-        <clr-select-container class="mt-0">
-          <label class="clr-control-label"> {{ filterStrings.filterLabel }} </label>
-          <select clrSelect [(ngModel)]="selectedFilterableProperty" (ngModelChange)="onPropertyChange()">
-            @for (property of filterableProperties | skipFilter: activeFilters(); track property) {
-              <option [ngValue]="property">
-                {{ property.displayName }}
-              </option>
-            }
-          </select>
-        </clr-select-container>
-        @switch (propertyType) {
-          @case (stringPropertyType) {
-            <appfx-general-filter
-              [filterProperty]="stringProperty"
-              (filterCriteriaChange)="onFilterCriteriaChange($event)"
-            >
-            </appfx-general-filter>
-          }
-          @case (numericPropertyType) {
-            <appfx-general-filter
-              [filterProperty]="numericProperty"
-              (filterCriteriaChange)="onFilterCriteriaChange($event)"
-            >
-            </appfx-general-filter>
-          }
-          @case (enumPropertyType) {
-            <appfx-enum-filter [filterProperty]="enumProperty" (filterCriteriaChange)="onFilterCriteriaChange($event)">
-            </appfx-enum-filter>
-          }
-          @case (dateTimePropertyType) {
-            <appfx-datetime-filter
-              [filterProperty]="dateTimeProperty"
-              (filterCriteriaChange)="onFilterCriteriaChange($event)"
-            >
-            </appfx-datetime-filter>
-          }
-          @case (userPropertyType) {
-            <appfx-users-filter [filterProperty]="userProperty" (filterCriteriaChange)="onFilterCriteriaChange($event)">
-            </appfx-users-filter>
-          }
+  <button
+    type="button"
+    clrPopoverOrigin
+    clrPopoverOpenCloseButton
+    class="btn btn-sm btn-link btn-compact"
+    data-test-id="add-button"
+    [attr.aria-label]="filterStrings.addNewAriaLabel"
+    [attr.aria-expanded]="signPostOpened"
+    [attr.aria-controls]="popoverId"
+    [disabled]="availableProperties.length === 0"
+  >
+    <cds-icon size="20" shape="filter-grid" class="is-solid"></cds-icon>
+    {{ filterStrings.addNew }}
+  </button>
+  <div
+    class="filter-popover"
+    role="dialog"
+    [id]="popoverId"
+    [attr.aria-label]="filterStrings.addNewAriaLabel"
+    cdkTrapFocus
+    [cdkTrapFocusAutoCapture]="true"
+    *clrPopoverContent="
+      signPostOpened;
+      at: popoverPosition;
+      type: popoverType;
+      outsideClickToClose: true;
+      scrollToClose: false
+    "
+  >
+    <clr-select-container class="mt-0">
+      <label class="clr-control-label"> {{ filterStrings.filterLabel }} </label>
+      <select clrSelect [(ngModel)]="selectedFilterableProperty" (ngModelChange)="onPropertyChange()">
+        @for (property of availableProperties; track property.property) {
+          <option [ngValue]="property">
+            {{ property.displayName }}
+          </option>
         }
-      </clr-signpost-content>
-    </ng-template>
-  </clr-signpost>
-  @if (propertyFilters.length > 0) {
-    <div class="manage-filter-container">
-      @for (propertyFilter of propertyFilters; track propertyFilter) {
-        <appfx-manage-filter
-          [hidden]="collapsedFilters"
-          [propertyFilter]="propertyFilter"
+      </select>
+    </clr-select-container>
+    @switch (propertyType) {
+      @case (stringPropertyType) {
+        <appfx-general-filter [filterProperty]="stringProperty" (filterCriteriaChange)="onFilterCriteriaChange($event)">
+        </appfx-general-filter>
+      }
+      @case (numericPropertyType) {
+        <appfx-general-filter
+          [filterProperty]="numericProperty"
           (filterCriteriaChange)="onFilterCriteriaChange($event)"
+        >
+        </appfx-general-filter>
+      }
+      @case (enumPropertyType) {
+        <appfx-enum-filter [filterProperty]="enumProperty" (filterCriteriaChange)="onFilterCriteriaChange($event)">
+        </appfx-enum-filter>
+      }
+      @case (dateTimePropertyType) {
+        <appfx-datetime-filter
+          [filterProperty]="dateTimeProperty"
+          (filterCriteriaChange)="onFilterCriteriaChange($event)"
+        >
+        </appfx-datetime-filter>
+      }
+      @case (userPropertyType) {
+        <appfx-users-filter [filterProperty]="userProperty" (filterCriteriaChange)="onFilterCriteriaChange($event)">
+        </appfx-users-filter>
+      }
+    }
+  </div>
+  @if (visibleProperties.length > 0) {
+    <div class="manage-filter-container">
+      @for (property of visibleProperties; track property.property) {
+        <appfx-manage-filter
+          [hidden]="collapsedFilters && !isPredefined(property)"
+          [filterProperty]="property"
+          [propertyFilter]="filterFor(property)"
+          [predefined]="isPredefined(property)"
+          (filterCriteriaChange)="onFilterCriteriaChange($event)"
+          (filterRemoved)="clearFilter(property)"
         >
         </appfx-manage-filter>
       }
-      <button
-        class="btn btn-sm btn-link btn-compact"
-        data-test-id="hide-filters"
-        [attr.aria-label]="showHideFiltersAriaLabel"
-        (click)="showHideAllFilters()"
-      >
-        <cds-icon shape="angle" class="is-solid" [direction]="showHideFiltersArrowDir"></cds-icon>
-        {{ showHideFiltersLabel }}
-      </button>
-      <button
-        class="btn btn-sm btn-link btn-compact"
-        data-test-id="clear-all-button"
-        [attr.aria-label]="filterStrings.clearAllButtonAriaLabel"
-        (click)="clearAllFilters()"
-      >
-        {{ filterStrings.clearAllButtonLabel }}
-      </button>
+      @if (propertyFilters.length > 0) {
+        @if (userAddedFiltersCount > 0) {
+          <button
+            type="button"
+            class="btn btn-sm btn-link btn-compact"
+            data-test-id="hide-filters"
+            [attr.aria-label]="showHideFiltersAriaLabel"
+            (click)="showHideAllFilters()"
+          >
+            <cds-icon shape="angle" class="is-solid" [direction]="showHideFiltersArrowDir"></cds-icon>
+            {{ showHideFiltersLabel }}
+          </button>
+        }
+        <button
+          type="button"
+          class="btn btn-sm btn-link btn-compact"
+          data-test-id="clear-all-button"
+          [attr.aria-label]="filterStrings.clearAllButtonAriaLabel"
+          (click)="clearAllFilters()"
+        >
+          {{ filterStrings.clearAllButtonLabel }}
+        </button>
+      }
     </div>
   }
 </div>

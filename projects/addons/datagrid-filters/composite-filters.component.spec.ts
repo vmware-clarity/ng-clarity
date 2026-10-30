@@ -9,8 +9,11 @@ import { A11yModule as CdkA11yModule } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ClrBadge } from '@clr/angular/emphasis/badge';
+import { ClrLabel } from '@clr/angular/emphasis/label';
 import { ClrCheckboxModule, ClrInputModule, ClrSelectModule } from '@clr/angular/forms';
 import { ClrIcon } from '@clr/angular/icon';
+import { ClrPopoverModuleNext } from '@clr/angular/popover/common';
 import { ClrSignpostModule } from '@clr/angular/popover/signpost';
 
 import { EnumFilterComponent } from './advanced-filters/enum-filter.component';
@@ -86,10 +89,13 @@ describe('CompositeFiltersComponent', () => {
   beforeEach(function (this: ThisTest) {
     TestBed.configureTestingModule({
       imports: [
+        ClrBadge,
+        ClrLabel,
         ClrCheckboxModule,
         ClrInputModule,
         ClrSelectModule,
         ClrSignpostModule,
+        ClrPopoverModuleNext,
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
@@ -114,6 +120,100 @@ describe('CompositeFiltersComponent', () => {
 
   afterEach(function (this: ThisTest) {
     this.fixture.destroy();
+  });
+
+  it('shows empty predefined pills without emitting active filters', function (this: ThisTest) {
+    this.component.predefinedFilters = [stringProperty];
+    spyOn(this.component.propertyFiltersChange, 'emit');
+    this.fixture.detectChanges();
+    const pill = this.fixture.nativeElement.querySelector('.filter-pill');
+    expect(pill.textContent.trim()).toBe(stringProperty.displayName);
+    expect(pill.classList.contains('filter-pill-active')).toBeFalse();
+    expect(this.component.propertyFilters).toEqual([]);
+    expect(this.component.propertyFiltersChange.emit).not.toHaveBeenCalled();
+    expect(this.component.availableProperties).toEqual([enumProperty]);
+    expect(this.component.selectedFilterableProperty).toBe(enumProperty);
+  });
+
+  it('deduplicates predefined fields and presets by property key', function (this: ThisTest) {
+    const equivalentProperty = new StringPropertyDefinition('Another label', stringProperty.property);
+    this.component.predefinedFilters = [stringProperty, equivalentProperty];
+    this.component.presetFilters = [stringPropertyFilter];
+    this.fixture.detectChanges();
+    expect(this.fixture.nativeElement.querySelectorAll('.filter-pill').length).toBe(1);
+    expect(this.component.propertyFilters).toEqual([stringPropertyFilter]);
+    expect(this.component.availableProperties).toEqual([enumProperty]);
+  });
+
+  it('keeps predefined pills visible when hiding and clearing active filters', function (this: ThisTest) {
+    this.component.predefinedFilters = [stringProperty];
+    this.component.presetFilters = [stringPropertyFilter, enumPropertyFilter];
+    spyOn(this.component.propertyFiltersChange, 'emit');
+    this.fixture.detectChanges();
+    this.fixture.nativeElement.querySelector('[data-test-id="hide-filters"]').click();
+    this.fixture.detectChanges();
+    const pills = this.fixture.nativeElement.querySelectorAll('appfx-manage-filter');
+    expect(pills[0].hidden).toBeFalse();
+    expect(pills[1].hidden).toBeTrue();
+    this.fixture.nativeElement.querySelector('[data-test-id="clear-all-button"]').click();
+    this.fixture.detectChanges();
+    expect(this.fixture.nativeElement.querySelectorAll('.filter-pill').length).toBe(1);
+    expect(this.fixture.nativeElement.querySelector('.filter-pill').textContent.trim()).toBe(
+      stringProperty.displayName
+    );
+    expect(this.component.propertyFiltersChange.emit).toHaveBeenCalledWith([]);
+    expect(this.component.presetFilters[0].criteria.length).toBe(2);
+  });
+
+  it('disables Add New when every property has a predefined pill', function (this: ThisTest) {
+    this.component.predefinedFilters = filterableProperties;
+    this.fixture.detectChanges();
+    expect(this.fixture.nativeElement.querySelector('[data-test-id="add-button"]').disabled).toBeTrue();
+  });
+
+  it('updates the predefined list without dropping active criteria', function (this: ThisTest) {
+    this.fixture.componentRef.setInput('predefinedFilters', [stringProperty]);
+    this.component.presetFilters = [stringPropertyFilter];
+    this.fixture.detectChanges();
+    this.fixture.componentRef.setInput('predefinedFilters', [enumProperty]);
+    this.fixture.detectChanges();
+    expect(this.component.visibleProperties).toEqual([enumProperty, stringProperty]);
+    expect(this.component.propertyFilters).toEqual([stringPropertyFilter]);
+  });
+
+  it('applies and clears a predefined filter through its popover', async function (this: ThisTest) {
+    this.component.predefinedFilters = [stringProperty];
+    spyOn(this.component.propertyFiltersChange, 'emit');
+    this.fixture.detectChanges();
+    const trigger: HTMLButtonElement = this.fixture.nativeElement.querySelector('.filter-pill');
+    trigger.click();
+    this.fixture.detectChanges();
+    await this.fixture.whenStable();
+    this.fixture.detectChanges();
+    const input: HTMLInputElement = document.querySelector('input[formControlName="primaryValue"]');
+    input.value = 'Demo';
+    input.dispatchEvent(new Event('input'));
+    this.fixture.detectChanges();
+    document.querySelector<HTMLButtonElement>('[data-test-id="submitBtn"]').click();
+    this.fixture.detectChanges();
+    await this.fixture.whenStable();
+    this.fixture.detectChanges();
+    expect(trigger.textContent.trim()).toBe('Contains: Demo');
+    expect(trigger.classList.contains('filter-pill-active')).toBeTrue();
+    expect(this.component.propertyFilters[0].criteria[0].value).toBe('Demo');
+    trigger.click();
+    this.fixture.detectChanges();
+    await this.fixture.whenStable();
+    this.fixture.detectChanges();
+    document.querySelector<HTMLButtonElement>('[data-test-id="clear-filter"]').click();
+    this.fixture.detectChanges();
+    await this.fixture.whenStable();
+    this.fixture.detectChanges();
+    expect(this.fixture.nativeElement.querySelector('.filter-pill')).toBe(trigger);
+    expect(trigger.textContent.trim()).toBe(stringProperty.displayName);
+    expect(trigger.classList.contains('filter-pill-active')).toBeFalse();
+    expect(this.component.propertyFiltersChange.emit).toHaveBeenCalledWith([]);
+    expect(document.activeElement).toBe(trigger);
   });
   it('is properly initialized', function (this: ThisTest) {
     this.fixture.detectChanges();

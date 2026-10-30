@@ -5,11 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { A11yModule } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClrInputModule, ClrSelectModule } from '@clr/angular/forms';
 import { ClrIcon } from '@clr/angular/icon';
+import { ClrPopoverModuleNext } from '@clr/angular/popover/common';
 import { ClrSignpostModule } from '@clr/angular/popover/signpost';
 
 import { CompositeFiltersComponent } from './composite-filters.component';
@@ -32,6 +34,8 @@ describe('DataGridFiltersComponent', () => {
         ClrInputModule,
         ClrSelectModule,
         ClrSignpostModule,
+        ClrPopoverModuleNext,
+        A11yModule,
         CommonModule,
         FormsModule,
         ReactiveFormsModule,

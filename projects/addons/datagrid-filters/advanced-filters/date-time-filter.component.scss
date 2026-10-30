@@ -4,7 +4,6 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-// TODO: zpopov: refactor with calculation over CSS vars
 clr-input-container {
-  margin-top: 0.9rem;
+  margin-top: var(--clr-base-vertical-offset-l);
 }

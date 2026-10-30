@@ -7,15 +7,24 @@
 
 .composite-filter-container {
   display: flex;
-}
-
-.height-standard {
-  height: 1.2rem;
+  align-items: center;
+  gap: var(--clr-base-gap-s);
 }
 
 .manage-filter-container {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+  gap: var(--clr-base-gap-m);
+  min-width: 0;
+}
+
+appfx-manage-filter {
+  max-width: 100%;
+
+  &:not([hidden]) {
+    display: inline-flex;
+  }
 }
 
 :host-context(.zoom2x, .zoom4x) {

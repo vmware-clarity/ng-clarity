@@ -44,3 +44,29 @@
     <label>Simulate error in searching users for the Users advanced filter.</label>
   </clr-toggle-wrapper>
 </clr-toggle-container>
+
+<section aria-labelledby="predefined-filters-heading" cds-layout="m-t:xl">
+  <h2 id="predefined-filters-heading">Predefined filters</h2>
+  <p cds-layout="m-b:md">
+    VM Name, State, and Status stay visible when cleared. Status starts with Warning and Alert selected. Use Add New to
+    filter by other fields.
+  </p>
+  <appfx-datagrid-filters
+    [filterMode]="FilterMode.AdvancedOnly"
+    [filterableProperties]="filterableProperties"
+    [predefinedFilters]="predefinedFilters"
+    [presetFilters]="presetFilters"
+    (propertyFiltersChange)="onPredefinedFilterChange($event)"
+  ></appfx-datagrid-filters>
+  <appfx-datagrid
+    [gridItems]="predefinedFilteredItems"
+    [columns]="columns"
+    [layoutModel]="{
+      compact: false,
+      stretchToParentHeight: false,
+    }"
+    [selectionType]="selectionType"
+    [pageSize]="10"
+    [rowSelectionMode]="false"
+  ></appfx-datagrid>
+</section>

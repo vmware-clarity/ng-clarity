@@ -21,8 +21,31 @@ Advanced modes allow users to build and manage complex filtering queries. Quick 
 | `filterMode`            | Input        | `FilterMode`                     | Enum parameter with three options.<br/>FilterMode.Quick - only quick filter is activated.<br/>FilterMode.Advanced - both quick and advanced filters are activated.<br/>FilterMode.AdvancedOnly - Only advanced filter is activated. |
 | `filterableProperties`  | Input        | `FilterablePropertyDefinition[]` | Array of properties, which are used for advanced filtering.<br/>Supported types: StringPropertyDefinition, NumericPropertyDefinition, EnumPropertyDefinition, DateTimePropertyDefinition                                            |
 | `presetFilters`         | Input        | `PropertyFilter[]`               | Array of pre-selected filters.                                                                                                                                                                                                      |
+| `predefinedFilters`     | Input        | `FilterablePropertyDefinition[]` | Properties whose pills remain visible without active criteria. Defaults to `[]`; initial values are supplied through `presetFilters`.                                                                                               |
 | `searchTermChange`      | Output       | `EventEmitter<string>`           | Emits when the quick filter changes. Triggered on `Enter` key press and/or automatically on every 2 sec when the user is typing in the search input.                                                                                |
 | `propertyFiltersChange` | Output       | `EventEmitter<PropertyFilter[]>` | Emits when the advanced filter changes.                                                                                                                                                                                             |
+
+#### Predefined filters
+
+The optional `predefinedFilters: FilterablePropertyDefinition[]` input selects the properties whose pills are always visible in advanced mode. Supply their definitions in the desired display order. Properties are matched by their `property` key, so a predefined field is not offered again in **Add new**.
+
+Predefined pills start empty and use a gray outline with the field name. Set initial criteria through the existing `presetFilters` input. Active pills use a blue outline and background, display the first condition, and show `+N` for additional conditions. Operators other than equality remain visible in the summary.
+
+Opening a pill edits its criteria in a popover. **Clear filter** returns a predefined pill to its empty state; user-added filters can be removed. **Clear all** clears all criteria and removes user-added pills while retaining predefined pills. **Hide** only hides user-added pills. Empty pills are not included in `propertyFiltersChange`.
+
+The popover applies changes only on **Apply**. **Cancel**, Escape, and outside clicks discard unapplied edits.
+
+```html
+<appfx-datagrid-filters
+  [filterMode]="filterMode"
+  [filterableProperties]="filterableProperties"
+  [predefinedFilters]="predefinedFilters"
+  [presetFilters]="presetFilters"
+  (propertyFiltersChange)="onAdvancedFilterCriteriaChange($event)"
+></appfx-datagrid-filters>
+```
+
+For example, `predefinedFilters = [nameProperty, statusProperty]` permanently shows the name and status filters independently of their initial values. Unlike a flag on `FilterablePropertyDefinition`, this input lets each grid choose visibility and order while sharing the same field definitions.
 
 #### FilterablePropertyDefinition
 

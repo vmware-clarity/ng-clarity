@@ -629,14 +629,18 @@ export class MockDatagridFiltersComponent {
     //
     // (undocumented)
     filterMode: FilterMode;
+    // (undocumented)
+    predefinedFilters: FilterablePropertyDefinition[];
     // Warning: (ae-forgotten-export) The symbol "PropertyFilter" needs to be exported by the entry point clr-addons-testing.d.ts
     //
+    // (undocumented)
+    presetFilters: PropertyFilter[];
     // (undocumented)
     propertyFiltersChange: EventEmitter<PropertyFilter[]>;
     // (undocumented)
     searchTermChange: EventEmitter<string>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridFiltersComponent, "appfx-datagrid-filters", never, { "filterMode": { "alias": "filterMode"; "required": false; }; "filterableProperties": { "alias": "filterableProperties"; "required": false; }; }, { "searchTermChange": "searchTermChange"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridFiltersComponent, "appfx-datagrid-filters", never, { "filterMode": { "alias": "filterMode"; "required": false; }; "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "predefinedFilters": { "alias": "predefinedFilters"; "required": false; }; "presetFilters": { "alias": "presetFilters"; "required": false; }; }, { "searchTermChange": "searchTermChange"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockDatagridFiltersComponent, never>;
 }
