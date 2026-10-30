@@ -20,7 +20,5 @@ without an extra click or forced render, and fail on browser errors. The separat
 [consumer smoke](../consumer/README.md) verifies compatibility with existing Zone.js
 applications using the built library packages. Both run in the PR build workflow.
 
-CDE-3270 owns this rollout and the library test configuration. Runtime regression
-fixes remain independently reviewed in CDE-3360 (datepicker), CDE-3361 (modal and
-side panel) and CDE-3362 (popover consumers). Switching the applications does not
-complete the separate all-component OnPush conversion (CDE-3272).
+Application bootstrapping and asynchronous examples are covered here; component-level
+change detection strategies are verified by the library regression suites.

@@ -107,13 +107,13 @@ export class DatagridSelectionSandboxDemo implements OnInit {
 
   ngOnInit() {
     this.configForm.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
-      this.cdr.markForCheck();
       if (value.initWithNull) {
         this.selected = null;
         this.emitCount = 0;
         this.log = [];
         this.recreateDatagrid();
       }
+      this.cdr.markForCheck();
     });
   }
 

@@ -30,15 +30,15 @@ export class DatagridTestCasesAsyncDemo {
     inventory.reset();
 
     setTimeout(() => {
-      this.changeDetectorRef.markForCheck();
       this.users = inventory.all;
+      this.changeDetectorRef.markForCheck();
     }, 1000);
 
     this.users1 = inventory.all.slice(0, 5);
 
     setTimeout(() => {
-      this.changeDetectorRef.markForCheck();
       this.users1 = this.users1.concat(inventory.all.slice(5));
+      this.changeDetectorRef.markForCheck();
     }, 3000);
   }
 

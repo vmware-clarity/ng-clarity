@@ -26,25 +26,19 @@ export class StackViewNgDemo {
   ];
 
   editModal = false;
-  private readonly childrenState = signal<any[]>([]);
-
-  get children(): any[] {
-    return this.childrenState();
-  }
-  set children(value: any[]) {
-    this.childrenState.set(value);
-  }
+  /* Lazy loading demo */
+  readonly children = signal<any[]>([]);
 
   fetchChildren(): void {
-    if (this.children.length > 0) {
+    if (this.children().length > 0) {
       return;
     }
     setTimeout(() => {
-      this.children = [
+      this.children.set([
         { title: 'Sub-label 1', content: 'Sub-content 1' },
         { title: 'Sub-label 2', content: 'Sub-content 2' },
         { title: 'Sub-label 3', content: 'Sub-content 3' },
-      ];
+      ]);
     }, 2000);
   }
 }

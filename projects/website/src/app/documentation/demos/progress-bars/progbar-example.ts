@@ -11,7 +11,6 @@ export class ProgBarExample {
   intervalId: any;
   intervalTimeInMs = 450;
   private readonly valueState = signal(0);
-  private readonly runningState = signal(false);
   private readonly completeState = signal(false);
 
   constructor(
@@ -25,13 +24,6 @@ export class ProgBarExample {
   }
   set value(value: number) {
     this.valueState.set(value);
-  }
-
-  get running(): boolean {
-    return this.runningState();
-  }
-  set running(value: boolean) {
-    this.runningState.set(value);
   }
 
   get complete(): boolean {
@@ -66,10 +58,6 @@ export class ProgBarExample {
     }, this.intervalTimeInMs);
   }
 
-  isRunning(): boolean {
-    return this.running;
-  }
-
   isFinished(): boolean {
     return this.complete;
   }
@@ -78,7 +66,6 @@ export class ProgBarExample {
     let myProgress: number = this.value;
     const maxProgressIncrement = 15;
     const minProgressIncrement = 4;
-    this.running = true;
     this.complete = false;
 
     myProgress += Math.random() * (maxProgressIncrement - minProgressIncrement) + minProgressIncrement;

@@ -124,12 +124,12 @@ export class VerticalNavDemo extends ClarityDocComponent implements OnInit, OnDe
     }
     this._subscriptions.push(
       this.router.events.subscribe((change: any) => {
-        this.changeDetectorRef.markForCheck();
         if (change instanceof NavigationEnd) {
           if (change.url.includes('vertical-nav')) {
             this.initializePagination(change.url);
           }
         }
+        this.changeDetectorRef.markForCheck();
       })
     );
 

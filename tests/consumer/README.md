@@ -13,8 +13,9 @@ npm run _build:consumer-smoke
 npm run test:consumer-smoke
 ```
 
-The same application runs with `?mode=zone` or `?mode=zoneless`. Zone.js is imported
-only for the first mode. Every scenario checks the actual presence or absence of the
+The application is built twice: `/zone/?mode=zone` includes the Zone.js polyfill
+before Angular and uses the builder’s Zone-compatible async transformations;
+`/zoneless/?mode=zoneless` has no Zone.js polyfill. Every scenario checks the actual presence or absence of the
 browser `Zone` global and fails on browser errors. No test forces Angular rendering.
 
 The smoke covers tabs, accordion, datagrid sorting and asynchronous signal updates,

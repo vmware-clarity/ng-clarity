@@ -31,58 +31,58 @@ export class ButtonLoadingDemo {
   disabledDemo() {
     this.disabledState = ClrLoadingState.LOADING;
     setTimeout(() => {
-      this.changeDetectorRef.markForCheck();
       this.disabledState = ClrLoadingState.SUCCESS;
       this.disabledStateDisabled = true;
+      this.changeDetectorRef.markForCheck();
     }, 1500);
   }
 
   enabledDemo() {
     this.enabledState = ClrLoadingState.LOADING;
     setTimeout(() => {
-      this.changeDetectorRef.markForCheck();
       this.enabledState = ClrLoadingState.SUCCESS;
       this.enabledStateDisabled = false;
+      this.changeDetectorRef.markForCheck();
     }, 1500);
   }
 
   validateDemo() {
     this.validateState = ClrLoadingState.LOADING;
     setTimeout(() => {
-      this.changeDetectorRef.markForCheck();
       this.validateState = ClrLoadingState.SUCCESS;
+      this.changeDetectorRef.markForCheck();
     }, 1500);
   }
 
   submitDemo() {
     this.submitState = ClrLoadingState.LOADING;
     setTimeout(() => {
-      this.changeDetectorRef.markForCheck();
       this.submitState = ClrLoadingState.DEFAULT;
+      this.changeDetectorRef.markForCheck();
     }, 1500);
   }
 
   validateSmDemo() {
     this.validateSmState = true;
     setTimeout(() => {
-      this.changeDetectorRef.markForCheck();
       this.validateSmState = false;
+      this.changeDetectorRef.markForCheck();
     }, 1500);
   }
 
   submitSmDemo() {
     this.submitSmState = ClrLoadingState.LOADING;
     setTimeout(() => {
-      this.changeDetectorRef.markForCheck();
       this.submitSmState = ClrLoadingState.DEFAULT;
+      this.changeDetectorRef.markForCheck();
     }, 1500);
   }
 
   validateFalsyDemo() {
     this.validateFalsyState = true;
     setTimeout(() => {
-      this.changeDetectorRef.markForCheck();
       this.validateFalsyState = null;
+      this.changeDetectorRef.markForCheck();
     }, 1500);
   }
 }

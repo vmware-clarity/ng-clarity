@@ -108,8 +108,8 @@ export class ModalAnimationDemo implements OnInit, OnDestroy {
     if (isPlatformBrowser(this.platformId)) {
       // If you want interactivity, go to the Angular component demo.
       this.interval = setInterval(() => {
-        this.changeDetectorRef.markForCheck();
         this.animatedExampleIn = !this.animatedExampleIn;
+        this.changeDetectorRef.markForCheck();
       }, 2000);
     }
   }

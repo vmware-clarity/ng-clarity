@@ -19,7 +19,7 @@ for (const mode of ['zone', 'zoneless']) {
           errors.push(message.text());
         }
       });
-      await page.goto(`/?mode=${mode}`);
+      await page.goto(`/${mode}/?mode=${mode}`);
       await expect(page.getByTestId('mode')).toHaveText(mode);
       expect(await page.evaluate(() => typeof (globalThis as { Zone?: unknown }).Zone !== 'undefined')).toBe(
         mode === 'zone'

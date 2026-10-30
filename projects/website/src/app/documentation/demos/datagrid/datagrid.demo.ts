@@ -678,12 +678,12 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
     }
     this._subscriptions.push(
       this.router.events.subscribe((change: any) => {
-        this.changeDetectorRef.markForCheck();
         if (change instanceof NavigationEnd) {
           if (change.url.includes('datagrid')) {
             this.initializePagination(change.url);
           }
         }
+        this.changeDetectorRef.markForCheck();
       })
     );
     this.initializePagination('/documentation/datagrid/code/' + this.route.children[0].routeConfig?.path);

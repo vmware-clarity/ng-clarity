@@ -98,8 +98,8 @@ export class ProgressBarStoryDemo {
   ngOnInit() {
     this.storyProgressBar.start();
     this.storyTime.subscribe(() => {
-      this.changeDetectorRef.markForCheck();
       this.tellStoryAgain();
+      this.changeDetectorRef.markForCheck();
     });
   }
 

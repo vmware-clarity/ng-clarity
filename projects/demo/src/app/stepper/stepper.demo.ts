@@ -64,8 +64,8 @@ export class StepperDemo {
   loadingDemo() {
     this.state = ClrLoadingState.LOADING;
     setTimeout(() => {
-      this.changeDetectorRef.markForCheck();
       this.state = ClrLoadingState.SUCCESS;
+      this.changeDetectorRef.markForCheck();
     }, 1500);
   }
 
@@ -88,9 +88,9 @@ export class StepperDemo {
   changeStep() {
     this.loading = true;
     setTimeout(() => {
-      this.changeDetectorRef.markForCheck();
       this.initialStep = 'contact';
       this.loading = false;
+      this.changeDetectorRef.markForCheck();
     }, 400);
   }
 

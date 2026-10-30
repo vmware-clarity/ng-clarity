@@ -23,7 +23,7 @@ for (const mode of ['zone', 'zoneless']) {
           errors.push(message.text());
         }
       });
-      await page.goto(`/?mode=${mode}`);
+      await page.goto(`/${mode}/?mode=${mode}`);
       await expect(page.getByTestId('mode')).toHaveText(mode);
       expect(await page.evaluate(() => typeof (globalThis as { Zone?: unknown }).Zone !== 'undefined')).toBe(
         mode === 'zone'
@@ -151,24 +151,45 @@ for (const mode of ['zone', 'zoneless']) {
       await outside.focus();
       await external(
         page,
-        'app.openPopover("menu"); app.closePopover("menu"); app.openPopover("combo"); app.closePopover("combo")'
+        'app.recordVisibility("menu"); app.recordVisibility("combo"); app.openPopover("menu"); app.closePopover("menu"); app.openPopover("combo"); app.closePopover("combo")'
       );
+      await page.evaluate(
+        () => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve())))
+      );
+      expect(await external(page, 'return app.visibility.menu')).not.toContain(true);
+      expect(await external(page, 'return app.visibility.combo')).not.toContain(true);
       await expect(page.getByRole('button', { name: 'Acceptance actions' })).toHaveAttribute('aria-expanded', 'false');
       await expect(page.locator('#overlay-acceptance [role="combobox"]')).toHaveAttribute('aria-expanded', 'false');
       await expect(page.getByRole('menuitem', { name: 'First action', exact: true })).toBeHidden();
       await expect(outside).toBeFocused();
     });
 
-    test('late modal requests after destruction cannot reacquire the scroll lock', async ({ page }) => {
+    test('opening a previously closed modal after destruction cannot reacquire the scroll lock', async ({ page }) => {
       await external(page, 'app.modal.set(true)');
       await expect(page.locator('.acceptance-modal .modal-dialog')).toBeVisible();
+      await external(page, 'app.modal.set(false)');
+      await expect(page.locator('.acceptance-modal .modal-dialog')).toBeHidden();
       await external(page, 'app.destroyRetainingModal()');
       await expect(page.locator('#overlay-acceptance .modal-dialog')).toHaveCount(0);
-      await external(page, 'app.requestDestroyedModal()');
+      await external(page, 'app.openDestroyedModal()');
       await expect(page.locator('body')).not.toHaveClass(/no-scrolling/);
       await expect(page.locator('#overlay-acceptance .modal-dialog')).toHaveCount(0);
       await page.getByTestId('outside-focus').click();
       await expect(page.getByTestId('outside-focus')).toBeFocused();
+    });
+
+    test('closing an open modal after destruction does not schedule work on its destroyed injector', async ({
+      page,
+    }) => {
+      await external(page, 'app.modal.set(true)');
+      await expect(page.locator('.acceptance-modal .modal-dialog')).toBeVisible();
+      await external(page, 'app.destroyRetainingModal()');
+      await expect(page.locator('#overlay-acceptance .modal-dialog')).toHaveCount(0);
+      await external(page, 'app.closeDestroyedModal()');
+      await page.evaluate(
+        () => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve())))
+      );
+      await expect(page.locator('body')).not.toHaveClass(/no-scrolling/);
     });
 
     test('destroying open overlays removes panels and releases scroll locks without stale callbacks', async ({

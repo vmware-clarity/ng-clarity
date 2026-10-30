@@ -226,7 +226,6 @@ export class WizardStopNavigation {
       this.untouched = false;
       this.loading = true;
       const timer = setInterval(() => {
-        this.changeDetectorRef.markForCheck();
         this.progress = this.progress + 14;
 
         if (this.progress > 99) {
@@ -234,6 +233,7 @@ export class WizardStopNavigation {
           this.loading = false;
           clearInterval(timer);
         }
+        this.changeDetectorRef.markForCheck();
       }, 1000);
     } else {
       this.wizard()?.forceFinish();

@@ -398,7 +398,6 @@ export class DatagridFullDemo {
 
     // Timeout hack to make sure we completely reset the datagrid
     setTimeout(() => {
-      this.changeDetectorRef.markForCheck();
       this.inventory.size = this.options.totalUsers;
       this.currentPageSize = Number.parseInt(this.options.pageSize, 10);
       this.selected = this.options.selectable ? [] : undefined;
@@ -413,6 +412,7 @@ export class DatagridFullDemo {
         this.users = this.inventory.all;
       }
       this.resetting = false;
+      this.changeDetectorRef.markForCheck();
     });
   }
 
@@ -440,10 +440,10 @@ export class DatagridFullDemo {
         state.page && state.page.size
       )
       .then((result: FetchResult) => {
-        this.changeDetectorRef.markForCheck();
         this.users = result.users;
         this.total = result.length;
         this.loading = false;
+        this.changeDetectorRef.markForCheck();
       });
   }
 

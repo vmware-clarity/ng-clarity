@@ -21,11 +21,11 @@
       <clr-stack-label>Label 1</clr-stack-label>
       <clr-stack-content>Content 1</clr-stack-content>
 
-      @if (children.length == 0) {
+      @if (children().length == 0) {
       <clr-stack-block [clrStackViewLevel]="2">
         <clr-spinner clrAssertive clrInline> Loading... </clr-spinner>
       </clr-stack-block>
-      } @for (child of children; track child; let i = $index) {
+      } @for (child of children(); track child; let i = $index) {
       <clr-stack-block [clrStackViewLevel]="2">
         <clr-stack-label>{{ child.title }}</clr-stack-label>
         <clr-stack-content>{{ child.content }}</clr-stack-content>

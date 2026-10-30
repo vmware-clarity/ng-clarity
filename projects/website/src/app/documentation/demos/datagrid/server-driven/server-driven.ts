@@ -68,9 +68,9 @@ export class DatagridServerDrivenDemo {
       .sort(<{ by: string; reverse: boolean }>state.sort)
       .fetch(pageSize * (currentPage - 1), pageSize)
       .then((result: FetchResult) => {
-        this.changeDetectorRef.markForCheck();
         this.users = result.users;
         this.loading = false;
+        this.changeDetectorRef.markForCheck();
       });
   }
 }
