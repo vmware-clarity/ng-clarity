@@ -7,11 +7,15 @@
 
 import { CommonModule } from '@angular/common';
 import {
+  afterNextRender,
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
+  inject,
+  Injector,
   Input,
   OnInit,
   Output,
@@ -96,6 +100,9 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
 
   readonly timelineStates = ClrTimelineStepState;
 
+  private readonly injector = inject(Injector);
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+
   private _presets: ThemePreset[] = [CLARITY_DEFAULT_PRESET, ...PRESETS];
 
   constructor() {
@@ -130,9 +137,16 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.buildColorStructure();
-
-    this.applyPreviewStyles();
+    // Computed colors require the rendered preview. Initialize after the current check so
+    // populating the controls and emitting the initial CSS cannot change checked bindings.
+    afterNextRender(
+      () => {
+        this.buildColorStructure();
+        this.applyPreviewStyles();
+        this.changeDetectorRef.markForCheck();
+      },
+      { injector: this.injector }
+    );
   }
 
   toggleActiveTheme(): void {
