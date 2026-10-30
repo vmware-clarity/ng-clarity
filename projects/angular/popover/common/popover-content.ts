@@ -36,7 +36,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { Keys } from '@clr/angular/utils';
-import { fromEvent, merge, Subscription, switchMap, timer } from 'rxjs';
+import { filter, fromEvent, merge, Subscription, switchMap, timer } from 'rxjs';
 
 import { ClrPopoverService } from './providers/popover.service';
 import { getCrossWindowOriginContext, resolveCrossWindowOrigin } from './utils/cross-window-origin';
@@ -664,7 +664,29 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
     this.zone.runOutsideAngular(() => {
       this.subscriptions.push(
-        merge(...scrollableParents.map(parent => fromEvent(parent, 'scroll', { passive: true }))).subscribe(() => {
+        merge(
+          ...scrollableParents.map(parent => {
+            const element =
+              parent.nodeType === Node.DOCUMENT_NODE ? (parent as Document).scrollingElement : (parent as Element);
+            let left = element?.scrollLeft;
+            let top = element?.scrollTop;
+
+            return fromEvent(parent, 'scroll', { passive: true }).pipe(
+              filter(() => {
+                const nextLeft = element?.scrollLeft;
+                const nextTop = element?.scrollTop;
+                // scrollIntoView() can queue a native event before these listeners are installed.
+                // Only subsequent movement should close or reposition the newly opened popover.
+                if (left === nextLeft && top === nextTop) {
+                  return false;
+                }
+                left = nextLeft;
+                top = nextTop;
+                return true;
+              })
+            );
+          })
+        ).subscribe(() => {
           if (this._scrollToClose) {
             this.zone.run(() => this.closePopover());
             return;

@@ -155,6 +155,31 @@ for (const zoneless of [false, true]) {
       expect(document.querySelector('clr-signpost-content')).toBeNull();
     });
 
+    it('ignores a queued opening scroll but still closes on subsequent scrolling', async () => {
+      const host = fixture.nativeElement as HTMLElement;
+      host.style.display = 'block';
+      host.style.marginTop = '2000px';
+      try {
+        const popover = service('clr-dropdown');
+        popover.open = true;
+        await fixture.whenStable();
+        await new Promise(resolve => requestAnimationFrame(resolve));
+        await new Promise(resolve => requestAnimationFrame(resolve));
+        expect(popover.open).toBeTrue();
+        document.dispatchEvent(new Event('scroll'));
+        await fixture.whenStable();
+        expect(popover.open).toBeTrue();
+        window.scrollTo(0, 0);
+        await new Promise(resolve => requestAnimationFrame(resolve));
+        await new Promise(resolve => requestAnimationFrame(resolve));
+        await fixture.whenStable();
+        expect(popover.open).toBeFalse();
+      } finally {
+        host.style.marginTop = '';
+        window.scrollTo(0, 0);
+      }
+    });
+
     it('keeps openChange synchronous and emits only actual changes', async () => {
       const popover = service('clr-dropdown');
       const values: boolean[] = [];
