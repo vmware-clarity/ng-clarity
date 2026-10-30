@@ -95,9 +95,10 @@ export class ThemeBuilderComponent implements OnDestroy {
     this.themeLockService.lockLightTheme();
     this.refreshSavedPresets();
 
-    this.cssToImportChanges
-      .pipe(debounceTime(IMPORT_VALIDATION_DEBOUNCE_MS), takeUntilDestroyed())
-      .subscribe(css => this.validateCssToImport(css));
+    this.cssToImportChanges.pipe(debounceTime(IMPORT_VALIDATION_DEBOUNCE_MS), takeUntilDestroyed()).subscribe(css => {
+      cd.markForCheck();
+      return this.validateCssToImport(css);
+    });
   }
 
   /**
@@ -216,10 +217,15 @@ export class ThemeBuilderComponent implements OnDestroy {
       if (this.copiedTimer) {
         clearTimeout(this.copiedTimer);
       }
-      this.copiedTimer = setTimeout(() => (this.copied = false), 2000);
+      this.copiedTimer = setTimeout(() => {
+        this.cd.markForCheck();
+        this.copied = false;
+      }, 2000);
     } catch {
       // clipboard not available — silently ignore
     }
+
+    this.cd.markForCheck();
   }
 
   private validateCssToImport(css: string): void {

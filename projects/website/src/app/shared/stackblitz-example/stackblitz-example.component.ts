@@ -6,7 +6,7 @@
  */
 
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { ChangeDetectionStrategy, Component, input, Input, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, input, viewChild } from '@angular/core';
 import { ClarityIcons, ClrIcon, ClrTabsModule, copyIcon, IconShapeTuple } from '@clr/angular';
 import stackblitz from '@stackblitz/sdk';
 
@@ -45,6 +45,7 @@ export class StackblitzExampleComponent {
   protected copied = false;
 
   private readonly activeCodeSnippet = viewChild(CodeSnippetComponent);
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   constructor(private liveAnnouncer: LiveAnnouncer) {
     ClarityIcons.addIcons(copyIcon, stackblitzIcon);
@@ -125,6 +126,7 @@ export class StackblitzExampleComponent {
       this.copied = true;
 
       setTimeout(() => {
+        this.changeDetectorRef.markForCheck();
         this.copied = false;
       }, 2000);
     }

@@ -98,8 +98,8 @@ export class VirtualScrollGridDemoComponent {
           skip: state.page.current * state.page.size,
           data: this.vmItems,
         };
-        this.cdr.detectChanges();
         this.options.loading = false;
+        this.cdr.markForCheck();
       });
   }
 
@@ -115,8 +115,8 @@ export class VirtualScrollGridDemoComponent {
           data: this.vmItems,
         };
         console.log(result);
-        this.cdr.detectChanges();
         this.options.loading = false;
+        this.cdr.markForCheck();
       });
   }
 
@@ -146,8 +146,8 @@ export class VirtualScrollGridDemoComponent {
           skip: 0,
           data: this.vmItems,
         };
-        this.cdr.detectChanges();
         this.resetting = false;
+        this.cdr.markForCheck();
       });
   }
 
@@ -160,8 +160,8 @@ export class VirtualScrollGridDemoComponent {
         skip: this.dataRange.skip,
         data: this.vmItems,
       };
-      this.cdr.detectChanges();
       this.options.loading = false;
+      this.cdr.markForCheck();
     }, this.inventory.latency);
   }
 }

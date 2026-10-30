@@ -6,7 +6,7 @@
  */
 
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ClrCheckboxModule,
@@ -386,6 +386,7 @@ export class DatagridFullDemo {
 
   pokemonComparator = new PokemonComparator();
   pokemonFilter = new PokemonFilter();
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   constructor(private inventory: Inventory) {
     this.reset();
@@ -397,6 +398,7 @@ export class DatagridFullDemo {
 
     // Timeout hack to make sure we completely reset the datagrid
     setTimeout(() => {
+      this.changeDetectorRef.markForCheck();
       this.inventory.size = this.options.totalUsers;
       this.currentPageSize = Number.parseInt(this.options.pageSize, 10);
       this.selected = this.options.selectable ? [] : undefined;
@@ -438,6 +440,7 @@ export class DatagridFullDemo {
         state.page && state.page.size
       )
       .then((result: FetchResult) => {
+        this.changeDetectorRef.markForCheck();
         this.users = result.users;
         this.total = result.length;
         this.loading = false;

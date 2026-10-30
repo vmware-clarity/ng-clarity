@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, TrackByFunction } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, TrackByFunction } from '@angular/core';
 import { ClrDatagridItemsIdentityFunction, ClrDatagridStateInterface } from '@clr/angular';
 
 import { Inventory } from '../inventory/inventory';
@@ -49,6 +49,7 @@ export class DatagridFullDemo {
 
   pokemonComparator = new PokemonComparator();
   pokemonFilter = new PokemonFilter();
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   constructor(private inventory: Inventory) {
     this.reset();
@@ -63,6 +64,7 @@ export class DatagridFullDemo {
     }
     this.rowActionsLoading = true;
     setTimeout(() => {
+      this.changeDetectorRef.markForCheck();
       this.rowActions = [
         'Edit',
         'Delete',
@@ -81,6 +83,7 @@ export class DatagridFullDemo {
 
     // Timeout hack to make sure we completely reset the datagrid
     setTimeout(() => {
+      this.changeDetectorRef.markForCheck();
       this.inventory.size = this.options.totalUsers;
       this.currentPageSize = Number.parseInt(this.options.pageSize, 10);
       this.selected = this.options.selectable ? [] : null;
@@ -123,6 +126,8 @@ export class DatagridFullDemo {
     this.users = result.users;
     this.total = result.length;
     this.loading = false;
+
+    this.changeDetectorRef.markForCheck();
   }
 
   clrDgActionOverflowOpenChangeFn(opened: boolean) {

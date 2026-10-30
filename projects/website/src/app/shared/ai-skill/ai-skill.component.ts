@@ -6,7 +6,7 @@
  */
 
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ClarityIcons, ClrIcon, copyIcon, downloadIcon } from '@clr/angular';
 
@@ -50,6 +50,7 @@ export class AiSkillComponent {
   readonly AI_DOCS = AI_DOCS;
 
   protected copied = false;
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   constructor(private readonly liveAnnouncer: LiveAnnouncer) {
     ClarityIcons.addIcons(copyIcon, downloadIcon);
@@ -59,6 +60,11 @@ export class AiSkillComponent {
     await navigator.clipboard.writeText(raw);
     this.copied = true;
     await this.liveAnnouncer.announce(`${this.skillName} SKILL.md copied to clipboard`);
-    setTimeout(() => (this.copied = false), 3000);
+    setTimeout(() => {
+      this.changeDetectorRef.markForCheck();
+      this.copied = false;
+    }, 3000);
+
+    this.changeDetectorRef.markForCheck();
   }
 }

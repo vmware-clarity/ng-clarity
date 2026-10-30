@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ClrAlertModule,
@@ -151,6 +151,7 @@ export class WizardAsyncValidation {
 
   code = code;
   html = html;
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   // have to define doCancel because page will prevent doCancel from working
   // if the page had a previous button, you would need to call
@@ -165,6 +166,7 @@ export class WizardAsyncValidation {
     this.errorFlag = false;
 
     setTimeout(() => {
+      this.changeDetectorRef.markForCheck();
       if (value.answer === '42') {
         this.wizard()?.forceNext();
       } else {

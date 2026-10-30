@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, ViewChild } from '@angular/core';
+import { Directive, signal, ViewChild } from '@angular/core';
 import { ClrStackBlock } from '@clr/angular';
 
 @Directive()
@@ -33,7 +33,14 @@ export class StackViewNgDemo {
   ];
 
   editModal = false;
-  children: any[] = [];
+  private readonly childrenState = signal<any[]>([]);
+
+  get children(): any[] {
+    return this.childrenState();
+  }
+  set children(value: any[]) {
+    this.childrenState.set(value);
+  }
 
   fetchChildren(): void {
     if (this.children.length > 0) {

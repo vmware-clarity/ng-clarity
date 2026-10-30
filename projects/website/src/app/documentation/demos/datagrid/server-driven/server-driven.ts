@@ -6,7 +6,7 @@
  */
 
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import {
   ClrDatagridModule,
   ClrDatagridStateInterface,
@@ -42,6 +42,7 @@ export class DatagridServerDrivenDemo {
   users: User[] | undefined;
   loading = true;
   totalUserCount = 103;
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   constructor(private inventory: Inventory) {
     inventory.size = this.totalUserCount;
@@ -67,6 +68,7 @@ export class DatagridServerDrivenDemo {
       .sort(<{ by: string; reverse: boolean }>state.sort)
       .fetch(pageSize * (currentPage - 1), pageSize)
       .then((result: FetchResult) => {
+        this.changeDetectorRef.markForCheck();
         this.users = result.users;
         this.loading = false;
       });

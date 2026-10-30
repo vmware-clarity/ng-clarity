@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 
 @Component({
   selector: 'clr-modal-animation-demo',
@@ -15,9 +15,13 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 })
 export class ModalAnimationDemo implements OnInit {
   animatedExampleIn = false;
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   ngOnInit(): void {
     // If you want interactivity, go to the Angular component demo. :-P
-    setInterval(() => (this.animatedExampleIn = !this.animatedExampleIn), 2000);
+    setInterval(() => {
+      this.changeDetectorRef.markForCheck();
+      this.animatedExampleIn = !this.animatedExampleIn;
+    }, 2000);
   }
 }
