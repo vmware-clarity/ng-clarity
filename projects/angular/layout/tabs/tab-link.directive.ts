@@ -5,7 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, ElementRef, HostBinding, HostListener, Inject, Input, ViewContainerRef } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  HostBinding,
+  HostListener,
+  Inject,
+  Input,
+  Optional,
+  ViewContainerRef,
+} from '@angular/core';
 import { IF_ACTIVE_ID, IfActiveService, TemplateRefContainer } from '@clr/angular/utils';
 
 import { TabsLayout } from './enums/tabs-layout.enum';
@@ -31,13 +40,16 @@ export class ClrTabLink {
   private _inOverflow: boolean;
 
   constructor(
-    public ifActiveService: IfActiveService,
-    @Inject(IF_ACTIVE_ID) readonly id: number,
+    @Optional() public ifActiveService: IfActiveService,
+    @Optional() @Inject(IF_ACTIVE_ID) readonly id: number,
     public el: ElementRef<HTMLElement>,
     viewContainerRef: ViewContainerRef,
-    private tabsService: TabsService,
-    @Inject(TABS_ID) public tabsId: number
+    @Optional() private tabsService: TabsService,
+    @Optional() @Inject(TABS_ID) public tabsId: number
   ) {
+    if (!ifActiveService || !tabsService || id === null || id === undefined) {
+      throw new Error('clrTabLink and clr-tab-content should only be used inside of a clr-tabs');
+    }
     if (!this.tabLinkId) {
       this.tabLinkId = 'clr-tab-link-' + nbTabLinkComponents++;
     }
