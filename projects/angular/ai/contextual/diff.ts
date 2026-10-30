@@ -30,6 +30,8 @@ export interface ClrContextChange {
   changed: ClrComponentContextChange[];
   /** Whether the route or URL differs. */
   routeChanged: boolean;
+  /** Whether the application, view id, view metadata or whether the view is enabled differs. */
+  viewChanged: boolean;
   /** Whether the application's annotations differ. */
   regionsChanged: boolean;
   /** Whether the document title differs. */
@@ -45,6 +47,12 @@ export function clrDiffContext(previous: ClrPageContext | null, current: ClrPage
     removed: [],
     changed: [],
     routeChanged: !previous || serialize(previous.route) !== serialize(current.route) || previous.url !== current.url,
+    viewChanged:
+      !previous ||
+      serialize(previous.application) !== serialize(current.application) ||
+      previous.viewId !== current.viewId ||
+      previous.enabled !== current.enabled ||
+      serialize(previous.metadata) !== serialize(current.metadata),
     regionsChanged: !previous || serialize(previous.regions) !== serialize(current.regions),
     titleChanged: !previous || previous.title !== current.title,
   };
@@ -59,6 +67,7 @@ export function clrIsEmptyContextChange(change: ClrContextChange): boolean {
     !change.removed.length &&
     !change.changed.length &&
     !change.routeChanged &&
+    !change.viewChanged &&
     !change.regionsChanged &&
     !change.titleChanged
   );

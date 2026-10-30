@@ -13,6 +13,7 @@ export * from './providers/contextual-engine.service';
 export { CLR_CONTEXT_DEFAULT_OPTIONS } from './dom/dom-context-collector';
 export type { ClrContextDomExtractor } from './dom/dom-context-collector';
 export * from './diff';
+export * from './schema';
 export {
   CLR_CONTEXT_CATEGORIES,
   CLR_CONTEXT_PRESETS,

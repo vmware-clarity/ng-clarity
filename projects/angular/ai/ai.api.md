@@ -14,6 +14,9 @@ import { OnInit } from '@angular/core';
 import { Type } from '@angular/core';
 
 // @public
+export const CLR_CONTEXT_APPLICATION: InjectionToken<ClrContextApplicationOptions>;
+
+// @public
 export const CLR_CONTEXT_CATEGORIES: Readonly<Record<ClrContextCategory, readonly string[]>>;
 
 // @public
@@ -45,6 +48,166 @@ export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: readonly (keyof ClrContextSnapsh
 
 // @public
 export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
+
+// @public
+export const CLR_PAGE_CONTEXT_SCHEMA: {
+    readonly $schema: "http://json-schema.org/draft-07/schema#";
+    readonly $id: "https://clarity.design/schemas/page-context/1.json";
+    readonly title: "ClrPageContext";
+    readonly type: "object";
+    readonly required: readonly ["schemaVersion", "application", "title", "regions", "components", "collectedAt"];
+    readonly additionalProperties: false;
+    readonly properties: {
+        readonly schemaVersion: {
+            readonly const: "1";
+        };
+        readonly application: {
+            readonly type: "object";
+            readonly required: readonly ["id"];
+            readonly additionalProperties: false;
+            readonly properties: {
+                readonly id: {
+                    readonly type: "string";
+                };
+                readonly version: {
+                    readonly type: "string";
+                };
+            };
+        };
+        readonly viewId: {
+            readonly type: "string";
+        };
+        readonly metadata: {
+            readonly type: "object";
+        };
+        readonly enabled: {
+            readonly const: false;
+        };
+        readonly title: {
+            readonly type: "string";
+        };
+        readonly url: {
+            readonly type: "string";
+        };
+        readonly route: {
+            readonly type: "object";
+            readonly required: readonly ["url"];
+            readonly additionalProperties: false;
+            readonly properties: {
+                readonly url: {
+                    readonly type: "string";
+                };
+                readonly path: {
+                    readonly type: "string";
+                };
+                readonly params: {
+                    readonly $ref: "#/definitions/strings";
+                };
+                readonly queryParams: {
+                    readonly $ref: "#/definitions/queryParams";
+                };
+                readonly data: {
+                    readonly type: "object";
+                };
+            };
+        };
+        readonly availableRoutes: {
+            readonly type: "array";
+            readonly items: {
+                readonly type: "object";
+                readonly required: readonly ["path"];
+                readonly additionalProperties: false;
+                readonly properties: {
+                    readonly path: {
+                        readonly type: "string";
+                    };
+                    readonly title: {
+                        readonly type: "string";
+                    };
+                    readonly lazy: {
+                        readonly type: "boolean";
+                    };
+                };
+            };
+        };
+        readonly regions: {
+            readonly type: "array";
+            readonly items: {
+                readonly $ref: "#/definitions/component";
+            };
+        };
+        readonly components: {
+            readonly type: "array";
+            readonly items: {
+                readonly $ref: "#/definitions/component";
+            };
+        };
+        readonly truncated: {
+            readonly type: "boolean";
+        };
+        readonly focus: {
+            readonly const: "modal";
+        };
+        readonly collectedAt: {
+            readonly type: "string";
+        };
+    };
+    readonly definitions: {
+        readonly strings: {
+            readonly type: "object";
+            readonly additionalProperties: {
+                readonly type: "string";
+            };
+        };
+        readonly queryParams: {
+            readonly type: "object";
+            readonly additionalProperties: {
+                readonly anyOf: readonly [{
+                    readonly type: "string";
+                }, {
+                    readonly type: "array";
+                    readonly items: {
+                        readonly type: "string";
+                    };
+                }];
+            };
+        };
+        readonly component: {
+            readonly type: "object";
+            readonly required: readonly ["type"];
+            readonly additionalProperties: false;
+            readonly properties: {
+                readonly type: {
+                    readonly type: "string";
+                };
+                readonly element: {
+                    readonly type: "string";
+                };
+                readonly label: {
+                    readonly type: "string";
+                };
+                readonly state: {
+                    readonly type: "object";
+                };
+                readonly children: {
+                    readonly type: "array";
+                    readonly items: {
+                        readonly $ref: "#/definitions/component";
+                    };
+                };
+            };
+        };
+    };
+};
+
+// @public
+export const CLR_PAGE_CONTEXT_SCHEMA_VERSION = "1";
+
+// @public
+export interface ClrApplicationContext {
+    id: string;
+    version?: string;
+}
 
 // @public
 export interface ClrAvailableRoute {
@@ -88,6 +251,13 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
 }
 
 // @public
+export interface ClrContextApplicationOptions extends ClrApplicationContext {
+    metadata?: () => Record<string, unknown> | null | undefined;
+    viewId?: () => string | null | undefined;
+    views?: 'all' | 'enabled';
+}
+
+// @public
 export interface ClrContextAsyncCollectOptions extends ClrContextCollectOptions {
     timeoutMs?: number;
 }
@@ -113,6 +283,7 @@ export interface ClrContextChange {
     removed: ClrComponentContext[];
     routeChanged: boolean;
     titleChanged: boolean;
+    viewChanged: boolean;
 }
 
 // @public
@@ -246,15 +417,20 @@ export function clrIsEmptyContextChange(change: ClrContextChange): boolean;
 
 // @public
 export interface ClrPageContext {
+    application: ClrApplicationContext;
     availableRoutes?: ClrAvailableRoute[];
     collectedAt: string;
     components: ClrComponentContext[];
+    enabled?: false;
     focus?: 'modal';
+    metadata?: Record<string, unknown>;
     regions: ClrComponentContext[];
     route?: ClrRouteContext;
+    schemaVersion: string;
     title: string;
     truncated?: boolean;
     url?: string;
+    viewId?: string;
 }
 
 // @public
@@ -271,6 +447,9 @@ export interface ClrRouteContext {
     queryParams?: Record<string, string | string[]>;
     url: string;
 }
+
+// @public
+export function provideClrContextApplication(application: ClrContextApplicationOptions): EnvironmentProviders;
 
 // @public
 export function provideClrContextOptions(options: ClrContextPreset | ClrContextSnapshotOptions, overrides?: ClrContextSnapshotOptions): EnvironmentProviders;

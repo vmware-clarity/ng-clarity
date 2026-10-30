@@ -7,9 +7,12 @@
 
 import { withoutFormValues, withoutUrlDetails } from './untrusted-options';
 
+const ENVELOPE = { schemaVersion: '1', application: { id: 'inventory' } };
+
 describe('withoutUrlDetails', () => {
   it('drops the page title and a frame’s document title with the address', () => {
     const shared = withoutUrlDetails({
+      ...ENVELOPE,
       title: 'Statement for ACC-1',
       url: 'https://app.example/statements/1',
       regions: [],
@@ -26,6 +29,7 @@ describe('withoutUrlDetails', () => {
 
   it('drops the document title of a frame that is an editing host and reads as a textbox', () => {
     const shared = withoutUrlDetails({
+      ...ENVELOPE,
       title: '',
       url: 'https://app.example/',
       regions: [],
@@ -45,6 +49,7 @@ describe('withoutUrlDetails', () => {
 
   it('reduces the addresses in provider regions as well', () => {
     const shared = withoutUrlDetails({
+      ...ENVELOPE,
       title: '',
       url: 'https://app.example/',
       regions: [{ type: 'link', state: { href: 'https://app.example/accounts/ACC-1?token=x' } }],
@@ -59,6 +64,7 @@ describe('withoutUrlDetails', () => {
 describe('withoutFormValues', () => {
   it('withholds what the user entered in provider regions as well', () => {
     const shared = withoutFormValues({
+      ...ENVELOPE,
       title: '',
       regions: [{ type: 'region', children: [{ type: 'textbox', label: 'Name', state: { value: 's3cr3t' } }] }],
       components: [],
@@ -70,6 +76,7 @@ describe('withoutFormValues', () => {
 
   it('says a node lost what it published, rather than leaving it looking empty', () => {
     const shared = withoutFormValues({
+      ...ENVELOPE,
       title: '',
       regions: [],
       components: [{ type: 'grid', element: 'app-picker', state: { rows: ['Alice'] } }],
@@ -81,6 +88,7 @@ describe('withoutFormValues', () => {
 
   it('withholds the rows a selectable grid lists along with its selection', () => {
     const shared = withoutFormValues({
+      ...ENVELOPE,
       title: '',
       regions: [],
       components: [
@@ -98,6 +106,7 @@ describe('withoutFormValues', () => {
 
   it('withholds how many rows are selected, and keeps what a progress bar or meter shows', () => {
     const shared = withoutFormValues({
+      ...ENVELOPE,
       title: '',
       regions: [],
       components: [
@@ -119,6 +128,7 @@ describe('withoutFormValues', () => {
 
   it('withholds which columns of a grid the user filtered or hid', () => {
     const shared = withoutFormValues({
+      ...ENVELOPE,
       title: '',
       regions: [],
       components: [
@@ -136,6 +146,7 @@ describe('withoutFormValues', () => {
 
   it('withholds how many files a file input holds', () => {
     const shared = withoutFormValues({
+      ...ENVELOPE,
       title: '',
       regions: [],
       components: [
@@ -154,6 +165,7 @@ describe('withoutFormValues', () => {
 
   it('leaves an empty field unmarked, so an agent can tell a filled field from an empty one', () => {
     const shared = withoutFormValues({
+      ...ENVELOPE,
       title: '',
       regions: [],
       components: [
@@ -177,6 +189,7 @@ describe('withoutFormValues', () => {
 
   it('marks where a value was withheld, so a withheld field does not read as an empty one', () => {
     const shared = withoutFormValues({
+      ...ENVELOPE,
       title: '',
       regions: [],
       components: [

@@ -10,22 +10,24 @@ import { DOCUMENT, inject, Injectable, OnDestroy, PLATFORM_ID } from '@angular/c
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { CLR_CONTEXT_REDACT_SELECTOR, usableSelectors } from '@clr/angular/utils';
 
-import { CLR_CONTEXT_OPTIONS } from './context-options';
+import { CLR_CONTEXT_APPLICATION, CLR_CONTEXT_OPTIONS } from './context-options';
 import { ClrContextRegionFilter, ClrContextRegistryService } from './context-registry.service';
-import { usableTimeout } from '../attempt';
+import { attempt, usableTimeout } from '../attempt';
 import { charged } from '../budget';
 import { ClrContextDomExtractor } from '../dom/dom-context-collector';
 import { closestAcrossShadow, containsAcrossShadow } from '../dom/shadow';
 import { collectContextTreeWithin, engineScope, isHiddenFromEngine } from '../dom/walk';
 import {
+  ClrApplicationContext,
   ClrComponentContext,
   ClrContextAsyncSnapshotOptions,
   ClrContextSnapshotOptions,
   ClrPageContext,
   ClrRouteContext,
 } from '../interfaces/context.interface';
-import { jsonSafe, ROUTE_DATA_DEPTH } from '../json-safe';
+import { jsonSafe, REGION_DEPTH, ROUTE_DATA_DEPTH } from '../json-safe';
 import { availableRoutes, routePatternFor } from '../routes';
+import { CLR_PAGE_CONTEXT_SCHEMA_VERSION } from '../schema';
 import { capSnapshotOptions, resolveSnapshotOptions, withCallOptions } from '../snapshot-options';
 import { sanitizeUntrustedSnapshotOptions, withoutFormValues, withoutUrlDetails } from '../untrusted-options';
 
@@ -53,6 +55,7 @@ export interface ClrContextGlobalAccessOptions extends ClrContextSnapshotOptions
 export class ClrContextEngineService implements OnDestroy {
   private readonly customExtractors: ClrContextDomExtractor[] = [];
   private readonly applicationOptions = inject(CLR_CONTEXT_OPTIONS, { optional: true });
+  private readonly application = inject(CLR_CONTEXT_APPLICATION, { optional: true });
   private readonly locationStrategy = inject(LocationStrategy, { optional: true });
   private readonly platformId = inject(PLATFORM_ID);
   private readonly document = inject(DOCUMENT);
@@ -71,7 +74,7 @@ export class ClrContextEngineService implements OnDestroy {
 
   /**
    * Like {@link getSnapshot}, awaiting asynchronous providers for up to `timeoutMs` each (2 seconds by
-   * default).
+   * default). When the view changes while they answer, the new view is snapshotted instead.
    */
   getSnapshotAsync(asyncOptions?: ClrContextAsyncSnapshotOptions): Promise<ClrPageContext> {
     return this.snapshotAsync(asyncOptions, false);
@@ -138,15 +141,33 @@ export class ClrContextEngineService implements OnDestroy {
     this.globalProperty = null;
   }
 
-  /** The route, with nothing about the page yet. */
-  private emptySnapshot(): ClrPageContext {
+  /**
+   * The application and view, with nothing about the page yet; with `views: 'enabled'`, a view
+   * without metadata is reported as not enabled and nothing else is read.
+   */
+  private viewSnapshot(): ClrPageContext {
+    const route = this.routeContext();
     const snapshot: ClrPageContext = {
+      schemaVersion: CLR_PAGE_CONTEXT_SCHEMA_VERSION,
+      application: this.applicationContext(),
       title: '',
       regions: [],
       components: [],
       collectedAt: new Date().toISOString(),
     };
-    const route = this.routeContext();
+    const viewId = this.viewId();
+    if (viewId) {
+      snapshot.viewId = viewId;
+    }
+    const provided = attempt(() => this.application?.metadata?.(), undefined);
+    // An empty object still enables the view.
+    const metadata = provided === null || provided === undefined ? undefined : jsonSafe(provided, REGION_DEPTH, true);
+    if (metadata && typeof metadata === 'object' && !Array.isArray(metadata)) {
+      snapshot.metadata = metadata as Record<string, unknown>;
+    } else if (readsEnabledViewsOnly(this.application?.views)) {
+      snapshot.enabled = false;
+      return snapshot;
+    }
     if (route) {
       snapshot.route = route;
     }
@@ -155,17 +176,27 @@ export class ClrContextEngineService implements OnDestroy {
 
   /** With `untrusted`, what application code published is cut to the state keys it marks public. */
   private snapshot(options: ClrContextSnapshotOptions | undefined, untrusted: boolean): ClrPageContext {
-    const snapshot = this.emptySnapshot();
+    const snapshot = this.viewSnapshot();
+    if (snapshot.enabled === false) {
+      return snapshot;
+    }
     const resolved = resolveSnapshotOptions(withCallOptions(this.applicationOptions, options));
     const regions = this.contextRegistry.collect({ filter: this.regionFilter(resolved), limits: resolved, untrusted });
     return this.describePage(snapshot, resolved, regions, untrusted);
   }
 
+  /** After a navigation, the new view's providers are awaited once more; then it settles for a synchronous snapshot. */
   private async snapshotAsync(
     asyncOptions: ClrContextAsyncSnapshotOptions | undefined,
-    untrusted: boolean
+    untrusted: boolean,
+    retries = 1
   ): Promise<ClrPageContext> {
     const { timeoutMs, ...options } = asyncOptions ?? {};
+    const view = this.viewSnapshot();
+    if (view.enabled === false) {
+      return view;
+    }
+    const address = this.address();
     const resolved = resolveSnapshotOptions(withCallOptions(this.applicationOptions, options));
     const regions = await this.contextRegistry.collectAsync({
       filter: this.regionFilter(resolved),
@@ -173,8 +204,13 @@ export class ClrContextEngineService implements OnDestroy {
       limits: resolved,
       untrusted,
     });
+    const snapshot = this.viewSnapshot();
+    // The answers are the old view's: a view id is optional, so the address is compared too.
+    if (snapshot.viewId !== view.viewId || snapshot.enabled !== view.enabled || this.address() !== address) {
+      return retries > 0 ? this.snapshotAsync(asyncOptions, untrusted, retries - 1) : this.snapshot(options, untrusted);
+    }
     // The page is read once providers have answered, so a region redacted meanwhile is read as it is now.
-    return this.describePage(this.emptySnapshot(), resolved, regions, untrusted);
+    return this.describePage(snapshot, resolved, regions, untrusted);
   }
 
   private describePage(
@@ -201,6 +237,29 @@ export class ClrContextEngineService implements OnDestroy {
       }
     }
     return snapshot;
+  }
+
+  private applicationContext(): ClrApplicationContext {
+    if (!this.application) {
+      return { id: this.document.location?.hostname ?? '' };
+    }
+    const { id, version } = this.application;
+    return version ? { id, version } : { id };
+  }
+
+  /** The application's own view id first, then the deepest route's `data.viewId`. */
+  private viewId(): string | undefined {
+    const provided = attempt(() => this.application?.viewId?.(), undefined);
+    if (typeof provided === 'string' && provided) {
+      return provided;
+    }
+    // The deepest route's own data only: a child route does not inherit its parent's view.
+    let route = this.router?.config.length ? this.router.routerState.snapshot.root : null;
+    while (route?.firstChild) {
+      route = route.firstChild;
+    }
+    const routed = route?.routeConfig?.data?.['viewId'];
+    return typeof routed === 'string' && routed ? routed : undefined;
   }
 
   /** Annotations follow their element: left out where it would be, stateless inside a redacted region. */
@@ -235,6 +294,11 @@ export class ClrContextEngineService implements OnDestroy {
 
   private browserWindow(): Window | null {
     return isPlatformBrowser(this.platformId) ? this.document.defaultView : null;
+  }
+
+  /** Where the application is, as its router sees it. */
+  private address(): string | undefined {
+    return this.router?.url ?? this.currentUrl();
   }
 
   private currentUrl(): string | undefined {
@@ -309,6 +373,11 @@ export class ClrContextEngineService implements OnDestroy {
     }
     return context;
   }
+}
+
+/** Whether only enabled views are read; an unrecognised `views` value reads only those, failing closed. */
+function readsEnabledViewsOnly(views: string | undefined): boolean {
+  return views !== undefined && views !== 'all';
 }
 
 /** Regions are not walked, so they get a component budget of their own. */

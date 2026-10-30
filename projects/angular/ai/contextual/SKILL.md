@@ -27,7 +27,7 @@ export class Assistant {
 }
 ```
 
-Options for the whole app: `provideClrContextOptions('interactive')` (a preset, or `ClrContextSnapshotOptions`).
+Options for the whole app: `provideClrContextOptions('interactive')` (a preset, or `ClrContextSnapshotOptions`). Name the app with `provideClrContextApplication({ id: 'inventory' })`.
 
 ## Privacy first
 
