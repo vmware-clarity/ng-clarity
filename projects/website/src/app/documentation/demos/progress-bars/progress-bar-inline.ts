@@ -140,7 +140,6 @@ export class ProgressBarInlineDemo implements OnDestroy {
   runProgressBar(): void {
     this.stopProgressBar();
     this.inlineProgressTimerId = setInterval(() => {
-      this.changeDetectorRef.markForCheck();
       const oldProgressValue: number = this.inlineProgress;
       let increment: number = Math.floor(Math.random() * 15) + 1;
       increment = parseInt(increment + '', 10);
@@ -153,6 +152,7 @@ export class ProgressBarInlineDemo implements OnDestroy {
       if (newProgressValue > 99) {
         this.stopProgressBar();
       }
+      this.changeDetectorRef.markForCheck();
     }, 300);
   }
 

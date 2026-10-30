@@ -241,7 +241,6 @@ export class WizardAsyncCompletion {
     }
 
     setTimeout(() => {
-      this.changeDetectorRef.markForCheck();
       const finishPage = this.finishPage();
       if (value.answer === '42') {
         this.finished = true;
@@ -251,6 +250,7 @@ export class WizardAsyncCompletion {
       }
       this.checked = true;
       this.loadingFlag = false;
+      this.changeDetectorRef.markForCheck();
     }, 1000);
   }
 }

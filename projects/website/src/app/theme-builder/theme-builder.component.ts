@@ -6,7 +6,15 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnDestroy, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  inject,
+  OnDestroy,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import {
@@ -58,7 +66,7 @@ const IMPORT_VALIDATION_DEBOUNCE_MS = 400;
 })
 export class ThemeBuilderComponent implements OnDestroy {
   generatedCss = '';
-  copied = false;
+  readonly copied = signal(false);
 
   saveModalOpen = false;
   presetName = '';
@@ -213,13 +221,12 @@ export class ThemeBuilderComponent implements OnDestroy {
 
     try {
       await navigator.clipboard.writeText(css);
-      this.copied = true;
+      this.copied.set(true);
       if (this.copiedTimer) {
         clearTimeout(this.copiedTimer);
       }
       this.copiedTimer = setTimeout(() => {
-        this.cd.markForCheck();
-        this.copied = false;
+        this.copied.set(false);
       }, 2000);
     } catch {
       // clipboard not available — silently ignore

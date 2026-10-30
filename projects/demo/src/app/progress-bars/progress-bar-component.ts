@@ -52,11 +52,11 @@ export class ProgressBarComponentDemo {
 
     if (example.state) {
       example.interval = setInterval(() => {
-        this.changeDetectorRef.markForCheck();
         example.value = example.value + 20;
         if (example.value >= 100) {
           clearInterval(example.interval);
         }
+        this.changeDetectorRef.markForCheck();
       }, 1000);
     }
 

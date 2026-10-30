@@ -5,10 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, ViewChild } from '@angular/core';
 import { AppfxDatagridModule } from '@clr/addons/datagrid';
 import { ThemeBuilderComponent } from '@clr/addons/theme-builder';
-import { ClarityModule } from '@clr/angular';
+import { ClarityModule, ClrTreeNode } from '@clr/angular';
 import { Observable } from 'rxjs';
 
 interface Node {
@@ -23,7 +23,7 @@ interface Node {
   template: `
     @if (enabled) {
       <section id="runtime-acceptance">
-        <clr-modal class="runtime-action-modal" [clrModalOpen]="actionModal()" [clrModalSkipAnimation]="true">
+        <clr-modal class="runtime-action-modal" [clrModalOpen]="actionModal()" [clrModalSkipAnimation]="false">
           <h2 class="modal-title">Runtime modal actions</h2>
           <div class="modal-body">
             @if (actionModal()) {
@@ -99,6 +99,10 @@ export class RuntimeAcceptance {
   kind: 'observable' | 'promise' = 'observable';
   completeRequest: () => void;
   cancellations = 0;
+  retainedTreeModel: ClrTreeNode<Node>['_model'];
+  loadingEmissions = 0;
+  @ViewChild(ClrTreeNode) private treeNode: ClrTreeNode<Node>;
+
   constructor() {
     Object.assign(window, { runtimeAcceptance: this });
   }
@@ -112,6 +116,11 @@ export class RuntimeAcceptance {
       return () => this.cancellations++;
     });
   };
+  destroyTreeRetainingModel() {
+    this.retainedTreeModel = this.treeNode._model;
+    this.retainedTreeModel.loading$.subscribe(() => this.loadingEmissions++);
+    this.treeMounted.set(false);
+  }
   rename(title: string) {
     this.columns.update(columns => columns.map((column, index) => (index === 0 ? { ...column, title } : column)));
   }

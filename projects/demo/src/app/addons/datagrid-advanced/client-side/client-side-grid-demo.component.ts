@@ -168,22 +168,22 @@ export class ClientSideDatagridDemoComponent {
 
     // Timeout to make sure we completely reset the datagrid.
     setTimeout(() => {
-      this.changeDetectorRef.markForCheck();
       this.inventory.size = this.options.totalItems;
       this.inventory.reset();
       this.allVms = this.inventory.allItems;
       this.filteredVms = this.allVms;
       this.selectedVms = [];
       this.resetting = false;
+      this.changeDetectorRef.markForCheck();
     });
   }
 
   refresh(): void {
     this.options.loading = true;
     setTimeout(() => {
-      this.changeDetectorRef.markForCheck();
       this.options.loading = false;
       this.filteredVms = [...this.inventory.allItems];
+      this.changeDetectorRef.markForCheck();
     }, 1000);
   }
 

@@ -7,7 +7,7 @@
 
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { NgClass, NgStyle } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, signal } from '@angular/core';
 
 import { CssVariablePipe } from '../../../../../shared/pipes/css-variable.pipe';
 
@@ -22,7 +22,7 @@ export class ColorPaletteExampleItem {
   @Input() color: string | undefined;
   @Input() colorCode: number | undefined;
 
-  protected copied = false;
+  protected readonly copied = signal(false);
   protected showColorCode = true;
 
   protected colorContrastThreshold: Record<string, number> = {
@@ -47,7 +47,6 @@ export class ColorPaletteExampleItem {
     tan: 500,
     construction: 500,
   };
-  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   constructor(private liveAnnouncer: LiveAnnouncer) {}
 
@@ -59,13 +58,10 @@ export class ColorPaletteExampleItem {
     await navigator.clipboard.writeText(this.colorToken);
     await this.liveAnnouncer.announce(`copied ${this.color} ${this.colorCode} color token to clipboard`);
 
-    this.copied = true;
+    this.copied.set(true);
 
     setTimeout(() => {
-      this.changeDetectorRef.markForCheck();
-      this.copied = false;
+      this.copied.set(false);
     }, 1000);
-
-    this.changeDetectorRef.markForCheck();
   }
 }

@@ -88,9 +88,9 @@ export class ServerDrivenGridDemoComponent {
       .filter()
       .fetch$(state.page.size * (state.page.current - 1), state.page.size)
       .subscribe((result: FetchResult) => {
-        this.cdr.markForCheck();
         this.vmItems = result.vms;
         this.options.loading = false;
+        this.cdr.markForCheck();
       });
   }
 
@@ -113,18 +113,18 @@ export class ServerDrivenGridDemoComponent {
       .filter()
       .fetch$(0, this.options.pageSize)
       .subscribe((data: FetchResult) => {
-        this.cdr.markForCheck();
         this.vmItems = data.vms;
         this.resetting = false;
+        this.cdr.markForCheck();
       });
   }
 
   protected refresh(): void {
     this.options.loading = true;
     setTimeout(() => {
-      this.cdr.markForCheck();
       this.options.loading = false;
       this.vmItems = [...this.vmItems];
+      this.cdr.markForCheck();
     }, this.inventory.latency);
   }
 }

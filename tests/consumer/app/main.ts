@@ -110,9 +110,6 @@ class ConsumerApp {
 
 async function main() {
   const useZone = new URLSearchParams(location.search).get('mode') === 'zone';
-  if (useZone) {
-    await import('zone.js');
-  }
   await bootstrapApplication(ConsumerApp, {
     providers: [useZone ? provideZoneChangeDetection() : provideZonelessChangeDetection()],
   });

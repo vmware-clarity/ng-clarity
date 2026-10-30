@@ -21,8 +21,8 @@ export class LoadingButtonGroupDemo {
   startLoading(): void {
     this.load = true;
     setTimeout(() => {
-      this.changeDetectorRef.markForCheck();
       this.load = false;
+      this.changeDetectorRef.markForCheck();
     }, 2000);
   }
 }

@@ -37,13 +37,13 @@ export class WizardAsyncValidation {
     this.errorFlag = false;
 
     setTimeout(() => {
-      this.changeDetectorRef.markForCheck();
       if (value.answer === '42') {
         this.wizard.forceNext();
       } else {
         this.errorFlag = true;
       }
       this.loadingFlag = false;
+      this.changeDetectorRef.markForCheck();
     }, 1000);
   }
 }

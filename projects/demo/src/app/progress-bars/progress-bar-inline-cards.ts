@@ -40,8 +40,8 @@ export class ProgressBarInlineCardsDemo implements OnInit {
 
   ngOnInit(): void {
     setTimeout(() => {
-      this.changeDetectorRef.markForCheck();
       this.setInitialValues();
+      this.changeDetectorRef.markForCheck();
     }, 500);
   }
 }

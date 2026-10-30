@@ -13,16 +13,28 @@ async function openZoneless(page: Page, url: string) {
   expect(await page.evaluate(() => typeof (window as Window & { Zone?: unknown }).Zone)).toBe('undefined');
 }
 
+let errors: string[];
+
 test.beforeEach(async ({ page }) => {
+  errors = [];
   page.on('console', message => {
-    if (message.type() === 'error' && /NG\d{4,5}/.test(message.text())) {
-      throw new Error(message.text());
+    if (message.type() === 'error') {
+      // Static Storybook does not ship a favicon; this browser-generated request is unrelated to application errors.
+      if (
+        message.location().url === 'http://localhost:8085/favicon.ico' &&
+        message.text() === 'Failed to load resource: the server responded with a status of 404 (Not Found)'
+      ) {
+        return;
+      }
+      errors.push(message.text());
     }
   });
   page.on('pageerror', error => {
-    throw error;
+    errors.push(error.message);
   });
 });
+
+test.afterEach(() => expect(errors).toEqual([]));
 
 test('demo: a timer completes loading without another user event', async ({ page }) => {
   await openZoneless(page, 'http://localhost:8082/demo/buttons/button-loading');
@@ -140,10 +152,36 @@ test('demo: tree measurements finish after animation frames', async ({ page }) =
   await expect(expand).toBeEnabled();
 });
 
-test('website: the resize observer initializes the table of contents', async ({ page }) => {
+test('website: resizing changes the table of contents scroll root and lets the title scroll on mobile', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    const roots: boolean[] = [];
+    Object.assign(window, { tocObserverRoots: roots });
+    const NativeObserver = window.IntersectionObserver;
+    window.IntersectionObserver = class extends NativeObserver {
+      constructor(callback: IntersectionObserverCallback, options?: IntersectionObserverInit) {
+        super(callback, options);
+        if (options?.root instanceof Element && options.root !== document.body) {
+          roots.push(!!options.root.querySelector('.dox-header'));
+        }
+      }
+    };
+  });
+  await page.setViewportSize({ width: 1200, height: 800 });
   await openZoneless(page, 'http://localhost:8083/documentation/button/code');
-  await expect(page.locator('app-table-of-contents')).toBeVisible();
-  await expect(page.locator('app-table-of-contents a').first()).toBeVisible();
+  await expect.poll(() => page.evaluate(() => (window as any).tocObserverRoots.at(-1))).toBe(false);
+  await page.setViewportSize({ width: 500, height: 800 });
+  // The resize observer must notify Angular before any click can incidentally render its new scrollParent input.
+  await expect.poll(() => page.evaluate(() => (window as any).tocObserverRoots.at(-1))).toBe(true);
+  const title = page.locator('.dox-header');
+  const initialTop = await title.evaluate(element => element.getBoundingClientRect().y);
+  await page.locator('app-table-of-contents a').last().click();
+  await expect
+    .poll(async () => await title.evaluate(element => element.getBoundingClientRect().y))
+    .toBeLessThan(initialTop);
+  await page.setViewportSize({ width: 1200, height: 800 });
+  await expect.poll(() => page.evaluate(() => (window as any).tocObserverRoots.at(-1))).toBe(false);
 });
 
 test('website: API renderer code is highlighted without bootstrap timing', async ({ page }) => {
@@ -152,3 +190,32 @@ test('website: API renderer code is highlighted without bootstrap timing', async
   await expect(example.locator('.token.keyword').filter({ hasText: 'class' })).toBeVisible();
   await expect(example).toContainText('{{ displayText }} cell custom HTML');
 });
+
+for (const inline of [false, true]) {
+  test(`demo: addon ${inline ? 'stepper' : 'wizard'} reports changing validation progress`, async ({ page }) => {
+    if (inline) {
+      await page.clock.install();
+    }
+    await openZoneless(page, 'http://localhost:8082/demo/wizard-addon');
+    if (inline) {
+      await page.getByLabel('Inline Wizard (Stepper)', { exact: true }).check();
+    }
+    await page.getByRole('button', { name: 'Open Workflow', exact: true }).click();
+    await page.getByRole('button', { name: 'Next', exact: true }).click();
+    if (inline) {
+      await expect(page.getByRole('button', { name: /2\. Virtual Machine Name/ })).toHaveAttribute(
+        'aria-expanded',
+        'true'
+      );
+      // StepperStateService debounces panel activation by 50 ms. Let it activate the page before validating it.
+      await page.clock.runFor(50);
+    }
+    const activeStep = inline ? page.locator('.clr-stepper-panel-open') : page.getByRole('dialog');
+    const name = activeStep.getByLabel('Virtual machine name:');
+    await name.fill('Zoneless VM');
+    await activeStep.getByRole('button', { name: 'Next', exact: true }).click();
+    await expect(page.getByText('Validating VM name: 0%', { exact: true })).toBeVisible();
+    await expect(page.getByText('Validating VM name: 12%', { exact: true })).toBeVisible();
+    await expect(page.getByText('Validating VM name: 24%', { exact: true })).toBeVisible();
+  });
+}

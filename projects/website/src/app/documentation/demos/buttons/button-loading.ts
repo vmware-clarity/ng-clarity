@@ -83,16 +83,16 @@ export class ButtonLoadingDemo {
   validateDemo() {
     this.validateBtnState = ClrLoadingState.LOADING;
     setTimeout(() => {
-      this.changeDetectorRef.markForCheck();
       this.validateBtnState = ClrLoadingState.SUCCESS;
+      this.changeDetectorRef.markForCheck();
     }, 1500);
   }
 
   submitDemo() {
     this.submitBtnState = ClrLoadingState.LOADING;
     setTimeout(() => {
-      this.changeDetectorRef.markForCheck();
       this.submitBtnState = ClrLoadingState.DEFAULT;
+      this.changeDetectorRef.markForCheck();
     }, 1500);
   }
 }

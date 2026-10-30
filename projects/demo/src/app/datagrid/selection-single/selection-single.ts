@@ -63,10 +63,10 @@ export class DatagridSelectionSingleDemo {
       .fetch(state.page.size * (state.page.current - 1), state.page.size);
 
     setTimeout(() => {
-      this.changeDetectorRef.markForCheck();
       this.trackByIdServerUsers = result.users;
       this.total = result.length;
       this.loading = false;
+      this.changeDetectorRef.markForCheck();
     });
 
     this.changeDetectorRef.markForCheck();

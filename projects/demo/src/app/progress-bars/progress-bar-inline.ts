@@ -48,7 +48,6 @@ export class ProgressBarInlineDemo implements OnInit {
   runProgressBar(): void {
     this.stopProgressBar();
     this.inlineProgressTimerId = setInterval(() => {
-      this.changeDetectorRef.markForCheck();
       const oldProgressValue: number = this.inlineProgress;
       let increment: number = Math.floor(Math.random() * 15) + 1;
       increment = parseInt(increment + '', 10);
@@ -61,6 +60,7 @@ export class ProgressBarInlineDemo implements OnInit {
       if (newProgressValue > 99) {
         this.stopProgressBar();
       }
+      this.changeDetectorRef.markForCheck();
     }, 300);
   }
 
@@ -68,8 +68,8 @@ export class ProgressBarInlineDemo implements OnInit {
     this.runProgressBar();
 
     setTimeout(() => {
-      this.changeDetectorRef.markForCheck();
       this.setNewValues();
+      this.changeDetectorRef.markForCheck();
     }, 800);
   }
 }

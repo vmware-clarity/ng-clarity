@@ -10,7 +10,6 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  NgZone,
   OnInit,
   QueryList,
   ViewChild,
@@ -98,7 +97,6 @@ export class ExpandAllPerformanceDemo implements OnInit {
 
   constructor(
     private el: ElementRef<HTMLElement>,
-    private ngZone: NgZone,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -207,40 +205,36 @@ export class ExpandAllPerformanceDemo implements OnInit {
     measurement.callMs = performance.now() - start;
     measurement.nodes = this.totalNodes;
 
-    this.ngZone.runOutsideAngular(() => {
-      let lastCount = -1;
-      let stableFrames = 0;
-      let lastChange = start;
-      let frames = 0;
-      const check = () => {
-        frames++;
-        const count = this.renderedNodes();
-        if (frames === 2 && !measurement.firstFrameMs) {
-          // The second frame is the first one that has actually been painted.
-          measurement.firstFrameMs = performance.now() - start;
-        }
-        if (count !== lastCount) {
-          lastCount = count;
-          stableFrames = 0;
-          lastChange = performance.now();
-        } else {
-          stableFrames++;
-        }
-        if (stableFrames < STABLE_FRAMES || frames < 2) {
-          requestAnimationFrame(check);
-          return;
-        }
-        measurement.settledMs = Math.max(lastChange - start, measurement.firstFrameMs);
-        measurement.rendered = count;
-        measurement.expanded = this.expandedNodes();
-        this.ngZone.run(() => {
-          this.measurements = [measurement, ...this.measurements].slice(0, MAX_MEASUREMENTS);
-          this.running = false;
-          this.cdr.markForCheck();
-        });
-      };
-      requestAnimationFrame(check);
-    });
+    let lastCount = -1;
+    let stableFrames = 0;
+    let lastChange = start;
+    let frames = 0;
+    const check = () => {
+      frames++;
+      const count = this.renderedNodes();
+      if (frames === 2 && !measurement.firstFrameMs) {
+        // The second frame is the first one that has actually been painted.
+        measurement.firstFrameMs = performance.now() - start;
+      }
+      if (count !== lastCount) {
+        lastCount = count;
+        stableFrames = 0;
+        lastChange = performance.now();
+      } else {
+        stableFrames++;
+      }
+      if (stableFrames < STABLE_FRAMES || frames < 2) {
+        requestAnimationFrame(check);
+        return;
+      }
+      measurement.settledMs = Math.max(lastChange - start, measurement.firstFrameMs);
+      measurement.rendered = count;
+      measurement.expanded = this.expandedNodes();
+      this.measurements = [measurement, ...this.measurements].slice(0, MAX_MEASUREMENTS);
+      this.running = false;
+      this.cdr.markForCheck();
+    };
+    requestAnimationFrame(check);
   }
 
   private renderedNodes() {

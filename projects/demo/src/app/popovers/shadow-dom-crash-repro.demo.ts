@@ -123,14 +123,14 @@ export class ShadowDomCrashReproDemo implements AfterViewInit, OnDestroy {
     // cannot prove the cross-realm overlay initialized successfully.
     this.subscriptions.push(
       this.dropdown.popoverService.popoverVisible.subscribe(visible => {
-        this.changeDetectorRef.markForCheck();
         this.dropdownOpened = visible;
+        this.changeDetectorRef.markForCheck();
       })
     );
     this.subscriptions.push(
       this.signpostPopoverService.popoverVisible.subscribe(visible => {
-        this.changeDetectorRef.markForCheck();
         this.signpostOpened = visible;
+        this.changeDetectorRef.markForCheck();
       })
     );
   }

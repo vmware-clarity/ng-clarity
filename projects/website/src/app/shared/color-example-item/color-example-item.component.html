@@ -11,7 +11,7 @@
   <button
     class="color-example-item-button"
     [attr.aria-label]="'Copy ' + text + ' ' + tokenType() + ' token to clipboard'"
-    [ngClass]="{ 'color-example-item-button--copied': copied }"
+    [ngClass]="{ 'color-example-item-button--copied': copied() }"
     [ngStyle]="{
       'border-color': borderColor ? 'var(' + borderColor + ')' : '',
       '--color': tokenType() === 'color' ? (token | cssVariable) : null,
@@ -19,7 +19,7 @@
     }"
     (click)="copyTokenToClipboard()"
   >
-    @if (copied) {
+    @if (copied()) {
       <span cds-text="caption">Copied!</span>
     }
   </button>

@@ -64,7 +64,6 @@ export class DatagridFullDemo {
     }
     this.rowActionsLoading = true;
     setTimeout(() => {
-      this.changeDetectorRef.markForCheck();
       this.rowActions = [
         'Edit',
         'Delete',
@@ -74,6 +73,7 @@ export class DatagridFullDemo {
         'Dynamic Action 3',
       ];
       this.rowActionsLoading = false;
+      this.changeDetectorRef.markForCheck();
     }, 2000);
   }
 
@@ -83,7 +83,6 @@ export class DatagridFullDemo {
 
     // Timeout hack to make sure we completely reset the datagrid
     setTimeout(() => {
-      this.changeDetectorRef.markForCheck();
       this.inventory.size = this.options.totalUsers;
       this.currentPageSize = Number.parseInt(this.options.pageSize, 10);
       this.selected = this.options.selectable ? [] : null;
@@ -98,6 +97,7 @@ export class DatagridFullDemo {
         this.users = this.inventory.all;
       }
       this.resetting = false;
+      this.changeDetectorRef.markForCheck();
     });
   }
 

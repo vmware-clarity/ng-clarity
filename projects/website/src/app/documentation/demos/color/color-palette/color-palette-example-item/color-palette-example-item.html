@@ -8,21 +8,21 @@
   class="color-palette-section"
   [attr.aria-label]="'Copy ' + color + ' ' + colorCode + ' color token to clipboard'"
   [ngClass]="{
-    uppercase: !copied,
-    'color-palette-section--copied': copied,
-    'color-palette-section--bordered': color === 'white' || copied
+    uppercase: !copied(),
+    'color-palette-section--copied': copied(),
+    'color-palette-section--bordered': color === 'white' || copied()
   }"
   [ngStyle]="{ '--color': colorToken | cssVariable }"
   (mouseover)="showColorCode = false"
   (mouseleave)="showColorCode = true"
   (click)="copyTokenToClipboard()"
 >
-  @if (copied) {
+  @if (copied()) {
   <span cds-text="caption">Copied!</span>
-  } @if (!copied && color && colorCode && showColorCode) {
+  } @if (!copied() && color && colorCode && showColorCode) {
   <span
     [ngStyle]="{
-      color: copied || color == 'white' || colorCode <= (colorContrastThreshold[color] || 0) ? '#000' : '#fff'
+      color: copied() || color == 'white' || colorCode <= (colorContrastThreshold[color] || 0) ? '#000' : '#fff'
     }"
   >
     @if (colorCode) { {{ colorCode }} } @if (color === 'black') { Black } @if (color === 'white') { White }

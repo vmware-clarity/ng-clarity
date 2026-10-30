@@ -5,7 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, signal, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal, ViewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule, ClrModal, ClrPopoverService, ClrSidePanelModule } from '@clr/angular';
 
@@ -82,8 +83,11 @@ export class OverlayAcceptance {
   readonly prevent = signal(false);
   readonly alternate = signal(0);
 
+  readonly visibility: Record<string, boolean[]> = {};
+
   @ViewChild('acceptanceModal') private modalInstance: ClrModal;
   private retainedModal: ClrModal;
+  private readonly destroyRef = inject(DestroyRef);
 
   @ViewChild('menu', { read: ClrPopoverService }) private menu: ClrPopoverService;
   @ViewChild('signpost', { read: ClrPopoverService }) private signpost: ClrPopoverService;
@@ -100,9 +104,18 @@ export class OverlayAcceptance {
     this.mounted.set(false);
   }
 
-  requestDestroyedModal() {
+  openDestroyedModal() {
     this.retainedModal.open();
+  }
+  closeDestroyedModal() {
     this.retainedModal.close();
+  }
+
+  recordVisibility(kind: 'menu' | 'combo') {
+    this.visibility[kind] = [];
+    this[kind].popoverVisible
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(value => this.visibility[kind].push(value));
   }
 
   openPopover(kind: 'menu' | 'signpost' | 'combo') {
