@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ClrLoadingButtonModule, ClrLoadingModule, ClrLoadingState } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -78,10 +78,12 @@ export class ButtonLoadingDemo {
 
   validateBtnState: ClrLoadingState = ClrLoadingState.DEFAULT;
   submitBtnState: ClrLoadingState = ClrLoadingState.DEFAULT;
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   validateDemo() {
     this.validateBtnState = ClrLoadingState.LOADING;
     setTimeout(() => {
+      this.changeDetectorRef.markForCheck();
       this.validateBtnState = ClrLoadingState.SUCCESS;
     }, 1500);
   }
@@ -89,6 +91,7 @@ export class ButtonLoadingDemo {
   submitDemo() {
     this.submitBtnState = ClrLoadingState.LOADING;
     setTimeout(() => {
+      this.changeDetectorRef.markForCheck();
       this.submitBtnState = ClrLoadingState.DEFAULT;
     }, 1500);
   }

@@ -5,7 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  inject,
+  OnDestroy,
+  OnInit,
+  viewChild,
+} from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Route, Router, RouterLink, RouterOutlet } from '@angular/router';
 import {
   blockIcon,
@@ -86,6 +95,7 @@ export class VerticalNavDemo extends ClarityDocComponent implements OnInit, OnDe
   parentRoute = '';
 
   private _subscriptions: Subscription[] = [];
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   constructor(
     private route: ActivatedRoute,
@@ -114,6 +124,7 @@ export class VerticalNavDemo extends ClarityDocComponent implements OnInit, OnDe
     }
     this._subscriptions.push(
       this.router.events.subscribe((change: any) => {
+        this.changeDetectorRef.markForCheck();
         if (change instanceof NavigationEnd) {
           if (change.url.includes('vertical-nav')) {
             this.initializePagination(change.url);

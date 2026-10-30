@@ -4,7 +4,6 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-import 'zone.js';
 import { loadCoreIconSet, loadEssentialIconSet } from '@clr/angular';
 import { setCompodocJson } from '@storybook/addon-docs/angular';
 import { applicationConfig } from '@storybook/angular';
@@ -13,7 +12,7 @@ import docs from '../documentation.json';
 import { DENSITY, THEMES } from './helpers/constants';
 import { cdsThemeAttribute, isDarkThemeMatcher, setDocsTheme } from './helpers/theme.helper';
 import AutoDocsTemplate from './stories/auto-docs.mdx';
-import { provideZoneChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 const privateModifier = 121;
 const clrDensityAttribute = 'clr-density';
@@ -146,7 +145,7 @@ export const decorators = [
   themeDecorator,
   densityDecorator,
   applicationConfig({
-    providers: [provideZoneChangeDetection({ eventCoalescing: true })],
+    providers: [provideZonelessChangeDetection()],
   }),
 ];
 

@@ -5,6 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { signal } from '@angular/core';
+
 export class StackViewNgDemo {
   /*
    * Modal edit demo
@@ -24,11 +26,14 @@ export class StackViewNgDemo {
   ];
 
   editModal = false;
+  private readonly childrenState = signal<any[]>([]);
 
-  /*
-   * Lazy loading demo
-   */
-  children: any[] = [];
+  get children(): any[] {
+    return this.childrenState();
+  }
+  set children(value: any[]) {
+    this.childrenState.set(value);
+  }
 
   fetchChildren(): void {
     if (this.children.length > 0) {

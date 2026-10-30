@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 
 @Component({
   selector: 'clr-loading-button-group-demo',
@@ -16,10 +16,12 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 })
 export class LoadingButtonGroupDemo {
   load = false;
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   startLoading(): void {
     this.load = true;
     setTimeout(() => {
+      this.changeDetectorRef.markForCheck();
       this.load = false;
     }, 2000);
   }

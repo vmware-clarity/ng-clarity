@@ -5,7 +5,4 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-/***************************************************************************************************
- * Zone JS is required by default for Angular itself.
- */
-import 'zone.js'; // Included with Angular CLI.
+// Angular applications run without Zone.js.

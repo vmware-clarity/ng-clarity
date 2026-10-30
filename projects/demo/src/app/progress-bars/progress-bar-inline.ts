@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 
 @Component({
   selector: 'clr-progress-bar-inline-demo',
@@ -22,6 +22,7 @@ export class ProgressBarInlineDemo implements OnInit {
   staticDangerValue = 0;
   staticSuccessValue = 0;
   staticLabeledProgbarValue = 0;
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   getNewValue(): number {
     const random: number = Math.floor(Math.random() * 98) + 1;
@@ -47,6 +48,7 @@ export class ProgressBarInlineDemo implements OnInit {
   runProgressBar(): void {
     this.stopProgressBar();
     this.inlineProgressTimerId = setInterval(() => {
+      this.changeDetectorRef.markForCheck();
       const oldProgressValue: number = this.inlineProgress;
       let increment: number = Math.floor(Math.random() * 15) + 1;
       increment = parseInt(increment + '', 10);
@@ -66,6 +68,7 @@ export class ProgressBarInlineDemo implements OnInit {
     this.runProgressBar();
 
     setTimeout(() => {
+      this.changeDetectorRef.markForCheck();
       this.setNewValues();
     }, 800);
   }

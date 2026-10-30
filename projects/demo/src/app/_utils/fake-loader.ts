@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
+import { ChangeDetectorRef, Directive, inject, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 import { ClrLoading, ClrLoadingState } from '@clr/angular';
 
 const LATENCY = 2000;
@@ -16,6 +16,7 @@ const LATENCY = 2000;
 })
 export class FakeLoader implements OnInit {
   @Input('clrFakeLoader') fake: boolean;
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   constructor(
     private template: TemplateRef<any>,
@@ -29,6 +30,7 @@ export class FakeLoader implements OnInit {
       setTimeout(() => {
         this.load();
         this.loading.loadingState = ClrLoadingState.DEFAULT;
+        this.changeDetectorRef.markForCheck();
       }, LATENCY);
     } else {
       this.load();

@@ -6,7 +6,7 @@
  */
 
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { ChangeDetectionStrategy, Component, input, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, input } from '@angular/core';
 import { ClarityIcons, ClrIcon, copyIcon } from '@clr/angular';
 import prismjs from 'prismjs';
 
@@ -49,6 +49,7 @@ export class CodeSnippetComponent {
 
   private _code: string | undefined;
   private _language = 'html';
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   constructor(private liveAnnouncer: LiveAnnouncer) {
     ClarityIcons.addIcons(copyIcon);
@@ -87,6 +88,7 @@ export class CodeSnippetComponent {
       this.copied = true;
 
       setTimeout(() => {
+        this.changeDetectorRef.markForCheck();
         this.copied = false;
       }, 2000);
     }

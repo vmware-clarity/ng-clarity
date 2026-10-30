@@ -7,7 +7,7 @@
 
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, input } from '@angular/core';
 
 import { CssVariablePipe } from '../pipes/css-variable.pipe';
 
@@ -26,6 +26,7 @@ export class ColorExampleItemComponent {
   @Input() borderColor: string = '';
 
   protected copied = false;
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   constructor(private liveAnnouncer: LiveAnnouncer) {}
 
@@ -37,8 +38,11 @@ export class ColorExampleItemComponent {
       this.copied = true;
 
       setTimeout(() => {
+        this.changeDetectorRef.markForCheck();
         this.copied = false;
       }, 1000);
     }
+
+    this.changeDetectorRef.markForCheck();
   }
 }

@@ -6,7 +6,7 @@
  */
 
 import { NgClass } from '@angular/common';
-import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, inject } from '@angular/core';
 import {
   ClarityIcons,
   ClrIcon,
@@ -79,6 +79,7 @@ export class ProgressBarStoryDemo {
 
   storyProgressBar: ProgBarExample;
   storyTime;
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   constructor() {
     this.storyProgressBar = new ProgBarExample('', 'Progress example');
@@ -97,6 +98,7 @@ export class ProgressBarStoryDemo {
   ngOnInit() {
     this.storyProgressBar.start();
     this.storyTime.subscribe(() => {
+      this.changeDetectorRef.markForCheck();
       this.tellStoryAgain();
     });
   }

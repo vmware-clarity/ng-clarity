@@ -6,7 +6,16 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  inject,
+  OnDestroy,
+  OnInit,
+  PLATFORM_ID,
+} from '@angular/core';
 import { ClrIcon, ClrIconModule, ClrModalModule } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -91,13 +100,17 @@ export class ModalAnimationDemo implements OnInit, OnDestroy {
   exampleTs = EXAMLPE_TS;
 
   private interval: any;
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   constructor(@Inject(PLATFORM_ID) private platformId: object) {}
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       // If you want interactivity, go to the Angular component demo.
-      this.interval = setInterval(() => (this.animatedExampleIn = !this.animatedExampleIn), 2000);
+      this.interval = setInterval(() => {
+        this.changeDetectorRef.markForCheck();
+        this.animatedExampleIn = !this.animatedExampleIn;
+      }, 2000);
     }
   }
 

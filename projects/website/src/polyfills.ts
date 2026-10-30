@@ -5,4 +5,4 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import 'zone.js';
+// Angular applications run without Zone.js.

@@ -12,12 +12,13 @@ import * as path from 'path';
 //
 // Usage: node --experimental-strip-types ./scripts/start-static-server.ts <root> <port> [--spa]
 //
-// --spa: fall back to index.html for unknown paths. The website is a single-page application,
+// --spa or --spa=<path>: fall back to index.html (or the given path) for unknown paths. The website is a single-page application,
 // so its routes must resolve to index.html (the same behavior as the redirect rule in
 // netlify-website.toml).
 
 const [root, port, ...flags] = process.argv.slice(2);
-const spaFallback = flags.includes('--spa');
+const spaIndex = flags.find(flag => flag.startsWith('--spa='))?.slice('--spa='.length);
+const spaFallback = flags.includes('--spa') || !!spaIndex;
 const rootPath = path.resolve(root);
 
 const app = express();
@@ -27,7 +28,7 @@ app.use(express.static(rootPath));
 if (spaFallback) {
   // Serve index.html for any path the static middleware did not find.
   app.use((request, _response, next) => {
-    request.url = '/index.html';
+    request.url = '/' + (spaIndex || 'index.html');
     next();
   });
   app.use(express.static(rootPath));
