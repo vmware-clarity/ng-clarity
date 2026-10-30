@@ -56,16 +56,9 @@ export class DatagridColumnToggleComponent implements OnDestroy {
   openState = false;
   overlay: CdkConnectedOverlay;
 
-  private readonly renderedViewId = signal<string | undefined>(undefined);
+  protected readonly viewId = signal<string | undefined>(undefined);
 
   constructor(public dgStrings: DatagridStrings) {}
-
-  get viewId(): string | undefined {
-    return this.renderedViewId();
-  }
-  set viewId(value: string | undefined) {
-    this.renderedViewId.set(value);
-  }
 
   get hasOnlyOneVisibleColumn(): boolean {
     const hideableColumns = this.hideableColumns();
@@ -79,12 +72,12 @@ export class DatagridColumnToggleComponent implements OnDestroy {
 
   onAttach(overlay: CdkConnectedOverlay) {
     this.overlay = overlay;
-    this.viewId = overlay?.overlayRef?.overlayElement.id;
+    this.viewId.set(overlay?.overlayRef?.overlayElement.id);
   }
 
   onDetach(): void {
     this.openState = false;
-    this.viewId = undefined;
+    this.viewId.set(undefined);
   }
 
   showColumn(colUid: string) {
