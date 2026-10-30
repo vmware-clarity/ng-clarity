@@ -15,10 +15,11 @@ import {
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClrDatagridModule } from '@clr/angular/data/datagrid';
 import { ClrModalModule } from '@clr/angular/modal';
+import { enableCssAnimations } from '@clr/angular/testing';
 
 @Component({
   template: `
-    <clr-modal [clrModalOpen]="open()" [clrModalSkipAnimation]="true">
+    <clr-modal [clrModalOpen]="open()" [clrModalSkipAnimation]="false">
       <h2 class="modal-title">Modal with actions</h2>
       <div class="modal-body">
         @if (open()) {
@@ -45,10 +46,13 @@ class ModalActionsHost {
 
 describe('Popover focus in a zoneless modal', () => {
   let fixture: ComponentFixture<ModalActionsHost>;
+  let restoreAnimations: () => void;
 
   beforeEach(async () => {
+    restoreAnimations = enableCssAnimations();
     TestBed.configureTestingModule({
       declarations: [ModalActionsHost],
+      animationsEnabled: true,
       imports: [ClrModalModule, ClrDatagridModule],
       providers: [provideZonelessChangeDetection(), provideCheckNoChangesConfig({ exhaustive: true })],
     });
@@ -56,9 +60,16 @@ describe('Popover focus in a zoneless modal', () => {
     fixture.autoDetectChanges();
     await fixture.whenStable();
   });
-  afterEach(() => fixture.destroy());
+  afterEach(() => {
+    fixture.destroy();
+    restoreAnimations();
+  });
 
-  it('focuses the initially open action menu after the modal captures its initial focus', () => {
+  it('keeps the initial action focused after the animated modal settles', async () => {
+    const animations = fixture.nativeElement.querySelector('.modal-dialog').getAnimations();
+    expect(animations.length).toBeGreaterThan(0);
+    await Promise.all(animations.map((animation: Animation) => animation.finished));
+    await fixture.whenStable();
     expect(document.activeElement).toBe(document.querySelector('.datagrid-action-overflow .action-item'));
     expect(document.activeElement.textContent).toBe('Edit');
   });
