@@ -8,6 +8,9 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  effect,
+  ErrorHandler,
+  NgZone,
   provideCheckNoChangesConfig,
   provideZoneChangeDetection,
   provideZonelessChangeDetection,
@@ -21,6 +24,7 @@ import { ComboboxFocusHandler } from '@clr/angular/forms/combobox/providers/comb
 import { ClrDropdownModule } from '@clr/angular/popover/dropdown';
 import { ClrSignpostModule } from '@clr/angular/popover/signpost';
 
+import { ClrPopoverModuleNext } from './popover.module';
 import { ClrPopoverService } from './providers/popover.service';
 
 @Component({
@@ -28,7 +32,11 @@ import { ClrPopoverService } from './providers/popover.service';
     @if (show()) {
       <clr-dropdown>
         <button clrDropdownTrigger>Menu</button>
-        <clr-dropdown-menu *clrIfOpen><button clrDropdownItem>Action</button></clr-dropdown-menu>
+        <clr-dropdown-menu *clrIfOpen
+          ><button clrDropdownItem clrPopoverCloseButton (clrPopoverOnCloseChange)="closed.push('dropdown')">
+            Action
+          </button></clr-dropdown-menu
+        >
       </clr-dropdown>
       <clr-dropdown class="persistent">
         <button clrDropdownTrigger>Persistent menu</button>
@@ -36,7 +44,11 @@ import { ClrPopoverService } from './providers/popover.service';
       </clr-dropdown>
       <clr-signpost>
         <button clrSignpostTrigger>Info</button>
-        <clr-signpost-content *clrIfOpen>Details</clr-signpost-content>
+        <clr-signpost-content *clrIfOpen
+          >Details<button clrPopoverCloseButton (clrPopoverOnCloseChange)="closed.push('signpost')">
+            Close
+          </button></clr-signpost-content
+        >
       </clr-signpost>
       <clr-combobox [ngModel]="selection()" (ngModelChange)="selection.set($event)">
         <clr-options
@@ -51,6 +63,7 @@ import { ClrPopoverService } from './providers/popover.service';
   standalone: false,
 })
 class PopoverHost {
+  readonly closed: string[] = [];
   readonly show = signal(true);
   readonly selection = signal<string>(null);
 }
@@ -64,7 +77,7 @@ for (const zoneless of [false, true]) {
     beforeEach(async () => {
       TestBed.configureTestingModule({
         declarations: [PopoverHost],
-        imports: [FormsModule, ClrDropdownModule, ClrSignpostModule, ClrComboboxModule],
+        imports: [FormsModule, ClrDropdownModule, ClrSignpostModule, ClrComboboxModule, ClrPopoverModuleNext],
         providers: [
           zoneless ? provideZonelessChangeDetection() : provideZoneChangeDetection(),
           provideCheckNoChangesConfig({ exhaustive: true }),
@@ -180,6 +193,62 @@ for (const zoneless of [false, true]) {
       }
     });
 
+    it('delivers child close outputs before structural content is destroyed', async () => {
+      for (const selector of ['clr-dropdown', 'clr-signpost']) {
+        const popover = service(selector);
+        popover.open = true;
+        await fixture.whenStable();
+        popover.open = false;
+        await fixture.whenStable();
+      }
+      expect(fixture.componentInstance.closed).toEqual(['dropdown', 'signpost']);
+    });
+
+    it('does not add effect dependencies when setting open or opening at a point', async () => {
+      for (const atPoint of [false, true]) {
+        const popover = new ClrPopoverService();
+        const enabled = signal(true);
+        let runs = 0;
+        const ref = TestBed.runInInjectionContext(() =>
+          effect(() => {
+            runs++;
+            if (enabled()) {
+              if (atPoint) {
+                popover.openAtPoint({ x: 1, y: 1 });
+              } else {
+                popover.open = true;
+              }
+            }
+          })
+        );
+        await fixture.whenStable();
+        expect(popover.open).toBeTrue();
+        popover.open = false;
+        await fixture.whenStable();
+        expect(popover.open).toBeFalse();
+        expect(runs).toBe(1);
+        ref.destroy();
+      }
+    });
+
+    it('preserves visible callback Zone context and forwards focus errors', async () => {
+      const popover = service('clr-dropdown.persistent');
+      const contexts: boolean[] = [];
+      popover.popoverVisible.subscribe(visible => {
+        if (visible) {
+          contexts.push(NgZone.isInAngularZone());
+        }
+      });
+      const error = new Error('focus failed');
+      const handler = spyOn(TestBed.inject(ErrorHandler), 'handleError');
+      const menu = fixture.nativeElement.querySelector('.persistent clr-dropdown-menu');
+      spyOn(menu, 'focus').and.throwError(error);
+      popover.open = true;
+      await fixture.whenStable();
+      expect(contexts).toEqual([!zoneless]);
+      expect(handler).toHaveBeenCalledOnceWith(error);
+    });
+
     it('keeps openChange synchronous and emits only actual changes', async () => {
       const popover = service('clr-dropdown');
       const values: boolean[] = [];
@@ -202,7 +271,8 @@ for (const zoneless of [false, true]) {
       popover.open = true;
       popover.open = false;
       await fixture.whenStable();
-      expect(visible).not.toContain(true);
+      expect(visible).toEqual([false]);
+      expect(document.querySelector('clr-dropdown:not(.persistent) clr-dropdown-menu')).toBeNull();
       expect(document.querySelector('.cdk-overlay-pane .dropdown-menu')).toBeNull();
       subscription.unsubscribe();
     });
@@ -230,17 +300,38 @@ for (const zoneless of [false, true]) {
       expect(focusHandler.pseudoFocus.isEmpty()).toBeTrue();
     });
 
+    it('coalesces combobox focus requests and cancels them on close or destruction', async () => {
+      const popover = service('clr-combobox');
+      const handler = fixture.debugElement.query(By.css('clr-combobox')).injector.get(ComboboxFocusHandler);
+      const focus = spyOn(handler, 'focusFirstActive');
+      handler.scheduleFocusFirstActive();
+      handler.scheduleFocusFirstActive();
+      await new Promise(resolve => setTimeout(resolve, 0));
+      expect(focus).toHaveBeenCalledTimes(1);
+      focus.calls.reset();
+      popover.open = true;
+      handler.scheduleFocusFirstActive();
+      popover.open = false;
+      await new Promise(resolve => setTimeout(resolve, 0));
+      expect(focus).not.toHaveBeenCalled();
+      handler.scheduleFocusFirstActive();
+      fixture.destroy();
+      await new Promise(resolve => setTimeout(resolve, 0));
+      expect(focus).not.toHaveBeenCalled();
+    });
+
     it('cleans up pending overlay work and native event handlers on destruction', async () => {
-      const popover = service('clr-signpost');
+      const popover = service('clr-dropdown.persistent');
       const visible: boolean[] = [];
       const subscription = popover.popoverVisible.subscribe(value => visible.push(value));
       popover.open = true;
-      fixture.componentInstance.show.set(false);
+      expect(document.querySelector('.cdk-overlay-pane .dropdown-menu')).not.toBeNull();
+      fixture.destroy();
       await fixture.whenStable();
       document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
       document.body.click();
       expect(visible).not.toContain(true);
-      expect(document.querySelector('clr-signpost-content')).toBeNull();
+      expect(document.querySelector('.cdk-overlay-pane .dropdown-menu')).toBeNull();
       subscription.unsubscribe();
     });
   });
