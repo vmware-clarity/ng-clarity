@@ -9,6 +9,8 @@ import { A11yModule as CdkA11yModule } from '@angular/cdk/a11y';
 import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ClrBadge } from '@clr/angular/emphasis/badge';
+import { ClrLabel } from '@clr/angular/emphasis/label';
 import { ClrCheckboxModule, ClrInputModule, ClrRadioModule, ClrSelectModule } from '@clr/angular/forms';
 import {
   angleIcon,
@@ -19,6 +21,7 @@ import {
   searchIcon,
   windowCloseIcon,
 } from '@clr/angular/icon';
+import { ClrPopoverModuleNext } from '@clr/angular/popover/common';
 import { ClrSignpostModule } from '@clr/angular/popover/signpost';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
 
@@ -60,12 +63,15 @@ export function datagridFiltersUserServiceFactory(existing: DatagridFiltersUserS
   ],
   imports: [
     CdkA11yModule,
+    ClrBadge,
+    ClrLabel,
     ClrCheckboxModule,
     ClrIcon,
     ClrInputModule,
     ClrRadioModule,
     ClrSelectModule,
     ClrSignpostModule,
+    ClrPopoverModuleNext,
     ClrSpinnerModule,
     CommonModule,
     FormsModule,

@@ -5,38 +5,57 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-.filter-remove-btn {
-  background: transparent;
-  border: none;
+.filter-pill-label {
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--clr-base-gap-s);
+  max-width: 100%;
+  min-width: 0;
+  padding: var(--clr-base-vertical-offset-2xs) calc(var(--clr-base-horizontal-offset-xs) * 2);
+  border: 0;
+  border-radius: inherit;
+  background: none;
+  color: inherit;
+  font: inherit;
   cursor: pointer;
-}
 
-.text-lower {
-  text-transform: lowercase;
-}
+  &:hover {
+    background: var(--clr-label-bg-hover-color);
+  }
 
-:host-context(body[data-theme='light']) {
-  :host-context(.user-tabbing) {
-    .edit-filter:focus,
-    .remove-filter:focus {
-      outline: 2px solid #000;
-    }
+  &:focus-visible {
+    outline: var(--cds-alias-object-interaction-outline);
+    outline-offset: var(--cds-alias-object-interaction-outline-offset);
+  }
 
-    .edit-filter:focus {
-      outline-offset: 1px;
-    }
+  cds-icon {
+    flex-shrink: 0;
   }
 }
 
-:host-context(body[data-theme='dark']) {
-  :host-context(.user-tabbing) {
-    .edit-filter:focus,
-    .remove-filter:focus {
-      outline: 2px solid #fafafa;
-    }
+.filter-pill-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
-    .edit-filter:focus {
-      outline-offset: 1px;
-    }
+.filter-pill-count {
+  flex-shrink: 0;
+}
+
+.filter-popover-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--clr-base-gap-s);
+
+  .btn {
+    margin: 0;
   }
 }

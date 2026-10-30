@@ -19,6 +19,10 @@ export class MockDatagridFiltersComponent {
 
   @Input() filterableProperties: FilterablePropertyDefinition[];
 
+  @Input() predefinedFilters: FilterablePropertyDefinition[] = [];
+
+  @Input() presetFilters: PropertyFilter[];
+
   @Output() searchTermChange = new EventEmitter<string>();
 
   @Output() propertyFiltersChange = new EventEmitter<PropertyFilter[]>();

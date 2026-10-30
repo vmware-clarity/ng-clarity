@@ -11,9 +11,17 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
 } from '@angular/core';
+import {
+  ClrPopoverHostDirective,
+  ClrPopoverPosition,
+  ClrPopoverService,
+  ClrPopoverType,
+} from '@clr/angular/popover/common';
+import { uniqueIdFactory } from '@clr/angular/utils';
 
 import { DatagridFiltersStrings } from './datagrid-filters-strings.service';
 import { PropertyType } from './model/datagrid-filters.enums';
@@ -38,12 +46,16 @@ import {
   templateUrl: 'composite-filters.component.html',
   styleUrls: ['composite-filters.component.scss', 'common-styles.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [ClrPopoverHostDirective],
 })
-export class CompositeFiltersComponent implements OnInit {
+export class CompositeFiltersComponent implements OnInit, OnChanges {
   // Array of filterable properties
-  @Input() filterableProperties: FilterablePropertyDefinition[];
+  @Input() filterableProperties: FilterablePropertyDefinition[] = [];
 
   @Input() presetFilters: PropertyFilter[];
+
+  /** Properties whose pills remain visible when their criteria are cleared. */
+  @Input() predefinedFilters: FilterablePropertyDefinition[] = [];
 
   /**
    * Event emitter to tell hosting view that the filtering conditions have changed
@@ -56,7 +68,9 @@ export class CompositeFiltersComponent implements OnInit {
   readonly dateTimePropertyType: PropertyType = PropertyType.DateTime;
   readonly userPropertyType: PropertyType = PropertyType.User;
 
-  signPostOpened = false;
+  readonly popoverId = uniqueIdFactory();
+  readonly popoverPosition = ClrPopoverPosition.BOTTOM_LEFT;
+  readonly popoverType = ClrPopoverType.DROPDOWN;
   selectedFilterableProperty: FilterablePropertyDefinition;
   propertyType: PropertyType;
   stringProperty: StringPropertyDefinition;
@@ -73,10 +87,50 @@ export class CompositeFiltersComponent implements OnInit {
 
   constructor(
     public filterStrings: DatagridFiltersStrings,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private popoverService: ClrPopoverService
   ) {
     this.showHideFiltersLabel = filterStrings.hideButtonLabel;
     this.showHideFiltersAriaLabel = filterStrings.hideButtonAriaLabel;
+  }
+
+  get signPostOpened(): boolean {
+    return this.popoverService.open;
+  }
+
+  set signPostOpened(open: boolean) {
+    this.popoverService.open = open;
+  }
+
+  get visibleProperties(): FilterablePropertyDefinition[] {
+    const properties = new Map<string, FilterablePropertyDefinition>();
+    for (const property of [...(this.predefinedFilters || []), ...this.activeFilters()]) {
+      if (!properties.has(property.property)) {
+        properties.set(property.property, property);
+      }
+    }
+    return [...properties.values()];
+  }
+
+  get availableProperties(): FilterablePropertyDefinition[] {
+    const visibleKeys = new Set(this.visibleProperties.map(property => property.property));
+    return (this.filterableProperties || []).filter(property => !visibleKeys.has(property.property));
+  }
+
+  get userAddedFiltersCount(): number {
+    return this.activeFilters().filter(property => !this.isPredefined(property)).length;
+  }
+
+  isPredefined(property: FilterablePropertyDefinition): boolean {
+    return (this.predefinedFilters || []).some(predefined => predefined.property === property.property);
+  }
+
+  filterFor(property: FilterablePropertyDefinition): PropertyFilter | undefined {
+    return this.propertyFilters.find(filter => filter.criteria[0]?.filterableProperty.property === property.property);
+  }
+
+  ngOnChanges(): void {
+    this.preselectFirstProperty();
   }
 
   ngOnInit() {
@@ -85,9 +139,9 @@ export class CompositeFiltersComponent implements OnInit {
       this.onPropertyChange();
     }
     if (this.presetFilters) {
-      this.propertyFilters.push(...this.presetFilters);
-      this.preselectFirstProperty();
+      this.propertyFilters = this.presetFilters.filter(filter => filter.criteria.length > 0);
     }
+    this.preselectFirstProperty();
   }
 
   onPropertyChange() {
@@ -120,7 +174,7 @@ export class CompositeFiltersComponent implements OnInit {
           // Check whether there is an existing filter for the same property.
           // If found, replace it with the new filter
           if (
-            this.propertyFilters[i].criteria[0].filterableProperty.property ===
+            this.propertyFilters[i].criteria[0]?.filterableProperty.property ===
             propertyFilter.criteria[0].filterableProperty.property
           ) {
             this.propertyFilters[i] = propertyFilter;
@@ -143,7 +197,10 @@ export class CompositeFiltersComponent implements OnInit {
       }
       this.propertyFiltersChange.emit(this.propertyFilters);
     }
-    this.signPostOpened = false;
+    if (this.signPostOpened) {
+      this.signPostOpened = false;
+      this.popoverService.focusOrigin();
+    }
     this.preselectFirstProperty();
     this.updateShowHideLabel();
     // The filter sometimes fails to close, necessitating
@@ -169,6 +226,17 @@ export class CompositeFiltersComponent implements OnInit {
     this.propertyFiltersChange.emit(this.propertyFilters);
     this.preselectFirstProperty();
     this.collapsedFilters = false;
+    this.updateShowHideLabel();
+    this.showHideFiltersArrowDir = 'left';
+  }
+
+  clearFilter(property: FilterablePropertyDefinition): void {
+    this.propertyFilters = this.propertyFilters.filter(
+      filter => filter.criteria[0]?.filterableProperty.property !== property.property
+    );
+    this.propertyFiltersChange.emit(this.propertyFilters);
+    this.preselectFirstProperty();
+    this.updateShowHideLabel();
   }
 
   showHideAllFilters(): void {
@@ -182,26 +250,24 @@ export class CompositeFiltersComponent implements OnInit {
    * We want to preselect the first displayed property
    */
   private preselectFirstProperty() {
-    const activeProperties: FilterablePropertyDefinition[] = this.activeFilters();
-    const remainingProperties: FilterablePropertyDefinition[] = this.filterableProperties.filter(
-      property => !activeProperties.includes(property)
-    );
-    if (remainingProperties.length > 0) {
-      this.selectedFilterableProperty = remainingProperties[0];
+    const remainingProperties = this.availableProperties;
+    this.selectedFilterableProperty = remainingProperties[0];
+    if (this.selectedFilterableProperty) {
       this.onPropertyChange();
     }
   }
 
   private updateShowHideLabel(): void {
+    const count = this.userAddedFiltersCount;
     this.showHideFiltersLabel = this.collapsedFilters
-      ? this.filterStrings.showButtonLabel + '(' + this.propertyFilters.length + ')'
+      ? this.filterStrings.showButtonLabel + '(' + count + ')'
       : this.filterStrings.hideButtonLabel;
     this.showHideFiltersAriaLabel = this.collapsedFilters
       ? this.filterStrings.showButtonLabel +
         ' ' +
-        this.propertyFilters.length +
+        count +
         ' ' +
-        (this.propertyFilters.length > 1 ? this.filterStrings.filtersText : this.filterStrings.filterText)
+        (count > 1 ? this.filterStrings.filtersText : this.filterStrings.filterText)
       : this.filterStrings.hideButtonAriaLabel;
   }
 

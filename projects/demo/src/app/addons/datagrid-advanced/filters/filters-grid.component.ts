@@ -10,11 +10,13 @@ import { ChangeDetectionStrategy, Component, Inject, Injectable } from '@angular
 import { FormsModule } from '@angular/forms';
 import { AppfxDatagridModule, ColumnDefinition } from '@clr/addons/datagrid';
 import {
+  AppfxDatagridFiltersModule,
   ComparisonOperator,
   DatagridFiltersUserService,
   EnumPropertyDefinition,
   FilterablePropertyDefinition,
   FilterMode,
+  LogicalOperator,
   PropertyFilter,
   StringPropertyDefinition,
   UserPropertyDefinition,
@@ -124,7 +126,7 @@ export class CustomUserService extends DatagridFiltersUserService {
 }
 
 @Component({
-  imports: [AppfxDatagridModule, ClarityModule, FormsModule],
+  imports: [AppfxDatagridModule, AppfxDatagridFiltersModule, ClarityModule, FormsModule],
   standalone: true,
   templateUrl: 'filters-grid.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
@@ -162,6 +164,9 @@ export class FiltersGridComponent {
   protected filteredItems: VmItem[] = [];
   protected allItems: VmItem[] = [];
   protected filterableProperties: FilterablePropertyDefinition[] = [];
+  protected predefinedFilters: FilterablePropertyDefinition[] = [];
+  protected presetFilters: PropertyFilter[] = [];
+  protected predefinedFilteredItems: VmItem[] = [];
   protected readonly FilterMode = FilterMode;
   protected selectedFilterMode: FilterMode = FilterMode.AdvancedOnly;
   protected errorRetrievingDomains = false;
@@ -175,6 +180,7 @@ export class FiltersGridComponent {
     this.allItems = inventory.allItems;
     this.filteredItems = this.allItems;
     this.initFilterableProperties();
+    this.onPredefinedFilterChange(this.presetFilters);
   }
 
   protected get isErrorRetrievingDomains(): boolean {
@@ -196,30 +202,11 @@ export class FiltersGridComponent {
   }
 
   onAdvancedFilterChange(filterCriteria: PropertyFilter[]): void {
-    this.filteredItems = this.allItems;
+    this.filteredItems = this.filterItems(filterCriteria);
+  }
 
-    if (filterCriteria?.length > 0) {
-      filterCriteria
-        .filter(propFilter => propFilter?.criteria?.length > 0)
-        .forEach(propFilter => {
-          const filteredItems: VmItem[] = [];
-          propFilter.criteria.forEach(predicate => {
-            if (predicate.filterableProperty.property) {
-              filteredItems.push(
-                ...this.filteredItems.filter(item => {
-                  return this.applyOperatorFilter(
-                    item[predicate.filterableProperty.property],
-                    predicate.value,
-                    predicate.operator
-                  );
-                })
-              );
-            }
-          });
-
-          this.filteredItems = filteredItems;
-        });
-    }
+  protected onPredefinedFilterChange(filterCriteria: PropertyFilter[]): void {
+    this.predefinedFilteredItems = this.filterItems(filterCriteria);
   }
 
   protected onFilterModeChange(filterMode: string): void {
@@ -280,6 +267,47 @@ export class FiltersGridComponent {
       categoryEnumProp,
       userProp
     );
+
+    this.predefinedFilters = [stringNameProperty, singleSelectStateProperty, enumProperty];
+    this.presetFilters = [
+      {
+        operator: LogicalOperator.Or,
+        criteria: ['Warning', 'Alert'].map(value => ({
+          filterableProperty: enumProperty,
+          operator: ComparisonOperator.Equals,
+          value,
+        })),
+      },
+    ];
+  }
+
+  private filterItems(filterCriteria: PropertyFilter[]): VmItem[] {
+    let matchingItems = this.allItems;
+
+    if (filterCriteria?.length > 0) {
+      filterCriteria
+        .filter(propFilter => propFilter?.criteria?.length > 0)
+        .forEach(propFilter => {
+          const filteredItems: VmItem[] = [];
+          propFilter.criteria.forEach(predicate => {
+            if (predicate.filterableProperty.property) {
+              filteredItems.push(
+                ...matchingItems.filter(item => {
+                  return this.applyOperatorFilter(
+                    item[predicate.filterableProperty.property],
+                    predicate.value,
+                    predicate.operator
+                  );
+                })
+              );
+            }
+          });
+
+          matchingItems = filteredItems;
+        });
+    }
+
+    return matchingItems;
   }
 
   private applyOperatorFilter(item: string, predicateValue: string, operator: ComparisonOperator): boolean {
