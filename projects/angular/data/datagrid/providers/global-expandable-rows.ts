@@ -5,13 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 
 import { DetailService } from './detail.service';
 
 @Injectable()
 export class ExpandableRowsCount {
-  private expandableCount = 0;
+  private readonly expandableCount = signal(0);
+  private readonly _hasExpandableRow = computed(() => !this.detailService.enabled && this.expandableCount() > 0);
 
   constructor(private detailService: DetailService) {}
 
@@ -20,14 +21,14 @@ export class ExpandableRowsCount {
    * check if details are on, and disable rows entirely
    */
   get hasExpandableRow(): boolean {
-    return !this.detailService.enabled && this.expandableCount > 0;
+    return this._hasExpandableRow();
   }
 
   register() {
-    this.expandableCount++;
+    this.expandableCount.update(count => count + 1);
   }
 
   unregister() {
-    this.expandableCount--;
+    this.expandableCount.update(count => count - 1);
   }
 }

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 
 import { ResponsiveNavCodes } from '../responsive-nav-codes';
@@ -13,13 +13,23 @@ import { ResponsiveNavControlMessage } from '../responsive-nav-control-message';
 
 @Injectable({ providedIn: 'root' })
 export class ResponsiveNavigationService {
-  responsiveNavList: number[] = [];
+  // The list is mutated in place (its reference is what `registeredNavs` emits), so the signal is configured to
+  // notify on every write rather than on reference change. Views reading `responsiveNavList` are refreshed
+  // whenever a nav level is registered or unregistered.
+  private readonly _responsiveNavList = signal<number[]>([], { equal: () => false });
 
   private registerNavSubject = new ReplaySubject<number[]>();
   private controlNavSubject = new Subject<ResponsiveNavControlMessage>();
 
   constructor() {
     this.closeAllNavs(); // We start with all navs closed
+  }
+
+  get responsiveNavList(): number[] {
+    return this._responsiveNavList();
+  }
+  set responsiveNavList(value: number[]) {
+    this._responsiveNavList.set(value);
   }
 
   get registeredNavs(): Observable<number[]> {
@@ -34,8 +44,13 @@ export class ResponsiveNavigationService {
     if (!navLevel || this.isNavRegistered(navLevel)) {
       return;
     }
-    this.responsiveNavList.push(navLevel);
-    this.registerNavSubject.next(this.responsiveNavList);
+    const navList = this.responsiveNavList;
+    navList.push(navLevel);
+    if (navList.length > 2) {
+      console.error('More than 2 Nav Levels detected.');
+    }
+    this._responsiveNavList.set(navList);
+    this.registerNavSubject.next(navList);
   }
 
   isNavRegistered(navLevel: number): boolean {
@@ -49,8 +64,10 @@ export class ResponsiveNavigationService {
   unregisterNav(navLevel: number) {
     const index = this.responsiveNavList.indexOf(navLevel);
     if (index > -1) {
-      this.responsiveNavList.splice(index, 1);
-      this.registerNavSubject.next(this.responsiveNavList);
+      const navList = this.responsiveNavList;
+      navList.splice(index, 1);
+      this._responsiveNavList.set(navList);
+      this.registerNavSubject.next(navList);
     }
   }
 
