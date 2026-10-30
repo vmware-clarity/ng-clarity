@@ -7,6 +7,7 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClrSignpostContent, ClrSignpostModule } from '@clr/angular/popover/signpost';
+import { renderFixture } from '@clr/angular/utils/testing';
 import { of, Subject } from 'rxjs';
 
 import { WorkflowModelMonitorComponent } from './workflow-model-monitor.component';
@@ -45,8 +46,8 @@ describe('WorkflowModelMonitor', () => {
     });
     fixture = TestBed.createComponent(WorkflowModelMonitorComponent);
     component = fixture.componentInstance;
-    component.modelMgr = mockModelManager;
-    fixture.detectChanges();
+    fixture.componentRef.setInput('modelMgr', mockModelManager);
+    renderFixture(fixture);
   });
 
   function updateModelManagerMock(changes: ModelChange[]) {

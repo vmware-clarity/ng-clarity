@@ -33,6 +33,7 @@ import {
 import { WorkflowStrings } from '@clr/addons/workflow/strings';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
 import { ClrStepperModule, ClrStepperPanel, StepperPanelModel, StepperService } from '@clr/angular/stepper';
+import { renderFixture } from '@clr/angular/utils/testing';
 import { Observable, of, Subject } from 'rxjs';
 import { first } from 'rxjs/operators';
 import type { Mock } from 'vitest';
@@ -287,8 +288,13 @@ describe('Stepper', () => {
       model: testContext.step4Model,
     };
 
-    testContext.component.wizardModel = testContext.wizardModel;
-    testContext.component.steps = [testContext.step1, testContext.skippedStep, testContext.step2, testContext.step3];
+    testContext.fixture.componentRef.setInput('wizardModel', testContext.wizardModel);
+    testContext.fixture.componentRef.setInput('steps', [
+      testContext.step1,
+      testContext.skippedStep,
+      testContext.step2,
+      testContext.step3,
+    ]);
 
     testContext.stateService = testContext.component.stateService;
     testContext.workflowModelManager = testContext.component['modelMgr'];
@@ -300,25 +306,25 @@ describe('Stepper', () => {
 
   describe('when the stepper is rendered', () => {
     it('THEN displays the loading indicator when needed to do so', () => {
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(isLoadingIndicatorVisible(testContext.fixture.debugElement)).toEqual(false);
 
-      testContext.component.loading = true;
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput('loading', true);
+      renderFixture(testContext.fixture);
       expect(isLoadingIndicatorVisible(testContext.fixture.debugElement)).toEqual(true);
 
-      testContext.component.loading = false;
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput('loading', false);
+      renderFixture(testContext.fixture);
       expect(isLoadingIndicatorVisible(testContext.fixture.debugElement)).toEqual(false);
 
       // Show indicator when the page model reports loading
       testContext.step1Model.loading = true;
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(isLoadingIndicatorVisible(testContext.fixture.debugElement)).toEqual(true);
 
       // Hide indicator
       testContext.step1Model.loading = false;
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(isLoadingIndicatorVisible(testContext.fixture.debugElement)).toEqual(false);
     });
 
@@ -327,7 +333,7 @@ describe('Stepper', () => {
       vi.spyOn(testContext.component, 'onStepActivated');
       vi.spyOn(testContext.workflowModelManager, 'injectPropertiesToPendingStep');
 
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       expect(testContext.component.initialStep).toEqual('step0');
       expect(testContext.stateService.stepActivated).toHaveBeenCalled();
@@ -337,7 +343,7 @@ describe('Stepper', () => {
     });
 
     it('THEN a form is created with a formgroup for each step', () => {
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       testContext.component.steps.forEach((step: Step, index: number) => {
         expect(testContext.component.form.controls['step' + index]).toBeDefined();
@@ -345,7 +351,7 @@ describe('Stepper', () => {
     });
 
     it('THEN on model change the steps are invalidated', () => {
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       vi.spyOn(testContext.stateService, 'resetNextStepsValidStates');
       vi.spyOn(testContext.component['stepperService'], 'resetPanels');
@@ -361,27 +367,27 @@ describe('Stepper', () => {
     });
 
     it('WHEN StepModel.readyToComplete=false, Next button must be disabled', () => {
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       testContext.step1Model.readyToComplete = false;
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component.isNextButtonDisabled(testContext.step1)).toEqual(true);
     });
 
     it('WHEN StepModel.readyToComplete=true, Next button must be enabled', () => {
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       testContext.step1Model.readyToComplete = true;
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component.isNextButtonDisabled(testContext.step1)).toEqual(false);
     });
 
     describe('WHEN next is clicked', () => {
       it('WHEN the step has cancelable validation, the cancel validation button is rendered', () => {
-        testContext.component.steps = [testContext.step4, testContext.step1];
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput('steps', [testContext.step4, testContext.step1]);
+        renderFixture(testContext.fixture);
 
         const nextButtonStep1 = queryNextButton();
         nextButtonStep1.click();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
 
         expect(isLoadingIndicatorVisible(testContext.fixture.debugElement)).toEqual(true);
 
@@ -392,14 +398,14 @@ describe('Stepper', () => {
         ).toEqual(testContext.step4Model.cancelableValidation?.cancelButtonLabel);
 
         testContext.fixture.debugElement.query(By.css('appfx-spinner button.btn')).nativeElement.click();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
 
         expect(isLoadingIndicatorVisible(testContext.fixture.debugElement)).toEqual(false);
         expect(testContext.step4Model.canceledValidationCallsCount).toEqual(1);
       });
 
       it('THEN the step is validated, step model properties ejected and stepper service next triggered', () => {
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
 
         vi.spyOn(testContext.stateService, 'markStepValid');
         vi.spyOn(testContext.workflowModelManager, 'ejectPropertiesFromCurrentStep');
@@ -409,7 +415,7 @@ describe('Stepper', () => {
         const nextButtonStep1 = queryNextButton();
         nextButtonStep1.click();
 
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
 
         expect(testContext.step1Model.validateCallsCount).toEqual(1);
         expect(testContext.stateService.markStepValid).toHaveBeenCalledWith(testContext.step1, true);
@@ -422,7 +428,7 @@ describe('Stepper', () => {
         const nextButtonStep2 = queryNextButton();
         nextButtonStep2.click();
 
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
 
         expect(testContext.stateService.markStepValid).toHaveBeenCalledTimes(2);
         expect(testContext.workflowModelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledTimes(1);
@@ -437,7 +443,7 @@ describe('Stepper', () => {
       });
 
       it('THEN next step is activated', () => {
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
 
         const indexOfFirstIncompleteStep = 2;
         vi.spyOn(testContext.stateService, 'getIndexOfFirstIncompleteStep').mockReturnValue(indexOfFirstIncompleteStep);
@@ -447,7 +453,7 @@ describe('Stepper', () => {
         const nextButtonStep1 = queryNextButton();
         nextButtonStep1.click();
 
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
 
         expect(testContext.stateService.getIndexOfFirstIncompleteStep).toHaveBeenCalled();
         expect(testContext.component['stepperService'].overrideInitialPanel).toHaveBeenCalledWith(
@@ -462,13 +468,13 @@ describe('Stepper', () => {
       it('WHEN last step is not valid THEN onFormSubmit and onFinish are not invoked', async () => {
         vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
         // Add only steps that return valid states
-        testContext.component.steps = [testContext.step1, testContext.step2];
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput('steps', [testContext.step1, testContext.step2]);
+        renderFixture(testContext.fixture);
 
         const nextButton = queryNextButton();
         nextButton.click();
         await vi.runOnlyPendingTimersAsync();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
 
         vi.spyOn(testContext.component, 'onFormSubmit');
         vi.spyOn(testContext.stateService, 'areAllStepsCompleted');
@@ -476,7 +482,7 @@ describe('Stepper', () => {
 
         const finishButton = queryNextButton();
         finishButton.click();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
 
         expect(testContext.component.onFormSubmit).not.toHaveBeenCalled();
         expect(testContext.component.onFinish.emit).not.toHaveBeenCalled();
@@ -486,13 +492,13 @@ describe('Stepper', () => {
       it('WHEN all steps are valid THEN onFormSubmit and onFinish are invoked', async () => {
         vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
         // Add only steps that return valid states
-        testContext.component.steps = [testContext.step1, testContext.step3];
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput('steps', [testContext.step1, testContext.step3]);
+        renderFixture(testContext.fixture);
 
         const nextButton = queryNextButton();
         nextButton.click();
         await vi.runOnlyPendingTimersAsync();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
 
         vi.spyOn(testContext.component, 'onFormSubmit');
         vi.spyOn(testContext.stateService, 'areAllStepsCompleted').mockReturnValue(true);
@@ -501,7 +507,7 @@ describe('Stepper', () => {
         const finishButton = queryNextButton();
         finishButton.click();
         await vi.runOnlyPendingTimersAsync();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
 
         expect(testContext.component.onFormSubmit).toHaveBeenCalled();
         expect(testContext.component.onFinish.emit).toHaveBeenCalled();
@@ -510,7 +516,7 @@ describe('Stepper', () => {
 
     describe('#onFormSubmit', () => {
       it('WHEN stateService reports that not all steps are completed THEN onFinish is not emitted', () => {
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
 
         vi.spyOn(testContext.stateService, 'areAllStepsCompleted').mockReturnValue(false);
         vi.spyOn(testContext.component.onFinish, 'emit');
@@ -524,13 +530,13 @@ describe('Stepper', () => {
     describe('WHEN navigating using step header', () => {
       beforeEach(async () => {
         vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
 
         // go to step2 using next
         const nextButtonStep1 = queryNextButton();
         nextButtonStep1.click();
         await vi.runOnlyPendingTimersAsync();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
 
         // go to step3 using next
         testContext.step2Model.nextValidationResult = true;
@@ -538,7 +544,7 @@ describe('Stepper', () => {
 
         nextButtonStep2.click();
         await vi.runOnlyPendingTimersAsync();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
       });
 
       it('WHEN click on completed step from incomplete step, should not call validate method on incomplete step', () => {
@@ -547,7 +553,7 @@ describe('Stepper', () => {
         // go back to step1 by click step1 header
         const steps = queryStepperButtons();
         steps[0].nativeElement.click();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.step3Model.validateCallsCount).toEqual(0);
       });
 
@@ -555,11 +561,11 @@ describe('Stepper', () => {
         // go back to step1 by click step1 header
         const steps = queryStepperButtons();
         steps[0].nativeElement.click(); // go to step 1 first
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.step1Model.validateCallsCount).toEqual(1);
 
         steps[1].nativeElement.click(); // go to step 2 from step 1
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.step1Model.validateCallsCount).toEqual(2);
       });
 
@@ -567,7 +573,7 @@ describe('Stepper', () => {
         vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
         const toggleStepState = (index: number) => {
           steps[index].nativeElement.click();
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
         };
 
         // go back to step1 by click step1 header
@@ -601,7 +607,7 @@ describe('Stepper', () => {
 
         const toggleStepState = (index: number) => {
           steps[index].nativeElement.click();
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
         };
 
         // Go back to step1
@@ -638,14 +644,14 @@ describe('Stepper', () => {
       });
 
       it('THEN buttons are not rendered by default', () => {
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(queryBackButton()).toBeNull();
         expect(queryCancelButton()).toBeNull();
       });
 
       it('THEN Cancel button is visible on all steps when showCancelButton is true and emits event', () => {
-        testContext.component.showCancelButton = true;
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput('showCancelButton', true);
+        renderFixture(testContext.fixture);
 
         const cancelBtn = queryCancelButton();
         expect(cancelBtn).not.toBeNull();
@@ -658,14 +664,14 @@ describe('Stepper', () => {
       });
 
       it('THEN Back button is not visible on the first visible step even if showBackButton is true', () => {
-        testContext.component.showBackButton = true;
-        testContext.component.steps = [
+        testContext.fixture.componentRef.setInput('showBackButton', true);
+        testContext.fixture.componentRef.setInput('steps', [
           testContext.skippedStep,
           testContext.step1,
           testContext.step2,
           testContext.step3,
-        ];
-        testContext.fixture.detectChanges();
+        ]);
+        renderFixture(testContext.fixture);
 
         expect(testContext.component.initialStep).toEqual('step1');
         expect(queryBackButton()).toBeNull();
@@ -673,11 +679,11 @@ describe('Stepper', () => {
 
       it('THEN Back button is visible on the second visible step and has the correct style', async () => {
         vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
-        testContext.component.showBackButton = true;
+        testContext.fixture.componentRef.setInput('showBackButton', true);
         vi.spyOn(testContext.stateService, 'isFirstVisibleStep').mockImplementation((index: number) => {
           return index === 0;
         });
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
 
         // Use the existing "Next" button logic to move to Step 2
         const nextButtonStep1 = queryNextButton();
@@ -685,8 +691,8 @@ describe('Stepper', () => {
 
         // Check that the step is now moved
         await vi.runOnlyPendingTimersAsync();
-        testContext.fixture.detectChanges();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
+        renderFixture(testContext.fixture);
         expect(testContext.component.initialStep).toEqual('step2');
 
         const backBtn = queryBackButton();
@@ -699,15 +705,15 @@ describe('Stepper', () => {
       });
 
       it('THEN Next button should only have btn-primary class when usePrimaryNextButton is true', () => {
-        testContext.component.usePrimaryNextButton = true;
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput('usePrimaryNextButton', true);
+        renderFixture(testContext.fixture);
 
         const nextButton = queryNextButton();
         // Check if the native element contains the class
         expect(nextButton.classList.contains('btn-primary')).toBeTruthy();
 
-        testContext.component.usePrimaryNextButton = false;
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput('usePrimaryNextButton', false);
+        renderFixture(testContext.fixture);
         expect(nextButton.classList.contains('btn-primary')).toBeFalsy();
       });
     });

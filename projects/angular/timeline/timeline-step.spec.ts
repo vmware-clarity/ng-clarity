@@ -11,6 +11,7 @@ import { By } from '@angular/platform-browser';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
 import { ClrCommonStringsService } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrTimelineStepState } from './enums/timeline-step-state.enum';
 import { TimelineIconAttributeService } from './providers/timeline-icon-attribute.service';
@@ -125,7 +126,7 @@ describe('Timeline', () => {
         });
 
         fixture = TestBed.createComponent(TestTimelineStep);
-        fixture.detectChanges();
+        renderFixture(fixture);
         nativeElement = fixture.nativeElement.querySelector('clr-timeline-step');
 
         testComponent = fixture.componentInstance;
@@ -139,23 +140,23 @@ describe('Timeline', () => {
 
       it('accepts a [clrState] input', () => {
         testComponent.state = ClrTimelineStepState.NOT_STARTED;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(nativeComponent.state).toBe(testComponent.state);
 
         testComponent.state = ClrTimelineStepState.CURRENT;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(nativeComponent.state).toBe(testComponent.state);
 
         testComponent.state = ClrTimelineStepState.SUCCESS;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(nativeComponent.state).toBe(testComponent.state);
 
         testComponent.state = ClrTimelineStepState.ERROR;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(nativeComponent.state).toBe(testComponent.state);
 
         testComponent.state = ClrTimelineStepState.PROCESSING;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(nativeComponent.state).toBe(testComponent.state);
       });
 
@@ -167,7 +168,7 @@ describe('Timeline', () => {
       ].forEach(stepState => {
         it(`renders icon when the state is "${stepState}"`, () => {
           testComponent.state = stepState;
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           const icon = debugElement.query(By.css('cds-icon'));
           const spinner = debugElement.query(By.css('clr-spinner'));
@@ -179,7 +180,7 @@ describe('Timeline', () => {
 
       it('renders spinner when the state is "processing"', () => {
         testComponent.state = ClrTimelineStepState.PROCESSING;
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         const icon = debugElement.query(By.css('cds-icon'));
         const spinner = debugElement.query(By.css('clr-spinner'));
@@ -201,7 +202,7 @@ describe('Timeline', () => {
         });
 
         fixture = TestBed.createComponent(TestTimelineStepContent);
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         nativeElement = fixture.nativeElement;
       });

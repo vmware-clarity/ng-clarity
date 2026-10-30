@@ -10,6 +10,12 @@ import { ComponentFixture, TestBed, TestModuleMetadata } from '@angular/core/tes
 import { By } from '@angular/platform-browser';
 import { ClarityModule } from '@clr/angular';
 
+/** Explicit legacy unit-test render; use fixture.whenStable() to test application notifications. */
+export function renderFixture(fixture: ComponentFixture<unknown>): void {
+  fixture.changeDetectorRef.markForCheck();
+  fixture.detectChanges();
+}
+
 export class TestContext<D, C> {
   fixture: ComponentFixture<C>;
   testComponentType: Type<C>;
@@ -69,6 +75,9 @@ export class TestContext<D, C> {
    * Delegate method to avoid verbosity
    */
   detectChanges() {
+    // Legacy unit tests explicitly request a render after mutating plain host fields. Preserve that intent
+    // under zoneless scheduling; notification-based integration tests must await stable() instead.
+    this.fixture.changeDetectorRef.markForCheck();
     this.fixture.detectChanges();
   }
 }

@@ -46,6 +46,7 @@ import { ClrAlertModule } from '@clr/angular/emphasis/alert';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrSignpostModule } from '@clr/angular/popover/signpost';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
+import { renderFixture } from '@clr/angular/utils/testing';
 import { ClrWizardModule } from '@clr/angular/wizard';
 import { Observable, of, Subject, throwError } from 'rxjs';
 
@@ -328,9 +329,9 @@ describe('appfx-wizard', () => {
     testContext.workflowService.addWorkflow('main', [testContext.page1, testContext.page2]);
     testContext.workflowService.switchToWorkflow('main');
 
-    testContext.component.title = 'JS Unit Tested Wizard';
-    testContext.component.wizardModel = testContext.wizardModel;
-    testContext.component.pages = testContext.workflowService.flow;
+    testContext.fixture.componentRef.setInput('title', 'JS Unit Tested Wizard');
+    testContext.fixture.componentRef.setInput('wizardModel', testContext.wizardModel);
+    testContext.fixture.componentRef.setInput('pages', testContext.workflowService.flow);
 
     testContext.wizardHelper = new WizardHelper(testContext.fixture.debugElement.query(By.css('clr-wizard')));
     testContext.strings = TestBed.inject(WorkflowStrings);
@@ -345,24 +346,24 @@ describe('appfx-wizard', () => {
 
   describe('WHEN the Component is rendered', () => {
     it('THEN the wizard is visible', () => {
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.wizardHelper.isVisible).toEqual(true);
     });
 
     it('THEN the page titles are visible in the TOC component', () => {
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.wizardHelper.pageNavTitles).toEqual([testContext.page1.navTitle, testContext.page2.navTitle]);
     });
 
     it("THEN the size of the modal is 'lg' by default", () => {
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.wizardHelper.size).toEqual('lg');
     });
 
     describe('WHEN the size input of the wizard is changed', () => {
       beforeEach(() => {
-        testContext.component.size = 'xl';
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput('size', 'xl');
+        renderFixture(testContext.fixture);
       });
 
       it('THEN the new size is applied to the wizard', () => {
@@ -379,12 +380,12 @@ describe('appfx-wizard', () => {
       beforeEach(() => {
         testContext.component.configService.debug = true;
         testContext.component.modelMgr.model = mockDebugModel;
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
       });
 
       it('THEN should render mock popup', async () => {
         vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         await vi.advanceTimersByTimeAsync(0);
 
         const popupElement = testContext.fixture.debugElement.query(By.css('appfx-model-popup')).componentInstance;
@@ -396,7 +397,7 @@ describe('appfx-wizard', () => {
     it("THEN the first page is rendered AND it's title is selected AND page.activate() lifecycle is invoked", () => {
       expect(testContext.page1Model.activateCallsCount).toEqual(0);
 
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       expect(testContext.wizardHelper.activePageTitle).toEqual(testContext.page1.title);
       expect(testContext.wizardHelper.activePageNavTitle).toEqual(testContext.page1.navTitle);
@@ -405,7 +406,7 @@ describe('appfx-wizard', () => {
     });
 
     it('THEN the buttons are correctly rendered', () => {
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.wizardHelper.visibleButtons.length).toBe(2);
 
       expect(testContext.wizardHelper.cancelButtonText).toEqual(testContext.strings.cancel.toUpperCase());
@@ -416,7 +417,7 @@ describe('appfx-wizard', () => {
       vi.spyOn(testContext.component, 'onWizardCommit');
       vi.spyOn(testContext.component, 'onWizardPageActivated');
 
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       expect(testContext.page1Model.validateCallsCount).toEqual(0);
       expect(testContext.page2Model.activateCallsCount).toEqual(0);
@@ -430,7 +431,7 @@ describe('appfx-wizard', () => {
     });
 
     it("WHEN 'Cancel' is clicked THEN onClose event is emitted", () => {
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       let invoked = false;
       testContext.component.onClose.subscribe(() => (invoked = true));
@@ -441,47 +442,47 @@ describe('appfx-wizard', () => {
     });
 
     it('THEN the displays correctly a loading indicator if requested to do so', () => {
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       // Initially indicator should be hidden
       expect(isLoadingIndicatorVisible(testContext.fixture.debugElement)).toEqual(false);
 
       // Show indicator when the wizard reports loading
-      testContext.component.loading = true;
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput('loading', true);
+      renderFixture(testContext.fixture);
       expect(isLoadingIndicatorVisible(testContext.fixture.debugElement)).toEqual(true);
 
       // Hide indicator
-      testContext.component.loading = false;
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput('loading', false);
+      renderFixture(testContext.fixture);
       expect(isLoadingIndicatorVisible(testContext.fixture.debugElement)).toEqual(false);
 
       // Show indicator when the page model reports loading
       testContext.page1Model.loading = true;
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(isLoadingIndicatorVisible(testContext.fixture.debugElement)).toEqual(true);
 
       // Hide indicator
       testContext.page1Model.loading = false;
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(isLoadingIndicatorVisible(testContext.fixture.debugElement)).toEqual(false);
     });
   });
 
   describe('WHEN we go to the next page', () => {
     beforeEach(() => {
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       testContext.wizardHelper.next();
     });
 
     it('THEN the selected navigation AND the page title are correct', () => {
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.wizardHelper.activePageTitle).toEqual(testContext.page2.title);
       expect(testContext.wizardHelper.activePageNavTitle).toEqual(testContext.page2.navTitle);
     });
 
     it('THEN the buttons are correctly rendered', () => {
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.wizardHelper.cancelButtonText).toEqual(testContext.strings.cancel.toUpperCase());
       expect(testContext.wizardHelper.backButtonText).toEqual(testContext.strings.back.toUpperCase());
       // we have only 2 pages so the second is last
@@ -491,7 +492,7 @@ describe('appfx-wizard', () => {
     it("WHEN 'Back' is clicked THEN onBack method is called", () => {
       vi.spyOn(testContext.component, 'onWizardBack');
 
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       testContext.wizardHelper.back();
       expect(testContext.component.onWizardBack).toHaveBeenCalled();
@@ -519,10 +520,10 @@ describe('appfx-wizard', () => {
 
   describe('WHEN a page has cancelable validation', () => {
     it('THEN should render cancel validation button ', () => {
-      testContext.component.pages = [testContext.page4, testContext.page1];
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput('pages', [testContext.page4, testContext.page1]);
+      renderFixture(testContext.fixture);
       testContext.wizardHelper.next();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       expect(isLoadingIndicatorVisible(testContext.fixture.debugElement)).toEqual(true);
 
@@ -531,7 +532,7 @@ describe('appfx-wizard', () => {
       ).toEqual(testContext.page4Model.cancelableValidation?.cancelButtonLabel?.toUpperCase());
 
       testContext.fixture.debugElement.query(By.css('appfx-spinner button.btn')).nativeElement.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       expect(isLoadingIndicatorVisible(testContext.fixture.debugElement)).toEqual(false);
       expect(testContext.page4Model.canceledValidationCallsCount).toEqual(1);
@@ -542,11 +543,11 @@ describe('appfx-wizard', () => {
     it('THEN onFinish() and onClose() events are emitted', () => {
       const untypedContext: any = testContext;
 
-      untypedContext.fixture.detectChanges();
+      renderFixture(untypedContext.fixture);
 
       untypedContext.wizardHelper.next();
 
-      untypedContext.fixture.detectChanges();
+      renderFixture(untypedContext.fixture);
 
       let ok = false;
       let ok2 = false;
@@ -555,7 +556,7 @@ describe('appfx-wizard', () => {
 
       untypedContext.wizardHelper.finish();
 
-      untypedContext.fixture.detectChanges();
+      renderFixture(untypedContext.fixture);
 
       expect(ok).toBe(true);
       expect(ok2).toBe(true);
@@ -574,7 +575,7 @@ describe('appfx-wizard', () => {
         },
       };
 
-      untypedContext.fixture.detectChanges();
+      renderFixture(untypedContext.fixture);
       untypedContext.wizardHelper.next();
       untypedContext.component.onWizardCommit();
 
@@ -590,7 +591,7 @@ describe('appfx-wizard', () => {
         },
       };
 
-      untypedContext.fixture.detectChanges();
+      renderFixture(untypedContext.fixture);
       untypedContext.wizardHelper.next();
       untypedContext.component.onWizardCommit();
 
@@ -606,7 +607,7 @@ describe('appfx-wizard', () => {
         },
       };
 
-      untypedContext.fixture.detectChanges();
+      renderFixture(untypedContext.fixture);
       untypedContext.component.onWizardCancel();
 
       expect(untypedContext.component.closeHandlerValidationState.errors).toEqual([customError]);
@@ -621,7 +622,7 @@ describe('appfx-wizard', () => {
         },
       };
 
-      untypedContext.fixture.detectChanges();
+      renderFixture(untypedContext.fixture);
       untypedContext.component.onWizardCancel();
 
       expect(untypedContext.component.closeHandlerValidationState.errors).toEqual([]);
@@ -639,7 +640,7 @@ describe('appfx-wizard', () => {
       beforeEach(() => {
         expect(testContext.page1Model.vmId).toBeUndefined();
 
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
       });
 
       it('THEN the wizard model properties are injected into the page model', () => {
@@ -663,7 +664,7 @@ describe('appfx-wizard', () => {
           )[1];
           nextButton.triggerEventHandler('click', null);
 
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
 
           // From page1 the data was outjected into the wizard model
           expect(testContext.wizardModel.newContextObjectId).toEqual('vm-12');
@@ -678,7 +679,7 @@ describe('appfx-wizard', () => {
   describe('WHEN compute function executed', () => {
     beforeEach(() => {
       testContext.page1.isRelevant = Var.from(testContext.wizardModel.dep1).by(dep1 => of(dep1));
-      testContext.component.pages = testContext.workflowService.flow;
+      testContext.fixture.componentRef.setInput('pages', testContext.workflowService.flow);
     });
     it('page relevance should be evaluated again', () => {
       expect(testContext.page1.isSkipped).toEqual(true);
@@ -694,22 +695,22 @@ describe('appfx-wizard', () => {
   describe('Relevance checks', () => {
     it('WHEN Page 1 is not relevant, THEN should display page2', () => {
       testContext.page1.isRelevant = Var.of(false);
-      testContext.component.pages = testContext.workflowService.flow;
+      testContext.fixture.componentRef.setInput('pages', testContext.workflowService.flow);
       expect(testContext.component.pages.length).toEqual(2);
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.wizardHelper.pageNavTitles.length).toEqual(1);
       expect(testContext.wizardHelper.activePageTitle).toEqual(page2Title);
     });
     it('WHEN next page becomes irrelevant, after page1 commit', () => {
       testContext.page2.isRelevant = testContext.wizardModel.isPage2Relevant;
-      testContext.component.pages = [testContext.page1, testContext.page2, testContext.page3];
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput('pages', [testContext.page1, testContext.page2, testContext.page3]);
+      renderFixture(testContext.fixture);
       expect(testContext.wizardHelper.pageNavTitles.length).toEqual(3);
       expect(testContext.wizardHelper.activePageTitle).toEqual(page1Title);
       // This should skip page 2 because, it become irrelevant
       testContext.page1Model.showPage2 = false;
       testContext.wizardHelper.next();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.wizardHelper.pageNavTitles.length).toEqual(2);
       expect(testContext.wizardHelper.activePageTitle).toEqual(page3Title);
     });
@@ -718,17 +719,17 @@ describe('appfx-wizard', () => {
       testContext.page3.isSkipped = true;
       testContext.page3.isRelevant = Var.from(testContext.wizardModel.dep1).by(dep1 => of(dep1));
       testContext.wizardModel.dep1.value = false;
-      testContext.component.pages = [testContext.page1, testContext.page2, testContext.page3];
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput('pages', [testContext.page1, testContext.page2, testContext.page3]);
+      renderFixture(testContext.fixture);
       expect(testContext.wizardHelper.pageNavTitles.length).toEqual(2);
       expect(testContext.wizardHelper.activePageTitle).toEqual(page1Title);
       testContext.wizardHelper.next();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.wizardHelper.pageNavTitles.length).toEqual(2);
       expect(testContext.wizardHelper.activePageTitle).toEqual(page2Title);
       testContext.wizardModel.dep1.value = true;
       testContext.wizardHelper.finish();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       // This should add one more page, last page become relevant.
       expect(testContext.wizardHelper.pageNavTitles.length).toEqual(3);
       expect(testContext.wizardHelper.activePageTitle).toEqual(page3Title);
@@ -739,8 +740,8 @@ describe('appfx-wizard', () => {
 
   describe('Step Navigation ->', () => {
     beforeEach(() => {
-      testContext.component.pages = [testContext.page1, testContext.page2, testContext.page3];
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput('pages', [testContext.page1, testContext.page2, testContext.page3]);
+      renderFixture(testContext.fixture);
     });
 
     it('WHEN rendered, Only step 1 is enabled', () => {
@@ -758,7 +759,7 @@ describe('appfx-wizard', () => {
     describe('Go to step2 using Next button ->', () => {
       beforeEach(() => {
         testContext.wizardHelper.next();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
       });
 
       it('Only step 3 is disabled', () => {
@@ -779,7 +780,7 @@ describe('appfx-wizard', () => {
       describe('Go to step3 using Next button ->', () => {
         beforeEach(() => {
           testContext.wizardHelper.next();
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
         });
 
         it('All step Nav should be enabled', () => {
@@ -800,7 +801,7 @@ describe('appfx-wizard', () => {
         describe('Go back to step 1 using Step Nav ->', () => {
           beforeEach(() => {
             testContext.wizardHelper.navigateToStep(0);
-            testContext.fixture.detectChanges();
+            renderFixture(testContext.fixture);
           });
 
           it('All step Nav should be enabled', () => {
@@ -821,7 +822,7 @@ describe('appfx-wizard', () => {
           describe('Go to step 2 using Step Nav ->', () => {
             beforeEach(() => {
               testContext.wizardHelper.navigateToStep(1);
-              testContext.fixture.detectChanges();
+              renderFixture(testContext.fixture);
             });
 
             it('All step Nav should be enabled', () => {
@@ -843,7 +844,7 @@ describe('appfx-wizard', () => {
           describe('Go to step 3 using Step Nav ->', () => {
             beforeEach(() => {
               testContext.wizardHelper.navigateToStep(2);
-              testContext.fixture.detectChanges();
+              renderFixture(testContext.fixture);
             });
 
             it('All step Nav should be enabled', () => {
@@ -865,13 +866,13 @@ describe('appfx-wizard', () => {
           describe('Step 1 is invalid ->', () => {
             beforeEach(() => {
               testContext.page1Model.validationResult = false;
-              testContext.fixture.detectChanges();
+              renderFixture(testContext.fixture);
             });
 
             describe('Go to step 2 using Step Nav ->', () => {
               beforeEach(() => {
                 testContext.wizardHelper.navigateToStep(1);
-                testContext.fixture.detectChanges();
+                renderFixture(testContext.fixture);
               });
 
               it('All step Nav should be enabled', () => {
@@ -893,7 +894,7 @@ describe('appfx-wizard', () => {
             describe('Go to step 3 using Step Nav ->', () => {
               beforeEach(() => {
                 testContext.wizardHelper.navigateToStep(2);
-                testContext.fixture.detectChanges();
+                renderFixture(testContext.fixture);
               });
 
               it('All step Nav should be enabled', () => {
@@ -918,7 +919,7 @@ describe('appfx-wizard', () => {
       describe('Go back to step 1 using Step Nav ->', () => {
         beforeEach(() => {
           testContext.wizardHelper.navigateToStep(0);
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
         });
 
         it('Only step 3 is disabled', () => {
@@ -944,7 +945,7 @@ describe('appfx-wizard', () => {
           describe('Go to step2 using Step Nav ->', () => {
             beforeEach(() => {
               testContext.wizardHelper.navigateToStep(1);
-              testContext.fixture.detectChanges();
+              renderFixture(testContext.fixture);
             });
 
             it('Only step 1 is enabled', () => {
@@ -967,7 +968,7 @@ describe('appfx-wizard', () => {
         describe('Go to step2 using Step Nav ->', () => {
           beforeEach(() => {
             testContext.wizardHelper.navigateToStep(1);
-            testContext.fixture.detectChanges();
+            renderFixture(testContext.fixture);
           });
 
           it('Only step 3 is disabled', () => {
@@ -995,7 +996,7 @@ describe('appfx-wizard', () => {
         describe('Go back to step 1 using Step Nav, Step2 is invalid ->', () => {
           beforeEach(() => {
             testContext.wizardHelper.navigateToStep(0);
-            testContext.fixture.detectChanges();
+            renderFixture(testContext.fixture);
           });
 
           it('Only step 3 is disabled', () => {
@@ -1019,11 +1020,11 @@ describe('appfx-wizard', () => {
 
   describe('WHEN StepModel.readyToComplete=false', () => {
     beforeEach(() => {
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       testContext.wizardHelper.next();
-      testContext.fixture.detectChanges(); // in Step 2
+      renderFixture(testContext.fixture); // in Step 2
       testContext.page2Model.readyToComplete = false;
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
     });
 
     it('Next button should be disabled', () => {
@@ -1033,24 +1034,24 @@ describe('appfx-wizard', () => {
 
     it('Cannot go to Next step', () => {
       testContext.wizardHelper.next();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.wizardHelper.activePageTitle).toEqual(page2Title);
     });
 
     it('Can go to Previous step', () => {
       testContext.wizardHelper.back();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.wizardHelper.activePageTitle).toEqual(page1Title);
     });
   });
 
   describe('WHEN StepValidationState.isValid()=false', () => {
     beforeEach(() => {
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       testContext.wizardHelper.next();
-      testContext.fixture.detectChanges(); // in Step 2
+      renderFixture(testContext.fixture); // in Step 2
       testContext.page2Model.validationState.errors = ['Error Message'];
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
     });
 
     it('Next button should be enabled', () => {
@@ -1060,13 +1061,13 @@ describe('appfx-wizard', () => {
 
     it('Cannot go to Next step', () => {
       testContext.wizardHelper.next();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.wizardHelper.activePageTitle).toEqual(page2Title);
     });
 
     it('Can go to Previous step', () => {
       testContext.wizardHelper.back();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.wizardHelper.activePageTitle).toEqual(page1Title);
     });
   });
@@ -1079,8 +1080,8 @@ describe('appfx-wizard', () => {
       testContext.page2.summary = (builder: PropertyViewSectionBuilder): PropertyViewSectionModel => {
         return builder.build();
       };
-      testContext.component.pages = [testContext.page1, testContext.page2, testContext.page3];
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput('pages', [testContext.page1, testContext.page2, testContext.page3]);
+      renderFixture(testContext.fixture);
     });
 
     it('THEN, SummaryComponent should be appended', () => {
@@ -1113,8 +1114,8 @@ describe('appfx-wizard', () => {
     describe('WHEN some pages are NOT relevant', () => {
       beforeEach(() => {
         testContext.page2.isRelevant = Var.of(false);
-        testContext.component.pages = [testContext.page1, testContext.page2, testContext.page3];
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput('pages', [testContext.page1, testContext.page2, testContext.page3]);
+        renderFixture(testContext.fixture);
       });
 
       it('THEN, appfx-summary should be rendered in last step', () => {
@@ -1137,8 +1138,8 @@ describe('appfx-wizard', () => {
       it('THEN, should have isSkpped state equal to true if all pages with summary are not relevant', () => {
         expect((<StepInternal>testContext.component.pages[3]).isSkipped).toEqual(false);
         testContext.page1.isRelevant = Var.of(false);
-        testContext.component.pages = [testContext.page1, testContext.page2, testContext.page3];
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput('pages', [testContext.page1, testContext.page2, testContext.page3]);
+        renderFixture(testContext.fixture);
         expect((<StepInternal>testContext.component.pages[3]).isSkipped).toEqual(true);
       });
     });
@@ -1146,14 +1147,14 @@ describe('appfx-wizard', () => {
 
   describe('zoom accessibility', () => {
     beforeEach(() => {
-      testContext.component.pages = [testContext.page1, testContext.page2];
+      testContext.fixture.componentRef.setInput('pages', [testContext.page1, testContext.page2]);
       testContext.zoomLevelService = TestBed.inject(ZoomLevelService);
     });
 
     describe('zoom2x', () => {
       beforeEach(() => {
         testContext.zoomLevelService['resizeSubject'].next(ZoomLevel.x2);
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
       });
 
       it('step nav panel is hidden by default', () => {
@@ -1175,7 +1176,7 @@ describe('appfx-wizard', () => {
       describe('when `Show step nav` burger icon is clicked', () => {
         beforeEach(() => {
           testContext.wizardHelper.showNavigator();
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
         });
 
         it('step nav panel is opened', () => {
@@ -1185,7 +1186,7 @@ describe('appfx-wizard', () => {
         describe('when `Close step nav` icon icon is clicked', () => {
           beforeEach(() => {
             testContext.wizardHelper.closeNavigator();
-            testContext.fixture.detectChanges();
+            renderFixture(testContext.fixture);
           });
 
           it('step nav panel is closed', () => {
@@ -1198,7 +1199,7 @@ describe('appfx-wizard', () => {
     describe('zoom4x', () => {
       beforeEach(() => {
         testContext.zoomLevelService['resizeSubject'].next(ZoomLevel.x4);
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
       });
 
       it('step nav panel is hidden by default', () => {
@@ -1220,7 +1221,7 @@ describe('appfx-wizard', () => {
       describe('when `Show step nav` burger icon is clicked', () => {
         beforeEach(() => {
           testContext.wizardHelper.showNavigator();
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
         });
 
         it('step nav panel is opened', () => {
@@ -1230,7 +1231,7 @@ describe('appfx-wizard', () => {
         describe('when `Close step nav` icon icon is clicked', () => {
           beforeEach(() => {
             testContext.wizardHelper.closeNavigator();
-            testContext.fixture.detectChanges();
+            renderFixture(testContext.fixture);
           });
 
           it('step nav panel is closed', () => {
@@ -1248,8 +1249,8 @@ describe('appfx-wizard', () => {
 
     describe('WHEN footer config is provided', () => {
       beforeEach(() => {
-        testContext.component.footer = { componentClass: MockFooterComponent };
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput('footer', { componentClass: MockFooterComponent });
+        renderFixture(testContext.fixture);
       });
 
       it('THEN the footer inputs are updated when the step changes', () => {
@@ -1265,7 +1266,7 @@ describe('appfx-wizard', () => {
         expect(footer.workflowModel).toBe(testContext.wizardModel);
 
         testContext.wizardHelper.next();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
 
         const updatedFooter = getFooterInstance();
         expect(updatedFooter.currentStep.title).toEqual(testContext.page2.title);

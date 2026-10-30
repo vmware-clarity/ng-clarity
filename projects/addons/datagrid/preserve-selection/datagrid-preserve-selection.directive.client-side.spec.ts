@@ -20,6 +20,7 @@ import {
   ZoomLevelServiceMock,
 } from '@clr/addons/testing';
 import { SelectionType } from '@clr/angular/data/datagrid';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { DatagridColumnsOrderModule } from '../addons/column-ordering/datagrid-columns-order.module';
 import { ExportProviderService } from '../addons/export/export-provider.service';
@@ -162,9 +163,9 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
         gridHelper.getFooter().clickNextPaginationButton();
       }
       await vi.advanceTimersByTimeAsync(0);
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       await vi.advanceTimersByTimeAsync(0);
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       await testContext.selectRows(selectRows);
     };
@@ -174,7 +175,7 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
       for (const selectedRowIndex of selectRows) {
         gridHelper.getRows()[selectedRowIndex].click();
         await vi.advanceTimersByTimeAsync(0);
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
       }
     };
 
@@ -219,16 +220,16 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
   });
 
   it('is called when datagrid items changed is emitted and there are already selected items in the grid', () => {
-    testContext.fixture.detectChanges(false);
+    renderFixture(testContext.fixture);
     vi.spyOn(testContext.appfxDatagridHostComponent.directive, 'updateSelectedItems').mockImplementation(
       () => undefined
     );
     const gridData = testContext.appfxDatagridHostComponent.data;
-    testContext.fixture.detectChanges(false);
+    renderFixture(testContext.fixture);
     expect(testContext.appfxDatagridHostComponent.directive.updateSelectedItems).not.toHaveBeenCalled();
     testContext.appfxDatagridHostComponent.data = [...gridData];
     testContext.appfxDatagridHostComponent.selectedItems = [gridData[0]];
-    testContext.fixture.detectChanges(false);
+    renderFixture(testContext.fixture);
     expect(testContext.appfxDatagridHostComponent.directive.updateSelectedItems).toHaveBeenCalledWith(gridData);
     expect(testContext.appfxDatagridHostComponent.datagridComponent.selectedItems[0]).toEqual(gridData[0]);
   });
@@ -240,7 +241,7 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
     const gridData = testContext.appfxDatagridHostComponent.data;
 
     testContext.appfxDatagridHostComponent.selectedItems = [gridData[0], gridData[1], gridData[3]];
-    testContext.fixture.detectChanges(false);
+    renderFixture(testContext.fixture);
     expect(testContext.appfxDatagridHostComponent.datagridComponent.selectedItems.length).toEqual(3);
     testContext.newData = [
       {
@@ -270,7 +271,7 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
     ];
     testContext.appfxDatagridHostComponent.data = testContext.newData;
 
-    testContext.fixture.detectChanges(false);
+    renderFixture(testContext.fixture);
 
     expect(testContext.appfxDatagridHostComponent.datagridComponent.selectedItems.length).toEqual(2);
     expect(testContext.appfxDatagridHostComponent.datagridComponent.selectedItems[0]).toEqual(testContext.newData[0]);
@@ -284,7 +285,7 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
     () => {
       const gridData = testContext.appfxDatagridHostComponent.data;
       testContext.appfxDatagridHostComponent.selectedItems = [gridData[0], gridData[1], gridData[3]];
-      testContext.fixture.detectChanges(false);
+      renderFixture(testContext.fixture);
       expect(testContext.appfxDatagridHostComponent.datagridComponent.selectedItems.length).toEqual(3);
       testContext.newData = [
         {
@@ -314,7 +315,7 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
       ];
       testContext.appfxDatagridHostComponent.data = testContext.newData;
 
-      testContext.fixture.detectChanges(false);
+      renderFixture(testContext.fixture);
 
       expect(testContext.appfxDatagridHostComponent.datagridComponent.selectedItems.length).toEqual(2);
       expect(testContext.appfxDatagridHostComponent.datagridComponent.selectedItems[0]).toEqual(testContext.newData[0]);
@@ -327,7 +328,7 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
       vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       testContext.appfxDatagridHostComponent.pageSize = 2;
       testContext.appfxDatagridHostComponent.data = allGridData;
-      testContext.fixture.detectChanges(false);
+      renderFixture(testContext.fixture);
       await vi.advanceTimersByTimeAsync(0);
     });
     it('selection is preserved when move between pages', async () => {
@@ -372,9 +373,9 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
       testContext.appfxDatagridHostComponent.data = allGridData.map((item: any) => {
         return { ...item };
       });
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       await vi.advanceTimersByTimeAsync(0);
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       testContext.verifySelectedRows([0, 1]);
       await testContext.moveToTheNextPageAndSelectRows([]);
       testContext.verifySelectedRows([0]);
@@ -391,8 +392,9 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
       testContext.appfxDatagridHostComponent.data = allGridData.map((item: any) => {
         return { ...item };
       });
-      testContext.fixture.detectChanges();
-      await vi.advanceTimersByTimeAsync(0);
+      renderFixture(testContext.fixture);
+      // The query-list notification schedules a second zero-delay selection emission.
+      await vi.advanceTimersByTimeAsync(1);
       expect(testContext.appfxDatagridHostComponent.datagridComponent.onSelectedItemsChange).toHaveBeenCalled();
     });
   });
@@ -403,7 +405,7 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
       testContext.appfxDatagridHostComponent.pageSize = 2;
       testContext.appfxDatagridHostComponent.data = allGridData;
       testContext.appfxDatagridHostComponent.selectionType = SelectionType.Single;
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       await vi.advanceTimersByTimeAsync(0);
     });
 
@@ -454,9 +456,9 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
       testContext.appfxDatagridHostComponent.data = allGridData.map((item: any) => {
         return { ...item };
       });
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       await vi.advanceTimersByTimeAsync(0);
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       testContext.verifySelectedRows([1]);
     });
   });
@@ -466,20 +468,20 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
     testContext.appfxDatagridHostComponent.preserveSelection = false;
     testContext.appfxDatagridHostComponent.pageSize = 2;
     testContext.appfxDatagridHostComponent.data = allGridData;
-    testContext.fixture.detectChanges(false);
+    renderFixture(testContext.fixture);
     await vi.advanceTimersByTimeAsync(0);
 
-    testContext.fixture.detectChanges(false);
+    renderFixture(testContext.fixture);
     vi.spyOn(testContext.appfxDatagridHostComponent.directive, 'updateSelectedItems').mockImplementation(
       () => undefined
     );
     const gridData = testContext.appfxDatagridHostComponent.data;
-    testContext.fixture.detectChanges(false);
+    renderFixture(testContext.fixture);
     await vi.advanceTimersByTimeAsync(0);
     expect(testContext.appfxDatagridHostComponent.directive.updateSelectedItems).not.toHaveBeenCalled();
     testContext.appfxDatagridHostComponent.data = [...gridData];
     testContext.appfxDatagridHostComponent.selectedItems = [gridData[0]];
-    testContext.fixture.detectChanges(false);
+    renderFixture(testContext.fixture);
     expect(testContext.appfxDatagridHostComponent.directive.updateSelectedItems).not.toHaveBeenCalled();
   });
 

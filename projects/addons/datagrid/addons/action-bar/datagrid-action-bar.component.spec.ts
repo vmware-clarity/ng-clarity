@@ -12,6 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ElementResizeService } from '@clr/addons/a11y';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrDropdownModule, ClrTooltipModule } from '@clr/angular/popover';
+import { renderFixture } from '@clr/angular/utils/testing';
 import { Observable, of, Subject } from 'rxjs';
 
 import { DatagridActionBarComponent } from './datagrid-action-bar.component';
@@ -184,7 +185,7 @@ describe('DatagridActionBarComponent', () => {
   describe('WHEN there are grouped actions', () => {
     beforeEach(() => {
       testContext.containerComponent.actions = testContext.actionsWithGroups;
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
     });
 
     it('THEN displays all available actions', () => {
@@ -210,7 +211,7 @@ describe('DatagridActionBarComponent', () => {
   describe("WHEN initially all the actions fit the container's width", () => {
     beforeEach(() => {
       testContext.containerComponent.actions = testContext.actionsToFitScreen;
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
     });
 
     it('THEN displays all available actions', () => {
@@ -254,7 +255,7 @@ describe('DatagridActionBarComponent', () => {
               enabled: action.id !== testContext.actionsToFitScreen[0].id,
             }
         );
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
       });
 
       it('THEN the first action button is disabled', () => {
@@ -270,10 +271,10 @@ describe('DatagridActionBarComponent', () => {
       beforeEach(async () => {
         vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
         testContext.containerComponent.width = testContext.containerComponent.smallSize;
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         testContext.resizeService.resize$.next();
         await vi.advanceTimersByTimeAsync(10);
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
       });
 
       it("THEN displays only the buttons for actions which fit the container's width", () => {
@@ -294,7 +295,7 @@ describe('DatagridActionBarComponent', () => {
 
       it('THEN displays the rest of the actions within the dropdown', () => {
         testContext.fixture.debugElement.query(By.css('clr-dropdown > button')).triggerEventHandler('click', {});
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
 
         const action: ActionDefinition = last(testContext.actionsToFitScreen);
         expect(
@@ -316,10 +317,10 @@ describe('DatagridActionBarComponent', () => {
         beforeEach(async () => {
           vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
           testContext.containerComponent.width = testContext.containerComponent.normalSize;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           testContext.resizeService.resize$.next();
           await vi.advanceTimersByTimeAsync(10);
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
         });
 
         it('THEN displays all available actions', () => {
@@ -347,7 +348,7 @@ describe('DatagridActionBarComponent', () => {
   describe("WHEN initially NOT all actions fit the container's width", () => {
     beforeEach(() => {
       testContext.containerComponent.actions = testContext.actionsNotFittingScreen;
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
     });
 
     it("THEN displays all actions which fit the container's width", () => {
@@ -372,7 +373,7 @@ describe('DatagridActionBarComponent', () => {
     describe('AND the dropdown is opened', () => {
       beforeEach(() => {
         testContext.fixture.debugElement.query(By.css('clr-dropdown > button')).triggerEventHandler('click', {});
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
       });
 
       it('THEN displays the rest of the actions within the dropdown', () => {
@@ -423,7 +424,7 @@ describe('DatagridActionBarComponent', () => {
           vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
           testContext.resizeService.resize$.next();
           await vi.advanceTimersByTimeAsync(10);
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
         });
 
         it('THEN the dropdown is closed', () => {
@@ -442,12 +443,12 @@ describe('DatagridActionBarComponent', () => {
               enabled: action.id !== last(testContext.actionsNotFittingScreen)?.id,
             }
         );
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
       });
 
       it('THEN the last action button from the dropdown is disabled', () => {
         testContext.fixture.debugElement.query(By.css('clr-dropdown > button')).triggerEventHandler('click', {});
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(
           testContext.fixture.debugElement.query(
             By.css(`clr-dropdown-menu button[data-test-id='${last(testContext.actionsNotFittingScreen)?.id}']`)
@@ -463,14 +464,14 @@ describe('DatagridActionBarComponent', () => {
     const hiddenActionSelector = `button[data-test-id='${testContext.actionsWithVisibility[1].id}']`;
     const dropDownSelector = 'clr-dropdown.dropdown button.dropdown-toggle';
     testContext.containerComponent.actions = testContext.actionsWithVisibility;
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
 
     expect(testContext.fixture.debugElement.query(By.css(visibleActionSelector))).toBeTruthy();
     expect(testContext.fixture.debugElement.query(By.css(hiddenActionSelector))).toBeNull();
 
     testContext.fixture.debugElement.query(By.css(dropDownSelector)).triggerEventHandler('click', {});
     await vi.advanceTimersByTimeAsync(10);
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
 
     const hiddenActionEle: DebugElement = testContext.fixture.debugElement.query(By.css(hiddenActionSelector));
     expect(hiddenActionEle).toBeTruthy();

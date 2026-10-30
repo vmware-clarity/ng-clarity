@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, Component, QueryList, signal, ViewChild, ViewChildren } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrTab, ClrTabLink, ClrTabs, ClrTabsModule } from '@clr/angular/layout/tabs';
@@ -18,7 +18,7 @@ import { ElementResizeService } from '../resize/element-resize.service';
 @Component({
   imports: [AppfxA11yModule, ClrTabsModule],
   template: `
-    <div [style.width]="width + 'px'">
+    <div [style.width]="width() + 'px'">
       <clr-tabs appfxOverflowTabs>
         <clr-tab>
           <button clrTabLink [clrTabLinkInOverflow]="false" style="width: 50px">Tab 1</button>
@@ -35,7 +35,7 @@ import { ElementResizeService } from '../resize/element-resize.service';
           <clr-tab-content></clr-tab-content>
         </clr-tab>
 
-        @if (tab4Visible) {
+        @if (tab4Visible()) {
           <clr-tab>
             <button clrTabLink [clrTabLinkInOverflow]="false" style="width: 50px">Tab 4</button>
             <clr-tab-content></clr-tab-content>
@@ -59,8 +59,8 @@ import { ElementResizeService } from '../resize/element-resize.service';
 })
 export class ClrTabsHostComponent {
   // gap is set to 0 in styles to remove tabs gap and improve calculation of tests
-  width = 160;
-  tab4Visible = false;
+  readonly width = signal(160);
+  readonly tab4Visible = signal(false);
 
   @ViewChild(ClrTabs) tabs: ClrTabs;
 
@@ -186,7 +186,7 @@ describe('OverflowClrTabsDirective', () => {
     it('1 tab in overflow', async () => {
       vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       Object.assign(testContext, createThisTest());
-      testContext.component.width = 140;
+      testContext.component.width.set(140);
       testContext.fixture.detectChanges();
 
       testContext.resizeService.resize.next();
@@ -198,7 +198,7 @@ describe('OverflowClrTabsDirective', () => {
     it('2 tabs in overflow', async () => {
       vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       Object.assign(testContext, createThisTest());
-      testContext.component.width = 90;
+      testContext.component.width.set(90);
       testContext.fixture.detectChanges();
 
       testContext.resizeService.resize.next();
@@ -211,7 +211,7 @@ describe('OverflowClrTabsDirective', () => {
     it('All tabs in overflow', async () => {
       vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       Object.assign(testContext, createThisTest());
-      testContext.component.width = 41;
+      testContext.component.width.set(41);
       testContext.fixture.detectChanges();
 
       testContext.resizeService.resize.next();
@@ -224,7 +224,7 @@ describe('OverflowClrTabsDirective', () => {
     it('Adding new tab in overflow', async () => {
       vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       Object.assign(testContext, createThisTest());
-      testContext.component.tab4Visible = true;
+      testContext.component.tab4Visible.set(true);
       testContext.fixture.detectChanges();
 
       await vi.advanceTimersByTimeAsync(resources.layoutChangesDebounceDuration);
@@ -235,8 +235,8 @@ describe('OverflowClrTabsDirective', () => {
     it('Adding new tab without overflow', async () => {
       vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       Object.assign(testContext, createThisTest());
-      testContext.component.width = 250;
-      testContext.component.tab4Visible = true;
+      testContext.component.width.set(250);
+      testContext.component.tab4Visible.set(true);
       testContext.fixture.detectChanges();
 
       await vi.advanceTimersByTimeAsync(resources.layoutChangesDebounceDuration);
@@ -248,7 +248,7 @@ describe('OverflowClrTabsDirective', () => {
       vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       Object.assign(testContext, createThisTest());
       // The first 2 buttons are visible, 3rd is in overflow.
-      testContext.component.width = 140;
+      testContext.component.width.set(140);
       testContext.fixture.detectChanges();
 
       testContext.resizeService.resize.next();
@@ -281,7 +281,7 @@ describe('OverflowClrTabsDirective', () => {
     it('WHEN initialLoadDelay passes THEN overflow will be updated', async () => {
       vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       Object.assign(testContext, createThisTest());
-      testContext.component.width = 140;
+      testContext.component.width.set(140);
       testContext.fixture.detectChanges();
 
       await vi.advanceTimersByTimeAsync(resources.initialLoadDelay + resources.layoutChangesDebounceDuration);
@@ -291,7 +291,7 @@ describe('OverflowClrTabsDirective', () => {
     it('WHEN all tabs are in overflow THEN the Overflow dropdown has custom styling', async () => {
       vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       Object.assign(testContext, createThisTest());
-      testContext.component.width = 41;
+      testContext.component.width.set(41);
       testContext.fixture.detectChanges();
 
       testContext.resizeService.resize.next();

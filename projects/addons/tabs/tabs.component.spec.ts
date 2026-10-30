@@ -22,6 +22,7 @@ import {
 import { WorkflowStrings } from '@clr/addons/workflow/strings';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrTab, ClrTabsModule } from '@clr/angular/layout/tabs';
+import { renderFixture } from '@clr/angular/utils/testing';
 import { of } from 'rxjs';
 import { take } from 'rxjs/operators';
 
@@ -134,12 +135,12 @@ describe('Appfx Tabs', () => {
     testContext.mockElementRef = testContext.fixture.debugElement.injector.get(ElementRef);
 
     testContext.component = testContext.fixture.componentInstance;
-    testContext.component.model = testContext.tabsModel;
+    testContext.fixture.componentRef.setInput('model', testContext.tabsModel);
 
     vi.spyOn(testContext.modelManager, 'injectPropertiesToPendingStep');
     vi.spyOn(testContext.modelManager, 'ejectPropertiesFromCurrentStep');
 
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
   });
 
   afterEach(() => {
@@ -171,20 +172,20 @@ describe('Appfx Tabs', () => {
         },
       ];
 
-      testContext.component.tabs = testContext.steps;
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput('tabs', testContext.steps);
+      renderFixture(testContext.fixture);
     });
 
     it('renders pages disabled when disableTabContent = true', () => {
-      testContext.component.disableTabsContent = true;
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput('disableTabsContent', true);
+      renderFixture(testContext.fixture);
 
       expect(
         testContext.fixture.nativeElement.querySelectorAll('appfx-step-container')[0].classList.contains('div-disabled')
       ).toEqual(true);
 
       testContext.component.onStepActiveChange(testContext.steps[2], true);
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       expect(
         testContext.fixture.nativeElement.querySelectorAll('appfx-step-container')[0].classList.contains('div-disabled')
@@ -221,8 +222,8 @@ describe('Appfx Tabs', () => {
         },
       ];
 
-      testContext.component.tabs = testContext.steps;
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput('tabs', testContext.steps);
+      renderFixture(testContext.fixture);
     });
 
     it(
@@ -239,7 +240,7 @@ describe('Appfx Tabs', () => {
           expect(labels).toEqual(['Resources', ipAllocationStepTitle, 'Details']);
 
           testContext.component.onStepActiveChange(testContext.steps[2], true);
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
 
           expect(testContext.modelManager.injectPropertiesToPendingStep).toHaveBeenCalledWith(testContext.steps[2]);
           expect(testContext.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(testContext.steps[0]);
@@ -251,13 +252,13 @@ describe('Appfx Tabs', () => {
       verifyAllStepPagesNotValidated(testContext.steps);
 
       testContext.component.onStepActiveChange(testContext.steps[1], true);
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       expect((testContext.steps[1].model as MockStepModel).isActivated).toEqual(true);
       expect((testContext.steps[2].model as MockStepModel).isActivated).toEqual(false);
 
       testContext.component.onStepActiveChange(testContext.steps[2], true);
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       expect((testContext.steps[2].model as MockStepModel).isActivated).toEqual(true);
     });
@@ -267,26 +268,26 @@ describe('Appfx Tabs', () => {
 
       testContext.component.onStepActiveChange(testContext.steps[1], true);
 
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       expect((testContext.steps[0].model as MockStepModel).isValidated).toEqual(true);
       expect((testContext.steps[1].model as MockStepModel).isValidated).toEqual(false);
 
       testContext.component.onStepActiveChange(testContext.steps[0], true);
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       expect((testContext.steps[1].model as MockStepModel).isValidated).toEqual(true);
     });
 
     it('does not validate the current page when navigating to another page when disableTabsContent = true', () => {
-      testContext.component.disableTabsContent = true;
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput('disableTabsContent', true);
+      renderFixture(testContext.fixture);
 
       expect((testContext.steps[0].model as MockStepModel).isValidated).toEqual(false);
       expect((testContext.steps[1].model as MockStepModel).isValidated).toEqual(false);
       testContext.component.onStepActiveChange(testContext.steps[1], true);
 
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       expect((testContext.steps[0].model as MockStepModel).isValidated).toEqual(false);
       expect((testContext.steps[1].model as MockStepModel).isValidated).toEqual(false);
@@ -297,7 +298,7 @@ describe('Appfx Tabs', () => {
       expect((testContext.steps[1].model as MockStepModel).isValidated).toEqual(false);
 
       testContext.component.onStepActiveChange(testContext.steps[1], true);
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       expect((testContext.steps[0].model as MockStepModel).isValidated).toEqual(true);
       expect(testContext.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(testContext.steps[0]);
@@ -322,7 +323,7 @@ describe('Appfx Tabs', () => {
 
       // Activate the invalid page
       testContext.component.onStepActiveChange(testContext.steps[2], true);
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       expect(testContext.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(testContext.steps[0]);
 
@@ -335,7 +336,7 @@ describe('Appfx Tabs', () => {
 
       // Go to the second valid page
       testContext.component.onStepActiveChange(testContext.steps[1], true);
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       expect(testContext.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(testContext.steps[2]);
 
@@ -348,7 +349,7 @@ describe('Appfx Tabs', () => {
         .subscribe(valid => {
           isValid = valid;
         });
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       // The user is navigated to the first invalid page and it is activated
       expect(testContext.modelManager.injectPropertiesToPendingStep).toHaveBeenCalledWith(testContext.steps[2]);
@@ -358,13 +359,13 @@ describe('Appfx Tabs', () => {
     });
 
     it('does not validate pages when validate$ is called, one step is invalid and disableTabsContent = true', () => {
-      testContext.component.disableTabsContent = true;
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput('disableTabsContent', true);
+      renderFixture(testContext.fixture);
 
       verifyAllStepPagesNotValidated(testContext.steps);
 
       testContext.component.onStepActiveChange(testContext.steps[1], true);
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       expect((testContext.steps[0].model as MockStepModel).isValidated).toEqual(false);
       expect(testContext.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(testContext.steps[0]);
@@ -387,7 +388,7 @@ describe('Appfx Tabs', () => {
 
       // Activate the invalid page
       testContext.component.onStepActiveChange(testContext.steps[2], true);
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       expect(testContext.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(testContext.steps[0]);
 
@@ -400,7 +401,7 @@ describe('Appfx Tabs', () => {
 
       // Go to the second valid page
       testContext.component.onStepActiveChange(testContext.steps[1], true);
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       expect(testContext.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(testContext.steps[2]);
 
@@ -413,7 +414,7 @@ describe('Appfx Tabs', () => {
         .subscribe(valid => {
           isValid = valid;
         });
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       expect(isValid, 'The second page should be valid').toBe(true);
     });
@@ -423,7 +424,7 @@ describe('Appfx Tabs', () => {
 
       // Activate the invalid page
       testContext.component.onStepActiveChange(testContext.steps[2], true);
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       expect(testContext.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(testContext.steps[0]);
 
@@ -439,7 +440,7 @@ describe('Appfx Tabs', () => {
         .subscribe(valid => {
           isValid = valid;
         });
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       expect(isValid, 'The third page should not be valid').toBe(false);
     });
@@ -479,9 +480,9 @@ describe('Appfx Tabs', () => {
       testContext.steps[0].isRelevant = Var.from(relevanceProperty).by(prop => of(prop));
       relevanceProperty.value = false;
 
-      testContext.component.tabs = testContext.steps;
+      testContext.fixture.componentRef.setInput('tabs', testContext.steps);
 
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
     });
 
     it('the first page is skipped', () => {
@@ -546,9 +547,9 @@ describe('Appfx Tabs', () => {
       ];
 
       testContext.zoomLevelService = TestBed.inject(ZoomLevelService);
-      testContext.component.tabs = testContext.steps;
-      testContext.component.tabLayout = TabLayout.vertical;
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput('tabs', testContext.steps);
+      testContext.fixture.componentRef.setInput('tabLayout', TabLayout.vertical);
+      renderFixture(testContext.fixture);
       testContext.component.ngOnChanges({
         tabLayout: new SimpleChange({} as TabLayout, TabLayout.vertical, true),
       });
@@ -557,8 +558,8 @@ describe('Appfx Tabs', () => {
 
     describe('WHEN showTabLinks = false', () => {
       beforeEach(() => {
-        testContext.component.showTabLinks = false;
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput('showTabLinks', false);
+        renderFixture(testContext.fixture);
       });
 
       it('appfx-tab-links is not visible', () => {
@@ -576,7 +577,7 @@ describe('Appfx Tabs', () => {
     describe('zoom2x', () => {
       beforeEach(() => {
         testContext.zoomLevelService['resizeSubject'].next(ZoomLevel.x2);
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
       });
 
       it('appfx-tab-links is visible', () => {
@@ -619,7 +620,7 @@ describe('Appfx Tabs', () => {
         beforeEach(() => {
           const showTabsIcon = testContext.fixture.debugElement.query(By.css(`.btn-show-tabs`));
           showTabsIcon.nativeElement.click();
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
         });
 
         it('tabs panel is opened', () => {
@@ -649,7 +650,7 @@ describe('Appfx Tabs', () => {
           beforeEach(() => {
             const closeTabsIcon = testContext.fixture.debugElement.query(By.css(`.btn-close-tabs`));
             closeTabsIcon.nativeElement.click();
-            testContext.fixture.detectChanges();
+            renderFixture(testContext.fixture);
           });
 
           it('tabs panel is closed', () => {
@@ -681,7 +682,7 @@ describe('Appfx Tabs', () => {
     describe('zoom4x', () => {
       beforeEach(() => {
         testContext.zoomLevelService['resizeSubject'].next(ZoomLevel.x4);
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
       });
 
       it('appfx-tab-links is visible', () => {
@@ -724,7 +725,7 @@ describe('Appfx Tabs', () => {
         beforeEach(() => {
           const showTabsIcon = testContext.fixture.debugElement.query(By.css(`.btn-show-tabs`));
           showTabsIcon.nativeElement.click();
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
         });
 
         it('tabs panel is opened', () => {
@@ -754,7 +755,7 @@ describe('Appfx Tabs', () => {
           beforeEach(() => {
             const closeTabsIcon = testContext.fixture.debugElement.query(By.css(`.btn-close-tabs`));
             closeTabsIcon.nativeElement.click();
-            testContext.fixture.detectChanges();
+            renderFixture(testContext.fixture);
           });
 
           it('tabs panel is closed', () => {

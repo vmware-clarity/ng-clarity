@@ -10,6 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { delay, enableCssAnimations, finishAnimations } from '@clr/angular/testing';
 import { ClrLoadingModule, ClrLoadingState } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrLoadingButton } from './loading-button';
 import { ClrLoadingButtonModule } from './loading-button.module';
@@ -25,7 +26,7 @@ describe('Loading Buttons', () => {
 
     fixture = TestBed.createComponent(TestLoadingButtonComponent);
 
-    fixture.detectChanges();
+    renderFixture(fixture);
   });
 
   afterEach(() => {
@@ -34,56 +35,56 @@ describe('Loading Buttons', () => {
 
   it('displays spinner when [(clrButtonState)] value is LOADING', () => {
     fixture.componentInstance.buttonState = ClrLoadingState.LOADING;
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(fixture.nativeElement.querySelector('.spinner')).toBeTruthy();
   });
 
   it('sets the state back to DEFAULT when [(clrButtonState)] value is VALIDATED', async () => {
     fixture.componentInstance.buttonState = ClrLoadingState.SUCCESS;
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(fixture.componentInstance.buttonState as ClrLoadingState).toEqual(ClrLoadingState.SUCCESS);
 
     await delay(1000);
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(fixture.componentInstance.buttonState as ClrLoadingState).toEqual(ClrLoadingState.DEFAULT);
   });
 
   it('sets the disabled state back to value defined in disabled input', async () => {
     fixture.componentInstance.disabled = true;
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     fixture.componentInstance.buttonState = ClrLoadingState.LOADING;
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(fixture.componentInstance.buttonState as ClrLoadingState).toEqual(ClrLoadingState.LOADING);
     expect(fixture.componentInstance.loadingButtonInstance.el.nativeElement.disabled).toBeTruthy();
 
     fixture.componentInstance.buttonState = ClrLoadingState.SUCCESS;
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(fixture.componentInstance.buttonState as ClrLoadingState).toEqual(ClrLoadingState.SUCCESS);
     expect(fixture.componentInstance.loadingButtonInstance.el.nativeElement.disabled).toBeTruthy();
 
     await delay(1000);
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(fixture.componentInstance.buttonState as ClrLoadingState).toEqual(ClrLoadingState.DEFAULT);
     expect(fixture.componentInstance.loadingButtonInstance.el.nativeElement.disabled).toBeTruthy();
 
     // now the input binding sets the disabled to false
     // it should be disabled while loading, and success, but change back to not disabled when it goes back to DEFAULT
     fixture.componentInstance.disabled = false;
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     fixture.componentInstance.buttonState = ClrLoadingState.LOADING;
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(fixture.componentInstance.buttonState as ClrLoadingState).toEqual(ClrLoadingState.LOADING);
     expect(fixture.componentInstance.loadingButtonInstance.el.nativeElement.disabled).toBeTruthy();
 
     fixture.componentInstance.buttonState = ClrLoadingState.SUCCESS;
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(fixture.componentInstance.buttonState as ClrLoadingState).toEqual(ClrLoadingState.SUCCESS);
     expect(fixture.componentInstance.loadingButtonInstance.el.nativeElement.disabled).toBeTruthy();
 
     await delay(1000);
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(fixture.componentInstance.buttonState as ClrLoadingState).toEqual(ClrLoadingState.DEFAULT);
     expect(fixture.componentInstance.loadingButtonInstance.el.nativeElement.disabled).toBeFalsy();
   });
@@ -92,15 +93,15 @@ describe('Loading Buttons', () => {
     expect(fixture.componentInstance.loadingButtonInstance.el.nativeElement.style.length).toBe(0);
 
     fixture.componentInstance.buttonState = ClrLoadingState.LOADING;
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(fixture.componentInstance.loadingButtonInstance.el.nativeElement.style.width).toBeDefined();
 
     fixture.componentInstance.buttonState = ClrLoadingState.SUCCESS;
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(fixture.componentInstance.loadingButtonInstance.el.nativeElement.style.width).toBeDefined();
 
     await delay(1000);
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(fixture.componentInstance.buttonState as ClrLoadingState).toEqual(ClrLoadingState.DEFAULT);
     expect(fixture.componentInstance.loadingButtonInstance.el.nativeElement.style.length).toBe(0);
   });
@@ -110,9 +111,9 @@ describe('Loading Buttons', () => {
     (Element.prototype as any).getAnimations = undefined;
     try {
       fixture.componentInstance.buttonState = ClrLoadingState.SUCCESS;
-      fixture.detectChanges();
+      renderFixture(fixture);
       await delay();
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(fixture.componentInstance.buttonState as ClrLoadingState).toEqual(ClrLoadingState.DEFAULT);
     } finally {
       Element.prototype.getAnimations = getAnimations;
@@ -121,15 +122,15 @@ describe('Loading Buttons', () => {
 
   it('hides spinner when [(clrButtonState)] value is DEFAULT', () => {
     fixture.componentInstance.buttonState = ClrLoadingState.DEFAULT;
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(fixture.nativeElement.querySelector('.spinner')).toBeFalsy();
   });
 
   it('has minimum width of 42px when loading', () => {
     fixture.componentInstance.buttonContent = '';
-    fixture.detectChanges();
+    renderFixture(fixture);
     fixture.componentInstance.buttonState = ClrLoadingState.LOADING;
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(fixture.nativeElement.querySelector('button').offsetWidth).toBe(42);
   });
 });
@@ -141,15 +142,15 @@ describe('Loading Button inside an OnPush host', () => {
       declarations: [OnPushTestLoadingButtonComponent],
     });
     const fixture = TestBed.createComponent(OnPushTestLoadingButtonComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     fixture.componentInstance.buttonState = ClrLoadingState.SUCCESS;
     fixture.debugElement.injector.get(ChangeDetectorRef).markForCheck();
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(fixture.nativeElement.querySelector('.spinner-check')).toBeTruthy();
 
     await delay();
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(fixture.nativeElement.querySelector('.spinner-check')).toBeNull();
     expect(fixture.nativeElement.querySelector('.clr-loading-btn-content')).toBeTruthy();
     fixture.destroy();
@@ -168,7 +169,7 @@ describe('Loading Buttons with animations', () => {
       animationsEnabled: true,
     });
     fixture = TestBed.createComponent(TestLoadingButtonComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay(); // the initial render is not animated
   });
 
@@ -189,10 +190,10 @@ describe('Loading Buttons with animations', () => {
 
   it('fades its content in when it goes back to its default state', async () => {
     fixture.componentInstance.buttonState = ClrLoadingState.LOADING;
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
     fixture.componentInstance.buttonState = ClrLoadingState.DEFAULT;
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
 
     expect(fixture.nativeElement.querySelector('.clr-loading-btn-content').classList).toContain(
@@ -202,7 +203,7 @@ describe('Loading Buttons with animations', () => {
 
   it('keeps the spinner rotating while it fades in', async () => {
     fixture.componentInstance.buttonState = ClrLoadingState.LOADING;
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
 
     const spinner = fixture.nativeElement.querySelector('.spinner');
@@ -212,7 +213,7 @@ describe('Loading Buttons with animations', () => {
 
   it('goes back to its default state once the check mark animation is done', async () => {
     fixture.componentInstance.buttonState = ClrLoadingState.SUCCESS;
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     const check = fixture.nativeElement.querySelector('.spinner-check');
     expect(animationNames(check)).toEqual(['clr-loading-btn-check']);
@@ -223,37 +224,37 @@ describe('Loading Buttons with animations', () => {
     // A finished CSS animation dispatches its `animationend` event on the next frame.
     await new Promise(resolve => requestAnimationFrame(resolve));
     await delay();
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(fixture.componentInstance.buttonState as ClrLoadingState).toBe(ClrLoadingState.DEFAULT);
   });
 
   it('goes back to its default state when the button is hidden during the check mark animation', async () => {
     fixture.componentInstance.buttonState = ClrLoadingState.SUCCESS;
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
 
     fixture.nativeElement.querySelector('button').style.display = 'none';
     // The animation is canceled when the style is next updated, which reading the animations forces.
     fixture.nativeElement.querySelector('.spinner-check').getAnimations();
     await delay();
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(fixture.componentInstance.buttonState as ClrLoadingState).toBe(ClrLoadingState.DEFAULT);
   });
 
   it('does not end a later success state when the check mark of an earlier one is done', async () => {
     fixture.componentInstance.buttonState = ClrLoadingState.SUCCESS;
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
     const firstCheck = fixture.nativeElement.querySelector('.spinner-check');
     fixture.componentInstance.buttonState = ClrLoadingState.LOADING;
-    fixture.detectChanges();
+    renderFixture(fixture);
     fixture.componentInstance.buttonState = ClrLoadingState.SUCCESS;
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
 
     finishAnimations(firstCheck);
     await delay();
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(fixture.componentInstance.buttonState).toBe(ClrLoadingState.SUCCESS);
   });
 });
@@ -268,10 +269,10 @@ describe('Loading Button driven as a loading listener', () => {
       animationsEnabled: true,
     });
     const fixture = TestBed.createComponent(ListenerTestLoadingButtonComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
     const button = fixture.componentInstance.loadingButtonInstance;
     button.loadingStateChange(ClrLoadingState.SUCCESS);
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
     const check = fixture.nativeElement.querySelector('.spinner-check');
 
@@ -299,7 +300,7 @@ describe('Loading Buttons with Noop animations', () => {
       animationsEnabled: true,
     });
     fixture = TestBed.createComponent(TestLoadingButtonComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
   });
 
@@ -310,12 +311,12 @@ describe('Loading Buttons with Noop animations', () => {
 
   it('does not animate the spinner or its content', async () => {
     fixture.componentInstance.buttonState = ClrLoadingState.LOADING;
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
     expect(fixture.nativeElement.querySelector('.spinner').classList).not.toContain('clr-loading-btn-enter');
 
     fixture.componentInstance.buttonState = ClrLoadingState.DEFAULT;
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
     expect(fixture.nativeElement.querySelector('.spinner')).toBeNull();
     expect(fixture.nativeElement.querySelector('.clr-loading-btn-content').classList).not.toContain(
@@ -325,11 +326,11 @@ describe('Loading Buttons with Noop animations', () => {
 
   it('goes back to its default state at once after the success state', async () => {
     fixture.componentInstance.buttonState = ClrLoadingState.SUCCESS;
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(fixture.nativeElement.querySelector('.spinner-check').classList).not.toContain('clr-loading-btn-check');
 
     await delay();
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(fixture.componentInstance.buttonState as ClrLoadingState).toEqual(ClrLoadingState.DEFAULT);
     await delay(); // the check mark is removed right after the render, without a leave animation
     expect(fixture.nativeElement.querySelector('.spinner-check')).toBeNull();

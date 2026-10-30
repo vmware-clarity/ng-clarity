@@ -10,6 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { ClrStepperModule, ClrStepperPanel } from '@clr/angular/stepper';
 import { ClrCommonStrings, ClrCommonStringsService } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { AppfxA11yModule } from '../a11y.module';
 
@@ -59,7 +60,7 @@ function createThisTest(): ThisTest {
   });
 
   const fixture = TestBed.createComponent(TestClrStepperComponent);
-  fixture.detectChanges();
+  renderFixture(fixture);
 
   return {
     fixture: fixture,

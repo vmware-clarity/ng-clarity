@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { RecursiveTreeNodeModel } from './models/recursive-tree-node.model';
 import { ClrRecursiveForOf, ClrRecursiveForOfContext } from './recursive-for-of';
@@ -69,7 +70,7 @@ describe('Tree View', () => {
           providers: [TreeFeaturesService],
         });
         testContext.fixture = TestBed.createComponent(TestComponent);
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         testContext.testComponent = testContext.fixture.componentInstance;
         testContext.clarityDirective = testContext.fixture.componentInstance.recursiveForOf;
         testContext.featuresService = TestBed.inject(TreeFeaturesService);
@@ -95,7 +96,7 @@ describe('Tree View', () => {
 
       it('updates the recursion service if the nodes change', () => {
         testContext.testComponent.root = TEST_ROOT.children[0];
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.featuresService.recursion.root).toEqual([
           new RecursiveTreeNodeModel(TEST_ROOT.children[0], null, getChildren, testContext.featuresService),
         ]);
@@ -118,7 +119,7 @@ describe('Tree View', () => {
 
       it('accepts multiple roots', () => {
         testContext.testComponent.root = [TEST_ROOT, TEST_ROOT];
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         const wrappedRoot = new RecursiveTreeNodeModel(TEST_ROOT, null, getChildren, testContext.featuresService);
         expect(testContext.featuresService.recursion.root).toEqual([wrappedRoot, wrappedRoot]);
       });

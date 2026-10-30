@@ -11,6 +11,7 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { ClrIcon } from '@clr/angular/icon';
 import { delay, expectActiveElementToBe, spec, TestContext } from '@clr/angular/testing';
 import { ClrCommonStringsService, IfExpandService, Keys } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { DeclarativeTreeNodeModel } from './models/declarative-tree-node.model';
 import { RecursiveTreeNodeModel } from './models/recursive-tree-node.model';
@@ -135,6 +136,9 @@ describe('Tree View', () => {
           const stringsService = new ClrCommonStringsService();
           testContext.focusManagerService = new TreeFocusManagerService<void>();
           const platformID = { provide: PLATFORM_ID, useValue: 'browser' };
+          TestBed.configureTestingModule({
+            providers: [{ provide: ChangeDetectorRef, useValue: { markForCheck: vi.fn() } }],
+          });
           TestBed.runInInjectionContext(() => {
             testContext.parent = new ClrTreeNode(
               platformID,
@@ -744,7 +748,7 @@ describe('Tree View', () => {
             animationsEnabled: true,
           });
           fixture = TestBed.createComponent(TestComponent);
-          fixture.detectChanges();
+          renderFixture(fixture);
           return delay();
         });
 
@@ -764,7 +768,7 @@ describe('Tree View', () => {
 
         async function expand(expanded: boolean) {
           fixture.componentInstance.expanded = expanded;
-          fixture.detectChanges();
+          renderFixture(fixture);
           await delay();
         }
 
@@ -801,7 +805,7 @@ describe('Tree View', () => {
             providers: [TreeFocusManagerService],
           });
           fixture = TestBed.createComponent(TestComponent);
-          fixture.detectChanges();
+          renderFixture(fixture);
           await delay();
           await expand(true);
 
@@ -818,7 +822,7 @@ describe('Tree View', () => {
             animationsEnabled: true,
           });
           fixture = TestBed.createComponent(TestComponent);
-          fixture.detectChanges();
+          renderFixture(fixture);
           await delay();
           await expand(true);
 
@@ -835,19 +839,19 @@ describe('Tree View', () => {
             animationsEnabled: true,
           });
           const lazyFixture = TestBed.createComponent(LazyRecursiveTestComponent);
-          lazyFixture.detectChanges();
+          renderFixture(lazyFixture);
           await delay();
           const node = lazyFixture.componentInstance.node;
           const nodeChildren: HTMLElement = lazyFixture.nativeElement.querySelector('.clr-treenode-children');
 
           node.expanded = true;
-          lazyFixture.detectChanges();
+          renderFixture(lazyFixture);
           await delay();
           expect(nodeChildren.getAnimations().length).toBe(1);
           nodeChildren.getAnimations().forEach(animation => animation.finish());
 
           node.expanded = false;
-          lazyFixture.detectChanges();
+          renderFixture(lazyFixture);
           await delay();
 
           expect(nodeChildren.getAnimations()).toEqual([]);
@@ -856,7 +860,7 @@ describe('Tree View', () => {
 
         it('does not animate the children when all the descendants are expanded at once', async function () {
           fixture.componentInstance.tree.expandDescendants();
-          fixture.detectChanges();
+          renderFixture(fixture);
           await delay();
 
           expect(children().getAnimations()).toEqual([]);
@@ -869,7 +873,7 @@ describe('Tree View', () => {
             .forEach(animation => animation.pause());
 
           fixture.componentInstance.tree.collapseDescendants();
-          fixture.detectChanges();
+          renderFixture(fixture);
           await delay();
 
           expect(children().getAnimations()).toEqual([]);
@@ -885,14 +889,14 @@ describe('Tree View', () => {
             animationsEnabled: true,
           });
           const nestedFixture = TestBed.createComponent(NestedTestComponent);
-          nestedFixture.detectChanges();
+          renderFixture(nestedFixture);
           await delay();
           const parent = nestedFixture.componentInstance.tree;
           const parentChildren: HTMLElement = nestedFixture.nativeElement.querySelector('.clr-treenode-children');
 
           parent.expanded = false;
           parent.expandDescendants();
-          nestedFixture.detectChanges();
+          renderFixture(nestedFixture);
           await delay();
 
           expect(parentChildren.getAnimations()).toEqual([]);

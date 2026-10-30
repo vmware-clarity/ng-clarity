@@ -22,6 +22,7 @@ import {
 import { AppfxTranslateModule } from '@clr/addons/translate';
 import { ClrIcon } from '@clr/angular/icon';
 import { enableCssAnimations } from '@clr/angular/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { AppfxCardInternal } from '../appfx-card-container.interface';
 import { AppfxCardComponent } from './appfx-card.component';
@@ -55,8 +56,8 @@ describe('AppfxCardComponent', () => {
     layoutService = TestBed.inject(LayoutService);
     a11yService = TestBed.inject(A11yService);
     dragDropService = TestBed.inject(DragDropService);
-    component.card = sampleCards[0];
-    component.dropGroup = 'container-1';
+    fixture.componentRef.setInput('card', sampleCards[0]);
+    fixture.componentRef.setInput('dropGroup', 'container-1');
     zoomLevelService = TestBed.inject(ZoomLevelService);
   });
 
@@ -65,7 +66,7 @@ describe('AppfxCardComponent', () => {
   });
 
   it('should throw error when card id is missing', () => {
-    component.card = {} as AppfxCardInternal;
+    fixture.componentRef.setInput('card', {} as AppfxCardInternal);
     expect(() => {
       component.ngOnInit();
     }).toThrowError('Missing Input property for card - id');
@@ -75,11 +76,11 @@ describe('AppfxCardComponent', () => {
     const cardViewContainer = (component as any).cardViewContainer;
     vi.spyOn(cardViewContainer, 'createComponent');
 
-    component.card = {
+    fixture.componentRef.setInput('card', {
       id: sampleCardId,
       componentClass: SampleCardComponent,
       context: {},
-    } as unknown as AppfxCardInternal;
+    } as unknown as AppfxCardInternal);
     component.ngOnInit();
 
     expect(cardViewContainer.createComponent).toHaveBeenCalledWith(SampleCardComponent);
@@ -89,7 +90,7 @@ describe('AppfxCardComponent', () => {
     const cardViewContainer = (component as any).cardViewContainer;
     vi.spyOn(cardViewContainer, 'createComponent');
 
-    component.card = { id: sampleCardId } as AppfxCardInternal;
+    fixture.componentRef.setInput('card', { id: sampleCardId } as AppfxCardInternal);
     component.ngOnInit();
 
     expect(cardViewContainer.createComponent).not.toHaveBeenCalled();
@@ -116,7 +117,7 @@ describe('AppfxCardComponent', () => {
   });
 
   it('when zoom level is change and cardZoomSize is define the updateCardSize method of layoutService is called', () => {
-    component.card = {
+    fixture.componentRef.setInput('card', {
       id: sampleCardId,
       componentClass: SampleCardComponent,
       context: {},
@@ -128,7 +129,7 @@ describe('AppfxCardComponent', () => {
           unitHeight: 5,
         },
       },
-    } as unknown as AppfxCardInternal;
+    } as unknown as AppfxCardInternal);
     component.ngOnInit();
     vi.spyOn(layoutService, 'updateCardSize');
     zoomLevelService['resizeSubject'].next(ZoomLevel.x2);
@@ -136,7 +137,7 @@ describe('AppfxCardComponent', () => {
   });
 
   it('when zoom level is change and cardZoomSize is not define the updateCardSize method of layoutService is not called', () => {
-    component.card = {
+    fixture.componentRef.setInput('card', {
       id: sampleCardId,
       componentClass: SampleCardComponent,
       context: {},
@@ -148,7 +149,7 @@ describe('AppfxCardComponent', () => {
           unitHeight: 1,
         },
       },
-    } as unknown as AppfxCardInternal;
+    } as unknown as AppfxCardInternal);
     component.ngOnInit();
     vi.spyOn(layoutService, 'updateCardSize');
     zoomLevelService['resizeSubject'].next(ZoomLevel.x2);
@@ -225,9 +226,9 @@ describe('AppfxCardComponent animations', () => {
       animationsEnabled: true,
     });
     const fixture = TestBed.createComponent(AppfxCardComponent);
-    fixture.componentInstance.card = sampleCards[0];
-    fixture.componentInstance.dropGroup = 'container-1';
-    fixture.detectChanges();
+    fixture.componentRef.setInput('card', sampleCards[0]);
+    fixture.componentRef.setInput('dropGroup', 'container-1');
+    renderFixture(fixture);
     return fixture.nativeElement.querySelector('.droppable');
   }
 

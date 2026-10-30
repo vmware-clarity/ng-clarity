@@ -10,6 +10,7 @@ import { TestBed } from '@angular/core/testing';
 import { ClrPopoverService, POPOVER_HOST_ORIGIN } from '@clr/angular/popover/common';
 import { createTestHelpers, TestContext } from '@clr/angular/testing';
 import { ClrCommonStringsService, FocusService, IF_ACTIVE_ID_PROVIDER } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrOptions } from './options';
 import { ComboboxFocusHandler } from './providers/combobox-focus-handler.service';
@@ -97,12 +98,12 @@ describe('Combobox component', () => {
         it('handles loading and no-result states', () => {
           const selectionService: OptionSelectionService<any> = context.getClarityProvider(OptionSelectionService);
           selectionService.loading = true;
-          context.fixture.detectChanges();
+          renderFixture(context.fixture);
           const menu = context.testElement.querySelector('clr-options');
           expect(menu.textContent).toMatch(/Loading/);
           expect(menu.textContent).toMatch(/Searching for matches for/);
           selectionService.loading = false;
-          context.fixture.detectChanges();
+          renderFixture(context.fixture);
           expect(menu.textContent).toMatch(/No results/);
         });
       });

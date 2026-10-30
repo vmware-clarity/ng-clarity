@@ -7,7 +7,7 @@
 
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import {
@@ -17,6 +17,7 @@ import {
   MockIsRowSelectablePipe,
 } from '@clr/addons/testing';
 import { SelectionType } from '@clr/angular/data/datagrid';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { DatagridPageDirective } from './datagrid-page.directive';
 import { DatagridComponent } from '../../datagrid.component';
@@ -141,7 +142,7 @@ describe('datagridPage directive', () => {
 
     it('set initial page', async () => {
       vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
-      testContext.fixture.detectChanges(false);
+      renderFixture(testContext.fixture);
       await vi.advanceTimersByTimeAsync(0);
       expect(testContext.appfxDatagridHostComponent.appfxDatagridComponent.clrDatagridPagination.currentPage).toEqual(
         testContext.appfxDatagridHostComponent.currentPageIndex
@@ -150,13 +151,13 @@ describe('datagridPage directive', () => {
     it('change grid page', async () => {
       vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       testContext.appfxDatagridHostComponent.currentPageIndex = 1;
-      testContext.fixture.detectChanges(false);
+      renderFixture(testContext.fixture);
       await vi.advanceTimersByTimeAsync(0);
       expect(testContext.appfxDatagridHostComponent.appfxDatagridComponent.clrDatagridPagination.currentPage).toEqual(
         testContext.appfxDatagridHostComponent.currentPageIndex
       );
       testContext.appfxDatagridHostComponent.currentPageIndex = 3;
-      testContext.fixture.detectChanges(false);
+      renderFixture(testContext.fixture);
       await vi.advanceTimersByTimeAsync(0);
       expect(testContext.appfxDatagridHostComponent.appfxDatagridComponent.clrDatagridPagination.currentPage).toEqual(
         testContext.appfxDatagridHostComponent.currentPageIndex
@@ -164,13 +165,13 @@ describe('datagridPage directive', () => {
     });
     it('emit grid page when is changed', async () => {
       vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
-      testContext.fixture.detectChanges(false);
+      renderFixture(testContext.fixture);
       await vi.advanceTimersByTimeAsync(0);
       expect(testContext.appfxDatagridHostComponent.newPageIndex).toEqual(
         testContext.appfxDatagridHostComponent.currentPageIndex
       );
       testContext.appfxDatagridHostComponent.currentPageIndex = 3;
-      testContext.fixture.detectChanges(false);
+      renderFixture(testContext.fixture);
       await vi.advanceTimersByTimeAsync(0);
       expect(testContext.appfxDatagridHostComponent.newPageIndex).toEqual(
         testContext.appfxDatagridHostComponent.currentPageIndex
@@ -184,11 +185,11 @@ describe('datagridPage directive', () => {
       testContext.appfxDatagridHostComponent = testContext.fixture.componentInstance;
 
       testContext.appfxDatagridHostComponent.appfxDatagridComponent.ngOnInit();
-      testContext.fixture.detectChanges(false);
+      renderFixture(testContext.fixture);
 
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       testContext.appfxDatagridHostComponent.appfxDatagridComponent.selectedItems = []; // reset
-      testContext.fixture.detectChanges(false);
+      renderFixture(testContext.fixture);
     });
 
     it('set initial page', () => {
@@ -198,12 +199,12 @@ describe('datagridPage directive', () => {
     });
     it('change grid page', () => {
       testContext.appfxDatagridHostComponent.currentPageIndex = 1;
-      testContext.fixture.detectChanges(false);
+      renderFixture(testContext.fixture);
       expect(testContext.appfxDatagridHostComponent.appfxDatagridComponent.clrDatagridPagination.currentPage).toEqual(
         testContext.appfxDatagridHostComponent.currentPageIndex
       );
       testContext.appfxDatagridHostComponent.currentPageIndex = 3;
-      testContext.fixture.detectChanges(false);
+      renderFixture(testContext.fixture);
       expect(testContext.appfxDatagridHostComponent.appfxDatagridComponent.clrDatagridPagination.currentPage).toEqual(
         testContext.appfxDatagridHostComponent.currentPageIndex
       );
@@ -214,7 +215,7 @@ describe('datagridPage directive', () => {
         testContext.appfxDatagridHostComponent.currentPageIndex
       );
       testContext.appfxDatagridHostComponent.currentPageIndex = 3;
-      testContext.fixture.detectChanges(false);
+      renderFixture(testContext.fixture);
       expect(testContext.appfxDatagridHostComponent.newPageIndex).toEqual(
         testContext.appfxDatagridHostComponent.currentPageIndex
       );
@@ -286,12 +287,18 @@ class DatagridForServerSideGridHostComponent {
   @ViewChild(DatagridPageDirective, { static: true }) newPageIndex = 0;
 
   currentPageIndex = 5;
-  data: any[] = [];
   allData: any[] = allGridData;
   serverDrivenDatagrid = true;
   columnsDefs: ColumnDefinition<any>[] = columns;
   selectionType = SelectionType.None;
   currentState: any;
+  private readonly gridData = signal<any[]>([]);
+  get data(): any[] {
+    return this.gridData();
+  }
+  set data(value: any[]) {
+    this.gridData.set(value);
+  }
 
   gridPageChange(page: number) {
     this.newPageIndex = page;

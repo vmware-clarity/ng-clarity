@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClarityIcons, ClrIcon, windowCloseIcon } from '@clr/angular/icon';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { DismissableDirective } from './dismissable.directive';
 
@@ -42,7 +43,7 @@ describe('Directive: DismissableDirective', () => {
     });
     fixture = TestBed.createComponent(TestComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    renderFixture(fixture);
     badge = fixture.nativeElement.querySelector('.badge');
     icon = badge.querySelector('cds-icon.remove-filter');
   });
@@ -82,7 +83,7 @@ describe('Directive: DismissableDirective', () => {
 
   it('removes the icon together with the badge', () => {
     component.show = false;
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(fixture.nativeElement.querySelector('cds-icon')).toBeNull();
     expect(document.body.contains(icon)).toBe(false);
   });

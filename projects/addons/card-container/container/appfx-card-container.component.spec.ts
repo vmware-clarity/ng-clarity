@@ -13,6 +13,7 @@ import { DragAndDropGroupService } from '@clr/addons/drag-and-drop';
 import { MockRenderer2, sampleCards } from '@clr/addons/testing';
 import { AppfxTranslateModule } from '@clr/addons/translate';
 import { ClrDropdownModule } from '@clr/angular/popover/dropdown';
+import { renderFixture } from '@clr/angular/utils/testing';
 import { of } from 'rxjs';
 
 import { AppfxCardContainerComponent } from './appfx-card-container.component';
@@ -53,7 +54,7 @@ describe('AppfxCardContainerComponent', () => {
 
     fixture = TestBed.createComponent(AppfxCardContainerComponent);
     component = fixture.componentInstance;
-    component.containerId = 'container-summary';
+    fixture.componentRef.setInput('containerId', 'container-summary');
   });
 
   it('should create component', () => {
@@ -74,7 +75,7 @@ describe('AppfxCardContainerComponent', () => {
     vi.spyOn(component, 'insertCardToContainer' as any).mockReturnValue({});
     vi.spyOn(mockContainerService, 'addCard').mockImplementation(() => undefined);
     component.cards.push(card);
-    fixture.detectChanges();
+    renderFixture(fixture);
     component.ngDoCheck();
     await vi.advanceTimersByTimeAsync(0);
 

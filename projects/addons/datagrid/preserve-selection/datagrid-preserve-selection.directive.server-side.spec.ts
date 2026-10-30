@@ -7,7 +7,7 @@
 
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CdkConnectedOverlay, CdkOverlayOrigin, OverlayModule } from '@angular/cdk/overlay';
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ZoomLevelService } from '@clr/addons/a11y';
@@ -20,6 +20,7 @@ import {
   ZoomLevelServiceMock,
 } from '@clr/addons/testing';
 import { SelectionType } from '@clr/angular/data/datagrid';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { DatagridColumnsOrderModule } from '../addons/column-ordering/datagrid-columns-order.module';
 import { ExportProviderService } from '../addons/export/export-provider.service';
@@ -129,8 +130,6 @@ class DatagridHostForServerSideGridComponent {
   @ViewChild(DatagridComponent, { static: true }) datagridComponent: DatagridComponent<unknown>;
 
   @ViewChild(DatagridPreserveSelectionDirective, { static: true }) directive: DatagridPreserveSelectionDirective;
-
-  data: any[] = [];
   preserveSelection = true;
   allData: any[] = allGridData;
   selectedItems: any[] = [];
@@ -138,6 +137,14 @@ class DatagridHostForServerSideGridComponent {
   columnsDefs: ColumnDefinition<any>[] = columns;
   selectionType = SelectionType.Multi;
   currentState: any;
+
+  private readonly gridData = signal<any[]>([]);
+  get data(): any[] {
+    return this.gridData();
+  }
+  set data(value: any[]) {
+    this.gridData.set(value);
+  }
 
   refreshData(state: any) {
     this.currentState = state;
@@ -174,9 +181,9 @@ describe('datagrid-preserve-selection-directive.server-side', () => {
         gridHelper.getFooter().clickNextPaginationButton();
       }
       await vi.advanceTimersByTimeAsync(0);
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       await vi.advanceTimersByTimeAsync(0);
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       await testContext.selectRows(selectRows);
     };
@@ -186,7 +193,7 @@ describe('datagrid-preserve-selection-directive.server-side', () => {
       for (const selectedRowIndex of selectRows) {
         gridHelper.getRows()[selectedRowIndex].click();
         await vi.advanceTimersByTimeAsync(0);
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
       }
     };
 
@@ -230,11 +237,11 @@ describe('datagrid-preserve-selection-directive.server-side', () => {
     testContext.appfxDatagridHostComponent = testContext.fixture.componentInstance;
 
     testContext.appfxDatagridHostComponent.datagridComponent.ngOnInit();
-    testContext.fixture.detectChanges(false);
+    renderFixture(testContext.fixture);
 
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     testContext.appfxDatagridHostComponent.datagridComponent.selectedItems = []; // reset
-    testContext.fixture.detectChanges(false);
+    renderFixture(testContext.fixture);
   });
 
   it(
@@ -244,7 +251,7 @@ describe('datagrid-preserve-selection-directive.server-side', () => {
     () => {
       const gridData = testContext.appfxDatagridHostComponent.allData;
       testContext.appfxDatagridHostComponent.selectedItems = [gridData[0], gridData[1], gridData[3]];
-      testContext.fixture.detectChanges(false);
+      renderFixture(testContext.fixture);
       expect(testContext.appfxDatagridHostComponent.datagridComponent.selectedItems.length).toEqual(3);
       const newData = [
         {
@@ -272,9 +279,9 @@ describe('datagrid-preserve-selection-directive.server-side', () => {
           host: '10.23.45.72',
         },
       ];
-      testContext.appfxDatagridHostComponent.data = testContext.newData;
+      testContext.appfxDatagridHostComponent.data = newData;
 
-      testContext.fixture.detectChanges(false);
+      renderFixture(testContext.fixture);
       expect(testContext.appfxDatagridHostComponent.datagridComponent.selectedItems.length).toEqual(3);
       expect(testContext.appfxDatagridHostComponent.datagridComponent.selectedItems[0]).toEqual(newData[0]);
       expect(testContext.appfxDatagridHostComponent.datagridComponent.selectedItems[1]).toEqual(gridData[1]);
@@ -336,9 +343,9 @@ describe('datagrid-preserve-selection-directive.server-side', () => {
           host: '10.23.45.100',
         },
       ];
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       await vi.advanceTimersByTimeAsync(0);
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       testContext.verifySelectedRows([0, 1]);
       await testContext.moveToTheNextPageAndSelectRows([]);
       await vi.advanceTimersByTimeAsync(0);
@@ -351,7 +358,7 @@ describe('datagrid-preserve-selection-directive.server-side', () => {
       vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       testContext.appfxDatagridHostComponent.datagridComponent.selectionType = SelectionType.Single;
       testContext.appfxDatagridHostComponent.datagridComponent.onModelChange();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       await vi.advanceTimersByTimeAsync(0);
     });
 
@@ -413,7 +420,7 @@ describe('datagrid-preserve-selection-directive.server-side', () => {
         },
       ];
 
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       await vi.advanceTimersByTimeAsync(0);
 
       testContext.verifySelectedRows([1]);

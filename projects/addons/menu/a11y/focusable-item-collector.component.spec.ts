@@ -34,9 +34,9 @@ describe('FocusableItemCollectorComponent', () => {
     const addChildren = vi.fn();
     const mockFocusHandler = { addChildren };
 
-    component.parentMenu = {
+    fixture.componentRef.setInput('parentMenu', {
       focusHandler: mockFocusHandler,
-    } as unknown as ClrDropdownMenu;
+    } as unknown as ClrDropdownMenu);
 
     const item1 = { getFocusableItem: () => 'item1' } as FocusableItemProvider;
     const item2 = { getFocusableItem: () => 'item2' } as FocusableItemProvider;

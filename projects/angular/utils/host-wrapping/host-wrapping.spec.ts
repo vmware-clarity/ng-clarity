@@ -17,6 +17,7 @@ import {
 } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { HostWrapper } from './host-wrapper';
 import { ClrHostWrappingModule } from './host-wrapping.module';
@@ -95,7 +96,7 @@ describe('Host wrapping', () => {
       declarations: [testComponent],
     });
     testContext.fixture = TestBed.createComponent(testComponent);
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     testContext.wrapper = testContext.fixture.debugElement.query(By.directive(WrapperComponent)).componentInstance;
     testContext.wrapped = testContext.fixture.debugElement
       .query(By.directive(WrappedDirective))
@@ -175,11 +176,11 @@ describe('Host wrapping', () => {
       expect(typedContext.fixture.nativeElement.textContent.trim()).toBe('Hello World!');
 
       typedContext.fixture.componentInstance.show = false;
-      typedContext.fixture.detectChanges();
+      renderFixture(typedContext.fixture);
       expect(typedContext.fixture.nativeElement.textContent.trim()).toBe('');
 
       typedContext.fixture.componentInstance.show = true;
-      typedContext.fixture.detectChanges();
+      renderFixture(typedContext.fixture);
       expect(typedContext.fixture.nativeElement.textContent.trim()).toBe('Hello World!');
     });
   });

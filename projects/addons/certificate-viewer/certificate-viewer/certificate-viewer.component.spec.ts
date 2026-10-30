@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, Input, SimpleChange, TemplateRef } 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppfxTranslateModule } from '@clr/addons/translate';
 import { ClrTabsModule } from '@clr/angular';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { CertificateViewerComponent } from './certificate-viewer.component';
 import { CertificateChain } from '../models/certificate-chain.model';
@@ -39,7 +40,7 @@ describe('CertificateViewerComponent', () => {
 
     fixture = TestBed.createComponent(CertificateViewerComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    renderFixture(fixture);
   });
 
   afterEach(() => {
@@ -51,7 +52,7 @@ describe('CertificateViewerComponent', () => {
   });
 
   it('does not update the parsed certificate if the PEM is invalid.', async () => {
-    component.pemEncodedCertificatesChain = ['foo'];
+    fixture.componentRef.setInput('pemEncodedCertificatesChain', ['foo']);
     component.ngOnChanges({
       pemEncodedCertificatesChain: new SimpleChange(undefined, ['foo'], true),
       KnownOids: new SimpleChange(undefined, undefined, true),
@@ -75,7 +76,7 @@ describe('CertificateViewerComponent', () => {
   });
 
   it('should update the parsed certificate chain', async () => {
-    component.pemEncodedCertificatesChain = ['boo'];
+    fixture.componentRef.setInput('pemEncodedCertificatesChain', ['boo']);
     const certificateChainResult = {
       poo: 'certificateChainResult',
     } as unknown as CertificateChain;

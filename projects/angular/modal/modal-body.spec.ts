@@ -7,6 +7,7 @@
 
 import { ApplicationRef, ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrModalBody } from './modal-body';
 
@@ -41,7 +42,7 @@ describe('ClrModalBody Directive', () => {
       declarations: [ClrModalBody, TestComponent],
     });
     fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
     modalBodyEl = fixture.componentInstance.testElement.nativeElement;
   });
 
@@ -49,14 +50,14 @@ describe('ClrModalBody Directive', () => {
     resizeObserverCallback();
     expect(modalBodyEl.getAttribute('tabindex')).toBeNull();
     fixture.componentInstance.scrollable = true;
-    fixture.detectChanges();
+    renderFixture(fixture);
     resizeObserverCallback();
     expect(modalBodyEl.getAttribute('tabindex')).toBe('0');
   });
 
   it('toggles tabindex="0" on mousedown and mouseup events', () => {
     fixture.componentInstance.scrollable = true;
-    fixture.detectChanges();
+    renderFixture(fixture);
     resizeObserverCallback();
 
     modalBodyEl.dispatchEvent(new Event('mousedown'));

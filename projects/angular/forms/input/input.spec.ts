@@ -10,6 +10,7 @@ import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule } from '@clr/angular/forms/common';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrInput } from './input';
 import { ClrInputContainer } from './input-container';
@@ -65,7 +66,7 @@ function inputSpec(description, testContainer, testControl, testComponent) {
       });
       fixture = TestBed.createComponent(testComponent);
       control = fixture.debugElement.query(By.directive(testControl));
-      fixture.detectChanges();
+      renderFixture(fixture);
     });
 
     it('should handle valueChanges calls', () => {
@@ -78,7 +79,7 @@ function inputSpec(description, testContainer, testControl, testComponent) {
       // make sure blur alone does not trigger valueChanges
       control.nativeElement.dispatchEvent(new Event('focus'));
       control.nativeElement.dispatchEvent(new Event('blur'));
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(valueChanges).toBe(0);
 
       // now make sure input change triggers valueChanges
@@ -87,7 +88,7 @@ function inputSpec(description, testContainer, testControl, testComponent) {
 
       control.nativeElement.dispatchEvent(new Event('input'));
       control.nativeElement.dispatchEvent(new Event('blur'));
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(valueChanges).toBe(1);
     });
   });

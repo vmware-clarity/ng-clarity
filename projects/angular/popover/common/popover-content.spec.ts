@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TestContext } from '@clr/angular/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 import type { Mock } from 'vitest';
 
 import { ClrPopoverContent } from './popover-content';
@@ -92,7 +93,7 @@ describe('ClrPopover', () => {
           declarations: [SimpleContent],
         });
         testContext.fixture = TestBed.createComponent(SimpleContent);
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         testContext.testComponent = testContext.fixture.componentInstance;
         testContext.clarityDirective = testContext.fixture.componentInstance.content;
         testContext.changeDetectorRef = testContext.fixture.debugElement.injector.get(ChangeDetectorRef);
@@ -108,14 +109,14 @@ describe('ClrPopover', () => {
       describe('TypeScript API', () => {
         it('responds to openChange events from the popoverService', () => {
           testContext.testComponent.openState = true; // Add content to the DOM
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           let content = document.body.querySelectorAll('div.clr-popover-content');
           // Popovers are not getting cleaned up here.
           expect(content.length).toBe(1);
           expect(content[0].textContent.trim()).toBe('Popover content');
 
           testContext.testComponent.openState = false; // Remove content from the DOM
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           content = document.body.querySelectorAll('div.clr-popover-content');
           expect(content.length).toBe(0);
         });
@@ -136,21 +137,21 @@ describe('ClrPopover', () => {
           );
           const newPosition = ClrPopoverPosition.TOP_RIGHT;
           testContext.testComponent.popoverPosition = newPosition;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.testComponent.content.contentAt as ClrPopoverPosition).toEqual(newPosition);
         });
 
         it('binds to [clrPopoverContentOutsideClickToClose]', () => {
           expect(testContext.testComponent.content.outsideClickClose).toBe(true);
           testContext.testComponent.closeClick = false;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.testComponent.content.outsideClickClose).toBe(false);
         });
 
         it('binds to [clrPopoverContentScrollToClose]', () => {
           expect(testContext.testComponent.closeScroll).toBe(testContext.testComponent.content.scrollToClose);
           testContext.testComponent.closeScroll = false;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.testComponent.content.scrollToClose).toBe(false);
         });
       });
@@ -158,7 +159,7 @@ describe('ClrPopover', () => {
       describe('View Basics', () => {
         it('adds top and left style to the content container when content is open', () => {
           testContext.testComponent.openState = true; // Add content to the DOM
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           const content: HTMLCollectionOf<Element> = document.body.getElementsByClassName('clr-popover-content');
           const testElement = content[0] as HTMLElement;
           expect(testElement.parentElement.style.top).toMatch(/\d+px/);
@@ -168,9 +169,9 @@ describe('ClrPopover', () => {
         it('does not fail when the popup view is immediately destroyed', async () => {
           vi.spyOn(testContext.fixture, 'detectChanges').mockImplementation(() => undefined);
           testContext.testComponent.openState = true;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           testContext.testComponent.openState = false;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
 
           expect(testContext.fixture.detectChanges).not.toThrow();
         });
@@ -299,7 +300,7 @@ describe('ClrPopover', () => {
           } as unknown as typeof IntersectionObserver;
 
           testContext.testComponent.openState = true;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
         });
 
         afterEach(() => {
@@ -416,7 +417,7 @@ describe('ClrPopover', () => {
 
         it('closes when the origin is scrolled out of view', async () => {
           testContext.testComponent.openState = true;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           await nextFrames();
           expect(testContext.popoverService.open).toBe(true);
 
@@ -431,7 +432,7 @@ describe('ClrPopover', () => {
           // With a 0 threshold in the list, the browser reports isIntersecting: true for any partially
           // visible origin, so closing must be decided on intersectionRatio instead.
           testContext.testComponent.openState = true;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           await nextFrames();
           expect(testContext.popoverService.open).toBe(true);
 
@@ -452,7 +453,7 @@ describe('ClrPopover', () => {
           host.style.overflow = 'hidden';
 
           testContext.testComponent.openState = true;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           await nextFrames();
           expect(testContext.popoverService.open).toBe(true);
 
@@ -465,7 +466,7 @@ describe('ClrPopover', () => {
 
         it('closes when the origin is hidden with display: none while open', async () => {
           testContext.testComponent.openState = true;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           await nextFrames();
           expect(testContext.popoverService.open).toBe(true);
 
@@ -482,7 +483,7 @@ describe('ClrPopover', () => {
           host.style.display = 'none';
 
           testContext.testComponent.openState = true;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           await nextFrames();
 
           expect(testContext.popoverService.open).toBe(false);
@@ -502,7 +503,7 @@ describe('ClrPopover', () => {
           testContext.popoverService.openEvent = openEvent;
           testContext.testComponent.closeClick = false;
           testContext.testComponent.openState = true;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
 
           expect(() => {
             (testContext.clarityDirective as any).handleOutsideClick(new MouseEvent('click'));
@@ -528,7 +529,7 @@ describe('ClrPopover', () => {
           testContext.popoverService.origin = new ElementRef(trigger);
           testContext.popoverService.openEvent = openEvent;
           testContext.testComponent.openState = true;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
 
           expect(testContext.popoverService.open).toBe(true);
 
@@ -584,7 +585,7 @@ describe('ClrPopover', () => {
 
           testContext.popoverService.origin = new ElementRef(trigger);
           testContext.testComponent.openState = true;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
 
           expect(countCaptureClickListeners(iframeDocSpy)).toBeGreaterThan(0);
         });
@@ -599,7 +600,7 @@ describe('ClrPopover', () => {
 
           testContext.popoverService.origin = new ElementRef(sameWindowTrigger);
           testContext.testComponent.openState = true;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
 
           expect(countCaptureClickListeners(mainDocSpy)).toBe(0);
 
@@ -611,7 +612,7 @@ describe('ClrPopover', () => {
           // inside the origin's own iframe document would otherwise never close the popover.
           testContext.popoverService.origin = new ElementRef(trigger);
           testContext.testComponent.openState = true;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
 
           expect(testContext.popoverService.open).toBe(true);
 
@@ -636,14 +637,14 @@ describe('ClrPopover', () => {
 
           // First click opens the popover, mimicking ClrDropdownTrigger's own click handler.
           trigger.click();
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.popoverService.open).toBe(true);
           expect(toggleCount).toBe(1);
 
           // Second click (the re-click) must close it via the capture-phase listener
           // without ever letting the trigger's own click handler run.
           trigger.click();
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
 
           expect(testContext.popoverService.open).toBe(false);
           expect(toggleCount).toBe(1);
@@ -679,7 +680,7 @@ describe('ClrPopover', () => {
           // - would otherwise never reach it.
           testContext.popoverService.origin = new ElementRef(trigger);
           testContext.testComponent.openState = true;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
 
           expect(testContext.popoverService.open).toBe(true);
 
@@ -691,7 +692,7 @@ describe('ClrPopover', () => {
         it('ignores Escape with a modifier key held', () => {
           testContext.popoverService.origin = new ElementRef(trigger);
           testContext.testComponent.openState = true;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
 
           iframeDoc.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', altKey: true, bubbles: true }));
 
@@ -706,7 +707,7 @@ describe('ClrPopover', () => {
 
           testContext.popoverService.origin = new ElementRef(sameWindowTrigger);
           testContext.testComponent.openState = true;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
 
           expect(vi.mocked(mainDocSpy).mock.calls.some(args => args[0] === 'keydown')).toBe(false);
 
@@ -741,7 +742,7 @@ describe('ClrPopover', () => {
 
           testContext.popoverService.origin = new ElementRef(trigger);
           testContext.testComponent.openState = true;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
 
           // CDK 21's native-popover-mode overlay doesn't expose the resolved position via
           // plain top/left CSS (it uses a full-viewport bounding box plus internal
@@ -773,13 +774,13 @@ describe('ClrPopover', () => {
       it('opens a popover at a specific point origin', async () => {
         vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
         const fixture = TestBed.createComponent(PointContent);
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         const popoverService = fixture.debugElement.injector.get(ClrPopoverService);
         const point = { x: 150, y: 250 };
         fixture.componentInstance.point = point;
         fixture.componentInstance.openState = true;
-        fixture.detectChanges();
+        renderFixture(fixture);
         await vi.advanceTimersByTimeAsync(0);
 
         const content = document.body.querySelectorAll('div.clr-popover-content');
@@ -788,7 +789,7 @@ describe('ClrPopover', () => {
         expect(popoverService.originPoint).toEqual(point);
 
         fixture.componentInstance.openState = false;
-        fixture.detectChanges();
+        renderFixture(fixture);
         await vi.advanceTimersByTimeAsync(0);
 
         fixture.destroy();
@@ -797,7 +798,7 @@ describe('ClrPopover', () => {
       it('opens via popoverService.openAtPoint without errors', async () => {
         vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
         const fixture = TestBed.createComponent(PointContent);
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         const popoverService = fixture.debugElement.injector.get(ClrPopoverService);
         const point = { x: 300, y: 100 };
@@ -805,14 +806,14 @@ describe('ClrPopover', () => {
         fixture.componentInstance.point = point;
         popoverService.openAtPoint(point);
         fixture.componentInstance.openState = true;
-        fixture.detectChanges();
+        renderFixture(fixture);
         await vi.advanceTimersByTimeAsync(0);
 
         const content = document.body.querySelectorAll('div.clr-popover-content');
         expect(content.length).toBe(1);
 
         popoverService.open = false;
-        fixture.detectChanges();
+        renderFixture(fixture);
         await vi.advanceTimersByTimeAsync(0);
 
         expect(popoverService.open).toBe(false);
@@ -844,7 +845,7 @@ describe('ClrPopover', () => {
         iframeDoc.body.appendChild(trigger);
 
         fixture = TestBed.createComponent(PointContent);
-        fixture.detectChanges();
+        renderFixture(fixture);
         popoverService = fixture.debugElement.injector.get(ClrPopoverService);
       });
 
@@ -859,7 +860,7 @@ describe('ClrPopover', () => {
         // (the right-clicked element a context menu is anchored to) can itself live
         // inside a foreign iframe document, invisible to CDK's outsidePointerEvents().
         popoverService.openAtPoint({ x: 10, y: 10 }, trigger);
-        fixture.detectChanges();
+        renderFixture(fixture);
         await vi.advanceTimersByTimeAsync(500);
 
         expect(popoverService.open).toBe(true);

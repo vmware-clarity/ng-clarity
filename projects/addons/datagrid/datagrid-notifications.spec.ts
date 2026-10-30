@@ -14,7 +14,7 @@ import { DatagridStrings } from './i18n/datagrid-strings.service';
 
 describe('Datagrid deferred row notifications', () => {
   let component: DatagridComponent<unknown>;
-  let notify: jasmine.Spy;
+  let notify: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
     component = new DatagridComponent(
@@ -30,7 +30,7 @@ describe('Datagrid deferred row notifications', () => {
     component.trackByGridItemProperty = 'id';
     component.gridItems = [];
     const rows = new QueryList<unknown>();
-    notify = spyOn(rows, 'notifyOnChanges');
+    notify = vi.spyOn(rows, 'notifyOnChanges').mockImplementation(() => undefined);
     component['clrDatagrid'] = { rows } as unknown as ClrDatagrid;
   });
 

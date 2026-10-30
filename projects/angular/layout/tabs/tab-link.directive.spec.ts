@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component, QueryList, ViewChildren } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { IfActiveService } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { TabsLayout } from './enums/tabs-layout.enum';
 import { TabsService } from './providers/tabs.service';
@@ -45,7 +46,7 @@ describe('TabLink Directive', () => {
     });
 
     fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
     compiled = fixture.nativeElement;
     instance = fixture.componentInstance;
   });
@@ -61,7 +62,7 @@ describe('TabLink Directive', () => {
 
   it('has the correct css classes in overflow', () => {
     fixture.componentInstance.inOverflow = true;
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(compiled.querySelector('.btn-link')).toBeNull();
     expect(compiled.querySelector('.nav-link')).toBeNull();
   });
@@ -69,7 +70,7 @@ describe('TabLink Directive', () => {
   it('has the correct css classes when vertical', () => {
     const tabsService = TestBed.inject(TabsService) as TabsService;
     tabsService.layout = TabsLayout.VERTICAL;
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(compiled.querySelector('.btn-link')).toBeDefined();
     expect(compiled.querySelector('.nav-link')).toBeDefined();
   });
@@ -78,7 +79,7 @@ describe('TabLink Directive', () => {
     fixture.componentInstance.inOverflow = true;
     const tabsService = TestBed.inject(TabsService) as TabsService;
     tabsService.layout = TabsLayout.VERTICAL;
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(compiled.querySelector('.btn-link')).toBeDefined();
     expect(compiled.querySelector('.nav-link')).toBeDefined();
   });
@@ -94,7 +95,7 @@ describe('TabLink Directive', () => {
 
     const tabLinks: HTMLElement[] = compiled.querySelectorAll('button');
     tabLinks[1].click();
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(links[0].active).toEqual(false);
     expect(links[1].active).toEqual(true);
   });
@@ -102,7 +103,7 @@ describe('TabLink Directive', () => {
   it('puts itself in tab sequence only if active', () => {
     const tabLinks: HTMLElement[] = compiled.querySelectorAll('button');
     tabLinks[1].click();
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(tabLinks[0].tabIndex).toBe(-1);
     expect(tabLinks[1].tabIndex).toBe(0);
   });

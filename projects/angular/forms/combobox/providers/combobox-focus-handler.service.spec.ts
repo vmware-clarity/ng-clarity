@@ -127,7 +127,9 @@ describe('Combobox component', () => {
 
       it('removes keyboard and blur listeners when destroyed', () => {
         testContext.focusHandler.ngOnDestroy();
-        testContext.testComponent.textInput.nativeElement.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        testContext.testComponent.textInput.nativeElement.dispatchEvent(
+          new KeyboardEvent('keydown', { key: Keys.ArrowDown })
+        );
         expect(testContext.popoverService.open).toBe(false);
         testContext.popoverService.open = true;
         testContext.testComponent.textInput.nativeElement.dispatchEvent(new FocusEvent('blur'));

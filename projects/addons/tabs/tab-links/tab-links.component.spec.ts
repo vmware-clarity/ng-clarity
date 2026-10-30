@@ -9,6 +9,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { WorkflowStrings } from '@clr/addons/workflow/strings';
 import { ClrIcon } from '@clr/angular/icon';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { TabLinksComponent } from './tab-links.component';
 
@@ -36,10 +37,10 @@ describe('TabLinks', () => {
     testContext.fixture = TestBed.createComponent(TabLinksComponent);
     testContext.component = testContext.fixture.componentInstance;
     testContext.title = 'Step Title';
-    testContext.component.title = testContext.title;
+    testContext.fixture.componentRef.setInput('title', testContext.title);
 
     vi.spyOn(testContext.component.openedChange, 'emit');
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
   });
 
   afterEach(() => {
@@ -65,7 +66,7 @@ describe('TabLinks', () => {
     beforeEach(() => {
       const showTabsIcon = testContext.fixture.debugElement.query(By.css(`.btn-show-tabs`));
       showTabsIcon.nativeElement.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
     });
 
     it('showTabLinks should emit true', () => {
@@ -77,7 +78,7 @@ describe('TabLinks', () => {
       beforeEach(() => {
         const closeTabsIcon = testContext.fixture.debugElement.query(By.css(`.btn-close-tabs`));
         closeTabsIcon.nativeElement.click();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
       });
 
       it('showTabLinks should emit false', () => {

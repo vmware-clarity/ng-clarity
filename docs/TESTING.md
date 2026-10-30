@@ -45,7 +45,7 @@ Shared configuration:
 
 The browser test bundles do not load `zone.js`, its testing support, or its Vitest patch. Use native `async` tests and await every assertion-bearing callback. For scheduled component rendering, use `await fixture.whenStable()` (or `await context.stable()`) after changing signals, setting inputs through `fixture.componentRef.setInput()`, or dispatching DOM events. `context.setInput()` sets a host input and waits for rendering. A direct assignment to an OnPush component's plain field is not a rendering notification; model the application's input or event instead.
 
-Use explicit `detectChanges()` for initial fixture setup or tests specifically exercising change detection. Do not add extra forced passes to make a missing notification disappear. Exhaustive validation must stay enabled, and neither suite may opt back into Zone scheduling.
+Use explicit `detectChanges()` for initial fixture setup or tests specifically exercising change detection. The legacy `TestContext.detectChanges()` and `renderFixture(fixture)` helpers mark their host for checking before the existing render pass, preserving unit tests that explicitly mutate plain host fields. It is an intentional forced check, not proof that application rendering was notified; notification-based integration tests must use `stable()` instead. The policy baseline counts these legacy forced checks per spec file and must shrink as they are removed. Do not add extra forced passes to make a missing notification disappear. Exhaustive validation must stay enabled, and neither suite may opt back into Zone scheduling.
 
 When testing debounce or timeout behavior, use Vitest timers and await advancement:
 

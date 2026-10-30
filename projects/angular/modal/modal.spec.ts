@@ -11,6 +11,7 @@ import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { delay, enableCssAnimations, expectActiveElementToBe, finishAnimations } from '@clr/angular/testing';
 import { CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrModal } from './modal';
 import { ModalStackService } from './modal-stack.service';
@@ -79,7 +80,7 @@ describe('Modal', () => {
     });
 
     fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
     compiled = fixture.nativeElement;
     modal = fixture.componentInstance.modalInstance;
 
@@ -87,7 +88,7 @@ describe('Modal', () => {
   });
 
   async function flushAndExpectOpen(componentFixture: ComponentFixture<any>, open: boolean) {
-    componentFixture.detectChanges();
+    renderFixture(componentFixture);
     await delay();
 
     const text: string = componentFixture.nativeElement.textContent.trim();
@@ -106,11 +107,11 @@ describe('Modal', () => {
 
   it('should set aria-hidden attribute to false if opened', async () => {
     fixture.componentInstance.opened = false;
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(compiled.querySelector('.modal-dialog')).toBeNull();
     // open modal
     modal.open();
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(compiled.querySelector('.modal-dialog').getAttribute('aria-hidden')).toBe('false');
   });
 
@@ -141,11 +142,11 @@ describe('Modal', () => {
     // detection feeds the input back as false.
     vi.spyOn(modal._openChanged, 'emit');
     modal.close();
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
     expect(fixture.componentInstance.opened).toBe(false);
 
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
     expect(modal._openChanged.emit).toHaveBeenCalledExactlyOnceWith(false);
   });
@@ -162,7 +163,7 @@ describe('Modal', () => {
     modal.close();
     expect(modal._openChanged.emit).not.toHaveBeenCalled();
 
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
     expect(modal._openChanged.emit).toHaveBeenCalledExactlyOnceWith(false);
     expect(fixture.nativeElement.querySelector('.modal-dialog')).toBeNull();
@@ -177,18 +178,18 @@ describe('Modal', () => {
   it('should not throw an error when close is called on an already closed modal', async () => {
     // Close the test modal
     fixture.componentInstance.modalInstance.close();
-    fixture.detectChanges();
+    renderFixture(fixture);
     // App should not throw an error when already closed.
     expect(() => {
       fixture.componentInstance.modalInstance.close();
-      fixture.detectChanges();
+      renderFixture(fixture);
     }).not.toThrow();
   });
 
   it('offers two-way binding on clrModalOpen', async () => {
     expect(fixture.componentInstance.opened).toBe(true);
     modal.close();
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
     expect(fixture.componentInstance.opened).toBe(false);
   });
@@ -202,19 +203,19 @@ describe('Modal', () => {
     expect(compiled.querySelector('.modal-lg')).toBeNull();
 
     fixture.componentInstance.size = 'sm';
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(compiled.querySelector('.modal-sm')).not.toBeNull();
     expect(compiled.querySelector('.modal-lg')).toBeNull();
 
     fixture.componentInstance.size = 'lg';
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(compiled.querySelector('.modal-sm')).toBeNull();
     expect(compiled.querySelector('.modal-lg')).not.toBeNull();
 
     fixture.componentInstance.size = 'full-screen';
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(compiled.querySelector('.modal-lg')).toBeNull();
     expect(compiled.querySelector('.modal-full-screen')).not.toBeNull();
@@ -222,7 +223,7 @@ describe('Modal', () => {
 
   it('supports a clrModalClosable option', async () => {
     fixture.componentInstance.closable = false;
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(compiled.querySelector('.close')).toBeNull();
 
@@ -230,18 +231,18 @@ describe('Modal', () => {
     await flushAndExpectOpen(fixture, true);
 
     fixture.componentInstance.closable = true;
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(compiled.querySelector('.close')).not.toBeNull();
     modal.close();
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     await flushAndExpectOpen(fixture, false);
   });
 
   it('should not be closed on backdrop click by default', async () => {
     const defaultsFixture = TestBed.createComponent(TestDefaultsComponent);
-    defaultsFixture.detectChanges();
+    renderFixture(defaultsFixture);
     compiled = defaultsFixture.nativeElement;
 
     const backdrop: HTMLElement = compiled.querySelector('.modal-backdrop');
@@ -255,7 +256,7 @@ describe('Modal', () => {
     const backdrop: HTMLElement = compiled.querySelector('.modal-backdrop');
 
     fixture.componentInstance.staticBackdrop = true;
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     // Just make sure we have the "x" to close the modal,
     // because this is different from the clrModalClosable option.
@@ -265,7 +266,7 @@ describe('Modal', () => {
     await flushAndExpectOpen(fixture, true);
 
     fixture.componentInstance.staticBackdrop = false;
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     backdrop.click();
     await flushAndExpectOpen(fixture, false);
@@ -273,7 +274,7 @@ describe('Modal', () => {
 
   it('static backdrop has pointer-events none and focus trap remains active', async () => {
     fixture.componentInstance.staticBackdrop = true;
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     const backdrop: HTMLElement = compiled.querySelector('div.modal-backdrop');
     const modalDialog: HTMLElement = compiled.querySelector('.modal-dialog');
@@ -281,18 +282,18 @@ describe('Modal', () => {
     expect(backdrop.classList.contains('static')).toBe(true);
 
     backdrop.click();
-    fixture.detectChanges();
+    renderFixture(fixture);
     await fixture.whenStable();
 
     window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Tab' }));
-    fixture.detectChanges();
+    renderFixture(fixture);
     await fixture.whenStable();
 
     expect(modalDialog.contains(document.activeElement)).toBe(true);
   });
 
   it('traps user focus', () => {
-    fixture.detectChanges();
+    renderFixture(fixture);
     const focusTrap = fixture.debugElement.query(By.directive(CdkTrapFocusModule_CdkTrapFocus));
 
     expect(focusTrap).toBeTruthy();
@@ -304,14 +305,14 @@ describe('Modal', () => {
 
   it('close button should have customizable aria-label', () => {
     fixture.componentInstance.closeButtonAriaLabel = 'custom close label';
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(compiled.querySelector('.close').getAttribute('aria-label')).toBe('custom close label');
   });
 
   it('should use modal id for aria-labelledby by default', () => {
     modal.open();
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(compiled.querySelector('.modal-dialog').getAttribute('aria-labelledby')).toBe(modal.modalId);
   });
@@ -320,7 +321,7 @@ describe('Modal', () => {
     modal.labelledBy = 'custom-id';
 
     modal.open();
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(compiled.querySelector('.modal-dialog').getAttribute('aria-labelledby')).toBe('custom-id');
   });
@@ -330,7 +331,7 @@ describe('Modal', () => {
     modal.labelledBy = '';
 
     modal.open();
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(compiled.querySelector('.modal-dialog').getAttribute('aria-labelledby')).toBe(modal.modalId);
   });
@@ -340,7 +341,7 @@ describe('Modal', () => {
     // we must give screen reader users text based warnings when they
     // are entering and leaving modal content.
     modal.open();
-    fixture.detectChanges();
+    renderFixture(fixture);
     const messages = compiled.querySelectorAll<HTMLElement>('.clr-sr-only');
     expect(messages[0].innerText).toBe('Beginning of Modal Content');
     expect(messages[1].innerText).toBe('End of Modal Content');
@@ -371,7 +372,7 @@ describe('Modal with animations', () => {
     });
     fixture = TestBed.createComponent(TestComponent);
     fixture.componentInstance.opened = false;
-    fixture.detectChanges();
+    renderFixture(fixture);
     modal = fixture.componentInstance.modalInstance;
   });
 
@@ -386,7 +387,7 @@ describe('Modal with animations', () => {
 
   async function open() {
     modal.open();
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
   }
 
@@ -409,7 +410,7 @@ describe('Modal with animations', () => {
     modal._openChanged.subscribe((opened: boolean) => openChanges.push(opened));
 
     modal.close();
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(query('.modal')).toBeNull();
     await delay();
@@ -424,7 +425,7 @@ describe('Modal with animations', () => {
     expect(query('.modal-dialog').contains(document.activeElement)).toBe(true);
 
     modal.close();
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(document.activeElement).toBe(opener);
   });
@@ -444,7 +445,7 @@ describe('Modal with animations', () => {
     // As in an application: close() from an event handler, then its microtasks, then change detection.
     modal.close();
     await Promise.resolve();
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(document.activeElement).toBe(handlerTarget);
     handlerTarget.remove();
@@ -486,7 +487,7 @@ describe('Modal with noop animations', () => {
       animationsEnabled: true,
     });
     fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
   });
 

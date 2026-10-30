@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClrInputModule, ClrSelectModule } from '@clr/angular/forms';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrSignpostModule } from '@clr/angular/popover/signpost';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { CompositeFiltersComponent } from './composite-filters.component';
 import { DatagridFiltersStrings } from './datagrid-filters-strings.service';
@@ -53,7 +54,7 @@ describe('DataGridFiltersComponent', () => {
     testContext.fixture.destroy();
   });
   it('is properly initialized in quick mode', () => {
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     const filterInput: HTMLInputElement = testContext.fixture.debugElement.nativeElement.querySelector('input');
     const quickFilterLabel: HTMLLabelElement = testContext.fixture.debugElement.nativeElement.querySelector('label');
     expect(filterInput).toBeTruthy();
@@ -62,7 +63,7 @@ describe('DataGridFiltersComponent', () => {
   });
   it('is properly initialized in advanced mode', () => {
     testContext.component.mode = FilterMode.Advanced;
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     const filterSelect: HTMLSelectElement = testContext.fixture.debugElement.nativeElement.querySelector('select');
     expect(filterSelect).toBeTruthy();
     expect(filterSelect.options.length).toEqual(2);
@@ -86,11 +87,11 @@ describe('DataGridFiltersComponent', () => {
     vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
     vi.spyOn(testContext.component, 'onSearchTermChanged');
     vi.spyOn(testContext.component.searchTermChange, 'emit').mockImplementation(() => undefined);
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     const filterInput: HTMLInputElement = testContext.fixture.debugElement.nativeElement.querySelector('input');
     filterInput.value = testInput;
     filterInput.dispatchEvent(new Event('input'));
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.component['lastSearchTerm']).toEqual('');
     await vi.advanceTimersByTimeAsync(2000);
     expect(filterInput).toBeTruthy();
@@ -105,12 +106,12 @@ describe('DataGridFiltersComponent', () => {
     const keyDownEvent: KeyboardEvent = new KeyboardEvent('keydown', {
       key: 'Enter',
     });
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     const filterInput: HTMLInputElement = testContext.fixture.debugElement.nativeElement.querySelector('input');
     filterInput.value = 'Key press';
     filterInput.dispatchEvent(new Event('input'));
     filterInput.dispatchEvent(keyDownEvent);
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.component.onSearchInputKeyPress).toHaveBeenCalledWith(keyDownEvent);
     expect(testContext.component.searchTerm).toEqual('Key press');
     expect(testContext.component['lastSearchTerm']).toEqual('Key press');
@@ -118,8 +119,8 @@ describe('DataGridFiltersComponent', () => {
   });
   it('is properly initialized in advanced only mode', () => {
     testContext.component.mode = FilterMode.AdvancedOnly;
-    testContext.component.filterableProperties = [];
-    testContext.fixture.detectChanges();
+    testContext.fixture.componentRef.setInput('filterableProperties', []);
+    renderFixture(testContext.fixture);
     const filterSelect: HTMLSelectElement = testContext.fixture.debugElement.nativeElement.querySelector('select');
     expect(filterSelect).toBeFalsy();
     const advancedFilterLabel: HTMLLabelElement = testContext.fixture.debugElement.nativeElement.querySelector('label');

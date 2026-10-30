@@ -24,6 +24,7 @@ import {
   expectActiveElementToBe,
   TestContext,
 } from '@clr/angular/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrFormsModule } from '../forms.module';
 import { ClrDateContainer } from './date-container';
@@ -180,7 +181,7 @@ describe('Datepicker', () => {
             // new test component
             delete context.fixture.componentInstance.minDate;
             delete context.fixture.componentInstance.maxDate;
-            context.fixture.detectChanges();
+            renderFixture(context.fixture);
             expect(dateIOService.disabledDates.minDate).toEqual(new DayModel(0, 0, 1));
             expect(dateIOService.disabledDates.maxDate).toEqual(new DayModel(9999, 11, 31));
           });
@@ -310,17 +311,17 @@ describe('Datepicker', () => {
 
             // should handle null input
             testComponent.minDate = null;
-            context.fixture.detectChanges();
+            renderFixture(context.fixture);
             expect(testMinDateModel).not.toEqual(dateIOService.disabledDates.minDate);
 
             // should handle undefined
             testComponent.minDate = undefined;
-            context.fixture.detectChanges();
+            renderFixture(context.fixture);
             expect(testMinDateModel).not.toEqual(dateIOService.disabledDates.minDate);
 
             // should handle empty string
             testComponent.minDate = '';
-            context.fixture.detectChanges();
+            renderFixture(context.fixture);
             expect(testMinDateModel).not.toEqual(dateIOService.disabledDates.minDate);
           });
 
@@ -332,17 +333,17 @@ describe('Datepicker', () => {
 
             // should handle null input
             testComponent.maxDate = null;
-            context.fixture.detectChanges();
+            renderFixture(context.fixture);
             expect(testMaxDateModel).not.toEqual(dateIOService.disabledDates.maxDate);
 
             // should handle undefined
             testComponent.maxDate = undefined;
-            context.fixture.detectChanges();
+            renderFixture(context.fixture);
             expect(testMaxDateModel).not.toEqual(dateIOService.disabledDates.maxDate);
 
             // should handle empty string
             testComponent.maxDate = '';
-            context.fixture.detectChanges();
+            renderFixture(context.fixture);
             expect(testMaxDateModel).not.toEqual(dateIOService.disabledDates.maxDate);
           });
         });
@@ -363,7 +364,7 @@ describe('Datepicker', () => {
           vi.spyOn(TestBed.inject(NgControlService), 'addControl').mockImplementation(() => undefined);
 
           fixture = TestBed.createComponent(TestComponentWithNgModel);
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           dateContainerDebugElement = fixture.debugElement.query(By.directive(ClrDateContainer));
           dateInputDebugElement = fixture.debugElement.query(By.directive(ClrDateInput));
@@ -377,7 +378,7 @@ describe('Datepicker', () => {
         it('updates the selectedDay when the app changes the ngModel value', async () => {
           fixture.componentInstance.dateValue = '01/02/2015';
 
-          fixture.detectChanges();
+          renderFixture(fixture);
           await delay();
 
           expect(dateInputDebugElement.nativeElement.value).toBe('01/02/2015');
@@ -385,7 +386,7 @@ describe('Datepicker', () => {
 
           fixture.componentInstance.dateValue = '05/05/2015';
 
-          fixture.detectChanges();
+          renderFixture(fixture);
           await delay();
 
           expect(dateInputDebugElement.nativeElement.value).toBe('05/05/2015');
@@ -397,7 +398,7 @@ describe('Datepicker', () => {
 
           dateNavigationService.notifySelectedDayChanged(new DayModel(2015, 1, 1));
 
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           expect(dateInputDebugElement.nativeElement.value).toBe('02/01/2015');
           expect(fixture.componentInstance.dateValue).toBe('02/01/2015');
@@ -405,21 +406,21 @@ describe('Datepicker', () => {
 
         it('allows you to reset the model', async () => {
           fixture.componentInstance.dateValue = '01/02/2015';
-          fixture.detectChanges();
+          renderFixture(fixture);
           await delay();
 
           expect(dateInputDebugElement.nativeElement.value).toBe('01/02/2015');
           expect(dateNavigationService.selectedDay).toEqual(new DayModel(2015, 0, 2));
 
           fixture.nativeElement.querySelector('#reset').click();
-          fixture.detectChanges();
+          renderFixture(fixture);
           await delay();
 
           expect(dateInputDebugElement.nativeElement.value).toBe('');
           expect(dateNavigationService.selectedDay).toEqual(null);
 
           fixture.componentInstance.dateValue = '01/02/2015';
-          fixture.detectChanges();
+          renderFixture(fixture);
           await delay();
 
           expect(dateInputDebugElement.nativeElement.value).toBe('01/02/2015');
@@ -431,7 +432,7 @@ describe('Datepicker', () => {
           dateInputDebugElement.nativeElement.value = '01/02/2015';
           dateInputDebugElement.nativeElement.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
 
-          fixture.detectChanges();
+          renderFixture(fixture);
           await delay();
 
           expect(dateNavigationService.selectedDay).toEqual(new DayModel(2015, 0, 2));
@@ -493,7 +494,7 @@ describe('Datepicker', () => {
           vi.spyOn(TestBed.inject(NgControlService), 'addControl').mockImplementation(() => undefined);
 
           fixture = TestBed.createComponent(TestComponentWithReactiveForms);
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           dateContainerDebugElement = fixture.debugElement.query(By.directive(ClrDateContainer));
           dateInputDebugElement = fixture.debugElement.query(By.directive(ClrDateInput));
@@ -530,7 +531,7 @@ describe('Datepicker', () => {
           expect(date).toBeUndefined();
           inputEl.value = '01/01/2012';
           inputEl.dispatchEvent(new Event('change'));
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           date = fixture.componentInstance.dateOutput;
 
@@ -540,7 +541,7 @@ describe('Datepicker', () => {
 
           inputEl.value = '01/01/201';
           inputEl.dispatchEvent(new Event('change'));
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           date = fixture.componentInstance.dateOutput;
 
@@ -580,7 +581,7 @@ describe('Datepicker', () => {
           vi.spyOn(TestBed.inject(NgControlService), 'addControl').mockImplementation(() => undefined);
 
           fixture = TestBed.createComponent(TestComponentWithTemplateDrivenForms);
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           dateContainerDebugElement = fixture.debugElement.query(By.directive(ClrDateContainer));
           dateFormControlService = dateContainerDebugElement.injector.get(DateFormControlService);
@@ -597,7 +598,7 @@ describe('Datepicker', () => {
 
           dateFormControlService.markAsTouched();
 
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(form.get('date').touched).toBe(true);
         });
 
@@ -608,7 +609,7 @@ describe('Datepicker', () => {
 
           dateFormControlService.markAsDirty();
 
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(form.get('date').dirty).toBe(true);
         });
 
@@ -619,7 +620,7 @@ describe('Datepicker', () => {
           expect(date).toBeUndefined();
           inputEl.value = '01/01/2012';
           inputEl.dispatchEvent(new Event('change'));
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           date = fixture.componentInstance.dateOutput;
 
@@ -629,7 +630,7 @@ describe('Datepicker', () => {
 
           inputEl.value = '01/01/201';
           inputEl.dispatchEvent(new Event('change'));
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           date = fixture.componentInstance.dateOutput;
 
@@ -652,7 +653,7 @@ describe('Datepicker', () => {
           vi.spyOn(TestBed.inject(NgControlService), 'addControl').mockImplementation(() => undefined);
 
           fixture = TestBed.createComponent(TestComponentWithClrDate);
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           dateContainerDebugElement = fixture.debugElement.query(By.directive(ClrDateContainer));
           dateInputDebugElement = fixture.debugElement.query(By.directive(ClrDateInput));
@@ -665,13 +666,13 @@ describe('Datepicker', () => {
 
         it('when disabled is true there must be attribute attached to the input', () => {
           fixture.componentInstance.disabled = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           const datePicker = fixture.nativeElement.querySelector('input');
           expect(datePicker.getAttribute('disabled')).not.toBeNull();
 
           // make sure that it won't stay and trick the styles
           fixture.componentInstance.disabled = false;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(datePicker.getAttribute('disabled')).toBeNull();
         });
 
@@ -680,7 +681,7 @@ describe('Datepicker', () => {
 
           fixture.componentInstance.date = date;
 
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           expect(dateNavigationService.selectedDay.year).toBe(date.getFullYear());
           expect(dateNavigationService.selectedDay.month).toBe(date.getMonth());
@@ -689,7 +690,7 @@ describe('Datepicker', () => {
           // Change the Date
           fixture.componentInstance.date = new Date(2015, 1, 1);
 
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           expect(dateNavigationService.selectedDay.year).toBe(2015);
           expect(dateNavigationService.selectedDay.month).toBe(1);
@@ -703,7 +704,7 @@ describe('Datepicker', () => {
           dateNavigationService.notifySelectedDayChanged(
             new DayModel(date.getFullYear(), date.getMonth(), date.getDate())
           );
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           expect(fixture.componentInstance.date.getFullYear()).toBe(date.getFullYear());
           expect(fixture.componentInstance.date.getMonth()).toBe(date.getMonth());
@@ -725,15 +726,15 @@ describe('Datepicker', () => {
           expect(fixture.componentInstance.date).toBeUndefined();
 
           dateNavigationService.notifySelectedDayChanged(new DayModel(2015, 1, 1));
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(fixture.componentInstance.date.getFullYear()).toBe(2015);
 
           fixture.componentInstance.date = new Date(2019, 1, 1);
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(fixture.componentInstance.date.getFullYear()).toBe(2019);
 
           dateNavigationService.notifySelectedDayChanged(new DayModel(2015, 1, 1));
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(fixture.componentInstance.date.getFullYear()).toBe(2015);
         });
 
@@ -741,7 +742,7 @@ describe('Datepicker', () => {
           dateInputDebugElement.nativeElement.value = '01/02/2015';
           dateInputDebugElement.nativeElement.dispatchEvent(new Event('change'));
 
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           expect(fixture.componentInstance.date.getFullYear()).toBe(2015);
           expect(fixture.componentInstance.date.getMonth()).toBe(0);
@@ -750,7 +751,7 @@ describe('Datepicker', () => {
           dateInputDebugElement.nativeElement.value = '01/02/201';
           dateInputDebugElement.nativeElement.dispatchEvent(new Event('change'));
 
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           expect(fixture.componentInstance.date).toBeNull();
         });
@@ -758,7 +759,7 @@ describe('Datepicker', () => {
         it('preserves input value from user when date is invalid', () => {
           dateInputDebugElement.nativeElement.value = '01/02/201';
           dateInputDebugElement.nativeElement.dispatchEvent(new Event('change'));
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           expect(fixture.componentInstance.date).toBe(null);
           expect(dateInputDebugElement.nativeElement.value).toBe('01/02/201');
@@ -766,15 +767,15 @@ describe('Datepicker', () => {
 
         it('updates the HTML input with value from clrDate input', () => {
           expect(fixture.componentInstance.date).toBeUndefined();
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(dateInputDebugElement.nativeElement.value).toBe('');
 
           fixture.componentInstance.date = new Date(2019, 2, 1);
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(dateInputDebugElement.nativeElement.value).toBe('03/01/2019');
 
           fixture.componentInstance.date = null;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(dateInputDebugElement.nativeElement.value).toBe('');
         });
       });

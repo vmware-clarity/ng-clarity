@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, NgModule } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { AppfxTranslateModule } from './translate.module';
 import { TranslatePipe } from './translate.pipe';
@@ -85,7 +86,7 @@ describe('Pipe: Translate', () => {
       });
 
       component1 = testbed.createComponent(Test1Component);
-      component1.detectChanges();
+      renderFixture(component1);
     });
 
     it('has no translations outside the component', inject([TranslatePipe], (pipe: TranslatePipe) => {
@@ -106,7 +107,7 @@ describe('Pipe: Translate', () => {
       });
 
       component2 = testbed.createComponent(Test2Component);
-      component2.detectChanges();
+      renderFixture(component2);
     });
 
     it('has no translations outside the component', inject([TranslatePipe], (pipe: TranslatePipe) => {
@@ -128,9 +129,9 @@ describe('Pipe: Translate', () => {
       });
 
       component1 = testbed.createComponent(Test1Component);
-      component1.detectChanges();
+      renderFixture(component1);
       component2 = testbed.createComponent(Test2Component);
-      component2.detectChanges();
+      renderFixture(component2);
     });
 
     it('has no translations outside the components', inject([TranslatePipe], (pipe: TranslatePipe) => {
@@ -148,8 +149,11 @@ describe('Pipe: Translate', () => {
     describe('and the locale is changed', () => {
       beforeEach(inject([AppfxTranslateService], (service: AppfxTranslateService) => {
         service.locale = AppfxLocale.Es;
-        component1.detectChanges();
-        component2.detectChanges();
+        // Both independent fixtures consume the shared locale. Notify both before a global test tick checks either.
+        component1.changeDetectorRef.markForCheck();
+        component2.changeDetectorRef.markForCheck();
+        renderFixture(component1);
+        renderFixture(component2);
       }));
 
       it('has no translations outside the components', inject([TranslatePipe], (pipe: TranslatePipe) => {

@@ -10,6 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { delay } from '@clr/angular/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrAccordion } from './accordion';
 import { ClrAccordionPanel } from './accordion-panel';
@@ -48,7 +49,7 @@ describe('ClrAccordion', () => {
       });
 
       fixture = TestBed.createComponent(ClrAccordion);
-      fixture.detectChanges();
+      renderFixture(fixture);
       accordion = fixture.componentInstance;
       accordionService = fixture.debugElement.injector.get(AccordionService);
     });
@@ -71,7 +72,7 @@ describe('ClrAccordion', () => {
       });
 
       fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
       testComponent = fixture.componentInstance;
     });
 
@@ -81,7 +82,7 @@ describe('ClrAccordion', () => {
       expect(accordionInstance.multiPanel).toBe(false);
 
       testComponent.multi = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(testComponent.multi).toBe(true);
       expect(accordionInstance.multiPanel).toBe(true);
@@ -102,7 +103,7 @@ describe('ClrAccordion', () => {
       });
 
       fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
       testComponent = fixture.componentInstance;
       accordionInstance = fixture.debugElement.query(By.directive(ClrAccordion)).componentInstance;
       accordionService = fixture.debugElement.query(By.directive(ClrAccordion)).injector.get(AccordionService);
@@ -119,11 +120,11 @@ describe('ClrAccordion', () => {
       expect(accordionInstance.multiPanel).toBe(false);
 
       panels[0].nativeElement.querySelector('button').click();
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(fixture.nativeElement.textContent.trim()).toContain('panel 1');
 
       panels[1].nativeElement.querySelector('button').click();
-      fixture.detectChanges();
+      renderFixture(fixture);
       await delay(200); // delay for animation
 
       expect(fixture.nativeElement.textContent.trim()).toContain('panel 2');
@@ -132,11 +133,11 @@ describe('ClrAccordion', () => {
 
     it('should allow multiple open panels when in multi panel mode', () => {
       testComponent.multi = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       accordionPanels[0].nativeElement.querySelector('button').click();
       accordionPanels[1].nativeElement.querySelector('button').click();
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(fixture.nativeElement.textContent.trim()).toContain('panel 1');
       expect(fixture.nativeElement.textContent.trim()).toContain('panel 2');
@@ -150,7 +151,7 @@ describe('ClrAccordion', () => {
         .injector.get(AccordionService);
       vi.spyOn(localAccordionService, 'setStrategy').mockImplementation(() => undefined);
 
-      localFixture.detectChanges();
+      renderFixture(localFixture);
 
       expect(localAccordionService.setStrategy).toHaveBeenCalledTimes(1);
     });
@@ -159,7 +160,7 @@ describe('ClrAccordion', () => {
       vi.spyOn(accordionService, 'setStrategy').mockImplementation(() => undefined);
 
       testComponent.multi = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(accordionService.setStrategy).toHaveBeenCalledTimes(1);
     });
@@ -167,7 +168,7 @@ describe('ClrAccordion', () => {
     it('should reorder panels when panel content children has changed', async () => {
       vi.spyOn(accordionService, 'updatePanelOrder').mockImplementation(() => undefined);
       testComponent.showSecondStep = false;
-      fixture.detectChanges();
+      renderFixture(fixture);
       await delay();
       expect(accordionService.updatePanelOrder).toHaveBeenCalled();
       expect(fixture.debugElement.queryAll(By.directive(ClrAccordionPanel)).length).toBe(2);

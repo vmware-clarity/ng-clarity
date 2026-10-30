@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { WrappedCell } from './wrapped-cell';
 
@@ -36,7 +37,7 @@ describe('Datagrid', () => {
         TestBed.configureTestingModule({ declarations: [WrappedCell, WrappedCellTest] });
         testContext.fixture = TestBed.createComponent(WrappedCellTest);
         testContext.wrapper = testContext.fixture.componentInstance.wrapper;
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
       });
 
       it('should have a cellView', () => {

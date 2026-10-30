@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrLayout } from './layout';
 import { ClrFormLayout, LayoutService } from './providers/layout.service';
@@ -34,7 +35,7 @@ describe('Forms common utilities', () => {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.layout).toEqual(ClrFormLayout.VERTICAL);
     });
@@ -46,7 +47,7 @@ describe('Forms common utilities', () => {
       const component = fixture.debugElement.query(By.directive(ClrLayout));
       const directive = component.injector.get(ClrLayout);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(directive.layout).toEqual(ClrFormLayout.VERTICAL);
       expect(service.layout).toEqual(ClrFormLayout.VERTICAL);
@@ -57,7 +58,7 @@ describe('Forms common utilities', () => {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.layout).toEqual(ClrFormLayout.HORIZONTAL);
     });
@@ -67,7 +68,7 @@ describe('Forms common utilities', () => {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.labelSize).toEqual(2);
     });
@@ -77,7 +78,7 @@ describe('Forms common utilities', () => {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.labelSizeIsValid(service.minLabelSize)).toBe(true);
       expect(service.labelSizeIsValid(Math.ceil((service.minLabelSize + service.maxLabelSize) / 2))).toBe(true);
@@ -99,7 +100,7 @@ describe('Forms common utilities', () => {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.labelSize).toEqual(2);
     });
@@ -109,7 +110,7 @@ describe('Forms common utilities', () => {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.labelSize).toEqual(2);
     });
@@ -119,7 +120,7 @@ describe('Forms common utilities', () => {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.labelSize).toEqual(2);
     });
@@ -129,7 +130,7 @@ describe('Forms common utilities', () => {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.layout).toEqual(ClrFormLayout.HORIZONTAL);
       expect(service.labelSize).toEqual(2);
@@ -140,7 +141,7 @@ describe('Forms common utilities', () => {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.layout).toEqual(ClrFormLayout.HORIZONTAL);
       expect(service.labelSize).toEqual(2);
@@ -151,7 +152,7 @@ describe('Forms common utilities', () => {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.layout).toEqual(ClrFormLayout.HORIZONTAL);
       expect(service.labelSize).toEqual(2);
@@ -162,7 +163,7 @@ describe('Forms common utilities', () => {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.layout).toEqual(ClrFormLayout.HORIZONTAL);
       expect(service.labelSize).toEqual(2);
@@ -173,7 +174,7 @@ describe('Forms common utilities', () => {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.layout).toEqual(ClrFormLayout.HORIZONTAL);
       expect(service.labelSize).toEqual(2);
@@ -185,7 +186,7 @@ describe('Forms common utilities', () => {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.layout).toEqual(ClrFormLayout.COMPACT);
       expect(service.labelSize).toEqual(2);
@@ -196,7 +197,7 @@ describe('Forms common utilities', () => {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.layout).toEqual(ClrFormLayout.COMPACT);
       expect(service.labelSize).toEqual(2);
@@ -207,7 +208,7 @@ describe('Forms common utilities', () => {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.layout).toEqual(ClrFormLayout.COMPACT);
       expect(service.labelSize).toEqual(2);
@@ -218,7 +219,7 @@ describe('Forms common utilities', () => {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.layout).toEqual(ClrFormLayout.COMPACT);
       expect(service.labelSize).toEqual(2);
@@ -229,7 +230,7 @@ describe('Forms common utilities', () => {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.layout).toEqual(ClrFormLayout.COMPACT);
       expect(service.labelSize).toEqual(2);

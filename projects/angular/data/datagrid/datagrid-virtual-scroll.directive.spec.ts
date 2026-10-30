@@ -18,6 +18,7 @@ import {
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { delay, expectActiveElementToBe } from '@clr/angular/testing';
 import { Keys } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
@@ -171,23 +172,23 @@ describe('Datagrid', () => {
     describe('ClrDatagrid virtual scroller', function () {
       async function finishInit(fixture: ComponentFixture<any>) {
         // On the first cycle we render and measure the viewport.
-        fixture.detectChanges();
+        renderFixture(fixture);
         await delay();
 
         // On the second cycle we render the items.
-        fixture.detectChanges();
+        renderFixture(fixture);
         await delay();
 
         // Flush the initial fake scroll event.
         // animationFrameScheduler.flush();
         await delay();
-        fixture.detectChanges();
+        renderFixture(fixture);
       }
       async function waitRequiredCycles(fixture: ComponentFixture<any>) {
         await delay(500);
         await fixture.whenStable();
         await fixture.whenRenderingDone();
-        fixture.detectChanges();
+        renderFixture(fixture);
       }
 
       describe('Typescript API', function () {
@@ -305,7 +306,7 @@ describe('Datagrid', () => {
         });
 
         it('allows to manually force a refresh of displayed items when data mutates', function () {
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           expect(instance.virtualScroll.items.all.length).toBe(1000);
 
@@ -327,36 +328,36 @@ describe('Datagrid', () => {
 
           expect(instance.virtualScroll.totalItems).toBeUndefined();
           instance.totalRows = 5000;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(instance.virtualScroll.totalItems).toBe(5000);
 
           expect(instance.virtualScroll.persistItems).toBe(true);
           instance.persistItems = false;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(instance.virtualScroll.persistItems).toBe(false);
 
           fixture.destroy();
         });
 
         it('Spy on Scroll to index', async () => {
-          fixture.detectChanges();
+          renderFixture(fixture);
           const spyVirtualScroll = vi
             .spyOn(instance.virtualScroll, 'scrollToIndex')
             .mockImplementation(() => undefined);
 
           instance.virtualScroll.scrollToIndex(300);
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(spyVirtualScroll).toHaveBeenCalledWith(300);
 
           instance.virtualScroll.scrollToIndex(0);
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(spyVirtualScroll).toHaveBeenCalledWith(0);
 
           fixture.destroy();
         });
 
         it('Spy on update data range', async () => {
-          fixture.detectChanges();
+          renderFixture(fixture);
           const spyVirtualScroll = vi
             .spyOn(instance.virtualScroll, 'updateDataRange')
             .mockImplementation(() => undefined);
@@ -368,7 +369,7 @@ describe('Datagrid', () => {
           };
 
           instance.updateDataRange(dataRange);
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(spyVirtualScroll).toHaveBeenCalledWith(dataRange.skip, dataRange.data);
 
           dataRange = {
@@ -378,7 +379,7 @@ describe('Datagrid', () => {
           };
 
           instance.updateDataRange(dataRange);
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(spyVirtualScroll).toHaveBeenCalledWith(dataRange.skip, dataRange.data);
 
           fixture.destroy();

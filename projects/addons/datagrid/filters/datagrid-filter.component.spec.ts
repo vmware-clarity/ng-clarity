@@ -8,6 +8,7 @@
 import { TestBed } from '@angular/core/testing';
 import { ClrInputModule } from '@clr/angular/forms/input';
 import { ClrPopoverService } from '@clr/angular/popover/common';
+import { renderFixture } from '@clr/angular/utils/testing';
 import { Observable, of } from 'rxjs';
 
 import { DatagridFilterComponent } from './datagrid-filter.component';
@@ -64,7 +65,7 @@ describe('DatagridFilterComponent', () => {
 
   it('should set the initial input value to be equal to the default filter value', () => {
     testContext.fixture.componentInstance.filterValue = 'hdd';
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
 
     expect(testContext.fixture.componentInstance.value).toEqual('hdd');
     expect(testContext.fixture.componentInstance.isActive()).toBeTruthy();
@@ -162,7 +163,7 @@ describe('DatagridFilterComponent', () => {
 
     input.dispatchEvent(generateKeyUpEvent('abcd'));
 
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
 
     expect(changesFlag).toBe(true);
     expect(testContext.fixture.componentInstance.filterValueChange.emit).toHaveBeenCalledWith('abcd');
@@ -177,7 +178,7 @@ describe('DatagridFilterComponent', () => {
     expect(input).toBeTruthy();
 
     testContext.fixture.componentInstance.ngAfterViewInit();
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
 
     await vi.advanceTimersByTimeAsync(0);
 

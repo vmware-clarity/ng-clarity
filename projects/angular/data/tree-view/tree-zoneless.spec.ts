@@ -10,7 +10,6 @@ import {
   Component,
   NgZone,
   provideCheckNoChangesConfig,
-  provideZoneChangeDetection,
   provideZonelessChangeDetection,
   signal,
 } from '@angular/core';
@@ -57,77 +56,72 @@ class TreeHost {
   };
 }
 
-for (const zoneless of [true, false]) {
-  describe(`recursive tree in a ${zoneless ? 'zoneless' : 'zone-based'} OnPush host`, () => {
-    let fixture: ComponentFixture<TreeHost>;
-    let host: TreeHost;
+describe('recursive tree in a zoneless OnPush host', () => {
+  let fixture: ComponentFixture<TreeHost>;
+  let host: TreeHost;
 
-    beforeEach(async () => {
-      TestBed.configureTestingModule({
-        declarations: [TreeHost],
-        imports: [ClrTreeViewModule],
-        providers: [
-          zoneless ? provideZonelessChangeDetection() : provideZoneChangeDetection(),
-          provideCheckNoChangesConfig({ exhaustive: true }),
-        ],
-      });
-      fixture = TestBed.createComponent(TreeHost);
-      host = fixture.componentInstance;
-      fixture.autoDetectChanges();
-      await fixture.whenStable();
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      declarations: [TreeHost],
+      imports: [ClrTreeViewModule],
+      providers: [provideZonelessChangeDetection(), provideCheckNoChangesConfig({ exhaustive: true })],
     });
-
-    afterEach(() => fixture.destroy());
-
-    async function open() {
-      fixture.nativeElement.querySelector('.clr-treenode-caret').click();
-      await fixture.whenStable();
-      expect(host.requests).toBe(1);
-      expect(fixture.nativeElement.querySelector('.clr-treenode-spinner')).not.toBeNull();
-    }
-
-    async function completeOutsideAngular() {
-      // A native callback must notify Angular by itself, even when Zone.js is available.
-      await TestBed.inject(NgZone).runOutsideAngular(
-        () =>
-          new Promise<void>(resolve =>
-            setTimeout(() => {
-              host.completeRequest();
-              // Let the Promise reaction and debounced loading notification settle.
-              setTimeout(resolve);
-            })
-          )
-      );
-      await fixture.whenStable();
-    }
-
-    for (const kind of ['observable', 'promise'] as const) {
-      it(`renders ${kind} children and clears loading after a native callback`, async () => {
-        host.kind = kind;
-        await open();
-        await completeOutsideAngular();
-        expect(fixture.nativeElement.querySelectorAll('clr-tree-node').length).toBe(2);
-        expect(fixture.nativeElement.textContent).toContain('child');
-        expect(fixture.nativeElement.querySelector('.clr-treenode-spinner')).toBeNull();
-      });
-    }
-
-    it('unsubscribes pending observable work when the tree is destroyed', async () => {
-      await open();
-      host.show.set(false);
-      await fixture.whenStable();
-      expect(host.cancellations).toBe(1);
-      await completeOutsideAngular();
-      expect(fixture.nativeElement.querySelector('clr-tree')).toBeNull();
-    });
-
-    it('ignores promise completion after the tree is destroyed', async () => {
-      host.kind = 'promise';
-      await open();
-      host.show.set(false);
-      await fixture.whenStable();
-      await completeOutsideAngular();
-      expect(fixture.nativeElement.querySelector('clr-tree')).toBeNull();
-    });
+    fixture = TestBed.createComponent(TreeHost);
+    host = fixture.componentInstance;
+    fixture.autoDetectChanges();
+    await fixture.whenStable();
   });
-}
+
+  afterEach(() => fixture.destroy());
+
+  async function open() {
+    fixture.nativeElement.querySelector('.clr-treenode-caret').click();
+    await fixture.whenStable();
+    expect(host.requests).toBe(1);
+    expect(fixture.nativeElement.querySelector('.clr-treenode-spinner')).not.toBeNull();
+  }
+
+  async function completeOutsideAngular() {
+    // A native callback must notify Angular by itself, even when Zone.js is available.
+    await TestBed.inject(NgZone).runOutsideAngular(
+      () =>
+        new Promise<void>(resolve =>
+          setTimeout(() => {
+            host.completeRequest();
+            // Let the Promise reaction and debounced loading notification settle.
+            setTimeout(resolve);
+          })
+        )
+    );
+    await fixture.whenStable();
+  }
+
+  for (const kind of ['observable', 'promise'] as const) {
+    it(`renders ${kind} children and clears loading after a native callback`, async () => {
+      host.kind = kind;
+      await open();
+      await completeOutsideAngular();
+      expect(fixture.nativeElement.querySelectorAll('clr-tree-node').length).toBe(2);
+      expect(fixture.nativeElement.textContent).toContain('child');
+      expect(fixture.nativeElement.querySelector('.clr-treenode-spinner')).toBeNull();
+    });
+  }
+
+  it('unsubscribes pending observable work when the tree is destroyed', async () => {
+    await open();
+    host.show.set(false);
+    await fixture.whenStable();
+    expect(host.cancellations).toBe(1);
+    await completeOutsideAngular();
+    expect(fixture.nativeElement.querySelector('clr-tree')).toBeNull();
+  });
+
+  it('ignores promise completion after the tree is destroyed', async () => {
+    host.kind = 'promise';
+    await open();
+    host.show.set(false);
+    await fixture.whenStable();
+    await completeOutsideAngular();
+    expect(fixture.nativeElement.querySelector('clr-tree')).toBeNull();
+  });
+});

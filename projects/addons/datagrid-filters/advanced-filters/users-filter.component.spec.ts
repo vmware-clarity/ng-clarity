@@ -12,6 +12,7 @@ import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClrCheckboxModule, ClrInputModule, ClrRadioModule, ClrSelectModule } from '@clr/angular/forms';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
+import { renderFixture } from '@clr/angular/utils/testing';
 import { of, throwError } from 'rxjs';
 
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
@@ -78,8 +79,8 @@ describe('UsersFilterComponent', () => {
     vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
     fixture = TestBed.createComponent(UsersFilterComponent);
     component = fixture.componentInstance;
-    component.filterProperty = mockFilterProperty;
-    fixture.detectChanges(); // triggers ngOnInit
+    fixture.componentRef.setInput('filterProperty', mockFilterProperty);
+    renderFixture(fixture); // triggers ngOnInit
     await vi.advanceTimersByTimeAsync(200);
   });
 
@@ -110,7 +111,7 @@ describe('UsersFilterComponent', () => {
       existingFilter.criteria = [p1];
 
       // Trigger ngOnChanges
-      component.propertyFilter = existingFilter;
+      fixture.componentRef.setInput('propertyFilter', existingFilter);
       component.ngOnChanges({
         propertyFilter: new SimpleChange(null, existingFilter, false),
       });
@@ -118,7 +119,7 @@ describe('UsersFilterComponent', () => {
       // Add a new user to the selection
       component.optionsFormArray.at(2)?.setValue(true);
       component.onOptionChange(2);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       const spy = vi.spyOn(component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
       component.onApplyButtonClick();
@@ -149,7 +150,7 @@ describe('UsersFilterComponent', () => {
       existingFilter.criteria = [p1, p2];
 
       // Trigger ngOnChanges
-      component.propertyFilter = existingFilter;
+      fixture.componentRef.setInput('propertyFilter', existingFilter);
       component.ngOnChanges({
         propertyFilter: new SimpleChange(null, existingFilter, false),
       });
@@ -158,7 +159,7 @@ describe('UsersFilterComponent', () => {
       component.optionsFormArray.at(2)?.setValue(true);
       component.onOptionChange(2);
       component.usersSelectionForm.get('userOperator')?.setValue(ComparisonOperator.DoesNotEqual);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       const spy = vi.spyOn(component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
       component.onApplyButtonClick();
@@ -188,7 +189,7 @@ describe('UsersFilterComponent', () => {
 
       // Manually trigger ngOnChanges behavior or re-create component logic
       // Since we already ran detectChanges, let's simulate input change
-      component.propertyFilter = existingFilter;
+      fixture.componentRef.setInput('propertyFilter', existingFilter);
       component.ngOnChanges({
         propertyFilter: new SimpleChange(null, existingFilter, false),
       });

@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, NgModule } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 import type { Mock } from 'vitest';
 
 import { AppfxTranslateModule } from './translate.module';
@@ -107,7 +108,7 @@ describe('Service: Translate', () => {
       });
 
       component1 = testbed.createComponent(Test1Component);
-      component1.detectChanges();
+      renderFixture(component1);
     });
 
     it('has no translations outside the component', inject(
@@ -131,7 +132,7 @@ describe('Service: Translate', () => {
       });
 
       component2 = testbed.createComponent(Test2Component);
-      component2.detectChanges();
+      renderFixture(component2);
     });
 
     it('has no translations outside the component', inject(
@@ -156,9 +157,9 @@ describe('Service: Translate', () => {
       });
 
       component1 = testbed.createComponent(Test1Component);
-      component1.detectChanges();
+      renderFixture(component1);
       component2 = testbed.createComponent(Test2Component);
-      component2.detectChanges();
+      renderFixture(component2);
     });
 
     it('has no translations outside the components', inject(

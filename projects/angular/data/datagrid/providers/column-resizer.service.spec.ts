@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DomAdapter } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ColumnResizerService } from './column-resizer.service';
 import { DatagridRenderOrganizer } from '../render/render-organizer';
@@ -34,7 +35,7 @@ describe('Datagrid', () => {
         TestBed.configureTestingModule({ declarations: [TestComponent] });
 
         fixture = TestBed.createComponent(TestComponent);
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         columnHostEl = fixture.nativeElement;
         columnResizerService = fixture.debugElement.injector.get(ColumnResizerService);

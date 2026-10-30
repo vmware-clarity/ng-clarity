@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrIcon } from '../icon.component';
 import { renderIcon } from '../icon.renderer';
@@ -127,7 +128,7 @@ describe('Icon classname helpers: ', () => {
         declarations: [TestComponent],
       });
       fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
       component = fixture.componentInstance.icon;
       nativeElement = component.el.nativeElement;
     });
@@ -135,9 +136,9 @@ describe('Icon classname helpers: ', () => {
     it('should update size styles if passed a numeric string', async () => {
       const expectedSize = 'calc((15 / var(--cds-global-base)) * 1rem)';
       updateIconSizeStyle(nativeElement, '81 fit');
-      fixture.detectChanges();
+      renderFixture(fixture);
       updateIconSizeStyle(nativeElement, '15');
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(nativeElement.style.width).toEqual(expectedSize);
       expect(nativeElement.style.minWidth).toEqual(expectedSize);
       expect(nativeElement.style.height).toEqual(expectedSize);
@@ -146,9 +147,9 @@ describe('Icon classname helpers: ', () => {
 
     it('should update minimum size styles if passed a numeric string (fit sized)', async () => {
       updateIconSizeStyle(nativeElement, '15');
-      fixture.detectChanges();
+      renderFixture(fixture);
       updateIconSizeStyle(nativeElement, '81 fit');
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(nativeElement.style.width).toEqual('auto');
       expect(nativeElement.style.height).toEqual('auto');
       expect(nativeElement.style.minWidth).toEqual('calc((81 / var(--cds-global-base)) * 1rem)');
@@ -157,11 +158,11 @@ describe('Icon classname helpers: ', () => {
 
     it('should remove size styles if passed a t-shirt size', async () => {
       component.size = '30';
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(nativeElement.style.height).toEqual('calc((30 / var(--cds-global-base)) * 1rem)');
       expect(nativeElement.style.width).toEqual('calc((30 / var(--cds-global-base)) * 1rem)');
       updateIconSizeStyle(nativeElement, 'xl');
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(nativeElement.style.width).toEqual('');
       expect(nativeElement.style.minWidth).toEqual('');
       expect(nativeElement.style.height).toEqual('');
@@ -170,11 +171,11 @@ describe('Icon classname helpers: ', () => {
 
     it('should remove size styles if passed a t-shirt size (fit sized)', async () => {
       component.size = '30';
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(nativeElement.style.height).toEqual('calc((30 / var(--cds-global-base)) * 1rem)');
       expect(nativeElement.style.width).toEqual('calc((30 / var(--cds-global-base)) * 1rem)');
       updateIconSizeStyle(nativeElement, 'xl fit');
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(nativeElement.style.width).toEqual('');
       expect(nativeElement.style.minWidth).toEqual('');
       expect(nativeElement.style.height).toEqual('');
@@ -183,20 +184,20 @@ describe('Icon classname helpers: ', () => {
 
     it('should remove size styles if passed a nil value', async () => {
       updateIconSizeStyle(nativeElement, 'lg fit');
-      fixture.detectChanges();
+      renderFixture(fixture);
       updateIconSizeStyle(nativeElement, null);
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(nativeElement.style.width).toEqual('');
       expect(nativeElement.style.height).toEqual('');
       updateIconSizeStyle(nativeElement, '48');
-      fixture.detectChanges();
+      renderFixture(fixture);
       const expectedSize = 'calc((48 / var(--cds-global-base)) * 1rem)';
       expect(nativeElement.style.width).toEqual(expectedSize);
       expect(nativeElement.style.minWidth).toEqual(expectedSize);
       expect(nativeElement.style.height).toEqual(expectedSize);
       expect(nativeElement.style.minHeight).toEqual(expectedSize);
       updateIconSizeStyle(nativeElement, void 0);
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(nativeElement.style.width).toEqual('');
       expect(nativeElement.style.minWidth).toEqual('');
       expect(nativeElement.style.height).toEqual('');
@@ -205,37 +206,37 @@ describe('Icon classname helpers: ', () => {
 
     it('should remove size styles if passed an empty string value', async () => {
       updateIconSizeStyle(nativeElement, 'xl');
-      fixture.detectChanges();
+      renderFixture(fixture);
       updateIconSizeStyle(nativeElement, '');
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(nativeElement.style.width).toEqual('');
       expect(nativeElement.style.height).toEqual('');
       updateIconSizeStyle(nativeElement, '48 fit');
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(nativeElement.style.width).toEqual('auto');
       expect(nativeElement.style.minWidth).toEqual('calc((48 / var(--cds-global-base)) * 1rem)');
       expect(nativeElement.style.height).toEqual('auto');
       expect(nativeElement.style.minHeight).toEqual('calc((48 / var(--cds-global-base)) * 1rem)');
       updateIconSizeStyle(nativeElement, '');
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(nativeElement.style.width).toEqual('');
       expect(nativeElement.style.height).toEqual('');
     });
 
     it('should do nothing if passed a string that is not a t-shirt size and is non-numeric', async () => {
       updateIconSizeStyle(nativeElement, 'sm');
-      fixture.detectChanges();
+      renderFixture(fixture);
       updateIconSizeStyle(nativeElement, 'jabberwocky');
-      fixture.detectChanges();
+      renderFixture(fixture);
       updateIconSizeStyle(nativeElement, '24');
-      fixture.detectChanges();
+      renderFixture(fixture);
       const expectedSize = 'calc((24 / var(--cds-global-base)) * 1rem)';
       expect(nativeElement.style.width).toEqual(expectedSize);
       expect(nativeElement.style.minWidth).toEqual(expectedSize);
       expect(nativeElement.style.height).toEqual(expectedSize);
       expect(nativeElement.style.minHeight).toEqual(expectedSize);
       updateIconSizeStyle(nativeElement, '4d9rs');
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(nativeElement.style.width).toEqual(expectedSize);
       expect(nativeElement.style.minWidth).toEqual(expectedSize);
       expect(nativeElement.style.height).toEqual(expectedSize);

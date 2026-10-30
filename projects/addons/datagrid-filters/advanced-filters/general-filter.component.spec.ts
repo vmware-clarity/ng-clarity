@@ -10,6 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClrInputModule, ClrRadioModule, ClrSelectModule } from '@clr/angular/forms';
 import { ClrIcon } from '@clr/angular/icon';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
 import { FilterFormComponent } from './filter-form.component';
@@ -124,8 +125,8 @@ describe('GeneralFilterComponent', () => {
   });
   describe('in normal mode with string property', () => {
     beforeEach(() => {
-      testContext.component.filterProperty = stringProperty;
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput('filterProperty', stringProperty);
+      renderFixture(testContext.fixture);
     });
     it(isInitializedExpectation, () => {
       expect(testContext.component).toBeTruthy();
@@ -145,7 +146,7 @@ describe('GeneralFilterComponent', () => {
       expect(cancelButton).toBeTruthy();
 
       cancelButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(1);
       expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith();
     });
@@ -164,7 +165,7 @@ describe('GeneralFilterComponent', () => {
 
       primaryOperatorSelect.value = primaryOperatorSelect.options[0].value;
       primaryOperatorSelect.dispatchEvent(new Event('change'));
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component.generalFilterForm.controls['primaryOperator'].value).toEqual(
         ComparisonOperator.Equals
       );
@@ -173,13 +174,13 @@ describe('GeneralFilterComponent', () => {
         testContext.fixture.debugElement.nativeElement.querySelector(primaryValueSelector);
       primaryValueInput.value = 'vm 1';
       primaryValueInput.dispatchEvent(new Event('input'));
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component.generalFilterForm.controls['primaryValue'].value).toEqual('vm 1');
       expect(submitButton.disabled).toBeFalsy();
       expect(testContext.component.generalFilterForm.valid).toBeTruthy();
 
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(1);
       expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(propertyFilter1);
     });
@@ -194,7 +195,7 @@ describe('GeneralFilterComponent', () => {
       );
 
       expect(testContext.component.comparisonOperators).toEqual(comparisonOperators);
-      testContext.component.filterProperty = testStringProperty;
+      testContext.fixture.componentRef.setInput('filterProperty', testStringProperty);
       testContext.component.ngOnChanges();
       expect(testContext.component.comparisonOperators).toEqual(testComparisonOperators);
     });
@@ -202,8 +203,8 @@ describe('GeneralFilterComponent', () => {
   describe('in normal mode with numeric property', () => {
     beforeEach(() => {
       numericProperty.unit = Unit.Byte;
-      testContext.component.filterProperty = numericProperty;
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput('filterProperty', numericProperty);
+      renderFixture(testContext.fixture);
     });
     it(isInitializedExpectation, () => {
       expect(testContext.component.comparisonOperators).toEqual(numericOperators);
@@ -352,7 +353,7 @@ describe('GeneralFilterComponent', () => {
 
       primaryOperatorSelect.value = primaryOperatorSelect.options[2].value;
       primaryOperatorSelect.dispatchEvent(new Event('change'));
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component.generalFilterForm.controls['primaryOperator'].value).toEqual(
         ComparisonOperator.GreaterThan
       );
@@ -361,20 +362,20 @@ describe('GeneralFilterComponent', () => {
         testContext.fixture.debugElement.nativeElement.querySelector(primaryValueSelector);
       primaryValueInput.value = 'text';
       primaryValueInput.dispatchEvent(new Event('input'));
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component.generalFilterForm.controls['primaryValue'].value).toEqual('text');
       expect(submitButton.disabled).toBeTruthy();
       expect(testContext.component.generalFilterForm.valid).toBeFalsy();
 
       primaryValueInput.value = '500';
       primaryValueInput.dispatchEvent(new Event('input'));
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component.generalFilterForm.controls['primaryValue'].value).toEqual('500');
       expect(submitButton.disabled).toBeFalsy();
       expect(testContext.component.generalFilterForm.valid).toBeTruthy();
 
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(1);
       expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(numericPropertyFilter1);
     });
@@ -385,12 +386,12 @@ describe('GeneralFilterComponent', () => {
         testContext.fixture.debugElement.nativeElement.querySelector(primaryValueSelector);
       primaryValueInput.value = '100';
       primaryValueInput.dispatchEvent(new Event('input'));
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       testContext.component.filterProperty.unit = Unit.Byte;
       testContext.component.ngOnChanges();
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual('100');
 
       const primaryUnitSelect: HTMLSelectElement =
@@ -398,273 +399,273 @@ describe('GeneralFilterComponent', () => {
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual(102400);
 
       primaryUnitSelect.value = primaryUnitSelect.options[2].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual(104857600);
 
       primaryUnitSelect.value = primaryUnitSelect.options[3].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual(107374182400);
 
       primaryUnitSelect.value = primaryUnitSelect.options[4].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual(109951162777600);
 
       testContext.component.filterProperty.unit = Unit.HZ;
       testContext.component.ngOnChanges();
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual(100000);
 
       primaryUnitSelect.value = primaryUnitSelect.options[2].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual(100000000);
 
       primaryUnitSelect.value = primaryUnitSelect.options[3].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual(100000000000);
 
       testContext.component.filterProperty.unit = Unit.BytePS;
       testContext.component.ngOnChanges();
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual(100000);
 
       primaryUnitSelect.value = primaryUnitSelect.options[2].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual(100000000);
 
       primaryUnitSelect.value = primaryUnitSelect.options[3].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual(100000000000);
 
       testContext.component.filterProperty.unit = Unit.KB;
       testContext.component.ngOnChanges();
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual(102400);
 
       primaryUnitSelect.value = primaryUnitSelect.options[2].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual(104857600);
 
       primaryUnitSelect.value = primaryUnitSelect.options[3].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual(107374182400);
 
       testContext.component.filterProperty.unit = Unit.MB;
       testContext.component.ngOnChanges();
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual(102400);
 
       primaryUnitSelect.value = primaryUnitSelect.options[2].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual(104857600);
 
       testContext.component.filterProperty.unit = Unit.GB;
       testContext.component.ngOnChanges();
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual(102400);
 
       testContext.component.filterProperty.unit = Unit.TB;
       testContext.component.ngOnChanges();
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual('100');
 
       testContext.component.filterProperty.unit = Unit.KHZ;
       testContext.component.ngOnChanges();
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual(100000);
 
       primaryUnitSelect.value = primaryUnitSelect.options[2].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual(100000000);
 
       testContext.component.filterProperty.unit = Unit.MHZ;
       testContext.component.ngOnChanges();
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual(100000);
 
       testContext.component.filterProperty.unit = Unit.GHZ;
       testContext.component.ngOnChanges();
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual('100');
 
       testContext.component.filterProperty.unit = Unit.KBytePS;
       testContext.component.ngOnChanges();
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual(100000);
 
       primaryUnitSelect.value = primaryUnitSelect.options[2].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual(100000000);
 
       testContext.component.filterProperty.unit = Unit.MBytePS;
       testContext.component.ngOnChanges();
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual(100000);
 
       testContext.component.filterProperty.unit = Unit.GBytePS;
       testContext.component.ngOnChanges();
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual('100');
 
       testContext.component.filterProperty.unit = Unit.BitPS;
       testContext.component.ngOnChanges();
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual(100000);
 
       primaryUnitSelect.value = primaryUnitSelect.options[2].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual(100000000);
 
       primaryUnitSelect.value = primaryUnitSelect.options[3].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual(100000000000);
 
       testContext.component.filterProperty.unit = Unit.KBitPS;
       testContext.component.ngOnChanges();
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual(100000);
 
       primaryUnitSelect.value = primaryUnitSelect.options[2].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual(100000000);
 
       testContext.component.filterProperty.unit = Unit.MBitPS;
       testContext.component.ngOnChanges();
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual(100000);
 
       testContext.component.filterProperty.unit = Unit.GBitPS;
       testContext.component.ngOnChanges();
       submitButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component['selectedFilterCriteria'].criteria[0].value).toEqual('100');
     });
   });
   describe('in edit mode with string property', () => {
     beforeEach(() => {
-      testContext.component.filterProperty = stringProperty;
-      testContext.component.propertyFilter = propertyFilter2;
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput('filterProperty', stringProperty);
+      testContext.fixture.componentRef.setInput('propertyFilter', propertyFilter2);
+      renderFixture(testContext.fixture);
     });
     it(isInitializedExpectation, () => {
       expect(testContext.component.generalFilterForm.controls['primaryOperator'].value).toEqual(
@@ -682,9 +683,9 @@ describe('GeneralFilterComponent', () => {
       numericProperty.unit = Unit.MB;
       numericProperty.selectedValue = [800, 700];
       numericProperty.selectedUnit = [Unit.MB, Unit.KB];
-      testContext.component.filterProperty = numericProperty;
-      testContext.component.propertyFilter = numericPropertyFilter2;
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput('filterProperty', numericProperty);
+      testContext.fixture.componentRef.setInput('propertyFilter', numericPropertyFilter2);
+      renderFixture(testContext.fixture);
     });
     it(isInitializedExpectation, () => {
       expect(testContext.component.generalFilterForm.controls['primaryOperator'].value).toEqual(
@@ -711,8 +712,8 @@ describe('GeneralFilterComponent', () => {
         singlePropertyComparisonOperators,
         true
       );
-      testContext.component.filterProperty = singleConditionStringProperty;
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput('filterProperty', singleConditionStringProperty);
+      renderFixture(testContext.fixture);
     });
     it(isInitializedExpectation, () => {
       const addConditionButton = testContext.fixture.debugElement.nativeElement.querySelector(addButtonSelector);
@@ -735,11 +736,11 @@ describe('GeneralFilterComponent', () => {
       );
     });
     it(' which is AND is displayed correctly', () => {
-      testContext.component.filterProperty = singleConditionStringProperty;
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput('filterProperty', singleConditionStringProperty);
+      renderFixture(testContext.fixture);
       const addConditionButton = testContext.fixture.debugElement.nativeElement.querySelector(addButtonSelector);
       addConditionButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       const logicalOperatorLabel = testContext.fixture.debugElement.nativeElement.querySelector(
         'span[data-test-id=logical-operator]'
       );
@@ -750,11 +751,11 @@ describe('GeneralFilterComponent', () => {
 
     it('which is OR is displayed correctly', () => {
       singleConditionStringProperty.logicalOperator = LogicalOperator.Or;
-      testContext.component.filterProperty = singleConditionStringProperty;
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput('filterProperty', singleConditionStringProperty);
+      renderFixture(testContext.fixture);
       const addConditionButton = testContext.fixture.debugElement.nativeElement.querySelector(addButtonSelector);
       addConditionButton.click();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       const logicalOperatorLabel = testContext.fixture.debugElement.nativeElement.querySelector(
         'span[data-test-id=logical-operator]'
       );

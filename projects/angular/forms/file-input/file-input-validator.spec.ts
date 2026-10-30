@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component, Type, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgModel, ReactiveFormsModule } from '@angular/forms';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrFormsModule } from '../forms.module';
 import { clearFiles, selectFiles } from './file-input.helpers';
@@ -121,7 +122,7 @@ function fileInputValidatorSpec(testComponent: Type<TestComponent>) {
     nativeElement = fixture.nativeElement;
     fileInputElement = nativeElement.querySelector('input[type="file"]');
 
-    fixture.detectChanges();
+    renderFixture(fixture);
   });
 
   it('should not show an error when not touched', () => {
@@ -130,179 +131,179 @@ function fileInputValidatorSpec(testComponent: Type<TestComponent>) {
 
   it('should not show an error when valid', () => {
     selectFiles(fileInputElement, [new File(['+'.repeat(100)], 'file.txt')]);
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(nativeElement.querySelector('clr-control-error')?.innerHTML).toBeUndefined();
   });
 
   it('should show the required error when touched and no file is selected', async () => {
     clearFiles(fileInputElement);
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(getErrorMessages(nativeElement)).toBe('Required');
   });
 
   it('should show the file type error when the file is not accepted', () => {
     selectFiles(fileInputElement, [new File(['+'.repeat(100)], 'image.png')]);
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(getErrorMessages(nativeElement)).toBe('File type not accepted');
   });
 
   it('should not show the file type error when `accept` is an empty string', () => {
     fixture.componentInstance.accept = '';
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     selectFiles(fileInputElement, [new File(['+'.repeat(100)], 'image.png')]);
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(nativeElement.querySelector('clr-control-error')).toBeNull();
   });
 
   it('should show the file size error when the file is too small', () => {
     selectFiles(fileInputElement, [new File(['+'.repeat(99)], 'file.txt')]);
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(getErrorMessages(nativeElement)).toBe('File size too small');
   });
 
   it('should show the file size error when the file is too large', () => {
     selectFiles(fileInputElement, [new File(['+'.repeat(501)], 'file.txt')]);
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(getErrorMessages(nativeElement)).toBe('File size too large');
   });
 
   it('accept: ".gz" should accept both readme.gz, archive.tar.gz (suffix match) but reject package.gz.tar', () => {
     fixture.componentInstance.accept = '.gz';
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     selectFiles(fileInputElement, [new File(['+'.repeat(100)], 'readme.gz')]);
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(nativeElement.querySelector('clr-control-error')).toBeNull();
 
     selectFiles(fileInputElement, [new File(['+'.repeat(100)], 'archive.tar.gz')]);
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(nativeElement.querySelector('clr-control-error')).toBeNull();
 
     selectFiles(fileInputElement, [new File(['+'.repeat(100)], 'package.gz.tar')]);
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(getErrorMessages(nativeElement)).toBe('File type not accepted');
   });
 
   it('accept: ".tar.gz" should accept archive.tar.gz and reject readme.gz', () => {
     fixture.componentInstance.accept = '.tar.gz';
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     selectFiles(fileInputElement, [new File(['+'.repeat(100)], 'archive.tar.gz')]);
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(nativeElement.querySelector('clr-control-error')).toBeNull();
 
     selectFiles(fileInputElement, [new File(['+'.repeat(100)], 'readme.gz')]);
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(getErrorMessages(nativeElement)).toBe('File type not accepted');
   });
 
   it('accept: ".gz,.tar.gz" should accept both variants', () => {
     fixture.componentInstance.accept = '.gz,.tar.gz';
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     selectFiles(fileInputElement, [new File(['+'.repeat(100)], 'readme.gz')]);
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(nativeElement.querySelector('clr-control-error')).toBeNull();
 
     selectFiles(fileInputElement, [new File(['+'.repeat(100)], 'archive.tar.gz')]);
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(nativeElement.querySelector('clr-control-error')).toBeNull();
   });
 
   it('accept: "application/gzip" should accept by MIME even if extension differs', () => {
     fixture.componentInstance.accept = 'application/gzip';
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     // Simulate a gzip file with correct MIME
     selectFiles(fileInputElement, [new File(['+'.repeat(100)], 'anything.any', { type: 'application/gzip' })]);
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(nativeElement.querySelector('clr-control-error')).toBeNull();
   });
 
   it('accept: "image/*" should accept image/png and reject text/plain', () => {
     fixture.componentInstance.accept = 'image/*';
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     // valid: image/png
     selectFiles(fileInputElement, [new File(['+'.repeat(100)], 'pic.png', { type: 'image/png' })]);
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(nativeElement.querySelector('clr-control-error')).toBeNull();
 
     // invalid: text/plain
     selectFiles(fileInputElement, [new File(['+'.repeat(100)], 'note.txt', { type: 'text/plain' })]);
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(getErrorMessages(nativeElement)).toBe('File type not accepted');
   });
 
   it('should be case-insensitive for extensions', () => {
     fixture.componentInstance.accept = '.gz,.tar.gz';
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     selectFiles(fileInputElement, [new File(['+'.repeat(100)], 'README.GZ')]);
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(nativeElement.querySelector('clr-control-error')).toBeNull();
 
     selectFiles(fileInputElement, [new File(['+'.repeat(100)], 'ARCHIVE.TAR.GZ')]);
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(nativeElement.querySelector('clr-control-error')).toBeNull();
   });
 
   it('dotfile with no further dot should be treated as no extension', () => {
     fixture.componentInstance.accept = '.txt';
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     // ".gitignore" should NOT match ".txt"
     selectFiles(fileInputElement, [new File(['+'.repeat(100)], '.gitignore')]);
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(getErrorMessages(nativeElement)).toBe('File type not accepted');
   });
 
   it('no extension should be rejected when an extension is required', () => {
     fixture.componentInstance.accept = '.txt';
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     selectFiles(fileInputElement, [new File(['+'.repeat(100)], 'readme')]); // no extension
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(getErrorMessages(nativeElement)).toBe('File type not accepted');
   });
 
   it('multi-part custom: accept ".module.css" should accept style.module.css and reject style.css', () => {
     fixture.componentInstance.accept = '.module.css';
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     selectFiles(fileInputElement, [new File(['+'.repeat(100)], 'style.module.css')]);
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(nativeElement.querySelector('clr-control-error')).toBeNull();
 
     selectFiles(fileInputElement, [new File(['+'.repeat(100)], 'style.css')]);
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(getErrorMessages(nativeElement)).toBe('File type not accepted');
   });
 
   it('MIME exact should override extension when present', () => {
     fixture.componentInstance.accept = '.txt,text/plain';
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     // Wrong extension but correct MIME -> accepted
     selectFiles(fileInputElement, [new File(['+'.repeat(100)], 'data.bin', { type: 'text/plain' })]);
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(nativeElement.querySelector('clr-control-error')).toBeNull();
   });
 
   it('empty MIME type falls back to extension checks only', () => {
     fixture.componentInstance.accept = '.gz';
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     // No MIME provided, should be accepted by extension
     selectFiles(fileInputElement, [new File(['+'.repeat(100)], 'readme.gz', { type: '' })]);
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(nativeElement.querySelector('clr-control-error')).toBeNull();
   });
 }

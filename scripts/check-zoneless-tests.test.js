@@ -7,7 +7,7 @@
 
 const assert = require('node:assert/strict');
 const { test } = require('node:test');
-const { checkSource } = require('./check-zoneless-tests');
+const { checkSource, countForcedChecks, hasZonelessProviders } = require('./check-zoneless-tests');
 
 test('rejects aliased Zone helpers and scheduler overrides', () => {
   const errors = checkSource(
@@ -38,5 +38,67 @@ test('accepts native asynchronous tests and ignores examples in comments', () =>
       'example.spec.ts'
     ),
     []
+  );
+});
+
+test('counts legacy direct and helper renders without counting comments', () => {
+  assert.equal(
+    countForcedChecks(
+      `
+    fixture.detectChanges();
+    context.detectChanges();
+    renderFixture(fixture);
+    // fixture.detectChanges();
+    await fixture.whenStable();
+  `,
+      'example.spec.ts'
+    ),
+    3
+  );
+});
+
+test('rejects dynamic Zone loading, namespace schedulers, and patched event inspection', () => {
+  assert.equal(
+    checkSource(
+      `
+    import * as core from '@angular/core';
+    import('zone.js');
+    require('zone.js/testing');
+    element.eventListeners();
+  `,
+      'example.spec.ts'
+    ).length,
+    4
+  );
+});
+
+test('counts aliases, computed method names and application ticks', () => {
+  assert.equal(
+    countForcedChecks(
+      `
+    import { renderFixture as render } from '@clr/angular/utils/testing';
+    render(fixture);
+    fixture['detectChanges']();
+    appRef.tick();
+    TestBed.tick();
+  `,
+      'example.spec.ts'
+    ),
+    4
+  );
+});
+
+test('requires active exported exhaustive zoneless providers, not comments', () => {
+  const source = `
+    import { provideZonelessChangeDetection, provideCheckNoChangesConfig } from '@angular/core';
+    export default [provideZonelessChangeDetection(), provideCheckNoChangesConfig({ exhaustive: true })];
+  `;
+  assert.equal(hasZonelessProviders(source), true);
+  assert.equal(hasZonelessProviders(source.replace('exhaustive: true', 'exhaustive: false')), false);
+  assert.equal(
+    hasZonelessProviders(
+      '// provideZonelessChangeDetection()\n// provideCheckNoChangesConfig({ exhaustive: true })\nexport default [];'
+    ),
+    false
   );
 });

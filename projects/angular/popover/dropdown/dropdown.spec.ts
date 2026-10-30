@@ -13,6 +13,7 @@ import { ClrModalModule } from '@clr/angular/modal';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { delay, expectActiveElementToBe } from '@clr/angular/testing';
 import { FocusableItem, FocusService } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 import { Subscription } from 'rxjs';
 
 import { ClrDropdown } from './dropdown';
@@ -32,7 +33,7 @@ describe('Dropdown', () => {
         TestBed.configureTestingModule({ imports: [ClrDropdownModule], declarations: [TestComponent] });
 
         fixture = TestBed.createComponent(TestComponent);
-        fixture.detectChanges();
+        renderFixture(fixture);
         compiled = fixture.nativeElement;
       });
 
@@ -61,7 +62,7 @@ describe('Dropdown', () => {
         const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
         dropdownToggle.click();
         // detect the click
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         const dropdownItem: HTMLElement = document.body.querySelector('[clrDropdownItem]');
         expect(dropdownItem.classList.contains('.dropdown-item'));
@@ -73,13 +74,13 @@ describe('Dropdown', () => {
         expect(document.body.querySelector('.dropdown-item')).toBeNull();
         dropdownToggle.click();
         // detect the click
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(document.body.querySelector('.dropdown-item')).not.toBeNull();
 
         // click the dropdown toggle again to close the menu
         dropdownToggle.click();
         // detect the click
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(document.body.querySelector('.dropdown-item')).toBeNull();
       });
 
@@ -87,19 +88,19 @@ describe('Dropdown', () => {
         const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
         dropdownToggle.click();
         // detect the click
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         const nestedToggle: HTMLElement = document.body.querySelector('.nested');
         expect(document.body.textContent.trim()).not.toMatch('Foo');
         nestedToggle.click();
         // detect the click
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(document.body.textContent.trim()).toMatch('Foo');
 
         // click the nested toggle again to close the menu
         nestedToggle.click();
         // detect the click
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(document.body.textContent.trim()).not.toMatch('Foo');
       });
 
@@ -112,7 +113,7 @@ describe('Dropdown', () => {
 
         // click outside the dropdown
         outsideButton.click();
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         // check if the click handler is triggered
         expect(fixture.componentInstance.testCnt).toEqual(1);
@@ -122,13 +123,13 @@ describe('Dropdown', () => {
         // click on the dropdown
         dropdownToggle.click();
         await delay();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(document.body.querySelector('.dropdown-item')).not.toBeNull();
 
         // click outside the dropdown
         outsideButton.click();
         await delay(10);
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         // check if the click handler is triggered
         expect(fixture.componentInstance.testCnt).toEqual(2);
@@ -140,41 +141,41 @@ describe('Dropdown', () => {
       it('supports clrCloseMenuOnItemClick option. Closes the dropdown menu when clrCloseMenuOnItemClick is set to true', async () => {
         const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
         dropdownToggle.click();
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         let dropdownItem: HTMLElement = document.body.querySelector('.dropdown-item');
 
         dropdownItem.click();
         await delay();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(document.body.querySelector('.dropdown-item')).toBeNull();
 
         fixture.componentInstance.menuClosable = false;
         dropdownToggle.click();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(document.body.querySelector('.dropdown-item')).not.toBeNull();
 
         dropdownItem.click();
         await delay();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(dropdownItem).not.toBeNull();
       });
 
       it('closes all dropdown menus when clrCloseMenuOnItemClick is true', async () => {
         const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
         dropdownToggle.click();
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         const nestedToggle: HTMLElement = document.body.querySelector('.nested');
         nestedToggle.click();
 
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         const nestedItem: HTMLElement = document.body.querySelector('.nested-item');
         nestedItem.click();
         await delay();
 
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         const items: HTMLElement = document.body.querySelector('.dropdown-item');
         expect(items).toBeNull();
@@ -183,19 +184,19 @@ describe('Dropdown', () => {
       it('does not close the menu when a disabled item is clicked', async () => {
         const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
         dropdownToggle.click();
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         const disabledDropdownItem: HTMLElement = document.body.querySelector('.dropdown-item.disabled');
         const dropdownItem: HTMLElement = document.body.querySelector('.dropdown-item');
 
         disabledDropdownItem.click();
         await delay();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(document.body.querySelector('.dropdown-item')).not.toBeNull();
 
         dropdownItem.click();
         await delay();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(document.body.querySelector('.dropdown-item')).toBeNull();
       });
 
@@ -204,11 +205,11 @@ describe('Dropdown', () => {
 
         const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
         dropdownToggle.click();
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         const nestedToggle: HTMLElement = document.body.querySelector('.nested');
         nestedToggle.click();
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         subscription = popoverService.openChange.subscribe(() => {
           expect(fixture.componentInstance.customClickHandlerDone).toBe(true);
@@ -217,7 +218,7 @@ describe('Dropdown', () => {
         const nestedItem: HTMLElement = document.body.querySelector('.nested-item');
         nestedItem.click();
         await delay();
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         // Make sure the dropdown correctly closed, otherwise our expect() in the subscription might not have run.
         expect(popoverService.open).toBe(false);
@@ -227,14 +228,14 @@ describe('Dropdown', () => {
         const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
 
         dropdownToggle.click();
-        fixture.detectChanges();
+        renderFixture(fixture);
         await delay();
 
         const dropdownItem: HTMLElement = document.body.querySelector('.dropdown-item');
         expectActiveElementToBe(dropdownItem);
 
         dropdownItem.click();
-        fixture.detectChanges();
+        renderFixture(fixture);
         await delay();
 
         expectActiveElementToBe(dropdownToggle);
@@ -243,19 +244,19 @@ describe('Dropdown', () => {
       it('does not put focus back on the trigger when a dropdown item is clicked if [clrCloseMenuOnItemClick] is false', async () => {
         // set [clrCloseMenuOnItemClick]="false"
         fixture.componentInstance.menuClosable = false;
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
 
         dropdownToggle.click();
-        fixture.detectChanges();
+        renderFixture(fixture);
         await delay();
 
         const dropdownItem: HTMLElement = document.body.querySelector('.dropdown-item');
         expectActiveElementToBe(dropdownItem);
 
         dropdownItem.click();
-        fixture.detectChanges();
+        renderFixture(fixture);
         await delay();
 
         expectActiveElementToBe(dropdownItem);
@@ -264,16 +265,16 @@ describe('Dropdown', () => {
       it('leaves focus on the submenu item that opening it focused', async () => {
         const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
         dropdownToggle.click();
-        fixture.detectChanges();
+        renderFixture(fixture);
         await delay();
 
         const nestedToggle: HTMLElement = document.body.querySelector('.nested') as HTMLElement;
         nestedToggle.focus();
 
         nestedToggle.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
-        fixture.detectChanges();
+        renderFixture(fixture);
         await delay();
-        fixture.detectChanges();
+        renderFixture(fixture);
         await delay();
 
         const nestedItem: HTMLElement = document.body.querySelector('.nested-item') as HTMLElement;
@@ -303,7 +304,7 @@ describe('Dropdown', () => {
         });
 
         fixture = TestBed.createComponent(DropdownItemThatOpensModalTestComponent);
-        fixture.detectChanges();
+        renderFixture(fixture);
       });
 
       afterEach(() => {
@@ -334,7 +335,7 @@ describe('Dropdown', () => {
 
       async function clickButton(buttonElementRef: ElementRef<HTMLButtonElement>) {
         buttonElementRef.nativeElement.click();
-        fixture.detectChanges();
+        renderFixture(fixture);
         await fixture.whenStable();
       }
     });
@@ -349,7 +350,7 @@ describe('Dropdown', () => {
         });
 
         fixture = TestBed.createComponent(DropdownItemThatDestroysAncestorTestComponent);
-        fixture.detectChanges();
+        renderFixture(fixture);
       });
 
       afterEach(() => {
@@ -363,12 +364,12 @@ describe('Dropdown', () => {
         expect(leaf.destroyed).toBe(false);
 
         fixture.componentInstance.dropdownTriggerElRef.nativeElement.click();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(fixture.componentInstance.dropdownInstance.popoverService.open).toBe(true);
 
         // Clicking the item destroys the ancestor container synchronously, while the popover is still open.
         fixture.componentInstance.dropdownItemButtonElRef.nativeElement.click();
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         expect(leaf.destroyed).toBe(true);
       });
@@ -384,7 +385,7 @@ describe('Dropdown', () => {
         });
 
         fixture = TestBed.createComponent(TestShadowDomComponent);
-        fixture.detectChanges();
+        renderFixture(fixture);
       });
 
       afterEach(() => {

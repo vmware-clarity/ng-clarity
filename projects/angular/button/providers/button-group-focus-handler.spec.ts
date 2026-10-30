@@ -10,6 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { expectActiveElementToBe } from '@clr/angular/testing';
 import { FocusService, Keys } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { BUTTON_GROUP_FOCUS_HANDLER_PROVIDER, ButtonGroupFocusHandler } from './button-group-focus-handler.service';
 import { InitialFocus } from './button-group-focus.enum';
@@ -60,13 +61,13 @@ describe('Button Group Directives', () => {
         testContext.focusService = testContext.fixture.debugElement.injector.get(FocusService);
         testContext.focusHandler = testContext.fixture.debugElement.injector.get(ButtonGroupFocusHandler);
 
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         testContext.compiled = testContext.fixture.nativeElement;
         testContext.testBtnGroup = testContext.fixture.componentInstance.btnGroup;
 
         testContext.menuToggle = testContext.testBtnGroup.menuToggle.nativeElement;
         testContext.menuToggle.click();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
 
         testContext.menu = testContext.testBtnGroup.menu.nativeElement;
         testContext.outside = document.createElement('button');

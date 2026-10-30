@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component, ElementRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DomAdapter } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrDatagridModule } from '../datagrid.module';
 import { ColumnsService } from './columns.service';
@@ -71,7 +72,7 @@ describe('Datagrid', () => {
         });
         testContext.fixture = TestBed.createComponent(TestComponent);
         testContext.sizeService = testContext.fixture.debugElement.injector.get(TableSizeService);
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         testContext.table = testContext.fixture.elementRef.nativeElement.children[0]; // reference to the TestComponnt table
         testContext.sizeService.tableRef = testContext.table; // setting service up with the component table for testing
       });
@@ -86,7 +87,7 @@ describe('Datagrid', () => {
       it('calculates the correct column drag height', () => {
         expect(testContext.sizeService.getColumnDragHeight()).toEqual('300px');
         testContext.fixture.componentInstance.height = 422;
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.sizeService.getColumnDragHeight()).toEqual('422px');
       });
     });

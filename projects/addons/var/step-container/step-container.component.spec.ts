@@ -11,6 +11,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { WorkflowStrings } from '@clr/addons/workflow/strings';
 import { ClrAlertModule } from '@clr/angular/emphasis/alert';
+import { renderFixture } from '@clr/angular/utils/testing';
 import { Observable, of } from 'rxjs';
 import type { Mock } from 'vitest';
 
@@ -84,10 +85,10 @@ describe('wizard-page-container.component.spec', () => {
 
     testContext.fixture = TestBed.createComponent(StepContainerComponent);
     testContext.component = testContext.fixture.componentInstance;
-    testContext.component.step = {
+    testContext.fixture.componentRef.setInput('step', {
       title: 'Mock Page Title',
       componentClass: MockPageComponent,
-    };
+    });
     testContext.pageModel = new MockPageModel();
     testContext.description = 'description';
     queryPageContent = () => testContext.fixture.debugElement.query(By.css('mock-page-component div'));
@@ -103,11 +104,11 @@ describe('wizard-page-container.component.spec', () => {
     beforeEach(() => {
       testContext.component.step.componentClass = MockPageComponent;
       testContext.component.step.modelInstance = testContext.pageModel;
-      testContext.component.description = testContext.description;
+      testContext.fixture.componentRef.setInput('description', testContext.description);
     });
 
     it('THEN the component is instantiated', () => {
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       const element: any = queryPageContent();
       const descriptionElement: any = testContext.fixture.debugElement.query(By.css('div > span'));
       expect(element).toBeDefined();
@@ -117,7 +118,7 @@ describe('wizard-page-container.component.spec', () => {
     });
 
     it('THEN onActivate clears stepValidationState', () => {
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       testContext.pageModel.validationState.errors = ['Error Message'];
       testContext.pageModel.validationState.warnings = ['Warning Message'];
       testContext.pageModel.validationState.infos = ['Info Message'];
@@ -135,7 +136,7 @@ describe('wizard-page-container.component.spec', () => {
       });
 
       it('THEN onActivate reaches the components activate() method', () => {
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
 
         expect(testContext.pageModel.activateCallsCount).toEqual(0);
         testContext.component.onActivate();
@@ -143,7 +144,7 @@ describe('wizard-page-container.component.spec', () => {
       });
 
       it('THEN onCommit reaches the components validate() method', () => {
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
 
         expect(testContext.pageModel.validateCallsCount).toEqual(0);
         testContext.pageModel.validationResult = true;
@@ -156,12 +157,12 @@ describe('wizard-page-container.component.spec', () => {
       });
 
       it('THEN WizardPage.readyToComplete should return true', () => {
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.component.readyToComplete).toEqual(true);
       });
 
       it('WHEN StepValidationState.errors is not empty, onCommit should return false', () => {
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.pageModel.validateCallsCount).toEqual(0);
         testContext.pageModel.validationResult = true;
         testContext.pageModel.validationState.errors = ['Error Message'];
@@ -180,12 +181,12 @@ describe('wizard-page-container.component.spec', () => {
       });
 
       it('THEN WizardPage.readyToComplete should return false', () => {
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.component.readyToComplete).toEqual(false);
       });
 
       it('WHEN StepValidationState.errors is empty, onCommit should return false', () => {
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.pageModel.validateCallsCount).toEqual(0);
         testContext.pageModel.validationResult = true;
         let onCommitResult = true;
@@ -197,7 +198,7 @@ describe('wizard-page-container.component.spec', () => {
       });
 
       it('THEN onActivate should reset readyToComplete to true', () => {
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.component.readyToComplete).toEqual(false);
         testContext.component.onActivate();
         expect(testContext.component.readyToComplete).toEqual(true);
@@ -214,14 +215,14 @@ describe('wizard-page-container.component.spec', () => {
 
     it('THEN the page component is instantiated when activate() method is invoked', () => {
       // Upon creation, MockPageComponent should not be instantiated.
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       let element: any = queryPageContent();
       expect(element).toBeNull();
 
       // After onActivate() the component should be created.
       testContext.component.onActivate();
 
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       element = queryPageContent();
       expect(element).toBeDefined();
       expect(testContext.pageModel.activateCallsCount).toEqual(1);
@@ -236,7 +237,7 @@ describe('wizard-page-container.component.spec', () => {
     });
 
     it('THEN the page component is re-instantiated when activate() method is invoked with changes', () => {
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       const element: any = queryPageContent();
       expect(element).toBeDefined();
       expect(element.nativeElement.innerText).toBe('Mock Page Content');
@@ -262,14 +263,14 @@ describe('wizard-page-container.component.spec', () => {
       it(`THEN the page component is instantiated when activate() method is invoked
                and re-instantiated again with activate()`, () => {
         // Upon creation, MockPageComponent should not be instantiated.
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         let element: any = queryPageContent();
         expect(element).toBeNull();
 
         // After onActivate() the component should be created.
         testContext.component.onActivate();
 
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         element = queryPageContent();
         expect(element).toBeDefined();
         expect(testContext.pageModel.activateCallsCount).toEqual(1);
@@ -295,55 +296,55 @@ describe('wizard-page-container.component.spec', () => {
     });
 
     it('THEN the page should display errors when error message is set.', () => {
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       let element: any = queryAlert();
       expect(element).toBeNull();
 
       testContext.pageModel.validationState.errors = ['Error from page'];
 
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       element = queryAlertItemText();
       expect(element).toBeDefined();
       expect(element.nativeElement.innerText).toBe('Error from page');
 
       testContext.pageModel.validationState.errors = [];
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       element = queryAlert();
       expect(element).toBeNull();
     });
 
     it('THEN the page should display warnings when warning message is set.', () => {
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       let element: any = queryAlert();
       expect(element).toBeNull();
 
       testContext.pageModel.validationState.warnings = ['Warning from page'];
 
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       element = queryAlertItemText();
       expect(element).toBeDefined();
       expect(element.nativeElement.innerText).toBe('Warning from page');
 
       testContext.pageModel.validationState.warnings = [];
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       element = queryAlert();
       expect(element).toBeNull();
     });
 
     it('THEN the page should display infos when info message is set.', () => {
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       let element: any = queryAlert();
       expect(element).toBeNull();
 
       testContext.pageModel.validationState.infos = ['Info from page'];
 
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       element = queryAlertItemText();
       expect(element).toBeDefined();
       expect(element.nativeElement.innerText).toBe('Info from page');
 
       testContext.pageModel.validationState.infos = [];
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       element = queryAlert();
       expect(element).toBeNull();
     });
@@ -351,7 +352,7 @@ describe('wizard-page-container.component.spec', () => {
     it('THEN the page should not render validation banner when messages are empty.', () => {
       testContext.pageModel.validationState = new StepValidationState();
       vi.spyOn(testContext.pageModel.validationState, 'isEmpty').mockReturnValue(true);
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       const validationBanner = testContext.fixture.debugElement.query(
         By.directive(ValidationBannerComponent)
@@ -362,7 +363,7 @@ describe('wizard-page-container.component.spec', () => {
     it('THEN the page should render validation banner when messages are not empty.', () => {
       testContext.pageModel.validationState = new StepValidationState();
       vi.spyOn(testContext.pageModel.validationState, 'isEmpty').mockReturnValue(false);
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       const validationBanner = testContext.fixture.debugElement.query(
         By.directive(ValidationBannerComponent)
@@ -375,7 +376,7 @@ describe('wizard-page-container.component.spec', () => {
     beforeEach(() => {
       testContext.component.step.componentClass = MockPageComponent;
       testContext.component.step.modelInstance = testContext.pageModel;
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       const error: ActivationError = {
         data: {
           message: 'error message',
@@ -383,7 +384,7 @@ describe('wizard-page-container.component.spec', () => {
         },
       };
       testContext.component.onActivate(error);
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
     });
     it('THEN error component should be rendered', () => {
       const errorComponent = testContext.fixture.debugElement.query(By.css('appfx-error'));

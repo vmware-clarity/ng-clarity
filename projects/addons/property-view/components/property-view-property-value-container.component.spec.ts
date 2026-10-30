@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, NgModule, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { PropertyViewPropertyValueComponent } from '../property-view.model';
 import { PropertyViewPropertyValueContainerComponent } from './property-view-property-value-container.component';
@@ -33,11 +34,11 @@ describe('PropertyViewPropertyValueContainerComponent', () => {
       PropertyViewPropertyValueContainerComponent
     );
     testContext.component = testContext.fixture.componentInstance;
-    testContext.component.componentType = MockComponent;
-    testContext.component.componentModel = {
+    testContext.fixture.componentRef.setInput('componentType', MockComponent);
+    testContext.fixture.componentRef.setInput('componentModel', {
       text: 'text',
-    };
-    testContext.fixture.detectChanges();
+    });
+    renderFixture(testContext.fixture);
   });
 
   it('should be created', () => {
@@ -49,7 +50,7 @@ describe('PropertyViewPropertyValueContainerComponent', () => {
   });
 
   it('on componentModel changes, should change model', () => {
-    testContext.component.componentModel = { text: 'text2' };
+    testContext.fixture.componentRef.setInput('componentModel', { text: 'text2' });
     testContext.component.ngOnChanges({
       componentModel: new SimpleChange({ text: 'text' }, { text: 'text2' }, false),
     });
@@ -59,8 +60,8 @@ describe('PropertyViewPropertyValueContainerComponent', () => {
   });
 
   it('on componentType changes, should recreate component', () => {
-    testContext.component.componentType = Mock2Component;
-    testContext.component.componentModel = { text: 'text2' };
+    testContext.fixture.componentRef.setInput('componentType', Mock2Component);
+    testContext.fixture.componentRef.setInput('componentModel', { text: 'text2' });
     testContext.component.ngOnChanges({
       componentType: new SimpleChange(MockComponent, Mock2Component, false),
     });

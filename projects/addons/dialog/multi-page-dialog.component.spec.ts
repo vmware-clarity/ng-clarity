@@ -32,6 +32,7 @@ import { WorkflowStrings } from '@clr/addons/workflow/strings';
 import { ClrAlertModule } from '@clr/angular/emphasis/alert';
 import { ClrTabsModule } from '@clr/angular/layout/tabs';
 import { ClrModalModule } from '@clr/angular/modal';
+import { renderFixture } from '@clr/angular/utils/testing';
 import { of, throwError } from 'rxjs';
 
 import { DialogComponent } from './multi-page-dialog.component';
@@ -110,17 +111,17 @@ describe('Appfx Multi Page Dialog', () => {
     testContext.mockElementRef = testContext.fixture.debugElement.injector.get(ElementRef);
 
     testContext.component = testContext.fixture.componentInstance;
-    testContext.component.model = testContext.dialogModel;
-    testContext.component.closeHandler = {
+    testContext.fixture.componentRef.setInput('model', testContext.dialogModel);
+    testContext.fixture.componentRef.setInput('closeHandler', {
       onSubmit: () => of({}),
       onCancel: () => of({}),
-    } as CloseHandler;
+    } as CloseHandler);
     vi.spyOn(testContext.component.openedChange, 'emit');
     vi.spyOn(testContext.component.onClose, 'emit');
     vi.spyOn(testContext.component.closeHandler, 'onSubmit');
     vi.spyOn(testContext.component.closeHandler as any, 'onCancel');
 
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
   });
 
   afterEach(() => {
@@ -135,7 +136,7 @@ describe('Appfx Multi Page Dialog', () => {
   const errorMessage = 'Error Message';
   describe('WHEN cancel button clicked', () => {
     it('THEN onCancel closeHandler is invoked and onClose event is emitted', () => {
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       testContext.component.onCancelButtonClick();
       expect(testContext.component.closeHandler.onCancel).toHaveBeenCalled();
       expect(testContext.component.onClose.emit).toHaveBeenCalled();
@@ -146,9 +147,9 @@ describe('Appfx Multi Page Dialog', () => {
       beforeEach(() => {
         testContext.component.closeHandler.onCancel = () => throwError(errorMessage);
         vi.spyOn(testContext.component.closeHandler as any, 'onCancel');
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         testContext.component.onCancelButtonClick();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
       });
 
       it('THEN onCancel closeHandler is invoked and onClose event is NOT emitted', () => {
@@ -165,7 +166,7 @@ describe('Appfx Multi Page Dialog', () => {
 
   describe('WHEN close button clicked', () => {
     it('THEN onCancel closeHandler is invoked and onClose event is emitted', () => {
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       testContext.component.onModalOpenChange(false);
       expect(testContext.component.closeHandler.onCancel).toHaveBeenCalled();
       expect(testContext.component.onClose.emit).toHaveBeenCalled();
@@ -176,7 +177,7 @@ describe('Appfx Multi Page Dialog', () => {
       beforeEach(() => {
         testContext.component.closeHandler.onCancel = () => throwError(errorMessage);
         vi.spyOn(testContext.component.closeHandler as any, 'onCancel');
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         testContext.component.onModalOpenChange(false);
       });
 
@@ -217,19 +218,19 @@ describe('Appfx Multi Page Dialog', () => {
         },
       ];
 
-      testContext.component.steps = testContext.steps;
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput('steps', testContext.steps);
+      renderFixture(testContext.fixture);
     });
 
     it('renders pages disabled when disableTabContent = true', () => {
-      testContext.component.disableTabsContent = true;
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput('disableTabsContent', true);
+      renderFixture(testContext.fixture);
 
       expect(
         testContext.fixture.nativeElement.querySelectorAll('appfx-step-container')[0].classList.contains('div-disabled')
       ).toEqual(true);
 
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       expect(
         testContext.fixture.nativeElement.querySelectorAll('appfx-step-container')[0].classList.contains('div-disabled')
@@ -244,13 +245,13 @@ describe('Appfx Multi Page Dialog', () => {
 
     it('WHEN StepModel.readyToComplete=false, Ok button should be disabled', () => {
       testContext.firstStepModel.readyToComplete = false;
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.component.isOkButtonDisabled).toEqual(true);
     });
 
     it('should set a title', () => {
-      testContext.component.title = 'Title';
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput('title', 'Title');
+      renderFixture(testContext.fixture);
 
       expect(testContext.fixture.nativeElement.querySelector('.modal-title .primaryTitle').innerHTML).toEqual(
         testContext.component.title
@@ -281,8 +282,8 @@ describe('Appfx Multi Page Dialog', () => {
         },
       ];
 
-      testContext.component.steps = testContext.steps;
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput('steps', testContext.steps);
+      renderFixture(testContext.fixture);
     });
 
     it('closes the dialog when when the OK button is clicked and all steps are valid', () => {
@@ -298,7 +299,7 @@ describe('Appfx Multi Page Dialog', () => {
       testContext.component.closeHandler.onSubmit = () => throwError(errorMessage);
       vi.spyOn(testContext.component.closeHandler, 'onSubmit');
 
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       testContext.component.onOkButtonClick();
 
       expect(testContext.component.closeHandler.onSubmit).toHaveBeenCalled();
@@ -312,7 +313,7 @@ describe('Appfx Multi Page Dialog', () => {
       vi.spyOn(testContext.component.tabs, 'validate$').mockReturnValue(of(false));
 
       testContext.component.onOkButtonClick();
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       // The dialog is not closed
       expect(testContext.component.closeHandler.onSubmit).not.toHaveBeenCalledWith();
@@ -346,9 +347,9 @@ describe('Appfx Multi Page Dialog', () => {
       testContext.steps[0].isRelevant = Var.from(relevanceProperty).by(prop => of(prop));
       relevanceProperty.value = false;
 
-      testContext.component.steps = testContext.steps;
+      testContext.fixture.componentRef.setInput('steps', testContext.steps);
 
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
     });
 
     it('the first page is skipped', () => {
@@ -410,15 +411,15 @@ describe('Appfx Multi Page Dialog', () => {
       ];
 
       testContext.zoomLevelService = TestBed.inject(ZoomLevelService);
-      testContext.component.steps = testContext.steps;
-      testContext.component.tabLayout = TabLayout.vertical;
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput('steps', testContext.steps);
+      testContext.fixture.componentRef.setInput('tabLayout', TabLayout.vertical);
+      renderFixture(testContext.fixture);
     });
 
     describe('zoom2x', () => {
       beforeEach(() => {
         testContext.zoomLevelService['resizeSubject'].next(ZoomLevel.x2);
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
       });
 
       it('appfx-tab-links is visible', () => {
@@ -460,7 +461,7 @@ describe('Appfx Multi Page Dialog', () => {
         beforeEach(() => {
           const showTabsIcon = testContext.fixture.debugElement.query(By.css(`.btn-show-tabs`));
           showTabsIcon.triggerEventHandler('click', null);
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
         });
 
         it('tabs panel is opened', () => {
@@ -490,7 +491,7 @@ describe('Appfx Multi Page Dialog', () => {
           beforeEach(() => {
             const closeTabsIcon = testContext.fixture.debugElement.query(By.css(`.btn-close-tabs`));
             closeTabsIcon.triggerEventHandler('click', null);
-            testContext.fixture.detectChanges();
+            renderFixture(testContext.fixture);
           });
 
           it('tabs panel is closed', () => {
@@ -529,7 +530,7 @@ describe('Appfx Multi Page Dialog', () => {
     describe('zoom4x', () => {
       beforeEach(() => {
         testContext.zoomLevelService['resizeSubject'].next(ZoomLevel.x4);
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
       });
 
       it('appfx-tab-links is visible', () => {
@@ -571,7 +572,7 @@ describe('Appfx Multi Page Dialog', () => {
         beforeEach(() => {
           const showTabsIcon = testContext.fixture.debugElement.query(By.css(`.btn-show-tabs`));
           showTabsIcon.triggerEventHandler('click', null);
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
         });
 
         it('tabs panel is opened', () => {
@@ -601,7 +602,7 @@ describe('Appfx Multi Page Dialog', () => {
           beforeEach(() => {
             const closeTabsIcon = testContext.fixture.debugElement.query(By.css(`.btn-close-tabs`));
             closeTabsIcon.triggerEventHandler('click', null);
-            testContext.fixture.detectChanges();
+            renderFixture(testContext.fixture);
           });
 
           it('tabs panel is closed', () => {

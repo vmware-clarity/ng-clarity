@@ -13,6 +13,7 @@ import { ClrIcon } from '@clr/angular/icon';
 import { ClrPopoverContent, ClrPopoverService } from '@clr/angular/popover/common';
 import { delay } from '@clr/angular/testing';
 import { FOCUS_SERVICE_PROVIDER, IF_ACTIVE_ID_PROVIDER } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrCombobox } from './combobox';
 import { ClrComboboxModule } from './combobox.module';
@@ -86,12 +87,12 @@ describe('Combobox component', () => {
         selectionService = comboboxDebugElement.injector.get(OptionSelectionService) as OptionSelectionService<string>;
         popoverService = comboboxDebugElement.injector.get(ClrPopoverService);
 
-        fixture.detectChanges();
+        renderFixture(fixture);
       });
 
       afterEach(function () {
         popoverService.open = false;
-        fixture.detectChanges();
+        renderFixture(fixture);
       });
 
       describe('Typescript API', function () {
@@ -140,14 +141,14 @@ describe('Combobox component', () => {
         // approach in the following tests
         it('sets selection model based on selection binding', async () => {
           fixture.componentInstance.selection = 'test';
-          fixture.detectChanges();
+          renderFixture(fixture);
           await fixture.whenStable();
           expect(selectionService.selectionModel.containsItem('test')).toBe(true);
         });
 
         it('clears selection model', async () => {
           fixture.componentInstance.selection = null;
-          fixture.detectChanges();
+          renderFixture(fixture);
           await fixture.whenStable();
           expect(selectionService.selectionModel.isEmpty()).toBe(true);
         });
@@ -160,14 +161,14 @@ describe('Combobox component', () => {
 
         it('can change to multi model', () => {
           fixture.componentInstance.multi = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(selectionService.selectionModel instanceof MultiSelectComboboxModel).toBe(true);
         });
 
         it('notifies on input changes', () => {
           expect(fixture.componentInstance.inputValue).toBeFalsy();
           clarityDirective.searchText = 'test';
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(fixture.componentInstance.inputValue).toBe('test');
         });
 
@@ -207,14 +208,14 @@ describe('Combobox component', () => {
           fixture.componentInstance.editable = false;
           await fixture.whenStable();
           popoverService.open = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           await fixture.whenStable();
           const input = clarityElement.querySelector('.clr-combobox-input') as HTMLInputElement;
           expect(input).not.toBeNull();
           input.focus();
           input.value = '4';
           input.dispatchEvent(new Event('input', { bubbles: true }));
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(input.value).toBe('4');
           expect(clarityDirective.searchText).toBe('4');
           expect(popoverService.open).toBe(true);
@@ -223,9 +224,9 @@ describe('Combobox component', () => {
           input.blur();
           expect(popoverService.open).toBe(false);
           expect(clarityDirective.searchText).toBe('');
-          fixture.detectChanges();
+          renderFixture(fixture);
           await fixture.whenStable();
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(input.value).toBe('');
         });
 
@@ -251,22 +252,22 @@ describe('Combobox component', () => {
           expect(trigger.hasAttribute('aria-expanded')).toBe(true);
           expect(trigger.getAttribute('aria-expanded')).toEqual('false');
           popoverService.open = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(trigger.getAttribute('aria-expanded')).toEqual('true');
         });
 
         it('should pass placeholder to internal input', () => {
           fixture.componentInstance.placeholder = 'hello world';
-          fixture.detectChanges();
+          renderFixture(fixture);
           const combobox: HTMLElement = clarityElement.querySelector('.clr-combobox-input');
           expect(combobox.getAttribute('placeholder')).toEqual('hello world');
         });
 
         it('should disable openClose button', async function () {
           fixture.componentInstance.disabled = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           await delay();
-          fixture.detectChanges();
+          renderFixture(fixture);
           const button: HTMLButtonElement = clarityElement.querySelector('.clr-combobox-trigger');
           expect(button.disabled).toBeTruthy();
         });
@@ -331,13 +332,13 @@ describe('Combobox component', () => {
           const identityFixture = TestBed.createComponent(IdentityTestComponent);
           const comboboxDE = identityFixture.debugElement.query(By.directive(ClrCombobox));
           const selectionService = comboboxDE.injector.get(OptionSelectionService) as OptionSelectionService<Item>;
-          identityFixture.detectChanges();
+          renderFixture(identityFixture);
           await identityFixture.whenStable();
 
           // writeValue with object that has same id as options[0] but different ref (e.g. from API)
           const preSelected = { id: 1, label: 'One' };
           (comboboxDE.componentInstance as ClrCombobox<Item>).writeValue(preSelected);
-          identityFixture.detectChanges();
+          renderFixture(identityFixture);
 
           // Option with value options[0] should be considered selected (same identity)
           expect(selectionService.selectionModel.containsItem(options[0])).toBe(true);
@@ -376,9 +377,9 @@ describe('Combobox component', () => {
             const onPushFixture = TestBed.createComponent(OnPushTestComponent);
             const comboboxDE = onPushFixture.debugElement.query(By.directive(ClrCombobox));
             comboboxDE.injector.get(ClrPopoverService).open = true;
-            onPushFixture.detectChanges();
+            renderFixture(onPushFixture);
             await delay();
-            onPushFixture.detectChanges();
+            renderFixture(onPushFixture);
 
             const input: HTMLInputElement = comboboxDE.nativeElement.querySelector('input');
             const focusedOptionId = () => document.querySelector('.clr-combobox-option.clr-focus')?.id;
@@ -386,7 +387,7 @@ describe('Combobox component', () => {
 
             // The focus handler listens with renderer.listen, so the keydown itself does not mark any view dirty.
             input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
-            onPushFixture.detectChanges();
+            renderFixture(onPushFixture);
 
             const focused = focusedOptionId();
             expect(focused).toBeTruthy();

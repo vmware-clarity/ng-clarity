@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { TimelineStepIdService } from './providers/timeline-step-id.service';
 import { ClrTimelineStepTitle } from './timeline-step-title';
@@ -23,7 +24,7 @@ describe('Timeline', () => {
       });
 
       fixture = TestBed.createComponent(TestTimelineStepTitle);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       nativeElement = fixture.nativeElement.querySelector('clr-timeline-step-title');
     });

@@ -6,6 +6,7 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { MockAppfxWizardComponent } from './wizard.component.mock';
 
@@ -20,7 +21,7 @@ describe('MockAppfxWizardComponent', () => {
 
     fixture = TestBed.createComponent(MockAppfxWizardComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    renderFixture(fixture);
   });
 
   it('should create an instance of MockAppfxWizardComponent', () => {

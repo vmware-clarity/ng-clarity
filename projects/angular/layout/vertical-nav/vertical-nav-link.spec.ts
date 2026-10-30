@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrIcon } from '@clr/angular/icon';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
 import { VerticalNavGroupService } from './providers/vertical-nav-group.service';
@@ -23,18 +24,26 @@ describe('Vertical Nav', () => {
     describe('Vertical Nav Links', () => {
       let fixture: ComponentFixture<any>;
       let compiled: HTMLElement;
+      let addEventListener: ReturnType<typeof vi.spyOn>;
 
       beforeEach(() => {
+        addEventListener = vi.spyOn(EventTarget.prototype, 'addEventListener');
         TestBed.configureTestingModule({
           imports: [ClrVerticalNavModule, ClrIcon],
           declarations: [TestComponent, TestComponentWithGroup],
         });
       });
 
+      function clickListenersFor(element: HTMLElement) {
+        return addEventListener.mock.calls.filter(
+          (args, index) => addEventListener.mock.contexts[index] === element && args[0] === 'click'
+        );
+      }
+
       describe('View Basics', () => {
         beforeEach(() => {
           fixture = TestBed.createComponent(TestComponent);
-          fixture.detectChanges();
+          renderFixture(fixture);
           compiled = fixture.nativeElement;
         });
 
@@ -70,20 +79,20 @@ describe('Vertical Nav', () => {
         it('should not add `click` listener if the `[clrVerticalNavLink]` is not located within the `clr-vertical-nav-group`', () => {
           const vertinalNavLink = fixture.debugElement.query(By.directive(ClrVerticalNavLink));
           expect(() => vertinalNavLink.injector.get(VerticalNavGroupService)).toThrow();
-          expect(vertinalNavLink.nativeElement.eventListeners()).toEqual([]);
+          expect(clickListenersFor(vertinalNavLink.nativeElement)).toHaveLength(0);
         });
       });
 
       describe('Nav Link Interactions with Nav Group', () => {
         beforeEach(() => {
           fixture = TestBed.createComponent(TestComponentWithGroup);
-          fixture.detectChanges();
+          renderFixture(fixture);
           compiled = fixture.nativeElement;
         });
 
         it('should add `click` listener if the `[clrVerticalNavLink]` is located within the `clr-vertical-nav-group`', () => {
           const vertinalNavLink = fixture.debugElement.query(By.css('#link1'));
-          expect(vertinalNavLink.nativeElement.eventListeners().length).toEqual(1);
+          expect(clickListenersFor(vertinalNavLink.nativeElement)).toHaveLength(1);
         });
       });
     });

@@ -11,6 +11,7 @@ import { FormControl, FormGroup, FormsModule, NgModel, ReactiveFormsModule, Vali
 import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule } from '@clr/angular/forms/common';
 import { ClrIcon } from '@clr/angular/icon';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrFileInput } from './file-input';
 import { ClrFileInputContainer } from './file-input-container';
@@ -120,12 +121,12 @@ describe('ClrFileInputContainer', () => {
         fixture = TestBed.createComponent(ReactiveTest);
         browseButtonElement = fixture.nativeElement.querySelector('.clr-file-input-browse-button');
         fileInputElement = fixture.nativeElement.querySelector('input[type="file"]');
-        fixture.detectChanges();
+        renderFixture(fixture);
       });
 
       it('should disable the browse button when the control is disabled', () => {
         fixture.componentInstance.form.get('model').disable();
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         expect(browseButtonElement.disabled).toBe(true);
         expect(fileInputElement.disabled).toBe(true);
@@ -134,11 +135,11 @@ describe('ClrFileInputContainer', () => {
       it('should enable the browse button after disable() then enable()', () => {
         const control = fixture.componentInstance.form.get('model');
         control.disable();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(browseButtonElement.disabled).toBe(true);
 
         control.enable();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(browseButtonElement.disabled).toBe(false);
         expect(fileInputElement.disabled).toBe(false);
       });
@@ -163,13 +164,13 @@ describe('ClrFileInputContainer', () => {
         fixture = TestBed.createComponent(TemplateDrivenTest);
         browseButtonElement = fixture.nativeElement.querySelector('.clr-file-input-browse-button');
         fileInputElement = fixture.nativeElement.querySelector('input[type="file"]');
-        fixture.detectChanges();
+        renderFixture(fixture);
       });
 
       it('should disable the browse button when the NgModel FormControl is disabled', () => {
         const ngModel = fixture.debugElement.query(By.directive(NgModel)).injector.get(NgModel);
         ngModel.control.disable();
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         expect(browseButtonElement.disabled).toBe(true);
         expect(fileInputElement.disabled).toBe(true);
@@ -178,11 +179,11 @@ describe('ClrFileInputContainer', () => {
       it('should enable the browse button after disable() then enable() on the NgModel FormControl', () => {
         const ngModel = fixture.debugElement.query(By.directive(NgModel)).injector.get(NgModel);
         ngModel.control.disable();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(browseButtonElement.disabled).toBe(true);
 
         ngModel.control.enable();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(browseButtonElement.disabled).toBe(false);
         expect(fileInputElement.disabled).toBe(false);
       });
@@ -204,12 +205,12 @@ describe('ClrFileInputContainer', () => {
       fixture = TestBed.createComponent(NoNgControlTest);
       browseButtonElement = fixture.nativeElement.querySelector('.clr-file-input-browse-button');
       fileInputElement = fixture.nativeElement.querySelector('input[type="file"]');
-      fixture.detectChanges();
+      renderFixture(fixture);
     });
 
     it('should reflect native disabled on the browse button when there is no form control', () => {
       fileInputElement.disabled = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(browseButtonElement.disabled).toBe(true);
     });
@@ -236,7 +237,7 @@ function fileInputSpec(testComponent: Type<TestComponent>) {
     browseButtonElement = nativeElement.querySelector('.clr-file-input-browse-button');
     queryClearButtonElement = () => nativeElement.querySelector('.clr-file-input-clear-button');
 
-    fixture.detectChanges();
+    renderFixture(fixture);
   });
 
   it('should have a default button label', () => {
@@ -245,21 +246,21 @@ function fileInputSpec(testComponent: Type<TestComponent>) {
 
   it('should have a customizable button label', () => {
     fixture.componentInstance.buttonLabel = 'Select File';
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(browseButtonElement.innerText.trim()).toBe('SELECT FILE');
   });
 
   it('should update the button label when a single file is selected', () => {
     selectFiles(fileInputElement, [new File([''], 'file.txt')]);
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(browseButtonElement.innerText.trim()).toBe('FILE.TXT');
   });
 
   it('should update the button label when two files are selected', () => {
     selectFiles(fileInputElement, [new File([''], 'file-1.txt'), new File([''], 'file-2.txt')]);
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(browseButtonElement.innerText.trim()).toBe('2 FILES');
   });
@@ -270,7 +271,7 @@ function fileInputSpec(testComponent: Type<TestComponent>) {
       new File([''], 'file-2.txt'),
       new File([''], 'file-3.txt'),
     ]);
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(browseButtonElement.innerText.trim()).toBe('3 FILES');
   });
@@ -283,7 +284,7 @@ function fileInputSpec(testComponent: Type<TestComponent>) {
 
   it('show a clear button when a single file is selected', () => {
     selectFiles(fileInputElement, [new File([''], 'file.txt')]);
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     const clearButtonElement = queryClearButtonElement();
     expect(clearButtonElement).toBeDefined();
@@ -292,7 +293,7 @@ function fileInputSpec(testComponent: Type<TestComponent>) {
 
   it('show a clear button when two files are selected', () => {
     selectFiles(fileInputElement, [new File([''], 'file-1.txt'), new File([''], 'file-2.txt')]);
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     const clearButtonElement = queryClearButtonElement();
     expect(clearButtonElement).toBeDefined();
@@ -301,11 +302,11 @@ function fileInputSpec(testComponent: Type<TestComponent>) {
 
   it('should clear the selected file when the clear button is clicked', () => {
     selectFiles(fileInputElement, [new File([''], 'file.txt')]);
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     const clearButtonElement = queryClearButtonElement();
     clearButtonElement.click();
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(fileInputElement.files.length).toBe(0);
     expect(browseButtonElement.innerText.trim()).toBe('BROWSE');
