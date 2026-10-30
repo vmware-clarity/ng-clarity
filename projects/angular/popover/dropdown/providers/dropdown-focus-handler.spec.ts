@@ -197,6 +197,33 @@ describe('Dropdown', () => {
           expect(testContext.popoverService.open).toBeTruthy();
         });
 
+        it('cancels pending initial focus when closed before the next task', async () => {
+          const moveTo = vi.spyOn(testContext.focusService, 'moveTo').mockImplementation(() => undefined);
+          testContext.popoverService.toggleWithEvent({});
+          testContext.popoverService.open = false;
+          await delay();
+          expect(moveTo).not.toHaveBeenCalled();
+        });
+
+        it('cancels pending initial focus on destruction', async () => {
+          const moveTo = vi.spyOn(testContext.focusService, 'moveTo').mockImplementation(() => undefined);
+          testContext.popoverService.toggleWithEvent({});
+          testContext.fixture.destroy();
+          await delay();
+          expect(moveTo).not.toHaveBeenCalled();
+        });
+
+        it('cancels pending focus recovery on destruction', async () => {
+          testContext.focusHandler.container = testContext.container;
+          testContext.focusHandler.addChildren(testContext.children);
+          testContext.popoverService.open = true;
+          const moveTo = vi.spyOn(testContext.focusService, 'moveTo').mockImplementation(() => undefined);
+          testContext.container.dispatchEvent(new FocusEvent('focusout'));
+          testContext.fixture.destroy();
+          await delay();
+          expect(moveTo).not.toHaveBeenCalled();
+        });
+
         it('moves to the first child when opened with a click', async () => {
           testContext.focusHandler.addChildren(testContext.children);
           const moveTo = vi.spyOn(testContext.focusService, 'moveTo').mockImplementation(() => undefined);
