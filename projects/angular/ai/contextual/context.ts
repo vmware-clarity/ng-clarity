@@ -28,7 +28,7 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
   @Input('clrContextType') type = 'region';
   /** Current application state an agent should know about, as a small serializable object. */
   @Input('clrContextState') state: Record<string, unknown> | null = null;
-  /** State keys untrusted callers (such as `window.clrContext()`) may see; every other key is withheld. */
+  /** State keys untrusted callers (`window.clrContext()`, frames) may see; every other key is withheld. */
   @Input('clrContextPublicKeys') publicKeys: readonly string[] | null = null;
 
   private lastReported = '';
