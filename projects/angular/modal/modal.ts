@@ -142,7 +142,7 @@ export class ClrModal implements OnChanges, OnDestroy {
   }
 
   open(): void {
-    if (this._open) {
+    if (this.destroyed || this._open) {
       return;
     }
     this._open = true;
@@ -164,6 +164,9 @@ export class ClrModal implements OnChanges, OnDestroy {
   }
 
   close(): void {
+    if (this.destroyed) {
+      return;
+    }
     if (this.stopClose) {
       this.altClose.emit(false);
       return;
