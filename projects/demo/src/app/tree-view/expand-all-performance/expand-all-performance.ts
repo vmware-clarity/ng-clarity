@@ -236,6 +236,7 @@ export class ExpandAllPerformanceDemo implements OnInit {
         this.ngZone.run(() => {
           this.measurements = [measurement, ...this.measurements].slice(0, MAX_MEASUREMENTS);
           this.running = false;
+          this.cdr.markForCheck();
         });
       };
       requestAnimationFrame(check);
