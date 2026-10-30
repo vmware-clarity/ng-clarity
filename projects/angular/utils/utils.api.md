@@ -4,13 +4,10 @@
 
 ```ts
 
-import { AfterContentChecked } from '@angular/core';
-import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
 import { AnimationCallbackEvent } from '@angular/core';
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import { CdkTrapFocus } from '@angular/cdk/a11y';
-import { ChangeDetectorRef } from '@angular/core';
 import { ElementRef } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { FactoryProvider } from '@angular/core';
@@ -982,7 +979,8 @@ export class IfActiveService {
 // @public (undocumented)
 export class IfExpandService implements LoadingListener {
     // (undocumented)
-    expandable: number;
+    get expandable(): number;
+    set expandable(value: number);
     // (undocumented)
     get expandChange(): Observable<boolean>;
     // (undocumented)
@@ -990,15 +988,16 @@ export class IfExpandService implements LoadingListener {
     // (undocumented)
     get expanded(): boolean;
     set expanded(value: boolean);
+    protected get _expanded(): boolean;
+    protected set _expanded(value: boolean);
     // (undocumented)
-    protected _expanded: boolean;
-    // (undocumented)
-    hasExpandTemplate: boolean;
+    get hasExpandTemplate(): boolean;
+    set hasExpandTemplate(value: boolean);
     // (undocumented)
     get loading(): boolean;
     set loading(value: boolean);
-    // (undocumented)
-    protected _loading: boolean;
+    protected get _loading(): boolean;
+    protected set _loading(value: boolean);
     // (undocumented)
     loadingStateChange(state: ClrLoadingState): void;
     // (undocumented)
@@ -1125,21 +1124,6 @@ export class MockFocusableItem implements FocusableItem {
 export function noopAnimations(): boolean;
 
 // @public (undocumented)
-export abstract class OompaLoompa implements AfterContentChecked, OnDestroy {
-    protected constructor(cdr: ChangeDetectorRef, willyWonka: WillyWonka);
-    // (undocumented)
-    abstract get flavor(): any;
-    // (undocumented)
-    ngAfterContentChecked(): void;
-    // (undocumented)
-    ngOnDestroy(): void;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<OompaLoompa, never, never, {}, {}, never, never, true, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<OompaLoompa, never>;
-}
-
-// @public (undocumented)
 export const OUSTIDE_CLICK_DIRECTIVES: Type<any>[];
 
 // @public (undocumented)
@@ -1206,20 +1190,6 @@ export function uniqueIdFactory(): string;
 
 // @public
 export function usableSelectors(root: ParentNode, selectors: readonly string[]): string;
-
-// @public (undocumented)
-export class WillyWonka implements AfterViewChecked {
-    // (undocumented)
-    get chocolate(): Observable<void>;
-    // (undocumented)
-    disableChocolateCheck: boolean;
-    // (undocumented)
-    ngAfterViewChecked(): void;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<WillyWonka, never, never, {}, {}, never, never, true, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<WillyWonka, never>;
-}
 
 // @public (undocumented)
 export function wrapObservable<T>(observable: Observable<T>, onSubscribe?: (observer: Observer<T>) => void, onUnsubscribe?: (observer: Observer<T>) => void): Observable<T>;
