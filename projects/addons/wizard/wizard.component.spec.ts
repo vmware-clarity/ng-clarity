@@ -677,9 +677,10 @@ describe('appfx-wizard', () => {
   });
 
   describe('WHEN compute function executed', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       testContext.page1.isRelevant = Var.from(testContext.wizardModel.dep1).by(dep1 => of(dep1));
-      testContext.fixture.componentRef.setInput('pages', testContext.workflowService.flow);
+      testContext.fixture.componentRef.setInput('pages', [...testContext.workflowService.flow]);
+      await testContext.fixture.whenStable();
     });
     it('page relevance should be evaluated again', () => {
       expect(testContext.page1.isSkipped).toEqual(true);

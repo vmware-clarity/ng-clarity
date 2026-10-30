@@ -14,6 +14,21 @@ const zoneHelpers = new Set(['fakeAsync', 'waitForAsync', 'tick', 'flush', 'flus
 function checkSource(source, filename) {
   const errors = [];
   const sourceFile = ts.createSourceFile(filename, source, ts.ScriptTarget.Latest, true);
+  const checkConfigNames = new Set(['provideCheckNoChangesConfig']);
+  for (const statement of sourceFile.statements) {
+    if (
+      ts.isImportDeclaration(statement) &&
+      statement.moduleSpecifier.text === '@angular/core' &&
+      statement.importClause?.namedBindings &&
+      ts.isNamedImports(statement.importClause.namedBindings)
+    ) {
+      for (const binding of statement.importClause.namedBindings.elements) {
+        if ((binding.propertyName || binding.name).text === 'provideCheckNoChangesConfig') {
+          checkConfigNames.add(binding.name.text);
+        }
+      }
+    }
+  }
   function visit(node) {
     if (ts.isImportDeclaration(node) && ts.isStringLiteral(node.moduleSpecifier)) {
       const moduleName = node.moduleSpecifier.text;
@@ -52,11 +67,28 @@ function checkSource(source, filename) {
         errors.push(`${filename}: imports ${imported.text}`);
       }
       if (
-        ts.isPropertyAccessExpression(node.expression) &&
-        node.expression.name.text === 'detectChanges' &&
+        ((ts.isPropertyAccessExpression(node.expression) && node.expression.name.text === 'detectChanges') ||
+          (ts.isElementAccessExpression(node.expression) &&
+            ts.isStringLiteral(node.expression.argumentExpression) &&
+            node.expression.argumentExpression.text === 'detectChanges')) &&
         node.arguments[0]?.kind === ts.SyntaxKind.FalseKeyword
       ) {
         errors.push(`${filename}: detectChanges(false) disables the exhaustive check; keep checks enabled`);
+      }
+      if (ts.isIdentifier(node.expression) && checkConfigNames.has(node.expression.text)) {
+        const options = node.arguments[0];
+        if (
+          !options ||
+          !ts.isObjectLiteralExpression(options) ||
+          !options.properties.some(
+            prop =>
+              ts.isPropertyAssignment(prop) &&
+              prop.name.getText(sourceFile) === 'exhaustive' &&
+              prop.initializer.kind === ts.SyntaxKind.TrueKeyword
+          )
+        ) {
+          errors.push(`${filename}: test-local check configuration must retain exhaustive: true`);
+        }
       }
       if (ts.isPropertyAccessExpression(node.expression) && node.expression.name.text === 'eventListeners') {
         errors.push(`${filename}: eventListeners depends on the Zone event patch; inspect native listeners instead`);

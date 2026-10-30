@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, SimpleChange } from '@angular/core';
+import { ChangeDetectorRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClrCheckboxModule, ClrInputModule, ClrRadioModule, ClrSelectModule } from '@clr/angular/forms';
@@ -80,6 +80,7 @@ describe('UsersFilterComponent', () => {
     fixture = TestBed.createComponent(UsersFilterComponent);
     component = fixture.componentInstance;
     fixture.componentRef.setInput('filterProperty', mockFilterProperty);
+    fixture.componentRef.setInput('propertyFilter', null);
     renderFixture(fixture); // triggers ngOnInit
     await vi.advanceTimersByTimeAsync(200);
   });
@@ -101,7 +102,7 @@ describe('UsersFilterComponent', () => {
       expect(component.usersSelectionForm.get('userOperator')?.value).toBe(ComparisonOperator.Equals);
     });
 
-    it('should add new user to existing propertyFilter and emit both on apply (Edit Mode)', () => {
+    it('should add new user to existing propertyFilter and emit both on apply (Edit Mode)', async () => {
       // Setup existing filter with 1 user
       const existingFilter = new PropertyFilter();
       existingFilter.operator = LogicalOperator.Or; // Corresponds to Equals
@@ -110,11 +111,10 @@ describe('UsersFilterComponent', () => {
       p1.operator = ComparisonOperator.Equals;
       existingFilter.criteria = [p1];
 
-      // Trigger ngOnChanges
+      // Let Angular deliver the changed input before editing the selection.
       fixture.componentRef.setInput('propertyFilter', existingFilter);
-      component.ngOnChanges({
-        propertyFilter: new SimpleChange(null, existingFilter, false),
-      });
+      await vi.advanceTimersByTimeAsync(1);
+      await fixture.whenStable();
 
       // Add a new user to the selection
       component.optionsFormArray.at(2)?.setValue(true);
@@ -136,7 +136,7 @@ describe('UsersFilterComponent', () => {
       expect(emittedFilter?.criteria[1].operator).toBe(ComparisonOperator.Equals);
     });
 
-    it('should update operator and predicates when modifying an initialized 2-user filter (Edit Mode)', () => {
+    it('should update operator and predicates when modifying an initialized 2-user filter (Edit Mode)', async () => {
       // Setup existing filter with 2 users and 'Equals' state
       const existingFilter = new PropertyFilter();
       existingFilter.operator = LogicalOperator.Or;
@@ -149,11 +149,10 @@ describe('UsersFilterComponent', () => {
 
       existingFilter.criteria = [p1, p2];
 
-      // Trigger ngOnChanges
+      // Let Angular deliver the changed input before editing the selection.
       fixture.componentRef.setInput('propertyFilter', existingFilter);
-      component.ngOnChanges({
-        propertyFilter: new SimpleChange(null, existingFilter, false),
-      });
+      await vi.advanceTimersByTimeAsync(1);
+      await fixture.whenStable();
 
       // Add a third user and change the operator to DoesNotEqual
       component.optionsFormArray.at(2)?.setValue(true);
@@ -180,19 +179,17 @@ describe('UsersFilterComponent', () => {
       expect(emittedFilter?.criteria[2].operator).toBe(ComparisonOperator.DoesNotEqual);
     });
 
-    it('should initialize from propertyFilter (Edit Mode)', () => {
+    it('should initialize from propertyFilter (Edit Mode)', async () => {
       const existingFilter = new PropertyFilter();
       existingFilter.operator = LogicalOperator.And; // Means "Does Not Equal" UI state
       const p1 = new PropertyPredicate();
       p1.value = 'dave@example.com';
       existingFilter.criteria = [p1];
 
-      // Manually trigger ngOnChanges behavior or re-create component logic
-      // Since we already ran detectChanges, let's simulate input change
+      // Let Angular deliver the changed input and initialize edit mode.
       fixture.componentRef.setInput('propertyFilter', existingFilter);
-      component.ngOnChanges({
-        propertyFilter: new SimpleChange(null, existingFilter, false),
-      });
+      await vi.advanceTimersByTimeAsync(1);
+      await fixture.whenStable();
 
       expect(component.usersSelectionForm.get('userOperator')?.value).toBe(ComparisonOperator.DoesNotEqual);
       expect(component.selectedValues.has('dave@example.com')).toBe(true);

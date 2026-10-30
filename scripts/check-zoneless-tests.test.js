@@ -102,3 +102,33 @@ test('requires active exported exhaustive zoneless providers, not comments', () 
     false
   );
 });
+
+test('rejects direct and computed disabled checks', () => {
+  assert.equal(
+    checkSource("fixture.detectChanges(false); fixture['detectChanges'](false);", 'example.spec.ts').length,
+    2
+  );
+});
+
+test('rejects test-local exhaustive opt-outs, including an aliased provider', () => {
+  assert.equal(
+    checkSource(
+      `
+    import { provideCheckNoChangesConfig as configureChecks } from '@angular/core';
+    TestBed.configureTestingModule({ providers: [configureChecks({ exhaustive: false })] });
+  `,
+      'example.spec.ts'
+    ).length,
+    1
+  );
+  assert.deepEqual(
+    checkSource(
+      `
+    import { provideCheckNoChangesConfig } from '@angular/core';
+    TestBed.configureTestingModule({ providers: [provideCheckNoChangesConfig({ exhaustive: true })] });
+  `,
+      'example.spec.ts'
+    ),
+    []
+  );
+});
