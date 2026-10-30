@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, PLATFORM_ID, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, PLATFORM_ID, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flushMicrotasks, TestBed } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { ClrIcon } from '@clr/angular/icon';
@@ -124,7 +124,12 @@ export default function (): void {
         const stringsService = new ClrCommonStringsService();
         this.focusManagerService = new TreeFocusManagerService<void>();
         const platformID = { provide: PLATFORM_ID, useValue: 'browser' };
-        // The node reads the animation module type in a field initializer.
+        TestBed.configureTestingModule({
+          providers: [
+            { provide: ChangeDetectorRef, useValue: jasmine.createSpyObj('ChangeDetectorRef', ['markForCheck']) },
+          ],
+        });
+        // Direct construction needs the node's injected rendering and animation dependencies.
         TestBed.runInInjectionContext(() => {
           this.parent = new ClrTreeNode(
             platformID,
