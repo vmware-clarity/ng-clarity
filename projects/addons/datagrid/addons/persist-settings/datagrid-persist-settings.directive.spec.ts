@@ -8,7 +8,7 @@
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CdkConnectedOverlay, CdkOverlayOrigin, OverlayModule } from '@angular/cdk/overlay';
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ZoomLevelService } from '@clr/addons/a11y';
 import {
@@ -195,7 +195,8 @@ describe('DatagridPersistSettingsDirective', () => {
       expect(persistedData.sorting.column.uid).toEqual(columns[2].displayName);
     });
 
-    it('when column visible state is changes ', fakeAsync(() => {
+    it('when column visible state is changes ', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       let persistedData: PersistedDatagridState = {};
       (localStorageService.setUserData as Spy).mockImplementation((key: string, data: PersistedDatagridState) => {
         persistedData = data;
@@ -204,7 +205,7 @@ describe('DatagridPersistSettingsDirective', () => {
         hidden: true,
         column: columns[1],
       });
-      tick(100);
+      await vi.advanceTimersByTimeAsync(100);
       expect(persistedData.columns).toBeTruthy();
       expect(persistedData.columns.length).toEqual(3);
       expect(persistedData.columns[0].visible).toEqual(true);
@@ -213,9 +214,10 @@ describe('DatagridPersistSettingsDirective', () => {
       expect(persistedData.columns[1].uid).toEqual(columns[1].field);
       expect(persistedData.columns[2].visible).toEqual(true);
       expect(persistedData.columns[2].uid).toEqual(columns[2].displayName);
-    }));
+    });
 
-    it('when column is resized state is changes ', fakeAsync(() => {
+    it('when column is resized state is changes ', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       let persistedData: PersistedDatagridState = {};
       (localStorageService.setUserData as Spy).mockImplementation((key: string, data: PersistedDatagridState) => {
         persistedData = data;
@@ -225,15 +227,16 @@ describe('DatagridPersistSettingsDirective', () => {
         columnSize: 101,
         column: columns[0],
       });
-      tick(100);
+      await vi.advanceTimersByTimeAsync(100);
       expect(persistedData.columns).toBeTruthy();
       expect(persistedData.columns.length).toEqual(3);
       expect(persistedData.columns[0].visible).toEqual(true);
       expect(persistedData.columns[0].uid).toEqual(columns[0].uid as string);
       expect(persistedData.columns[0].width).toEqual(101);
-    }));
+    });
 
-    it('when column order is changes ', fakeAsync(() => {
+    it('when column order is changes ', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       let persistedData: PersistedDatagridState = {};
       (localStorageService.setUserData as Spy).mockImplementation((key: string, data: PersistedDatagridState) => {
         persistedData = data;
@@ -244,12 +247,12 @@ describe('DatagridPersistSettingsDirective', () => {
         currentIndex: 2,
         column: columns,
       });
-      tick(100);
+      await vi.advanceTimersByTimeAsync(100);
       expect(persistedData.columns).toBeTruthy();
       expect(persistedData.columns.length).toEqual(3);
       expect(persistedData.columns[0].visible).toEqual(true);
       expect(persistedData.columns[0].uid).toEqual(columns[0].uid as string);
-    }));
+    });
   });
 
   describe('does not calls setUserData method of datagrid persisted settings service', () => {

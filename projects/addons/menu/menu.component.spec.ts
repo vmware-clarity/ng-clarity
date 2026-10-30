@@ -6,7 +6,7 @@
  */
 
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
 import { ZoomLevelServiceMock } from '@clr/addons/testing';
 import { ClrDropdownModule } from '@clr/angular/popover/dropdown';
@@ -114,13 +114,14 @@ describe('MenuComponent', () => {
     expect(component.currentZoomLevel).toEqual(ZoomLevel.x4);
   });
 
-  it('should throw an error when menu items change', fakeAsync(() => {
+  it('should throw an error when menu items change', async () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
     component.menuItems.reset([{} as any]);
 
-    expect(() => {
+    await expect(async () => {
       component.menuItems.notifyOnChanges();
       component.ngAfterContentInit();
-      tick();
-    }).toThrowError();
-  }));
+      await vi.advanceTimersByTimeAsync(0);
+    }).rejects.toThrowError();
+  });
 });

@@ -8,7 +8,7 @@
 import { InteractivityChecker } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DebugElement, Input, NgModule } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
 import { PropertyViewSectionBuilder, PropertyViewSectionModel } from '@clr/addons/property-view';
@@ -382,14 +382,15 @@ describe('appfx-wizard', () => {
         testContext.fixture.detectChanges();
       });
 
-      it('THEN should render mock popup', fakeAsync(() => {
+      it('THEN should render mock popup', async () => {
+        vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
         testContext.fixture.detectChanges();
-        tick();
+        await vi.advanceTimersByTimeAsync(0);
 
         const popupElement = testContext.fixture.debugElement.query(By.css('appfx-model-popup')).componentInstance;
         expect(popupElement).toBeDefined();
         expect(popupElement.modelMgr.model).toEqual(mockDebugModel);
-      }));
+      });
     });
 
     it("THEN the first page is rendered AND it's title is selected AND page.activate() lifecycle is invoked", () => {

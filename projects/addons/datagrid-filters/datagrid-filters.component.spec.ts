@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClrInputModule, ClrSelectModule } from '@clr/angular/forms';
 import { ClrIcon } from '@clr/angular/icon';
@@ -82,7 +82,8 @@ describe('DataGridFiltersComponent', () => {
     testContext.component.onFilterModeChange();
     expect(testContext.component.propertyFiltersChange.emit).toHaveBeenCalledWith([]);
   });
-  it('emits an event on search term change', fakeAsync(() => {
+  it('emits an event on search term change', async () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
     vi.spyOn(testContext.component, 'onSearchTermChanged');
     vi.spyOn(testContext.component.searchTermChange, 'emit').mockImplementation(() => undefined);
     testContext.fixture.detectChanges();
@@ -91,13 +92,13 @@ describe('DataGridFiltersComponent', () => {
     filterInput.dispatchEvent(new Event('input'));
     testContext.fixture.detectChanges();
     expect(testContext.component['lastSearchTerm']).toEqual('');
-    tick(2000);
+    await vi.advanceTimersByTimeAsync(2000);
     expect(filterInput).toBeTruthy();
     expect(testContext.component.onSearchTermChanged).toHaveBeenCalledWith(testInput);
     expect(testContext.component.searchTerm).toEqual(testInput);
     expect(testContext.component['lastSearchTerm']).toEqual(testInput);
     expect(testContext.component.searchTermChange.emit).toHaveBeenCalledWith(testInput);
-  }));
+  });
   it('emits an event on enter key press', () => {
     vi.spyOn(testContext.component, 'onSearchInputKeyPress');
     vi.spyOn(testContext.component.searchTermChange, 'emit').mockImplementation(() => undefined);

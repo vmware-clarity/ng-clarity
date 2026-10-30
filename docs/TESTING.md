@@ -40,10 +40,23 @@ Shared configuration:
 
 - `vitest.config.mts`: mock restoration, shuffled execution, seed selection, browser execution, and slow-test reporting.
 - `projects/test-setup.ts`: the `cds-theme` body attribute and timer cleanup.
-- `projects/test-providers.ts`: the Zone-based change detection scheduler used by the existing tests.
+- `projects/test-providers.ts`: zoneless scheduling and exhaustive check-no-changes validation for both library suites.
 - `angular.json`: browser viewport, coverage, setup files, and CI targets.
 
-The existing `fakeAsync`, `tick`, `flush`, and `waitForAsync` tests use the documented `zone.js/plugins/vitest-patch` integration. Tests that use native asynchronous callbacks explicitly await their work. New tests can use native async functions and Vitest timers.
+The browser test bundles do not load `zone.js`, its testing support, or its Vitest patch. Use native `async` tests and await every assertion-bearing callback. For scheduled component rendering, use `await fixture.whenStable()` (or `await context.stable()`) after changing signals, setting inputs through `fixture.componentRef.setInput()`, or dispatching DOM events. `context.setInput()` sets a host input and waits for rendering. A direct assignment to an OnPush component's plain field is not a rendering notification; model the application's input or event instead.
+
+Use explicit `detectChanges()` for initial fixture setup or tests specifically exercising change detection. Do not add extra forced passes to make a missing notification disappear. Exhaustive validation must stay enabled, and neither suite may opt back into Zone scheduling.
+
+When testing debounce or timeout behavior, use Vitest timers and await advancement:
+
+```typescript
+vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+// Trigger the behavior under test.
+await vi.advanceTimersByTimeAsync(300);
+await fixture.whenStable();
+```
+
+Keep `requestAnimationFrame` and microtasks real so Angular can schedule rendering. Prefer advancing the specific timeout to draining all timers, especially when a component has repeating timers. Shared teardown restores real timers after every test. Zone compatibility belongs in the separate consumer smoke tests; the library suites always test the absence of Zone.
 
 Each spec file registers its own suites. The old `all.spec.ts` aggregators are removed, with their suite names retained in the individual files. Support-only modules use ordinary `.ts` filenames. This avoids empty suites and duplicate registration under Vitest and also enables previously unregistered spec factories.
 
@@ -65,6 +78,8 @@ VITEST_SEED=3219 npm run _test:addons
 Without `VITEST_SEED`, a local run uses the current timestamp. Explicit seeds must be non-negative safe integers. PR builds use the workflow run ID as their seed and print it in the Test step; reruns keep the same seed. Release and release-preview workflows use seed `3219`. Run multiple seeds when changing shared test infrastructure.
 
 ## Coverage and checks
+
+`npm run _test:zoneless-policy` runs first in `npm test`. It rejects Zone imports, Zone test helpers (including aliases), a Zone scheduler override, and removal of either library's shared zoneless provider configuration. Its CI summary reports the number of library spec files checked; the allowed number of Zone-dependent specs is zero. Coverage thresholds and test assertions are preserved during migration.
 
 Both CI targets enforce the original global coverage thresholds with Vitest's V8 provider. Each target measures its own library source; imported code from the other library is measured by that library's suite. Schematics use their separate test target; fixture factories and other test support retain their previous coverage exclusions:
 

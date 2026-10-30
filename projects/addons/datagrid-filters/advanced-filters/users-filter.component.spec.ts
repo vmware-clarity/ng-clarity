@@ -7,7 +7,7 @@
 
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, SimpleChange } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClrCheckboxModule, ClrInputModule, ClrRadioModule, ClrSelectModule } from '@clr/angular/forms';
 import { ClrIcon } from '@clr/angular/icon';
@@ -74,13 +74,14 @@ describe('UsersFilterComponent', () => {
     datagridFiltersStrings = TestBed.inject(DatagridFiltersStrings);
   });
 
-  beforeEach(fakeAsync(() => {
+  beforeEach(async () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
     fixture = TestBed.createComponent(UsersFilterComponent);
     component = fixture.componentInstance;
     component.filterProperty = mockFilterProperty;
     fixture.detectChanges(); // triggers ngOnInit
-    tick(200);
-  }));
+    await vi.advanceTimersByTimeAsync(200);
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -198,7 +199,8 @@ describe('UsersFilterComponent', () => {
   });
 
   describe('Search Logic', () => {
-    it('should search users when searchTerm changes (debounced)', fakeAsync(() => {
+    it('should search users when searchTerm changes (debounced)', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       const searchTerm = 'al';
       userServiceMock.searchUsers.mockClear();
       component.usersSelectionForm.get('searchTerm')?.setValue(searchTerm);
@@ -206,25 +208,26 @@ describe('UsersFilterComponent', () => {
       // Should not call immediately
       expect(userServiceMock.searchUsers).not.toHaveBeenCalled();
 
-      tick(200); // Wait for debounce
+      await vi.advanceTimersByTimeAsync(200); // Wait for debounce
 
       expect(userServiceMock.searchUsers).toHaveBeenCalledWith(searchTerm, exampleDomain);
       expect(component.allFetchedUsers).toEqual(['alice', 'bob', 'charlie']);
       expect(component.visibleUsers.length).toBe(4); // incldue al
-    }));
+    });
 
-    it('should handle search errors gracefully by returning search term as fallback', fakeAsync(() => {
+    it('should handle search errors gracefully by returning search term as fallback', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       userServiceMock.searchUsers.mockReturnValue(throwError({ status: 500 }));
       const searchTerm = 'unknown_user';
 
       component.usersSelectionForm.get('searchTerm')?.setValue(searchTerm);
-      tick(200);
+      await vi.advanceTimersByTimeAsync(200);
 
       expect(component.errorSearchingUsers).toBe(datagridFiltersStrings.errorSearchingUsers);
       // The catchError logic returns of([searchTerm]) if searchTerm exists
       expect(component.allFetchedUsers).toEqual([searchTerm]);
       expect(component.visibleUsers).toContain(searchTerm);
-    }));
+    });
 
     it('should clear search term when clearSearch is called', () => {
       component.usersSelectionForm.get('searchTerm')?.setValue('testing');
@@ -232,23 +235,25 @@ describe('UsersFilterComponent', () => {
       expect(component.usersSelectionForm.get('searchTerm')?.value).toBe('');
     });
 
-    it('should re-trigger search when domain changes', fakeAsync(() => {
+    it('should re-trigger search when domain changes', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       userServiceMock.searchUsers.mockClear();
 
       // Change domain
       component.usersSelectionForm.get('domain')?.setValue(exampleDomain);
-      tick(200);
+      await vi.advanceTimersByTimeAsync(200);
 
       expect(userServiceMock.searchUsers).toHaveBeenCalledWith('', exampleDomain);
-    }));
+    });
   });
 
   describe('Selection & Checkbox Logic', () => {
-    beforeEach(fakeAsync(() => {
+    beforeEach(async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       // Setup: Search returns alice, bob, charlie
       component.usersSelectionForm.get('searchTerm')?.setValue('');
-      tick(200);
-    }));
+      await vi.advanceTimersByTimeAsync(200);
+    });
 
     it('should add user to selectedValues when checked', () => {
       const index = 0; // alice
@@ -332,30 +337,32 @@ describe('UsersFilterComponent', () => {
   });
 
   describe('Custom Search Term Logic', () => {
-    it('should display search term as an option if it is not in the results', fakeAsync(() => {
+    it('should display search term as an option if it is not in the results', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       // Scenario: User searches for "frank", API returns empty or other users.
       // The code forces "frank" to appear as a selectable option if not matched.
       userServiceMock.searchUsers.mockReturnValue(of([]));
       const term = 'frank';
 
       component.usersSelectionForm.get('searchTerm')?.setValue(term);
-      tick(200);
+      await vi.advanceTimersByTimeAsync(200);
 
       // Expect "frank" to be in visible users
       expect(component.visibleUsers).toContain(term);
-    }));
+    });
 
-    it('should NOT duplicate search term if it IS in the results', fakeAsync(() => {
+    it('should NOT duplicate search term if it IS in the results', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       // Search "alice", API returns "alice"
       userServiceMock.searchUsers.mockReturnValue(of(['alice']));
       const term = 'alice';
 
       component.usersSelectionForm.get('searchTerm')?.setValue(term);
-      tick(200);
+      await vi.advanceTimersByTimeAsync(200);
 
       const occurrences = component.visibleUsers.filter(u => u === 'alice').length;
       expect(occurrences).toBe(1);
-    }));
+    });
   });
 
   describe('Form Submission', () => {
@@ -390,16 +397,17 @@ describe('UsersFilterComponent', () => {
   });
 
   describe('Error Handling', () => {
-    it('should handle domain loading error', fakeAsync(() => {
+    it('should handle domain loading error', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       userServiceMock.getDomains.mockReturnValue(throwError('Network Error'));
       // Trigger ngOnInit again to test the flow
       component.ngOnInit();
       // domains stream is subscribed in loadDomains
-      tick(200);
+      await vi.advanceTimersByTimeAsync(200);
 
       expect(component.errorRetrievingDomains).toBe(datagridFiltersStrings.errorLoadingDomains);
       expect(component.isLoading).toBe(false);
-    }));
+    });
   });
 
   describe('Coverage: Edge Cases & Missing Branches', () => {
@@ -419,7 +427,8 @@ describe('UsersFilterComponent', () => {
       expect(component.usersSelectionForm.get('searchTerm')?.value).toBe('');
     });
 
-    it('should filter selected values when a search term is present', fakeAsync(() => {
+    it('should filter selected values when a search term is present', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       // 1. Setup Selected Values
       component.selectedValues.add('Alice'); // Partial Match
       component.selectedValues.add('Bob'); // No Match
@@ -431,7 +440,7 @@ describe('UsersFilterComponent', () => {
       // 3. Set Search Term
       component.usersSelectionForm.get('searchTerm')?.setValue('Charlie');
 
-      tick(200);
+      await vi.advanceTimersByTimeAsync(200);
 
       component.selectedValues.clear();
       component.selectedValues.add('Alice');
@@ -439,7 +448,7 @@ describe('UsersFilterComponent', () => {
       component.selectedValues.add('Bob');
 
       component.usersSelectionForm.get('searchTerm')?.setValue('Ali');
-      tick(200);
+      await vi.advanceTimersByTimeAsync(200);
 
       expect(component.visibleUsers).toContain('Alice');
       expect(component.visibleUsers).toContain('Ali');
@@ -449,7 +458,7 @@ describe('UsersFilterComponent', () => {
       // Count occurrences of "Ali"
       const count = component.visibleUsers.filter(u => u === 'Ali').length;
       expect(count).toBe(1);
-    }));
+    });
 
     it('should handle empty visible users in updateSelectAllState', () => {
       // Setup empty state
@@ -462,7 +471,8 @@ describe('UsersFilterComponent', () => {
       expect(component.usersSelectionForm.get('selectAll')?.value).toBe(false);
     });
 
-    it('should return empty array if error occurs and search term is empty', fakeAsync(() => {
+    it('should return empty array if error occurs and search term is empty', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       // Mock error
       userServiceMock.searchUsers.mockReturnValue(throwError('Error'));
 
@@ -470,13 +480,13 @@ describe('UsersFilterComponent', () => {
       component.usersSelectionForm.get('searchTerm')?.setValue('');
 
       // Trigger the pipe
-      tick(200);
+      await vi.advanceTimersByTimeAsync(200);
 
       // The handleError function is called within the pipe.
       // We can test the public handleError method directly to ensure the specific branch is hit.
       component.handleError('some error', ErrorType.USER_SEARCH).subscribe(result => {
         expect(result).toEqual([]);
       });
-    }));
+    });
   });
 });

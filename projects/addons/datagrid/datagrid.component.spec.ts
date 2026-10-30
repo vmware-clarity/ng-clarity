@@ -19,7 +19,7 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ZoomLevelService } from '@clr/addons/a11y';
@@ -1984,11 +1984,12 @@ describe('DatagridComponent', () => {
       untypedContext.component.isRowSelectionMode = true;
     });
 
-    it('when returns false', fakeAsync(() => {
+    it('when returns false', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       const untypedContext: any = testContext;
       vi.spyOn(untypedContext.component, 'isRowLocked').mockReturnValue(false);
       untypedContext.fixture.detectChanges(false);
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
 
       const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
       expect(gridHelper.getSelectedRows().length).toBe(0);
@@ -1999,13 +2000,14 @@ describe('DatagridComponent', () => {
       expect(gridHelper.getSelectedRows().length).toBe(1);
       expect(gridHelper.getRows()[0].isSelected()).toBeTruthy();
       expect(untypedContext.component.isRowLocked).toHaveBeenCalledWith(untypedContext.data[0]);
-    }));
+    });
 
-    it('when returns true', fakeAsync(() => {
+    it('when returns true', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       const untypedContext: any = testContext;
       vi.spyOn(untypedContext.component, 'isRowLocked').mockReturnValue(true);
       untypedContext.fixture.detectChanges(false);
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
 
       const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
       expect(gridHelper.getSelectedRows().length).toBe(0);
@@ -2018,7 +2020,7 @@ describe('DatagridComponent', () => {
       expect(gridHelper.getRows()[2].isSelectionDisabled).toBeTruthy();
       expect(gridHelper.getRows()[3].isSelectionDisabled).toBeTruthy();
       expect(untypedContext.component.isRowLocked).toHaveBeenCalledWith(untypedContext.data[0]);
-    }));
+    });
   });
 
   describe('Single-selection mode', () => {
@@ -2031,7 +2033,8 @@ describe('DatagridComponent', () => {
       untypedContext.component.appfxDatagridComponent.ngOnInit();
     });
 
-    it('is set by default', fakeAsync(() => {
+    it('is set by default', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       testContext.fixture.detectChanges(false);
 
       const gridHelper = new GridHelper(testContext.fixture.debugElement);
@@ -2041,7 +2044,7 @@ describe('DatagridComponent', () => {
       gridHelper.getRows()[0].click();
 
       testContext.fixture.detectChanges(false);
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
 
       expect(gridHelper.getSelectedRows().length).toBe(1);
 
@@ -2049,22 +2052,23 @@ describe('DatagridComponent', () => {
       expect(testContext.component.changeSelection).toHaveBeenCalledWith([testContext.data[0]]);
       gridHelper.getRows()[2].click();
       testContext.fixture.detectChanges();
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
 
       expect(gridHelper.getRows()[2].isSelected()).toBeTruthy();
       expect(gridHelper.getSelectedRows().length).toBe(1);
-    }));
+    });
 
-    it('let the user to select only one item', fakeAsync(() => {
+    it('let the user to select only one item', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       testContext.fixture.detectChanges(false);
       testContext.fixture.detectChanges();
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
 
       vi.spyOn(testContext.component, 'changeSelection').mockImplementation(() => undefined);
       const gridHelper = new GridHelper(testContext.fixture.debugElement);
       gridHelper.getRows()[0].click();
       testContext.fixture.detectChanges();
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
 
       expect(gridHelper.getRows()[0].isSelected()).toBeTruthy();
       expect(gridHelper.getSelectedRows().length).toBe(1);
@@ -2072,16 +2076,17 @@ describe('DatagridComponent', () => {
 
       gridHelper.getRows()[2].click();
       testContext.fixture.detectChanges();
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
 
       expect(gridHelper.getSelectedRows().length).toBe(1);
       expect(gridHelper.getRows()[2].isSelected()).toBeTruthy();
       expect(testContext.component.changeSelection).toHaveBeenCalledWith([testContext.data[0]]);
-    }));
+    });
 
-    it('can be changed to multi-selection mode and reset to single selection mode', fakeAsync(() => {
+    it('can be changed to multi-selection mode and reset to single selection mode', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       testContext.fixture.detectChanges(false);
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
       testContext.fixture.detectChanges();
 
       const gridHelper = new GridHelper(testContext.fixture.debugElement);
@@ -2089,49 +2094,50 @@ describe('DatagridComponent', () => {
 
       testContext.component.appfxDatagridComponent.selectionType = SelectionType.None;
       testContext.component.appfxDatagridComponent.onModelChange();
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
       testContext.fixture.detectChanges();
       expect(gridHelper.getRows()[2].isRowSingleSelectable()).toBeFalsy();
 
       testContext.component.appfxDatagridComponent.selectionType = SelectionType.Multi;
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
       testContext.component.appfxDatagridComponent.onModelChange();
       testContext.fixture.detectChanges();
       expect(gridHelper.getRows()[2].isRowSingleSelectable()).toBeFalsy();
 
       gridHelper.getRows()[2].click();
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
       testContext.fixture.detectChanges();
       expect(gridHelper.getRows()[2].isSelected()).toBeTruthy();
       gridHelper.getRows()[1].click();
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
       testContext.fixture.detectChanges();
       expect(gridHelper.getSelectedRows().length).toBe(2);
       testContext.component.appfxDatagridComponent.selectionType = SelectionType.Single;
       testContext.component.appfxDatagridComponent.onModelChange();
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
       testContext.fixture.detectChanges();
       expect(gridHelper.getRows()[2].isRowSingleSelectable()).toBeTruthy();
-    }));
+    });
 
-    it('allows selected items to be changed from the host component', fakeAsync(() => {
+    it('allows selected items to be changed from the host component', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       testContext.component.appfxDatagridComponent.selectionType = SelectionType.Single;
 
       testContext.fixture.detectChanges(false);
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
       testContext.fixture.detectChanges();
       const gridHelper = new GridHelper(testContext.fixture.debugElement);
       gridHelper.getRows()[0].click();
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
       testContext.fixture.detectChanges();
       expect(gridHelper.getRows()[0].isSelected()).toBeTruthy();
 
       testContext.component.appfxDatagridComponent.selectedItems = [testContext.data[3]];
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
       testContext.fixture.detectChanges();
       expect(gridHelper.getRows()[3].isSelected()).toBeTruthy();
       expect(gridHelper.getRows()[0].isSelected()).toBeFalsy();
-    }));
+    });
 
     it('let the user to select the first item when pre-select first item flag is enabled', () => {
       const untypedContext: any = testContext;
@@ -2153,21 +2159,22 @@ describe('DatagridComponent', () => {
       untypedContext.component.appfxDatagridComponent.ngOnInit();
     });
 
-    it('the user can not select an item', fakeAsync(() => {
+    it('the user can not select an item', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       testContext.fixture.detectChanges(false);
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
       testContext.fixture.detectChanges();
 
       const gridHelper = new GridHelper(testContext.fixture.debugElement);
       gridHelper.getRows()[0].click();
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
       testContext.fixture.detectChanges();
       expect(gridHelper.getRows()[0].isSelected()).toBeTruthy();
       expect(gridHelper.getSelectedRows().length).toBe(1);
 
       testContext.component.appfxDatagridComponent.selectionType = SelectionType.None;
       testContext.component.appfxDatagridComponent.onModelChange();
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
       testContext.fixture.detectChanges();
       vi.spyOn(testContext.component, 'changeSelection').mockImplementation(() => undefined);
       expect(gridHelper.getRows()[2].isRowSingleSelectable()).toBeFalsy();
@@ -2179,7 +2186,7 @@ describe('DatagridComponent', () => {
         expect(row.isSelectionAvailable(), `Row ${i} should not have selection available`).toBeFalsy();
       });
       expect(testContext.component.changeSelection).not.toHaveBeenCalled();
-    }));
+    });
   });
 
   describe('Multi-selection mode', () => {
@@ -2322,22 +2329,24 @@ describe('DatagridComponent', () => {
       untypedContext.component.appfxDatagridComponent.ngOnInit();
     });
 
-    it('is set by default', fakeAsync(() => {
+    it('is set by default', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       testContext.fixture.detectChanges(false);
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
       testContext.fixture.detectChanges();
       expect(testContext.component.appfxDatagridComponent.rowSelectionMode).toBeTruthy();
       const gridHelper = new GridHelper(testContext.fixture.debugElement);
       expect(gridHelper.getSelectedRows().length).toBe(0);
       gridHelper.getRows()[0].click();
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
       testContext.fixture.detectChanges();
       expect(gridHelper.getSelectedRows().length).toBe(1);
-    }));
+    });
 
-    it('can be disabled', fakeAsync(() => {
-      const detectChanges = () => {
-        tick();
+    it('can be disabled', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+      const detectChanges = async () => {
+        await vi.advanceTimersByTimeAsync(0);
         testContext.fixture.detectChanges();
       };
 
@@ -2345,22 +2354,22 @@ describe('DatagridComponent', () => {
 
       testContext.component.appfxDatagridComponent.selectionType = SelectionType.Single;
       testContext.component.appfxDatagridComponent.rowSelectionMode = true;
-      detectChanges();
+      await detectChanges();
 
       expect(gridHelper.getRows()[0].isRowClickable()).toEqual(true);
       expect(gridHelper.getSelectedRows().length).toBe(0);
 
       testContext.component.appfxDatagridComponent.rowSelectionMode = false;
-      detectChanges();
+      await detectChanges();
 
       expect(gridHelper.getRows()[0].isRowClickable()).toEqual(false);
       expect(gridHelper.getSelectedRows().length).toBe(0);
 
       gridHelper.getRows()[0].select();
 
-      detectChanges();
+      await detectChanges();
       expect(gridHelper.getSelectedRows().length).toBe(1);
-    }));
+    });
   });
 
   describe('Actions', () => {
@@ -2942,7 +2951,8 @@ describe('DatagridComponent', () => {
       });
     });
 
-    it('should preserve detail state and not recreate row when items are updated by reference but trackByProperty matches', fakeAsync(() => {
+    it('should preserve detail state and not recreate row when items are updated by reference but trackByProperty matches', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       class TestItem {
         constructor(
           public name: string,
@@ -2964,7 +2974,7 @@ describe('DatagridComponent', () => {
       testContext.component.data = allGridData;
 
       testContext.fixture.detectChanges(true);
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
 
       const gridHelper: GridHelper = new GridHelper(testContext.fixture.debugElement);
       const rows: GridRowTestHelper[] = gridHelper.getRows();
@@ -2972,7 +2982,7 @@ describe('DatagridComponent', () => {
       // Expand the first row
       rows[0].expand();
       testContext.fixture.detectChanges();
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
       testContext.fixture.detectChanges();
 
       // Verify row is expanded
@@ -2985,7 +2995,7 @@ describe('DatagridComponent', () => {
       );
       testContext.component.data = newData;
       testContext.fixture.detectChanges();
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
       testContext.fixture.detectChanges();
 
       const updatedRows = gridHelper.getRows();
@@ -2995,7 +3005,7 @@ describe('DatagridComponent', () => {
 
       // Verify it's the exact same DOM element (not recreated)
       expect(updatedRows[0].getElement(), 'Row DOM element should not be recreated').toBe(originalRowElement);
-    }));
+    });
 
     it('should have aria description', () => {
       testContext.component.rowsExpandedByDefault = true;

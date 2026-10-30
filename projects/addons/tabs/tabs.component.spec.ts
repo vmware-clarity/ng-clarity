@@ -6,7 +6,7 @@
  */
 
 import { DebugElement, Directive, ElementRef, Host, Input, Self, SimpleChange } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
 import { ZoomLevelServiceMock } from '@clr/addons/testing';
@@ -228,8 +228,8 @@ describe('Appfx Tabs', () => {
     it(
       'renders page tabs links correctly, shows the first page and clicking' +
         ' on a page tab opens the page associated with that tab',
-      waitForAsync(() => {
-        testContext.fixture.whenStable().then(() => {
+      async () => {
+        return testContext.fixture.whenStable().then(() => {
           expect(testContext.modelManager.injectPropertiesToPendingStep).toHaveBeenCalledWith(testContext.steps[0]);
 
           const tabsHelper = new TabsHelper(testContext.fixture.debugElement);
@@ -244,7 +244,7 @@ describe('Appfx Tabs', () => {
           expect(testContext.modelManager.injectPropertiesToPendingStep).toHaveBeenCalledWith(testContext.steps[2]);
           expect(testContext.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(testContext.steps[0]);
         });
-      })
+      }
     );
 
     it('activates the next page when navigating to another page', () => {
@@ -317,7 +317,7 @@ describe('Appfx Tabs', () => {
       expect(isValid, 'All steps should be valid').toBeTruthy();
     });
 
-    it('validates all visited pages when validate$ is called and navigates to the invalid page', waitForAsync(() => {
+    it('validates all visited pages when validate$ is called and navigates to the invalid page', async () => {
       verifyAllStepPagesNotValidated(testContext.steps);
 
       // Activate the invalid page
@@ -355,7 +355,7 @@ describe('Appfx Tabs', () => {
 
       // The validate$ returns false
       expect(isValid, 'The third page should be invalid').toBeFalsy();
-    }));
+    });
 
     it('does not validate pages when validate$ is called, one step is invalid and disableTabsContent = true', () => {
       testContext.component.disableTabsContent = true;
@@ -382,7 +382,7 @@ describe('Appfx Tabs', () => {
       expect(isValid, 'The second page should be valid').toBeTruthy();
     });
 
-    it('validates the active pages when validateActiveTab$ is called and current tab is valid', waitForAsync(() => {
+    it('validates the active pages when validateActiveTab$ is called and current tab is valid', async () => {
       verifyAllStepPagesNotValidated(testContext.steps);
 
       // Activate the invalid page
@@ -416,9 +416,9 @@ describe('Appfx Tabs', () => {
       testContext.fixture.detectChanges();
 
       expect(isValid, 'The second page should be valid').toBe(true);
-    }));
+    });
 
-    it('validates the active pages when validateActiveTab$ is called and current tab is invalid', waitForAsync(() => {
+    it('validates the active pages when validateActiveTab$ is called and current tab is invalid', async () => {
       verifyAllStepPagesNotValidated(testContext.steps);
 
       // Activate the invalid page
@@ -442,7 +442,7 @@ describe('Appfx Tabs', () => {
       testContext.fixture.detectChanges();
 
       expect(isValid, 'The third page should not be valid').toBe(false);
-    }));
+    });
 
     function verifyAllStepPagesNotValidated(steps: Step[]) {
       expect(
@@ -495,8 +495,8 @@ describe('Appfx Tabs', () => {
       expect((testContext.steps[1].model as MockStepModel).isActivated).toEqual(true);
     });
 
-    it('renders page tabs links correctly', waitForAsync(() => {
-      testContext.fixture.whenStable().then(() => {
+    it('renders page tabs links correctly', async () => {
+      return testContext.fixture.whenStable().then(() => {
         expect(testContext.modelManager.injectPropertiesToPendingStep).toHaveBeenCalledWith(testContext.steps[1]);
 
         const tabsHelper = new TabsHelper(testContext.fixture.debugElement);
@@ -505,7 +505,7 @@ describe('Appfx Tabs', () => {
           .map((link: DebugElement) => link.nativeElement.textContent.trim());
         expect(labels).toEqual([ipAllocationStepTitle, 'Details']);
       });
-    }));
+    });
   });
 
   describe('vertical tabs zoom accessibility', () => {

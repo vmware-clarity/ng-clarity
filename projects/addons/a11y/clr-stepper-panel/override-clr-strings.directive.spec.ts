@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, QueryList, ViewChildren } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { ClrStepperModule, ClrStepperPanel } from '@clr/angular/stepper';
 import { ClrCommonStrings, ClrCommonStringsService } from '@clr/angular/utils';
@@ -80,7 +80,8 @@ describe('OverrideClrStringsDirective', () => {
     }
   });
 
-  it('ClrStepperPanel.commonStrings has correct values', fakeAsync(() => {
+  it('ClrStepperPanel.commonStrings has correct values', async () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
     Object.assign(testContext, createThisTest());
 
     const panel: ClrStepperPanel | undefined = testContext.component.stepperPanels.get(0);
@@ -90,5 +91,5 @@ describe('OverrideClrStringsDirective', () => {
     // Verify that original strings in ClrCommonStringsService are not modified.
     expect(testContext.clrStringsService.keys.success).not.toBe(successText);
     expect(testContext.clrStringsService.keys.danger).not.toBe(dangerText);
-  }));
+  });
 });

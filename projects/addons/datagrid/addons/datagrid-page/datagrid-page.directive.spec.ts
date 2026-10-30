@@ -8,7 +8,7 @@
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import {
   MockDatagridActionBarComponent,
@@ -139,40 +139,43 @@ describe('datagridPage directive', () => {
       testContext.appfxDatagridHostComponent = testContext.fixture.componentInstance;
     });
 
-    it('set initial page', fakeAsync(() => {
+    it('set initial page', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       testContext.fixture.detectChanges(false);
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
       expect(testContext.appfxDatagridHostComponent.appfxDatagridComponent.clrDatagridPagination.currentPage).toEqual(
         testContext.appfxDatagridHostComponent.currentPageIndex
       );
-    }));
-    it('change grid page', fakeAsync(() => {
+    });
+    it('change grid page', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       testContext.appfxDatagridHostComponent.currentPageIndex = 1;
       testContext.fixture.detectChanges(false);
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
       expect(testContext.appfxDatagridHostComponent.appfxDatagridComponent.clrDatagridPagination.currentPage).toEqual(
         testContext.appfxDatagridHostComponent.currentPageIndex
       );
       testContext.appfxDatagridHostComponent.currentPageIndex = 3;
       testContext.fixture.detectChanges(false);
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
       expect(testContext.appfxDatagridHostComponent.appfxDatagridComponent.clrDatagridPagination.currentPage).toEqual(
         testContext.appfxDatagridHostComponent.currentPageIndex
       );
-    }));
-    it('emit grid page when is changed', fakeAsync(() => {
+    });
+    it('emit grid page when is changed', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       testContext.fixture.detectChanges(false);
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
       expect(testContext.appfxDatagridHostComponent.newPageIndex).toEqual(
         testContext.appfxDatagridHostComponent.currentPageIndex
       );
       testContext.appfxDatagridHostComponent.currentPageIndex = 3;
       testContext.fixture.detectChanges(false);
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
       expect(testContext.appfxDatagridHostComponent.newPageIndex).toEqual(
         testContext.appfxDatagridHostComponent.currentPageIndex
       );
-    }));
+    });
   });
 
   describe('on server side grid', () => {

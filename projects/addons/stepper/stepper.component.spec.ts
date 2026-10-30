@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DebugElement, NgModule } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { OverrideClrStringsDirective } from '@clr/addons/a11y';
@@ -459,14 +459,15 @@ describe('Stepper', () => {
     });
 
     describe('WHEN finish is clicked', () => {
-      it('WHEN last step is not valid THEN onFormSubmit and onFinish are not invoked', fakeAsync(() => {
+      it('WHEN last step is not valid THEN onFormSubmit and onFinish are not invoked', async () => {
+        vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
         // Add only steps that return valid states
         testContext.component.steps = [testContext.step1, testContext.step2];
         testContext.fixture.detectChanges();
 
         const nextButton = queryNextButton();
         nextButton.click();
-        flush();
+        await vi.runOnlyPendingTimersAsync();
         testContext.fixture.detectChanges();
 
         vi.spyOn(testContext.component, 'onFormSubmit');
@@ -479,17 +480,18 @@ describe('Stepper', () => {
 
         expect(testContext.component.onFormSubmit).not.toHaveBeenCalled();
         expect(testContext.component.onFinish.emit).not.toHaveBeenCalled();
-        flush();
-      }));
+        await vi.runOnlyPendingTimersAsync();
+      });
 
-      it('WHEN all steps are valid THEN onFormSubmit and onFinish are invoked', fakeAsync(() => {
+      it('WHEN all steps are valid THEN onFormSubmit and onFinish are invoked', async () => {
+        vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
         // Add only steps that return valid states
         testContext.component.steps = [testContext.step1, testContext.step3];
         testContext.fixture.detectChanges();
 
         const nextButton = queryNextButton();
         nextButton.click();
-        flush();
+        await vi.runOnlyPendingTimersAsync();
         testContext.fixture.detectChanges();
 
         vi.spyOn(testContext.component, 'onFormSubmit');
@@ -498,12 +500,12 @@ describe('Stepper', () => {
 
         const finishButton = queryNextButton();
         finishButton.click();
-        flush();
+        await vi.runOnlyPendingTimersAsync();
         testContext.fixture.detectChanges();
 
         expect(testContext.component.onFormSubmit).toHaveBeenCalled();
         expect(testContext.component.onFinish.emit).toHaveBeenCalled();
-      }));
+      });
     });
 
     describe('#onFormSubmit', () => {
@@ -520,13 +522,14 @@ describe('Stepper', () => {
     });
 
     describe('WHEN navigating using step header', () => {
-      beforeEach(fakeAsync(() => {
+      beforeEach(async () => {
+        vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
         testContext.fixture.detectChanges();
 
         // go to step2 using next
         const nextButtonStep1 = queryNextButton();
         nextButtonStep1.click();
-        flush();
+        await vi.runOnlyPendingTimersAsync();
         testContext.fixture.detectChanges();
 
         // go to step3 using next
@@ -534,9 +537,9 @@ describe('Stepper', () => {
         const nextButtonStep2 = queryNextButton();
 
         nextButtonStep2.click();
-        flush();
+        await vi.runOnlyPendingTimersAsync();
         testContext.fixture.detectChanges();
-      }));
+      });
 
       it('WHEN click on completed step from incomplete step, should not call validate method on incomplete step', () => {
         expect(testContext.step3Model.activateCallsCount).toBe(1);
@@ -560,7 +563,8 @@ describe('Stepper', () => {
         expect(testContext.step1Model.validateCallsCount).toEqual(2);
       });
 
-      it('WHEN already completed panel gets expanded, collapsed and then expanded again, it remains open', fakeAsync(() => {
+      it('WHEN already completed panel gets expanded, collapsed and then expanded again, it remains open', async () => {
+        vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
         const toggleStepState = (index: number) => {
           steps[index].nativeElement.click();
           testContext.fixture.detectChanges();
@@ -586,11 +590,11 @@ describe('Stepper', () => {
         stepperPanel.panel.pipe(first()).subscribe((stepperPanel: StepperPanelModel) => {
           panelOpen = stepperPanel.open;
         });
-        flush();
+        await vi.runOnlyPendingTimersAsync();
 
         expect(panelOpen).toBeTruthy();
         expect(testContext.component.initialStep).toEqual('step0');
-      }));
+      });
 
       it('WHEN already completed panel gets expanded, last opened step remains incomplete', () => {
         const steps = queryStepperButtons();
@@ -667,7 +671,8 @@ describe('Stepper', () => {
         expect(queryBackButton()).toBeNull();
       });
 
-      it('THEN Back button is visible on the second visible step and has the correct style', fakeAsync(() => {
+      it('THEN Back button is visible on the second visible step and has the correct style', async () => {
+        vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
         testContext.component.showBackButton = true;
         vi.spyOn(testContext.stateService, 'isFirstVisibleStep').mockImplementation((index: number) => {
           return index === 0;
@@ -679,7 +684,7 @@ describe('Stepper', () => {
         nextButtonStep1.click();
 
         // Check that the step is now moved
-        flush();
+        await vi.runOnlyPendingTimersAsync();
         testContext.fixture.detectChanges();
         testContext.fixture.detectChanges();
         expect(testContext.component.initialStep).toEqual('step2');
@@ -691,7 +696,7 @@ describe('Stepper', () => {
         expect(backBtn.nativeElement.innerText.trim().toLowerCase()).toEqual(
           testContext.component.workflowStrings.back.toLowerCase()
         );
-      }));
+      });
 
       it('THEN Next button should only have btn-primary class when usePrimaryNextButton is true', () => {
         testContext.component.usePrimaryNextButton = true;

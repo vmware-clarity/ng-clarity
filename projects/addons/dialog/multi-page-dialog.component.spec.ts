@@ -7,7 +7,7 @@
 
 import { InteractivityChecker } from '@angular/cdk/a11y';
 import { DebugElement, Directive, ElementRef, Input } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
 import { IfTabActiveDirective, TabLinksComponent, Tabs } from '@clr/addons/tabs';
@@ -307,7 +307,8 @@ describe('Appfx Multi Page Dialog', () => {
     });
 
     it(`validates all visited pages when OK is clicked
-            and does not call onSubmit when #tabs.validate$ return false`, fakeAsync(() => {
+            and does not call onSubmit when #tabs.validate$ return false`, async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       vi.spyOn(testContext.component.tabs, 'validate$').mockReturnValue(of(false));
 
       testContext.component.onOkButtonClick();
@@ -315,7 +316,7 @@ describe('Appfx Multi Page Dialog', () => {
 
       // The dialog is not closed
       expect(testContext.component.closeHandler.onSubmit).not.toHaveBeenCalledWith();
-    }));
+    });
   });
 
   describe('when the first step is skipped', () => {
@@ -361,7 +362,8 @@ describe('Appfx Multi Page Dialog', () => {
       expect(testContext.steps[1].model.isActivated).toEqual(true);
     });
 
-    it('renders page tabs links correctly', fakeAsync(() => {
+    it('renders page tabs links correctly', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       testContext.fixture.whenStable().then(() => {
         const tabsHelper = new TabsHelper(testContext.fixture.debugElement);
         const labels: string[] = tabsHelper
@@ -369,7 +371,7 @@ describe('Appfx Multi Page Dialog', () => {
           .map((link: DebugElement) => link.nativeElement.textContent.trim());
         expect(labels).toEqual([ipAllocationTitle, 'Details']);
       });
-    }));
+    });
   });
 
   describe('vertical tabs zoom accessibility', () => {

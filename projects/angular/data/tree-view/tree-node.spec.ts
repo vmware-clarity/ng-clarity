@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, PLATFORM_ID, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flushMicrotasks, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { ClrIcon } from '@clr/angular/icon';
 import { delay, expectActiveElementToBe, spec, TestContext } from '@clr/angular/testing';
@@ -356,16 +356,17 @@ describe('Tree View', () => {
           expect(testContext.clarityElement.querySelector('.clr-treenode-spinner')).not.toBeNull();
         });
 
-        it('shows the spinner once the model starts loading, in a microtask', fakeAsync(() => {
+        it('shows the spinner once the model starts loading, in a microtask', async () => {
+          vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
           // The loading state can flip in the middle of a change detection pass, so it is not applied synchronously.
           testContext.clarityDirective._model.loading = true;
           expect(testContext.clarityDirective.isModelLoading).toBe(false);
           // A microtask is enough: no timer per node when a large tree gets created.
-          flushMicrotasks();
+          await Promise.resolve();
           expect(testContext.clarityDirective.isModelLoading).toBe(true);
           testContext.detectChanges();
           expect(testContext.clarityElement.querySelector('.clr-treenode-spinner')).not.toBeNull();
-        }));
+        });
 
         it('expands and collapses when the caret is clicked', () => {
           const caret: HTMLElement = testContext.clarityElement.querySelector('.clr-treenode-caret');

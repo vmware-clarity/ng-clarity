@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flushMicrotasks, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RecursiveTreeNodeModel } from './models/recursive-tree-node.model';
 import { ClrRecursiveForOf, ClrRecursiveForOfContext } from './recursive-for-of';
@@ -101,7 +101,8 @@ describe('Tree View', () => {
         ]);
       });
 
-      it('refreshes the tree once per burst of fetched children, in a microtask', fakeAsync(() => {
+      it('refreshes the tree once per burst of fetched children, in a microtask', async () => {
+        vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
         // Children fetched while the tree renders arrive in bursts, one notification per node.
         const detectChanges = vi
           .spyOn((testContext.clarityDirective as any).cdr, 'detectChanges')
@@ -111,9 +112,9 @@ describe('Tree View', () => {
         }
         expect(detectChanges).not.toHaveBeenCalled();
         // A microtask is enough: no timer, and so no separate change detection pass per burst.
-        flushMicrotasks();
+        await Promise.resolve();
         expect(detectChanges).toHaveBeenCalledTimes(1);
-      }));
+      });
 
       it('accepts multiple roots', () => {
         testContext.testComponent.root = [TEST_ROOT, TEST_ROOT];

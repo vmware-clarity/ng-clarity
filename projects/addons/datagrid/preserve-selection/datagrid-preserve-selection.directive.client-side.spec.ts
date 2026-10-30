@@ -8,7 +8,7 @@
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CdkConnectedOverlay, CdkOverlayOrigin, OverlayModule } from '@angular/cdk/overlay';
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ZoomLevelService } from '@clr/addons/a11y';
 import {
@@ -147,35 +147,35 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
   });
 
   beforeEach(() => {
-    testContext.moveToTheNextPageAndSelectRows = (selectRows: number[]) => {
-      testContext.moveToNewPageAndSelectRow(selectRows);
+    testContext.moveToTheNextPageAndSelectRows = async (selectRows: number[]) => {
+      await testContext.moveToNewPageAndSelectRow(selectRows);
     };
 
-    testContext.moveToThePreviousPageAndSelectRows = (selectRows: number[]) => {
-      testContext.moveToNewPageAndSelectRow(selectRows, true);
+    testContext.moveToThePreviousPageAndSelectRows = async (selectRows: number[]) => {
+      await testContext.moveToNewPageAndSelectRow(selectRows, true);
     };
-    testContext.moveToNewPageAndSelectRow = (selectRows: number[], previousPage?: boolean) => {
+    testContext.moveToNewPageAndSelectRow = async (selectRows: number[], previousPage?: boolean) => {
       const gridHelper = new GridHelper(testContext.fixture.debugElement);
       if (previousPage) {
         gridHelper.getFooter().clickPreviousPaginationButton();
       } else {
         gridHelper.getFooter().clickNextPaginationButton();
       }
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
       testContext.fixture.detectChanges();
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
       testContext.fixture.detectChanges();
 
-      testContext.selectRows(selectRows);
+      await testContext.selectRows(selectRows);
     };
 
-    testContext.selectRows = (selectRows: number[]) => {
+    testContext.selectRows = async (selectRows: number[]) => {
       const gridHelper = new GridHelper(testContext.fixture.debugElement);
-      selectRows.forEach((selectedRowIndex: number) => {
+      for (const selectedRowIndex of selectRows) {
         gridHelper.getRows()[selectedRowIndex].click();
-        tick();
+        await vi.advanceTimersByTimeAsync(0);
         testContext.fixture.detectChanges();
-      });
+      }
     };
 
     testContext.verifySelectedRows = (selectedRows: number[]) => {
@@ -323,62 +323,66 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
   );
 
   describe('when the grid is with multi-selection', () => {
-    beforeEach(fakeAsync(() => {
+    beforeEach(async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       testContext.appfxDatagridHostComponent.pageSize = 2;
       testContext.appfxDatagridHostComponent.data = allGridData;
       testContext.fixture.detectChanges(false);
-      tick();
-    }));
-    it('selection is preserved when move between pages', fakeAsync(() => {
-      testContext.selectRows([0, 1]);
+      await vi.advanceTimersByTimeAsync(0);
+    });
+    it('selection is preserved when move between pages', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+      await testContext.selectRows([0, 1]);
       testContext.verifySelectedRows([0, 1]);
 
-      testContext.moveToTheNextPageAndSelectRows([0]);
+      await testContext.moveToTheNextPageAndSelectRows([0]);
       testContext.verifySelectedRows([0]);
 
-      testContext.moveToTheNextPageAndSelectRows([1]);
+      await testContext.moveToTheNextPageAndSelectRows([1]);
       testContext.verifySelectedRows([1]);
 
-      testContext.moveToTheNextPageAndSelectRows([0, 1]);
+      await testContext.moveToTheNextPageAndSelectRows([0, 1]);
       testContext.verifySelectedRows([0, 1]);
 
-      testContext.moveToThePreviousPageAndSelectRows([]);
+      await testContext.moveToThePreviousPageAndSelectRows([]);
       testContext.verifySelectedRows([1]);
 
-      testContext.moveToTheNextPageAndSelectRows([]);
+      await testContext.moveToTheNextPageAndSelectRows([]);
       testContext.verifySelectedRows([0, 1]);
 
-      testContext.moveToThePreviousPageAndSelectRows([]);
+      await testContext.moveToThePreviousPageAndSelectRows([]);
       testContext.verifySelectedRows([1]);
 
-      testContext.moveToThePreviousPageAndSelectRows([]);
+      await testContext.moveToThePreviousPageAndSelectRows([]);
       testContext.verifySelectedRows([0]);
 
-      testContext.moveToThePreviousPageAndSelectRows([]);
+      await testContext.moveToThePreviousPageAndSelectRows([]);
       testContext.verifySelectedRows([0, 1]);
-    }));
+    });
 
-    it('selection is preserved when refresh data', fakeAsync(() => {
-      testContext.selectRows([0, 1]);
+    it('selection is preserved when refresh data', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+      await testContext.selectRows([0, 1]);
       testContext.verifySelectedRows([0, 1]);
-      testContext.moveToTheNextPageAndSelectRows([0]);
+      await testContext.moveToTheNextPageAndSelectRows([0]);
       testContext.verifySelectedRows([0]);
-      testContext.moveToThePreviousPageAndSelectRows([]);
+      await testContext.moveToThePreviousPageAndSelectRows([]);
       testContext.verifySelectedRows([0, 1]);
       //Simulate data refresh by create new instances of data
       testContext.appfxDatagridHostComponent.data = allGridData.map((item: any) => {
         return { ...item };
       });
       testContext.fixture.detectChanges();
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
       testContext.fixture.detectChanges();
       testContext.verifySelectedRows([0, 1]);
-      testContext.moveToTheNextPageAndSelectRows([]);
+      await testContext.moveToTheNextPageAndSelectRows([]);
       testContext.verifySelectedRows([0]);
-    }));
+    });
 
-    it('calls onSelectedItemsChange() method of datagrid when grid items are updated', fakeAsync(() => {
-      testContext.selectRows([0, 1]);
+    it('calls onSelectedItemsChange() method of datagrid when grid items are updated', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+      await testContext.selectRows([0, 1]);
       testContext.verifySelectedRows([0, 1]);
       vi.spyOn(testContext.appfxDatagridHostComponent.datagridComponent, 'onSelectedItemsChange').mockImplementation(
         () => undefined
@@ -388,78 +392,82 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
         return { ...item };
       });
       testContext.fixture.detectChanges();
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
       expect(testContext.appfxDatagridHostComponent.datagridComponent.onSelectedItemsChange).toHaveBeenCalled();
-    }));
+    });
   });
 
   describe('when the grid is with single selection', () => {
-    beforeEach(fakeAsync(() => {
+    beforeEach(async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       testContext.appfxDatagridHostComponent.pageSize = 2;
       testContext.appfxDatagridHostComponent.data = allGridData;
       testContext.appfxDatagridHostComponent.selectionType = SelectionType.Single;
       testContext.fixture.detectChanges();
-      tick();
-    }));
+      await vi.advanceTimersByTimeAsync(0);
+    });
 
-    it('selection is preserved when move between pages', fakeAsync(() => {
+    it('selection is preserved when move between pages', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       const gridHelper = new GridHelper(testContext.fixture.debugElement);
       expect(gridHelper.getRows()[1].isRowSingleSelectable()).toBeTruthy();
-      testContext.selectRows([0]);
+      await testContext.selectRows([0]);
       testContext.verifySelectedRows([0]);
       //Move to second page
-      testContext.moveToTheNextPageAndSelectRows([]);
+      await testContext.moveToTheNextPageAndSelectRows([]);
       testContext.verifySelectedRows([]);
       // Move to first page
-      testContext.moveToThePreviousPageAndSelectRows([]);
+      await testContext.moveToThePreviousPageAndSelectRows([]);
       testContext.verifySelectedRows([0]);
       // Move to second page
-      testContext.moveToTheNextPageAndSelectRows([1]);
+      await testContext.moveToTheNextPageAndSelectRows([1]);
       testContext.verifySelectedRows([1]);
 
       // Move to third page
-      testContext.moveToTheNextPageAndSelectRows([]);
+      await testContext.moveToTheNextPageAndSelectRows([]);
       testContext.verifySelectedRows([]);
       // Move to four page
-      testContext.moveToTheNextPageAndSelectRows([]);
+      await testContext.moveToTheNextPageAndSelectRows([]);
       testContext.verifySelectedRows([]);
       // Move to third page
-      testContext.moveToThePreviousPageAndSelectRows([]);
+      await testContext.moveToThePreviousPageAndSelectRows([]);
       // Move to second page
-      testContext.moveToThePreviousPageAndSelectRows([]);
+      await testContext.moveToThePreviousPageAndSelectRows([]);
       testContext.verifySelectedRows([1]);
       // Move to first page
-      testContext.moveToThePreviousPageAndSelectRows([]);
+      await testContext.moveToThePreviousPageAndSelectRows([]);
       // Move to second page
-      testContext.moveToTheNextPageAndSelectRows([]);
+      await testContext.moveToTheNextPageAndSelectRows([]);
       testContext.verifySelectedRows([1]);
-    }));
+    });
 
-    it('selection is preserve when refreshing data', fakeAsync(() => {
-      testContext.selectRows([1]);
+    it('selection is preserve when refreshing data', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
+      await testContext.selectRows([1]);
       testContext.verifySelectedRows([1]);
-      testContext.moveToTheNextPageAndSelectRows([]);
+      await testContext.moveToTheNextPageAndSelectRows([]);
       testContext.verifySelectedRows([]);
 
-      testContext.moveToThePreviousPageAndSelectRows([]);
+      await testContext.moveToThePreviousPageAndSelectRows([]);
       testContext.verifySelectedRows([1]);
       //Simulate data refresh by create new instances of data
       testContext.appfxDatagridHostComponent.data = allGridData.map((item: any) => {
         return { ...item };
       });
       testContext.fixture.detectChanges();
-      tick();
+      await vi.advanceTimersByTimeAsync(0);
       testContext.fixture.detectChanges();
       testContext.verifySelectedRows([1]);
-    }));
+    });
   });
 
-  it("does not preserve selection when 'preserveExistingSelection' is set to falsy", fakeAsync(() => {
+  it("does not preserve selection when 'preserveExistingSelection' is set to falsy", async () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
     testContext.appfxDatagridHostComponent.preserveSelection = false;
     testContext.appfxDatagridHostComponent.pageSize = 2;
     testContext.appfxDatagridHostComponent.data = allGridData;
     testContext.fixture.detectChanges(false);
-    tick();
+    await vi.advanceTimersByTimeAsync(0);
 
     testContext.fixture.detectChanges(false);
     vi.spyOn(testContext.appfxDatagridHostComponent.directive, 'updateSelectedItems').mockImplementation(
@@ -467,13 +475,13 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
     );
     const gridData = testContext.appfxDatagridHostComponent.data;
     testContext.fixture.detectChanges(false);
-    tick();
+    await vi.advanceTimersByTimeAsync(0);
     expect(testContext.appfxDatagridHostComponent.directive.updateSelectedItems).not.toHaveBeenCalled();
     testContext.appfxDatagridHostComponent.data = [...gridData];
     testContext.appfxDatagridHostComponent.selectedItems = [gridData[0]];
     testContext.fixture.detectChanges(false);
     expect(testContext.appfxDatagridHostComponent.directive.updateSelectedItems).not.toHaveBeenCalled();
-  }));
+  });
 
   afterEach(() => {
     testContext.fixture.destroy();

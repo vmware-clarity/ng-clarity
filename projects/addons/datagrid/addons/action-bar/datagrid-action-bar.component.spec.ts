@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, DebugElement, EventEmitter, HostBinding } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ElementResizeService } from '@clr/addons/a11y';
@@ -267,13 +267,14 @@ describe('DatagridActionBarComponent', () => {
     });
 
     describe("AND the container's width has decreased due to a browser window resize", () => {
-      beforeEach(fakeAsync(() => {
+      beforeEach(async () => {
+        vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
         testContext.containerComponent.width = testContext.containerComponent.smallSize;
         testContext.fixture.detectChanges();
         testContext.resizeService.resize$.next();
-        tick(10);
+        await vi.advanceTimersByTimeAsync(10);
         testContext.fixture.detectChanges();
-      }));
+      });
 
       it("THEN displays only the buttons for actions which fit the container's width", () => {
         const action: ActionDefinition = testContext.actionsToFitScreen[0];
@@ -312,13 +313,14 @@ describe('DatagridActionBarComponent', () => {
       });
 
       describe('AND the container is resized back to its original size', () => {
-        beforeEach(fakeAsync(() => {
+        beforeEach(async () => {
+          vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
           testContext.containerComponent.width = testContext.containerComponent.normalSize;
           testContext.fixture.detectChanges();
           testContext.resizeService.resize$.next();
-          tick(10);
+          await vi.advanceTimersByTimeAsync(10);
           testContext.fixture.detectChanges();
-        }));
+        });
 
         it('THEN displays all available actions', () => {
           testContext.actionsToFitScreen.forEach(action => {
@@ -417,11 +419,12 @@ describe('DatagridActionBarComponent', () => {
       });
 
       describe('AND the browser window is being resized', () => {
-        beforeEach(fakeAsync(() => {
+        beforeEach(async () => {
+          vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
           testContext.resizeService.resize$.next();
-          tick(10);
+          await vi.advanceTimersByTimeAsync(10);
           testContext.fixture.detectChanges();
-        }));
+        });
 
         it('THEN the dropdown is closed', () => {
           expect(testContext.fixture.debugElement.query(By.css('clr-dropdown-menu'))).toBeNull();
@@ -454,7 +457,8 @@ describe('DatagridActionBarComponent', () => {
     });
   });
 
-  it('NOT all actions should be visible', fakeAsync(() => {
+  it('NOT all actions should be visible', async () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
     const visibleActionSelector = `button[data-test-id='${testContext.actionsWithVisibility[0].id}']`;
     const hiddenActionSelector = `button[data-test-id='${testContext.actionsWithVisibility[1].id}']`;
     const dropDownSelector = 'clr-dropdown.dropdown button.dropdown-toggle';
@@ -465,11 +469,11 @@ describe('DatagridActionBarComponent', () => {
     expect(testContext.fixture.debugElement.query(By.css(hiddenActionSelector))).toBeNull();
 
     testContext.fixture.debugElement.query(By.css(dropDownSelector)).triggerEventHandler('click', {});
-    tick(10);
+    await vi.advanceTimersByTimeAsync(10);
     testContext.fixture.detectChanges();
 
     const hiddenActionEle: DebugElement = testContext.fixture.debugElement.query(By.css(hiddenActionSelector));
     expect(hiddenActionEle).toBeTruthy();
     expect(hiddenActionEle.nativeElement.textContent.trim()).toEqual(`${testContext.actionsWithVisibility[1].label}`);
-  }));
+  });
 });

@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TestContext } from '@clr/angular/testing';
 import type { Mock } from 'vitest';
 
@@ -770,7 +770,8 @@ describe('ClrPopover', () => {
         });
       });
 
-      it('opens a popover at a specific point origin', fakeAsync(() => {
+      it('opens a popover at a specific point origin', async () => {
+        vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
         const fixture = TestBed.createComponent(PointContent);
         fixture.detectChanges();
 
@@ -779,7 +780,7 @@ describe('ClrPopover', () => {
         fixture.componentInstance.point = point;
         fixture.componentInstance.openState = true;
         fixture.detectChanges();
-        tick();
+        await vi.advanceTimersByTimeAsync(0);
 
         const content = document.body.querySelectorAll('div.clr-popover-content');
         expect(content.length).toBe(1);
@@ -788,12 +789,13 @@ describe('ClrPopover', () => {
 
         fixture.componentInstance.openState = false;
         fixture.detectChanges();
-        tick();
+        await vi.advanceTimersByTimeAsync(0);
 
         fixture.destroy();
-      }));
+      });
 
-      it('opens via popoverService.openAtPoint without errors', fakeAsync(() => {
+      it('opens via popoverService.openAtPoint without errors', async () => {
+        vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
         const fixture = TestBed.createComponent(PointContent);
         fixture.detectChanges();
 
@@ -804,19 +806,19 @@ describe('ClrPopover', () => {
         popoverService.openAtPoint(point);
         fixture.componentInstance.openState = true;
         fixture.detectChanges();
-        tick();
+        await vi.advanceTimersByTimeAsync(0);
 
         const content = document.body.querySelectorAll('div.clr-popover-content');
         expect(content.length).toBe(1);
 
         popoverService.open = false;
         fixture.detectChanges();
-        tick();
+        await vi.advanceTimersByTimeAsync(0);
 
         expect(popoverService.open).toBe(false);
 
         fixture.destroy();
-      }));
+      });
     });
 
     describe('outside click for cross-window point-based origins', () => {
@@ -851,20 +853,21 @@ describe('ClrPopover', () => {
         fixture.destroy();
       });
 
-      it('closes a point-based popover on a click dispatched inside the foreign-realm document CDK cannot see', fakeAsync(() => {
+      it('closes a point-based popover on a click dispatched inside the foreign-realm document CDK cannot see', async () => {
+        vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
         // Mirrors the element-based cross-window outside-click fix: pointTargetElement
         // (the right-clicked element a context menu is anchored to) can itself live
         // inside a foreign iframe document, invisible to CDK's outsidePointerEvents().
         popoverService.openAtPoint({ x: 10, y: 10 }, trigger);
         fixture.detectChanges();
-        tick(500);
+        await vi.advanceTimersByTimeAsync(500);
 
         expect(popoverService.open).toBe(true);
 
         iframeDoc.dispatchEvent(new Event('click', { bubbles: true }));
 
         expect(popoverService.open).toBe(false);
-      }));
+      });
     });
   });
 });

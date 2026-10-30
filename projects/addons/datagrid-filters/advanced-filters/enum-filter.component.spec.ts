@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClrCheckboxModule, ClrInputModule, ClrRadioModule, ClrSelectModule } from '@clr/angular/forms';
 import { ClrIcon } from '@clr/angular/icon';
@@ -99,9 +99,10 @@ describe('EnumFilterComponent', () => {
   });
 
   describe('Initialization (Small Data)', () => {
-    it('should initialize correctly with default values', fakeAsync(() => {
+    it('should initialize correctly with default values', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       component.ngOnInit();
-      tick(50); // Allow initial async load
+      await vi.advanceTimersByTimeAsync(50); // Allow initial async load
       fixture.detectChanges();
 
       expect(component.optionsData.length).toBe(3);
@@ -109,12 +110,13 @@ describe('EnumFilterComponent', () => {
       expect(component.enumFilterForm).toBeDefined();
       expect(component.enumFilterForm.get('enumOperator')?.value).toBe(ComparisonOperator.DoesNotEqual);
       expect(component.additionalOperators).toBe(true); // Because allowNotInOperator is true
-    }));
+    });
 
-    it('should initialize in Edit Mode (pre-selected values)', fakeAsync(() => {
+    it('should initialize in Edit Mode (pre-selected values)', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       component.propertyFilter = propertyFilter;
       component.ngOnChanges(); // Trigger reload
-      tick(50);
+      await vi.advanceTimersByTimeAsync(50);
       fixture.detectChanges();
 
       const redControl = component.optionsFormArray.controls[0]; // red
@@ -124,9 +126,10 @@ describe('EnumFilterComponent', () => {
       expect(greenControl.value).toBe(false);
       // Operator sync check
       expect(component.enumFilterForm.get('enumOperator')?.value).toBe(ComparisonOperator.Equals);
-    }));
+    });
 
-    it('should sync "DoesNotEqual" operator correctly from PropertyFilter', fakeAsync(() => {
+    it('should sync "DoesNotEqual" operator correctly from PropertyFilter', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       const filterAnd = new PropertyFilter();
       filterAnd.criteria = [predicateRed];
       filterAnd.operator = LogicalOperator.And; // Implies DoesNotEqual
@@ -134,10 +137,10 @@ describe('EnumFilterComponent', () => {
       component.propertyFilter = filterAnd;
       component.ngOnInit();
       component.ngOnChanges();
-      tick(50);
+      await vi.advanceTimersByTimeAsync(50);
 
       expect(component.enumFilterForm?.get('enumOperator')?.value).toBe(ComparisonOperator.DoesNotEqual);
-    }));
+    });
   });
 
   describe('Async Loading & Large Data', () => {
@@ -145,40 +148,44 @@ describe('EnumFilterComponent', () => {
       component.filterProperty = enumPropertyLarge;
     });
 
-    it('should handle large datasets by showing loading indicator and splicing results', fakeAsync(() => {
+    it('should handle large datasets by showing loading indicator and splicing results', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       component.ngOnInit();
       expect(component.isProcessing).toBe(false);
       // Should only show maxInitiallyShownItems (50)
       expect(component.filteredOptions.length).toBe(50);
       // But total searchable length is 150
       expect(component.searchResultsLen).toBe(150);
-    }));
+    });
 
-    it('should load more items when loadMore() is called', fakeAsync(() => {
+    it('should load more items when loadMore() is called', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       component.ngOnInit();
-      tick(50);
+      await vi.advanceTimersByTimeAsync(50);
 
       expect(component.filteredOptions.length).toBe(50);
 
       component.loadMore();
       expect(component.isProcessing).toBe(true);
 
-      tick(50); // Wait for loadMore async
+      await vi.advanceTimersByTimeAsync(50); // Wait for loadMore async
 
       // 50 + 100 step
       expect(component.filteredOptions.length).toBe(150);
       expect(component.isProcessing).toBe(false);
-    }));
+    });
   });
 
   describe('Search Logic', () => {
-    beforeEach(fakeAsync(() => {
+    beforeEach(async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       component.filterProperty = enumPropertySmall; // red, green, blue
       component.ngOnInit();
-      tick(50);
-    }));
+      await vi.advanceTimersByTimeAsync(50);
+    });
 
-    it('should filter options by value (case insensitive)', fakeAsync(() => {
+    it('should filter options by value (case insensitive)', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       const searchControl = component.enumFilterForm.get('searchTerm');
       searchControl?.setValue('Re'); // Should match 'red'/'Alert' (if key matched) or just check logic
       // Actually values are Alert, Normal, Info. Keys are red, green, blue.
@@ -186,61 +193,65 @@ describe('EnumFilterComponent', () => {
       // Let's search by Value "Alert"
       searchControl?.setValue('alert');
 
-      tick(200); // Debounce
-      tick(50); // Async search execution
+      await vi.advanceTimersByTimeAsync(200); // Debounce
+      await vi.advanceTimersByTimeAsync(50); // Async search execution
 
       expect(component.filteredOptions.length).toBe(1);
       expect(component.filteredOptions[0].data.value).toBe('Alert');
-    }));
+    });
 
-    it('should filter options by key', fakeAsync(() => {
+    it('should filter options by key', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       const searchControl = component.enumFilterForm.get('searchTerm');
       searchControl?.setValue('gree'); // matches 'green'
 
-      tick(200);
-      tick(50);
+      await vi.advanceTimersByTimeAsync(200);
+      await vi.advanceTimersByTimeAsync(50);
 
       expect(component.filteredOptions.length).toBe(1);
       expect(component.filteredOptions[0].data.key).toBe('green');
-    }));
+    });
 
-    it('should clear search and restore full list', fakeAsync(() => {
+    it('should clear search and restore full list', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       component.enumFilterForm.get('searchTerm')?.setValue('alert');
-      tick(250);
+      await vi.advanceTimersByTimeAsync(250);
       expect(component.filteredOptions.length).toBe(1);
 
       component.clearSearch();
-      tick(250); // Value change logic triggers again
+      await vi.advanceTimersByTimeAsync(250); // Value change logic triggers again
 
       expect(component.enumFilterForm.get('searchTerm')?.value).toBe('');
       expect(component.filteredOptions.length).toBe(3);
-    }));
+    });
   });
 
   describe('Interaction: Search + Selection', () => {
-    beforeEach(fakeAsync(() => {
+    beforeEach(async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       component.filterProperty = enumPropertySmall;
       component.ngOnInit();
-      tick(50);
-    }));
+      await vi.advanceTimersByTimeAsync(50);
+    });
 
-    it('Select All should only select filtered (visible) options', fakeAsync(() => {
+    it('Select All should only select filtered (visible) options', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       // 1. Search for "Alert" (red)
       component.enumFilterForm.get('searchTerm')?.setValue('Alert');
-      tick(250);
+      await vi.advanceTimersByTimeAsync(250);
       expect(component.filteredOptions.length).toBe(1);
 
       // 2. Click Select All
       component.enumFilterForm.get('selectAll')?.setValue(true);
       component.onSelectAllChange(); // Trigger manually as we are bypassing template binding
-      tick(50);
+      await vi.advanceTimersByTimeAsync(50);
 
       // 3. Assert "red" is selected, "green/blue" are NOT
       // red is index 0, green is 1, blue is 2
       expect(component.optionsFormArray.at(0).value).toBe(true);
       expect(component.optionsFormArray.at(1).value).toBe(false);
       expect(component.optionsFormArray.at(2).value).toBe(false);
-    }));
+    });
 
     it('should update "selectedCount" correctly when individual options change', () => {
       // Select 1 item
@@ -268,11 +279,12 @@ describe('EnumFilterComponent', () => {
   });
 
   describe('Operators & Validation', () => {
-    beforeEach(fakeAsync(() => {
+    beforeEach(async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       component.filterProperty = enumPropertySmall;
       component.ngOnInit();
-      tick(50);
-    }));
+      await vi.advanceTimersByTimeAsync(50);
+    });
 
     it('should update filter criteria operator when form operator changes', () => {
       vi.spyOn(component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
@@ -308,11 +320,12 @@ describe('EnumFilterComponent', () => {
   });
 
   describe('Single Select Mode', () => {
-    beforeEach(fakeAsync(() => {
+    beforeEach(async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       component.filterProperty = singleSelectEnumProperty;
       component.ngOnInit();
-      tick(50);
-    }));
+      await vi.advanceTimersByTimeAsync(50);
+    });
 
     it('should create valid form without requiring array selection', () => {
       // Single select uses 'singleSelectOption' control, not the array checkboxes
@@ -333,11 +346,12 @@ describe('EnumFilterComponent', () => {
   });
 
   describe('Apply & Cancel Actions', () => {
-    beforeEach(fakeAsync(() => {
+    beforeEach(async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       component.filterProperty = enumPropertySmall;
       component.ngOnInit();
-      tick(50);
-    }));
+      await vi.advanceTimersByTimeAsync(50);
+    });
 
     it('onApply (multiselect) should collect all checked values', () => {
       vi.spyOn(component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
@@ -362,11 +376,12 @@ describe('EnumFilterComponent', () => {
     });
   });
   describe('Additional Coverage: Branch & Input Logic', () => {
-    it('should verify performSearch logic and update options when filterProperty input is changed', fakeAsync(() => {
+    it('should verify performSearch logic and update options when filterProperty input is changed', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       // 1. Initialize with Small Property (3 items)
       component.filterProperty = enumPropertySmall;
       component.ngOnInit();
-      tick(50);
+      await vi.advanceTimersByTimeAsync(50);
 
       expect(component.optionsData.length).toBe(3);
       expect(component.filteredOptions.length).toBe(3);
@@ -375,15 +390,16 @@ describe('EnumFilterComponent', () => {
       // This tests the ngOnChanges -> initializeFilter -> performSearch flow
       component.filterProperty = enumPropertyLarge;
       component.ngOnChanges();
-      tick(50);
+      await vi.advanceTimersByTimeAsync(50);
 
       // performSearch('') is called implicitly, populating filteredOptions up to max limit
       expect(component.optionsData.length).toBe(150);
       expect(component.filteredOptions.length).toBe(50); // default max shown
       expect(component.searchResultsLen).toBe(150);
-    }));
+    });
 
-    it('should auto-check "Select All" if propertyFilter contains ALL options (updateForm branch)', fakeAsync(() => {
+    it('should auto-check "Select All" if propertyFilter contains ALL options (updateForm branch)', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       // Create a filter that includes every single option available in 'enumPropertySmall'
       const allSelectedFilter = new PropertyFilter();
       allSelectedFilter.criteria = [
@@ -408,21 +424,22 @@ describe('EnumFilterComponent', () => {
       component.propertyFilter = allSelectedFilter;
 
       component.ngOnInit();
-      tick(50); // wait for async init
+      await vi.advanceTimersByTimeAsync(50); // wait for async init
 
       // This hits the branch: if (selectedOptions.length === this.optionsData.length)
       expect(component.enumFilterForm.get('selectAll')?.value).toBe(true);
 
       // Verify individual controls are also checked
       component.optionsFormArray.controls.forEach(c => expect(c.value).toBe(true));
-    }));
+    });
 
     describe('Single Select Initialization Logic', () => {
       beforeEach(() => {
         component.filterProperty = singleSelectEnumProperty;
       });
 
-      it('should set singleSelectOption to the specific value from propertyFilter (If branch)', fakeAsync(() => {
+      it('should set singleSelectOption to the specific value from propertyFilter (If branch)', async () => {
+        vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
         // Define a filter for 'green' to hit the 'if (this.propertyFilter)' block
         const greenFilter = new PropertyFilter();
         greenFilter.criteria = [
@@ -435,10 +452,10 @@ describe('EnumFilterComponent', () => {
         component.propertyFilter = greenFilter;
 
         component.ngOnInit();
-        tick(50);
+        await vi.advanceTimersByTimeAsync(50);
 
         expect(component.enumFilterForm.get('singleSelectOption')?.value).toBe('green');
-      }));
+      });
     });
   });
 });

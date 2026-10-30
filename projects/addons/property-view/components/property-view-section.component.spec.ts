@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, DebugElement, Input } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrDropdownModule } from '@clr/angular/popover/dropdown';
 
@@ -439,7 +439,8 @@ describe('PropertyViewSectionComponent', () => {
         expect(testContext.getTitleActionsDropdownMenusItems()[1].classList.contains('disabled')).toEqual(true);
       });
 
-      it("should invoke action's clickHandler() when action element is clicked", fakeAsync(() => {
+      it("should invoke action's clickHandler() when action element is clicked", async () => {
+        vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
         const action1 = {
           title: 'action-1',
           isEnabled: true,
@@ -466,15 +467,15 @@ describe('PropertyViewSectionComponent', () => {
         expect(vi.mocked(action1ClickHandlerSpy).mock.calls.length).toEqual(1);
         expect(vi.mocked(action1ClickHandlerSpy).mock.lastCall).toEqual([]);
         testContext.fixture.detectChanges();
-        tick();
+        await vi.advanceTimersByTimeAsync(0);
 
         testContext.getTitleActionsDropdownTriggers()[0].click();
         testContext.fixture.detectChanges();
         testContext.getTitleActionsDropdownMenusItems()[1].click();
         expect(vi.mocked(action2ClickHandlerSpy).mock.calls.length).toEqual(1);
         expect(vi.mocked(action2ClickHandlerSpy).mock.lastCall).toEqual([]);
-        flush();
-      }));
+        await vi.runOnlyPendingTimersAsync();
+      });
 
       it('should be displayed after text', () => {
         testContext.component.data = testContext.createData({

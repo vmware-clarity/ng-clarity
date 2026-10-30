@@ -54,6 +54,17 @@ export class TestContext<D, C> {
     return this.clarityDebugElement.injector.get(token, notFoundValue);
   }
 
+  /** Wait for Angular's scheduled rendering without forcing a change detection pass. */
+  stable(): Promise<void> {
+    return this.fixture.whenStable();
+  }
+
+  /** Set a host component input through Angular so OnPush views receive a notification. */
+  async setInput(name: string, value: unknown): Promise<void> {
+    this.fixture.componentRef.setInput(name, value);
+    await this.stable();
+  }
+
   /**
    * Delegate method to avoid verbosity
    */
@@ -238,12 +249,7 @@ export function finishAnimations(element: Element) {
 }
 
 /**
- * Helper for testing requestAnimationFrame code. FakeAssync internally mocks requestAnimationFrame as setTimeout(16).
- * That's why we need to test it with tick(16). 16 is not a truly magic number, it's the approximated single frame time
- * of a 60 FPS refresh rate.
- * @param fixture If fixture is provided we will also run change detection. Unlike the usual fakeAsync/tick scenario,
- * where tick() follows the changeDetection, requestAnimationFrame may be used to setup preconditions for a change detection
- * cycle, so it should precede a detectChanges call.
+ * Allow a browser animation frame before checking a fixture. Keep requestAnimationFrame real when using Vitest timers.
  */
 export async function animationFrameTick(fixture?: ComponentFixture<any>) {
   await delay(16);

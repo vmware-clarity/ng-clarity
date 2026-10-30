@@ -5,6 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { provideZoneChangeDetection } from '@angular/core';
+import { provideCheckNoChangesConfig, provideZonelessChangeDetection } from '@angular/core';
 
-export default [provideZoneChangeDetection({ eventCoalescing: true })];
+export default [provideZonelessChangeDetection(), provideCheckNoChangesConfig({ exhaustive: true })];

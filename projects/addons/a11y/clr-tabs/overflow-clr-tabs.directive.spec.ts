@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrTab, ClrTabLink, ClrTabs, ClrTabsModule } from '@clr/angular/layout/tabs';
 import { Observable, Subject } from 'rxjs';
@@ -183,70 +183,76 @@ describe('OverflowClrTabsDirective', () => {
       expect(testContext.component.tabsInOverflow).toEqual([false, false, false]);
     });
 
-    it('1 tab in overflow', fakeAsync(() => {
+    it('1 tab in overflow', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       Object.assign(testContext, createThisTest());
       testContext.component.width = 140;
       testContext.fixture.detectChanges();
 
       testContext.resizeService.resize.next();
-      tick(resources.layoutChangesDebounceDuration);
+      await vi.advanceTimersByTimeAsync(resources.layoutChangesDebounceDuration);
       expect(testContext.component.tabsInOverflow).toEqual([false, false, true]);
-      tick(resources.initialLoadDelay);
-    }));
+      await vi.advanceTimersByTimeAsync(resources.initialLoadDelay);
+    });
 
-    it('2 tabs in overflow', fakeAsync(() => {
+    it('2 tabs in overflow', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       Object.assign(testContext, createThisTest());
       testContext.component.width = 90;
       testContext.fixture.detectChanges();
 
       testContext.resizeService.resize.next();
-      tick(resources.layoutChangesDebounceDuration);
+      await vi.advanceTimersByTimeAsync(resources.layoutChangesDebounceDuration);
 
       expect(testContext.component.tabsInOverflow).toEqual([false, true, true]);
-      tick(resources.initialLoadDelay);
-    }));
+      await vi.advanceTimersByTimeAsync(resources.initialLoadDelay);
+    });
 
-    it('All tabs in overflow', fakeAsync(() => {
+    it('All tabs in overflow', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       Object.assign(testContext, createThisTest());
       testContext.component.width = 41;
       testContext.fixture.detectChanges();
 
       testContext.resizeService.resize.next();
-      tick(resources.layoutChangesDebounceDuration);
+      await vi.advanceTimersByTimeAsync(resources.layoutChangesDebounceDuration);
 
       expect(testContext.component.tabsInOverflow).toEqual([true, true, true]);
-      tick(resources.initialLoadDelay);
-    }));
+      await vi.advanceTimersByTimeAsync(resources.initialLoadDelay);
+    });
 
-    it('Adding new tab in overflow', fakeAsync(() => {
+    it('Adding new tab in overflow', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       Object.assign(testContext, createThisTest());
       testContext.component.tab4Visible = true;
       testContext.fixture.detectChanges();
 
-      tick(resources.layoutChangesDebounceDuration);
+      await vi.advanceTimersByTimeAsync(resources.layoutChangesDebounceDuration);
       expect(testContext.component.tabsInOverflow).toEqual([false, false, false, true]);
-      tick(resources.initialLoadDelay);
-    }));
+      await vi.advanceTimersByTimeAsync(resources.initialLoadDelay);
+    });
 
-    it('Adding new tab without overflow', fakeAsync(() => {
+    it('Adding new tab without overflow', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       Object.assign(testContext, createThisTest());
       testContext.component.width = 250;
       testContext.component.tab4Visible = true;
       testContext.fixture.detectChanges();
 
-      tick(resources.layoutChangesDebounceDuration);
+      await vi.advanceTimersByTimeAsync(resources.layoutChangesDebounceDuration);
       expect(testContext.component.tabsInOverflow).toEqual([false, false, false, false]);
-      tick(resources.initialLoadDelay);
-    }));
+      await vi.advanceTimersByTimeAsync(resources.initialLoadDelay);
+    });
 
-    it('add proper classes to the buttons', fakeAsync(() => {
+    it('add proper classes to the buttons', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       Object.assign(testContext, createThisTest());
       // The first 2 buttons are visible, 3rd is in overflow.
       testContext.component.width = 140;
       testContext.fixture.detectChanges();
 
       testContext.resizeService.resize.next();
-      tick(resources.layoutChangesDebounceDuration);
+      await vi.advanceTimersByTimeAsync(resources.layoutChangesDebounceDuration);
 
       let debugElements = testContext.fixture.debugElement.queryAll(By.css('button[clrTabLink]'));
       expect(debugElements.length).toEqual(2); // only the first 2 are visible
@@ -269,25 +275,27 @@ describe('OverflowClrTabsDirective', () => {
       // Verify styles of the 3rd button (in overflow)
       expect(debugElements[2].classes['nav-link']).toBeUndefined();
       expect(debugElements[2].classes['btn-link']).toBeUndefined();
-      tick(resources.initialLoadDelay);
-    }));
+      await vi.advanceTimersByTimeAsync(resources.initialLoadDelay);
+    });
 
-    it('WHEN initialLoadDelay passes THEN overflow will be updated', fakeAsync(() => {
+    it('WHEN initialLoadDelay passes THEN overflow will be updated', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       Object.assign(testContext, createThisTest());
       testContext.component.width = 140;
       testContext.fixture.detectChanges();
 
-      tick(resources.initialLoadDelay + resources.layoutChangesDebounceDuration);
+      await vi.advanceTimersByTimeAsync(resources.initialLoadDelay + resources.layoutChangesDebounceDuration);
       expect(testContext.component.tabsInOverflow).toEqual([false, false, true]);
-    }));
+    });
 
-    it('WHEN all tabs are in overflow THEN the Overflow dropdown has custom styling', fakeAsync(() => {
+    it('WHEN all tabs are in overflow THEN the Overflow dropdown has custom styling', async () => {
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
       Object.assign(testContext, createThisTest());
       testContext.component.width = 41;
       testContext.fixture.detectChanges();
 
       testContext.resizeService.resize.next();
-      tick(resources.layoutChangesDebounceDuration);
+      await vi.advanceTimersByTimeAsync(resources.layoutChangesDebounceDuration);
 
       // Open the "More" button.
       const clrTabs: ClrTabs = testContext.fixture.componentInstance.tabs;
@@ -302,7 +310,7 @@ describe('OverflowClrTabsDirective', () => {
       expect(toggleEl.style.position).toEqual('fixed');
       expect(toggleEl.style.top).toEqual('auto');
 
-      tick(resources.initialLoadDelay);
-    }));
+      await vi.advanceTimersByTimeAsync(resources.initialLoadDelay);
+    });
   });
 });

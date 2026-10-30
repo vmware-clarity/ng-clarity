@@ -8,7 +8,7 @@
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { Renderer2 } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DragAndDropGroupService } from '@clr/addons/drag-and-drop';
 import { MockRenderer2, sampleCards } from '@clr/addons/testing';
 import { AppfxTranslateModule } from '@clr/addons/translate';
@@ -68,17 +68,18 @@ describe('AppfxCardContainerComponent', () => {
     }
   });
 
-  it('should insert card to container', fakeAsync(() => {
+  it('should insert card to container', async () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] });
     const card = sampleCards[0];
     vi.spyOn(component, 'insertCardToContainer' as any).mockReturnValue({});
     vi.spyOn(mockContainerService, 'addCard').mockImplementation(() => undefined);
     component.cards.push(card);
     fixture.detectChanges();
     component.ngDoCheck();
-    tick();
+    await vi.advanceTimersByTimeAsync(0);
 
     expect((component as any).insertCardToContainer).toHaveBeenCalled();
-  }));
+  });
 
   describe('#onToggleCardVisibility', () => {
     it('should remove card from container view when card is hidden', () => {
