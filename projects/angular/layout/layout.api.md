@@ -4,7 +4,9 @@
 
 ```ts
 
+import { AbstractControl } from '@angular/forms';
 import { AfterContentInit } from '@angular/core';
+import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
 import { AnimationCallbackEvent } from '@angular/core';
 import { ApplicationRef } from '@angular/core';
@@ -462,11 +464,11 @@ export class ClrTabsModule {
 }
 
 // @public (undocumented)
-export class ClrVerticalNav implements OnDestroy {
+export class ClrVerticalNav implements OnInit, AfterViewChecked, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "VerticalNavService" needs to be exported by the entry point clr-angular-layout.d.ts
     // Warning: (ae-forgotten-export) The symbol "VerticalNavIconService" needs to be exported by the entry point clr-angular-layout.d.ts
     // Warning: (ae-forgotten-export) The symbol "VerticalNavGroupRegistrationService" needs to be exported by the entry point clr-angular-layout.d.ts
-    constructor(_navService: VerticalNavService, _navIconService: VerticalNavIconService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, commonStrings: ClrCommonStringsService);
+    constructor(_navService: VerticalNavService, _navIconService: VerticalNavIconService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, commonStrings: ClrCommonStringsService, el?: ElementRef<HTMLElement>, changeDetector?: ChangeDetectorRef);
     // (undocumented)
     get ariaExpanded(): string;
     // (undocumented)
@@ -483,8 +485,11 @@ export class ClrVerticalNav implements OnDestroy {
     get hasIcons(): boolean;
     // (undocumented)
     get hasNavGroups(): boolean;
+    ngAfterViewChecked(): void;
     // (undocumented)
     ngOnDestroy(): void;
+    // (undocumented)
+    ngOnInit(): void;
     // (undocumented)
     toggleByButton(): void;
     // (undocumented)
@@ -492,7 +497,7 @@ export class ClrVerticalNav implements OnDestroy {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNav, "clr-vertical-nav", never, { "toggleLabel": { "alias": "clrVerticalNavToggleLabel"; "required": false; }; "collapsible": { "alias": "clrVerticalNavCollapsible"; "required": false; }; "collapsed": { "alias": "clrVerticalNavCollapsed"; "required": false; }; }, { "_collapsedChanged": "clrVerticalNavCollapsedChange"; }, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNav, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNav, [null, null, null, null, { optional: true; }, { optional: true; }]>;
 }
 
 // @public (undocumented)
