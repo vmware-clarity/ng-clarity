@@ -59,6 +59,7 @@ import { DatagridComponent } from './datagrid.component';
 import { AppfxDatagridModule } from './datagrid.module';
 import { DatagridStrings } from './i18n/datagrid-strings.service';
 import { ColumnSortOrder } from './interfaces/column-state';
+import { DatagridTreeConfig, TreeExpandedState } from './interfaces/datagrid-tree-config';
 import { ActionDefinition } from './shared/action/action-definition';
 import { ActionClickEvent } from './shared/action/actions-event-types';
 import { ColumnDefinition, ColumnRenderer } from './shared/column/column-definitions';
@@ -2835,6 +2836,157 @@ describe('DatagridComponent', () => {
     });
   });
 
+  describe('Tree', () => {
+    let result: Subject<any[]>;
+
+    beforeEach(function (this: any) {
+      this.component.columnsDefs = this.columnsDefs;
+      this.component.data = this.data;
+      this.component.serverDrivenDatagrid = true;
+      this.component.trackByProperty = 'name';
+      this.component.treeConfig = {
+        getChildren: () => (result = new Subject<any[]>()),
+        hasChildren: (item: any) => item.name === 'vm0',
+      };
+      // The datagrid is OnPush, so let the application check it the way it does in an app.
+      this.fixture.autoDetectChanges();
+    });
+
+    // The datagrid applies the results of the loaders on the next frame.
+    async function respond(children: any[]) {
+      result.next(children);
+      await new Promise(resolve => requestAnimationFrame(resolve));
+    }
+
+    function rowNames(element: HTMLElement): string[] {
+      return Array.from(element.querySelectorAll<HTMLElement>('clr-dg-row')).map(row =>
+        row.querySelector<HTMLElement>('clr-dg-cell').innerText.trim()
+      );
+    }
+
+    it('renders the rows as a treegrid with a toggle on expandable rows', async function (this: any) {
+      await this.fixture.whenStable();
+
+      const element: HTMLElement = this.fixture.nativeElement;
+      expect(element.querySelector('.datagrid-table').getAttribute('role')).toBe('treegrid');
+      const rows = element.querySelectorAll('clr-dg-row');
+      expect(rows.length).toBe(this.data.length);
+      expect(rows[0].querySelector('.datagrid-tree-toggle')).not.toBeNull();
+      expect(rows[1].querySelector('.datagrid-tree-toggle')).toBeNull();
+    });
+
+    // The text of the cells that have the toggle, in the order they are on screen.
+    function toggleCells(element: HTMLElement): string[] {
+      return Array.from(
+        element.querySelectorAll<HTMLElement>('clr-dg-row')[0].querySelectorAll<HTMLElement>('clr-dg-cell')
+      )
+        .filter(cell => cell.querySelector('.datagrid-tree-toggle'))
+        .map(cell => cell.innerText.trim());
+    }
+
+    it('keeps the toggle in the first column when it is moved', async function (this: any) {
+      await this.fixture.whenStable();
+      // Drops Name after Status, like dragging its header.
+      const dropList = this.fixture.debugElement.query(By.directive(CdkDropList)).injector.get(CdkDropList);
+      const lastIndex = dropList.getSortedItems().findIndex((item: any) => item.data === this.columnsDefs[2]);
+      dropList.dropped.next({ item: { data: this.columnsDefs[0] }, currentIndex: lastIndex });
+      await this.fixture.whenStable();
+
+      const firstCell = this.fixture.nativeElement.querySelector('clr-dg-row clr-dg-cell') as HTMLElement;
+      expect(firstCell.innerText.trim()).toBe('Powered Off');
+      expect(toggleCells(this.fixture.nativeElement)).toEqual(['vm0']);
+      expect(
+        Array.from(this.fixture.nativeElement.querySelector('clr-dg-row').querySelectorAll('clr-dg-cell')).pop()
+      ).toBe(this.fixture.nativeElement.querySelector('.datagrid-tree-toggle').closest('clr-dg-cell'));
+    });
+
+    it('puts the toggle in the columns marked with treeToggle', async function (this: any) {
+      this.columnsDefs[1].treeToggle = true;
+      this.columnsDefs[2].treeToggle = true;
+      this.component.columnsDefs = [...this.columnsDefs];
+      await this.fixture.whenStable();
+
+      expect(toggleCells(this.fixture.nativeElement).length).toBe(2);
+      expect(toggleCells(this.fixture.nativeElement)).not.toContain('vm0');
+    });
+
+    it('shows the children when they arrive', async function (this: any) {
+      await this.fixture.whenStable();
+      const element: HTMLElement = this.fixture.nativeElement;
+
+      element.querySelector<HTMLButtonElement>('.datagrid-tree-toggle').click();
+      await this.fixture.whenStable();
+      await respond([
+        { ...this.data[0], name: 'vm0-a' },
+        { ...this.data[0], name: 'vm0-b' },
+      ]);
+      await this.fixture.whenStable();
+
+      expect(rowNames(element).slice(0, 3)).toEqual(['vm0', 'vm0-a', 'vm0-b']);
+      expect(element.querySelectorAll('clr-dg-row [role=row]')[1].getAttribute('aria-level')).toBe('2');
+    });
+
+    it('drops the toggle of a row whose children come back empty', async function (this: any) {
+      await this.fixture.whenStable();
+      const element: HTMLElement = this.fixture.nativeElement;
+
+      element.querySelector<HTMLButtonElement>('.datagrid-tree-toggle').click();
+      await this.fixture.whenStable();
+      await respond([]);
+      await this.fixture.whenStable();
+
+      expect(element.querySelector('.datagrid-tree-toggle')).toBeNull();
+    });
+
+    it('reports expansion and selects the loaded descendants with cascadeSelection', async function (this: any) {
+      this.component.selectionType = SelectionType.Multi;
+      this.component.treeConfig = { ...this.component.treeConfig, cascadeSelection: true };
+      spyOn(this.component, 'changeSelection');
+      await this.fixture.whenStable();
+      const element: HTMLElement = this.fixture.nativeElement;
+
+      element.querySelector<HTMLButtonElement>('.datagrid-tree-toggle').click();
+      await this.fixture.whenStable();
+      await respond([{ ...this.data[0], name: 'vm0-a' }]);
+      await this.fixture.whenStable();
+      expect(this.component.treeExpandedChanges).toEqual([{ item: this.data[0], expanded: true }]);
+
+      element.querySelector<HTMLLabelElement>('clr-dg-row .datagrid-select label').click();
+      await this.fixture.whenStable();
+      const selected: any[] = this.component.changeSelection.calls.mostRecent().args[0];
+      expect(selected.map(item => item.name).sort()).toEqual(['vm0', 'vm0-a']);
+    });
+
+    it('expands and collapses every row', async function (this: any) {
+      const requested: string[] = [];
+      const getChildren = this.component.treeConfig.getChildren;
+      this.component.treeConfig = {
+        ...this.component.treeConfig,
+        getChildren: (item: any) => {
+          requested.push(item.name);
+          return getChildren(item);
+        },
+      };
+      await this.fixture.whenStable();
+      const element: HTMLElement = this.fixture.nativeElement;
+      const datagrid = this.component.appfxDatagridComponent;
+
+      datagrid.expandAllTreeRows();
+      await this.fixture.whenStable();
+      await respond([{ ...this.data[0], name: 'vm0-a' }]);
+      await this.fixture.whenStable();
+      expect(rowNames(element).slice(0, 2)).toEqual(['vm0', 'vm0-a']);
+      // Only the rows that can have children are asked for them.
+      expect(requested).toEqual(['vm0']);
+      expect(this.component.treeExpandedChanges).toEqual([{ item: this.data[0], expanded: true }]);
+
+      datagrid.collapseAllTreeRows();
+      await this.fixture.whenStable();
+      expect(rowNames(element).length).toBe(this.data.length);
+      expect(this.component.treeExpandedChanges.pop()).toEqual({ item: this.data[0], expanded: false });
+    });
+  });
+
   describe('toggleAll', () => {
     it('should toggle the allSelected property of clrDatagrid', function (this: any) {
       this.component.selectionType = SelectionType.Multi;
@@ -2909,6 +3061,8 @@ class StatusComparator implements ClrDatagridComparatorInterface<any> {
       (exportDataEvent)="onExportDataEvent($event)"
       [rowsExpandedByDefault]="rowsExpandedByDefault"
       [rowDetailContent]="rowDetailContent"
+      [treeConfig]="treeConfig"
+      (treeExpandedChange)="treeExpandedChanges.push($event)"
     >
       <div class="custom-placeholder-content">
         <p>Custom placeholder content</p>
@@ -2949,6 +3103,8 @@ class DatagridHostComponent {
   enableColumnActions = false;
   columnActions: ActionDefinition[] | null = null;
   serverDrivenDatagrid = false;
+  treeConfig?: DatagridTreeConfig<any>;
+  treeExpandedChanges: TreeExpandedState<any>[] = [];
   dataRange: ClrDatagridVirtualScrollRangeInterface<any> = {
     total: 100,
     skip: 0,

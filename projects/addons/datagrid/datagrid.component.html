@@ -73,6 +73,7 @@
       [clrDgDisableUnsort]="column.disableUnsort ?? disableUnsort"
       [clrDgPinnable]="!!column.pinnable"
       [clrDgPinned]="!!column.pinned"
+      [clrDgTreeToggle]="!!treeConfig && hasTreeToggle(column)"
       (clrDgPinnedChange)="onPinnedChange($event, column)"
     >
       <clr-dg-filter
@@ -236,8 +237,54 @@
     </ng-template>
   }
 
+  <!-- Server driven tree datagrid with paging. A tree has no expandable rows. -->
+  @if (serverDrivenDatagrid && !virtualScrolling && treeConfig) {
+    <clr-dg-row
+      *clrDgTreeItems="
+        let item of gridItems;
+        getChildren: treeConfig.getChildren;
+        cascadeSelection: !!treeConfig.cascadeSelection
+      "
+      [clrDgItem]="item"
+      [clrDgDetailOpenLabel]="getExpandDetailsLabel(item)"
+      [clrDgDetailCloseLabel]="getCollapseDetailsLabel(item)"
+      [clrDgExpandable]="!treeConfig.hasChildren || treeConfig.hasChildren(item)"
+      (clrDgExpandedChange)="treeExpandedChange.emit({ item: item, expanded: $event })"
+      [clrDgSelectable]="item | isRowSelectable: isRowLocked : rowsDisabled"
+      [clrDgRowSelectionLabel]="$any(item)?.[visibleColumns && visibleColumns.length ? visibleColumns[0].field : -1]"
+      (contextmenu)="onContextMenu($event, item)"
+    >
+      <clr-dg-action-overflow
+        *ngIf="enableSingleRowActions"
+        (clrDgActionOverflowOpenChange)="onRowActionOverflowOpen($event, singleRowActions, item)"
+      >
+        @for (action of singleRowActions; track action) {
+          <button
+            type="button"
+            class="action-item"
+            (click)="onActionClick(action, item)"
+            [title]="action.tooltip"
+            [disabled]="!action.enabled"
+          >
+            {{ action.label }}
+          </button>
+        }
+      </clr-dg-action-overflow>
+      @if (dragConfig) {
+        <clr-dg-cell class="draggableCell" style="width: 20px">
+          <ng-container *ngTemplateOutlet="draggableCell; context: { $implicit: item }"> </ng-container>
+        </clr-dg-cell>
+      }
+      @for (column of visibleColumns; track column) {
+        <clr-dg-cell>
+          <appfx-dg-cell-container [column]="column" [item]="item"></appfx-dg-cell-container>
+        </clr-dg-cell>
+      }
+    </clr-dg-row>
+  }
+
   <!--  Server driven datagrid with paging -->
-  @if (serverDrivenDatagrid && !virtualScrolling) {
+  @if (serverDrivenDatagrid && !virtualScrolling && !treeConfig) {
     @for (item of gridItems; track trackByFn.bind(this)(i, item); let i = $index) {
       <clr-dg-row
         [clrDgItem]="item"

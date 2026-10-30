@@ -47,6 +47,7 @@ import { CustomFilter } from './providers/custom-filter';
 import { DetailService } from './providers/detail.service';
 import { FiltersProvider } from './providers/filters';
 import { Sort } from './providers/sort';
+import { DatagridTreeService } from './providers/tree.service';
 import { HIDDEN_COLUMN_CLASS, PINNED_COLUMN_CLASS } from './render/constants';
 import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
 import { WrappedColumn } from './wrapped-column';
@@ -201,6 +202,8 @@ export class ClrDatagridColumn<T = any>
 
   private _pinned = false;
 
+  private tree = inject(DatagridTreeService, { optional: true });
+
   constructor(
     private el: ElementRef<HTMLElement>,
     private _sort: Sort<T>,
@@ -262,6 +265,25 @@ export class ClrDatagridColumn<T = any>
         pinned: value,
         changes: [DatagridColumnChanges.PINNED],
       });
+    }
+  }
+
+  /**
+   * In a tree datagrid, puts the expand toggle and the indentation in the cells of this column, and
+   * keeps them there when the column is moved or pinned. Several columns can have it; without any,
+   * the first column does.
+   */
+  @Input({ alias: 'clrDgTreeToggle', transform: booleanAttribute })
+  get treeToggle(): boolean {
+    return !!this.columnState && !!this.tree?.toggleColumns.has(this.columnState);
+  }
+  set treeToggle(value: boolean) {
+    if (this.tree && this.columnState) {
+      if (value) {
+        this.tree.toggleColumns.add(this.columnState);
+      } else {
+        this.tree.toggleColumns.delete(this.columnState);
+      }
     }
   }
 
@@ -441,6 +463,7 @@ export class ClrDatagridColumn<T = any>
   override ngOnDestroy() {
     super.ngOnDestroy();
     this.subscriptions.forEach(s => s.unsubscribe());
+    this.treeToggle = false;
   }
 
   /**

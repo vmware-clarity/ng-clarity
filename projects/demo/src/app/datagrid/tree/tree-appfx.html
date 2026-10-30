@@ -1,0 +1,67 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h3>AppFx datagrid</h3>
+
+<p>
+  <code class="clr-code">appfx-datagrid</code> renders a tree when it is server driven and gets
+  <code class="clr-code">[treeConfig]</code>. Drag a column header, or use its actions menu, to move it; every column
+  can be pinned from the same menu. The expand toggle stays in its column wherever it goes: Name, or the columns picked
+  as toggle columns below.
+</p>
+
+<clr-checkbox-container clrInline>
+  <label>Tree columns</label>
+  @for (column of columns; track column.field) {
+  <clr-checkbox-wrapper>
+    <input
+      type="checkbox"
+      clrCheckbox
+      [ngModel]="!!column.treeToggle"
+      (ngModelChange)="setTreeToggle(column, $event)"
+    />
+    <label>{{ column.displayName }}</label>
+  </clr-checkbox-wrapper>
+  }
+</clr-checkbox-container>
+
+<clr-checkbox-wrapper>
+  <input type="checkbox" clrCheckbox name="appfx-cascade" [(ngModel)]="cascadeSelection" />
+  <label>Selecting a row also selects its loaded descendants</label>
+</clr-checkbox-wrapper>
+
+<p>Columns: {{ order }}</p>
+
+<div class="btn-group btn-sm">
+  <button type="button" class="btn btn-outline" (click)="grid.expandAllTreeRows()">Expand all</button>
+  <button type="button" class="btn btn-outline" (click)="grid.collapseAllTreeRows()">Collapse all</button>
+</div>
+
+<appfx-datagrid
+  #grid
+  [serverDrivenDatagrid]="true"
+  [gridItems]="roots"
+  [totalItems]="total"
+  [loading]="loading"
+  [columns]="columns"
+  [trackByGridItemProperty]="'id'"
+  [selectionType]="SelectionType.Multi"
+  [selectedItems]="selected"
+  [treeConfig]="treeConfig"
+  [enableColumnActions]="true"
+  [layoutModel]="{ stretchToParentHeight: false }"
+  [footerModel]="{ showFooter: true }"
+  [pageSize]="10"
+  [pageSizeOptions]="[5, 10, 20, 50]"
+  [datagridLabels]="labels"
+  (refreshGridData)="refresh($event)"
+  (selectedItemsChange)="selected = $event"
+  (columnOrderChange)="onColumnOrderChange($event)"
+>
+</appfx-datagrid>
+
+<p>Selected: {{ selected.length }}</p>
