@@ -291,7 +291,7 @@ jobs:
           comment-id: ${{steps.find-comment.outputs.comment-id}}
           issue-number: ${{github.event.pull_request.number}}
           edit-mode: replace
-          body-path: dist/benchmarks/report.md
+          body-file: dist/benchmarks/report.md
 
   pr-website-visual-regression-test:
     name: PR Website Visual Regression Test (${{matrix.browser}}, ${{matrix.theme}}, ${{matrix.density}})
