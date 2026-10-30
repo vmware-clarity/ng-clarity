@@ -138,7 +138,6 @@ export class ThemeBuilderComponent implements OnDestroy {
 
   writeGeneratedCss(css: string) {
     this.generatedCss = css;
-    this.cd.detectChanges();
   }
 
   openSaveModal(): void {
