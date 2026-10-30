@@ -27,6 +27,7 @@ import { ClrSidePanelModule } from './side-panel.module';
       <clr-modal
         class="first"
         [clrModalOpen]="first()"
+        [clrModalOverrideScrollService]="bypass()"
         (clrModalOpenChange)="first.set($event)"
         [clrModalSkipAnimation]="true"
       >
@@ -48,6 +49,8 @@ import { ClrSidePanelModule } from './side-panel.module';
       </clr-modal>
       <clr-side-panel
         [clrSidePanelOpen]="panel()"
+        [clrSidePanelPinned]="pinned()"
+        (clrSidePanelAlternateClose)="alternate.push($event)"
         (clrSidePanelOpenChange)="panel.set($event)"
         [clrSidePanelSkipAnimation]="true"
       >
@@ -72,6 +75,8 @@ import { ClrSidePanelModule } from './side-panel.module';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class ModalHost {
+  readonly bypass = signal(false);
+  readonly pinned = signal(false);
   readonly first = signal(false);
   readonly second = signal(false);
   readonly panel = signal(false);
@@ -149,6 +154,65 @@ for (const zoneless of [false, true]) {
       expect(dialog('clr-side-panel')).toBeNull();
       expect(dialog('.first')).not.toBeNull();
       expect(document.body.classList.contains('no-scrolling')).toBeTrue();
+    });
+
+    it('keeps pinned panels off Escape handling and tracks pin changes while open', async () => {
+      host.panel.set(true);
+      host.pinned.set(true);
+      await fixture.whenStable();
+      const trigger: HTMLButtonElement = fixture.nativeElement.querySelector('.trigger');
+      trigger.focus();
+      escape();
+      await fixture.whenStable();
+      expect(document.activeElement).toBe(trigger);
+      expect(host.alternate).toEqual([]);
+      expect(host.panel()).toBeTrue();
+      host.pinned.set(false);
+      await fixture.whenStable();
+      escape();
+      await fixture.whenStable();
+      expect(host.panel()).toBeFalse();
+      host.panel.set(true);
+      await fixture.whenStable();
+      host.pinned.set(true);
+      await fixture.whenStable();
+      trigger.focus();
+      escape();
+      await fixture.whenStable();
+      expect(document.activeElement).toBe(trigger);
+      expect(host.panel()).toBeTrue();
+      expect(host.alternate).toEqual([]);
+    });
+
+    it('does not retain a modal synchronously closed by its open output', async () => {
+      host.first.set(true);
+      await fixture.whenStable();
+      const modal = fixture.debugElement
+        .queryAll(By.directive(ClrModal))
+        .find(el => el.nativeElement.classList.contains('imperative')).componentInstance as ClrModal;
+      modal._openChanged.subscribe(open => {
+        if (open) {
+          modal.close();
+        }
+      });
+      modal.open();
+      await fixture.whenStable();
+      escape();
+      await fixture.whenStable();
+      expect(host.first()).toBeFalse();
+      expect(document.body.classList.contains('no-scrolling')).toBeFalse();
+    });
+
+    it('releases an owned scroll lock when bypass changes while open', async () => {
+      host.first.set(true);
+      await fixture.whenStable();
+      expect(document.body.classList.contains('no-scrolling')).toBeTrue();
+      host.bypass.set(true);
+      await fixture.whenStable();
+      expect(document.body.classList.contains('no-scrolling')).toBeFalse();
+      host.first.set(false);
+      await fixture.whenStable();
+      expect(document.body.classList.contains('no-scrolling')).toBeFalse();
     });
 
     it('preserves the stack bypass used by inline wizard modals', async () => {
