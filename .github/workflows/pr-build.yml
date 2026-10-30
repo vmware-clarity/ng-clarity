@@ -228,6 +228,71 @@ jobs:
           body: |
             🎬 **Animation Report** ${{ steps.test.outcome == 'success' && '✅' || '❌' }} · [View Report](${{ steps.deploy-report.outcome == 'success' && format('https://{0}-animations--{1}.netlify.app', github.event.pull_request.number, secrets.NETLIFY_SITE_NAME) || format('{0}/{1}/actions/runs/{2}', github.server_url, github.repository, github.run_id) }})
 
+  pr-performance-test:
+    name: PR Performance Test
+    timeout-minutes: 40
+    permissions:
+      contents: read
+      # Posts the performance report comment.
+      pull-requests: write
+    runs-on: ubuntu-24.04
+    steps:
+      # The merge of the pull request into its base branch: the head that the base is compared with.
+      - name: Checkout
+        uses: actions/checkout@v4
+      # The base branch as the pull request would be merged into it. Only its libraries: projects/benchmarks builds the
+      # scenarios of the head against them (see tests/performance/README.md).
+      - name: Checkout Base
+        uses: actions/checkout@v4
+        with:
+          ref: ${{github.event.pull_request.base.sha}}
+          path: .benchmark-base
+          sparse-checkout: |
+            projects/angular
+            projects/addons
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+      - name: Install Dependencies
+        run: npm ci --ignore-scripts
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+      - name: Build Benchmarks
+        run: npm run _build:benchmarks
+      - name: Run Benchmarks
+        run: node tests/performance/run.ts
+      - name: Write Report
+        run: |
+          node tests/performance/report.ts
+          cat dist/benchmarks/report.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload Results
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: performance-results
+          path: |
+            dist/benchmarks/results.json
+            dist/benchmarks/report.md
+      # Pull requests from forks have no access to comments: their report is in the job summary.
+      - name: Find Performance Report Comment
+        id: find-comment
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+        uses: peter-evans/find-comment@v2
+        with:
+          issue-number: ${{github.event.pull_request.number}}
+          comment-author: 'github-actions[bot]'
+          body-includes: '<!-- clarity-performance-report -->'
+      - name: Comment Performance Report
+        if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          comment-id: ${{steps.find-comment.outputs.comment-id}}
+          issue-number: ${{github.event.pull_request.number}}
+          edit-mode: replace
+          body-path: dist/benchmarks/report.md
+
   pr-website-visual-regression-test:
     name: PR Website Visual Regression Test (${{matrix.browser}}, ${{matrix.theme}}, ${{matrix.density}})
     timeout-minutes: 40
