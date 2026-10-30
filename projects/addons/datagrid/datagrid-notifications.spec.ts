@@ -6,6 +6,7 @@
  */
 
 import { ChangeDetectorRef, QueryList, SimpleChange } from '@angular/core';
+import { fakeAsync, flush } from '@angular/core/testing';
 import { ClrDatagrid, SelectionType } from '@clr/angular/data/datagrid';
 
 import { ExportProviderService } from './addons/export/export-provider.service';
@@ -46,6 +47,13 @@ describe('Datagrid deferred row notifications', () => {
     await new Promise<void>(resolve => setTimeout(resolve));
     expect(notify).toHaveBeenCalledTimes(1);
   });
+
+  it('preserves fakeAsync flush compatibility for queued row notifications', fakeAsync(() => {
+    updateItems();
+    expect(notify).not.toHaveBeenCalled();
+    flush();
+    expect(notify).toHaveBeenCalledTimes(1);
+  }));
 
   it('cancels every pending row notification when destroyed', async () => {
     updateItems();
