@@ -43,6 +43,10 @@
   </head>
 
   <body id="body" cds-theme="light">
-    <app-root></app-root>
+    <!-- The nonce Angular adds to the styles and scripts it injects. The visual regression test server
+         (scripts/start-static-server.ts) serves the page with a Content-Security-Policy and replaces it per response.
+         The production site sends no Content-Security-Policy, so the placeholder has no effect there. A host that adds
+         one must replace the placeholder with a new nonce per response: a fixed nonce defeats the policy. -->
+    <app-root ngCspNonce="CSP_NONCE"></app-root>
   </body>
 </html>

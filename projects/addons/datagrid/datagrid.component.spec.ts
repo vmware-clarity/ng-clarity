@@ -59,6 +59,7 @@ import { DatagridComponent } from './datagrid.component';
 import { AppfxDatagridModule } from './datagrid.module';
 import { DatagridStrings } from './i18n/datagrid-strings.service';
 import { ColumnSortOrder } from './interfaces/column-state';
+import { DatagridDragConfig } from './interfaces/datagrid-drag-config';
 import { ActionDefinition } from './shared/action/action-definition';
 import { ActionClickEvent } from './shared/action/actions-event-types';
 import { ColumnDefinition, ColumnRenderer } from './shared/column/column-definitions';
@@ -471,6 +472,22 @@ describe('DatagridComponent', () => {
         );
       }
     });
+  });
+
+  // The width is a style binding, not a style attribute, which a Content-Security-Policy without unsafe-inline blocks.
+  it('renders the drag handle column 20px wide', function (this: any) {
+    this.component.columnsDefs = this.columnsDefs;
+    this.component.data = this.data;
+    this.component.serverDrivenDatagrid = true;
+    this.component.dragConfig = { fieldName: 'name' };
+    this.fixture.detectChanges(true);
+
+    const dragHandleCells: HTMLElement[] = Array.from(
+      this.fixture.nativeElement.querySelectorAll('clr-dg-column.draggableCell, clr-dg-cell.draggableCell')
+    );
+
+    expect(dragHandleCells.length).toEqual(1 + this.data.length);
+    dragHandleCells.forEach(cell => expect(cell.style.width).toEqual('20px'));
   });
 
   it('can render cell data with the help of column renderer', function (this: any) {
@@ -2888,6 +2905,7 @@ class StatusComparator implements ClrDatagridComparatorInterface<any> {
       [disableUnsort]="disableUnsort"
       [enableColumnActions]="enableColumnActions"
       [columnActions]="columnActions"
+      [dragConfig]="dragConfig"
       [serverDrivenDatagrid]="serverDrivenDatagrid"
       [dataRange]="dataRange"
       [(detailState)]="detailState"
@@ -2948,6 +2966,7 @@ class DatagridHostComponent {
   disableUnsort = true;
   enableColumnActions = false;
   columnActions: ActionDefinition[] | null = null;
+  dragConfig: DatagridDragConfig;
   serverDrivenDatagrid = false;
   dataRange: ClrDatagridVirtualScrollRangeInterface<any> = {
     total: 100,

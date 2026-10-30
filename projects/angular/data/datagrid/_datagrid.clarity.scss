@@ -386,6 +386,13 @@
     }
   }
 
+  // The pin icon is smaller than the sort icons above it in the column actions menu, so a margin
+  // lines its label up with theirs. The menu is not rendered inside the column, so the rule is not
+  // nested under it.
+  .datagrid-column-actions-pin-icon {
+    margin: tokens.$cds-global-space-2;
+  }
+
   .datagrid-header {
     position: sticky;
     top: 0;
