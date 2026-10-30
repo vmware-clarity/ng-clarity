@@ -87,8 +87,10 @@
       DOM, published through <code cds-text="code">publishElementContext</code>.
     </p>
     <p class="clr-mt-16px" cds-text="body">
-      The engine reads the document it is in and the same-origin frames inside it. Icons are described by their own role
-      and name, not their internals.
+      The engine reads the document it is in and the same-origin frames inside it, and walks into open shadow roots, so
+      a web component is described by what it renders: slotted content where its slots place it, ids resolved within its
+      own shadow root. A marker on a slot or on an element around it applies to what the slot shows. Closed shadow roots
+      cannot be read, and icons are described by their own role and name, not their internals.
     </p>
 
     <h2 id="cost-and-limits" class="clr-mt-48px" cds-text="title">Cost and limits</h2>
@@ -106,7 +108,7 @@
         drawn on a <code cds-text="code">canvas</code>, such as most charts. Publish what matters through
         <code cds-text="code">publishElementContext</code> or an annotation.
       </li>
-      <li>Shadow roots are not read: a web component is described by its host and its light DOM.</li>
+      <li>Closed shadow roots cannot be read. Open shadow roots are read.</li>
       <li>
         Cross-origin frames are opaque. The engine reports the frame with <code cds-text="code">crossOrigin: true</code>
         in its state, but not what it shows. Same-origin frames are read.
