@@ -72,7 +72,9 @@ import { ClrDatagridRow } from './datagrid-row';
 import { ClrDatagridRowDetail } from './datagrid-row-detail';
 import { ClrDatagridSelectionCellDirective } from './datagrid-selection-cell.directive';
 import { ClrDatagridSingleSelectionValueAccessor } from './datagrid-single-selection.directive';
+import { ClrDatagridTreeItems } from './datagrid-tree-items';
 import { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
+import { ClrDatagridVirtualTree } from './datagrid-virtual-tree.directive';
 import { DatagridCellRenderer } from './render/cell-renderer';
 import { DatagridHeaderRenderer } from './render/header-renderer';
 import { DatagridMainRenderer } from './render/main-renderer';
@@ -99,6 +101,8 @@ export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
   ClrDatagridFooter,
   ClrDatagridHideableColumn,
   ClrDatagridItems,
+  ClrDatagridTreeItems,
+  ClrDatagridVirtualTree,
   ClrDatagridPageSize,
   ClrDatagridPagination,
   ClrDatagridPlaceholder,

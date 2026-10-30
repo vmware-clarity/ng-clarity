@@ -184,6 +184,36 @@ columns = [{ displayName: 'State', field: 'state', columnRenderer: StatusCell }]
 
 Persistence needs a `PersistDatagridSettingsService` provided via `appfxDatagridPersistSettingsToken` and a stable `uid` on each column (falls back to `field`, then `displayName`). It is injected optionally, so **missing setup fails silently**.
 
+## Tree data
+
+A server-driven grid without virtual scrolling renders a tree when it gets `[treeConfig]`: `gridItems` are the roots of the page, children are fetched on first expand.
+
+```ts
+treeConfig: DatagridTreeConfig<Vm> = {
+  getChildren: vm => this.api.children(vm.id), // array, Promise or Observable
+  hasChildren: vm => vm.childCount > 0,
+  cascadeSelection: true, // multi selection: a row selects its loaded descendants
+};
+```
+
+```html
+<appfx-datagrid
+  [serverDrivenDatagrid]="true"
+  [gridItems]="roots"
+  [totalItems]="total"
+  [columns]="columns"
+  [trackByGridItemProperty]="'id'"
+  [treeConfig]="treeConfig"
+  (refreshGridData)="onRefresh($event)"
+>
+</appfx-datagrid>
+```
+
+- `treeToggle: true` on a `ColumnDefinition` puts the toggle in that column (several allowed; default: the first column).
+- `trackByGridItemProperty` must be unique across the whole tree.
+- `(treeExpandedChange)` reports expansion; a failed load collapses the row, so handle errors in `getChildren`. `reloadTreeChildren(item?)` fetches children again. `expandAllTreeRows()` / `collapseAllTreeRows()` on the component expand or collapse every row (call them from your own buttons through a template reference).
+- Assign a new `treeConfig` object to change it (OnPush).
+
 ## Rules
 
 - The component is OnPush: always assign new array/object references for `gridItems`, `columns`, `selectedItems`, `layoutModel`, `footerModel`, and actions. In-place mutation will not refresh.

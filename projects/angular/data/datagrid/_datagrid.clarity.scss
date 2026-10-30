@@ -17,6 +17,8 @@
 @use '../../forms/styles/variables.forms' as forms-variables;
 @use '../../modal/variables.modal' as modal-variables;
 @use '../../popover/dropdown/variables.dropdown' as dropdown-variables;
+@use '../../progress/spinner/mixins.spinner' as spinner-mixins;
+@use '../../progress/spinner/variables.spinner' as spinner-variables;
 @use '../variables.tables' as tables-variables;
 @use 'variables.datagrid' as datagrid-variables;
 @use 'mixins.datagrid' as datagrid-mixins;
@@ -253,6 +255,57 @@
         gap: density.$clr-base-gap-m;
         justify-content: center;
       }
+    }
+  }
+
+  // Tree rows: the content of a tree cell is indented by the depth of its row, and the expand toggle
+  // sits in the indentation, so the content of every level lines up past it. The indentation is inside
+  // the cell, which keeps the padding of its header: a squeezed column shrinks its cells like its
+  // header. When the column is too narrow for the full indentation, every level gets a share of what
+  // there is, deeper levels a larger one, so the hierarchy still shows.
+  .datagrid .datagrid-cell.datagrid-tree-cell {
+    overflow: hidden;
+  }
+
+  .datagrid-tree-cell-content {
+    $indent: datagrid-variables.$clr-datagrid-tree-indent;
+    $level: var(--clr-datagrid-tree-level, 0);
+
+    position: relative;
+    // Percentages are of the cell's content width; one indent of it is kept for the text.
+    margin-inline-start: max(
+      0px,
+      min(calc((#{$level} + 1) * #{$indent}), calc((100% - #{$indent}) * (#{$level} + 1) / (#{$level} + 2)))
+    );
+    // The indentation leaves less room, so a long word breaks rather than being cut off by the cell.
+    overflow-wrap: anywhere;
+  }
+
+  .datagrid .datagrid-tree-toggle {
+    @include mixins.clr-no-styles-button();
+    @include datagrid-mixins.datagrid-action-button-styles(
+      $height: datagrid-variables.$clr-datagrid-tree-indent,
+      $columnWidth: datagrid-variables.$clr-datagrid-tree-indent
+    );
+    // A square as wide as the indentation, centred on the first line of the text like the other row
+    // controls. The button takes the font of the text to measure its line.
+    position: absolute;
+    inset-block-start: 0.5lh;
+    inset-inline-end: 100%;
+    translate: 0 -50%;
+    // Centred rather than placed by the padding: the compact density pulls up the icons of a cell.
+    align-items: center;
+    justify-content: center;
+    width: datagrid-variables.$clr-datagrid-tree-indent;
+    font: inherit;
+    color: datagrid-variables.$clr-datagrid-icon-color;
+
+    // While the children of the row load, the size of the icon it replaces.
+    .spinner {
+      @include spinner-mixins.spinner-size-before-after(
+        datagrid-variables.$clr-datagrid-icon-size,
+        spinner-variables.$clr-spinner-small-stroke-width
+      );
     }
   }
 
@@ -1048,6 +1101,9 @@
 
   // @deprecated CSS rule `.datagrid-compact { ... }` in favor of compact mode in density theme
   .datagrid-compact {
+    // The tree geometry of the compact density.
+    --clr-datagrid-tree-indent: #{mixins.baselinePx(20)};
+
     .datagrid {
       margin-top: datagrid-variables.$clr-datagrid-compact-margin-top;
     }

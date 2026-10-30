@@ -49,6 +49,7 @@
 | --clr-datagrid-row-active-color                      | Background color for active state on rows                                |
 | --clr-datagrid-fixed-column-size                     | Size for fixed columns inside datagrid                                   |
 | --clr-datagrid-pinned-columns-max-width              | Largest share of the datagrid the pinned columns may occupy              |
+| --clr-datagrid-tree-indent                           | Indentation of each tree level, and width of the tree expand toggle      |
 
 ## CSS Classes
 
@@ -109,3 +110,7 @@
 | pagination-previous              | Previous page button.                                                                          |
 | pagination-size                  | Wrapper for datagrid page size element.                                                        |
 | sort-icon                        | Sort icon for sortable columns.                                                                |
+| datagrid-tree-cell               | Applied to the cell of a tree row that is indented and holds the expand toggle.                |
+| datagrid-tree-cell-content       | Wrapper in a tree cell that is indented by the level of the row.                               |
+| datagrid-tree-cell-text          | Content of a tree cell, next to the expand toggle.                                             |
+| datagrid-tree-toggle             | Expand toggle of a tree row.                                                                   |

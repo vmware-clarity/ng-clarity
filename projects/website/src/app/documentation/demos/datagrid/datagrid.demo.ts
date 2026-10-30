@@ -31,6 +31,7 @@ import { DatagridDetailAccessibilityGuidance } from './accessibility/datagrid-de
 import { DatagridBasicStructureDemo } from './basic-structure/basic-structure';
 import { Inventory } from './inventory/inventory';
 import { User } from './inventory/user';
+import { DatagridTreeFilesExample } from './tree-data/files-example';
 import { ColorFilter } from './utils/color-filter';
 import { PokemonComparator } from './utils/pokemon-comparator';
 import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
@@ -72,6 +73,7 @@ type DemoRoute = Route & { data: { demoName: string } };
     AiSkillComponent,
     DatagridDetailAccessibilityGuidance,
     DatagridBasicStructureDemo,
+    DatagridTreeFilesExample,
     DatePipe,
   ],
 })
@@ -181,6 +183,25 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
           description:
             'When true, the "select all" checkbox in the datagrid header is disabled. Individual row checkboxes remain functional.',
         },
+        {
+          name: 'reloadTreeChildren(item?)',
+          type: 'T',
+          defaultValue: 'n/a',
+          description: 'Tree data: fetches the children of the item again, or of the whole tree when no item is given.',
+        },
+        {
+          name: 'expandAllTreeRows()',
+          type: 'n/a',
+          defaultValue: 'n/a',
+          description:
+            'Tree data: expands every row and fetches the children of every level. The rows that come in afterwards, on any page, come in expanded too until a row is collapsed.',
+        },
+        {
+          name: 'collapseAllTreeRows()',
+          type: 'n/a',
+          defaultValue: 'n/a',
+          description: 'Tree data: collapses every row, on every page.',
+        },
       ],
     },
     {
@@ -205,6 +226,20 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
           defaultValue: 'true',
           description:
             "Set this to false if you don't want the row to be selectable (single or multicast select modes).",
+        },
+        {
+          name: '[(clrDgExpanded)]',
+          type: 'boolean',
+          defaultValue: 'false',
+          description:
+            'Whether the row is expanded: its expandable row detail, or with tree data, its children. Emits when the user expands or collapses the row.',
+        },
+        {
+          name: '[clrDgExpandable]',
+          type: 'boolean',
+          defaultValue: 'true',
+          description:
+            'Tree data: set this to false on rows that cannot have children, so they do not show the expand toggle. Rows that can show it until their children come back empty.',
         },
         {
           name: '[clrDgSkeletonLoading]',
@@ -355,6 +390,13 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
           description: "Emits when the column is resized. The value is the column's size in pixels.",
         },
         {
+          name: 'clrDgTreeToggle',
+          type: 'boolean',
+          defaultValue: 'false',
+          description:
+            'Tree data: shows the expand toggle and the indentation in this column. Defaults to the first column.',
+        },
+        {
           name: '',
           type: '',
           defaultValue: '',
@@ -492,6 +534,33 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
       ],
     },
     {
+      name: 'ClrDatagridTreeItems',
+      selector: '[clrDgTreeItems][clrDgTreeItemsOf]',
+      props: [
+        {
+          name: '[clrDgTreeItemsOf]',
+          type: 'T[]',
+          defaultValue: 'undefined',
+          description:
+            'A structural directive that renders a tree as rows: the top-level items, and below each expanded row its children. Used as *clrDgTreeItems="let item of items; getChildren: getChildren".',
+        },
+        {
+          name: '[clrDgTreeItemsGetChildren]',
+          type: 'ClrDatagridTreeChildrenFunction<T>',
+          defaultValue: 'undefined',
+          description:
+            'Returns the children of an item: an array, or a Promise or an Observable of one. Called the first time the row is expanded.',
+        },
+        {
+          name: '[clrDgTreeItemsCascadeSelection]',
+          type: 'boolean',
+          defaultValue: 'false',
+          description:
+            'In multi-selection, selecting a row also selects its loaded descendants, and a row is selected when all of its children are.',
+        },
+      ],
+    },
+    {
       name: 'ClrDatagridPageSize',
       selector: 'clr-dg-page-size',
       props: [
@@ -611,6 +680,25 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
           defaultValue: '20',
           description:
             'The size of the cache used to store templates that are not being used for re-use later. Setting the cache size to 0 will disable caching. Defaults to 20 templates.',
+        },
+        {
+          name: '[clrVirtualTreeOf]',
+          type: 'T[]',
+          defaultValue: 'undefined',
+          description:
+            'Tree data: the top-level items, rendered with their expanded children. Use it instead of [clrVirtualRowsOf].',
+        },
+        {
+          name: '[clrVirtualTreeGetChildren]',
+          type: 'ClrDatagridTreeChildrenFunction<T>',
+          defaultValue: 'undefined',
+          description: 'Tree data: returns the children of an item, as an array, or a Promise or an Observable of one.',
+        },
+        {
+          name: '[clrVirtualTreeCascadeSelection]',
+          type: 'boolean',
+          defaultValue: 'false',
+          description: 'Tree data: selecting a row also selects its loaded descendants.',
         },
       ],
     },

@@ -1,0 +1,44 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="btn-group btn-sm clr-mt-16px">
+  <button type="button" class="btn btn-outline" (click)="grid.expandAllTreeRows()">Expand all</button>
+  <button type="button" class="btn btn-outline" (click)="grid.collapseAllTreeRows()">Collapse all</button>
+</div>
+
+<clr-datagrid
+  #grid
+  [clrDgItemsIdentityFn]="identity"
+  [clrDgLoading]="loading"
+  clrDgSelectionType="multi"
+  [(clrDgSelected)]="selected"
+  (clrDgRefresh)="refresh($event)"
+>
+  <clr-dg-column clrDgSortBy="name">Name</clr-dg-column>
+  <clr-dg-column clrDgSortBy="type">Type</clr-dg-column>
+  <clr-dg-column clrDgSortBy="size">Size</clr-dg-column>
+  <clr-dg-column clrDgSortBy="modified">Modified</clr-dg-column>
+
+  <clr-dg-row
+    *clrDgTreeItems="let item of files; getChildren: getChildren; cascadeSelection: true"
+    [clrDgItem]="item"
+    [clrDgExpandable]="item.type === 'Folder'"
+  >
+    <clr-dg-cell>{{ item.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ item.type }}</clr-dg-cell>
+    <clr-dg-cell>{{ item.size | number }} KB</clr-dg-cell>
+    <clr-dg-cell>{{ item.modified | date }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-placeholder>No files found</clr-dg-placeholder>
+
+  <clr-dg-footer>
+    <clr-dg-pagination #pagination [clrDgPageSize]="5" [clrDgTotalItems]="total">
+      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ total }} items
+    </clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>

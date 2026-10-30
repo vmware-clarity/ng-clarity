@@ -1,0 +1,97 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2>Datagrid: Tree data</h2>
+
+<h3>Pagination</h3>
+
+<p>
+  Root rows come one page at a time through <code class="clr-code">(clrDgRefresh)</code>, sorted by the server. Children
+  are fetched the first time a row is expanded, kept for when the page is shown again, and sorted by the datagrid.
+  Selecting a row with its descendants selects the descendants that are loaded; the ones that load later come in
+  selected.
+</p>
+
+<clr-radio-container clrInline>
+  <label>Selection</label>
+  <clr-radio-wrapper>
+    <input type="radio" clrRadio name="tree-selection" value="multi" [(ngModel)]="selectionType" />
+    <label>Multi</label>
+  </clr-radio-wrapper>
+  <clr-radio-wrapper>
+    <input type="radio" clrRadio name="tree-selection" value="single" [(ngModel)]="selectionType" />
+    <label>Single</label>
+  </clr-radio-wrapper>
+</clr-radio-container>
+<clr-checkbox-wrapper>
+  <input type="checkbox" clrCheckbox name="tree-cascade" [(ngModel)]="cascadeSelection" />
+  <label>Selecting a row also selects its loaded descendants</label>
+</clr-checkbox-wrapper>
+<clr-checkbox-wrapper>
+  <input type="checkbox" clrCheckbox name="tree-pin" [(ngModel)]="pinName" />
+  <label>Pin the name column</label>
+</clr-checkbox-wrapper>
+
+<div class="btn-group btn-sm">
+  <button type="button" class="btn btn-outline" (click)="grid.expandAllTreeRows()">Expand all</button>
+  <button type="button" class="btn btn-outline" (click)="grid.collapseAllTreeRows()">Collapse all</button>
+</div>
+
+<clr-datagrid
+  #grid
+  [clrDgSelectionType]="selectionType"
+  [(clrDgSelected)]="selected"
+  [clrDgItemsIdentityFn]="identity"
+  [clrDgLoading]="loading"
+  (clrDgRefresh)="refresh($event)"
+>
+  <clr-dg-column [clrDgPinned]="pinName" clrDgSortBy="name">Name</clr-dg-column>
+  <clr-dg-column clrDgSortBy="kind">Kind</clr-dg-column>
+  <clr-dg-column clrDgSortBy="status">Status</clr-dg-column>
+  <clr-dg-column clrDgSortBy="cpu">CPU %</clr-dg-column>
+  <clr-dg-column clrDgSortBy="memory">Memory (GB)</clr-dg-column>
+  <clr-dg-column clrDgSortBy="childCount">Children</clr-dg-column>
+
+  <clr-dg-row
+    *clrDgTreeItems="let resource of roots; getChildren: getChildren; cascadeSelection: cascadeSelection"
+    [clrDgItem]="resource"
+    [clrDgExpandable]="resource.childCount > 0"
+  >
+    <clr-dg-action-overflow>
+      <button type="button" class="action-item" (click)="act('Edit', resource)">Edit</button>
+      <button type="button" class="action-item" (click)="act('Delete', resource)">Delete</button>
+    </clr-dg-action-overflow>
+    <clr-dg-cell>{{ resource.name }} {{ resource.name }} {{ resource.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ resource.kind }}</clr-dg-cell>
+    <clr-dg-cell>{{ resource.status }}</clr-dg-cell>
+    <clr-dg-cell>{{ resource.cpu }}</clr-dg-cell>
+    <clr-dg-cell>{{ resource.memory }}</clr-dg-cell>
+    <clr-dg-cell>{{ resource.childCount }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-detail *clrIfDetail="let detail">
+    <clr-dg-detail-header>{{ detail.name }}</clr-dg-detail-header>
+    <clr-dg-detail-body>
+      <p>{{ detail.kind }} {{ detail.id }} is {{ detail.status }}.</p>
+      <p>{{ detail.cpu }}% CPU, {{ detail.memory }} GB memory, {{ detail.childCount }} children.</p>
+    </clr-dg-detail-body>
+  </clr-dg-detail>
+
+  <clr-dg-footer>
+    <clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems]="total">
+      <clr-dg-page-size [clrPageSizeOptions]="[5, 10, 20, 50]">Datacenters per page</clr-dg-page-size>
+      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ total }} datacenters
+    </clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>
+
+<p>Selected: {{ selectedNames }}</p>
+<p>Actions: {{ log.join('; ') }}</p>
+
+<clr-datagrid-tree-virtual-demo></clr-datagrid-tree-virtual-demo>
+
+<clr-datagrid-tree-appfx-demo></clr-datagrid-tree-appfx-demo>

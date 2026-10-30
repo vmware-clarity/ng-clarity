@@ -341,6 +341,64 @@
       </clr-accordion>
     </div>
 
+    <!-- Tree Data -->
+    <div class="demo-section">
+      <h3 data-toc-item id="tree-data" cds-text="section" class="clr-mt-32px">Tree Data</h3>
+      <p cds-text="body" class="clr-mt-16px">
+        The Tree Data example shows rows with children of their own, loaded the first time a row is expanded. Children
+        show below their parent, indented, in the same columns.
+      </p>
+
+      <h2 class="clr-mt-48px" cds-text="subsection">Core Concepts</h2>
+      <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+        <li>
+          <strong cds-text="medium">Tree Configuration:</strong> A server-driven grid (<code cds-text="code"
+            >[serverDrivenDatagrid]="true"</code
+          >) without virtual scrolling renders a tree when it gets <code cds-text="code">[treeConfig]</code>. Its
+          <code cds-text="code">getChildren</code> function returns the children of an item as an array, a Promise or an
+          Observable. Pass a new object to change the configuration.
+        </li>
+        <li>
+          <strong cds-text="medium">Top-Level Rows:</strong> <code cds-text="code">[gridItems]</code> are the top-level
+          rows of the current page, fetched in <code cds-text="code">(refreshGridData)</code> like in any server-driven
+          grid. The grid sorts the children it loaded, and keeps them while their parent is on another page. Set
+          <code cds-text="code">trackByGridItemProperty</code> to a property that is unique across the whole tree.
+        </li>
+        <li>
+          <strong cds-text="medium">Expanding Rows:</strong> <code cds-text="code">hasChildren</code> tells which rows
+          can be expanded; without it, every row offers the toggle until its children come back empty.
+          <code cds-text="code">(treeExpandedChange)</code> emits when the user expands or collapses a row.
+          <code cds-text="code">expandAllTreeRows()</code> and <code cds-text="code">collapseAllTreeRows()</code> expand
+          or collapse every row; after expanding all, the rows that come in on other pages come in expanded too until a
+          row is collapsed.
+        </li>
+        <li>
+          <strong cds-text="medium">Tree Column:</strong> The toggle and the indentation are in the column defined
+          first. Set <code cds-text="code">treeToggle: true</code> on a column definition to put them in another column;
+          they move with it when the user reorders or pins columns.
+        </li>
+        <li>
+          <strong cds-text="medium">Selection:</strong> With <code cds-text="code">cascadeSelection: true</code> and
+          multi-selection, selecting a row also selects its loaded descendants.
+        </li>
+      </ul>
+      <clr-accordion cds-layout="m-t:md">
+        <clr-accordion-panel>
+          <clr-accordion-title>Example</clr-accordion-title>
+          <clr-accordion-content *clrIfExpanded>
+            <div class="clr-mt-16px">
+              <app-tree-data-advanced-grid-demo></app-tree-data-advanced-grid-demo>
+            </div>
+            <app-stackblitz-example
+              name="tree-data-demo"
+              [componentTemplate]="treeDataHtml"
+              [componentClass]="treeDataTs"
+            ></app-stackblitz-example>
+          </clr-accordion-content>
+        </clr-accordion-panel>
+      </clr-accordion>
+    </div>
+
     <!-- Custom Column Definitions -->
     <div class="demo-section">
       <h3 data-toc-item id="column-definitions" cds-text="section" class="clr-mt-32px">Column Definitions</h3>
@@ -921,6 +979,16 @@
           <td>No</td>
         </tr>
         <tr>
+          <td><code cds-text="code">treeConfig</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">DatagridTreeConfig&lt;T&gt;</code></td>
+          <td>
+            Renders the rows of a server-driven grid as a tree: <code cds-text="code">gridItems</code> are the top-level
+            rows, and their children are loaded when they are expanded.
+          </td>
+          <td>No</td>
+        </tr>
+        <tr>
           <td><code cds-text="code">rowDetailContent</code></td>
           <td>Input</td>
           <td><code cds-text="code">TemplateRef&lt;unknown&gt;</code></td>
@@ -1023,10 +1091,44 @@
           <td>No</td>
         </tr>
         <tr>
+          <td><code cds-text="code">treeExpandedChange</code></td>
+          <td>Output</td>
+          <td><code cds-text="code">EventEmitter&lt;TreeExpandedState&lt;T&gt;&gt;</code></td>
+          <td>Emits the row and its new state when the user expands or collapses a row of the tree.</td>
+          <td>No</td>
+        </tr>
+        <tr>
           <td><code cds-text="code">toggleAll</code></td>
           <td>Method</td>
           <td><code cds-text="code">void</code></td>
           <td>Toggles the selection state of all rows.</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">reloadTreeChildren</code></td>
+          <td>Method</td>
+          <td><code cds-text="code">void</code></td>
+          <td>
+            Fetches the children of the given row again, or of the whole tree when no row is given. Use it when the
+            children change on the server.
+          </td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">expandAllTreeRows</code></td>
+          <td>Method</td>
+          <td><code cds-text="code">void</code></td>
+          <td>
+            Expands every row of the tree and fetches the children of every level. The rows that come in afterwards, on
+            any page, come in expanded too until a row is collapsed.
+          </td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">collapseAllTreeRows</code></td>
+          <td>Method</td>
+          <td><code cds-text="code">void</code></td>
+          <td>Collapses every row of the tree, on every page.</td>
           <td>No</td>
         </tr>
       </tbody>
@@ -1091,6 +1193,15 @@
             the state itself is held by <code cds-text="code">pinned</code> - and it needs
             <code cds-text="code">enableColumnActions</code> on the grid to render the menu. Defaults to
             <code cds-text="code">false</code>.
+          </td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">treeToggle</code></td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>
+            With <code cds-text="code">treeConfig</code>, shows the expand toggle and the indentation in this column.
+            Without any column marked, they are in the column defined first.
           </td>
           <td>No</td>
         </tr>
@@ -1290,6 +1401,46 @@
           <td><code cds-text="code">dragGroup</code></td>
           <td><code cds-text="code">ColumnDefinition&lt;T&gt;</code></td>
           <td>Optional grouping for draggable elements.</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 data-toc-item id="datagrid-tree-config" cds-text="section" class="clr-mt-32px">DatagridTreeConfig</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Syntax</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code cds-text="code">getChildren</code></td>
+          <td><code cds-text="code">(item: T) =&gt; T[] | Promise&lt;T[]&gt; | Observable&lt;T[]&gt;</code></td>
+          <td>
+            Loads the children of a row. Called the first time the row is expanded, and again after
+            <code cds-text="code">reloadTreeChildren()</code>.
+          </td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">hasChildren</code></td>
+          <td><code cds-text="code">(item: T) =&gt; boolean</code></td>
+          <td>
+            Whether a row can have children. Without it, every row offers the toggle until its children come back empty.
+          </td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">cascadeSelection</code></td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>
+            In multi-selection, selecting a row also selects its loaded descendants, and a row is selected when all of
+            its children are. Defaults to <code cds-text="code">false</code>.
+          </td>
           <td>No</td>
         </tr>
       </tbody>
