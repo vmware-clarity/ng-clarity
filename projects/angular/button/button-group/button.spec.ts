@@ -10,6 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ClrLoadingModule, ClrLoadingState } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrButton } from './button';
 import { ClrButtonGroupModule } from './button-group.module';
@@ -108,7 +109,7 @@ describe('Button Group Directives', () => {
         });
 
         fixture = TestBed.createComponent(TestButtonComponent);
-        fixture.detectChanges();
+        renderFixture(fixture);
         debugEl = fixture.debugElement;
         componentInstance = debugEl.componentInstance;
       });
@@ -232,7 +233,7 @@ describe('Button Group Directives', () => {
         });
 
         fixture = TestBed.createComponent(ButtonViewTestComponent);
-        fixture.detectChanges();
+        renderFixture(fixture);
         debugEl = fixture.debugElement;
         componentInstance = debugEl.componentInstance;
         buttons = debugEl.nativeElement.querySelectorAll('button');
@@ -278,7 +279,7 @@ describe('Button Group Directives', () => {
         expect(buttons[2].querySelector('span.spinner')).toBe(null);
 
         componentInstance.load = false;
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         const newButtons: HTMLButtonElement[] = debugEl.nativeElement.querySelectorAll('button');
         expect(newButtons[0].querySelector('span.spinner')).toBe(null);
@@ -293,7 +294,7 @@ describe('Button Group Directives', () => {
         });
 
         fixture = TestBed.createComponent(TestButtonWithRouterLinkActiveComponent);
-        fixture.detectChanges();
+        renderFixture(fixture);
         debugEl = fixture.debugElement;
         componentInstance = debugEl.componentInstance;
         buttons = debugEl.nativeElement.querySelectorAll('button');
@@ -308,7 +309,7 @@ describe('Button Group Directives', () => {
       it('sets the routerLinkActive classes only on the active button', async () => {
         buttons[0].click();
         await fixture.whenStable();
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         expect(buttons[0].classList.contains('btn-primary')).toBe(true);
         expect(buttons[1].classList.contains('btn-primary')).toBe(false);

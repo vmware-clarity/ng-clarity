@@ -12,6 +12,7 @@ import { ClrInput, ClrInputContainer } from '@clr/angular/forms/input';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrSignpostModule, ClrSignpostTrigger } from '@clr/angular/popover/signpost';
 import { expectActiveElementToBe } from '@clr/angular/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrControlLabel } from './label';
 import { ControlIdService } from './providers/control-id.service';
@@ -124,14 +125,14 @@ describe('Forms common utilities', () => {
       TestBed.configureTestingModule({ declarations: [ClrControlLabel, NoForTest] });
       expect(() => {
         const fixture = TestBed.createComponent(NoForTest);
-        fixture.detectChanges();
+        renderFixture(fixture);
       }).not.toThrow();
     });
 
     it("doesn't set the the class unless its inside of a container", function () {
       TestBed.configureTestingModule({ declarations: [ClrControlLabel, NoForTest] });
       const fixture = TestBed.createComponent(NoForTest);
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(fixture.debugElement.query(By.css('label')).nativeElement.classList.contains('clr-control-label')).toBe(
         false
       );
@@ -143,7 +144,7 @@ describe('Forms common utilities', () => {
         declarations: [ClrControlLabel, ContainerizedTest],
       });
       const fixture = TestBed.createComponent(ContainerizedTest);
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(fixture.debugElement.query(By.css('label')).nativeElement.classList.contains('clr-control-label')).toBe(
         true
       );
@@ -155,7 +156,7 @@ describe('Forms common utilities', () => {
         declarations: [ClrControlLabel, WrapperTest],
       });
       const fixture = TestBed.createComponent(WrapperTest);
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(fixture.debugElement.query(By.css('label')).nativeElement.classList.contains('clr-control-label')).toBe(
         true
       );
@@ -164,12 +165,12 @@ describe('Forms common utilities', () => {
     it('sets the for attribute to the id given by the service', function () {
       TestBed.configureTestingModule({ declarations: [ClrControlLabel, NoForTest], providers: [ControlIdService] });
       const fixture = TestBed.createComponent(NoForTest);
-      fixture.detectChanges();
+      renderFixture(fixture);
       const controlIdService = fixture.debugElement.injector.get(ControlIdService);
       const label = fixture.nativeElement.querySelector('label');
       expect(label.getAttribute('for')).toBe(controlIdService.id);
       controlIdService.id = 'test';
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(label.getAttribute('for')).toBe('test');
     });
 
@@ -182,7 +183,7 @@ describe('Forms common utilities', () => {
       const fixture = TestBed.createComponent(ContainerizedTest);
       const layoutService = fixture.debugElement.injector.get(LayoutService);
       layoutService.layout = ClrFormLayout.HORIZONTAL;
-      fixture.detectChanges();
+      renderFixture(fixture);
       const label = fixture.nativeElement.querySelector('label');
       expect(label.classList.contains('clr-col-md-2')).toBe(true);
       expect(label.classList.contains('clr-col-12')).toBe(true);
@@ -198,7 +199,7 @@ describe('Forms common utilities', () => {
       const layoutService = fixture.debugElement.injector.get(LayoutService);
       layoutService.layout = ClrFormLayout.HORIZONTAL;
       layoutService.labelSize = 3;
-      fixture.detectChanges();
+      renderFixture(fixture);
       const label = fixture.nativeElement.querySelector('label');
       expect(label.classList.contains('clr-col-md-3')).toBe(true);
       expect(label.classList.contains('clr-col-12')).toBe(true);
@@ -214,7 +215,7 @@ describe('Forms common utilities', () => {
       const layoutService = fixture.debugElement.injector.get(LayoutService);
       layoutService.layout = ClrFormLayout.HORIZONTAL;
       fixture.componentInstance.label.disableGrid();
-      fixture.detectChanges();
+      renderFixture(fixture);
       const label = fixture.nativeElement.querySelector('label');
       expect(label.classList.contains('clr-col-md-2')).toBe(false);
       expect(label.classList.contains('clr-col-12')).toBe(false);
@@ -226,7 +227,7 @@ describe('Forms common utilities', () => {
         providers: [ControlIdService],
       });
       const fixture = TestBed.createComponent(ExistingGridTest);
-      fixture.detectChanges();
+      renderFixture(fixture);
       const label = fixture.nativeElement.querySelector('label');
       expect(label.className).not.toContain('clr-col-md-2');
       expect(label.className).toContain('clr-col-md-3');
@@ -238,7 +239,7 @@ describe('Forms common utilities', () => {
         providers: [ControlIdService],
       });
       const fixture = TestBed.createComponent(ExplicitForTest);
-      fixture.detectChanges();
+      renderFixture(fixture);
       const label = fixture.nativeElement.querySelector('label');
       expect(label.getAttribute('for')).toBe('hello');
     });
@@ -249,9 +250,9 @@ describe('Forms common utilities', () => {
         providers: [ControlIdService],
       });
       const fixture = TestBed.createComponent(ExplicitForTest);
-      fixture.detectChanges();
+      renderFixture(fixture);
       fixture.componentInstance.forValue = 'updatedFor';
-      fixture.detectChanges();
+      renderFixture(fixture);
       const label = fixture.nativeElement.querySelector('label');
       expect(label.getAttribute('for')).toBe('updatedFor');
     });
@@ -262,7 +263,7 @@ describe('Forms common utilities', () => {
         providers: [ControlIdService],
       });
       const fixture = TestBed.createComponent(ExplicitIdTest);
-      fixture.detectChanges();
+      renderFixture(fixture);
       const label = fixture.nativeElement.querySelector('label');
       expect(label.getAttribute('id')).toBe('explicit-label');
     });
@@ -270,7 +271,7 @@ describe('Forms common utilities', () => {
     it('leaves the id attribute untouched if it exists (without control id service)', function () {
       TestBed.configureTestingModule({ declarations: [ClrControlLabel, ExplicitIdTest] });
       const fixture = TestBed.createComponent(ExplicitIdTest);
-      fixture.detectChanges();
+      renderFixture(fixture);
       const label = fixture.nativeElement.querySelector('label');
       expect(label.getAttribute('id')).toBe('explicit-label');
     });
@@ -278,7 +279,7 @@ describe('Forms common utilities', () => {
     it('uses the control id when present', function () {
       TestBed.configureTestingModule({ declarations: [ClrControlLabel, ClrInputContainer, ClrInput, ControlIdTest] });
       const fixture = TestBed.createComponent(ControlIdTest);
-      fixture.detectChanges();
+      renderFixture(fixture);
       const input = fixture.nativeElement.querySelector('input');
       const label = fixture.nativeElement.querySelector('label');
       expect(label.getAttribute('id')).toBe(`${input.id}-label`);
@@ -289,7 +290,7 @@ describe('Forms common utilities', () => {
         declarations: [ClrControlLabel, ClrInputContainer, ClrInput, ExplicitControlIdTest],
       });
       const fixture = TestBed.createComponent(ExplicitControlIdTest);
-      fixture.detectChanges();
+      renderFixture(fixture);
       const label = fixture.nativeElement.querySelector('label');
       expect(label.id).toBe('explicit-control-label');
       expect(label.getAttribute('for')).toBe('explicit-control');
@@ -301,10 +302,10 @@ describe('Forms common utilities', () => {
         declarations: [ClrControlLabel, SignpostTest],
       });
       const fixture = TestBed.createComponent(SignpostTest);
-      fixture.detectChanges();
+      renderFixture(fixture);
       const signpostTrigger = fixture.nativeElement.querySelector('#signpost-trigger');
       signpostTrigger.click();
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(fixture.componentInstance.signpostTrigger.isOpen).toBe(true);
     });
 
@@ -313,10 +314,10 @@ describe('Forms common utilities', () => {
         declarations: [ClrControlLabel, DefaultClickBehaviorTest],
       });
       const fixture = TestBed.createComponent(DefaultClickBehaviorTest);
-      fixture.detectChanges();
+      renderFixture(fixture);
       const label = fixture.nativeElement.querySelector('label');
       label.click();
-      fixture.detectChanges();
+      renderFixture(fixture);
       const input = fixture.nativeElement.querySelector('input');
       expectActiveElementToBe(input);
     });

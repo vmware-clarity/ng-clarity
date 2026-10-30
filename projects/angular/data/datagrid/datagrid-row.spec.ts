@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EmbeddedViewRef 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { createTestHelpers, delay, TestContext } from '@clr/angular/testing';
 import { LoadingListener } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrDatagrid } from './datagrid';
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
@@ -237,7 +238,7 @@ describe('Datagrid', () => {
 
         it('does disable the selection checkbox when clrDgSelectable is false', () => {
           fixture.componentInstance.clrDgSelectable = false;
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           const checkboxElement: HTMLInputElement = nativeElement.querySelector("input[type='checkbox']");
 
@@ -663,7 +664,7 @@ describe('Datagrid', () => {
 
             fixture = TestBed.createComponent(RowSelectionWithDetailAndActionTest);
             nativeElement = fixture.nativeElement;
-            fixture.detectChanges();
+            renderFixture(fixture);
           });
 
           afterEach(() => {
@@ -675,7 +676,7 @@ describe('Datagrid', () => {
             const actionToggle: HTMLButtonElement = nativeElement.querySelector('.datagrid-action-toggle');
             actionToggle.click();
             await delay();
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(fixture.componentInstance.selected).toEqual([]);
           });
 
@@ -684,7 +685,7 @@ describe('Datagrid', () => {
             const detailCaret: HTMLButtonElement = nativeElement.querySelector('.datagrid-detail-caret-button');
             detailCaret.click();
             await delay();
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(fixture.componentInstance.selected).toEqual([]);
           });
         });

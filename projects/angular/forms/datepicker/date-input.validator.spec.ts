@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrDatepickerModule } from './datepicker.module';
 import { DateNavigationService } from './providers/date-navigation.service';
@@ -42,7 +43,7 @@ describe('Datepicker', () => {
 
       it('should not allow a date less than the min date', () => {
         fixture.componentInstance.formControl.setValue('12/31/2021');
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         const expectedErrors = {
           min: {
@@ -56,28 +57,28 @@ describe('Datepicker', () => {
 
       it('should allow a date equal to the min date', () => {
         fixture.componentInstance.formControl.setValue('01/01/2022');
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         expect(fixture.componentInstance.formControl.errors).toBeNull();
       });
 
       it('should allow a date between the min and max dates', () => {
         fixture.componentInstance.formControl.setValue('06/01/2022');
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         expect(fixture.componentInstance.formControl.errors).toBeNull();
       });
 
       it('should allow a date equal to the max date', () => {
         fixture.componentInstance.formControl.setValue('12/31/2022');
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         expect(fixture.componentInstance.formControl.errors).toBeNull();
       });
 
       it('should not allow a date greater than the max date', () => {
         fixture.componentInstance.formControl.setValue('01/01/2023');
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         const expectedErrors = {
           max: {

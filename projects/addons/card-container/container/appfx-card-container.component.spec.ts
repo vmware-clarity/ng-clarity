@@ -8,14 +8,16 @@
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { Renderer2 } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DragAndDropGroupService } from '@clr/addons/drag-and-drop';
 import { MockRenderer2, sampleCards } from '@clr/addons/testing';
 import { AppfxTranslateModule } from '@clr/addons/translate';
 import { ClrDropdownModule } from '@clr/angular/popover/dropdown';
+import { renderFixture } from '@clr/angular/utils/testing';
 import { of } from 'rxjs';
 
 import { AppfxCardContainerComponent } from './appfx-card-container.component';
+import { useTestTimers } from '../../../test-timers';
 import { AppfxCardComponent } from '../card/appfx-card.component';
 import { ContainerService } from '../services/container.service';
 import { PersistenceService } from '../services/persistence.service';
@@ -53,7 +55,7 @@ describe('AppfxCardContainerComponent', () => {
 
     fixture = TestBed.createComponent(AppfxCardContainerComponent);
     component = fixture.componentInstance;
-    component.containerId = 'container-summary';
+    fixture.componentRef.setInput('containerId', 'container-summary');
   });
 
   it('should create component', () => {
@@ -68,17 +70,18 @@ describe('AppfxCardContainerComponent', () => {
     }
   });
 
-  it('should insert card to container', fakeAsync(() => {
+  it('should insert card to container', async () => {
+    useTestTimers();
     const card = sampleCards[0];
     vi.spyOn(component, 'insertCardToContainer' as any).mockReturnValue({});
     vi.spyOn(mockContainerService, 'addCard').mockImplementation(() => undefined);
     component.cards.push(card);
-    fixture.detectChanges();
+    renderFixture(fixture);
     component.ngDoCheck();
-    tick();
+    await vi.advanceTimersByTimeAsync(0);
 
     expect((component as any).insertCardToContainer).toHaveBeenCalled();
-  }));
+  });
 
   describe('#onToggleCardVisibility', () => {
     it('should remove card from container view when card is hidden', () => {

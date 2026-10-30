@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component, TrackByFunction, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ClrPopoverService } from '@clr/angular/popover/common';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrComboboxModule } from './combobox.module';
 import { ClrOptionItems } from './option-items.directive';
@@ -79,7 +80,7 @@ describe('Combobox component', () => {
             providers: OPTION_ITEM_PROVIDERS,
           });
           testContext.fixture = TestBed.createComponent(FullTest);
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           testContext.testComponent = testContext.fixture.componentInstance;
           testContext.clarityDirective = testContext.testComponent.optionItems;
         });
@@ -92,7 +93,7 @@ describe('Combobox component', () => {
           const initialContent = testContext.fixture.elementRef.nativeElement.textContent;
           expect(initialContent.trim()).toEqual('0123');
           testContext.testComponent.numbers.push(6);
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           const updatedContent = testContext.fixture.elementRef.nativeElement.textContent;
 
           expect(updatedContent.trim()).toEqual('01236');
@@ -100,13 +101,13 @@ describe('Combobox component', () => {
 
         it('handles a null input for the array of items', () => {
           testContext.testComponent.numbers = null;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.clarityDirective._rawItems).toEqual([]);
         });
 
         it('handles an undefined input for the array of items', () => {
           testContext.testComponent.numbers = undefined;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.clarityDirective._rawItems).toEqual([]);
         });
 
@@ -115,7 +116,7 @@ describe('Combobox component', () => {
           const optionService: OptionSelectionService<any> = TestBed.inject(OptionSelectionService);
           testContext.testComponent.numbers.push(12);
           optionService.currentInput = '1';
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.clarityDirective.iterableProxy._ngForOf).toEqual([0, 1, 2, 3, 12]);
         });
 
@@ -125,7 +126,7 @@ describe('Combobox component', () => {
           optionService.showAllOptions = false;
           testContext.testComponent.numbers.push(12);
           optionService.currentInput = '1';
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.clarityDirective.iterableProxy._ngForOf).toEqual([1, 12]);
         });
 
@@ -134,7 +135,7 @@ describe('Combobox component', () => {
           optionService.showAllOptions = false;
           testContext.testComponent.numbers.push('Room', 'Broom');
           optionService.currentInput = 'ro';
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.clarityDirective.iterableProxy._ngForOf).toEqual(['Room', 'Broom']);
         });
 
@@ -143,7 +144,7 @@ describe('Combobox component', () => {
           optionService.showAllOptions = false;
           testContext.testComponent.numbers.push('Ardèche', 'Ardennes', 'Ariège');
           optionService.currentInput = 'arde';
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.clarityDirective.iterableProxy._ngForOf).toEqual(['Ardèche', 'Ardennes']);
         });
       });
@@ -156,7 +157,7 @@ describe('Combobox component', () => {
             providers: OPTION_ITEM_PROVIDERS,
           });
           testContext.fixture = TestBed.createComponent(TrackByIndexTest);
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           testContext.testComponent = testContext.fixture.componentInstance;
           testContext.clarityDirective = testContext.fixture.componentInstance.optionItems;
         });
@@ -178,14 +179,14 @@ describe('Combobox component', () => {
 
           // First mutation
           testContext.testComponent.numbers.unshift(42);
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           const unshiftedItem = testContext.fixture.nativeElement.querySelector('li');
           expect(testContext.clarityDirective._rawItems).toEqual([42, 0, 1, 2, 3]);
           expect(unshiftedItem.style.color).toBe('red');
 
           // Resetting
           testContext.testComponent.numbers = [42];
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           const replacedItem = testContext.fixture.nativeElement.querySelector('li');
           expect(replacedItem.style.color).toBe('red');
         });
@@ -199,7 +200,7 @@ describe('Combobox component', () => {
             providers: OPTION_ITEM_PROVIDERS,
           });
           testContext.fixture = TestBed.createComponent(ObjectDataTest);
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           testContext.testComponent = testContext.fixture.componentInstance;
           testContext.clarityDirective = testContext.fixture.componentInstance.optionItems;
         });
@@ -222,7 +223,7 @@ describe('Combobox component', () => {
         it('handles null values', () => {
           expect(() => {
             testContext.testComponent.numbers = [{ a: null }, ...testContext.testComponent.numbers];
-            testContext.fixture.detectChanges();
+            renderFixture(testContext.fixture);
           }).not.toThrow();
         });
 
@@ -231,7 +232,7 @@ describe('Combobox component', () => {
           optionService.showAllOptions = false;
           testContext.testComponent.numbers.push({ a: 'Room' }, { a: 'Broom' });
           optionService.currentInput = 'ro';
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.clarityDirective.iterableProxy._ngForOf).toEqual([{ a: 'Room' }, { a: 'Broom' }]);
         });
 
@@ -240,7 +241,7 @@ describe('Combobox component', () => {
           optionService.showAllOptions = false;
           testContext.testComponent.numbers.push({ a: 'Ardèche' }, { a: 'Ardennes' }, { a: 'Ariège' });
           optionService.currentInput = 'arde';
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.clarityDirective.filteredItems).toEqual([{ a: 'Ardèche' }, { a: 'Ardennes' }]);
         });
       });

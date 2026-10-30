@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrStackViewModule } from './stack-view.module';
 
@@ -38,7 +39,7 @@ describe('Stack View directives', () => {
       });
 
       fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
       compiled = fixture.nativeElement;
     });
 

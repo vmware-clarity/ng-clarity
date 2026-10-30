@@ -10,6 +10,12 @@ import { ComponentFixture, TestBed, TestModuleMetadata } from '@angular/core/tes
 import { By } from '@angular/platform-browser';
 import { ClarityModule } from '@clr/angular';
 
+/** Explicit legacy unit-test render; use fixture.whenStable() to test application notifications. */
+export function renderFixture(fixture: ComponentFixture<unknown>): void {
+  fixture.changeDetectorRef.markForCheck();
+  fixture.detectChanges();
+}
+
 export class TestContext<D, C> {
   fixture: ComponentFixture<C>;
   testComponentType: Type<C>;
@@ -58,7 +64,9 @@ export class TestContext<D, C> {
    * Delegate method to avoid verbosity
    */
   detectChanges() {
-    this.fixture.detectChanges();
+    // Legacy unit tests explicitly request a render after mutating plain host fields. Preserve that intent
+    // under zoneless scheduling; notification-based integration tests must await fixture.whenStable() instead.
+    renderFixture(this.fixture);
   }
 }
 /**
@@ -238,12 +246,7 @@ export function finishAnimations(element: Element) {
 }
 
 /**
- * Helper for testing requestAnimationFrame code. FakeAssync internally mocks requestAnimationFrame as setTimeout(16).
- * That's why we need to test it with tick(16). 16 is not a truly magic number, it's the approximated single frame time
- * of a 60 FPS refresh rate.
- * @param fixture If fixture is provided we will also run change detection. Unlike the usual fakeAsync/tick scenario,
- * where tick() follows the changeDetection, requestAnimationFrame may be used to setup preconditions for a change detection
- * cycle, so it should precede a detectChanges call.
+ * Allow a browser animation frame before checking a fixture. Keep requestAnimationFrame real when using Vitest timers.
  */
 export async function animationFrameTick(fixture?: ComponentFixture<any>) {
   await delay(16);

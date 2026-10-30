@@ -5,13 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { ClrInputModule } from '@clr/angular/forms/input';
 import { ClrPopoverService } from '@clr/angular/popover/common';
+import { renderFixture } from '@clr/angular/utils/testing';
 import { Observable, of } from 'rxjs';
 
 import { DatagridFilterComponent } from './datagrid-filter.component';
 import { CaseInsensitiveContainsStringFilter } from './string-filters';
+import { useTestTimers } from '../../../test-timers';
 import { DatagridStrings } from '../i18n/datagrid-strings.service';
 
 class ClrPopoverServiceMock {
@@ -64,7 +66,7 @@ describe('DatagridFilterComponent', () => {
 
   it('should set the initial input value to be equal to the default filter value', () => {
     testContext.fixture.componentInstance.filterValue = 'hdd';
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
 
     expect(testContext.fixture.componentInstance.value).toEqual('hdd');
     expect(testContext.fixture.componentInstance.isActive()).toBeTruthy();
@@ -162,13 +164,14 @@ describe('DatagridFilterComponent', () => {
 
     input.dispatchEvent(generateKeyUpEvent('abcd'));
 
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
 
     expect(changesFlag).toBe(true);
     expect(testContext.fixture.componentInstance.filterValueChange.emit).toHaveBeenCalledWith('abcd');
   });
 
-  it('should focus the input field when the filter dropdown is opened', fakeAsync(() => {
+  it('should focus the input field when the filter dropdown is opened', async () => {
+    useTestTimers();
     const input: HTMLElement = testContext.fixture.nativeElement.querySelector('input');
 
     vi.spyOn(input, 'focus').mockImplementation(() => undefined);
@@ -176,10 +179,10 @@ describe('DatagridFilterComponent', () => {
     expect(input).toBeTruthy();
 
     testContext.fixture.componentInstance.ngAfterViewInit();
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
 
-    tick();
+    await vi.advanceTimersByTimeAsync(0);
 
     expect(input.focus).toHaveBeenCalled();
-  }));
+  });
 });

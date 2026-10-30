@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, Inject, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrIfExpanded } from './if-expanded.directive';
 import { IfExpandService } from './if-expanded.service';
@@ -30,7 +31,7 @@ describe('IfExpanded directive', () => {
         providers: [IfExpandService],
       });
       testContext.fixture = TestBed.createComponent(SimpleTest);
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       testContext.testComponent = testContext.fixture.componentInstance;
       testContext.testElement = testContext.fixture.nativeElement;
       testContext.clarityDirective = testContext.fixture.componentInstance.ifExpanded;
@@ -47,15 +48,15 @@ describe('IfExpanded directive', () => {
 
     it('displays the content when the parent becomes expanded', () => {
       testContext.expand.expanded = true;
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.testElement.textContent.trim()).toBe('1');
     });
 
     it('removes the content when the parent becomes collapsed again', () => {
       testContext.expand.expanded = true;
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       testContext.expand.expanded = false;
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.testElement.textContent.trim()).toBe('');
     });
 
@@ -65,12 +66,12 @@ describe('IfExpanded directive', () => {
 
     it('re-instantiates the content every time it is displayed', () => {
       testContext.expand.expanded = true;
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.testElement.textContent.trim()).toBe('1');
       testContext.expand.expanded = false;
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       testContext.expand.expanded = true;
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.testElement.textContent.trim()).toBe('2');
     });
 
@@ -92,7 +93,7 @@ describe('IfExpanded directive', () => {
         providers: [IfExpandService],
       });
       testContext.fixture = TestBed.createComponent(SimpleTemplateTest);
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       testContext.expand = TestBed.inject(IfExpandService);
     });
 
@@ -118,7 +119,7 @@ describe('IfExpanded directive', () => {
         providers: [IfExpandService],
       });
       testContext.fixture = TestBed.createComponent(NgIfTest);
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       testContext.testComponent = testContext.fixture.componentInstance;
       testContext.expand = TestBed.inject(IfExpandService);
     });
@@ -133,7 +134,7 @@ describe('IfExpanded directive', () => {
 
     it('sets the parent as not expandable when destroyed', () => {
       testContext.testComponent.expandable = false;
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.expand.expandable).toBe(0);
     });
   });

@@ -19,6 +19,7 @@ import {
 import { DatalistIdService } from '@clr/angular/forms/datalist';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrPopoverContent } from '@clr/angular/popover';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 export function ContainerNoLabelSpec(testContainer, testControl, testComponent): void {
   describe('no label', () => {
@@ -38,14 +39,14 @@ export function ContainerNoLabelSpec(testContainer, testControl, testComponent):
     });
 
     it('adds an empty label when instantiated without vertical layout', () => {
-      fixture.detectChanges();
+      renderFixture(fixture);
       const labels = containerEl.querySelectorAll('label');
       expect(Array.prototype.filter.call(labels, label => label.textContent === '').length).toBe(1);
     });
 
     it('does not add an empty label when instantiated with vertical layout', () => {
       layoutService.layout = ClrFormLayout.VERTICAL;
-      fixture.detectChanges();
+      renderFixture(fixture);
       const labels = containerEl.querySelectorAll('label');
       expect(Array.prototype.filter.call(labels, label => label.textContent === '').length).toBe(0);
     });
@@ -79,7 +80,7 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
       containerEl = containerDE.nativeElement;
       markControlService = containerDE.injector.get(MarkControlService);
       layoutService = containerDE.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
     });
 
     function setValid(valid: boolean) {
@@ -117,14 +118,14 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
     it('display the helper text when invalid', () => {
       expect(containerEl.querySelector('clr-control-helper')).toBeTruthy();
       setValid(false);
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(containerEl.querySelector('clr-control-helper')).toBeTruthy();
     });
 
     it('display the helper text when valid', () => {
       expect(containerEl.querySelector('clr-control-helper')).toBeTruthy();
       setValid(true);
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(containerEl.querySelector('clr-control-helper')).toBeTruthy();
     });
 
@@ -132,7 +133,7 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
       expect(containerEl.querySelector('.clr-control-container').classList.contains('clr-error')).toBe(false);
       expect(containerEl.querySelector('.clr-validate-icon')).toBeFalsy();
       setValid(false);
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(containerEl.querySelector('.clr-control-container').classList.contains('clr-error')).toBe(true);
       expect(containerEl.querySelector('.clr-validate-icon')).toBeTruthy();
     });
@@ -140,14 +141,14 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
     it('projects the error helper when invalid', () => {
       expect(containerEl.querySelector('clr-control-error')).toBeFalsy();
       setValid(false);
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(containerEl.querySelector('clr-control-error')).toBeTruthy();
     });
 
     it('projects the success content when valid', () => {
       setValid(true);
       container.control.control.updateValueAndValidity();
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(containerEl.querySelector('clr-control-error')).toBeFalsy();
       expect(containerEl.querySelector('clr-control-success')).toBeTruthy();
     });
@@ -155,7 +156,7 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
     it('should have the success icon when valid', () => {
       setValid(true);
       container.control.control.updateValueAndValidity();
-      fixture.detectChanges();
+      renderFixture(fixture);
       const icon: HTMLElement = containerEl.querySelector('cds-icon[shape=success-standard]');
       expect(icon).toBeTruthy();
     });
@@ -167,10 +168,10 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
     it('adds the .clr-row class to the host on non-vertical layouts', () => {
       expect(containerEl.classList).toContain('clr-row');
       layoutService.layout = ClrFormLayout.VERTICAL;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(containerEl.classList).not.toContain('clr-row');
       layoutService.layout = ClrFormLayout.COMPACT;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(containerEl.classList).toContain('clr-row');
     });
 
@@ -189,21 +190,21 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
     it('tracks the validity of the form control', () => {
       expect(container.showInvalid).toBe(false);
       markControlService.markAsTouched();
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(container.showInvalid).toBe(true);
     });
 
     it('tracks the disabled state', async () => {
       const test = fixture.debugElement.componentInstance;
       test.disabled = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
       // Have to wait for the whole control to settle or it doesn't track
       await fixture.whenStable();
       expect(containerEl.className).not.toContain('clr-form-control-disabled');
       if (test.form) {
         // Handle setting disabled based on reactive form
         test.form.get('model').reset({ value: '', disabled: true });
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(containerEl.className).toContain('clr-form-control-disabled');
       }
     });

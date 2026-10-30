@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrIfOpen } from './if-open.directive';
 import { ClrPopoverService } from './providers/popover.service';
@@ -27,7 +28,7 @@ describe('ClrPopover', () => {
             providers: [ClrPopoverService],
           });
           testContext.fixture = TestBed.createComponent(IfOpenTest);
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           testContext.testComponent = testContext.fixture.componentInstance;
           testContext.testElement = testContext.fixture.nativeElement;
           testContext.clarityDirective = testContext.fixture.componentInstance.directive;
@@ -40,7 +41,7 @@ describe('ClrPopover', () => {
 
         it('sets the open state of the directive', () => {
           testContext.testComponent.openState = true;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.clarityDirective.open).toEqual(true);
         });
 
@@ -72,7 +73,7 @@ describe('ClrPopover', () => {
           expect(nbChanges).toBe(0);
           expect(currentChange).toBeUndefined();
           testContext.popoverService.open = true;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(nbChanges).toBe(1);
           expect(currentChange).toBe(true);
         });
@@ -86,7 +87,7 @@ describe('ClrPopover', () => {
             providers: [ClrPopoverService],
           });
           testContext.fixture = TestBed.createComponent(IfOpenTest);
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           testContext.testComponent = testContext.fixture.componentInstance;
           testContext.testElement = testContext.fixture.nativeElement;
           testContext.clarityDirective = testContext.fixture.componentInstance.directive;
@@ -104,7 +105,7 @@ describe('ClrPopover', () => {
 
         it('projects content when true', () => {
           testContext.popoverService.open = true;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.testElement.textContent.trim()).toBe('Hello Template!');
         });
       });

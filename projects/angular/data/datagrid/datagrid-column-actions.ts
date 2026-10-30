@@ -236,11 +236,10 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
   }
 
   /**
-   * The menu is a live view of the column, so the label has to be read at render time rather than
-   * cached - the column title can change, and so can the sort state it reports.
+   * The title follows projected content changes while staying stable throughout each render pass.
    */
   protected get triggerLabel(): string {
-    const title = this.column.titleContainer?.nativeElement.textContent.trim();
+    const title = this.columnActions.title();
 
     return title
       ? this.commonStrings.parse(this.commonStrings.keys.datagridColumnActionsAriaLabel, { COLUMN: title })

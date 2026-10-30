@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClrPopoverService } from '@clr/angular/popover/common';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrTabOverflowContent } from './tab-overflow-content';
 @Component({
@@ -28,7 +29,7 @@ describe('TabOverflowContent', () => {
     });
 
     fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
     compiled = fixture.nativeElement;
   });
 

@@ -6,10 +6,12 @@
  */
 
 import { ChangeDetectionStrategy, Component, DebugElement, Input } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrDropdownModule } from '@clr/angular/popover/dropdown';
+import { renderFixture } from '@clr/angular/utils/testing';
 
+import { useTestTimers } from '../../../test-timers';
 import { MockPropertyViewStrings } from '../../testing';
 import { PropertyViewStrings } from '../property-view-strings.service';
 import {
@@ -133,65 +135,89 @@ describe('PropertyViewSectionComponent', () => {
   const titleText = 'title-text';
   describe('title', () => {
     it('should not be rendered when input data title is null', () => {
-      testContext.component.data = testContext.createData({
-        title: null,
-      });
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          title: null,
+        })
+      );
+      renderFixture(testContext.fixture);
       expect(testContext.getTitleContainerElements().length).toEqual(0);
     });
 
     it('should not be rendered when input data title is empty', () => {
-      testContext.component.data = testContext.createData({
-        title: '',
-      });
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          title: '',
+        })
+      );
+      renderFixture(testContext.fixture);
       expect(testContext.getTitleContainerElements().length).toEqual(0);
     });
 
     it('should be rendered when input data title is not null or empty', () => {
-      testContext.component.data = testContext.createData({
-        title: titleText,
-      });
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          title: titleText,
+        })
+      );
+      renderFixture(testContext.fixture);
       expect(testContext.getTitleContainerElements().length).toEqual(1);
     });
 
     const titleText2 = 'title-text-2';
     it('should be updated when input data changes', () => {
-      testContext.component.data = testContext.createData({
-        title: 'title-text-1',
-      });
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          title: 'title-text-1',
+        })
+      );
+      renderFixture(testContext.fixture);
       expect(testContext.getTitleContainerElements().length).toEqual(1);
 
-      testContext.component.data = testContext.createData({
-        title: null,
-      });
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          title: null,
+        })
+      );
+      renderFixture(testContext.fixture);
       expect(testContext.getTitleContainerElements().length).toEqual(0);
 
-      testContext.component.data = testContext.createData({
-        title: titleText2,
-      });
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          title: titleText2,
+        })
+      );
+      renderFixture(testContext.fixture);
       expect(testContext.getTitleContainerElements().length).toEqual(1);
     });
 
     describe('expand button', () => {
       it('should not have text', () => {
-        testContext.component.data = testContext.createData({
-          title: titleText,
-        });
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput(
+          'data',
+          testContext.createData({
+            title: titleText,
+          })
+        );
+        renderFixture(testContext.fixture);
         expect(testContext.getTitleExpandButtonElements().length).toEqual(1);
         expect(testContext.getTitleExpandButtonElements()[0].textContent?.trim()).toEqual('');
       });
 
       it('should contain a single caret icon', () => {
-        testContext.component.data = testContext.createData({
-          title: titleText,
-        });
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput(
+          'data',
+          testContext.createData({
+            title: titleText,
+          })
+        );
+        renderFixture(testContext.fixture);
         expect(testContext.getTitleExpandButtonElements().length).toEqual(1);
         expect(testContext.getTitleExpandButtonElements()[0].querySelectorAll('cds-icon').length).toEqual(1);
         expect(testContext.getTitleExpandButtonIconElements().length).toEqual(1);
@@ -199,11 +225,14 @@ describe('PropertyViewSectionComponent', () => {
       });
 
       it('should have collapsed state when input expanded is false', () => {
-        testContext.component.data = testContext.createData({
-          title: titleText,
-        });
-        testContext.component.expanded = false;
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput(
+          'data',
+          testContext.createData({
+            title: titleText,
+          })
+        );
+        testContext.fixture.componentRef.setInput('expanded', false);
+        renderFixture(testContext.fixture);
         expect(testContext.getTitleExpandButtonElements().length).toEqual(1);
         expect(testContext.getTitleExpandButtonElements()[0].getAttribute('aria-label')).toEqual(
           testContext.propertyViewStrings.toggle.replace('{0}', testContext.component.data.title || '')
@@ -213,11 +242,14 @@ describe('PropertyViewSectionComponent', () => {
       });
 
       it('should have expanded state when input expanded is true', () => {
-        testContext.component.data = testContext.createData({
-          title: titleText,
-        });
-        testContext.component.expanded = true;
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput(
+          'data',
+          testContext.createData({
+            title: titleText,
+          })
+        );
+        testContext.fixture.componentRef.setInput('expanded', true);
+        renderFixture(testContext.fixture);
         expect(testContext.getTitleExpandButtonElements().length).toEqual(1);
         expect(testContext.getTitleExpandButtonElements()[0].getAttribute('aria-label')).toEqual(
           testContext.propertyViewStrings.toggle.replace('{0}', testContext.component.data.title || '')
@@ -227,42 +259,48 @@ describe('PropertyViewSectionComponent', () => {
       });
 
       it('should not change its expanded state and input expanded when clicked', () => {
-        testContext.component.data = testContext.createData({
-          title: titleText,
-        });
+        testContext.fixture.componentRef.setInput(
+          'data',
+          testContext.createData({
+            title: titleText,
+          })
+        );
 
-        testContext.component.expanded = true;
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput('expanded', true);
+        renderFixture(testContext.fixture);
         expect(testContext.getTitleExpandButtonElements().length).toEqual(1);
         expect(testContext.getTitleExpandButtonIconElements().length).toEqual(1);
         expect(testContext.getTitleExpandButtonIconElements()[0].getAttribute('direction')).toEqual('down');
 
         testContext.getTitleExpandButtonElements()[0].click();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.component.expanded).toEqual(true);
         expect(testContext.getTitleExpandButtonIconElements()[0].getAttribute('direction')).toEqual('down');
 
-        testContext.component.expanded = false;
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput('expanded', false);
+        renderFixture(testContext.fixture);
         expect(testContext.getTitleExpandButtonElements().length).toEqual(1);
         expect(testContext.getTitleExpandButtonIconElements().length).toEqual(1);
         expect(testContext.getTitleExpandButtonIconElements()[0].getAttribute('direction')).toEqual('right');
 
         testContext.getTitleExpandButtonElements()[0].click();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.component.expanded).toEqual(false);
         expect(testContext.getTitleExpandButtonIconElements()[0].getAttribute('direction')).toEqual('right');
       });
 
       it('should trigger "expandedChange" event' + ' when clicked', () => {
-        testContext.component.data = testContext.createData({
-          title: titleText,
-        });
+        testContext.fixture.componentRef.setInput(
+          'data',
+          testContext.createData({
+            title: titleText,
+          })
+        );
 
         const emitSpy = vi.spyOn(testContext.component.expandedChange, 'emit').mockImplementation(() => undefined);
 
-        testContext.component.expanded = true;
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput('expanded', true);
+        renderFixture(testContext.fixture);
         testContext.getTitleExpandButtonElements()[0].click();
         expect(vi.mocked(emitSpy).mock.calls.length).toEqual(1);
         expect(vi.mocked(emitSpy).mock.calls[0]).toEqual([false]);
@@ -270,8 +308,8 @@ describe('PropertyViewSectionComponent', () => {
         expect(vi.mocked(emitSpy).mock.calls.length).toEqual(2);
         expect(vi.mocked(emitSpy).mock.calls[1]).toEqual([false]);
 
-        testContext.component.expanded = false;
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput('expanded', false);
+        renderFixture(testContext.fixture);
         testContext.getTitleExpandButtonElements()[0].click();
         expect(vi.mocked(emitSpy).mock.calls.length).toEqual(3);
         expect(vi.mocked(emitSpy).mock.calls[2]).toEqual([true]);
@@ -284,54 +322,72 @@ describe('PropertyViewSectionComponent', () => {
     const titleIcon = 'title-icon';
     describe('icon', () => {
       it('should not be rendered when input data title icon is null', () => {
-        testContext.component.data = testContext.createData({
-          title: titleText,
-          titleIcon: null,
-        });
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput(
+          'data',
+          testContext.createData({
+            title: titleText,
+            titleIcon: null,
+          })
+        );
+        renderFixture(testContext.fixture);
         expect(testContext.getTitleIconElements().length).toEqual(0);
       });
 
       it('should not be rendered when input data title icon is empty', () => {
-        testContext.component.data = testContext.createData({
-          title: titleText,
-          titleIcon: '',
-        });
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput(
+          'data',
+          testContext.createData({
+            title: titleText,
+            titleIcon: '',
+          })
+        );
+        renderFixture(testContext.fixture);
         expect(testContext.getTitleIconElements().length).toEqual(0);
       });
 
       it('should be rendered when input data title icon is defined', () => {
-        testContext.component.data = testContext.createData({
-          title: titleText,
-          titleIcon: titleIcon,
-        });
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput(
+          'data',
+          testContext.createData({
+            title: titleText,
+            titleIcon: titleIcon,
+          })
+        );
+        renderFixture(testContext.fixture);
         expect(testContext.getTitleIconElements().length).toEqual(1);
         expect(testContext.getTitleIconElements()[0].classList.contains(titleIcon)).toEqual(true);
       });
 
       it('should be updated when input data changes', () => {
-        testContext.component.data = testContext.createData({
-          title: titleText,
-          titleIcon: 'title-icon-1',
-        });
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput(
+          'data',
+          testContext.createData({
+            title: titleText,
+            titleIcon: 'title-icon-1',
+          })
+        );
+        renderFixture(testContext.fixture);
         expect(testContext.getTitleIconElements().length).toEqual(1);
         expect(testContext.getTitleIconElements()[0].classList.contains('title-icon-1')).toEqual(true);
 
-        testContext.component.data = testContext.createData({
-          title: titleText,
-          titleIcon: null,
-        });
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput(
+          'data',
+          testContext.createData({
+            title: titleText,
+            titleIcon: null,
+          })
+        );
+        renderFixture(testContext.fixture);
         expect(testContext.getTitleIconElements().length).toEqual(0);
 
-        testContext.component.data = testContext.createData({
-          title: titleText,
-          titleIcon: 'title-icon-2',
-        });
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput(
+          'data',
+          testContext.createData({
+            title: titleText,
+            titleIcon: 'title-icon-2',
+          })
+        );
+        renderFixture(testContext.fixture);
         expect(testContext.getTitleIconElements().length).toEqual(1);
         expect(testContext.getTitleIconElements()[0].classList.contains('title-icon-2')).toEqual(true);
       });
@@ -340,11 +396,14 @@ describe('PropertyViewSectionComponent', () => {
     describe('text', () => {
       const titleTextHtml = '<b>title-text</b>';
       it('should be rendered as plain text when input data renderAsHtml is false', () => {
-        testContext.component.data = testContext.createData({
-          title: titleTextHtml,
-          renderAsHtml: false,
-        });
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput(
+          'data',
+          testContext.createData({
+            title: titleTextHtml,
+            renderAsHtml: false,
+          })
+        );
+        renderFixture(testContext.fixture);
         expect(testContext.element.textContent?.trim()).toEqual(titleTextHtml);
         expect(testContext.getTitleTextElements().length).toEqual(1);
         expect(testContext.getTitleTextElements()[0].textContent).toEqual(titleTextHtml);
@@ -352,11 +411,14 @@ describe('PropertyViewSectionComponent', () => {
       });
 
       it('should be rendered as HTML when input data renderAsHtml is true', () => {
-        testContext.component.data = testContext.createData({
-          title: titleTextHtml,
-          renderAsHtml: true,
-        });
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput(
+          'data',
+          testContext.createData({
+            title: titleTextHtml,
+            renderAsHtml: true,
+          })
+        );
+        renderFixture(testContext.fixture);
         expect(testContext.element.textContent?.trim()).toEqual(titleText);
         expect(testContext.getTitleTextElements().length).toEqual(1);
         expect(testContext.getTitleTextElements()[0].textContent).toEqual(titleText);
@@ -364,11 +426,14 @@ describe('PropertyViewSectionComponent', () => {
       });
 
       it('should be displayed after icon', () => {
-        testContext.component.data = testContext.createData({
-          title: titleText,
-          titleIcon: titleIcon,
-        });
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput(
+          'data',
+          testContext.createData({
+            title: titleText,
+            titleIcon: titleIcon,
+          })
+        );
+        renderFixture(testContext.fixture);
         const iconElement = testContext.getTitleIconElements()[0];
         const textElement = testContext.getTitleTextElements()[0];
         expect(textElement.previousElementSibling).toBe(iconElement);
@@ -376,20 +441,26 @@ describe('PropertyViewSectionComponent', () => {
 
       it('should be updated when input data changes', () => {
         const titleText1 = '<b>title-text-1</b>';
-        testContext.component.data = testContext.createData({
-          title: titleText1,
-        });
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput(
+          'data',
+          testContext.createData({
+            title: titleText1,
+          })
+        );
+        renderFixture(testContext.fixture);
         expect(testContext.element.textContent?.trim()).toEqual(titleText1);
         expect(testContext.getTitleTextElements().length).toEqual(1);
         expect(testContext.getTitleTextElements()[0].textContent).toEqual(titleText1);
         expect(testContext.getTitleTextElements()[0].innerHTML).toEqual('&lt;b&gt;title-text-1&lt;/b&gt;');
 
-        testContext.component.data = testContext.createData({
-          title: '<b>title-text-2</b>',
-          renderAsHtml: true,
-        });
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput(
+          'data',
+          testContext.createData({
+            title: '<b>title-text-2</b>',
+            renderAsHtml: true,
+          })
+        );
+        renderFixture(testContext.fixture);
         expect(testContext.element.textContent?.trim()).toEqual(titleText2);
         expect(testContext.getTitleTextElements().length).toEqual(1);
         expect(testContext.getTitleTextElements()[0].textContent).toEqual(titleText2);
@@ -399,37 +470,43 @@ describe('PropertyViewSectionComponent', () => {
 
     describe('actions dropdown', () => {
       it('should not be rendered when input data actions are empty', () => {
-        testContext.component.data = testContext.createData({
-          title: titleText,
-          actions: [],
-        });
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput(
+          'data',
+          testContext.createData({
+            title: titleText,
+            actions: [],
+          })
+        );
+        renderFixture(testContext.fixture);
         expect(testContext.getTitleActionsDropdownTriggers().length).toEqual(0);
         expect(testContext.getTitleActionsDropdownMenusItems().length).toEqual(0);
       });
 
       it('should be rendered when input data actions are not empty', () => {
-        testContext.component.data = testContext.createData({
-          title: titleText,
-          actions: [
-            {
-              title: 'action-1',
-              isEnabled: true,
-              clickHandler: () => undefined,
-            },
-            {
-              title: 'action-2',
-              isEnabled: false,
-              clickHandler: () => undefined,
-            },
-          ],
-        });
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput(
+          'data',
+          testContext.createData({
+            title: titleText,
+            actions: [
+              {
+                title: 'action-1',
+                isEnabled: true,
+                clickHandler: () => undefined,
+              },
+              {
+                title: 'action-2',
+                isEnabled: false,
+                clickHandler: () => undefined,
+              },
+            ],
+          })
+        );
+        renderFixture(testContext.fixture);
         expect(testContext.getTitleActionsDropdownTriggers().length).toEqual(1);
         expect(testContext.getTitleActionsDropdownMenusItems().length).toEqual(0);
 
         testContext.getTitleActionsDropdownTriggers()[0].click();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
 
         expect(testContext.getTitleActionsDropdownMenusItems().length).toEqual(2);
 
@@ -439,7 +516,8 @@ describe('PropertyViewSectionComponent', () => {
         expect(testContext.getTitleActionsDropdownMenusItems()[1].classList.contains('disabled')).toEqual(true);
       });
 
-      it("should invoke action's clickHandler() when action element is clicked", fakeAsync(() => {
+      it("should invoke action's clickHandler() when action element is clicked", async () => {
+        useTestTimers();
         const action1 = {
           title: 'action-1',
           isEnabled: true,
@@ -454,100 +532,115 @@ describe('PropertyViewSectionComponent', () => {
         };
         const action2ClickHandlerSpy = vi.spyOn(action2, 'clickHandler').mockImplementation(() => undefined);
 
-        testContext.component.data = testContext.createData({
-          title: titleText,
-          actions: [action1, action2],
-        });
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput(
+          'data',
+          testContext.createData({
+            title: titleText,
+            actions: [action1, action2],
+          })
+        );
+        renderFixture(testContext.fixture);
 
         testContext.getTitleActionsDropdownTriggers()[0].click();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         testContext.getTitleActionsDropdownMenusItems()[0].click();
         expect(vi.mocked(action1ClickHandlerSpy).mock.calls.length).toEqual(1);
         expect(vi.mocked(action1ClickHandlerSpy).mock.lastCall).toEqual([]);
-        testContext.fixture.detectChanges();
-        tick();
+        renderFixture(testContext.fixture);
+        await vi.advanceTimersByTimeAsync(0);
 
         testContext.getTitleActionsDropdownTriggers()[0].click();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         testContext.getTitleActionsDropdownMenusItems()[1].click();
         expect(vi.mocked(action2ClickHandlerSpy).mock.calls.length).toEqual(1);
         expect(vi.mocked(action2ClickHandlerSpy).mock.lastCall).toEqual([]);
-        flush();
-      }));
+        await vi.runOnlyPendingTimersAsync();
+      });
 
       it('should be displayed after text', () => {
-        testContext.component.data = testContext.createData({
-          title: titleText,
-          actions: [
-            {
-              title: 'action-1',
-              isEnabled: true,
-              clickHandler: () => undefined,
-            },
-          ],
-        });
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput(
+          'data',
+          testContext.createData({
+            title: titleText,
+            actions: [
+              {
+                title: 'action-1',
+                isEnabled: true,
+                clickHandler: () => undefined,
+              },
+            ],
+          })
+        );
+        renderFixture(testContext.fixture);
         const textElement = testContext.getTitleTextElements()[0];
         const actionsContainerElement = <HTMLElement>testContext.getTitleActionsDropdownTriggers()[0].parentElement;
         expect(actionsContainerElement.previousElementSibling).toBe(textElement);
       });
 
       it('should be updated when input data changes', () => {
-        testContext.component.data = testContext.createData({
-          title: titleText,
-          actions: [
-            {
-              title: 'action-1',
-              isEnabled: true,
-              clickHandler: () => undefined,
-            },
-            {
-              title: 'action-2',
-              isEnabled: false,
-              clickHandler: () => undefined,
-            },
-          ],
-        });
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput(
+          'data',
+          testContext.createData({
+            title: titleText,
+            actions: [
+              {
+                title: 'action-1',
+                isEnabled: true,
+                clickHandler: () => undefined,
+              },
+              {
+                title: 'action-2',
+                isEnabled: false,
+                clickHandler: () => undefined,
+              },
+            ],
+          })
+        );
+        renderFixture(testContext.fixture);
         expect(testContext.getTitleActionsDropdownTriggers().length).toEqual(1);
         expect(testContext.getTitleActionsDropdownMenusItems().length).toEqual(0);
         testContext.getTitleActionsDropdownTriggers()[0].click();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.getTitleActionsDropdownMenusItems().length).toEqual(2);
         expect(testContext.getTitleActionsDropdownMenusItems()[0].textContent).toEqual('action-1');
         expect(testContext.getTitleActionsDropdownMenusItems()[0].classList.contains('disabled')).toEqual(false);
         expect(testContext.getTitleActionsDropdownMenusItems()[1].textContent).toEqual('action-2');
         expect(testContext.getTitleActionsDropdownMenusItems()[1].classList.contains('disabled')).toEqual(true);
 
-        testContext.component.data = testContext.createData({
-          title: titleText,
-          actions: [],
-        });
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput(
+          'data',
+          testContext.createData({
+            title: titleText,
+            actions: [],
+          })
+        );
+        renderFixture(testContext.fixture);
         expect(testContext.getTitleActionsDropdownTriggers().length).toEqual(0);
         expect(testContext.getTitleActionsDropdownMenusItems().length).toEqual(0);
 
-        testContext.component.data = testContext.createData({
-          title: titleText,
-          actions: [
-            {
-              title: 'action-3',
-              isEnabled: false,
-              clickHandler: () => undefined,
-            },
-            {
-              title: 'action-4',
-              isEnabled: true,
-              clickHandler: () => undefined,
-            },
-          ],
-        });
-        testContext.fixture.detectChanges();
+        testContext.fixture.componentRef.setInput(
+          'data',
+          testContext.createData({
+            title: titleText,
+            actions: [
+              {
+                title: 'action-3',
+                isEnabled: false,
+                clickHandler: () => undefined,
+              },
+              {
+                title: 'action-4',
+                isEnabled: true,
+                clickHandler: () => undefined,
+              },
+            ],
+          })
+        );
+        renderFixture(testContext.fixture);
         expect(testContext.getTitleActionsDropdownTriggers().length).toEqual(1);
         expect(testContext.getTitleActionsDropdownMenusItems().length).toEqual(0);
         testContext.getTitleActionsDropdownTriggers()[0].click();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.getTitleActionsDropdownMenusItems().length).toEqual(2);
         expect(testContext.getTitleActionsDropdownMenusItems()[0].textContent).toEqual('action-3');
         expect(testContext.getTitleActionsDropdownMenusItems()[0].classList.contains('disabled')).toEqual(true);
@@ -590,18 +683,24 @@ describe('PropertyViewSectionComponent', () => {
     };
 
     it('should not be rendered when input data content is empty', () => {
-      testContext.component.data = testContext.createData({
-        content: [],
-      });
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          content: [],
+        })
+      );
+      renderFixture(testContext.fixture);
       expect(testContext.getContentDebugElements().length).toEqual(0);
     });
 
     it('should be rendered when input data content is not empty', () => {
-      testContext.component.data = testContext.createData({
-        content: [message1Data, property1Data, message2Data, property2Data],
-      });
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          content: [message1Data, property1Data, message2Data, property2Data],
+        })
+      );
+      renderFixture(testContext.fixture);
       expect(testContext.getContentDebugElements().length).toEqual(4);
       expect(testContext.getContentDebugElements()[0].componentInstance).toEqual(
         expect.any(PropertyViewMessageMockComponent)
@@ -622,21 +721,27 @@ describe('PropertyViewSectionComponent', () => {
     });
 
     it('should be rendered after title', () => {
-      testContext.component.data = testContext.createData({
-        title: titleText,
-        content: [message1Data, message2Data],
-      });
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          title: titleText,
+          content: [message1Data, message2Data],
+        })
+      );
+      renderFixture(testContext.fixture);
       const titleElement = testContext.getTitleContainerElements()[0];
       const firstContentItem: Element = testContext.getContentDebugElements()[0].nativeElement;
       expect(firstContentItem.previousElementSibling).toBe(titleElement);
     });
 
     it('should be updated when input data changes', () => {
-      testContext.component.data = testContext.createData({
-        content: [property1Data, message1Data],
-      });
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          content: [property1Data, message1Data],
+        })
+      );
+      renderFixture(testContext.fixture);
       expect(testContext.getContentDebugElements().length).toEqual(2);
       expect(testContext.getContentDebugElements()[0].componentInstance).toEqual(
         expect.any(PropertyViewPropertyMockComponent)
@@ -647,10 +752,13 @@ describe('PropertyViewSectionComponent', () => {
       );
       expect(testContext.getContentDebugElements()[1].componentInstance.data).toBe(message1Data);
 
-      testContext.component.data = testContext.createData({
-        content: [message1Data, message2Data, property2Data],
-      });
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          content: [message1Data, message2Data, property2Data],
+        })
+      );
+      renderFixture(testContext.fixture);
       expect(testContext.getContentDebugElements().length).toEqual(3);
       expect(testContext.getContentDebugElements()[0].componentInstance).toEqual(
         expect.any(PropertyViewMessageMockComponent)
@@ -667,11 +775,14 @@ describe('PropertyViewSectionComponent', () => {
     });
 
     it('should not be indented when input data title is empty', () => {
-      testContext.component.data = testContext.createData({
-        title: '',
-        content: [property1Data, message2Data],
-      });
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          title: '',
+          content: [property1Data, message2Data],
+        })
+      );
+      renderFixture(testContext.fixture);
 
       expect(testContext.getContentDebugElements().length).toEqual(2);
       expect(testContext.getContentDebugElements()[0].classes['indented']).toBeFalsy();
@@ -679,11 +790,14 @@ describe('PropertyViewSectionComponent', () => {
     });
 
     it('should be indented when input data title is not empty', () => {
-      testContext.component.data = testContext.createData({
-        title: 'title',
-        content: [property1Data, message2Data],
-      });
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          title: 'title',
+          content: [property1Data, message2Data],
+        })
+      );
+      renderFixture(testContext.fixture);
 
       expect(testContext.getContentDebugElements().length).toEqual(2);
       expect(testContext.getContentDebugElements()[0].classes['indented']).toEqual(true);
@@ -691,12 +805,15 @@ describe('PropertyViewSectionComponent', () => {
     });
 
     it('should be expanded when input data title is empty and input expanded is false', () => {
-      testContext.component.data = testContext.createData({
-        title: '',
-        content: [property1Data, message2Data],
-      });
-      testContext.component.expanded = false;
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          title: '',
+          content: [property1Data, message2Data],
+        })
+      );
+      testContext.fixture.componentRef.setInput('expanded', false);
+      renderFixture(testContext.fixture);
 
       expect(testContext.getContentDebugElements().length).toEqual(2);
       expect(testContext.getContentDebugElements()[0].classes['collapsed']).toBeFalsy();
@@ -704,12 +821,15 @@ describe('PropertyViewSectionComponent', () => {
     });
 
     it('should be expanded when input data title is empty and input expanded is true', () => {
-      testContext.component.data = testContext.createData({
-        title: '',
-        content: [property1Data, message2Data],
-      });
-      testContext.component.expanded = true;
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          title: '',
+          content: [property1Data, message2Data],
+        })
+      );
+      testContext.fixture.componentRef.setInput('expanded', true);
+      renderFixture(testContext.fixture);
 
       expect(testContext.getContentDebugElements().length).toEqual(2);
       expect(testContext.getContentDebugElements()[0].classes['collapsed']).toBeFalsy();
@@ -717,12 +837,15 @@ describe('PropertyViewSectionComponent', () => {
     });
 
     it('should not be expanded when input data title is not empty and input expanded is false', () => {
-      testContext.component.data = testContext.createData({
-        title: 'title',
-        content: [property1Data, message2Data],
-      });
-      testContext.component.expanded = false;
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          title: 'title',
+          content: [property1Data, message2Data],
+        })
+      );
+      testContext.fixture.componentRef.setInput('expanded', false);
+      renderFixture(testContext.fixture);
 
       expect(testContext.getContentDebugElements().length).toEqual(2);
       expect(testContext.getContentDebugElements()[0].classes['collapsed']).toEqual(true);
@@ -730,12 +853,15 @@ describe('PropertyViewSectionComponent', () => {
     });
 
     it('should be expanded when input data title is not empty and input expanded is true', () => {
-      testContext.component.data = testContext.createData({
-        title: 'title',
-        content: [property1Data, message2Data],
-      });
-      testContext.component.expanded = true;
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          title: 'title',
+          content: [property1Data, message2Data],
+        })
+      );
+      testContext.fixture.componentRef.setInput('expanded', true);
+      renderFixture(testContext.fixture);
 
       expect(testContext.getContentDebugElements().length).toEqual(2);
       expect(testContext.getContentDebugElements()[0].classes['collapsed']).toBeFalsy();

@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ZoomLevelServiceMock } from '@clr/addons/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ZoomLevelIndicatorDirective } from './zoom-level-indicator.directive';
 import { ZoomLevel } from './zoom-level.model';
@@ -54,7 +55,7 @@ describe('ZoomLevelIndicatorDirective', () => {
   describe('When applied on element', () => {
     beforeEach(() => {
       (testContext.service as any).resizeSubject.next(ZoomLevel.none);
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
     });
 
     it('Then emitted class is applied on the DOM element', () => {

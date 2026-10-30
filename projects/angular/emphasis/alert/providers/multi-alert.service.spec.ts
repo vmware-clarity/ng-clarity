@@ -107,7 +107,7 @@ describe('Alert Tests', () => {
       multiAlertService.changes.subscribe(() => {
         changesEmitted = true;
       });
-      alert.componentInstance.closed = true;
+      alert.componentRef.setInput('clrAlertClosed', true);
       expect(multiAlertService.current).toBe(0);
       expect(multiAlertService.currentAlert).toBe(anotherAlert.componentInstance);
       expect(changesEmitted).toBe(true);

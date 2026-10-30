@@ -10,6 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrTabsModule } from '@clr/angular/layout/tabs';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { TabsHelper } from './tabs-helper';
 
@@ -66,7 +67,7 @@ describe('TabsHelper', () => {
     });
 
     fixture = TestBed.createComponent(TestClarityTabsComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
     tabsHelper = new TabsHelper(fixture.debugElement);
   });
 
@@ -78,7 +79,7 @@ describe('TabsHelper', () => {
 
   it('should throw an error if multiple tabs are found', () => {
     const multipleTabsComponent = TestBed.createComponent(TestClarityMultipleTabsComponent);
-    multipleTabsComponent.detectChanges();
+    renderFixture(multipleTabsComponent);
 
     expect(() => new TabsHelper(multipleTabsComponent.debugElement)).toThrowError(
       'Unable to isolate targeted instance of tabs widget'

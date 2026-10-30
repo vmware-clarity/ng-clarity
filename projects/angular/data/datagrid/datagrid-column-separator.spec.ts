@@ -10,6 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { expectActiveElementNotToBe, expectActiveElementToBe } from '@clr/angular/testing';
 import { DomAdapter, Keys } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrDatagridColumnSeparator } from './datagrid-column-separator';
 import { ColumnResizerService } from './providers/column-resizer.service';
@@ -46,7 +47,7 @@ describe('Datagrid', () => {
 
         fixture = TestBed.createComponent(TestComponent);
 
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         columnSeparatorDebugElement = fixture.debugElement.query(By.directive(ClrDatagridColumnSeparator));
 

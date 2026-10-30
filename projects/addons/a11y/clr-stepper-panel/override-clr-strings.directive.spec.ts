@@ -6,11 +6,13 @@
  */
 
 import { ChangeDetectionStrategy, Component, QueryList, ViewChildren } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { ClrStepperModule, ClrStepperPanel } from '@clr/angular/stepper';
 import { ClrCommonStrings, ClrCommonStringsService } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
+import { useTestTimers } from '../../../test-timers';
 import { AppfxA11yModule } from '../a11y.module';
 
 const successText = 'Step {STEP} complete';
@@ -59,7 +61,7 @@ function createThisTest(): ThisTest {
   });
 
   const fixture = TestBed.createComponent(TestClrStepperComponent);
-  fixture.detectChanges();
+  renderFixture(fixture);
 
   return {
     fixture: fixture,
@@ -80,7 +82,8 @@ describe('OverrideClrStringsDirective', () => {
     }
   });
 
-  it('ClrStepperPanel.commonStrings has correct values', fakeAsync(() => {
+  it('ClrStepperPanel.commonStrings has correct values', async () => {
+    useTestTimers();
     Object.assign(testContext, createThisTest());
 
     const panel: ClrStepperPanel | undefined = testContext.component.stepperPanels.get(0);
@@ -90,5 +93,5 @@ describe('OverrideClrStringsDirective', () => {
     // Verify that original strings in ClrCommonStringsService are not modified.
     expect(testContext.clrStringsService.keys.success).not.toBe(successText);
     expect(testContext.clrStringsService.keys.danger).not.toBe(dangerText);
-  }));
+  });
 });

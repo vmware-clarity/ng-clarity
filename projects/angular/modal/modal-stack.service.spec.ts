@@ -78,6 +78,7 @@ describe('ModalStackService', () => {
       .filter(([type]) => type === 'keyup')
       .map(([, listener]) => listener);
     expect(removedKeyUpListeners).not.toContain(addEventListenerSpy.mock.calls[0][1]);
+    modalStackService.trackModalClose(modal1);
   });
 
   it('should close two open modals when the escape key is pressed twice', () => {

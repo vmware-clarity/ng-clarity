@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, Injectable, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrLoading, ClrLoadingState } from './loading';
 import { LoadingListener } from './loading-listener';
@@ -23,7 +24,7 @@ describe('Loading directive', () => {
       providers: [{ provide: LoadingListener, useClass: DummyListener }],
     });
     testContext.fixture = TestBed.createComponent(FullTest);
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     testContext.testComponent = testContext.fixture.componentInstance;
     testContext.clarityDirective = testContext.fixture.componentInstance.loadingDirective;
     testContext.listener = TestBed.inject(LoadingListener);
@@ -36,45 +37,45 @@ describe('Loading directive', () => {
   it('notifies the listener when the [clrLoading] input changes', () => {
     expect(testContext.listener.loading).toBe(false);
     testContext.testComponent.loading = true;
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.listener.loading).toBe(true);
     testContext.testComponent.loading = false;
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.listener.loading).toBe(false);
   });
 
   it('ignores successive inputs with the same value', () => {
     vi.spyOn(testContext.listener, 'loadingStateChange').mockImplementation(() => undefined);
     testContext.testComponent.loading = false;
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     testContext.testComponent.loading = false;
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.listener.loadingStateChange).toHaveBeenCalledTimes(0);
     testContext.testComponent.loading = true;
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     testContext.testComponent.loading = true;
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.listener.loadingStateChange).toHaveBeenCalledTimes(1);
   });
 
   it('handles null or other falsy values as false', () => {
     testContext.testComponent.loading = null;
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.clarityDirective.loadingState).toEqual(ClrLoadingState.DEFAULT);
     testContext.testComponent.loading = undefined;
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.clarityDirective.loadingState).toEqual(ClrLoadingState.DEFAULT);
     testContext.testComponent.loading = 0;
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.clarityDirective.loadingState).toEqual(ClrLoadingState.DEFAULT);
   });
 
   it('stops loading when destroyed', () => {
     testContext.testComponent.loading = true;
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.listener.loading).toBe(true);
     testContext.testComponent.displayed = false;
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.listener.loading).toBe(false);
   });
 });
@@ -90,7 +91,7 @@ describe('Loading directive without listener', () => {
       declarations: [ClrLoading, FullTest],
     });
     testContext.fixture = TestBed.createComponent(FullTest);
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     testContext.testComponent = testContext.fixture.componentInstance;
     testContext.clarityDirective = testContext.fixture.componentInstance.loadingDirective;
   });
@@ -102,10 +103,10 @@ describe('Loading directive without listener', () => {
   it('keeps loading state without exceptions', () => {
     expect(testContext.clarityDirective.loadingState).toEqual(ClrLoadingState.DEFAULT);
     testContext.testComponent.loading = true;
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.clarityDirective.loadingState).toEqual(ClrLoadingState.LOADING);
     testContext.testComponent.loading = false;
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.clarityDirective.loadingState).toEqual(ClrLoadingState.DEFAULT);
   });
 });

@@ -188,9 +188,7 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
     this.subscriptions.push(
       this.items.changes.subscribe(items => {
         if (items.length) {
-          setTimeout(() => {
-            this.focusHandler.focusFirstActive();
-          });
+          this.focusHandler.scheduleFocusFirstActive();
         } else {
           this.focusHandler.pseudoFocus.pop();
         }
