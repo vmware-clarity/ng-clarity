@@ -1,0 +1,133 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2 class="clr-mt-48px" cds-text="title">Tree Data</h2>
+
+<p class="clr-mt-16px" cds-text="body">
+  Use tree data when the rows have rows of their own, like folders and files. Children show below their parent,
+  indented, in the same columns, and they can be sorted, selected and opened in the detail pane like any other row. The
+  datagrid becomes an ARIA treegrid.
+</p>
+<p class="clr-mt-16px" cds-text="body">
+  To render a tree, put <code cds-text="code">*clrDgTreeItems</code> on the row instead of
+  <code cds-text="code">*clrDgItems</code>. It takes the top-level items and a
+  <code cds-text="code">getChildren</code> function, which returns the children of an item as an array, a Promise or an
+  Observable. The function is called the first time a row is expanded, and the children are kept after that. Rows are
+  told apart with <code cds-text="code">[clrDgItemsIdentityFn]</code>: give the datagrid one that is unique across the
+  whole tree, or a refresh that returns new objects collapses every row and clears the selection.
+</p>
+
+<app-code-snippet [code]="examples.basicHtml" language="html"></app-code-snippet>
+<app-code-snippet [code]="examples.basicTs" language="typescript"></app-code-snippet>
+
+<h3 class="clr-mt-32px" cds-text="section">Expanding rows</h3>
+<p class="clr-mt-16px" cds-text="body">
+  Like a tree node, a row offers the expand toggle until its children come back empty. Set
+  <code cds-text="code">[clrDgExpandable]</code> to <code cds-text="code">false</code> on the rows that cannot have
+  children, so they never show the toggle. <code cds-text="code">[(clrDgExpanded)]</code> binds whether a row is
+  expanded, and reports the rows the user expands or collapses. On the toggle, the Right arrow key expands the row and
+  Left collapses it.
+</p>
+
+<app-code-snippet [code]="examples.expandable" language="html"></app-code-snippet>
+
+<p class="clr-mt-16px" cds-text="body">
+  The toggle and the indentation are in the first column. To put them in another column, add
+  <code cds-text="code">clrDgTreeToggle</code> to it.
+</p>
+
+<app-code-snippet [code]="examples.treeToggle" language="html"></app-code-snippet>
+
+<h3 class="clr-mt-32px" cds-text="section">Sorting and pagination</h3>
+<p class="clr-mt-16px" cds-text="body">
+  The top-level items work like the items of a server-driven datagrid: the datagrid emits
+  <code cds-text="code">(clrDgRefresh)</code> when the user sorts or changes the page, and the application sends back
+  the items of that page in order. The datagrid sorts the children itself, with the comparator of the column. Children
+  that were loaded are kept while their parent is on another page.
+</p>
+
+<h3 class="clr-mt-32px" cds-text="section">Selection</h3>
+<p class="clr-mt-16px" cds-text="body">
+  Every row can be selected on its own. With <code cds-text="code">cascadeSelection: true</code> and multi-selection,
+  selecting a row also selects its loaded descendants, and a row is selected when all of its children are, like in the
+  tree view. Children that load later come in selected.
+</p>
+
+<app-code-snippet [code]="examples.cascadeSelection" language="html"></app-code-snippet>
+
+<h3 class="clr-mt-32px" cds-text="section">Example</h3>
+<p class="clr-mt-16px" cds-text="body">
+  The top-level items are sorted and paged by a fake server, and the folders load their content when they are first
+  expanded.
+</p>
+
+<clr-datagrid-tree-files-example></clr-datagrid-tree-files-example>
+
+<app-stackblitz-example
+  name="Datagrid Tree Data"
+  [componentTemplate]="filesExampleHtml"
+  [componentClass]="filesExampleTs"
+></app-stackblitz-example>
+
+<h3 class="clr-mt-32px" cds-text="section">Data that is already loaded</h3>
+<p class="clr-mt-16px" cds-text="body">
+  When the whole tree is already in the data, return the children from <code cds-text="code">getChildren</code> as an
+  array. They are shown as soon as the row is expanded, without a loading state. Set
+  <code cds-text="code">[clrDgExpandable]</code> from the data, so the rows without children never show the toggle.
+</p>
+
+<clr-datagrid-tree-static-example></clr-datagrid-tree-static-example>
+
+<app-stackblitz-example
+  name="Datagrid Tree Data Already Loaded"
+  [componentTemplate]="staticExampleHtml"
+  [componentClass]="staticExampleTs"
+></app-stackblitz-example>
+
+<h3 class="clr-mt-32px" cds-text="section">Reloading children</h3>
+<p class="clr-mt-16px" cds-text="body">
+  When the children of a row change on the server, call <code cds-text="code">reloadTreeChildren(item)</code> on the
+  datagrid to fetch them again. Without an item, it fetches the children of the whole tree again. If
+  <code cds-text="code">getChildren</code> fails, the row collapses so the user can try again; handle the error in the
+  function to tell the user what happened.
+</p>
+
+<app-code-snippet [code]="examples.reload" language="typescript"></app-code-snippet>
+
+<h3 class="clr-mt-32px" cds-text="section">Expanding and collapsing all rows</h3>
+<p class="clr-mt-16px" cds-text="body">
+  Call <code cds-text="code">expandAllTreeRows()</code> or <code cds-text="code">collapseAllTreeRows()</code> on the
+  datagrid from your own buttons. Expanding all rows fetches the children of every level as the rows are shown, and the
+  rows that come in afterwards, on any page, come in expanded too until the user collapses a row.
+  <code cds-text="code">(clrDgExpandedChange)</code> reports the rows that expand all opens among the rows on display,
+  not the ones it opens later. It reports every collapsed row, and a row that closes again because its children failed
+  to load or came back empty.
+</p>
+
+<app-code-snippet [code]="examples.expandAll" language="html"></app-code-snippet>
+
+<h3 class="clr-mt-32px" cds-text="section">Virtual scrolling</h3>
+<p class="clr-mt-16px" cds-text="body">
+  For large trees, use <code cds-text="code">[clrVirtualTreeOf]</code> on the virtual scroll template instead of
+  <code cds-text="code">[clrVirtualRowsOf]</code>, with <code cds-text="code">[clrVirtualTreeGetChildren]</code> and
+  <code cds-text="code">[clrVirtualTreeCascadeSelection]</code>. Only the rows in view are rendered, however many rows
+  are expanded.
+</p>
+
+<app-code-snippet [code]="examples.virtualScroll" language="html"></app-code-snippet>
+
+<h3 class="clr-mt-32px" cds-text="section">Considerations</h3>
+<ul class="list" cds-text="body" cds-layout="m-t:md">
+  <li>
+    Do not combine tree data with expandable rows (<code cds-text="code">clr-dg-row-detail</code>) or nest datagrids.
+    Use the detail pane to show more about a row.
+  </li>
+  <li>
+    Filters are sent with <code cds-text="code">(clrDgRefresh)</code> for the top-level items; the datagrid does not
+    filter children.
+  </li>
+</ul>

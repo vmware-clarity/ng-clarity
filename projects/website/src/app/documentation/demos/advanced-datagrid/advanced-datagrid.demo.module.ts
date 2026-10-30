@@ -21,6 +21,7 @@ import { FiltersGridComponent } from './ng/filters';
 import { PersistenceGridDemoComponent } from './ng/persistance';
 import { PinnableColumnsGridDemoComponent } from './ng/pinnable-columns';
 import { ServerDrivenGridDemoComponent } from './ng/server-driven';
+import { TreeDataGridDemoComponent } from './ng/tree-data';
 import { VirtualScrollGridDemoComponent } from './ng/virtual-scroll';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabsModule } from '../../../shared/doc-tabs/doc-tabs.module';
@@ -51,6 +52,7 @@ import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.
     PinnableColumnsGridDemoComponent,
     ServerDrivenGridDemoComponent,
     VirtualScrollGridDemoComponent,
+    TreeDataGridDemoComponent,
     AdvancedDatagridDemo,
   ],
   exports: [AdvancedDatagridDemo],

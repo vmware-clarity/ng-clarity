@@ -19,6 +19,7 @@ import {
   EventEmitter,
   forwardRef,
   Inject,
+  inject,
   Input,
   NgZone,
   OnDestroy,
@@ -56,6 +57,7 @@ import { Sort } from './providers/sort';
 import { StateDebouncer } from './providers/state-debouncer.provider';
 import { StateProvider } from './providers/state.provider';
 import { TableSizeService } from './providers/table-size.service';
+import { DatagridTreeService } from './providers/tree.service';
 import { DatagridRenderOrganizer } from './render/render-organizer';
 import { CellCoordinates, KeyNavigationGridController } from './utils/key-navigation-grid.controller';
 
@@ -78,6 +80,7 @@ import { CellCoordinates, KeyNavigationGridController } from './utils/key-naviga
     ColumnsService,
     DisplayModeService,
     KeyNavigationGridController,
+    DatagridTreeService,
   ],
   host: {
     '[class.datagrid-host]': 'true',
@@ -160,6 +163,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   /* reference to the enum so that template can access */
   SELECTION_TYPE = SelectionType;
 
+  protected readonly tree = inject<DatagridTreeService<T>>(DatagridTreeService);
+
   @ViewChild('selectAllCheckbox') private selectAllCheckbox: ElementRef<HTMLInputElement>;
   @ViewChild('rowControls', { read: ElementRef }) private rowControls: ElementRef<HTMLElement>;
 
@@ -167,6 +172,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    * Subscriptions to all the services and queries changes
    */
   private _subscriptions: Subscription[] = [];
+  private focusToRestore: HTMLElement | null = null;
   private _virtualScrollSubscriptions: Subscription[] = [];
 
   /**
@@ -291,7 +297,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
        * It's strange, but it lets us have an indeterminate state where only
        * some of the items are selected.
        */
-      this.selection.toggleAll();
+      if (this.tree.cascading) {
+        this.tree.toggleAll();
+      } else {
+        this.selection.toggleAll();
+      }
     }
   }
 
@@ -332,13 +342,26 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         // Remove any projected rows from the displayedRows container
         // Necessary with Ivy off. See https://github.com/vmware/clarity/issues/4692
         for (let i = this._displayedRows.length - 1; i >= 0; i--) {
-          if (this._displayedRows.get(i).destroyed) {
+          const view = this._displayedRows.get(i) as EmbeddedViewRef<void>;
+          if (view.destroyed) {
             this._displayedRows.remove(i);
+          } else if (!view.rootNodes[0]?.isConnected) {
+            // The virtual scroller took the row out of the page to reuse it later: it is put back
+            // below, and no row can be moved in front of it until then.
+            this._displayedRows.detach(i);
           }
         }
-        this.rows.forEach(row => {
-          this._displayedRows.insert(row._view);
+        // Only the rows that are not in their place yet are moved: moving a row takes the focus away
+        // from it, and moving all of them on every change gets slow with many rows, as in a tree.
+        const focused = this._focusedElement();
+        this.rows.forEach((row, index) => {
+          if (this._displayedRows.indexOf(row._view) !== index) {
+            this._displayedRows.insert(row._view, index);
+          }
         });
+        if (focused?.isConnected && focused !== this._focusedElement()) {
+          focused.focus({ preventScroll: true });
+        }
         this.updateDetailState();
 
         // retain active cell when navigating with Up/Down Arrows, PageUp and PageDown buttons in virtual scroller
@@ -399,6 +422,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       }),
       // A subscription that listens for displayMode changes on the datagrid
       this.displayMode.view.subscribe(viewChange => {
+        // Moving the rows between modes takes the focus away from them, e.g. from the button that
+        // the detail pane gives it back to when it closes, so it is given back once they are on display.
+        this.focusToRestore = this._focusedElement() || this.focusToRestore;
         // Remove any projected columns from the projectedDisplayColumns container
         for (let i = this._projectedDisplayColumns.length; i > 0; i--) {
           this._projectedDisplayColumns.detach();
@@ -435,6 +461,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
           this.rows.forEach(row => {
             this._displayedRows.insert(row._view);
           });
+          this.restoreFocus();
           // The row controls are only laid out in this mode, and this is also the point where
           // their number can have changed.
           this.updateRowControlsWidth();
@@ -543,6 +570,61 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    */
   dataChanged() {
     this.items.refresh();
+  }
+
+  /**
+   * Fetches the children of `item` again, or of the whole tree when no item is given. Loaded
+   * children are kept while the roots are refreshed, so call this when their data changes too.
+   */
+  reloadTreeChildren(item?: T) {
+    this.tree.reload(item);
+  }
+
+  /**
+   * Expands every row of the tree and fetches the children of every level. The rows that come in
+   * afterwards, on any page, come in expanded too until a row is collapsed.
+   */
+  expandAllTreeRows() {
+    // With virtual scrolling, only some of the rows the tree shows are rendered.
+    const rendered = this.rows.map(row => row.item);
+    this.tree.expandAll(rendered);
+  }
+
+  /**
+   * Collapses every row of the tree, on every page.
+   */
+  collapseAllTreeRows() {
+    this.tree.collapseAll();
+  }
+
+  /**
+   * The element in the datagrid that has the focus, if any.
+   *
+   * @internal
+   */
+  _focusedElement(): HTMLElement | null {
+    const active = this.el.nativeElement.ownerDocument.activeElement as HTMLElement | null;
+    return active && this.el.nativeElement.contains(active) ? active : null;
+  }
+
+  /**
+   * Whether no element has the focus, e.g. because the one that had it was taken out of the page.
+   *
+   * @internal
+   */
+  _focusLost(): boolean {
+    const document = this.el.nativeElement.ownerDocument;
+    return !document.activeElement || document.activeElement === document.body;
+  }
+
+  // Gives the focus back to the element that lost it while the rows were moved, unless the user has
+  // put it somewhere else in the meantime.
+  private restoreFocus() {
+    const element = this.focusToRestore;
+    this.focusToRestore = null;
+    if (element?.isConnected && this._focusLost()) {
+      element.focus({ preventScroll: true });
+    }
   }
 
   private destroyFixedColumnViews() {

@@ -8,6 +8,7 @@
 import {
   AfterContentInit,
   AfterViewInit,
+  booleanAttribute,
   ChangeDetectionStrategy,
   Component,
   ContentChildren,
@@ -16,12 +17,15 @@ import {
   EmbeddedViewRef,
   EventEmitter,
   Inject,
+  inject,
   Injector,
   Input,
+  OnChanges,
   Optional,
   Output,
   QueryList,
   Renderer2,
+  SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewContainerRef,
@@ -46,6 +50,8 @@ import { ExpandableRowsCount } from './providers/global-expandable-rows';
 import { Items } from './providers/items';
 import { RowActionService } from './providers/row-action-service';
 import { Selection } from './providers/selection';
+import { DatagridTreeNode } from './providers/tree-node.model';
+import { DatagridTreeService } from './providers/tree.service';
 import { WrappedRow } from './wrapped-row';
 
 let nbRow = 0;
@@ -68,7 +74,7 @@ let nbRow = 0;
   standalone: false,
   changeDetection: ChangeDetectionStrategy.Eager,
 })
-export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit {
+export class ClrDatagridRow<T = any> implements OnChanges, AfterContentInit, AfterViewInit {
   @Output('clrDgSelectedChange') selectedChanged = new EventEmitter<boolean>(false);
   @Output('clrDgExpandedChange') expandedChange = new EventEmitter<boolean>(false);
   @Input('clrDgDetailDisabled') detailDisabled = false;
@@ -108,6 +114,8 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   @ViewChild('calculatedCells', { read: ViewContainerRef }) _calculatedCells: ViewContainerRef;
   @ViewChild('fixedCellTemplate') _fixedCellTemplate: TemplateRef<any>;
 
+  protected readonly tree = inject<DatagridTreeService<T>>(DatagridTreeService, { optional: true });
+
   private _item: T;
   private _selected = false;
   private _detailOpenLabel = '';
@@ -126,6 +134,10 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
 
   // By default, every item is selectable; it becomes not selectable only if it's explicitly set to false
   private _selectable: boolean | string = true;
+
+  // The tree inputs, kept to be applied to the item when it is set, like the selectable state.
+  private _expandable = true;
+  private _treeExpanded: boolean | undefined;
 
   constructor(
     @Optional() public selection: Selection<T>,
@@ -173,6 +185,16 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
         }
       })
     );
+    if (this.tree) {
+      // In a tree, the rows report their expanded state like expandable rows do.
+      this.subscriptions.push(
+        this.tree.expandedChange.subscribe(({ item, expanded }) => {
+          if (this.item !== undefined && this.tree.identify(item) === this.tree.identify(this.item)) {
+            this.expandedChange.emit(expanded);
+          }
+        })
+      );
+    }
   }
 
   /**
@@ -215,6 +237,12 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     if (this.selection.selectionType === SelectionType.None) {
       this._selected = value as boolean;
     } else {
+      if (this.tree?.cascading && this.item !== undefined) {
+        // In a tree, a row's selection reaches its descendants and ancestors; ranges don't apply.
+        this.selection.rangeStart = null;
+        this.tree.setSelected([this.item], !!value);
+        return;
+      }
       if (value && this.selection.selectionType === SelectionType.Multi) {
         this.rangeSelect();
       } else {
@@ -224,12 +252,34 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     }
   }
 
+  /**
+   * Whether the row is expanded: its detail row, or in a tree, its children.
+   */
   @Input('clrDgExpanded')
   get expanded() {
-    return this.expand.expanded;
+    const node = this._treeNode;
+    return node ? node.expanded : this.expand.expanded;
   }
   set expanded(value: boolean | string) {
-    this.expand.expanded = value as boolean;
+    if (this.tree?.enabled()) {
+      // Applied once all the inputs are set.
+      this._treeExpanded = value as boolean;
+    } else {
+      this.expand.expanded = value as boolean;
+    }
+  }
+
+  /**
+   * In a tree, whether the row can have children, like `clrExpandable` on a tree node, so that rows
+   * known to have none don't offer the toggle. A row also stops offering it when its children come
+   * back empty.
+   */
+  @Input({ alias: 'clrDgExpandable', transform: booleanAttribute })
+  get expandable(): boolean {
+    return this._expandable;
+  }
+  set expandable(value: boolean) {
+    this._expandable = value;
   }
 
   @Input()
@@ -265,10 +315,61 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     return this.items.identifyBy;
   }
 
+  /**
+   * The place of this row in the tree, when the datagrid renders one. Read by the row's cells.
+   */
+  get _treeNode(): DatagridTreeNode<T> | undefined {
+    // The rows the datagrid shows while more items load have no item.
+    return this.tree?.enabled() && this.item !== undefined ? this.tree.nodeFor(this.item) : undefined;
+  }
+
+  /**
+   * The cells that carry the indentation and the expand toggle: those of the toggle columns, so they
+   * move with their column when it is reordered or pinned. The toggle columns are the ones marked with
+   * `clrDgTreeToggle`, or the first visible column when none of them is visible. Cells match columns
+   * by declaration index, as everywhere else in the datagrid.
+   *
+   * Read by the cells while they are checked, which can be before the row's own hooks run, when the
+   * cells are rendered in a loop inside the row.
+   */
+  get _treeCells(): ClrDatagridCell[] {
+    const visible = this.visibleTreeCells();
+    const marked = visible.filter(({ column }) => this.tree.toggleColumns.has(column));
+    return (marked.length ? marked : visible.slice(0, 1)).map(({ cell }) => cell);
+  }
+
+  /**
+   * The cell that names the row for its toggles: the first visible one as the user sees the row, so
+   * pinned cells come first. A toggle in a column like Status then reads "Expand Datacenter 1", not
+   * "Expand Running".
+   */
+  get _treeLabelCell(): ClrDatagridCell | undefined {
+    const visible = this.visibleTreeCells();
+    return (visible.find(({ column }) => column?.value.pinned) || visible[0])?.cell;
+  }
+
+  /**
+   * Some, but not all, of this row's descendants are selected.
+   */
+  protected get treeIndeterminate(): boolean {
+    return !!this.tree?.cascading && this.item !== undefined && this.tree.isIndeterminate(this.item);
+  }
+
   openDetails(event: MouseEvent, detailButton: HTMLButtonElement) {
     event.stopPropagation();
 
     this.detailService.toggle(this.item, detailButton);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (!this.tree?.enabled() || this.item === undefined) {
+      return;
+    }
+    this.tree.rowDeclared(this.item, {
+      expandable: this._expandable,
+      locked: this._selectable === false || this._selectable === 'false',
+      expanded: changes['item'] || changes['expanded'] ? this._treeExpanded : undefined,
+    });
   }
 
   ngOnInit() {
@@ -277,7 +378,9 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   }
 
   ngAfterContentInit() {
+    this.markTreeCell();
     this.dgCells.changes.subscribe(() => {
+      this.markTreeCell();
       this.insertCellViews();
     });
   }
@@ -412,6 +515,22 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
       const container = this.columnsService.isPinned(index) ? this._pinnedCells : this._scrollableCells;
       container.insert(cell._view);
     });
+  }
+
+  /**
+   * Lets the cells of a tree row find out which of them carries the toggle. Rows of other
+   * datagrids leave their cells alone, so they pay nothing for trees.
+   */
+  private markTreeCell() {
+    const treeRow = this.tree?.enabled() ? this : null;
+    this.dgCells.forEach(cell => (cell._treeRow = treeRow));
+  }
+
+  private visibleTreeCells() {
+    const columns = this.columnsService.columns;
+    return (this.dgCells?.toArray() || [])
+      .map((cell, index) => ({ cell, column: columns[index] }))
+      .filter(({ column }) => !column?.value.hidden);
   }
 
   private rangeSelect() {

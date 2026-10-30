@@ -21,6 +21,8 @@ export * from './datagrid-hideable-column';
 export * from './datagrid-filter';
 export * from './datagrid-if-detail';
 export * from './datagrid-items';
+export * from './datagrid-tree-items';
+export * from './datagrid-virtual-tree.directive';
 export * from './datagrid-row';
 export * from './datagrid-row-detail';
 export * from './datagrid-cell';
@@ -37,6 +39,7 @@ export * from './interfaces/string-filter.interface';
 export * from './interfaces/numeric-filter.interface';
 export * from './interfaces/comparator.interface';
 export * from './interfaces/virtual-scroll-data-range.interface';
+export * from './interfaces/tree-children-function.interface';
 
 export * from './built-in/filters/datagrid-string-filter';
 export * from './built-in/filters/datagrid-numeric-filter';

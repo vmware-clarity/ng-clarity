@@ -47,6 +47,7 @@ import DatagridPlaceholderSpecs from './datagrid-placeholder.spec';
 import DatagridRowDetailSpecs from './datagrid-row-detail.spec';
 import DatagridRowSpecs from './datagrid-row.spec';
 import DatagridSingleSelectionDirectiveSpec from './datagrid-single-selection.directive.spec';
+import DatagridTreeItemsSpecs from './datagrid-tree-items.spec';
 import DatagridVirtualScrollSpec from './datagrid-virtual-scroll.directive.spec';
 import DatagridSpecs from './datagrid.spec';
 import ColumnResizerServiceSpecs from './providers/column-resizer.service.spec';
@@ -103,6 +104,7 @@ describe('Datagrid', function () {
     DatagridDetailRegistererSpecs();
     DatagridColumnSeparatorSpecs();
     DatagridItemsSpecs();
+    DatagridTreeItemsSpecs();
     DatagridRowSpecs();
     DatagridRowDetailSpecs();
     DatagridSingleSelectionDirectiveSpec();

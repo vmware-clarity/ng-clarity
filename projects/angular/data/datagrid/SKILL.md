@@ -176,6 +176,41 @@ Give the grid a fixed height. No pagination with virtual scroll. Virtual scroll 
 
 The directive is `ClrDatagridVirtualScrollDirective` (part of `ClrDatagridModule`); it goes on an `ng-template` with `clrVirtualRowsOf`, and the `clr-dg-row` sits inside that template. There is no `*clrVirtualScrollOf` structural directive on `clr-dg-row`.
 
+## Tree data
+
+Rows with children loaded on demand, in one grid (an ARIA treegrid): use `*clrDgTreeItems` on `clr-dg-row` instead of `*clrDgItems`.
+
+```ts
+roots: Folder[] = [];
+identity = (folder: Folder) => folder.id;
+getChildren = (folder: Folder) => this.api.children(folder.id); // array, Promise or Observable
+```
+
+```html
+<clr-datagrid [clrDgItemsIdentityFn]="identity" (clrDgRefresh)="onRefresh($event)">
+  <clr-dg-column clrDgTreeToggle>Name</clr-dg-column>
+  <clr-dg-column>Size</clr-dg-column>
+  <clr-dg-row
+    *clrDgTreeItems="let folder of roots; getChildren: getChildren; cascadeSelection: true"
+    [clrDgItem]="folder"
+    [clrDgExpandable]="folder.childCount > 0"
+  >
+    <clr-dg-cell>{{ folder.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ folder.size }}</clr-dg-cell>
+  </clr-dg-row>
+</clr-datagrid>
+```
+
+- The roots are the page: they come sorted and paged through `(clrDgRefresh)`; children are fetched on first expand, kept, and sorted by the datagrid.
+- Data already loaded: return the array, `getChildren = item => item.children`, with `[clrDgExpandable]="!!item.children?.length"`; arrays apply synchronously. Rows are not nested in the template (`clr-dg-row` inside `clr-dg-row` is not supported).
+- Always set `[clrDgItemsIdentityFn]`, unique across the whole tree, or rows close on every refresh.
+- `clrDgTreeToggle` puts the toggle and indentation in that column (several allowed; default: first column).
+- On the row, like on a tree node: `[clrDgExpandable]="false"` hides the toggle of rows without children (optional: without it, a row offers the toggle until its children come back empty), and `[(clrDgExpanded)]` binds whether it is expanded.
+- `cascadeSelection: true`: in multi-selection, a row selects its loaded descendants (default `false`).
+- A failed load (or an Observable that ends without a value) collapses the row again; handle errors in `getChildren`. `reloadTreeChildren(item?)` on `ClrDatagrid` fetches children again. `expandAllTreeRows()` / `collapseAllTreeRows()` expand or collapse every row from your own buttons; after expand all, rows that come in later (other pages) come in expanded until a row is collapsed. `clrDgExpandedChange` emits for user toggles, for the rows on display when expand all is called (not the rows it opens later), for every collapse, and when a failed or empty load closes a row.
+- Virtual scroll: `[clrVirtualTreeOf]`, `[clrVirtualTreeGetChildren]`, `[clrVirtualTreeCascadeSelection]` on the `ClrVirtualScroll` template instead of `clrVirtualRowsOf`.
+- Do not combine with expandable rows (`clr-dg-row-detail`) or nested datagrids.
+
 ## Rules
 
 - Always include `<clr-dg-placeholder>` for the empty state.
