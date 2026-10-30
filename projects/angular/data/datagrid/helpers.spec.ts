@@ -11,7 +11,6 @@
  * just to avoid leaks since destroying fixtures is automatic with this.
  */
 
-import { DatagridWillyWonka } from './chocolate/datagrid-willy-wonka';
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
 import { ColumnsService } from './providers/columns.service';
 import { DetailService } from './providers/detail.service';
@@ -39,7 +38,6 @@ export const DATAGRID_SPEC_PROVIDERS = [
   Selection,
   Sort,
   FiltersProvider,
-  DatagridWillyWonka,
   DomAdapter,
   IfExpandService,
   DatagridIfExpandService,
