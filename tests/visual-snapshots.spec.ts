@@ -71,11 +71,13 @@ const takenScreenshotPaths = new Map<string, string>();
  * The stories and Storybook set style attributes; the library must not (see the report-only policy in
  * scripts/start-static-server.ts). A style attribute the page reports is the library's when its value is in none of
  * the story sources, not in Storybook's iframe.html and not one Storybook's addons set at runtime. A violation reports
- * at most the first 40 characters of the value. Angular rewrites static style attributes (`margin: 0` becomes
- * `margin: 0;`), so values are compared without whitespace around `:` and `;` and without a trailing `;`.
+ * at most the first 40 characters of the value (Firefox adds `…` when it cuts it). Angular rewrites static style
+ * attributes (`margin: 0` becomes `margin: 0;`), so values are compared without whitespace around `:` and `;` and
+ * without a trailing `;`.
  */
 const normalizeStyle = (text: string) =>
   text
+    .replace(/…$/, '')
     .replace(/\s+/g, ' ')
     .replace(/\s*([:;])\s*/g, '$1')
     .replace(/;$/, '')
