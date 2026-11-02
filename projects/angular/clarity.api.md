@@ -979,6 +979,7 @@ export abstract class ClrAbstractContainer implements OnDestroy {
     controlErrorComponent: ClrControlError;
     // (undocumented)
     controlHelperComponent: ClrControlHelper;
+    protected get controlInvalid(): boolean;
     // (undocumented)
     controls: NgControl[];
     // (undocumented)
@@ -1097,7 +1098,7 @@ export class ClrAccordionTitle {
 }
 
 // @public (undocumented)
-export class ClrAlert implements OnInit, OnDestroy {
+export class ClrAlert implements OnInit, OnChanges, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "AlertIconAndTypesService" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "MultiAlertService" needs to be exported by the entry point clr-angular.d.ts
     constructor(iconService: AlertIconAndTypesService, cdr: ChangeDetectorRef, multiAlertService: MultiAlertService, commonStrings: ClrCommonStringsService, renderer: Renderer2, hostElement: ElementRef<HTMLElement>);
@@ -1108,6 +1109,8 @@ export class ClrAlert implements OnInit, OnDestroy {
     // (undocumented)
     get alertType(): string;
     set alertType(val: string);
+    protected get ariaAtomic(): 'false' | null;
+    protected ariaRole: 'alert' | 'status' | null;
     // (undocumented)
     closable: boolean;
     // (undocumented)
@@ -1132,6 +1135,11 @@ export class ClrAlert implements OnInit, OnDestroy {
     set isLightweight(val: boolean);
     // (undocumented)
     isSmall: boolean;
+    liveRole: 'alert' | 'status' | null | undefined;
+    // (undocumented)
+    static ngAcceptInputType_liveRole: unknown;
+    // (undocumented)
+    ngOnChanges(): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -1139,7 +1147,7 @@ export class ClrAlert implements OnInit, OnDestroy {
     // (undocumented)
     open(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlert, "clr-alert", never, { "isSmall": { "alias": "clrAlertSizeSmall"; "required": false; }; "closable": { "alias": "clrAlertClosable"; "required": false; }; "isAppLevel": { "alias": "clrAlertAppLevel"; "required": false; }; "clrCloseButtonAriaLabel": { "alias": "clrCloseButtonAriaLabel"; "required": false; }; "isLightweight": { "alias": "clrAlertLightweight"; "required": false; }; "alertType": { "alias": "clrAlertType"; "required": false; }; "alertIconShape": { "alias": "clrAlertIcon"; "required": false; }; "closed": { "alias": "clrAlertClosed"; "required": false; }; }, { "_closedChanged": "clrAlertClosedChange"; }, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlert, "clr-alert", never, { "isSmall": { "alias": "clrAlertSizeSmall"; "required": false; }; "closable": { "alias": "clrAlertClosable"; "required": false; }; "isAppLevel": { "alias": "clrAlertAppLevel"; "required": false; }; "clrCloseButtonAriaLabel": { "alias": "clrCloseButtonAriaLabel"; "required": false; }; "liveRole": { "alias": "clrAlertRole"; "required": false; }; "isLightweight": { "alias": "clrAlertLightweight"; "required": false; }; "alertType": { "alias": "clrAlertType"; "required": false; }; "alertIconShape": { "alias": "clrAlertIcon"; "required": false; }; "closed": { "alias": "clrAlertClosed"; "required": false; }; }, { "_closedChanged": "clrAlertClosedChange"; }, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlert, [null, null, { optional: true; }, null, null, null]>;
 }
@@ -1770,7 +1778,7 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
     // (undocumented)
     role: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCheckboxContainer, "clr-checkbox-container,clr-toggle-container", never, { "clrInline": { "alias": "clrInline"; "required": false; }; }, {}, ["checkboxes"], ["label", "clr-checkbox-wrapper,clr-toggle-wrapper", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCheckboxContainer, "clr-checkbox-container,clr-toggle-container", never, { "clrInline": { "alias": "clrInline"; "required": false; }; }, {}, ["checkboxes", "groupLabels"], ["label", "clr-checkbox-wrapper,clr-toggle-wrapper", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCheckboxContainer, [{ optional: true; }, null, null]>;
 }
@@ -1864,6 +1872,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     protected index: number;
     // (undocumented)
     inputId(): string;
+    protected get isRequired(): boolean;
     // (undocumented)
     protected isTotalSelection: boolean;
     // (undocumented)
@@ -1911,6 +1920,8 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     registerOnTouched(onTouched: any): void;
     // (undocumented)
     protected renderer: Renderer2;
+    protected reportsAriaInvalid(): boolean;
+    protected reportsAriaRequired(): boolean;
     // (undocumented)
     get searchText(): string;
     set searchText(text: string);
@@ -2156,6 +2167,7 @@ export interface ClrCommonStrings {
     unpinColumn: string;
     // (undocumented)
     unselectedTreeNode: string;
+    verticalNavLabel: string;
     // (undocumented)
     verticalNavToggle: string;
     warning: string;
@@ -2997,6 +3009,7 @@ export class ClrDatagridPlaceholder<T = any> {
 // @public (undocumented)
 export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit {
     constructor(selection: Selection_2<T>, rowActionService: RowActionService, globalExpandable: ExpandableRowsCount, expand: DatagridIfExpandService, detailService: DetailService, displayMode: DisplayModeService, vcr: ViewContainerRef, renderer: Renderer2, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, items: Items, columnsService: ColumnsService, document: any);
+    protected get ariaSelected(): boolean | null;
     // (undocumented)
     _calculatedCells: ViewContainerRef;
     // (undocumented)
@@ -3839,6 +3852,7 @@ export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
     constructor(injector: Injector, renderer: Renderer2, viewContainerRef: ViewContainerRef, elementRef: ElementRef<HTMLInputElement>, control: NgControl, commonStrings: ClrCommonStringsService);
     // (undocumented)
     readonly elementRef: ElementRef<HTMLInputElement>;
+    protected reportsAriaRequired(): boolean;
     // (undocumented)
     selection: ClrFileInputSelection;
     // (undocumented)
@@ -4092,6 +4106,9 @@ export class ClrFormsModule {
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFormsModule, never, [typeof i2.CommonModule], [typeof i6.ClrCommonFormsModule, typeof i42.ClrCheckboxModule, typeof i4_2.ClrComboboxModule, typeof i5_2.ClrDatepickerModule, typeof i6_3.ClrFileInputModule, typeof i40.ClrInputModule, typeof i8_2.ClrPasswordModule, typeof i41.ClrRadioModule, typeof i44.ClrSelectModule, typeof i11.ClrTextareaModule, typeof i12.ClrRangeModule, typeof i13.ClrDatalistModule, typeof i43.ClrNumberInputModule]>;
 }
 
+// @public
+export function clrHasRequiredValidator(control: AbstractControl | null | undefined): boolean;
+
 // @public (undocumented)
 export class ClrHeader implements OnDestroy {
     constructor(responsiveNavService: ResponsiveNavigationService, commonStrings: ClrCommonStringsService);
@@ -4129,6 +4146,13 @@ export class ClrHeader implements OnDestroy {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrHeader, "clr-header", never, { "role": { "alias": "role"; "required": false; }; }, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrHeader, never>;
+}
+
+// @public
+export class ClrHostAttribute {
+    constructor(element: Element | null | undefined, name: string);
+    get current(): string | null;
+    value(computed: string | boolean | null): string | null;
 }
 
 // @public
@@ -4607,6 +4631,7 @@ export class ClrModal implements OnChanges, OnDestroy {
     constructor(_scrollingService: ScrollingService, commonStrings: ClrCommonStringsService, modalStackService: ModalStackService, configuration: ClrModalConfigurationService);
     // (undocumented)
     altClose: EventEmitter<boolean>;
+    ariaModal: boolean;
     // (undocumented)
     get backdrop(): boolean;
     // (undocumented)
@@ -4637,6 +4662,8 @@ export class ClrModal implements OnChanges, OnDestroy {
     // (undocumented)
     modalId: string;
     // (undocumented)
+    static ngAcceptInputType_ariaModal: unknown;
+    // (undocumented)
     ngOnChanges(changes: {
         [propName: string]: SimpleChange;
     }): void;
@@ -4661,7 +4688,7 @@ export class ClrModal implements OnChanges, OnDestroy {
     // (undocumented)
     title: ElementRef<HTMLElement>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, { "_open": { "alias": "clrModalOpen"; "required": false; }; "closable": { "alias": "clrModalClosable"; "required": false; }; "closeButtonAriaLabel": { "alias": "clrModalCloseButtonAriaLabel"; "required": false; }; "size": { "alias": "clrModalSize"; "required": false; }; "staticBackdrop": { "alias": "clrModalStaticBackdrop"; "required": false; }; "skipAnimation": { "alias": "clrModalSkipAnimation"; "required": false; }; "stopClose": { "alias": "clrModalPreventClose"; "required": false; }; "labelledBy": { "alias": "clrModalLabelledById"; "required": false; }; "bypassScrollService": { "alias": "clrModalOverrideScrollService"; "required": false; }; }, { "_openChanged": "clrModalOpenChange"; "altClose": "clrModalAlternateClose"; }, ["modalContentTemplate"], [".leading-button", ".modal-title", ".modal-body", ".modal-footer"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, { "_open": { "alias": "clrModalOpen"; "required": false; }; "closable": { "alias": "clrModalClosable"; "required": false; }; "closeButtonAriaLabel": { "alias": "clrModalCloseButtonAriaLabel"; "required": false; }; "size": { "alias": "clrModalSize"; "required": false; }; "staticBackdrop": { "alias": "clrModalStaticBackdrop"; "required": false; }; "skipAnimation": { "alias": "clrModalSkipAnimation"; "required": false; }; "stopClose": { "alias": "clrModalPreventClose"; "required": false; }; "labelledBy": { "alias": "clrModalLabelledById"; "required": false; }; "ariaModal": { "alias": "clrModalAriaModal"; "required": false; }; "bypassScrollService": { "alias": "clrModalOverrideScrollService"; "required": false; }; }, { "_openChanged": "clrModalOpenChange"; "altClose": "clrModalAlternateClose"; }, ["modalContentTemplate"], [".leading-button", ".modal-title", ".modal-body", ".modal-footer"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrModal, never>;
 }
@@ -5355,6 +5382,8 @@ export interface ClrPublishedContext extends ClrComponentContext {
 // @public (undocumented)
 export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
+    protected reportsAriaInvalid(): boolean;
+    protected reportsAriaRequired(): boolean;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRadio, "[clrRadio]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -5364,8 +5393,10 @@ export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
 // @public (undocumented)
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
     constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
+    protected get ariaInvalid(): string | null;
     // (undocumented)
     ariaLabelledBy: string;
+    protected get ariaRequired(): string | null;
     // (undocumented)
     get clrInline(): boolean | string;
     set clrInline(value: boolean | string);
@@ -5382,7 +5413,7 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
     // (undocumented)
     role: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrRadioContainer, "clr-radio-container", never, { "clrInline": { "alias": "clrInline"; "required": false; }; }, {}, ["radios"], ["label", "clr-radio-wrapper", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrRadioContainer, "clr-radio-container", never, { "clrInline": { "alias": "clrInline"; "required": false; }; }, {}, ["radios", "groupLabels"], ["label", "clr-radio-wrapper", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrRadioContainer, [{ optional: true; }, null, null]>;
 }
@@ -5413,6 +5444,7 @@ export class ClrRadioWrapper implements OnInit {
 // @public (undocumented)
 export class ClrRange extends WrappedFormControl<ClrRangeContainer> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
+    protected reportsAriaRequired(): boolean;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRange, "[clrRange]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -6550,11 +6582,11 @@ export class ClrTreeViewModule {
 }
 
 // @public (undocumented)
-export class ClrVerticalNav implements OnDestroy {
+export class ClrVerticalNav implements OnInit, AfterViewChecked, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "VerticalNavService" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "VerticalNavIconService" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "VerticalNavGroupRegistrationService" needs to be exported by the entry point clr-angular.d.ts
-    constructor(_navService: VerticalNavService, _navIconService: VerticalNavIconService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, commonStrings: ClrCommonStringsService);
+    constructor(_navService: VerticalNavService, _navIconService: VerticalNavIconService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, commonStrings: ClrCommonStringsService, el?: ElementRef<HTMLElement>, changeDetector?: ChangeDetectorRef);
     // (undocumented)
     get ariaExpanded(): string;
     // (undocumented)
@@ -6571,8 +6603,11 @@ export class ClrVerticalNav implements OnDestroy {
     get hasIcons(): boolean;
     // (undocumented)
     get hasNavGroups(): boolean;
+    ngAfterViewChecked(): void;
     // (undocumented)
     ngOnDestroy(): void;
+    // (undocumented)
+    ngOnInit(): void;
     // (undocumented)
     toggleByButton(): void;
     // (undocumented)
@@ -6580,7 +6615,7 @@ export class ClrVerticalNav implements OnDestroy {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNav, "clr-vertical-nav", never, { "toggleLabel": { "alias": "clrVerticalNavToggleLabel"; "required": false; }; "collapsible": { "alias": "clrVerticalNavCollapsible"; "required": false; }; "collapsed": { "alias": "clrVerticalNavCollapsed"; "required": false; }; }, { "_collapsedChanged": "clrVerticalNavCollapsedChange"; }, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNav, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNav, [null, null, null, null, { optional: true; }, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -10443,6 +10478,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     constructor(vcr: ViewContainerRef, wrapperType: Type<W>, injector: Injector, ngControl: NgControl | null, renderer: Renderer2, el: ElementRef<HTMLElement>);
     // (undocumented)
     protected controlIdService: ControlIdService;
+    protected get controlInvalid(): boolean;
     // (undocumented)
     protected el: ElementRef<HTMLElement>;
     // (undocumented)
@@ -10464,6 +10500,8 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     ngOnInit(): void;
     // (undocumented)
     protected renderer: Renderer2;
+    protected reportsAriaInvalid(): boolean;
+    protected reportsAriaRequired(): boolean;
     // (undocumented)
     protected subscriptions: Subscription[];
     // (undocumented)

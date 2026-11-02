@@ -49,6 +49,7 @@ import {
   ClrCommonStringsService,
   ClrContextSnapshotOptions,
   ClrElementMutation,
+  clrHasRequiredValidator,
   ClrLoadingState,
   ClrPublishedContext,
   contextText,
@@ -87,6 +88,7 @@ import { OptionSelectionService } from './providers/option-selection.service';
   ],
   hostDirectives: [ClrPopoverHostDirective],
   host: {
+    // @deprecated since v18, remove in v19: select on `aria-required` on the input instead.
     '[class.aria-required]': 'true',
     '[class.clr-combobox]': 'true',
     '[class.clr-combobox-disabled]': 'control?.disabled',
@@ -289,6 +291,11 @@ export class ClrCombobox<T>
     );
   }
 
+  /** ARIA requires `aria-required` and `aria-invalid` on the `role="combobox"` element, not the host. */
+  protected get isRequired(): boolean {
+    return clrHasRequiredValidator(this.control?.control);
+  }
+
   private get disabled() {
     return this.control?.disabled;
   }
@@ -461,6 +468,16 @@ export class ClrCombobox<T>
     } else {
       this.containerWidthChange.next(this.containerWidth);
     }
+  }
+
+  /** Suppressed on the host: the combobox input reports it (see `isRequired`). */
+  protected override reportsAriaInvalid(): boolean {
+    return false;
+  }
+
+  /** Suppressed on the host: the combobox input reports it (see `isRequired`). */
+  protected override reportsAriaRequired(): boolean {
+    return false;
   }
 
   private initialiseObserver() {

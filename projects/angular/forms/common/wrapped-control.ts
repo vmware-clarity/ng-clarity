@@ -23,7 +23,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
-import { HostWrapper } from '@clr/angular/utils';
+import { clrHasRequiredValidator, ClrHostAttribute, HostWrapper } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { CONTROL_SUFFIX } from './abstract-control';
@@ -48,6 +48,8 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   protected subscriptions: Subscription[] = [];
 
   private controlClassService: ControlClassService;
+  private readonly ariaInvalidAttribute: ClrHostAttribute;
+  private readonly ariaRequiredAttribute: ClrHostAttribute;
   private markControlService: MarkControlService;
   private containerIdService: ContainerIdService;
   private _containerInjector: Injector;
@@ -64,6 +66,9 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     protected renderer: Renderer2,
     protected el: ElementRef<HTMLElement>
   ) {
+    // Attributes the application writes or binds are kept: see ClrHostAttribute.
+    this.ariaInvalidAttribute = new ClrHostAttribute(el?.nativeElement, 'aria-invalid');
+    this.ariaRequiredAttribute = new ClrHostAttribute(el?.nativeElement, 'aria-required');
     if (injector) {
       this.ngControlService = injector.get(NgControlService, null);
       this.markControlService = injector.get(MarkControlService, null);
@@ -89,6 +94,23 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     if (this.controlIdService) {
       this.controlIdService.id = value;
     }
+  }
+
+  /** Invalid and touched, so a field the user has not reached yet is not announced as wrong. */
+  protected get controlInvalid(): boolean {
+    return !!this.ngControl?.invalid && !!this.ngControl?.touched;
+  }
+
+  @HostBinding('attr.aria-invalid')
+  private get hostAriaInvalid(): string | null {
+    return this.ariaInvalidAttribute.value(this.reportsAriaInvalid() && this.controlInvalid);
+  }
+
+  /** A reactive `Validators.required` is not in the DOM, unlike the `required` attribute. */
+  @HostBinding('attr.aria-required')
+  private get hostAriaRequired(): string | null {
+    const required = this.reportsAriaRequired() && clrHasRequiredValidator(this.ngControl?.control);
+    return this.ariaRequiredAttribute.value(required);
   }
 
   @HostBinding('attr.aria-describedby')
@@ -170,6 +192,16 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     if (this.ngControl?.control?.markAsTouched) {
       this.ngControl.control.markAsTouched();
     }
+  }
+
+  /** Whether this control reports `aria-invalid` on its host. */
+  protected reportsAriaInvalid(): boolean {
+    return true;
+  }
+
+  /** Whether this control reports `aria-required` on its host. */
+  protected reportsAriaRequired(): boolean {
+    return true;
   }
 
   // @TODO This method has a try/catch due to an unknown issue that came when building the clrToggle feature

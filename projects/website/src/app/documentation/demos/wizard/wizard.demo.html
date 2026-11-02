@@ -284,6 +284,11 @@
       nested wizard is complete. When the nested wizard finishes, call
       <code cds-text="code">parentWizard.forceNext()</code> to automatically advance to the next step.
     </p>
+    <p cds-text="body" class="clr-mt-24px">
+      A wizard shown inline in the page, with the <code cds-text="code">clr-wizard--inline</code> class, sits beside
+      content that stays in use, so it is not a modal dialog: it carries no <code cds-text="code">aria-modal</code> and
+      does not keep keyboard focus inside, and the user can tab between the wizard and the page.
+    </p>
     <p cds-text="body" class="clr-mt-24px" cds-layout="m-b:sm">
       The example below demonstrates a horizontal wizard whose first page contains a nested wizard with its own steps.
     </p>

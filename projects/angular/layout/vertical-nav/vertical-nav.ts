@@ -5,13 +5,28 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
-import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
+import {
+  AfterViewChecked,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
+  Input,
+  OnDestroy,
+  OnInit,
+  Optional,
+  Output,
+} from '@angular/core';
+import { ClrCommonStringsService, ClrHostAttribute, uniqueIdFactory } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
 import { VerticalNavIconService } from './providers/vertical-nav-icon.service';
 import { VerticalNavService } from './providers/vertical-nav.service';
+
+const LANDMARK_SELECTOR = 'nav, [role="navigation"]';
 
 @Component({
   selector: 'clr-vertical-nav',
@@ -26,20 +41,28 @@ import { VerticalNavService } from './providers/vertical-nav.service';
   standalone: false,
   changeDetection: ChangeDetectionStrategy.Eager,
 })
-export class ClrVerticalNav implements OnDestroy {
+export class ClrVerticalNav implements OnInit, AfterViewChecked, OnDestroy {
   @Input('clrVerticalNavToggleLabel') toggleLabel: string;
   contentId = uniqueIdFactory();
 
   @Output('clrVerticalNavCollapsedChange') private _collapsedChanged = new EventEmitter<boolean>(true);
 
   private _sub: Subscription;
+  private readonly roleAttribute: ClrHostAttribute;
+  private readonly labelAttribute: ClrHostAttribute;
+  private landmarkNearby = false;
 
   constructor(
     private _navService: VerticalNavService,
     private _navIconService: VerticalNavIconService,
     private _navGroupRegistrationService: VerticalNavGroupRegistrationService,
-    public commonStrings: ClrCommonStringsService
+    public commonStrings: ClrCommonStringsService,
+    // Optional and last, so subclasses calling `super()` keep compiling.
+    @Optional() private readonly el?: ElementRef<HTMLElement>,
+    @Optional() private readonly changeDetector?: ChangeDetectorRef
   ) {
+    this.roleAttribute = new ClrHostAttribute(el?.nativeElement, 'role');
+    this.labelAttribute = new ClrHostAttribute(el?.nativeElement, 'aria-label');
     this._sub = _navService.collapsedChanged.subscribe(value => {
       this._collapsedChanged.emit(value);
     });
@@ -76,11 +99,50 @@ export class ClrVerticalNav implements OnDestroy {
     return !this.collapsed ? 'true' : 'false';
   }
 
+  /** A navigation landmark, unless one already sits around or inside it; an application `role` is kept. */
+  @HostBinding('attr.role')
+  private get hostRole(): string | null {
+    return this.roleAttribute.value(this.landmarkNearby ? null : 'navigation');
+  }
+
+  /** The landmark's name: the application's `aria-label`/`aria-labelledby`, else `verticalNavLabel`. */
+  @HostBinding('attr.aria-label')
+  private get hostLabel(): string | null {
+    // Host bindings are evaluated in declaration order, so the role above is settled.
+    const landmark =
+      this.roleAttribute.current === 'navigation' && !this.el?.nativeElement.hasAttribute('aria-labelledby');
+    return this.labelAttribute.value(landmark ? this.commonStrings.keys.verticalNavLabel : null);
+  }
+
+  ngOnInit() {
+    this.landmarkNearby = this.nearLandmark();
+  }
+
+  /** A projected `<nav>` can come and go, so look again after each check and apply on the next turn. */
+  ngAfterViewChecked() {
+    if (this.nearLandmark() === this.landmarkNearby) {
+      return;
+    }
+    // A promise rather than `queueMicrotask`, so the change lands in the zone.
+    Promise.resolve().then(() => {
+      const nearby = this.nearLandmark();
+      if (nearby !== this.landmarkNearby) {
+        this.landmarkNearby = nearby;
+        this.changeDetector?.markForCheck();
+      }
+    });
+  }
+
   ngOnDestroy() {
     this._sub.unsubscribe();
   }
 
   toggleByButton() {
     this.collapsed = !this.collapsed;
+  }
+
+  private nearLandmark(): boolean {
+    const host = this.el?.nativeElement;
+    return !!host?.parentElement?.closest(LANDMARK_SELECTOR) || !!host?.querySelector(LANDMARK_SELECTOR);
   }
 }

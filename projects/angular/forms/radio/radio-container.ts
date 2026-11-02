@@ -10,18 +10,21 @@ import {
   ChangeDetectionStrategy,
   Component,
   ContentChildren,
+  ElementRef,
+  inject,
   Input,
   Optional,
   QueryList,
 } from '@angular/core';
 import {
   ClrAbstractContainer,
+  ClrControlLabel,
   ContainerIdService,
   ControlClassService,
   LayoutService,
   NgControlService,
 } from '@clr/angular/forms/common';
-import { uniqueIdFactory } from '@clr/angular/utils';
+import { clrHasRequiredValidator, ClrHostAttribute, uniqueIdFactory } from '@clr/angular/utils';
 
 import { ClrRadio } from './radio';
 
@@ -53,6 +56,8 @@ import { ClrRadio } from './radio';
     '[class.clr-row]': 'addGrid()',
     '[attr.role]': 'role',
     '[attr.aria-labelledby]': 'ariaLabelledBy',
+    '[attr.aria-required]': 'ariaRequired',
+    '[attr.aria-invalid]': 'ariaInvalid',
   },
   providers: [NgControlService, ControlClassService, ContainerIdService],
   standalone: false,
@@ -64,8 +69,14 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
 
   @ContentChildren(ClrRadio, { descendants: true }) radios: QueryList<ClrRadio>;
 
+  // Only a direct-child label names the group; the inherited query also matches each radio label.
+  @ContentChildren(ClrControlLabel, { descendants: false }) private groupLabels: QueryList<ClrControlLabel>;
+
   private inline = false;
   private _generatedId = uniqueIdFactory();
+  private readonly host: HTMLElement = inject(ElementRef).nativeElement;
+  private readonly ariaRequiredAttribute = new ClrHostAttribute(this.host, 'aria-required');
+  private readonly ariaInvalidAttribute = new ClrHostAttribute(this.host, 'aria-invalid');
 
   constructor(
     @Optional() protected override layoutService: LayoutService,
@@ -93,6 +104,18 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
     }
   }
 
+  /** Reported once on the `radiogroup`, where ARIA puts it; standalone `ngModel` radios each have a control. */
+  protected get ariaRequired(): string | null {
+    return this.ariaRequiredAttribute.value(
+      !!this.role && this.controls.some(control => clrHasRequiredValidator(control.control))
+    );
+  }
+
+  /** Whether the group's choice is invalid, once the user has had a chance to make one. */
+  protected get ariaInvalid(): string | null {
+    return this.ariaInvalidAttribute.value(!!this.role && this.controlInvalid);
+  }
+
   ngAfterContentInit() {
     this.setAriaRoles();
     this.setAriaLabelledBy();
@@ -103,10 +126,12 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
   }
 
   private setAriaLabelledBy() {
-    if (this.label && !this.label.idAttr) {
-      this.label.idAttr = this._generatedId;
+    const groupLabel = this.groupLabels?.first;
+
+    if (groupLabel && !groupLabel.idAttr) {
+      groupLabel.idAttr = this._generatedId;
     }
 
-    this.ariaLabelledBy = this.radios?.length && this.label ? this.label.idAttr : null;
+    this.ariaLabelledBy = this.radios?.length && groupLabel ? groupLabel.idAttr : null;
   }
 }
