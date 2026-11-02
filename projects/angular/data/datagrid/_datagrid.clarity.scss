@@ -90,9 +90,11 @@
 
   .datagrid-overflow-ellipsis .datagrid-row {
     // Pinned cells sit one level deeper, in their own static container, but they have to truncate
-    // the same way as the scrollable ones.
+    // the same way as the scrollable ones. The text of a tree cell is in its own block, next to the
+    // expand toggle, so it truncates itself.
     .datagrid-scrolling-cells > .datagrid-cell,
-    .datagrid-pinned-cells > .datagrid-cell {
+    .datagrid-pinned-cells > .datagrid-cell,
+    .datagrid-tree-cell-text {
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
