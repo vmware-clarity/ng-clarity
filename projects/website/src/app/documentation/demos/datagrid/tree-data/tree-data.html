@@ -29,8 +29,8 @@
   Like a tree node, a row offers the expand toggle until its children come back empty. Set
   <code cds-text="code">[clrDgExpandable]</code> to <code cds-text="code">false</code> on the rows that cannot have
   children, so they never show the toggle. <code cds-text="code">[(clrDgExpanded)]</code> binds whether a row is
-  expanded, and reports the rows the user expands or collapses. On the toggle, the Right arrow key expands the row and
-  Left collapses it.
+  expanded, and reports the rows the user expands or collapses. On the toggle, Enter or Space expands and collapses the
+  row, while the arrow keys move between cells as usual.
 </p>
 
 <app-code-snippet [code]="examples.expandable" language="html"></app-code-snippet>

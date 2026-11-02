@@ -18,7 +18,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { ClrSignpost } from '@clr/angular/popover/signpost';
-import { ClrCommonStringsService, HostWrapper, Keys, uniqueIdFactory } from '@clr/angular/utils';
+import { ClrCommonStringsService, HostWrapper, uniqueIdFactory } from '@clr/angular/utils';
 
 import { DatagridTreeRow } from './interfaces/tree-row.interface';
 import { DatagridTreeNode } from './providers/tree-node.model';
@@ -45,7 +45,6 @@ import { WrappedCell } from './wrapped-cell';
             [attr.aria-labelledby]="_treeId + '-action ' + (_treeRow?._treeLabelCell?._treeId ?? _treeId)"
             [attr.aria-expanded]="node.expanded"
             (click)="toggle($event, node)"
-            (keydown)="expandOrCollapseWithArrows($event, node)"
             (focus)="toggleFocused = true"
             (blur)="toggleFocused = false"
           >
@@ -146,23 +145,5 @@ export class ClrDatagridCell implements OnInit {
     // Expanding is not selecting, even in row selection mode.
     event.stopPropagation();
     this.tree.setExpanded(node, !node.expanded);
-  }
-
-  /**
-   * The treegrid keys: Right expands a collapsed row and Left collapses an expanded one. Otherwise the
-   * arrows move between cells as usual. Like that cell navigation, the keys are not mirrored in
-   * right-to-left, so a key does the same thing whichever cell it is pressed in.
-   */
-  protected expandOrCollapseWithArrows(event: KeyboardEvent, node: DatagridTreeNode<unknown>) {
-    if (event.key !== Keys.ArrowRight && event.key !== Keys.ArrowLeft) {
-      return;
-    }
-    const expand = event.key === Keys.ArrowRight;
-    if (node.expanded === expand) {
-      return;
-    }
-    event.preventDefault();
-    event.stopPropagation();
-    this.tree.setExpanded(node, expand);
   }
 }

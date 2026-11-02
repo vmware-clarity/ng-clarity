@@ -882,28 +882,17 @@ export default function (): void {
     });
 
     describe('Keyboard', function () {
-      it('expands with Right and collapses with Left on the toggle', function () {
+      it('leaves Right and Left on the toggle to the navigation between cells', function () {
+        toggleButton(0).focus();
         press(0, 'ArrowRight');
-        expect(context.requests).toEqual(['a']);
-        context.respond('a', 2);
-        fixture.detectChanges();
-        expect(rowNames()).toEqual(['a', 'a1', 'a2', 'b', 'c']);
-
         press(0, 'ArrowLeft');
-        expect(rowNames()).toEqual(['a', 'b', 'c']);
-      });
-
-      it('does not mirror the keys in right-to-left, like the navigation between cells', function () {
-        element.setAttribute('dir', 'rtl');
-        press(0, 'ArrowRight');
-        expect(context.requests).toEqual(['a']);
-        press(0, 'ArrowLeft');
+        expect(context.requests).toEqual([]);
         expect(masterRow(0).getAttribute('aria-expanded')).toBe('false');
       });
 
       it('keeps the focus on the toggle when the children come in', function () {
         toggleButton(0).focus();
-        press(0, 'ArrowRight');
+        toggle(0);
         context.respond('a', 2);
         fixture.detectChanges();
         expect(rowNames()).toEqual(['a', 'a1', 'a2', 'b', 'c']);
