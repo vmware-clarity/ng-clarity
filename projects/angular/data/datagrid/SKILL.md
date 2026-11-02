@@ -209,7 +209,7 @@ getChildren = (folder: Folder) => this.api.children(folder.id); // array, Promis
 - `cascadeSelection: true`: in multi-selection, a row selects its loaded descendants (default `false`).
 - A failed load (or an Observable that ends without a value) collapses the row again; handle errors in `getChildren`. `reloadTreeChildren(item?)` on `ClrDatagrid` fetches children again. `expandAllTreeRows()` / `collapseAllTreeRows()` expand or collapse every row from your own buttons; after expand all, rows that come in later (other pages) come in expanded until a row is collapsed. `clrDgExpandedChange` emits for user toggles, for every row expand all or collapse all changes (rows not shown: once they are, so `[(clrDgExpanded)]` stays in sync), and when a failed or empty load closes a row.
 - Virtual scroll: `[clrVirtualTreeOf]`, `[clrVirtualTreeGetChildren]`, `[clrVirtualTreeCascadeSelection]` on the `ClrVirtualScroll` template instead of `clrVirtualRowsOf`.
-- Do not combine with expandable rows (`clr-dg-row-detail`) or nested datagrids.
+- Expandable rows (`clr-dg-row-detail`) are not supported with tree data: their caret looks like the tree toggle and both expand the row. Nested datagrids are not supported either; use the detail pane.
 
 ## Rules
 

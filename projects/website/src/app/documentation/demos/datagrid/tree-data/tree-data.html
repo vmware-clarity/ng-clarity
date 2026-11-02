@@ -123,8 +123,9 @@
 <h3 class="clr-mt-32px" cds-text="section">Considerations</h3>
 <ul class="list" cds-text="body" cds-layout="m-t:md">
   <li>
-    Do not combine tree data with expandable rows (<code cds-text="code">clr-dg-row-detail</code>) or nest datagrids.
-    Use the detail pane to show more about a row.
+    Expandable rows (<code cds-text="code">clr-dg-row-detail</code>) are not supported with tree data: their caret looks
+    like the tree toggle, and both expand the row. Nested datagrids are not supported either. Use the detail pane to
+    show more about a row.
   </li>
   <li>
     Filters are sent with <code cds-text="code">(clrDgRefresh)</code> for the top-level items; the datagrid does not
