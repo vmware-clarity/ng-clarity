@@ -18,7 +18,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { ClrSignpost } from '@clr/angular/popover/signpost';
-import { ClrCommonStringsService, HostWrapper, uniqueIdFactory } from '@clr/angular/utils';
+import { ClrCommonStringsService, HostWrapper, Keys, uniqueIdFactory } from '@clr/angular/utils';
 
 import { DatagridTreeRow } from './interfaces/tree-row.interface';
 import { DatagridTreeNode } from './providers/tree-node.model';
@@ -154,10 +154,10 @@ export class ClrDatagridCell implements OnInit {
    * right-to-left, so a key does the same thing whichever cell it is pressed in.
    */
   protected expandOrCollapseWithArrows(event: KeyboardEvent, node: DatagridTreeNode<unknown>) {
-    if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') {
+    if (event.key !== Keys.ArrowRight && event.key !== Keys.ArrowLeft) {
       return;
     }
-    const expand = event.key === 'ArrowRight';
+    const expand = event.key === Keys.ArrowRight;
     if (node.expanded === expand) {
       return;
     }
