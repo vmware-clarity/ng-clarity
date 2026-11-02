@@ -15,6 +15,13 @@ export type { ClrContextDomExtractor } from './dom/dom-context-collector';
 export * from './diff';
 export * from './schema';
 export {
+  CLR_AI_METADATA_ATTRIBUTE,
+  CLR_AI_METADATA_URL_ATTRIBUTE,
+  CLR_CONTEXT_LABEL_ATTRIBUTE,
+  CLR_CONTEXT_STATE_ATTRIBUTE,
+  CLR_CONTEXT_TYPE_ATTRIBUTE,
+} from './dom/annotations';
+export {
   CLR_CONTEXT_CATEGORIES,
   CLR_CONTEXT_PRESETS,
   clrContextCategoryRoles,

@@ -40,22 +40,28 @@ function warnLeftOut(element: Element, error: unknown): void {
 }
 
 /**
- * Merges an element's published context over the DOM-extracted one; published values win. For an `untrusted`
- * caller, only the published state keys marked public are merged.
+ * Merges the context from an element's annotation attributes, then its published context, over the
+ * DOM-extracted one; published values win. For an `untrusted` caller, only the state keys the published
+ * context marks public are merged.
  */
 export function mergeElementContext(
   base: ClrComponentContext,
   element: Element,
   options: Required<ClrContextSnapshotOptions>,
+  annotation: Partial<ClrComponentContext> | null = null,
   untrusted = false
 ): ClrComponentContext {
   const published = readClrElementContext(element, options);
-  if (!published) {
+  const source =
+    annotation && published
+      ? { ...annotation, ...published, state: { ...annotation.state, ...published.state } }
+      : (published ?? annotation);
+  if (!source) {
     return base;
   }
   let own: Partial<ClrComponentContext>;
   try {
-    own = publishedParts(published, options, untrusted, PUBLISHED_DEPTH);
+    own = publishedParts(source, options, untrusted, PUBLISHED_DEPTH);
   } catch (error) {
     warnLeftOut(element, error);
     return base;

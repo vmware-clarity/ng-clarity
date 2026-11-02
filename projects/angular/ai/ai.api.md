@@ -14,10 +14,19 @@ import { OnInit } from '@angular/core';
 import { Type } from '@angular/core';
 
 // @public
+export const CLR_AI_METADATA_ATTRIBUTE = "data-ai-metadata";
+
+// @public
+export const CLR_AI_METADATA_URL_ATTRIBUTE = "data-ai-metadata-url";
+
+// @public
 export const CLR_CONTEXT_APPLICATION: InjectionToken<ClrContextApplicationOptions>;
 
 // @public
 export const CLR_CONTEXT_CATEGORIES: Readonly<Record<ClrContextCategory, readonly string[]>>;
+
+// @public
+export const CLR_CONTEXT_CONFIG: InjectionToken<string | ClrContextConfig>;
 
 // @public
 export const CLR_CONTEXT_DEFAULT_OPTIONS: Readonly<Required<ClrContextSnapshotOptions>>;
@@ -27,6 +36,9 @@ export const CLR_CONTEXT_DIRECTIVES: Type<any>[];
 
 // @public
 export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
+
+// @public
+export const CLR_CONTEXT_LABEL_ATTRIBUTE = "data-clr-context";
 
 // @public
 export const CLR_CONTEXT_LOADING_TYPE = "clr-loading";
@@ -42,6 +54,12 @@ export const CLR_CONTEXT_PROTOCOL = "ui-context/v1";
 
 // @public
 export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
+
+// @public
+export const CLR_CONTEXT_STATE_ATTRIBUTE = "data-clr-context-state";
+
+// @public
+export const CLR_CONTEXT_TYPE_ATTRIBUTE = "data-clr-context-type";
 
 // @public
 export const CLR_CONTEXT_UNAVAILABLE_TYPE = "clr-unavailable";
@@ -87,6 +105,9 @@ export const CLR_PAGE_CONTEXT_SCHEMA: {
         };
         readonly metadata: {
             readonly type: "object";
+        };
+        readonly metadataState: {
+            readonly enum: readonly ["loading", "unavailable"];
         };
         readonly enabled: {
             readonly type: "boolean";
@@ -272,6 +293,7 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
 // @public
 export interface ClrContextApplicationOptions extends ClrApplicationContext {
     metadata?: () => Record<string, unknown> | null | undefined;
+    metadataOrigins?: string[];
     viewId?: () => string | null | undefined;
     views?: 'all' | 'enabled';
 }
@@ -310,6 +332,11 @@ export interface ClrContextCollectOptions {
     filter?: ClrContextRegionFilter;
     limits?: ClrContextRegionLimits;
     untrusted?: boolean;
+}
+
+// @public
+export interface ClrContextConfig {
+    views: ClrContextViewConfig[];
 }
 
 // @public
@@ -463,6 +490,15 @@ export interface ClrContextTrackingOptions {
 }
 
 // @public
+export interface ClrContextViewConfig {
+    enabled?: boolean;
+    metadata?: Record<string, unknown>;
+    route?: string;
+    selector?: string;
+    viewId?: string;
+}
+
+// @public
 export function clrDiffContext(previous: ClrPageContext | null, current: ClrPageContext): ClrContextChange;
 
 // @public
@@ -597,6 +633,7 @@ export interface ClrPageContext {
     enabled: boolean;
     focus?: 'modal';
     metadata?: Record<string, unknown>;
+    metadataState?: 'loading' | 'unavailable';
     regions: ClrComponentContext[];
     route?: ClrRouteContext;
     schemaVersion: string;
@@ -634,6 +671,9 @@ export interface ClrSetValueOperation {
 
 // @public
 export function provideClrContextApplication(application: ClrContextApplicationOptions): EnvironmentProviders;
+
+// @public
+export function provideClrContextConfig(config: ClrContextConfig | string): EnvironmentProviders;
 
 // @public
 export function provideClrContextOptions(options: ClrContextPreset | ClrContextSnapshotOptions, overrides?: ClrContextSnapshotOptions): EnvironmentProviders;

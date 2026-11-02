@@ -19,6 +19,7 @@ import {
 } from '@clr/angular/utils';
 
 import { accessibleName } from './accessible-name';
+import { annotationContext, hasAnnotation } from './annotations';
 import { ariaEnumValue, ariaState, isContentEditable, isRedacted, redactNode } from './aria-state';
 import { mergeElementContext, publishedNode, readClrElementContext } from './element-context';
 import { readElementMutator } from './element-mutator';
@@ -107,6 +108,8 @@ interface Walk {
   /** Inside a component that publishes its own writing, so its rendered controls get no refs. */
   mutatorDepth: number;
   readonly refs: ClrContextRefSink | null;
+  /** Where the view starts; `data-ai-metadata` on these and their ancestors describes the view, not a node. */
+  viewRoots: Element[];
 }
 
 /** The result of a walk, and whether it ran out of budget before it ran out of page. */
@@ -147,11 +150,13 @@ export function collectContextTreeWithin(
     frameDepth: 0,
     mutatorDepth: 0,
     refs,
+    viewRoots: [],
   };
   return withinReadScope(() => {
     const rootScope = root.nodeType === Node.ELEMENT_NODE ? idScope(root as Element) : (root as IdScope);
     walk.referencedIds.set(rootScope, collectReferencedIds(root, walk));
     const scope = engineScope(root, walk.options);
+    walk.viewRoots = scope.roots ?? topOf(root);
     const components = describeScope(root, scope.roots, walk);
     const result: ClrContextTreeResult = { components, truncated: walk.truncated };
     if (scope.focus) {
@@ -285,6 +290,7 @@ function rendersOnly(parent: Element, part: Element, excludeSelector: string): b
     }
     if (
       CLR_ELEMENT_CONTEXT_PROPERTY in element ||
+      hasAnnotation(element) ||
       element.matches(DESCRIBABLE_SELECTOR) ||
       hasRendered(element, DESCRIBABLE_SELECTOR)
     ) {
@@ -483,6 +489,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
     role === 'listitem' &&
     walk.summarizedListDepth > 0 &&
     !(CLR_ELEMENT_CONTEXT_PROPERTY in element) &&
+    !hasAnnotation(element) &&
     !Array.from(element.attributes).some(attribute => attribute.name.startsWith('aria-')) &&
     !hasRendered(element, CONTROL_SELECTOR)
   ) {
@@ -494,7 +501,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
   const redacted = walk.redactedDepth > 0;
   const label = nameSafely(element, redacted ? null : role, walk);
 
-  if (!role && !label) {
+  if (!role && !label && !annotationOf(element, walk)) {
     if (!isCustomElement) {
       return isTextBlock(element, walk)
         ? describeTextBlock(element, walk, owner)
@@ -614,6 +621,7 @@ function describeAnonymousCustomElement(element: Element, tagName: string, walk:
   }
   if (
     !readClrElementContext(element, walk.options) &&
+    !annotationOf(element, walk) &&
     !accessibleText(element, undefined, walk.excludeSelector).trim()
   ) {
     return [];
@@ -866,6 +874,7 @@ function isPhrasing(element: Element, walk: Walk): boolean {
     !element.hasAttribute('aria-live') &&
     !element.hasAttribute(CLR_CONTEXT_REDACT_ATTRIBUTE) &&
     !(CLR_ELEMENT_CONTEXT_PROPERTY in element) &&
+    !hasAnnotation(element) &&
     !isLabel(element, walk) &&
     !element.matches(DESCRIBABLE_SELECTOR) &&
     !hasRendered(element, DESCRIBABLE_SELECTOR) &&
@@ -918,7 +927,7 @@ function finish(
   if (published) {
     described = redacted
       ? withoutOverriddenLabel(node, element, walk)
-      : mergeElementContext(node, element, walk.options, walk.untrusted);
+      : mergeElementContext(node, element, walk.options, annotationOf(element, walk), walk.untrusted);
   }
   if (walk.excludeRoles.has(described.type)) {
     walk.remaining++;
@@ -952,6 +961,24 @@ function withoutOverriddenLabel(node: ClrComponentContext, element: Element, wal
   const unnamed = { ...node };
   delete unnamed.label;
   return unnamed;
+}
+
+/** The context annotation attributes give the element; view metadata is not the element's own. */
+function annotationOf(element: Element, walk: Walk): Partial<ClrComponentContext> | null {
+  if (!hasAnnotation(element)) {
+    return null;
+  }
+  const isViewLevel = walk.viewRoots.some(root => containsAcrossShadow(element, root));
+  return annotationContext(element, !isViewLevel);
+}
+
+/** The element a snapshot of the whole of `root` starts from. */
+function topOf(root: ParentNode): Element[] {
+  const top =
+    root.nodeType === Node.DOCUMENT_NODE
+      ? ((root as Document).body ?? (root as Document).documentElement)
+      : (root as Element);
+  return top ? [top] : [];
 }
 
 /** Whether a label read from content leaves the element out: only its resolved role counts, not any `role`. */
