@@ -293,7 +293,7 @@
       $columnWidth: datagrid-variables.$clr-datagrid-tree-toggle-size
     );
     // A square of the toggle size, centred on the first line of the text like the other row
-    // controls. The button takes the font of the text to measure its line.
+    // controls. The button inherits the font of the text (normalize), which measures its line.
     position: absolute;
     top: 0.5lh;
     right: calc(100% + #{density.$clr-base-gap-s});
@@ -302,7 +302,6 @@
     align-items: center;
     justify-content: center;
     width: datagrid-variables.$clr-datagrid-tree-toggle-size;
-    font: inherit;
     color: datagrid-variables.$clr-datagrid-icon-color;
 
     // While the children of the row load, the size of the icon it replaces.
