@@ -524,8 +524,9 @@ per response, the setup Angular documents for applications. Scripts and `<style>
 server or with the nonce, so a Clarity component that injects a style or script the policy does not allow
 shows up as a broken snapshot. `tests/csp.spec.ts` checks that the policy is enforced.
 
-- The Storybook preview provides the nonce to Angular through `CSP_NONCE` (`.storybook/preview.js`), and the
-  website reads it from `ngCspNonce` on `<app-root>` (`projects/website/src/index.html`).
+- The Storybook preview provides the nonce to Angular through `CSP_NONCE` (`.storybook/preview.js`). The website
+  suite tests its own build, `npm run _build:website:vrt`, whose `index.html` adds `ngCspNonce` to `<app-root>`
+  (`projects/website/scripts/write-vrt-index.js`). The production website has no nonce placeholder.
 - The Storybook server also allows `'unsafe-eval'`: the story templates are compiled at runtime by the
   Angular JIT compiler. The website suite does not allow it.
 - Style attributes are allowed (`style-src-attr 'unsafe-inline'`), because stories and website pages use
