@@ -270,17 +270,17 @@
   }
 
   .datagrid-tree-cell-content {
-    $indent: datagrid-variables.$clr-datagrid-tree-indent;
+    $toggle-size: datagrid-variables.$clr-datagrid-tree-toggle-size;
     // Each level holds the toggle and a gap before the text, so a child's toggle sits under the text of
     // its parent.
-    $level-width: calc(#{$indent} + #{density.$clr-base-gap-s});
+    $indent: calc(#{$toggle-size} + #{density.$clr-base-gap-s});
     $level: var(--clr-datagrid-tree-level, 0);
 
     position: relative;
-    // Percentages are of the cell's content width; one indent of it is kept for the text.
+    // Percentages are of the cell's content width; the size of a toggle of it is kept for the text.
     margin-left: max(
       0px,
-      min(calc((#{$level} + 1) * #{$level-width}), calc((100% - #{$indent}) * (#{$level} + 1) / (#{$level} + 2)))
+      min(calc((#{$level} + 1) * #{$indent}), calc((100% - #{$toggle-size}) * (#{$level} + 1) / (#{$level} + 2)))
     );
     // The indentation leaves less room, so a long word breaks rather than being cut off by the cell.
     overflow-wrap: anywhere;
@@ -289,10 +289,10 @@
   .datagrid .datagrid-tree-toggle {
     @include mixins.clr-no-styles-button();
     @include datagrid-mixins.datagrid-action-button-styles(
-      $height: datagrid-variables.$clr-datagrid-tree-indent,
-      $columnWidth: datagrid-variables.$clr-datagrid-tree-indent
+      $height: datagrid-variables.$clr-datagrid-tree-toggle-size,
+      $columnWidth: datagrid-variables.$clr-datagrid-tree-toggle-size
     );
-    // A square as wide as the indentation, centred on the first line of the text like the other row
+    // A square of the toggle size, centred on the first line of the text like the other row
     // controls. The button takes the font of the text to measure its line.
     position: absolute;
     top: 0.5lh;
@@ -301,7 +301,7 @@
     // Centred rather than placed by the padding: the compact density pulls up the icons of a cell.
     align-items: center;
     justify-content: center;
-    width: datagrid-variables.$clr-datagrid-tree-indent;
+    width: datagrid-variables.$clr-datagrid-tree-toggle-size;
     font: inherit;
     color: datagrid-variables.$clr-datagrid-icon-color;
 
@@ -1107,7 +1107,7 @@
   // @deprecated CSS rule `.datagrid-compact { ... }` in favor of compact mode in density theme
   .datagrid-compact {
     // The tree geometry of the compact density.
-    --clr-datagrid-tree-indent: #{mixins.baselinePx(20)};
+    --clr-datagrid-tree-toggle-size: #{mixins.baselinePx(20)};
 
     .datagrid {
       margin-top: datagrid-variables.$clr-datagrid-compact-margin-top;

@@ -49,7 +49,7 @@
 | --clr-datagrid-row-active-color                      | Background color for active state on rows                                |
 | --clr-datagrid-fixed-column-size                     | Size for fixed columns inside datagrid                                   |
 | --clr-datagrid-pinned-columns-max-width              | Largest share of the datagrid the pinned columns may occupy              |
-| --clr-datagrid-tree-indent                           | Indentation of each tree level, and width of the tree expand toggle      |
+| --clr-datagrid-tree-toggle-size                      | Size of the tree expand toggle; each tree level indents by it and a gap  |
 
 ## CSS Classes
 
