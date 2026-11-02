@@ -550,7 +550,9 @@
   <code cds-text="code">CLR_PAGE_CONTEXT_SCHEMA</code> is the JSON Schema (draft-07) of
   <code cds-text="code">ClrPageContext</code>, for consumers that validate snapshots outside TypeScript; it compiles
   with a default Ajv. <code cds-text="code">CLR_PAGE_CONTEXT_SCHEMA_VERSION</code> is the
-  <code cds-text="code">schemaVersion</code> it describes.
+  <code cds-text="code">schemaVersion</code> it describes. It changes only when a field changes meaning or is removed: a
+  later release can add top-level fields without changing it, so ignore the ones you do not know. Everything below the
+  top level is strict.
 </p>
 
 <h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrPageContext</code></h3>
@@ -566,7 +568,7 @@
     <tr>
       <td class="left"><b cds-text="medium">schemaVersion</b></td>
       <td class="left clr-hidden-xs-down">String</td>
-      <td class="left">Version of the snapshot format; it changes when a field changes meaning.</td>
+      <td class="left">Version of the snapshot format; it changes when a field changes meaning or is removed.</td>
     </tr>
     <tr>
       <td class="left"><b cds-text="medium">application</b></td>
@@ -588,10 +590,11 @@
     </tr>
     <tr>
       <td class="left"><b cds-text="medium">enabled</b></td>
-      <td class="left clr-hidden-xs-down"><code cds-text="code">false</code></td>
+      <td class="left clr-hidden-xs-down">Boolean</td>
       <td class="left">
-        Present when the application reads only enabled views and this one is not; the snapshot then describes nothing
-        on the page.
+        Whether the engine reads this view. <code cds-text="code">false</code> when the application reads only enabled
+        views and this one has no metadata; the snapshot then describes nothing on the page. It gates the engine only,
+        not what the page renders.
       </td>
     </tr>
     <tr>

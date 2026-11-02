@@ -7,7 +7,7 @@
 
 import { withoutFormValues, withoutUrlDetails } from './untrusted-options';
 
-const ENVELOPE = { schemaVersion: '1', application: { id: 'inventory' } };
+const ENVELOPE = { schemaVersion: '1', application: { id: 'inventory' }, enabled: true };
 
 describe('withoutUrlDetails', () => {
   it('drops the page title and a frame’s document title with the address', () => {

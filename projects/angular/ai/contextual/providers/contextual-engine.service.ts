@@ -205,6 +205,7 @@ export class ClrContextEngineService implements OnDestroy {
     const snapshot: ClrPageContext = {
       schemaVersion: CLR_PAGE_CONTEXT_SCHEMA_VERSION,
       application: this.applicationContext(),
+      enabled: true,
       title: '',
       regions: [],
       components: [],
@@ -232,7 +233,7 @@ export class ClrContextEngineService implements OnDestroy {
   /** With `untrusted`, what application code published is cut to the state keys it marks public. */
   private snapshot(options: ClrContextSnapshotOptions | undefined, untrusted: boolean): ClrPageContext {
     const snapshot = this.viewSnapshot();
-    if (snapshot.enabled === false) {
+    if (!snapshot.enabled) {
       return snapshot;
     }
     const resolved = resolveSnapshotOptions(withCallOptions(this.applicationOptions, options));
@@ -248,7 +249,7 @@ export class ClrContextEngineService implements OnDestroy {
   ): Promise<ClrPageContext> {
     const { timeoutMs, ...options } = asyncOptions ?? {};
     const view = this.viewSnapshot();
-    if (view.enabled === false) {
+    if (!view.enabled) {
       return view;
     }
     const address = this.address();

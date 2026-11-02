@@ -57,6 +57,7 @@ describe('Context frame bridge', () => {
   const pageContext: ClrPageContext = {
     schemaVersion: '1',
     application: { id: 'inventory' },
+    enabled: true,
     title: 'Host page',
     url: 'https://app.example/clusters/42?tenant=acme&token=secret#details',
     route: {
@@ -415,6 +416,7 @@ describe('Context frame bridge', () => {
           () => ({
             schemaVersion: '1',
             application: { id: 'inventory' },
+            enabled: true,
             title: 'Host page',
             url: 'https://app.example/reset/4f9c-token',
             regions: [],

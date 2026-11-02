@@ -1130,7 +1130,7 @@ describe('ClrContextEngineService, reading only enabled views', () => {
 
     const snapshot = engine.getSnapshot();
 
-    expect(snapshot.enabled).toBeUndefined();
+    expect(snapshot.enabled).toBeTrue();
     expect(snapshot.metadata).toEqual({ purpose: 'Lists hosts' });
     expect(snapshot.title).toBe(document.title);
     expect(snapshot.regions).toEqual([{ type: 'region', label: 'Hosts' }]);
@@ -1139,7 +1139,7 @@ describe('ClrContextEngineService, reading only enabled views', () => {
   it('reads a view whose metadata is an empty object', () => {
     metadata = {};
 
-    expect(engine.getSnapshot().enabled).toBeUndefined();
+    expect(engine.getSnapshot().enabled).toBeTrue();
   });
 });
 
