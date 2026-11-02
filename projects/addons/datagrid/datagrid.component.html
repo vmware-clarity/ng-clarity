@@ -53,7 +53,7 @@
     }
   </clr-dg-action-bar>
   @if (dragConfig) {
-    <clr-dg-column class="draggableCell" style="width: 20px"></clr-dg-column>
+    <clr-dg-column class="draggableCell" [style.width.px]="20"></clr-dg-column>
   }
   @for (column of visibleColumns; track trackByColumnId(index, column); let index = $index) {
     <clr-dg-column
@@ -223,7 +223,7 @@
         [clrDgSkeletonLoading]="!item"
       >
         @if (dragConfig) {
-          <clr-dg-cell class="draggableCell" style="width: 20px">
+          <clr-dg-cell class="draggableCell" [style.width.px]="20">
             <ng-container *ngTemplateOutlet="draggableCell; context: { $implicit: item }"> </ng-container>
           </clr-dg-cell>
         }
@@ -266,7 +266,7 @@
         </clr-dg-action-overflow>
 
         @if (dragConfig) {
-          <clr-dg-cell class="draggableCell" style="width: 20px">
+          <clr-dg-cell class="draggableCell" [style.width.px]="20">
             <ng-container *ngTemplateOutlet="draggableCell; context: { $implicit: item }"> </ng-container>
           </clr-dg-cell>
         }

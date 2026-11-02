@@ -263,10 +263,11 @@ jobs:
         uses: actions/cache@v4
         with:
           path: dist/website
-          key: website-build-${{hashFiles('package-lock.json', 'projects/website/**', 'projects/angular/**', 'projects/ui/**', 'projects/addons/**', 'angular.json', 'tsconfig.json')}}
+          key: website-vrt-build-${{hashFiles('package-lock.json', 'projects/website/**', 'projects/angular/**', 'projects/ui/**', 'projects/addons/**', 'angular.json', 'tsconfig.json')}}
+      # The production build with the CSP nonce placeholder, see projects/website/scripts/write-vrt-index.js.
       - name: Build Website
         if: steps.website-cache.outputs.cache-hit != 'true'
-        run: npm run _build:website
+        run: npm run _build:website:vrt
       - name: Update Visual Snapshots
         run: npx playwright test --update-snapshots
       - name: Collect Changes
