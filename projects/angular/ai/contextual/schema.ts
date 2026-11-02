@@ -5,21 +5,24 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-/** Version of the {@link ClrPageContext} format; it changes only when a field changes meaning. */
+/**
+ * Version of the {@link ClrPageContext} format; it changes only when a field changes meaning or is removed.
+ * New top-level fields are added without changing it.
+ */
 export const CLR_PAGE_CONTEXT_SCHEMA_VERSION = '1';
 
 /**
  * JSON Schema (draft-07) of {@link ClrPageContext} at `schemaVersion` `'1'`, for consumers that validate
- * snapshots outside TypeScript. Component `state` and the view's `metadata` are application-specific and
- * left open.
+ * snapshots outside TypeScript. The top level accepts fields a later release adds, so ignore the ones you do
+ * not know; everything below it is strict. Component `state` and the view's `metadata` are
+ * application-specific and left open.
  */
 export const CLR_PAGE_CONTEXT_SCHEMA = {
   $schema: 'http://json-schema.org/draft-07/schema#',
   $id: 'https://clarity.design/schemas/page-context/1.json',
   title: 'ClrPageContext',
   type: 'object',
-  required: ['schemaVersion', 'application', 'title', 'regions', 'components', 'collectedAt'],
-  additionalProperties: false,
+  required: ['schemaVersion', 'application', 'enabled', 'title', 'regions', 'components', 'collectedAt'],
   properties: {
     schemaVersion: { const: CLR_PAGE_CONTEXT_SCHEMA_VERSION },
     application: {
@@ -31,7 +34,7 @@ export const CLR_PAGE_CONTEXT_SCHEMA = {
     viewId: { type: 'string' },
     metadata: { type: 'object' },
     metadataState: { enum: ['loading', 'unavailable'] },
-    enabled: { const: false },
+    enabled: { type: 'boolean' },
     title: { type: 'string' },
     url: { type: 'string' },
     route: {

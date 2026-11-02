@@ -72,10 +72,11 @@ export interface ClrPageContext {
   /** Set while a metadata URL is loading, or when one could not be loaded. */
   metadataState?: 'loading' | 'unavailable';
   /**
-   * `false` when the views configuration disables this view, or the application reads only enabled
-   * views and this one has no metadata; nothing else is read.
+   * Whether the engine reads this view: `false` when the views configuration disables it, or the application
+   * reads only enabled views and this one has no metadata, and then nothing else is read. It gates this engine
+   * only, not what the page renders.
    */
-  enabled?: false;
+  enabled: boolean;
   /** The document title; empty for an untrusted caller unless it shares the full URL. */
   title: string;
   /** The current URL (browser location, or router URL when available). */

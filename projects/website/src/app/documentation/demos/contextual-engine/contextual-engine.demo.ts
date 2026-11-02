@@ -66,6 +66,7 @@ const SNAPSHOT_SHAPE_EXAMPLE = `
   "schemaVersion": "1",
   "application": { "id": "inventory", "version": "2.4.0" },
   "viewId": "cluster-overview",
+  "enabled": true,
   "title": "Cluster overview",
   "url": "https://app.example/clusters/42",
   "route": { "url": "/clusters/42", "path": "clusters/:id", "params": { "id": "42" } },

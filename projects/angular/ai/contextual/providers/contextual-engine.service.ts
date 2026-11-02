@@ -166,6 +166,7 @@ export class ClrContextEngineService implements OnDestroy {
     const snapshot: ClrPageContext = {
       schemaVersion: CLR_PAGE_CONTEXT_SCHEMA_VERSION,
       application: this.applicationContext(),
+      enabled: true,
       title: '',
       regions: [],
       components: [],
@@ -266,7 +267,7 @@ export class ClrContextEngineService implements OnDestroy {
   private snapshot(options: ClrContextSnapshotOptions | undefined, untrusted: boolean): ClrPageContext {
     const resolved = resolveSnapshotOptions(withCallOptions(this.applicationOptions, options));
     const snapshot = this.viewSnapshot(resolved, false);
-    if (snapshot.enabled === false) {
+    if (!snapshot.enabled) {
       return snapshot;
     }
     const regions = this.contextRegistry.collect({ filter: this.regionFilter(resolved), limits: resolved, untrusted });
@@ -287,7 +288,7 @@ export class ClrContextEngineService implements OnDestroy {
       await this.metadataLoader.settle(urls, waitMs);
     }
     const view = this.viewSnapshot(resolved, true);
-    if (view.enabled === false) {
+    if (!view.enabled) {
       return view;
     }
     const address = this.address();

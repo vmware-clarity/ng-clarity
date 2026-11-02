@@ -73,8 +73,7 @@ export const CLR_PAGE_CONTEXT_SCHEMA: {
     readonly $id: "https://clarity.design/schemas/page-context/1.json";
     readonly title: "ClrPageContext";
     readonly type: "object";
-    readonly required: readonly ["schemaVersion", "application", "title", "regions", "components", "collectedAt"];
-    readonly additionalProperties: false;
+    readonly required: readonly ["schemaVersion", "application", "enabled", "title", "regions", "components", "collectedAt"];
     readonly properties: {
         readonly schemaVersion: {
             readonly const: "1";
@@ -102,7 +101,7 @@ export const CLR_PAGE_CONTEXT_SCHEMA: {
             readonly enum: readonly ["loading", "unavailable"];
         };
         readonly enabled: {
-            readonly const: false;
+            readonly type: "boolean";
         };
         readonly title: {
             readonly type: "string";
@@ -457,7 +456,7 @@ export interface ClrPageContext {
     availableRoutes?: ClrAvailableRoute[];
     collectedAt: string;
     components: ClrComponentContext[];
-    enabled?: false;
+    enabled: boolean;
     focus?: 'modal';
     metadata?: Record<string, unknown>;
     metadataState?: 'loading' | 'unavailable';

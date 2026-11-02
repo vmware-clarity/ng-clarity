@@ -76,7 +76,7 @@ describe('ClrContextEngineService, view metadata', () => {
       document.body.setAttribute('data-ai-metadata', '{"purpose":"Hosts"}');
       const engine = engineWith({ views: 'enabled' });
 
-      expect(engine.getSnapshot(quiet).enabled).toBeUndefined();
+      expect(engine.getSnapshot(quiet).enabled).toBeTrue();
     });
 
     it('leaves out metadata that is not a JSON object', () => {
@@ -211,7 +211,7 @@ describe('ClrContextEngineService, view metadata', () => {
 
       expect(snapshot.viewId).toBe('host-detail');
       expect(snapshot.metadata).toEqual({ purpose: 'One host' });
-      expect(snapshot.enabled).toBeUndefined();
+      expect(snapshot.enabled).toBeTrue();
     });
 
     it('lets the page metadata win over the configuration', async () => {
@@ -234,7 +234,7 @@ describe('ClrContextEngineService, view metadata', () => {
       TestBed.resetTestingModule();
       const enabledOnly = routedEngine('enabled');
       await TestBed.inject(Router).navigateByUrl('/settings');
-      expect(enabledOnly.getSnapshot(quiet).enabled).toBeUndefined();
+      expect(enabledOnly.getSnapshot(quiet).enabled).toBeTrue();
     });
 
     it('loads the configuration from a URL', async () => {
