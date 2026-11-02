@@ -271,13 +271,16 @@
 
   .datagrid-tree-cell-content {
     $indent: datagrid-variables.$clr-datagrid-tree-indent;
+    // Each level holds the toggle and a gap before the text, so a child's toggle sits under the text of
+    // its parent.
+    $level-width: calc(#{$indent} + #{density.$clr-base-gap-s});
     $level: var(--clr-datagrid-tree-level, 0);
 
     position: relative;
     // Percentages are of the cell's content width; one indent of it is kept for the text.
     margin-left: max(
       0px,
-      min(calc((#{$level} + 1) * #{$indent}), calc((100% - #{$indent}) * (#{$level} + 1) / (#{$level} + 2)))
+      min(calc((#{$level} + 1) * #{$level-width}), calc((100% - #{$indent}) * (#{$level} + 1) / (#{$level} + 2)))
     );
     // The indentation leaves less room, so a long word breaks rather than being cut off by the cell.
     overflow-wrap: anywhere;
@@ -293,7 +296,7 @@
     // controls. The button takes the font of the text to measure its line.
     position: absolute;
     top: 0.5lh;
-    right: 100%;
+    right: calc(100% + #{density.$clr-base-gap-s});
     translate: 0 -50%;
     // Centred rather than placed by the padding: the compact density pulls up the icons of a cell.
     align-items: center;
