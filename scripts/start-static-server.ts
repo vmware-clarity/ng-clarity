@@ -40,7 +40,8 @@ function contentSecurityPolicy(nonce: string) {
     "default-src 'self'",
     `script-src 'self' 'nonce-${nonce}'${unsafeEval ? " 'unsafe-eval'" : ''}`,
     `style-src 'self' 'nonce-${nonce}'`,
-    // The stories and the website pages use style attributes. The library must not (eslint.config.js enforces it).
+    // The stories and the website pages use style attributes. The library must not: eslint.config.js reports the ones
+    // in its source, and the report-only policy below reports every style attribute at runtime.
     "style-src-attr 'unsafe-inline'",
     "img-src 'self' data: blob:",
     "font-src 'self' data:",
@@ -75,6 +76,10 @@ function sendHtml(html: string, response: express.Response) {
     );
 
   response.setHeader('Content-Security-Policy', contentSecurityPolicy(nonce));
+  // Fires a securitypolicyviolation event, with the first 40 characters of the value, for every style attribute set
+  // through the HTML parser or setAttribute(), but not for styles set through the CSSOM. tests/visual-snapshots.spec.ts
+  // fails a story on one that comes from neither the story sources nor Storybook.
+  response.setHeader('Content-Security-Policy-Report-Only', "style-src-attr 'report-sample'");
   response.type('html').send(page);
 }
 

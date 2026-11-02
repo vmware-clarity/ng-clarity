@@ -67,6 +67,31 @@ function optionsFor(group: string, storyName: string) {
 
 const takenScreenshotPaths = new Map<string, string>();
 
+/**
+ * The stories and Storybook set style attributes; the library must not (see the report-only policy in
+ * scripts/start-static-server.ts). A style attribute the page reports is the library's when its value is in none of
+ * the story sources, not in Storybook's iframe.html and not one Storybook's addons set at runtime. A violation reports
+ * at most the first 40 characters of the value. Angular rewrites static style attributes (`margin: 0` becomes
+ * `margin: 0;`), so values are compared without whitespace around `:` and `;` and without a trailing `;`.
+ */
+const normalizeStyle = (text: string) =>
+  text
+    .replace(/\s+/g, ' ')
+    .replace(/\s*([:;])\s*/g, '$1')
+    .replace(/;$/, '')
+    .trim();
+const storySourceText = normalizeStyle(
+  [
+    ...fs
+      .readdirSync('.storybook', { recursive: true, encoding: 'utf8' })
+      .filter(file => /\.(ts|js|html|mdx)$/.test(file))
+      .map(file => fs.readFileSync(path.join('.storybook', file), 'utf8')),
+    fs.readFileSync(path.join('.', 'dist', 'docs', 'iframe.html'), 'utf8'),
+  ].join('\n')
+);
+// The hidden container of the a11y addon's vision simulator filters.
+const storybookStyleAttributes = ['position:absolute;width:0;height:0;overf'];
+
 for (const entry of entries) {
   const storyId = entry.id;
   const group = groupFor(entry.importPath);
@@ -114,6 +139,15 @@ for (const entry of entries) {
       await page.setViewportSize(options.viewport);
     }
 
+    await page.addInitScript(() => {
+      const samples: string[] = ((window as any).styleAttributeSamples = []);
+      document.addEventListener('securitypolicyviolation', event => {
+        if (event.disposition === 'report' && event.effectiveDirective === 'style-src-attr') {
+          samples.push(event.sample);
+        }
+      });
+    });
+
     await page.goto(`http://localhost:8080/iframe.html?${storyParams}`);
 
     for (const selector of options.waitForSelectors ?? []) {
@@ -128,6 +162,13 @@ for (const entry of entries) {
       ...screenshotExpectOptions,
       mask: (options.maskSelectors ?? []).map(selector => page.locator(selector)),
     });
+
+    const styleAttributeSamples: string[] = await page.evaluate(() => (window as any).styleAttributeSamples);
+    const libraryStyleAttributes = styleAttributeSamples.filter(sample => {
+      const style = normalizeStyle(sample);
+      return !storybookStyleAttributes.includes(style) && !storySourceText.includes(style);
+    });
+    expect(libraryStyleAttributes, 'style attributes from neither the story nor Storybook').toEqual([]);
   });
 }
 

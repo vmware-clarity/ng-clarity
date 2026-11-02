@@ -533,6 +533,10 @@ shows up as a broken snapshot. `tests/csp.spec.ts` checks that the policy is enf
   them. The library must not: ESLint reports style attributes, `[attr.style]` and `<style>` elements under
   `projects/angular` and `projects/addons`. Use a class, or a style binding such as `[style.width.px]`, which
   Angular applies through the CSSOM.
+- The ones built at runtime are caught too: a report-only policy (`style-src-attr 'report-sample'`) reports
+  every style attribute a page sets, and `tests/visual-snapshots.spec.ts` fails a story on one whose value is
+  in neither the story sources nor Storybook. When a story sets one the check cannot find in its source (built
+  from parts, for example), write the value out in the story.
 - A test that adds CSS to the page uses `addStyleWithNonce()` from `tests/helpers/vrt.ts`. The policy blocks
   `page.addStyleTag()`.
 
