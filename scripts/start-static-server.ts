@@ -66,7 +66,13 @@ function sendHtml(html: string, response: express.Response) {
   const nonce = randomBytes(16).toString('base64');
   const page = html
     .replaceAll(noncePlaceholder, nonce)
-    .replace(/<(script|style)\b(?![^>]*\snonce=)/g, `<$1 nonce="${nonce}"`);
+    // Each match is a whole element, up to its first closing tag as the HTML parser reads it, so text like "<style"
+    // inside an inline script is never mistaken for a tag.
+    .replace(
+      /<(script|style)\b([^>]*)>([\s\S]*?)<\/\1>/gi,
+      (element, tag: string, attributes: string, content: string) =>
+        /\snonce=/i.test(attributes) ? element : `<${tag} nonce="${nonce}"${attributes}>${content}</${tag}>`
+    );
 
   response.setHeader('Content-Security-Policy', contentSecurityPolicy(nonce));
   response.type('html').send(page);
