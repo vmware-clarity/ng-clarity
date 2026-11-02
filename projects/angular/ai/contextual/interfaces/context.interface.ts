@@ -63,8 +63,11 @@ export interface ClrPageContext {
   viewId?: string;
   /** Application metadata about the current view, from the application provider. */
   metadata?: Record<string, unknown>;
-  /** `false` when the application reads only enabled views and this one has no metadata; nothing else is read. */
-  enabled?: false;
+  /**
+   * Whether the engine reads this view: `false` when the application reads only enabled views and this one
+   * has no metadata, and then nothing else is read. It gates this engine only, not what the page renders.
+   */
+  enabled: boolean;
   /** The document title; empty for an untrusted caller unless it shares the full URL. */
   title: string;
   /** The current URL (browser location, or router URL when available). */
