@@ -33,7 +33,7 @@ import { WrappedCell } from './wrapped-cell';
       <!-- The content is indented by the depth of the row, and the toggle sits in the indentation. -->
       <div class="datagrid-tree-cell-content">
         @if (node.expandable) {
-          <!-- Named "Expand <row>": the hidden word, then the leading cell of the row. -->
+          <!-- Named "Expand <row>": the hidden word, then the leading cell of the row and this cell. -->
           <span hidden [id]="_treeId + '-action'">
             {{ node.expanded ? commonStrings.keys.collapse : commonStrings.keys.expand }}
           </span>
@@ -42,7 +42,7 @@ import { WrappedCell } from './wrapped-cell';
             type="button"
             class="datagrid-tree-toggle"
             tabindex="-1"
-            [attr.aria-labelledby]="_treeId + '-action ' + (_treeRow?._treeLabelCell?._treeId ?? _treeId)"
+            [attr.aria-labelledby]="treeToggleLabelledBy"
             [attr.aria-expanded]="node.expanded"
             (click)="toggle($event, node)"
             (focus)="toggleFocused = true"
@@ -119,6 +119,16 @@ export class ClrDatagridCell implements OnInit {
   protected get treeNode(): DatagridTreeNode<unknown> | undefined {
     const row = this._treeRow;
     return row?._treeCells.includes(this) ? row._treeNode : undefined;
+  }
+
+  /**
+   * The ids that name the toggle: the action, the leading cell of the row, then this cell. The cell
+   * with the toggle still names the row when the leading cell has no text, like a drag handle.
+   */
+  protected get treeToggleLabelledBy(): string {
+    const leading = this._treeRow?._treeLabelCell;
+    const cells = leading && leading !== this ? [leading, this] : [this];
+    return [this._treeId + '-action', ...cells.map(cell => cell._treeId)].join(' ');
   }
 
   /**

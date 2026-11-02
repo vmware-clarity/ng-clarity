@@ -281,6 +281,7 @@ export class ClrDatagridCell implements OnInit {
     // Warning: (ae-forgotten-export) The symbol "DatagridTreeRow" needs to be exported by the entry point clr-angular-data.d.ts
     _treeRow: DatagridTreeRow | null;
     protected set treeToggle(toggle: ElementRef<HTMLButtonElement> | undefined);
+    protected get treeToggleLabelledBy(): string;
     // (undocumented)
     get _view(): any;
     // (undocumented)
@@ -1861,7 +1862,7 @@ export class WrappedRow implements AfterViewInit, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1592:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
+// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1597:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
 
 // (No @packageDocumentation comment for this package)
 

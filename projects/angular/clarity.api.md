@@ -2452,6 +2452,7 @@ export class ClrDatagridCell implements OnInit {
     // Warning: (ae-forgotten-export) The symbol "DatagridTreeRow" needs to be exported by the entry point clr-angular.d.ts
     _treeRow: DatagridTreeRow | null;
     protected set treeToggle(toggle: ElementRef<HTMLButtonElement> | undefined);
+    protected get treeToggleLabelledBy(): string;
     // (undocumented)
     get _view(): any;
     // (undocumented)

@@ -59,6 +59,7 @@ import { DatagridComponent } from './datagrid.component';
 import { AppfxDatagridModule } from './datagrid.module';
 import { DatagridStrings } from './i18n/datagrid-strings.service';
 import { ColumnSortOrder } from './interfaces/column-state';
+import { DatagridDragConfig } from './interfaces/datagrid-drag-config';
 import { DatagridTreeConfig, TreeExpandedState } from './interfaces/datagrid-tree-config';
 import { ActionDefinition } from './shared/action/action-definition';
 import { ActionClickEvent } from './shared/action/actions-event-types';
@@ -2900,6 +2901,32 @@ describe('DatagridComponent', () => {
       ).toBe(this.fixture.nativeElement.querySelector('.datagrid-tree-toggle').closest('clr-dg-cell'));
     });
 
+    it('names the toggle after its row when the drag handle leads the row', async function (this: any) {
+      // The drag column comes first only when the grid starts with it.
+      const fixture = TestBed.createComponent(DatagridHostComponent);
+      Object.assign(fixture.componentInstance, {
+        columnsDefs: this.columnsDefs,
+        data: this.data,
+        serverDrivenDatagrid: true,
+        trackByProperty: 'name',
+        treeConfig: this.component.treeConfig,
+        dragConfig: { fieldName: 'name' },
+      });
+      fixture.autoDetectChanges();
+      await fixture.whenStable();
+
+      const toggle = fixture.nativeElement.querySelector('.datagrid-tree-toggle') as HTMLElement;
+      const name = toggle
+        .getAttribute('aria-labelledby')
+        .split(' ')
+        .map(id => document.getElementById(id))
+        .map(label => (label.hidden ? label.textContent : label.innerText).trim())
+        .filter(Boolean)
+        .join(' ');
+      expect(name).toBe('Expand vm0');
+      fixture.destroy();
+    });
+
     it('puts the toggle in the columns marked with treeToggle', async function (this: any) {
       this.columnsDefs[1].treeToggle = true;
       this.columnsDefs[2].treeToggle = true;
@@ -3062,6 +3089,7 @@ class StatusComparator implements ClrDatagridComparatorInterface<any> {
       [rowsExpandedByDefault]="rowsExpandedByDefault"
       [rowDetailContent]="rowDetailContent"
       [treeConfig]="treeConfig"
+      [dragConfig]="dragConfig"
       (treeExpandedChange)="treeExpandedChanges.push($event)"
     >
       <div class="custom-placeholder-content">
@@ -3104,6 +3132,7 @@ class DatagridHostComponent {
   columnActions: ActionDefinition[] | null = null;
   serverDrivenDatagrid = false;
   treeConfig?: DatagridTreeConfig<any>;
+  dragConfig?: DatagridDragConfig;
   treeExpandedChanges: TreeExpandedState<any>[] = [];
   dataRange: ClrDatagridVirtualScrollRangeInterface<any> = {
     total: 100,
