@@ -95,10 +95,17 @@ describe('CLR_PAGE_CONTEXT_SCHEMA', () => {
     expectValid(await engineWith().getSnapshotAsync());
   });
 
-  it('rejects unknown properties and a different schema version', () => {
-    const snapshot = engineWith().getSnapshot();
+  it('accepts top-level fields a later release adds', () => {
+    expectValid({ ...engineWith().getSnapshot(), addedLater: true });
+  });
 
-    expect(validate({ ...snapshot, extra: true })).toBeFalse();
+  it('rejects unknown properties below the top level, a missing enabled flag and a different schema version', () => {
+    const { enabled, ...withoutEnabled } = engineWith().getSnapshot();
+    const snapshot = { ...withoutEnabled, enabled };
+
+    expect(validate({ ...snapshot, application: { ...snapshot.application, extra: true } })).toBeFalse();
+    expect(validate({ ...snapshot, components: [{ type: 'button', extra: true }] })).toBeFalse();
+    expect(validate(withoutEnabled)).toBeFalse();
     expect(validate({ ...snapshot, schemaVersion: '2' })).toBeFalse();
   });
 });

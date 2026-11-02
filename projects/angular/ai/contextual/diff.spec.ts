@@ -13,6 +13,7 @@ describe('clrDiffContext', () => {
     return {
       schemaVersion: '1',
       application: { id: 'inventory' },
+      enabled: true,
       title: 'Hosts',
       url: '/hosts',
       regions: [],
