@@ -30,6 +30,14 @@ export {
 } from '@clr/angular/utils';
 export type { ClrElementContextCallback, ClrElementMutation, ClrElementMutator } from '@clr/angular/utils';
 export { CLR_CONTEXT_IGNORE_ATTRIBUTE, CLR_CONTEXT_REDACT_ATTRIBUTE } from '@clr/angular/utils';
+// The host class stays internal so the application-wide options always apply.
+export { CLR_CONTEXT_PROTOCOL, clrRequestHostContext } from './iframe/context-frame-bridge';
+export type {
+  ClrContextFrameHostOptions,
+  ClrContextFrameRequest,
+  ClrContextFrameRequestOptions,
+  ClrContextFrameResponse,
+} from './iframe/context-frame-bridge';
 export * from './context';
 export * from './contextual.module';
 export { CLR_CONTEXT_UNTRUSTED_OPTION_KEYS } from './untrusted-options';
