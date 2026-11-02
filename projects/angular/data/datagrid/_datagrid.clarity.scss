@@ -275,7 +275,7 @@
 
     position: relative;
     // Percentages are of the cell's content width; one indent of it is kept for the text.
-    margin-inline-start: max(
+    margin-left: max(
       0px,
       min(calc((#{$level} + 1) * #{$indent}), calc((100% - #{$indent}) * (#{$level} + 1) / (#{$level} + 2)))
     );
@@ -292,8 +292,8 @@
     // A square as wide as the indentation, centred on the first line of the text like the other row
     // controls. The button takes the font of the text to measure its line.
     position: absolute;
-    inset-block-start: 0.5lh;
-    inset-inline-end: 100%;
+    top: 0.5lh;
+    right: 100%;
     translate: 0 -50%;
     // Centred rather than placed by the padding: the compact density pulls up the icons of a cell.
     align-items: center;
