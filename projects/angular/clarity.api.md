@@ -2439,7 +2439,6 @@ export class ClrDatagridCell implements OnInit {
     constructor(vcr: ViewContainerRef);
     // (undocumented)
     protected commonStrings: ClrCommonStringsService;
-    protected expandOrCollapseWithArrows(event: KeyboardEvent, node: DatagridTreeNode<unknown>): void;
     // (undocumented)
     ngOnInit(): void;
     signpost: QueryList<ClrSignpost>;

@@ -267,7 +267,6 @@ export class ClrDatagridCell implements OnInit {
     constructor(vcr: ViewContainerRef);
     // (undocumented)
     protected commonStrings: ClrCommonStringsService;
-    protected expandOrCollapseWithArrows(event: KeyboardEvent, node: DatagridTreeNode<unknown>): void;
     // (undocumented)
     ngOnInit(): void;
     // Warning: (ae-forgotten-export) The symbol "ClrSignpost" needs to be exported by the entry point clr-angular-data.d.ts
@@ -1862,7 +1861,7 @@ export class WrappedRow implements AfterViewInit, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1598:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
+// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1592:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
 
 // (No @packageDocumentation comment for this package)
 
