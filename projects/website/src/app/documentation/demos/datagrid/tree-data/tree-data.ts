@@ -6,6 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ClrAlertModule } from '@clr/angular';
 
 import { EXAMPLES } from './examples';
 import { DatagridTreeFilesExample } from './files-example';
@@ -30,7 +31,13 @@ const staticExampleTs = stackblitzClass(require('!raw-loader!./static-example.ts
   selector: 'clr-datagrid-tree-data-demo',
   templateUrl: 'tree-data.html',
   styleUrl: '../datagrid.demo.scss',
-  imports: [CodeSnippetComponent, StackblitzExampleComponent, DatagridTreeFilesExample, DatagridTreeStaticExample],
+  imports: [
+    ClrAlertModule,
+    CodeSnippetComponent,
+    StackblitzExampleComponent,
+    DatagridTreeFilesExample,
+    DatagridTreeStaticExample,
+  ],
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DatagridTreeDataDemo {

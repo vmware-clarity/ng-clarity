@@ -121,12 +121,16 @@
 <app-code-snippet [code]="examples.virtualScroll" language="html"></app-code-snippet>
 
 <h3 class="clr-mt-32px" cds-text="section">Considerations</h3>
+<clr-alert [clrAlertType]="'warning'" [clrAlertClosable]="false">
+  <clr-alert-item>
+    <span class="alert-text">
+      Expandable rows (<code cds-text="code">clr-dg-row-detail</code>) are not supported with tree data: their caret
+      looks like the tree toggle, and both expand the row. Nested datagrids are not supported either. Use the detail
+      pane to show more about a row.
+    </span>
+  </clr-alert-item>
+</clr-alert>
 <ul class="list" cds-text="body" cds-layout="m-t:md">
-  <li>
-    Expandable rows (<code cds-text="code">clr-dg-row-detail</code>) are not supported with tree data: their caret looks
-    like the tree toggle, and both expand the row. Nested datagrids are not supported either. Use the detail pane to
-    show more about a row.
-  </li>
   <li>
     Filters are sent with <code cds-text="code">(clrDgRefresh)</code> for the top-level items; the datagrid does not
     filter children.
