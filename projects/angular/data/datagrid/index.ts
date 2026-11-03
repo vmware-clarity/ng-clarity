@@ -22,6 +22,7 @@ export * from './datagrid-filter';
 export * from './datagrid-if-detail';
 export * from './datagrid-items';
 export * from './datagrid-tree-items';
+export * from './datagrid-tree-toggle';
 export * from './datagrid-virtual-tree.directive';
 export * from './datagrid-row';
 export * from './datagrid-row-detail';
