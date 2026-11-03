@@ -317,8 +317,7 @@
       $height: datagrid-variables.$clr-datagrid-tree-toggle-size,
       $columnWidth: datagrid-variables.$clr-datagrid-tree-toggle-size
     );
-    // Centred rather than placed by the padding: the compact density pulls up the icons of a cell.
-    align-items: center;
+
     width: datagrid-variables.$clr-datagrid-tree-toggle-size;
     color: datagrid-variables.$clr-datagrid-icon-color;
 
@@ -1244,7 +1243,13 @@
       }
     }
 
-    .datagrid-cell:not(.datagrid-detail-caret, .datagrid-expandable-caret, .datagrid-row-actions) {
+    .datagrid-cell:not(
+      .datagrid-detail-caret,
+      .datagrid-expandable-caret,
+      .datagrid-row-actions,
+      .datagrid-tree-cell,
+      .datagrid-tree-toggle
+    ) {
       @include mixins.cell-children-aligment();
     }
 
