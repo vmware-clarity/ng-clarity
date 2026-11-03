@@ -2927,6 +2927,39 @@ describe('DatagridComponent', () => {
       fixture.destroy();
     });
 
+    it('renders the tree with virtual scrolling, asking for the roots it renders', async function (this: any) {
+      const fixture = TestBed.createComponent(DatagridHostComponent);
+      const host = fixture.componentInstance;
+      Object.assign(host, {
+        columnsDefs: this.columnsDefs,
+        serverDrivenDatagrid: true,
+        virtualScrolling: true,
+        trackByProperty: 'name',
+        treeConfig: this.component.treeConfig,
+        dataRange: { total: 50, skip: 0, data: this.data },
+      });
+      spyOn(host, 'refreshVirtualGridData');
+      fixture.autoDetectChanges();
+      await fixture.whenStable();
+      await new Promise(resolve => setTimeout(resolve, 20));
+      await fixture.whenStable();
+
+      const element: HTMLElement = fixture.nativeElement;
+      // The roots, then also the children of the expanded ones.
+      const rowCount = () => (host.appfxDatagridComponent as any).clrDatagrid.virtualScroll.totalItems;
+      expect(element.querySelector('[role=treegrid]')).not.toBeNull();
+      expect(rowCount()).toBe(50);
+      expect(host.refreshVirtualGridData).toHaveBeenCalledWith({ page: jasmine.objectContaining({ from: 0 }) });
+
+      element.querySelector<HTMLButtonElement>('.datagrid-tree-toggle').click();
+      await fixture.whenStable();
+      await respond([{ ...this.data[0], name: 'vm0-a' }]);
+      await fixture.whenStable();
+      expect(rowCount()).toBe(51);
+      expect(element.querySelectorAll('clr-dg-row [role=row]')[1].getAttribute('aria-level')).toBe('2');
+      fixture.destroy();
+    });
+
     it('puts the toggle in the columns marked with treeToggle', async function (this: any) {
       this.columnsDefs[1].treeToggle = true;
       this.columnsDefs[2].treeToggle = true;

@@ -5,11 +5,24 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { afterNextRender, booleanAttribute, Directive, inject, Injector, Input } from '@angular/core';
+import { ListRange } from '@angular/cdk/collections';
+import {
+  afterNextRender,
+  booleanAttribute,
+  Directive,
+  EventEmitter,
+  inject,
+  Injector,
+  Input,
+  Output,
+} from '@angular/core';
+import { combineLatest } from 'rxjs';
+import { auditTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 
 import { DatagridTreeRenderer, FocusedCell } from './datagrid-tree-renderer';
 import { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
 import { ClrDatagridTreeChildrenFunction } from './interfaces/tree-children-function.interface';
+import { ClrDatagridVirtualScrollRangeInterface } from './interfaces/virtual-scroll-data-range.interface';
 
 /** How many frames the virtual scroll gets to render a row scrolled to, before focusing it anyway. */
 const FRAMES_TO_RENDER = 3;
@@ -23,9 +36,26 @@ const FRAMES_TO_RENDER = 3;
  *   <clr-dg-row [clrDgItem]="item">...</clr-dg-row>
  * </ng-template>
  * ```
+ *
+ * The roots can also be loaded by range, like the rows of `clrVirtualDataRange`: the datagrid
+ * reports the roots it renders, and the app gives it those it loads.
+ *
+ * ```html
+ * <ng-template
+ *   ClrVirtualScroll
+ *   let-item
+ *   [clrVirtualTreeDataRange]="rootsRange"
+ *   [clrVirtualTreeGetChildren]="getChildren"
+ *   (clrVirtualTreeRenderedRootsChange)="loadRoots($event)"
+ * >
+ *   <clr-dg-row [clrDgItem]="item" [clrDgSkeletonLoading]="!item">...</clr-dg-row>
+ * </ng-template>
+ * ```
  */
 @Directive({
-  selector: '[ClrVirtualScroll][clrVirtualTreeOf],[clrVirtualScroll][clrVirtualTreeOf]',
+  selector:
+    '[ClrVirtualScroll][clrVirtualTreeOf],[clrVirtualScroll][clrVirtualTreeOf],' +
+    '[ClrVirtualScroll][clrVirtualTreeDataRange],[clrVirtualScroll][clrVirtualTreeDataRange]',
   standalone: false,
 })
 export class ClrDatagridVirtualTree<T> extends DatagridTreeRenderer<T> {
@@ -34,14 +64,53 @@ export class ClrDatagridVirtualTree<T> extends DatagridTreeRenderer<T> {
   /** Like `clrDgTreeItemsCascadeSelection`. */
   @Input({ alias: 'clrVirtualTreeCascadeSelection', transform: booleanAttribute }) cascadeSelection = false;
 
+  /**
+   * The range of roots the rendered rows belong to, for the app to load those it hasn't yet, when it
+   * gives the roots with `clrVirtualTreeDataRange`. The end is excluded.
+   */
+  @Output('clrVirtualTreeRenderedRootsChange') renderedRootsChange = new EventEmitter<ListRange>();
+
   private virtualScroll = inject<ClrDatagridVirtualScrollDirective<T>>(ClrDatagridVirtualScrollDirective);
   private injector = inject(Injector);
   /** The rows rendered last, to find where the focused or top row was. */
   private shownItems: T[] = [];
   private frame: number | undefined;
+  private renderedRoots = combineLatest([this.virtualScroll.renderedRangeChange, this.tree.change])
+    .pipe(
+      // After the check in progress, as the app loads the roots in response.
+      auditTime(0),
+      map(([range]) => this.rootsOf(range)),
+      filter(Boolean),
+      distinctUntilChanged((previous, next) => previous.start === next.start && previous.end === next.end)
+    )
+    .subscribe(range => this.renderedRootsChange.emit(range));
+
+  /**
+   * The roots loaded by range: `total` roots, of which `data` starts at `skip`. The rows of the roots
+   * not loaded yet have no item. The roots loaded before are kept, so the expanded rows above keep
+   * their place, until the total changes.
+   */
+  @Input('clrVirtualTreeDataRange')
+  set dataRange(range: ClrDatagridVirtualScrollRangeInterface<T>) {
+    if (!range) {
+      return;
+    }
+    const roots = this.roots?.length === range.total ? this.roots : new Array<T>(range.total);
+    // A root the range brings to another place has moved, after a sort for instance: it has to be
+    // loaded again at its old one.
+    const moved = new Set(range.data.map(item => this.tree.identify(item)));
+    roots.forEach((root, index) => {
+      if (moved.has(this.tree.identify(root))) {
+        delete roots[index];
+      }
+    });
+    range.data.forEach((item, index) => (roots[range.skip + index] = item));
+    this.roots = roots;
+  }
 
   override ngOnDestroy() {
     super.ngOnDestroy();
+    this.renderedRoots.unsubscribe();
     if (this.frame !== undefined) {
       cancelAnimationFrame(this.frame);
     }
@@ -93,6 +162,29 @@ export class ClrDatagridVirtualTree<T> extends DatagridTreeRenderer<T> {
       },
       { injector: this.injector }
     );
+  }
+
+  private rootsOf(range: ListRange): ListRange | null {
+    const end = Math.min(range.end, this.shownItems.length);
+    return range.start < end ? { start: this.rootAt(range.start), end: this.rootAt(end - 1) + 1 } : null;
+  }
+
+  /**
+   * The place among the roots of the root of the row at `index`. The rows without an item are roots
+   * not loaded yet, so they follow the root of the closest row above that has one.
+   */
+  private rootAt(index: number): number {
+    for (let row = index; row >= 0; row--) {
+      const item = this.shownItems[row];
+      if (item !== undefined) {
+        let node = this.tree.nodeFor(item);
+        while (node.parent) {
+          node = node.parent;
+        }
+        return node.index + index - row;
+      }
+    }
+    return index;
   }
 
   // Scrolling renders the rows it brings on screen on the next frame.

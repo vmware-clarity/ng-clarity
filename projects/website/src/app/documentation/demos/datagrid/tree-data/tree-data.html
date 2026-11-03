@@ -120,6 +120,16 @@
 
 <app-code-snippet [code]="examples.virtualScroll" language="html"></app-code-snippet>
 
+<p class="clr-mt-16px" cds-text="body">
+  When the server returns the top-level rows a range at a time, bind
+  <code cds-text="code">[clrVirtualTreeDataRange]</code> instead of <code cds-text="code">[clrVirtualTreeOf]</code>. Its
+  <code cds-text="code">total</code> and <code cds-text="code">skip</code> count top-level rows, and
+  <code cds-text="code">(clrVirtualTreeRenderedRootsChange)</code> tells which of them are in view, so you can load
+  them. Rows not loaded yet have no item; show them as skeleton rows.
+</p>
+
+<app-code-snippet [code]="examples.virtualRange" language="html"></app-code-snippet>
+
 <h3 class="clr-mt-32px" cds-text="section">Considerations</h3>
 <clr-alert [clrAlertType]="'warning'" [clrAlertClosable]="false">
   <clr-alert-item>

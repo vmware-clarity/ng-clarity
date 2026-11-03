@@ -354,9 +354,11 @@
         <li>
           <strong cds-text="medium">Tree Configuration:</strong> A server-driven grid (<code cds-text="code"
             >[serverDrivenDatagrid]="true"</code
-          >) without virtual scrolling renders a tree when it gets <code cds-text="code">[treeConfig]</code>. Its
-          <code cds-text="code">getChildren</code> function returns the children of an item as an array, a Promise or an
-          Observable. Pass a new object to change the configuration.
+          >) renders a tree when it gets <code cds-text="code">[treeConfig]</code>. With virtual scrolling,
+          <code cds-text="code">refreshVirtualGridData</code> asks for a range of top-level rows and
+          <code cds-text="code">dataRange</code> holds them. Its <code cds-text="code">getChildren</code> function
+          returns the children of an item as an array, a Promise or an Observable. Pass a new object to change the
+          configuration.
         </li>
         <li>
           <strong cds-text="medium">Top-Level Rows:</strong> <code cds-text="code">[gridItems]</code> are the top-level

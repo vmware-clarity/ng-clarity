@@ -60,7 +60,8 @@ function firstChildren<T>(children: Observable<TreeChildren<T>>): Observable<T[]
 
 /**
  * Holds the tree behind a tree datagrid and flattens it into the list of rows on display: every
- * root, followed by the descendants of the expanded ones, depth-first.
+ * root, followed by the descendants of the expanded ones, depth-first. In a virtual scroll that
+ * loads its roots by range, the roots not loaded yet are rows without an item.
  *
  * The rest of the datagrid only ever sees that flat list, which is what keeps selection, actions,
  * the detail pane, pagination and pinned columns working unchanged: to them a child row is a row
@@ -81,7 +82,8 @@ export class DatagridTreeService<T = any> implements OnDestroy {
   /** Rows expanded or collapsed, by the user or because their children came back empty or failed. */
   readonly expandedChange = new Subject<{ item: T; expanded: boolean }>();
 
-  private roots: DatagridTreeNode<T>[] = [];
+  /** By their place, which is empty for a root not loaded yet. */
+  private roots: (DatagridTreeNode<T> | undefined)[] = [];
   /**
    * Every node by the identity of its item, also those of rows on other pages and of children
    * whose parent was reloaded, so open rows and fetched children come back with their rows.
@@ -159,9 +161,9 @@ export class DatagridTreeService<T = any> implements OnDestroy {
   }
 
   setRoots(items: T[]) {
-    const previous = this.roots;
-    this.roots = this.toNodes(items || [], null);
-    this.loadOpen(this.roots);
+    const previous = this.loadedRoots();
+    this.roots = Array.from(items || [], item => (item === undefined ? undefined : this.toNode(item, null)));
+    this.loadOpen(this.loadedRoots());
     const kept = new Set(this.roots);
     previous
       .filter(root => !kept.has(root))
@@ -278,7 +280,9 @@ export class DatagridTreeService<T = any> implements OnDestroy {
     if (item === undefined) {
       // Children of rows on other pages are stale too.
       this.nodes.forEach(node => this.forget(node));
-      this.roots.filter(root => root.expanded).forEach(root => this.load(root));
+      this.loadedRoots()
+        .filter(root => root.expanded)
+        .forEach(root => this.load(root));
     } else {
       const node = this.nodeFor(item);
       if (node) {
@@ -329,7 +333,7 @@ export class DatagridTreeService<T = any> implements OnDestroy {
    */
   toggleAll() {
     this.setSelected(
-      this.roots.map(root => root.item),
+      this.loadedRoots().map(root => root.item),
       !this.selection.isAllSelected()
     );
   }
@@ -363,7 +367,7 @@ export class DatagridTreeService<T = any> implements OnDestroy {
         }
         return self || below;
       };
-      this.roots.forEach(walk);
+      this.loadedRoots().forEach(walk);
       this.indeterminate = { selection: this.selection.current, nodes };
     }
     return this.indeterminate.nodes.has(this.nodeFor(item));
@@ -414,21 +418,23 @@ export class DatagridTreeService<T = any> implements OnDestroy {
     }
   }
 
-  private toNodes(items: T[], parent: DatagridTreeNode<T> | null): DatagridTreeNode<T>[] {
+  private toNode(item: T, parent: DatagridTreeNode<T> | null): DatagridTreeNode<T> {
     const level = parent ? parent.level + 1 : 1;
-    return items.map(item => {
-      const ref = this.identify(item);
-      const node = this.nodes.get(ref) || new DatagridTreeNode(item, parent, level);
-      // The item can be a new object for the same row.
-      node.item = item;
-      node.parent = parent;
-      node.level = level;
-      this.nodes.set(ref, node);
-      if (this.allExpanded && node.expandable && !node.expanded) {
-        this.setUnseen(node, true);
-      }
-      return node;
-    });
+    const ref = this.identify(item);
+    const node = this.nodes.get(ref) || new DatagridTreeNode(item, parent, level);
+    // The item can be a new object for the same row.
+    node.item = item;
+    node.parent = parent;
+    node.level = level;
+    this.nodes.set(ref, node);
+    if (this.allExpanded && node.expandable && !node.expanded) {
+      this.setUnseen(node, true);
+    }
+    return node;
+  }
+
+  private loadedRoots(): DatagridTreeNode<T>[] {
+    return this.roots.filter(Boolean);
   }
 
   /**
@@ -463,7 +469,7 @@ export class DatagridTreeService<T = any> implements OnDestroy {
 
   /** The nodes of the current roots and their loaded descendants. */
   private treeNodes(): DatagridTreeNode<T>[] {
-    return this.roots.flatMap(root => root.descendants());
+    return this.loadedRoots().flatMap(root => root.descendants());
   }
 
   private cancel(node: DatagridTreeNode<T>) {
@@ -533,7 +539,7 @@ export class DatagridTreeService<T = any> implements OnDestroy {
   }
 
   private setChildren(node: DatagridTreeNode<T>, children: TreeChildren<T>) {
-    node.children = this.toNodes([...(children || [])], node);
+    node.children = (children || []).map(child => this.toNode(child, node));
     this.loadOpen(node.children);
     // Children of a selected parent come in selected. Their rows haven't said yet whether they can
     // be selected, so the ones that can't are taken out again once they are rendered.
@@ -579,16 +585,20 @@ export class DatagridTreeService<T = any> implements OnDestroy {
    */
   private update() {
     const visible: T[] = [];
-    const walk = (siblings: DatagridTreeNode<T>[], sorted: boolean) => {
+    const walk = (siblings: (DatagridTreeNode<T> | undefined)[], sorted: boolean) => {
       const ordered =
         sorted && this.sort.comparator ? siblings.slice().sort((a, b) => this.sort.compare(a.item, b.item)) : siblings;
-      ordered.forEach((node, index) => {
-        node.index = index;
-        visible.push(node.item);
-        if (node.expanded && node.children) {
-          walk(node.children, true);
+      // A loop rather than forEach, which would skip the roots not loaded yet.
+      for (let index = 0; index < ordered.length; index++) {
+        const node = ordered[index];
+        visible.push(node?.item);
+        if (node) {
+          node.index = index;
+          if (node.expanded && node.children) {
+            walk(node.children, true);
+          }
         }
-      });
+      }
     };
     walk(this.roots, false);
     // The tree changed under the selection.

@@ -186,7 +186,7 @@ Persistence needs a `PersistDatagridSettingsService` provided via `appfxDatagrid
 
 ## Tree data
 
-A server-driven grid without virtual scrolling renders a tree when it gets `[treeConfig]`: `gridItems` are the roots of the page, children are fetched on first expand.
+A server-driven grid renders a tree when it gets `[treeConfig]`: `gridItems` are the roots of the page, children are fetched on first expand. With `virtualScrolling`, `dataRange` holds the roots: `refreshVirtualGridData` asks for a range of roots (`page.from`, `page.size` count roots, not rows), `dataRange.total` is the number of roots, and the children of expanded rows add to the rows to scroll through as they load.
 
 ```ts
 treeConfig: DatagridTreeConfig<Vm> = {

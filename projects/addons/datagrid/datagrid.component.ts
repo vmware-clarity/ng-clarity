@@ -395,7 +395,8 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
 
   /**
    * Input for providing data when virtual scrolling is enabled.
-   * <code>gridItems</code> should not be used in this case.
+   * <code>gridItems</code> should not be used in this case. With <code>treeConfig</code>, the data
+   * are the roots of the tree.
    */
   @Input() dataRange: ClrDatagridVirtualScrollRangeInterface<T> = {
     total: 100,
@@ -413,10 +414,12 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   @Input() gridItems: T[];
 
   /**
-   * Renders the datagrid as a tree: `gridItems` are the roots, and their children are loaded the
-   * first time their row is expanded.
+   * Renders the datagrid as a tree: `gridItems` are the roots, or `dataRange` with `virtualScrolling`,
+   * and their children are loaded the first time their row is expanded.
    *
-   * Only works with `serverDrivenDatagrid` and without `virtualScrolling`; other grids ignore it.
+   * Only works with `serverDrivenDatagrid`; other grids ignore it. With `virtualScrolling`,
+   * `refreshVirtualGridData` asks for a range of roots, and the children add to the rows to scroll
+   * through as they load.
    * A tree has no expandable rows, so `rowDetailContent` is not rendered. Rows are matched by
    * `trackByGridItemProperty` or `trackByFunction`, which must be unique across the whole tree.
    */
@@ -934,11 +937,9 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
       this.initActionTypes();
     }
 
-    const treeInputs = changes['treeConfig'] || changes['serverDrivenDatagrid'] || changes['virtualScrolling'];
-    if (treeInputs && this.treeConfig && (!this.serverDrivenDatagrid || this.virtualScrolling) && isDevMode()) {
-      console.warn(
-        'appfx-datagrid: treeConfig needs serverDrivenDatagrid without virtualScrolling; rendering flat rows.'
-      );
+    const treeInputs = changes['treeConfig'] || changes['serverDrivenDatagrid'];
+    if (treeInputs && this.treeConfig && !this.serverDrivenDatagrid && isDevMode()) {
+      console.warn('appfx-datagrid: treeConfig needs serverDrivenDatagrid; rendering flat rows.');
     }
   }
 

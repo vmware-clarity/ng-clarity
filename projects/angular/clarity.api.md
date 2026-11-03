@@ -3290,6 +3290,7 @@ export interface ClrDatagridVirtualScrollRangeInterface<T> {
 // @public
 export class ClrDatagridVirtualTree<T> extends DatagridTreeRenderer<T> {
     cascadeSelection: boolean;
+    set dataRange(range: ClrDatagridVirtualScrollRangeInterface<T>);
     // (undocumented)
     getChildren: ClrDatagridTreeChildrenFunction<T>;
     // (undocumented)
@@ -3297,10 +3298,11 @@ export class ClrDatagridVirtualTree<T> extends DatagridTreeRenderer<T> {
     // (undocumented)
     ngOnDestroy(): void;
     protected render(items: T[], focus: FocusedCell<T> | null, tabStop: T | undefined): void;
+    renderedRootsChange: EventEmitter<ListRange>;
     // (undocumented)
     roots: T[];
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridVirtualTree<any>, "[ClrVirtualScroll][clrVirtualTreeOf],[clrVirtualScroll][clrVirtualTreeOf]", never, { "roots": { "alias": "clrVirtualTreeOf"; "required": false; }; "getChildren": { "alias": "clrVirtualTreeGetChildren"; "required": false; }; "cascadeSelection": { "alias": "clrVirtualTreeCascadeSelection"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridVirtualTree<any>, "[ClrVirtualScroll][clrVirtualTreeOf],[clrVirtualScroll][clrVirtualTreeOf],[ClrVirtualScroll][clrVirtualTreeDataRange],[clrVirtualScroll][clrVirtualTreeDataRange]", never, { "roots": { "alias": "clrVirtualTreeOf"; "required": false; }; "getChildren": { "alias": "clrVirtualTreeGetChildren"; "required": false; }; "cascadeSelection": { "alias": "clrVirtualTreeCascadeSelection"; "required": false; }; "dataRange": { "alias": "clrVirtualTreeDataRange"; "required": false; }; }, { "renderedRootsChange": "clrVirtualTreeRenderedRootsChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridVirtualTree<any>, never>;
 }

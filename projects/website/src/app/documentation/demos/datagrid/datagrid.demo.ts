@@ -700,6 +700,19 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
           defaultValue: 'false',
           description: 'Tree data: selecting a row also selects its loaded descendants.',
         },
+        {
+          name: '[clrVirtualTreeDataRange]',
+          type: 'ClrDatagridVirtualScrollRangeInterface<T>',
+          defaultValue: 'undefined',
+          description:
+            'Tree data loaded by range: total, skip and data count the top-level items. Use it instead of [clrVirtualTreeOf]; items not loaded yet render as rows without an item.',
+        },
+        {
+          name: '(clrVirtualTreeRenderedRootsChange)',
+          type: 'ListRange',
+          defaultValue: 'undefined',
+          description: 'Tree data loaded by range: emits the range of top-level items in view, to load them.',
+        },
       ],
     },
   ];

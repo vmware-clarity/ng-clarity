@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { ListRange } from '@angular/cdk/collections';
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -16,6 +17,7 @@ import { ClrDatagrid } from './datagrid';
 import { ClrDatagridCell } from './datagrid-cell';
 import { ClrDatagridModule } from './datagrid.module';
 import { SelectionType } from './enums/selection-type';
+import { ClrDatagridVirtualScrollRangeInterface } from './interfaces/virtual-scroll-data-range.interface';
 import { Page } from './providers/page';
 
 interface Folder {
@@ -167,6 +169,46 @@ class VirtualTreeTest {
 
 @Component({
   template: `
+    <clr-datagrid [clrDgItemsIdentityFn]="identity" style="height: 20rem">
+      <clr-dg-column>Name</clr-dg-column>
+      <ng-template
+        ClrVirtualScroll
+        let-folder
+        [clrVirtualTreeDataRange]="range"
+        [clrVirtualTreeGetChildren]="getChildren"
+        [clrVirtualRowsItemSize]="25"
+        (clrVirtualTreeRenderedRootsChange)="rendered.push($event)"
+      >
+        <clr-dg-row [clrDgItem]="folder" [clrDgExpandable]="!!folder?.children" [clrDgSkeletonLoading]="!folder">
+          <clr-dg-cell>{{ folder?.id }}</clr-dg-cell>
+        </clr-dg-row>
+      </ng-template>
+    </clr-datagrid>
+  `,
+  standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
+})
+class VirtualRangeTreeTest {
+  range: ClrDatagridVirtualScrollRangeInterface<Folder> = { total: 1000, skip: 0, data: roots(0, 20) };
+  rendered: ListRange[] = [];
+
+  // The rows of roots not loaded yet have no item.
+  identity = (folder: Folder) => folder?.id;
+  getChildren = (folder: Folder) =>
+    Array.from({ length: folder.children }, (_, i) => ({ id: `${folder.id}-${i + 1}` }));
+
+  load(skip: number, count: number) {
+    this.range = { total: 1000, skip, data: roots(skip, count) };
+  }
+}
+
+// Roots r<start> to r<start + count - 1>, each with two children.
+function roots(start: number, count: number): Folder[] {
+  return Array.from({ length: count }, (_, i) => ({ id: `r${start + i}`, children: 2 }));
+}
+
+@Component({
+  template: `
     <clr-datagrid>
       <clr-dg-column>Name</clr-dg-column>
       <clr-dg-row *ngFor="let folder of roots" [clrDgItem]="folder">
@@ -218,7 +260,7 @@ export default function (): void {
     beforeEach(function () {
       TestBed.configureTestingModule({
         imports: [ClrDatagridModule, NoopAnimationsModule],
-        declarations: [TreeTest, VirtualTreeTest, FlatTest],
+        declarations: [TreeTest, VirtualTreeTest, VirtualRangeTreeTest, FlatTest],
       });
       fixture = TestBed.createComponent(TreeTest);
       context = fixture.componentInstance;
@@ -1194,6 +1236,88 @@ export default function (): void {
         virtual.componentInstance.roots = [{ id: 'a', children: 2 }];
         expect(() => virtual.detectChanges()).not.toThrow();
         await delay();
+      });
+    });
+
+    describe('Virtual scroll with roots loaded by range', function () {
+      let fixture: ComponentFixture<VirtualRangeTreeTest>;
+      let host: HTMLElement;
+
+      async function settle() {
+        fixture.detectChanges();
+        await delay(20);
+        fixture.detectChanges();
+      }
+
+      function rows() {
+        return Array.from(host.querySelectorAll<HTMLElement>('.datagrid-rows clr-dg-row'));
+      }
+
+      function rowOf(id: string) {
+        return rows().find(row => row.querySelector<HTMLElement>('clr-dg-cell').innerText.trim() === id);
+      }
+
+      function rowCount() {
+        return host.querySelector('[role=treegrid]').getAttribute('aria-rowcount');
+      }
+
+      function lastRendered() {
+        return fixture.componentInstance.rendered[fixture.componentInstance.rendered.length - 1];
+      }
+
+      function grid(): ClrDatagrid {
+        return fixture.debugElement.query(By.directive(ClrDatagrid)).componentInstance;
+      }
+
+      beforeEach(async function () {
+        fixture = TestBed.createComponent(VirtualRangeTreeTest);
+        host = fixture.nativeElement;
+        await settle();
+      });
+
+      afterEach(() => fixture.destroy());
+
+      it('shows the roots not loaded yet as rows without an item, and reports the rendered roots', function () {
+        expect(rowCount()).toBe('1000');
+        expect(rowOf('r0').querySelector('[role=row]').getAttribute('aria-setsize')).toBe('1000');
+        expect(lastRendered().start).toBe(0);
+        expect(lastRendered().end).toBeGreaterThan(0);
+      });
+
+      it('counts the children of loaded roots in the rows, and keeps them when other roots load', async function () {
+        rowOf('r0').querySelector<HTMLButtonElement>('.datagrid-tree-toggle').click();
+        await settle();
+        expect(rowCount()).toBe('1002');
+
+        fixture.componentInstance.load(500, 20);
+        await settle();
+        expect(rowCount()).toBe('1002');
+        expect(rowOf('r0-1')).toBeDefined();
+      });
+
+      it('reports the roots it scrolls to, past the children of the expanded ones', async function () {
+        rowOf('r0').querySelector<HTMLButtonElement>('.datagrid-tree-toggle').click();
+        await settle();
+
+        // Row 600 is root 598, after the two children of the first root.
+        grid().virtualScroll.scrollToIndex(600);
+        await delay(50);
+        await settle();
+        expect(lastRendered().start).toBeLessThanOrEqual(598);
+        expect(lastRendered().end).toBeGreaterThan(598);
+
+        fixture.componentInstance.load(lastRendered().start, lastRendered().end - lastRendered().start);
+        await settle();
+        const root = rowOf('r598').querySelector('[role=row]');
+        expect(root.getAttribute('aria-posinset')).toBe('599');
+        expect(root.getAttribute('aria-level')).toBe('1');
+      });
+
+      it('loads a root again at its old place when a range moves it', async function () {
+        fixture.componentInstance.range = { total: 1000, skip: 30, data: [{ id: 'r0', children: 2 }] };
+        await settle();
+        expect(rowOf('r0').querySelector('[role=row]').getAttribute('aria-posinset')).toBe('31');
+        expect(rows()[0].querySelector<HTMLElement>('clr-dg-cell').innerText.trim()).toBe('');
       });
     });
   });

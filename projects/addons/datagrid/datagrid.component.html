@@ -199,8 +199,49 @@
     <ng-content select=".custom-placeholder-content"></ng-content>
   </clr-dg-placeholder>
 
+  <!-- Server driven tree datagrid with virtual scrolling. The data range is a range of roots. -->
+  @if (serverDrivenDatagrid && virtualScrolling && treeConfig) {
+    <ng-template
+      ClrVirtualScroll
+      let-item
+      [clrVirtualTreeDataRange]="dataRange"
+      [clrVirtualTreeGetChildren]="treeConfig.getChildren"
+      [clrVirtualTreeCascadeSelection]="!!treeConfig.cascadeSelection"
+      [clrVirtualRowsItemSize]="25"
+      [clrVirtualRowsMinBufferPx]="400"
+      [clrVirtualRowsMaxBufferPx]="800"
+      [clrVirtualRowsTemplateCacheSize]="400"
+      [clrVirtualPersistItems]="false"
+      [clrVirtualRowsTrackBy]="trackByFunction"
+      (clrVirtualTreeRenderedRootsChange)="renderedRangeChange($event)"
+    >
+      <clr-dg-row
+        [clrDgItem]="item"
+        [clrDgExpandable]="!!item && (!treeConfig.hasChildren || treeConfig.hasChildren(item))"
+        (clrDgExpandedChange)="treeExpandedChange.emit({ item: item, expanded: $event })"
+        [clrDgSelectable]="item | isRowSelectable: isRowLocked : rowsDisabled"
+        [clrDgRowSelectionLabel]="
+          $any(item)?.[visibleColumns && visibleColumns.length ? visibleColumns[0].field : -1] ?? null
+        "
+        (contextmenu)="onContextMenu($event, item)"
+        [clrDgSkeletonLoading]="!item"
+      >
+        @if (dragConfig) {
+          <clr-dg-cell class="draggableCell" style="width: 20px">
+            <ng-container *ngTemplateOutlet="draggableCell; context: { $implicit: item }"> </ng-container>
+          </clr-dg-cell>
+        }
+        @for (column of visibleColumns; track column) {
+          <clr-dg-cell class="fixed-cell-height">
+            <appfx-dg-cell-container [column]="column" [item]="item"></appfx-dg-cell-container>
+          </clr-dg-cell>
+        }
+      </clr-dg-row>
+    </ng-template>
+  }
+
   <!-- Server driven datagrid with virtual scrolling -->
-  @if (serverDrivenDatagrid && virtualScrolling) {
+  @if (serverDrivenDatagrid && virtualScrolling && !treeConfig) {
     <ng-template
       ClrVirtualScroll
       let-item

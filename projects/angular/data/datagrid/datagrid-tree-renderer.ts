@@ -86,7 +86,10 @@ export abstract class DatagridTreeRenderer<T> implements OnChanges, DoCheck, OnD
    * goes when a collapse or a reload takes the row away.
    */
   protected nearestShown(item: T, items: T[]): T | undefined {
-    const shown = new Set(items.map(shownItem => this.tree.identify(shownItem)));
+    // Without the rows of roots not loaded yet, which have no item.
+    const shown = new Set(
+      items.filter(shownItem => shownItem !== undefined).map(shownItem => this.tree.identify(shownItem))
+    );
     for (let node = this.tree.nodeFor(item); node; node = node.parent) {
       if (shown.has(this.tree.identify(node.item))) {
         return node.item;
@@ -141,7 +144,7 @@ export abstract class DatagridTreeRenderer<T> implements OnChanges, DoCheck, OnD
 
   protected indexOf(items: T[], item: T) {
     const ref = this.tree.identify(item);
-    return items.findIndex(candidate => this.tree.identify(candidate) === ref);
+    return items.findIndex(candidate => candidate !== undefined && this.tree.identify(candidate) === ref);
   }
 
   // The item of the row that has the tab stop of the grid, if a row has it.
@@ -153,7 +156,8 @@ export abstract class DatagridTreeRenderer<T> implements OnChanges, DoCheck, OnD
   private focusedCell(): FocusedCell<T> | null {
     const active = this.datagrid._focusedElement();
     const row = active && this.datagrid.rows?.find(candidate => candidate.el.nativeElement.contains(active));
-    if (!row) {
+    // The row of a root not loaded yet has no item to follow.
+    if (row?.item === undefined) {
       return null;
     }
     const cells = this.cells(row.el.nativeElement);
