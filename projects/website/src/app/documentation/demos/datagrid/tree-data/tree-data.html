@@ -27,7 +27,7 @@
 <h3 class="clr-mt-32px" cds-text="section">Expanding rows</h3>
 <p class="clr-mt-16px" cds-text="body">
   Like a tree node, a row offers the expand toggle until its children come back empty. Set
-  <code cds-text="code">[clrDgExpandable]</code> to <code cds-text="code">false</code> on the rows that cannot have
+  <code cds-text="code">[clrDgTreeExpandable]</code> to <code cds-text="code">false</code> on the rows that cannot have
   children, so they never show the toggle. <code cds-text="code">[(clrDgExpanded)]</code> binds whether a row is
   expanded, and reports the rows the user expands or collapses. On the toggle, Enter or Space expands and collapses the
   row, while the arrow keys move between cells as usual.
@@ -77,7 +77,7 @@
 <p class="clr-mt-16px" cds-text="body">
   When the whole tree is already in the data, return the children from <code cds-text="code">getChildren</code> as an
   array. They are shown as soon as the row is expanded, without a loading state. Set
-  <code cds-text="code">[clrDgExpandable]</code> from the data, so the rows without children never show the toggle.
+  <code cds-text="code">[clrDgTreeExpandable]</code> from the data, so the rows without children never show the toggle.
 </p>
 
 <clr-datagrid-tree-static-example></clr-datagrid-tree-static-example>

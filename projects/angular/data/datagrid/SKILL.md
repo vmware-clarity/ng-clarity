@@ -193,7 +193,7 @@ getChildren = (folder: Folder) => this.api.children(folder.id); // array, Promis
   <clr-dg-row
     *clrDgTreeItems="let folder of roots; getChildren: getChildren; cascadeSelection: true"
     [clrDgItem]="folder"
-    [clrDgExpandable]="folder.childCount > 0"
+    [clrDgTreeExpandable]="folder.childCount > 0"
   >
     <clr-dg-cell>{{ folder.name }}</clr-dg-cell>
     <clr-dg-cell>{{ folder.size }}</clr-dg-cell>
@@ -202,10 +202,10 @@ getChildren = (folder: Folder) => this.api.children(folder.id); // array, Promis
 ```
 
 - The roots are the page: they come sorted and paged through `(clrDgRefresh)`; children are fetched on first expand, kept, and sorted by the datagrid.
-- Data already loaded: return the array, `getChildren = item => item.children`, with `[clrDgExpandable]="!!item.children?.length"`; arrays apply synchronously. Rows are not nested in the template (`clr-dg-row` inside `clr-dg-row` is not supported).
+- Data already loaded: return the array, `getChildren = item => item.children`, with `[clrDgTreeExpandable]="!!item.children?.length"`; arrays apply synchronously. Rows are not nested in the template (`clr-dg-row` inside `clr-dg-row` is not supported).
 - Always set `[clrDgItemsIdentityFn]`, unique across the whole tree, or rows close on every refresh.
 - `clrDgTreeToggle` puts the toggle and indentation in that column (several allowed; default: first column).
-- On the row, like on a tree node: `[clrDgExpandable]="false"` hides the toggle of rows without children (optional: without it, a row offers the toggle until its children come back empty), and `[(clrDgExpanded)]` binds whether it is expanded.
+- On the row, like on a tree node: `[clrDgTreeExpandable]="false"` hides the toggle of rows without children (optional: without it, a row offers the toggle until its children come back empty), and `[(clrDgExpanded)]` binds whether it is expanded.
 - `cascadeSelection: true`: in multi-selection, a row selects its loaded descendants (default `false`).
 - A failed load (or an Observable that ends without a value) collapses the row again; handle errors in `getChildren`. `reloadTreeChildren(item?)` on `ClrDatagrid` fetches children again. `expandAllTreeRows()` / `collapseAllTreeRows()` expand or collapse every row from your own buttons; after expand all, rows that come in later (other pages) come in expanded until a row is collapsed. `clrDgExpandedChange` emits for user toggles, for every row expand all or collapse all changes (rows not shown: once they are, so `[(clrDgExpanded)]` stays in sync), and when a failed or empty load closes a row.
 - Virtual scroll: `[clrVirtualTreeOf]`, `[clrVirtualTreeGetChildren]`, `[clrVirtualTreeCascadeSelection]` on the `ClrVirtualScroll` template instead of `clrVirtualRowsOf`. Roots loaded by range: `[clrVirtualTreeDataRange]="{ total, skip, data }"` (counts roots) instead of `clrVirtualTreeOf`, and `(clrVirtualTreeRenderedRootsChange)` emits the range of roots in view to load; roots not loaded yet render as rows without an item (`[clrDgSkeletonLoading]="!item"`).

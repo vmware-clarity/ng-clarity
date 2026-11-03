@@ -26,7 +26,7 @@
   <clr-dg-row
     *clrDgTreeItems="let item of files; getChildren: getChildren; cascadeSelection: true"
     [clrDgItem]="item"
-    [clrDgExpandable]="item.type === 'Folder'"
+    [clrDgTreeExpandable]="item.type === 'Folder'"
   >
     <clr-dg-cell>{{ item.name }}</clr-dg-cell>
     <clr-dg-cell>{{ item.type }}</clr-dg-cell>

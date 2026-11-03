@@ -235,7 +235,7 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
             'Whether the row is expanded: its expandable row detail, or with tree data, its children. Emits when the user expands or collapses the row.',
         },
         {
-          name: '[clrDgExpandable]',
+          name: '[clrDgTreeExpandable]',
           type: 'boolean',
           defaultValue: 'true',
           description:

@@ -217,7 +217,7 @@
     >
       <clr-dg-row
         [clrDgItem]="item"
-        [clrDgExpandable]="!!item && (!treeConfig.hasChildren || treeConfig.hasChildren(item))"
+        [clrDgTreeExpandable]="!!item && (!treeConfig.hasChildren || treeConfig.hasChildren(item))"
         (clrDgExpandedChange)="treeExpandedChange.emit({ item: item, expanded: $event })"
         [clrDgSelectable]="item | isRowSelectable: isRowLocked : rowsDisabled"
         [clrDgRowSelectionLabel]="
@@ -289,7 +289,7 @@
       [clrDgItem]="item"
       [clrDgDetailOpenLabel]="getExpandDetailsLabel(item)"
       [clrDgDetailCloseLabel]="getCollapseDetailsLabel(item)"
-      [clrDgExpandable]="!treeConfig.hasChildren || treeConfig.hasChildren(item)"
+      [clrDgTreeExpandable]="!treeConfig.hasChildren || treeConfig.hasChildren(item)"
       (clrDgExpandedChange)="treeExpandedChange.emit({ item: item, expanded: $event })"
       [clrDgSelectable]="item | isRowSelectable: isRowLocked : rowsDisabled"
       [clrDgRowSelectionLabel]="$any(item)?.[visibleColumns && visibleColumns.length ? visibleColumns[0].field : -1]"

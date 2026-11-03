@@ -81,6 +81,13 @@ export class ClrDatagridRow<T = any> implements OnChanges, AfterContentInit, Aft
   @Input('clrDgDetailHidden') detailHidden = false;
   @Input('clrDgSkeletonLoading') skeletonLoading = false;
 
+  /**
+   * In a tree, whether the row can have children, like `clrExpandable` on a tree node, so that rows
+   * known to have none don't offer the toggle. A row also stops offering it when its children come
+   * back empty.
+   */
+  @Input({ alias: 'clrDgTreeExpandable', transform: booleanAttribute }) treeExpandable = true;
+
   id: string;
   radioId: string;
   checkboxId: string;
@@ -135,8 +142,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, AfterContentInit, Aft
   // By default, every item is selectable; it becomes not selectable only if it's explicitly set to false
   private _selectable: boolean | string = true;
 
-  // The tree inputs, kept to be applied to the item when it is set, like the selectable state.
-  private _expandable = true;
+  // The expanded state in a tree, kept to be applied to the item when it is set, like the selectable state.
   private _treeExpanded: boolean | undefined;
 
   constructor(
@@ -269,19 +275,6 @@ export class ClrDatagridRow<T = any> implements OnChanges, AfterContentInit, Aft
     }
   }
 
-  /**
-   * In a tree, whether the row can have children, like `clrExpandable` on a tree node, so that rows
-   * known to have none don't offer the toggle. A row also stops offering it when its children come
-   * back empty.
-   */
-  @Input({ alias: 'clrDgExpandable', transform: booleanAttribute })
-  get expandable(): boolean {
-    return this._expandable;
-  }
-  set expandable(value: boolean) {
-    this._expandable = value;
-  }
-
   @Input()
   get clrDgDetailOpenLabel(): string {
     return this._detailOpenLabel ? this._detailOpenLabel : this.commonStrings.keys.open;
@@ -366,7 +359,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, AfterContentInit, Aft
       return;
     }
     this.tree.rowDeclared(this.item, {
-      expandable: this._expandable,
+      expandable: this.treeExpandable,
       locked: this._selectable === false || this._selectable === 'false',
       expanded: changes['item'] || changes['expanded'] ? this._treeExpanded : undefined,
     });

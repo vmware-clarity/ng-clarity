@@ -15,7 +15,7 @@ export class DatagridTreeNode<T> {
   children: DatagridTreeNode<T>[] | null = null;
   /** Position among its siblings on display, 0-based. */
   index = 0;
-  /** `false` when the row says with `[clrDgExpandable]` that it has no children. */
+  /** `false` when the row says with `[clrDgTreeExpandable]` that it has no children. */
   mayHaveChildren = true;
   /** The request for the children in flight, if any. A result is applied only for this request. */
   request: object | null = null;

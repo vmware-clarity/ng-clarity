@@ -93,7 +93,7 @@
     [clrVirtualTreeCascadeSelection]="cascadeSelection"
     (renderedRangeChange)="range = $event"
   >
-    <clr-dg-row [clrDgItem]="resource" [clrDgExpandable]="resource.childCount > 0">
+    <clr-dg-row [clrDgItem]="resource" [clrDgTreeExpandable]="resource.childCount > 0">
       <clr-dg-cell>{{ resource.name }}</clr-dg-cell>
       <clr-dg-cell>{{ resource.kind }}</clr-dg-cell>
       <clr-dg-cell>{{ resource.status }}</clr-dg-cell>

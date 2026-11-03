@@ -59,7 +59,7 @@
   <clr-dg-row
     *clrDgTreeItems="let resource of roots; getChildren: getChildren; cascadeSelection: cascadeSelection"
     [clrDgItem]="resource"
-    [clrDgExpandable]="resource.childCount > 0"
+    [clrDgTreeExpandable]="resource.childCount > 0"
   >
     <clr-dg-action-overflow>
       <button type="button" class="action-item" (click)="act('Edit', resource)">Edit</button>

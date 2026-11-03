@@ -31,7 +31,7 @@ const expandable = `
 <clr-dg-row
   *clrDgTreeItems="let item of files; getChildren: getChildren"
   [clrDgItem]="item"
-  [clrDgExpandable]="item.type === 'Folder'"
+  [clrDgTreeExpandable]="item.type === 'Folder'"
   [(clrDgExpanded)]="item.expanded"
 >
   <clr-dg-cell>{{ item.name }}</clr-dg-cell>
@@ -98,7 +98,7 @@ const virtualScroll = `
     [clrVirtualTreeGetChildren]="getChildren"
     [clrVirtualTreeCascadeSelection]="true"
   >
-    <clr-dg-row [clrDgItem]="item" [clrDgExpandable]="item.type === 'Folder'">
+    <clr-dg-row [clrDgItem]="item" [clrDgTreeExpandable]="item.type === 'Folder'">
       <clr-dg-cell>{{ item.name }}</clr-dg-cell>
       <clr-dg-cell>{{ item.size }}</clr-dg-cell>
     </clr-dg-row>
@@ -120,7 +120,7 @@ const virtualRange = `
   >
     <clr-dg-row
       [clrDgItem]="item"
-      [clrDgExpandable]="item?.type === 'Folder'"
+      [clrDgTreeExpandable]="item?.type === 'Folder'"
       [clrDgSkeletonLoading]="!item"
     >
       <clr-dg-cell>{{ item?.name }}</clr-dg-cell>

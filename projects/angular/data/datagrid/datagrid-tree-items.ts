@@ -23,10 +23,10 @@ import { ClrDatagridTreeChildrenFunction } from './interfaces/tree-children-func
  * Renders a tree as datagrid rows: the roots, and below every expanded row its children, indented.
  *
  * ```html
- * <clr-dg-row *clrDgTreeItems="let item of roots; getChildren: getChildren" [clrDgItem]="item" [clrDgExpandable]="item.childCount > 0">
+ * <clr-dg-row *clrDgTreeItems="let item of roots; getChildren: getChildren" [clrDgItem]="item" [clrDgTreeExpandable]="item.childCount > 0">
  * ```
  *
- * Like on a tree node, `[clrDgExpandable]` on the row says whether it can be expanded; without it,
+ * Like on a tree node, `[clrDgTreeExpandable]` on the row says whether it can be expanded; without it,
  * every row offers the toggle until its children come back empty. `[(clrDgExpanded)]` on the row
  * binds whether it is expanded.
  *

@@ -844,8 +844,6 @@ export class ClrDatagridRow<T = any> implements OnChanges, AfterContentInit, Aft
     //
     // (undocumented)
     expand: DatagridIfExpandService;
-    get expandable(): boolean;
-    set expandable(value: boolean);
     // (undocumented)
     expandableId: string;
     // Warning: (ae-forgotten-export) The symbol "ClrExpandableAnimationDirective" needs to be exported by the entry point clr-angular-data.d.ts
@@ -873,7 +871,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, AfterContentInit, Aft
     // @internal (undocumented)
     itemChanges: ReplaySubject<T>;
     // (undocumented)
-    static ngAcceptInputType_expandable: unknown;
+    static ngAcceptInputType_treeExpandable: unknown;
     // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
@@ -917,13 +915,14 @@ export class ClrDatagridRow<T = any> implements OnChanges, AfterContentInit, Aft
     // (undocumented)
     protected readonly tree: DatagridTreeService<T>;
     get _treeCells(): ClrDatagridCell[];
+    treeExpandable: boolean;
     protected get treeIndeterminate(): boolean;
     get _treeLabelCell(): ClrDatagridCell | undefined;
     get _treeNode(): DatagridTreeNode<T> | undefined;
     // (undocumented)
     get _view(): any;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRow<any>, "clr-dg-row", never, { "detailDisabled": { "alias": "clrDgDetailDisabled"; "required": false; }; "detailHidden": { "alias": "clrDgDetailHidden"; "required": false; }; "skeletonLoading": { "alias": "clrDgSkeletonLoading"; "required": false; }; "item": { "alias": "clrDgItem"; "required": false; }; "clrDgSelectable": { "alias": "clrDgSelectable"; "required": false; }; "selected": { "alias": "clrDgSelected"; "required": false; }; "expanded": { "alias": "clrDgExpanded"; "required": false; }; "expandable": { "alias": "clrDgExpandable"; "required": false; }; "clrDgDetailOpenLabel": { "alias": "clrDgDetailOpenLabel"; "required": false; }; "clrDgDetailCloseLabel": { "alias": "clrDgDetailCloseLabel"; "required": false; }; "clrDgRowSelectionLabel": { "alias": "clrDgRowSelectionLabel"; "required": false; }; }, { "selectedChanged": "clrDgSelectedChange"; "expandedChange": "clrDgExpandedChange"; }, ["dgCells"], ["clr-dg-action-overflow", "clr-dg-cell", "clr-dg-row-detail"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRow<any>, "clr-dg-row", never, { "detailDisabled": { "alias": "clrDgDetailDisabled"; "required": false; }; "detailHidden": { "alias": "clrDgDetailHidden"; "required": false; }; "skeletonLoading": { "alias": "clrDgSkeletonLoading"; "required": false; }; "treeExpandable": { "alias": "clrDgTreeExpandable"; "required": false; }; "item": { "alias": "clrDgItem"; "required": false; }; "clrDgSelectable": { "alias": "clrDgSelectable"; "required": false; }; "selected": { "alias": "clrDgSelected"; "required": false; }; "expanded": { "alias": "clrDgExpanded"; "required": false; }; "clrDgDetailOpenLabel": { "alias": "clrDgDetailOpenLabel"; "required": false; }; "clrDgDetailCloseLabel": { "alias": "clrDgDetailCloseLabel"; "required": false; }; "clrDgRowSelectionLabel": { "alias": "clrDgRowSelectionLabel"; "required": false; }; }, { "selectedChanged": "clrDgSelectedChange"; "expandedChange": "clrDgExpandedChange"; }, ["dgCells"], ["clr-dg-action-overflow", "clr-dg-cell", "clr-dg-row-detail"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridRow<any>, [{ optional: true; }, { optional: true; }, { optional: true; }, null, { optional: true; }, { optional: true; }, null, null, null, null, { optional: true; }, { optional: true; }, null]>;
 }
@@ -1864,7 +1863,7 @@ export class WrappedRow implements AfterViewInit, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1600:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
+// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1598:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
 
 // (No @packageDocumentation comment for this package)
 

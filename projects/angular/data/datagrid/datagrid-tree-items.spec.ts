@@ -40,7 +40,7 @@ type LoaderKind = 'observable' | 'promise' | 'sync' | 'throw';
       <clr-dg-row
         *clrDgTreeItems="let folder of roots; getChildren: getChildren; cascadeSelection: cascade"
         [clrDgItem]="folder"
-        [clrDgExpandable]="!!folder.children"
+        [clrDgTreeExpandable]="!!folder.children"
         [(clrDgExpanded)]="expanded[folder.id]"
         [clrDgSelectable]="!locked.includes(folder.id)"
         (clrDgExpandedChange)="expandedChanges.push({ id: folder.id, expanded: $event })"
@@ -147,7 +147,7 @@ function applyNow(emit: () => void) {
         [clrVirtualTreeGetChildren]="getChildren"
         [clrVirtualRowsItemSize]="25"
       >
-        <clr-dg-row [clrDgItem]="folder" [clrDgExpandable]="!!folder.children">
+        <clr-dg-row [clrDgItem]="folder" [clrDgTreeExpandable]="!!folder.children">
           <clr-dg-cell>{{ folder.id }}</clr-dg-cell>
           <clr-dg-cell>
             <button type="button" class="open">Open</button>
@@ -179,7 +179,7 @@ class VirtualTreeTest {
         [clrVirtualRowsItemSize]="25"
         (clrVirtualTreeRenderedRootsChange)="rendered.push($event)"
       >
-        <clr-dg-row [clrDgItem]="folder" [clrDgExpandable]="!!folder?.children" [clrDgSkeletonLoading]="!folder">
+        <clr-dg-row [clrDgItem]="folder" [clrDgTreeExpandable]="!!folder?.children" [clrDgSkeletonLoading]="!folder">
           <clr-dg-cell>{{ folder?.id }}</clr-dg-cell>
         </clr-dg-row>
       </ng-template>
@@ -750,7 +750,7 @@ export default function (): void {
         expect(context.expandedChanges).toEqual([{ id: 'a', expanded: false }]);
       });
 
-      it('expands a row that clrDgExpandable and clrDgExpanded turn on together', function () {
+      it('expands a row that clrDgTreeExpandable and clrDgExpanded turn on together', function () {
         context.roots[2].children = 1;
         context.expanded = { c: true };
         fixture.detectChanges();
@@ -758,7 +758,7 @@ export default function (): void {
         expect(masterRow(2).getAttribute('aria-expanded')).toBe('true');
       });
 
-      it('collapses a row when clrDgExpandable turns false, and reports it after the check', async function () {
+      it('collapses a row when clrDgTreeExpandable turns false, and reports it after the check', async function () {
         toggle(0);
         context.respond('a', 2);
         fixture.detectChanges();

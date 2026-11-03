@@ -12,7 +12,7 @@
   <clr-dg-row
     *clrDgTreeItems="let item of people; getChildren: getChildren"
     [clrDgItem]="item"
-    [clrDgExpandable]="!!item.reports?.length"
+    [clrDgTreeExpandable]="!!item.reports?.length"
   >
     <clr-dg-cell>{{ item.name }}</clr-dg-cell>
     <clr-dg-cell>{{ item.role }}</clr-dg-cell>
