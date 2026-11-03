@@ -588,9 +588,8 @@ export class DatagridTreeService<T = any> implements OnDestroy {
     const walk = (siblings: (DatagridTreeNode<T> | undefined)[], sorted: boolean) => {
       const ordered =
         sorted && this.sort.comparator ? siblings.slice().sort((a, b) => this.sort.compare(a.item, b.item)) : siblings;
-      // A loop rather than forEach, which would skip the roots not loaded yet.
-      for (let index = 0; index < ordered.length; index++) {
-        const node = ordered[index];
+      // entries() also visits the roots not loaded yet, which forEach would skip.
+      for (const [index, node] of ordered.entries()) {
         visible.push(node?.item);
         if (node) {
           node.index = index;

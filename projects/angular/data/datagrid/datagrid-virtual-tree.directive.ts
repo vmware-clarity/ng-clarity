@@ -79,6 +79,8 @@ export class ClrDatagridVirtualTree<T> extends DatagridTreeRenderer<T> {
   private frame: number | undefined;
   private renderedRoots = combineLatest([this.virtualScroll.renderedRangeChange, this.tree.change])
     .pipe(
+      // Only for an app that loads the roots by range.
+      filter(() => this.renderedRootsChange.observed),
       // After the check in progress, as the app loads the roots in response.
       auditTime(0),
       map(([range]) => this.rootsOf(range)),
