@@ -6,15 +6,20 @@
  */
 
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
+  inject,
+  Injector,
   Input,
   OnChanges,
   OnInit,
   Output,
+  ViewChild,
 } from '@angular/core';
+import { ClrCombobox } from '@clr/angular/forms';
 import {
   ClrPopoverHostDirective,
   ClrPopoverPosition,
@@ -85,6 +90,9 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   showHideFiltersLabel: string;
   showHideFiltersAriaLabel: string;
 
+  @ViewChild(ClrCombobox) private fieldCombobox: ClrCombobox<FilterablePropertyDefinition>;
+  private readonly injector = inject(Injector);
+
   constructor(
     public filterStrings: DatagridFiltersStrings,
     private cdr: ChangeDetectorRef,
@@ -145,6 +153,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   }
 
   onPropertyChange() {
+    this.propertyType = undefined;
     if (this.isStringProperty(this.selectedFilterableProperty)) {
       this.propertyType = PropertyType.String;
       this.stringProperty = this.castStringProperty();
@@ -160,6 +169,17 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     } else if (this.isUserProperty(this.selectedFilterableProperty)) {
       this.propertyType = PropertyType.User;
       this.userProperty = this.castUserProperty();
+    }
+    if (this.signPostOpened) {
+      // Changing fields recreates the editor and its field picker. Keep keyboard focus in the new picker.
+      afterNextRender(
+        () => {
+          if (this.signPostOpened) {
+            this.fieldCombobox?.textbox.nativeElement.focus();
+          }
+        },
+        { injector: this.injector }
+      );
     }
   }
 

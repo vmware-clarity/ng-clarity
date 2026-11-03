@@ -35,6 +35,10 @@ Opening a pill edits its criteria in a popover. **Clear filter** returns a prede
 
 The popover applies changes only on **Apply**. **Cancel**, Escape, and outside clicks discard unapplied edits.
 
+**Add new** uses a searchable field combobox. Existing pills keep their field locked while editing. String and numeric filters place the **AND/OR** button group beside the field, with each condition's operator and value on one row. A label between conditions shows the selected logical operator.
+
+String and numeric filters support any number of conditions, joined by one shared **AND** or **OR** operator. **Add condition** appends another row; individual rows can be removed while keeping at least one. Setting `singleCondition` to `true` limits the field to one condition.
+
 ```html
 <appfx-datagrid-filters
   [filterMode]="filterMode"

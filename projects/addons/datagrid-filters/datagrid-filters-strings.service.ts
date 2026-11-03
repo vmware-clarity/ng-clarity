@@ -139,14 +139,14 @@ export class DatagridFiltersStrings {
   readonly unitAriaLabel: string = 'Unit';
 
   /**
-   * Add second condition button label.
+   * Add condition button label.
    */
   readonly addCondition: string = 'Add condition';
 
   /**
-   * Remove second condition button aria label.
+   * Remove condition button aria label, followed by the condition number.
    */
-  readonly removeConditionAriaLabel: string = 'Remove second condition';
+  readonly removeConditionAriaLabel: string = 'Remove condition';
 
   /**
    * Conjoiners.

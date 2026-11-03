@@ -34,49 +34,75 @@
   [cdkTrapFocusAutoCapture]="true"
   *clrPopoverContent="open; at: popoverPosition; type: popoverType; outsideClickToClose: true; scrollToClose: false"
 >
-  <div class="filter-popover-header">
-    <span class="clr-control-label">{{ managedProperty.displayName }}</span>
+  <ng-template #fieldSelector>
+    <clr-combobox-container class="filter-field">
+      <label class="clr-sr-only">{{ filterStrings.filterLabel }}</label>
+      <clr-combobox name="field" [disabled]="true" [ngModel]="managedProperty" [ngModelOptions]="{ standalone: true }">
+        <clr-options>
+          <clr-option *clrOptionItems="let property of [managedProperty]; field: 'displayName'" [clrValue]="property">
+            {{ property.displayName }}
+          </clr-option>
+        </clr-options>
+      </clr-combobox>
+    </clr-combobox-container>
+  </ng-template>
+  <ng-template #filterActions>
     @if (active) {
       <button type="button" class="btn btn-sm btn-link" data-test-id="clear-filter" (click)="removeFilter()">
         {{ predefined ? filterStrings.clearFilter : filterStrings.removeFilterText }}
       </button>
     }
-  </div>
+  </ng-template>
   @switch (managedPropertyType) {
     @case (stringPropertyType) {
       <appfx-general-filter
         [filterProperty]="stringProperty"
         [propertyFilter]="propertyFilter"
         (filterCriteriaChange)="onFilterCriteriaChange($event)"
-      ></appfx-general-filter>
+      >
+        <ng-container filterField [ngTemplateOutlet]="fieldSelector"></ng-container>
+        <ng-container filterActions [ngTemplateOutlet]="filterActions"></ng-container>
+      </appfx-general-filter>
     }
     @case (numericPropertyType) {
       <appfx-general-filter
         [filterProperty]="numericProperty"
         [propertyFilter]="propertyFilter"
         (filterCriteriaChange)="onFilterCriteriaChange($event)"
-      ></appfx-general-filter>
+      >
+        <ng-container filterField [ngTemplateOutlet]="fieldSelector"></ng-container>
+        <ng-container filterActions [ngTemplateOutlet]="filterActions"></ng-container>
+      </appfx-general-filter>
     }
     @case (enumPropertyType) {
       <appfx-enum-filter
         [filterProperty]="enumProperty"
         [propertyFilter]="propertyFilter"
         (filterCriteriaChange)="onFilterCriteriaChange($event)"
-      ></appfx-enum-filter>
+      >
+        <ng-container filterField [ngTemplateOutlet]="fieldSelector"></ng-container>
+        <ng-container filterActions [ngTemplateOutlet]="filterActions"></ng-container>
+      </appfx-enum-filter>
     }
     @case (dateTimePropertyType) {
       <appfx-datetime-filter
         [filterProperty]="dateTimeProperty"
         [propertyFilter]="propertyFilter"
         (filterCriteriaChange)="onFilterCriteriaChange($event)"
-      ></appfx-datetime-filter>
+      >
+        <ng-container filterField [ngTemplateOutlet]="fieldSelector"></ng-container>
+        <ng-container filterActions [ngTemplateOutlet]="filterActions"></ng-container>
+      </appfx-datetime-filter>
     }
     @case (userPropertyType) {
       <appfx-users-filter
         [filterProperty]="userProperty"
         [propertyFilter]="propertyFilter"
         (filterCriteriaChange)="onFilterCriteriaChange($event)"
-      ></appfx-users-filter>
+      >
+        <ng-container filterField [ngTemplateOutlet]="fieldSelector"></ng-container>
+        <ng-container filterActions [ngTemplateOutlet]="filterActions"></ng-container>
+      </appfx-users-filter>
     }
   }
 </div>

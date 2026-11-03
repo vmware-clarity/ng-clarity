@@ -188,7 +188,10 @@ export class ManageFilterComponent implements OnInit, OnChanges {
       const enumProperty: EnumPropertyDefinition = property as EnumPropertyDefinition;
       value = enumProperty.values.get(this.propertyFilter.criteria[index].value) ?? value;
     } else if (this.isNumericUnitFilterProperty(property)) {
-      value = property.selectedValue[index] + ' ' + this.filterStrings.getUnitDisplayName(property.selectedUnit[index]);
+      value =
+        (property.selectedValue?.[index] ?? value) +
+        ' ' +
+        this.filterStrings.getUnitDisplayName(property.selectedUnit?.[index] ?? property.unit);
     }
     return compact && this.propertyFilter.criteria[index].operator === ComparisonOperator.Equals
       ? String(value)

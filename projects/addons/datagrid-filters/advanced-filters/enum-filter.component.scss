@@ -10,21 +10,9 @@
   text-align: left;
 }
 
-:host-context(.no-zoom) {
-  .enum-options {
-    overflow-y: auto;
-  }
-}
-
 .enum-filter-wrapper {
   max-height: 18rem;
   overflow: auto;
-}
-
-:host {
-  ::ng-deep .clr-control-container {
-    margin-left: var(--clr-base-horizontal-offset-xs);
-  }
 }
 
 clr-checkbox-container:not(.clr-default-style) {

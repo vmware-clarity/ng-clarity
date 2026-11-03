@@ -48,8 +48,9 @@
 <section aria-labelledby="predefined-filters-heading" cds-layout="m-t:xl">
   <h2 id="predefined-filters-heading">Predefined filters</h2>
   <p cds-layout="m-b:md">
-    VM Name, State, and Status stay visible when cleared. Status starts with Warning and Alert selected. Use Add New to
-    filter by other fields.
+    VM Name, State, and Status stay visible when cleared. VM Name starts with three conditions: contains linux, windows,
+    or ubuntu. Status starts with Warning and Alert selected. Open VM Name to add or remove conditions, or use Add New
+    to filter by other fields.
   </p>
   <appfx-datagrid-filters
     [filterMode]="FilterMode.AdvancedOnly"

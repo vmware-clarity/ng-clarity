@@ -18,6 +18,7 @@ import {
   FilterMode,
   LogicalOperator,
   PropertyFilter,
+  PropertyPredicate,
   StringPropertyDefinition,
   UserPropertyDefinition,
 } from '@clr/addons/datagrid-filters';
@@ -272,6 +273,14 @@ export class FiltersGridComponent {
     this.presetFilters = [
       {
         operator: LogicalOperator.Or,
+        criteria: ['linux', 'windows', 'ubuntu'].map(value => ({
+          filterableProperty: stringNameProperty,
+          operator: ComparisonOperator.Contains,
+          value,
+        })),
+      },
+      {
+        operator: LogicalOperator.Or,
         criteria: ['Warning', 'Alert'].map(value => ({
           filterableProperty: enumProperty,
           operator: ComparisonOperator.Equals,
@@ -282,32 +291,17 @@ export class FiltersGridComponent {
   }
 
   private filterItems(filterCriteria: PropertyFilter[]): VmItem[] {
-    let matchingItems = this.allItems;
-
-    if (filterCriteria?.length > 0) {
-      filterCriteria
-        .filter(propFilter => propFilter?.criteria?.length > 0)
-        .forEach(propFilter => {
-          const filteredItems: VmItem[] = [];
-          propFilter.criteria.forEach(predicate => {
-            if (predicate.filterableProperty.property) {
-              filteredItems.push(
-                ...matchingItems.filter(item => {
-                  return this.applyOperatorFilter(
-                    item[predicate.filterableProperty.property],
-                    predicate.value,
-                    predicate.operator
-                  );
-                })
-              );
-            }
-          });
-
-          matchingItems = filteredItems;
-        });
-    }
-
-    return matchingItems;
+    const activeFilters = (filterCriteria ?? []).filter(propFilter => propFilter?.criteria?.length > 0);
+    return this.allItems.filter(item =>
+      activeFilters.every(propFilter => {
+        const matches = (predicate: PropertyPredicate) =>
+          !!predicate.filterableProperty.property &&
+          this.applyOperatorFilter(item[predicate.filterableProperty.property], predicate.value, predicate.operator);
+        return propFilter.operator === LogicalOperator.And
+          ? propFilter.criteria.every(matches)
+          : propFilter.criteria.some(matches);
+      })
+    );
   }
 
   private applyOperatorFilter(item: string, predicateValue: string, operator: ComparisonOperator): boolean {

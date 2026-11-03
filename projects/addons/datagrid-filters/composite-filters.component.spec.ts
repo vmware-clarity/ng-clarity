@@ -9,9 +9,10 @@ import { A11yModule as CdkA11yModule } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import { ClrBadge } from '@clr/angular/emphasis/badge';
 import { ClrLabel } from '@clr/angular/emphasis/label';
-import { ClrCheckboxModule, ClrInputModule, ClrSelectModule } from '@clr/angular/forms';
+import { ClrCheckboxModule, ClrCombobox, ClrComboboxModule, ClrInputModule, ClrSelectModule } from '@clr/angular/forms';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrPopoverModuleNext } from '@clr/angular/popover/common';
 import { ClrSignpostModule } from '@clr/angular/popover/signpost';
@@ -92,6 +93,7 @@ describe('CompositeFiltersComponent', () => {
         ClrBadge,
         ClrLabel,
         ClrCheckboxModule,
+        ClrComboboxModule,
         ClrInputModule,
         ClrSelectModule,
         ClrSignpostModule,
@@ -190,7 +192,7 @@ describe('CompositeFiltersComponent', () => {
     this.fixture.detectChanges();
     await this.fixture.whenStable();
     this.fixture.detectChanges();
-    const input: HTMLInputElement = document.querySelector('input[formControlName="primaryValue"]');
+    const input: HTMLInputElement = document.querySelector('input[formControlName="value"]');
     input.value = 'Demo';
     input.dispatchEvent(new Event('input'));
     this.fixture.detectChanges();
@@ -222,24 +224,71 @@ describe('CompositeFiltersComponent', () => {
     expect(this.component.propertyType).toEqual(PropertyType.String);
     expect(this.component.stringProperty).toEqual(stringProperty);
   });
-  it('on property change', function (this: ThisTest) {
-    const addNewButton: HTMLButtonElement = this.fixture.debugElement.nativeElement.querySelector(
-      'button[data-test-id="add-button"]'
-    );
-    expect(addNewButton).toBeTruthy();
-    addNewButton.click();
-    this.fixture.detectChanges();
+  it('searches fields in the combobox and switches to the selected editor', async function (this: ThisTest) {
+    await openAddFilter(this.fixture);
     expect(this.component.signPostOpened).toBeTruthy();
-    const propertySelect: HTMLSelectElement = document.body.querySelector('select');
-    expect(propertySelect).toBeTruthy();
-    expect(propertySelect.options.length).toEqual(2);
-
-    propertySelect.value = propertySelect.options[1].value;
-    propertySelect.dispatchEvent(new Event('change'));
-    this.fixture.detectChanges();
+    await selectField(this.fixture, enumProperty.displayName);
     expect(this.component.selectedFilterableProperty).toEqual(filterableProperties[1]);
     expect(this.component.propertyType).toEqual(PropertyType.Enum);
     expect(this.component.enumProperty).toEqual(enumProperty);
+    expect(document.querySelector('appfx-general-filter')).toBeNull();
+    expect(document.querySelector('appfx-enum-filter')).not.toBeNull();
+    expect(this.component.signPostOpened).toBeTrue();
+    expect(document.activeElement).toBe(document.querySelector('.filter-popover .clr-combobox-input'));
+  });
+  it('discards the draft when switching between fields of the same type', async function (this: ThisTest) {
+    const otherProperty = new StringPropertyDefinition('Description', 'description', [ComparisonOperator.Equals]);
+    this.component.filterableProperties = [stringProperty, otherProperty];
+    spyOn(this.component.propertyFiltersChange, 'emit');
+    await openAddFilter(this.fixture);
+    const input: HTMLInputElement = document.querySelector('input[formControlName="value"]');
+    input.value = 'Draft name';
+    input.dispatchEvent(new Event('input'));
+    this.fixture.detectChanges();
+    document.querySelector<HTMLButtonElement>('.filter-popover [data-test-id="add-button"]').click();
+    this.fixture.detectChanges();
+    await this.fixture.whenStable();
+    this.fixture.detectChanges();
+
+    await selectField(this.fixture, otherProperty.displayName);
+
+    expect(document.querySelector<HTMLInputElement>('input[formControlName="value"]').value).toBe('');
+    expect(document.querySelectorAll('.filter-condition-row').length).toBe(1);
+    expect(document.querySelector<HTMLSelectElement>('select[formControlName="operator"]').options.length).toBe(1);
+    expect(document.querySelector<HTMLButtonElement>('[data-test-id="submitBtn"]').disabled).toBeTrue();
+    expect(this.component.propertyFiltersChange.emit).not.toHaveBeenCalled();
+    expect(document.activeElement).toBe(document.querySelector('.filter-popover .clr-combobox-input'));
+  });
+  it('keeps the field picker available after a cleared selection', async function (this: ThisTest) {
+    await openAddFilter(this.fixture);
+    const picker = this.fixture.debugElement.query(By.directive(ClrCombobox));
+    picker.triggerEventHandler('ngModelChange', null);
+    this.fixture.detectChanges();
+    await this.fixture.whenStable();
+    this.fixture.detectChanges();
+    expect(document.querySelector('appfx-general-filter')).toBeNull();
+    expect(document.querySelector<HTMLButtonElement>('[data-test-id="submitBtn"]').disabled).toBeTrue();
+    expect(document.querySelector('[data-test-id="cancelBtn"]')).not.toBeNull();
+    expect(document.querySelector('.filter-popover clr-combobox')).not.toBeNull();
+    expect(document.activeElement).toBe(document.querySelector('.filter-popover .clr-combobox-input'));
+
+    await selectField(this.fixture, stringProperty.displayName);
+
+    expect(this.component.selectedFilterableProperty).toBe(stringProperty);
+    expect(document.querySelector('appfx-general-filter')).not.toBeNull();
+    expect(this.component.signPostOpened).toBeTrue();
+    expect(document.activeElement).toBe(document.querySelector('.filter-popover .clr-combobox-input'));
+  });
+  it('does not move focus when changing the field with the popover closed', async function (this: ThisTest) {
+    this.fixture.detectChanges();
+    const trigger: HTMLButtonElement = this.fixture.nativeElement.querySelector('[data-test-id="add-button"]');
+    trigger.focus();
+    this.component.selectedFilterableProperty = enumProperty;
+    this.component.onPropertyChange();
+    this.fixture.detectChanges();
+    await this.fixture.whenStable();
+    expect(document.activeElement).toBe(trigger);
+    expect(document.querySelector('.filter-popover')).toBeNull();
   });
   it('displays property filters', function (this: ThisTest) {
     this.component.propertyFilters.push(stringPropertyFilter);
@@ -319,3 +368,31 @@ describe('CompositeFiltersComponent', () => {
     expect(propertyFilterElements[1].hasAttribute('hidden')).toBeFalsy();
   });
 });
+
+async function openAddFilter(fixture: ComponentFixture<CompositeFiltersComponent>): Promise<void> {
+  fixture.detectChanges();
+  fixture.nativeElement.querySelector('button[data-test-id="add-button"]').click();
+  fixture.detectChanges();
+  await fixture.whenStable();
+  fixture.detectChanges();
+}
+
+async function selectField(fixture: ComponentFixture<CompositeFiltersComponent>, displayName: string): Promise<void> {
+  document.querySelector<HTMLButtonElement>('.filter-popover .clr-combobox-trigger').click();
+  fixture.detectChanges();
+  await fixture.whenStable();
+  fixture.detectChanges();
+  const input = document.querySelector<HTMLInputElement>('.filter-popover .clr-combobox-input');
+  input.value = displayName;
+  input.dispatchEvent(new Event('input'));
+  fixture.detectChanges();
+  await fixture.whenStable();
+  fixture.detectChanges();
+  const options = document.querySelectorAll<HTMLElement>('clr-option');
+  expect(options.length).toBe(1);
+  expect(options[0].textContent).toContain(displayName);
+  options[0].click();
+  fixture.detectChanges();
+  await fixture.whenStable();
+  fixture.detectChanges();
+}

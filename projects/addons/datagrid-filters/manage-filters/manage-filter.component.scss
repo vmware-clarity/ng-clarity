@@ -31,6 +31,7 @@
 
   &:focus-visible {
     outline: var(--cds-alias-object-interaction-outline);
+    outline-color: -webkit-focus-ring-color;
     outline-offset: var(--cds-alias-object-interaction-outline-offset);
   }
 
@@ -47,15 +48,4 @@
 
 .filter-pill-count {
   flex-shrink: 0;
-}
-
-.filter-popover-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--clr-base-gap-s);
-
-  .btn {
-    margin: 0;
-  }
 }

@@ -161,6 +161,20 @@ describe('ManageFilterComponent', () => {
     expect(this.component.primaryConditionDisplayText).toEqual('Equals: Alert');
     expect(this.component.secondaryConditionDisplayText).toEqual('Equals: Normal');
   });
+  it('locks the field combobox while editing a pill', async function (this: ThisTest) {
+    this.component.propertyFilter = { operator: LogicalOperator.And, criteria: [stringPredicate1] };
+    this.fixture.detectChanges();
+    this.fixture.nativeElement.querySelector('.filter-pill').click();
+    this.fixture.detectChanges();
+    await this.fixture.whenStable();
+    this.fixture.detectChanges();
+
+    const input = document.querySelector<HTMLInputElement>('.filter-popover .clr-combobox-input');
+    expect(input.value).toBe(stringProperty.displayName);
+    expect(input.disabled).toBeTrue();
+    expect(document.querySelector<HTMLButtonElement>('.filter-popover .clr-combobox-trigger').disabled).toBeTrue();
+    expect(document.querySelector('.filter-form-actions [data-test-id="clear-filter"]')).not.toBeNull();
+  });
   it('manages numeric property filter', function (this: ThisTest) {
     spyOn(this.component.filterStrings, 'getConjoinerDisplayName');
     this.component.propertyFilter = numericPropertyFilter;
@@ -264,6 +278,62 @@ describe('ManageFilterComponent', () => {
     expect(numericProperty.selectedValue).toEqual([176, 50]);
   });
 
+  it('edits four string conditions without dropping criteria or changing the count', async function (this: ThisTest) {
+    const field = new StringPropertyDefinition('Name', 'name');
+    const values = ['first', 'second', 'third', 'fourth'];
+    const originalFilter: PropertyFilter = {
+      operator: LogicalOperator.Or,
+      criteria: values.map(value => ({ filterableProperty: field, operator: ComparisonOperator.Contains, value })),
+    };
+    this.component.propertyFilter = originalFilter;
+    const emitted = spyOn(this.component.filterCriteriaChange, 'emit');
+    this.fixture.detectChanges();
+    const trigger: HTMLButtonElement = this.fixture.nativeElement.querySelector('.filter-pill');
+    expect(trigger.querySelector('clr-badge').textContent).toBe('+3');
+    for (const value of values) {
+      expect(trigger.getAttribute('aria-label')).toContain(value);
+    }
+    trigger.click();
+    this.fixture.detectChanges();
+    await this.fixture.whenStable();
+    this.fixture.detectChanges();
+    const inputs = document.querySelectorAll<HTMLInputElement>('.filter-condition-row input[formControlName="value"]');
+    expect(Array.from(inputs, input => input.value)).toEqual(values);
+    inputs[2].value = 'changed';
+    inputs[2].dispatchEvent(new Event('input'));
+    this.fixture.detectChanges();
+    document.querySelector<HTMLButtonElement>('[data-test-id="submitBtn"]').click();
+    this.fixture.detectChanges();
+    const updated = emitted.calls.mostRecent().args[0];
+    expect(updated.criteria.map(predicate => predicate.value)).toEqual(['first', 'second', 'changed', 'fourth']);
+    expect(originalFilter.criteria.map(predicate => predicate.value)).toEqual(values);
+    this.fixture.componentRef.setInput('propertyFilter', updated);
+    this.fixture.detectChanges();
+    expect(trigger.querySelector('clr-badge').textContent).toBe('+3');
+  });
+
+  it('summarizes and opens numeric presets without display metadata', async function (this: ThisTest) {
+    const field = new NumericPropertyDefinition('Memory', 'memory', undefined, Unit.MB);
+    const values = [0, 1024, 2048];
+    this.component.propertyFilter = {
+      operator: LogicalOperator.Or,
+      criteria: values.map(value => ({ filterableProperty: field, operator: ComparisonOperator.Equals, value })),
+    };
+    this.fixture.detectChanges();
+    const trigger: HTMLButtonElement = this.fixture.nativeElement.querySelector('.filter-pill');
+    expect(trigger.querySelector('.filter-pill-text').textContent).toBe('0 MB');
+    expect(trigger.querySelector('clr-badge').textContent).toBe('+2');
+    for (const value of values) {
+      expect(trigger.getAttribute('aria-label')).toContain(`${value} MB`);
+    }
+    trigger.click();
+    this.fixture.detectChanges();
+    await this.fixture.whenStable();
+    this.fixture.detectChanges();
+    const inputs = document.querySelectorAll<HTMLInputElement>('.filter-condition-row input[formControlName="value"]');
+    expect(Array.from(inputs, input => input.value)).toEqual(['0', '1024', '2048']);
+  });
+
   for (const dismiss of ['escape', 'outside', 'cancel']) {
     it('discards unapplied edits on ' + dismiss, async function (this: ThisTest) {
       this.component.propertyFilter = { operator: LogicalOperator.And, criteria: [stringPredicate1] };
@@ -274,7 +344,7 @@ describe('ManageFilterComponent', () => {
       this.fixture.detectChanges();
       await this.fixture.whenStable();
       this.fixture.detectChanges();
-      const input: HTMLInputElement = document.querySelector('input[formControlName="primaryValue"]');
+      const input: HTMLInputElement = document.querySelector('input[formControlName="value"]');
       input.value = 'unsaved';
       input.dispatchEvent(new Event('input'));
       if (dismiss === 'escape') {

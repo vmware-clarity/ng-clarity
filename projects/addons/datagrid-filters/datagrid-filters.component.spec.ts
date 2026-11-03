@@ -9,7 +9,7 @@ import { A11yModule } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ClrInputModule, ClrSelectModule } from '@clr/angular/forms';
+import { ClrComboboxModule, ClrInputModule, ClrSelectModule } from '@clr/angular/forms';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrPopoverModuleNext } from '@clr/angular/popover/common';
 import { ClrSignpostModule } from '@clr/angular/popover/signpost';
@@ -31,6 +31,7 @@ describe('DataGridFiltersComponent', () => {
   beforeEach(function (this: ThisTest) {
     TestBed.configureTestingModule({
       imports: [
+        ClrComboboxModule,
         ClrInputModule,
         ClrSelectModule,
         ClrSignpostModule,

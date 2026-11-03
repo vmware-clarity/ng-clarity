@@ -34,42 +34,71 @@
       scrollToClose: false
     "
   >
-    <clr-select-container class="mt-0">
-      <label class="clr-control-label"> {{ filterStrings.filterLabel }} </label>
-      <select clrSelect [(ngModel)]="selectedFilterableProperty" (ngModelChange)="onPropertyChange()">
-        @for (property of availableProperties; track property.property) {
-          <option [ngValue]="property">
-            {{ property.displayName }}
-          </option>
+    <ng-template #fieldSelector>
+      <clr-combobox-container class="filter-field">
+        <label class="clr-sr-only">{{ filterStrings.filterLabel }}</label>
+        <clr-combobox
+          name="field"
+          required
+          [placeholder]="filterStrings.filterLabel"
+          [ngModelOptions]="{ standalone: true }"
+          [(ngModel)]="selectedFilterableProperty"
+          (ngModelChange)="onPropertyChange()"
+        >
+          <clr-options>
+            <clr-option
+              *clrOptionItems="let property of availableProperties; field: 'displayName'"
+              [clrValue]="property"
+            >
+              {{ property.displayName }}
+            </clr-option>
+          </clr-options>
+        </clr-combobox>
+      </clr-combobox-container>
+    </ng-template>
+    @if (!selectedFilterableProperty) {
+      <appfx-filter-form [valid]="false" (cancel)="onFilterCriteriaChange(undefined)">
+        <div class="filter-field-row">
+          <ng-container [ngTemplateOutlet]="fieldSelector"></ng-container>
+        </div>
+      </appfx-filter-form>
+    }
+    @for (property of selectedFilterableProperty ? [selectedFilterableProperty] : []; track property.property) {
+      @switch (propertyType) {
+        @case (stringPropertyType) {
+          <appfx-general-filter
+            [filterProperty]="stringProperty"
+            (filterCriteriaChange)="onFilterCriteriaChange($event)"
+          >
+            <ng-container filterField [ngTemplateOutlet]="fieldSelector"></ng-container>
+          </appfx-general-filter>
         }
-      </select>
-    </clr-select-container>
-    @switch (propertyType) {
-      @case (stringPropertyType) {
-        <appfx-general-filter [filterProperty]="stringProperty" (filterCriteriaChange)="onFilterCriteriaChange($event)">
-        </appfx-general-filter>
-      }
-      @case (numericPropertyType) {
-        <appfx-general-filter
-          [filterProperty]="numericProperty"
-          (filterCriteriaChange)="onFilterCriteriaChange($event)"
-        >
-        </appfx-general-filter>
-      }
-      @case (enumPropertyType) {
-        <appfx-enum-filter [filterProperty]="enumProperty" (filterCriteriaChange)="onFilterCriteriaChange($event)">
-        </appfx-enum-filter>
-      }
-      @case (dateTimePropertyType) {
-        <appfx-datetime-filter
-          [filterProperty]="dateTimeProperty"
-          (filterCriteriaChange)="onFilterCriteriaChange($event)"
-        >
-        </appfx-datetime-filter>
-      }
-      @case (userPropertyType) {
-        <appfx-users-filter [filterProperty]="userProperty" (filterCriteriaChange)="onFilterCriteriaChange($event)">
-        </appfx-users-filter>
+        @case (numericPropertyType) {
+          <appfx-general-filter
+            [filterProperty]="numericProperty"
+            (filterCriteriaChange)="onFilterCriteriaChange($event)"
+          >
+            <ng-container filterField [ngTemplateOutlet]="fieldSelector"></ng-container>
+          </appfx-general-filter>
+        }
+        @case (enumPropertyType) {
+          <appfx-enum-filter [filterProperty]="enumProperty" (filterCriteriaChange)="onFilterCriteriaChange($event)">
+            <ng-container filterField [ngTemplateOutlet]="fieldSelector"></ng-container>
+          </appfx-enum-filter>
+        }
+        @case (dateTimePropertyType) {
+          <appfx-datetime-filter
+            [filterProperty]="dateTimeProperty"
+            (filterCriteriaChange)="onFilterCriteriaChange($event)"
+          >
+            <ng-container filterField [ngTemplateOutlet]="fieldSelector"></ng-container>
+          </appfx-datetime-filter>
+        }
+        @case (userPropertyType) {
+          <appfx-users-filter [filterProperty]="userProperty" (filterCriteriaChange)="onFilterCriteriaChange($event)">
+            <ng-container filterField [ngTemplateOutlet]="fieldSelector"></ng-container>
+          </appfx-users-filter>
+        }
       }
     }
   </div>

@@ -85,7 +85,7 @@ class AppfxDatagridFiltersModule {
     // Warning: (ae-forgotten-export) The symbol "i19" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridFiltersModule, [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof DateTimeFilterComponent, typeof DismissableDirective, typeof EnumFilterComponent, typeof FilterFormComponent, typeof FilterPopoverRepositionDirective, typeof GeneralFilterComponent, typeof ManageFilterComponent, typeof SkipFiltersPipe, typeof UsersFilterComponent], [typeof i12.A11yModule, typeof i13.ClrBadge, typeof i14.ClrLabel, typeof i15.ClrCheckboxModule, typeof i16.ClrIcon, typeof i15.ClrInputModule, typeof i15.ClrRadioModule, typeof i15.ClrSelectModule, typeof i17.ClrSignpostModule, typeof i1.ClrPopoverModuleNext, typeof i19.ClrSpinnerModule, typeof i20.CommonModule, typeof i21.FormsModule, typeof i21.ReactiveFormsModule], [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof FilterFormComponent]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridFiltersModule, [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof DateTimeFilterComponent, typeof DismissableDirective, typeof EnumFilterComponent, typeof FilterFormComponent, typeof FilterPopoverRepositionDirective, typeof GeneralFilterComponent, typeof ManageFilterComponent, typeof SkipFiltersPipe, typeof UsersFilterComponent], [typeof i12.A11yModule, typeof i13.ClrBadge, typeof i14.ClrLabel, typeof i15.ClrCheckboxModule, typeof i15.ClrComboboxModule, typeof i16.ClrIcon, typeof i15.ClrInputModule, typeof i15.ClrRadioModule, typeof i15.ClrSelectModule, typeof i17.ClrSignpostModule, typeof i1.ClrPopoverModuleNext, typeof i19.ClrSpinnerModule, typeof i20.CommonModule, typeof i21.FormsModule, typeof i21.ReactiveFormsModule], [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof FilterFormComponent]>;
 }
 export { AppfxDatagridFiltersModule }
 export { AppfxDatagridFiltersModule as DatagridFiltersModule }
@@ -467,7 +467,7 @@ export class FilterFormComponent {
     onCancelButtonClick(): void;
     valid: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<FilterFormComponent, "appfx-filter-form", never, { "valid": { "alias": "valid"; "required": false; }; }, { "cancel": "cancel"; "apply": "apply"; }, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<FilterFormComponent, "appfx-filter-form", never, { "valid": { "alias": "valid"; "required": false; }; }, { "cancel": "cancel"; "apply": "apply"; }, never, ["*", "[filterActions]"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<FilterFormComponent, never>;
 }

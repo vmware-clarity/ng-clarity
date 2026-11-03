@@ -11,7 +11,13 @@ import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClrBadge } from '@clr/angular/emphasis/badge';
 import { ClrLabel } from '@clr/angular/emphasis/label';
-import { ClrCheckboxModule, ClrInputModule, ClrRadioModule, ClrSelectModule } from '@clr/angular/forms';
+import {
+  ClrCheckboxModule,
+  ClrComboboxModule,
+  ClrInputModule,
+  ClrRadioModule,
+  ClrSelectModule,
+} from '@clr/angular/forms';
 import {
   angleIcon,
   ClarityIcons,
@@ -66,6 +72,7 @@ export function datagridFiltersUserServiceFactory(existing: DatagridFiltersUserS
     ClrBadge,
     ClrLabel,
     ClrCheckboxModule,
+    ClrComboboxModule,
     ClrIcon,
     ClrInputModule,
     ClrRadioModule,

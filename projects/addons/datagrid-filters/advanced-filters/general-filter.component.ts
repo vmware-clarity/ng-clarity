@@ -5,8 +5,23 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import {
+  afterNextRender,
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  ElementRef,
+  EventEmitter,
+  inject,
+  Injector,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormArray, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { uniqueIdFactory } from '@clr/angular/utils';
 
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
 import { ComparisonOperator, LogicalOperator, Unit } from '../model/datagrid-filters.enums';
@@ -33,6 +48,7 @@ const unmericPatternRegex = '^-?[0-9]+$';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GeneralFilterComponent implements OnInit, OnChanges {
+  readonly id = uniqueIdFactory();
   readonly logicalOperators: LogicalOperator[];
   readonly isEmptyOperator: ComparisonOperator = ComparisonOperator.IsEmpty;
 
@@ -40,9 +56,7 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
   comparisonOperators: ComparisonOperator[];
   units: Unit[] = [];
   isNumericUnitProperty = false;
-  additionalPredicate = false;
-  isEmptyPrimaryPredicate = false;
-  isEmptySecondaryPredicate = false;
+  @Input() filterProperty: StringPropertyDefinition | NumericPropertyDefinition;
   /**
    * In case the component is used for filter editing
    */
@@ -54,13 +68,9 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
   @Output() filterCriteriaChange: EventEmitter<PropertyFilter> = new EventEmitter<PropertyFilter>();
 
   protected LogicalOperator = LogicalOperator;
-  private selectedFilterCriteria: PropertyFilter = new PropertyFilter();
-  private primaryPredicate: PropertyPredicate = new PropertyPredicate();
-  private secondaryPredicate: PropertyPredicate = new PropertyPredicate();
-  /**
-   * Property used for filtering
-   */
-  #filterProperty: StringPropertyDefinition | NumericPropertyDefinition;
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly injector = inject(Injector);
+  private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
 
   constructor(
     private formBuilder: FormBuilder,
@@ -69,14 +79,12 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
     this.logicalOperators = [LogicalOperator.And, LogicalOperator.Or];
   }
 
-  @Input()
-  get filterProperty(): StringPropertyDefinition | NumericPropertyDefinition {
-    return this.#filterProperty;
+  get conditions(): FormArray<FormGroup> {
+    return this.generalFilterForm.controls.conditions as FormArray<FormGroup>;
   }
-  set filterProperty(filterProperty: StringPropertyDefinition | NumericPropertyDefinition) {
-    this.#filterProperty = filterProperty;
-    this.primaryPredicate.filterableProperty = filterProperty;
-    this.secondaryPredicate.filterableProperty = filterProperty;
+
+  get hasEmptyPredicate(): boolean {
+    return this.conditions.controls.some(condition => condition.controls.operator.value === this.isEmptyOperator);
   }
 
   ngOnInit() {
@@ -84,35 +92,19 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
     this.comparisonOperators = this.filterProperty.getOperators();
     this.units = this.applicableUnits();
 
-    // To handle edit mode with operator IsEmpty
-    let validators: ValidatorFn[] = [];
-    if (this.propertyFilter?.criteria[0]?.operator === this.isEmptyOperator) {
-      this.isEmptyPrimaryPredicate = true;
-    } else {
-      validators = this.initValidators();
-    }
-
+    const conditionCount = this.filterProperty.singleCondition
+      ? 1
+      : Math.max(1, this.propertyFilter?.criteria.length ?? 0);
     this.generalFilterForm = this.formBuilder.group({
-      primaryOperator: [this.initOperator(0)],
-      primaryValue: [this.initValue(0), validators],
-      primaryUnit: [this.initUnit(0)],
-      logicalOperator: [this.propertyFilter?.operator || LogicalOperator.And],
+      conditions: this.formBuilder.array(
+        Array.from({ length: conditionCount }, (_, index) => this.createCondition(index))
+      ),
+      logicalOperator: [this.filterProperty.logicalOperator ?? this.propertyFilter?.operator ?? LogicalOperator.And],
     });
-
-    this.generalFilterForm.get('primaryOperator')?.valueChanges.subscribe((operator: ComparisonOperator) => {
-      if (operator === this.isEmptyOperator) {
-        this.removeValidators('primaryValue');
-        this.isEmptyPrimaryPredicate = true;
-        this.selectLogicalOperator(LogicalOperator.Or);
-      } else {
-        this.addValidators('primaryValue', validators);
-        this.isEmptyPrimaryPredicate = false;
-      }
-    });
-
-    if (this.propertyFilter?.criteria?.length === 2) {
-      this.enableSecondaryPredicate();
-    }
+    this.conditions.valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.updateConditionValidators());
+    this.updateConditionValidators();
   }
 
   ngOnChanges() {
@@ -121,14 +113,7 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
     // Update property units
     if (this.isNumericUnitProperty && this.generalFilterForm) {
       this.units = this.applicableUnits();
-      this.generalFilterForm.patchValue({
-        primaryUnit: this.initUnit(0),
-      });
-      if (this.additionalPredicate) {
-        this.generalFilterForm.patchValue({
-          secondaryUnit: this.initUnit(1),
-        });
-      }
+      this.conditions.controls.forEach((condition, index) => condition.controls.unit.setValue(this.initUnit(index)));
     }
   }
 
@@ -142,93 +127,86 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
     }
   }
 
-  enableSecondaryPredicate(): void {
-    this.additionalPredicate = true;
-    // To handle edit mode with operator IsEmpty
-    let validators: ValidatorFn[] = [];
-    if (this.propertyFilter?.criteria[1]?.operator === this.isEmptyOperator) {
-      this.isEmptySecondaryPredicate = true;
-    } else {
-      validators = this.initValidators();
+  addCondition(): void {
+    if (!this.filterProperty.singleCondition) {
+      this.conditions.push(this.createCondition());
+      this.focusCondition(this.conditions.length - 1);
     }
-    this.generalFilterForm.addControl('secondaryOperator', new FormControl(this.initOperator(1)));
-    this.generalFilterForm.addControl('secondaryValue', new FormControl(this.initValue(1), validators));
-    this.generalFilterForm.addControl('secondaryUnit', new FormControl(this.initUnit(1)));
-    this.generalFilterForm.get('secondaryOperator')?.valueChanges.subscribe((operator: ComparisonOperator) => {
-      if (operator === this.isEmptyOperator) {
-        this.removeValidators('secondaryValue');
-        this.isEmptySecondaryPredicate = true;
-        this.selectLogicalOperator(LogicalOperator.Or);
-      } else {
-        this.addValidators('secondaryValue', validators);
-        this.isEmptySecondaryPredicate = false;
-      }
-    });
   }
 
-  disableSecondaryPredicate(): void {
-    this.additionalPredicate = false;
-    this.generalFilterForm.removeControl('secondaryOperator');
-    this.generalFilterForm.removeControl('secondaryValue');
+  removeCondition(index: number): void {
+    if (this.conditions.length > 1 && index >= 0 && index < this.conditions.length) {
+      this.conditions.removeAt(index);
+      this.focusCondition(Math.min(index, this.conditions.length - 1));
+    }
   }
 
   onApplyButtonClick(): void {
-    this.primaryPredicate.operator = this.generalFilterForm.value.primaryOperator;
-    this.primaryPredicate.value = this.generalFilterForm.value.primaryValue;
+    if (!this.generalFilterForm.valid) {
+      return;
+    }
+    const rows = this.conditions.getRawValue();
     if (this.isNumericUnitProperty) {
-      // Selected value and unit are stored, in order to be able to be rendered in edit mode.
-      // They are stored in an array, because there are up to two conditions for a single property.
-      this.primaryPredicate.filterableProperty.selectedValue = [this.generalFilterForm.value.primaryValue];
-      this.primaryPredicate.filterableProperty.selectedUnit = [this.generalFilterForm.value.primaryUnit];
-      this.primaryPredicate.value = this.convertValue(
-        this.generalFilterForm.value.primaryValue,
-        this.generalFilterForm.value.primaryUnit
-      );
+      // Keep display values and units aligned with the surviving criteria, including empty predicates.
+      this.filterProperty.selectedValue = rows.map(row => row.value);
+      this.filterProperty.selectedUnit = rows.map(row => row.unit);
     }
-    this.selectedFilterCriteria.criteria = [this.primaryPredicate];
-    this.selectedFilterCriteria.operator =
-      this.filterProperty.logicalOperator ?? this.generalFilterForm.value.logicalOperator;
-    if (this.additionalPredicate) {
-      this.secondaryPredicate.operator = this.generalFilterForm.value.secondaryOperator;
-      this.secondaryPredicate.value = this.generalFilterForm.value.secondaryValue;
-      if (this.isNumericUnitProperty) {
-        this.secondaryPredicate.filterableProperty.selectedValue.push(this.generalFilterForm.value.secondaryValue);
-        this.secondaryPredicate.filterableProperty.selectedUnit.push(this.generalFilterForm.value.secondaryUnit);
-        this.secondaryPredicate.value = this.convertValue(
-          this.generalFilterForm.value.secondaryValue,
-          this.generalFilterForm.value.secondaryUnit
-        );
-      }
-      this.selectedFilterCriteria.criteria.push(this.secondaryPredicate);
-    }
-    this.filterCriteriaChange.emit(this.selectedFilterCriteria);
+    const filter = new PropertyFilter();
+    filter.operator = this.filterProperty.logicalOperator ?? this.generalFilterForm.value.logicalOperator;
+    filter.criteria = rows.map(row => {
+      const predicate = new PropertyPredicate();
+      predicate.filterableProperty = this.filterProperty;
+      predicate.operator = row.operator;
+      predicate.value = row.operator === this.isEmptyOperator ? undefined : this.convertValue(row.value, row.unit);
+      return predicate;
+    });
+    this.filterCriteriaChange.emit(filter);
   }
 
   onCancelButtonClick(): void {
     this.filterCriteriaChange.emit();
   }
 
-  private addValidators(formControlName: string, validators: ValidatorFn[]): void {
-    this.generalFilterForm.get(formControlName)?.addValidators(validators);
-    this.generalFilterForm.get(formControlName)?.updateValueAndValidity();
-  }
-
-  private removeValidators(formControlName: string): void {
-    this.generalFilterForm.get(formControlName)?.clearValidators();
-    this.generalFilterForm.get(formControlName)?.updateValueAndValidity();
-  }
-
-  private selectLogicalOperator(operator: LogicalOperator): void {
-    this.generalFilterForm.patchValue({
-      logicalOperator: operator,
+  private createCondition(index = -1): FormGroup {
+    const operator = this.initOperator(index);
+    return this.formBuilder.group({
+      operator: [operator, Validators.required],
+      value: [this.initValue(index), operator === this.isEmptyOperator ? [] : this.initValidators()],
+      unit: [this.initUnit(index)],
     });
+  }
+
+  private updateConditionValidators(): void {
+    this.conditions.controls.forEach(condition => {
+      const value = condition.controls.value;
+      value.setValidators(condition.controls.operator.value === this.isEmptyOperator ? [] : this.initValidators());
+      value.updateValueAndValidity({ emitEvent: false });
+    });
+    if (this.hasEmptyPredicate && this.filterProperty.logicalOperator === undefined) {
+      this.generalFilterForm.controls.logicalOperator.setValue(LogicalOperator.Or, { emitEvent: false });
+    }
+  }
+
+  private focusCondition(index: number): void {
+    afterNextRender(
+      () => {
+        this.elementRef.nativeElement
+          .querySelectorAll<HTMLElement>('.filter-condition-row')
+          [index]?.querySelector<HTMLInputElement | HTMLSelectElement>('input, select')
+          ?.focus();
+      },
+      { injector: this.injector }
+    );
   }
 
   private initOperator(index: number): ComparisonOperator {
     const selectedOperator: ComparisonOperator = this.propertyFilter?.criteria[index]?.operator;
     const defaultOperator: ComparisonOperator =
       this.filterProperty instanceof StringPropertyDefinition ? ComparisonOperator.Contains : ComparisonOperator.Equals;
-    return selectedOperator || defaultOperator;
+    return (
+      selectedOperator ??
+      (this.comparisonOperators.includes(defaultOperator) ? defaultOperator : this.comparisonOperators[0])
+    );
   }
 
   private initValidators(): ValidatorFn[] {
@@ -300,15 +278,21 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
   }
 
   private getSelectedUnit(index: number): Unit {
-    const selectedUnit: Unit = this.propertyFilter.criteria[index].filterableProperty.selectedUnit[index] as Unit;
+    const selectedUnit: Unit =
+      this.propertyFilter.criteria[index].filterableProperty.selectedUnit?.[index] ??
+      (this.filterProperty as NumericPropertyDefinition).unit;
     return selectedUnit;
   }
 
   private initValue(index: number): any {
     if (this.isNumericUnitProperty) {
-      return this.propertyFilter?.criteria[index]?.filterableProperty.selectedValue[index] || '';
+      return (
+        this.propertyFilter?.criteria[index]?.filterableProperty.selectedValue?.[index] ??
+        this.propertyFilter?.criteria[index]?.value ??
+        ''
+      );
     } else {
-      return this.propertyFilter?.criteria[index]?.value || '';
+      return this.propertyFilter?.criteria[index]?.value ?? '';
     }
   }
 
