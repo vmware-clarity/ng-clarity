@@ -6,7 +6,7 @@
  */
 
 import { ListRange } from '@angular/cdk/collections';
-import { ChangeDetectionStrategy, Component, SimpleChange, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, NgZone, SimpleChange, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -178,7 +178,7 @@ class VirtualTreeTest {
         [clrVirtualTreeDataRange]="range"
         [clrVirtualTreeGetChildren]="getChildren"
         [clrVirtualRowsItemSize]="25"
-        (clrVirtualTreeRenderedRootsChange)="rendered.push($event)"
+        (clrVirtualTreeRenderedRootsChange)="onRendered($event)"
       >
         <clr-dg-row [clrDgItem]="folder" [clrDgTreeExpandable]="!!folder?.children" [clrDgSkeletonLoading]="!folder">
           <clr-dg-cell>{{ folder?.id }}</clr-dg-cell>
@@ -192,6 +192,7 @@ class VirtualTreeTest {
 class VirtualRangeTreeTest {
   range: ClrDatagridVirtualScrollRangeInterface<Folder> = { total: 1000, skip: 0, data: roots(0, 20) };
   rendered: ListRange[] = [];
+  renderedInZone: boolean[] = [];
 
   // The rows of roots not loaded yet have no item.
   identity = (folder: Folder) => folder?.id;
@@ -200,6 +201,11 @@ class VirtualRangeTreeTest {
 
   load(skip: number, count: number) {
     this.range = { total: 1000, skip, data: roots(skip, count) };
+  }
+
+  onRendered(range: ListRange) {
+    this.rendered.push(range);
+    this.renderedInZone.push(NgZone.isInAngularZone());
   }
 }
 
@@ -1296,6 +1302,21 @@ export default function (): void {
         expect(rowOf('r0').querySelector('[role=row]').getAttribute('aria-setsize')).toBe('1000');
         expect(lastRendered().start).toBe(0);
         expect(lastRendered().end).toBeGreaterThan(0);
+      });
+
+      it('shows the roots of a range in the same change detection that brings them', async function () {
+        fixture.componentInstance.range = { total: 500, skip: 0, data: [] };
+        await settle();
+        expect(rowOf('r0')).toBeUndefined();
+
+        fixture.componentInstance.load(0, 20);
+        fixture.detectChanges();
+        expect(rowOf('r0')).toBeDefined();
+      });
+
+      it('reports the rendered roots inside the Angular zone, so the roots the app loads update the view', function () {
+        expect(fixture.componentInstance.renderedInZone.length).toBeGreaterThan(0);
+        expect(fixture.componentInstance.renderedInZone).not.toContain(false);
       });
 
       it('counts the children of loaded roots in the rows, and keeps them when other roots load', async function () {

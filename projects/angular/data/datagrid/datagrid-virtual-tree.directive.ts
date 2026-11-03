@@ -14,6 +14,7 @@ import {
   inject,
   Injector,
   Input,
+  NgZone,
   Output,
 } from '@angular/core';
 import { combineLatest } from 'rxjs';
@@ -72,6 +73,7 @@ export class ClrDatagridVirtualTree<T> extends DatagridTreeRenderer<T> {
 
   private virtualScroll = inject<ClrDatagridVirtualScrollDirective<T>>(ClrDatagridVirtualScrollDirective);
   private injector = inject(Injector);
+  private ngZone = inject(NgZone);
   /** The rows rendered last, to find where the focused or top row was. */
   private shownItems: T[] = [];
   private frame: number | undefined;
@@ -83,7 +85,9 @@ export class ClrDatagridVirtualTree<T> extends DatagridTreeRenderer<T> {
       filter(Boolean),
       distinctUntilChanged((previous, next) => previous.start === next.start && previous.end === next.end)
     )
-    .subscribe(range => this.renderedRootsChange.emit(range));
+    // The virtual scroll reports its range outside the Angular zone; the app loads the roots in it, so
+    // that their arrival updates the view.
+    .subscribe(range => this.ngZone.run(() => this.renderedRootsChange.emit(range)));
 
   /**
    * The roots loaded by range: `total` roots, of which `data` starts at `skip`. The rows of the roots
@@ -137,6 +141,9 @@ export class ClrDatagridVirtualTree<T> extends DatagridTreeRenderer<T> {
 
     this.shownItems = items;
     this.virtualScroll.dataRange = { total: items.length, skip: 0, data: items };
+    // New roots arrive in a change detection that has already checked the virtual scroll, so its
+    // rows would show them only on the next one.
+    this.virtualScroll.ngDoCheck();
 
     const target = focus ? this.nearestShown(focus.item, items) : undefined;
     // The focused row can be gone with all of its ancestors, after a reload or a new page of roots.
