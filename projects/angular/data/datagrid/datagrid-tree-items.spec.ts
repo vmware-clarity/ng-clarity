@@ -6,7 +6,7 @@
  */
 
 import { ListRange } from '@angular/cdk/collections';
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, SimpleChange, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -19,6 +19,7 @@ import { ClrDatagridModule } from './datagrid.module';
 import { SelectionType } from './enums/selection-type';
 import { ClrDatagridVirtualScrollRangeInterface } from './interfaces/virtual-scroll-data-range.interface';
 import { Page } from './providers/page';
+import { DatagridTreeService } from './providers/tree.service';
 
 interface Folder {
   id: string;
@@ -770,6 +771,19 @@ export default function (): void {
         await fixture.whenStable();
         expect(context.expandedChanges.at(-1)).toEqual({ id: 'a', expanded: false });
         expect(context.expanded['a']).toBe(false);
+      });
+
+      it('declares a row to the tree only when one of its tree inputs changes', function () {
+        const tree = fixture.debugElement.query(By.directive(ClrDatagrid)).injector.get(DatagridTreeService);
+        const declared = spyOn(tree, 'rowDeclared').and.callThrough();
+        const row = context.datagrid.rows.first;
+
+        row.ngOnChanges({ detailHidden: new SimpleChange(false, true, false) });
+        expect(declared).not.toHaveBeenCalled();
+
+        context.roots[0].children = 0;
+        fixture.detectChanges();
+        expect(declared).toHaveBeenCalledTimes(1);
       });
     });
 

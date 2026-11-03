@@ -355,7 +355,9 @@ export class ClrDatagridRow<T = any> implements OnChanges, AfterContentInit, Aft
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (!this.tree?.enabled() || this.item === undefined) {
+    const treeInputs =
+      changes['item'] || changes['treeExpandable'] || changes['clrDgSelectable'] || changes['expanded'];
+    if (!treeInputs || !this.tree?.enabled() || this.item === undefined) {
       return;
     }
     this.tree.rowDeclared(this.item, {
