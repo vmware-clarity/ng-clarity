@@ -157,7 +157,16 @@ export class PropertyViewComponent implements DoCheck {
     // (undocumented)
     selectedCategoryId: string | undefined;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<PropertyViewComponent, "appfx-property-view", never, { "data": { "alias": "data"; "required": false; }; "config": { "alias": "config"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<PropertyViewComponent, "appfx-property-view", never, {
+        "data": {
+            "alias": "data";
+            "required": false;
+        };
+        "config": {
+            "alias": "config";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<PropertyViewComponent, never>;
 }
@@ -413,7 +422,7 @@ export class PropertyViewService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<PropertyViewService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<PropertyViewService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public
@@ -425,7 +434,7 @@ export class PropertyViewStrings {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<PropertyViewStrings, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<PropertyViewStrings>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // (No @packageDocumentation comment for this package)

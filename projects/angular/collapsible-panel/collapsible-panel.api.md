@@ -127,7 +127,7 @@ export class CollapsiblePanelService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<CollapsiblePanelService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<CollapsiblePanelService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // Warning: (ae-forgotten-export) The symbol "ClrAnimationTransitionMetadata" needs to be exported by the entry point clr-angular-collapsible-panel.d.ts

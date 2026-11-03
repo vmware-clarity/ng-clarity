@@ -120,7 +120,14 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     // (undocumented)
     wizardOpen: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ThemeBuilderComponent, "clr-theme-builder", never, { "presets": { "alias": "presets"; "required": false; }; }, { "generatedCSS": "generatedCSS"; }, never, ["*"], true, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ThemeBuilderComponent, "clr-theme-builder", never, {
+        "presets": {
+            "alias": "presets";
+            "required": false;
+        };
+    }, {
+        "generatedCSS": "generatedCSS";
+    }, never, ["*"], true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ThemeBuilderComponent, never>;
 }

@@ -5,48 +5,33 @@
 ```ts
 
 import { AfterContentInit } from '@angular/core';
-import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
-import * as _angular_cdk_overlay from '@angular/cdk/overlay';
-import { AnimationCallbackEvent } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { CdkDrag } from '@angular/cdk/drag-drop';
 import { CdkFixedSizeVirtualScroll } from '@angular/cdk/scrolling';
-import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { CdkVirtualForOf } from '@angular/cdk/scrolling';
 import { CdkVirtualForOfContext } from '@angular/cdk/scrolling';
 import { ChangeDetectorRef } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
 import { ConnectedPosition } from '@angular/cdk/overlay';
-import { ControlValueAccessor } from '@angular/forms';
 import { DebugElement } from '@angular/core';
 import { Directionality } from '@angular/cdk/bidi';
 import { DoCheck } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { ElementRef } from '@angular/core';
 import { EmbeddedViewRef } from '@angular/core';
 import { EnvironmentInjector } from '@angular/core';
 import { EventEmitter } from '@angular/core';
-import { FactoryProvider } from '@angular/core';
 import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
-import { FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
 import * as i1_2 from '@angular/platform-browser/animations';
-import * as i37 from '@angular/common';
-import * as i45 from '@angular/forms';
 import { InjectionToken } from '@angular/core';
-import { Injector } from '@angular/core';
 import { IterableDiffers } from '@angular/core';
 import { ListRange } from '@angular/cdk/collections';
-import { NgControl } from '@angular/forms';
 import { NgForOfContext } from '@angular/common';
 import { NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Observer } from 'rxjs';
 import { OnChanges } from '@angular/core';
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
-import { Optional } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { PipeTransform } from '@angular/core';
@@ -54,18 +39,15 @@ import { Predicate } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
-import * as rxjs from 'rxjs';
-import { SafeHtml } from '@angular/platform-browser';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
-import { SelectMultipleControlValueAccessor } from '@angular/forms';
 import { SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Subscription } from 'rxjs';
 import { TemplateRef } from '@angular/core';
 import { TrackByFunction } from '@angular/core';
 import { Type } from '@angular/core';
 import { ViewContainerRef } from '@angular/core';
 import { ViewportRuler } from '@angular/cdk/scrolling';
+import { WritableSignal } from '@angular/core';
 
 // @public (undocumented)
 export const cardIdToOrder: {
@@ -284,7 +266,28 @@ export class MockAppfxCardContainerComponent {
     // (undocumented)
     showCardContainerSettings: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxCardContainerComponent, "appfx-card-container", never, { "containerId": { "alias": "containerId"; "required": false; }; "cards": { "alias": "cards"; "required": false; }; "persistenceStore": { "alias": "persistenceStore"; "required": false; }; "showCardContainerSettings": { "alias": "showCardContainerSettings"; "required": false; }; "dragDropEnabled": { "alias": "dragDropEnabled"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxCardContainerComponent, "appfx-card-container", never, {
+        "containerId": {
+            "alias": "containerId";
+            "required": false;
+        };
+        "cards": {
+            "alias": "cards";
+            "required": false;
+        };
+        "persistenceStore": {
+            "alias": "persistenceStore";
+            "required": false;
+        };
+        "showCardContainerSettings": {
+            "alias": "showCardContainerSettings";
+            "required": false;
+        };
+        "dragDropEnabled": {
+            "alias": "dragDropEnabled";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxCardContainerComponent, never>;
 }
@@ -388,7 +391,143 @@ export class MockAppfxDatagridComponent {
     // (undocumented)
     vscPersistDatagridSettings: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxDatagridComponent, "appfx-datagrid", never, { "gridItems": { "alias": "gridItems"; "required": false; }; "columns": { "alias": "columns"; "required": false; }; "layoutModel": { "alias": "layoutModel"; "required": false; }; "footerModel": { "alias": "footerModel"; "required": false; }; "pageSize": { "alias": "pageSize"; "required": false; }; "pageSizeOptions": { "alias": "pageSizeOptions"; "required": false; }; "totalItems": { "alias": "totalItems"; "required": false; }; "selectionType": { "alias": "selectionType"; "required": false; }; "selectedItems": { "alias": "selectedItems"; "required": false; }; "datagridLabels": { "alias": "datagridLabels"; "required": false; }; "preSelectFirstItem": { "alias": "preSelectFirstItem"; "required": false; }; "rowSelectionMode": { "alias": "rowSelectionMode"; "required": false; }; "actionBarActions": { "alias": "actionBarActions"; "required": false; }; "showFooter": { "alias": "showFooter"; "required": false; }; "singleRowActions": { "alias": "singleRowActions"; "required": false; }; "noItemsFoundPlaceholder": { "alias": "noItemsFoundPlaceholder"; "required": false; }; "loading": { "alias": "loading"; "required": false; }; "serverDrivenDatagrid": { "alias": "serverDrivenDatagrid"; "required": false; }; "filterMode": { "alias": "filterMode"; "required": false; }; "listItemsCount": { "alias": "listItemsCount"; "required": false; }; "trackByGridItemProperty": { "alias": "trackByGridItemProperty"; "required": false; }; "isRowLocked": { "alias": "isRowLocked"; "required": false; }; "detailHeader": { "alias": "detailHeader"; "required": false; }; "detailBody": { "alias": "detailBody"; "required": false; }; "rowDetailContent": { "alias": "rowDetailContent"; "required": false; }; "rowsExpandedByDefault": { "alias": "rowsExpandedByDefault"; "required": false; }; "vscPersistDatagridSettings": { "alias": "vscPersistDatagridSettings"; "required": false; }; "detailState": { "alias": "detailState"; "required": false; }; "trackByFunction": { "alias": "trackByFunction"; "required": false; }; "virtualScrolling": { "alias": "virtualScrolling"; "required": false; }; "dataRange": { "alias": "dataRange"; "required": false; }; }, { "selectedItemsChange": "selectedItemsChange"; "gridItemsChange": "gridItemsChange"; "selectionChange": "selectionChange"; "searchTermChange": "searchTermChange"; "refreshGridData": "refreshGridData"; "refreshVirtualGridData": "refreshVirtualGridData"; "actionClick": "actionClick"; "rowActionMenuOpenChange": "rowActionMenuOpenChange"; "exportDataEvent": "exportDataEvent"; "detailStateChange": "detailStateChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxDatagridComponent, "appfx-datagrid", never, {
+        "gridItems": {
+            "alias": "gridItems";
+            "required": false;
+        };
+        "columns": {
+            "alias": "columns";
+            "required": false;
+        };
+        "layoutModel": {
+            "alias": "layoutModel";
+            "required": false;
+        };
+        "footerModel": {
+            "alias": "footerModel";
+            "required": false;
+        };
+        "pageSize": {
+            "alias": "pageSize";
+            "required": false;
+        };
+        "pageSizeOptions": {
+            "alias": "pageSizeOptions";
+            "required": false;
+        };
+        "totalItems": {
+            "alias": "totalItems";
+            "required": false;
+        };
+        "selectionType": {
+            "alias": "selectionType";
+            "required": false;
+        };
+        "selectedItems": {
+            "alias": "selectedItems";
+            "required": false;
+        };
+        "datagridLabels": {
+            "alias": "datagridLabels";
+            "required": false;
+        };
+        "preSelectFirstItem": {
+            "alias": "preSelectFirstItem";
+            "required": false;
+        };
+        "rowSelectionMode": {
+            "alias": "rowSelectionMode";
+            "required": false;
+        };
+        "actionBarActions": {
+            "alias": "actionBarActions";
+            "required": false;
+        };
+        "showFooter": {
+            "alias": "showFooter";
+            "required": false;
+        };
+        "singleRowActions": {
+            "alias": "singleRowActions";
+            "required": false;
+        };
+        "noItemsFoundPlaceholder": {
+            "alias": "noItemsFoundPlaceholder";
+            "required": false;
+        };
+        "loading": {
+            "alias": "loading";
+            "required": false;
+        };
+        "serverDrivenDatagrid": {
+            "alias": "serverDrivenDatagrid";
+            "required": false;
+        };
+        "filterMode": {
+            "alias": "filterMode";
+            "required": false;
+        };
+        "listItemsCount": {
+            "alias": "listItemsCount";
+            "required": false;
+        };
+        "trackByGridItemProperty": {
+            "alias": "trackByGridItemProperty";
+            "required": false;
+        };
+        "isRowLocked": {
+            "alias": "isRowLocked";
+            "required": false;
+        };
+        "detailHeader": {
+            "alias": "detailHeader";
+            "required": false;
+        };
+        "detailBody": {
+            "alias": "detailBody";
+            "required": false;
+        };
+        "rowDetailContent": {
+            "alias": "rowDetailContent";
+            "required": false;
+        };
+        "rowsExpandedByDefault": {
+            "alias": "rowsExpandedByDefault";
+            "required": false;
+        };
+        "vscPersistDatagridSettings": {
+            "alias": "vscPersistDatagridSettings";
+            "required": false;
+        };
+        "detailState": {
+            "alias": "detailState";
+            "required": false;
+        };
+        "trackByFunction": {
+            "alias": "trackByFunction";
+            "required": false;
+        };
+        "virtualScrolling": {
+            "alias": "virtualScrolling";
+            "required": false;
+        };
+        "dataRange": {
+            "alias": "dataRange";
+            "required": false;
+        };
+    }, {
+        "selectedItemsChange": "selectedItemsChange";
+        "gridItemsChange": "gridItemsChange";
+        "selectionChange": "selectionChange";
+        "searchTermChange": "searchTermChange";
+        "refreshGridData": "refreshGridData";
+        "refreshVirtualGridData": "refreshVirtualGridData";
+        "actionClick": "actionClick";
+        "rowActionMenuOpenChange": "rowActionMenuOpenChange";
+        "exportDataEvent": "exportDataEvent";
+        "detailStateChange": "detailStateChange";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxDatagridComponent, never>;
 }
@@ -444,7 +583,72 @@ export class MockAppfxDialogComponent {
     // (undocumented)
     title: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxDialogComponent, "appfx-dialog", never, { "title": { "alias": "title"; "required": false; }; "subTitle": { "alias": "subTitle"; "required": false; }; "size": { "alias": "size"; "required": false; }; "height": { "alias": "height"; "required": false; }; "defaultButton": { "alias": "defaultButton"; "required": false; }; "cancelButtonLabel": { "alias": "cancelButtonLabel"; "required": false; }; "okButtonLabel": { "alias": "okButtonLabel"; "required": false; }; "tabLayout": { "alias": "tabLayout"; "required": false; }; "disableTabsContent": { "alias": "disableTabsContent"; "required": false; }; "loading": { "alias": "loading"; "required": false; }; "steps": { "alias": "steps"; "required": false; }; "model": { "alias": "model"; "required": false; }; "closeHandler": { "alias": "closeHandler"; "required": false; }; "showTabLinks": { "alias": "showTabLinks"; "required": false; }; "opened": { "alias": "opened"; "required": false; }; }, { "onModelChange": "onModelChange"; "onClose": "onClose"; "openedChange": "openedChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxDialogComponent, "appfx-dialog", never, {
+        "title": {
+            "alias": "title";
+            "required": false;
+        };
+        "subTitle": {
+            "alias": "subTitle";
+            "required": false;
+        };
+        "size": {
+            "alias": "size";
+            "required": false;
+        };
+        "height": {
+            "alias": "height";
+            "required": false;
+        };
+        "defaultButton": {
+            "alias": "defaultButton";
+            "required": false;
+        };
+        "cancelButtonLabel": {
+            "alias": "cancelButtonLabel";
+            "required": false;
+        };
+        "okButtonLabel": {
+            "alias": "okButtonLabel";
+            "required": false;
+        };
+        "tabLayout": {
+            "alias": "tabLayout";
+            "required": false;
+        };
+        "disableTabsContent": {
+            "alias": "disableTabsContent";
+            "required": false;
+        };
+        "loading": {
+            "alias": "loading";
+            "required": false;
+        };
+        "steps": {
+            "alias": "steps";
+            "required": false;
+        };
+        "model": {
+            "alias": "model";
+            "required": false;
+        };
+        "closeHandler": {
+            "alias": "closeHandler";
+            "required": false;
+        };
+        "showTabLinks": {
+            "alias": "showTabLinks";
+            "required": false;
+        };
+        "opened": {
+            "alias": "opened";
+            "required": false;
+        };
+    }, {
+        "onModelChange": "onModelChange";
+        "onClose": "onClose";
+        "openedChange": "openedChange";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxDialogComponent, never>;
 }
@@ -488,7 +692,30 @@ export class MockAppfxMenuActionComponent {
     // (undocumented)
     text?: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxMenuActionComponent, "appfx-menu-action", never, { "actionId": { "alias": "actionId"; "required": false; }; "iconClass": { "alias": "iconClass"; "required": false; }; "text": { "alias": "text"; "required": false; }; "shortcut": { "alias": "shortcut"; "required": false; }; "enabled": { "alias": "enabled"; "required": false; }; }, { "handle": "handle"; }, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxMenuActionComponent, "appfx-menu-action", never, {
+        "actionId": {
+            "alias": "actionId";
+            "required": false;
+        };
+        "iconClass": {
+            "alias": "iconClass";
+            "required": false;
+        };
+        "text": {
+            "alias": "text";
+            "required": false;
+        };
+        "shortcut": {
+            "alias": "shortcut";
+            "required": false;
+        };
+        "enabled": {
+            "alias": "enabled";
+            "required": false;
+        };
+    }, {
+        "handle": "handle";
+    }, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxMenuActionComponent, never>;
 }
@@ -510,7 +737,15 @@ export class MockAppfxMenuComponent {
     // (undocumented)
     text: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxMenuComponent, "appfx-menu", never, { "text": { "alias": "text"; "required": false; }; }, { "opened": "opened"; "closed": "closed"; }, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxMenuComponent, "appfx-menu", never, {
+        "text": {
+            "alias": "text";
+            "required": false;
+        };
+    }, {
+        "opened": "opened";
+        "closed": "closed";
+    }, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxMenuComponent, never>;
 }
@@ -548,7 +783,37 @@ export class MockAppfxWizardComponent {
     // (undocumented)
     wizardModel: WorkflowModel;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxWizardComponent, "appfx-wizard", never, { "title": { "alias": "title"; "required": false; }; "pages": { "alias": "pages"; "required": false; }; "wizardModel": { "alias": "wizardModel"; "required": false; }; "loading": { "alias": "loading"; "required": false; }; "size": { "alias": "size"; "required": false; }; "opened": { "alias": "opened"; "required": false; }; }, { "openedChange": "openedChange"; "onModelChange": "onModelChange"; "onFinish": "onFinish"; "onClose": "onClose"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxWizardComponent, "appfx-wizard", never, {
+        "title": {
+            "alias": "title";
+            "required": false;
+        };
+        "pages": {
+            "alias": "pages";
+            "required": false;
+        };
+        "wizardModel": {
+            "alias": "wizardModel";
+            "required": false;
+        };
+        "loading": {
+            "alias": "loading";
+            "required": false;
+        };
+        "size": {
+            "alias": "size";
+            "required": false;
+        };
+        "opened": {
+            "alias": "opened";
+            "required": false;
+        };
+    }, {
+        "openedChange": "openedChange";
+        "onModelChange": "onModelChange";
+        "onFinish": "onFinish";
+        "onClose": "onClose";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxWizardComponent, never>;
 }
@@ -584,7 +849,14 @@ export class MockDatagridActionBarComponent {
     // (undocumented)
     onActionClick(action: ActionDefinition): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridActionBarComponent, "appfx-datagrid-action-bar", never, { "actions": { "alias": "actions"; "required": false; }; }, { "invokeAction": "invokeAction"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridActionBarComponent, "appfx-datagrid-action-bar", never, {
+        "actions": {
+            "alias": "actions";
+            "required": false;
+        };
+    }, {
+        "invokeAction": "invokeAction";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockDatagridActionBarComponent, never>;
 }
@@ -600,7 +872,16 @@ export class MockDatagridCellContainerComponent implements OnInit {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridCellContainerComponent, "appfx-dg-cell-container", never, { "column": { "alias": "column"; "required": false; }; "item": { "alias": "item"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridCellContainerComponent, "appfx-dg-cell-container", never, {
+        "column": {
+            "alias": "column";
+            "required": false;
+        };
+        "item": {
+            "alias": "item";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockDatagridCellContainerComponent, never>;
 }
@@ -614,7 +895,12 @@ export class MockDatagridColumnToggleComponent {
     // (undocumented)
     showColumn(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridColumnToggleComponent, "appfx-dg-column-toggle", never, { "columns": { "alias": "columns"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridColumnToggleComponent, "appfx-dg-column-toggle", never, {
+        "columns": {
+            "alias": "columns";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockDatagridColumnToggleComponent, never>;
 }
@@ -636,7 +922,19 @@ export class MockDatagridFiltersComponent {
     // (undocumented)
     searchTermChange: EventEmitter<string>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridFiltersComponent, "appfx-datagrid-filters", never, { "filterMode": { "alias": "filterMode"; "required": false; }; "filterableProperties": { "alias": "filterableProperties"; "required": false; }; }, { "searchTermChange": "searchTermChange"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridFiltersComponent, "appfx-datagrid-filters", never, {
+        "filterMode": {
+            "alias": "filterMode";
+            "required": false;
+        };
+        "filterableProperties": {
+            "alias": "filterableProperties";
+            "required": false;
+        };
+    }, {
+        "searchTermChange": "searchTermChange";
+        "propertyFiltersChange": "propertyFiltersChange";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockDatagridFiltersComponent, never>;
 }
@@ -658,7 +956,20 @@ export class MockDatagridPersistSettingsDirective {
     // (undocumented)
     persistSortOrder: boolean;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<MockDatagridPersistSettingsDirective, "appfx-datagrid[appfxPersistDatagridSettings]", never, { "appfxPersistDatagridSettings": { "alias": "appfxPersistDatagridSettings"; "required": false; }; "persistPageSize": { "alias": "persistPageSize"; "required": false; }; "persistSortOrder": { "alias": "persistSortOrder"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<MockDatagridPersistSettingsDirective, "appfx-datagrid[appfxPersistDatagridSettings]", never, {
+        "appfxPersistDatagridSettings": {
+            "alias": "appfxPersistDatagridSettings";
+            "required": false;
+        };
+        "persistPageSize": {
+            "alias": "persistPageSize";
+            "required": false;
+        };
+        "persistSortOrder": {
+            "alias": "persistSortOrder";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockDatagridPersistSettingsDirective, never>;
 }
@@ -668,7 +979,12 @@ export class MockDatagridPreserveSelectionDirective {
     // (undocumented)
     preserveExistingSelection: boolean;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<MockDatagridPreserveSelectionDirective, "[appfxPreserveSelection]", never, { "preserveExistingSelection": { "alias": "preserveExistingSelection"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<MockDatagridPreserveSelectionDirective, "[appfxPreserveSelection]", never, {
+        "preserveExistingSelection": {
+            "alias": "preserveExistingSelection";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockDatagridPreserveSelectionDirective, never>;
 }
@@ -712,7 +1028,16 @@ export class MockPropertyViewComponent {
     // (undocumented)
     data: any;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<MockPropertyViewComponent, "appfx-property-view", never, { "data": { "alias": "data"; "required": false; }; "config": { "alias": "config"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockPropertyViewComponent, "appfx-property-view", never, {
+        "data": {
+            "alias": "data";
+            "required": false;
+        };
+        "config": {
+            "alias": "config";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockPropertyViewComponent, never>;
 }
@@ -740,7 +1065,7 @@ export class MockPropertyViewStrings extends PropertyViewStrings {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockPropertyViewStrings, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<MockPropertyViewStrings>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public (undocumented)
@@ -824,7 +1149,23 @@ export class MockStepperComponent {
     // (undocumented)
     wizardModel: WorkflowModel;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<MockStepperComponent, "appfx-stepper", never, { "steps": { "alias": "steps"; "required": false; }; "wizardModel": { "alias": "wizardModel"; "required": false; }; "loading": { "alias": "loading"; "required": false; }; }, { "onModelChange": "onModelChange"; "onFinish": "onFinish"; }, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockStepperComponent, "appfx-stepper", never, {
+        "steps": {
+            "alias": "steps";
+            "required": false;
+        };
+        "wizardModel": {
+            "alias": "wizardModel";
+            "required": false;
+        };
+        "loading": {
+            "alias": "loading";
+            "required": false;
+        };
+    }, {
+        "onModelChange": "onModelChange";
+        "onFinish": "onFinish";
+    }, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockStepperComponent, never>;
 }
@@ -1011,7 +1352,7 @@ export class WizardHelper {
 // @public (undocumented)
 export class ZoomLevelServiceMock {
     // (undocumented)
-    onChange: rxjs.Observable<ZoomLevel>;
+    onChange: Observable<ZoomLevel>;
     // Warning: (ae-forgotten-export) The symbol "ZoomLevel" needs to be exported by the entry point clr-addons-testing.d.ts
     //
     // (undocumented)
