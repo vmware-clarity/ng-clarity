@@ -317,11 +317,8 @@
       $height: datagrid-variables.$clr-datagrid-tree-toggle-size,
       $columnWidth: datagrid-variables.$clr-datagrid-tree-toggle-size
     );
-
-    flex: none;
     // Centred rather than placed by the padding: the compact density pulls up the icons of a cell.
     align-items: center;
-    justify-content: center;
     width: datagrid-variables.$clr-datagrid-tree-toggle-size;
     color: datagrid-variables.$clr-datagrid-icon-color;
 
