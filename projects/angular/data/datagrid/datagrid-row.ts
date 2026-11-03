@@ -362,7 +362,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, AfterContentInit, Aft
     }
     this.tree.rowDeclared(this.item, {
       expandable: this.treeExpandable,
-      locked: this._selectable === false || this._selectable === 'false',
+      locked: !this.clrDgSelectable,
       expanded: changes['item'] || changes['expanded'] ? this._treeExpanded : undefined,
     });
   }
