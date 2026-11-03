@@ -118,7 +118,11 @@ const virtualRange = `
     [clrVirtualTreeGetChildren]="getChildren"
     (clrVirtualTreeRenderedRootsChange)="loadRoots($event)"
   >
-    <clr-dg-row [clrDgItem]="item" [clrDgExpandable]="item?.type === 'Folder'" [clrDgSkeletonLoading]="!item">
+    <clr-dg-row
+      [clrDgItem]="item"
+      [clrDgExpandable]="item?.type === 'Folder'"
+      [clrDgSkeletonLoading]="!item"
+    >
       <clr-dg-cell>{{ item?.name }}</clr-dg-cell>
       <clr-dg-cell>{{ item?.size }}</clr-dg-cell>
     </clr-dg-row>
