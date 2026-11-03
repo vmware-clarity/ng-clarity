@@ -73,6 +73,7 @@ import { ClrDatagridRowDetail } from './datagrid-row-detail';
 import { ClrDatagridSelectionCellDirective } from './datagrid-selection-cell.directive';
 import { ClrDatagridSingleSelectionValueAccessor } from './datagrid-single-selection.directive';
 import { ClrDatagridTreeItems } from './datagrid-tree-items';
+import { ClrDatagridTreeToggleButton } from './datagrid-tree-toggle-button';
 import { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
 import { ClrDatagridVirtualTree } from './datagrid-virtual-tree.directive';
 import { DatagridCellRenderer } from './render/cell-renderer';
@@ -128,7 +129,11 @@ export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
   DatagridStringFilter,
 ];
 
-const CLR_DATAGRID_INTERNAL_DIRECTIVES = [ClrDatagridColumnToggle, ClrDatagridColumnToggleButton];
+const CLR_DATAGRID_INTERNAL_DIRECTIVES = [
+  ClrDatagridColumnToggle,
+  ClrDatagridColumnToggleButton,
+  ClrDatagridTreeToggleButton,
+];
 const CLR_DATAGRID_STANDALONE_DIRECTIVES = [ClrDatagridSingleSelectionValueAccessor];
 const CLR_DATAGRID_SHARED_DIRECTIVES = [ClrIfExpanded];
 
