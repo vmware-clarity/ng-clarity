@@ -1,0 +1,4 @@
+{
+  "module": "../fesm2022/clr-angular-collapsible-panel.mjs",
+  "typings": "../types/clr-angular-collapsible-panel.d.ts"
+}

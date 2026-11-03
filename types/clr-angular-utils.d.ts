@@ -1,0 +1,1239 @@
+import { AbstractControl, FormGroup } from '@angular/forms';
+import * as i0 from '@angular/core';
+import { OnDestroy, EventEmitter, ElementRef, Renderer2, NgZone, Type, TemplateRef, Injector, ViewContainerRef, InjectionToken, OnChanges, SimpleChanges, AnimationCallbackEvent, AfterViewInit, QueryList, FactoryProvider } from '@angular/core';
+import * as i2 from '@angular/common';
+export * from '@clr/angular/utils/loading';
+export * from '@clr/angular/utils/conditional';
+import { CdkTrapFocus } from '@angular/cdk/a11y';
+import { Subscription, Observable, Observer, Subject } from 'rxjs';
+import { CdkDrag } from '@angular/cdk/drag-drop';
+
+declare function triggerAllFormControlValidation(formGroup: FormGroup): void;
+/**
+ * Whether the control requires a value, from `Validators.required` or a template `required`/`[required]`.
+ * `hasValidator` misses the template forms, so the composed validator is probed with an empty value.
+ */
+declare function clrHasRequiredValidator(control: AbstractControl | null | undefined): boolean;
+
+declare class DomAdapter {
+    userDefinedWidth(element: HTMLElement): number;
+    scrollBarWidth(element: any): number;
+    scrollWidth(element: any): any;
+    computedHeight(element: any): number;
+    clientRect(element: any): DOMRect;
+    minWidth(element: any): number;
+    focus(element: any): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DomAdapter, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<DomAdapter>;
+}
+
+declare class MockDomAdapter extends DomAdapter {
+    _userDefinedWidth: number;
+    _scrollBarWidth: number;
+    _scrollWidth: number;
+    _computedHeight: number;
+    userDefinedWidth(_element: any): number;
+    scrollBarWidth(_element: any): number;
+    scrollWidth(_element: any): number;
+    computedHeight(_element: any): number;
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockDomAdapter, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<MockDomAdapter>;
+}
+declare const MOCK_DOM_ADAPTER_PROVIDER: {
+    provide: typeof DomAdapter;
+    useClass: typeof MockDomAdapter;
+};
+
+declare class OutsideClick implements OnDestroy {
+    strict: boolean;
+    outsideClick: EventEmitter<any>;
+    private documentClickListener;
+    constructor(host: ElementRef<HTMLElement>, renderer: Renderer2, ngZone: NgZone);
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<OutsideClick, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<OutsideClick, "[clrOutsideClick]", never, { "strict": { "alias": "clrStrict"; "required": false; }; }, { "outsideClick": "clrOutsideClick"; }, never, never, false, never>;
+}
+
+declare const OUSTIDE_CLICK_DIRECTIVES: Type<any>[];
+declare class ClrOutsideClickModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrOutsideClickModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrOutsideClickModule, [typeof OutsideClick], [typeof i2.CommonModule], [typeof OutsideClick]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrOutsideClickModule>;
+}
+
+declare class TemplateRefContainer {
+    template: TemplateRef<any>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<TemplateRefContainer, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<TemplateRefContainer, "ng-component", never, {}, {}, never, ["*"], false, never>;
+}
+
+declare class ClrTemplateRefModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTemplateRefModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTemplateRefModule, [typeof TemplateRefContainer], [typeof i2.CommonModule], [typeof TemplateRefContainer]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrTemplateRefModule>;
+}
+
+/**
+ * TODO:
+ * Using core functions like:
+ * - pluckPixelValue
+ * - getCssPropertyValue
+ *
+ * to get the value of the design token.
+ *
+ * Note: Memoization/Cache usage possible.
+ */
+declare const DATEPICKER_ENABLE_BREAKPOINT = 768;
+declare const SMALL_BREAKPOINT = 576;
+declare const MEDIUM_BREAKPOINT = 768;
+declare const LARGE_BREAKPOINT = 992;
+declare const EXTRA_LARGE_BREAKPOINT = 1200;
+
+declare class EmptyAnchor {
+    static ɵfac: i0.ɵɵFactoryDeclaration<EmptyAnchor, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<EmptyAnchor, "ng-component", never, {}, {}, never, never, false, never>;
+}
+
+/**
+ * HostWrapper must be called in OnInit to ensure that the Views are ready. If its called in a constructor the view is
+ * still undefined.
+ */
+declare class HostWrapper<W> implements Injector {
+    private injector;
+    constructor(containerType: Type<W>, vcr: ViewContainerRef, index?: number);
+    get<T>(token: Type<T> | InjectionToken<T>, notFoundValue?: T): T;
+}
+
+/**
+ * Internal module, please do not export!
+ */
+declare class ClrHostWrappingModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrHostWrappingModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrHostWrappingModule, [typeof EmptyAnchor], never, [typeof EmptyAnchor]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrHostWrappingModule>;
+}
+
+declare function assertNever(value: never): void;
+
+declare function isBooleanAttributeSet(value: string | boolean): boolean;
+
+/**
+ * Marks an element whose value, and everything inside it, never appears in a snapshot.
+ * The element is still described, so an agent knows the value is withheld rather than absent.
+ */
+declare const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
+/**
+ * Elements carrying this attribute, and everything inside them, are invisible to the engine and the tracker.
+ * Put it on UI that consumes context, such as a chat panel, to avoid feedback loops.
+ */
+declare const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
+/** Selector for elements marked with `CLR_CONTEXT_REDACT_ATTRIBUTE`. */
+declare const CLR_CONTEXT_REDACT_SELECTOR = "[data-clr-context-redact]";
+/** Selector for elements marked with `CLR_CONTEXT_IGNORE_ATTRIBUTE`. */
+declare const CLR_CONTEXT_IGNORE_SELECTOR = "[data-clr-context-ignore]";
+/** What page-context tooling treats as not on the page; shared so the engine and components agree. */
+declare const CLR_CONTEXT_HIDDEN_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore]";
+/** An editing host; what it holds is user input, never text to read into a name. */
+declare const CLR_CONTEXT_EDITING_HOST_SELECTOR = "[contenteditable]:not([contenteditable=\"false\" i])";
+/** What page-context tooling never reads text from: hidden, redacted and editing-host content. */
+declare const CLR_CONTEXT_WITHHELD_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore], [data-clr-context-redact], [contenteditable]:not([contenteditable=\"false\" i])";
+
+/** Compact, serializable description of one piece of UI at the moment of the snapshot. */
+interface ClrComponentContext {
+    /** ARIA role, e.g. `'dialog'` or `'grid'`; `'group'` for a component without one, `'text'` for prose. */
+    type: string;
+    /** Tag name when it adds to the role, e.g. the `clr-modal` rendering a dialog. */
+    element?: string;
+    /** Human-readable label: a title, heading or accessible name. */
+    label?: string;
+    /** Current state that is relevant right now, e.g. `{ open: true }` or `{ selectedRows: 3 }`. */
+    state?: Record<string, unknown>;
+    /** Nested contexts; controls here are as invocable as top-level ones. */
+    children?: ClrComponentContext[];
+    /** A random, stable handle the mutation engine accepts for this node, present only when mutations are enabled. */
+    ref?: string;
+}
+/**
+ * Context that application code publishes. Its state is shared only with trusted callers, except the keys
+ * listed in `publicKeys`, which untrusted ones (`window.clrContext()`, embedded frames) see too.
+ */
+interface ClrPublishedContext extends ClrComponentContext {
+    /** State keys untrusted callers may see; every other key is withheld from them. Default none. */
+    publicKeys?: readonly string[];
+    /** Nested contexts, each listing its own public keys. */
+    children?: ClrPublishedContext[];
+}
+/** Kinds of content a snapshot can leave out wholesale; each expands to the ARIA roles it covers. */
+type ClrContextCategory = 'layout' | 'actions' | 'forms' | 'headings' | 'collections' | 'dialogs' | 'status' | 'images' | 'text' | 'frames';
+/** Default for `maxItemsPerCollection`, shared with page tooling that calls a publisher directly. */
+declare const CLR_CONTEXT_DEFAULT_MAX_ITEMS = 25;
+/** Budgets applied while building a snapshot, conservative so it fits an agent's context window. */
+interface ClrContextSnapshotOptions {
+    /** Maximum length of any single text value. Longer text is truncated. Default `100`. */
+    maxTextLength?: number;
+    /** Maximum number of items collected per list (rows, tabs, links, options...). Default `25`. */
+    maxItemsPerCollection?: number;
+    /** Maximum number of components reported. Default `300`; past it the snapshot has `truncated: true`. */
+    maxComponents?: number;
+    /** Whether to describe what is rendered in the DOM at all. Default `true`. */
+    includeDomComponents?: boolean;
+    /** Whether to report text that carries no role as `text` nodes. Default `true`. */
+    includeText?: boolean;
+    /** Whether to report frames; a same-origin frame is described in place. Default `true`. */
+    includeFrames?: boolean;
+    /** Kinds of content to leave out, e.g. `['layout', 'actions']`. Default none. */
+    excludeCategories?: ClrContextCategory[];
+    /** Roles whose subtree is left out, e.g. `['navigation', 'banner']`. Default none. */
+    excludeRoles?: string[];
+    /**
+     * CSS selectors for elements to leave out with their subtree, shadow content included. A selector matches
+     * within one tree, so `main .secret` does not reach into a shadow root; select the host instead. Default none.
+     */
+    excludeSelectors?: string[];
+    /** CSS selector for the element(s) to describe instead of the whole document. Default: the document. */
+    rootSelector?: string;
+    /** Deepest nesting of described nodes; `0` means unlimited. Default `0`. */
+    maxDepth?: number;
+    /** `'modal'` describes only the open modal dialog and sets `focus: 'modal'`. Default `'page'`. */
+    focus?: 'page' | 'modal';
+    /** `'summary'` reports counts and selection only, without item lists. Default `'all'`. */
+    collectionItems?: 'all' | 'summary';
+    /** Whether to list the router's configured routes. Default `false`. */
+    includeRoutes?: boolean;
+}
+
+/** Host element property through which a component publishes state the DOM cannot show. */
+declare const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
+/**
+ * Returns context to merge into the host's description, or `null`. Untrusted consumers see only the state
+ * keys listed in `publicKeys`, so user input stays private unless it is listed.
+ */
+type ClrElementContextCallback = (options?: Required<ClrContextSnapshotOptions>) => Partial<ClrPublishedContext> | null | undefined;
+/** Publishes a context callback on the host element. The teardown only removes the callback it published. */
+declare function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
+
+/**
+ * Host element property through which a component says how it is written to, when its model is not
+ * what an agent sees (a combobox's option value, a date input's locale string, datagrid selection).
+ */
+declare const CLR_ELEMENT_MUTATOR_PROPERTY = "clrElementMutator";
+/**
+ * A coerced or written value, or an actionable refusal. `display` is the value in agent terms, shown to
+ * the policy, and must hold nothing the published context withholds.
+ */
+type ClrElementMutation = {
+    value: unknown;
+    display?: unknown;
+    refused?: undefined;
+} | {
+    refused: string;
+    value?: undefined;
+    display?: undefined;
+};
+/** What a component publishes through {@link CLR_ELEMENT_MUTATOR_PROPERTY}; every member is optional. */
+interface ClrElementMutator {
+    /** `true` when the component is written as one thing and its rendered controls are internals. */
+    ownsContents?: boolean;
+    /** Turns an agent's proposal into the value the form control takes, or refuses; `null` proposes clearing. */
+    coerce?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
+    /** Writes the proposal directly, for state no form control holds, such as datagrid selection. */
+    write?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
+    /** The current value in agent terms, read back after a write. */
+    read?(options?: Required<ClrContextSnapshotOptions>): unknown;
+}
+/** Publishes a mutator on the host element. The teardown only removes the mutator it published. */
+declare function publishElementMutator(host: Element, mutator: ClrElementMutator): () => void;
+
+/** Text as page-context tooling compares it, shared so components and the engine agree on matches. */
+declare function normalizeContextText(text: string, lowercase?: boolean): string;
+/**
+ * The text an element shows, without redacted, ignored or hidden descendants, with whitespace collapsed.
+ * Style is only judged while the element is on the page; a closed combobox's options are read from markup.
+ */
+declare function contextText(element: Element, skip?: (descendant: Element) => boolean): string;
+
+/** The selectors `root`'s document accepts, joined, or `''`; one invalid entry drops only itself. */
+declare function usableSelectors(root: ParentNode, selectors: readonly string[]): string;
+
+/**
+ * Structural equivalents of the animation metadata produced by the `@angular/animations` package
+ * (`style()`, `animate()`, `transition()`, ...).
+ *
+ * Clarity itself does not depend on `@angular/animations` anymore. The deprecated
+ * animation helpers below keep producing the objects Angular's animation engine understands, so that applications
+ * which still use the package can keep passing them to their own `trigger()` definitions.
+ *
+ * The numeric `type` codes match Angular's `AnimationMetadataType` enum.
+ *
+ * @deprecated Use CSS animations, for example the `clr-fade-*` and `clr-slide-*` classes, or `animateHeight()` instead.
+ */
+type ClrAnimationStyles = '*' | {
+    [key: string]: string | number;
+} | Array<{
+    [key: string]: string | number;
+} | '*'>;
+/** @deprecated see {@link ClrAnimationStyles} */
+interface ClrAnimationOptions {
+    delay?: number | string;
+    params?: {
+        [name: string]: any;
+    };
+}
+/** @deprecated see {@link ClrAnimationStyles} */
+interface ClrAnimationStyleMetadata {
+    type: 6;
+    styles: ClrAnimationStyles;
+    offset: number | null;
+}
+/** @deprecated see {@link ClrAnimationStyles} */
+interface ClrAnimationAnimateMetadata {
+    type: 4;
+    timings: string | number;
+    styles: ClrAnimationStyleMetadata | null;
+}
+/** @deprecated see {@link ClrAnimationStyles} */
+interface ClrAnimationStateMetadata {
+    type: 0;
+    name: string;
+    styles: ClrAnimationStyleMetadata;
+    options?: {
+        params: {
+            [name: string]: any;
+        };
+    };
+}
+/** @deprecated see {@link ClrAnimationStyles} */
+interface ClrAnimationTransitionMetadata {
+    type: 1;
+    expr: string;
+    animation: ClrAnimationMetadata | ClrAnimationMetadata[];
+    options: ClrAnimationOptions | null;
+}
+/** @deprecated see {@link ClrAnimationStyles} */
+interface ClrAnimationReferenceMetadata {
+    type: 8;
+    animation: ClrAnimationMetadata | ClrAnimationMetadata[];
+    options: ClrAnimationOptions | null;
+}
+/** @deprecated see {@link ClrAnimationStyles} */
+interface ClrAnimationTriggerMetadata {
+    type: 7;
+    name: string;
+    definitions: ClrAnimationMetadata[];
+    options: {
+        params?: {
+            [name: string]: any;
+        };
+    } | null;
+}
+/** @deprecated see {@link ClrAnimationStyles} */
+type ClrAnimationMetadata = ClrAnimationStyleMetadata | ClrAnimationAnimateMetadata | ClrAnimationStateMetadata | ClrAnimationTransitionMetadata | ClrAnimationReferenceMetadata | ClrAnimationTriggerMetadata;
+
+/** @deprecated Clarity no longer uses Angular animations; use the `--cds-global-animation-*` tokens instead. */
+declare const defaultAnimationTiming = "0.2s ease-in-out";
+/** @deprecated Clarity no longer uses Angular animations; see `ClrExpandableAnimation` and `clrExpandableAnimation`. */
+declare const defaultExpandAnimation: ClrAnimationReferenceMetadata;
+
+/** @deprecated Clarity no longer uses Angular animations; use `animateHeight()` instead. */
+declare function collapse(): ClrAnimationMetadata[];
+
+declare class BaseExpandableAnimation {
+    protected element: ElementRef<HTMLElement>;
+    protected domAdapter: DomAdapter;
+    protected renderer: Renderer2;
+    startHeight: number;
+    /**
+     * Set when Angular adds the element (see the `animate.enter` host listener), so that nothing animates on the first
+     * render. Angular calls `animate.enter` handlers only when animations are enabled, and the listener leaves it unset
+     * with `provideNoopAnimations()` or `NoopAnimationsModule`.
+     */
+    protected animates: boolean;
+    /** Whether the application turned animations off with `provideNoopAnimations()` or `NoopAnimationsModule`. */
+    protected readonly noopAnimations: boolean;
+    constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2);
+    updateStartHeight(): void;
+    initAnimationEffects(): void;
+    cleanupAnimationEffects(cancelAnimations?: boolean): void;
+    /**
+     * Animates the height of the element from `startHeight` to its current height, then updates `startHeight`. Call it
+     * once the change is rendered.
+     */
+    protected animateFromStartHeight(): void;
+    private cancelElementAnimations;
+    static ɵfac: i0.ɵɵFactoryDeclaration<BaseExpandableAnimation, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<BaseExpandableAnimation, never, never, {}, {}, never, never, true, never>;
+}
+
+declare class ClrExpandableAnimation extends BaseExpandableAnimation implements OnChanges {
+    /** Animates the height of the element, from `startHeight` to its new height, each time it changes. */
+    clrExpandTrigger: boolean;
+    /** @deprecated No longer used: the height animates without Angular animations. To be removed in a future major version. */
+    get expandAnimation(): {
+        value: boolean;
+        params: {
+            startHeight: number;
+        };
+    };
+    ngOnChanges(changes: SimpleChanges): void;
+    /** @deprecated No longer called. To be removed in a future major version. */
+    animationStart(_event: {
+        fromState: string;
+    }): void;
+    /** @deprecated No longer called. To be removed in a future major version. */
+    animationDone(_event: {
+        fromState: string;
+    }): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimation, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrExpandableAnimation, "clr-expandable-animation", never, { "clrExpandTrigger": { "alias": "clrExpandTrigger"; "required": false; }; }, {}, never, ["*"], false, never>;
+}
+
+declare class ClrExpandableAnimationDirective extends BaseExpandableAnimation implements OnChanges, OnDestroy {
+    /** Animates the height of the element, from `startHeight` to its new height, each time it changes. */
+    expanded: boolean;
+    /**
+     * @param _builder Deprecated and ignored: the height no longer animates with Angular animations. Kept so that
+     * subclasses passing an `AnimationBuilder` still compile.
+     */
+    constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2, _builder?: unknown);
+    ngOnChanges(changes: SimpleChanges): void;
+    /** @deprecated Kept so that subclasses calling `super.ngOnDestroy()` still compile. */
+    ngOnDestroy(): void;
+    playAnimation(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimationDirective, [null, null, null, { optional: true; }]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrExpandableAnimationDirective, "[clrExpandableAnimation]", never, { "expanded": { "alias": "clrExpandableAnimation"; "required": false; }; }, {}, never, never, false, never>;
+}
+
+declare const EXPANDABLE_ANIMATION_DIRECTIVES: Type<any>[];
+declare class ClrExpandableAnimationModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimationModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrExpandableAnimationModule, [typeof ClrExpandableAnimation, typeof ClrExpandableAnimationDirective], [typeof i2.CommonModule], [typeof ClrExpandableAnimation, typeof ClrExpandableAnimationDirective]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrExpandableAnimationModule>;
+}
+
+/** @deprecated Clarity no longer uses Angular animations; use the `clr-fade-enter` and `clr-fade-leave` classes instead. */
+declare function fade(opacity?: number): ClrAnimationMetadata[];
+
+/** @deprecated Clarity no longer uses Angular animations; use the `clr-fade-slide-<direction>-enter` / `-leave` classes instead. */
+declare function fadeSlide(direction: string): ClrAnimationMetadata[];
+
+/** `animate.enter` handler expanding the added element from 0 to its natural height. */
+declare function expandHeight({ target }: AnimationCallbackEvent): void;
+/**
+ * Animates the height of the element from `from` pixels to `to` pixels, or to the height it has once the animation
+ * it started before on the same element is canceled. The content is clipped (`clip` rather than `hidden`, which would
+ * make the element a scroll container and loosen its `position: sticky` descendants), and stays rendered even when
+ * the end state skips it (`content-visibility: hidden`). The animation leaves no style behind: once it is over, the element
+ * shows the style of its end state.
+ *
+ * The duration and easing are the `--cds-global-animation-duration-quick` and `--cds-global-animation-easing-in-out`
+ * tokens of the element, unless `easing` is given. It does not animate, and returns `null`, when the duration is 0
+ * (low motion theme), when the user prefers reduced motion, or outside of a browser.
+ */
+declare function animateHeight(element: HTMLElement, { from, to, easing }: {
+    from: number;
+    to?: number;
+    easing?: string;
+}): Animation | null;
+/**
+ * The height of the element as it is rendered, running animations included, with its fractional part. It is 0 outside
+ * of a browser.
+ */
+declare function measureHeight(element: HTMLElement): number;
+
+/**
+ * Whether the application turned animations off with `provideNoopAnimations()` or `NoopAnimationsModule`. Angular's
+ * `animate.enter` and `animate.leave` do not honour them, so Clarity components check it to skip their animations,
+ * as they did with `@angular/animations`. To be called in an injection context.
+ */
+declare function noopAnimations(): boolean;
+
+/** @deprecated Clarity no longer uses Angular animations; use the `clr-slide-<direction>-enter` / `-leave` classes instead. */
+declare function slide(direction: string): ClrAnimationMetadata[];
+
+interface ClrCommonStrings {
+    /**
+     * Open button
+     */
+    open: string;
+    /**
+     * Close button
+     */
+    close: string;
+    /**
+     * Show button
+     */
+    show: string;
+    /**
+     * Hide button
+     */
+    hide: string;
+    /**
+     * Apply button
+     */
+    apply: string;
+    /**
+     * Cancel button
+     */
+    cancel: string;
+    /**
+     * Expandable components: expand caret
+     */
+    expand: string;
+    /**
+     * Expandable components: collapse caret
+     */
+    collapse: string;
+    /**
+     * Overflow menus: ellipsis button
+     */
+    more: string;
+    /**
+     * Selectable components: checkbox or radio
+     */
+    select: string;
+    /**
+     * Selectable components: checkbox to select all
+     */
+    selectAll: string;
+    /**
+     * Pagination: previous button
+     */
+    previous: string;
+    /**
+     * Pagination: next button
+     */
+    next: string;
+    /**
+     * Pagination: go to current
+     */
+    current: string;
+    /**
+     * Alert levels: info
+     */
+    info: string;
+    /**
+     * Alert levels: success
+     */
+    success: string;
+    /**
+     * Alert levels: warning
+     */
+    warning: string;
+    /**
+     * Alert levels: danger
+     */
+    danger: string;
+    /**
+     * Alert levels: neutral
+     */
+    neutral: string;
+    /**
+     * Alert levels: unknown
+     */
+    unknown: string;
+    /**
+     * Datagrid: row actions
+     */
+    rowActions: string;
+    /**
+     * Datagrid: pick columns
+     */
+    pickColumns: string;
+    /**
+     * Datagrid: show columns
+     */
+    showColumns: string;
+    /**
+     * Datagrid: sort of columns
+     */
+    sortColumn: string;
+    /**
+     * Datagrid: sort a column in ascending order
+     */
+    sortColumnAscending: string;
+    /**
+     * Datagrid: sort a column in descending order
+     */
+    sortColumnDescending: string;
+    /**
+     * Datagrid: return a sorted column to its unsorted state
+     */
+    clearColumnSort: string;
+    /**
+     * Datagrid: open the filter of a column from its actions menu
+     */
+    filterColumn: string;
+    /**
+     * Datagrid: column actions menu, when the column title is unknown
+     */
+    columnActions: string;
+    /**
+     * Datagrid: column actions menu toggle
+     */
+    datagridColumnActionsAriaLabel: string;
+    /**
+     * Datagrid: pin a column to the left of the datagrid
+     */
+    pinColumn: string;
+    /**
+     * Datagrid: unpin a pinned column
+     */
+    unpinColumn: string;
+    /**
+     * Datagrid: first page
+     */
+    firstPage: string;
+    /**
+     * Datagrid: last page
+     */
+    lastPage: string;
+    /**
+     * Datagrid: next page
+     */
+    nextPage: string;
+    /**
+     * Datagrid: previous page
+     */
+    previousPage: string;
+    /**
+     * Datagrid: previous page
+     */
+    currentPage: string;
+    /**
+     * Datagird: total pages
+     */
+    totalPages: string;
+    /**
+     * Datagrid string filter: filter items
+     */
+    filterItems: string;
+    /**
+     * Datagrid numeric filter: min
+     */
+    minValue: string;
+    /**
+     * Datagrid numeric filter: max
+     */
+    maxValue: string;
+    /**
+     * Datagrid filter toggle button
+     */
+    datagridFilterAriaLabel: string;
+    /**
+     * Datagrid filter label
+     */
+    datagridFilterLabel: string;
+    /**
+     * Datagrid filter dialog.
+     * The popover already has `role="dialog"`, so this label should not include the word "dialog"
+     * to avoid screen readers announcing it twice.
+     */
+    datagridFilterDialogAriaLabel: string;
+    /**
+     * Datagrid column handler string
+     */
+    columnSeparatorAriaLabel: string;
+    /**
+     * Datagrid column resize handler string
+     */
+    columnSeparatorDescription: string;
+    /**
+     * Numeric filter from label string
+     */
+    fromLabel: string;
+    /**
+     * Numeric filter to label string
+     */
+    toLabel: string;
+    /**
+     * Modal start of content
+     */
+    modalContentStart: string;
+    /**
+     * Modal end of content
+     */
+    modalContentEnd: string;
+    /**
+     * Side Panel pin dialog
+     */
+    sidePanelPin: string;
+    /**
+     * Datagrid Show columns menu description
+     */
+    showColumnsMenuDescription: string;
+    /**
+     * Datagrid Show columns / All columns selected confirmation
+     */
+    allColumnsSelected: string;
+    /**
+     * Signpost Toggle Button
+     */
+    signpostToggle: string;
+    /**
+     * Signpost Close Button
+     * (used inside signpost content components)
+     */
+    signpostClose: string;
+    loading: string;
+    /**
+     * Datagrid: detail pane start content for screen reader
+     */
+    detailPaneStart: string;
+    /**
+     * Datagrid: detail pane end content for screen reader
+     */
+    detailPaneEnd: string;
+    /**
+     * Datagrid: Single selection header
+     */
+    singleSelectionAriaLabel: string;
+    /**
+     * Datagrid: Single actionable header
+     */
+    singleActionableAriaLabel: string;
+    /**
+     * Datagrid: Expandable row
+     */
+    detailExpandableAriaLabel: string;
+    /**
+     * Alert: Close alert button
+     */
+    alertCloseButtonAriaLabel: string;
+    /**
+     * Alert: Next Alert button
+     */
+    alertNextAlertAriaLabel: string;
+    /**
+     * Alert: Previous Alert button
+     */
+    alertPreviousAlertAriaLabel: string;
+    /**
+     * Datepicker UI labels
+     */
+    datepickerDialogLabel: string;
+    datepickerToggleChooseDateLabel: string;
+    datepickerToggleChangeDateLabel: string;
+    datepickerPreviousMonth: string;
+    datepickerCurrentMonth: string;
+    datepickerNextMonth: string;
+    datepickerPreviousDecade: string;
+    datepickerNextDecade: string;
+    datepickerCurrentDecade: string;
+    datepickerSelectMonthText: string;
+    datepickerSelectYearText: string;
+    datepickerSelectedLabel: string;
+    /**
+     * Stack View: Record has changed
+     */
+    stackViewChanged: string;
+    responsiveNavToggleOpen: string;
+    responsiveNavToggleClose: string;
+    responsiveNavOverflowOpen: string;
+    responsiveNavOverflowClose: string;
+    verticalNavToggle: string;
+    /** Name of the vertical nav landmark. Screen readers add the role, so do not repeat "navigation". */
+    verticalNavLabel: string;
+    /**
+     * Timeline Steps
+     */
+    timelineStepNotStarted: string;
+    timelineStepCurrent: string;
+    timelineStepSuccess: string;
+    timelineStepError: string;
+    timelineStepProcessing: string;
+    datagridExpandableBeginningOf: string;
+    datagridExpandableEndOf: string;
+    datagridExpandableRowContent: string;
+    datagridExpandableRowsHelperText: string;
+    /**
+     * Combobox Searching Text
+     */
+    comboboxSearching: string;
+    comboboxDelete: string;
+    comboboxSelection: string;
+    comboboxSelected: string;
+    comboboxNoResults: string;
+    comboboxOpen: string;
+    comboboxSelectAll: string;
+    comboboxUnselectAll: string;
+    comboboxAllSelected: string;
+    comboboxShowAll: string;
+    comboboxShowLess: string;
+    /**
+     * Wizard: Screen-reader text for "step" (read before step number).
+     */
+    wizardStep: string;
+    /**
+     * Wizard: Screen-reader text for current step.
+     */
+    wizardStepCurrent: string;
+    /**
+     * Wizard: Screen-reader text for completed step.
+     */
+    wizardStepSuccess: string;
+    /**
+     * Wizard: Screen-reader text for step with error.
+     */
+    wizardStepError: string;
+    /**
+     * Wizard: Aria-label for the stepnav section.
+     */
+    wizardStepnavAriaLabel: string;
+    /**
+     * Password Input
+     * Screen-reader text for the hide/show password field button.
+     */
+    passwordHide: string;
+    passwordShow: string;
+    /**
+     * Datagrid footer; sr-only text after the number of selected rows.
+     */
+    selectedRows: string;
+    stepComplete: string;
+    stepError: string;
+    browse: string;
+    fileCount: string;
+    clearFile: string;
+    clearFiles: string;
+    selectedTreeNode: string;
+    unselectedTreeNode: string;
+    breadcrumbsLabel: string;
+    expandBreadcrumbsLabel: string;
+    /**
+     * Aria label of a collapsible card's toggle button while the card is collapsed
+     */
+    expandCardAriaLabel: string;
+    /**
+     * Aria label of a collapsible card's toggle button while the card is expanded
+     */
+    collapseCardAriaLabel: string;
+}
+
+declare class ClrCommonStringsService {
+    private _strings;
+    /**
+     * Access to all of the keys as strings
+     */
+    get keys(): Readonly<ClrCommonStrings>;
+    /**
+     * Allows you to pass in new overrides for localization
+     */
+    localize(overrides: Partial<ClrCommonStrings>): void;
+    /**
+     * Parse a string with a set of tokens to replace
+     */
+    parse(source: string, tokens?: {
+        [key: string]: string;
+    }): string;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrCommonStringsService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ClrCommonStringsService>;
+}
+
+declare const commonStringsDefault: ClrCommonStrings;
+
+declare class ClrFocusOnViewInit implements AfterViewInit, OnDestroy {
+    private el;
+    private platformId;
+    private focusOnViewInit;
+    private renderer;
+    private document;
+    private directFocus;
+    private destroy$;
+    private _isEnabled;
+    constructor(el: ElementRef<HTMLElement>, platformId: any, focusOnViewInit: boolean, document: any, renderer: Renderer2, ngZone: NgZone);
+    set isEnabled(value: boolean | string);
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    private focus;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrFocusOnViewInit, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrFocusOnViewInit, "[clrFocusOnViewInit]", never, { "isEnabled": { "alias": "clrFocusOnViewInit"; "required": false; }; }, {}, never, never, false, never>;
+}
+
+declare const FOCUS_ON_VIEW_INIT: InjectionToken<boolean>;
+
+declare const FOCUS_ON_VIEW_INIT_DIRECTIVES: Type<any>[];
+declare class ClrFocusOnViewInitModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrFocusOnViewInitModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFocusOnViewInitModule, [typeof ClrFocusOnViewInit], [typeof i2.CommonModule], [typeof ClrFocusOnViewInit]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrFocusOnViewInitModule>;
+}
+
+declare class ClrStandaloneCdkTrapFocus extends CdkTrapFocus {
+    /**
+     * The base class resolves its dependencies with `inject()`, so it takes no constructor arguments
+     * (`@angular/cdk` 22 declares it that way). The explicit constructor stays as a workaround for the
+     * Angular "ɵɵinvalidFactoryDep" error in storybook: https://github.com/storybookjs/storybook/issues/23534
+     */
+    constructor();
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStandaloneCdkTrapFocus, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStandaloneCdkTrapFocus, never, never, {}, {}, never, never, true, never>;
+}
+
+declare enum ClrFocusDirection {
+    VERTICAL = "vertical",
+    HORIZONTAL = "horizontal",
+    BOTH = "both"
+}
+
+interface FocusableItem$1 {
+    tabIndex?: number;
+    focus: () => void;
+    nativeElement?: HTMLElement;
+}
+
+declare class ClrKeyFocusItem {
+    private elementRef;
+    private platformId;
+    constructor(elementRef: ElementRef<HTMLElement>, platformId: any);
+    get nativeElement(): HTMLElement;
+    focus(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrKeyFocusItem, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrKeyFocusItem, "[clrKeyFocusItem]", never, {}, {}, never, never, false, never>;
+}
+
+declare class ClrKeyFocus {
+    private elementRef;
+    direction: ClrFocusDirection | string;
+    focusOnLoad: boolean;
+    protected clrKeyFocusItems: QueryList<ClrKeyFocusItem>;
+    protected subscriptions: Subscription[];
+    private focusChange;
+    private _current;
+    private _focusableItems;
+    constructor(elementRef: ElementRef<HTMLElement>);
+    /**
+     * Here we use `any` cause any other type require reworking all methods below and a lot of more ifs.
+     * this method will only work with array with FocusableItems anyway so any other value will be ignored.
+     */
+    get focusableItems(): Array<FocusableItem$1> | any;
+    set focusableItems(elements: Array<FocusableItem$1> | any);
+    get nativeElement(): HTMLElement;
+    get current(): number;
+    set current(value: number);
+    get currentItem(): any;
+    get currentItemElement(): HTMLElement;
+    ngAfterContentInit(): void;
+    ngOnDestroy(): void;
+    handleKeyboardEvent(event: KeyboardEvent): void;
+    setClickedItemCurrent(event: any): void;
+    focusCurrent(): void;
+    moveTo(position: number): void;
+    protected positionInRange(position: number): boolean;
+    protected currentFocusIsNotFirstItem(): boolean;
+    protected currentFocusIsNotLastItem(): boolean;
+    protected initializeFocus(): void;
+    protected nextKeyPressed(event: KeyboardEvent): boolean;
+    protected prevKeyPressed(event: KeyboardEvent): boolean;
+    private getItemPosition;
+    private listenForItemUpdates;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrKeyFocus, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrKeyFocus, "[clrKeyFocus]", never, { "direction": { "alias": "clrDirection"; "required": false; }; "focusOnLoad": { "alias": "clrFocusOnLoad"; "required": false; }; "focusableItems": { "alias": "clrKeyFocus"; "required": false; }; }, { "focusChange": "clrFocusChange"; }, ["clrKeyFocusItems"], ["*"], false, never>;
+}
+
+declare function preventArrowKeyScroll(event: KeyboardEvent): void;
+declare function isKeyEitherLetterOrNumber(event: KeyboardEvent): boolean;
+
+declare class ClrRovingTabindex extends ClrKeyFocus {
+    private renderer;
+    private disabled;
+    constructor(elementRef: ElementRef<HTMLElement>, renderer: Renderer2);
+    get rovingIndexItems(): Array<FocusableItem$1> | string;
+    set rovingIndexItems(elements: Array<FocusableItem$1> | string);
+    set rovingTabindexDisabled(disabled: boolean);
+    handleKeyboardEvent(event: KeyboardEvent): void;
+    setClickedItemCurrent(event: any): void;
+    protected initializeFocus(): void;
+    private updateTabindex;
+    private setTabindex;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrRovingTabindex, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrRovingTabindex, "[clrRovingTabindex]", never, { "rovingIndexItems": { "alias": "clrRovingTabindex"; "required": false; }; "rovingTabindexDisabled": { "alias": "clrRovingTabindexDisabled"; "required": false; }; }, {}, never, ["*"], false, never>;
+}
+
+declare class ClrKeyFocusModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrKeyFocusModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrKeyFocusModule, [typeof ClrKeyFocus, typeof ClrRovingTabindex, typeof ClrKeyFocusItem], [typeof i2.CommonModule], [typeof ClrKeyFocus, typeof ClrRovingTabindex, typeof ClrKeyFocusItem]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrKeyFocusModule>;
+}
+
+declare abstract class FocusableItem {
+    id: string;
+    disabled?: boolean;
+    up?: FocusableItem | Observable<FocusableItem>;
+    down?: FocusableItem | Observable<FocusableItem>;
+    left?: FocusableItem | Observable<FocusableItem>;
+    right?: FocusableItem | Observable<FocusableItem>;
+    abstract focus(): void;
+    abstract blur(): void;
+    abstract activate?(): void;
+}
+
+declare class MockFocusableItem implements FocusableItem {
+    id: string;
+    disabled: boolean;
+    up?: FocusableItem | Observable<FocusableItem>;
+    down?: FocusableItem | Observable<FocusableItem>;
+    left?: FocusableItem | Observable<FocusableItem>;
+    right?: FocusableItem | Observable<FocusableItem>;
+    constructor(id: string);
+    focus(): void;
+    blur(): void;
+    activate(): void;
+}
+
+declare class BasicFocusableItem implements FocusableItem {
+    private el;
+    private renderer;
+    private platformId;
+    id: string;
+    disabled: boolean;
+    constructor(el: ElementRef<HTMLElement>, renderer: Renderer2, platformId: any);
+    focus(): void;
+    blur(): void;
+    activate(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<BasicFocusableItem, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<BasicFocusableItem>;
+}
+declare const BASIC_FOCUSABLE_ITEM_PROVIDER: {
+    provide: typeof FocusableItem;
+    useClass: typeof BasicFocusableItem;
+}[];
+
+declare function customFocusableItemProvider<T>(implementation: Type<T>): (Type<T> | {
+    provide: typeof FocusableItem;
+    useExisting: Type<T>;
+})[];
+
+declare enum ArrowKeyDirection {
+    UP = "up",
+    DOWN = "down",
+    LEFT = "left",
+    RIGHT = "right"
+}
+
+declare class Linkers {
+    /**
+     * Links a set of focusable items to a parent along one direction
+     */
+    static linkParent(items: FocusableItem[], parent: FocusableItem | Observable<FocusableItem>, direction: ArrowKeyDirection): void;
+    /**
+     * Double-links a set of focusable items vertically, possibly looping
+     */
+    static linkVertical(items: FocusableItem[], loop?: boolean): void;
+}
+
+declare function wrapObservable<T>(observable: Observable<T>, onSubscribe?: (observer: Observer<T>) => void, onUnsubscribe?: (observer: Observer<T>) => void): Observable<T>;
+
+declare class FocusService {
+    private renderer;
+    private _current;
+    private _unlistenFuncsMap;
+    constructor(renderer: Renderer2);
+    get current(): FocusableItem;
+    reset(first: FocusableItem): void;
+    registerContainer(el: HTMLElement): void;
+    moveTo(item: FocusableItem): void;
+    move(direction: ArrowKeyDirection): boolean;
+    activateCurrent(): boolean;
+    detachListeners(el: HTMLElement): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<FocusService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<FocusService>;
+}
+declare function clrFocusServiceFactory(existing: FocusService, renderer: Renderer2): FocusService;
+declare const FOCUS_SERVICE_PROVIDER: FactoryProvider;
+
+declare function uniqueIdFactory(): string;
+
+declare class ScrollingService {
+    private _document;
+    constructor(_document: any);
+    stopScrolling(): void;
+    resumeScrolling(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ScrollingService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ScrollingService>;
+}
+
+/**
+ * This is just a copy of CdkDrag so it can be used independent of the rest of the CdkDragDropModule.
+ */
+declare class CdkDragModule_CdkDrag extends CdkDrag {
+    /**
+     * The base class resolves its dependencies with `inject()`, so it takes no constructor arguments
+     * (`@angular/cdk` 22 declares it that way). The explicit constructor stays as a workaround for the
+     * Angular "ɵɵinvalidFactoryDep" error in storybook: https://github.com/storybookjs/storybook/issues/23534
+     */
+    constructor();
+    static ɵfac: i0.ɵɵFactoryDeclaration<CdkDragModule_CdkDrag, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<CdkDragModule_CdkDrag, "[cdkDrag]", never, {}, {}, never, never, false, never>;
+}
+/**
+ * This module allows us to avoid importing all of CdkDragDropModule which results in a smaller application bundle.
+ */
+declare class CdkDragModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<CdkDragModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<CdkDragModule, [typeof CdkDragModule_CdkDrag], never, [typeof CdkDragModule_CdkDrag]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<CdkDragModule>;
+}
+
+/**
+ * This is just a copy of CdkTrapFocus so it can be used independent of the rest of the A11yModule.
+ */
+declare class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
+    /**
+     * The base class resolves its dependencies with `inject()`, so it takes no constructor arguments
+     * (`@angular/cdk` 22 declares it that way). The explicit constructor stays as a workaround for the
+     * Angular "ɵɵinvalidFactoryDep" error in storybook: https://github.com/storybookjs/storybook/issues/23534
+     */
+    constructor();
+    static ɵfac: i0.ɵɵFactoryDeclaration<CdkTrapFocusModule_CdkTrapFocus, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<CdkTrapFocusModule_CdkTrapFocus, "[cdkTrapFocus]", never, {}, {}, never, never, false, never>;
+}
+/**
+ * This module allows us to avoid importing all of A11yModule which results in a smaller application bundle.
+ */
+declare class CdkTrapFocusModule {
+    static ɵfac: i0.ɵɵFactoryDeclaration<CdkTrapFocusModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<CdkTrapFocusModule, [typeof CdkTrapFocusModule_CdkTrapFocus], never, [typeof CdkTrapFocusModule_CdkTrapFocus]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<CdkTrapFocusModule>;
+}
+
+/**
+ * @description
+ *
+ * Developers should explicitly add this service to providers; it then can be injected
+ * into a constructor and used as a notifier for the `takeUntil` operator. This eliminates
+ * the need for boilerplates with subscriptions, and we don't need to implement the `OnDestroy`
+ * interface and teardown subscriptions there.
+ *
+ * This can be used as follows:
+ * ```ts
+ * @Component({
+ *   selector: 'clr-button-group',
+ *   templateUrl: 'button-group.html',
+ *   providers: [ClrDestroyService],
+ * })
+ * export class ClrButtonGroup {
+ *   constructor(public buttonGroupNewService: ButtonInGroupService, private destroy$: ClrDestroyService) {}
+ *
+ *   ngAfterContentInit() {
+ *     this.buttonGroupNewService.changes.pipe(takeUntil(this.destroy$)).subscribe(button => this.rearrangeButton(button));
+ *   }
+ * }
+ * ```
+ */
+declare class ClrDestroyService extends Subject<void> implements OnDestroy {
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDestroyService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ClrDestroyService>;
+}
+
+/**
+ * A host-bound attribute that yields to the application: a template value is kept, and once the
+ * application binds the attribute, its binding wins. A `null` binding from the first render cannot be detected.
+ */
+declare class ClrHostAttribute {
+    private readonly element;
+    private readonly name;
+    private readonly initial;
+    private authored;
+    private reported;
+    private yielded;
+    private serverRendered?;
+    constructor(element: Element | null | undefined, name: string);
+    /** The value as of the last {@link value} call, for a binding that depends on this one. */
+    get current(): string | null;
+    /** What the host binding should return, given what the component would report. */
+    value(computed: string | boolean | null): string | null;
+    /** On a server-rendered page, a value equal to the component's own came from the server. */
+    private isApplicationValue;
+    /** Searches the document, so asked only when a value equal to the component's is found. */
+    private isServerRendered;
+}
+
+type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6 | '1' | '2' | '3' | '4' | '5' | '6';
+
+type ThemeType = 'light' | 'dark';
+
+declare enum Keys {
+    ArrowLeft = "ArrowLeft",
+    ArrowUp = "ArrowUp",
+    ArrowRight = "ArrowRight",
+    ArrowDown = "ArrowDown",
+    Backspace = "Backspace",
+    Tab = "Tab",
+    Enter = "Enter",
+    Escape = "Escape",
+    Space = "Space",
+    Spacebar = " ",
+    Home = "Home",
+    End = "End",
+    PageDown = "PageDown",
+    PageUp = "PageUp"
+}
+
+/**
+ * A (clockwise) enumeration for positions around an element.
+ *
+ *     A    B    C
+ *  L  ----------- D
+ *     |         |
+ *     |         |
+ *  K  |         | E
+ *     |         |
+ *     |         |
+ *  J  ----------- F
+ *     I    H    G
+ *
+ * TOP_LEFT      = A
+ * TOP_CENTER    = B
+ * TOP_RIGHT     = C
+ * RIGHT_TOP     = D
+ * RIGHT_CENTER  = E
+ * RIGHT_BOTTOM  = F
+ * BOTTOM_RIGHT  = G
+ * BOTTOM_CENTER = H
+ * BOTTOM_LEFT   = I
+ * LEFT_BOTTOM   = J
+ * LEFT_CENTER   = K
+ * LEFT_TOP      = L
+ *
+ *
+ * Consumers tell us that they want something to display on the TOP_LEFT of the trigger and that they want the
+ * _content_ container to orient AT the bottom left.
+ * In order to calculate the position for the content I need to match up the origin/trigger ClrPosition with the
+ * content ClrPosition.
+ *
+ * Origin TOP_LEFT **AT** Content BOTTOM_LEFT.
+ *     -----------
+ *     |         |
+ *     |         |
+ *     | content |
+ *     |         |
+ *     |         |
+ *     -----------
+ *     |/
+ *     -----------
+ *     |         |
+ *     |         |
+ *     | trigger |
+ *     |         |
+ *     |         |
+ *     -----------
+ *
+ */
+declare enum ClrPosition {
+    TOP_LEFT = 0,
+    TOP_CENTER = 1,
+    TOP_RIGHT = 2,
+    RIGHT_TOP = 3,
+    RIGHT_CENTER = 4,
+    RIGHT_BOTTOM = 5,
+    BOTTOM_RIGHT = 6,
+    BOTTOM_CENTER = 7,
+    BOTTOM_LEFT = 8,
+    LEFT_BOTTOM = 9,
+    LEFT_CENTER = 10,
+    LEFT_TOP = 11
+}
+
+export { ArrowKeyDirection, BASIC_FOCUSABLE_ITEM_PROVIDER, BaseExpandableAnimation, BasicFocusableItem, CLR_CONTEXT_DEFAULT_MAX_ITEMS, CLR_CONTEXT_EDITING_HOST_SELECTOR, CLR_CONTEXT_HIDDEN_SELECTOR, CLR_CONTEXT_IGNORE_ATTRIBUTE, CLR_CONTEXT_IGNORE_SELECTOR, CLR_CONTEXT_REDACT_ATTRIBUTE, CLR_CONTEXT_REDACT_SELECTOR, CLR_CONTEXT_WITHHELD_SELECTOR, CLR_ELEMENT_CONTEXT_PROPERTY, CLR_ELEMENT_MUTATOR_PROPERTY, CdkDragModule, CdkDragModule_CdkDrag, CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus, ClrCommonStringsService, ClrDestroyService, ClrExpandableAnimation, ClrExpandableAnimationDirective, ClrExpandableAnimationModule, ClrFocusOnViewInit, ClrFocusOnViewInitModule, ClrHostAttribute, ClrHostWrappingModule, ClrKeyFocus, ClrKeyFocusItem, ClrKeyFocusModule, ClrOutsideClickModule, ClrPosition, ClrRovingTabindex, ClrStandaloneCdkTrapFocus, ClrTemplateRefModule, DATEPICKER_ENABLE_BREAKPOINT, DomAdapter, EXPANDABLE_ANIMATION_DIRECTIVES, EXTRA_LARGE_BREAKPOINT, EmptyAnchor, FOCUS_ON_VIEW_INIT, FOCUS_ON_VIEW_INIT_DIRECTIVES, FOCUS_SERVICE_PROVIDER, FocusService, FocusableItem, HostWrapper, Keys, LARGE_BREAKPOINT, Linkers, MEDIUM_BREAKPOINT, MOCK_DOM_ADAPTER_PROVIDER, MockDomAdapter, MockFocusableItem, OUSTIDE_CLICK_DIRECTIVES, OutsideClick, SMALL_BREAKPOINT, ScrollingService, TemplateRefContainer, animateHeight, assertNever, clrFocusServiceFactory, clrHasRequiredValidator, collapse, commonStringsDefault, contextText, customFocusableItemProvider, defaultAnimationTiming, defaultExpandAnimation, expandHeight, fade, fadeSlide, isBooleanAttributeSet, isKeyEitherLetterOrNumber, measureHeight, noopAnimations, normalizeContextText, preventArrowKeyScroll, publishElementContext, publishElementMutator, slide, triggerAllFormControlValidation, uniqueIdFactory, usableSelectors, wrapObservable };
+export type { ClrAnimationAnimateMetadata, ClrAnimationMetadata, ClrAnimationOptions, ClrAnimationReferenceMetadata, ClrAnimationStateMetadata, ClrAnimationStyleMetadata, ClrAnimationStyles, ClrAnimationTransitionMetadata, ClrAnimationTriggerMetadata, ClrCommonStrings, ClrComponentContext, ClrContextCategory, ClrContextSnapshotOptions, ClrElementContextCallback, ClrElementMutation, ClrElementMutator, ClrPublishedContext, HeadingLevel, ThemeType };
