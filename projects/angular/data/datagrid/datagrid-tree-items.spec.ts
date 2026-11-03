@@ -359,8 +359,10 @@ export default function (): void {
         const indent = (index: number) => content(index).getBoundingClientRect().left;
         expect(indent(1) - indent(0)).toBeGreaterThan(0);
         expect(getComputedStyle(cellOf(0, /^a$/)).paddingLeft).toBe(getComputedStyle(cellOf(1, /^a1$/)).paddingLeft);
-        // The toggle sits in the indentation, before the content.
-        expect(toggleButton(0).getBoundingClientRect().right).toBeLessThanOrEqual(indent(0) + 0.5);
+        // The toggle sits before the text, in the content.
+        const text = rows()[0].querySelector<HTMLElement>('.datagrid-tree-cell-text').getBoundingClientRect();
+        expect(toggleButton(0).getBoundingClientRect().left).toBeGreaterThanOrEqual(indent(0) - 0.5);
+        expect(toggleButton(0).getBoundingClientRect().right).toBeLessThanOrEqual(text.left + 0.5);
       });
 
       it('shows the rows of items loading at the end, which have no item', function () {

@@ -267,6 +267,9 @@
   // there is, deeper levels a larger one, so the hierarchy still shows.
   .datagrid .datagrid-cell.datagrid-tree-cell {
     overflow: hidden;
+    // The toggle is in the flow, so the cell is padded to fit it within the height of a row.
+    padding-top: density.$clr-base-vertical-offset-s;
+    padding-bottom: density.$clr-base-vertical-offset-s;
   }
 
   .datagrid-tree-cell-content {
@@ -276,14 +279,36 @@
     $indent: calc(#{$toggle-size} + #{density.$clr-base-gap-s});
     $level: var(--clr-datagrid-tree-level, 0);
 
-    position: relative;
-    // Percentages are of the cell's content width; the size of a toggle of it is kept for the text.
+    display: flex;
+    align-items: center;
+    gap: density.$clr-base-gap-s;
+    // The indentation of the tree, less the place of the toggle, which is in the content now. Percentages
+    // are of the cell's content width; the size of a toggle of it is kept for the text.
     margin-left: max(
       0px,
-      min(calc((#{$level} + 1) * #{$indent}), calc((100% - #{$toggle-size}) * (#{$level} + 1) / (#{$level} + 2)))
+      min(calc(#{$level} * #{$indent}), calc((100% - #{$toggle-size}) * (#{$level} + 1) / (#{$level} + 2) - #{$indent}))
     );
     // The indentation leaves less room, so a long word breaks rather than being cut off by the cell.
     overflow-wrap: anywhere;
+
+    // A row without children has no toggle: its text keeps the place of one.
+    > .datagrid-tree-cell-text:first-child {
+      margin-left: $indent;
+    }
+  }
+
+  .datagrid-tree-cell-text {
+    // The vertical padding of the toggle, so the text of a row without children lines up with the rows
+    // that have one.
+    $padding: calc(
+      (#{datagrid-variables.$clr-datagrid-tree-toggle-size} - #{datagrid-variables.$clr-datagrid-icon-size}) / 2
+    );
+
+    padding-top: $padding;
+    padding-bottom: $padding;
+    // Shrinks below its content, so the overflow ellipsis cuts it.
+    flex: 1 1 auto;
+    min-width: 0;
   }
 
   .datagrid .datagrid-tree-toggle {
@@ -292,12 +317,8 @@
       $height: datagrid-variables.$clr-datagrid-tree-toggle-size,
       $columnWidth: datagrid-variables.$clr-datagrid-tree-toggle-size
     );
-    // A square of the toggle size, centred on the first line of the text like the other row
-    // controls. The button inherits the font of the text (normalize), which measures its line.
-    position: absolute;
-    top: 0.5lh;
-    right: calc(100% + #{density.$clr-base-gap-s});
-    translate: 0 -50%;
+
+    flex: none;
     // Centred rather than placed by the padding: the compact density pulls up the icons of a cell.
     align-items: center;
     justify-content: center;
@@ -1107,6 +1128,12 @@
   .datagrid-compact {
     // The tree geometry of the compact density.
     --clr-datagrid-tree-toggle-size: #{mixins.baselinePx(20)};
+
+    // The smaller toggle and its padding fit in the height of a compact row.
+    .datagrid .datagrid-cell.datagrid-tree-cell {
+      padding-top: tokens.$cds-global-space-2;
+      padding-bottom: tokens.$cds-global-space-2;
+    }
 
     .datagrid {
       margin-top: datagrid-variables.$clr-datagrid-compact-margin-top;
