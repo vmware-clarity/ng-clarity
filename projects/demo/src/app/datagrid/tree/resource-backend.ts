@@ -44,9 +44,17 @@ export class ResourceBackend {
   page(state: ClrDatagridStateInterface): Observable<{ items: Resource[]; total: number }> {
     // `from` is -1 until the datagrid knows the total, so the page number is the reliable input.
     const size = state.page?.size || 10;
-    const from = ((state.page?.current || 1) - 1) * size;
-    const roots = this.sorted(state.sort);
-    return this.respond({ items: roots.slice(from, from + size), total: roots.length });
+    return this.range(((state.page?.current || 1) - 1) * size, size, state.sort);
+  }
+
+  /** `count` roots from `from`, as a virtual scroll asks for them. */
+  range(
+    from: number,
+    count: number,
+    sort?: ClrDatagridStateInterface['sort']
+  ): Observable<{ items: Resource[]; total: number }> {
+    const roots = this.sorted(sort);
+    return this.respond({ items: roots.slice(from, from + count), total: roots.length });
   }
 
   children(parent: Resource): Observable<Resource[]> {
