@@ -1,0 +1,32 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+// Usage: ../stack-view/_stack-view.clarity.scss
+$clr-stack-view-border-width: var(--clr-stack-view-border-width) !default;
+$clr-stack-view-border-radius: var(--clr-stack-view-border-radius) !default;
+$clr-stack-view-border-color: var(--clr-stack-view-border-color) !default;
+// top-left-border-color of changed stack view row
+$clr-stack-block-changed-border-top-color: var(--clr-stack-block-changed-border-top-color) !default;
+
+// Stack view title text color
+$clr-stack-view-title-color: var(--clr-stack-view-title-color) !default;
+
+// non expandable row background and text/icon colors
+$clr-stack-view-row-color: var(--clr-stack-view-row-color) !default;
+$clr-stack-view-row-bg-color: var(--clr-stack-view-row-bg-color) !default;
+
+// expandable row background and text/icon colors
+$clr-stack-view-expandable-row-color: var(--clr-stack-view-expandable-row-color) !default;
+$clr-stack-view-expandable-row-bg-color: var(--clr-stack-view-expandable-row-bg-color) !default;
+$clr-stack-view-expandable-row-hover: var(--clr-stack-view-expandable-row-hover) !default;
+$clr-stack-view-expandable-row-bg-hover: var(--clr-stack-view-expandable-row-bg-hover) !default;
+$clr-stack-view-expandable-row-active: var(--clr-stack-view-expandable-row-active) !default;
+$clr-stack-view-expandable-row-bg-active: var(--clr-stack-view-expandable-row-bg-active) !default;
+$clr-stack-view-expanded-row-color: var(--clr-stack-view-expanded-row-color) !default;
+$clr-stack-view-expanded-row-bg-color: var(--clr-stack-view-expanded-row-bg-color) !default;
+$clr-stack-view-expanded-row-bg-color-hover: var(--clr-stack-view-expanded-row-bg-color-hover) !default;
+$clr-stack-view-expanded-row-bg-color-active: var(--clr-stack-view-expanded-row-bg-color-active) !default;

@@ -1,0 +1,60 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../tokens/variables.tokens' as tokens;
+@use '../../mixins';
+
+// This is a performance optimization that aliases the token to a "minified" value to reduce overall bundle size.
+@include mixins.root-or-host() {
+  &,
+  [clr-density] {
+    --δ1: #{tokens.$cds-global-layout-space-xxxs};
+    --δ2: #{tokens.$cds-global-layout-space-xxs};
+    --δ3: #{tokens.$cds-global-layout-space-xs};
+    --δ4: #{tokens.$cds-global-layout-space-sm};
+    --δ5: #{tokens.$cds-global-layout-space-md};
+    --δ6: #{tokens.$cds-global-layout-space-lg};
+    --δ7: #{tokens.$cds-global-layout-space-xl};
+    --δ8: #{tokens.$cds-global-layout-space-xxl};
+    --δ9: #{tokens.$cds-global-layout-space-xxxl};
+  }
+}
+
+$δ1: var(--δ1);
+$δ2: var(--δ2);
+$δ3: var(--δ3);
+$δ4: var(--δ4);
+$δ5: var(--δ5);
+$δ6: var(--δ6);
+$δ7: var(--δ7);
+$δ8: var(--δ8);
+$δ9: var(--δ9);
+
+// selectors one location to make it easier to test for shorthand optimizations
+// this is also helpful for tools like AMP that require data-* prefix on all attrs
+$layout: 'cds-layout';
+$horizontal: 'horizontal';
+$vertical: 'vertical';
+$grid: 'grid';
+$gap: 'gap';
+$align: 'align';
+$top: 'top';
+$bottom: 'bottom';
+$left: 'left';
+$right: 'right';
+$center: 'center';
+$stretch: 'stretch';
+$shrink: 'shrink';
+$fill: 'fill';
+$cols: 'cols';
+$rows: 'rows';
+$col: 'col';
+$row: 'row';
+$vertical-center: 'vertical-center';
+$horizontal-center: 'horizontal-center';
+$vertical-stretch: 'vertical-stretch';
+$horizontal-stretch: 'horizontal-stretch';
