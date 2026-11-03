@@ -280,7 +280,7 @@
     $level: var(--clr-datagrid-tree-level, 0);
 
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: density.$clr-base-gap-s;
     // The indentation of the tree, less the place of the toggle, which is in the content now. Percentages
     // are of the cell's content width; the size of a toggle of it is kept for the text.
