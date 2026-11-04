@@ -64,7 +64,6 @@ import { ClrModalModule, ClrSpinnerModule, ClrStackBlock, ClrStackViewModule } f
   imports: [FormsModule, ClrStackViewModule, ClrModalModule, ClrSpinnerModule],
 })
 export class ExampleComponent {
-
   @ViewChild('lazyBlock', { static: true }) lazyBlock!: ClrStackBlock;
 
   editModal = false;
