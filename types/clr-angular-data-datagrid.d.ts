@@ -1,12 +1,12 @@
 import * as i0 from '@angular/core';
 import { TemplateRef, OnDestroy, OnInit, OnChanges, EventEmitter, ElementRef, ViewContainerRef, ChangeDetectorRef, SimpleChanges, DoCheck, IterableDiffers, TrackByFunction, QueryList, AfterContentInit, AfterViewInit, Renderer2, NgZone, EnvironmentInjector, Injector, AfterViewChecked, EmbeddedViewRef, Type } from '@angular/core';
-import * as i41 from '@clr/angular/utils';
+import * as i44 from '@clr/angular/utils';
 import { ClrCommonStringsService, IfExpandService, ClrLoadingState, ClrExpandableAnimationDirective, FocusableItem, DomAdapter, WillyWonka, OompaLoompa } from '@clr/angular/utils';
 import { Observable, BehaviorSubject, Subject, ReplaySubject } from 'rxjs';
 import { ModalStackService } from '@clr/angular/modal';
 import * as i1 from '@clr/angular/popover/common';
 import { ClrPopoverPosition, ClrPopoverService, ClrPopoverType } from '@clr/angular/popover/common';
-import * as i40 from '@angular/common';
+import * as i43 from '@angular/common';
 import { NgForOfContext } from '@angular/common';
 import * as _clr_angular_data_datagrid from '@clr/angular/data/datagrid';
 import { ClrSignpost } from '@clr/angular/popover/signpost';
@@ -14,18 +14,18 @@ import { Directionality } from '@angular/cdk/bidi';
 import { ListRange } from '@angular/cdk/collections';
 import { CdkVirtualForOfContext, ScrollDispatcher, ViewportRuler, CdkVirtualForOf, CdkFixedSizeVirtualScroll } from '@angular/cdk/scrolling';
 import * as _angular_cdk_overlay from '@angular/cdk/overlay';
-import * as i51 from '@clr/angular/popover/dropdown';
+import * as i54 from '@clr/angular/popover/dropdown';
 import { ClrDropdown, DropdownFocusHandler, RootDropdownService, ClrDropdownItem } from '@clr/angular/popover/dropdown';
 import { ClrControlLabel } from '@clr/angular/forms/common';
-import * as i42 from '@clr/angular/icon';
-import * as i43 from '@clr/angular/forms/input';
-import * as i44 from '@clr/angular/forms/radio';
-import * as i45 from '@clr/angular/forms/checkbox';
-import * as i46 from '@clr/angular/forms/number-input';
-import * as i47 from '@clr/angular/forms/select';
-import * as i48 from '@angular/forms';
+import * as i45 from '@clr/angular/icon';
+import * as i46 from '@clr/angular/forms/input';
+import * as i47 from '@clr/angular/forms/radio';
+import * as i48 from '@clr/angular/forms/checkbox';
+import * as i49 from '@clr/angular/forms/number-input';
+import * as i50 from '@clr/angular/forms/select';
+import * as i51 from '@angular/forms';
 import { ControlValueAccessor } from '@angular/forms';
-import * as i49 from '@clr/angular/progress/spinner';
+import * as i52 from '@clr/angular/progress/spinner';
 
 /**
  * Enumeration representing the sorting order of a datagrid column. It is a constant Enum,
@@ -387,6 +387,7 @@ declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrD
     private subscriptions;
     private _showSeparator;
     private _pinned;
+    private tree;
     constructor(el: ElementRef<HTMLElement>, _sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef, detailService: DetailService, changeDetectorRef: ChangeDetectorRef, commonStrings: ClrCommonStringsService, columnsService: ColumnsService, columnState: BehaviorSubject<ColumnState>);
     get isHidden(): boolean;
     /**
@@ -404,6 +405,13 @@ declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrD
      */
     get pinned(): boolean;
     set pinned(value: boolean);
+    /**
+     * In a tree datagrid, puts the expand toggle and the indentation in the cells of this column, and
+     * keeps them there when the column is moved or pinned. Several columns can have it; without any,
+     * the first column does.
+     */
+    get treeToggle(): boolean;
+    set treeToggle(value: boolean);
     get colType(): "string" | "number";
     set colType(value: 'string' | 'number');
     get field(): string;
@@ -456,9 +464,10 @@ declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrD
     private listenForSortingChanges;
     private setupDefaultFilter;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumn<any>, [null, null, null, null, null, null, null, null, { optional: true; }]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumn<any>, "clr-dg-column", never, { "filterStringPlaceholder": { "alias": "clrFilterStringPlaceholder"; "required": false; }; "filterNumberMaxPlaceholder": { "alias": "clrFilterNumberMaxPlaceholder"; "required": false; }; "filterNumberMinPlaceholder": { "alias": "clrFilterNumberMinPlaceholder"; "required": false; }; "disableUnsort": { "alias": "clrDgDisableUnsort"; "required": false; }; "pinnable": { "alias": "clrDgPinnable"; "required": false; }; "pinned": { "alias": "clrDgPinned"; "required": false; }; "colType": { "alias": "clrDgColType"; "required": false; }; "field": { "alias": "clrDgField"; "required": false; }; "sortBy": { "alias": "clrDgSortBy"; "required": false; }; "sortOrder": { "alias": "clrDgSortOrder"; "required": false; }; "updateFilterValue": { "alias": "clrFilterValue"; "required": false; }; }, { "sortOrderChange": "clrDgSortOrderChange"; "pinnedChange": "clrDgPinnedChange"; "filterValueChange": "clrFilterValueChange"; }, ["projectedFilter"], ["clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter", "*", "clr-dg-column-actions"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumn<any>, "clr-dg-column", never, { "filterStringPlaceholder": { "alias": "clrFilterStringPlaceholder"; "required": false; }; "filterNumberMaxPlaceholder": { "alias": "clrFilterNumberMaxPlaceholder"; "required": false; }; "filterNumberMinPlaceholder": { "alias": "clrFilterNumberMinPlaceholder"; "required": false; }; "disableUnsort": { "alias": "clrDgDisableUnsort"; "required": false; }; "pinnable": { "alias": "clrDgPinnable"; "required": false; }; "pinned": { "alias": "clrDgPinned"; "required": false; }; "treeToggle": { "alias": "clrDgTreeToggle"; "required": false; }; "colType": { "alias": "clrDgColType"; "required": false; }; "field": { "alias": "clrDgField"; "required": false; }; "sortBy": { "alias": "clrDgSortBy"; "required": false; }; "sortOrder": { "alias": "clrDgSortOrder"; "required": false; }; "updateFilterValue": { "alias": "clrFilterValue"; "required": false; }; }, { "sortOrderChange": "clrDgSortOrderChange"; "pinnedChange": "clrDgPinnedChange"; "filterValueChange": "clrFilterValueChange"; }, ["projectedFilter"], ["clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter", "*", "clr-dg-column-actions"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     static ngAcceptInputType_pinnable: unknown;
     static ngAcceptInputType_pinned: unknown;
+    static ngAcceptInputType_treeToggle: unknown;
 }
 
 type ClrDatagridItemsIdentityFunction<T> = (item: T) => any;
@@ -577,6 +586,54 @@ declare class ClrDatagridPlaceholder<T = any> {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridPlaceholder<any>, "clr-dg-placeholder", never, {}, {}, never, ["*"], false, never>;
 }
 
+/**
+ * A row of a tree datagrid, with its place in the tree. Nodes are kept by the identity of their
+ * item across refreshes and pages, so their state outlives the objects that come from the server.
+ */
+declare class DatagridTreeNode<T> {
+    item: T;
+    parent: DatagridTreeNode<T> | null;
+    level: number;
+    expanded: boolean;
+    /** `null` until the children are fetched, and again once they are reloaded. */
+    children: DatagridTreeNode<T>[] | null;
+    /** Position among its siblings on display, 0-based. */
+    index: number;
+    /** `false` when the row says with `[clrDgTreeExpandable]` that it has no children. */
+    mayHaveChildren: boolean;
+    /** The request for the children in flight, if any. A result is applied only for this request. */
+    request: object | null;
+    /** The row says with `[clrDgSelectable]="false"` that it can't be selected; kept while it is hidden. */
+    locked: boolean;
+    /** Expanded or collapsed by expand all or collapse all while its row was not shown: not reported yet. */
+    unseen: boolean;
+    /** Selected along with its parent before its row said whether it can be selected. */
+    selectedWithParent: boolean;
+    constructor(item: T, parent: DatagridTreeNode<T> | null, level: number);
+    get loading(): boolean;
+    /** Children that came back empty make a leaf. */
+    get expandable(): boolean;
+    /** The node and its loaded descendants, depth-first. */
+    descendants(): DatagridTreeNode<T>[];
+}
+
+/**
+ * What the cells of a tree row render: the node of the row, the cells that carry the indentation and
+ * the expand toggle, and the cell that names the row on its toggles.
+ */
+interface DatagridTreeRowCells<T = unknown> {
+    readonly node: DatagridTreeNode<T>;
+    readonly toggleCells: ReadonlySet<ClrDatagridCell>;
+    readonly labelCell: ClrDatagridCell | undefined;
+}
+/**
+ * What a cell needs from its row to render the tree toggle.
+ */
+interface DatagridTreeRow {
+    /** `null` while the row has no tree node, like the rows of items still loading. */
+    readonly _tree: DatagridTreeRowCells | null;
+}
+
 declare class ClrDatagridCell implements OnInit {
     private vcr;
     /*********
@@ -588,9 +645,29 @@ declare class ClrDatagridCell implements OnInit {
      *
      */
     signpost: QueryList<ClrSignpost>;
+    /**
+     * Set by the row on its cells when the datagrid renders a tree; `null` otherwise.
+     */
+    _treeRow: DatagridTreeRow | null;
     private wrappedInjector;
+    private el;
     constructor(vcr: ViewContainerRef);
+    /**
+     * The id of the cell, by which the toggles of a tree row are named. Given only to the cells that
+     * need one, and an id the app set is kept.
+     */
+    get _treeId(): string;
     get _view(): any;
+    /**
+     * The tree node of the row, on the cells that carry the indentation and the toggle.
+     */
+    protected get treeNode(): DatagridTreeNode<unknown> | undefined;
+    /**
+     * The ids of the cells that name the row on its toggle: the leading cell of the row, then this
+     * cell. The cell with the toggle still names the row when the leading cell has no text, like a
+     * drag handle.
+     */
+    protected get treeToggleLabelIds(): string;
     ngOnInit(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridCell, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridCell, "clr-dg-cell", never, {}, {}, ["signpost"], ["*"], false, never>;
@@ -658,33 +735,6 @@ declare class DisplayModeService implements OnDestroy {
     ngOnDestroy(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<DisplayModeService, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<DisplayModeService>;
-}
-
-declare class ExpandableRowsCount {
-    private detailService;
-    private expandableCount;
-    constructor(detailService: DetailService);
-    /**
-     * false means no rows with action
-     * check if details are on, and disable rows entirely
-     */
-    get hasExpandableRow(): boolean;
-    register(): void;
-    unregister(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ExpandableRowsCount, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<ExpandableRowsCount>;
-}
-
-declare class RowActionService {
-    private actionableCount;
-    /**
-     * false means no rows with action
-     */
-    get hasActionableRow(): boolean;
-    register(): void;
-    unregister(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<RowActionService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<RowActionService>;
 }
 
 declare class Selection<T = any> {
@@ -780,7 +830,220 @@ declare class Selection<T = any> {
     static ɵprov: i0.ɵɵInjectableDeclaration<Selection<any>>;
 }
 
-declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit {
+/**
+ * Fetches the children of `item`: an array, or a Promise or an Observable of one. Called when a row
+ * is expanded for the first time, and again after `ClrDatagrid.reloadTreeChildren()`. Only the first
+ * value of an Observable is used; one that ends without a value fails like a request that fails.
+ * The datagrid waits for the results outside the Angular zone and applies those of the same frame
+ * together, so many rows expanded at once don't run change detection once per result.
+ */
+type ClrDatagridTreeChildrenFunction<T> = (item: T) => T[] | null | undefined | PromiseLike<T[] | null | undefined> | Observable<T[] | null | undefined>;
+
+/**
+ * Holds the tree behind a tree datagrid and flattens it into the list of rows on display: every
+ * root, followed by the descendants of the expanded ones, depth-first. In a virtual scroll that
+ * loads its roots by range, the roots not loaded yet are rows without an item.
+ *
+ * The rest of the datagrid only ever sees that flat list, which is what keeps selection, actions,
+ * the detail pane, pagination and pinned columns working unchanged: to them a child row is a row
+ * like any other.
+ *
+ * Rows are told apart by `Items.identifyBy` (`clrDgItemsIdentityFn`), so identities have to be
+ * unique across the whole tree, and stable across refreshes for rows to stay open.
+ */
+declare class DatagridTreeService<T = any> implements OnDestroy {
+    private items;
+    private sort;
+    private selection;
+    private page;
+    /** Whether the datagrid renders a tree, while a tree directive is in it. */
+    readonly enabled: i0.WritableSignal<boolean>;
+    getChildren: ClrDatagridTreeChildrenFunction<T>;
+    /** Selecting a row also selects its loaded descendants, in multi-selection. */
+    cascadeSelection: boolean;
+    /** The columns marked with `clrDgTreeToggle`, which carry the toggle; the first column when none is. */
+    readonly toggleColumns: Set<BehaviorSubject<ColumnState>>;
+    /** Rows expanded or collapsed, by the user or because their children came back empty or failed. */
+    readonly expandedChange: Subject<{
+        item: T;
+        expanded: boolean;
+    }>;
+    /** By their place, which is empty for a root not loaded yet. */
+    private roots;
+    /**
+     * Every node by the identity of its item, also those of rows on other pages and of children
+     * whose parent was reloaded, so open rows and fetched children come back with their rows.
+     */
+    private nodes;
+    /**
+     * Set by `expandAll()`, so rows that come in later (children as they load, other pages)
+     * come in expanded too, like in the tree view. Cleared as soon as a row is collapsed.
+     */
+    private allExpanded;
+    private _change;
+    private requests;
+    private cancelled;
+    private subscriptions;
+    /** The indeterminate rows, for the selection they were found for. */
+    private indeterminate;
+    private zone;
+    private inBrowser;
+    constructor(items: Items<T>, sort: Sort<T>, selection: Selection<T>, page: Page);
+    get change(): Observable<T[]>;
+    /**
+     * With `cascadeSelection`, multi-selection works like in the tree view: a row's selection reaches
+     * all of its loaded descendants, and a parent is selected when all of its children are.
+     */
+    get cascading(): boolean;
+    /**
+     * Applies the inputs of the directive that renders the tree, all at once, so the roots are built
+     * with the final loader.
+     */
+    configure(roots: T[], getChildren: ClrDatagridTreeChildrenFunction<T>, cascadeSelection: boolean): void;
+    setRoots(items: T[]): void;
+    identify(item: T): any;
+    /** The node of `item`, also when its row is on another page or a reload of its parent took it away. */
+    nodeFor(item: T): DatagridTreeNode<T> | undefined;
+    /** Expands or collapses the row of `node`, and reports it unless the app itself asked for it. */
+    setExpanded(node: DatagridTreeNode<T>, expanded: boolean, report?: boolean): void;
+    /**
+     * Called by a row once all its inputs are set, with what they say about its item: whether it can
+     * have children, whether it can be selected, and whether it is expanded, when that input changed.
+     * A row the virtual scroll reuses gets its new item before its other inputs, which still hold the
+     * values of the previous item, so the row waits for all of them.
+     */
+    rowDeclared(item: T, { expandable, locked, expanded }: {
+        expandable: boolean;
+        locked: boolean;
+        expanded?: boolean;
+    }): void;
+    /**
+     * Expands every row. Rows that come in later (children as they load, other pages) come in
+     * expanded too, until a row is collapsed. Only the rows in `rendered` are reported and fetch their
+     * children now; the others do once their row is rendered.
+     */
+    expandAll(rendered: T[]): void;
+    /**
+     * Collapses every row, also those on other pages. Only the rows in `rendered` are reported now;
+     * the others are once their row is rendered.
+     */
+    collapseAll(rendered: T[]): void;
+    /**
+     * Forgets the loaded children of `item`, or of the whole tree, so they are fetched again the next
+     * time they are needed. Open rows fetch right away, from the top, so rows under a collapsed
+     * parent wait until the parent is opened.
+     */
+    reload(item?: T): void;
+    /**
+     * Selects or deselects `items` with all their loaded descendants, then settles their ancestors:
+     * a parent is selected only when all of its children are. Locked items keep their state.
+     */
+    setSelected(items: T[], selected: boolean): void;
+    /**
+     * The header checkbox: selects every row of the page with its loaded descendants, or clears them
+     * when all the displayed rows already are.
+     */
+    toggleAll(): void;
+    /**
+     * The position of a row among its siblings, for `aria-posinset` and `aria-setsize`. Roots count
+     * across pages, so screen readers hear "3 of 23", not "3 of 10". Read on every check, as the total
+     * comes in after the roots.
+     */
+    posInSet(node: DatagridTreeNode<T>): number;
+    setSize(node: DatagridTreeNode<T>): number;
+    /** A row that is not selected itself but has a selected descendant. */
+    isIndeterminate(item: T): boolean;
+    ngOnDestroy(): void;
+    /**
+     * An item that was selected along with its parent but can't be selected leaves the selection,
+     * after the check in progress.
+     */
+    private unselectIfLocked;
+    /**
+     * Says whether the row of `node` can be expanded. One that can still stops offering the toggle
+     * when its children come back empty.
+     */
+    private setExpandable;
+    private toNode;
+    private loadedRoots;
+    /**
+     * Fetches the children of the open rows among `nodes`, once they are in the tree: a loader that
+     * returns right away settles the selection of their ancestors.
+     */
+    private loadOpen;
+    /**
+     * Expands or collapses a row that is not shown, which reports it once it is. A second change undoes
+     * the first, which leaves nothing to report.
+     */
+    private setUnseen;
+    /**
+     * Reports whether a row is expanded after the check of its row in progress, so that a two-way
+     * binding doesn't change while it is checked, unless the row changed again by then.
+     */
+    private reportLater;
+    /** The nodes of the current roots and their loaded descendants. */
+    private treeNodes;
+    private cancel;
+    /**
+     * Drops the loaded descendants of `node`, and their requests in flight. Their nodes stay, so they
+     * come back open if they were.
+     */
+    private forget;
+    /** Asks the loader for the children of `node`: an array is set right away, the rest is awaited. */
+    private load;
+    /**
+     * Loaders run outside Angular in the browser, so that they and their results don't run change
+     * detection on their own: the results are applied together.
+     */
+    private outsideAngular;
+    /**
+     * Sets the children a loader returned. A failed request closes the row again, so it can be
+     * retried by opening it; the app hears of the error from its own loader. A result that came in
+     * before its request was cancelled, in the same frame, is dropped.
+     */
+    private applyResult;
+    private setChildren;
+    private expand;
+    private collapse;
+    /**
+     * Renders the rows on display: every root, followed by the descendants of the expanded ones,
+     * depth-first. Children are sorted by the column; roots keep their order, which is the server's.
+     * Numbers every node among its siblings on the way, for `aria-posinset`.
+     */
+    private update;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridTreeService<any>, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<DatagridTreeService<any>>;
+}
+
+declare class ExpandableRowsCount {
+    private detailService;
+    private tree?;
+    private expandableCount;
+    constructor(detailService: DetailService, tree?: DatagridTreeService);
+    /**
+     * false means no rows with action
+     * check if details are on, and disable rows entirely; a tree has no expandable rows
+     */
+    get hasExpandableRow(): boolean;
+    register(): void;
+    unregister(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ExpandableRowsCount, [null, { optional: true; }]>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ExpandableRowsCount>;
+}
+
+declare class RowActionService {
+    private actionableCount;
+    /**
+     * false means no rows with action
+     */
+    get hasActionableRow(): boolean;
+    register(): void;
+    unregister(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<RowActionService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<RowActionService>;
+}
+
+declare class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContentInit, AfterViewInit {
     selection: Selection<T>;
     rowActionService: RowActionService;
     globalExpandable: ExpandableRowsCount;
@@ -798,6 +1061,12 @@ declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit
     detailDisabled: boolean;
     detailHidden: boolean;
     skeletonLoading: boolean;
+    /**
+     * In a tree, whether the row can have children, like `clrExpandable` on a tree node, so that rows
+     * known to have none don't offer the toggle. A row also stops offering it when its children come
+     * back empty.
+     */
+    treeExpandable: boolean;
     id: string;
     radioId: string;
     checkboxId: string;
@@ -825,12 +1094,15 @@ declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit
     _scrollableCells: ViewContainerRef;
     _calculatedCells: ViewContainerRef;
     _fixedCellTemplate: TemplateRef<any>;
+    protected readonly tree: DatagridTreeService<T>;
     private _item;
     private _selected;
     private _detailOpenLabel;
     private _detailCloseLabel;
     private _rowSelectionLabel;
     private wrappedInjector;
+    /** What `_tree` worked out in this check; `undefined` until it is read. */
+    private treeCells;
     private subscriptions;
     /**
      * The placeholder cells we create from `fixedCellTemplate` for the calculate pass. Unlike the
@@ -840,6 +1112,7 @@ declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit
      */
     private fixedCellViews;
     private _selectable;
+    private _treeExpanded;
     constructor(selection: Selection<T>, rowActionService: RowActionService, globalExpandable: ExpandableRowsCount, expand: DatagridIfExpandService, detailService: DetailService, displayMode: DisplayModeService, vcr: ViewContainerRef, renderer: Renderer2, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, items: Items, columnsService: ColumnsService, document: any);
     /**
      * Model of the row, to use for selection
@@ -853,6 +1126,9 @@ declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit
      */
     get selected(): boolean | string;
     set selected(value: boolean | string);
+    /**
+     * Whether the row is expanded: its detail row, or in a tree, its children.
+     */
     get expanded(): boolean | string;
     set expanded(value: boolean | string);
     get clrDgDetailOpenLabel(): string;
@@ -863,8 +1139,22 @@ declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit
     set clrDgRowSelectionLabel(label: string);
     get _view(): any;
     get identifyBy(): _clr_angular_data_datagrid.ClrDatagridItemsIdentityFunction<any>;
+    /**
+     * What the cells of this row render of the tree, when the datagrid renders one. The row and its
+     * cells read it many times per check, so it is worked out at the first read of each check.
+     *
+     * The cells read it while they are checked, which can be before the row's own content hooks run,
+     * when the cells are rendered in a loop inside the row; the row's `ngDoCheck` runs before them.
+     */
+    get _tree(): DatagridTreeRowCells<T> | null;
+    /**
+     * Some, but not all, of this row's descendants are selected.
+     */
+    protected get treeIndeterminate(): boolean;
     openDetails(event: MouseEvent, detailButton: HTMLButtonElement): void;
+    ngOnChanges(changes: SimpleChanges): void;
     ngOnInit(): void;
+    ngDoCheck(): void;
     ngAfterContentInit(): void;
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
@@ -889,9 +1179,24 @@ declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit
      * aligned with the header.
      */
     private insertCellViews;
+    /**
+     * Lets the cells of a tree row find out which of them carries the toggle. Rows of other
+     * datagrids leave their cells alone, so they pay nothing for trees.
+     */
+    private markTreeCell;
+    /**
+     * The cells that carry the indentation and the expand toggle are those of the toggle columns, so
+     * they move with their column when it is reordered or pinned. The toggle columns are the ones marked
+     * with `clrDgTreeToggle`, or the first visible column when none of them is visible. The cell that
+     * names the row is the first visible one as the user sees the row, so pinned cells come first: a
+     * toggle in a column like Status then reads "Expand Datacenter 1", not "Expand Running". Cells
+     * match columns by declaration index, as everywhere else in the datagrid.
+     */
+    private workOutTreeCells;
     private rangeSelect;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridRow<any>, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRow<any>, "clr-dg-row", never, { "detailDisabled": { "alias": "clrDgDetailDisabled"; "required": false; }; "detailHidden": { "alias": "clrDgDetailHidden"; "required": false; }; "skeletonLoading": { "alias": "clrDgSkeletonLoading"; "required": false; }; "item": { "alias": "clrDgItem"; "required": false; }; "clrDgSelectable": { "alias": "clrDgSelectable"; "required": false; }; "selected": { "alias": "clrDgSelected"; "required": false; }; "expanded": { "alias": "clrDgExpanded"; "required": false; }; "clrDgDetailOpenLabel": { "alias": "clrDgDetailOpenLabel"; "required": false; }; "clrDgDetailCloseLabel": { "alias": "clrDgDetailCloseLabel"; "required": false; }; "clrDgRowSelectionLabel": { "alias": "clrDgRowSelectionLabel"; "required": false; }; }, { "selectedChanged": "clrDgSelectedChange"; "expandedChange": "clrDgExpandedChange"; }, ["dgCells"], ["clr-dg-action-overflow", "clr-dg-cell", "clr-dg-row-detail"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRow<any>, "clr-dg-row", never, { "detailDisabled": { "alias": "clrDgDetailDisabled"; "required": false; }; "detailHidden": { "alias": "clrDgDetailHidden"; "required": false; }; "skeletonLoading": { "alias": "clrDgSkeletonLoading"; "required": false; }; "treeExpandable": { "alias": "clrDgTreeExpandable"; "required": false; }; "item": { "alias": "clrDgItem"; "required": false; }; "clrDgSelectable": { "alias": "clrDgSelectable"; "required": false; }; "selected": { "alias": "clrDgSelected"; "required": false; }; "expanded": { "alias": "clrDgExpanded"; "required": false; }; "clrDgDetailOpenLabel": { "alias": "clrDgDetailOpenLabel"; "required": false; }; "clrDgDetailCloseLabel": { "alias": "clrDgDetailCloseLabel"; "required": false; }; "clrDgRowSelectionLabel": { "alias": "clrDgRowSelectionLabel"; "required": false; }; }, { "selectedChanged": "clrDgSelectedChange"; "expandedChange": "clrDgExpandedChange"; }, ["dgCells"], ["clr-dg-action-overflow", "clr-dg-cell", "clr-dg-row-detail"], false, never>;
+    static ngAcceptInputType_treeExpandable: unknown;
 }
 
 interface ClrDatagridVirtualScrollRangeInterface<T> {
@@ -1122,12 +1427,14 @@ declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, O
     selectAllId: string;
     activeCellCoords: CellCoordinates;
     SELECTION_TYPE: typeof SelectionType;
+    protected readonly tree: DatagridTreeService<T>;
     private selectAllCheckbox;
     private rowControls;
     /**
      * Subscriptions to all the services and queries changes
      */
     private _subscriptions;
+    private focusToRestore;
     private _virtualScrollSubscriptions;
     /**
      * The placeholder columns we create from `fixedColumnTemplate` for the calculate pass. Unlike
@@ -1197,6 +1504,33 @@ declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, O
      * Public method to re-trigger the computation of displayed items manually
      */
     dataChanged(): void;
+    /**
+     * Fetches the children of `item` again, or of the whole tree when no item is given. Loaded
+     * children are kept while the roots are refreshed, so call this when their data changes too.
+     */
+    reloadTreeChildren(item?: T): void;
+    /**
+     * Expands every row of the tree and fetches the children of every level. The rows that come in
+     * afterwards, on any page, come in expanded too until a row is collapsed.
+     */
+    expandAllTreeRows(): void;
+    /**
+     * Collapses every row of the tree, on every page.
+     */
+    collapseAllTreeRows(): void;
+    /**
+     * The element in the datagrid that has the focus, if any.
+     *
+     * @internal
+     */
+    _focusedElement(): HTMLElement | null;
+    /**
+     * Whether no element has the focus, e.g. because the one that had it was taken out of the page.
+     *
+     * @internal
+     */
+    _focusLost(): boolean;
+    private restoreFocus;
     private destroyFixedColumnViews;
     private toggleVirtualScrollSubscriptions;
     /**
@@ -1660,6 +1994,209 @@ declare class ClrIfDetail implements OnInit, OnDestroy {
     private _createContextForwardProxy;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfDetail, never>;
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfDetail, "[clrIfDetail]", never, { "state": { "alias": "clrIfDetail"; "required": false; }; }, { "stateChange": "clrIfDetailChange"; }, never, never, false, never>;
+}
+
+/**
+ * The row and the cell that have the focus.
+ */
+interface FocusedCell<T> {
+    item: T;
+    /** Among the cells keyboard navigation goes through. */
+    cell: number;
+    /** Among the tabbable elements of the cell, when one of them has the focus rather than the cell. */
+    inner: number;
+}
+/**
+ * What both tree directives share: they hand their inputs to the tree service and render the flat
+ * list of rows it computes, each in its own way.
+ */
+declare abstract class DatagridTreeRenderer<T> implements OnChanges, DoCheck, OnDestroy {
+    protected tree: DatagridTreeService<T>;
+    protected datagrid: ClrDatagrid<T>;
+    private changeDetectorRef;
+    private differs;
+    private rootsDiffer;
+    private subscription;
+    abstract roots: T[];
+    abstract getChildren: ClrDatagridTreeChildrenFunction<T>;
+    abstract cascadeSelection: boolean;
+    constructor();
+    ngOnChanges(): void;
+    ngDoCheck(): void;
+    ngOnDestroy(): void;
+    /**
+     * The row of `item` if it is in `items`, or else its nearest ancestor that is: where the focus
+     * goes when a collapse or a reload takes the row away.
+     */
+    protected nearestShown(item: T, items: T[]): T | undefined;
+    /**
+     * Focuses a cell of the row of `item`, or its toggle when `cell` is not given, and the element of
+     * the cell at `inner` if there is one. The row has to be rendered.
+     */
+    protected focus(item: T, cell?: number, inner?: number): void;
+    /**
+     * When the row of `item`, which had the tab stop of the grid, is no longer shown, gives the tab
+     * stop to the toggle cell of the ancestor that is, without focusing it, or else back to the first
+     * cell. The rows have to be rendered.
+     */
+    protected moveTabStop(item: T, items: T[]): void;
+    /**
+     * Whether the focus is still in the grid, or was lost with a row the grid took away: otherwise the
+     * user has moved it elsewhere, and it stays there.
+     */
+    protected focusInGrid(): boolean;
+    protected rowOf(item: T): ClrDatagridRow<T> | undefined;
+    protected indexOf(items: T[], item: T): number;
+    private tabStopItem;
+    private focusedCell;
+    private cellOf;
+    private cells;
+    /**
+     * Renders the rows of `items`. `focus` is where the focus was in the rows before, if anywhere;
+     * otherwise `tabStop` is the item of the row that had the tab stop, if any.
+     */
+    protected abstract render(items: T[], focus: FocusedCell<T> | null, tabStop: T | undefined): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridTreeRenderer<any>, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridTreeRenderer<any>, never, never, {}, {}, never, never, true, never>;
+}
+
+/**
+ * Renders a tree as datagrid rows: the roots, and below every expanded row its children, indented.
+ *
+ * ```html
+ * <clr-dg-row *clrDgTreeItems="let item of roots; getChildren: getChildren" [clrDgItem]="item" [clrDgTreeExpandable]="item.childCount > 0">
+ * ```
+ *
+ * Like on a tree node, `[clrDgTreeExpandable]` on the row says whether it can be expanded; without it,
+ * every row offers the toggle until its children come back empty. `[(clrDgExpanded)]` on the row
+ * binds whether it is expanded.
+ *
+ * The roots are the current page, exactly like the items of a server-driven datagrid: their order
+ * and pagination go through `(clrDgRefresh)`, while children are sorted with the column comparator.
+ * Children are fetched the first time their parent is expanded, and kept, also while their parent is
+ * on another page, until `ClrDatagrid.reloadTreeChildren()`.
+ *
+ * Rows are told apart with `[clrDgItemsIdentityFn]`. Give the datagrid one that is unique across the
+ * tree and stable across refreshes: without it, a refresh that returns new objects closes every row
+ * and drops the loaded children and the selection.
+ */
+declare class ClrDatagridTreeItems<T> extends DatagridTreeRenderer<T> {
+    roots: T[];
+    getChildren: ClrDatagridTreeChildrenFunction<T>;
+    /**
+     * In multi-selection, selecting a row also selects its loaded descendants, and a parent is
+     * selected when all of its children are, like in the tree view. Descendants that are not loaded
+     * yet come in selected when they load.
+     */
+    cascadeSelection: boolean;
+    private iterableProxy;
+    constructor();
+    static ngTemplateContextGuard<T>(_dir: ClrDatagridTreeItems<T>, _ctx: unknown): _ctx is NgForOfContext<T>;
+    protected render(items: T[], focus: FocusedCell<T> | null, tabStop: T | undefined): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridTreeItems<any>, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridTreeItems<any>, "[clrDgTreeItems][clrDgTreeItemsOf]", never, { "roots": { "alias": "clrDgTreeItemsOf"; "required": false; }; "getChildren": { "alias": "clrDgTreeItemsGetChildren"; "required": false; }; "cascadeSelection": { "alias": "clrDgTreeItemsCascadeSelection"; "required": false; }; }, {}, never, never, false, never>;
+    static ngAcceptInputType_cascadeSelection: unknown;
+}
+
+/**
+ * The button that expands and collapses a tree row, in the cells of its toggle columns.
+ */
+declare class ClrDatagridTreeToggleButton implements OnDestroy {
+    node: DatagridTreeNode<unknown>;
+    /**
+     * The ids of the cells that name the row, separated by spaces.
+     */
+    labelIds: string;
+    protected commonStrings: ClrCommonStringsService;
+    protected actionId: string;
+    /**
+     * The cell of the button, from when the button first has the focus. By the time the button is
+     * destroyed, it can be out of the cell already.
+     */
+    private cell;
+    private tree;
+    private el;
+    /**
+     * The button goes away when the children of its row come back empty. If it took the focus with it,
+     * the cell takes the focus, so keyboard users don't land at the top of the page. The browser can
+     * take the button out of the page before it is destroyed, and then the focus has already gone to
+     * the body: blur doesn't tell that apart from the user leaving the button.
+     */
+    ngOnDestroy(): void;
+    protected onFocus(): void;
+    protected toggle(event: MouseEvent): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridTreeToggleButton, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridTreeToggleButton, "button[clrDgTreeToggleButton]", never, { "node": { "alias": "clrDgTreeToggleButton"; "required": true; }; "labelIds": { "alias": "labelIds"; "required": true; }; }, {}, never, never, false, never>;
+}
+
+/**
+ * Renders a tree in a virtual scroll datagrid: the virtual scroll renders the rows of the expanded
+ * tree, flattened, as if they were one long list.
+ *
+ * ```html
+ * <ng-template ClrVirtualScroll let-item [clrVirtualTreeOf]="roots" [clrVirtualTreeGetChildren]="getChildren">
+ *   <clr-dg-row [clrDgItem]="item">...</clr-dg-row>
+ * </ng-template>
+ * ```
+ *
+ * The roots can also be loaded by range, like the rows of `clrVirtualDataRange`: the datagrid
+ * reports the roots it renders, and the app gives it those it loads.
+ *
+ * ```html
+ * <ng-template
+ *   ClrVirtualScroll
+ *   let-item
+ *   [clrVirtualTreeDataRange]="rootsRange"
+ *   [clrVirtualTreeGetChildren]="getChildren"
+ *   (clrVirtualTreeRenderedRootsChange)="loadRoots($event)"
+ * >
+ *   <clr-dg-row [clrDgItem]="item" [clrDgSkeletonLoading]="!item">...</clr-dg-row>
+ * </ng-template>
+ * ```
+ */
+declare class ClrDatagridVirtualTree<T> extends DatagridTreeRenderer<T> {
+    roots: T[];
+    getChildren: ClrDatagridTreeChildrenFunction<T>;
+    /** Like `clrDgTreeItemsCascadeSelection`. */
+    cascadeSelection: boolean;
+    /**
+     * The range of roots the rendered rows belong to, for the app to load those it hasn't yet, when it
+     * gives the roots with `clrVirtualTreeDataRange`. The end is excluded.
+     */
+    renderedRootsChange: EventEmitter<ListRange>;
+    private virtualScroll;
+    private injector;
+    private ngZone;
+    /** The rows rendered last, to find where the focused or top row was. */
+    private shownItems;
+    private frame;
+    private renderedRoots;
+    /**
+     * The roots loaded by range: `total` roots, of which `data` starts at `skip`. The rows of the roots
+     * not loaded yet have no item. The roots loaded before are kept, so the expanded rows above keep
+     * their place, until the total changes.
+     */
+    set dataRange(range: ClrDatagridVirtualScrollRangeInterface<T>);
+    ngOnDestroy(): void;
+    /**
+     * The whole flat list is one data range, so the virtual scroll neither sorts nor pages it.
+     *
+     * The virtual scroll reuses its rows by position, so rows inserted or removed above the screen
+     * would shift what is on it, and the focus would stay on a row that now shows another item. So the
+     * focused row when it is on screen, or else the top row, keeps its place, and the focus moves with
+     * its item.
+     */
+    protected render(items: T[], focus: FocusedCell<T> | null, tabStop: T | undefined): void;
+    private rootsOf;
+    /**
+     * The place among the roots of the root of the row at `index`. The rows without an item are roots
+     * not loaded yet, so they follow the root of the closest row above that has one.
+     */
+    private rootAt;
+    private focusWhenRendered;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridVirtualTree<any>, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridVirtualTree<any>, "[ClrVirtualScroll][clrVirtualTreeOf],[clrVirtualScroll][clrVirtualTreeOf],[ClrVirtualScroll][clrVirtualTreeDataRange],[clrVirtualScroll][clrVirtualTreeDataRange]", never, { "roots": { "alias": "clrVirtualTreeOf"; "required": false; }; "getChildren": { "alias": "clrVirtualTreeGetChildren"; "required": false; }; "cascadeSelection": { "alias": "clrVirtualTreeCascadeSelection"; "required": false; }; "dataRange": { "alias": "clrVirtualTreeDataRange"; "required": false; }; }, { "renderedRootsChange": "clrVirtualTreeRenderedRootsChange"; }, never, never, false, never>;
+    static ngAcceptInputType_cascadeSelection: unknown;
 }
 
 /**
@@ -2205,9 +2742,9 @@ declare const CLR_DATAGRID_DIRECTIVES: Type<any>[];
 declare class ClrDatagridModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatagridModule, [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnAction, typeof ClrDatagridColumnActions, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof ActionableOompaLoompa, typeof DatagridWillyWonka, typeof ExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridColumnToggle, typeof ClrDatagridColumnToggleButton], [typeof i40.CommonModule, typeof i41.CdkDragModule, typeof i41.CdkTrapFocusModule, typeof i42.ClrIcon, typeof i43.ClrInputModule, typeof i44.ClrRadioModule, typeof i45.ClrCheckboxModule, typeof i46.ClrNumberInputModule, typeof i47.ClrSelectModule, typeof i48.FormsModule, typeof i41.ClrLoadingModule, typeof i41.ClrConditionalModule, typeof i41.ClrOutsideClickModule, typeof i41.ClrExpandableAnimationModule, typeof i49.ClrSpinnerModule, typeof i1.ClrPopoverModuleNext, typeof i51.ClrDropdownModule, typeof i41.ClrKeyFocusModule, typeof ClrDatagridSingleSelectionValueAccessor, typeof i41.ClrIfExpanded], [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnAction, typeof ClrDatagridColumnActions, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof ActionableOompaLoompa, typeof DatagridWillyWonka, typeof ExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridSingleSelectionValueAccessor, typeof i41.ClrIfExpanded]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatagridModule, [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnAction, typeof ClrDatagridColumnActions, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridTreeItems, typeof ClrDatagridVirtualTree, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof ActionableOompaLoompa, typeof DatagridWillyWonka, typeof ExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridColumnToggle, typeof ClrDatagridColumnToggleButton, typeof ClrDatagridTreeToggleButton], [typeof i43.CommonModule, typeof i44.CdkDragModule, typeof i44.CdkTrapFocusModule, typeof i45.ClrIcon, typeof i46.ClrInputModule, typeof i47.ClrRadioModule, typeof i48.ClrCheckboxModule, typeof i49.ClrNumberInputModule, typeof i50.ClrSelectModule, typeof i51.FormsModule, typeof i44.ClrLoadingModule, typeof i44.ClrConditionalModule, typeof i44.ClrOutsideClickModule, typeof i44.ClrExpandableAnimationModule, typeof i52.ClrSpinnerModule, typeof i1.ClrPopoverModuleNext, typeof i54.ClrDropdownModule, typeof i44.ClrKeyFocusModule, typeof ClrDatagridSingleSelectionValueAccessor, typeof i44.ClrIfExpanded], [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnAction, typeof ClrDatagridColumnActions, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridTreeItems, typeof ClrDatagridVirtualTree, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof ActionableOompaLoompa, typeof DatagridWillyWonka, typeof ExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridSingleSelectionValueAccessor, typeof i44.ClrIfExpanded]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrDatagridModule>;
 }
 
-export { ActionableOompaLoompa, CLR_DATAGRID_DIRECTIVES, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridAriaSortOrder, ClrDatagridCell, ClrDatagridColumn, ClrDatagridColumnAction, ClrDatagridColumnActions, ClrDatagridColumnSeparator, ClrDatagridColumnToggle, ClrDatagridColumnToggleButton, ClrDatagridDetail, ClrDatagridDetailBody, ClrDatagridDetailHeader, ClrDatagridFilter, ClrDatagridFooter, ClrDatagridHideableColumn, ClrDatagridItems, ClrDatagridModule, ClrDatagridPageSize, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridSelectionCellDirective, ClrDatagridSingleSelectionValueAccessor, ClrDatagridSortOrder, ClrDatagridVirtualScrollDirective, ClrIfDetail, DatagridCellRenderer, DatagridDetailRegisterer, DatagridHeaderRenderer, DatagridMainRenderer, DatagridNumericFilter, DatagridPropertyComparator, DatagridPropertyNumericFilter, DatagridPropertyStringFilter, DatagridRowDetailRenderer, DatagridRowRenderer, DatagridStringFilter, DatagridWillyWonka, ExpandableOompaLoompa, Selection, SelectionType, WrappedCell, WrappedColumn, WrappedRow, selectionTypeAttribute };
-export type { ClrDatagridComparatorInterface, ClrDatagridFilterInterface, ClrDatagridItemsIdentityFunction, ClrDatagridNumericFilterInterface, ClrDatagridStateInterface, ClrDatagridStringFilterInterface, ClrDatagridVirtualScrollRangeInterface };
+export { ActionableOompaLoompa, CLR_DATAGRID_DIRECTIVES, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridAriaSortOrder, ClrDatagridCell, ClrDatagridColumn, ClrDatagridColumnAction, ClrDatagridColumnActions, ClrDatagridColumnSeparator, ClrDatagridColumnToggle, ClrDatagridColumnToggleButton, ClrDatagridDetail, ClrDatagridDetailBody, ClrDatagridDetailHeader, ClrDatagridFilter, ClrDatagridFooter, ClrDatagridHideableColumn, ClrDatagridItems, ClrDatagridModule, ClrDatagridPageSize, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridSelectionCellDirective, ClrDatagridSingleSelectionValueAccessor, ClrDatagridSortOrder, ClrDatagridTreeItems, ClrDatagridTreeToggleButton, ClrDatagridVirtualScrollDirective, ClrDatagridVirtualTree, ClrIfDetail, DatagridCellRenderer, DatagridDetailRegisterer, DatagridHeaderRenderer, DatagridMainRenderer, DatagridNumericFilter, DatagridPropertyComparator, DatagridPropertyNumericFilter, DatagridPropertyStringFilter, DatagridRowDetailRenderer, DatagridRowRenderer, DatagridStringFilter, DatagridWillyWonka, ExpandableOompaLoompa, Selection, SelectionType, WrappedCell, WrappedColumn, WrappedRow, selectionTypeAttribute };
+export type { ClrDatagridComparatorInterface, ClrDatagridFilterInterface, ClrDatagridItemsIdentityFunction, ClrDatagridNumericFilterInterface, ClrDatagridStateInterface, ClrDatagridStringFilterInterface, ClrDatagridTreeChildrenFunction, ClrDatagridVirtualScrollRangeInterface };
