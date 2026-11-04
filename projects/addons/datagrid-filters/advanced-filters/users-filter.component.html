@@ -14,7 +14,7 @@
     <ng-content select="[filterField]"></ng-content>
   </div>
   <ng-content select="[filterActions]" ngProjectAs="[filterActions]"></ng-content>
-  <div class="user-filter-wrapper">
+  <div class="user-filter-wrapper filter-scroll-region">
     <div *ngIf="isLoading" class="loading-overlay">
       <div class="loading-content">
         <clr-spinner clrMedium>{{ filterStrings.loading }}</clr-spinner>

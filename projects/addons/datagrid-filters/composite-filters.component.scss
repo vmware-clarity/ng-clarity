@@ -19,6 +19,14 @@
   min-width: 0;
 }
 
+// Separates the predefined pills from the user-added ones.
+.filter-group-separator {
+  align-self: stretch;
+  width: var(--cds-alias-object-border-width-100);
+  margin-block: var(--clr-base-vertical-offset-2xs);
+  background: var(--cds-alias-object-border-color);
+}
+
 appfx-manage-filter {
   max-width: 100%;
 

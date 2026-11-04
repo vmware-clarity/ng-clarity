@@ -292,6 +292,20 @@ describe('CompositeFiltersComponent', () => {
     expect(document.activeElement).toBe(trigger);
     expect(document.querySelector('.filter-popover')).toBeNull();
   });
+  it('separates predefined pills from user-added pills', function (this: ThisTest) {
+    this.component.predefinedFilters = [stringProperty];
+    this.fixture.detectChanges();
+    const separator = () => this.fixture.nativeElement.querySelector('[data-test-id="filter-group-separator"]');
+    expect(separator()).toBeNull();
+
+    this.component.onFilterCriteriaChange(enumPropertyFilter);
+    this.fixture.detectChanges();
+    const element: HTMLElement = separator();
+    expect(element.getAttribute('role')).toBe('separator');
+    expect(element.previousElementSibling.tagName).toBe('APPFX-MANAGE-FILTER');
+    expect(element.nextElementSibling.textContent).toContain(enumProperty.displayName);
+  });
+
   it('displays property filters', function (this: ThisTest) {
     this.component.propertyFilters.push(stringPropertyFilter);
     this.component.propertyFilters.push(enumPropertyFilter);

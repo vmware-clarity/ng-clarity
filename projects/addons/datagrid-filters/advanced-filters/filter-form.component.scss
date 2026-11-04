@@ -31,6 +31,17 @@ form {
 
 // Projected editors and Clarity's generated control wrappers share the same layout.
 :host ::ng-deep {
+  // Projected content keeps its height; the form scrolls instead. Clarity buttons have
+  // overflow: hidden, so without this they collapse when the popover height is reached.
+  .form-max-height > * {
+    flex-shrink: 0;
+  }
+
+  // Editors with their own scroll region (e.g. the options list) shrink to fit the popover.
+  .form-max-height > .filter-scroll-region {
+    flex-shrink: 1;
+  }
+
   .filter-field-row {
     display: flex;
     align-items: center;

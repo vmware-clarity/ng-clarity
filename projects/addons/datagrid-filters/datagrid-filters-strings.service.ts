@@ -67,12 +67,12 @@ export class DatagridFiltersStrings {
   /**
    * Add new filter button label.
    */
-  readonly addNew: string = 'Add new';
+  readonly addNew: string = 'Add filter';
 
   /**
    * Add new filter button aria label.
    */
-  readonly addNewAriaLabel: string = 'Add new filter';
+  readonly addNewAriaLabel: string = 'Add filter';
 
   /**
    * Select filter label.

@@ -14,7 +14,7 @@
     <ng-content select="[filterField]"></ng-content>
   </div>
   <ng-content select="[filterActions]" ngProjectAs="[filterActions]"></ng-content>
-  <div class="enum-filter-wrapper">
+  <div class="enum-filter-wrapper filter-scroll-region">
     <div *ngIf="additionalOperators || filterProperty.searchable" class="filter-condition-row">
       <clr-select-container *ngIf="additionalOperators" class="filter-operator">
         <label class="clr-sr-only">

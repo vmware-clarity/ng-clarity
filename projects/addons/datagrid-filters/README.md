@@ -27,7 +27,7 @@ Advanced modes allow users to build and manage complex filtering queries. Quick 
 
 #### Predefined filters
 
-The optional `predefinedFilters: FilterablePropertyDefinition[]` input selects the properties whose pills are always visible in advanced mode. Supply their definitions in the desired display order. Properties are matched by their `property` key, so a predefined field is not offered again in **Add new**.
+The optional `predefinedFilters: FilterablePropertyDefinition[]` input selects the properties whose pills are always visible in advanced mode. Supply their definitions in the desired display order. Properties are matched by their `property` key, so a predefined field is not offered again in **Add filter**.
 
 Predefined pills start empty and use a gray outline with the field name. Set initial criteria through the existing `presetFilters` input. Active pills use a blue outline and background, display the first condition, and show `+N` for additional conditions. Operators other than equality remain visible in the summary.
 
@@ -35,7 +35,7 @@ Opening a pill edits its criteria in a popover. **Clear filter** returns a prede
 
 The popover applies changes only on **Apply**. **Cancel**, Escape, and outside clicks discard unapplied edits.
 
-**Add new** uses a searchable field combobox. Existing pills keep their field locked while editing. String and numeric filters place the **AND/OR** button group beside the field, with each condition's operator and value on one row. A label between conditions shows the selected logical operator.
+**Add filter** uses a searchable field combobox. Existing pills keep their field locked while editing. String and numeric filters place the **AND/OR** button group beside the field, with each condition's operator and value on one row. A label between conditions shows the selected logical operator.
 
 String and numeric filters support any number of conditions, joined by one shared **AND** or **OR** operator. **Add condition** appends another row; individual rows can be removed while keeping at least one. Setting `singleCondition` to `true` limits the field to one condition.
 
