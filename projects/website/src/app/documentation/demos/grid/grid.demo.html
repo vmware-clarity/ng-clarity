@@ -309,18 +309,21 @@
 
     <h3 data-toc-item cds-text="section" class="clr-mt-32px" id="container-queries">Container Queries</h3>
     <p cds-text="body" class="clr-mt-16px">
-      The grid breakpoints follow the viewport. When the grid lives in an area narrower than the viewport, such as an
-      application embedded in a shadow root, load <code cds-text="code">clr-ui-container-grid.min.css</code> instead of
-      <code cds-text="code">clr-ui.min.css</code>. Its grid breakpoints follow the nearest element declared as a
-      <code cds-text="code">clr-grid</code> container.
+      The grid and <code cds-text="code">cds-layout</code> breakpoints follow the viewport. When the layout lives in an
+      area narrower than the viewport, such as an application embedded in a shadow root, load
+      <code cds-text="code">clr-ui-container-queries.min.css</code> instead of
+      <code cds-text="code">clr-ui.min.css</code>. Its breakpoints follow the nearest element declared as a
+      <code cds-text="code">clr-layout</code> container.
     </p>
-    <app-code-snippet [code]="containerGridCss" language="css"></app-code-snippet>
+    <app-code-snippet [code]="containerQueriesCss" language="css"></app-code-snippet>
     <p cds-text="body" class="clr-mt-16px">With Sass, configure the variable before loading Clarity:</p>
-    <app-code-snippet [code]="containerGridScss" language="css"></app-code-snippet>
+    <app-code-snippet [code]="containerQueriesScss" language="css"></app-code-snippet>
     <p cds-text="body" class="clr-mt-16px">
-      Only the grid columns, offsets, ordering and the display, flex, float and visibility utilities follow the
-      container. Without a <code cds-text="code">clr-grid</code> container ancestor, columns use their smallest
-      breakpoint layout.
+      This covers the grid columns, offsets and ordering, the grid display, flex, float and visibility utilities, and
+      the <code cds-text="code">cds-layout</code> utilities with a breakpoint (for example
+      <code cds-text="code">cols&#64;md:6</code>). Component styles keep following the viewport. Without a
+      <code cds-text="code">clr-layout</code> container ancestor, every breakpoint is off and the smallest layout
+      applies.
     </p>
   </app-doc-tab>
 

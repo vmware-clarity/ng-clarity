@@ -7,6 +7,7 @@
 
 @use 'sass:list';
 @use 'sass:map';
+@use '../../../styles/mixins';
 @use '../../../styles/variables/variables.layout';
 
 @function clr-breakpoint-next(
@@ -52,20 +53,6 @@
   @return '-#{$name}';
 }
 
-// Wraps breakpoint content in a media query or, with `$clr-grid-breakpoint-query: container`,
-// in a query on the nearest `clr-grid` container.
-@mixin clr-breakpoint-query($condition) {
-  @if variables.$clr-grid-breakpoint-query == container {
-    @container clr-grid (#{$condition}) {
-      @content;
-    }
-  } @else {
-    @media (#{$condition}) {
-      @content;
-    }
-  }
-}
-
 // Media of at least the minimum breakpoint width. No query for the smallest breakpoint.
 // Makes the @content apply to the given breakpoint and wider.
 
@@ -73,7 +60,7 @@
   $min: clr-breakpoint-min($name, $breakpoints);
 
   @if $min {
-    @include clr-breakpoint-query('min-width: #{$min}') {
+    @include mixins.breakpoint-query('min-width: #{$min}') {
       @content;
     }
   } @else {
@@ -88,7 +75,7 @@
   $max: clr-breakpoint-max($name, $breakpoints);
 
   @if $max {
-    @include clr-breakpoint-query('max-width: #{$max}') {
+    @include mixins.breakpoint-query('max-width: #{$max}') {
       @content;
     }
   } @else {

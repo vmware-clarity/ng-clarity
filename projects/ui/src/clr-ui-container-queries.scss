@@ -5,9 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-// Same as clr-ui.scss, but the grid breakpoints respond to the nearest
-// `container: clr-grid / inline-size` ancestor instead of the viewport.
+// Same as clr-ui.scss, but the grid and `cds-layout` breakpoints respond to the nearest
+// `container: clr-layout / inline-size` ancestor instead of the viewport.
 @use '../../angular/styles/variables/variables.layout' with (
-  $clr-grid-breakpoint-query: container
+  $clr-breakpoint-query: container
 );
 @use '../../angular/main';

@@ -157,6 +157,19 @@ $opp-directions: (
     @content;
   }
 }
+// Wraps breakpoint content in a viewport media query or, with `$clr-breakpoint-query: container`,
+// in a query on the nearest `clr-layout` container.
+@mixin breakpoint-query($condition) {
+  @if variables.$clr-breakpoint-query == container {
+    @container clr-layout (#{$condition}) {
+      @content;
+    }
+  } @else {
+    @media (#{$condition}) {
+      @content;
+    }
+  }
+}
 @mixin input-placeholder-wrapper() {
   @include optional-at-root('::-webkit-input-placeholder') {
     @content;

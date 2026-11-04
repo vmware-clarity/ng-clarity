@@ -8,7 +8,7 @@
 import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
 import { CommonModules } from '@storybook-helpers/common';
 
-import { ShadowRootContainerGridComponent, ShadowRootTypographyComponent } from './shadow-root.storybook.component';
+import { ShadowRootContainerQueriesComponent, ShadowRootTypographyComponent } from './shadow-root.storybook.component';
 
 /** The stories are fixed markup inside a shadow root; none of them takes an arg. */
 type ShadowRootArgs = Record<never, never>;
@@ -17,7 +17,7 @@ const meta = {
   title: 'Foundations/Shadow Root',
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ShadowRootTypographyComponent, ShadowRootContainerGridComponent],
+      imports: [...CommonModules, ShadowRootTypographyComponent, ShadowRootContainerQueriesComponent],
     }),
   ],
   render: () => ({
@@ -33,15 +33,15 @@ type Story = StoryObj<ShadowRootArgs>;
 
 export const Typography: Story = {};
 
-export const ContainerGrid: Story = {
-  // eslint-disable-next-line no-restricted-syntax -- this story renders the grid component at two container widths instead of the typography component of the meta template
+export const ContainerQueries: Story = {
+  // eslint-disable-next-line no-restricted-syntax -- this story renders the container-query component at two container widths instead of the typography component of the meta template
   render: () => ({
     template: `
       <div style="width: 400px">
-        <shadow-root-container-grid></shadow-root-container-grid>
+        <shadow-root-container-queries></shadow-root-container-queries>
       </div>
       <div style="width: 900px">
-        <shadow-root-container-grid></shadow-root-container-grid>
+        <shadow-root-container-queries></shadow-root-container-queries>
       </div>
     `,
   }),

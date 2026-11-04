@@ -34,9 +34,9 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
 })
 export class ShadowRootTypographyComponent {}
 
-/** The container-query build of Clarity's CSS in a shadow root whose host is the grid container. */
+/** The container-query build of Clarity's CSS in a shadow root whose host is the layout container. */
 @Component({
-  selector: 'shadow-root-container-grid',
+  selector: 'shadow-root-container-queries',
   template: `
     <div class="clr-row">
       <div class="clr-col-12 clr-col-md-6"><span>clr-col-12 clr-col-md-6</span></div>
@@ -47,9 +47,13 @@ export class ShadowRootTypographyComponent {}
       <div class="clr-col-sm-4"><span>clr-col-sm-4</span></div>
       <div class="clr-col-sm-4"><span>clr-col-sm-4</span></div>
     </div>
+    <div cds-layout="grid cols@sm:6 gap:md">
+      <span>cds-layout cols&#64;sm:6</span>
+      <span>cds-layout cols&#64;sm:6</span>
+    </div>
   `,
-  styleUrls: ['../../../../projects/ui/src/clr-ui-container-grid.scss', './shadow-root-container-grid.scss'],
+  styleUrls: ['../../../../projects/ui/src/clr-ui-container-queries.scss', './shadow-root-container-queries.scss'],
   encapsulation: ViewEncapsulation.ShadowDom,
   changeDetection: ChangeDetectionStrategy.Eager,
 })
-export class ShadowRootContainerGridComponent {}
+export class ShadowRootContainerQueriesComponent {}

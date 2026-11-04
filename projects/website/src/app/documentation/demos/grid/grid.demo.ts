@@ -27,16 +27,16 @@ import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.component';
 import { ClarityDocComponent } from '../clarity-doc';
 
-const CONTAINER_GRID_CSS = `
-/* the element that holds the grid, for example the shadow host */
+const CONTAINER_QUERIES_CSS = `
+/* the element that holds the layout, for example the shadow host */
 :host {
-  container: clr-grid / inline-size;
+  container: clr-layout / inline-size;
 }
 `;
 
-const CONTAINER_GRID_SCSS = `
+const CONTAINER_QUERIES_SCSS = `
 @use '@clr/ui/styles/variables/variables.layout' with (
-  $clr-grid-breakpoint-query: container
+  $clr-breakpoint-query: container
 );
 @use '@clr/ui/main';
 `;
@@ -71,8 +71,8 @@ const CONTAINER_GRID_SCSS = `
   ],
 })
 export class GridDemo extends ClarityDocComponent {
-  containerGridCss = CONTAINER_GRID_CSS;
-  containerGridScss = CONTAINER_GRID_SCSS;
+  containerQueriesCss = CONTAINER_QUERIES_CSS;
+  containerQueriesScss = CONTAINER_QUERIES_SCSS;
 
   constructor() {
     super('grid');
