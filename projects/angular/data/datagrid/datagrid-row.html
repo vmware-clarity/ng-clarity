@@ -4,6 +4,7 @@
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
+@let treeNode = _tree?.node;
 <div
   role="row"
   [id]="id"
@@ -12,11 +13,11 @@
   (click)="selectRow(!selected, $event)"
   [class.datagrid-row-clickable]="selection.rowSelectionMode"
   [class.datagrid-row-detail-open]="detailService.isRowOpen(item)"
-  [attr.aria-level]="_treeNode?.level"
-  [attr.aria-expanded]="_treeNode?.expandable ? _treeNode.expanded : null"
-  [attr.aria-posinset]="_treeNode ? tree.posInSet(_treeNode) : null"
-  [attr.aria-setsize]="_treeNode ? tree.setSize(_treeNode) : null"
-  [attr.aria-busy]="(_treeNode?.loading && _treeNode.expanded) || null"
+  [attr.aria-level]="treeNode?.level"
+  [attr.aria-expanded]="treeNode?.expandable ? treeNode.expanded : null"
+  [attr.aria-posinset]="treeNode ? tree.posInSet(treeNode) : null"
+  [attr.aria-setsize]="treeNode ? tree.setSize(treeNode) : null"
+  [attr.aria-busy]="(treeNode?.loading && treeNode.expanded) || null"
 >
   <div class="datagrid-row-sticky">
     <!-- Sticky elements here -->

@@ -9,10 +9,19 @@ import { ClrDatagridCell } from '../datagrid-cell';
 import { DatagridTreeNode } from '../providers/tree-node.model';
 
 /**
+ * What the cells of a tree row render: the node of the row, the cells that carry the indentation and
+ * the expand toggle, and the cell that names the row on its toggles.
+ */
+export interface DatagridTreeRowCells<T = unknown> {
+  readonly node: DatagridTreeNode<T>;
+  readonly toggleCells: ReadonlySet<ClrDatagridCell>;
+  readonly labelCell: ClrDatagridCell | undefined;
+}
+
+/**
  * What a cell needs from its row to render the tree toggle.
  */
 export interface DatagridTreeRow {
-  readonly _treeNode: DatagridTreeNode<unknown> | undefined;
-  readonly _treeCells: ClrDatagridCell[];
-  readonly _treeLabelCell: ClrDatagridCell | undefined;
+  /** `null` while the row has no tree node, like the rows of items still loading. */
+  readonly _tree: DatagridTreeRowCells | null;
 }

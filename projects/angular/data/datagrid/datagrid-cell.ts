@@ -90,8 +90,8 @@ export class ClrDatagridCell implements OnInit {
    * The tree node of the row, on the cells that carry the indentation and the toggle.
    */
   protected get treeNode(): DatagridTreeNode<unknown> | undefined {
-    const row = this._treeRow;
-    return row?._treeCells.includes(this) ? row._treeNode : undefined;
+    const tree = this._treeRow?._tree;
+    return tree?.toggleCells.has(this) ? tree.node : undefined;
   }
 
   /**
@@ -100,9 +100,8 @@ export class ClrDatagridCell implements OnInit {
    * drag handle.
    */
   protected get treeToggleLabelIds(): string {
-    const leading = this._treeRow?._treeLabelCell;
-    const cells = leading && leading !== this ? [leading, this] : [this];
-    return cells.map(cell => cell._treeId).join(' ');
+    const leading = this._treeRow?._tree?.labelCell;
+    return leading && leading !== this ? `${leading._treeId} ${this._treeId}` : this._treeId;
   }
 
   ngOnInit() {

@@ -15,6 +15,7 @@ import { Subject } from 'rxjs';
 
 import { ClrDatagrid } from './datagrid';
 import { ClrDatagridCell } from './datagrid-cell';
+import { ClrDatagridRow } from './datagrid-row';
 import { ClrDatagridModule } from './datagrid.module';
 import { SelectionType } from './enums/selection-type';
 import { ClrDatagridVirtualScrollRangeInterface } from './interfaces/virtual-scroll-data-range.interface';
@@ -384,6 +385,15 @@ export default function (): void {
         expect(() => fixture.detectChanges()).not.toThrow();
         expect(element.querySelectorAll('.datagrid-row-loading').length).toBeGreaterThan(0);
         expect(rowNames()).toEqual(['a', 'b', 'c']);
+      });
+
+      it('works out the tree of a row once per check, however many times its cells read it', function () {
+        const rowComponents = fixture.debugElement
+          .queryAll(By.directive(ClrDatagridRow))
+          .map(row => row.componentInstance as ClrDatagridRow);
+        const spies = rowComponents.map(row => spyOn<any>(row, 'workOutTreeCells').and.callThrough());
+        fixture.detectChanges();
+        spies.forEach(spy => expect(spy).toHaveBeenCalledTimes(1));
       });
 
       it('leaves the cells of other datagrids alone', function () {

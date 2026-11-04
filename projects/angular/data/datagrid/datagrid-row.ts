@@ -12,6 +12,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   ContentChildren,
+  DoCheck,
   DOCUMENT,
   ElementRef,
   EmbeddedViewRef,
@@ -43,6 +44,7 @@ import { ClrDatagridCell } from './datagrid-cell';
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
 import { DatagridDisplayMode } from './enums/display-mode.enum';
 import { SelectionType } from './enums/selection-type';
+import { DatagridTreeRowCells } from './interfaces/tree-row.interface';
 import { ColumnsService } from './providers/columns.service';
 import { DetailService } from './providers/detail.service';
 import { DisplayModeService } from './providers/display-mode.service';
@@ -50,7 +52,6 @@ import { ExpandableRowsCount } from './providers/global-expandable-rows';
 import { Items } from './providers/items';
 import { RowActionService } from './providers/row-action-service';
 import { Selection } from './providers/selection';
-import { DatagridTreeNode } from './providers/tree-node.model';
 import { DatagridTreeService } from './providers/tree.service';
 import { WrappedRow } from './wrapped-row';
 
@@ -74,7 +75,7 @@ let nbRow = 0;
   standalone: false,
   changeDetection: ChangeDetectionStrategy.Eager,
 })
-export class ClrDatagridRow<T = any> implements OnChanges, AfterContentInit, AfterViewInit {
+export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContentInit, AfterViewInit {
   @Output('clrDgSelectedChange') selectedChanged = new EventEmitter<boolean>(false);
   @Output('clrDgExpandedChange') expandedChange = new EventEmitter<boolean>(false);
   @Input('clrDgDetailDisabled') detailDisabled = false;
@@ -129,6 +130,8 @@ export class ClrDatagridRow<T = any> implements OnChanges, AfterContentInit, Aft
   private _detailCloseLabel = '';
   private _rowSelectionLabel = '';
   private wrappedInjector: Injector;
+  /** What `_tree` worked out in this check; `undefined` until it is read. */
+  private treeCells: DatagridTreeRowCells<T> | null | undefined;
   private subscriptions: Subscription[] = [];
 
   /**
@@ -263,7 +266,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, AfterContentInit, Aft
    */
   @Input('clrDgExpanded')
   get expanded() {
-    const node = this._treeNode;
+    const node = this._tree?.node;
     return node ? node.expanded : this.expand.expanded;
   }
   set expanded(value: boolean | string) {
@@ -309,36 +312,17 @@ export class ClrDatagridRow<T = any> implements OnChanges, AfterContentInit, Aft
   }
 
   /**
-   * The place of this row in the tree, when the datagrid renders one. Read by the row's cells.
-   */
-  get _treeNode(): DatagridTreeNode<T> | undefined {
-    // The rows the datagrid shows while more items load have no item.
-    return this.tree?.enabled() && this.item !== undefined ? this.tree.nodeFor(this.item) : undefined;
-  }
-
-  /**
-   * The cells that carry the indentation and the expand toggle: those of the toggle columns, so they
-   * move with their column when it is reordered or pinned. The toggle columns are the ones marked with
-   * `clrDgTreeToggle`, or the first visible column when none of them is visible. Cells match columns
-   * by declaration index, as everywhere else in the datagrid.
+   * What the cells of this row render of the tree, when the datagrid renders one. The row and its
+   * cells read it many times per check, so it is worked out at the first read of each check.
    *
-   * Read by the cells while they are checked, which can be before the row's own hooks run, when the
-   * cells are rendered in a loop inside the row.
+   * The cells read it while they are checked, which can be before the row's own content hooks run,
+   * when the cells are rendered in a loop inside the row; the row's `ngDoCheck` runs before them.
    */
-  get _treeCells(): ClrDatagridCell[] {
-    const visible = this.visibleTreeCells();
-    const marked = visible.filter(({ column }) => this.tree.toggleColumns.has(column));
-    return (marked.length ? marked : visible.slice(0, 1)).map(({ cell }) => cell);
-  }
-
-  /**
-   * The cell that names the row for its toggles: the first visible one as the user sees the row, so
-   * pinned cells come first. A toggle in a column like Status then reads "Expand Datacenter 1", not
-   * "Expand Running".
-   */
-  get _treeLabelCell(): ClrDatagridCell | undefined {
-    const visible = this.visibleTreeCells();
-    return (visible.find(({ column }) => column?.value.pinned) || visible[0])?.cell;
+  get _tree(): DatagridTreeRowCells<T> | null {
+    if (this.treeCells === undefined) {
+      this.treeCells = this.workOutTreeCells();
+    }
+    return this.treeCells;
   }
 
   /**
@@ -370,6 +354,10 @@ export class ClrDatagridRow<T = any> implements OnChanges, AfterContentInit, Aft
   ngOnInit() {
     this.wrappedInjector = new HostWrapper(WrappedRow, this.vcr);
     this.selection.lockItem(this.item, this.clrDgSelectable === false);
+  }
+
+  ngDoCheck() {
+    this.treeCells = undefined;
   }
 
   ngAfterContentInit() {
@@ -521,11 +509,39 @@ export class ClrDatagridRow<T = any> implements OnChanges, AfterContentInit, Aft
     this.dgCells.forEach(cell => (cell._treeRow = treeRow));
   }
 
-  private visibleTreeCells() {
+  /**
+   * The cells that carry the indentation and the expand toggle are those of the toggle columns, so
+   * they move with their column when it is reordered or pinned. The toggle columns are the ones marked
+   * with `clrDgTreeToggle`, or the first visible column when none of them is visible. The cell that
+   * names the row is the first visible one as the user sees the row, so pinned cells come first: a
+   * toggle in a column like Status then reads "Expand Datacenter 1", not "Expand Running". Cells
+   * match columns by declaration index, as everywhere else in the datagrid.
+   */
+  private workOutTreeCells(): DatagridTreeRowCells<T> | null {
+    // The rows the datagrid shows while more items load have no item.
+    const node = this.tree?.enabled() && this.item !== undefined ? this.tree.nodeFor(this.item) : undefined;
+    if (!node) {
+      return null;
+    }
     const columns = this.columnsService.columns;
-    return (this.dgCells?.toArray() || [])
-      .map((cell, index) => ({ cell, column: columns[index] }))
-      .filter(({ column }) => !column?.value.hidden);
+    const marked = new Set<ClrDatagridCell>();
+    let first: ClrDatagridCell | undefined;
+    let pinned: ClrDatagridCell | undefined;
+    this.dgCells?.forEach((cell, index) => {
+      const column = columns[index];
+      if (column?.value.hidden) {
+        return;
+      }
+      first ??= cell;
+      if (column?.value.pinned) {
+        pinned ??= cell;
+      }
+      if (this.tree.toggleColumns.has(column)) {
+        marked.add(cell);
+      }
+    });
+    const toggleCells = marked.size || !first ? marked : new Set([first]);
+    return { node, toggleCells, labelCell: pinned || first };
   }
 
   private rangeSelect() {

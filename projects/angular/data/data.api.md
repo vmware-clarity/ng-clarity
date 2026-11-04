@@ -799,7 +799,7 @@ export class ClrDatagridPlaceholder<T = any> {
 }
 
 // @public (undocumented)
-export class ClrDatagridRow<T = any> implements OnChanges, AfterContentInit, AfterViewInit {
+export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContentInit, AfterViewInit {
     constructor(selection: Selection_2<T>, rowActionService: RowActionService, globalExpandable: ExpandableRowsCount, expand: DatagridIfExpandService, detailService: DetailService, displayMode: DisplayModeService, vcr: ViewContainerRef, renderer: Renderer2, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, items: Items, columnsService: ColumnsService, document: any);
     // (undocumented)
     _calculatedCells: ViewContainerRef;
@@ -870,6 +870,8 @@ export class ClrDatagridRow<T = any> implements OnChanges, AfterContentInit, Aft
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
+    ngDoCheck(): void;
+    // (undocumented)
     ngOnChanges(changes: SimpleChanges): void;
     // (undocumented)
     ngOnDestroy(): void;
@@ -907,11 +909,10 @@ export class ClrDatagridRow<T = any> implements OnChanges, AfterContentInit, Aft
     toggleExpand(event: MouseEvent): void;
     // (undocumented)
     protected readonly tree: DatagridTreeService<T>;
-    get _treeCells(): ClrDatagridCell[];
+    // Warning: (ae-forgotten-export) The symbol "DatagridTreeRowCells" needs to be exported by the entry point clr-angular-data.d.ts
+    get _tree(): DatagridTreeRowCells<T> | null;
     treeExpandable: boolean;
     protected get treeIndeterminate(): boolean;
-    get _treeLabelCell(): ClrDatagridCell | undefined;
-    get _treeNode(): DatagridTreeNode<T> | undefined;
     // (undocumented)
     get _view(): any;
     // (undocumented)
@@ -1876,7 +1877,7 @@ export class WrappedRow implements AfterViewInit, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1590:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
+// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1597:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
 
 // (No @packageDocumentation comment for this package)
 
