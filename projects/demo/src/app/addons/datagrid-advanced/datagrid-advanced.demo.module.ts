@@ -32,6 +32,13 @@ const ROUTES: Routes = [
           import('./virtual-scroll/virtual-scroll-grid-demo.component').then(m => m.VirtualScrollGridDemoComponent),
       },
       {
+        path: 'tree-virtual-scroll',
+        loadComponent: () =>
+          import('./tree-virtual-scroll/tree-virtual-scroll-grid-demo.component').then(
+            m => m.TreeVirtualScrollGridDemoComponent
+          ),
+      },
+      {
         path: 'drag-drop',
         loadComponent: () => import('./drag-drop/drag-drop-grid-demo.component').then(m => m.DragDropGridDemoComponent),
       },
