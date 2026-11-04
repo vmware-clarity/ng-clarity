@@ -17,6 +17,7 @@ import { RouterModule } from '@angular/router';
       <li><a [routerLink]="['./client-side']" routerLinkActive="active">Client-Side</a></li>
       <li><a [routerLink]="['./server-driven']" routerLinkActive="active">Server-Driven</a></li>
       <li><a [routerLink]="['./virtual-scroll']" routerLinkActive="active">Virtual Scroll</a></li>
+      <li><a [routerLink]="['./tree-virtual-scroll']" routerLinkActive="active">Tree Virtual Scroll</a></li>
       <li><a [routerLink]="['./drag-drop']" routerLinkActive="active">Drag &amp; Drop</a></li>
       <li><a [routerLink]="['./filters']" routerLinkActive="active">Custom Filters</a></li>
       <li><a [routerLink]="['./detail-pane']" routerLinkActive="active">Detail Pane</a></li>
