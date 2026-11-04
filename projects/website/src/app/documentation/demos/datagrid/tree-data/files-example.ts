@@ -6,7 +6,7 @@
  */
 
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ClrDatagridModule, ClrDatagridStateInterface } from '@clr/angular';
 import { Observable, of, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
@@ -84,7 +84,6 @@ function fromServer<T>(value: T): Observable<T> {
   selector: 'clr-datagrid-tree-files-example',
   templateUrl: './files-example.html',
   imports: [ClrDatagridModule, DatePipe, DecimalPipe],
-  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DatagridTreeFilesExample implements OnDestroy {
   files: FileItem[] = [];

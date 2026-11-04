@@ -6,7 +6,7 @@
  */
 
 import { ListRange } from '@angular/cdk/collections';
-import { ChangeDetectionStrategy, Component, NgZone, SimpleChange, ViewChild } from '@angular/core';
+import { Component, NgZone, SimpleChange, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -57,7 +57,6 @@ type LoaderKind = 'observable' | 'promise' | 'sync' | 'throw';
     </clr-datagrid>
   `,
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class TreeTest {
   @ViewChild(ClrDatagrid) datagrid: ClrDatagrid<Folder>;
@@ -160,7 +159,6 @@ function applyNow(emit: () => void) {
     </clr-datagrid>
   `,
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class VirtualTreeTest {
   roots: Folder[] = [{ id: 'a', children: 2 }, { id: 'b' }];
@@ -188,7 +186,6 @@ class VirtualTreeTest {
     </clr-datagrid>
   `,
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class VirtualRangeTreeTest {
   range: ClrDatagridVirtualScrollRangeInterface<Folder> = { total: 1000, skip: 0, data: roots(0, 20) };
@@ -225,7 +222,6 @@ function roots(start: number, count: number): Folder[] {
     </clr-datagrid>
   `,
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class FlatTest {
   roots: Folder[] = [{ id: 'a' }, { id: 'b' }];

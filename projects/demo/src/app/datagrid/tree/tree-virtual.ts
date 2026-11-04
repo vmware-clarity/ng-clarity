@@ -6,7 +6,7 @@
  */
 
 import { ListRange } from '@angular/cdk/collections';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { Resource, ResourceBackend, ResourceBackendOptions } from './resource-backend';
 
@@ -14,7 +14,6 @@ import { Resource, ResourceBackend, ResourceBackendOptions } from './resource-ba
   selector: 'clr-datagrid-tree-virtual-demo',
   templateUrl: 'tree-virtual.html',
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DatagridTreeVirtualDemo {
   options: ResourceBackendOptions = { roots: 1000, children: 20, latency: 300 };

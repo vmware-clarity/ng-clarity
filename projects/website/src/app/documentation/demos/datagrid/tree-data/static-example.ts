@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { ClrDatagridModule } from '@clr/angular';
 
 interface Person {
@@ -50,7 +50,6 @@ const PEOPLE: Person[] = [
   selector: 'clr-datagrid-tree-static-example',
   templateUrl: './static-example.html',
   imports: [ClrDatagridModule],
-  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DatagridTreeStaticExample {
   people = PEOPLE;

@@ -5,11 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-<<<<<<< HEAD
-import { Component, ContentChildren, Injector, OnInit, QueryList, ViewContainerRef } from '@angular/core';
-=======
 import {
-  ChangeDetectionStrategy,
   Component,
   ContentChildren,
   ElementRef,
@@ -19,7 +15,6 @@ import {
   QueryList,
   ViewContainerRef,
 } from '@angular/core';
->>>>>>> 5720c369e (feat(datagrid): tree data (#2807))
 import { ClrSignpost } from '@clr/angular/popover/signpost';
 import { HostWrapper, uniqueIdFactory } from '@clr/angular/utils';
 

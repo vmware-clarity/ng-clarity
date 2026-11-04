@@ -8,11 +8,7 @@
 import {
   AfterContentInit,
   AfterViewInit,
-<<<<<<< HEAD
-=======
   booleanAttribute,
-  ChangeDetectionStrategy,
->>>>>>> 5720c369e (feat(datagrid): tree data (#2807))
   Component,
   ContentChildren,
   DoCheck,
@@ -24,11 +20,7 @@ import {
   inject,
   Injector,
   Input,
-<<<<<<< HEAD
-=======
   OnChanges,
-  Optional,
->>>>>>> 5720c369e (feat(datagrid): tree data (#2807))
   Output,
   QueryList,
   Renderer2,

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ColumnDefinition, ColumnOrderChanged, DatagridTreeConfig } from '@clr/addons/datagrid';
 import { ClrDatagridStateInterface, SelectionType } from '@clr/angular';
 import { Subscription } from 'rxjs';
@@ -16,7 +16,6 @@ import { Resource, ResourceBackend } from './resource-backend';
   selector: 'clr-datagrid-tree-appfx-demo',
   templateUrl: 'tree-appfx.html',
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DatagridTreeAppfxDemo implements OnDestroy {
   backend = new ResourceBackend();

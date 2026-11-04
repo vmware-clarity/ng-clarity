@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, ElementRef, inject, Input, OnDestroy } from '@angular/core';
+import { Component, ElementRef, inject, Input, OnDestroy } from '@angular/core';
 import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
 
 import { DatagridTreeNode } from './providers/tree-node.model';
@@ -38,7 +38,6 @@ import { DatagridTreeService } from './providers/tree.service';
     '(focus)': 'onFocus()',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDatagridTreeToggleButton implements OnDestroy {
   @Input({ alias: 'clrDgTreeToggleButton', required: true }) node: DatagridTreeNode<unknown>;

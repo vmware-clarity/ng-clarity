@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { AppfxDatagridModule, ColumnDefinition, DatagridTreeConfig } from '@clr/addons/datagrid';
 import { ClrDatagridStateInterface, ClrDatagridVirtualScrollRangeInterface, SelectionType } from '@clr/angular';
 import { Subscription } from 'rxjs';
@@ -16,7 +16,6 @@ import { Resource, ResourceBackend } from '../../../datagrid/tree/resource-backe
   imports: [AppfxDatagridModule],
   standalone: true,
   templateUrl: 'tree-virtual-scroll-grid-demo.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class TreeVirtualScrollGridDemoComponent implements OnDestroy {
   protected readonly SelectionType = SelectionType;

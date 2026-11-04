@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { AppfxDatagridModule, ColumnDefinition, DatagridTreeConfig, TreeExpandedState } from '@clr/addons/datagrid';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import { SelectionType } from '@clr/angular/data/datagrid';
@@ -49,7 +49,6 @@ function fromServer<T>(value: T): Observable<T> {
   imports: [AppfxDatagridModule],
   standalone: true,
   templateUrl: './tree-data.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class TreeDataGridDemoComponent implements OnDestroy {
   roots: Resource[] = [];

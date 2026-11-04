@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { ClrAlertModule } from '@clr/angular';
 
 import { EXAMPLES } from './examples';
@@ -38,7 +38,6 @@ const staticExampleTs = stackblitzClass(require('!raw-loader!./static-example.ts
     DatagridTreeFilesExample,
     DatagridTreeStaticExample,
   ],
-  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DatagridTreeDataDemo {
   examples = EXAMPLES;

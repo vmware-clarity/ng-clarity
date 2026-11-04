@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import { Subscription } from 'rxjs';
 
@@ -16,7 +16,6 @@ import { Resource, ResourceBackend } from './resource-backend';
   templateUrl: 'tree.html',
   styleUrls: ['../datagrid.demo.scss'],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DatagridTreeDemo implements OnDestroy {
   backend = new ResourceBackend();
