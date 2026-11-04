@@ -355,12 +355,26 @@ export default function (): void {
         toggle(0);
         context.respond('a', 2);
         fixture.detectChanges();
-        const content = (index: number) => rows()[index].querySelector<HTMLElement>('.datagrid-tree-cell-content');
-        const indent = (index: number) => content(index).getBoundingClientRect().left;
-        expect(indent(1) - indent(0)).toBeGreaterThan(0);
+        const text = (index: number) =>
+          rows()[index].querySelector<HTMLElement>('.datagrid-tree-cell-text').getBoundingClientRect();
+        expect(text(1).left - text(0).left).toBeGreaterThan(0);
         expect(getComputedStyle(cellOf(0, /^a$/)).paddingLeft).toBe(getComputedStyle(cellOf(1, /^a1$/)).paddingLeft);
-        // The toggle sits in the indentation, before the content.
-        expect(toggleButton(0).getBoundingClientRect().right).toBeLessThanOrEqual(indent(0) + 0.5);
+        // The toggle comes before the text, in the content.
+        expect(toggleButton(0).getBoundingClientRect().right).toBeLessThanOrEqual(text(0).left);
+      });
+
+      it('centres the toggle on the first line of the text, whatever its line height', function () {
+        const text = rows()[0].querySelector<HTMLElement>('.datagrid-tree-cell-text');
+        const centre = (rect: DOMRect) => rect.top + rect.height / 2;
+        const firstLine = () => {
+          const range = document.createRange();
+          range.selectNodeContents(text);
+          return centre(range.getClientRects()[0]);
+        };
+        for (const lineHeight of ['16px', '32px']) {
+          rows()[0].querySelector<HTMLElement>('.datagrid-tree-cell-content').style.lineHeight = lineHeight;
+          expect(centre(toggleButton(0).getBoundingClientRect())).toBeCloseTo(firstLine(), 0);
+        }
       });
 
       it('shows the rows of items loading at the end, which have no item', function () {
