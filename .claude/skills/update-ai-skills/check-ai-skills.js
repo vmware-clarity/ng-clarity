@@ -5,13 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-// Checks the Clarity API names used in AI skill files (SKILL.md, ai/AGENTS.md) against the public API reports.
+// Checks the Clarity API names used in the AI files (component AI-GUIDE.md, ai/SKILL.md, ai/AGENTS.md) against the
+// public API reports.
 // Reports names that are missing from every *.api.md (removed or renamed) and names that are deprecated.
-// Also checks the design guidance (https://guidance.clarity.design) cited by skills against a local clone of
+// Also checks the design guidance (https://guidance.clarity.design) cited by guides against a local clone of
 // https://github.com/vmware-clarity/clarity-guidance: reports cited CIPs that were updated after the date in the
-// skill's `guidance-<id>: '<date>'` metadata keys, CIPs that no longer exist, and guidance links not listed in metadata.
+// guide's `guidance-<id>: '<date>'` metadata keys, CIPs that no longer exist, and guidance links not listed in metadata.
 // Usage (from the repo root): node .claude/skills/update-ai-skills/check-ai-skills.js [--changed <base-ref>] [--guidance <dir>]
-//   --changed [ref]    also list which skill files cover each *.api.md that differs from <ref> (default: HEAD, i.e.
+//   --changed [ref]    also list which guides cover each *.api.md that differs from <ref> (default: HEAD, i.e.
 //                      the reports `npm run public-api:update` just rewrote)
 //   --guidance <dir>   clarity-guidance clone (default: ../clarity-guidance next to this repo; skipped if absent)
 
@@ -20,7 +21,7 @@ const fs = require('fs');
 const glob = require('glob');
 const path = require('path');
 
-const { LIBS, REPO_ROOT, collectSkills, getAgentsFile } = require(path.join(process.cwd(), 'scripts/ai-files'));
+const { LIBS, REPO_ROOT, collectAiFiles, getAgentsFile } = require(path.join(process.cwd(), 'scripts/ai-files'));
 
 // Lines that warn against a name (e.g. "there is no `clrFoo`", "do not use `clrBar`") are skipped on purpose.
 const WARNING_LINE = /\b(no|not|never|deprecated|instead of|don't|doesn't)\b/i;
@@ -98,48 +99,35 @@ const existsInLibrary = name => apiIdentifiers.has(name) || cssClasses.has(name)
 
 const files = [];
 for (const lib of Object.keys(LIBS)) {
-  const { skills, errors } = collectSkills(lib);
+  // errors include a guide index in ai/SKILL.md that doesn't list exactly the guides of its package
+  const { skill, guides, errors } = collectAiFiles(lib);
   if (errors.length) {
     console.error(errors.join('\n'));
     process.exit(1);
   }
-  files.push(...skills.map(skill => ({ lib, name: skill.name, file: skill.file, guidance: skill.guidance })));
+  files.push(...guides.map(guide => ({ lib, name: guide.name, file: guide.file, guidance: guide.guidance })));
+  files.push({ lib, name: skill.name, file: skill.file, packageFile: true });
   const agents = getAgentsFile(lib);
   if (agents) {
-    files.push({ lib, name: 'AGENTS.md', file: agents.file, agents: true });
+    files.push({ lib, name: 'AGENTS.md', file: agents.file, packageFile: true });
   }
 }
-const skillNames = new Set(files.filter(f => !f.agents).map(f => f.name));
+const guideNames = new Set(files.filter(f => !f.packageFile).map(f => f.name));
 
 let problems = 0;
 for (const entry of files) {
   const markdown = fs.readFileSync(entry.file, 'utf8');
-  const names = extractApiNames(markdown).filter(name => !skillNames.has(name));
+  const names = extractApiNames(markdown).filter(name => !guideNames.has(name));
   const bound = extractBoundNames(markdown);
   const missing = [...names.filter(name => !existsInLibrary(name)), ...bound.missing];
   const deprecatedUsed = [...names.filter(name => deprecated.has(name)), ...bound.deprecated];
-  const indexIssues = entry.agents ? checkIndex(entry) : [];
 
-  if (missing.length || deprecatedUsed.length || indexIssues.length) {
+  if (missing.length || deprecatedUsed.length) {
     console.log(`\n${label(entry)}`);
     missing.forEach(name => console.log(`  missing     ${name}`));
     deprecatedUsed.forEach(name => console.log(`  deprecated  ${name}`));
-    indexIssues.forEach(issue => console.log(`  index       ${issue}`));
-    problems += missing.length + deprecatedUsed.length + indexIssues.length;
+    problems += missing.length + deprecatedUsed.length;
   }
-}
-
-// The AGENTS.md guide index must list exactly the skills of its package, as list items ("- `skill-name`: ...")
-// or table rows ("| `skill-name` | ...").
-function checkIndex(entry) {
-  const listed = new Set(
-    [...fs.readFileSync(entry.file, 'utf8').matchAll(/^(?:-|\|)\s*`([a-z0-9-]+)`\s*[:|]/gm)].map(m => m[1])
-  );
-  const libSkills = files.filter(f => !f.agents && f.lib === entry.lib).map(f => f.name);
-  return [
-    ...libSkills.filter(name => !listed.has(name)).map(name => `${name} is not listed in the guide index`),
-    ...[...listed].filter(name => !libSkills.includes(name)).map(name => `${name} is listed but no such skill exists`),
-  ];
 }
 
 const guidanceIndex = process.argv.indexOf('--guidance');
@@ -163,7 +151,7 @@ if (guidanceChecked) {
       if (!cipDates.has(id)) {
         issues.push(`guidance   CIP ${id} no longer exists`);
       } else if (!date || cipDates.get(id) > date) {
-        issues.push(`guidance   CIP ${id} updated ${cipDates.get(id)} (skill follows ${date || 'no date'})`);
+        issues.push(`guidance   CIP ${id} updated ${cipDates.get(id)} (guide follows ${date || 'no date'})`);
       }
     }
 
@@ -173,7 +161,7 @@ if (guidanceChecked) {
     for (const id of new Set(linked)) {
       if (!cipDates.has(id)) {
         issues.push(`guidance   link to CIP ${id}, which does not exist`);
-      } else if (!entry.agents && !tracked.has(id)) {
+      } else if (!entry.packageFile && !tracked.has(id)) {
         issues.push(`guidance   links to CIP ${id} but has no guidance-${id} metadata key`);
       }
     }
@@ -204,14 +192,14 @@ if (changedIndex !== -1) {
   for (const apiFile of changedApi) {
     const dir = path.dirname(apiFile);
     const lib = apiFile.split('/')[1];
-    // a skill covers the reports in its own folder and those of every entry point it imports or cites
-    const skillsForApi = files.filter(f => !f.agents && (rel(f.file).startsWith(`${dir}/`) || dependsOn(f, dir)));
-    const agentsForLib = files.filter(f => f.agents && f.lib === lib);
+    // a guide covers the reports in its own folder and those of every entry point it imports or cites
+    const guidesForApi = files.filter(f => !f.packageFile && (rel(f.file).startsWith(`${dir}/`) || dependsOn(f, dir)));
+    const packageFilesForLib = files.filter(f => f.packageFile && f.lib === lib);
 
     console.log(`  ${apiFile}`);
-    [...skillsForApi, ...agentsForLib].forEach(f => console.log(`    -> ${label(f)}`));
-    if (!skillsForApi.length) {
-      console.log('    (no skill covers this API yet)');
+    [...guidesForApi, ...packageFilesForLib].forEach(f => console.log(`    -> ${label(f)}`));
+    if (!guidesForApi.length) {
+      console.log('    (no guide covers this API yet)');
     }
   }
 }
@@ -225,8 +213,8 @@ console.log(
 );
 process.exit(problems ? 1 : 0);
 
-// Entry points a skill cites, as `@clr/<lib>/<entry-point>` imports or `@clr/<lib>/types/clr-<lib>-<entry-point>.d.ts`
-// paths, resolved to their source folders (e.g. the dialog skill uses `@clr/addons/var`, so it depends on projects/addons/var).
+// Entry points a guide cites, as `@clr/<lib>/<entry-point>` imports or `@clr/<lib>/types/clr-<lib>-<entry-point>.d.ts`
+// paths, resolved to their source folders (e.g. the dialog guide uses `@clr/addons/var`, so it depends on projects/addons/var).
 function dependsOn(entry, apiDir) {
   const text = fs.readFileSync(entry.file, 'utf8');
   return [...text.matchAll(/@clr\/(angular|addons)\/(?:types\/clr-(?:angular|addons)-)?([a-z][a-z0-9-]*)/g)].some(
