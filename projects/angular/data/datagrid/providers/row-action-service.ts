@@ -5,24 +5,25 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 
 @Injectable()
 export class RowActionService {
-  private actionableCount = 0;
+  private readonly actionableCount = signal(0);
+  private readonly _hasActionableRow = computed(() => this.actionableCount() > 0);
 
   /**
    * false means no rows with action
    */
   get hasActionableRow(): boolean {
-    return this.actionableCount > 0;
+    return this._hasActionableRow();
   }
 
   register() {
-    this.actionableCount++;
+    this.actionableCount.update(count => count + 1);
   }
 
   unregister() {
-    this.actionableCount--;
+    this.actionableCount.update(count => count - 1);
   }
 }

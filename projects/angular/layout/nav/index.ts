@@ -5,7 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './chocolate/index';
 export * from './header';
 export * from './nav-level';
 export * from './aria-current-link';

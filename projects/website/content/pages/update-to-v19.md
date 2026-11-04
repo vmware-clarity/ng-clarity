@@ -57,3 +57,19 @@ to the factory constructor. Clarity's website focus-trap override has been adapt
 The exported `Reason` enum in `@clr/addons/wizard` is now a regular enum rather than a const enum, so
 applications using `isolatedModules` can reference its members. Its `finish` and `cancel` string values
 are unchanged. Internal icon size and certificate algorithm enums also use regular enum declarations.
+
+## Removed change detection helpers
+
+The following public symbols have been removed: `WillyWonka`, `OompaLoompa`, `AccordionWillyWonka`,
+`AccordionOompaLoompa`, `StepperWillyWonka`, `StepperOompaLoompa`, `TabsWillyWonka`, `ActiveOompaLoompa`,
+`MainContainerWillyWonka`, `NavDetectionOompaLoompa`, `DatagridWillyWonka`, `ActionableOompaLoompa` and
+`ExpandableOompaLoompa`. They were internal helpers that forced extra change detection cycles. Component
+state now flows through signals, so no replacement is needed; remove any imports of these symbols.
+
+`clr-header` can now be used outside `clr-main-container`. The other components retain their parent-placement errors.
+
+Some fields became accessors: `IfExpandService.expandable`, `hasExpandTemplate`, and the protected `_expanded` and `_loading`,
+`ResponsiveNavigationService.responsiveNavList`, and `ClrHeader.isNavLevel1OnPage` and
+`isNavLevel2OnPage`. This is source compatible unless a subclass redeclares them as fields.
+
+When upgrading through v18, remove any `*WillyWonka` / `*OompaLoompa` imports left by the v18 rename schematic.

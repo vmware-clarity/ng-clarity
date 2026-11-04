@@ -56,6 +56,8 @@ export const SYMBOL_REPLACEMENTS: readonly SymbolReplacement[] = [
   { old: 'ÇlrClrPopoverModuleNext', new: 'ClrPopoverModuleNext', context: 'c-prefix-rename' },
   { old: 'ÇlrClrPopoverCloseButton', new: 'ClrPopoverCloseButton', context: 'c-prefix-rename' },
   { old: 'ÇlrClrPopoverOpenCloseButton', new: 'ClrPopoverOpenCloseButton', context: 'c-prefix-rename' },
+  // The Chocolate-derived targets below (AccordionWillyWonka ... ExpandableOompaLoompa) are
+  // removed in v19 (CDE-3271); their v19 removal is tracked for the v19 migration (CDE-3257).
   { old: 'ÇlrAccordionWillyWonka', new: 'AccordionWillyWonka', context: 'c-prefix-rename' },
   { old: 'ÇlrAccordionOompaLoompa', new: 'AccordionOompaLoompa', context: 'c-prefix-rename' },
   { old: 'ÇlrStepperWillyWonka', new: 'StepperWillyWonka', context: 'c-prefix-rename' },

@@ -103,7 +103,8 @@ export class ClrWizardButton {
     const nav = this.navService;
     const page = this.navService.currentPage;
 
-    // Ensure we don't change the response until buttons are ready to avoid chocolate
+    // Ensure we don't change the response until buttons are ready to avoid
+    // ExpressionChangedAfterItHasBeenChecked errors
     if (!this.buttonService.buttonsReady) {
       return !disabled;
     }
@@ -140,7 +141,8 @@ export class ClrWizardButton {
     const hidden = true;
     const nav = this.navService;
 
-    // Ensure we don't change the response until buttons are ready to avoid chocolate
+    // Ensure we don't change the response until buttons are ready to avoid
+    // ExpressionChangedAfterItHasBeenChecked errors
     if (!this.buttonService.buttonsReady) {
       return !hidden;
     }

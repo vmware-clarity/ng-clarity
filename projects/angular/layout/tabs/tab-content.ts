@@ -12,6 +12,7 @@ import {
   Inject,
   Input,
   OnDestroy,
+  Optional,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
@@ -47,10 +48,13 @@ export class ClrTabContent implements OnDestroy {
   private viewRef: EmbeddedViewRef<ClrTabContent>;
 
   constructor(
-    public ifActiveService: IfActiveService,
-    @Inject(IF_ACTIVE_ID) public id: number,
-    private tabsService: TabsService
+    @Optional() public ifActiveService: IfActiveService,
+    @Optional() @Inject(IF_ACTIVE_ID) public id: number,
+    @Optional() private tabsService: TabsService
   ) {
+    if (!ifActiveService || !tabsService || id === null || id === undefined) {
+      throw new Error('clrTabLink and clr-tab-content should only be used inside of a clr-tabs');
+    }
     if (!this.tabContentId) {
       this.tabContentId = 'clr-tab-content-' + nbTabContentComponents++;
     }

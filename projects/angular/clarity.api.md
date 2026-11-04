@@ -5,7 +5,6 @@
 ```ts
 
 import { AbstractControl } from '@angular/forms';
-import { AfterContentChecked } from '@angular/core';
 import { AfterContentInit } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
@@ -118,17 +117,6 @@ export class AccordionModel extends CollapsiblePanelGroupModel {
 }
 
 // @public (undocumented)
-export class AccordionOompaLoompa extends OompaLoompa {
-    constructor(cdr: ChangeDetectorRef, willyWonka: AccordionWillyWonka, ifExpandService: IfExpandService);
-    // (undocumented)
-    get flavor(): boolean;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<AccordionOompaLoompa, "clr-accordion-panel", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<AccordionOompaLoompa, [null, { optional: true; }, null]>;
-}
-
-// @public (undocumented)
 export class AccordionService extends CollapsiblePanelService {
     // (undocumented)
     protected panelGroup: AccordionModel;
@@ -144,37 +132,6 @@ export class AccordionService extends CollapsiblePanelService {
 export enum AccordionStrategy {
     Multi = "multi",
     Single = "single"
-}
-
-// @public (undocumented)
-export class AccordionWillyWonka extends WillyWonka {
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<AccordionWillyWonka, "clr-accordion", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<AccordionWillyWonka, never>;
-}
-
-// @public (undocumented)
-export class ActionableOompaLoompa extends OompaLoompa {
-    // Warning: (ae-forgotten-export) The symbol "RowActionService" needs to be exported by the entry point clr-angular.d.ts
-    constructor(cdr: ChangeDetectorRef, willyWonka: DatagridWillyWonka, rowActions: RowActionService);
-    // (undocumented)
-    get flavor(): boolean;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ActionableOompaLoompa, "clr-datagrid, clr-dg-row", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ActionableOompaLoompa, [null, { optional: true; }, null]>;
-}
-
-// @public (undocumented)
-export class ActiveOompaLoompa extends OompaLoompa {
-    constructor(cdr: ChangeDetectorRef, willyWonka: TabsWillyWonka, id: number, ifActive: IfActiveService);
-    // (undocumented)
-    get flavor(): boolean;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ActiveOompaLoompa, "[clrTabLink], clr-tab-content", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ActiveOompaLoompa, [null, { optional: true; }, null, null]>;
 }
 
 // @public (undocumented)
@@ -1072,11 +1029,12 @@ export class ClrAccordionModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrAccordionModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAccordionModule, [typeof ClrAccordion, typeof ClrAccordionPanel, typeof ClrAccordionTitle, typeof ClrAccordionDescription, typeof ClrAccordionContent, typeof AccordionOompaLoompa, typeof AccordionWillyWonka], [typeof i2.CommonModule, typeof i1.ClrIcon], [typeof ClrAccordion, typeof ClrAccordionPanel, typeof ClrAccordionTitle, typeof ClrAccordionDescription, typeof ClrAccordionContent, typeof AccordionOompaLoompa, typeof AccordionWillyWonka]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAccordionModule, [typeof ClrAccordion, typeof ClrAccordionPanel, typeof ClrAccordionTitle, typeof ClrAccordionDescription, typeof ClrAccordionContent], [typeof i2.CommonModule, typeof i1.ClrIcon], [typeof ClrAccordion, typeof ClrAccordionPanel, typeof ClrAccordionTitle, typeof ClrAccordionDescription, typeof ClrAccordionContent]>;
 }
 
 // @public (undocumented)
 export class ClrAccordionPanel extends CollapsiblePanel implements OnChanges {
+    constructor(panelService: CollapsiblePanelService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
     // (undocumented)
     accordionDescription: QueryList<ClrAccordionDescription>;
     // (undocumented)
@@ -1097,7 +1055,7 @@ export class ClrAccordionPanel extends CollapsiblePanel implements OnChanges {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionPanel, "clr-accordion-panel", never, { "disabled": { "alias": "clrAccordionPanelDisabled"; "required": false; }; "panelOpen": { "alias": "clrAccordionPanelOpen"; "required": false; }; "explicitHeadingLevel": { "alias": "clrAccordionPanelHeadingLevel"; "required": false; }; }, { "panelOpenChange": "clrAccordionPanelOpenChange"; }, ["accordionDescription"], ["clr-accordion-title", "clr-accordion-description", "*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionPanel, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionPanel, [{ optional: true; }, null, null]>;
 }
 
 // @public (undocumented)
@@ -2316,6 +2274,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     clrDgSingleActionableAriaLabel: string;
     // (undocumented)
     clrDgSingleSelectionAriaLabel: string;
+    collapseAllTreeRows(): void;
     columns: QueryList<ClrDatagridColumn<T>>;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
@@ -2343,8 +2302,13 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     //
     // (undocumented)
     expandableRows: ExpandableRowsCount;
+    expandAllTreeRows(): void;
     // (undocumented)
     _fixedColumnTemplate: TemplateRef<any>;
+    // @internal
+    _focusedElement(): HTMLElement | null;
+    // @internal
+    _focusLost(): boolean;
     // (undocumented)
     set identityFn(value: ClrDatagridItemsIdentityFunction<T>);
     // (undocumented)
@@ -2379,8 +2343,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // (undocumented)
     _projectedStickyColumns: ViewContainerRef;
     refresh: EventEmitter<ClrDatagridStateInterface<T>>;
+    reloadTreeChildren(item?: T): void;
     // (undocumented)
     resize(): void;
+    // Warning: (ae-forgotten-export) The symbol "RowActionService" needs to be exported by the entry point clr-angular.d.ts
+    //
     // (undocumented)
     rowActionService: RowActionService;
     rows: QueryList<ClrDatagridRow<T>>;
@@ -2407,6 +2374,10 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     stickyHeaders: QueryList<ElementRef>;
     // (undocumented)
     toggleAllSelected($event: any): void;
+    // Warning: (ae-forgotten-export) The symbol "DatagridTreeService" needs to be exported by the entry point clr-angular.d.ts
+    //
+    // (undocumented)
+    protected readonly tree: DatagridTreeService<T>;
     updateDetailState(): void;
     // (undocumented)
     get virtualScroll(): ClrDatagridVirtualScrollDirective<any>;
@@ -2469,6 +2440,12 @@ export class ClrDatagridCell implements OnInit {
     // (undocumented)
     ngOnInit(): void;
     signpost: QueryList<ClrSignpost>;
+    get _treeId(): string;
+    // Warning: (ae-forgotten-export) The symbol "DatagridTreeNode" needs to be exported by the entry point clr-angular.d.ts
+    protected get treeNode(): DatagridTreeNode<unknown> | undefined;
+    // Warning: (ae-forgotten-export) The symbol "DatagridTreeRow" needs to be exported by the entry point clr-angular.d.ts
+    _treeRow: DatagridTreeRow | null;
+    protected get treeToggleLabelIds(): string;
     // (undocumented)
     get _view(): any;
     // (undocumented)
@@ -2521,6 +2498,8 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // (undocumented)
     static ngAcceptInputType_pinned: unknown;
     // (undocumented)
+    static ngAcceptInputType_treeToggle: unknown;
+    // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
     ngOnChanges(changes: SimpleChanges): void;
@@ -2555,12 +2534,14 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // (undocumented)
     titleContainer: ElementRef<HTMLElement>;
     togglePinned(): void;
+    get treeToggle(): boolean;
+    set treeToggle(value: boolean);
     // (undocumented)
     set updateFilterValue(newValue: string | [number, number]);
     // (undocumented)
     get _view(): any;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumn<any>, "clr-dg-column", never, { "filterStringPlaceholder": { "alias": "clrFilterStringPlaceholder"; "required": false; }; "filterNumberMaxPlaceholder": { "alias": "clrFilterNumberMaxPlaceholder"; "required": false; }; "filterNumberMinPlaceholder": { "alias": "clrFilterNumberMinPlaceholder"; "required": false; }; "disableUnsort": { "alias": "clrDgDisableUnsort"; "required": false; }; "pinnable": { "alias": "clrDgPinnable"; "required": false; }; "pinned": { "alias": "clrDgPinned"; "required": false; }; "colType": { "alias": "clrDgColType"; "required": false; }; "field": { "alias": "clrDgField"; "required": false; }; "sortBy": { "alias": "clrDgSortBy"; "required": false; }; "sortOrder": { "alias": "clrDgSortOrder"; "required": false; }; "updateFilterValue": { "alias": "clrFilterValue"; "required": false; }; }, { "sortOrderChange": "clrDgSortOrderChange"; "pinnedChange": "clrDgPinnedChange"; "filterValueChange": "clrFilterValueChange"; }, ["projectedFilter"], ["clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter", "*", "clr-dg-column-actions"], false, [{ directive: typeof i16.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumn<any>, "clr-dg-column", never, { "filterStringPlaceholder": { "alias": "clrFilterStringPlaceholder"; "required": false; }; "filterNumberMaxPlaceholder": { "alias": "clrFilterNumberMaxPlaceholder"; "required": false; }; "filterNumberMinPlaceholder": { "alias": "clrFilterNumberMinPlaceholder"; "required": false; }; "disableUnsort": { "alias": "clrDgDisableUnsort"; "required": false; }; "pinnable": { "alias": "clrDgPinnable"; "required": false; }; "pinned": { "alias": "clrDgPinned"; "required": false; }; "treeToggle": { "alias": "clrDgTreeToggle"; "required": false; }; "colType": { "alias": "clrDgColType"; "required": false; }; "field": { "alias": "clrDgField"; "required": false; }; "sortBy": { "alias": "clrDgSortBy"; "required": false; }; "sortOrder": { "alias": "clrDgSortOrder"; "required": false; }; "updateFilterValue": { "alias": "clrFilterValue"; "required": false; }; }, { "sortOrderChange": "clrDgSortOrderChange"; "pinnedChange": "clrDgPinnedChange"; "filterValueChange": "clrFilterValueChange"; }, ["projectedFilter"], ["clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter", "*", "clr-dg-column-actions"], false, [{ directive: typeof i16.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumn<any>, [null, null, null, null, null, null, null, null, { optional: true; }]>;
 }
@@ -2893,7 +2874,7 @@ export class ClrDatagridModule {
     // Warning: (ae-forgotten-export) The symbol "i47" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatagridModule, [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnAction, typeof ClrDatagridColumnActions, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof ActionableOompaLoompa, typeof DatagridWillyWonka, typeof ExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridColumnToggle, typeof ClrDatagridColumnToggleButton], [typeof i2.CommonModule, typeof i5.CdkDragModule, typeof i5.CdkTrapFocusModule, typeof i1.ClrIcon, typeof i43.ClrInputModule, typeof i44.ClrRadioModule, typeof i45.ClrCheckboxModule, typeof i46.ClrNumberInputModule, typeof i47.ClrSelectModule, typeof i48.FormsModule, typeof i5.ClrLoadingModule, typeof i5.ClrConditionalModule, typeof i5.ClrOutsideClickModule, typeof i5.ClrExpandableAnimationModule, typeof i14.ClrSpinnerModule, typeof i16.ClrPopoverModuleNext, typeof i8.ClrDropdownModule, typeof i5.ClrKeyFocusModule, typeof ClrDatagridSingleSelectionValueAccessor, typeof i5.ClrIfExpanded], [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnAction, typeof ClrDatagridColumnActions, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof ActionableOompaLoompa, typeof DatagridWillyWonka, typeof ExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridSingleSelectionValueAccessor, typeof i5.ClrIfExpanded]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatagridModule, [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnAction, typeof ClrDatagridColumnActions, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridTreeItems, typeof ClrDatagridVirtualTree, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridColumnToggle, typeof ClrDatagridColumnToggleButton, typeof ClrDatagridTreeToggleButton], [typeof i2.CommonModule, typeof i5.CdkDragModule, typeof i5.CdkTrapFocusModule, typeof i1.ClrIcon, typeof i43.ClrInputModule, typeof i44.ClrRadioModule, typeof i45.ClrCheckboxModule, typeof i46.ClrNumberInputModule, typeof i47.ClrSelectModule, typeof i48.FormsModule, typeof i5.ClrLoadingModule, typeof i5.ClrConditionalModule, typeof i5.ClrOutsideClickModule, typeof i5.ClrExpandableAnimationModule, typeof i14.ClrSpinnerModule, typeof i16.ClrPopoverModuleNext, typeof i8.ClrDropdownModule, typeof i5.ClrKeyFocusModule, typeof ClrDatagridSingleSelectionValueAccessor, typeof i5.ClrIfExpanded], [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnAction, typeof ClrDatagridColumnActions, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridTreeItems, typeof ClrDatagridVirtualTree, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridSingleSelectionValueAccessor, typeof i5.ClrIfExpanded]>;
 }
 
 // @public (undocumented)
@@ -2974,7 +2955,7 @@ export class ClrDatagridPlaceholder<T = any> {
 }
 
 // @public (undocumented)
-export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit {
+export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContentInit, AfterViewInit {
     constructor(selection: Selection_2<T>, rowActionService: RowActionService, globalExpandable: ExpandableRowsCount, expand: DatagridIfExpandService, detailService: DetailService, displayMode: DisplayModeService, vcr: ViewContainerRef, renderer: Renderer2, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, items: Items, columnsService: ColumnsService, document: any);
     // (undocumented)
     _calculatedCells: ViewContainerRef;
@@ -3018,7 +2999,6 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     expandAnimation: ClrExpandableAnimationDirective;
     // (undocumented)
     expandAnimationTrigger: boolean;
-    // (undocumented)
     get expanded(): boolean | string;
     set expanded(value: boolean | string);
     // (undocumented)
@@ -3038,9 +3018,15 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     // @internal (undocumented)
     itemChanges: ReplaySubject<T>;
     // (undocumented)
+    static ngAcceptInputType_treeExpandable: unknown;
+    // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
     ngAfterViewInit(): void;
+    // (undocumented)
+    ngDoCheck(): void;
+    // (undocumented)
+    ngOnChanges(changes: SimpleChanges): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -3076,11 +3062,17 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     // (undocumented)
     toggleExpand(event: MouseEvent): void;
     // (undocumented)
+    protected readonly tree: DatagridTreeService<T>;
+    // Warning: (ae-forgotten-export) The symbol "DatagridTreeRowCells" needs to be exported by the entry point clr-angular.d.ts
+    get _tree(): DatagridTreeRowCells<T> | null;
+    treeExpandable: boolean;
+    protected get treeIndeterminate(): boolean;
+    // (undocumented)
     get _view(): any;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRow<any>, "clr-dg-row", never, { "detailDisabled": { "alias": "clrDgDetailDisabled"; "required": false; }; "detailHidden": { "alias": "clrDgDetailHidden"; "required": false; }; "skeletonLoading": { "alias": "clrDgSkeletonLoading"; "required": false; }; "item": { "alias": "clrDgItem"; "required": false; }; "clrDgSelectable": { "alias": "clrDgSelectable"; "required": false; }; "selected": { "alias": "clrDgSelected"; "required": false; }; "expanded": { "alias": "clrDgExpanded"; "required": false; }; "clrDgDetailOpenLabel": { "alias": "clrDgDetailOpenLabel"; "required": false; }; "clrDgDetailCloseLabel": { "alias": "clrDgDetailCloseLabel"; "required": false; }; "clrDgRowSelectionLabel": { "alias": "clrDgRowSelectionLabel"; "required": false; }; }, { "selectedChanged": "clrDgSelectedChange"; "expandedChange": "clrDgExpandedChange"; }, ["dgCells"], ["clr-dg-action-overflow", "clr-dg-cell", "clr-dg-row-detail"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRow<any>, "clr-dg-row", never, { "detailDisabled": { "alias": "clrDgDetailDisabled"; "required": false; }; "detailHidden": { "alias": "clrDgDetailHidden"; "required": false; }; "skeletonLoading": { "alias": "clrDgSkeletonLoading"; "required": false; }; "treeExpandable": { "alias": "clrDgTreeExpandable"; "required": false; }; "item": { "alias": "clrDgItem"; "required": false; }; "clrDgSelectable": { "alias": "clrDgSelectable"; "required": false; }; "selected": { "alias": "clrDgSelected"; "required": false; }; "expanded": { "alias": "clrDgExpanded"; "required": false; }; "clrDgDetailOpenLabel": { "alias": "clrDgDetailOpenLabel"; "required": false; }; "clrDgDetailCloseLabel": { "alias": "clrDgDetailCloseLabel"; "required": false; }; "clrDgRowSelectionLabel": { "alias": "clrDgRowSelectionLabel"; "required": false; }; }, { "selectedChanged": "clrDgSelectedChange"; "expandedChange": "clrDgExpandedChange"; }, ["dgCells"], ["clr-dg-action-overflow", "clr-dg-cell", "clr-dg-row-detail"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridRow<any>, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridRow<any>, [{ optional: true; }, { optional: true; }, { optional: true; }, null, { optional: true; }, { optional: true; }, null, null, null, null, { optional: true; }, { optional: true; }, null]>;
 }
 
 // @public
@@ -3195,6 +3187,53 @@ export interface ClrDatagridStringFilterInterface<T> {
     accepts(item: T, search: string): boolean;
 }
 
+// @public
+export type ClrDatagridTreeChildrenFunction<T> = (item: T) => T[] | null | undefined | PromiseLike<T[] | null | undefined> | Observable<T[] | null | undefined>;
+
+// Warning: (ae-forgotten-export) The symbol "DatagridTreeRenderer" needs to be exported by the entry point clr-angular.d.ts
+//
+// @public
+export class ClrDatagridTreeItems<T> extends DatagridTreeRenderer<T> {
+    constructor();
+    cascadeSelection: boolean;
+    // (undocumented)
+    getChildren: ClrDatagridTreeChildrenFunction<T>;
+    // (undocumented)
+    static ngAcceptInputType_cascadeSelection: unknown;
+    // (undocumented)
+    static ngTemplateContextGuard<T>(_dir: ClrDatagridTreeItems<T>, _ctx: unknown): _ctx is NgForOfContext<T>;
+    // Warning: (ae-forgotten-export) The symbol "FocusedCell" needs to be exported by the entry point clr-angular.d.ts
+    //
+    // (undocumented)
+    protected render(items: T[], focus: FocusedCell<T> | null, tabStop: T | undefined): void;
+    // (undocumented)
+    roots: T[];
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridTreeItems<any>, "[clrDgTreeItems][clrDgTreeItemsOf]", never, { "roots": { "alias": "clrDgTreeItemsOf"; "required": false; }; "getChildren": { "alias": "clrDgTreeItemsGetChildren"; "required": false; }; "cascadeSelection": { "alias": "clrDgTreeItemsCascadeSelection"; "required": false; }; }, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridTreeItems<any>, never>;
+}
+
+// @public
+export class ClrDatagridTreeToggleButton implements OnDestroy {
+    // (undocumented)
+    protected actionId: string;
+    // (undocumented)
+    protected commonStrings: ClrCommonStringsService;
+    labelIds: string;
+    ngOnDestroy(): void;
+    // (undocumented)
+    node: DatagridTreeNode<unknown>;
+    // (undocumented)
+    protected onFocus(): void;
+    // (undocumented)
+    protected toggle(event: MouseEvent): void;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridTreeToggleButton, "button[clrDgTreeToggleButton]", never, { "node": { "alias": "clrDgTreeToggleButton"; "required": true; }; "labelIds": { "alias": "labelIds"; "required": true; }; }, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridTreeToggleButton, never>;
+}
+
 // @public (undocumented)
 export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
     constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items<T>, ngZone: NgZone, renderer2: Renderer2, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, injector: EnvironmentInjector);
@@ -3259,6 +3298,26 @@ export interface ClrDatagridVirtualScrollRangeInterface<T> {
     skip: number;
     // (undocumented)
     total: number;
+}
+
+// @public
+export class ClrDatagridVirtualTree<T> extends DatagridTreeRenderer<T> {
+    cascadeSelection: boolean;
+    set dataRange(range: ClrDatagridVirtualScrollRangeInterface<T>);
+    // (undocumented)
+    getChildren: ClrDatagridTreeChildrenFunction<T>;
+    // (undocumented)
+    static ngAcceptInputType_cascadeSelection: unknown;
+    // (undocumented)
+    ngOnDestroy(): void;
+    protected render(items: T[], focus: FocusedCell<T> | null, tabStop: T | undefined): void;
+    renderedRootsChange: EventEmitter<ListRange>;
+    // (undocumented)
+    roots: T[];
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridVirtualTree<any>, "[ClrVirtualScroll][clrVirtualTreeOf],[clrVirtualScroll][clrVirtualTreeOf],[ClrVirtualScroll][clrVirtualTreeDataRange],[clrVirtualScroll][clrVirtualTreeDataRange]", never, { "roots": { "alias": "clrVirtualTreeOf"; "required": false; }; "getChildren": { "alias": "clrVirtualTreeGetChildren"; "required": false; }; "cascadeSelection": { "alias": "clrVirtualTreeCascadeSelection"; "required": false; }; "dataRange": { "alias": "clrVirtualTreeDataRange"; "required": false; }; }, { "renderedRootsChange": "clrVirtualTreeRenderedRootsChange"; }, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridVirtualTree<any>, never>;
 }
 
 // @public (undocumented)
@@ -4053,9 +4112,11 @@ export class ClrHeader implements OnDestroy {
     // (undocumented)
     initializeNavTriggers(navList: number[]): void;
     // (undocumented)
-    isNavLevel1OnPage: boolean;
+    get isNavLevel1OnPage(): boolean;
+    set isNavLevel1OnPage(value: boolean);
     // (undocumented)
-    isNavLevel2OnPage: boolean;
+    get isNavLevel2OnPage(): boolean;
+    set isNavLevel2OnPage(value: boolean);
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -4701,7 +4762,7 @@ export class ClrNavigationModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrNavigationModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNavigationModule, [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink, typeof NavDetectionOompaLoompa, typeof MainContainerWillyWonka], [typeof i2.CommonModule, typeof i1.ClrIcon, typeof i8.ClrDropdownModule], [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink, typeof NavDetectionOompaLoompa, typeof MainContainerWillyWonka]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNavigationModule, [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink], [typeof i2.CommonModule, typeof i1.ClrIcon, typeof i8.ClrDropdownModule], [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink]>;
 }
 
 // @public (undocumented)
@@ -5860,7 +5921,7 @@ export class ClrStepButton implements OnInit {
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStepButton, "[clrStepButton]", never, { "type": { "alias": "clrStepButton"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepButton, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepButton, [{ optional: true; }, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -5920,7 +5981,7 @@ export class ClrStepperModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrStepperModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStepperModule, [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepTitle, typeof ClrStepDescription, typeof ClrStepContent, typeof ClrStepperPanel, typeof StepperOompaLoompa, typeof StepperWillyWonka], [typeof i2.CommonModule, typeof i1.ClrIcon], [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepTitle, typeof ClrStepDescription, typeof ClrStepContent, typeof ClrStepperPanel, typeof StepperOompaLoompa, typeof StepperWillyWonka, typeof i1.ClrIcon]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStepperModule, [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepTitle, typeof ClrStepDescription, typeof ClrStepContent, typeof ClrStepperPanel], [typeof i2.CommonModule, typeof i1.ClrIcon], [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepTitle, typeof ClrStepDescription, typeof ClrStepContent, typeof ClrStepperPanel, typeof i1.ClrIcon]>;
 }
 
 // @public (undocumented)
@@ -5966,7 +6027,7 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepperPanel, "clr-stepper-panel", never, {}, {}, ["stepDescription"], ["clr-step-title", "clr-step-description", "*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperPanel, [null, null, { optional: true; }, { optional: true; }, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperPanel, [null, null, { optional: true; }, { optional: true; }, { optional: true; }, null, null]>;
 }
 
 // @public (undocumented)
@@ -6040,7 +6101,7 @@ export class ClrTabContent implements OnDestroy {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabContent, "clr-tab-content", never, { "tabContentId": { "alias": "id"; "required": false; }; }, {}, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabContent, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabContent, [{ optional: true; }, { optional: true; }, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -6074,7 +6135,7 @@ export class ClrTabLink {
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTabLink, "[clrTabLink]", never, { "tabLinkId": { "alias": "id"; "required": false; }; "inOverflow": { "alias": "clrTabLinkInOverflow"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabLink, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabLink, [{ optional: true; }, { optional: true; }, null, null, { optional: true; }, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -6168,7 +6229,7 @@ export class ClrTabsModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTabsModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTabsModule, [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof TabsWillyWonka, typeof ActiveOompaLoompa], [typeof i2.CommonModule, typeof i5.ClrConditionalModule, typeof i1.ClrIcon, typeof i5.ClrTemplateRefModule, typeof i5.ClrKeyFocusModule], [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof TabsWillyWonka, typeof ActiveOompaLoompa, typeof i5.ClrConditionalModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTabsModule, [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions], [typeof i2.CommonModule, typeof i5.ClrConditionalModule, typeof i1.ClrIcon, typeof i5.ClrTemplateRefModule, typeof i5.ClrKeyFocusModule], [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof i5.ClrConditionalModule]>;
 }
 
 // @public (undocumented)
@@ -7636,14 +7697,6 @@ export class DatagridStringFilter<T = any> extends DatagridFilterRegistrar<T, Da
 }
 
 // @public (undocumented)
-export class DatagridWillyWonka extends WillyWonka {
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridWillyWonka, "clr-datagrid", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridWillyWonka, never>;
-}
-
-// @public (undocumented)
 export class DatalistIdService {
     // (undocumented)
     get id(): string;
@@ -7958,17 +8011,6 @@ export const exclamationTriangleIconName = "exclamation-triangle";
 
 // @public (undocumented)
 export const EXPANDABLE_ANIMATION_DIRECTIVES: Type<any>[];
-
-// @public (undocumented)
-export class ExpandableOompaLoompa extends OompaLoompa {
-    constructor(cdr: ChangeDetectorRef, willyWonka: DatagridWillyWonka, expandableCount: ExpandableRowsCount);
-    // (undocumented)
-    get flavor(): boolean;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ExpandableOompaLoompa, "clr-datagrid, clr-dg-row", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ExpandableOompaLoompa, [null, { optional: true; }, null]>;
-}
 
 // @public (undocumented)
 export const expandCardIcon: IconShapeTuple;
@@ -8505,7 +8547,8 @@ export class IfActiveService {
 // @public (undocumented)
 export class IfExpandService implements LoadingListener {
     // (undocumented)
-    expandable: number;
+    get expandable(): number;
+    set expandable(value: number);
     // (undocumented)
     get expandChange(): Observable<boolean>;
     // (undocumented)
@@ -8513,15 +8556,16 @@ export class IfExpandService implements LoadingListener {
     // (undocumented)
     get expanded(): boolean;
     set expanded(value: boolean);
+    protected get _expanded(): boolean;
+    protected set _expanded(value: boolean);
     // (undocumented)
-    protected _expanded: boolean;
-    // (undocumented)
-    hasExpandTemplate: boolean;
+    get hasExpandTemplate(): boolean;
+    set hasExpandTemplate(value: boolean);
     // (undocumented)
     get loading(): boolean;
     set loading(value: boolean);
-    // (undocumented)
-    protected _loading: boolean;
+    protected get _loading(): boolean;
+    protected set _loading(value: boolean);
     // (undocumented)
     loadingStateChange(state: ClrLoadingState): void;
     // (undocumented)
@@ -8819,14 +8863,6 @@ export const logoutIcon: IconShapeTuple;
 export const logoutIconName = "logout";
 
 // @public (undocumented)
-export class MainContainerWillyWonka extends WillyWonka {
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<MainContainerWillyWonka, "clr-main-container", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<MainContainerWillyWonka, never>;
-}
-
-// @public (undocumented)
 export const mapIcon: IconShapeTuple;
 
 // @public (undocumented)
@@ -9004,17 +9040,6 @@ export const namespaceIcon: IconShapeTuple;
 export const namespaceIconName = "namespace";
 
 // @public (undocumented)
-export class NavDetectionOompaLoompa extends OompaLoompa {
-    constructor(cdr: ChangeDetectorRef, willyWonka: MainContainerWillyWonka, responsiveNavService: ResponsiveNavigationService);
-    // (undocumented)
-    get flavor(): number;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<NavDetectionOompaLoompa, "clr-header", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<NavDetectionOompaLoompa, [null, { optional: true; }, null]>;
-}
-
-// @public (undocumented)
 export const networkGlobeIcon: IconShapeTuple;
 
 // @public (undocumented)
@@ -9126,21 +9151,6 @@ export const onHolidayIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const onHolidayIconName = "on-holiday";
-
-// @public (undocumented)
-export abstract class OompaLoompa implements AfterContentChecked, OnDestroy {
-    protected constructor(cdr: ChangeDetectorRef, willyWonka: WillyWonka);
-    // (undocumented)
-    abstract get flavor(): any;
-    // (undocumented)
-    ngAfterContentChecked(): void;
-    // (undocumented)
-    ngOnDestroy(): void;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<OompaLoompa, never, never, {}, {}, never, never, true, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<OompaLoompa, never>;
-}
 
 // @public (undocumented)
 export const organizationIcon: IconShapeTuple;
@@ -9475,7 +9485,8 @@ export class ResponsiveNavigationService {
     // (undocumented)
     registerNav(navLevel: number): void;
     // (undocumented)
-    responsiveNavList: number[];
+    get responsiveNavList(): number[];
+    set responsiveNavList(value: number[]);
     // (undocumented)
     sendControlMessage(controlCode: string, navLevel: number): void;
     // (undocumented)
@@ -9770,17 +9781,6 @@ export const stepForwardIconName = "step-forward";
 export function stepnavLayoutAttribute(value: ClrWizardStepnavLayout | string): ClrWizardStepnavLayout;
 
 // @public (undocumented)
-export class StepperOompaLoompa extends OompaLoompa {
-    constructor(cdr: ChangeDetectorRef, willyWonka: StepperWillyWonka, ifExpandService: IfExpandService);
-    // (undocumented)
-    get flavor(): boolean;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<StepperOompaLoompa, "clr-stepper-panel, [clrStepButton]", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<StepperOompaLoompa, [null, { optional: true; }, null]>;
-}
-
-// @public (undocumented)
 export class StepperPanelModel extends CollapsiblePanelModel {
     // (undocumented)
     status: StepperPanelStatus;
@@ -9825,14 +9825,6 @@ export class StepperService extends CollapsiblePanelService {
     static ɵfac: i0.ɵɵFactoryDeclaration<StepperService, never>;
     // (undocumented)
     static ɵprov: i0.ɵɵInjectableDeclaration<StepperService>;
-}
-
-// @public (undocumented)
-export class StepperWillyWonka extends WillyWonka {
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<StepperWillyWonka, "form[clrStepper]", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<StepperWillyWonka, never>;
 }
 
 // @public (undocumented)
@@ -9912,14 +9904,6 @@ export const tabletIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const tabletIconName = "tablet";
-
-// @public (undocumented)
-export class TabsWillyWonka extends WillyWonka {
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<TabsWillyWonka, "clr-tabs", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<TabsWillyWonka, never>;
-}
 
 // @public (undocumented)
 export const tagIcon: IconShapeTuple;
@@ -10369,20 +10353,6 @@ export const wifiIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const wifiIconName = "wifi";
-
-// @public (undocumented)
-export class WillyWonka implements AfterViewChecked {
-    // (undocumented)
-    get chocolate(): Observable<void>;
-    // (undocumented)
-    disableChocolateCheck: boolean;
-    // (undocumented)
-    ngAfterViewChecked(): void;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<WillyWonka, never, never, {}, {}, never, never, true, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<WillyWonka, never>;
-}
 
 // @public (undocumented)
 export const windowCloseIcon: IconShapeTuple;
