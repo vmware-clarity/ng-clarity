@@ -2316,6 +2316,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     clrDgSingleActionableAriaLabel: string;
     // (undocumented)
     clrDgSingleSelectionAriaLabel: string;
+    collapseAllTreeRows(): void;
     columns: QueryList<ClrDatagridColumn<T>>;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
@@ -2343,8 +2344,13 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     //
     // (undocumented)
     expandableRows: ExpandableRowsCount;
+    expandAllTreeRows(): void;
     // (undocumented)
     _fixedColumnTemplate: TemplateRef<any>;
+    // @internal
+    _focusedElement(): HTMLElement | null;
+    // @internal
+    _focusLost(): boolean;
     // (undocumented)
     set identityFn(value: ClrDatagridItemsIdentityFunction<T>);
     // (undocumented)
@@ -2379,6 +2385,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // (undocumented)
     _projectedStickyColumns: ViewContainerRef;
     refresh: EventEmitter<ClrDatagridStateInterface<T>>;
+    reloadTreeChildren(item?: T): void;
     // (undocumented)
     resize(): void;
     // (undocumented)
@@ -2407,6 +2414,10 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     stickyHeaders: QueryList<ElementRef>;
     // (undocumented)
     toggleAllSelected($event: any): void;
+    // Warning: (ae-forgotten-export) The symbol "DatagridTreeService" needs to be exported by the entry point clr-angular.d.ts
+    //
+    // (undocumented)
+    protected readonly tree: DatagridTreeService<T>;
     updateDetailState(): void;
     // (undocumented)
     get virtualScroll(): ClrDatagridVirtualScrollDirective<any>;
@@ -2469,6 +2480,12 @@ export class ClrDatagridCell implements OnInit {
     // (undocumented)
     ngOnInit(): void;
     signpost: QueryList<ClrSignpost>;
+    get _treeId(): string;
+    // Warning: (ae-forgotten-export) The symbol "DatagridTreeNode" needs to be exported by the entry point clr-angular.d.ts
+    protected get treeNode(): DatagridTreeNode<unknown> | undefined;
+    // Warning: (ae-forgotten-export) The symbol "DatagridTreeRow" needs to be exported by the entry point clr-angular.d.ts
+    _treeRow: DatagridTreeRow | null;
+    protected get treeToggleLabelIds(): string;
     // (undocumented)
     get _view(): any;
     // (undocumented)
@@ -2521,6 +2538,8 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // (undocumented)
     static ngAcceptInputType_pinned: unknown;
     // (undocumented)
+    static ngAcceptInputType_treeToggle: unknown;
+    // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
     ngOnChanges(changes: SimpleChanges): void;
@@ -2555,12 +2574,14 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // (undocumented)
     titleContainer: ElementRef<HTMLElement>;
     togglePinned(): void;
+    get treeToggle(): boolean;
+    set treeToggle(value: boolean);
     // (undocumented)
     set updateFilterValue(newValue: string | [number, number]);
     // (undocumented)
     get _view(): any;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumn<any>, "clr-dg-column", never, { "filterStringPlaceholder": { "alias": "clrFilterStringPlaceholder"; "required": false; }; "filterNumberMaxPlaceholder": { "alias": "clrFilterNumberMaxPlaceholder"; "required": false; }; "filterNumberMinPlaceholder": { "alias": "clrFilterNumberMinPlaceholder"; "required": false; }; "disableUnsort": { "alias": "clrDgDisableUnsort"; "required": false; }; "pinnable": { "alias": "clrDgPinnable"; "required": false; }; "pinned": { "alias": "clrDgPinned"; "required": false; }; "colType": { "alias": "clrDgColType"; "required": false; }; "field": { "alias": "clrDgField"; "required": false; }; "sortBy": { "alias": "clrDgSortBy"; "required": false; }; "sortOrder": { "alias": "clrDgSortOrder"; "required": false; }; "updateFilterValue": { "alias": "clrFilterValue"; "required": false; }; }, { "sortOrderChange": "clrDgSortOrderChange"; "pinnedChange": "clrDgPinnedChange"; "filterValueChange": "clrFilterValueChange"; }, ["projectedFilter"], ["clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter", "*", "clr-dg-column-actions"], false, [{ directive: typeof i16.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumn<any>, "clr-dg-column", never, { "filterStringPlaceholder": { "alias": "clrFilterStringPlaceholder"; "required": false; }; "filterNumberMaxPlaceholder": { "alias": "clrFilterNumberMaxPlaceholder"; "required": false; }; "filterNumberMinPlaceholder": { "alias": "clrFilterNumberMinPlaceholder"; "required": false; }; "disableUnsort": { "alias": "clrDgDisableUnsort"; "required": false; }; "pinnable": { "alias": "clrDgPinnable"; "required": false; }; "pinned": { "alias": "clrDgPinned"; "required": false; }; "treeToggle": { "alias": "clrDgTreeToggle"; "required": false; }; "colType": { "alias": "clrDgColType"; "required": false; }; "field": { "alias": "clrDgField"; "required": false; }; "sortBy": { "alias": "clrDgSortBy"; "required": false; }; "sortOrder": { "alias": "clrDgSortOrder"; "required": false; }; "updateFilterValue": { "alias": "clrFilterValue"; "required": false; }; }, { "sortOrderChange": "clrDgSortOrderChange"; "pinnedChange": "clrDgPinnedChange"; "filterValueChange": "clrFilterValueChange"; }, ["projectedFilter"], ["clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter", "*", "clr-dg-column-actions"], false, [{ directive: typeof i16.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumn<any>, [null, null, null, null, null, null, null, null, { optional: true; }]>;
 }
@@ -2893,7 +2914,11 @@ export class ClrDatagridModule {
     // Warning: (ae-forgotten-export) The symbol "i47" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
+<<<<<<< HEAD
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatagridModule, [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnAction, typeof ClrDatagridColumnActions, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof ActionableOompaLoompa, typeof DatagridWillyWonka, typeof ExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridColumnToggle, typeof ClrDatagridColumnToggleButton], [typeof i2.CommonModule, typeof i5.CdkDragModule, typeof i5.CdkTrapFocusModule, typeof i1.ClrIcon, typeof i43.ClrInputModule, typeof i44.ClrRadioModule, typeof i45.ClrCheckboxModule, typeof i46.ClrNumberInputModule, typeof i47.ClrSelectModule, typeof i48.FormsModule, typeof i5.ClrLoadingModule, typeof i5.ClrConditionalModule, typeof i5.ClrOutsideClickModule, typeof i5.ClrExpandableAnimationModule, typeof i14.ClrSpinnerModule, typeof i16.ClrPopoverModuleNext, typeof i8.ClrDropdownModule, typeof i5.ClrKeyFocusModule, typeof ClrDatagridSingleSelectionValueAccessor, typeof i5.ClrIfExpanded], [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnAction, typeof ClrDatagridColumnActions, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof ActionableOompaLoompa, typeof DatagridWillyWonka, typeof ExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridSingleSelectionValueAccessor, typeof i5.ClrIfExpanded]>;
+=======
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatagridModule, [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnAction, typeof ClrDatagridColumnActions, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridTreeItems, typeof ClrDatagridVirtualTree, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridColumnToggle, typeof ClrDatagridColumnToggleButton, typeof ClrDatagridTreeToggleButton], [typeof i2.CommonModule, typeof i5.CdkDragModule, typeof i5.CdkTrapFocusModule, typeof i1.ClrIcon, typeof i43.ClrInputModule, typeof i44.ClrRadioModule, typeof i45.ClrCheckboxModule, typeof i46.ClrNumberInputModule, typeof i47.ClrSelectModule, typeof i48.FormsModule, typeof i5.ClrLoadingModule, typeof i5.ClrConditionalModule, typeof i5.ClrOutsideClickModule, typeof i5.ClrExpandableAnimationModule, typeof i14.ClrSpinnerModule, typeof i16.ClrPopoverModuleNext, typeof i8.ClrDropdownModule, typeof i5.ClrKeyFocusModule, typeof ClrDatagridSingleSelectionValueAccessor, typeof i5.ClrIfExpanded], [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnAction, typeof ClrDatagridColumnActions, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridTreeItems, typeof ClrDatagridVirtualTree, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridSingleSelectionValueAccessor, typeof i5.ClrIfExpanded]>;
+>>>>>>> 5720c369e (feat(datagrid): tree data (#2807))
 }
 
 // @public (undocumented)
@@ -2974,7 +2999,7 @@ export class ClrDatagridPlaceholder<T = any> {
 }
 
 // @public (undocumented)
-export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit {
+export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContentInit, AfterViewInit {
     constructor(selection: Selection_2<T>, rowActionService: RowActionService, globalExpandable: ExpandableRowsCount, expand: DatagridIfExpandService, detailService: DetailService, displayMode: DisplayModeService, vcr: ViewContainerRef, renderer: Renderer2, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, items: Items, columnsService: ColumnsService, document: any);
     // (undocumented)
     _calculatedCells: ViewContainerRef;
@@ -3018,7 +3043,6 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     expandAnimation: ClrExpandableAnimationDirective;
     // (undocumented)
     expandAnimationTrigger: boolean;
-    // (undocumented)
     get expanded(): boolean | string;
     set expanded(value: boolean | string);
     // (undocumented)
@@ -3038,9 +3062,15 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     // @internal (undocumented)
     itemChanges: ReplaySubject<T>;
     // (undocumented)
+    static ngAcceptInputType_treeExpandable: unknown;
+    // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
     ngAfterViewInit(): void;
+    // (undocumented)
+    ngDoCheck(): void;
+    // (undocumented)
+    ngOnChanges(changes: SimpleChanges): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -3076,9 +3106,15 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     // (undocumented)
     toggleExpand(event: MouseEvent): void;
     // (undocumented)
+    protected readonly tree: DatagridTreeService<T>;
+    // Warning: (ae-forgotten-export) The symbol "DatagridTreeRowCells" needs to be exported by the entry point clr-angular.d.ts
+    get _tree(): DatagridTreeRowCells<T> | null;
+    treeExpandable: boolean;
+    protected get treeIndeterminate(): boolean;
+    // (undocumented)
     get _view(): any;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRow<any>, "clr-dg-row", never, { "detailDisabled": { "alias": "clrDgDetailDisabled"; "required": false; }; "detailHidden": { "alias": "clrDgDetailHidden"; "required": false; }; "skeletonLoading": { "alias": "clrDgSkeletonLoading"; "required": false; }; "item": { "alias": "clrDgItem"; "required": false; }; "clrDgSelectable": { "alias": "clrDgSelectable"; "required": false; }; "selected": { "alias": "clrDgSelected"; "required": false; }; "expanded": { "alias": "clrDgExpanded"; "required": false; }; "clrDgDetailOpenLabel": { "alias": "clrDgDetailOpenLabel"; "required": false; }; "clrDgDetailCloseLabel": { "alias": "clrDgDetailCloseLabel"; "required": false; }; "clrDgRowSelectionLabel": { "alias": "clrDgRowSelectionLabel"; "required": false; }; }, { "selectedChanged": "clrDgSelectedChange"; "expandedChange": "clrDgExpandedChange"; }, ["dgCells"], ["clr-dg-action-overflow", "clr-dg-cell", "clr-dg-row-detail"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRow<any>, "clr-dg-row", never, { "detailDisabled": { "alias": "clrDgDetailDisabled"; "required": false; }; "detailHidden": { "alias": "clrDgDetailHidden"; "required": false; }; "skeletonLoading": { "alias": "clrDgSkeletonLoading"; "required": false; }; "treeExpandable": { "alias": "clrDgTreeExpandable"; "required": false; }; "item": { "alias": "clrDgItem"; "required": false; }; "clrDgSelectable": { "alias": "clrDgSelectable"; "required": false; }; "selected": { "alias": "clrDgSelected"; "required": false; }; "expanded": { "alias": "clrDgExpanded"; "required": false; }; "clrDgDetailOpenLabel": { "alias": "clrDgDetailOpenLabel"; "required": false; }; "clrDgDetailCloseLabel": { "alias": "clrDgDetailCloseLabel"; "required": false; }; "clrDgRowSelectionLabel": { "alias": "clrDgRowSelectionLabel"; "required": false; }; }, { "selectedChanged": "clrDgSelectedChange"; "expandedChange": "clrDgExpandedChange"; }, ["dgCells"], ["clr-dg-action-overflow", "clr-dg-cell", "clr-dg-row-detail"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridRow<any>, never>;
 }
@@ -3195,6 +3231,53 @@ export interface ClrDatagridStringFilterInterface<T> {
     accepts(item: T, search: string): boolean;
 }
 
+// @public
+export type ClrDatagridTreeChildrenFunction<T> = (item: T) => T[] | null | undefined | PromiseLike<T[] | null | undefined> | Observable<T[] | null | undefined>;
+
+// Warning: (ae-forgotten-export) The symbol "DatagridTreeRenderer" needs to be exported by the entry point clr-angular.d.ts
+//
+// @public
+export class ClrDatagridTreeItems<T> extends DatagridTreeRenderer<T> {
+    constructor();
+    cascadeSelection: boolean;
+    // (undocumented)
+    getChildren: ClrDatagridTreeChildrenFunction<T>;
+    // (undocumented)
+    static ngAcceptInputType_cascadeSelection: unknown;
+    // (undocumented)
+    static ngTemplateContextGuard<T>(_dir: ClrDatagridTreeItems<T>, _ctx: unknown): _ctx is NgForOfContext<T>;
+    // Warning: (ae-forgotten-export) The symbol "FocusedCell" needs to be exported by the entry point clr-angular.d.ts
+    //
+    // (undocumented)
+    protected render(items: T[], focus: FocusedCell<T> | null, tabStop: T | undefined): void;
+    // (undocumented)
+    roots: T[];
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridTreeItems<any>, "[clrDgTreeItems][clrDgTreeItemsOf]", never, { "roots": { "alias": "clrDgTreeItemsOf"; "required": false; }; "getChildren": { "alias": "clrDgTreeItemsGetChildren"; "required": false; }; "cascadeSelection": { "alias": "clrDgTreeItemsCascadeSelection"; "required": false; }; }, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridTreeItems<any>, never>;
+}
+
+// @public
+export class ClrDatagridTreeToggleButton implements OnDestroy {
+    // (undocumented)
+    protected actionId: string;
+    // (undocumented)
+    protected commonStrings: ClrCommonStringsService;
+    labelIds: string;
+    ngOnDestroy(): void;
+    // (undocumented)
+    node: DatagridTreeNode<unknown>;
+    // (undocumented)
+    protected onFocus(): void;
+    // (undocumented)
+    protected toggle(event: MouseEvent): void;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridTreeToggleButton, "button[clrDgTreeToggleButton]", never, { "node": { "alias": "clrDgTreeToggleButton"; "required": true; }; "labelIds": { "alias": "labelIds"; "required": true; }; }, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridTreeToggleButton, never>;
+}
+
 // @public (undocumented)
 export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
     constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items<T>, ngZone: NgZone, renderer2: Renderer2, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, injector: EnvironmentInjector);
@@ -3259,6 +3342,26 @@ export interface ClrDatagridVirtualScrollRangeInterface<T> {
     skip: number;
     // (undocumented)
     total: number;
+}
+
+// @public
+export class ClrDatagridVirtualTree<T> extends DatagridTreeRenderer<T> {
+    cascadeSelection: boolean;
+    set dataRange(range: ClrDatagridVirtualScrollRangeInterface<T>);
+    // (undocumented)
+    getChildren: ClrDatagridTreeChildrenFunction<T>;
+    // (undocumented)
+    static ngAcceptInputType_cascadeSelection: unknown;
+    // (undocumented)
+    ngOnDestroy(): void;
+    protected render(items: T[], focus: FocusedCell<T> | null, tabStop: T | undefined): void;
+    renderedRootsChange: EventEmitter<ListRange>;
+    // (undocumented)
+    roots: T[];
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridVirtualTree<any>, "[ClrVirtualScroll][clrVirtualTreeOf],[clrVirtualScroll][clrVirtualTreeOf],[ClrVirtualScroll][clrVirtualTreeDataRange],[clrVirtualScroll][clrVirtualTreeDataRange]", never, { "roots": { "alias": "clrVirtualTreeOf"; "required": false; }; "getChildren": { "alias": "clrVirtualTreeGetChildren"; "required": false; }; "cascadeSelection": { "alias": "clrVirtualTreeCascadeSelection"; "required": false; }; "dataRange": { "alias": "clrVirtualTreeDataRange"; "required": false; }; }, { "renderedRootsChange": "clrVirtualTreeRenderedRootsChange"; }, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridVirtualTree<any>, never>;
 }
 
 // @public (undocumented)
