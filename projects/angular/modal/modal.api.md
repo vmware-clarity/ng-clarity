@@ -4,8 +4,6 @@
 
 ```ts
 
-import { AfterContentChecked } from '@angular/core';
-import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
 import { AnimationCallbackEvent } from '@angular/core';
 import { CdkDrag } from '@angular/cdk/drag-drop';

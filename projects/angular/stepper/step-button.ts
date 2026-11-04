@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, HostBinding, HostListener, Input, OnInit } from '@angular/core';
+import { Directive, HostBinding, HostListener, Input, OnInit, Optional } from '@angular/core';
 
 import { StepperService } from './providers/stepper.service';
 import { ClrStepperPanel } from './stepper-panel';
@@ -31,9 +31,13 @@ export class ClrStepButton implements OnInit {
   @HostBinding('class.btn-link') previousButton = false;
 
   constructor(
-    private clrStep: ClrStepperPanel,
-    private stepperService: StepperService
-  ) {}
+    @Optional() private clrStep: ClrStepperPanel,
+    @Optional() private stepperService: StepperService
+  ) {
+    if (!clrStep || !stepperService) {
+      throw new Error('clrStepButton should only be used inside of clr-stepper-panel within clrStepper');
+    }
+  }
 
   ngOnInit() {
     this.submitButton = this.type === ClrStepButtonType.Submit;

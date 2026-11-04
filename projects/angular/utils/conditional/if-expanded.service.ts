@@ -5,18 +5,34 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { ClrLoadingState, LoadingListener } from '@clr/angular/utils/loading';
 import { Observable, Subject } from 'rxjs';
 
 @Injectable()
 export class IfExpandService implements LoadingListener {
-  expandable = 0;
-  hasExpandTemplate = false;
-
-  protected _loading = false;
-  protected _expanded = false;
   protected _expandChange = new Subject<boolean>();
+
+  // State is held in signals so that any view reading it through the getters below is refreshed by Angular
+  // when it changes, including when it changes after that view was checked (no manual change detection needed).
+  private readonly _expandableSignal = signal(0);
+  private readonly _hasExpandTemplateSignal = signal(false);
+  private readonly _loadingSignal = signal(false);
+  private readonly _expandedSignal = signal(false);
+
+  get expandable(): number {
+    return this._expandableSignal();
+  }
+  set expandable(value: number) {
+    this._expandableSignal.set(value);
+  }
+
+  get hasExpandTemplate(): boolean {
+    return this._hasExpandTemplateSignal();
+  }
+  set hasExpandTemplate(value: boolean) {
+    this._hasExpandTemplateSignal.set(value);
+  }
 
   get loading(): boolean {
     return this._loading;
@@ -41,6 +57,27 @@ export class IfExpandService implements LoadingListener {
 
   get expandChange(): Observable<boolean> {
     return this._expandChange.asObservable();
+  }
+
+  /**
+   * Raw loading state, kept as a protected accessor for subclasses. Backed by a signal.
+   */
+  protected get _loading(): boolean {
+    return this._loadingSignal();
+  }
+  protected set _loading(value: boolean) {
+    this._loadingSignal.set(value);
+  }
+
+  /**
+   * Raw expanded state, kept as a protected accessor for subclasses (e.g. `DatagridIfExpandService`).
+   * Backed by a signal.
+   */
+  protected get _expanded(): boolean {
+    return this._expandedSignal();
+  }
+  protected set _expanded(value: boolean) {
+    this._expandedSignal.set(value);
   }
 
   toggle() {

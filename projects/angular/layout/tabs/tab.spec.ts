@@ -9,7 +9,6 @@ import { ChangeDetectionStrategy, Component, ViewChild, ViewContainerRef } from 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { IfActiveService } from '@clr/angular/utils';
 
-import { TabsWillyWonka } from './chocolate/tabs-willy-wonka';
 import { TabsService } from './providers/tabs.service';
 import { ClrTab } from './tab';
 import { TABS_ID_PROVIDER } from './tabs-id.provider';
@@ -54,7 +53,7 @@ describe('Tab', () => {
     TestBed.configureTestingModule({
       imports: [ClrTabsModule],
       declarations: [TestComponent, TestWrapper],
-      providers: [IfActiveService, TabsService, TabsWillyWonka, TABS_ID_PROVIDER],
+      providers: [IfActiveService, TabsService, TABS_ID_PROVIDER],
     });
     fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();

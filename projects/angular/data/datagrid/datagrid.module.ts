@@ -46,9 +46,6 @@ import {
 
 import { DatagridNumericFilter } from './built-in/filters/datagrid-numeric-filter';
 import { DatagridStringFilter } from './built-in/filters/datagrid-string-filter';
-import { ActionableOompaLoompa } from './chocolate/actionable-oompa-loompa';
-import { DatagridWillyWonka } from './chocolate/datagrid-willy-wonka';
-import { ExpandableOompaLoompa } from './chocolate/expandable-oompa-loompa';
 import { ClrDatagrid } from './datagrid';
 import { ClrDatagridActionBar } from './datagrid-action-bar';
 import { ClrDatagridActionOverflow } from './datagrid-action-overflow';
@@ -75,7 +72,10 @@ import { ClrDatagridRow } from './datagrid-row';
 import { ClrDatagridRowDetail } from './datagrid-row-detail';
 import { ClrDatagridSelectionCellDirective } from './datagrid-selection-cell.directive';
 import { ClrDatagridSingleSelectionValueAccessor } from './datagrid-single-selection.directive';
+import { ClrDatagridTreeItems } from './datagrid-tree-items';
+import { ClrDatagridTreeToggleButton } from './datagrid-tree-toggle-button';
 import { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
+import { ClrDatagridVirtualTree } from './datagrid-virtual-tree.directive';
 import { DatagridCellRenderer } from './render/cell-renderer';
 import { DatagridHeaderRenderer } from './render/header-renderer';
 import { DatagridMainRenderer } from './render/main-renderer';
@@ -102,6 +102,8 @@ export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
   ClrDatagridFooter,
   ClrDatagridHideableColumn,
   ClrDatagridItems,
+  ClrDatagridTreeItems,
+  ClrDatagridVirtualTree,
   ClrDatagridPageSize,
   ClrDatagridPagination,
   ClrDatagridPlaceholder,
@@ -122,17 +124,16 @@ export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
   DatagridRowDetailRenderer,
   DatagridRowRenderer,
 
-  // Chocolate
-  ActionableOompaLoompa,
-  DatagridWillyWonka,
-  ExpandableOompaLoompa,
-
   // Built-in shortcuts
   DatagridNumericFilter,
   DatagridStringFilter,
 ];
 
-const CLR_DATAGRID_INTERNAL_DIRECTIVES = [ClrDatagridColumnToggle, ClrDatagridColumnToggleButton];
+const CLR_DATAGRID_INTERNAL_DIRECTIVES = [
+  ClrDatagridColumnToggle,
+  ClrDatagridColumnToggleButton,
+  ClrDatagridTreeToggleButton,
+];
 const CLR_DATAGRID_STANDALONE_DIRECTIVES = [ClrDatagridSingleSelectionValueAccessor];
 const CLR_DATAGRID_SHARED_DIRECTIVES = [ClrIfExpanded];
 

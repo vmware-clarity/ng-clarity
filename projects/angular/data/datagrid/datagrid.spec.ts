@@ -331,7 +331,7 @@ class ExpandedOnInitTest {
   changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
-class ChocolateClrDgItemsTest {
+class LateRowFeaturesClrDgItemsTest {
   items = [1, 2, 3];
   action = false;
   expandable = false;
@@ -364,7 +364,7 @@ class ChocolateClrDgItemsTest {
   changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
-class ChocolateNgForTest {
+class LateRowFeaturesForTest {
   items = [
     { id: 1, value: 1 },
     { id: 2, value: 2 },
@@ -817,7 +817,7 @@ export default function (): void {
           ]);
         });
 
-        it('emits early enough to avoid chocolate errors on the loading input', function () {
+        it('emits early enough to avoid expression changed errors on the loading input', function () {
           context.testComponent.fakeLoad = true;
           const page: Page = context.getClarityProvider(Page);
           page.current = 2;
@@ -1428,37 +1428,49 @@ export default function (): void {
       });
     });
 
-    describe('Chocolate', function () {
+    describe('Rows becoming actionable or expandable late', function () {
+      function expectFixedColumns(context: TestContext<ClrDatagrid, any>, actions: boolean, expandable: boolean) {
+        const header = context.clarityElement.querySelector('.datagrid-header');
+        expect(!!header.querySelector('.datagrid-row-actions')).toBe(actions);
+        expect(!!header.querySelector('.datagrid-expandable-caret')).toBe(expandable);
+      }
+
       describe('clrDgItems', function () {
-        it("doesn't taunt with chocolate on actionable rows", function () {
-          const context = this.create(ClrDatagrid, ChocolateClrDgItemsTest);
+        it('renders the action column when a row gets an action overflow', function () {
+          const context = this.create(ClrDatagrid, LateRowFeaturesClrDgItemsTest);
+          expectFixedColumns(context, false, false);
           context.testComponent.action = true;
           expect(() => context.detectChanges()).not.toThrow();
+          expectFixedColumns(context, true, false);
         });
 
-        it("doesn't taunt with chocolate on expandable rows", function () {
-          const context = this.create(ClrDatagrid, ChocolateClrDgItemsTest);
+        it('renders the expand column when a row gets a row detail', function () {
+          const context = this.create(ClrDatagrid, LateRowFeaturesClrDgItemsTest);
           context.testComponent.expandable = true;
           expect(() => context.detectChanges()).not.toThrow();
+          expectFixedColumns(context, false, true);
         });
       });
 
       describe('ngFor', function () {
-        it("doesn't taunt with chocolate on actionable rows", function () {
-          const context = this.create(ClrDatagrid, ChocolateNgForTest);
+        it('renders the action column when a row gets an action overflow', function () {
+          const context = this.create(ClrDatagrid, LateRowFeaturesForTest);
+          expectFixedColumns(context, false, false);
           context.testComponent.action = true;
           expect(() => context.detectChanges()).not.toThrow();
+          expectFixedColumns(context, true, false);
         });
 
-        it("doesn't taunt with chocolate on expandable rows", function () {
-          const context = this.create(ClrDatagrid, ChocolateNgForTest);
+        it('renders the expand column when a row gets a row detail', function () {
+          const context = this.create(ClrDatagrid, LateRowFeaturesForTest);
           context.testComponent.expandable = true;
           expect(() => context.detectChanges()).not.toThrow();
+          expectFixedColumns(context, false, true);
         });
       });
 
       describe('column hidden by default', function () {
-        it("doesn't taunt with chocolate on columns hidden by default", function () {
+        it('renders columns hidden by default without errors', function () {
           const context = this.create(ClrDatagrid, HiddenColumnTest);
           expect(() => context.detectChanges()).not.toThrow();
         });
