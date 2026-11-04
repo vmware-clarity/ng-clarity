@@ -41,7 +41,22 @@ export class ClrCard {
     static ngAcceptInputType_footerCollapsible: unknown;
     toggle(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCard, "clr-card", never, { "footerCollapsible": { "alias": "clrCardFooterCollapsible"; "required": false; }; "collapsible": { "alias": "clrCardCollapsible"; "required": false; }; "expanded": { "alias": "clrCardExpanded"; "required": false; }; }, { "expandedChange": "clrCardExpandedChange"; }, never, ["clr-card-header", "*", "clr-card-footer"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCard, "clr-card", never, {
+        "footerCollapsible": {
+            "alias": "clrCardFooterCollapsible";
+            "required": false;
+        };
+        "collapsible": {
+            "alias": "clrCardCollapsible";
+            "required": false;
+        };
+        "expanded": {
+            "alias": "clrCardExpanded";
+            "required": false;
+        };
+    }, {
+        "expandedChange": "clrCardExpandedChange";
+    }, never, ["clr-card-header", "*", "clr-card-footer"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCard, never>;
 }
@@ -67,7 +82,12 @@ export class ClrCardBodyTitle {
     // Warning: (ae-forgotten-export) The symbol "HeadingLevel" needs to be exported by the entry point clr-angular-card.d.ts
     explicitHeadingLevel: HeadingLevel;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCardBodyTitle, "clr-card-body-title", never, { "explicitHeadingLevel": { "alias": "clrHeadingLevel"; "required": false; }; }, {}, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCardBodyTitle, "clr-card-body-title", never, {
+        "explicitHeadingLevel": {
+            "alias": "clrHeadingLevel";
+            "required": false;
+        };
+    }, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCardBodyTitle, never>;
 }
@@ -99,9 +119,16 @@ export class ClrCardHeader {
     protected readonly commonStrings: ClrCommonStringsService;
     explicitHeadingLevel: HeadingLevel;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCardHeader, "clr-card-header", never, { "explicitHeadingLevel": { "alias": "clrHeadingLevel"; "required": false; }; }, {}, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCardHeader, "clr-card-header", never, {
+        "explicitHeadingLevel": {
+            "alias": "clrHeadingLevel";
+            "required": false;
+        };
+    }, {}, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrCardHeader, [{ optional: true; }, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrCardHeader, [{
+        optional: true;
+    }, null]>;
 }
 
 // @public (undocumented)
@@ -119,7 +146,12 @@ export class ClrCardMediaBlock {
     // (undocumented)
     static ngAcceptInputType_clrCardMediaWrap: unknown;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCardMediaBlock, "clr-card-media-block", never, { "clrCardMediaWrap": { "alias": "clrCardMediaWrap"; "required": false; }; }, {}, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCardMediaBlock, "clr-card-media-block", never, {
+        "clrCardMediaWrap": {
+            "alias": "clrCardMediaWrap";
+            "required": false;
+        };
+    }, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCardMediaBlock, never>;
 }

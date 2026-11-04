@@ -23,7 +23,7 @@ import { FormGroupDirective } from '@angular/forms';
 import { FormGroupName } from '@angular/forms';
 import * as i0 from '@angular/core';
 import * as i6 from '@angular/common';
-import * as i7 from '@angular/forms';
+import * as i7_2 from '@angular/forms';
 import { InjectionToken } from '@angular/core';
 import { Injector } from '@angular/core';
 import { NgForm } from '@angular/forms';
@@ -62,7 +62,7 @@ export class AppfxStepperModule {
     // Warning: (ae-forgotten-export) The symbol "i5_2" needs to be exported by the entry point clr-addons-stepper.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxStepperModule, [typeof StepperComponent], [typeof i2.AppfxPropertyViewModule, typeof i3.AppfxA11yModule, typeof i4.AppfxWorkflowCoreModule, typeof i5_2.ClrStepperModule, typeof i6.CommonModule, typeof i7.FormsModule, typeof i7.ReactiveFormsModule], [typeof StepperComponent]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxStepperModule, [typeof StepperComponent], [typeof i2.AppfxPropertyViewModule, typeof i3.AppfxA11yModule, typeof i4.AppfxWorkflowCoreModule, typeof i5_2.ClrStepperModule, typeof i6.CommonModule, typeof i7_2.FormsModule, typeof i7_2.ReactiveFormsModule], [typeof StepperComponent]>;
 }
 
 // @public
@@ -134,7 +134,36 @@ class StepperComponent implements OnDestroy, AfterViewInit, AfterContentInit {
     // (undocumented)
     readonly workflowStrings: WorkflowStrings;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<StepperComponent, "appfx-stepper", never, { "loading": { "alias": "loading"; "required": false; }; "usePrimaryNextButton": { "alias": "usePrimaryNextButton"; "required": false; }; "showBackButton": { "alias": "showBackButton"; "required": false; }; "showCancelButton": { "alias": "showCancelButton"; "required": false; }; "steps": { "alias": "steps"; "required": false; }; "wizardModel": { "alias": "wizardModel"; "required": false; }; }, { "onModelChange": "onModelChange"; "onFinish": "onFinish"; "onCancel": "onCancel"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<StepperComponent, "appfx-stepper", never, {
+        "loading": {
+            "alias": "loading";
+            "required": false;
+        };
+        "usePrimaryNextButton": {
+            "alias": "usePrimaryNextButton";
+            "required": false;
+        };
+        "showBackButton": {
+            "alias": "showBackButton";
+            "required": false;
+        };
+        "showCancelButton": {
+            "alias": "showCancelButton";
+            "required": false;
+        };
+        "steps": {
+            "alias": "steps";
+            "required": false;
+        };
+        "wizardModel": {
+            "alias": "wizardModel";
+            "required": false;
+        };
+    }, {
+        "onModelChange": "onModelChange";
+        "onFinish": "onFinish";
+        "onCancel": "onCancel";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<StepperComponent, never>;
 }
@@ -156,7 +185,7 @@ export class StepperStateService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<StepperStateService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<StepperStateService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public (undocumented)
@@ -179,7 +208,7 @@ export class SummaryService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<SummaryService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<SummaryService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // (No @packageDocumentation comment for this package)
