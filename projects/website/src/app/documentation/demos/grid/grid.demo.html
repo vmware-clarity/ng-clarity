@@ -317,14 +317,20 @@
     </p>
     <app-code-snippet [code]="containerQueriesCss" language="css"></app-code-snippet>
     <p cds-text="body" class="clr-mt-16px">With Sass, configure the variable before loading Clarity:</p>
-    <app-code-snippet [code]="containerQueriesScss" language="css"></app-code-snippet>
+    <app-code-snippet [code]="containerQueriesScss" language="scss"></app-code-snippet>
     <p cds-text="body" class="clr-mt-16px">
       This covers the grid columns, offsets and ordering, the grid display, flex, float and visibility utilities, and
       the <code cds-text="code">cds-layout</code> utilities with a breakpoint (for example
-      <code cds-text="code">cols&#64;md:6</code>). Component styles keep following the viewport. Without a
-      <code cds-text="code">clr-layout</code> container ancestor, every breakpoint is off and the smallest layout
-      applies.
+      <code cds-text="code">cols&#64;md:6</code>). Component styles keep following the viewport.
     </p>
+    <clr-alert clrAlertType="warning" [clrAlertClosable]="false" class="clr-mt-16px">
+      <clr-alert-item>
+        <span class="alert-text">
+          Breakpoints apply only inside a <code cds-text="code">clr-layout</code> container. Content without one, such
+          as overlays rendered outside the container element, always gets the smallest layout.
+        </span>
+      </clr-alert-item>
+    </clr-alert>
   </app-doc-tab>
 
   <app-doc-tab tab="overview">

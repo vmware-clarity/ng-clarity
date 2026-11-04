@@ -148,6 +148,7 @@ $opp-directions: (
     @content;
   }
 }
+
 // Anchors a global rule on `body` and, when the CSS is loaded inside a shadow root, on the
 // shadow host. `:where(:host)` adds no specificity and `:not(html)` adds back the type
 // selector that `body` adds, so both branches have the same specificity.
@@ -157,6 +158,7 @@ $opp-directions: (
     @content;
   }
 }
+
 // Wraps breakpoint content in a viewport media query or, with `$clr-breakpoint-query: container`,
 // in a query on the nearest `clr-layout` container.
 @mixin breakpoint-query($condition) {
