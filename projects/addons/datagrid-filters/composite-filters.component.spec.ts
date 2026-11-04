@@ -16,6 +16,7 @@ import { ClrCheckboxModule, ClrCombobox, ClrComboboxModule, ClrInputModule, ClrS
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrPopoverModuleNext } from '@clr/angular/popover/common';
 import { ClrSignpostModule } from '@clr/angular/popover/signpost';
+import { ClrTooltipModule } from '@clr/angular/popover/tooltip';
 
 import { EnumFilterComponent } from './advanced-filters/enum-filter.component';
 import { FilterFormComponent } from './advanced-filters/filter-form.component';
@@ -98,6 +99,7 @@ describe('CompositeFiltersComponent', () => {
         ClrSelectModule,
         ClrSignpostModule,
         ClrPopoverModuleNext,
+        ClrTooltipModule,
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
@@ -200,7 +202,7 @@ describe('CompositeFiltersComponent', () => {
     this.fixture.detectChanges();
     await this.fixture.whenStable();
     this.fixture.detectChanges();
-    expect(trigger.textContent.trim()).toBe('Contains: Demo');
+    expect(trigger.textContent.trim()).toBe(`${stringProperty.displayName}: Contains Demo`);
     expect(trigger.classList.contains('filter-pill-active')).toBeTrue();
     expect(this.component.propertyFilters[0].criteria[0].value).toBe('Demo');
     trigger.click();

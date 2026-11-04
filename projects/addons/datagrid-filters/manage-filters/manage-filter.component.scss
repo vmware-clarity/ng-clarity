@@ -9,6 +9,14 @@
   max-width: 100%;
   padding: 0;
   margin: 0;
+
+  .clr-tooltip-container {
+    display: inline-flex;
+    max-width: 100%;
+
+    // Pass the label radius through to the pill button hover background.
+    border-radius: inherit;
+  }
 }
 
 .filter-pill {
@@ -44,6 +52,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.filter-pill-condition {
+  font-weight: var(--cds-alias-typography-font-weight-bold);
 }
 
 .filter-pill-count {

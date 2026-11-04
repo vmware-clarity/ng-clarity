@@ -29,6 +29,7 @@ import {
 } from '@clr/angular/icon';
 import { ClrPopoverModuleNext } from '@clr/angular/popover/common';
 import { ClrSignpostModule } from '@clr/angular/popover/signpost';
+import { ClrTooltipModule } from '@clr/angular/popover/tooltip';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
 
 import { DateTimeFilterComponent } from './advanced-filters/date-time-filter.component';
@@ -80,6 +81,7 @@ export function datagridFiltersUserServiceFactory(existing: DatagridFiltersUserS
     ClrSignpostModule,
     ClrPopoverModuleNext,
     ClrSpinnerModule,
+    ClrTooltipModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

@@ -67,7 +67,7 @@
       </div>
     </div>
 
-    <div cds-layout="m-t:xs">
+    <div cds-layout="m-t:xs" class="filter-options">
       <clr-checkbox-container *ngIf="!filterProperty.singleSelect" class="enum-options">
         <clr-checkbox-wrapper *ngIf="filterProperty.enableSelectAll" cds-layout="m-b:xs">
           <input type="checkbox" clrCheckbox formControlName="selectAll" (change)="onSelectAllChange()" />

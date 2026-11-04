@@ -5,25 +5,36 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 <clr-label class="filter-pill-label" [clrColor]="active ? 'info' : ''">
-  <button
-    type="button"
-    class="filter-pill"
-    [class.filter-pill-active]="active"
-    clrPopoverOrigin
-    clrPopoverOpenCloseButton
-    [attr.aria-label]="editFilterAriaLabel"
-    [attr.aria-expanded]="open"
-    [attr.aria-controls]="popoverId"
-    [title]="editFilterAriaLabel"
-  >
-    <span class="filter-pill-text">{{ pillText }}</span>
-    @if (additionalConditions > 0) {
-      <clr-badge class="filter-pill-count" clrColor="info" clrType="solid" aria-hidden="true"
-        >+{{ additionalConditions }}</clr-badge
-      >
+  <clr-tooltip>
+    <button
+      #pillButton
+      type="button"
+      class="filter-pill"
+      [class.filter-pill-active]="active"
+      clrTooltipTrigger
+      [attr.aria-label]="editFilterAriaLabel"
+      [attr.aria-expanded]="open"
+      [attr.aria-controls]="popoverId"
+      (click)="togglePopover($event)"
+    >
+      <span class="filter-pill-text">
+        @if (active) {
+          {{ managedProperty.displayName }}: <span class="filter-pill-condition">{{ pillCondition }}</span>
+        } @else {
+          {{ managedProperty.displayName }}
+        }
+      </span>
+      @if (additionalConditions > 0) {
+        <clr-badge class="filter-pill-count" clrColor="info" clrType="solid" aria-hidden="true"
+          >+{{ additionalConditions }}</clr-badge
+        >
+      }
+      <cds-icon shape="angle" direction="down" size="16" aria-hidden="true"></cds-icon>
+    </button>
+    @if (!open) {
+      <clr-tooltip-content clrPosition="top-right" clrSize="lg">{{ editFilterAriaLabel }}</clr-tooltip-content>
     }
-    <cds-icon shape="angle" direction="down" size="16" aria-hidden="true"></cds-icon>
-  </button>
+  </clr-tooltip>
 </clr-label>
 <div
   class="filter-popover"

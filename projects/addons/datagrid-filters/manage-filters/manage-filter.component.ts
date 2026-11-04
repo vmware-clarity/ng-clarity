@@ -5,7 +5,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import {
   ClrPopoverHostDirective,
   ClrPopoverPosition,
@@ -81,6 +91,17 @@ export class ManageFilterComponent implements OnInit, OnChanges {
     private popoverService: ClrPopoverService
   ) {}
 
+  /**
+   * The pill button sits inside clr-tooltip, which provides its own popover service.
+   * Register it as the filter popover origin here instead of using clrPopoverOrigin.
+   */
+  @ViewChild('pillButton', { static: true })
+  set pillButton(button: ElementRef<HTMLButtonElement>) {
+    if (button) {
+      this.popoverService.origin = button;
+    }
+  }
+
   get open(): boolean {
     return this.popoverService.open;
   }
@@ -99,7 +120,13 @@ export class ManageFilterComponent implements OnInit, OnChanges {
     if (!this.active) {
       return this.managedProperty.displayName;
     }
-    return this.displayFilterValue(0, true);
+    // FIELD_NAME: CONDITION VALUE, e.g. "VM Name: Contains linux". The +N badge is rendered separately.
+    return this.managedProperty.displayName + ': ' + this.pillCondition;
+  }
+
+  /** The CONDITION VALUE part of an active pill, e.g. "Contains linux". Empty for an inactive pill. */
+  get pillCondition(): string {
+    return this.active ? this.displayFilterValue(0, true) : '';
   }
 
   ngOnChanges(): void {
@@ -125,6 +152,10 @@ export class ManageFilterComponent implements OnInit, OnChanges {
       this.userProperty = this.castUserProperty();
     }
     this.updateDisplayValues();
+  }
+
+  togglePopover(event: MouseEvent): void {
+    this.popoverService.toggleWithEvent(event);
   }
 
   removeFilter(): void {
@@ -175,9 +206,12 @@ export class ManageFilterComponent implements OnInit, OnChanges {
     }
   }
 
+  /**
+   * @param compact Pill format without the colon after the operator: "Contains linux" instead of "Contains: linux".
+   */
   private displayFilterValue(index: number, compact = false): string {
     if (this.isDateTimeProperty(this.managedProperty)) {
-      return this.displayDateTimeFilter();
+      return this.displayDateTimeFilter(compact);
     }
     if (this.propertyFilter.criteria[index].operator === ComparisonOperator.IsEmpty) {
       return this.operatorDisplayName(this.propertyFilter.criteria[index].operator);
@@ -193,21 +227,20 @@ export class ManageFilterComponent implements OnInit, OnChanges {
         ' ' +
         this.filterStrings.getUnitDisplayName(property.selectedUnit?.[index] ?? property.unit);
     }
-    return compact && this.propertyFilter.criteria[index].operator === ComparisonOperator.Equals
-      ? String(value)
-      : this.operatorDisplayName(this.propertyFilter.criteria[index].operator) + ': ' + value;
+    return this.operatorDisplayName(this.propertyFilter.criteria[index].operator) + (compact ? ' ' : ': ') + value;
   }
 
-  private displayDateTimeFilter(): string {
+  private displayDateTimeFilter(compact = false): string {
+    const separator = compact ? ' ' : ': ';
     const operator: ComparisonOperator = this.propertyFilter.criteria[0].filterableProperty.selectedOperator;
     if (operator === ComparisonOperator.CustomRange) {
       const displayValue: string =
         this.filterStrings.fromLabel +
-        ': ' +
+        separator +
         this.formatDateTimeValue(this.propertyFilter.criteria[0].filterableProperty.selectedValue) +
         ' ' +
         this.filterStrings.toLabel +
-        ': ' +
+        separator +
         this.formatDateTimeValue(this.propertyFilter.criteria[0].filterableProperty.selectedValueTo);
       return displayValue;
     } else if (this.isNoDisplayValueOperator(operator)) {
@@ -217,7 +250,7 @@ export class ManageFilterComponent implements OnInit, OnChanges {
       const timeSpan: TimeSpan = this.propertyFilter.criteria[0].filterableProperty.selectedTimeSpan;
       return (
         this.operatorDisplayName(operator) +
-        ': ' +
+        separator +
         timeSpanValue +
         ' ' +
         this.filterStrings.getTimeSpanDisplayName(timeSpan)
@@ -226,7 +259,7 @@ export class ManageFilterComponent implements OnInit, OnChanges {
       const filterValue: string = this.formatDateTimeValue(
         this.propertyFilter.criteria[0].filterableProperty.selectedValue
       );
-      return this.operatorDisplayName(operator) + ': ' + filterValue;
+      return this.operatorDisplayName(operator) + separator + filterValue;
     }
   }
 

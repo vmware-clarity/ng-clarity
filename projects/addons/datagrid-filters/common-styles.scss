@@ -45,11 +45,12 @@
   margin-bottom: 0;
 }
 
-.enum-filter-wrapper,
-.user-filter-wrapper {
+.filter-options {
   // Keep focus outlines inside the scroll area without moving the controls.
   padding: var(--cds-global-space-4);
-  margin: calc(-1 * var(--cds-global-space-4));
+  // The top margin is left to the cds-layout spacing on the element.
+  margin-inline: calc(-1 * var(--cds-global-space-4));
+  margin-bottom: calc(-1 * var(--cds-global-space-4));
   scroll-padding: var(--cds-global-space-4);
 }
 
@@ -60,6 +61,11 @@
     padding: var(--cds-global-space-4);
     margin: calc(-1 * var(--cds-global-space-4));
     scroll-padding: var(--cds-global-space-4);
+  }
+
+  // When zoomed the whole form scrolls, so the options list must not add a second scroller.
+  .filter-options {
+    overflow-y: visible;
   }
 }
 
@@ -73,12 +79,22 @@ select {
   min-width: min(16.5rem, calc(100vw - 2 * var(--clr-base-horizontal-offset-l)));
   max-width: min(24rem, calc(100vw - 2 * var(--clr-base-horizontal-offset-l)));
   max-height: 400px;
-  overflow: auto;
+  // The popover does not scroll. Its height limit is passed down to the editor,
+  // so only the inner scroll region (e.g. the options list) scrolls.
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   padding: var(--clr-base-vertical-offset-l) var(--clr-base-horizontal-offset-l);
   background: var(--cds-alias-object-container-background);
   border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
   border-radius: var(--clr-base-border-radius-s);
   box-shadow: var(--cds-alias-object-shadow-200);
+
+  > * {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
 }
 
 .filter-field {

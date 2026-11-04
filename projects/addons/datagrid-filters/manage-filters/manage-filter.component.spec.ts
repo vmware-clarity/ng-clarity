@@ -152,6 +152,25 @@ describe('ManageFilterComponent', () => {
     this.fixture.detectChanges();
     expect(this.component.open).toBeTrue();
   });
+  it('describes the pill with a clr-tooltip instead of a title', function (this: ThisTest) {
+    this.component.propertyFilter = { operator: LogicalOperator.And, criteria: [stringPredicate1] };
+    this.fixture.detectChanges();
+
+    const trigger: HTMLButtonElement = this.fixture.nativeElement.querySelector('.filter-pill');
+    expect(trigger.hasAttribute('title')).toBeFalse();
+    expect(trigger.hasAttribute('clrTooltipTrigger')).toBeTrue();
+
+    trigger.dispatchEvent(new Event('focus'));
+    this.fixture.detectChanges();
+    const tooltip = document.querySelector<HTMLElement>('.tooltip-content');
+    expect(tooltip.textContent.trim()).toBe(this.component.editFilterAriaLabel);
+    expect(trigger.getAttribute('aria-describedby')).toBe(tooltip.id);
+
+    trigger.click();
+    this.fixture.detectChanges();
+    expect(this.component.open).toBeTrue();
+    expect(document.querySelector('.tooltip-content')).toBeNull();
+  });
   it('manages enum property filter', function (this: ThisTest) {
     this.component.propertyFilter = enumPropertyFilter;
     this.fixture.detectChanges();
@@ -212,9 +231,35 @@ describe('ManageFilterComponent', () => {
     expect(trigger.classList.contains('filter-pill-active')).toBeTrue();
     expect(trigger.closest('clr-label').classList.contains('label-info')).toBeTrue();
     expect(trigger.querySelector('clr-badge').textContent).toBe('+3');
-    expect(trigger.querySelector('.filter-pill-text').textContent).toBe('Alert');
+    expect(trigger.querySelector('.filter-pill-text').textContent.trim()).toBe(
+      `${enumProperty.displayName}: Equals Alert`
+    );
     expect(trigger.querySelector('.filter-pill-count').textContent).toBe('+3');
     expect(trigger.getAttribute('aria-label')).toContain('Equals: Normal');
+  });
+
+  it('prefixes the pill text with the field name and condition', function (this: ThisTest) {
+    this.component.propertyFilter = {
+      operator: LogicalOperator.Or,
+      criteria: [
+        { ...stringPredicate1, operator: ComparisonOperator.Contains, value: 'linux' },
+        { ...stringPredicate1, operator: ComparisonOperator.Contains, value: 'ubuntu' },
+        { ...stringPredicate1, operator: ComparisonOperator.Contains, value: 'centos' },
+      ],
+    };
+    this.fixture.detectChanges();
+    const trigger: HTMLButtonElement = this.fixture.nativeElement.querySelector('.filter-pill');
+    expect(trigger.querySelector('.filter-pill-text').textContent.trim()).toBe(
+      `${stringProperty.displayName}: Contains linux`
+    );
+    expect(trigger.querySelector('.filter-pill-condition').textContent).toBe('Contains linux');
+    expect(trigger.querySelector('.filter-pill-count').textContent).toBe('+2');
+  });
+
+  it('shows only the field name on an empty pill', function (this: ThisTest) {
+    this.component.filterProperty = stringProperty;
+    this.fixture.detectChanges();
+    expect(this.component.pillText).toBe(stringProperty.displayName);
   });
 
   it('keeps exclusion operators in the pill text', function (this: ThisTest) {
@@ -223,7 +268,7 @@ describe('ManageFilterComponent', () => {
       criteria: [{ ...enumPredicate1, operator: ComparisonOperator.DoesNotEqual }],
     };
     this.fixture.detectChanges();
-    expect(this.component.pillText).toBe('Does not equal: Alert');
+    expect(this.component.pillText).toBe(`${enumProperty.displayName}: Does not equal Alert`);
   });
 
   it('updates an existing pill when its criteria are replaced or cleared', function (this: ThisTest) {
@@ -236,7 +281,7 @@ describe('ManageFilterComponent', () => {
       criteria: [{ ...stringPredicate1, value: 'new name' }],
     });
     this.fixture.detectChanges();
-    expect(trigger.textContent.trim()).toBe('new name');
+    expect(trigger.textContent.trim()).toBe(`${stringProperty.displayName}: Equals new name`);
     this.fixture.componentRef.setInput('propertyFilter', undefined);
     this.fixture.detectChanges();
     expect(trigger.textContent.trim()).toBe(stringProperty.displayName);
@@ -321,7 +366,7 @@ describe('ManageFilterComponent', () => {
     };
     this.fixture.detectChanges();
     const trigger: HTMLButtonElement = this.fixture.nativeElement.querySelector('.filter-pill');
-    expect(trigger.querySelector('.filter-pill-text').textContent).toBe('0 MB');
+    expect(trigger.querySelector('.filter-pill-text').textContent.trim()).toBe(`${field.displayName}: Equals 0 MB`);
     expect(trigger.querySelector('clr-badge').textContent).toBe('+2');
     for (const value of values) {
       expect(trigger.getAttribute('aria-label')).toContain(`${value} MB`);

@@ -6,8 +6,27 @@
  */
 
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
   min-width: 0;
+  min-height: 0;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+// Fallback scroll region for editors without their own (e.g. many conditions).
+.form-max-height {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--cds-global-space-4);
+  margin: calc(-1 * var(--cds-global-space-4));
+  scroll-padding: var(--cds-global-space-4);
 }
 
 // Projected editors and Clarity's generated control wrappers share the same layout.
