@@ -37,6 +37,7 @@ import { DatagridSingleActionDemo } from './single-action/single-action';
 import { DatagridSelectionSingleDemo } from './single-selection/single-selection';
 import { DatagridSmartIteratorDemo } from './smart-iterator/smart-iterator';
 import { DatagridSortingDemo } from './sorting/sorting';
+import { DatagridTreeDataDemo } from './tree-data/tree-data';
 import { DatagridUsageDemo } from './usage/usage';
 import { ColorFilter } from './utils/color-filter';
 import { DatagridVirtualScrollDemo } from './virtual-scroll/virtual-scroll';
@@ -177,6 +178,13 @@ const routes: Routes = [
         },
       },
       {
+        path: 'tree-data',
+        component: DatagridTreeDataDemo,
+        data: {
+          demoName: 'Tree Data',
+        },
+      },
+      {
         path: 'compact',
         component: DatagridCompactDemo,
         data: {
@@ -267,6 +275,7 @@ const routes: Routes = [
     DatagridBuiltInFiltersDemo,
     DatagridPlaceholderDemo,
     DatagridExpandableRowsDemo,
+    DatagridTreeDataDemo,
     DatagridFixedHeightDemo,
     DatagridHideShowColumnsDemo,
     DatagridPinnableColumnsDemo,
