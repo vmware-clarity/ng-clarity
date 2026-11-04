@@ -13,6 +13,11 @@ jobs:
     name: Release
     timeout-minutes: 30
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # tags, GitHub release, release notes
+      issues: write # semantic-release comments on released issues
+      pull-requests: write # semantic-release comments on released PRs
+      id-token: write # npm trusted publishing (OIDC) and provenance
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -35,7 +40,6 @@ jobs:
           BD_ACCESS_TOKEN: ${{ secrets.BD_ACCESS_TOKEN }}
           BD_RELEASE_PHASE: RELEASED
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
         run: npx semantic-release --extends ./.releaserc.release.js
       - name: Update Figma Tokens
         env:
