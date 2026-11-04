@@ -148,6 +148,15 @@ $opp-directions: (
     @content;
   }
 }
+// Anchors a global rule on `body` and, when the CSS is loaded inside a shadow root, on the
+// shadow host. `:where(:host)` adds no specificity and `:not(html)` adds back the type
+// selector that `body` adds, so both branches have the same specificity.
+@mixin body-or-host($selector) {
+  #{selector.nest('body', $selector)},
+  #{selector.nest(':where(:host)', selector.append($selector, ':not(html)'))} {
+    @content;
+  }
+}
 @mixin input-placeholder-wrapper() {
   @include optional-at-root('::-webkit-input-placeholder') {
     @content;

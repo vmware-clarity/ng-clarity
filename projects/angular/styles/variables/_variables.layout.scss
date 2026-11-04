@@ -18,6 +18,10 @@ $clr-grid-breakpoints: (
 ) !default;
 /* stylelint-enable */
 
+// What the grid breakpoints respond to: `media` (the viewport) or `container` (the nearest
+// ancestor declared as `container: clr-grid / inline-size`).
+$clr-grid-breakpoint-query: media !default;
+
 $clr-grid-columns: 12 !default;
 $clr-grid-gutter-width: var(--clr-grid-gutter-width) !default;
 $clr-grid-container-padding: var(--clr-grid-container-padding) !default;

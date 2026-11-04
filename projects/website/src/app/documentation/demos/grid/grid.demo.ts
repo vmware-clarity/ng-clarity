@@ -21,10 +21,25 @@ import { GridItemsHorizontalAlignmentDemo } from './grid-items-horizontal-alignm
 import { GridItemsIndividualVerticalAlignmentDemo } from './grid-items-individual-vertical-alignment';
 import { GridItemsVerticalAlignmentDemo } from './grid-items-vertical-alignment';
 import { GridNestingDemo } from './grid-nesting';
+import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.component';
 import { ClarityDocComponent } from '../clarity-doc';
+
+const CONTAINER_GRID_CSS = `
+/* the element that holds the grid, for example the shadow host */
+:host {
+  container: clr-grid / inline-size;
+}
+`;
+
+const CONTAINER_GRID_SCSS = `
+@use '@clr/ui/styles/variables/variables.layout' with (
+  $clr-grid-breakpoint-query: container
+);
+@use '@clr/ui/main';
+`;
 
 @Component({
   selector: 'clr-grid-demo',
@@ -52,9 +67,13 @@ import { ClarityDocComponent } from '../clarity-doc';
     GridItemsHorizontalAlignmentDemo,
     GridNestingDemo,
     StyleDocsComponent,
+    CodeSnippetComponent,
   ],
 })
 export class GridDemo extends ClarityDocComponent {
+  containerGridCss = CONTAINER_GRID_CSS;
+  containerGridScss = CONTAINER_GRID_SCSS;
+
   constructor() {
     super('grid');
   }
