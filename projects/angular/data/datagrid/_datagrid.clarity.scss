@@ -311,9 +311,6 @@
     flex: none;
     width: $size;
     margin-block: calc((1lh - #{$size}) / 2);
-    // Centred rather than placed by the padding: the compact density pulls up the icons of a cell.
-    align-items: center;
-    justify-content: center;
     color: datagrid-variables.$clr-datagrid-icon-color;
 
     // While the children of the row load, the size of the icon it replaces.
@@ -1232,7 +1229,10 @@
       }
     }
 
-    .datagrid-cell:not(.datagrid-detail-caret, .datagrid-expandable-caret, .datagrid-row-actions) {
+    // A tree cell is left out for its toggle, which places its icon by its padding; the icons of its
+    // text line up like those of any other cell.
+    .datagrid-cell:not(.datagrid-detail-caret, .datagrid-expandable-caret, .datagrid-row-actions, .datagrid-tree-cell),
+    .datagrid-tree-cell-text {
       @include mixins.cell-children-aligment();
     }
 
