@@ -11,7 +11,7 @@ import * as i14 from '@clr/addons/datagrid-filters';
 import { FilterablePropertyDefinition, FilterMode, PropertyFilter } from '@clr/addons/datagrid-filters';
 import { DragAndDropGroupService } from '@clr/addons/drag-and-drop';
 import * as i4 from '@clr/angular/data/datagrid';
-import { ClrDatagridFilterInterface, ClrDatagridStringFilterInterface, ClrDatagridComparatorInterface, ClrDatagridSortOrder, SelectionType, ClrDatagridPagination, ClrDatagridVirtualScrollRangeInterface, ClrDatagridStateInterface, ClrDatagridFilter, ClrDatagrid } from '@clr/angular/data/datagrid';
+import { ClrDatagridFilterInterface, ClrDatagridStringFilterInterface, ClrDatagridComparatorInterface, ClrDatagridSortOrder, ClrDatagridTreeChildrenFunction, SelectionType, ClrDatagridPagination, ClrDatagridVirtualScrollRangeInterface, ClrDatagridStateInterface, ClrDatagridFilter, ClrDatagrid } from '@clr/angular/data/datagrid';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import * as i17 from '@angular/cdk/overlay';
 import { ConnectionPositionPair, CdkConnectedOverlay } from '@angular/cdk/overlay';
@@ -157,6 +157,13 @@ interface ColumnDefinition<T> {
      * @default false - Columns cannot be pinned by the user by default.
      */
     pinnable?: boolean;
+    /**
+     * In a tree (`treeConfig`), puts the expand toggle and the indentation in this column, which
+     * keeps them when it is moved or pinned. Several columns can have it.
+     *
+     * @default false - Without any column with the toggle, the column defined first carries the toggle.
+     */
+    treeToggle?: boolean;
     /**
      * Application actions to offer in this column's actions menu, after the built-in ones and after
      * any actions given to the grid as a whole through `columnActions`. Use these for something that
@@ -656,6 +663,38 @@ interface DatagridDragConfig {
     dragGroup?: string;
 }
 
+/**
+ * Turns a server-driven datagrid with paging into a tree: `gridItems` are the roots, and a row is
+ * expanded with the toggle in its toggle column (`ColumnDefinition.treeToggle`, by default the column
+ * defined first). Pass a new object to change it, as the grid is OnPush.
+ */
+interface DatagridTreeConfig<T> {
+    /**
+     * Loads the children of a row: an array, or a Promise or an Observable of one. Called when the row
+     * is expanded for the first time, and again after `reloadTreeChildren()`.
+     */
+    getChildren: ClrDatagridTreeChildrenFunction<T>;
+    /**
+     * Whether a row can have children. Without it, every row offers the toggle until its children come
+     * back empty.
+     */
+    hasChildren?: (item: T) => boolean;
+    /**
+     * In multi-selection, selecting a row also selects its loaded descendants, and a parent is selected
+     * when all of its children are.
+     *
+     * @default false
+     */
+    cascadeSelection?: boolean;
+}
+/**
+ * A row of the tree that was expanded or collapsed, emitted by `treeExpandedChange`.
+ */
+interface TreeExpandedState<T> {
+    item: T;
+    expanded: boolean;
+}
+
 interface PreselectableComponent {
     trackByGridItemProperty: string;
     trackByFunction: TrackByFunction<any>;
@@ -1037,7 +1076,8 @@ declare class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, 
     columnActions: ActionDefinition[] | null;
     /**
      * Input for providing data when virtual scrolling is enabled.
-     * <code>gridItems</code> should not be used in this case.
+     * <code>gridItems</code> should not be used in this case. With <code>treeConfig</code>, the data
+     * are the roots of the tree.
      */
     dataRange: ClrDatagridVirtualScrollRangeInterface<T>;
     /**
@@ -1048,6 +1088,17 @@ declare class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, 
      * as defined in {@link ColumnDefinition}.
      */
     gridItems: T[];
+    /**
+     * Renders the datagrid as a tree: `gridItems` are the roots, or `dataRange` with `virtualScrolling`,
+     * and their children are loaded the first time their row is expanded.
+     *
+     * Only works with `serverDrivenDatagrid`; other grids ignore it. With `virtualScrolling`,
+     * `refreshVirtualGridData` asks for a range of roots, and the children add to the rows to scroll
+     * through as they load.
+     * A tree has no expandable rows, so `rowDetailContent` is not rendered. Rows are matched by
+     * `trackByGridItemProperty` or `trackByFunction`, which must be unique across the whole tree.
+     */
+    treeConfig?: DatagridTreeConfig<T>;
     /**
      * Emits the updated page size {@link pageSize} to the parent component when changed.
      */
@@ -1123,6 +1174,11 @@ declare class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, 
      * Event emitter to tell hosting view that column order has changed.
      */
     columnOrderChange: EventEmitter<ColumnOrderChanged>;
+    /**
+     * Emits when a row of the tree is expanded or collapsed, by the user or because its children came
+     * back empty or failed to load. Errors of `treeConfig.getChildren` are for the app to handle.
+     */
+    treeExpandedChange: EventEmitter<TreeExpandedState<T>>;
     protected applyFlexLayout: boolean;
     protected zoomLevel: ZoomLevel;
     protected gridLayoutModel: GridLayoutModel;
@@ -1220,6 +1276,19 @@ declare class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, 
      */
     renderedRangeChange($event: ListRange): void;
     /**
+     * Fetches the children of `item` again, or of the whole tree when no item is given.
+     */
+    reloadTreeChildren(item?: T): void;
+    /**
+     * Expands every row of the tree. The rows that come in afterwards, on any page, come in expanded too until a row
+     * is collapsed.
+     */
+    expandAllTreeRows(): void;
+    /**
+     * Collapses every row of the tree, on every page.
+     */
+    collapseAllTreeRows(): void;
+    /**
      * Scrolls to a specified index when virtual scrolling is enabled.
      */
     scrollToIndex(index: number, behavior?: ScrollBehavior): void;
@@ -1247,6 +1316,11 @@ declare class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, 
      */
     getFooterMessage(totalItems: number, pageSize?: number, firstItem?: number, lastItem?: number): string;
     toggleAll(): void;
+    /**
+     * Whether the cells of a column carry the tree toggle: the columns marked with `treeToggle`, else
+     * the column defined first, and the first column on screen while none of those is shown.
+     */
+    protected hasTreeToggle(column: ColumnDefinition<T>): boolean;
     protected getExpandDetailsLabel(item: T): string;
     protected getCollapseDetailsLabel(item: T): string;
     protected onColumnResize(columnSize: number, column: ColumnDefinition<T>): void;
@@ -1322,7 +1396,7 @@ declare class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, 
     private initTotalItemsCount;
     private interpolateMessage;
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridComponent<any>, [null, null, null, null, { optional: true; }, { optional: true; }]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridComponent<any>, "appfx-datagrid", never, { "loading": { "alias": "loading"; "required": false; }; "loadingMoreItems": { "alias": "loadingMoreItems"; "required": false; }; "preSelectFirstItem": { "alias": "preSelectFirstItem"; "required": false; }; "pageSizeOptions": { "alias": "pageSizeOptions"; "required": false; }; "totalItems": { "alias": "totalItems"; "required": false; }; "showCustomPagination": { "alias": "showCustomPagination"; "required": false; }; "serverDrivenDatagrid": { "alias": "serverDrivenDatagrid"; "required": false; }; "listItemsCount": { "alias": "listItemsCount"; "required": false; }; "rowDetailContent": { "alias": "rowDetailContent"; "required": false; }; "rowsExpandedByDefault": { "alias": "rowsExpandedByDefault"; "required": false; }; "trackByFunction": { "alias": "trackByFunction"; "required": false; }; "trackByGridItemProperty": { "alias": "trackByGridItemProperty"; "required": false; }; "detailHeader": { "alias": "detailHeader"; "required": false; }; "detailBody": { "alias": "detailBody"; "required": false; }; "detailState": { "alias": "detailState"; "required": false; }; "isRowLocked": { "alias": "isRowLocked"; "required": false; }; "dragConfig": { "alias": "dragConfig"; "required": false; }; "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "filterMode": { "alias": "filterMode"; "required": false; }; "singleRowActions": { "alias": "singleRowActions"; "required": false; }; "preserveExistingSelectionOnFilter": { "alias": "preserveExistingSelectionOnFilter"; "required": false; }; "virtualScrolling": { "alias": "virtualScrolling"; "required": false; }; "disableUnsort": { "alias": "disableUnsort"; "required": false; }; "enableColumnActions": { "alias": "enableColumnActions"; "required": false; }; "columnActions": { "alias": "columnActions"; "required": false; }; "dataRange": { "alias": "dataRange"; "required": false; }; "gridItems": { "alias": "gridItems"; "required": false; }; "layoutModel": { "alias": "layoutModel"; "required": false; }; "footerModel": { "alias": "footerModel"; "required": false; }; "columns": { "alias": "columns"; "required": false; }; "selectionType": { "alias": "selectionType"; "required": false; }; "selectedItems": { "alias": "selectedItems"; "required": false; }; "rowSelectionMode": { "alias": "rowSelectionMode"; "required": false; }; "actionBarActions": { "alias": "actionBarActions"; "required": false; }; "pageSize": { "alias": "pageSize"; "required": false; }; "datagridLabels": { "alias": "datagridLabels"; "required": false; }; }, { "detailStateChange": "detailStateChange"; "pageSizeChange": "pageSizeChange"; "gridItemsChange": "gridItemsChange"; "advancedFilterChange": "advancedFilterChange"; "columnDefsChange": "columnDefsChange"; "selectedItemsChange": "selectedItemsChange"; "exportDataEvent": "exportDataEvent"; "searchTermChange": "searchTermChange"; "columnResize": "columnResize"; "columnSortOrderChange": "columnSortOrderChange"; "columnHiddenStateChange": "columnHiddenStateChange"; "columnPinnedChange": "columnPinnedChange"; "columnFilterChange": "columnFilterChange"; "refreshGridData": "refreshGridData"; "refreshVirtualGridData": "refreshVirtualGridData"; "actionClick": "actionClick"; "rowActionMenuOpenChange": "rowActionMenuOpenChange"; "openContextMenu": "openContextMenu"; "columnOrderChange": "columnOrderChange"; }, never, [".custom-placeholder-content", ".custom-footer-content", "*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridComponent<any>, "appfx-datagrid", never, { "loading": { "alias": "loading"; "required": false; }; "loadingMoreItems": { "alias": "loadingMoreItems"; "required": false; }; "preSelectFirstItem": { "alias": "preSelectFirstItem"; "required": false; }; "pageSizeOptions": { "alias": "pageSizeOptions"; "required": false; }; "totalItems": { "alias": "totalItems"; "required": false; }; "showCustomPagination": { "alias": "showCustomPagination"; "required": false; }; "serverDrivenDatagrid": { "alias": "serverDrivenDatagrid"; "required": false; }; "listItemsCount": { "alias": "listItemsCount"; "required": false; }; "rowDetailContent": { "alias": "rowDetailContent"; "required": false; }; "rowsExpandedByDefault": { "alias": "rowsExpandedByDefault"; "required": false; }; "trackByFunction": { "alias": "trackByFunction"; "required": false; }; "trackByGridItemProperty": { "alias": "trackByGridItemProperty"; "required": false; }; "detailHeader": { "alias": "detailHeader"; "required": false; }; "detailBody": { "alias": "detailBody"; "required": false; }; "detailState": { "alias": "detailState"; "required": false; }; "isRowLocked": { "alias": "isRowLocked"; "required": false; }; "dragConfig": { "alias": "dragConfig"; "required": false; }; "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "filterMode": { "alias": "filterMode"; "required": false; }; "singleRowActions": { "alias": "singleRowActions"; "required": false; }; "preserveExistingSelectionOnFilter": { "alias": "preserveExistingSelectionOnFilter"; "required": false; }; "virtualScrolling": { "alias": "virtualScrolling"; "required": false; }; "disableUnsort": { "alias": "disableUnsort"; "required": false; }; "enableColumnActions": { "alias": "enableColumnActions"; "required": false; }; "columnActions": { "alias": "columnActions"; "required": false; }; "dataRange": { "alias": "dataRange"; "required": false; }; "gridItems": { "alias": "gridItems"; "required": false; }; "treeConfig": { "alias": "treeConfig"; "required": false; }; "layoutModel": { "alias": "layoutModel"; "required": false; }; "footerModel": { "alias": "footerModel"; "required": false; }; "columns": { "alias": "columns"; "required": false; }; "selectionType": { "alias": "selectionType"; "required": false; }; "selectedItems": { "alias": "selectedItems"; "required": false; }; "rowSelectionMode": { "alias": "rowSelectionMode"; "required": false; }; "actionBarActions": { "alias": "actionBarActions"; "required": false; }; "pageSize": { "alias": "pageSize"; "required": false; }; "datagridLabels": { "alias": "datagridLabels"; "required": false; }; }, { "detailStateChange": "detailStateChange"; "pageSizeChange": "pageSizeChange"; "gridItemsChange": "gridItemsChange"; "advancedFilterChange": "advancedFilterChange"; "columnDefsChange": "columnDefsChange"; "selectedItemsChange": "selectedItemsChange"; "exportDataEvent": "exportDataEvent"; "searchTermChange": "searchTermChange"; "columnResize": "columnResize"; "columnSortOrderChange": "columnSortOrderChange"; "columnHiddenStateChange": "columnHiddenStateChange"; "columnPinnedChange": "columnPinnedChange"; "columnFilterChange": "columnFilterChange"; "refreshGridData": "refreshGridData"; "refreshVirtualGridData": "refreshVirtualGridData"; "actionClick": "actionClick"; "rowActionMenuOpenChange": "rowActionMenuOpenChange"; "openContextMenu": "openContextMenu"; "columnOrderChange": "columnOrderChange"; "treeExpandedChange": "treeExpandedChange"; }, never, [".custom-placeholder-content", ".custom-footer-content", "*"], false, never>;
 }
 
 /**
@@ -1677,4 +1751,4 @@ declare class CaseInsensitiveContainsStringFilter implements ClrDatagridStringFi
 }
 
 export { ActionBarLayout, AppfxDatagridModule, CaseInsensitiveContainsStringFilter, CsvHelperService, DatagridActionBarComponent, DatagridComponent, DatagridContentNoWrapDirective, DatagridFeatureStates, DatagridFilterComponent, DatagridPageDirective, DatagridPersistSettingsDirective, DatagridPreserveSelectionDirective, DatagridStrings, ExportProviderService, ExportType, FieldComparator, ListComparator, SimpleNumericComparator, appfxDatagridErrorNotifiableToken, appfxDatagridPersistSettingsToken, appfxDatagridUserPreferencesToken, appfxPreselectableComponentToken };
-export type { ActionClickEvent, ActionDefinition, ClientSideExportConfig, ColumnDefinition, ColumnFilter, ColumnFilterChange, ColumnHiddenState, ColumnOrderChanged, ColumnPinnedState, ColumnRenderer, ColumnResize, ColumnSortOrder, ContextMenuEvent, DatagridDragConfig, DatagridItemSet, DatagridUserPreferencesService, ErrorNotifiable, ExportColumnDefinition, ExportStatus, ExportValueCallbackParams, GridFooterModel, GridLayoutModel, PersistDatagridSettingsService, PreselectableComponent, SingleRowActionOpen };
+export type { ActionClickEvent, ActionDefinition, ClientSideExportConfig, ColumnDefinition, ColumnFilter, ColumnFilterChange, ColumnHiddenState, ColumnOrderChanged, ColumnPinnedState, ColumnRenderer, ColumnResize, ColumnSortOrder, ContextMenuEvent, DatagridDragConfig, DatagridItemSet, DatagridTreeConfig, DatagridUserPreferencesService, ErrorNotifiable, ExportColumnDefinition, ExportStatus, ExportValueCallbackParams, GridFooterModel, GridLayoutModel, PersistDatagridSettingsService, PreselectableComponent, SingleRowActionOpen, TreeExpandedState };
