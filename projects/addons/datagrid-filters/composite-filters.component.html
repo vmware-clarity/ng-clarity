@@ -41,6 +41,7 @@
     </div>
   }
   <button
+    #addButton
     type="button"
     clrPopoverOrigin
     clrPopoverOpenCloseButton
@@ -136,11 +137,11 @@
       }
     }
   </div>
-  @if (propertyFilters.length > 0) {
+  @if (propertyFilters.length > 0 || externalCriteriaActive) {
     <clr-tooltip>
       <button
         type="button"
-        class="btn btn-sm btn-icon btn-link-neutral clear-all-button"
+        class="btn btn-sm btn-icon btn-link-neutral btn-compact clear-all-button"
         data-test-id="clear-all-button"
         clrTooltipTrigger
         [attr.aria-label]="filterStrings.clearAllButtonAriaLabel"

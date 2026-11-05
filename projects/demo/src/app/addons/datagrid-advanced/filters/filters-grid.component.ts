@@ -168,10 +168,15 @@ export class FiltersGridComponent {
   protected predefinedFilters: FilterablePropertyDefinition[] = [];
   protected presetFilters: PropertyFilter[] = [];
   protected predefinedFilteredItems: VmItem[] = [];
+  protected combinedFilteredItems: VmItem[] = [];
   protected readonly FilterMode = FilterMode;
   protected selectedFilterMode: FilterMode = FilterMode.AdvancedOnly;
   protected errorRetrievingDomains = false;
   protected errorRetrievingUsers = false;
+  private searchTerm = '';
+  private advancedCriteria: PropertyFilter[] = [];
+  private combinedSearchTerm = '';
+  private combinedCriteria: PropertyFilter[] = [];
 
   constructor(
     private inventory: Inventory,
@@ -182,6 +187,7 @@ export class FiltersGridComponent {
     this.filteredItems = this.allItems;
     this.initFilterableProperties();
     this.onPredefinedFilterChange(this.presetFilters);
+    this.combinedFilteredItems = this.allItems;
   }
 
   protected get isErrorRetrievingDomains(): boolean {
@@ -203,17 +209,33 @@ export class FiltersGridComponent {
   }
 
   onAdvancedFilterChange(filterCriteria: PropertyFilter[]): void {
-    this.filteredItems = this.filterItems(filterCriteria);
+    this.advancedCriteria = filterCriteria;
+    this.filteredItems = this.applySearch(this.filterItems(this.advancedCriteria), this.searchTerm);
   }
 
   protected onPredefinedFilterChange(filterCriteria: PropertyFilter[]): void {
     this.predefinedFilteredItems = this.filterItems(filterCriteria);
   }
 
+  // Combined filter: the host applies the search and the pills together (AND).
+  protected onCombinedSearchTermChange(searchTerm: string): void {
+    this.combinedSearchTerm = searchTerm;
+    this.updateCombinedItems();
+  }
+
+  protected onCombinedFilterChange(filterCriteria: PropertyFilter[]): void {
+    this.combinedCriteria = filterCriteria;
+    this.updateCombinedItems();
+  }
+
   protected onFilterModeChange(filterMode: string): void {
     this.filteredItems = this.allItems;
+    this.searchTerm = '';
+    this.advancedCriteria = [];
 
-    if (filterMode === FilterMode.Quick.toString()) {
+    if (filterMode === FilterMode.Combined.toString()) {
+      this.selectedFilterMode = FilterMode.Combined;
+    } else if (filterMode === FilterMode.Quick.toString()) {
       this.selectedFilterMode = FilterMode.Quick;
     } else if (filterMode === FilterMode.Advanced.toString()) {
       this.selectedFilterMode = FilterMode.Advanced;
@@ -224,15 +246,24 @@ export class FiltersGridComponent {
     }
   }
 
+  // The search and the advanced filters are combined with AND. In the other modes the
+  // component clears one side when switching, so this also covers Quick and Advanced.
   protected onSearchTermChange(searchTerm: string): void {
-    if (!searchTerm || searchTerm.trim() === '') {
-      this.filteredItems = this.allItems;
-    }
+    this.searchTerm = searchTerm ?? '';
+    this.filteredItems = this.applySearch(this.filterItems(this.advancedCriteria), this.searchTerm);
+  }
 
-    const lowerCaseSearch = searchTerm.toLowerCase();
-    this.filteredItems = this.allItems.filter((item: VmItem) =>
-      [item.name, item.state, item.status, item.usedSpace].some(field => field.toLowerCase().includes(lowerCaseSearch))
-    );
+  private updateCombinedItems(): void {
+    this.combinedFilteredItems = this.applySearch(this.filterItems(this.combinedCriteria), this.combinedSearchTerm);
+  }
+
+  private applySearch(items: VmItem[], searchTerm: string): VmItem[] {
+    const search = searchTerm.trim().toLowerCase();
+    return search
+      ? items.filter((item: VmItem) =>
+          [item.name, item.state, item.status, item.usedSpace].some(field => field.toLowerCase().includes(search))
+        )
+      : items;
   }
 
   private initFilterableProperties(): void {

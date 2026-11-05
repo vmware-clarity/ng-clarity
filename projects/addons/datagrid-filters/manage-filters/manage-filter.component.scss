@@ -17,6 +17,37 @@
     // Pass the label radius through to the pill button hover background.
     border-radius: inherit;
   }
+
+  // With a remove button the pill button only keeps the start corners rounded.
+  &:has(.filter-pill-remove) .clr-tooltip-container {
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+}
+
+// Removes a user-added pill. Predefined pills have no remove button.
+.filter-pill-remove {
+  display: inline-flex;
+  align-items: center;
+  align-self: stretch;
+  flex-shrink: 0;
+  padding: 0 var(--clr-base-horizontal-offset-xs);
+  border: 0;
+  border-start-end-radius: inherit;
+  border-end-end-radius: inherit;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--clr-label-bg-hover-color);
+  }
+
+  &:focus-visible {
+    outline: var(--cds-alias-object-interaction-outline);
+    outline-color: -webkit-focus-ring-color;
+    outline-offset: var(--cds-alias-object-interaction-outline-offset);
+  }
 }
 
 .filter-pill {

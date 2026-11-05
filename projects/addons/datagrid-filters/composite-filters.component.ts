@@ -10,6 +10,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   inject,
   Injector,
@@ -63,6 +64,15 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   @Input() predefinedFilters: FilterablePropertyDefinition[] = [];
 
   /**
+   * Other criteria (e.g. the quick search in combined mode) are active, so Clear all stays available
+   * even without property filters.
+   */
+  @Input() externalCriteriaActive = false;
+
+  /** Emitted when the user clicks Clear all, so the host can clear its other criteria too. */
+  @Output() clearAll = new EventEmitter<void>();
+
+  /**
    * Event emitter to tell hosting view that the filtering conditions have changed
    */
   @Output() propertyFiltersChange: EventEmitter<PropertyFilter[]> = new EventEmitter<PropertyFilter[]>();
@@ -91,6 +101,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   showHideFiltersAriaLabel: string;
 
   @ViewChild(ClrCombobox) private fieldCombobox: ClrCombobox<FilterablePropertyDefinition>;
+  @ViewChild('addButton', { static: true }) private addButton: ElementRef<HTMLButtonElement>;
   private readonly injector = inject(Injector);
 
   constructor(
@@ -248,6 +259,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     this.collapsedFilters = false;
     this.updateShowHideLabel();
     this.showHideFiltersArrowDir = 'left';
+    this.clearAll.emit();
   }
 
   clearFilter(property: FilterablePropertyDefinition): void {
@@ -257,6 +269,10 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     this.propertyFiltersChange.emit(this.propertyFilters);
     this.preselectFirstProperty();
     this.updateShowHideLabel();
+    if (!this.isPredefined(property)) {
+      // The removed pill held focus and no longer exists, so move focus to Add filter.
+      afterNextRender(() => this.addButton?.nativeElement.focus(), { injector: this.injector });
+    }
   }
 
   showHideAllFilters(): void {

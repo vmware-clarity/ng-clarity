@@ -40,6 +40,7 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
   readonly quickMode: FilterMode = FilterMode.Quick;
   readonly advancedMode: FilterMode = FilterMode.Advanced;
   readonly advancedOnlyMode: FilterMode = FilterMode.AdvancedOnly;
+  readonly combinedMode: FilterMode = FilterMode.Combined;
 
   mode: FilterMode = FilterMode.Quick;
   selectedFilterMode: FilterMode = FilterMode.Quick;
@@ -113,6 +114,15 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
     if (this.selectedFilterMode === FilterMode.Quick && this.appliedFiltersCount > 0) {
       this.appliedFiltersCount = 0;
       this.propertyFiltersChange.emit([]);
+    }
+  }
+
+  /** Combined mode: Clear all also clears the quick search text. */
+  onClearAll(): void {
+    if (this.mode === FilterMode.Combined && this.searchTerm) {
+      this.searchTerm = '';
+      this.searchTermDebouncer.next(this.searchTerm);
+      this.doSearch(this.searchTerm);
     }
   }
 

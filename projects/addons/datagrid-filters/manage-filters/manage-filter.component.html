@@ -35,9 +35,21 @@
       <clr-tooltip-content clrPosition="top-right" clrSize="lg">{{ editFilterAriaLabel }}</clr-tooltip-content>
     }
   </clr-tooltip>
+  @if (!predefined) {
+    <button
+      type="button"
+      class="filter-pill-remove"
+      data-test-id="remove-pill"
+      [attr.aria-label]="filterStrings.removeFilterText + ' ' + managedProperty.displayName"
+      (click)="filterRemoved.emit()"
+    >
+      <cds-icon shape="window-close" size="16" aria-hidden="true"></cds-icon>
+    </button>
+  }
 </clr-label>
 <div
   class="filter-popover"
+  [class.filter-popover-minimal]="predefined && managedPropertyType === enumPropertyType"
   role="dialog"
   [id]="popoverId"
   [attr.aria-label]="filterStrings.editFilterText + ' ' + managedProperty.displayName"
@@ -97,6 +109,7 @@
       <appfx-enum-filter
         [filterProperty]="enumProperty"
         [propertyFilter]="propertyFilter"
+        [minimal]="predefined"
         (filterCriteriaChange)="onFilterCriteriaChange($event)"
       >
         <ng-container filterField [ngTemplateOutlet]="fieldSelector"></ng-container>

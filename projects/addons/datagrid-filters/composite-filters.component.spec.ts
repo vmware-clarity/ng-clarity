@@ -306,6 +306,18 @@ describe('CompositeFiltersComponent', () => {
     expect(element.nextElementSibling.textContent).toContain(enumProperty.displayName);
   });
 
+  it('moves focus to Add filter after a user-added pill is removed', async function (this: ThisTest) {
+    this.component.onFilterCriteriaChange(enumPropertyFilter);
+    this.fixture.detectChanges();
+    const remove: HTMLButtonElement = this.fixture.nativeElement.querySelector('[data-test-id="remove-pill"]');
+    remove.focus();
+    remove.click();
+    this.fixture.detectChanges();
+    await this.fixture.whenStable();
+    expect(this.component.propertyFilters.length).toBe(0);
+    expect(document.activeElement).toBe(this.fixture.nativeElement.querySelector('[data-test-id="add-button"]'));
+  });
+
   it('displays property filters', function (this: ThisTest) {
     this.component.propertyFilters.push(stringPropertyFilter);
     this.component.propertyFilters.push(enumPropertyFilter);

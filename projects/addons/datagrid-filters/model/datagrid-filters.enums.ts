@@ -38,6 +38,11 @@ export enum FilterMode {
   Quick,
   Advanced,
   AdvancedOnly,
+  /**
+   * Quick search and advanced filter pills are shown and applied together.
+   * The host combines `searchTermChange` and `propertyFiltersChange` with AND.
+   */
+  Combined,
 }
 
 export enum PropertyType {

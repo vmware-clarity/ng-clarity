@@ -207,6 +207,41 @@ describe('ManageFilterComponent', () => {
     expect(document.querySelector('.filter-popover clr-combobox')).toBeNull();
     expect(getComputedStyle(document.querySelector('.filter-popover .filter-field-row')).display).toBe('none');
   });
+  it('shows a minimal enum editor for predefined pills', async function (this: ThisTest) {
+    this.component.filterProperty = enumProperty;
+    this.component.predefined = true;
+    this.fixture.detectChanges();
+    this.fixture.nativeElement.querySelector('.filter-pill').click();
+    this.fixture.detectChanges();
+    await this.fixture.whenStable();
+    this.fixture.detectChanges();
+
+    const popover = document.querySelector('.filter-popover');
+    expect(popover.classList).toContain('filter-popover-minimal');
+    expect(popover.querySelector('.selection-counter')).toBeNull();
+    expect(popover.textContent).not.toContain(this.component.filterStrings.valueLabel);
+    expect(popover.querySelectorAll('input[type="checkbox"]').length).toBeGreaterThan(0);
+    expect(popover.querySelector('.filter-options').hasAttribute('cds-layout')).toBeFalse();
+    expect(popover.querySelector('.filter-options').classList).toContain('filter-options-minimal');
+  });
+  it('removes a user-added pill with its X button', function (this: ThisTest) {
+    spyOn(this.component.filterRemoved, 'emit');
+    this.component.propertyFilter = { operator: LogicalOperator.And, criteria: [stringPredicate1] };
+    this.fixture.detectChanges();
+    const remove: HTMLButtonElement = this.fixture.nativeElement.querySelector('[data-test-id="remove-pill"]');
+    expect(remove.getAttribute('aria-label')).toBe(
+      this.component.filterStrings.removeFilterText + ' ' + stringProperty.displayName
+    );
+    remove.click();
+    expect(this.component.filterRemoved.emit).toHaveBeenCalled();
+    expect(this.component.open).toBeFalse();
+  });
+  it('has no X button on predefined pills', function (this: ThisTest) {
+    this.component.filterProperty = stringProperty;
+    this.component.predefined = true;
+    this.fixture.detectChanges();
+    expect(this.fixture.nativeElement.querySelector('[data-test-id="remove-pill"]')).toBeNull();
+  });
   it('manages numeric property filter', function (this: ThisTest) {
     spyOn(this.component.filterStrings, 'getConjoinerDisplayName');
     this.component.propertyFilter = numericPropertyFilter;

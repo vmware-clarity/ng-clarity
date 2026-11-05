@@ -8,6 +8,7 @@
 .filter-container {
   display: flex;
   align-items: center;
+  gap: var(--clr-base-gap-m);
   margin-left: var(--clr-base-horizontal-offset-xs);
 
   > .form-control-compact {

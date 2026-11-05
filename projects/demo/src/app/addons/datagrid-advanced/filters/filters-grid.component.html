@@ -9,6 +9,7 @@
     <label>Filter mode</label>
     <select clrSelect name="filter-mode" [ngModel]="selectedFilterMode" (ngModelChange)="onFilterModeChange($event)">
       <option [value]="FilterMode.AdvancedOnly" selected>Advanced Only Filter</option>
+      <option [value]="FilterMode.Combined">Combined Filter</option>
       <option [value]="FilterMode.Advanced">Advanced Filter</option>
       <option [value]="FilterMode.Quick">Quick Filter</option>
       <option [value]="undefined">No filter</option>
@@ -49,8 +50,8 @@
   <h2 id="predefined-filters-heading">Predefined filters</h2>
   <p cds-layout="m-b:md">
     VM Name, State, and Status stay visible when cleared. VM Name starts with three conditions: contains linux, windows,
-    or ubuntu. Status starts with Warning and Alert selected. Open VM Name to add or remove conditions, or use Add New
-    to filter by other fields.
+    or ubuntu. Status starts with Warning and Alert selected. Open VM Name to add or remove conditions, or use Add
+    filter to filter by other fields.
   </p>
   <appfx-datagrid-filters
     [filterMode]="FilterMode.AdvancedOnly"
@@ -61,6 +62,32 @@
   ></appfx-datagrid-filters>
   <appfx-datagrid
     [gridItems]="predefinedFilteredItems"
+    [columns]="columns"
+    [layoutModel]="{
+      compact: false,
+      stretchToParentHeight: false,
+    }"
+    [selectionType]="selectionType"
+    [pageSize]="10"
+    [rowSelectionMode]="false"
+  ></appfx-datagrid>
+</section>
+
+<section aria-labelledby="combined-filter-heading" cds-layout="m-t:xl">
+  <h2 id="combined-filter-heading">Combined filter</h2>
+  <p cds-layout="m-b:md">
+    The quick search and the filter pills work together: rows must match the search text and every filter. Clear all
+    removes both.
+  </p>
+  <appfx-datagrid-filters
+    [filterMode]="FilterMode.Combined"
+    [filterableProperties]="filterableProperties"
+    [predefinedFilters]="predefinedFilters"
+    (searchTermChange)="onCombinedSearchTermChange($event)"
+    (propertyFiltersChange)="onCombinedFilterChange($event)"
+  ></appfx-datagrid-filters>
+  <appfx-datagrid
+    [gridItems]="combinedFilteredItems"
     [columns]="columns"
     [layoutModel]="{
       compact: false,
