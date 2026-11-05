@@ -83,6 +83,11 @@ export class AssistantComponent {
 }
 ```
 
+`apply()` resolves with each operation's result. A refused one carries `refused` (such as `redacted`,
+`unbound` or `unsupported`) and a `detail` saying why, so show those to the user rather than
+treating the call as done. The policy's optional `announce` receives the same report, for a log or a
+notification that does not depend on the caller.
+
 Never classify everything as reversible (`classify: () => 'reversible'`): anyone who can put words
 in front of the model could then fill any bound field on the page, including one moved off-screen.
 
