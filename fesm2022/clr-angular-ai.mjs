@@ -2442,9 +2442,17 @@ function summarizeGrid(element, scope) {
     // A paginated grid holds one page, so its declared count is the honest total;
     // `aria-rowcount="-1"` or no attribute falls back to counting rendered rows.
     const rows = queryRole(element, 'row', scope);
+    const records = dataRows(rows);
     const declared = element.getAttribute('aria-rowcount');
     const total = declared === null ? Number.NaN : Number(declared);
-    state.rowCount = Number.isFinite(total) && total >= 0 ? total : dataRows(rows).length;
+    state.rowCount = Number.isFinite(total) && total >= 0 ? total : records.length;
+    // The cells are not walked, so their data is listed here, as other collections list their items.
+    if (listsItems(scope.options)) {
+        const listed = rowTexts(records, element, scope);
+        if (listed.length) {
+            state.rows = listed;
+        }
+    }
     const selected = rows.filter(row => row.getAttribute('aria-selected') === 'true').length;
     if (selected) {
         state.selectedRows = selected;
@@ -2568,6 +2576,29 @@ function summarizeRadiogroup(element, scope) {
 function dataRows(rows) {
     return rows.filter(row => !row.querySelector(ITEM_SELECTORS.columnheader) || row.querySelector(CELL_SELECTOR));
 }
+/** Each row's cells joined with ` | `, as a datagrid names its rows; a row that says nothing is left out. */
+function rowTexts(rows, grid, scope) {
+    const texts = [];
+    for (const row of rows) {
+        if (texts.length >= scope.options.maxItemsPerCollection) {
+            break;
+        }
+        const text = cellsOf(row, scope)
+            .map(cell => nameOf(cell, grid, scope))
+            .filter(Boolean)
+            .join(' | ');
+        if (text) {
+            texts.push(text);
+        }
+    }
+    return texts;
+}
+/** The row's own cells, row headers included; a nested table's cells are left to it. */
+function cellsOf(row, scope) {
+    return queryRendered(row, ROW_CELL_SELECTOR).filter(cell => !isHiddenFromContext(cell, scope.withheld) && closestContainer(cell, ROW_SELECTOR) === row);
+}
+const ROW_SELECTOR = 'tr, [role="row"]';
+const ROW_CELL_SELECTOR = `${CELL_SELECTOR}, th, [role="rowheader"]`;
 function queryRole(element, role, scope) {
     // Items of an excluded role are left out of the summary as the walk leaves them out.
     if (scope.options.excludeRoles.includes(role)) {

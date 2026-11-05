@@ -5807,12 +5807,16 @@ class ClrDatagrid {
         if (total > 0) {
             state.totalRows = total;
         }
+        const maxItems = this.budgetOf(snapshotOptions);
+        // The cells are not walked, so the rows are where their data shows; selection names rows the same way.
+        if (snapshotOptions?.collectionItems !== 'summary') {
+            const listed = firstRowLabels(this.rows.toArray(), row => this.rowLabel(row, excluded), maxItems);
+            if (listed.length) {
+                state.rows = listed;
+            }
+        }
         if (this.selection.selectable) {
             state.selectionMode = this.selection.selectionType === SelectionType.Single ? 'single' : 'multi';
-            const maxItems = this.budgetOf(snapshotOptions);
-            if (snapshotOptions?.collectionItems !== 'summary') {
-                state.rows = firstRowLabels(this.rows.toArray(), row => this.rowLabel(row, excluded), maxItems);
-            }
             const selected = this.selectedRowLabels(excluded, maxItems);
             if (selected.length) {
                 state.selection = selected;
