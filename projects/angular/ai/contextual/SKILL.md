@@ -11,13 +11,18 @@ metadata:
 
 ```ts
 import { inject } from '@angular/core';
-import { ClrContextEngineService } from '@clr/angular/ai';
+import { ClrContextEngineService, ClrContextTrackerService } from '@clr/angular/ai';
 
 export class Assistant {
   private readonly engine = inject(ClrContextEngineService);
+  private readonly tracker = inject(ClrContextTrackerService);
 
   snapshot() {
     return this.engine.getSnapshot(); // one snapshot, now
+  }
+
+  live() {
+    return this.tracker.track(); // Observable<ClrPageContext>, re-emits when the page changes
   }
 }
 ```

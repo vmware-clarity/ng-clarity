@@ -13,7 +13,9 @@
     </p>
 
     <h2 id="quickstart" class="clr-mt-48px" cds-text="title">Quickstart</h2>
-    <p class="clr-mt-16px" cds-text="body">Inject the engine for a snapshot of the page now.</p>
+    <p class="clr-mt-16px" cds-text="body">
+      Inject the engine for a snapshot of the page now, or the tracker for the current page as it changes.
+    </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="quickstartExample" language="typescript"></app-code-snippet>
     </div>
@@ -114,8 +116,8 @@
     <h2 id="principles" class="clr-mt-48px" cds-text="title">What it guarantees</h2>
     <p class="clr-mt-16px" cds-text="body">
       <strong cds-text="medium">Always the live page.</strong> A snapshot is computed from the live DOM at the moment it
-      is requested. Nothing is cached, so a snapshot cannot describe UI that has been closed, destroyed or navigated
-      away from.
+      is requested — or, by the tracker, when the page changes. Nothing is cached, so a snapshot cannot describe UI that
+      has been closed, destroyed or navigated away from.
     </p>
     <p class="clr-mt-16px" cds-text="body">
       <strong cds-text="medium">Bounded output.</strong> Text is truncated, collections are capped, hidden elements are
@@ -156,8 +158,8 @@
 
     <h2 id="who-it-is-for" class="clr-mt-48px" cds-text="title">Who consumes it</h2>
     <p class="clr-mt-16px" cds-text="body">
-      An assistant inside your application injects the service and asks for a snapshot per question. An agent driving
-      the browser from outside reads
+      An assistant inside your application injects the service and asks for a snapshot per question, or subscribes to
+      the tracker to always hold the current page. An agent driving the browser from outside reads
       <code cds-text="code">window.clrContext()</code>. Those are different trust boundaries, and each is configured
       separately.
     </p>
@@ -172,7 +174,7 @@
       </thead>
       <tbody>
         <tr>
-          <td class="left">The application's own code (<code cds-text="code">getSnapshot()</code>)</td>
+          <td class="left">The application's own code (<code cds-text="code">getSnapshot()</code>, the tracker)</td>
           <td class="left">Any, over the application-wide ones</td>
           <td class="left">Reported, except what is redacted</td>
           <td class="left">Full URL, route parameters and data, title</td>
@@ -230,10 +232,31 @@
       <code cds-text="code">url</code> and <code cds-text="code">title</code> always are.
     </p>
 
-    <h3 id="ignoring" class="clr-mt-32px" cds-text="section">Leaving the assistant out</h3>
+    <h3 id="live-context" class="clr-mt-32px" cds-text="section">Keeping a live page context</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Consumers that always want the context of the page the user is currently on subscribe to
+      <code cds-text="code">ClrContextTrackerService</code>. It watches the DOM with a
+      <code cds-text="code">MutationObserver</code> created outside the Angular zone, and watches
+      <code cds-text="code">input</code> and <code cds-text="code">change</code> too, because typing changes a property
+      rather than an attribute and is invisible to an observer. Both feed one quiet window of
+      <code cds-text="code">debounceMs</code> (default 300), bounded by <code cds-text="code">maxWaitMs</code> (default
+      2000), so a burst of activity results in a single scrape and an emission happens only when the context actually
+      changed. <code cds-text="code">debounceMs</code> is at least 10, so <code cds-text="code">0</code> becomes 10 and
+      a value that is not a number falls back to the default. <code cds-text="code">maxWaitMs</code> is never shorter
+      than <code cds-text="code">debounceMs</code>.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="trackerExample" language="typescript"></app-code-snippet>
+    </div>
+    <p class="clr-mt-16px" cds-text="body">
+      Neither service depends on zone.js, and both work in a zoneless application. The tracker's emissions arrive from a
+      timer, so a view that shows them should read them through the <code cds-text="code">async</code> pipe or a signal
+      (<code cds-text="code">toSignal</code>), which schedule change detection themselves.
+    </p>
     <p class="clr-mt-16px" cds-text="body">
       Mark UI that renders the context with <code cds-text="code">data-clr-context-ignore</code>. Such regions are
-      invisible to the engine end to end, so a panel rendering the context cannot describe itself into the page context.
+      invisible to the engine end to end, so a panel re-rendering the context cannot re-trigger tracking or describe
+      itself into the page context.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="ignoreExample" language="html"></app-code-snippet>
@@ -461,8 +484,13 @@
     <h3 id="changes" class="clr-mt-32px" cds-text="section">Sending only what changed</h3>
     <p class="clr-mt-16px" cds-text="body">
       In a conversation the page is described once; after that, what a model needs is the difference.
-      <code cds-text="code">clrDiffContext(previous, current)</code> compares two snapshots: nodes added (with their
-      subtrees), removed, and changed in their own state, plus whether the route, title or annotations moved.
+      <code cds-text="code">ClrContextTrackerService.changes$</code> emits alongside every
+      <code cds-text="code">context$</code> emission: nodes added (with their subtrees), removed, and changed in their
+      own state, plus whether the route, title or annotations moved. The first emission after
+      <code cds-text="code">start()</code> lists everything as added; it is not replayed, so subscribe to
+      <code cds-text="code">changes$</code> before calling <code cds-text="code">start()</code> or
+      <code cds-text="code">track()</code>, or begin from <code cds-text="code">currentContext</code>.
+      <code cds-text="code">clrDiffContext()</code> is the same comparison as a plain function.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="changesExample" language="typescript"></app-code-snippet>

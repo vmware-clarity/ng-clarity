@@ -13,3 +13,14 @@ export function attempt<T, F>(fn: () => T, fallback: F): T | F {
     return fallback;
   }
 }
+
+/** The longest delay `setTimeout` honours; longer ones, `Infinity` included, fire at once. */
+const MAX_TIMEOUT_MS = 2 ** 31 - 1;
+
+/** `timeoutMs` as a delay `setTimeout` honours: `fallback` when it is not a number, capped otherwise. */
+export function usableTimeout(timeoutMs: number | undefined, fallback: number): number {
+  if (typeof timeoutMs !== 'number' || Number.isNaN(timeoutMs)) {
+    return fallback;
+  }
+  return Math.min(Math.max(timeoutMs, 0), MAX_TIMEOUT_MS);
+}

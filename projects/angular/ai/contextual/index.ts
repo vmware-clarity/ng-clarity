@@ -8,6 +8,7 @@
 export * from './interfaces/context.interface';
 export * from './providers/context-options';
 export * from './providers/context-registry.service';
+export * from './providers/context-tracker.service';
 export * from './providers/contextual-engine.service';
 export { CLR_CONTEXT_DEFAULT_OPTIONS } from './dom/dom-context-collector';
 export type { ClrContextDomExtractor } from './dom/dom-context-collector';
