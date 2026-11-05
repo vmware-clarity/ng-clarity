@@ -18,7 +18,7 @@ import {
   Output,
   Renderer2,
 } from '@angular/core';
-import { ClrCommonStringsService } from '@clr/angular/utils';
+import { ClrCommonStringsService, publishElementContext } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { AlertIconAndTypesService } from './providers/icon-and-types.service';
@@ -45,6 +45,7 @@ export class ClrAlert implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   private _isLightweight = false;
   private _origAlertType: string;
+  private teardownElementContext?: () => void;
 
   constructor(
     private iconService: AlertIconAndTypesService,
@@ -111,6 +112,11 @@ export class ClrAlert implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // The alert type is only a CSS class, so the component reports it.
+    this.teardownElementContext = publishElementContext(this.hostElement.nativeElement, () =>
+      this._closed ? null : { state: { severity: this.alertType }, publicKeys: ['severity'] }
+    );
+
     if (this.multiAlertService) {
       this.subscriptions.push(
         this.multiAlertService.changes.subscribe(() => {
@@ -121,6 +127,7 @@ export class ClrAlert implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.teardownElementContext?.();
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 

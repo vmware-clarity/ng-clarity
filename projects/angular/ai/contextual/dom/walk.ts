@@ -851,7 +851,12 @@ function finish(
 ): ClrComponentContext | null {
   const redacted = isRedacted(element, walk.redactedDepth > 0);
   // Published context is not merged inside a redacted region: it would carry the component's state straight out.
-  let described = redacted || !published ? node : mergeElementContext(node, element, walk.options, walk.untrusted);
+  let described = node;
+  if (published) {
+    described = redacted
+      ? withoutOverriddenLabel(node, element, walk)
+      : mergeElementContext(node, element, walk.options, walk.untrusted);
+  }
   if (walk.excludeRoles.has(described.type)) {
     walk.remaining++;
     return null;
@@ -869,6 +874,17 @@ function finish(
   }
 
   return pruneEmpty(described, { foreign: unpruned });
+}
+
+/** In a redacted region, a markup name the element overrides is dropped; both may be the withheld content. */
+function withoutOverriddenLabel(node: ClrComponentContext, element: Element, walk: Walk): ClrComponentContext {
+  // Reading the published label runs the whole callback, so only when there is a label to lose.
+  if (node.label === undefined || typeof readClrElementContext(element, walk.options)?.label !== 'string') {
+    return node;
+  }
+  const unnamed = { ...node };
+  delete unnamed.label;
+  return unnamed;
 }
 
 /** Whether a label read from content leaves the element out: only its resolved role counts, not any `role`. */

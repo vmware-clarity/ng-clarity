@@ -63,6 +63,18 @@ export default function (): void {
       fixture.destroy();
     });
 
+    it('publishes nothing about itself once dismissed', () => {
+      const host = compiled.querySelector('clr-alert') as Element & {
+        clrElementContext?: () => unknown;
+      };
+      expect(host.clrElementContext?.()).toEqual({ state: { severity: 'info' }, publicKeys: ['severity'] });
+
+      fixture.componentInstance.isClosable = true;
+      fixture.componentInstance.closed = true;
+      fixture.detectChanges();
+      expect(host.clrElementContext?.()).toBeNull();
+    });
+
     it('projects content', () => {
       const newAlertMsg = 'OHAI';
       expect(compiled.textContent).toMatch(/This is an alert!/);

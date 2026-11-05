@@ -37,6 +37,7 @@ import {
   measureHeight,
   noopAnimations,
   preventArrowKeyScroll,
+  publishElementContext,
   uniqueIdFactory,
 } from '@clr/angular/utils';
 import { asapScheduler, Subject, Subscription } from 'rxjs';
@@ -90,6 +91,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   /** The latest expand or collapse of the children, so that an earlier one does not start its animation after it. */
   private childrenHeightChange: object;
 
+  private teardownElementContext?: () => void;
   private bulkChange = false;
   private skipAnimation = false;
   private skipEmitChange = false;
@@ -208,6 +210,15 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   }
 
   ngOnInit() {
+    // `aria-expanded` cannot say whether anything is under the node, and a lazy subtree is absent from the DOM.
+    this.teardownElementContext = publishElementContext(this.elementRef.nativeElement, () => {
+      const state: Record<string, unknown> = { expandable: !!this.isExpandable() };
+      if (this.expandService.loading || this.isModelLoading) {
+        state.loading = true;
+      }
+      return { state, publicKeys: ['expandable', 'loading'] };
+    });
+
     this._model.expanded = this.expanded;
     this._model.disabled = this.disabled;
     this.subscriptions.push(
@@ -285,6 +296,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   }
 
   ngOnDestroy() {
+    this.teardownElementContext?.();
     this._model.destroy();
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
