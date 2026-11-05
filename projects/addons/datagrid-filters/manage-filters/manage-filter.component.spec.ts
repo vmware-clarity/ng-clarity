@@ -194,6 +194,19 @@ describe('ManageFilterComponent', () => {
     expect(document.querySelector<HTMLButtonElement>('.filter-popover .clr-combobox-trigger').disabled).toBeTrue();
     expect(document.querySelector('.filter-form-actions [data-test-id="clear-filter"]')).not.toBeNull();
   });
+  it('hides the field combobox for predefined pills', async function (this: ThisTest) {
+    this.component.filterProperty = enumProperty;
+    this.component.predefined = true;
+    this.fixture.detectChanges();
+    this.fixture.nativeElement.querySelector('.filter-pill').click();
+    this.fixture.detectChanges();
+    await this.fixture.whenStable();
+    this.fixture.detectChanges();
+
+    expect(document.querySelector('.filter-popover')).toBeTruthy();
+    expect(document.querySelector('.filter-popover clr-combobox')).toBeNull();
+    expect(getComputedStyle(document.querySelector('.filter-popover .filter-field-row')).display).toBe('none');
+  });
   it('manages numeric property filter', function (this: ThisTest) {
     spyOn(this.component.filterStrings, 'getConjoinerDisplayName');
     this.component.propertyFilter = numericPropertyFilter;

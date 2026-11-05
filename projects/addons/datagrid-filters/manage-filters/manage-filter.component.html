@@ -46,16 +46,24 @@
   *clrPopoverContent="open; at: popoverPosition; type: popoverType; outsideClickToClose: true; scrollToClose: false"
 >
   <ng-template #fieldSelector>
-    <clr-combobox-container class="filter-field">
-      <label class="clr-sr-only">{{ filterStrings.filterLabel }}</label>
-      <clr-combobox name="field" [disabled]="true" [ngModel]="managedProperty" [ngModelOptions]="{ standalone: true }">
-        <clr-options>
-          <clr-option *clrOptionItems="let property of [managedProperty]; field: 'displayName'" [clrValue]="property">
-            {{ property.displayName }}
-          </clr-option>
-        </clr-options>
-      </clr-combobox>
-    </clr-combobox-container>
+    <!-- Predefined pills always edit the same field, so the locked field picker is not shown. -->
+    @if (!predefined) {
+      <clr-combobox-container class="filter-field">
+        <label class="clr-sr-only">{{ filterStrings.filterLabel }}</label>
+        <clr-combobox
+          name="field"
+          [disabled]="true"
+          [ngModel]="managedProperty"
+          [ngModelOptions]="{ standalone: true }"
+        >
+          <clr-options>
+            <clr-option *clrOptionItems="let property of [managedProperty]; field: 'displayName'" [clrValue]="property">
+              {{ property.displayName }}
+            </clr-option>
+          </clr-options>
+        </clr-combobox>
+      </clr-combobox-container>
+    }
   </ng-template>
   <ng-template #filterActions>
     @if (active) {

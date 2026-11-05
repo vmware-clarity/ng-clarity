@@ -42,6 +42,11 @@ form {
     flex-shrink: 1;
   }
 
+  // The row is empty when no field picker or AND/OR group is projected (e.g. predefined pills).
+  .filter-field-row:empty {
+    display: none;
+  }
+
   .filter-field-row {
     display: flex;
     align-items: center;
