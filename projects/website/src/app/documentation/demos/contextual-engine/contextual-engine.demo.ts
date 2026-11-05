@@ -71,7 +71,12 @@ const SNAPSHOT_SHAPE_EXAMPLE = `
     {
       "type": "grid",
       "element": "clr-datagrid",
-      "state": { "columns": ["Name", "Status"], "rowCount": 20, "selectedRows": 2 }
+      "state": {
+        "columns": ["Name", "Status"],
+        "rowCount": 2,
+        "rows": ["esx-01 | Connected", "esx-edge-01 | Disconnected"],
+        "selectedRows": 1
+      }
     },
     {
       "type": "alert",
