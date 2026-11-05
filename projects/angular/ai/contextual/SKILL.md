@@ -69,7 +69,7 @@ export class Firewall {
 - Published state is private to untrusted callers unless its key is in `publicKeys`; list only keys that carry no user data.
 - Keep `[clrContextState]` small and replace the object instead of mutating it: the directive serialises it on every change detection.
 - An element holds one published context: `publishElementContext` on the host of a Clarity component replaces what the component publishes, or is replaced by it. Publish from an element of your own.
-- A grid is summarised, not walked: its `rows` list each row's cells joined with ` | `, up to `maxItemsPerCollection`, so there is no need to publish them.
+- A grid is summarised, not walked: its `rows` list each row's cells in one string, such as `esx-01 | ok`, up to `maxItemsPerCollection`, so there is no need to publish them.
 - `focus: 'modal'` reads only the open modal dialog, such as a wizard, and reads the whole page while none is open, so it can be set once for the application.
 - Prefer semantic HTML and ARIA over annotations: the engine reads the accessibility tree, so an unlabelled control is unnamed to the agent too.
 - `getSnapshotAsync({ timeoutMs })` waits for asynchronous providers; `getSnapshot()` reports a pending one as `{ type: 'clr-loading' }`.
