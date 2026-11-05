@@ -5,22 +5,85 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 <div class="composite-filter-container">
-  @if (visibleProperties.length > 0) {
+  @if (visibleProperties.length > 0 || semiPredefinedFilters.length > 0 || toggleFilters.length > 0) {
     <div class="manage-filter-container">
-      @for (property of visibleProperties; track property.property; let index = $index) {
-        @if (index > 0 && !isPredefined(property) && isPredefined(visibleProperties[index - 1])) {
-          <span
-            class="filter-group-separator"
-            role="separator"
-            aria-orientation="vertical"
-            data-test-id="filter-group-separator"
-          ></span>
-        }
+      <ng-template #separator>
+        <span
+          class="filter-group-separator"
+          role="separator"
+          aria-orientation="vertical"
+          data-test-id="filter-group-separator"
+        ></span>
+      </ng-template>
+      @for (toggle of toggleFilters; track toggle) {
+        <clr-label class="semi-filter-option-label" [clrColor]="isToggleOn(toggle) ? 'info' : ''">
+          <button
+            type="button"
+            class="semi-filter-option"
+            data-test-id="toggle-filter"
+            [attr.aria-pressed]="isToggleOn(toggle)"
+            (click)="toggleFilter(toggle)"
+          >
+            @if (isToggleOn(toggle)) {
+              <cds-icon shape="check" size="16" aria-hidden="true"></cds-icon>
+            }
+            <span class="semi-filter-option-text">{{ toggleText(toggle) }}</span>
+          </button>
+        </clr-label>
+      }
+      @for (property of predefinedProperties; track property.property) {
         <appfx-manage-filter
-          [hidden]="collapsedFilters && !isPredefined(property)"
           [filterProperty]="property"
           [propertyFilter]="filterFor(property)"
-          [predefined]="isPredefined(property)"
+          [predefined]="true"
+          (filterCriteriaChange)="onFilterCriteriaChange($event)"
+          (filterRemoved)="clearFilter(property)"
+        >
+        </appfx-manage-filter>
+      }
+      @for (property of semiPredefinedFilters; track property.property; let first = $first) {
+        <!-- Separator before the group and between semi-predefined filters. -->
+        @if (!first || hasPredefinedGroup) {
+          <ng-container [ngTemplateOutlet]="separator"></ng-container>
+        }
+        <div
+          class="semi-filter-group"
+          role="group"
+          data-test-id="semi-filter-group"
+          [attr.aria-labelledby]="popoverId + '-semi-' + property.property"
+        >
+          <span class="semi-filter-label" [id]="popoverId + '-semi-' + property.property"
+            >{{ property.displayName }}:</span
+          >
+          @for (option of semiOptions(property); track option.key) {
+            <clr-label
+              class="semi-filter-option-label"
+              [clrColor]="isOptionSelected(property, option.key) ? 'info' : ''"
+            >
+              <button
+                type="button"
+                class="semi-filter-option"
+                data-test-id="semi-filter-option"
+                [attr.aria-pressed]="isOptionSelected(property, option.key)"
+                (click)="toggleOption(property, option.key)"
+              >
+                @if (isOptionSelected(property, option.key)) {
+                  <cds-icon shape="check" size="16" aria-hidden="true"></cds-icon>
+                }
+                <span class="semi-filter-option-text">{{ option.label }}</span>
+              </button>
+            </clr-label>
+          }
+        </div>
+      }
+      @for (property of userAddedProperties; track property.property; let first = $first) {
+        @if (first && (hasPredefinedGroup || semiPredefinedFilters.length > 0)) {
+          <ng-container [ngTemplateOutlet]="separator"></ng-container>
+        }
+        <appfx-manage-filter
+          [hidden]="collapsedFilters"
+          [filterProperty]="property"
+          [propertyFilter]="filterFor(property)"
           (filterCriteriaChange)="onFilterCriteriaChange($event)"
           (filterRemoved)="clearFilter(property)"
         >
@@ -137,7 +200,7 @@
       }
     }
   </div>
-  @if (propertyFilters.length > 0 || externalCriteriaActive) {
+  @if (hasActiveCriteria || externalCriteriaActive) {
     <clr-tooltip>
       <button
         type="button"

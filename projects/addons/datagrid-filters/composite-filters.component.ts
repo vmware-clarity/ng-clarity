@@ -30,13 +30,14 @@ import {
 import { uniqueIdFactory } from '@clr/angular/utils';
 
 import { DatagridFiltersStrings } from './datagrid-filters-strings.service';
-import { PropertyType } from './model/datagrid-filters.enums';
+import { ComparisonOperator, LogicalOperator, PropertyType } from './model/datagrid-filters.enums';
 import {
   DateTimePropertyDefinition,
   EnumPropertyDefinition,
   FilterablePropertyDefinition,
   NumericPropertyDefinition,
   PropertyFilter,
+  PropertyPredicate,
   StringPropertyDefinition,
   UserPropertyDefinition,
 } from './model/datagrid-filters.interfaces';
@@ -62,6 +63,22 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
 
   /** Properties whose pills remain visible when their criteria are cleared. */
   @Input() predefinedFilters: FilterablePropertyDefinition[] = [];
+
+  /**
+   * Enum properties shown as a field label followed by toggleable option pills,
+   * between the predefined and the user-added pills. Selected options are combined with OR
+   * and applied immediately.
+   */
+  @Input() semiPredefinedFilters: EnumPropertyDefinition[] = [];
+
+  /**
+   * Ready-made filters shown as on/off pills in the predefined group. OFF means not applied;
+   * ON applies the filter as configured. A preset filter for the same field starts the toggle ON.
+   */
+  @Input() toggleFilters: PropertyFilter[] = [];
+
+  /** Toggle filters that are currently ON. */
+  activeToggles = new Set<PropertyFilter>();
 
   /**
    * Other criteria (e.g. the quick search in combined mode) are active, so Clear all stays available
@@ -124,7 +141,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   get visibleProperties(): FilterablePropertyDefinition[] {
     const properties = new Map<string, FilterablePropertyDefinition>();
     for (const property of [...(this.predefinedFilters || []), ...this.activeFilters()]) {
-      if (!properties.has(property.property)) {
+      if (!properties.has(property.property) && !this.isSemiPredefined(property)) {
         properties.set(property.property, property);
       }
     }
@@ -132,12 +149,97 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   }
 
   get availableProperties(): FilterablePropertyDefinition[] {
-    const visibleKeys = new Set(this.visibleProperties.map(property => property.property));
+    const visibleKeys = new Set(
+      [...this.visibleProperties, ...(this.semiPredefinedFilters || []), ...this.toggleProperties()].map(
+        property => property.property
+      )
+    );
     return (this.filterableProperties || []).filter(property => !visibleKeys.has(property.property));
   }
 
   get userAddedFiltersCount(): number {
-    return this.activeFilters().filter(property => !this.isPredefined(property)).length;
+    return this.activeFilters().filter(property => !this.isPredefined(property) && !this.isSemiPredefined(property))
+      .length;
+  }
+
+  get predefinedProperties(): FilterablePropertyDefinition[] {
+    return this.visibleProperties.filter(property => this.isPredefined(property));
+  }
+
+  get userAddedProperties(): FilterablePropertyDefinition[] {
+    return this.visibleProperties.filter(property => !this.isPredefined(property));
+  }
+
+  /** True when the predefined group has content (toggles or predefined pills). */
+  get hasPredefinedGroup(): boolean {
+    return (this.toggleFilters || []).length > 0 || this.predefinedProperties.length > 0;
+  }
+
+  get hasActiveCriteria(): boolean {
+    return this.propertyFilters.length > 0 || this.activeToggles.size > 0;
+  }
+
+  isToggleOn(toggle: PropertyFilter): boolean {
+    return this.activeToggles.has(toggle);
+  }
+
+  toggleFilter(toggle: PropertyFilter): void {
+    if (this.activeToggles.has(toggle)) {
+      this.activeToggles.delete(toggle);
+    } else {
+      this.activeToggles.add(toggle);
+    }
+    this.emitFilters();
+  }
+
+  /** FIELD_NAME: VALUE for Equals, FIELD_NAME: CONDITION VALUE otherwise. Multiple values are comma separated. */
+  toggleText(toggle: PropertyFilter): string {
+    const property = toggle.criteria[0]?.filterableProperty;
+    const values = toggle.criteria.map(predicate => {
+      const value =
+        property instanceof EnumPropertyDefinition
+          ? (property.values.get(predicate.value) ?? predicate.value)
+          : predicate.value;
+      return predicate.operator === ComparisonOperator.Equals
+        ? `${value}`
+        : `${this.filterStrings.getOperatorDisplayName(predicate.operator)} ${value}`;
+    });
+    return `${property?.displayName}: ${values.join(', ')}`;
+  }
+
+  isSemiPredefined(property: FilterablePropertyDefinition): boolean {
+    return (this.semiPredefinedFilters || []).some(semi => semi.property === property.property);
+  }
+
+  /** Option pills of a semi-predefined filter, in the order of the enum values map. */
+  semiOptions(property: EnumPropertyDefinition): { key: string; label: string }[] {
+    return Array.from(property.values, ([key, label]) => ({ key, label }));
+  }
+
+  isOptionSelected(property: EnumPropertyDefinition, key: string): boolean {
+    return !!this.filterFor(property)?.criteria.some(
+      predicate => predicate.operator === ComparisonOperator.Equals && predicate.value === key
+    );
+  }
+
+  toggleOption(property: EnumPropertyDefinition, key: string): void {
+    const selected = this.semiOptions(property)
+      .map(option => option.key)
+      .filter(optionKey => (optionKey === key) !== this.isOptionSelected(property, optionKey));
+    const filter = new PropertyFilter();
+    filter.operator = LogicalOperator.Or;
+    filter.criteria = selected.map(value => {
+      const predicate = new PropertyPredicate();
+      predicate.filterableProperty = property;
+      predicate.operator = ComparisonOperator.Equals;
+      predicate.value = value;
+      return predicate;
+    });
+    if (filter.criteria.length) {
+      this.onFilterCriteriaChange(filter);
+    } else {
+      this.clearFilter(property);
+    }
   }
 
   isPredefined(property: FilterablePropertyDefinition): boolean {
@@ -158,7 +260,16 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
       this.onPropertyChange();
     }
     if (this.presetFilters) {
-      this.propertyFilters = this.presetFilters.filter(filter => filter.criteria.length > 0);
+      const presets = this.presetFilters.filter(filter => filter.criteria.length > 0);
+      // A preset for a toggle field turns that toggle ON instead of creating a pill.
+      for (const toggle of this.toggleFilters || []) {
+        if (presets.some(filter => this.sameField(filter, toggle))) {
+          this.activeToggles.add(toggle);
+        }
+      }
+      this.propertyFilters = presets.filter(
+        filter => !(this.toggleFilters || []).some(toggle => this.sameField(filter, toggle))
+      );
     }
     this.preselectFirstProperty();
   }
@@ -226,7 +337,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
           }
         }
       }
-      this.propertyFiltersChange.emit(this.propertyFilters);
+      this.emitFilters();
     }
     if (this.signPostOpened) {
       this.signPostOpened = false;
@@ -254,7 +365,8 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
 
   clearAllFilters(): void {
     this.propertyFilters = [];
-    this.propertyFiltersChange.emit(this.propertyFilters);
+    this.activeToggles.clear();
+    this.emitFilters();
     this.preselectFirstProperty();
     this.collapsedFilters = false;
     this.updateShowHideLabel();
@@ -266,10 +378,10 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     this.propertyFilters = this.propertyFilters.filter(
       filter => filter.criteria[0]?.filterableProperty.property !== property.property
     );
-    this.propertyFiltersChange.emit(this.propertyFilters);
+    this.emitFilters();
     this.preselectFirstProperty();
     this.updateShowHideLabel();
-    if (!this.isPredefined(property)) {
+    if (!this.isPredefined(property) && !this.isSemiPredefined(property)) {
       // The removed pill held focus and no longer exists, so move focus to Add filter.
       afterNextRender(() => this.addButton?.nativeElement.focus(), { injector: this.injector });
     }
@@ -285,6 +397,22 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
    * Active filters are not displayed in the new filters list.
    * We want to preselect the first displayed property
    */
+  private toggleProperties(): FilterablePropertyDefinition[] {
+    return (this.toggleFilters || [])
+      .map(toggle => toggle.criteria[0]?.filterableProperty)
+      .filter((property): property is FilterablePropertyDefinition => !!property);
+  }
+
+  private sameField(filter: PropertyFilter, other: PropertyFilter): boolean {
+    const property = filter.criteria[0]?.filterableProperty?.property;
+    return !!property && property === other.criteria[0]?.filterableProperty?.property;
+  }
+
+  /** Emits the user filters plus the toggle filters that are ON. */
+  private emitFilters(): void {
+    this.propertyFiltersChange.emit([...this.propertyFilters, ...this.activeToggles]);
+  }
+
   private preselectFirstProperty() {
     const remainingProperties = this.availableProperties;
     this.selectedFilterableProperty = remainingProperties[0];

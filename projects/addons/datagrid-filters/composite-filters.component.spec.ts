@@ -318,6 +318,121 @@ describe('CompositeFiltersComponent', () => {
     expect(document.activeElement).toBe(this.fixture.nativeElement.querySelector('[data-test-id="add-button"]'));
   });
 
+  describe('toggle filters', () => {
+    const toggles = () => Array.from(document.querySelectorAll<HTMLButtonElement>('[data-test-id="toggle-filter"]'));
+    const equalsToggle = (): PropertyFilter => ({
+      operator: LogicalOperator.Or,
+      criteria: [{ filterableProperty: enumProperty, operator: ComparisonOperator.Equals, value: 'red' }],
+    });
+
+    it('shows FIELD: VALUE for Equals and FIELD: CONDITION VALUE otherwise', function (this: ThisTest) {
+      const notEquals: PropertyFilter = {
+        operator: LogicalOperator.And,
+        criteria: [{ filterableProperty: stringProperty, operator: ComparisonOperator.Contains, value: 'demo' }],
+      };
+      this.component.toggleFilters = [equalsToggle(), notEquals];
+      this.fixture.detectChanges();
+      expect(toggles().map(toggle => toggle.textContent.trim())).toEqual([
+        `${enumProperty.displayName}: ${enumProperty.values.get('red')}`,
+        `${stringProperty.displayName}: Contains demo`,
+      ]);
+      expect(this.component.availableProperties).not.toContain(enumProperty);
+      expect(this.component.availableProperties).not.toContain(stringProperty);
+    });
+
+    it('applies the filter only while ON', function (this: ThisTest) {
+      const toggle = equalsToggle();
+      this.component.toggleFilters = [toggle];
+      this.fixture.detectChanges();
+      spyOn(this.component.propertyFiltersChange, 'emit');
+      expect(toggles()[0].getAttribute('aria-pressed')).toBe('false');
+      expect(toggles()[0].closest('clr-label').classList).not.toContain('label-info');
+
+      toggles()[0].click();
+      this.fixture.detectChanges();
+      expect(this.component.propertyFiltersChange.emit).toHaveBeenCalledWith([toggle]);
+      expect(toggles()[0].getAttribute('aria-pressed')).toBe('true');
+      expect(toggles()[0].querySelector('cds-icon[shape="check"]')).toBeTruthy();
+      expect(toggles()[0].closest('clr-label').classList).toContain('label-info');
+
+      toggles()[0].click();
+      this.fixture.detectChanges();
+      expect(this.component.propertyFiltersChange.emit).toHaveBeenCalledWith([]);
+    });
+
+    it('starts ON from a preset and is turned OFF by Clear all', function (this: ThisTest) {
+      const toggle = equalsToggle();
+      this.component.toggleFilters = [toggle];
+      this.component.presetFilters = [equalsToggle()];
+      this.fixture.detectChanges();
+      expect(this.component.isToggleOn(toggle)).toBeTrue();
+      expect(this.component.propertyFilters.length).toBe(0);
+
+      this.fixture.nativeElement.querySelector('[data-test-id="clear-all-button"]').click();
+      this.fixture.detectChanges();
+      expect(this.component.isToggleOn(toggle)).toBeFalse();
+    });
+  });
+
+  describe('semi-predefined filters', () => {
+    const options = () =>
+      Array.from(document.querySelectorAll<HTMLButtonElement>('[data-test-id="semi-filter-option"]'));
+
+    beforeEach(function (this: ThisTest) {
+      this.component.predefinedFilters = [stringProperty];
+      this.component.semiPredefinedFilters = [enumProperty];
+      this.fixture.detectChanges();
+    });
+
+    it('renders the field label and one pill per option, after the predefined pills', function (this: ThisTest) {
+      const group: HTMLElement = this.fixture.nativeElement.querySelector('[data-test-id="semi-filter-group"]');
+      expect(group.querySelector('.semi-filter-label').textContent.trim()).toBe(enumProperty.displayName + ':');
+      expect(options().map(option => option.textContent.trim())).toEqual(Array.from(enumProperty.values.values()));
+      expect(group.previousElementSibling.getAttribute('role')).toBe('separator');
+      expect(this.component.availableProperties).not.toContain(enumProperty);
+    });
+
+    it('separates multiple semi-predefined filters', function (this: ThisTest) {
+      const second = new EnumPropertyDefinition('Kind', 'kind', new Map([['a', 'A']]));
+      this.fixture.componentRef.setInput('semiPredefinedFilters', [enumProperty, second]);
+      this.fixture.detectChanges();
+      const groups = this.fixture.nativeElement.querySelectorAll('[data-test-id="semi-filter-group"]');
+      expect(groups.length).toBe(2);
+      expect(groups[1].previousElementSibling.getAttribute('role')).toBe('separator');
+    });
+
+    it('toggles options instantly and combines them with OR', function (this: ThisTest) {
+      spyOn(this.component.propertyFiltersChange, 'emit');
+      const keys = Array.from(enumProperty.values.keys());
+      options()[0].click();
+      options()[1].click();
+      this.fixture.detectChanges();
+      const filter = this.component.filterFor(enumProperty);
+      expect(filter.operator).toBe(LogicalOperator.Or);
+      expect(filter.criteria.map(predicate => predicate.value)).toEqual(keys.slice(0, 2));
+      expect(options()[0].getAttribute('aria-pressed')).toBe('true');
+      expect(options()[0].querySelector('cds-icon[shape="check"]')).toBeTruthy();
+      expect(options()[0].closest('clr-label').classList).toContain('label-info');
+      // Semi-predefined filters are not user-added pills.
+      expect(this.component.userAddedFiltersCount).toBe(0);
+      expect(this.fixture.nativeElement.querySelectorAll('appfx-manage-filter').length).toBe(1);
+
+      options()[0].click();
+      options()[1].click();
+      this.fixture.detectChanges();
+      expect(this.component.filterFor(enumProperty)).toBeUndefined();
+      expect(this.component.propertyFiltersChange.emit).toHaveBeenCalledTimes(4);
+    });
+
+    it('is cleared by Clear all', function (this: ThisTest) {
+      options()[0].click();
+      this.fixture.detectChanges();
+      this.fixture.nativeElement.querySelector('[data-test-id="clear-all-button"]').click();
+      this.fixture.detectChanges();
+      expect(options().every(option => option.getAttribute('aria-pressed') === 'false')).toBeTrue();
+    });
+  });
+
   it('displays property filters', function (this: ThisTest) {
     this.component.propertyFilters.push(stringPropertyFilter);
     this.component.propertyFilters.push(enumPropertyFilter);

@@ -149,6 +149,10 @@ export class FiltersGridComponent {
       field: 'status',
     },
     {
+      displayName: 'Priority',
+      field: 'priority',
+    },
+    {
       displayName: 'Used space',
       field: 'usedSpace',
     },
@@ -166,6 +170,8 @@ export class FiltersGridComponent {
   protected allItems: VmItem[] = [];
   protected filterableProperties: FilterablePropertyDefinition[] = [];
   protected predefinedFilters: FilterablePropertyDefinition[] = [];
+  protected semiPredefinedFilters: EnumPropertyDefinition[] = [];
+  protected toggleFilters: PropertyFilter[] = [];
   protected presetFilters: PropertyFilter[] = [];
   protected predefinedFilteredItems: VmItem[] = [];
   protected combinedFilteredItems: VmItem[] = [];
@@ -280,6 +286,12 @@ export class FiltersGridComponent {
     enumStatusMap.set('Alert', 'Alert');
     const enumProperty = new EnumPropertyDefinition('Status', 'status', enumStatusMap);
 
+    const priorityProperty = new EnumPropertyDefinition(
+      'Priority',
+      'priority',
+      new Map(['Low', 'Medium', 'High'].map(value => [value, value]))
+    );
+
     const categoryEnumProp = new EnumPropertyDefinition(
       'Category',
       'event',
@@ -296,11 +308,26 @@ export class FiltersGridComponent {
       stringNameProperty,
       singleSelectStateProperty,
       enumProperty,
+      priorityProperty,
       categoryEnumProp,
       userProp
     );
 
-    this.predefinedFilters = [stringNameProperty, singleSelectStateProperty, enumProperty];
+    this.predefinedFilters = [stringNameProperty, enumProperty];
+    // Category as option pills for a few common events: Category: (User Login) (User Logout) (Password Changed)
+    const categoryOptions = new Map(
+      ['auth.login', 'auth.logout', 'auth.password_change'].map(key => [key, CATEGORY_ENUM_VALUES[key]])
+    );
+    // Priority: (Low) (Medium) (High) and Category: (User Login) (User Logout) (Password Changed)
+    this.semiPredefinedFilters = [priorityProperty, new EnumPropertyDefinition('Category', 'event', categoryOptions)];
+    // On/off filter: OFF = not applied, ON = State equals Powered On.
+    const stateProperty = new EnumPropertyDefinition('State', 'state', stateEnumMap);
+    this.toggleFilters = [
+      {
+        operator: LogicalOperator.Or,
+        criteria: [{ filterableProperty: stateProperty, operator: ComparisonOperator.Equals, value: 'Powered On' }],
+      },
+    ];
     this.presetFilters = [
       {
         operator: LogicalOperator.Or,

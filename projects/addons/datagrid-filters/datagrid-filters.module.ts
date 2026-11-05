@@ -18,7 +18,7 @@ import {
   ClrRadioModule,
   ClrSelectModule,
 } from '@clr/angular/forms';
-import { angleIcon, ClarityIcons, ClrIcon, plusIcon, searchIcon, windowCloseIcon } from '@clr/angular/icon';
+import { angleIcon, checkIcon, ClarityIcons, ClrIcon, plusIcon, searchIcon, windowCloseIcon } from '@clr/angular/icon';
 import { ClrPopoverModuleNext } from '@clr/angular/popover/common';
 import { ClrSignpostModule } from '@clr/angular/popover/signpost';
 import { ClrTooltipModule } from '@clr/angular/popover/tooltip';
@@ -96,6 +96,6 @@ export function datagridFiltersUserServiceFactory(existing: DatagridFiltersUserS
 })
 export class AppfxDatagridFiltersModule {
   constructor() {
-    ClarityIcons.addIcons(angleIcon, plusIcon, searchIcon, windowCloseIcon);
+    ClarityIcons.addIcons(angleIcon, checkIcon, plusIcon, searchIcon, windowCloseIcon);
   }
 }

@@ -49,14 +49,17 @@
 <section aria-labelledby="predefined-filters-heading" cds-layout="m-t:xl">
   <h2 id="predefined-filters-heading">Predefined filters</h2>
   <p cds-layout="m-b:md">
-    VM Name, State, and Status stay visible when cleared. VM Name starts with three conditions: contains linux, windows,
-    or ubuntu. Status starts with Warning and Alert selected. Open VM Name to add or remove conditions, or use Add
-    filter to filter by other fields.
+    VM Name and Status stay visible when cleared. VM Name starts with three conditions: contains linux, windows, or
+    ubuntu. Status starts with Warning and Alert selected. Priority and Category are semi-predefined filters: click
+    their option pills to toggle them. State: Powered On is an on/off filter. Open VM Name to add or remove conditions,
+    or use Add filter to filter by other fields.
   </p>
   <appfx-datagrid-filters
     [filterMode]="FilterMode.AdvancedOnly"
     [filterableProperties]="filterableProperties"
     [predefinedFilters]="predefinedFilters"
+    [semiPredefinedFilters]="semiPredefinedFilters"
+    [toggleFilters]="toggleFilters"
     [presetFilters]="presetFilters"
     (propertyFiltersChange)="onPredefinedFilterChange($event)"
   ></appfx-datagrid-filters>
@@ -83,6 +86,8 @@
     [filterMode]="FilterMode.Combined"
     [filterableProperties]="filterableProperties"
     [predefinedFilters]="predefinedFilters"
+    [semiPredefinedFilters]="semiPredefinedFilters"
+    [toggleFilters]="toggleFilters"
     (searchTermChange)="onCombinedSearchTermChange($event)"
     (propertyFiltersChange)="onCombinedFilterChange($event)"
   ></appfx-datagrid-filters>

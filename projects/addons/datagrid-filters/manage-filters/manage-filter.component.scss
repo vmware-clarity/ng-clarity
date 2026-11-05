@@ -6,13 +6,17 @@
  */
 
 .filter-pill-label {
-  max-width: 100%;
+  // Long values are truncated with an ellipsis.
+  max-width: min(300px, 100%);
   padding: 0;
   margin: 0;
 
   .clr-tooltip-container {
     display: inline-flex;
     max-width: 100%;
+    // Shrink to leave room for the remove button, so the text truncates inside the 300px cap.
+    min-width: 0;
+    flex: 0 1 auto;
 
     // Pass the label radius through to the pill button hover background.
     border-radius: inherit;
