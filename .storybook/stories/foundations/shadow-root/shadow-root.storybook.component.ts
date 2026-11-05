@@ -8,16 +8,16 @@
 import { DOCUMENT } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, ViewEncapsulation } from '@angular/core';
 
-/** The page's `cds-theme` does not reach into a shadow root, so plugins set it again inside. */
-function pageTheme() {
-  return inject(DOCUMENT).body.getAttribute('cds-theme');
+/** The page's `cds-theme` and `clr-density` do not reach into a shadow root, so plugins set them again inside. */
+function pageAttribute(name: string) {
+  return inject(DOCUMENT).body.getAttribute(name);
 }
 
 /** Clarity's global CSS loaded inside a shadow root, the way shadow-root hosted plugins load it. */
 @Component({
   selector: 'shadow-root-typography',
   template: `
-    <div [attr.cds-theme]="theme">
+    <div [attr.cds-theme]="theme" [attr.clr-density]="density">
       <h3>Heading</h3>
       <p>Paragraph</p>
       <p class="p0">Paragraph p0</p>
@@ -41,12 +41,13 @@ function pageTheme() {
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ShadowRootTypographyComponent {
-  protected readonly theme = pageTheme();
+  protected readonly theme = pageAttribute('cds-theme');
+  protected readonly density = pageAttribute('clr-density');
 }
 
 /** The layout of both container-query stories: columns that split at the `sm` and `md` breakpoints. */
 const CONTAINER_QUERIES_TEMPLATE = `
-  <div [attr.cds-theme]="theme">
+  <div [attr.cds-theme]="theme" [attr.clr-density]="density">
     <div class="clr-row">
       <div class="clr-col-12 clr-col-md-6"><span>clr-col-12 clr-col-md-6</span></div>
       <div class="clr-col-12 clr-col-md-6"><span>clr-col-12 clr-col-md-6</span></div>
@@ -72,7 +73,8 @@ const CONTAINER_QUERIES_TEMPLATE = `
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ShadowRootContainerQueriesComponent {
-  protected readonly theme = pageTheme();
+  protected readonly theme = pageAttribute('cds-theme');
+  protected readonly density = pageAttribute('clr-density');
 }
 
 /** The same layout with the opt-in container-query build: breakpoints follow the host's width. */
@@ -84,5 +86,6 @@ export class ShadowRootContainerQueriesComponent {
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ShadowRootContainerQueriesBuildComponent {
-  protected readonly theme = pageTheme();
+  protected readonly theme = pageAttribute('cds-theme');
+  protected readonly density = pageAttribute('clr-density');
 }
