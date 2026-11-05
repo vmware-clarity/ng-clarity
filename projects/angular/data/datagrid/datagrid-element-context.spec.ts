@@ -91,8 +91,10 @@ describe('ClrDatagrid element context', () => {
     expect(gridState(fixture).hiddenColumns).toEqual(['Status']);
   });
 
-  it('says nothing about selection while rows cannot be selected', () => {
-    expect(JSON.stringify(gridState(fixture))).not.toMatch(/"(selectionMode|rows|selection)"/);
+  it('lists the rows by their cells while rows cannot be selected, and says nothing about selection', () => {
+    const state = gridState(fixture);
+    expect(state.rows).toEqual(['node-1 | ok', 'node-2 | down']);
+    expect(JSON.stringify(state)).not.toMatch(/"(selectionMode|selection)"/);
   });
 
   it('publishes nothing about hidden columns while every column is shown', () => {
