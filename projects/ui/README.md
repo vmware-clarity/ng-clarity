@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="path/to/node_modules/@clr/ui/clr-ui.min.css">
     ```
 
+    For layouts in an area narrower than the screen, `clr-ui-container-queries.min.css` makes the grid and `cds-layout` breakpoints follow a `container: clr-layout / inline-size` element instead.
+
 3.  Add the `cds-theme="light"` (or `cds-theme="dark"` for dark theme) to the body tag:
 
     ```

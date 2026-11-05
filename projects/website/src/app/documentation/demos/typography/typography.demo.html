@@ -711,7 +711,8 @@
       inside a shadow root. The shadow host takes the body font and color, and paragraphs inside the shadow root,
       including overlays rendered there, get the same styles as in the page. The page's
       <code cds-text="code">cds-theme</code> attribute does not reach into the shadow root, so set it again on an
-      element inside it.
+      element inside it. Without it, text and components in the shadow root use the light theme colors, also on a dark
+      page.
     </p>
   </app-doc-tab>
 

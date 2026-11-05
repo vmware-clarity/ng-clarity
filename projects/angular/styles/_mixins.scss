@@ -166,10 +166,12 @@ $opp-directions: (
     @container clr-layout (#{$condition}) {
       @content;
     }
-  } @else {
+  } @else if variables.$clr-breakpoint-query == media {
     @media (#{$condition}) {
       @content;
     }
+  } @else {
+    @error '$clr-breakpoint-query must be `media` or `container`, got `#{variables.$clr-breakpoint-query}`.';
   }
 }
 @mixin input-placeholder-wrapper() {

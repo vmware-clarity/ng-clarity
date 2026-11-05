@@ -30,6 +30,7 @@ import { ClarityDocComponent } from '../clarity-doc';
 const CONTAINER_QUERIES_CSS = `
 /* the element that holds the layout, for example the shadow host */
 :host {
+  display: block;
   container: clr-layout / inline-size;
 }
 `;
