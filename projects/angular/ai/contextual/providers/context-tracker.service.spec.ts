@@ -235,7 +235,7 @@ describe('ClrContextTrackerService', () => {
   it('does not re-scrape when a style only moves or resizes something, and does when it hides it', async () => {
     const widget = addWidget('Popover');
     tracker.start({ debounceMs: 20 });
-    const scrapes = spyOn(TestBed.inject(ClrContextEngineService), 'getSnapshot').and.callThrough();
+    const scrapes = spyOn(TestBed.inject(ClrContextEngineService), 'getSnapshotAsync').and.callThrough();
 
     (widget as HTMLElement).style.left = '10px';
     (widget as HTMLElement).style.width = '120px';
@@ -619,7 +619,7 @@ describe('ClrContextTrackerService, tracking embedded frames', () => {
     frame.setAttribute(CLR_CONTEXT_IGNORE_ATTRIBUTE, '');
     await loadFrame('<p>Streaming</p>');
     tracker.start({ debounceMs: 10 });
-    const getSnapshot = spyOn(TestBed.inject(ClrContextEngineService), 'getSnapshot').and.callThrough();
+    const getSnapshot = spyOn(TestBed.inject(ClrContextEngineService), 'getSnapshotAsync').and.callThrough();
 
     addFrameButton('Token');
     frameBody().ownerDocument.querySelector('p')?.append(' more');
@@ -632,7 +632,7 @@ describe('ClrContextTrackerService, tracking embedded frames', () => {
     await loadFrame('<button>Run</button>');
     tracker.start({ debounceMs: 10 });
     const handleError = spyOn(TestBed.inject(ErrorHandler), 'handleError');
-    const getSnapshot = spyOn(TestBed.inject(ClrContextEngineService), 'getSnapshot').and.throwError('boom');
+    const getSnapshot = spyOn(TestBed.inject(ClrContextEngineService), 'getSnapshotAsync').and.throwError('boom');
 
     addFrameButton('Stop');
     await elapse(10);
@@ -751,5 +751,130 @@ describe('ClrContextTrackerService, reporting what changed', () => {
     } finally {
       document.title = originalTitle;
     }
+  });
+});
+
+describe('ClrContextTrackerService, asynchronous providers', () => {
+  let tracker: ClrContextTrackerService;
+  let emitted: ClrPageContext[];
+
+  beforeEach(() => {
+    useFakeTimers();
+    TestBed.configureTestingModule({});
+    tracker = TestBed.inject(ClrContextTrackerService);
+    emitted = [];
+    tracker.context$.subscribe(context => emitted.push(context));
+  });
+
+  afterEach(() => tracker.stop());
+
+  it('emits again once an asynchronous provider answers', async () => {
+    let answer: (context: ClrComponentContext) => void = () => undefined;
+    const unregister = TestBed.inject(ClrContextRegistryService).register({
+      getClrContext: () => new Promise<ClrComponentContext>(resolve => (answer = resolve)),
+    });
+    try {
+      tracker.start();
+      expect(emitted[0].regions).toEqual([{ type: 'clr-loading' }]);
+
+      answer({ type: 'region', label: 'Answered' });
+      await flushMutations();
+
+      expect(tracker.currentContext?.regions).toEqual([{ type: 'region', label: 'Answered' }]);
+    } finally {
+      unregister();
+    }
+  });
+
+  describe('with a slow provider', () => {
+    let answers: ((context: ClrComponentContext) => void)[];
+    let page: HTMLElement;
+    let unregister: () => void;
+
+    beforeEach(() => {
+      answers = [];
+      unregister = TestBed.inject(ClrContextRegistryService).register({
+        getClrContext: () => new Promise<ClrComponentContext>(resolve => answers.push(resolve)),
+      });
+      page = document.createElement('main');
+      page.innerHTML = '<button>Before</button>';
+      document.body.appendChild(page);
+    });
+
+    afterEach(() => {
+      unregister();
+      page.remove();
+    });
+
+    function answerAll(label: string): void {
+      answers.forEach(answer => answer({ type: 'region', label }));
+    }
+
+    it('still emits when the page keeps changing while the provider answers', async () => {
+      tracker.start({ debounceMs: 10, maxWaitMs: 20 });
+      for (let tick = 0; tick < 5; tick++) {
+        page.setAttribute('data-tick', String(tick));
+        await elapse(10);
+      }
+
+      expect(answers.length).toBe(1);
+
+      answerAll('Answered');
+      await flushMutations();
+
+      expect(tracker.currentContext?.regions).toEqual([{ type: 'region', label: 'Answered' }]);
+    });
+
+    it('drops a scrape that started before refresh, then follows up', async () => {
+      tracker.start({ debounceMs: 10 });
+      (page.querySelector('button') as HTMLButtonElement).textContent = 'After';
+      tracker.refresh();
+
+      answerAll('Answered');
+      await flushMutations();
+
+      expect(JSON.stringify(tracker.currentContext?.components)).toContain('After');
+
+      await elapse(10);
+      answerAll('Answered');
+      await flushMutations();
+
+      expect(JSON.stringify(tracker.currentContext?.components)).toContain('After');
+      expect(tracker.currentContext?.regions).toEqual([{ type: 'region', label: 'Answered' }]);
+    });
+
+    it('asks the provider once for the snapshot and the answer that follows it', async () => {
+      tracker.start({ debounceMs: 10 });
+
+      expect(answers.length).toBe(1);
+
+      answerAll('Answered');
+      await flushMutations();
+
+      expect(answers.length).toBe(1);
+      expect(tracker.currentContext?.regions).toEqual([{ type: 'region', label: 'Answered' }]);
+    });
+
+    it('settles a refresh taken before tracking starts', async () => {
+      tracker.refresh();
+      answerAll('Answered');
+      await flushMutations();
+
+      expect(tracker.currentContext?.regions).toEqual([{ type: 'region', label: 'Answered' }]);
+    });
+
+    it('settles a second refresh taken before tracking starts while the first waits', async () => {
+      tracker.refresh();
+      (page.querySelector('button') as HTMLButtonElement).textContent = 'After';
+      tracker.refresh();
+
+      answerAll('Answered');
+      await flushMutations();
+      answerAll('Answered');
+      await flushMutations();
+
+      expect(JSON.stringify(tracker.currentContext?.components)).toContain('After');
+      expect(tracker.currentContext?.regions).toEqual([{ type: 'region', label: 'Answered' }]);
+    });
   });
 });

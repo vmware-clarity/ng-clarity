@@ -12,11 +12,13 @@ import { CLR_CONTEXT_REDACT_SELECTOR, usableSelectors } from '@clr/angular/utils
 
 import { CLR_CONTEXT_OPTIONS } from './context-options';
 import { ClrContextRegionFilter, ClrContextRegistryService } from './context-registry.service';
+import { usableTimeout } from '../attempt';
 import { charged } from '../budget';
 import { ClrContextDomExtractor } from '../dom/dom-context-collector';
 import { collectContextTreeWithin, engineScope, isHiddenFromEngine } from '../dom/walk';
 import {
   ClrComponentContext,
+  ClrContextAsyncSnapshotOptions,
   ClrContextSnapshotOptions,
   ClrPageContext,
   ClrRouteContext,
@@ -27,6 +29,9 @@ import { capSnapshotOptions, resolveSnapshotOptions, withCallOptions } from '../
 import { sanitizeUntrustedSnapshotOptions, withoutFormValues, withoutUrlDetails } from '../untrusted-options';
 
 const DEFAULT_GLOBAL_PROPERTY = 'clrContext';
+
+/** How long `getSnapshotAsync` waits for each asynchronous provider by default. */
+const DEFAULT_SOURCE_TIMEOUT_MS = 2000;
 
 /** A route map cut to a handful of entries would misdescribe where the app can go. */
 const MIN_ROUTE_LIMIT = 50;
@@ -58,9 +63,17 @@ export class ClrContextEngineService implements OnDestroy {
     this.disableGlobalAccess();
   }
 
-  /** Takes a fresh snapshot, applying `options` over the application-wide ones. */
+  /** Takes a fresh snapshot, applying `options` over the application-wide ones; pending providers are reported as loading. */
   getSnapshot(options?: ClrContextSnapshotOptions): ClrPageContext {
     return this.snapshot(options, false);
+  }
+
+  /**
+   * Like {@link getSnapshot}, awaiting asynchronous providers for up to `timeoutMs` each (2 seconds by
+   * default).
+   */
+  getSnapshotAsync(asyncOptions?: ClrContextAsyncSnapshotOptions): Promise<ClrPageContext> {
+    return this.snapshotAsync(asyncOptions, false);
   }
 
   /** Registers a DOM extractor for other libraries' components. Returns a function that removes it. */
@@ -145,6 +158,22 @@ export class ClrContextEngineService implements OnDestroy {
     const resolved = resolveSnapshotOptions(withCallOptions(this.applicationOptions, options));
     const regions = this.contextRegistry.collect({ filter: this.regionFilter(resolved), limits: resolved, untrusted });
     return this.describePage(snapshot, resolved, regions, untrusted);
+  }
+
+  private async snapshotAsync(
+    asyncOptions: ClrContextAsyncSnapshotOptions | undefined,
+    untrusted: boolean
+  ): Promise<ClrPageContext> {
+    const { timeoutMs, ...options } = asyncOptions ?? {};
+    const resolved = resolveSnapshotOptions(withCallOptions(this.applicationOptions, options));
+    const regions = await this.contextRegistry.collectAsync({
+      filter: this.regionFilter(resolved),
+      timeoutMs: usableTimeout(timeoutMs, DEFAULT_SOURCE_TIMEOUT_MS),
+      limits: resolved,
+      untrusted,
+    });
+    // The page is read once providers have answered, so a region redacted meanwhile is read as it is now.
+    return this.describePage(this.emptySnapshot(), resolved, regions, untrusted);
   }
 
   private describePage(

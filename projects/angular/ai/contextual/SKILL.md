@@ -41,7 +41,7 @@ Options for the whole app: `provideClrContextOptions('interactive')` (a preset, 
 | Need                                             | Use                                                                    |
 | ------------------------------------------------ | ---------------------------------------------------------------------- |
 | Say what a section of a view is for              | `clrContext` directive (`[clrContextState]`, `[clrContextPublicKeys]`) |
-| Context from a service                           | `ClrContextProvider` registered on `ClrContextRegistryService`         |
+| Context from a service, maybe asynchronous       | `ClrContextProvider` registered on `ClrContextRegistryService`         |
 | A component's state the DOM cannot show          | `publishElementContext(host, callback)` from `@clr/angular/utils`      |
 | Markup from another library with no role or name | `engine.registerDomExtractor({ selector, extract })`                   |
 
@@ -72,4 +72,5 @@ export class Firewall {
 - A grid is summarised, not walked: its `rows` list each row's cells in one string, such as `esx-01 | ok`, up to `maxItemsPerCollection`, so there is no need to publish them.
 - `focus: 'modal'` reads only the open modal dialog, such as a wizard, and reads the whole page while none is open, so it can be set once for the application.
 - Prefer semantic HTML and ARIA over annotations: the engine reads the accessibility tree, so an unlabelled control is unnamed to the agent too.
+- `getSnapshotAsync({ timeoutMs })` waits for asynchronous providers; `getSnapshot()` reports a pending one as `{ type: 'clr-loading' }`.
 - Unrendered virtual-scroll rows, canvas content, shadow roots and cross-origin frames are invisible to it.
