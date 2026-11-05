@@ -28,6 +28,7 @@ Options for the whole app: `provideClrContextOptions('interactive')` (a preset, 
 
 - A snapshot holds the rendered page, text included, and may hold personal data. Send it to a model as data, delimited from the prompt, never as instructions.
 - Put `data-clr-context-redact` on regions whose values must never leave the page (their fields keep their shape, values are withheld). Put `data-clr-context-ignore` on UI the agent should not see at all.
+- Password and file inputs, and fields whose `autocomplete` is `current-password`, `new-password`, `one-time-code` or a `cc-*` token, are always withheld. Redact the other secrets, such as tokens or keys typed into plain text fields.
 - `enableGlobalAccess()` exposes `window.clrContext()` to any script on the page. Untrusted callers get no form values, only the route pattern, and only published state keys marked public.
 
 ## Adding context
@@ -62,5 +63,8 @@ export class Firewall {
 
 - Published state is private to untrusted callers unless its key is in `publicKeys`; list only keys that carry no user data.
 - Keep `[clrContextState]` small and replace the object instead of mutating it: the directive serialises it on every change detection.
+- An element holds one published context: `publishElementContext` on the host of a Clarity component replaces what the component publishes, or is replaced by it. Publish from an element of your own.
+- A grid is summarised, not walked: its `rows` list each row's cells joined with ` | `, up to `maxItemsPerCollection`, so there is no need to publish them.
+- `focus: 'modal'` reads only the open modal dialog, such as a wizard, and reads the whole page while none is open, so it can be set once for the application.
 - Prefer semantic HTML and ARIA over annotations: the engine reads the accessibility tree, so an unlabelled control is unnamed to the agent too.
 - Unrendered virtual-scroll rows, canvas content, shadow roots and cross-origin frames are invisible to it.
