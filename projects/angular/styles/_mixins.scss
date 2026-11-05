@@ -148,6 +148,32 @@ $opp-directions: (
     @content;
   }
 }
+
+// Anchors a global rule on `body` and, when the CSS is loaded inside a shadow root, on the
+// shadow host. `:where(:host)` adds no specificity and `:not(html)` adds back the type
+// selector that `body` adds, so both branches have the same specificity.
+@mixin body-or-host($selector) {
+  #{selector.nest('body', $selector)},
+  #{selector.nest(':where(:host)', selector.append($selector, ':not(html)'))} {
+    @content;
+  }
+}
+
+// Wraps breakpoint content in a viewport media query or, with `$clr-breakpoint-query: container`,
+// in a query on the nearest `clr-layout` container.
+@mixin breakpoint-query($condition) {
+  @if variables.$clr-breakpoint-query == container {
+    @container clr-layout (#{$condition}) {
+      @content;
+    }
+  } @else if variables.$clr-breakpoint-query == media {
+    @media (#{$condition}) {
+      @content;
+    }
+  } @else {
+    @error '$clr-breakpoint-query must be `media` or `container`, got `#{variables.$clr-breakpoint-query}`.';
+  }
+}
 @mixin input-placeholder-wrapper() {
   @include optional-at-root('::-webkit-input-placeholder') {
     @content;

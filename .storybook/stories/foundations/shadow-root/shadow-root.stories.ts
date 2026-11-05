@@ -8,7 +8,11 @@
 import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
 import { CommonModules } from '@storybook-helpers/common';
 
-import { ShadowRootContainerQueriesComponent, ShadowRootTypographyComponent } from './shadow-root.storybook.component';
+import {
+  ShadowRootContainerQueriesBuildComponent,
+  ShadowRootContainerQueriesComponent,
+  ShadowRootTypographyComponent,
+} from './shadow-root.storybook.component';
 
 /** The stories are fixed markup inside a shadow root; none of them takes an arg. */
 type ShadowRootArgs = Record<never, never>;
@@ -17,7 +21,12 @@ const meta = {
   title: 'Foundations/Shadow Root',
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ShadowRootTypographyComponent, ShadowRootContainerQueriesComponent],
+      imports: [
+        ...CommonModules,
+        ShadowRootTypographyComponent,
+        ShadowRootContainerQueriesComponent,
+        ShadowRootContainerQueriesBuildComponent,
+      ],
     }),
   ],
   render: () => ({
@@ -33,16 +42,22 @@ type Story = StoryObj<ShadowRootArgs>;
 
 export const Typography: Story = {};
 
-export const ContainerQueries: Story = {
-  // eslint-disable-next-line no-restricted-syntax -- this story renders the container-query component at two container widths instead of the typography component of the meta template
-  render: () => ({
+/** Renders a container-query component in a 400px and a 900px slot, both narrower than the viewport. */
+function atTwoWidths(selector: string) {
+  return () => ({
     template: `
-      <div style="width: 400px">
-        <shadow-root-container-queries></shadow-root-container-queries>
-      </div>
-      <div style="width: 900px">
-        <shadow-root-container-queries></shadow-root-container-queries>
-      </div>
+      <div style="width: 400px"><${selector}></${selector}></div>
+      <div style="width: 900px"><${selector}></${selector}></div>
     `,
-  }),
+  });
+}
+
+export const ContainerQueries: Story = {
+  // eslint-disable-next-line no-restricted-syntax -- renders the container-query component instead of the typography component of the meta template
+  render: atTwoWidths('shadow-root-container-queries'),
+};
+
+export const ContainerQueriesBuild: Story = {
+  // eslint-disable-next-line no-restricted-syntax -- renders the container-query build component instead of the typography component of the meta template
+  render: atTwoWidths('shadow-root-container-queries-build'),
 };
