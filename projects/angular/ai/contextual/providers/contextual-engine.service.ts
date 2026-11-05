@@ -6,7 +6,7 @@
  */
 
 import { HashLocationStrategy, isPlatformBrowser, LocationStrategy } from '@angular/common';
-import { DOCUMENT, inject, Injectable, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { DOCUMENT, inject, Injectable, NgZone, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { CLR_CONTEXT_REDACT_SELECTOR, usableSelectors } from '@clr/angular/utils';
 
@@ -17,6 +17,12 @@ import { charged } from '../budget';
 import { ClrContextDomExtractor } from '../dom/dom-context-collector';
 import { closestAcrossShadow, containsAcrossShadow } from '../dom/shadow';
 import { collectContextTreeWithin, engineScope, isHiddenFromEngine } from '../dom/walk';
+import {
+  ClrContextFrameHost,
+  ClrContextFrameHostOptions,
+  ClrContextFrameRequestOptions,
+  clrRequestHostContext,
+} from '../iframe/context-frame-bridge';
 import {
   ClrApplicationContext,
   ClrComponentContext,
@@ -29,12 +35,15 @@ import { jsonSafe, REGION_DEPTH, ROUTE_DATA_DEPTH } from '../json-safe';
 import { availableRoutes, routePatternFor } from '../routes';
 import { CLR_PAGE_CONTEXT_SCHEMA_VERSION } from '../schema';
 import { capSnapshotOptions, resolveSnapshotOptions, withCallOptions } from '../snapshot-options';
-import { sanitizeUntrustedSnapshotOptions, withoutFormValues, withoutUrlDetails } from '../untrusted-options';
+import { contextForUntrustedCaller, sanitizeUntrustedSnapshotOptions } from '../untrusted-options';
 
 const DEFAULT_GLOBAL_PROPERTY = 'clrContext';
 
 /** How long `getSnapshotAsync` waits for each asynchronous provider by default. */
 const DEFAULT_SOURCE_TIMEOUT_MS = 2000;
+
+/** Shorter than a frame waits for its answer, so a slow provider is reported rather than the request lost. */
+const FRAME_SOURCE_TIMEOUT_MS = 1000;
 
 /** A route map cut to a handful of entries would misdescribe where the app can go. */
 const MIN_ROUTE_LIMIT = 50;
@@ -61,9 +70,12 @@ export class ClrContextEngineService implements OnDestroy {
   private readonly document = inject(DOCUMENT);
   private readonly contextRegistry = inject(ClrContextRegistryService);
   private readonly router = inject(Router, { optional: true });
+  private readonly zone = inject(NgZone);
+  private frameHost: ClrContextFrameHost | null = null;
   private globalProperty: string | null = null;
 
   ngOnDestroy(): void {
+    this.disableFrameBridge();
     this.disableGlobalAccess();
   }
 
@@ -120,8 +132,12 @@ export class ClrContextEngineService implements OnDestroy {
     const accessor = (options?: unknown) => {
       // The caller may ask for less than the application allows, never for more.
       const snapshot = this.snapshot(capSnapshotOptions(sanitizeUntrustedSnapshotOptions(options), ceiling), true);
-      const shared = shareFormValues ? snapshot : withoutFormValues(snapshot);
-      return shareFullUrl ? shared : withoutUrlDetails(shared, url => this.routePattern(url), this.document.baseURI);
+      return contextForUntrustedCaller(
+        snapshot,
+        { shareFormValues, shareFullUrl },
+        url => this.routePattern(url),
+        this.document.baseURI
+      );
     };
     // Read-only so assignment cannot replace it; configurable so `disableGlobalAccess` can delete it.
     Object.defineProperty(host, propertyName, {
@@ -139,6 +155,45 @@ export class ClrContextEngineService implements OnDestroy {
       delete (window as unknown as Record<string, unknown>)[this.globalProperty];
     }
     this.globalProperty = null;
+  }
+
+  /** Answers context requests from embedded frames over `postMessage`; by default only same-origin frames. */
+  enableFrameBridge(options?: ClrContextFrameHostOptions): void {
+    const window = this.browserWindow();
+    if (!window) {
+      return;
+    }
+    // The application's options cap what the host allows, so a frame cannot undo them either.
+    const ceiling = this.untrustedCeiling(options?.snapshot);
+    // Built before the running bridge stops, so a refused configuration leaves current frames served.
+    const frameHost = new ClrContextFrameHost(
+      snapshotOptions =>
+        this.snapshotAsync(
+          { ...capSnapshotOptions(snapshotOptions, ceiling), timeoutMs: FRAME_SOURCE_TIMEOUT_MS },
+          true
+        ),
+      window,
+      options,
+      url => this.routePattern(url)
+    );
+    this.disableFrameBridge();
+    this.frameHost = frameHost;
+    // Every `message` on the page reaches the listener, and answering renders nothing.
+    this.zone.runOutsideAngular(() => frameHost.start());
+  }
+
+  /** Stops answering embedded frames. */
+  disableFrameBridge(): void {
+    this.frameHost?.stop();
+    this.frameHost = null;
+  }
+
+  /** Requests the hosting page's context from inside an iframe; `null` when there is none or it does not answer. */
+  requestHostContext(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null> {
+    if (!this.browserWindow()) {
+      return Promise.resolve(null);
+    }
+    return clrRequestHostContext(options);
   }
 
   /**
