@@ -74,3 +74,10 @@ export class Firewall {
 - Prefer semantic HTML and ARIA over annotations: the engine reads the accessibility tree, so an unlabelled control is unnamed to the agent too.
 - `getSnapshotAsync({ timeoutMs })` waits for asynchronous providers; `getSnapshot()` reports a pending one as `{ type: 'clr-loading' }`.
 - Unrendered virtual-scroll rows, canvas content, closed shadow roots and cross-origin frames are invisible to it.
+
+## Writing back
+
+- Nothing is written until the application provides `provideClrMutationPolicy({ classify })`; `confirm` is asked before a `consequential` operation.
+- `mutationEngine.apply(operations)` resolves with a result per operation; a refusal carries `refused` and a `detail`, so show it to the user. `announce` on the policy hears the same report.
+- The combobox, the date input and the datagrid's row selection can be written as they are. A custom control whose value is not what the agent sees is refused as `unsupported` until it publishes `publishElementMutator(host, { coerce, write, read })`.
+- Password and other always-withheld fields, and controls without an Angular form binding, are never written (`redacted`, `unbound`).
