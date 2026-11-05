@@ -33,7 +33,7 @@ describe('summarizeRole', () => {
     expect(summarize('<div role="dialog"></div>', 'dialog')).toBeNull();
   });
 
-  it('summarises a grid by its columns and rows rather than every cell', () => {
+  it('summarises a grid by its columns and the cells of each row', () => {
     const state = summarize(
       `<table role="grid">
          <thead><tr><th aria-sort="ascending">Name</th><th>Status</th></tr></thead>
@@ -50,6 +50,18 @@ describe('summarizeRole', () => {
     expect(state?.rowCount).toBe(2);
     expect(state?.selectedRows).toBe(1);
     expect(state?.sort).toEqual({ column: 'Name', direction: 'ascending' });
+    expect(state?.rows).toEqual(['a | up', 'b | down']);
+  });
+
+  it('lists only the first rows, and none when only a summary is asked for', () => {
+    const html = `<table><tr><th>Name</th></tr><tr><td>a</td></tr><tr><td>b</td></tr><tr><td>c</td></tr></table>`;
+    const first = summarize(html, 'table', { maxItemsPerCollection: 2 });
+    expect(first?.rowCount).toBe(3);
+    expect(first?.rows).toEqual(['a', 'b']);
+
+    const summary = summarize(html, 'table', { collectionItems: 'summary' });
+    expect(summary?.rowCount).toBe(3);
+    expect('rows' in (summary ?? {})).toBe(false);
   });
 
   it('counts only rows the user can see, and only this table’s own', () => {
@@ -65,6 +77,7 @@ describe('summarizeRole', () => {
     expect(state?.columns).toEqual(['Name', 'Status']);
     expect(state?.rowCount).toBe(2);
     expect(state?.selectedRows).toBe(1);
+    expect(state?.rows).toEqual(['esx-01 | ok nested', 'esx-02 | not a row']);
   });
 
   it('prefers the declared row count, which is the only truth for a paginated grid', () => {
@@ -198,6 +211,15 @@ describe('summarizeRole', () => {
       );
       expect(grid?.columns).toEqual(['Name']);
       expect('sort' in (grid ?? {})).toBe(false);
+
+      const cells = summarize(
+        `<table><tr><th>Name</th><th>Account</th></tr>
+         <tr><td>a</td><td data-clr-context-redact>ACC-1</td></tr><tr><td data-clr-context-redact>ACC-2</td></tr></table>`,
+        'table'
+      );
+      expect(cells?.rowCount).toBe(2);
+      expect(cells?.rows).toEqual(['a']);
+      expect(JSON.stringify(cells)).not.toContain('ACC');
     });
 
     it('keeps column names when the whole grid is redacted, for the walk to reduce', () => {
@@ -314,5 +336,6 @@ describe('summarizeRole, collections the first version misread', () => {
     );
     expect(state?.columns).toEqual(['Name', 'Size']);
     expect(state?.rowCount).toBe(2);
+    expect(state?.rows).toEqual(['alpha | 1', 'beta | 2']);
   });
 });
