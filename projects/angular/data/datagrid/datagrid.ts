@@ -699,23 +699,28 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       state.totalRows = total;
     }
 
+    const maxItems = snapshotOptions?.maxItemsPerCollection ?? CLR_CONTEXT_DEFAULT_MAX_ITEMS;
+    // Labelling a row reads the style of everything in it, so each row is read at most once.
+    const labels = new Map<ClrDatagridRow<T>, string>();
+    const label = (row: ClrDatagridRow<T>) => {
+      let text = labels.get(row);
+      if (text === undefined) {
+        text = this.readRowCells(row, excluded).join(' | ');
+        labels.set(row, text);
+      }
+      return text;
+    };
+    const rows = this.rows.toArray();
+    // The cells are not walked, so the rows are where their data shows; selection names rows the same way.
+    if (snapshotOptions?.collectionItems !== 'summary') {
+      const listed = firstRowLabels(rows, label, maxItems);
+      if (listed.length) {
+        state.rows = listed;
+      }
+    }
+
     if (this.selection.selectable) {
       state.selectionMode = this.selection.selectionType === SelectionType.Single ? 'single' : 'multi';
-      const maxItems = snapshotOptions?.maxItemsPerCollection ?? CLR_CONTEXT_DEFAULT_MAX_ITEMS;
-      // Labelling a row reads the style of everything in it, so each row is read at most once.
-      const labels = new Map<ClrDatagridRow<T>, string>();
-      const label = (row: ClrDatagridRow<T>) => {
-        let text = labels.get(row);
-        if (text === undefined) {
-          text = this.readRowCells(row, excluded).join(' | ');
-          labels.set(row, text);
-        }
-        return text;
-      };
-      const rows = this.rows.toArray();
-      if (snapshotOptions?.collectionItems !== 'summary') {
-        state.rows = firstRowLabels(rows, label, maxItems);
-      }
       const selected = firstRowLabels(
         rows.filter(row => this.selection.isSelected(row.item)),
         label,
