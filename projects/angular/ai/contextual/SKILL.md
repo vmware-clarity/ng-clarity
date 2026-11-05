@@ -27,7 +27,7 @@ export class Assistant {
 }
 ```
 
-Options for the whole app: `provideClrContextOptions('interactive')` (a preset, or `ClrContextSnapshotOptions`).
+Options for the whole app: `provideClrContextOptions('interactive')` (a preset, or `ClrContextSnapshotOptions`). Name the app with `provideClrContextApplication({ id: 'inventory' })`. Name each view with `data: { viewId: 'vm-list' }` on its route; `viewId` and `metadata` given to `provideClrContextApplication` are functions, read on every snapshot.
 
 ## Privacy first
 
