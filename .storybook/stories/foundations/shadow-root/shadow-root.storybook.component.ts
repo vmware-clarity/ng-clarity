@@ -44,30 +44,45 @@ export class ShadowRootTypographyComponent {
   protected readonly theme = pageTheme();
 }
 
-/** The container-query build of Clarity's CSS in a shadow root whose host is the layout container. */
+/** The layout of both container-query stories: columns that split at the `sm` and `md` breakpoints. */
+const CONTAINER_QUERIES_TEMPLATE = `
+  <div [attr.cds-theme]="theme">
+    <div class="clr-row">
+      <div class="clr-col-12 clr-col-md-6"><span>clr-col-12 clr-col-md-6</span></div>
+      <div class="clr-col-12 clr-col-md-6"><span>clr-col-12 clr-col-md-6</span></div>
+    </div>
+    <div class="clr-row">
+      <div class="clr-col-sm-4"><span>clr-col-sm-4</span></div>
+      <div class="clr-col-sm-4"><span>clr-col-sm-4</span></div>
+      <div class="clr-col-sm-4"><span>clr-col-sm-4</span></div>
+    </div>
+    <div cds-layout="grid cols@sm:6 gap:md">
+      <span>cds-layout cols&#64;sm:6</span>
+      <span>cds-layout cols&#64;sm:6</span>
+    </div>
+  </div>
+`;
+
+/** Grid and `cds-layout` breakpoints in a shadow root whose host is narrower than the viewport. */
 @Component({
   selector: 'shadow-root-container-queries',
-  template: `
-    <div [attr.cds-theme]="theme">
-      <div class="clr-row">
-        <div class="clr-col-12 clr-col-md-6"><span>clr-col-12 clr-col-md-6</span></div>
-        <div class="clr-col-12 clr-col-md-6"><span>clr-col-12 clr-col-md-6</span></div>
-      </div>
-      <div class="clr-row">
-        <div class="clr-col-sm-4"><span>clr-col-sm-4</span></div>
-        <div class="clr-col-sm-4"><span>clr-col-sm-4</span></div>
-        <div class="clr-col-sm-4"><span>clr-col-sm-4</span></div>
-      </div>
-      <div cds-layout="grid cols@sm:6 gap:md">
-        <span>cds-layout cols&#64;sm:6</span>
-        <span>cds-layout cols&#64;sm:6</span>
-      </div>
-    </div>
-  `,
-  styleUrls: ['../../../../projects/ui/src/clr-ui-container-queries.scss', './shadow-root-container-queries.scss'],
+  template: CONTAINER_QUERIES_TEMPLATE,
+  styleUrls: ['../../../../projects/ui/src/clr-ui.scss', './shadow-root-container-queries.scss'],
   encapsulation: ViewEncapsulation.ShadowDom,
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ShadowRootContainerQueriesComponent {
+  protected readonly theme = pageTheme();
+}
+
+/** The same layout with the opt-in container-query build: breakpoints follow the host's width. */
+@Component({
+  selector: 'shadow-root-container-queries-build',
+  template: CONTAINER_QUERIES_TEMPLATE,
+  styleUrls: ['../../../../projects/ui/src/clr-ui-container-queries.scss', './shadow-root-container-queries.scss'],
+  encapsulation: ViewEncapsulation.ShadowDom,
+  changeDetection: ChangeDetectionStrategy.Eager,
+})
+export class ShadowRootContainerQueriesBuildComponent {
   protected readonly theme = pageTheme();
 }
