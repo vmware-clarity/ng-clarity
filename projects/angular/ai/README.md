@@ -99,13 +99,15 @@ libraries and plain semantic HTML with one implementation. Components publish on
 cannot express, through `publishElementContext` from `@clr/angular/utils` — which is why a
 component that publishes context does not depend on this entry point.
 
-Through custom extractors and a framework-agnostic `postMessage` protocol it also reaches other UI
-libraries and UI embedded in iframes, such as chat components. Callers the application does not
-control, embedded frames and the optional `window.clrContext()` accessor, are held to the
-application's budgets and the defaults, and see neither what the user entered nor the page's full
-address (only its route pattern) unless the application shares them. Of the state that application
-code publishes, they see only the keys the publisher lists in `publicKeys` (`[clrContextPublicKeys]`
-on the directive). Any other key is withheld, so a key nobody listed stays private.
+Through custom extractors it also reaches other UI libraries, and a framework-agnostic `postMessage`
+protocol lets UI embedded in an iframe, such as a chat component, read the page hosting it; the host
+does not read its frames that way, though it describes a same-origin frame in place. Callers the
+application does not control, embedded frames and the optional `window.clrContext()` accessor, are
+held to the application's budgets and the defaults, and see neither what the user entered nor the
+page's full address (only its route pattern) unless the application shares them. Of the state that
+application code publishes, they see only the keys the publisher lists in `publicKeys`
+(`[clrContextPublicKeys]` on the directive). Any other key is withheld, so a key nobody listed stays
+private.
 
 The engine's write half, the **mutation engine** (`ClrMutationEngineService`), lets an agent act on
 what it read: fill Angular-bound form controls (reactive and template-driven) and navigate to any
