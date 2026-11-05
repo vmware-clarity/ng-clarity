@@ -73,4 +73,4 @@ export class Firewall {
 - `focus: 'modal'` reads only the open modal dialog, such as a wizard, and reads the whole page while none is open, so it can be set once for the application.
 - Prefer semantic HTML and ARIA over annotations: the engine reads the accessibility tree, so an unlabelled control is unnamed to the agent too.
 - `getSnapshotAsync({ timeoutMs })` waits for asynchronous providers; `getSnapshot()` reports a pending one as `{ type: 'clr-loading' }`.
-- Unrendered virtual-scroll rows, canvas content, shadow roots and cross-origin frames are invisible to it.
+- Unrendered virtual-scroll rows, canvas content, closed shadow roots and cross-origin frames are invisible to it.

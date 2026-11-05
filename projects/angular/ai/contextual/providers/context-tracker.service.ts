@@ -15,6 +15,7 @@ import { CLR_CONTEXT_LOADING_TYPE, ClrContextRegistryService } from './context-r
 import { ClrContextEngineService } from './contextual-engine.service';
 import { attempt, usableTimeout } from '../attempt';
 import { ClrContextChange, clrDiffContext } from '../diff';
+import { closestAcrossShadow, openShadowRoots } from '../dom/shadow';
 import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
 import { serialize } from '../json-safe';
 
@@ -56,6 +57,8 @@ export class ClrContextTrackerService implements OnDestroy {
   private maxWaitTimer: ReturnType<typeof setTimeout> | null = null;
   private stopListeningForValues: (() => void) | null = null;
   private readonly frames = new Map<HTMLIFrameElement, TrackedFrame>();
+  /** Observers do not cross shadow boundaries, so each open shadow root gets its own. */
+  private readonly shadowObservers = new Map<ShadowRoot, MutationObserver>();
   private subscriptions: Subscription | null = null;
   private latest: ClrPageContext | null = null;
   private latestSerialized: string | null = null;
@@ -103,7 +106,8 @@ export class ClrContextTrackerService implements OnDestroy {
 
   /**
    * Starts tracking with an immediate snapshot. Calling it again restarts with the new options. Tracking
-   * started here runs until `stop`, even after the last `track()` subscriber leaves.
+   * started here runs until `stop`, even after the last `track()` subscriber leaves. An open shadow root
+   * attached to an element already on the page is watched from the next snapshot; `refresh` takes one.
    */
   start(options: ClrContextTrackingOptions = {}): void {
     this.sharedStarted = false;
@@ -150,6 +154,10 @@ export class ClrContextTrackerService implements OnDestroy {
       this.detachFrame(frame, tracked);
     }
     this.frames.clear();
+    for (const observer of this.shadowObservers.values()) {
+      observer.disconnect();
+    }
+    this.shadowObservers.clear();
     this.subscriptions?.unsubscribe();
     this.subscriptions = null;
     this.clearTimers();
@@ -164,6 +172,7 @@ export class ClrContextTrackerService implements OnDestroy {
     this.scrapeRun++;
     const snapshot = this.contextEngine.getSnapshot(this.trackingOptions.snapshot);
     this.emit(snapshot);
+    this.zone.runOutsideAngular(() => this.observeShadowRootsIn(this.document));
     if (!snapshot.regions.some(region => region.type === CLR_CONTEXT_LOADING_TYPE)) {
       return;
     }
@@ -186,6 +195,7 @@ export class ClrContextTrackerService implements OnDestroy {
     // Outside the zone: zone.js patches MutationObserver and would run change detection on every batch.
     this.zone.runOutsideAngular(() => {
       this.observer = this.observeDocument(this.document);
+      this.observeShadowRootsIn(this.document);
       this.observeFrames();
 
       this.stopListeningForValues = listenForValues(this.document.body, event => this.onValueChange(event));
@@ -210,6 +220,14 @@ export class ClrContextTrackerService implements OnDestroy {
   }
 
   private onMutations(records: MutationRecord[]): void {
+    // Shadow roots arrive with their hosts; observers do not cross into them.
+    for (const record of records) {
+      for (const node of Array.from(record.addedNodes)) {
+        if (node.nodeType === Node.ELEMENT_NODE) {
+          this.observeShadowRootsIn(node as Element);
+        }
+      }
+    }
     // Ignoring a region changes what the snapshot holds, though the element is then inside it.
     const unchanged = (record: MutationRecord) =>
       (record.attributeName !== CLR_CONTEXT_IGNORE_ATTRIBUTE && isInsideIgnoredRegion(record.target)) ||
@@ -273,6 +291,9 @@ export class ClrContextTrackerService implements OnDestroy {
       this.scrapeInFlight = false;
       this.zone.runOutsideAngular(() => {
         this.observeFrames();
+        this.forgetDetachedShadowRoots();
+        // Attaching a shadow root is no DOM mutation, so roots attached to hosts already on the page are found here.
+        this.observeShadowRootsIn(this.document);
         if (this.scrapeDirty) {
           this.scrapeDirty = false;
           // Untracked, only a `refresh` marks the page dirty, and it is still owed its answer.
@@ -287,9 +308,13 @@ export class ClrContextTrackerService implements OnDestroy {
   }
 
   private observeDocument(target: Document): MutationObserver {
-    const observer = new MutationObserver(records => this.onMutations(records));
     // The title lives in the head, so the whole document is observed.
-    observer.observe(target.documentElement, {
+    return this.observeTree(target.documentElement);
+  }
+
+  private observeTree(target: Node): MutationObserver {
+    const observer = new MutationObserver(records => this.onMutations(records));
+    observer.observe(target, {
       childList: true,
       subtree: true,
       attributes: true,
@@ -305,7 +330,7 @@ export class ClrContextTrackerService implements OnDestroy {
       return;
     }
     const present = new Set<HTMLIFrameElement>();
-    for (const frame of allFrames([this.document])) {
+    for (const frame of allFrames([this.document, ...this.shadowObservers.keys()])) {
       present.add(frame);
       const contents = readableDocument(frame);
       const tracked = this.frames.get(frame);
@@ -324,6 +349,7 @@ export class ClrContextTrackerService implements OnDestroy {
         this.frames.set(frame, { document: null, observer: null, stopListeningForValues: null, loadListener: onLoad });
         continue;
       }
+      this.observeShadowRootsIn(contents);
       this.frames.set(frame, {
         document: contents,
         observer: this.observeDocument(contents),
@@ -335,6 +361,34 @@ export class ClrContextTrackerService implements OnDestroy {
       if (!present.has(frame)) {
         this.detachFrame(frame, tracked);
         this.frames.delete(frame);
+      }
+    }
+  }
+
+  /** Observes the open shadow roots in `root`, its own included, that are not observed yet. */
+  private observeShadowRootsIn(root: ParentNode): void {
+    if (!this.tracking) {
+      return;
+    }
+    for (const shadowRoot of openShadowRoots(root)) {
+      if (!this.shadowObservers.has(shadowRoot)) {
+        this.shadowObservers.set(shadowRoot, this.observeTree(shadowRoot));
+      }
+    }
+  }
+
+  private forgetDetachedShadowRoots(): void {
+    // A removed frame's document lives on with its hosts connected to it, so only tracked documents count.
+    const documents = new Set<Document>([this.document]);
+    for (const tracked of this.frames.values()) {
+      if (tracked.document) {
+        documents.add(tracked.document);
+      }
+    }
+    for (const [shadowRoot, observer] of this.shadowObservers) {
+      if (!shadowRoot.host.isConnected || !documents.has(shadowRoot.host.ownerDocument)) {
+        observer.disconnect();
+        this.shadowObservers.delete(shadowRoot);
       }
     }
   }
@@ -374,12 +428,12 @@ function listenForValues(body: HTMLElement, listener: (event: Event) => void): (
   };
 }
 
-/** The frames in `roots` and in their readable documents. */
+/** The frames in `roots`, which include the observed shadow roots, and in their readable documents. */
 function allFrames(roots: ParentNode[]): Set<HTMLIFrameElement> {
   const frames = new Set<HTMLIFrameElement>();
   for (const root of roots) {
     for (const frame of Array.from(root.querySelectorAll('iframe'))) {
-      if (frames.has(frame) || frame.closest(CLR_CONTEXT_IGNORE_SELECTOR)) {
+      if (frames.has(frame) || closestAcrossShadow(frame, CLR_CONTEXT_IGNORE_SELECTOR)) {
         continue;
       }
       frames.add(frame);
@@ -399,8 +453,11 @@ function readableDocument(frame: HTMLIFrameElement): Document | null {
 
 function isInsideIgnoredRegion(node: Node): boolean {
   // A node in a frame is an instance of that window's Element, so `instanceof` would fail.
-  const element = node.nodeType === Node.ELEMENT_NODE ? (node as Element) : node.parentElement;
-  return !!element?.closest(CLR_CONTEXT_IGNORE_SELECTOR);
+  const element =
+    node.nodeType === Node.ELEMENT_NODE
+      ? (node as Element)
+      : (node.parentElement ?? (node.getRootNode() as Partial<ShadowRoot>).host ?? null);
+  return !!element && !!closestAcrossShadow(element, CLR_CONTEXT_IGNORE_SELECTOR);
 }
 
 // A custom property can feed any of these, so a change to one counts too.

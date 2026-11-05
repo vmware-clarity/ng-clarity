@@ -6,6 +6,7 @@
  */
 
 import { isContentEditable } from './aria-state';
+import { closestAcrossShadow, parentAcrossShadow } from './shadow';
 import { ownEntry } from '../lookup';
 import {
   ARIA_ROLES,
@@ -159,6 +160,6 @@ function hasNameAttribute(element: Element): boolean {
 
 /** The nearest ancestor in the rendered tree matching `selector`, so a component's own markup sits in its page. */
 function closestAncestor(element: Element, selector: string): Element | null {
-  const parent = element.parentElement;
-  return parent ? parent.closest(selector) : null;
+  const parent = parentAcrossShadow(element);
+  return parent ? closestAcrossShadow(parent, selector) : null;
 }

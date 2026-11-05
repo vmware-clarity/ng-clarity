@@ -15,6 +15,7 @@ import { ClrContextRegionFilter, ClrContextRegistryService } from './context-reg
 import { usableTimeout } from '../attempt';
 import { charged } from '../budget';
 import { ClrContextDomExtractor } from '../dom/dom-context-collector';
+import { closestAcrossShadow, containsAcrossShadow } from '../dom/shadow';
 import { collectContextTreeWithin, engineScope, isHiddenFromEngine } from '../dom/walk';
 import {
   ClrComponentContext,
@@ -216,10 +217,13 @@ export class ClrContextEngineService implements OnDestroy {
       if (isHiddenFromEngine(element, excludeSelector)) {
         return 'drop';
       }
-      if (scope.roots && !scope.roots.some(root => root.contains(element) || element.contains(root))) {
+      if (
+        scope.roots &&
+        !scope.roots.some(root => containsAcrossShadow(root, element) || containsAcrossShadow(element, root))
+      ) {
         return 'drop';
       }
-      return element.closest(CLR_CONTEXT_REDACT_SELECTOR) ? 'redact' : 'keep';
+      return closestAcrossShadow(element, CLR_CONTEXT_REDACT_SELECTOR) ? 'redact' : 'keep';
     };
   }
 
