@@ -28,18 +28,25 @@
       </select>
     </clr-select-container>
     <div class="filter-value date-filter-values">
-      @if (!noDateTimeInputNeeded()) {
+      @if (isCustomRangePredicate && !timePredicate) {
+        <!-- Dates only: one range picker for From and To. With times, separate pickers are shown below. -->
         <div class="date-filter-value-row">
-          <clr-input-container class="filter-value">
-            <label [class.clr-sr-only]="!isCustomRangePredicate">
-              {{ isCustomRangePredicate ? filterStrings.fromLabel : filterStrings.dateFormat }}
-            </label>
+          <clr-date-range-container class="filter-value">
+            <label class="clr-sr-only">{{ filterStrings.dateRangeLabel }}</label>
             <input
               type="date"
-              pattern="^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$"
+              autocomplete="off"
               formControlName="dateValue"
-              placeholder="{{ filterStrings.dateFormat }}"
-              clrInput
+              clrStartDate
+              [attr.aria-label]="filterStrings.fromLabel"
+              (keydown)="onInputKeyPress($event)"
+            />
+            <input
+              type="date"
+              autocomplete="off"
+              formControlName="dateValueTo"
+              clrEndDate
+              [attr.aria-label]="filterStrings.toLabel"
               (keydown)="onInputKeyPress($event)"
             />
             <clr-control-error *clrIfError="'required'" role="alert">{{
@@ -48,7 +55,31 @@
             <clr-control-error *clrIfError="'pattern'" role="alert">{{
               filterStrings.dateValidatorMessage
             }}</clr-control-error>
-          </clr-input-container>
+            <clr-control-error *clrIfError="'range'" role="alert">{{
+              filterStrings.dateRangeValidatorMessage
+            }}</clr-control-error>
+          </clr-date-range-container>
+        </div>
+      } @else if (!noDateTimeInputNeeded()) {
+        <div class="date-filter-value-row">
+          <clr-date-container class="filter-value">
+            <label [class.clr-sr-only]="!isCustomRangePredicate">
+              {{ isCustomRangePredicate ? filterStrings.fromLabel : filterStrings.dateFormat }}
+            </label>
+            <input
+              type="date"
+              autocomplete="off"
+              formControlName="dateValue"
+              clrDate
+              (keydown)="onInputKeyPress($event)"
+            />
+            <clr-control-error *clrIfError="'required'" role="alert">{{
+              filterStrings.requiredValidatorMessage
+            }}</clr-control-error>
+            <clr-control-error *clrIfError="'pattern'" role="alert">{{
+              filterStrings.dateValidatorMessage
+            }}</clr-control-error>
+          </clr-date-container>
         </div>
       }
       @if (timePredicate) {
@@ -82,18 +113,17 @@
           </button>
         </div>
       }
-      @if (isCustomRangePredicate) {
+      @if (isCustomRangePredicate && timePredicate) {
         <div class="date-filter-value-row">
-          <clr-input-container class="filter-value">
+          <clr-date-container class="filter-value">
             <label class="clr-control-label">
               {{ filterStrings.toLabel }}
             </label>
             <input
               type="date"
-              pattern="^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$"
+              autocomplete="off"
               formControlName="dateValueTo"
-              placeholder="{{ filterStrings.dateFormat }}"
-              clrInput
+              clrDate
               (keydown)="onInputKeyPress($event)"
             />
             <clr-control-error *clrIfError="'required'" role="alert">{{
@@ -102,7 +132,7 @@
             <clr-control-error *clrIfError="'pattern'" role="alert">{{
               filterStrings.dateValidatorMessage
             }}</clr-control-error>
-          </clr-input-container>
+          </clr-date-container>
         </div>
       }
       @if (timePredicate && isCustomRangePredicate) {

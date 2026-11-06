@@ -13,6 +13,7 @@ import {
   AppfxDatagridFiltersModule,
   ComparisonOperator,
   DatagridFiltersUserService,
+  DateTimePropertyDefinition,
   EnumPropertyDefinition,
   FilterablePropertyDefinition,
   FilterMode,
@@ -164,6 +165,10 @@ export class FiltersGridComponent {
       displayName: 'User',
       field: 'user',
     },
+    {
+      displayName: 'Created',
+      field: 'creation',
+    },
   ];
 
   protected filteredItems: VmItem[] = [];
@@ -303,6 +308,7 @@ export class FiltersGridComponent {
     );
 
     const userProp = new UserPropertyDefinition('User', 'user');
+    const createdProp = new DateTimePropertyDefinition('Created', 'creation');
 
     this.filterableProperties.push(
       stringNameProperty,
@@ -310,7 +316,8 @@ export class FiltersGridComponent {
       enumProperty,
       priorityProperty,
       categoryEnumProp,
-      userProp
+      userProp,
+      createdProp
     );
 
     this.predefinedFilters = [stringNameProperty, enumProperty];
@@ -354,12 +361,48 @@ export class FiltersGridComponent {
       activeFilters.every(propFilter => {
         const matches = (predicate: PropertyPredicate) =>
           !!predicate.filterableProperty.property &&
-          this.applyOperatorFilter(item[predicate.filterableProperty.property], predicate.value, predicate.operator);
+          (predicate.filterableProperty instanceof DateTimePropertyDefinition
+            ? this.applyDateFilter(item[predicate.filterableProperty.property], predicate.value, predicate.operator)
+            : this.applyOperatorFilter(
+                item[predicate.filterableProperty.property],
+                predicate.value,
+                predicate.operator
+              ));
         return propFilter.operator === LogicalOperator.And
           ? propFilter.criteria.every(matches)
           : propFilter.criteria.some(matches);
       })
     );
+  }
+
+  // Date filters emit date-time strings; compare them as timestamps.
+  private applyDateFilter(item: string, predicateValue: string, operator: ComparisonOperator): boolean {
+    if (operator === ComparisonOperator.IsEmpty) {
+      return !item;
+    }
+    const itemTime = Date.parse(item);
+    const filterTime = Date.parse(predicateValue);
+    if (isNaN(itemTime) || isNaN(filterTime)) {
+      return false;
+    }
+    switch (operator) {
+      case ComparisonOperator.Equals:
+        return itemTime === filterTime;
+      case ComparisonOperator.Before:
+      case ComparisonOperator.LessThan:
+        return itemTime < filterTime;
+      case ComparisonOperator.BeforeOrEqualTo:
+      case ComparisonOperator.LessThanOrEqualTo:
+        return itemTime <= filterTime;
+      case ComparisonOperator.After:
+      case ComparisonOperator.GreaterThan:
+        return itemTime > filterTime;
+      case ComparisonOperator.AfterOrEqualTo:
+      case ComparisonOperator.GreaterThanOrEqualTo:
+        return itemTime >= filterTime;
+      default:
+        return true;
+    }
   }
 
   private applyOperatorFilter(item: string, predicateValue: string, operator: ComparisonOperator): boolean {

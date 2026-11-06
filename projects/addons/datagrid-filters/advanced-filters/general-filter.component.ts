@@ -146,12 +146,11 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
       return;
     }
     const rows = this.conditions.getRawValue();
-    if (this.isNumericUnitProperty) {
-      // Keep display values and units aligned with the surviving criteria, including empty predicates.
-      this.filterProperty.selectedValue = rows.map(row => row.value);
-      this.filterProperty.selectedUnit = rows.map(row => row.unit);
-    }
     const filter = new PropertyFilter();
+    if (this.isNumericUnitProperty) {
+      // Typed values and units stay on this filter (aligned with its criteria), not on the shared definition.
+      filter.editorState = { values: rows.map(row => row.value), units: rows.map(row => row.unit) };
+    }
     filter.operator = this.filterProperty.logicalOperator ?? this.generalFilterForm.value.logicalOperator;
     filter.criteria = rows.map(row => {
       const predicate = new PropertyPredicate();
@@ -279,18 +278,13 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
 
   private getSelectedUnit(index: number): Unit {
     const selectedUnit: Unit =
-      this.propertyFilter.criteria[index].filterableProperty.selectedUnit?.[index] ??
-      (this.filterProperty as NumericPropertyDefinition).unit;
+      this.propertyFilter.editorState?.units?.[index] ?? (this.filterProperty as NumericPropertyDefinition).unit;
     return selectedUnit;
   }
 
   private initValue(index: number): any {
     if (this.isNumericUnitProperty) {
-      return (
-        this.propertyFilter?.criteria[index]?.filterableProperty.selectedValue?.[index] ??
-        this.propertyFilter?.criteria[index]?.value ??
-        ''
-      );
+      return this.propertyFilter?.editorState?.values?.[index] ?? this.propertyFilter?.criteria[index]?.value ?? '';
     } else {
       return this.propertyFilter?.criteria[index]?.value ?? '';
     }

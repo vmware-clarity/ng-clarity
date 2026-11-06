@@ -15,7 +15,6 @@ import {
   inject,
   Injector,
   Input,
-  isDevMode,
   OnChanges,
   OnInit,
   Output,
@@ -123,8 +122,9 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   private resolvedPredefinedFilters: FilterablePropertyDefinition[] = [];
   private resolvedSemiPredefinedFilters: EnumPropertyDefinition[] = [];
   private resolvedToggleFilters: PropertyFilter[] = [];
-  /** Fields ignored by the last resolution, reported in dev mode. */
+  /** Fields ignored by the last resolution, reported with console.warn. */
   private ignoredFieldEntries: string[] = [];
+  private initialized = false;
   private readonly activeToggleKeys = new Set<string>();
 
   constructor(
@@ -141,7 +141,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
    *
    * A field can be used only once per filter bar. Fields are claimed in this order:
    * `predefinedFilters`, then `semiPredefinedFilters`, then `toggleFilters`. A later entry
-   * for a field that is already claimed is ignored, with a warning in dev mode.
+   * for a field that is already claimed is ignored, with a console warning.
    */
   @Input({ transform: toPropertyArray })
   get predefinedFilters(): FilterablePropertyDefinition[] {
@@ -318,6 +318,10 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['predefinedFilters'] || changes['semiPredefinedFilters'] || changes['toggleFilters']) {
       this.warnIgnoredFields();
+      // Precedence can hand a field to semiPredefinedFilters after init; its current filter may no longer be valid.
+      if (this.initialized && this.removeInvalidSemiFilters()) {
+        this.emitFilters();
+      }
     }
     if (changes['toggleFilters']) {
       // Drop ON states of toggles that are no longer configured.
@@ -340,27 +344,17 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
       const presets = this.presetFilters.filter(filter => filter.criteria.length > 0);
       // A preset with exactly a toggle's criteria turns that toggle ON. Any other preset stays a normal pill.
       const toggleKeys = new Set(this.toggleFilters.map(toggle => this.toggleKey(toggle)));
-      const unsupported: PropertyFilter[] = [];
       this.propertyFilters = presets.filter(filter => {
         const key = this.toggleKey(filter);
         if (toggleKeys.has(key)) {
           this.activeToggleKeys.add(key);
           return false;
         }
-        if (this.isSemiPredefined(filter.criteria[0].filterableProperty) && !this.isOptionSelection(filter)) {
-          unsupported.push(filter);
-          return false;
-        }
         return true;
       });
-      if (isDevMode() && unsupported.length) {
-        console.warn(
-          'appfx-composite-filter: presets on semiPredefinedFilters fields must select options ' +
-            '(Equals on option keys, combined with OR). Ignored presets for: ' +
-            unsupported.map(filter => filter.criteria[0].filterableProperty.property).join(', ')
-        );
-      }
+      this.removeInvalidSemiFilters();
     }
+    this.initialized = true;
     this.preselectFirstProperty();
   }
 
@@ -608,6 +602,26 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
           property.values.has(predicate.value)
       )
     );
+  }
+
+  /**
+   * Semi-predefined fields only support picking options. Removes any other filter on such a field
+   * and writes a console warning. Returns true when something was removed.
+   */
+  private removeInvalidSemiFilters(): boolean {
+    const invalid = this.propertyFilters.filter(
+      filter => this.isSemiPredefined(filter.criteria[0].filterableProperty) && !this.isOptionSelection(filter)
+    );
+    if (!invalid.length) {
+      return false;
+    }
+    this.propertyFilters = this.propertyFilters.filter(filter => !invalid.includes(filter));
+    console.warn(
+      'appfx-composite-filter: filters on semiPredefinedFilters fields must select options ' +
+        '(Equals on option keys, combined with OR). Removed filters for: ' +
+        invalid.map(filter => filter.criteria[0].filterableProperty.property).join(', ')
+    );
+    return true;
   }
 
   private warnIgnoredFields(): void {

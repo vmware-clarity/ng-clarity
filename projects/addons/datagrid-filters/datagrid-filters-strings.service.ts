@@ -249,9 +249,19 @@ export class DatagridFiltersStrings {
   readonly dateValidatorMessage: string = 'Invalid date format';
 
   /**
+   * Validation message when the end of a custom date range is before its start.
+   */
+  readonly dateRangeValidatorMessage: string = 'End date must not be before start date';
+
+  /**
    * Time input validator error message
    */
   readonly timeValidatorMessage: string = 'Invalid time format';
+
+  /**
+   * Screen reader label of the date range picker used by the custom range operator without times.
+   */
+  readonly dateRangeLabel: string = 'Date range';
 
   readonly fromLabel: string = 'From';
 

@@ -81,9 +81,6 @@ const numericProperty: NumericPropertyDefinition = new NumericPropertyDefinition
   numericOperators,
   Unit.MB
 );
-numericProperty.selectedValue = [176, 50];
-numericProperty.selectedUnit = [Unit.MB, Unit.GB];
-
 const numericPredicate1 = new PropertyPredicate();
 numericPredicate1.filterableProperty = numericProperty;
 numericPredicate1.operator = ComparisonOperator.Equals;
@@ -96,6 +93,7 @@ numericPredicate2.operator = ComparisonOperator.GreaterThan;
 const numericPropertyFilter: PropertyFilter = new PropertyFilter();
 numericPropertyFilter.criteria = [numericPredicate1, numericPredicate2];
 numericPropertyFilter.operator = LogicalOperator.Or;
+numericPropertyFilter.editorState = { values: [176, 50], units: [Unit.MB, Unit.GB] };
 
 const dateTimePropertyName = 'lastUpdated';
 const dateTimePropertyDisplayName = 'Last Updated';
@@ -103,9 +101,6 @@ const dateTimeProperty: DateTimePropertyDefinition = new DateTimePropertyDefinit
   dateTimePropertyName,
   dateTimePropertyDisplayName
 );
-dateTimeProperty.selectedOperator = ComparisonOperator.BeforeOrEqualTo;
-dateTimeProperty.selectedValue = '2023-02-02T13:23';
-
 const dateTimePredicate1 = new PropertyPredicate();
 dateTimePredicate1.filterableProperty = dateTimeProperty;
 dateTimePredicate1.operator = ComparisonOperator.LessThan;
@@ -255,8 +250,6 @@ describe('ManageFilterComponent', () => {
     spyOn(this.component.filterStrings, 'getConjoinerDisplayName');
     this.component.propertyFilter = numericPropertyFilter;
     numericPropertyFilter.criteria = [numericPredicate1, numericPredicate2];
-    numericProperty.selectedValue = [176, 50];
-    numericProperty.selectedUnit = [Unit.MB, Unit.GB];
     this.fixture.detectChanges();
     expect(this.component.managedProperty).toEqual(numericProperty);
     expect(this.component.managedPropertyType).toEqual(PropertyType.Numeric);
@@ -377,7 +370,7 @@ describe('ManageFilterComponent', () => {
     expect(remove.textContent.trim()).toBe(this.component.filterStrings.removeFilterText);
     remove.click();
     expect(this.component.filterRemoved.emit).toHaveBeenCalledTimes(1);
-    expect(numericProperty.selectedValue).toEqual([176, 50]);
+    expect(numericProperty['selectedValue']).toBeUndefined();
   });
 
   it('edits four string conditions without dropping criteria or changing the count', async function (this: ThisTest) {
@@ -465,39 +458,94 @@ describe('ManageFilterComponent', () => {
     });
   }
 
+  // Date-time pills read this filter's own editor state; the shared definition is never consulted (bug 10).
+  const dateFilter = (editorState: PropertyFilter['editorState']): PropertyFilter => ({
+    ...dateTimePropertyFilter,
+    editorState,
+  });
+
   it('manages date-time property filter normal operator', function (this: ThisTest) {
-    this.component.propertyFilter = dateTimePropertyFilter;
-    dateTimeProperty.selectedOperator = ComparisonOperator.BeforeOrEqualTo;
-    dateTimeProperty.selectedValue = '2023-02-02T13:23';
+    this.component.propertyFilter = dateFilter({
+      operator: ComparisonOperator.BeforeOrEqualTo,
+      value: '2023-02-02T13:23',
+    });
     this.fixture.detectChanges();
     expect(this.component.managedProperty).toEqual(dateTimeProperty);
     expect(this.component.managedPropertyType).toEqual(PropertyType.DateTime);
     expect(this.component.dateTimeProperty).toEqual(dateTimeProperty);
 
-    expect(this.component.primaryConditionDisplayText).toEqual('Before or equal to: 2023-02-02 13:23');
+    // Angular formats times with a narrow no-break space before AM/PM.
+    expect(this.component.primaryConditionDisplayText.replace(/\u202f/g, ' ')).toEqual(
+      'Before or equal to: Feb 2, 2023 1:23 PM'
+    );
   });
   it('manages date-time property filter custom range operator', function (this: ThisTest) {
-    dateTimeProperty.selectedOperator = ComparisonOperator.CustomRange;
-    dateTimeProperty.selectedValueTo = '2023-02-07T13:28';
-    this.component.propertyFilter = dateTimePropertyFilter;
+    this.component.propertyFilter = dateFilter({
+      operator: ComparisonOperator.CustomRange,
+      value: '2023-02-02',
+      valueTo: '2023-02-07',
+    });
     this.fixture.detectChanges();
 
-    expect(this.component.primaryConditionDisplayText).toEqual('' + 'From: 2023-02-02 13:23 ' + 'To: 2023-02-07 13:28');
+    expect(this.component.primaryConditionDisplayText).toEqual('From: Feb 2, 2023 To: Feb 7, 2023');
+    expect(this.component.pillCondition).toEqual('From Feb 2, 2023 To Feb 7, 2023');
   });
   it('manages date-time property filter relative operator', function (this: ThisTest) {
-    dateTimeProperty.selectedOperator = ComparisonOperator.LastYear;
-    this.component.propertyFilter = dateTimePropertyFilter;
+    this.component.propertyFilter = dateFilter({ operator: ComparisonOperator.LastYear });
     this.fixture.detectChanges();
 
     expect(this.component.primaryConditionDisplayText).toEqual('Last year');
   });
   it('manages date-time property filter time span operator', function (this: ThisTest) {
-    dateTimeProperty.selectedOperator = ComparisonOperator.TimeSpan;
-    dateTimeProperty.selectedTimeSpanValue = '300';
-    dateTimeProperty.selectedTimeSpan = TimeSpan.Weeks;
-    this.component.propertyFilter = dateTimePropertyFilter;
+    this.component.propertyFilter = dateFilter({
+      operator: ComparisonOperator.TimeSpan,
+      timeSpanValue: 300,
+      timeSpan: TimeSpan.Weeks,
+    });
     this.fixture.detectChanges();
 
     expect(this.component.primaryConditionDisplayText).toEqual('Time span: 300 Weeks');
+  });
+  it('does not change its text when another filter on the same definition changes (bug 10)', function (this: ThisTest) {
+    this.component.propertyFilter = dateFilter({ operator: ComparisonOperator.LastWeek });
+    this.fixture.detectChanges();
+    // Another grid writing legacy editor fields onto the shared definition has no effect.
+    dateTimeProperty['selectedOperator'] = ComparisonOperator.TimeSpan;
+    this.component.ngOnChanges();
+    expect(this.component.primaryConditionDisplayText).toEqual('Last week');
+    delete dateTimeProperty['selectedOperator'];
+  });
+  it('describes a preset without editor state from its criteria (bug 9)', function (this: ThisTest) {
+    this.component.propertyFilter = {
+      operator: LogicalOperator.And,
+      criteria: [{ filterableProperty: dateTimeProperty, operator: ComparisonOperator.Before, value: '2026-01-01' }],
+    };
+    this.fixture.detectChanges();
+    expect(this.component.primaryConditionDisplayText).toEqual('Before: Jan 1, 2026');
+    expect(this.component.editFilterAriaLabel).not.toContain('Unknown operator');
+  });
+  it('reads an editor-built custom range preset back from its criteria', function (this: ThisTest) {
+    this.component.propertyFilter = {
+      operator: LogicalOperator.And,
+      criteria: [
+        {
+          filterableProperty: dateTimeProperty,
+          operator: ComparisonOperator.GreaterThanOrEqualTo,
+          value: '2023-05-01T00:00:00+03:00',
+        },
+        {
+          filterableProperty: dateTimeProperty,
+          operator: ComparisonOperator.LessThan,
+          value: '2024-01-01T00:00:00+03:00',
+        },
+      ],
+    };
+    this.fixture.detectChanges();
+    expect(this.component.primaryConditionDisplayText).toEqual('From: May 1, 2023 To: Dec 31, 2023');
+  });
+  it('shows numeric values and units from its own filter', function (this: ThisTest) {
+    this.component.propertyFilter = { ...numericPropertyFilter, editorState: { values: [2], units: [Unit.GB] } };
+    this.fixture.detectChanges();
+    expect(this.component.primaryConditionDisplayText).toEqual('Equals: 2 GB');
   });
 });

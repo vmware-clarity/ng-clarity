@@ -14,6 +14,7 @@ import { ClrLabel } from '@clr/angular/emphasis/label';
 import {
   ClrCheckboxModule,
   ClrComboboxModule,
+  ClrDatepickerModule,
   ClrInputModule,
   ClrRadioModule,
   ClrSelectModule,
@@ -66,6 +67,7 @@ export function datagridFiltersUserServiceFactory(existing: DatagridFiltersUserS
     ClrLabel,
     ClrCheckboxModule,
     ClrComboboxModule,
+    ClrDatepickerModule,
     ClrIcon,
     ClrInputModule,
     ClrRadioModule,

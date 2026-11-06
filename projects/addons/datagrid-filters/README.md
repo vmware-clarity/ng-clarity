@@ -57,7 +57,7 @@ For example, `predefinedFilters = [nameProperty, statusProperty]` permanently sh
 
 Each field can be used only once per filter bar. Fields are claimed from left to right: `predefinedFilters` first, then `semiPredefinedFilters`, then `toggleFilters` (the first toggle per field wins). Later entries for an already claimed field are ignored, with a console warning. Fields used by any of these inputs are not offered in **Add filter**.
 
-Semi-predefined fields only support picking options. A preset for such a field must be one or more `Equals` conditions on option keys, combined with OR; any other preset is ignored, with a console warning in dev mode.
+Semi-predefined fields only support picking options. A preset for such a field must be one or more `Equals` conditions on option keys, combined with OR; any other filter on such a field is removed, with a console warning. This also applies when a field becomes semi-predefined after init; the filter bar then emits `propertyFiltersChange` without the removed filter.
 
 #### FilterablePropertyDefinition
 

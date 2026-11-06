@@ -467,7 +467,7 @@ describe('CompositeFiltersComponent', () => {
       expect(this.component.toggleFilters.length).toBe(1);
     });
 
-    it('warns in dev mode about ignored entries', function (this: ThisTest) {
+    it('warns about ignored entries', function (this: ThisTest) {
       spyOn(console, 'warn');
       this.component.predefinedFilters = [enumProperty];
       this.component.semiPredefinedFilters = [enumProperty];
@@ -490,7 +490,7 @@ describe('CompositeFiltersComponent', () => {
       this.fixture.detectChanges();
       expect(this.component.propertyFilters).toEqual([]);
       expect((console.warn as jasmine.Spy).calls.mostRecent().args[0]).toContain(
-        'Ignored presets for: ' + enumProperty.property
+        'Removed filters for: ' + enumProperty.property
       );
     });
 
@@ -509,6 +509,43 @@ describe('CompositeFiltersComponent', () => {
       this.fixture.detectChanges();
       expect(this.component.propertyFilters).toEqual([selection]);
       expect(this.component.isOptionSelected(enumProperty, first)).toBeTrue();
+    });
+
+    it('removes a filter that becomes invalid when its field turns semi-predefined', function (this: ThisTest) {
+      const key = Array.from(enumProperty.values.keys())[0];
+      const notEquals: PropertyFilter = {
+        operator: LogicalOperator.Or,
+        criteria: [{ filterableProperty: enumProperty, operator: ComparisonOperator.DoesNotEqual, value: key }],
+      };
+      const valid = stringPropertyFilter;
+      this.component.presetFilters = [notEquals, valid];
+      this.fixture.detectChanges();
+      expect(this.component.propertyFilters).toEqual([notEquals, valid]);
+      spyOn(console, 'warn');
+      spyOn(this.component.propertyFiltersChange, 'emit');
+      this.component.semiPredefinedFilters = [enumProperty];
+      this.component.ngOnChanges({ semiPredefinedFilters: new SimpleChange([], [enumProperty], false) });
+      expect(this.component.propertyFilters).toEqual([valid]);
+      expect(this.component.propertyFiltersChange.emit).toHaveBeenCalledOnceWith([valid]);
+      expect((console.warn as jasmine.Spy).calls.mostRecent().args[0]).toContain(
+        'Removed filters for: ' + enumProperty.property
+      );
+    });
+
+    it('keeps a valid option selection when its field turns semi-predefined', function (this: ThisTest) {
+      const key = Array.from(enumProperty.values.keys())[0];
+      const equals: PropertyFilter = {
+        operator: LogicalOperator.Or,
+        criteria: [{ filterableProperty: enumProperty, operator: ComparisonOperator.Equals, value: key }],
+      };
+      this.component.presetFilters = [equals];
+      this.fixture.detectChanges();
+      spyOn(this.component.propertyFiltersChange, 'emit');
+      this.component.semiPredefinedFilters = [enumProperty];
+      this.component.ngOnChanges({ semiPredefinedFilters: new SimpleChange([], [enumProperty], false) });
+      expect(this.component.propertyFilters).toEqual([equals]);
+      expect(this.component.propertyFiltersChange.emit).not.toHaveBeenCalled();
+      expect(this.component.isOptionSelected(enumProperty, key)).toBeTrue();
     });
 
     it('does not warn without conflicts', function (this: ThisTest) {

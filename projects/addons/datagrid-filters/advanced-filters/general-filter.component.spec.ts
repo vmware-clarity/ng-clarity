@@ -412,8 +412,10 @@ describe('GeneralFilterComponent', () => {
       this.fixture.nativeElement.querySelector(submitBtnSelector).click();
       const filter = emitted.calls.mostRecent().args[0];
       expect(filter.criteria.map(predicate => predicate.value)).toEqual([0, 2 * 1024 ** 2, 3 * 1024 ** 3]);
-      expect(filter.criteria[0].filterableProperty.selectedValue).toEqual([0, 2, 3]);
-      expect(filter.criteria[0].filterableProperty.selectedUnit).toEqual([Unit.Byte, Unit.MB, Unit.GB]);
+      expect(filter.editorState).toEqual({ values: [0, 2, 3], units: [Unit.Byte, Unit.MB, Unit.GB] });
+      // The shared definition is not written to.
+      expect(field['selectedValue']).toBeUndefined();
+      expect(field['selectedUnit']).toBeUndefined();
       const reopened = TestBed.createComponent(GeneralFilterComponent);
       try {
         reopened.componentInstance.filterProperty = filter.criteria[0].filterableProperty as NumericPropertyDefinition;
@@ -444,8 +446,8 @@ describe('GeneralFilterComponent', () => {
       };
       const emitted = spyOn(this.component.filterCriteriaChange, 'emit');
       this.fixture.detectChanges();
-      expect(field.selectedValue).toBeUndefined();
-      expect(field.selectedUnit).toBeUndefined();
+      expect(field['selectedValue']).toBeUndefined();
+      expect(field['selectedUnit']).toBeUndefined();
       expect(this.component.conditions.value.map(condition => condition.value)).toEqual(values);
       expect(this.component.conditions.value.map(condition => condition.unit)).toEqual([Unit.MB, Unit.MB, Unit.MB]);
       expect(this.component.generalFilterForm.valid).toBeTrue();
@@ -640,7 +642,12 @@ describe('GeneralFilterComponent', () => {
       submitButton.click();
       this.fixture.detectChanges();
       expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(1);
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(numericPropertyFilter1);
+      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(
+        jasmine.objectContaining({
+          criteria: numericPropertyFilter1.criteria,
+          operator: numericPropertyFilter1.operator,
+        })
+      );
     });
     it('converts filter values to the corresponding property unit', function (this: ThisTest) {
       const emitted = spyOn(this.component.filterCriteriaChange, 'emit');
@@ -940,10 +947,11 @@ describe('GeneralFilterComponent', () => {
   describe('in edit mode with numeric property', () => {
     beforeEach(function (this: ThisTest) {
       numericProperty.unit = Unit.MB;
-      numericProperty.selectedValue = [800, 700];
-      numericProperty.selectedUnit = [Unit.MB, Unit.KB];
       this.component.filterProperty = numericProperty;
-      this.component.propertyFilter = numericPropertyFilter2;
+      this.component.propertyFilter = {
+        ...numericPropertyFilter2,
+        editorState: { values: [800, 700], units: [Unit.MB, Unit.KB] },
+      };
       this.fixture.detectChanges();
     });
     it(isInitializedExpectation, function (this: ThisTest) {

@@ -5,12 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { formatDate } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
+  LOCALE_ID,
   OnChanges,
   OnInit,
   Output,
@@ -25,7 +28,7 @@ import {
 import { uniqueIdFactory } from '@clr/angular/utils';
 
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
-import { ComparisonOperator, PropertyType, TimeSpan } from '../model/datagrid-filters.enums';
+import { ComparisonOperator, PropertyType } from '../model/datagrid-filters.enums';
 import {
   DateTimePropertyDefinition,
   EnumPropertyDefinition,
@@ -35,6 +38,7 @@ import {
   StringPropertyDefinition,
   UserPropertyDefinition,
 } from '../model/datagrid-filters.interfaces';
+import { dateTimeEditorState, parseLocalDateTime } from '../model/date-time-editor-state';
 
 @Component({
   selector: 'appfx-manage-filter',
@@ -78,6 +82,7 @@ export class ManageFilterComponent implements OnInit, OnChanges {
   secondaryConditionDisplayText = '';
   editFilterAriaLabel = '';
 
+  private readonly locale = inject(LOCALE_ID);
   private readonly noDisplayValueOperators: ComparisonOperator[] = [
     ComparisonOperator.IsEmpty,
     ComparisonOperator.LastDay,
@@ -222,45 +227,50 @@ export class ManageFilterComponent implements OnInit, OnChanges {
       const enumProperty: EnumPropertyDefinition = property as EnumPropertyDefinition;
       value = enumProperty.values.get(this.propertyFilter.criteria[index].value) ?? value;
     } else if (this.isNumericUnitFilterProperty(property)) {
+      const state = this.propertyFilter.editorState;
       value =
-        (property.selectedValue?.[index] ?? value) +
+        (state?.values?.[index] ?? value) +
         ' ' +
-        this.filterStrings.getUnitDisplayName(property.selectedUnit?.[index] ?? property.unit);
+        this.filterStrings.getUnitDisplayName(state?.units?.[index] ?? property.unit);
     }
     return this.operatorDisplayName(this.propertyFilter.criteria[index].operator) + (compact ? ' ' : ': ') + value;
   }
 
+  /**
+   * Date-time pill text, built from this filter only (its editor state, or what its criteria express),
+   * never from the shared field definition. Dates use the locale's medium date format.
+   */
   private displayDateTimeFilter(compact = false): string {
     const separator = compact ? ' ' : ': ';
-    const operator: ComparisonOperator = this.propertyFilter.criteria[0].filterableProperty.selectedOperator;
+    const state = dateTimeEditorState(this.propertyFilter);
+    if (!state) {
+      // Criteria with no date-time meaning (e.g. a custom preset): show them as they are.
+      const predicate = this.propertyFilter.criteria[0];
+      return this.operatorDisplayName(predicate.operator) + separator + this.formatDateTimeValue(predicate.value);
+    }
+    const operator = state.operator;
     if (operator === ComparisonOperator.CustomRange) {
-      const displayValue: string =
+      return (
         this.filterStrings.fromLabel +
         separator +
-        this.formatDateTimeValue(this.propertyFilter.criteria[0].filterableProperty.selectedValue) +
+        this.formatDateTimeValue(state.value) +
         ' ' +
         this.filterStrings.toLabel +
         separator +
-        this.formatDateTimeValue(this.propertyFilter.criteria[0].filterableProperty.selectedValueTo);
-      return displayValue;
+        this.formatDateTimeValue(state.valueTo)
+      );
     } else if (this.isNoDisplayValueOperator(operator)) {
       return this.operatorDisplayName(operator);
     } else if (operator === ComparisonOperator.TimeSpan) {
-      const timeSpanValue: number = this.propertyFilter.criteria[0].filterableProperty.selectedTimeSpanValue;
-      const timeSpan: TimeSpan = this.propertyFilter.criteria[0].filterableProperty.selectedTimeSpan;
       return (
         this.operatorDisplayName(operator) +
         separator +
-        timeSpanValue +
+        state.timeSpanValue +
         ' ' +
-        this.filterStrings.getTimeSpanDisplayName(timeSpan)
+        this.filterStrings.getTimeSpanDisplayName(state.timeSpan)
       );
-    } else {
-      const filterValue: string = this.formatDateTimeValue(
-        this.propertyFilter.criteria[0].filterableProperty.selectedValue
-      );
-      return this.operatorDisplayName(operator) + separator + filterValue;
     }
+    return this.operatorDisplayName(operator) + separator + this.formatDateTimeValue(state.value);
   }
 
   private isNoDisplayValueOperator(operator: ComparisonOperator): boolean {
@@ -268,10 +278,15 @@ export class ManageFilterComponent implements OnInit, OnChanges {
   }
 
   private formatDateTimeValue(dateTime: string): string {
-    if (!dateTime) {
-      return dateTime;
+    const parsed = parseLocalDateTime(dateTime);
+    if (!parsed) {
+      return dateTime ?? '';
     }
-    return dateTime.replace('T', ' ');
+    const includeSeconds = (this.managedProperty as DateTimePropertyDefinition).includeSeconds;
+    const date = formatDate(parsed.date, 'mediumDate', this.locale);
+    return parsed.hasTime
+      ? date + ' ' + formatDate(parsed.date, includeSeconds ? 'mediumTime' : 'shortTime', this.locale)
+      : date;
   }
 
   private isStringProperty(property: FilterablePropertyDefinition): property is StringPropertyDefinition {
