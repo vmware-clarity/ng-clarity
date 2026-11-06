@@ -7,15 +7,87 @@
 
 .composite-filter-container {
   display: flex;
-}
+  align-items: center;
+  gap: var(--clr-base-gap-s);
 
-.height-standard {
-  height: 1.2rem;
+  // Add filter and Clear all keep their size; only the pill area shrinks and wraps.
+  > .btn,
+  > clr-tooltip {
+    flex-shrink: 0;
+  }
 }
 
 .manage-filter-container {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+  gap: var(--clr-base-gap-m);
+  min-width: 0;
+}
+
+// Separates the predefined pills from the user-added ones.
+.filter-group-separator {
+  align-self: stretch;
+  width: var(--cds-alias-object-border-width-100);
+  margin-block: var(--clr-base-vertical-offset-2xs);
+  background: var(--cds-alias-object-border-color);
+}
+
+// Semi-predefined filter: "Field: (Option) (Option)".
+.semi-filter-group {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--clr-base-gap-s);
+}
+
+.semi-filter-option-label {
+  max-width: 300px;
+  padding: 0;
+  margin: 0;
+}
+
+.semi-filter-option {
+  display: inline-flex;
+  min-width: 0;
+  max-width: 100%;
+  align-items: center;
+  // Fill the label's min-height so hover and focus cover the whole pill.
+  align-self: stretch;
+  gap: var(--clr-base-gap-xs);
+  padding: var(--clr-base-vertical-offset-2xs) calc(var(--clr-base-horizontal-offset-xs) * 2);
+  border: 0;
+  border-radius: inherit;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--clr-label-bg-hover-color);
+  }
+
+  &:focus-visible {
+    outline: var(--cds-alias-object-interaction-outline);
+    outline-color: -webkit-focus-ring-color;
+    outline-offset: var(--cds-alias-object-interaction-outline-offset);
+  }
+}
+
+.semi-filter-option-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+appfx-manage-filter {
+  // A fixed cap (no percentage): percentage max-widths are ignored when the browser measures the
+  // pill row's preferred width, which would reserve space for the full text and push the buttons away.
+  max-width: 300px;
+
+  &:not([hidden]) {
+    display: inline-flex;
+  }
 }
 
 :host-context(.zoom2x, .zoom4x) {

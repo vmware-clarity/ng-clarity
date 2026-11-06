@@ -80,6 +80,8 @@ const filterableProperties: FilterablePropertyDefinition[] = [
   userProperty,
 ];
 
+export const predefinedFilters = [nameProperty, statusProperty, usedSpaceProperty, createdProperty, userProperty];
+
 function createPredicate(
   filterableProperty: FilterablePropertyDefinition,
   operator: ComparisonOperator,
@@ -122,6 +124,7 @@ export const presetFilters: PropertyFilter[] = [
       [filterMode]="filterMode"
       [filterableProperties]="filterableProperties"
       [presetFilters]="presetFilters"
+      [predefinedFilters]="predefinedFilters"
       (searchTermChange)="searchTerm = $event"
       (propertyFiltersChange)="propertyFilters = $event"
     ></appfx-datagrid-filters>
@@ -159,6 +162,7 @@ export const presetFilters: PropertyFilter[] = [
 export class DatagridFiltersStoryWrapperComponent {
   @Input() filterMode: FilterMode = FilterMode.Advanced;
   @Input() presetFilters: PropertyFilter[] = [];
+  @Input() predefinedFilters: FilterablePropertyDefinition[] = [];
 
   readonly filterableProperties = filterableProperties;
   readonly comparisonOperator = ComparisonOperator;

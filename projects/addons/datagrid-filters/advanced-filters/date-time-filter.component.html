@@ -10,165 +10,205 @@
   (cancel)="onCancelButtonClick()"
   (apply)="onApplyButtonClick()"
 >
-  <clr-select-container class="mt-compact">
-    <label class="clr-control-label">
-      {{ filterStrings.operatorLabel }}
-    </label>
-    <select clrSelect formControlName="operator">
-      @for (operator of comparisonOperators; track operator) {
-        <option [ngValue]="operator">
-          {{ filterStrings.getOperatorDisplayName(operator) }}
-        </option>
-      }
-    </select>
-  </clr-select-container>
-  @if (!noDateTimeInputNeeded()) {
-    <div class="flex-container">
-      <clr-input-container>
-        @if (isCustomRangePredicate) {
-          <label class="clr-control-label">
-            {{ filterStrings.fromLabel }}
-          </label>
+  <div class="filter-field-row">
+    <ng-content select="[filterField]"></ng-content>
+  </div>
+  <ng-content select="[filterActions]" ngProjectAs="[filterActions]"></ng-content>
+  <div class="filter-condition-row">
+    <clr-select-container class="filter-operator">
+      <label class="clr-sr-only">
+        {{ filterStrings.operatorLabel }}
+      </label>
+      <select clrSelect formControlName="operator">
+        @for (operator of comparisonOperators; track operator) {
+          <option [ngValue]="operator">
+            {{ filterStrings.getOperatorDisplayName(operator) }}
+          </option>
         }
-        <input
-          type="date"
-          pattern="^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$"
-          formControlName="dateValue"
-          placeholder="{{ filterStrings.dateFormat }}"
-          clrInput
-          (keydown)="onInputKeyPress($event)"
-        />
-        <clr-control-error *clrIfError="'required'" role="alert">{{
-          filterStrings.requiredValidatorMessage
-        }}</clr-control-error>
-        <clr-control-error *clrIfError="'pattern'" role="alert">{{
-          filterStrings.dateValidatorMessage
-        }}</clr-control-error>
-      </clr-input-container>
+      </select>
+    </clr-select-container>
+    <div class="filter-value date-filter-values">
+      @if (isCustomRangePredicate && !timePredicate) {
+        <!-- Dates only: one range picker for From and To. With times, separate pickers are shown below. -->
+        <div class="date-filter-value-row">
+          <clr-date-range-container class="filter-value">
+            <label class="clr-sr-only">{{ filterStrings.dateRangeLabel }}</label>
+            <input
+              type="date"
+              autocomplete="off"
+              formControlName="dateValue"
+              clrStartDate
+              [attr.aria-label]="filterStrings.fromLabel"
+              (keydown)="onInputKeyPress($event)"
+            />
+            <input
+              type="date"
+              autocomplete="off"
+              formControlName="dateValueTo"
+              clrEndDate
+              [attr.aria-label]="filterStrings.toLabel"
+              (keydown)="onInputKeyPress($event)"
+            />
+            <clr-control-error *clrIfError="'required'" role="alert">{{
+              filterStrings.requiredValidatorMessage
+            }}</clr-control-error>
+            <clr-control-error *clrIfError="'pattern'" role="alert">{{
+              filterStrings.dateValidatorMessage
+            }}</clr-control-error>
+            <clr-control-error *clrIfError="'range'" role="alert">{{
+              filterStrings.dateRangeValidatorMessage
+            }}</clr-control-error>
+          </clr-date-range-container>
+        </div>
+      } @else if (!noDateTimeInputNeeded()) {
+        <div class="date-filter-value-row">
+          <clr-date-container class="filter-value">
+            <label [class.clr-sr-only]="!isCustomRangePredicate">
+              {{ isCustomRangePredicate ? filterStrings.fromLabel : filterStrings.dateFormat }}
+            </label>
+            <input
+              type="date"
+              autocomplete="off"
+              formControlName="dateValue"
+              clrDate
+              (keydown)="onInputKeyPress($event)"
+            />
+            <clr-control-error *clrIfError="'required'" role="alert">{{
+              filterStrings.requiredValidatorMessage
+            }}</clr-control-error>
+            <clr-control-error *clrIfError="'pattern'" role="alert">{{
+              filterStrings.dateValidatorMessage
+            }}</clr-control-error>
+          </clr-date-container>
+        </div>
+      }
+      @if (timePredicate) {
+        <div class="date-filter-value-row">
+          <clr-input-container class="filter-value">
+            <label class="clr-sr-only">{{ filterStrings.timeFormat }}</label>
+            <input
+              type="time"
+              [step]="includeSeconds ? 1 : 60"
+              pattern="^(0[0-9]|1[0-9]|2[0-4]):([0-5][0-9]):?([0-5][0-9])?$"
+              formControlName="timeValue"
+              placeholder="{{ filterStrings.timeFormat }}"
+              clrInput
+              (keydown)="onInputKeyPress($event)"
+            />
+            <clr-control-error *clrIfError="'required'" role="alert">{{
+              filterStrings.requiredValidatorMessage
+            }}</clr-control-error>
+            <clr-control-error *clrIfError="'pattern'" role="alert">{{
+              filterStrings.timeValidatorMessage
+            }}</clr-control-error>
+          </clr-input-container>
+          <button
+            type="button"
+            class="btn btn-sm btn-link btn-icon filter-condition-remove"
+            data-test-id="close-button"
+            [attr.aria-label]="filterStrings.removeTimeFilterAriaLabel"
+            (click)="disableTimePredicate()"
+          >
+            <cds-icon size="20" shape="window-close"></cds-icon>
+          </button>
+        </div>
+      }
+      @if (isCustomRangePredicate && timePredicate) {
+        <div class="date-filter-value-row">
+          <clr-date-container class="filter-value">
+            <label class="clr-control-label">
+              {{ filterStrings.toLabel }}
+            </label>
+            <input
+              type="date"
+              autocomplete="off"
+              formControlName="dateValueTo"
+              clrDate
+              (keydown)="onInputKeyPress($event)"
+            />
+            <clr-control-error *clrIfError="'required'" role="alert">{{
+              filterStrings.requiredValidatorMessage
+            }}</clr-control-error>
+            <clr-control-error *clrIfError="'pattern'" role="alert">{{
+              filterStrings.dateValidatorMessage
+            }}</clr-control-error>
+          </clr-date-container>
+        </div>
+      }
+      @if (timePredicate && isCustomRangePredicate) {
+        <div class="date-filter-value-row">
+          <clr-input-container class="filter-value">
+            <label class="clr-sr-only">{{ filterStrings.timeFormat }}</label>
+            <input
+              type="time"
+              [step]="includeSeconds ? 1 : 60"
+              pattern="^(0[0-9]|1[0-9]|2[0-4]):([0-5][0-9]):?([0-5][0-9])?$"
+              formControlName="timeValueTo"
+              placeholder="{{ filterStrings.timeFormat }}"
+              clrInput
+              (keydown)="onInputKeyPress($event)"
+            />
+            <clr-control-error *clrIfError="'required'" role="alert">{{
+              filterStrings.requiredValidatorMessage
+            }}</clr-control-error>
+            <clr-control-error *clrIfError="'pattern'" role="alert">{{
+              filterStrings.timeValidatorMessage
+            }}</clr-control-error>
+          </clr-input-container>
+          <button
+            type="button"
+            class="btn btn-sm btn-link btn-icon filter-condition-remove"
+            data-test-id="close-button"
+            [attr.aria-label]="filterStrings.removeTimeFilterAriaLabel"
+            (click)="disableTimePredicate()"
+          >
+            <cds-icon size="20" shape="window-close"></cds-icon>
+          </button>
+        </div>
+      }
+      @if (isTimeSpanPredicate) {
+        <div class="date-filter-value-row">
+          <clr-input-container class="filter-value">
+            <label class="clr-sr-only">
+              {{ filterStrings.timeSpanInputLabel }}
+            </label>
+            <input
+              type="text"
+              pattern="^[0-9]+$"
+              formControlName="timeSpanValue"
+              placeholder="{{ filterStrings.enterValue }}"
+              clrInput
+              (keydown)="onInputKeyPress($event)"
+            />
+            <clr-control-error *clrIfError="'required'" role="alert">{{
+              filterStrings.requiredValidatorMessage
+            }}</clr-control-error>
+            <clr-control-error *clrIfError="'pattern'" role="alert">{{
+              filterStrings.integerValidatorMessage
+            }}</clr-control-error>
+          </clr-input-container>
+          <clr-select-container class="filter-unit">
+            <select clrSelect formControlName="timeSpan" [attr.aria-label]="filterStrings.timeSpanAriaLabel">
+              @for (timeSpan of timeSpans; track timeSpan) {
+                <option [ngValue]="timeSpan">
+                  {{ filterStrings.getTimeSpanDisplayName(timeSpan) }}
+                </option>
+              }
+            </select>
+          </clr-select-container>
+        </div>
+      }
     </div>
-  }
-  @if (timePredicate) {
-    <div class="flex-end-container">
-      <clr-input-container>
-        <input
-          type="time"
-          [step]="includeSeconds ? 1 : 60"
-          pattern="^(0[0-9]|1[0-9]|2[0-4]):([0-5][0-9]):?([0-5][0-9])?$"
-          formControlName="timeValue"
-          placeholder="{{ filterStrings.timeFormat }}"
-          clrInput
-          (keydown)="onInputKeyPress($event)"
-        />
-        <clr-control-error *clrIfError="'required'" role="alert">{{
-          filterStrings.requiredValidatorMessage
-        }}</clr-control-error>
-        <clr-control-error *clrIfError="'pattern'" role="alert">{{
-          filterStrings.timeValidatorMessage
-        }}</clr-control-error>
-      </clr-input-container>
-      <button
-        class="close ml-half"
-        data-test-id="close-button"
-        [attr.aria-label]="filterStrings.removeTimeFilterAriaLabel"
-        (click)="disableTimePredicate()"
-      >
-        <cds-icon size="20" shape="window-close"></cds-icon>
-      </button>
-    </div>
-  }
-  @if (isCustomRangePredicate) {
-    <div class="flex-container">
-      <clr-input-container>
-        <label class="clr-control-label">
-          {{ filterStrings.toLabel }}
-        </label>
-        <input
-          type="date"
-          pattern="^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$"
-          formControlName="dateValueTo"
-          placeholder="{{ filterStrings.dateFormat }}"
-          clrInput
-          (keydown)="onInputKeyPress($event)"
-        />
-        <clr-control-error *clrIfError="'required'" role="alert">{{
-          filterStrings.requiredValidatorMessage
-        }}</clr-control-error>
-        <clr-control-error *clrIfError="'pattern'" role="alert">{{
-          filterStrings.dateValidatorMessage
-        }}</clr-control-error>
-      </clr-input-container>
-    </div>
-  }
-  @if (timePredicate && isCustomRangePredicate) {
-    <div class="flex-end-container">
-      <clr-input-container>
-        <input
-          type="time"
-          [step]="includeSeconds ? 1 : 60"
-          pattern="^(0[0-9]|1[0-9]|2[0-4]):([0-5][0-9]):?([0-5][0-9])?$"
-          formControlName="timeValueTo"
-          placeholder="{{ filterStrings.timeFormat }}"
-          clrInput
-          (keydown)="onInputKeyPress($event)"
-        />
-        <clr-control-error *clrIfError="'required'" role="alert">{{
-          filterStrings.requiredValidatorMessage
-        }}</clr-control-error>
-        <clr-control-error *clrIfError="'pattern'" role="alert">{{
-          filterStrings.timeValidatorMessage
-        }}</clr-control-error>
-      </clr-input-container>
-      <button
-        class="close ml-half"
-        data-test-id="close-button"
-        [attr.aria-label]="filterStrings.removeTimeFilterAriaLabel"
-        (click)="disableTimePredicate()"
-      >
-        <cds-icon size="20" shape="window-close"></cds-icon>
-      </button>
-    </div>
-  }
+  </div>
   @if (!timePredicate && !noDateTimeInputNeeded()) {
     <button
-      class="btn btn-sm btn-link mt-half"
+      type="button"
+      class="btn btn-sm btn-outline filter-add-condition"
       data-test-id="add-button"
       [attr.aria-label]="filterStrings.addTimeFilter"
       (click)="enableTimePredicate()"
     >
-      <cds-icon shape="plus" class="is-solid"></cds-icon>
       {{ filterStrings.addTimeFilter }}
     </button>
-  }
-  @if (isTimeSpanPredicate) {
-    <div class="flex-end-container">
-      <clr-input-container>
-        <label class="clr-control-label">
-          {{ filterStrings.timeSpanInputLabel }}
-        </label>
-        <input
-          type="text"
-          pattern="^[0-9]+$"
-          formControlName="timeSpanValue"
-          placeholder="{{ filterStrings.enterValue }}"
-          clrInput
-          (keydown)="onInputKeyPress($event)"
-        />
-        <clr-control-error *clrIfError="'required'" role="alert">{{
-          filterStrings.requiredValidatorMessage
-        }}</clr-control-error>
-        <clr-control-error *clrIfError="'pattern'" role="alert">{{
-          filterStrings.integerValidatorMessage
-        }}</clr-control-error>
-      </clr-input-container>
-      <clr-select-container class="ml-half">
-        <select clrSelect formControlName="timeSpan" [attr.aria-label]="filterStrings.timeSpanAriaLabel">
-          @for (timeSpan of timeSpans; track timeSpan) {
-            <option [ngValue]="timeSpan">
-              {{ filterStrings.getTimeSpanDisplayName(timeSpan) }}
-            </option>
-          }
-        </select>
-      </clr-select-container>
-    </div>
   }
 </appfx-filter-form>

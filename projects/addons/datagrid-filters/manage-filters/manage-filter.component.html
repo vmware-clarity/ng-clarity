@@ -4,159 +4,137 @@
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
-<span class="label label-blue">
-  {{ managedProperty.displayName }}
-  <span
-    class="badge"
-    dismissable
-    [dismissAriaLabel]="
-      filterStrings.removeFilterText + ' ' + managedProperty.displayName + ' ' + primaryConditionDisplayText
-    "
-    (dismiss)="removeFilter(0)"
-  >
-    <clr-signpost>
-      <span
-        clrSignpostTrigger
-        class="edit-filter"
-        tabindex="0"
-        role="button"
-        [attr.aria-label]="editFilterAriaLabel"
-        (keydown)="onEditFilterKeyPress($event, 0)"
-      >
-        {{ primaryConditionDisplayText }}
-      </span>
-      <ng-template [(clrIfOpen)]="openPrimaryConditionSignPost">
-        <clr-signpost-content [clrPosition]="'bottom-middle'" filterPopoverReposition>
-          <clr-select-container class="mt-0">
-            <label class="clr-control-label">
-              {{ this.filterStrings.filterLabel }}
-            </label>
-            <select clrSelect [(ngModel)]="managedProperty" disabled>
-              <option [ngValue]="managedProperty">
-                {{ managedProperty.displayName }}
-              </option>
-            </select>
-          </clr-select-container>
-          @switch (managedPropertyType) {
-            @case (stringPropertyType) {
-              <appfx-general-filter
-                [filterProperty]="stringProperty"
-                [propertyFilter]="propertyFilter"
-                (filterCriteriaChange)="onFilterCriteriaChange($event)"
-              >
-              </appfx-general-filter>
-            }
-            @case (numericPropertyType) {
-              <appfx-general-filter
-                [filterProperty]="numericProperty"
-                [propertyFilter]="propertyFilter"
-                (filterCriteriaChange)="onFilterCriteriaChange($event)"
-              >
-              </appfx-general-filter>
-            }
-            @case (enumPropertyType) {
-              <appfx-enum-filter
-                [filterProperty]="enumProperty"
-                [propertyFilter]="propertyFilter"
-                (filterCriteriaChange)="onFilterCriteriaChange($event)"
-              >
-              </appfx-enum-filter>
-            }
-            @case (dateTimePropertyType) {
-              <appfx-datetime-filter
-                [filterProperty]="dateTimeProperty"
-                [propertyFilter]="propertyFilter"
-                (filterCriteriaChange)="onFilterCriteriaChange($event)"
-              >
-              </appfx-datetime-filter>
-            }
-            @case (userPropertyType) {
-              <appfx-users-filter
-                [filterProperty]="userProperty"
-                [propertyFilter]="propertyFilter"
-                (filterCriteriaChange)="onFilterCriteriaChange($event)"
-              >
-              </appfx-users-filter>
-            }
-          }
-        </clr-signpost-content>
-      </ng-template>
-    </clr-signpost>
-  </span>
-  @if (propertyFilter.criteria.length === 2 && managedPropertyType !== dateTimePropertyType) {
-    <span class="text-lower">
-      {{ this.filterStrings.getConjoinerDisplayName(propertyFilter.operator) }}
-    </span>
-  }
-  @if (propertyFilter.criteria.length === 2 && managedPropertyType !== dateTimePropertyType) {
-    <span
-      class="badge"
-      dismissable
-      [dismissAriaLabel]="
-        this.filterStrings.removeFilterText + managedProperty.displayName + ' ' + secondaryConditionDisplayText
-      "
-      (dismiss)="removeFilter(1)"
+<clr-label class="filter-pill-label" [clrColor]="active ? 'info' : ''">
+  <clr-tooltip>
+    <button
+      #pillButton
+      type="button"
+      class="filter-pill"
+      [class.filter-pill-active]="active"
+      clrTooltipTrigger
+      [attr.aria-label]="editFilterAriaLabel"
+      [attr.aria-expanded]="open"
+      [attr.aria-controls]="popoverId"
+      (click)="togglePopover($event)"
     >
-      <clr-signpost>
-        <span
-          clrSignpostTrigger
-          class="edit-filter"
-          tabindex="0"
-          role="button"
-          [attr.aria-label]="editFilterAriaLabel"
-          (keydown)="onEditFilterKeyPress($event, 1)"
+      <span class="filter-pill-text">
+        @if (active) {
+          {{ managedProperty.displayName }}: <span class="filter-pill-condition">{{ pillCondition }}</span>
+        } @else {
+          {{ managedProperty.displayName }}
+        }
+      </span>
+      @if (additionalConditions > 0) {
+        <clr-badge class="filter-pill-count" clrColor="info" clrType="solid" aria-hidden="true"
+          >+{{ additionalConditions }}</clr-badge
         >
-          {{ secondaryConditionDisplayText }}
-        </span>
-        <ng-template [(clrIfOpen)]="openSecondaryConditionSignPost">
-          <clr-signpost-content [clrPosition]="'bottom-middle'" filterPopoverReposition>
-            <clr-select-container class="mt-0">
-              <label class="clr-control-label">
-                {{ this.filterStrings.filterLabel }}
-              </label>
-              <select clrSelect [(ngModel)]="managedProperty" disabled>
-                <option [ngValue]="managedProperty">
-                  {{ managedProperty.displayName }}
-                </option>
-              </select>
-            </clr-select-container>
-            @switch (managedPropertyType) {
-              @case (stringPropertyType) {
-                <appfx-general-filter
-                  [filterProperty]="stringProperty"
-                  [propertyFilter]="propertyFilter"
-                  (filterCriteriaChange)="onFilterCriteriaChange($event)"
-                >
-                </appfx-general-filter>
-              }
-              @case (numericPropertyType) {
-                <appfx-general-filter
-                  [filterProperty]="numericProperty"
-                  [propertyFilter]="propertyFilter"
-                  (filterCriteriaChange)="onFilterCriteriaChange($event)"
-                >
-                </appfx-general-filter>
-              }
-              @case (enumPropertyType) {
-                <appfx-enum-filter
-                  [filterProperty]="enumProperty"
-                  [propertyFilter]="propertyFilter"
-                  (filterCriteriaChange)="onFilterCriteriaChange($event)"
-                >
-                </appfx-enum-filter>
-              }
-              @case (userPropertyType) {
-                <appfx-users-filter
-                  [filterProperty]="userProperty"
-                  [propertyFilter]="propertyFilter"
-                  (filterCriteriaChange)="onFilterCriteriaChange($event)"
-                >
-                </appfx-users-filter>
-              }
-            }
-          </clr-signpost-content>
-        </ng-template>
-      </clr-signpost>
-    </span>
+      }
+      <cds-icon shape="angle" direction="down" size="16" aria-hidden="true"></cds-icon>
+    </button>
+    @if (!open) {
+      <clr-tooltip-content clrPosition="top-right" clrSize="lg">{{ editFilterAriaLabel }}</clr-tooltip-content>
+    }
+  </clr-tooltip>
+  @if (!predefined) {
+    <button
+      type="button"
+      class="filter-pill-remove"
+      data-test-id="remove-pill"
+      [attr.aria-label]="filterStrings.removeFilterText + ' ' + managedProperty.displayName"
+      (click)="filterRemoved.emit()"
+    >
+      <cds-icon shape="window-close" size="16" aria-hidden="true"></cds-icon>
+    </button>
   }
-</span>
+</clr-label>
+<div
+  class="filter-popover"
+  [class.filter-popover-minimal]="predefined && managedPropertyType === enumPropertyType"
+  role="dialog"
+  [id]="popoverId"
+  [attr.aria-label]="filterStrings.editFilterText + ' ' + managedProperty.displayName"
+  cdkTrapFocus
+  [cdkTrapFocusAutoCapture]="true"
+  *clrPopoverContent="open; at: popoverPosition; type: popoverType; outsideClickToClose: true; scrollToClose: false"
+>
+  <ng-template #fieldSelector>
+    <!-- Predefined pills always edit the same field, so the locked field picker is not shown. -->
+    @if (!predefined) {
+      <clr-combobox-container class="filter-field">
+        <label class="clr-sr-only">{{ filterStrings.filterLabel }}</label>
+        <clr-combobox
+          name="field"
+          [disabled]="true"
+          [ngModel]="managedProperty"
+          [ngModelOptions]="{ standalone: true }"
+        >
+          <clr-options>
+            <clr-option *clrOptionItems="let property of [managedProperty]; field: 'displayName'" [clrValue]="property">
+              {{ property.displayName }}
+            </clr-option>
+          </clr-options>
+        </clr-combobox>
+      </clr-combobox-container>
+    }
+  </ng-template>
+  <ng-template #filterActions>
+    @if (active) {
+      <button type="button" class="btn btn-sm btn-link" data-test-id="clear-filter" (click)="removeFilter()">
+        {{ predefined ? filterStrings.clearFilter : filterStrings.removeFilterText }}
+      </button>
+    }
+  </ng-template>
+  @switch (managedPropertyType) {
+    @case (stringPropertyType) {
+      <appfx-general-filter
+        [filterProperty]="stringProperty"
+        [propertyFilter]="propertyFilter"
+        (filterCriteriaChange)="onFilterCriteriaChange($event)"
+      >
+        <ng-container filterField [ngTemplateOutlet]="fieldSelector"></ng-container>
+        <ng-container filterActions [ngTemplateOutlet]="filterActions"></ng-container>
+      </appfx-general-filter>
+    }
+    @case (numericPropertyType) {
+      <appfx-general-filter
+        [filterProperty]="numericProperty"
+        [propertyFilter]="propertyFilter"
+        (filterCriteriaChange)="onFilterCriteriaChange($event)"
+      >
+        <ng-container filterField [ngTemplateOutlet]="fieldSelector"></ng-container>
+        <ng-container filterActions [ngTemplateOutlet]="filterActions"></ng-container>
+      </appfx-general-filter>
+    }
+    @case (enumPropertyType) {
+      <appfx-enum-filter
+        [filterProperty]="enumProperty"
+        [propertyFilter]="propertyFilter"
+        [minimal]="predefined"
+        (filterCriteriaChange)="onFilterCriteriaChange($event)"
+      >
+        <ng-container filterField [ngTemplateOutlet]="fieldSelector"></ng-container>
+        <ng-container filterActions [ngTemplateOutlet]="filterActions"></ng-container>
+      </appfx-enum-filter>
+    }
+    @case (dateTimePropertyType) {
+      <appfx-datetime-filter
+        [filterProperty]="dateTimeProperty"
+        [propertyFilter]="propertyFilter"
+        (filterCriteriaChange)="onFilterCriteriaChange($event)"
+      >
+        <ng-container filterField [ngTemplateOutlet]="fieldSelector"></ng-container>
+        <ng-container filterActions [ngTemplateOutlet]="filterActions"></ng-container>
+      </appfx-datetime-filter>
+    }
+    @case (userPropertyType) {
+      <appfx-users-filter
+        [filterProperty]="userProperty"
+        [propertyFilter]="propertyFilter"
+        (filterCriteriaChange)="onFilterCriteriaChange($event)"
+      >
+        <ng-container filterField [ngTemplateOutlet]="fieldSelector"></ng-container>
+        <ng-container filterActions [ngTemplateOutlet]="filterActions"></ng-container>
+      </appfx-users-filter>
+    }
+  }
+</div>

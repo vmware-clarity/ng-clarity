@@ -9,17 +9,20 @@ import { A11yModule as CdkA11yModule } from '@angular/cdk/a11y';
 import { CommonModule, DatePipe } from '@angular/common';
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ClrCheckboxModule, ClrInputModule, ClrRadioModule, ClrSelectModule } from '@clr/angular/forms';
+import { ClrBadge } from '@clr/angular/emphasis/badge';
+import { ClrLabel } from '@clr/angular/emphasis/label';
 import {
-  angleIcon,
-  ClarityIcons,
-  ClrIcon,
-  filterGridIcon,
-  plusIcon,
-  searchIcon,
-  windowCloseIcon,
-} from '@clr/angular/icon';
+  ClrCheckboxModule,
+  ClrComboboxModule,
+  ClrDatepickerModule,
+  ClrInputModule,
+  ClrRadioModule,
+  ClrSelectModule,
+} from '@clr/angular/forms';
+import { angleIcon, checkIcon, ClarityIcons, ClrIcon, plusIcon, searchIcon, windowCloseIcon } from '@clr/angular/icon';
+import { ClrPopoverModuleNext } from '@clr/angular/popover/common';
 import { ClrSignpostModule } from '@clr/angular/popover/signpost';
+import { ClrTooltipModule } from '@clr/angular/popover/tooltip';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
 
 import { DateTimeFilterComponent } from './advanced-filters/date-time-filter.component';
@@ -60,13 +63,19 @@ export function datagridFiltersUserServiceFactory(existing: DatagridFiltersUserS
   ],
   imports: [
     CdkA11yModule,
+    ClrBadge,
+    ClrLabel,
     ClrCheckboxModule,
+    ClrComboboxModule,
+    ClrDatepickerModule,
     ClrIcon,
     ClrInputModule,
     ClrRadioModule,
     ClrSelectModule,
     ClrSignpostModule,
+    ClrPopoverModuleNext,
     ClrSpinnerModule,
+    ClrTooltipModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -89,6 +98,6 @@ export function datagridFiltersUserServiceFactory(existing: DatagridFiltersUserS
 })
 export class AppfxDatagridFiltersModule {
   constructor() {
-    ClarityIcons.addIcons(angleIcon, filterGridIcon, plusIcon, searchIcon, windowCloseIcon);
+    ClarityIcons.addIcons(angleIcon, checkIcon, plusIcon, searchIcon, windowCloseIcon);
   }
 }

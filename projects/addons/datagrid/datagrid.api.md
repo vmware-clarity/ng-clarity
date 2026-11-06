@@ -37,7 +37,7 @@ import { FormGroup } from '@angular/forms';
 import { FormGroupName } from '@angular/forms';
 import * as i0 from '@angular/core';
 import * as i15 from '@angular/cdk/a11y';
-import * as i17 from '@angular/cdk/overlay';
+import * as i17_2 from '@angular/cdk/overlay';
 import * as i25 from '@angular/forms';
 import * as i5_2 from '@angular/common';
 import * as i6_2 from '@angular/cdk/drag-drop';
@@ -134,13 +134,13 @@ export class AppfxDatagridModule {
     // Warning: (ae-forgotten-export) The symbol "i14" needs to be exported by the entry point clr-addons-datagrid.d.ts
     // Warning: (ae-forgotten-export) The symbol "i18" needs to be exported by the entry point clr-addons-datagrid.d.ts
     // Warning: (ae-forgotten-export) The symbol "i4_2" needs to be exported by the entry point clr-addons-datagrid.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i20" needs to be exported by the entry point clr-addons-datagrid.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i20_2" needs to be exported by the entry point clr-addons-datagrid.d.ts
     // Warning: (ae-forgotten-export) The symbol "i21" needs to be exported by the entry point clr-addons-datagrid.d.ts
     // Warning: (ae-forgotten-export) The symbol "i22" needs to be exported by the entry point clr-addons-datagrid.d.ts
     // Warning: (ae-forgotten-export) The symbol "DatagridColumnsOrderModule" needs to be exported by the entry point clr-addons-datagrid.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridModule, [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective, typeof DatagridCellContainerComponent, typeof DatagridColumnToggleComponent, typeof DatagridFilterContainerComponent, typeof ExportDatagridComponent, typeof IsRowSelectablePipe], [typeof i13.AppfxA11yModule, typeof i14.AppfxDatagridFiltersModule, typeof i15.A11yModule, typeof i6_2.DragDropModule, typeof i17.OverlayModule, typeof i18.ClrCheckboxModule, typeof i4_2.ClrDatagridModule, typeof i20.ClrDropdownModule, typeof i21.ClrIcon, typeof i18.ClrInputModule, typeof i22.ClrLoadingModule, typeof i5_2.CommonModule, typeof DatagridColumnsOrderModule, typeof i25.FormsModule], [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridModule, [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective, typeof DatagridCellContainerComponent, typeof DatagridColumnToggleComponent, typeof DatagridFilterContainerComponent, typeof ExportDatagridComponent, typeof IsRowSelectablePipe], [typeof i13.AppfxA11yModule, typeof i14.AppfxDatagridFiltersModule, typeof i15.A11yModule, typeof i6_2.DragDropModule, typeof i17_2.OverlayModule, typeof i18.ClrCheckboxModule, typeof i4_2.ClrDatagridModule, typeof i20_2.ClrDropdownModule, typeof i21.ClrIcon, typeof i18.ClrInputModule, typeof i22.ClrLoadingModule, typeof i5_2.CommonModule, typeof DatagridColumnsOrderModule, typeof i25.FormsModule], [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective]>;
 }
 
 // @public (undocumented)

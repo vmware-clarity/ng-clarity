@@ -30,8 +30,8 @@
       </clr-select-container>
     }
   }
-  @if (selectedFilterMode === quickMode && mode !== advancedOnlyMode) {
-    <clr-input-container class="ml-half form-control-compact">
+  @if ((selectedFilterMode === quickMode && mode !== advancedOnlyMode) || mode === combinedMode) {
+    <clr-input-container class="form-control-compact">
       <label class="clr-sr-only"> {{ filterStrings.quickFilter }} </label>
       <input
         type="text"
@@ -43,12 +43,17 @@
       />
     </clr-input-container>
   }
-  @if (selectedFilterMode === advancedMode || mode === advancedOnlyMode) {
+  @if (selectedFilterMode === advancedMode || mode === advancedOnlyMode || mode === combinedMode) {
     <appfx-composite-filter
       class="filter-contents"
       [filterableProperties]="filterableProperties"
       [presetFilters]="presetFilters"
+      [predefinedFilters]="predefinedFilters"
+      [semiPredefinedFilters]="semiPredefinedFilters"
+      [toggleFilters]="toggleFilters"
+      [externalCriteriaActive]="mode === combinedMode && !!searchTerm"
       (propertyFiltersChange)="onFilterCriteriaChange($event)"
+      (clearAll)="onClearAll()"
     >
     </appfx-composite-filter>
   }

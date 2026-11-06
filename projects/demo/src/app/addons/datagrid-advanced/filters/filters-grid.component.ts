@@ -10,12 +10,16 @@ import { ChangeDetectionStrategy, Component, Inject, Injectable } from '@angular
 import { FormsModule } from '@angular/forms';
 import { AppfxDatagridModule, ColumnDefinition } from '@clr/addons/datagrid';
 import {
+  AppfxDatagridFiltersModule,
   ComparisonOperator,
   DatagridFiltersUserService,
+  DateTimePropertyDefinition,
   EnumPropertyDefinition,
   FilterablePropertyDefinition,
   FilterMode,
+  LogicalOperator,
   PropertyFilter,
+  PropertyPredicate,
   StringPropertyDefinition,
   UserPropertyDefinition,
 } from '@clr/addons/datagrid-filters';
@@ -124,7 +128,7 @@ export class CustomUserService extends DatagridFiltersUserService {
 }
 
 @Component({
-  imports: [AppfxDatagridModule, ClarityModule, FormsModule],
+  imports: [AppfxDatagridModule, AppfxDatagridFiltersModule, ClarityModule, FormsModule],
   standalone: true,
   templateUrl: 'filters-grid.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
@@ -146,6 +150,10 @@ export class FiltersGridComponent {
       field: 'status',
     },
     {
+      displayName: 'Priority',
+      field: 'priority',
+    },
+    {
       displayName: 'Used space',
       field: 'usedSpace',
     },
@@ -157,15 +165,29 @@ export class FiltersGridComponent {
       displayName: 'User',
       field: 'user',
     },
+    {
+      displayName: 'Created',
+      field: 'creation',
+    },
   ];
 
   protected filteredItems: VmItem[] = [];
   protected allItems: VmItem[] = [];
   protected filterableProperties: FilterablePropertyDefinition[] = [];
+  protected predefinedFilters: FilterablePropertyDefinition[] = [];
+  protected semiPredefinedFilters: EnumPropertyDefinition[] = [];
+  protected toggleFilters: PropertyFilter[] = [];
+  protected presetFilters: PropertyFilter[] = [];
+  protected predefinedFilteredItems: VmItem[] = [];
+  protected combinedFilteredItems: VmItem[] = [];
   protected readonly FilterMode = FilterMode;
   protected selectedFilterMode: FilterMode = FilterMode.AdvancedOnly;
   protected errorRetrievingDomains = false;
   protected errorRetrievingUsers = false;
+  private searchTerm = '';
+  private advancedCriteria: PropertyFilter[] = [];
+  private combinedSearchTerm = '';
+  private combinedCriteria: PropertyFilter[] = [];
 
   constructor(
     private inventory: Inventory,
@@ -175,6 +197,8 @@ export class FiltersGridComponent {
     this.allItems = inventory.allItems;
     this.filteredItems = this.allItems;
     this.initFilterableProperties();
+    this.onPredefinedFilterChange(this.presetFilters);
+    this.combinedFilteredItems = this.allItems;
   }
 
   protected get isErrorRetrievingDomains(): boolean {
@@ -196,36 +220,33 @@ export class FiltersGridComponent {
   }
 
   onAdvancedFilterChange(filterCriteria: PropertyFilter[]): void {
-    this.filteredItems = this.allItems;
+    this.advancedCriteria = filterCriteria;
+    this.filteredItems = this.applySearch(this.filterItems(this.advancedCriteria), this.searchTerm);
+  }
 
-    if (filterCriteria?.length > 0) {
-      filterCriteria
-        .filter(propFilter => propFilter?.criteria?.length > 0)
-        .forEach(propFilter => {
-          const filteredItems: VmItem[] = [];
-          propFilter.criteria.forEach(predicate => {
-            if (predicate.filterableProperty.property) {
-              filteredItems.push(
-                ...this.filteredItems.filter(item => {
-                  return this.applyOperatorFilter(
-                    item[predicate.filterableProperty.property],
-                    predicate.value,
-                    predicate.operator
-                  );
-                })
-              );
-            }
-          });
+  protected onPredefinedFilterChange(filterCriteria: PropertyFilter[]): void {
+    this.predefinedFilteredItems = this.filterItems(filterCriteria);
+  }
 
-          this.filteredItems = filteredItems;
-        });
-    }
+  // Combined filter: the host applies the search and the pills together (AND).
+  protected onCombinedSearchTermChange(searchTerm: string): void {
+    this.combinedSearchTerm = searchTerm;
+    this.updateCombinedItems();
+  }
+
+  protected onCombinedFilterChange(filterCriteria: PropertyFilter[]): void {
+    this.combinedCriteria = filterCriteria;
+    this.updateCombinedItems();
   }
 
   protected onFilterModeChange(filterMode: string): void {
     this.filteredItems = this.allItems;
+    this.searchTerm = '';
+    this.advancedCriteria = [];
 
-    if (filterMode === FilterMode.Quick.toString()) {
+    if (filterMode === FilterMode.Combined.toString()) {
+      this.selectedFilterMode = FilterMode.Combined;
+    } else if (filterMode === FilterMode.Quick.toString()) {
       this.selectedFilterMode = FilterMode.Quick;
     } else if (filterMode === FilterMode.Advanced.toString()) {
       this.selectedFilterMode = FilterMode.Advanced;
@@ -236,15 +257,24 @@ export class FiltersGridComponent {
     }
   }
 
+  // The search and the advanced filters are combined with AND. In the other modes the
+  // component clears one side when switching, so this also covers Quick and Advanced.
   protected onSearchTermChange(searchTerm: string): void {
-    if (!searchTerm || searchTerm.trim() === '') {
-      this.filteredItems = this.allItems;
-    }
+    this.searchTerm = searchTerm ?? '';
+    this.filteredItems = this.applySearch(this.filterItems(this.advancedCriteria), this.searchTerm);
+  }
 
-    const lowerCaseSearch = searchTerm.toLowerCase();
-    this.filteredItems = this.allItems.filter((item: VmItem) =>
-      [item.name, item.state, item.status, item.usedSpace].some(field => field.toLowerCase().includes(lowerCaseSearch))
-    );
+  private updateCombinedItems(): void {
+    this.combinedFilteredItems = this.applySearch(this.filterItems(this.combinedCriteria), this.combinedSearchTerm);
+  }
+
+  private applySearch(items: VmItem[], searchTerm: string): VmItem[] {
+    const search = searchTerm.trim().toLowerCase();
+    return search
+      ? items.filter((item: VmItem) =>
+          [item.name, item.state, item.status, item.usedSpace].some(field => field.toLowerCase().includes(search))
+        )
+      : items;
   }
 
   private initFilterableProperties(): void {
@@ -261,6 +291,12 @@ export class FiltersGridComponent {
     enumStatusMap.set('Alert', 'Alert');
     const enumProperty = new EnumPropertyDefinition('Status', 'status', enumStatusMap);
 
+    const priorityProperty = new EnumPropertyDefinition(
+      'Priority',
+      'priority',
+      new Map(['Low', 'Medium', 'High'].map(value => [value, value]))
+    );
+
     const categoryEnumProp = new EnumPropertyDefinition(
       'Category',
       'event',
@@ -272,14 +308,101 @@ export class FiltersGridComponent {
     );
 
     const userProp = new UserPropertyDefinition('User', 'user');
+    const createdProp = new DateTimePropertyDefinition('Created', 'creation');
 
     this.filterableProperties.push(
       stringNameProperty,
       singleSelectStateProperty,
       enumProperty,
+      priorityProperty,
       categoryEnumProp,
-      userProp
+      userProp,
+      createdProp
     );
+
+    this.predefinedFilters = [stringNameProperty, enumProperty];
+    // Category as option pills for a few common events: Category: (User Login) (User Logout) (Password Changed)
+    const categoryOptions = new Map(
+      ['auth.login', 'auth.logout', 'auth.password_change'].map(key => [key, CATEGORY_ENUM_VALUES[key]])
+    );
+    // Priority: (Low) (Medium) (High) and Category: (User Login) (User Logout) (Password Changed)
+    this.semiPredefinedFilters = [priorityProperty, new EnumPropertyDefinition('Category', 'event', categoryOptions)];
+    // On/off filter: OFF = not applied, ON = State equals Powered On.
+    const stateProperty = new EnumPropertyDefinition('State', 'state', stateEnumMap);
+    this.toggleFilters = [
+      {
+        operator: LogicalOperator.Or,
+        criteria: [{ filterableProperty: stateProperty, operator: ComparisonOperator.Equals, value: 'Powered On' }],
+      },
+    ];
+    this.presetFilters = [
+      {
+        operator: LogicalOperator.Or,
+        criteria: ['linux', 'windows', 'ubuntu'].map(value => ({
+          filterableProperty: stringNameProperty,
+          operator: ComparisonOperator.Contains,
+          value,
+        })),
+      },
+      {
+        operator: LogicalOperator.Or,
+        criteria: ['Warning', 'Alert'].map(value => ({
+          filterableProperty: enumProperty,
+          operator: ComparisonOperator.Equals,
+          value,
+        })),
+      },
+    ];
+  }
+
+  private filterItems(filterCriteria: PropertyFilter[]): VmItem[] {
+    const activeFilters = (filterCriteria ?? []).filter(propFilter => propFilter?.criteria?.length > 0);
+    return this.allItems.filter(item =>
+      activeFilters.every(propFilter => {
+        const matches = (predicate: PropertyPredicate) =>
+          !!predicate.filterableProperty.property &&
+          (predicate.filterableProperty instanceof DateTimePropertyDefinition
+            ? this.applyDateFilter(item[predicate.filterableProperty.property], predicate.value, predicate.operator)
+            : this.applyOperatorFilter(
+                item[predicate.filterableProperty.property],
+                predicate.value,
+                predicate.operator
+              ));
+        return propFilter.operator === LogicalOperator.And
+          ? propFilter.criteria.every(matches)
+          : propFilter.criteria.some(matches);
+      })
+    );
+  }
+
+  // Date filters emit date-time strings; compare them as timestamps.
+  private applyDateFilter(item: string, predicateValue: string, operator: ComparisonOperator): boolean {
+    if (operator === ComparisonOperator.IsEmpty) {
+      return !item;
+    }
+    const itemTime = Date.parse(item);
+    const filterTime = Date.parse(predicateValue);
+    if (isNaN(itemTime) || isNaN(filterTime)) {
+      return false;
+    }
+    switch (operator) {
+      case ComparisonOperator.Equals:
+        return itemTime === filterTime;
+      case ComparisonOperator.Before:
+      case ComparisonOperator.LessThan:
+        return itemTime < filterTime;
+      case ComparisonOperator.BeforeOrEqualTo:
+      case ComparisonOperator.LessThanOrEqualTo:
+        return itemTime <= filterTime;
+      case ComparisonOperator.After:
+      case ComparisonOperator.GreaterThan:
+        return itemTime > filterTime;
+      case ComparisonOperator.AfterOrEqualTo:
+      case ComparisonOperator.GreaterThanOrEqualTo:
+        return itemTime >= filterTime;
+      default:
+        return true;
+    }
   }
 
   private applyOperatorFilter(item: string, predicateValue: string, operator: ComparisonOperator): boolean {

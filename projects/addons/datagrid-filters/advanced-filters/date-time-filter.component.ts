@@ -6,12 +6,29 @@
  */
 
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  LOCALE_ID,
+  OnChanges,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
+import { isoToLocaleDate, localeDateToIso, localeDateValidator } from './locale-date.utils';
 import { ComparisonOperator, LogicalOperator, TimeSpan } from '../model/datagrid-filters.enums';
-import { DateTimePropertyDefinition, PropertyFilter, PropertyPredicate } from '../model/datagrid-filters.interfaces';
+import {
+  DateTimePropertyDefinition,
+  FilterEditorState,
+  PropertyFilter,
+  PropertyPredicate,
+} from '../model/datagrid-filters.interfaces';
+import { dateTimeEditorState } from '../model/date-time-editor-state';
 
 const enterKey = 'Enter';
 const dateTimeFormat = 'yyyy-MM-ddTHH:mm:ss';
@@ -59,6 +76,9 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
    */
   @Output() filterCriteriaChange: EventEmitter<PropertyFilter> = new EventEmitter<PropertyFilter>();
 
+  // The clrDate inputs hold locale date strings; predicates and stored values use yyyy-MM-dd.
+  private readonly locale = inject(LOCALE_ID);
+  private readonly dateValidators: ValidatorFn[] = [Validators.required, localeDateValidator(this.locale)];
   private readonly relativeOperators: ComparisonOperator[] = [
     ComparisonOperator.LastDay,
     ComparisonOperator.LastWeek,
@@ -74,6 +94,8 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
   private selectedFilterCriteria: PropertyFilter = new PropertyFilter();
   private primaryPredicate: PropertyPredicate = new PropertyPredicate();
   private secondaryPredicate: PropertyPredicate = new PropertyPredicate();
+  /** The edited filter's own state, or one derived from its criteria (e.g. a preset). Never the shared definition. */
+  private storedState: FilterEditorState | null = null;
 
   /**
    * Property used for filtering
@@ -98,11 +120,12 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.comparisonOperators = this.filterProperty.getOperators();
-    let dateValidators: ValidatorFn[] = requiredValidators;
+    let dateValidators: ValidatorFn[] = this.dateValidators;
 
     // To handle edit mode
-    const storedOperator: ComparisonOperator = this.propertyFilter?.criteria[0]?.filterableProperty.selectedOperator;
-    if (storedOperator) {
+    this.storedState = dateTimeEditorState(this.propertyFilter);
+    const storedOperator: ComparisonOperator | undefined = this.storedState?.operator;
+    if (storedOperator !== undefined) {
       this.processSelectedOperator(storedOperator);
       if (this.noDateTimeInputNeeded()) {
         dateValidators = [];
@@ -110,7 +133,7 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
     }
 
     this.dateTimeFilterForm = this.formBuilder.group({
-      operator: [storedOperator || ComparisonOperator.AfterOrEqualTo],
+      operator: [storedOperator ?? ComparisonOperator.AfterOrEqualTo],
       dateValue: [this.parseDateValue(this.getStoredDateTimeValue()), dateValidators],
     });
 
@@ -172,6 +195,8 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
   }
 
   onApplyButtonClick(): void {
+    // A new filter per Apply, so a filter emitted earlier is never changed afterwards.
+    this.selectedFilterCriteria = new PropertyFilter();
     const selectedOperator: ComparisonOperator = this.dateTimeFilterForm.value.operator;
 
     if (this.isRelativeDateTimeOperator(selectedOperator)) {
@@ -260,7 +285,7 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
   private enableCustomRangePredicate(): void {
     this.dateTimeFilterForm.addControl(
       'dateValueTo',
-      new FormControl(this.parseDateValue(this.getStoredDateTimeValueTo()), requiredValidators)
+      new FormControl(this.parseDateValue(this.getStoredDateTimeValueTo()), this.dateValidators)
     );
     if (this.timePredicate) {
       this.dateTimeFilterForm.addControl(
@@ -279,7 +304,7 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
   }
 
   private enableDateTimePredicates(): void {
-    this.addValidators('dateValue', requiredValidators);
+    this.addValidators('dateValue', this.dateValidators);
     if (this.timePredicate) {
       this.enableTimePredicate();
     }
@@ -299,9 +324,9 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
   }
 
   private enableTimeSpanPredicate(): void {
-    const timeSpanValue: number = this.propertyFilter?.criteria[0]?.filterableProperty?.selectedTimeSpanValue;
+    const timeSpanValue: number = this.storedState?.timeSpanValue;
     this.dateTimeFilterForm.addControl('timeSpanValue', new FormControl(timeSpanValue || '', requiredValidators));
-    const timeSpan: TimeSpan = this.propertyFilter?.criteria[0]?.filterableProperty?.selectedTimeSpan;
+    const timeSpan: TimeSpan = this.storedState?.timeSpan;
     this.dateTimeFilterForm.addControl('timeSpan', new FormControl(timeSpan || TimeSpan.Minutes));
   }
 
@@ -404,7 +429,7 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
   private getFromDateTimePredicate(adjustTime = false): PropertyPredicate {
     const fromPredicate: PropertyPredicate = new PropertyPredicate();
     fromPredicate.operator = ComparisonOperator.GreaterThanOrEqualTo;
-    let fromValue: string = this.dateTimeFilterForm.value.dateValue;
+    let fromValue: string = this.isoDate('dateValue');
     if (this.timePredicate) {
       fromValue += 'T' + this.dateTimeFilterForm.value.timeValue + (this.includeSeconds ? '' : ':00');
       if (adjustTime) {
@@ -423,7 +448,7 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
   private getToDateTimePredicate(): PropertyPredicate {
     const toPredicate: PropertyPredicate = new PropertyPredicate();
     toPredicate.operator = ComparisonOperator.LessThan;
-    let toValue: string = this.dateTimeFilterForm.value.dateValueTo;
+    let toValue: string = this.isoDate('dateValueTo');
     if (this.timePredicate) {
       toValue += 'T' + this.dateTimeFilterForm.value.timeValueTo + (this.includeSeconds ? '' : ':00');
       toValue = this.getCustomDate(toValue, oneMinuteMs);
@@ -483,37 +508,38 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
     return utcOffset;
   }
 
+  /** Keeps the editor choices on the emitted filter, so the pill and a later edit read them from there. */
   private storeSelectedValues(): void {
-    this.primaryPredicate.filterableProperty.selectedOperator = this.dateTimeFilterForm.value.operator;
-    this.primaryPredicate.filterableProperty.selectedValue = this.dateTimeFilterForm.value.dateValue;
-    if (this.timePredicate) {
-      this.primaryPredicate.filterableProperty.selectedValue += 'T' + this.dateTimeFilterForm.value.timeValue;
+    const value = this.dateTimeFilterForm.value;
+    const state: FilterEditorState = { operator: value.operator };
+    if (!this.noDateTimeInputNeeded()) {
+      state.value = this.isoDate('dateValue') + (this.timePredicate ? 'T' + value.timeValue : '');
     }
     if (this.isCustomRangePredicate) {
-      this.primaryPredicate.filterableProperty.selectedValueTo = this.dateTimeFilterForm.value.dateValueTo;
-      if (this.timePredicate) {
-        this.primaryPredicate.filterableProperty.selectedValueTo += 'T' + this.dateTimeFilterForm.value.timeValueTo;
-      }
+      state.valueTo = this.isoDate('dateValueTo') + (this.timePredicate ? 'T' + value.timeValueTo : '');
     }
     if (this.isTimeSpanPredicate) {
-      this.primaryPredicate.filterableProperty.selectedTimeSpanValue = this.dateTimeFilterForm.value.timeSpanValue;
-      this.primaryPredicate.filterableProperty.selectedTimeSpan = this.dateTimeFilterForm.value.timeSpan;
+      state.timeSpanValue = value.timeSpanValue;
+      state.timeSpan = value.timeSpan;
     }
+    this.selectedFilterCriteria.editorState = state;
   }
 
   private getStoredDateTimeValue(): string {
-    return this.propertyFilter?.criteria[0]?.filterableProperty?.selectedValue || '';
+    return this.storedState?.value || '';
   }
 
   private getStoredDateTimeValueTo(): string {
-    return this.propertyFilter?.criteria[0]?.filterableProperty?.selectedValueTo || '';
+    return this.storedState?.valueTo || '';
   }
 
   private parseDateValue(dateTime: string): string {
-    if (dateTime) {
-      return dateTime.substring(0, 10);
-    }
-    return '';
+    return dateTime ? isoToLocaleDate(dateTime.substring(0, 10), this.locale) : '';
+  }
+
+  /** The date picker's locale date string as yyyy-MM-dd. */
+  private isoDate(controlName: 'dateValue' | 'dateValueTo'): string {
+    return localeDateToIso(this.dateTimeFilterForm.value[controlName], this.locale) ?? '';
   }
 
   private parseTimeValue(dateTime: string): string {

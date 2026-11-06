@@ -7,8 +7,13 @@
 
 .filter-container {
   display: flex;
-  align-items: baseline;
-  margin-left: 0.2rem;
+  align-items: center;
+  gap: var(--clr-base-gap-m);
+  margin-left: var(--clr-base-horizontal-offset-xs);
+
+  > .form-control-compact {
+    margin-top: 0;
+  }
 }
 
 :host-context(.zoom2x, .zoom4x) {

@@ -19,7 +19,11 @@ import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 import { DatagridFiltersStrings } from './datagrid-filters-strings.service';
 import { FilterMode } from './model/datagrid-filters.enums';
-import { FilterablePropertyDefinition, PropertyFilter } from './model/datagrid-filters.interfaces';
+import {
+  EnumPropertyDefinition,
+  FilterablePropertyDefinition,
+  PropertyFilter,
+} from './model/datagrid-filters.interfaces';
 
 const enterKey = 'Enter';
 const searchTermDebounceTimeMs = 2000;
@@ -40,6 +44,7 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
   readonly quickMode: FilterMode = FilterMode.Quick;
   readonly advancedMode: FilterMode = FilterMode.Advanced;
   readonly advancedOnlyMode: FilterMode = FilterMode.AdvancedOnly;
+  readonly combinedMode: FilterMode = FilterMode.Combined;
 
   mode: FilterMode = FilterMode.Quick;
   selectedFilterMode: FilterMode = FilterMode.Quick;
@@ -54,6 +59,24 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
    * Array of pre-selected filters
    */
   @Input() presetFilters: PropertyFilter[];
+
+  /**
+   * Properties whose filter pills stay visible even without active criteria.
+   * Use presetFilters to supply their initial values.
+   */
+  @Input() predefinedFilters: FilterablePropertyDefinition[] = [];
+
+  /**
+   * Enum properties shown as a field label with toggleable option pills, between the
+   * predefined and the user-added pills. Selected options are combined with OR.
+   */
+  @Input() semiPredefinedFilters: EnumPropertyDefinition[] = [];
+
+  /**
+   * Ready-made filters shown as on/off pills in the predefined group. OFF means not applied;
+   * ON applies the filter as configured.
+   */
+  @Input() toggleFilters: PropertyFilter[] = [];
 
   /**
    * Event emitter to tell hosting view that search term, used for filtering
@@ -107,6 +130,15 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
     if (this.selectedFilterMode === FilterMode.Quick && this.appliedFiltersCount > 0) {
       this.appliedFiltersCount = 0;
       this.propertyFiltersChange.emit([]);
+    }
+  }
+
+  /** Combined mode: Clear all also clears the quick search text. */
+  onClearAll(): void {
+    if (this.mode === FilterMode.Combined && this.searchTerm) {
+      this.searchTerm = '';
+      this.searchTermDebouncer.next(this.searchTerm);
+      this.doSearch(this.searchTerm);
     }
   }
 

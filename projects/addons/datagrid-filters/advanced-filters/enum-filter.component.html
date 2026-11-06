@@ -10,50 +10,58 @@
   (cancel)="onCancelButtonClick()"
   (apply)="onApplyButtonClick()"
 >
-  <div class="enum-filter-wrapper">
-    <clr-select-container *ngIf="additionalOperators" class="mt-compact">
-      <label class="clr-control-label">
-        {{ filterStrings.operatorLabel }}
-      </label>
-      <select clrSelect formControlName="enumOperator">
-        <option *ngFor="let operator of enumOperators; trackBy: trackByOperator" [ngValue]="operator">
-          {{ filterStrings.getOperatorDisplayName(operator) }}
-        </option>
-      </select>
-    </clr-select-container>
+  <div class="filter-field-row">
+    <ng-content select="[filterField]"></ng-content>
+  </div>
+  <ng-content select="[filterActions]" ngProjectAs="[filterActions]"></ng-content>
+  <div class="enum-filter-wrapper filter-scroll-region">
+    <div *ngIf="additionalOperators || filterProperty.searchable" class="filter-condition-row">
+      <clr-select-container *ngIf="additionalOperators" class="filter-operator">
+        <label class="clr-sr-only">
+          {{ filterStrings.operatorLabel }}
+        </label>
+        <select clrSelect formControlName="enumOperator">
+          <option *ngFor="let operator of enumOperators; trackBy: trackByOperator" [ngValue]="operator">
+            {{ filterStrings.getOperatorDisplayName(operator) }}
+          </option>
+        </select>
+      </clr-select-container>
 
-    <label class="clr-control-label text-left mt-compact">
-      {{ filterStrings.valueLabel }}
-    </label>
-
-    <clr-input-container *ngIf="filterProperty.searchable" cds-layout="m-t:xs">
-      <label class="clr-sr-only">{{ filterStrings.searchOptions }}</label>
-      <input clrInput type="text" [placeholder]="filterStrings.searchPlaceholder" formControlName="searchTerm" />
-      <cds-icon shape="search" clrInputPrefix></cds-icon>
-      <cds-icon
-        *ngIf="enumFilterForm.get('searchTerm')?.value"
-        shape="window-close"
-        clrInputSuffix
-        (click)="clearSearch()"
-      ></cds-icon>
-      <clr-control-helper *ngIf="filteredOptions.length">
-        {{
-          filterStrings.formatString(filterStrings.showingFormat, [
-            filteredOptions.length.toString(),
-            searchResultsLen.toString(),
-          ])
-        }}
-      </clr-control-helper>
-      <clr-control-helper *ngIf="filteredOptions.length === 0 && enumFilterForm.get('searchTerm')?.value">
-        {{ filterStrings.noValuesFound }}
-      </clr-control-helper>
-    </clr-input-container>
-
-    <div *ngIf="filteredOptions.length" cds-layout="m-t:xs m-l:xxs" class="selection-counter">
-      <span *ngIf="!filterProperty.singleSelect" class="clr-subtext" cds-text="body medium">
-        {{ filterStrings.formatString(filterStrings.elementsSelectedFormat, [selectedCount.toString()]) }}
-      </span>
+      <clr-input-container *ngIf="filterProperty.searchable" class="filter-value">
+        <label class="clr-sr-only">{{ filterStrings.searchOptions }}</label>
+        <input clrInput type="text" [placeholder]="filterStrings.searchPlaceholder" formControlName="searchTerm" />
+        <cds-icon shape="search" clrInputPrefix></cds-icon>
+        <cds-icon
+          *ngIf="enumFilterForm.get('searchTerm')?.value"
+          shape="window-close"
+          clrInputSuffix
+          (click)="clearSearch()"
+        ></cds-icon>
+        <clr-control-helper *ngIf="filteredOptions.length">
+          {{
+            filterStrings.formatString(filterStrings.showingFormat, [
+              filteredOptions.length.toString(),
+              searchResultsLen.toString(),
+            ])
+          }}
+        </clr-control-helper>
+        <clr-control-helper *ngIf="filteredOptions.length === 0 && enumFilterForm.get('searchTerm')?.value">
+          {{ filterStrings.noValuesFound }}
+        </clr-control-helper>
+      </clr-input-container>
     </div>
+
+    @if (!minimal) {
+      <label class="clr-control-label text-left mt-compact">
+        {{ filterStrings.valueLabel }}
+      </label>
+
+      <div *ngIf="filteredOptions.length" cds-layout="m-t:xs m-l:xxs" class="selection-counter">
+        <span *ngIf="!filterProperty.singleSelect" class="clr-subtext" cds-text="body medium">
+          {{ filterStrings.formatString(filterStrings.elementsSelectedFormat, [selectedCount.toString()]) }}
+        </span>
+      </div>
+    }
 
     <div *ngIf="isProcessing" class="loading-overlay">
       <div class="loading-content">
@@ -61,7 +69,7 @@
       </div>
     </div>
 
-    <div cds-layout="m-t:xs">
+    <div class="filter-options" [class.filter-options-minimal]="minimal" [attr.cds-layout]="minimal ? null : 'm-t:xs'">
       <clr-checkbox-container *ngIf="!filterProperty.singleSelect" class="enum-options">
         <clr-checkbox-wrapper *ngIf="filterProperty.enableSelectAll" cds-layout="m-b:xs">
           <input type="checkbox" clrCheckbox formControlName="selectAll" (change)="onSelectAllChange()" />
