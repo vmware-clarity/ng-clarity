@@ -15,6 +15,7 @@ import {
   inject,
   Injector,
   Input,
+  isDevMode,
   OnChanges,
   OnInit,
   Output,
@@ -75,23 +76,6 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
 
   @Input() presetFilters: PropertyFilter[];
 
-  /** Properties whose pills remain visible when their criteria are cleared. */
-  @Input({ transform: toPropertyArray }) predefinedFilters: FilterablePropertyDefinition[] = [];
-
-  /**
-   * Enum properties shown as a field label followed by toggleable option pills,
-   * between the predefined and the user-added pills. Selected options are combined with OR
-   * and applied immediately.
-   */
-  @Input({ transform: toEnumPropertyArray }) semiPredefinedFilters: EnumPropertyDefinition[] = [];
-
-  /**
-   * Ready-made filters shown as on/off pills in the predefined group. OFF means not applied;
-   * ON applies the filter as configured. A preset filter with the same criteria starts the toggle ON.
-   * Toggles are identified by their criteria, so the host may pass new but equal objects.
-   */
-  @Input({ transform: toFilterArray }) toggleFilters: PropertyFilter[] = [];
-
   /**
    * Other criteria (e.g. the quick search in combined mode) are active, so Clear all stays available
    * even without property filters.
@@ -133,6 +117,14 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   @ViewChild('addButton', { static: true }) private addButton: ElementRef<HTMLButtonElement>;
   private readonly injector = inject(Injector);
   /** Keys (see toggleKey) of the toggle filters that are ON. */
+  private rawPredefinedFilters: FilterablePropertyDefinition[] = [];
+  private rawSemiPredefinedFilters: EnumPropertyDefinition[] = [];
+  private rawToggleFilters: PropertyFilter[] = [];
+  private resolvedPredefinedFilters: FilterablePropertyDefinition[] = [];
+  private resolvedSemiPredefinedFilters: EnumPropertyDefinition[] = [];
+  private resolvedToggleFilters: PropertyFilter[] = [];
+  /** Fields ignored by the last resolution, reported in dev mode. */
+  private ignoredFieldEntries: string[] = [];
   private readonly activeToggleKeys = new Set<string>();
 
   constructor(
@@ -142,6 +134,51 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   ) {
     this.showHideFiltersLabel = filterStrings.hideButtonLabel;
     this.showHideFiltersAriaLabel = filterStrings.hideButtonAriaLabel;
+  }
+
+  /**
+   * Properties whose pills remain visible when their criteria are cleared.
+   *
+   * A field can be used only once per filter bar. Fields are claimed in this order:
+   * `predefinedFilters`, then `semiPredefinedFilters`, then `toggleFilters`. A later entry
+   * for a field that is already claimed is ignored, with a warning in dev mode.
+   */
+  @Input({ transform: toPropertyArray })
+  get predefinedFilters(): FilterablePropertyDefinition[] {
+    return this.resolvedPredefinedFilters;
+  }
+  set predefinedFilters(value: FilterablePropertyDefinition[]) {
+    this.rawPredefinedFilters = value;
+    this.resolveFieldOwners();
+  }
+
+  /**
+   * Enum properties shown as a field label followed by toggleable option pills,
+   * between the predefined and the user-added pills. Selected options are combined with OR
+   * and applied immediately. Fields already in `predefinedFilters` are ignored.
+   */
+  @Input({ transform: toEnumPropertyArray })
+  get semiPredefinedFilters(): EnumPropertyDefinition[] {
+    return this.resolvedSemiPredefinedFilters;
+  }
+  set semiPredefinedFilters(value: EnumPropertyDefinition[]) {
+    this.rawSemiPredefinedFilters = value;
+    this.resolveFieldOwners();
+  }
+
+  /**
+   * Ready-made filters shown as on/off pills in the predefined group. OFF means not applied;
+   * ON applies the filter as configured. A preset filter with the same criteria starts the toggle ON.
+   * Toggles are identified by their criteria, so the host may pass new but equal objects.
+   * Toggles on a field already in `predefinedFilters`, `semiPredefinedFilters` or an earlier toggle are ignored.
+   */
+  @Input({ transform: toFilterArray })
+  get toggleFilters(): PropertyFilter[] {
+    return this.resolvedToggleFilters;
+  }
+  set toggleFilters(value: PropertyFilter[]) {
+    this.rawToggleFilters = value;
+    this.resolveFieldOwners();
   }
 
   get signPostOpened(): boolean {
@@ -279,6 +316,9 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes['predefinedFilters'] || changes['semiPredefinedFilters'] || changes['toggleFilters']) {
+      this.warnIgnoredFields();
+    }
     if (changes['toggleFilters']) {
       // Drop ON states of toggles that are no longer configured.
       const keys = new Set(this.toggleFilters.map(toggle => this.toggleKey(toggle)));
@@ -300,14 +340,26 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
       const presets = this.presetFilters.filter(filter => filter.criteria.length > 0);
       // A preset with exactly a toggle's criteria turns that toggle ON. Any other preset stays a normal pill.
       const toggleKeys = new Set(this.toggleFilters.map(toggle => this.toggleKey(toggle)));
+      const unsupported: PropertyFilter[] = [];
       this.propertyFilters = presets.filter(filter => {
         const key = this.toggleKey(filter);
         if (toggleKeys.has(key)) {
           this.activeToggleKeys.add(key);
           return false;
         }
+        if (this.isSemiPredefined(filter.criteria[0].filterableProperty) && !this.isOptionSelection(filter)) {
+          unsupported.push(filter);
+          return false;
+        }
         return true;
       });
+      if (isDevMode() && unsupported.length) {
+        console.warn(
+          'appfx-composite-filter: presets on semiPredefinedFilters fields must select options ' +
+            '(Equals on option keys, combined with OR). Ignored presets for: ' +
+            unsupported.map(filter => filter.criteria[0].filterableProperty.property).join(', ')
+        );
+      }
     }
     this.preselectFirstProperty();
   }
@@ -509,5 +561,62 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
 
   private castUserProperty(): UserPropertyDefinition {
     return this.selectedFilterableProperty as UserPropertyDefinition;
+  }
+
+  /**
+   * Each field may appear only once across predefined, semi-predefined and toggle filters.
+   * Fields are claimed left to right: predefined, then semi-predefined, then toggles.
+   */
+  private resolveFieldOwners(): void {
+    const claimed = new Set<string>();
+    const ignored: string[] = [];
+    const claim = (fields: string[], source: string): boolean => {
+      const taken = fields.filter(field => claimed.has(field));
+      if (taken.length) {
+        ignored.push(`${source}: ${taken.join(', ')}`);
+        return false;
+      }
+      fields.forEach(field => claimed.add(field));
+      return true;
+    };
+    this.resolvedPredefinedFilters = this.rawPredefinedFilters.filter(property =>
+      claim([property.property], 'predefinedFilters')
+    );
+    this.resolvedSemiPredefinedFilters = this.rawSemiPredefinedFilters.filter(property =>
+      claim([property.property], 'semiPredefinedFilters')
+    );
+    this.resolvedToggleFilters = this.rawToggleFilters.filter(toggle =>
+      claim(
+        [...new Set(toggle.criteria.map(predicate => predicate.filterableProperty?.property).filter(Boolean))],
+        'toggleFilters'
+      )
+    );
+    this.ignoredFieldEntries = ignored;
+  }
+
+  /** Semi-predefined fields only support picking options: Equals on option keys of that field, joined with OR. */
+  private isOptionSelection(filter: PropertyFilter): boolean {
+    const property = this.semiPredefinedFilters.find(
+      semi => semi.property === filter.criteria[0].filterableProperty.property
+    );
+    return (
+      (filter.criteria.length === 1 || filter.operator === LogicalOperator.Or) &&
+      filter.criteria.every(
+        predicate =>
+          predicate.filterableProperty?.property === property.property &&
+          predicate.operator === ComparisonOperator.Equals &&
+          property.values.has(predicate.value)
+      )
+    );
+  }
+
+  private warnIgnoredFields(): void {
+    if (this.ignoredFieldEntries.length) {
+      console.warn(
+        'appfx-composite-filter: a field can be used only once across predefinedFilters, ' +
+          'semiPredefinedFilters and toggleFilters (in that order of precedence). Ignored entries: ' +
+          this.ignoredFieldEntries.join('; ')
+      );
+    }
   }
 }

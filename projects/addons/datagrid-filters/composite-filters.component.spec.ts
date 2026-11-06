@@ -7,6 +7,7 @@
 
 import { A11yModule as CdkA11yModule } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
+import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -425,6 +426,97 @@ describe('CompositeFiltersComponent', () => {
       this.fixture.nativeElement.querySelector('[data-test-id="clear-all-button"]').click();
       this.fixture.detectChanges();
       expect(this.component.isToggleOn(toggle)).toBeFalse();
+    });
+  });
+
+  describe('field precedence', () => {
+    const enumToggle = (value: string): PropertyFilter => ({
+      operator: LogicalOperator.Or,
+      criteria: [{ filterableProperty: enumProperty, operator: ComparisonOperator.Equals, value }],
+    });
+
+    it('keeps a field in predefinedFilters over semi-predefined and toggle filters', function (this: ThisTest) {
+      this.component.predefinedFilters = [enumProperty];
+      this.component.semiPredefinedFilters = [enumProperty];
+      this.component.toggleFilters = [enumToggle('red')];
+      this.fixture.detectChanges();
+      expect(this.component.predefinedFilters).toEqual([enumProperty]);
+      expect(this.component.semiPredefinedFilters).toEqual([]);
+      expect(this.component.toggleFilters).toEqual([]);
+      expect(document.querySelectorAll('[data-test-id="toggle-filter"]').length).toBe(0);
+    });
+
+    it('keeps a semi-predefined field over a toggle', function (this: ThisTest) {
+      this.component.semiPredefinedFilters = [enumProperty];
+      this.component.toggleFilters = [enumToggle('red')];
+      expect(this.component.semiPredefinedFilters).toEqual([enumProperty]);
+      expect(this.component.toggleFilters).toEqual([]);
+    });
+
+    it('keeps only the first toggle per field', function (this: ThisTest) {
+      const first = enumToggle('red');
+      this.component.toggleFilters = [first, enumToggle('blue')];
+      expect(this.component.toggleFilters).toEqual([first]);
+    });
+
+    it('restores an ignored entry when the conflicting one is removed', function (this: ThisTest) {
+      this.component.toggleFilters = [enumToggle('red')];
+      this.component.predefinedFilters = [enumProperty];
+      expect(this.component.toggleFilters).toEqual([]);
+      this.component.predefinedFilters = [];
+      expect(this.component.toggleFilters.length).toBe(1);
+    });
+
+    it('warns in dev mode about ignored entries', function (this: ThisTest) {
+      spyOn(console, 'warn');
+      this.component.predefinedFilters = [enumProperty];
+      this.component.semiPredefinedFilters = [enumProperty];
+      this.component.ngOnChanges({ semiPredefinedFilters: new SimpleChange(undefined, [enumProperty], true) });
+      expect(console.warn).toHaveBeenCalledTimes(1);
+      expect((console.warn as jasmine.Spy).calls.mostRecent().args[0]).toContain(
+        `semiPredefinedFilters: ${enumProperty.property}`
+      );
+    });
+
+    it('ignores semi-predefined presets that do not select options', function (this: ThisTest) {
+      spyOn(console, 'warn');
+      const key = Array.from(enumProperty.values.keys())[0];
+      const notEquals: PropertyFilter = {
+        operator: LogicalOperator.Or,
+        criteria: [{ filterableProperty: enumProperty, operator: ComparisonOperator.DoesNotEqual, value: key }],
+      };
+      this.component.semiPredefinedFilters = [enumProperty];
+      this.component.presetFilters = [notEquals];
+      this.fixture.detectChanges();
+      expect(this.component.propertyFilters).toEqual([]);
+      expect((console.warn as jasmine.Spy).calls.mostRecent().args[0]).toContain(
+        'Ignored presets for: ' + enumProperty.property
+      );
+    });
+
+    it('keeps semi-predefined presets that select options', function (this: ThisTest) {
+      const [first, second] = Array.from(enumProperty.values.keys());
+      const selection: PropertyFilter = {
+        operator: LogicalOperator.Or,
+        criteria: [first, second].map(value => ({
+          filterableProperty: enumProperty,
+          operator: ComparisonOperator.Equals,
+          value,
+        })),
+      };
+      this.component.semiPredefinedFilters = [enumProperty];
+      this.component.presetFilters = [selection];
+      this.fixture.detectChanges();
+      expect(this.component.propertyFilters).toEqual([selection]);
+      expect(this.component.isOptionSelected(enumProperty, first)).toBeTrue();
+    });
+
+    it('does not warn without conflicts', function (this: ThisTest) {
+      spyOn(console, 'warn');
+      this.component.predefinedFilters = [stringProperty];
+      this.component.semiPredefinedFilters = [enumProperty];
+      this.component.ngOnChanges({ semiPredefinedFilters: new SimpleChange(undefined, [enumProperty], true) });
+      expect(console.warn).not.toHaveBeenCalled();
     });
   });
 
