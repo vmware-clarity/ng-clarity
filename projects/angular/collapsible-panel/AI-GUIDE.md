@@ -9,8 +9,8 @@ A lower-level building block: `ClrAccordionPanel` and `ClrStepperPanel` both ext
 
 ## When to use
 
-- Sections that expand and collapse: use `clr-accordion` (skill `clr-accordion`).
-- A step-by-step form flow: use `clr-stepper` (skill `clr-stepper`).
+- Sections that expand and collapse: use `clr-accordion` (guide `clr-accordion`).
+- A step-by-step form flow: use `clr-stepper` (guide `clr-stepper`).
 - Extend `CollapsiblePanel` only for a custom collapsible component neither can express. Reuse it rather than hand-rolling open state, ids and animations.
 
 ## Setup
