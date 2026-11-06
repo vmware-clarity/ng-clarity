@@ -46,6 +46,34 @@
   </clr-toggle-wrapper>
 </clr-toggle-container>
 
+<section aria-labelledby="combined-filter-heading" cds-layout="m-t:xl">
+  <h2 id="combined-filter-heading">Combined filter</h2>
+  <p cds-layout="m-b:md">
+    The quick search and the filter pills work together: rows must match the search text and every filter. Clear all
+    removes both.
+  </p>
+  <appfx-datagrid-filters
+    [filterMode]="FilterMode.Combined"
+    [filterableProperties]="filterableProperties"
+    [predefinedFilters]="predefinedFilters"
+    [semiPredefinedFilters]="semiPredefinedFilters"
+    [toggleFilters]="toggleFilters"
+    (searchTermChange)="onCombinedSearchTermChange($event)"
+    (propertyFiltersChange)="onCombinedFilterChange($event)"
+  ></appfx-datagrid-filters>
+  <appfx-datagrid
+    [gridItems]="combinedFilteredItems"
+    [columns]="columns"
+    [layoutModel]="{
+      compact: false,
+      stretchToParentHeight: false,
+    }"
+    [selectionType]="selectionType"
+    [pageSize]="10"
+    [rowSelectionMode]="false"
+  ></appfx-datagrid>
+</section>
+
 <section aria-labelledby="predefined-filters-heading" cds-layout="m-t:xl">
   <h2 id="predefined-filters-heading">Predefined filters</h2>
   <p cds-layout="m-b:md">
@@ -65,34 +93,6 @@
   ></appfx-datagrid-filters>
   <appfx-datagrid
     [gridItems]="predefinedFilteredItems"
-    [columns]="columns"
-    [layoutModel]="{
-      compact: false,
-      stretchToParentHeight: false,
-    }"
-    [selectionType]="selectionType"
-    [pageSize]="10"
-    [rowSelectionMode]="false"
-  ></appfx-datagrid>
-</section>
-
-<section aria-labelledby="combined-filter-heading" cds-layout="m-t:xl">
-  <h2 id="combined-filter-heading">Combined filter</h2>
-  <p cds-layout="m-b:md">
-    The quick search and the filter pills work together: rows must match the search text and every filter. Clear all
-    removes both.
-  </p>
-  <appfx-datagrid-filters
-    [filterMode]="FilterMode.Combined"
-    [filterableProperties]="filterableProperties"
-    [predefinedFilters]="predefinedFilters"
-    [semiPredefinedFilters]="semiPredefinedFilters"
-    [toggleFilters]="toggleFilters"
-    (searchTermChange)="onCombinedSearchTermChange($event)"
-    (propertyFiltersChange)="onCombinedFilterChange($event)"
-  ></appfx-datagrid-filters>
-  <appfx-datagrid
-    [gridItems]="combinedFilteredItems"
     [columns]="columns"
     [layoutModel]="{
       compact: false,
