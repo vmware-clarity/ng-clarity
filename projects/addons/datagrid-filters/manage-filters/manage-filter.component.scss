@@ -55,6 +55,12 @@
 }
 
 .filter-pill {
+  // The button is the only click target. Clarity matches outside clicks against the element that
+  // received the opening click, so a click on the text and then on the chevron must hit the same element.
+  > * {
+    pointer-events: none;
+  }
+
   display: inline-flex;
   align-items: center;
   gap: var(--clr-base-gap-s);

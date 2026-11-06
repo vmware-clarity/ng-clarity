@@ -15,7 +15,7 @@
           data-test-id="filter-group-separator"
         ></span>
       </ng-template>
-      @for (toggle of toggleFilters; track toggle) {
+      @for (toggle of toggleFilters; track toggleKey(toggle)) {
         <clr-label class="semi-filter-option-label" [clrColor]="isToggleOn(toggle) ? 'info' : ''">
           <button
             type="button"

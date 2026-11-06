@@ -18,6 +18,7 @@ import {
   OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { ClrCombobox } from '@clr/angular/forms';
@@ -47,6 +48,19 @@ import {
  * the corresponding filterable property, e.g., string, enum, number, etc.
  */
 
+// The array inputs below accept null/undefined (e.g. `[toggleFilters]="config?.toggles"` before the config loads).
+function toPropertyArray(value: FilterablePropertyDefinition[] | null | undefined): FilterablePropertyDefinition[] {
+  return value ?? [];
+}
+
+function toEnumPropertyArray(value: EnumPropertyDefinition[] | null | undefined): EnumPropertyDefinition[] {
+  return value ?? [];
+}
+
+function toFilterArray(value: PropertyFilter[] | null | undefined): PropertyFilter[] {
+  return value ?? [];
+}
+
 @Component({
   selector: 'appfx-composite-filter',
   standalone: false,
@@ -62,23 +76,21 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   @Input() presetFilters: PropertyFilter[];
 
   /** Properties whose pills remain visible when their criteria are cleared. */
-  @Input() predefinedFilters: FilterablePropertyDefinition[] = [];
+  @Input({ transform: toPropertyArray }) predefinedFilters: FilterablePropertyDefinition[] = [];
 
   /**
    * Enum properties shown as a field label followed by toggleable option pills,
    * between the predefined and the user-added pills. Selected options are combined with OR
    * and applied immediately.
    */
-  @Input() semiPredefinedFilters: EnumPropertyDefinition[] = [];
+  @Input({ transform: toEnumPropertyArray }) semiPredefinedFilters: EnumPropertyDefinition[] = [];
 
   /**
    * Ready-made filters shown as on/off pills in the predefined group. OFF means not applied;
-   * ON applies the filter as configured. A preset filter for the same field starts the toggle ON.
+   * ON applies the filter as configured. A preset filter with the same criteria starts the toggle ON.
+   * Toggles are identified by their criteria, so the host may pass new but equal objects.
    */
-  @Input() toggleFilters: PropertyFilter[] = [];
-
-  /** Toggle filters that are currently ON. */
-  activeToggles = new Set<PropertyFilter>();
+  @Input({ transform: toFilterArray }) toggleFilters: PropertyFilter[] = [];
 
   /**
    * Other criteria (e.g. the quick search in combined mode) are active, so Clear all stays available
@@ -120,6 +132,8 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   @ViewChild(ClrCombobox) private fieldCombobox: ClrCombobox<FilterablePropertyDefinition>;
   @ViewChild('addButton', { static: true }) private addButton: ElementRef<HTMLButtonElement>;
   private readonly injector = inject(Injector);
+  /** Keys (see toggleKey) of the toggle filters that are ON. */
+  private readonly activeToggleKeys = new Set<string>();
 
   constructor(
     public filterStrings: DatagridFiltersStrings,
@@ -140,7 +154,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
 
   get visibleProperties(): FilterablePropertyDefinition[] {
     const properties = new Map<string, FilterablePropertyDefinition>();
-    for (const property of [...(this.predefinedFilters || []), ...this.activeFilters()]) {
+    for (const property of [...this.predefinedFilters, ...this.activeFilters()]) {
       if (!properties.has(property.property) && !this.isSemiPredefined(property)) {
         properties.set(property.property, property);
       }
@@ -150,7 +164,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
 
   get availableProperties(): FilterablePropertyDefinition[] {
     const visibleKeys = new Set(
-      [...this.visibleProperties, ...(this.semiPredefinedFilters || []), ...this.toggleProperties()].map(
+      [...this.visibleProperties, ...this.semiPredefinedFilters, ...this.toggleProperties()].map(
         property => property.property
       )
     );
@@ -172,22 +186,36 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
 
   /** True when the predefined group has content (toggles or predefined pills). */
   get hasPredefinedGroup(): boolean {
-    return (this.toggleFilters || []).length > 0 || this.predefinedProperties.length > 0;
+    return this.toggleFilters.length > 0 || this.predefinedProperties.length > 0;
   }
 
   get hasActiveCriteria(): boolean {
-    return this.propertyFilters.length > 0 || this.activeToggles.size > 0;
+    return this.propertyFilters.length > 0 || this.activeToggleKeys.size > 0;
+  }
+
+  /**
+   * Stable identity of a toggle: field, operator and value of each criterion, plus the logical
+   * operator when there is more than one criterion.
+   */
+  toggleKey(filter: PropertyFilter): string {
+    const criteria = filter.criteria.map(predicate => [
+      predicate.filterableProperty?.property,
+      predicate.operator,
+      predicate.value,
+    ]);
+    return JSON.stringify(criteria.length > 1 ? [filter.operator, criteria] : criteria);
   }
 
   isToggleOn(toggle: PropertyFilter): boolean {
-    return this.activeToggles.has(toggle);
+    return this.activeToggleKeys.has(this.toggleKey(toggle));
   }
 
   toggleFilter(toggle: PropertyFilter): void {
-    if (this.activeToggles.has(toggle)) {
-      this.activeToggles.delete(toggle);
+    const key = this.toggleKey(toggle);
+    if (this.activeToggleKeys.has(key)) {
+      this.activeToggleKeys.delete(key);
     } else {
-      this.activeToggles.add(toggle);
+      this.activeToggleKeys.add(key);
     }
     this.emitFilters();
   }
@@ -208,7 +236,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   }
 
   isSemiPredefined(property: FilterablePropertyDefinition): boolean {
-    return (this.semiPredefinedFilters || []).some(semi => semi.property === property.property);
+    return this.semiPredefinedFilters.some(semi => semi.property === property.property);
   }
 
   /** Option pills of a semi-predefined filter, in the order of the enum values map. */
@@ -243,14 +271,23 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   }
 
   isPredefined(property: FilterablePropertyDefinition): boolean {
-    return (this.predefinedFilters || []).some(predefined => predefined.property === property.property);
+    return this.predefinedFilters.some(predefined => predefined.property === property.property);
   }
 
   filterFor(property: FilterablePropertyDefinition): PropertyFilter | undefined {
     return this.propertyFilters.find(filter => filter.criteria[0]?.filterableProperty.property === property.property);
   }
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['toggleFilters']) {
+      // Drop ON states of toggles that are no longer configured.
+      const keys = new Set(this.toggleFilters.map(toggle => this.toggleKey(toggle)));
+      this.activeToggleKeys.forEach(key => {
+        if (!keys.has(key)) {
+          this.activeToggleKeys.delete(key);
+        }
+      });
+    }
     this.preselectFirstProperty();
   }
 
@@ -261,15 +298,16 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     }
     if (this.presetFilters) {
       const presets = this.presetFilters.filter(filter => filter.criteria.length > 0);
-      // A preset for a toggle field turns that toggle ON instead of creating a pill.
-      for (const toggle of this.toggleFilters || []) {
-        if (presets.some(filter => this.sameField(filter, toggle))) {
-          this.activeToggles.add(toggle);
+      // A preset with exactly a toggle's criteria turns that toggle ON. Any other preset stays a normal pill.
+      const toggleKeys = new Set(this.toggleFilters.map(toggle => this.toggleKey(toggle)));
+      this.propertyFilters = presets.filter(filter => {
+        const key = this.toggleKey(filter);
+        if (toggleKeys.has(key)) {
+          this.activeToggleKeys.add(key);
+          return false;
         }
-      }
-      this.propertyFilters = presets.filter(
-        filter => !(this.toggleFilters || []).some(toggle => this.sameField(filter, toggle))
-      );
+        return true;
+      });
     }
     this.preselectFirstProperty();
   }
@@ -365,7 +403,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
 
   clearAllFilters(): void {
     this.propertyFilters = [];
-    this.activeToggles.clear();
+    this.activeToggleKeys.clear();
     this.emitFilters();
     this.preselectFirstProperty();
     this.collapsedFilters = false;
@@ -398,19 +436,17 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
    * We want to preselect the first displayed property
    */
   private toggleProperties(): FilterablePropertyDefinition[] {
-    return (this.toggleFilters || [])
+    return this.toggleFilters
       .map(toggle => toggle.criteria[0]?.filterableProperty)
       .filter((property): property is FilterablePropertyDefinition => !!property);
   }
 
-  private sameField(filter: PropertyFilter, other: PropertyFilter): boolean {
-    const property = filter.criteria[0]?.filterableProperty?.property;
-    return !!property && property === other.criteria[0]?.filterableProperty?.property;
-  }
-
   /** Emits the user filters plus the toggle filters that are ON. */
   private emitFilters(): void {
-    this.propertyFiltersChange.emit([...this.propertyFilters, ...this.activeToggles]);
+    this.propertyFiltersChange.emit([
+      ...this.propertyFilters,
+      ...this.toggleFilters.filter(toggle => this.isToggleOn(toggle)),
+    ]);
   }
 
   private preselectFirstProperty() {

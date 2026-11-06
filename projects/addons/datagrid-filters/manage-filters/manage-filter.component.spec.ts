@@ -242,6 +242,15 @@ describe('ManageFilterComponent', () => {
     this.fixture.detectChanges();
     expect(this.fixture.nativeElement.querySelector('[data-test-id="remove-pill"]')).toBeNull();
   });
+  it('makes the pill button the only click target', function (this: ThisTest) {
+    this.component.propertyFilter = { operator: LogicalOperator.Or, criteria: [stringPredicate1, stringPredicate1] };
+    this.fixture.detectChanges();
+    const trigger: HTMLButtonElement = this.fixture.nativeElement.querySelector('.filter-pill');
+    // Clicks on the text, badge or chevron must target the button, so Clarity sees one toggle element.
+    for (const child of Array.from(trigger.children)) {
+      expect(getComputedStyle(child).pointerEvents).toBe('none');
+    }
+  });
   it('manages numeric property filter', function (this: ThisTest) {
     spyOn(this.component.filterStrings, 'getConjoinerDisplayName');
     this.component.propertyFilter = numericPropertyFilter;

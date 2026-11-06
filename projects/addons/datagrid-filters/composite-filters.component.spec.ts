@@ -360,6 +360,60 @@ describe('CompositeFiltersComponent', () => {
       expect(this.component.propertyFiltersChange.emit).toHaveBeenCalledWith([]);
     });
 
+    it('keeps the ON state when the host passes equal but new toggle objects', function (this: ThisTest) {
+      const emitted: PropertyFilter[][] = [];
+      this.component.propertyFiltersChange.subscribe(value => emitted.push(value));
+      this.fixture.componentRef.setInput('toggleFilters', [equalsToggle()]);
+      this.fixture.detectChanges();
+      toggles()[0].click();
+      this.fixture.detectChanges();
+
+      this.fixture.componentRef.setInput('toggleFilters', [equalsToggle()]);
+      this.fixture.detectChanges();
+      expect(toggles()[0].getAttribute('aria-pressed')).toBe('true');
+
+      toggles()[0].click();
+      this.fixture.detectChanges();
+      expect(toggles()[0].getAttribute('aria-pressed')).toBe('false');
+      expect(emitted[emitted.length - 1]).toEqual([]);
+    });
+
+    it('drops the ON state of a toggle that is no longer configured', function (this: ThisTest) {
+      const emitted: PropertyFilter[][] = [];
+      this.component.propertyFiltersChange.subscribe(value => emitted.push(value));
+      this.fixture.componentRef.setInput('toggleFilters', [equalsToggle()]);
+      this.fixture.detectChanges();
+      toggles()[0].click();
+      this.fixture.componentRef.setInput('toggleFilters', []);
+      this.fixture.detectChanges();
+      expect(this.component.hasActiveCriteria).toBeFalse();
+      this.component.clearFilter(stringProperty);
+      expect(emitted[emitted.length - 1]).toEqual([]);
+    });
+
+    it('turns a toggle ON only for a preset with the same criteria', function (this: ThisTest) {
+      const toggle = equalsToggle();
+      const otherValue: PropertyFilter = {
+        operator: LogicalOperator.Or,
+        criteria: [{ filterableProperty: enumProperty, operator: ComparisonOperator.Equals, value: 'green' }],
+      };
+      this.component.toggleFilters = [toggle];
+      this.component.presetFilters = [otherValue];
+      this.fixture.detectChanges();
+      expect(this.component.isToggleOn(toggle)).toBeFalse();
+      // The preset is kept as a normal pill with its own value.
+      expect(this.component.propertyFilters).toEqual([otherValue]);
+    });
+
+    it('renders when the array inputs are undefined', function (this: ThisTest) {
+      this.fixture.componentRef.setInput('toggleFilters', undefined);
+      this.fixture.componentRef.setInput('semiPredefinedFilters', undefined);
+      this.fixture.componentRef.setInput('predefinedFilters', undefined);
+      expect(() => this.fixture.detectChanges()).not.toThrow();
+      expect(this.component.toggleFilters).toEqual([]);
+      expect(this.fixture.nativeElement.querySelector('[data-test-id="add-button"]')).toBeTruthy();
+    });
+
     it('starts ON from a preset and is turned OFF by Clear all', function (this: ThisTest) {
       const toggle = equalsToggle();
       this.component.toggleFilters = [toggle];
