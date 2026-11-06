@@ -90,6 +90,7 @@ export class ServerDrivenGridDemoComponent {
       .subscribe((result: FetchResult) => {
         this.vmItems = result.vms;
         this.options.loading = false;
+        this.cdr.markForCheck();
       });
   }
 
@@ -114,6 +115,7 @@ export class ServerDrivenGridDemoComponent {
       .subscribe((data: FetchResult) => {
         this.vmItems = data.vms;
         this.resetting = false;
+        this.cdr.markForCheck();
       });
   }
 
@@ -122,6 +124,7 @@ export class ServerDrivenGridDemoComponent {
     setTimeout(() => {
       this.options.loading = false;
       this.vmItems = [...this.vmItems];
+      this.cdr.markForCheck();
     }, this.inventory.latency);
   }
 }

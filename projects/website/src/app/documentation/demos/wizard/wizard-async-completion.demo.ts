@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ClrAlertModule,
@@ -202,6 +202,7 @@ export class WizardAsyncCompletion {
 
   code = code;
   html = html;
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   get showCongrats(): boolean {
     return !this.errorFlag && this.checked;
@@ -249,6 +250,7 @@ export class WizardAsyncCompletion {
       }
       this.checked = true;
       this.loadingFlag = false;
+      this.changeDetectorRef.markForCheck();
     }, 1000);
   }
 }

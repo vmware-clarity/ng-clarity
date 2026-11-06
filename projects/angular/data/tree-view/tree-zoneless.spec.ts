@@ -19,7 +19,6 @@ import { By } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
 
 import { ClrTreeNode } from './tree-node';
-
 import { ClrTreeViewModule } from './tree-view.module';
 
 interface Node {

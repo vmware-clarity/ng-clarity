@@ -5,12 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { signal } from '@angular/core';
 import { CancelableStepValidation, In, Out, StepModel, StepValidationState, Var } from '@clr/addons/var';
 
 export class ObjectNameModel implements StepModel {
   loading = false;
   validationState = new StepValidationState();
-  progressStatus = '';
   cancelableValidation: CancelableStepValidation = undefined;
 
   @In({ optional: true }) defaultName: string;
@@ -18,4 +18,14 @@ export class ObjectNameModel implements StepModel {
   @In({ optional: true })
   @Out()
   readonly name: Var<string> = Var.of();
+
+  private readonly progress = signal('');
+
+  get progressStatus(): string {
+    return this.progress();
+  }
+
+  set progressStatus(value: string) {
+    this.progress.set(value);
+  }
 }

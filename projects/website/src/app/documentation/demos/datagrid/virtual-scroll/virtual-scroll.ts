@@ -283,6 +283,8 @@ export class DatagridVirtualScrollDemo implements OnInit, OnDestroy {
     } else {
       await this.getData($event);
     }
+
+    this.cdr.markForCheck();
   }
 
   getIndexes(count: number) {

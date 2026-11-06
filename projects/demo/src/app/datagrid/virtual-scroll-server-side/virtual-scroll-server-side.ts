@@ -115,5 +115,7 @@ export class DatagridVirtualScrollServerSideDemo implements OnInit {
 
     this._inventory.getAllUsersSubject().next(result.users);
     this.loading = false;
+
+    this.cdr.markForCheck();
   }
 }

@@ -6,7 +6,7 @@
  */
 
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { ChangeDetectionStrategy, Component, input, Input, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, Input, signal, viewChild } from '@angular/core';
 import { ClarityIcons, ClrIcon, ClrTabsModule, copyIcon, IconShapeTuple } from '@clr/angular';
 import stackblitz from '@stackblitz/sdk';
 
@@ -42,7 +42,7 @@ export class StackblitzExampleComponent {
   @Input() showComponentClass = true;
   readonly showComponentTemplate = input(true);
 
-  protected copied = false;
+  protected readonly copied = signal(false);
 
   private readonly activeCodeSnippet = viewChild(CodeSnippetComponent);
 
@@ -122,10 +122,10 @@ export class StackblitzExampleComponent {
       navigator.clipboard.writeText(code);
       this.liveAnnouncer.announce(`${this.name()} example code is copied to clipboard`);
 
-      this.copied = true;
+      this.copied.set(true);
 
       setTimeout(() => {
-        this.copied = false;
+        this.copied.set(false);
       }, 2000);
     }
   }

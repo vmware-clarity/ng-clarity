@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClrLoadingState } from '@clr/angular';
 
@@ -51,6 +51,7 @@ export class StepperDemo {
       email: new FormControl('', [Validators.required, Validators.email]),
     }),
   });
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   get validateNoSiblingFormGroup(): FormGroup {
     return this.validateNoSiblingForm.get('person') as FormGroup;
@@ -64,6 +65,7 @@ export class StepperDemo {
     this.state = ClrLoadingState.LOADING;
     setTimeout(() => {
       this.state = ClrLoadingState.SUCCESS;
+      this.changeDetectorRef.markForCheck();
     }, 1500);
   }
 
@@ -88,6 +90,7 @@ export class StepperDemo {
     setTimeout(() => {
       this.initialStep = 'contact';
       this.loading = false;
+      this.changeDetectorRef.markForCheck();
     }, 400);
   }
 

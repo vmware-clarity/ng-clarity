@@ -270,6 +270,41 @@
           }
         }
       }
+    },
+    "clr-consumer-smoke": {
+      "projectType": "application",
+      "root": "tests/consumer/app",
+      "sourceRoot": "tests/consumer/app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "tests/consumer/app/main.ts",
+            "index": "tests/consumer/app/index.html",
+            "tsConfig": "tests/consumer/app/tsconfig.json",
+            "outputPath": {
+              "base": "dist/consumer-smoke/zoneless",
+              "browser": ""
+            },
+            "styles": ["projects/angular/main.scss"],
+            "polyfills": [],
+            "optimization": false,
+            "sourceMap": false,
+            "extractLicenses": false,
+            "baseHref": "/zoneless/"
+          },
+          "configurations": {
+            "zone": {
+              "polyfills": ["zone.js"],
+              "outputPath": {
+                "base": "dist/consumer-smoke/zone",
+                "browser": ""
+              },
+              "baseHref": "/zone/"
+            }
+          }
+        }
+      }
     }
   },
   "schematics": {
