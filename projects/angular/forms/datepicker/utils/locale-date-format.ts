@@ -26,18 +26,22 @@ import { getNumberOfDaysInTheMonth, parseToFourDigitYear } from './date-utils';
  * FormatWidth.Short)`). Use it to format and parse dates exactly as `clrDate`, `clrStartDate` and
  * `clrEndDate` show and accept them, e.g. to convert a date input's form value.
  *
- * Instances are immutable and depend on the locale only, so they need no providers and can be shared.
+ * Instances are immutable and depend on the locale only, so they need no providers. Create one per locale
+ * and share it (e.g. as a component field) rather than one per call: the constructor reads the locale data
+ * and logs an error for an unexpected date format.
  *
  * ```ts
- * const dateFormat = new ClrLocaleDateFormat(inject(LOCALE_ID));
- * dateFormat.placeholder; // "MM/DD/YYYY" for en-US
- * dateFormat.format(new Date(2015, 1, 1)); // "02/01/2015"
- * dateFormat.parse('02/01/2015'); // Date for 1 February 2015, local midnight
+ * // In a field initializer or constructor, where inject() is available:
+ * private readonly dateFormat = new ClrLocaleDateFormat(inject(LOCALE_ID));
+ *
+ * this.dateFormat.placeholder; // "MM/DD/YYYY" for en-US
+ * this.dateFormat.format(new Date(2015, 1, 1)); // "02/01/2015"
+ * this.dateFormat.parse('02/01/2015'); // Date for 1 February 2015, local midnight
  * ```
  */
 export class ClrLocaleDateFormat {
   private readonly displayFormat: InputDateDisplayFormat;
-  private readonly delimiters: [string, string] = ['/', '/'];
+  private readonly delimiters: [string, string];
 
   /**
    * @param locale An Angular locale id whose locale data is registered, such as the app's `LOCALE_ID`.
@@ -48,9 +52,9 @@ export class ClrLocaleDateFormat {
      */
     readonly locale: string
   ) {
-    const cldrLocaleDateFormat: string = getLocaleDateFormat(locale, FormatWidth.Short);
-    this.displayFormat = this.getDisplayFormat(cldrLocaleDateFormat);
-    this.delimiters = this.extractDelimiters(cldrLocaleDateFormat) ?? this.delimiters;
+    const localeDateFormat: string = getLocaleDateFormat(locale, FormatWidth.Short);
+    this.displayFormat = this.getDisplayFormat(localeDateFormat);
+    this.delimiters = this.extractDelimiters(localeDateFormat) ?? ['/', '/'];
   }
 
   /**
@@ -111,8 +115,8 @@ export class ClrLocaleDateFormat {
     }
   }
 
-  private getDisplayFormat(cldrLocaleDateFormat: string): InputDateDisplayFormat {
-    const format: string = cldrLocaleDateFormat.toLocaleLowerCase();
+  private getDisplayFormat(localeDateFormat: string): InputDateDisplayFormat {
+    const format: string = localeDateFormat.toLocaleLowerCase();
     if (LITTLE_ENDIAN_REGEX.test(format)) {
       return LITTLE_ENDIAN;
     } else if (MIDDLE_ENDIAN_REGEX.test(format)) {
@@ -122,15 +126,15 @@ export class ClrLocaleDateFormat {
     return BIG_ENDIAN;
   }
 
-  private extractDelimiters(cldrLocaleDateFormat: string): [string, string] | null {
-    if (cldrLocaleDateFormat) {
+  private extractDelimiters(localeDateFormat: string): [string, string] | null {
+    if (localeDateFormat) {
       // Sanitize Date Format. Remove RTL characters.
       // FIXME: When we support RTL, remove this and handle it correctly.
-      const localeFormat: string = cldrLocaleDateFormat.replace(RTL_REGEX, '');
+      const localeFormat: string = localeDateFormat.replace(RTL_REGEX, '');
       const delimiters: string[] = localeFormat.split(DELIMITER_REGEX);
 
       // NOTE: The split from the CLDR date format should always result
-      // in an arary with 4 elements. The 1st and the 2nd values are the delimiters
+      // in an array with 4 elements. The 1st and the 2nd values are the delimiters
       // we will use in order.
       // Eg: "dd/MM/y".split(/d+|m+|y+/i) results in ["", "/", "/", ""]
       if (delimiters && delimiters.length === 4) {

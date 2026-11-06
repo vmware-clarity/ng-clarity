@@ -6,6 +6,7 @@
  */
 
 import { registerLocaleData } from '@angular/common';
+import localeAr from '@angular/common/locales/ar';
 import localeBg from '@angular/common/locales/bg';
 import localeHr from '@angular/common/locales/hr';
 import localeJa from '@angular/common/locales/ja';
@@ -14,6 +15,7 @@ import { assertEqualDates } from '@clr/angular/testing';
 
 import { ClrLocaleDateFormat } from './locale-date-format';
 
+registerLocaleData(localeAr);
 registerLocaleData(localeBg);
 registerLocaleData(localeHr);
 registerLocaleData(localeJa);
@@ -67,12 +69,21 @@ export default function () {
     it('returns null for text that is not a day that exists', () => {
       const dateFormat = new ClrLocaleDateFormat('en-US');
       expect(dateFormat.parse('')).toBeNull();
-      expect(dateFormat.parse(null)).toBeNull();
+      // Defensive guard for non-TypeScript callers; null is not part of the parse() contract.
+      expect(dateFormat.parse(null as unknown as string)).toBeNull();
       expect(dateFormat.parse('abc')).toBeNull();
       expect(dateFormat.parse('02/30/2015')).toBeNull();
       expect(dateFormat.parse('13/01/2015')).toBeNull();
       expect(dateFormat.parse('02/01/201')).toBeNull();
       expect(dateFormat.parse('02/01/20155')).toBeNull();
+    });
+
+    it('ignores right-to-left marks in the locale date format', () => {
+      // The ar short date format contains U+200F marks around its delimiters.
+      const dateFormat = new ClrLocaleDateFormat('ar');
+      expect(dateFormat.placeholder).toBe('DD/MM/YYYY');
+      expect(dateFormat.format(new Date(2015, 1, 1))).toBe('01/02/2015');
+      assertEqualDates(dateFormat.parse('01/02/2015'), new Date(2015, 1, 1));
     });
 
     it('round-trips its own output', () => {

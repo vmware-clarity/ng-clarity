@@ -11,7 +11,6 @@ import { Subject } from 'rxjs';
 import { LocaleHelperService } from './locale-helper.service';
 import { DateRange, DateRangeOption } from '../interfaces/date-range.interface';
 import { DayModel } from '../model/day.model';
-import { DEFAULT_LOCALE_FORMAT } from '../utils/constants';
 import { ClrLocaleDateFormat } from '../utils/locale-date-format';
 
 @Injectable()
@@ -28,7 +27,6 @@ export class DateIOService {
     maxDate: new DayModel(9999, 11, 31),
   };
 
-  cldrLocaleDateFormat: string = DEFAULT_LOCALE_FORMAT;
   minDateChange = new Subject<DayModel>();
   maxDateChange = new Subject<DayModel>();
 
@@ -37,7 +35,6 @@ export class DateIOService {
   private readonly localeDateFormat: ClrLocaleDateFormat;
 
   constructor(localeHelperService: LocaleHelperService) {
-    this.cldrLocaleDateFormat = localeHelperService.localeDateFormat;
     this.localeDateFormat = new ClrLocaleDateFormat(localeHelperService.locale);
   }
 

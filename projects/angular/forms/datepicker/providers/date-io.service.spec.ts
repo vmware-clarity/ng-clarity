@@ -25,15 +25,15 @@ export default function () {
     let localeHelperService: LocaleHelperService;
 
     describe('Locale Formatting', function () {
-      it('updates the cldrLocaleDateFormat based on the locale helper service', () => {
+      it('uses the date format of the locale from the locale helper service', () => {
         const localeHelperServ: LocaleHelperService = new LocaleHelperService('en-US');
         const dateIOServ: DateIOService = new DateIOService(localeHelperServ);
-        expect(dateIOServ.cldrLocaleDateFormat).toBe('M/d/yy');
+        expect(dateIOServ.placeholderText).toBe('MM/DD/YYYY');
 
         const localeHelperServ1: LocaleHelperService = new LocaleHelperService('ja');
         const dateIOServ1: DateIOService = new DateIOService(localeHelperServ1);
 
-        expect(dateIOServ1.cldrLocaleDateFormat).toBe('y/MM/dd');
+        expect(dateIOServ1.placeholderText).toBe('YYYY/MM/DD');
       });
 
       it('supports a method to convert a Date object to date string based on the locale', () => {
