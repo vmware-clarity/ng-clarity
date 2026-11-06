@@ -45,6 +45,7 @@ import { ClrDatepickerModule, ClrFormsModule } from '@clr/angular';
 - `min` / `max` take `yyyy-mm-dd` strings; out-of-range dates are disabled and produce `min` / `max` errors.
 - Container inputs: `[showActionButtons]="true"` (confirm with Cancel/Apply), `[clrFirstDayOfWeek]="ClrWeekday.Monday"` (enum `ClrWeekday`, default from the Angular locale), `clrPosition`.
 - Locale and date format come from Angular `LOCALE_ID`.
+- To read or write the string value, create one `new ClrLocaleDateFormat(inject(LOCALE_ID))` per component (field initializer or constructor, where `inject()` works) and reuse it: `parse(text)` returns a `Date` or `null` for text that is not a valid day, `format(date)` returns the text the input shows, `placeholder` the generated placeholder. Same rules as the date picker; min/max are not checked. Do not parse the string with `new Date(text)`.
 
 ## Date range picker
 
@@ -74,7 +75,7 @@ ranges = [
 ## Rules
 
 - Always wrap inputs in the matching container with a `<label>`; a placeholder is not a label.
-- Add one `*clrIfError` per validator: `required`, `min`, `max`, and on range inputs `range`. Clarity does not flag unparseable text; add your own validator if needed.
+- Add one `*clrIfError` per validator: `required`, `min`, `max`, and on range inputs `range`. Clarity does not flag unparseable text; add your own validator if needed, using `ClrLocaleDateFormat.parse()` (returns `null` for invalid text).
 - Keep `min` / `max` within the range the guidance allows (about 10 years).
 
 ## References
