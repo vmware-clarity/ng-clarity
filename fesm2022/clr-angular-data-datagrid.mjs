@@ -7288,7 +7288,7 @@ class ClrDatagridColumnActions extends ClrDropdown {
             [shape]="column.pinned ? 'unpin' : 'pin'"
             solid
             size="12"
-            style="margin: 2px;"
+            class="datagrid-column-actions-pin-icon"
             aria-hidden="true"
           ></cds-icon>
           {{ column.pinned ? commonStrings.keys.unpinColumn : commonStrings.keys.pinColumn }}
@@ -7387,7 +7387,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImpor
             [shape]="column.pinned ? 'unpin' : 'pin'"
             solid
             size="12"
-            style="margin: 2px;"
+            class="datagrid-column-actions-pin-icon"
             aria-hidden="true"
           ></cds-icon>
           {{ column.pinned ? commonStrings.keys.unpinColumn : commonStrings.keys.pinColumn }}
