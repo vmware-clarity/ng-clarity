@@ -7,7 +7,7 @@
 
 import { A11yModule as CdkA11yModule } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
-import { SimpleChange } from '@angular/core';
+import { ChangeDetectionStrategy, Component, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -84,6 +84,23 @@ enumPropertyFilter.operator = LogicalOperator.Or;
 
 const ariaLabelAttributeName = 'aria-label';
 
+/**
+ * A parent for the OnPush filter bar, as in an app. A fixture always refreshes its own root component,
+ * so state that only goes stale in a child view (e.g. aria-expanded) needs this host to show up.
+ */
+@Component({
+  template: `<appfx-composite-filter
+    [filterableProperties]="filterableProperties"
+    [presetFilters]="presetFilters"
+  ></appfx-composite-filter>`,
+  changeDetection: ChangeDetectionStrategy.Default,
+  standalone: false,
+})
+class CompositeFiltersHostComponent {
+  filterableProperties = filterableProperties;
+  presetFilters = [enumPropertyFilter];
+}
+
 export interface ThisTest {
   fixture: ComponentFixture<CompositeFiltersComponent>;
   component: CompositeFiltersComponent;
@@ -110,6 +127,7 @@ describe('CompositeFiltersComponent', () => {
       ],
       declarations: [
         CompositeFiltersComponent,
+        CompositeFiltersHostComponent,
         DismissableDirective,
         EnumFilterComponent,
         FilterFormComponent,
@@ -355,6 +373,44 @@ describe('CompositeFiltersComponent', () => {
     this.component.semiPredefinedFilters = [enumProperty];
     this.component.ngOnChanges({ semiPredefinedFilters: new SimpleChange([], [enumProperty], false) });
     expect(this.component.selectedFilterableProperty).toBe(stringProperty);
+  });
+
+  describe('aria-expanded when an outside click closes a popover', () => {
+    const closeWithOutsideClick = async (fixture: ComponentFixture<CompositeFiltersHostComponent>) => {
+      document.body.click();
+      fixture.detectChanges();
+      await fixture.whenStable();
+    };
+
+    it('resets it on Add filter', async function (this: ThisTest) {
+      const host = TestBed.createComponent(CompositeFiltersHostComponent);
+      host.detectChanges();
+      const addButton: HTMLButtonElement = host.nativeElement.querySelector('[data-test-id="add-button"]');
+      addButton.click();
+      host.detectChanges();
+      await host.whenStable();
+      expect(addButton.getAttribute('aria-expanded')).toBe('true');
+
+      await closeWithOutsideClick(host);
+      expect(document.querySelector('.filter-popover')).toBeNull();
+      expect(addButton.getAttribute('aria-expanded')).toBe('false');
+      host.destroy();
+    });
+
+    it('resets it on a filter pill', async function (this: ThisTest) {
+      const host = TestBed.createComponent(CompositeFiltersHostComponent);
+      host.detectChanges();
+      const pill: HTMLButtonElement = host.nativeElement.querySelector('appfx-manage-filter .filter-pill');
+      pill.click();
+      host.detectChanges();
+      await host.whenStable();
+      expect(pill.getAttribute('aria-expanded')).toBe('true');
+
+      await closeWithOutsideClick(host);
+      expect(document.querySelector('.filter-popover')).toBeNull();
+      expect(pill.getAttribute('aria-expanded')).toBe('false');
+      host.destroy();
+    });
   });
 
   it('separates predefined pills from user-added pills', function (this: ThisTest) {

@@ -36,10 +36,9 @@ import {
   PropertyFilter,
   PropertyPredicate,
 } from '../model/datagrid-filters.interfaces';
-import { dateTimeEditorState } from '../model/date-time-editor-state';
+import { dateTimeEditorState, toIsoDate } from '../model/date-time-editor-state';
 
 const enterKey = 'Enter';
-const pad = (value: number) => value.toString().padStart(2, '0');
 const dateTimeFormat = 'yyyy-MM-ddTHH:mm:ss';
 const requiredValidators: ValidatorFn[] = [Validators.required];
 
@@ -557,7 +556,7 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
   /** The date picker's locale date string as yyyy-MM-dd. */
   private isoDate(controlName: 'dateValue' | 'dateValueTo'): string {
     const date = this.dateFormat.parse(this.dateTimeFilterForm.value[controlName]);
-    return date ? `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}` : '';
+    return date ? toIsoDate(date) : '';
   }
 
   private parseTimeValue(dateTime: string): string {

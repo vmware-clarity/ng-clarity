@@ -30,9 +30,14 @@ export function parseLocalDateTime(value: string): { date: Date; hasTime: boolea
   return isNaN(date.getTime()) ? null : { date, hasTime: hours !== undefined };
 }
 
+/** A local date as `yyyy-MM-dd`, the date format of predicates and editor state. */
+export function toIsoDate(date: Date): string {
+  return `${pad(date.getFullYear(), 4)}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+}
+
 /** `yyyy-MM-dd`, or `yyyy-MM-ddTHH:mm[:ss]` when the time is not midnight. */
 function toStateValue(date: Date, withSeconds: boolean): string {
-  const day = `${pad(date.getFullYear(), 4)}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+  const day = toIsoDate(date);
   if (!date.getHours() && !date.getMinutes() && !date.getSeconds()) {
     return day;
   }
