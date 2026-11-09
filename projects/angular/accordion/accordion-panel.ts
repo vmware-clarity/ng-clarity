@@ -42,9 +42,9 @@ export class ClrAccordionPanel extends CollapsiblePanel implements OnChanges {
   /**
    * Level of the accordion heading from 1 to 6.
    */
-  @Input('clrAccordionPanelHeadingLevel') explicitHeadingLevel: HeadingLevel;
+  @Input('clrAccordionPanelHeadingLevel') explicitHeadingLevel?: HeadingLevel;
 
-  @ContentChildren(ClrAccordionDescription) accordionDescription: QueryList<ClrAccordionDescription>;
+  @ContentChildren(ClrAccordionDescription) accordionDescription!: QueryList<ClrAccordionDescription>;
 
   constructor(
     @Optional() @Inject(AccordionService) panelService: CollapsiblePanelService,

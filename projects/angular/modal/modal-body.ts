@@ -20,7 +20,7 @@ import { Directive, ElementRef, NgZone, OnDestroy, Renderer2 } from '@angular/co
 export class ClrModalBody implements OnDestroy {
   private tabindex = '0';
   private unlisteners: VoidFunction[] = [];
-  private observer: ResizeObserver;
+  private observer: ResizeObserver | null = null;
 
   constructor(
     private readonly renderer: Renderer2,
@@ -46,11 +46,10 @@ export class ClrModalBody implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    while (this.unlisteners.length) {
-      this.unlisteners.pop()();
-    }
+    this.unlisteners.forEach(unlisten => unlisten());
+    this.unlisteners = [];
 
-    this.observer.disconnect();
+    this.observer?.disconnect();
     this.observer = null;
   }
 

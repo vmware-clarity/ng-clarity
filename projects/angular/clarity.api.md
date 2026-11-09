@@ -1039,7 +1039,7 @@ export class ClrAccordionPanel extends CollapsiblePanel implements OnChanges {
     accordionDescription: QueryList<ClrAccordionDescription>;
     // (undocumented)
     disabled: boolean;
-    explicitHeadingLevel: HeadingLevel;
+    explicitHeadingLevel?: HeadingLevel;
     // (undocumented)
     getContentId(id: string): string;
     // (undocumented)
@@ -1427,22 +1427,22 @@ export class ClrButton implements LoadingListener {
     get inMenu(): boolean;
     set inMenu(value: boolean);
     // (undocumented)
-    loading: boolean;
+    loading?: boolean;
     // (undocumented)
     loadingStateChange(state: ClrLoadingState): void;
     // (undocumented)
-    get name(): string;
+    get name(): string | null;
     set name(value: string);
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
-    get role(): string;
+    get role(): string | null;
     // (undocumented)
-    routerLinkActiveClasses: string;
+    routerLinkActiveClasses?: string;
     // (undocumented)
     templateRef: TemplateRef<ClrButton>;
     // (undocumented)
-    get type(): string;
+    get type(): string | null;
     set type(value: string);
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrButton, "clr-button", never, { "routerLinkActiveClasses": { "alias": "routerLinkActive"; "required": false; }; "inMenu": { "alias": "clrInMenu"; "required": false; }; "classNames": { "alias": "class"; "required": false; }; "name": { "alias": "name"; "required": false; }; "type": { "alias": "type"; "required": false; }; "id": { "alias": "id"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; }, { "_click": "click"; }, never, ["*"], false, never>;
@@ -1602,7 +1602,7 @@ export class ClrCardBodyText {
 
 // @public (undocumented)
 export class ClrCardBodyTitle {
-    explicitHeadingLevel: HeadingLevel;
+    explicitHeadingLevel?: HeadingLevel;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrCardBodyTitle, "clr-card-body-title", never, { "explicitHeadingLevel": { "alias": "clrHeadingLevel"; "required": false; }; }, {}, never, ["*"], false, never>;
     // (undocumented)
@@ -1632,7 +1632,7 @@ export class ClrCardHeader {
     protected readonly card: ClrCard;
     // (undocumented)
     protected readonly commonStrings: ClrCommonStringsService;
-    explicitHeadingLevel: HeadingLevel;
+    explicitHeadingLevel?: HeadingLevel;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrCardHeader, "clr-card-header", never, { "explicitHeadingLevel": { "alias": "clrHeadingLevel"; "required": false; }; }, {}, never, ["*"], false, never>;
     // (undocumented)
@@ -3666,7 +3666,7 @@ export class ClrDropdown implements OnDestroy {
 export class ClrDropdownItem {
     constructor(dropdown: ClrDropdown, _dropdownService: RootDropdownService, focusableItem: FocusableItem, el: ElementRef, renderer: Renderer2);
     // (undocumented)
-    get disabled(): boolean | string;
+    get disabled(): boolean | undefined;
     set disabled(value: boolean | string);
     get dropdownItemId(): string;
     set dropdownItemId(value: string);
@@ -4122,7 +4122,7 @@ export class ClrHeader implements OnDestroy {
     // (undocumented)
     openNav(navLevel: number): void;
     // (undocumented)
-    openNavLevel: number;
+    openNavLevel: number | null;
     // (undocumented)
     resetNavTriggers(): void;
     // (undocumented)
@@ -4167,7 +4167,7 @@ export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
     set flip(value: Orientations);
     // (undocumented)
     iconSVG: string;
-    get innerOffset(): number;
+    get innerOffset(): number | undefined;
     set innerOffset(value: number);
     // (undocumented)
     get inverse(): boolean;
@@ -4188,9 +4188,9 @@ export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
     ngOnInit(): void;
     // (undocumented)
     get shape(): string;
-    set shape(value: string);
+    set shape(value: string | undefined);
     // (undocumented)
-    get size(): string;
+    get size(): string | undefined;
     set size(value: string);
     // (undocumented)
     get solid(): boolean;
@@ -4641,7 +4641,7 @@ export class ClrModal implements OnChanges, OnDestroy {
     get fadeMove(): string;
     set fadeMove(move: string);
     // (undocumented)
-    labelledBy: string;
+    labelledBy?: string;
     // (undocumented)
     protected readonly modalContentTemplate: TemplateRef<any>;
     // (undocumented)
@@ -5216,7 +5216,7 @@ export class ClrPopoverService {
     // (undocumented)
     get openChange(): Observable<boolean>;
     // (undocumented)
-    get openEvent(): Event;
+    get openEvent(): Event | undefined;
     set openEvent(event: Event);
     // (undocumented)
     origin: FlexibleConnectedPositionStrategyOrigin;
@@ -5227,7 +5227,7 @@ export class ClrPopoverService {
     // (undocumented)
     panelClass: string[];
     // (undocumented)
-    parent: ClrPopoverContent;
+    parent: ClrPopoverContent | null;
     // (undocumented)
     pointTargetElement: HTMLElement | undefined;
     // (undocumented)
@@ -5306,17 +5306,17 @@ export class ClrProgressBar {
     // (undocumented)
     set clrLoop(value: boolean | string);
     // (undocumented)
-    color: string;
+    color?: string;
     // (undocumented)
     get compactClass(): boolean;
     // (undocumented)
     get dangerClass(): boolean;
     displayStringValue(): boolean;
     // (undocumented)
-    displayval: string;
+    displayval?: string;
     get displayValue(): string;
     // (undocumented)
-    externalId: string;
+    externalId: string | null;
     // (undocumented)
     get fadeClass(): boolean;
     // (undocumented)
@@ -5324,7 +5324,7 @@ export class ClrProgressBar {
     // (undocumented)
     get flashDangerClass(): boolean;
     // (undocumented)
-    get id(): string;
+    get id(): string | undefined;
     set id(value: string);
     // (undocumented)
     get labeledClass(): boolean;
@@ -5572,7 +5572,7 @@ export class ClrSidePanel implements OnInit, OnDestroy {
     // (undocumented)
     handleModalOpen(open: boolean): void;
     // (undocumented)
-    labelledById: string;
+    labelledById?: string;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -5630,7 +5630,7 @@ export class ClrSignpost {
     // (undocumented)
     get showDefaultTrigger(): boolean;
     // (undocumented)
-    signpostTriggerAriaLabel: string;
+    signpostTriggerAriaLabel?: string;
     useCustomTrigger: boolean;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpost, "clr-signpost", never, { "signpostTriggerAriaLabel": { "alias": "clrSignpostTriggerAriaLabel"; "required": false; }; "hideTrigger": { "alias": "clrSignpostHideTrigger"; "required": false; }; }, {}, ["customTrigger"], ["*"], false, [{ directive: typeof i16.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
@@ -5659,7 +5659,7 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
     get position(): string | ClrPopoverPosition;
     set position(position: string | ClrPopoverPosition);
     // (undocumented)
-    signpostCloseAriaLabel: string;
+    signpostCloseAriaLabel?: string;
     // (undocumented)
     signpostContentId: string;
     // (undocumented)
@@ -5691,7 +5691,7 @@ export class ClrSignpostTitle {
 export class ClrSignpostTrigger implements OnDestroy {
     constructor(popoverService: ClrPopoverService, el: ElementRef<HTMLElement>, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, document: any, platformId: any);
     // (undocumented)
-    ariaControl: string;
+    ariaControl?: string;
     // (undocumented)
     ariaExpanded: boolean;
     // (undocumented)
@@ -6089,7 +6089,7 @@ export class ClrTabContent implements OnDestroy {
     // (undocumented)
     get active(): boolean;
     // (undocumented)
-    get ariaLabelledBy(): string;
+    get ariaLabelledBy(): string | undefined;
     // (undocumented)
     id: number;
     // (undocumented)
@@ -6114,7 +6114,7 @@ export class ClrTabLink {
     // (undocumented)
     get addLinkClasses(): boolean;
     // (undocumented)
-    get ariaControls(): string;
+    get ariaControls(): string | undefined;
     // (undocumented)
     el: ElementRef<HTMLElement>;
     // (undocumented)
@@ -6310,9 +6310,9 @@ export class ClrTimelineStep {
     // (undocumented)
     get iconAriaLabel(): string;
     // (undocumented)
-    get iconShape(): string;
+    get iconShape(): string | undefined;
     // (undocumented)
-    get iconStatus(): string;
+    get iconStatus(): string | null;
     // (undocumented)
     get isProcessing(): boolean;
     // (undocumented)
@@ -6413,7 +6413,7 @@ export class ClrTooltipModule {
 export class ClrTooltipTrigger {
     constructor(popoverService: ClrPopoverService, tooltipIdService: TooltipIdService, tooltipMouseService: TooltipMouseService, element: ElementRef);
     // (undocumented)
-    ariaDescribedBy: string;
+    ariaDescribedBy?: string;
     // (undocumented)
     hideTooltip(): void;
     // (undocumented)
@@ -6558,7 +6558,7 @@ export class ClrVerticalNav implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "VerticalNavGroupRegistrationService" needs to be exported by the entry point clr-angular.d.ts
     constructor(_navService: VerticalNavService, _navIconService: VerticalNavIconService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, commonStrings: ClrCommonStringsService);
     // (undocumented)
-    get ariaExpanded(): string;
+    get ariaExpanded(): string | null;
     // (undocumented)
     get collapsed(): boolean | string;
     set collapsed(value: boolean | string);
@@ -6578,7 +6578,7 @@ export class ClrVerticalNav implements OnDestroy {
     // (undocumented)
     toggleByButton(): void;
     // (undocumented)
-    toggleLabel: string;
+    toggleLabel?: string;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNav, "clr-vertical-nav", never, { "toggleLabel": { "alias": "clrVerticalNavToggleLabel"; "required": false; }; "collapsible": { "alias": "clrVerticalNavCollapsible"; "required": false; }; "collapsed": { "alias": "clrVerticalNavCollapsed"; "required": false; }; }, { "_collapsedChanged": "clrVerticalNavCollapsedChange"; }, never, ["*"], false, never>;
     // (undocumented)
@@ -6702,7 +6702,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
-    get currentPage(): ClrWizardPage;
+    get currentPage(): ClrWizardPage | null;
     set currentPage(page: ClrWizardPage);
     currentPageChange: EventEmitter<any>;
     get disableStepnav(): boolean;
@@ -6878,7 +6878,7 @@ export class ClrWizardModule {
 // @public
 export class ClrWizardPage implements OnInit {
     constructor(navService: WizardNavigationService, pageCollection: PageCollectionService, buttonService: ButtonHubService);
-    get buttons(): TemplateRef<any>;
+    get buttons(): TemplateRef<any> | undefined;
     _buttons: ClrWizardPageButtons;
     // (undocumented)
     buttonService: ButtonHubService;
@@ -6896,7 +6896,7 @@ export class ClrWizardPage implements OnInit {
     get hasError(): boolean;
     set hasError(val: boolean);
     get hasHeaderActions(): boolean;
-    get headerActions(): TemplateRef<any>;
+    get headerActions(): TemplateRef<any> | undefined;
     _headerActions: ClrWizardPageHeaderActions;
     get id(): string;
     _id: any;
@@ -6972,7 +6972,7 @@ export class ClrWizardPageNavTitle {
 export class ClrWizardPageTitle {
     constructor(pageTitleTemplateRef: TemplateRef<any>);
     // (undocumented)
-    headingLevel: HeadingLevel;
+    headingLevel?: HeadingLevel;
     // (undocumented)
     pageTitleTemplateRef: TemplateRef<any>;
     // (undocumented)
@@ -6985,7 +6985,7 @@ export class ClrWizardPageTitle {
 export class ClrWizardStepnav implements AfterViewInit, OnDestroy {
     constructor(pageService: PageCollectionService, navService: WizardNavigationService, elementRef: ElementRef<HTMLElement>);
     // (undocumented)
-    label: string;
+    label?: string;
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
@@ -7049,7 +7049,7 @@ export class ClrWizardStepnavItem implements OnInit, OnDestroy {
     // (undocumented)
     protected scrollIntoView(): void;
     // (undocumented)
-    get stepAriaCurrent(): string;
+    get stepAriaCurrent(): 'step' | false;
     // (undocumented)
     protected get stepIconId(): string;
     // (undocumented)
@@ -7075,7 +7075,7 @@ export enum ClrWizardStepnavLayout {
 // @public (undocumented)
 export class ClrWizardTitle {
     // (undocumented)
-    headingLevel: HeadingLevel;
+    headingLevel?: HeadingLevel;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardTitle, "clr-wizard-title", never, { "headingLevel": { "alias": "clrHeadingLevel"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
@@ -7180,7 +7180,7 @@ export abstract class CollapsiblePanel implements OnInit {
     // (undocumented)
     panel: Observable<CollapsiblePanelModel>;
     // (undocumented)
-    protected _panelIndex: number;
+    protected _panelIndex?: number | null;
     // (undocumented)
     panelOpen: boolean;
     // (undocumented)
@@ -7231,7 +7231,7 @@ export class CollapsiblePanelModel {
     // (undocumented)
     id: string;
     // (undocumented)
-    index: number;
+    index: number | null;
     // (undocumented)
     open: boolean;
     // (undocumented)
@@ -7247,7 +7247,7 @@ export class CollapsiblePanelService {
     // (undocumented)
     protected emitUpdatedPanels(): void;
     // (undocumented)
-    getPanelChanges(panelId: string): Observable<CollapsiblePanelModel>;
+    getPanelChanges(panelId: string): Observable<CollapsiblePanelModel | undefined>;
     // (undocumented)
     protected panelGroup: CollapsiblePanelGroupModel;
     // (undocumented)
@@ -7878,7 +7878,7 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
     // (undocumented)
     blur(): void;
     // (undocumented)
-    get container(): HTMLElement;
+    get container(): HTMLElement | undefined;
     set container(el: HTMLElement);
     // (undocumented)
     down?: Observable<FocusableItem>;
@@ -7895,7 +7895,7 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
     // (undocumented)
     right?: Observable<FocusableItem>;
     // (undocumented)
-    get trigger(): HTMLElement;
+    get trigger(): HTMLElement | undefined;
     set trigger(el: HTMLElement);
     // (undocumented)
     up?: Observable<FocusableItem>;
@@ -8535,7 +8535,7 @@ export const IF_ACTIVE_ID_PROVIDER: {
 
 // @public (undocumented)
 export class IfActiveService {
-    get current(): number;
+    get current(): number | undefined;
     set current(value: number);
     get currentChange(): Observable<number>;
     // (undocumented)
@@ -9004,7 +9004,7 @@ export class MockFocusableItem implements FocusableItem {
 
 // @public (undocumented)
 export class ModalStackService {
-    constructor(platformId: unknown);
+    constructor(platformId: any);
     // (undocumented)
     trackModalClose(closedModal: Closable): void;
     // (undocumented)

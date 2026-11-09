@@ -55,7 +55,7 @@ export class ClrSignpost {
    */
   useCustomTrigger = false;
 
-  @Input('clrSignpostTriggerAriaLabel') signpostTriggerAriaLabel: string;
+  @Input('clrSignpostTriggerAriaLabel') signpostTriggerAriaLabel?: string;
   /**
    * Hides the default trigger button. Use when the signpost is opened
    * programmatically via `openAtPoint()` and no trigger icon is needed.

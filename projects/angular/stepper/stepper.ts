@@ -37,9 +37,9 @@ import { ClrStepperPanel } from './stepper-panel';
   standalone: false,
 })
 export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
-  @Input('clrInitialStep') initialPanel: string;
-  @ContentChildren(ClrStepperPanel) panels: QueryList<ClrStepperPanel>;
-  form: FormGroupDirective | NgForm;
+  @Input('clrInitialStep') initialPanel!: string;
+  @ContentChildren(ClrStepperPanel) panels!: QueryList<ClrStepperPanel>;
+  form!: FormGroupDirective | NgForm;
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -91,7 +91,10 @@ export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   }
 
   private setPanelsWithFormErrors() {
-    const panelsWithErrors = this.panels.reduce((panels, p) => (p.formGroup.invalid ? [...panels, p.id] : panels), []);
+    const panelsWithErrors = this.panels.reduce<string[]>(
+      (panels, p) => (p.formGroup.invalid ? [...panels, p.id] : panels),
+      []
+    );
     this.stepperService.setPanelsWithErrors(panelsWithErrors);
   }
 

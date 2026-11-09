@@ -33,8 +33,8 @@ import { SignpostIdService } from './providers/signpost-id.service';
  */
 export class ClrSignpostTrigger implements OnDestroy {
   ariaExpanded = false;
-  ariaControl: string;
-  isOpen: boolean;
+  ariaControl?: string;
+  isOpen = false;
 
   private document: Document;
   private subscriptions: Subscription[] = [];

@@ -41,7 +41,7 @@ export class PageCollectionService {
    *
    * @memberof PageCollectionService
    */
-  pages: QueryList<ClrWizardPage>;
+  pages!: QueryList<ClrWizardPage>;
 
   /**
    *
@@ -75,7 +75,7 @@ export class PageCollectionService {
    *
    * @memberof PageCollectionService
    */
-  get penultimatePage(): ClrWizardPage {
+  get penultimatePage(): ClrWizardPage | null {
     const pageCount = this.pagesCount;
 
     if (pageCount < 2) {
@@ -91,7 +91,7 @@ export class PageCollectionService {
    *
    * @memberof PageCollectionService
    */
-  get lastPage(): ClrWizardPage {
+  get lastPage(): ClrWizardPage | null {
     const pageCount = this.pagesCount;
 
     if (pageCount < 1) {
@@ -107,7 +107,7 @@ export class PageCollectionService {
    *
    * @memberof PageCollectionService
    */
-  get firstPage(): ClrWizardPage {
+  get firstPage(): ClrWizardPage | null {
     if (!this.pagesCount) {
       return null;
     }
@@ -373,7 +373,7 @@ export class PageCollectionService {
    * @memberof PageCollectionService
    */
   findFirstIncompletePageIndex(): number {
-    let returnIndex: number = null;
+    let returnIndex: number | null = null;
     this.pagesAsArray.forEach((page: ClrWizardPage, index: number) => {
       if (null === returnIndex && false === page.completed) {
         returnIndex = index;
