@@ -8,13 +8,13 @@
 import { DayModel } from '../model/day.model';
 
 export interface DateRange {
-  minDate?: DayModel;
-  maxDate?: DayModel;
+  minDate: DayModel;
+  maxDate: DayModel;
 }
 
 export interface DateRangeInput {
-  startDate: DayModel;
-  endDate?: DayModel;
+  startDate: DayModel | null | undefined;
+  endDate?: DayModel | null;
 }
 
 export interface DateRangeOption {

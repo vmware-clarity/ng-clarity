@@ -50,7 +50,7 @@ import {
 })
 export class ClrRangeContainer extends ClrAbstractContainer {
   private _hasProgress = false;
-  private lastRangeProgressFillWidth: string;
+  private lastRangeProgressFillWidth = '';
 
   constructor(
     @Optional() layoutService: LayoutService,

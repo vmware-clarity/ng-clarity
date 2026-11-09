@@ -38,10 +38,10 @@ import { OptionSelectionService } from './providers/option-selection.service';
 })
 export class ClrOption<T> implements OnInit {
   // A proxy with only the necessary data to be used for a11y and the focus handler service.
-  optionProxy: OptionProxy<T> = new OptionProxy(null, null);
+  optionProxy: OptionProxy<T> = new OptionProxy<T>(null, null);
 
-  private _id: string;
-  private _value: T;
+  private _id!: string;
+  private _value!: T;
 
   constructor(
     public elRef: ElementRef<HTMLElement>,

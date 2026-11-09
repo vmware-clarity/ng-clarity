@@ -102,11 +102,11 @@ export class ClrYearpicker implements AfterViewInit {
     this._focusedYear = this.calendarYear;
   }
 
-  get selectedStartYear(): number {
+  get selectedStartYear(): number | undefined {
     return this._dateNavigationService.selectedDay?.year;
   }
 
-  get selectedEndYear(): number {
+  get selectedEndYear(): number | undefined {
     return this._dateNavigationService.selectedEndDay?.year;
   }
 
@@ -213,7 +213,7 @@ export class ClrYearpicker implements AfterViewInit {
     if (!this.yearRangeModel.inRange(this._focusedYear)) {
       if (this.yearRangeModel.inRange(this.calendarYear)) {
         this._focusedYear = this.calendarYear;
-      } else if (this.yearRangeModel.inRange(this.selectedEndYear)) {
+      } else if (this.selectedEndYear !== undefined && this.yearRangeModel.inRange(this.selectedEndYear)) {
         this._focusedYear = this.selectedEndYear;
       } else {
         this._focusedYear = this.yearRangeModel.middleYear;
@@ -230,10 +230,14 @@ export class ClrYearpicker implements AfterViewInit {
     if (!this._dateNavigationService.isRangePicker) {
       return false;
     }
-    if (this._dateNavigationService.selectedDay?.year && this.selectedEndYear) {
-      return year > this.selectedStartYear && year < this.selectedEndYear;
-    } else if (this._dateNavigationService.selectedDay?.year && !this.selectedEndYear) {
-      return year > this.selectedStartYear && year < this._dateNavigationService.hoveredYear;
+    const startYear = this.selectedStartYear;
+    const endYear = this.selectedEndYear;
+    const hoveredYear = this._dateNavigationService.hoveredYear;
+
+    if (startYear && endYear) {
+      return year > startYear && year < endYear;
+    } else if (startYear && !endYear && hoveredYear !== undefined) {
+      return year > startYear && year < hoveredYear;
     } else {
       return false;
     }

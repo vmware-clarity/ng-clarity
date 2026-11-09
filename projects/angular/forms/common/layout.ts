@@ -14,7 +14,7 @@ import { ClrFormLayout, LayoutService } from './providers/layout.service';
   standalone: false,
 })
 export class ClrLayout implements OnInit {
-  @Input('clrLayout') layout: ClrFormLayout | string;
+  @Input('clrLayout') layout!: ClrFormLayout | string;
 
   constructor(public layoutService: LayoutService) {}
 

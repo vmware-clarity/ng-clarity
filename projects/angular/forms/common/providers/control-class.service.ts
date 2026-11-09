@@ -19,7 +19,7 @@ export class ControlClassService {
 
   constructor(@Optional() private layoutService: LayoutService) {}
 
-  controlClass(state: string, grid = false, additional = '') {
+  controlClass(state: string | null, grid = false, additional = '') {
     const controlClasses = [this.className, additional];
 
     switch (state) {
@@ -41,7 +41,7 @@ export class ControlClassService {
   initControlClass(renderer: Renderer2, element: HTMLElement) {
     if (element && element.className) {
       const klasses = element.className.split(' ');
-      const controlKlasses = [];
+      const controlKlasses: string[] = [];
 
       klasses.forEach(klass => {
         if (klass.startsWith('clr-')) {

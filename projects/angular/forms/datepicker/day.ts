@@ -42,7 +42,7 @@ import { DateNavigationService } from './providers/date-navigation.service';
 export class ClrDay {
   @Output('selectDay') onSelectDay = new EventEmitter<DayModel>();
 
-  private _dayView: DayViewModel;
+  private _dayView!: DayViewModel;
 
   constructor(
     private _dateNavigationService: DateNavigationService,

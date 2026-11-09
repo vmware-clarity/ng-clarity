@@ -46,7 +46,7 @@ export class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> {
   override ngOnInit() {
     super.ngOnInit();
 
-    const toggleService = this.getProviderFromContainer<BehaviorSubject<boolean>>(IS_TOGGLE, null);
+    const toggleService = this.getProviderFromContainer<BehaviorSubject<boolean> | null>(IS_TOGGLE, null);
 
     if (toggleService && this.toggle !== null) {
       toggleService.next(true);

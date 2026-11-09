@@ -10,7 +10,7 @@ import { Observable, Subject } from 'rxjs';
 
 @Injectable()
 export class DateFormControlService {
-  disabled: boolean;
+  disabled = false;
 
   private _touchedChange = new Subject<void>();
   private _dirtyChange = new Subject<void>();

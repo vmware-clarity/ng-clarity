@@ -10,8 +10,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { SingleSelectComboboxModel } from './single-select-combobox.model';
 
 export class PseudoFocusModel<T> extends SingleSelectComboboxModel<T> {
-  private _focusChanged = new BehaviorSubject<T>(null);
-  get focusChanged(): Observable<T> {
+  private _focusChanged = new BehaviorSubject<T | null>(null);
+  get focusChanged(): Observable<T | null> {
     return this._focusChanged.asObservable();
   }
 

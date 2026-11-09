@@ -25,9 +25,9 @@ import { ClrOptionItems } from './option-items.directive';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrOptionGroup<T> {
-  @Input('clrOptionGroupLabel') label: string;
+  @Input('clrOptionGroupLabel') label?: string;
 
-  @ContentChild(ClrOptionItems) protected clrOptionItems: ClrOptionItems<T>;
+  @ContentChild(ClrOptionItems) protected clrOptionItems!: ClrOptionItems<T>;
 
   protected labelId = uniqueIdFactory();
 }
