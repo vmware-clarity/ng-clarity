@@ -24,7 +24,7 @@ import { ClrStackViewModule } from './stack-view.module';
   standalone: false,
 })
 class TestComponent {
-  headingLevel: HeadingLevel = null;
+  headingLevel?: HeadingLevel;
 }
 
 export default function (): void {

@@ -31,7 +31,7 @@ import { ClrTreeViewModule } from './tree-view.module';
   standalone: false,
 })
 class TestComponent {
-  @ViewChild(ClrTree) tree: ClrTree<void>;
+  @ViewChild(ClrTree) tree!: ClrTree<void>;
 
   lazy = false;
   hasChild = false;
@@ -99,16 +99,16 @@ class TreeTypeAhead {}
   standalone: false,
 })
 class ExpandAllTestComponent {
-  @ViewChild('tree') tree: ClrTree<void>;
-  @ViewChild('california') california: ClrTreeNode<void>;
-  @ViewChild('sanFrancisco') sanFrancisco: ClrTreeNode<void>;
-  @ViewChild('losAngeles') losAngeles: ClrTreeNode<void>;
-  @ViewChild('washington') washington: ClrTreeNode<void>;
-  @ViewChild('seattle') seattle: ClrTreeNode<void>;
-  @ViewChild('oregon') oregon: ClrTreeNode<void>;
-  @ViewChild('portland') portland: ClrTreeNode<void>;
-  @ViewChild('vermont') vermont: ClrTreeNode<void>;
-  @ViewChild('maine') maine: ClrTreeNode<void>;
+  @ViewChild('tree') tree!: ClrTree<void>;
+  @ViewChild('california') california!: ClrTreeNode<void>;
+  @ViewChild('sanFrancisco') sanFrancisco!: ClrTreeNode<void>;
+  @ViewChild('losAngeles') losAngeles!: ClrTreeNode<void>;
+  @ViewChild('washington') washington!: ClrTreeNode<void>;
+  @ViewChild('seattle') seattle!: ClrTreeNode<void>;
+  @ViewChild('oregon') oregon!: ClrTreeNode<void>;
+  @ViewChild('portland') portland!: ClrTreeNode<void>;
+  @ViewChild('vermont') vermont!: ClrTreeNode<void>;
+  @ViewChild('maine') maine!: ClrTreeNode<void>;
 
   hasTree = true;
   californiaExpanded = false;
@@ -138,7 +138,7 @@ interface LazyNode {
   standalone: false,
 })
 class LazyExpandAllTestComponent {
-  @ViewChild('tree') tree: ClrTree<LazyNode>;
+  @ViewChild('tree') tree!: ClrTree<LazyNode>;
 
   roots: LazyNode[] = [
     { name: 'A', children: [{ name: 'AA', children: [{ name: 'AAA', children: [{ name: 'AAAA' }] }] }] },
@@ -187,7 +187,7 @@ export default function (): void {
       // Using an empty tree and checking reference equality because I don't want to create full models for this.
       const emptyTree: RecursiveTreeNodeModel<void>[] = [];
       this.getClarityProvider(TreeFeaturesService).recursion = {
-        template: null,
+        template: null!,
         root: emptyTree,
       };
       this.detectChanges();
@@ -231,29 +231,29 @@ export default function (): void {
 
     it('focuses node whose text content that starts with pressed keys', async function () {
       forTypeAheadDirectives[0].focusTreeNode();
-      expect(document.activeElement.textContent.trim()).toBe('California');
-      document.activeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 's' }));
+      expect(document.activeElement!.textContent.trim()).toBe('California');
+      document.activeElement!.dispatchEvent(new KeyboardEvent('keydown', { key: 's' }));
       await delay(200);
-      expect(document.activeElement.textContent.trim()).toBe('San Francisco');
-      document.activeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 's' }));
+      expect(document.activeElement!.textContent.trim()).toBe('San Francisco');
+      document.activeElement!.dispatchEvent(new KeyboardEvent('keydown', { key: 's' }));
       await delay(200);
-      expect(document.activeElement.textContent.trim()).toBe('Seattle');
+      expect(document.activeElement!.textContent.trim()).toBe('Seattle');
     });
 
     it('skips and focuses node whose text content that starts with pressed keys', async function () {
       forTypeAheadDirectives[0].focusTreeNode();
-      expect(document.activeElement.textContent.trim()).toBe('California');
-      document.activeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'se' }));
+      expect(document.activeElement!.textContent.trim()).toBe('California');
+      document.activeElement!.dispatchEvent(new KeyboardEvent('keydown', { key: 'se' }));
       await delay(200);
-      expect(document.activeElement.textContent.trim()).toBe('Seattle');
+      expect(document.activeElement!.textContent.trim()).toBe('Seattle');
     });
 
     it('should skip node even if its text content starts with pressed keys', async function () {
       forTypeAheadDirectives[0].focusTreeNode();
-      expect(document.activeElement.textContent.trim()).toBe('California');
-      document.activeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'b' }));
+      expect(document.activeElement!.textContent.trim()).toBe('California');
+      document.activeElement!.dispatchEvent(new KeyboardEvent('keydown', { key: 'b' }));
       await delay(200);
-      expect(document.activeElement.textContent.trim()).toBe(
+      expect(document.activeElement!.textContent.trim()).toBe(
         'California',
         'Should skip Burlington because the containing node is not expanded'
       );

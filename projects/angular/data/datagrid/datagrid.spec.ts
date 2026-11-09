@@ -79,7 +79,7 @@ class FullTest {
   selectionType: SelectionType = SelectionType.None;
 
   nbRefreshed = 0;
-  latestState: ClrDatagridStateInterface;
+  latestState!: ClrDatagridStateInterface;
 
   fakeLoad = false;
 
@@ -235,7 +235,7 @@ class MultiSelectionNgForTest {
 class SingleSelectionTest {
   items = [1, 2, 3];
 
-  selected: number[] = null;
+  selected: (number | null | undefined)[] | null = null;
 }
 
 @Component({
@@ -716,7 +716,7 @@ export default function (): void {
         selection.setSelected(1, true);
         context.detectChanges();
         await delay();
-        expect(context.testComponent.selected).toEqual([1]);
+        expect<number[] | undefined>(context.testComponent.selected).toEqual([1]);
       });
 
       describe('clrDgRefresh output', function () {
@@ -1328,7 +1328,7 @@ export default function (): void {
           checkboxes[1].click();
           document.body.dispatchEvent(new KeyboardEvent('keyup', { key: 'Shift' }));
           // We don't really care about the order, do we?
-          expect(selection.current.every(x => [1, 2, 3].includes(x))).toBeTrue();
+          expect(selection.current!.every(x => [1, 2, 3].includes(x))).toBeTrue();
         });
 
         it('can update ranges in a sequence, without releasing Shift', function () {
@@ -1344,7 +1344,7 @@ export default function (): void {
           checkboxes[7].click();
           document.body.dispatchEvent(new KeyboardEvent('keyup', { key: 'Shift' }));
           // final state
-          expect(selection.current.every(x => [1, 2, 3, 4, 5, 6, 7].includes(x))).toBeTrue();
+          expect(selection.current!.every(x => [1, 2, 3, 4, 5, 6, 7].includes(x))).toBeTrue();
         });
 
         it('can update ranges in a sequence, releasing Shift', function () {
@@ -1361,14 +1361,14 @@ export default function (): void {
           document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'Shift' }));
           checkboxes[7].click();
           document.body.dispatchEvent(new KeyboardEvent('keyup', { key: 'Shift' }));
-          expect(selection.current.includes(4)).toBeFalse();
+          expect(selection.current!.includes(4)).toBeFalse();
           // final state
-          expect(selection.current.every(x => [1, 2, 3, 5, 6, 7].includes(x))).toBeTrue();
+          expect(selection.current!.every(x => [1, 2, 3, 5, 6, 7].includes(x))).toBeTrue();
         });
 
         it('can deselect items inside a range', async function () {
           // define range
-          selection.current.push(1, 2, 3, 4, 5, 6, 7);
+          selection.current!.push(1, 2, 3, 4, 5, 6, 7);
           context.detectChanges();
           await delay();
           // // deselect inside range

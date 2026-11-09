@@ -56,7 +56,7 @@ const LOG_TIMINGS = false;
   standalone: false,
 })
 class PerformanceTestComponent {
-  @ViewChild(ClrTree) tree: ClrTree<PerfNode>;
+  @ViewChild(ClrTree) tree!: ClrTree<PerfNode>;
 
   roots: PerfNode[] = generateTree(ROOTS, BRANCHING, DEPTH);
   expanded: { [name: string]: boolean } = {};
@@ -121,7 +121,7 @@ export default function (): void {
         '.clr-tree-node-content-container[aria-expanded="false"]'
       );
       return Array.from(collapsed).filter(
-        content => getComputedStyle(content.nextElementSibling).contentVisibility !== 'hidden'
+        content => getComputedStyle(content.nextElementSibling!).contentVisibility !== 'hidden'
       ).length;
     }
 

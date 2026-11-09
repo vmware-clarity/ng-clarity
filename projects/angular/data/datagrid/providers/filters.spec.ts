@@ -70,7 +70,7 @@ export default function (): void {
 
     it('exposes an Observable that proxies all filters changes', function (this: Context) {
       let nbChanges = 0;
-      let latestChanges: ClrDatagridFilterInterface<number>[];
+      let latestChanges: ClrDatagridFilterInterface<number>[] | undefined;
       this.filtersInstance.change.subscribe((changes: ClrDatagridFilterInterface<number>[]) => {
         nbChanges++;
         latestChanges = changes;

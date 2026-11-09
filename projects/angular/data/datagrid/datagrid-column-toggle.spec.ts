@@ -104,7 +104,7 @@ export default function (): void {
         context.detectChanges();
         await delay();
         // expect it to have aria-expanded = true
-        const toggleBtn = document.querySelector('.column-toggle-action');
+        const toggleBtn = document.querySelector('.column-toggle-action')!;
         expect(toggleBtn.getAttribute('aria-expanded')).toBe('true');
         columnToggle.toggleSwitchPanel();
         context.detectChanges();
@@ -131,7 +131,7 @@ export default function (): void {
         context.detectChanges();
         await delay();
         expect(document.querySelectorAll('.column-switch').length).toBe(1);
-        const closeBtn: HTMLButtonElement = document.querySelector('.toggle-switch-close-button');
+        const closeBtn: HTMLButtonElement = document.querySelector('.toggle-switch-close-button')!;
         closeBtn.click();
         context.detectChanges();
         await delay();
@@ -142,8 +142,8 @@ export default function (): void {
         columnToggle.toggleSwitchPanel();
         context.detectChanges();
         await delay();
-        expect(document.querySelector('button.column-toggle-action').getAttribute('aria-controls')).toBe(
-          document.querySelector('div.column-switch').getAttribute('id')
+        expect(document.querySelector('button.column-toggle-action')!.getAttribute('aria-controls')).toBe(
+          document.querySelector('div.column-switch')!.getAttribute('id')
         );
       });
 
@@ -152,14 +152,14 @@ export default function (): void {
         columnToggle.toggleSwitchPanel();
         context.detectChanges();
         await delay();
-        expect(document.querySelector('button.toggle-switch-close-button').getAttribute('aria-label')).toBe('Close');
+        expect(document.querySelector('button.toggle-switch-close-button')!.getAttribute('aria-label')).toBe('Close');
       });
 
       it('projects template as switch content', function () {
         columnsService.mockAllHideable();
         columnToggle.openState = true;
         context.detectChanges();
-        expect(document.querySelector('.switch-content li').textContent).toMatch(/Template Content/);
+        expect(document.querySelector('.switch-content li')!.textContent).toMatch(/Template Content/);
       });
 
       it('shows the same number of switches for hideable columns', function () {
@@ -187,7 +187,7 @@ export default function (): void {
         await delay();
         const inputList = document.querySelectorAll('.switch-content input');
         expect(inputList.length).toBe(1);
-        const testInput: HTMLInputElement = document.querySelector('.switch-content input');
+        const testInput: HTMLInputElement = document.querySelector('.switch-content input')!;
         expect(testInput.checked).toBeFalsy();
         testInput.click();
         context.detectChanges();
@@ -234,21 +234,21 @@ export default function (): void {
         columnsService.mockAllHideable();
         columnToggle.openState = true;
         context.fixture.detectChanges();
-        expect(document.querySelector('.switch-header').textContent).toMatch(/Show Columns/);
+        expect(document.querySelector('.switch-header')!.textContent).toMatch(/Show Columns/);
       });
 
       it('shows toggle button in switch panel', function () {
         columnsService.mockAllHideable();
         columnToggle.openState = true;
         context.fixture.detectChanges();
-        expect(document.querySelector('button.switch-button').textContent).toMatch(/Select All/);
+        expect(document.querySelector('button.switch-button')!.textContent).toMatch(/Select All/);
       });
 
       it('disables toggle button when all columns are hideable and all of them are visible', function () {
         columnsService.mockAllHideable();
         columnToggle.openState = true;
         context.fixture.detectChanges();
-        const disabledButton: HTMLButtonElement = document.querySelector('button.switch-button');
+        const disabledButton: HTMLButtonElement = document.querySelector('button.switch-button')!;
         expect(disabledButton.disabled).toBeTruthy();
       });
 
@@ -257,7 +257,7 @@ export default function (): void {
         columnsService.mockHideableAt(1, true);
         columnToggle.openState = true;
         context.fixture.detectChanges();
-        const toggleButton: HTMLButtonElement = document.querySelector('button.switch-button');
+        const toggleButton: HTMLButtonElement = document.querySelector('button.switch-button')!;
         expect(toggleButton.disabled).toBeFalsy();
       });
     });

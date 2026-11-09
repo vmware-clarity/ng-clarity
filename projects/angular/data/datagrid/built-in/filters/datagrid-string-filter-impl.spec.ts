@@ -101,7 +101,7 @@ class TestFilter implements ClrDatagridStringFilterInterface<string> {
 }
 
 class IncompatibleFilter implements ClrDatagridFilterInterface<string> {
-  changes: Observable<any>;
+  changes!: Observable<any>;
 
   accepts(_item: string): boolean {
     return true;

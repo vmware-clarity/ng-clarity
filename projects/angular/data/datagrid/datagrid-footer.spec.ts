@@ -61,14 +61,14 @@ export default function (): void {
       it('shows the selection details when more than one item is selected', function () {
         const clarityDirectiveSelection = context.clarityDirective.selection;
         clarityDirectiveSelection.selectionType = SelectionType.Multi;
-        clarityDirectiveSelection.current.push(1);
+        clarityDirectiveSelection.current!.push(1);
 
         context.detectChanges();
 
         expect(context.clarityElement.querySelector('.datagrid-footer-select')).not.toBeNull();
         expect(context.clarityElement.querySelector('.datagrid-footer-select').textContent).toMatch('1');
 
-        clarityDirectiveSelection.current.push(1);
+        clarityDirectiveSelection.current!.push(1);
         context.detectChanges();
 
         expect(context.clarityElement.querySelector('.datagrid-footer-select')).not.toBeNull();

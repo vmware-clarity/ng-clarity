@@ -27,7 +27,7 @@ export default function (): void {
     describe('Typescript API', function () {
       beforeEach(function (this: Context) {
         this.pageProvider = new Page(new StateDebouncer());
-        this.itemsProvider = new Items(null, null, this.pageProvider);
+        this.itemsProvider = new Items(null!, null!, this.pageProvider);
         this.component = new ClrDatagridPlaceholder(this.itemsProvider);
       });
 

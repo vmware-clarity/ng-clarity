@@ -45,7 +45,7 @@ function menuItemLabels(): string[] {
 }
 
 function itemLabelled(label: string): HTMLElement {
-  return menuItems().find(item => item.textContent.trim() === label);
+  return menuItems().find(item => item.textContent.trim() === label)!;
 }
 
 function menuIsOpen(): boolean {
@@ -76,7 +76,7 @@ function menuIsOpen(): boolean {
 })
 class ColumnActionsTest {
   items = [1, 2, 3];
-  sortBy = 'x';
+  sortBy: string | undefined = 'x';
   disableUnsort = false;
   pinnable = true;
   firstPinned = false;
@@ -204,7 +204,7 @@ export default function (): void {
 
       function closeMenu() {
         if (menuIsOpen()) {
-          element.querySelector<HTMLButtonElement>(TOGGLE).click();
+          element.querySelector<HTMLButtonElement>(TOGGLE)!.click();
           context.detectChanges();
         }
       }
@@ -224,24 +224,24 @@ export default function (): void {
       });
 
       it('renders the trigger at the trailing edge of the header, not inside the sort button', function () {
-        const headerCell = element.querySelector<HTMLElement>('.datagrid-header clr-dg-column .datagrid-column-flex');
+        const headerCell = element.querySelector<HTMLElement>('.datagrid-header clr-dg-column .datagrid-column-flex')!;
         const actions = headerCell.querySelector('clr-dg-column-actions');
 
         expect(actions).not.toBeNull();
-        expect(actions.parentElement).toBe(headerCell);
+        expect(actions!.parentElement).toBe(headerCell);
         expect(headerCell.querySelector('.datagrid-column-title clr-dg-column-actions')).toBeNull();
       });
 
       it('labels the trigger with the column it belongs to', function () {
         const commonStrings = new ClrCommonStringsService();
 
-        expect(element.querySelector(TOGGLE).getAttribute('aria-label')).toBe(
+        expect(element.querySelector(TOGGLE)!.getAttribute('aria-label')).toBe(
           commonStrings.parse(commonStrings.keys.datagridColumnActionsAriaLabel, { COLUMN: 'First' })
         );
       });
 
       it('leaves the column title sortable', function () {
-        const title = element.querySelector<HTMLButtonElement>('.datagrid-header .datagrid-column-title');
+        const title = element.querySelector<HTMLButtonElement>('.datagrid-header .datagrid-column-title')!;
         expect(title.tagName).toBe('BUTTON');
 
         title.click();
@@ -260,14 +260,14 @@ export default function (): void {
       // item and then want it open again, and an unconditional click would close it instead.
       function openMenu() {
         if (!menuIsOpen()) {
-          element.querySelector<HTMLButtonElement>(TOGGLE).click();
+          element.querySelector<HTMLButtonElement>(TOGGLE)!.click();
           context.detectChanges();
         }
       }
 
       function closeMenu() {
         if (menuIsOpen()) {
-          element.querySelector<HTMLButtonElement>(TOGGLE).click();
+          element.querySelector<HTMLButtonElement>(TOGGLE)!.click();
           context.detectChanges();
         }
       }
@@ -351,14 +351,14 @@ export default function (): void {
       // item and then want it open again, and an unconditional click would close it instead.
       function openMenu() {
         if (!menuIsOpen()) {
-          element.querySelector<HTMLButtonElement>(TOGGLE).click();
+          element.querySelector<HTMLButtonElement>(TOGGLE)!.click();
           context.detectChanges();
         }
       }
 
       function closeMenu() {
         if (menuIsOpen()) {
-          element.querySelector<HTMLButtonElement>(TOGGLE).click();
+          element.querySelector<HTMLButtonElement>(TOGGLE)!.click();
           context.detectChanges();
         }
       }
@@ -388,7 +388,7 @@ export default function (): void {
         openMenu();
 
         const actions = context.fixture.debugElement.query(By.directive(ClrDatagridColumnActions));
-        const action = getDebugNode(document.querySelector('.custom-action'));
+        const action = getDebugNode(document.querySelector('.custom-action'))!;
 
         expect(action.injector.get(ClrDatagridColumnAction)).toBeInstanceOf(ClrDropdownItem);
         expect(action.injector.get(ClrDropdown)).toBe(actions.componentInstance);
@@ -422,7 +422,7 @@ export default function (): void {
         itemLabelled('Custom').click();
         context.detectChanges();
 
-        expect(element.querySelector(TOGGLE).getAttribute('aria-expanded')).toBe('false');
+        expect(element.querySelector(TOGGLE)!.getAttribute('aria-expanded')).toBe('false');
         expect(menuIsOpen()).toBeFalse();
       });
 
@@ -432,7 +432,7 @@ export default function (): void {
         itemLabelled('Keep open').click();
         context.detectChanges();
 
-        expect(element.querySelector(TOGGLE).getAttribute('aria-expanded')).toBe('true');
+        expect(element.querySelector(TOGGLE)!.getAttribute('aria-expanded')).toBe('true');
       });
 
       it('marks a disabled projected action and leaves the menu open', function () {
@@ -448,7 +448,7 @@ export default function (): void {
         custom.click();
         context.detectChanges();
 
-        expect(element.querySelector(TOGGLE).getAttribute('aria-expanded')).toBe('true');
+        expect(element.querySelector(TOGGLE)!.getAttribute('aria-expanded')).toBe('true');
       });
     });
 
@@ -481,7 +481,7 @@ export default function (): void {
       }
 
       async function press(key: string) {
-        document.activeElement.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }));
+        document.activeElement!.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }));
         await settle();
       }
 
@@ -535,14 +535,14 @@ export default function (): void {
       // item and then want it open again, and an unconditional click would close it instead.
       function openMenu() {
         if (!menuIsOpen()) {
-          element.querySelector<HTMLButtonElement>(TOGGLE).click();
+          element.querySelector<HTMLButtonElement>(TOGGLE)!.click();
           context.detectChanges();
         }
       }
 
       function closeMenu() {
         if (menuIsOpen()) {
-          element.querySelector<HTMLButtonElement>(TOGGLE).click();
+          element.querySelector<HTMLButtonElement>(TOGGLE)!.click();
           context.detectChanges();
         }
       }
@@ -732,20 +732,20 @@ export default function (): void {
       // item and then want it open again, and an unconditional click would close it instead.
       function openMenu() {
         if (!menuIsOpen()) {
-          element.querySelector<HTMLButtonElement>(TOGGLE).click();
+          element.querySelector<HTMLButtonElement>(TOGGLE)!.click();
           context.detectChanges();
         }
       }
 
       function closeMenu() {
         if (menuIsOpen()) {
-          element.querySelector<HTMLButtonElement>(TOGGLE).click();
+          element.querySelector<HTMLButtonElement>(TOGGLE)!.click();
           context.detectChanges();
         }
       }
 
       function filterPanel(): HTMLElement {
-        return document.querySelector('.datagrid-filter');
+        return document.querySelector('.datagrid-filter')!;
       }
 
       beforeEach(function (this: TestHelpers) {
@@ -799,7 +799,7 @@ export default function (): void {
         filterItem.click();
         context.detectChanges();
 
-        expect(popover.originElement.nativeElement).toBe(filterItem);
+        expect(popover.originElement!.nativeElement).toBe(filterItem);
       });
 
       // The menu and the filter are two separate overlays, so nothing structurally stops both being
@@ -835,12 +835,12 @@ export default function (): void {
         // guards against: the trigger keeping a stale icon until an unrelated interaction.
         context.fixture.autoDetectChanges(true);
 
-        const input: HTMLInputElement = filterPanel().querySelector('input');
+        const input: HTMLInputElement = filterPanel().querySelector('input')!;
         input.value = 'aaa';
         input.dispatchEvent(new Event('input'));
         await context.fixture.whenStable();
 
-        expect(element.querySelector(TOGGLE).classList).toContain('datagrid-column-actions-filtered');
+        expect(element.querySelector(TOGGLE)!.classList).toContain('datagrid-column-actions-filtered');
       });
 
       // This item stands in for the filter's own toggle, which announced all of this - see the
@@ -887,11 +887,11 @@ export default function (): void {
         filter.value = 'aaa';
         context.detectChanges();
 
-        expect(element.querySelector(TOGGLE).classList).toContain('datagrid-column-actions-filtered');
+        expect(element.querySelector(TOGGLE)!.classList).toContain('datagrid-column-actions-filtered');
 
         openMenu();
 
-        const filterIcon = itemLabelled(commonStrings.keys.filterColumn)?.querySelector('cds-icon');
+        const filterIcon = itemLabelled(commonStrings.keys.filterColumn)?.querySelector('cds-icon')!;
         expect(filterIcon.getAttribute('shape')).toContain('filter-grid-circle');
       });
     });
@@ -902,7 +902,7 @@ export default function (): void {
 
       function closeMenu() {
         if (menuIsOpen()) {
-          element.querySelector<HTMLButtonElement>(TOGGLE).click();
+          element.querySelector<HTMLButtonElement>(TOGGLE)!.click();
           context.detectChanges();
         }
       }
@@ -917,7 +917,7 @@ export default function (): void {
       });
 
       it('omits the filter action when the column has no filter', function () {
-        element.querySelector<HTMLButtonElement>(TOGGLE).click();
+        element.querySelector<HTMLButtonElement>(TOGGLE)!.click();
         context.detectChanges();
 
         expect(menuItemLabels()).not.toContain(new ClrCommonStringsService().keys.filterColumn);
@@ -931,14 +931,14 @@ export default function (): void {
 
       function openMenu() {
         if (!menuIsOpen()) {
-          element.querySelector<HTMLButtonElement>(TOGGLE).click();
+          element.querySelector<HTMLButtonElement>(TOGGLE)!.click();
           context.detectChanges();
         }
       }
 
       function closeMenu() {
         if (menuIsOpen()) {
-          element.querySelector<HTMLButtonElement>(TOGGLE).click();
+          element.querySelector<HTMLButtonElement>(TOGGLE)!.click();
           context.detectChanges();
         }
       }

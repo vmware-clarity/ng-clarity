@@ -16,7 +16,7 @@ import { WrappedColumn } from './wrapped-column';
   standalone: false,
 })
 class WrappedColumnTest {
-  @ViewChild(WrappedColumn, { static: true }) wrapper: WrappedColumn;
+  @ViewChild(WrappedColumn, { static: true }) wrapper!: WrappedColumn;
 }
 
 interface TestContext {

@@ -29,7 +29,7 @@ export default function (): void {
       const child = document.createElement('div');
       child.style.width = '10px';
       child.style.height = '1234px';
-      element.replaceChild(child, element.firstChild);
+      element.replaceChild(child, element.firstChild!);
       expect(domAdapter.computedHeight(element)).toBe(0);
     });
 

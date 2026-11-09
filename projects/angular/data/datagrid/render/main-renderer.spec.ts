@@ -254,24 +254,24 @@ export default function (): void {
         context.testComponent.firstHeader = 'ZZZZZZ ZZZZZZ ZZZZZZ ZZZZZZ';
         context.detectChanges();
         organizer.resize();
-        expect(columnsService.columns[0].value.width).toBeGreaterThan(columnsService.columns[1].value.width);
+        expect(columnsService.columns[0].value.width).toBeGreaterThan(columnsService.columns[1].value.width!);
         context.testComponent.firstHeader = 'AAA';
         context.testComponent.secondHeader = 'ZZZZZZ ZZZZZZ ZZZZZZ ZZZZZZ';
         context.detectChanges();
         organizer.resize();
-        expect(columnsService.columns[0].value.width).toBeLessThan(columnsService.columns[1].value.width);
+        expect(columnsService.columns[0].value.width).toBeLessThan(columnsService.columns[1].value.width!);
       });
 
       it('uses cells content to compute columns width', function () {
         context.testComponent.firstCell = 'ZZZZZZ ZZZZZZ ZZZZZZ ZZZZZZ';
         context.detectChanges();
         organizer.resize();
-        expect(columnsService.columns[0].value.width).toBeGreaterThan(columnsService.columns[1].value.width);
+        expect(columnsService.columns[0].value.width).toBeGreaterThan(columnsService.columns[1].value.width!);
         context.testComponent.firstCell = 'AAA';
         context.testComponent.secondCell = 'ZZZZZZ ZZZZZZ ZZZZZZ ZZZZZZ';
         context.detectChanges();
         organizer.resize();
-        expect(columnsService.columns[0].value.width).toBeLessThan(columnsService.columns[1].value.width);
+        expect(columnsService.columns[0].value.width).toBeLessThan(columnsService.columns[1].value.width!);
       });
 
       it('correctly sets strict widths', function () {
@@ -403,14 +403,14 @@ export default function (): void {
   standalone: false,
 })
 class RenderWidthTest {
-  currentTest: string;
+  currentTest!: string;
   expandable = false;
   hasActions = false;
   selected: any[] = [];
-  @ViewChild('dgContainer', { read: ElementRef }) container: ElementRef<HTMLElement>;
-  @ViewChild('datagridDefault', { read: ElementRef }) datagridDefault: ElementRef<HTMLElement>;
-  @ViewChild('datagridSingleSelect', { read: ElementRef }) datagridSingleSelect: ElementRef<HTMLElement>;
-  @ViewChild('datagridMultiSelect', { read: ElementRef }) datagridMultiSelect: ElementRef<HTMLElement>;
+  @ViewChild('dgContainer', { read: ElementRef }) container!: ElementRef<HTMLElement>;
+  @ViewChild('datagridDefault', { read: ElementRef }) datagridDefault!: ElementRef<HTMLElement>;
+  @ViewChild('datagridSingleSelect', { read: ElementRef }) datagridSingleSelect!: ElementRef<HTMLElement>;
+  @ViewChild('datagridMultiSelect', { read: ElementRef }) datagridMultiSelect!: ElementRef<HTMLElement>;
   protected readonly SelectionType = SelectionType;
 }
 

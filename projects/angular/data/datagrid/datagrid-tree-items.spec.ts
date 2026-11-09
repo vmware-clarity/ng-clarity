@@ -60,13 +60,13 @@ type LoaderKind = 'observable' | 'promise' | 'sync' | 'throw';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 class TreeTest {
-  @ViewChild(ClrDatagrid) datagrid: ClrDatagrid<Folder>;
+  @ViewChild(ClrDatagrid) datagrid!: ClrDatagrid<Folder>;
 
   selectionType = SelectionType.Multi;
   selected: Folder[] = [];
   roots: Folder[] = [{ id: 'a', children: 2 }, { id: 'b', children: 5 }, { id: 'c' }];
   requests: string[] = [];
-  cascade = true;
+  cascade: boolean | undefined = true;
   pinSize = false;
   toggleOnName = false;
   toggleOnSize = false;
@@ -84,7 +84,7 @@ class TreeTest {
     this.requests.push(folder.id);
     switch (this.loader) {
       case 'sync':
-        return this.childrenOf(folder.id, folder.children);
+        return this.childrenOf(folder.id, folder.children!);
       case 'throw':
         throw new Error('offline');
       case 'promise':
@@ -100,20 +100,20 @@ class TreeTest {
   respond(parent: string, count: number, { now } = { now: true }) {
     const children = this.childrenOf(parent, count);
     if (this.loader === 'promise') {
-      this.promises.get(parent)(children);
+      this.promises.get(parent)!(children);
     } else if (now) {
-      applyNow(() => this.observables.get(parent).next(children));
+      applyNow(() => this.observables.get(parent)!.next(children));
     } else {
-      this.observables.get(parent).next(children);
+      this.observables.get(parent)!.next(children);
     }
   }
 
   end(parent: string) {
-    applyNow(() => this.observables.get(parent).complete());
+    applyNow(() => this.observables.get(parent)!.complete());
   }
 
   fail(parent: string) {
-    applyNow(() => this.observables.get(parent).error(new Error('offline')));
+    applyNow(() => this.observables.get(parent)!.error(new Error('offline')));
   }
 
   private childrenOf(parent: string, count: number): Folder[] {
@@ -166,7 +166,8 @@ class VirtualTreeTest {
   roots: Folder[] = [{ id: 'a', children: 2 }, { id: 'b' }];
 
   identity = (folder: Folder) => folder.id;
-  getChildren = (folder: Folder) => Array.from({ length: folder.children }, (_, i) => ({ id: `${folder.id}${i + 1}` }));
+  getChildren = (folder: Folder) =>
+    Array.from({ length: folder.children! }, (_, i) => ({ id: `${folder.id}${i + 1}` }));
 }
 
 @Component({
@@ -198,7 +199,7 @@ class VirtualRangeTreeTest {
   // The rows of roots not loaded yet have no item.
   identity = (folder: Folder) => folder?.id;
   getChildren = (folder: Folder) =>
-    Array.from({ length: folder.children }, (_, i) => ({ id: `${folder.id}-${i + 1}` }));
+    Array.from({ length: folder.children! }, (_, i) => ({ id: `${folder.id}-${i + 1}` }));
 
   load(skip: number, count: number) {
     this.range = { total: 1000, skip, data: roots(skip, count) };
@@ -244,15 +245,15 @@ export default function (): void {
 
     // The visible text of the first cell, without the hidden label of the toggle.
     function rowNames() {
-      return rows().map(row => row.querySelector<HTMLElement>('.datagrid-tree-cell-text').innerText.trim());
+      return rows().map(row => row.querySelector<HTMLElement>('.datagrid-tree-cell-text')!.innerText.trim());
     }
 
     function masterRow(index: number) {
-      return rows()[index].querySelector('[role=row]');
+      return rows()[index].querySelector('[role=row]')!;
     }
 
     function toggleButton(index: number) {
-      return rows()[index].querySelector<HTMLButtonElement>('.datagrid-tree-toggle');
+      return rows()[index].querySelector<HTMLButtonElement>('.datagrid-tree-toggle')!;
     }
 
     function toggle(index: number) {
@@ -299,7 +300,7 @@ export default function (): void {
       function cellOf(row: number, text: RegExp) {
         return Array.from(rows()[row].querySelectorAll<HTMLElement>('clr-dg-cell')).find(cell =>
           text.test(cell.innerText.trim())
-        );
+        )!;
       }
 
       it('keeps the toggle in its column when another column is pinned', async function () {
@@ -335,15 +336,15 @@ export default function (): void {
 
       it('names the toggle with the action and the leading cell of its row', function () {
         const button = toggleButton(0);
-        const [action, cell] = button.getAttribute('aria-labelledby').split(' ');
-        expect(document.getElementById(action).textContent.trim()).toBe('Expand');
+        const [action, cell] = button.getAttribute('aria-labelledby')!.split(' ');
+        expect(document.getElementById(action)!.textContent.trim()).toBe('Expand');
         expect(document.getElementById(cell)).toBe(rows()[0].querySelector<HTMLElement>('clr-dg-cell'));
       });
 
       it('names the toggle of another column after the leading cell too, a pinned one first', async function () {
         context.toggleOnSize = true;
         fixture.detectChanges();
-        const labelCell = () => document.getElementById(toggleButton(0).getAttribute('aria-labelledby').split(' ')[1]);
+        const labelCell = () => document.getElementById(toggleButton(0).getAttribute('aria-labelledby')!.split(' ')[1]);
         expect(labelCell()).toBe(cellOf(0, /^a$/));
 
         context.pinSize = true;
@@ -357,7 +358,7 @@ export default function (): void {
         context.respond('a', 2);
         fixture.detectChanges();
         const text = (index: number) =>
-          rows()[index].querySelector<HTMLElement>('.datagrid-tree-cell-text').getBoundingClientRect();
+          rows()[index].querySelector<HTMLElement>('.datagrid-tree-cell-text')!.getBoundingClientRect();
         expect(text(1).left - text(0).left).toBeGreaterThan(0);
         expect(getComputedStyle(cellOf(0, /^a$/)).paddingLeft).toBe(getComputedStyle(cellOf(1, /^a1$/)).paddingLeft);
         // The toggle comes before the text, in the content.
@@ -365,7 +366,7 @@ export default function (): void {
       });
 
       it('centres the toggle on the first line of the text, whatever its line height', function () {
-        const text = rows()[0].querySelector<HTMLElement>('.datagrid-tree-cell-text');
+        const text = rows()[0].querySelector<HTMLElement>('.datagrid-tree-cell-text')!;
         const centre = (rect: DOMRect) => rect.top + rect.height / 2;
         const firstLine = () => {
           const range = document.createRange();
@@ -373,7 +374,7 @@ export default function (): void {
           return centre(range.getClientRects()[0]);
         };
         for (const lineHeight of ['16px', '32px']) {
-          rows()[0].querySelector<HTMLElement>('.datagrid-tree-cell-content').style.lineHeight = lineHeight;
+          rows()[0].querySelector<HTMLElement>('.datagrid-tree-cell-content')!.style.lineHeight = lineHeight;
           expect(centre(toggleButton(0).getBoundingClientRect())).toBeCloseTo(firstLine(), 0);
         }
       });
@@ -566,7 +567,7 @@ export default function (): void {
 
       it('drops a failure that came in before its row was reloaded', async function () {
         toggle(0);
-        context['observables'].get('a').error(new Error('offline'));
+        context['observables'].get('a')!.error(new Error('offline'));
         context.datagrid.reloadTreeChildren(context.roots[0]);
         fixture.detectChanges();
         await new Promise(resolve => requestAnimationFrame(resolve));
@@ -581,7 +582,7 @@ export default function (): void {
 
       it('fetches the children of an open child again when it comes back from another page', function () {
         toggle(0);
-        applyNow(() => context['observables'].get('a').next([{ id: 'a1', children: 1 }]));
+        applyNow(() => context['observables'].get('a')!.next([{ id: 'a1', children: 1 }]));
         fixture.detectChanges();
         toggle(1); // a1, still loading when its page goes away
         expect(context.requests).toEqual(['a', 'a1']);
@@ -705,7 +706,7 @@ export default function (): void {
         toggle(0);
         context.respond('a', 2);
         fixture.detectChanges();
-        const cell = rows()[1].querySelector<HTMLElement>('clr-dg-cell');
+        const cell = rows()[1].querySelector<HTMLElement>('clr-dg-cell')!;
         context.datagrid.keyNavigation.setActiveCell(cell);
         cell.focus();
 
@@ -719,7 +720,7 @@ export default function (): void {
         toggle(0);
         context.respond('a', 2);
         fixture.detectChanges();
-        context.datagrid.keyNavigation.setActiveCell(rows()[1].querySelector<HTMLElement>('clr-dg-cell'));
+        context.datagrid.keyNavigation.setActiveCell(rows()[1].querySelector<HTMLElement>('clr-dg-cell')!);
         const outside = document.createElement('button');
         document.body.appendChild(outside);
         outside.focus();
@@ -734,7 +735,7 @@ export default function (): void {
         toggle(0);
         context.respond('a', 2);
         fixture.detectChanges();
-        const cell = rows()[1].querySelector<HTMLElement>('clr-dg-cell');
+        const cell = rows()[1].querySelector<HTMLElement>('clr-dg-cell')!;
         cell.setAttribute('tabindex', '-1');
         cell.focus();
 
@@ -957,7 +958,7 @@ export default function (): void {
         context.respond('a', 2);
         fixture.detectChanges();
         element.querySelectorAll('[tabindex="0"]').forEach(cell => cell.setAttribute('tabindex', '-1'));
-        const childCell = rows()[1].querySelector<HTMLElement>('clr-dg-cell');
+        const childCell = rows()[1].querySelector<HTMLElement>('clr-dg-cell')!;
         childCell.setAttribute('tabindex', '0');
         childCell.focus();
 
@@ -1002,25 +1003,25 @@ export default function (): void {
         context.respond('a', 2);
         fixture.detectChanges();
         await fixture.whenStable();
-        rows()[0].querySelector<HTMLLabelElement>('.datagrid-select label').click();
+        rows()[0].querySelector<HTMLLabelElement>('.datagrid-select label')!.click();
         fixture.detectChanges();
         await fixture.whenStable();
-        expect(context.datagrid.selection.current.map(folder => folder.id)).toEqual(['a']);
-        expect(rows()[0].querySelector<HTMLInputElement>('.datagrid-select input').indeterminate).toBe(false);
+        expect(context.datagrid.selection.current!.map(folder => folder.id)).toEqual(['a']);
+        expect(rows()[0].querySelector<HTMLInputElement>('.datagrid-select input')!.indeterminate).toBe(false);
       });
 
       describe('of descendants', function () {
         function checkbox(index: number) {
-          return rows()[index].querySelector<HTMLInputElement>('.datagrid-select input');
+          return rows()[index].querySelector<HTMLInputElement>('.datagrid-select input')!;
         }
 
         function selectedIds() {
-          return context.datagrid.selection.current.map(folder => folder.id).sort();
+          return context.datagrid.selection.current!.map(folder => folder.id).sort();
         }
 
         // Through the label, like a user: it is what covers the checkbox.
         async function click(index: number) {
-          rows()[index].querySelector<HTMLLabelElement>('.datagrid-select label').click();
+          rows()[index].querySelector<HTMLLabelElement>('.datagrid-select label')!.click();
           fixture.detectChanges();
           await fixture.whenStable();
           fixture.detectChanges();
@@ -1130,7 +1131,7 @@ export default function (): void {
         });
 
         it('selects everything loaded from the header checkbox', async function () {
-          element.querySelector<HTMLLabelElement>('.datagrid-header .datagrid-select label').click();
+          element.querySelector<HTMLLabelElement>('.datagrid-header .datagrid-select label')!.click();
           fixture.detectChanges();
           await fixture.whenStable();
           expect(selectedIds()).toEqual(['a', 'a1', 'a2', 'b', 'c']);
@@ -1161,7 +1162,7 @@ export default function (): void {
       }
 
       function names() {
-        return virtualRows().map(row => row.querySelector<HTMLElement>('clr-dg-cell').innerText.trim());
+        return virtualRows().map(row => row.querySelector<HTMLElement>('clr-dg-cell')!.innerText.trim());
       }
 
       function grid(): ClrDatagrid {
@@ -1170,7 +1171,7 @@ export default function (): void {
 
       // The first cell of the row that has the focus.
       function focusedName() {
-        return document.activeElement.closest('clr-dg-row').querySelector('clr-dg-cell').textContent.trim();
+        return document.activeElement!.closest('clr-dg-row')!.querySelector('clr-dg-cell')!.textContent.trim();
       }
 
       afterEach(() => virtual?.destroy());
@@ -1178,12 +1179,12 @@ export default function (): void {
       it('renders the expanded tree as one list', async function () {
         await render();
         expect(names()).toEqual(['a', 'b']);
-        expect(host.querySelector('[role=treegrid]').getAttribute('aria-rowcount')).toBe('2');
+        expect(host.querySelector('[role=treegrid]')!.getAttribute('aria-rowcount')).toBe('2');
 
-        host.querySelector<HTMLButtonElement>('.datagrid-tree-toggle').click();
+        host.querySelector<HTMLButtonElement>('.datagrid-tree-toggle')!.click();
         await settle();
         expect(names()).toEqual(['a', 'a1', 'a2', 'b']);
-        expect(host.querySelector('[role=treegrid]').getAttribute('aria-rowcount')).toBe('4');
+        expect(host.querySelector('[role=treegrid]')!.getAttribute('aria-rowcount')).toBe('4');
       });
 
       it('expands all rows, fetching the children of the rendered ones only', async function () {
@@ -1212,7 +1213,7 @@ export default function (): void {
         grid().expandAllTreeRows();
         virtual.detectChanges();
 
-        grid().virtualScroll.scrollToIndex(120);
+        grid().virtualScroll!.scrollToIndex(120);
         await delay(50);
         virtual.detectChanges();
         await delay(50);
@@ -1224,11 +1225,11 @@ export default function (): void {
 
       it('keeps the focus on its item when rows are inserted above it', async function () {
         await render();
-        const cell = virtualRows()[1].querySelector<HTMLElement>('clr-dg-cell');
+        const cell = virtualRows()[1].querySelector<HTMLElement>('clr-dg-cell')!;
         cell.setAttribute('tabindex', '-1');
         cell.focus();
 
-        virtualRows()[0].querySelector<HTMLButtonElement>('.datagrid-tree-toggle').click();
+        virtualRows()[0].querySelector<HTMLButtonElement>('.datagrid-tree-toggle')!.click();
         await settle();
         await delay();
         expect(focusedName()).toBe('b');
@@ -1236,12 +1237,12 @@ export default function (): void {
 
       it('gives the focus back to the element of the cell that had it', async function () {
         await render();
-        virtualRows()[1].querySelector<HTMLButtonElement>('.share').focus();
+        virtualRows()[1].querySelector<HTMLButtonElement>('.share')!.focus();
 
-        virtualRows()[0].querySelector<HTMLButtonElement>('.datagrid-tree-toggle').click();
+        virtualRows()[0].querySelector<HTMLButtonElement>('.datagrid-tree-toggle')!.click();
         await settle();
         await delay();
-        expect(document.activeElement.classList).toContain('share');
+        expect(document.activeElement!.classList).toContain('share');
         expect(focusedName()).toBe('b');
       });
 
@@ -1249,9 +1250,9 @@ export default function (): void {
         await render();
         const outside = document.createElement('button');
         document.body.appendChild(outside);
-        virtualRows()[1].querySelector<HTMLButtonElement>('.share').focus();
+        virtualRows()[1].querySelector<HTMLButtonElement>('.share')!.focus();
 
-        host.querySelector<HTMLButtonElement>('.datagrid-tree-toggle').click();
+        host.querySelector<HTMLButtonElement>('.datagrid-tree-toggle')!.click();
         outside.focus();
         await settle();
         await delay();
@@ -1261,9 +1262,9 @@ export default function (): void {
 
       it('keeps the tab stop of the grid in the rows when the row that had it is hidden', async function () {
         await render();
-        host.querySelector<HTMLButtonElement>('.datagrid-tree-toggle').click();
+        host.querySelector<HTMLButtonElement>('.datagrid-tree-toggle')!.click();
         await settle();
-        grid().keyNavigation.setActiveCell(virtualRows()[1].querySelector<HTMLElement>('clr-dg-cell'));
+        grid().keyNavigation.setActiveCell(virtualRows()[1].querySelector<HTMLElement>('clr-dg-cell')!);
 
         grid().collapseAllTreeRows();
         await settle();
@@ -1273,7 +1274,7 @@ export default function (): void {
 
       it('does not throw when the focused row goes away with its ancestors', async function () {
         await render();
-        const cell = virtualRows()[1].querySelector<HTMLElement>('clr-dg-cell');
+        const cell = virtualRows()[1].querySelector<HTMLElement>('clr-dg-cell')!;
         cell.setAttribute('tabindex', '-1');
         cell.focus();
 
@@ -1298,11 +1299,11 @@ export default function (): void {
       }
 
       function rowOf(id: string) {
-        return rows().find(row => row.querySelector<HTMLElement>('clr-dg-cell').innerText.trim() === id);
+        return rows().find(row => row.querySelector<HTMLElement>('clr-dg-cell')!.innerText.trim() === id)!;
       }
 
       function rowCount() {
-        return host.querySelector('[role=treegrid]').getAttribute('aria-rowcount');
+        return host.querySelector('[role=treegrid]')!.getAttribute('aria-rowcount');
       }
 
       function lastRendered() {
@@ -1323,7 +1324,7 @@ export default function (): void {
 
       it('shows the roots not loaded yet as rows without an item, and reports the rendered roots', function () {
         expect(rowCount()).toBe('1000');
-        expect(rowOf('r0').querySelector('[role=row]').getAttribute('aria-setsize')).toBe('1000');
+        expect(rowOf('r0').querySelector('[role=row]')!.getAttribute('aria-setsize')).toBe('1000');
         expect(lastRendered().start).toBe(0);
         expect(lastRendered().end).toBeGreaterThan(0);
       });
@@ -1344,7 +1345,7 @@ export default function (): void {
       });
 
       it('counts the children of loaded roots in the rows, and keeps them when other roots load', async function () {
-        rowOf('r0').querySelector<HTMLButtonElement>('.datagrid-tree-toggle').click();
+        rowOf('r0').querySelector<HTMLButtonElement>('.datagrid-tree-toggle')!.click();
         await settle();
         expect(rowCount()).toBe('1002');
 
@@ -1355,11 +1356,11 @@ export default function (): void {
       });
 
       it('reports the roots it scrolls to, past the children of the expanded ones', async function () {
-        rowOf('r0').querySelector<HTMLButtonElement>('.datagrid-tree-toggle').click();
+        rowOf('r0').querySelector<HTMLButtonElement>('.datagrid-tree-toggle')!.click();
         await settle();
 
         // Row 600 is root 598, after the two children of the first root.
-        grid().virtualScroll.scrollToIndex(600);
+        grid().virtualScroll!.scrollToIndex(600);
         await delay(50);
         await settle();
         expect(lastRendered().start).toBeLessThanOrEqual(598);
@@ -1367,7 +1368,7 @@ export default function (): void {
 
         fixture.componentInstance.load(lastRendered().start, lastRendered().end - lastRendered().start);
         await settle();
-        const root = rowOf('r598').querySelector('[role=row]');
+        const root = rowOf('r598').querySelector('[role=row]')!;
         expect(root.getAttribute('aria-posinset')).toBe('599');
         expect(root.getAttribute('aria-level')).toBe('1');
       });
@@ -1375,8 +1376,8 @@ export default function (): void {
       it('loads a root again at its old place when a range moves it', async function () {
         fixture.componentInstance.range = { total: 1000, skip: 30, data: [{ id: 'r0', children: 2 }] };
         await settle();
-        expect(rowOf('r0').querySelector('[role=row]').getAttribute('aria-posinset')).toBe('31');
-        expect(rows()[0].querySelector<HTMLElement>('clr-dg-cell').innerText.trim()).toBe('');
+        expect(rowOf('r0').querySelector('[role=row]')!.getAttribute('aria-posinset')).toBe('31');
+        expect(rows()[0].querySelector<HTMLElement>('clr-dg-cell')!.innerText.trim()).toBe('');
       });
     });
   });

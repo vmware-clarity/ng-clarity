@@ -36,10 +36,10 @@ function getChildren(node: TestNode) {
   standalone: false,
 })
 class TestComponent {
-  @ViewChild('template') template: TemplateRef<ClrRecursiveForOfContext<TestNode>>;
+  @ViewChild('template') template!: TemplateRef<ClrRecursiveForOfContext<TestNode>>;
 
-  parent: RecursiveTreeNodeModel<TestNode>;
-  children: RecursiveTreeNodeModel<TestNode>[];
+  parent?: RecursiveTreeNodeModel<TestNode>;
+  children!: RecursiveTreeNodeModel<TestNode>[];
 }
 
 export default function (): void {
@@ -124,7 +124,7 @@ export default function (): void {
     });
 
     it('does not destroy the children when he parent becomes collapsed if the tree is eager', function (this: Context) {
-      const spy = spyOn(this.testComponent.parent, 'clearChildren');
+      const spy = spyOn(this.testComponent.parent!, 'clearChildren');
       this.expandService.expanded = true;
       expect(spy).not.toHaveBeenCalled();
       this.expandService.expanded = false;
@@ -133,7 +133,7 @@ export default function (): void {
 
     it('destroys the children when he parent becomes collapsed if the tree is lazy', function (this: Context) {
       this.featuresService.eager = false;
-      const spy = spyOn(this.testComponent.parent, 'clearChildren');
+      const spy = spyOn(this.testComponent.parent!, 'clearChildren');
       this.expandService.expanded = true;
       expect(spy).not.toHaveBeenCalled();
       this.expandService.expanded = false;

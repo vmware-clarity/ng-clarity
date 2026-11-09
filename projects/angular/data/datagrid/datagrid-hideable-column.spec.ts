@@ -186,7 +186,7 @@ class HideableNotInsideColumnTest {}
   standalone: false,
 })
 class HideableSugaredTest {
-  hideFirst: boolean;
+  hideFirst!: boolean;
 }
 
 @Component({
@@ -203,5 +203,5 @@ class HideableSugaredTest {
   standalone: false,
 })
 class HideableDesugeredTest {
-  hideSecond: boolean;
+  hideSecond!: boolean;
 }

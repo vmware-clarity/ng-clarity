@@ -63,7 +63,7 @@ class SimpleTest {}
 class HeaderResizeTestComponent {
   items = [1, 2, 3];
   column3WidthStrict = 200;
-  newWidth: number;
+  newWidth!: number;
 }
 
 export default function (): void {

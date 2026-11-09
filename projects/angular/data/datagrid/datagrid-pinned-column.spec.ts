@@ -74,7 +74,7 @@ function boxOf(element: HTMLElement) {
 
 function cellBoxes(root: HTMLElement, ...texts: string[]) {
   const cells = queryAll(root, 'clr-dg-cell');
-  return texts.map(text => boxOf(cells.find(cell => cell.textContent.trim() === text)));
+  return texts.map(text => boxOf(cells.find(cell => cell.textContent.trim() === text)!));
 }
 
 // The box of the column itself, not of the title inside it, which is inset by the padding of the
@@ -82,7 +82,7 @@ function cellBoxes(root: HTMLElement, ...texts: string[]) {
 function columnBoxes(root: HTMLElement, ...titles: string[]) {
   const columns = queryAll(root, 'clr-dg-column');
   return titles.map(title =>
-    boxOf(columns.find(column => column.querySelector('.datagrid-column-title').textContent.trim() === title))
+    boxOf(columns.find(column => column.querySelector('.datagrid-column-title')!.textContent.trim() === title)!)
   );
 }
 
@@ -427,7 +427,7 @@ export default function (): void {
       const MAX_SHARE = 0.85;
 
       function widthOf(root: HTMLElement, selector: string): number {
-        return root.querySelector(selector).getBoundingClientRect().width;
+        return root.querySelector(selector)!.getBoundingClientRect().width;
       }
 
       // The cap is a share of the visible width of the datagrid, which is what the static container
@@ -563,7 +563,7 @@ export default function (): void {
         context.testComponent.pinFirst = true;
         context.detectChanges();
 
-        const pinnedHeader: HTMLElement = element.querySelector(`${HEADER_PINNED} clr-dg-column`);
+        const pinnedHeader: HTMLElement = element.querySelector(`${HEADER_PINNED} clr-dg-column`)!;
         expect(pinnedHeader.classList).toContain(PINNED_COLUMN_CLASS);
         expect(context.clarityDirective.columns.first.isPinned).toBeTrue();
 
@@ -643,11 +643,11 @@ export default function (): void {
       let element: HTMLElement;
 
       function pinToggle(): HTMLButtonElement {
-        return element.querySelector('.datagrid-header .datagrid-column-pin');
+        return element.querySelector('.datagrid-header .datagrid-column-pin')!;
       }
 
       function pinIconShape(): string {
-        return pinToggle().querySelector('cds-icon').getAttribute('shape');
+        return pinToggle().querySelector('cds-icon')!.getAttribute('shape')!;
       }
 
       beforeEach(function (this: TestHelpers) {
@@ -665,7 +665,7 @@ export default function (): void {
       });
 
       it('renders the toggle last in the header, after the title and the filter', function () {
-        const headerCell = element.querySelector('.datagrid-header clr-dg-column .datagrid-column-flex');
+        const headerCell = element.querySelector('.datagrid-header clr-dg-column .datagrid-column-flex')!;
         const children = Array.from(headerCell.children);
         const indexOf = (selector: string) => children.findIndex(child => child.matches(selector));
 
@@ -767,12 +767,12 @@ export default function (): void {
       // published as a custom property instead.
       function publishedWidth(scope: string): number {
         return parseFloat(
-          getComputedStyle(element.querySelector(scope)).getPropertyValue('--clr-datagrid-row-controls-width')
+          getComputedStyle(element.querySelector(scope)!).getPropertyValue('--clr-datagrid-row-controls-width')
         );
       }
 
       function controlsWidth(scope: string): number {
-        return element.querySelector(`${scope} .datagrid-row-master > .datagrid-row-sticky`).getBoundingClientRect()
+        return element.querySelector(`${scope} .datagrid-row-master > .datagrid-row-sticky`)!.getBoundingClientRect()
           .width;
       }
 
@@ -782,7 +782,7 @@ export default function (): void {
       });
 
       it('freezes the pinned columns where the row controls end', function () {
-        const pinned: HTMLElement = element.querySelector(HEADER_PINNED);
+        const pinned: HTMLElement = element.querySelector(HEADER_PINNED)!;
 
         // The select column is what makes this more than a no-op.
         expect(controlsWidth('.datagrid-header')).toBeGreaterThan(0);
@@ -817,8 +817,8 @@ export default function (): void {
       });
 
       it('freezes the pinned detail cell alongside the pinned cell of the row', function () {
-        const rowPinned: HTMLElement = element.querySelector(`.datagrid-rows .datagrid-row-master ${PINNED}`);
-        const detailPinned: HTMLElement = element.querySelector(`.datagrid-row-detail ${PINNED}`);
+        const rowPinned: HTMLElement = element.querySelector(`.datagrid-rows .datagrid-row-master ${PINNED}`)!;
+        const detailPinned: HTMLElement = element.querySelector(`.datagrid-row-detail ${PINNED}`)!;
 
         expect(getComputedStyle(detailPinned).position).toBe('sticky');
         expect(getComputedStyle(detailPinned).insetInlineStart).toBe(getComputedStyle(rowPinned).insetInlineStart);
@@ -827,7 +827,7 @@ export default function (): void {
       it('holds the pinned cells of the row and of the detail in place while scrolling sideways', function () {
         const scroller = queryAll(element, '.datagrid, .datagrid-table-wrapper, .datagrid-table').find(
           candidate => candidate.scrollWidth > candidate.clientWidth
-        );
+        )!;
         const before = cellBoxes(element, 'A1', 'dA1', 'C1', 'dC1');
 
         scroller.scrollLeft = 80;

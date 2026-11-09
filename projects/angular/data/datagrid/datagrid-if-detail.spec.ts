@@ -46,7 +46,7 @@ export default function (): void {
         const input = 'projected state';
         testComponent.detailState = input;
         fixture.detectChanges();
-        expect(testElement.querySelector('.state').textContent).toBe(input);
+        expect(testElement.querySelector('.state')!.textContent).toBe(input);
       });
 
       it('should emit changes', () => {
@@ -99,6 +99,6 @@ export default function (): void {
   standalone: false,
 })
 class IfDetailTest {
-  @ViewChild(ClrIfDetail) detail: ClrIfDetail;
+  @ViewChild(ClrIfDetail) detail!: ClrIfDetail;
   detailState: unknown = null;
 }

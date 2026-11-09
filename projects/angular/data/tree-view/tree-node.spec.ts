@@ -33,7 +33,7 @@ import { ClrTreeViewModule } from './tree-view.module';
   standalone: false,
 })
 class TestComponent {
-  @ViewChild('node') tree: ClrTreeNode<void>;
+  @ViewChild('node') tree!: ClrTreeNode<void>;
 
   selected = ClrSelectedState.UNSELECTED;
   expanded = false;
@@ -55,7 +55,7 @@ class TestComponent {
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 class NestedTestComponent {
-  @ViewChild('node') tree: ClrTreeNode<void>;
+  @ViewChild('node') tree!: ClrTreeNode<void>;
 }
 
 interface LazyNode {
@@ -75,7 +75,7 @@ interface LazyNode {
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 class LazyRecursiveTestComponent {
-  @ViewChild(ClrTreeNode) node: ClrTreeNode<LazyNode>;
+  @ViewChild(ClrTreeNode) node!: ClrTreeNode<LazyNode>;
 
   roots: LazyNode[] = [{ name: 'A', children: [{ name: 'AA' }] }];
   getChildren = (node: LazyNode) => node.children;
@@ -128,13 +128,13 @@ export default function (): void {
         TestBed.runInInjectionContext(() => {
           this.parent = new ClrTreeNode(
             platformID,
-            undefined,
+            undefined!,
             this.featureService,
             this.expandService,
             stringsService,
             this.focusManagerService,
             { nativeElement: document.createElement('div') },
-            null
+            null!
           );
           this.node = new ClrTreeNode(
             platformID,
@@ -144,7 +144,7 @@ export default function (): void {
             stringsService,
             this.focusManagerService,
             { nativeElement: document.createElement('div') },
-            null
+            null!
           );
         });
       });
@@ -208,7 +208,7 @@ export default function (): void {
       });
 
       it('is expandable handles no children', function (this: TsApiContext) {
-        this.node._model.children = undefined;
+        this.node._model.children = undefined!;
         expect(() => {
           this.node.isExpandable();
         }).not.toThrow();
@@ -221,7 +221,7 @@ export default function (): void {
       });
 
       it('is expandable and does not fetch children if overriden to be expandable', function (this: TsApiContext) {
-        const recursiveModel = new RecursiveTreeNodeModel(null, null, () => undefined, this.featureService);
+        const recursiveModel = new RecursiveTreeNodeModel(null!, null, () => undefined, this.featureService);
         const spy = spyOnProperty(recursiveModel, 'children', 'get');
         this.node._model = recursiveModel;
         this.node.expandable = true;
@@ -230,7 +230,7 @@ export default function (): void {
       });
 
       it('is not expandable and does not fetch children if overriden not to be expandable', function (this: TsApiContext) {
-        const recursiveModel = new RecursiveTreeNodeModel(null, null, () => undefined, this.featureService);
+        const recursiveModel = new RecursiveTreeNodeModel(null!, null, () => undefined, this.featureService);
         const spy = spyOnProperty(recursiveModel, 'children', 'get');
         this.node._model = recursiveModel;
         this.node.expandable = false;
@@ -576,7 +576,7 @@ export default function (): void {
       });
 
       it('expands collapsed node if expandable on ArrowRight key', function (this: Context) {
-        this.clarityDirective._model.children = [null]; // children array needs to have something
+        this.clarityDirective._model.children = [null!]; // children array needs to have something
         expect(this.clarityDirective.expanded).toBeFalse();
         expect(this.clarityDirective.isExpandable()).toBeTrue();
         contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
@@ -584,7 +584,7 @@ export default function (): void {
       });
 
       it('toggles aria-expanded on expanded property value change on node content container', function (this: Context) {
-        this.clarityDirective._model.children = [null]; // children array needs to have something
+        this.clarityDirective._model.children = [null!]; // children array needs to have something
         expect(this.clarityDirective.expanded).toBeFalse();
         expect(contentContainer.getAttribute('aria-expanded')).toBe('false');
         contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
@@ -594,7 +594,7 @@ export default function (): void {
       });
 
       it('calls focusManager.focusNodeBelow if node is already expanded on ArrowRight key', function (this: Context) {
-        this.clarityDirective._model.children = [null]; // children array needs to have something
+        this.clarityDirective._model.children = [null!]; // children array needs to have something
         this.clarityDirective.expanded = true;
         spyOn(focusManager, 'focusNodeBelow');
         contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
@@ -602,7 +602,7 @@ export default function (): void {
       });
 
       it('calls focusManager.focusNodeBelow if node is already disabled on ArrowDown key', function (this: Context) {
-        this.clarityDirective._model.children = [null]; // children array needs to have something
+        this.clarityDirective._model.children = [null!]; // children array needs to have something
         this.clarityDirective.disabled = true;
         this.detectChanges();
         expect(contentContainer.getAttribute('aria-disabled')).toBe('true');
@@ -613,7 +613,7 @@ export default function (): void {
       });
 
       it('collapses expanded node on ArrowLeft key', function (this: Context) {
-        this.clarityDirective._model.children = [null]; // children array needs to have something
+        this.clarityDirective._model.children = [null!]; // children array needs to have something
         this.clarityDirective.expanded = true;
         contentContainer.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
         expect(this.clarityDirective.expanded).toBeFalse();
@@ -627,7 +627,7 @@ export default function (): void {
 
       it('keeps the children out of reach from the moment the node collapses', function (this: Context) {
         const childrenContainer: HTMLElement = this.clarityElement.querySelector('.clr-treenode-children');
-        const child: HTMLElement = childrenContainer.querySelector('.clr-tree-node-content-container');
+        const child: HTMLElement = childrenContainer.querySelector('.clr-tree-node-content-container')!;
         const canFocus = (element: HTMLElement) => {
           element.focus();
           return document.activeElement === element;

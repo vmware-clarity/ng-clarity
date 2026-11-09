@@ -147,7 +147,7 @@ export default function (): void {
 
     it('exposes an Observable to follow items changes', function (this: Context) {
       let nbChanges = 0;
-      let latestDisplayed: number[];
+      let latestDisplayed: number[] | undefined;
       this.itemsInstance.change.subscribe((items: number[]) => {
         nbChanges++;
         latestDisplayed = items;

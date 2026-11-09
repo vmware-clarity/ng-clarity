@@ -231,7 +231,7 @@ export default function (): void {
         fixture.componentInstance.clrDgSelectable = false;
         fixture.detectChanges();
 
-        const checkboxElement: HTMLInputElement = nativeElement.querySelector("input[type='checkbox']");
+        const checkboxElement: HTMLInputElement = nativeElement.querySelector("input[type='checkbox']")!;
 
         expect(checkboxElement.getAttribute('disabled')).toBeDefined();
       });
@@ -653,7 +653,7 @@ export default function (): void {
 
         it('does not select the row when the action overflow toggle is clicked', async function () {
           expect(fixture.componentInstance.selected).toEqual([]);
-          const actionToggle: HTMLButtonElement = nativeElement.querySelector('.datagrid-action-toggle');
+          const actionToggle: HTMLButtonElement = nativeElement.querySelector('.datagrid-action-toggle')!;
           actionToggle.click();
           await delay();
           fixture.detectChanges();
@@ -662,7 +662,7 @@ export default function (): void {
 
         it('does not select the row when the detail caret is clicked', async function () {
           expect(fixture.componentInstance.selected).toEqual([]);
-          const detailCaret: HTMLButtonElement = nativeElement.querySelector('.datagrid-detail-caret-button');
+          const detailCaret: HTMLButtonElement = nativeElement.querySelector('.datagrid-detail-caret-button')!;
           detailCaret.click();
           await delay();
           fixture.detectChanges();
@@ -700,7 +700,7 @@ export default function (): void {
         const detailBody = document.querySelector('div.clr-dg-detail-body-wrapper') as HTMLElement;
 
         expect(button.querySelector('cds-icon[shape^=angle-double][direction^=left]')).not.toBeNull();
-        expect(detailBody.innerText).toBe('' + context.testComponent.preState.id);
+        expect(detailBody.innerText).toBe('' + context.testComponent.preState!.id);
         expect(context.clarityElement.querySelector('clr-dg-detail')).not.toBeNull();
       });
       it('open and close the details', async function () {
@@ -806,7 +806,7 @@ class SelectableRow {
 })
 class SelectableRowOrder {
   clrDgSelectable: boolean | undefined = undefined;
-  item: Item = { id: 42 };
+  item: Item | undefined = { id: 42 };
   ariaLabel = 'uniq aria-label';
 }
 
@@ -816,7 +816,7 @@ class SelectableRowOrder {
   standalone: false,
 })
 class FullTest {
-  item: Item;
+  item!: Item;
   selected = false;
 }
 
@@ -890,18 +890,18 @@ class DatagridWithDisabledOrHiddenDetails {
   hiddenIndex = -1;
 
   readonly items: Item[] = [];
-  private _preState: Item = null;
+  private _preState: Item | null = null;
 
   constructor(private cdr: ChangeDetectorRef) {
     this.items.push({ id: 42 });
     this.items.push({ id: 22 });
   }
 
-  get preState(): Item {
+  get preState(): Item | null {
     return this._preState;
   }
 
-  set preState(value: Item) {
+  set preState(value: Item | null) {
     this._preState = value;
     this.cdr.detectChanges();
   }
