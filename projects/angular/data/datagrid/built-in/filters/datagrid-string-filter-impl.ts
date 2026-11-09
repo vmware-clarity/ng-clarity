@@ -38,7 +38,7 @@ export class DatagridStringFilterImpl<T = any> implements ClrDatagridFilterInter
     return this._lowerCaseValue;
   }
 
-  get state() {
+  get state(): { property: string; value: string } | this {
     if (this.filterFn instanceof DatagridPropertyStringFilter) {
       return {
         property: this.filterFn.prop,

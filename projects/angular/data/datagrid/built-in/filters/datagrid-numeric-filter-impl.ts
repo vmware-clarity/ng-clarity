@@ -63,7 +63,7 @@ export class DatagridNumericFilterImpl<T = any> implements ClrDatagridFilterInte
     }
   }
 
-  get state() {
+  get state(): { property: string; low: number | null; high: number | null } | this {
     if (this.filterFn instanceof DatagridPropertyNumericFilter) {
       return {
         property: this.filterFn.prop,

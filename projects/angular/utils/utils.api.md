@@ -580,7 +580,7 @@ export class ClrKeyFocus {
     // (undocumented)
     protected currentFocusIsNotLastItem(): boolean;
     // (undocumented)
-    get currentItem(): any;
+    get currentItem(): FocusableItem$1;
     // (undocumented)
     get currentItemElement(): HTMLElement;
     // Warning: (ae-forgotten-export) The symbol "ClrFocusDirection" needs to be exported by the entry point clr-angular-utils.d.ts
@@ -588,7 +588,7 @@ export class ClrKeyFocus {
     // (undocumented)
     direction: ClrFocusDirection | string;
     // Warning: (ae-forgotten-export) The symbol "FocusableItem$1" needs to be exported by the entry point clr-angular-utils.d.ts
-    get focusableItems(): Array<FocusableItem$1> | any;
+    get focusableItems(): FocusableItem$1[];
     set focusableItems(elements: Array<FocusableItem$1> | any);
     // (undocumented)
     focusCurrent(): void;

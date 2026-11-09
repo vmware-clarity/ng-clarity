@@ -89,7 +89,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     // (undocumented)
     previewWrapper: ElementRef<HTMLElement>;
     // (undocumented)
-    resetAllThemeColors(theme: string): void;
+    resetAllThemeColors(theme: ThemeType): void;
     // (undocumented)
     resetColor($event: Event, color: Color, colorGroup?: Color[]): void;
     // Warning: (ae-forgotten-export) The symbol "DataRow" needs to be exported by the entry point clr-addons-theme-builder.d.ts

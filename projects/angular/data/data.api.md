@@ -898,7 +898,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
     // (undocumented)
     SELECTION_TYPE: typeof SelectionType;
     // @deprecated (undocumented)
-    protected selectRow(selected: boolean, $event: any): void;
+    protected selectRow(selected: boolean, $event: MouseEvent): void;
     // (undocumented)
     skeletonLoading: boolean;
     // (undocumented)

@@ -99,5 +99,5 @@ export default function (): void {
   standalone: false,
 })
 class TestTrigger {
-  label = null;
+  label: string | null = null;
 }

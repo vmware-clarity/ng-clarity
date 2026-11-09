@@ -88,7 +88,7 @@ const keyPress = (key: string, el = clarityElement, bubbles = true) => {
 
 const verifyTabindices = (index: number) => {
   const domElements = fixture.nativeElement.querySelectorAll('button');
-  domElements.forEach((element, i) => {
+  domElements.forEach((element: HTMLButtonElement, i: number) => {
     if (i === index) {
       expect(element.getAttribute('tabindex')).toEqual('0');
     } else {

@@ -103,19 +103,19 @@ export default function () {
       it('has the correct aria-label for the previousDecade button', () => {
         const switchers: HTMLElement = context.clarityElement.querySelector('.year-switchers');
         const previousDecadeBtn = switchers.children[0] as HTMLButtonElement;
-        expect(previousDecadeBtn.attributes['aria-label'].value).toEqual('Previous decade');
+        expect(previousDecadeBtn.getAttribute('aria-label')).toEqual('Previous decade');
       });
 
       it('has the correct aria-label for the currentDecade button', () => {
         const switchers: HTMLElement = context.clarityElement.querySelector('.year-switchers');
         const currentDecadeBtn = switchers.children[1] as HTMLButtonElement;
-        expect(currentDecadeBtn.attributes['aria-label'].value).toEqual('Current decade');
+        expect(currentDecadeBtn.getAttribute('aria-label')).toEqual('Current decade');
       });
 
       it('has the correct aria-label for the nextDecade button', () => {
         const switchers: HTMLElement = context.clarityElement.querySelector('.year-switchers');
         const nextDecadeBtn = switchers.children[2] as HTMLButtonElement;
-        expect(nextDecadeBtn.attributes['aria-label'].value).toEqual('Next decade');
+        expect(nextDecadeBtn.getAttribute('aria-label')).toEqual('Next decade');
       });
 
       it('updates the tab indices correctly', () => {

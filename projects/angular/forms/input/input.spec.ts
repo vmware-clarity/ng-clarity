@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ChangeDetectionStrategy, Component, DebugElement, Type } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule } from '@clr/angular/forms/common';
@@ -54,9 +54,15 @@ export default function (): void {
   });
 }
 
-function inputSpec(description, testContainer, testControl, testComponent) {
+function inputSpec(
+  description: string,
+  testContainer: Type<unknown>,
+  testControl: Type<unknown>,
+  testComponent: Type<unknown>
+) {
   describe('Input specific value change tests ' + description, () => {
-    let control, fixture;
+    let control: DebugElement;
+    let fixture: ComponentFixture<unknown>;
 
     beforeEach(() => {
       TestBed.configureTestingModule({

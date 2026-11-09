@@ -8,7 +8,7 @@
 export const THEMES = {
   LIGHT: 'light',
   DARK: 'dark',
-};
+} as const;
 
 export const DENSITY = {
   NONE: 'default',

@@ -19,12 +19,11 @@ const LABEL_STATUS_TYPES = ['info', 'success', 'warning', 'danger'];
 const meta = {
   title: 'Components/Label',
   component: LabelStoryBookComponent,
-  decorators: [],
   argTypes: {
     ...hideControls('labelTypes'),
   },
   args: {
-    labelType: null,
+    labelType: null as string | null,
     badgeText: '',
     labelTypes: [''],
     // story helpers

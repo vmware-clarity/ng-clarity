@@ -291,7 +291,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
-    protected containerWidth: any;
+    protected containerWidth: number | null;
     // (undocumented)
     control: NgControl;
     // (undocumented)
@@ -340,7 +340,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    onBlur(event: any): void;
+    onBlur(event: FocusEvent): void;
     // (undocumented)
     onChange(): void;
     // (undocumented)
@@ -348,7 +348,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     onKeyUp(event: KeyboardEvent): void;
     // (undocumented)
-    onWrapperClick(event: any): void;
+    onWrapperClick(event: MouseEvent): void;
     // (undocumented)
     get openState(): boolean;
     // (undocumented)
@@ -646,7 +646,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     // (undocumented)
     protected popoverType: ClrPopoverType;
     // (undocumented)
-    set rangeOptions(rangeOptions: any);
+    set rangeOptions(rangeOptions: DateRangeOption[]);
     // (undocumented)
     protected renderer: Renderer2;
     set showActionButtons(flag: boolean);
@@ -777,7 +777,7 @@ export class ClrDatepickerViewManager {
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
-    protected get dateRangeOptions(): any;
+    protected get dateRangeOptions(): DateRangeOption[];
     // (undocumented)
     protected get hasActionButtons(): boolean;
     // (undocumented)
@@ -786,7 +786,7 @@ export class ClrDatepickerViewManager {
     get isMonthView(): boolean;
     get isYearView(): boolean;
     // (undocumented)
-    onRangeOptionSelect(selectedRange: any): void;
+    onRangeOptionSelect(selectedRange: DateRangeOption): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatepickerViewManager, "clr-datepicker-view-manager", never, {}, {}, never, never, false, never>;
     // (undocumented)

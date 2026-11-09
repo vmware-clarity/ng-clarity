@@ -109,7 +109,7 @@ export default function () {
         const currentMonth = localeHelperService.localeMonthsAbbreviated[dateNavigationService.displayedCalendar.month];
         const expectedString = `Select month, the current month is ${currentMonth}`;
         expect(button.title).toEqual(expectedString);
-        expect(button.attributes['aria-label'].value).toEqual(expectedString);
+        expect(button.getAttribute('aria-label')).toEqual(expectedString);
       });
 
       it('has correct title and aria-label for yearpicker button', () => {
@@ -117,25 +117,25 @@ export default function () {
         const currentYear = dateNavigationService.displayedCalendar.year;
         const expectedString = `Select year, the current year is ${currentYear}`;
         expect(button.title).toEqual(expectedString);
-        expect(button.attributes['aria-label'].value).toEqual(expectedString);
+        expect(button.getAttribute('aria-label')).toEqual(expectedString);
       });
 
       it('sets the correct aria-label value on the previous month button', () => {
         const switchers: HTMLElement = context.clarityElement.querySelector('.calendar-switchers');
         const previousButton = switchers.children[0] as HTMLButtonElement;
-        expect(previousButton.attributes['aria-label'].value).toEqual('Previous month');
+        expect(previousButton.getAttribute('aria-label')).toEqual('Previous month');
       });
 
       it('sets the correct aria-label value on the current month button', () => {
         const switchers: HTMLElement = context.clarityElement.querySelector('.calendar-switchers');
         const currentButton = switchers.children[1] as HTMLButtonElement;
-        expect(currentButton.attributes['aria-label'].value).toEqual('Current month');
+        expect(currentButton.getAttribute('aria-label')).toEqual('Current month');
       });
 
       it('sets the correct aria-label value on the next month button', () => {
         const switchers: HTMLElement = context.clarityElement.querySelector('.calendar-switchers');
         const nextButton = switchers.children[2] as HTMLButtonElement;
-        expect(nextButton.attributes['aria-label'].value).toEqual('Next month');
+        expect(nextButton.getAttribute('aria-label')).toEqual('Next month');
       });
 
       it('should have text based boundaries for screen readers', () => {

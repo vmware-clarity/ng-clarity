@@ -9,7 +9,7 @@ import { ClrFormLayout, LayoutService } from './layout.service';
 
 export default function (): void {
   describe('LayoutService', function () {
-    let service;
+    let service: LayoutService;
 
     beforeEach(() => {
       service = new LayoutService();

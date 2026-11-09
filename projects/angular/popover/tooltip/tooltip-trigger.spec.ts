@@ -50,7 +50,7 @@ export default function (): void {
 
       it('responds to the TooltipIdService', function () {
         let testId;
-        this.tooltipIdService.id.subscribe(idChange => {
+        this.tooltipIdService.id.subscribe((idChange: string) => {
           testId = idChange;
         });
         expect(this.clarityDirective.ariaDescribedBy).toEqual(testId);

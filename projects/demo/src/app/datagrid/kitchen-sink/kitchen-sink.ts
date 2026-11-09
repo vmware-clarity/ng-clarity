@@ -21,6 +21,7 @@ import { PokemonFilter } from '../utils/pokemon-filter';
   standalone: false,
 })
 export class DatagridKitchenSinkDemo {
+  noUsers: User[] = [];
   nameFilter = '';
   currentPageSize = 1;
   selectedUser: User;

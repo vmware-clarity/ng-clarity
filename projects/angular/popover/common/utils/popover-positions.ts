@@ -142,7 +142,12 @@ function getOffset(key: ClrPopoverPosition, type: ClrPopoverType): Partial<Conne
   }
 }
 
-const STANDARD_ORIGINS = {
+interface PopoverOrigin {
+  origin: ClrPosition;
+  content: ClrPosition;
+}
+
+const STANDARD_ORIGINS: Partial<Record<ClrPopoverPosition, PopoverOrigin>> = {
   // TOP
   [ClrPopoverPosition.TOP_RIGHT]: { origin: ClrPosition.TOP_CENTER, content: ClrPosition.BOTTOM_LEFT },
   [ClrPopoverPosition.TOP_MIDDLE]: { origin: ClrPosition.TOP_CENTER, content: ClrPosition.BOTTOM_CENTER },
@@ -166,7 +171,7 @@ const STANDARD_ORIGINS = {
   [ClrPopoverPosition.BOTTOM_LEFT]: { origin: ClrPosition.BOTTOM_CENTER, content: ClrPosition.TOP_RIGHT },
 };
 
-const DROPDOWN_ORIGINS = {
+const DROPDOWN_ORIGINS: Partial<Record<ClrPopoverPosition, PopoverOrigin>> = {
   // TOP
   [ClrPopoverPosition.TOP_RIGHT]: { origin: ClrPosition.TOP_RIGHT, content: ClrPosition.BOTTOM_RIGHT },
   [ClrPopoverPosition.TOP_LEFT]: { origin: ClrPosition.TOP_LEFT, content: ClrPosition.BOTTOM_LEFT },

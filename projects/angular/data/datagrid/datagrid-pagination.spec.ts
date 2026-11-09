@@ -389,23 +389,17 @@ export default function (): void {
       });
 
       it('expect buttons to have the correct aria-label', function () {
-        expect(context.clarityElement.querySelector('.pagination-first').attributes['aria-label'].value).toBe(
-          'First Page'
-        );
-        expect(context.clarityElement.querySelector('.pagination-last').attributes['aria-label'].value).toBe(
-          'Last Page'
-        );
-        expect(context.clarityElement.querySelector('.pagination-previous').attributes['aria-label'].value).toBe(
+        expect(context.clarityElement.querySelector('.pagination-first').getAttribute('aria-label')).toBe('First Page');
+        expect(context.clarityElement.querySelector('.pagination-last').getAttribute('aria-label')).toBe('Last Page');
+        expect(context.clarityElement.querySelector('.pagination-previous').getAttribute('aria-label')).toBe(
           'Previous Page'
         );
-        expect(context.clarityElement.querySelector('.pagination-next').attributes['aria-label'].value).toBe(
-          'Next Page'
-        );
-        expect(context.clarityElement.querySelector('.pagination-current').attributes['aria-label'].value).toBe(
+        expect(context.clarityElement.querySelector('.pagination-next').getAttribute('aria-label')).toBe('Next Page');
+        expect(context.clarityElement.querySelector('.pagination-current').getAttribute('aria-label')).toBe(
           'Current Page'
         );
         expect(
-          context.clarityElement.querySelector('.pagination-list span:not(.clr-sr-only)').attributes['aria-label'].value
+          context.clarityElement.querySelector('.pagination-list span:not(.clr-sr-only)').getAttribute('aria-label')
         ).toBe('Total Pages');
       });
     });

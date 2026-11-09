@@ -428,7 +428,7 @@ describe('Tabs', () => {
   describe('Without *clrIfActive', () => {
     let context: TestContext<ClrTabs, NoClrIfActiveTest>;
     let compiled: any;
-    let contents: HTMLElement;
+    let contents: NodeListOf<HTMLElement>;
 
     beforeEach(function () {
       context = this.create(ClrTabs, NoClrIfActiveTest);

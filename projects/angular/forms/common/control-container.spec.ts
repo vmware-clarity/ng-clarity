@@ -41,7 +41,7 @@ class SimpleTest {
   standalone: false,
 })
 class NoLabelTest {
-  model;
+  model: string;
 }
 
 @Component({

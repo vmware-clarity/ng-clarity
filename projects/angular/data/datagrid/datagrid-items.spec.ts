@@ -199,7 +199,9 @@ export default function (): void {
 
       it('correctly mutates and resets an array with trackBy', function () {
         // Initial state
-        this.fixture.nativeElement.querySelectorAll('li:first-child').forEach(li => (li.style.color = 'red'));
+        this.fixture.nativeElement
+          .querySelectorAll('li:first-child')
+          .forEach((li: HTMLElement) => (li.style.color = 'red'));
         const firstItem = this.fixture.nativeElement.querySelector('li');
         expect(firstItem.style.color).toBe('red');
         expect(firstItem.textContent.trim()).toBe('1');
