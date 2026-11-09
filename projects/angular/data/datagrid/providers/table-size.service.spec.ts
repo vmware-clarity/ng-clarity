@@ -70,7 +70,7 @@ export default function (): void {
       this.sizeService.tableRef = this.table; // setting service up with the component table for testing
     });
 
-    it('sets a tableRef property with an elementReference', function () {
+    it('sets a tableRef property with an elementReference', function (this: TestContext) {
       // sizeService.tableRef is set in beforeEach
       expect(this.sizeService.tableRef).toBeDefined();
     });

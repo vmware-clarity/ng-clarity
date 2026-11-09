@@ -10,19 +10,23 @@ import { computed } from '@angular/core';
 import { IfExpandService } from './if-expanded.service';
 import { ClrLoadingState } from '../loading/loading';
 
+interface Context {
+  expand: IfExpandService;
+}
+
 export default function (): void {
   describe('Expand provider', function () {
-    beforeEach(function () {
+    beforeEach(function (this: Context) {
       this.expand = new IfExpandService();
     });
 
-    it('starts with the correct default settings', function () {
+    it('starts with the correct default settings', function (this: Context) {
       expect(this.expand.expandable).toBe(0, 'not expandable');
       expect(this.expand.loading).toBe(false, 'already loaded');
       expect(this.expand.expanded).toBe(false, 'collapsed');
     });
 
-    it('exposes its state as reactive (signal-backed) state', function () {
+    it('exposes its state as reactive (signal-backed) state', function (this: Context) {
       const state = computed(() => ({
         expanded: this.expand.expanded,
         loading: this.expand.loading,
@@ -39,7 +43,7 @@ export default function (): void {
       expect(state().expanded).toBe(false);
     });
 
-    it('emits expandChange synchronously, once per change, with the getter already updated', function () {
+    it('emits expandChange synchronously, once per change, with the getter already updated', function (this: Context) {
       const seen: boolean[] = [];
       this.expand.expandChange.subscribe((value: boolean) => {
         expect(this.expand.expanded).toBe(value);
@@ -53,7 +57,7 @@ export default function (): void {
       expect(seen).toEqual([true, false]);
     });
 
-    it('implements LoadingListener', function () {
+    it('implements LoadingListener', function (this: Context) {
       this.expand.loadingStateChange(ClrLoadingState.LOADING);
       expect(this.expand.loading).toBe(true);
       this.expand.loadingStateChange(ClrLoadingState.DEFAULT);

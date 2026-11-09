@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { TestContext } from '@clr/angular/testing';
+import { TestContext, TestHelpers } from '@clr/angular/testing';
 
 import { BasicWizardTestComponent } from '../test-components/basic-wizard.mock';
 import { ClrWizard } from '../wizard';
@@ -20,7 +20,7 @@ export default function (): void {
     let wizardNavigationService: WizardNavigationService;
     let pageCollectionService: PageCollectionService;
 
-    beforeEach(function () {
+    beforeEach(function (this: TestHelpers) {
       context = this.create(ClrWizard, BasicWizardTestComponent);
       buttonHubService = context.getClarityProvider(ButtonHubService);
       wizardNavigationService = context.getClarityProvider(WizardNavigationService);

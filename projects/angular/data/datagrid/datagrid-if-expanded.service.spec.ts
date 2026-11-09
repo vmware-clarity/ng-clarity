@@ -9,13 +9,17 @@ import { ClrLoadingState } from '@clr/angular/utils';
 
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
 
+interface Context {
+  expand: DatagridIfExpandService;
+}
+
 export default function (): void {
   describe('Expand provider', function () {
-    beforeEach(function () {
+    beforeEach(function (this: Context) {
       this.expand = new DatagridIfExpandService();
     });
 
-    it('starts with the correct default settings', function () {
+    it('starts with the correct default settings', function (this: Context) {
       let doesReplace = null;
       this.expand.replace.subscribe(expandChange => {
         doesReplace = expandChange;
@@ -26,7 +30,7 @@ export default function (): void {
       expect(this.expand.expanded).toBe(false, 'collapsed');
     });
 
-    it('notifies when cells are replaced', function () {
+    it('notifies when cells are replaced', function (this: Context) {
       let isReplaced = null;
       this.expand.replace.subscribe(replaceChange => {
         isReplaced = replaceChange;
@@ -36,14 +40,14 @@ export default function (): void {
       expect(isReplaced).toBe(true);
     });
 
-    it('implements LoadingListener', function () {
+    it('implements LoadingListener', function (this: Context) {
       this.expand.loadingStateChange(ClrLoadingState.LOADING);
       expect(this.expand.loading).toBe(true);
       this.expand.loadingStateChange(ClrLoadingState.DEFAULT);
       expect(this.expand.loading).toBe(false);
     });
 
-    it('prepares the animation before requesting to expand', function () {
+    it('prepares the animation before requesting to expand', function (this: Context) {
       const listeners: string[] = [];
       this.expand.animate.subscribe(() => listeners.push('animate'));
       this.expand.expandChange.subscribe(() => listeners.push('expand'));
@@ -51,7 +55,7 @@ export default function (): void {
       expect(listeners).toEqual(['animate', 'expand']);
     });
 
-    it('re-triggers animation when done loading', function () {
+    it('re-triggers animation when done loading', function (this: Context) {
       let animates = 0;
       this.expand.animate.subscribe(() => animates++);
       this.expand.loadingStateChange(ClrLoadingState.LOADING);
@@ -61,7 +65,7 @@ export default function (): void {
       expect(animates).toBe(2);
     });
 
-    it('expect to create expandableId property', function () {
+    it('expect to create expandableId property', function (this: Context) {
       expect(this.expand.expandableId).toContain('clr-dg-expandable-row-');
     });
   });

@@ -20,7 +20,7 @@ import {
   NgControlService,
 } from '@clr/angular/forms/common';
 import { ClrPopoverPosition, ClrPopoverService } from '@clr/angular/popover/common';
-import { expectActiveElementToBe, TestContext } from '@clr/angular/testing';
+import { expectActiveElementToBe, TestContext, TestHelpers } from '@clr/angular/testing';
 
 import { ClrDateContainer } from './date-container';
 import { ClrWeekday } from './enums/weekday.enum';
@@ -57,7 +57,7 @@ export default function () {
     let popoverService: ClrPopoverService;
     let container: any;
 
-    beforeEach(function () {
+    beforeEach(function (this: TestHelpers) {
       TestBed.configureTestingModule({
         imports: [FormsModule, ClrCommonFormsModule],
       });
@@ -241,7 +241,7 @@ export default function () {
     let context: TestContext<ClrDateContainer, TestComponentWithFirstDay>;
     let localeHelperService: LocaleHelperService;
 
-    beforeEach(function () {
+    beforeEach(function (this: TestHelpers) {
       TestBed.configureTestingModule({
         imports: [FormsModule, ClrCommonFormsModule],
       });
@@ -284,7 +284,7 @@ export default function () {
     let context: TestContext<ClrDateContainer, TestComponentWithFirstDay>;
     let localeHelperService: LocaleHelperService;
 
-    beforeEach(function () {
+    beforeEach(function (this: TestHelpers) {
       TestBed.configureTestingModule({
         imports: [FormsModule, ClrCommonFormsModule],
       });

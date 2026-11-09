@@ -10,6 +10,7 @@ import { Observable, of } from 'rxjs';
 import { delay as rxDelay } from 'rxjs/operators';
 
 import { RecursiveTreeNodeModel } from './recursive-tree-node.model';
+import { TreeFeaturesService } from '../tree-features.service';
 
 function synchronousChildren(node: string): string[] {
   return [node + 'A', node + 'B'];
@@ -23,14 +24,19 @@ function observableChildren(node: string): Observable<string[]> {
   return of(synchronousChildren(node));
 }
 
+// featureService is never set: the models are created without one.
+interface Context {
+  featureService?: TreeFeaturesService<string>;
+}
+
 export default function (): void {
   describe('RecursiveTreeNodeModel', () => {
-    it('fetches children through the given function', function () {
+    it('fetches children through the given function', function (this: Context) {
       const root = new RecursiveTreeNodeModel('A', null, synchronousChildren, this.featureService);
       expect(root.children.map(c => c.model)).toEqual(['AA', 'AB']);
     });
 
-    it('offers a fetchChildren() method that fetches the children only once', function () {
+    it('offers a fetchChildren() method that fetches the children only once', function (this: Context) {
       let nbFetch = 0;
       const root = new RecursiveTreeNodeModel(
         'A',
@@ -48,7 +54,7 @@ export default function (): void {
       expect(nbFetch).toBe(1);
     });
 
-    it('offers a clearChildren() method that forces the children to be fetched again next time', function () {
+    it('offers a clearChildren() method that forces the children to be fetched again next time', function (this: Context) {
       let nbFetch = 0;
       const root = new RecursiveTreeNodeModel(
         'A',
@@ -66,30 +72,30 @@ export default function (): void {
       expect(nbFetch).toBe(2);
     });
 
-    it('declares itself as parent for created children', function () {
+    it('declares itself as parent for created children', function (this: Context) {
       const root = new RecursiveTreeNodeModel('A', null, synchronousChildren, this.featureService);
       expect(root.children.map(c => c.parent)).toEqual([root, root]);
     });
 
-    it('can unwrap a Promise for the children', async function () {
+    it('can unwrap a Promise for the children', async function (this: Context) {
       const root = new RecursiveTreeNodeModel('A', null, promiseChildren, this.featureService);
       root.fetchChildren();
       await delay();
       expect(root.children.map(c => c.model)).toEqual(['AA', 'AB']);
     });
-    it('can unwrap an Observable for the children', function () {
+    it('can unwrap an Observable for the children', function (this: Context) {
       const root = new RecursiveTreeNodeModel('A', null, observableChildren, this.featureService);
       expect(root.children.map(c => c.model)).toEqual(['AA', 'AB']);
     });
 
-    it('marks itself as loading while waiting for children from a Promise', async function () {
+    it('marks itself as loading while waiting for children from a Promise', async function (this: Context) {
       const root = new RecursiveTreeNodeModel('A', null, promiseChildren, this.featureService);
       root.fetchChildren();
       expect(root.loading).toBeTrue();
       await delay();
       expect(root.loading).toBeFalse();
     });
-    it('marks itself as loading while waiting for children from an Observable', async function () {
+    it('marks itself as loading while waiting for children from an Observable', async function (this: Context) {
       const root = new RecursiveTreeNodeModel(
         'A',
         null,

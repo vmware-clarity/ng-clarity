@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { expectActiveElementToBe, TestContext } from '@clr/angular/testing';
+import { expectActiveElementToBe, TestContext, TestHelpers } from '@clr/angular/testing';
 import { Keys } from '@clr/angular/utils';
 
 import { ClrDatagrid } from '../datagrid';
@@ -73,7 +73,7 @@ export default function (): void {
       let grid: HTMLElement;
       let cells: NodeListOf<HTMLElement>;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, TestComponent);
 
         grid = context.clarityElement.querySelector('[role=grid]');
@@ -161,7 +161,7 @@ export default function (): void {
       let grid: HTMLElement;
       let cells: NodeListOf<HTMLElement>;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, TestComponent, [Selection]);
         context.testComponent.selected = [];
         context.detectChanges();
@@ -253,7 +253,7 @@ export default function (): void {
       let grid: HTMLElement;
       let cells: NodeListOf<HTMLElement>;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, TestComponent);
         context.testComponent.showRowDetail = true;
         context.detectChanges();
@@ -338,7 +338,7 @@ export default function (): void {
       let grid: HTMLElement;
       let cells: NodeListOf<HTMLElement>;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, TestComponent, [Selection]);
         context.testComponent.selected = [];
         context.testComponent.showRowDetail = true;
@@ -452,7 +452,7 @@ export default function (): void {
       let grid: HTMLElement;
       let cells: NodeListOf<HTMLElement>;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, TestComponent, [Selection]);
         context.testComponent.selected = [];
         context.testComponent.expandedRowIndexes = [1, 2];
@@ -684,7 +684,7 @@ export default function (): void {
       let grid: HTMLElement;
       let cells: NodeListOf<HTMLElement>;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, TestComponent, [Selection]);
         context.testComponent.selected = [];
         context.testComponent.expandedRowIndexes = [1, 2];
@@ -877,7 +877,7 @@ export default function (): void {
       let grid: HTMLElement;
       let cells: NodeListOf<HTMLElement>;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, TestComponent, [Selection]);
         context.testComponent.selected = [];
         context.testComponent.expandedRowIndexes = [1, 2];
@@ -1109,7 +1109,7 @@ export default function (): void {
       let grid: HTMLElement;
       let cells: NodeListOf<HTMLElement>;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, TestComponent, [Selection]);
         context.testComponent.selected = [];
         context.testComponent.columns = false;
@@ -1296,7 +1296,7 @@ export default function (): void {
       let grid: HTMLElement;
       let cells: NodeListOf<HTMLElement>;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, TestComponent, [Selection]);
         context.testComponent.items = Array.from(Array(10), (v, i) => {
           return { value: v, id: i };

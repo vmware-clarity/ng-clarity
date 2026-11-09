@@ -14,6 +14,15 @@ import { ClrAlertsPager } from './alerts-pager';
 import { ClrEmphasisModule } from '../emphasis.module';
 import { MultiAlertService } from './providers/multi-alert.service';
 
+interface Context<C = unknown> {
+  create: (componentType: Type<C>) => void;
+  fixture: ComponentFixture<C>;
+  alertFixture: ComponentFixture<ClrAlert>;
+  alert: ClrAlert;
+  secondAlertFixture: ComponentFixture<ClrAlert>;
+  secondAlert: ClrAlert;
+}
+
 export default function () {
   describe('ClrAlerts pager component', function () {
     describe('Typescript API', function () {
@@ -48,7 +57,7 @@ export default function () {
     });
 
     describe('Template API', function () {
-      beforeEach(function () {
+      beforeEach(function (this: Context) {
         const service = new MultiAlertService();
         const queryList = new QueryList<ClrAlert>();
 
@@ -72,13 +81,13 @@ export default function () {
         };
       });
 
-      afterEach(function () {
+      afterEach(function (this: Context) {
         this.fixture.destroy();
         this.alertFixture.destroy();
         this.secondAlertFixture.destroy();
       });
 
-      it('offers two way binding on the alert index', function () {
+      it('offers two way binding on the alert index', function (this: Context<TestIndex>) {
         this.create(TestIndex);
         this.fixture.componentInstance.index = 1;
         this.fixture.detectChanges();
@@ -89,7 +98,7 @@ export default function () {
         expect(this.fixture.componentInstance.index).toEqual(0);
       });
 
-      it('offers two way binding on the alert instance', function () {
+      it('offers two way binding on the alert instance', function (this: Context<TestInstance>) {
         this.create(TestInstance);
         this.fixture.componentInstance.currentAlert = this.secondAlert;
         this.fixture.detectChanges();

@@ -418,8 +418,8 @@ export default function (): void {
       let contentContainer: HTMLElement;
       let focusManager: TreeFocusManagerService<void>;
 
-      beforeEach(function () {
-        focusManager = this.getClarityProvider(TreeFocusManagerService);
+      beforeEach(function (this: Context) {
+        focusManager = this.getClarityProvider<TreeFocusManagerService<void>>(TreeFocusManagerService);
         contentContainer = this.clarityElement.querySelector('.clr-tree-node-content-container');
       });
 
@@ -672,7 +672,7 @@ export default function (): void {
 
       let contentContainer: HTMLElement;
 
-      beforeEach(function () {
+      beforeEach(function (this: Context) {
         contentContainer = this.clarityElement.querySelector('.clr-tree-node-content-container');
       });
 

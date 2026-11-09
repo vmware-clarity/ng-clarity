@@ -45,7 +45,7 @@ export default function (): void {
     });
 
     describe('Simple', function (this: TooltipContext) {
-      it('projects trigger content', function () {
+      it('projects trigger content', function (this: TooltipContext) {
         expect(this.clarityElement.textContent).toMatch(/Hello/);
       });
     });

@@ -11,6 +11,7 @@
     "moduleResolution": "bundler",
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
+    "noImplicitThis": true,
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "strict": false,

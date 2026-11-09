@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestContext } from '@clr/angular/testing';
+import { TestContext, TestHelpers } from '@clr/angular/testing';
 
 import { ClrDatagridDetail } from './datagrid-detail';
 import { DetailService } from './providers/detail.service';
@@ -18,7 +18,7 @@ export default function (): void {
     describe('Typescript API', function () {
       let context: TestContext<ClrDatagridDetail, FullTest>;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagridDetail, FullTest, [DetailService]);
         context.detectChanges();
       });
@@ -127,7 +127,7 @@ export default function (): void {
       let context: TestContext<ClrDatagridDetail, FullTest>;
       let detailService: DetailService;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagridDetail, FullTest, [DetailService]);
         detailService = context.getClarityProvider(DetailService);
         detailService.id = 'clr-id-1';

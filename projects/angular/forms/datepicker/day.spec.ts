@@ -7,7 +7,7 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import { TestContext } from '@clr/angular/testing';
+import { TestContext, TestHelpers } from '@clr/angular/testing';
 
 import { ClrDay } from './day';
 import { DayViewModel } from './model/day-view.model';
@@ -22,7 +22,7 @@ export default function () {
   describe('Day Component', () => {
     let context: TestContext<ClrDay, TestComponent>;
 
-    beforeEach(function () {
+    beforeEach(function (this: TestHelpers) {
       context = this.create(ClrDay, TestComponent, [
         LocaleHelperService,
         DateNavigationService,

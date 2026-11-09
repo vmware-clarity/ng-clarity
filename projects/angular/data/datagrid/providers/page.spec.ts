@@ -10,11 +10,15 @@ import { Subscription } from 'rxjs';
 import { Page } from './page';
 import { StateDebouncer } from './state-debouncer.provider';
 
+interface Context {
+  pageInstance: Page;
+}
+
 export default function (): void {
   describe('Page provider', function () {
     let subscriptions: Subscription[] = [];
 
-    beforeEach(function () {
+    beforeEach(function (this: Context) {
       this.pageInstance = new Page(new StateDebouncer());
     });
 
@@ -23,21 +27,21 @@ export default function (): void {
       subscriptions = [];
     });
 
-    it('has page size 0 by default', function () {
+    it('has page size 0 by default', function (this: Context) {
       expect(this.pageInstance.size).toBe(0);
     });
 
-    it('starts at page 1', function () {
+    it('starts at page 1', function (this: Context) {
       expect(this.pageInstance.current).toBe(1);
     });
 
-    it('computes the last page', function () {
+    it('computes the last page', function (this: Context) {
       this.pageInstance.size = 10;
       this.pageInstance.totalItems = 42;
       expect(this.pageInstance.last).toBe(5);
     });
 
-    it('computes the indexes of the first and last displayed items', function () {
+    it('computes the indexes of the first and last displayed items', function (this: Context) {
       this.pageInstance.size = 10;
       this.pageInstance.totalItems = 42;
       this.pageInstance.current = 3;
@@ -45,7 +49,7 @@ export default function (): void {
       expect(this.pageInstance.lastItem).toBe(29);
     });
 
-    it('returns -1 for the firstItem and lastItem of none items', function () {
+    it('returns -1 for the firstItem and lastItem of none items', function (this: Context) {
       this.pageInstance.size = 10;
       this.pageInstance.totalItems = 0;
       this.pageInstance.current = 1;
@@ -53,12 +57,12 @@ export default function (): void {
       expect(this.pageInstance.lastItem).toBe(-1);
     });
 
-    it("doesn't paginate when size is 0", function () {
+    it("doesn't paginate when size is 0", function (this: Context) {
       this.pageInstance.next();
       expect(this.pageInstance.current).toBe(1);
     });
 
-    it('moves to the new last page when the number of items becomes too small', function () {
+    it('moves to the new last page when the number of items becomes too small', function (this: Context) {
       this.pageInstance.size = 10;
       this.pageInstance.totalItems = 42;
       this.pageInstance.current = 4;
@@ -67,7 +71,7 @@ export default function (): void {
       expect(this.pageInstance.current).toBe(2);
     });
 
-    it('updates the current page when page size changes', function () {
+    it('updates the current page when page size changes', function (this: Context) {
       this.pageInstance.size = 20;
       this.pageInstance.totalItems = 42;
       this.pageInstance.current = 2;
@@ -78,14 +82,14 @@ export default function (): void {
       expect(this.pageInstance.current).toBe(1);
     });
 
-    it("correctly uses the last item's index if the last page is not full", function () {
+    it("correctly uses the last item's index if the last page is not full", function (this: Context) {
       this.pageInstance.size = 10;
       this.pageInstance.totalItems = 42;
       this.pageInstance.current = 5;
       expect(this.pageInstance.lastItem).toBe(41);
     });
 
-    it('offers a method to safely move to the next page', function () {
+    it('offers a method to safely move to the next page', function (this: Context) {
       this.pageInstance.size = 10;
       this.pageInstance.totalItems = 15;
       expect(this.pageInstance.current).toBe(1);
@@ -95,7 +99,7 @@ export default function (): void {
       expect(this.pageInstance.current).toBe(2);
     });
 
-    it('offers a method to safely move to the previous page', function () {
+    it('offers a method to safely move to the previous page', function (this: Context) {
       this.pageInstance.size = 10;
       this.pageInstance.totalItems = 15;
       this.pageInstance.current = 2;
@@ -106,7 +110,7 @@ export default function (): void {
       expect(this.pageInstance.current).toBe(1);
     });
 
-    it('exposes an Observable to follow page changes', function () {
+    it('exposes an Observable to follow page changes', function (this: Context) {
       let nbChanges = 0;
       let currentPage: number;
       subscriptions.push(
@@ -125,7 +129,7 @@ export default function (): void {
       expect(nbChanges).toBe(3);
     });
 
-    it('does not emit changes when resetPageSize if set to preventEmit', function () {
+    it('does not emit changes when resetPageSize if set to preventEmit', function (this: Context) {
       // This test is a bit convoluted perhaps, but testing all ways to emit changes
       let nbChanges = 0;
       let currentPage: number;

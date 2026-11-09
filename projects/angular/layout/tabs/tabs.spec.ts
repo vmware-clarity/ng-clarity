@@ -7,7 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, DebugElement, ElementRef, Type, ViewChild } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { addHelpers, expectActiveElementToBe, TestContext } from '@clr/angular/testing';
+import { addHelpers, expectActiveElementToBe, TestContext, TestHelpers } from '@clr/angular/testing';
 import { ClrKeyFocus, IfActiveService } from '@clr/angular/utils';
 
 import { TabsLayout } from './enums/tabs-layout.enum';
@@ -183,7 +183,7 @@ describe('Tabs', () => {
     let context: TestContext<ClrTabs, TestComponent>;
     let compiled: any;
 
-    beforeEach(function () {
+    beforeEach(function (this: TestHelpers) {
       context = this.create(ClrTabs, TestComponent);
       context.fixture.detectChanges();
       compiled = context.fixture.nativeElement;
@@ -269,7 +269,7 @@ describe('Tabs', () => {
     let keyFocus: ClrKeyFocus;
     let dummyButton: HTMLElement;
 
-    beforeEach(function () {
+    beforeEach(function (this: TestHelpers) {
       context = this.create(ClrTabs, TestComponent);
 
       tabLinkDEs = context.fixture.debugElement.queryAll(By.directive(ClrTabLink));
@@ -355,7 +355,7 @@ describe('Tabs', () => {
     let context: TestContext<ClrTabs, NestedTabsTest>;
     let compiled: any;
 
-    beforeEach(function () {
+    beforeEach(function (this: TestHelpers) {
       context = this.create(ClrTabs, NestedTabsTest);
       context.fixture.detectChanges();
       compiled = context.fixture.nativeElement;
@@ -375,21 +375,24 @@ describe('Tabs', () => {
   });
 
   describe('Default tab', function () {
-    function expectFirstTabActive<T extends TestComponent | NgIfFirstTest | NgIfSecondTest>(testType: Type<T>) {
+    function expectFirstTabActive<T extends TestComponent | NgIfFirstTest | NgIfSecondTest>(
+      this: TestHelpers,
+      testType: Type<T>
+    ) {
       const context: TestContext<ClrTabs, T> = this.create(ClrTabs, testType);
       const tabsService = context.getClarityProvider(TabsService);
       expect(tabsService.activeTab).toEqual(context.testComponent.firstTab);
     }
 
-    it('sets the first tab as active by default', function () {
+    it('sets the first tab as active by default', function (this: TestHelpers) {
       expectFirstTabActive.call(this, TestComponent);
     });
 
-    it("doesn't ignore tabs with @if", function () {
+    it("doesn't ignore tabs with @if", function (this: TestHelpers) {
       expectFirstTabActive.call(this, NgIfFirstTest);
     });
 
-    it("doesn't prioritize tabs with @if", function () {
+    it("doesn't prioritize tabs with @if", function (this: TestHelpers) {
       expectFirstTabActive.call(this, NgIfSecondTest);
     });
   });
@@ -399,24 +402,24 @@ describe('Tabs', () => {
     let compiled: any;
     let tabsService: TabsService;
 
-    function initialize<T extends TestComponent | NoClrIfActiveTest>(testType: Type<T>) {
+    function initialize<T extends TestComponent | NoClrIfActiveTest>(this: TestHelpers, testType: Type<T>) {
       context = this.create(ClrTabs, testType);
       tabsService = context.fixture.componentInstance.tabsInstance.tabsService;
       compiled = context.fixture.nativeElement;
     }
 
-    it('service defaults to horizontal', function () {
+    it('service defaults to horizontal', function (this: TestHelpers) {
       initialize.call(this, NoClrIfActiveTest);
       expect(context.fixture.componentInstance.tabsInstance.tabsService.layout).toEqual(TabsLayout.HORIZONTAL);
     });
 
-    it('does not contain class for vertical', function () {
+    it('does not contain class for vertical', function (this: TestHelpers) {
       initialize.call(this, TestComponent);
       compiled = context.fixture.nativeElement;
       expect(compiled.querySelector('.tabs-vertical')).toBeNull();
     });
 
-    it('can be switched to vertical', function () {
+    it('can be switched to vertical', function (this: TestHelpers) {
       initialize.call(this, TestComponent);
       context.fixture.componentInstance.layout = TabsLayout.VERTICAL;
       context.detectChanges();
@@ -430,7 +433,7 @@ describe('Tabs', () => {
     let compiled: any;
     let contents: HTMLElement;
 
-    beforeEach(function () {
+    beforeEach(function (this: TestHelpers) {
       context = this.create(ClrTabs, NoClrIfActiveTest);
       context.fixture.componentInstance.tabsInstance.ngAfterContentInit();
       context.fixture.detectChanges();
@@ -460,7 +463,7 @@ describe('Tabs', () => {
     let context: TestContext<ClrTabs, ScalingTestComponent>;
     let component: ScalingTestComponent;
 
-    beforeEach(function () {
+    beforeEach(function (this: TestHelpers) {
       context = this.create(ClrTabs, ScalingTestComponent);
       component = context.testComponent;
       context.fixture.detectChanges();

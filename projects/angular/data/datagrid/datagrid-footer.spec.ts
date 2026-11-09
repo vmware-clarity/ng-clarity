@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestContext } from '@clr/angular/testing';
+import { TestContext, TestHelpers } from '@clr/angular/testing';
 import { BehaviorSubject } from 'rxjs';
 
 import { ClrDatagridFooter } from './datagrid-footer';
@@ -21,7 +21,7 @@ export default function (): void {
     describe('View', function () {
       let context: TestContext<ClrDatagridFooter<number>, SimpleTest>;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagridFooter, SimpleTest, DATAGRID_SPEC_PROVIDERS);
       });
 
@@ -84,7 +84,7 @@ export default function (): void {
     describe('View with Detail Pane open', function () {
       let context: TestContext<ClrDatagridFooter<void>, SimpleTest>;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagridFooter, SimpleTest, [
           ...DATAGRID_SPEC_PROVIDERS,
           MOCK_COLUMN_SERVICE_PROVIDER,

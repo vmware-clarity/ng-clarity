@@ -8,6 +8,14 @@
 // This is a variation of a few similar utils found across the interwebs
 // Saved as a spec so it gets gobbled up and just runs.
 
+interface SlowSpecsReporter {
+  _specTimes?: { fullName: string; time: number }[];
+  _specStartedTime?: number;
+  jasmineStarted(): void;
+  specStarted(): void;
+  specDone(result: any): void;
+}
+
 export function reportSlowSpecs(): void {
   const reportSlowerThanMs = 250;
 
@@ -15,7 +23,7 @@ export function reportSlowSpecs(): void {
     return new Date().getTime();
   }
 
-  const slowSpecs = {
+  const slowSpecs: SlowSpecsReporter = {
     jasmineStarted() {
       this._specTimes = [];
     },
