@@ -79,6 +79,26 @@ export const filesRoot: File[] = [
   },
 ];
 
+/** A file as a row of a tree datagrid: folders have children, files have none. */
+export interface FileRow {
+  name: string;
+  type: 'Folder' | 'File';
+  /** How many files a folder holds; none for a file. */
+  items?: number;
+  children: FileRow[];
+}
+
+function toFileRows(files: File[]): FileRow[] {
+  return files.map(file => {
+    const children = toFileRows(file.files ?? []);
+    return file.files
+      ? { name: file.name, type: 'Folder', items: children.length, children }
+      : { name: file.name, type: 'File', children };
+  });
+}
+
+export const fileRows: FileRow[] = toFileRows(filesRoot);
+
 export function getFileTreeNodeMarkup(
   files: File[] = filesRoot,
   args: { asLink?: boolean; clrSelected?: boolean; hasIcon?: boolean } = {}
