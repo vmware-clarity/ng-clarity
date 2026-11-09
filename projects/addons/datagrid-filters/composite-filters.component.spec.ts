@@ -411,6 +411,38 @@ describe('CompositeFiltersComponent', () => {
       expect(pill.getAttribute('aria-expanded')).toBe('false');
       host.destroy();
     });
+
+    const openAddFilterInHost = async (host: ComponentFixture<CompositeFiltersHostComponent>) => {
+      host.detectChanges();
+      const addButton: HTMLButtonElement = host.nativeElement.querySelector('[data-test-id="add-button"]');
+      addButton.click();
+      host.detectChanges();
+      await host.whenStable();
+      expect(addButton.getAttribute('aria-expanded')).toBe('true');
+      return addButton;
+    };
+
+    it('resets it on Add filter after Escape', async function (this: ThisTest) {
+      const host = TestBed.createComponent(CompositeFiltersHostComponent);
+      const addButton = await openAddFilterInHost(host);
+      document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      host.detectChanges();
+      await host.whenStable();
+      expect(document.querySelector('.filter-popover')).toBeNull();
+      expect(addButton.getAttribute('aria-expanded')).toBe('false');
+      host.destroy();
+    });
+
+    it('resets it on Add filter after a second click on it', async function (this: ThisTest) {
+      const host = TestBed.createComponent(CompositeFiltersHostComponent);
+      const addButton = await openAddFilterInHost(host);
+      addButton.click();
+      host.detectChanges();
+      await host.whenStable();
+      expect(document.querySelector('.filter-popover')).toBeNull();
+      expect(addButton.getAttribute('aria-expanded')).toBe('false');
+      host.destroy();
+    });
   });
 
   it('separates predefined pills from user-added pills', function (this: ThisTest) {
@@ -425,6 +457,19 @@ describe('CompositeFiltersComponent', () => {
     expect(element.getAttribute('role')).toBe('separator');
     expect(element.previousElementSibling.tagName).toBe('APPFX-MANAGE-FILTER');
     expect(element.nextElementSibling.textContent).toContain(enumProperty.displayName);
+  });
+
+  it('moves focus to Add filter after Clear all', async function (this: ThisTest) {
+    this.component.onFilterCriteriaChange(enumPropertyFilter);
+    this.fixture.detectChanges();
+    const clearAll: HTMLButtonElement = this.fixture.nativeElement.querySelector('[data-test-id="clear-all-button"]');
+    clearAll.focus();
+    clearAll.click();
+    this.fixture.detectChanges();
+    await this.fixture.whenStable();
+    expect(this.component.propertyFilters.length).toBe(0);
+    expect(this.fixture.nativeElement.querySelector('[data-test-id="clear-all-button"]')).toBeNull();
+    expect(document.activeElement).toBe(this.fixture.nativeElement.querySelector('[data-test-id="add-button"]'));
   });
 
   it('moves focus to Add filter after a user-added pill is removed', async function (this: ThisTest) {

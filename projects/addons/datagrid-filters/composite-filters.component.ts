@@ -472,6 +472,9 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     this.updateShowHideLabel();
     this.showHideFiltersArrowDir = 'left';
     this.clearAll.emit();
+
+    // Clear all hides itself once nothing is active, so move focus to Add filter.
+    this.focusAddButton();
   }
 
   clearFilter(property: FilterablePropertyDefinition): void {
@@ -483,7 +486,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     this.updateShowHideLabel();
     if (!this.isPredefined(property) && !this.isSemiPredefined(property)) {
       // The removed pill held focus and no longer exists, so move focus to Add filter.
-      afterNextRender(() => this.addButton?.nativeElement.focus(), { injector: this.injector });
+      this.focusAddButton();
     }
   }
 
@@ -509,6 +512,10 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
       ...this.propertyFilters,
       ...this.toggleFilters.filter(toggle => this.isToggleOn(toggle)),
     ]);
+  }
+
+  private focusAddButton(): void {
+    afterNextRender(() => this.addButton?.nativeElement.focus(), { injector: this.injector });
   }
 
   /**
