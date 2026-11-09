@@ -62,9 +62,9 @@ export default function (): void {
       });
 
       it('adds a11y roles to the row', function () {
-        expect(context.clarityElement.attributes.role.value).toEqual('rowgroup');
+        expect(context.clarityElement.getAttribute('role')).toEqual('rowgroup');
         const rowId = context.clarityDirective.id;
-        expect(context.clarityElement.attributes['aria-owns'].value).toEqual(rowId);
+        expect(context.clarityElement.getAttribute('aria-owns')).toEqual(rowId);
         const rowContent = context.clarityElement.querySelector('.datagrid-row-master');
         expect(rowContent.attributes.id.value).toEqual(rowId);
       });
@@ -805,7 +805,7 @@ class SelectableRow {
   standalone: false,
 })
 class SelectableRowOrder {
-  clrDgSelectable = undefined;
+  clrDgSelectable: boolean | undefined = undefined;
   item: Item = { id: 42 };
   ariaLabel = 'uniq aria-label';
 }

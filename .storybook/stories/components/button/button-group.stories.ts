@@ -59,7 +59,7 @@ const meta = {
     clrToggleButtonAriaLabel: commonStringsDefault.rowActions,
     buttonCount: 3,
     inMenuButtonCount: 3,
-    disabledButtonsPosition: [],
+    disabledButtonsPosition: [] as number[],
     content: 'Hello World!',
     buttonType: 'primary',
     buttonStyle: 'outline',

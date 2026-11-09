@@ -5,10 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { TestBed } from '@angular/core/testing';
+import { DebugElement, Type } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import {
+  ClrAbstractContainer,
   ClrCommonFormsModule,
   ClrFormLayout,
   ControlIdService,
@@ -20,9 +22,16 @@ import { DatalistIdService } from '@clr/angular/forms/datalist';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrPopoverContent } from '@clr/angular/popover';
 
-export function ContainerNoLabelSpec(testContainer, testControl, testComponent): void {
+export function ContainerNoLabelSpec(
+  testContainer: Type<unknown>,
+  testControl: Type<unknown> | Type<unknown>[],
+  testComponent: Type<unknown>
+): void {
   describe('no label', () => {
-    let fixture, containerDE, containerEl, layoutService;
+    let fixture: ComponentFixture<unknown>;
+    let containerDE: DebugElement;
+    let containerEl: HTMLElement;
+    let layoutService: LayoutService;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -40,36 +49,55 @@ export function ContainerNoLabelSpec(testContainer, testControl, testComponent):
     it('adds an empty label when instantiated without vertical layout', () => {
       fixture.detectChanges();
       const labels = containerEl.querySelectorAll('label');
-      expect(Array.prototype.filter.call(labels, label => label.textContent === '').length).toBe(1);
+      expect(Array.prototype.filter.call(labels, (label: HTMLLabelElement) => label.textContent === '').length).toBe(1);
     });
 
     it('does not add an empty label when instantiated with vertical layout', () => {
       layoutService.layout = ClrFormLayout.VERTICAL;
       fixture.detectChanges();
       const labels = containerEl.querySelectorAll('label');
-      expect(Array.prototype.filter.call(labels, label => label.textContent === '').length).toBe(0);
+      expect(Array.prototype.filter.call(labels, (label: HTMLLabelElement) => label.textContent === '').length).toBe(0);
     });
   });
 }
 
-export function TemplateDrivenSpec(testContainer, testControl, testComponent, wrapperClass): void {
+export function TemplateDrivenSpec(
+  testContainer: Type<unknown>,
+  testControl: Type<unknown> | Type<unknown>[],
+  testComponent: Type<unknown>,
+  wrapperClass: string
+): void {
   fullSpec('template-driven', testContainer, testControl, testComponent, wrapperClass);
 }
 
-export function ReactiveSpec(testContainer, testControl, testComponent, wrapperClass): void {
+export function ReactiveSpec(
+  testContainer: Type<unknown>,
+  testControl: Type<unknown> | Type<unknown>[],
+  testComponent: Type<unknown>,
+  wrapperClass: string
+): void {
   fullSpec('reactive', testContainer, testControl, testComponent, wrapperClass);
 }
 
-function fullSpec(description, testContainer, directives: any | any[], testComponent, wrapperClass) {
+function fullSpec(
+  description: string,
+  testContainer: Type<unknown>,
+  directives: Type<unknown> | Type<unknown>[],
+  testComponent: Type<unknown>,
+  wrapperClass: string
+) {
   describe(description, () => {
-    let fixture, containerDE, container, containerEl, layoutService, markControlService;
-    if (!Array.isArray(directives)) {
-      directives = [directives];
-    }
+    let fixture: ComponentFixture<unknown>;
+    let containerDE: DebugElement;
+    let container: ClrAbstractContainer;
+    let containerEl: HTMLElement;
+    let layoutService: LayoutService;
+    let markControlService: MarkControlService;
+    const directiveList = Array.isArray(directives) ? directives : [directives];
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [ClrIcon, ClrCommonFormsModule, FormsModule, ReactiveFormsModule, ClrPopoverContent],
-        declarations: [testContainer, ...directives, testComponent],
+        declarations: [testContainer, ...directiveList, testComponent],
         providers: [NgControlService, LayoutService, MarkControlService, ControlIdService, DatalistIdService],
       });
       fixture = TestBed.createComponent(testComponent);
@@ -87,7 +115,7 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
       // The scenarios were additionally verified by manual testing in a patched Stackblitz demo:
       // https://stackblitz.com/edit/input-on-blur-issue-onpush-td-13-4-3
       markControlService.markAsTouched();
-      container.control.control.value = valid;
+      (container.control.control as { value: boolean }).value = valid;
       container.control.control.markAsDirty();
     }
 
@@ -97,7 +125,7 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
     });
 
     it('injects the container subscribes', () => {
-      expect(container.subscriptions[0]).toBeTruthy();
+      expect(container['subscriptions'][0]).toBeTruthy();
     });
 
     it('projects the label as first child', () => {

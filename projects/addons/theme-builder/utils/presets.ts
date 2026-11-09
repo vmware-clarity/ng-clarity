@@ -8,7 +8,7 @@
 import { Color } from './color';
 import { DataRow, ThemePreset } from './types';
 
-export const DEFAULT_OVERRIDES = {
+export const DEFAULT_OVERRIDES: Record<string, string[]> = {
   // primary
   '--cds-alias-primary-tint': ['--cds-alias-object-interaction-background-hover'],
   '--cds-alias-primary-shade': ['--cds-alias-typography-link-color', '--cds-alias-object-interaction-primary-hover'],
@@ -104,7 +104,7 @@ export const BACKGROUND_TOKENS = [
   },
 ];
 
-export const TOKEN_KEYS = {
+export const TOKEN_KEYS: Record<string, string[]> = {
   baseTokens: [
     '--cds-alias-primary',
     '--cds-alias-status-info',

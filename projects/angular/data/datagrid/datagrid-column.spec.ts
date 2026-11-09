@@ -359,17 +359,17 @@ export default function (): void {
       });
 
       it('adds a11y roles to the column', function () {
-        expect(context.clarityElement.attributes.role.value).toEqual('columnheader');
-        expect(context.clarityElement.attributes['aria-sort'].value).toBe('none');
+        expect(context.clarityElement.getAttribute('role')).toEqual('columnheader');
+        expect(context.clarityElement.getAttribute('aria-sort')).toBe('none');
 
         context.clarityDirective.sortBy = new TestComparator();
         context.clarityDirective.sort();
         context.detectChanges();
-        expect(context.clarityElement.attributes['aria-sort'].value).toBe('ascending');
+        expect(context.clarityElement.getAttribute('aria-sort')).toBe('ascending');
 
         context.clarityDirective.sort();
         context.detectChanges();
-        expect(context.clarityElement.attributes['aria-sort'].value).toBe('descending');
+        expect(context.clarityElement.getAttribute('aria-sort')).toBe('descending');
       });
     });
 
@@ -416,7 +416,7 @@ export default function (): void {
     });
 
     describe('Build-in string and numeric filters', function () {
-      let context;
+      let context: TestContext<ClrDatagridColumn, ColTypeTest>;
 
       beforeEach(function () {
         context = this.create(ClrDatagridColumn, ColTypeTest, DATAGRID_SPEC_PROVIDERS);

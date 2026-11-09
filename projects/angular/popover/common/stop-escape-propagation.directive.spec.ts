@@ -81,7 +81,7 @@ class TestPopoverHostComponent {
   ) {}
 
   @HostListener('keydown.escape', ['$event'])
-  onEscapeKey(event) {
+  onEscapeKey(event: KeyboardEvent) {
     this.popoverService.toggleWithEvent(event);
   }
 }

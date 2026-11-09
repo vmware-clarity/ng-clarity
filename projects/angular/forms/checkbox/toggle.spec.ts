@@ -52,7 +52,9 @@ export default function (): void {
   });
 
   describe('a11y', () => {
-    let fixture, containerDE, containerEl;
+    let fixture;
+    let containerDE;
+    let containerEl: HTMLElement;
 
     beforeEach(() => {
       TestBed.configureTestingModule({

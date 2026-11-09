@@ -174,8 +174,8 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
         continue;
       }
 
-      for (const key of Object.keys(themeColors)) {
-        this.applyGroupOverrides(theme, key, themeColors[key]);
+      for (const [key, colors] of Object.entries(themeColors)) {
+        this.applyGroupOverrides(theme, key, colors);
       }
     }
 
@@ -225,7 +225,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     return true;
   }
 
-  resetAllThemeColors(theme: string) {
+  resetAllThemeColors(theme: ThemeType) {
     for (const key of Object.keys(this.colorStruct[theme])) {
       const tokenGroup = this.colorStruct[theme][key];
 

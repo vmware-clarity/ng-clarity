@@ -71,7 +71,9 @@ export default function (): void {
     ReactiveSpec(ClrPasswordContainer, ClrPassword, ReactiveTest, 'clr-input');
 
     describe('set password type', () => {
-      let fixture, containerDE, containerEl;
+      let fixture;
+      let containerDE;
+      let containerEl: HTMLElement;
 
       beforeEach(() => {
         TestBed.configureTestingModule({

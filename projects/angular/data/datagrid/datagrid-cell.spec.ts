@@ -46,7 +46,7 @@ export default function (): void {
     });
 
     it('adds a11y roles to the cell', function () {
-      expect(context.clarityElement.attributes.role.value).toBe('gridcell');
+      expect(context.clarityElement.getAttribute('role')).toBe('gridcell');
     });
   });
 }

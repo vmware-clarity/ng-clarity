@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ChangeDetectionStrategy, Component, DebugElement, Type } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule } from '@clr/angular/forms/common';
@@ -81,7 +81,9 @@ export default function (): void {
     inputSpec('reactive', ClrNumberInputContainer, ClrNumberInput, ReactiveTest);
 
     describe('without a form control', () => {
-      let fixture, control, clarityDirective: ClrNumberInput;
+      let fixture: ComponentFixture<NoFormControlTest>;
+      let control: DebugElement;
+      let clarityDirective: ClrNumberInput;
 
       beforeEach(() => {
         TestBed.configureTestingModule({
@@ -121,9 +123,16 @@ export default function (): void {
   });
 }
 
-function inputSpec(description, testContainer, testControl, testComponent) {
+function inputSpec(
+  description: string,
+  testContainer: Type<unknown>,
+  testControl: Type<ClrNumberInput>,
+  testComponent: Type<unknown>
+) {
   describe('Input specific value change tests ' + description, () => {
-    let control, fixture, clarityDirective: ClrNumberInput;
+    let control: DebugElement;
+    let fixture: ComponentFixture<unknown>;
+    let clarityDirective: ClrNumberInput;
 
     beforeEach(() => {
       TestBed.configureTestingModule({

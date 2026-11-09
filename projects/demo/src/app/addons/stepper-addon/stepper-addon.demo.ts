@@ -96,7 +96,7 @@ export class StepperAddonDemo implements OnInit {
     this.submitted = true;
   }
 
-  onModelChange(event) {
+  onModelChange(event: unknown) {
     console.log(event);
   }
 

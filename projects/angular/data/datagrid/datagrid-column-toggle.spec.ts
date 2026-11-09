@@ -142,7 +142,7 @@ export default function (): void {
         columnToggle.toggleSwitchPanel();
         context.detectChanges();
         await delay();
-        expect(document.querySelector('button.column-toggle-action').attributes['aria-controls'].value).toBe(
+        expect(document.querySelector('button.column-toggle-action').getAttribute('aria-controls')).toBe(
           document.querySelector('div.column-switch').getAttribute('id')
         );
       });
@@ -152,9 +152,7 @@ export default function (): void {
         columnToggle.toggleSwitchPanel();
         context.detectChanges();
         await delay();
-        expect(document.querySelector('button.toggle-switch-close-button').attributes['aria-label'].value).toBe(
-          'Close'
-        );
+        expect(document.querySelector('button.toggle-switch-close-button').getAttribute('aria-label')).toBe('Close');
       });
 
       it('projects template as switch content', function () {

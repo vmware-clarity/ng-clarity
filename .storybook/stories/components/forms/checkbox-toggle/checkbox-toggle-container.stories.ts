@@ -45,7 +45,7 @@ const meta = {
     type: CheckboxType.Checkbox,
     containerLabel: 'Options',
     optionCount: 4,
-    disabledIndexes: [],
+    disabledIndexes: [] as number[],
   },
   render: args => ({
     props: {

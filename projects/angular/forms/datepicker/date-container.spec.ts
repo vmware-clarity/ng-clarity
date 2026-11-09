@@ -172,13 +172,13 @@ export default function () {
       it('has an accessible title and aria-label on the calendar toggle button', async () => {
         const toggleButton: HTMLButtonElement = context.clarityElement.querySelector('.clr-input-group-icon-action');
         expect(toggleButton.title).toEqual('Choose date');
-        expect(toggleButton.attributes['aria-label'].value).toEqual('Choose date');
+        expect(toggleButton.getAttribute('aria-label')).toEqual('Choose date');
 
         dateNavigationService.notifySelectedDayChanged(new DayModel(2022, 1, 1));
         context.detectChanges();
 
         expect(toggleButton.title).toEqual('Change date, 02/01/2022');
-        expect(toggleButton.attributes['aria-label'].value).toEqual('Change date, 02/01/2022');
+        expect(toggleButton.getAttribute('aria-label')).toEqual('Change date, 02/01/2022');
       });
 
       it('supports clrPosition option', () => {

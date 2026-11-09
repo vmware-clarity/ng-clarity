@@ -6,7 +6,12 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { AppfxDatagridFiltersModule, DataGridFiltersComponent, FilterMode } from '@clr/addons/datagrid-filters';
+import {
+  AppfxDatagridFiltersModule,
+  DataGridFiltersComponent,
+  FilterMode,
+  PropertyFilter,
+} from '@clr/addons/datagrid-filters';
 import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
 
 import { DatagridFiltersStoryWrapperComponent, presetFilters } from './datagrid-filters.storybook.component';
@@ -36,7 +41,7 @@ const meta = {
   },
   args: {
     filterMode: FilterMode.Advanced,
-    presetFilters: [],
+    presetFilters: [] as PropertyFilter[],
   },
   render: args => ({
     props: args,

@@ -41,7 +41,7 @@ export class ControlClassService {
   initControlClass(renderer: Renderer2, element: HTMLElement) {
     if (element && element.className) {
       const klasses = element.className.split(' ');
-      const controlKlasses = [];
+      const controlKlasses: string[] = [];
 
       klasses.forEach(klass => {
         if (klass.startsWith('clr-')) {

@@ -121,8 +121,8 @@ const meta = {
     scrollOffset: 16,
     showFooterNavButtons: false,
     height: 480,
-    selectedRows: [],
-    selectedRowsArray: [],
+    selectedRows: [] as number[],
+    selectedRowsArray: [] as Element[],
     setExpanded,
   },
   render: args => ({
@@ -265,7 +265,7 @@ export default meta;
 
 type Story = StoryObj<VirtualScrollDetailArgs>;
 
-function setExpanded($event, element) {
+function setExpanded($event: boolean, element: Element) {
   element.expanded = $event;
 }
 

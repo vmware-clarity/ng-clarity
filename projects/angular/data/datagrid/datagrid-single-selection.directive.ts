@@ -23,7 +23,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   },
 })
 export class ClrDatagridSingleSelectionValueAccessor implements ControlValueAccessor {
-  @Input() value;
+  @Input() value: any;
   @Input() clrDgIdentityFn!: (value: any) => unknown;
 
   private state: any;

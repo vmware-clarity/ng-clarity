@@ -22,7 +22,7 @@ export default function () {
       fixture.detectChanges();
     });
 
-    it('Focuses on the button if the button has a tabindex of 0', inject([PLATFORM_ID], platformId => {
+    it('Focuses on the button if the button has a tabindex of 0', inject([PLATFORM_ID], (platformId: object) => {
       const datepickerViewService: DatepickerFocusService = new DatepickerFocusService(mockNgZone, platformId);
       const compInstance = fixture.debugElement.componentInstance;
 
@@ -36,7 +36,7 @@ export default function () {
 
     it('Does not focus on the button if the button does not have a tab index of 0', inject(
       [PLATFORM_ID],
-      platformId => {
+      (platformId: object) => {
         const datepickerFocusService: DatepickerFocusService = new DatepickerFocusService(mockNgZone, platformId);
         const compInstance = fixture.debugElement.componentInstance;
         compInstance.tabIndex = '-1';
@@ -52,7 +52,7 @@ export default function () {
       }
     ));
 
-    it('should focus given input element', inject([PLATFORM_ID], platformId => {
+    it('should focus given input element', inject([PLATFORM_ID], (platformId: object) => {
       const datepickerFocusService: DatepickerFocusService = new DatepickerFocusService(mockNgZone, platformId);
       const input: HTMLInputElement = fixture.debugElement.nativeElement.querySelector('input');
 

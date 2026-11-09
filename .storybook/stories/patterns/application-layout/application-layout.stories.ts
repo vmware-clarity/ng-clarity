@@ -18,7 +18,6 @@ type ApplicationLayoutArgs = ApplicationLayoutStorybookComponent;
 const meta = {
   title: 'Patterns/Application Layout',
   component: ApplicationLayoutStorybookComponent,
-  decorators: [],
   argTypes: {},
   args: {
     level1Navigation: true,

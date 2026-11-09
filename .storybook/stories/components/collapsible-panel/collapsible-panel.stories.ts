@@ -33,7 +33,7 @@ const meta = {
     panelDisabled: false,
     title: 'Panel',
     content: 'Content for panel',
-    openIndices: [],
+    openIndices: [] as boolean[],
   },
   render: args => ({
     props: args,

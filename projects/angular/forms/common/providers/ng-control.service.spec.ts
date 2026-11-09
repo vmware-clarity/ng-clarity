@@ -5,13 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { FormControl } from '@angular/forms';
+import { FormControl, NgControl } from '@angular/forms';
 
 import { NgControlService } from './ng-control.service';
 
 export default function (): void {
   describe('NgControlService', function () {
-    let service, testControl;
+    let service: NgControlService;
+    let testControl: FormControl;
 
     beforeEach(() => {
       testControl = new FormControl(true);
@@ -22,7 +23,7 @@ export default function (): void {
       const cb = jasmine.createSpy('cb');
       const sub = service.controlsChanges.subscribe(controls => cb(controls[0]));
       expect(cb).not.toHaveBeenCalled();
-      service.addControl(testControl);
+      service.addControl(testControl as unknown as NgControl);
       expect(cb).toHaveBeenCalledWith(testControl);
       sub.unsubscribe();
     });

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrDatepickerModule, ClrEndDateInput, ClrStartDateInput } from '@clr/angular';
+import { ClrDatepickerModule, ClrEndDateInput, ClrStartDateInput, DateRangeOption } from '@clr/angular';
 import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
 import { hideControls } from '@storybook-helpers/arg-types';
 import { CommonModules } from '@storybook-helpers/common';
@@ -80,7 +80,7 @@ const meta = {
     // story helpers
     getDateObject: date => date && new Date(date),
     getDateString: date => date && new Date(date).toISOString().split('T')[0],
-    predefinedDateRanges: [],
+    predefinedDateRanges: [] as DateRangeOption[],
   },
   render: args => ({
     template: `

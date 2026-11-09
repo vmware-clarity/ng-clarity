@@ -412,31 +412,31 @@ export default function (): void {
 
           it('previous button is hidden on first page', () => {
             const previous = context.testElement.querySelector('.clr-wizard-btn--secondary');
-            const val = previous.parentElement.attributes['aria-hidden'].value;
+            const val = previous.parentElement.getAttribute('aria-hidden');
             expect(val).toBe('true');
           });
 
           it('next button is visible on every page except the last page', () => {
             const next = context.testElement.querySelector('.clr-wizard-btn--primary:not(.disabled)');
-            let val = next.parentElement.attributes['aria-hidden'].value;
+            let val = next.parentElement.getAttribute('aria-hidden');
             expect(val).toBe('false');
 
             wizard.pageCollection.lastPage.makeCurrent();
             context.detectChanges();
 
-            val = next.parentElement.attributes['aria-hidden'].value;
+            val = next.parentElement.getAttribute('aria-hidden');
             expect(val).toBe('true');
           });
 
           it('finish button is hidden on every page except the last one', () => {
             const finish = context.testElement.querySelector('.clr-wizard-btn--primary.disabled');
-            let val = finish.parentElement.attributes['aria-hidden'].value;
+            let val = finish.parentElement.getAttribute('aria-hidden');
             expect(val).toBe('true');
 
             wizard.pageCollection.lastPage.makeCurrent();
             context.detectChanges();
 
-            val = finish.parentElement.attributes['aria-hidden'].value;
+            val = finish.parentElement.getAttribute('aria-hidden');
             expect(val).toBe('false');
           });
 

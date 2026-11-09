@@ -78,7 +78,7 @@ export class TextareaDemo extends ClarityDocComponent {
   readonly patternLinks: LinkCardsLink[] = [formsPatternLink];
 
   exampleOne = '';
-  exampleTwo = null;
+  exampleTwo: string | null = null;
   exampleThree = '';
   description = '';
 

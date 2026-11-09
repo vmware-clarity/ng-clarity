@@ -31,7 +31,7 @@ const meta = {
     ...hideControls('clrLazy'),
   },
   args: {
-    selected: null,
+    selected: null as ClrSelectedState | null,
   },
   render: args => ({
     template: `

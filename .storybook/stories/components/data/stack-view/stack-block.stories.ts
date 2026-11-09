@@ -44,7 +44,7 @@ const meta = {
   },
   args: {
     // inputs
-    clrSbExpandable: undefined,
+    clrSbExpandable: undefined as boolean | undefined,
     // outputs
     clrSbExpandedChange: action('clrSbExpandedChange'),
     // story helpers

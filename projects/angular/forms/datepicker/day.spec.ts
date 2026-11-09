@@ -133,18 +133,18 @@ export default function () {
         context.testComponent.dayView.isTodaysDate = true;
 
         context.detectChanges();
-        expect(button.attributes['aria-current'].value).toBe('date');
+        expect(button.getAttribute('aria-current')).toBe('date');
 
         context.testComponent.dayView.isTodaysDate = false;
 
         context.detectChanges();
-        expect(button.attributes['aria-current'].value).toBe('false');
+        expect(button.getAttribute('aria-current')).toBe('false');
       });
 
       it('sets the correct value for the aria-label attribute', () => {
         const dayBtn: HTMLButtonElement = context.clarityElement.children[0];
         const dvm: DayViewModel = context.clarityDirective.dayView;
-        expect(dayBtn.attributes['aria-label'].value).toEqual(dvm.dayModel.toDateString());
+        expect(dayBtn.getAttribute('aria-label')).toEqual(dvm.dayModel.toDateString());
       });
 
       it('sets the correct value for the aria-label attribute when the date is selected', () => {
@@ -154,16 +154,16 @@ export default function () {
         context.testComponent.dayView.isSelected = true;
 
         context.detectChanges();
-        expect(dayBtn.attributes['aria-label'].value).toEqual(`${dvm.dayModel.toDateString()} - Selected`);
+        expect(dayBtn.getAttribute('aria-label')).toEqual(`${dvm.dayModel.toDateString()} - Selected`);
       });
 
       it('sets aria-selected when the date is selected', () => {
         const button: HTMLButtonElement = context.clarityElement.children[0];
-        expect(button.attributes['aria-selected'].value).toBe('false');
+        expect(button.getAttribute('aria-selected')).toBe('false');
         context.testComponent.dayView.isSelected = true;
 
         context.detectChanges();
-        expect(button.attributes['aria-selected'].value).toBe('true');
+        expect(button.getAttribute('aria-selected')).toBe('true');
       });
 
       it('updates the focusable date when a button is focused', () => {

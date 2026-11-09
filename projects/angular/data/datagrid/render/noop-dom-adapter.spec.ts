@@ -9,8 +9,8 @@ import { NoopDomAdapter } from './noop-dom-adapter';
 
 export default function (): void {
   describe('NoopDomAdapter', function () {
-    let domAdapter;
-    let element;
+    let domAdapter: NoopDomAdapter;
+    let element: HTMLElement;
     beforeEach(() => {
       domAdapter = new NoopDomAdapter();
       element = document.createElement('div');

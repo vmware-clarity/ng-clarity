@@ -97,7 +97,7 @@ const meta = {
     hidableColumns: false,
     showActions: false,
     height: 0,
-    selectedRows: [],
+    selectedRows: [] as (number | Element)[],
   },
   render: args => ({
     template: `
