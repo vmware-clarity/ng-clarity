@@ -1,5 +1,5 @@
 import * as i5$1 from '@angular/common';
-import { getLocaleDayNames, FormStyle, TranslationWidth, getLocaleMonthNames, getLocaleFirstDayOfWeek, getLocaleDateFormat, FormatWidth, isPlatformBrowser, CommonModule } from '@angular/common';
+import { getLocaleDateFormat, FormatWidth, getLocaleDayNames, FormStyle, TranslationWidth, getLocaleMonthNames, getLocaleFirstDayOfWeek, isPlatformBrowser, CommonModule } from '@angular/common';
 import * as i0 from '@angular/core';
 import { Injectable, LOCALE_ID, Inject, DOCUMENT, PLATFORM_ID, HostListener, Component, EventEmitter, Input, Output, ViewChild, Optional, forwardRef, HostBinding, Self, Directive, NgModule } from '@angular/core';
 import * as i7 from '@clr/angular/forms/common';
@@ -129,10 +129,6 @@ class DayModel {
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-/**
- * This is the en-001 short locale date format. Setting as default.
- */
-const DEFAULT_LOCALE_FORMAT = 'dd/MM/y';
 // https://en.wikipedia.org/wiki/Date_format_by_country
 const LITTLE_ENDIAN_REGEX = /d+.+m+.+y+/i;
 const MIDDLE_ENDIAN_REGEX = /m+.+d+.+y+/i;
@@ -218,6 +214,170 @@ function datesAreEqual(date1, date2) {
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 /**
+ * The date format that Clarity date inputs use for a locale: the order of day, month and year and the
+ * delimiters between them, read from the Angular locale short date format (`getLocaleDateFormat(locale,
+ * FormatWidth.Short)`). Use it to format and parse dates exactly as `clrDate`, `clrStartDate` and
+ * `clrEndDate` show and accept them, e.g. to convert a date input's form value.
+ *
+ * Instances are immutable and depend on the locale only, so they need no providers. Create one per locale
+ * and share it (e.g. as a component field) rather than one per call: the constructor reads the locale data
+ * and logs an error for an unexpected date format.
+ *
+ * ```ts
+ * // In a field initializer or constructor, where inject() is available:
+ * private readonly dateFormat = new ClrLocaleDateFormat(inject(LOCALE_ID));
+ *
+ * this.dateFormat.placeholder; // "MM/DD/YYYY" for en-US
+ * this.dateFormat.format(new Date(2015, 1, 1)); // "02/01/2015"
+ * this.dateFormat.parse('02/01/2015'); // Date for 1 February 2015, local midnight
+ * ```
+ */
+class ClrLocaleDateFormat {
+    /**
+     * @param locale An Angular locale id whose locale data is registered, such as the app's `LOCALE_ID`.
+     */
+    constructor(
+    /**
+     * The Angular locale id the format was read from.
+     */
+    locale) {
+        this.locale = locale;
+        const localeDateFormat = getLocaleDateFormat(locale, FormatWidth.Short);
+        this.displayFormat = this.getDisplayFormat(localeDateFormat);
+        this.delimiters = this.extractDelimiters(localeDateFormat) ?? ['/', '/'];
+    }
+    /**
+     * The format as placeholder text, e.g. "MM/DD/YYYY" for en-US or "DD.MM.YYYY" for bg.
+     */
+    get placeholder() {
+        const format = this.displayFormat.format;
+        return format[0] + this.delimiters[0] + format[1] + this.delimiters[1] + format[2];
+    }
+    /**
+     * Formats a date as the date inputs show it, e.g. "02/01/2015" for en-US.
+     * Returns an empty string for `null`, `undefined` or an invalid date.
+     */
+    format(date) {
+        if (date) {
+            if (isNaN(date.getTime())) {
+                return '';
+            }
+            const dateNo = date.getDate();
+            const monthNo = date.getMonth() + 1;
+            const dateStr = dateNo > 9 ? dateNo.toString() : '0' + dateNo;
+            const monthStr = monthNo > 9 ? monthNo.toString() : '0' + monthNo;
+            if (this.displayFormat === LITTLE_ENDIAN) {
+                return dateStr + this.delimiters[0] + monthStr + this.delimiters[1] + date.getFullYear();
+            }
+            else if (this.displayFormat === MIDDLE_ENDIAN) {
+                return monthStr + this.delimiters[0] + dateStr + this.delimiters[1] + date.getFullYear();
+            }
+            else {
+                return date.getFullYear() + this.delimiters[0] + monthStr + this.delimiters[1] + dateStr;
+            }
+        }
+        return '';
+    }
+    /**
+     * Parses text typed in the locale's format into a `Date` at local midnight. Any non-digit characters
+     * delimit the parts. Returns `null` when the text does not have three parts, the month or day does not
+     * exist, or the year is not accepted. Minimum and maximum dates are not checked.
+     *
+     * Years, the same rules as the date picker:
+     * - `1000`–`9999` are used as typed.
+     * - `10`–`99` are expanded to the year in the current century, or the previous one when that would be
+     *   more than 20 years ahead. In 2026, `46` is 2046 and `47` is 1947.
+     * - `0`–`9`, including `00`–`09`, are rejected, so 2000–2009 must be typed with four digits.
+     * - `101`–`998` and anything above `9999` are rejected.
+     * - `100` and `999` (or `0999`) are expanded like two-digit years, e.g. to 2000 and 2899 in 2026.
+     */
+    parse(text) {
+        if (!text || typeof text !== 'string') {
+            return null;
+        }
+        const dateParts = text.match(USER_INPUT_REGEX);
+        if (!dateParts || dateParts.length !== 3) {
+            return null;
+        }
+        const [firstPart, secondPart, thirdPart] = dateParts;
+        if (this.displayFormat === LITTLE_ENDIAN) {
+            // secondPart is month && firstPart is date
+            return this.validateAndGetDate(thirdPart, secondPart, firstPart);
+        }
+        else if (this.displayFormat === MIDDLE_ENDIAN) {
+            // firstPart is month && secondPart is date
+            return this.validateAndGetDate(thirdPart, firstPart, secondPart);
+        }
+        else {
+            // secondPart is month && thirdPart is date
+            return this.validateAndGetDate(firstPart, secondPart, thirdPart);
+        }
+    }
+    getDisplayFormat(localeDateFormat) {
+        const format = localeDateFormat.toLocaleLowerCase();
+        if (LITTLE_ENDIAN_REGEX.test(format)) {
+            return LITTLE_ENDIAN;
+        }
+        else if (MIDDLE_ENDIAN_REGEX.test(format)) {
+            return MIDDLE_ENDIAN;
+        }
+        // everything else is set to BIG-ENDIAN FORMAT
+        return BIG_ENDIAN;
+    }
+    extractDelimiters(localeDateFormat) {
+        if (localeDateFormat) {
+            // Sanitize Date Format. Remove RTL characters.
+            // FIXME: When we support RTL, remove this and handle it correctly.
+            const localeFormat = localeDateFormat.replace(RTL_REGEX, '');
+            const delimiters = localeFormat.split(DELIMITER_REGEX);
+            // NOTE: The split from the CLDR date format should always result
+            // in an array with 4 elements. The 1st and the 2nd values are the delimiters
+            // we will use in order.
+            // Eg: "dd/MM/y".split(/d+|m+|y+/i) results in ["", "/", "/", ""]
+            if (delimiters && delimiters.length === 4) {
+                return [delimiters[1], delimiters[2]];
+            }
+            console.error('Unexpected date format received. Delimiters extracted: ', delimiters);
+        }
+        return null;
+    }
+    /**
+     * Checks if the month entered by the user is valid or not.
+     * Note: Month is 0 based.
+     */
+    isValidMonth(month) {
+        return month > -1 && month < 12;
+    }
+    /**
+     * Checks if the date is valid depending on the year and month provided.
+     */
+    isValidDate(year, month, date) {
+        return date > 0 && date <= getNumberOfDaysInTheMonth(year, month);
+    }
+    /**
+     * Validates the parameters provided and returns the date.
+     * If the parameters are not valid then return null.
+     * NOTE: (Month here is 1 based since the user has provided that as an input)
+     */
+    validateAndGetDate(year, month, date) {
+        const y = +year;
+        const m = +month - 1; // month is 0 based
+        const d = +date;
+        if (!this.isValidMonth(m) || !this.isValidDate(y, m, d)) {
+            return null;
+        }
+        const result = parseToFourDigitYear(y);
+        return result !== -1 ? new Date(result, m, d) : null;
+    }
+}
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/**
  * Index of the day of the week, matching JavaScript's Date.getDay() convention.
  * Used to override the locale-derived first day of the week in the date picker.
  */
@@ -263,9 +423,6 @@ class LocaleHelperService {
     get localeMonthsWide() {
         return this._localeMonthsWide;
     }
-    get localeDateFormat() {
-        return this._localeDateFormat;
-    }
     /**
      * Overrides the first day of the week regardless of locale.
      * Accepts a `ClrWeekday` value (Sunday=0 through Saturday=6), or null to revert to locale default.
@@ -286,7 +443,6 @@ class LocaleHelperService {
     initializeLocaleData() {
         // Order in which these functions is called is very important.
         this.initializeLocaleFirstDayOfWeek();
-        this.initializeLocaleDateFormat();
         this.initializeLocaleMonthsAbbreviated();
         this.initializeLocaleMonthsWide();
         this.initializeLocaleDays();
@@ -330,9 +486,6 @@ class LocaleHelperService {
     initializeLocaleFirstDayOfWeek() {
         this._firstDayOfWeek = getLocaleFirstDayOfWeek(this.locale);
     }
-    initializeLocaleDateFormat() {
-        this._localeDateFormat = getLocaleDateFormat(this.locale, FormatWidth.Short);
-    }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: LocaleHelperService, deps: [{ token: LOCALE_ID }], target: i0.ɵɵFactoryTarget.Injectable }); }
     static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: LocaleHelperService }); }
 }
@@ -362,17 +515,12 @@ class DateIOService {
             minDate: new DayModel(0, 0, 1),
             maxDate: new DayModel(9999, 11, 31),
         };
-        this.cldrLocaleDateFormat = DEFAULT_LOCALE_FORMAT;
         this.minDateChange = new Subject();
         this.maxDateChange = new Subject();
-        this.localeDisplayFormat = LITTLE_ENDIAN;
-        this.delimiters = ['/', '/'];
-        this.cldrLocaleDateFormat = localeHelperService.localeDateFormat;
-        this.initializeLocaleDisplayFormat();
+        this.localeDateFormat = new ClrLocaleDateFormat(localeHelperService.locale);
     }
     get placeholderText() {
-        const format = this.localeDisplayFormat.format;
-        return format[0] + this.delimiters[0] + format[1] + this.delimiters[1] + format[2];
+        return this.localeDateFormat.placeholder;
     }
     setMinDate(date) {
         // NOTE: I'm expecting consumers to pass one of four things here:
@@ -408,47 +556,10 @@ class DateIOService {
         return this.dateRangeOptions;
     }
     toLocaleDisplayFormatString(date) {
-        if (date) {
-            if (isNaN(date.getTime())) {
-                return '';
-            }
-            const dateNo = date.getDate();
-            const monthNo = date.getMonth() + 1;
-            const dateStr = dateNo > 9 ? dateNo.toString() : '0' + dateNo;
-            const monthStr = monthNo > 9 ? monthNo.toString() : '0' + monthNo;
-            if (this.localeDisplayFormat === LITTLE_ENDIAN) {
-                return dateStr + this.delimiters[0] + monthStr + this.delimiters[1] + date.getFullYear();
-            }
-            else if (this.localeDisplayFormat === MIDDLE_ENDIAN) {
-                return monthStr + this.delimiters[0] + dateStr + this.delimiters[1] + date.getFullYear();
-            }
-            else {
-                return date.getFullYear() + this.delimiters[0] + monthStr + this.delimiters[1] + dateStr;
-            }
-        }
-        return '';
+        return this.localeDateFormat.format(date);
     }
     getDateValueFromDateString(date) {
-        if (!date || typeof date !== 'string') {
-            return null;
-        }
-        const dateParts = date.match(USER_INPUT_REGEX);
-        if (!dateParts || dateParts.length !== 3) {
-            return null;
-        }
-        const [firstPart, secondPart, thirdPart] = dateParts;
-        if (this.localeDisplayFormat === LITTLE_ENDIAN) {
-            // secondPart is month && firstPart is date
-            return this.validateAndGetDate(thirdPart, secondPart, firstPart);
-        }
-        else if (this.localeDisplayFormat === MIDDLE_ENDIAN) {
-            // firstPart is month && secondPart is date
-            return this.validateAndGetDate(thirdPart, firstPart, secondPart);
-        }
-        else {
-            // secondPart is month && thirdPart is date
-            return this.validateAndGetDate(firstPart, secondPart, thirdPart);
-        }
+        return this.localeDateFormat.parse(date);
     }
     validateDateRangeOptions(rangeOptions) {
         const validOptions = [];
@@ -461,77 +572,6 @@ class DateIOService {
             validOptions.push(rangeOption);
         });
         return validOptions;
-    }
-    initializeLocaleDisplayFormat() {
-        const format = this.cldrLocaleDateFormat.toLocaleLowerCase();
-        if (LITTLE_ENDIAN_REGEX.test(format)) {
-            this.localeDisplayFormat = LITTLE_ENDIAN;
-        }
-        else if (MIDDLE_ENDIAN_REGEX.test(format)) {
-            this.localeDisplayFormat = MIDDLE_ENDIAN;
-        }
-        else {
-            // everything else is set to BIG-ENDIAN FORMAT
-            this.localeDisplayFormat = BIG_ENDIAN;
-        }
-        this.extractDelimiters();
-    }
-    extractDelimiters() {
-        if (this.cldrLocaleDateFormat) {
-            // Sanitize Date Format. Remove RTL characters.
-            // FIXME: When we support RTL, remove this and handle it correctly.
-            const localeFormat = this.cldrLocaleDateFormat.replace(RTL_REGEX, '');
-            const delimiters = localeFormat.split(DELIMITER_REGEX);
-            // NOTE: The split from the CLDR date format should always result
-            // in an arary with 4 elements. The 1st and the 2nd values are the delimiters
-            // we will use in order.
-            // Eg: "dd/MM/y".split(/d+|m+|y+/i) results in ["", "/", "/", ""]
-            if (delimiters && delimiters.length === 4) {
-                this.delimiters = [delimiters[1], delimiters[2]];
-            }
-            else {
-                console.error('Unexpected date format received. Delimiters extracted: ', delimiters);
-            }
-        }
-    }
-    /**
-     * Checks if the month entered by the user is valid or not.
-     * Note: Month is 0 based.
-     */
-    isValidMonth(month) {
-        return month > -1 && month < 12;
-    }
-    /**
-     * Checks if the date is valid depending on the year and month provided.
-     */
-    isValidDate(year, month, date) {
-        return date > 0 && date <= getNumberOfDaysInTheMonth(year, month);
-    }
-    /**
-     * Validates the parameters provided and returns the date.
-     * If the parameters are not
-     * valid then return null.
-     * NOTE: (Month here is 1 based since the user has provided that as an input)
-     */
-    validateAndGetDate(year, month, date) {
-        // I don't know whats wrong with the TS compiler. It throws an error if I write
-        // the below if statement. The error is:
-        // Operator '!==' cannot be applied to types '2' and '4'
-        // More info here: https://github.com/Microsoft/TypeScript/issues/12794#issuecomment-270342936
-        /*
-            if (year.length !== 2 || year.length !== 4) {
-                return null;
-            }
-            */
-        // Instead I have to write the logic like this x-(
-        const y = +year;
-        const m = +month - 1; // month is 0 based
-        const d = +date;
-        if (!this.isValidMonth(m) || !this.isValidDate(y, m, d)) {
-            return null;
-        }
-        const result = parseToFourDigitYear(y);
-        return result !== -1 ? new Date(result, m, d) : null;
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: DateIOService, deps: [{ token: LocaleHelperService }], target: i0.ɵɵFactoryTarget.Injectable }); }
     static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: DateIOService }); }
@@ -3270,5 +3310,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
  * Generated bundle index. Do not edit.
  */
 
-export { CLR_DATEPICKER_DIRECTIVES, ClrCalendar, ClrDateContainer, ClrDateInput, ClrDateInputBase, ClrDateInputValidator, ClrDatepickerActions, ClrDatepickerModule, ClrDatepickerViewManager, ClrDay, ClrDaypicker, ClrEndDateInput, ClrEndDateInputValidator, ClrMonthpicker, ClrStartDateInput, ClrStartDateInputValidator, ClrWeekday, ClrYearpicker };
+export { CLR_DATEPICKER_DIRECTIVES, ClrCalendar, ClrDateContainer, ClrDateInput, ClrDateInputBase, ClrDateInputValidator, ClrDatepickerActions, ClrDatepickerModule, ClrDatepickerViewManager, ClrDay, ClrDaypicker, ClrEndDateInput, ClrEndDateInputValidator, ClrLocaleDateFormat, ClrMonthpicker, ClrStartDateInput, ClrStartDateInputValidator, ClrWeekday, ClrYearpicker };
 //# sourceMappingURL=clr-angular-forms-datepicker.mjs.map
