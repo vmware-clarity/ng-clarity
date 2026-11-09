@@ -5,11 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-/**
- * This is the en-001 short locale date format. Setting as default.
- */
-export const DEFAULT_LOCALE_FORMAT = 'dd/MM/y';
-
 // https://en.wikipedia.org/wiki/Date_format_by_country
 export const LITTLE_ENDIAN_REGEX = /d+.+m+.+y+/i;
 export const MIDDLE_ENDIAN_REGEX = /m+.+d+.+y+/i;
