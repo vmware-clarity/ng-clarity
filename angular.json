@@ -214,6 +214,12 @@
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true
+            },
+            "vrt": {
+              "index": {
+                "input": "projects/website/src/index.vrt.html",
+                "output": "index.html"
+              }
             }
           },
           "defaultConfiguration": ""

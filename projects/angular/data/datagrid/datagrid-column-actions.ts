@@ -129,7 +129,7 @@ import { FiltersProvider } from './providers/filters';
             [shape]="column.pinned ? 'unpin' : 'pin'"
             solid
             size="12"
-            style="margin: 2px;"
+            class="datagrid-column-actions-pin-icon"
             aria-hidden="true"
           ></cds-icon>
           {{ column.pinned ? commonStrings.keys.unpinColumn : commonStrings.keys.pinColumn }}
