@@ -115,8 +115,8 @@ export interface ThemeColors {
 
 export interface ThemePreset {
   name: string;
-  light: ThemeColors;
-  dark: ThemeColors;
+  light: ThemeColors | null;
+  dark: ThemeColors | null;
 }
 
 export interface ThemeColor {

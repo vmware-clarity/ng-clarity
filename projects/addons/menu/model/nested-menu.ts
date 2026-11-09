@@ -17,5 +17,5 @@ export class NestedMenu extends MenuItem {
 
   iconClass?: string;
 
-  menuItems: Iterable<MenuItem>;
+  menuItems!: Iterable<MenuItem>;
 }

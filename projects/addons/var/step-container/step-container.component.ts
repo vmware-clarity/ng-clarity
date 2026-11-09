@@ -35,7 +35,7 @@ import { StepModel } from '../model/step.model';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class StepContainerComponent implements OnInit, OnDestroy {
-  @Input() step: StepInternal;
+  @Input() step!: StepInternal;
 
   @Input() description?: string;
 
@@ -43,10 +43,10 @@ export class StepContainerComponent implements OnInit, OnDestroy {
 
   // eslint-disable-next-line decorator-position/decorator-position
   @ViewChild('componentContainer', { read: ViewContainerRef, static: true })
-  private componentContainer: ViewContainerRef;
+  private componentContainer!: ViewContainerRef;
 
   private pageComponent?: any;
-  private retrySubscription: Subscription;
+  private retrySubscription?: Subscription;
 
   get readyToComplete(): boolean {
     if (this.pageComponent?.model) {

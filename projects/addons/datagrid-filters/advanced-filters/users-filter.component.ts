@@ -47,11 +47,11 @@ export enum ErrorType {
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class UsersFilterComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() filterProperty: UserPropertyDefinition;
-  @Input() propertyFilter: PropertyFilter;
+  @Input() filterProperty!: UserPropertyDefinition;
+  @Input() propertyFilter?: PropertyFilter;
   @Output() filterCriteriaChange: EventEmitter<PropertyFilter> = new EventEmitter<PropertyFilter>();
 
-  usersSelectionForm: FormGroup;
+  usersSelectionForm!: FormGroup;
   isLoading = false;
   domains: string[] = [''];
   errorRetrievingDomains?: string;

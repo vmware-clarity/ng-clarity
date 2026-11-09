@@ -24,7 +24,7 @@ import { getNestedProperty } from '../utils/property-resolver.util';
 
 export interface PreselectableComponent {
   trackByGridItemProperty: string;
-  trackByFunction: TrackByFunction<any>;
+  trackByFunction?: TrackByFunction<any>;
   selectionType: SelectionType;
   selectedItems: any[];
   serverDrivenDatagrid: boolean;
@@ -90,9 +90,9 @@ export class DatagridPreserveSelectionDirective implements AfterViewInit, OnDest
 
   private component: PreselectableComponent;
 
-  private selectBy: string | TrackByFunction<any>;
+  private selectBy?: string | TrackByFunction<any>;
 
-  private gridItemChangeSub: Subscription;
+  private gridItemChangeSub?: Subscription;
 
   constructor(
     @Inject(appfxPreselectableComponentToken)

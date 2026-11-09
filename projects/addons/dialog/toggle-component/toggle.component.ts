@@ -34,9 +34,9 @@ export class ToggleComponent {
   @Input() toggleId: string;
 
   /** The label/description of the toggle. */
-  @Input() label: string;
+  @Input() label!: string;
 
-  @Input() disabled: boolean;
+  @Input() disabled!: boolean;
 
   constructor() {
     ToggleComponent.instanceCount++;

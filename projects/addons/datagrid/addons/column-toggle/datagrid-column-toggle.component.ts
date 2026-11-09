@@ -32,9 +32,9 @@ import { ColumnDefinition } from '../../shared/column/column-definitions';
 export class DatagridColumnToggleComponent implements OnDestroy {
   @HostBinding('class') layoutClass = 'column-switch-wrapper';
 
-  @ViewChild('closeColumnButton', { read: ElementRef }) closeColumnButtonElement: ElementRef;
+  @ViewChild('closeColumnButton', { read: ElementRef }) closeColumnButtonElement!: ElementRef;
 
-  @Input() columns: ColumnDefinition<any>[];
+  @Input() columns!: ColumnDefinition<any>[];
   @Output() columnsChange = new EventEmitter<ColumnDefinition<any>[]>();
 
   @Output() columnHiddenStateChange = new EventEmitter<ColumnHiddenState>();
@@ -54,7 +54,7 @@ export class DatagridColumnToggleComponent implements OnDestroy {
 
   openState = false;
   viewId: string | undefined;
-  overlay: CdkConnectedOverlay;
+  overlay!: CdkConnectedOverlay;
 
   constructor(public dgStrings: DatagridStrings) {}
 
