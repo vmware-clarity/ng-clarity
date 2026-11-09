@@ -341,6 +341,26 @@ describe('CompositeFiltersComponent', () => {
       expect(this.component.availableProperties).not.toContain(stringProperty);
     });
 
+    it('shows Is empty without a value and joins criteria with the logical operator', function (this: ThisTest) {
+      const isEmpty: PropertyFilter = {
+        operator: LogicalOperator.And,
+        criteria: [{ filterableProperty: stringProperty, operator: ComparisonOperator.IsEmpty, value: undefined }],
+      };
+      const redOrGreen: PropertyFilter = {
+        operator: LogicalOperator.Or,
+        criteria: [
+          { filterableProperty: enumProperty, operator: ComparisonOperator.Equals, value: 'red' },
+          { filterableProperty: enumProperty, operator: ComparisonOperator.Equals, value: 'green' },
+        ],
+      };
+      this.component.toggleFilters = [isEmpty, redOrGreen];
+      this.fixture.detectChanges();
+      expect(toggles().map(toggle => toggle.textContent.trim())).toEqual([
+        `${stringProperty.displayName}: Is empty`,
+        `${enumProperty.displayName}: ${enumProperty.values.get('red')} Or ${enumProperty.values.get('green')}`,
+      ]);
+    });
+
     it('applies the filter only while ON', function (this: ThisTest) {
       const toggle = equalsToggle();
       this.component.toggleFilters = [toggle];

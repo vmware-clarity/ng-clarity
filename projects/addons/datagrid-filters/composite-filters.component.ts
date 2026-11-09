@@ -257,10 +257,16 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     this.emitFilters();
   }
 
-  /** FIELD_NAME: VALUE for Equals, FIELD_NAME: CONDITION VALUE otherwise. Multiple values are comma separated. */
+  /**
+   * FIELD_NAME: VALUE for Equals, FIELD_NAME: CONDITION for Is empty, FIELD_NAME: CONDITION VALUE otherwise.
+   * Multiple criteria are joined with the filter's logical operator, e.g. "Status: Running Or Stopped".
+   */
   toggleText(toggle: PropertyFilter): string {
     const property = toggle.criteria[0]?.filterableProperty;
-    const values = toggle.criteria.map(predicate => {
+    const conditions = toggle.criteria.map(predicate => {
+      if (predicate.operator === ComparisonOperator.IsEmpty) {
+        return this.filterStrings.getOperatorDisplayName(predicate.operator);
+      }
       const value =
         property instanceof EnumPropertyDefinition
           ? (property.values.get(predicate.value) ?? predicate.value)
@@ -269,7 +275,9 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
         ? `${value}`
         : `${this.filterStrings.getOperatorDisplayName(predicate.operator)} ${value}`;
     });
-    return `${property?.displayName}: ${values.join(', ')}`;
+    const conjoiner =
+      toggle.operator !== undefined ? ` ${this.filterStrings.getConjoinerDisplayName(toggle.operator)} ` : ', ';
+    return `${property?.displayName}: ${conditions.join(conjoiner)}`;
   }
 
   isSemiPredefined(property: FilterablePropertyDefinition): boolean {
