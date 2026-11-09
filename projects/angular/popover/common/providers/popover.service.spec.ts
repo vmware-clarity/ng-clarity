@@ -35,7 +35,7 @@ export default function (): void {
           declarations: [TestHost],
         });
         const fixture = TestBed.createComponent(TestHost);
-        this.popoverService = fixture.debugElement.injector.get(ClrPopoverService, null);
+        this.popoverService = fixture.debugElement.injector.get(ClrPopoverService, null)!;
       });
 
       it('exposes an observable for the open change events', function (this: TestContext) {
@@ -58,14 +58,14 @@ export default function (): void {
         const subscription = visibleObservable.subscribe(() => {
           visible = true;
         });
-        this.popoverService.popoverVisibleEmit(null);
+        this.popoverService.popoverVisibleEmit(null!);
         expect(visible).toBeTrue();
         subscription.unsubscribe();
       });
 
       it('updates and notifies when the openEvent changes', function (this: TestContext) {
         const clickEvent: Event = new MouseEvent('click');
-        let testEvent: Event;
+        let testEvent!: Event;
         const eventSubscription = this.popoverService.getEventChange().subscribe(event => {
           testEvent = event;
         });
@@ -77,7 +77,7 @@ export default function (): void {
       });
 
       it('updates and notifies when the open value changes', function (this: TestContext) {
-        let openValue: boolean;
+        let openValue!: boolean;
         const openSubscription = this.popoverService.openChange.subscribe(change => {
           openValue = change;
         });

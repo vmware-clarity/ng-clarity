@@ -35,7 +35,7 @@ import { ClrWizardModule } from './wizard.module';
 })
 class ViewTestComponent {
   show = true;
-  btnType = '';
+  btnType: string | null = '';
   disableBtn = false;
   hideBtn = false;
   projector = 'mundo';
@@ -863,7 +863,7 @@ export default function (): void {
         it("should not error out if type isn't truthy", () => {
           myTestComponent.btnType = null;
           fixture.detectChanges();
-          expect(buttonComponent.type).toBe(null, 'button type should reflect input');
+          expect(buttonComponent.type).toBeNull('button type should reflect input');
           expect(buttonComponent.isPrimaryAction).toBe(false, 'null button type should not be primary');
         });
       });
@@ -998,7 +998,7 @@ export default function (): void {
         buttonDebugEl = fixture.debugElement.query(By.directive(ClrWizardButton));
         buttonComponent = buttonDebugEl.componentInstance;
         buttonElement = buttonDebugEl.nativeElement;
-        actualButton = buttonElement.querySelector('button');
+        actualButton = buttonElement.querySelector('button')!;
         myTestComponent = fixture.componentInstance;
       });
 

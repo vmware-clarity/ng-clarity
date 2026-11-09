@@ -31,7 +31,7 @@ import { ClrStepperModule } from './stepper.module';
   standalone: false,
 })
 class ReactiveFormsTestComponent {
-  @ViewChild(ClrStepperPanel) step: ClrStepperPanel;
+  @ViewChild(ClrStepperPanel) step!: ClrStepperPanel;
   form = new FormGroup({ groupName: new FormGroup({}) });
 }
 
@@ -45,7 +45,7 @@ class ReactiveFormsTestComponent {
   standalone: false,
 })
 class TemplateFormsTestComponent {
-  @ViewChild(ClrStepperPanel) step: ClrStepperPanel;
+  @ViewChild(ClrStepperPanel) step!: ClrStepperPanel;
 }
 
 @Component({
@@ -236,7 +236,7 @@ describe('ClrStep animations', () => {
     setup(true);
     await openStep(true);
 
-    const [animation] = content().getAnimations();
+    const [animation] = content()!.getAnimations();
     expect((animation.effect as KeyframeEffect).getKeyframes()[0].height).toBe('0px');
   });
 
@@ -246,8 +246,8 @@ describe('ClrStep animations', () => {
     finishAnimations();
     await openStep(false);
 
-    expect(content().textContent).toContain('step content');
-    const [animation] = content().getAnimations();
+    expect(content()!.textContent).toContain('step content');
+    const [animation] = content()!.getAnimations();
     expect((animation.effect as KeyframeEffect).getKeyframes()[1].height).toBe('0px');
 
     finishAnimations();
@@ -267,7 +267,7 @@ describe('ClrStep animations', () => {
     finishAnimations();
     await delay();
     fixture.detectChanges();
-    expect(content().textContent).toContain('step content');
+    expect(content()!.textContent).toContain('step content');
   });
 
   it('removes the content and its projected content at once when animations are disabled', async () => {
@@ -283,7 +283,7 @@ describe('ClrStep animations', () => {
     setup(true, [provideNoopAnimations()]);
     await openStep(true);
 
-    expect(content().getAnimations().length).toBe(0);
+    expect(content()!.getAnimations().length).toBe(0);
 
     await openStep(false);
 
@@ -297,7 +297,7 @@ describe('ClrStep animations', () => {
     finishAnimations();
     await openStep(false);
     const ifExpandService = fixture.debugElement.query(By.directive(ClrStepperPanel)).injector.get(IfExpandService);
-    const [animation] = content().getAnimations();
+    const [animation] = content()!.getAnimations();
 
     fixture.destroy();
     animation.finish();

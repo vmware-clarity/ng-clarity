@@ -41,7 +41,7 @@ class ExplicitForTest {
   standalone: false,
 })
 class ContainerizedTest {
-  @ViewChild(ClrControlLabel, { static: true }) label: ClrControlLabel;
+  @ViewChild(ClrControlLabel, { static: true }) label!: ClrControlLabel;
 }
 
 @Component({
@@ -72,7 +72,7 @@ class ExistingGridTest {}
   standalone: false,
 })
 class SignpostTest {
-  @ViewChild(ClrSignpostTrigger) signpostTrigger: ClrSignpostTrigger;
+  @ViewChild(ClrSignpostTrigger) signpostTrigger!: ClrSignpostTrigger;
 }
 
 @Component({

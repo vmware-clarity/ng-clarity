@@ -20,7 +20,7 @@ export default function (): void {
     describe('Typescript API', function () {
       it('provides an observable for changes', function () {
         let nbChanges = 0;
-        let currentChange: number;
+        let currentChange!: number;
 
         // Subscribe first
         ifActiveService.currentChange.subscribe((change: number) => {

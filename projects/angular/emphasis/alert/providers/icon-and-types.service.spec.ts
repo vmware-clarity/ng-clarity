@@ -30,7 +30,7 @@ export default function (): void {
     });
 
     afterEach(() => {
-      testMe = null;
+      testMe = null!;
     });
 
     describe('alertType()', function () {
@@ -66,7 +66,7 @@ export default function (): void {
 
       it('will set to empty string and return based on alertType if set to junk', function () {
         expect(testMe.alertIconShape).toBe('info-standard');
-        testMe.alertIconShape = null;
+        testMe.alertIconShape = null!;
         expect(testMe.alertIconShape).toBe('info-standard');
       });
     });
@@ -81,17 +81,17 @@ export default function (): void {
 
     describe('iconInfoFromType()', function () {
       it('returns default shape as fallthrough', function () {
-        expect(testShape(null)).toBe('info-standard');
+        expect(testShape(null!)).toBe('info-standard');
         expect(testShape('ohai')).toBe('info-standard');
       });
 
       it('returns .alert-info class as fallthrough', function () {
-        expect(testCssClass(null)).toBe('alert-info');
+        expect(testCssClass(null!)).toBe('alert-info');
         expect(testCssClass('ohai')).toBe('alert-info');
       });
 
       it('returns info title as fallthrough', function () {
-        expect(testTitle(null)).toBe('Info');
+        expect(testTitle(null!)).toBe('Info');
         expect(testTitle('ohai')).toBe('Info');
       });
 

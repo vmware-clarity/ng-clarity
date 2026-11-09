@@ -66,7 +66,7 @@ export default function (): void {
 
       it('emits an openChange event', function (this: Context) {
         let nbChanges = 0;
-        let currentChange: boolean;
+        let currentChange!: boolean;
         this.testComponent.directive.openChange.subscribe((change: boolean) => {
           currentChange = change;
           nbChanges++;
@@ -119,6 +119,6 @@ export default function (): void {
   standalone: false,
 })
 class IfOpenTest {
-  @ViewChild(ClrIfOpen) directive: ClrIfOpen;
+  @ViewChild(ClrIfOpen) directive!: ClrIfOpen;
   openState = false;
 }

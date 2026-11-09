@@ -57,7 +57,7 @@ export default function (): void {
         this.fixture = TestBed.createComponent(SimpleHost);
         this.popoverService = this.fixture.debugElement.injector.get(ClrPopoverService);
         this.focusService = this.fixture.debugElement.injector.get(FocusService);
-        this.focusHandler = this.fixture.debugElement.injector.get(DropdownFocusHandler, null);
+        this.focusHandler = this.fixture.debugElement.injector.get(DropdownFocusHandler, null)!;
         this.trigger = document.createElement('button');
         this.container = document.createElement('div');
         this.outside = document.createElement('button');
@@ -140,15 +140,15 @@ export default function (): void {
       });
 
       it('points down to the first child', function (this: TestContext) {
-        let down: FocusableItem;
-        this.focusHandler.down.subscribe(child => (down = child));
+        let down!: FocusableItem;
+        this.focusHandler.down!.subscribe(child => (down = child));
         this.focusHandler.addChildren(this.children);
         expect(down).toBe(this.children[0]);
       });
 
       it('points up to the last child', function (this: TestContext) {
-        let up: FocusableItem;
-        this.focusHandler.up.subscribe(child => (up = child));
+        let up!: FocusableItem;
+        this.focusHandler.up!.subscribe(child => (up = child));
         this.focusHandler.addChildren(this.children);
         expect(up).toBe(this.children[this.children.length - 1]);
       });
@@ -160,25 +160,25 @@ export default function (): void {
       });
 
       it('points correctly even if children have been added early', function (this: TestContext) {
-        let down: FocusableItem;
+        let down!: FocusableItem;
         this.focusHandler.addChildren(this.children);
-        this.focusHandler.down.subscribe(child => (down = child));
+        this.focusHandler.down!.subscribe(child => (down = child));
         expect(down).toBe(this.children[0]);
       });
 
       it('properly resets children', function (this: TestContext) {
         this.focusHandler.addChildren(this.children);
         this.focusHandler.resetChildren();
-        this.focusHandler.down.subscribe(() => fail('Expected no pointer down.'));
-        this.focusHandler.up.subscribe(() => fail('Expected no pointer up.'));
+        this.focusHandler.down!.subscribe(() => fail('Expected no pointer down.'));
+        this.focusHandler.up!.subscribe(() => fail('Expected no pointer up.'));
       });
 
       it('opens the dropdown when trying to go down or up', function (this: TestContext) {
         expect(this.popoverService.open).toBeFalsy();
-        this.focusHandler.down.subscribe(() => null);
+        this.focusHandler.down!.subscribe(() => null);
         expect(this.popoverService.open).toBeTruthy();
         this.popoverService.open = false;
-        this.focusHandler.up.subscribe(() => null);
+        this.focusHandler.up!.subscribe(() => null);
         expect(this.popoverService.open).toBeTruthy();
       });
 
@@ -204,7 +204,7 @@ export default function (): void {
         const nestedInjector = this.fixture.debugElement.query(By.directive(SimpleHost)).injector;
         this.popoverService = nestedInjector.get(ClrPopoverService);
         this.focusService = nestedInjector.get(FocusService);
-        this.focusHandler = nestedInjector.get(DropdownFocusHandler, null);
+        this.focusHandler = nestedInjector.get(DropdownFocusHandler, null)!;
         this.trigger = document.createElement('button');
         this.container = document.createElement('div');
         // We need the elements in the DOM to be able to focus them
@@ -247,8 +247,8 @@ export default function (): void {
       });
 
       it('points right to the first child', function (this: TestContext) {
-        let right: FocusableItem;
-        this.focusHandler.right.subscribe(child => (right = child));
+        let right!: FocusableItem;
+        this.focusHandler.right!.subscribe(child => (right = child));
         this.focusHandler.addChildren(this.children);
         expect(right).toBe(this.children[0]);
       });

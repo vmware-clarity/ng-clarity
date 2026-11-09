@@ -20,8 +20,8 @@ import { ROOT_DROPDOWN_PROVIDER } from './providers/dropdown.service';
   standalone: false,
 })
 class SimpleTest {
-  disabled: boolean;
-  disabledDeprecated: boolean;
+  disabled!: boolean;
+  disabledDeprecated!: boolean;
 }
 
 @Component({

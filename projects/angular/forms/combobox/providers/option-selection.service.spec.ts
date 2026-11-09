@@ -30,7 +30,7 @@ export default function () {
     });
 
     it('notifies that the value has changed', () => {
-      let selectedValue: string;
+      let selectedValue!: string;
       const subscription: Subscription = optionSelectionService.inputChanged.subscribe((value: string) => {
         selectedValue = value;
       });
@@ -42,10 +42,10 @@ export default function () {
     });
 
     it('notifies that the option has changed', () => {
-      let selectedOption: string;
+      let selectedOption!: string;
       const subscription: Subscription = optionSelectionService.selectionChanged.subscribe(
         (option: ComboboxModel<string>) => {
-          selectedOption = option.pop();
+          selectedOption = option.pop()!;
         }
       );
       optionSelectionService.select('Option 1');
@@ -56,7 +56,7 @@ export default function () {
     });
 
     it('can toggle an option and emits selection events', () => {
-      let selectedOption: string;
+      let selectedOption!: string;
       const subscription: Subscription = optionSelectionService.selectionChanged.subscribe(
         (option: ComboboxModel<string>) => {
           selectedOption = option.model as string;
@@ -144,7 +144,7 @@ export default function () {
 
     describe('editableResolverFn', () => {
       it('returns string as-is by default', () => {
-        expect(optionSelectionService.editableResolver('test')).toBe('test');
+        expect(optionSelectionService.editableResolver!('test')).toBe('test');
       });
 
       it('returns expected item when resolver is provided', () => {

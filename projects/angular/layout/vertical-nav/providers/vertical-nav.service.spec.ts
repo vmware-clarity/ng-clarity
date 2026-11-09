@@ -18,7 +18,7 @@ export default function (): void {
     });
 
     afterEach(() => {
-      vertNavService = null;
+      vertNavService = null!;
     });
 
     it('exposes an observable to animate when the collapsed property of the vertical nav changes', () => {
@@ -28,7 +28,7 @@ export default function (): void {
     it('does not set collapsed when collapsible is false', () => {
       expect(vertNavService.collapsible).toBe(false);
 
-      let testVal: boolean;
+      let testVal!: boolean;
       const sub: Subscription = vertNavService.animateOnCollapsed.subscribe((val: boolean) => {
         testVal = val;
       });
@@ -44,7 +44,7 @@ export default function (): void {
     it('emits an animate flag when the observable property is changed && nav is collapsible', () => {
       vertNavService.collapsible = true;
 
-      let testVal: boolean;
+      let testVal!: boolean;
       const sub: Subscription = vertNavService.animateOnCollapsed.subscribe((val: boolean) => {
         testVal = val;
       });
@@ -67,7 +67,7 @@ export default function (): void {
     it('expands a collapsed nav when collapsible behavior is turned off', () => {
       expect(vertNavService.collapsible).toBe(false);
 
-      let testVal: boolean;
+      let testVal!: boolean;
       const sub: Subscription = vertNavService.animateOnCollapsed.subscribe((val: boolean) => {
         testVal = val;
       });

@@ -311,7 +311,7 @@ export default function () {
       context.detectChanges();
       expect(localeHelperService.firstDayOfWeek).toBe(ClrWeekday.Wednesday);
 
-      context.testComponent.firstDayOfWeek = null;
+      context.testComponent.firstDayOfWeek = null!;
       context.detectChanges();
       expect(localeHelperService.firstDayOfWeek).toBe(ClrWeekday.Monday);
     });
@@ -332,7 +332,7 @@ export default function () {
 class TestComponent {
   model = '';
   disabled = false;
-  position: ClrPopoverPosition;
+  position!: ClrPopoverPosition;
 }
 
 @Component({
@@ -347,5 +347,5 @@ class TestComponent {
 })
 class TestComponentWithFirstDay {
   model = '';
-  firstDayOfWeek: ClrWeekday = null;
+  firstDayOfWeek: ClrWeekday | null = null;
 }

@@ -77,7 +77,7 @@ function inputSpec(
     it('should handle valueChanges calls', () => {
       // control must be both invalid and blurred to register the validity
       let valueChanges = 0;
-      control.injector.get(NgControl).control.valueChanges.subscribe(() => {
+      control.injector.get(NgControl).control!.valueChanges.subscribe(() => {
         valueChanges++;
       });
 

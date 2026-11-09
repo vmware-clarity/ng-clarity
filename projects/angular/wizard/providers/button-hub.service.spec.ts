@@ -35,7 +35,7 @@ export default function (): void {
     });
 
     it("'previous' calls wizardNavigationService.previous", function () {
-      wizardNavigationService.currentPage = pageCollectionService.lastPage;
+      wizardNavigationService.currentPage = pageCollectionService.lastPage!;
       spyOn(wizardNavigationService, 'previous');
       buttonHubService.buttonClicked('previous');
       expect(wizardNavigationService.previous).toHaveBeenCalled();
@@ -55,7 +55,7 @@ export default function (): void {
 
     it("'finish' calls wizard.close, emit wizardFinished", function () {
       const wizard = context.clarityDirective;
-      const finalPage = wizard.pageCollection.lastPage;
+      const finalPage = wizard.pageCollection.lastPage!;
 
       spyOn(wizard.wizardFinished, 'emit');
       spyOn(wizard, 'close');
@@ -72,9 +72,9 @@ export default function (): void {
     });
 
     it('.custom calls wizardNavigationService.currentPage.customButtonClicked', function () {
-      spyOn(wizardNavigationService.currentPage.customButtonClicked, 'emit');
+      spyOn(wizardNavigationService.currentPage!.customButtonClicked, 'emit');
       buttonHubService.buttonClicked('custom');
-      expect(wizardNavigationService.currentPage.customButtonClicked.emit).toHaveBeenCalled();
+      expect(wizardNavigationService.currentPage!.customButtonClicked.emit).toHaveBeenCalled();
     });
   });
 }

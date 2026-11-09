@@ -44,18 +44,18 @@ describe('animateHeight', () => {
   });
 
   it('animates the height between the given heights and leaves no style behind', () => {
-    const animation = animateHeight(element, { from: 20, to: 80 });
+    const animation = animateHeight(element, { from: 20, to: 80 })!;
 
     expect(heightKeyframes(animation)).toEqual(['20px', '80px']);
     // `clip`, not `hidden`, which would loosen the `position: sticky` descendants (datagrid pinned columns, CDE-3127).
     expect(keyframes(animation).map(keyframe => keyframe.overflow)).toEqual(['clip', 'clip']);
-    expect(animation.effect.getComputedTiming().duration).toBe(200);
+    expect(animation.effect!.getComputedTiming().duration).toBe(200);
     animation.finish();
     expect(element.getAnimations().length).toBe(0);
   });
 
   it('cancels the height animation it started before', () => {
-    const first = animateHeight(element, { from: 0, to: 80 });
+    const first = animateHeight(element, { from: 0, to: 80 })!;
     animateHeight(element, { from: 40, to: 0 });
 
     expect(first.playState).toBe('idle');
@@ -67,19 +67,19 @@ describe('animateHeight', () => {
     animateHeight(element, { from: 0, to: 20 });
     const animation = animateHeight(element, { from: 10 });
 
-    expect(heightKeyframes(animation)).toEqual(['10px', '60px']);
+    expect(heightKeyframes(animation!)).toEqual(['10px', '60px']);
   });
 
   it('uses the given easing', () => {
-    const animation = animateHeight(element, { from: 0, to: 80, easing: 'linear' });
+    const animation = animateHeight(element, { from: 0, to: 80, easing: 'linear' })!;
 
-    expect(animation.effect.getTiming().easing).toBe('linear');
+    expect(animation.effect!.getTiming().easing).toBe('linear');
   });
 
   it('reads a duration token in milliseconds, whatever its case', () => {
     element.style.setProperty('--cds-global-animation-duration-quick', '150MS');
 
-    expect(animateHeight(element, { from: 0, to: 80 }).effect.getComputedTiming().duration).toBe(150);
+    expect(animateHeight(element, { from: 0, to: 80 })!.effect!.getComputedTiming().duration).toBe(150);
   });
 
   it('does not animate when the duration is 0', () => {
@@ -103,7 +103,7 @@ describe('animateHeight', () => {
     const serverElement = {} as HTMLElement;
 
     beforeEach(() => {
-      window.getComputedStyle = undefined;
+      window.getComputedStyle = undefined!;
     });
 
     afterEach(() => {

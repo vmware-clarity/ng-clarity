@@ -43,12 +43,12 @@ import { OptionSelectionService } from './providers/option-selection.service';
   standalone: false,
 })
 class TestComponent {
-  multi: boolean;
+  multi!: boolean;
   editable = false;
   selection: any;
-  inputValue: string;
-  openState: boolean;
-  placeholder: string;
+  inputValue!: string;
+  openState!: boolean;
+  placeholder!: string;
   disabled = false;
   inputChanged(value: string) {
     this.inputValue = value;
@@ -118,7 +118,7 @@ export default function (): void {
 
       it('does not close panel on clear', () => {
         popoverService.open = true;
-        clarityDirective.writeValue(null);
+        clarityDirective.writeValue(null!);
         expect(clarityDirective.openState).toBeTrue();
       });
 
@@ -220,20 +220,20 @@ export default function (): void {
       });
 
       it('opens the menu on the trigger click', () => {
-        const trigger: HTMLElement = clarityElement.querySelector('.clr-combobox-trigger');
+        const trigger: HTMLElement = clarityElement.querySelector('.clr-combobox-trigger')!;
         expect(popoverService.open).toBe(false);
         trigger.click();
         expect(popoverService.open).toBe(true);
       });
 
       it('has aria-owns attribute', () => {
-        const trigger: HTMLElement = clarityElement.querySelector('.clr-combobox-input');
+        const trigger: HTMLElement = clarityElement.querySelector('.clr-combobox-input')!;
         expect(trigger.hasAttribute('aria-owns')).toBeTrue();
         expect(trigger.getAttribute('aria-owns')).toContain('clr-options-');
       });
 
       it('has aria-expanded attribute', () => {
-        const trigger: HTMLElement = clarityElement.querySelector('.clr-combobox-input');
+        const trigger: HTMLElement = clarityElement.querySelector('.clr-combobox-input')!;
         expect(trigger.hasAttribute('aria-expanded')).toBeTrue();
         expect(trigger.getAttribute('aria-expanded')).toEqual('false');
         popoverService.open = true;
@@ -244,7 +244,7 @@ export default function (): void {
       it('should pass placeholder to internal input', () => {
         fixture.componentInstance.placeholder = 'hello world';
         fixture.detectChanges();
-        const combobox: HTMLElement = clarityElement.querySelector('.clr-combobox-input');
+        const combobox: HTMLElement = clarityElement.querySelector('.clr-combobox-input')!;
         expect(combobox.getAttribute('placeholder')).toEqual('hello world');
       });
 
@@ -253,7 +253,7 @@ export default function (): void {
         fixture.detectChanges();
         await delay();
         fixture.detectChanges();
-        const button: HTMLButtonElement = clarityElement.querySelector('.clr-combobox-trigger');
+        const button: HTMLButtonElement = clarityElement.querySelector('.clr-combobox-trigger')!;
         expect(button.disabled).toBeTruthy();
       });
     });
@@ -266,7 +266,7 @@ export default function (): void {
       });
 
       it('returns the same item by default when no resolver is provided', () => {
-        const result = selectionService.editableResolver('test');
+        const result = selectionService.editableResolver!('test');
         expect(result).toEqual('test');
       });
     });
@@ -345,7 +345,7 @@ export default function (): void {
         standalone: false,
       })
       class OnPushTestComponent {
-        selection: number;
+        selection!: number;
       }
 
       it('moves the keyboard focus between options', async () => {
@@ -378,7 +378,7 @@ export default function (): void {
         const focused = focusedOptionId();
         expect(focused).toBeTruthy();
         expect(focused).not.toBe(initiallyFocused);
-        expect(input.getAttribute('aria-activedescendant')).toBe(focused);
+        expect(input.getAttribute('aria-activedescendant')).toBe(focused!);
       });
     });
   });

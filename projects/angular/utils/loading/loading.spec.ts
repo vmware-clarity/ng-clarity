@@ -115,10 +115,10 @@ describe('Loading directive without listener', function () {
   standalone: false,
 })
 class FullTest {
-  @ViewChild(ClrLoading) loadingDirective: ClrLoading;
+  @ViewChild(ClrLoading) loadingDirective!: ClrLoading;
 
   displayed = true;
-  loading: boolean | ClrLoadingState = false;
+  loading: boolean | ClrLoadingState | null | undefined = false;
 }
 
 @Injectable()

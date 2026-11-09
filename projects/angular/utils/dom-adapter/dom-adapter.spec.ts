@@ -50,7 +50,7 @@ export default function (): void {
       const child = document.createElement('div');
       child.style.width = '10px';
       child.style.height = '1234px';
-      this.element.replaceChild(child, this.element.firstChild);
+      this.element.replaceChild(child, this.element.firstChild!);
       expect(this.domAdapter.computedHeight(this.element)).toBe(1234);
     });
 

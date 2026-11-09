@@ -18,7 +18,7 @@ import { ClrKeyFocusModule } from './key-focus.module';
   standalone: false,
 })
 class TestComponent {
-  @ViewChild(ClrKeyFocusItem, { static: true }) button: ClrKeyFocusItem;
+  @ViewChild(ClrKeyFocusItem, { static: true }) button!: ClrKeyFocusItem;
 }
 
 let fixture: ComponentFixture<any>;

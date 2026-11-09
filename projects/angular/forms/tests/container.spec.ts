@@ -116,7 +116,7 @@ function fullSpec(
       // https://stackblitz.com/edit/input-on-blur-issue-onpush-td-13-4-3
       markControlService.markAsTouched();
       (container.control.control as { value: boolean }).value = valid;
-      container.control.control.markAsDirty();
+      container.control.control!.markAsDirty();
     }
 
     it('injects the layoutService', () => {
@@ -131,7 +131,7 @@ function fullSpec(
     it('projects the label as first child', () => {
       const label = containerEl.querySelector('label');
       expect(label).toBeTruthy();
-      expect(label.previousElementSibling).toBeFalsy();
+      expect(label!.previousElementSibling).toBeFalsy();
     });
 
     it('projects the control inside of the wrapper', () => {
@@ -157,11 +157,11 @@ function fullSpec(
     });
 
     it('sets error classes and displays the icon when invalid', () => {
-      expect(containerEl.querySelector('.clr-control-container').classList.contains('clr-error')).toBeFalse();
+      expect(containerEl.querySelector('.clr-control-container')!.classList.contains('clr-error')).toBeFalse();
       expect(containerEl.querySelector('.clr-validate-icon')).toBeFalsy();
       setValid(false);
       fixture.detectChanges();
-      expect(containerEl.querySelector('.clr-control-container').classList.contains('clr-error')).toBeTrue();
+      expect(containerEl.querySelector('.clr-control-container')!.classList.contains('clr-error')).toBeTrue();
       expect(containerEl.querySelector('.clr-validate-icon')).toBeTruthy();
     });
 
@@ -174,7 +174,7 @@ function fullSpec(
 
     it('projects the success content when valid', () => {
       setValid(true);
-      container.control.control.updateValueAndValidity();
+      container.control.control!.updateValueAndValidity();
       fixture.detectChanges();
       expect(containerEl.querySelector('clr-control-error')).toBeFalsy();
       expect(containerEl.querySelector('clr-control-success')).toBeTruthy();
@@ -182,9 +182,9 @@ function fullSpec(
 
     it('should have the success icon when valid', () => {
       setValid(true);
-      container.control.control.updateValueAndValidity();
+      container.control.control!.updateValueAndValidity();
       fixture.detectChanges();
-      const icon: HTMLElement = containerEl.querySelector('cds-icon[shape=success-standard]');
+      const icon: HTMLElement = containerEl.querySelector('cds-icon[shape=success-standard]')!;
       expect(icon).toBeTruthy();
     });
 

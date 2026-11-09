@@ -41,13 +41,13 @@ export default function (): void {
 
       expect(calendarModel1.isDayInCalendar(dayModel1)).toBe(true);
       expect(calendarModel1.isDayInCalendar(dayModel2)).toBe(false);
-      expect(calendarModel1.isDayInCalendar(null)).toBe(false);
+      expect(calendarModel1.isDayInCalendar(null!)).toBe(false);
     });
 
     it('checks if two CalendarModels are equal', () => {
       expect(calendarModel1.isEqual(calendarModel3)).toBe(true);
       expect(calendarModel1.isEqual(calendarModel2)).toBe(false);
-      expect(calendarModel1.isEqual(null)).toBe(false);
+      expect(calendarModel1.isEqual(null!)).toBe(false);
     });
 
     it('returns a CalendarModel from the next month', () => {

@@ -29,7 +29,7 @@ import { ClrTabsModule } from './tabs.module';
   standalone: false,
 })
 class TestComponent {
-  @ViewChildren(ClrTabAction, { read: ElementRef }) tabsActions: QueryList<ElementRef>;
+  @ViewChildren(ClrTabAction, { read: ElementRef }) tabsActions!: QueryList<ElementRef>;
 }
 
 describe('TabAction Directive', () => {
@@ -55,6 +55,6 @@ describe('TabAction Directive', () => {
   it('has the correct tabIndex value', () => {
     const tabsActions: QueryList<ElementRef> = instance.tabsActions;
     expect(tabsActions.length).toBe(1);
-    expect(tabsActions.get(0).nativeElement.tabIndex).toBe(0);
+    expect(tabsActions.get(0)!.nativeElement.tabIndex).toBe(0);
   });
 });

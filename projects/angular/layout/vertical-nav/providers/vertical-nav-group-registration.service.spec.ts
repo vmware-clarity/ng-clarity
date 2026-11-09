@@ -22,7 +22,7 @@ export default function (): void {
     });
 
     afterEach(() => {
-      vertNavGroupService = null;
+      vertNavGroupService = null!;
     });
 
     it('supports registration of nav groups', () => {

@@ -8,7 +8,7 @@
 import { MockPage } from '../wizard-page.mock';
 
 export class NavServiceMock {
-  currentPage: MockPage;
+  currentPage!: MockPage;
   currentPageIsLast = false;
   currentPageIsFirst = false;
   wizardStopNavigation = false;

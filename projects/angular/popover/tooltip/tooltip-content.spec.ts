@@ -39,7 +39,7 @@ class DefaultTest {}
   standalone: false,
 })
 class IdTest {
-  idValue: string;
+  idValue?: string | null;
 }
 
 @Component({
@@ -56,8 +56,8 @@ class IdTest {
   standalone: false,
 })
 class SimpleTest {
-  position: ClrPopoverPosition;
-  size: string;
+  position!: ClrPopoverPosition;
+  size!: string;
 }
 
 interface TooltipContext<H> extends TestContext<ClrTooltipContent, H> {
@@ -96,7 +96,7 @@ export default function (): void {
         it('sets the correct default classes', function (this: TooltipContext<DefaultTest>) {
           expect(tooltipContent.classList).toContain('tooltip-content');
           expect(tooltipContent.classList).toContain('tooltip-sm');
-          expect(tooltipContent.parentElement.classList).toContain('right');
+          expect(tooltipContent.parentElement!.classList).toContain('right');
         });
       });
 
@@ -170,11 +170,11 @@ export default function (): void {
           const clrTooltipContent = fixture.debugElement
             .query(By.directive(ClrTooltipContent))
             .injector.get(ClrTooltipContent);
-          expect(clrTooltipContent.id).toEqual(tooltipContent.getAttribute('id'));
+          expect(clrTooltipContent.id).toEqual(tooltipContent.getAttribute('id')!);
         });
 
         it('accepts a [clrPosition] input', function () {
-          const tooltipContainer = tooltipContent.parentElement;
+          const tooltipContainer = tooltipContent.parentElement!;
           // Default is right
           expect(tooltipContainer.classList).toContain(ClrPopoverPosition.RIGHT);
 

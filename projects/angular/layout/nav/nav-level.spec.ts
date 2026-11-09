@@ -28,7 +28,7 @@ class TestComponent {}
 type Context = TestContext<ClrNavLevel, TestComponent>;
 
 describe('NavLevelDirective', function () {
-  spec(ClrNavLevel, TestComponent, ClrNavigationModule, null, true);
+  spec(ClrNavLevel, TestComponent, ClrNavigationModule, {}, true);
 
   it('#level is set to 1', function (this: Context) {
     const navLevel = this.clarityDirective;

@@ -141,7 +141,7 @@ export default function (): void {
             const lastPage = pageCollectionService.lastPage;
 
             // set last page
-            wizardNavigationService.currentPage = lastPage;
+            wizardNavigationService.currentPage = lastPage!;
             context.detectChanges();
             expect(wizard.currentPage).toBe(lastPage, 'verify currentPage is the last page');
             expect(wizard.isLast).toBe(true, 'isLast should return true');
@@ -201,7 +201,7 @@ export default function (): void {
 
         describe('goTo', () => {
           it('should call the navService', () => {
-            const testId = pageCollectionService.lastPage.id;
+            const testId = pageCollectionService.lastPage!.id;
             spyOn(wizardNavigationService, 'goTo');
             wizard.goTo(testId);
             expect(wizardNavigationService.goTo).toHaveBeenCalledWith(testId);
@@ -209,7 +209,7 @@ export default function (): void {
 
           it('should early return if not given a page id', () => {
             spyOn(wizardNavigationService, 'goTo');
-            wizard.goTo(null);
+            wizard.goTo(null!);
             wizard.goTo('');
             expect(wizardNavigationService.goTo).not.toHaveBeenCalled();
           });
@@ -365,7 +365,7 @@ export default function (): void {
           it('content changes', () => {
             let val: string;
 
-            wizard.pageCollection.lastPage.makeCurrent();
+            wizard.pageCollection.lastPage!.makeCurrent();
             context.detectChanges();
 
             // page 3 has projected content
@@ -421,7 +421,7 @@ export default function (): void {
             let val = next.parentElement.getAttribute('aria-hidden');
             expect(val).toBe('false');
 
-            wizard.pageCollection.lastPage.makeCurrent();
+            wizard.pageCollection.lastPage!.makeCurrent();
             context.detectChanges();
 
             val = next.parentElement.getAttribute('aria-hidden');
@@ -433,7 +433,7 @@ export default function (): void {
             let val = finish.parentElement.getAttribute('aria-hidden');
             expect(val).toBe('true');
 
-            wizard.pageCollection.lastPage.makeCurrent();
+            wizard.pageCollection.lastPage!.makeCurrent();
             context.detectChanges();
 
             val = finish.parentElement.getAttribute('aria-hidden');
@@ -453,7 +453,7 @@ export default function (): void {
           });
 
           it('page buttons override default wizard buttons', () => {
-            wizard.pageCollection.lastPage.makeCurrent();
+            wizard.pageCollection.lastPage!.makeCurrent();
             context.detectChanges();
 
             const cancel = context.testElement.querySelector('.clr-wizard-btn--tertiary');
@@ -497,7 +497,7 @@ export default function (): void {
         it('clrWizardOnCancel output is not fired when wizard is closed by finish button', () => {
           expect(context.testComponent._cancelled).toBe(0, 'verify initial state');
 
-          wizard.pageCollection.lastPage.makeCurrent();
+          wizard.pageCollection.lastPage!.makeCurrent();
           context.detectChanges();
           const finish = context.testElement.querySelector('.clr-wizard-btn--primary:not(.disabled)') as HTMLElement;
           finish.click();
@@ -511,7 +511,7 @@ export default function (): void {
         it('clrWizardOnFinish output is fired', () => {
           expect(context.testComponent._finished).toBe(0, 'verify initial state');
 
-          wizard.pageCollection.lastPage.makeCurrent();
+          wizard.pageCollection.lastPage!.makeCurrent();
           context.detectChanges();
           const finish = context.testElement.querySelector('.clr-wizard-btn--primary:not(.disabled)') as HTMLElement;
           finish.click();
@@ -794,10 +794,10 @@ export default function (): void {
 
       describe('Page title focus', () => {
         it('should be placed on the page title after page change', () => {
-          wizard.pageCollection.lastPage.makeCurrent();
+          wizard.pageCollection.lastPage!.makeCurrent();
           context.detectChanges();
           const titleString = context.testElement.querySelector('.clr-wizard-page-title').textContent.trim();
-          expect(document.activeElement.textContent.trim()).toBe(titleString);
+          expect(document.activeElement!.textContent.trim()).toBe(titleString);
         });
       });
     });
@@ -816,7 +816,7 @@ export default function (): void {
 
       describe('aria-labelledby', () => {
         it('should be placed on the page title after page change', () => {
-          wizard.pageCollection.lastPage.makeCurrent();
+          wizard.pageCollection.lastPage!.makeCurrent();
           context.detectChanges();
           const modalWrapper = context.testElement.querySelector('.modal-dialog');
           const wizardId = wizard.wizardId;

@@ -148,7 +148,7 @@ function inputSpec(
     it('should handle valueChanges calls', () => {
       // control must be both invalid and blurred to register the validity
       let valueChanges = 0;
-      control.injector.get(NgControl).control.valueChanges.subscribe(() => {
+      control.injector.get(NgControl).control!.valueChanges.subscribe(() => {
         valueChanges++;
       });
 
@@ -231,22 +231,22 @@ function inputSpec(
 
     it('should mark the control as touched after stepUp', () => {
       const ngControl = control.injector.get(NgControl);
-      expect(ngControl.control.touched).toBeFalse();
+      expect(ngControl.control!.touched).toBeFalse();
 
       clarityDirective.stepUp();
       fixture.detectChanges();
 
-      expect(ngControl.control.touched).toBeTrue();
+      expect(ngControl.control!.touched).toBeTrue();
     });
 
     it('should mark the control as touched after stepDown', () => {
       const ngControl = control.injector.get(NgControl);
-      expect(ngControl.control.touched).toBeFalse();
+      expect(ngControl.control!.touched).toBeFalse();
 
       clarityDirective.stepDown();
       fixture.detectChanges();
 
-      expect(ngControl.control.touched).toBeTrue();
+      expect(ngControl.control!.touched).toBeTrue();
     });
   });
 }

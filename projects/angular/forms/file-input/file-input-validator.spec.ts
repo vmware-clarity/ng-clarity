@@ -15,7 +15,7 @@ import { clearFiles, selectFiles } from './file-input.helpers';
 interface TestComponent {
   accept: string;
 
-  get control(): FormControl<FileList>;
+  get control(): FormControl<FileList | null | undefined>;
 }
 
 @Component({
@@ -49,7 +49,7 @@ class ReactiveTest implements TestComponent {
   accept = '.txt,text/plain';
 
   readonly form = new FormGroup({
-    files: new FormControl<FileList>(undefined),
+    files: new FormControl<FileList | undefined>(undefined),
   });
 
   get control() {
@@ -85,10 +85,10 @@ class ReactiveTest implements TestComponent {
   standalone: false,
 })
 class TemplateDrivenTest implements TestComponent {
-  files: FileList;
+  files!: FileList;
   accept = '.txt,text/plain';
 
-  @ViewChild('ngModel') private readonly ngModel: NgModel;
+  @ViewChild('ngModel') private readonly ngModel!: NgModel;
 
   get control() {
     return this.ngModel.control;
@@ -119,7 +119,7 @@ function fileInputValidatorSpec(testComponent: Type<TestComponent>) {
     fixture = TestBed.createComponent(testComponent);
 
     nativeElement = fixture.nativeElement;
-    fileInputElement = nativeElement.querySelector('input[type="file"]');
+    fileInputElement = nativeElement.querySelector('input[type="file"]')!;
 
     fixture.detectChanges();
   });

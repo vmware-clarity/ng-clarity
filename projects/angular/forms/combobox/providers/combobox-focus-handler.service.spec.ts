@@ -25,9 +25,9 @@ import { SingleSelectComboboxModel } from '../model/single-select-combobox.model
   standalone: false,
 })
 class SimpleHost {
-  @ViewChild('textInput') textInput: ElementRef<HTMLInputElement>;
-  @ViewChild('trigger') trigger: ElementRef<HTMLButtonElement>;
-  @ViewChild('listbox') listbox: ElementRef<HTMLUListElement>;
+  @ViewChild('textInput') textInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('trigger') trigger!: ElementRef<HTMLButtonElement>;
+  @ViewChild('listbox') listbox!: ElementRef<HTMLUListElement>;
   onSubmit() {
     // do nothing; it makes eslint happy
   }

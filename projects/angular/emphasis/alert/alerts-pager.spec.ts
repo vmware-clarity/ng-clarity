@@ -35,8 +35,8 @@ export default function () {
       });
 
       afterEach(() => {
-        service = null;
-        component = null;
+        service = null!;
+        component = null!;
       });
 
       it('page up calls the multi alert service', function () {
@@ -158,7 +158,7 @@ export default function () {
   standalone: false,
 })
 export class TestIndex {
-  @ViewChild(ClrAlertsPager) pagerInstance: ClrAlertsPager;
+  @ViewChild(ClrAlertsPager) pagerInstance!: ClrAlertsPager;
   index = 0;
 }
 
@@ -168,8 +168,8 @@ export class TestIndex {
   standalone: false,
 })
 export class TestInstance {
-  @ViewChild(ClrAlertsPager) pagerInstance: ClrAlertsPager;
-  currentAlert: ClrAlert;
+  @ViewChild(ClrAlertsPager) pagerInstance!: ClrAlertsPager;
+  currentAlert!: ClrAlert;
 }
 
 @Component({
@@ -178,5 +178,5 @@ export class TestInstance {
   standalone: false,
 })
 export class TestBasics {
-  @ViewChild(ClrAlertsPager) pagerInstance: ClrAlertsPager;
+  @ViewChild(ClrAlertsPager) pagerInstance!: ClrAlertsPager;
 }

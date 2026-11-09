@@ -20,7 +20,7 @@ export default function (): void {
     it('exposes an Observable for id changes', function () {
       const service = new DatalistIdService();
       service.id = 'hello';
-      let emittedId: string;
+      let emittedId!: string;
       service.idChange.subscribe(id => (emittedId = id));
       expect(emittedId).toBe('hello');
       service.id = 'world';

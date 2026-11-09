@@ -58,7 +58,7 @@ export default function (): void {
       beforeEach(function (this: TestContext) {
         TestBed.configureTestingModule({ declarations: [SimpleHost] });
         const fixture = TestBed.createComponent(SimpleHost);
-        this.focusService = fixture.debugElement.injector.get(FocusService, null);
+        this.focusService = fixture.debugElement.injector.get(FocusService, null)!;
       });
 
       function setupContainer(context: TestContext) {

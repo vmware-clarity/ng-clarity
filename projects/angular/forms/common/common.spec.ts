@@ -36,7 +36,7 @@ class GenericWrapper {}
 })
 class GenericControl extends WrappedFormControl<GenericWrapper> {
   constructor(vcr: ViewContainerRef) {
-    super(vcr, GenericWrapper, null, null, null, null);
+    super(vcr, GenericWrapper, null!, null, null!, null!);
   }
 }
 

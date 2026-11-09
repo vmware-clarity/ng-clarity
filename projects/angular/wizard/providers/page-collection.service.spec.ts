@@ -32,22 +32,22 @@ export default function (): void {
     });
 
     it('.lastPage should return the last wizard page', function () {
-      expect(pageCollectionService.lastPage.id).toEqual(context.clarityDirective.pages.last.id);
+      expect(pageCollectionService.lastPage!.id).toEqual(context.clarityDirective.pages.last.id);
     });
 
     it('.firstPage should return the first wizard page', function () {
-      expect(pageCollectionService.firstPage.id).toEqual(context.clarityDirective.pages.first.id);
+      expect(pageCollectionService.firstPage!.id).toEqual(context.clarityDirective.pages.first.id);
     });
 
     it('.getPageById() should return the wizard page with a matching id', function () {
       // checkResults() method is tested here as well
       const firstPageId = context.clarityDirective.pages.first.id;
-      const firstPageIdNumber = firstPageId.match(/\d+/)[0];
+      const firstPageIdNumber = firstPageId.match(/\d+/)![0];
       const lastPageId = context.clarityDirective.pages.last.id;
       const nonExistingPageId = 'N0N-EX1ST1N-ID';
 
-      expect(pageCollectionService.getPageById(firstPageId)).toEqual(pageCollectionService.firstPage);
-      expect(pageCollectionService.getPageById(lastPageId)).toEqual(pageCollectionService.lastPage);
+      expect(pageCollectionService.getPageById(firstPageId)).toEqual(pageCollectionService.firstPage!);
+      expect(pageCollectionService.getPageById(lastPageId)).toEqual(pageCollectionService.lastPage!);
 
       expect(function () {
         pageCollectionService.getPageById(nonExistingPageId);
@@ -62,8 +62,8 @@ export default function (): void {
     });
 
     it('.getPageByIndex() should return the index of the wizard page', function () {
-      expect(pageCollectionService.getPageByIndex(0)).toEqual(pageCollectionService.firstPage);
-      expect(pageCollectionService.getPageByIndex(4)).toEqual(pageCollectionService.lastPage);
+      expect(pageCollectionService.getPageByIndex(0)).toEqual(pageCollectionService.firstPage!);
+      expect(pageCollectionService.getPageByIndex(4)).toEqual(pageCollectionService.lastPage!);
 
       expect(function () {
         pageCollectionService.getPageByIndex(-20);
@@ -75,13 +75,13 @@ export default function (): void {
     });
 
     it('.getPageIndex() should return the index of a wizard page', function () {
-      expect(pageCollectionService.getPageIndex(pageCollectionService.firstPage)).toBe(0);
+      expect(pageCollectionService.getPageIndex(pageCollectionService.firstPage!)).toBe(0);
     });
 
     it('.pageRange() should return the range of wizard pages', function () {
-      expect(pageCollectionService.pageRange(0, 0)).toEqual([pageCollectionService.firstPage]);
+      expect(pageCollectionService.pageRange(0, 0)).toEqual([pageCollectionService.firstPage!]);
 
-      expect(pageCollectionService.pageRange(4, 4)).toEqual([pageCollectionService.lastPage]);
+      expect(pageCollectionService.pageRange(4, 4)).toEqual([pageCollectionService.lastPage!]);
 
       expect(pageCollectionService.pageRange(1, 3)).toEqual(pageCollectionService.pagesAsArray.slice(1, 4));
 
@@ -95,20 +95,20 @@ export default function (): void {
 
       expect(pageCollectionService.pageRange(1, -3)).toEqual([]);
 
-      expect(pageCollectionService.pageRange(null, 3)).toEqual([]);
+      expect(pageCollectionService.pageRange(null!, 3)).toEqual([]);
 
-      expect(pageCollectionService.pageRange(3, undefined)).toEqual([]);
+      expect(pageCollectionService.pageRange(3, undefined!)).toEqual([]);
 
-      expect(pageCollectionService.pageRange(null, undefined)).toEqual([]);
+      expect(pageCollectionService.pageRange(null!, undefined!)).toEqual([]);
     });
 
     it('.getPageRangeFromPages() should return the range of wizard pages', function () {
       expect(
-        pageCollectionService.getPageRangeFromPages(pageCollectionService.firstPage, pageCollectionService.lastPage)
+        pageCollectionService.getPageRangeFromPages(pageCollectionService.firstPage!, pageCollectionService.lastPage!)
       ).toEqual(pageCollectionService.pageRange(0, 4));
 
       expect(
-        pageCollectionService.getPageRangeFromPages(pageCollectionService.firstPage, pageCollectionService.firstPage)
+        pageCollectionService.getPageRangeFromPages(pageCollectionService.firstPage!, pageCollectionService.firstPage!)
       ).toEqual(pageCollectionService.pageRange(0, 0));
 
       expect(
@@ -120,7 +120,7 @@ export default function (): void {
     });
 
     it('.getPreviousPage() should return the previous page of the current page', function () {
-      expect(pageCollectionService.getPreviousPage(pageCollectionService.lastPage)).toEqual(
+      expect(pageCollectionService.getPreviousPage(pageCollectionService.lastPage!)).toEqual(
         pageCollectionService.getPageByIndex(3)
       );
 
@@ -128,11 +128,11 @@ export default function (): void {
         pageCollectionService.getPageByIndex(1)
       );
 
-      expect(pageCollectionService.getPreviousPage(pageCollectionService.firstPage)).toBeNull();
+      expect(pageCollectionService.getPreviousPage(pageCollectionService.firstPage!)).toBeNull();
     });
 
     it('.getNextPage() should return the next page of the current page', function () {
-      expect(pageCollectionService.getNextPage(pageCollectionService.firstPage)).toEqual(
+      expect(pageCollectionService.getNextPage(pageCollectionService.firstPage!)).toEqual(
         pageCollectionService.getPageByIndex(1)
       );
 
@@ -140,7 +140,7 @@ export default function (): void {
         pageCollectionService.getPageByIndex(3)
       );
 
-      expect(pageCollectionService.getNextPage(pageCollectionService.lastPage)).toBeNull();
+      expect(pageCollectionService.getNextPage(pageCollectionService.lastPage!)).toBeNull();
     });
 
     it('.getStepItemIdForPage() should return the step id of the page', function () {
@@ -150,8 +150,8 @@ export default function (): void {
       const firstPageStepId = firstPageId.replace('page', 'step');
       const lastPageStepId = lastPageId.replace('page', 'step');
 
-      expect(pageCollectionService.getStepItemIdForPage(pageCollectionService.firstPage)).toBe(firstPageStepId);
-      expect(pageCollectionService.getStepItemIdForPage(pageCollectionService.lastPage)).toBe(lastPageStepId);
+      expect(pageCollectionService.getStepItemIdForPage(pageCollectionService.firstPage!)).toBe(firstPageStepId);
+      expect(pageCollectionService.getStepItemIdForPage(pageCollectionService.lastPage!)).toBe(lastPageStepId);
     });
 
     it(".commitPage() should set the page's completed property to true", function () {
@@ -191,30 +191,30 @@ export default function (): void {
     });
 
     it('.reset() should set the completed properties back to false.', function () {
-      pageCollectionService.firstPage.completed = true;
-      pageCollectionService.lastPage.completed = true;
+      pageCollectionService.firstPage!.completed = true;
+      pageCollectionService.lastPage!.completed = true;
 
       pageCollectionService.reset();
 
-      expect(pageCollectionService.firstPage.completed).toBe(false);
-      expect(pageCollectionService.lastPage.completed).toBe(false);
+      expect(pageCollectionService.firstPage!.completed).toBe(false);
+      expect(pageCollectionService.lastPage!.completed).toBe(false);
     });
 
     it('.previousPageIsCompleted() should return true if previous page is completed', function () {
       const secondPage = pageCollectionService.getPageByIndex(1);
-      pageCollectionService.firstPage.completed = true;
+      pageCollectionService.firstPage!.completed = true;
       context.detectChanges();
       expect(pageCollectionService.previousPageIsCompleted(secondPage)).toBe(true);
     });
 
     it('.previousPageIsCompleted() should return true if there is no previous page', function () {
       const firstPage = pageCollectionService.firstPage;
-      expect(pageCollectionService.previousPageIsCompleted(firstPage)).toBe(true);
+      expect(pageCollectionService.previousPageIsCompleted(firstPage!)).toBe(true);
     });
 
     it('.previousPageIsCompleted() should return false if previous page is not complete', function () {
       const secondPage = pageCollectionService.getPageByIndex(1);
-      expect(pageCollectionService.firstPage.completed).toBe(false, 'verify first page is not completed');
+      expect(pageCollectionService.firstPage!.completed).toBe(false, 'verify first page is not completed');
       expect(pageCollectionService.previousPageIsCompleted(secondPage)).toBe(
         false,
         "second page's previous page is not complete"
@@ -223,7 +223,7 @@ export default function (): void {
 
     it("updateCompletedStates() shouldn't update completed state if all pages completed", function () {
       const pageArray = [];
-      pageArray.push(pageCollectionService.firstPage);
+      pageArray.push(pageCollectionService.firstPage!);
       pageArray.push(pageCollectionService.getPageByIndex(1));
       pageArray.push(pageCollectionService.getPageByIndex(2));
       pageArray.push(pageCollectionService.getPageByIndex(3));
@@ -234,7 +234,7 @@ export default function (): void {
       });
       pageCollectionService.updateCompletedStates();
 
-      expect(pageCollectionService.firstPage.completed).toBe(true, 'first page not updated');
+      expect(pageCollectionService.firstPage!.completed).toBe(true, 'first page not updated');
       expect(pageCollectionService.getPageByIndex(1).completed).toBe(true, 'second page not updated');
       expect(pageCollectionService.getPageByIndex(2).completed).toBe(true, 'third page not updated');
       expect(pageCollectionService.getPageByIndex(3).completed).toBe(true, 'fourth page not updated');
@@ -243,7 +243,7 @@ export default function (): void {
 
     it('updateCompletedStates() should mark pages after first incomplete page as incomplete', function () {
       const pageArray = [];
-      pageArray.push(pageCollectionService.firstPage);
+      pageArray.push(pageCollectionService.firstPage!);
       pageArray.push(pageCollectionService.getPageByIndex(1));
       pageArray.push(pageCollectionService.getPageByIndex(3));
       pageArray.push(pageCollectionService.getPageByIndex(4));
@@ -254,7 +254,7 @@ export default function (): void {
 
       pageCollectionService.updateCompletedStates();
 
-      expect(pageCollectionService.firstPage.completed).toBe(true, 'first page not changed');
+      expect(pageCollectionService.firstPage!.completed).toBe(true, 'first page not changed');
       expect(pageCollectionService.getPageByIndex(1).completed).toBe(true, 'second page not changed');
       expect(pageCollectionService.getPageByIndex(2).completed).toBe(false, 'third page never set');
       expect(pageCollectionService.getPageByIndex(3).completed).toBe(false, 'fourth page changed');
@@ -262,7 +262,7 @@ export default function (): void {
     });
 
     it('findFirstIncompletePageIndex() should return index of first incomplete page', function () {
-      pageCollectionService.firstPage.completed = true;
+      pageCollectionService.firstPage!.completed = true;
       pageCollectionService.getPageByIndex(1).completed = false;
       pageCollectionService.getPageByIndex(2).completed = true;
       pageCollectionService.getPageByIndex(3).completed = false;
@@ -274,7 +274,7 @@ export default function (): void {
       const pageArray = [];
       const expectedIndex = pageCollectionService.pagesCount - 1;
 
-      pageArray.push(pageCollectionService.firstPage);
+      pageArray.push(pageCollectionService.firstPage!);
       pageArray.push(pageCollectionService.getPageByIndex(1));
       pageArray.push(pageCollectionService.getPageByIndex(2));
       pageArray.push(pageCollectionService.getPageByIndex(3));

@@ -28,7 +28,7 @@ import { ClrTabsModule } from './tabs.module';
   standalone: false,
 })
 class TestComponent {
-  @ViewChildren(ClrTabLink) tabLinkChildren: QueryList<ClrTabLink>;
+  @ViewChildren(ClrTabLink) tabLinkChildren!: QueryList<ClrTabLink>;
   inOverflow = false;
 }
 
