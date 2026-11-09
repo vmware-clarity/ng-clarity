@@ -151,7 +151,7 @@ export default function (): void {
       });
       expect(this.clarityElement.querySelectorAll('[aria-expanded="true"]').length).toBe(0);
 
-      const focusManager = this.getClarityProvider(TreeFocusManagerService);
+      const focusManager = this.getClarityProvider<TreeFocusManagerService<PerfNode>>(TreeFocusManagerService);
       const roots = this.fixture.debugElement
         .queryAll(By.directive(ClrTreeNode))
         .filter(de => !(de.componentInstance as ClrTreeNode<PerfNode>)._model.parent);

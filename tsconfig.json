@@ -14,6 +14,11 @@
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "strict": false,
+    "alwaysStrict": true,
+    "strictBindCallApply": true,
+    "strictBuiltinIteratorReturn": true,
+    "strictFunctionTypes": true,
+    "useUnknownInCatchVariables": true,
     "target": "es2022",
     "useDefineForClassFields": false,
     "paths": {

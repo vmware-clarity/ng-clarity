@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable, IterableDiffer, IterableDiffers, TrackByFunction } from '@angular/core';
+import { Injectable, IterableDiffer, IterableDiffers } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, delay } from 'rxjs/operators';
 
@@ -66,7 +66,7 @@ export class Selection<T = any> {
   ) {
     this.id = 'clr-dg-selection' + nbSelection++;
     this.identifyBy = _items.identifyBy;
-    this._differ = differs.find(this._current || []).create<T>(this.identifyBy as TrackByFunction<T>);
+    this._differ = differs.find(this._current || []).create<T>((_index, item) => this.identifyBy(item));
 
     this.subscriptions.push(
       filters.change.subscribe(() => {

@@ -207,7 +207,7 @@ export interface Step {
     recreateComponent?: (stepModelChanges?: ModelChanges) => boolean;
     // Warning: (ae-forgotten-export) The symbol "PropertyViewSectionBuilder" needs to be exported by the entry point clr-addons-var.d.ts
     // Warning: (ae-forgotten-export) The symbol "PropertyViewSectionModel" needs to be exported by the entry point clr-addons-var.d.ts
-    summary?: (builder: PropertyViewSectionBuilder, stepModel?: StepModel) => PropertyViewSectionModel;
+    summary?(builder: PropertyViewSectionBuilder, stepModel?: StepModel): PropertyViewSectionModel;
     title: string;
 }
 
