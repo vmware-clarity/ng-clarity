@@ -22,7 +22,7 @@ import { DatalistIdService } from './providers/datalist-id.service';
   standalone: false,
 })
 export class TestDatalistId {
-  testId;
+  testId: string;
 }
 
 @Component({

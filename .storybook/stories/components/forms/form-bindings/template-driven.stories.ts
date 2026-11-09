@@ -37,7 +37,7 @@ const patterns = {
 function getForm() {
   return {
     name: '',
-    age: null,
+    age: null as number | null,
     password: '',
     description: '',
   };

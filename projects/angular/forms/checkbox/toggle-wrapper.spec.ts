@@ -66,7 +66,9 @@ export default function (): void {
     WrapperContainerSpec(ClrCheckboxContainer, ClrCheckboxWrapper, ClrCheckbox, ContainerTest, 'clr-toggle-wrapper');
 
     describe('toggle class', () => {
-      let fixture, containerDE, containerEl;
+      let fixture;
+      let containerDE;
+      let containerEl: HTMLElement;
 
       beforeEach(() => {
         TestBed.configureTestingModule({

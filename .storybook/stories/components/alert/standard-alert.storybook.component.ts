@@ -66,9 +66,9 @@ import { RenderComponentStorybook } from '@storybook-helpers/render-component';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class StandardAlertStorybookComponent extends RenderComponentStorybook {
-  @Input() componentDescription = null;
+  @Input() componentDescription: string | null = null;
   @Input() clrAlertClosable = false;
-  @Input() clrAlertIcon;
+  @Input() clrAlertIcon: string;
   @Input() clrAlertLightweight = false;
   @Input() clrAlertSizeSmall = false;
   @Input() clrCloseButtonAriaLabel = commonStringsDefault.alertCloseButtonAriaLabel;

@@ -53,7 +53,7 @@ describe('formatError should return error object, WHEN error of type', () => {
     }
 
     it('when messages are set to an EMPTY array', function () {
-      const error = { messages: [] };
+      const error = { messages: [] as string[] };
       formatAndVerifyStringifiedMessage(error);
     });
 

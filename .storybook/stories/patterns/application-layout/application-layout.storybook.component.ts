@@ -39,7 +39,7 @@ import { VerticalNavIconService } from '../../../../projects/angular/layout/vert
 export class ApplicationLayoutStorybookComponent {
   rootDirectory = organization;
   elements = elements;
-  selected = [];
+  selected: unknown[] = [];
   breadcrumbs = [
     { label: 'Framework', href: '/framework' },
     { label: 'Angular', href: '/framework/angular' },

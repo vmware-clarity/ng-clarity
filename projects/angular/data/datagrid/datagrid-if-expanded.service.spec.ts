@@ -17,7 +17,7 @@ export default function (): void {
 
     it('starts with the correct default settings', function () {
       let doesReplace = null;
-      this.expand.replace.subscribe(expandChange => {
+      this.expand.replace.subscribe((expandChange: boolean) => {
         doesReplace = expandChange;
       });
       expect(this.expand.expandable).toBe(0, 'not expandable');
@@ -28,7 +28,7 @@ export default function (): void {
 
     it('notifies when cells are replaced', function () {
       let isReplaced = null;
-      this.expand.replace.subscribe(replaceChange => {
+      this.expand.replace.subscribe((replaceChange: boolean) => {
         isReplaced = replaceChange;
       });
       expect(isReplaced).toBe(false);

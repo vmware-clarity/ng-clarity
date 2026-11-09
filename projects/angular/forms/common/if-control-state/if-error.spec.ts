@@ -7,7 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, NgControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ClrInput, ClrInputContainer } from '@clr/angular/forms/input';
 import { ClrIcon } from '@clr/angular/icon';
 import { delay } from '@clr/angular/testing';
@@ -113,7 +113,8 @@ export default function (): void {
     });
 
     describe('general error', () => {
-      let fixture, ngControlService;
+      let fixture: ComponentFixture<GeneralErrorTest>;
+      let ngControlService: NgControlService;
 
       beforeEach(() => {
         TestBed.configureTestingModule({
@@ -133,7 +134,7 @@ export default function (): void {
         expect(fixture.nativeElement.innerHTML).not.toContain(errorMessage);
         const control = new FormControl('', Validators.required);
         control.markAsTouched();
-        ngControlService.addControl(control);
+        ngControlService.addControl(control as unknown as NgControl);
         control.markAsTouched();
         fixture.detectChanges();
         await delay();
@@ -142,7 +143,8 @@ export default function (): void {
     });
 
     describe('specific error', () => {
-      let fixture, ngControlService;
+      let fixture: ComponentFixture<SpecificErrorTest>;
+      let ngControlService: NgControlService;
 
       beforeEach(() => {
         TestBed.configureTestingModule({
@@ -161,7 +163,7 @@ export default function (): void {
       it('displays the error when the specific error is defined', async () => {
         expect(fixture.nativeElement.innerHTML).not.toContain(errorMessage);
         const control = new FormControl('', [Validators.required, Validators.minLength(5)]);
-        ngControlService.addControl(control);
+        ngControlService.addControl(control as unknown as NgControl);
         control.markAsTouched();
         await delay();
         fixture.detectChanges();
@@ -171,7 +173,7 @@ export default function (): void {
       it('hides the message even when it is invalid due to a different validation error', async () => {
         expect(fixture.nativeElement.innerHTML).not.toContain(errorMessage);
         const control = new FormControl('abc', [Validators.required, Validators.minLength(5)]);
-        ngControlService.addControl(control);
+        ngControlService.addControl(control as unknown as NgControl);
         control.markAsTouched();
         await delay();
         fixture.detectChanges();
@@ -181,7 +183,7 @@ export default function (): void {
 
       it('displays the error message with values from error object in context', async () => {
         const control = new FormControl('abcdef', [Validators.maxLength(5)]);
-        ngControlService.addControl(control);
+        ngControlService.addControl(control as unknown as NgControl);
         control.markAsTouched();
         await delay();
         fixture.detectChanges();
@@ -190,7 +192,7 @@ export default function (): void {
 
       it('updates the error message with values from error object in context', async () => {
         const control = new FormControl('abcdef', [Validators.maxLength(5)]);
-        ngControlService.addControl(control);
+        ngControlService.addControl(control as unknown as NgControl);
         control.markAsTouched();
         await delay();
         fixture.detectChanges();
@@ -209,7 +211,7 @@ export default function (): void {
           Validators.maxLength(5),
         ]);
         control.markAsTouched();
-        ngControlService.addControl(control);
+        ngControlService.addControl(control as unknown as NgControl);
         control.markAsTouched();
         await delay();
         fixture.detectChanges();

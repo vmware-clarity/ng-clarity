@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ThemeType } from '@clr/angular';
 
 import { ThemeBuilderComponent } from './theme-builder.component';
 import { Color } from './utils/color';
@@ -156,8 +157,8 @@ describe('ThemeBuilderComponent', () => {
 
     this.component.applyPreset(testPresets[1]);
 
-    const variantsByLabel = (theme: string) =>
-      Object.fromEntries(this.component.colorStruct[theme]['primary'].map(c => [c.label, c.hsl]));
+    const variantsByLabel = (theme: ThemeType) =>
+      Object.fromEntries(this.component.colorStruct[theme]['primary'].map((c: Color) => [c.label, c.hsl]));
 
     expect(variantsByLabel('light')).toEqual({
       Base: 'hsl(160deg, 69%, 36%)',

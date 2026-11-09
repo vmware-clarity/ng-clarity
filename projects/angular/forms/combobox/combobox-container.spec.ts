@@ -45,7 +45,7 @@ class NoLabelTest {}
 class TemplateDrivenTest {
   inline = false;
   disabled = false;
-  model = [];
+  model: string[] = [];
 }
 
 @Component({

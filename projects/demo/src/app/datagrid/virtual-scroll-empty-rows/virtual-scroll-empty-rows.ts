@@ -173,7 +173,7 @@ export class DatagridVirtualScrollEmptyRowsDemo {
     return result;
   }
 
-  setExpanded($event, user: User) {
+  setExpanded($event: boolean, user: User) {
     if (user) {
       user.expanded = $event;
     }

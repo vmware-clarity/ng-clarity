@@ -7,7 +7,7 @@
 
 import { Color } from './color';
 import { generateCSS } from './css-generator';
-import { parseGeneratedCSS, validateGeneratedCSS } from './css-parser';
+import { parseGeneratedCSS, ThemeCssValidation, validateGeneratedCSS } from './css-parser';
 import { CdsThemeStructure, HslColor } from './types';
 
 function emptyStruct(): CdsThemeStructure {
@@ -116,7 +116,11 @@ describe('parseGeneratedCSS', () => {
 });
 
 describe('validateGeneratedCSS', () => {
-  const NO_ISSUES = { malformedDeclarations: [], duplicateThemeBlocks: [], duplicateTokens: [] };
+  const NO_ISSUES: Omit<ThemeCssValidation, 'valid'> = {
+    malformedDeclarations: [],
+    duplicateThemeBlocks: [],
+    duplicateTokens: [],
+  };
 
   function changedStruct(): CdsThemeStructure {
     const struct = emptyStruct();

@@ -50,7 +50,7 @@ export class ClrKeyFocus {
    * this method will only work with array with FocusableItems anyway so any other value will be ignored.
    */
   @Input('clrKeyFocus')
-  get focusableItems() {
+  get focusableItems(): FocusableItem[] {
     if (this._focusableItems) {
       return this._focusableItems;
     } else if (this.clrKeyFocusItems) {

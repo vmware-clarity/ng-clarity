@@ -40,7 +40,7 @@ export default function (): void {
     it('properly updates the view mode when organizer resizes', function (this: UserContext) {
       let currentChange: DatagridDisplayMode;
       let displayChangeCount = 0;
-      this.displayViewServiceSubscription = this.displayService.view.subscribe(viewChange => {
+      this.displayViewServiceSubscription = this.displayService.view.subscribe((viewChange: DatagridDisplayMode) => {
         displayChangeCount++;
         currentChange = viewChange;
       });
@@ -53,7 +53,7 @@ export default function (): void {
     it('it defaults to DatagridDisplayMode.DISPLAY', function () {
       const viewObservable = this.displayService.view;
       let currentView = null;
-      this.displayViewServiceSubscription = viewObservable.subscribe(viewChange => {
+      this.displayViewServiceSubscription = viewObservable.subscribe((viewChange: DatagridDisplayMode) => {
         currentView = viewChange;
       });
       expect(currentView).toBe(DatagridDisplayMode.DISPLAY);
@@ -62,7 +62,7 @@ export default function (): void {
     it('updates the view for DatagridDisplayMode.DISPLAY', function () {
       const viewObservable = this.displayService.view;
       let currentView = null;
-      this.displayViewServiceSubscription = viewObservable.subscribe(viewChange => {
+      this.displayViewServiceSubscription = viewObservable.subscribe((viewChange: DatagridDisplayMode) => {
         currentView = viewChange;
       });
       this.organizer.updateRenderStep.next(DatagridRenderStep.CALCULATE_MODE_OFF);
@@ -72,7 +72,7 @@ export default function (): void {
     it('updates the view for DatagridDisplayMode.CALCULATE', function () {
       const viewObservable = this.displayService.view;
       let currentView = null;
-      this.displayViewServiceSubscription = viewObservable.subscribe(viewChange => {
+      this.displayViewServiceSubscription = viewObservable.subscribe((viewChange: DatagridDisplayMode) => {
         currentView = viewChange;
       });
       this.organizer.updateRenderStep.next(DatagridRenderStep.CALCULATE_MODE_ON);

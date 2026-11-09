@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -79,7 +79,8 @@ export default function (): void {
     ReactiveSpec(ClrDatalistContainer, ClrDatalistInput, ReactiveTest, 'clr-input');
 
     describe('set datalist type', () => {
-      let fixture, containerDE, containerEl;
+      let fixture;
+      let containerDE: DebugElement;
 
       beforeEach(() => {
         TestBed.configureTestingModule({
@@ -89,12 +90,12 @@ export default function (): void {
         });
         fixture = TestBed.createComponent(TemplateDrivenTest);
         containerDE = fixture.debugElement.query(By.directive(ClrDatalistContainer));
-        containerEl = containerDE.nativeElement;
         fixture.detectChanges();
       });
 
       it('should set the list', () => {
-        expect(containerEl.attributes.list).toEqual(containerDE.componentInstance.listValue);
+        const input = containerDE.query(By.directive(ClrDatalistInput));
+        expect(input.nativeElement.getAttribute('list')).toEqual(input.injector.get(ClrDatalistInput).listValue);
       });
     });
   });

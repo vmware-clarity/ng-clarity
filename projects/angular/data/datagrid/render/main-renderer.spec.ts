@@ -101,7 +101,8 @@ export default function (): void {
 
     describe('dynamic loading', function () {
       let context: TestContext<DatagridMainRenderer, DynamicTest>;
-      let resizeSpy, rowsSpy: jasmine.Spy;
+      let resizeSpy: jasmine.Spy;
+      let rowsSpy: jasmine.Spy;
 
       beforeEach(async function () {
         resizeSpy = spyOn(DatagridRenderOrganizer.prototype, 'resize');
@@ -402,7 +403,7 @@ export default function (): void {
   standalone: false,
 })
 class RenderWidthTest {
-  currentTest;
+  currentTest: string;
   expandable = false;
   hasActions = false;
   selected: any[] = [];

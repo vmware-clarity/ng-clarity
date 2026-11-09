@@ -39,7 +39,7 @@ import { createArray } from '@storybook-helpers/common';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class AccordionStorybookComponent {
-  @Input() componentDescription = null;
+  @Input() componentDescription: string | null = null;
   @Input() clrAccordionMultiPanel = false;
   @Input() clrAccordionPanelHeadingLevel = 1;
   @Input() clrAccordionPanelDisabled = false;
@@ -47,7 +47,7 @@ export class AccordionStorybookComponent {
   @Input() title = 'Title';
   @Input() content = 'Hello World!';
   @Input() showDescriptions = false;
-  @Input() openIndices = [];
+  @Input() openIndices: boolean[] = [];
   @Input() alignmentTest = false;
   createArray = createArray;
 }

@@ -108,7 +108,7 @@ describe('DatagridComponent', () => {
         {
           provide: DragAndDropGroupService,
           useValue: {
-            getGroupItems: () => [],
+            getGroupItems: (): unknown[] => [],
           },
         },
       ],
@@ -2774,7 +2774,7 @@ describe('DatagridComponent', () => {
     });
 
     it('should preserve detail state and not recreate row when items are updated by reference but trackByProperty matches', fakeAsync(function (
-      this: any
+      this: DatagridSpecContext
     ) {
       class TestItem {
         constructor(

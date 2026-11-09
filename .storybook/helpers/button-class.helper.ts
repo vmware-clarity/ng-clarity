@@ -17,7 +17,7 @@ export function getButtonClass({
   buttonStyle: string;
   btnSmallSize: boolean;
 }) {
-  const buttonClasses = {
+  const buttonClasses: Record<string, string> = {
     solid: `btn-${buttonType} ${btnSmallSize ? 'btn-sm' : ''}`,
     outline: `btn-${buttonType}-outline ${btnSmallSize ? 'btn-sm' : ''}`,
     flat: `btn-link-${buttonType} ${btnSmallSize ? 'btn-sm' : ''}`,

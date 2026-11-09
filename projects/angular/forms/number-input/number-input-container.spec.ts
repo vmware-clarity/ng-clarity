@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import {
@@ -52,7 +52,7 @@ class SimpleTest {
   standalone: false,
 })
 class NoLabelTest {
-  model;
+  model: number;
 }
 
 @Component({
@@ -100,7 +100,8 @@ export default function (): void {
     ReactiveSpec(ClrNumberInputContainer, ClrNumberInput, ReactiveTest, '.clr-number-input-wrapper  [clrNumberInput]');
 
     describe('host binding with missing input', () => {
-      let fixture, containerEl;
+      let fixture: ComponentFixture<NoInputTest>;
+      let containerEl: HTMLElement;
 
       beforeEach(() => {
         TestBed.configureTestingModule({

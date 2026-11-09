@@ -19,13 +19,12 @@ const BADGE_STATUS_TYPES = ['', 'info', 'success', 'warning', 'danger'];
 const meta = {
   title: 'Components/Badge',
   component: BadgeStoryBookComponent,
-  decorators: [],
   argTypes: {
     ...hideControls('badgeTypes'),
   },
   args: {
     context: '42',
-    badgeType: null,
+    badgeType: null as string | null,
     badgeTypes: [...BADGE_STATUS_TYPES, ...BADGE_COLOR_TYPES],
     cssBadge: true,
     outlined: false,

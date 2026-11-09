@@ -113,7 +113,7 @@ export const MostColumnsPinned: Story = {
   },
 };
 
-function setExpanded($event, element) {
+function setExpanded($event: boolean, element: Element) {
   element.expanded = $event;
 }
 

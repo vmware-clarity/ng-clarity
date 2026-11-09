@@ -531,7 +531,7 @@ class ExpandedCellsTest {
     { id: 2, value: 2 },
     { id: 3, value: 3 },
   ];
-  detailItem = null;
+  detailItem: { id: number; value: number } | null = null;
   replaceCells = false;
   firstColumnHidden = false;
 }
@@ -858,16 +858,16 @@ export default function (): void {
 
       it('adds a11y roles to datagrid', function () {
         const tableWrapper = context.clarityElement.querySelector('.datagrid-table');
-        expect(tableWrapper.attributes.role.value).toEqual('grid');
+        expect(tableWrapper.getAttribute('role')).toEqual('grid');
 
         const header = context.clarityElement.querySelector('.datagrid-header');
-        expect(header.attributes.role.value).toEqual('rowgroup');
+        expect(header.getAttribute('role')).toEqual('rowgroup');
 
         const row = context.clarityElement.querySelector('.datagrid-row');
-        expect(row.attributes.role.value).toEqual('row');
+        expect(row.getAttribute('role')).toEqual('row');
 
         const columns = context.clarityElement.querySelectorAll('.datagrid-column');
-        columns.forEach(column => expect(column.attributes.role.value).toEqual('columnheader'));
+        columns.forEach((column: HTMLElement) => expect(column.getAttribute('role')).toEqual('columnheader'));
       });
     });
 
@@ -1591,11 +1591,11 @@ export default function (): void {
 
     describe('detail pane and track by', function () {
       let context: TestContext<ClrDatagrid, PanelTrackByTest>;
-      let detailService;
+      let detailService: DetailService;
 
       beforeEach(function () {
         context = this.create(ClrDatagrid, PanelTrackByTest, DATAGRID_SPEC_PROVIDERS);
-        detailService = context.getClarityProvider(DetailService) as DetailService;
+        detailService = context.getClarityProvider(DetailService);
       });
 
       it('should keep open the panel', () => {
