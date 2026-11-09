@@ -39,7 +39,7 @@ export function validDate(dateFormat: ClrLocaleDateFormat): ValidatorFn {
     control.value && !dateFormat.parse(control.value) ? { date: true } : null;
 }
 
-@Component({ ... })
+@Component({/* ... */})
 export class MyComponent {
   // One instance per component, created where inject() is available.
   private readonly dateFormat = new ClrLocaleDateFormat(inject(LOCALE_ID));
