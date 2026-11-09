@@ -15,7 +15,7 @@ import { ClrWizard } from '@clr/angular';
   standalone: false,
 })
 export class WizardAsyncValidation {
-  @ViewChild('wizard') wizard: ClrWizard;
+  @ViewChild('wizard') wizard!: ClrWizard;
   @ViewChild('myForm') formData: any;
 
   open = false;

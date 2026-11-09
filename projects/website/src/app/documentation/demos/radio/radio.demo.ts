@@ -105,10 +105,10 @@ export class RadioDemo extends ClarityDocComponent {
 
   angularTs = AngularTs;
 
-  @ViewChild('successRadio') successRadio: NgModel;
+  @ViewChild('successRadio') successRadio!: NgModel;
   successRadioModel = 'Large';
 
-  @ViewChild('errorRadio') errorRadio: NgModel;
+  @ViewChild('errorRadio') errorRadio!: NgModel;
   errorRadioModel = '';
 
   constructor() {

@@ -29,10 +29,10 @@ export class DatagridCompactDemo {
   pokemonFilter = new PokemonFilter();
   singleSelected: User[] = [];
   _selected: User[] = [];
-  selected2: User[];
+  selected2?: User[];
   toAdd: User[] = [];
   toDelete: User[] = [];
-  toEdit: User;
+  toEdit: User | null = null;
   detail = 'default';
   replace = false;
   fixedHeight = false;

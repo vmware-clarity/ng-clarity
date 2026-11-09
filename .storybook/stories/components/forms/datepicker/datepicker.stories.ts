@@ -27,8 +27,8 @@ type DatepickerArgs = {
   id: string;
   showActionButtons: boolean;
   clrDateChange: (date: Date) => void;
-  getDateObject: (date: Date | number | string) => Date;
-  getDateString: (date: Date | number | string) => string;
+  getDateObject: (date: Date | number | string) => Date | number | string;
+  getDateString: (date: Date | number | string) => string | number;
   // `argTypes`-only: `ClrDateInput` methods whose generated docs rows are hidden
   onValueChange: never;
   setFocusStates: never;

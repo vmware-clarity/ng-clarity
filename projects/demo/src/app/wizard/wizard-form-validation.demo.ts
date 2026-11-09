@@ -15,7 +15,7 @@ import { ClrWizard } from '@clr/angular';
   standalone: false,
 })
 export class WizardFormValidation {
-  @ViewChild('wizard') wizard: ClrWizard;
+  @ViewChild('wizard') wizard!: ClrWizard;
   @ViewChild('number') numberField: any;
 
   open = false;

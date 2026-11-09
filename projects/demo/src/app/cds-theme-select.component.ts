@@ -50,7 +50,7 @@ export class CdsThemeSelectComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.applyTheme(null);
+    this.applyTheme('');
     this.applyDensity('');
   }
 

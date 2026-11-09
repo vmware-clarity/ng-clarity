@@ -48,7 +48,7 @@ export class FontSwitcher {
   }
 
   sendFontSwitch(presetToLoad: string) {
-    const presetObj: FontPreset = getPreset(presetToLoad);
+    const presetObj: FontPreset | null = getPreset(presetToLoad);
 
     if (presetObj === null) {
       return;

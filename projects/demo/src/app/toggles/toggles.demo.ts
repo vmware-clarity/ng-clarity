@@ -14,7 +14,7 @@ import { ClrForm } from '@clr/angular';
   standalone: false,
 })
 export class TogglesDemo {
-  @ViewChildren(ClrForm) forms: QueryList<ClrForm>;
+  @ViewChildren(ClrForm) forms!: QueryList<ClrForm>;
 
   disabled = true;
   switch = true;

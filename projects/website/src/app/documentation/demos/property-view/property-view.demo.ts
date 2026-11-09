@@ -63,13 +63,13 @@ export class PropertyViewAddonDemoComponent extends ClarityDocComponent implemen
   readonly basicPropertyViewHtml = BasicPropertyViewHtml;
   readonly basicPropertyViewTs = BasicPropertyViewTs;
 
-  demoData: PropertyViewModel;
-  interactiveData: PropertyViewModel;
+  demoData!: PropertyViewModel;
+  interactiveData!: PropertyViewModel;
   collapsedSection = false;
   renderTitleAsHtml = false;
 
   private readonly propertyViewBuilder = new PropertyViewBuilder();
-  private lionSection: PropertyViewSectionBuilder;
+  private lionSection!: PropertyViewSectionBuilder;
   private newSectionId = 0;
   private newCategoryId = 0;
 

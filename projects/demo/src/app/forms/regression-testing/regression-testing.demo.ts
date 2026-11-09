@@ -59,7 +59,7 @@ export class RegressionTestingDemo implements OnInit {
 
   setValidators() {
     if (this.undefinedErrorForm) {
-      const ctrl = this.undefinedErrorForm.get('password');
+      const ctrl = this.undefinedErrorForm.controls['password'];
       ctrl.setValidators([Validators.required, Validators.minLength(8), this.customValidator]);
       ctrl.updateValueAndValidity();
     }

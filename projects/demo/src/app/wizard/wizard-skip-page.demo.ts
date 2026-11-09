@@ -15,7 +15,7 @@ import { ClrWizard } from '@clr/angular';
   standalone: false,
 })
 export class WizardSkipPageDemo {
-  @ViewChild('wizard') wizard: ClrWizard;
+  @ViewChild('wizard') wizard!: ClrWizard;
   skipStepTwo = true;
   _open = false;
 

@@ -24,9 +24,9 @@ type PaginationArgs = Pick<ClrDatagridPagination, 'next' | 'previous'> & {
   clrDgSelectionType: SelectionType;
   clrDgPageInputDisabled: boolean;
   clrDgPageSize: number;
-  clrDgPage: number;
-  clrDgLastPage: number;
-  clrDgTotalItems: number;
+  clrDgPage: number | null;
+  clrDgLastPage: number | null;
+  clrDgTotalItems: number | null;
   clrDgPageChange: (page: number) => void;
   elements: Element[];
   highlight: boolean;

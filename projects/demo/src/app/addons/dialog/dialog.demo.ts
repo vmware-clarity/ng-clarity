@@ -29,7 +29,7 @@ export class DialogDemoComponent implements OnInit {
 
   dialogOpened = false;
   steps: Step[] = [];
-  dialogModel: SampleWorkflowModel;
+  dialogModel!: SampleWorkflowModel;
 
   selectedLayout: TabLayout = TabLayout.horizontal;
   selectedSize: 'full-screen' | 'xl' | 'lg' | 'md' | 'sm' = 'xl';

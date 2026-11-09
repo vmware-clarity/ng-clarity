@@ -21,16 +21,16 @@ import { User } from '../inventory/user';
 })
 export class DatagridSelectionSingleDemo {
   users: User[];
-  singleSelected: User[];
+  singleSelected?: User[];
 
   trackByIndexUsers: User[];
-  trackByIndexSingleSelected: User[];
+  trackByIndexSingleSelected?: User[];
 
   trackByIdUsers: User[];
-  trackByIdSingleSelected: User[];
+  trackByIdSingleSelected?: User[];
 
-  trackByIdServerUsers: User[];
-  trackByIdServerSingleSelected: User[];
+  trackByIdServerUsers?: User[];
+  trackByIdServerSingleSelected?: User[];
 
   loading = true;
   total = 0;
@@ -56,10 +56,11 @@ export class DatagridSelectionSingleDemo {
       }
     }
 
+    const { size = 0, current = 1 } = state.page ?? {};
     const result = await this.inventory
       .filter(filters)
       .sort(state.sort as { by: string; reverse: boolean })
-      .fetch(state.page.size * (state.page.current - 1), state.page.size);
+      .fetch(size * (current - 1), size);
 
     setTimeout(() => {
       this.trackByIdServerUsers = result.users;

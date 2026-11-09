@@ -17,9 +17,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class DatePickerWithActionButtonsDemo {
   dateForm = new FormGroup({
-    showActionButtons: new FormControl(true),
+    showActionButtons: new FormControl(true, { nonNullable: true }),
     date: new FormControl(),
-    minDate: new FormControl('2024-02-01'),
-    maxDate: new FormControl('2025-12-31'),
+    minDate: new FormControl('2024-02-01', { nonNullable: true }),
+    maxDate: new FormControl('2025-12-31', { nonNullable: true }),
   });
 }

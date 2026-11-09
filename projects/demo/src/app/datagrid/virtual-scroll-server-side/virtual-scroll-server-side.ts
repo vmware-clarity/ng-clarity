@@ -26,7 +26,7 @@ export class DatagridVirtualScrollServerSideDemo implements OnInit {
   users: Observable<User[]>;
   currentPageSize = 100;
   _inventory: Inventory;
-  loading: boolean;
+  loading!: boolean;
   loadingMoreItems = false;
   selected: User[] = [];
 

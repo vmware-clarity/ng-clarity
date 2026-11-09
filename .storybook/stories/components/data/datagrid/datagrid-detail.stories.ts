@@ -308,6 +308,8 @@ export const HiddenDetailButton: Story = {
 };
 
 async function openDetail({ canvasElement, userEvent }: StoryContext) {
-  const detailCaretButton = await canvasElement.querySelector<HTMLButtonElement>('button.datagrid-detail-caret-button');
+  const detailCaretButton = (await canvasElement.querySelector(
+    'button.datagrid-detail-caret-button'
+  )) as HTMLButtonElement;
   await userEvent.click(detailCaretButton);
 }

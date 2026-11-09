@@ -22,6 +22,6 @@ export enum ModalSize {
 })
 export class ModalAngularSizeDemo {
   modalSize = ModalSize;
-  selectedSize: ModalSize;
+  selectedSize!: ModalSize;
   open = false;
 }

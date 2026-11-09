@@ -32,14 +32,14 @@ import { SampleWorkflowService } from '../../_utils/sample-workflow/sample-workf
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class SampleWizardComponent implements OnInit {
-  @ViewChild(WizardComponent, { static: true }) wizard: WizardComponent;
+  @ViewChild(WizardComponent, { static: true }) wizard!: WizardComponent;
 
   @Output() onClose = new EventEmitter<void>();
 
-  @Input() vcMoRef: string;
+  @Input() vcMoRef!: string;
   @Input() useDescriptionForNavTitle = false;
   @Input() showSummaryPage = true;
-  @Input() wizardSize: string;
+  @Input() wizardSize!: string;
   @Input() asyncErrorOnSubmit = false;
   @Input() useCustomFooter = false;
 
@@ -48,8 +48,8 @@ export class SampleWizardComponent implements OnInit {
     onCancel: () => this.onWizardCancel(),
   };
 
-  pages: Step[];
-  wizardModel: SampleWorkflowModel;
+  pages!: Step[];
+  wizardModel!: SampleWorkflowModel;
 
   private readonly workflowService = inject(SampleWorkflowService);
 

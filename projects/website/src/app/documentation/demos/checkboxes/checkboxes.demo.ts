@@ -140,13 +140,13 @@ export class CheckboxesDemo extends ClarityDocComponent {
     meetingReminder: true,
   };
 
-  @ViewChild('successCheckbox') successCheckbox: NgModel;
+  @ViewChild('successCheckbox') successCheckbox!: NgModel;
   successCheckboxModel = {
     newEmail: false,
     meetingReminder: true,
   };
 
-  @ViewChild('errorCheckbox') errorCheckbox: NgModel;
+  @ViewChild('errorCheckbox') errorCheckbox!: NgModel;
   errorCheckboxModel = false;
 
   options = {

@@ -42,9 +42,9 @@ export class DatagridVirtualScrollEmptyRowsDemo {
   };
 
   _selectedUsers: User[] = [];
-  @ViewChild('datagrid') datagrid: ClrDatagrid;
-  state: ClrDatagridStateInterface<User>;
-  private _indexToJump: number;
+  @ViewChild('datagrid') datagrid!: ClrDatagrid;
+  state?: ClrDatagridStateInterface<User>;
+  private _indexToJump!: number;
   private _latency = 500;
 
   constructor(
@@ -82,10 +82,12 @@ export class DatagridVirtualScrollEmptyRowsDemo {
     this.inventory.size = totalRows;
     this.inventory.generatedCount = 0;
     this.inventory.reset();
-    this.renderUserRangeChange(this.userRange).then(x => {
-      console.log(x);
-      // this.cdr.detectChanges();
-    });
+    if (this.userRange) {
+      this.renderUserRangeChange(this.userRange).then(x => {
+        console.log(x);
+        // this.cdr.detectChanges();
+      });
+    }
   }
 
   get selectedUsers() {
@@ -154,7 +156,7 @@ export class DatagridVirtualScrollEmptyRowsDemo {
 
   jumpTo(index: number) {
     // this.userRange = null;
-    this.datagrid.virtualScroll.scrollToIndex(index, 'auto');
+    this.datagrid.virtualScroll?.scrollToIndex(index, 'auto');
   }
 
   rowByIndex(index: number, user: User) {

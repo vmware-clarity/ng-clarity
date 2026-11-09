@@ -19,7 +19,7 @@ import { User } from '../inventory/user';
   standalone: false,
 })
 export class DatagridTestCasesAsyncDemo {
-  users: User[];
+  users!: User[];
   users1: User[];
 
   loading = false;

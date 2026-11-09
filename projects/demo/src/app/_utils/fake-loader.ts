@@ -15,7 +15,7 @@ const LATENCY = 2000;
   standalone: false,
 })
 export class FakeLoader implements OnInit {
-  @Input('clrFakeLoader') fake: boolean;
+  @Input('clrFakeLoader') fake!: boolean;
 
   constructor(
     private template: TemplateRef<any>,

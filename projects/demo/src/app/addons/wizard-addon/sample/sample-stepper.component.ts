@@ -20,10 +20,10 @@ import { SampleWorkflowService } from '../../_utils/sample-workflow/sample-workf
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class SampleStepperComponent implements OnInit {
-  @Input() vcMoRef: string;
+  @Input() vcMoRef!: string;
 
-  steps: Step[];
-  workflowModel: SampleWorkflowModel;
+  steps!: Step[];
+  workflowModel!: SampleWorkflowModel;
 
   private readonly workflowService = inject(SampleWorkflowService);
 

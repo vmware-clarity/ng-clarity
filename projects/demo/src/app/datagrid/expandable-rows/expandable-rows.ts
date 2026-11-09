@@ -20,7 +20,7 @@ import { User } from '../inventory/user';
 })
 export class DatagridExpandableRowsDemo {
   users: User[];
-  selected: User[];
+  selected?: User[];
   detail = 'columns';
   replace = false;
   fixedHeight = false;

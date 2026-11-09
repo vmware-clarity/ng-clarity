@@ -54,7 +54,7 @@ export class TreeVirtualScrollGridDemoComponent implements OnDestroy {
 
   // The page counts roots: the children of the rows expanded in between don't move it.
   protected loadRoots(state: ClrDatagridStateInterface) {
-    const { from, size } = state.page;
+    const { from = 0, size = 0 } = state.page ?? {};
     this.requested = [...this.requested.slice(-4), `${from + 1} - ${from + size}`];
     this.requests.add(
       this.backend.range(from, size).subscribe(result => {

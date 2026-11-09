@@ -11,9 +11,9 @@ export class ObjectNameModel implements StepModel {
   loading = false;
   validationState = new StepValidationState();
   progressStatus = '';
-  cancelableValidation: CancelableStepValidation = undefined;
+  cancelableValidation: CancelableStepValidation | undefined = undefined;
 
-  @In({ optional: true }) defaultName: string;
+  @In({ optional: true }) defaultName?: string;
 
   @In({ optional: true })
   @Out()

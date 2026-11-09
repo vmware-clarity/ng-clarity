@@ -19,7 +19,7 @@ import { buildingIcon, ClarityIcons, clusterIcon, hostIcon } from '@clr/angular/
   templateUrl: 'tree-menu.html',
 })
 export class TreeMenuDemoComponent {
-  @ViewChild('demoMenu') demoMenu: MenuComponent;
+  @ViewChild('demoMenu') demoMenu!: MenuComponent;
 
   constructor() {
     ClarityIcons.addIcons(buildingIcon, clusterIcon, hostIcon);

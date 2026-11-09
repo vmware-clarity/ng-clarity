@@ -15,7 +15,7 @@ import { ClrWizard } from '@clr/angular';
   standalone: false,
 })
 export class WizardCustomButtonsDemo {
-  @ViewChild('wizard') wizard: ClrWizard;
+  @ViewChild('wizard') wizard!: ClrWizard;
 
   open = false;
   showWarning = false;

@@ -19,7 +19,7 @@ import { ClarityIcons, vmIcon } from '@clr/angular/icon';
   templateUrl: 'datagrid-menu.html',
 })
 export class DatagridMenuDemoComponent {
-  @ViewChild('demoMenu') demoMenu: MenuComponent;
+  @ViewChild('demoMenu') demoMenu!: MenuComponent;
 
   readonly vms = [
     { name: 'external-gateway', state: 'Powered On' },

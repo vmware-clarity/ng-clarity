@@ -27,8 +27,8 @@ type DateRangePickerArgs = {
   id: string;
   clrStartDateChange: (date: Date) => void;
   clrEndDateChange: (date: Date) => void;
-  getDateObject: (date: Date | number | string) => Date;
-  getDateString: (date: Date | number | string) => string;
+  getDateObject: (date: Date | number | string) => Date | number | string;
+  getDateString: (date: Date | number | string) => string | number;
   predefinedDateRanges: { label: string; value: Date[] }[];
   // `argTypes`-only: date-input methods whose generated docs rows are hidden
   onValueChange: never;

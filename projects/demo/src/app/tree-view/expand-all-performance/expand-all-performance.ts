@@ -63,8 +63,8 @@ const MAX_NODES = 250_000;
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ExpandAllPerformanceDemo implements OnInit {
-  @ViewChild(ClrTree) tree: ClrTree<PerfNode>;
-  @ViewChildren(ClrTreeNode) nodes: QueryList<ClrTreeNode<PerfNode>>;
+  @ViewChild(ClrTree) tree!: ClrTree<PerfNode>;
+  @ViewChildren(ClrTreeNode) nodes!: QueryList<ClrTreeNode<PerfNode>>;
 
   presets: SizePreset[] = [
     { roots: 10, branching: 10, depth: 3 }, // 1,110 nodes
@@ -131,7 +131,7 @@ export class ExpandAllPerformanceDemo implements OnInit {
     if (!this.lazy) {
       return node.children;
     }
-    return new Promise<PerfNode[]>(resolve => setTimeout(() => resolve(node.children), this.lazyDelay));
+    return new Promise<PerfNode[] | undefined>(resolve => setTimeout(() => resolve(node.children), this.lazyDelay));
   };
 
   ngOnInit() {

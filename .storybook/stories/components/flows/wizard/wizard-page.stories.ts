@@ -157,9 +157,9 @@ export const WizardPage: Story = {};
 export const WizardPageStatusIndicators: Story = {
   play: async ({ canvasElement, userEvent }) => {
     // navigate to the last page
-    const nextButtonElement = await canvasElement.querySelector<HTMLButtonElement>(
+    const nextButtonElement = (await canvasElement.querySelector(
       'clr-wizard-button[type="next"] button'
-    );
+    )) as HTMLButtonElement;
     await userEvent.click(nextButtonElement);
     await userEvent.click(nextButtonElement);
   },
@@ -171,16 +171,16 @@ export const WizardPageStatusIndicators: Story = {
 export const WizardPageStatusIndicatorsWithCurrentStepError: Story = {
   play: async ({ canvasElement, userEvent }) => {
     // navigate to the last page
-    const nextButtonElement = await canvasElement.querySelector<HTMLButtonElement>(
+    const nextButtonElement = (await canvasElement.querySelector(
       'clr-wizard-button[type="next"] button'
-    );
+    )) as HTMLButtonElement;
     await userEvent.click(nextButtonElement);
     await userEvent.click(nextButtonElement);
 
     // navigate back to the error step
-    const previousButtonElement = await canvasElement.querySelector<HTMLButtonElement>(
+    const previousButtonElement = (await canvasElement.querySelector(
       'clr-wizard-button[type="previous"] button'
-    );
+    )) as HTMLButtonElement;
     await userEvent.click(previousButtonElement);
   },
   args: {

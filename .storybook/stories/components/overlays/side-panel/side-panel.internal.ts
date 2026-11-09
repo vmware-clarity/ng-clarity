@@ -20,7 +20,7 @@ import { fn } from 'storybook/test';
 export type SidePanelArgs = Pick<ClrSidePanel, 'clrSidePanelBackdrop' | 'clrSidePanelPinnable' | 'open' | 'close'> & {
   clrSidePanelCloseButtonAriaLabel: string;
   clrSidePanelLabelledById: string;
-  clrSidePanelSize: string;
+  clrSidePanelSize: string | null;
   clrSidePanelPosition: string;
   clrSidePanelOpen: boolean;
   clrSidePanelClosable: boolean;

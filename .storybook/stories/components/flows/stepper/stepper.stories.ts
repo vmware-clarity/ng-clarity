@@ -283,9 +283,9 @@ export const NestedStepper: Story = {
 
 export const StepperPanelStatusIndicators: Story = {
   play: async ({ canvasElement, userEvent }) => {
-    const nextButton1 = await canvasElement.querySelector<HTMLButtonElement>('#next-button-1');
+    const nextButton1 = (await canvasElement.querySelector('#next-button-1')) as HTMLButtonElement;
     await userEvent.click(nextButton1);
-    const nextButton2 = await canvasElement.querySelector<HTMLButtonElement>('#next-button-2');
+    const nextButton2 = (await canvasElement.querySelector('#next-button-2')) as HTMLButtonElement;
     await userEvent.click(nextButton2);
   },
   argTypes: {

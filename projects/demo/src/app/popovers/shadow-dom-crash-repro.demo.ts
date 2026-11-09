@@ -112,10 +112,10 @@ import { Subscription } from 'rxjs';
   `,
 })
 export class ShadowDomCrashReproDemo implements AfterViewInit, OnDestroy {
-  @ViewChild('hostFrame', { static: true }) hostFrame: ElementRef<HTMLIFrameElement>;
-  @ViewChild('reproContainer', { static: true }) reproContainer: ElementRef<HTMLElement>;
-  @ViewChild('dropdown', { static: true }) dropdown: ClrDropdown;
-  @ViewChild('signpost', { static: true, read: ClrPopoverService }) signpostPopoverService: ClrPopoverService;
+  @ViewChild('hostFrame', { static: true }) hostFrame!: ElementRef<HTMLIFrameElement>;
+  @ViewChild('reproContainer', { static: true }) reproContainer!: ElementRef<HTMLElement>;
+  @ViewChild('dropdown', { static: true }) dropdown!: ClrDropdown;
+  @ViewChild('signpost', { static: true, read: ClrPopoverService }) signpostPopoverService!: ClrPopoverService;
 
   relocated = false;
   dropdownOpened = false;
@@ -155,6 +155,9 @@ export class ShadowDomCrashReproDemo implements AfterViewInit, OnDestroy {
   relocateIntoShadowRealm() {
     const iframe = this.hostFrame.nativeElement;
     const iframeDoc = iframe.contentDocument;
+    if (!iframeDoc) {
+      return;
+    }
     iframeDoc.open();
     iframeDoc.write(`<!DOCTYPE html><html><head></head><body style="margin:0">
       <div id="scroll-container" style="height:165px; overflow-y:auto;">
@@ -169,7 +172,7 @@ export class ShadowDomCrashReproDemo implements AfterViewInit, OnDestroy {
     </body></html>`);
     iframeDoc.close();
 
-    const shadowHost = iframeDoc.getElementById('shadow-host');
+    const shadowHost = iframeDoc.getElementById('shadow-host') as HTMLElement;
     const shadowRoot = shadowHost.attachShadow({ mode: 'open' });
 
     // Native ShadowRoots never inherit page-level stylesheets, so clone the ones

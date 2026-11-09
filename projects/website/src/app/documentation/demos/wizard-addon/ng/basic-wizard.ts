@@ -35,7 +35,7 @@ export class NameModel implements StepModel {
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class WizardStep1Component implements StepModelHolder {
-  model: NameModel;
+  model!: NameModel;
 }
 
 /* ---- Step 2 model ---- */
@@ -65,7 +65,7 @@ export class StorageModel implements StepModel {
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class WizardStep2Component implements StepModelHolder {
-  model: StorageModel;
+  model!: StorageModel;
 }
 
 /* ---- Workflow model ---- */
@@ -96,7 +96,7 @@ export class DemoWorkflowModel {
 export class BasicWizardDemoComponent implements OnInit {
   isOpen = false;
   model = new DemoWorkflowModel();
-  steps: Step[];
+  steps!: Step[];
 
   closeHandler: CloseHandler = {
     onSubmit: (): Observable<void> => of(undefined).pipe(delay(500)),

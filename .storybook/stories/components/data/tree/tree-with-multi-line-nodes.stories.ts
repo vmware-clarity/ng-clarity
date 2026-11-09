@@ -16,7 +16,7 @@ import { CommonModules } from '@storybook-helpers/common';
  */
 type TreeWithMultiLineNodesArgs = {
   clrLazy: boolean;
-  selected: ClrSelectedState;
+  selected: ClrSelectedState | null;
 };
 
 const meta = {

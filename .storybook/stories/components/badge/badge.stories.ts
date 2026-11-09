@@ -24,7 +24,7 @@ const meta = {
   },
   args: {
     context: '42',
-    badgeType: null as string | null,
+    badgeType: '',
     badgeTypes: [...BADGE_STATUS_TYPES, ...BADGE_COLOR_TYPES],
     cssBadge: true,
     outlined: false,

@@ -10,8 +10,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Column, DynamicData, Row } from '../inventory/dynamic-data';
 
 class ChangeDetectionPerfRecord {
-  msPerTick: 0;
-  numTicks: 0;
+  msPerTick!: number;
+  numTicks!: number;
 }
 
 @Component({
@@ -25,8 +25,8 @@ class ChangeDetectionPerfRecord {
 export class DatagridPerformanceDemo {
   totalRows = 100;
   totalCols = 20;
-  cols: Column[];
-  rows: Row[];
+  cols!: Column[];
+  rows!: Row[];
   timeCD: ChangeDetectionPerfRecord;
 
   constructor(private dynamicData: DynamicData) {

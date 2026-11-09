@@ -56,18 +56,18 @@ const NULL_BUTTONS: SelectionButton[] = [
   standalone: false,
 })
 export class DatagridSelectionSandboxDemo implements OnInit {
-  @ViewChild(ClrDatagrid) clrDatagrid: ClrDatagrid<User>;
-  @ViewChild(DatagridComponent) appfxDatagrid: DatagridComponent<User>;
+  @ViewChild(ClrDatagrid) clrDatagrid!: ClrDatagrid<User>;
+  @ViewChild(DatagridComponent) appfxDatagrid!: DatagridComponent<User>;
 
   users: User[];
-  selected: User[] = [];
+  selected: User[] | null | undefined = [];
   emitCount = 0;
   log: string[] = [];
   datagridVisible = true;
 
   configForm = new FormGroup({
     useAppfx: new FormControl(false),
-    selectionType: new FormControl<'none' | 'single' | 'multi'>('multi'),
+    selectionType: new FormControl<'none' | 'single' | 'multi'>('multi', { nonNullable: true }),
     twoWayBinding: new FormControl(true),
     showManualButtons: new FormControl(false),
     noSelectedBinding: new FormControl(false),
@@ -183,7 +183,7 @@ export class DatagridSelectionSandboxDemo implements OnInit {
     return `${this.selected?.length ?? 0} item(s)`;
   }
 
-  datagridSelection(): User[] {
+  datagridSelection(): User[] | undefined {
     if (this.configForm.value.useAppfx) {
       return this.appfxDatagrid?.selectedItems;
     }
