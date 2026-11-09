@@ -101,7 +101,7 @@
       </clr-radio-container>
     </div>
 
-    <button *ngIf="filteredOptions.length < searchResultsLen" class="btn btn-link" (click)="loadMore()">
+    <button *ngIf="filteredOptions.length < searchResultsLen" type="button" class="btn btn-link" (click)="loadMore()">
       {{ filterStrings.loadMore }}
     </button>
   </div>

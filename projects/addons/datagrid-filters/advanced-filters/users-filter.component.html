@@ -99,7 +99,7 @@
       </div>
     </div>
 
-    <button *ngIf="hasMoreItems" class="btn btn-link" (click)="loadMore($event)">
+    <button *ngIf="hasMoreItems" type="button" class="btn btn-link" (click)="loadMore($event)">
       {{ filterStrings.loadMore }}
     </button>
   </div>
