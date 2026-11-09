@@ -21,6 +21,7 @@ const unusedImports = require('eslint-plugin-unused-imports');
 const decoratorPosition = require('eslint-plugin-decorator-position');
 const licenseHeader = require('eslint-plugin-license-header');
 const htmlParser = require('@html-eslint/parser');
+const htmlPlugin = require('@html-eslint/eslint-plugin');
 // eslint-plugin-storybook ships as ESM with a default export; `require` of it yields the module namespace.
 const storybookPluginModule = require('eslint-plugin-storybook');
 const storybookPlugin = storybookPluginModule.default ?? storybookPluginModule;
@@ -36,6 +37,20 @@ const EXPLICIT_CHANGE_DETECTION = {
     "Decorator > CallExpression:matches([callee.name='Component'], [callee.property.name='Component']):not(:has(Property:matches([key.name='changeDetection'], [key.value='changeDetection'])))",
   message: 'Declare changeDetection explicitly in @Component.',
 };
+
+// The library ships no style attributes or <style> elements in its templates and markup strings (icon shapes): a
+// Content-Security-Policy without 'unsafe-inline' blocks them. Style bindings ([style.width.px]) are applied through the
+// CSSOM and are allowed; [attr.style], a host style attribute and setAttribute('style', ...) are not.
+const NO_INLINE_STYLES_MESSAGE =
+  'Use a class instead of inline styles: a Content-Security-Policy without unsafe-inline blocks them.';
+const INLINE_STYLE_MARKUP = '/\\sstyle=|<style[\\s>]|\\[attr\\.style\\]/i';
+const NO_INLINE_STYLES = [
+  `Literal[value=${INLINE_STYLE_MARKUP}]`,
+  `TemplateElement[value.raw=${INLINE_STYLE_MARKUP}]`,
+  "Property[key.name='host'] > ObjectExpression > Property:matches([key.name=/^style$/i], [key.value=/^style$/i])",
+  "Decorator > CallExpression[callee.name='HostBinding'] > Literal[value=/^attr\\.style$/i]",
+  "CallExpression[callee.property.name='setAttribute'] > Literal[value=/^style$/i]",
+].map(selector => ({ selector, message: NO_INLINE_STYLES_MESSAGE }));
 
 // The story-file rules of eslint-plugin-storybook's flat/recommended config, at their recommended
 // severities.
@@ -187,6 +202,14 @@ module.exports = [
     },
   },
 
+  {
+    files: ['projects/angular/**/*.ts', 'projects/addons/**/*.ts'],
+    ignores: ['**/*.spec.ts', 'projects/angular/schematics/**'],
+    rules: {
+      'no-restricted-syntax': ['error', EXPLICIT_CHANGE_DETECTION, ...NO_INLINE_STYLES],
+    },
+  },
+
   // Storybook story files (see docs/CONTRIBUTING_STORYBOOK.md for the canonical story shape).
   // These are errors: every story file conforms, and the point is to keep it that way.
   {
@@ -284,6 +307,21 @@ module.exports = [
     rules: {
       'license-header/header': 'off',
       'ng-clarity-eslint-rules/html-license-header': ['error', './.license-header.html'],
+    },
+  },
+
+  {
+    files: ['projects/angular/**/*.html', 'projects/addons/**/*.html'],
+    plugins: {
+      '@html-eslint': htmlPlugin,
+    },
+    rules: {
+      '@html-eslint/no-inline-styles': 'error',
+      '@html-eslint/no-restricted-tags': ['error', { tagPatterns: ['^style$'], message: NO_INLINE_STYLES_MESSAGE }],
+      '@html-eslint/no-restricted-attrs': [
+        'error',
+        { tagPatterns: ['.*'], attrPatterns: ['^\\[attr\\.style\\]$'], message: NO_INLINE_STYLES_MESSAGE },
+      ],
     },
   },
 
