@@ -24,9 +24,9 @@ export class Items<T = any> {
   /**
    * Subscriptions to the other providers changes.
    */
-  private _filtersSub: Subscription;
-  private _sortSub: Subscription;
-  private _pageSub: Subscription;
+  private _filtersSub?: Subscription;
+  private _sortSub?: Subscription;
+  private _pageSub?: Subscription;
 
   /**
    * Whether we should use smart items for this datagrid or let the user handle
@@ -37,12 +37,12 @@ export class Items<T = any> {
   /**
    * List of all items in the datagrid
    */
-  private _all: T[];
+  private _all!: T[];
 
   /**
    * Internal temporary step, which we preserve to avoid re-filtering or re-sorting if not necessary
    */
-  private _filtered: T[];
+  private _filtered!: T[];
 
   /**
    * List of items currently displayed

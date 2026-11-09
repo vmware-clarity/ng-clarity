@@ -33,7 +33,7 @@ export class KeyNavigationUtils {
 
   get currentCellCoordinates() {
     const currentCell = this.cells ? Array.from(this.cells).find(i => i.getAttribute('tabindex') === '0') : null;
-    const currentRow: HTMLElement = currentCell ? currentCell.closest(this.config.keyGridRows) : null;
+    const currentRow = currentCell ? currentCell.closest<HTMLElement>(this.config.keyGridRows) : null;
 
     const coordinates: CellCoordinates = {
       x:
@@ -55,7 +55,8 @@ export class KeyNavigationUtils {
   }
 
   get itemsPerPage() {
-    return Math.floor(this.host?.querySelector('.datagrid').clientHeight / this.averageRowHeight) - 1 || 0;
+    const datagrid = this.host?.querySelector('.datagrid');
+    return datagrid ? Math.floor(datagrid.clientHeight / this.averageRowHeight) - 1 || 0 : 0;
   }
 
   setAriaRowIndexTo(cellCoords: CellCoordinates) {
@@ -102,7 +103,7 @@ export class KeyNavigationUtils {
   }
 
   isExpandedRow(index: number) {
-    const selectedElement: HTMLElement = this.rows[index].querySelector('.datagrid-row-detail');
+    const selectedElement = this.rows[index].querySelector<HTMLElement>('.datagrid-row-detail');
 
     return selectedElement ? selectedElement.style.display !== 'none' : false;
   }

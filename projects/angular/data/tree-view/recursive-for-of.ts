@@ -25,12 +25,12 @@ export interface ClrRecursiveForOfContext<T> {
 })
 export class ClrRecursiveForOf<T> implements OnChanges, OnDestroy {
   // TODO: accept NgIterable<T>
-  @Input('clrRecursiveForOf') nodes: T | T[];
+  @Input('clrRecursiveForOf') nodes!: T | T[];
 
   // TODO: accept NgIterable<T> return type
-  @Input('clrRecursiveForGetChildren') getChildren: (node: T) => AsyncArray<T>;
+  @Input('clrRecursiveForGetChildren') getChildren!: (node: T) => AsyncArray<T>;
 
-  private childrenFetchSubscription: Subscription;
+  private childrenFetchSubscription?: Subscription;
 
   constructor(
     private template: TemplateRef<ClrRecursiveForOfContext<T>>,

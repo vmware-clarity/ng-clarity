@@ -60,8 +60,8 @@ export class DatagridStringFilter<T = any>
   /**
    * Provide a way to pass external placeholder and aria-label to the filter input
    */
-  @Input('clrFilterPlaceholder') placeholder: string;
-  @Input('clrFilterLabel') label: string;
+  @Input('clrFilterPlaceholder') placeholder?: string;
+  @Input('clrFilterLabel') label?: string;
 
   @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
 
@@ -73,15 +73,15 @@ export class DatagridStringFilter<T = any>
   /**
    * We need the actual input element to automatically focus on it
    */
-  @ViewChild('input') input: ElementRef<HTMLInputElement>;
+  @ViewChild('input') input!: ElementRef<HTMLInputElement>;
 
   /**
    * We grab the ClrDatagridFilter we wrap to register this StringFilter to it.
    */
-  @ViewChild(ClrDatagridFilter) filterContainer: ClrDatagridFilter<T>;
+  @ViewChild(ClrDatagridFilter) filterContainer!: ClrDatagridFilter<T>;
 
   labelValue = '';
-  private initFilterValue: string;
+  private initFilterValue?: string;
   private subs: Subscription[] = [];
 
   constructor(

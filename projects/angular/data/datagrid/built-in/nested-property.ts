@@ -10,7 +10,7 @@
  * that can be specified as simple dot-separated strings.
  */
 export class NestedProperty<T = any> {
-  private splitProp: string[];
+  private splitProp?: string[];
 
   constructor(private prop: string) {
     if (prop.indexOf('.') >= 0) {

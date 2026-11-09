@@ -185,11 +185,11 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
   private _keepFilterInHeader = false;
   private _menuPopoverContent: ClrPopoverContent | undefined;
 
-  @ViewChild('trigger', { read: ElementRef }) private trigger: ElementRef<HTMLButtonElement>;
+  @ViewChild('trigger', { read: ElementRef }) private trigger!: ElementRef<HTMLButtonElement>;
 
   // Named for this component rather than inherited: ClrDropdown keeps its own private list.
   private subs: Subscription[] = [];
-  private projectedItemsSubscription: Subscription;
+  private projectedItemsSubscription?: Subscription;
   private readonly columnActionsFocusHandler = inject(ColumnActionsFocusHandler);
 
   constructor(
@@ -431,7 +431,7 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
   protected openFilter(event: Event) {
     // reroute filter popover origin to filter trigger and set dropdown menu as parent.
     this.columnPopover.origin = this.trigger;
-    this.columnPopover.parent = this._menuPopoverContent;
+    this.columnPopover.parent = this._menuPopoverContent ?? null;
 
     // The popover closes on an outside click, and ignores exactly one event while doing so: the one
     // that opened it. Without this, the very click on this menu item would close the filter again.

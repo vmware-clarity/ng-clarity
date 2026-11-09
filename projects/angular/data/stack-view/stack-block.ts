@@ -91,7 +91,7 @@ export class ClrStackBlock implements OnInit {
   /**
    * Depth of the stack view starting from 1 for first level
    */
-  @Input('clrStackViewLevel') ariaLevel: HeadingLevel;
+  @Input('clrStackViewLevel') ariaLevel?: HeadingLevel;
 
   @Output('clrSbExpandedChange') expandedChange = new EventEmitter<boolean>(false);
 
@@ -151,15 +151,15 @@ export class ClrStackBlock implements OnInit {
     return this.expanded ? 'down' : 'right';
   }
 
-  get role(): string {
+  get role(): string | null {
     return this.expandable ? 'button' : null;
   }
 
-  get tabIndex(): string {
+  get tabIndex(): string | null {
     return this.expandable ? '0' : null;
   }
 
-  get ariaExpanded(): string {
+  get ariaExpanded(): string | null {
     if (!this.expandable) {
       return null;
     } else {

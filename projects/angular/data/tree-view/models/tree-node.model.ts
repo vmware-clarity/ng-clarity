@@ -11,8 +11,8 @@ import type { ClrTreeNode } from '../tree-node';
 import { ClrSelectedState } from './selected-state.enum';
 
 export abstract class TreeNodeModel<T> {
-  nodeId: string;
-  expanded: boolean;
+  nodeId!: string;
+  expanded = false;
   /*
    * Internal. Whether a bulk expansion is currently in effect for this node's subtree, so that descendants
    * created afterwards (lazy-loaded children, dynamic nodes) come in expanded.
@@ -25,8 +25,8 @@ export abstract class TreeNodeModel<T> {
    * Imported as a type only, so the models pull in nothing from the components at runtime.
    */
   _node: ClrTreeNode<T> | null = null;
-  model: T | null;
-  textContent: string;
+  model: T | null = null;
+  textContent!: string;
   loading$ = new BehaviorSubject(false);
   selected = new BehaviorSubject(ClrSelectedState.UNSELECTED);
 
@@ -36,7 +36,7 @@ export abstract class TreeNodeModel<T> {
    * abstract parent class for now and we can revisit it later, when we're not facing such a close deadline.
    */
   private _loading = false;
-  private _disabled: boolean;
+  private _disabled = false;
 
   /*
    * Ideally, I would like to use a polymorphic this type here to ensure homogeneity of the tree, something like:
@@ -98,7 +98,7 @@ export abstract class TreeNodeModel<T> {
    * Internal. Whether this node, or one of its ancestors, expects all of its descendants to be expanded.
    */
   _isInExpandedSubtree(): boolean {
-    for (let current: TreeNodeModel<T> = this; current; current = current.parent) {
+    for (let current: TreeNodeModel<T> | null = this; current; current = current.parent) {
       if (current._descendantsExpanded) {
         return true;
       }
@@ -142,7 +142,7 @@ export abstract class TreeNodeModel<T> {
    * to be expanded, so nodes created afterwards must not keep cascading open.
    */
   _clearExpandedSubtree() {
-    for (let current: TreeNodeModel<T> = this; current; current = current.parent) {
+    for (let current: TreeNodeModel<T> | null = this; current; current = current.parent) {
       current._descendantsExpanded = false;
     }
   }

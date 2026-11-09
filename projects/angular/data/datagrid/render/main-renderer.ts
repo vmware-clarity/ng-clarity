@@ -56,13 +56,13 @@ export const domAdapterFactory = (platformId: any) => {
   standalone: false,
 })
 export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
-  @ContentChildren(DatagridHeaderRenderer) private headers: QueryList<DatagridHeaderRenderer>;
-  @ContentChildren(DatagridRowRenderer) private rows: QueryList<DatagridRowRenderer>;
+  @ContentChildren(DatagridHeaderRenderer) private headers!: QueryList<DatagridHeaderRenderer>;
+  @ContentChildren(DatagridRowRenderer) private rows!: QueryList<DatagridRowRenderer>;
 
   private _heightSet = false;
   private shouldStabilizeColumns = true;
   private subscriptions: Subscription[] = [];
-  private intersectionObserver: IntersectionObserver = null;
+  private intersectionObserver: IntersectionObserver | null = null;
 
   /**
    * Indicates if we want to re-compute columns width. This should only happen:
@@ -106,11 +106,11 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
     // hidden by default gets initialised without being visible and breakes rendering cycle.
     // Should run only the first time if the datagrid is not visible on first initialization.
     if (this.el.nativeElement.offsetParent === null) {
-      this.intersectionObserver = new IntersectionObserver(([entry]) => {
+      this.intersectionObserver = new IntersectionObserver(([entry], observer) => {
         if ((this.el.nativeElement.offsetParent || entry.isIntersecting) && this.columnsSizesStable) {
           this.columnsSizesStable = false;
           this.changeDetectorRef.markForCheck();
-          this.intersectionObserver.disconnect();
+          observer.disconnect();
         }
       });
       this.intersectionObserver.observe(this.el.nativeElement);
@@ -155,7 +155,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
     this.intersectionObserver?.disconnect();
   }
 
-  toggleDetailPane(state: boolean) {
+  toggleDetailPane(state: boolean | null) {
     if (this.headers) {
       if (state && !this.columnsService.hasCache()) {
         this.columnsService.cache();
@@ -250,9 +250,9 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
     });
   }
 
-  private columnStateChanged(state: ColumnState) {
+  private columnStateChanged(state: ColumnState | null) {
     // eslint-disable-next-line eqeqeq
-    if (!this.headers || state.columnIndex == null) {
+    if (!this.headers || state?.columnIndex == null) {
       return;
     }
     const columnIndex = state.columnIndex;
@@ -260,10 +260,10 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
       state.changes.forEach(change => {
         switch (change) {
           case DatagridColumnChanges.WIDTH:
-            this.headers.get(columnIndex).setWidth(state);
+            this.headers.get(columnIndex)?.setWidth(state);
             this.rows.forEach(row => {
               if (row?.cells.length === this.columnsService.columns.length) {
-                row.cells.get(columnIndex).setWidth(state);
+                row.cells.get(columnIndex)?.setWidth(state);
                 row.expandableRows.forEach(expandableRow => {
                   expandableRow.cells.get(columnIndex)?.setWidth(state);
                 });
@@ -271,10 +271,10 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
             });
             break;
           case DatagridColumnChanges.HIDDEN:
-            this.headers.get(columnIndex).setHidden(state);
+            this.headers.get(columnIndex)?.setHidden(state);
             this.rows.forEach(row => {
               if (row.cells && row.cells.length) {
-                row.cells.get(columnIndex).setHidden(state);
+                row.cells.get(columnIndex)?.setHidden(state);
 
                 row.expandableRows.forEach(expandableRow => {
                   expandableRow.cells.get(columnIndex)?.setHidden(state);
@@ -289,7 +289,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
             // value, e.g. by resetToLastCache, and relocating the views then is pure overhead.
             const wasPinned = this.datagrid.columns.get(columnIndex)?.isPinned;
 
-            this.headers.get(columnIndex).setPinned(state);
+            this.headers.get(columnIndex)?.setPinned(state);
             this.rows.forEach(row => {
               if (row.cells && row.cells.length) {
                 row.cells.get(columnIndex)?.setPinned(state);
@@ -315,10 +315,10 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
           }
           case DatagridColumnChanges.INITIALIZE:
             if (state.pinned) {
-              this.headers.get(columnIndex).setPinned(state);
+              this.headers.get(columnIndex)?.setPinned(state);
             }
             if (state.hideable && state.hidden) {
-              this.headers.get(columnIndex).setHidden(state);
+              this.headers.get(columnIndex)?.setHidden(state);
             }
             if (state.pinned || (state.hideable && state.hidden)) {
               this.rows.forEach(row => {

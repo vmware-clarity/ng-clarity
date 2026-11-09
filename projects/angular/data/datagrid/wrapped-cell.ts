@@ -26,8 +26,8 @@ import {
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class WrappedCell implements AfterViewInit, OnDestroy {
-  @ViewChild('cellPortal') templateRef: TemplateRef<void>;
-  cellView: EmbeddedViewRef<void>; // the cells projected view
+  @ViewChild('cellPortal') templateRef!: TemplateRef<null>;
+  cellView!: EmbeddedViewRef<null>; // the cells projected view
 
   ngAfterViewInit() {
     this.cellView = this.templateRef.createEmbeddedView(null);

@@ -14,14 +14,14 @@ import { ElementRef, Inject, Injectable, PLATFORM_ID } from '@angular/core';
  */
 @Injectable()
 export class TableSizeService {
-  private _tableRef: HTMLElement;
+  private _tableRef: HTMLElement | null = null;
 
   constructor(@Inject(PLATFORM_ID) private platformId: any) {}
 
-  get tableRef(): HTMLElement {
+  get tableRef(): HTMLElement | null {
     return this._tableRef;
   }
-  set tableRef(element: HTMLElement) {
+  set tableRef(element: HTMLElement | null) {
     this._tableRef = element;
   }
 
@@ -32,7 +32,7 @@ export class TableSizeService {
   }
 
   // Used when resizing columns to show the column border being dragged.
-  getColumnDragHeight(): string {
+  getColumnDragHeight(): string | null {
     if (!this.tableRef) {
       return null;
     }

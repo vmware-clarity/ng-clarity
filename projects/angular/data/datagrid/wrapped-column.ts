@@ -26,8 +26,8 @@ import {
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class WrappedColumn implements AfterViewInit, OnDestroy {
-  @ViewChild('columnPortal') templateRef: TemplateRef<void>;
-  columnView: EmbeddedViewRef<void>; // the columns projected view (in memory)
+  @ViewChild('columnPortal') templateRef!: TemplateRef<null>;
+  columnView!: EmbeddedViewRef<null>; // the columns projected view (in memory)
 
   ngAfterViewInit() {
     // Create the cells view in memory, not the DOM.

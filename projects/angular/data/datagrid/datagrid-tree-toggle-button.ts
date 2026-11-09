@@ -41,12 +41,12 @@ import { DatagridTreeService } from './providers/tree.service';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDatagridTreeToggleButton implements OnDestroy {
-  @Input({ alias: 'clrDgTreeToggleButton', required: true }) node: DatagridTreeNode<unknown>;
+  @Input({ alias: 'clrDgTreeToggleButton', required: true }) node!: DatagridTreeNode<unknown>;
 
   /**
    * The ids of the cells that name the row, separated by spaces.
    */
-  @Input({ required: true }) labelIds: string;
+  @Input({ required: true }) labelIds!: string;
 
   protected commonStrings = inject(ClrCommonStringsService);
   protected actionId = uniqueIdFactory();

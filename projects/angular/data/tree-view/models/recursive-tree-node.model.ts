@@ -16,9 +16,11 @@ import { TreeNodeModel } from './tree-node.model';
  * Recursive = Model dictates the tree node components
  */
 export class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
+  // Override for a more precise type
+  override model: T;
   parent: RecursiveTreeNodeModel<T> | null;
 
-  private subscription: Subscription;
+  private subscription?: Subscription;
   private childrenFetched = false;
   private _children: RecursiveTreeNodeModel<T>[] = [];
 
@@ -54,7 +56,7 @@ export class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
 
   clearChildren() {
     this._children.forEach(child => child.destroy());
-    delete this._children;
+    this._children = [];
     this.childrenFetched = false;
   }
 

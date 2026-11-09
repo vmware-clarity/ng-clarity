@@ -20,6 +20,7 @@ import { Subscription } from 'rxjs';
 import { ClrDatagrid } from './datagrid';
 import { ClrDatagridRow } from './datagrid-row';
 import { ClrDatagridTreeChildrenFunction } from './interfaces/tree-children-function.interface';
+import { DatagridTreeNode } from './providers/tree-node.model';
 import { DatagridTreeService } from './providers/tree.service';
 import { getTabbableItems } from './utils/key-navigation-grid.controller';
 
@@ -47,7 +48,7 @@ export abstract class DatagridTreeRenderer<T> implements OnChanges, DoCheck, OnD
   private rootsDiffer: IterableDiffer<T> | undefined;
   private subscription: Subscription;
 
-  abstract roots: T[];
+  abstract roots: T[] | undefined;
   abstract getChildren: ClrDatagridTreeChildrenFunction<T>;
   abstract cascadeSelection: boolean;
 
@@ -90,7 +91,7 @@ export abstract class DatagridTreeRenderer<T> implements OnChanges, DoCheck, OnD
     const shown = new Set(
       items.filter(shownItem => shownItem !== undefined).map(shownItem => this.tree.identify(shownItem))
     );
-    for (let node = this.tree.nodeFor(item); node; node = node.parent) {
+    for (let node: DatagridTreeNode<T> | null | undefined = this.tree.nodeFor(item); node; node = node.parent) {
       if (shown.has(this.tree.identify(node.item))) {
         return node.item;
       }
@@ -155,7 +156,10 @@ export abstract class DatagridTreeRenderer<T> implements OnChanges, DoCheck, OnD
 
   private focusedCell(): FocusedCell<T> | null {
     const active = this.datagrid._focusedElement();
-    const row = active && this.datagrid.rows?.find(candidate => candidate.el.nativeElement.contains(active));
+    if (!active) {
+      return null;
+    }
+    const row = this.datagrid.rows?.find(candidate => candidate.el.nativeElement.contains(active));
     // The row of a root not loaded yet has no item to follow.
     if (row?.item === undefined) {
       return null;
@@ -169,7 +173,7 @@ export abstract class DatagridTreeRenderer<T> implements OnChanges, DoCheck, OnD
     };
   }
 
-  private cellOf(item: T, cell?: number): HTMLElement | undefined {
+  private cellOf(item: T, cell?: number): HTMLElement | null | undefined {
     const element = this.rowOf(item)?.el.nativeElement;
     return cell === undefined
       ? element?.querySelector<HTMLElement>('.datagrid-tree-toggle')?.closest<HTMLElement>('[role=gridcell]')

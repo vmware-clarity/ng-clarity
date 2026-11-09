@@ -60,8 +60,8 @@ const FRAMES_TO_RENDER = 3;
   standalone: false,
 })
 export class ClrDatagridVirtualTree<T> extends DatagridTreeRenderer<T> {
-  @Input('clrVirtualTreeOf') roots: T[];
-  @Input('clrVirtualTreeGetChildren') getChildren: ClrDatagridTreeChildrenFunction<T>;
+  @Input('clrVirtualTreeOf') roots: T[] | undefined;
+  @Input('clrVirtualTreeGetChildren') getChildren!: ClrDatagridTreeChildrenFunction<T>;
   /** Like `clrDgTreeItemsCascadeSelection`. */
   @Input({ alias: 'clrVirtualTreeCascadeSelection', transform: booleanAttribute }) cascadeSelection = false;
 
@@ -138,7 +138,7 @@ export class ClrDatagridVirtualTree<T> extends DatagridTreeRenderer<T> {
     // The last row that is fully on screen.
     const last = Math.floor((scrollTop + (viewport?.clientHeight || 0)) / itemSize) - 1;
     const focused = focus ? this.indexOf(this.shownItems, focus.item) : -1;
-    const onScreen = focused >= first && focused <= last;
+    const onScreen = focus !== null && focused >= first && focused <= last;
     const anchor = onScreen ? focus.item : this.shownItems[first];
 
     this.shownItems = items;
@@ -162,7 +162,7 @@ export class ClrDatagridVirtualTree<T> extends DatagridTreeRenderer<T> {
         if (shift && viewport) {
           viewport.scrollTop += shift * itemSize;
         }
-        if (target !== undefined) {
+        if (target !== undefined && focus) {
           const same = target === focus.item;
           this.focusWhenRendered(target, same ? focus.cell : undefined, same ? focus.inner : -1);
         } else if (tabStop !== undefined) {
@@ -185,8 +185,8 @@ export class ClrDatagridVirtualTree<T> extends DatagridTreeRenderer<T> {
   private rootAt(index: number): number {
     for (let row = index; row >= 0; row--) {
       const item = this.shownItems[row];
-      if (item !== undefined) {
-        let node = this.tree.nodeFor(item);
+      let node = item === undefined ? undefined : this.tree.nodeFor(item);
+      if (node) {
         while (node.parent) {
           node = node.parent;
         }
