@@ -33,7 +33,7 @@ export default function (): void {
       const lastPage = wizardNavigationService.pageCollection.lastPage;
 
       expect(headerActionService.currentPageHasHeaderActions).toBe(true);
-      wizardNavigationService.currentPage = lastPage;
+      wizardNavigationService.currentPage = lastPage!;
       expect(headerActionService.currentPageHasHeaderActions).toBe(false);
     });
 
@@ -41,7 +41,7 @@ export default function (): void {
       const lastPage = wizardNavigationService.pageCollection.lastPage;
       expect(headerActionService.showWizardHeaderActions).toBe(false);
 
-      wizardNavigationService.currentPage = lastPage;
+      wizardNavigationService.currentPage = lastPage!;
       expect(headerActionService.showWizardHeaderActions).toBe(true);
     });
   });

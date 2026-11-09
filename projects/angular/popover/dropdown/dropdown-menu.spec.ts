@@ -29,7 +29,7 @@ import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service
   standalone: false,
 })
 class SimpleTest {
-  position: ClrPopoverPosition;
+  position!: ClrPopoverPosition;
 
   menu = true;
 }

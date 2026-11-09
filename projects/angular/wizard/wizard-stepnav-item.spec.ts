@@ -30,8 +30,8 @@ const fakeOutPage = new MockPage(pageIndex);
   standalone: false,
 })
 class TestComponent implements AfterContentInit {
-  @ViewChild(ClrWizardStepnavItem, { static: true }) stepNavItem: ClrWizardStepnavItem;
-  @ViewChild(ClrWizardPageNavTitle, { static: true }) navTitleRef: ClrWizardPageNavTitle;
+  @ViewChild(ClrWizardStepnavItem, { static: true }) stepNavItem!: ClrWizardStepnavItem;
+  @ViewChild(ClrWizardPageNavTitle, { static: true }) navTitleRef!: ClrWizardPageNavTitle;
 
   page: MockPage;
   projector = 'foo';
@@ -85,7 +85,7 @@ export default function (): void {
         });
 
         it('should throw an error if page is not present', () => {
-          testItemComponent.page = null;
+          testItemComponent.page = null!;
           expect(() => {
             fixture.detectChanges();
           }).toThrow();
@@ -132,7 +132,7 @@ export default function (): void {
         });
 
         it('should throw an error if page is not present', () => {
-          testItemComponent.page = null;
+          testItemComponent.page = null!;
           expect(() => {
             testItemComponent.click();
           }).toThrow();
@@ -164,7 +164,7 @@ export default function (): void {
         });
 
         it('should throw an error if page is not present', () => {
-          testItemComponent.page = null;
+          testItemComponent.page = null!;
           expect(() => {
             testItemComponent.click();
           }).toThrow();
@@ -184,7 +184,7 @@ export default function (): void {
         });
 
         it('should throw an error if page is not present', () => {
-          testItemComponent.page = null;
+          testItemComponent.page = null!;
           expect(() => {
             testItemComponent.click();
           }).toThrow();
@@ -204,7 +204,7 @@ export default function (): void {
         });
 
         it('should throw an error if page is not present', () => {
-          testItemComponent.page = null;
+          testItemComponent.page = null!;
           expect(() => {
             testItemComponent.click();
           }).toThrow();
@@ -242,7 +242,7 @@ export default function (): void {
         });
 
         it('should throw an error if page is not present', () => {
-          testItemComponent.page = null;
+          testItemComponent.page = null!;
           expect(() => {
             testItemComponent.click();
           }).toThrow();
@@ -257,7 +257,7 @@ export default function (): void {
         const expectedUpdatedTitle = 'This is my bar';
 
         it('projects page nav title as expected', () => {
-          const titleElement = myStepnavItem.querySelector('.clr-wizard-stepnav-link-title');
+          const titleElement = myStepnavItem.querySelector('.clr-wizard-stepnav-link-title')!;
 
           expect(titleElement.textContent.trim()).toBe(expectedInitialTitle, 'projects initial value');
           fixture.componentInstance.projector = 'bar';
@@ -282,7 +282,7 @@ export default function (): void {
         });
 
         it('should have aria-labelledby attribute on the button', () => {
-          const stepNavButton = myStepnavItem.querySelector<HTMLButtonElement>('button.clr-wizard-stepnav-link');
+          const stepNavButton = myStepnavItem.querySelector<HTMLButtonElement>('button.clr-wizard-stepnav-link')!;
 
           expect(stepNavButton.getAttribute('aria-labelledby')).toBe(
             'mock-id-step-text mock-id-step-number mock-id-step-title'
@@ -293,7 +293,7 @@ export default function (): void {
           fakeOutPage.completed = true;
           fixture.detectChanges();
 
-          const stepNavButton = myStepnavItem.querySelector<HTMLButtonElement>('button.clr-wizard-stepnav-link');
+          const stepNavButton = myStepnavItem.querySelector<HTMLButtonElement>('button.clr-wizard-stepnav-link')!;
 
           expect(stepNavButton.getAttribute('aria-labelledby')).toBe(
             'mock-id-step-icon mock-id-step-text mock-id-step-number mock-id-step-title'
@@ -303,7 +303,7 @@ export default function (): void {
         it('should add disabled attribute when isDisabled return true', () => {
           fakeOutPage.disabled = true;
           fixture.detectChanges();
-          expect(myStepnavItem.querySelector('button.clr-wizard-stepnav-link').hasAttribute('disabled')).toBeTruthy();
+          expect(myStepnavItem.querySelector('button.clr-wizard-stepnav-link')!.hasAttribute('disabled')).toBeTruthy();
         });
 
         it('should have clr-nav-link and nav-item classes', () => {
@@ -499,7 +499,7 @@ export default function (): void {
 
           const iconElement = myStepnavItem.querySelector('cds-icon[shape="error-standard"]');
           expect(iconElement).not.toBeNull();
-          expect(iconElement.getAttribute('aria-label')).toBe('Error');
+          expect(iconElement!.getAttribute('aria-label')).toBe('Error');
         });
 
         it('should have a cds-icon when page has is complete', () => {
@@ -513,7 +513,7 @@ export default function (): void {
 
           const iconElement = myStepnavItem.querySelector('cds-icon[shape="success-standard"]');
           expect(iconElement).not.toBeNull();
-          expect(iconElement.getAttribute('aria-label')).toBe('Completed');
+          expect(iconElement!.getAttribute('aria-label')).toBe('Completed');
         });
       });
 
@@ -525,7 +525,7 @@ export default function (): void {
           fakeOutPage.reset();
           fixture.detectChanges();
           navServiceSpy = spyOn(testItemComponent.navService, 'goTo');
-          myClickTarget = myStepnavItem.querySelector('button');
+          myClickTarget = myStepnavItem.querySelector('button')!;
         });
 
         it('should not register the click action if disabled', () => {

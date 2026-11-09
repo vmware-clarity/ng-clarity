@@ -37,7 +37,7 @@ class WrapperComponent {}
   standalone: false,
 })
 class WrappedDirective implements OnInit {
-  injected: number;
+  injected!: number;
 
   constructor(private vcr: ViewContainerRef) {}
 
@@ -84,7 +84,10 @@ interface TestContext<T extends WrappingTest | ExplicitTest | NgIfTest> {
 }
 
 describe('Host wrapping', function () {
-  function setupTest<T>(testContext: TestContext<T>, testComponent: Type<T>) {
+  function setupTest<T extends WrappingTest | ExplicitTest | NgIfTest>(
+    testContext: TestContext<T>,
+    testComponent: Type<T>
+  ) {
     TestBed.configureTestingModule({
       imports: [ClrHostWrappingModule, HostWrappingTestModule],
       declarations: [testComponent],

@@ -25,7 +25,7 @@ class StandaloneUseTest {}
   standalone: false,
 })
 class TemplateDrivenTest {
-  model: string;
+  model!: string;
 }
 
 @Component({

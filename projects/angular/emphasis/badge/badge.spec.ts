@@ -17,7 +17,7 @@ import { ClrBadge, ClrBadgeColors } from './badge';
   standalone: false,
 })
 class TestComponent {
-  @ViewChild(ClrBadge) badgeInstance: ClrBadge;
+  @ViewChild(ClrBadge) badgeInstance!: ClrBadge;
 
   content = '';
   type = Type.Solid;

@@ -37,8 +37,8 @@ import { Keys } from '../../enums/keys.enum';
   standalone: false,
 })
 class TestComponent {
-  @ViewChild(ClrRovingTabindex, { static: true }) keyFocus: ClrRovingTabindex;
-  @ViewChildren(ClrKeyFocusItem) keyFocusItems: QueryList<ClrKeyFocusItem>;
+  @ViewChild(ClrRovingTabindex, { static: true }) keyFocus!: ClrRovingTabindex;
+  @ViewChildren(ClrKeyFocusItem) keyFocusItems!: QueryList<ClrKeyFocusItem>;
   open = false;
   changed = false;
   direction = 'vertical';
@@ -199,9 +199,9 @@ describe('RovingTabindex directive', () => {
 
     it('set focus with mouse click', () => {
       openMenu();
-      const savedFirst = document.activeElement;
+      const savedFirst = document.activeElement!;
       clarityDirective.moveTo(2);
-      expect(savedFirst).not.toBe(document.activeElement);
+      expect(savedFirst).not.toBe(document.activeElement!);
       savedFirst.dispatchEvent(new KeyboardEvent('click'));
       expectActiveElementNotToBe(savedFirst);
     });
@@ -219,10 +219,10 @@ describe('RovingTabindex directive', () => {
     });
 
     it('should focus on load', () => {
-      expect(document.activeElement.textContent).not.toBe('Button 1');
+      expect(document.activeElement!.textContent).not.toBe('Button 1');
       verifyTabindices(-1);
       openMenu();
-      expect(document.activeElement.textContent).toBe('Button 1');
+      expect(document.activeElement!.textContent).toBe('Button 1');
       verifyTabindices(0);
     });
 
@@ -233,11 +233,11 @@ describe('RovingTabindex directive', () => {
     });
 
     it('should not focus on load', () => {
-      expect(document.activeElement.textContent).not.toBe('Button 1');
+      expect(document.activeElement!.textContent).not.toBe('Button 1');
       verifyTabindices(-1);
       component.focusOnLoad = false;
       openMenu();
-      expect(document.activeElement.textContent).not.toBe('Button 1');
+      expect(document.activeElement!.textContent).not.toBe('Button 1');
       // While it is NOT focused, the tabindex should still be set,
       //   or we won't be able to tab into the pill list.
       verifyTabindices(0);
@@ -245,50 +245,50 @@ describe('RovingTabindex directive', () => {
 
     it('moves focus with home/end keys', () => {
       openMenu();
-      expect(document.activeElement.textContent).toBe('Button 1');
+      expect(document.activeElement!.textContent).toBe('Button 1');
       verifyTabindices(0);
       keyPress(Keys.End);
-      expect(document.activeElement.textContent).toBe('Button 3');
+      expect(document.activeElement!.textContent).toBe('Button 3');
       verifyTabindices(2);
       keyPress(Keys.Home);
-      expect(document.activeElement.textContent).toBe('Button 1');
+      expect(document.activeElement!.textContent).toBe('Button 1');
       verifyTabindices(0);
     });
 
     it('prevents focus rotation', () => {
       openMenu();
-      expect(document.activeElement.textContent).toBe('Button 1');
+      expect(document.activeElement!.textContent).toBe('Button 1');
       verifyTabindices(0);
       keyPress(Keys.ArrowUp);
-      expect(document.activeElement.textContent).toBe('Button 1');
+      expect(document.activeElement!.textContent).toBe('Button 1');
       verifyTabindices(0);
       keyPress(Keys.End);
-      expect(document.activeElement.textContent).toBe('Button 3');
+      expect(document.activeElement!.textContent).toBe('Button 3');
       verifyTabindices(2);
       keyPress(Keys.ArrowDown);
-      expect(document.activeElement.textContent).toBe('Button 3');
+      expect(document.activeElement!.textContent).toBe('Button 3');
       verifyTabindices(2);
     });
 
     describe('direction vertical', () => {
       it('moves focus with arrow up/down keys', () => {
         openMenu();
-        expect(document.activeElement.textContent).toBe('Button 1');
+        expect(document.activeElement!.textContent).toBe('Button 1');
         verifyTabindices(0);
         // Arrow down
         keyPress(Keys.ArrowDown);
-        expect(document.activeElement.textContent).toBe('Button 2');
+        expect(document.activeElement!.textContent).toBe('Button 2');
         verifyTabindices(1);
         // Make sure it's only ArrowDown/Up
         keyPress(Keys.ArrowRight);
-        expect(document.activeElement.textContent).toBe('Button 2');
+        expect(document.activeElement!.textContent).toBe('Button 2');
         verifyTabindices(1);
         keyPress(Keys.ArrowLeft);
-        expect(document.activeElement.textContent).toBe('Button 2');
+        expect(document.activeElement!.textContent).toBe('Button 2');
         verifyTabindices(1);
         // Arrow up
         keyPress(Keys.ArrowUp);
-        expect(document.activeElement.textContent).toBe('Button 1');
+        expect(document.activeElement!.textContent).toBe('Button 1');
         verifyTabindices(0);
       });
     });
@@ -300,22 +300,22 @@ describe('RovingTabindex directive', () => {
 
       it('move focus with arrow left/right keys', () => {
         openMenu();
-        expect(document.activeElement.textContent).toBe('Button 1');
+        expect(document.activeElement!.textContent).toBe('Button 1');
         verifyTabindices(0);
         // Arrow right
         keyPress(Keys.ArrowRight);
-        expect(document.activeElement.textContent).toBe('Button 2');
+        expect(document.activeElement!.textContent).toBe('Button 2');
         verifyTabindices(1);
         // Make sure it's only ArrowRight/Left
         keyPress(Keys.ArrowDown);
-        expect(document.activeElement.textContent).toBe('Button 2');
+        expect(document.activeElement!.textContent).toBe('Button 2');
         verifyTabindices(1);
         keyPress(Keys.ArrowUp);
-        expect(document.activeElement.textContent).toBe('Button 2');
+        expect(document.activeElement!.textContent).toBe('Button 2');
         verifyTabindices(1);
         // Arrow up
         keyPress(Keys.ArrowLeft);
-        expect(document.activeElement.textContent).toBe('Button 1');
+        expect(document.activeElement!.textContent).toBe('Button 1');
         verifyTabindices(0);
       });
     });
@@ -327,19 +327,19 @@ describe('RovingTabindex directive', () => {
 
       it('move focus with all arrow keys', () => {
         openMenu();
-        expect(document.activeElement.textContent).toBe('Button 1');
+        expect(document.activeElement!.textContent).toBe('Button 1');
         verifyTabindices(0);
         keyPress(Keys.ArrowRight);
-        expect(document.activeElement.textContent).toBe('Button 2');
+        expect(document.activeElement!.textContent).toBe('Button 2');
         verifyTabindices(1);
         keyPress(Keys.ArrowDown);
-        expect(document.activeElement.textContent).toBe('Button 3');
+        expect(document.activeElement!.textContent).toBe('Button 3');
         verifyTabindices(2);
         keyPress(Keys.ArrowUp);
-        expect(document.activeElement.textContent).toBe('Button 2');
+        expect(document.activeElement!.textContent).toBe('Button 2');
         verifyTabindices(1);
         keyPress(Keys.ArrowLeft);
-        expect(document.activeElement.textContent).toBe('Button 1');
+        expect(document.activeElement!.textContent).toBe('Button 1');
         verifyTabindices(0);
       });
     });
@@ -372,16 +372,16 @@ describe('RovingTabindex directive', () => {
     it('focus updates, when elements are being removed', () => {
       domComponent.buttons = Array.from(fixture.nativeElement.querySelectorAll('button'));
       fixture.detectChanges();
-      expect(document.activeElement.textContent).toBe('Button 1');
+      expect(document.activeElement!.textContent).toBe('Button 1');
       verifyTabindices(0);
       keyPress(Keys.End);
-      expect(document.activeElement.textContent).toBe('Button 3');
+      expect(document.activeElement!.textContent).toBe('Button 3');
       verifyTabindices(2);
       domComponent.showLast = false;
       fixture.detectChanges();
       domComponent.buttons = Array.from(fixture.nativeElement.querySelectorAll('button'));
       fixture.detectChanges();
-      expect(document.activeElement.textContent).toBe('Button 2');
+      expect(document.activeElement!.textContent).toBe('Button 2');
       verifyTabindices(1);
     });
   });

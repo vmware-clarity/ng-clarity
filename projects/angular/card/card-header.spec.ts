@@ -112,11 +112,11 @@ describe('ClrCardHeader', () => {
       fixture.detectChanges();
       headerElement = fixture.debugElement.query(By.directive(ClrCardHeader)).nativeElement;
       cardInstance = fixture.debugElement.query(By.directive(ClrCard)).componentInstance;
-      button = headerElement.querySelector('button');
+      button = headerElement.querySelector('button')!;
     });
 
     it('wraps the projected content in an element carrying the header content id', () => {
-      const content = headerElement.querySelector('.clr-card-header-content');
+      const content = headerElement.querySelector('.clr-card-header-content')!;
       expect(content.getAttribute('id')).toBe(cardInstance.headerContentId);
       expect(content.textContent.trim()).toBe('Header text');
       expect(button.hasAttribute('id')).toBe(false);
@@ -136,7 +136,7 @@ describe('ClrCardHeader', () => {
     });
 
     it('swaps aria-expanded and aria-label based on the expanded state', () => {
-      const icon = headerElement.querySelector('cds-icon');
+      const icon = headerElement.querySelector('cds-icon')!;
       expect(icon.getAttribute('shape')).toBe('angle');
       const collapseLabel = button.getAttribute('aria-label');
 

@@ -16,7 +16,7 @@ export default function (): void {
     });
 
     afterEach(() => {
-      vertNavService = null;
+      vertNavService = null!;
     });
 
     it('supports registration of icons', () => {

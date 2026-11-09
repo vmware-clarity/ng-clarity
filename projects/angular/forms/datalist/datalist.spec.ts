@@ -22,7 +22,7 @@ import { DatalistIdService } from './providers/datalist-id.service';
   standalone: false,
 })
 export class TestDatalistId {
-  testId: string;
+  testId!: string;
 }
 
 @Component({
@@ -66,7 +66,7 @@ export default function (): void {
     spec(ClrDatalist, TestNativeDatalist);
 
     it('handles native datalist element without any errors', function () {
-      const nativeDatalist: HTMLElement = document.getElementById('native-datalist');
+      const nativeDatalist: HTMLElement = document.getElementById('native-datalist')!;
       expect(nativeDatalist).toBeTruthy();
     });
   });

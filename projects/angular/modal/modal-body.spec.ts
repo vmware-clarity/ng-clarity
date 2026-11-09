@@ -100,9 +100,9 @@ describe('ClrModalBody Directive', () => {
   standalone: false,
 })
 class TestComponent {
-  @ViewChild('testLabel') testLabel: ElementRef<HTMLElement>;
+  @ViewChild('testLabel') testLabel!: ElementRef<HTMLElement>;
 
-  @ViewChild('testElement') testElement: ElementRef<HTMLElement>;
+  @ViewChild('testElement') testElement!: ElementRef<HTMLElement>;
 
   scrollable = false;
 }

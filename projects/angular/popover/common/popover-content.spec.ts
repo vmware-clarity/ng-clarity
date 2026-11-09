@@ -36,7 +36,7 @@ import { ClrPopoverPosition } from './utils/popover-positions';
   standalone: false,
 })
 class SimpleContent {
-  @ViewChild(ClrPopoverContent, { read: ClrPopoverContent, static: true }) content: ClrPopoverContent;
+  @ViewChild(ClrPopoverContent, { read: ClrPopoverContent, static: true }) content!: ClrPopoverContent;
   popoverPosition = ClrPopoverPosition.BOTTOM_LEFT;
   openState = false;
   closeClick = true;
@@ -114,7 +114,7 @@ export default function (): void {
     describe('Template API', () => {
       it('binds to [clrPopoverContent] open state', function (this: Context) {
         expect(this.testComponent.openState).toBe(this.popoverService.open);
-        this.testComponent.openState = undefined;
+        this.testComponent.openState = undefined!;
         expect(this.popoverService.open).toBe(false);
         this.testComponent.openState = false;
         expect(this.popoverService.open).toBe(false);
@@ -149,8 +149,8 @@ export default function (): void {
         this.fixture.detectChanges();
         const content: HTMLCollectionOf<Element> = document.body.getElementsByClassName('clr-popover-content');
         const testElement = content[0] as HTMLElement;
-        expect(testElement.parentElement.style.top).toMatch(/\d+px/);
-        expect(testElement.parentElement.style.left).toMatch(/\d+px/);
+        expect(testElement.parentElement!.style.top).toMatch(/\d+px/);
+        expect(testElement.parentElement!.style.left).toMatch(/\d+px/);
       });
 
       it('does not fail when the popup view is immediately destroyed', async function (this: Context) {
@@ -183,11 +183,11 @@ export default function (): void {
         const iframe = document.createElement('iframe');
         document.body.appendChild(iframe);
         cleanupFns.push(() => iframe.remove());
-        const iframeDoc = iframe.contentDocument;
+        const iframeDoc = iframe.contentDocument!;
         iframeDoc.open();
         iframeDoc.write('<!DOCTYPE html><html><body><div id="host"></div></body></html>');
         iframeDoc.close();
-        const host = iframeDoc.getElementById('host');
+        const host = iframeDoc.getElementById('host')!;
         const shadowRoot = host.attachShadow({ mode: 'open' });
         const trigger = iframeDoc.createElement('button');
         shadowRoot.appendChild(trigger);
@@ -226,14 +226,14 @@ export default function (): void {
         outerScrollable.appendChild(iframe);
         cleanupFns.push(() => iframe.remove());
 
-        const iframeDoc = iframe.contentDocument;
+        const iframeDoc = iframe.contentDocument!;
         iframeDoc.open();
         iframeDoc.write(
           '<!DOCTYPE html><html><body><div id="inner-scrollable" style="overflow-y:auto;"><div id="host"></div></div></body></html>'
         );
         iframeDoc.close();
         const innerScrollable = iframeDoc.getElementById('inner-scrollable');
-        const host = iframeDoc.getElementById('host');
+        const host = iframeDoc.getElementById('host')!;
         const shadowRoot = host.attachShadow({ mode: 'open' });
         const trigger = iframeDoc.createElement('button');
         shadowRoot.appendChild(trigger);
@@ -257,13 +257,13 @@ export default function (): void {
 
       // Delivers one callback with an entry per given visible ratio of the origin. isIntersecting
       // mirrors what Chromium reports for a single 0.8 threshold.
-      function notify(visibleRatios: number[], rootBounds = viewport) {
+      function notify(visibleRatios: number[], rootBounds: DOMRectReadOnly | null = viewport) {
         observerCallback(
           visibleRatios.map(
             intersectionRatio =>
               ({ intersectionRatio, isIntersecting: intersectionRatio >= 0.8, rootBounds }) as IntersectionObserverEntry
           ),
-          null
+          null!
         );
       }
 
@@ -364,7 +364,7 @@ export default function (): void {
             { intersectionRatio: 0, isIntersecting: false, rootBounds: collapsedViewport },
             { intersectionRatio: 1, isIntersecting: true, rootBounds: viewport },
           ] as IntersectionObserverEntry[],
-          null
+          null!
         );
         expect(this.popoverService.open).toBe(true);
 
@@ -404,7 +404,7 @@ export default function (): void {
         await nextFrames();
         expect(this.popoverService.open).toBe(true);
 
-        const origin = this.popoverService.originElement.nativeElement as HTMLElement;
+        const origin = this.popoverService.originElement!.nativeElement as HTMLElement;
         window.scrollTo(0, window.scrollY + origin.getBoundingClientRect().bottom + window.innerHeight);
         await nextFrames();
 
@@ -419,7 +419,7 @@ export default function (): void {
         await nextFrames();
         expect(this.popoverService.open).toBe(true);
 
-        const origin = this.popoverService.originElement.nativeElement as HTMLElement;
+        const origin = this.popoverService.originElement!.nativeElement as HTMLElement;
         const rect = origin.getBoundingClientRect();
         // scroll the top 40% of the origin above the viewport - 60% stays visible
         window.scrollTo(0, window.scrollY + rect.top + rect.height * 0.4);
@@ -440,7 +440,7 @@ export default function (): void {
         await nextFrames();
         expect(this.popoverService.open).toBe(true);
 
-        const origin = this.popoverService.originElement.nativeElement as HTMLElement;
+        const origin = this.popoverService.originElement!.nativeElement as HTMLElement;
         window.scrollTo(0, window.scrollY + origin.getBoundingClientRect().bottom + window.innerHeight);
         await nextFrames();
 
@@ -538,7 +538,7 @@ export default function (): void {
       beforeEach(function () {
         iframe = document.createElement('iframe');
         document.body.appendChild(iframe);
-        iframeDoc = iframe.contentDocument;
+        iframeDoc = iframe.contentDocument!;
         iframeDoc.open();
         iframeDoc.write('<!DOCTYPE html><html><body></body></html>');
         iframeDoc.close();
@@ -642,7 +642,7 @@ export default function (): void {
       beforeEach(function () {
         iframe = document.createElement('iframe');
         document.body.appendChild(iframe);
-        iframeDoc = iframe.contentDocument;
+        iframeDoc = iframe.contentDocument!;
         iframeDoc.open();
         iframeDoc.write('<!DOCTYPE html><html><body></body></html>');
         iframeDoc.close();
@@ -708,7 +708,7 @@ export default function (): void {
         iframe.style.border = 'none';
         document.body.appendChild(iframe);
 
-        const iframeDoc = iframe.contentDocument;
+        const iframeDoc = iframe.contentDocument!;
         iframeDoc.open();
         iframeDoc.write('<!DOCTYPE html><html><body style="margin:0"></body></html>');
         iframeDoc.close();
@@ -816,7 +816,7 @@ export default function (): void {
 
       iframe = document.createElement('iframe');
       document.body.appendChild(iframe);
-      iframeDoc = iframe.contentDocument;
+      iframeDoc = iframe.contentDocument!;
       iframeDoc.open();
       iframeDoc.write('<!DOCTYPE html><html><body></body></html>');
       iframeDoc.close();

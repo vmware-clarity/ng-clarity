@@ -73,13 +73,13 @@ export function WrapperFullSpec(
     it('projects the control as first child', () => {
       const control = containerEl.querySelector('[name]');
       expect(control).toBeTruthy();
-      expect(control.previousElementSibling).toBeFalsy();
+      expect(control!.previousElementSibling).toBeFalsy();
     });
 
     it('projects the label as second child', () => {
       const label = containerEl.querySelector('label');
       expect(label).toBeTruthy();
-      expect(label.previousElementSibling).toBeTruthy();
+      expect(label!.previousElementSibling).toBeTruthy();
     });
 
     it('adds the wrapper class to the host', () => {

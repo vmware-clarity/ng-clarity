@@ -51,7 +51,7 @@ class TestWrapper {}
 })
 class TestControl extends WrappedFormControl<TestWrapper> {
   constructor(vcr: ViewContainerRef, el: ElementRef<HTMLElement>) {
-    super(vcr, TestWrapper, null, null, null, el);
+    super(vcr, TestWrapper, null!, null, null!, el);
   }
 }
 
@@ -73,7 +73,7 @@ class TestWrapper2 {}
 })
 class TestControl2 extends WrappedFormControl<TestWrapper2> {
   constructor(vcr: ViewContainerRef, el: ElementRef<HTMLElement>) {
-    super(vcr, TestWrapper2, null, null, null, el);
+    super(vcr, TestWrapper2, null!, null, null!, el);
   }
 }
 
@@ -386,7 +386,7 @@ export default function (): void {
       it('subscribes to requests to mark as touched', function (this: TestContext) {
         setupTest(this, WithControl, TestControl3);
         expect(this.input.className).not.toContain('ng-touched');
-        this.markControlService.markAsTouched();
+        this.markControlService!.markAsTouched();
         this.fixture.detectChanges();
         expect(this.input.className).toContain('ng-touched');
       });

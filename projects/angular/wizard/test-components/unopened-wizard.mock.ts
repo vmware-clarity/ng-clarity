@@ -36,6 +36,6 @@ import { ClrWizard } from '../wizard';
   standalone: false,
 })
 export class UnopenedWizardTestComponent {
-  @ViewChild('wizard', { static: true }) wizard: ClrWizard;
+  @ViewChild('wizard', { static: true }) wizard!: ClrWizard;
   open = false;
 }

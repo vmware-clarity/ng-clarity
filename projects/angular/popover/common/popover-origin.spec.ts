@@ -19,7 +19,7 @@ import { ClrPopoverService } from './providers/popover.service';
   standalone: false,
 })
 class TestHost {
-  @ViewChild('testOrigin', { read: ElementRef, static: true }) origin: ElementRef<HTMLButtonElement>;
+  @ViewChild('testOrigin', { read: ElementRef, static: true }) origin!: ElementRef<HTMLButtonElement>;
 }
 
 export default function (): void {

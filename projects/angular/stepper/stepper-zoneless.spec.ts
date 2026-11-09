@@ -98,7 +98,7 @@ describe('ClrStepper (zoneless, OnPush host)', () => {
     return fixture.debugElement
       .queryAll(By.css('.clr-step-button'))
       .map(button => button.nativeElement as HTMLButtonElement)
-      .find(button => button.textContent.trim() === text);
+      .find(button => button.textContent.trim() === text)!;
   }
 
   beforeEach(async () => {

@@ -57,9 +57,9 @@ export default function () {
     describe('Typescript API', () => {
       function assertFocusedDay(year: number, month: number, day: number) {
         expect(dateNavigationService.focusedDay).not.toBeUndefined();
-        expect(dateNavigationService.focusedDay.date).toBe(day);
-        expect(dateNavigationService.focusedDay.month).toBe(month);
-        expect(dateNavigationService.focusedDay.year).toBe(year);
+        expect(dateNavigationService.focusedDay!.date).toBe(day);
+        expect(dateNavigationService.focusedDay!.month).toBe(month);
+        expect(dateNavigationService.focusedDay!.year).toBe(year);
       }
 
       it('generates a CalendarViewModel on initialization', () => {
@@ -72,9 +72,9 @@ export default function () {
 
       it('has access to the selectedDay', () => {
         expect(context.clarityDirective.selectedDay).not.toBeUndefined();
-        expect(context.clarityDirective.selectedDay.month).toBe(0);
-        expect(context.clarityDirective.selectedDay.year).toBe(2015);
-        expect(context.clarityDirective.selectedDay.date).toBe(1);
+        expect(context.clarityDirective.selectedDay!.month).toBe(0);
+        expect(context.clarityDirective.selectedDay!.year).toBe(2015);
+        expect(context.clarityDirective.selectedDay!.date).toBe(1);
       });
 
       it('has access to todays date', () => {
@@ -170,9 +170,9 @@ export default function () {
         context.clarityDirective.setSelectedDay(testDayView.dayModel);
         context.detectChanges();
         expect(dateNavigationService.selectedDay).not.toBeUndefined();
-        expect(dateNavigationService.selectedDay.date).toBe(testDayView.dayModel.date);
-        expect(dateNavigationService.selectedDay.month).toBe(testDayView.dayModel.month);
-        expect(dateNavigationService.selectedDay.year).toBe(testDayView.dayModel.year);
+        expect(dateNavigationService.selectedDay!.date).toBe(testDayView.dayModel.date);
+        expect(dateNavigationService.selectedDay!.month).toBe(testDayView.dayModel.month);
+        expect(dateNavigationService.selectedDay!.year).toBe(testDayView.dayModel.year);
       });
     });
   });

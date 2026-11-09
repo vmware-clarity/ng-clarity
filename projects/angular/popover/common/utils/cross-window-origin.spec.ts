@@ -58,7 +58,7 @@ export default function (): void {
       iframe.style.top = '40px';
       iframe.style.border = 'none';
 
-      const iframeDoc = iframe.contentDocument;
+      const iframeDoc = iframe.contentDocument!;
       iframeDoc.open();
       iframeDoc.write('<!DOCTYPE html><html><body style="margin:0"></body></html>');
       iframeDoc.close();
@@ -97,7 +97,7 @@ export default function (): void {
       iframe.style.border = '2px solid black';
       iframe.style.padding = '10px 5px';
 
-      const iframeDoc = iframe.contentDocument;
+      const iframeDoc = iframe.contentDocument!;
       iframeDoc.open();
       iframeDoc.write('<!DOCTYPE html><html><body style="margin:0"></body></html>');
       iframeDoc.close();
@@ -125,7 +125,7 @@ export default function (): void {
       iframe.style.top = '40px';
       iframe.style.border = 'none';
 
-      const iframeDoc = iframe.contentDocument;
+      const iframeDoc = iframe.contentDocument!;
       iframeDoc.open();
       iframeDoc.write('<!DOCTYPE html><html><body style="margin:0"></body></html>');
       iframeDoc.close();
@@ -156,7 +156,7 @@ export default function (): void {
       outerIframe.style.top = '25px';
       outerIframe.style.border = 'none';
 
-      const outerDoc = outerIframe.contentDocument;
+      const outerDoc = outerIframe.contentDocument!;
       outerDoc.open();
       outerDoc.write(
         '<!DOCTYPE html><html><body style="margin:0"><iframe id="inner" style="position:absolute;left:5px;top:5px;border:none;"></iframe></body></html>'
@@ -164,7 +164,7 @@ export default function (): void {
       outerDoc.close();
 
       const innerIframe = outerDoc.getElementById('inner') as HTMLIFrameElement;
-      const innerDoc = innerIframe.contentDocument;
+      const innerDoc = innerIframe.contentDocument!;
       innerDoc.open();
       innerDoc.write('<!DOCTYPE html><html><body style="margin:0"></body></html>');
       innerDoc.close();
@@ -186,7 +186,7 @@ export default function (): void {
       const iframe = createIframe();
       iframe.style.border = 'none';
 
-      const iframeDoc = iframe.contentDocument;
+      const iframeDoc = iframe.contentDocument!;
       iframeDoc.open();
       iframeDoc.write('<!DOCTYPE html><html><body style="margin:0"></body></html>');
       iframeDoc.close();

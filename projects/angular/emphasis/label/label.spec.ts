@@ -27,7 +27,7 @@ import { ClrLabel, ClrLabelColors } from './label';
   standalone: false,
 })
 class TestComponent {
-  @ViewChild(ClrLabel) badgeInstance: ClrLabel;
+  @ViewChild(ClrLabel) badgeInstance!: ClrLabel;
 
   projectedContent = '';
   text = '';

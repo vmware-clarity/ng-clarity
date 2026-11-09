@@ -33,9 +33,9 @@ export function reportSlowSpecs(): void {
     },
 
     specDone(result: any) {
-      const time = now() - this._specStartedTime;
+      const time = now() - this._specStartedTime!;
 
-      this._specTimes.push({ fullName: result.fullName, time: time });
+      this._specTimes!.push({ fullName: result.fullName, time: time });
       if (time >= reportSlowerThanMs) {
         console.warn(`${result.fullName} took ${time}ms`);
       }

@@ -12,16 +12,16 @@ import { ClarityModule } from '@clr/angular';
 // import { reportSlowSpecs } from "./slow-specs.spec";
 
 export class TestContext<D, C> {
-  fixture: ComponentFixture<C>;
+  fixture!: ComponentFixture<C>;
   testComponentType: Type<C>;
   clarityDirectiveType: Type<D>;
-  testingModule: TestBed;
-  testComponent: C;
+  testingModule!: TestBed;
+  testComponent!: C;
   testElement: any;
-  clarityDirective: D;
+  clarityDirective!: D;
   clarityElement: any;
 
-  private clarityDebugElement: DebugElement;
+  private clarityDebugElement!: DebugElement;
 
   constructor(directiveType: Type<D>, componentType: Type<C>) {
     this.clarityDirectiveType = directiveType;

@@ -272,12 +272,12 @@ describe('ClrCard', () => {
 
     it('renders a region labelled by the header content, not the header toggle', () => {
       const region = cardElement.querySelector('[role="region"]');
-      const headerContent = cardElement.querySelector('.clr-card-header-content');
+      const headerContent = cardElement.querySelector('.clr-card-header-content')!;
 
       expect(region).not.toBeNull();
-      expect(region.getAttribute('aria-hidden')).toBe('false');
-      expect(region.hasAttribute('inert')).toBe(false);
-      expect(region.getAttribute('aria-labelledby')).toBe(headerContent.getAttribute('id'));
+      expect(region!.getAttribute('aria-hidden')).toBe('false');
+      expect(region!.hasAttribute('inert')).toBe(false);
+      expect(region!.getAttribute('aria-labelledby')).toBe(headerContent.getAttribute('id'));
       expect(headerContent.querySelector('button')).toBeNull();
     });
 
@@ -295,23 +295,23 @@ describe('ClrCard', () => {
       fixture.componentInstance.expanded = false;
       fixture.detectChanges();
 
-      const region = cardElement.querySelector('[role="region"]');
+      const region = cardElement.querySelector('[role="region"]')!;
       expect(region.getAttribute('aria-hidden')).toBe('true');
       expect(region.hasAttribute('inert')).toBe(true);
       expect(region.textContent).toContain('Body text');
     });
 
     it('collapses via the header toggle button', () => {
-      const headerButton = cardElement.querySelector<HTMLButtonElement>('button');
+      const headerButton = cardElement.querySelector<HTMLButtonElement>('button')!;
       headerButton.click();
       fixture.detectChanges();
 
       expect(fixture.componentInstance.expanded).toBe(false);
-      expect(cardElement.querySelector('[role="region"]').getAttribute('aria-hidden')).toBe('true');
+      expect(cardElement.querySelector('[role="region"]')!.getAttribute('aria-hidden')).toBe('true');
     });
 
     it('collapses the footer along with the body by default', () => {
-      const region = cardElement.querySelector('[role="region"]');
+      const region = cardElement.querySelector('[role="region"]')!;
       expect(region.textContent).toContain('Footer text');
     });
 
@@ -320,7 +320,7 @@ describe('ClrCard', () => {
       fixture.componentInstance.expanded = false;
       fixture.detectChanges();
 
-      const region = cardElement.querySelector('[role="region"]');
+      const region = cardElement.querySelector('[role="region"]')!;
       expect(region.textContent).not.toContain('Footer text');
       expect(cardElement.textContent).toContain('Footer text');
     });
@@ -329,7 +329,7 @@ describe('ClrCard', () => {
       fixture.componentInstance.footerCollapsible = false;
       fixture.detectChanges();
 
-      const region = cardElement.querySelector('[role="region"]');
+      const region = cardElement.querySelector('[role="region"]')!;
       expect(region.textContent).toContain('Body text');
       expect(region.textContent).not.toContain('Footer text');
       expect(cardElement.textContent).toContain('Footer text');
@@ -347,7 +347,7 @@ describe('ClrCard', () => {
       fixture.detectChanges();
 
       const cardElement = fixture.debugElement.query(By.directive(ClrCard)).nativeElement as HTMLElement;
-      const region = cardElement.querySelector('[role="region"]');
+      const region = cardElement.querySelector('[role="region"]')!;
 
       expect(cardElement.classList.contains('card-collapsed')).toBe(true);
       expect(region.getAttribute('aria-hidden')).toBe('true');

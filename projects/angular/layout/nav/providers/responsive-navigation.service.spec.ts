@@ -66,12 +66,12 @@ describe('ResponsiveNavigationService', () => {
   });
 
   it('should send control messages to nav controls', () => {
-    let controlMessage: ResponsiveNavControlMessage = null;
+    let controlMessage: ResponsiveNavControlMessage | null = null;
     service.navControl.subscribe(message => (controlMessage = message));
     expect(controlMessage).toBe(null);
     service.sendControlMessage('control_code', 1);
-    expect(controlMessage.controlCode).toBe('control_code');
-    expect(controlMessage.navLevel).toBe(1);
+    expect(controlMessage!.controlCode).toBe('control_code');
+    expect(controlMessage!.navLevel).toBe(1);
   });
 
   it('exposes responsiveNavList as reactive (signal-backed) state', () => {

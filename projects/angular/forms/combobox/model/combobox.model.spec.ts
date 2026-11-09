@@ -152,7 +152,7 @@ export default function () {
     });
 
     it('pseudo-focus model has focusChanged observable', () => {
-      let changeValue: string = null;
+      let changeValue = null as string | null;
       pseudoFocusModel.focusChanged.subscribe(value => {
         changeValue = value;
       });

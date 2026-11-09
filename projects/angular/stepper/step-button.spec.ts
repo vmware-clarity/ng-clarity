@@ -26,7 +26,7 @@ import { ClrStepperModule } from './stepper.module';
   standalone: false,
 })
 class TestComponent {
-  @ViewChild(ClrStepButton) button: ClrStepButton;
+  @ViewChild(ClrStepButton) button!: ClrStepButton;
   buttonType = ClrStepButtonType.Next;
   form = new FormGroup({ group: new FormGroup({}) });
 }
@@ -43,7 +43,7 @@ class TestComponent {
   standalone: false,
 })
 class TestPreviousButtonComponent {
-  @ViewChild(ClrStepButton) button: ClrStepButton;
+  @ViewChild(ClrStepButton) button!: ClrStepButton;
   buttonType = ClrStepButtonType.Previous;
   form = new FormGroup({ group: new FormGroup({}) });
 }

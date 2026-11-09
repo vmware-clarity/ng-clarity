@@ -33,7 +33,7 @@ export default function (): void {
       TestBed.configureTestingModule({ declarations: [SimpleHost] });
       const fixture = TestBed.createComponent(SimpleHost);
       this.el = fixture.debugElement.nativeElement;
-      this.item = fixture.debugElement.injector.get(FocusableItem, null);
+      this.item = fixture.debugElement.injector.get(FocusableItem, null)!;
       this.id = this.item.id;
     });
 
@@ -63,9 +63,9 @@ export default function (): void {
       let clicks = 0;
       this.el.addEventListener('click', () => clicks++);
       expect(clicks).toBe(0);
-      this.item.activate();
+      this.item.activate!();
       expect(clicks).toBe(1);
-      this.item.activate();
+      this.item.activate!();
       expect(clicks).toBe(2);
     });
   });

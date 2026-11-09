@@ -35,7 +35,7 @@ interface TestComponent {
   standalone: false,
 })
 class NoLabelTest {
-  model: string;
+  model!: string;
 }
 
 @Component({
@@ -56,10 +56,10 @@ class NoLabelTest {
 class ReactiveTest implements TestComponent {
   disabled = false;
   form = new FormGroup({
-    model: new FormControl<FileList>({ value: undefined, disabled: this.disabled }, Validators.required),
+    model: new FormControl<FileList | undefined>({ value: undefined, disabled: this.disabled }, Validators.required),
   });
 
-  buttonLabel: string;
+  buttonLabel!: string;
 }
 
 @Component({
@@ -77,9 +77,9 @@ class ReactiveTest implements TestComponent {
 })
 class TemplateDrivenTest implements TestComponent {
   disabled = false;
-  model: FileList;
+  model!: FileList;
 
-  buttonLabel: string;
+  buttonLabel!: string;
 }
 
 @Component({
@@ -124,7 +124,7 @@ describe('ClrFileInputContainer', () => {
       });
 
       it('should disable the browse button when the control is disabled', () => {
-        fixture.componentInstance.form.get('model').disable();
+        fixture.componentInstance.form.get('model')!.disable();
         fixture.detectChanges();
 
         expect(browseButtonElement.disabled).toBeTrue();
@@ -132,7 +132,7 @@ describe('ClrFileInputContainer', () => {
       });
 
       it('should enable the browse button after disable() then enable()', () => {
-        const control = fixture.componentInstance.form.get('model');
+        const control = fixture.componentInstance.form.get('model')!;
         control.disable();
         fixture.detectChanges();
         expect(browseButtonElement.disabled).toBeTrue();
@@ -221,7 +221,7 @@ function fileInputSpec(testComponent: Type<TestComponent>) {
   let nativeElement: HTMLElement;
   let fileInputElement: HTMLInputElement;
   let browseButtonElement: HTMLButtonElement;
-  let queryClearButtonElement: () => HTMLButtonElement;
+  let queryClearButtonElement: () => HTMLButtonElement | null;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -232,8 +232,8 @@ function fileInputSpec(testComponent: Type<TestComponent>) {
     fixture = TestBed.createComponent(testComponent);
 
     nativeElement = fixture.nativeElement;
-    fileInputElement = nativeElement.querySelector('input[type="file"]');
-    browseButtonElement = nativeElement.querySelector('.clr-file-input-browse-button');
+    fileInputElement = nativeElement.querySelector('input[type="file"]')!;
+    browseButtonElement = nativeElement.querySelector('.clr-file-input-browse-button')!;
     queryClearButtonElement = () => nativeElement.querySelector('.clr-file-input-clear-button');
 
     fixture.detectChanges();
@@ -287,7 +287,7 @@ function fileInputSpec(testComponent: Type<TestComponent>) {
 
     const clearButtonElement = queryClearButtonElement();
     expect(clearButtonElement).toBeDefined();
-    expect(clearButtonElement.getAttribute('aria-label')).toBe('Clear file.txt');
+    expect(clearButtonElement!.getAttribute('aria-label')).toBe('Clear file.txt');
   });
 
   it('show a clear button when two files are selected', () => {
@@ -296,18 +296,18 @@ function fileInputSpec(testComponent: Type<TestComponent>) {
 
     const clearButtonElement = queryClearButtonElement();
     expect(clearButtonElement).toBeDefined();
-    expect(clearButtonElement.getAttribute('aria-label')).toBe('Clear 2 files');
+    expect(clearButtonElement!.getAttribute('aria-label')).toBe('Clear 2 files');
   });
 
   it('should clear the selected file when the clear button is clicked', () => {
     selectFiles(fileInputElement, [new File([''], 'file.txt')]);
     fixture.detectChanges();
 
-    const clearButtonElement = queryClearButtonElement();
+    const clearButtonElement = queryClearButtonElement()!;
     clearButtonElement.click();
     fixture.detectChanges();
 
-    expect(fileInputElement.files.length).toBe(0);
+    expect(fileInputElement.files!.length).toBe(0);
     expect(browseButtonElement.innerText.trim()).toBe('BROWSE');
     expect(nativeElement.querySelector('.clr-file-input-clear-button')).toBeNull();
   });

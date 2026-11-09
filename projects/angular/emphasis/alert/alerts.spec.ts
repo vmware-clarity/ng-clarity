@@ -308,8 +308,8 @@ export default function () {
   standalone: false,
 })
 class TestComponent {
-  @ViewChild(ClrAlerts) alertsInstance: ClrAlerts;
-  @ViewChildren(ClrAlert) alertInstances: QueryList<ClrAlert>;
+  @ViewChild(ClrAlerts) alertsInstance!: ClrAlerts;
+  @ViewChildren(ClrAlert) alertInstances!: QueryList<ClrAlert>;
 
   currentAlertIndex = 0;
 }
@@ -343,10 +343,10 @@ class TestComponent {
   standalone: false,
 })
 class TestAlertInstance {
-  @ViewChild(ClrAlerts) alertsInstance: ClrAlerts;
-  @ViewChildren(ClrAlert) alertInstances: QueryList<ClrAlert>;
+  @ViewChild(ClrAlerts) alertsInstance!: ClrAlerts;
+  @ViewChildren(ClrAlert) alertInstances!: QueryList<ClrAlert>;
 
-  currentAlert: ClrAlert;
+  currentAlert!: ClrAlert;
 }
 
 @Component({
@@ -367,10 +367,10 @@ class TestAlertInstance {
   standalone: false,
 })
 class DynamicAlerts {
-  @ViewChild(ClrAlerts) alertsInstance: ClrAlerts;
-  @ViewChildren(ClrAlert) alertInstances: QueryList<ClrAlert>;
+  @ViewChild(ClrAlerts) alertsInstance!: ClrAlerts;
+  @ViewChildren(ClrAlert) alertInstances!: QueryList<ClrAlert>;
 
-  dynamicAlerts: Array<any>;
+  dynamicAlerts!: Array<any>;
 
   ngOnInit() {
     this.dynamicAlerts = [

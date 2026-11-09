@@ -26,7 +26,7 @@ import { ClrTimelineModule } from './timeline.module';
 class TestTimelineStep {
   state: ClrTimelineStepState = ClrTimelineStepState.NOT_STARTED;
 
-  @ViewChild(ClrTimelineStep) step: ClrTimelineStep;
+  @ViewChild(ClrTimelineStep) step!: ClrTimelineStep;
 }
 
 @Component({
@@ -207,25 +207,25 @@ export default function (): void {
       });
 
       it('should project header', () => {
-        const headerElement: HTMLElement = nativeElement.querySelector('clr-timeline-step-header');
+        const headerElement: HTMLElement = nativeElement.querySelector('clr-timeline-step-header')!;
         expect(headerElement.innerText).toBe('Header Content');
       });
 
       it('should project title and description inside body', () => {
-        const bodyElement: HTMLElement = nativeElement.querySelector('.clr-timeline-step-body');
+        const bodyElement: HTMLElement = nativeElement.querySelector('.clr-timeline-step-body')!;
         expect(bodyElement).toBeDefined();
 
-        const titleElement: HTMLElement = bodyElement.querySelector('clr-timeline-step-title');
+        const titleElement: HTMLElement = bodyElement.querySelector('clr-timeline-step-title')!;
         expect(titleElement.innerText).toBe('Title Content');
 
-        const descriptionElement: HTMLElement = bodyElement.querySelector('clr-timeline-step-description');
+        const descriptionElement: HTMLElement = bodyElement.querySelector('clr-timeline-step-description')!;
         expect(descriptionElement.innerText).toBe('Description Content');
       });
 
       it('sets the title to clr-sr-only element before icon for screen readers', () => {
         // expect screen reader content to be Title Content
-        const title = nativeElement.querySelector('.clr-timeline-step-title');
-        const srOnlyElement = nativeElement.querySelector('.clr-sr-only');
+        const title = nativeElement.querySelector('.clr-timeline-step-title')!;
+        const srOnlyElement = nativeElement.querySelector('.clr-sr-only')!;
         expect(title.textContent).toEqual(srOnlyElement.textContent);
       });
     });

@@ -29,12 +29,12 @@ export default function (): void {
     it('currentPage should set the current page and emit the event', function () {
       wizardNavigationService.currentPage = pageCollectionService.getPageByIndex(1);
       expect(wizardNavigationService.currentPage).toEqual(pageCollectionService.getPageByIndex(1));
-      wizardNavigationService.currentPage = pageCollectionService.lastPage;
-      expect(wizardNavigationService.currentPage).toEqual(pageCollectionService.lastPage);
+      wizardNavigationService.currentPage = pageCollectionService.lastPage!;
+      expect(wizardNavigationService.currentPage).toEqual(pageCollectionService.lastPage!);
     });
 
     it('.next() should call finish() if the current page is the last page.', function () {
-      const testPage = wizardNavigationService.pageCollection.lastPage;
+      const testPage = wizardNavigationService.pageCollection.lastPage!;
       const wizard = context.clarityDirective;
 
       wizardNavigationService.currentPage = testPage;
@@ -79,7 +79,7 @@ export default function (): void {
     });
 
     it('.finish() should commit the current page and emit the event', function () {
-      const testPage = wizardNavigationService.pageCollection.lastPage;
+      const testPage = wizardNavigationService.pageCollection.lastPage!;
 
       spyOn(testPage.primaryButtonClicked, 'emit');
       spyOn(testPage.onCommit, 'emit');
@@ -120,9 +120,9 @@ export default function (): void {
     it('.previous() should do nothing if the current page is the first page', function () {
       const testPage = wizardNavigationService.pageCollection.firstPage;
       const pageCollectionSpy = spyOn(wizardNavigationService.pageCollection, 'getPreviousPage');
-      wizardNavigationService.currentPage = testPage;
+      wizardNavigationService.currentPage = testPage!;
       wizardNavigationService.previous();
-      expect(wizardNavigationService.currentPage).toBe(testPage);
+      expect(wizardNavigationService.currentPage).toBe(testPage!);
       expect(pageCollectionSpy).not.toHaveBeenCalled();
     });
 
@@ -321,7 +321,7 @@ export default function (): void {
     it('.goTo() should emit the current page for navItemChanged subject', function () {
       // const startPage = wizardNavigationService.pageCollection.getPageByIndex(0);
       const secondPage = wizardNavigationService.pageCollection.getPageByIndex(1);
-      let pageTest: ClrWizardPage;
+      let pageTest!: ClrWizardPage;
       wizardNavigationService.currentPageChange.subscribe(page => (pageTest = page));
 
       expect(pageTest).toBeUndefined();
@@ -343,8 +343,8 @@ export default function (): void {
 
     it(".forceNext() should throw an error if there's no next page to go to", function () {
       const testPage = wizardNavigationService.pageCollection.lastPage;
-      wizardNavigationService.currentPage = testPage;
-      expect(wizardNavigationService.currentPage).toEqual(testPage);
+      wizardNavigationService.currentPage = testPage!;
+      expect(wizardNavigationService.currentPage).toEqual(testPage!);
       expect(() => {
         wizardNavigationService.forceNext();
       }).toThrowError();
@@ -352,11 +352,11 @@ export default function (): void {
 
     it('.forceNext() should do nothing if stop navigation is set', function () {
       const testPage = wizardNavigationService.pageCollection.firstPage;
-      wizardNavigationService.currentPage = testPage;
-      expect(wizardNavigationService.currentPage).toEqual(testPage);
+      wizardNavigationService.currentPage = testPage!;
+      expect(wizardNavigationService.currentPage).toEqual(testPage!);
       wizardNavigationService.wizardStopNavigation = true;
       wizardNavigationService.forceNext();
-      expect(wizardNavigationService.currentPage).toBe(testPage);
+      expect(wizardNavigationService.currentPage).toBe(testPage!);
     });
 
     it('.forceNext() set next page to be current and commit old current page if incomplete', function () {
@@ -377,7 +377,7 @@ export default function (): void {
 
     describe('.checkAndCommitCurrentPage() -- ', function () {
       it('should do nothing if the current page is not ready to complete', function () {
-        const currentPage = wizardNavigationService.currentPage;
+        const currentPage = wizardNavigationService.currentPage!;
         currentPage.nextStepDisabled = true;
 
         // whole lotta spies!
@@ -397,7 +397,7 @@ export default function (): void {
       });
 
       it('should do nothing if stop navigation is set to true', function () {
-        const currentPage = wizardNavigationService.currentPage;
+        const currentPage = wizardNavigationService.currentPage!;
         currentPage.nextStepDisabled = false;
         wizardNavigationService.wizardStopNavigation = true;
 
@@ -419,12 +419,12 @@ export default function (): void {
 
       it('should do nothing if the action type is finish and stop navigation is true', function () {
         const lastPage = wizardNavigationService.pageCollection.lastPage;
-        wizardNavigationService.currentPage = lastPage;
+        wizardNavigationService.currentPage = lastPage!;
         const currentPage = wizardNavigationService.currentPage;
         wizardNavigationService.wizardStopNavigation = true;
         currentPage.nextStepDisabled = false;
 
-        expect(currentPage).toBe(lastPage, 'validate current page is last page');
+        expect(currentPage).toBe(lastPage!, 'validate current page is last page');
 
         // whole lotta spies!
         spyOn(currentPage.primaryButtonClicked, 'emit');
@@ -446,8 +446,8 @@ export default function (): void {
         const lastPageIsNotCurrent = wizardNavigationService.currentPage !== lastPage;
 
         // whole lotta spies!
-        spyOn(currentPage.primaryButtonClicked, 'emit');
-        spyOn(currentPage.nextButtonClicked, 'emit');
+        spyOn(currentPage!.primaryButtonClicked, 'emit');
+        spyOn(currentPage!.nextButtonClicked, 'emit');
         spyOn(wizardNavigationService.pageCollection, 'commitPage');
         spyOn(wizardNavigationService, 'forceNext');
 
@@ -455,14 +455,14 @@ export default function (): void {
 
         wizardNavigationService.checkAndCommitCurrentPage('finish');
 
-        expect(currentPage.primaryButtonClicked.emit).not.toHaveBeenCalled();
-        expect(currentPage.nextButtonClicked.emit).not.toHaveBeenCalled();
+        expect(currentPage!.primaryButtonClicked.emit).not.toHaveBeenCalled();
+        expect(currentPage!.nextButtonClicked.emit).not.toHaveBeenCalled();
         expect(wizardNavigationService.pageCollection.commitPage).not.toHaveBeenCalled();
         expect(wizardNavigationService.forceNext).not.toHaveBeenCalled();
       });
 
       it('should emit that a primary button was clicked', function () {
-        const currentPage = wizardNavigationService.currentPage;
+        const currentPage = wizardNavigationService.currentPage!;
         spyOn(currentPage.primaryButtonClicked, 'emit');
         wizardNavigationService.checkAndCommitCurrentPage('next');
         expect(currentPage.primaryButtonClicked.emit).toHaveBeenCalledTimes(1);
@@ -471,7 +471,7 @@ export default function (): void {
       it('should emit finish button was clicked', function () {
         const lastPage = wizardNavigationService.pageCollection.lastPage;
 
-        wizardNavigationService.currentPage = lastPage;
+        wizardNavigationService.currentPage = lastPage!;
         context.detectChanges();
         const currentPage = wizardNavigationService.currentPage;
 
@@ -490,7 +490,7 @@ export default function (): void {
       it('should emit danger button was clicked', function () {
         const lastPage = wizardNavigationService.pageCollection.lastPage;
 
-        wizardNavigationService.currentPage = lastPage;
+        wizardNavigationService.currentPage = lastPage!;
         context.detectChanges();
 
         const currentPage = wizardNavigationService.currentPage;
@@ -511,7 +511,7 @@ export default function (): void {
       });
 
       it('should emit next button was clicked', function () {
-        const currentPage = wizardNavigationService.currentPage;
+        const currentPage = wizardNavigationService.currentPage!;
 
         spyOn(currentPage.primaryButtonClicked, 'emit');
         spyOn(currentPage.nextButtonClicked, 'emit');
@@ -527,7 +527,7 @@ export default function (): void {
       });
 
       it('should commit the current page -- but only once', function () {
-        const currentPage = wizardNavigationService.currentPage;
+        const currentPage = wizardNavigationService.currentPage!;
         spyOn(currentPage.onCommit, 'emit');
         wizardNavigationService.checkAndCommitCurrentPage('next');
         expect(currentPage.onCommit.emit).toHaveBeenCalledTimes(1);
@@ -535,7 +535,7 @@ export default function (): void {
 
       it('should only commit page once on last page if there are wizard overrides', function () {
         const wiz = context.clarityDirective;
-        const testPage = pageCollectionService.lastPage;
+        const testPage = pageCollectionService.lastPage!;
         spyOn(testPage.onCommit, 'emit');
 
         wiz.navService.currentPage = testPage;
@@ -558,7 +558,7 @@ export default function (): void {
         });
         const lastPage = wizardNavigationService.pageCollection.lastPage;
 
-        wizardNavigationService.currentPage = lastPage;
+        wizardNavigationService.currentPage = lastPage!;
         context.detectChanges();
         const currentPage = wizardNavigationService.currentPage;
 
@@ -579,7 +579,7 @@ export default function (): void {
         });
         const lastPage = wizardNavigationService.pageCollection.lastPage;
 
-        wizardNavigationService.currentPage = lastPage;
+        wizardNavigationService.currentPage = lastPage!;
         context.detectChanges();
         const currentPage = wizardNavigationService.currentPage;
 
@@ -638,7 +638,7 @@ export default function (): void {
       });
 
       it('should emit onCommit if next overridden at page level', function () {
-        const currentPage = wizardNavigationService.currentPage;
+        const currentPage = wizardNavigationService.currentPage!;
         spyOn(currentPage.onCommit, 'emit');
 
         currentPage.stopNext = true;
@@ -650,7 +650,7 @@ export default function (): void {
       });
 
       it('should emit onCommit if next overridden at wizard level', function () {
-        const currentPage = wizardNavigationService.currentPage;
+        const currentPage = wizardNavigationService.currentPage!;
         spyOn(currentPage.onCommit, 'emit');
 
         wizardNavigationService.wizardHasAltNext = true;
@@ -663,9 +663,9 @@ export default function (): void {
         const currentPage = wizardNavigationService.currentPage;
         const expectedPage = wizardNavigationService.pageCollection.getPageByIndex(0);
 
-        spyOn(currentPage.primaryButtonClicked, 'emit');
-        spyOn(currentPage.nextButtonClicked, 'emit');
-        spyOn(currentPage.onCommit, 'emit');
+        spyOn(currentPage!.primaryButtonClicked, 'emit');
+        spyOn(currentPage!.nextButtonClicked, 'emit');
+        spyOn(currentPage!.onCommit, 'emit');
         spyOn(wizardNavigationService.pageCollection, 'commitPage');
         spyOn(wizardNavigationService, 'forceNext');
 
@@ -674,11 +674,11 @@ export default function (): void {
         const currentAsExpected = currentPage === expectedPage;
 
         // still need some events fired
-        expect(currentPage.primaryButtonClicked.emit).toHaveBeenCalled();
-        expect(currentPage.nextButtonClicked.emit).toHaveBeenCalled();
+        expect(currentPage!.primaryButtonClicked.emit).toHaveBeenCalled();
+        expect(currentPage!.nextButtonClicked.emit).toHaveBeenCalled();
         expect(wizardNavigationService.pageCollection.commitPage).toHaveBeenCalled();
 
-        expect(currentPage.onCommit.emit).not.toHaveBeenCalled();
+        expect(currentPage!.onCommit.emit).not.toHaveBeenCalled();
         expect(wizardNavigationService.forceNext).not.toHaveBeenCalled();
         expect(currentAsExpected).toBe(true, 'wizard did not navigate');
       });
@@ -687,22 +687,22 @@ export default function (): void {
         const currentPage = wizardNavigationService.currentPage;
         const expectedPage = wizardNavigationService.pageCollection.getPageByIndex(0);
 
-        spyOn(currentPage.primaryButtonClicked, 'emit');
-        spyOn(currentPage.nextButtonClicked, 'emit');
-        spyOn(currentPage.onCommit, 'emit');
+        spyOn(currentPage!.primaryButtonClicked, 'emit');
+        spyOn(currentPage!.nextButtonClicked, 'emit');
+        spyOn(currentPage!.onCommit, 'emit');
         spyOn(wizardNavigationService.pageCollection, 'commitPage');
         spyOn(wizardNavigationService, 'forceNext');
 
-        currentPage.stopNext = true;
+        currentPage!.stopNext = true;
         context.detectChanges();
 
         wizardNavigationService.checkAndCommitCurrentPage('next');
         const currentAsExpected = currentPage === expectedPage;
 
         // still need some events fired
-        expect(currentPage.primaryButtonClicked.emit).toHaveBeenCalled();
-        expect(currentPage.nextButtonClicked.emit).toHaveBeenCalled();
-        expect(currentPage.onCommit.emit).toHaveBeenCalled();
+        expect(currentPage!.primaryButtonClicked.emit).toHaveBeenCalled();
+        expect(currentPage!.nextButtonClicked.emit).toHaveBeenCalled();
+        expect(currentPage!.onCommit.emit).toHaveBeenCalled();
 
         expect(wizardNavigationService.pageCollection.commitPage).not.toHaveBeenCalled();
         expect(wizardNavigationService.forceNext).not.toHaveBeenCalled();
@@ -713,9 +713,9 @@ export default function (): void {
         const currentPage = wizardNavigationService.currentPage;
         const expectedPage = wizardNavigationService.pageCollection.getPageByIndex(0);
 
-        spyOn(currentPage.primaryButtonClicked, 'emit');
-        spyOn(currentPage.nextButtonClicked, 'emit');
-        spyOn(currentPage.onCommit, 'emit');
+        spyOn(currentPage!.primaryButtonClicked, 'emit');
+        spyOn(currentPage!.nextButtonClicked, 'emit');
+        spyOn(currentPage!.onCommit, 'emit');
         spyOn(wizardNavigationService.pageCollection, 'commitPage');
         spyOn(wizardNavigationService, 'forceNext');
 
@@ -724,10 +724,10 @@ export default function (): void {
         const currentAsExpected = currentPage === expectedPage;
 
         // should not fire events at all
-        expect(currentPage.primaryButtonClicked.emit).not.toHaveBeenCalled();
-        expect(currentPage.nextButtonClicked.emit).not.toHaveBeenCalled();
+        expect(currentPage!.primaryButtonClicked.emit).not.toHaveBeenCalled();
+        expect(currentPage!.nextButtonClicked.emit).not.toHaveBeenCalled();
         expect(wizardNavigationService.pageCollection.commitPage).not.toHaveBeenCalled();
-        expect(currentPage.onCommit.emit).not.toHaveBeenCalled();
+        expect(currentPage!.onCommit.emit).not.toHaveBeenCalled();
         expect(wizardNavigationService.forceNext).not.toHaveBeenCalled();
         expect(currentAsExpected).toBe(true, 'wizard did not navigate');
       });
@@ -736,22 +736,22 @@ export default function (): void {
         const currentPage = wizardNavigationService.currentPage;
         const expectedPage = wizardNavigationService.pageCollection.getPageByIndex(1);
 
-        spyOn(currentPage.primaryButtonClicked, 'emit');
-        spyOn(currentPage.nextButtonClicked, 'emit');
-        spyOn(currentPage.onCommit, 'emit');
+        spyOn(currentPage!.primaryButtonClicked, 'emit');
+        spyOn(currentPage!.nextButtonClicked, 'emit');
+        spyOn(currentPage!.onCommit, 'emit');
         spyOn(wizardNavigationService.pageCollection, 'commitPage');
         spyOn(wizardNavigationService, 'forceNext').and.callThrough();
 
         expect(wizardNavigationService.wizardHasAltNext).toBe(false, 'wizard alt-next false by default');
-        expect(currentPage.stopNext).toBe(false, 'page alt-next false by default');
-        expect(currentPage.preventDefault).toBe(false, 'page prevent default false by default');
+        expect(currentPage!.stopNext).toBe(false, 'page alt-next false by default');
+        expect(currentPage!.preventDefault).toBe(false, 'page prevent default false by default');
 
         wizardNavigationService.checkAndCommitCurrentPage('next');
         const currentAsExpected = wizardNavigationService.currentPage === expectedPage;
 
         // still need some events fired
-        expect(currentPage.primaryButtonClicked.emit).toHaveBeenCalledTimes(1);
-        expect(currentPage.nextButtonClicked.emit).toHaveBeenCalledTimes(1);
+        expect(currentPage!.primaryButtonClicked.emit).toHaveBeenCalledTimes(1);
+        expect(currentPage!.nextButtonClicked.emit).toHaveBeenCalledTimes(1);
         // expect(currentPage.onCommit.emit).toHaveBeenCalledTimes(1);
         expect(wizardNavigationService.pageCollection.commitPage).toHaveBeenCalledTimes(1);
         expect(wizardNavigationService.forceNext).toHaveBeenCalledTimes(1);
@@ -763,26 +763,26 @@ export default function (): void {
         const currentPage = wizardNavigationService.currentPage;
         const expectedPage = wizardNavigationService.pageCollection.getPageByIndex(1);
 
-        spyOn(currentPage.primaryButtonClicked, 'emit');
-        spyOn(currentPage.dangerButtonClicked, 'emit');
-        spyOn(currentPage.onCommit, 'emit');
+        spyOn(currentPage!.primaryButtonClicked, 'emit');
+        spyOn(currentPage!.dangerButtonClicked, 'emit');
+        spyOn(currentPage!.onCommit, 'emit');
         spyOn(wizardNavigationService.pageCollection, 'commitPage');
         spyOn(wizardNavigationService, 'forceNext').and.callThrough();
 
         expect(wizardNavigationService.wizardHasAltNext).toBe(false, 'wizard alt-next false by default');
-        expect(currentPage.stopNext).toBe(false, 'page alt-next false by default');
-        expect(currentPage.preventDefault).toBe(false, 'page prevent default false by default');
+        expect(currentPage!.stopNext).toBe(false, 'page alt-next false by default');
+        expect(currentPage!.preventDefault).toBe(false, 'page prevent default false by default');
 
         wizardNavigationService.checkAndCommitCurrentPage('danger');
         const currentAsExpected = wizardNavigationService.currentPage === expectedPage;
 
         // these get called in routines outside of checkAndCommit by default. simplify in the future?
-        expect(currentPage.onCommit.emit).not.toHaveBeenCalled();
+        expect(currentPage!.onCommit.emit).not.toHaveBeenCalled();
 
         // still need some events fired
         expect(wizardNavigationService.pageCollection.commitPage).toHaveBeenCalledTimes(1);
-        expect(currentPage.primaryButtonClicked.emit).toHaveBeenCalledTimes(1);
-        expect(currentPage.dangerButtonClicked.emit).toHaveBeenCalledTimes(1);
+        expect(currentPage!.primaryButtonClicked.emit).toHaveBeenCalledTimes(1);
+        expect(currentPage!.dangerButtonClicked.emit).toHaveBeenCalledTimes(1);
         expect(wizardNavigationService.forceNext).toHaveBeenCalledTimes(1);
 
         expect(currentAsExpected).toBe(true, 'wizard navigated');
@@ -791,7 +791,7 @@ export default function (): void {
 
     describe('.canGoTo() -- ', function () {
       it('should return false if pages parameter is falsy', function () {
-        expect(wizardNavigationService.canGoTo(null)).toBe(false, 'null returns false');
+        expect(wizardNavigationService.canGoTo(null!)).toBe(false, 'null returns false');
       });
 
       it('should return false if pages parameter is empty array', function () {

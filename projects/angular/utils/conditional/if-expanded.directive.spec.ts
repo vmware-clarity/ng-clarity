@@ -151,7 +151,7 @@ export default function (): void {
   standalone: false,
 })
 class SimpleTest {
-  @ViewChild(ClrIfExpanded) ifExpanded: ClrIfExpanded;
+  @ViewChild(ClrIfExpanded) ifExpanded!: ClrIfExpanded;
 
   constructor(@Inject('counter') public counter: { total: number }) {}
 }
@@ -163,7 +163,7 @@ class SimpleTest {
   standalone: false,
 })
 class SimpleTemplateTest {
-  @ViewChild(ClrIfExpanded) ifExpanded: ClrIfExpanded;
+  @ViewChild(ClrIfExpanded) ifExpanded!: ClrIfExpanded;
 
   constructor(@Inject('counter') public counter: { total: number }) {}
 }

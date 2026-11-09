@@ -30,8 +30,8 @@ export default function () {
 
       mockNgZone.stabilizeZone();
 
-      expect(document.activeElement.innerHTML).toBe('Test Button');
-      expect(document.activeElement.id).toBe('1');
+      expect(document.activeElement!.innerHTML).toBe('Test Button');
+      expect(document.activeElement!.id).toBe('1');
     }));
 
     it('Does not focus on the button if the button does not have a tab index of 0', inject(
@@ -47,8 +47,8 @@ export default function () {
 
         mockNgZone.stabilizeZone();
 
-        expect(document.activeElement.innerHTML).not.toBe('Test Button');
-        expect(document.activeElement.id).not.toBe('1');
+        expect(document.activeElement!.innerHTML).not.toBe('Test Button');
+        expect(document.activeElement!.id).not.toBe('1');
       }
     ));
 

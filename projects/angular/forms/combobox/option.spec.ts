@@ -28,7 +28,7 @@ import { OptionSelectionService } from './providers/option-selection.service';
   standalone: false,
 })
 class TestComponent {
-  @ViewChild(ClrOption) option: ClrOption<string>;
+  @ViewChild(ClrOption) option!: ClrOption<string>;
   value = 'Test';
   id = 'test-id';
 }

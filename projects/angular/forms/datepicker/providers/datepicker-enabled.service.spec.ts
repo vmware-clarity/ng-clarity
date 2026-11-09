@@ -12,8 +12,8 @@ import { DatepickerEnabledService } from './datepicker-enabled.service';
 export default function () {
   describe('Datepicker Enabled Service', () => {
     function initializeSpies(userAgent: string, innerWidth: number): DatepickerEnabledService {
-      spyOnProperty(document.defaultView.navigator, 'userAgent', 'get').and.returnValue(userAgent);
-      spyOnProperty(document.defaultView, 'innerWidth', 'get').and.returnValue(innerWidth);
+      spyOnProperty(document.defaultView!.navigator, 'userAgent', 'get').and.returnValue(userAgent);
+      spyOnProperty(document.defaultView!, 'innerWidth', 'get').and.returnValue(innerWidth);
       return new DatepickerEnabledService(document);
     }
 

@@ -24,9 +24,9 @@ import { OptionSelectionService } from './providers/option-selection.service';
   standalone: false,
 })
 class FullTest {
-  @ViewChild(ClrOptionItems) optionItems: ClrOptionItems<number | string>;
+  @ViewChild(ClrOptionItems) optionItems!: ClrOptionItems<number | string>;
   numbers: (number | string)[] = [0, 1, 2, 3];
-  trackBy: TrackByFunction<number | string>;
+  trackBy!: TrackByFunction<number | string>;
 }
 
 @Component({
@@ -40,7 +40,7 @@ class FullTest {
   standalone: false,
 })
 class TrackByIndexTest {
-  @ViewChild(ClrOptionItems) optionItems: ClrOptionItems<number>;
+  @ViewChild(ClrOptionItems) optionItems!: ClrOptionItems<number>;
   numbers = [0, 1, 2, 3];
   trackBy: TrackByFunction<number> = index => index;
 }
@@ -56,8 +56,8 @@ class TrackByIndexTest {
   standalone: false,
 })
 class ObjectDataTest {
-  @ViewChild(ClrOptionItems) optionItems: ClrOptionItems<{ a: number | string }>;
-  numbers: { a: number | string }[] = [{ a: 0 }, { a: 1 }, { a: 2 }, { a: 3 }];
+  @ViewChild(ClrOptionItems) optionItems!: ClrOptionItems<{ a: number | string }>;
+  numbers: { a: number | string | null }[] = [{ a: 0 }, { a: 1 }, { a: 2 }, { a: 3 }];
   trackBy: TrackByFunction<number> = index => index;
 }
 
@@ -99,13 +99,13 @@ export default function (): void {
       });
 
       it('handles a null input for the array of items', function (this: Context<FullTest>) {
-        this.testComponent.numbers = null;
+        this.testComponent.numbers = null!;
         this.fixture.detectChanges();
         expect(this.clarityDirective['_rawItems']).toEqual([]);
       });
 
       it('handles an undefined input for the array of items', function (this: Context<FullTest>) {
-        this.testComponent.numbers = undefined;
+        this.testComponent.numbers = undefined!;
         this.fixture.detectChanges();
         expect(this.clarityDirective['_rawItems']).toEqual([]);
       });

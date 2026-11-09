@@ -342,7 +342,7 @@ describe('Loading Buttons with Noop animations', () => {
   standalone: false,
 })
 class TestLoadingButtonComponent {
-  @ViewChild(ClrLoadingButton) loadingButtonInstance: ClrLoadingButton;
+  @ViewChild(ClrLoadingButton) loadingButtonInstance!: ClrLoadingButton;
 
   buttonState: ClrLoadingState = ClrLoadingState.DEFAULT;
   disabled = false;
@@ -355,7 +355,7 @@ class TestLoadingButtonComponent {
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 class ListenerTestLoadingButtonComponent {
-  @ViewChild(ClrLoadingButton) loadingButtonInstance: ClrLoadingButton;
+  @ViewChild(ClrLoadingButton) loadingButtonInstance!: ClrLoadingButton;
 }
 
 @Component({

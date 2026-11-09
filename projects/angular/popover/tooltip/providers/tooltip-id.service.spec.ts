@@ -20,7 +20,7 @@ export default function (): void {
     });
 
     it('should set an id', function (this: TestContext) {
-      let currentId;
+      let currentId: string | undefined;
       this.idService.id.subscribe(newId => {
         currentId = newId;
       });

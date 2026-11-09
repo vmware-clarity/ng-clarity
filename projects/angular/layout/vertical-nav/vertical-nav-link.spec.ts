@@ -116,6 +116,6 @@ class TestComponent {}
   standalone: false,
 })
 class TestComponentWithGroup {
-  @ViewChild('group') navGroup: ClrVerticalNavGroup;
-  @ViewChild('link') navLink: ClrVerticalNavLink;
+  @ViewChild('group') navGroup!: ClrVerticalNavGroup;
+  @ViewChild('link') navLink!: ClrVerticalNavLink;
 }

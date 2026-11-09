@@ -45,14 +45,14 @@ export default function (): void {
         // Test that content shows
         signpostToggle.click();
         this.detectChanges();
-        signpostContent = document.body.querySelector('.clr-signpost-container');
+        signpostContent = document.body.querySelector('.clr-signpost-container')!;
         expect(signpostContent).not.toBeNull();
         expect(this.popoverService.open).toBe(true);
 
         // Test that content hides again
         signpostToggle.click();
         this.detectChanges();
-        signpostContent = document.body.querySelector('.clr-signpost-container');
+        signpostContent = document.body.querySelector('.clr-signpost-container')!;
         expect(signpostContent).toBeNull();
         expect(this.popoverService.open).toBe(false);
       });
@@ -93,7 +93,7 @@ export default function (): void {
 
           const signpostContent = document.body.querySelector('.clr-signpost-container');
           expect(signpostContent).not.toBeNull();
-          expect(signpostContent.classList).toContain(name);
+          expect(signpostContent!.classList).toContain(name);
         });
       }
     });
@@ -145,7 +145,7 @@ export default function (): void {
         this.popoverService.open = true;
         this.detectChanges();
 
-        const dummyButton: HTMLElement = document.body.querySelector('.dummy-button');
+        const dummyButton: HTMLElement = document.body.querySelector('.dummy-button')!;
         dummyButton.focus();
 
         this.popoverService.open = false;
@@ -203,14 +203,14 @@ export default function (): void {
         // Test it shows after changes
         signpostTrigger.click();
         this.detectChanges();
-        signpostContent = document.body.querySelector('.clr-signpost-container');
+        signpostContent = document.body.querySelector('.clr-signpost-container')!;
         expect(signpostContent).not.toBeNull();
         expect(this.popoverService.open).toBe(true);
 
         // Test it hide when clicked again
         signpostTrigger.click();
         this.detectChanges();
-        signpostContent = document.body.querySelector('.clr-signpost-container');
+        signpostContent = document.body.querySelector('.clr-signpost-container')!;
         expect(signpostContent).toBeNull();
         expect(this.popoverService.open).toBe(false);
       });
@@ -220,22 +220,22 @@ export default function (): void {
       spec(ClrSignpost, TestDefaultSignpost, ClrSignpostModule);
 
       function checkAriaControlsId(id: string, element: HTMLElement) {
-        const triggerControlsValue = element.querySelector('.signpost-action').getAttribute('aria-controls');
+        const triggerControlsValue = element.querySelector('.signpost-action')!.getAttribute('aria-controls');
         const closeControlsValue = element
-          .querySelector('.signpost-content .signpost-action')
+          .querySelector('.signpost-content .signpost-action')!
           .getAttribute('aria-controls');
-        const contentId = element.querySelector('.signpost-content').getAttribute('id');
+        const contentId = element.querySelector('.signpost-content')!.getAttribute('id');
 
         expect(id).toBe(
-          contentId,
+          contentId!,
           'ClrSignpostContent id is out of sync (content gets a new id each time it is created)'
         );
         expect(id).toBe(
-          triggerControlsValue,
+          triggerControlsValue!,
           'ClrSignpost id does not match the signpost trigger aria-controls value on the signpost trigger'
         );
         expect(id).toBe(
-          closeControlsValue,
+          closeControlsValue!,
           'ClrSignpost id does not match the aria-controls value on the close button'
         );
       }
@@ -246,7 +246,7 @@ export default function (): void {
       });
 
       it('are correct when content is opened', function (this: Context) {
-        let currentId;
+        let currentId!: string;
         this.signpostIdService.id.subscribe(idChange => {
           currentId = idChange;
         });
@@ -255,7 +255,7 @@ export default function (): void {
         this.triggerButton.click();
         this.fixture.detectChanges();
 
-        checkAriaControlsId(currentId, document.body.querySelector('.clr-signpost-container'));
+        checkAriaControlsId(currentId, document.body.querySelector<HTMLElement>('.clr-signpost-container')!);
 
         // Close it
         this.triggerButton.click();
@@ -265,7 +265,7 @@ export default function (): void {
         this.triggerButton.click();
         this.fixture.detectChanges();
 
-        checkAriaControlsId(currentId, document.body.querySelector('.clr-signpost-container'));
+        checkAriaControlsId(currentId, document.body.querySelector<HTMLElement>('.clr-signpost-container')!);
       });
     });
   });
@@ -283,10 +283,10 @@ export default function (): void {
   standalone: false,
 })
 class TestCustomTriggerSignpost {
-  @ViewChild(ClrSignpost) signpost: ClrSignpost;
+  @ViewChild(ClrSignpost) signpost!: ClrSignpost;
   openState = false;
 
-  @ViewChild('outsideClick', { read: ElementRef, static: true }) outsideClickBtn: ElementRef<HTMLButtonElement>;
+  @ViewChild('outsideClick', { read: ElementRef, static: true }) outsideClickBtn!: ElementRef<HTMLButtonElement>;
 
   position = ClrPopoverPosition.RIGHT_MIDDLE;
 }
@@ -307,11 +307,11 @@ class TestCustomTriggerSignpost {
   standalone: false,
 })
 class TestDefaultSignpost {
-  @ViewChild(ClrSignpost) signpost: ClrSignpost;
+  @ViewChild(ClrSignpost) signpost!: ClrSignpost;
 
   openState = false;
-  signpostTriggerAriaLabel: string;
+  signpostTriggerAriaLabel!: string;
   position = ClrPopoverPosition.RIGHT_MIDDLE;
 
-  @ViewChild('outsideClick', { read: ElementRef, static: true }) outsideClickBtn: ElementRef<HTMLButtonElement>;
+  @ViewChild('outsideClick', { read: ElementRef, static: true }) outsideClickBtn!: ElementRef<HTMLButtonElement>;
 }
