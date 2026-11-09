@@ -27,6 +27,7 @@ import { FiltersGridComponent } from './ng/filters';
 import { PersistenceGridDemoComponent } from './ng/persistance';
 import { PinnableColumnsGridDemoComponent } from './ng/pinnable-columns';
 import { ServerDrivenGridDemoComponent } from './ng/server-driven';
+import { TreeDataGridDemoComponent } from './ng/tree-data';
 import { VirtualScrollGridDemoComponent } from './ng/virtual-scroll';
 import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
@@ -39,7 +40,7 @@ import { ClarityDocComponent } from '../clarity-doc';
 import { multiStepPatternLink } from '../pattern-links';
 
 const replaceComponentName = (file: string) => {
-  file = file.replace(/(export class )\w+(\s*\{)/, '$1ExampleComponent$2');
+  file = file.replace(/(export class )\w+/, '$1ExampleComponent');
   return file;
 };
 
@@ -63,6 +64,8 @@ const PinnableColumnsHtml = require('!raw-loader!./ng/pinnable-columns.html').de
 const PinnableColumnsTs = replaceComponentName(require('!raw-loader!./ng/pinnable-columns.ts').default);
 const ServerDrivenHtml = require('!raw-loader!./ng/server-driven.html').default;
 const ServerDrivenTs = replaceComponentName(require('!raw-loader!./ng/server-driven.ts').default);
+const TreeDataHtml = require('!raw-loader!./ng/tree-data.html').default;
+const TreeDataTs = replaceComponentName(require('!raw-loader!./ng/tree-data.ts').default);
 const VirtualScrollHtml = require('!raw-loader!./ng/virtual-scroll.html').default;
 const VirtualScrollTs = replaceComponentName(require('!raw-loader!./ng/virtual-scroll.ts').default);
 
@@ -254,6 +257,7 @@ const additionalFiles = {
     StackblitzExampleComponent,
     ServerDrivenGridDemoComponent,
     VirtualScrollGridDemoComponent,
+    TreeDataGridDemoComponent,
     CustomColumnDefinitionsDemoComponent,
     DetailPaneGridDemoComponent,
     DragDropGridDemoComponent,
@@ -296,6 +300,9 @@ export class AdvancedDatagridDemo extends ClarityDocComponent {
 
   virtualScrollHtml = VirtualScrollHtml;
   virtualScrollTs = VirtualScrollTs;
+
+  treeDataHtml = TreeDataHtml;
+  treeDataTs = TreeDataTs;
 
   basicDatagridExample = BASIC_DATAGRID_EXAMPLE;
   datagridFiltersExample = DATAGRID_FILTERS_EXAMPLE;

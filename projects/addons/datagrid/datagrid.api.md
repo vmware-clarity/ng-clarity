@@ -197,6 +197,7 @@ export interface ColumnDefinition<T> {
     // Warning: (ae-forgotten-export) The symbol "ClrDatagridComparatorInterface" needs to be exported by the entry point clr-addons-datagrid.d.ts
     sortComparator?: ClrDatagridComparatorInterface<T> | string;
     stringFilter?: ClrDatagridStringFilterInterface<T>;
+    treeToggle?: boolean;
     uid?: string;
     width?: string;
 }
@@ -354,6 +355,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     //
     // (undocumented)
     clrDatagridPagination: ClrDatagridPagination;
+    collapseAllTreeRows(): void;
     columnActions: ActionDefinition[] | null;
     columnDefsChange: EventEmitter<ColumnDefinition<T>[]>;
     columnFilterChange: EventEmitter<ColumnFilterChange>;
@@ -397,6 +399,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     protected enableSingleRowActions: boolean;
     // (undocumented)
     protected get enableToolBar(): boolean;
+    expandAllTreeRows(): void;
     exportDataEvent: EventEmitter<ExportStatus>;
     // Warning: (ae-forgotten-export) The symbol "FilterablePropertyDefinition" needs to be exported by the entry point clr-addons-datagrid.d.ts
     filterableProperties: FilterablePropertyDefinition[];
@@ -418,6 +421,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     gridItemsChange: EventEmitter<T[]>;
     // (undocumented)
     protected gridLayoutModel: GridLayoutModel;
+    protected hasTreeToggle(column: ColumnDefinition<T>): boolean;
     // (undocumented)
     protected isItemSelected(item: T): boolean;
     isRowLocked: (rowItem: T) => boolean;
@@ -484,6 +488,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     // Warning: (ae-forgotten-export) The symbol "ClrDatagridStateInterface" needs to be exported by the entry point clr-addons-datagrid.d.ts
     refreshGridData: EventEmitter<ClrDatagridStateInterface>;
     refreshVirtualGridData: EventEmitter<ClrDatagridStateInterface>;
+    reloadTreeChildren(item?: T): void;
     renderedRangeChange($event: ListRange): void;
     // (undocumented)
     resize(): void;
@@ -521,6 +526,8 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     trackByFunction: TrackByFunction<T>;
     trackByGridItemFn: (item: T) => T;
     trackByGridItemProperty: string;
+    treeConfig?: DatagridTreeConfig<T>;
+    treeExpandedChange: EventEmitter<TreeExpandedState<T>>;
     virtualScrolling: boolean;
     // (undocumented)
     visibleColumns: ColumnDefinition<T>[];
@@ -640,6 +647,10 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
             "alias": "gridItems";
             "required": false;
         };
+        "treeConfig": {
+            "alias": "treeConfig";
+            "required": false;
+        };
         "layoutModel": {
             "alias": "layoutModel";
             "required": false;
@@ -696,6 +707,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
         "rowActionMenuOpenChange": "rowActionMenuOpenChange";
         "openContextMenu": "openContextMenu";
         "columnOrderChange": "columnOrderChange";
+        "treeExpandedChange": "treeExpandedChange";
     }, never, [".custom-placeholder-content", ".custom-footer-content", "*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridComponent<any>, [null, null, null, null, {
@@ -915,6 +927,14 @@ export class DatagridStrings {
     static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
+// @public
+export interface DatagridTreeConfig<T> {
+    cascadeSelection?: boolean;
+    // Warning: (ae-forgotten-export) The symbol "ClrDatagridTreeChildrenFunction" needs to be exported by the entry point clr-addons-datagrid.d.ts
+    getChildren: ClrDatagridTreeChildrenFunction<T>;
+    hasChildren?: (item: T) => boolean;
+}
+
 // @public (undocumented)
 export interface DatagridUserPreferencesService {
     // (undocumented)
@@ -1045,6 +1065,14 @@ export interface SingleRowActionOpen<T = any> {
     actions: ActionDefinition[] | null;
     context: T;
     open: boolean;
+}
+
+// @public
+export interface TreeExpandedState<T> {
+    // (undocumented)
+    expanded: boolean;
+    // (undocumented)
+    item: T;
 }
 
 // (No @packageDocumentation comment for this package)
