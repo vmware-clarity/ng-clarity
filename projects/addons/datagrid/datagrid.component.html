@@ -73,6 +73,7 @@
       [clrDgDisableUnsort]="column.disableUnsort ?? disableUnsort"
       [clrDgPinnable]="!!column.pinnable"
       [clrDgPinned]="!!column.pinned"
+      [clrDgTreeToggle]="!!treeConfig && hasTreeToggle(column)"
       (clrDgPinnedChange)="onPinnedChange($event, column)"
     >
       <clr-dg-filter
@@ -198,8 +199,48 @@
     <ng-content select=".custom-placeholder-content"></ng-content>
   </clr-dg-placeholder>
 
+  <!-- Server driven tree datagrid with virtual scrolling. The data range is a range of roots. -->
+  @if (serverDrivenDatagrid && virtualScrolling && treeConfig) {
+    <ng-template
+      ClrVirtualScroll
+      let-item
+      [clrVirtualTreeDataRange]="dataRange"
+      [clrVirtualTreeGetChildren]="treeConfig.getChildren"
+      [clrVirtualTreeCascadeSelection]="!!treeConfig.cascadeSelection"
+      [clrVirtualRowsItemSize]="25"
+      [clrVirtualRowsMinBufferPx]="400"
+      [clrVirtualRowsMaxBufferPx]="800"
+      [clrVirtualRowsTemplateCacheSize]="400"
+      [clrVirtualRowsTrackBy]="trackByFunction"
+      (clrVirtualTreeRenderedRootsChange)="renderedRangeChange($event)"
+    >
+      <clr-dg-row
+        [clrDgItem]="item"
+        [clrDgTreeExpandable]="!!item && (!treeConfig.hasChildren || treeConfig.hasChildren(item))"
+        (clrDgExpandedChange)="treeExpandedChange.emit({ item: item, expanded: $event })"
+        [clrDgSelectable]="item | isRowSelectable: isRowLocked : rowsDisabled"
+        [clrDgRowSelectionLabel]="
+          $any(item)?.[visibleColumns && visibleColumns.length ? visibleColumns[0].field : -1] ?? null
+        "
+        (contextmenu)="onContextMenu($event, item)"
+        [clrDgSkeletonLoading]="!item"
+      >
+        @if (dragConfig) {
+          <clr-dg-cell class="draggableCell" [style.width.px]="20">
+            <ng-container *ngTemplateOutlet="draggableCell; context: { $implicit: item }"> </ng-container>
+          </clr-dg-cell>
+        }
+        @for (column of visibleColumns; track column) {
+          <clr-dg-cell class="fixed-cell-height">
+            <appfx-dg-cell-container [column]="column" [item]="item"></appfx-dg-cell-container>
+          </clr-dg-cell>
+        }
+      </clr-dg-row>
+    </ng-template>
+  }
+
   <!-- Server driven datagrid with virtual scrolling -->
-  @if (serverDrivenDatagrid && virtualScrolling) {
+  @if (serverDrivenDatagrid && virtualScrolling && !treeConfig) {
     <ng-template
       ClrVirtualScroll
       let-item
@@ -236,8 +277,54 @@
     </ng-template>
   }
 
+  <!-- Server driven tree datagrid with paging. A tree has no expandable rows. -->
+  @if (serverDrivenDatagrid && !virtualScrolling && treeConfig) {
+    <clr-dg-row
+      *clrDgTreeItems="
+        let item of gridItems;
+        getChildren: treeConfig.getChildren;
+        cascadeSelection: !!treeConfig.cascadeSelection
+      "
+      [clrDgItem]="item"
+      [clrDgDetailOpenLabel]="getExpandDetailsLabel(item)"
+      [clrDgDetailCloseLabel]="getCollapseDetailsLabel(item)"
+      [clrDgTreeExpandable]="!treeConfig.hasChildren || treeConfig.hasChildren(item)"
+      (clrDgExpandedChange)="treeExpandedChange.emit({ item: item, expanded: $event })"
+      [clrDgSelectable]="item | isRowSelectable: isRowLocked : rowsDisabled"
+      [clrDgRowSelectionLabel]="$any(item)?.[visibleColumns && visibleColumns.length ? visibleColumns[0].field : -1]"
+      (contextmenu)="onContextMenu($event, item)"
+    >
+      <clr-dg-action-overflow
+        *ngIf="enableSingleRowActions"
+        (clrDgActionOverflowOpenChange)="onRowActionOverflowOpen($event, singleRowActions, item)"
+      >
+        @for (action of singleRowActions; track action) {
+          <button
+            type="button"
+            class="action-item"
+            (click)="onActionClick(action, item)"
+            [title]="action.tooltip"
+            [disabled]="!action.enabled"
+          >
+            {{ action.label }}
+          </button>
+        }
+      </clr-dg-action-overflow>
+      @if (dragConfig) {
+        <clr-dg-cell class="draggableCell" [style.width.px]="20">
+          <ng-container *ngTemplateOutlet="draggableCell; context: { $implicit: item }"> </ng-container>
+        </clr-dg-cell>
+      }
+      @for (column of visibleColumns; track column) {
+        <clr-dg-cell>
+          <appfx-dg-cell-container [column]="column" [item]="item"></appfx-dg-cell-container>
+        </clr-dg-cell>
+      }
+    </clr-dg-row>
+  }
+
   <!--  Server driven datagrid with paging -->
-  @if (serverDrivenDatagrid && !virtualScrolling) {
+  @if (serverDrivenDatagrid && !virtualScrolling && !treeConfig) {
     @for (item of gridItems; track trackByFn.bind(this)(i, item); let i = $index) {
       <clr-dg-row
         [clrDgItem]="item"

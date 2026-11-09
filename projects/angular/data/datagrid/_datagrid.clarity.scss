@@ -17,6 +17,8 @@
 @use '../../forms/styles/variables.forms' as forms-variables;
 @use '../../modal/variables.modal' as modal-variables;
 @use '../../popover/dropdown/variables.dropdown' as dropdown-variables;
+@use '../../progress/spinner/mixins.spinner' as spinner-mixins;
+@use '../../progress/spinner/variables.spinner' as spinner-variables;
 @use '../variables.tables' as tables-variables;
 @use 'variables.datagrid' as datagrid-variables;
 @use 'mixins.datagrid' as datagrid-mixins;
@@ -88,9 +90,11 @@
 
   .datagrid-overflow-ellipsis .datagrid-row {
     // Pinned cells sit one level deeper, in their own static container, but they have to truncate
-    // the same way as the scrollable ones.
+    // the same way as the scrollable ones. The text of a tree cell is in its own block, next to the
+    // expand toggle, so it truncates itself.
     .datagrid-scrolling-cells > .datagrid-cell,
-    .datagrid-pinned-cells > .datagrid-cell {
+    .datagrid-pinned-cells > .datagrid-cell,
+    .datagrid-tree-cell-text {
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
@@ -253,6 +257,68 @@
         gap: density.$clr-base-gap-m;
         justify-content: center;
       }
+    }
+  }
+
+  // Tree rows: the content of a tree cell is indented by the depth of its row and starts with the
+  // expand toggle, so the text of every level lines up past it. The indentation is inside the cell,
+  // which keeps the padding of its header: a squeezed column shrinks its cells like its header. When
+  // the column is too narrow for the full indentation, every level gets a share of what there is,
+  // deeper levels a larger one, so the hierarchy still shows.
+  .datagrid .datagrid-cell.datagrid-tree-cell {
+    overflow: hidden;
+  }
+
+  .datagrid-tree-cell-content {
+    $toggle-size: datagrid-variables.$clr-datagrid-tree-toggle-size;
+    // Each level holds the toggle and a gap before the text, so a child's toggle sits under the text of
+    // its parent.
+    $indent: calc(#{$toggle-size} + #{density.$clr-base-gap-s});
+    $level: var(--clr-datagrid-tree-level, 0);
+
+    display: flex;
+    align-items: flex-start;
+    gap: density.$clr-base-gap-s;
+    // The levels above the row; the toggle and its gap make the last one. Percentages are of the cell's
+    // content width; the size of a toggle of it is kept for the text.
+    margin-left: max(
+      0px,
+      min(calc(#{$level} * #{$indent}), calc((100% - #{$toggle-size}) * (#{$level} + 1) / (#{$level} + 2) - #{$indent}))
+    );
+    // The indentation leaves less room, so a long word breaks rather than being cut off by the cell.
+    overflow-wrap: anywhere;
+
+    // A row without children has no toggle: its text keeps the place of one.
+    > .datagrid-tree-cell-text:first-child {
+      margin-left: $indent;
+    }
+  }
+
+  .datagrid-tree-cell-text {
+    // Shrinks below its content, so the overflow ellipsis can cut it.
+    flex: 1;
+    min-width: 0;
+  }
+
+  .datagrid .datagrid-tree-toggle {
+    $size: datagrid-variables.$clr-datagrid-tree-toggle-size;
+
+    @include mixins.clr-no-styles-button();
+    @include datagrid-mixins.datagrid-action-button-styles($height: $size, $columnWidth: $size);
+    // A square of the toggle size, centred on the first line of the text like the other row controls:
+    // the margins make up the difference with the line, which the button measures in the font of the
+    // text (normalize), so it holds for any line height.
+    flex: none;
+    width: $size;
+    margin-block: calc((1lh - #{$size}) / 2);
+    color: datagrid-variables.$clr-datagrid-icon-color;
+
+    // While the children of the row load, the size of the icon it replaces.
+    .spinner {
+      @include spinner-mixins.spinner-size-before-after(
+        datagrid-variables.$clr-datagrid-icon-size,
+        spinner-variables.$clr-spinner-small-stroke-width
+      );
     }
   }
 
@@ -1055,6 +1121,9 @@
 
   // @deprecated CSS rule `.datagrid-compact { ... }` in favor of compact mode in density theme
   .datagrid-compact {
+    // The tree geometry of the compact density.
+    --clr-datagrid-tree-toggle-size: #{mixins.baselinePx(20)};
+
     .datagrid {
       margin-top: datagrid-variables.$clr-datagrid-compact-margin-top;
     }
@@ -1167,7 +1236,10 @@
       }
     }
 
-    .datagrid-cell:not(.datagrid-detail-caret, .datagrid-expandable-caret, .datagrid-row-actions) {
+    // A tree cell is left out for its toggle, which places its icon by its padding; the icons of its
+    // text line up like those of any other cell.
+    .datagrid-cell:not(.datagrid-detail-caret, .datagrid-expandable-caret, .datagrid-row-actions, .datagrid-tree-cell),
+    .datagrid-tree-cell-text {
       @include mixins.cell-children-aligment();
     }
 
