@@ -18,7 +18,7 @@ import { tap } from 'rxjs/operators';
   template: '<div>{{ model.mockPropertyValue }}</div>',
 })
 export class MockStepComponent implements OnStepValidate, OnStepActivate {
-  model: MockStepModel;
+  model!: MockStepModel;
 
   activate() {
     this.model.isActivated = true;
@@ -52,7 +52,7 @@ export class InvalidMockComponent extends MockStepComponent {
 export class MockStepModel implements StepModel {
   isActivated = false;
   isValidated = false;
-  readyToComplete: boolean;
+  readyToComplete!: boolean;
 
   validationState: StepValidationState = new StepValidationState();
 

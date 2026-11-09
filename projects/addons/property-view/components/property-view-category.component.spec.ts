@@ -22,11 +22,11 @@ import { PropertyViewCategoryComponent } from './property-view-category.componen
   template: '',
 })
 class PropertyViewSectionMockComponent {
-  @Input() componentId: string;
+  @Input() componentId!: string;
 
-  @Input() data: PropertyViewSectionModel;
+  @Input() data!: PropertyViewSectionModel;
 
-  @Input() expanded: boolean;
+  @Input() expanded!: boolean;
 }
 
 class PropertyViewCategoriesSectionsExpandedStateManagerMock {

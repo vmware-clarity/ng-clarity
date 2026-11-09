@@ -231,7 +231,7 @@ describe('datagridPage directive', () => {
   `,
 })
 class DatagridForClientSideGridHostComponent {
-  @ViewChild(DatagridComponent, { static: true }) appfxDatagridComponent: DatagridComponent<unknown>;
+  @ViewChild(DatagridComponent, { static: true }) appfxDatagridComponent!: DatagridComponent<unknown>;
 
   currentPageIndex = 3;
   newPageIndex = 0;
@@ -265,7 +265,7 @@ class DatagridForClientSideGridHostComponent {
   `,
 })
 class DatagridForServerSideGridHostComponent {
-  @ViewChild(DatagridComponent, { static: true }) appfxDatagridComponent: DatagridComponent<unknown>;
+  @ViewChild(DatagridComponent, { static: true }) appfxDatagridComponent!: DatagridComponent<unknown>;
 
   @ViewChild(DatagridPageDirective, { static: true }) newPageIndex = 0;
 

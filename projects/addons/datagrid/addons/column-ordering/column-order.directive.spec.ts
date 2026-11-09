@@ -259,11 +259,11 @@ describe('ColumnOrderDirective', () => {
   selector: 'clr-datagrid[testDirectives]',
 })
 class TestDirective {
-  @ContentChildren(ColumnOrderDirective) columnOrderDirectives: QueryList<ColumnOrderDirective>;
+  @ContentChildren(ColumnOrderDirective) columnOrderDirectives!: QueryList<ColumnOrderDirective>;
 
-  @ContentChildren(CdkDrag) cdkDragDirectives: QueryList<CdkDrag>;
+  @ContentChildren(CdkDrag) cdkDragDirectives!: QueryList<CdkDrag>;
 
-  @ContentChildren(ColumnOrderDirective, { read: ElementRef }) elementRefs: QueryList<ElementRef>;
+  @ContentChildren(ColumnOrderDirective, { read: ElementRef }) elementRefs!: QueryList<ElementRef>;
 }
 
 @Component({
@@ -293,7 +293,7 @@ class TestDirective {
   `,
 })
 class TestClrDatagridHostComponent {
-  @ViewChild(TestDirective) content: TestDirective;
+  @ViewChild(TestDirective) content!: TestDirective;
 
   data: any[] = [
     {

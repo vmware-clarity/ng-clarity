@@ -77,7 +77,7 @@ class MockStep2WayBindingModel implements StepModel {
 class MockStepWithGetterSetter implements StepModel {
   loading = false;
 
-  #prop1: string;
+  #prop1!: string;
 
   @In()
   @Out()
@@ -104,9 +104,9 @@ class MockStepModelWithoutInputProperties implements StepModel {
 class MockStepModelWithNestedObjectOutput implements StepModel {
   loading = false;
 
-  @Out() var1: string;
+  @Out() var1!: string;
 
-  @Out() nt: NestedType;
+  @Out() nt!: NestedType;
 
   @Out() nestedVar = Var.of<NestedType>();
 }
@@ -114,9 +114,9 @@ class MockStepModelWithNestedObjectOutput implements StepModel {
 class MockStepModelWithNestedObjectInput implements StepModel {
   loading = false;
 
-  @In() var1: string;
+  @In() var1!: string;
 
-  @In() nt: NestedType;
+  @In() nt!: NestedType;
 
   @In() nestedVar = Var.of<NestedType>();
 }
@@ -126,7 +126,7 @@ class StepModelWithOptionalInputs implements StepModel {
 
   @In() var1 = '';
 
-  @In({ optional: true }) var2: string;
+  @In({ optional: true }) var2!: string;
 }
 
 class EmptyStepModel implements StepModel {
@@ -143,7 +143,7 @@ class StepModelForExternalMappings implements StepModel {
 
 class WorkflowModel {
   v1 = Var.of(10);
-  c1: Var<number>;
+  c1!: Var<number>;
 
   var1 = Var.of('var1');
   var2 = Var.of<string>();
@@ -160,7 +160,7 @@ class WorkflowModel {
     return throwError(() => new Error('cp3'));
   });
 
-  nt: NestedType;
+  nt!: NestedType;
   nestedVar = Var.of<NestedType>();
   nestedVar1 = Var.from(this.nestedVar).pluck('var1');
 
@@ -687,8 +687,8 @@ describe('appfx-workflow-model-manager.service.spec', () => {
         it('WHEN input property does not exist in wizard model', function (this: ThisTest) {
           class StepModelWithOptionalInput implements StepModel {
             loading = false;
-            @In({ optional: true }) notExisting: string;
-            @In() var1: string;
+            @In({ optional: true }) notExisting!: string;
+            @In() var1!: string;
           }
 
           const model = new StepModelWithOptionalInput();
@@ -706,9 +706,9 @@ describe('appfx-workflow-model-manager.service.spec', () => {
         it('WHEN input property maps to SimpleVar that is unset', function (this: ThisTest) {
           class StepModelWithOptionalInput implements StepModel {
             loading = false;
-            @In() var1: string;
+            @In() var1!: string;
             // Maps to WorkflowModel.var2 that is unset SimpleVar.
-            @In({ optional: true }) var2: string;
+            @In({ optional: true }) var2!: string;
           }
 
           const model = new StepModelWithOptionalInput();
@@ -727,9 +727,9 @@ describe('appfx-workflow-model-manager.service.spec', () => {
         it('WHEN input property maps to ComputedVar with missing dependencies', function (this: ThisTest) {
           class StepModelWithOptionalInput implements StepModel {
             loading = false;
-            @In() var1: string;
+            @In() var1!: string;
             // Maps to WorkflowModel.cp2 that is a ComputedVar, whose dependencies are not satisfied.
-            @In({ optional: true }) cp2: string;
+            @In({ optional: true }) cp2!: string;
           }
 
           const model = new StepModelWithOptionalInput();

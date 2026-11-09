@@ -126,9 +126,9 @@ const columns = [
   standalone: true,
 })
 class DatagridForClientSideGridHostComponent {
-  @ViewChild(DatagridComponent, { static: true }) datagridComponent: DatagridComponent<unknown>;
+  @ViewChild(DatagridComponent, { static: true }) datagridComponent!: DatagridComponent<unknown>;
 
-  @ViewChild(DatagridPreserveSelectionDirective, { static: true }) directive: DatagridPreserveSelectionDirective;
+  @ViewChild(DatagridPreserveSelectionDirective, { static: true }) directive!: DatagridPreserveSelectionDirective;
 
   preserveSelection = true;
   pageSize = 4;

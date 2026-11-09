@@ -16,21 +16,21 @@ import { CloseHandler, ModelChange, Step, TabLayout, WorkflowModel } from '@clr/
   template: '',
 })
 export class MockAppfxDialogComponent {
-  @Input() title: string;
-  @Input() subTitle: string;
-  @Input() size: string;
-  @Input() height: string;
-  @Input() defaultButton: DefaultButton;
-  @Input() cancelButtonLabel: string;
-  @Input() okButtonLabel: string;
-  @Input() tabLayout: TabLayout;
-  @Input() disableTabsContent: boolean;
-  @Input() loading: boolean;
-  @Input() steps: Step[];
-  @Input() model: WorkflowModel;
-  @Input() closeHandler: CloseHandler;
-  @Input() showTabLinks: boolean;
-  @Input() opened: boolean;
+  @Input() title!: string;
+  @Input() subTitle!: string;
+  @Input() size!: string;
+  @Input() height!: string;
+  @Input() defaultButton!: DefaultButton;
+  @Input() cancelButtonLabel!: string;
+  @Input() okButtonLabel!: string;
+  @Input() tabLayout!: TabLayout;
+  @Input() disableTabsContent!: boolean;
+  @Input() loading!: boolean;
+  @Input() steps!: Step[];
+  @Input() model!: WorkflowModel;
+  @Input() closeHandler!: CloseHandler;
+  @Input() showTabLinks!: boolean;
+  @Input() opened!: boolean;
 
   @Output() readonly onModelChange: EventEmitter<ModelChange[]> = new EventEmitter<ModelChange[]>();
   @Output() onClose: EventEmitter<void> = new EventEmitter<void>();

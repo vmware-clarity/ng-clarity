@@ -211,7 +211,7 @@ describe('ManageFilterComponent', () => {
       expect(icon.closest('.badge')).toBeTruthy();
       const svg = (icon.shadowRoot ?? icon).querySelector('svg');
       expect(svg).toBeTruthy();
-      expect(svg.innerHTML).toContain('path');
+      expect(svg!.innerHTML).toContain('path');
     });
   });
   it('removes string property filter', function (this: ThisTest) {

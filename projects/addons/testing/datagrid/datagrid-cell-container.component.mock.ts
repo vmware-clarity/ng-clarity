@@ -34,8 +34,8 @@ export class MockDatagridCellContainerComponent implements OnInit {
 
   @Input() item: any;
 
-  @ViewChild('cellContainer', { read: ViewContainerRef, static: true }) protected container: ViewContainerRef;
-  private componentRef: ComponentRef<any> | null;
+  @ViewChild('cellContainer', { read: ViewContainerRef, static: true }) protected container!: ViewContainerRef;
+  private componentRef!: ComponentRef<any> | null;
   private instance: any;
 
   ngOnInit(): void {

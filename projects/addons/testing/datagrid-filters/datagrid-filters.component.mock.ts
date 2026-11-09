@@ -17,7 +17,7 @@ import { FilterablePropertyDefinition, FilterMode, PropertyFilter } from '@clr/a
 export class MockDatagridFiltersComponent {
   @Input() filterMode = FilterMode.Quick;
 
-  @Input() filterableProperties: FilterablePropertyDefinition[];
+  @Input() filterableProperties!: FilterablePropertyDefinition[];
 
   @Output() searchTermChange = new EventEmitter<string>();
 
