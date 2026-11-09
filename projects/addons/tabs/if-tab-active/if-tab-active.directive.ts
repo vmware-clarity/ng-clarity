@@ -34,9 +34,9 @@ import { Subscription } from 'rxjs';
 export class IfTabActiveDirective implements OnInit, OnDestroy {
   @Output() appfxIfTabActiveChange: EventEmitter<boolean> = new EventEmitter();
 
-  @Input() activeClass: string;
+  @Input() activeClass!: string;
 
-  private subscription: Subscription;
+  private subscription?: Subscription;
 
   constructor(
     @Host() @Self() public tab: ClrTab,

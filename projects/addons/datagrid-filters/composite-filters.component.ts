@@ -41,9 +41,9 @@ import {
 })
 export class CompositeFiltersComponent implements OnInit {
   // Array of filterable properties
-  @Input() filterableProperties: FilterablePropertyDefinition[];
+  @Input() filterableProperties!: FilterablePropertyDefinition[];
 
-  @Input() presetFilters: PropertyFilter[];
+  @Input() presetFilters: PropertyFilter[] = [];
 
   /**
    * Event emitter to tell hosting view that the filtering conditions have changed
@@ -57,13 +57,13 @@ export class CompositeFiltersComponent implements OnInit {
   readonly userPropertyType: PropertyType = PropertyType.User;
 
   signPostOpened = false;
-  selectedFilterableProperty: FilterablePropertyDefinition;
-  propertyType: PropertyType;
-  stringProperty: StringPropertyDefinition;
-  enumProperty: EnumPropertyDefinition;
-  numericProperty: NumericPropertyDefinition;
-  dateTimeProperty: DateTimePropertyDefinition;
-  userProperty: UserPropertyDefinition;
+  selectedFilterableProperty!: FilterablePropertyDefinition;
+  propertyType!: PropertyType;
+  stringProperty!: StringPropertyDefinition;
+  enumProperty!: EnumPropertyDefinition;
+  numericProperty!: NumericPropertyDefinition;
+  dateTimeProperty!: DateTimePropertyDefinition;
+  userProperty!: UserPropertyDefinition;
   // List of active filters to be sent to the hosting view
   propertyFilters: PropertyFilter[] = [];
   collapsedFilters = false;

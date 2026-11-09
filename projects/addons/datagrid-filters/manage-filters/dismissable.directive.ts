@@ -34,7 +34,7 @@ const spaceKey = 'Space';
   standalone: false,
 })
 export class DismissableDirective implements AfterViewInit {
-  @Input() dismissAriaLabel: string;
+  @Input() dismissAriaLabel!: string;
   @Output() dismiss = new EventEmitter();
 
   constructor(

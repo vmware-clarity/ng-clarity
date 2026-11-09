@@ -24,7 +24,7 @@ export class FilterFormComponent {
   /**
    * Hosting view form status
    */
-  @Input() valid: boolean;
+  @Input() valid!: boolean;
 
   /**
    * Event emitter to tell hosting view that cancel button was clicked

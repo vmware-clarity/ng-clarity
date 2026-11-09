@@ -10,5 +10,5 @@ import { StepModel } from '@clr/addons/var';
 
 export class SummaryModel implements StepModel {
   loading = false;
-  data: PropertyViewModel;
+  data!: PropertyViewModel;
 }

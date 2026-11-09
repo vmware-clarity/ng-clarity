@@ -34,12 +34,12 @@ import { ColumnFilter } from '../interfaces/column-filter';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DatagridFilterContainerComponent implements AfterViewInit, OnDestroy {
-  @ViewChild('filterContainer', { read: ViewContainerRef, static: true }) container: ViewContainerRef;
+  @ViewChild('filterContainer', { read: ViewContainerRef, static: true }) container!: ViewContainerRef;
 
   /**
    * The filter component to be created.
    */
-  @Input() filterType: Type<any>;
+  @Input() filterType!: Type<any>;
 
   /**
    * The initial value for the filter.
@@ -51,9 +51,9 @@ export class DatagridFilterContainerComponent implements AfterViewInit, OnDestro
    */
   @Output() filterValueChange: EventEmitter<any> = new EventEmitter<any>();
 
-  private componentRef: ComponentRef<any> | null;
-  private filter: ColumnFilter<any>;
-  private filterChangeSub: Subscription | null;
+  private componentRef: ComponentRef<any> | null = null;
+  private filter?: ColumnFilter<any>;
+  private filterChangeSub: Subscription | null = null;
 
   constructor(private filterContainer: ClrDatagridFilter) {}
 

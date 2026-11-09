@@ -20,7 +20,7 @@ import { zoomBreakpoints, ZoomLevel } from './zoom-level.model';
  */
 @Injectable()
 export class ZoomLevelService implements OnDestroy {
-  private observer: ResizeObserver;
+  private observer!: ResizeObserver;
   private resizeSubject = new ReplaySubject<ZoomLevel>(1);
   private lastZoomLevel: ZoomLevel | undefined;
 

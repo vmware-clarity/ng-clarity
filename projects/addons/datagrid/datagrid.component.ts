@@ -194,10 +194,10 @@ export interface GridFooterModel {
 })
 export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, OnChanges, PreselectableComponent {
   searchTerm = '';
-  visibleColumns: ColumnDefinition<T>[];
+  visibleColumns!: ColumnDefinition<T>[];
   draggedItems: T[] = [];
 
-  @ViewChild(ClrDatagridPagination) clrDatagridPagination: ClrDatagridPagination;
+  @ViewChild(ClrDatagridPagination) clrDatagridPagination!: ClrDatagridPagination;
 
   /**
    * Shows loading indicator inside the datagrid to prevent user interactions while data is loading.
@@ -223,7 +223,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    * Defines the selectable page size options displayed in the grid footer.
    * Users can choose from these options to control the number of items shown per page.
    */
-  @Input() pageSizeOptions: number[];
+  @Input() pageSizeOptions!: number[];
 
   /**
    * The totalItems should be provided when the grid is server driven datagrid
@@ -260,20 +260,20 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   /**
    * Template for the content displayed when a row expands. Enables expandable row functionality.
    */
-  @Input() rowDetailContent: TemplateRef<unknown>;
+  @Input() rowDetailContent!: TemplateRef<unknown>;
 
   @Input() rowsExpandedByDefault = false;
 
   /**
    * A function that defines how to be tracked the changes for items in the grid.
    */
-  @Input() trackByFunction: TrackByFunction<T>;
+  @Input() trackByFunction?: TrackByFunction<T>;
 
   /**
    * property expression which defines the item property which to be
    * used for tracking changes of items in in the grid. May be deep with "a.b.c" notation.
    */
-  @Input() trackByGridItemProperty: string;
+  @Input() trackByGridItemProperty!: string;
 
   /**
    * Reference to the template containing the content for the header
@@ -304,14 +304,14 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    * This function receives a row item as an argument and returns a boolean indicating
    * whether the row should be locked (`true`) or enabled (`false`).
    */
-  @Input() isRowLocked: (rowItem: T) => boolean;
+  @Input() isRowLocked!: (rowItem: T) => boolean;
 
   /**
    * Configuration for enabling drag-and-drop functionality within the datagrid.
    * By default, drag and drop is disabled. To enable it, provide a valid configuration object
    * implementing the @see DatagridDragConfig interface.
    */
-  @Input() dragConfig: DatagridDragConfig;
+  @Input() dragConfig!: DatagridDragConfig;
 
   /**
    * An array of properties used for advanced filtering in FilterMode.Advanced
@@ -332,12 +332,12 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   /**
    * Action definitions for the single row actions.
    */
-  @Input() singleRowActions: ActionDefinition[] | null;
+  @Input() singleRowActions: ActionDefinition[] | null = null;
 
   /**
    * Controls whether the datagrid selection should be preserved on filtering.
    */
-  @Input() preserveExistingSelectionOnFilter: boolean;
+  @Input() preserveExistingSelectionOnFilter = false;
 
   /**
    * Controls whether the datagrid uses virtual scrolling to render data.
@@ -391,7 +391,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    *
    * Requires {@link enableColumnActions}, which is what renders the menu in the first place.
    */
-  @Input() columnActions: ActionDefinition[] | null;
+  @Input() columnActions: ActionDefinition[] | null = null;
 
   /**
    * Input for providing data when virtual scrolling is enabled.
@@ -411,7 +411,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    * individual fields map to columns based on each column's `field` property
    * as defined in {@link ColumnDefinition}.
    */
-  @Input() gridItems: T[];
+  @Input() gridItems!: T[];
 
   /**
    * Renders the datagrid as a tree: `gridItems` are the roots, or `dataRange` with `virtualScrolling`,
@@ -544,7 +544,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   protected readonly dgStrings: DatagridStrings;
   protected enableSingleRowActions = false;
 
-  @ViewChild(ClrDatagrid, { static: true }) private clrDatagrid: ClrDatagrid;
+  @ViewChild(ClrDatagrid, { static: true }) private clrDatagrid!: ClrDatagrid;
 
   readonly #defaultActionButtonClass: string = ActionBarLayout.flatCompact;
   readonly #interpolationExpression: RegExp = /\{(\d+)\}/g;
@@ -556,7 +556,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    *
    * @type ColumnDefinition
    */
-  #dgColumns: ColumnDefinition<T>[];
+  #dgColumns!: ColumnDefinition<T>[];
   // The column defined first, which carries the tree toggle when no column is marked with `treeToggle`.
   #firstColumn: ColumnDefinition<T> | undefined;
   #selectionType: SelectionType = SelectionType.Single;
@@ -1340,10 +1340,6 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    * does not emit <code>QueryList<T>.changes</code> in this case.
    */
   private notifyOnChanges() {
-    // Disable check for this.trackByFunction since the compiler thinks it's always assigned but that's not the case.
-    // In the PreselectComponent interface, trackByFunction is required but in the datagrid it's optional.
-
-    // @ts-ignore
     if (this.trackByGridItemProperty || this.trackByFunction) {
       setTimeout(() => {
         this.clrDatagrid?.rows?.notifyOnChanges();

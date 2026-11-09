@@ -508,7 +508,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     // (undocumented)
     trackByColumnId(index: number, column: ColumnDefinition<T>): string;
     protected trackByFn(index: number, gridItem: T): T;
-    trackByFunction: TrackByFunction<T>;
+    trackByFunction?: TrackByFunction<T>;
     trackByGridItemFn: (item: T) => T;
     trackByGridItemProperty: string;
     treeConfig?: DatagridTreeConfig<T>;
@@ -803,7 +803,7 @@ export interface PreselectableComponent {
     // (undocumented)
     serverDrivenDatagrid: boolean;
     // (undocumented)
-    trackByFunction: TrackByFunction<any>;
+    trackByFunction?: TrackByFunction<any>;
     // (undocumented)
     trackByGridItemProperty: string;
 }

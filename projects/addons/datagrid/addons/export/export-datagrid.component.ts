@@ -39,9 +39,9 @@ export class ExportDatagridComponent {
    */
   @Output() exportEventEmitter: EventEmitter<ExportStatus> = new EventEmitter<ExportStatus>();
 
-  allRowsCount: string;
-  selectedRowsCount: string;
-  matchedFilterRowsCount: string;
+  allRowsCount = '';
+  selectedRowsCount = '';
+  matchedFilterRowsCount = '';
   exportType: any;
   exportStatus: ExportStatus = { inProgress: false, exportType: ExportType.ALL };
 

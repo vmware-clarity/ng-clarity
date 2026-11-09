@@ -167,9 +167,9 @@ export interface ThemeCssValidation {
 // @public (undocumented)
 export interface ThemePreset {
     // (undocumented)
-    dark: ThemeColors;
+    dark: ThemeColors | null;
     // (undocumented)
-    light: ThemeColors;
+    light: ThemeColors | null;
     // (undocumented)
     name: string;
 }

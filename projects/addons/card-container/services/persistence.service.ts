@@ -21,7 +21,7 @@ import {
  */
 @Injectable()
 export class PersistenceService {
-  private containerStore: AppfxContainerPersistenceStore;
+  private containerStore!: AppfxContainerPersistenceStore;
 
   private appfxCardSettings: AppfxCardSettings[] = [];
 
