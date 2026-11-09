@@ -26,6 +26,7 @@ import DatepickerEnabledServiceSpecs from './providers/datepicker-enabled.servic
 import DatepickerFocusServiceSpecs from './providers/datepicker-focus.service.spec';
 import LocaleHelperServiceSpecs from './providers/locale-helper.service.spec';
 import ViewManagerServiceSpecs from './providers/view-manager.service.spec';
+import LocaleDateFormatSpecs from './utils/locale-date-format.spec';
 import YearpickerSpecs from './yearpicker.spec';
 
 describe('Datepicker', function () {
@@ -43,6 +44,7 @@ describe('Datepicker', function () {
     LocaleHelperServiceSpecs();
     DatepickerFocusServiceSpecs();
     DateIOServiceSpecs();
+    LocaleDateFormatSpecs();
     DateNavigationServiceSpecs();
     DatepickerEnabledServiceSpecs();
     DateFormControlServiceSpecs();

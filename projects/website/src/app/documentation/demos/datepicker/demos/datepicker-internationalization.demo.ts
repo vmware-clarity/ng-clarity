@@ -28,6 +28,34 @@ import localeFr from '@angular/common/locales/fr';
 registerLocaleData(localeFr);
 `;
 
+const LOCALE_DATE_FORMAT_EXAMPLE = `
+import { Component, LOCALE_ID, inject } from '@angular/core';
+import { AbstractControl, FormControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { ClrLocaleDateFormat } from '@clr/angular';
+
+// Flags text that is not a valid date, which the date picker does not do by itself.
+export function validDate(dateFormat: ClrLocaleDateFormat): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null =>
+    control.value && !dateFormat.parse(control.value) ? { date: true } : null;
+}
+
+@Component({/* ... */})
+export class MyComponent {
+  // One instance per component, created where inject() is available.
+  private readonly dateFormat = new ClrLocaleDateFormat(inject(LOCALE_ID));
+
+  readonly start = new FormControl('', [validDate(this.dateFormat)]);
+
+  get startDate(): Date | null {
+    return this.dateFormat.parse(this.start.value ?? ''); // e.g. '01/31/2025' (en-US) -> 31 January 2025
+  }
+
+  setStart(date: Date): void {
+    this.start.setValue(this.dateFormat.format(date)); // '01/31/2025' for en-US, '31/01/2025' for fr
+  }
+}
+`;
+
 @Component({
   selector: 'clr-datepicker-internationalization-demo',
   templateUrl: './datepicker-internationalization.demo.html',
@@ -36,4 +64,5 @@ registerLocaleData(localeFr);
 export class DatepickerInternationalizationDemo {
   registerLocaleExample = REGISTER_LOCALE_EXAMPLE;
   provideLocaleExample = PROVIDE_LOCALE_EXAMPLE;
+  localeDateFormatExample = LOCALE_DATE_FORMAT_EXAMPLE;
 }
