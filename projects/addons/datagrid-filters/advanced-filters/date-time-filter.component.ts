@@ -17,10 +17,18 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
+import { ClrLocaleDateFormat } from '@clr/angular/forms';
 
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
-import { isoToLocaleDate, localeDateToIso, localeDateValidator } from './locale-date.utils';
 import { ComparisonOperator, LogicalOperator, TimeSpan } from '../model/datagrid-filters.enums';
 import {
   DateTimePropertyDefinition,
@@ -31,6 +39,7 @@ import {
 import { dateTimeEditorState } from '../model/date-time-editor-state';
 
 const enterKey = 'Enter';
+const pad = (value: number) => value.toString().padStart(2, '0');
 const dateTimeFormat = 'yyyy-MM-ddTHH:mm:ss';
 const requiredValidators: ValidatorFn[] = [Validators.required];
 
@@ -77,8 +86,13 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
   @Output() filterCriteriaChange: EventEmitter<PropertyFilter> = new EventEmitter<PropertyFilter>();
 
   // The clrDate inputs hold locale date strings; predicates and stored values use yyyy-MM-dd.
-  private readonly locale = inject(LOCALE_ID);
-  private readonly dateValidators: ValidatorFn[] = [Validators.required, localeDateValidator(this.locale)];
+  private readonly dateFormat = new ClrLocaleDateFormat(inject(LOCALE_ID));
+  /** Flags a typed date that cannot be read in the current locale with the `pattern` error. */
+  private readonly dateValidators: ValidatorFn[] = [
+    Validators.required,
+    (control: AbstractControl): ValidationErrors | null =>
+      control.value && !this.dateFormat.parse(control.value) ? { pattern: true } : null,
+  ];
   private readonly relativeOperators: ComparisonOperator[] = [
     ComparisonOperator.LastDay,
     ComparisonOperator.LastWeek,
@@ -195,8 +209,10 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
   }
 
   onApplyButtonClick(): void {
-    // A new filter per Apply, so a filter emitted earlier is never changed afterwards.
+    // A new filter and predicates per Apply, so a filter emitted earlier is never changed afterwards.
     this.selectedFilterCriteria = new PropertyFilter();
+    this.primaryPredicate = new PropertyPredicate();
+    this.secondaryPredicate = new PropertyPredicate();
     const selectedOperator: ComparisonOperator = this.dateTimeFilterForm.value.operator;
 
     if (this.isRelativeDateTimeOperator(selectedOperator)) {
@@ -534,12 +550,14 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
   }
 
   private parseDateValue(dateTime: string): string {
-    return dateTime ? isoToLocaleDate(dateTime.substring(0, 10), this.locale) : '';
+    const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(dateTime || '');
+    return match ? this.dateFormat.format(new Date(+match[1], +match[2] - 1, +match[3])) : '';
   }
 
   /** The date picker's locale date string as yyyy-MM-dd. */
   private isoDate(controlName: 'dateValue' | 'dateValueTo'): string {
-    return localeDateToIso(this.dateTimeFilterForm.value[controlName], this.locale) ?? '';
+    const date = this.dateFormat.parse(this.dateTimeFilterForm.value[controlName]);
+    return date ? `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}` : '';
   }
 
   private parseTimeValue(dateTime: string): string {

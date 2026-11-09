@@ -8,13 +8,12 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ClrDatepickerModule, ClrInputModule, ClrSelectModule } from '@clr/angular/forms';
+import { ClrDatepickerModule, ClrInputModule, ClrLocaleDateFormat, ClrSelectModule } from '@clr/angular/forms';
 import { ClrIcon } from '@clr/angular/icon';
 
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
 import { DateTimeFilterComponent } from './date-time-filter.component';
 import { FilterFormComponent } from './filter-form.component';
-import { isoToLocaleDate } from './locale-date.utils';
 import { ComparisonOperator, LogicalOperator, TimeSpan } from '../model/datagrid-filters.enums';
 import { DateTimePropertyDefinition, PropertyFilter, PropertyPredicate } from '../model/datagrid-filters.interfaces';
 
@@ -22,7 +21,11 @@ import Spy = jasmine.Spy;
 
 const augustNinth = '2023-08-09';
 // The clrDate inputs hold en-US locale strings (MM/dd/yyyy) in tests.
-const toInput = (iso: string) => isoToLocaleDate(iso, 'en-US');
+const enUsDateFormat = new ClrLocaleDateFormat('en-US');
+const toInput = (iso: string) => {
+  const [year, month, day] = iso.split('-').map(Number);
+  return enUsDateFormat.format(new Date(year, month - 1, day));
+};
 // Emitted filters also carry editorState; these assertions check the criteria only.
 const withCriteria = (filter: PropertyFilter) =>
   jasmine.objectContaining<PropertyFilter>(
@@ -536,6 +539,25 @@ describe('DateTimeFilterComponent', () => {
       this.component.onApplyButtonClick();
       const [first, second] = (this.component.filterCriteriaChange.emit as Spy).calls.allArgs().map(args => args[0]);
       expect(first).not.toBe(second);
+    });
+
+    it('leaves an emitted filter unchanged after a later Apply', function (this: ThisTest) {
+      spyOn(this.component.filterCriteriaChange, 'emit');
+      this.fixture.detectChanges();
+      this.component.dateTimeFilterForm.controls['operator'].setValue(ComparisonOperator.Equals);
+      this.component.dateTimeFilterForm.controls['dateValue'].setValue(toInput('2023-08-09'));
+      this.component.onApplyButtonClick();
+      const first: PropertyFilter = (this.component.filterCriteriaChange.emit as Spy).calls.mostRecent().args[0];
+      const snapshot = first.criteria.map(predicate => ({ operator: predicate.operator, value: predicate.value }));
+
+      this.component.dateTimeFilterForm.controls['dateValue'].setValue(toInput('2024-01-15'));
+      this.component.onApplyButtonClick();
+      this.component.dateTimeFilterForm.controls['operator'].setValue(ComparisonOperator.IsEmpty);
+      this.component.onApplyButtonClick();
+
+      expect(first.criteria.map(predicate => ({ operator: predicate.operator, value: predicate.value }))).toEqual(
+        snapshot
+      );
     });
 
     it('opens a preset without editor state from its criteria', function (this: ThisTest) {
