@@ -92,7 +92,7 @@ export class ClrIfActive implements OnDestroy {
     }
   }
 
-  private checkAndUpdateView(currentId: number) {
+  private checkAndUpdateView(currentId: number | undefined) {
     const isNowActive = currentId === this.id;
     // only emit if the new active state is changed since last time.
     if (isNowActive !== this.wasActive) {

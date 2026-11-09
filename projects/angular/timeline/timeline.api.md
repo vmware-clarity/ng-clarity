@@ -57,9 +57,9 @@ export class ClrTimelineStep {
     // (undocumented)
     get iconAriaLabel(): string;
     // (undocumented)
-    get iconShape(): string;
+    get iconShape(): string | undefined;
     // (undocumented)
-    get iconStatus(): string;
+    get iconStatus(): string | null;
     // (undocumented)
     get isProcessing(): boolean;
     // (undocumented)

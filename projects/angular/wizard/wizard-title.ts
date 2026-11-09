@@ -13,5 +13,5 @@ import { HeadingLevel } from '@clr/angular/utils';
   standalone: false,
 })
 export class ClrWizardTitle {
-  @Input('clrHeadingLevel') headingLevel: HeadingLevel;
+  @Input('clrHeadingLevel') headingLevel?: HeadingLevel;
 }

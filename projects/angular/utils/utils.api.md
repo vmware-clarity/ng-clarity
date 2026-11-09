@@ -904,7 +904,7 @@ export const IF_ACTIVE_ID_PROVIDER: {
 
 // @public (undocumented)
 export class IfActiveService {
-    get current(): number;
+    get current(): number | undefined;
     set current(value: number);
     get currentChange(): Observable<number>;
     // (undocumented)

@@ -51,10 +51,10 @@ import { ButtonInGroupService } from '../providers/button-in-group.service';
 export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
   @Input('clrToggleButtonAriaLabel') clrToggleButtonAriaLabel: string = this.commonStrings.keys.rowActions;
 
-  @ViewChild('menuToggle') menuToggle: ElementRef<HTMLElement>;
-  @ViewChild('menu') menu: ElementRef<HTMLElement>;
+  @ViewChild('menuToggle') menuToggle!: ElementRef<HTMLElement>;
+  @ViewChild('menu') menu!: ElementRef<HTMLElement>;
 
-  @ContentChildren(ClrButton) buttons: QueryList<ClrButton>;
+  @ContentChildren(ClrButton) buttons!: QueryList<ClrButton>;
 
   popoverId = uniqueIdFactory();
   InitialFocus = InitialFocus;

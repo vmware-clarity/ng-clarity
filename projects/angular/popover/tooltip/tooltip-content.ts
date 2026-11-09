@@ -48,9 +48,9 @@ const defaultSize = 'sm';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrTooltipContent implements OnInit {
-  private _id: string;
-  private _position: ClrPopoverPosition;
-  private _size: string;
+  private _id!: string;
+  private _position!: ClrPopoverPosition;
+  private _size!: string;
 
   constructor(
     @Optional()

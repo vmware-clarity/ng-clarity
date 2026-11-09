@@ -156,7 +156,7 @@ export class ClrHeader implements OnDestroy {
     // (undocumented)
     openNav(navLevel: number): void;
     // (undocumented)
-    openNavLevel: number;
+    openNavLevel: number | null;
     // (undocumented)
     resetNavTriggers(): void;
     // (undocumented)
@@ -312,7 +312,7 @@ export class ClrTabContent implements OnDestroy {
     // (undocumented)
     get active(): boolean;
     // (undocumented)
-    get ariaLabelledBy(): string;
+    get ariaLabelledBy(): string | undefined;
     // (undocumented)
     id: number;
     // (undocumented)
@@ -337,7 +337,7 @@ export class ClrTabLink {
     // (undocumented)
     get addLinkClasses(): boolean;
     // (undocumented)
-    get ariaControls(): string;
+    get ariaControls(): string | undefined;
     // (undocumented)
     el: ElementRef<HTMLElement>;
     // (undocumented)
@@ -468,7 +468,7 @@ export class ClrVerticalNav implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "VerticalNavGroupRegistrationService" needs to be exported by the entry point clr-angular-layout.d.ts
     constructor(_navService: VerticalNavService, _navIconService: VerticalNavIconService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, commonStrings: ClrCommonStringsService);
     // (undocumented)
-    get ariaExpanded(): string;
+    get ariaExpanded(): string | null;
     // (undocumented)
     get collapsed(): boolean | string;
     set collapsed(value: boolean | string);
@@ -488,7 +488,7 @@ export class ClrVerticalNav implements OnDestroy {
     // (undocumented)
     toggleByButton(): void;
     // (undocumented)
-    toggleLabel: string;
+    toggleLabel?: string;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNav, "clr-vertical-nav", never, { "toggleLabel": { "alias": "clrVerticalNavToggleLabel"; "required": false; }; "collapsible": { "alias": "clrVerticalNavCollapsible"; "required": false; }; "collapsed": { "alias": "clrVerticalNavCollapsed"; "required": false; }; }, { "_collapsedChanged": "clrVerticalNavCollapsedChange"; }, never, ["*"], false, never>;
     // (undocumented)

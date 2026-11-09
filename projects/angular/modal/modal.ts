@@ -54,7 +54,7 @@ const FADE_MOVE_ENTER_CLASSES: Record<string, string> = {
 })
 export class ClrModal implements OnChanges, OnDestroy {
   modalId = uniqueIdFactory();
-  @ViewChild('title') title: ElementRef<HTMLElement>;
+  @ViewChild('title') title!: ElementRef<HTMLElement>;
 
   @Input('clrModalOpen') @HostBinding('class.open') _open = false;
   @Output('clrModalOpenChange') _openChanged = new EventEmitter<boolean>(false);
@@ -68,16 +68,16 @@ export class ClrModal implements OnChanges, OnDestroy {
   @Input('clrModalPreventClose') stopClose = false;
   @Output('clrModalAlternateClose') altClose = new EventEmitter<boolean>(false);
 
-  @Input('clrModalLabelledById') labelledBy: string;
+  @Input('clrModalLabelledById') labelledBy?: string;
 
   // presently this is only used by inline wizards
   @Input('clrModalOverrideScrollService') bypassScrollService = false;
 
   // Provide raw modal content. This is used by the wizard so that the same template can be rendered with and without a modal.
-  @ContentChild('clrInternalModalContentTemplate') protected readonly modalContentTemplate: TemplateRef<any>;
+  @ContentChild('clrInternalModalContentTemplate') protected readonly modalContentTemplate!: TemplateRef<any>;
 
-  @ViewChild('body') private readonly bodyElementRef: ElementRef<HTMLElement>;
-  @ViewChild('dialog') private readonly dialogElementRef: ElementRef<HTMLElement>;
+  @ViewChild('body') private readonly bodyElementRef!: ElementRef<HTMLElement>;
+  @ViewChild('dialog') private readonly dialogElementRef!: ElementRef<HTMLElement>;
 
   private readonly injector = inject(Injector);
   private readonly noopAnimations = noopAnimations();

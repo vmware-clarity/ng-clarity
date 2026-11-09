@@ -11,8 +11,8 @@ import { ClrPopoverService } from '@clr/angular/popover/common';
 @Injectable()
 export class TooltipMouseService {
   private mouseOutDelay = 100;
-  private mouseOverTrigger: boolean;
-  private mouseOverContent: boolean;
+  private mouseOverTrigger = false;
+  private mouseOverContent = false;
 
   constructor(private readonly popoverService: ClrPopoverService) {}
 

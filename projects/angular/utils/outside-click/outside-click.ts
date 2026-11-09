@@ -16,7 +16,7 @@ export class OutsideClick implements OnDestroy {
 
   @Output('clrOutsideClick') outsideClick = new EventEmitter<any>(false);
 
-  private documentClickListener: VoidFunction;
+  private documentClickListener!: VoidFunction;
 
   constructor(host: ElementRef<HTMLElement>, renderer: Renderer2, ngZone: NgZone) {
     ngZone.runOutsideAngular(() => {

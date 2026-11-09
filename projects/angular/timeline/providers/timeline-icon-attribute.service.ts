@@ -13,45 +13,47 @@ import { IconAttributes } from '../interface/icon-attribute.interface';
 
 @Injectable()
 export class TimelineIconAttributeService {
-  private attributeMap: Map<ClrTimelineStepState, IconAttributes> = new Map<ClrTimelineStepState, IconAttributes>();
+  private attributeMap: Record<ClrTimelineStepState, IconAttributes>;
 
   constructor(commonStrings: ClrCommonStringsService) {
-    this.attributeMap.set(ClrTimelineStepState.NOT_STARTED, {
-      iconShape: 'circle',
-      iconStatus: null,
-      ariaLabel: commonStrings.keys.timelineStepNotStarted,
-    });
-    this.attributeMap.set(ClrTimelineStepState.CURRENT, {
-      iconShape: 'dot-circle',
-      iconStatus: null,
-      ariaLabel: commonStrings.keys.timelineStepCurrent,
-    });
-    this.attributeMap.set(ClrTimelineStepState.PROCESSING, {
-      iconShape: undefined,
-      iconStatus: null,
-      ariaLabel: commonStrings.keys.timelineStepProcessing,
-    });
-    this.attributeMap.set(ClrTimelineStepState.SUCCESS, {
-      iconShape: 'success-standard',
-      iconStatus: 'success',
-      ariaLabel: commonStrings.keys.timelineStepSuccess,
-    });
-    this.attributeMap.set(ClrTimelineStepState.ERROR, {
-      iconShape: 'error-standard',
-      iconStatus: 'danger',
-      ariaLabel: commonStrings.keys.timelineStepError,
-    });
+    this.attributeMap = {
+      [ClrTimelineStepState.NOT_STARTED]: {
+        iconShape: 'circle',
+        iconStatus: null,
+        ariaLabel: commonStrings.keys.timelineStepNotStarted,
+      },
+      [ClrTimelineStepState.CURRENT]: {
+        iconShape: 'dot-circle',
+        iconStatus: null,
+        ariaLabel: commonStrings.keys.timelineStepCurrent,
+      },
+      [ClrTimelineStepState.PROCESSING]: {
+        iconShape: undefined,
+        iconStatus: null,
+        ariaLabel: commonStrings.keys.timelineStepProcessing,
+      },
+      [ClrTimelineStepState.SUCCESS]: {
+        iconShape: 'success-standard',
+        iconStatus: 'success',
+        ariaLabel: commonStrings.keys.timelineStepSuccess,
+      },
+      [ClrTimelineStepState.ERROR]: {
+        iconShape: 'error-standard',
+        iconStatus: 'danger',
+        ariaLabel: commonStrings.keys.timelineStepError,
+      },
+    };
   }
 
   getAriaLabel(step: ClrTimelineStepState): string {
-    return this.attributeMap.get(step).ariaLabel;
+    return this.attributeMap[step].ariaLabel;
   }
 
-  getIconShape(step: ClrTimelineStepState): string {
-    return this.attributeMap.get(step).iconShape;
+  getIconShape(step: ClrTimelineStepState): string | undefined {
+    return this.attributeMap[step].iconShape;
   }
 
-  getIconStatus(step: ClrTimelineStepState): string {
-    return this.attributeMap.get(step).iconStatus;
+  getIconStatus(step: ClrTimelineStepState): string | null {
+    return this.attributeMap[step].iconStatus;
   }
 }
