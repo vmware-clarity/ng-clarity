@@ -122,18 +122,18 @@ export function spec<C, H>(
 }
 
 /*
- * The directive type `D` is the instance type of `clarityDirective`, unless the type the result is assigned to narrows
- * it, e.g. to `TestContext<ClrDatagrid<number>, FullTest>` for the generic `ClrDatagrid`.
+ * The directive type `D` comes from the type the result is assigned to, e.g. `TestContext<ClrDatagrid<number>, FullTest>`
+ * for the generic `ClrDatagrid`, because the class alone can't say which `T` the test uses.
  */
-type CreateTestContext = <T, C, D extends T = T>(
-  clarityDirective: Type<T>,
+type CreateTestContext = <D, C>(
+  clarityDirective: Type<unknown>,
   testComponent: Type<C>,
   providers?: any[],
   extraDirectives?: Type<any>[]
 ) => TestContext<D, C>;
 
-type CreateTestContextWithOverrides = <T, C, D extends T = T>(
-  clarityDirective: Type<T>,
+type CreateTestContextWithOverrides = <D, C>(
+  clarityDirective: Type<unknown>,
   testComponent: Type<C>,
   providers: any[],
   extraDirectives: Type<any>[],
@@ -156,8 +156,8 @@ interface TestHelpersContext extends TestHelpers {
 
 export function addHelpers(): void {
   beforeEach(function (this: TestHelpersContext) {
-    this.create = <T, C, D extends T = T>(
-      clarityDirective: Type<T>,
+    this.create = <D, C>(
+      clarityDirective: Type<unknown>,
       testComponent: Type<C>,
       providers: any[] = [],
       extraDirectives: Type<any>[] = []
@@ -171,8 +171,8 @@ export function addHelpers(): void {
       return (this._context = new TestContext<D, C>(clarityDirective as Type<D>, testComponent));
     };
 
-    this.createOnly = <T, C, D extends T = T>(
-      clarityDirective: Type<T>,
+    this.createOnly = <D, C>(
+      clarityDirective: Type<unknown>,
       testComponent: Type<C>,
       providers: any[] = [],
       extraDirectives: Type<any>[] = []
@@ -185,8 +185,8 @@ export function addHelpers(): void {
       return (this._context = new TestContext<D, C>(clarityDirective as Type<D>, testComponent));
     };
 
-    this.createWithOverrideComponent = <T, C, D extends T = T>(
-      clarityDirective: Type<T>,
+    this.createWithOverrideComponent = <D, C>(
+      clarityDirective: Type<unknown>,
       testComponent: Type<C>,
       providers: any[] = [],
       extraDirectives: Type<any>[] = [],
@@ -205,8 +205,8 @@ export function addHelpers(): void {
       return (this._context = new TestContext<D, C>(clarityDirective as Type<D>, testComponent));
     };
 
-    this.createWithOverrideDirective = <T, C, D extends T = T>(
-      clarityDirective: Type<T>,
+    this.createWithOverrideDirective = <D, C>(
+      clarityDirective: Type<unknown>,
       testComponent: Type<C>,
       providers: any[] = [],
       extraDirectives: Type<any>[] = [],
