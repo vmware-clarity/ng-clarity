@@ -906,7 +906,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    */
   scrollToIndex(index: number, behavior?: ScrollBehavior): void {
     if (this.virtualScrolling) {
-      this.clrDatagrid.virtualScroll.scrollToIndex(index, behavior);
+      this.clrDatagrid.virtualScroll?.scrollToIndex(index, behavior);
     }
   }
 

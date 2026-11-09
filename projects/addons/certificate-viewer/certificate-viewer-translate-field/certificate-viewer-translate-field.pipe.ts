@@ -21,7 +21,7 @@ export class CertificateViewerTranslateFieldPipe implements PipeTransform {
     private readonly dateTimeService: DateTimeService
   ) {}
 
-  transform(field: CertificateField | undefined, prop: 'name' | 'value'): string {
+  transform(field: CertificateField | null | undefined, prop: 'name' | 'value'): string {
     if (!field) {
       return '';
     }

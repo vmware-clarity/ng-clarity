@@ -30,7 +30,7 @@ export class DateIOService {
   minDateChange = new Subject<DayModel>();
   maxDateChange = new Subject<DayModel>();
 
-  private dateRangeOptions: DateRangeOption[];
+  private dateRangeOptions: DateRangeOption[] = [];
   // Locale-only formatting and parsing; the state above is per date picker.
   private readonly localeDateFormat: ClrLocaleDateFormat;
 
