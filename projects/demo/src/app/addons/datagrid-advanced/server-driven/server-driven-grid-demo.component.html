@@ -47,7 +47,7 @@
     [loading]="options.loading"
     [listItemsCount]="options.totalItems"
     [selectionType]="options.selectionType"
-    [pageSize]="options.pageSize"
+    [pageSize]="options.pageSize ?? 0"
     [pageSizeOptions]="options.pageSizeOptions"
     [rowSelectionMode]="options.enableRowSelection"
     (refreshGridData)="onRefreshGridData($event)"

@@ -80,7 +80,7 @@ export class ClrTooltipContent implements OnInit {
   get id(): string {
     return this._id;
   }
-  set id(value: string) {
+  set id(value: string | null | undefined) {
     const id = value || '';
 
     this._id = id;

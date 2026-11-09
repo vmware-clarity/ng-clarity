@@ -171,7 +171,7 @@ export class ClrCombobox<T>
   }
 
   @Input('clrComboboxIdentityFn')
-  set identityFn(value: ClrComboboxIdentityFunction<T>) {
+  set identityFn(value: ClrComboboxIdentityFunction<T> | undefined) {
     this.optionSelectionService.identityFn = value;
   }
 

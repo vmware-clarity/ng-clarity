@@ -223,7 +223,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    * Defines the selectable page size options displayed in the grid footer.
    * Users can choose from these options to control the number of items shown per page.
    */
-  @Input() pageSizeOptions!: number[];
+  @Input() pageSizeOptions?: number[];
 
   /**
    * The totalItems should be provided when the grid is server driven datagrid
@@ -697,7 +697,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   get selectedItems(): T[] {
     return this.#selectedItems;
   }
-  set selectedItems(items: T[]) {
+  set selectedItems(items: T[] | null | undefined) {
     this.#selectedItems = Array.isArray(items) ? items.filter((item: T) => item !== undefined) : [];
 
     this.cdr.detectChanges();

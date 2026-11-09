@@ -43,7 +43,7 @@
     }"
     [loading]="options.loading"
     [selectionType]="options.selectionType"
-    [pageSize]="options.pageSize"
+    [pageSize]="options.pageSize ?? 0"
     [pageSizeOptions]="options.pageSizeOptions"
     [rowSelectionMode]="options.enableRowSelection"
     (selectedItemsChange)="onSelectedItemsChange($event)"

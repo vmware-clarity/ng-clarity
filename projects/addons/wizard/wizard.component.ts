@@ -85,7 +85,7 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
    * is rendered in the wizard footer before the action buttons.
    * The wizard injects the current step, all steps, and the {@link WorkflowModel} whenever the active step changes.
    */
-  @Input() footer!: WizardFooterConfig;
+  @Input() footer?: WizardFooterConfig;
 
   /**
    * Clarity Wizard size - 'md', 'lg', 'xl' and 'full-screen'.

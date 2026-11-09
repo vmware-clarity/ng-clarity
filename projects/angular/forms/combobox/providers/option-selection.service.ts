@@ -68,7 +68,7 @@ export class OptionSelectionService<T> {
     return this._identityFn;
   }
 
-  set identityFn(value: ClrComboboxIdentityFunction<T>) {
+  set identityFn(value: ClrComboboxIdentityFunction<T> | undefined) {
     this._identityFn = value || ((item: T) => item);
     if (this.selectionModel) {
       this.selectionModel.identityFn = this._identityFn;
