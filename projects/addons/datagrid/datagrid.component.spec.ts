@@ -475,6 +475,22 @@ describe('DatagridComponent', () => {
     });
   });
 
+  // The width is a style binding, not a style attribute, which a Content-Security-Policy without unsafe-inline blocks.
+  it('renders the drag handle column 20px wide', function (this: any) {
+    this.component.columnsDefs = this.columnsDefs;
+    this.component.data = this.data;
+    this.component.serverDrivenDatagrid = true;
+    this.component.dragConfig = { fieldName: 'name' };
+    this.fixture.detectChanges(true);
+
+    const dragHandleCells: HTMLElement[] = Array.from(
+      this.fixture.nativeElement.querySelectorAll('clr-dg-column.draggableCell, clr-dg-cell.draggableCell')
+    );
+
+    expect(dragHandleCells.length).toEqual(1 + this.data.length);
+    dragHandleCells.forEach(cell => expect(cell.style.width).toEqual('20px'));
+  });
+
   it('can render cell data with the help of column renderer', function (this: any) {
     const testColumnsDefs: Array<ColumnDefinition<any>> = [
       {
