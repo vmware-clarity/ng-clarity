@@ -132,7 +132,9 @@
   <!--  </clr-dg-detail>-->
 
   <clr-dg-footer>
-    <div class="footer-counters">Rows {{userRange?.start + 1}} - {{userRange?.end}} of {{dataRange.total}}</div>
+    <div class="footer-counters">
+      Rows {{userRange ? userRange.start + 1 : ''}} - {{userRange?.end}} of {{dataRange.total}}
+    </div>
     <clr-dropdown>
       <button class="btn btn-sm btn-outline-neutral" clrDropdownTrigger aria-label="Dropdown demo button">
         Snap Jump to

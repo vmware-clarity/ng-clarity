@@ -20,8 +20,8 @@ import { User } from '../inventory/user';
   standalone: false,
 })
 export class DatagridServerDrivenDemo {
-  users: User[];
-  total: number;
+  users?: User[];
+  total!: number;
   loading = true;
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
@@ -40,10 +40,11 @@ export class DatagridServerDrivenDemo {
         filters[property] = [value];
       }
     }
+    const { size = 0, current = 1 } = state.page ?? {};
     const result = await this.inventory
       .filter(filters)
       .sort(state.sort as { by: string; reverse: boolean })
-      .fetch(state.page.size * (state.page.current - 1), state.page.size);
+      .fetch(size * (current - 1), size);
 
     this.users = result.users;
     this.total = result.length;

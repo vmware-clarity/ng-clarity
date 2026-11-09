@@ -30,8 +30,8 @@ export class Inventory {
   size = 100;
   latency = 0;
 
-  #allItems: VmItem[];
-  #currentQuery: VmItem[];
+  #allItems!: VmItem[];
+  #currentQuery: VmItem[] | null = null;
 
   get allItems(): VmItem[] {
     return this.#allItems.slice();
@@ -56,7 +56,7 @@ export class Inventory {
   }
 
   filter(filters?: { [key: string]: string[] }): Inventory {
-    this.checkCurrentQuery();
+    let query = this.checkCurrentQuery();
     if (filters) {
       for (const key in filters) {
         if (filters[key].length === 0) {
@@ -69,7 +69,7 @@ export class Inventory {
         }
 
         const lowerCase = filters[key].map(value => value.toLowerCase());
-        this.#currentQuery = this.#currentQuery.filter(user => {
+        query = query.filter(user => {
           for (const value of lowerCase) {
             if (getFilterProperty(user).toLowerCase().indexOf(value) >= 0) {
               return true;
@@ -79,21 +79,25 @@ export class Inventory {
         });
       }
     }
+    this.#currentQuery = query;
     return this;
   }
 
-  fetch$(skip = 0, limit: number = this.#currentQuery.length): Observable<FetchResult> {
+  fetch$(skip = 0, limit?: number): Observable<FetchResult> {
+    const query = this.checkCurrentQuery();
+    limit ??= query.length;
     // Stringify and parse to mimic new object creation like a real HTTP request
-    const items = JSON.stringify(this.#currentQuery.slice(skip, skip + limit));
-    const result: FetchResult = { vms: JSON.parse(items), length: this.#currentQuery.length };
+    const items = JSON.stringify(query.slice(skip, skip + limit));
+    const result: FetchResult = { vms: JSON.parse(items), length: query.length };
     this.#currentQuery = null;
     return from(this.fakeHttp(result));
   }
 
-  private checkCurrentQuery() {
+  private checkCurrentQuery(): VmItem[] {
     if (!this.#currentQuery) {
       this.#currentQuery = this.allItems.slice();
     }
+    return this.#currentQuery;
   }
 
   // Used by an iterator to pull an item out of an array in a repeatable way.

@@ -216,7 +216,7 @@ export class ThemeBuilderComponent implements OnDestroy {
 
     // Target origin is unknown (the theme builder can be embedded by any host) and the
     // payload (generated CSS) isn't sensitive, so a wildcard target is intentional here.
-    window.top.postMessage(css, '*');
+    window.top?.postMessage(css, '*');
 
     try {
       await navigator.clipboard.writeText(css);

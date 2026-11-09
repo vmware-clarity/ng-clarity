@@ -118,43 +118,43 @@ function advancedFileInputTemplateFn(label: string) {
 }
 
 function fileInputStatesPlayFn({ canvasElement }: StoryContext) {
-  const successStateFileInputElement = canvasElement.querySelector<HTMLInputElement>('#success-state-file-input');
+  const successStateFileInputElement = canvasElement.querySelector('#success-state-file-input') as HTMLInputElement;
   selectFiles(successStateFileInputElement, [new File(['.'.repeat(50)], 'file.txt')]);
 
-  const emptyErrorStateFileInputElement = canvasElement.querySelector<HTMLInputElement>(
+  const emptyErrorStateFileInputElement = canvasElement.querySelector(
     '#empty-error-state-file-input'
-  );
+  ) as HTMLInputElement;
   selectFiles(emptyErrorStateFileInputElement, [new File([''], 'file.txt')]);
   clearFiles(emptyErrorStateFileInputElement);
 
-  const multipleFilesSuccessStateFileInputElement = canvasElement.querySelector<HTMLInputElement>(
+  const multipleFilesSuccessStateFileInputElement = canvasElement.querySelector(
     '#multiple-files-success-state-file-input'
-  );
+  ) as HTMLInputElement;
   selectFiles(multipleFilesSuccessStateFileInputElement, [
     new File(['.'.repeat(50)], 'file-1.txt'),
     new File(['.'.repeat(50)], 'file-2.txt'),
     new File(['.'.repeat(50)], 'file-3.txt'),
   ]);
 
-  const multipleFilesErrorStateFileInputElement = canvasElement.querySelector<HTMLInputElement>(
+  const multipleFilesErrorStateFileInputElement = canvasElement.querySelector(
     '#multiple-files-error-state-file-input'
-  );
+  ) as HTMLInputElement;
   selectFiles(multipleFilesErrorStateFileInputElement, [
     new File(['.'.repeat(25)], 'file-1.txt'),
     new File(['.'.repeat(501)], 'file-2.txt'),
     new File(['.'.repeat(50)], 'file-3.png'),
   ]);
 
-  const multipleFilesMixedStateFileInputElement = canvasElement.querySelector<HTMLInputElement>(
+  const multipleFilesMixedStateFileInputElement = canvasElement.querySelector(
     '#multiple-files-mixed-state-file-input'
-  );
+  ) as HTMLInputElement;
   selectFiles(multipleFilesMixedStateFileInputElement, [
     new File(['.'.repeat(25)], 'file-1.txt'),
     new File(['.'.repeat(50)], 'file-2.txt'),
     new File(['.'.repeat(501)], 'file-3.txt'),
   ]);
 
-  const longFilenameFileInputElement = canvasElement.querySelector<HTMLInputElement>('#long-filename-file-input');
+  const longFilenameFileInputElement = canvasElement.querySelector('#long-filename-file-input') as HTMLInputElement;
   selectFiles(longFilenameFileInputElement, [
     new File(
       [''],

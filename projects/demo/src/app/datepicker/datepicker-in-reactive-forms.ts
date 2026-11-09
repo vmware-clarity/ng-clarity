@@ -18,7 +18,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 export class DatepickerInReactiveForms {
   dateForm = new FormGroup({ date: new FormControl('03/05/2018'), name: new FormControl('Jane') });
 
-  dateChanged(date: Date) {
+  dateChanged(date: Date | null) {
     console.log(date);
   }
 }

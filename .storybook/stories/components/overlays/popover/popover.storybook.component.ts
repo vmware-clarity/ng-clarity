@@ -62,10 +62,10 @@ export class StorybookPopoverComponent {
   @Input() scrollToClose = false;
   @Input() showCloseButton = true;
   @Input() type = ClrPopoverType.DEFAULT;
-  @Input() defaultPosition: string;
-  @Input() signpostPosition: string;
-  @Input() tooltipPosition: string;
-  @Input() dropdownPosition: string;
+  @Input() defaultPosition!: string;
+  @Input() signpostPosition!: string;
+  @Input() tooltipPosition!: string;
+  @Input() dropdownPosition!: string;
   @Input() overlayX = '';
   @Input() overlayY = '';
   @Input() originX = '';

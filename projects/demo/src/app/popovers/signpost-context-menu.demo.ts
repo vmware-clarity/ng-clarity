@@ -30,7 +30,7 @@ import { ClarityModule, ClrSignpost } from '@clr/angular';
   `,
 })
 export class SignpostContextMenuDemo {
-  @ViewChild('signpost', { static: true }) signpost: ClrSignpost;
+  @ViewChild('signpost', { static: true }) signpost!: ClrSignpost;
 
   lastPoint: { x: number; y: number } | null = null;
 
