@@ -43,7 +43,7 @@ export class DateIOService {
   minDateChange = new Subject<DayModel>();
   maxDateChange = new Subject<DayModel>();
 
-  private dateRangeOptions: DateRangeOption[];
+  private dateRangeOptions: DateRangeOption[] = [];
   private localeDisplayFormat: InputDateDisplayFormat = LITTLE_ENDIAN;
   private delimiters: [string, string] = ['/', '/'];
 
