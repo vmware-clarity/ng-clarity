@@ -185,7 +185,7 @@ export default function (): void {
     it('creates a clr-recursive-children component if the tree is recursive', function (this: Context) {
       expect(this.fixture.debugElement.query(By.directive(RecursiveChildren))).toBeFalsy();
       // Using an empty tree and checking reference equality because I don't want to create full models for this.
-      const emptyTree: RecursiveTreeNodeModel<void>[] = [];
+      const emptyTree: RecursiveTreeNodeModel<unknown>[] = [];
       this.getClarityProvider(TreeFeaturesService).recursion = {
         template: null,
         root: emptyTree,
@@ -193,7 +193,7 @@ export default function (): void {
       this.detectChanges();
       const recursiveChildrenDE = this.fixture.debugElement.query(By.directive(RecursiveChildren));
       expect(recursiveChildrenDE).toBeTruthy();
-      expect((recursiveChildrenDE.componentInstance as RecursiveChildren<void>).children).toBe(emptyTree);
+      expect((recursiveChildrenDE.componentInstance as RecursiveChildren<unknown>).children).toBe(emptyTree);
     });
 
     it('gets tree role by default', function (this: Context) {
