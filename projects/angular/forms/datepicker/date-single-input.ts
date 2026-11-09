@@ -21,7 +21,7 @@ import { DatepickerFocusService } from './providers/datepicker-focus.service';
   standalone: false,
 })
 export class ClrDateInput extends ClrDateInputBase {
-  @Output('clrDateChange') override dateChange = new EventEmitter<Date>(false);
+  @Output('clrDateChange') override dateChange = new EventEmitter<Date | null>(false);
 
   @Input('clrDate')
   set date(date: Date | string) {
@@ -42,7 +42,7 @@ export class ClrDateInput extends ClrDateInputBase {
     return this.dateNavigationService.selectedDayChange;
   }
 
-  protected override updateDayModel(dayModel: DayModel) {
+  protected override updateDayModel(dayModel: DayModel | null) {
     this.dateNavigationService.persistedDate = this.dateNavigationService.selectedDay = dayModel;
   }
 }

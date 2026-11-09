@@ -17,7 +17,7 @@ import {
 import { ClrCommonStringsService } from '@clr/angular/utils';
 import { BehaviorSubject } from 'rxjs';
 
-export const TOGGLE_SERVICE = new InjectionToken<BehaviorSubject<boolean>>(undefined);
+export const TOGGLE_SERVICE = new InjectionToken<BehaviorSubject<boolean>>('TOGGLE_SERVICE');
 export function ToggleServiceFactory() {
   return new BehaviorSubject<boolean>(false);
 }

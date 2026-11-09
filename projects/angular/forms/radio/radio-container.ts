@@ -59,10 +59,10 @@ import { ClrRadio } from './radio';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
-  role: string;
-  ariaLabelledBy: string;
+  role: string | null = null;
+  ariaLabelledBy?: string | null;
 
-  @ContentChildren(ClrRadio, { descendants: true }) radios: QueryList<ClrRadio>;
+  @ContentChildren(ClrRadio, { descendants: true }) radios!: QueryList<ClrRadio>;
 
   private inline = false;
   private _generatedId = uniqueIdFactory();

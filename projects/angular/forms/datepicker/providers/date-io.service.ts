@@ -92,7 +92,7 @@ export class DateIOService {
     return this.dateRangeOptions;
   }
 
-  toLocaleDisplayFormatString(date: Date): string {
+  toLocaleDisplayFormatString(date: Date | null | undefined): string {
     if (date) {
       if (isNaN(date.getTime())) {
         return '';
@@ -112,11 +112,11 @@ export class DateIOService {
     return '';
   }
 
-  getDateValueFromDateString(date: string): Date {
+  getDateValueFromDateString(date: string): Date | null {
     if (!date || typeof date !== 'string') {
       return null;
     }
-    const dateParts: string[] = date.match(USER_INPUT_REGEX);
+    const dateParts = date.match(USER_INPUT_REGEX);
     if (!dateParts || dateParts.length !== 3) {
       return null;
     }
@@ -201,7 +201,7 @@ export class DateIOService {
    * valid then return null.
    * NOTE: (Month here is 1 based since the user has provided that as an input)
    */
-  private validateAndGetDate(year: string, month: string, date: string): Date {
+  private validateAndGetDate(year: string, month: string, date: string): Date | null {
     // I don't know whats wrong with the TS compiler. It throws an error if I write
     // the below if statement. The error is:
     // Operator '!==' cannot be applied to types '2' and '4'

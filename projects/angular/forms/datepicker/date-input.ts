@@ -28,7 +28,7 @@ import {
 import { NgControl } from '@angular/forms';
 import { FormsFocusService, WrappedFormControl } from '@clr/angular/forms/common';
 import { isBooleanAttributeSet } from '@clr/angular/utils';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { ClrDateContainer } from './date-container';
@@ -53,14 +53,14 @@ export abstract class ClrDateInputBase
 {
   static ngAcceptInputType_date: Date | null | string;
 
-  @Input() placeholder: string;
+  @Input() placeholder?: string;
 
   protected override index = 1;
 
-  private initialClrDateInputValue: Date;
-  private previousDateChange: Date;
+  private initialClrDateInputValue?: Date;
+  private previousDateChange: Date | null | undefined;
 
-  protected abstract dateChange: EventEmitter<Date>;
+  protected abstract dateChange: EventEmitter<Date | null>;
 
   constructor(
     viewContainerRef: ViewContainerRef,
@@ -82,7 +82,7 @@ export abstract class ClrDateInputBase
     super(viewContainerRef, ClrDateContainer, injector, control, renderer, el);
   }
 
-  get disabled() {
+  get disabled(): boolean | null {
     if (this.dateFormControlService) {
       return this.dateFormControlService.disabled || !!this.control?.control?.disabled;
     }
@@ -107,7 +107,7 @@ export abstract class ClrDateInputBase
     return isPlatformBrowser(this.platformId) && this.usingNativeDatepicker() ? 'date' : 'text';
   }
 
-  protected abstract get userSelectedDayChange(): Observable<DayModel>;
+  protected abstract get userSelectedDayChange(): Observable<DayModel | null | undefined>;
 
   override ngOnInit() {
     super.ngOnInit();
@@ -212,7 +212,7 @@ export abstract class ClrDateInputBase
     }
   }
 
-  private updateDate(value: Date, setByUserInteraction = false) {
+  private updateDate(value: Date | null | undefined, setByUserInteraction = false) {
     const date = this.getValidDateValueFromDate(value);
     if (setByUserInteraction) {
       this.emitDateOutput(date);
@@ -229,7 +229,7 @@ export abstract class ClrDateInputBase
     this.updateInput(date);
   }
 
-  private updateInput(date: Date) {
+  private updateInput(date: Date | null) {
     if (date) {
       const dateString = this.dateIOService.toLocaleDisplayFormatString(date);
       if (this.usingNativeDatepicker()) {
@@ -237,7 +237,7 @@ export abstract class ClrDateInputBase
         date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
         this.renderer.setProperty(this.el.nativeElement, 'valueAsDate', date);
       } else if (this.datepickerHasFormControl() && dateString !== this.control.value) {
-        this.control.control.setValue(dateString);
+        this.control.control?.setValue(dateString);
       } else {
         this.renderer.setProperty(this.el.nativeElement, 'value', dateString);
       }
@@ -247,7 +247,7 @@ export abstract class ClrDateInputBase
     }
   }
 
-  private getValidDateValueFromDate(date: Date) {
+  private getValidDateValueFromDate(date: Date | null | undefined) {
     if (this.dateIOService) {
       const dateString = this.dateIOService.toLocaleDisplayFormatString(date);
       return this.dateIOService.getDateValueFromDateString(dateString);
@@ -256,7 +256,7 @@ export abstract class ClrDateInputBase
     }
   }
 
-  private emitDateOutput(date: Date) {
+  private emitDateOutput(date: Date | null) {
     if (!datesAreEqual(date, this.previousDateChange)) {
       this.dateChange.emit(date);
       this.previousDateChange = date;
@@ -267,16 +267,16 @@ export abstract class ClrDateInputBase
   }
 
   private listenForControlValueChanges() {
-    if (this.datepickerHasFormControl()) {
-      return this.control.valueChanges
-        .pipe(
-          // only update date value if not being set by user
-          filter(() => !this.datepickerFocusService.elementIsFocused(this.el.nativeElement))
-        )
-        .subscribe((value: string) => this.updateDate(this.dateIOService.getDateValueFromDateString(value)));
-    } else {
-      return null;
+    if (!this.datepickerHasFormControl() || !this.control.valueChanges) {
+      return Subscription.EMPTY;
     }
+
+    return this.control.valueChanges
+      .pipe(
+        // only update date value if not being set by user
+        filter(() => !this.datepickerFocusService.elementIsFocused(this.el.nativeElement))
+      )
+      .subscribe((value: string) => this.updateDate(this.dateIOService.getDateValueFromDateString(value)));
   }
 
   private listenForUserSelectedDayChanges() {
@@ -286,13 +286,13 @@ export abstract class ClrDateInputBase
   private listenForTouchChanges() {
     return this.dateFormControlService.touchedChange
       .pipe(filter(() => this.datepickerHasFormControl()))
-      .subscribe(() => this.control.control.markAsTouched());
+      .subscribe(() => this.control.control?.markAsTouched());
   }
 
   private listenForDirtyChanges() {
     return this.dateFormControlService.dirtyChange
       .pipe(filter(() => this.datepickerHasFormControl()))
-      .subscribe(() => this.control.control.markAsDirty());
+      .subscribe(() => this.control.control?.markAsDirty());
   }
 
   private listenForInputRefocus() {
@@ -317,5 +317,5 @@ export abstract class ClrDateInputBase
     }
   }
 
-  protected abstract updateDayModel(dayModel: DayModel): void;
+  protected abstract updateDayModel(dayModel: DayModel | null): void;
 }

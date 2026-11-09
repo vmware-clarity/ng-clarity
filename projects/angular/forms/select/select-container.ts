@@ -47,7 +47,7 @@ import {
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrSelectContainer extends ClrAbstractContainer {
-  @ContentChild(SelectMultipleControlValueAccessor, { static: false }) multiple: SelectMultipleControlValueAccessor;
+  @ContentChild(SelectMultipleControlValueAccessor, { static: false }) multiple!: SelectMultipleControlValueAccessor;
 
   constructor(
     @Optional() protected override layoutService: LayoutService,

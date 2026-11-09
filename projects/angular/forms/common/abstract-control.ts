@@ -10,7 +10,7 @@ import { Directive, Optional } from '@angular/core';
 import { ContainerIdService } from './providers/container-id.service';
 import { ControlIdService } from './providers/control-id.service';
 
-export const CONTROL_SUFFIX: { [key: string]: string | null } = {
+export const CONTROL_SUFFIX = {
   HELPER: 'helper',
   ERROR: 'error',
   SUCCESS: 'success',
@@ -29,7 +29,7 @@ export abstract class ClrAbstractControl {
     @Optional() protected containerIdService: ContainerIdService
   ) {}
 
-  get id(): string {
+  get id(): string | null {
     /**
      * The order of witch the id will be pick is:
      *   - Container ID  (Wrapper arround multiple Controls like, Checkbox, Radio, ...)

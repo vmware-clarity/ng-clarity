@@ -43,7 +43,7 @@ export function parseToFourDigitYear(year: number): number {
   return result;
 }
 
-export function datesAreEqual(date1: Date, date2: Date) {
+export function datesAreEqual(date1: Date | null | undefined, date2: Date | null | undefined) {
   if (date1 instanceof Date && date2 instanceof Date) {
     return (
       date1.getFullYear() === date2.getFullYear() &&
