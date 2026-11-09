@@ -29,7 +29,7 @@ class NameModel implements StepModel {
   `,
 })
 class DemoStepperStep1 implements StepModelHolder {
-  model: NameModel;
+  model!: NameModel;
 }
 
 class TeamModel implements StepModel {
@@ -53,7 +53,7 @@ class TeamModel implements StepModel {
   `,
 })
 class DemoStepperStep2 implements StepModelHolder {
-  model: TeamModel;
+  model!: TeamModel;
 }
 
 class ProjectModel {
@@ -70,7 +70,7 @@ class ProjectModel {
 })
 export class StepperAddonDemo implements OnInit {
   model = new ProjectModel();
-  steps: Step[];
+  steps!: Step[];
   submitted = false;
   result: { name: string; team: string } | null = null;
 

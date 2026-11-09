@@ -87,7 +87,7 @@ import { RenderComponentStorybook } from '@storybook-helpers/render-component';
 })
 export class AppLevelAlertStorybookComponent extends RenderComponentStorybook {
   // Story inputs matching the original story args
-  @Input() clrAlertIcon: string | null = null;
+  @Input() clrAlertIcon = '';
   @Input() clrCloseButtonAriaLabel = 'Close alert';
   @Input() clrAlertClosable = false;
   @Input() alertCount = 3;

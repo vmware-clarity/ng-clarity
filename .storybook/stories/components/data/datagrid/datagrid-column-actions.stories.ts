@@ -102,11 +102,11 @@ export const ColumnActions: Story = {};
 // The menu of a sortable, pinnable column: the sort items, then the pin item, then the filter item.
 export const ColumnActionsOpened: Story = {
   play: async ({ canvasElement, userEvent }) => {
-    await userEvent.click(canvasElement.querySelector('.datagrid-column-actions-toggle'));
+    await userEvent.click(canvasElement.querySelector('.datagrid-column-actions-toggle') as HTMLElement);
     // The menu focuses its first item in a timeout after it opens, which sometimes runs before the item can take
     // focus. Focus it here until it has it, so that every snapshot shows the same focus state.
     await waitFor(() => {
-      const firstItem = canvasElement.ownerDocument.querySelector<HTMLElement>('.dropdown-item');
+      const firstItem = canvasElement.ownerDocument.querySelector('.dropdown-item') as HTMLElement;
       firstItem.focus();
       expect(firstItem).toHaveFocus();
     });

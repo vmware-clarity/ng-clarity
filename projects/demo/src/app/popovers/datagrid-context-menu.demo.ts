@@ -88,7 +88,7 @@ interface FileItem {
   `,
 })
 export class DatagridContextMenuDemo {
-  @ViewChild('gridContextMenu', { static: true }) dropdown: ClrDropdown;
+  @ViewChild('gridContextMenu', { static: true }) dropdown!: ClrDropdown;
 
   files: FileItem[] = [];
   selected: FileItem[] = [];
@@ -116,9 +116,9 @@ export class DatagridContextMenuDemo {
     this.dropdown.openAtPoint({ x: event.clientX, y: event.clientY }, event.target as HTMLElement);
   }
 
-  doAction(action: string, file: FileItem) {
+  doAction(action: string, file: FileItem | null) {
     const timestamp = this.datePipe.transform(new Date(), 'mediumTime');
-    this.actionLog.unshift(`[${timestamp}] ${action}: ${file.name}`);
+    this.actionLog.unshift(`[${timestamp}] ${action}: ${file?.name}`);
   }
 
   private randomExt(): string {

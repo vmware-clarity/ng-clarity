@@ -24,9 +24,9 @@
       <div class="card" data-heading="Date Range Picker">
         <div class="card-content">
           <clr-date-range-container
-            [min]="dateForm.get('minDate').value"
-            [max]="dateForm.get('maxDate').value"
-            [rangeOptions]="dateForm.get('showRangeOptions')?.value ? dateRangeOptions: []"
+            [min]="dateForm.controls.minDate.value"
+            [max]="dateForm.controls.maxDate.value"
+            [rangeOptions]="dateForm.controls.showRangeOptions.value ? dateRangeOptions: []"
           >
             <input
               id="startDate"
@@ -49,18 +49,18 @@
               formControlName="endDate"
             />
             <clr-control-error *clrIfError="'min'">
-              @if (dateForm.get('startDate').errors?.min?.min || dateForm.get('endDate').errors?.min?.min) { Minimum
-              date should be {{dateForm.get('startDate').errors?.min?.min || dateForm.get('endDate').errors?.min?.min}}
-              }
+              @if (dateForm.controls.startDate.errors?.min?.min || dateForm.controls.endDate.errors?.min?.min) { Minimum
+              date should be {{dateForm.controls.startDate.errors?.min?.min ||
+              dateForm.controls.endDate.errors?.min?.min}} }
             </clr-control-error>
             <clr-control-error *clrIfError="'max'">
-              @if (dateForm.get('startDate').errors?.max?.max || dateForm.get('endDate').errors?.max?.max) { Maximum
-              date should be {{dateForm.get('startDate').errors?.max?.max || dateForm.get('endDate').errors?.max?.max}}
-              }
+              @if (dateForm.controls.startDate.errors?.max?.max || dateForm.controls.endDate.errors?.max?.max) { Maximum
+              date should be {{dateForm.controls.startDate.errors?.max?.max ||
+              dateForm.controls.endDate.errors?.max?.max}} }
             </clr-control-error>
             <clr-control-error *clrIfError="'range'">
-              @if (dateForm.get('startDate').errors?.range?.startDate ||
-              dateForm.get('endDate').errors?.range?.startDate) { Start date must be less than End date }
+              @if (dateForm.controls.startDate.errors?.range?.startDate ||
+              dateForm.controls.endDate.errors?.range?.startDate) { Start date must be less than End date }
             </clr-control-error>
           </clr-date-range-container>
         </div>

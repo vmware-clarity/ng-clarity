@@ -308,9 +308,9 @@ export class ComboboxDemo {
 
   selectAllModel: string[] = [];
 
-  validateOnBlur: string;
+  validateOnBlur?: string;
 
-  asyncStates$: Observable<any>;
+  asyncStates$?: Observable<any>;
 
   STATES_SERVICE = {
     getStates: (filterString: string) =>

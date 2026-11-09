@@ -59,11 +59,11 @@ export class RangeDemo extends ClarityDocComponent {
   exampleValue2 = 50;
   exampleValue3 = 50;
 
-  @ViewChild('successRange') successRange: NgModel;
-  successRangeModel: 50;
+  @ViewChild('successRange') successRange!: NgModel;
+  successRangeModel!: number;
 
-  @ViewChild('errorRange') errorRange: NgModel;
-  errorRangeModel: 1;
+  @ViewChild('errorRange') errorRange!: NgModel;
+  errorRangeModel!: number;
 
   constructor() {
     super('range');

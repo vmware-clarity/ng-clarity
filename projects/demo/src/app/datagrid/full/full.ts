@@ -36,14 +36,14 @@ export class DatagridFullDemo {
   };
 
   resetting = true;
-  currentPageSize: number;
-  users: User[];
-  selected: User[];
-  loremIpsumColumn: boolean;
+  currentPageSize!: number;
+  users!: User[];
+  selected?: User[];
+  loremIpsumColumn!: boolean;
   // Server-driven specific
   isServerDriven = false;
   loading = true;
-  total: number;
+  total!: number;
   rowActions: string[] = ['Edit', 'Delete'];
   rowActionsLoading = false;
 
@@ -83,7 +83,7 @@ export class DatagridFullDemo {
     setTimeout(() => {
       this.inventory.size = this.options.totalUsers;
       this.currentPageSize = Number.parseInt(this.options.pageSize, 10);
-      this.selected = this.options.selectable ? [] : null;
+      this.selected = this.options.selectable ? [] : undefined;
       this.loremIpsumColumn = this.options.loremIpsum;
       this.isServerDriven = this.options.server;
       this.inventory.latency = Number.parseInt(this.options.latency, 10);

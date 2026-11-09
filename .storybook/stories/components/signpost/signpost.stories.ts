@@ -83,7 +83,7 @@ export const Initial: Story = {};
 
 export const Opened: Story = {
   play({ canvasElement }) {
-    canvasElement.querySelector('button').click();
+    (canvasElement.querySelector('button') as HTMLButtonElement).click();
   },
 };
 
@@ -103,14 +103,14 @@ export const DefaultPositionOpened: Story = {
     props: args,
   }),
   play({ canvasElement }) {
-    canvasElement.querySelector('button').click();
+    (canvasElement.querySelector('button') as HTMLButtonElement).click();
   },
 };
 
 // visual regression test for CDE-2226
 export const OpenedLongContent: Story = {
   play({ canvasElement }) {
-    canvasElement.querySelector('button').click();
+    (canvasElement.querySelector('button') as HTMLButtonElement).click();
   },
   args: {
     content: 'Hello World! '.repeat(170),
@@ -133,6 +133,6 @@ export const SignpostWithTitle: Story = {
     props: args,
   }),
   play({ canvasElement }) {
-    canvasElement.querySelector('button').click();
+    (canvasElement.querySelector('button') as HTMLButtonElement).click();
   },
 };

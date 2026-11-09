@@ -28,14 +28,14 @@ export class DatagridPreserveSelectionDemo {
   clientTrackByIndexSelected: User[] = [];
   clientTrackByIdUsers: User[];
   clientTrackByIdSelected: User[] = [];
-  serverTrackByIdUsers: User[];
+  serverTrackByIdUsers?: User[];
   serverTrackByIdSelected: User[] = [];
   total = 100;
   loading = true;
 
   currentPageSize = 10;
   nameFilter = '';
-  nameFilterNoTrackBy: string;
+  nameFilterNoTrackBy!: string;
   nameFilterTrackByIndex = '';
   nameFilterTrackById = '';
   nameFilterServerTrackBy = '';
@@ -67,10 +67,11 @@ export class DatagridPreserveSelectionDemo {
       }
     }
 
+    const { size = 0, current = 1 } = state.page ?? {};
     const result = await this.inventory
       .filter(filters)
       .sort(state.sort as { by: string; reverse: boolean })
-      .fetch(state.page.size * (state.page.current - 1), state.page.size);
+      .fetch(size * (current - 1), size);
 
     this.serverTrackByIdUsers = result.users;
     this.loading = false;

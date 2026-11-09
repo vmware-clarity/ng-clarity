@@ -40,10 +40,7 @@ export class RenderComponentStorybook implements AfterViewInit {
       componentRef.changeDetectorRef.detectChanges();
 
       const hostEl = componentRef.location.nativeElement as HTMLElement;
-      const parent = hostEl.parentNode;
-
-      Array.from(hostEl.childNodes).forEach(child => parent.insertBefore(child, hostEl));
-      parent.removeChild(hostEl);
+      hostEl.replaceWith(...Array.from(hostEl.childNodes));
     });
   }
 }

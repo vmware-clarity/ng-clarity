@@ -98,16 +98,16 @@ function fileInputTemplateFn(label: string) {
 }
 
 function fileInputStatesPlayFn({ canvasElement }: StoryContext) {
-  const successStateFileInputElement = canvasElement.querySelector<HTMLInputElement>('#success-state-file-input');
+  const successStateFileInputElement = canvasElement.querySelector('#success-state-file-input') as HTMLInputElement;
   selectFiles(successStateFileInputElement, [new File([''], 'file.txt')]);
 
-  const errorStateFileInputElement = canvasElement.querySelector<HTMLInputElement>('#error-state-file-input');
+  const errorStateFileInputElement = canvasElement.querySelector('#error-state-file-input') as HTMLInputElement;
   selectFiles(errorStateFileInputElement, [new File([''], 'file.txt')]);
   clearFiles(errorStateFileInputElement);
 
-  const multipleFilesFileInputElement = canvasElement.querySelector<HTMLInputElement>('#multiple-files-file-input');
+  const multipleFilesFileInputElement = canvasElement.querySelector('#multiple-files-file-input') as HTMLInputElement;
   selectFiles(multipleFilesFileInputElement, [new File([''], 'file-1.txt'), new File([''], 'file-2.txt')]);
 
-  const longFilenameFileInputElement = canvasElement.querySelector<HTMLInputElement>('#long-filename-file-input');
+  const longFilenameFileInputElement = canvasElement.querySelector('#long-filename-file-input') as HTMLInputElement;
   selectFiles(longFilenameFileInputElement, [new File([''], 'long-filename-lorem-ipsum-dolor-sit-amet.txt')]);
 }

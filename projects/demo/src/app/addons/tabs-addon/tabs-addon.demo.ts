@@ -28,7 +28,7 @@ export class TabsAddonDemoComponent implements OnInit {
   TabLayout = TabLayout;
 
   steps: Step[] = [];
-  tabsModel: SampleWorkflowModel;
+  tabsModel!: SampleWorkflowModel;
 
   selectedLayout: TabLayout = TabLayout.horizontal;
   disableContent = false;

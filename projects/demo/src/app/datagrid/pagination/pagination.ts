@@ -20,7 +20,7 @@ import { User } from '../inventory/user';
 })
 export class DatagridPaginationDemo {
   users: User[];
-  expanded: false;
+  expanded!: boolean;
   clrDgPageInputDisabled = false;
 
   constructor(inventory: Inventory) {

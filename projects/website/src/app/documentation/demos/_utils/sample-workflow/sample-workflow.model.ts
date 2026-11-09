@@ -15,12 +15,12 @@ export class SampleWorkflowModel {
   readonly creationType: Var<CreationType> = Var.of(CreationType.newVM);
   readonly cloneVmId: Var<string> = Var.of();
   readonly cloneVmName: Var<string> = Var.of();
-  defaultName: Var<string>;
+  defaultName!: Var<string>;
   readonly name: Var<string> = Var.of<string>();
   readonly computeResourceId: Var<string> = Var.of<string>();
   readonly computeResourceName: Var<string> = Var.of<string>();
-  datastores: Var<DatastoreGridItem[]>;
-  storagePolicies: Var<StoragePolicy[]>;
+  datastores!: Var<DatastoreGridItem[]>;
+  storagePolicies!: Var<StoragePolicy[]>;
   readonly selectedStoragePolicyId: Var<string> = Var.of<string>();
   readonly selectedDatastoreId: Var<string> = Var.of<string>();
 }

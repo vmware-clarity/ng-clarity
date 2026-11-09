@@ -15,7 +15,7 @@ import { ClrForm } from '@clr/angular';
   standalone: false,
 })
 export class FormsValidationDemo {
-  @ViewChildren(ClrForm) forms: ClrForm[];
+  @ViewChildren(ClrForm) forms!: ClrForm[];
 
   items = ['one', 'two'];
 

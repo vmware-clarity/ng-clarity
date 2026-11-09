@@ -18,7 +18,7 @@ export class Inventory {
   latency = 0;
 
   private _all: User[] = [];
-  private _currentQuery: User[];
+  private _currentQuery: User[] | null = null;
   private allUsers = new BehaviorSubject<User[]>(this.all);
 
   get all(): User[] {
@@ -63,7 +63,7 @@ export class Inventory {
   }
 
   filter(filters: { [key: string]: string[] }): Inventory {
-    this._checkCurrentQuery();
+    let query = this._checkCurrentQuery();
     if (filters) {
       for (const key in filters) {
         if (filters[key].length === 0) {
@@ -76,7 +76,7 @@ export class Inventory {
         }
 
         const lowerCase = filters[key].map(value => value.toLowerCase());
-        this._currentQuery = this._currentQuery.filter(user => {
+        query = query.filter(user => {
           for (const value of lowerCase) {
             if (getFilterProperty(user).toLowerCase().indexOf(value) >= 0) {
               return true;
@@ -86,18 +86,19 @@ export class Inventory {
         });
       }
     }
+    this._currentQuery = query;
     return this;
   }
 
   sort(sort: { by: string; reverse: boolean }): Inventory {
-    this._checkCurrentQuery();
+    const query = this._checkCurrentQuery();
     if (sort && sort.by) {
       let getSortProperty = (user: User) => user[sort.by];
       if (sort.by === 'pokemon') {
         getSortProperty = (user: User) => user.pokemon.number;
       }
 
-      this._currentQuery.sort((a, b) => {
+      query.sort((a, b) => {
         let comp = 0;
         const propA = getSortProperty(a),
           propB = getSortProperty(b);
@@ -115,11 +116,12 @@ export class Inventory {
     return this;
   }
 
-  fetch(skip = 0, limit: number = this._currentQuery.length): Promise<FetchResult> {
-    this._checkCurrentQuery();
+  fetch(skip = 0, limit?: number): Promise<FetchResult> {
+    const query = this._checkCurrentQuery();
+    limit ??= query.length;
     // Stringify and parse to mimic new object creation like a real HTTP request
-    const items = JSON.stringify(this._currentQuery.slice(skip, skip + limit));
-    const result: FetchResult = { users: JSON.parse(items), length: this._currentQuery.length };
+    const items = JSON.stringify(query.slice(skip, skip + limit));
+    const result: FetchResult = { users: JSON.parse(items), length: query.length };
     this._currentQuery = null;
     return this._fakeHttp(result);
   }
@@ -129,10 +131,11 @@ export class Inventory {
     return array[num % array.length];
   }
 
-  private _checkCurrentQuery() {
+  private _checkCurrentQuery(): User[] {
     if (!this._currentQuery) {
       this._currentQuery = this._all.slice();
     }
+    return this._currentQuery;
   }
 
   private _fakeHttp<T>(result: T): Promise<T> {

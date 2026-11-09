@@ -23,7 +23,7 @@ const meta = {
     ...hideControls('labelTypes'),
   },
   args: {
-    labelType: null as string | null,
+    labelType: '',
     badgeText: '',
     labelTypes: [''],
     // story helpers

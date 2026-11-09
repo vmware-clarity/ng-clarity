@@ -89,10 +89,10 @@ export class PasswordDemo extends ClarityDocComponent {
   exampleOne = '';
   exampleTwo = '';
 
-  @ViewChild('successPassword') successPassword: NgModel;
+  @ViewChild('successPassword') successPassword!: NgModel;
   successPasswordModel = '*********';
 
-  @ViewChild('errorPassword') errorPassword: NgModel;
+  @ViewChild('errorPassword') errorPassword!: NgModel;
   errorPasswordModel = '*********';
 
   constructor() {

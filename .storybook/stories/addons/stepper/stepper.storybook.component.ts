@@ -29,7 +29,7 @@ class Step1Model implements StepModel {
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class StepperStoryStep1 implements StepModelHolder {
-  model: Step1Model;
+  model!: Step1Model;
 }
 
 class Step2Model implements StepModel {
@@ -53,7 +53,7 @@ class Step2Model implements StepModel {
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class StepperStoryStep2 implements StepModelHolder {
-  model: Step2Model;
+  model!: Step2Model;
 }
 
 class ProjectModel {
@@ -82,7 +82,7 @@ export class StepperStoryWrapperComponent implements OnInit {
   usePrimaryNextButton = false;
   finished = false;
   model = new ProjectModel();
-  steps: Step[];
+  steps!: Step[];
 
   ngOnInit() {
     this.steps = [

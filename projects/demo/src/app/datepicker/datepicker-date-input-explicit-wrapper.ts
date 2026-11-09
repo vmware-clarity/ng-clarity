@@ -16,9 +16,9 @@ import { ChangeDetectionStrategy, Component, LOCALE_ID } from '@angular/core';
   standalone: false,
 })
 export class DatepickerDateInputExplicitWrapperDemo {
-  date: Date = new Date();
+  date: Date | null = new Date();
 
-  dateChanged(date: Date) {
+  dateChanged(date: Date | null) {
     console.log('Datepicker Container Output Changed', date);
     this.date = date;
   }

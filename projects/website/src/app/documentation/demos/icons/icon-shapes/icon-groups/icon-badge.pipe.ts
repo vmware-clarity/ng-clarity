@@ -13,11 +13,11 @@ import { Icon } from './icon-inventory';
 export class IconBadgePipe implements PipeTransform {
   transform(badge: string | null | undefined, icon: Icon) {
     if (badge?.includes('triangle')) {
-      return icon.shapeCollection.outlineAlerted || icon.shapeCollection.solidAlerted ? badge : null;
+      return icon.shapeCollection.outlineAlerted || icon.shapeCollection.solidAlerted ? badge : undefined;
     } else if (badge) {
-      return icon.shapeCollection.outlineBadged || icon.shapeCollection.solidBadged ? badge : null;
+      return icon.shapeCollection.outlineBadged || icon.shapeCollection.solidBadged ? badge : undefined;
     } else {
-      return null;
+      return undefined;
     }
   }
 }

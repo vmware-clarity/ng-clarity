@@ -31,7 +31,7 @@ class Step1Model implements StepModel {
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class WizardStoryStep1 implements StepModelHolder {
-  model: Step1Model;
+  model!: Step1Model;
 }
 
 class Step2Model implements StepModel {
@@ -55,7 +55,7 @@ class Step2Model implements StepModel {
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class WizardStoryStep2 implements StepModelHolder {
-  model: Step2Model;
+  model!: Step2Model;
 }
 
 class DemoModel {
@@ -87,7 +87,7 @@ export class WizardStoryWrapperComponent implements OnInit {
   size = 'lg';
   isOpen = false;
   model = new DemoModel();
-  steps: Step[];
+  steps!: Step[];
   closeHandler: CloseHandler = {
     onSubmit: (): Observable<void> => of(undefined).pipe(delay(300)),
   };

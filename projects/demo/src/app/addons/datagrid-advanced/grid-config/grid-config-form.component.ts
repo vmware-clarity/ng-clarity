@@ -39,7 +39,7 @@ export interface GridConfigDemoOptions {
   templateUrl: 'grid-config-form.component.html',
 })
 export class GridConfigFormComponent {
-  @Input() protected options: GridConfigDemoOptions;
+  @Input() protected options!: GridConfigDemoOptions;
 
   @Output() protected optionsChange = new EventEmitter<GridConfigDemoOptions>();
 

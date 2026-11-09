@@ -60,5 +60,5 @@ export class ComboboxEditableDemo {
   additionalFiles = additionalFiles;
 
   states = states;
-  selection: State;
+  selection?: State;
 }

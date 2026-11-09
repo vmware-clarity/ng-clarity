@@ -18,9 +18,9 @@ import { Step, WizardFooter, WorkflowModel } from '@clr/addons/var';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class CustomFooterComponent implements WizardFooter {
-  @Input() currentStep: Step;
-  @Input() steps: Step[];
-  @Input() workflowModel: WorkflowModel;
+  @Input() currentStep!: Step;
+  @Input() steps!: Step[];
+  @Input() workflowModel!: WorkflowModel;
 
   get isFirstStep(): boolean {
     return this.steps?.length > 0 && this.currentStep === this.steps[0];

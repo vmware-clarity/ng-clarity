@@ -105,7 +105,7 @@
   @if (datagridVisible) { @if (!configForm.value.useAppfx) { @if (configForm.value.noSelectedBinding) {
   <clr-datagrid
     style="height: 480px"
-    [clrDgSelectionType]="configForm.value.selectionType"
+    [clrDgSelectionType]="configForm.controls.selectionType.value"
     (clrDgSelectedChange)="onChange($event)"
   >
     <clr-dg-column>User ID</clr-dg-column>
@@ -124,7 +124,7 @@
   <clr-datagrid
     style="height: 480px"
     [clrDgSelected]="selected"
-    [clrDgSelectionType]="configForm.value.selectionType"
+    [clrDgSelectionType]="configForm.controls.selectionType.value"
     (clrDgSelectedChange)="onChange($event)"
   >
     <clr-dg-column>User ID</clr-dg-column>
@@ -144,7 +144,7 @@
     style="height: 480px"
     [columns]="userColumns"
     [gridItems]="users"
-    [selectionType]="configForm.value.selectionType"
+    [selectionType]="configForm.controls.selectionType.value"
     (selectedItemsChange)="onChange($event)"
   ></appfx-datagrid>
   } @else {
@@ -152,7 +152,7 @@
     style="height: 480px"
     [columns]="userColumns"
     [gridItems]="users"
-    [selectionType]="configForm.value.selectionType"
+    [selectionType]="configForm.controls.selectionType.value"
     [selectedItems]="selected"
     (selectedItemsChange)="onChange($event)"
   ></appfx-datagrid>

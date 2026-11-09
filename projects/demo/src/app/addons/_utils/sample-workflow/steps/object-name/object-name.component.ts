@@ -21,7 +21,7 @@ import { ObjectNameModel } from './object-name.model';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ObjectNameComponent implements StepModelHolder, OnStepActivate, OnStepValidate {
-  model: ObjectNameModel;
+  model!: ObjectNameModel;
 
   activate(): void {
     if (!this.model.name.value && this.model.defaultName) {

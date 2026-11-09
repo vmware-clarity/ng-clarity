@@ -27,9 +27,9 @@ import { Inventory, VmItem } from '../inventory/inventory';
 })
 export class ClientSideDatagridDemoComponent {
   resetting = false;
-  allVms: VmItem[];
+  allVms!: VmItem[];
   selectedVms: VmItem[] = [];
-  filteredVms: VmItem[];
+  filteredVms!: VmItem[];
   SelectionType = SelectionType;
 
   actions = [

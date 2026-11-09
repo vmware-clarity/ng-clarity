@@ -7,7 +7,7 @@
 
 import { NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { ClrAccordionModule } from '@clr/angular';
+import { ClrAccordionModule, HeadingLevel } from '@clr/angular';
 
 @Component({
   selector: 'storybook-accordion-panel',
@@ -33,7 +33,7 @@ import { ClrAccordionModule } from '@clr/angular';
 export class AccordionPanelStorybookComponent {
   @Input() clrAccordionPanelOpen = false;
   @Input() clrAccordionPanelDisabled = false;
-  @Input() clrAccordionPanelHeadingLevel = 1;
+  @Input() clrAccordionPanelHeadingLevel: HeadingLevel = 1;
   @Input() title = 'Title';
   @Input() content = 'Hello World!';
 

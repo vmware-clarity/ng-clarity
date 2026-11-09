@@ -42,7 +42,7 @@
 </button>
 
 <h3>Dynamic cols and rows</h3>
-@if ({ rows: rows | async }; as data) {
+@if ({ rows: (rows | async) ?? [] }; as data) {
 <clr-datagrid
   #dynamicRowsDatagrid
   [(clrDgSelected)]="selectedRows"
@@ -85,7 +85,7 @@
       </button>
       <clr-dropdown-menu *clrIfOpen [clrPosition]="'top-right'">
         @for (index of getIndexes(data.rows); track index) {
-        <div (click)="dynamicRowsDatagrid.virtualScroll.scrollToIndex(index, 'smooth')" clrDropdownItem>
+        <div (click)="dynamicRowsDatagrid.virtualScroll?.scrollToIndex(index, 'smooth')" clrDropdownItem>
           {{index + 1}}
         </div>
         }
@@ -93,25 +93,25 @@
     </clr-dropdown>
     <button
       class="btn btn-sm btn-link-neutral footer-button"
-      (click)="dynamicRowsDatagrid.virtualScroll.scrollToIndex(0, 'smooth')"
+      (click)="dynamicRowsDatagrid.virtualScroll?.scrollToIndex(0, 'smooth')"
     >
       <cds-icon shape="step-forward-2" direction="left"></cds-icon>
     </button>
     <button
       class="btn btn-sm btn-link-neutral footer-button"
-      (click)="dynamicRowsDatagrid.virtualScroll.scrollUp(19, 'smooth')"
+      (click)="dynamicRowsDatagrid.virtualScroll?.scrollUp(19, 'smooth')"
     >
       <cds-icon shape="angle" direction="up"></cds-icon>
     </button>
     <button
       class="btn btn-sm btn-link-neutral footer-button"
-      (click)="dynamicRowsDatagrid.virtualScroll.scrollDown(19, 'smooth')"
+      (click)="dynamicRowsDatagrid.virtualScroll?.scrollDown(19, 'smooth')"
     >
       <cds-icon shape="angle" direction="down"></cds-icon>
     </button>
     <button
       class="btn btn-sm btn-link-neutral footer-button"
-      (click)="dynamicRowsDatagrid.virtualScroll.scrollToIndex(data.rows.length, 'smooth')"
+      (click)="dynamicRowsDatagrid.virtualScroll?.scrollToIndex(data.rows.length, 'smooth')"
     >
       <cds-icon shape="step-forward-2" direction="right"></cds-icon>
     </button>
@@ -131,7 +131,7 @@
   />
 </clr-input-container>
 
-@if ({ users: users | async }; as data) {
+@if ({ users: (users | async) ?? [] }; as data) {
 <clr-datagrid
   #usersDatagrid
   [(clrDgSelected)]="selectedUsers"
@@ -189,31 +189,31 @@
       </button>
       <clr-dropdown-menu *clrIfOpen [clrPosition]="'top-right'">
         @for (index of getIndexes(data.users); track index) {
-        <div (click)="usersDatagrid.virtualScroll.scrollToIndex(index, 'auto')" clrDropdownItem>{{index + 1}}</div>
+        <div (click)="usersDatagrid.virtualScroll?.scrollToIndex(index, 'auto')" clrDropdownItem>{{index + 1}}</div>
         }
       </clr-dropdown-menu>
     </clr-dropdown>
     <button
       class="btn btn-sm btn-link-neutral footer-button"
-      (click)="usersDatagrid.virtualScroll.scrollToIndex(0, 'auto')"
+      (click)="usersDatagrid.virtualScroll?.scrollToIndex(0, 'auto')"
     >
       <cds-icon shape="step-forward-2" direction="left"></cds-icon>
     </button>
     <button
       class="btn btn-sm btn-link-neutral footer-button"
-      (click)="usersDatagrid.virtualScroll.scrollUp(19, 'auto')"
+      (click)="usersDatagrid.virtualScroll?.scrollUp(19, 'auto')"
     >
       <cds-icon shape="angle" direction="up"></cds-icon>
     </button>
     <button
       class="btn btn-sm btn-link-neutral footer-button"
-      (click)="usersDatagrid.virtualScroll.scrollDown(19, 'auto')"
+      (click)="usersDatagrid.virtualScroll?.scrollDown(19, 'auto')"
     >
       <cds-icon shape="angle" direction="down"></cds-icon>
     </button>
     <button
       class="btn btn-sm btn-link-neutral footer-button"
-      (click)="usersDatagrid.virtualScroll.scrollToIndex(data.users.length, 'auto')"
+      (click)="usersDatagrid.virtualScroll?.scrollToIndex(data.users.length, 'auto')"
     >
       <cds-icon shape="step-forward-2" direction="right"></cds-icon>
     </button>

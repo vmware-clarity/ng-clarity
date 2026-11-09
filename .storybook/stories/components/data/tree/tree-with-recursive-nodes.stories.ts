@@ -18,7 +18,7 @@ import { type File, filesRoot } from '@storybook-helpers/files.data';
 type RecursiveNodesArgs = {
   clrLazy: boolean;
   files: File[];
-  getChildren: (file: File) => File[];
+  getChildren: (file: File) => File[] | undefined;
 };
 
 const meta = {

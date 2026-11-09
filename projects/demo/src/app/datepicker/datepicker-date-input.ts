@@ -19,7 +19,7 @@ const date2: Date = new Date(2017, 4, 5);
 })
 export class DatepickerDateInputDemo {
   date: Date = date1;
-  dateStr: string;
+  dateStr?: string;
 
   dateChanged(date: Date) {
     console.log('Datepicker Output Changed', date);

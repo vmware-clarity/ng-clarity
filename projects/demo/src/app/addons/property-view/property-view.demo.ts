@@ -25,12 +25,12 @@ import { ClarityModule } from '@clr/angular';
   templateUrl: './property-view.demo.html',
 })
 export class PropertyViewDemo implements OnInit {
-  interactiveData: PropertyViewModel;
+  interactiveData!: PropertyViewModel;
   collapsedSection = false;
   renderTitleAsHtml = false;
 
   private readonly propertyViewBuilder = new PropertyViewBuilder();
-  private lionSection: PropertyViewSectionBuilder;
+  private lionSection!: PropertyViewSectionBuilder;
   private newSectionId = 0;
   private newCategoryId = 0;
 

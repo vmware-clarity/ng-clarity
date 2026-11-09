@@ -19,7 +19,7 @@ import { DatagridKitchenSinkData } from '../kitchen-sink/kitchen-sink-data';
   standalone: false,
 })
 export class DatagridDensityDemo {
-  selected: User[];
+  selected?: User[];
   users: User[];
   detail = 'columns';
   replace = true;
@@ -28,7 +28,7 @@ export class DatagridDensityDemo {
   compact = true;
   showRowDetail = true;
   showAnchor = false;
-  actions: true;
+  actions!: boolean;
 
   constructor() {
     this.users = DatagridKitchenSinkData.users;

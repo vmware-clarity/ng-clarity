@@ -73,7 +73,7 @@ export class VirtualScrollGridDemoComponent {
   ];
 
   protected resetting = true;
-  protected vmItems: VmItem[];
+  protected vmItems!: VmItem[];
   protected selectedVms: VmItem[] = [];
 
   constructor(
@@ -87,15 +87,16 @@ export class VirtualScrollGridDemoComponent {
 
   protected onRefreshGridData(state: ClrDatagridStateInterface): void {
     this.options.loading = true;
+    const { size = 0, current = 1 } = state.page ?? {};
     this.cdr.detectChanges();
     this.inventory
       .filter()
-      .fetch$(state.page.size * (state.page.current - 1), state.page.size)
+      .fetch$(size * (current - 1), size)
       .subscribe((result: FetchResult) => {
         this.vmItems = result.vms;
         this.dataRange = {
           total: this.options.totalItems,
-          skip: state.page.current * state.page.size,
+          skip: current * size,
           data: this.vmItems,
         };
         this.cdr.detectChanges();
@@ -104,14 +105,15 @@ export class VirtualScrollGridDemoComponent {
   }
 
   protected refreshVirtualGridData(state: ClrDatagridStateInterface) {
+    const { from = 0, size } = state.page ?? {};
     this.inventory
       .filter()
-      .fetch$(state.page.from, state.page.size)
+      .fetch$(from, size)
       .subscribe((result: FetchResult) => {
         this.vmItems = result.vms;
         this.dataRange = {
           total: this.options.totalItems,
-          skip: state.page.from,
+          skip: from,
           data: this.vmItems,
         };
         console.log(result);
