@@ -45,7 +45,7 @@ import { ClrDatepickerModule, ClrFormsModule } from '@clr/angular';
 - `min` / `max` take `yyyy-mm-dd` strings; out-of-range dates are disabled and produce `min` / `max` errors.
 - Container inputs: `[showActionButtons]="true"` (confirm with Cancel/Apply), `[clrFirstDayOfWeek]="ClrWeekday.Monday"` (enum `ClrWeekday`, default from the Angular locale), `clrPosition`.
 - Locale and date format come from Angular `LOCALE_ID`.
-- To read or write the string value, create one `new ClrLocaleDateFormat(inject(LOCALE_ID))` per component (field initializer or constructor, where `inject()` works) and reuse it: `parse(text)` returns a `Date` or `null` for text that is not a valid day, `format(date)` returns the text the input shows, `placeholder` the generated placeholder. Same rules as the date picker; min/max are not checked. Do not parse the string with `new Date(text)`.
+- To read or write the string value, create one `new ClrLocaleDateFormat(inject(LOCALE_ID))` per component (field initializer or constructor, where `inject()` works) and reuse it: `parse(text)` returns a `Date` or `null` for text that is not a valid day, `format(date)` returns the text the input shows, `placeholder` the generated placeholder. Same rules as the date picker; min/max are not checked. Do not parse the string with `new Date(text)`. Not needed with `[(clrDate)]`, which already gives a `Date`. Pass the same `LOCALE_ID` the date input uses: a `LOCALE_ID` provided on a child component applies only to that component's injector, so `inject(LOCALE_ID)` in a parent returns the app locale.
 
 ## Date range picker
 
