@@ -1439,7 +1439,7 @@ export default function (): void {
     });
 
     describe('Rows becoming actionable or expandable late', function () {
-      function expectFixedColumns(context: TestContext<ClrDatagrid, any>, actions: boolean, expandable: boolean) {
+      function expectFixedColumns(context: TestContext<unknown, unknown>, actions: boolean, expandable: boolean) {
         const header = context.clarityElement.querySelector('.datagrid-header');
         expect(!!header.querySelector('.datagrid-row-actions')).toBe(actions);
         expect(!!header.querySelector('.datagrid-expandable-caret')).toBe(expandable);
