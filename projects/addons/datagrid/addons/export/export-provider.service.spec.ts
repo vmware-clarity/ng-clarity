@@ -26,7 +26,7 @@ import { appfxDatagridErrorNotifiableToken } from '../../interfaces/tokens';
   standalone: true,
 })
 class ClrDatagridHostComponent {
-  @ViewChild(ClrDatagrid, { static: true }) clrDatagrid: ClrDatagrid;
+  @ViewChild(ClrDatagrid, { static: true }) clrDatagrid!: ClrDatagrid;
 
   serialKeyLicenseItems: any[] = [
     {

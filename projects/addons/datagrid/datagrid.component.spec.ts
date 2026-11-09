@@ -331,7 +331,7 @@ describe('DatagridComponent', () => {
         } else {
           expectedValue = expectedRow[columnDef.field];
         }
-        expect(row.getCell(columnDef.displayName).getCellWrapperElement().textContent?.trim().trim()).toEqual(
+        expect(row.getCell(columnDef.displayName).getCellWrapperElement()!.textContent?.trim().trim()).toEqual(
           expectedValue
         );
       }
@@ -412,7 +412,7 @@ describe('DatagridComponent', () => {
     rows.forEach((row: GridRowTestHelper, rowIndex: number) => {
       const expectedRow = allGridData[rowIndex];
       for (const columnDef of this.columnsDefs) {
-        expect(row.getCell(columnDef.displayName).getCellWrapperElement().textContent?.trim()).toEqual(
+        expect(row.getCell(columnDef.displayName).getCellWrapperElement()!.textContent?.trim()).toEqual(
           expectedRow[columnDef.field]
         );
       }
@@ -468,7 +468,7 @@ describe('DatagridComponent', () => {
     rows.forEach((row: GridRowTestHelper, rowIndex: number) => {
       const expectedRow = this.data[rowIndex];
       for (const columnDef of this.columnsDefs) {
-        expect(row.getCell(columnDef.displayName).getCellWrapperElement().textContent?.trim()).toEqual(
+        expect(row.getCell(columnDef.displayName).getCellWrapperElement()!.textContent?.trim()).toEqual(
           expectedRow[columnDef.field]
         );
       }
@@ -536,7 +536,7 @@ describe('DatagridComponent', () => {
     rows.forEach((row: GridRowTestHelper, rowIndex: number) => {
       const statusValue = row
         .getCellAt(subjectColumnIndex)
-        .getCellWrapperElement('test-status-renderer span')
+        .getCellWrapperElement('test-status-renderer span')!
         .textContent?.trim()
         .trim();
       expect(statusValue).toEqual(states[rowIndex]);
@@ -591,7 +591,7 @@ describe('DatagridComponent', () => {
           this.fixture.detectChanges(false);
 
           gridHelper.getRows().forEach((row: GridRowTestHelper, rowIndex: number) => {
-            expect(row.getCellAt(subjectColumnIndex).getCellWrapperElement().textContent?.trim()).toEqual(
+            expect(row.getCellAt(subjectColumnIndex).getCellWrapperElement()!.textContent?.trim()).toEqual(
               states[rowIndex]
             );
           });
@@ -602,7 +602,7 @@ describe('DatagridComponent', () => {
           this.fixture.detectChanges();
 
           gridHelper.getRows().forEach((row: GridRowTestHelper, rowIndex: number) => {
-            expect(row.getCellAt(subjectColumnIndex).getCellWrapperElement().textContent?.trim()).toEqual(
+            expect(row.getCellAt(subjectColumnIndex).getCellWrapperElement()!.textContent?.trim()).toEqual(
               states[states.length - rowIndex - 1]
             );
           });
@@ -667,7 +667,7 @@ describe('DatagridComponent', () => {
           this.fixture.detectChanges(false);
 
           gridHelper.getRows().forEach((row: GridRowTestHelper, rowIndex: number) => {
-            expect(row.getCellAt(subjectColumnIndex).getCellWrapperElement().textContent?.trim()).toEqual(
+            expect(row.getCellAt(subjectColumnIndex).getCellWrapperElement()!.textContent?.trim()).toEqual(
               states[rowIndex]
             );
           });
@@ -677,7 +677,7 @@ describe('DatagridComponent', () => {
           this.fixture.detectChanges();
 
           gridHelper.getRows().forEach((row: GridRowTestHelper, rowIndex: number) => {
-            expect(row.getCellAt(subjectColumnIndex).getCellWrapperElement().textContent?.trim()).toEqual(
+            expect(row.getCellAt(subjectColumnIndex).getCellWrapperElement()!.textContent?.trim()).toEqual(
               states[states.length - rowIndex - 1]
             );
           });
@@ -777,11 +777,11 @@ describe('DatagridComponent', () => {
       describe('divider in front of the move actions', () => {
         // The menu is rendered into a CDK overlay attached to document.body, outside the fixture, so
         // it has to be read through plain document queries once it is open.
-        function menuRoles(fixture: ComponentFixture<DatagridHostComponent>): string[] {
+        function menuRoles(fixture: ComponentFixture<DatagridHostComponent>): (string | null)[] {
           fixture.debugElement.query(By.css('.datagrid-column-actions-toggle')).nativeElement.click();
           fixture.detectChanges();
 
-          const roles = Array.from(document.querySelector('.dropdown-menu').children).map(item =>
+          const roles = Array.from(document.querySelector('.dropdown-menu')!.children).map(item =>
             item.getAttribute('role')
           );
 
@@ -791,7 +791,7 @@ describe('DatagridComponent', () => {
           return roles;
         }
 
-        function openMenuFor(this: DatagridSpecContext, column: ColumnDefinition<any>): string[] {
+        function openMenuFor(this: DatagridSpecContext, column: ColumnDefinition<any>): (string | null)[] {
           this.component.enableColumnActions = true;
           this.component.columnsDefs = [column];
           this.fixture.detectChanges(false);
@@ -841,7 +841,7 @@ describe('DatagridComponent', () => {
       function menuItem(label: string): HTMLElement {
         return Array.from(document.querySelectorAll<HTMLElement>('.dropdown-menu .dropdown-item')).find(
           item => item.textContent.trim() === label
-        );
+        )!;
       }
 
       beforeEach(function (this: DatagridSpecContext) {
@@ -907,7 +907,7 @@ describe('DatagridComponent', () => {
       function menuItem(label: string): HTMLElement {
         return Array.from(document.querySelectorAll<HTMLElement>('.dropdown-menu .dropdown-item')).find(
           item => item.textContent.trim() === label
-        );
+        )!;
       }
 
       beforeEach(function (this: DatagridSpecContext) {
@@ -1084,7 +1084,7 @@ describe('DatagridComponent', () => {
 
           const order = [focusedLabel()];
           for (let i = 0; i < 5; i++) {
-            document.activeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+            document.activeElement!.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
             await settle();
             order.push(focusedLabel());
           }
@@ -1133,7 +1133,7 @@ describe('DatagridComponent', () => {
       function moveButton(label: string): HTMLElement {
         return Array.from(document.querySelectorAll<HTMLElement>('.dropdown-menu .dropdown-item')).find(
           item => item.textContent.trim() === label
-        );
+        )!;
       }
 
       beforeEach(function (this: DatagridSpecContext) {
@@ -1188,7 +1188,7 @@ describe('DatagridComponent', () => {
       function moveButton(label: string): HTMLElement {
         return Array.from(document.querySelectorAll<HTMLElement>('.dropdown-menu .dropdown-item')).find(
           item => item.textContent.trim() === label
-        );
+        )!;
       }
 
       // A move leaves the menu open on the moved column, so it is closed from there afterwards.
@@ -1299,7 +1299,7 @@ describe('DatagridComponent', () => {
       // (on keyup), not while it is only being calculated, so a synthetic width can't be
       // substituted for it.
       function resizeColumnByKeyboard(fixture: ComponentFixture<DatagridHostComponent>, title: string, by: number) {
-        const handle = columnElementByTitle(fixture, title).querySelector<HTMLElement>('.datagrid-column-handle');
+        const handle = columnElementByTitle(fixture, title).querySelector<HTMLElement>('.datagrid-column-handle')!;
         const key = by > 0 ? 'ArrowRight' : 'ArrowLeft';
         handle.dispatchEvent(new KeyboardEvent('keydown', { key: key, bubbles: true }));
         handle.dispatchEvent(new KeyboardEvent('keyup', { key: key, bubbles: true }));
@@ -1369,7 +1369,7 @@ describe('DatagridComponent', () => {
       function moveButton(label: string): HTMLElement {
         return Array.from(document.querySelectorAll<HTMLElement>('.dropdown-menu .dropdown-item')).find(
           item => item.textContent.trim() === label
-        );
+        )!;
       }
 
       beforeEach(function (this: DatagridSpecContext) {
@@ -1402,7 +1402,7 @@ describe('DatagridComponent', () => {
         const toggle = fixture.debugElement.query(By.directive(DatagridColumnToggleComponent))
           .componentInstance as DatagridColumnToggleComponent;
         const column = toggle.columns.find(other => other.displayName === title);
-        toggle.toggleColumnState(column, { target: { checked: !hidden } } as unknown as Event);
+        toggle.toggleColumnState(column!, { target: { checked: !hidden } } as unknown as Event);
         fixture.detectChanges();
       }
 
@@ -1472,7 +1472,7 @@ describe('DatagridComponent', () => {
           this.fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle'))[2].nativeElement.click();
           this.fixture.detectChanges();
           Array.from(document.querySelectorAll<HTMLElement>('.dropdown-menu .dropdown-item'))
-            .find(item => item.textContent.trim() === 'Move Right')
+            .find(item => item.textContent.trim() === 'Move Right')!
             .click();
           this.fixture.detectChanges();
           setHidden(this.fixture, 'C3', true);
@@ -1526,7 +1526,7 @@ describe('DatagridComponent', () => {
         it('keeps a resized width', function (this: DatagridSpecContext) {
           const handle = columnElementByTitle(this.fixture, 'Name').querySelector<HTMLElement>(
             '.datagrid-column-handle'
-          );
+          )!;
           handle.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
           handle.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowRight', bubbles: true }));
           this.fixture.detectChanges();
@@ -2429,7 +2429,7 @@ describe('DatagridComponent', () => {
         for (const columnDef of this.columnsDefs) {
           const expectedRow: any = this.data[rowIndex];
           const subjectColumnIndex = this.columnsDefs.findIndex((col: ColumnDefinition<any>) => col === columnDef);
-          expect(row.getCellAt(subjectColumnIndex).getCellWrapperElement().textContent?.trim()).toEqual(
+          expect(row.getCellAt(subjectColumnIndex).getCellWrapperElement()!.textContent?.trim()).toEqual(
             expectedRow[columnDef.field]
           );
         }
@@ -2445,7 +2445,7 @@ describe('DatagridComponent', () => {
         for (const columnDef of this.columnsDefs) {
           const expectedRow: any = this.data[rowIndex + 2];
           const subjectColumnIndex = this.columnsDefs.findIndex((col: ColumnDefinition<any>) => col === columnDef);
-          expect(row.getCellAt(subjectColumnIndex).getCellWrapperElement().textContent?.trim()).toEqual(
+          expect(row.getCellAt(subjectColumnIndex).getCellWrapperElement()!.textContent?.trim()).toEqual(
             expectedRow[columnDef.field]
           );
         }
@@ -2877,7 +2877,7 @@ describe('DatagridComponent', () => {
 
     function rowNames(element: HTMLElement): string[] {
       return Array.from(element.querySelectorAll<HTMLElement>('clr-dg-row')).map(row =>
-        row.querySelector<HTMLElement>('clr-dg-cell').innerText.trim()
+        row.querySelector<HTMLElement>('clr-dg-cell')!.innerText.trim()
       );
     }
 
@@ -2885,7 +2885,7 @@ describe('DatagridComponent', () => {
       await this.fixture.whenStable();
 
       const element: HTMLElement = this.fixture.nativeElement;
-      expect(element.querySelector('.datagrid-table').getAttribute('role')).toBe('treegrid');
+      expect(element.querySelector('.datagrid-table')!.getAttribute('role')).toBe('treegrid');
       const rows = element.querySelectorAll('clr-dg-row');
       expect(rows.length).toBe(this.data.length);
       expect(rows[0].querySelector('.datagrid-tree-toggle')).not.toBeNull();
@@ -2933,9 +2933,9 @@ describe('DatagridComponent', () => {
 
       const toggle = fixture.nativeElement.querySelector('.datagrid-tree-toggle') as HTMLElement;
       const name = toggle
-        .getAttribute('aria-labelledby')
+        .getAttribute('aria-labelledby')!
         .split(' ')
-        .map(id => document.getElementById(id))
+        .map(id => document.getElementById(id)!)
         .map(label => (label.hidden ? label.textContent : label.innerText).trim())
         .filter(Boolean)
         .join(' ');
@@ -2967,7 +2967,7 @@ describe('DatagridComponent', () => {
       expect(rowCount()).toBe(50);
       expect(host.refreshVirtualGridData).toHaveBeenCalledWith({ page: jasmine.objectContaining({ from: 0 }) });
 
-      element.querySelector<HTMLButtonElement>('.datagrid-tree-toggle').click();
+      element.querySelector<HTMLButtonElement>('.datagrid-tree-toggle')!.click();
       await fixture.whenStable();
       await respond([{ ...this.data[0], name: 'vm0-a' }]);
       await fixture.whenStable();
@@ -2990,7 +2990,7 @@ describe('DatagridComponent', () => {
       await this.fixture.whenStable();
       const element: HTMLElement = this.fixture.nativeElement;
 
-      element.querySelector<HTMLButtonElement>('.datagrid-tree-toggle').click();
+      element.querySelector<HTMLButtonElement>('.datagrid-tree-toggle')!.click();
       await this.fixture.whenStable();
       await respond([
         { ...this.data[0], name: 'vm0-a' },
@@ -3006,7 +3006,7 @@ describe('DatagridComponent', () => {
       await this.fixture.whenStable();
       const element: HTMLElement = this.fixture.nativeElement;
 
-      element.querySelector<HTMLButtonElement>('.datagrid-tree-toggle').click();
+      element.querySelector<HTMLButtonElement>('.datagrid-tree-toggle')!.click();
       await this.fixture.whenStable();
       await respond([]);
       await this.fixture.whenStable();
@@ -3021,13 +3021,13 @@ describe('DatagridComponent', () => {
       await this.fixture.whenStable();
       const element: HTMLElement = this.fixture.nativeElement;
 
-      element.querySelector<HTMLButtonElement>('.datagrid-tree-toggle').click();
+      element.querySelector<HTMLButtonElement>('.datagrid-tree-toggle')!.click();
       await this.fixture.whenStable();
       await respond([{ ...this.data[0], name: 'vm0-a' }]);
       await this.fixture.whenStable();
       expect(this.component.treeExpandedChanges).toEqual([{ item: this.data[0], expanded: true }]);
 
-      element.querySelector<HTMLLabelElement>('clr-dg-row .datagrid-select label').click();
+      element.querySelector<HTMLLabelElement>('clr-dg-row .datagrid-select label')!.click();
       await this.fixture.whenStable();
       const selected: any[] = this.component.changeSelection.calls.mostRecent().args[0];
       expect(selected.map(item => item.name).sort()).toEqual(['vm0', 'vm0-a']);
@@ -3157,19 +3157,19 @@ class StatusComparator implements ClrDatagridComparatorInterface<any> {
   standalone: true,
 })
 class DatagridHostComponent {
-  @ViewChild(DatagridComponent, { static: true }) appfxDatagridComponent: DatagridComponent<unknown>;
-  @ViewChild(TemplateRef, { static: true }) detailHeader: TemplateRef<any>;
-  @ViewChild(TemplateRef, { static: true }) rowDetailContent: TemplateRef<any>;
-  trackByProperty: string | null;
+  @ViewChild(DatagridComponent, { static: true }) appfxDatagridComponent!: DatagridComponent<unknown>;
+  @ViewChild(TemplateRef, { static: true }) detailHeader!: TemplateRef<any>;
+  @ViewChild(TemplateRef, { static: true }) rowDetailContent!: TemplateRef<any>;
+  trackByProperty!: string | null;
   trackByGridItemPropertySeparator = '.';
   data: any[] = [];
-  columnsDefs: ColumnDefinition<any>[];
-  actions: any[];
-  actionBarActions: any[];
+  columnsDefs!: ColumnDefinition<any>[];
+  actions!: any[];
+  actionBarActions!: any[];
   selectionType = SelectionType.Single;
-  selectedItems: any[];
-  loading: boolean;
-  loadingMoreItems: boolean;
+  selectedItems!: any[];
+  loading!: boolean;
+  loadingMoreItems!: boolean;
   isRowSelectionMode = true; // default
   datagridLabels = { noItemsFound: 'No items found' };
   noItemsFoundPlaceholder?: string = 'No items found';
@@ -3256,10 +3256,10 @@ class DatagridHostComponent {
   `,
 })
 class StatusRendererComponent implements ColumnRenderer<any> {
-  column: ColumnDefinition<any>;
+  column!: ColumnDefinition<any>;
 
-  icon: string;
-  label: string;
+  icon!: string;
+  label!: string;
 
   set item(value: any) {
     this.statusProperties(value['status']);

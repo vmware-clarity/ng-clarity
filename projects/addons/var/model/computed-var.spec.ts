@@ -14,12 +14,12 @@ import { ComputedVar, ComputeStrategy, SimpleVar, Var } from './var';
 const fnResult = 'fn result:';
 
 class MockWorkflowModel {
-  var1: Var<number>;
-  var2: Var<number>;
-  delay: Var<boolean>;
-  cp1: ComputedVar<string>;
-  cp2: ComputedVar<number>;
-  delayedVar: Var<string>;
+  var1!: Var<number>;
+  var2!: Var<number>;
+  delay!: Var<boolean>;
+  cp1!: ComputedVar<string>;
+  cp2!: ComputedVar<number>;
+  delayedVar!: Var<string>;
 
   cp1InvocationCount = 0;
 }

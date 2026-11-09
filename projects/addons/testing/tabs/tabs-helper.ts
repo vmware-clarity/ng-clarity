@@ -43,7 +43,7 @@ export class TabsHelper {
   /**
    * Retrieves the active Clarity Tab instance.
    */
-  getActiveTab(): ClrTab {
+  getActiveTab(): ClrTab | undefined {
     return this.component.tabsService.activeTab;
   }
 
@@ -52,7 +52,7 @@ export class TabsHelper {
    */
   getActiveTabIndex(): number {
     return this.component.tabLinkDirectives.findIndex(
-      tabLink => tabLink.tabLinkId === this.component.tabsService.activeTab.tabLink.tabLinkId
+      tabLink => tabLink.tabLinkId === this.component.tabsService.activeTab?.tabLink.tabLinkId
     );
   }
 
@@ -60,7 +60,7 @@ export class TabsHelper {
    * Extract located projected content as provided for the active tab.
    */
   getActiveTabContentElement(): HTMLElement | undefined {
-    const evr = this.getActiveTab().tabContent['viewRef'] as EmbeddedViewRef<ClrTabContent>;
+    const evr = this.getActiveTab()?.tabContent['viewRef'] as EmbeddedViewRef<ClrTabContent>;
     return evr ? ((evr.rootNodes[0] as HTMLElement).firstElementChild as HTMLElement) || undefined : undefined;
   }
 

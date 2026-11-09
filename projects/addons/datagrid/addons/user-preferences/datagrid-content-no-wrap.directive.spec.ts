@@ -87,7 +87,7 @@ describe('DatagridContentNoWrapDirective', () => {
   template: `<appfx-datagrid></appfx-datagrid>`,
 })
 class DatagridHostComponent {
-  @ViewChild(DatagridComponent, { static: true }) appfxDatagridComponent: DatagridComponent<unknown>;
+  @ViewChild(DatagridComponent, { static: true }) appfxDatagridComponent!: DatagridComponent<unknown>;
 
-  @ViewChild(DatagridContentNoWrapDirective, { static: true }) directive: DatagridContentNoWrapDirective;
+  @ViewChild(DatagridContentNoWrapDirective, { static: true }) directive!: DatagridContentNoWrapDirective;
 }

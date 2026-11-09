@@ -39,7 +39,7 @@ describe('ColumnMoveActionDirective', () => {
   function moveButton(label: string): HTMLElement {
     return Array.from(document.querySelectorAll<HTMLElement>('.dropdown-menu .dropdown-item')).find(
       item => item.textContent.trim() === label
-    );
+    )!;
   }
 
   it('is enabled in the middle and disabled at both edges', function (this: any) {
@@ -130,7 +130,7 @@ describe('ColumnMoveActionDirective', () => {
   `,
 })
 class TestClrDatagridHostComponent {
-  @ViewChild(ClrDatagrid, { static: true }) clrDatagrid: ClrDatagrid<any>;
+  @ViewChild(ClrDatagrid, { static: true }) clrDatagrid!: ClrDatagrid<any>;
 
   moveActions = [
     { direction: ColumnMoveDirection.Left, label: 'Move Left' },

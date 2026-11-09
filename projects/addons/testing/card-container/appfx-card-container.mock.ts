@@ -74,7 +74,7 @@ export class MockRenderer2 {
   ],
 })
 export class MockCardContainerComponent {
-  @ViewChild('cardContainer', { read: ViewContainerRef, static: true }) cardContainer: ViewContainerRef;
+  @ViewChild('cardContainer', { read: ViewContainerRef, static: true }) cardContainer!: ViewContainerRef;
 }
 
 // Sample Card to test scenarios

@@ -24,9 +24,9 @@ import Spy = jasmine.Spy;
   template: '',
 })
 class PropertyViewCategoryMockComponent {
-  @Input() componentId: string;
+  @Input() componentId!: string;
 
-  @Input() data: PropertyViewCategoryModel;
+  @Input() data!: PropertyViewCategoryModel;
 }
 
 class PropertyViewCategoriesSectionsExpandedStateManagerMock {

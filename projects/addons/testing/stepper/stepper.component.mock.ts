@@ -15,9 +15,9 @@ import { ModelChange, Step, WorkflowModel } from '@clr/addons/var';
   template: '<ng-content></ng-content>',
 })
 export class MockStepperComponent {
-  @Input() steps: Step[];
-  @Input() wizardModel: WorkflowModel;
-  @Input() loading: boolean;
+  @Input() steps!: Step[];
+  @Input() wizardModel!: WorkflowModel;
+  @Input() loading!: boolean;
 
   @Output() onModelChange: EventEmitter<ModelChange[]> = new EventEmitter<ModelChange[]>();
   @Output() onFinish: EventEmitter<void> = new EventEmitter<void>();

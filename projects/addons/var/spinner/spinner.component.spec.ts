@@ -96,15 +96,15 @@ describe('appfx-spinner', () => {
 })
 class MockComponent {
   loading = false;
-  message: string;
+  message!: string;
   politeness: 'assertive' | 'polite' | 'off' = 'assertive';
-  progressDetails: string;
+  progressDetails!: string;
   showActionButton = false;
   actionButtonLabel = 'cancel';
 
   actionInvoked = 0;
 
-  @ViewChild(SpinnerComponent, { static: false }) spinner: SpinnerComponent;
+  @ViewChild(SpinnerComponent, { static: false }) spinner!: SpinnerComponent;
 
   onAction(): void {
     this.actionInvoked++;
