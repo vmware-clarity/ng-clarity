@@ -46,7 +46,7 @@ export default function (): void {
       providers: [DatalistIdService],
     });
 
-    beforeEach(function () {
+    beforeEach(function (this: Context) {
       datalistIdService = this.getClarityProvider(DatalistIdService);
     });
 

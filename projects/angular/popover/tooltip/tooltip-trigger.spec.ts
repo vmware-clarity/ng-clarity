@@ -33,14 +33,14 @@ export default function (): void {
       providers: [ClrPopoverService, TooltipIdService, TooltipMouseService],
     });
 
-    beforeEach(function () {
+    beforeEach(function (this: TooltipContext) {
       this.popoverService = this.getClarityProvider(ClrPopoverService);
       this.tooltipIdService = this.getClarityProvider(TooltipIdService);
       this.detectChanges();
     });
 
     describe('TypeScript API', function () {
-      it('notifies the IfOpen service', function () {
+      it('notifies the IfOpen service', function (this: TooltipContext) {
         const toggleService = this.getClarityProvider(ClrPopoverService);
         this.clarityDirective.showTooltip();
         expect(toggleService.open).toBe(true);
@@ -48,7 +48,7 @@ export default function (): void {
         expect(toggleService.open).toBe(false);
       });
 
-      it('responds to the TooltipIdService', function () {
+      it('responds to the TooltipIdService', function (this: TooltipContext) {
         let testId;
         this.tooltipIdService.id.subscribe((idChange: string) => {
           testId = idChange;
@@ -62,11 +62,11 @@ export default function (): void {
     });
 
     describe('View basics', function () {
-      it('has the role of button', function () {
+      it('has the role of button', function (this: TooltipContext) {
         expect(this.clarityElement.getAttribute('role')).toEqual('button');
       });
 
-      it('has a tab index of 0', function () {
+      it('has a tab index of 0', function (this: TooltipContext) {
         expect(this.clarityElement.getAttribute('tabindex')).toEqual('0');
       });
     });

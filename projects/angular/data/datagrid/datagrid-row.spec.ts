@@ -7,7 +7,7 @@
 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EmbeddedViewRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { delay, TestContext } from '@clr/angular/testing';
+import { delay, TestContext, TestHelpers } from '@clr/angular/testing';
 import { LoadingListener } from '@clr/angular/utils';
 
 import { ClrDatagrid } from './datagrid';
@@ -33,7 +33,7 @@ export default function (): void {
       let context: TestContext<ClrDatagridRow<Item>, FullTest>;
       let renderer: DatagridRenderOrganizer;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagridRow, FullTest, DATAGRID_SPEC_PROVIDERS);
         renderer = context.getClarityProvider(DatagridRenderOrganizer);
         context.detectChanges();
@@ -71,10 +71,10 @@ export default function (): void {
     });
 
     describe('Projection', function () {
-      let context: TestContext<ClrDatagridRow, FullTest>;
+      let context: TestContext<ClrDatagridRow, ProjectionTest>;
       let displayMode: MockDisplayModeService;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagridRow, ProjectionTest, DATAGRID_SPEC_PROVIDERS);
         displayMode = context.getClarityProvider(DisplayModeService) as MockDisplayModeService;
       });
@@ -124,7 +124,7 @@ export default function (): void {
       let selectionProvider: Selection;
       let checkbox: HTMLElement;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagridRow, SelectableRow, DATAGRID_SPEC_PROVIDERS);
         selectionProvider = TestBed.inject(Selection);
         TestBed.inject(Items).all = [{ id: 1 }, { id: 2 }];
@@ -159,7 +159,7 @@ export default function (): void {
       let selectionProvider: Selection;
       let checkbox: HTMLElement;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagridRow, SelectableRowOrder, DATAGRID_SPEC_PROVIDERS);
         selectionProvider = TestBed.inject(Selection);
         TestBed.inject(Items).all = [{ id: 1 }, { id: 2 }];
@@ -242,7 +242,7 @@ export default function (): void {
       let context: TestContext<ClrDatagridRow, FullTest>;
       let selectionProvider: Selection;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagridRow, FullTest, DATAGRID_SPEC_PROVIDERS);
         selectionProvider = TestBed.inject(Selection);
         TestBed.inject(Items).all = [{ id: 1 }, { id: 2 }];
@@ -419,7 +419,7 @@ export default function (): void {
       let context: TestContext<ClrDatagridRow<Item>, ExpandTest>;
       let expand: DatagridIfExpandService;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagridRow, ExpandTest, DATAGRID_SPEC_PROVIDERS);
         context.detectChanges();
         expand = context.getClarityProvider(DatagridIfExpandService);
@@ -586,7 +586,7 @@ export default function (): void {
       describe('with expandable rows and action overflow', function () {
         let context: TestContext<ClrDatagridRow<Item>, RowSelectionWithExpandAndActionTest>;
 
-        beforeEach(function () {
+        beforeEach(function (this: TestHelpers) {
           context = this.create(ClrDatagridRow, RowSelectionWithExpandAndActionTest, DATAGRID_SPEC_PROVIDERS);
           context.detectChanges();
         });
@@ -674,7 +674,7 @@ export default function (): void {
     describe('Details', function () {
       let context: TestContext<ClrDatagrid<Item>, DatagridWithDisabledOrHiddenDetails>;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, DatagridWithDisabledOrHiddenDetails, DATAGRID_SPEC_PROVIDERS);
         context.detectChanges();
       });

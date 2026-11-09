@@ -77,7 +77,7 @@ export default function (): void {
       });
 
       function testPosition(name: ClrPopoverPosition): void {
-        it('has a ' + name + ' signpost content position', async function () {
+        it('has a ' + name + ' signpost content position', async function (this: Context) {
           this.testComponent.position = name;
           this.detectChanges();
 

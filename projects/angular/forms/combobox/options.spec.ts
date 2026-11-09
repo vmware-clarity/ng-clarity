@@ -8,7 +8,7 @@
 import { ChangeDetectionStrategy, Component, ElementRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ClrPopoverService, POPOVER_HOST_ORIGIN } from '@clr/angular/popover/common';
-import { TestContext } from '@clr/angular/testing';
+import { TestContext, TestHelpers } from '@clr/angular/testing';
 import { ClrCommonStringsService, FocusService, IF_ACTIVE_ID_PROVIDER } from '@clr/angular/utils';
 
 import { ClrOptions } from './options';
@@ -63,7 +63,7 @@ export default function (): void {
     let popoverService: ClrPopoverService;
 
     describe('View Basics', function () {
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.createOnly(ClrOptions, TestComponent, []);
         popoverService = context.getClarityProvider(ClrPopoverService);
       });
@@ -106,7 +106,7 @@ export default function (): void {
 
     describe('Template API', function () {
       describe('Plain text content', function () {
-        beforeEach(function () {
+        beforeEach(function (this: TestHelpers) {
           context = this.createOnly(ClrOptions, TestComponent, []);
         });
 
@@ -117,7 +117,7 @@ export default function (): void {
       });
 
       describe('ClrOption content', function () {
-        beforeEach(function () {
+        beforeEach(function (this: TestHelpers) {
           context = this.create(ClrOptions, TestComponentWithChild, []);
         });
 

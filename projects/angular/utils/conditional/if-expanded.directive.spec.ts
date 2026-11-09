@@ -6,15 +6,23 @@
  */
 
 import { ChangeDetectionStrategy, Component, Inject, ViewChild } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrIfExpanded } from './if-expanded.directive';
 import { IfExpandService } from './if-expanded.service';
 
+interface Context<C> {
+  fixture: ComponentFixture<C>;
+  testComponent: C;
+  testElement: HTMLElement;
+  clarityDirective: ClrIfExpanded;
+  expand: IfExpandService;
+}
+
 export default function (): void {
   describe('IfExpanded directive', function () {
     describe('View', function () {
-      beforeEach(function () {
+      beforeEach(function (this: Context<SimpleTest>) {
         /*
          * Since IfExpanded is a structural directive that isn't rendered in the DOM immediately,
          * we can't use our usual shortcut, we need to rely on @ViewChild.
@@ -33,21 +41,21 @@ export default function (): void {
         this.expand = TestBed.inject(IfExpandService);
       });
 
-      afterEach(function () {
+      afterEach(function (this: Context<SimpleTest>) {
         this.fixture.destroy();
       });
 
-      it("doesn't display anything by default", function () {
+      it("doesn't display anything by default", function (this: Context<SimpleTest>) {
         expect(this.testElement.textContent.trim()).toBe('');
       });
 
-      it('displays the content when the parent becomes expanded', function () {
+      it('displays the content when the parent becomes expanded', function (this: Context<SimpleTest>) {
         this.expand.expanded = true;
         this.fixture.detectChanges();
         expect(this.testElement.textContent.trim()).toBe('1');
       });
 
-      it('removes the content when the parent becomes collapsed again', function () {
+      it('removes the content when the parent becomes collapsed again', function (this: Context<SimpleTest>) {
         this.expand.expanded = true;
         this.fixture.detectChanges();
         this.expand.expanded = false;
@@ -55,11 +63,11 @@ export default function (): void {
         expect(this.testElement.textContent.trim()).toBe('');
       });
 
-      it("doesn't instantiate until the content is actually needed", function () {
+      it("doesn't instantiate until the content is actually needed", function (this: Context<SimpleTest>) {
         expect(this.testComponent.counter.total).toBe(0);
       });
 
-      it('re-instantiates the content every time it is displayed', function () {
+      it('re-instantiates the content every time it is displayed', function (this: Context<SimpleTest>) {
         this.expand.expanded = true;
         this.fixture.detectChanges();
         expect(this.testElement.textContent.trim()).toBe('1');
@@ -70,13 +78,13 @@ export default function (): void {
         expect(this.testElement.textContent.trim()).toBe('2');
       });
 
-      it('have template reference', function () {
+      it('have template reference', function (this: Context<SimpleTest>) {
         expect(this.expand.hasExpandTemplate).toBe(true);
       });
     });
 
     describe('Template Ref', function () {
-      beforeEach(function () {
+      beforeEach(function (this: Context<SimpleTemplateTest>) {
         /*
          * Since IfExpanded is a structural directive that isn't rendered in the DOM immediately,
          * we can't use our usual shortcut, we need to rely on @ViewChild.
@@ -92,17 +100,17 @@ export default function (): void {
         this.expand = TestBed.inject(IfExpandService);
       });
 
-      afterEach(function () {
+      afterEach(function (this: Context<SimpleTemplateTest>) {
         this.fixture.destroy();
       });
 
-      it("don't have template reference", function () {
+      it("don't have template reference", function (this: Context<SimpleTemplateTest>) {
         expect(this.expand.hasExpandTemplate).toBe(false);
       });
     });
 
     describe('Parent interaction', function () {
-      beforeEach(function () {
+      beforeEach(function (this: Context<NgIfTest>) {
         /*
          * Since IfExpanded is a structural directive that isn't rendered in the DOM immediately,
          * we can't use our usual shortcut, we need to rely on @ViewChild.
@@ -119,15 +127,15 @@ export default function (): void {
         this.expand = TestBed.inject(IfExpandService);
       });
 
-      afterEach(function () {
+      afterEach(function (this: Context<NgIfTest>) {
         this.fixture.destroy();
       });
 
-      it('sets the parent as expandable', function () {
+      it('sets the parent as expandable', function (this: Context<NgIfTest>) {
         expect(this.expand.expandable).toBeGreaterThan(0);
       });
 
-      it('sets the parent as not expandable when destroyed', function () {
+      it('sets the parent as not expandable when destroyed', function (this: Context<NgIfTest>) {
         this.testComponent.expandable = false;
         this.fixture.detectChanges();
         expect(this.expand.expandable).toBe(0);

@@ -7,7 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { delay, TestContext } from '@clr/angular/testing';
+import { delay, TestContext, TestHelpers } from '@clr/angular/testing';
 import { DomAdapter, MOCK_DOM_ADAPTER_PROVIDER, MockDomAdapter } from '@clr/angular/utils';
 import { BehaviorSubject } from 'rxjs';
 
@@ -74,7 +74,7 @@ export default function (): void {
     let columnsService: ColumnsService;
     let stateSub: BehaviorSubject<ColumnState>;
 
-    beforeEach(function () {
+    beforeEach(function (this: TestHelpers) {
       context = this.create(DatagridHeaderRenderer, SimpleTest, [
         MOCK_ORGANIZER_PROVIDER,
         MOCK_DOM_ADAPTER_PROVIDER,
@@ -178,7 +178,7 @@ export default function (): void {
       columnSeparator.hideTracker();
     };
 
-    beforeEach(async function () {
+    beforeEach(async function (this: TestHelpers) {
       context = this.create(ClrDatagrid, HeaderResizeTestComponent);
 
       context.detectChanges();

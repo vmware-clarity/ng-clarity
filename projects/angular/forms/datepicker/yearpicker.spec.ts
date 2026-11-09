@@ -7,7 +7,7 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import { TestContext } from '@clr/angular/testing';
+import { TestContext, TestHelpers } from '@clr/angular/testing';
 import { ClrCommonStringsService, Keys } from '@clr/angular/utils';
 
 import { DateNavigationService } from './providers/date-navigation.service';
@@ -29,7 +29,7 @@ export default function () {
     }
 
     describe('View Basics', () => {
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         initializeCalendar(selectedYear);
 
         context = this.create(ClrYearpicker, TestComponent, [
@@ -150,7 +150,7 @@ export default function () {
     });
 
     describe('Typescript API', () => {
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         initializeCalendar(selectedYear);
 
         context = this.create(ClrYearpicker, TestComponent, [
@@ -256,7 +256,7 @@ export default function () {
       // 2003 | 2008
       // 2004 | 2009
 
-      function createYearPicker(scope: any, selYear: number) {
+      function createYearPicker(scope: TestHelpers, selYear: number) {
         initializeCalendar(selYear);
 
         context = scope.create(ClrYearpicker, TestComponent, [
@@ -269,7 +269,7 @@ export default function () {
         ]);
       }
 
-      it('handles up arrow', function () {
+      it('handles up arrow', function (this: TestHelpers) {
         createYearPicker(this, 2010);
 
         // Boundary
@@ -284,7 +284,7 @@ export default function () {
         expect(context.clarityDirective.yearRangeModel.inRange(2010)).toBe(false);
       });
 
-      it('handles down arrow', function () {
+      it('handles down arrow', function (this: TestHelpers) {
         createYearPicker(this, 2009);
 
         // Boundary
@@ -299,7 +299,7 @@ export default function () {
         expect(context.clarityDirective.yearRangeModel.inRange(2010)).toBe(true);
       });
 
-      it('handles right arrow', function () {
+      it('handles right arrow', function (this: TestHelpers) {
         createYearPicker(this, 2008);
         expect(context.clarityDirective.getTabIndex(2008)).toBe(0, "Year 2008 doesn't have tabindex 0");
         context.clarityDirective.onKeyDown(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
@@ -312,7 +312,7 @@ export default function () {
         expect(context.clarityDirective.getTabIndex(2010)).toBe(0, "Year 2010 doesn't have tabindex 0");
       });
 
-      it('handles left arrow', function () {
+      it('handles left arrow', function (this: TestHelpers) {
         createYearPicker(this, 2011);
         expect(context.clarityDirective.getTabIndex(2011)).toBe(0, "Year 2011 doesn't have tabindex 0");
         context.clarityDirective.onKeyDown(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));

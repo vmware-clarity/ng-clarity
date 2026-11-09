@@ -13,6 +13,14 @@ import { ClrAlert } from './alert';
 import { ClrAlerts } from './alerts';
 import { MultiAlertService } from './providers/multi-alert.service';
 
+interface Context {
+  alert: ClrAlert;
+  anotherAlert: ClrAlert;
+  create: <T>(componentType: Type<T>) => void;
+  fixture: ComponentFixture<DynamicAlerts>;
+  compiled: HTMLElement;
+}
+
 export default function () {
   describe('ClrAlerts component', function () {
     describe('Typescript API', function () {
@@ -20,7 +28,7 @@ export default function () {
       let service: MultiAlertService;
       let queryList: QueryList<ClrAlert>;
 
-      beforeEach(function () {
+      beforeEach(function (this: Context) {
         service = new MultiAlertService();
 
         TestBed.configureTestingModule({ imports: [ClrEmphasisModule] });
@@ -37,7 +45,7 @@ export default function () {
         component = new ClrAlerts(service);
       });
 
-      it('knows the current alert', function () {
+      it('knows the current alert', function (this: Context) {
         expect(component.currentAlert).toEqual(this.alert);
       });
     });
@@ -45,7 +53,7 @@ export default function () {
     describe('Template API', function () {
       let fixture: ComponentFixture<any>;
 
-      beforeEach(function () {
+      beforeEach(function (this: Context) {
         this.create = <T>(componentType: Type<T>) => {
           TestBed.configureTestingModule({ imports: [ClrEmphasisModule], declarations: [componentType] });
 
@@ -58,7 +66,7 @@ export default function () {
         fixture.destroy();
       });
 
-      it('offers two way binding on the alert index', function () {
+      it('offers two way binding on the alert index', function (this: Context) {
         this.create(TestComponent);
         const testComponent = fixture.componentInstance;
         fixture.detectChanges();
@@ -70,7 +78,7 @@ export default function () {
         expect(testComponent.currentAlertIndex).toEqual(1);
       });
 
-      it('allows changing alert index from 1 to 0', function () {
+      it('allows changing alert index from 1 to 0', function (this: Context) {
         this.create(TestComponent);
         const testComponent = fixture.componentInstance;
         fixture.detectChanges();
@@ -82,7 +90,7 @@ export default function () {
         expect(testComponent.alertsInstance.currentAlertIndex).toEqual(0);
       });
 
-      it('does not allow invalid indexes (undefined, null, -1, 1.5, string)', function () {
+      it('does not allow invalid indexes (undefined, null, -1, 1.5, string)', function (this: Context) {
         this.create(TestComponent);
         const testComponent = fixture.componentInstance;
         fixture.detectChanges();
@@ -103,7 +111,7 @@ export default function () {
         expect(testComponent.alertsInstance.currentAlertIndex).toEqual(0);
       });
 
-      it('offers two way binding on the alert instance', function () {
+      it('offers two way binding on the alert instance', function (this: Context) {
         this.create(TestAlertInstance);
         fixture.detectChanges();
 
@@ -224,7 +232,7 @@ export default function () {
     });
 
     describe('Supports dynamic alerts', function () {
-      beforeEach(function () {
+      beforeEach(function (this: Context) {
         TestBed.configureTestingModule({ imports: [ClrEmphasisModule], declarations: [DynamicAlerts] });
 
         this.fixture = TestBed.createComponent(DynamicAlerts);
@@ -232,7 +240,7 @@ export default function () {
         this.fixture.detectChanges();
       });
 
-      it('contains dynamic alerts and set an initial index', function () {
+      it('contains dynamic alerts and set an initial index', function (this: Context) {
         expect(this.fixture.componentInstance.alertsInstance.currentAlertIndex).toEqual(0);
         expect(this.fixture.componentInstance.alertInstances.length).toEqual(2);
       });

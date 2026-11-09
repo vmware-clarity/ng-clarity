@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { delay, TestContext } from '@clr/angular/testing';
+import { delay, TestContext, TestHelpers } from '@clr/angular/testing';
 
 import { PageCollectionService } from './providers/page-collection.service';
 import { WizardNavigationService } from './providers/wizard-navigation.service';
@@ -24,7 +24,7 @@ export default function (): void {
         let wizard: ClrWizard;
         let component: UnopenedWizardTestComponent;
 
-        beforeEach(async function () {
+        beforeEach(async function (this: TestHelpers) {
           context = this.create(ClrWizard, UnopenedWizardTestComponent);
           wizard = context.clarityDirective;
           component = context.testComponent;
@@ -108,7 +108,7 @@ export default function (): void {
         let pageCollectionService: PageCollectionService;
         let wizard: ClrWizard;
 
-        beforeEach(async function () {
+        beforeEach(async function (this: TestHelpers) {
           context = this.create(ClrWizard, BasicWizardTestComponent);
           wizardNavigationService = context.getClarityProvider(WizardNavigationService);
           pageCollectionService = context.getClarityProvider(PageCollectionService);
@@ -239,7 +239,7 @@ export default function (): void {
       let context: TestContext<ClrWizard, TemplateApiWizardTestComponent>;
       let wizard: ClrWizard;
 
-      beforeEach(async function () {
+      beforeEach(async function (this: TestHelpers) {
         context = this.create(ClrWizard, TemplateApiWizardTestComponent);
         wizard = context.clarityDirective;
         context.detectChanges();
@@ -661,7 +661,7 @@ export default function (): void {
 
     // CDE-2156
     describe('Initialization', () => {
-      it('should be initilized empty and with navigation prevented.', function () {
+      it('should be initilized empty and with navigation prevented.', function (this: TestHelpers) {
         expect(() => {
           this.create(ClrWizard, DynamicEmptyWizardTestComponent);
         }).not.toThrow();
@@ -672,7 +672,7 @@ export default function (): void {
       let context: TestContext<ClrWizard, DynamicWizardTestComponent>;
       let wizard: ClrWizard;
 
-      beforeEach(async function () {
+      beforeEach(async function (this: TestHelpers) {
         context = this.create(ClrWizard, DynamicWizardTestComponent);
         wizard = context.clarityDirective;
         context.detectChanges();
@@ -784,7 +784,7 @@ export default function (): void {
       let context: TestContext<ClrWizard, TemplateApiWizardTestComponent>;
       let wizard: ClrWizard;
 
-      beforeEach(async function () {
+      beforeEach(async function (this: TestHelpers) {
         context = this.create(ClrWizard, TemplateApiWizardTestComponent);
         wizard = context.clarityDirective;
         context.detectChanges();
@@ -806,7 +806,7 @@ export default function (): void {
       let context: TestContext<ClrWizard, TemplateApiWizardTestComponent>;
       let wizard: ClrWizard;
 
-      beforeEach(async function () {
+      beforeEach(async function (this: TestHelpers) {
         context = this.create(ClrWizard, TemplateApiWizardTestComponent);
         wizard = context.clarityDirective;
         context.detectChanges();

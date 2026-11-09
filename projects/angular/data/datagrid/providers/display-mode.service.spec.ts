@@ -31,7 +31,7 @@ export default function (): void {
       }
     });
 
-    it('exposes an Observable for display mode view state', function () {
+    it('exposes an Observable for display mode view state', function (this: UserContext) {
       const viewObservable = this.displayService.view;
       expect(viewObservable).toBeDefined();
       expect(viewObservable instanceof Observable).toBe(true);
@@ -50,7 +50,7 @@ export default function (): void {
       expect(displayChangeCount).toBe(3); // +1 b/c of the behavior subject.
     });
 
-    it('it defaults to DatagridDisplayMode.DISPLAY', function () {
+    it('it defaults to DatagridDisplayMode.DISPLAY', function (this: UserContext) {
       const viewObservable = this.displayService.view;
       let currentView = null;
       this.displayViewServiceSubscription = viewObservable.subscribe((viewChange: DatagridDisplayMode) => {
@@ -59,7 +59,7 @@ export default function (): void {
       expect(currentView).toBe(DatagridDisplayMode.DISPLAY);
     });
 
-    it('updates the view for DatagridDisplayMode.DISPLAY', function () {
+    it('updates the view for DatagridDisplayMode.DISPLAY', function (this: UserContext) {
       const viewObservable = this.displayService.view;
       let currentView = null;
       this.displayViewServiceSubscription = viewObservable.subscribe((viewChange: DatagridDisplayMode) => {
@@ -69,7 +69,7 @@ export default function (): void {
       expect(currentView).toBe(DatagridDisplayMode.DISPLAY);
     });
 
-    it('updates the view for DatagridDisplayMode.CALCULATE', function () {
+    it('updates the view for DatagridDisplayMode.CALCULATE', function (this: UserContext) {
       const viewObservable = this.displayService.view;
       let currentView = null;
       this.displayViewServiceSubscription = viewObservable.subscribe((viewChange: DatagridDisplayMode) => {

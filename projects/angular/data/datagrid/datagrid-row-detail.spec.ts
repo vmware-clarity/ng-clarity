@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestContext } from '@clr/angular/testing';
+import { TestContext, TestHelpers } from '@clr/angular/testing';
 
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
 import { ClrDatagridRowDetail } from './datagrid-row-detail';
@@ -16,7 +16,7 @@ export default function (): void {
   describe('ClrDatagridRowDetail component', function () {
     let context: TestContext<ClrDatagridRowDetail, FullTest>;
 
-    beforeEach(function () {
+    beforeEach(function (this: TestHelpers) {
       context = this.create(ClrDatagridRowDetail, FullTest, DATAGRID_SPEC_PROVIDERS);
     });
 

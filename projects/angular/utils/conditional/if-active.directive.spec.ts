@@ -6,15 +6,23 @@
  */
 
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrIfActive } from './if-active.directive';
 import { IF_ACTIVE_ID_PROVIDER, IfActiveService } from './if-active.service';
 
+interface Context {
+  fixture: ComponentFixture<IfActiveTest>;
+  testComponent: IfActiveTest;
+  testElement: HTMLElement;
+  clarityDirective: ClrIfActive;
+  ifActiveService: IfActiveService;
+}
+
 export default function (): void {
   describe('IfActive Directive', function () {
     describe('Typescript API', function () {
-      beforeEach(function () {
+      beforeEach(function (this: Context) {
         TestBed.configureTestingModule({
           imports: [ClrIfActive],
           declarations: [IfActiveTest],
@@ -28,34 +36,34 @@ export default function (): void {
         this.ifActiveService = TestBed.inject(IfActiveService);
       });
 
-      afterEach(function () {
+      afterEach(function (this: Context) {
         this.fixture.destroy();
       });
 
-      it('sets the active state of the directive', function () {
+      it('sets the active state of the directive', function (this: Context) {
         this.testComponent.activeState = true;
         this.fixture.detectChanges();
         expect(this.clarityDirective.active).toEqual(true);
       });
 
-      it('gets the current value of the active state', function () {
-        this.ifActiveService.current = new Object();
+      it('gets the current value of the active state', function (this: Context) {
+        this.ifActiveService.current = new Object() as number;
         this.fixture.detectChanges();
         expect(this.testComponent.activeState).toEqual(false);
       });
 
-      it('provides a function to update the view', function () {
+      it('provides a function to update the view', function (this: Context) {
         expect(this.clarityDirective.updateView).toBeDefined();
 
         // when activeState is false there should be no embedded views
-        expect(this.clarityDirective.container.length).toEqual(0);
+        expect(this.clarityDirective['container'].length).toEqual(0);
 
         // We can call the updateView function
         this.clarityDirective.updateView(true);
-        expect(this.clarityDirective.container.length).toEqual(1);
+        expect(this.clarityDirective['container'].length).toEqual(1);
       });
 
-      it('emits an activeChange event only if the active state changes', function () {
+      it('emits an activeChange event only if the active state changes', function (this: Context) {
         let nbChanges = 0;
         let currentChange: boolean;
         this.testComponent.directive.activeChange.subscribe((change: boolean) => {
@@ -66,25 +74,25 @@ export default function (): void {
         expect(currentChange).toBeUndefined();
 
         // setting the current to something other than the test directive's id
-        this.ifActiveService.current = this.testComponent.directive.id + 1;
+        this.ifActiveService.current = this.testComponent.directive['id'] + 1;
         this.fixture.detectChanges();
         expect(nbChanges).toBe(0);
         expect(currentChange).toBeUndefined();
 
         // setting the current to the test directive's id
-        this.ifActiveService.current = this.testComponent.directive.id;
+        this.ifActiveService.current = this.testComponent.directive['id'];
         this.fixture.detectChanges();
         expect(nbChanges).toBe(1);
         expect(currentChange).toBe(true);
 
         // setting the current to the test directive's id again
-        this.ifActiveService.current = this.testComponent.directive.id;
+        this.ifActiveService.current = this.testComponent.directive['id'];
         this.fixture.detectChanges();
         expect(nbChanges).toBe(1);
         expect(currentChange).toBe(true);
 
         // setting the current to something other than the test directive's id again
-        this.ifActiveService.current = this.testComponent.directive.id + 1;
+        this.ifActiveService.current = this.testComponent.directive['id'] + 1;
         this.fixture.detectChanges();
         expect(nbChanges).toBe(2);
         expect(currentChange).toBe(false);
@@ -92,7 +100,7 @@ export default function (): void {
     });
 
     describe('View', function () {
-      beforeEach(function () {
+      beforeEach(function (this: Context) {
         TestBed.configureTestingModule({
           imports: [ClrIfActive],
           declarations: [IfActiveTest],
@@ -106,17 +114,17 @@ export default function (): void {
         this.ifActiveService = TestBed.inject(IfActiveService);
       });
 
-      afterEach(function () {
+      afterEach(function (this: Context) {
         this.fixture.destroy();
       });
 
       // More for view tests.
-      it('should not display anything when false', function () {
+      it('should not display anything when false', function (this: Context) {
         expect(this.testElement.textContent.trim()).toBe('');
       });
 
-      it('projects content when this directive is set to current', function () {
-        this.ifActiveService.current = this.clarityDirective.id;
+      it('projects content when this directive is set to current', function (this: Context) {
+        this.ifActiveService.current = this.clarityDirective['id'];
         this.fixture.detectChanges();
         expect(this.testElement.textContent.trim()).toBe('Hello Template!');
       });

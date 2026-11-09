@@ -440,13 +440,13 @@ export default function (): void {
     });
 
     describe('aria roles', function () {
-      it('adds the aria-describedby for helper', function () {
+      it('adds the aria-describedby for helper', function (this: TestContext) {
         setupTest(this, WithControlAndHelper, TestControl3);
         this.control.triggerValidation();
         expect(this.input.getAttribute('aria-describedby')).toContain('-helper');
       });
 
-      it('does not set aria-describedby unless helper is present', function () {
+      it('does not set aria-describedby unless helper is present', function (this: TestContext) {
         setupTest(this, WithControl, TestControl3);
         this.control.triggerValidation();
         expect(this.input.getAttribute('aria-describedby')).toBe(null);
@@ -470,7 +470,7 @@ export default function (): void {
         expect(this.input.getAttribute('aria-describedby')).toContain('-error');
       });
 
-      it('does not set aria-describedby unless error helper is present', function () {
+      it('does not set aria-describedby unless error helper is present', function (this: TestContext) {
         setupTest(this, WithControl, TestControl3);
         this.input.focus();
         this.input.blur();
@@ -507,7 +507,7 @@ export default function (): void {
         expect(this.input.getAttribute('aria-describedby')).toEqual(`${this.input.id}-helper ${this.input.id}-success`);
       });
 
-      it('does not set aria-describedby unless success helper is present', async function () {
+      it('does not set aria-describedby unless success helper is present', async function (this: TestContext) {
         setupTest(this, WithControl, TestControl3);
         this.input.focus();
         this.fixture.componentInstance.model = 'test';

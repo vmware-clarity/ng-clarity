@@ -7,7 +7,7 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import { TestContext } from '@clr/angular/testing';
+import { TestContext, TestHelpers } from '@clr/angular/testing';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { ClrDaypicker } from './daypicker';
@@ -26,7 +26,7 @@ export default function () {
     let localeHelperService: LocaleHelperService;
     let dateNavigationService: DateNavigationService;
 
-    beforeEach(function () {
+    beforeEach(function (this: TestHelpers) {
       dateNavigationService = new DateNavigationService();
       // Initializing selected day just to make sure that previous and next month tests become easier
       dateNavigationService.selectedDay = new DayModel(2015, 1, 1);

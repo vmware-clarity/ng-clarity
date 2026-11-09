@@ -10,7 +10,7 @@ import { TestBed } from '@angular/core/testing';
 // I'm giving up, I'm using the datagrid ones for now.
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrPopoverPosition, ClrPopoverService, POPOVER_HOST_ORIGIN } from '@clr/angular/popover/common';
-import { TestContext } from '@clr/angular/testing';
+import { TestContext, TestHelpers } from '@clr/angular/testing';
 
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
@@ -20,7 +20,7 @@ export default function (): void {
   describe('ClrSignpostContent', function () {
     let context: TestContext<ClrSignpostContent, SimpleTest>;
 
-    beforeEach(function () {
+    beforeEach(function (this: TestHelpers) {
       context = this.createOnly(ClrSignpostContent, SimpleTest, [
         SignpostIdService,
         ClrPopoverService,

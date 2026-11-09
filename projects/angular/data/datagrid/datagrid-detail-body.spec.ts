@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestContext } from '@clr/angular/testing';
+import { TestContext, TestHelpers } from '@clr/angular/testing';
 
 import { ClrDatagridDetailBody } from './datagrid-detail-body';
 
@@ -17,7 +17,7 @@ export default function (): void {
     describe('View', function () {
       let context: TestContext<ClrDatagridDetailBody, FullTest>;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagridDetailBody, FullTest);
         context.detectChanges();
       });

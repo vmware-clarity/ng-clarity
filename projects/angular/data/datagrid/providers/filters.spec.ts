@@ -7,14 +7,21 @@
 
 import { Subject } from 'rxjs';
 
-import { FiltersProvider } from './filters';
+import { FiltersProvider, RegisteredFilter } from './filters';
 import { Page } from './page';
 import { StateDebouncer } from './state-debouncer.provider';
 import { ClrDatagridFilterInterface } from '../interfaces/filter.interface';
 
+interface Context {
+  filtersInstance: FiltersProvider<number>;
+  evenFilter: EvenFilter;
+  positiveFilter: PositiveFilter;
+  registeredFilters: RegisteredFilter<number, NumFilter>[];
+}
+
 export default function (): void {
   describe('FiltersProvider provider', function () {
-    beforeEach(function () {
+    beforeEach(function (this: Context) {
       const stateDebouncer = new StateDebouncer();
       this.filtersInstance = new FiltersProvider(new Page(stateDebouncer), stateDebouncer);
       this.evenFilter = new EvenFilter();
@@ -23,7 +30,7 @@ export default function (): void {
       this.filtersInstance.add(this.positiveFilter);
     });
 
-    it('detects if it has active filters', function () {
+    it('detects if it has active filters', function (this: Context) {
       expect(this.filtersInstance.hasActiveFilters()).toBe(false);
       this.evenFilter.toggle();
       expect(this.filtersInstance.hasActiveFilters()).toBe(true);
@@ -31,7 +38,7 @@ export default function (): void {
       expect(this.filtersInstance.hasActiveFilters()).toBe(false);
     });
 
-    it('can return a list of active filters', function () {
+    it('can return a list of active filters', function (this: Context) {
       expect(this.filtersInstance.getActiveFilters()).toEqual([]);
       this.evenFilter.toggle();
       expect(this.filtersInstance.getActiveFilters()).toEqual([this.evenFilter]);
@@ -41,14 +48,14 @@ export default function (): void {
       expect(this.filtersInstance.getActiveFilters()).toEqual([this.positiveFilter]);
     });
 
-    it('ignores inactive filters', function () {
+    it('ignores inactive filters', function (this: Context) {
       expect(this.filtersInstance.accepts(-1)).toBe(true);
       expect(this.filtersInstance.accepts(-2)).toBe(true);
       expect(this.filtersInstance.accepts(1)).toBe(true);
       expect(this.filtersInstance.accepts(2)).toBe(true);
     });
 
-    it('uses all active filters', function () {
+    it('uses all active filters', function (this: Context) {
       this.positiveFilter.toggle();
       expect(this.filtersInstance.accepts(-1)).toBe(false);
       expect(this.filtersInstance.accepts(-2)).toBe(false);
@@ -61,7 +68,7 @@ export default function (): void {
       expect(this.filtersInstance.accepts(2)).toBe(true);
     });
 
-    it('exposes an Observable that proxies all filters changes', function () {
+    it('exposes an Observable that proxies all filters changes', function (this: Context) {
       let nbChanges = 0;
       let latestChanges: ClrDatagridFilterInterface<number>[];
       this.filtersInstance.change.subscribe((changes: ClrDatagridFilterInterface<number>[]) => {
@@ -78,7 +85,7 @@ export default function (): void {
       expect(nbChanges).toBe(3);
     });
 
-    it('un-registers an inactive filter', function () {
+    it('un-registers an inactive filter', function (this: Context) {
       const filter = new InactiveFilter();
       const registerInactiveFilter = this.filtersInstance.add(filter);
       let nbChanges = 0;
@@ -93,7 +100,7 @@ export default function (): void {
       expect(nbChanges).toBe(1);
     });
 
-    it('un-registers an active filter', function () {
+    it('un-registers an active filter', function (this: Context) {
       const filter = new EvenFilter();
       const registeredFilter = this.filtersInstance.add(filter);
       let nbChanges = 0;
@@ -108,7 +115,7 @@ export default function (): void {
       expect(nbChanges).toBe(2);
     });
 
-    it('correctly updates hasUnregistered property', function () {
+    it('correctly updates hasUnregistered property', function (this: Context) {
       const filter = new ActiveFilter();
       const filter2 = new ActiveFilter();
       const filter3 = new ActiveFilter();
@@ -130,7 +137,7 @@ export default function (): void {
   });
 
   describe('FiltersProvider provider unregisters filters correctly', function () {
-    beforeEach(function () {
+    beforeEach(function (this: Context) {
       const stateDebouncer = new StateDebouncer();
       this.filtersInstance = new FiltersProvider(new Page(stateDebouncer), stateDebouncer);
       this.registeredFilters = [];
@@ -139,7 +146,7 @@ export default function (): void {
       }
     });
 
-    it('should unregister the designated filters', function () {
+    it('should unregister the designated filters', function (this: Context) {
       expect(this.registeredFilters.length).toBe(this.filtersInstance.getActiveFilters().length);
 
       this.registeredFilters[0].unregister();

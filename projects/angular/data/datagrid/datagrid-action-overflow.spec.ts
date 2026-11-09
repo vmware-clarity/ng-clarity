@@ -7,7 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import { expectActiveElementToBe, TestContext } from '@clr/angular/testing';
+import { expectActiveElementToBe, TestContext, TestHelpers } from '@clr/angular/testing';
 import { commonStringsDefault } from '@clr/angular/utils';
 
 import { ClrDatagridActionOverflow } from './datagrid-action-overflow';
@@ -18,7 +18,7 @@ export default function (): void {
     let context: TestContext<ClrDatagridActionOverflow, SimpleTest>;
     let toggle: HTMLElement;
 
-    beforeEach(function () {
+    beforeEach(function (this: TestHelpers) {
       context = this.create(ClrDatagridActionOverflow, SimpleTest, [RowActionService, ClrPopoverService]);
       toggle = context.clarityElement.querySelector('.clr-smart-open-close');
     });

@@ -9,21 +9,26 @@ import { Sort } from './sort';
 import { StateDebouncer } from './state-debouncer.provider';
 import { ClrDatagridComparatorInterface } from '../interfaces/comparator.interface';
 
+interface Context {
+  sortInstance: Sort<number>;
+  comparator: TestComparator;
+}
+
 export default function (): void {
   describe('Sort provider', function () {
-    beforeEach(function () {
+    beforeEach(function (this: Context) {
       this.sortInstance = new Sort(new StateDebouncer());
       this.comparator = new TestComparator();
     });
 
-    it('compares according to the current comparator', function () {
+    it('compares according to the current comparator', function (this: Context) {
       this.sortInstance.comparator = this.comparator;
       expect(this.sortInstance.compare(1, 10)).toBeLessThan(0);
       expect(this.sortInstance.compare(4, 4)).toBe(0);
       expect(this.sortInstance.compare(42, 3)).toBeGreaterThan(0);
     });
 
-    it('can reverse the order of the current comparator', function () {
+    it('can reverse the order of the current comparator', function (this: Context) {
       this.sortInstance.comparator = this.comparator;
       this.sortInstance.reverse = true;
       expect(this.sortInstance.compare(1, 10)).toBeGreaterThan(0);
@@ -31,14 +36,14 @@ export default function (): void {
       expect(this.sortInstance.compare(42, 3)).toBeLessThan(0);
     });
 
-    it('exposes a toggle method to set the comparator', function () {
+    it('exposes a toggle method to set the comparator', function (this: Context) {
       this.sortInstance.toggle(this.comparator);
       expect(this.sortInstance.comparator).toBe(this.comparator);
       this.sortInstance.toggle(this.comparator, true);
       expect(this.sortInstance.comparator).toBe(this.comparator);
     });
 
-    it('reverses the order when toggle is called on the same comparator', function () {
+    it('reverses the order when toggle is called on the same comparator', function (this: Context) {
       // Ascending
       this.sortInstance.toggle(this.comparator);
       expect(this.sortInstance.reverse).toBe(false);
@@ -50,7 +55,7 @@ export default function (): void {
       expect(this.sortInstance.reverse).toBe(false);
     });
 
-    it('always uses descending order if forceReverse is set', function () {
+    it('always uses descending order if forceReverse is set', function (this: Context) {
       // Force descending
       this.sortInstance.toggle(this.comparator, true);
       expect(this.sortInstance.reverse).toBe(true);
@@ -65,7 +70,7 @@ export default function (): void {
       expect(this.sortInstance.reverse).toBe(true);
     });
 
-    it('always uses ascending order when toggling a new comparator ', function () {
+    it('always uses ascending order when toggling a new comparator ', function (this: Context) {
       this.sortInstance.comparator = this.comparator;
       expect(this.sortInstance.reverse).toBe(false);
       this.sortInstance.toggle(new TestComparator());
@@ -77,7 +82,7 @@ export default function (): void {
       expect(this.sortInstance.reverse).toBe(false);
     });
 
-    it('always uses descending order if forceReverse is set even when toggling a new comparator ', function () {
+    it('always uses descending order if forceReverse is set even when toggling a new comparator ', function (this: Context) {
       this.sortInstance.comparator = this.comparator;
       expect(this.sortInstance.reverse).toBe(false);
       this.sortInstance.toggle(new TestComparator(), true);
@@ -89,7 +94,7 @@ export default function (): void {
       expect(this.sortInstance.reverse).toBe(false);
     });
 
-    it('exposes an Observable to follow sort changes', function () {
+    it('exposes an Observable to follow sort changes', function (this: Context) {
       let nbChanges = 0;
       let latestComparator: ClrDatagridComparatorInterface<number>;
       let latestReverse: boolean;

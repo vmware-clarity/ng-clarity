@@ -7,7 +7,7 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import { delay, TestContext } from '@clr/angular/testing';
+import { delay, TestContext, TestHelpers } from '@clr/angular/testing';
 
 import { ClrCombobox } from './combobox';
 
@@ -28,7 +28,7 @@ export default function (): void {
     let context: TestContext<ClrCombobox<string>, TestOptionSelection>;
     let popoverService: ClrPopoverService;
 
-    beforeEach(function () {
+    beforeEach(function (this: TestHelpers) {
       context = this.create(ClrCombobox, TestOptionSelection, [], []);
       popoverService = context.getClarityProvider(ClrPopoverService);
       popoverService.open = true;

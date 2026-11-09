@@ -7,7 +7,7 @@
 
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, TrackByFunction, ViewChild } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrDatagridItems } from './datagrid-items';
 import { ClrDatagridModule } from './datagrid.module';
@@ -68,10 +68,17 @@ class TrackByIndexTest {
   trackBy: TrackByFunction<number> = index => index;
 }
 
+interface Context<C> {
+  fixture: ComponentFixture<C>;
+  testComponent: C;
+  clarityDirective: ClrDatagridItems<number>;
+  itemsProvider: Items<number>;
+}
+
 export default function (): void {
   describe('ClrDatagridItems directive', function () {
     describe('correctly initializes', () => {
-      beforeEach(function () {
+      beforeEach(function (this: Context<FullTest>) {
         /*
          * Since the ClrDatagridItems element is a template that isn't rendered in the DOM,
          * we can't use our usual shortcut, we need to rely on @ViewChild
@@ -88,19 +95,19 @@ export default function (): void {
         this.itemsProvider = TestBed.inject(Items);
       });
 
-      afterEach(function () {
+      afterEach(function (this: Context<FullTest>) {
         this.fixture.destroy();
       });
 
-      it('makes the Items provider smart', function () {
+      it('makes the Items provider smart', function (this: Context<FullTest>) {
         expect(this.itemsProvider.smart).toBe(true);
       });
 
-      it('receives an input for the array of items', function () {
+      it('receives an input for the array of items', function (this: Context<FullTest>) {
         expect(this.itemsProvider.displayed).toEqual([1, 2, 3, 4, 5]);
       });
 
-      it('subscribes to changes in the datagrid Items (_items)', function () {
+      it('subscribes to changes in the datagrid Items (_items)', function (this: Context<FullTest>) {
         const initialContent = this.fixture.elementRef.nativeElement.textContent;
         expect(initialContent.trim()).toEqual('12345');
         this.testComponent.numbers.push(6);
@@ -109,21 +116,21 @@ export default function (): void {
         expect(updatedContent.trim()).toEqual('123456');
       });
 
-      it('handles a null input for the array of items', function () {
+      it('handles a null input for the array of items', function (this: Context<FullTest>) {
         this.testComponent.numbers = null;
         this.fixture.detectChanges();
-        expect(this.clarityDirective._rawItems).toEqual([]);
+        expect(this.clarityDirective['_rawItems']).toEqual([]);
       });
 
-      it('handles an undefined input for the array of items', function () {
+      it('handles an undefined input for the array of items', function (this: Context<FullTest>) {
         this.testComponent.numbers = undefined;
         this.fixture.detectChanges();
-        expect(this.clarityDirective._rawItems).toEqual([]);
+        expect(this.clarityDirective['_rawItems']).toEqual([]);
       });
     });
 
     describe('cleans up on destroy', () => {
-      beforeEach(function () {
+      beforeEach(function (this: Context<DestroyTest>) {
         TestBed.configureTestingModule({
           imports: [CommonModule, ClrDatagridModule],
           declarations: [DestroyTest],
@@ -135,11 +142,11 @@ export default function (): void {
         this.itemsProvider = TestBed.inject(Items);
       });
 
-      afterEach(function () {
+      afterEach(function (this: Context<DestroyTest>) {
         this.fixture.destroy();
       });
 
-      it('smartens the Items provider back down when the *clrDgItems view is destroyed', function () {
+      it('smartens the Items provider back down when the *clrDgItems view is destroyed', function (this: Context<DestroyTest>) {
         expect(this.itemsProvider.smart).toBe(true);
 
         this.testComponent.showItems = false;
@@ -148,7 +155,7 @@ export default function (): void {
         expect(this.itemsProvider.smart).toBe(false);
       });
 
-      it('stops reacting to page changes once destroyed, instead of slicing stale data', function () {
+      it('stops reacting to page changes once destroyed, instead of slicing stale data', function (this: Context<DestroyTest>) {
         this.testComponent.showItems = false;
         this.fixture.detectChanges();
 
@@ -162,7 +169,7 @@ export default function (): void {
     });
 
     describe('handles Item arrays correctly', () => {
-      beforeEach(function () {
+      beforeEach(function (this: Context<TrackByIndexTest>) {
         /*
          * Since the ClrDatagridItems element is a template that isn't rendered in the DOM,
          * we can't use our usual shortcut, we need to rely on @ViewChild
@@ -179,11 +186,11 @@ export default function (): void {
         this.itemsProvider = TestBed.inject(Items);
       });
 
-      afterEach(function () {
+      afterEach(function (this: Context<TrackByIndexTest>) {
         this.fixture.destroy();
       });
 
-      it('keeps the Items provider up to date with array changes', function () {
+      it('keeps the Items provider up to date with array changes', function (this: Context<TrackByIndexTest>) {
         expect(this.itemsProvider.displayed).toEqual([1, 2, 3, 4, 5]);
         this.testComponent.numbers[0] = 6;
         this.fixture.detectChanges();
@@ -193,11 +200,11 @@ export default function (): void {
         expect(this.itemsProvider.displayed).toEqual([]);
       });
 
-      it('receives an input for the trackBy option', function () {
-        expect(this.clarityDirective.iterableProxy.ngForTrackBy).toBe(this.testComponent.trackBy);
+      it('receives an input for the trackBy option', function (this: Context<TrackByIndexTest>) {
+        expect(this.clarityDirective['iterableProxy'].ngForTrackBy).toBe(this.testComponent.trackBy);
       });
 
-      it('correctly mutates and resets an array with trackBy', function () {
+      it('correctly mutates and resets an array with trackBy', function (this: Context<TrackByIndexTest>) {
         // Initial state
         this.fixture.nativeElement
           .querySelectorAll('li:first-child')

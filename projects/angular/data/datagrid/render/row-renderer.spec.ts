@@ -7,7 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { TestContext } from '@clr/angular/testing';
+import { TestContext, TestHelpers } from '@clr/angular/testing';
 import { BehaviorSubject } from 'rxjs';
 
 import { DatagridColumnChanges } from '../enums/column-changes.enum';
@@ -30,7 +30,7 @@ export default function (): void {
     let columnStateSpy: jasmine.Spy;
     let displayModeService: MockDisplayModeService;
 
-    beforeEach(function () {
+    beforeEach(function (this: TestHelpers) {
       context = this.create(DatagridRowRenderer, SimpleTest, DATAGRID_SPEC_PROVIDERS);
       columnsService = context.getClarityProvider(ColumnsService);
       displayModeService = context.getClarityProvider(DisplayModeService) as MockDisplayModeService;

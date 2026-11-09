@@ -9,7 +9,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angu
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { SelectionType } from '@clr/angular';
-import { delay, TestContext } from '@clr/angular/testing';
+import { delay, TestContext, TestHelpers } from '@clr/angular/testing';
 
 import { ClrDatagridColumn } from '../datagrid-column';
 import { ClrDatagridModule } from '../datagrid.module';
@@ -31,7 +31,7 @@ export default function (): void {
       let computeStateSpy: jasmine.Spy;
       let columnsService: ColumnsService;
 
-      beforeEach(async function () {
+      beforeEach(async function (this: TestHelpers) {
         resizeSpy = spyOn(DatagridRenderOrganizer.prototype, 'resize');
         context = this.createWithOverrideDirective(
           DatagridMainRenderer,
@@ -104,7 +104,7 @@ export default function (): void {
       let resizeSpy: jasmine.Spy;
       let rowsSpy: jasmine.Spy;
 
-      beforeEach(async function () {
+      beforeEach(async function (this: TestHelpers) {
         resizeSpy = spyOn(DatagridRenderOrganizer.prototype, 'resize');
         rowsSpy = spyOn(DatagridRowRenderer.prototype, 'setCellsState');
         context = this.create(DatagridMainRenderer, DynamicTest);
@@ -240,7 +240,7 @@ export default function (): void {
       let organizer: DatagridRenderOrganizer;
       let columnsService: ColumnsService;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(DatagridMainRenderer, ColumnsWidthTest);
         organizer = context.getClarityProvider(DatagridRenderOrganizer);
         columnsService = context.getClarityProvider(ColumnsService);
@@ -290,7 +290,7 @@ export default function (): void {
       let context: TestContext<DatagridMainRenderer, DatagridDetailPaneTest>;
       let columnsService: ColumnsService;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(DatagridMainRenderer, DatagridDetailPaneTest);
         columnsService = context.getClarityProvider(ColumnsService);
         columnsService.resetToLastCache();
