@@ -18,7 +18,7 @@ import { DatalistIdService } from './providers/datalist-id.service';
   standalone: false,
 })
 export class ClrDatalist implements AfterContentInit {
-  datalistId: string;
+  datalistId?: string;
 
   private subscriptions: Subscription[] = [];
 

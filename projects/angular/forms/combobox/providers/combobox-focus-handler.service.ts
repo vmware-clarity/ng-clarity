@@ -20,9 +20,9 @@ export class ComboboxFocusHandler<T> {
   pseudoFocus: PseudoFocusModel<OptionData<T>> = new PseudoFocusModel<OptionData<T>>();
 
   private renderer: Renderer2;
-  private _trigger: HTMLElement;
-  private _listbox: HTMLElement;
-  private _textInput: HTMLElement;
+  private _trigger!: HTMLElement;
+  private _listbox!: HTMLElement;
+  private _textInput!: HTMLElement;
   private optionData: OptionData<T>[] = [];
 
   constructor(
@@ -221,14 +221,14 @@ export class ComboboxFocusHandler<T> {
 export const COMBOBOX_FOCUS_HANDLER_PROVIDER = customFocusableItemProvider(ComboboxFocusHandler);
 
 export class OptionData<T> {
-  el: HTMLElement;
+  el!: HTMLElement;
 
   constructor(
-    public id: string,
-    public value: T
+    public id: string | null,
+    public value: T | null
   ) {}
 
-  equals(other: OptionData<T>): boolean {
+  equals(other: OptionData<T> | null | undefined): boolean {
     if (!other) {
       return false;
     }

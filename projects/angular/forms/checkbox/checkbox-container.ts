@@ -59,10 +59,10 @@ import { ClrCheckbox } from './checkbox';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterContentInit {
-  role: string;
-  ariaLabelledBy: string;
+  role: string | null = null;
+  ariaLabelledBy?: string | null;
 
-  @ContentChildren(ClrCheckbox, { descendants: true }) checkboxes: QueryList<ClrCheckbox>;
+  @ContentChildren(ClrCheckbox, { descendants: true }) checkboxes!: QueryList<ClrCheckbox>;
 
   private inline = false;
   private _generatedId = uniqueIdFactory();

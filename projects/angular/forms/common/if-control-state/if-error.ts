@@ -17,8 +17,8 @@ import { NgControlService } from '../providers/ng-control.service';
   standalone: false,
 })
 export class ClrIfError extends AbstractIfState {
-  private _error: string;
-  private embeddedViewRef: EmbeddedViewRef<any>;
+  private _error = '';
+  private embeddedViewRef: EmbeddedViewRef<any> | undefined;
 
   constructor(
     @Optional() ngControlService: NgControlService,
@@ -45,7 +45,7 @@ export class ClrIfError extends AbstractIfState {
   /**
    * @param state CONTROL_STATE
    */
-  protected override handleState(state: CONTROL_STATE) {
+  protected override handleState(state: CONTROL_STATE | undefined) {
     if (!this.controls?.length) {
       return;
     }

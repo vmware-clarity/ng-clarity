@@ -84,13 +84,13 @@ export const SELECT_ALL_ID = 'select-all-id';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy {
-  @Input('id') optionsId: string;
+  @Input('id') optionsId = 'clr-options-' + nbOptionsComponents++;
 
   loading = false;
-  _items: QueryList<ClrOption<T>>;
+  _items!: QueryList<ClrOption<T>>;
 
   private subscriptions: Subscription[] = [];
-  private _selectAllOption: OptionData<T>;
+  private _selectAllOption: OptionData<T> | null = null;
 
   constructor(
     public optionSelectionService: OptionSelectionService<T>,
@@ -106,10 +106,6 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
   ) {
     if (!parentHost) {
       throw new Error('clr-options should only be used inside of a clr-combobox');
-    }
-
-    if (!this.optionsId) {
-      this.optionsId = 'clr-options-' + nbOptionsComponents++;
     }
   }
 
@@ -168,7 +164,7 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
     return this.focusHandler.pseudoFocus.model?.id === SELECT_ALL_ID;
   }
 
-  toggleSelectAll(event: Event = null) {
+  toggleSelectAll(event: Event | null = null) {
     if (event) {
       event.stopPropagation();
       this.focusHandler.focusInput();

@@ -13,7 +13,7 @@ import { MOBILE_USERAGENT_REGEX } from '../utils/constants';
 @Injectable()
 export class DatepickerEnabledService {
   private _isUserAgentMobile = false;
-  private _innerWidth: number;
+  private _innerWidth = 0;
 
   constructor(@Inject(DOCUMENT) private _document: any) {
     if (_document) {

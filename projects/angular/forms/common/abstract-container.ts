@@ -20,10 +20,10 @@ import { NgControlService } from './providers/ng-control.service';
 
 @Directive()
 export abstract class ClrAbstractContainer implements OnDestroy {
-  @ContentChild(ClrControlLabel, { static: false }) label: ClrControlLabel;
-  @ContentChild(ClrControlSuccess) controlSuccessComponent: ClrControlSuccess;
-  @ContentChild(ClrControlError) controlErrorComponent: ClrControlError;
-  @ContentChild(ClrControlHelper) controlHelperComponent: ClrControlHelper;
+  @ContentChild(ClrControlLabel, { static: false }) label!: ClrControlLabel;
+  @ContentChild(ClrControlSuccess) controlSuccessComponent!: ClrControlSuccess;
+  @ContentChild(ClrControlError) controlErrorComponent!: ClrControlError;
+  @ContentChild(ClrControlHelper) controlHelperComponent!: ClrControlHelper;
 
   controls: NgControl[] = [];
 
