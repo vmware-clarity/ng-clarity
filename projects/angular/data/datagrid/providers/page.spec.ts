@@ -112,7 +112,7 @@ export default function (): void {
 
     it('exposes an Observable to follow page changes', function (this: Context) {
       let nbChanges = 0;
-      let currentPage: number;
+      let currentPage: number | undefined;
       subscriptions.push(
         this.pageInstance.change.subscribe((page: number) => {
           nbChanges++;
@@ -132,7 +132,7 @@ export default function (): void {
     it('does not emit changes when resetPageSize if set to preventEmit', function (this: Context) {
       // This test is a bit convoluted perhaps, but testing all ways to emit changes
       let nbChanges = 0;
-      let currentPage: number;
+      let currentPage: number | undefined;
       this.pageInstance.size = 10; // Emit avoided by setting before subscribe
       subscriptions.push(
         this.pageInstance.change.subscribe((page: number) => {

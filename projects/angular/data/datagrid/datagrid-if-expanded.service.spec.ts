@@ -20,7 +20,7 @@ export default function (): void {
     });
 
     it('starts with the correct default settings', function (this: Context) {
-      let doesReplace = null;
+      let doesReplace: boolean | undefined;
       this.expand.replace.subscribe((expandChange: boolean) => {
         doesReplace = expandChange;
       });
@@ -31,7 +31,7 @@ export default function (): void {
     });
 
     it('notifies when cells are replaced', function (this: Context) {
-      let isReplaced = null;
+      let isReplaced: boolean | undefined;
       this.expand.replace.subscribe((replaceChange: boolean) => {
         isReplaced = replaceChange;
       });

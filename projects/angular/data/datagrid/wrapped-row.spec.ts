@@ -16,7 +16,7 @@ import { WrappedRow } from './wrapped-row';
   standalone: false,
 })
 class WrappedRowTest {
-  @ViewChild(WrappedRow, { static: true }) wrapper: WrappedRow;
+  @ViewChild(WrappedRow, { static: true }) wrapper!: WrappedRow;
 }
 
 interface TestContext {

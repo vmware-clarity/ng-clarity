@@ -22,7 +22,7 @@ export default function (): void {
 
       beforeEach(function () {
         pageService = new Page(new StateDebouncer());
-        component = new ClrDatagridPagination(pageService, new ClrCommonStringsService(), null);
+        component = new ClrDatagridPagination(pageService, new ClrCommonStringsService(), null!);
         component.ngOnInit(); // For the subscription that will get destroyed.
       });
 
@@ -423,8 +423,8 @@ class FullTest {
   // this value needs to be initialized; otherwise, when you call a setter for size, the page number is set
   // mid-cycle and throws an error.
   current = 1;
-  size: number;
-  total: number;
-  last: number;
-  disableCurrentPageInput: boolean;
+  size!: number;
+  total!: number;
+  last!: number;
+  disableCurrentPageInput!: boolean;
 }

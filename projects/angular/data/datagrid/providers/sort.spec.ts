@@ -96,8 +96,8 @@ export default function (): void {
 
     it('exposes an Observable to follow sort changes', function (this: Context) {
       let nbChanges = 0;
-      let latestComparator: ClrDatagridComparatorInterface<number>;
-      let latestReverse: boolean;
+      let latestComparator: ClrDatagridComparatorInterface<number> | null | undefined;
+      let latestReverse: boolean | undefined;
       this.sortInstance.change.subscribe((sort: Sort<number>) => {
         nbChanges++;
         latestComparator = sort.comparator;

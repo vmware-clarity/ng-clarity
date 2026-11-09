@@ -82,7 +82,7 @@ export default function (): void {
         selectionInstance.setSelected(4, true);
         expect(selectionInstance.current).toEqual([4]);
         selectionInstance.toggleAll();
-        expect(selectionInstance.current.sort(numberSort)).toEqual(itemsInstance.displayed);
+        expect(selectionInstance.current!.sort(numberSort)).toEqual(itemsInstance.displayed);
       });
 
       it("can't select/deselect all items at once in other single selection type", function () {
@@ -103,7 +103,7 @@ export default function (): void {
         selectionInstance.setSelected(4, true);
         expect(selectionInstance.current).toEqual([4]);
         selectionInstance.toggleAll();
-        expect(selectionInstance.current.sort(numberSort)).toEqual(itemsInstance.displayed);
+        expect(selectionInstance.current!.sort(numberSort)).toEqual(itemsInstance.displayed);
       });
 
       it('can select/deselect items only on the current page', function () {
@@ -154,7 +154,7 @@ export default function (): void {
       });
 
       it('accepts pre-selected items in multi selection type when `all` has not been defined', async function () {
-        itemsInstance.all = null;
+        itemsInstance.all = null!;
         await delay();
         selectionInstance.selectionType = SelectionType.Multi;
         selectionInstance.current = [4, 2];
@@ -176,7 +176,7 @@ export default function (): void {
       });
 
       it('accepts pre-selected item in single selection type when `all` has not been defined', async function () {
-        itemsInstance.all = null;
+        itemsInstance.all = null!;
         await delay();
         selectionInstance.selectionType = SelectionType.Single;
         selectionInstance.current = [2];
@@ -191,7 +191,7 @@ export default function (): void {
       it('exposes an Observable to follow selection changes in multi selection type', async function () {
         selectionInstance.selectionType = SelectionType.Multi;
         let nbChanges = 0;
-        let currentSelection: number[];
+        let currentSelection: number[] | undefined;
         selectionInstance.change.subscribe((items: any) => {
           nbChanges++;
           currentSelection = [...items];
@@ -201,7 +201,7 @@ export default function (): void {
         expect(currentSelection).toEqual([4]);
         selectionInstance.toggleAll();
         await delay();
-        expect(currentSelection.sort(numberSort)).toEqual(itemsInstance.displayed);
+        expect(currentSelection!.sort(numberSort)).toEqual(itemsInstance.displayed);
         selectionInstance.toggleAll();
         await delay();
         expect(currentSelection).toEqual([]);
@@ -210,7 +210,7 @@ export default function (): void {
       it('exposes an Observable to follow selection changes in single selection type', async function () {
         selectionInstance.selectionType = SelectionType.Single;
         let nbChanges = 0;
-        let currentSelection: number;
+        let currentSelection: number | undefined;
         selectionInstance.change.subscribe((items: number[]) => {
           nbChanges++;
           currentSelection = items[0];
@@ -574,7 +574,7 @@ export default function (): void {
           const clones = cloneItems();
           itemsInstance.all = clones;
           await delay();
-          expect(itemsInstance.identifyBy(selectionInstance.currentSingle)).toEqual(3);
+          expect(itemsInstance.identifyBy(selectionInstance.currentSingle!)).toEqual(3);
         });
       });
     });
@@ -650,7 +650,7 @@ export default function (): void {
           itemsInstance.all = itemsC;
           await delay();
           testSelection(true, false, true);
-          expect(selectionInstance.current[0].modified).toEqual(true);
+          expect(selectionInstance.current![0].modified).toEqual(true);
         });
 
         it('accepts pre-selected items with identifyBy when `all` has not been defined', async () => {
@@ -688,7 +688,7 @@ export default function (): void {
           pageInstance.current = 1;
           await delay();
           testToggleAllSelection(true, false, true);
-          expect(selectionInstance.current[0].modified).toEqual(true);
+          expect(selectionInstance.current![0].modified).toEqual(true);
         });
 
         it('should not clear selection when filter applied and clrDgPreserveSelection is true', async () => {
@@ -703,7 +703,7 @@ export default function (): void {
           evenFilter.toggle();
           await delay();
 
-          expect(selectionInstance.current.length).toBe(1);
+          expect(selectionInstance.current!.length).toBe(1);
           expect(selectionInstance.isSelected(itemsA[0])).toBeTruthy();
         });
       });
@@ -798,7 +798,7 @@ export default function (): void {
         // unselect all
         selectionInstance.toggleAll();
         // locked row is not selectable
-        expect(selectionInstance.current.length).toEqual(0);
+        expect(selectionInstance.current!.length).toEqual(0);
         expect(selectionInstance.isSelected(4)).toBe(false);
       });
 

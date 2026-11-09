@@ -69,7 +69,7 @@ export default function (): void {
 
     it('shows resize tracker when resizing starts', function () {
       columnSeparatorComponent.showTracker();
-      expect(resizeTrackerEl.style.height).toBe(tableSizeService.getColumnDragHeight());
+      expect(resizeTrackerEl.style.height).toBe(tableSizeService.getColumnDragHeight()!);
     });
 
     it('moves resize tracker during resizing', function () {
@@ -100,13 +100,13 @@ export default function (): void {
     it('shows resize tracker on first arrow right key down event', function () {
       expect(resizeTrackerEl.style.height).toBe('');
       columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-      expect(resizeTrackerEl.style.height).toBe(tableSizeService.getColumnDragHeight());
+      expect(resizeTrackerEl.style.height).toBe(tableSizeService.getColumnDragHeight()!);
     });
 
     it('shows resize tracker on first arrow left key down event', function () {
       expect(resizeTrackerEl.style.height).toBe('');
       columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-      expect(resizeTrackerEl.style.height).toBe(tableSizeService.getColumnDragHeight());
+      expect(resizeTrackerEl.style.height).toBe(tableSizeService.getColumnDragHeight()!);
     });
 
     it('moves resize tracker on horizontal arrow key down events', function () {
@@ -123,7 +123,7 @@ export default function (): void {
     it('hides resize tracker on horizontal arrow key up events', function () {
       expect(resizeTrackerEl.style.height).toBe('');
       columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-      expect(resizeTrackerEl.style.height).toBe(tableSizeService.getColumnDragHeight());
+      expect(resizeTrackerEl.style.height).toBe(tableSizeService.getColumnDragHeight()!);
       columnHandleEl.dispatchEvent(new KeyboardEvent('keyup', { key: Keys.ArrowRight }));
       expect(resizeTrackerEl.style.display).toBe('none');
       expect(resizeTrackerEl.style.transform).toBe('translateX(0px)');
@@ -132,7 +132,7 @@ export default function (): void {
     it('focuses column handle after arrow key up events', function () {
       expectActiveElementNotToBe(columnHandleEl);
       columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-      expect(resizeTrackerEl.style.height).toBe(tableSizeService.getColumnDragHeight());
+      expect(resizeTrackerEl.style.height).toBe(tableSizeService.getColumnDragHeight()!);
       columnHandleEl.dispatchEvent(new KeyboardEvent('keyup', { key: Keys.ArrowRight }));
       expectActiveElementToBe(columnHandleEl);
     });

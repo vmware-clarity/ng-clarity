@@ -38,7 +38,7 @@ export default function (): void {
     });
 
     it('properly updates the view mode when organizer resizes', function (this: UserContext) {
-      let currentChange: DatagridDisplayMode;
+      let currentChange: DatagridDisplayMode | undefined;
       let displayChangeCount = 0;
       this.displayViewServiceSubscription = this.displayService.view.subscribe((viewChange: DatagridDisplayMode) => {
         displayChangeCount++;
@@ -52,7 +52,7 @@ export default function (): void {
 
     it('it defaults to DatagridDisplayMode.DISPLAY', function (this: UserContext) {
       const viewObservable = this.displayService.view;
-      let currentView = null;
+      let currentView: DatagridDisplayMode | undefined;
       this.displayViewServiceSubscription = viewObservable.subscribe((viewChange: DatagridDisplayMode) => {
         currentView = viewChange;
       });
@@ -61,7 +61,7 @@ export default function (): void {
 
     it('updates the view for DatagridDisplayMode.DISPLAY', function (this: UserContext) {
       const viewObservable = this.displayService.view;
-      let currentView = null;
+      let currentView: DatagridDisplayMode | undefined;
       this.displayViewServiceSubscription = viewObservable.subscribe((viewChange: DatagridDisplayMode) => {
         currentView = viewChange;
       });
@@ -71,7 +71,7 @@ export default function (): void {
 
     it('updates the view for DatagridDisplayMode.CALCULATE', function (this: UserContext) {
       const viewObservable = this.displayService.view;
-      let currentView = null;
+      let currentView: DatagridDisplayMode | undefined;
       this.displayViewServiceSubscription = viewObservable.subscribe((viewChange: DatagridDisplayMode) => {
         currentView = viewChange;
       });

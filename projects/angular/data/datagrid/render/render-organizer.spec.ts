@@ -53,11 +53,11 @@ export default function (): void {
     });
 
     it('provides a filtering utility that targets one step', function (this: UserContext) {
-      let currentStep: DatagridRenderStep = null;
+      let currentStep: DatagridRenderStep | null = null;
       this.organizer.filterRenderSteps(DatagridRenderStep.ALIGN_COLUMNS).subscribe(step => (currentStep = step));
       expect(currentStep).toBeNull();
       this.organizer.resize();
-      expect(currentStep).toBe(DatagridRenderStep.ALIGN_COLUMNS);
+      expect<DatagridRenderStep | null>(currentStep).toBe(DatagridRenderStep.ALIGN_COLUMNS);
     });
   });
 }

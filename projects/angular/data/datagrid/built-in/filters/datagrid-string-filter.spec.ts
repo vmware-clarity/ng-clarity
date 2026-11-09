@@ -39,7 +39,7 @@ export default function (): void {
       context.testComponent.clrFilterPlaceholder = 'demo placeholder';
 
       openFilter();
-      const input: HTMLInputElement = document.querySelector("input[type='text']");
+      const input: HTMLInputElement = document.querySelector("input[type='text']")!;
       expect(input.getAttribute('placeholder')).toBe('demo placeholder');
       expect(input.getAttribute('aria-label')).toBe('demo placeholder');
       await delay();
@@ -103,7 +103,7 @@ export default function (): void {
 
     it('focuses on the input when the filter opens', async function () {
       openFilter();
-      const input: HTMLInputElement = document.querySelector("input[type='text']");
+      const input: HTMLInputElement = document.querySelector("input[type='text']")!;
       spyOn(input, 'focus');
       expect(input.focus).not.toHaveBeenCalled();
       await animationFrameTick();
@@ -121,14 +121,14 @@ export default function (): void {
 
     it('has an aria-label on the input', async function () {
       openFilter();
-      const input: HTMLInputElement = document.querySelector("input[type='text']");
+      const input: HTMLInputElement = document.querySelector("input[type='text']")!;
       expect(input.getAttribute('aria-label')).toBe('Filter items');
       await delay();
     });
 
     it('has placeholder on the input', async function () {
       openFilter();
-      const input: HTMLInputElement = document.querySelector("input[type='text']");
+      const input: HTMLInputElement = document.querySelector("input[type='text']")!;
       expect(input.getAttribute('placeholder')).toBe('Filter items');
       await delay();
     });
@@ -149,10 +149,10 @@ class TestFilter implements ClrDatagridStringFilterInterface<string> {
   standalone: false,
 })
 class FullTest {
-  @ViewChild(CustomFilter) customFilter: CustomFilter;
+  @ViewChild(CustomFilter) customFilter!: CustomFilter;
 
-  filter: ClrDatagridStringFilterInterface<string>;
-  filterValue: string;
+  filter!: ClrDatagridStringFilterInterface<string>;
+  filterValue!: string;
 }
 
 @Component({
@@ -167,9 +167,9 @@ class FullTest {
   standalone: false,
 })
 class AccessibilityTest {
-  @ViewChild(CustomFilter) customFilter: CustomFilter;
+  @ViewChild(CustomFilter) customFilter!: CustomFilter;
 
-  filter: ClrDatagridStringFilterInterface<string>;
-  filterValue: string;
-  clrFilterPlaceholder: string;
+  filter!: ClrDatagridStringFilterInterface<string>;
+  filterValue!: string;
+  clrFilterPlaceholder!: string;
 }

@@ -148,7 +148,7 @@ export default function (): void {
 
       it('sorts based on a property name if sortyBy is undefined', function () {
         component.field = 'test';
-        component.sortBy = undefined;
+        component.sortBy = undefined!;
         expect(sortService.comparator).toBeUndefined();
         component.sort();
         expect(sortService.comparator).toEqual(new DatagridPropertyComparator('test'));
@@ -157,7 +157,7 @@ export default function (): void {
       it('sorts based on a property name if sortyBy becomes undefined', function () {
         component.sortBy = comparator;
         component.field = 'test';
-        component.sortBy = undefined;
+        component.sortBy = undefined!;
         expect(sortService.comparator).toBeUndefined();
         component.sort();
         expect(sortService.comparator).toEqual(new DatagridPropertyComparator('test'));
@@ -534,8 +534,8 @@ class TestStringFilter implements ClrDatagridStringFilterInterface<number> {
   standalone: false,
 })
 class SimpleTest {
-  comparator: ClrDatagridComparatorInterface<number> | string;
-  field: string;
+  comparator!: ClrDatagridComparatorInterface<number> | string;
+  field!: string;
   sortOrder = ClrDatagridSortOrder.UNSORTED;
 }
 
@@ -551,7 +551,7 @@ class SimpleTest {
 })
 class FilterTest {
   filter = new TestFilter();
-  field: string;
+  field!: string;
 }
 
 @Component({
@@ -566,10 +566,10 @@ class FilterTest {
 })
 class StringFilterTest {
   filter = new TestStringFilter();
-  field: string;
+  field!: string;
   filterValue = '';
 
-  @ViewChild(DatagridStringFilter) stringFilter: DatagridStringFilter<number>;
+  @ViewChild(DatagridStringFilter) stringFilter!: DatagridStringFilter<number>;
 }
 
 @Component({
@@ -578,8 +578,8 @@ class StringFilterTest {
   standalone: false,
 })
 class PreFilterTest {
-  field: string;
-  filterValue: string;
+  field!: string;
+  filterValue!: string;
 }
 
 @Component({
@@ -595,7 +595,7 @@ class PreFilterTest {
   standalone: false,
 })
 class UnregisterTest {
-  show: boolean;
+  show!: boolean;
   filter = new TestStringFilter();
   filterValue = 'M';
 }
@@ -606,8 +606,8 @@ class UnregisterTest {
   standalone: false,
 })
 class ColTypeTest {
-  field: string;
-  type: string;
+  field!: string;
+  type!: string;
 }
 
 // There should be only a limited number of input bindings in this testing case
