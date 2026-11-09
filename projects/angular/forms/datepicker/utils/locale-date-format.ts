@@ -91,8 +91,16 @@ export class ClrLocaleDateFormat {
 
   /**
    * Parses text typed in the locale's format into a `Date` at local midnight. Any non-digit characters
-   * delimit the parts and two-digit years are expanded. Returns `null` when the text is not a day that exists.
-   * Minimum and maximum dates are not checked.
+   * delimit the parts. Returns `null` when the text does not have three parts, the month or day does not
+   * exist, or the year is not accepted. Minimum and maximum dates are not checked.
+   *
+   * Years, the same rules as the date picker:
+   * - `1000`–`9999` are used as typed.
+   * - `10`–`99` are expanded to the year in the current century, or the previous one when that would be
+   *   more than 20 years ahead. In 2026, `46` is 2046 and `47` is 1947.
+   * - `0`–`9`, including `00`–`09`, are rejected, so 2000–2009 must be typed with four digits.
+   * - `101`–`998` and anything above `9999` are rejected.
+   * - `100` and `999` (or `0999`) are expanded like two-digit years, e.g. to 2000 and 2899 in 2026.
    */
   parse(text: string): Date | null {
     if (!text || typeof text !== 'string') {
