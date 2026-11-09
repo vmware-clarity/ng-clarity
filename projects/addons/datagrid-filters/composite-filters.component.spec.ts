@@ -29,6 +29,7 @@ import { ManageFilterComponent } from './manage-filters/manage-filter.component'
 import { ComparisonOperator, LogicalOperator, PropertyType } from './model/datagrid-filters.enums';
 import {
   EnumPropertyDefinition,
+  FilterablePropertyDefinition,
   PropertyFilter,
   PropertyPredicate,
   StringPropertyDefinition,
@@ -293,6 +294,69 @@ describe('CompositeFiltersComponent', () => {
     expect(document.activeElement).toBe(trigger);
     expect(document.querySelector('.filter-popover')).toBeNull();
   });
+  it('runs the first ngOnChanges before ngOnInit and preselects the first available field', function (this: ThisTest) {
+    // Angular reads ngOnInit from the class, so the order is checked with the flag that only ngOnInit sets.
+    const seenInOnChanges: { initialized: boolean; selected: FilterablePropertyDefinition }[] = [];
+    spyOn(this.component, 'ngOnChanges').and.callFake(function (this: CompositeFiltersComponent, changes) {
+      CompositeFiltersComponent.prototype.ngOnChanges.call(this, changes);
+      seenInOnChanges.push({ initialized: this['initialized'], selected: this.selectedFilterableProperty });
+    });
+    // setInput goes through Angular's input handling, as a template binding does.
+    this.fixture.componentRef.setInput('filterableProperties', filterableProperties);
+    this.fixture.componentRef.setInput('predefinedFilters', [stringProperty]);
+    this.fixture.detectChanges();
+    // One ngOnChanges, before ngOnInit, which already picked the first available field.
+    expect(seenInOnChanges).toEqual([{ initialized: false, selected: enumProperty }]);
+    // ngOnInit ran afterwards and kept the same field.
+    expect(this.component['initialized']).toBeTrue();
+    expect(this.component.selectedFilterableProperty).toBe(enumProperty);
+  });
+
+  it('keeps the chosen Add filter field when an unrelated input changes', function (this: ThisTest) {
+    this.fixture.detectChanges();
+    this.component.selectedFilterableProperty = enumProperty;
+    this.component.onPropertyChange();
+
+    const propertyChange = spyOn(this.component, 'onPropertyChange').and.callThrough();
+    this.component.externalCriteriaActive = true;
+    this.component.ngOnChanges({ externalCriteriaActive: new SimpleChange(false, true, false) });
+    expect(this.component.selectedFilterableProperty).toBe(enumProperty);
+    expect(propertyChange).not.toHaveBeenCalled();
+
+    // A toggle on another field leaves the chosen field available, so the editor is not rebuilt.
+    const nameToggle: PropertyFilter = {
+      operator: LogicalOperator.And,
+      criteria: [{ filterableProperty: stringProperty, operator: ComparisonOperator.Contains, value: 'demo' }],
+    };
+    this.component.toggleFilters = [nameToggle];
+    this.component.ngOnChanges({ toggleFilters: new SimpleChange([], [nameToggle], false) });
+    expect(this.component.selectedFilterableProperty).toBe(enumProperty);
+    expect(propertyChange).not.toHaveBeenCalled();
+    this.component.toggleFilters = [];
+
+    // A new array with an equal field keeps the choice and switches to the new definition.
+    const newEnumProperty = new EnumPropertyDefinition(
+      enumProperty.displayName,
+      enumProperty.property,
+      enumProperty.values
+    );
+    this.component.filterableProperties = [stringProperty, newEnumProperty];
+    this.component.ngOnChanges({
+      filterableProperties: new SimpleChange(filterableProperties, this.component.filterableProperties, false),
+    });
+    expect(this.component.selectedFilterableProperty).toBe(newEnumProperty);
+  });
+
+  it('moves the Add filter field to the first available one when the chosen field is taken', function (this: ThisTest) {
+    this.fixture.detectChanges();
+    this.component.selectedFilterableProperty = enumProperty;
+    this.component.onPropertyChange();
+
+    this.component.semiPredefinedFilters = [enumProperty];
+    this.component.ngOnChanges({ semiPredefinedFilters: new SimpleChange([], [enumProperty], false) });
+    expect(this.component.selectedFilterableProperty).toBe(stringProperty);
+  });
+
   it('separates predefined pills from user-added pills', function (this: ThisTest) {
     this.component.predefinedFilters = [stringProperty];
     this.fixture.detectChanges();

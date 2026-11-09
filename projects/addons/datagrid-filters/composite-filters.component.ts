@@ -340,7 +340,15 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
         }
       });
     }
-    this.preselectFirstProperty();
+    // Only these inputs change which fields Add filter can offer.
+    if (
+      changes['filterableProperties'] ||
+      changes['predefinedFilters'] ||
+      changes['semiPredefinedFilters'] ||
+      changes['toggleFilters']
+    ) {
+      this.keepOrPreselectProperty();
+    }
   }
 
   ngOnInit() {
@@ -501,6 +509,21 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
       ...this.propertyFilters,
       ...this.toggleFilters.filter(toggle => this.isToggleOn(toggle)),
     ]);
+  }
+
+  /**
+   * Keeps the field chosen in Add filter (and the editor's typed values) across input changes, as long as the field
+   * is still available. Matched by key, so a new `filterableProperties` array with equal fields keeps it too.
+   */
+  private keepOrPreselectProperty() {
+    const selectedKey = this.selectedFilterableProperty?.property;
+    const kept = this.availableProperties.find(property => property.property === selectedKey);
+    if (!kept) {
+      this.preselectFirstProperty();
+    } else if (kept !== this.selectedFilterableProperty) {
+      this.selectedFilterableProperty = kept;
+      this.onPropertyChange();
+    }
   }
 
   private preselectFirstProperty() {
