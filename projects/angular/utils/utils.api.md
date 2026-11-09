@@ -866,7 +866,7 @@ export class FocusService {
     // (undocumented)
     activateCurrent(): boolean;
     // (undocumented)
-    get current(): FocusableItem;
+    get current(): FocusableItem | undefined;
     // (undocumented)
     detachListeners(el: HTMLElement): void;
     // (undocumented)

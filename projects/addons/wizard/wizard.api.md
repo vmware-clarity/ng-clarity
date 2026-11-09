@@ -100,7 +100,7 @@ export class SummaryModel implements StepModel {
 class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterContentInit {
     // Warning: (ae-forgotten-export) The symbol "RelevanceService" needs to be exported by the entry point clr-addons-wizard.d.ts
     // Warning: (ae-forgotten-export) The symbol "ZoomLevelService" needs to be exported by the entry point clr-addons-wizard.d.ts
-    constructor(cdr: ChangeDetectorRef, modelMgr: WorkflowModelManager, relevanceService: RelevanceService, configService: WorkflowConfigurationService, workflowStrings: WorkflowStrings, zoomLevelService?: ZoomLevelService,
+    constructor(cdr: ChangeDetectorRef, modelMgr: WorkflowModelManager, relevanceService: RelevanceService, configService: WorkflowConfigurationService, workflowStrings: WorkflowStrings, zoomLevelService?: ZoomLevelService | undefined,
     openModalComponent?: boolean);
     // (undocumented)
     activeStepIndex: number;
@@ -122,7 +122,7 @@ class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterContentI
     //
     // (undocumented)
     currentZoomLevel?: ZoomLevel;
-    footer: WizardFooterConfig;
+    footer?: WizardFooterConfig;
     // (undocumented)
     footerComponentInputs?: Record<string, unknown>;
     // (undocumented)

@@ -465,7 +465,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     get pageSize(): number;
     set pageSize(value: number);
     pageSizeChange: EventEmitter<number>;
-    pageSizeOptions: number[];
+    pageSizeOptions?: number[];
     preSelectFirstItem: boolean;
     preserveExistingSelectionOnFilter: boolean;
     // (undocumented)
@@ -490,7 +490,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     searchTerm: string;
     searchTermChange: EventEmitter<string>;
     get selectedItems(): T[];
-    set selectedItems(items: T[]);
+    set selectedItems(items: T[] | null | undefined);
     selectedItemsChange: EventEmitter<T[]>;
     // (undocumented)
     protected get selectedItemsCount(): number;

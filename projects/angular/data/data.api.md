@@ -186,7 +186,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     selectAllDisabled: boolean;
     // (undocumented)
     selectAllId: string;
-    set selected(value: T[] | undefined);
+    set selected(value: T[] | null | undefined);
     // (undocumented)
     selectedChanged: EventEmitter<T[]>;
     // (undocumented)
@@ -898,7 +898,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
     // (undocumented)
     SELECTION_TYPE: typeof SelectionType;
     // @deprecated (undocumented)
-    protected selectRow(selected: boolean, $event: MouseEvent): void;
+    protected selectRow(selected: boolean | undefined, $event: MouseEvent): void;
     // (undocumented)
     skeletonLoading: boolean;
     // (undocumented)
@@ -908,7 +908,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
     // (undocumented)
     toggleExpand(event: MouseEvent): void;
     // (undocumented)
-    protected readonly tree: DatagridTreeService<T>;
+    protected readonly tree: DatagridTreeService<T> | null;
     // Warning: (ae-forgotten-export) The symbol "DatagridTreeRowCells" needs to be exported by the entry point clr-angular-data.d.ts
     get _tree(): DatagridTreeRowCells<T> | null;
     treeExpandable: boolean;
@@ -1262,7 +1262,7 @@ export class ClrStackBlock implements OnInit {
     // (undocumented)
     get getChangedValue(): boolean;
     // (undocumented)
-    getStackChildrenId(): string;
+    getStackChildrenId(): string | null;
     // (undocumented)
     get labelledById(): any;
     // (undocumented)

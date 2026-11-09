@@ -493,7 +493,7 @@ export class ClrTooltipContent implements OnInit {
     el: ElementRef;
     // (undocumented)
     get id(): string;
-    set id(value: string);
+    set id(value: string | null | undefined);
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)

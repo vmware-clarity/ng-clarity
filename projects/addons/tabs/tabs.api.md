@@ -117,7 +117,7 @@ export { TabLinksComponent }
 class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterContentInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "RelevanceService" needs to be exported by the entry point clr-addons-tabs.d.ts
     // Warning: (ae-forgotten-export) The symbol "ZoomLevelService" needs to be exported by the entry point clr-addons-tabs.d.ts
-    constructor(modelMgr: WorkflowModelManager, relevanceService: RelevanceService, cdr: ChangeDetectorRef, workflowStrings: WorkflowStrings, configService: WorkflowConfigurationService, zoomLevelService?: ZoomLevelService);
+    constructor(modelMgr: WorkflowModelManager, relevanceService: RelevanceService, cdr: ChangeDetectorRef, workflowStrings: WorkflowStrings, configService: WorkflowConfigurationService, zoomLevelService?: ZoomLevelService | undefined);
     // Warning: (ae-forgotten-export) The symbol "Step" needs to be exported by the entry point clr-addons-tabs.d.ts
     activeTabChange: EventEmitter<Step>;
     // (undocumented)

@@ -76,7 +76,7 @@ export class MenuActionComponent extends MenuItem {
 // @public (undocumented)
 export class MenuComponent extends NestedMenu implements Menu, OnInit, OnDestroy, AfterContentInit {
     // Warning: (ae-forgotten-export) The symbol "ZoomLevelService" needs to be exported by the entry point clr-addons-menu.d.ts
-    constructor(cdr: ChangeDetectorRef, zoomLevelService?: ZoomLevelService);
+    constructor(cdr: ChangeDetectorRef, zoomLevelService?: ZoomLevelService | undefined);
     // Warning: (ae-forgotten-export) The symbol "ClrPopoverPoint" needs to be exported by the entry point clr-addons-menu.d.ts
     //
     // (undocumented)
