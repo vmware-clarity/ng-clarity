@@ -1,0 +1,22 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+:host {
+  display: block;
+  container: clr-layout / inline-size;
+}
+
+.clr-row {
+  margin-bottom: var(--cds-global-space-6);
+}
+
+span {
+  display: block;
+  padding: var(--cds-global-space-5);
+  background: var(--cds-alias-object-container-background-tint);
+  border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
+}
