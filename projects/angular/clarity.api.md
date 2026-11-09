@@ -2259,7 +2259,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // Warning: (ae-forgotten-export) The symbol "CellCoordinates" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    activeCellCoords: CellCoordinates;
+    activeCellCoords?: CellCoordinates | null;
     get allSelected(): boolean;
     set allSelected(value: boolean);
     // (undocumented)
@@ -2380,7 +2380,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     protected readonly tree: DatagridTreeService<T>;
     updateDetailState(): void;
     // (undocumented)
-    get virtualScroll(): ClrDatagridVirtualScrollDirective<any>;
+    get virtualScroll(): ClrDatagridVirtualScrollDirective<any> | undefined;
     _virtualScroll: QueryList<ClrDatagridVirtualScrollDirective<any>>;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagrid<any>, "clr-datagrid", never, { "loadingMoreItems": { "alias": "clrLoadingMoreItems"; "required": false; }; "clrDgSingleSelectionAriaLabel": { "alias": "clrDgSingleSelectionAriaLabel"; "required": false; }; "clrDgSingleActionableAriaLabel": { "alias": "clrDgSingleActionableAriaLabel"; "required": false; }; "clrDetailExpandableAriaLabel": { "alias": "clrDetailExpandableAriaLabel"; "required": false; }; "clrDgDisablePageFocus": { "alias": "clrDgDisablePageFocus"; "required": false; }; "customSelectAllEnabled": { "alias": "clrDgCustomSelectAllEnabled"; "required": false; }; "selectAllDisabled": { "alias": "clrDgSelectAllDisabled"; "required": false; }; "loading": { "alias": "clrDgLoading"; "required": false; }; "selectionType": { "alias": "clrDgSelectionType"; "required": false; }; "selected": { "alias": "clrDgSelected"; "required": false; }; "clrDgPreserveSelection": { "alias": "clrDgPreserveSelection"; "required": false; }; "rowSelectionMode": { "alias": "clrDgRowSelection"; "required": false; }; "identityFn": { "alias": "clrDgItemsIdentityFn"; "required": false; }; }, { "selectedChanged": "clrDgSelectedChange"; "refresh": "clrDgRefresh"; "customSelectAll": "clrDgCustomSelectAll"; }, ["iterator", "placeholder", "_virtualScroll", "columns", "rows"], ["clr-dg-action-bar", "clr-dg-placeholder", "clr-dg-footer", "[clrIfDetail],clr-dg-detail"], false, never>;
@@ -2400,7 +2400,7 @@ export class ClrDatagridActionBar {
 export class ClrDatagridActionOverflow implements OnDestroy {
     constructor(rowActionService: RowActionService, commonStrings: ClrCommonStringsService, platformId: any, popoverService: ClrPopoverService);
     // (undocumented)
-    buttonLabel: string;
+    buttonLabel?: string;
     // (undocumented)
     closeOverflowContent(event: Event): void;
     // (undocumented)
@@ -2478,14 +2478,14 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // (undocumented)
     disableUnsort: boolean;
     // (undocumented)
-    get field(): string;
+    get field(): string | undefined;
     set field(field: string);
     // (undocumented)
-    filterNumberMaxPlaceholder: string;
+    filterNumberMaxPlaceholder?: string;
     // (undocumented)
-    filterNumberMinPlaceholder: string;
+    filterNumberMinPlaceholder?: string;
     // (undocumented)
-    filterStringPlaceholder: string;
+    filterStringPlaceholder?: string;
     get filterValue(): any;
     set filterValue(newValue: any);
     // (undocumented)
@@ -2522,10 +2522,10 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     sort(reverse?: boolean): void;
     get sortable(): boolean;
     // (undocumented)
-    get sortBy(): ClrDatagridComparatorInterface<T> | string;
+    get sortBy(): ClrDatagridComparatorInterface<T> | undefined;
     set sortBy(comparator: ClrDatagridComparatorInterface<T> | string);
     // (undocumented)
-    get sortDirection(): 'up' | 'down' | null;
+    get sortDirection(): 'up' | 'down' | null | undefined;
     // (undocumented)
     get sortOrder(): ClrDatagridSortOrder;
     set sortOrder(value: ClrDatagridSortOrder);
@@ -2537,7 +2537,7 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     get treeToggle(): boolean;
     set treeToggle(value: boolean);
     // (undocumented)
-    set updateFilterValue(newValue: string | [number, number]);
+    set updateFilterValue(newValue: string | [number | null, number | null]);
     // (undocumented)
     get _view(): any;
     // (undocumented)
@@ -2690,9 +2690,9 @@ export interface ClrDatagridComparatorInterface<T> {
 export class ClrDatagridDetail {
     constructor(detailService: DetailService, commonStrings: ClrCommonStringsService);
     // (undocumented)
-    ariaLabel: string;
+    ariaLabel?: string;
     // (undocumented)
-    ariaLabelledBy: string;
+    ariaLabelledBy?: string;
     // (undocumented)
     close(): void;
     // (undocumented)
@@ -2707,9 +2707,9 @@ export class ClrDatagridDetail {
     // (undocumented)
     get isCustomWidth(): boolean;
     // (undocumented)
-    get label(): string;
+    get label(): string | null;
     // (undocumented)
-    get labelledBy(): string;
+    get labelledBy(): string | null;
     // (undocumented)
     get width(): number | null;
     // (undocumented)
@@ -2880,7 +2880,7 @@ export class ClrDatagridModule {
 // @public (undocumented)
 export interface ClrDatagridNumericFilterInterface<T> {
     // (undocumented)
-    accepts(item: T, low: number, high: number): boolean;
+    accepts(item: T, low: number | null, high: number | null): boolean;
 }
 
 // @public (undocumented)
@@ -3081,7 +3081,7 @@ export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, Af
     // (undocumented)
     get beginningOfExpandableContentAriaText(): string;
     // (undocumented)
-    _beginningOfExpandableContentAriaText: string;
+    _beginningOfExpandableContentAriaText?: string;
     // (undocumented)
     cells: QueryList<ClrDatagridCell>;
     columnAligned: boolean;
@@ -3090,7 +3090,7 @@ export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, Af
     // (undocumented)
     get endOfExpandableContentAriaText(): string;
     // (undocumented)
-    _endOfExpandableContentAriaText: string;
+    _endOfExpandableContentAriaText?: string;
     // (undocumented)
     expand: DatagridIfExpandService;
     // (undocumented)
@@ -3283,7 +3283,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     // (undocumented)
     get totalContentHeight(): string;
     // (undocumented)
-    get totalItems(): number;
+    get totalItems(): number | undefined;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridVirtualScrollDirective<any>, "[clrVirtualScroll],[ClrVirtualScroll]", never, { "persistItems": { "alias": "clrVirtualPersistItems"; "required": false; }; "cdkVirtualForOf": { "alias": "clrVirtualRowsOf"; "required": false; }; "cdkVirtualForTrackBy": { "alias": "clrVirtualRowsTrackBy"; "required": false; }; "cdkVirtualForTemplate": { "alias": "clrVirtualRowsTemplate"; "required": false; }; "cdkVirtualForTemplateCacheSize": { "alias": "clrVirtualRowsTemplateCacheSize"; "required": false; }; "itemSize": { "alias": "clrVirtualRowsItemSize"; "required": false; }; "minBufferPx": { "alias": "clrVirtualRowsMinBufferPx"; "required": false; }; "maxBufferPx": { "alias": "clrVirtualRowsMaxBufferPx"; "required": false; }; "dataRange": { "alias": "clrVirtualDataRange"; "required": false; }; }, { "renderedRangeChange": "renderedRangeChange"; }, never, never, false, never>;
     // (undocumented)
@@ -3313,7 +3313,7 @@ export class ClrDatagridVirtualTree<T> extends DatagridTreeRenderer<T> {
     protected render(items: T[], focus: FocusedCell<T> | null, tabStop: T | undefined): void;
     renderedRootsChange: EventEmitter<ListRange>;
     // (undocumented)
-    roots: T[];
+    roots: T[] | undefined;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridVirtualTree<any>, "[ClrVirtualScroll][clrVirtualTreeOf],[clrVirtualScroll][clrVirtualTreeOf],[ClrVirtualScroll][clrVirtualTreeDataRange],[clrVirtualScroll][clrVirtualTreeDataRange]", never, { "roots": { "alias": "clrVirtualTreeOf"; "required": false; }; "getChildren": { "alias": "clrVirtualTreeGetChildren"; "required": false; }; "cascadeSelection": { "alias": "clrVirtualTreeCascadeSelection"; "required": false; }; "dataRange": { "alias": "clrVirtualTreeDataRange"; "required": false; }; }, { "renderedRootsChange": "clrVirtualTreeRenderedRootsChange"; }, never, never, false, never>;
     // (undocumented)
@@ -5757,8 +5757,8 @@ export class ClrStackBlock implements OnInit {
     // (undocumented)
     addChild(): void;
     // (undocumented)
-    get ariaExpanded(): string;
-    ariaLevel: HeadingLevel;
+    get ariaExpanded(): string | null;
+    ariaLevel?: HeadingLevel;
     // (undocumented)
     get caretDirection(): string;
     // (undocumented)
@@ -5784,13 +5784,13 @@ export class ClrStackBlock implements OnInit {
     // (undocumented)
     protected preventDefaultIfNotInputEvent(event: Event): void;
     // (undocumented)
-    get role(): string;
+    get role(): string | null;
     // (undocumented)
     set setChangedValue(value: boolean);
     // (undocumented)
     stackBlockTitle: any;
     // (undocumented)
-    get tabIndex(): string;
+    get tabIndex(): string | null;
     // (undocumented)
     toggleExpand(event?: Event): void;
     // (undocumented)
@@ -5814,7 +5814,7 @@ export class ClrStackContentInput {
 // @public (undocumented)
 export class ClrStackHeader {
     constructor(stackView: ClrStackView);
-    ariaLevel: HeadingLevel;
+    ariaLevel?: HeadingLevel;
     // (undocumented)
     stackView: ClrStackView;
     // (undocumented)
@@ -5842,7 +5842,7 @@ export class ClrStackViewCustomTags {
 // @public (undocumented)
 export class ClrStackViewLabel implements OnInit {
     // (undocumented)
-    get id(): string;
+    get id(): string | null;
     set id(val: string);
     // (undocumented)
     ngOnInit(): void;
@@ -6453,7 +6453,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     constructor(platformId: any, parent: ClrTreeNode<T>, featuresService: TreeFeaturesService<T>, expandService: IfExpandService, commonStrings: ClrCommonStringsService, focusManager: TreeFocusManagerService<T>, elementRef: ElementRef<HTMLElement>, injector: Injector);
     protected animatesChildren: boolean;
     // (undocumented)
-    get ariaSelected(): boolean;
+    get ariaSelected(): boolean | null;
     // (undocumented)
     broadcastFocusOnContainer(): void;
     // @deprecated (undocumented)
@@ -7547,7 +7547,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    toggleDetailPane(state: boolean): void;
+    toggleDetailPane(state: boolean | null): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridMainRenderer, "clr-datagrid", never, {}, {}, ["headers", "rows"], never, false, never>;
     // (undocumented)
@@ -7566,22 +7566,22 @@ export class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar<T, D
     // (undocumented)
     filterValueChange: EventEmitter<any>;
     // (undocumented)
-    fromLabel: string;
+    fromLabel?: string;
     // (undocumented)
     get fromLabelValue(): string;
     // (undocumented)
-    get high(): number | string;
-    set high(high: number | string);
+    get high(): number | string | null;
+    set high(high: number | string | null);
     input: ElementRef<HTMLInputElement>;
     // (undocumented)
-    get low(): number | string;
-    set low(low: number | string);
+    get low(): number | string | null;
+    set low(low: number | string | null);
     // (undocumented)
-    maxPlaceholder: string;
+    maxPlaceholder?: string;
     // (undocumented)
     get maxPlaceholderValue(): string;
     // (undocumented)
-    minPlaceholder: string;
+    minPlaceholder?: string;
     // (undocumented)
     get minPlaceholderValue(): string;
     // (undocumented)
@@ -7590,11 +7590,11 @@ export class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar<T, D
     ngOnDestroy(): void;
     open: boolean;
     // (undocumented)
-    toLabel: string;
+    toLabel?: string;
     // (undocumented)
     get toLabelValue(): string;
-    get value(): [number, number];
-    set value(values: [number, number]);
+    get value(): [number | null, number | null];
+    set value(values: [number | null, number | null]);
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<DatagridNumericFilter<any>, "clr-dg-numeric-filter", never, { "minPlaceholder": { "alias": "clrFilterMinPlaceholder"; "required": false; }; "maxPlaceholder": { "alias": "clrFilterMaxPlaceholder"; "required": false; }; "fromLabel": { "alias": "clrFilterFromLabel"; "required": false; }; "toLabel": { "alias": "clrFilterToLabel"; "required": false; }; "value": { "alias": "clrFilterValue"; "required": false; }; "customNumericFilter": { "alias": "clrDgNumericFilter"; "required": false; }; }, { "filterValueChange": "clrFilterValueChange"; }, never, never, false, never>;
     // (undocumented)
@@ -7614,7 +7614,7 @@ export class DatagridPropertyComparator<T = any> implements ClrDatagridComparato
 export class DatagridPropertyNumericFilter<T = any> implements ClrDatagridNumericFilterInterface<T> {
     constructor(prop: string, exact?: boolean);
     // (undocumented)
-    accepts(item: T, low: number, high: number): boolean;
+    accepts(item: T, low: number | null, high: number | null): boolean;
     // (undocumented)
     exact: boolean;
     // (undocumented)
@@ -7675,7 +7675,7 @@ export class DatagridStringFilter<T = any> extends DatagridFilterRegistrar<T, Da
     filterValueChange: EventEmitter<any>;
     input: ElementRef<HTMLInputElement>;
     // (undocumented)
-    label: string;
+    label?: string;
     // (undocumented)
     labelValue: string;
     // (undocumented)
@@ -7685,7 +7685,7 @@ export class DatagridStringFilter<T = any> extends DatagridFilterRegistrar<T, Da
     // (undocumented)
     ngOnDestroy(): void;
     open: boolean;
-    placeholder: string;
+    placeholder?: string;
     // (undocumented)
     get placeholderValue(): string;
     get value(): string;
@@ -9374,6 +9374,8 @@ export class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
     // (undocumented)
     get _loadedChildren(): RecursiveTreeNodeModel<T>[];
     // (undocumented)
+    model: T;
+    // (undocumented)
     parent: RecursiveTreeNodeModel<T> | null;
 }
 
@@ -9617,10 +9619,10 @@ class Selection_2<T = any> {
     // (undocumented)
     clearSelection(): void;
     // (undocumented)
-    get current(): T[];
+    get current(): T[] | undefined;
     set current(value: T[]);
     // (undocumented)
-    get currentSingle(): T;
+    get currentSingle(): T | undefined;
     destroy(): void;
     // (undocumented)
     id: string;
@@ -9630,7 +9632,7 @@ class Selection_2<T = any> {
     lockItem(item: T, lock: boolean): void;
     // (undocumented)
     preserveSelection: boolean;
-    rangeStart: T;
+    rangeStart: T | null;
     // @deprecated (undocumented)
     rowSelectionMode: boolean;
     // (undocumented)
@@ -10396,13 +10398,13 @@ export function wrapObservable<T>(observable: Observable<T>, onSubscribe?: (obse
 // @public (undocumented)
 export class WrappedCell implements AfterViewInit, OnDestroy {
     // (undocumented)
-    cellView: EmbeddedViewRef<void>;
+    cellView: EmbeddedViewRef<null>;
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    templateRef: TemplateRef<void>;
+    templateRef: TemplateRef<null>;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<WrappedCell, "dg-wrapped-cell", never, {}, {}, never, ["*"], false, never>;
     // (undocumented)
@@ -10412,13 +10414,13 @@ export class WrappedCell implements AfterViewInit, OnDestroy {
 // @public (undocumented)
 export class WrappedColumn implements AfterViewInit, OnDestroy {
     // (undocumented)
-    columnView: EmbeddedViewRef<void>;
+    columnView: EmbeddedViewRef<null>;
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    templateRef: TemplateRef<void>;
+    templateRef: TemplateRef<null>;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<WrappedColumn, "dg-wrapped-column", never, {}, {}, never, ["*"], false, never>;
     // (undocumented)
@@ -10472,9 +10474,9 @@ export class WrappedRow implements AfterViewInit, OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    rowView: EmbeddedViewRef<void>;
+    rowView: EmbeddedViewRef<null>;
     // (undocumented)
-    templateRef: TemplateRef<void>;
+    templateRef: TemplateRef<null>;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<WrappedRow, "dg-wrapped-row", never, {}, {}, never, ["*"], false, never>;
     // (undocumented)

@@ -46,12 +46,12 @@ export interface KeyNavigationGridConfig {
 export interface CellCoordinates {
   x: number;
   y: number;
-  ariaRowIndex?: string;
+  ariaRowIndex?: string | null;
 }
 
 @Injectable()
 export class KeyNavigationGridController implements OnDestroy {
-  nextCellCoordsEmitter = new EventEmitter<CellCoordinates>(false);
+  nextCellCoordsEmitter = new EventEmitter<CellCoordinates | null>(false);
 
   skipItemFocus = false;
   preventScrollOnFocus = false;
@@ -62,7 +62,7 @@ export class KeyNavigationGridController implements OnDestroy {
       '[role=gridcell]:not(.datagrid-hidden-column):not(.datagrid-placeholder-content), [role=columnheader]:not(.datagrid-hidden-column):not(.datagrid-placeholder-content), .datagrid-detail-caret',
     keyGrid: '[role=grid], [role=treegrid]',
   };
-  private keyNavUtils: KeyNavigationUtils;
+  private keyNavUtils!: KeyNavigationUtils;
   private listenersAdded = false;
   private destroy$ = new Subject<void>();
 
@@ -74,12 +74,13 @@ export class KeyNavigationGridController implements OnDestroy {
   }
 
   addListeners() {
-    if (this.listenersAdded) {
+    const grid = this.keyNavUtils.grid;
+    if (this.listenersAdded || !grid) {
       return;
     }
 
     this.zone.runOutsideAngular(() => {
-      fromEvent<MouseEvent>(this.keyNavUtils.grid, 'mousedown')
+      fromEvent<MouseEvent>(grid, 'mousedown')
         .pipe(takeUntil(this.destroy$))
         .subscribe((e: MouseEvent) => {
           // preserve right click for context menus & keyboard mouse control https://apple.stackexchange.com/questions/32715/how-do-i-open-the-context-menu-from-a-mac-keyboard
@@ -99,13 +100,13 @@ export class KeyNavigationGridController implements OnDestroy {
           }
         });
 
-      fromEvent(this.keyNavUtils.grid, 'wheel')
+      fromEvent(grid, 'wheel')
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
           this.nextCellCoordsEmitter.emit(null);
         });
 
-      fromEvent<KeyboardEvent>(this.keyNavUtils.grid, 'keydown')
+      fromEvent<KeyboardEvent>(grid, 'keydown')
         .pipe(takeUntil(this.destroy$))
         .subscribe((e: KeyboardEvent) => {
           // Skip column resize events

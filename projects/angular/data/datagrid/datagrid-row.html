@@ -15,8 +15,8 @@
   [class.datagrid-row-detail-open]="detailService.isRowOpen(item)"
   [attr.aria-level]="treeNode?.level"
   [attr.aria-expanded]="treeNode?.expandable ? treeNode.expanded : null"
-  [attr.aria-posinset]="treeNode ? tree.posInSet(treeNode) : null"
-  [attr.aria-setsize]="treeNode ? tree.setSize(treeNode) : null"
+  [attr.aria-posinset]="treeNode && tree ? tree.posInSet(treeNode) : null"
+  [attr.aria-setsize]="treeNode && tree ? tree.setSize(treeNode) : null"
   [attr.aria-busy]="(treeNode?.loading && treeNode.expanded) || null"
 >
   <div class="datagrid-row-sticky">
@@ -36,7 +36,7 @@
             (ngModelChange)="toggle($event)"
             [indeterminate]="treeIndeterminate"
             [id]="checkboxId"
-            [disabled]="clrDgSelectable ? null : true"
+            [disabled]="!clrDgSelectable"
             [attr.aria-disabled]="clrDgSelectable ? null : true"
           />
           <!-- Usage of class clr-col-null here prevents clr-col-* classes from being added when a datagrid is wrapped inside clrForm -->
@@ -63,7 +63,7 @@
             [value]="item"
             [ngModel]="selection.currentSingle"
             (ngModelChange)="selection.current = [$event]"
-            [disabled]="clrDgSelectable ? null : true"
+            [disabled]="!clrDgSelectable"
             [attr.aria-disabled]="clrDgSelectable ? null : true"
           />
           <label class="clr-control-label clr-col-null" [for]="radioId">

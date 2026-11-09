@@ -25,7 +25,7 @@ import { ColumnsService } from '../providers/columns.service';
   standalone: false,
 })
 export class DatagridRowRenderer implements AfterContentInit, OnDestroy {
-  @ContentChildren(DatagridCellRenderer) cells: QueryList<DatagridCellRenderer>;
+  @ContentChildren(DatagridCellRenderer) cells!: QueryList<DatagridCellRenderer>;
   expandableRows: DatagridRowDetailRenderer[] = [];
 
   private subscriptions: Subscription[] = [];

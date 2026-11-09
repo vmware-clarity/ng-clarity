@@ -134,9 +134,9 @@ export class ClrDatagridColumn<T = any>
   extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>>
   implements OnDestroy, OnInit, OnChanges
 {
-  @Input('clrFilterStringPlaceholder') filterStringPlaceholder: string;
-  @Input('clrFilterNumberMaxPlaceholder') filterNumberMaxPlaceholder: string;
-  @Input('clrFilterNumberMinPlaceholder') filterNumberMinPlaceholder: string;
+  @Input('clrFilterStringPlaceholder') filterStringPlaceholder?: string;
+  @Input('clrFilterNumberMaxPlaceholder') filterNumberMaxPlaceholder?: string;
+  @Input('clrFilterNumberMinPlaceholder') filterNumberMinPlaceholder?: string;
   @Input('clrDgDisableUnsort') disableUnsort = false;
 
   /**
@@ -151,7 +151,7 @@ export class ClrDatagridColumn<T = any>
   @Output('clrDgPinnedChange') pinnedChange = new EventEmitter<boolean>();
   @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
 
-  @ViewChild('titleContainer', { read: ElementRef }) titleContainer: ElementRef<HTMLElement>;
+  @ViewChild('titleContainer', { read: ElementRef }) titleContainer!: ElementRef<HTMLElement>;
 
   /**
    * A custom filter for this column that can be provided in the projected content
@@ -172,26 +172,26 @@ export class ClrDatagridColumn<T = any>
    * Simple object property shortcut, activates both sorting and filtering
    * based on native comparison of the specified property on the items.
    */
-  private _field: string;
+  private _field?: string;
 
   /**
    * ClrDatagridComparatorInterface to use when sorting the column
    */
-  private _sortBy: ClrDatagridComparatorInterface<T>;
+  private _sortBy?: ClrDatagridComparatorInterface<T>;
 
   /**
    * Indicates how the column is currently sorted
    */
   private _sortOrder: ClrDatagridSortOrder = ClrDatagridSortOrder.UNSORTED;
 
-  private _sortDirection: 'up' | 'down' | null;
+  private _sortDirection?: 'up' | 'down' | null;
 
   // This property holds filter value temporarily while this.filter property is not yet registered
   // When this.filter is registered, this property value would be used update this.filter.value
   //
-  private initFilterValue: string | [number, number];
+  private initFilterValue?: string | [number | null, number | null];
 
-  private wrappedInjector: Injector;
+  private wrappedInjector!: Injector;
 
   /**
    * Subscription to the sort service changes
@@ -297,7 +297,7 @@ export class ClrDatagridColumn<T = any>
   }
 
   @Input('clrDgField')
-  get field() {
+  get field(): string | undefined {
     return this._field;
   }
   set field(field: string) {
@@ -311,7 +311,7 @@ export class ClrDatagridColumn<T = any>
   }
 
   @Input('clrDgSortBy')
-  get sortBy() {
+  get sortBy(): ClrDatagridComparatorInterface<T> | undefined {
     return this._sortBy;
   }
   set sortBy(comparator: ClrDatagridComparatorInterface<T> | string) {
@@ -357,7 +357,7 @@ export class ClrDatagridColumn<T = any>
   }
 
   @Input('clrFilterValue')
-  set updateFilterValue(newValue: string | [number, number]) {
+  set updateFilterValue(newValue: string | [number | null, number | null]) {
     if (this.filter) {
       if (this.filter instanceof DatagridStringFilterImpl) {
         if (!newValue || typeof newValue !== 'string') {
@@ -406,7 +406,7 @@ export class ClrDatagridColumn<T = any>
     }
   }
 
-  get sortDirection(): 'up' | 'down' | null {
+  get sortDirection(): 'up' | 'down' | null | undefined {
     return this._sortDirection;
   }
 
@@ -454,7 +454,7 @@ export class ClrDatagridColumn<T = any>
       }
     }
     if (changes.field && changes.field.currentValue && changes.field.currentValue !== changes.field.previousValue) {
-      if (!this.customFilter && this.colType) {
+      if (!this.customFilter && this.colType && this.field) {
         this.setupDefaultFilter(this.field, this.colType);
       }
     }
@@ -470,7 +470,7 @@ export class ClrDatagridColumn<T = any>
    * Sorts the datagrid based on this column
    */
   sort(reverse?: boolean) {
-    if (!this.sortable) {
+    if (!this._sortBy) {
       return;
     }
 

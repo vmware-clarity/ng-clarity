@@ -19,7 +19,9 @@ import { TreeFeaturesService } from './tree-features.service';
   template: `
     @if (shouldRender()) {
       @for (child of parent?.children || children; track child) {
-        <ng-container *ngTemplateOutlet="featuresService.recursion.template; context: getContext(child)"></ng-container>
+        <ng-container
+          *ngTemplateOutlet="featuresService.recursion?.template; context: getContext(child)"
+        ></ng-container>
       }
     }
   `,
@@ -36,11 +38,11 @@ import { TreeFeaturesService } from './tree-features.service';
 export class RecursiveChildren<T> {
   // Offering the option to either give the parent node to recurse potentially lazily,
   // or directly the list of children to display.
-  @Input('parent') parent: TreeNodeModel<T>;
-  @Input('children') children: TreeNodeModel<T>[];
+  @Input('parent') parent?: TreeNodeModel<T>;
+  @Input('children') children?: TreeNodeModel<T>[];
 
-  subscription: Subscription;
-  role: string;
+  subscription?: Subscription;
+  role: string | null = null;
 
   // One context object per node: a new object on every change detection pass would make ngTemplateOutlet
   // run ngOnChanges and rewrite the context of every node on every pass.
@@ -81,8 +83,9 @@ export class RecursiveChildren<T> {
     if (!context) {
       context = {
         // Read through, so the context keeps following the node if its model gets reassigned.
+        // The nodes rendered here are the recursive ones, which always have a model.
         get $implicit() {
-          return node.model;
+          return node.model as T;
         },
         clrModel: node,
       };

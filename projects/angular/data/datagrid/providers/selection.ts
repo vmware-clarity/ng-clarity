@@ -23,7 +23,7 @@ export class Selection<T = any> {
   /**
    * Last selection, for use in range selection.
    */
-  rangeStart: T;
+  rangeStart: T | null = null;
 
   /**
    * Shift key state, for use in range selection.
@@ -41,7 +41,7 @@ export class Selection<T = any> {
   /**
    * The current selection
    */
-  private _current: T[];
+  private _current: T[] | undefined;
 
   /**
    * The Observable that lets other classes subscribe to selection changes
@@ -115,7 +115,8 @@ export class Selection<T = any> {
           }
 
           case SelectionType.Multi: {
-            let leftOver: any[] = this.current.slice();
+            const current = this.current ?? [];
+            let leftOver: any[] = current.slice();
             let selectionUpdated = false;
 
             // Duplicate loop, when the issue is issue#2342 is revisited keep in mind that
@@ -154,7 +155,7 @@ export class Selection<T = any> {
               // present
               if (_items.smart) {
                 leftOver = leftOver.filter(selected => updatedItems.indexOf(selected) > -1);
-                if (this.current.length !== leftOver.length) {
+                if (current.length !== leftOver.length) {
                   selectionUpdated = true;
                 }
               }
@@ -193,7 +194,7 @@ export class Selection<T = any> {
     }
   }
 
-  get current(): T[] {
+  get current(): T[] | undefined {
     return this._current;
   }
   set current(value: T[]) {
@@ -201,7 +202,7 @@ export class Selection<T = any> {
     this.updateCurrentSelectionRefs();
   }
 
-  get currentSingle(): T {
+  get currentSingle(): T | undefined {
     return this._current?.length ? this._current[0] : undefined;
   }
 
@@ -379,14 +380,15 @@ export class Selection<T = any> {
    * Selects an item
    */
   private selectItem(item: T): void {
-    this.current = this.current.concat(item);
+    this.current = (this.current ?? []).concat(item);
   }
 
   /**
    * Deselects an item
    */
   private deselectItem(indexOfItem: number): void {
-    this.current = this.current.slice(0, indexOfItem).concat(this.current.slice(indexOfItem + 1));
+    const current = this.current ?? [];
+    this.current = current.slice(0, indexOfItem).concat(current.slice(indexOfItem + 1));
   }
 
   /**
@@ -397,7 +399,7 @@ export class Selection<T = any> {
   }
 
   private emitChange() {
-    this._change.next(this.current);
+    this._change.next(this.current ?? []);
   }
 
   private updateCurrentSelectionRefs() {

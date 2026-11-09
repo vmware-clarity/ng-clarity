@@ -18,9 +18,9 @@ const MIN_COLUMN_WIDTH = 96;
 @Injectable()
 export class ColumnResizerService {
   // is it within the maximum resize range to the left
-  isWithinMaxResizeRange: boolean;
+  isWithinMaxResizeRange!: boolean;
 
-  private widthBeforeResize: number;
+  private widthBeforeResize!: number;
   private _resizedBy = 0;
 
   constructor(

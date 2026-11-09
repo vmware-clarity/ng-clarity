@@ -96,7 +96,7 @@ export class ClrDatagridFilter<T = any>
   popoverPosition = ClrPopoverPosition.BOTTOM_RIGHT;
   popoverType = ClrPopoverType.DROPDOWN;
 
-  @ViewChild('anchor', { read: ElementRef }) anchor: ElementRef<HTMLButtonElement>;
+  @ViewChild('anchor', { read: ElementRef }) anchor!: ElementRef<HTMLButtonElement>;
 
   private subs: Subscription[] = [];
 

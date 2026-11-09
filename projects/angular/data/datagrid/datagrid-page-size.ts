@@ -27,7 +27,7 @@ import { Page } from './providers/page';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDatagridPageSize {
-  @Input('clrPageSizeOptions') pageSizeOptions: number[];
+  @Input('clrPageSizeOptions') pageSizeOptions: number[] = [];
   @Input('clrPageSizeOptionsId') pageSizeOptionsId = uniqueIdFactory();
 
   constructor(public page: Page) {}

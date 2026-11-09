@@ -44,8 +44,8 @@ import { ClrDatagridTreeChildrenFunction } from './interfaces/tree-children-func
   standalone: false,
 })
 export class ClrDatagridTreeItems<T> extends DatagridTreeRenderer<T> {
-  @Input('clrDgTreeItemsOf') roots: T[];
-  @Input('clrDgTreeItemsGetChildren') getChildren: ClrDatagridTreeChildrenFunction<T>;
+  @Input('clrDgTreeItemsOf') roots!: T[];
+  @Input('clrDgTreeItemsGetChildren') getChildren!: ClrDatagridTreeChildrenFunction<T>;
   /**
    * In multi-selection, selecting a row also selects its loaded descendants, and a parent is
    * selected when all of its children are, like in the tree view. Descendants that are not loaded
