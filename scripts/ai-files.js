@@ -8,7 +8,7 @@
 // Shared discovery of AI agent files. Each library has:
 //   projects/<lib>/ai/AGENTS.md         a short pointer to the package skill
 //   projects/<lib>/ai/SKILL.md          the package skill: rules for all components plus an index of the guides
-//   projects/<lib>/**/GUIDE.md       one guide per component, shipped as references/<name>.md of the skill
+//   projects/<lib>/**/GUIDE.md          one guide per component, shipped as references/<name>.md of the skill
 // Used by scripts/copy-ai-files.js (npm packages), projects/website/scripts/compile-content.js (website) and
 // .claude/skills/update-ai-skills/check-ai-skills.js (maintainers).
 
@@ -100,4 +100,4 @@ function checkGuideIndex(skill, guides) {
   ];
 }
 
-module.exports = { LIBS, REPO_ROOT, collectAiFiles, getAgentsFile };
+module.exports = { LIBS, REPO_ROOT, checkGuideIndex, collectAiFiles, getAgentsFile };

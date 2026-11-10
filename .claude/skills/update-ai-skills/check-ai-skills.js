@@ -194,7 +194,8 @@ if (changedIndex !== -1) {
     const lib = apiFile.split('/')[1];
     // a guide covers the reports in its own folder and those of every entry point it imports or cites
     const guidesForApi = files.filter(f => !f.packageFile && (rel(f.file).startsWith(`${dir}/`) || dependsOn(f, dir)));
-    const packageFilesForLib = files.filter(f => f.packageFile && f.lib === lib);
+    // AGENTS.md only points to the package skill, so API changes never need an edit there
+    const packageFilesForLib = files.filter(f => f.packageFile && f.lib === lib && f.name !== 'AGENTS.md');
 
     console.log(`  ${apiFile}`);
     [...guidesForApi, ...packageFilesForLib].forEach(f => console.log(`    -> ${label(f)}`));

@@ -118,7 +118,7 @@ function collectWebsiteAiFiles() {
       guides.push(
         ...result.guides.map(guide => ({
           ...guide,
-          skillName: result.skill.name,
+          packageSkill: result.skill.name,
           raw: guide.body.trimStart(),
           url: `${skillUrl}/references/${guide.name}.md`,
         }))
@@ -240,10 +240,10 @@ async function compileAiDocs({ guides }) {
   const aiDocs = {};
   const extraTransformers = [removeFirstH1, incrementHeadingLevels];
 
-  for (const { name, packageName, skillName, description, url, raw, body } of guides) {
+  for (const { name, packageName, packageSkill, description, url, raw, body } of guides) {
     aiDocs[name] = {
       packageName,
-      skillName,
+      packageSkill,
       description,
       url,
       raw,
