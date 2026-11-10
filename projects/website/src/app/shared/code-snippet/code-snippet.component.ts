@@ -14,7 +14,6 @@ import prismjs from 'prismjs';
 import 'prismjs/components/prism-typescript';
 import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-json';
-import 'prismjs/components/prism-scss';
 
 /**
  * Describe ES5/6 module import

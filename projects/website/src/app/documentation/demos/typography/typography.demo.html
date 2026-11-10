@@ -708,10 +708,9 @@
     <h3 cds-text="section disable-lhe" cds-layout="m-t:xl">Shadow DOM</h3>
     <p cds-text="body" cds-layout="m-t:md">
       The paragraph styles also apply when Clarity's CSS is loaded inside a shadow root, including overlays rendered
-      there. Other text in the shadow root inherits its font and color from the page. The page's
-      <code cds-text="code">cds-theme</code> and <code cds-text="code">clr-density</code> attributes do not reach into
-      the shadow root, so set them again on an element inside it. Without them, paragraphs, headings and components in
-      the shadow root use the light theme and the default density, also on a dark or compact page.
+      there. Other text in the shadow root inherits its font and color from the page. To set the theme and density
+      there, see the
+      <a routerLink="/pages/developing" fragment="theme-and-density-in-a-shadow-root">shadow root setup</a>.
     </p>
   </app-doc-tab>
 

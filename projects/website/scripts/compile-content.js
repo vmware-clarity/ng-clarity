@@ -23,6 +23,7 @@ const { LIBS, collectSkills, getAgentsFile } = require('../../../scripts/ai-file
 // add languages for code highlighting
 require('prismjs/components/prism-bash');
 require('prismjs/components/prism-json');
+require('prismjs/components/prism-scss');
 require('prismjs/components/prism-typescript');
 
 // heading ids

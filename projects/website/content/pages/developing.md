@@ -145,6 +145,54 @@ export class AppModule { }
 npm start
 ```
 
+## Using Clarity in a Shadow Root or a Narrow Area
+
+These steps apply when Clarity renders inside another application, for example as a plugin in a
+shadow root or in a side panel.
+
+### Theme and Density in a Shadow Root
+
+Load Clarity's styles inside the shadow root. The page's `cds-theme` and `clr-density` attributes do
+not reach into the shadow root, so set them again on an element inside it. Without them, the content
+of the shadow root uses the light theme and the default density, also on a dark or compact page.
+
+```html
+<div cds-theme="dark" clr-density="compact">...</div>
+```
+
+### Breakpoints That Follow a Container
+
+The grid and `cds-layout` breakpoints follow the viewport. When your layout lives in an area narrower
+than the viewport, load `@clr/ui/clr-ui-container-queries.min.css` instead of
+`@clr/ui/clr-ui.min.css`. Its breakpoints follow the nearest element declared as a `clr-layout`
+container. Custom elements are inline by default, and an inline element can't be a container, so
+give a custom element host `display: block`.
+
+```css
+/* the element that holds the layout, for example the shadow host */
+:host {
+  display: block;
+  container: clr-layout / inline-size;
+}
+```
+
+With Sass, configure the variable before loading Clarity:
+
+```scss
+@use '@clr/ui/styles/variables/variables.layout' with (
+  $clr-breakpoint-query: container
+);
+@use '@clr/ui/main';
+```
+
+This covers the grid columns, offsets and ordering, the flex, float and visibility utilities, and
+the `cds-layout` utilities with a breakpoint (for example `cols@md:6`). Component styles keep
+following the viewport.
+
+Breakpoints apply only to elements inside the container, not to the container itself. Content
+outside it, such as overlays rendered outside the container element, matches no breakpoint,
+including the `-down` visibility rules.
+
 ## Contributing to Clarity
 
 The Clarity team welcomes contributions from the community. See our

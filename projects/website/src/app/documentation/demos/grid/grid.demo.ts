@@ -6,6 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { ClrAlertModule } from '@clr/angular';
 
 import { GridAutoLayout1Demo } from './grid-auto-layout-1';
@@ -21,26 +22,10 @@ import { GridItemsHorizontalAlignmentDemo } from './grid-items-horizontal-alignm
 import { GridItemsIndividualVerticalAlignmentDemo } from './grid-items-individual-vertical-alignment';
 import { GridItemsVerticalAlignmentDemo } from './grid-items-vertical-alignment';
 import { GridNestingDemo } from './grid-nesting';
-import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.component';
 import { ClarityDocComponent } from '../clarity-doc';
-
-const CONTAINER_QUERIES_CSS = `
-/* the element that holds the layout, for example the shadow host */
-:host {
-  display: block;
-  container: clr-layout / inline-size;
-}
-`;
-
-const CONTAINER_QUERIES_SCSS = `
-@use '@clr/ui/styles/variables/variables.layout' with (
-  $clr-breakpoint-query: container
-);
-@use '@clr/ui/main';
-`;
 
 @Component({
   selector: 'clr-grid-demo',
@@ -68,13 +53,10 @@ const CONTAINER_QUERIES_SCSS = `
     GridItemsHorizontalAlignmentDemo,
     GridNestingDemo,
     StyleDocsComponent,
-    CodeSnippetComponent,
+    RouterLink,
   ],
 })
 export class GridDemo extends ClarityDocComponent {
-  containerQueriesCss = CONTAINER_QUERIES_CSS;
-  containerQueriesScss = CONTAINER_QUERIES_SCSS;
-
   constructor() {
     super('grid');
   }
