@@ -1,0 +1,2739 @@
+import * as i0 from '@angular/core';
+import { TemplateRef, OnDestroy, OnInit, OnChanges, EventEmitter, ElementRef, ViewContainerRef, ChangeDetectorRef, SimpleChanges, DoCheck, IterableDiffers, TrackByFunction, QueryList, AfterContentInit, AfterViewInit, Renderer2, NgZone, EnvironmentInjector, Injector, AfterViewChecked, EmbeddedViewRef, Type } from '@angular/core';
+import * as i41 from '@clr/angular/utils';
+import { ClrCommonStringsService, IfExpandService, ClrLoadingState, ClrExpandableAnimationDirective, FocusableItem, DomAdapter } from '@clr/angular/utils';
+import { Observable, BehaviorSubject, Subject, ReplaySubject } from 'rxjs';
+import { ModalStackService } from '@clr/angular/modal';
+import * as i1 from '@clr/angular/popover/common';
+import { ClrPopoverPosition, ClrPopoverService, ClrPopoverType } from '@clr/angular/popover/common';
+import * as i40 from '@angular/common';
+import { NgForOfContext } from '@angular/common';
+import * as _clr_angular_data_datagrid from '@clr/angular/data/datagrid';
+import { ClrSignpost } from '@clr/angular/popover/signpost';
+import { Directionality } from '@angular/cdk/bidi';
+import { ListRange } from '@angular/cdk/collections';
+import { CdkVirtualForOfContext, ScrollDispatcher, ViewportRuler, CdkVirtualForOf, CdkFixedSizeVirtualScroll } from '@angular/cdk/scrolling';
+import * as _angular_cdk_overlay from '@angular/cdk/overlay';
+import * as i51 from '@clr/angular/popover/dropdown';
+import { ClrDropdown, DropdownFocusHandler, RootDropdownService, ClrDropdownItem } from '@clr/angular/popover/dropdown';
+import { ClrControlLabel } from '@clr/angular/forms/common';
+import * as i42 from '@clr/angular/icon';
+import * as i43 from '@clr/angular/forms/input';
+import * as i44 from '@clr/angular/forms/radio';
+import * as i45 from '@clr/angular/forms/checkbox';
+import * as i46 from '@clr/angular/forms/number-input';
+import * as i47 from '@clr/angular/forms/select';
+import * as i48 from '@angular/forms';
+import { ControlValueAccessor } from '@angular/forms';
+import * as i49 from '@clr/angular/progress/spinner';
+
+/**
+ * Enumeration representing the sorting order of a datagrid column. It is a constant Enum,
+ * i.e. each value needs to be treated as a `number`, starting at index 0.
+ *
+ * @export
+ * @enum {number}
+ */
+declare enum ClrDatagridSortOrder {
+    UNSORTED = 0,
+    ASC = 1,
+    DESC = -1
+}
+declare enum ClrDatagridAriaSortOrder {
+    UNSORTED = "none",
+    ASC = "ascending",
+    DESC = "descending"
+}
+
+declare enum DatagridColumnChanges {
+    WIDTH = 0,
+    HIDDEN = 1,
+    INITIALIZE = 2,
+    PINNED = 3
+}
+
+interface ColumnState {
+    columnIndex?: number;
+    changes?: DatagridColumnChanges[];
+    width?: number;
+    strictWidth?: number;
+    hideable?: boolean;
+    hidden?: boolean;
+    pinned?: boolean;
+    titleTemplateRef?: TemplateRef<any>;
+}
+interface ColumnStateDiff extends ColumnState {
+    changes: DatagridColumnChanges[];
+}
+
+interface ClrDatagridComparatorInterface<T> {
+    compare(a: T, b: T): number;
+}
+
+interface ClrDatagridFilterInterface<T, S = any> {
+    readonly state?: S;
+    changes: Observable<any>;
+    isActive(): boolean;
+    accepts(item: T): boolean;
+    equals?(other: ClrDatagridFilterInterface<T, any>): boolean;
+}
+
+/**
+ * The part of a filter that the actions menu needs. Declared here rather than importing
+ * ClrDatagridFilter, which would close an import cycle back through this service.
+ */
+interface ColumnFilterHandle {
+    readonly active: boolean;
+    /**
+     * The id of the popover the filter renders its content into, for the menu item that opens it to
+     * point `aria-controls` at. Optional because it only exists once the filter has an element to
+     * label - a handle can register before then.
+     */
+    readonly popoverId?: string;
+}
+/**
+ * Lets `clr-dg-column-actions` and the filter of the same column find each other without either
+ * importing the other, and without depending on the order they are declared in.
+ *
+ * It is provided by `ClrDatagridColumn`, so every filter flavour resolves the same instance - a
+ * projected `clr-dg-filter` is a content child of the column, and the `clr-dg-string-filter` and
+ * `clr-dg-numeric-filter` the column creates for `clrDgField` live in its view.
+ */
+declare class ColumnActionsService {
+    /**
+     * Whether the filter keeps its own toggle in the column header. An actions menu turns this off and
+     * opens the filter itself, so the header keeps a single control per column - unless
+     * `clrDgKeepFilterInHeader` asks to keep the toggle.
+     *
+     * A signal rather than a plain flag because the menu and the filter are siblings: either can be
+     * created first, and the filter has to react whenever the answer changes.
+     */
+    readonly filterInHeader: i0.WritableSignal<boolean>;
+    /**
+     * Whether the column has an actions menu at all, whatever it does with the filter. While it does,
+     * the column drops its own pin toggle, because the menu offers Pin Column instead.
+     */
+    readonly menuPresent: i0.WritableSignal<boolean>;
+    /** The filter rendered for this column, if it has one. */
+    readonly filter: i0.WritableSignal<ColumnFilterHandle>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ColumnActionsService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ColumnActionsService>;
+}
+
+declare class ColumnsService {
+    columns: BehaviorSubject<ColumnState>[];
+    columnsStateChange: BehaviorSubject<ColumnState>;
+    private _cache;
+    get columnStates(): ColumnState[];
+    get hasHideableColumns(): boolean;
+    get visibleColumns(): ColumnState[];
+    get hasPinnedColumns(): boolean;
+    /**
+     * Tells whether the column at the given index is pinned (static). Columns and cells are
+     * matched by their declaration index, so this is what the header, the rows and a column aligned
+     * row detail use to decide which views belong in the static container.
+     */
+    isPinned(columnIndex: number): boolean;
+    cache(): void;
+    hasCache(): boolean;
+    resetToLastCache(): void;
+    emitStateChangeAt(columnIndex: number, diff: ColumnStateDiff): void;
+    emitStateChange(column: BehaviorSubject<ColumnState>, diff: ColumnStateDiff): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ColumnsService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ColumnsService>;
+}
+
+declare class DetailService {
+    private readonly modalStackService;
+    id: string;
+    detailWidth: number;
+    private registeredPanes;
+    private preventScroll;
+    private toggleState;
+    private cache;
+    private button;
+    private readonly _enabled;
+    private _state;
+    constructor(modalStackService: ModalStackService);
+    /**
+     * Whether the datagrid has a detail pane (`*clrIfDetail`). Signal-backed, so views reading it are
+     * refreshed when a detail pane is added or removed after they were checked.
+     */
+    get enabled(): boolean;
+    set enabled(state: boolean);
+    get preventFocusScroll(): boolean;
+    set preventFocusScroll(preventScroll: boolean);
+    get state(): any;
+    get stateChange(): Observable<boolean | null>;
+    get isOpen(): boolean;
+    /** Register a detail outlet and release it exactly once when its directive is destroyed. */
+    register(): () => void;
+    open(item: any, button?: HTMLButtonElement): void;
+    close(): void;
+    returnFocus(): void;
+    toggle(item: any, button?: HTMLButtonElement): void;
+    isRowOpen(item: any): boolean;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DetailService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<DetailService>;
+}
+
+declare class StateDebouncer {
+    private nbChanges;
+    /**
+     * The Observable that lets other classes subscribe to global state changes
+     */
+    private _change;
+    get change(): Observable<void>;
+    changeStart(): void;
+    changeDone(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<StateDebouncer, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<StateDebouncer>;
+}
+
+declare class Page {
+    private stateDebouncer;
+    activated: boolean;
+    /**
+     * Page size, a value of 0 means no pagination
+     */
+    private _size;
+    /**
+     * Total items (needed to guess the last page)
+     */
+    private _totalItems?;
+    /**
+     * Last page
+     */
+    private _last;
+    /**
+     * Current page
+     */
+    private _current;
+    /**
+     * The Observable that lets other classes subscribe to page changes
+     */
+    private _change;
+    private preventEmit;
+    private _sizeChange;
+    constructor(stateDebouncer: StateDebouncer);
+    get size(): number;
+    set size(size: number);
+    get totalItems(): number;
+    set totalItems(total: number);
+    get last(): number;
+    set last(page: number);
+    get change(): Observable<number>;
+    get sizeChange(): Observable<number>;
+    get current(): number;
+    set current(page: number);
+    /**
+     * Index of the first item displayed on the current page, starting at 0, -1 if none displayed
+     */
+    get firstItem(): number;
+    /**
+     * Index of the last item displayed on the current page, starting at 0, -1 if none displayed
+     */
+    get lastItem(): number;
+    /**
+     * Moves to the previous page if it exists
+     */
+    previous(): void;
+    /**
+     * Moves to the next page if it exists
+     */
+    next(): void;
+    /**
+     * Resets the page size to 0
+     */
+    resetPageSize(preventEmit?: boolean): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<Page, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<Page>;
+}
+
+declare class FiltersProvider<T = any> {
+    private _page;
+    private stateDebouncer;
+    /**
+     * This subject is the list of filters that changed last, not the whole list.
+     * We emit a list rather than just one filter to allow batch changes to several at once.
+     */
+    private _change;
+    /**
+     * List of all filters, whether they're active or not
+     */
+    private _all;
+    constructor(_page: Page, stateDebouncer: StateDebouncer);
+    get change(): Observable<ClrDatagridFilterInterface<T>[]>;
+    /**
+     * Tests if at least one filter is currently active
+     */
+    hasActiveFilters(): boolean;
+    /**
+     * Returns a list of all currently active filters
+     */
+    getActiveFilters(): ClrDatagridFilterInterface<T>[];
+    /**
+     * Registers a filter, and returns a deregistration function
+     */
+    add<F extends ClrDatagridFilterInterface<T>>(filter: F): RegisteredFilter<T, F>;
+    /**
+     * Accepts an item if it is accepted by all currently active filters
+     */
+    accepts(item: T): boolean;
+    private resetPageAndEmitFilterChange;
+    static ɵfac: i0.ɵɵFactoryDeclaration<FiltersProvider<any>, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<FiltersProvider<any>>;
+}
+declare class RegisteredFilter<T, F extends ClrDatagridFilterInterface<T>> {
+    filter: F;
+    unregister: () => void;
+    constructor(filter: F, unregister: () => void);
+}
+
+declare class Sort<T = any> {
+    private stateDebouncer;
+    /**
+     * Currently active comparator
+     */
+    private _comparator;
+    /**
+     * Ascending order if false, descending if true
+     */
+    private _reverse;
+    /**
+     * The Observable that lets other classes subscribe to sort changes
+     */
+    private _change;
+    constructor(stateDebouncer: StateDebouncer);
+    get comparator(): ClrDatagridComparatorInterface<T>;
+    set comparator(value: ClrDatagridComparatorInterface<T>);
+    get reverse(): boolean;
+    set reverse(value: boolean);
+    get change(): Observable<Sort<T>>;
+    /**
+     * Sets a comparator as the current one, or toggles reverse if the comparator is already used. The
+     * optional forceReverse input parameter allows to override that toggling behavior by sorting in
+     * reverse order if `true`.
+     *
+     * @memberof Sort
+     */
+    toggle(sortBy: ClrDatagridComparatorInterface<T>, forceReverse?: boolean): void;
+    /**
+     * Clears the current sorting order
+     */
+    clear(): void;
+    /**
+     * Compares two objects according to the current comparator
+     */
+    compare(a: T, b: T): number;
+    private emitChange;
+    static ɵfac: i0.ɵɵFactoryDeclaration<Sort<any>, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<Sort<any>>;
+}
+
+declare abstract class DatagridFilterRegistrar<T, F extends ClrDatagridFilterInterface<T>> implements OnDestroy {
+    private filters;
+    /**
+     * @NOTEe Type `any` is set here to be able to pass templateStrictMode
+     */
+    registered: any;
+    protected constructor(filters: FiltersProvider<T>);
+    get filter(): F;
+    ngOnDestroy(): void;
+    setFilter(filter: F | RegisteredFilter<T, F>): void;
+    deleteFilter(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridFilterRegistrar<any, any>, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridFilterRegistrar<any, any>, never, never, {}, {}, never, never, true, never>;
+}
+
+declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>> implements OnDestroy, OnInit, OnChanges {
+    private el;
+    private _sort;
+    private vcr;
+    private detailService;
+    private changeDetectorRef;
+    protected commonStrings: ClrCommonStringsService;
+    private columnsService;
+    private columnState;
+    filterStringPlaceholder: string;
+    filterNumberMaxPlaceholder: string;
+    filterNumberMinPlaceholder: string;
+    disableUnsort: boolean;
+    /**
+     * Lets the user pin and unpin the column from within the datagrid. It only offers the control - the
+     * pinned state itself stays on `clrDgPinned`.
+     * The control is a pin toggle in the column header, or Pin Column in the column's
+     * `clr-dg-column-actions` when it has one - never both, so the header keeps one control per action.
+     */
+    pinnable: boolean;
+    sortOrderChange: EventEmitter<ClrDatagridSortOrder>;
+    pinnedChange: EventEmitter<boolean>;
+    filterValueChange: EventEmitter<any>;
+    titleContainer: ElementRef<HTMLElement>;
+    /**
+     * A custom filter for this column that can be provided in the projected content
+     */
+    customFilter: boolean;
+    protected readonly columnActions: ColumnActionsService;
+    private _colType;
+    private _field;
+    /**
+     * ClrDatagridComparatorInterface to use when sorting the column
+     */
+    private _sortBy;
+    /**
+     * Indicates how the column is currently sorted
+     */
+    private _sortOrder;
+    private _sortDirection;
+    private initFilterValue;
+    private wrappedInjector;
+    /**
+     * Subscription to the sort service changes
+     */
+    private subscriptions;
+    private _showSeparator;
+    private _pinned;
+    private tree;
+    constructor(el: ElementRef<HTMLElement>, _sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef, detailService: DetailService, changeDetectorRef: ChangeDetectorRef, commonStrings: ClrCommonStringsService, columnsService: ColumnsService, columnState: BehaviorSubject<ColumnState>);
+    get isHidden(): boolean;
+    /**
+     * Whether the column is currently rendered as pinned. This can differ from the `pinned` input
+     * while the detail pane is open, because pinning is suspended for as long as it shows a single
+     * column.
+     */
+    get isPinned(): boolean;
+    get showSeparator(): boolean;
+    set showSeparator(value: boolean);
+    /**
+     * Pins the column to the left of the datagrid, so it stays visible while the remaining
+     * columns are scrolled horizontally. Pinned columns keep their declaration order and are
+     * rendered before the scrollable ones, right after the built-in row controls.
+     */
+    get pinned(): boolean;
+    set pinned(value: boolean);
+    /**
+     * In a tree datagrid, puts the expand toggle and the indentation in the cells of this column, and
+     * keeps them there when the column is moved or pinned. Several columns can have it; without any,
+     * the first column does.
+     */
+    get treeToggle(): boolean;
+    set treeToggle(value: boolean);
+    get colType(): "string" | "number";
+    set colType(value: 'string' | 'number');
+    get field(): string;
+    set field(field: string);
+    get sortBy(): ClrDatagridComparatorInterface<T> | string;
+    set sortBy(comparator: ClrDatagridComparatorInterface<T> | string);
+    get sortOrder(): ClrDatagridSortOrder;
+    set sortOrder(value: ClrDatagridSortOrder);
+    set updateFilterValue(newValue: string | [number, number]);
+    set projectedFilter(custom: any);
+    /**
+     * Indicates if the column is sortable
+     */
+    get sortable(): boolean;
+    get ariaSort(): ClrDatagridAriaSortOrder;
+    get sortDirection(): 'up' | 'down' | null;
+    /**
+     * @NOTE type `any` here is to let us pass templateStrictMode, because in our code we try to handle
+     * two types of filters String and Number with the same variable but both of them work with different
+     * format we got an error for casting. We could not cast anything inside the template so to not mess the
+     * casting, the last type is set to `any`
+     *
+     * Orignial types: string | [number, number]
+     */
+    get filterValue(): any;
+    set filterValue(newValue: any);
+    get _view(): any;
+    ngOnInit(): void;
+    ngAfterViewInit(): void;
+    ngOnChanges(changes: SimpleChanges): void;
+    ngOnDestroy(): void;
+    /**
+     * Sorts the datagrid based on this column
+     */
+    sort(reverse?: boolean): void;
+    /**
+     * Returns the datagrid to its unsorted state. Both the tri-state title button and the sort actions
+     * in `clr-dg-column-actions` go through here, so the two cannot drift apart.
+     */
+    clearSort(): void;
+    /**
+     * Pins or unpins the column. Going through the `pinned` setter keeps the rendering in sync, and the
+     * output lets the application follow a change it did not initiate - without it a one-way
+     * [clrDgPinned] binding would write the old value straight back.
+     */
+    togglePinned(): void;
+    protected onPinToggleClick(event: MouseEvent): void;
+    private listenForDetailPaneChanges;
+    private setFilterToggleAriaLabel;
+    private listenForSortingChanges;
+    private setupDefaultFilter;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumn<any>, [null, null, null, null, null, null, null, null, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumn<any>, "clr-dg-column", never, { "filterStringPlaceholder": { "alias": "clrFilterStringPlaceholder"; "required": false; }; "filterNumberMaxPlaceholder": { "alias": "clrFilterNumberMaxPlaceholder"; "required": false; }; "filterNumberMinPlaceholder": { "alias": "clrFilterNumberMinPlaceholder"; "required": false; }; "disableUnsort": { "alias": "clrDgDisableUnsort"; "required": false; }; "pinnable": { "alias": "clrDgPinnable"; "required": false; }; "pinned": { "alias": "clrDgPinned"; "required": false; }; "treeToggle": { "alias": "clrDgTreeToggle"; "required": false; }; "colType": { "alias": "clrDgColType"; "required": false; }; "field": { "alias": "clrDgField"; "required": false; }; "sortBy": { "alias": "clrDgSortBy"; "required": false; }; "sortOrder": { "alias": "clrDgSortOrder"; "required": false; }; "updateFilterValue": { "alias": "clrFilterValue"; "required": false; }; }, { "sortOrderChange": "clrDgSortOrderChange"; "pinnedChange": "clrDgPinnedChange"; "filterValueChange": "clrFilterValueChange"; }, ["projectedFilter"], ["clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter", "*", "clr-dg-column-actions"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ngAcceptInputType_pinnable: unknown;
+    static ngAcceptInputType_pinned: unknown;
+    static ngAcceptInputType_treeToggle: unknown;
+}
+
+type ClrDatagridItemsIdentityFunction<T> = (item: T) => any;
+declare class Items<T = any> {
+    private _filters;
+    private _sort;
+    private _page;
+    /**
+     * Indicates if the data is currently loading
+     */
+    loading: boolean;
+    /**
+     * Subscriptions to the other providers changes.
+     */
+    private _filtersSub;
+    private _sortSub;
+    private _pageSub;
+    /**
+     * Whether we should use smart items for this datagrid or let the user handle
+     * everything.
+     */
+    private _smart;
+    /**
+     * List of all items in the datagrid
+     */
+    private _all;
+    /**
+     * Internal temporary step, which we preserve to avoid re-filtering or re-sorting if not necessary
+     */
+    private _filtered;
+    /**
+     * List of items currently displayed
+     */
+    private _displayed;
+    /**
+     * The Observable that lets other classes subscribe to items changes
+     */
+    private _change;
+    private _allChanges;
+    constructor(_filters: FiltersProvider<T>, _sort: Sort<T>, _page: Page);
+    get smart(): boolean;
+    get all(): T[];
+    set all(items: T[]);
+    get displayed(): T[];
+    get change(): Observable<T[]>;
+    get allChanges(): Observable<T[]>;
+    /**
+     * Checks if we don't have data to process yet, to abort early operations
+     */
+    private get uninitialized();
+    /**
+     * Tracking function to identify objects.
+     */
+    identifyBy: ClrDatagridItemsIdentityFunction<T>;
+    /**
+     * Cleans up our subscriptions to other providers
+     */
+    destroy(): void;
+    smartenDown(): void;
+    smartenUp(): void;
+    /**
+     * Manually recompute the list of displayed items
+     */
+    refresh(): void;
+    private emitChange;
+    private emitAllChanges;
+    /**
+     * FiltersProvider items from the raw list
+     */
+    private _filterItems;
+    /**
+     * Sorts items in the filtered list
+     */
+    private _sortItems;
+    /**
+     * Extracts the current page from the sorted list
+     */
+    private _changePage;
+    static ɵfac: i0.ɵɵFactoryDeclaration<Items<any>, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<Items<any>>;
+}
+
+declare class ClrDatagridItems<T> implements DoCheck, OnDestroy {
+    template: TemplateRef<NgForOfContext<T>>;
+    private differs;
+    private items;
+    private iterableProxy;
+    private _rawItems;
+    private differ;
+    private subscriptions;
+    constructor(template: TemplateRef<NgForOfContext<T>>, differs: IterableDiffers, items: Items, vcr: ViewContainerRef);
+    set rawItems(items: T[]);
+    set trackBy(value: TrackByFunction<T>);
+    /**
+     * Asserts the correct type of the template context that the directive will render.
+     * See https://angular.io/guide/structural-directives#typing-the-directives-context
+     *
+     * The presence of this method is a signal to the Ivy template type-check compiler that the
+     * structural directive renders its template with a specific context type.
+     */
+    static ngTemplateContextGuard<T>(_dir: ClrDatagridItems<T>, _ctx: unknown): _ctx is NgForOfContext<T>;
+    ngDoCheck(): void;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridItems<any>, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridItems<any>, "[clrDgItems][clrDgItemsOf]", never, { "rawItems": { "alias": "clrDgItemsOf"; "required": false; }; "trackBy": { "alias": "clrDgItemsTrackBy"; "required": false; }; }, {}, never, never, false, never>;
+}
+
+declare class ClrDatagridPlaceholder<T = any> {
+    private items;
+    constructor(items: Items<T>);
+    /**
+     * Tests if the datagrid is empty, meaning it doesn't contain any items
+     */
+    get emptyDatagrid(): boolean;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridPlaceholder<any>, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridPlaceholder<any>, "clr-dg-placeholder", never, {}, {}, never, ["*"], false, never>;
+}
+
+/**
+ * A row of a tree datagrid, with its place in the tree. Nodes are kept by the identity of their
+ * item across refreshes and pages, so their state outlives the objects that come from the server.
+ */
+declare class DatagridTreeNode<T> {
+    item: T;
+    parent: DatagridTreeNode<T> | null;
+    level: number;
+    expanded: boolean;
+    /** `null` until the children are fetched, and again once they are reloaded. */
+    children: DatagridTreeNode<T>[] | null;
+    /** Position among its siblings on display, 0-based. */
+    index: number;
+    /** `false` when the row says with `[clrDgTreeExpandable]` that it has no children. */
+    mayHaveChildren: boolean;
+    /** The request for the children in flight, if any. A result is applied only for this request. */
+    request: object | null;
+    /** The row says with `[clrDgSelectable]="false"` that it can't be selected; kept while it is hidden. */
+    locked: boolean;
+    /** Expanded or collapsed by expand all or collapse all while its row was not shown: not reported yet. */
+    unseen: boolean;
+    /** Selected along with its parent before its row said whether it can be selected. */
+    selectedWithParent: boolean;
+    constructor(item: T, parent: DatagridTreeNode<T> | null, level: number);
+    get loading(): boolean;
+    /** Children that came back empty make a leaf. */
+    get expandable(): boolean;
+    /** The node and its loaded descendants, depth-first. */
+    descendants(): DatagridTreeNode<T>[];
+}
+
+/**
+ * What the cells of a tree row render: the node of the row, the cells that carry the indentation and
+ * the expand toggle, and the cell that names the row on its toggles.
+ */
+interface DatagridTreeRowCells<T = unknown> {
+    readonly node: DatagridTreeNode<T>;
+    readonly toggleCells: ReadonlySet<ClrDatagridCell>;
+    readonly labelCell: ClrDatagridCell | undefined;
+}
+/**
+ * What a cell needs from its row to render the tree toggle.
+ */
+interface DatagridTreeRow {
+    /** `null` while the row has no tree node, like the rows of items still loading. */
+    readonly _tree: DatagridTreeRowCells | null;
+}
+
+declare class ClrDatagridCell implements OnInit {
+    private vcr;
+    /*********
+     * @property signpost
+     *
+     * @description
+     * @ContentChild is used to detect the presence of a Signpost in the projected content.
+     * On the host, we set the .datagrid-signpost-trigger class on the cell when signpost.length is greater than 0.
+     *
+     */
+    signpost: QueryList<ClrSignpost>;
+    /**
+     * Set by the row on its cells when the datagrid renders a tree; `null` otherwise.
+     */
+    _treeRow: DatagridTreeRow | null;
+    private wrappedInjector;
+    private el;
+    constructor(vcr: ViewContainerRef);
+    /**
+     * The id of the cell, by which the toggles of a tree row are named. Given only to the cells that
+     * need one, and an id the app set is kept.
+     */
+    get _treeId(): string;
+    get _view(): any;
+    /**
+     * The tree node of the row, on the cells that carry the indentation and the toggle.
+     */
+    protected get treeNode(): DatagridTreeNode<unknown> | undefined;
+    /**
+     * The ids of the cells that name the row on its toggle: the leading cell of the row, then this
+     * cell. The cell with the toggle still names the row when the leading cell has no text, like a
+     * drag handle.
+     */
+    protected get treeToggleLabelIds(): string;
+    ngOnInit(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridCell, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridCell, "clr-dg-cell", never, {}, {}, ["signpost"], ["*"], false, never>;
+}
+
+declare class DatagridIfExpandService extends IfExpandService {
+    expandableId: string;
+    private _replace;
+    private _animate;
+    constructor();
+    get expanded(): boolean;
+    set expanded(value: boolean);
+    get replace(): Observable<boolean>;
+    get animate(): Observable<void>;
+    loadingStateChange(state: ClrLoadingState): void;
+    setReplace(replaceValue: boolean): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridIfExpandService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<DatagridIfExpandService>;
+}
+
+declare enum SelectionType {
+    /**
+     * User cannot select any row in the Datagrid
+     */
+    None = "none",
+    /**
+     * User can select only one row at a time in the Datagrid.
+     */
+    Single = "single",
+    /**
+     * User can select any number of rows in the Datagrid.
+     */
+    Multi = "multi"
+}
+declare function selectionTypeAttribute(value: SelectionType | string): SelectionType;
+
+declare enum DatagridDisplayMode {
+    DISPLAY = 0,
+    CALCULATE = 1
+}
+
+declare enum DatagridRenderStep {
+    ALIGN_COLUMNS = 0,
+    CALCULATE_MODE_ON = 1,
+    CALCULATE_MODE_OFF = 2,
+    CLEAR_WIDTHS = 3,// Note this is listened to by both cells and columns
+    COMPUTE_COLUMN_WIDTHS = 4
+}
+
+declare class DatagridRenderOrganizer {
+    protected _renderStep: Subject<DatagridRenderStep>;
+    private alreadySized;
+    get renderStep(): Observable<DatagridRenderStep>;
+    filterRenderSteps(step: DatagridRenderStep): Observable<DatagridRenderStep>;
+    resize(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridRenderOrganizer, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<DatagridRenderOrganizer>;
+}
+
+declare class DisplayModeService implements OnDestroy {
+    protected _view: BehaviorSubject<DatagridDisplayMode>;
+    private subscriptions;
+    constructor(renderOrganizer: DatagridRenderOrganizer);
+    get view(): Observable<DatagridDisplayMode>;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DisplayModeService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<DisplayModeService>;
+}
+
+declare class Selection<T = any> {
+    private _items;
+    id: string;
+    preserveSelection: boolean;
+    /**
+     * Last selection, for use in range selection.
+     */
+    rangeStart: T;
+    /**
+     * Shift key state, for use in range selection.
+     */
+    shiftPressed: boolean;
+    /** @deprecated since 2.0, remove in 3.0 */
+    rowSelectionMode: boolean;
+    private lockedRefs;
+    private _currentSelectionRefs;
+    private valueCollector;
+    private _selectionType;
+    /**
+     * The current selection
+     */
+    private _current;
+    /**
+     * The Observable that lets other classes subscribe to selection changes
+     */
+    private _change;
+    /**
+     * Subscriptions to the other providers changes.
+     */
+    private subscriptions;
+    /**
+     * Differ to track changes of multi selection.
+     */
+    private _differ;
+    private identifyBy;
+    constructor(_items: Items<T>, filters: FiltersProvider<T>, differs: IterableDiffers);
+    get selectionType(): SelectionType;
+    set selectionType(value: SelectionType);
+    get current(): T[];
+    set current(value: T[]);
+    get currentSingle(): T;
+    get change(): Observable<T[]>;
+    get selectable(): boolean;
+    private get currentSelectionRefs();
+    checkForChanges(): void;
+    clearSelection(): void;
+    /**
+     * Cleans up our subscriptions to other providers
+     */
+    destroy(): void;
+    updateCurrent(value: T[], emit: boolean): void;
+    /**
+     * Checks if an item is currently selected
+     */
+    isSelected(item: T): boolean;
+    /**
+     * Selects or deselects an item
+     */
+    setSelected(item: T, selected: boolean): void;
+    /**
+     * Checks if all currently displayed items are selected
+     */
+    isAllSelected(): boolean;
+    /**
+     * Lock and unlock item
+     */
+    lockItem(item: T, lock: boolean): void;
+    /**
+     * Check is item locked or not by searching into lockedRefs for entry
+     */
+    isLocked(item: T): boolean;
+    /**
+     * Selects or deselects all currently displayed items
+     */
+    toggleAll(): void;
+    /**
+     * Selects an item
+     */
+    private selectItem;
+    /**
+     * Deselects an item
+     */
+    private deselectItem;
+    /**
+     * Make sure that it could be locked
+     */
+    private canItBeLocked;
+    private emitChange;
+    private updateCurrentSelectionRefs;
+    static ɵfac: i0.ɵɵFactoryDeclaration<Selection<any>, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<Selection<any>>;
+}
+
+/**
+ * Fetches the children of `item`: an array, or a Promise or an Observable of one. Called when a row
+ * is expanded for the first time, and again after `ClrDatagrid.reloadTreeChildren()`. Only the first
+ * value of an Observable is used; one that ends without a value fails like a request that fails.
+ * The datagrid waits for the results outside the Angular zone and applies those of the same frame
+ * together, so many rows expanded at once don't run change detection once per result.
+ */
+type ClrDatagridTreeChildrenFunction<T> = (item: T) => T[] | null | undefined | PromiseLike<T[] | null | undefined> | Observable<T[] | null | undefined>;
+
+/**
+ * Holds the tree behind a tree datagrid and flattens it into the list of rows on display: every
+ * root, followed by the descendants of the expanded ones, depth-first. In a virtual scroll that
+ * loads its roots by range, the roots not loaded yet are rows without an item.
+ *
+ * The rest of the datagrid only ever sees that flat list, which is what keeps selection, actions,
+ * the detail pane, pagination and pinned columns working unchanged: to them a child row is a row
+ * like any other.
+ *
+ * Rows are told apart by `Items.identifyBy` (`clrDgItemsIdentityFn`), so identities have to be
+ * unique across the whole tree, and stable across refreshes for rows to stay open.
+ */
+declare class DatagridTreeService<T = any> implements OnDestroy {
+    private items;
+    private sort;
+    private selection;
+    private page;
+    /** Whether the datagrid renders a tree, while a tree directive is in it. */
+    readonly enabled: i0.WritableSignal<boolean>;
+    getChildren: ClrDatagridTreeChildrenFunction<T>;
+    /** Selecting a row also selects its loaded descendants, in multi-selection. */
+    cascadeSelection: boolean;
+    /** The columns marked with `clrDgTreeToggle`, which carry the toggle; the first column when none is. */
+    readonly toggleColumns: Set<BehaviorSubject<ColumnState>>;
+    /** Rows expanded or collapsed, by the user or because their children came back empty or failed. */
+    readonly expandedChange: Subject<{
+        item: T;
+        expanded: boolean;
+    }>;
+    /** By their place, which is empty for a root not loaded yet. */
+    private roots;
+    /**
+     * Every node by the identity of its item, also those of rows on other pages and of children
+     * whose parent was reloaded, so open rows and fetched children come back with their rows.
+     */
+    private nodes;
+    /**
+     * Set by `expandAll()`, so rows that come in later (children as they load, other pages)
+     * come in expanded too, like in the tree view. Cleared as soon as a row is collapsed.
+     */
+    private allExpanded;
+    private _change;
+    private requests;
+    private cancelled;
+    private subscriptions;
+    /** The indeterminate rows, for the selection they were found for. */
+    private indeterminate;
+    private zone;
+    private inBrowser;
+    constructor(items: Items<T>, sort: Sort<T>, selection: Selection<T>, page: Page);
+    get change(): Observable<T[]>;
+    /**
+     * With `cascadeSelection`, multi-selection works like in the tree view: a row's selection reaches
+     * all of its loaded descendants, and a parent is selected when all of its children are.
+     */
+    get cascading(): boolean;
+    /**
+     * Applies the inputs of the directive that renders the tree, all at once, so the roots are built
+     * with the final loader.
+     */
+    configure(roots: T[], getChildren: ClrDatagridTreeChildrenFunction<T>, cascadeSelection: boolean): void;
+    setRoots(items: T[]): void;
+    identify(item: T): any;
+    /** The node of `item`, also when its row is on another page or a reload of its parent took it away. */
+    nodeFor(item: T): DatagridTreeNode<T> | undefined;
+    /** Expands or collapses the row of `node`, and reports it unless the app itself asked for it. */
+    setExpanded(node: DatagridTreeNode<T>, expanded: boolean, report?: boolean): void;
+    /**
+     * Called by a row once all its inputs are set, with what they say about its item: whether it can
+     * have children, whether it can be selected, and whether it is expanded, when that input changed.
+     * A row the virtual scroll reuses gets its new item before its other inputs, which still hold the
+     * values of the previous item, so the row waits for all of them.
+     */
+    rowDeclared(item: T, { expandable, locked, expanded }: {
+        expandable: boolean;
+        locked: boolean;
+        expanded?: boolean;
+    }): void;
+    /**
+     * Expands every row. Rows that come in later (children as they load, other pages) come in
+     * expanded too, until a row is collapsed. Only the rows in `rendered` are reported and fetch their
+     * children now; the others do once their row is rendered.
+     */
+    expandAll(rendered: T[]): void;
+    /**
+     * Collapses every row, also those on other pages. Only the rows in `rendered` are reported now;
+     * the others are once their row is rendered.
+     */
+    collapseAll(rendered: T[]): void;
+    /**
+     * Forgets the loaded children of `item`, or of the whole tree, so they are fetched again the next
+     * time they are needed. Open rows fetch right away, from the top, so rows under a collapsed
+     * parent wait until the parent is opened.
+     */
+    reload(item?: T): void;
+    /**
+     * Selects or deselects `items` with all their loaded descendants, then settles their ancestors:
+     * a parent is selected only when all of its children are. Locked items keep their state.
+     */
+    setSelected(items: T[], selected: boolean): void;
+    /**
+     * The header checkbox: selects every row of the page with its loaded descendants, or clears them
+     * when all the displayed rows already are.
+     */
+    toggleAll(): void;
+    /**
+     * The position of a row among its siblings, for `aria-posinset` and `aria-setsize`. Roots count
+     * across pages, so screen readers hear "3 of 23", not "3 of 10". Read on every check, as the total
+     * comes in after the roots.
+     */
+    posInSet(node: DatagridTreeNode<T>): number;
+    setSize(node: DatagridTreeNode<T>): number;
+    /** A row that is not selected itself but has a selected descendant. */
+    isIndeterminate(item: T): boolean;
+    ngOnDestroy(): void;
+    /**
+     * An item that was selected along with its parent but can't be selected leaves the selection,
+     * after the check in progress.
+     */
+    private unselectIfLocked;
+    /**
+     * Says whether the row of `node` can be expanded. One that can still stops offering the toggle
+     * when its children come back empty.
+     */
+    private setExpandable;
+    private toNode;
+    private loadedRoots;
+    /**
+     * Fetches the children of the open rows among `nodes`, once they are in the tree: a loader that
+     * returns right away settles the selection of their ancestors.
+     */
+    private loadOpen;
+    /**
+     * Expands or collapses a row that is not shown, which reports it once it is. A second change undoes
+     * the first, which leaves nothing to report.
+     */
+    private setUnseen;
+    /**
+     * Reports whether a row is expanded after the check of its row in progress, so that a two-way
+     * binding doesn't change while it is checked, unless the row changed again by then.
+     */
+    private reportLater;
+    /** The nodes of the current roots and their loaded descendants. */
+    private treeNodes;
+    private cancel;
+    /**
+     * Drops the loaded descendants of `node`, and their requests in flight. Their nodes stay, so they
+     * come back open if they were.
+     */
+    private forget;
+    /** Asks the loader for the children of `node`: an array is set right away, the rest is awaited. */
+    private load;
+    /**
+     * Loaders run outside Angular in the browser, so that they and their results don't run change
+     * detection on their own: the results are applied together.
+     */
+    private outsideAngular;
+    /**
+     * Sets the children a loader returned. A failed request closes the row again, so it can be
+     * retried by opening it; the app hears of the error from its own loader. A result that came in
+     * before its request was cancelled, in the same frame, is dropped.
+     */
+    private applyResult;
+    private setChildren;
+    private expand;
+    private collapse;
+    /**
+     * Renders the rows on display: every root, followed by the descendants of the expanded ones,
+     * depth-first. Children are sorted by the column; roots keep their order, which is the server's.
+     * Numbers every node among its siblings on the way, for `aria-posinset`.
+     */
+    private update;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridTreeService<any>, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<DatagridTreeService<any>>;
+}
+
+declare class ExpandableRowsCount {
+    private detailService;
+    private tree?;
+    private readonly expandableCount;
+    private readonly _hasExpandableRow;
+    constructor(detailService: DetailService, tree?: DatagridTreeService);
+    /**
+     * false means no rows with action
+     * check if details are on, and disable rows entirely; a tree has no expandable rows
+     */
+    get hasExpandableRow(): boolean;
+    register(): void;
+    unregister(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ExpandableRowsCount, [null, { optional: true; }]>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ExpandableRowsCount>;
+}
+
+declare class RowActionService {
+    private readonly actionableCount;
+    private readonly _hasActionableRow;
+    /**
+     * false means no rows with action
+     */
+    get hasActionableRow(): boolean;
+    register(): void;
+    unregister(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<RowActionService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<RowActionService>;
+}
+
+declare class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContentInit, AfterViewInit {
+    selection: Selection<T>;
+    rowActionService: RowActionService;
+    globalExpandable: ExpandableRowsCount;
+    expand: DatagridIfExpandService;
+    detailService: DetailService;
+    private displayMode;
+    private vcr;
+    el: ElementRef<HTMLElement>;
+    commonStrings: ClrCommonStringsService;
+    private items;
+    private columnsService;
+    private document;
+    selectedChanged: EventEmitter<boolean>;
+    expandedChange: EventEmitter<boolean>;
+    detailDisabled: boolean;
+    detailHidden: boolean;
+    skeletonLoading: boolean;
+    /**
+     * In a tree, whether the row can have children, like `clrExpandable` on a tree node, so that rows
+     * known to have none don't offer the toggle. A row also stops offering it when its children come
+     * back empty.
+     */
+    treeExpandable: boolean;
+    id: string;
+    radioId: string;
+    checkboxId: string;
+    expandableId: string;
+    replaced: boolean;
+    displayCells: boolean;
+    expandAnimationTrigger: boolean;
+    SELECTION_TYPE: typeof SelectionType;
+    /**
+     * @internal
+     */
+    itemChanges: ReplaySubject<T>;
+    /*****
+     * property dgCells
+     *
+     * @description
+     * A Query List of the ClrDatagrid cells in this row.
+     *
+     */
+    dgCells: QueryList<ClrDatagridCell>;
+    expandAnimation: ClrExpandableAnimationDirective;
+    detailButton: ElementRef<HTMLButtonElement>;
+    _stickyCells: ViewContainerRef;
+    _pinnedCells: ViewContainerRef;
+    _scrollableCells: ViewContainerRef;
+    _calculatedCells: ViewContainerRef;
+    _fixedCellTemplate: TemplateRef<any>;
+    protected readonly tree: DatagridTreeService<T>;
+    private _item;
+    private _selected;
+    private _detailOpenLabel;
+    private _detailCloseLabel;
+    private _rowSelectionLabel;
+    private wrappedInjector;
+    /** What `_tree` worked out in this check; `undefined` until it is read. */
+    private treeCells;
+    private subscriptions;
+    /**
+     * The placeholder cells we create from `fixedCellTemplate` for the calculate pass. Unlike the
+     * cell views, which belong to their `WrappedCell`, these are created here on every pass, so
+     * they are ours to destroy. Detaching them from the container only unlinks them - the views
+     * themselves would stay alive and keep the whole row, and the datagrid with it, in memory.
+     */
+    private fixedCellViews;
+    private _selectable;
+    private _treeExpanded;
+    constructor(selection: Selection<T>, rowActionService: RowActionService, globalExpandable: ExpandableRowsCount, expand: DatagridIfExpandService, detailService: DetailService, displayMode: DisplayModeService, vcr: ViewContainerRef, renderer: Renderer2, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, items: Items, columnsService: ColumnsService, document: any);
+    /**
+     * Model of the row, to use for selection
+     */
+    get item(): T;
+    set item(item: T);
+    get clrDgSelectable(): boolean | string;
+    set clrDgSelectable(value: boolean | string);
+    /**
+     * Indicates if the row is selected
+     */
+    get selected(): boolean | string;
+    set selected(value: boolean | string);
+    /**
+     * Whether the row is expanded: its detail row, or in a tree, its children.
+     */
+    get expanded(): boolean | string;
+    set expanded(value: boolean | string);
+    get clrDgDetailOpenLabel(): string;
+    set clrDgDetailOpenLabel(label: string);
+    get clrDgDetailCloseLabel(): string;
+    set clrDgDetailCloseLabel(label: string);
+    get clrDgRowSelectionLabel(): string;
+    set clrDgRowSelectionLabel(label: string);
+    get _view(): any;
+    get identifyBy(): _clr_angular_data_datagrid.ClrDatagridItemsIdentityFunction<any>;
+    /**
+     * What the cells of this row render of the tree, when the datagrid renders one. The row and its
+     * cells read it many times per check, so it is worked out at the first read of each check.
+     *
+     * The cells read it while they are checked, which can be before the row's own content hooks run,
+     * when the cells are rendered in a loop inside the row; the row's `ngDoCheck` runs before them.
+     */
+    get _tree(): DatagridTreeRowCells<T> | null;
+    /**
+     * Some, but not all, of this row's descendants are selected.
+     */
+    protected get treeIndeterminate(): boolean;
+    openDetails(event: MouseEvent, detailButton: HTMLButtonElement): void;
+    ngOnChanges(changes: SimpleChanges): void;
+    ngOnInit(): void;
+    ngDoCheck(): void;
+    ngAfterContentInit(): void;
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    toggle(selected?: boolean): void;
+    toggleExpand(event: MouseEvent): void;
+    /**
+     * The default behavior in Chrome and Firefox for shift-clicking on a label is to perform text-selection.
+     * This prevents our intended range-selection, because this text-selection overrides our shift-click event.
+     * We need to clear the stored selection range when shift-clicking. This will override the mostly unused shift-click
+     * selection browser functionality, which is inconsistently implemented in browsers anyway.
+     */
+    clearRanges(event: MouseEvent): void;
+    /**
+     * @deprecated related to clrDgRowSelection, which is deprecated
+     */
+    protected selectRow(selected: boolean, $event: any): void;
+    private destroyFixedCellViews;
+    /**
+     * Projects the cells into the display containers. Cells of pinned columns go into their static
+     * container so they stay visible during horizontal scroll; the rest stay scrollable. Cells are
+     * matched with their column by declaration index, and iterating in that order keeps both groups
+     * aligned with the header.
+     */
+    private insertCellViews;
+    /**
+     * Lets the cells of a tree row find out which of them carries the toggle. Rows of other
+     * datagrids leave their cells alone, so they pay nothing for trees.
+     */
+    private markTreeCell;
+    /**
+     * The cells that carry the indentation and the expand toggle are those of the toggle columns, so
+     * they move with their column when it is reordered or pinned. The toggle columns are the ones marked
+     * with `clrDgTreeToggle`, or the first visible column when none of them is visible. The cell that
+     * names the row is the first visible one as the user sees the row, so pinned cells come first: a
+     * toggle in a column like Status then reads "Expand Datacenter 1", not "Expand Running". Cells
+     * match columns by declaration index, as everywhere else in the datagrid.
+     */
+    private workOutTreeCells;
+    private rangeSelect;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridRow<any>, [{ optional: true; }, { optional: true; }, { optional: true; }, null, { optional: true; }, { optional: true; }, null, null, null, null, { optional: true; }, { optional: true; }, null]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRow<any>, "clr-dg-row", never, { "detailDisabled": { "alias": "clrDgDetailDisabled"; "required": false; }; "detailHidden": { "alias": "clrDgDetailHidden"; "required": false; }; "skeletonLoading": { "alias": "clrDgSkeletonLoading"; "required": false; }; "treeExpandable": { "alias": "clrDgTreeExpandable"; "required": false; }; "item": { "alias": "clrDgItem"; "required": false; }; "clrDgSelectable": { "alias": "clrDgSelectable"; "required": false; }; "selected": { "alias": "clrDgSelected"; "required": false; }; "expanded": { "alias": "clrDgExpanded"; "required": false; }; "clrDgDetailOpenLabel": { "alias": "clrDgDetailOpenLabel"; "required": false; }; "clrDgDetailCloseLabel": { "alias": "clrDgDetailCloseLabel"; "required": false; }; "clrDgRowSelectionLabel": { "alias": "clrDgRowSelectionLabel"; "required": false; }; }, { "selectedChanged": "clrDgSelectedChange"; "expandedChange": "clrDgExpandedChange"; }, ["dgCells"], ["clr-dg-action-overflow", "clr-dg-cell", "clr-dg-row-detail"], false, never>;
+    static ngAcceptInputType_treeExpandable: unknown;
+}
+
+interface ClrDatagridVirtualScrollRangeInterface<T> {
+    total: number;
+    skip: number;
+    data: T[];
+}
+
+type CdkVirtualForInputKey = 'cdkVirtualForOf' | 'cdkVirtualForTrackBy' | 'cdkVirtualForTemplate' | 'cdkVirtualForTemplateCacheSize';
+type CdkVirtualForInputs<T> = Partial<Pick<CdkVirtualForOf<T>, CdkVirtualForInputKey>>;
+type CdkFixedSizeVirtualScrollInputs = Pick<CdkFixedSizeVirtualScroll, 'itemSize' | 'minBufferPx' | 'maxBufferPx'>;
+declare class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCheck, OnDestroy {
+    private readonly changeDetectorRef;
+    private iterableDiffers;
+    private items;
+    private readonly ngZone;
+    private readonly renderer2;
+    private readonly templateRef;
+    private readonly viewContainerRef;
+    private readonly directionality;
+    private readonly scrollDispatcher;
+    private readonly viewportRuler;
+    private readonly datagrid;
+    private readonly injector;
+    renderedRangeChange: EventEmitter<ListRange>;
+    persistItems: boolean;
+    private _isUserProvidedItemSize;
+    private _itemSize;
+    private _minBufferPx;
+    private _maxBufferPx;
+    private shouldUpdateAriaRowIndexes;
+    private readonly datagridElementRef;
+    private gridRoleElement;
+    private readonly virtualScrollStrategy;
+    private virtualScrollViewport;
+    private cdkVirtualFor;
+    private subscriptions;
+    private topIndex;
+    /**
+     * Injectors for the CDK virtual scroll instances we create by hand, in the order they have to be
+     * destroyed. Destroying them is what runs the CDK teardown: their `ngOnDestroy` and, importantly,
+     * the `DestroyRef` cleanup `CdkVirtualScrollViewport` registers for the effect it creates on the
+     * application injector. Leaving them alive keeps that effect registered, which retains the
+     * viewport and the entire datagrid view tree for as long as the application lives.
+     */
+    private readonly cdkInjectors;
+    private mutationChanges;
+    private cdkVirtualForInputs;
+    private _totalItems;
+    constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items<T>, ngZone: NgZone, renderer2: Renderer2, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, injector: EnvironmentInjector);
+    get totalContentHeight(): string;
+    get cdkVirtualForOf(): CdkVirtualForInputs<T>["cdkVirtualForOf"];
+    set cdkVirtualForOf(value: CdkVirtualForInputs<T>['cdkVirtualForOf']);
+    get cdkVirtualForTrackBy(): CdkVirtualForInputs<T>["cdkVirtualForTrackBy"];
+    set cdkVirtualForTrackBy(value: CdkVirtualForInputs<T>['cdkVirtualForTrackBy']);
+    get cdkVirtualForTemplate(): CdkVirtualForInputs<T>["cdkVirtualForTemplate"];
+    set cdkVirtualForTemplate(value: CdkVirtualForInputs<T>['cdkVirtualForTemplate']);
+    get cdkVirtualForTemplateCacheSize(): CdkVirtualForInputs<T>["cdkVirtualForTemplateCacheSize"];
+    set cdkVirtualForTemplateCacheSize(value: CdkVirtualForInputs<T>['cdkVirtualForTemplateCacheSize']);
+    get itemSize(): CdkFixedSizeVirtualScrollInputs["itemSize"];
+    set itemSize(value: CdkFixedSizeVirtualScrollInputs['itemSize']);
+    get minBufferPx(): CdkFixedSizeVirtualScrollInputs["minBufferPx"];
+    set minBufferPx(value: CdkFixedSizeVirtualScrollInputs['minBufferPx']);
+    get maxBufferPx(): CdkFixedSizeVirtualScrollInputs["maxBufferPx"];
+    set maxBufferPx(value: CdkFixedSizeVirtualScrollInputs['maxBufferPx']);
+    set dataRange(range: ClrDatagridVirtualScrollRangeInterface<T>);
+    get totalItems(): number;
+    private set totalItems(value);
+    ngAfterViewInit(): void;
+    ngDoCheck(): void;
+    ngOnDestroy(): void;
+    scrollUp(offset: number, behavior?: ScrollBehavior): void;
+    scrollDown(offset: number, behavior?: ScrollBehavior): void;
+    scrollToIndex(index: number, behavior?: ScrollBehavior): void;
+    private updateDataRange;
+    private updateItemSize;
+    private updateCdkVirtualForInputs;
+    private updateFixedSizeVirtualScrollInputs;
+    private updateAriaRowCount;
+    private updateAriaRowIndexes;
+    private createVirtualScrollViewportForDatagrid;
+    private createCdkVirtualScrollViewport;
+    /**
+     * `Directionality`, `ScrollDispatcher` and `ViewportRuler` belong to the application, not to us.
+     * Angular registers every value an injector hands out that has an `ngOnDestroy` - `useValue`
+     * providers included - and calls it from `injector.destroy()`, so putting them in an injector we
+     * destroy would end scroll, resize and text-direction notification for the whole application the
+     * first time a virtual scroll datagrid goes away. They live in this parent, which nothing destroys,
+     * so the viewport still resolves the very instances our host injector gave us - including a
+     * `Directionality` overridden by an ancestor `[dir]`.
+     */
+    private createApplicationInjector;
+    private createCdkVirtualForOfDirective;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridVirtualScrollDirective<any>, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridVirtualScrollDirective<any>, "[clrVirtualScroll],[ClrVirtualScroll]", never, { "persistItems": { "alias": "clrVirtualPersistItems"; "required": false; }; "cdkVirtualForOf": { "alias": "clrVirtualRowsOf"; "required": false; }; "cdkVirtualForTrackBy": { "alias": "clrVirtualRowsTrackBy"; "required": false; }; "cdkVirtualForTemplate": { "alias": "clrVirtualRowsTemplate"; "required": false; }; "cdkVirtualForTemplateCacheSize": { "alias": "clrVirtualRowsTemplateCacheSize"; "required": false; }; "itemSize": { "alias": "clrVirtualRowsItemSize"; "required": false; }; "minBufferPx": { "alias": "clrVirtualRowsMinBufferPx"; "required": false; }; "maxBufferPx": { "alias": "clrVirtualRowsMaxBufferPx"; "required": false; }; "dataRange": { "alias": "clrVirtualDataRange"; "required": false; }; }, { "renderedRangeChange": "renderedRangeChange"; }, never, never, false, never>;
+}
+
+interface ClrDatagridStateInterface<T = any> {
+    page?: {
+        from?: number;
+        to?: number;
+        size?: number;
+        current?: number;
+    };
+    sort?: {
+        by: string | ClrDatagridComparatorInterface<T>;
+        reverse: boolean;
+    };
+    filters?: any[];
+}
+
+/**
+ * This provider aggregates state changes from the various providers of the Datagrid
+ */
+declare class StateProvider<T> {
+    private filters;
+    private sort;
+    private page;
+    private debouncer;
+    /**
+     * The Observable that lets other classes subscribe to global state changes
+     */
+    change: Observable<ClrDatagridStateInterface<T>>;
+    constructor(filters: FiltersProvider<T>, sort: Sort<T>, page: Page, debouncer: StateDebouncer);
+    get state(): ClrDatagridStateInterface<T>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<StateProvider<any>, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<StateProvider<any>>;
+}
+
+interface KeyNavigationGridConfig {
+    keyGrid: string;
+    keyGridRows: string;
+    keyGridCells: string;
+}
+interface CellCoordinates {
+    x: number;
+    y: number;
+    ariaRowIndex?: string;
+}
+declare class KeyNavigationGridController implements OnDestroy {
+    private zone;
+    nextCellCoordsEmitter: EventEmitter<CellCoordinates>;
+    skipItemFocus: boolean;
+    preventScrollOnFocus: boolean;
+    config: KeyNavigationGridConfig;
+    private keyNavUtils;
+    private listenersAdded;
+    private destroy$;
+    constructor(zone: NgZone);
+    ngOnDestroy(): void;
+    addListeners(): void;
+    initializeKeyGrid(host: HTMLElement): void;
+    resetKeyGrid(): void;
+    setActiveCell(activeCell: HTMLElement): void;
+    focusElement(activeCell: HTMLElement, options?: FocusOptions): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<KeyNavigationGridController, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<KeyNavigationGridController>;
+}
+
+declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy, DoCheck {
+    private organizer;
+    items: Items<T>;
+    expandableRows: ExpandableRowsCount;
+    selection: Selection<T>;
+    rowActionService: RowActionService;
+    private stateProvider;
+    private displayMode;
+    private renderer;
+    detailService: DetailService;
+    private document;
+    el: ElementRef<HTMLElement>;
+    private page;
+    commonStrings: ClrCommonStringsService;
+    keyNavigation: KeyNavigationGridController;
+    private zone;
+    private columnsService;
+    loadingMoreItems: boolean;
+    clrDgSingleSelectionAriaLabel: string;
+    clrDgSingleActionableAriaLabel: string;
+    clrDetailExpandableAriaLabel: string;
+    clrDgDisablePageFocus: boolean;
+    selectedChanged: EventEmitter<T[]>;
+    /**
+     * Output emitted whenever the data needs to be refreshed, based on user action or external ones
+     */
+    refresh: EventEmitter<ClrDatagridStateInterface<T>>;
+    /**
+     * The application can provide custom select all logic.
+     */
+    customSelectAllEnabled: boolean;
+    selectAllDisabled: boolean;
+    customSelectAll: EventEmitter<boolean>;
+    /**
+     * Expose virtual scroll directive for applications to access its public methods
+     */
+    _virtualScroll: QueryList<ClrDatagridVirtualScrollDirective<any>>;
+    /**
+     * We grab the smart iterator from projected content
+     */
+    iterator: ClrDatagridItems<T>;
+    /**
+     * Custom placeholder detection
+     */
+    placeholder: ClrDatagridPlaceholder<T>;
+    /**
+     * Hideable Column data source / detection.
+     */
+    columns: QueryList<ClrDatagridColumn<T>>;
+    /**
+     * When the datagrid is user-managed without the smart iterator, we get the items displayed
+     * by querying the projected content. This is needed to keep track of the models currently
+     * displayed, typically for selection.
+     */
+    rows: QueryList<ClrDatagridRow<T>>;
+    datagrid: ElementRef<HTMLElement>;
+    datagridTable: ElementRef<HTMLElement>;
+    datagridHeader: ElementRef<HTMLElement>;
+    contentWrapper: ElementRef<HTMLElement>;
+    rowsWrapper: ElementRef<HTMLElement>;
+    scrollableColumns: ViewContainerRef;
+    _projectedDisplayColumns: ViewContainerRef;
+    _projectedStickyColumns: ViewContainerRef;
+    _projectedCalculationColumns: ViewContainerRef;
+    _displayedRows: ViewContainerRef;
+    _calculationRows: ViewContainerRef;
+    _fixedColumnTemplate: TemplateRef<any>;
+    stickyHeaders: QueryList<ElementRef>;
+    selectAllId: string;
+    activeCellCoords: CellCoordinates;
+    SELECTION_TYPE: typeof SelectionType;
+    protected readonly tree: DatagridTreeService<T>;
+    private selectAllCheckbox;
+    private rowControls;
+    /**
+     * Subscriptions to all the services and queries changes
+     */
+    private _subscriptions;
+    private focusToRestore;
+    private _virtualScrollSubscriptions;
+    /**
+     * The placeholder columns we create from `fixedColumnTemplate` for the calculate pass. Unlike
+     * the column views, which belong to their `WrappedColumn`, these are created here on every
+     * pass, so they are ours to destroy. Detaching them from the container only unlinks them - the
+     * views themselves would stay alive and keep the whole datagrid in memory.
+     */
+    private fixedColumnViews;
+    private cachedRowsHeight;
+    private cachedContentHeight;
+    private resizeObserver;
+    /**
+     * Watches the row controls for anything that changes their width without going through a render
+     * cycle - a density change, or an application restyling them.
+     */
+    private rowControlsObserver;
+    constructor(organizer: DatagridRenderOrganizer, items: Items<T>, expandableRows: ExpandableRowsCount, selection: Selection<T>, rowActionService: RowActionService, stateProvider: StateProvider<T>, displayMode: DisplayModeService, renderer: Renderer2, detailService: DetailService, document: any, el: ElementRef<HTMLElement>, page: Page, commonStrings: ClrCommonStringsService, keyNavigation: KeyNavigationGridController, zone: NgZone, columnsService: ColumnsService);
+    /**
+     * Freezes the datagrid while data is loading
+     */
+    get loading(): boolean;
+    set loading(value: boolean);
+    /**
+     * Selection type
+     * - `None`: No rows are selectable.
+     * - `Single`: Only one row can be selected at a time.
+     * - `Multi`: Multiple rows can be selected.
+     *
+     * Defaults to `None`.
+     */
+    get selectionType(): SelectionType;
+    set selectionType(value: SelectionType);
+    /**
+     * Array of all selected items
+     */
+    set selected(value: T[] | undefined);
+    set clrDgPreserveSelection(state: boolean);
+    /**
+     * @deprecated since 2.0, remove in 3.0
+     *
+     * Selection/Deselection on row click mode
+     */
+    set rowSelectionMode(value: boolean);
+    set identityFn(value: ClrDatagridItemsIdentityFunction<T>);
+    /**
+     * Indicates if all currently displayed items are selected
+     */
+    get allSelected(): boolean;
+    set allSelected(value: boolean);
+    get virtualScroll(): ClrDatagridVirtualScrollDirective<any>;
+    protected get isDetailOverlay(): boolean;
+    ngAfterContentInit(): void;
+    /**
+     * Our setup happens in the view of some of our components, so we wait for it to be done before starting
+     */
+    ngAfterViewInit(): void;
+    ngDoCheck(): void;
+    ngOnDestroy(): void;
+    toggleAllSelected($event: any): void;
+    resize(): void;
+    /**
+     * Checks the state of detail panel and if it's opened then
+     * find the matching row and trigger the detail panel
+     */
+    updateDetailState(): void;
+    /**
+     * Public method to re-trigger the computation of displayed items manually
+     */
+    dataChanged(): void;
+    /**
+     * Fetches the children of `item` again, or of the whole tree when no item is given. Loaded
+     * children are kept while the roots are refreshed, so call this when their data changes too.
+     */
+    reloadTreeChildren(item?: T): void;
+    /**
+     * Expands every row of the tree and fetches the children of every level. The rows that come in
+     * afterwards, on any page, come in expanded too until a row is collapsed.
+     */
+    expandAllTreeRows(): void;
+    /**
+     * Collapses every row of the tree, on every page.
+     */
+    collapseAllTreeRows(): void;
+    /**
+     * The element in the datagrid that has the focus, if any.
+     *
+     * @internal
+     */
+    _focusedElement(): HTMLElement | null;
+    /**
+     * Whether no element has the focus, e.g. because the one that had it was taken out of the page.
+     *
+     * @internal
+     */
+    _focusLost(): boolean;
+    private restoreFocus;
+    private destroyFixedColumnViews;
+    private toggleVirtualScrollSubscriptions;
+    /**
+     * Publishes the width of the row controls - the static container holding the select, action and
+     * caret cells - as a custom property, which is where the pinned columns read the offset they
+     * became static at. They are static right after the controls rather than at the edge of the datagrid,
+     * and `position: sticky` always measures its offsets from that edge, so the distance between the
+     * two has to be measured and handed to the stylesheet.
+     *
+     * The header and the rows get their own value: the header renders one caret column for both
+     * kinds of caret where a row renders one cell per caret, so the two containers are not
+     * necessarily the same width.
+     *
+     * Nothing reads this property unless a column is pinned - `.datagrid-pinned-cells` is the only
+     * consumer, and it is `display: none` while empty - so the measurement is skipped entirely
+     * otherwise. It matters on a datagrid with many rows: `getBoundingClientRect()` forces the
+     * browser to resolve any pending layout first, and on a large datagrid that resolution is not
+     * cheap. Both boxes are read before either write for the same reason - writing the custom
+     * property is itself layout-affecting (`.datagrid-pinned-cells` reads it back for its own
+     * position and width), so reading again in between would force that resolution twice.
+     */
+    private updateRowControlsWidth;
+    private setRowControlsWidth;
+    private handleResizeChanges;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagrid<any>, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagrid<any>, "clr-datagrid", never, { "loadingMoreItems": { "alias": "clrLoadingMoreItems"; "required": false; }; "clrDgSingleSelectionAriaLabel": { "alias": "clrDgSingleSelectionAriaLabel"; "required": false; }; "clrDgSingleActionableAriaLabel": { "alias": "clrDgSingleActionableAriaLabel"; "required": false; }; "clrDetailExpandableAriaLabel": { "alias": "clrDetailExpandableAriaLabel"; "required": false; }; "clrDgDisablePageFocus": { "alias": "clrDgDisablePageFocus"; "required": false; }; "customSelectAllEnabled": { "alias": "clrDgCustomSelectAllEnabled"; "required": false; }; "selectAllDisabled": { "alias": "clrDgSelectAllDisabled"; "required": false; }; "loading": { "alias": "clrDgLoading"; "required": false; }; "selectionType": { "alias": "clrDgSelectionType"; "required": false; }; "selected": { "alias": "clrDgSelected"; "required": false; }; "clrDgPreserveSelection": { "alias": "clrDgPreserveSelection"; "required": false; }; "rowSelectionMode": { "alias": "clrDgRowSelection"; "required": false; }; "identityFn": { "alias": "clrDgItemsIdentityFn"; "required": false; }; }, { "selectedChanged": "clrDgSelectedChange"; "refresh": "clrDgRefresh"; "customSelectAll": "clrDgCustomSelectAll"; }, ["iterator", "placeholder", "_virtualScroll", "columns", "rows"], ["clr-dg-action-bar", "clr-dg-placeholder", "clr-dg-footer", "[clrIfDetail],clr-dg-detail"], false, never>;
+    static ngAcceptInputType_selectionType: SelectionType | string;
+}
+
+declare class ClrDatagridActionBar {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridActionBar, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridActionBar, "clr-dg-action-bar", never, {}, {}, never, ["*"], false, never>;
+}
+
+declare class ClrDatagridActionOverflow implements OnDestroy {
+    private rowActionService;
+    commonStrings: ClrCommonStringsService;
+    private platformId;
+    private popoverService;
+    buttonLabel: string;
+    openChange: EventEmitter<boolean>;
+    popoverId: string;
+    smartPosition: ClrPopoverPosition;
+    protected positions: _angular_cdk_overlay.ConnectedPosition[];
+    private readonly keyFocus;
+    private _open;
+    private subscriptions;
+    constructor(rowActionService: RowActionService, commonStrings: ClrCommonStringsService, platformId: any, popoverService: ClrPopoverService);
+    get open(): boolean;
+    set open(open: boolean);
+    ngOnDestroy(): void;
+    closeOverflowContent(event: Event): void;
+    private initializeFocus;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridActionOverflow, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridActionOverflow, "clr-dg-action-overflow", never, { "buttonLabel": { "alias": "clrDgActionOverflowButtonLabel"; "required": false; }; "open": { "alias": "clrDgActionOverflowOpen"; "required": false; }; }, { "openChange": "clrDgActionOverflowOpenChange"; }, never, ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+}
+
+/**
+ * Groups the actions of a single column behind one menu in the column header. It only gathers
+ * controls that already exist on the column - the behavior itself stays on `ClrDatagridColumn`,
+ * so the menu and the header controls can never drift apart.
+ *
+ * Each item is rendered only when the column can actually perform it, so the menu never offers a
+ * dead option - that covers both what the column can never do, such as sorting when it is not
+ * sortable, and what it cannot do right now, such as clearing a sort while nothing is sorted.
+ * Anything projected into the component is appended after the built-in items.
+ *
+ * A column that has a filter gets a filter action automatically, and the filter drops its own toggle
+ * for as long as this menu is present - the header keeps one control per column rather than two. The
+ * trigger also takes over showing that the column is filtered, which the toggle used to do.
+ * `clrDgKeepFilterInHeader` opts back into the toggle, and then the menu drops the filter action in
+ * exchange: a column offers one way to reach its filter, never both at once.
+ *
+ * Projected items can be `clrDgColumnAction`s, plain `clrDropdownItem`s, or a nested `clr-dropdown`.
+ * They join the arrow key order after the built-in items as long as they are projected directly -
+ * an item wrapped in an element of its own is not found. A nested dropdown's own items stay in its
+ * own menu.
+ *
+ * The component is the dropdown itself rather than wrapping one, so that a projected item can reach
+ * it: injection resolves from where a node is declared, and an item declared outside this component
+ * would sit outside the injector of any `clr-dropdown` in its template.
+ */
+declare class ClrDatagridColumnActions extends ClrDropdown implements AfterViewInit, OnDestroy {
+    protected column: ClrDatagridColumn;
+    protected commonStrings: ClrCommonStringsService;
+    private columnActions;
+    private columnPopover;
+    private changeDetectorRef;
+    private injector;
+    private filters;
+    protected readonly ClrDatagridSortOrder: typeof ClrDatagridSortOrder;
+    private _keepFilterInHeader;
+    private _menuPopoverContent;
+    private trigger;
+    private subs;
+    private projectedItemsSubscription;
+    private readonly columnActionsFocusHandler;
+    constructor(column: ClrDatagridColumn, commonStrings: ClrCommonStringsService, columnActions: ColumnActionsService, columnPopover: ClrPopoverService, changeDetectorRef: ChangeDetectorRef, injector: Injector, filters: FiltersProvider, parent: ClrDropdown, popoverService: ClrPopoverService, focusHandler: DropdownFocusHandler, dropdownService: RootDropdownService);
+    /**
+     * Keeps the filter's own toggle in the column header instead of moving it into this menu, and the
+     * menu drops its filter action in exchange - a column offers one way to reach its filter at a
+     * time, never two.
+     */
+    get keepFilterInHeader(): boolean;
+    set keepFilterInHeader(value: boolean);
+    /**
+     * The menu is a live view of the column, so the label has to be read at render time rather than
+     * cached - the column title can change, and so can the sort state it reports.
+     */
+    protected get triggerLabel(): string;
+    protected get sortOrder(): ClrDatagridSortOrder;
+    protected get canClearSort(): boolean;
+    protected get hasFilter(): boolean;
+    /**
+     * Hiding the filter toggle also hides the only sign that a column is filtered, so the trigger and
+     * the filter action carry that state instead.
+     */
+    protected get filterActive(): boolean;
+    /**
+     * Whether the filter this menu opens is open, for the filter action to report the same way the
+     * toggle it replaced did. Read from the column's popover service rather than from the filter,
+     * because that service is what the action opens.
+     */
+    protected get filterOpen(): boolean;
+    /**
+     * The popover the filter action opens, so it can point at what it controls - again the same thing
+     * the replaced toggle pointed at.
+     */
+    protected get filterPopoverId(): string | null;
+    /**
+     * The items projected into the menu. The menu's own content query cannot see them, so they are
+     * handed to the focus handler from here.
+     *
+     * Only direct children are queried, not descendants: a nested `clr-dropdown` is one item here - its
+     * focus handler - and the items inside it belong to its own menu, not to this one.
+     */
+    private set projectedItems(value);
+    private set menuPopoverContent(value);
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    /**
+     * Returns focus to the trigger before closing, the same order `clrDropdownItem` uses - moving focus
+     * first means it lands correctly even when the action opens a modal.
+     */
+    closeMenu(): void;
+    /**
+     * Re-anchors the open menu to the trigger, for an action that moves the column it belongs to
+     * instead of closing the menu behind it.
+     *
+     * Deferred to after the next render rather than run straight away, because the action that asked
+     * for this has only just been clicked - the column is relocated by the change detection that
+     * follows, so measuring the trigger now would re-anchor the menu to where it already is.
+     */
+    repositionMenu(): void;
+    /**
+     * Moves focus to one of the projected actions, keeping the menu's keyboard handling in step with
+     * it.
+     *
+     * Called by `clrDgColumnAction` when the item takes focus, so that focusing an item by any means -
+     * including a plain `focus()` from outside, after an action rebuilt the menu - leaves space and
+     * enter acting on that same item rather than on whatever the menu focused when it opened.
+     */
+    focusAction(item: FocusableItem): void;
+    /**
+     * The menu states a direction rather than cycling through them, so asking for the direction the
+     * column already has is a no-op.
+     *
+     * The guard is needed because `Sort.toggle()` reads `forceReverse: false` as "toggle" rather than
+     * "ascending" - `forceReverse || !this._reverse` falls through to the toggle for a falsy value - so
+     * `sort(false)` on an already ascending column would flip it to descending. The tri-state title
+     * button never hits that path, because it always calls `sort()` without an argument.
+     */
+    protected sort(descending: boolean): void;
+    /**
+     * Pins or unpins the column, then re-anchors this menu to the trigger.
+     *
+     * Pinning moves the column between the datagrid's static and scrollable containers, and the
+     * trigger this menu is anchored to travels with it - far enough that the menu would otherwise be
+     * left hanging next to where the column used to be. The menu stays open on purpose, so the action
+     * it now offers is the one that undoes the pin the user just applied.
+     *
+     * The columns are relocated on the render cycle the pinned state change schedules, not while this
+     * runs, so the overlay can only be re-anchored once that has happened - which `repositionMenu`
+     * takes care of.
+     */
+    protected togglePinned(): void;
+    /**
+     * Opens the filter of this column, anchored to the "Filter Column" menu item itself (`#trigger`
+     * above), so the popover positions off the item that was actually clicked rather than the kebab.
+     *
+     * The popover is driven through the column's ClrPopoverService rather than through
+     * `ClrDatagridFilter.open`, because that is the one thing every filter flavour has in common - a
+     * projected clr-dg-filter, and the string and numeric filters the column builds for clrDgField,
+     * all share this service. Setting `origin` is all it takes to re-anchor it: `clrPopoverOrigin` is
+     * itself only an assignment to that property, and with the toggle gone nothing else claims it.
+     *
+     * `parent` links the filter's popover to this menu's, so that scrolling while both are open closes
+     * or repositions them together rather than leaving one behind. It is cleared again once the filter
+     * closes, in the `openChange` subscription below, so it never outlives the menu session that set it.
+     */
+    protected openFilter(event: Event): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnActions, [null, null, null, { skipSelf: true; }, null, null, { optional: true; }, { optional: true; skipSelf: true; }, null, null, null]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnActions, "clr-dg-column-actions", never, { "keepFilterInHeader": { "alias": "clrDgKeepFilterInHeader"; "required": false; }; }, {}, ["projectedItems"], ["*"], false, never>;
+    static ngAcceptInputType_keepFilterInHeader: unknown;
+}
+
+/**
+ * An application provided item in a `clr-dg-column-actions` menu. It is the dropdown item - same
+ * inputs, styling and arrow key order - with what a column action needs on top: it closes the menu
+ * when picked, or re-anchors it after an action that leaves it open.
+ */
+declare class ClrDatagridColumnAction extends ClrDropdownItem {
+    private columnActions;
+    /**
+     * Whether activating this item should close the menu.
+     */
+    canClosePopover: boolean;
+    constructor(columnActions: ClrDatagridColumnActions, item: FocusableItem, dropdownService: RootDropdownService, el: ElementRef, renderer: Renderer2);
+    protected onColumnActionClick(): void;
+    /**
+     * Focus can arrive from anywhere - the arrow keys, or a plain `focus()` from an application that
+     * moved the column this action belongs to and rebuilt the menu. Reporting it keeps space and enter
+     * acting on this item rather than on whatever the menu focused when it opened.
+     */
+    protected onFocus(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnAction, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridColumnAction, "[clrDgColumnAction]", never, { "canClosePopover": { "alias": "clrCanClosePopover"; "required": false; }; }, {}, never, never, false, never>;
+    static ngAcceptInputType_canClosePopover: unknown;
+}
+
+declare class ClrDatagridColumnToggle implements OnDestroy {
+    commonStrings: ClrCommonStringsService;
+    private columnsService;
+    popoverId: string;
+    openState: boolean;
+    popoverPosition: ClrPopoverPosition;
+    popoverType: ClrPopoverType;
+    readonly trackByFn: i0.TrackByFunction<ColumnState>;
+    private _allColumnsVisible;
+    private subscription;
+    private allSelectedElement;
+    constructor(commonStrings: ClrCommonStringsService, columnsService: ColumnsService, popoverService: ClrPopoverService);
+    get allColumnsVisible(): boolean;
+    set allColumnsVisible(value: boolean);
+    get hideableColumnStates(): ColumnState[];
+    get hasOnlyOneVisibleColumn(): boolean;
+    ngOnDestroy(): void;
+    toggleColumnState(columnState: ColumnState, event: boolean): void;
+    toggleSwitchPanel(): void;
+    allColumnsSelected(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnToggle, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnToggle, "clr-dg-column-toggle", never, {}, {}, never, never, false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+}
+
+declare class ClrDatagridColumnToggleButton {
+    commonStrings: ClrCommonStringsService;
+    private columnsService;
+    private allSelected;
+    constructor(commonStrings: ClrCommonStringsService, columnsService: ColumnsService);
+    get clrAllSelected(): Observable<boolean>;
+    get allHideablesVisible(): boolean;
+    selectAll(): void;
+    private hideableColumns;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnToggleButton, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnToggleButton, "clr-dg-column-toggle-button", never, {}, { "clrAllSelected": "clrAllSelected"; }, never, never, false, never>;
+}
+
+declare class ColumnResizerService {
+    private el;
+    private domAdapter;
+    private organizer;
+    isWithinMaxResizeRange: boolean;
+    private widthBeforeResize;
+    private _resizedBy;
+    constructor(el: ElementRef<HTMLElement>, domAdapter: DomAdapter, organizer: DatagridRenderOrganizer);
+    get resizedBy(): number;
+    get minColumnWidth(): number;
+    get maxResizeRange(): number;
+    get widthAfterResize(): number;
+    startResize(): void;
+    endResize(): void;
+    calculateResize(resizedBy: number): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ColumnResizerService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ColumnResizerService>;
+}
+
+/**
+ * @description
+ * Internal datagrid service that holds a reference to the clr-dg-table element and exposes a method to get height.
+ */
+declare class TableSizeService {
+    private platformId;
+    private _tableRef;
+    constructor(platformId: any);
+    get tableRef(): HTMLElement;
+    set tableRef(element: HTMLElement);
+    set table(table: ElementRef<HTMLElement>);
+    getColumnDragHeight(): string;
+    static ɵfac: i0.ɵɵFactoryDeclaration<TableSizeService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<TableSizeService>;
+}
+
+declare class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
+    private columnResizerService;
+    private renderer;
+    private ngZone;
+    private tableSizeService;
+    commonString: ClrCommonStringsService;
+    private document;
+    columnSeparatorId: string;
+    private resizeStartedOnKeyDown;
+    private isWithinMaxResizeRange;
+    private unlisteners;
+    private resizeTrackerRef;
+    private columnHandleRef;
+    constructor(columnResizerService: ColumnResizerService, renderer: Renderer2, ngZone: NgZone, tableSizeService: TableSizeService, commonString: ClrCommonStringsService, document: any);
+    get descriptionId(): string;
+    private get resizeTrackerEl();
+    private get columnHandleEl();
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    showTracker(): void;
+    moveTracker(movedBy: number): void;
+    hideTracker(): void;
+    private showTrackerOnFirstKeyDown;
+    private moveTrackerOnKeyDown;
+    private hideTrackerOnKeyUp;
+    private redFlagTracker;
+    private isArrowLeftKeyEvent;
+    private isArrowRightKeyEvent;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnSeparator, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnSeparator, "clr-dg-column-separator", never, {}, {}, never, never, false, never>;
+}
+
+declare class ClrDatagridDetailHeader implements AfterViewInit {
+    detailService: DetailService;
+    commonStrings: ClrCommonStringsService;
+    title: ElementRef<HTMLElement>;
+    constructor(detailService: DetailService, commonStrings: ClrCommonStringsService);
+    get titleId(): string;
+    ngAfterViewInit(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridDetailHeader, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetailHeader, "clr-dg-detail-header", never, {}, {}, never, ["*"], false, never>;
+}
+
+declare class ClrDatagridDetail {
+    detailService: DetailService;
+    commonStrings: ClrCommonStringsService;
+    ariaLabelledBy: string;
+    ariaLabel: string;
+    header: ClrDatagridDetailHeader;
+    constructor(detailService: DetailService, commonStrings: ClrCommonStringsService);
+    get detailWidth(): number;
+    set detailWidth(value: number | null | undefined);
+    get isCustomWidth(): boolean;
+    get width(): number | null;
+    get labelledBy(): string;
+    get label(): string;
+    close(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridDetail, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetail, "clr-dg-detail", never, { "ariaLabelledBy": { "alias": "clrDetailAriaLabelledBy"; "required": false; }; "ariaLabel": { "alias": "clrDetailAriaLabel"; "required": false; }; "detailWidth": { "alias": "clrDetailWidth"; "required": false; }; }, {}, ["header"], ["*"], false, never>;
+}
+
+declare class ClrDatagridDetailBody {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridDetailBody, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetailBody, "clr-dg-detail-body", never, {}, {}, never, ["*"], false, never>;
+}
+
+declare class ClrDatagridHideableColumn implements OnDestroy {
+    private titleTemplateRef;
+    private columnsService;
+    private columnState;
+    hiddenChange: EventEmitter<boolean>;
+    /**
+     *
+     * @description
+     * Used to initialize the column with either hidden or visible state.
+     *
+     */
+    private _hidden;
+    private subscriptions;
+    constructor(titleTemplateRef: TemplateRef<any>, viewContainerRef: ViewContainerRef, columnsService: ColumnsService, columnState: BehaviorSubject<ColumnState>);
+    /**
+     *
+     * @description
+     * Setter fn for the @Input with the same name as this structural directive.
+     * It allows the user to pre-configure the column's hide/show state. { hidden: true }
+     * It's more verbose but has more Clarity.
+     *
+     * @example
+     * *clrDgHideableColumn
+     * *clrDgHideableColumn={hidden: false}
+     * *clrDgHideableColumn={hidden: true}
+     *
+     */
+    set clrDgHideableColumn(value: {
+        hidden: boolean;
+    } | string);
+    set clrDgHidden(hidden: boolean);
+    ngOnInit(): void;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridHideableColumn, [null, null, null, { optional: true; }]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridHideableColumn, "[clrDgHideableColumn]", never, { "clrDgHideableColumn": { "alias": "clrDgHideableColumn"; "required": false; }; "clrDgHidden": { "alias": "clrDgHidden"; "required": false; }; }, { "hiddenChange": "clrDgHiddenChange"; }, never, never, false, never>;
+}
+
+declare abstract class CustomFilter {
+}
+
+/**
+ * Custom filter that can be added in any column to override the default object property string filter.
+ * The reason this is not just an input on DatagridColumn is because we need the filter's template to be projected,
+ * since it can be anything (not just a text input).
+ */
+declare class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>> implements CustomFilter, OnDestroy {
+    commonStrings: ClrCommonStringsService;
+    private popoverService;
+    private keyNavigation;
+    protected columnActions: ColumnActionsService;
+    openChange: EventEmitter<boolean>;
+    ariaExpanded: boolean;
+    popoverId: string;
+    popoverPosition: ClrPopoverPosition;
+    popoverType: ClrPopoverType;
+    anchor: ElementRef<HTMLButtonElement>;
+    private subs;
+    constructor(_filters: FiltersProvider<T>, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, keyNavigation: KeyNavigationGridController, columnActions: ColumnActionsService);
+    get open(): boolean;
+    set open(open: boolean);
+    set customFilter(filter: ClrDatagridFilterInterface<T> | RegisteredFilter<T, ClrDatagridFilterInterface<T>>);
+    /**
+     * Indicates if the filter is currently active
+     */
+    get active(): boolean;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridFilter<any>, [null, null, null, { optional: true; }, { optional: true; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridFilter<any>, "clr-dg-filter", never, { "open": { "alias": "clrDgFilterOpen"; "required": false; }; "customFilter": { "alias": "clrDgFilter"; "required": false; }; }, { "openChange": "clrDgFilterOpenChange"; }, never, ["*"], false, never>;
+    static ngAcceptInputType_open: unknown;
+}
+
+declare class ClrIfDetail implements OnInit, OnDestroy {
+    private templateRef;
+    private viewContainer;
+    private detailService;
+    stateChange: EventEmitter<any>;
+    private subscriptions;
+    private readonly unregister;
+    private skip;
+    private embeddedViewRef;
+    constructor(templateRef: TemplateRef<any>, viewContainer: ViewContainerRef, detailService: DetailService);
+    set state(model: any);
+    get viewContext(): {
+        $implicit: any;
+    };
+    ngOnInit(): void;
+    ngOnDestroy(): void;
+    private togglePanel;
+    /**
+     * For a given outlet instance, we create a proxy object that delegates
+     * to the user-specified context. This allows changing, or swapping out
+     * the context object completely without having to destroy/re-create the view.
+     */
+    private _createContextForwardProxy;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfDetail, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfDetail, "[clrIfDetail]", never, { "state": { "alias": "clrIfDetail"; "required": false; }; }, { "stateChange": "clrIfDetailChange"; }, never, never, false, never>;
+}
+
+/**
+ * The row and the cell that have the focus.
+ */
+interface FocusedCell<T> {
+    item: T;
+    /** Among the cells keyboard navigation goes through. */
+    cell: number;
+    /** Among the tabbable elements of the cell, when one of them has the focus rather than the cell. */
+    inner: number;
+}
+/**
+ * What both tree directives share: they hand their inputs to the tree service and render the flat
+ * list of rows it computes, each in its own way.
+ */
+declare abstract class DatagridTreeRenderer<T> implements OnChanges, DoCheck, OnDestroy {
+    protected tree: DatagridTreeService<T>;
+    protected datagrid: ClrDatagrid<T>;
+    private changeDetectorRef;
+    private differs;
+    private rootsDiffer;
+    private subscription;
+    abstract roots: T[];
+    abstract getChildren: ClrDatagridTreeChildrenFunction<T>;
+    abstract cascadeSelection: boolean;
+    constructor();
+    ngOnChanges(): void;
+    ngDoCheck(): void;
+    ngOnDestroy(): void;
+    /**
+     * The row of `item` if it is in `items`, or else its nearest ancestor that is: where the focus
+     * goes when a collapse or a reload takes the row away.
+     */
+    protected nearestShown(item: T, items: T[]): T | undefined;
+    /**
+     * Focuses a cell of the row of `item`, or its toggle when `cell` is not given, and the element of
+     * the cell at `inner` if there is one. The row has to be rendered.
+     */
+    protected focus(item: T, cell?: number, inner?: number): void;
+    /**
+     * When the row of `item`, which had the tab stop of the grid, is no longer shown, gives the tab
+     * stop to the toggle cell of the ancestor that is, without focusing it, or else back to the first
+     * cell. The rows have to be rendered.
+     */
+    protected moveTabStop(item: T, items: T[]): void;
+    /**
+     * Whether the focus is still in the grid, or was lost with a row the grid took away: otherwise the
+     * user has moved it elsewhere, and it stays there.
+     */
+    protected focusInGrid(): boolean;
+    protected rowOf(item: T): ClrDatagridRow<T> | undefined;
+    protected indexOf(items: T[], item: T): number;
+    private tabStopItem;
+    private focusedCell;
+    private cellOf;
+    private cells;
+    /**
+     * Renders the rows of `items`. `focus` is where the focus was in the rows before, if anywhere;
+     * otherwise `tabStop` is the item of the row that had the tab stop, if any.
+     */
+    protected abstract render(items: T[], focus: FocusedCell<T> | null, tabStop: T | undefined): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridTreeRenderer<any>, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridTreeRenderer<any>, never, never, {}, {}, never, never, true, never>;
+}
+
+/**
+ * Renders a tree as datagrid rows: the roots, and below every expanded row its children, indented.
+ *
+ * ```html
+ * <clr-dg-row *clrDgTreeItems="let item of roots; getChildren: getChildren" [clrDgItem]="item" [clrDgTreeExpandable]="item.childCount > 0">
+ * ```
+ *
+ * Like on a tree node, `[clrDgTreeExpandable]` on the row says whether it can be expanded; without it,
+ * every row offers the toggle until its children come back empty. `[(clrDgExpanded)]` on the row
+ * binds whether it is expanded.
+ *
+ * The roots are the current page, exactly like the items of a server-driven datagrid: their order
+ * and pagination go through `(clrDgRefresh)`, while children are sorted with the column comparator.
+ * Children are fetched the first time their parent is expanded, and kept, also while their parent is
+ * on another page, until `ClrDatagrid.reloadTreeChildren()`.
+ *
+ * Rows are told apart with `[clrDgItemsIdentityFn]`. Give the datagrid one that is unique across the
+ * tree and stable across refreshes: without it, a refresh that returns new objects closes every row
+ * and drops the loaded children and the selection.
+ */
+declare class ClrDatagridTreeItems<T> extends DatagridTreeRenderer<T> {
+    roots: T[];
+    getChildren: ClrDatagridTreeChildrenFunction<T>;
+    /**
+     * In multi-selection, selecting a row also selects its loaded descendants, and a parent is
+     * selected when all of its children are, like in the tree view. Descendants that are not loaded
+     * yet come in selected when they load.
+     */
+    cascadeSelection: boolean;
+    private iterableProxy;
+    constructor();
+    static ngTemplateContextGuard<T>(_dir: ClrDatagridTreeItems<T>, _ctx: unknown): _ctx is NgForOfContext<T>;
+    protected render(items: T[], focus: FocusedCell<T> | null, tabStop: T | undefined): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridTreeItems<any>, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridTreeItems<any>, "[clrDgTreeItems][clrDgTreeItemsOf]", never, { "roots": { "alias": "clrDgTreeItemsOf"; "required": false; }; "getChildren": { "alias": "clrDgTreeItemsGetChildren"; "required": false; }; "cascadeSelection": { "alias": "clrDgTreeItemsCascadeSelection"; "required": false; }; }, {}, never, never, false, never>;
+    static ngAcceptInputType_cascadeSelection: unknown;
+}
+
+/**
+ * The button that expands and collapses a tree row, in the cells of its toggle columns.
+ */
+declare class ClrDatagridTreeToggleButton implements OnDestroy {
+    node: DatagridTreeNode<unknown>;
+    /**
+     * The ids of the cells that name the row, separated by spaces.
+     */
+    labelIds: string;
+    protected commonStrings: ClrCommonStringsService;
+    protected actionId: string;
+    /**
+     * The cell of the button, from when the button first has the focus. By the time the button is
+     * destroyed, it can be out of the cell already.
+     */
+    private cell;
+    private tree;
+    private el;
+    /**
+     * The button goes away when the children of its row come back empty. If it took the focus with it,
+     * the cell takes the focus, so keyboard users don't land at the top of the page. The browser can
+     * take the button out of the page before it is destroyed, and then the focus has already gone to
+     * the body: blur doesn't tell that apart from the user leaving the button.
+     */
+    ngOnDestroy(): void;
+    protected onFocus(): void;
+    protected toggle(event: MouseEvent): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridTreeToggleButton, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridTreeToggleButton, "button[clrDgTreeToggleButton]", never, { "node": { "alias": "clrDgTreeToggleButton"; "required": true; }; "labelIds": { "alias": "labelIds"; "required": true; }; }, {}, never, never, false, never>;
+}
+
+/**
+ * Renders a tree in a virtual scroll datagrid: the virtual scroll renders the rows of the expanded
+ * tree, flattened, as if they were one long list.
+ *
+ * ```html
+ * <ng-template ClrVirtualScroll let-item [clrVirtualTreeOf]="roots" [clrVirtualTreeGetChildren]="getChildren">
+ *   <clr-dg-row [clrDgItem]="item">...</clr-dg-row>
+ * </ng-template>
+ * ```
+ *
+ * The roots can also be loaded by range, like the rows of `clrVirtualDataRange`: the datagrid
+ * reports the roots it renders, and the app gives it those it loads.
+ *
+ * ```html
+ * <ng-template
+ *   ClrVirtualScroll
+ *   let-item
+ *   [clrVirtualTreeDataRange]="rootsRange"
+ *   [clrVirtualTreeGetChildren]="getChildren"
+ *   (clrVirtualTreeRenderedRootsChange)="loadRoots($event)"
+ * >
+ *   <clr-dg-row [clrDgItem]="item" [clrDgSkeletonLoading]="!item">...</clr-dg-row>
+ * </ng-template>
+ * ```
+ */
+declare class ClrDatagridVirtualTree<T> extends DatagridTreeRenderer<T> {
+    roots: T[];
+    getChildren: ClrDatagridTreeChildrenFunction<T>;
+    /** Like `clrDgTreeItemsCascadeSelection`. */
+    cascadeSelection: boolean;
+    /**
+     * The range of roots the rendered rows belong to, for the app to load those it hasn't yet, when it
+     * gives the roots with `clrVirtualTreeDataRange`. The end is excluded.
+     */
+    renderedRootsChange: EventEmitter<ListRange>;
+    private virtualScroll;
+    private injector;
+    private ngZone;
+    /** The rows rendered last, to find where the focused or top row was. */
+    private shownItems;
+    private frame;
+    private renderedRoots;
+    /**
+     * The roots loaded by range: `total` roots, of which `data` starts at `skip`. The rows of the roots
+     * not loaded yet have no item. The roots loaded before are kept, so the expanded rows above keep
+     * their place, until the total changes.
+     */
+    set dataRange(range: ClrDatagridVirtualScrollRangeInterface<T>);
+    ngOnDestroy(): void;
+    /**
+     * The whole flat list is one data range, so the virtual scroll neither sorts nor pages it.
+     *
+     * The virtual scroll reuses its rows by position, so rows inserted or removed above the screen
+     * would shift what is on it, and the focus would stay on a row that now shows another item. So the
+     * focused row when it is on screen, or else the top row, keeps its place, and the focus moves with
+     * its item.
+     */
+    protected render(items: T[], focus: FocusedCell<T> | null, tabStop: T | undefined): void;
+    private rootsOf;
+    /**
+     * The place among the roots of the root of the row at `index`. The rows without an item are roots
+     * not loaded yet, so they follow the root of the closest row above that has one.
+     */
+    private rootAt;
+    private focusWhenRendered;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridVirtualTree<any>, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridVirtualTree<any>, "[ClrVirtualScroll][clrVirtualTreeOf],[clrVirtualScroll][clrVirtualTreeOf],[ClrVirtualScroll][clrVirtualTreeDataRange],[clrVirtualScroll][clrVirtualTreeDataRange]", never, { "roots": { "alias": "clrVirtualTreeOf"; "required": false; }; "getChildren": { "alias": "clrVirtualTreeGetChildren"; "required": false; }; "cascadeSelection": { "alias": "clrVirtualTreeCascadeSelection"; "required": false; }; "dataRange": { "alias": "clrVirtualTreeDataRange"; "required": false; }; }, { "renderedRootsChange": "clrVirtualTreeRenderedRootsChange"; }, never, never, false, never>;
+    static ngAcceptInputType_cascadeSelection: unknown;
+}
+
+/**
+ * Generic bland container serving various purposes for Datagrid.
+ * For instance, it can help span a text over multiple rows in detail view.
+ */
+declare class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
+    selection: Selection;
+    rowActionService: RowActionService;
+    expand: DatagridIfExpandService;
+    expandableRows: ExpandableRowsCount;
+    commonStrings: ClrCommonStringsService;
+    private columnsService;
+    private displayMode;
+    _beginningOfExpandableContentAriaText: string;
+    _endOfExpandableContentAriaText: string;
+    replacedRow: boolean;
+    /**
+     * Whether the detail lays its cells out in the same columns as the row, which it does when it
+     * holds one cell per column and at least one of those columns is pinned. The cells of the pinned
+     * columns are then static alongside the ones in the row above.
+     */
+    columnAligned: boolean;
+    SELECTION_TYPE: typeof SelectionType;
+    cells: QueryList<ClrDatagridCell>;
+    private _pinnedCells;
+    private _scrollableCells;
+    private _plainCells;
+    private subscriptions;
+    private cellsMoved;
+    private lastLayout;
+    private hadCells;
+    constructor(selection: Selection, rowActionService: RowActionService, expand: DatagridIfExpandService, expandableRows: ExpandableRowsCount, commonStrings: ClrCommonStringsService, columnsService: ColumnsService, displayMode: DisplayModeService);
+    set replace(value: boolean);
+    get beginningOfExpandableContentAriaText(): string;
+    get endOfExpandableContentAriaText(): string;
+    ngAfterContentInit(): void;
+    ngAfterViewInit(): void;
+    ngAfterViewChecked(): void;
+    ngOnDestroy(): void;
+    /**
+     * Moves the cells into the containers that lay them out in the same columns as the row, or back
+     * out of them once that stops making sense.
+     */
+    private syncColumnAlignment;
+    private moveCell;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridRowDetail, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRowDetail, "clr-dg-row-detail", never, { "_beginningOfExpandableContentAriaText": { "alias": "clrRowDetailBeginningAriaText"; "required": false; }; "_endOfExpandableContentAriaText": { "alias": "clrRowDetailEndAriaText"; "required": false; }; "replace": { "alias": "clrDgReplace"; "required": false; }; }, {}, ["cells"], ["*"], false, never>;
+}
+
+declare class ClrDatagridFooter<T = any> {
+    selection: Selection<T>;
+    detailService: DetailService;
+    private columnsService;
+    commonStrings: ClrCommonStringsService;
+    SELECTION_TYPE: typeof SelectionType;
+    constructor(selection: Selection<T>, detailService: DetailService, columnsService: ColumnsService, commonStrings: ClrCommonStringsService);
+    get hasHideableColumns(): boolean;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridFooter<any>, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridFooter<any>, "clr-dg-footer", never, {}, {}, never, ["*", "clr-dg-pagination"], false, never>;
+}
+
+declare class ClrDatagridPageSize {
+    page: Page;
+    pageSizeOptions: number[];
+    pageSizeOptionsId: string;
+    constructor(page: Page);
+    set label(label: ClrControlLabel);
+    ngOnInit(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridPageSize, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridPageSize, "clr-dg-page-size", never, { "pageSizeOptions": { "alias": "clrPageSizeOptions"; "required": false; }; "pageSizeOptionsId": { "alias": "clrPageSizeOptionsId"; "required": false; }; }, {}, never, ["*"], false, never>;
+}
+
+declare class ClrDatagridPagination implements OnDestroy, OnInit {
+    page: Page;
+    commonStrings: ClrCommonStringsService;
+    detailService: DetailService;
+    disableCurrentPageInput: boolean;
+    currentChanged: EventEmitter<number>;
+    _pageSizeComponent: ClrDatagridPageSize;
+    currentPageInputRef: ElementRef<HTMLInputElement>;
+    /**
+     * Subscription to the page service changes
+     */
+    private _pageSubscription;
+    constructor(page: Page, commonStrings: ClrCommonStringsService, detailService: DetailService);
+    /**
+     * Page size
+     */
+    get pageSize(): number;
+    set pageSize(size: number);
+    /**
+     * Total items (needed to guess the last page)
+     */
+    get totalItems(): number;
+    set totalItems(total: number);
+    /**
+     * Last page
+     */
+    get lastPage(): number;
+    set lastPage(last: number);
+    /**
+     * Current page
+     */
+    get currentPage(): number;
+    set currentPage(page: number);
+    /**
+     * Index of the first item displayed on the current page, starting at 0, -1 if none displayed
+     */
+    get firstItem(): number;
+    /**
+     * Index of the last item displayed on the current page, starting at 0, -1 if none displayed
+     */
+    get lastItem(): number;
+    /**
+     * Conditionally adds page numbers before and after the current page
+     */
+    get middlePages(): number[];
+    /**********
+     * Subscription to the Page service for page changes.
+     * Note: this only emits after the datagrid is initialized/stabalized and the page changes.
+     */
+    ngOnInit(): void;
+    ngOnDestroy(): void;
+    /**
+     * Moves to the previous page if it exists
+     */
+    previous(): void;
+    /**
+     * Moves to the next page if it exists
+     */
+    next(): void;
+    verifyCurrentPage(event: any): void;
+    /**
+     * We only update the pagination's current page on enter.
+     */
+    updateCurrentPage(event: any): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridPagination, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridPagination, "clr-dg-pagination", never, { "disableCurrentPageInput": { "alias": "clrDgPageInputDisabled"; "required": false; }; "pageSize": { "alias": "clrDgPageSize"; "required": false; }; "totalItems": { "alias": "clrDgTotalItems"; "required": false; }; "lastPage": { "alias": "clrDgLastPage"; "required": false; }; "currentPage": { "alias": "clrDgPage"; "required": false; }; }, { "currentChanged": "clrDgPageChange"; }, ["_pageSizeComponent"], ["clr-dg-page-size", "*"], false, never>;
+}
+
+interface ClrDatagridStringFilterInterface<T> {
+    accepts(item: T, search: string): boolean;
+}
+
+interface ClrDatagridNumericFilterInterface<T> {
+    accepts(item: T, low: number, high: number): boolean;
+}
+
+declare class DatagridStringFilterImpl<T = any> implements ClrDatagridFilterInterface<T> {
+    filterFn: ClrDatagridStringFilterInterface<T>;
+    /**
+     * The Observable required as part of the Filter interface
+     */
+    private _changes;
+    /**
+     * Input value converted to lowercase
+     */
+    private _lowerCaseValue;
+    /**
+     * Raw input value
+     */
+    private _rawValue;
+    constructor(filterFn: ClrDatagridStringFilterInterface<T>);
+    get changes(): Observable<string>;
+    get lowerCaseValue(): string;
+    get state(): this | {
+        property: string;
+        value: string;
+    };
+    get value(): string;
+    /**
+     * Common setter for the input value
+     */
+    set value(value: string);
+    /**
+     * Indicates if the filter is currently active, meaning the input is not empty
+     */
+    isActive(): boolean;
+    /**
+     * Tests if an item matches a search text
+     */
+    accepts(item: T): boolean;
+    equals(other: ClrDatagridFilterInterface<T, any>): boolean;
+}
+
+declare class DatagridStringFilter<T = any> extends DatagridFilterRegistrar<T, DatagridStringFilterImpl<T>> implements CustomFilter, OnChanges, OnDestroy, AfterViewInit {
+    private domAdapter;
+    commonStrings: ClrCommonStringsService;
+    private popoverService;
+    private elementRef;
+    private cdr;
+    private ngZone;
+    /**
+     * Provide a way to pass external placeholder and aria-label to the filter input
+     */
+    placeholder: string;
+    label: string;
+    filterValueChange: EventEmitter<any>;
+    /**
+     * Indicates if the filter dropdown is open
+     */
+    open: boolean;
+    /**
+     * We need the actual input element to automatically focus on it
+     */
+    input: ElementRef<HTMLInputElement>;
+    /**
+     * We grab the ClrDatagridFilter we wrap to register this StringFilter to it.
+     */
+    filterContainer: ClrDatagridFilter<T>;
+    labelValue: string;
+    private initFilterValue;
+    private subs;
+    constructor(filters: FiltersProvider<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, elementRef: ElementRef<HTMLElement>, cdr: ChangeDetectorRef, ngZone: NgZone);
+    /**
+     * Customizable filter logic based on a search text
+     */
+    set customStringFilter(value: ClrDatagridStringFilterInterface<T> | RegisteredFilter<T, DatagridStringFilterImpl<T>>);
+    /**
+     * Common setter for the input value
+     */
+    get value(): string;
+    set value(value: string);
+    get placeholderValue(): string;
+    ngAfterViewInit(): void;
+    ngOnChanges(): void;
+    ngOnDestroy(): void;
+    /**
+     * This is not in a getter to prevent "expression has changed after it was checked" errors.
+     */
+    private setFilterLabel;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridStringFilter<any>, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridStringFilter<any>, "clr-dg-string-filter", never, { "placeholder": { "alias": "clrFilterPlaceholder"; "required": false; }; "label": { "alias": "clrFilterLabel"; "required": false; }; "customStringFilter": { "alias": "clrDgStringFilter"; "required": false; }; "value": { "alias": "clrFilterValue"; "required": false; }; }, { "filterValueChange": "clrFilterValueChange"; }, never, never, false, never>;
+}
+
+declare class DatagridNumericFilterImpl<T = any> implements ClrDatagridFilterInterface<T> {
+    filterFn: ClrDatagridNumericFilterInterface<T>;
+    /**
+     * The Observable required as part of the Filter interface
+     */
+    private _changes;
+    /**
+     * Internal values and accessor
+     */
+    private _low;
+    private _high;
+    constructor(filterFn: ClrDatagridNumericFilterInterface<T>);
+    get changes(): Observable<[number, number]>;
+    get value(): [number, number];
+    set value(vals: [number, number]);
+    get low(): number;
+    set low(low: number);
+    get high(): number;
+    set high(high: number);
+    get state(): this | {
+        property: string;
+        low: number;
+        high: number;
+    };
+    /**
+     * Indicates if the filter is currently active, (at least one input is set)
+     */
+    isActive(): boolean;
+    /**
+     * Tests if an item matches a search text
+     */
+    accepts(item: T): boolean;
+    equals(other: ClrDatagridFilterInterface<T, any>): boolean;
+}
+
+declare class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar<T, DatagridNumericFilterImpl<T>> implements CustomFilter, AfterViewInit {
+    private domAdapter;
+    commonStrings: ClrCommonStringsService;
+    private popoverService;
+    private ngZone;
+    minPlaceholder: string;
+    maxPlaceholder: string;
+    fromLabel: string;
+    toLabel: string;
+    filterValueChange: EventEmitter<any>;
+    /**
+     * Indicates if the filter dropdown is open
+     */
+    open: boolean;
+    /**
+     * We need the actual input element to automatically focus on it
+     */
+    input: ElementRef<HTMLInputElement>;
+    /**
+     * We grab the ClrDatagridFilter we wrap to register this StringFilter to it.
+     */
+    filterContainer: ClrDatagridFilter<T>;
+    private initFilterValues;
+    private subscriptions;
+    constructor(filters: FiltersProvider<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, ngZone: NgZone);
+    /**
+     * Common setter for the input values
+     */
+    get value(): [number, number];
+    set value(values: [number, number]);
+    /**
+     * Customizable filter logic based on high and low values
+     */
+    set customNumericFilter(value: ClrDatagridNumericFilterInterface<T> | RegisteredFilter<T, DatagridNumericFilterImpl<T>>);
+    get maxPlaceholderValue(): string;
+    get minPlaceholderValue(): string;
+    get fromLabelValue(): string;
+    get toLabelValue(): string;
+    get low(): number | string;
+    set low(low: number | string);
+    get high(): number | string;
+    set high(high: number | string);
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridNumericFilter<any>, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridNumericFilter<any>, "clr-dg-numeric-filter", never, { "minPlaceholder": { "alias": "clrFilterMinPlaceholder"; "required": false; }; "maxPlaceholder": { "alias": "clrFilterMaxPlaceholder"; "required": false; }; "fromLabel": { "alias": "clrFilterFromLabel"; "required": false; }; "toLabel": { "alias": "clrFilterToLabel"; "required": false; }; "value": { "alias": "clrFilterValue"; "required": false; }; "customNumericFilter": { "alias": "clrDgNumericFilter"; "required": false; }; }, { "filterValueChange": "clrFilterValueChange"; }, never, never, false, never>;
+}
+
+declare class DatagridPropertyStringFilter<T = any> implements ClrDatagridStringFilterInterface<T> {
+    prop: string;
+    exact: boolean;
+    private nestedProp;
+    constructor(prop: string, exact?: boolean);
+    accepts(item: T, search: string): boolean;
+}
+
+declare class DatagridPropertyNumericFilter<T = any> implements ClrDatagridNumericFilterInterface<T> {
+    prop: string;
+    exact: boolean;
+    private nestedProp;
+    constructor(prop: string, exact?: boolean);
+    accepts(item: T, low: number, high: number): boolean;
+}
+
+declare class DatagridPropertyComparator<T = any> implements ClrDatagridComparatorInterface<T> {
+    prop: string;
+    private nestedProp;
+    constructor(prop: string);
+    compare(a: T, b: T): number;
+}
+
+declare class ClrDatagridSelectionCellDirective {
+    private readonly selection;
+    constructor(selection: Selection);
+    private onSelectionCellClick;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridSelectionCellDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridSelectionCellDirective, ".datagrid-select", never, {}, {}, never, never, false, never>;
+}
+
+declare class DatagridDetailRegisterer {
+    private expandableRowsCount;
+    constructor(expandableRowsCount: ExpandableRowsCount);
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridDetailRegisterer, [{ optional: true; }]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridDetailRegisterer, "[clrIfExpanded]", never, {}, {}, never, never, false, never>;
+}
+
+declare class WrappedCell implements AfterViewInit, OnDestroy {
+    templateRef: TemplateRef<void>;
+    cellView: EmbeddedViewRef<void>;
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<WrappedCell, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<WrappedCell, "dg-wrapped-cell", never, {}, {}, never, ["*"], false, never>;
+}
+
+declare class WrappedColumn implements AfterViewInit, OnDestroy {
+    templateRef: TemplateRef<void>;
+    columnView: EmbeddedViewRef<void>;
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<WrappedColumn, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<WrappedColumn, "dg-wrapped-column", never, {}, {}, never, ["*"], false, never>;
+}
+
+declare class WrappedRow implements AfterViewInit, OnDestroy {
+    templateRef: TemplateRef<void>;
+    rowView: EmbeddedViewRef<void>;
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<WrappedRow, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<WrappedRow, "dg-wrapped-row", never, {}, {}, never, ["*"], false, never>;
+}
+
+declare class DatagridCellRenderer implements OnDestroy {
+    private el;
+    private renderer;
+    private stateSubscription;
+    private subscriptions;
+    constructor(el: ElementRef<HTMLElement>, renderer: Renderer2, organizer: DatagridRenderOrganizer);
+    ngOnDestroy(): void;
+    resetState(state: ColumnState): void;
+    setWidth(state: ColumnState): void;
+    setHidden(state: ColumnState): void;
+    setPinned(state: ColumnState): void;
+    private clearWidth;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridCellRenderer, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridCellRenderer, "clr-dg-cell", never, {}, {}, never, never, false, never>;
+}
+
+declare class DatagridHeaderRenderer implements OnDestroy {
+    private el;
+    private renderer;
+    private domAdapter;
+    private columnResizerService;
+    private columnsService;
+    private columnState;
+    resizeEmitter: EventEmitter<number>;
+    /**
+     * Indicates if the column has a strict width, so it doesn't shrink or expand based on the content.
+     */
+    private widthSet;
+    private autoSet;
+    private subscriptions;
+    constructor(el: ElementRef<HTMLElement>, renderer: Renderer2, organizer: DatagridRenderOrganizer, domAdapter: DomAdapter, columnResizerService: ColumnResizerService, columnsService: ColumnsService, columnState: BehaviorSubject<ColumnState>);
+    ngOnDestroy(): void;
+    getColumnWidthState(): Partial<ColumnState>;
+    setColumnState(index: number): void;
+    setWidth(state: ColumnState): void;
+    setHidden(state: ColumnState): void;
+    setPinned(state: ColumnState): void;
+    private clearWidth;
+    private detectStrictWidth;
+    private computeWidth;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridHeaderRenderer, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridHeaderRenderer, "clr-dg-column", never, {}, { "resizeEmitter": "clrDgColumnResize"; }, never, never, false, never>;
+}
+
+declare class DatagridMainRenderer implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
+    private datagrid;
+    private organizer;
+    private items;
+    private page;
+    private el;
+    private renderer;
+    private tableSizeService;
+    private columnsService;
+    private ngZone;
+    private keyNavigation;
+    private changeDetectorRef;
+    private headers;
+    private rows;
+    private _heightSet;
+    private shouldStabilizeColumns;
+    private subscriptions;
+    private intersectionObserver;
+    /**
+     * Indicates if we want to re-compute columns width. This should only happen:
+     * 1) When headers change, with columns being added or removed
+     * 2) When rows are lazily loaded for the first time
+     */
+    private columnsSizesStable;
+    constructor(datagrid: ClrDatagrid, organizer: DatagridRenderOrganizer, items: Items, page: Page, el: ElementRef<HTMLElement>, renderer: Renderer2, detailService: DetailService, tableSizeService: TableSizeService, columnsService: ColumnsService, ngZone: NgZone, keyNavigation: KeyNavigationGridController, changeDetectorRef: ChangeDetectorRef);
+    ngOnInit(): void;
+    ngAfterContentInit(): void;
+    ngAfterViewInit(): void;
+    ngAfterViewChecked(): void;
+    ngOnDestroy(): void;
+    toggleDetailPane(state: boolean): void;
+    private setupColumns;
+    private shouldComputeHeight;
+    private computeDatagridHeight;
+    private resetDatagridHeight;
+    /**
+     * Makes each header compute its width.
+     */
+    private computeHeadersWidth;
+    private columnStateChanged;
+    /**
+     * Triggers a whole re-rendring cycle to set column sizes, if needed.
+     */
+    private stabilizeColumns;
+    private updateColumnSeparatorsVisibility;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridMainRenderer, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridMainRenderer, "clr-datagrid", never, {}, {}, ["headers", "rows"], never, false, never>;
+}
+
+declare class DatagridRowRenderer implements AfterContentInit, OnDestroy {
+    private columnsService;
+    private el;
+    cells: QueryList<DatagridCellRenderer>;
+    expandableRows: DatagridRowDetailRenderer[];
+    private subscriptions;
+    constructor(columnsService: ColumnsService, el: ElementRef<HTMLElement>);
+    ngAfterContentInit(): void;
+    ngOnDestroy(): void;
+    setCellsState(): void;
+    private addDetachedRowsColumnStateChangesListener;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridRowRenderer, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridRowRenderer, "clr-dg-row", never, {}, {}, ["cells"], never, false, never>;
+}
+
+declare class DatagridRowDetailRenderer extends DatagridRowRenderer implements OnDestroy {
+    private parentRow;
+    constructor(parentRow: DatagridRowRenderer, columnsService: ColumnsService, el: ElementRef<HTMLElement>);
+    ngOnDestroy(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridRowDetailRenderer, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridRowDetailRenderer, "clr-dg-row-detail", never, {}, {}, never, never, false, never>;
+}
+
+declare class ClrDatagridSingleSelectionValueAccessor implements ControlValueAccessor {
+    private renderer;
+    private elementRef;
+    value: any;
+    clrDgIdentityFn: (value: any) => unknown;
+    private state;
+    constructor(renderer: Renderer2, elementRef: ElementRef<HTMLInputElement>);
+    onChange: (value: any) => void;
+    onTouched: () => void;
+    registerOnChange(fn: (value: any) => void): void;
+    registerOnTouched(fn: () => void): void;
+    setDisabledState(isDisabled: boolean): void;
+    writeValue(value: any): void;
+    private keyOf;
+    private updateChecked;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridSingleSelectionValueAccessor, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridSingleSelectionValueAccessor, "input[type=radio][clrDgSingleSelectionRadio]", never, { "value": { "alias": "value"; "required": false; }; "clrDgIdentityFn": { "alias": "clrDgIdentityFn"; "required": false; }; }, {}, never, never, true, never>;
+}
+
+declare const CLR_DATAGRID_DIRECTIVES: Type<any>[];
+declare class ClrDatagridModule {
+    constructor();
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridModule, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatagridModule, [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnAction, typeof ClrDatagridColumnActions, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridTreeItems, typeof ClrDatagridVirtualTree, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridColumnToggle, typeof ClrDatagridColumnToggleButton, typeof ClrDatagridTreeToggleButton], [typeof i40.CommonModule, typeof i41.CdkDragModule, typeof i41.CdkTrapFocusModule, typeof i42.ClrIcon, typeof i43.ClrInputModule, typeof i44.ClrRadioModule, typeof i45.ClrCheckboxModule, typeof i46.ClrNumberInputModule, typeof i47.ClrSelectModule, typeof i48.FormsModule, typeof i41.ClrLoadingModule, typeof i41.ClrConditionalModule, typeof i41.ClrOutsideClickModule, typeof i41.ClrExpandableAnimationModule, typeof i49.ClrSpinnerModule, typeof i1.ClrPopoverModuleNext, typeof i51.ClrDropdownModule, typeof i41.ClrKeyFocusModule, typeof ClrDatagridSingleSelectionValueAccessor, typeof i41.ClrIfExpanded], [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnAction, typeof ClrDatagridColumnActions, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridTreeItems, typeof ClrDatagridVirtualTree, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridSingleSelectionValueAccessor, typeof i41.ClrIfExpanded]>;
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrDatagridModule>;
+}
+
+export { CLR_DATAGRID_DIRECTIVES, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridAriaSortOrder, ClrDatagridCell, ClrDatagridColumn, ClrDatagridColumnAction, ClrDatagridColumnActions, ClrDatagridColumnSeparator, ClrDatagridColumnToggle, ClrDatagridColumnToggleButton, ClrDatagridDetail, ClrDatagridDetailBody, ClrDatagridDetailHeader, ClrDatagridFilter, ClrDatagridFooter, ClrDatagridHideableColumn, ClrDatagridItems, ClrDatagridModule, ClrDatagridPageSize, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridSelectionCellDirective, ClrDatagridSingleSelectionValueAccessor, ClrDatagridSortOrder, ClrDatagridTreeItems, ClrDatagridTreeToggleButton, ClrDatagridVirtualScrollDirective, ClrDatagridVirtualTree, ClrIfDetail, DatagridCellRenderer, DatagridDetailRegisterer, DatagridHeaderRenderer, DatagridMainRenderer, DatagridNumericFilter, DatagridPropertyComparator, DatagridPropertyNumericFilter, DatagridPropertyStringFilter, DatagridRowDetailRenderer, DatagridRowRenderer, DatagridStringFilter, Selection, SelectionType, WrappedCell, WrappedColumn, WrappedRow, selectionTypeAttribute };
+export type { ClrDatagridComparatorInterface, ClrDatagridFilterInterface, ClrDatagridItemsIdentityFunction, ClrDatagridNumericFilterInterface, ClrDatagridStateInterface, ClrDatagridStringFilterInterface, ClrDatagridTreeChildrenFunction, ClrDatagridVirtualScrollRangeInterface };
