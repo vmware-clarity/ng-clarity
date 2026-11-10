@@ -10,8 +10,10 @@ import {
   AfterViewChecked,
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChildren,
+  inject,
   Input,
   OnDestroy,
   QueryList,
@@ -105,6 +107,7 @@ export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, Af
   private cellsMoved = false;
   private lastLayout: string;
   private hadCells: boolean;
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   constructor(
     public selection: Selection,
@@ -141,7 +144,10 @@ export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, Af
         this.replacedRow = replaceChange;
       }),
       // New cells have to be moved even when the columns did not change.
-      this.cells.changes.subscribe(() => this.syncColumnAlignment(true))
+      this.cells.changes.subscribe(() => this.syncColumnAlignment(true)),
+      // Content behind a `clrLoading` template is created whenever it has loaded, which nothing tells
+      // Angular about. Its cells are only found once the view declaring the detail is checked again.
+      this.expand.animate.subscribe(() => this.changeDetectorRef.markForCheck())
     );
   }
 
