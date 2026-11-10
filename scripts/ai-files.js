@@ -8,7 +8,7 @@
 // Shared discovery of AI agent files. Each library has:
 //   projects/<lib>/ai/AGENTS.md         a short pointer to the package skill
 //   projects/<lib>/ai/SKILL.md          the package skill: rules for all components plus an index of the guides
-//   projects/<lib>/**/AI-GUIDE.md       one guide per component, shipped as references/<name>.md of the skill
+//   projects/<lib>/**/GUIDE.md       one guide per component, shipped as references/<name>.md of the skill
 // Used by scripts/copy-ai-files.js (npm packages), projects/website/scripts/compile-content.js (website) and
 // .claude/skills/update-ai-skills/check-ai-skills.js (maintainers).
 
@@ -55,7 +55,7 @@ function collectAiFiles(lib) {
     errors.push(`projects/${lib}/ai/SKILL.md: needs "name: ${skillName}" and a "description" in frontmatter`);
   }
 
-  const files = glob.sync(`projects/${lib}/**/AI-GUIDE.md`, { cwd: REPO_ROOT, ignore: ['**/node_modules/**'] }).sort();
+  const files = glob.sync(`projects/${lib}/**/GUIDE.md`, { cwd: REPO_ROOT, ignore: ['**/node_modules/**'] }).sort();
   for (const relativeFile of files) {
     const file = path.join(REPO_ROOT, relativeFile);
     const raw = fs.readFileSync(file, 'utf8');

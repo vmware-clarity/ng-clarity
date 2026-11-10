@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-// Checks the Clarity API names used in the AI files (component AI-GUIDE.md, ai/SKILL.md, ai/AGENTS.md) against the
+// Checks the Clarity API names used in the AI files (component GUIDE.md, ai/SKILL.md, ai/AGENTS.md) against the
 // public API reports.
 // Reports names that are missing from every *.api.md (removed or renamed) and names that are deprecated.
 // Also checks the design guidance (https://guidance.clarity.design) cited by guides against a local clone of

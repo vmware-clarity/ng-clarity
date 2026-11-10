@@ -8,7 +8,7 @@
 // Copies AI agent files into a built package:
 //   projects/<lib>/ai/AGENTS.md      -> dist/clr-<lib>/ai/AGENTS.md
 //   projects/<lib>/ai/SKILL.md       -> dist/clr-<lib>/ai/skills/<skill>/SKILL.md
-//   projects/<lib>/**/AI-GUIDE.md    -> dist/clr-<lib>/ai/skills/<skill>/references/<guide>.md (without frontmatter)
+//   projects/<lib>/**/GUIDE.md    -> dist/clr-<lib>/ai/skills/<skill>/references/<guide>.md (without frontmatter)
 // Usage: node ./scripts/copy-ai-files.js <angular|addons> [destRoot]
 
 const fs = require('fs');

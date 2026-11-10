@@ -1,17 +1,17 @@
 ---
 name: update-ai-skills
-description: Keep the consumer AI files (component AI-GUIDE.md files, projects/*/ai/SKILL.md and projects/*/ai/AGENTS.md) in sync with the public API and the Clarity design guidance. Use when a *.api.md report changed (after `npm run public-api:update`, or in a branch/PR that changes public API), when adding, renaming, removing, or deprecating a public input, output, selector, class, or module, when the Clarity design guidance (guidance.clarity.design / clarity-guidance repo) changed, or when asked to check or update the AI skills or AGENTS.md.
+description: Keep the consumer AI files (component GUIDE.md files, projects/*/ai/SKILL.md and projects/*/ai/AGENTS.md) in sync with the public API and the Clarity design guidance. Use when a *.api.md report changed (after `npm run public-api:update`, or in a branch/PR that changes public API), when adding, renaming, removing, or deprecating a public input, output, selector, class, or module, when the Clarity design guidance (guidance.clarity.design / clarity-guidance repo) changed, or when asked to check or update the AI skills or AGENTS.md.
 ---
 
 # Update the AI skills and guides after public API changes
 
 The consumer AI files ship in the npm packages and on the website:
 
-| File                                        | Role                                                                                                                                 |
-| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `projects/<lib>/**/<component>/AI-GUIDE.md` | Detailed guide for one component (name prefix `clr-` for angular, `appfx-` for addons); ships as `references/<name>.md` of the skill |
-| `projects/<lib>/ai/SKILL.md`                | The package skill (`clarity-angular`, `clarity-addons`): rules for all components of a package, plus an index of its guides          |
-| `projects/<lib>/ai/AGENTS.md`               | A few lines that point agents without skill support to the package skill                                                             |
+| File                                     | Role                                                                                                                                 |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `projects/<lib>/**/<component>/GUIDE.md` | Detailed guide for one component (name prefix `clr-` for angular, `appfx-` for addons); ships as `references/<name>.md` of the skill |
+| `projects/<lib>/ai/SKILL.md`             | The package skill (`clarity-angular`, `clarity-addons`): rules for all components of a package, plus an index of its guides          |
+| `projects/<lib>/ai/AGENTS.md`            | A few lines that point agents without skill support to the package skill                                                             |
 
 The public API reports (`projects/**/*.api.md`) are the source of truth for names. A guide or skill must never use a name that is not in a report, and must not recommend a deprecated one.
 
@@ -83,7 +83,7 @@ node .claude/skills/update-ai-skills/check-ai-skills.js
 AI_CHECK="$(mktemp -d)"
 node scripts/copy-ai-files.js angular "$AI_CHECK/clr-angular"
 node scripts/copy-ai-files.js addons "$AI_CHECK/clr-addons"
-npx prettier --check <changed AI-GUIDE.md / SKILL.md / AGENTS.md files>
+npx prettier --check <changed GUIDE.md / SKILL.md / AGENTS.md files>
 ```
 
 The first command must report no problems. The copy commands validate names, prefixes, duplicates and the guide index the same way the package build does.
