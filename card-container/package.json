@@ -1,0 +1,4 @@
+{
+  "module": "../fesm2022/clr-addons-card-container.mjs",
+  "typings": "../types/clr-addons-card-container.d.ts"
+}
