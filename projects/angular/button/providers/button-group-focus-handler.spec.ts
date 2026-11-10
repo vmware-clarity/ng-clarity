@@ -113,8 +113,10 @@ describe('Button Group Directives', () => {
         expectActiveElementToBe(lastChild);
       });
 
-      it('focus last button in the menu on key down events', () => {
-        testContext.focusHandler.initialize({ menu: testContext.menu, menuToggle: testContext.menuToggle });
+      it('focus last button in the menu on key down events', async () => {
+        // The open menu initializes the handler itself. Initializing it again here would register
+        // the key listeners twice, and every key press would then move two buttons.
+        await testContext.fixture.whenStable();
         testContext.menu.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         testContext.menu.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         const lastChild = testContext.menu.children[testContext.menu.children.length - 1];

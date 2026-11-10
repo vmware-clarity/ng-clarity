@@ -697,7 +697,7 @@ describe('appfx-wizard', () => {
   describe('Relevance checks', () => {
     it('WHEN Page 1 is not relevant, THEN should display page2', () => {
       testContext.page1.isRelevant = Var.of(false);
-      testContext.fixture.componentRef.setInput('pages', testContext.workflowService.flow);
+      testContext.fixture.componentRef.setInput('pages', [...testContext.workflowService.flow]);
       expect(testContext.component.pages.length).toEqual(2);
       renderFixture(testContext.fixture);
       expect(testContext.wizardHelper.pageNavTitles.length).toEqual(1);

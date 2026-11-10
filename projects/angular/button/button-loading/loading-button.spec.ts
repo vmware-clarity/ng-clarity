@@ -112,12 +112,14 @@ describe('Loading Buttons', () => {
     try {
       fixture.componentInstance.buttonState = ClrLoadingState.SUCCESS;
       renderFixture(fixture);
-      await delay();
-      renderFixture(fixture);
-      expect(fixture.componentInstance.buttonState as ClrLoadingState).toEqual(ClrLoadingState.DEFAULT);
     } finally {
+      // Restored before waiting: Angular checks for the API once, at load, and its own animation
+      // callbacks call it from the next frame on.
       Element.prototype.getAnimations = getAnimations;
     }
+    await delay();
+    renderFixture(fixture);
+    expect(fixture.componentInstance.buttonState as ClrLoadingState).toEqual(ClrLoadingState.DEFAULT);
   });
 
   it('hides spinner when [(clrButtonState)] value is DEFAULT', () => {

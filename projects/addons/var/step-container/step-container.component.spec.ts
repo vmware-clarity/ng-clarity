@@ -10,12 +10,15 @@ import { ChangeDetectionStrategy, Component, DebugElement, NgModule } from '@ang
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { WorkflowStrings } from '@clr/addons/workflow/strings';
+import { ClrStackViewModule } from '@clr/angular/data/stack-view';
 import { ClrAlertModule } from '@clr/angular/emphasis/alert';
+import { ClrIcon } from '@clr/angular/icon';
 import { renderFixture } from '@clr/angular/utils/testing';
 import { Observable, of } from 'rxjs';
 import type { Mock } from 'vitest';
 
 import { StepContainerComponent } from './step-container.component';
+import { ErrorComponent } from '../error/error.component';
 import { ActivationError } from '../error/interfaces';
 import { OnStepActivate, OnStepValidate, StepModelHolder } from '../model/step-interfaces';
 import { StepValidationState } from '../model/step-validation-state';
@@ -79,8 +82,14 @@ describe('wizard-page-container.component.spec', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ClrAlertModule, ThisTestModule],
-      declarations: [StepContainerComponent, ValidationBannerComponent, ValidationBannerInternalComponent],
+      // ErrorComponent and what its template uses are here because the container creates it on an activation error.
+      imports: [ClrAlertModule, ClrStackViewModule, ClrIcon, CommonModule, ThisTestModule],
+      declarations: [
+        StepContainerComponent,
+        ValidationBannerComponent,
+        ValidationBannerInternalComponent,
+        ErrorComponent,
+      ],
     });
 
     testContext.fixture = TestBed.createComponent(StepContainerComponent);

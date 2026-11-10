@@ -153,7 +153,8 @@ describe('Modal', () => {
 
   it('stops tracking the modal in the modal stack when destroyed while open', () => {
     const modalStackService = TestBed.inject(ModalStackService);
-    vi.spyOn(modalStackService, 'trackModalClose').mockImplementation(() => undefined);
+    // Spied on, not replaced: a modal left in the stack keeps its Escape listener on the body for every later test.
+    vi.spyOn(modalStackService, 'trackModalClose');
     fixture.destroy();
     expect(modalStackService.trackModalClose).toHaveBeenCalledWith(modal);
   });

@@ -337,6 +337,8 @@ describe('Dropdown', () => {
         buttonElementRef.nativeElement.click();
         renderFixture(fixture);
         await fixture.whenStable();
+        // The dropdown moves focus from a timer, which whenStable() does not wait for.
+        await delay();
       }
     });
 

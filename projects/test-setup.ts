@@ -5,10 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-afterEach(() => {
-  vi.useRealTimers();
-});
-
 document.body.setAttribute('cds-theme', '');
 
 // Match the native-animation defaults from the upstream test bootstrap.

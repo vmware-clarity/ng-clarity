@@ -39,7 +39,7 @@ Each library has a dedicated application build target for its test-specific styl
 Shared configuration:
 
 - `vitest.config.mts`: mock restoration, shuffled execution, seed selection, browser execution, and slow-test reporting.
-- `projects/test-setup.ts`: the `cds-theme` body attribute and timer cleanup.
+- `projects/test-setup.ts`: the `cds-theme` body attribute and the animation defaults.
 - `projects/test-providers.ts`: zoneless scheduling and exhaustive check-no-changes validation for both library suites.
 - `angular.json`: browser viewport, coverage, setup files, and CI targets.
 
@@ -58,7 +58,7 @@ await vi.advanceTimersByTimeAsync(300);
 await fixture.whenStable();
 ```
 
-Keep `requestAnimationFrame` and microtasks real so Angular can schedule rendering. Prefer advancing the specific timeout to draining all timers, especially when a component has repeating timers. Shared teardown restores real timers after every test. Zone compatibility belongs in the separate consumer smoke tests; the library suites always test the absence of Zone.
+Keep `requestAnimationFrame` and microtasks real so Angular can schedule rendering. Prefer advancing the specific timeout to draining all timers, especially when a component has repeating timers. `useTestTimers()` restores the real timers when its test finishes; a spec that calls `vi.useFakeTimers()` directly has to restore them itself. Hooks registered in `projects/test-setup.ts` are not an option for this: with coverage on, the builder runs that file's top level once, so they only apply to the first spec file. Zone compatibility belongs in the separate consumer smoke tests; the library suites always test the absence of Zone.
 
 Each spec file registers its own suites. The old `all.spec.ts` aggregators are removed, with their suite names retained in the individual files. Support-only modules use ordinary `.ts` filenames. This avoids empty suites and duplicate registration under Vitest and also enables previously unregistered spec factories.
 
