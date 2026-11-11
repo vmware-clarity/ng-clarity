@@ -18,26 +18,26 @@ const AI_DOCS = RAW_AI_DOCS as Record<string, (typeof RAW_AI_DOCS)[keyof typeof 
 @Component({
   selector: 'app-ai-skill',
   template: `
-    @if (skillName && AI_DOCS[skillName]; as skill) {
+    @if (skillName && AI_DOCS[skillName]; as guide) {
       <section>
-        <h2 cds-text="title" cds-layout="m-t:xl">AI agent skill</h2>
+        <h2 cds-text="title" cds-layout="m-t:xl">AI agent guide</h2>
         <p cds-text="body" cds-layout="m-t:md">
-          The <code cds-text="code">{{ skillName }}</code> skill ships in
-          <code cds-text="code">{{ skill.packageName }}/ai/skills/</code> and teaches AI coding agents how to use this
-          component. <a routerLink="/pages/ai">Set up AI agents</a>
+          The <code cds-text="code">{{ skillName }}</code> guide ships in
+          <code cds-text="code">{{ guide.packageName }}/ai/skills/{{ guide.packageSkill }}/references/</code> and
+          teaches AI coding agents how to use this component. <a routerLink="/pages/ai">Set up AI agents</a>
         </p>
-        <p cds-text="body" cds-layout="m-t:md">{{ skill.description }}</p>
+        <p cds-text="body" cds-layout="m-t:md">{{ guide.description }}</p>
         <div cds-layout="m-t:md">
-          <button type="button" class="btn btn-sm btn-outline" (click)="copySkill(skill.raw)">
+          <button type="button" class="btn btn-sm btn-outline" (click)="copyGuide(guide.raw)">
             <clr-icon shape="copy"></clr-icon>
-            {{ copied ? 'Copied!' : 'Copy SKILL.md' }}
+            {{ copied ? 'Copied!' : 'Copy guide' }}
           </button>
-          <a class="btn btn-sm btn-link" [href]="skill.url" download="SKILL.md">
+          <a class="btn btn-sm btn-link" [href]="guide.url" [download]="skillName + '.md'">
             <clr-icon shape="download"></clr-icon>
-            Download SKILL.md
+            Download guide
           </a>
         </div>
-        <div [innerHTML]="skill.html | appSafeHtml"></div>
+        <div [innerHTML]="guide.html | appSafeHtml"></div>
       </section>
     }
   `,
@@ -54,10 +54,10 @@ export class AiSkillComponent {
     ClarityIcons.addIcons(copyIcon, downloadIcon);
   }
 
-  protected async copySkill(raw: string) {
+  protected async copyGuide(raw: string) {
     await navigator.clipboard.writeText(raw);
     this.copied = true;
-    await this.liveAnnouncer.announce(`${this.skillName} SKILL.md copied to clipboard`);
+    await this.liveAnnouncer.announce(`${this.skillName} guide copied to clipboard`);
     setTimeout(() => (this.copied = false), 3000);
   }
 }
