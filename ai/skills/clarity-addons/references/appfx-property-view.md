@@ -1,10 +1,3 @@
----
-name: appfx-property-view
-description: Show read-only key/value details grouped into categories (tabs) and collapsible sections with the AppFX property view (`<appfx-property-view>` from `@clr/addons/property-view`), built with a fluent `PropertyViewBuilder`. Use when adding or changing an `appfx-property-view`, `PropertyViewBuilder`, `PropertyViewModel`, or custom property value components.
-metadata:
-  docs: /documentation/property-view
----
-
 # AppFX property view (`appfx-property-view`)
 
 ## When to use it vs `clr-stack-view`

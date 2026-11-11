@@ -1,10 +1,3 @@
----
-name: appfx-datagrid
-description: Build tables with the AppFX datagrid (`<appfx-datagrid>` from `@clr/addons/datagrid`) — a column-definition driven wrapper over the Clarity datagrid with quick/advanced filters, export, action bar, row actions, detail pane, settings persistence, column ordering, drag-drop, and virtual scroll. Use when adding or changing an `appfx-datagrid`, `ColumnDefinition`, or `@clr/addons/datagrid-filters` filter definitions.
-metadata:
-  docs: /documentation/advanced-datagrid
----
-
 # AppFX datagrid (`appfx-datagrid`)
 
 ## When to use it vs `clr-datagrid`
@@ -13,7 +6,7 @@ Use `appfx-datagrid` for complex, configuration-driven grids: columns are data (
 
 For a simple list or table, `clr-datagrid` is the default. Don't switch an existing `clr-datagrid` to `appfx-datagrid` unless asked.
 
-Use plain `clr-datagrid` (see the clr-datagrid skill) when every cell needs custom markup or you need structures the column model can't express. The AppFX column-ordering, toggle, export, and cell/filter container pieces are internal — they cannot be used on a plain `clr-datagrid`.
+Use plain `clr-datagrid` (see the clr-datagrid guide in the `clarity-angular` skill) when every cell needs custom markup or you need structures the column model can't express. The AppFX column-ordering, toggle, export, and cell/filter container pieces are internal — they cannot be used on a plain `clr-datagrid`.
 
 ## Setup
 

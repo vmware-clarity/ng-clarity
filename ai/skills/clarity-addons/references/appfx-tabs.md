@@ -1,10 +1,3 @@
----
-name: appfx-tabs
-description: Render step components as tabs with AppFX tabs (`<appfx-tabs>` from `@clr/addons/tabs`) — a `Step[]` + workflow-model driven wrapper over `clr-tabs` with horizontal/vertical/secondary layouts, per-tab validation, loading, and zoom-aware tab links; plus the `appfxIfTabActive` directive for plain `clr-tab`. Use when adding or changing `appfx-tabs`, `appfx-tab-links`, `appfxIfTabActive`, or tab `Step` definitions.
-metadata:
-  docs: /documentation/tabs-addon
----
-
 # AppFX tabs (`appfx-tabs`)
 
 ## When to use it vs `clr-tabs`

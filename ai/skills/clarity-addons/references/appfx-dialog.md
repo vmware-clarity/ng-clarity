@@ -1,10 +1,3 @@
----
-name: appfx-dialog
-description: Build multi-page modal dialogs with the AppFX dialog (`<appfx-dialog>` from `@clr/addons/dialog`) — a `clr-modal` that hosts `Step[]` components as tabs (horizontal/vertical) over a shared workflow model, with OK/Cancel wired to an async `CloseHandler`, loading, and validation. Use when adding or changing an `appfx-dialog`, `appfx-dialog-header`, `DialogOptions`, or a tabbed edit/settings modal.
-metadata:
-  docs: /documentation/dialog
----
-
 # AppFX dialog (`appfx-dialog`)
 
 ## When to use it vs `clr-modal`
@@ -82,4 +75,4 @@ Step components and models are written as for `appfx-tabs` (`StepModelHolder`, `
 
 - API: `@clr/addons/types/clr-addons-dialog.d.ts`, `@clr/addons/types/clr-addons-var.d.ts`
 - Docs: `@clr/addons/dialog/README.md`
-- Step/model concepts: the appfx-tabs and appfx-wizard skills
+- Step/model concepts: the appfx-tabs and appfx-wizard guides

@@ -1,10 +1,3 @@
----
-name: appfx-wizard
-description: Build modal multi-step workflows with the AppFX wizard (`<appfx-wizard>` from `@clr/addons/wizard`) — a `Step[]` + workflow-model driven wrapper over `clr-wizard` with data injection between pages (`Var`, `@In`/`@Out`), per-page validation, loading/error handling, conditional steps, and an auto "Ready to Complete" summary. Use when adding or changing an `appfx-wizard`, `Step` definitions, `CloseHandler`, or `WizardFooterConfig`.
-metadata:
-  docs: /documentation/wizard-addon
----
-
 # AppFX wizard (`appfx-wizard`)
 
 ## When to use it vs `clr-wizard`

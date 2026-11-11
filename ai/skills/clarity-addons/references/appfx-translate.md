@@ -1,10 +1,3 @@
----
-name: appfx-translate
-description: Set the locale and translations used by AppFX components with `AppfxTranslateService`, `appfxTranslationsToken`, the `translate` and `dateTime` pipes from `@clr/addons/translate`. Use when syncing the app locale with AppFX components, providing AppFX translations, formatting dates with `DateTimePipe`, or localizing `@clr/addons` components.
-metadata:
-  docs: /documentation/translate
----
-
 # AppFX translate (`@clr/addons/translate`)
 
 ## When to use

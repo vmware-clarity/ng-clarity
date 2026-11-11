@@ -1,10 +1,3 @@
----
-name: appfx-a11y
-description: Accessibility helpers from `@clr/addons/a11y` — tab overflow for `clr-tabs` (`appfxOverflowTabs`), stepper string overrides (`appfxOverrideClrStrings`), `<appfx-required-field-legend>` for forms, and zoom/reflow detection (`zoomLevelIndicator`, `ZoomLevelService`, `ZoomLevel`). Use when making Clarity tabs, steppers, forms, or layouts work at 200%/400% zoom or adding a required-field legend.
-metadata:
-  docs: /documentation/a11y
----
-
 # AppFX a11y (`@clr/addons/a11y`)
 
 ## When to use

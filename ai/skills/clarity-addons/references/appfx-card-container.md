@@ -1,10 +1,3 @@
----
-name: appfx-card-container
-description: Lay out a dashboard of user-reorderable, show/hide-able cards with the AppFX card container (`<appfx-card-container>` from `@clr/addons/card-container`), driven by an `AppfxCard[]` config with grid unit sizing, drag-and-drop, zoom sizes, and persisted order. Use when adding or changing an `appfx-card-container`, `AppfxCard`, or `AppfxContainerPersistenceStore`.
-metadata:
-  docs: /documentation/card-container
----
-
 # AppFX card container (`appfx-card-container`)
 
 ## When to use it vs Clarity `.card`
