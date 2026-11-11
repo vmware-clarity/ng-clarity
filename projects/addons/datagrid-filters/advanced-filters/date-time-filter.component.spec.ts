@@ -16,6 +16,8 @@ import { DateTimeFilterComponent } from './date-time-filter.component';
 import { FilterFormComponent } from './filter-form.component';
 import { ComparisonOperator, LogicalOperator, TimeSpan } from '../model/datagrid-filters.enums';
 import { DateTimePropertyDefinition, PropertyFilter, PropertyPredicate } from '../model/datagrid-filters.interfaces';
+import { addDays, toIsoDate } from '../model/date-time-editor-state';
+import { clockChangeDays } from '../model/date-time-editor-state.spec';
 
 import Spy = jasmine.Spy;
 
@@ -518,6 +520,58 @@ describe('DateTimeFilterComponent', () => {
       expect(this.component.dateTimeFilterForm.controls['timeSpan'].value).toEqual(TimeSpan.Years);
     });
   });
+  describe('on the days the clocks change', () => {
+    const days = clockChangeDays(2026);
+    const nextDay = (iso: string) => toIsoDate(addDays(new Date(`${iso}T00:00:00`), 1));
+    // Emitted values end with the local UTC offset; the local date and time come first.
+    const localPart = (value: string) => value.substring(0, 19);
+    const emittedCriteria = (component: DateTimeFilterComponent): PropertyPredicate[] =>
+      ((component.filterCriteriaChange.emit as Spy).calls.mostRecent().args[0] as PropertyFilter).criteria;
+
+    beforeEach(function (this: ThisTest) {
+      if (!days.length) {
+        pending('The time zone of this run has no daylight saving');
+      }
+      spyOn(this.component.filterCriteriaChange, 'emit');
+      this.fixture.detectChanges();
+    });
+
+    it('emits Equals as midnight to the next midnight, however many hours the day has', function (this: ThisTest) {
+      days.forEach(day => {
+        this.component.dateTimeFilterForm.controls['operator'].setValue(ComparisonOperator.Equals);
+        this.component.dateTimeFilterForm.controls['dateValue'].setValue(toInput(day));
+        this.component.onApplyButtonClick();
+        expect(emittedCriteria(this.component).map(predicate => localPart(predicate.value)))
+          .withContext(day)
+          .toEqual([`${day}T00:00:00`, `${nextDay(day)}T00:00:00`]);
+      });
+    });
+
+    it('emits Before or equal to as before the next midnight', function (this: ThisTest) {
+      days.forEach(day => {
+        this.component.dateTimeFilterForm.controls['operator'].setValue(ComparisonOperator.BeforeOrEqualTo);
+        this.component.dateTimeFilterForm.controls['dateValue'].setValue(toInput(day));
+        this.component.onApplyButtonClick();
+        expect(emittedCriteria(this.component).map(predicate => localPart(predicate.value)))
+          .withContext(day)
+          .toEqual([`${nextDay(day)}T00:00:00`]);
+      });
+    });
+
+    it('ends a custom range at the midnight after its end date', function (this: ThisTest) {
+      days.forEach(day => {
+        this.component.dateTimeFilterForm.controls['operator'].setValue(ComparisonOperator.CustomRange);
+        this.fixture.detectChanges();
+        this.component.dateTimeFilterForm.controls['dateValue'].setValue(toInput('2026-01-01'));
+        this.component.dateTimeFilterForm.controls['dateValueTo'].setValue(toInput(day));
+        this.component.onApplyButtonClick();
+        expect(emittedCriteria(this.component).map(predicate => localPart(predicate.value)))
+          .withContext(day)
+          .toEqual(['2026-01-01T00:00:00', `${nextDay(day)}T00:00:00`]);
+      });
+    });
+  });
+
   describe('editor state', () => {
     it('stores its choices on the emitted filter, not on the field definition', function (this: ThisTest) {
       spyOn(this.component.filterCriteriaChange, 'emit');

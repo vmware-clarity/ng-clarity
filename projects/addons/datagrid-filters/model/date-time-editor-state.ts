@@ -7,14 +7,27 @@
 
 import { ComparisonOperator, LogicalOperator } from './datagrid-filters.enums';
 import { FilterEditorState, PropertyFilter } from './datagrid-filters.interfaces';
+import { oneMinuteMs } from './date-time-constants';
 
 // Internal helpers for date-time filters. Not exported from the package.
 
 const LOCAL_DATE_TIME = /^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2})(?::(\d{2}))?)?/;
-const oneMinuteMs = 60 * 1000;
-const oneDayMs = 24 * 60 * oneMinuteMs;
 
 const pad = (value: number, length = 2) => value.toString().padStart(length, '0');
+
+/**
+ * The same clock time `days` calendar days later (or earlier, for a negative value). Calendar days, not 24 hours:
+ * a day can have 23 or 25 hours when daylight saving starts or ends.
+ */
+export function addDays(date: Date, days: number): Date {
+  const result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+}
+
+function isMidnight(date: Date): boolean {
+  return !date.getHours() && !date.getMinutes() && !date.getSeconds();
+}
 
 /**
  * A stored or emitted date-time ("2003-05-01", "2003-05-01T10:30", "2003-05-01T00:00:00+03:00") as a local `Date`.
@@ -38,19 +51,15 @@ export function toIsoDate(date: Date): string {
 /** `yyyy-MM-dd`, or `yyyy-MM-ddTHH:mm[:ss]` when the time is not midnight. */
 function toStateValue(date: Date, withSeconds: boolean): string {
   const day = toIsoDate(date);
-  if (!date.getHours() && !date.getMinutes() && !date.getSeconds()) {
+  if (isMidnight(date)) {
     return day;
   }
   return `${day}T${pad(date.getHours())}:${pad(date.getMinutes())}` + (withSeconds ? `:${pad(date.getSeconds())}` : '');
 }
 
-function normalize(value: string, shiftMs = 0): string | undefined {
+function normalize(value: string): string | undefined {
   const parsed = parseLocalDateTime(value);
-  if (!parsed) {
-    return undefined;
-  }
-  const date = new Date(parsed.date.getTime() + shiftMs);
-  return toStateValue(date, !!date.getSeconds());
+  return parsed ? toStateValue(parsed.date, !!parsed.date.getSeconds()) : undefined;
 }
 
 const singleOperators = new Map<ComparisonOperator, ComparisonOperator>([
@@ -92,17 +101,19 @@ export function dateTimeEditorState(filter: PropertyFilter | undefined): FilterE
     if (!start || !end) {
       return null;
     }
-    const span = end.date.getTime() - start.date.getTime();
-    if (span === oneDayMs || span === oneMinuteMs) {
-      // The editor writes Equals as [day, next day) or [minute, next minute).
+    // The editor writes Equals as [day, next day) or [minute, next minute). A day is midnight to the next midnight,
+    // however many hours it has.
+    const isWholeDay = isMidnight(start.date) && end.date.getTime() === addDays(start.date, 1).getTime();
+    const isOneMinute = end.date.getTime() - start.date.getTime() === oneMinuteMs;
+    if (isWholeDay || isOneMinute) {
       return { operator: ComparisonOperator.Equals, value: normalize(from.value) };
     }
-    // A custom range ends at the start of the day after its (inclusive) end date, or a minute after its end time.
-    const endHasTime = !!(end.date.getHours() || end.date.getMinutes() || end.date.getSeconds());
+    // A custom range ends at the midnight after its (inclusive) end date, or a minute after its end time.
+    const inclusiveEnd = isMidnight(end.date) ? addDays(end.date, -1) : new Date(end.date.getTime() - oneMinuteMs);
     return {
       operator: ComparisonOperator.CustomRange,
       value: normalize(from.value),
-      valueTo: normalize(to.value, endHasTime ? -oneMinuteMs : -oneDayMs),
+      valueTo: toStateValue(inclusiveEnd, !!inclusiveEnd.getSeconds()),
     };
   }
   return null;

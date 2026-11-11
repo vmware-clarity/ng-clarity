@@ -36,21 +36,12 @@ import {
   PropertyFilter,
   PropertyPredicate,
 } from '../model/datagrid-filters.interfaces';
-import { dateTimeEditorState, toIsoDate } from '../model/date-time-editor-state';
+import { oneDayMs, oneHourMs, oneMinuteMs, oneMonthMs, oneWeekMs, oneYearMs } from '../model/date-time-constants';
+import { addDays, dateTimeEditorState, parseLocalDateTime, toIsoDate } from '../model/date-time-editor-state';
 
 const enterKey = 'Enter';
 const dateTimeFormat = 'yyyy-MM-ddTHH:mm:ss';
 const requiredValidators: ValidatorFn[] = [Validators.required];
-
-// TODO: zpopov: Existing time utils to convert to/from milliseconds may make the code even easier to read
-const oneSecondMs: number = 1 * 1000;
-const oneMinuteMs: number = 60 * oneSecondMs;
-const oneHourMs: number = 60 * oneMinuteMs;
-const oneDayMs: number = 24 * oneHourMs;
-const oneWeekMs: number = 7 * oneDayMs;
-const oneMonthMs: number = 30 * oneDayMs;
-// We ignore leap years when it comes to time-spans.
-const oneYearMs: number = 365 * oneDayMs;
 
 /**
  * Datetime filter component collects filtering criteria for datetime based properties
@@ -413,7 +404,7 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
     if (this.timePredicate) {
       this.secondaryPredicate.value = this.getCustomDate(this.primaryPredicate.value, oneMinuteMs);
     } else {
-      this.secondaryPredicate.value = this.getCustomDate(this.primaryPredicate.value, oneDayMs);
+      this.secondaryPredicate.value = this.getNextDay(this.primaryPredicate.value);
     }
   }
 
@@ -453,7 +444,7 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
     } else {
       fromValue += 'T00:00:00';
       if (adjustTime) {
-        fromValue = this.getCustomDate(fromValue, oneDayMs);
+        fromValue = this.getNextDay(fromValue);
       }
     }
     fromPredicate.value = fromValue;
@@ -469,7 +460,7 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
       toValue = this.getCustomDate(toValue, oneMinuteMs);
     } else {
       toValue += 'T00:00:00';
-      toValue = this.getCustomDate(toValue, oneDayMs);
+      toValue = this.getNextDay(toValue);
     }
     toPredicate.value = toValue;
     return toPredicate;
@@ -486,6 +477,15 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
     const now: Date = new Date();
     const prevDate: Date = new Date(new Date().setTime(now.getTime() - timePeriod));
     return this.datePipe.transform(prevDate, dateTimeFormat);
+  }
+
+  /**
+   * The next calendar day at the same clock time, e.g. "2026-03-29T00:00:00" to "2026-03-30T00:00:00".
+   * Not 24 hours later: on the days daylight saving starts or ends that would miss midnight by an hour.
+   */
+  private getNextDay(baseDate: string): string {
+    const parsed = parseLocalDateTime(baseDate);
+    return parsed ? this.datePipe.transform(addDays(parsed.date, 1), dateTimeFormat) || baseDate : baseDate;
   }
 
   private getCustomDate(baseDate: string, timePeriod: number): string {
