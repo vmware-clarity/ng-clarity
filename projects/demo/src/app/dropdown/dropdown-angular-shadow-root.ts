@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, DOCUMENT, inject, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'clr-dropdown-angular-shadow-root-demo',
@@ -15,15 +15,4 @@ import { ChangeDetectionStrategy, Component, DOCUMENT, inject, ViewEncapsulation
   changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
-export class DropdownAngularShadowRootDemo {
-  private readonly body = inject(DOCUMENT).body;
-
-  // The page's theme and density do not reach into the shadow root, so they are set again inside.
-  get theme() {
-    return this.body.getAttribute('cds-theme');
-  }
-
-  get density() {
-    return this.body.getAttribute('clr-density');
-  }
-}
+export class DropdownAngularShadowRootDemo {}
