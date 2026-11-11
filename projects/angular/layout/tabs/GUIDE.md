@@ -100,7 +100,7 @@ export class Settings {
 ## Rules
 
 - Do not build tabs from `ul.nav` + buttons with manual active state; use `clr-tabs`.
-- Use `<button clrTabLink>`, not an `<a>` with a route. For route-based top navigation use a subnav (see the clr-header skill).
+- Use `<button clrTabLink>`, not an `<a>` with a route. For route-based top navigation use a subnav (see the clr-header guide).
 - Do not use tabs for wizard-like steps, inside cards, or inside modals.
 - Icon-only `clrTabAction` buttons need an `aria-label`.
 
