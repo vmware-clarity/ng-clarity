@@ -44,11 +44,6 @@ import {
   UserPropertyDefinition,
 } from './model/datagrid-filters.interfaces';
 
-/**
- * Composite filters component renders different filters based on the type of
- * the corresponding filterable property, e.g., string, enum, number, etc.
- */
-
 // The array inputs below accept null/undefined (e.g. `[toggleFilters]="config?.toggles"` before the config loads).
 function toPropertyArray(value: FilterablePropertyDefinition[] | null | undefined): FilterablePropertyDefinition[] {
   return value ?? [];
@@ -62,6 +57,10 @@ function toFilterArray(value: PropertyFilter[] | null | undefined): PropertyFilt
   return value ?? [];
 }
 
+/**
+ * Composite filters component renders different filters based on the type of
+ * the corresponding filterable property, e.g., string, enum, number, etc.
+ */
 @Component({
   selector: 'appfx-composite-filter',
   standalone: false,

@@ -25,6 +25,7 @@ Path: `node_modules/@clr/addons/ai/skills/<guide>/SKILL.md`.
 | `appfx-card-container`     | Dashboards of cards users can reorder, show/hide, and keep the layout of (`appfx-card-container`, `persistenceStore`)         |
 | `appfx-certificate-viewer` | X.509 / PEM certificate chains (`appfx-certificate-viewer`)                                                                   |
 | `appfx-datagrid`           | Configuration-driven tables (`appfx-datagrid`, `ColumnDefinition`), advanced filters, server-driven paging, export            |
+| `appfx-datagrid-filters`   | Standalone filter bar (`appfx-datagrid-filters`), presets, toggle pills, `[(propertyFilters)]` sync                           |
 | `appfx-dialog`             | Multi-page tabbed modals (`appfx-dialog`, `Step[]` with `StepModel` pages, async OK/Cancel `CloseHandler`)                    |
 | `appfx-drag-and-drop`      | Connecting CDK drop lists across components by group (`DragAndDropGroupService`, live `cdkDropListConnectedTo` array)         |
 | `appfx-menu`               | Declarative or code-created context menus at a point (`appfx-menu`, actions, submenus, `MenuOutletService`), 400%-zoom reflow |

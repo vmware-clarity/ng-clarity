@@ -197,7 +197,7 @@ export class FiltersGridComponent {
     this.allItems = inventory.allItems;
     this.filteredItems = this.allItems;
     this.initFilterableProperties();
-    this.onPredefinedFilterChange(this.presetFilters);
+    // The predefined filters grid is filled by the filter bar: it emits the preset filters once at start-up.
     this.combinedFilteredItems = this.allItems;
   }
 

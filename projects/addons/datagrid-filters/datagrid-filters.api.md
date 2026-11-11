@@ -84,7 +84,7 @@ class AppfxDatagridFiltersModule {
     // Warning: (ae-forgotten-export) The symbol "i20" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridFiltersModule, [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof DateTimeFilterComponent, typeof DismissableDirective, typeof EnumFilterComponent, typeof FilterFormComponent, typeof FilterPopoverRepositionDirective, typeof GeneralFilterComponent, typeof ManageFilterComponent, typeof SkipFiltersPipe, typeof UsersFilterComponent], [typeof i12.A11yModule, typeof i13.ClrBadge, typeof i14.ClrLabel, typeof i15.ClrCheckboxModule, typeof i15.ClrComboboxModule, typeof i16.ClrIcon, typeof i15.ClrInputModule, typeof i15.ClrRadioModule, typeof i15.ClrSelectModule, typeof i17.ClrSignpostModule, typeof i1.ClrPopoverModuleNext, typeof i19.ClrSpinnerModule, typeof i20.ClrTooltipModule, typeof i21.CommonModule, typeof i22.FormsModule, typeof i22.ReactiveFormsModule], [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof FilterFormComponent]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridFiltersModule, [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof DateTimeFilterComponent, typeof DismissableDirective, typeof EnumFilterComponent, typeof FilterFormComponent, typeof FilterPopoverRepositionDirective, typeof GeneralFilterComponent, typeof ManageFilterComponent, typeof SkipFiltersPipe, typeof UsersFilterComponent], [typeof i12.A11yModule, typeof i13.ClrBadge, typeof i14.ClrLabel, typeof i15.ClrCheckboxModule, typeof i15.ClrComboboxModule, typeof i15.ClrDatepickerModule, typeof i16.ClrIcon, typeof i15.ClrInputModule, typeof i15.ClrRadioModule, typeof i15.ClrSelectModule, typeof i17.ClrSignpostModule, typeof i1.ClrPopoverModuleNext, typeof i19.ClrSpinnerModule, typeof i20.ClrTooltipModule, typeof i21.CommonModule, typeof i22.FormsModule, typeof i22.ReactiveFormsModule], [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof FilterFormComponent]>;
 }
 export { AppfxDatagridFiltersModule }
 export { AppfxDatagridFiltersModule as DatagridFiltersModule }
@@ -140,7 +140,6 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     // Warning: (ae-forgotten-export) The symbol "ClrPopoverService" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
     constructor(filterStrings: DatagridFiltersStrings, cdr: ChangeDetectorRef, popoverService: ClrPopoverService);
     activeFilters(): FilterablePropertyDefinition[];
-    activeToggles: Set<PropertyFilter>;
     // (undocumented)
     get availableProperties(): FilterablePropertyDefinition[];
     clearAll: EventEmitter<void>;
@@ -177,7 +176,15 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     // (undocumented)
     isToggleOn(toggle: PropertyFilter): boolean;
     // (undocumented)
-    ngOnChanges(): void;
+    static ngAcceptInputType_predefinedFilters: FilterablePropertyDefinition[] | null | undefined;
+    // (undocumented)
+    static ngAcceptInputType_propertyFilters: PropertyFilter[] | null | undefined;
+    // (undocumented)
+    static ngAcceptInputType_semiPredefinedFilters: EnumPropertyDefinition[] | null | undefined;
+    // (undocumented)
+    static ngAcceptInputType_toggleFilters: PropertyFilter[] | null | undefined;
+    // (undocumented)
+    ngOnChanges(changes: SimpleChanges): void;
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
@@ -194,12 +201,11 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     readonly popoverPosition = ClrPopoverPosition.BOTTOM_LEFT;
     // (undocumented)
     readonly popoverType = ClrPopoverType.DROPDOWN;
-    predefinedFilters: FilterablePropertyDefinition[];
+    get predefinedFilters(): FilterablePropertyDefinition[];
+    set predefinedFilters(value: FilterablePropertyDefinition[]);
     // (undocumented)
     get predefinedProperties(): FilterablePropertyDefinition[];
-    // (undocumented)
     presetFilters: PropertyFilter[];
-    // (undocumented)
     propertyFilters: PropertyFilter[];
     propertyFiltersChange: EventEmitter<PropertyFilter[]>;
     // (undocumented)
@@ -210,7 +216,8 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
         key: string;
         label: string;
     }[];
-    semiPredefinedFilters: EnumPropertyDefinition[];
+    get semiPredefinedFilters(): EnumPropertyDefinition[];
+    set semiPredefinedFilters(value: EnumPropertyDefinition[]);
     // (undocumented)
     showHideAllFilters(): void;
     // (undocumented)
@@ -228,7 +235,9 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     readonly stringPropertyType: PropertyType;
     // (undocumented)
     toggleFilter(toggle: PropertyFilter): void;
-    toggleFilters: PropertyFilter[];
+    get toggleFilters(): PropertyFilter[];
+    set toggleFilters(value: PropertyFilter[]);
+    toggleKey(filter: PropertyFilter): string;
     // (undocumented)
     toggleOption(property: EnumPropertyDefinition, key: string): void;
     toggleText(toggle: PropertyFilter): string;
@@ -243,7 +252,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     // (undocumented)
     get visibleProperties(): FilterablePropertyDefinition[];
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<CompositeFiltersComponent, "appfx-composite-filter", never, { "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "presetFilters": { "alias": "presetFilters"; "required": false; }; "predefinedFilters": { "alias": "predefinedFilters"; "required": false; }; "semiPredefinedFilters": { "alias": "semiPredefinedFilters"; "required": false; }; "toggleFilters": { "alias": "toggleFilters"; "required": false; }; "externalCriteriaActive": { "alias": "externalCriteriaActive"; "required": false; }; }, { "clearAll": "clearAll"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<CompositeFiltersComponent, "appfx-composite-filter", never, { "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "presetFilters": { "alias": "presetFilters"; "required": false; }; "propertyFilters": { "alias": "propertyFilters"; "required": false; }; "externalCriteriaActive": { "alias": "externalCriteriaActive"; "required": false; }; "predefinedFilters": { "alias": "predefinedFilters"; "required": false; }; "semiPredefinedFilters": { "alias": "semiPredefinedFilters"; "required": false; }; "toggleFilters": { "alias": "toggleFilters"; "required": false; }; }, { "clearAll": "clearAll"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<CompositeFiltersComponent, never>;
 }
@@ -278,6 +287,8 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
     onSearchTermChanged(searchTerm: string): void;
     predefinedFilters: FilterablePropertyDefinition[];
     presetFilters: PropertyFilter[];
+    get propertyFilters(): PropertyFilter[];
+    set propertyFilters(filters: PropertyFilter[] | null | undefined);
     // (undocumented)
     propertyFiltersChange: EventEmitter<PropertyFilter[]>;
     // (undocumented)
@@ -290,7 +301,7 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
     semiPredefinedFilters: EnumPropertyDefinition[];
     toggleFilters: PropertyFilter[];
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<DataGridFiltersComponent, "appfx-datagrid-filters", never, { "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "presetFilters": { "alias": "presetFilters"; "required": false; }; "predefinedFilters": { "alias": "predefinedFilters"; "required": false; }; "semiPredefinedFilters": { "alias": "semiPredefinedFilters"; "required": false; }; "toggleFilters": { "alias": "toggleFilters"; "required": false; }; "filterMode": { "alias": "filterMode"; "required": false; }; }, { "searchTermChange": "searchTermChange"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DataGridFiltersComponent, "appfx-datagrid-filters", never, { "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "presetFilters": { "alias": "presetFilters"; "required": false; }; "predefinedFilters": { "alias": "predefinedFilters"; "required": false; }; "semiPredefinedFilters": { "alias": "semiPredefinedFilters"; "required": false; }; "toggleFilters": { "alias": "toggleFilters"; "required": false; }; "filterMode": { "alias": "filterMode"; "required": false; }; "propertyFilters": { "alias": "propertyFilters"; "required": false; }; }, { "searchTermChange": "searchTermChange"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DataGridFiltersComponent, never>;
 }
@@ -313,6 +324,8 @@ export class DatagridFiltersStrings {
     readonly clearAllButtonLabel: string;
     readonly clearFilter: string;
     readonly dateFormat: string;
+    readonly dateRangeLabel: string;
+    readonly dateRangeValidatorMessage: string;
     readonly dateValidatorMessage: string;
     // (undocumented)
     readonly domain: string;
@@ -341,8 +354,6 @@ export class DatagridFiltersStrings {
     getConjoinerDisplayName(conjoiner: LogicalOperator): string;
     // (undocumented)
     getOperatorDisplayName(operator: ComparisonOperator): string;
-    // Warning: (ae-forgotten-export) The symbol "TimeSpan" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
-    //
     // (undocumented)
     getTimeSpanDisplayName(timeSpan: TimeSpan): string;
     // (undocumented)
@@ -486,6 +497,19 @@ export abstract class FilterablePropertyDefinition {
 }
 
 // @public
+export interface FilterEditorState {
+    operator?: ComparisonOperator;
+    // (undocumented)
+    timeSpan?: TimeSpan;
+    // (undocumented)
+    timeSpanValue?: number;
+    units?: Unit[];
+    value?: string;
+    values?: any[];
+    valueTo?: string;
+}
+
+// @public
 export class FilterFormComponent {
     constructor(filterStrings: DatagridFiltersStrings);
     apply: EventEmitter<void>;
@@ -535,6 +559,7 @@ export class NumericPropertyDefinition extends FilterablePropertyDefinition {
 // @public (undocumented)
 export class PropertyFilter {
     criteria: PropertyPredicate[];
+    editorState?: FilterEditorState;
     operator: LogicalOperator;
 }
 
@@ -566,6 +591,22 @@ export class StringPropertyDefinition extends FilterablePropertyDefinition {
     getOperators(): ComparisonOperator[];
     logicalOperator: LogicalOperator | undefined;
     singleCondition: boolean;
+}
+
+// @public (undocumented)
+export enum TimeSpan {
+    // (undocumented)
+    Days = 2,
+    // (undocumented)
+    Hours = 1,
+    // (undocumented)
+    Minutes = 0,
+    // (undocumented)
+    Months = 4,
+    // (undocumented)
+    Weeks = 3,
+    // (undocumented)
+    Years = 5
 }
 
 // @public (undocumented)
