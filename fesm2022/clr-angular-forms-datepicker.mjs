@@ -1,12 +1,12 @@
 import * as i5$1 from '@angular/common';
 import { getLocaleDateFormat, FormatWidth, getLocaleDayNames, FormStyle, TranslationWidth, getLocaleMonthNames, getLocaleFirstDayOfWeek, isPlatformBrowser, CommonModule } from '@angular/common';
 import * as i0 from '@angular/core';
-import { Injectable, LOCALE_ID, Inject, DOCUMENT, PLATFORM_ID, HostListener, ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild, Optional, forwardRef, HostBinding, Self, Directive, NgModule } from '@angular/core';
+import { Injectable, LOCALE_ID, Inject, DOCUMENT, afterNextRender, PLATFORM_ID, HostListener, ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild, Optional, forwardRef, HostBinding, Self, Directive, NgModule } from '@angular/core';
 import * as i7 from '@clr/angular/forms/common';
 import { ClrAbstractContainer, ControlIdService, ControlClassService, FormsFocusService, NgControlService, WrappedFormControl, ClrCommonFormsModule } from '@clr/angular/forms/common';
 import * as i4 from '@clr/angular/utils';
 import { DATEPICKER_ENABLE_BREAKPOINT, Keys, isBooleanAttributeSet, CdkTrapFocusModule, ClrHostWrappingModule, ClrConditionalModule } from '@clr/angular/utils';
-import { first, filter, startWith } from 'rxjs/operators';
+import { startWith, filter } from 'rxjs/operators';
 import * as i1 from '@clr/angular/popover/common';
 import { ClrPopoverPosition, ClrPopoverType, DROPDOWN_POSITIONS, ClrPopoverHostDirective, ClrPopoverModuleNext } from '@clr/angular/popover/common';
 import { Subject, tap } from 'rxjs';
@@ -937,36 +937,31 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImpor
  * This service focuses the day that is focusable in the calendar.
  */
 class DatepickerFocusService {
-    constructor(_ngZone, platformId) {
-        this._ngZone = _ngZone;
+    constructor(injector, platformId) {
+        this.injector = injector;
         this.platformId = platformId;
     }
     focusCell(elRef) {
-        this._ngZone.runOutsideAngular(() => {
-            this.ngZoneIsStableInBrowser().subscribe(() => {
-                const focusEl = elRef.nativeElement.querySelector('[tabindex="0"]');
-                if (focusEl) {
-                    focusEl.focus();
-                }
+        if (isPlatformBrowser(this.platformId)) {
+            afterNextRender(() => elRef.nativeElement.querySelector('[tabindex="0"]')?.focus(), {
+                injector: this.injector,
             });
-        });
+        }
     }
     focusInput(element) {
-        this._ngZone.runOutsideAngular(() => this.ngZoneIsStableInBrowser().subscribe(() => element.focus()));
+        if (isPlatformBrowser(this.platformId)) {
+            afterNextRender(() => element.focus(), { injector: this.injector });
+        }
     }
     elementIsFocused(element) {
         return isPlatformBrowser(this.platformId) && document.activeElement === element;
     }
-    ngZoneIsStableInBrowser() {
-        // Credit: Material: https://github.com/angular/material2/blob/master/src/lib/datepicker/calendar.ts
-        return this._ngZone.onStable.asObservable().pipe(first(), filter(() => isPlatformBrowser(this.platformId)));
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: DatepickerFocusService, deps: [{ token: i0.NgZone }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: DatepickerFocusService, deps: [{ token: i0.Injector }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Injectable }); }
     static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: DatepickerFocusService }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: DatepickerFocusService, decorators: [{
             type: Injectable
-        }], ctorParameters: () => [{ type: i0.NgZone }, { type: undefined, decorators: [{
+        }], ctorParameters: () => [{ type: i0.Injector }, { type: undefined, decorators: [{
                     type: Inject,
                     args: [PLATFORM_ID]
                 }] }] });

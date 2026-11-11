@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { AfterViewInit, Renderer2, ElementRef, NgZone, OnInit, OnDestroy, EventEmitter, ViewContainerRef, Injector, Type } from '@angular/core';
+import { AfterViewInit, Renderer2, ElementRef, Injector, OnInit, OnDestroy, EventEmitter, ViewContainerRef, Type } from '@angular/core';
 import { NgControl, Validator, AbstractControl, ValidationErrors } from '@angular/forms';
 import * as i17 from '@clr/angular/forms/common';
 import { ClrAbstractContainer, ControlClassService, LayoutService, NgControlService, FormsFocusService, WrappedFormControl } from '@clr/angular/forms/common';
@@ -383,13 +383,12 @@ declare class ClrDateContainer extends ClrAbstractContainer implements AfterView
  * This service focuses the day that is focusable in the calendar.
  */
 declare class DatepickerFocusService {
-    private _ngZone;
+    private injector;
     private platformId;
-    constructor(_ngZone: NgZone, platformId: any);
+    constructor(injector: Injector, platformId: any);
     focusCell(elRef: ElementRef<HTMLElement>): void;
     focusInput(element: HTMLInputElement): void;
     elementIsFocused(element: HTMLInputElement): boolean;
-    private ngZoneIsStableInBrowser;
     static ɵfac: i0.ɵɵFactoryDeclaration<DatepickerFocusService, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<DatepickerFocusService>;
 }
