@@ -118,6 +118,17 @@ export default function (): void {
       expect(this.popoverService.open).toBeFalse();
     });
 
+    it('removes keyboard and blur listeners when destroyed', function (this: TestContext) {
+      this.focusHandler.ngOnDestroy();
+      this.testComponent.textInput.nativeElement.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+      expect(this.popoverService.open).toBeFalse();
+      this.popoverService.open = true;
+      this.testComponent.textInput.nativeElement.dispatchEvent(new FocusEvent('blur'));
+      this.testComponent.trigger.nativeElement.dispatchEvent(new FocusEvent('blur'));
+      this.testComponent.listbox.nativeElement.dispatchEvent(new FocusEvent('blur'));
+      expect(this.popoverService.open).toBeTrue();
+    });
+
     it('can set focus on textInput', function (this: TestContext) {
       spyOn(this.testComponent.textInput.nativeElement, 'focus');
       this.focusHandler.focusInput();
