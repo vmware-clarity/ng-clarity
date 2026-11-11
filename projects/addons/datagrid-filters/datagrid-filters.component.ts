@@ -56,7 +56,9 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
   @Input() filterableProperties: FilterablePropertyDefinition[];
 
   /**
-   * Array of pre-selected filters
+   * Filters applied when the filter bar starts, e.g. a fixed default view. Read once at start-up:
+   * later changes are ignored. For filters the host keeps in sync, use `propertyFilters`.
+   * `presetFilters` have precedence over `propertyFilters` on initial load.
    */
   @Input() presetFilters: PropertyFilter[];
 
@@ -91,7 +93,7 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
   // on every 2 sec.
   private searchTermDebouncer: Subject<string> = new Subject<string>();
   private unsubscribeSubject: Subject<void> = new Subject<void>();
-  private appliedFiltersCount = 0;
+  private _propertyFilters: PropertyFilter[] = [];
 
   constructor(public filterStrings: DatagridFiltersStrings) {}
 
@@ -103,6 +105,19 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
     if (filterMode !== null && filterMode !== undefined) {
       this.mode = filterMode;
     }
+  }
+
+  /**
+   * The active filters, including toggle filters that are ON. Supports two-way binding:
+   * `[(propertyFilters)]="filters"`. A new value replaces the active filters without emitting
+   * `propertyFiltersChange`.
+   */
+  @Input()
+  get propertyFilters(): PropertyFilter[] {
+    return this._propertyFilters;
+  }
+  set propertyFilters(filters: PropertyFilter[] | null | undefined) {
+    this._propertyFilters = filters ?? [];
   }
 
   ngAfterViewInit() {
@@ -127,8 +142,8 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
       this.searchTermDebouncer.next(this.searchTerm);
     }
     // Clear applied filters when switching to quick mode
-    if (this.selectedFilterMode === FilterMode.Quick && this.appliedFiltersCount > 0) {
-      this.appliedFiltersCount = 0;
+    if (this.selectedFilterMode === FilterMode.Quick && this.propertyFilters.length > 0) {
+      this.propertyFilters = [];
       this.propertyFiltersChange.emit([]);
     }
   }
@@ -143,7 +158,8 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
   }
 
   onFilterCriteriaChange(propertyFilters: PropertyFilter[]) {
-    this.appliedFiltersCount = propertyFilters.length;
+    // Keep the last emitted state, so the filter bar starts from it when it is shown again (e.g. after Quick mode).
+    this.propertyFilters = propertyFilters;
     this.propertyFiltersChange.emit(propertyFilters);
   }
 

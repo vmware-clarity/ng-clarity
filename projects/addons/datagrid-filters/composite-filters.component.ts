@@ -10,6 +10,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   ElementRef,
   EventEmitter,
   inject,
@@ -73,7 +74,19 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   // Array of filterable properties
   @Input() filterableProperties: FilterablePropertyDefinition[] = [];
 
+  /**
+   * Filters applied when the filter bar starts, e.g. a fixed default view. Read once, in `ngOnInit`:
+   * later changes are ignored. For filters the host keeps in sync, use `propertyFilters`.
+   */
   @Input() presetFilters: PropertyFilter[];
+
+  /**
+   * The active filters, including toggle filters that are ON. Supports two-way binding:
+   * `[(propertyFilters)]="filters"`. A new value replaces the active filters without emitting
+   * `propertyFiltersChange`, unless invalid filters on semi-predefined fields had to be removed.
+   * At start-up, a `presetFilters` filter wins over one here for the same field.
+   */
+  @Input({ transform: toFilterArray }) propertyFilters: PropertyFilter[] = [];
 
   /**
    * Other criteria (e.g. the quick search in combined mode) are active, so Clear all stays available
@@ -105,8 +118,6 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   numericProperty: NumericPropertyDefinition;
   dateTimeProperty: DateTimePropertyDefinition;
   userProperty: UserPropertyDefinition;
-  // List of active filters to be sent to the hosting view
-  propertyFilters: PropertyFilter[] = [];
   collapsedFilters = false;
   showHideFiltersArrowDir = 'left';
   showHideFiltersLabel: string;
@@ -115,6 +126,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   @ViewChild(ClrCombobox) private fieldCombobox: ClrCombobox<FilterablePropertyDefinition>;
   @ViewChild('addButton', { static: true }) private addButton: ElementRef<HTMLButtonElement>;
   private readonly injector = inject(Injector);
+  private readonly destroyRef = inject(DestroyRef);
   /** Keys (see toggleKey) of the toggle filters that are ON. */
   private rawPredefinedFilters: FilterablePropertyDefinition[] = [];
   private rawSemiPredefinedFilters: EnumPropertyDefinition[] = [];
@@ -331,6 +343,14 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
         this.emitFilters();
       }
     }
+    if (changes['propertyFilters'] && this.initialized) {
+      // The host replaced the active filters. The value is the full state, so it also sets which toggles are ON.
+      this.applyFilters(changes['propertyFilters'].currentValue ?? []);
+      if (this.removeInvalidSemiFilters()) {
+        this.emitFilters();
+      }
+      this.updateShowHideLabel();
+    }
     if (changes['toggleFilters']) {
       // Drop ON states of toggles that are no longer configured.
       const keys = new Set(this.toggleFilters.map(toggle => this.toggleKey(toggle)));
@@ -342,6 +362,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     }
     // Only these inputs change which fields Add filter can offer.
     if (
+      changes['propertyFilters'] ||
       changes['filterableProperties'] ||
       changes['predefinedFilters'] ||
       changes['semiPredefinedFilters'] ||
@@ -356,21 +377,27 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
       this.selectedFilterableProperty = this.filterableProperties[0];
       this.onPropertyChange();
     }
-    if (this.presetFilters) {
-      const presets = this.presetFilters.filter(filter => filter.criteria.length > 0);
-      // A preset with exactly a toggle's criteria turns that toggle ON. Any other preset stays a normal pill.
-      const toggleKeys = new Set(this.toggleFilters.map(toggle => this.toggleKey(toggle)));
-      this.propertyFilters = presets.filter(filter => {
-        const key = this.toggleKey(filter);
-        if (toggleKeys.has(key)) {
-          this.activeToggleKeys.add(key);
-          return false;
-        }
-        return true;
-      });
-      this.removeInvalidSemiFilters();
-    }
+    // A preset wins over a propertyFilters filter for the same field.
+    const presets = this.presetFilters ?? [];
+    const presetFields = new Set(presets.map(filter => filter.criteria?.[0]?.filterableProperty?.property));
+    const bound = this.propertyFilters.filter(
+      filter => !presetFields.has(filter.criteria?.[0]?.filterableProperty?.property)
+    );
+    const passedIn = this.propertyFilters;
+    this.applyFilters([...presets, ...bound]);
+    this.removeInvalidSemiFilters();
     this.initialized = true;
+    if (!this.sameFilters(this.currentFilters(), passedIn)) {
+      // Presets or clean-up changed what the host passed in: tell it once, so a [(propertyFilters)] binding is in sync.
+      // Deferred, because emitting during the first change detection would change a parent value already checked.
+      let destroyed = false;
+      this.destroyRef.onDestroy(() => (destroyed = true));
+      Promise.resolve().then(() => {
+        if (!destroyed) {
+          this.emitFilters();
+        }
+      });
+    }
     this.preselectFirstProperty();
   }
 
@@ -506,12 +533,45 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
       .filter((property): property is FilterablePropertyDefinition => !!property);
   }
 
+  /**
+   * Sets the active filters from a full list, as emitted by `propertyFiltersChange`: a filter with exactly a toggle's
+   * criteria turns that toggle ON, any other non-empty filter becomes a pill. Copies the list, so the host's array
+   * is never changed.
+   */
+  private applyFilters(filters: PropertyFilter[]): void {
+    const toggleKeys = new Set(this.toggleFilters.map(toggle => this.toggleKey(toggle)));
+    this.activeToggleKeys.clear();
+    this.propertyFilters = filters.filter(filter => {
+      if (!filter?.criteria?.length) {
+        return false;
+      }
+      const key = this.toggleKey(filter);
+      if (toggleKeys.has(key)) {
+        this.activeToggleKeys.add(key);
+        return false;
+      }
+      return true;
+    });
+  }
+
   /** Emits the user filters plus the toggle filters that are ON. */
   private emitFilters(): void {
-    this.propertyFiltersChange.emit([
-      ...this.propertyFilters,
-      ...this.toggleFilters.filter(toggle => this.isToggleOn(toggle)),
-    ]);
+    this.propertyFiltersChange.emit(this.currentFilters());
+  }
+
+  /** The user filters plus the toggle filters that are ON, as emitted. */
+  private currentFilters(): PropertyFilter[] {
+    return [...this.propertyFilters, ...this.toggleFilters.filter(toggle => this.isToggleOn(toggle))];
+  }
+
+  /** Same filters by criteria (field, operator, value and logical operator), in any order. */
+  private sameFilters(first: PropertyFilter[], second: PropertyFilter[]): boolean {
+    const keys = (filters: PropertyFilter[]) =>
+      filters
+        .filter(filter => filter?.criteria?.length)
+        .map(filter => this.toggleKey(filter))
+        .sort();
+    return JSON.stringify(keys(first)) === JSON.stringify(keys(second));
   }
 
   private focusAddButton(): void {

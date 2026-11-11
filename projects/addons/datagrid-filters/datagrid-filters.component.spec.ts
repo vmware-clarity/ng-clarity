@@ -7,8 +7,10 @@
 
 import { A11yModule } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectorRef } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import { ClrComboboxModule, ClrInputModule, ClrSelectModule } from '@clr/angular/forms';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrPopoverModuleNext } from '@clr/angular/popover/common';
@@ -19,7 +21,8 @@ import { CompositeFiltersComponent } from './composite-filters.component';
 import { DatagridFiltersStrings } from './datagrid-filters-strings.service';
 import { DataGridFiltersComponent } from './datagrid-filters.component';
 import { DismissableDirective } from './manage-filters/dismissable.directive';
-import { FilterMode } from './model/datagrid-filters.enums';
+import { ComparisonOperator, FilterMode, LogicalOperator } from './model/datagrid-filters.enums';
+import { PropertyFilter, StringPropertyDefinition } from './model/datagrid-filters.interfaces';
 
 const testInput = 'Test input';
 
@@ -122,10 +125,56 @@ describe('DataGridFiltersComponent', () => {
   });
   it('clears advanced filters on mode switch', function (this: ThisTest) {
     spyOn(this.component.propertyFiltersChange, 'emit');
-    this.component['appliedFiltersCount'] = 3;
+    const nameProperty = new StringPropertyDefinition('Name', 'name', [ComparisonOperator.Contains]);
+    this.component.propertyFilters = [
+      {
+        operator: LogicalOperator.And,
+        criteria: [{ filterableProperty: nameProperty, operator: ComparisonOperator.Contains, value: 'vm' }],
+      },
+    ];
     this.component.selectedFilterMode = FilterMode.Quick;
     this.component.onFilterModeChange();
     expect(this.component.propertyFiltersChange.emit).toHaveBeenCalledWith([]);
+    expect(this.component.propertyFilters).toEqual([]);
+  });
+  it('does not emit on the switch to quick mode when no filters are applied', function (this: ThisTest) {
+    spyOn(this.component.propertyFiltersChange, 'emit');
+    this.component.selectedFilterMode = FilterMode.Quick;
+    this.component.onFilterModeChange();
+    expect(this.component.propertyFiltersChange.emit).not.toHaveBeenCalled();
+  });
+  it('passes propertyFilters to the filter bar and resets them when switching to quick mode', function (this: ThisTest) {
+    const nameProperty = new StringPropertyDefinition('Name', 'name', [ComparisonOperator.Contains]);
+    const nameFilter: PropertyFilter = {
+      operator: LogicalOperator.And,
+      criteria: [{ filterableProperty: nameProperty, operator: ComparisonOperator.Contains, value: 'vm' }],
+    };
+    this.component.filterableProperties = [nameProperty];
+    this.component.mode = FilterMode.Advanced;
+    this.component.selectedFilterMode = FilterMode.Advanced;
+    this.component.propertyFilters = [nameFilter];
+    this.fixture.detectChanges();
+    // The wrapper is OnPush: the mode select marks it in the app, so mark it here after changing fields directly.
+    const refresh = () => {
+      this.fixture.componentRef.injector.get(ChangeDetectorRef).markForCheck();
+      this.fixture.detectChanges();
+    };
+    const bar = (): CompositeFiltersComponent =>
+      this.fixture.debugElement.query(By.directive(CompositeFiltersComponent))?.componentInstance;
+    expect(bar().propertyFilters).toEqual([nameFilter]);
+
+    spyOn(this.component.propertyFiltersChange, 'emit');
+    this.component.selectedFilterMode = FilterMode.Quick;
+    this.component.onFilterModeChange();
+    refresh();
+    expect(this.component.propertyFiltersChange.emit).toHaveBeenCalledWith([]);
+    expect(this.component.propertyFilters).toEqual([]);
+    expect(bar()).toBeUndefined();
+
+    // Back in advanced mode, the filter bar starts from the cleared state, not the old filters.
+    this.component.selectedFilterMode = FilterMode.Advanced;
+    refresh();
+    expect(bar().propertyFilters).toEqual([]);
   });
   it('emits an event on search term change', fakeAsync(function (this: ThisTest) {
     spyOn(this.component, 'onSearchTermChanged').and.callThrough();

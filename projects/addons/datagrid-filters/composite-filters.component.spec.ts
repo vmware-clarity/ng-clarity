@@ -101,6 +101,24 @@ class CompositeFiltersHostComponent {
   presetFilters = [enumPropertyFilter];
 }
 
+/** A host that keeps the active filters in sync with two-way binding. */
+@Component({
+  template: `<appfx-composite-filter
+    [filterableProperties]="filterableProperties"
+    [presetFilters]="presetFilters"
+    [toggleFilters]="toggleFilters"
+    [(propertyFilters)]="filters"
+  ></appfx-composite-filter>`,
+  changeDetection: ChangeDetectionStrategy.Default,
+  standalone: false,
+})
+class TwoWayHostComponent {
+  filterableProperties = filterableProperties;
+  presetFilters: PropertyFilter[] = [];
+  toggleFilters: PropertyFilter[] = [];
+  filters: PropertyFilter[] = [];
+}
+
 export interface ThisTest {
   fixture: ComponentFixture<CompositeFiltersComponent>;
   component: CompositeFiltersComponent;
@@ -128,6 +146,7 @@ describe('CompositeFiltersComponent', () => {
       declarations: [
         CompositeFiltersComponent,
         CompositeFiltersHostComponent,
+        TwoWayHostComponent,
         DismissableDirective,
         EnumFilterComponent,
         FilterFormComponent,
@@ -441,6 +460,114 @@ describe('CompositeFiltersComponent', () => {
       await host.whenStable();
       expect(document.querySelector('.filter-popover')).toBeNull();
       expect(addButton.getAttribute('aria-expanded')).toBe('false');
+      host.destroy();
+    });
+  });
+
+  describe('[(propertyFilters)] two-way binding', () => {
+    const pillNames = (host: ComponentFixture<TwoWayHostComponent>) =>
+      Array.from<HTMLElement>(host.nativeElement.querySelectorAll('appfx-manage-filter .filter-pill-text')).map(pill =>
+        pill.textContent.trim()
+      );
+    const bar = (host: ComponentFixture<TwoWayHostComponent>): CompositeFiltersComponent =>
+      host.debugElement.query(By.directive(CompositeFiltersComponent)).componentInstance;
+    const redToggle = (): PropertyFilter => ({
+      operator: LogicalOperator.Or,
+      criteria: [{ filterableProperty: enumProperty, operator: ComparisonOperator.Equals, value: 'red' }],
+    });
+
+    it('shows filters set by the host without emitting them back', function (this: ThisTest) {
+      const host = TestBed.createComponent(TwoWayHostComponent);
+      host.detectChanges();
+      spyOn(bar(host).propertyFiltersChange, 'emit');
+
+      host.componentInstance.filters = [stringPropertyFilter];
+      host.detectChanges();
+      expect(pillNames(host)).toEqual([jasmine.stringContaining(stringProperty.displayName)]);
+      expect(bar(host).propertyFiltersChange.emit).not.toHaveBeenCalled();
+      host.destroy();
+    });
+
+    it('turns a toggle ON when the host value contains its criteria, and OFF when it no longer does', function (this: ThisTest) {
+      const host = TestBed.createComponent(TwoWayHostComponent);
+      host.componentInstance.toggleFilters = [redToggle()];
+      host.detectChanges();
+
+      host.componentInstance.filters = [redToggle()];
+      host.detectChanges();
+      expect(bar(host).isToggleOn(redToggle())).toBeTrue();
+      expect(pillNames(host)).toEqual([]);
+
+      host.componentInstance.filters = [];
+      host.detectChanges();
+      expect(bar(host).isToggleOn(redToggle())).toBeFalse();
+      host.destroy();
+    });
+
+    it('updates the host value on user changes and never changes the host array', function (this: ThisTest) {
+      const host = TestBed.createComponent(TwoWayHostComponent);
+      const original = [stringPropertyFilter];
+      host.componentInstance.filters = original;
+      host.detectChanges();
+
+      bar(host).onFilterCriteriaChange(enumPropertyFilter);
+      host.detectChanges();
+      expect(host.componentInstance.filters).toEqual([stringPropertyFilter, enumPropertyFilter]);
+      expect(original).toEqual([stringPropertyFilter]);
+      expect(pillNames(host).length).toBe(2);
+
+      bar(host).clearAllFilters();
+      host.detectChanges();
+      expect(host.componentInstance.filters).toEqual([]);
+      host.destroy();
+    });
+
+    it('emits once at start-up when presets change what the host passed in', async function (this: ThisTest) {
+      const host = TestBed.createComponent(TwoWayHostComponent);
+      const presetForName: PropertyFilter = {
+        operator: LogicalOperator.And,
+        criteria: [{ filterableProperty: stringProperty, operator: ComparisonOperator.Contains, value: 'preset' }],
+      };
+      host.componentInstance.presetFilters = [presetForName];
+      host.componentInstance.filters = [stringPropertyFilter, enumPropertyFilter];
+      const emitted: PropertyFilter[][] = [];
+      host.detectChanges();
+      bar(host).propertyFiltersChange.subscribe(filters => emitted.push(filters));
+      await host.whenStable();
+      host.detectChanges();
+
+      expect(emitted).toEqual([[presetForName, enumPropertyFilter]]);
+      expect(host.componentInstance.filters).toEqual([presetForName, enumPropertyFilter]);
+      host.destroy();
+    });
+
+    it('does not emit at start-up when the result is what the host passed in', async function (this: ThisTest) {
+      const host = TestBed.createComponent(TwoWayHostComponent);
+      host.componentInstance.toggleFilters = [redToggle()];
+      // New but equal objects, in another order than the bar emits them (pills first, then toggles).
+      host.componentInstance.filters = [redToggle(), stringPropertyFilter];
+      host.detectChanges();
+      spyOn(bar(host).propertyFiltersChange, 'emit');
+      await host.whenStable();
+      expect(bar(host).propertyFiltersChange.emit).not.toHaveBeenCalled();
+      host.destroy();
+    });
+
+    it('lets a preset win over a bound filter for the same field at start-up', function (this: ThisTest) {
+      const host = TestBed.createComponent(TwoWayHostComponent);
+      const presetForName: PropertyFilter = {
+        operator: LogicalOperator.And,
+        criteria: [{ filterableProperty: stringProperty, operator: ComparisonOperator.Contains, value: 'preset' }],
+      };
+      host.componentInstance.presetFilters = [presetForName];
+      host.componentInstance.filters = [stringPropertyFilter, enumPropertyFilter];
+      host.detectChanges();
+      expect(bar(host).propertyFilters).toEqual([presetForName, enumPropertyFilter]);
+
+      // Presets are read once: a later change is ignored.
+      host.componentInstance.presetFilters = [];
+      host.detectChanges();
+      expect(bar(host).propertyFilters).toEqual([presetForName, enumPropertyFilter]);
       host.destroy();
     });
   });
