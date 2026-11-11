@@ -158,7 +158,7 @@ export class WizardNavigationService implements OnDestroy {
   /**
    * @memberof WizardNavigationService
    */
-  private _currentPage: ClrWizardPage;
+  private _currentPage: ClrWizardPage | undefined;
 
   /**
    *
@@ -200,7 +200,7 @@ export class WizardNavigationService implements OnDestroy {
   ) {
     this.previousButtonSubscription = buttonService.previousBtnClicked.subscribe(() => {
       const currentPage = this.currentPage;
-      if (this.currentPageIsFirst || currentPage.previousStepDisabled) {
+      if (!currentPage || this.currentPageIsFirst || currentPage.previousStepDisabled) {
         return;
       }
       currentPage.previousButtonClicked.emit(currentPage);
@@ -222,18 +222,20 @@ export class WizardNavigationService implements OnDestroy {
     });
 
     this.customButtonSubscription = buttonService.customBtnClicked.subscribe((type: string) => {
-      if (!this.wizardStopNavigation) {
-        this.currentPage.customButtonClicked.emit(type);
+      const currentPage = this.currentPage;
+      if (currentPage && !this.wizardStopNavigation) {
+        currentPage.customButtonClicked.emit(type);
       }
     });
 
     this.cancelButtonSubscription = buttonService.cancelBtnClicked.subscribe(() => {
-      if (this.wizardStopNavigation) {
+      const currentPage = this.currentPage;
+      if (!currentPage || this.wizardStopNavigation) {
         return;
       }
 
-      if (this.currentPage.preventDefault) {
-        this.currentPage.pageOnCancel.emit(this.currentPage);
+      if (currentPage.preventDefault) {
+        currentPage.pageOnCancel.emit(currentPage);
       } else {
         this.cancel();
       }
@@ -258,7 +260,7 @@ export class WizardNavigationService implements OnDestroy {
   /**
    * @memberof WizardNavigationService
    */
-  get currentPageTitle(): TemplateRef<any> {
+  get currentPageTitle(): TemplateRef<any> | null {
     // when the querylist of pages is empty. this is the first place it fails...
     if (!this.currentPage) {
       return null;
@@ -295,7 +297,7 @@ export class WizardNavigationService implements OnDestroy {
    *
    * @memberof WizardNavigationService
    */
-  get currentPage(): ClrWizardPage {
+  get currentPage(): ClrWizardPage | null {
     if (!this._currentPage) {
       return null;
     }
@@ -405,11 +407,11 @@ export class WizardNavigationService implements OnDestroy {
    * @memberof WizardNavigationService
    */
   forceNext(): void {
-    const currentPage: ClrWizardPage = this.currentPage;
-    const nextPage: ClrWizardPage = this.pageCollection.getNextPage(currentPage);
+    const currentPage = this.currentPage;
+    const nextPage = currentPage ? this.pageCollection.getNextPage(currentPage) : null;
 
     // catch errant null or undefineds that creep in
-    if (!nextPage) {
+    if (!currentPage || !nextPage) {
       throw new Error('The wizard has no next page to go to.');
     }
 
@@ -433,9 +435,9 @@ export class WizardNavigationService implements OnDestroy {
    * @memberof WizardNavigationService
    */
   checkAndCommitCurrentPage(buttonType: string): void {
-    const currentPage: ClrWizardPage = this.currentPage;
+    const currentPage = this.currentPage;
 
-    if (!currentPage.readyToComplete || this.wizardStopNavigation) {
+    if (!currentPage || !currentPage.readyToComplete || this.wizardStopNavigation) {
       return;
     }
 
@@ -519,11 +521,12 @@ export class WizardNavigationService implements OnDestroy {
    * @memberof WizardNavigationService
    */
   previous(): void {
-    if (this.currentPageIsFirst || this.wizardStopNavigation) {
+    const currentPage = this.currentPage;
+    if (!currentPage || this.currentPageIsFirst || this.wizardStopNavigation) {
       return;
     }
 
-    const previousPage = this.pageCollection.getPreviousPage(this.currentPage);
+    const previousPage = this.pageCollection.getPreviousPage(currentPage);
 
     if (!previousPage) {
       return;
@@ -532,7 +535,7 @@ export class WizardNavigationService implements OnDestroy {
     this._movedToPreviousPage.next(true);
 
     if (this.forceForwardNavigation) {
-      this.currentPage.completed = false;
+      currentPage.completed = false;
     }
 
     this.currentPage = previousPage;
@@ -581,14 +584,14 @@ export class WizardNavigationService implements OnDestroy {
 
     // no point in going to the current page. you're there already!
     // also hard block on any navigation when stopNavigation is true
-    if (pageToGoTo === currentPage || this.wizardStopNavigation) {
+    if (!currentPage || pageToGoTo === currentPage || this.wizardStopNavigation) {
       return;
     }
 
     const currentPageIndex = myPages.getPageIndex(currentPage);
     const goToPageIndex = myPages.getPageIndex(pageToGoTo);
     const goingForward = goToPageIndex > currentPageIndex;
-    const pagesToCheck = myPages.getPageRangeFromPages(this.currentPage, pageToGoTo);
+    const pagesToCheck = myPages.getPageRangeFromPages(currentPage, pageToGoTo);
     const okayToMove = lazyComplete || this.canGoTo(pagesToCheck);
 
     if (!okayToMove) {
@@ -661,7 +664,7 @@ export class WizardNavigationService implements OnDestroy {
    */
   setLastEnabledPageCurrent(): void {
     const allPages: ClrWizardPage[] = this.pageCollection.pagesAsArray;
-    let lastCompletedPageIndex: number = null;
+    let lastCompletedPageIndex: number | null = null;
 
     allPages.forEach((page: ClrWizardPage, index: number) => {
       if (page.completed) {
@@ -700,7 +703,8 @@ export class WizardNavigationService implements OnDestroy {
 
     this.pageCollection.updateCompletedStates();
 
-    const currentPageRemoved = this.pageCollection.pagesAsArray.indexOf(this.currentPage) < 0;
+    const currentPage = this.currentPage;
+    const currentPageRemoved = !currentPage || this.pageCollection.pagesAsArray.indexOf(currentPage) < 0;
     if (currentPageRemoved) {
       toSetCurrent = this.pageCollection.findFirstIncompletePage();
       this.currentPage = toSetCurrent;

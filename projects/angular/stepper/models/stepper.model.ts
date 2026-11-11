@@ -14,14 +14,14 @@ export class StepperModel extends CollapsiblePanelGroupModel {
   protected override _panels: { [id: string]: StepperPanelModel } = {};
 
   private stepperModelInitialize = false;
-  private initialPanel: string;
+  private initialPanel: string | undefined;
 
   override get panels(): StepperPanelModel[] {
     return Object.keys(this._panels).map(id => this._panels[id]);
   }
 
   get allPanelsCompleted(): boolean {
-    return this.panels.length && this.getNumberOfIncompletePanels() === 0 && this.getNumberOfOpenPanels() === 0;
+    return this.panels.length > 0 && this.getNumberOfIncompletePanels() === 0 && this.getNumberOfOpenPanels() === 0;
   }
 
   get shouldOpenFirstPanel() {
@@ -63,17 +63,20 @@ export class StepperModel extends CollapsiblePanelGroupModel {
 
   overrideInitialPanel(panelId: string) {
     this.initialPanel = panelId;
-    this.panels
-      .filter(() => this._panels[panelId] !== undefined)
-      .forEach(panel => {
-        if (panel.index < this._panels[panelId].index) {
-          this.completePanel(panel.id);
-        } else if (panel.id === panelId) {
-          this._panels[panel.id].open = true;
-        } else {
-          this._panels[panel.id].open = false;
-        }
-      });
+    const initialPanel = this._panels[panelId];
+    if (!initialPanel) {
+      return;
+    }
+
+    this.panels.forEach(panel => {
+      if (getIndex(panel) < getIndex(initialPanel)) {
+        this.completePanel(panel.id);
+      } else if (panel.id === panelId) {
+        this._panels[panel.id].open = true;
+      } else {
+        this._panels[panel.id].open = false;
+      }
+    });
   }
 
   setPanelValid(panelId: string) {
@@ -95,15 +98,17 @@ export class StepperModel extends CollapsiblePanelGroupModel {
   }
 
   getNextPanel(currentPanelId: string) {
-    return this.panels.find(s => s.index === this._panels[currentPanelId].index + 1);
+    return this.panels.find(s => s.index === getIndex(this._panels[currentPanelId]) + 1);
   }
 
   getPreviousPanel(currentPanelId: string) {
-    return this.panels.find(s => s.index === this._panels[currentPanelId].index - 1);
+    return this.panels.find(s => s.index === getIndex(this._panels[currentPanelId]) - 1);
   }
 
   private resetAllFuturePanels(panelId: string) {
-    this.panels.filter(panel => panel.index >= this._panels[panelId].index).forEach(panel => this.resetPanel(panel.id));
+    this.panels
+      .filter(panel => getIndex(panel) >= getIndex(this._panels[panelId]))
+      .forEach(panel => this.resetPanel(panel.id));
   }
 
   private resetPanel(panelId: string) {
@@ -171,4 +176,11 @@ export class StepperModel extends CollapsiblePanelGroupModel {
   private getNumberOfOpenPanels() {
     return this.panels.reduce((prev, next) => (next.open !== false ? prev + 1 : prev), 0);
   }
+}
+
+/**
+ * A panel has no index until the panel order is known. It counts as the first panel until then.
+ */
+function getIndex(panel: StepperPanelModel): number {
+  return panel.index ?? 0;
 }

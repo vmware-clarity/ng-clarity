@@ -43,7 +43,7 @@ import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
-  @ContentChildren(FocusableItem) items: QueryList<FocusableItem>;
+  @ContentChildren(FocusableItem) items!: QueryList<FocusableItem>;
 
   constructor(
     @Optional()

@@ -13,7 +13,7 @@ import { HeadingLevel } from '@clr/angular/utils';
   standalone: false,
 })
 export class ClrWizardPageTitle {
-  @Input('clrHeadingLevel') headingLevel: HeadingLevel;
+  @Input('clrHeadingLevel') headingLevel?: HeadingLevel;
 
   constructor(public pageTitleTemplateRef: TemplateRef<any>) {}
 }

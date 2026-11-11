@@ -13,7 +13,9 @@ export function wrapObservable<T>(
   onUnsubscribe?: (observer: Observer<T>) => void
 ): Observable<T> {
   return Observable.create((observer: Observer<T>) => {
-    onSubscribe(observer);
+    if (onSubscribe) {
+      onSubscribe(observer);
+    }
     const subscription = observable.subscribe(observer);
     return () => {
       subscription.unsubscribe();

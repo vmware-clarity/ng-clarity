@@ -46,7 +46,7 @@ import { ResponsiveNavCodes } from './responsive-nav-codes';
 export class ClrHeader implements OnDestroy {
   @Input() @HostBinding('attr.role') role = 'banner';
 
-  openNavLevel: number = null;
+  openNavLevel: number | null = null;
   responsiveNavCodes = ResponsiveNavCodes;
   private _subscription: Subscription;
 

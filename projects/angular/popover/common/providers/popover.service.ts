@@ -21,15 +21,15 @@ export interface ClrPopoverPoint {
 @Injectable()
 export class ClrPopoverService {
   // use to connect 2 unrelated (not nested) Popovers to make them nested
-  parent: ClrPopoverContent = null;
+  parent: ClrPopoverContent | null = null;
   pointTargetElement: HTMLElement | undefined;
-  origin: FlexibleConnectedPositionStrategyOrigin;
-  closeButtonRef: ElementRef;
+  origin!: FlexibleConnectedPositionStrategyOrigin;
+  closeButtonRef!: ElementRef;
   panelClass: string[] = [];
 
   private _open = false;
   private _openChange = new Subject<boolean>();
-  private _openEvent: Event;
+  private _openEvent: Event | undefined;
   private _openEventChange = new Subject<Event>();
   private _positionChange = new Subject<string>();
   private _resetPositions = new Subject<void>();
@@ -52,7 +52,7 @@ export class ClrPopoverService {
     return this._popoverVisible.asObservable();
   }
 
-  get openEvent(): Event {
+  get openEvent(): Event | undefined {
     return this._openEvent;
   }
   set openEvent(event: Event) {

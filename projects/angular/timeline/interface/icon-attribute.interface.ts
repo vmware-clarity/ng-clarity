@@ -9,6 +9,6 @@ import { StatusTypes } from '@clr/angular/icon';
 
 export interface IconAttributes {
   iconShape: string | undefined;
-  iconStatus: StatusTypes;
+  iconStatus: StatusTypes | null;
   ariaLabel: string;
 }

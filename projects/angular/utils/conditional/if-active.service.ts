@@ -69,7 +69,7 @@ export class IfActiveService {
    * And, broadcasts the new value to all subscribers.
    *
    */
-  get current(): number {
+  get current(): number | undefined {
     return this._current();
   }
   set current(value: number) {

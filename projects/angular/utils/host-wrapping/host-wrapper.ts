@@ -27,7 +27,7 @@ export class HostWrapper<W> implements Injector {
       // Craft the element array based on what slot to use. Angular only uses the index to determine
       // which ng-content to project into, so if you have more than one ng-content you'll need to set
       // the index in the constructor appropriately
-      const element = [];
+      const element: any[][] = [];
       element[index] = [el.nativeElement];
       // We're assuming only one projection slot, but in more complex cases we might want to provide
       // a different array of projected elements.

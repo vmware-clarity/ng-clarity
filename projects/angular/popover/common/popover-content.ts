@@ -51,16 +51,16 @@ import {
 export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   private _outsideClickClose = true;
   private _scrollToClose = false;
-  private view: EmbeddedViewRef<void>;
-  private elementRef: ElementRef;
-  private overlayRef: OverlayRef;
+  private view: EmbeddedViewRef<void> | null = null;
+  private elementRef: ElementRef | null = null;
+  private overlayRef: OverlayRef | null = null;
   private popoverType: ClrPopoverType = ClrPopoverType.DEFAULT;
   private _availablePositions: ConnectedPosition[] = [];
   private _position = ClrPopoverPosition.BOTTOM_LEFT;
 
   private subscriptions: Subscription[] = [];
-  private openCloseSubscription: Subscription;
-  private domPortal: DomPortal;
+  private openCloseSubscription: Subscription | undefined;
+  private domPortal: DomPortal | null = null;
   private preferredPositionIsSet = false;
   private availablePositionsAreSet = false;
   private _preferredPosition: ConnectedPosition = {
@@ -70,7 +70,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     overlayY: 'top',
     panelClass: ClrPopoverPosition.LEFT_TOP,
   };
-  private intersectionObserver: IntersectionObserver;
+  private intersectionObserver: IntersectionObserver | null = null;
 
   constructor(
     element: ElementRef,
@@ -201,8 +201,8 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     this.openCloseSubscription?.unsubscribe();
   }
 
-  private _createOverlayRef() {
-    this.overlayRef = this.overlay.create(
+  private _createOverlayRef(): OverlayRef {
+    const overlayRef = this.overlay.create(
       new OverlayConfig({
         // This is where we can pass externally facing inputs into the angular overlay API, and essentially proxy behaviors our users want directly to the CDK if they have them.
         positionStrategy: this.positionStrategy,
@@ -212,6 +212,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
         hasBackdrop: false,
       })
     );
+    this.overlayRef = overlayRef;
 
     this.subscriptions.push(
       merge(this.popoverService.resetPositionsChange, this.popoverService.getPositionChange()).subscribe(() => {
@@ -220,21 +221,23 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       this.popoverService.updatePositionChange().subscribe(() => {
         this.overlayRef?.updatePosition();
       }),
-      this.createEscapeSubscription(),
+      this.createEscapeSubscription(overlayRef),
 
       this.popoverService.originPoint
-        ? this.createPointBasedOutsideClickSubscription()
-        : this.createElementBasedOutsideClickSubscription()
+        ? this.createPointBasedOutsideClickSubscription(overlayRef)
+        : this.createElementBasedOutsideClickSubscription(overlayRef)
     );
+
+    return overlayRef;
   }
 
   /**
    * Point-based origins (context menus) delay the subscription to avoid the
    * mouseup from the same right-click that opened the popover.
    */
-  private createPointBasedOutsideClickSubscription(): Subscription {
+  private createPointBasedOutsideClickSubscription(overlayRef: OverlayRef): Subscription {
     const subscription = timer(500)
-      .pipe(switchMap(() => this.overlayRef.outsidePointerEvents()))
+      .pipe(switchMap(() => overlayRef.outsidePointerEvents()))
       .subscribe(event => this.handlePointOutsideClick(event));
 
     const crossWindowSubscription = this.createCrossWindowPointOutsideClickSubscription();
@@ -292,8 +295,8 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
    * Element-based origins close on outside clicks and suppress toggle-button
    * re-clicks so the popover doesn't immediately reopen.
    */
-  private createElementBasedOutsideClickSubscription(): Subscription {
-    const subscription = this.overlayRef.outsidePointerEvents().subscribe(event => this.handleOutsideClick(event));
+  private createElementBasedOutsideClickSubscription(overlayRef: OverlayRef): Subscription {
+    const subscription = overlayRef.outsidePointerEvents().subscribe(event => this.handleOutsideClick(event));
 
     const crossWindowSubscription = this.createCrossWindowOutsideClickSubscription();
     if (crossWindowSubscription) {
@@ -398,16 +401,16 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
    * merged into a single stream/handler here since both ultimately just detect Escape and
    * close.
    */
-  private createEscapeSubscription(): Subscription {
+  private createEscapeSubscription(overlayRef: OverlayRef): Subscription {
     const crossWindowOrigin = getCrossWindowOriginContext(this.popoverService.origin);
     const keydownEvents = crossWindowOrigin
       ? merge(
-          this.overlayRef.keydownEvents(),
+          overlayRef.keydownEvents(),
           this.zone.runOutsideAngular(() =>
             fromEvent<KeyboardEvent>(crossWindowOrigin.elementWindow.document, 'keydown')
           )
         )
-      : this.overlayRef.keydownEvents();
+      : overlayRef.keydownEvents();
 
     return keydownEvents.subscribe(event => {
       if (isEscapeKey(event)) {
@@ -448,9 +451,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   private showOverlay() {
-    if (!this.overlayRef) {
-      this._createOverlayRef();
-    }
+    const overlayRef = this.overlayRef || this._createOverlayRef();
 
     if (!this.view && this.template) {
       this.view = this.container.createEmbeddedView(this.template);
@@ -461,9 +462,9 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       }
     }
 
-    if (!this.domPortal) {
+    if (!this.domPortal && this.elementRef) {
       this.domPortal = new DomPortal<HTMLElement>(this.elementRef);
-      this.overlayRef.attach(this.domPortal);
+      overlayRef.attach(this.domPortal);
     }
 
     if (this.popoverService.originElement) {
@@ -531,11 +532,11 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
    * the walk safely continue across a same-origin realm boundary instead of just
    * stopping at it.
    */
-  private getScrollableParents(node: HTMLElement) {
+  private getScrollableParents(node: HTMLElement | undefined) {
     const overflowScrollKeys = ['auto', 'scroll', 'clip'];
     const scrollableParents: (Document | Element)[] = [window.document];
 
-    let parent: Node | null = node;
+    let parent: Node | null | undefined = node;
 
     while (parent && isElementOrShadowRoot(parent)) {
       if (isShadowRoot(parent)) {
@@ -638,7 +639,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   // Element origins track ancestor scroll containers to reposition or close.
-  private listenToScrollForElementOrigin(originEl: HTMLElement) {
+  private listenToScrollForElementOrigin(originEl: HTMLElement | undefined) {
     const scrollableParents = this.getScrollableParents(originEl);
 
     this.zone.runOutsideAngular(() => {

@@ -62,9 +62,9 @@ import { ClrWizardPage } from './wizard-page';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrWizardStepnavItem implements OnInit, OnDestroy {
-  @Input('page') page: ClrWizardPage;
+  @Input('page') page!: ClrWizardPage;
 
-  private subscription: Subscription;
+  private subscription: Subscription | undefined;
 
   /**
    * This is used to prevent the steps from scrolling as the user clicks on the steps.
@@ -83,8 +83,8 @@ export class ClrWizardStepnavItem implements OnInit, OnDestroy {
     return this.pageCollection.getStepItemIdForPage(this.page);
   }
 
-  get stepAriaCurrent(): string {
-    return this.isCurrent && 'step';
+  get stepAriaCurrent(): 'step' | false {
+    return this.isCurrent ? 'step' : false;
   }
 
   get isDisabled(): boolean {

@@ -13,7 +13,7 @@ import { ClrTab } from '../tab';
 @Injectable()
 export class TabsService {
   layout: TabsLayout | string = TabsLayout.HORIZONTAL;
-  tabContentViewContainer: ViewContainerRef;
+  tabContentViewContainer!: ViewContainerRef;
 
   private _children: ClrTab[] = [];
 

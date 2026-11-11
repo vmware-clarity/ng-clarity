@@ -39,7 +39,7 @@ export class ClarityIcons {
   static getIconShape(name: string): IconRegistrySources[string] | undefined {
     const iconRegistry = GlobalStateService.state.iconRegistry;
     if (name in iconRegistry) {
-      return iconRegistry[name];
+      return iconRegistry[name] as IconRegistrySources[string];
     }
     return name === 'unknown' ? (unknownIcon[1] as string) : undefined;
   }
