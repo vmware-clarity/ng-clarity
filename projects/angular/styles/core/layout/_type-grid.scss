@@ -46,22 +46,41 @@
 @include grid-mixins.generateAlignments();
 
 @each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
-  @include clr-mixins.breakpoint-query('min-width: #{$breakpoint-value}') {
-    @include grid-mixins.generateColumnsAndRows($breakpoint);
+  @include clr-mixins.breakpoint-query('min-width: #{$breakpoint-value}') using ($matches) {
+    @if $matches {
+      @include grid-mixins.generateColumnsAndRows($breakpoint);
+    } @else {
+      // Defaults: the children of `cols@<bp>:N` span the full row, `rows@<bp>:N` none.
+      @for $i from 1 through tokens.$cds-global-layout-grid-cols-static {
+        [#{optimize.$layout}*='#{optimize.$cols}#{$breakpoint}:#{$i}'] > * {
+          grid-column: span #{tokens.$cds-global-layout-grid-cols};
+        }
+
+        [#{optimize.$layout}*='#{optimize.$rows}#{$breakpoint}:#{$i}'] > * {
+          grid-row: auto;
+        }
+      }
+    }
   }
 }
 @each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
-  @include clr-mixins.breakpoint-query('min-width: #{$breakpoint-value}') {
-    @include grid-mixins.generateExplicitColumnAndRow($breakpoint);
+  @include clr-mixins.breakpoint-query('min-width: #{$breakpoint-value}') using ($matches) {
+    @if $matches {
+      @include grid-mixins.generateExplicitColumnAndRow($breakpoint);
+    }
   }
 }
 @each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
-  @include clr-mixins.breakpoint-query('min-width: #{$breakpoint-value}') {
-    @include grid-mixins.generatePositions($breakpoint);
+  @include clr-mixins.breakpoint-query('min-width: #{$breakpoint-value}') using ($matches) {
+    @if $matches {
+      @include grid-mixins.generatePositions($breakpoint);
+    }
   }
 }
 @each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
-  @include clr-mixins.breakpoint-query('min-width: #{$breakpoint-value}') {
-    @include grid-mixins.generateAlignments($breakpoint);
+  @include clr-mixins.breakpoint-query('min-width: #{$breakpoint-value}') using ($matches) {
+    @if $matches {
+      @include grid-mixins.generateAlignments($breakpoint);
+    }
   }
 }

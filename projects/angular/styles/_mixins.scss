@@ -158,20 +158,21 @@ $opp-directions: (
     @content;
   }
 }
-
-// Wraps breakpoint content in a viewport media query or, with `$clr-breakpoint-query: container`,
-// in a query on the nearest `clr-layout` container.
 @mixin breakpoint-query($condition) {
-  @if variables.$clr-breakpoint-query == container {
-    @container clr-layout (#{$condition}) {
-      @content;
-    }
-  } @else if variables.$clr-breakpoint-query == media {
-    @media (#{$condition}) {
-      @content;
-    }
-  } @else {
-    @error '$clr-breakpoint-query must be `media` or `container`, got `#{variables.$clr-breakpoint-query}`.';
+  @media (#{$condition}) {
+    // no container: viewport decides
+    // stylelint-disable-next-line at-rule-no-unknown
+    @content (true);
+  }
+  @container clr-layout (#{$condition}) {
+    // container matches
+    // stylelint-disable-next-line at-rule-no-unknown
+    @content (true);
+  }
+  @container clr-layout not (#{$condition}) {
+    // container does not match: put the defaults back
+    // stylelint-disable-next-line at-rule-no-unknown
+    @content (false);
   }
 }
 @mixin input-placeholder-wrapper() {

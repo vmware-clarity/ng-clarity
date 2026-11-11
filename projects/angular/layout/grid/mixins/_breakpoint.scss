@@ -60,11 +60,13 @@
   $min: clr-breakpoint-min($name, $breakpoints);
 
   @if $min {
-    @include mixins.breakpoint-query('min-width: #{$min}') {
-      @content;
+    @include mixins.breakpoint-query('min-width: #{$min}') using ($matches) {
+      // stylelint-disable-next-line at-rule-no-unknown
+      @content ($matches);
     }
   } @else {
-    @content;
+    // stylelint-disable-next-line at-rule-no-unknown
+    @content (true);
   }
 }
 
@@ -75,10 +77,12 @@
   $max: clr-breakpoint-max($name, $breakpoints);
 
   @if $max {
-    @include mixins.breakpoint-query('max-width: #{$max}') {
-      @content;
+    @include mixins.breakpoint-query('max-width: #{$max}') using ($matches) {
+      // stylelint-disable-next-line at-rule-no-unknown
+      @content ($matches);
     }
   } @else {
-    @content;
+    // stylelint-disable-next-line at-rule-no-unknown
+    @content (true);
   }
 }

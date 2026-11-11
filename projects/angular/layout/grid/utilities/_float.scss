@@ -10,17 +10,19 @@
 @use '../mixins/breakpoint';
 
 @each $breakpoint in map.keys(variables.$clr-grid-breakpoints) {
-  @include breakpoint.clr-media-breakpoint-up($breakpoint) {
-    .clr-float-#{$breakpoint}-left {
-      float: left !important;
-    }
+  @include breakpoint.clr-media-breakpoint-up($breakpoint) using ($matches) {
+    @if $matches {
+      .clr-float-#{$breakpoint}-left {
+        float: left !important;
+      }
 
-    .clr-float-#{$breakpoint}-right {
-      float: right !important;
-    }
+      .clr-float-#{$breakpoint}-right {
+        float: right !important;
+      }
 
-    .clr-float-#{$breakpoint}-none {
-      float: none !important;
+      .clr-float-#{$breakpoint}-none {
+        float: none !important;
+      }
     }
   }
 }

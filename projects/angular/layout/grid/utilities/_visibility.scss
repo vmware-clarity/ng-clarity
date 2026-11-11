@@ -16,14 +16,18 @@
 
 @each $bp in map.keys(variables.$clr-grid-breakpoints) {
   .clr-hidden-#{$bp}-up {
-    @include breakpoint.clr-media-breakpoint-up($bp) {
-      display: none !important;
+    @include breakpoint.clr-media-breakpoint-up($bp) using ($matches) {
+      @if $matches {
+        display: none !important;
+      }
     }
   }
 
   .clr-hidden-#{$bp}-down {
-    @include breakpoint.clr-media-breakpoint-down($bp) {
-      display: none !important;
+    @include breakpoint.clr-media-breakpoint-down($bp) using ($matches) {
+      @if $matches {
+        display: none !important;
+      }
     }
   }
 }

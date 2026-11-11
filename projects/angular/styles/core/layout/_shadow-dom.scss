@@ -31,9 +31,11 @@
 @include shadow-dom-mixins.generateShadowDomVerticalItemAlignment();
 
 @each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
-  @include clr-mixins.breakpoint-query('min-width: #{$breakpoint-value}') {
-    @include shadow-dom-mixins.generateShadowDomVerticalStretch($breakpoint);
-    @include shadow-dom-mixins.generateShadowDomVerticalItemAlignment($breakpoint);
+  @include clr-mixins.breakpoint-query('min-width: #{$breakpoint-value}') using ($matches) {
+    @if $matches {
+      @include shadow-dom-mixins.generateShadowDomVerticalStretch($breakpoint);
+      @include shadow-dom-mixins.generateShadowDomVerticalItemAlignment($breakpoint);
+    }
   }
 }
 
@@ -41,8 +43,10 @@
 @include shadow-dom-mixins.generateShadowDomHorizontalItemAlignment();
 
 @each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
-  @include clr-mixins.breakpoint-query('min-width: #{$breakpoint-value}') {
-    @include shadow-dom-mixins.generateShadowDomHorizontalStretch($breakpoint);
-    @include shadow-dom-mixins.generateShadowDomHorizontalItemAlignment($breakpoint);
+  @include clr-mixins.breakpoint-query('min-width: #{$breakpoint-value}') using ($matches) {
+    @if $matches {
+      @include shadow-dom-mixins.generateShadowDomHorizontalStretch($breakpoint);
+      @include shadow-dom-mixins.generateShadowDomHorizontalItemAlignment($breakpoint);
+    }
   }
 }

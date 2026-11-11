@@ -28,7 +28,9 @@
 @include horizontal-mixins.generateHorizontalAlignments();
 
 @each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
-  @include clr-mixins.breakpoint-query('min-width: #{$breakpoint-value}') {
-    @include horizontal-mixins.generateHorizontalAlignments($breakpoint);
+  @include clr-mixins.breakpoint-query('min-width: #{$breakpoint-value}') using ($matches) {
+    @if $matches {
+      @include horizontal-mixins.generateHorizontalAlignments($breakpoint);
+    }
   }
 }

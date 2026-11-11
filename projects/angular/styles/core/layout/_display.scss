@@ -29,17 +29,25 @@
   display: inline !important;
 }
 
-@include clr-mixins.breakpoint-query('min-width: #{tokens.$cds-global-layout-width-sm-static}') {
-  @include display-mixins.display('sm');
+@include clr-mixins.breakpoint-query('min-width: #{tokens.$cds-global-layout-width-sm-static}') using ($matches) {
+  @if $matches {
+    @include display-mixins.display('sm');
+  }
 }
-@include clr-mixins.breakpoint-query('min-width: #{tokens.$cds-global-layout-width-md-static}') {
-  @include display-mixins.display('md');
+@include clr-mixins.breakpoint-query('min-width: #{tokens.$cds-global-layout-width-md-static}') using ($matches) {
+  @if $matches {
+    @include display-mixins.display('md');
+  }
 }
-@include clr-mixins.breakpoint-query('min-width: #{tokens.$cds-global-layout-width-lg-static}') {
-  @include display-mixins.display('lg');
+@include clr-mixins.breakpoint-query('min-width: #{tokens.$cds-global-layout-width-lg-static}') using ($matches) {
+  @if $matches {
+    @include display-mixins.display('lg');
+  }
 }
-@include clr-mixins.breakpoint-query('min-width: #{tokens.$cds-global-layout-width-xl-static}') {
-  @include display-mixins.display('xl');
+@include clr-mixins.breakpoint-query('min-width: #{tokens.$cds-global-layout-width-xl-static}') using ($matches) {
+  @if $matches {
+    @include display-mixins.display('xl');
+  }
 }
 
 ::slotted([cds-layout~='display:screen-reader-only']),

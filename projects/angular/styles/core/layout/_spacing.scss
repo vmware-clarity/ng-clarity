@@ -23,10 +23,12 @@
 @include mixins.sideSpacers();
 
 @each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
-  @include clr-mixins.breakpoint-query('min-width: #{$breakpoint-value}') {
-    @include mixins.generateGaps($breakpoint);
-    @include mixins.spacers($breakpoint);
-    @include mixins.axisSpacers($breakpoint);
-    @include mixins.sideSpacers($breakpoint);
+  @include clr-mixins.breakpoint-query('min-width: #{$breakpoint-value}') using ($matches) {
+    @if $matches {
+      @include mixins.generateGaps($breakpoint);
+      @include mixins.spacers($breakpoint);
+      @include mixins.axisSpacers($breakpoint);
+      @include mixins.sideSpacers($breakpoint);
+    }
   }
 }
