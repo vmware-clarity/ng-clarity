@@ -176,7 +176,8 @@ give a custom element host `display: block`.
 }
 ```
 
-With Sass, configure the variable before loading Clarity:
+If you compile Clarity from Sass instead of loading the CSS file, set `$clr-breakpoint-query` to
+`container` before loading Clarity. Its default, `media`, keeps the viewport breakpoints.
 
 ```scss
 @use '@clr/ui/styles/variables/variables.layout' with (
