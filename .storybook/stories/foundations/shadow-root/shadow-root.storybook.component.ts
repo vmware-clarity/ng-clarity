@@ -47,7 +47,7 @@ export class ShadowRootTypographyComponent {
 
 /** The layout of both container-query stories: columns that split at the `sm` and `md` breakpoints. */
 const CONTAINER_QUERIES_TEMPLATE = `
-  <div [attr.cds-theme]="theme" [attr.clr-density]="density">
+  <div [attr.cds-theme]="theme" [attr.clr-density]="density" clr-layout-container>
     <div class="clr-row">
       <div class="clr-col-12 clr-col-md-6"><span>clr-col-12 clr-col-md-6</span></div>
       <div class="clr-col-12 clr-col-md-6"><span>clr-col-12 clr-col-md-6</span></div>
@@ -77,15 +77,19 @@ export class ShadowRootContainerQueriesComponent {
   protected readonly density = pageAttribute('clr-density');
 }
 
-/** The same layout with the opt-in container-query build: breakpoints follow the host's width. */
+/** The same layout with the grid container-query add-on: the grid follows the host's width, `cds-layout` the viewport. */
 @Component({
-  selector: 'shadow-root-container-queries-build',
+  selector: 'shadow-root-grid-container-queries',
   template: CONTAINER_QUERIES_TEMPLATE,
-  styleUrls: ['../../../../projects/ui/src/clr-ui-container-queries.scss', './shadow-root-container-queries.scss'],
+  styleUrls: [
+    '../../../../projects/ui/src/clr-ui.scss',
+    '../../../../projects/ui/src/clr-ui-grid-container-queries.scss',
+    './shadow-root-container-queries.scss',
+  ],
   encapsulation: ViewEncapsulation.ShadowDom,
   changeDetection: ChangeDetectionStrategy.Eager,
 })
-export class ShadowRootContainerQueriesBuildComponent {
+export class ShadowRootGridContainerQueriesComponent {
   protected readonly theme = pageAttribute('cds-theme');
   protected readonly density = pageAttribute('clr-density');
 }

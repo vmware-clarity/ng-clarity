@@ -162,22 +162,29 @@ of the shadow root uses the light theme and the default density, also on a dark 
 
 ### Breakpoints That Follow a Container
 
-The grid and `cds-layout` breakpoints follow the viewport. When your layout lives in an area narrower
-than the viewport, load `@clr/ui/clr-ui-container-queries.min.css` instead of
-`@clr/ui/clr-ui.min.css`. Its breakpoints follow the nearest element declared as a `clr-layout`
-container. Custom elements are inline by default, and an inline element can't be a container, so
-give a custom element host `display: block`.
+The grid breakpoints follow the viewport. When your layout lives in an area narrower than the
+viewport, also load `@clr/ui/clr-ui-grid-container-queries.min.css` after `@clr/ui/clr-ui.min.css`
+and add the `clr-layout-container` attribute to the element that holds the layout. Inside that
+element, the grid columns, offsets and order follow its width instead of the viewport. In a shadow
+root, put the attribute on an element inside it.
 
-```css
-/* the element that holds the layout, for example the shadow host */
-:host {
-  display: block;
-  container: clr-layout / inline-size;
-}
+```html
+<div clr-layout-container>
+  <div class="clr-row">
+    <div class="clr-col-12 clr-col-md-6">...</div>
+    <div class="clr-col-12 clr-col-md-6">...</div>
+  </div>
+</div>
 ```
 
-If you compile Clarity from Sass instead of loading the CSS file, set `$clr-breakpoint-query` to
-`container` before loading Clarity. Its default, `media`, keeps the viewport breakpoints.
+The element can't be inline, so give a custom element `display: block`. Outside it nothing changes.
+The other breakpoint utilities, the `cds-layout` breakpoints and the component styles keep following
+the viewport.
+
+If you compile Clarity from Sass, you can instead switch every grid and `cds-layout` breakpoint of
+your build to container queries by setting `$clr-breakpoint-query` to `container` before loading
+Clarity. Its default, `media`, keeps the viewport breakpoints. The layout then needs an ancestor
+with `container: clr-layout / inline-size`, and content outside it matches no breakpoint.
 
 ```scss
 @use '@clr/ui/styles/variables/variables.layout' with (
@@ -185,14 +192,6 @@ If you compile Clarity from Sass instead of loading the CSS file, set `$clr-brea
 );
 @use '@clr/ui/main';
 ```
-
-This covers the grid columns, offsets and ordering, the flex, float and visibility utilities, and
-the `cds-layout` utilities with a breakpoint (for example `cols@md:6`). Component styles keep
-following the viewport.
-
-Breakpoints apply only to elements inside the container, not to the container itself. Content
-outside it, such as overlays rendered outside the container element, matches no breakpoint,
-including the `-down` visibility rules.
 
 ## Contributing to Clarity
 

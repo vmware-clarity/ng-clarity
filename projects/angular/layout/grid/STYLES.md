@@ -61,4 +61,4 @@
 | lg         | >= 992px    |
 | xl         | >= 1200px   |
 
-`clr-ui-container-queries.css` (or `$clr-breakpoint-query: container` in Sass) applies the same breakpoints to the width of the nearest `container: clr-layout / inline-size` ancestor instead of the screen.
+`clr-ui-grid-container-queries.css`, loaded after `clr-ui.css`, applies the column, offset and order breakpoints to the width of the nearest element with the `clr-layout-container` attribute instead of the screen.
