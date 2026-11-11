@@ -900,6 +900,7 @@ declare function uniqueIdFactory(): string;
 
 declare class ScrollingService {
     private _document;
+    private readonly locks;
     constructor(_document: any);
     stopScrolling(): void;
     resumeScrolling(): void;

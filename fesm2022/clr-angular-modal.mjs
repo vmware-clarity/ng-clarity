@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { PLATFORM_ID, Inject, Injectable, EventEmitter, inject, Injector, afterNextRender, ViewChild, ContentChild, Input, Output, HostBinding, ChangeDetectionStrategy, Component, Directive, NgModule, HostListener } from '@angular/core';
+import { PLATFORM_ID, Inject, Injectable, EventEmitter, inject, Injector, ChangeDetectorRef, afterNextRender, ViewChild, ContentChild, Input, Output, HostBinding, ChangeDetectionStrategy, Component, Directive, NgModule, HostListener } from '@angular/core';
 import * as i1 from '@clr/angular/utils';
 import { Keys, uniqueIdFactory, noopAnimations, ScrollingService, CdkTrapFocusModule } from '@clr/angular/utils';
 import * as i4 from '@angular/common';
@@ -102,9 +102,10 @@ class ClrModal {
         this.skipAnimation = false;
         this.stopClose = false;
         this.altClose = new EventEmitter(false);
-        // presently this is only used by inline wizards
+        // Legacy inline wizards bypass both scrolling and stack participation unless inOverlay is explicit.
         this.bypassScrollService = false;
         this.injector = inject(Injector);
+        this.changeDetectorRef = inject(ChangeDetectorRef);
         this.noopAnimations = noopAnimations();
         this.destroyed = false;
         /** Set when the modal closes, until it opens again: identifies the closing to notify. */
@@ -131,20 +132,14 @@ class ClrModal {
     // clrModalOpenChange(false) notification (emitted on an input-driven close too, as before).
     ngOnChanges(changes) {
         if (changes && Object.prototype.hasOwnProperty.call(changes, '_open')) {
-            if (changes._open.currentValue) {
+            if (this._open) {
                 this.closeRequest = null;
-                if (!this.bypassScrollService) {
-                    this._scrollingService.stopScrolling();
-                    this.modalStackService.trackModalOpen(this);
-                }
             }
             else {
                 this.notifyClosing();
-                if (!this.bypassScrollService) {
-                    this._scrollingService.resumeScrolling();
-                }
             }
         }
+        this.updateOverlayState();
     }
     ngOnDestroy() {
         this.destroyed = true;
@@ -153,13 +148,14 @@ class ClrModal {
         this.modalStackService.trackModalClose(this);
     }
     open() {
-        if (this._open) {
+        if (this.destroyed || this._open) {
             return;
         }
         this._open = true;
         this.closeRequest = null;
+        this.updateOverlayState();
+        this.changeDetectorRef.markForCheck();
         this._openChanged.emit(true);
-        this.modalStackService.trackModalOpen(this);
     }
     backdropClick() {
         if (this.staticBackdrop) {
@@ -168,6 +164,9 @@ class ClrModal {
         this.close();
     }
     close() {
+        if (this.destroyed) {
+            return;
+        }
         if (this.stopClose) {
             this.altClose.emit(false);
             return;
@@ -176,6 +175,8 @@ class ClrModal {
             return;
         }
         this._open = false;
+        this.changeDetectorRef.markForCheck();
+        this._scrollingService.resumeScrolling();
         this.notifyClosing();
     }
     /** @deprecated No longer called: `clrModalOpenChange` is emitted when the modal closes. To be removed in a future major version. */
@@ -185,13 +186,31 @@ class ClrModal {
     scrollTop() {
         this.bodyElementRef.nativeElement.scrollTo(0, 0);
     }
+    updateOverlayState() {
+        if (this._open && !this.bypassScrollService) {
+            this._scrollingService.stopScrolling();
+        }
+        else {
+            this._scrollingService.resumeScrolling();
+        }
+        if (this._open && (this.inOverlay ?? !this.bypassScrollService)) {
+            this.modalStackService.trackModalOpen(this);
+        }
+        else {
+            this.modalStackService.trackModalClose(this);
+        }
+    }
     /**
      * Emits `clrModalOpenChange(false)` after the closing render, once the dialog is removed and the focus trap has given
      * the focus back, so that a handler can move the focus elsewhere.
      * Once per closing, and not when the modal was not rendered, opens again in between, or is destroyed.
      */
     notifyClosing() {
-        if (this.closeRequest || !this.dialogElementRef) {
+        if (!this.dialogElementRef) {
+            this.modalStackService.trackModalClose(this);
+            return;
+        }
+        if (this.closeRequest) {
             return;
         }
         const closeRequest = (this.closeRequest = {});
@@ -203,7 +222,7 @@ class ClrModal {
         }, { injector: this.injector });
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrModal, deps: [{ token: i1.ScrollingService }, { token: i1.ClrCommonStringsService }, { token: ModalStackService }, { token: ClrModalConfigurationService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "22.1.2", type: ClrModal, isStandalone: false, selector: "clr-modal", inputs: { _open: ["clrModalOpen", "_open"], closable: ["clrModalClosable", "closable"], closeButtonAriaLabel: ["clrModalCloseButtonAriaLabel", "closeButtonAriaLabel"], size: ["clrModalSize", "size"], staticBackdrop: ["clrModalStaticBackdrop", "staticBackdrop"], skipAnimation: ["clrModalSkipAnimation", "skipAnimation"], stopClose: ["clrModalPreventClose", "stopClose"], labelledBy: ["clrModalLabelledById", "labelledBy"], bypassScrollService: ["clrModalOverrideScrollService", "bypassScrollService"] }, outputs: { _openChanged: "clrModalOpenChange", altClose: "clrModalAlternateClose" }, host: { properties: { "class.open": "this._open" } }, queries: [{ propertyName: "modalContentTemplate", first: true, predicate: ["clrInternalModalContentTemplate"], descendants: true }], viewQueries: [{ propertyName: "title", first: true, predicate: ["title"], descendants: true }, { propertyName: "bodyElementRef", first: true, predicate: ["body"], descendants: true }, { propertyName: "dialogElementRef", first: true, predicate: ["dialog"], descendants: true }], usesOnChanges: true, ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n@if (_open) {\n<div class=\"modal\" [class.modal-full-screen]=\"size == 'full-screen'\">\n  <div\n    #dialog\n    cdkTrapFocus\n    [cdkTrapFocusAutoCapture]=\"true\"\n    [animate.enter]=\"dialogEnterClass\"\n    class=\"modal-dialog\"\n    [class.modal-sm]=\"size == 'sm'\"\n    [class.modal-lg]=\"size == 'lg'\"\n    [class.modal-xl]=\"size == 'xl'\"\n    role=\"dialog\"\n    aria-modal=\"true\"\n    [attr.aria-hidden]=\"!_open\"\n    [attr.aria-labelledby]=\"labelledBy || modalId\"\n  >\n    <div class=\"clr-sr-only\">{{commonStrings.keys.modalContentStart}}</div>\n    <!-- This wizard is tightly coupled to the modal styles, so changes here could require changes in the wizard. -->\n    @if (!modalContentTemplate) {\n    <div class=\"modal-content-wrapper\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header--accessible\">\n          <ng-content select=\".leading-button\"></ng-content>\n          <div class=\"modal-title-wrapper\" #title [id]=\"modalId\" cdkFocusInitial tabindex=\"-1\">\n            <ng-content select=\".modal-title\"></ng-content>\n          </div>\n          @if (closable) {\n          <button\n            type=\"button\"\n            [attr.aria-label]=\"closeButtonAriaLabel || commonStrings.keys.close\"\n            class=\"close\"\n            (click)=\"close()\"\n          >\n            <cds-icon shape=\"window-close\"></cds-icon>\n          </button>\n          }\n        </div>\n        <div #body class=\"modal-body-wrapper\">\n          <ng-content select=\".modal-body\"></ng-content>\n        </div>\n        <ng-content select=\".modal-footer\"></ng-content>\n      </div>\n    </div>\n    } @else {\n    <ng-template [ngTemplateOutlet]=\"modalContentTemplate\"></ng-template>\n    }\n  </div>\n  <div class=\"clr-sr-only\">{{commonStrings.keys.modalContentEnd}}</div>\n  @if (backdrop) {\n  <div\n    [animate.enter]=\"backdropEnterClass\"\n    class=\"modal-backdrop\"\n    [class.static]=\"staticBackdrop\"\n    aria-hidden=\"true\"\n    (click)=\"backdropClick()\"\n  ></div>\n  }\n</div>\n}\n", styles: [":host{display:none}:host.open{display:inline}\n"], dependencies: [{ kind: "directive", type: i4.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: i1.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge", "innerOffset"] }], viewProviders: [ScrollingService], changeDetection: i0.ChangeDetectionStrategy.Eager }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "22.1.2", type: ClrModal, isStandalone: false, selector: "clr-modal", inputs: { _open: ["clrModalOpen", "_open"], closable: ["clrModalClosable", "closable"], closeButtonAriaLabel: ["clrModalCloseButtonAriaLabel", "closeButtonAriaLabel"], size: ["clrModalSize", "size"], staticBackdrop: ["clrModalStaticBackdrop", "staticBackdrop"], skipAnimation: ["clrModalSkipAnimation", "skipAnimation"], stopClose: ["clrModalPreventClose", "stopClose"], labelledBy: ["clrModalLabelledById", "labelledBy"], bypassScrollService: ["clrModalOverrideScrollService", "bypassScrollService"], inOverlay: ["clrModalInOverlay", "inOverlay"] }, outputs: { _openChanged: "clrModalOpenChange", altClose: "clrModalAlternateClose" }, host: { properties: { "class.open": "this._open" } }, queries: [{ propertyName: "modalContentTemplate", first: true, predicate: ["clrInternalModalContentTemplate"], descendants: true }], viewQueries: [{ propertyName: "title", first: true, predicate: ["title"], descendants: true }, { propertyName: "bodyElementRef", first: true, predicate: ["body"], descendants: true }, { propertyName: "dialogElementRef", first: true, predicate: ["dialog"], descendants: true }], usesOnChanges: true, ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n@if (_open) {\n<div class=\"modal\" [class.modal-full-screen]=\"size == 'full-screen'\">\n  <div\n    #dialog\n    cdkTrapFocus\n    [cdkTrapFocusAutoCapture]=\"true\"\n    [animate.enter]=\"dialogEnterClass\"\n    class=\"modal-dialog\"\n    [class.modal-sm]=\"size == 'sm'\"\n    [class.modal-lg]=\"size == 'lg'\"\n    [class.modal-xl]=\"size == 'xl'\"\n    role=\"dialog\"\n    aria-modal=\"true\"\n    [attr.aria-hidden]=\"!_open\"\n    [attr.aria-labelledby]=\"labelledBy || modalId\"\n  >\n    <div class=\"clr-sr-only\">{{commonStrings.keys.modalContentStart}}</div>\n    <!-- This wizard is tightly coupled to the modal styles, so changes here could require changes in the wizard. -->\n    @if (!modalContentTemplate) {\n    <div class=\"modal-content-wrapper\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header--accessible\">\n          <ng-content select=\".leading-button\"></ng-content>\n          <div class=\"modal-title-wrapper\" #title [id]=\"modalId\" cdkFocusInitial tabindex=\"-1\">\n            <ng-content select=\".modal-title\"></ng-content>\n          </div>\n          @if (closable) {\n          <button\n            type=\"button\"\n            [attr.aria-label]=\"closeButtonAriaLabel || commonStrings.keys.close\"\n            class=\"close\"\n            (click)=\"close()\"\n          >\n            <cds-icon shape=\"window-close\"></cds-icon>\n          </button>\n          }\n        </div>\n        <div #body class=\"modal-body-wrapper\">\n          <ng-content select=\".modal-body\"></ng-content>\n        </div>\n        <ng-content select=\".modal-footer\"></ng-content>\n      </div>\n    </div>\n    } @else {\n    <ng-template [ngTemplateOutlet]=\"modalContentTemplate\"></ng-template>\n    }\n  </div>\n  <div class=\"clr-sr-only\">{{commonStrings.keys.modalContentEnd}}</div>\n  @if (backdrop) {\n  <div\n    [animate.enter]=\"backdropEnterClass\"\n    class=\"modal-backdrop\"\n    [class.static]=\"staticBackdrop\"\n    aria-hidden=\"true\"\n    (click)=\"backdropClick()\"\n  ></div>\n  }\n</div>\n}\n", styles: [":host{display:none}:host.open{display:inline}\n"], dependencies: [{ kind: "directive", type: i4.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: i1.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge", "innerOffset"] }], viewProviders: [ScrollingService], changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrModal, decorators: [{
             type: Component,
@@ -247,6 +266,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImpor
             }], bypassScrollService: [{
                 type: Input,
                 args: ['clrModalOverrideScrollService']
+            }], inOverlay: [{
+                type: Input,
+                args: ['clrModalInOverlay']
             }], modalContentTemplate: [{
                 type: ContentChild,
                 args: ['clrInternalModalContentTemplate']
@@ -537,13 +559,13 @@ class ClrSidePanel {
         this.hostElement.classList.add(`clr-side-panel-pinned-${this.position}-${this.size}`);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrSidePanel, deps: [{ token: i0.ElementRef }, { token: ClrModalConfigurationService }, { token: i1.ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "22.1.2", type: ClrSidePanel, isStandalone: false, selector: "clr-side-panel", inputs: { closeButtonAriaLabel: ["clrSidePanelCloseButtonAriaLabel", "closeButtonAriaLabel"], skipAnimation: ["clrSidePanelSkipAnimation", "skipAnimation"], labelledById: ["clrSidePanelLabelledById", "labelledById"], staticBackdrop: ["clrSidePanelStaticBackdrop", "staticBackdrop"], closable: ["clrSidePanelClosable", "closable"], preventClose: ["clrSidePanelPreventClose", "preventClose"], _open: ["clrSidePanelOpen", "_open"], size: ["clrSidePanelSize", "size"], position: ["clrSidePanelPosition", "position"], pinned: ["clrSidePanelPinned", "pinned"], clrSidePanelBackdrop: "clrSidePanelBackdrop", clrSidePanelPinnable: "clrSidePanelPinnable" }, outputs: { openChange: "clrSidePanelOpenChange", altClose: "clrSidePanelAlternateClose" }, host: { listeners: { "document:pointerup": "documentClick($event)" }, properties: { "class.side-panel": "true", "class.side-panel-bottom": "this.bottomPositionCssClass" } }, viewQueries: [{ propertyName: "modal", first: true, predicate: ClrModal, descendants: true }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n<clr-modal\n  [clrModalOpen]=\"_open\"\n  (clrModalOpenChange)=\"handleModalOpen($event)\"\n  [clrModalCloseButtonAriaLabel]=\"closeButtonAriaLabel\"\n  [clrModalSize]=\"size\"\n  [clrModalSkipAnimation]=\"skipAnimation\"\n  [clrModalStaticBackdrop]=\"staticBackdrop\"\n  [clrModalLabelledById]=\"labelledById\"\n  [clrModalPreventClose]=\"preventClose\"\n  [clrModalClosable]=\"closable\"\n  (clrModalAlternateClose)=\"altClose.emit($event)\"\n  [clrModalOverrideScrollService]=\"true\"\n>\n  @if (clrSidePanelPinnable) {\n  <button\n    type=\"button\"\n    [attr.aria-label]=\"commonStrings.keys.sidePanelPin\"\n    class=\"leading-button pinnable\"\n    (click)=\"togglePinned()\"\n  >\n    <cds-icon [shape]=\"pinned ? 'unpin' : 'pin'\"></cds-icon>\n  </button>\n  }\n  <div class=\"modal-title\"><ng-content select=\".side-panel-title\"></ng-content></div>\n  <div class=\"modal-body\"><ng-content select=\".side-panel-body\"></ng-content></div>\n  <div class=\"modal-footer\"><ng-content select=\".side-panel-footer\"></ng-content></div>\n</clr-modal>\n", dependencies: [{ kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge", "innerOffset"] }, { kind: "component", type: ClrModal, selector: "clr-modal", inputs: ["clrModalOpen", "clrModalClosable", "clrModalCloseButtonAriaLabel", "clrModalSize", "clrModalStaticBackdrop", "clrModalSkipAnimation", "clrModalPreventClose", "clrModalLabelledById", "clrModalOverrideScrollService"], outputs: ["clrModalOpenChange", "clrModalAlternateClose"] }, { kind: "directive", type: ClrModalBody, selector: ".modal-body" }], changeDetection: i0.ChangeDetectionStrategy.Eager }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "22.1.2", type: ClrSidePanel, isStandalone: false, selector: "clr-side-panel", inputs: { closeButtonAriaLabel: ["clrSidePanelCloseButtonAriaLabel", "closeButtonAriaLabel"], skipAnimation: ["clrSidePanelSkipAnimation", "skipAnimation"], labelledById: ["clrSidePanelLabelledById", "labelledById"], staticBackdrop: ["clrSidePanelStaticBackdrop", "staticBackdrop"], closable: ["clrSidePanelClosable", "closable"], preventClose: ["clrSidePanelPreventClose", "preventClose"], _open: ["clrSidePanelOpen", "_open"], size: ["clrSidePanelSize", "size"], position: ["clrSidePanelPosition", "position"], pinned: ["clrSidePanelPinned", "pinned"], clrSidePanelBackdrop: "clrSidePanelBackdrop", clrSidePanelPinnable: "clrSidePanelPinnable" }, outputs: { openChange: "clrSidePanelOpenChange", altClose: "clrSidePanelAlternateClose" }, host: { listeners: { "document:pointerup": "documentClick($event)" }, properties: { "class.side-panel": "true", "class.side-panel-bottom": "this.bottomPositionCssClass" } }, viewQueries: [{ propertyName: "modal", first: true, predicate: ClrModal, descendants: true }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n<clr-modal\n  [clrModalOpen]=\"_open\"\n  (clrModalOpenChange)=\"handleModalOpen($event)\"\n  [clrModalCloseButtonAriaLabel]=\"closeButtonAriaLabel\"\n  [clrModalSize]=\"size\"\n  [clrModalSkipAnimation]=\"skipAnimation\"\n  [clrModalStaticBackdrop]=\"staticBackdrop\"\n  [clrModalLabelledById]=\"labelledById\"\n  [clrModalPreventClose]=\"preventClose\"\n  [clrModalClosable]=\"closable\"\n  (clrModalAlternateClose)=\"altClose.emit($event)\"\n  [clrModalOverrideScrollService]=\"true\"\n  [clrModalInOverlay]=\"!pinned\"\n>\n  @if (clrSidePanelPinnable) {\n  <button\n    type=\"button\"\n    [attr.aria-label]=\"commonStrings.keys.sidePanelPin\"\n    class=\"leading-button pinnable\"\n    (click)=\"togglePinned()\"\n  >\n    <cds-icon [shape]=\"pinned ? 'unpin' : 'pin'\"></cds-icon>\n  </button>\n  }\n  <div class=\"modal-title\"><ng-content select=\".side-panel-title\"></ng-content></div>\n  <div class=\"modal-body\"><ng-content select=\".side-panel-body\"></ng-content></div>\n  <div class=\"modal-footer\"><ng-content select=\".side-panel-footer\"></ng-content></div>\n</clr-modal>\n", dependencies: [{ kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge", "innerOffset"] }, { kind: "component", type: ClrModal, selector: "clr-modal", inputs: ["clrModalOpen", "clrModalClosable", "clrModalCloseButtonAriaLabel", "clrModalSize", "clrModalStaticBackdrop", "clrModalSkipAnimation", "clrModalPreventClose", "clrModalLabelledById", "clrModalOverrideScrollService", "clrModalInOverlay"], outputs: ["clrModalOpenChange", "clrModalAlternateClose"] }, { kind: "directive", type: ClrModalBody, selector: ".modal-body" }], changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrSidePanel, decorators: [{
             type: Component,
             args: [{ selector: 'clr-side-panel', host: {
                         '[class.side-panel]': 'true',
-                    }, standalone: false, changeDetection: ChangeDetectionStrategy.Eager, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n<clr-modal\n  [clrModalOpen]=\"_open\"\n  (clrModalOpenChange)=\"handleModalOpen($event)\"\n  [clrModalCloseButtonAriaLabel]=\"closeButtonAriaLabel\"\n  [clrModalSize]=\"size\"\n  [clrModalSkipAnimation]=\"skipAnimation\"\n  [clrModalStaticBackdrop]=\"staticBackdrop\"\n  [clrModalLabelledById]=\"labelledById\"\n  [clrModalPreventClose]=\"preventClose\"\n  [clrModalClosable]=\"closable\"\n  (clrModalAlternateClose)=\"altClose.emit($event)\"\n  [clrModalOverrideScrollService]=\"true\"\n>\n  @if (clrSidePanelPinnable) {\n  <button\n    type=\"button\"\n    [attr.aria-label]=\"commonStrings.keys.sidePanelPin\"\n    class=\"leading-button pinnable\"\n    (click)=\"togglePinned()\"\n  >\n    <cds-icon [shape]=\"pinned ? 'unpin' : 'pin'\"></cds-icon>\n  </button>\n  }\n  <div class=\"modal-title\"><ng-content select=\".side-panel-title\"></ng-content></div>\n  <div class=\"modal-body\"><ng-content select=\".side-panel-body\"></ng-content></div>\n  <div class=\"modal-footer\"><ng-content select=\".side-panel-footer\"></ng-content></div>\n</clr-modal>\n" }]
+                    }, standalone: false, changeDetection: ChangeDetectionStrategy.Eager, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n<clr-modal\n  [clrModalOpen]=\"_open\"\n  (clrModalOpenChange)=\"handleModalOpen($event)\"\n  [clrModalCloseButtonAriaLabel]=\"closeButtonAriaLabel\"\n  [clrModalSize]=\"size\"\n  [clrModalSkipAnimation]=\"skipAnimation\"\n  [clrModalStaticBackdrop]=\"staticBackdrop\"\n  [clrModalLabelledById]=\"labelledById\"\n  [clrModalPreventClose]=\"preventClose\"\n  [clrModalClosable]=\"closable\"\n  (clrModalAlternateClose)=\"altClose.emit($event)\"\n  [clrModalOverrideScrollService]=\"true\"\n  [clrModalInOverlay]=\"!pinned\"\n>\n  @if (clrSidePanelPinnable) {\n  <button\n    type=\"button\"\n    [attr.aria-label]=\"commonStrings.keys.sidePanelPin\"\n    class=\"leading-button pinnable\"\n    (click)=\"togglePinned()\"\n  >\n    <cds-icon [shape]=\"pinned ? 'unpin' : 'pin'\"></cds-icon>\n  </button>\n  }\n  <div class=\"modal-title\"><ng-content select=\".side-panel-title\"></ng-content></div>\n  <div class=\"modal-body\"><ng-content select=\".side-panel-body\"></ng-content></div>\n  <div class=\"modal-footer\"><ng-content select=\".side-panel-footer\"></ng-content></div>\n</clr-modal>\n" }]
         }], ctorParameters: () => [{ type: i0.ElementRef }, { type: ClrModalConfigurationService }, { type: i1.ClrCommonStringsService }], propDecorators: { openChange: [{
                 type: Output,
                 args: ['clrSidePanelOpenChange']

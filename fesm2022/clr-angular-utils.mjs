@@ -1934,15 +1934,29 @@ const FOCUS_SERVICE_PROVIDER = {
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** One owner per overlay, shared by the instance-scoped scrolling services. */
+class ScrollLockOwners {
+    constructor() {
+        this.owners = new Set();
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ScrollLockOwners, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ScrollLockOwners, providedIn: 'root' }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ScrollLockOwners, decorators: [{
+            type: Injectable,
+            args: [{ providedIn: 'root' }]
+        }] });
 class ScrollingService {
     constructor(_document) {
         this._document = _document;
+        this.locks = inject(ScrollLockOwners);
     }
     stopScrolling() {
+        this.locks.owners.add(this);
         this._document.body.classList.add('no-scrolling');
     }
     resumeScrolling() {
-        if (this._document.body.classList.contains('no-scrolling')) {
+        if (this.locks.owners.delete(this) && this.locks.owners.size === 0) {
             this._document.body.classList.remove('no-scrolling');
         }
     }

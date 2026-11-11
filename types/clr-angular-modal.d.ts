@@ -45,10 +45,13 @@ declare class ClrModal implements OnChanges, OnDestroy {
     altClose: EventEmitter<boolean>;
     labelledBy: string;
     bypassScrollService: boolean;
+    /** Whether this modal participates in overlay Escape handling, independently of scroll locking. */
+    inOverlay: boolean | undefined;
     protected readonly modalContentTemplate: TemplateRef<any>;
     private readonly bodyElementRef;
     private readonly dialogElementRef;
     private readonly injector;
+    private readonly changeDetectorRef;
     private readonly noopAnimations;
     private destroyed;
     /** Set when the modal closes, until it opens again: identifies the closing to notify. */
@@ -73,6 +76,7 @@ declare class ClrModal implements OnChanges, OnDestroy {
         toState: string;
     }): void;
     scrollTop(): void;
+    private updateOverlayState;
     /**
      * Emits `clrModalOpenChange(false)` after the closing render, once the dialog is removed and the focus trap has given
      * the focus back, so that a handler can move the focus elsewhere.
@@ -80,7 +84,7 @@ declare class ClrModal implements OnChanges, OnDestroy {
      */
     private notifyClosing;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrModal, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, { "_open": { "alias": "clrModalOpen"; "required": false; }; "closable": { "alias": "clrModalClosable"; "required": false; }; "closeButtonAriaLabel": { "alias": "clrModalCloseButtonAriaLabel"; "required": false; }; "size": { "alias": "clrModalSize"; "required": false; }; "staticBackdrop": { "alias": "clrModalStaticBackdrop"; "required": false; }; "skipAnimation": { "alias": "clrModalSkipAnimation"; "required": false; }; "stopClose": { "alias": "clrModalPreventClose"; "required": false; }; "labelledBy": { "alias": "clrModalLabelledById"; "required": false; }; "bypassScrollService": { "alias": "clrModalOverrideScrollService"; "required": false; }; }, { "_openChanged": "clrModalOpenChange"; "altClose": "clrModalAlternateClose"; }, ["modalContentTemplate"], [".leading-button", ".modal-title", ".modal-body", ".modal-footer"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, { "_open": { "alias": "clrModalOpen"; "required": false; }; "closable": { "alias": "clrModalClosable"; "required": false; }; "closeButtonAriaLabel": { "alias": "clrModalCloseButtonAriaLabel"; "required": false; }; "size": { "alias": "clrModalSize"; "required": false; }; "staticBackdrop": { "alias": "clrModalStaticBackdrop"; "required": false; }; "skipAnimation": { "alias": "clrModalSkipAnimation"; "required": false; }; "stopClose": { "alias": "clrModalPreventClose"; "required": false; }; "labelledBy": { "alias": "clrModalLabelledById"; "required": false; }; "bypassScrollService": { "alias": "clrModalOverrideScrollService"; "required": false; }; "inOverlay": { "alias": "clrModalInOverlay"; "required": false; }; }, { "_openChanged": "clrModalOpenChange"; "altClose": "clrModalAlternateClose"; }, ["modalContentTemplate"], [".leading-button", ".modal-title", ".modal-body", ".modal-footer"], false, never>;
 }
 
 /**
