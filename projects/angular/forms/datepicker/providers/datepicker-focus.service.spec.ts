@@ -5,95 +5,96 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, NgZone, PLATFORM_ID } from '@angular/core';
-import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  inject,
+  PLATFORM_ID,
+  provideCheckNoChangesConfig,
+  provideZonelessChangeDetection,
+  signal,
+} from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DatepickerFocusService } from './datepicker-focus.service';
 
-describe('Datepicker', () => {
-  describe('Providers', () => {
-    describe('Calendar View Service', () => {
-      let fixture: ComponentFixture<any>;
-      let mockNgZone: MockNgZone;
+describe('Datepicker focus (zoneless, OnPush host)', () => {
+  let fixture: ComponentFixture<TestComponent>;
+  let service: DatepickerFocusService;
 
-      beforeEach(() => {
-        mockNgZone = new MockNgZone();
-        TestBed.configureTestingModule({ declarations: [TestComponent] });
-        fixture = TestBed.createComponent(TestComponent);
-        fixture.detectChanges();
-      });
-
-      it('Focuses on the button if the button has a tabindex of 0', inject([PLATFORM_ID], platformId => {
-        const datepickerViewService: DatepickerFocusService = new DatepickerFocusService(mockNgZone, platformId);
-        const compInstance = fixture.debugElement.componentInstance;
-
-        datepickerViewService.focusCell(compInstance.elementRef);
-
-        mockNgZone.stabilizeZone();
-
-        expect(document.activeElement.innerHTML).toBe('Test Button');
-        expect(document.activeElement.id).toBe('1');
-      }));
-
-      it('Does not focus on the button if the button does not have a tab index of 0', inject(
-        [PLATFORM_ID],
-        platformId => {
-          const datepickerFocusService: DatepickerFocusService = new DatepickerFocusService(mockNgZone, platformId);
-          const compInstance = fixture.debugElement.componentInstance;
-          compInstance.tabIndex = '-1';
-
-          fixture.detectChanges();
-
-          datepickerFocusService.focusCell(compInstance.elementRef);
-
-          mockNgZone.stabilizeZone();
-
-          expect(document.activeElement.innerHTML).not.toBe('Test Button');
-          expect(document.activeElement.id).not.toBe('1');
-        }
-      ));
-
-      it('should focus given input element', inject([PLATFORM_ID], platformId => {
-        const datepickerFocusService: DatepickerFocusService = new DatepickerFocusService(mockNgZone, platformId);
-        const input: HTMLInputElement = fixture.debugElement.nativeElement.querySelector('input');
-
-        mockNgZone.stabilizeZone();
-        expect(datepickerFocusService.elementIsFocused(input)).toBe(false);
-
-        datepickerFocusService.focusInput(input);
-        mockNgZone.stabilizeZone();
-        expect(datepickerFocusService.elementIsFocused(input)).toBe(true);
-      }));
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      declarations: [TestComponent],
+      providers: [provideZonelessChangeDetection(), provideCheckNoChangesConfig({ exhaustive: true })],
     });
+    fixture = TestBed.createComponent(TestComponent);
+    fixture.autoDetectChanges();
+    service = fixture.componentInstance.focusService;
+    await fixture.whenStable();
+  });
+
+  afterEach(() => fixture.destroy());
+
+  it('focuses the cell after its tab index has rendered', async () => {
+    const button: HTMLButtonElement = fixture.nativeElement.querySelector('button');
+    fixture.componentInstance.tabIndex.set('0');
+    service.focusCell(fixture.componentInstance.elementRef);
+    expect(document.activeElement).not.toBe(button);
+    await fixture.whenStable();
+    expect(document.activeElement).toBe(button);
+  });
+
+  it('leaves focus alone when there is no focusable cell', async () => {
+    const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
+    input.focus();
+    service.focusCell(fixture.componentInstance.elementRef);
+    await fixture.whenStable();
+    expect(document.activeElement).toBe(input);
+  });
+
+  it('restores focus to the input after rendering', async () => {
+    const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
+    expect(service.elementIsFocused(input)).toBe(false);
+    service.focusInput(input);
+    expect(service.elementIsFocused(input)).toBe(false);
+    await fixture.whenStable();
+    expect(service.elementIsFocused(input)).toBe(true);
+  });
+
+  it('cancels pending focus when its host is destroyed', async () => {
+    const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
+    const focus = vi.spyOn(input, 'focus');
+    service.focusInput(input);
+    fixture.destroy();
+    await fixture.whenStable();
+    expect(focus).not.toHaveBeenCalled();
   });
 });
 
-class MockNgZone extends NgZone {
-  onStable = new EventEmitter<any>(false);
-
-  constructor() {
-    super({ enableLongStackTrace: false });
-  }
-
-  runOutsideAngular(fn: () => any): any {
-    return fn();
-  }
-
-  stabilizeZone(): void {
-    this.onStable.emit(null);
-  }
-}
+describe('Datepicker focus on the server', () => {
+  it('does not access the DOM', () => {
+    TestBed.configureTestingModule({
+      providers: [DatepickerFocusService, { provide: PLATFORM_ID, useValue: 'server' }],
+    });
+    const service = TestBed.inject(DatepickerFocusService);
+    service.focusCell(new ElementRef(null));
+    service.focusInput(null);
+    expect(service.elementIsFocused(null)).toBe(false);
+  });
+});
 
 @Component({
   template: `
-    <button id="1" [attr.tabindex]="tabIndex">Test Button</button>
+    <button [attr.tabindex]="tabIndex()">Test Button</button>
     <input type="date" />
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
+  providers: [DatepickerFocusService],
 })
 class TestComponent {
-  tabIndex = '0';
-
-  constructor(public elementRef: ElementRef<HTMLElement>) {}
+  readonly tabIndex = signal('-1');
+  readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  readonly focusService = inject(DatepickerFocusService);
 }

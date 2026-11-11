@@ -1422,6 +1422,8 @@ describe('Datagrid', () => {
         it('should preserve selection when row items change but row query list does not change', async () => {
           context.testComponent.items = [{ value: 1 }, { value: 2 }, { value: 3 }, { value: 4 }, { value: 5 }];
           context.detectChanges();
+          // Selection emits through an RxJS zero-delay timer, outside Angular rendering stability.
+          await delay();
           await context.fixture.whenStable();
 
           const rowsChangeHandler = vi.fn();
@@ -1429,12 +1431,16 @@ describe('Datagrid', () => {
 
           context.testElement.querySelector('clr-dg-row input[type="checkbox"]').click();
           context.detectChanges();
+          // Selection emits through an RxJS zero-delay timer, outside Angular rendering stability.
+          await delay();
           await context.fixture.whenStable();
           expect(context.testComponent.selected).toEqual([{ value: 1 }]);
 
           // Break item references and test that the selection is preserved.
           context.testComponent.items = [{ value: 1 }, { value: 2 }, { value: 3 }, { value: 4 }, { value: 5 }];
           context.detectChanges();
+          // Selection emits through an RxJS zero-delay timer, outside Angular rendering stability.
+          await delay();
           await context.fixture.whenStable();
           expect(context.testComponent.selected).toEqual([{ value: 1 }]);
 
@@ -1446,6 +1452,8 @@ describe('Datagrid', () => {
         it('should preserve selection when row items and row query list both change', async () => {
           context.testComponent.items = [{ value: 1 }, { value: 2 }, { value: 3 }, { value: 4 }, { value: 5 }];
           context.detectChanges();
+          // Selection emits through an RxJS zero-delay timer, outside Angular rendering stability.
+          await delay();
           await context.fixture.whenStable();
 
           const rowsChangeHandler = vi.fn();
@@ -1453,12 +1461,16 @@ describe('Datagrid', () => {
 
           context.testElement.querySelector('clr-dg-row input[type="checkbox"]').click();
           context.detectChanges();
+          // Selection emits through an RxJS zero-delay timer, outside Angular rendering stability.
+          await delay();
           await context.fixture.whenStable();
           expect(context.testComponent.selected).toEqual([{ value: 1 }]);
 
           // Break item references and test that the selection is preserved. (One less item to force the rows query list to change.)
           context.testComponent.items = [{ value: 1 }, { value: 2 }, { value: 3 }, { value: 4 }];
           context.detectChanges();
+          // Selection emits through an RxJS zero-delay timer, outside Angular rendering stability.
+          await delay();
           await context.fixture.whenStable();
           expect(context.testComponent.selected).toEqual([{ value: 1 }]);
 

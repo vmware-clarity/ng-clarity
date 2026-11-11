@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrIcon } from './icon.component';
 import { renderIcon } from './icon.renderer';
@@ -42,7 +43,7 @@ describe('icon element', () => {
     ClarityIcons.addIcons(['testing', testIcon]);
 
     fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
     component = fixture.componentInstance.icon;
   });
 
@@ -53,7 +54,7 @@ describe('icon element', () => {
 
     it('shape should get shape if it is in the registry', async () => {
       component.shape = 'testing';
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.shape).toBe('testing');
     });
 
@@ -62,14 +63,14 @@ describe('icon element', () => {
       const svg = '<svg>jabberwocky</svg>';
 
       component.shape = shape;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.shape).toBe(shape);
       // The component should fall back to the "unknown" icon
       expect(component.isStringIcon).toBe(false); // "unknown" is an SVG, not a string
 
       // Use the static service to add the new icon
       ClarityIcons.addIcons([shape, svg]);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       // The subscription in ngOnInit should pick up the change and update the icon
       expect(component.isStringIcon).toBe(true); // as it's a raw string
@@ -78,29 +79,29 @@ describe('icon element', () => {
 
     it('shape should not run an update if the shape is assigned the value it already has', async () => {
       component.shape = 'testing';
-      fixture.detectChanges();
+      renderFixture(fixture);
       vi.spyOn(component, 'updateIcon');
       component.shape = 'testing';
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.updateIcon).not.toHaveBeenCalled();
     });
 
     it('shape should not run an update if the shape is assigned a nil or empty value', async () => {
       const testShape = 'testing';
       component.shape = testShape;
-      fixture.detectChanges();
+      renderFixture(fixture);
       vi.spyOn(component, 'updateIcon');
 
       component.shape = '';
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.updateIcon).not.toHaveBeenCalled();
 
       component.shape = null;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.updateIcon).not.toHaveBeenCalled();
 
       component.shape = void 0;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.updateIcon).not.toHaveBeenCalled();
     });
 
@@ -109,7 +110,7 @@ describe('icon element', () => {
 
       // Create a component, which subscribes in ngOnInit
       fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges(); // This calls ngOnInit
+      renderFixture(fixture); // This calls ngOnInit
       expect(spy).toHaveBeenCalledTimes(1);
 
       // Destroy the component, which unsubscribes in ngOnDestroy
@@ -118,7 +119,7 @@ describe('icon element', () => {
       // Create a new component
       spy.mockClear();
       fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(spy).toHaveBeenCalledTimes(1);
     });
   });
@@ -126,19 +127,19 @@ describe('icon element', () => {
   describe('size: ', () => {
     it('should update if assigned a new value', async () => {
       component.size = 'xl';
-      fixture.detectChanges();
+      renderFixture(fixture);
       vi.spyOn(component, 'updateIconSize');
       component.size = 'md';
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.updateIconSize).toHaveBeenCalled();
     });
 
     it('should not run an update if assigned the value it already has', async () => {
       component.size = 'md';
-      fixture.detectChanges();
+      renderFixture(fixture);
       vi.spyOn(component, 'updateIconSize');
       component.size = 'md';
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.updateIconSize).not.toHaveBeenCalled();
     });
 
@@ -146,28 +147,28 @@ describe('icon element', () => {
       expect(component.el.nativeElement.style.width).toBe('');
       expect(component.el.nativeElement.style.height).toBe('');
       component.size = '43';
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.el.nativeElement.style.width).toBe('calc((43 / var(--cds-global-base)) * 1rem)');
       expect(component.el.nativeElement.style.height).toBe('calc((43 / var(--cds-global-base)) * 1rem)');
     });
 
     it('should remove the size attribute if set to undefined', async () => {
       component.size = 'md'; // Set a value first
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.el.nativeElement.hasAttribute('size')).toBe(true);
 
       component.size = void 0;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.el.nativeElement.hasAttribute('size')).toBe(false);
     });
 
     it('should remove the size attribute if set to null', async () => {
       component.size = 'md'; // Set a value first
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.el.nativeElement.hasAttribute('size')).toBe(true);
 
       component.size = null;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.el.nativeElement.hasAttribute('size')).toBe(false);
     });
   });
@@ -178,7 +179,7 @@ describe('icon element', () => {
     });
     it('should update if assigned a new value', async () => {
       component.solid = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.el.nativeElement.hasAttribute('solid')).toBe(true);
     });
   });
@@ -189,7 +190,7 @@ describe('icon element', () => {
     });
     it('should update if assigned a new value', async () => {
       component.status = 'info';
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.status).toEqual('info');
     });
   });
@@ -200,7 +201,7 @@ describe('icon element', () => {
     });
     it('should update if assigned a new value', async () => {
       component.inverse = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.el.nativeElement.hasAttribute('inverse')).toBe(true);
     });
   });
@@ -212,22 +213,22 @@ describe('icon element', () => {
     });
     it('should update if assigned a new value', async () => {
       component.badge = 'warning';
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.el.nativeElement.hasAttribute('badge')).toBe(true);
     });
     it('should update if assigned a new value', async () => {
       component.badge = 'info';
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.el.nativeElement.hasAttribute('badge')).toBe(true);
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.badge).toEqual('info');
     });
     it('should be removed if set to null', async () => {
       component.badge = 'danger';
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.el.nativeElement.hasAttribute('badge')).toBe(true);
       component.badge = null;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.el.nativeElement.hasAttribute('badge')).toBe(false);
     });
   });
@@ -240,25 +241,25 @@ describe('icon element', () => {
 
     it('should update if assigned a new value', async () => {
       component.innerOffset = 4;
-      fixture.detectChanges();
+      renderFixture(fixture);
       vi.spyOn(component, 'updateInnerOffset');
       component.innerOffset = 8;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.updateInnerOffset).toHaveBeenCalled();
     });
 
     it('should not run an update if assigned the value it already has', async () => {
       component.innerOffset = 4;
-      fixture.detectChanges();
+      renderFixture(fixture);
       vi.spyOn(component, 'updateInnerOffset');
       component.innerOffset = 4;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.updateInnerOffset).not.toHaveBeenCalled();
     });
 
     it('should set the --inner-offset custom property when given a positive value', async () => {
       component.innerOffset = 4;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.el.nativeElement.style.getPropertyValue('--inner-offset')).toBe(
         'calc((4 / var(--cds-global-base)) * 1rem)'
       );
@@ -266,17 +267,17 @@ describe('icon element', () => {
 
     it('should not set the --inner-offset custom property when given a non-positive value', async () => {
       component.innerOffset = 0;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.el.nativeElement.style.getPropertyValue('--inner-offset')).toBe('');
     });
 
     it('should remove the inner-offset attribute if set to undefined', async () => {
       component.innerOffset = 4; // Set a value first
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.el.nativeElement.hasAttribute('inner-offset')).toBe(true);
 
       component.innerOffset = void 0;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.el.nativeElement.hasAttribute('inner-offset')).toBe(false);
       expect(component.el.nativeElement.style.getPropertyValue('--inner-offset')).toBe('');
     });
@@ -287,7 +288,7 @@ describe('icon element', () => {
       const registrySpy = vi.spyOn(ClarityIcons, 'registry', 'get');
 
       component.shape = 'testing';
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(registrySpy).not.toHaveBeenCalled();
     });

@@ -12,6 +12,7 @@ import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { delay } from '@clr/angular/testing';
 import { ClrConditionalModule, IfExpandService } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 import { BehaviorSubject, Subject } from 'rxjs';
 
 import { StepperPanelStatus } from './enums/stepper-panel-status.enum';
@@ -110,7 +111,7 @@ describe('ClrStep Reactive Forms', () => {
       });
 
       fixture = TestBed.createComponent(ReactiveFormsTestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
     });
 
     it('should use reactive forms to access form groups', () => {
@@ -128,14 +129,14 @@ describe('ClrStep Reactive Forms', () => {
       const stepperService = fixture.debugElement.query(By.directive(ClrStepperPanel)).injector.get(StepperService);
       mockStep.status = StepperPanelStatus.Error;
       (stepperService as MockStepperService).step.next(mockStep);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       const statusMessage = fixture.nativeElement.querySelector('.clr-stepper-header .clr-sr-only');
       expect(statusMessage.innerText.trim()).toBe('Error in step 1');
 
       mockStep.status = StepperPanelStatus.Complete;
       (stepperService as MockStepperService).step.next(mockStep);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(statusMessage.innerText.trim()).toBe(`Step 1 complete`);
     });
@@ -147,7 +148,7 @@ describe('ClrStep Reactive Forms', () => {
       mockStep.status = StepperPanelStatus.Error;
       mockStep.disabled = true;
       (stepperService as MockStepperService).step.next(mockStep);
-      fixture.detectChanges();
+      renderFixture(fixture);
       // use 'aria-disabled' instead of 'disabled' so screen reader users can be auto focused to next step and have title be readable
       expect(fixture.nativeElement.querySelector('.clr-stepper-header-button').getAttribute('aria-disabled')).toBe(
         'true'
@@ -180,7 +181,7 @@ describe('ClrStep Template Forms', () => {
       });
 
       fixture = TestBed.createComponent(TemplateFormsTestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
     });
 
     it('should use template forms to access form groups', () => {
@@ -204,7 +205,7 @@ describe('ClrStep animations', () => {
       set: { providers: [{ provide: StepperService, useClass: MockStepperService }] },
     });
     fixture = TestBed.createComponent(ExpandableContentTestComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
     stepperService = fixture.debugElement
       .query(By.directive(ClrStepperPanel))
       .injector.get(StepperService) as MockStepperService;
@@ -222,7 +223,7 @@ describe('ClrStep animations', () => {
     const step = new StepperPanelModel('groupName', 0);
     step.open = open;
     stepperService.step.next(step);
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
   }
 
@@ -252,7 +253,7 @@ describe('ClrStep animations', () => {
 
     finishAnimations();
     await delay();
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(content()).toBeNull();
     expect(fixture.nativeElement.textContent).not.toContain('step content');
   });
@@ -266,7 +267,7 @@ describe('ClrStep animations', () => {
 
     finishAnimations();
     await delay();
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(content().textContent).toContain('step content');
   });
 
@@ -315,9 +316,9 @@ describe('ClrStepper animations', () => {
       animationsEnabled: true,
     });
     const stepperFixture = TestBed.createComponent(StepperTestComponent);
-    stepperFixture.detectChanges();
+    renderFixture(stepperFixture);
     await delay();
-    stepperFixture.detectChanges();
+    renderFixture(stepperFixture);
 
     const stepContent: HTMLElement = stepperFixture.nativeElement.querySelector('.clr-stepper-content');
     expect(stepContent.textContent).toContain('first step');
@@ -332,12 +333,12 @@ describe('ClrStepper animations', () => {
       animationsEnabled: true,
     });
     const stepperFixture = TestBed.createComponent(StepperTestComponent);
-    stepperFixture.detectChanges();
+    renderFixture(stepperFixture);
     await delay();
     const stepperService = stepperFixture.debugElement.query(By.directive(ClrStepper)).injector.get(StepperService);
 
     stepperService.navigateToNextPanel('first');
-    stepperFixture.detectChanges();
+    renderFixture(stepperFixture);
     await delay();
 
     const [first, second] = stepperFixture.nativeElement.querySelectorAll('.clr-stepper-content');
@@ -347,7 +348,7 @@ describe('ClrStepper animations', () => {
 
     first.getAnimations().forEach((animation: Animation) => animation.finish());
     await delay();
-    stepperFixture.detectChanges();
+    renderFixture(stepperFixture);
     expect(stepperFixture.nativeElement.querySelectorAll('.clr-stepper-content').length).toBe(1);
     expect(stepperFixture.nativeElement.textContent).not.toContain('first step');
     stepperFixture.destroy();

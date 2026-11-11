@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrWizardHeaderAction } from './wizard-header-action';
 import { ClrWizardModule } from './wizard.module';
@@ -61,7 +62,7 @@ describe('New Wizard Tests', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({ imports: [ClrWizardModule], declarations: [TestComponent] });
       fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
       testComponent = fixture.componentInstance;
       debugEl = fixture.debugElement;
     });
@@ -85,7 +86,7 @@ describe('New Wizard Tests', () => {
           const haToTest = testComponent.idHA;
           expect(haToTest.id, 'id reflects input that is set').toBe('clr-wizard-header-action-ohai');
           haToTest._id = 'onoez';
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(haToTest.id, 'id honors internal changes to id').toBe('clr-wizard-header-action-onoez');
         });
       });
@@ -106,7 +107,7 @@ describe('New Wizard Tests', () => {
 
         it('should not emit event if disabled', () => {
           clicker.disabled = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           clicker.click();
           expect(onClickSpy).not.toHaveBeenCalled();
         });
@@ -128,7 +129,7 @@ describe('New Wizard Tests', () => {
           const myHA = testComponent.clickedHA;
           expect(myHA.title, 'should init with expected value').toBe('title to update');
           testComponent.titleToUpdate = 'updated title';
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(myHA.title, 'should update as expected').toBe('updated title');
         });
       });
@@ -147,7 +148,7 @@ describe('New Wizard Tests', () => {
 
         it('should update id input as expected', () => {
           testComponent.myId = 'update';
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(haToTest.id).toBe('clr-wizard-header-action-update');
         });
 
@@ -156,7 +157,7 @@ describe('New Wizard Tests', () => {
           expect(unsetHA.id, 'id exists on unset header action').toBeTruthy();
           expect(unsetHA.id, 'id should have ' + 'format of header action id').toContain('clr-wizard-header-action-');
           testComponent.myId = null;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(haToTest.id, 'nulling id should change id').not.toBe(haToTestDefaultId);
           expect(unsetHA.id, 'id exists on null id header action').toBeTruthy();
           expect(unsetHA.id, 'new id ' + ' on null id should have format of header action id').toContain(
@@ -181,7 +182,7 @@ describe('New Wizard Tests', () => {
           const testMe = testComponent.projectedHA;
           expect(testMe.disabled, 'disabled input is initted to false').toBe(false);
           testComponent.disableMe = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testMe.disabled, 'disabled input has been changed to true').toBe(true);
         });
       });
@@ -194,7 +195,7 @@ describe('New Wizard Tests', () => {
 
         it('should not emit event when disabled', () => {
           testComponent.clickedHA.disabled = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           testComponent.clickedHA.click();
           expect(testComponent.lastClickedHeaderAction).toBe('');
         });
@@ -219,7 +220,7 @@ describe('New Wizard Tests', () => {
             testComponent.projector
           );
           testComponent.projector = newContent;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(projectedEl.textContent.trim(), 'verify that projected content is updated properly').toBe(newContent);
         });
       });
@@ -246,7 +247,7 @@ describe('New Wizard Tests', () => {
       describe('disabled', () => {
         it('should have .disabled class if set to be disabled', () => {
           testComponent.disableMe = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testComponent.projectedHA.disabled, 'verify component disabled as expected').toBe(true);
           const testMe = debugEl.nativeElement.querySelector('#clr-wizard-header-action-projection');
           expect(testMe.classList.contains('disabled'), 'disabled header action has .disabled').toBe(true);
@@ -271,7 +272,7 @@ describe('New Wizard Tests', () => {
           const testMe = debugEl.nativeElement.querySelector('#clr-wizard-header-action-gotklikz');
           expect(testMe.getAttribute('title'), 'verify DOM title updated').toBe('title to update');
           testComponent.titleToUpdate = 'updated title';
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testMe.getAttribute('title'), 'verify DOM title updated').toBe('updated title');
         });
       });

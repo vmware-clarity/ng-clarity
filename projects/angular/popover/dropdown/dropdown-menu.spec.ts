@@ -10,6 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrPopoverContent, ClrPopoverPosition, ClrPopoverService } from '@clr/angular/popover/common';
 import { FocusableItem } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrDropdown } from './dropdown';
 import { ClrDropdownMenu } from './dropdown-menu';
@@ -51,7 +52,7 @@ describe('Dropdown', () => {
         focusHandler = fixture.debugElement.query(By.directive(ClrDropdown)).injector.get(DropdownFocusHandler);
 
         popoverService.open = true;
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         // ClrPopoverContent is only available after open
         popoverContent = fixture.debugElement.query(By.directive(ClrDropdownMenu)).injector.get(ClrPopoverContent);
@@ -76,11 +77,11 @@ describe('Dropdown', () => {
         expect(popoverContent.contentAt as ClrPopoverPosition).toEqual(ClrPopoverPosition.BOTTOM_LEFT);
 
         fixture.componentInstance.position = ClrPopoverPosition.BOTTOM_RIGHT;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(popoverContent.contentAt as ClrPopoverPosition).toEqual(ClrPopoverPosition.BOTTOM_RIGHT);
 
         fixture.componentInstance.position = ClrPopoverPosition.TOP_RIGHT;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(popoverContent.contentAt as ClrPopoverPosition).toEqual(ClrPopoverPosition.TOP_RIGHT);
       });
 
@@ -104,7 +105,7 @@ describe('Dropdown', () => {
       it('removes children from the DropdownFocusHandler on destroy', function () {
         const spy = vi.spyOn(focusHandler, 'resetChildren').mockImplementation(() => undefined);
         fixture.componentInstance.menu = false;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(spy).toHaveBeenCalled();
       });
     });

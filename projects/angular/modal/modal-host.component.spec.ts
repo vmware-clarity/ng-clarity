@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, ElementRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrModalHostComponent } from './modal-host.component';
 
@@ -19,7 +20,7 @@ describe('ModalHost for SidePanel', () => {
       declarations: [ClrModalHostComponent, TestComponent],
     });
     fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
     modalHostElement = fixture.componentInstance.testElement.nativeElement.querySelector('&>.clr-modal-host');
   });
 

@@ -11,6 +11,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { ClrInput, ClrInputContainer } from '@clr/angular/forms/input';
 import { ClrIcon } from '@clr/angular/icon';
 import { delay } from '@clr/angular/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrIfError } from './if-error';
 import { ClrControlError } from '../control-subtexts/error';
@@ -107,7 +108,7 @@ describe('Forms common utilities', () => {
         TestBed.configureTestingModule({ declarations: [ClrIfError, InvalidUseTest] });
         expect(() => {
           const fixture = TestBed.createComponent(InvalidUseTest);
-          fixture.detectChanges();
+          renderFixture(fixture);
         }).toThrow();
       });
     });
@@ -121,7 +122,7 @@ describe('Forms common utilities', () => {
           declarations: [ClrInput, ClrControlError, ClrInputContainer, ClrIfError, GeneralErrorTest],
         });
         fixture = TestBed.createComponent(GeneralErrorTest);
-        fixture.detectChanges();
+        renderFixture(fixture);
         ngControlService = fixture.debugElement.injector.get(NgControlService);
       });
 
@@ -135,7 +136,7 @@ describe('Forms common utilities', () => {
         control.markAsTouched();
         ngControlService.addControl(control);
         control.markAsTouched();
-        fixture.detectChanges();
+        renderFixture(fixture);
         await delay();
         expect(fixture.nativeElement.innerHTML).toContain(errorMessage);
       });
@@ -150,7 +151,7 @@ describe('Forms common utilities', () => {
           declarations: [ClrInput, ClrControlError, ClrInputContainer, ClrIfError, SpecificErrorTest],
         });
         fixture = TestBed.createComponent(SpecificErrorTest);
-        fixture.detectChanges();
+        renderFixture(fixture);
         ngControlService = fixture.debugElement.injector.get(NgControlService);
       });
 
@@ -164,7 +165,7 @@ describe('Forms common utilities', () => {
         ngControlService.addControl(control);
         control.markAsTouched();
         await delay();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(fixture.nativeElement.innerHTML).toContain(errorMessage);
       });
 
@@ -174,7 +175,7 @@ describe('Forms common utilities', () => {
         ngControlService.addControl(control);
         control.markAsTouched();
         await delay();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(fixture.nativeElement.innerHTML).not.toContain(errorMessage);
         expect(fixture.nativeElement.innerHTML).toContain(minLengthMessage);
       });
@@ -184,7 +185,7 @@ describe('Forms common utilities', () => {
         ngControlService.addControl(control);
         control.markAsTouched();
         await delay();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(fixture.nativeElement.innerHTML).toContain(`${maxLengthMessage}-5-6`);
       });
 
@@ -193,12 +194,12 @@ describe('Forms common utilities', () => {
         ngControlService.addControl(control);
         control.markAsTouched();
         await delay();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(fixture.nativeElement.innerHTML).toContain(`${maxLengthMessage}-5-6`);
 
         control.setValue('abcdefg');
         await delay();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(fixture.nativeElement.innerHTML).toContain(`${maxLengthMessage}-5-7`);
       });
 
@@ -212,7 +213,7 @@ describe('Forms common utilities', () => {
         ngControlService.addControl(control);
         control.markAsTouched();
         await delay();
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         // Required message
         expect(fixture.nativeElement.innerHTML).toContain(errorMessage);
@@ -222,7 +223,7 @@ describe('Forms common utilities', () => {
         // MinLength message
         control.setValue('abc');
         await delay();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(fixture.nativeElement.innerHTML).not.toContain(errorMessage);
         expect(fixture.nativeElement.innerHTML).toContain(minLengthMessage);
         expect(fixture.nativeElement.innerHTML).not.toContain(maxLengthMessage);
@@ -230,7 +231,7 @@ describe('Forms common utilities', () => {
         // MaxLength message
         control.setValue('abcdef');
         await delay();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(fixture.nativeElement.innerHTML).not.toContain(errorMessage);
         expect(fixture.nativeElement.innerHTML).not.toContain(minLengthMessage);
         expect(fixture.nativeElement.innerHTML).toContain(maxLengthMessage);
@@ -238,7 +239,7 @@ describe('Forms common utilities', () => {
         // No errors
         control.setValue('abcde');
         await delay();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(fixture.nativeElement.innerHTML).not.toContain(errorMessage);
         expect(fixture.nativeElement.innerHTML).not.toContain(minLengthMessage);
         expect(fixture.nativeElement.innerHTML).not.toContain(maxLengthMessage);
@@ -256,7 +257,7 @@ describe('Forms common utilities', () => {
         });
         fixture = TestBed.createComponent(DynamicErrorTypeTest);
         component = fixture.componentInstance;
-        fixture.detectChanges();
+        renderFixture(fixture);
       });
 
       // Correct errors ARE shown after validators are applied dynamically and no error in console (CDE-3109)
@@ -270,7 +271,7 @@ describe('Forms common utilities', () => {
         fixture.componentInstance.undefinedErrorForm.get('password').setValue('abcdefgh');
         fixture.componentInstance.onSubmit();
         await delay();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(fixture.nativeElement.innerHTML).not.toContain('Input is required');
         expect(fixture.nativeElement.innerHTML).not.toContain(`shorter than ${component.maxLength} characters`);
         expect(fixture.nativeElement.innerHTML).not.toContain(`Must be at least ${component.minLength} characters`);
@@ -280,7 +281,7 @@ describe('Forms common utilities', () => {
       it('does not show minlength or maxlength errors when only the required error is active', async () => {
         fixture.componentInstance.onSubmit();
         await delay();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(fixture.nativeElement.innerHTML).toContain('Input is required');
         expect(fixture.nativeElement.innerHTML).not.toContain(`shorter than ${component.maxLength} characters`);
         expect(fixture.nativeElement.innerHTML).not.toContain(`Must be at least ${component.maxLength} characters`);
@@ -290,7 +291,7 @@ describe('Forms common utilities', () => {
         fixture.componentInstance.undefinedErrorForm.get('password').setValue('abc');
         fixture.componentInstance.onSubmit();
         await delay();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(fixture.nativeElement.innerHTML).not.toContain('Input is required');
         expect(fixture.nativeElement.innerHTML).not.toContain(`shorter than ${component.maxLength} characters`);
         expect(fixture.nativeElement.innerHTML).toContain(`Must be at least ${component.minLength} characters`);
@@ -300,7 +301,7 @@ describe('Forms common utilities', () => {
         fixture.componentInstance.undefinedErrorForm.get('password').setValue('abcdefghijk');
         fixture.componentInstance.onSubmit();
         await delay();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(fixture.nativeElement.innerHTML).not.toContain('Input is required');
         expect(fixture.nativeElement.innerHTML).toContain(`shorter than ${component.maxLength} characters`);
         expect(fixture.nativeElement.innerHTML).not.toContain(`Must be at least ${component.minLength} characters`);

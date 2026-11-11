@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrCard } from './card';
 import { ClrCardHeader } from './card-header';
@@ -67,7 +68,7 @@ describe('ClrCardHeader', () => {
 
     beforeEach(() => {
       fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
       headerElement = fixture.debugElement.query(By.directive(ClrCardHeader)).nativeElement;
     });
 
@@ -84,14 +85,14 @@ describe('ClrCardHeader', () => {
 
   it('works outside of a clr-card without throwing', () => {
     const standaloneFixture = TestBed.createComponent(StandaloneHeaderComponent);
-    expect(() => standaloneFixture.detectChanges()).not.toThrow();
+    expect(() => renderFixture(standaloneFixture)).not.toThrow();
     expect(standaloneFixture.nativeElement.textContent.trim()).toBe('Standalone header');
     expect(standaloneFixture.nativeElement.querySelector('.clr-card-header-content').hasAttribute('id')).toBe(false);
   });
 
   it('gives clr-card-body-title-style heading semantics via clrHeadingLevel', () => {
     const fixture = TestBed.createComponent(TestHeadingLevelComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     const content = fixture.debugElement
       .query(By.directive(ClrCardHeader))
@@ -109,7 +110,7 @@ describe('ClrCardHeader', () => {
 
     beforeEach(() => {
       fixture = TestBed.createComponent(TestCollapsibleComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
       headerElement = fixture.debugElement.query(By.directive(ClrCardHeader)).nativeElement;
       cardInstance = fixture.debugElement.query(By.directive(ClrCard)).componentInstance;
       button = headerElement.querySelector('button');
@@ -141,7 +142,7 @@ describe('ClrCardHeader', () => {
       const collapseLabel = button.getAttribute('aria-label');
 
       button.click();
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(button.getAttribute('aria-expanded')).toBe('false');
       expect(button.getAttribute('aria-label')).not.toBe(collapseLabel);
@@ -151,23 +152,23 @@ describe('ClrCardHeader', () => {
       expect(cardInstance.expanded).toBe(true);
 
       button.click();
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(cardInstance.expanded).toBe(false);
 
       button.click();
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(cardInstance.expanded).toBe(true);
     });
 
     it('reflects a programmatic expanded change without a manual change detection subscription', () => {
       cardInstance.expanded = false;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(button.getAttribute('aria-expanded')).toBe('false');
     });
 
     it('does not toggle when clicking the header outside of the toggle button', () => {
       headerElement.click();
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(cardInstance.expanded).toBe(true);
     });
   });

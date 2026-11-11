@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule, LayoutService, NgControlService } from '@clr/angular/forms/common';
 import { ClrIcon } from '@clr/angular/icon';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 export function WrapperNoLabelSpec(testContainer, testControl, testComponent): void {
   describe('no label', () => {
@@ -28,7 +29,7 @@ export function WrapperNoLabelSpec(testContainer, testControl, testComponent): v
     });
 
     it('adds an empty label when no label is provided', () => {
-      fixture.detectChanges();
+      renderFixture(fixture);
       const labels = containerEl.querySelectorAll('label');
       expect(Array.prototype.filter.call(labels, label => label.textContent === '').length).toBe(1);
     });
@@ -49,7 +50,7 @@ export function WrapperFullSpec(testContainer, testControl, testComponent, wrapp
 
       containerDE = fixture.debugElement.query(By.directive(testContainer));
       containerEl = containerDE.nativeElement;
-      fixture.detectChanges();
+      renderFixture(fixture);
     });
 
     it('projects the control inside of the wrapper', () => {
@@ -88,7 +89,7 @@ export function WrapperContainerSpec(testContainer, testWrapper, testControl, te
 
       wrapper = fixture.debugElement.query(By.directive(testWrapper));
       wrapperEl = wrapper.nativeElement;
-      fixture.detectChanges();
+      renderFixture(fixture);
     });
 
     it('does not add the wrapper class inside a container', () => {

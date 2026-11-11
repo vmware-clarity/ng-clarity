@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrDatagridFilter } from '@clr/angular/data/datagrid';
+import { renderFixture } from '@clr/angular/utils/testing';
 import { Subject } from 'rxjs';
 
 import { DatagridFilterContainerComponent } from './datagrid-filter-container.component';
@@ -46,9 +47,9 @@ describe('DatagridFilterContainer', () => {
   });
 
   it('should create the filter component when filterType is set', () => {
-    component.filterType = MockFilterComponent;
-    component.filterValue = 'testValue';
-    fixture.detectChanges();
+    fixture.componentRef.setInput('filterType', MockFilterComponent);
+    fixture.componentRef.setInput('filterValue', 'testValue');
+    renderFixture(fixture);
 
     const filterComponent = fixture.debugElement.query(By.directive(MockFilterComponent));
     expect(filterComponent).toBeTruthy();
@@ -58,9 +59,9 @@ describe('DatagridFilterContainer', () => {
   });
 
   it('should emit filterValueChange when filter value changes', () => {
-    component.filterType = MockFilterComponent;
-    component.filterValue = 'testValue';
-    fixture.detectChanges();
+    fixture.componentRef.setInput('filterType', MockFilterComponent);
+    fixture.componentRef.setInput('filterValue', 'testValue');
+    renderFixture(fixture);
 
     const filterComponent = fixture.debugElement.query(By.directive(MockFilterComponent));
     const filterInstance = filterComponent.componentInstance as MockFilterComponent;
@@ -72,15 +73,15 @@ describe('DatagridFilterContainer', () => {
   });
 
   it('should destroy the filter component when destroyed', () => {
-    component.filterType = MockFilterComponent;
-    component.filterValue = 'testValue';
-    fixture.detectChanges();
+    fixture.componentRef.setInput('filterType', MockFilterComponent);
+    fixture.componentRef.setInput('filterValue', 'testValue');
+    renderFixture(fixture);
 
     const filterComponent = fixture.debugElement.query(By.directive(MockFilterComponent));
     expect(filterComponent).toBeTruthy();
 
     component.ngOnDestroy();
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     const destroyedFilterComponent = fixture.debugElement.query(By.directive(MockFilterComponent));
     expect(destroyedFilterComponent).toBeNull();

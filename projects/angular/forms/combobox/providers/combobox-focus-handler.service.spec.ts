@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angu
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { Keys } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { COMBOBOX_FOCUS_HANDLER_PROVIDER, ComboboxFocusHandler, OptionData } from './combobox-focus-handler.service';
 import { OptionSelectionService } from './option-selection.service';
@@ -62,7 +63,7 @@ describe('Combobox component', () => {
         testContext.popoverService = testContext.fixture.debugElement.injector.get(ClrPopoverService);
         testContext.selectionService = testContext.fixture.debugElement.injector.get(OptionSelectionService);
 
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
 
         testContext.focusHandler.textInput = testContext.testComponent.textInput.nativeElement;
         testContext.focusHandler.trigger = testContext.testComponent.trigger.nativeElement;
@@ -122,6 +123,19 @@ describe('Combobox component', () => {
         const event = new FocusEvent('blur');
         testContext.testComponent.listbox.nativeElement.dispatchEvent(event);
         expect(testContext.popoverService.open).toBe(false);
+      });
+
+      it('removes keyboard and blur listeners when destroyed', () => {
+        testContext.focusHandler.ngOnDestroy();
+        testContext.testComponent.textInput.nativeElement.dispatchEvent(
+          new KeyboardEvent('keydown', { key: Keys.ArrowDown })
+        );
+        expect(testContext.popoverService.open).toBe(false);
+        testContext.popoverService.open = true;
+        testContext.testComponent.textInput.nativeElement.dispatchEvent(new FocusEvent('blur'));
+        testContext.testComponent.trigger.nativeElement.dispatchEvent(new FocusEvent('blur'));
+        testContext.testComponent.listbox.nativeElement.dispatchEvent(new FocusEvent('blur'));
+        expect(testContext.popoverService.open).toBe(true);
       });
 
       it('can set focus on textInput', () => {

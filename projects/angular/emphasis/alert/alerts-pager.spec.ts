@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component, QueryList, Type, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClrCommonStringsService } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrAlert } from './alert';
 import { ClrAlertsPager } from './alerts-pager';
@@ -73,7 +74,7 @@ describe('Alert Tests', () => {
           queryList.reset([testContext.alert, testContext.secondAlert]);
           service.manage(queryList);
 
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
         };
       });
 
@@ -86,22 +87,22 @@ describe('Alert Tests', () => {
       it('offers two way binding on the alert index', () => {
         testContext.create(TestIndex);
         testContext.fixture.componentInstance.index = 1;
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.fixture.componentInstance.pagerInstance.currentAlertIndex).toEqual(1);
 
         testContext.fixture.componentInstance.pagerInstance.currentAlertIndex = 0;
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.fixture.componentInstance.index).toEqual(0);
       });
 
       it('offers two way binding on the alert instance', () => {
         testContext.create(TestInstance);
         testContext.fixture.componentInstance.currentAlert = testContext.secondAlert;
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.fixture.componentInstance.pagerInstance.currentAlert).toEqual(testContext.secondAlert);
 
         testContext.fixture.componentInstance.pagerInstance.currentAlert = testContext.alert;
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.fixture.componentInstance.currentAlert).toEqual(testContext.alert);
       });
     });
@@ -121,7 +122,7 @@ describe('Alert Tests', () => {
         fixture = TestBed.createComponent(TestBasics);
         queryList.reset(Array(4).fill(TestBed.createComponent(ClrAlert).componentInstance));
         service.manage(queryList);
-        fixture.detectChanges();
+        renderFixture(fixture);
         pagerInstance = fixture.componentInstance.pagerInstance;
       });
 
@@ -133,7 +134,7 @@ describe('Alert Tests', () => {
         const button = fixture.nativeElement.querySelector('.alerts-page-up button');
         expect(button.getAttribute('aria-label')).toBe('Next alert message, 2 of 4');
         pagerInstance.pageUp();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(button.getAttribute('aria-label')).toBe('Next alert message, 3 of 4');
       });
 
@@ -141,7 +142,7 @@ describe('Alert Tests', () => {
         const button = fixture.nativeElement.querySelector('.alerts-page-down button');
         expect(button.getAttribute('aria-label')).toBe('Previous alert message, 4 of 4');
         pagerInstance.pageUp();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(button.getAttribute('aria-label')).toBe('Previous alert message, 1 of 4');
       });
     });

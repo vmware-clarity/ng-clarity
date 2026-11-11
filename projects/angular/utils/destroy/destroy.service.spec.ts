@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 import { Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 
@@ -39,7 +40,7 @@ describe('ClrDestroyService', () => {
 
     // Act
     const fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     fixture.destroy();
 

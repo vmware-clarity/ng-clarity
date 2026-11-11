@@ -36,8 +36,8 @@ describe('MenuHeaderComponent', () => {
     const iconClass = 'icon-class';
     const text = 'Header Text';
 
-    component.iconClass = iconClass;
-    component.text = text;
+    fixture.componentRef.setInput('iconClass', iconClass);
+    fixture.componentRef.setInput('text', text);
 
     expect(component.iconClass).toEqual(iconClass);
     expect(component.text).toEqual(text);

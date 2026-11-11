@@ -6,6 +6,7 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { PropertyViewMessageModel, PropertyViewModelType } from '../property-view.model';
 import { PropertyViewMessageComponent } from './property-view-message.component';
@@ -60,8 +61,8 @@ describe('PropertyViewMessageComponent', () => {
   });
 
   it('should render a cell element that spans across 2 columns', () => {
-    testContext.component.data = testContext.createData({});
-    testContext.fixture.detectChanges();
+    testContext.fixture.componentRef.setInput('data', testContext.createData({}));
+    renderFixture(testContext.fixture);
     expect(testContext.element.children.length).toEqual(1);
     expect(testContext.element.children[0]).toEqual(expect.any(HTMLTableCellElement));
     expect(testContext.element.children[0].getAttribute('colspan')).toEqual('2');
@@ -71,54 +72,72 @@ describe('PropertyViewMessageComponent', () => {
   const messageIcon = 'message-icon';
   describe('icon', () => {
     it('should not be rendered when input data icon is null', () => {
-      testContext.component.data = testContext.createData({
-        text: messageText,
-        icon: null,
-      });
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          text: messageText,
+          icon: null,
+        })
+      );
+      renderFixture(testContext.fixture);
       expect(testContext.getMessageIconElements().length).toEqual(0);
     });
 
     it('should not be rendered when input data icon is empty', () => {
-      testContext.component.data = testContext.createData({
-        text: messageText,
-        icon: '',
-      });
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          text: messageText,
+          icon: '',
+        })
+      );
+      renderFixture(testContext.fixture);
       expect(testContext.getMessageIconElements().length).toEqual(0);
     });
 
     it('should be rendered when input data icon is defined', () => {
-      testContext.component.data = testContext.createData({
-        text: messageText,
-        icon: messageIcon,
-      });
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          text: messageText,
+          icon: messageIcon,
+        })
+      );
+      renderFixture(testContext.fixture);
       expect(testContext.getMessageIconElements().length).toEqual(1);
       expect(testContext.getMessageIconElements()[0].classList.contains(messageIcon)).toEqual(true);
     });
 
     it('should be updated when input data changes', () => {
-      testContext.component.data = testContext.createData({
-        text: messageText,
-        icon: 'message-icon-1',
-      });
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          text: messageText,
+          icon: 'message-icon-1',
+        })
+      );
+      renderFixture(testContext.fixture);
       expect(testContext.getMessageIconElements().length).toEqual(1);
       expect(testContext.getMessageIconElements()[0].classList.contains('message-icon-1')).toEqual(true);
 
-      testContext.component.data = testContext.createData({
-        text: messageText,
-        icon: null,
-      });
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          text: messageText,
+          icon: null,
+        })
+      );
+      renderFixture(testContext.fixture);
       expect(testContext.getMessageIconElements().length).toEqual(0);
 
-      testContext.component.data = testContext.createData({
-        text: messageText,
-        icon: 'message-icon-2',
-      });
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          text: messageText,
+          icon: 'message-icon-2',
+        })
+      );
+      renderFixture(testContext.fixture);
       expect(testContext.getMessageIconElements().length).toEqual(1);
       expect(testContext.getMessageIconElements()[0].classList.contains('message-icon-2')).toEqual(true);
     });
@@ -127,11 +146,14 @@ describe('PropertyViewMessageComponent', () => {
   describe('text', () => {
     const htmlText = '<b>message-text</b>';
     it('should be rendered as plain text when input data renderAsHtml is false', () => {
-      testContext.component.data = testContext.createData({
-        text: htmlText,
-        renderAsHtml: false,
-      });
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          text: htmlText,
+          renderAsHtml: false,
+        })
+      );
+      renderFixture(testContext.fixture);
       expect(testContext.element.textContent?.trim()).toEqual(htmlText);
       expect(testContext.getMessageTextElements().length).toEqual(1);
       expect(testContext.getMessageTextElements()[0].textContent).toEqual(htmlText);
@@ -139,11 +161,14 @@ describe('PropertyViewMessageComponent', () => {
     });
 
     it('should be rendered as HTML when input data renderAsHtml is true', () => {
-      testContext.component.data = testContext.createData({
-        text: htmlText,
-        renderAsHtml: true,
-      });
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          text: htmlText,
+          renderAsHtml: true,
+        })
+      );
+      renderFixture(testContext.fixture);
       expect(testContext.element.textContent?.trim()).toEqual(messageText);
       expect(testContext.getMessageTextElements().length).toEqual(1);
       expect(testContext.getMessageTextElements()[0].textContent).toEqual(messageText);
@@ -151,32 +176,41 @@ describe('PropertyViewMessageComponent', () => {
     });
 
     it('should be displayed after icon', () => {
-      testContext.component.data = testContext.createData({
-        text: messageText,
-        icon: messageIcon,
-      });
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          text: messageText,
+          icon: messageIcon,
+        })
+      );
+      renderFixture(testContext.fixture);
       const iconElement = testContext.getMessageIconElements()[0];
       const textElement = testContext.getMessageTextElements()[0];
       expect(textElement.previousElementSibling).toBe(iconElement);
     });
 
     it('should be updated when input data changes', () => {
-      testContext.component.data = testContext.createData({
-        text: '<b>message-text-1</b>',
-        renderAsHtml: true,
-      });
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          text: '<b>message-text-1</b>',
+          renderAsHtml: true,
+        })
+      );
+      renderFixture(testContext.fixture);
       expect(testContext.element.textContent?.trim()).toEqual('message-text-1');
       expect(testContext.getMessageTextElements().length).toEqual(1);
       expect(testContext.getMessageTextElements()[0].textContent).toEqual('message-text-1');
       expect(testContext.getMessageTextElements()[0].innerHTML).toEqual('<b>message-text-1</b>');
 
       const messageText2 = '<b>message-text-2</b>';
-      testContext.component.data = testContext.createData({
-        text: messageText2,
-      });
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          text: messageText2,
+        })
+      );
+      renderFixture(testContext.fixture);
       expect(testContext.element.textContent?.trim()).toEqual(messageText2);
       expect(testContext.getMessageTextElements().length).toEqual(1);
       expect(testContext.getMessageTextElements()[0].textContent).toEqual(messageText2);

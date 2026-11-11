@@ -6,6 +6,7 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { MockAppfxCardContainerComponent } from './appfx-card-container.component.mock';
 
@@ -20,7 +21,7 @@ describe('MockAppfxCardContainerComponent', () => {
 
     fixture = TestBed.createComponent(MockAppfxCardContainerComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    renderFixture(fixture);
   });
 
   it('should create an instance of MockAppfxCardContainerComponent', () => {

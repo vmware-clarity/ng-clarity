@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrIcon } from '../icon.component';
 import { ClarityIcons } from '../icon.service';
@@ -58,20 +59,20 @@ describe('icon svg helpers:', () => {
       declarations: [TestComponent],
     });
     fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
     component = fixture.componentInstance.icon;
     nativeElement = component.el.nativeElement;
   });
 
   it('should check if icon has a alert style badge', async () => {
     component.badge = 'warning-triangle';
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(hasAlertBadge(component)).toBe(true);
   });
 
   it('should get alert badge svg template', async () => {
     component.badge = 'warning-triangle';
-    fixture.detectChanges();
+    renderFixture(fixture);
     // Use the helper function here
     expect(getSvgContent(nativeElement)).toContain('alert');
     expect(getSvgContent(nativeElement)).not.toContain('badge');
@@ -79,38 +80,38 @@ describe('icon svg helpers:', () => {
 
   it('should get circle badge svg template', async () => {
     component.badge = true;
-    fixture.detectChanges();
+    renderFixture(fixture);
     // Use the helper function here
     expect(getSvgContent(nativeElement)).toContain('badge');
     expect(getSvgContent(nativeElement)).not.toContain('alert');
   });
 
   it('should get icon svg template', async () => {
-    fixture.detectChanges();
+    renderFixture(fixture);
     // Use the helper function here
     expect(getSvgContent(nativeElement)).toContain(testIcon.outline);
 
     component.badge = 'success';
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(getSvgContent(nativeElement)).toContain(testIcon.outlineBadged);
 
     component.badge = 'warning-triangle';
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(getSvgContent(nativeElement)).toContain(testIcon.outlineAlerted);
 
     component.solid = true;
     component.badge = false;
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(getSvgContent(nativeElement)).toContain(testIcon.solid);
 
     component.solid = true;
     component.badge = 'success';
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(getSvgContent(nativeElement)).toContain(testIcon.solidBadged);
 
     component.solid = true;
     component.badge = 'warning-triangle';
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(getSvgContent(nativeElement)).toContain(testIcon.solidAlerted);
   });
 });

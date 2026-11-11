@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrIfDetail } from './datagrid-if-detail';
 import { DetailService } from './providers/detail.service';
@@ -28,7 +29,7 @@ describe('ClrIfDetail Directive', function () {
     testElement = fixture.debugElement.nativeElement;
     detailService = TestBed.inject(DetailService);
     vi.spyOn(detailService, 'close');
-    fixture.detectChanges();
+    renderFixture(fixture);
   });
 
   afterEach(() => {
@@ -43,17 +44,17 @@ describe('ClrIfDetail Directive', function () {
     it('should project input state', () => {
       const input = 'projected state';
       testComponent.detailState = input;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(testElement.querySelector('.state').textContent).toBe(input);
     });
 
     it('should emit changes', () => {
       expect(testComponent.detailState).toBeNull();
       detailService.open(content);
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(testComponent.detailState).toEqual(content);
       detailService.close();
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(testComponent.detailState).toBeNull();
     });
 
@@ -61,7 +62,7 @@ describe('ClrIfDetail Directive', function () {
       vi.spyOn(detailService, 'toggle').mockImplementation(() => undefined);
       vi.spyOn(testComponent.detail.stateChange, 'emit');
       detailService.open(content);
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(detailService.toggle).not.toHaveBeenCalled();
       expect(testComponent.detail.stateChange.emit).toHaveBeenCalledWith(testComponent.detailState);
     });
@@ -71,17 +72,17 @@ describe('ClrIfDetail Directive', function () {
     it('should show and hide the panel', () => {
       expect(testElement.innerHTML).not.toContain(content);
       detailService.open({});
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(testElement.innerHTML).toContain(content);
       detailService.close();
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(testElement.innerHTML).not.toContain(content);
     });
 
     it('should update the service when input changes', () => {
       vi.spyOn(detailService, 'toggle');
       testComponent.detailState = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(detailService.toggle).toHaveBeenCalled();
       expect(testElement.innerHTML).toContain(content);
     });

@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Type } from '@clr/angular/emphasis/common';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrBadge, ClrBadgeColors } from './badge';
 
@@ -32,7 +33,7 @@ describe('ClrBadge component', () => {
       TestBed.configureTestingModule({ imports: [ClrBadge], declarations: [TestComponent] });
 
       fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
     });
 
     afterEach(() => {
@@ -50,7 +51,7 @@ describe('ClrBadge component', () => {
 
       const newBadgeText = '15';
       fixture.componentInstance.content = newBadgeText;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(badgeElement.textContent).toBe(newBadgeText);
     });
@@ -62,30 +63,30 @@ describe('ClrBadge component', () => {
 
       // set purple color
       fixture.componentInstance.color = ClrBadgeColors.Purple;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(badgeElement.className).toContain('badge-purple');
 
       // set blue color
       fixture.componentInstance.color = ClrBadgeColors.Blue;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(badgeElement.className).toContain('badge-blue');
 
       // set light blue color
       fixture.componentInstance.color = ClrBadgeColors.LightBlue;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(badgeElement.className).toContain('badge-light-blue');
 
       // set orange color
       fixture.componentInstance.color = ClrBadgeColors.Orange;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(badgeElement.className).toContain('badge-orange');
       // set gray color
       fixture.componentInstance.color = ClrBadgeColors.Gray;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(badgeElement.className).toContain('badge-gray');
     });
@@ -97,25 +98,25 @@ describe('ClrBadge component', () => {
 
       // set info color
       fixture.componentInstance.color = ClrBadgeColors.Info;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(badgeElement.className).toContain('badge-info');
 
       // set warning color
       fixture.componentInstance.color = ClrBadgeColors.Warning;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(badgeElement.className).toContain('badge-warning');
 
       // set danger color
       fixture.componentInstance.color = ClrBadgeColors.Danger;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(badgeElement.className).toContain('badge-danger');
 
       // set success color
       fixture.componentInstance.color = ClrBadgeColors.Success;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(badgeElement.className).toContain('badge-success');
     });
@@ -127,7 +128,7 @@ describe('ClrBadge component', () => {
 
       // set solid color
       fixture.componentInstance.type = Type.Outlined;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(htmlElement.className).toContain('outlined');
     });
@@ -139,31 +140,31 @@ describe('ClrBadge component', () => {
 
       // set color 1
       fixture.componentInstance.color = '1';
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(badgeElement.className).toContain('badge-1');
 
       // set color 2
       fixture.componentInstance.color = '2';
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(badgeElement.className).toContain('badge-2');
 
       // set color 3
       fixture.componentInstance.color = '3';
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(badgeElement.className).toContain('badge-3');
 
       // set color 4
       fixture.componentInstance.color = '4';
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(badgeElement.className).toContain('badge-4');
 
       // set color 5
       fixture.componentInstance.color = '5';
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(badgeElement.className).toContain('badge-5');
     });

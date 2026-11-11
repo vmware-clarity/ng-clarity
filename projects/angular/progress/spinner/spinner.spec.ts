@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrSpinner } from './spinner';
 import { ClrSpinnerModule } from './spinner.module';
@@ -69,7 +70,7 @@ describe('ClrSpinner component', () => {
 
     it('should project content', () => {
       fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
       clrSpinner = fixture.debugElement.query(By.directive(ClrSpinner)).nativeElement;
       expect(fixture.nativeElement.textContent.trim()).toBe('Loading ...');
     });
@@ -77,7 +78,7 @@ describe('ClrSpinner component', () => {
     describe('Modifiers', () => {
       it(`should add class .${SPINNER_INLINE} when inline is set`, () => {
         fixture = TestBed.createComponent(TestComponent);
-        fixture.detectChanges();
+        renderFixture(fixture);
         clrSpinner = fixture.debugElement.query(By.directive(ClrSpinner)).nativeElement;
         expect(clrSpinner.getAttribute('class')).toContain(SPINNER_BASE_CLASS);
         expect(clrSpinner.getAttribute('class')).toContain(SPINNER_INLINE);
@@ -86,7 +87,7 @@ describe('ClrSpinner component', () => {
       it(`should add class .${SPINNER_INVERSE} when inverse is set`, () => {
         fixture = TestBed.createComponent(TestSmallComponent);
         clrSpinner = fixture.debugElement.query(By.directive(ClrSpinner)).nativeElement;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(clrSpinner.getAttribute('class')).toContain(SPINNER_BASE_CLASS);
         expect(clrSpinner.getAttribute('class')).toContain(SPINNER_INVERSE);
       });
@@ -105,14 +106,14 @@ describe('ClrSpinner component', () => {
 
       it(`.${SPINNER_SMALL_SIZE} should have the size ot 16x16`, async () => {
         fixture = TestBed.createComponent(TestSmallComponent);
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(componentHeight(fixture)).toBe(16);
         expect(componentWidth(fixture)).toBe(16);
       });
 
       it(`.${SPINNER_MEDIUM_SIZE} should have the size ot 32x32`, () => {
         fixture = TestBed.createComponent(TestMediumComponent);
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         expect(componentHeight(fixture)).toBe(32);
         expect(componentWidth(fixture)).toBe(32);
@@ -120,7 +121,7 @@ describe('ClrSpinner component', () => {
 
       it(`.${SPINNER_LARGE_SIZE} should have the size ot 64x64`, () => {
         fixture = TestBed.createComponent(TestLargeComponent);
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         expect(componentHeight(fixture)).toBe(64);
         expect(componentWidth(fixture)).toBe(64);
@@ -129,7 +130,7 @@ describe('ClrSpinner component', () => {
       it(`should add .${SPINNER_SMALL_SIZE}`, () => {
         fixture = TestBed.createComponent(TestSmallComponent);
         clrSpinner = fixture.debugElement.query(By.directive(ClrSpinner)).nativeElement;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(clrSpinner.getAttribute('class')).toContain(SPINNER_BASE_CLASS);
         expect(clrSpinner.getAttribute('class')).toContain(SPINNER_SMALL_SIZE);
       });
@@ -137,14 +138,14 @@ describe('ClrSpinner component', () => {
       it(`should add .${SPINNER_MEDIUM_SIZE}`, () => {
         fixture = TestBed.createComponent(TestMediumComponent);
         clrSpinner = fixture.debugElement.query(By.directive(ClrSpinner)).nativeElement;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(clrSpinner.getAttribute('class')).toContain(SPINNER_BASE_CLASS);
         expect(clrSpinner.getAttribute('class')).toContain(SPINNER_MEDIUM_SIZE);
       });
 
       it(`when two sizes are passed use the .${SPINNER_SMALL_SIZE} size only`, () => {
         fixture = TestBed.createComponent(TestComponent);
-        fixture.detectChanges();
+        renderFixture(fixture);
         clrSpinner = fixture.debugElement.query(By.directive(ClrSpinner)).nativeElement;
         expect(clrSpinner.getAttribute('class')).toContain(SPINNER_BASE_CLASS);
         expect(clrSpinner.getAttribute('class')).toContain(SPINNER_SMALL_SIZE);

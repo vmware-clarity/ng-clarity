@@ -11,6 +11,7 @@ import { By } from '@angular/platform-browser';
 import { ClrAlert, ClrAlertModule } from '@clr/angular/emphasis/alert';
 import { ClrIcon } from '@clr/angular/icon';
 import { delay } from '@clr/angular/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ButtonHubService } from './providers/button-hub.service';
 import { PageCollectionService } from './providers/page-collection.service';
@@ -279,7 +280,7 @@ describe('New Wizard Tests', () => {
           ],
         });
         fixture = TestBed.createComponent(IdTestComponent);
-        fixture.detectChanges();
+        renderFixture(fixture);
         myTestComponent = fixture.componentInstance;
         firstPage = myTestComponent.pages.toArray()[0];
         secondPage = myTestComponent.pages.toArray()[1];
@@ -386,7 +387,7 @@ describe('New Wizard Tests', () => {
           ],
         });
         fixture = TestBed.createComponent(TypescriptTestComponent);
-        fixture.detectChanges();
+        renderFixture(fixture);
         testComponent = fixture.componentInstance;
         navService = fixture.debugElement.injector.get(WizardNavigationService);
         testWizardPage = testComponent.wizardPageChildren.toArray()[0];
@@ -409,7 +410,7 @@ describe('New Wizard Tests', () => {
         it('should return expected id', () => {
           expect(testWizardPage.id, 'verify default').toContain('clr-wizard-page-');
           testWizardPage._id = 'ohai';
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testWizardPage.id, 'verify custom id').toBe('clr-wizard-page-ohai');
         });
       });
@@ -421,7 +422,7 @@ describe('New Wizard Tests', () => {
           expect(testWizardPage.nextStepDisabled, 'nextStepDisabled initialized to false').toBe(false);
           expect(testWizardPage.readyToComplete, 'readyToComplete ' + 'initialized to true').toBe(true);
           testWizardPage.nextStepDisabled = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(
             testWizardPage.readyToComplete,
             'readyToComplete ' + 'reflect update to nextStepDisabled, part 2'
@@ -433,21 +434,21 @@ describe('New Wizard Tests', () => {
         it('should be true if complete and readyToComplete are true', () => {
           testWizardPage.nextStepDisabled = false;
           testWizardPage.completed = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testWizardPage.completed).toBe(true);
         });
 
         it('should return false if not complete', () => {
           testWizardPage.nextStepDisabled = false;
           testWizardPage.completed = false;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testWizardPage.completed).toBe(false);
         });
 
         it('should return false if not readyToComplete', () => {
           testWizardPage.nextStepDisabled = true;
           testWizardPage.completed = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testWizardPage.completed).toBe(false);
         });
       });
@@ -462,13 +463,13 @@ describe('New Wizard Tests', () => {
         it('should return false if not current', () => {
           // make sure another page is current
           navService.currentPage = otherWizardPage;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testWizardPage.current).toBe(false);
         });
 
         it('should be true if page is current', () => {
           navService.currentPage = testWizardPage;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testWizardPage.current).toBe(true);
         });
       });
@@ -481,7 +482,7 @@ describe('New Wizard Tests', () => {
           dummyPreviousPage.completed = false;
           navService.currentPage = otherWizardPage;
           testWizardPage.completed = false;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testWizardPage.enabled, 'enabled is set to false').toBe(false);
           expect(testWizardPage.disabled, 'disabled is true when enabled is false').toBe(true);
 
@@ -494,13 +495,13 @@ describe('New Wizard Tests', () => {
       describe('enabled', () => {
         it('should return true if page is current', () => {
           navService.currentPage = testWizardPage;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testWizardPage.enabled).toBe(true);
         });
 
         it('should return true if page is completed', () => {
           testWizardPage.completed = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testWizardPage.enabled).toBe(true);
         });
 
@@ -510,7 +511,7 @@ describe('New Wizard Tests', () => {
           dummyPreviousPage.completed = true;
           navService.currentPage = otherWizardPage;
           testWizardPage.completed = false;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testWizardPage.enabled).toBe(true);
         });
 
@@ -520,7 +521,7 @@ describe('New Wizard Tests', () => {
           dummyPreviousPage.completed = false;
           navService.currentPage = otherWizardPage;
           testWizardPage.completed = false;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testWizardPage.enabled).toBe(false);
         });
       });
@@ -528,7 +529,7 @@ describe('New Wizard Tests', () => {
       describe('previousCompleted', () => {
         it('should return true if there is no previous page', () => {
           pageCollection.previousPage = null; // explicitly remove previous page
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testWizardPage.previousCompleted).toBe(true);
         });
 
@@ -536,7 +537,7 @@ describe('New Wizard Tests', () => {
           const dummyPreviousPage = new MockPage(99);
           pageCollection.previousPage = dummyPreviousPage;
           dummyPreviousPage.completed = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testWizardPage.previousCompleted).toBe(true);
         });
 
@@ -544,7 +545,7 @@ describe('New Wizard Tests', () => {
           const dummyPreviousPage = new MockPage(99);
           pageCollection.previousPage = dummyPreviousPage;
           dummyPreviousPage.completed = false; // set explicitly
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testWizardPage.previousCompleted).toBe(false);
         });
       });
@@ -643,7 +644,7 @@ describe('New Wizard Tests', () => {
         it('should emit onLoad event', () => {
           const eventSpy = vi.spyOn(otherWizardPage.onLoad, 'emit').mockImplementation(() => undefined);
           otherWizardPage.makeCurrent();
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(eventSpy).toHaveBeenCalled();
         });
       });
@@ -674,7 +675,7 @@ describe('New Wizard Tests', () => {
           ],
         });
         fixture = TestBed.createComponent(TemplateTestComponent);
-        fixture.detectChanges();
+        renderFixture(fixture);
         templateTestComponent = fixture.componentInstance;
         navService = fixture.debugElement.injector.get(WizardNavigationService);
         navWizardPage = templateTestComponent.navigationTemplateTester;
@@ -695,7 +696,7 @@ describe('New Wizard Tests', () => {
             nextDisabledVal
           );
           templateTestComponent.navTestNextDisabled = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           // get new values
           nextDisabledVal = templateTestComponent.navTestNextDisabled;
@@ -717,7 +718,7 @@ describe('New Wizard Tests', () => {
           expect(emitSpy).not.toHaveBeenCalled();
           navWizardPage.nextStepDisabled = newValue;
 
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           // get new value
           twoWayBindingTest = templateTestComponent.navTwoWayBindingPassed;
@@ -735,7 +736,7 @@ describe('New Wizard Tests', () => {
           expect(emitSpy).not.toHaveBeenCalled();
 
           templateTestComponent.navTestNextDisabled = newValue;
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           // get new value
           twoWayBindingTest = templateTestComponent.navTwoWayBindingPassed;
@@ -757,7 +758,7 @@ describe('New Wizard Tests', () => {
           ).toBe(hostVal);
 
           templateTestComponent.navTestPreviousDisabled = false;
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           // get new values
           hostVal = templateTestComponent.navTestPreviousDisabled;
@@ -776,7 +777,7 @@ describe('New Wizard Tests', () => {
           expect(emitSpy).not.toHaveBeenCalled();
 
           navWizardPage.previousStepDisabled = newValue;
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           // get new vals
           twoWayBindingTest = templateTestComponent.navTwoWayBindingPassed;
@@ -794,7 +795,7 @@ describe('New Wizard Tests', () => {
           expect(emitSpy).not.toHaveBeenCalled();
 
           templateTestComponent.navTestPreviousDisabled = newValue;
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           // new vals
           twoWayBindingTest = templateTestComponent.navTwoWayBindingPassed;
@@ -819,7 +820,7 @@ describe('New Wizard Tests', () => {
           expect(testVal, 'expect component value and wizard page value to be the same').toBe(hostVal);
 
           templateTestComponent.navStopCancel = false;
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           hostVal = templateTestComponent.navStopCancel;
           testVal = navWizardPage.stopCancel;
@@ -837,7 +838,7 @@ describe('New Wizard Tests', () => {
           expect(emitSpy).not.toHaveBeenCalled();
 
           navWizardPage.stopCancel = newValue;
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           twoWayBindingTest = templateTestComponent.navTwoWayBindingPassed;
 
@@ -854,7 +855,7 @@ describe('New Wizard Tests', () => {
           expect(emitSpy).not.toHaveBeenCalled();
 
           templateTestComponent.navStopCancel = newValue;
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           twoWayBindingTest = templateTestComponent.navTwoWayBindingPassed;
 
@@ -872,7 +873,7 @@ describe('New Wizard Tests', () => {
           ).not.toBe(otherWizardPage.id);
           emitSpy.mockClear();
           otherWizardPage.makeCurrent();
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(emitSpy).toHaveBeenCalledWith(otherWizardPage.id);
           expect(templateTestComponent.loadedPageId).toBe(otherWizardPage.id);
         });
@@ -880,7 +881,7 @@ describe('New Wizard Tests', () => {
         it('should not emit when another page is made current', () => {
           const emitSpy = vi.spyOn(otherWizardPage.onLoad, 'emit');
           lifecycleWizardPage.makeCurrent();
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(emitSpy).not.toHaveBeenCalled();
           expect(templateTestComponent.loadedPageId).not.toBe(otherWizardPage.id);
         });
@@ -893,7 +894,7 @@ describe('New Wizard Tests', () => {
 
         it('should update id when input is updated', () => {
           templateTestComponent.testId = 'onoez';
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(otherWizardPage.id).toBe('clr-wizard-page-onoez');
         });
 
@@ -935,7 +936,7 @@ describe('New Wizard Tests', () => {
           providers: [WizardNavigationService, PageCollectionService, ButtonHubService],
         });
         fixture = TestBed.createComponent(ViewTestComponent);
-        fixture.detectChanges();
+        renderFixture(fixture);
         viewTestComponent = fixture.componentInstance;
         navService = fixture.debugElement.injector.get(WizardNavigationService);
         allTestPages = fixture.debugElement.queryAll(By.directive(ClrWizardPage));
@@ -977,7 +978,7 @@ describe('New Wizard Tests', () => {
           const newContent = 'my updated content';
 
           viewTestComponent.projector = newContent;
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           const updatedContent = pageTwo.nativeElement.textContent.trim();
 
@@ -1001,7 +1002,7 @@ describe('New Wizard Tests', () => {
 
           await delay(120);
 
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(viewTestComponent.asyncLoaded, 'make sure async routine ran').toBe(true);
           expect(pageThree.nativeElement.textContent.trim()).toBe('better late than never');
         });
@@ -1018,7 +1019,7 @@ describe('New Wizard Tests', () => {
 
         it('updating id input should update id attribute', () => {
           viewTestComponent.testId = 'onoez';
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(pageOne.nativeElement.id).toBe('clr-wizard-page-onoez');
         });
 
@@ -1033,7 +1034,7 @@ describe('New Wizard Tests', () => {
 
         it('should have an id even if id input is changed to falsy', () => {
           viewTestComponent.testId = null;
-          fixture.detectChanges();
+          renderFixture(fixture);
           idToTest = pageOne.nativeElement.id;
           idSplitAndFlipped = idToTest.split('-').reverse();
           idIndex = Number(idSplitAndFlipped[0]);
@@ -1050,7 +1051,7 @@ describe('New Wizard Tests', () => {
           const expectedPage = pageTwo.componentInstance;
 
           viewTestComponent.testWizard.next();
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           const currentPage = viewTestComponent.testWizard.navService.currentPage;
           const pageOneTest = pageOne.nativeElement.getAttribute('aria-hidden');
@@ -1075,7 +1076,7 @@ describe('New Wizard Tests', () => {
           const pageColl = viewTestComponent.testWizard.pageCollection;
 
           viewTestComponent.testId = 'onoez';
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           const labelToTest = pageOne.nativeElement.getAttribute('aria-labelledby');
           const expected = pageColl.getStepItemIdForPage(pageOne.componentInstance);
@@ -1101,7 +1102,7 @@ describe('New Wizard Tests', () => {
 
           // setup
           wizard.navService.next();
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           const testIfCurrent = wizard.navService.currentPage === pageToTest;
 
@@ -1117,7 +1118,7 @@ describe('New Wizard Tests', () => {
           expect(previousBtn, 'expect wizard level button to not have disabled class').toBe(null);
 
           viewTestComponent.disablePrevious = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           wizardBtnDisabled = viewTestComponent.wizardPreviousBtn.isDisabled;
           expect(wizardBtnDisabled, 'expect wizard level button to be disabled').toBe(true);
@@ -1138,7 +1139,7 @@ describe('New Wizard Tests', () => {
           wizard.next();
           wizard.next();
 
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           const testIfCurrent = wizard.navService.currentPage === pageToTest;
           expect(testIfCurrent, 'expect page to have been made current').toBe(true);
@@ -1152,7 +1153,7 @@ describe('New Wizard Tests', () => {
           expect(previousBtn, 'expect page level button to not have disabled class').toBe(null);
 
           viewTestComponent.disablePrevious = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           wizardBtnDisabled = viewTestComponent.pagePreviousBtn.isDisabled;
           expect(wizardBtnDisabled, 'expect page level button to be disabled').toBe(true);
@@ -1171,7 +1172,7 @@ describe('New Wizard Tests', () => {
           // setup
           wizard.next();
           viewTestComponent.disablePrevious = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           const testIfCurrent = wizard.navService.currentPage === pageToTest;
           expect(testIfCurrent, 'expect page not to be current').not.toBe(true);
@@ -1194,7 +1195,7 @@ describe('New Wizard Tests', () => {
 
           // setup
           viewTestComponent.preventCancel = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           const currentPage = wizard.navService.currentPage;
           const expectedCurrent = currentPage === pageToTest.componentInstance;
@@ -1227,7 +1228,7 @@ describe('New Wizard Tests', () => {
 
           // setup
           viewTestComponent.preventCancel = false; // set explicitly
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           const currentPage = wizard.navService.currentPage;
           const expectedCurrent = currentPage === pageToTest.componentInstance;
@@ -1256,7 +1257,7 @@ describe('New Wizard Tests', () => {
           const wizardCloseSpy = vi.spyOn(wizard, 'close');
 
           wizard.next();
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           // setup
           const currentPage = wizard.navService.currentPage;
@@ -1296,7 +1297,7 @@ describe('New Wizard Tests', () => {
 
           viewTestComponent.preventCancel = true;
 
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           const currentPage = wizard.navService.currentPage;
           const expectedCurrent = currentPage === pageToTest.componentInstance;
@@ -1351,7 +1352,7 @@ describe('New Wizard Tests', () => {
 
           // make sure primary buttons aren't disabled...
           innerPage.componentInstance.nextStepDisabled = false;
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           cancelBtn = debugElem.querySelector('.clr-test-wizard-cancel > button');
           previousBtn = debugElem.querySelector('.clrtest-wizard-previous > button');
@@ -1394,7 +1395,7 @@ describe('New Wizard Tests', () => {
           // this gets called with .next() to page 3; reset for testing below;
           otherClickSpy.mockClear();
 
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           finishBtn.click();
 

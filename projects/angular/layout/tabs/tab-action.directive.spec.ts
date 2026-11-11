@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrTabAction } from './tab-action.directive';
 import { ClrTabsModule } from './tabs.module';
@@ -44,7 +45,7 @@ describe('TabAction Directive', () => {
     });
 
     fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
     instance = fixture.componentInstance;
   });
 

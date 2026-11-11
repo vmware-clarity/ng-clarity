@@ -11,6 +11,7 @@ import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ClrDatagridModule } from '@clr/angular/data/datagrid';
+import { renderFixture } from '@clr/angular/utils/testing';
 import { of } from 'rxjs';
 import type { Mock } from 'vitest';
 
@@ -59,9 +60,9 @@ describe('DatagridContentNoWrapDirective', () => {
     (userPreferencesService.getWrapGridCellTextPreference$ as Spy).mockReturnValue(of(true));
     fixture = TestBed.createComponent(DatagridHostComponent);
     appfxDatagridHostComponent = fixture.componentInstance;
-    fixture.detectChanges(false);
+    renderFixture(fixture);
     expect(userPreferencesService.getWrapGridCellTextPreference$).toHaveBeenCalled();
-    fixture.detectChanges(false);
+    renderFixture(fixture);
     expect(appfxDatagridHostComponent.appfxDatagridComponent.wrapText).toEqual(true);
   });
 
@@ -69,9 +70,9 @@ describe('DatagridContentNoWrapDirective', () => {
     (userPreferencesService.getWrapGridCellTextPreference$ as Spy).mockReturnValue(of(false));
     fixture = TestBed.createComponent(DatagridHostComponent);
     appfxDatagridHostComponent = fixture.componentInstance;
-    fixture.detectChanges(false);
+    renderFixture(fixture);
     expect(userPreferencesService.getWrapGridCellTextPreference$).toHaveBeenCalled();
-    fixture.detectChanges(false);
+    renderFixture(fixture);
     expect(appfxDatagridHostComponent.appfxDatagridComponent.wrapText).toEqual(false);
   });
 

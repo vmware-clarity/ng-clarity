@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component, ViewChild, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { IfActiveService } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { TabsService } from './providers/tabs.service';
 import { ClrTab } from './tab';
@@ -56,13 +57,13 @@ describe('Tab', () => {
       providers: [IfActiveService, TabsService, TABS_ID_PROVIDER],
     });
     fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
     instance = fixture.componentInstance.tabInstance;
   });
 
   it('initializes the correct aria attribute values', () => {
     instance.tabContent.ifActiveService.current = instance.self;
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(instance.tabLink.ariaControls).toMatch(/clr-tab-content-[0-9]/);
     expect(instance.tabContent.ariaLabelledBy).toMatch(/clr-tab-link-[0-9]/);
   });

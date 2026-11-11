@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Type } from '@clr/angular/emphasis/common';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrLabel, ClrLabelColors } from './label';
 
@@ -47,7 +48,7 @@ describe('ClrLabel component', () => {
       TestBed.configureTestingModule({ imports: [ClrLabel], declarations: [TestComponent] });
 
       fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
     });
 
     afterEach(() => {
@@ -65,7 +66,7 @@ describe('ClrLabel component', () => {
 
       const newText = 'Hello World';
       fixture.componentInstance.projectedContent = newText;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(htmlElement.textContent.trim()).toBe(newText);
     });
@@ -79,7 +80,7 @@ describe('ClrLabel component', () => {
       const badgeText = '15';
       fixture.componentInstance.text = newText;
       fixture.componentInstance.badgeText = badgeText;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       const textElement = fixture.nativeElement.querySelector('.text');
       expect(textElement.textContent).toBe(newText);
@@ -99,7 +100,7 @@ describe('ClrLabel component', () => {
       fixture.componentInstance.projectedContent = projectedText;
       fixture.componentInstance.text = newText;
       fixture.componentInstance.badgeText = badgeText;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(htmlElement.textContent.trim().endsWith(projectedText)).toBe(true);
 
@@ -117,30 +118,30 @@ describe('ClrLabel component', () => {
 
       // set purple color
       fixture.componentInstance.color = ClrLabelColors.Purple;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(htmlElement.className).toContain('label-purple');
 
       // set blue color
       fixture.componentInstance.color = ClrLabelColors.Blue;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(htmlElement.className).toContain('label-blue');
 
       // set light blue color
       fixture.componentInstance.color = ClrLabelColors.LightBlue;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(htmlElement.className).toContain('label-light-blue');
 
       // set orange color
       fixture.componentInstance.color = ClrLabelColors.Orange;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(htmlElement.className).toContain('label-orange');
       // set gray color
       fixture.componentInstance.color = ClrLabelColors.Gray;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(htmlElement.className).toContain('label-gray');
     });
@@ -152,25 +153,25 @@ describe('ClrLabel component', () => {
 
       // set info color
       fixture.componentInstance.color = ClrLabelColors.Info;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(htmlElement.className).toContain('label-info');
 
       // set warning color
       fixture.componentInstance.color = ClrLabelColors.Warning;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(htmlElement.className).toContain('label-warning');
 
       // set danger color
       fixture.componentInstance.color = ClrLabelColors.Danger;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(htmlElement.className).toContain('label-danger');
 
       // set success color
       fixture.componentInstance.color = ClrLabelColors.Success;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(htmlElement.className).toContain('label-success');
     });
@@ -182,7 +183,7 @@ describe('ClrLabel component', () => {
 
       // set solid color
       fixture.componentInstance.type = Type.Solid;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(htmlElement.className).toContain('solid');
     });
@@ -194,7 +195,7 @@ describe('ClrLabel component', () => {
 
       // set color 1
       fixture.componentInstance.clickable = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(htmlElement.className).toContain('clickable');
     });
@@ -207,7 +208,7 @@ describe('ClrLabel component', () => {
       // set color 1
       fixture.componentInstance.clickable = true;
       fixture.componentInstance.disabled = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(htmlElement.className).toContain('clickable');
       expect(htmlElement.className).toContain('disabled');
@@ -232,7 +233,7 @@ describe('ClrLabel component', () => {
 
       it('is a focusable button when clickable', () => {
         fixture.componentInstance.clickable = true;
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         expect(htmlElement.getAttribute('role')).toBe('button');
         expect(htmlElement.getAttribute('tabindex')).toBe('0');
@@ -242,7 +243,7 @@ describe('ClrLabel component', () => {
       it('is a disabled button out of the tab order when clickable and disabled', () => {
         fixture.componentInstance.clickable = true;
         fixture.componentInstance.disabled = true;
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         expect(htmlElement.getAttribute('role')).toBe('button');
         expect(htmlElement.getAttribute('tabindex')).toBeNull();
@@ -251,7 +252,7 @@ describe('ClrLabel component', () => {
 
       it('triggers click on Enter and Space when clickable', () => {
         fixture.componentInstance.clickable = true;
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         pressKey('Enter');
         pressKey(' ');
@@ -269,7 +270,7 @@ describe('ClrLabel component', () => {
       it('does not trigger click handlers when clickable and disabled', () => {
         fixture.componentInstance.clickable = true;
         fixture.componentInstance.disabled = true;
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         pressKey('Enter');
         pressKey(' ');
@@ -280,7 +281,7 @@ describe('ClrLabel component', () => {
 
       it('keeps click handlers working when disabled but not clickable', () => {
         fixture.componentInstance.disabled = true;
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         htmlElement.click();
 

@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { DatagridCellContainerComponent } from './datagrid-cell-container.component';
 import { ColumnDefinition } from './shared/column/column-definitions';
@@ -46,13 +47,13 @@ describe('DatagridCellContainerComponent', () => {
   it('should render the item field value if no columnRenderer is provided', () => {
     const fieldName = 'testField';
     const fieldValue = 'testValue';
-    component.column = {
+    fixture.componentRef.setInput('column', {
       field: fieldName,
-    } as ColumnDefinition<unknown>;
-    component.item = {
+    } as ColumnDefinition<unknown>);
+    fixture.componentRef.setInput('item', {
       [fieldName]: fieldValue,
-    };
-    fixture.detectChanges();
+    });
+    renderFixture(fixture);
 
     const cellContainerElement = fixture.nativeElement.querySelector('span');
     expect(cellContainerElement.textContent).toContain(fieldValue);
@@ -61,13 +62,13 @@ describe('DatagridCellContainerComponent', () => {
   });
 
   it('should create and render the columnRenderer if provided', () => {
-    component.column = {
+    fixture.componentRef.setInput('column', {
       field: testColumnName,
       columnRenderer: MockColumnRendererComponent,
-    } as ColumnDefinition<unknown>;
+    } as ColumnDefinition<unknown>);
 
-    component.item = { [testColumnName]: testItemName };
-    fixture.detectChanges();
+    fixture.componentRef.setInput('item', { [testColumnName]: testItemName });
+    renderFixture(fixture);
 
     const mockRenderer = fixture.debugElement.query(By.directive(MockColumnRendererComponent));
 

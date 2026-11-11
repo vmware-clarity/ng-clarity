@@ -11,8 +11,8 @@
   type="button"
   class="btn btn-sm btn-link column-toggle-action"
   (click)="openState = !openState"
-  [attr.aria-owns]="viewId"
-  [attr.aria-controls]="viewId"
+  [attr.aria-owns]="viewId()"
+  [attr.aria-controls]="viewId()"
   [attr.aria-expanded]="openState"
 >
   {{ dgStrings.pickColumns }}

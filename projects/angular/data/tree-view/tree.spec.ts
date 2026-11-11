@@ -9,6 +9,7 @@ import { ApplicationRef, ChangeDetectionStrategy, Component, DebugElement, ViewC
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { delay, spec, TestContext } from '@clr/angular/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { RecursiveChildren } from './recursive-children';
 import { ClrTree } from './tree';
@@ -236,7 +237,7 @@ describe('Tree View', () => {
       beforeEach(() => {
         forTypeAheadDirectiveDEs = testContext.fixture.debugElement.queryAll(By.directive(ClrTreeNode));
         forTypeAheadDirectives = forTypeAheadDirectiveDEs.map(de => de.componentInstance);
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
       });
 
       it('focuses node whose text content that starts with pressed keys', async () => {

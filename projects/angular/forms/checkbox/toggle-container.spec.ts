@@ -11,6 +11,7 @@ import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms'
 import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule, LayoutService, NgControlService } from '@clr/angular/forms/common';
 import { ClrIcon } from '@clr/angular/icon';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrCheckbox } from './checkbox';
 import { ClrCheckboxContainer } from './checkbox-container';
@@ -108,13 +109,13 @@ describe('Checkbox component', () => {
 
         containerDE = fixture.debugElement.query(By.directive(ClrCheckboxContainer));
         containerEl = containerDE.nativeElement;
-        fixture.detectChanges();
+        renderFixture(fixture);
       });
 
       it('sets the inline class', () => {
         expect(containerEl.querySelector('.clr-control-container').className).not.toContain('clr-control-inline');
         fixture.debugElement.componentInstance.inline = true;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(containerEl.querySelector('.clr-control-container').className).toContain('clr-control-inline');
       });
     });

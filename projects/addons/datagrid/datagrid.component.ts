@@ -529,6 +529,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   readonly #interpolationExpression: RegExp = /\{(\d+)\}/g;
   readonly #unsubscribeSubject: Subject<void> = new Subject<void>();
   readonly #zoomLevelSubscription: Subscription = new Subscription();
+  readonly #pendingRowNotifications = new Set<ReturnType<typeof setTimeout>>();
 
   /**
    * Array of objects defining the properties of each column in the Datagrid.
@@ -794,6 +795,8 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   }
 
   ngOnDestroy() {
+    this.#pendingRowNotifications.forEach(handle => clearTimeout(handle));
+    this.#pendingRowNotifications.clear();
     this.#unsubscribeSubject.next();
     this.#unsubscribeSubject.complete();
     this.#zoomLevelSubscription.unsubscribe();
@@ -1277,9 +1280,11 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
 
     // @ts-ignore
     if (this.trackByGridItemProperty || this.trackByFunction) {
-      setTimeout(() => {
+      const handle = setTimeout(() => {
+        this.#pendingRowNotifications.delete(handle);
         this.clrDatagrid?.rows?.notifyOnChanges();
-      }, 0);
+      });
+      this.#pendingRowNotifications.add(handle);
     }
   }
 

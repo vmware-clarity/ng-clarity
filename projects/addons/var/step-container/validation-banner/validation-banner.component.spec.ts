@@ -9,6 +9,7 @@ import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrAlertModule } from '@clr/angular/emphasis/alert';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ValidationBannerComponent, ValidationBannerInternalComponent } from './validation-banner.component';
 import { StepValidationState } from '../../model/step-validation-state';
@@ -62,13 +63,13 @@ describe('wizard-banner.spec', () => {
 
     describe('WHEN rendered', () => {
       beforeEach(() => {
-        testContext.componentInternal.items = testContext.dummyItems;
-        testContext.componentInternal.type = testContext.myCustomType;
-        testContext.componentInternal.closable = false;
+        testContext.fixtureInternal.componentRef.setInput('items', testContext.dummyItems);
+        testContext.fixtureInternal.componentRef.setInput('type', testContext.myCustomType);
+        testContext.fixtureInternal.componentRef.setInput('closable', false);
       });
 
       it('THEN all items are visible', () => {
-        testContext.fixtureInternal.detectChanges();
+        renderFixture(testContext.fixtureInternal);
 
         const items = queryAlertItems(testContext.fixtureInternal.debugElement);
         expect(items.length).toEqual(testContext.dummyItems.length);
@@ -78,7 +79,7 @@ describe('wizard-banner.spec', () => {
       });
 
       it('THEN correct type is applied', () => {
-        testContext.fixtureInternal.detectChanges();
+        renderFixture(testContext.fixtureInternal);
 
         const items = queryAlertItems(testContext.fixtureInternal.debugElement, testContext.myCustomType);
         expect(items.length).toEqual(testContext.dummyItems.length);
@@ -108,13 +109,13 @@ describe('wizard-banner.spec', () => {
 
     describe('WHEN rendered', () => {
       beforeEach(() => {
-        testContext.component.state = testContext.state;
+        testContext.fixture.componentRef.setInput('state', testContext.state);
       });
 
       it('THEN all items are displayed correctly', () => {
         const untypedContext: any = testContext;
 
-        untypedContext.fixture.detectChanges();
+        renderFixture(untypedContext.fixture);
 
         (['info', 'danger', 'warning'] as AlertType[]).forEach(alertType => {
           const items = queryAlertItems(untypedContext.fixture.debugElement, alertType);

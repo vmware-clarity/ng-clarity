@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrCardMediaBlock } from './card-media-block';
 import { ClrCardModule } from './card.module';
@@ -32,7 +33,7 @@ describe('ClrCardMediaBlock', () => {
     });
 
     fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
     el = fixture.debugElement.query(By.directive(ClrCardMediaBlock)).nativeElement;
   });
 
@@ -51,7 +52,7 @@ describe('ClrCardMediaBlock', () => {
 
   it('adds the .wrap class when clrCardMediaWrap is true', () => {
     fixture.componentInstance.wrap = true;
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(el.classList.contains('wrap')).toBe(true);
   });
 });

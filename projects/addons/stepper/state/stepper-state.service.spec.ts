@@ -5,11 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { fakeAsync, tick } from '@angular/core/testing';
 import { Step, StepInternal } from '@clr/addons/var';
 import { take } from 'rxjs/operators';
 
 import { StepperStateService, StepState } from './stepper-state.service';
+import { useTestTimers } from '../../../test-timers';
 import { SummaryService } from '../summary/summary.service';
 
 describe('StepperStateService', () => {
@@ -22,7 +22,8 @@ describe('StepperStateService', () => {
 
   describe('#stepActivated', () => {
     describe('WHEN called with expanded step which was previously collapsed', () => {
-      it('THEN onStepActivated$ to emit the new step state for the step', fakeAsync(() => {
+      it('THEN onStepActivated$ to emit the new step state for the step', async () => {
+        useTestTimers();
         const stepperStateService: StepperStateService = new StepperStateService(new SummaryService());
         const expectedStepState: StepState = {
           step: <Step>{},
@@ -37,13 +38,14 @@ describe('StepperStateService', () => {
 
         stepperStateService.stepActivated(<Step>{}, true, 2);
 
-        tick(50);
+        await vi.advanceTimersByTimeAsync(50);
         expect(resultStepState).toEqual(expectedStepState);
-      }));
+      });
     });
 
     describe('WHEN called with collapsed step', () => {
-      it('THEN onStepActivated$ to does not emit the new step state for the step', fakeAsync(() => {
+      it('THEN onStepActivated$ to does not emit the new step state for the step', async () => {
+        useTestTimers();
         const stepperStateService: StepperStateService = new StepperStateService(new SummaryService());
         let resultStepState: StepState | undefined;
         stepperStateService.onStepActivated$.subscribe((stepState: StepState) => {
@@ -52,14 +54,15 @@ describe('StepperStateService', () => {
 
         stepperStateService.stepActivated(<Step>{}, false, 2);
 
-        tick(50);
+        await vi.advanceTimersByTimeAsync(50);
         expect(resultStepState).toBeUndefined();
-      }));
+      });
     });
   });
 
   describe('#markStepValid', () => {
-    it('sets the valid flag in the step state according to the passed state', fakeAsync(function () {
+    it('sets the valid flag in the step state according to the passed state', async function () {
+      useTestTimers();
       let stepState1: StepState;
       let stepState2: StepState;
 
@@ -68,25 +71,26 @@ describe('StepperStateService', () => {
         stepState1 = stepState;
       });
       stepperStateService.stepActivated(<Step>{}, true, 0);
-      tick(50);
+      await vi.advanceTimersByTimeAsync(50);
       stepperStateService.onStepActivated$.pipe(take(1)).subscribe((stepState: StepState) => {
         stepState2 = stepState;
       });
       stepperStateService.stepActivated(<Step>{}, false, 1);
-      tick(50);
+      await vi.advanceTimersByTimeAsync(50);
       stepperStateService.stepActivated(<Step>{}, true, 1);
-      tick(50);
+      await vi.advanceTimersByTimeAsync(50);
 
       stepperStateService.markStepValid((stepState1 as StepState).step, true);
       expect((stepState1 as StepState).valid).toBeTruthy();
       stepperStateService.markStepValid((stepState2 as StepState).step, false);
       expect((stepState2 as StepState).valid).toBeFalsy();
-    }));
+    });
   });
 
   const panelStateProperty = 'panelState$';
   describe('#resetNextStepsValidStates', () => {
-    it('sets the valid states of all steps after the step provided as argument as invalid', fakeAsync(function () {
+    it('sets the valid states of all steps after the step provided as argument as invalid', async function () {
+      useTestTimers();
       const step0: Step = <Step>{};
       const step1: Step = <Step>{};
       const step2: Step = <Step>{};
@@ -97,7 +101,7 @@ describe('StepperStateService', () => {
       stepperStateService.stepActivated(step1, true, 1);
       stepperStateService.stepActivated(step2, false, 2);
       stepperStateService.stepActivated(step3, false, 3);
-      tick(50);
+      await vi.advanceTimersByTimeAsync(50);
 
       const panelStates = stepperStateService[panelStateProperty].value;
       panelStates[0].valid = true;
@@ -111,11 +115,12 @@ describe('StepperStateService', () => {
       expect(panelStates[1].valid).toBeTruthy();
       expect(panelStates[2].valid).toBeFalsy();
       expect(panelStates[3].valid).toBeFalsy();
-    }));
+    });
   });
 
   describe('#getIndexOfFirstIncompleteStep', () => {
-    it('returns the index of first step that is not skipped and not valid', fakeAsync(function () {
+    it('returns the index of first step that is not skipped and not valid', async function () {
+      useTestTimers();
       const step0: Step = <Step>{};
       const step1: Step = <StepInternal>{ isSkipped: true };
       const step2: Step = <Step>{};
@@ -126,7 +131,7 @@ describe('StepperStateService', () => {
       stepperStateService.stepActivated(step1, true, 1);
       stepperStateService.stepActivated(step2, false, 2);
       stepperStateService.stepActivated(step3, false, 3);
-      tick(50);
+      await vi.advanceTimersByTimeAsync(50);
 
       const panelStates = stepperStateService[panelStateProperty].value;
       panelStates[0].valid = true;
@@ -136,9 +141,10 @@ describe('StepperStateService', () => {
 
       const indexOfFirstIncompleteStep = stepperStateService.getIndexOfFirstIncompleteStep();
       expect(indexOfFirstIncompleteStep).toEqual(2);
-    }));
+    });
 
-    it('returns the correct index of the last not skipped step when all are completed', fakeAsync(function () {
+    it('returns the correct index of the last not skipped step when all are completed', async function () {
+      useTestTimers();
       const step0: Step = <Step>{};
       const step1: Step = <Step>{};
       const step2: Step = <StepInternal>{ isSkipped: true };
@@ -155,11 +161,12 @@ describe('StepperStateService', () => {
 
       const indexOfFirstIncompleteStep = stepperStateService.getIndexOfFirstIncompleteStep();
       expect(indexOfFirstIncompleteStep).toEqual(1);
-    }));
+    });
   });
 
   describe('#getFirstIncompleteStepContainerIndex', () => {
-    it('omits the skipped steps when determining the first invalid step', fakeAsync(function () {
+    it('omits the skipped steps when determining the first invalid step', async function () {
+      useTestTimers();
       const step0: Step = <Step>{};
       const step1: Step = <StepInternal>{ isSkipped: true };
       const step2: Step = <StepInternal>{ isSkipped: true };
@@ -172,7 +179,7 @@ describe('StepperStateService', () => {
       stepperStateService.stepActivated(step2, false, 2);
       stepperStateService.stepActivated(step3, false, 3);
       stepperStateService.stepActivated(step4, false, 4);
-      tick(50);
+      await vi.advanceTimersByTimeAsync(50);
 
       const panelStates = stepperStateService[panelStateProperty].value;
       panelStates[0].valid = true;
@@ -193,11 +200,12 @@ describe('StepperStateService', () => {
 
       firstIncompleteStepContainerIndex = stepperStateService.getFirstIncompleteStepContainerIndex();
       expect(firstIncompleteStepContainerIndex).toEqual(2);
-    }));
+    });
   });
 
   describe('#areAllStepsCompleted', () => {
-    it('determines correctly whether all non-skip steps are valid', fakeAsync(function () {
+    it('determines correctly whether all non-skip steps are valid', async function () {
+      useTestTimers();
       const step0: Step = <Step>{};
       const step1: Step = <StepInternal>{ isSkipped: true };
       const step2: Step = <Step>{};
@@ -219,11 +227,12 @@ describe('StepperStateService', () => {
 
       areAllStepsCompleted = stepperStateService.areAllStepsCompleted();
       expect(areAllStepsCompleted).toBeTruthy();
-    }));
+    });
   });
 
   describe('#isStepActivated', () => {
-    it('determines correctly if step is activated or not based on its expanded state', fakeAsync(function () {
+    it('determines correctly if step is activated or not based on its expanded state', async function () {
+      useTestTimers();
       const step0: Step = <Step>{};
       const step1: Step = <StepInternal>{ isSkipped: true };
       const step2: Step = <Step>{};
@@ -238,6 +247,6 @@ describe('StepperStateService', () => {
 
       const isStep2Activated = stepperStateService.isStepActivated(2);
       expect(isStep2Activated).toBeFalsy();
-    }));
+    });
   });
 });

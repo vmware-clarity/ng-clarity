@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrCardBodyTitle } from './card-body-title';
 import { ClrCardModule } from './card.module';
@@ -36,7 +37,7 @@ describe('ClrCardBodyTitle', () => {
     });
 
     fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
   });
 
   it('projects content', () => {
@@ -56,7 +57,7 @@ describe('ClrCardBodyTitle', () => {
 
   it('gets a heading role and level when clrHeadingLevel is set', () => {
     const headingFixture = TestBed.createComponent(TestHeadingLevelComponent);
-    headingFixture.detectChanges();
+    renderFixture(headingFixture);
 
     const el = headingFixture.debugElement.query(By.directive(ClrCardBodyTitle)).nativeElement;
     expect(el.getAttribute('role')).toBe('heading');

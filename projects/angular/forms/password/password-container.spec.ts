@@ -11,6 +11,7 @@ import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms'
 import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule, LayoutService, NgControlService } from '@clr/angular/forms/common';
 import { ClrIcon } from '@clr/angular/icon';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrPassword } from './password';
 import { ClrPasswordContainer } from './password-container';
@@ -88,21 +89,21 @@ describe('ClrPassword', () => {
 
         containerDE = fixture.debugElement.query(By.directive(ClrPasswordContainer));
         containerEl = containerDE.nativeElement;
-        fixture.detectChanges();
+        renderFixture(fixture);
       });
 
       it('toggles the visibility of the password', () => {
         const button = containerEl.querySelector('button');
         expect(containerEl.querySelector('input').type).toEqual('password');
         button.click();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(containerEl.querySelector('input').type).toEqual('text');
       });
 
       it('should disable toggling', () => {
         expect(containerEl.querySelector('button')).toBeTruthy();
         fixture.componentInstance.toggler = false;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(containerEl.querySelector('button')).toBeFalsy();
       });
 
@@ -110,7 +111,7 @@ describe('ClrPassword', () => {
         const button: HTMLButtonElement = containerEl.querySelector('button');
         expect(button.textContent.trim()).toEqual('Show password for Hello World');
         button.click();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(button.textContent.trim()).toEqual('Hide password for Hello World');
       });
     });

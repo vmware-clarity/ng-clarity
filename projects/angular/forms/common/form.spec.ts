@@ -11,6 +11,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { By } from '@angular/platform-browser';
 import { ClrInputModule } from '@clr/angular/forms/input';
 import { ClrCommonStringsService } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrForm } from './form';
 import { LayoutService } from './providers/layout.service';
@@ -57,30 +58,30 @@ describe('Forms common utilities', () => {
     });
 
     it('adds the .clr-form class to host', function () {
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(directive.nativeElement.className).toContain('clr-form');
     });
 
     it('adds the horizontal layout class to host', function () {
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(directive.nativeElement.className).toContain('clr-form-horizontal');
     });
 
     it('adds the vertical layout class to host', function () {
       layoutService.layout = 'vertical';
-      fixture.detectChanges();
+      renderFixture(fixture);
       // There is no need to put `clr-form-vertical` because its the default behavior in CSS
       expect(directive.nativeElement.className).toContain('clr-form');
     });
 
     it('adds the compact layout class to host', function () {
       layoutService.layout = 'compact';
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(directive.nativeElement.className).toContain('clr-form-compact');
     });
 
     it('provides the LayoutService', function () {
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(directive.injector.get(LayoutService)).toBeTruthy();
     });
 
@@ -100,10 +101,10 @@ describe('Forms common utilities', () => {
     });
 
     it('responds when the form is submitted', function () {
-      fixture.detectChanges();
+      renderFixture(fixture);
       vi.spyOn(directive.componentInstance.form, 'onFormSubmit').mockImplementation(() => undefined);
       fixture.componentInstance.submitBtn.nativeElement.click();
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(directive.componentInstance.form.onFormSubmit).toHaveBeenCalled();
     });
   });

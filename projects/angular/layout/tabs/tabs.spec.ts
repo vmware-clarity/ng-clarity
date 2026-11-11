@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, DebugElement, ElementRef, Type, Vie
 import { By } from '@angular/platform-browser';
 import { createTestHelpers, expectActiveElementToBe, TestContext } from '@clr/angular/testing';
 import { ClrKeyFocus, IfActiveService } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { TabsLayout } from './enums/tabs-layout.enum';
 import { TabsService } from './providers/tabs.service';
@@ -185,7 +186,7 @@ describe('Tabs', () => {
 
     beforeEach(() => {
       context = helpers.create(ClrTabs, TestComponent);
-      context.fixture.detectChanges();
+      renderFixture(context.fixture);
       compiled = context.fixture.nativeElement;
     });
 
@@ -212,18 +213,18 @@ describe('Tabs', () => {
       expect(compiled.querySelector('.tabs-overflow .tab4')).toBeNull();
 
       context.fixture.componentInstance.inOverflow = true;
-      context.fixture.detectChanges();
+      renderFixture(context.fixture);
       expect(compiled.querySelector('.tabs-overflow')).toBeDefined();
 
       const toggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
       toggle.click();
-      context.fixture.detectChanges();
+      renderFixture(context.fixture);
       expect(compiled.querySelector('.tabs-overflow .tab4')).toBeDefined();
     });
 
     it('should add attribute title to dropdown-toggle', () => {
       context.fixture.componentInstance.inOverflow = true;
-      context.fixture.detectChanges();
+      renderFixture(context.fixture);
       const toggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
       expect(toggle.getAttribute('aria-hidden')).toBe('true');
     });
@@ -232,17 +233,17 @@ describe('Tabs', () => {
       expect(compiled.querySelector('.tabs-overflow')).toBeNull();
 
       context.fixture.componentInstance.inOverflow = true;
-      context.fixture.detectChanges();
+      renderFixture(context.fixture);
       expect(compiled.querySelector('.tabs-overflow')).toBeDefined();
 
       context.fixture.componentInstance.layout = TabsLayout.VERTICAL;
-      context.fixture.detectChanges();
+      renderFixture(context.fixture);
       expect(compiled.querySelector('.tabs-overflow')).toBeNull();
     });
 
     it('sets the role on the overflow button li to application', () => {
       context.fixture.componentInstance.inOverflow = true;
-      context.fixture.detectChanges();
+      renderFixture(context.fixture);
       expect(compiled.querySelector('.tabs-overflow .nav-item').getAttribute('role')).toEqual('application');
     });
 
@@ -280,7 +281,7 @@ describe('Tabs', () => {
       dummyButton = context.testElement.querySelector('.dummy-button');
 
       context.testComponent.inOverflow = true;
-      context.fixture.detectChanges();
+      renderFixture(context.fixture);
     });
 
     afterEach(() => {
@@ -357,7 +358,7 @@ describe('Tabs', () => {
 
     beforeEach(() => {
       context = helpers.create(ClrTabs, NestedTabsTest);
-      context.fixture.detectChanges();
+      renderFixture(context.fixture);
       compiled = context.fixture.nativeElement;
     });
 
@@ -433,7 +434,7 @@ describe('Tabs', () => {
     beforeEach(() => {
       context = helpers.create(ClrTabs, NoClrIfActiveTest);
       context.fixture.componentInstance.tabsInstance.ngAfterContentInit();
-      context.fixture.detectChanges();
+      renderFixture(context.fixture);
       compiled = context.fixture.nativeElement;
       contents = compiled.querySelectorAll('section');
     });
@@ -463,7 +464,7 @@ describe('Tabs', () => {
     beforeEach(() => {
       context = helpers.create(ClrTabs, ScalingTestComponent);
       component = context.testComponent;
-      context.fixture.detectChanges();
+      renderFixture(context.fixture);
     });
 
     afterEach(() => {

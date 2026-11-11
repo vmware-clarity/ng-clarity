@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, DebugElement, QueryList, ViewChild,
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { expectActiveElementNotToBe } from '@clr/angular/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrKeyFocus } from './key-focus';
 import { ClrKeyFocusItem } from './key-focus-item';
@@ -68,7 +69,7 @@ let clarityElement: HTMLElement;
 
 const openMenu = () => {
   component.open = true;
-  fixture.detectChanges();
+  renderFixture(fixture);
 
   directiveDebugElement = fixture.debugElement.query(By.directive(ClrKeyFocus));
   clarityElement = directiveDebugElement.nativeElement;
@@ -87,7 +88,7 @@ describe('KeyFocus directive', () => {
         declarations: [TestComponent],
       });
       fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
       component = fixture.componentInstance;
     });
 
@@ -144,7 +145,7 @@ describe('KeyFocus directive', () => {
       keyPress(Keys.End);
       expect(clarityDirective.current).toBe(2);
       component.showLast = false;
-      fixture.detectChanges();
+      renderFixture(fixture);
     });
 
     it('checks if keyboard event comes focused current', () => {
@@ -162,7 +163,7 @@ describe('KeyFocus directive', () => {
         declarations: [TestComponent],
       });
       fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
       component = fixture.componentInstance;
     });
 
@@ -196,7 +197,7 @@ describe('KeyFocus directive', () => {
         declarations: [TestComponent],
       });
       fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
       component = fixture.componentInstance;
     });
 
@@ -302,7 +303,7 @@ describe('KeyFocus directive', () => {
         declarations: [DOMTestComponent],
       });
       fixture = TestBed.createComponent(DOMTestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
       domComponent = fixture.componentInstance;
       directiveDebugElement = fixture.debugElement.query(By.directive(ClrKeyFocus));
       clarityElement = directiveDebugElement.nativeElement;
@@ -313,20 +314,20 @@ describe('KeyFocus directive', () => {
       // This API is needed for cases where Content Children is not available for a template
       // An example of this is the Tabs component.
       domComponent.buttons = Array.from(fixture.nativeElement.querySelectorAll('button'));
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(clarityDirective.focusableItems.length).toBe(3);
     });
 
     it('focus updates, when elements are being removed', () => {
       domComponent.buttons = Array.from(fixture.nativeElement.querySelectorAll('button'));
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(document.activeElement.textContent).toBe('Button 1');
       keyPress(Keys.End);
       expect(document.activeElement.textContent).toBe('Button 3');
       domComponent.showLast = false;
-      fixture.detectChanges();
+      renderFixture(fixture);
       domComponent.buttons = Array.from(fixture.nativeElement.querySelectorAll('button'));
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(document.activeElement.textContent).toBe('Button 2');
     });
   });

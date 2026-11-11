@@ -19,6 +19,7 @@ import {
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrDatagridModule } from '@clr/angular/data/datagrid';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ColumnOrderDirective } from './column-order.directive';
 import { DatagridColumnsOrderDirective } from './datagrid-columns-order.directive';
@@ -49,7 +50,7 @@ describe('ColumnOrderDirective', () => {
     let receivedDraggedColumnData: any[] = [];
     beforeEach(() => {
       receivedDraggedColumnData = [];
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       service.grabbedColumn.next(testContext.datagridHostComponent.columns[0]);
       service.grabbedColumn.subscribe(data => {
         receivedDraggedColumnData.push(data);
@@ -113,7 +114,7 @@ describe('ColumnOrderDirective', () => {
 
   it('emits column as aa grabbed column event when on a not grabbed column a space key is pressed', () => {
     const receivedDraggedColumnData: any[] = [];
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     service.grabbedColumn.subscribe(data => {
       receivedDraggedColumnData.push(data);
     });
@@ -131,7 +132,7 @@ describe('ColumnOrderDirective', () => {
     let receivedData: any[] = [];
     beforeEach(() => {
       receivedData = [];
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       service.grabbedColumn.next(testContext.datagridHostComponent.columns[1]);
       service.moveVisibleColumn.subscribe(data => {
         receivedData.push(data);
@@ -160,7 +161,7 @@ describe('ColumnOrderDirective', () => {
   });
 
   it('switch isGrabbed state when grabbed column event is received', () => {
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     service.grabbedColumn.next(testContext.datagridHostComponent.columns[1]);
 
     expect(testContext.datagridHostComponent.content.columnOrderDirectives.get(0).isGrabbed).toEqual(false);
@@ -189,7 +190,7 @@ describe('ColumnOrderDirective', () => {
     beforeEach(() => {
       // A pinned column is rendered in the sticky container, outside the reorderable group.
       testContext.datagridHostComponent.columns[1].pinned = true;
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
     });
 
     it('cannot be grabbed with the keyboard', () => {
@@ -238,7 +239,7 @@ describe('ColumnOrderDirective', () => {
   });
 
   it('focus grabbed column when focus grabbed column event is received', () => {
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     const firstColumnElement = testContext.datagridHostComponent.content.elementRefs.get(0).nativeElement;
     const secondColumnElement = testContext.datagridHostComponent.content.elementRefs.get(1).nativeElement;
     vi.spyOn(firstColumnElement, 'focus').mockImplementation(() => undefined);

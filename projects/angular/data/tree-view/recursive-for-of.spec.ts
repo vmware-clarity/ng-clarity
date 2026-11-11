@@ -6,11 +6,13 @@
  */
 
 import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flushMicrotasks, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { RecursiveTreeNodeModel } from './models/recursive-tree-node.model';
 import { ClrRecursiveForOf, ClrRecursiveForOfContext } from './recursive-for-of';
 import { TreeFeaturesService } from './tree-features.service';
+import { useTestTimers } from '../../../test-timers';
 
 /*
  * Some utilities for this spec
@@ -69,7 +71,7 @@ describe('Tree View', () => {
           providers: [TreeFeaturesService],
         });
         testContext.fixture = TestBed.createComponent(TestComponent);
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         testContext.testComponent = testContext.fixture.componentInstance;
         testContext.clarityDirective = testContext.fixture.componentInstance.recursiveForOf;
         testContext.featuresService = TestBed.inject(TreeFeaturesService);
@@ -95,13 +97,14 @@ describe('Tree View', () => {
 
       it('updates the recursion service if the nodes change', () => {
         testContext.testComponent.root = TEST_ROOT.children[0];
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.featuresService.recursion.root).toEqual([
           new RecursiveTreeNodeModel(TEST_ROOT.children[0], null, getChildren, testContext.featuresService),
         ]);
       });
 
-      it('refreshes the tree once per burst of fetched children, in a microtask', fakeAsync(() => {
+      it('refreshes the tree once per burst of fetched children, in a microtask', async () => {
+        useTestTimers();
         // Children fetched while the tree renders arrive in bursts, one notification per node.
         const detectChanges = vi
           .spyOn((testContext.clarityDirective as any).cdr, 'detectChanges')
@@ -111,13 +114,13 @@ describe('Tree View', () => {
         }
         expect(detectChanges).not.toHaveBeenCalled();
         // A microtask is enough: no timer, and so no separate change detection pass per burst.
-        flushMicrotasks();
+        await Promise.resolve();
         expect(detectChanges).toHaveBeenCalledTimes(1);
-      }));
+      });
 
       it('accepts multiple roots', () => {
         testContext.testComponent.root = [TEST_ROOT, TEST_ROOT];
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         const wrappedRoot = new RecursiveTreeNodeModel(TEST_ROOT, null, getChildren, testContext.featuresService);
         expect(testContext.featuresService.recursion.root).toEqual([wrappedRoot, wrappedRoot]);
       });

@@ -20,6 +20,7 @@ import {
 import { DatalistIdService } from '@clr/angular/forms/datalist';
 import { selectFiles } from '@clr/angular/forms/file-input';
 import { ClrIcon } from '@clr/angular/icon';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 export function ControlStandaloneSpec(testComponent): void {
   describe('standalone use', () => {
@@ -30,7 +31,7 @@ export function ControlStandaloneSpec(testComponent): void {
       });
       expect(() => {
         const fixture = TestBed.createComponent(testComponent);
-        fixture.detectChanges();
+        renderFixture(fixture);
       }).not.toThrow();
     });
   });
@@ -69,7 +70,7 @@ function fullTest(description, testContainer, testControl, testComponent, contro
       markControlService = control.injector.get(MarkControlService);
       controlIdService = control.injector.get(ControlIdService);
       datalistIdService = control.injector.get(DatalistIdService);
-      fixture.detectChanges();
+      renderFixture(fixture);
     });
 
     it('should have the ControlIdService', () => {
@@ -111,7 +112,7 @@ function fullTest(description, testContainer, testControl, testComponent, contro
       }
 
       control.nativeElement.dispatchEvent(new Event('blur'));
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(testControl.prototype.triggerValidation).toHaveBeenCalled();
     });
 

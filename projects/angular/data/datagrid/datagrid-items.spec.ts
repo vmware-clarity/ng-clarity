@@ -8,6 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, TrackByFunction, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrDatagridItems } from './datagrid-items';
 import { ClrDatagridModule } from './datagrid.module';
@@ -88,7 +89,7 @@ describe('Datagrid', () => {
             providers: [Items, FiltersProvider, Sort, Page, StateDebouncer],
           });
           testContext.fixture = TestBed.createComponent(FullTest);
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           testContext.testComponent = testContext.fixture.componentInstance;
           testContext.clarityDirective = testContext.fixture.componentInstance.datagridItems;
           testContext.itemsProvider = TestBed.inject(Items);
@@ -110,20 +111,20 @@ describe('Datagrid', () => {
           const initialContent = testContext.fixture.elementRef.nativeElement.textContent;
           expect(initialContent.trim()).toEqual('12345');
           testContext.testComponent.numbers.push(6);
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           const updatedContent = testContext.fixture.elementRef.nativeElement.textContent;
           expect(updatedContent.trim()).toEqual('123456');
         });
 
         it('handles a null input for the array of items', () => {
           testContext.testComponent.numbers = null;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.clarityDirective._rawItems).toEqual([]);
         });
 
         it('handles an undefined input for the array of items', () => {
           testContext.testComponent.numbers = undefined;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.clarityDirective._rawItems).toEqual([]);
         });
       });
@@ -136,7 +137,7 @@ describe('Datagrid', () => {
             providers: [Items, FiltersProvider, Sort, Page, StateDebouncer],
           });
           testContext.fixture = TestBed.createComponent(DestroyTest);
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           testContext.testComponent = testContext.fixture.componentInstance;
           testContext.itemsProvider = TestBed.inject(Items);
         });
@@ -149,14 +150,14 @@ describe('Datagrid', () => {
           expect(testContext.itemsProvider.smart).toBe(true);
 
           testContext.testComponent.showItems = false;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
 
           expect(testContext.itemsProvider.smart).toBe(false);
         });
 
         it('stops reacting to page changes once destroyed, instead of slicing stale data', () => {
           testContext.testComponent.showItems = false;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
 
           const page: Page = TestBed.inject(Page);
           page.size = 2;
@@ -179,7 +180,7 @@ describe('Datagrid', () => {
             providers: [Items, FiltersProvider, Sort, Page, StateDebouncer],
           });
           testContext.fixture = TestBed.createComponent(TrackByIndexTest);
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           testContext.testComponent = testContext.fixture.componentInstance;
           testContext.clarityDirective = testContext.fixture.componentInstance.datagridItems;
           testContext.itemsProvider = TestBed.inject(Items);
@@ -192,10 +193,10 @@ describe('Datagrid', () => {
         it('keeps the Items provider up to date with array changes', () => {
           expect(testContext.itemsProvider.displayed).toEqual([1, 2, 3, 4, 5]);
           testContext.testComponent.numbers[0] = 6;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.itemsProvider.displayed).toEqual([6, 2, 3, 4, 5]);
           testContext.testComponent.numbers = [];
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.itemsProvider.displayed).toEqual([]);
         });
 
@@ -212,18 +213,18 @@ describe('Datagrid', () => {
 
           // First mutation
           testContext.testComponent.numbers.unshift(42);
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           const unshiftedItem = testContext.fixture.nativeElement.querySelector('li');
           expect(testContext.itemsProvider.displayed).toEqual([42, 1, 2, 3, 4, 5]);
           expect(unshiftedItem.style.color).toBe('red');
 
           // Second mutation
           testContext.testComponent.numbers.unshift(42);
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
 
           // Resetting
           testContext.testComponent.numbers = [42];
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           const replacedItem = testContext.fixture.nativeElement.querySelector('li');
           expect(replacedItem.style.color).toBe('red');
         });

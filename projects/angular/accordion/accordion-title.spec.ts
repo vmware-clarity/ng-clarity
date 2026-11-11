@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrAccordionTitle } from './accordion-title';
 import { ClrAccordionModule } from './accordion.module';
@@ -30,7 +31,7 @@ describe('ClrAccordionTitle', () => {
       });
 
       fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
     });
 
     it('projects content', () => {

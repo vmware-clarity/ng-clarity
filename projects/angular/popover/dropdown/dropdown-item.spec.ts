@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { spec, TestContext } from '@clr/angular/testing';
 import { FocusableItem } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrDropdown } from './dropdown';
 import { ClrDropdownItem } from './dropdown-item';
@@ -102,7 +103,7 @@ describe('Dropdown', () => {
         });
 
         const fixture = TestBed.createComponent(CustomRoleTest);
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         expect(fixture.nativeElement.querySelector('button').getAttribute('role')).toBe('menuitemcheckbox');
       });

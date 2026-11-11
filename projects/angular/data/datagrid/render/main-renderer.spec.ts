@@ -10,6 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { SelectionType } from '@clr/angular';
 import { createTestHelpers, delay, TestContext } from '@clr/angular/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 import type { Mock } from 'vitest';
 
 import { ClrDatagridColumn } from '../datagrid-column';
@@ -167,27 +168,27 @@ describe('Datagrid', () => {
             providers: DATAGRID_SPEC_PROVIDERS,
           });
           context = TestBed.createComponent(RenderWidthTest);
-          context.detectChanges();
+          renderFixture(context);
           containerWidth = context.componentInstance.container.nativeElement.clientWidth;
         });
 
         it('calculates the correct width with no row options', () => {
           context.componentInstance.currentTest = 'defaultDatagridTest';
-          context.detectChanges();
+          renderFixture(context);
           const datagridWidth = context.componentInstance.datagridDefault.nativeElement.clientWidth;
           expect(containerWidth).toEqual(datagridWidth);
         });
 
         it('calculates the correct width when single select is enabled', () => {
           context.componentInstance.currentTest = 'singleSelectTest';
-          context.detectChanges();
+          renderFixture(context);
           const datagridWidth = context.componentInstance.datagridSingleSelect.nativeElement.clientWidth;
           expect(containerWidth).toEqual(datagridWidth);
         });
 
         it('calculates correct width when multi select is enabled', () => {
           context.componentInstance.currentTest = 'multiSelectTest';
-          context.detectChanges();
+          renderFixture(context);
           const datagridWidth = context.componentInstance.datagridMultiSelect.nativeElement.clientWidth;
           expect(containerWidth).toEqual(datagridWidth);
         });
@@ -195,7 +196,7 @@ describe('Datagrid', () => {
         it('calculates correct width when row is expandable', () => {
           context.componentInstance.currentTest = 'defaultDatagridTest';
           context.componentInstance.expandable = true;
-          context.detectChanges();
+          renderFixture(context);
           const datagridWidth = context.componentInstance.datagridDefault.nativeElement.clientWidth;
           expect(containerWidth).toEqual(datagridWidth);
         });
@@ -203,7 +204,7 @@ describe('Datagrid', () => {
         it('calculates correct width when row has actions', () => {
           context.componentInstance.currentTest = 'defaultDatagridTest';
           context.componentInstance.hasActions = true;
-          context.detectChanges();
+          renderFixture(context);
           const datagridWidth = context.componentInstance.datagridDefault.nativeElement.clientWidth;
           expect(containerWidth).toEqual(datagridWidth);
         });
@@ -218,7 +219,7 @@ describe('Datagrid', () => {
             declarations: [DatagridHeightTest],
           });
           context = TestBed.createComponent(DatagridHeightTest);
-          context.detectChanges();
+          renderFixture(context);
         });
 
         it('sets an initial datagrid height', () => {
@@ -230,11 +231,11 @@ describe('Datagrid', () => {
           const initHeight = context.nativeElement.clientHeight;
           const changeBtn = context.nativeElement.querySelector('.btn.btn-sm.btn-outline-primary');
           changeBtn.click(); // Adds items to the list
-          context.detectChanges();
+          renderFixture(context);
           const height2 = context.nativeElement.clientHeight;
           expect(initHeight).toBeLessThan(height2);
           changeBtn.click(); // toggle back to initial height
-          context.detectChanges();
+          renderFixture(context);
           const finalHeight = context.nativeElement.clientHeight;
           expect(finalHeight).toEqual(initHeight);
         });

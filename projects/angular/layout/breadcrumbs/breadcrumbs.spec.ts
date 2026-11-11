@@ -11,6 +11,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { delay } from '@clr/angular/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrLayoutModule } from '../layout.module';
 
@@ -49,7 +50,7 @@ describe('ClrBreadcrumbs', () => {
 
     fixture = TestBed.createComponent(TestComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    renderFixture(fixture);
     breadcrumbs = fixture.debugElement.query(By.css('clr-breadcrumbs'));
     breadcrumbList = breadcrumbs.query(By.css('.clr-breadcrumb-menu'));
   });
@@ -57,7 +58,7 @@ describe('ClrBreadcrumbs', () => {
   it('should have each breadcrumb as a clickable item which navigates to its corresponding page', async () => {
     const item = breadcrumbList.queryAll(By.css('.clr-breadcrumb-item'))[1].query(By.css('a'));
     item.nativeElement.click();
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay(1);
     const location: Location = TestBed.inject(Location);
     expect(location.path()).toEqual('/child');
@@ -87,7 +88,7 @@ describe('ClrBreadcrumbs', () => {
       { label: 'Parent Page', routerLink: '/parent' },
       { label: 'Current Page', routerLink: '/child' },
     ];
-    fixture.detectChanges();
+    renderFixture(fixture);
     const firstItem = breadcrumbList.children[0];
     expect(firstItem.children[0].nativeElement.textContent.trim()).toEqual('Home');
   });
@@ -104,7 +105,7 @@ describe('ClrBreadcrumbs', () => {
   it('should show all breadcrumbs if breadcrumbs are expanded', () => {
     const expandLink = breadcrumbList.query(By.css('.clr-breadcrumb-expand'));
     expandLink.nativeElement.click();
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(breadcrumbList.children.length).toEqual(5);
   });
 });

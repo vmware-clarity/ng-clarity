@@ -5,11 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { fakeAsync, tick } from '@angular/core/testing';
 import { of, Subject, throwError } from 'rxjs';
 import { delay, take, tap } from 'rxjs/operators';
 
 import { ComputedVar, ComputeStrategy, SimpleVar, Var } from './var';
+import { useTestTimers } from '../../../test-timers';
 
 const fnResult = 'fn result:';
 
@@ -415,7 +415,8 @@ describe('computed-var.spec', () => {
   });
 
   describe('eager evaluation', () => {
-    it('when there is a second subscription, compute function should not be invoked again', fakeAsync(() => {
+    it('when there is a second subscription, compute function should not be invoked again', async () => {
+      useTestTimers();
       const model = new MockWorkflowModel();
       model.delay = Var.of<boolean>();
       model.delayedVar = Var.from(model.delay)
@@ -432,17 +433,17 @@ describe('computed-var.spec', () => {
         result1 = r;
       });
       model.delay.value = false; // should trigger computeFn, which takes 300 ms
-      tick(300); // wait for 300ms
+      await vi.advanceTimersByTimeAsync(300); // wait for 300ms
       expect(result1).toEqual('not delayed');
       model.delay.value = true; // should trigger computeFn again
-      tick(100); // wait for 100ms and subscribe to same value again.
+      await vi.advanceTimersByTimeAsync(100); // wait for 100ms and subscribe to same value again.
       let result2 = '';
       const subscription2 = (<ComputedVar<string>>model.delayedVar).value$.subscribe(r => {
         result2 = r;
       });
       // Since computation in progress, it should NOT return the previously computed ("not delayed")
       expect(result2).toEqual('');
-      tick(3000);
+      await vi.advanceTimersByTimeAsync(3000);
       expect(result1).toEqual('delayed');
       expect(result2).toEqual('delayed');
 
@@ -450,6 +451,6 @@ describe('computed-var.spec', () => {
       expect(model.cp1InvocationCount).toEqual(2);
       subscription1.unsubscribe();
       subscription2.unsubscribe();
-    }));
+    });
   });
 });

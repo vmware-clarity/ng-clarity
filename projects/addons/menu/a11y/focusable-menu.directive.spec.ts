@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrDropdownModule } from '@clr/angular/popover/dropdown';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { FocusableMenuDirective } from './focusable-menu.directive';
 
@@ -36,7 +37,7 @@ describe('FocusableMenuDirective', () => {
     });
 
     fixture = TestBed.createComponent(TestFocusableMenuComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     directive = fixture.debugElement.query(By.directive(FocusableMenuDirective)).injector.get(FocusableMenuDirective);
   });

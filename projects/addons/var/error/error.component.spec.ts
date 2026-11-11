@@ -12,6 +12,7 @@ import { By } from '@angular/platform-browser';
 import { WorkflowStrings } from '@clr/addons/workflow/strings';
 import { ClrStackViewModule } from '@clr/angular/data/stack-view';
 import { ClrIcon } from '@clr/angular/icon';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ErrorComponent } from './error.component';
 import { ActivationError } from './interfaces';
@@ -27,7 +28,7 @@ interface ThisTest {
 function expandStackBlock(fixture: ComponentFixture<ErrorComponent>): void {
   const sbLabel = fixture.debugElement.query(By.css('.stack-block-label'));
   sbLabel.nativeElement.click();
-  fixture.detectChanges();
+  renderFixture(fixture);
 }
 
 describe('ErrorComponent', () => {
@@ -51,8 +52,8 @@ describe('ErrorComponent', () => {
       },
     };
     testContext.strings = TestBed.inject(WorkflowStrings);
-    testContext.component.error = testContext.error;
-    testContext.fixture.detectChanges();
+    testContext.fixture.componentRef.setInput('error', testContext.error);
+    renderFixture(testContext.fixture);
   });
   afterEach(() => {
     testContext.fixture.destroy();

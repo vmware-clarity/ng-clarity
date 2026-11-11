@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
 import { AppfxDatagridFiltersModule } from '../datagrid-filters.module';
@@ -51,7 +52,7 @@ describe('FilterFormComponent', () => {
     });
     testContext.fixture = TestBed.createComponent(FilterFormHostComponent);
     testContext.component = testContext.fixture.componentInstance;
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
   });
 
   afterEach(() => {
@@ -71,7 +72,7 @@ describe('FilterFormComponent', () => {
     const formActionButtons: HTMLInputElement[] =
       testContext.fixture.debugElement.nativeElement.querySelectorAll('button');
     formActionButtons[1].click();
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.component.onCancelButtonClick).toHaveBeenCalledTimes(1);
   });
   it('emits apply event on apply button click ', () => {
@@ -79,13 +80,13 @@ describe('FilterFormComponent', () => {
     const formActionButtons: HTMLInputElement[] =
       testContext.fixture.debugElement.nativeElement.querySelectorAll('button');
     formActionButtons[0].click();
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.component.onApplyButtonClick).toHaveBeenCalledTimes(0);
 
     testContext.component.isFormValid = true;
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     formActionButtons[0].click();
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.component.onApplyButtonClick).toHaveBeenCalledTimes(1);
   });
 });

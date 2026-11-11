@@ -18,6 +18,7 @@ import {
 } from '@clr/angular/forms/common';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrPopoverContent } from '@clr/angular/popover';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrNumberInput } from './number-input';
 import { ClrNumberInputContainer } from './number-input-container';
@@ -113,7 +114,7 @@ describe('Number Input component', () => {
       });
 
       it('should not throw when input ContentChild is undefined', () => {
-        expect(() => fixture.detectChanges()).not.toThrow();
+        expect(() => renderFixture(fixture)).not.toThrow();
         expect(containerEl.classList.contains('clr-form-control-readonly')).toBe(false);
       });
     });
