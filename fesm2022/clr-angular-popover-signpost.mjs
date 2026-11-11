@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { Injectable, DOCUMENT, PLATFORM_ID, HostListener, Inject, Directive, ContentChild, Input, ChangeDetectionStrategy, Component, ElementRef, HostBinding, ViewChild, Optional, NgModule } from '@angular/core';
+import { Injectable, inject, ChangeDetectorRef, DOCUMENT, PLATFORM_ID, HostListener, Inject, Directive, ContentChild, Input, ChangeDetectionStrategy, Component, ElementRef, HostBinding, ViewChild, Optional, NgModule } from '@angular/core';
 import * as i4 from '@clr/angular/popover/common';
 import { ClrPopoverHostDirective, ClrPopoverPosition, ClrPopoverType, SIGNPOST_POSITIONS, POPOVER_HOST_ORIGIN, ClrPopoverContent, ClrIfOpen, ClrPopoverModuleNext } from '@clr/angular/popover/common';
 import { Subject } from 'rxjs';
@@ -77,6 +77,7 @@ class ClrSignpostTrigger {
         this.signpostFocusManager = signpostFocusManager;
         this.platformId = platformId;
         this.ariaExpanded = false;
+        this.cdr = inject(ChangeDetectorRef);
         this.subscriptions = [];
         this.document = document;
     }
@@ -85,6 +86,7 @@ class ClrSignpostTrigger {
         this.signpostFocusManager.triggerEl = this.el.nativeElement;
         this.subscriptions.push(this.popoverService.openChange.subscribe((isOpen) => {
             this.ariaExpanded = isOpen;
+            this.cdr.markForCheck();
             const prevIsOpen = this.isOpen;
             this.isOpen = isOpen;
             // openChange fires false on initialization because signpost starts as closed by default
@@ -93,7 +95,10 @@ class ClrSignpostTrigger {
             if (!this.isOpen && prevIsOpen) {
                 this.focusOnClose();
             }
-        }), this.signpostIdService.id.subscribe(idChange => (this.ariaControl = idChange)));
+        }), this.signpostIdService.id.subscribe(idChange => {
+            this.ariaControl = idChange;
+            this.cdr.markForCheck();
+        }));
     }
     ngOnDestroy() {
         this.subscriptions.forEach((sub) => sub.unsubscribe());

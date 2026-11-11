@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { signal, Injectable, InjectionToken, inject, NgZone, PLATFORM_ID, Directive, ViewChild, ChangeDetectionStrategy, Component, Inject, DOCUMENT, EventEmitter, ElementRef, booleanAttribute, Input, Output, Optional, ContentChild, ContentChildren, computed, forwardRef, HostListener, ViewContainerRef, runInInjectionContext, createEnvironmentInjector, ChangeDetectorRef, Renderer2, EnvironmentInjector, TemplateRef, IterableDiffers, afterNextRender, RendererStyleFlags2, ViewChildren, SkipSelf, Injector, NgModule } from '@angular/core';
+import { signal, Injectable, InjectionToken, inject, NgZone, PLATFORM_ID, Directive, ViewChild, ChangeDetectionStrategy, Component, Inject, DOCUMENT, EventEmitter, ElementRef, booleanAttribute, Input, Output, Optional, ContentChild, ContentChildren, computed, forwardRef, HostListener, ViewContainerRef, runInInjectionContext, createEnvironmentInjector, ChangeDetectorRef, Renderer2, EnvironmentInjector, TemplateRef, IterableDiffers, afterNextRender, RendererStyleFlags2, ViewChildren, viewChild, SkipSelf, Injector, NgModule } from '@angular/core';
 import * as i2 from '@clr/angular/utils';
 import { uniqueIdFactory, Keys, HostWrapper, ClrCommonStringsService, IfExpandService, ClrLoadingState, ClrExpandableAnimationDirective, LoadingListener, ClrKeyFocus, FocusableItem, FOCUS_SERVICE_PROVIDER, BASIC_FOCUSABLE_ITEM_PROVIDER, DomAdapter, ClrIfExpanded, CdkDragModule, CdkTrapFocusModule, ClrLoadingModule, ClrConditionalModule, ClrOutsideClickModule, ClrExpandableAnimationModule, ClrKeyFocusModule } from '@clr/angular/utils';
 import * as i12 from 'rxjs';
@@ -6792,6 +6792,8 @@ class ClrDatagridActionOverflow {
             mapPopoverKeyToPosition(ClrPopoverPosition.RIGHT_BOTTOM, ClrPopoverType.DROPDOWN),
             mapPopoverKeyToPosition(ClrPopoverPosition.RIGHT_TOP, ClrPopoverType.DROPDOWN),
         ];
+        this.keyFocus = viewChild(ClrKeyFocus, /* @ts-ignore */
+        ...(ngDevMode ? [{ debugName: "keyFocus" }] : /* istanbul ignore next */ []));
         this._open = false;
         this.subscriptions = [];
         rowActionService.register();
@@ -6827,14 +6829,15 @@ class ClrDatagridActionOverflow {
         if (isPlatformBrowser(this.platformId)) {
             const buttons = Array.from(document.querySelectorAll('button.action-item'));
             if (buttons.length) {
-                this.keyFocus.current = 0;
-                this.keyFocus.focusableItems = buttons;
-                this.keyFocus.focusCurrent();
+                const keyFocus = this.keyFocus();
+                keyFocus.current = 0;
+                keyFocus.focusableItems = buttons;
+                keyFocus.focusCurrent();
             }
         }
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrDatagridActionOverflow, deps: [{ token: RowActionService }, { token: i2.ClrCommonStringsService }, { token: PLATFORM_ID }, { token: i3.ClrPopoverService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: ClrDatagridActionOverflow, isStandalone: false, selector: "clr-dg-action-overflow", inputs: { buttonLabel: ["clrDgActionOverflowButtonLabel", "buttonLabel"], open: ["clrDgActionOverflowOpen", "open"] }, outputs: { openChange: "clrDgActionOverflowOpenChange" }, viewQueries: [{ propertyName: "keyFocus", first: true, predicate: ClrKeyFocus, descendants: true }], hostDirectives: [{ directive: i3.ClrPopoverHostDirective }], ngImport: i0, template: `
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.2.0", version: "22.1.2", type: ClrDatagridActionOverflow, isStandalone: false, selector: "clr-dg-action-overflow", inputs: { buttonLabel: ["clrDgActionOverflowButtonLabel", "buttonLabel"], open: ["clrDgActionOverflowOpen", "open"] }, outputs: { openChange: "clrDgActionOverflowOpenChange" }, viewQueries: [{ propertyName: "keyFocus", first: true, predicate: ClrKeyFocus, descendants: true, isSignal: true }], hostDirectives: [{ directive: i3.ClrPopoverHostDirective }], ngImport: i0, template: `
     <button
       tabindex="-1"
       class="datagrid-action-toggle"
@@ -6926,10 +6929,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImpor
             }], openChange: [{
                 type: Output,
                 args: ['clrDgActionOverflowOpenChange']
-            }], keyFocus: [{
-                type: ViewChild,
-                args: [ClrKeyFocus]
-            }], open: [{
+            }], keyFocus: [{ type: i0.ViewChild, args: [i0.forwardRef(() => ClrKeyFocus), { isSignal: true }] }], open: [{
                 type: Input,
                 args: ['clrDgActionOverflowOpen']
             }] } });

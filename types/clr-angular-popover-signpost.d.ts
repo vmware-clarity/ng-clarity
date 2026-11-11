@@ -33,6 +33,7 @@ declare class ClrSignpostTrigger implements OnDestroy {
     ariaExpanded: boolean;
     ariaControl: string;
     isOpen: boolean;
+    private readonly cdr;
     private document;
     private subscriptions;
     constructor(popoverService: ClrPopoverService, el: ElementRef<HTMLElement>, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, document: any, platformId: any);

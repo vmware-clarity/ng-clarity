@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { AfterContentInit, AfterViewInit, ElementRef, TemplateRef, RendererFactory2, Renderer2, EventEmitter, QueryList, ViewContainerRef, Injector, ChangeDetectorRef, NgZone, OnInit, OnDestroy, DoCheck, IterableDiffers, TrackByFunction } from '@angular/core';
+import { AfterContentInit, AfterViewInit, ElementRef, TemplateRef, OnDestroy, RendererFactory2, Renderer2, EventEmitter, QueryList, ViewContainerRef, Injector, ChangeDetectorRef, NgZone, OnInit, DoCheck, IterableDiffers, TrackByFunction } from '@angular/core';
 import * as rxjs from 'rxjs';
 import { Observable } from 'rxjs';
 import * as i9 from '@angular/forms';
@@ -115,11 +115,14 @@ declare class PseudoFocusModel<T> extends SingleSelectComboboxModel<T> {
     select(item: T): void;
 }
 
-declare class ComboboxFocusHandler<T> {
+declare class ComboboxFocusHandler<T> implements OnDestroy {
     private popoverService;
     private selectionService;
     private platformId;
     pseudoFocus: PseudoFocusModel<OptionData<T>>;
+    private readonly subscriptions;
+    private readonly focusRequests;
+    private readonly unlisteners;
     private renderer;
     private _trigger;
     private _listbox;
@@ -132,7 +135,9 @@ declare class ComboboxFocusHandler<T> {
     set listbox(el: HTMLElement);
     get textInput(): HTMLElement;
     set textInput(el: HTMLElement);
+    ngOnDestroy(): void;
     focusInput(): void;
+    scheduleFocusFirstActive(): void;
     focusFirstActive(): void;
     addOptionValues(options: OptionData<T>[]): void;
     focusOption(option: OptionData<T>): void;
@@ -191,6 +196,7 @@ declare class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> im
     protected shouldCalculate: boolean;
     protected isTotalSelection: boolean;
     private resizeObserver;
+    private readonly renderInjector;
     private containerWidthChange;
     private options;
     private _searchText;

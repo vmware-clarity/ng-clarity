@@ -21,6 +21,8 @@ declare class DropdownFocusHandler implements OnDestroy, FocusableItem {
     private _container;
     private children;
     private _unlistenFuncs;
+    private readonly subscriptions;
+    private readonly recoverFocus;
     constructor(renderer: Renderer2, parent: DropdownFocusHandler, popoverService: ClrPopoverService, focusService: FocusService, platformId: any);
     get trigger(): HTMLElement;
     set trigger(el: HTMLElement);
@@ -45,7 +47,6 @@ declare class DropdownFocusHandler implements OnDestroy, FocusableItem {
     moveTo(item: FocusableItem): void;
     resetChildren(): void;
     addChildren(children: FocusableItem[]): void;
-    private recoverFocusIfLost;
     private openAndGetChildren;
     private closeAndGetThis;
     static ɵfac: i0.ɵɵFactoryDeclaration<DropdownFocusHandler, [null, { optional: true; skipSelf: true; }, null, null, null]>;

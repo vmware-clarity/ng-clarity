@@ -4,17 +4,18 @@ import { OverlayConfig } from '@angular/cdk/overlay';
 import { DomPortal } from '@angular/cdk/portal';
 import { isPlatformBrowser } from '@angular/common';
 import * as i0 from '@angular/core';
-import { ElementRef, Injectable, PLATFORM_ID, Input, Optional, SkipSelf, Inject, Directive, InjectionToken, HostListener, EventEmitter, Output, NgModule } from '@angular/core';
+import { signal, ElementRef, untracked, Injectable, inject, Injector, ErrorHandler, afterNextRender, PLATFORM_ID, Input, Optional, SkipSelf, Inject, Directive, InjectionToken, HostListener, EventEmitter, Output, NgModule } from '@angular/core';
 import { preventArrowKeyScroll, ClrPosition, Keys } from '@clr/angular/utils';
-import { Subject, merge, timer, switchMap, fromEvent } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { Subject, merge, timer, switchMap, fromEvent, filter } from 'rxjs';
+import { filter as filter$1 } from 'rxjs/operators';
 
 class ClrPopoverService {
     constructor() {
         // use to connect 2 unrelated (not nested) Popovers to make them nested
         this.parent = null;
         this.panelClass = [];
-        this._open = false;
+        this._open = signal(false, /* @ts-ignore */
+        ...(ngDevMode ? [{ debugName: "_open" }] : /* istanbul ignore next */ []));
         this._openChange = new Subject();
         this._openEventChange = new Subject();
         this._positionChange = new Subject();
@@ -42,12 +43,12 @@ class ClrPopoverService {
         this._openEventChange.next(event);
     }
     get open() {
-        return this._open;
+        return this._open();
     }
     set open(value) {
         value = !!value;
-        if (this._open !== value) {
-            this._open = value;
+        if (untracked(this._open) !== value) {
+            this._open.set(value);
             this._openChange.next(value);
         }
     }
@@ -80,8 +81,8 @@ class ClrPopoverService {
      * Useful for context menus where the popover should appear at the cursor position.
      */
     openAtPoint(point, targetElement) {
-        if (this._open) {
-            this._open = false;
+        if (untracked(this._open)) {
+            this._open.set(false);
             this._openChange.next(false);
         }
         this.origin = point;
@@ -602,11 +603,20 @@ class ClrPopoverContent {
             overlayY: 'top',
             panelClass: ClrPopoverPosition.LEFT_TOP,
         };
+        this.injector = inject(Injector);
+        this.errorHandler = inject(ErrorHandler);
         popoverService.panelClass.push('clr-popover-content');
         overlayContainer.getContainerElement().classList.add('clr-overlay-container');
         if (!template) {
             this.elementRef = element;
         }
+        // Before view init only cancel the structural view on an early close. Normal close
+        // handling is registered after the children so their close outputs fire first.
+        this.openCloseSubscription = popoverService.openChange.subscribe(open => {
+            if (!open) {
+                popoverService.popoverVisibleEmit(false);
+            }
+        });
     }
     set open(value) {
         this.popoverService.open = !!value;
@@ -679,17 +689,18 @@ class ClrPopoverContent {
         return mapPopoverKeyToPosition(this._position, this.popoverType);
     }
     ngAfterViewInit() {
-        if (this.popoverService.open) {
-            this.showOverlay();
-        }
-        this.openCloseSubscription = this.popoverService.openChange.subscribe(change => {
-            if (change) {
+        this.openCloseSubscription.unsubscribe();
+        this.openCloseSubscription = this.popoverService.openChange.subscribe(open => {
+            if (open) {
                 this.showOverlay();
             }
             else {
                 this.closePopover();
             }
         });
+        if (this.popoverService.open) {
+            this.showOverlay();
+        }
     }
     ngOnDestroy() {
         this.removeOverlay();
@@ -905,16 +916,34 @@ class ClrPopoverContent {
             });
             this.setupIntersectionObserver();
         }
-        setTimeout(() => {
-            // Get Scrollable Parents
-            this.listenToScrollEvents();
-            this.popoverService.popoverVisibleEmit(true);
-            if (this.elementRef?.nativeElement?.focus) {
-                this.elementRef.nativeElement.focus();
-            }
-        });
+        this.pendingRender?.destroy();
+        const pendingRender = afterNextRender(() => {
+            // Parent focus traps also capture focus after rendering. Let those callbacks finish
+            // before an initially open child popover focuses its content.
+            queueMicrotask(() => {
+                if (this.pendingRender !== pendingRender) {
+                    return;
+                }
+                this.pendingRender = null;
+                // Render callbacks run outside NgZone. Preserve subscriber/focus context in
+                // Zone applications and route synchronous callback errors in either mode.
+                this.zone.run(() => {
+                    try {
+                        this.listenToScrollEvents();
+                        this.popoverService.popoverVisibleEmit(true);
+                        this.elementRef?.nativeElement?.focus?.();
+                    }
+                    catch (error) {
+                        this.errorHandler.handleError(error);
+                    }
+                });
+            });
+        }, { injector: this.injector });
+        this.pendingRender = pendingRender;
     }
     removeOverlay() {
+        this.pendingRender?.destroy();
+        this.pendingRender = null;
         this.subscriptions.forEach(s => s.unsubscribe());
         this.subscriptions = [];
         if (this.overlayRef?.hasAttached()) {
@@ -1036,7 +1065,23 @@ class ClrPopoverContent {
     listenToScrollForElementOrigin(originEl) {
         const scrollableParents = this.getScrollableParents(originEl);
         this.zone.runOutsideAngular(() => {
-            this.subscriptions.push(merge(...scrollableParents.map(parent => fromEvent(parent, 'scroll', { passive: true }))).subscribe(() => {
+            this.subscriptions.push(merge(...scrollableParents.map(parent => {
+                const element = parent.nodeType === Node.DOCUMENT_NODE ? parent.scrollingElement : parent;
+                let left = element?.scrollLeft;
+                let top = element?.scrollTop;
+                return fromEvent(parent, 'scroll', { passive: true }).pipe(filter(() => {
+                    const nextLeft = element?.scrollLeft;
+                    const nextTop = element?.scrollTop;
+                    // scrollIntoView() can queue a native event before these listeners are installed.
+                    // Only subsequent movement should close or reposition the newly opened popover.
+                    if (left === nextLeft && top === nextTop) {
+                        return false;
+                    }
+                    left = nextLeft;
+                    top = nextTop;
+                    return true;
+                }));
+            })).subscribe(() => {
                 if (this._scrollToClose) {
                     this.zone.run(() => this.closePopover());
                     return;
@@ -1296,7 +1341,7 @@ class ClrPopoverCloseButton {
         this.popoverService = popoverService;
         this.closeChange = new EventEmitter();
         this.subscriptions = [];
-        this.subscriptions.push(popoverService.openChange.pipe(filter(value => !value)).subscribe(() => {
+        this.subscriptions.push(popoverService.openChange.pipe(filter$1(value => !value)).subscribe(() => {
             this.closeChange.emit();
         }));
     }

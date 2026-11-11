@@ -1,7 +1,7 @@
 import * as i8 from '@angular/common';
 import { isPlatformBrowser, NgForOf, CommonModule } from '@angular/common';
 import * as i0 from '@angular/core';
-import { Injectable, ViewChild, Optional, ChangeDetectionStrategy, Component, Input, Directive, PLATFORM_ID, Inject, HostListener, HostBinding, DOCUMENT, ContentChildren, EventEmitter, booleanAttribute, ContentChild, ViewChildren, Output, Self, Host, NgModule } from '@angular/core';
+import { Injectable, ViewChild, Optional, ChangeDetectionStrategy, Component, Input, Directive, PLATFORM_ID, Inject, HostListener, HostBinding, DOCUMENT, ContentChildren, EventEmitter, inject, Injector, afterNextRender, booleanAttribute, ContentChild, ViewChildren, Output, Self, Host, NgModule } from '@angular/core';
 import * as i1$1 from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import * as i1 from '@clr/angular/forms/common';
@@ -14,8 +14,8 @@ import * as i5 from '@clr/angular/progress/spinner';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
 import * as i3 from '@clr/angular/utils';
 import { ArrowKeyDirection, Keys, customFocusableItemProvider, uniqueIdFactory, ClrLoadingState, IF_ACTIVE_ID, LoadingListener, IF_ACTIVE_ID_PROVIDER, FOCUS_SERVICE_PROVIDER, ClrConditionalModule, ClrKeyFocusModule } from '@clr/angular/utils';
-import { BehaviorSubject, ReplaySubject, Subject, debounceTime } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { BehaviorSubject, ReplaySubject, Subject, Subscription, merge, EMPTY, timer, debounceTime } from 'rxjs';
+import { map, switchMap, take } from 'rxjs/operators';
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -489,8 +489,14 @@ class ComboboxFocusHandler {
         this.selectionService = selectionService;
         this.platformId = platformId;
         this.pseudoFocus = new PseudoFocusModel();
+        this.subscriptions = new Subscription();
+        this.focusRequests = new Subject();
+        this.unlisteners = [];
         this.optionData = [];
         this.handleFocusSubscription();
+        this.subscriptions.add(merge(this.focusRequests.pipe(map(() => true)), popoverService.openChange.pipe(map(() => false)))
+            .pipe(switchMap(requested => (requested ? timer(0) : EMPTY)))
+            .subscribe(() => this.focusFirstActive()));
         // Direct renderer injection can be problematic and leads to failing tests at least
         this.renderer = rendererFactory.createRenderer(null, null);
     }
@@ -513,13 +519,20 @@ class ComboboxFocusHandler {
     }
     set textInput(el) {
         this._textInput = el;
-        this.renderer.listen(el, 'keydown', event => !this.handleTextInput(event));
+        this.unlisteners.push(this.renderer.listen(el, 'keydown', event => !this.handleTextInput(event)));
         this.addFocusOnBlurListener(el);
+    }
+    ngOnDestroy() {
+        this.subscriptions.unsubscribe();
+        this.unlisteners.forEach(unlisten => unlisten());
     }
     focusInput() {
         if (this.textInput && isPlatformBrowser(this.platformId)) {
             this.textInput.focus({ preventScroll: true });
         }
+    }
+    scheduleFocusFirstActive() {
+        this.focusRequests.next();
     }
     focusFirstActive() {
         if (this.optionData.length > 0) {
@@ -554,11 +567,11 @@ class ComboboxFocusHandler {
         this.pseudoFocus.select(option);
     }
     handleFocusSubscription() {
-        this.popoverService.openChange.subscribe(open => {
+        this.subscriptions.add(this.popoverService.openChange.subscribe(open => {
             if (!open) {
                 this.pseudoFocus.model = null;
             }
-        });
+        }));
     }
     moveFocusTo(direction) {
         let index = this.optionData.findIndex(option => option.equals(this.pseudoFocus.model));
@@ -583,11 +596,11 @@ class ComboboxFocusHandler {
     }
     openAndMoveTo(direction) {
         if (!this.popoverService.open) {
-            this.popoverService.openChange.pipe(take(1)).subscribe(open => {
+            this.subscriptions.add(this.popoverService.openChange.pipe(take(1)).subscribe(open => {
                 if (open) {
                     this.moveFocusTo(direction);
                 }
-            });
+            }));
             this.popoverService.open = true;
         }
         else {
@@ -656,16 +669,16 @@ class ComboboxFocusHandler {
     }
     addFocusOnBlurListener(el) {
         if (isPlatformBrowser(this.platformId)) {
-            this.renderer.listen(el, 'blur', event => {
+            this.unlisteners.push(this.renderer.listen(el, 'blur', event => {
                 if (this.focusOutOfComponent(event)) {
                     this.popoverService.open = false;
                 }
-            });
+            }));
         }
     }
     focusOutOfComponent(event) {
         const target = event.relatedTarget;
-        return !(this.textInput.contains(target) || this.trigger.contains(target) || this.listbox.contains(target));
+        return !(this.textInput?.contains(target) || this.trigger?.contains(target) || this.listbox?.contains(target));
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ComboboxFocusHandler, deps: [{ token: i0.RendererFactory2 }, { token: i4.ClrPopoverService }, { token: OptionSelectionService }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Injectable }); }
     static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ComboboxFocusHandler }); }
@@ -879,9 +892,7 @@ class ClrOptions {
         this.focusHandler.listbox = this.el.nativeElement;
         this.subscriptions.push(this.items.changes.subscribe(items => {
             if (items.length) {
-                setTimeout(() => {
-                    this.focusHandler.focusFirstActive();
-                });
+                this.focusHandler.scheduleFocusFirstActive();
             }
             else {
                 this.focusHandler.pseudoFocus.pop();
@@ -1063,6 +1074,7 @@ class ClrCombobox extends WrappedFormControl {
         this.selectionExpanded = false;
         this.shouldCalculate = true;
         this.isTotalSelection = false;
+        this.renderInjector = inject(Injector);
         this.containerWidthChange = new Subject();
         this._searchText = '';
         if (control) {
@@ -1235,9 +1247,7 @@ class ClrCombobox extends WrappedFormControl {
     loadingStateChange(state) {
         this.optionSelectionService.loading = state === ClrLoadingState.LOADING;
         if (state !== ClrLoadingState.LOADING && isPlatformBrowser(this.platformId)) {
-            setTimeout(() => {
-                this.popoverService?.resetPositions();
-            });
+            afterNextRender(() => this.popoverService?.resetPositions(), { injector: this.renderInjector });
             this.focusFirstActive();
         }
     }
@@ -1272,9 +1282,7 @@ class ClrCombobox extends WrappedFormControl {
         return this.commonStrings.keys.comboboxSelection;
     }
     focusFirstActive() {
-        setTimeout(() => {
-            this.focusHandler.focusFirstActive();
-        });
+        this.focusHandler.scheduleFocusFirstActive();
     }
     writeValue(value) {
         this.optionSelectionService.selectionModel.model = value;
@@ -1401,12 +1409,11 @@ class ClrCombobox extends WrappedFormControl {
                 this.calculateLimit();
             }
             if (this.multiSelect) {
-                setTimeout(() => {
-                    this.popoverService?.updatePosition();
-                });
+                afterNextRender(() => this.popoverService?.updatePosition(), { injector: this.renderInjector });
             }
         }));
         this.subscriptions.push(this.popoverService.openChange.subscribe(open => {
+            this.cdr.markForCheck();
             if (this.editable && !this.multiSelect) {
                 if (this.searchText) {
                     this.optionSelectionService.showAllOptions = false;

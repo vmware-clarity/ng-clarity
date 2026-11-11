@@ -45,7 +45,7 @@ declare class ClrPopoverService {
     origin: FlexibleConnectedPositionStrategyOrigin;
     closeButtonRef: ElementRef;
     panelClass: string[];
-    private _open;
+    private readonly _open;
     private _openChange;
     private _openEvent;
     private _openEventChange;
@@ -109,6 +109,9 @@ declare class ClrPopoverContent implements OnDestroy, AfterViewInit {
     private availablePositionsAreSet;
     private _preferredPosition;
     private intersectionObserver;
+    private readonly injector;
+    private pendingRender;
+    private readonly errorHandler;
     constructor(element: ElementRef, container: ViewContainerRef, template: TemplateRef<any>, overlayContainer: OverlayContainer, parent: ClrPopoverContent, overlay: Overlay, popoverService: ClrPopoverService, zone: NgZone, platformId: any);
     set open(value: boolean);
     get contentAt(): string | ClrPopoverPosition | ConnectedPosition;

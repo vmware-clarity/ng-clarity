@@ -5,8 +5,8 @@ import { ClrPopoverHostDirective, ClrPopoverType, ClrPopoverPosition, DROPDOWN_P
 import * as i2$1 from '@clr/angular/utils';
 import { uniqueIdFactory, ArrowKeyDirection, Linkers, wrapObservable, customFocusableItemProvider, FOCUS_SERVICE_PROVIDER, FocusableItem, BASIC_FOCUSABLE_ITEM_PROVIDER } from '@clr/angular/utils';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
-import { ReplaySubject, of, Subject } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { Subscription, Subject, EMPTY, timer, ReplaySubject, of } from 'rxjs';
+import { switchMap, take, map } from 'rxjs/operators';
 import { ClrIcon } from '@clr/angular/icon';
 
 /*
@@ -24,8 +24,15 @@ class DropdownFocusHandler {
         this.platformId = platformId;
         this.id = uniqueIdFactory();
         this._unlistenFuncs = [];
+        this.subscriptions = new Subscription();
+        this.recoverFocus = new Subject();
         this.resetChildren();
         this.moveToFirstItemWhenOpen();
+        this.subscriptions.add(popoverService.openChange
+            .pipe(switchMap(open => open
+            ? this.recoverFocus.pipe(switchMap(() => timer(0)), switchMap(() => document.activeElement === document.body ? (parent ? this.right : this.down).pipe(take(1)) : EMPTY))
+            : EMPTY))
+            .subscribe(item => item && focusService.moveTo(item)));
     }
     get trigger() {
         return this._trigger;
@@ -49,7 +56,7 @@ class DropdownFocusHandler {
         this._unlistenFuncs.push(this.renderer.listen(el, 'keydown.tab', event => this.popoverService.toggleWithEvent(event)), this.renderer.listen(el, 'keydown.shift.tab', event => this.popoverService.toggleWithEvent(event)));
         // All containers are registered to the focus service.
         this.focusService.registerContainer(el);
-        this._unlistenFuncs.push(this.renderer.listen(el, 'focusout', () => this.recoverFocusIfLost()));
+        this._unlistenFuncs.push(this.renderer.listen(el, 'focusout', () => this.recoverFocus.next()));
         if (this.parent) {
             // if it's a nested container, pressing escape has the same effect as pressing left key, which closes the current
             // popup and moves up to its parent. Here, we stop propagation so that the parent container
@@ -61,6 +68,7 @@ class DropdownFocusHandler {
         }
     }
     ngOnDestroy() {
+        this.subscriptions.unsubscribe();
         this._unlistenFuncs.forEach((unlisten) => unlisten());
         this.focusService.detachListeners(this.container);
     }
@@ -68,22 +76,12 @@ class DropdownFocusHandler {
      * If the dropdown was opened by clicking on the trigger, we automatically move to the first item
      */
     moveToFirstItemWhenOpen() {
-        const subscription = this.popoverService.openChange.subscribe(open => {
-            if (open && this.popoverService.openEvent) {
-                // Even if we properly waited for ngAfterViewInit, the container still wouldn't be attached to the DOM.
-                // So setTimeout is the only way to wait for the container to be ready to move focus to first item.
-                setTimeout(() => {
-                    this.focusService.moveTo(this);
-                    if (this.parent) {
-                        this.focusService.move(ArrowKeyDirection.RIGHT);
-                    }
-                    else {
-                        this.focusService.move(ArrowKeyDirection.DOWN);
-                    }
-                });
-            }
-        });
-        this._unlistenFuncs.push(() => subscription.unsubscribe());
+        this.subscriptions.add(this.popoverService.openChange
+            .pipe(switchMap(open => (open && this.popoverService.openEvent ? timer(0) : EMPTY)))
+            .subscribe(() => {
+            this.focusService.moveTo(this);
+            this.focusService.move(this.parent ? ArrowKeyDirection.RIGHT : ArrowKeyDirection.DOWN);
+        }));
     }
     focus() {
         if (this.trigger && isPlatformBrowser(this.platformId)) {
@@ -132,15 +130,6 @@ class DropdownFocusHandler {
             Linkers.linkParent(children, this.closeAndGetThis(), ArrowKeyDirection.LEFT);
         }
         this.children.next(children);
-    }
-    recoverFocusIfLost() {
-        setTimeout(() => {
-            if (!this.popoverService.open || document.activeElement !== document.body) {
-                return;
-            }
-            const firstItem = this.parent ? this.right : this.down;
-            firstItem?.pipe(take(1)).subscribe(item => item && this.focusService.moveTo(item));
-        });
     }
     openAndGetChildren() {
         return wrapObservable(this.children, () => (this.popoverService.open = true));
