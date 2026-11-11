@@ -5,15 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-// Copies AI agent files (AGENTS.md and per-component SKILL.md) into a built package:
-//   projects/<lib>/ai/AGENTS.md          -> dist/clr-<lib>/ai/AGENTS.md
-//   projects/<lib>/**/SKILL.md           -> dist/clr-<lib>/ai/skills/<name>/SKILL.md
+// Copies AI agent files into a built package:
+//   projects/<lib>/ai/AGENTS.md      -> dist/clr-<lib>/ai/AGENTS.md
+//   projects/<lib>/ai/SKILL.md       -> dist/clr-<lib>/ai/skills/<skill>/SKILL.md
+//   projects/<lib>/**/GUIDE.md       -> dist/clr-<lib>/ai/skills/<skill>/references/<guide>.md (without frontmatter)
 // Usage: node ./scripts/copy-ai-files.js <angular|addons> [destRoot]
 
 const fs = require('fs');
 const path = require('path');
 
-const { LIBS, collectSkills, getAgentsFile } = require('./ai-files');
+const { LIBS, collectAiFiles, getAgentsFile } = require('./ai-files');
 
 const lib = process.argv[2];
 if (!LIBS[lib]) {
@@ -22,7 +23,7 @@ if (!LIBS[lib]) {
 }
 
 const dest = path.join(process.argv[3] || `dist/clr-${lib}`, 'ai');
-const { skills, errors } = collectSkills(lib);
+const { skill, guides, errors } = collectAiFiles(lib);
 
 if (errors.length) {
   console.error(errors.join('\n'));
@@ -30,16 +31,17 @@ if (errors.length) {
 }
 
 fs.rmSync(dest, { recursive: true, force: true });
-fs.mkdirSync(dest, { recursive: true });
+const referencesDir = path.join(dest, 'skills', skill.name, 'references');
+fs.mkdirSync(referencesDir, { recursive: true });
 
 const agents = getAgentsFile(lib);
 if (agents) {
   fs.copyFileSync(agents.file, path.join(dest, 'AGENTS.md'));
 }
 
-for (const skill of skills) {
-  fs.mkdirSync(path.join(dest, 'skills', skill.name), { recursive: true });
-  fs.copyFileSync(skill.file, path.join(dest, 'skills', skill.name, 'SKILL.md'));
+fs.copyFileSync(skill.file, path.join(dest, 'skills', skill.name, 'SKILL.md'));
+for (const guide of guides) {
+  fs.writeFileSync(path.join(referencesDir, `${guide.name}.md`), guide.body.trimStart());
 }
 
-console.log(`Copied ${skills.length} skill(s) to ${dest}`);
+console.log(`Copied the ${skill.name} skill with ${guides.length} guide(s) to ${dest}`);

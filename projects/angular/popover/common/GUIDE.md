@@ -9,7 +9,7 @@ metadata:
 
 ## When to use
 
-- Action menu: use `clr-dropdown` (clr-dropdown skill). Rich help next to a field: `clr-signpost` (clr-signpost skill). Short hover hint: `clr-tooltip` (clr-tooltip skill).
+- Action menu: use `clr-dropdown` (clr-dropdown guide). Rich help next to a field: `clr-signpost` (clr-signpost guide). Short hover hint: `clr-tooltip` (clr-tooltip guide).
 - Use the toolkit only for a custom overlay those components can't express (e.g. a filter panel, a details card anchored to a button or a cursor point).
 - It handles positioning, layering, outside click, Escape and focus return — don't hand-roll overlays with CDK `Overlay` or absolute positioning.
 
@@ -113,7 +113,7 @@ onContextMenu(event: MouseEvent) {
 </div>
 ```
 
-For a plain action list at a point, prefer `ClrDropdown.openAtPoint()` (clr-dropdown skill), which adds menu keyboard navigation.
+For a plain action list at a point, prefer `ClrDropdown.openAtPoint()` (clr-dropdown guide), which adds menu keyboard navigation.
 
 ## Rules
 
