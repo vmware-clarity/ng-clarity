@@ -52,7 +52,7 @@ export class ClrDatagridHideableColumn implements OnDestroy {
    * Used to initialize the column with either hidden or visible state.
    *
    */
-  private _hidden: boolean;
+  private _hidden?: boolean;
 
   private subscriptions: Subscription[] = [];
 

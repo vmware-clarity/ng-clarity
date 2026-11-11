@@ -12,9 +12,9 @@ import { TreeNodeModel } from './models/tree-node.model';
 
 @Injectable()
 export class TreeFocusManagerService<T> {
-  rootNodeModels: TreeNodeModel<T>[];
+  rootNodeModels: TreeNodeModel<T>[] = [];
 
-  private focusedNodeId: string;
+  private focusedNodeId?: string;
   private _focusRequest = new Subject<string>();
   private _focusChange = new Subject<string>();
 
@@ -26,7 +26,7 @@ export class TreeFocusManagerService<T> {
     return this._focusChange.asObservable();
   }
 
-  focusNode(model: TreeNodeModel<T>): void {
+  focusNode(model: TreeNodeModel<T> | null): void {
     if (model) {
       this._focusRequest.next(model.nodeId);
     }
@@ -75,7 +75,7 @@ export class TreeFocusManagerService<T> {
     }
   }
 
-  private findLastVisibleInNode(model: TreeNodeModel<T>): TreeNodeModel<T> {
+  private findLastVisibleInNode(model: TreeNodeModel<T> | undefined): TreeNodeModel<T> | null {
     // the method will traverse through until it finds the last visible node from the given node
     if (!model) {
       return null;
@@ -89,7 +89,7 @@ export class TreeFocusManagerService<T> {
     }
   }
 
-  private findNextFocusable(model: TreeNodeModel<T>): TreeNodeModel<T> {
+  private findNextFocusable(model: TreeNodeModel<T> | null): TreeNodeModel<T> | null {
     if (!model) {
       return null;
     }
@@ -105,13 +105,12 @@ export class TreeFocusManagerService<T> {
     return null;
   }
 
-  private findLastVisibleInTree(): TreeNodeModel<T> {
-    const lastRootNode =
-      this.rootNodeModels && this.rootNodeModels.length && this.rootNodeModels[this.rootNodeModels.length - 1];
+  private findLastVisibleInTree(): TreeNodeModel<T> | null {
+    const lastRootNode = this.rootNodeModels[this.rootNodeModels.length - 1];
     return this.findLastVisibleInNode(lastRootNode);
   }
 
-  private findNodeAbove(model: TreeNodeModel<T>): TreeNodeModel<T> {
+  private findNodeAbove(model: TreeNodeModel<T>): TreeNodeModel<T> | null {
     if (!model) {
       return null;
     }
@@ -127,7 +126,7 @@ export class TreeFocusManagerService<T> {
     return null;
   }
 
-  private findNodeBelow(model: TreeNodeModel<T>): TreeNodeModel<T> {
+  private findNodeBelow(model: TreeNodeModel<T>): TreeNodeModel<T> | null {
     if (!model) {
       return null;
     }
@@ -139,7 +138,7 @@ export class TreeFocusManagerService<T> {
     }
   }
 
-  private findDescendentNodeStartsWith(searchString: string, model: TreeNodeModel<T>): TreeNodeModel<T> {
+  private findDescendentNodeStartsWith(searchString: string, model: TreeNodeModel<T>): TreeNodeModel<T> | null {
     if (model.expanded && model.children.length > 0) {
       for (const childModel of model.children) {
         const found = this.findNodeStartsWith(searchString, childModel);
@@ -151,7 +150,7 @@ export class TreeFocusManagerService<T> {
     return null;
   }
 
-  private findSiblingNodeStartsWith(searchString: string, model: TreeNodeModel<T>): TreeNodeModel<T> {
+  private findSiblingNodeStartsWith(searchString: string, model: TreeNodeModel<T>): TreeNodeModel<T> | null {
     const siblings = this.findSiblings(model);
     const selfIndex = siblings.indexOf(model);
 
@@ -166,7 +165,7 @@ export class TreeFocusManagerService<T> {
     return null;
   }
 
-  private findRootNodeStartsWith(searchString: string, model: TreeNodeModel<T>): TreeNodeModel<T> {
+  private findRootNodeStartsWith(searchString: string, model: TreeNodeModel<T>): TreeNodeModel<T> | null {
     for (const rootModel of this.rootNodeModels) {
       // Don't look from a parent yet
       if (model.parent && model.parent === rootModel) {
@@ -181,7 +180,7 @@ export class TreeFocusManagerService<T> {
     return null;
   }
 
-  private findNodeStartsWith(searchString: string, model: TreeNodeModel<T>): TreeNodeModel<T> {
+  private findNodeStartsWith(searchString: string, model: TreeNodeModel<T> | null): TreeNodeModel<T> | null {
     if (!model) {
       return null;
     }
@@ -193,7 +192,7 @@ export class TreeFocusManagerService<T> {
     return this.findDescendentNodeStartsWith(searchString, model);
   }
 
-  private findClosestNodeStartsWith(searchString: string, model: TreeNodeModel<T>): TreeNodeModel<T> {
+  private findClosestNodeStartsWith(searchString: string, model: TreeNodeModel<T>): TreeNodeModel<T> | null {
     if (!model) {
       return null;
     }

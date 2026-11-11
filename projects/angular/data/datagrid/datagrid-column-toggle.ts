@@ -103,10 +103,10 @@ export class ClrDatagridColumnToggle implements OnDestroy {
   // to loss of focus after checkbox toggle.
   readonly trackByFn = columnToggleTrackByFn;
 
-  private _allColumnsVisible: boolean;
+  private _allColumnsVisible = false;
   private subscription: Subscription;
 
-  @ViewChild('allSelected', { read: ElementRef }) private allSelectedElement: ElementRef<HTMLElement>;
+  @ViewChild('allSelected', { read: ElementRef }) private allSelectedElement!: ElementRef<HTMLElement>;
 
   constructor(
     public commonStrings: ClrCommonStringsService,

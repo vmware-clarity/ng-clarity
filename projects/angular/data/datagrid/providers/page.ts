@@ -27,7 +27,7 @@ export class Page {
   /**
    * Last page
    */
-  private _last: number;
+  private _last?: number;
 
   /**
    * Current page

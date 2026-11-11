@@ -75,7 +75,7 @@ let clrDgActionId = 0;
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDatagridActionOverflow implements OnDestroy {
-  @Input('clrDgActionOverflowButtonLabel') buttonLabel: string;
+  @Input('clrDgActionOverflowButtonLabel') buttonLabel?: string;
 
   @Output('clrDgActionOverflowOpenChange') openChange = new EventEmitter<boolean>(false);
 
@@ -87,7 +87,7 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     mapPopoverKeyToPosition(ClrPopoverPosition.RIGHT_TOP, ClrPopoverType.DROPDOWN),
   ];
 
-  @ViewChild(ClrKeyFocus) private readonly keyFocus: ClrKeyFocus;
+  @ViewChild(ClrKeyFocus) private readonly keyFocus!: ClrKeyFocus;
 
   private _open = false;
   private subscriptions: Subscription[] = [];

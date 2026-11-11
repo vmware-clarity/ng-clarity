@@ -15,7 +15,7 @@ import { ClrRecursiveForOfContext } from './recursive-for-of';
 export class TreeFeaturesService<T> {
   selectable = false;
   eager = true;
-  recursion: {
+  recursion?: {
     template: TemplateRef<ClrRecursiveForOfContext<T>>;
     root: RecursiveTreeNodeModel<T>[];
   };
