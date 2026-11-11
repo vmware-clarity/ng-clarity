@@ -26,8 +26,8 @@ export class DatagridPageDirective implements AfterViewInit, OnDestroy {
   private component: DatagridComponent<unknown>;
 
   private initCompleted = false;
-  private initialPage: number;
-  private subscription: Subscription;
+  private initialPage = 0;
+  private subscription?: Subscription;
 
   constructor(@Host() datagrid: DatagridComponent<unknown>) {
     this.component = datagrid;

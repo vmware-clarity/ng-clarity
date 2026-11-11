@@ -15,7 +15,7 @@ import { ContainerService } from './container.service';
  */
 @Injectable()
 export class DragDropService {
-  private dragOrder: number;
+  private dragOrder!: number;
 
   constructor(private containerService: ContainerService) {}
 

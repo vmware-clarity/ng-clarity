@@ -28,7 +28,7 @@ export class PropertyViewComponent implements DoCheck {
 
   @Input() data: PropertyViewModel | null | undefined;
 
-  @ViewChildren('categoryTabButton') categoryTabButtonsList: QueryList<ElementRef>;
+  @ViewChildren('categoryTabButton') categoryTabButtonsList!: QueryList<ElementRef>;
 
   constructor(
     private expandedStateManager: PropertyViewSectionsExpandedStateManager,

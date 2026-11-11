@@ -47,7 +47,7 @@ export enum ColumnMoveDirection {
   standalone: false,
 })
 export class DatagridColumnsOrderDirective implements OnInit, OnDestroy, OnChanges {
-  @Input() dgColumnsOrderColumns: ColumnDefinition<any>[];
+  @Input() dgColumnsOrderColumns!: ColumnDefinition<any>[];
 
   @Input() dgColumnsVirtualScrolling = false;
 

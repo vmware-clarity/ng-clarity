@@ -51,7 +51,7 @@ export class CertificateViewerComponent implements OnChanges {
    * The first element is the leaf certificate and the last element is the root certificate.
    * This order is described in the TLS 1.2 RFC section 7.4.2.
    */
-  @Input() pemEncodedCertificatesChain: string[];
+  @Input() pemEncodedCertificatesChain!: string[];
 
   /**
    * The top heading level for this component.

@@ -41,8 +41,8 @@ const resources = {
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DatagridActionBarComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
-  @ViewChildren('actionBtn', { read: ElementRef }) queryActionBtnElementList: QueryList<ElementRef<HTMLButtonElement>>;
-  @Input() actions: ActionDefinition[];
+  @ViewChildren('actionBtn', { read: ElementRef }) queryActionBtnElementList!: QueryList<ElementRef<HTMLButtonElement>>;
+  @Input() actions!: ActionDefinition[];
 
   @Input() btnLayout = 'flex';
 
@@ -57,7 +57,7 @@ export class DatagridActionBarComponent implements OnInit, OnChanges, AfterViewI
 
   private listOfWidths: number[] = [];
 
-  #subscription: Subscription;
+  #subscription: Subscription | undefined;
 
   constructor(
     private cdr: ChangeDetectorRef,

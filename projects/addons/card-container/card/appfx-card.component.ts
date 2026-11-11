@@ -66,24 +66,24 @@ export class AppfxCardComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * The descriptor of the step being rendered.
    */
-  @Input() card: AppfxCardInternal;
+  @Input() card!: AppfxCardInternal;
 
   /**
    * Specifics which dropGroup card belongs to as card drop should happen within specific container
    * used to distinguish drag and drop cards from multiple containers
    */
-  @Input() dropGroup: string;
+  @Input() dropGroup!: string;
 
-  @ViewChild(CdkDropList, { static: true }) readonly dropList: CdkDropList;
+  @ViewChild(CdkDropList, { static: true }) readonly dropList!: CdkDropList;
 
   dragDropEnabled: boolean = true;
 
   /** Cards slide in, unless the application turned animations off with `provideNoopAnimations()`. */
   protected readonly enterClass = noopAnimations() ? '' : 'clr-fade-slide-right-enter';
 
-  @ViewChild(CdkDrag, { read: ElementRef }) private cdkDragElementRefs: ElementRef;
+  @ViewChild(CdkDrag, { read: ElementRef }) private cdkDragElementRefs?: ElementRef;
 
-  @ViewChild('cardViewContainer', { read: ViewContainerRef, static: true }) private cardViewContainer: ViewContainerRef;
+  @ViewChild('cardView', { read: ViewContainerRef, static: true }) private cardViewContainer!: ViewContainerRef;
 
   // Store current set card unit width
   private currentUnitWidth: number | undefined;

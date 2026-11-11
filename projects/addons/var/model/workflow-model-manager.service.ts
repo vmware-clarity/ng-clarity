@@ -60,7 +60,7 @@ export class WorkflowModelManager {
   // Contains stringified values of the input step model properties.
   private stepModelLastValuesIn: Map<StepModel, any> = new Map();
 
-  #steps: StepInternal[];
+  #steps!: StepInternal[];
 
   /**
    * Workflow steps.

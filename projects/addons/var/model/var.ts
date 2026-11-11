@@ -123,7 +123,7 @@ import { stringify } from '../util/util';
  * }
  */
 export abstract class Var<T> {
-  #value: T;
+  #value!: T;
 
   protected constructor() {
     // no action
@@ -338,7 +338,7 @@ export class ComputedVar<T> extends Var<T> {
 
   private lastDependencyValues: string | undefined;
   private isLastComputationSuccessful = false;
-  #value$: Observable<T>;
+  #value$!: Observable<T>;
 
   constructor(private config: ComputedVarSchema<T>) {
     super();

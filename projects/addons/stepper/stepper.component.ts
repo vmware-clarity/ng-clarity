@@ -96,23 +96,23 @@ export class StepperComponent implements OnDestroy, AfterViewInit, AfterContentI
   @Output() readonly onCancel: EventEmitter<void> = new EventEmitter<void>();
 
   form: UntypedFormGroup;
-  initialStep: string;
+  initialStep!: string;
   stepPanelOverriddenStrings: Partial<ClrCommonStrings>;
 
-  @ViewChildren(StepContainer) private pagesContainers: QueryList<StepContainer>;
+  @ViewChildren(StepContainer) private pagesContainers!: QueryList<StepContainer>;
 
-  @ViewChildren(ClrStepperPanel) private stepperPanels: QueryList<ClrStepperPanel>;
+  @ViewChildren(ClrStepperPanel) private stepperPanels!: QueryList<ClrStepperPanel>;
 
   private activeStep: Step | undefined;
   private activePage: StepContainer | undefined;
   private awaitingWizardPageOnLoad$: ReplaySubject<Step> = new ReplaySubject(Infinity);
   private componentAfterViewInit$: Subject<void> = new Subject();
   private readonly subscriptions = new Subscription();
-  private retrySubscription: Subscription;
-  private stepperService: StepperService;
+  private retrySubscription?: Subscription;
+  private stepperService!: StepperService;
   private errorActivatingStep = false;
 
-  #steps: StepInternal[];
+  #steps!: StepInternal[];
   #wizardModel: any;
 
   constructor(

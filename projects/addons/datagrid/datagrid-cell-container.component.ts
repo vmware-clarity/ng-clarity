@@ -32,14 +32,14 @@ import { ColumnDefinition, ColumnRenderer } from './shared/column/column-definit
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DatagridCellContainerComponent implements OnInit, OnDestroy, OnChanges {
-  @ViewChild('cellContainer', { read: ViewContainerRef, static: true }) container: ViewContainerRef;
+  @ViewChild('cellContainer', { read: ViewContainerRef, static: true }) container!: ViewContainerRef;
 
-  @Input() column: ColumnDefinition<any>;
+  @Input() column!: ColumnDefinition<any>;
 
   @Input() item: any;
 
-  private componentRef: ComponentRef<any> | null;
-  private instance: ColumnRenderer<any> | null;
+  private componentRef: ComponentRef<any> | null = null;
+  private instance: ColumnRenderer<any> | null = null;
 
   ngOnChanges(): void {
     if (this.instance && typeof this.instance.onChange === 'function') {

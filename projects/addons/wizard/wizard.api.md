@@ -121,10 +121,10 @@ class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterContentI
     // Warning: (ae-forgotten-export) The symbol "ZoomLevel" needs to be exported by the entry point clr-addons-wizard.d.ts
     //
     // (undocumented)
-    currentZoomLevel: ZoomLevel;
+    currentZoomLevel?: ZoomLevel;
     footer: WizardFooterConfig;
     // (undocumented)
-    footerComponentInputs: Record<string, unknown>;
+    footerComponentInputs?: Record<string, unknown>;
     // (undocumented)
     get isLoading(): boolean;
     // (undocumented)

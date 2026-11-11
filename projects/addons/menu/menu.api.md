@@ -88,7 +88,7 @@ export class MenuComponent extends NestedMenu implements Menu, OnInit, OnDestroy
     // Warning: (ae-forgotten-export) The symbol "ZoomLevel" needs to be exported by the entry point clr-addons-menu.d.ts
     //
     // (undocumented)
-    currentZoomLevel: ZoomLevel;
+    currentZoomLevel?: ZoomLevel;
     // (undocumented)
     documentContextMenu(event: Event): void;
     // Warning: (ae-forgotten-export) The symbol "ClrDropdown" needs to be exported by the entry point clr-addons-menu.d.ts
