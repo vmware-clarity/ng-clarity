@@ -7,7 +7,9 @@
 
 /* eslint-disable @typescript-eslint/parameter-properties */
 
-import { ComparisonOperator, LogicalOperator, Unit } from './datagrid-filters.enums';
+import { DateRangeOption } from '@clr/angular/forms';
+
+import { ComparisonOperator, LogicalOperator, TimeSpan, Unit } from './datagrid-filters.enums';
 
 /**
  * Defines a property that can be used to filter data in a datagrid.
@@ -199,6 +201,13 @@ export class DateTimePropertyDefinition extends FilterablePropertyDefinition {
    */
   includeSeconds: boolean;
 
+  /**
+   * Preset ranges offered by the custom range operator. Without times they are listed in the date range picker; with
+   * times they are buttons under the operator. Each `value` is `[start, end]`, both inclusive, used as given. A `Date`
+   * at exactly 00:00 means the whole day. Options whose `value` is not two valid dates are ignored.
+   */
+  rangeOptions: DateRangeOption[];
+
   private readonly defaultOperators: ComparisonOperator[] = [
     ComparisonOperator.Equals,
     ComparisonOperator.Before,
@@ -214,14 +223,41 @@ export class DateTimePropertyDefinition extends FilterablePropertyDefinition {
     ComparisonOperator.TimeSpan,
   ];
 
-  constructor(displayName: string, property: string, operators?: ComparisonOperator[], includeSeconds?: boolean) {
+  constructor(
+    displayName: string,
+    property: string,
+    operators?: ComparisonOperator[],
+    includeSeconds?: boolean,
+    rangeOptions?: DateRangeOption[]
+  ) {
     super(displayName, property, operators);
     this.includeSeconds = includeSeconds ? includeSeconds : false;
+    this.rangeOptions = rangeOptions ?? [];
   }
 
   getOperators(): ComparisonOperator[] {
     return this.supportedOperators || this.defaultOperators;
   }
+}
+
+/**
+ * Editor choices that the criteria alone cannot express, kept on each filter so that field definitions
+ * can be shared between filter bars. Date-time filters store the operator as chosen (e.g. Last week or
+ * Time span) and the entered dates; numeric filters with units store the typed values and units.
+ */
+export interface FilterEditorState {
+  /** Date-time operator as chosen in the editor. */
+  operator?: ComparisonOperator;
+  /** Date-time value as `yyyy-MM-dd` or `yyyy-MM-ddTHH:mm[:ss]`. The start of a custom range. */
+  value?: string;
+  /** End of a custom range, in the same format as `value`. Inclusive. */
+  valueTo?: string;
+  timeSpanValue?: number;
+  timeSpan?: TimeSpan;
+  /** Numeric with unit: the value typed for each condition, before unit conversion. */
+  values?: any[];
+  /** Numeric with unit: the unit chosen for each condition. */
+  units?: Unit[];
 }
 
 export class PropertyFilter {
@@ -233,6 +269,11 @@ export class PropertyFilter {
    *  Logical operator. Supported values are AND/OR
    */
   operator: LogicalOperator;
+  /**
+   * Set by the built-in editors. Optional for host-built filters such as presets; without it the
+   * editor and pill derive what they can from the criteria.
+   */
+  editorState?: FilterEditorState;
 }
 
 export class PropertyPredicate {

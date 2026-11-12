@@ -92,10 +92,14 @@
 
     <div class="clr-row clr-mt-48px">
       <div class="clr-col-12">
-        <h3 class="clr-mb-16px" cds-text="section disable-lhe" id="datagrid-filters">Datagrid Filters</h3>
+        <h3 class="clr-mb-16px" cds-text="section disable-lhe" id="datagrid-filters">Filters</h3>
         <p cds-text="body">
-          AppFx Datagrid Filters component provides an enhanced user experience for datagrid filtering. It is expected
-          to be hosted in the datagrid action bar and supports three modes: quick, advanced, and advanced only.
+          Filters component provides an enhanced user experience for datagrid filtering. It is expected to be hosted in
+          the datagrid action bar and supports three modes: quick, advanced, and advanced only.
+        </p>
+        <p class="clr-mt-16px" cds-text="body">
+          To use the filter bar on its own, or with presets, predefined, semi-predefined and toggle filters, see
+          <a routerLink="/documentation/filters">Filters</a>.
         </p>
 
         <h2 id="usage" class="clr-mt-48px" cds-text="title">Usage</h2>
@@ -112,7 +116,7 @@
             <app-themed-image
               [lightSrc]="'assets/images/documentation/advanced-datagrid/datagrid-advanced-filter-overview.png'"
               [darkSrc]="'assets/images/documentation/advanced-datagrid/datagrid-advanced-filter-overview.png'"
-              [imageAlt]="'Datagrid Filters advanced example'"
+              [imageAlt]="'Filters advanced example'"
               [imageStyle]="'max-width: 100%'"
             ></app-themed-image>
           </div>
@@ -126,7 +130,7 @@
             <app-themed-image
               [lightSrc]="'assets/images/documentation/advanced-datagrid/datagrid-quick-filter-overview.png'"
               [darkSrc]="'assets/images/documentation/advanced-datagrid/datagrid-quick-filter-overview.png'"
-              [imageAlt]="'Datagrid Filters quick example'"
+              [imageAlt]="'Filters quick example'"
               [imageStyle]="'max-width: 100%'"
             ></app-themed-image>
           </div>
@@ -161,20 +165,6 @@
       <app-code-snippet
         name="basic-datagrid"
         [code]="basicDatagridExample"
-        language="typescript"
-        [copy]="true"
-      ></app-code-snippet>
-    </div>
-
-    <h3 data-toc-item id="filters-example" cds-text="section" class="clr-mt-32px">Filters</h3>
-    <p cds-text="body" class="clr-mt-16px">
-      The following example demonstrates how to configure the component with various property definitions such as
-      String, Numeric, Enum, and DateTime.
-    </p>
-    <div class="clr-mt-24px">
-      <app-code-snippet
-        name="datagrid-filters-demo"
-        [code]="datagridFiltersExample"
         language="typescript"
         [copy]="true"
       ></app-code-snippet>
@@ -542,11 +532,13 @@
 
     <!-- Filters -->
     <div class="demo-section">
-      <h3 data-toc-item id="filters-implementation" cds-text="section" class="clr-mt-32px">Filters</h3>
+      <h3 data-toc-item id="filters-example" cds-text="section" class="clr-mt-32px">Filters</h3>
       <p cds-text="body" class="clr-mt-16px">
         The Filters example demonstrates how to integrate both Quick and Advanced filtering modes into the AppFx
         Datagrid. It shows how to define filterable properties, switch between filter modes, and handle filter change
-        events to update the displayed data.
+        events to update the displayed data. The filter bar itself, every property definition (String, Numeric, Enum,
+        DateTime and User) and the inputs the grid does not pass on are covered on the
+        <a routerLink="/documentation/filters/code">Filters</a> page.
       </p>
 
       <h2 class="clr-mt-48px" cds-text="subsection">Key Features</h2>

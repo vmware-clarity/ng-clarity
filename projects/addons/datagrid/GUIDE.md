@@ -126,7 +126,8 @@ onSearch(term: string): void {}
 </appfx-datagrid>
 ```
 
-- `FilterMode`: `Quick` = search box only; `Advanced` = selector between search box and advanced filter; `AdvancedOnly` = advanced filter only.
+- `FilterMode`: `Quick` = search box only; `Advanced` = selector between search box and advanced filter; `AdvancedOnly` = advanced filter only; `Combined` = search box and filter pills together — keep the latest `searchTermChange` and `advancedFilterChange` values and apply both (AND).
+- `PropertyPredicate.value` is `undefined` for `ComparisonOperator.IsEmpty` — check the operator before reading the value.
 - Enum filter labels should match what the column renders, or render the column through the same map.
 - The grid only **emits** filters — `advancedFilterChange` carries a `PropertyFilter[]` (each `{ criteria: PropertyPredicate[], operator }`); apply them to the data yourself and pass the result as `gridItems`.
 - Other definitions: `DateTimePropertyDefinition`, `UserPropertyDefinition` (requires providing `DatagridFiltersUserService`).

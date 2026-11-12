@@ -107,6 +107,8 @@ export const colors: string[] = [
 
 export const status: string[] = ['Normal', 'Warning', 'Alert'];
 
+export const priorities: string[] = ['Low', 'Medium', 'High'];
+
 export const cpus: string[] = ['1', '2', '4', '8', '16', '32'];
 
 export const usedSpace: number[] = [

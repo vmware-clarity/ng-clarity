@@ -27,8 +27,8 @@ import { FormBuilder } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
 import * as i12 from '@angular/cdk/a11y';
-import * as i17 from '@angular/common';
-import * as i18 from '@angular/forms';
+import * as i21 from '@angular/common';
+import * as i22 from '@angular/forms';
 import { InjectionToken } from '@angular/core';
 import { Injector } from '@angular/core';
 import { IterableDiffers } from '@angular/core';
@@ -54,7 +54,7 @@ import { Subject } from 'rxjs';
 import { Subscription } from 'rxjs';
 import { TemplateRef } from '@angular/core';
 import { TrackByFunction } from '@angular/core';
-import { Type } from '@angular/core';
+import { Type as Type_2 } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
 import { Validator } from '@angular/forms';
 import { ViewContainerRef } from '@angular/core';
@@ -78,9 +78,13 @@ class AppfxDatagridFiltersModule {
     // Warning: (ae-forgotten-export) The symbol "i14" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
     // Warning: (ae-forgotten-export) The symbol "i15" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
     // Warning: (ae-forgotten-export) The symbol "i16" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i17" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i19" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i20" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridFiltersModule, [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof DateTimeFilterComponent, typeof DismissableDirective, typeof EnumFilterComponent, typeof FilterFormComponent, typeof FilterPopoverRepositionDirective, typeof GeneralFilterComponent, typeof ManageFilterComponent, typeof SkipFiltersPipe, typeof UsersFilterComponent], [typeof i12.A11yModule, typeof i13.ClrCheckboxModule, typeof i14.ClrIcon, typeof i13.ClrInputModule, typeof i13.ClrRadioModule, typeof i13.ClrSelectModule, typeof i15.ClrSignpostModule, typeof i16.ClrSpinnerModule, typeof i17.CommonModule, typeof i18.FormsModule, typeof i18.ReactiveFormsModule], [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof FilterFormComponent]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridFiltersModule, [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof DateTimeFilterComponent, typeof DismissableDirective, typeof EnumFilterComponent, typeof FilterFormComponent, typeof FilterPopoverRepositionDirective, typeof GeneralFilterComponent, typeof ManageFilterComponent, typeof SkipFiltersPipe, typeof UsersFilterComponent], [typeof i12.A11yModule, typeof i13.ClrBadge, typeof i14.ClrLabel, typeof i15.ClrCheckboxModule, typeof i15.ClrComboboxModule, typeof i15.ClrDatepickerModule, typeof i16.ClrIcon, typeof i15.ClrInputModule, typeof i15.ClrRadioModule, typeof i15.ClrSelectModule, typeof i17.ClrSignpostModule, typeof i1.ClrPopoverModuleNext, typeof i19.ClrSpinnerModule, typeof i20.ClrTooltipModule, typeof i21.CommonModule, typeof i22.FormsModule, typeof i22.ReactiveFormsModule], [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof FilterFormComponent]>;
 }
 export { AppfxDatagridFiltersModule }
 export { AppfxDatagridFiltersModule as DatagridFiltersModule }
@@ -132,11 +136,17 @@ export enum ComparisonOperator {
 }
 
 // @public
-export class CompositeFiltersComponent implements OnInit {
-    constructor(filterStrings: DatagridFiltersStrings, cdr: ChangeDetectorRef);
+export class CompositeFiltersComponent implements OnInit, OnChanges {
+    // Warning: (ae-forgotten-export) The symbol "ClrPopoverService" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    constructor(filterStrings: DatagridFiltersStrings, cdr: ChangeDetectorRef, popoverService: ClrPopoverService);
     activeFilters(): FilterablePropertyDefinition[];
     // (undocumented)
+    get availableProperties(): FilterablePropertyDefinition[];
+    clearAll: EventEmitter<void>;
+    // (undocumented)
     clearAllFilters(): void;
+    // (undocumented)
+    clearFilter(property: FilterablePropertyDefinition): void;
     // (undocumented)
     collapsedFilters: boolean;
     // (undocumented)
@@ -147,10 +157,34 @@ export class CompositeFiltersComponent implements OnInit {
     enumProperty: EnumPropertyDefinition;
     // (undocumented)
     readonly enumPropertyType: PropertyType;
+    externalCriteriaActive: boolean;
     // (undocumented)
     filterableProperties: FilterablePropertyDefinition[];
     // (undocumented)
+    filterFor(property: FilterablePropertyDefinition): PropertyFilter | undefined;
+    // (undocumented)
     filterStrings: DatagridFiltersStrings;
+    // (undocumented)
+    get hasActiveCriteria(): boolean;
+    get hasPredefinedGroup(): boolean;
+    // (undocumented)
+    isOptionSelected(property: EnumPropertyDefinition, key: string): boolean;
+    // (undocumented)
+    isPredefined(property: FilterablePropertyDefinition): boolean;
+    // (undocumented)
+    isSemiPredefined(property: FilterablePropertyDefinition): boolean;
+    // (undocumented)
+    isToggleOn(toggle: PropertyFilter): boolean;
+    // (undocumented)
+    static ngAcceptInputType_predefinedFilters: FilterablePropertyDefinition[] | null | undefined;
+    // (undocumented)
+    static ngAcceptInputType_propertyFilters: PropertyFilter[] | null | undefined;
+    // (undocumented)
+    static ngAcceptInputType_semiPredefinedFilters: EnumPropertyDefinition[] | null | undefined;
+    // (undocumented)
+    static ngAcceptInputType_toggleFilters: PropertyFilter[] | null | undefined;
+    // (undocumented)
+    ngOnChanges(changes: SimpleChanges): void;
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
@@ -162,14 +196,28 @@ export class CompositeFiltersComponent implements OnInit {
     // (undocumented)
     onPropertyChange(): void;
     // (undocumented)
-    presetFilters: PropertyFilter[];
+    readonly popoverId: string;
     // (undocumented)
+    readonly popoverPosition = ClrPopoverPosition.BOTTOM_LEFT;
+    // (undocumented)
+    readonly popoverType = ClrPopoverType.DROPDOWN;
+    get predefinedFilters(): FilterablePropertyDefinition[];
+    set predefinedFilters(value: FilterablePropertyDefinition[]);
+    // (undocumented)
+    get predefinedProperties(): FilterablePropertyDefinition[];
+    presetFilters: PropertyFilter[];
     propertyFilters: PropertyFilter[];
     propertyFiltersChange: EventEmitter<PropertyFilter[]>;
     // (undocumented)
     propertyType: PropertyType;
     // (undocumented)
     selectedFilterableProperty: FilterablePropertyDefinition;
+    semiOptions(property: EnumPropertyDefinition): {
+        key: string;
+        label: string;
+    }[];
+    get semiPredefinedFilters(): EnumPropertyDefinition[];
+    set semiPredefinedFilters(value: EnumPropertyDefinition[]);
     // (undocumented)
     showHideAllFilters(): void;
     // (undocumented)
@@ -179,17 +227,32 @@ export class CompositeFiltersComponent implements OnInit {
     // (undocumented)
     showHideFiltersLabel: string;
     // (undocumented)
-    signPostOpened: boolean;
+    get signPostOpened(): boolean;
+    set signPostOpened(open: boolean);
     // (undocumented)
     stringProperty: StringPropertyDefinition;
     // (undocumented)
     readonly stringPropertyType: PropertyType;
     // (undocumented)
+    toggleFilter(toggle: PropertyFilter): void;
+    get toggleFilters(): PropertyFilter[];
+    set toggleFilters(value: PropertyFilter[]);
+    toggleKey(filter: PropertyFilter): string;
+    // (undocumented)
+    toggleOption(property: EnumPropertyDefinition, key: string): void;
+    toggleText(toggle: PropertyFilter): string;
+    // (undocumented)
+    get userAddedFiltersCount(): number;
+    // (undocumented)
+    get userAddedProperties(): FilterablePropertyDefinition[];
+    // (undocumented)
     userProperty: UserPropertyDefinition;
     // (undocumented)
     readonly userPropertyType: PropertyType;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<CompositeFiltersComponent, "appfx-composite-filter", never, { "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "presetFilters": { "alias": "presetFilters"; "required": false; }; }, { "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
+    get visibleProperties(): FilterablePropertyDefinition[];
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<CompositeFiltersComponent, "appfx-composite-filter", never, { "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "presetFilters": { "alias": "presetFilters"; "required": false; }; "propertyFilters": { "alias": "propertyFilters"; "required": false; }; "externalCriteriaActive": { "alias": "externalCriteriaActive"; "required": false; }; "predefinedFilters": { "alias": "predefinedFilters"; "required": false; }; "semiPredefinedFilters": { "alias": "semiPredefinedFilters"; "required": false; }; "toggleFilters": { "alias": "toggleFilters"; "required": false; }; }, { "clearAll": "clearAll"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<CompositeFiltersComponent, never>;
 }
@@ -201,6 +264,8 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
     readonly advancedMode: FilterMode;
     // (undocumented)
     readonly advancedOnlyMode: FilterMode;
+    // (undocumented)
+    readonly combinedMode: FilterMode;
     filterableProperties: FilterablePropertyDefinition[];
     set filterMode(filterMode: FilterMode);
     // (undocumented)
@@ -211,6 +276,7 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
     ngAfterViewInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
+    onClearAll(): void;
     // (undocumented)
     onFilterCriteriaChange(propertyFilters: PropertyFilter[]): void;
     // (undocumented)
@@ -219,7 +285,10 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
     onSearchInputKeyPress(event: KeyboardEvent): void;
     // (undocumented)
     onSearchTermChanged(searchTerm: string): void;
+    predefinedFilters: FilterablePropertyDefinition[];
     presetFilters: PropertyFilter[];
+    get propertyFilters(): PropertyFilter[];
+    set propertyFilters(filters: PropertyFilter[] | null | undefined);
     // (undocumented)
     propertyFiltersChange: EventEmitter<PropertyFilter[]>;
     // (undocumented)
@@ -229,8 +298,10 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
     searchTermChange: EventEmitter<string>;
     // (undocumented)
     selectedFilterMode: FilterMode;
+    semiPredefinedFilters: EnumPropertyDefinition[];
+    toggleFilters: PropertyFilter[];
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<DataGridFiltersComponent, "appfx-datagrid-filters", never, { "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "presetFilters": { "alias": "presetFilters"; "required": false; }; "filterMode": { "alias": "filterMode"; "required": false; }; }, { "searchTermChange": "searchTermChange"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DataGridFiltersComponent, "appfx-datagrid-filters", never, { "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "presetFilters": { "alias": "presetFilters"; "required": false; }; "predefinedFilters": { "alias": "predefinedFilters"; "required": false; }; "semiPredefinedFilters": { "alias": "semiPredefinedFilters"; "required": false; }; "toggleFilters": { "alias": "toggleFilters"; "required": false; }; "filterMode": { "alias": "filterMode"; "required": false; }; "propertyFilters": { "alias": "propertyFilters"; "required": false; }; }, { "searchTermChange": "searchTermChange"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DataGridFiltersComponent, never>;
 }
@@ -251,7 +322,11 @@ export class DatagridFiltersStrings {
     readonly clearAllButtonAriaLabel: string;
     // (undocumented)
     readonly clearAllButtonLabel: string;
+    readonly clearFilter: string;
     readonly dateFormat: string;
+    readonly dateRangeLabel: string;
+    readonly dateRangeOptionsLabel: string;
+    readonly dateRangeValidatorMessage: string;
     readonly dateValidatorMessage: string;
     // (undocumented)
     readonly domain: string;
@@ -280,8 +355,6 @@ export class DatagridFiltersStrings {
     getConjoinerDisplayName(conjoiner: LogicalOperator): string;
     // (undocumented)
     getOperatorDisplayName(operator: ComparisonOperator): string;
-    // Warning: (ae-forgotten-export) The symbol "TimeSpan" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
-    //
     // (undocumented)
     getTimeSpanDisplayName(timeSpan: TimeSpan): string;
     // (undocumented)
@@ -400,10 +473,12 @@ export class DatagridFiltersUserService {
 
 // @public (undocumented)
 export class DateTimePropertyDefinition extends FilterablePropertyDefinition {
-    constructor(displayName: string, property: string, operators?: ComparisonOperator[], includeSeconds?: boolean);
+    constructor(displayName: string, property: string, operators?: ComparisonOperator[], includeSeconds?: boolean, rangeOptions?: DateRangeOption[]);
     // (undocumented)
     getOperators(): ComparisonOperator[];
     includeSeconds: boolean;
+    // Warning: (ae-forgotten-export) The symbol "DateRangeOption" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    rangeOptions: DateRangeOption[];
 }
 
 // @public (undocumented)
@@ -425,6 +500,19 @@ export abstract class FilterablePropertyDefinition {
 }
 
 // @public
+export interface FilterEditorState {
+    operator?: ComparisonOperator;
+    // (undocumented)
+    timeSpan?: TimeSpan;
+    // (undocumented)
+    timeSpanValue?: number;
+    units?: Unit[];
+    value?: string;
+    values?: any[];
+    valueTo?: string;
+}
+
+// @public
 export class FilterFormComponent {
     constructor(filterStrings: DatagridFiltersStrings);
     apply: EventEmitter<void>;
@@ -437,7 +525,7 @@ export class FilterFormComponent {
     onCancelButtonClick(): void;
     valid: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<FilterFormComponent, "appfx-filter-form", never, { "valid": { "alias": "valid"; "required": false; }; }, { "cancel": "cancel"; "apply": "apply"; }, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<FilterFormComponent, "appfx-filter-form", never, { "valid": { "alias": "valid"; "required": false; }; }, { "cancel": "cancel"; "apply": "apply"; }, never, ["*", "[filterActions]"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<FilterFormComponent, never>;
 }
@@ -448,6 +536,7 @@ export enum FilterMode {
     Advanced = 1,
     // (undocumented)
     AdvancedOnly = 2,
+    Combined = 3,
     // (undocumented)
     Quick = 0
 }
@@ -473,6 +562,7 @@ export class NumericPropertyDefinition extends FilterablePropertyDefinition {
 // @public (undocumented)
 export class PropertyFilter {
     criteria: PropertyPredicate[];
+    editorState?: FilterEditorState;
     operator: LogicalOperator;
 }
 
@@ -504,6 +594,22 @@ export class StringPropertyDefinition extends FilterablePropertyDefinition {
     getOperators(): ComparisonOperator[];
     logicalOperator: LogicalOperator | undefined;
     singleCondition: boolean;
+}
+
+// @public (undocumented)
+export enum TimeSpan {
+    // (undocumented)
+    Days = 2,
+    // (undocumented)
+    Hours = 1,
+    // (undocumented)
+    Minutes = 0,
+    // (undocumented)
+    Months = 4,
+    // (undocumented)
+    Weeks = 3,
+    // (undocumented)
+    Years = 5
 }
 
 // @public (undocumented)

@@ -5,38 +5,100 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-.filter-remove-btn {
-  background: transparent;
-  border: none;
+.filter-pill-label {
+  // Long values are truncated with an ellipsis.
+  max-width: min(300px, 100%);
+  padding: 0;
+  margin: 0;
+
+  .clr-tooltip-container {
+    display: inline-flex;
+    max-width: 100%;
+    // Shrink to leave room for the remove button, so the text truncates inside the 300px cap.
+    min-width: 0;
+    flex: 0 1 auto;
+
+    // Pass the label radius through to the pill button hover background.
+    border-radius: inherit;
+  }
+
+  // With a remove button the pill button only keeps the start corners rounded.
+  &:has(.filter-pill-remove) .clr-tooltip-container {
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+}
+
+// Removes a user-added pill. Predefined pills have no remove button.
+.filter-pill-remove {
+  display: inline-flex;
+  align-items: center;
+  align-self: stretch;
+  flex-shrink: 0;
+  padding: 0 var(--clr-base-horizontal-offset-xs);
+  border: 0;
+  border-start-end-radius: inherit;
+  border-end-end-radius: inherit;
+  background: none;
+  color: inherit;
   cursor: pointer;
-}
 
-.text-lower {
-  text-transform: lowercase;
-}
+  &:hover {
+    background: var(--clr-label-bg-hover-color);
+  }
 
-:host-context(body[data-theme='light']) {
-  :host-context(.user-tabbing) {
-    .edit-filter:focus,
-    .remove-filter:focus {
-      outline: 2px solid #000;
-    }
-
-    .edit-filter:focus {
-      outline-offset: 1px;
-    }
+  &:focus-visible {
+    outline: var(--cds-alias-object-interaction-outline);
+    outline-color: -webkit-focus-ring-color;
+    outline-offset: var(--cds-alias-object-interaction-outline-offset);
   }
 }
 
-:host-context(body[data-theme='dark']) {
-  :host-context(.user-tabbing) {
-    .edit-filter:focus,
-    .remove-filter:focus {
-      outline: 2px solid #fafafa;
-    }
-
-    .edit-filter:focus {
-      outline-offset: 1px;
-    }
+.filter-pill {
+  // The button is the only click target. Clarity matches outside clicks against the element that
+  // received the opening click, so a click on the text and then on the chevron must hit the same element.
+  > * {
+    pointer-events: none;
   }
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--clr-base-gap-s);
+  max-width: 100%;
+  min-width: 0;
+  padding: var(--clr-base-vertical-offset-2xs) calc(var(--clr-base-horizontal-offset-xs) * 2);
+  border: 0;
+  border-radius: inherit;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--clr-label-bg-hover-color);
+  }
+
+  &:focus-visible {
+    outline: var(--cds-alias-object-interaction-outline);
+    outline-color: -webkit-focus-ring-color;
+    outline-offset: var(--cds-alias-object-interaction-outline-offset);
+  }
+
+  cds-icon {
+    flex-shrink: 0;
+  }
+}
+
+.filter-pill-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.filter-pill-condition {
+  font-weight: var(--cds-alias-typography-font-weight-bold);
+}
+
+.filter-pill-count {
+  flex-shrink: 0;
 }

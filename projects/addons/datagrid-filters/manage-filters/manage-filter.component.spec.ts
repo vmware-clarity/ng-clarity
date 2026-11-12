@@ -5,18 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ClrInputModule, ClrRadioModule, ClrSelectModule } from '@clr/angular/forms';
-import { ClrIcon } from '@clr/angular/icon';
-import { ClrSignpostModule } from '@clr/angular/popover/signpost';
 
-import { DismissableDirective } from './dismissable.directive';
 import { ManageFilterComponent } from './manage-filter.component';
-import { FilterFormComponent } from '../advanced-filters/filter-form.component';
-import { GeneralFilterComponent } from '../advanced-filters/general-filter.component';
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
+import { AppfxDatagridFiltersModule } from '../datagrid-filters.module';
 import { ComparisonOperator, LogicalOperator, PropertyType, TimeSpan, Unit } from '../model/datagrid-filters.enums';
 import {
   DateTimePropertyDefinition,
@@ -88,9 +81,6 @@ const numericProperty: NumericPropertyDefinition = new NumericPropertyDefinition
   numericOperators,
   Unit.MB
 );
-numericProperty.selectedValue = [176, 50];
-numericProperty.selectedUnit = [Unit.MB, Unit.GB];
-
 const numericPredicate1 = new PropertyPredicate();
 numericPredicate1.filterableProperty = numericProperty;
 numericPredicate1.operator = ComparisonOperator.Equals;
@@ -103,6 +93,7 @@ numericPredicate2.operator = ComparisonOperator.GreaterThan;
 const numericPropertyFilter: PropertyFilter = new PropertyFilter();
 numericPropertyFilter.criteria = [numericPredicate1, numericPredicate2];
 numericPropertyFilter.operator = LogicalOperator.Or;
+numericPropertyFilter.editorState = { values: [176, 50], units: [Unit.MB, Unit.GB] };
 
 const dateTimePropertyName = 'lastUpdated';
 const dateTimePropertyDisplayName = 'Last Updated';
@@ -110,9 +101,6 @@ const dateTimeProperty: DateTimePropertyDefinition = new DateTimePropertyDefinit
   dateTimePropertyName,
   dateTimePropertyDisplayName
 );
-dateTimeProperty.selectedOperator = ComparisonOperator.BeforeOrEqualTo;
-dateTimeProperty.selectedValue = '2023-02-02T13:23';
-
 const dateTimePredicate1 = new PropertyPredicate();
 dateTimePredicate1.filterableProperty = dateTimeProperty;
 dateTimePredicate1.operator = ComparisonOperator.LessThan;
@@ -122,8 +110,6 @@ const dateTimePropertyFilter: PropertyFilter = new PropertyFilter();
 dateTimePropertyFilter.criteria = [dateTimePredicate1];
 dateTimePropertyFilter.operator = LogicalOperator.And;
 
-const removeFilterSelector = '.remove-filter';
-
 export interface ThisTest {
   fixture: ComponentFixture<ManageFilterComponent>;
   component: ManageFilterComponent;
@@ -132,17 +118,7 @@ export interface ThisTest {
 describe('ManageFilterComponent', () => {
   beforeEach(function (this: ThisTest) {
     TestBed.configureTestingModule({
-      imports: [
-        ClrInputModule,
-        ClrRadioModule,
-        ClrSignpostModule,
-        ClrSelectModule,
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        ClrIcon,
-      ],
-      declarations: [DismissableDirective, FilterFormComponent, ManageFilterComponent, GeneralFilterComponent],
+      imports: [AppfxDatagridFiltersModule],
       providers: [DatagridFiltersStrings],
     });
     this.fixture = TestBed.createComponent(ManageFilterComponent);
@@ -164,16 +140,31 @@ describe('ManageFilterComponent', () => {
     expect(this.component.secondaryConditionDisplayText).toEqual('Is empty');
     expect(this.component.filterStrings.getConjoinerDisplayName).toHaveBeenCalledWith(stringPropertyFilter.operator);
 
-    const editFilterSignpostTrigger: HTMLSpanElement[] =
-      this.fixture.debugElement.nativeElement.querySelectorAll('.edit-filter');
-    expect(editFilterSignpostTrigger.length).toEqual(2);
+    const trigger: HTMLButtonElement = this.fixture.nativeElement.querySelector('.filter-pill');
+    expect(trigger.textContent).toContain('vm 1');
+    expect(trigger.textContent).toContain('+1');
+    trigger.click();
+    this.fixture.detectChanges();
+    expect(this.component.open).toBeTrue();
+  });
+  it('describes the pill with a clr-tooltip instead of a title', function (this: ThisTest) {
+    this.component.propertyFilter = { operator: LogicalOperator.And, criteria: [stringPredicate1] };
+    this.fixture.detectChanges();
 
-    editFilterSignpostTrigger[0].click();
+    const trigger: HTMLButtonElement = this.fixture.nativeElement.querySelector('.filter-pill');
+    expect(trigger.hasAttribute('title')).toBeFalse();
+    expect(trigger.hasAttribute('clrTooltipTrigger')).toBeTrue();
+
+    trigger.dispatchEvent(new Event('focus'));
     this.fixture.detectChanges();
-    expect(this.component.openPrimaryConditionSignPost).toBeTruthy();
-    editFilterSignpostTrigger[1].click();
+    const tooltip = document.querySelector<HTMLElement>('.tooltip-content');
+    expect(tooltip.textContent.trim()).toBe(this.component.editFilterAriaLabel);
+    expect(trigger.getAttribute('aria-describedby')).toBe(tooltip.id);
+
+    trigger.click();
     this.fixture.detectChanges();
-    expect(this.component.openSecondaryConditionSignPost).toBeTruthy();
+    expect(this.component.open).toBeTrue();
+    expect(document.querySelector('.tooltip-content')).toBeNull();
   });
   it('manages enum property filter', function (this: ThisTest) {
     this.component.propertyFilter = enumPropertyFilter;
@@ -184,12 +175,81 @@ describe('ManageFilterComponent', () => {
     expect(this.component.primaryConditionDisplayText).toEqual('Equals: Alert');
     expect(this.component.secondaryConditionDisplayText).toEqual('Equals: Normal');
   });
+  it('locks the field combobox while editing a pill', async function (this: ThisTest) {
+    this.component.propertyFilter = { operator: LogicalOperator.And, criteria: [stringPredicate1] };
+    this.fixture.detectChanges();
+    this.fixture.nativeElement.querySelector('.filter-pill').click();
+    this.fixture.detectChanges();
+    await this.fixture.whenStable();
+    this.fixture.detectChanges();
+
+    const input = document.querySelector<HTMLInputElement>('.filter-popover .clr-combobox-input');
+    expect(input.value).toBe(stringProperty.displayName);
+    expect(input.disabled).toBeTrue();
+    expect(document.querySelector<HTMLButtonElement>('.filter-popover .clr-combobox-trigger').disabled).toBeTrue();
+    expect(document.querySelector('.filter-form-actions [data-test-id="clear-filter"]')).not.toBeNull();
+  });
+  it('hides the field combobox for predefined pills', async function (this: ThisTest) {
+    this.component.filterProperty = enumProperty;
+    this.component.predefined = true;
+    this.fixture.detectChanges();
+    this.fixture.nativeElement.querySelector('.filter-pill').click();
+    this.fixture.detectChanges();
+    await this.fixture.whenStable();
+    this.fixture.detectChanges();
+
+    expect(document.querySelector('.filter-popover')).toBeTruthy();
+    expect(document.querySelector('.filter-popover clr-combobox')).toBeNull();
+    expect(getComputedStyle(document.querySelector('.filter-popover .filter-field-row')).display).toBe('none');
+  });
+  it('shows a minimal enum editor for predefined pills', async function (this: ThisTest) {
+    this.component.filterProperty = enumProperty;
+    this.component.predefined = true;
+    this.fixture.detectChanges();
+    this.fixture.nativeElement.querySelector('.filter-pill').click();
+    this.fixture.detectChanges();
+    await this.fixture.whenStable();
+    this.fixture.detectChanges();
+
+    const popover = document.querySelector('.filter-popover');
+    expect(popover.classList).toContain('filter-popover-minimal');
+    expect(popover.querySelector('.selection-counter')).toBeNull();
+    expect(popover.textContent).not.toContain(this.component.filterStrings.valueLabel);
+    expect(popover.querySelectorAll('input[type="checkbox"]').length).toBeGreaterThan(0);
+    expect(popover.querySelector('.filter-options').hasAttribute('cds-layout')).toBeFalse();
+    expect(popover.querySelector('.filter-options').classList).toContain('filter-options-minimal');
+  });
+  it('removes a user-added pill with its X button', function (this: ThisTest) {
+    spyOn(this.component.filterRemoved, 'emit');
+    this.component.propertyFilter = { operator: LogicalOperator.And, criteria: [stringPredicate1] };
+    this.fixture.detectChanges();
+    const remove: HTMLButtonElement = this.fixture.nativeElement.querySelector('[data-test-id="remove-pill"]');
+    expect(remove.getAttribute('aria-label')).toBe(
+      this.component.filterStrings.removeFilterText + ' ' + stringProperty.displayName
+    );
+    remove.click();
+    expect(this.component.filterRemoved.emit).toHaveBeenCalled();
+    expect(this.component.open).toBeFalse();
+  });
+  it('has no X button on predefined pills', function (this: ThisTest) {
+    this.component.filterProperty = stringProperty;
+    this.component.predefined = true;
+    this.fixture.detectChanges();
+    expect(this.fixture.nativeElement.querySelector('[data-test-id="remove-pill"]')).toBeNull();
+  });
+  it('makes the pill button the only click target', function (this: ThisTest) {
+    this.component.propertyFilter = { operator: LogicalOperator.Or, criteria: [stringPredicate1, stringPredicate1] };
+    this.fixture.detectChanges();
+    const trigger: HTMLButtonElement = this.fixture.nativeElement.querySelector('.filter-pill');
+    // Clicks on the text, badge or chevron must target the button, so Clarity sees one toggle element.
+    for (const child of Array.from(trigger.children)) {
+      expect(getComputedStyle(child).pointerEvents).toBe('none');
+    }
+  });
   it('manages numeric property filter', function (this: ThisTest) {
     spyOn(this.component.filterStrings, 'getConjoinerDisplayName');
     this.component.propertyFilter = numericPropertyFilter;
     numericPropertyFilter.criteria = [numericPredicate1, numericPredicate2];
-    numericProperty.selectedValue = [176, 50];
-    numericProperty.selectedUnit = [Unit.MB, Unit.GB];
     this.fixture.detectChanges();
     expect(this.component.managedProperty).toEqual(numericProperty);
     expect(this.component.managedPropertyType).toEqual(PropertyType.Numeric);
@@ -198,101 +258,294 @@ describe('ManageFilterComponent', () => {
     expect(this.component.secondaryConditionDisplayText).toEqual('Greater than: 50 GB');
     expect(this.component.filterStrings.getConjoinerDisplayName).toHaveBeenCalledWith(numericPropertyFilter.operator);
   });
-  it('renders the remove filter icons with their SVG content', function (this: ThisTest) {
-    this.component.propertyFilter = stringPropertyFilter;
-    stringPropertyFilter.criteria = [stringPredicate1, stringPredicate2];
+  it('shows the field name without an active style or count when empty', function (this: ThisTest) {
+    this.component.filterProperty = stringProperty;
+    this.component.predefined = true;
     this.fixture.detectChanges();
-    const removeFilterIcons: NodeListOf<HTMLElement> =
-      this.fixture.debugElement.nativeElement.querySelectorAll(removeFilterSelector);
-    expect(removeFilterIcons.length).toEqual(2);
-    removeFilterIcons.forEach(icon => {
-      expect(icon.tagName.toLowerCase()).toEqual('cds-icon');
-      expect(icon.getAttribute('shape')).toEqual('window-close');
-      expect(icon.closest('.badge')).toBeTruthy();
-      const svg = (icon.shadowRoot ?? icon).querySelector('svg');
-      expect(svg).toBeTruthy();
-      expect(svg.innerHTML).toContain('path');
+    const trigger: HTMLButtonElement = this.fixture.nativeElement.querySelector('.filter-pill');
+    expect(trigger.tagName).toBe('BUTTON');
+    expect(trigger.closest('clr-label').classList.contains('label-info')).toBeFalse();
+    expect(trigger.textContent.trim()).toBe(stringProperty.displayName);
+    expect(trigger.classList.contains('filter-pill-active')).toBeFalse();
+    expect(trigger.querySelector('.filter-pill-count')).toBeNull();
+    expect(trigger.querySelector('cds-icon').getAttribute('direction')).toBe('down');
+  });
+
+  it('shows the first value and counts all additional selections', function (this: ThisTest) {
+    this.component.propertyFilter = {
+      operator: LogicalOperator.Or,
+      criteria: [enumPredicate1, enumPredicate2, enumPredicate2, enumPredicate2],
+    };
+    this.fixture.detectChanges();
+    const trigger: HTMLButtonElement = this.fixture.nativeElement.querySelector('.filter-pill');
+    expect(trigger.classList.contains('filter-pill-active')).toBeTrue();
+    expect(trigger.closest('clr-label').classList.contains('label-info')).toBeTrue();
+    expect(trigger.querySelector('clr-badge').textContent).toBe('+3');
+    expect(trigger.querySelector('.filter-pill-text').textContent.trim()).toBe(
+      `${enumProperty.displayName}: Equals Alert`
+    );
+    expect(trigger.querySelector('.filter-pill-count').textContent).toBe('+3');
+    expect(trigger.getAttribute('aria-label')).toContain('Equals: Normal');
+  });
+
+  it('prefixes the pill text with the field name and condition', function (this: ThisTest) {
+    this.component.propertyFilter = {
+      operator: LogicalOperator.Or,
+      criteria: [
+        { ...stringPredicate1, operator: ComparisonOperator.Contains, value: 'linux' },
+        { ...stringPredicate1, operator: ComparisonOperator.Contains, value: 'ubuntu' },
+        { ...stringPredicate1, operator: ComparisonOperator.Contains, value: 'centos' },
+      ],
+    };
+    this.fixture.detectChanges();
+    const trigger: HTMLButtonElement = this.fixture.nativeElement.querySelector('.filter-pill');
+    expect(trigger.querySelector('.filter-pill-text').textContent.trim()).toBe(
+      `${stringProperty.displayName}: Contains linux`
+    );
+    expect(trigger.querySelector('.filter-pill-condition').textContent).toBe('Contains linux');
+    expect(trigger.querySelector('.filter-pill-count').textContent).toBe('+2');
+  });
+
+  it('shows only the field name on an empty pill', function (this: ThisTest) {
+    this.component.filterProperty = stringProperty;
+    this.fixture.detectChanges();
+    expect(this.component.pillText).toBe(stringProperty.displayName);
+  });
+
+  it('keeps exclusion operators in the pill text', function (this: ThisTest) {
+    this.component.propertyFilter = {
+      operator: LogicalOperator.And,
+      criteria: [{ ...enumPredicate1, operator: ComparisonOperator.DoesNotEqual }],
+    };
+    this.fixture.detectChanges();
+    expect(this.component.pillText).toBe(`${enumProperty.displayName}: Does not equal Alert`);
+  });
+
+  it('updates an existing pill when its criteria are replaced or cleared', function (this: ThisTest) {
+    this.fixture.componentRef.setInput('filterProperty', stringProperty);
+    this.fixture.componentRef.setInput('propertyFilter', stringPropertyFilter);
+    this.fixture.detectChanges();
+    const trigger = this.fixture.nativeElement.querySelector('.filter-pill');
+    this.fixture.componentRef.setInput('propertyFilter', {
+      operator: LogicalOperator.And,
+      criteria: [{ ...stringPredicate1, value: 'new name' }],
     });
+    this.fixture.detectChanges();
+    expect(trigger.textContent.trim()).toBe(`${stringProperty.displayName}: Equals new name`);
+    this.fixture.componentRef.setInput('propertyFilter', undefined);
+    this.fixture.detectChanges();
+    expect(trigger.textContent.trim()).toBe(stringProperty.displayName);
+    expect(trigger.classList.contains('filter-pill-active')).toBeFalse();
   });
-  it('removes string property filter', function (this: ThisTest) {
-    spyOn(this.component.filterCriteriaChange, 'emit');
+
+  it('clears a predefined filter from the popover without mutating its defaults', async function (this: ThisTest) {
     this.component.propertyFilter = stringPropertyFilter;
-    stringPropertyFilter.criteria = [stringPredicate1, stringPredicate2];
+    this.component.predefined = true;
+    spyOn(this.component.filterRemoved, 'emit');
     this.fixture.detectChanges();
-    let removeFilterIcon: HTMLElement[] =
-      this.fixture.debugElement.nativeElement.querySelectorAll(removeFilterSelector);
-    expect(removeFilterIcon.length).toEqual(2);
-
-    const modifiedPropertyFilter = new PropertyFilter();
-    modifiedPropertyFilter.criteria = [stringPredicate2];
-    modifiedPropertyFilter.operator = LogicalOperator.And;
-    removeFilterIcon[0].click();
+    const trigger: HTMLButtonElement = this.fixture.nativeElement.querySelector('.filter-pill');
+    trigger.click();
     this.fixture.detectChanges();
-    expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(modifiedPropertyFilter);
-
-    modifiedPropertyFilter.criteria = [];
-    removeFilterIcon = this.fixture.debugElement.nativeElement.querySelectorAll(removeFilterSelector);
-    expect(removeFilterIcon.length).toEqual(1);
-    removeFilterIcon[0].click();
+    await this.fixture.whenStable();
     this.fixture.detectChanges();
-    expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(modifiedPropertyFilter);
+    const clear: HTMLButtonElement = document.querySelector('[data-test-id="clear-filter"]');
+    expect(clear.textContent.trim()).toBe('Clear filter');
+    clear.click();
+    this.fixture.detectChanges();
+    expect(this.component.filterRemoved.emit).toHaveBeenCalledTimes(1);
+    expect(stringPropertyFilter.criteria).toEqual([stringPredicate1, stringPredicate2]);
+    expect(this.component.open).toBeFalse();
+    expect(document.activeElement).toBe(trigger);
   });
-  it('removes numeric property filter', function (this: ThisTest) {
-    spyOn(this.component.filterCriteriaChange, 'emit');
+
+  it('offers removal for a user-added filter', async function (this: ThisTest) {
     this.component.propertyFilter = numericPropertyFilter;
-    numericPropertyFilter.criteria = [numericPredicate1, numericPredicate2];
+    spyOn(this.component.filterRemoved, 'emit');
     this.fixture.detectChanges();
-    const removeFilterIcon: HTMLElement[] =
-      this.fixture.debugElement.nativeElement.querySelectorAll(removeFilterSelector);
-    expect(removeFilterIcon.length).toEqual(2);
-
-    const modifiedPropertyFilter = new PropertyFilter();
-    modifiedPropertyFilter.criteria = [numericPredicate2];
-    modifiedPropertyFilter.operator = LogicalOperator.Or;
-    removeFilterIcon[0].click();
+    this.fixture.nativeElement.querySelector('.filter-pill').click();
     this.fixture.detectChanges();
-    expect(numericProperty.selectedValue).toEqual([50]);
-    expect(numericProperty.selectedUnit).toEqual([Unit.GB]);
-    expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(modifiedPropertyFilter);
-
-    removeFilterIcon[0].click();
+    await this.fixture.whenStable();
     this.fixture.detectChanges();
-    modifiedPropertyFilter.criteria = [];
-    expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(modifiedPropertyFilter);
+    const remove: HTMLButtonElement = document.querySelector('[data-test-id="clear-filter"]');
+    expect(remove.textContent.trim()).toBe(this.component.filterStrings.removeFilterText);
+    remove.click();
+    expect(this.component.filterRemoved.emit).toHaveBeenCalledTimes(1);
+    expect(numericProperty['selectedValue']).toBeUndefined();
   });
+
+  it('edits four string conditions without dropping criteria or changing the count', async function (this: ThisTest) {
+    const field = new StringPropertyDefinition('Name', 'name');
+    const values = ['first', 'second', 'third', 'fourth'];
+    const originalFilter: PropertyFilter = {
+      operator: LogicalOperator.Or,
+      criteria: values.map(value => ({ filterableProperty: field, operator: ComparisonOperator.Contains, value })),
+    };
+    this.component.propertyFilter = originalFilter;
+    const emitted = spyOn(this.component.filterCriteriaChange, 'emit');
+    this.fixture.detectChanges();
+    const trigger: HTMLButtonElement = this.fixture.nativeElement.querySelector('.filter-pill');
+    expect(trigger.querySelector('clr-badge').textContent).toBe('+3');
+    for (const value of values) {
+      expect(trigger.getAttribute('aria-label')).toContain(value);
+    }
+    trigger.click();
+    this.fixture.detectChanges();
+    await this.fixture.whenStable();
+    this.fixture.detectChanges();
+    const inputs = document.querySelectorAll<HTMLInputElement>('.filter-condition-row input[formControlName="value"]');
+    expect(Array.from(inputs, input => input.value)).toEqual(values);
+    inputs[2].value = 'changed';
+    inputs[2].dispatchEvent(new Event('input'));
+    this.fixture.detectChanges();
+    document.querySelector<HTMLButtonElement>('[data-test-id="submitBtn"]').click();
+    this.fixture.detectChanges();
+    const updated = emitted.calls.mostRecent().args[0];
+    expect(updated.criteria.map(predicate => predicate.value)).toEqual(['first', 'second', 'changed', 'fourth']);
+    expect(originalFilter.criteria.map(predicate => predicate.value)).toEqual(values);
+    this.fixture.componentRef.setInput('propertyFilter', updated);
+    this.fixture.detectChanges();
+    expect(trigger.querySelector('clr-badge').textContent).toBe('+3');
+  });
+
+  it('summarizes and opens numeric presets without display metadata', async function (this: ThisTest) {
+    const field = new NumericPropertyDefinition('Memory', 'memory', undefined, Unit.MB);
+    const values = [0, 1024, 2048];
+    this.component.propertyFilter = {
+      operator: LogicalOperator.Or,
+      criteria: values.map(value => ({ filterableProperty: field, operator: ComparisonOperator.Equals, value })),
+    };
+    this.fixture.detectChanges();
+    const trigger: HTMLButtonElement = this.fixture.nativeElement.querySelector('.filter-pill');
+    expect(trigger.querySelector('.filter-pill-text').textContent.trim()).toBe(`${field.displayName}: Equals 0 MB`);
+    expect(trigger.querySelector('clr-badge').textContent).toBe('+2');
+    for (const value of values) {
+      expect(trigger.getAttribute('aria-label')).toContain(`${value} MB`);
+    }
+    trigger.click();
+    this.fixture.detectChanges();
+    await this.fixture.whenStable();
+    this.fixture.detectChanges();
+    const inputs = document.querySelectorAll<HTMLInputElement>('.filter-condition-row input[formControlName="value"]');
+    expect(Array.from(inputs, input => input.value)).toEqual(['0', '1024', '2048']);
+  });
+
+  for (const dismiss of ['escape', 'outside', 'cancel']) {
+    it('discards unapplied edits on ' + dismiss, async function (this: ThisTest) {
+      this.component.propertyFilter = { operator: LogicalOperator.And, criteria: [stringPredicate1] };
+      spyOn(this.component.filterCriteriaChange, 'emit');
+      this.fixture.detectChanges();
+      const trigger: HTMLButtonElement = this.fixture.nativeElement.querySelector('.filter-pill');
+      trigger.click();
+      this.fixture.detectChanges();
+      await this.fixture.whenStable();
+      this.fixture.detectChanges();
+      const input: HTMLInputElement = document.querySelector('input[formControlName="value"]');
+      input.value = 'unsaved';
+      input.dispatchEvent(new Event('input'));
+      if (dismiss === 'escape') {
+        document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      } else if (dismiss === 'outside') {
+        document.body.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      } else {
+        document.querySelector<HTMLButtonElement>('[data-test-id="cancelBtn"]').click();
+      }
+      this.fixture.detectChanges();
+      await this.fixture.whenStable();
+      this.fixture.detectChanges();
+      expect(this.component.open).toBeFalse();
+      expect(this.component.propertyFilter.criteria[0].value).toBe('vm 1');
+      expect(this.component.filterCriteriaChange.emit).not.toHaveBeenCalled();
+    });
+  }
+
+  // Date-time pills read this filter's own editor state; the shared definition is never consulted (bug 10).
+  const dateFilter = (editorState: PropertyFilter['editorState']): PropertyFilter => ({
+    ...dateTimePropertyFilter,
+    editorState,
+  });
+
   it('manages date-time property filter normal operator', function (this: ThisTest) {
-    this.component.propertyFilter = dateTimePropertyFilter;
-    dateTimeProperty.selectedOperator = ComparisonOperator.BeforeOrEqualTo;
-    dateTimeProperty.selectedValue = '2023-02-02T13:23';
+    this.component.propertyFilter = dateFilter({
+      operator: ComparisonOperator.BeforeOrEqualTo,
+      value: '2023-02-02T13:23',
+    });
     this.fixture.detectChanges();
     expect(this.component.managedProperty).toEqual(dateTimeProperty);
     expect(this.component.managedPropertyType).toEqual(PropertyType.DateTime);
     expect(this.component.dateTimeProperty).toEqual(dateTimeProperty);
 
-    expect(this.component.primaryConditionDisplayText).toEqual('Before or equal to: 2023-02-02 13:23');
+    // Angular formats times with a narrow no-break space before AM/PM.
+    expect(this.component.primaryConditionDisplayText.replace(/\u202f/g, ' ')).toEqual(
+      'Before or equal to: Feb 2, 2023 1:23 PM'
+    );
   });
   it('manages date-time property filter custom range operator', function (this: ThisTest) {
-    dateTimeProperty.selectedOperator = ComparisonOperator.CustomRange;
-    dateTimeProperty.selectedValueTo = '2023-02-07T13:28';
-    this.component.propertyFilter = dateTimePropertyFilter;
+    this.component.propertyFilter = dateFilter({
+      operator: ComparisonOperator.CustomRange,
+      value: '2023-02-02',
+      valueTo: '2023-02-07',
+    });
     this.fixture.detectChanges();
 
-    expect(this.component.primaryConditionDisplayText).toEqual('' + 'From: 2023-02-02 13:23 ' + 'To: 2023-02-07 13:28');
+    expect(this.component.primaryConditionDisplayText).toEqual('From: Feb 2, 2023 To: Feb 7, 2023');
+    expect(this.component.pillCondition).toEqual('From Feb 2, 2023 To Feb 7, 2023');
   });
   it('manages date-time property filter relative operator', function (this: ThisTest) {
-    dateTimeProperty.selectedOperator = ComparisonOperator.LastYear;
-    this.component.propertyFilter = dateTimePropertyFilter;
+    this.component.propertyFilter = dateFilter({ operator: ComparisonOperator.LastYear });
     this.fixture.detectChanges();
 
     expect(this.component.primaryConditionDisplayText).toEqual('Last year');
   });
   it('manages date-time property filter time span operator', function (this: ThisTest) {
-    dateTimeProperty.selectedOperator = ComparisonOperator.TimeSpan;
-    dateTimeProperty.selectedTimeSpanValue = '300';
-    dateTimeProperty.selectedTimeSpan = TimeSpan.Weeks;
-    this.component.propertyFilter = dateTimePropertyFilter;
+    this.component.propertyFilter = dateFilter({
+      operator: ComparisonOperator.TimeSpan,
+      timeSpanValue: 300,
+      timeSpan: TimeSpan.Weeks,
+    });
     this.fixture.detectChanges();
 
     expect(this.component.primaryConditionDisplayText).toEqual('Time span: 300 Weeks');
+  });
+  it('does not change its text when another filter on the same definition changes (bug 10)', function (this: ThisTest) {
+    this.component.propertyFilter = dateFilter({ operator: ComparisonOperator.LastWeek });
+    this.fixture.detectChanges();
+    // Another grid writing legacy editor fields onto the shared definition has no effect.
+    dateTimeProperty['selectedOperator'] = ComparisonOperator.TimeSpan;
+    this.component.ngOnChanges();
+    expect(this.component.primaryConditionDisplayText).toEqual('Last week');
+    delete dateTimeProperty['selectedOperator'];
+  });
+  it('describes a preset without editor state from its criteria (bug 9)', function (this: ThisTest) {
+    this.component.propertyFilter = {
+      operator: LogicalOperator.And,
+      criteria: [{ filterableProperty: dateTimeProperty, operator: ComparisonOperator.Before, value: '2026-01-01' }],
+    };
+    this.fixture.detectChanges();
+    expect(this.component.primaryConditionDisplayText).toEqual('Before: Jan 1, 2026');
+    expect(this.component.editFilterAriaLabel).not.toContain('Unknown operator');
+  });
+  it('reads an editor-built custom range preset back from its criteria', function (this: ThisTest) {
+    this.component.propertyFilter = {
+      operator: LogicalOperator.And,
+      criteria: [
+        {
+          filterableProperty: dateTimeProperty,
+          operator: ComparisonOperator.GreaterThanOrEqualTo,
+          value: '2023-05-01T00:00:00+03:00',
+        },
+        {
+          filterableProperty: dateTimeProperty,
+          operator: ComparisonOperator.LessThan,
+          value: '2024-01-01T00:00:00+03:00',
+        },
+      ],
+    };
+    this.fixture.detectChanges();
+    expect(this.component.primaryConditionDisplayText).toEqual('From: May 1, 2023 To: Dec 31, 2023');
+  });
+  it('shows numeric values and units from its own filter', function (this: ThisTest) {
+    this.component.propertyFilter = { ...numericPropertyFilter, editorState: { values: [2], units: [Unit.GB] } };
+    this.fixture.detectChanges();
+    expect(this.component.primaryConditionDisplayText).toEqual('Equals: 2 GB');
   });
 });

@@ -8,7 +8,9 @@
 import { Injectable } from '@angular/core';
 import { from, Observable } from 'rxjs';
 
-import { colors, cpus, events, names, states, status, usedSpace, users } from './values';
+import { colors, cpus, events, names, priorities, states, status, usedSpace, users } from './values';
+
+const oneDayMs = 24 * 60 * 60 * 1000;
 
 export interface VmItem {
   // Type for dynamic access to specific properties
@@ -17,6 +19,7 @@ export interface VmItem {
   name: string;
   state: string;
   status: string;
+  priority: string;
   usedSpace: string;
   cpus: string;
   creation: string;
@@ -45,10 +48,14 @@ export class Inventory {
         name: this.getItem(i, names),
         state: this.getItem(i, states),
         status: this.getItem(i, status),
+        // Offset from status so the two columns do not always match.
+        priority: this.getItem(Math.floor(i / 2), priorities),
         color: this.getItem(i, colors),
         usedSpace: this.getItem(i, usedSpace) + ' GHz',
         cpus: this.getItem(i, cpus),
-        creation: this.getRandomDate(),
+        // Every 4th item was created in the last 60 days, about 3 per week starting today,
+        // so Last day / week / month and time spans match rows.
+        creation: i % 4 === 0 ? this.getRecentDate((i / 4) * 2.4) : this.getRandomDate(),
         event: this.getItem(i, events),
         user: this.getItem(i, users),
       });
@@ -101,7 +108,12 @@ export class Inventory {
     return array[num % array.length];
   }
 
-  private getRandomDate(startDate = new Date('January 1, 2000'), endDate = new Date('September 18, 2024')): string {
+  private getRecentDate(daysAgo: number): string {
+    const date = new Date(Date.now() - daysAgo * oneDayMs);
+    return this.getRandomDate(date, date);
+  }
+
+  private getRandomDate(startDate = new Date('January 1, 2000'), endDate = new Date()): string {
     const startMillis = startDate.getTime();
     const endMillis = endDate.getTime();
     const randomMillis = startMillis + Math.random() * (endMillis - startMillis);

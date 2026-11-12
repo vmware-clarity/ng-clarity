@@ -56,27 +56,27 @@ describe('FilterFormComponent', () => {
     const formActionButtons: HTMLInputElement[] = this.fixture.debugElement.nativeElement.querySelectorAll('button');
     expect(formActionButtons).toBeTruthy();
     expect(formActionButtons.length).toEqual(2);
-    expect(formActionButtons[0].innerText).toEqual('APPLY');
-    expect(formActionButtons[1].innerText).toEqual('CANCEL');
-    expect(formActionButtons[0].disabled).toBeTruthy();
+    expect(formActionButtons[0].innerText).toEqual('CANCEL');
+    expect(formActionButtons[1].innerText).toEqual('APPLY');
+    expect(formActionButtons[1].disabled).toBeTruthy();
   });
   it('emits cancel event on cancel button click', function (this: ThisTest) {
     spyOn(this.component, 'onCancelButtonClick');
-    const formActionButtons: HTMLInputElement[] = this.fixture.debugElement.nativeElement.querySelectorAll('button');
-    formActionButtons[1].click();
+    const cancelButton: HTMLButtonElement = this.fixture.nativeElement.querySelector('[data-test-id="cancelBtn"]');
+    cancelButton.click();
     this.fixture.detectChanges();
     expect(this.component.onCancelButtonClick).toHaveBeenCalledTimes(1);
   });
   it('emits apply event on apply button click ', function (this: ThisTest) {
     spyOn(this.component, 'onApplyButtonClick');
-    const formActionButtons: HTMLInputElement[] = this.fixture.debugElement.nativeElement.querySelectorAll('button');
-    formActionButtons[0].click();
+    const applyButton: HTMLButtonElement = this.fixture.nativeElement.querySelector('[data-test-id="submitBtn"]');
+    applyButton.click();
     this.fixture.detectChanges();
     expect(this.component.onApplyButtonClick).toHaveBeenCalledTimes(0);
 
     this.component.isFormValid = true;
     this.fixture.detectChanges();
-    formActionButtons[0].click();
+    applyButton.click();
     this.fixture.detectChanges();
     expect(this.component.onApplyButtonClick).toHaveBeenCalledTimes(1);
   });

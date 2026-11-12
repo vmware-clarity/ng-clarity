@@ -20,7 +20,7 @@ import {
 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { ClrIcon, ClrTabsModule } from '@clr/angular';
+import { arrowIcon, ClarityIcons, ClrIcon, ClrTabsModule } from '@clr/angular';
 import { combineLatest, Observable, ReplaySubject } from 'rxjs';
 import { map, shareReplay, startWith, switchMap, tap } from 'rxjs/operators';
 
@@ -57,6 +57,7 @@ export class DocTabsComponent implements AfterViewInit, OnDestroy {
   @Input() title = '';
   @Input() type: string | undefined;
   @Input() storybookPath: string | undefined;
+  @Input() storybookLink = false;
   @Input() basedOn: ComponentListElement | undefined;
   @Input() addons: ComponentListElement[] = [];
 
@@ -97,6 +98,9 @@ export class DocTabsComponent implements AfterViewInit, OnDestroy {
     if (!route.snapshot.parent) {
       throw new Error('Please update the DocTabsComponent constructor after route configuration changes.');
     }
+
+    // The "Explore in Storybook" link in the header.
+    ClarityIcons.addIcons(arrowIcon);
 
     this.componentPath = route.snapshot.parent.url[0].path;
     this.componentURL = `/documentation/${this.componentPath}`;

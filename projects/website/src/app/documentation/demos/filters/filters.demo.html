@@ -1,0 +1,517 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<app-doc-tabs>
+  <app-doc-tab tab="overview">
+    <p class="component-summary">
+      Filters (<code cds-text="code">appfx-datagrid-filters</code> from
+      <code cds-text="code">&#64;clr/addons/datagrid-filters</code>) is a filter bar with a quick search input and
+      advanced filter pills. It only emits the search term and the active filters; the host applies them to its data.
+    </p>
+
+    <div class="clr-mt-24px">
+      <app-themed-image
+        [lightSrc]="'assets/images/documentation/filters/filters-overview-light.png'"
+        [darkSrc]="'assets/images/documentation/filters/filters-overview-dark.png'"
+        [imageAlt]="'Datagrid filter bar with a search term and two filter pills above a datagrid'"
+        [imageStyle]="'max-width: 100%'"
+      ></app-themed-image>
+    </div>
+
+    <h2 id="when-to-use" class="clr-mt-48px" cds-text="title">When to use it standalone</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Inside <a routerLink="/documentation/advanced-datagrid">Advanced Datagrid</a> the filter bar is built in.
+      <code cds-text="code">appfx-datagrid</code> only passes on <code cds-text="code">filterMode</code>,
+      <code cds-text="code">filterableProperties</code>, <code cds-text="code">searchTermChange</code> and
+      <code cds-text="code">advancedFilterChange</code>. Place
+      <code cds-text="code">appfx-datagrid-filters</code> yourself when you host it outside that grid, for example over
+      a <code cds-text="code">clr-datagrid</code>, or when you need <code cds-text="code">presetFilters</code>,
+      <code cds-text="code">predefinedFilters</code>, <code cds-text="code">semiPredefinedFilters</code>,
+      <code cds-text="code">toggleFilters</code> or two-way <code cds-text="code">[(propertyFilters)]</code>.
+    </p>
+
+    <h2 id="modes" class="clr-mt-48px" cds-text="title">Modes</h2>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li><strong cds-text="medium">Quick:</strong> only the quick search input.</li>
+      <li>
+        <strong cds-text="medium">Advanced:</strong> quick search and advanced filters; the user switches between them.
+      </li>
+      <li><strong cds-text="medium">Advanced only:</strong> only the advanced filter pills.</li>
+      <li>
+        <strong cds-text="medium">Combined:</strong> quick search and filter pills are shown and applied together. The
+        host combines <code cds-text="code">searchTermChange</code> and
+        <code cds-text="code">propertyFiltersChange</code> with AND, and <strong>Clear all</strong> clears both.
+      </li>
+    </ul>
+
+    <h2 id="pills" class="clr-mt-48px" cds-text="title">Filter pills</h2>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>
+        Opening a pill edits its criteria in a popover. Changes are applied only on <strong>Apply</strong>;
+        <strong>Cancel</strong>, Escape and outside clicks discard them.
+      </li>
+      <li>
+        <strong>Clear filter</strong> returns a predefined pill to its empty state; user-added filters can be removed.
+        <strong>Clear all</strong> clears all criteria and removes user-added pills while keeping predefined pills.
+        <strong>Hide</strong> only hides user-added pills. Empty pills are not emitted.
+      </li>
+      <li>
+        <strong>Add filter</strong> uses a searchable field combobox. Existing pills keep their field locked while
+        editing.
+      </li>
+      <li>
+        String and numeric filters support any number of conditions joined by one shared <strong>AND</strong> or
+        <strong>OR</strong> operator. <strong>Add condition</strong> appends a row; set
+        <code cds-text="code">singleCondition</code> to limit a field to one condition.
+      </li>
+      <li>Active pills show the first condition and <code cds-text="code">+N</code> for additional conditions.</li>
+    </ul>
+
+    <h2 id="field-precedence" class="clr-mt-48px" cds-text="title">Field precedence</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Each field can be used only once per filter bar. Fields are claimed from left to right:
+      <code cds-text="code">predefinedFilters</code> first, then <code cds-text="code">semiPredefinedFilters</code>,
+      then <code cds-text="code">toggleFilters</code> (the first toggle per field wins). Later entries for a claimed
+      field are ignored with a console warning, and claimed fields are not offered in <strong>Add filter</strong>.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      Semi-predefined fields only support picking options. A preset or
+      <code cds-text="code">propertyFilters</code> entry for such a field must be one or more
+      <code cds-text="code">Equals</code> conditions on option keys combined with OR; any other filter on the field is
+      removed with a console warning.
+    </p>
+
+    <h2 id="keeping-filters-in-sync" class="clr-mt-48px" cds-text="title">Keeping filters in sync</h2>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>
+        <code cds-text="code">[(propertyFilters)]</code> holds the active filters, toggles that are ON included. A new
+        value replaces the active filters; a filter with exactly a toggle's criteria turns that toggle ON. The filter
+        bar copies the array and never changes it.
+      </li>
+      <li>
+        Setting <code cds-text="code">propertyFilters</code> does not emit
+        <code cds-text="code">propertyFiltersChange</code>, so passing the emitted value back does not loop. The
+        exception is a filter on a semi-predefined field that had to be removed; the corrected list is emitted.
+      </li>
+      <li>
+        <code cds-text="code">presetFilters</code> are applied once, at start-up. For the same field a preset wins over
+        a <code cds-text="code">propertyFilters</code> filter. If the start-up result differs from what was passed in,
+        <code cds-text="code">propertyFiltersChange</code> emits it once, after the first change detection.
+      </li>
+      <li>Switching to quick mode clears the filters and emits an empty array.</li>
+      <li>
+        Keep <code cds-text="code">PropertyFilter.editorState</code> when storing filters in memory. It restores editor
+        choices the criteria cannot express, such as <em>Last week</em>.
+      </li>
+    </ul>
+
+    <h2 id="date-time" class="clr-mt-48px" cds-text="title">Date-time and empty values</h2>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>
+        Date-time filters emit local date-times followed by the local UTC offset, e.g.
+        <code cds-text="code">2026-03-29T00:00:00+02:00</code>.
+      </li>
+      <li>
+        <strong>Equals</strong> a day is emitted as <code cds-text="code">&gt;= that day 00:00</code> AND
+        <code cds-text="code">&lt; next day 00:00</code>; a custom range ends before the midnight after its end date. A
+        day always runs from midnight to the next midnight, also on daylight saving days (23 or 25 hours).
+      </li>
+      <li>
+        <strong>Last day</strong>, <strong>Last week</strong> and <strong>Time span</strong> count back a fixed length
+        from now.
+      </li>
+      <li>
+        <strong>Preset ranges:</strong> pass <code cds-text="code">rangeOptions</code> (Clarity's
+        <code cds-text="code">DateRangeOption[]</code>,
+        <code cds-text="code">&#123; label, value: [start, end] &#125;</code>) to
+        <code cds-text="code">DateTimePropertyDefinition</code> to offer ready-made ranges for
+        <strong>Custom range</strong>. Without times they are listed in the date range picker; with times they are
+        buttons under the operator. A click fills From and To, which can still be changed before <strong>Apply</strong>.
+        Both ends are inclusive, the dates are used as given, and a date at 00:00 means the whole day. Keep the list to
+        4–5 options.
+      </li>
+      <li>
+        <strong>Is empty</strong> emits <code cds-text="code">value: undefined</code>; check the operator before the
+        value.
+      </li>
+    </ul>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 id="examples" cds-text="title" class="clr-mt-48px">Code &amp; Examples</h2>
+    <p cds-text="body" class="clr-mt-16px">
+      The examples share two files, shown at the end of this page under
+      <a routerLink="/documentation/filters/code" fragment="shared-files">Shared example files</a>. The StackBlitz
+      projects include both.
+    </p>
+
+    <h3 data-toc-item id="filter-modes" cds-text="section" class="clr-mt-32px">Filter modes</h3>
+    <p cds-text="body" class="clr-mt-16px">Switch between Quick, Advanced, Advanced only and Combined.</p>
+    <div class="clr-mt-24px">
+      <app-datagrid-filters-modes-demo></app-datagrid-filters-modes-demo>
+    </div>
+    <div class="clr-mt-24px">
+      <app-stackblitz-example
+        name="datagrid-filters-filter-modes"
+        [componentTemplate]="filterModesHtml"
+        [componentClass]="filterModesTs"
+        [additionalFiles]="additionalFiles"
+      ></app-stackblitz-example>
+    </div>
+
+    <h3 data-toc-item id="predefined-filters" cds-text="section" class="clr-mt-32px">Predefined filters</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      <code cds-text="code">predefinedFilters</code> keeps pills visible in the given order, even without criteria.
+      Initial values come from <code cds-text="code">presetFilters</code>.
+    </p>
+    <div class="clr-mt-24px">
+      <app-datagrid-filters-predefined-demo></app-datagrid-filters-predefined-demo>
+    </div>
+    <div class="clr-mt-24px">
+      <app-stackblitz-example
+        name="datagrid-filters-predefined"
+        [componentTemplate]="predefinedHtml"
+        [componentClass]="predefinedTs"
+        [additionalFiles]="additionalFiles"
+      ></app-stackblitz-example>
+    </div>
+
+    <h3 data-toc-item id="semi-predefined-filters" cds-text="section" class="clr-mt-32px">Semi-predefined filters</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      <code cds-text="code">semiPredefinedFilters</code> shows enum fields as a label followed by option pills. Selected
+      options are combined with OR and applied immediately.
+    </p>
+    <div class="clr-mt-24px">
+      <app-datagrid-filters-semi-predefined-demo></app-datagrid-filters-semi-predefined-demo>
+    </div>
+    <div class="clr-mt-24px">
+      <app-stackblitz-example
+        name="datagrid-filters-semi-predefined"
+        [componentTemplate]="semiPredefinedHtml"
+        [componentClass]="semiPredefinedTs"
+        [additionalFiles]="additionalFiles"
+      ></app-stackblitz-example>
+    </div>
+
+    <h3 data-toc-item id="toggle-filters" cds-text="section" class="clr-mt-32px">Toggle filters</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      <code cds-text="code">toggleFilters</code> shows ready-made filters as on/off pills. ON applies the filter as
+      configured.
+    </p>
+    <div class="clr-mt-24px">
+      <app-datagrid-filters-toggle-demo></app-datagrid-filters-toggle-demo>
+    </div>
+    <div class="clr-mt-24px">
+      <app-stackblitz-example
+        name="datagrid-filters-toggle"
+        [componentTemplate]="toggleHtml"
+        [componentClass]="toggleTs"
+        [additionalFiles]="additionalFiles"
+      ></app-stackblitz-example>
+    </div>
+
+    <h3 data-toc-item id="two-way-binding" cds-text="section" class="clr-mt-32px">Two-way binding</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Use <code cds-text="code">[(propertyFilters)]</code> to restore a saved view or a URL. Setting the value from the
+      host does not emit <code cds-text="code">propertyFiltersChange</code>. Presets win over
+      <code cds-text="code">propertyFilters</code> at start-up, and the start-up result is emitted once when it differs
+      from what was passed in. The saved view below also turns the "Powered On" toggle ON.
+    </p>
+    <div class="clr-mt-24px">
+      <app-datagrid-filters-two-way-demo></app-datagrid-filters-two-way-demo>
+    </div>
+    <div class="clr-mt-24px">
+      <app-stackblitz-example
+        name="datagrid-filters-two-way"
+        [componentTemplate]="twoWayHtml"
+        [componentClass]="twoWayTs"
+        [additionalFiles]="additionalFiles"
+      ></app-stackblitz-example>
+    </div>
+
+    <h3 data-toc-item id="date-time-filters" cds-text="section" class="clr-mt-32px">Date-time filters</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Restore an Equals a day filter, a custom range, or Last week. The Created field also has preset ranges: open the
+      pill, choose Custom range, and pick one in the date range picker, or add a time to see them as buttons. Relative
+      operators such as Last week cannot be recovered from the criteria, so the filter carries
+      <code cds-text="code">editorState: &#123; operator: ComparisonOperator.LastWeek &#125;</code>. Emitted values are
+      local date-times followed by the UTC offset, and a day runs from midnight to midnight, also on daylight saving
+      days.
+    </p>
+    <div class="clr-mt-24px">
+      <app-datagrid-filters-date-time-demo></app-datagrid-filters-date-time-demo>
+    </div>
+    <div class="clr-mt-24px">
+      <app-stackblitz-example
+        name="datagrid-filters-date-time"
+        [componentTemplate]="dateTimeHtml"
+        [componentClass]="dateTimeTs"
+        [additionalFiles]="additionalFiles"
+      ></app-stackblitz-example>
+    </div>
+
+    <h3 data-toc-item id="property-definitions-example" cds-text="section" class="clr-mt-32px">Property definitions</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      A complete component that configures every property definition: String, Numeric (with a unit), Enum (single and
+      multi select, searchable), DateTime and User, with the user service the User filter needs.
+    </p>
+    <div class="clr-mt-24px">
+      <app-datagrid-filters-property-definitions-demo></app-datagrid-filters-property-definitions-demo>
+    </div>
+    <div class="clr-mt-24px">
+      <app-stackblitz-example
+        name="datagrid-filters-property-definitions"
+        [componentTemplate]="propertyDefinitionsHtml"
+        [componentClass]="propertyDefinitionsTs"
+        [additionalFiles]="additionalFiles"
+      ></app-stackblitz-example>
+    </div>
+
+    <h3 data-toc-item id="shared-files" cds-text="section" class="clr-mt-32px">Shared example files</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      <code cds-text="code">vm-properties.ts</code> defines the fields the examples filter on and the helpers that build
+      presets, toggles and saved views. <code cds-text="code">applied-filters.ts</code> is a demo-only component that
+      prints what the filter bar emits; the examples pass <code cds-text="code">propertyFiltersChange</code> output to
+      it. The two files do not depend on each other.
+    </p>
+    <clr-accordion cds-layout="m-t:md">
+      <clr-accordion-panel>
+        <clr-accordion-title>vm-properties.ts</clr-accordion-title>
+        <clr-accordion-content *clrIfExpanded>
+          <app-code-snippet
+            name="vm-properties"
+            [code]="vmPropertiesTs"
+            language="typescript"
+            [copy]="true"
+          ></app-code-snippet>
+        </clr-accordion-content>
+      </clr-accordion-panel>
+      <clr-accordion-panel>
+        <clr-accordion-title>applied-filters.ts</clr-accordion-title>
+        <clr-accordion-content *clrIfExpanded>
+          <app-code-snippet
+            name="applied-filters"
+            [code]="appliedFiltersTs"
+            language="typescript"
+            [copy]="true"
+          ></app-code-snippet>
+        </clr-accordion-content>
+      </clr-accordion-panel>
+    </clr-accordion>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <h2 id="api-reference" cds-text="title" class="clr-mt-48px">API Reference</h2>
+
+    <h3 data-toc-item id="inputs-outputs" cds-text="section" class="clr-mt-32px">appfx-datagrid-filters</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Property</th>
+          <th class="left">Input/Output</th>
+          <th class="left">Type</th>
+          <th class="left">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left"><code cds-text="code">filterMode</code></td>
+          <td class="left">Input</td>
+          <td class="left"><code cds-text="code">FilterMode</code></td>
+          <td class="left">Quick, Advanced, AdvancedOnly or Combined.</td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">filterableProperties</code></td>
+          <td class="left">Input</td>
+          <td class="left"><code cds-text="code">FilterablePropertyDefinition[]</code></td>
+          <td class="left">
+            Properties used for advanced filtering: String, Numeric, Enum, DateTime and User property definitions.
+          </td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">presetFilters</code></td>
+          <td class="left">Input</td>
+          <td class="left"><code cds-text="code">PropertyFilter[]</code></td>
+          <td class="left">Filters applied when the filter bar starts. Read once; later changes are ignored.</td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">predefinedFilters</code></td>
+          <td class="left">Input</td>
+          <td class="left"><code cds-text="code">FilterablePropertyDefinition[]</code></td>
+          <td class="left">Properties whose pills stay visible without active criteria. Defaults to an empty array.</td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">semiPredefinedFilters</code></td>
+          <td class="left">Input</td>
+          <td class="left"><code cds-text="code">EnumPropertyDefinition[]</code></td>
+          <td class="left">Enum fields shown as a label followed by option pills, combined with OR.</td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">toggleFilters</code></td>
+          <td class="left">Input</td>
+          <td class="left"><code cds-text="code">PropertyFilter[]</code></td>
+          <td class="left">Ready-made filters shown as on/off pills.</td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">propertyFilters</code></td>
+          <td class="left">Input</td>
+          <td class="left"><code cds-text="code">PropertyFilter[]</code></td>
+          <td class="left">
+            The active filters, toggles that are ON included. Supports <code cds-text="code">[(propertyFilters)]</code>.
+          </td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">searchTermChange</code></td>
+          <td class="left">Output</td>
+          <td class="left"><code cds-text="code">EventEmitter&lt;string&gt;</code></td>
+          <td class="left">Emits the quick search term on Enter and every 2 seconds while the user types.</td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">propertyFiltersChange</code></td>
+          <td class="left">Output</td>
+          <td class="left"><code cds-text="code">EventEmitter&lt;PropertyFilter[]&gt;</code></td>
+          <td class="left">
+            Emits the active filters when the user changes them, and once at start-up when presets or clean-up change
+            what was passed in.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p cds-text="body" class="clr-mt-16px">
+      <code cds-text="code">UserPropertyDefinition</code> requires a provided
+      <code cds-text="code">DatagridFiltersUserService</code>. Localize the texts by providing
+      <code cds-text="code">DatagridFiltersStrings</code>.
+    </p>
+
+    <h3 data-toc-item id="property-filter" cds-text="section" class="clr-mt-48px">PropertyFilter</h3>
+    <p cds-text="body" class="clr-mt-16px">One filter pill: its criteria and how they are combined.</p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Property</th>
+          <th class="left">Type</th>
+          <th class="left">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left"><code cds-text="code">criteria</code></td>
+          <td class="left"><code cds-text="code">PropertyPredicate[]</code></td>
+          <td class="left">The conditions of the filter.</td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">operator</code></td>
+          <td class="left"><code cds-text="code">LogicalOperator</code></td>
+          <td class="left">How the conditions are combined: AND or OR.</td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">editorState</code></td>
+          <td class="left"><code cds-text="code">FilterEditorState</code></td>
+          <td class="left">
+            Optional. Set by the built-in editors so a filter can be edited again, e.g. to keep <em>Last week</em>. Keep
+            it when storing filters in memory. Not needed for host-built filters.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 data-toc-item id="property-predicate" cds-text="section" class="clr-mt-48px">PropertyPredicate</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Property</th>
+          <th class="left">Type</th>
+          <th class="left">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left"><code cds-text="code">filterableProperty</code></td>
+          <td class="left"><code cds-text="code">FilterablePropertyDefinition</code></td>
+          <td class="left">The property the condition filters on.</td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">operator</code></td>
+          <td class="left"><code cds-text="code">ComparisonOperator</code></td>
+          <td class="left">The comparison operator.</td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">value</code></td>
+          <td class="left"><code cds-text="code">any</code></td>
+          <td class="left">
+            The value to compare with. <code cds-text="code">undefined</code> for
+            <code cds-text="code">ComparisonOperator.IsEmpty</code>.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 data-toc-item id="property-definitions" cds-text="section" class="clr-mt-48px">
+      Filterable property definitions
+    </h3>
+    <p cds-text="body" class="clr-mt-16px">
+      All definitions take the display name and the property key first. Where available, the optional
+      <code cds-text="code">operators</code> argument replaces the default operators.
+    </p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Class</th>
+          <th class="left">Optional arguments</th>
+          <th class="left">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left"><code cds-text="code">StringPropertyDefinition</code></td>
+          <td class="left">
+            <code cds-text="code">operators</code>, <code cds-text="code">singleCondition</code>,
+            <code cds-text="code">logicalOperator</code>
+          </td>
+          <td class="left">Text values. Any number of conditions joined by AND or OR, unless limited.</td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">NumericPropertyDefinition</code></td>
+          <td class="left">
+            <code cds-text="code">operators</code>, <code cds-text="code">unit</code>,
+            <code cds-text="code">singleCondition</code>, <code cds-text="code">logicalOperator</code>
+          </td>
+          <td class="left">Numbers, optionally with a unit the user can change.</td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">EnumPropertyDefinition</code></td>
+          <td class="left">
+            <code cds-text="code">values</code> (required), <code cds-text="code">singleSelect</code>,
+            <code cds-text="code">searchable</code>, <code cds-text="code">enableSelectAll</code>
+          </td>
+          <td class="left">A fixed set of options, given as a key-to-label map.</td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">DateTimePropertyDefinition</code></td>
+          <td class="left">
+            <code cds-text="code">operators</code>, <code cds-text="code">includeSeconds</code>,
+            <code cds-text="code">rangeOptions</code>
+          </td>
+          <td class="left">
+            Dates and times: Equals, Before, After, Custom range, Last day/week/month/year, Time span and Is empty.
+            <code cds-text="code">rangeOptions</code> adds preset ranges to Custom range.
+          </td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">UserPropertyDefinition</code></td>
+          <td class="left"></td>
+          <td class="left">
+            Users picked by domain. Requires a provided <code cds-text="code">DatagridFiltersUserService</code>.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </app-doc-tab>
+
+  <app-doc-tab tab="ai">
+    <app-ai-skill skillName="appfx-datagrid-filters"></app-ai-skill>
+  </app-doc-tab>
+</app-doc-tabs>

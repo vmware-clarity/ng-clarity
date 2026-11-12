@@ -6,7 +6,12 @@
  */
 
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { FilterablePropertyDefinition, FilterMode, PropertyFilter } from '@clr/addons/datagrid-filters';
+import {
+  EnumPropertyDefinition,
+  FilterablePropertyDefinition,
+  FilterMode,
+  PropertyFilter,
+} from '@clr/addons/datagrid-filters';
 
 @Component({
   selector: 'appfx-datagrid-filters',
@@ -18,6 +23,16 @@ export class MockDatagridFiltersComponent {
   @Input() filterMode = FilterMode.Quick;
 
   @Input() filterableProperties: FilterablePropertyDefinition[];
+
+  @Input() predefinedFilters: FilterablePropertyDefinition[] = [];
+
+  @Input() semiPredefinedFilters: EnumPropertyDefinition[] = [];
+
+  @Input() toggleFilters: PropertyFilter[] = [];
+
+  @Input() presetFilters: PropertyFilter[];
+
+  @Input() propertyFilters: PropertyFilter[] = [];
 
   @Output() searchTermChange = new EventEmitter<string>();
 

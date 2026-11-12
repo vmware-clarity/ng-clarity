@@ -10,115 +10,52 @@
   (cancel)="onCancelButtonClick()"
   (apply)="onApplyButtonClick()"
 >
-  <clr-select-container class="mt-compact">
-    <label class="clr-control-label">
-      {{ filterStrings.operatorLabel }}
-    </label>
-    <select clrSelect formControlName="primaryOperator">
-      @for (operator of comparisonOperators; track operator) {
-        <option [ngValue]="operator">
-          {{ filterStrings.getOperatorDisplayName(operator) }}
-        </option>
-      }
-    </select>
-  </clr-select-container>
-  @if (!isEmptyPrimaryPredicate) {
-    <div class="flex-container">
-      <clr-input-container>
-        <input
-          type="text"
-          formControlName="primaryValue"
-          placeholder="{{ filterStrings.enterValue }}"
-          clrInput
-          (keydown)="onInputKeyPress($event)"
-        />
-        <clr-control-error *clrIfError="'required'" role="alert">{{
-          filterStrings.requiredValidatorMessage
-        }}</clr-control-error>
-        <clr-control-error *clrIfError="'pattern'" role="alert">{{
-          filterStrings.integerValidatorMessage
-        }}</clr-control-error>
-      </clr-input-container>
-      @if (isNumericUnitProperty) {
-        <clr-select-container class="ml-half">
-          <select clrSelect formControlName="primaryUnit" [attr.aria-label]="filterStrings.unitAriaLabel">
-            @for (unit of units; track unit) {
-              <option [ngValue]="unit">
-                {{ filterStrings.getUnitDisplayName(unit) }}
-              </option>
-            }
-          </select>
-        </clr-select-container>
-      }
-    </div>
-  }
-  @if (!additionalPredicate && !filterProperty.singleCondition) {
-    <button
-      class="btn btn-sm btn-link mt-half"
-      data-test-id="add-button"
-      [attr.aria-label]="filterStrings.addCondition"
-      (click)="enableSecondaryPredicate()"
-    >
-      <cds-icon shape="plus" class="is-solid"></cds-icon>
-      {{ filterStrings.addCondition }}
-    </button>
-  }
-  @if (additionalPredicate) {
-    <div>
-      @if (filterProperty.logicalOperator == undefined) {
-        <clr-radio-container clrInline class="mt-compact">
-          <clr-radio-wrapper>
+  <div class="filter-field-row">
+    <ng-content select="[filterField]"></ng-content>
+    @if (!filterProperty.singleCondition && filterProperty.logicalOperator == undefined) {
+      <div
+        class="btn-group btn-sm filter-logic"
+        role="radiogroup"
+        [attr.aria-label]="
+          filterStrings.getConjoinerDisplayName(LogicalOperator.And) +
+          ' / ' +
+          filterStrings.getConjoinerDisplayName(LogicalOperator.Or)
+        "
+      >
+        @for (operator of logicalOperators; track operator) {
+          <div class="radio btn">
             <input
               type="radio"
-              clrRadio
-              formControlName="logicalOperator"
-              [value]="logicalOperators[0]"
-              [attr.disabled]="isEmptyPrimaryPredicate || isEmptySecondaryPredicate ? 'disabled' : null"
+              [id]="id + '-logic-' + operator"
+              [name]="id + '-logic'"
+              [checked]="generalFilterForm.value.logicalOperator === operator"
+              [disabled]="operator === LogicalOperator.And && hasEmptyPredicate"
+              (change)="generalFilterForm.controls.logicalOperator.setValue(operator)"
             />
-            <label> {{ filterStrings.getConjoinerDisplayName(logicalOperators[0]) }} </label>
-          </clr-radio-wrapper>
-          <clr-radio-wrapper>
-            <input type="radio" clrRadio formControlName="logicalOperator" [value]="logicalOperators[1]" />
-            <label> {{ filterStrings.getConjoinerDisplayName(logicalOperators[1]) }} </label>
-          </clr-radio-wrapper>
-        </clr-radio-container>
-      }
-      @if (filterProperty.logicalOperator != undefined) {
-        <div class="clr-control-container" cds-layout="m-t:sm">
-          <span data-test-id="logical-operator" cds-text="body medium">{{
-            filterStrings.getConjoinerDisplayName(filterProperty.logicalOperator)
-          }}</span>
-        </div>
-      }
-      <div class="flex-end-container">
-        <clr-select-container class="form-control-compact">
-          <label class="clr-control-label">
-            {{ filterStrings.operatorLabel }}
-          </label>
-          <select clrSelect formControlName="secondaryOperator">
+            <label [for]="id + '-logic-' + operator">{{ filterStrings.getConjoinerDisplayName(operator) }}</label>
+          </div>
+        }
+      </div>
+    }
+  </div>
+  <div formArrayName="conditions">
+    @for (condition of conditions.controls; track condition; let index = $index; let last = $last) {
+      <div class="filter-condition-row" [formGroupName]="index">
+        <clr-select-container class="filter-operator">
+          <label class="clr-sr-only">{{ filterStrings.operatorLabel }}</label>
+          <select clrSelect formControlName="operator">
             @for (operator of comparisonOperators; track operator) {
-              <option [ngValue]="operator">
-                {{ filterStrings.getOperatorDisplayName(operator) }}
-              </option>
+              <option [ngValue]="operator">{{ filterStrings.getOperatorDisplayName(operator) }}</option>
             }
           </select>
         </clr-select-container>
-        <button
-          class="close ml-half"
-          data-test-id="close-button"
-          [attr.aria-label]="filterStrings.removeConditionAriaLabel"
-          (click)="disableSecondaryPredicate()"
-        >
-          <cds-icon size="20" shape="window-close"></cds-icon>
-        </button>
-      </div>
-      @if (!isEmptySecondaryPredicate) {
-        <div class="flex-container">
-          <clr-input-container>
+        @if (condition.controls.operator.value !== isEmptyOperator) {
+          <clr-input-container class="filter-value">
+            <label class="clr-sr-only">{{ filterStrings.enterValue }}</label>
             <input
               type="text"
-              formControlName="secondaryValue"
-              placeholder="{{ filterStrings.enterValue }}"
+              formControlName="value"
+              [placeholder]="filterStrings.enterValue"
               clrInput
               (keydown)="onInputKeyPress($event)"
             />
@@ -130,18 +67,55 @@
             }}</clr-control-error>
           </clr-input-container>
           @if (isNumericUnitProperty) {
-            <clr-select-container class="ml-half">
-              <select clrSelect formControlName="secondaryUnit">
+            <clr-select-container class="filter-unit">
+              <label class="clr-sr-only">{{ filterStrings.unitAriaLabel }}</label>
+              <select clrSelect formControlName="unit">
                 @for (unit of units; track unit) {
-                  <option [ngValue]="unit">
-                    {{ filterStrings.getUnitDisplayName(unit) }}
-                  </option>
+                  <option [ngValue]="unit">{{ filterStrings.getUnitDisplayName(unit) }}</option>
                 }
               </select>
             </clr-select-container>
           }
-        </div>
+        }
+        @if (!filterProperty.singleCondition) {
+          <button
+            type="button"
+            class="btn btn-sm btn-link btn-icon filter-condition-remove"
+            data-test-id="close-button"
+            [attr.aria-label]="filterStrings.removeConditionAriaLabel + ' ' + (index + 1)"
+            [disabled]="conditions.length === 1"
+            (click)="removeCondition(index)"
+          >
+            <cds-icon size="20" shape="window-close"></cds-icon>
+          </button>
+        }
+      </div>
+      @if (!last) {
+        <button
+          type="button"
+          class="btn btn-sm btn-outline filter-logic-label"
+          data-test-id="logical-operator"
+          disabled
+        >
+          {{
+            filterStrings.getConjoinerDisplayName(
+              filterProperty.logicalOperator ?? generalFilterForm.value.logicalOperator
+            )
+          }}
+        </button>
       }
-    </div>
+    }
+  </div>
+  @if (!filterProperty.singleCondition) {
+    <button
+      type="button"
+      class="btn btn-sm btn-outline filter-add-condition"
+      data-test-id="add-button"
+      [attr.aria-label]="filterStrings.addCondition"
+      (click)="addCondition()"
+    >
+      {{ filterStrings.addCondition }}
+    </button>
   }
+  <ng-content select="[filterActions]" ngProjectAs="[filterActions]"></ng-content>
 </appfx-filter-form>

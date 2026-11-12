@@ -12,6 +12,8 @@ export interface ComponentListElement {
   text: string;
   type: string;
   storybookPath?: string;
+  /** For addons: show "Explore in Storybook" in the page header. Component pages always show it. */
+  storybookLink?: boolean;
   /** For addons: the url of the Clarity component the addon is built on. */
   basedOn?: string;
 }

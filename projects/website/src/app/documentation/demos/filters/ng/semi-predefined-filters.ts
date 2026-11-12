@@ -1,0 +1,28 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { AppfxDatagridFiltersModule, FilterMode, PropertyFilter } from '@clr/addons/datagrid-filters';
+
+import { AppliedFiltersComponent } from './applied-filters';
+import { guestOsProperty, vmProperties } from './vm-properties';
+
+@Component({
+  selector: 'app-datagrid-filters-semi-predefined-demo',
+  templateUrl: './semi-predefined-filters.html',
+  imports: [AppfxDatagridFiltersModule, AppliedFiltersComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class DatagridFiltersSemiPredefinedDemoComponent {
+  readonly FilterMode = FilterMode;
+  readonly filterableProperties = vmProperties;
+
+  // Enum fields shown as a label followed by one pill per option.
+  readonly semiPredefinedFilters = [guestOsProperty];
+
+  filters: PropertyFilter[] = [];
+}

@@ -323,6 +323,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    * - `FilterMode.Quick`: Enables the quick filter.
    * - `FilterMode.Advanced`: Enables the advanced filter.
    * - `FilterMode.AdvancedOnly`: Enables only the advanced filter.
+   * - `FilterMode.Combined`: Enables the quick and advanced filters together (combined with AND by the host).
    *
    * When the filter is enabled, the component will emit the `searchTermChange`/`advancedFilterChange` event whenever the filter changes.
    * If not set, no filter will be displayed.

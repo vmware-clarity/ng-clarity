@@ -5,18 +5,24 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { A11yModule } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectorRef } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ClrInputModule, ClrSelectModule } from '@clr/angular/forms';
+import { By } from '@angular/platform-browser';
+import { ClrComboboxModule, ClrInputModule, ClrSelectModule } from '@clr/angular/forms';
 import { ClrIcon } from '@clr/angular/icon';
+import { ClrPopoverModuleNext } from '@clr/angular/popover/common';
 import { ClrSignpostModule } from '@clr/angular/popover/signpost';
+import { ClrTooltipModule } from '@clr/angular/popover/tooltip';
 
 import { CompositeFiltersComponent } from './composite-filters.component';
 import { DatagridFiltersStrings } from './datagrid-filters-strings.service';
 import { DataGridFiltersComponent } from './datagrid-filters.component';
 import { DismissableDirective } from './manage-filters/dismissable.directive';
-import { FilterMode } from './model/datagrid-filters.enums';
+import { ComparisonOperator, FilterMode, LogicalOperator } from './model/datagrid-filters.enums';
+import { PropertyFilter, StringPropertyDefinition } from './model/datagrid-filters.interfaces';
 
 const testInput = 'Test input';
 
@@ -29,9 +35,13 @@ describe('DataGridFiltersComponent', () => {
   beforeEach(function (this: ThisTest) {
     TestBed.configureTestingModule({
       imports: [
+        ClrComboboxModule,
         ClrInputModule,
         ClrSelectModule,
         ClrSignpostModule,
+        ClrPopoverModuleNext,
+        ClrTooltipModule,
+        A11yModule,
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
@@ -62,6 +72,49 @@ describe('DataGridFiltersComponent', () => {
     expect(filterSelect).toBeTruthy();
     expect(filterSelect.options.length).toEqual(2);
   });
+  it('shows the search and the pills together without a label in combined mode', function (this: ThisTest) {
+    this.component.filterMode = FilterMode.Combined;
+    this.fixture.detectChanges();
+    const element: HTMLElement = this.fixture.nativeElement;
+    expect(element.querySelector('input[clrInput]')).toBeTruthy();
+    expect(element.querySelector('appfx-composite-filter')).toBeTruthy();
+    expect(element.querySelector('select')).toBeNull();
+    expect(element.querySelector('.filter-container > label')).toBeNull();
+    // Search comes first, then the pills.
+    expect(
+      element
+        .querySelector('clr-input-container')
+        .compareDocumentPosition(element.querySelector('appfx-composite-filter'))
+    ).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+  });
+  it('keeps the search when property filters change in combined mode', function (this: ThisTest) {
+    this.component.filterMode = FilterMode.Combined;
+    spyOn(this.component.searchTermChange, 'emit');
+    this.component.searchTerm = 'Test';
+    this.component.onFilterCriteriaChange([]);
+    expect(this.component.searchTerm).toBe('Test');
+    expect(this.component.searchTermChange.emit).not.toHaveBeenCalled();
+  });
+  it('clears the search and the pills on Clear all in combined mode', function (this: ThisTest) {
+    this.component.filterMode = FilterMode.Combined;
+    this.fixture.detectChanges();
+    spyOn(this.component.searchTermChange, 'emit');
+    spyOn(this.component.propertyFiltersChange, 'emit');
+    // Type into the search, as a user would, so the view is updated.
+    const input: HTMLInputElement = this.fixture.nativeElement.querySelector('input[clrInput]');
+    input.value = 'Test';
+    input.dispatchEvent(new Event('input'));
+    this.component['lastSearchTerm'] = 'Test';
+    this.fixture.detectChanges();
+
+    const clearAll: HTMLButtonElement = this.fixture.nativeElement.querySelector('[data-test-id="clear-all-button"]');
+    expect(clearAll).toBeTruthy();
+    clearAll.click();
+    this.fixture.detectChanges();
+    expect(this.component.searchTerm).toBe('');
+    expect(this.component.searchTermChange.emit).toHaveBeenCalledWith('');
+    expect(this.component.propertyFiltersChange.emit).toHaveBeenCalledWith([]);
+  });
   it('clears quick filter on mode switch', function (this: ThisTest) {
     spyOn(this.component.searchTermChange, 'emit');
     this.component.searchTerm = 'Test';
@@ -72,10 +125,56 @@ describe('DataGridFiltersComponent', () => {
   });
   it('clears advanced filters on mode switch', function (this: ThisTest) {
     spyOn(this.component.propertyFiltersChange, 'emit');
-    this.component['appliedFiltersCount'] = 3;
+    const nameProperty = new StringPropertyDefinition('Name', 'name', [ComparisonOperator.Contains]);
+    this.component.propertyFilters = [
+      {
+        operator: LogicalOperator.And,
+        criteria: [{ filterableProperty: nameProperty, operator: ComparisonOperator.Contains, value: 'vm' }],
+      },
+    ];
     this.component.selectedFilterMode = FilterMode.Quick;
     this.component.onFilterModeChange();
     expect(this.component.propertyFiltersChange.emit).toHaveBeenCalledWith([]);
+    expect(this.component.propertyFilters).toEqual([]);
+  });
+  it('does not emit on the switch to quick mode when no filters are applied', function (this: ThisTest) {
+    spyOn(this.component.propertyFiltersChange, 'emit');
+    this.component.selectedFilterMode = FilterMode.Quick;
+    this.component.onFilterModeChange();
+    expect(this.component.propertyFiltersChange.emit).not.toHaveBeenCalled();
+  });
+  it('passes propertyFilters to the filter bar and resets them when switching to quick mode', function (this: ThisTest) {
+    const nameProperty = new StringPropertyDefinition('Name', 'name', [ComparisonOperator.Contains]);
+    const nameFilter: PropertyFilter = {
+      operator: LogicalOperator.And,
+      criteria: [{ filterableProperty: nameProperty, operator: ComparisonOperator.Contains, value: 'vm' }],
+    };
+    this.component.filterableProperties = [nameProperty];
+    this.component.mode = FilterMode.Advanced;
+    this.component.selectedFilterMode = FilterMode.Advanced;
+    this.component.propertyFilters = [nameFilter];
+    this.fixture.detectChanges();
+    // The wrapper is OnPush: the mode select marks it in the app, so mark it here after changing fields directly.
+    const refresh = () => {
+      this.fixture.componentRef.injector.get(ChangeDetectorRef).markForCheck();
+      this.fixture.detectChanges();
+    };
+    const bar = (): CompositeFiltersComponent =>
+      this.fixture.debugElement.query(By.directive(CompositeFiltersComponent))?.componentInstance;
+    expect(bar().propertyFilters).toEqual([nameFilter]);
+
+    spyOn(this.component.propertyFiltersChange, 'emit');
+    this.component.selectedFilterMode = FilterMode.Quick;
+    this.component.onFilterModeChange();
+    refresh();
+    expect(this.component.propertyFiltersChange.emit).toHaveBeenCalledWith([]);
+    expect(this.component.propertyFilters).toEqual([]);
+    expect(bar()).toBeUndefined();
+
+    // Back in advanced mode, the filter bar starts from the cleared state, not the old filters.
+    this.component.selectedFilterMode = FilterMode.Advanced;
+    refresh();
+    expect(bar().propertyFilters).toEqual([]);
   });
   it('emits an event on search term change', fakeAsync(function (this: ThisTest) {
     spyOn(this.component, 'onSearchTermChanged').and.callThrough();

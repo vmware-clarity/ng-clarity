@@ -629,14 +629,26 @@ export class MockDatagridFiltersComponent {
     //
     // (undocumented)
     filterMode: FilterMode;
-    // Warning: (ae-forgotten-export) The symbol "PropertyFilter" needs to be exported by the entry point clr-addons-testing.d.ts
-    //
+    // (undocumented)
+    predefinedFilters: FilterablePropertyDefinition[];
+    // (undocumented)
+    presetFilters: PropertyFilter[];
+    // (undocumented)
+    propertyFilters: PropertyFilter[];
     // (undocumented)
     propertyFiltersChange: EventEmitter<PropertyFilter[]>;
     // (undocumented)
     searchTermChange: EventEmitter<string>;
+    // Warning: (ae-forgotten-export) The symbol "EnumPropertyDefinition" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridFiltersComponent, "appfx-datagrid-filters", never, { "filterMode": { "alias": "filterMode"; "required": false; }; "filterableProperties": { "alias": "filterableProperties"; "required": false; }; }, { "searchTermChange": "searchTermChange"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
+    semiPredefinedFilters: EnumPropertyDefinition[];
+    // Warning: (ae-forgotten-export) The symbol "PropertyFilter" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    toggleFilters: PropertyFilter[];
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridFiltersComponent, "appfx-datagrid-filters", never, { "filterMode": { "alias": "filterMode"; "required": false; }; "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "predefinedFilters": { "alias": "predefinedFilters"; "required": false; }; "semiPredefinedFilters": { "alias": "semiPredefinedFilters"; "required": false; }; "toggleFilters": { "alias": "toggleFilters"; "required": false; }; "presetFilters": { "alias": "presetFilters"; "required": false; }; "propertyFilters": { "alias": "propertyFilters"; "required": false; }; }, { "searchTermChange": "searchTermChange"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockDatagridFiltersComponent, never>;
 }

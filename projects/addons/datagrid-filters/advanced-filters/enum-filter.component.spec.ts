@@ -168,6 +168,24 @@ describe('EnumFilterComponent', () => {
       expect(component.filteredOptions.length).toBe(150);
       expect(component.isProcessing).toBeFalse();
     }));
+
+    it('renders Load more as a plain button, so it never submits the filter form', fakeAsync(() => {
+      fixture.detectChanges();
+      tick(50);
+      fixture.detectChanges();
+      const form: HTMLFormElement = fixture.nativeElement.querySelector('form');
+      const submit = jasmine.createSpy('submit').and.callFake((event: Event) => event.preventDefault());
+      form.addEventListener('submit', submit);
+      const loadMore = Array.from<HTMLButtonElement>(fixture.nativeElement.querySelectorAll('button')).find(
+        button => button.textContent.trim() === component.filterStrings.loadMore
+      );
+      expect(loadMore.type).toBe('button');
+
+      loadMore.click();
+      tick(50);
+      expect(submit).not.toHaveBeenCalled();
+      expect(component.filteredOptions.length).toBe(150);
+    }));
   });
 
   describe('Search Logic', () => {
