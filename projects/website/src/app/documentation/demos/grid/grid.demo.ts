@@ -5,7 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+<<<<<<< HEAD
 import { Component } from '@angular/core';
+=======
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
+>>>>>>> f080f38e3 (fix(ui): add support for typographies and utilities under shadow dom (#2838))
 import { ClrAlertModule } from '@clr/angular';
 
 import { GridAutoLayout1Demo } from './grid-auto-layout-1';
@@ -51,6 +56,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     GridItemsHorizontalAlignmentDemo,
     GridNestingDemo,
     StyleDocsComponent,
+    RouterLink,
   ],
 })
 export class GridDemo extends ClarityDocComponent {

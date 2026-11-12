@@ -5,7 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+<<<<<<< HEAD
 import { Component } from '@angular/core';
+=======
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
+>>>>>>> f080f38e3 (fix(ui): add support for typographies and utilities under shadow dom (#2838))
 import { ClrAlertModule } from '@clr/angular';
 
 import { ColorTypeDemo } from './color-type/color-type.demo';
@@ -32,6 +37,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     ColorTypeDemo,
     DoDontComponent,
     ColorizeCapitalizeLettersPipe,
+    RouterLink,
   ],
 })
 export class TypographyDemo extends ClarityDocComponent {
