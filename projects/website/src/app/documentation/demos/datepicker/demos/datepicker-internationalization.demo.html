@@ -34,6 +34,27 @@
   </clr-alert>
 </div>
 
+<div>
+  <h4 cds-text="subsection" class="clr-mt-32px">Formatting and parsing dates</h4>
+  <p cds-text="body" class="clr-mt-16px">
+    When a date input is bound with <code cds-text="code">ngModel</code> or
+    <code cds-text="code">formControlName</code>, its value is the text in the locale's format, not a
+    <code cds-text="code">Date</code>. Use <code cds-text="code">ClrLocaleDateFormat</code> to convert that text the
+    same way the date picker does: <code cds-text="code">parse()</code> returns a <code cds-text="code">Date</code> or
+    <code cds-text="code">null</code> when the text is not a valid day, <code cds-text="code">format()</code> returns
+    the text the input shows, and <code cds-text="code">placeholder</code> returns the generated placeholder. It depends
+    on the locale only and needs no providers. Minimum and maximum dates are not checked.
+  </p>
+  <p cds-text="body" class="clr-mt-16px">
+    If you bind <code cds-text="code">[(clrDate)]</code>, the value is already a <code cds-text="code">Date</code> and
+    you don't need this class. Create the instance with the same <code cds-text="code">LOCALE_ID</code> as the date
+    input. A component that provides its own <code cds-text="code">LOCALE_ID</code>, like the
+    <code cds-text="code">fr</code> demo below, changes it only for its own injector, so a parent component that calls
+    <code cds-text="code">inject(LOCALE_ID)</code> gets the app locale.
+  </p>
+  <app-code-snippet [code]="localeDateFormatExample" language="typescript"></app-code-snippet>
+</div>
+
 <p cds-text="body" class="clr-mt-16px">
   The following demo shows two date pickers. The first date picker uses the
   <code cds-text="code">en-US</code> locale identifier whereas the second one uses <code cds-text="code">fr</code>. Both
