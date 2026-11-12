@@ -7,7 +7,6 @@
 import { AfterContentInit } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
-import * as _angular_cdk_overlay from '@angular/cdk/overlay';
 import { AnimationCallbackEvent } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { CdkDrag } from '@angular/cdk/drag-drop';
@@ -61,6 +60,7 @@ import { TrackByFunction } from '@angular/core';
 import { Type } from '@angular/core';
 import { ViewContainerRef } from '@angular/core';
 import { ViewportRuler } from '@angular/cdk/scrolling';
+import { WritableSignal } from '@angular/core';
 
 // @public (undocumented)
 export const CLR_DATAGRID_DIRECTIVES: Type<any>[];
@@ -208,7 +208,64 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     get virtualScroll(): ClrDatagridVirtualScrollDirective<any>;
     _virtualScroll: QueryList<ClrDatagridVirtualScrollDirective<any>>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagrid<any>, "clr-datagrid", never, { "loadingMoreItems": { "alias": "clrLoadingMoreItems"; "required": false; }; "clrDgSingleSelectionAriaLabel": { "alias": "clrDgSingleSelectionAriaLabel"; "required": false; }; "clrDgSingleActionableAriaLabel": { "alias": "clrDgSingleActionableAriaLabel"; "required": false; }; "clrDetailExpandableAriaLabel": { "alias": "clrDetailExpandableAriaLabel"; "required": false; }; "clrDgDisablePageFocus": { "alias": "clrDgDisablePageFocus"; "required": false; }; "customSelectAllEnabled": { "alias": "clrDgCustomSelectAllEnabled"; "required": false; }; "selectAllDisabled": { "alias": "clrDgSelectAllDisabled"; "required": false; }; "loading": { "alias": "clrDgLoading"; "required": false; }; "selectionType": { "alias": "clrDgSelectionType"; "required": false; }; "selected": { "alias": "clrDgSelected"; "required": false; }; "clrDgPreserveSelection": { "alias": "clrDgPreserveSelection"; "required": false; }; "rowSelectionMode": { "alias": "clrDgRowSelection"; "required": false; }; "identityFn": { "alias": "clrDgItemsIdentityFn"; "required": false; }; }, { "selectedChanged": "clrDgSelectedChange"; "refresh": "clrDgRefresh"; "customSelectAll": "clrDgCustomSelectAll"; }, ["iterator", "placeholder", "_virtualScroll", "columns", "rows"], ["clr-dg-action-bar", "clr-dg-placeholder", "clr-dg-footer", "[clrIfDetail],clr-dg-detail"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagrid<any>, "clr-datagrid", never, {
+        "loadingMoreItems": {
+            "alias": "clrLoadingMoreItems";
+            "required": false;
+        };
+        "clrDgSingleSelectionAriaLabel": {
+            "alias": "clrDgSingleSelectionAriaLabel";
+            "required": false;
+        };
+        "clrDgSingleActionableAriaLabel": {
+            "alias": "clrDgSingleActionableAriaLabel";
+            "required": false;
+        };
+        "clrDetailExpandableAriaLabel": {
+            "alias": "clrDetailExpandableAriaLabel";
+            "required": false;
+        };
+        "clrDgDisablePageFocus": {
+            "alias": "clrDgDisablePageFocus";
+            "required": false;
+        };
+        "customSelectAllEnabled": {
+            "alias": "clrDgCustomSelectAllEnabled";
+            "required": false;
+        };
+        "selectAllDisabled": {
+            "alias": "clrDgSelectAllDisabled";
+            "required": false;
+        };
+        "loading": {
+            "alias": "clrDgLoading";
+            "required": false;
+        };
+        "selectionType": {
+            "alias": "clrDgSelectionType";
+            "required": false;
+        };
+        "selected": {
+            "alias": "clrDgSelected";
+            "required": false;
+        };
+        "clrDgPreserveSelection": {
+            "alias": "clrDgPreserveSelection";
+            "required": false;
+        };
+        "rowSelectionMode": {
+            "alias": "clrDgRowSelection";
+            "required": false;
+        };
+        "identityFn": {
+            "alias": "clrDgItemsIdentityFn";
+            "required": false;
+        };
+    }, {
+        "selectedChanged": "clrDgSelectedChange";
+        "refresh": "clrDgRefresh";
+        "customSelectAll": "clrDgCustomSelectAll";
+    }, ["iterator", "placeholder", "_virtualScroll", "columns", "rows"], ["clr-dg-action-bar", "clr-dg-placeholder", "clr-dg-footer", "[clrIfDetail],clr-dg-detail"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagrid<any>, never>;
 }
@@ -241,13 +298,28 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     // (undocumented)
     popoverId: string;
     // (undocumented)
-    protected positions: _angular_cdk_overlay.ConnectedPosition[];
+    protected positions: ConnectedPosition[];
     // Warning: (ae-forgotten-export) The symbol "ClrPopoverPosition" needs to be exported by the entry point clr-angular-data.d.ts
     //
     // (undocumented)
     smartPosition: ClrPopoverPosition;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridActionOverflow, "clr-dg-action-overflow", never, { "buttonLabel": { "alias": "clrDgActionOverflowButtonLabel"; "required": false; }; "open": { "alias": "clrDgActionOverflowOpen"; "required": false; }; }, { "openChange": "clrDgActionOverflowOpenChange"; }, never, ["*"], false, [{ directive: typeof i1_2.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridActionOverflow, "clr-dg-action-overflow", never, {
+        "buttonLabel": {
+            "alias": "clrDgActionOverflowButtonLabel";
+            "required": false;
+        };
+        "open": {
+            "alias": "clrDgActionOverflowOpen";
+            "required": false;
+        };
+    }, {
+        "openChange": "clrDgActionOverflowOpenChange";
+    }, never, ["*"], false, [{
+        directive: typeof i1_2.ClrPopoverHostDirective;
+        inputs: {};
+        outputs: {};
+    }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridActionOverflow, never>;
 }
@@ -372,9 +444,68 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // (undocumented)
     get _view(): any;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumn<any>, "clr-dg-column", never, { "filterStringPlaceholder": { "alias": "clrFilterStringPlaceholder"; "required": false; }; "filterNumberMaxPlaceholder": { "alias": "clrFilterNumberMaxPlaceholder"; "required": false; }; "filterNumberMinPlaceholder": { "alias": "clrFilterNumberMinPlaceholder"; "required": false; }; "disableUnsort": { "alias": "clrDgDisableUnsort"; "required": false; }; "pinnable": { "alias": "clrDgPinnable"; "required": false; }; "pinned": { "alias": "clrDgPinned"; "required": false; }; "treeToggle": { "alias": "clrDgTreeToggle"; "required": false; }; "colType": { "alias": "clrDgColType"; "required": false; }; "field": { "alias": "clrDgField"; "required": false; }; "sortBy": { "alias": "clrDgSortBy"; "required": false; }; "sortOrder": { "alias": "clrDgSortOrder"; "required": false; }; "updateFilterValue": { "alias": "clrFilterValue"; "required": false; }; }, { "sortOrderChange": "clrDgSortOrderChange"; "pinnedChange": "clrDgPinnedChange"; "filterValueChange": "clrFilterValueChange"; }, ["projectedFilter"], ["clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter", "*", "clr-dg-column-actions"], false, [{ directive: typeof i1_2.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumn<any>, "clr-dg-column", never, {
+        "filterStringPlaceholder": {
+            "alias": "clrFilterStringPlaceholder";
+            "required": false;
+        };
+        "filterNumberMaxPlaceholder": {
+            "alias": "clrFilterNumberMaxPlaceholder";
+            "required": false;
+        };
+        "filterNumberMinPlaceholder": {
+            "alias": "clrFilterNumberMinPlaceholder";
+            "required": false;
+        };
+        "disableUnsort": {
+            "alias": "clrDgDisableUnsort";
+            "required": false;
+        };
+        "pinnable": {
+            "alias": "clrDgPinnable";
+            "required": false;
+        };
+        "pinned": {
+            "alias": "clrDgPinned";
+            "required": false;
+        };
+        "treeToggle": {
+            "alias": "clrDgTreeToggle";
+            "required": false;
+        };
+        "colType": {
+            "alias": "clrDgColType";
+            "required": false;
+        };
+        "field": {
+            "alias": "clrDgField";
+            "required": false;
+        };
+        "sortBy": {
+            "alias": "clrDgSortBy";
+            "required": false;
+        };
+        "sortOrder": {
+            "alias": "clrDgSortOrder";
+            "required": false;
+        };
+        "updateFilterValue": {
+            "alias": "clrFilterValue";
+            "required": false;
+        };
+    }, {
+        "sortOrderChange": "clrDgSortOrderChange";
+        "pinnedChange": "clrDgPinnedChange";
+        "filterValueChange": "clrFilterValueChange";
+    }, ["projectedFilter"], ["clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter", "*", "clr-dg-column-actions"], false, [{
+        directive: typeof i1_2.ClrPopoverHostDirective;
+        inputs: {};
+        outputs: {};
+    }]>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumn<any>, [null, null, null, null, null, null, null, null, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumn<any>, [null, null, null, null, null, null, null, null, {
+        optional: true;
+    }]>;
 }
 
 // Warning: (ae-forgotten-export) The symbol "ClrDropdownItem" needs to be exported by the entry point clr-angular-data.d.ts
@@ -391,7 +522,12 @@ export class ClrDatagridColumnAction extends ClrDropdownItem {
     protected onColumnActionClick(): void;
     protected onFocus(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridColumnAction, "[clrDgColumnAction]", never, { "canClosePopover": { "alias": "clrCanClosePopover"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridColumnAction, "[clrDgColumnAction]", never, {
+        "canClosePopover": {
+            "alias": "clrCanClosePopover";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnAction, never>;
 }
@@ -433,9 +569,21 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
     protected togglePinned(): void;
     protected get triggerLabel(): string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnActions, "clr-dg-column-actions", never, { "keepFilterInHeader": { "alias": "clrDgKeepFilterInHeader"; "required": false; }; }, {}, ["projectedItems"], ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnActions, "clr-dg-column-actions", never, {
+        "keepFilterInHeader": {
+            "alias": "clrDgKeepFilterInHeader";
+            "required": false;
+        };
+    }, {}, ["projectedItems"], ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnActions, [null, null, null, { skipSelf: true; }, null, null, { optional: true; }, { optional: true; skipSelf: true; }, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnActions, [null, null, null, {
+        skipSelf: true;
+    }, null, null, {
+        optional: true;
+    }, {
+        optional: true;
+        skipSelf: true;
+    }, null, null, null]>;
 }
 
 // @public (undocumented)
@@ -496,9 +644,13 @@ export class ClrDatagridColumnToggle implements OnDestroy {
     // (undocumented)
     toggleSwitchPanel(): void;
     // (undocumented)
-    readonly trackByFn: i0.TrackByFunction<ColumnState>;
+    readonly trackByFn: TrackByFunction<ColumnState>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnToggle, "clr-dg-column-toggle", never, {}, {}, never, never, false, [{ directive: typeof i1_2.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnToggle, "clr-dg-column-toggle", never, {}, {}, never, never, false, [{
+        directive: typeof i1_2.ClrPopoverHostDirective;
+        inputs: {};
+        outputs: {};
+    }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnToggle, never>;
 }
@@ -515,7 +667,9 @@ export class ClrDatagridColumnToggleButton {
     // (undocumented)
     selectAll(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnToggleButton, "clr-dg-column-toggle-button", never, {}, { "clrAllSelected": "clrAllSelected"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnToggleButton, "clr-dg-column-toggle-button", never, {}, {
+        "clrAllSelected": "clrAllSelected";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnToggleButton, never>;
 }
@@ -553,7 +707,20 @@ export class ClrDatagridDetail {
     // (undocumented)
     get width(): number | null;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetail, "clr-dg-detail", never, { "ariaLabelledBy": { "alias": "clrDetailAriaLabelledBy"; "required": false; }; "ariaLabel": { "alias": "clrDetailAriaLabel"; "required": false; }; "detailWidth": { "alias": "clrDetailWidth"; "required": false; }; }, {}, ["header"], ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetail, "clr-dg-detail", never, {
+        "ariaLabelledBy": {
+            "alias": "clrDetailAriaLabelledBy";
+            "required": false;
+        };
+        "ariaLabel": {
+            "alias": "clrDetailAriaLabel";
+            "required": false;
+        };
+        "detailWidth": {
+            "alias": "clrDetailWidth";
+            "required": false;
+        };
+    }, {}, ["header"], ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridDetail, never>;
 }
@@ -619,9 +786,24 @@ export class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // (undocumented)
     popoverType: ClrPopoverType;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridFilter<any>, "clr-dg-filter", never, { "open": { "alias": "clrDgFilterOpen"; "required": false; }; "customFilter": { "alias": "clrDgFilter"; "required": false; }; }, { "openChange": "clrDgFilterOpenChange"; }, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridFilter<any>, "clr-dg-filter", never, {
+        "open": {
+            "alias": "clrDgFilterOpen";
+            "required": false;
+        };
+        "customFilter": {
+            "alias": "clrDgFilter";
+            "required": false;
+        };
+    }, {
+        "openChange": "clrDgFilterOpenChange";
+    }, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridFilter<any>, [null, null, null, { optional: true; }, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridFilter<any>, [null, null, null, {
+        optional: true;
+    }, {
+        optional: true;
+    }]>;
 }
 
 // @public (undocumented)
@@ -672,9 +854,22 @@ export class ClrDatagridHideableColumn implements OnDestroy {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridHideableColumn, "[clrDgHideableColumn]", never, { "clrDgHideableColumn": { "alias": "clrDgHideableColumn"; "required": false; }; "clrDgHidden": { "alias": "clrDgHidden"; "required": false; }; }, { "hiddenChange": "clrDgHiddenChange"; }, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridHideableColumn, "[clrDgHideableColumn]", never, {
+        "clrDgHideableColumn": {
+            "alias": "clrDgHideableColumn";
+            "required": false;
+        };
+        "clrDgHidden": {
+            "alias": "clrDgHidden";
+            "required": false;
+        };
+    }, {
+        "hiddenChange": "clrDgHiddenChange";
+    }, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridHideableColumn, [null, null, null, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridHideableColumn, [null, null, null, {
+        optional: true;
+    }]>;
 }
 
 // @public (undocumented)
@@ -692,7 +887,16 @@ export class ClrDatagridItems<T> implements DoCheck, OnDestroy {
     // (undocumented)
     set trackBy(value: TrackByFunction<T>);
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridItems<any>, "[clrDgItems][clrDgItemsOf]", never, { "rawItems": { "alias": "clrDgItemsOf"; "required": false; }; "trackBy": { "alias": "clrDgItemsTrackBy"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridItems<any>, "[clrDgItems][clrDgItemsOf]", never, {
+        "rawItems": {
+            "alias": "clrDgItemsOf";
+            "required": false;
+        };
+        "trackBy": {
+            "alias": "clrDgItemsTrackBy";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridItems<any>, never>;
 }
@@ -743,7 +947,16 @@ export class ClrDatagridPageSize {
     // (undocumented)
     pageSizeOptionsId: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridPageSize, "clr-dg-page-size", never, { "pageSizeOptions": { "alias": "clrPageSizeOptions"; "required": false; }; "pageSizeOptionsId": { "alias": "clrPageSizeOptionsId"; "required": false; }; }, {}, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridPageSize, "clr-dg-page-size", never, {
+        "pageSizeOptions": {
+            "alias": "clrPageSizeOptions";
+            "required": false;
+        };
+        "pageSizeOptionsId": {
+            "alias": "clrPageSizeOptionsId";
+            "required": false;
+        };
+    }, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridPageSize, never>;
 }
@@ -785,7 +998,30 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
     // (undocumented)
     verifyCurrentPage(event: any): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridPagination, "clr-dg-pagination", never, { "disableCurrentPageInput": { "alias": "clrDgPageInputDisabled"; "required": false; }; "pageSize": { "alias": "clrDgPageSize"; "required": false; }; "totalItems": { "alias": "clrDgTotalItems"; "required": false; }; "lastPage": { "alias": "clrDgLastPage"; "required": false; }; "currentPage": { "alias": "clrDgPage"; "required": false; }; }, { "currentChanged": "clrDgPageChange"; }, ["_pageSizeComponent"], ["clr-dg-page-size", "*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridPagination, "clr-dg-pagination", never, {
+        "disableCurrentPageInput": {
+            "alias": "clrDgPageInputDisabled";
+            "required": false;
+        };
+        "pageSize": {
+            "alias": "clrDgPageSize";
+            "required": false;
+        };
+        "totalItems": {
+            "alias": "clrDgTotalItems";
+            "required": false;
+        };
+        "lastPage": {
+            "alias": "clrDgLastPage";
+            "required": false;
+        };
+        "currentPage": {
+            "alias": "clrDgPage";
+            "required": false;
+        };
+    }, {
+        "currentChanged": "clrDgPageChange";
+    }, ["_pageSizeComponent"], ["clr-dg-page-size", "*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridPagination, never>;
 }
@@ -857,10 +1093,8 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
     globalExpandable: ExpandableRowsCount;
     // (undocumented)
     id: string;
-    // Warning: (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-angular-data.d.ts
-    //
     // (undocumented)
-    get identifyBy(): i1.ClrDatagridItemsIdentityFunction<any>;
+    get identifyBy(): ClrDatagridItemsIdentityFunction<any>;
     get item(): T;
     set item(item: T);
     // @internal (undocumented)
@@ -918,9 +1152,71 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
     // (undocumented)
     get _view(): any;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRow<any>, "clr-dg-row", never, { "detailDisabled": { "alias": "clrDgDetailDisabled"; "required": false; }; "detailHidden": { "alias": "clrDgDetailHidden"; "required": false; }; "skeletonLoading": { "alias": "clrDgSkeletonLoading"; "required": false; }; "treeExpandable": { "alias": "clrDgTreeExpandable"; "required": false; }; "item": { "alias": "clrDgItem"; "required": false; }; "clrDgSelectable": { "alias": "clrDgSelectable"; "required": false; }; "selected": { "alias": "clrDgSelected"; "required": false; }; "expanded": { "alias": "clrDgExpanded"; "required": false; }; "clrDgDetailOpenLabel": { "alias": "clrDgDetailOpenLabel"; "required": false; }; "clrDgDetailCloseLabel": { "alias": "clrDgDetailCloseLabel"; "required": false; }; "clrDgRowSelectionLabel": { "alias": "clrDgRowSelectionLabel"; "required": false; }; }, { "selectedChanged": "clrDgSelectedChange"; "expandedChange": "clrDgExpandedChange"; }, ["dgCells"], ["clr-dg-action-overflow", "clr-dg-cell", "clr-dg-row-detail"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRow<any>, "clr-dg-row", never, {
+        "detailDisabled": {
+            "alias": "clrDgDetailDisabled";
+            "required": false;
+        };
+        "detailHidden": {
+            "alias": "clrDgDetailHidden";
+            "required": false;
+        };
+        "skeletonLoading": {
+            "alias": "clrDgSkeletonLoading";
+            "required": false;
+        };
+        "treeExpandable": {
+            "alias": "clrDgTreeExpandable";
+            "required": false;
+        };
+        "item": {
+            "alias": "clrDgItem";
+            "required": false;
+        };
+        "clrDgSelectable": {
+            "alias": "clrDgSelectable";
+            "required": false;
+        };
+        "selected": {
+            "alias": "clrDgSelected";
+            "required": false;
+        };
+        "expanded": {
+            "alias": "clrDgExpanded";
+            "required": false;
+        };
+        "clrDgDetailOpenLabel": {
+            "alias": "clrDgDetailOpenLabel";
+            "required": false;
+        };
+        "clrDgDetailCloseLabel": {
+            "alias": "clrDgDetailCloseLabel";
+            "required": false;
+        };
+        "clrDgRowSelectionLabel": {
+            "alias": "clrDgRowSelectionLabel";
+            "required": false;
+        };
+    }, {
+        "selectedChanged": "clrDgSelectedChange";
+        "expandedChange": "clrDgExpandedChange";
+    }, ["dgCells"], ["clr-dg-action-overflow", "clr-dg-cell", "clr-dg-row-detail"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridRow<any>, [{ optional: true; }, { optional: true; }, { optional: true; }, null, { optional: true; }, { optional: true; }, null, null, null, null, { optional: true; }, { optional: true; }, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridRow<any>, [{
+        optional: true;
+    }, {
+        optional: true;
+    }, {
+        optional: true;
+    }, null, {
+        optional: true;
+    }, {
+        optional: true;
+    }, null, null, null, null, {
+        optional: true;
+    }, {
+        optional: true;
+    }, null]>;
 }
 
 // @public
@@ -962,7 +1258,20 @@ export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, Af
     // (undocumented)
     SELECTION_TYPE: typeof SelectionType;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRowDetail, "clr-dg-row-detail", never, { "_beginningOfExpandableContentAriaText": { "alias": "clrRowDetailBeginningAriaText"; "required": false; }; "_endOfExpandableContentAriaText": { "alias": "clrRowDetailEndAriaText"; "required": false; }; "replace": { "alias": "clrDgReplace"; "required": false; }; }, {}, ["cells"], ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridRowDetail, "clr-dg-row-detail", never, {
+        "_beginningOfExpandableContentAriaText": {
+            "alias": "clrRowDetailBeginningAriaText";
+            "required": false;
+        };
+        "_endOfExpandableContentAriaText": {
+            "alias": "clrRowDetailEndAriaText";
+            "required": false;
+        };
+        "replace": {
+            "alias": "clrDgReplace";
+            "required": false;
+        };
+    }, {}, ["cells"], ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridRowDetail, never>;
 }
@@ -996,7 +1305,16 @@ export class ClrDatagridSingleSelectionValueAccessor implements ControlValueAcce
     // (undocumented)
     writeValue(value: any): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridSingleSelectionValueAccessor, "input[type=radio][clrDgSingleSelectionRadio]", never, { "value": { "alias": "value"; "required": false; }; "clrDgIdentityFn": { "alias": "clrDgIdentityFn"; "required": false; }; }, {}, never, never, true, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridSingleSelectionValueAccessor, "input[type=radio][clrDgSingleSelectionRadio]", never, {
+        "value": {
+            "alias": "value";
+            "required": false;
+        };
+        "clrDgIdentityFn": {
+            "alias": "clrDgIdentityFn";
+            "required": false;
+        };
+    }, {}, never, never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridSingleSelectionValueAccessor, never>;
 }
@@ -1057,7 +1375,20 @@ export class ClrDatagridTreeItems<T> extends DatagridTreeRenderer<T> {
     // (undocumented)
     roots: T[];
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridTreeItems<any>, "[clrDgTreeItems][clrDgTreeItemsOf]", never, { "roots": { "alias": "clrDgTreeItemsOf"; "required": false; }; "getChildren": { "alias": "clrDgTreeItemsGetChildren"; "required": false; }; "cascadeSelection": { "alias": "clrDgTreeItemsCascadeSelection"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridTreeItems<any>, "[clrDgTreeItems][clrDgTreeItemsOf]", never, {
+        "roots": {
+            "alias": "clrDgTreeItemsOf";
+            "required": false;
+        };
+        "getChildren": {
+            "alias": "clrDgTreeItemsGetChildren";
+            "required": false;
+        };
+        "cascadeSelection": {
+            "alias": "clrDgTreeItemsCascadeSelection";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridTreeItems<any>, never>;
 }
@@ -1077,7 +1408,16 @@ export class ClrDatagridTreeToggleButton implements OnDestroy {
     // (undocumented)
     protected toggle(event: MouseEvent): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridTreeToggleButton, "button[clrDgTreeToggleButton]", never, { "node": { "alias": "clrDgTreeToggleButton"; "required": true; }; "labelIds": { "alias": "labelIds"; "required": true; }; }, {}, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridTreeToggleButton, "button[clrDgTreeToggleButton]", never, {
+        "node": {
+            "alias": "clrDgTreeToggleButton";
+            "required": true;
+        };
+        "labelIds": {
+            "alias": "labelIds";
+            "required": true;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridTreeToggleButton, never>;
 }
@@ -1133,7 +1473,46 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     // (undocumented)
     get totalItems(): number;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridVirtualScrollDirective<any>, "[clrVirtualScroll],[ClrVirtualScroll]", never, { "persistItems": { "alias": "clrVirtualPersistItems"; "required": false; }; "cdkVirtualForOf": { "alias": "clrVirtualRowsOf"; "required": false; }; "cdkVirtualForTrackBy": { "alias": "clrVirtualRowsTrackBy"; "required": false; }; "cdkVirtualForTemplate": { "alias": "clrVirtualRowsTemplate"; "required": false; }; "cdkVirtualForTemplateCacheSize": { "alias": "clrVirtualRowsTemplateCacheSize"; "required": false; }; "itemSize": { "alias": "clrVirtualRowsItemSize"; "required": false; }; "minBufferPx": { "alias": "clrVirtualRowsMinBufferPx"; "required": false; }; "maxBufferPx": { "alias": "clrVirtualRowsMaxBufferPx"; "required": false; }; "dataRange": { "alias": "clrVirtualDataRange"; "required": false; }; }, { "renderedRangeChange": "renderedRangeChange"; }, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridVirtualScrollDirective<any>, "[clrVirtualScroll],[ClrVirtualScroll]", never, {
+        "persistItems": {
+            "alias": "clrVirtualPersistItems";
+            "required": false;
+        };
+        "cdkVirtualForOf": {
+            "alias": "clrVirtualRowsOf";
+            "required": false;
+        };
+        "cdkVirtualForTrackBy": {
+            "alias": "clrVirtualRowsTrackBy";
+            "required": false;
+        };
+        "cdkVirtualForTemplate": {
+            "alias": "clrVirtualRowsTemplate";
+            "required": false;
+        };
+        "cdkVirtualForTemplateCacheSize": {
+            "alias": "clrVirtualRowsTemplateCacheSize";
+            "required": false;
+        };
+        "itemSize": {
+            "alias": "clrVirtualRowsItemSize";
+            "required": false;
+        };
+        "minBufferPx": {
+            "alias": "clrVirtualRowsMinBufferPx";
+            "required": false;
+        };
+        "maxBufferPx": {
+            "alias": "clrVirtualRowsMaxBufferPx";
+            "required": false;
+        };
+        "dataRange": {
+            "alias": "clrVirtualDataRange";
+            "required": false;
+        };
+    }, {
+        "renderedRangeChange": "renderedRangeChange";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridVirtualScrollDirective<any>, never>;
 }
@@ -1163,7 +1542,26 @@ export class ClrDatagridVirtualTree<T> extends DatagridTreeRenderer<T> {
     // (undocumented)
     roots: T[];
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridVirtualTree<any>, "[ClrVirtualScroll][clrVirtualTreeOf],[clrVirtualScroll][clrVirtualTreeOf],[ClrVirtualScroll][clrVirtualTreeDataRange],[clrVirtualScroll][clrVirtualTreeDataRange]", never, { "roots": { "alias": "clrVirtualTreeOf"; "required": false; }; "getChildren": { "alias": "clrVirtualTreeGetChildren"; "required": false; }; "cascadeSelection": { "alias": "clrVirtualTreeCascadeSelection"; "required": false; }; "dataRange": { "alias": "clrVirtualTreeDataRange"; "required": false; }; }, { "renderedRootsChange": "clrVirtualTreeRenderedRootsChange"; }, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridVirtualTree<any>, "[ClrVirtualScroll][clrVirtualTreeOf],[clrVirtualScroll][clrVirtualTreeOf],[ClrVirtualScroll][clrVirtualTreeDataRange],[clrVirtualScroll][clrVirtualTreeDataRange]", never, {
+        "roots": {
+            "alias": "clrVirtualTreeOf";
+            "required": false;
+        };
+        "getChildren": {
+            "alias": "clrVirtualTreeGetChildren";
+            "required": false;
+        };
+        "cascadeSelection": {
+            "alias": "clrVirtualTreeCascadeSelection";
+            "required": false;
+        };
+        "dataRange": {
+            "alias": "clrVirtualTreeDataRange";
+            "required": false;
+        };
+    }, {
+        "renderedRootsChange": "clrVirtualTreeRenderedRootsChange";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridVirtualTree<any>, never>;
 }
@@ -1174,6 +1572,7 @@ export class ClrDataModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDataModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrDataModule>;
+    // Warning: (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-angular-data.d.ts
     // Warning: (ae-forgotten-export) The symbol "i2" needs to be exported by the entry point clr-angular-data.d.ts
     // Warning: (ae-forgotten-export) The symbol "i3" needs to be exported by the entry point clr-angular-data.d.ts
     //
@@ -1197,7 +1596,14 @@ export class ClrIfDetail implements OnInit, OnDestroy {
         $implicit: any;
     };
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfDetail, "[clrIfDetail]", never, { "state": { "alias": "clrIfDetail"; "required": false; }; }, { "stateChange": "clrIfDetailChange"; }, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfDetail, "[clrIfDetail]", never, {
+        "state": {
+            "alias": "clrIfDetail";
+            "required": false;
+        };
+    }, {
+        "stateChange": "clrIfDetailChange";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfDetail, never>;
 }
@@ -1217,7 +1623,16 @@ export class ClrRecursiveForOf<T> implements OnChanges, OnDestroy {
     // (undocumented)
     nodes: T | T[];
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRecursiveForOf<any>, "[clrRecursiveFor][clrRecursiveForOf]", never, { "nodes": { "alias": "clrRecursiveForOf"; "required": false; }; "getChildren": { "alias": "clrRecursiveForGetChildren"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRecursiveForOf<any>, "[clrRecursiveFor][clrRecursiveForOf]", never, {
+        "nodes": {
+            "alias": "clrRecursiveForOf";
+            "required": false;
+        };
+        "getChildren": {
+            "alias": "clrRecursiveForGetChildren";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrRecursiveForOf<any>, never>;
 }
@@ -1286,9 +1701,31 @@ export class ClrStackBlock implements OnInit {
     // (undocumented)
     uniqueId: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackBlock, "clr-stack-block", never, { "expanded": { "alias": "clrSbExpanded"; "required": false; }; "expandable": { "alias": "clrSbExpandable"; "required": false; }; "ariaLevel": { "alias": "clrStackViewLevel"; "required": false; }; "setChangedValue": { "alias": "clrSbNotifyChange"; "required": false; }; }, { "expandedChange": "clrSbExpandedChange"; }, ["stackBlockTitle"], ["clr-stack-label", "*", "clr-stack-block"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackBlock, "clr-stack-block", never, {
+        "expanded": {
+            "alias": "clrSbExpanded";
+            "required": false;
+        };
+        "expandable": {
+            "alias": "clrSbExpandable";
+            "required": false;
+        };
+        "ariaLevel": {
+            "alias": "clrStackViewLevel";
+            "required": false;
+        };
+        "setChangedValue": {
+            "alias": "clrSbNotifyChange";
+            "required": false;
+        };
+    }, {
+        "expandedChange": "clrSbExpandedChange";
+    }, ["stackBlockTitle"], ["clr-stack-label", "*", "clr-stack-block"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackBlock, [{ optional: true; skipSelf: true; }, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackBlock, [{
+        optional: true;
+        skipSelf: true;
+    }, null]>;
 }
 
 // @public (undocumented)
@@ -1308,7 +1745,12 @@ export class ClrStackHeader {
     // (undocumented)
     stackView: ClrStackView;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackHeader, "clr-stack-header", never, { "ariaLevel": { "alias": "clrStackHeaderLevel"; "required": false; }; }, {}, never, ["*", ".stack-action"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackHeader, "clr-stack-header", never, {
+        "ariaLevel": {
+            "alias": "clrStackHeaderLevel";
+            "required": false;
+        };
+    }, {}, never, ["*", ".stack-action"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackHeader, never>;
 }
@@ -1337,7 +1779,12 @@ export class ClrStackViewLabel implements OnInit {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackViewLabel, "clr-stack-label", never, { "id": { "alias": "id"; "required": false; }; }, {}, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackViewLabel, "clr-stack-label", never, {
+        "id": {
+            "alias": "id";
+            "required": false;
+        };
+    }, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackViewLabel, never>;
 }
@@ -1370,7 +1817,12 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTree<any>, "clr-tree", never, { "lazy": { "alias": "clrLazy"; "required": false; }; }, {}, ["rootNodes"], ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTree<any>, "clr-tree", never, {
+        "lazy": {
+            "alias": "clrLazy";
+            "required": false;
+        };
+    }, {}, ["rootNodes"], ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTree<any>, never>;
 }
@@ -1447,9 +1899,36 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     // (undocumented)
     get treeNodeLink(): ClrTreeNodeLink;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTreeNode<any>, "clr-tree-node", never, { "expandable": { "alias": "clrExpandable"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; "selected": { "alias": "clrSelected"; "required": false; }; "expanded": { "alias": "clrExpanded"; "required": false; }; "clrForTypeAhead": { "alias": "clrForTypeAhead"; "required": false; }; }, { "selectedChange": "clrSelectedChange"; "expandedChange": "clrExpandedChange"; }, ["treeNodeLinkList"], ["*", "clr-tree-node", "[clrIfExpanded]"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTreeNode<any>, "clr-tree-node", never, {
+        "expandable": {
+            "alias": "clrExpandable";
+            "required": false;
+        };
+        "disabled": {
+            "alias": "clrDisabled";
+            "required": false;
+        };
+        "selected": {
+            "alias": "clrSelected";
+            "required": false;
+        };
+        "expanded": {
+            "alias": "clrExpanded";
+            "required": false;
+        };
+        "clrForTypeAhead": {
+            "alias": "clrForTypeAhead";
+            "required": false;
+        };
+    }, {
+        "selectedChange": "clrSelectedChange";
+        "expandedChange": "clrExpandedChange";
+    }, ["treeNodeLinkList"], ["*", "clr-tree-node", "[clrIfExpanded]"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeNode<any>, [null, { optional: true; skipSelf: true; }, null, null, null, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeNode<any>, [null, {
+        optional: true;
+        skipSelf: true;
+    }, null, null, null, null, null, null]>;
 }
 
 // @public (undocumented)
@@ -1507,7 +1986,9 @@ export class DatagridDetailRegisterer {
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridDetailRegisterer, "[clrIfExpanded]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridDetailRegisterer, [{ optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridDetailRegisterer, [{
+        optional: true;
+    }]>;
 }
 
 // @public (undocumented)
@@ -1529,7 +2010,9 @@ export class DatagridHeaderRenderer implements OnDestroy {
     // (undocumented)
     setWidth(state: ColumnState): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridHeaderRenderer, "clr-dg-column", never, {}, { "resizeEmitter": "clrDgColumnResize"; }, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridHeaderRenderer, "clr-dg-column", never, {}, {
+        "resizeEmitter": "clrDgColumnResize";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridHeaderRenderer, never>;
 }
@@ -1597,7 +2080,34 @@ export class DatagridNumericFilter<T = any> extends DatagridFilterRegistrar<T, D
     get value(): [number, number];
     set value(values: [number, number]);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridNumericFilter<any>, "clr-dg-numeric-filter", never, { "minPlaceholder": { "alias": "clrFilterMinPlaceholder"; "required": false; }; "maxPlaceholder": { "alias": "clrFilterMaxPlaceholder"; "required": false; }; "fromLabel": { "alias": "clrFilterFromLabel"; "required": false; }; "toLabel": { "alias": "clrFilterToLabel"; "required": false; }; "value": { "alias": "clrFilterValue"; "required": false; }; "customNumericFilter": { "alias": "clrDgNumericFilter"; "required": false; }; }, { "filterValueChange": "clrFilterValueChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridNumericFilter<any>, "clr-dg-numeric-filter", never, {
+        "minPlaceholder": {
+            "alias": "clrFilterMinPlaceholder";
+            "required": false;
+        };
+        "maxPlaceholder": {
+            "alias": "clrFilterMaxPlaceholder";
+            "required": false;
+        };
+        "fromLabel": {
+            "alias": "clrFilterFromLabel";
+            "required": false;
+        };
+        "toLabel": {
+            "alias": "clrFilterToLabel";
+            "required": false;
+        };
+        "value": {
+            "alias": "clrFilterValue";
+            "required": false;
+        };
+        "customNumericFilter": {
+            "alias": "clrDgNumericFilter";
+            "required": false;
+        };
+    }, {
+        "filterValueChange": "clrFilterValueChange";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridNumericFilter<any>, never>;
 }
@@ -1692,7 +2202,26 @@ export class DatagridStringFilter<T = any> extends DatagridFilterRegistrar<T, Da
     get value(): string;
     set value(value: string);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridStringFilter<any>, "clr-dg-string-filter", never, { "placeholder": { "alias": "clrFilterPlaceholder"; "required": false; }; "label": { "alias": "clrFilterLabel"; "required": false; }; "customStringFilter": { "alias": "clrDgStringFilter"; "required": false; }; "value": { "alias": "clrFilterValue"; "required": false; }; }, { "filterValueChange": "clrFilterValueChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridStringFilter<any>, "clr-dg-string-filter", never, {
+        "placeholder": {
+            "alias": "clrFilterPlaceholder";
+            "required": false;
+        };
+        "label": {
+            "alias": "clrFilterLabel";
+            "required": false;
+        };
+        "customStringFilter": {
+            "alias": "clrDgStringFilter";
+            "required": false;
+        };
+        "value": {
+            "alias": "clrFilterValue";
+            "required": false;
+        };
+    }, {
+        "filterValueChange": "clrFilterValueChange";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridStringFilter<any>, never>;
 }
@@ -1769,7 +2298,7 @@ class Selection_2<T = any> {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<Selection_2<any>, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<Selection_2<any>>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 export { Selection_2 as Selection }
 
@@ -1879,7 +2408,7 @@ export class WrappedRow implements AfterViewInit, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1601:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
+// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1799:5 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
 
 // (No @packageDocumentation comment for this package)
 

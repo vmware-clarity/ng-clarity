@@ -83,9 +83,45 @@ export class ClrButton implements LoadingListener {
     get type(): string;
     set type(value: string);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrButton, "clr-button", never, { "routerLinkActiveClasses": { "alias": "routerLinkActive"; "required": false; }; "inMenu": { "alias": "clrInMenu"; "required": false; }; "classNames": { "alias": "class"; "required": false; }; "name": { "alias": "name"; "required": false; }; "type": { "alias": "type"; "required": false; }; "id": { "alias": "id"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; }, { "_click": "click"; }, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrButton, "clr-button", never, {
+        "routerLinkActiveClasses": {
+            "alias": "routerLinkActive";
+            "required": false;
+        };
+        "inMenu": {
+            "alias": "clrInMenu";
+            "required": false;
+        };
+        "classNames": {
+            "alias": "class";
+            "required": false;
+        };
+        "name": {
+            "alias": "name";
+            "required": false;
+        };
+        "type": {
+            "alias": "type";
+            "required": false;
+        };
+        "id": {
+            "alias": "id";
+            "required": false;
+        };
+        "disabled": {
+            "alias": "disabled";
+            "required": false;
+        };
+    }, {
+        "_click": "click";
+    }, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrButton, [{ optional: true; }, { optional: true; skipSelf: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrButton, [{
+        optional: true;
+    }, {
+        optional: true;
+        skipSelf: true;
+    }]>;
 }
 
 // @public (undocumented)
@@ -139,7 +175,20 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
     protected popoverType: ClrPopoverType;
     rearrangeButton(button: ClrButton): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrButtonGroup, "clr-button-group", never, { "clrToggleButtonAriaLabel": { "alias": "clrToggleButtonAriaLabel"; "required": false; }; "menuPosition": { "alias": "clrMenuPosition"; "required": false; }; }, {}, ["buttons"], never, false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrButtonGroup, "clr-button-group", never, {
+        "clrToggleButtonAriaLabel": {
+            "alias": "clrToggleButtonAriaLabel";
+            "required": false;
+        };
+        "menuPosition": {
+            "alias": "clrMenuPosition";
+            "required": false;
+        };
+    }, {}, ["buttons"], never, false, [{
+        directive: typeof i1.ClrPopoverHostDirective;
+        inputs: {};
+        outputs: {};
+    }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrButtonGroup, never>;
 }
@@ -188,7 +237,14 @@ export class ClrLoadingButton implements LoadingListener {
     // (undocumented)
     state: ClrLoadingState;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrLoadingButton, "button[clrLoading]", never, { "disabled": { "alias": "disabled"; "required": false; }; }, { "clrLoadingChange": "clrLoadingChange"; }, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrLoadingButton, "button[clrLoading]", never, {
+        "disabled": {
+            "alias": "disabled";
+            "required": false;
+        };
+    }, {
+        "clrLoadingChange": "clrLoadingChange";
+    }, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoadingButton, never>;
 }
@@ -205,7 +261,7 @@ export class ClrLoadingButtonModule {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-button.d.ts:162:283 - (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-angular-button.d.ts
+// dist/clr-angular/types/clr-angular-button.d.ts:208:5 - (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-angular-button.d.ts
 
 // (No @packageDocumentation comment for this package)
 
