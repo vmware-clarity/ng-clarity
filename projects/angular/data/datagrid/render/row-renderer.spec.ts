@@ -13,7 +13,7 @@ import type { Mock } from 'vitest';
 
 import { DatagridColumnChanges } from '../enums/column-changes.enum';
 import { DatagridDisplayMode } from '../enums/display-mode.enum';
-import { DATAGRID_SPEC_PROVIDERS } from '../helpers';
+import { DATAGRID_SPEC_PROVIDERS } from '../helpers.mock';
 import { DatagridCellRenderer } from './cell-renderer';
 import { STRICT_WIDTH_CLASS } from './constants';
 import { DatagridRowRenderer } from './row-renderer';

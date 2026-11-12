@@ -12,7 +12,7 @@ import { ClrCommonStringsService } from '@clr/angular/utils';
 import { Subject } from 'rxjs';
 
 import { ClrDatagridFilter } from './datagrid-filter';
-import { DATAGRID_SPEC_PROVIDERS } from './helpers';
+import { DATAGRID_SPEC_PROVIDERS } from './helpers.mock';
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
 import { CustomFilter } from './providers/custom-filter';
 import { FiltersProvider } from './providers/filters';

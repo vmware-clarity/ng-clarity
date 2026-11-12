@@ -15,7 +15,7 @@ import type { Mock } from 'vitest';
 import { ClrDatagridColumn } from '../datagrid-column';
 import { ClrDatagridModule } from '../datagrid.module';
 import { DatagridHeaderRenderer } from './header-renderer';
-import { DATAGRID_SPEC_PROVIDERS } from '../helpers';
+import { DATAGRID_SPEC_PROVIDERS } from '../helpers.mock';
 import { DatagridMainRenderer } from './main-renderer';
 import { DatagridRenderOrganizer } from './render-organizer';
 import { MockDatagridRenderOrganizer } from './render-organizer.mock';

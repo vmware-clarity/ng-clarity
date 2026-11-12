@@ -122,7 +122,7 @@
               "projects/angular/schematics/**",
               "projects/angular/utils/testing/**",
               "projects/angular/forms/tests/**",
-              "projects/angular/data/datagrid/helpers.ts"
+              "**/*.mock.ts"
             ],
             "exclude": ["schematics/**"],
             "browserViewport": "1280x1024"

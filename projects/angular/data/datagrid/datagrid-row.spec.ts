@@ -16,7 +16,7 @@ import { ClrDatagridRow } from './datagrid-row';
 import { ClrDatagridModule } from './datagrid.module';
 import { DatagridDisplayMode } from './enums/display-mode.enum';
 import { SelectionType } from './enums/selection-type';
-import { DATAGRID_SPEC_PROVIDERS } from './helpers';
+import { DATAGRID_SPEC_PROVIDERS } from './helpers.mock';
 import { MockDisplayModeService } from './providers/display-mode.mock';
 import { DisplayModeService } from './providers/display-mode.service';
 import { ExpandableRowsCount } from './providers/global-expandable-rows';

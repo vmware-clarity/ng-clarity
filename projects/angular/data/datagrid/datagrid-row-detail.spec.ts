@@ -10,7 +10,7 @@ import { createTestHelpers, TestContext } from '@clr/angular/testing';
 
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
 import { ClrDatagridRowDetail } from './datagrid-row-detail';
-import { DATAGRID_SPEC_PROVIDERS } from './helpers';
+import { DATAGRID_SPEC_PROVIDERS } from './helpers.mock';
 
 describe('Datagrid', () => {
   describe('Components', () => {

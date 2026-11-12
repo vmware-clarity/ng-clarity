@@ -17,7 +17,7 @@ import { DatagridStringFilter } from './built-in/filters/datagrid-string-filter'
 import { DatagridStringFilterImpl } from './built-in/filters/datagrid-string-filter-impl';
 import { ClrDatagridColumn } from './datagrid-column';
 import { ClrDatagridSortOrder } from './enums/sort-order.enum';
-import { DATAGRID_SPEC_PROVIDERS } from './helpers';
+import { DATAGRID_SPEC_PROVIDERS } from './helpers.mock';
 import { ClrDatagridComparatorInterface } from './interfaces/comparator.interface';
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
 import { ClrDatagridStringFilterInterface } from './interfaces/string-filter.interface';
