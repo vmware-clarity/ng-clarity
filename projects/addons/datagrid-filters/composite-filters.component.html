@@ -6,7 +6,7 @@
   -->
 <div class="composite-filter-container">
   @if (visibleProperties.length > 0 || semiPredefinedFilters.length > 0 || toggleFilters.length > 0) {
-    <div class="manage-filter-container">
+    <div #filterContainer class="manage-filter-container">
       <ng-template #separator>
         <span
           class="filter-group-separator"

@@ -599,6 +599,22 @@ describe('CompositeFiltersComponent', () => {
     expect(document.activeElement).toBe(this.fixture.nativeElement.querySelector('[data-test-id="add-button"]'));
   });
 
+  it('moves focus to the first filter after Clear all when Add filter is disabled', async function (this: ThisTest) {
+    this.component.predefinedFilters = [...this.component.filterableProperties];
+    this.fixture.detectChanges();
+    this.component.onFilterCriteriaChange(enumPropertyFilter);
+    this.fixture.detectChanges();
+    const addButton: HTMLButtonElement = this.fixture.nativeElement.querySelector('[data-test-id="add-button"]');
+    const clearAll: HTMLButtonElement = this.fixture.nativeElement.querySelector('[data-test-id="clear-all-button"]');
+    clearAll.focus();
+    clearAll.click();
+    this.fixture.detectChanges();
+    await this.fixture.whenStable();
+    expect(addButton.disabled).toBeTrue();
+    const firstPill: HTMLButtonElement = this.fixture.nativeElement.querySelector('appfx-manage-filter button');
+    expect(document.activeElement).toBe(firstPill);
+  });
+
   it('moves focus to Add filter after a user-added pill is removed', async function (this: ThisTest) {
     this.component.onFilterCriteriaChange(enumPropertyFilter);
     this.fixture.detectChanges();

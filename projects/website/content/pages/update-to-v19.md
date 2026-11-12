@@ -73,3 +73,21 @@ Some fields became accessors: `IfExpandService.expandable`, `hasExpandTemplate`,
 `isNavLevel2OnPage`. This is source compatible unless a subclass redeclares them as fields.
 
 When upgrading through v18, remove any `*WillyWonka` / `*OompaLoompa` imports left by the v18 rename schematic.
+
+## Deprecations
+
+### Advanced Filters selector (Addons)
+
+The `appfx-datagrid-filters` selector from `@clr/addons/datagrid-filters` is deprecated and will be removed in v20.
+Use `clr-advanced-filters` instead. Every filter bar that still uses the deprecated selector logs a console warning.
+
+Only the tag changes. Inputs, outputs, `AppfxDatagridFiltersModule`, `DataGridFiltersComponent` and the
+`@clr/addons/datagrid-filters` import path stay the same, and `appfx-datagrid` already uses the new selector.
+
+```html
+<!-- Before -->
+<appfx-datagrid-filters [filterMode]="filterMode" [filterableProperties]="properties"></appfx-datagrid-filters>
+
+<!-- After -->
+<clr-advanced-filters [filterMode]="filterMode" [filterableProperties]="properties"></clr-advanced-filters>
+```

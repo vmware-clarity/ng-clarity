@@ -124,6 +124,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
 
   @ViewChild(ClrCombobox) private fieldCombobox: ClrCombobox<FilterablePropertyDefinition>;
   @ViewChild('addButton', { static: true }) private addButton: ElementRef<HTMLButtonElement>;
+  @ViewChild('filterContainer') private filterContainer: ElementRef<HTMLElement>;
   private readonly injector = inject(Injector);
   private readonly destroyRef = inject(DestroyRef);
   /** Keys (see toggleKey) of the toggle filters that are ON. */
@@ -499,8 +500,9 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     this.showHideFiltersArrowDir = 'left';
     this.clearAll.emit();
 
-    // Clear all hides itself once nothing is active, so move focus to Add filter.
-    this.focusAddButton();
+    // Clear all hides itself once nothing is active,
+    // so move focus to Add filter, or to the first filter when Add filter is disabled.
+    this.moveFocusToActiveButton();
   }
 
   clearFilter(property: FilterablePropertyDefinition): void {
@@ -512,7 +514,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     this.updateShowHideLabel();
     if (!this.isPredefined(property) && !this.isSemiPredefined(property)) {
       // The removed pill held focus and no longer exists, so move focus to Add filter.
-      this.focusAddButton();
+      this.moveFocusToActiveButton();
     }
   }
 
@@ -573,8 +575,31 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     return JSON.stringify(keys(first)) === JSON.stringify(keys(second));
   }
 
-  private focusAddButton(): void {
-    afterNextRender(() => this.addButton?.nativeElement.focus(), { injector: this.injector });
+  /**
+   * Moves focus after the element that had it was removed (Clear all, or removing a user-added pill). Runs after the
+   * next render, once the removed element is gone and Add filter is enabled or disabled for the remaining fields.
+   *
+   * Focus goes to:
+   * 1. Add filter, when it is enabled.
+   * 2. Otherwise the first enabled filter button, in page order:
+   *    2.1. The first toggle filter
+   *    2.2. Then the first predefined pill
+   *    2.3. then the first semi-predefined option.
+   *    Add filter is disabled when every field is taken by these fixed filters, and it cannot take focus.
+   * 3. Nowhere, when neither exists; focus then stays where the browser puts it.
+   */
+  private moveFocusToActiveButton(): void {
+    afterNextRender(
+      () => {
+        const addButton = this.addButton?.nativeElement;
+        if (addButton && !addButton.disabled) {
+          addButton.focus();
+          return;
+        }
+        this.filterContainer?.nativeElement.querySelector<HTMLButtonElement>('button:not([disabled])')?.focus();
+      },
+      { injector: this.injector }
+    );
   }
 
   /**
