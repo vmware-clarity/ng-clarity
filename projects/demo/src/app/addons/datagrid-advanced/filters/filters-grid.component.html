@@ -52,7 +52,7 @@
     The quick search and the filter pills work together: rows must match the search text and every filter. Clear all
     removes both.
   </p>
-  <clr-advanced-filters
+  <appfx-datagrid-filters
     [filterMode]="FilterMode.Combined"
     [filterableProperties]="filterableProperties"
     [predefinedFilters]="predefinedFilters"
@@ -60,7 +60,7 @@
     [toggleFilters]="toggleFilters"
     (searchTermChange)="onCombinedSearchTermChange($event)"
     (propertyFiltersChange)="onCombinedFilterChange($event)"
-  ></clr-advanced-filters>
+  ></appfx-datagrid-filters>
   <appfx-datagrid
     [gridItems]="combinedFilteredItems"
     [columns]="columns"
@@ -82,7 +82,7 @@
     their option pills to toggle them. State: Powered On is an on/off filter. Open VM Name to add or remove conditions,
     or use Add filter to filter by other fields.
   </p>
-  <clr-advanced-filters
+  <appfx-datagrid-filters
     [filterMode]="FilterMode.AdvancedOnly"
     [filterableProperties]="filterableProperties"
     [predefinedFilters]="predefinedFilters"
@@ -90,7 +90,7 @@
     [toggleFilters]="toggleFilters"
     [presetFilters]="presetFilters"
     (propertyFiltersChange)="onPredefinedFilterChange($event)"
-  ></clr-advanced-filters>
+  ></appfx-datagrid-filters>
   <appfx-datagrid
     [gridItems]="predefinedFilteredItems"
     [columns]="columns"

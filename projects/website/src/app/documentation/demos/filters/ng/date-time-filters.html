@@ -4,12 +4,17 @@
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
-<clr-advanced-filters
+<div cds-layout="m-b:md">
+  <button type="button" class="btn btn-sm btn-outline" (click)="showEqualsDay()">Equals a day</button>
+  <button type="button" class="btn btn-sm btn-outline" (click)="showCustomRange()">Custom range</button>
+  <button type="button" class="btn btn-sm btn-outline" (click)="showLastWeek()">Last week</button>
+</div>
+
+<appfx-datagrid-filters
   [filterMode]="FilterMode.AdvancedOnly"
   [filterableProperties]="filterableProperties"
   [predefinedFilters]="predefinedFilters"
-  [presetFilters]="presetFilters"
-  (propertyFiltersChange)="filters = $event"
-></clr-advanced-filters>
+  [(propertyFilters)]="filters"
+></appfx-datagrid-filters>
 
 <app-applied-filters [filters]="filters"></app-applied-filters>

@@ -9,9 +9,7 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   EventEmitter,
-  inject,
   Input,
   OnDestroy,
   Output,
@@ -33,14 +31,10 @@ const searchTermDebounceTimeMs = 2000;
 /**
  * Component provides the ability to choose from quick filter (search)
  * and advanced filter (composite filters).
- *
- * Use the `clr-advanced-filters` selector. The `appfx-datagrid-filters` selector is deprecated and will be removed
- * in v20.
  */
 
 @Component({
-  // TODO: remove the deprecated `appfx-datagrid-filters` selector in v20.
-  selector: 'clr-advanced-filters, appfx-datagrid-filters',
+  selector: 'appfx-datagrid-filters',
   standalone: false,
   templateUrl: 'datagrid-filters.component.html',
   styleUrls: ['datagrid-filters.component.scss', 'common-styles.scss'],
@@ -101,16 +95,7 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
   private unsubscribeSubject: Subject<void> = new Subject<void>();
   private _propertyFilters: PropertyFilter[] = [];
 
-  constructor(public filterStrings: DatagridFiltersStrings) {
-    const element = inject(ElementRef<HTMLElement>).nativeElement;
-
-    // `localName` is lower case; `tagName` is upper case in HTML documents.
-    if (element?.localName === 'appfx-datagrid-filters') {
-      console.warn(
-        'The `appfx-datagrid-filters` selector is deprecated and will be removed in v20. Use `clr-advanced-filters` instead.'
-      );
-    }
-  }
+  constructor(public filterStrings: DatagridFiltersStrings) {}
 
   /**
    * Quick, Advanced or AdvancedOnly. Default Quick.

@@ -43,13 +43,13 @@
       </div>
     }
     @if (filterMode !== undefined && filterMode !== null) {
-      <clr-advanced-filters
+      <appfx-datagrid-filters
         [filterMode]="filterMode"
         [filterableProperties]="filterableProperties"
         (searchTermChange)="onAdvancedSearchTermChange($event)"
         (propertyFiltersChange)="onAdvancedFilterCriteriaChange($event)"
       >
-      </clr-advanced-filters>
+      </appfx-datagrid-filters>
     }
   </clr-dg-action-bar>
   @if (dragConfig) {

@@ -14,7 +14,7 @@ import {
 } from '@clr/addons/datagrid-filters';
 
 @Component({
-  selector: 'clr-advanced-filters, appfx-datagrid-filters',
+  selector: 'appfx-datagrid-filters',
   standalone: false,
   changeDetection: ChangeDetectionStrategy.Eager,
   template: '',
@@ -40,7 +40,7 @@ export class MockDatagridFiltersComponent {
 }
 
 @Component({
-  selector: 'clr-advanced-filters, appfx-datagrid-filters',
+  selector: 'appfx-datagrid-filters',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.Eager,
   template: '',

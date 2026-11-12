@@ -372,9 +372,8 @@ export const documentationRoutes: Routes = [
       },
       {
         matcher: documentationRouteMatcher,
-        data: { routePath: 'advanced-filters/:tab?' },
-        loadChildren: () =>
-          import('./demos/advanced-filters/advanced-filters.demo.module').then(m => m.AdvancedFiltersDemoModule),
+        data: { routePath: 'filters/:tab?' },
+        loadChildren: () => import('./demos/filters/filters.demo.module').then(m => m.FiltersDemoModule),
       },
       {
         matcher: documentationRouteMatcher,

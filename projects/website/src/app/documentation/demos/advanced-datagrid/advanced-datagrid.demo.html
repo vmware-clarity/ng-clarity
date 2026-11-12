@@ -92,14 +92,14 @@
 
     <div class="clr-row clr-mt-48px">
       <div class="clr-col-12">
-        <h3 class="clr-mb-16px" cds-text="section disable-lhe" id="datagrid-filters">Advanced Filters</h3>
+        <h3 class="clr-mb-16px" cds-text="section disable-lhe" id="datagrid-filters">Filters</h3>
         <p cds-text="body">
-          Advanced Filters component provides an enhanced user experience for datagrid filtering. It is expected to be
-          hosted in the datagrid action bar and supports three modes: quick, advanced, and advanced only.
+          Filters component provides an enhanced user experience for datagrid filtering. It is expected to be hosted in
+          the datagrid action bar and supports three modes: quick, advanced, and advanced only.
         </p>
         <p class="clr-mt-16px" cds-text="body">
           To use the filter bar on its own, or with presets, predefined, semi-predefined and toggle filters, see
-          <a routerLink="/documentation/advanced-filters">Advanced Filters</a>.
+          <a routerLink="/documentation/filters">Filters</a>.
         </p>
 
         <h2 id="usage" class="clr-mt-48px" cds-text="title">Usage</h2>
@@ -116,7 +116,7 @@
             <app-themed-image
               [lightSrc]="'assets/images/documentation/advanced-datagrid/datagrid-advanced-filter-overview.png'"
               [darkSrc]="'assets/images/documentation/advanced-datagrid/datagrid-advanced-filter-overview.png'"
-              [imageAlt]="'Advanced Filters advanced example'"
+              [imageAlt]="'Filters advanced example'"
               [imageStyle]="'max-width: 100%'"
             ></app-themed-image>
           </div>
@@ -130,7 +130,7 @@
             <app-themed-image
               [lightSrc]="'assets/images/documentation/advanced-datagrid/datagrid-quick-filter-overview.png'"
               [darkSrc]="'assets/images/documentation/advanced-datagrid/datagrid-quick-filter-overview.png'"
-              [imageAlt]="'Advanced Filters quick example'"
+              [imageAlt]="'Filters quick example'"
               [imageStyle]="'max-width: 100%'"
             ></app-themed-image>
           </div>
@@ -172,17 +172,10 @@
 
     <h3 data-toc-item id="filters-example" cds-text="section" class="clr-mt-32px">Filters</h3>
     <p cds-text="body" class="clr-mt-16px">
-      The following example demonstrates how to configure the component with various property definitions such as
-      String, Numeric, Enum, and DateTime.
+      Filter property definitions (String, Numeric, Enum, DateTime and User) and the filter bar itself are covered on
+      the
+      <a routerLink="/documentation/filters/code">Filters</a> page.
     </p>
-    <div class="clr-mt-24px">
-      <app-code-snippet
-        name="datagrid-filters-demo"
-        [code]="datagridFiltersExample"
-        language="typescript"
-        [copy]="true"
-      ></app-code-snippet>
-    </div>
 
     <!-- Client Side -->
     <div class="demo-section">
@@ -1653,7 +1646,7 @@ class DemoTextRendererComponent implements ColumnRenderer&lt;unknown&gt;, OnInit
 
     <h2 id="api-reference" cds-text="title" class="clr-mt-48px">Filters</h2>
 
-    <h3 data-toc-item id="component-inputs" cds-text="section" class="clr-mt-32px">clr-advanced-filters</h3>
+    <h3 data-toc-item id="component-inputs" cds-text="section" class="clr-mt-32px">appfx-datagrid-filters</h3>
     <table class="table">
       <thead>
         <tr>

@@ -4,11 +4,11 @@
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
-<clr-advanced-filters
+<appfx-datagrid-filters
   [filterMode]="FilterMode.AdvancedOnly"
   [filterableProperties]="filterableProperties"
-  [semiPredefinedFilters]="semiPredefinedFilters"
+  [toggleFilters]="toggleFilters"
   (propertyFiltersChange)="filters = $event"
-></clr-advanced-filters>
+></appfx-datagrid-filters>
 
 <app-applied-filters [filters]="filters"></app-applied-filters>

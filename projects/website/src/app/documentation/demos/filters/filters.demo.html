@@ -7,15 +7,15 @@
 <app-doc-tabs>
   <app-doc-tab tab="overview">
     <p class="component-summary">
-      Advanced Filters (<code cds-text="code">clr-advanced-filters</code> from
+      Filters (<code cds-text="code">appfx-datagrid-filters</code> from
       <code cds-text="code">&#64;clr/addons/datagrid-filters</code>) is a filter bar with a quick search input and
       advanced filter pills. It only emits the search term and the active filters; the host applies them to its data.
     </p>
 
     <div class="clr-mt-24px">
       <app-themed-image
-        [lightSrc]="'assets/images/documentation/advanced-filters/advanced-filters-overview-light.png'"
-        [darkSrc]="'assets/images/documentation/advanced-filters/advanced-filters-overview-dark.png'"
+        [lightSrc]="'assets/images/documentation/filters/filters-overview-light.png'"
+        [darkSrc]="'assets/images/documentation/filters/filters-overview-dark.png'"
         [imageAlt]="'Datagrid filter bar with a search term and two filter pills above a datagrid'"
         [imageStyle]="'max-width: 100%'"
       ></app-themed-image>
@@ -27,8 +27,8 @@
       <code cds-text="code">appfx-datagrid</code> only passes on <code cds-text="code">filterMode</code>,
       <code cds-text="code">filterableProperties</code>, <code cds-text="code">searchTermChange</code> and
       <code cds-text="code">advancedFilterChange</code>. Place
-      <code cds-text="code">clr-advanced-filters</code> yourself when you host it outside that grid, for example over a
-      <code cds-text="code">clr-datagrid</code>, or when you need <code cds-text="code">presetFilters</code>,
+      <code cds-text="code">appfx-datagrid-filters</code> yourself when you host it outside that grid, for example over
+      a <code cds-text="code">clr-datagrid</code>, or when you need <code cds-text="code">presetFilters</code>,
       <code cds-text="code">predefinedFilters</code>, <code cds-text="code">semiPredefinedFilters</code>,
       <code cds-text="code">toggleFilters</code> or two-way <code cds-text="code">[(propertyFilters)]</code>.
     </p>
@@ -255,16 +255,26 @@
         [additionalFiles]="additionalFiles"
       ></app-stackblitz-example>
     </div>
+
+    <h3 data-toc-item id="property-definitions" cds-text="section" class="clr-mt-32px">Property definitions</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      A complete component that configures every property definition: String, Numeric (with a unit), Enum (single and
+      multi select, searchable), DateTime and User, with the user service the User filter needs.
+    </p>
+    <div class="clr-mt-24px">
+      <app-code-snippet
+        name="property-definitions"
+        [code]="propertyDefinitionsExample"
+        language="typescript"
+        [copy]="true"
+      ></app-code-snippet>
+    </div>
   </app-doc-tab>
 
   <app-doc-tab tab="api">
     <h2 id="api-reference" cds-text="title" class="clr-mt-48px">API Reference</h2>
 
-    <h3 data-toc-item id="inputs-outputs" cds-text="section" class="clr-mt-32px">clr-advanced-filters</h3>
-    <p cds-text="body" class="clr-mt-16px">
-      The <code cds-text="code">appfx-datagrid-filters</code> selector is deprecated and will be removed in v20. Use
-      <code cds-text="code">clr-advanced-filters</code>.
-    </p>
+    <h3 data-toc-item id="inputs-outputs" cds-text="section" class="clr-mt-32px">appfx-datagrid-filters</h3>
     <table class="table">
       <thead>
         <tr>
@@ -466,6 +476,6 @@
   </app-doc-tab>
 
   <app-doc-tab tab="ai">
-    <app-ai-skill skillName="appfx-advanced-filters"></app-ai-skill>
+    <app-ai-skill skillName="appfx-datagrid-filters"></app-ai-skill>
   </app-doc-tab>
 </app-doc-tabs>

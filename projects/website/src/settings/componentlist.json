@@ -319,10 +319,10 @@
       "basedOn": "datagrid"
     },
     {
-      "url": "advanced-filters",
-      "text": "Advanced Filters",
+      "url": "filters",
+      "text": "Filters",
       "type": "addons",
-      "storybookPath": "addons-advanced-filters",
+      "storybookPath": "addons-filters",
       "storybookLink": true
     },
     {

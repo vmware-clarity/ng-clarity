@@ -8,10 +8,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AdvancedFiltersDemo } from './advanced-filters.demo';
+import { FiltersDemo } from './filters.demo';
 
 @NgModule({
-  imports: [RouterModule.forChild([{ path: '', component: AdvancedFiltersDemo }]), AdvancedFiltersDemo],
-  exports: [AdvancedFiltersDemo],
+  imports: [RouterModule.forChild([{ path: '', component: FiltersDemo }]), FiltersDemo],
+  exports: [FiltersDemo],
 })
-export class AdvancedFiltersDemoModule {}
+export class FiltersDemoModule {}

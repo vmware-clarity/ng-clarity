@@ -36,13 +36,13 @@ The datagrid has a customizable responsive action bar component: `appfx-datagrid
 
 ![Action bar](assets/appfx/datagrid/action-bar.png)
 
-#### Advanced Filters
+#### Filters
 
 The datagrid integrates seamlessly with Advanced Filters, enabling users to create and manage complex filtering queries.
 
 For detailed guidance, refer to the [Advanced Filters Doc] (@clr/addons/datagrid-filters/overview)
 
-![Advanced Filters example screen](assets/appfx/datagrid-advanced-filter-overview.png)
+![Filters example screen](assets/appfx/datagrid-advanced-filter-overview.png)
 
 #### Datagrid settings persistence
 

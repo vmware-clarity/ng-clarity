@@ -10,7 +10,7 @@ import { Injectable } from '@angular/core';
 import { ComparisonOperator, LogicalOperator, TimeSpan, Unit } from './model/datagrid-filters.enums';
 
 /**
- * User-visible strings used in the 'clr-advanced-filters' library.
+ * User-visible strings used in the 'appfx-datagrid-filters' library.
  * Fields are read-only to avoid accidentally modifying the values and affecting all
  * filters in the application.
  *
