@@ -76,3 +76,42 @@ export class ShadowRootContainerQueriesComponent {
   protected readonly theme = pageAttribute('cds-theme');
   protected readonly density = pageAttribute('clr-density');
 }
+
+/**
+ * A modal inside a narrow `clr-layout-container` slot. The modal is fixed to the viewport, so its grid keeps
+ * following the viewport while the grid next to it follows the slot.
+ */
+@Component({
+  selector: 'shadow-root-container-queries-modal',
+  template: `
+    <div [attr.cds-theme]="theme" [attr.clr-density]="density" clr-layout-container>
+      <div class="clr-row">
+        <div class="clr-col-12 clr-col-md-6"><span>Slot: clr-col-12 clr-col-md-6</span></div>
+        <div class="clr-col-12 clr-col-md-6"><span>Slot: clr-col-12 clr-col-md-6</span></div>
+      </div>
+      <div class="modal">
+        <div class="modal-dialog modal-lg" role="dialog" aria-labelledby="modal-title">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3 class="modal-title" id="modal-title">Modal inside the slot</h3>
+            </div>
+            <div class="modal-body">
+              <div class="clr-row">
+                <div class="clr-col-12 clr-col-md-6"><span>Modal: clr-col-12 clr-col-md-6</span></div>
+                <div class="clr-col-12 clr-col-md-6"><span>Modal: clr-col-12 clr-col-md-6</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-backdrop" aria-hidden="true"></div>
+    </div>
+  `,
+  styleUrls: ['../../../../projects/ui/src/clr-ui.scss', './shadow-root-container-queries.scss'],
+  encapsulation: ViewEncapsulation.ShadowDom,
+  changeDetection: ChangeDetectionStrategy.Eager,
+})
+export class ShadowRootContainerQueriesModalComponent {
+  protected readonly theme = pageAttribute('cds-theme');
+  protected readonly density = pageAttribute('clr-density');
+}
