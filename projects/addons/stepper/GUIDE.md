@@ -92,4 +92,4 @@ steps: Step[] = [
 ## References
 
 - API: `@clr/addons/types/clr-addons-stepper.d.ts`, `@clr/addons/types/clr-addons-var.d.ts`
-- Model concepts in detail: the appfx-wizard skill
+- Model concepts in detail: the appfx-wizard guide
