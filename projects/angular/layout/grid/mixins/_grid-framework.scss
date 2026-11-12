@@ -14,7 +14,8 @@
 @mixin clr-make-grid-columns(
   $columns: variables.$clr-grid-columns,
   $gutter: variables.$clr-grid-column-padding,
-  $breakpoints: variables.$clr-grid-breakpoints
+  $breakpoints: variables.$clr-grid-breakpoints,
+  $query: variables.$clr-breakpoint-query
 ) {
   // Common properties for all breakpoints
   %clr-grid-column {
@@ -40,7 +41,7 @@
       @extend %clr-grid-column;
     }
 
-    @include breakpoint.clr-media-breakpoint-up($breakpoint, $breakpoints) {
+    @include breakpoint.clr-media-breakpoint-up($breakpoint, $breakpoints, $query) {
       // Provide basic `.clr-col-{bp}` classes for equal-width flexbox columns
       .clr-col#{$infix} {
         flex-basis: 0;

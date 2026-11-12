@@ -8,11 +8,7 @@
 import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
 import { CommonModules } from '@storybook-helpers/common';
 
-import {
-  ShadowRootContainerQueriesComponent,
-  ShadowRootGridContainerQueriesComponent,
-  ShadowRootTypographyComponent,
-} from './shadow-root.storybook.component';
+import { ShadowRootContainerQueriesComponent, ShadowRootTypographyComponent } from './shadow-root.storybook.component';
 
 /** The stories are fixed markup inside a shadow root; none of them takes an arg. */
 type ShadowRootArgs = Record<never, never>;
@@ -21,12 +17,7 @@ const meta = {
   title: 'Foundations/Shadow Root',
   decorators: [
     moduleMetadata({
-      imports: [
-        ...CommonModules,
-        ShadowRootTypographyComponent,
-        ShadowRootContainerQueriesComponent,
-        ShadowRootGridContainerQueriesComponent,
-      ],
+      imports: [...CommonModules, ShadowRootTypographyComponent, ShadowRootContainerQueriesComponent],
     }),
   ],
   render: () => ({
@@ -55,9 +46,4 @@ function atTwoWidths(selector: string) {
 export const ContainerQueries: Story = {
   // eslint-disable-next-line no-restricted-syntax -- renders the container-query component instead of the typography component of the meta template
   render: atTwoWidths('shadow-root-container-queries'),
-};
-
-export const GridContainerQueries: Story = {
-  // eslint-disable-next-line no-restricted-syntax -- renders the grid container-query component instead of the typography component of the meta template
-  render: atTwoWidths('shadow-root-grid-container-queries'),
 };

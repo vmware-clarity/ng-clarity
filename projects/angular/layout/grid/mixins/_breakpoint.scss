@@ -56,11 +56,15 @@
 // Media of at least the minimum breakpoint width. No query for the smallest breakpoint.
 // Makes the @content apply to the given breakpoint and wider.
 
-@mixin clr-media-breakpoint-up($name, $breakpoints: variables.$clr-grid-breakpoints) {
+@mixin clr-media-breakpoint-up(
+  $name,
+  $breakpoints: variables.$clr-grid-breakpoints,
+  $query: variables.$clr-breakpoint-query
+) {
   $min: clr-breakpoint-min($name, $breakpoints);
 
   @if $min {
-    @include mixins.breakpoint-query('min-width: #{$min}') {
+    @include mixins.breakpoint-query('min-width: #{$min}', $query) {
       @content;
     }
   } @else {

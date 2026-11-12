@@ -45,51 +45,34 @@ export class ShadowRootTypographyComponent {
   protected readonly density = pageAttribute('clr-density');
 }
 
-/** The layout of both container-query stories: columns that split at the `sm` and `md` breakpoints. */
-const CONTAINER_QUERIES_TEMPLATE = `
-  <div [attr.cds-theme]="theme" [attr.clr-density]="density" clr-layout-container>
-    <div class="clr-row">
-      <div class="clr-col-12 clr-col-md-6"><span>clr-col-12 clr-col-md-6</span></div>
-      <div class="clr-col-12 clr-col-md-6"><span>clr-col-12 clr-col-md-6</span></div>
-    </div>
-    <div class="clr-row">
-      <div class="clr-col-sm-4"><span>clr-col-sm-4</span></div>
-      <div class="clr-col-sm-4"><span>clr-col-sm-4</span></div>
-      <div class="clr-col-sm-4"><span>clr-col-sm-4</span></div>
-    </div>
-    <div cds-layout="grid cols@sm:6 gap:md">
-      <span>cds-layout cols&#64;sm:6</span>
-      <span>cds-layout cols&#64;sm:6</span>
-    </div>
-  </div>
-`;
-
-/** Grid and `cds-layout` breakpoints in a shadow root whose host is narrower than the viewport. */
+/**
+ * Grid and `cds-layout` breakpoints in a shadow root whose host is narrower than the viewport. Inside the
+ * `clr-layout-container` element the grid columns follow its width; `cds-layout` follows the viewport.
+ */
 @Component({
   selector: 'shadow-root-container-queries',
-  template: CONTAINER_QUERIES_TEMPLATE,
+  template: `
+    <div [attr.cds-theme]="theme" [attr.clr-density]="density" clr-layout-container>
+      <div class="clr-row">
+        <div class="clr-col-12 clr-col-md-6"><span>clr-col-12 clr-col-md-6</span></div>
+        <div class="clr-col-12 clr-col-md-6"><span>clr-col-12 clr-col-md-6</span></div>
+      </div>
+      <div class="clr-row">
+        <div class="clr-col-sm-4"><span>clr-col-sm-4</span></div>
+        <div class="clr-col-sm-4"><span>clr-col-sm-4</span></div>
+        <div class="clr-col-sm-4"><span>clr-col-sm-4</span></div>
+      </div>
+      <div cds-layout="grid cols@sm:6 gap:md">
+        <span>cds-layout cols&#64;sm:6</span>
+        <span>cds-layout cols&#64;sm:6</span>
+      </div>
+    </div>
+  `,
   styleUrls: ['../../../../projects/ui/src/clr-ui.scss', './shadow-root-container-queries.scss'],
   encapsulation: ViewEncapsulation.ShadowDom,
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ShadowRootContainerQueriesComponent {
-  protected readonly theme = pageAttribute('cds-theme');
-  protected readonly density = pageAttribute('clr-density');
-}
-
-/** The same layout with the grid container-query add-on: the grid follows the host's width, `cds-layout` the viewport. */
-@Component({
-  selector: 'shadow-root-grid-container-queries',
-  template: CONTAINER_QUERIES_TEMPLATE,
-  styleUrls: [
-    '../../../../projects/ui/src/clr-ui.scss',
-    '../../../../projects/ui/src/clr-ui-grid-container-queries.scss',
-    './shadow-root-container-queries.scss',
-  ],
-  encapsulation: ViewEncapsulation.ShadowDom,
-  changeDetection: ChangeDetectionStrategy.Eager,
-})
-export class ShadowRootGridContainerQueriesComponent {
   protected readonly theme = pageAttribute('cds-theme');
   protected readonly density = pageAttribute('clr-density');
 }

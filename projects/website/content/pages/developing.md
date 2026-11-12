@@ -163,8 +163,7 @@ of the shadow root uses the light theme and the default density, also on a dark 
 ### Breakpoints That Follow a Container
 
 The grid breakpoints follow the viewport. When your layout lives in an area narrower than the
-viewport, also load `@clr/ui/clr-ui-grid-container-queries.min.css` after `@clr/ui/clr-ui.min.css`
-and add the `clr-layout-container` attribute to the element that holds the layout. Inside that
+viewport, add the `clr-layout-container` attribute to the element that holds the layout. Inside that
 element, the grid columns, offsets and order follow its width instead of the viewport. In a shadow
 root, put the attribute on an element inside it.
 
@@ -177,9 +176,10 @@ root, put the attribute on an element inside it.
 </div>
 ```
 
-The element can't be inline, so give a custom element `display: block`. Outside it nothing changes.
-The other breakpoint utilities, the `cds-layout` breakpoints and the component styles keep following
-the viewport.
+The attribute only sets `container: clr-layout / inline-size`, so you can also set that in your own
+CSS instead. The element can't be inline, so give a custom element `display: block`. Outside it
+nothing changes, and a modal inside it keeps following the viewport. The other breakpoint utilities,
+the `cds-layout` breakpoints and the component styles keep following the viewport.
 
 If you compile Clarity from Sass, you can instead switch every grid and `cds-layout` breakpoint of
 your build to container queries by setting `$clr-breakpoint-query` to `container` before loading
