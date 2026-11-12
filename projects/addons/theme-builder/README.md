@@ -18,7 +18,9 @@ result live, and exporting a CSS override file consumers can drop into their app
   variants: the base drives the computed tint/shade/dark variants, and a variant listed
   explicitly overrides the computed value.
 - `(generatedCSS)` — emits the generated CSS override text (a `string`) every time a color,
-  preset, reset, or the warning-text-override toggle changes.
+  preset, reset, or the warning-text-override toggle changes. The initial value is emitted after
+  the preview has rendered and its computed colors have been read. Color controls and output
+  update with either zoneless or Zone.js change detection.
 - Content projection — anything projected through `<ng-content>` renders above the built-in
   preview, which covers most Clarity components (buttons, forms, datagrid, alerts, navigation,
   etc.) so the color changes can be seen in context. Projected content renders inside the same
@@ -88,3 +90,12 @@ export class HostComponent {
   generatedCss = '';
 }
 ```
+
+### Restoring a saved theme
+
+`applyPreset()` and `importCSS()` can be called from a host's first `ngAfterViewInit`.
+The preview reads its computed colors after rendering; requests made before that
+initialization are retained, and the latest valid preset or CSS request is applied
+when the preview is ready. `importCSS()` returns `true` for accepted CSS, including
+an early request, and `false` for malformed CSS. Rejected CSS does not replace an
+already pending request. The `generatedCSS` output reports the resulting theme.
