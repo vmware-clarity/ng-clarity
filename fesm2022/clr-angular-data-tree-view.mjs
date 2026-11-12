@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { Injectable, Optional, SkipSelf, HostBinding, Directive, Input, ChangeDetectionStrategy, Component, EventEmitter, afterNextRender, PLATFORM_ID, ElementRef, ContentChildren, ViewChild, Output, Inject, NgModule } from '@angular/core';
+import { Injectable, Optional, SkipSelf, HostBinding, Directive, Input, ChangeDetectionStrategy, Component, EventEmitter, inject, ChangeDetectorRef, afterNextRender, PLATFORM_ID, ElementRef, ContentChildren, ViewChild, Output, Inject, NgModule } from '@angular/core';
 import { Subject, BehaviorSubject, asapScheduler, fromEvent, isObservable } from 'rxjs';
 import * as i3 from '@angular/common';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
@@ -629,6 +629,7 @@ class ClrTreeNode {
         this.typeAheadKeyBuffer = '';
         this.typeAheadKeyEvent = new Subject();
         this.subscriptions = [];
+        this.changeDetectorRef = inject(ChangeDetectorRef);
         if (featuresService.recursion) {
             // I'm completely stuck, we have to hack into private properties until either
             // https://github.com/angular/angular/issues/14935 or https://github.com/angular/angular/issues/15998
@@ -744,9 +745,10 @@ class ClrTreeNode {
         // would schedule one timer per node when a large tree gets created, and one extra change detection pass per
         // fetched node in lazy trees. The current value is read directly instead of debouncing the replayed initial one.
         this.isModelLoading = this._model.loading;
-        this.subscriptions.push(this._model.loading$
-            .pipe(skip(1), debounceTime(0, asapScheduler))
-            .subscribe(isLoading => (this.isModelLoading = isLoading)));
+        this.subscriptions.push(this._model.loading$.pipe(skip(1), debounceTime(0, asapScheduler)).subscribe(isLoading => {
+            this.isModelLoading = isLoading;
+            this.changeDetectorRef.markForCheck();
+        }));
     }
     ngAfterContentInit() {
         // Nodes created while everything above them is expected to be expanded (lazy-loaded children, dynamic
@@ -1183,6 +1185,7 @@ class RecursiveTreeNodeModel extends TreeNodeModel {
         this.getChildren = getChildren;
         this.featuresService = featuresService;
         this.childrenFetched = false;
+        this.destroyed = false;
         this._children = [];
         this.model = model;
         this.parent = parent;
@@ -1198,6 +1201,7 @@ class RecursiveTreeNodeModel extends TreeNodeModel {
         return this._children || [];
     }
     destroy() {
+        this.destroyed = true;
         if (this.subscription) {
             this.subscription.unsubscribe();
         }
@@ -1209,13 +1213,16 @@ class RecursiveTreeNodeModel extends TreeNodeModel {
         this.childrenFetched = false;
     }
     fetchChildren() {
-        if (this.childrenFetched) {
+        if (this.destroyed || this.childrenFetched) {
             return;
         }
         const asyncChildren = this.getChildren(this.model);
         if (isPromise(asyncChildren)) {
             this.loading = true;
             asyncChildren.then(raw => {
+                if (this.destroyed) {
+                    return;
+                }
                 this._children = this.wrapChildren(raw);
                 this.loading = false;
             });

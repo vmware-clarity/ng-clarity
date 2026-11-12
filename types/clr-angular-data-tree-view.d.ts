@@ -85,6 +85,7 @@ declare class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit,
     private typeAheadKeyBuffer;
     private typeAheadKeyEvent;
     private subscriptions;
+    private readonly changeDetectorRef;
     private contentContainer;
     private children;
     private treeNodeLinkList;
@@ -169,6 +170,7 @@ declare class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
     parent: RecursiveTreeNodeModel<T> | null;
     private subscription;
     private childrenFetched;
+    private destroyed;
     private _children;
     constructor(model: T, parent: RecursiveTreeNodeModel<T> | null, getChildren: (node: T) => AsyncArray<T> | undefined, featuresService: TreeFeaturesService<T> | undefined);
     get children(): RecursiveTreeNodeModel<T>[];
