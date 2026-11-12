@@ -2500,6 +2500,8 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // (undocumented)
     static ngAcceptInputType_treeToggle: unknown;
     // (undocumented)
+    ngAfterViewChecked(): void;
+    // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
     ngOnChanges(changes: SimpleChanges): void;
