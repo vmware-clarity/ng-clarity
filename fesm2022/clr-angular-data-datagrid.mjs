@@ -402,6 +402,9 @@ var ClrDatagridAriaSortOrder;
  */
 class ColumnActionsService {
     constructor() {
+        /** Projected title, refreshed by the owning column and shared by its accessible labels. */
+        this.title = signal('', /* @ts-ignore */
+        ...(ngDevMode ? [{ debugName: "title" }] : /* istanbul ignore next */ []));
         /**
          * Whether the filter keeps its own toggle in the column header. An actions menu turns this off and
          * opens the filter itself, so the header keeps a single control per column - unless
@@ -3833,8 +3836,12 @@ class ClrDatagridColumn extends DatagridFilterRegistrar {
          * Subscription to the sort service changes
          */
         this.subscriptions = [];
-        this._showSeparator = true;
-        this._pinned = false;
+        // The renderer updates separators while pinning or relocating column views. Track the template
+        // consumer directly so it refreshes even when that view was already checked in the current render.
+        this._showSeparator = signal(true, /* @ts-ignore */
+        ...(ngDevMode ? [{ debugName: "_showSeparator" }] : /* istanbul ignore next */ []));
+        this._pinned = signal(false, /* @ts-ignore */
+        ...(ngDevMode ? [{ debugName: "_pinned" }] : /* istanbul ignore next */ []));
         this.tree = inject(DatagridTreeService, { optional: true });
         this.subscriptions.push(this.listenForSortingChanges());
         this.subscriptions.push(this.listenForDetailPaneChanges());
@@ -3851,11 +3858,10 @@ class ClrDatagridColumn extends DatagridFilterRegistrar {
         return this.el.nativeElement.classList.contains(PINNED_COLUMN_CLASS);
     }
     get showSeparator() {
-        return this._showSeparator;
+        return this._showSeparator();
     }
     set showSeparator(value) {
-        this._showSeparator = value;
-        this.changeDetectorRef.markForCheck();
+        this._showSeparator.set(value);
     }
     /**
      * Pins the column to the left of the datagrid, so it stays visible while the remaining
@@ -3863,13 +3869,13 @@ class ClrDatagridColumn extends DatagridFilterRegistrar {
      * rendered before the scrollable ones, right after the built-in row controls.
      */
     get pinned() {
-        return this._pinned;
+        return this._pinned();
     }
     set pinned(value) {
-        if (this._pinned === value) {
+        if (this._pinned() === value) {
             return;
         }
-        this._pinned = value;
+        this._pinned.set(value);
         // The column state is what the header and the rows read to decide where to project the
         // column and its cells. It is optional only so the column keeps working when it is used
         // outside the render directives, e.g. in isolated tests.
@@ -4035,7 +4041,10 @@ class ClrDatagridColumn extends DatagridFilterRegistrar {
         this.wrappedInjector = new HostWrapper(WrappedColumn, this.vcr);
     }
     ngAfterViewInit() {
-        this.setFilterToggleAriaLabel();
+        this.updateTitle();
+    }
+    ngAfterViewChecked() {
+        this.updateTitle();
     }
     ngOnChanges(changes) {
         if (changes.colType &&
@@ -4109,11 +4118,15 @@ class ClrDatagridColumn extends DatagridFilterRegistrar {
             }
         });
     }
+    updateTitle() {
+        this.columnActions.title.set(this.titleContainer?.nativeElement.textContent?.trim() ?? '');
+        this.setFilterToggleAriaLabel();
+    }
     setFilterToggleAriaLabel() {
         const filterToggle = this.el.nativeElement.querySelector('.datagrid-filter-toggle');
         if (filterToggle) {
             filterToggle.ariaLabel = this.commonStrings.parse(this.commonStrings.keys.datagridFilterAriaLabel, {
-                COLUMN: this?.titleContainer?.nativeElement.textContent.trim().toLocaleLowerCase(),
+                COLUMN: this.columnActions.title().toLocaleLowerCase(),
             });
         }
     }
@@ -7045,11 +7058,10 @@ class ClrDatagridColumnActions extends ClrDropdown {
         this.columnActions.filterInHeader.set(value);
     }
     /**
-     * The menu is a live view of the column, so the label has to be read at render time rather than
-     * cached - the column title can change, and so can the sort state it reports.
+     * The title follows projected content changes while staying stable throughout each render pass.
      */
     get triggerLabel() {
-        const title = this.column.titleContainer?.nativeElement.textContent.trim();
+        const title = this.columnActions.title();
         return title
             ? this.commonStrings.parse(this.commonStrings.keys.datagridColumnActionsAriaLabel, { COLUMN: title })
             : this.commonStrings.keys.columnActions;
@@ -9817,6 +9829,7 @@ class DatagridMainRenderer {
                             // the `clrDgPinned` input setter runs in.
                             this.columnsSizesStable = false;
                             this.shouldStabilizeColumns = true;
+                            this.changeDetectorRef.markForCheck();
                         }
                         break;
                     }

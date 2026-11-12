@@ -100,6 +100,8 @@ interface ColumnFilterHandle {
  * `clr-dg-numeric-filter` the column creates for `clrDgField` live in its view.
  */
 declare class ColumnActionsService {
+    /** Projected title, refreshed by the owning column and shared by its accessible labels. */
+    readonly title: i0.WritableSignal<string>;
     /**
      * Whether the filter keeps its own toggle in the column header. An actions menu turns this off and
      * opens the filter itself, so the header keeps a single control per column - unless
@@ -392,8 +394,8 @@ declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrD
      * Subscription to the sort service changes
      */
     private subscriptions;
-    private _showSeparator;
-    private _pinned;
+    private readonly _showSeparator;
+    private readonly _pinned;
     private tree;
     constructor(el: ElementRef<HTMLElement>, _sort: Sort<T>, filters: FiltersProvider<T>, vcr: ViewContainerRef, detailService: DetailService, changeDetectorRef: ChangeDetectorRef, commonStrings: ClrCommonStringsService, columnsService: ColumnsService, columnState: BehaviorSubject<ColumnState>);
     get isHidden(): boolean;
@@ -448,6 +450,7 @@ declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrD
     get _view(): any;
     ngOnInit(): void;
     ngAfterViewInit(): void;
+    ngAfterViewChecked(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
     /**
@@ -467,6 +470,7 @@ declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrD
     togglePinned(): void;
     protected onPinToggleClick(event: MouseEvent): void;
     private listenForDetailPaneChanges;
+    private updateTitle;
     private setFilterToggleAriaLabel;
     private listenForSortingChanges;
     private setupDefaultFilter;
@@ -1646,8 +1650,7 @@ declare class ClrDatagridColumnActions extends ClrDropdown implements AfterViewI
     get keepFilterInHeader(): boolean;
     set keepFilterInHeader(value: boolean);
     /**
-     * The menu is a live view of the column, so the label has to be read at render time rather than
-     * cached - the column title can change, and so can the sort state it reports.
+     * The title follows projected content changes while staying stable throughout each render pass.
      */
     protected get triggerLabel(): string;
     protected get sortOrder(): ClrDatagridSortOrder;
