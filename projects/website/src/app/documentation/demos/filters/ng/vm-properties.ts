@@ -17,6 +17,7 @@ import {
   StringPropertyDefinition,
   Unit,
 } from '@clr/addons/datagrid-filters';
+import { DateRangeOption } from '@clr/angular';
 
 export const nameProperty = new StringPropertyDefinition('VM Name', 'name');
 
@@ -52,7 +53,29 @@ export const guestOsProperty = new EnumPropertyDefinition(
 
 export const usedSpaceProperty = new NumericPropertyDefinition('Used space', 'usedSpace', undefined, Unit.GB);
 
-export const createdProperty = new DateTimePropertyDefinition('Created', 'created');
+/**
+ * Preset ranges for Custom range. Dates are used as given; a Date at 00:00 means the whole day. Without times they show
+ * in the date range picker, with times as buttons under the operator.
+ */
+function createdRangeOptions(): DateRangeOption[] {
+  const now = new Date();
+  const day = (offset: number, hours = 0, minutes = 0) =>
+    new Date(now.getFullYear(), now.getMonth(), now.getDate() + offset, hours, minutes);
+  return [
+    { label: 'Today', value: [day(0), day(0)] },
+    { label: 'Last 7 days', value: [day(-6), day(0)] },
+    { label: 'This month', value: [new Date(now.getFullYear(), now.getMonth(), 1), day(0)] },
+    { label: 'Working hours today', value: [day(0, 9), day(0, 17)] },
+  ];
+}
+
+export const createdProperty = new DateTimePropertyDefinition(
+  'Created',
+  'created',
+  undefined,
+  false,
+  createdRangeOptions()
+);
 
 export const vmProperties: FilterablePropertyDefinition[] = [
   nameProperty,

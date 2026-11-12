@@ -627,6 +627,138 @@ describe('DateTimeFilterComponent', () => {
     });
   });
 
+  describe('preset ranges', () => {
+    const wholeWeek = { label: 'First week of August', value: [new Date(2023, 7, 1), new Date(2023, 7, 7)] };
+    const workingHours = {
+      label: 'Working hours',
+      value: [new Date(2023, 7, 11, 9, 0), new Date(2023, 7, 11, 17, 30)],
+    };
+    const invalid = [
+      { label: 'One date', value: [new Date(2023, 7, 1)] },
+      { label: 'Strings', value: ['2023-08-01', '2023-08-07'] as unknown as Date[] },
+      { label: 'Invalid date', value: [new Date('nope'), new Date(2023, 7, 7)] },
+    ];
+    const rangeButtons = (element: HTMLElement) =>
+      Array.from(element.querySelectorAll<HTMLButtonElement>('[data-test-id="date-range-option"]'));
+
+    function openCustomRange(this: ThisTest, withTime: boolean): HTMLElement {
+      this.component.filterProperty = new DateTimePropertyDefinition(
+        dateTimePropertyDisplayName,
+        dateTimePropertyName,
+        undefined,
+        false,
+        [wholeWeek, ...invalid, workingHours]
+      );
+      this.fixture.detectChanges();
+      const element: HTMLElement = this.fixture.nativeElement;
+      const operatorSelect: HTMLSelectElement = element.querySelector(operatorSelector);
+      operatorSelect.value = operatorSelect.options[5].value;
+      operatorSelect.dispatchEvent(new Event('change'));
+      this.fixture.detectChanges();
+      if (withTime) {
+        (element.querySelector('[data-test-id="add-button"]') as HTMLButtonElement).click();
+        this.fixture.detectChanges();
+      }
+      return element;
+    }
+
+    it('keeps only options with two valid dates and shows no buttons without times', function (this: ThisTest) {
+      const element = openCustomRange.call(this, false);
+      expect(this.component.rangeOptions).toEqual([wholeWeek, workingHours]);
+      expect(element.querySelector('clr-date-range-container')).not.toBeNull();
+      expect(rangeButtons(element).length).toBe(0);
+    });
+
+    it('lists the options as buttons under the operator with times', function (this: ThisTest) {
+      const element = openCustomRange.call(this, true);
+      const buttons = rangeButtons(element);
+      expect(buttons.map(button => button.textContent.trim())).toEqual([wholeWeek.label, workingHours.label]);
+      expect(buttons.every(button => button.type === 'button')).toBeTrue();
+      expect(element.querySelector('.date-range-options').getAttribute('aria-label')).toBe('Preset ranges');
+    });
+
+    it('fills whole days as 00:00 to 23:59 and emits up to the next midnight', function (this: ThisTest) {
+      spyOn(this.component.filterCriteriaChange, 'emit');
+      const element = openCustomRange.call(this, true);
+      rangeButtons(element)[0].click();
+      this.fixture.detectChanges();
+
+      const form = this.component.dateTimeFilterForm;
+      expect(form.value.dateValue).toBe(toInput('2023-08-01'));
+      expect(form.value.dateValueTo).toBe(toInput('2023-08-07'));
+      expect(form.value.timeValue).toBe('00:00');
+      expect(form.value.timeValueTo).toBe('23:59');
+
+      (element.querySelector(submitBtnSelector) as HTMLButtonElement).click();
+      const emitted = (this.component.filterCriteriaChange.emit as Spy).calls.mostRecent().args[0] as PropertyFilter;
+      expect(emitted.criteria[0].value).toContain('2023-08-01T00:00:00');
+      expect(emitted.criteria[1].value).toContain('2023-08-08T00:00:00');
+    });
+
+    it('fills the times of a timed range, ending one minute after its inclusive end', function (this: ThisTest) {
+      spyOn(this.component.filterCriteriaChange, 'emit');
+      const element = openCustomRange.call(this, true);
+      rangeButtons(element)[1].click();
+      this.fixture.detectChanges();
+
+      expect(this.component.dateTimeFilterForm.value.timeValue).toBe('09:00');
+      expect(this.component.dateTimeFilterForm.value.timeValueTo).toBe('17:30');
+
+      (element.querySelector(submitBtnSelector) as HTMLButtonElement).click();
+      const emitted = (this.component.filterCriteriaChange.emit as Spy).calls.mostRecent().args[0] as PropertyFilter;
+      expect(emitted.criteria[0].value).toContain('2023-08-11T09:00:00');
+      expect(emitted.criteria[1].value).toContain('2023-08-11T17:31:00');
+    });
+  });
+
+  describe('custom range order with times', () => {
+    function openCustomRangeWithTime(this: ThisTest): HTMLElement {
+      this.fixture.detectChanges();
+      const element: HTMLElement = this.fixture.nativeElement;
+      const operatorSelect: HTMLSelectElement = element.querySelector(operatorSelector);
+      operatorSelect.value = operatorSelect.options[5].value;
+      operatorSelect.dispatchEvent(new Event('change'));
+      this.fixture.detectChanges();
+      (element.querySelector('[data-test-id="add-button"]') as HTMLButtonElement).click();
+      this.fixture.detectChanges();
+      return element;
+    }
+
+    function setRange(this: ThisTest, from: string, fromTime: string, to: string, toTime: string): void {
+      this.component.dateTimeFilterForm.patchValue({
+        dateValue: toInput(from),
+        timeValue: fromTime,
+        dateValueTo: toInput(to),
+        timeValueTo: toTime,
+      });
+      this.fixture.detectChanges();
+    }
+
+    it('rejects a From date later than the To date', function (this: ThisTest) {
+      const element = openCustomRangeWithTime.call(this);
+      setRange.call(this, '2023-08-15', '10:00', '2023-08-11', '10:00');
+
+      const dateValueTo = this.component.dateTimeFilterForm.get('dateValueTo');
+      expect(dateValueTo.hasError('range')).toBeTrue();
+      expect(this.component.dateTimeFilterForm.valid).toBeFalse();
+      expect(element.textContent).toContain('End date must not be before start date');
+    });
+
+    it('rejects a From time later than the To time on the same day', function (this: ThisTest) {
+      openCustomRangeWithTime.call(this);
+      setRange.call(this, '2023-08-11', '15:00', '2023-08-11', '09:00');
+      expect(this.component.dateTimeFilterForm.get('dateValueTo').hasError('range')).toBeTrue();
+    });
+
+    it('accepts equal From and To, and clears the error once the order is fixed', function (this: ThisTest) {
+      openCustomRangeWithTime.call(this);
+      setRange.call(this, '2023-08-11', '15:00', '2023-08-11', '09:00');
+      setRange.call(this, '2023-08-11', '09:00', '2023-08-11', '09:00');
+      expect(this.component.dateTimeFilterForm.get('dateValueTo').hasError('range')).toBeFalse();
+      expect(this.component.dateTimeFilterForm.valid).toBeTrue();
+    });
+  });
+
   describe('additional coverage', () => {
     beforeEach(function (this: ThisTest) {
       this.fixture.detectChanges();

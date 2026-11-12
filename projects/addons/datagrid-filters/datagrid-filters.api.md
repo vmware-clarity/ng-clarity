@@ -325,6 +325,7 @@ export class DatagridFiltersStrings {
     readonly clearFilter: string;
     readonly dateFormat: string;
     readonly dateRangeLabel: string;
+    readonly dateRangeOptionsLabel: string;
     readonly dateRangeValidatorMessage: string;
     readonly dateValidatorMessage: string;
     // (undocumented)
@@ -472,10 +473,12 @@ export class DatagridFiltersUserService {
 
 // @public (undocumented)
 export class DateTimePropertyDefinition extends FilterablePropertyDefinition {
-    constructor(displayName: string, property: string, operators?: ComparisonOperator[], includeSeconds?: boolean);
+    constructor(displayName: string, property: string, operators?: ComparisonOperator[], includeSeconds?: boolean, rangeOptions?: DateRangeOption[]);
     // (undocumented)
     getOperators(): ComparisonOperator[];
     includeSeconds: boolean;
+    // Warning: (ae-forgotten-export) The symbol "DateRangeOption" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    rangeOptions: DateRangeOption[];
 }
 
 // @public (undocumented)

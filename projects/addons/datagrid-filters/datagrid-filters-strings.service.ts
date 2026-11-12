@@ -263,6 +263,11 @@ export class DatagridFiltersStrings {
    */
   readonly dateRangeLabel: string = 'Date range';
 
+  /**
+   * Screen reader label of the preset range buttons shown by the custom range operator with times.
+   */
+  readonly dateRangeOptionsLabel: string = 'Preset ranges';
+
   readonly fromLabel: string = 'From';
 
   readonly toLabel: string = 'To';

@@ -7,6 +7,8 @@
 
 /* eslint-disable @typescript-eslint/parameter-properties */
 
+import { DateRangeOption } from '@clr/angular/forms';
+
 import { ComparisonOperator, LogicalOperator, TimeSpan, Unit } from './datagrid-filters.enums';
 
 /**
@@ -199,6 +201,13 @@ export class DateTimePropertyDefinition extends FilterablePropertyDefinition {
    */
   includeSeconds: boolean;
 
+  /**
+   * Preset ranges offered by the custom range operator. Without times they are listed in the date range picker; with
+   * times they are buttons under the operator. Each `value` is `[start, end]`, both inclusive, used as given. A `Date`
+   * at exactly 00:00 means the whole day. Options whose `value` is not two valid dates are ignored.
+   */
+  rangeOptions: DateRangeOption[];
+
   private readonly defaultOperators: ComparisonOperator[] = [
     ComparisonOperator.Equals,
     ComparisonOperator.Before,
@@ -214,9 +223,16 @@ export class DateTimePropertyDefinition extends FilterablePropertyDefinition {
     ComparisonOperator.TimeSpan,
   ];
 
-  constructor(displayName: string, property: string, operators?: ComparisonOperator[], includeSeconds?: boolean) {
+  constructor(
+    displayName: string,
+    property: string,
+    operators?: ComparisonOperator[],
+    includeSeconds?: boolean,
+    rangeOptions?: DateRangeOption[]
+  ) {
     super(displayName, property, operators);
     this.includeSeconds = includeSeconds ? includeSeconds : false;
+    this.rangeOptions = rangeOptions ?? [];
   }
 
   getOperators(): ComparisonOperator[] {

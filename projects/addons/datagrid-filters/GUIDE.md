@@ -74,6 +74,7 @@ The component only **emits** filters. Apply `PropertyFilter[]` (each `{ criteria
 
 - OnPush: assign new arrays for every input; never mutate them.
 - `PropertyPredicate.value` is `undefined` for `ComparisonOperator.IsEmpty` — check the operator first.
+- `DateTimePropertyDefinition`'s fifth argument `rangeOptions: DateRangeOption[]` (`{ label, value: [start, end] }`, both inclusive) adds preset ranges to **Custom range**. Dates are used as given; a `Date` at 00:00 means the whole day.
 - Date-time values are local date-times with the local UTC offset (`2026-03-29T00:00:00+02:00`). **Equals** a day is emitted as `>= day 00:00` AND `< next day 00:00`.
 - `UserPropertyDefinition` requires providing `DatagridFiltersUserService`.
 - Localize by providing `DatagridFiltersStrings`.

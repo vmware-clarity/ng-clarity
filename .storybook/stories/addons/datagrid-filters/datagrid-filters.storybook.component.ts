@@ -22,6 +22,7 @@ import {
   StringPropertyDefinition,
   UserPropertyDefinition,
 } from '@clr/addons/datagrid-filters';
+import { DateRangeOption } from '@clr/angular';
 import { Observable, of, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -77,7 +78,23 @@ const guestOsProperty = new EnumPropertyDefinition(
 
 const usedSpaceProperty = new NumericPropertyDefinition('Used space', 'usedSpace');
 
-const createdProperty = new DateTimePropertyDefinition('Created', 'created');
+/**
+ * Preset ranges for Custom range. Dates are used as given; a Date at 00:00 means the whole day. Without times they show
+ * in the date range picker, with times as buttons under the operator.
+ */
+function createdRangeOptions(): DateRangeOption[] {
+  const now = new Date();
+  const day = (offset: number, hours = 0, minutes = 0) =>
+    new Date(now.getFullYear(), now.getMonth(), now.getDate() + offset, hours, minutes);
+  return [
+    { label: 'Today', value: [day(0), day(0)] },
+    { label: 'Last 7 days', value: [day(-6), day(0)] },
+    { label: 'This month', value: [new Date(now.getFullYear(), now.getMonth(), 1), day(0)] },
+    { label: 'Working hours today', value: [day(0, 9), day(0, 17)] },
+  ];
+}
+
+const createdProperty = new DateTimePropertyDefinition('Created', 'created', undefined, false, createdRangeOptions());
 
 const userProperty = new UserPropertyDefinition('User', 'user');
 
@@ -90,6 +107,9 @@ const filterableProperties: FilterablePropertyDefinition[] = [
   createdProperty,
   userProperty,
 ];
+
+/** The Created field alone, as a predefined pill, to try its preset ranges. */
+export const createdOnly = [createdProperty];
 
 export const predefinedFilters = [nameProperty, statusProperty, usedSpaceProperty, createdProperty, userProperty];
 

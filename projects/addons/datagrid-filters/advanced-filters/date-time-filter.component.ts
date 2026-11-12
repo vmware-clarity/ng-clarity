@@ -26,7 +26,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { ClrLocaleDateFormat } from '@clr/angular/forms';
+import { ClrLocaleDateFormat, DateRangeOption } from '@clr/angular/forms';
 
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
 import { ComparisonOperator, LogicalOperator, TimeSpan } from '../model/datagrid-filters.enums';
@@ -64,6 +64,8 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
   isRelativePredicate = false;
   isTimeSpanPredicate = false;
   timePredicate = false;
+  /** Preset ranges of the field with valid dates, for the range picker and the time-mode buttons. */
+  rangeOptions: DateRangeOption[] = [];
   includeSeconds = false;
   /**
    * In case the component is used for filter editing
@@ -124,6 +126,7 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.comparisonOperators = this.filterProperty.getOperators();
+    this.rangeOptions = validRangeOptions(this.filterProperty.rangeOptions);
     let dateValidators: ValidatorFn[] = this.dateValidators;
 
     // To handle edit mode
@@ -170,6 +173,22 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
         this.onApplyButtonClick();
       }
     }
+  }
+
+  /** Fills From and To (dates and, with times, times) from a preset range. The user can still change them. */
+  applyRangeOption(option: DateRangeOption): void {
+    const [start, end] = option.value;
+    this.dateTimeFilterForm.patchValue({
+      dateValue: this.dateFormat.format(start),
+      dateValueTo: this.dateFormat.format(end),
+    });
+    if (this.timePredicate) {
+      this.dateTimeFilterForm.patchValue({
+        timeValue: this.timeInputValue(start, false),
+        timeValueTo: this.timeInputValue(end, true),
+      });
+    }
+    this.dateTimeFilterForm.markAsDirty();
   }
 
   enableTimePredicate(): void {
@@ -251,6 +270,20 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
   }
 
   private onOperatorChange(): void {
+    // The To date's range rule depends on the other fields, so re-check it (and show its error) when they change.
+    this.dateTimeFilterForm.valueChanges.subscribe(() => {
+      const dateValueTo = this.dateTimeFilterForm.get('dateValueTo');
+      if (!dateValueTo) {
+        return;
+      }
+      // Without emitting value changes (that would loop back here); setErrors emits only the status change Clarity
+      // needs to show or hide the message.
+      dateValueTo.updateValueAndValidity({ emitEvent: false });
+      if (dateValueTo.hasError('range')) {
+        dateValueTo.markAsTouched();
+      }
+      dateValueTo.setErrors(dateValueTo.errors);
+    });
     this.dateTimeFilterForm.get('operator')?.valueChanges.subscribe((operator: ComparisonOperator) => {
       this.processSelectedOperator(operator);
       if (this.noDateTimeInputNeeded()) {
@@ -291,7 +324,10 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
   private enableCustomRangePredicate(): void {
     this.dateTimeFilterForm.addControl(
       'dateValueTo',
-      new FormControl(this.parseDateValue(this.getStoredDateTimeValueTo()), this.dateValidators)
+      new FormControl(this.parseDateValue(this.getStoredDateTimeValueTo()), [
+        ...this.dateValidators,
+        (control: AbstractControl) => this.validateRangeOrder(control),
+      ])
     );
     if (this.timePredicate) {
       this.dateTimeFilterForm.addControl(
@@ -559,10 +595,56 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
     return date ? toIsoDate(date) : '';
   }
 
+  /**
+   * A time input value (`HH:mm`, or `HH:mm:ss` with seconds) for a preset range date. Exactly 00:00 means the whole
+   * day: the start of the day for From, its last minute (or second) for To, since To is inclusive.
+   */
+  private timeInputValue(date: Date, isEnd: boolean): string {
+    const pad = (value: number) => value.toString().padStart(2, '0');
+    if (!date.getHours() && !date.getMinutes() && !date.getSeconds()) {
+      if (isEnd) {
+        return this.includeSeconds ? '23:59:59' : '23:59';
+      }
+      return this.includeSeconds ? '00:00:00' : '00:00';
+    }
+    const time = `${pad(date.getHours())}:${pad(date.getMinutes())}`;
+    return this.includeSeconds ? `${time}:${pad(date.getSeconds())}` : time;
+  }
+
+  /**
+   * With times the range picker is not used, so its start-before-end rule is applied here: From must not be later than
+   * To (both inclusive, so equal is fine). Reported as the picker's `range` error on the To date.
+   */
+  private validateRangeOrder(control: AbstractControl): ValidationErrors | null {
+    if (!this.timePredicate || !this.isCustomRangePredicate || !control.parent) {
+      return null;
+    }
+    const start = this.localDateTime(control.parent, 'dateValue', 'timeValue');
+    const end = this.localDateTime(control.parent, 'dateValueTo', 'timeValueTo');
+    return start && end && start.getTime() > end.getTime() ? { range: true } : null;
+  }
+
+  /** A From or To field pair as a local date-time; null while the date or time is missing or invalid. */
+  private localDateTime(form: AbstractControl, dateControl: string, timeControl: string): Date | null {
+    const date = this.dateFormat.parse(form.get(dateControl)?.value);
+    const time = /^(\d{2}):(\d{2})(?::(\d{2}))?$/.exec(form.get(timeControl)?.value || '');
+    if (!date || !time) {
+      return null;
+    }
+    const [, hours, minutes, seconds] = time;
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate(), +hours, +minutes, +(seconds ?? 0));
+  }
+
   private parseTimeValue(dateTime: string): string {
     if (!!dateTime && dateTime.indexOf('T') > 0) {
       return dateTime.substring(dateTime.indexOf('T') + 1);
     }
     return '';
   }
+}
+
+/** The options Clarity's range picker accepts: a `value` of exactly two valid dates. Applied to the buttons too. */
+function validRangeOptions(options: DateRangeOption[] | undefined): DateRangeOption[] {
+  const isDate = (value: unknown) => value instanceof Date && !isNaN(value.getTime());
+  return (options ?? []).filter(option => option?.value?.length === 2 && option.value.every(isDate));
 }

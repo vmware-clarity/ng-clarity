@@ -21,3 +21,24 @@
     min-width: 0;
   }
 }
+
+.date-filter-operator {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.date-range-options {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--clr-base-gap-s);
+  margin-top: var(--clr-base-gap-s);
+
+  .date-range-option {
+    display: inline-block;
+    max-width: 100%;
+    margin: 0;
+    text-align: start;
+  }
+}

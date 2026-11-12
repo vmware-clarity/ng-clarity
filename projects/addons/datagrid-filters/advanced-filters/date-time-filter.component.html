@@ -15,23 +15,40 @@
   </div>
   <ng-content select="[filterActions]" ngProjectAs="[filterActions]"></ng-content>
   <div class="filter-condition-row">
-    <clr-select-container class="filter-operator">
-      <label class="clr-sr-only">
-        {{ filterStrings.operatorLabel }}
-      </label>
-      <select clrSelect formControlName="operator">
-        @for (operator of comparisonOperators; track operator) {
-          <option [ngValue]="operator">
-            {{ filterStrings.getOperatorDisplayName(operator) }}
-          </option>
-        }
-      </select>
-    </clr-select-container>
+    <div class="filter-operator date-filter-operator">
+      <clr-select-container>
+        <label class="clr-sr-only">
+          {{ filterStrings.operatorLabel }}
+        </label>
+        <select clrSelect formControlName="operator">
+          @for (operator of comparisonOperators; track operator) {
+            <option [ngValue]="operator">
+              {{ filterStrings.getOperatorDisplayName(operator) }}
+            </option>
+          }
+        </select>
+      </clr-select-container>
+      @if (isCustomRangePredicate && timePredicate && rangeOptions.length) {
+        <!-- With times the range picker is not used, so its preset ranges are offered as buttons. -->
+        <div class="date-range-options" role="group" [attr.aria-label]="filterStrings.dateRangeOptionsLabel">
+          @for (option of rangeOptions; track $index) {
+            <button
+              type="button"
+              class="btn btn-sm btn-outline date-range-option"
+              data-test-id="date-range-option"
+              (click)="applyRangeOption(option)"
+            >
+              {{ option.label }}
+            </button>
+          }
+        </div>
+      }
+    </div>
     <div class="filter-value date-filter-values">
       @if (isCustomRangePredicate && !timePredicate) {
         <!-- Dates only: one range picker for From and To. With times, separate pickers are shown below. -->
         <div class="date-filter-value-row">
-          <clr-date-range-container class="filter-value">
+          <clr-date-range-container class="filter-value" [rangeOptions]="rangeOptions">
             <label class="clr-sr-only">{{ filterStrings.dateRangeLabel }}</label>
             <input
               type="date"
@@ -131,6 +148,9 @@
             }}</clr-control-error>
             <clr-control-error *clrIfError="'pattern'" role="alert">{{
               filterStrings.dateValidatorMessage
+            }}</clr-control-error>
+            <clr-control-error *clrIfError="'range'" role="alert">{{
+              filterStrings.dateRangeValidatorMessage
             }}</clr-control-error>
           </clr-date-container>
         </div>

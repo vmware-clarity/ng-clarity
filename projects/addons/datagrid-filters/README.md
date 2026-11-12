@@ -163,6 +163,26 @@ Extends FilterablePropertyDefinition. Default supported operators:
 
 Date-time filters emit local date-times followed by the local UTC offset, e.g. `2026-03-29T00:00:00+02:00`. **Equals** a date is emitted as `>= that day 00:00` AND `< next day 00:00`, and a custom range ends before the midnight after its end date. A day always runs from midnight to the next midnight, also on the days daylight saving starts or ends (23 or 25 hours). **Last day**, **Last week** and **Time span** count back a fixed length from now.
 
+#### Preset ranges
+
+Pass `rangeOptions` (Clarity's `DateRangeOption[]` from `@clr/angular`) as the fifth constructor argument to offer ready-made ranges for **Custom range**. Without times they are listed in the date range picker; with times they are buttons under the operator. A click fills From and To, which the user can still change before **Apply**; the pill then shows the dates.
+
+```ts
+const today = new Date();
+const daysAgo = (days: number) => new Date(today.getFullYear(), today.getMonth(), today.getDate() - days);
+
+new DateTimePropertyDefinition('Created', 'created', undefined, false, [
+  { label: 'Today', value: [today, today] },
+  { label: 'Last 7 days', value: [daysAgo(6), today] },
+  { label: 'Working hours', value: [new Date(2026, 10, 12, 9, 0), new Date(2026, 10, 12, 17, 0)] },
+]);
+```
+
+- `value` is `[start, end]`, both inclusive. Options whose `value` is not exactly two valid `Date`s are ignored.
+- The dates are used as given. To change what a range covers (e.g. a new "Today"), pass a new definition with new options.
+- With times, a `Date` at exactly 00:00 means the whole day: From becomes 00:00 and To 23:59. Other times are used as they are, so `17:00` includes 17:00. Seconds are kept only with `includeSeconds`.
+- Keep the list short (4–5 options); with times the buttons are listed under the operator.
+
 ### PropertyFilter
 
 | Property      | Type                  | Description                                                                                               |

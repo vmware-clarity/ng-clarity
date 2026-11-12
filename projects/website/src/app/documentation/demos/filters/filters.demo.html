@@ -124,6 +124,16 @@
         from now.
       </li>
       <li>
+        <strong>Preset ranges:</strong> pass <code cds-text="code">rangeOptions</code> (Clarity's
+        <code cds-text="code">DateRangeOption[]</code>,
+        <code cds-text="code">&#123; label, value: [start, end] &#125;</code>) to
+        <code cds-text="code">DateTimePropertyDefinition</code> to offer ready-made ranges for
+        <strong>Custom range</strong>. Without times they are listed in the date range picker; with times they are
+        buttons under the operator. A click fills From and To, which can still be changed before <strong>Apply</strong>.
+        Both ends are inclusive, the dates are used as given, and a date at 00:00 means the whole day. Keep the list to
+        4–5 options.
+      </li>
+      <li>
         <strong>Is empty</strong> emits <code cds-text="code">value: undefined</code>; check the operator before the
         value.
       </li>
@@ -224,8 +234,9 @@
 
     <h3 data-toc-item id="date-time-filters" cds-text="section" class="clr-mt-32px">Date-time filters</h3>
     <p cds-text="body" class="clr-mt-16px">
-      Restore an Equals a day filter, a custom range, or Last week. Relative operators such as Last week cannot be
-      recovered from the criteria, so the filter carries
+      Restore an Equals a day filter, a custom range, or Last week. The Created field also has preset ranges: open the
+      pill, choose Custom range, and pick one in the date range picker, or add a time to see them as buttons. Relative
+      operators such as Last week cannot be recovered from the criteria, so the filter carries
       <code cds-text="code">editorState: &#123; operator: ComparisonOperator.LastWeek &#125;</code>. Emitted values are
       local date-times followed by the UTC offset, and a day runs from midnight to midnight, also on daylight saving
       days.
@@ -480,9 +491,13 @@
         </tr>
         <tr>
           <td class="left"><code cds-text="code">DateTimePropertyDefinition</code></td>
-          <td class="left"><code cds-text="code">operators</code>, <code cds-text="code">includeSeconds</code></td>
+          <td class="left">
+            <code cds-text="code">operators</code>, <code cds-text="code">includeSeconds</code>,
+            <code cds-text="code">rangeOptions</code>
+          </td>
           <td class="left">
             Dates and times: Equals, Before, After, Custom range, Last day/week/month/year, Time span and Is empty.
+            <code cds-text="code">rangeOptions</code> adds preset ranges to Custom range.
           </td>
         </tr>
         <tr>

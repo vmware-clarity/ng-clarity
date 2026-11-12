@@ -10,6 +10,7 @@ import { AppfxDatagridFiltersModule, DataGridFiltersComponent, FilterMode } from
 import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
 
 import {
+  createdOnly,
   customRangePresetFilters,
   DatagridFiltersStoryWrapperComponent,
   equalsDayPresetFilters,
@@ -172,5 +173,13 @@ export const DateTimeLastWeek: Story = {
     filterMode: FilterMode.AdvancedOnly,
     // The pill shows "Last week" from the editor state, whatever date the criteria start at.
     presetFilters: lastWeekPresetFilters(),
+  },
+};
+
+export const DateTimePresetRanges: Story = {
+  args: {
+    filterMode: FilterMode.AdvancedOnly,
+    // Open Created, choose Custom range: the ranges are in the date picker, or buttons once a time is added.
+    predefinedFilters: createdOnly,
   },
 };
