@@ -182,6 +182,33 @@ export default function (): void {
         expect(this.popoverService.open).toBeTruthy();
       });
 
+      it('cancels pending initial focus when closed before the next task', async function (this: TestContext) {
+        const moveTo = spyOn(this.focusService, 'moveTo');
+        this.popoverService.toggleWithEvent({});
+        this.popoverService.open = false;
+        await delay();
+        expect(moveTo).not.toHaveBeenCalled();
+      });
+
+      it('cancels pending initial focus on destruction', async function (this: TestContext) {
+        const moveTo = spyOn(this.focusService, 'moveTo');
+        this.popoverService.toggleWithEvent({});
+        this.fixture.destroy();
+        await delay();
+        expect(moveTo).not.toHaveBeenCalled();
+      });
+
+      it('cancels pending focus recovery on destruction', async function (this: TestContext) {
+        this.focusHandler.container = this.container;
+        this.focusHandler.addChildren(this.children);
+        this.popoverService.open = true;
+        const moveTo = spyOn(this.focusService, 'moveTo');
+        this.container.dispatchEvent(new FocusEvent('focusout'));
+        this.fixture.destroy();
+        await delay();
+        expect(moveTo).not.toHaveBeenCalled();
+      });
+
       it('moves to the first child when opened with a click', async function (this: TestContext) {
         this.focusHandler.addChildren(this.children);
         const moveTo = spyOn(this.focusService, 'moveTo');

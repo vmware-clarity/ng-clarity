@@ -31,7 +31,7 @@ export class AppNav {
 }
 ```
 
-`ClrVerticalNavModule` is an NgModule (re-exports `ClrIcon` and `ClrConditionalModule` for `*clrIfExpanded`). Place the nav inside `div.content-container`, next to `content-area` (see the clr-app-layout skill).
+`ClrVerticalNavModule` is an NgModule (re-exports `ClrIcon` and `ClrConditionalModule` for `*clrIfExpanded`). Place the nav inside `div.content-container`, next to `content-area` (see the clr-app-layout guide).
 
 ## Links
 
@@ -83,14 +83,14 @@ export class AppNav {
 
 ## Responsive
 
-Add `[clr-nav-level]="2"` on `clr-vertical-nav` (inside `clr-main-container` with `clr-header`) so it collapses into the header overflow menu on small screens. Needs `ClrNavigationModule`. See the clr-navigation skill.
+Add `[clr-nav-level]="2"` on `clr-vertical-nav` (inside `clr-main-container` with `clr-header`) so it collapses into the header overflow menu on small screens. Needs `ClrNavigationModule`. See the clr-navigation guide.
 
 ## Rules
 
 - Do not put icons on child links inside groups, and do not mix top-level items with and without icons.
 - Do not build a custom sidebar with `<ul>`/`<div>`; use `clr-vertical-nav`.
 - Do not use a vertical nav together with both a header nav and a subnav.
-- Register every icon shape you use with `ClarityIcons.addIcons(...)` (see the clr-icons skill).
+- Register every icon shape you use with `ClarityIcons.addIcons(...)` (see the clr-icons guide).
 - Use real links (`<a>` with `routerLink`/`href`) for navigation, not buttons.
 
 ## References

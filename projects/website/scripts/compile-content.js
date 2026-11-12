@@ -18,7 +18,7 @@ const { markedHighlight } = require('marked-highlight');
 const prismjs = require('prismjs');
 const { parse: parseMarkdown, Syntax } = require('@textlint/markdown-to-ast');
 
-const { LIBS, collectSkills, getAgentsFile } = require('../../../scripts/ai-files');
+const { LIBS, collectAiFiles, getAgentsFile } = require('../../../scripts/ai-files');
 
 // add languages for code highlighting
 require('prismjs/components/prism-bash');
@@ -45,7 +45,7 @@ async function main() {
   const compiledContentPath = path.join(PROJECT_ROOT, 'src/compiled-content');
   fs.mkdirSync(compiledContentPath, { recursive: true });
 
-  const aiFiles = collectAiFiles();
+  const aiFiles = collectWebsiteAiFiles();
   writeAiStaticFiles(aiFiles);
 
   writeJson('nav.json', await compileNav());
@@ -94,32 +94,47 @@ async function compilePages(aiFiles) {
   return pages;
 }
 
-// Reads AGENTS.md and SKILL.md files from source (not dist) so the website works without a library build.
-function collectAiFiles() {
+// Reads the AI files from source (not dist) so the website works without a library build.
+// The URLs follow the package layout: /ai/skills/<skill>/SKILL.md and /ai/skills/<skill>/references/<guide>.md.
+function collectWebsiteAiFiles() {
   const agents = [];
   const skills = [];
+  const guides = [];
   const errors = [];
 
   for (const lib of Object.keys(LIBS)) {
+    const { packageName } = LIBS[lib];
     const agentsFile = getAgentsFile(lib);
     if (agentsFile) {
-      agents.push({ lib, packageName: LIBS[lib].packageName, url: `/ai/${lib}/AGENTS.md`, raw: agentsFile.raw });
+      agents.push({ lib, packageName, url: `/ai/${lib}/AGENTS.md`, raw: agentsFile.raw });
     }
 
-    const result = collectSkills(lib);
-    skills.push(...result.skills.map(skill => ({ ...skill, url: `/ai/skills/${skill.name}/SKILL.md` })));
+    const result = collectAiFiles(lib);
     errors.push(...result.errors);
+    if (result.skill) {
+      const skillUrl = `/ai/skills/${result.skill.name}`;
+      skills.push({ lib, packageName, ...result.skill, url: `${skillUrl}/SKILL.md` });
+      // guides ship without frontmatter, so the website serves and copies the body
+      guides.push(
+        ...result.guides.map(guide => ({
+          ...guide,
+          packageSkill: result.skill.name,
+          raw: guide.body.trimStart(),
+          url: `${skillUrl}/references/${guide.name}.md`,
+        }))
+      );
+    }
   }
 
   if (errors.length) {
-    throw new Error(`Invalid AI skill files:\n${errors.join('\n')}`);
+    throw new Error(`Invalid AI files:\n${errors.join('\n')}`);
   }
 
-  return { agents, skills };
+  return { agents, skills, guides };
 }
 
 // Writes raw files served as-is by the website: /ai/**, /llms.txt, /llms-full.txt
-function writeAiStaticFiles({ agents, skills }) {
+function writeAiStaticFiles({ agents, skills, guides }) {
   const outputPath = path.join(PROJECT_ROOT, 'src/compiled-ai');
   fs.rmSync(outputPath, { recursive: true, force: true });
 
@@ -129,14 +144,15 @@ function writeAiStaticFiles({ agents, skills }) {
     fs.writeFileSync(filePath, content);
   };
 
-  for (const { url, raw } of [...agents, ...skills]) {
+  for (const { url, raw } of [...agents, ...skills, ...guides]) {
     write(url, raw);
   }
 
   const agentLinks = agents.map(
-    a => `- [${a.packageName} AGENTS.md](${SITE_URL}${a.url}): rules for all ${a.packageName} UI`
+    a => `- [${a.packageName} AGENTS.md](${SITE_URL}${a.url}): points agents to the ${a.packageName} skill`
   );
   const skillLinks = skills.map(s => `- [${s.name}](${SITE_URL}${s.url}): ${s.description}`);
+  const guideLinks = guides.map(g => `- [${g.name}](${SITE_URL}${g.url}): ${g.description}`);
   write(
     'llms.txt',
     [
@@ -154,29 +170,33 @@ function writeAiStaticFiles({ agents, skills }) {
       '',
       ...skillLinks,
       '',
+      '## Component guides',
+      '',
+      ...guideLinks,
+      '',
     ].join('\n')
   );
-  write('llms-full.txt', [...agents, ...skills].map(({ raw }) => raw.trim()).join('\n\n---\n\n') + '\n');
+  write('llms-full.txt', [...agents, ...skills, ...guides].map(({ raw }) => raw.trim()).join('\n\n---\n\n') + '\n');
 }
 
 // Placeholders usable in content/pages/*.md:
-//   <!-- ai:skills:<lib> -->    table of the skills of one library
-//   <!-- ai:agents -->          accordion with the AGENTS.md of every library (see AiAgentsComponent)
-function replaceAiPlaceholders(markdown, { skills }) {
+//   <!-- ai:guides:<lib> -->    table of the component guides of one library
+//   <!-- ai:agents -->          accordion with the AGENTS.md and SKILL.md of every library (see AiAgentsComponent)
+function replaceAiPlaceholders(markdown, { guides }) {
   return markdown
-    .replace(/<!-- ai:skills:([a-z]+) -->/g, (placeholder, lib) => {
-      const libSkills = skills.filter(s => s.lib === lib);
-      if (!libSkills.length) {
-        throw new Error(`${placeholder}: no skills found for "${lib}"`);
+    .replace(/<!-- ai:guides:([a-z]+) -->/g, (placeholder, lib) => {
+      const libGuides = guides.filter(g => g.lib === lib);
+      if (!libGuides.length) {
+        throw new Error(`${placeholder}: no guides found for "${lib}"`);
       }
       // HTML instead of a markdown table so the description column can be given most of the width
-      const rows = libSkills.map(s => {
-        const name = s.docs ? `<a href="${s.docs}/ai">${s.name}</a>` : s.name;
-        return `<tr><td class="left">${name}</td><td class="left">${inlineMarkdownToHtml(s.description)}</td><td class="left"><a href="${s.url}">SKILL.md</a></td></tr>`;
+      const rows = libGuides.map(g => {
+        const name = g.docs ? `<a href="${g.docs}/ai">${g.name}</a>` : g.name;
+        return `<tr><td class="left">${name}</td><td class="left">${inlineMarkdownToHtml(g.description)}</td><td class="left"><a href="${g.url}">${g.name}.md</a></td></tr>`;
       });
       return [
         '<table>',
-        '<thead><tr><th class="left" style="width: 20%">Skill</th><th class="left" style="width: 65%">Use it for</th><th class="left" style="width: 15%">Files</th></tr></thead>',
+        '<thead><tr><th class="left" style="width: 20%">Guide</th><th class="left" style="width: 65%">Use it for</th><th class="left" style="width: 15%">Files</th></tr></thead>',
         `<tbody>${rows.join('')}</tbody>`,
         '</table>',
       ].join('\n');
@@ -189,20 +209,26 @@ function inlineMarkdownToHtml(text) {
   return escaped.replace(/`([^`]+)`/g, '<code cds-text="code">$1</code>');
 }
 
-async function compileAiAgents({ agents }) {
+async function compileAiAgents({ agents, skills }) {
   const aiAgents = [];
+  const files = [
+    ...agents.map(agent => ({ ...agent, fileName: 'AGENTS.md', markdown: agent.raw, idPrefix: `agents-${agent.lib}` })),
+    // SKILL.md headings start one level higher (h1) than the AGENTS.md section (h2)
+    ...skills.map(skill => ({ ...skill, fileName: 'SKILL.md', markdown: skill.body, idPrefix: `skill-${skill.lib}` })),
+  ].sort((a, b) => Object.keys(LIBS).indexOf(a.lib) - Object.keys(LIBS).indexOf(b.lib));
 
-  for (const { lib, packageName, url, raw } of agents) {
-    // drop the managed-block marker lines and nest headings two levels below the page section (h4 and below)
-    const markdown = raw.replace(/^<!-- (?:clarity|appfx):(?:start|end)\b[^\n]*-->\n?/gm, '').trim();
+  for (const { packageName, fileName, url, markdown, idPrefix } of files) {
+    // drop the managed-block marker lines and nest headings below the page section (h4 and below)
+    const content = markdown.replace(/^<!-- (?:clarity|appfx):(?:start|end)\b[^\n]*-->\n?/gm, '').trim();
+    const levels = fileName === 'SKILL.md' ? 3 : 2;
     aiAgents.push({
       packageName,
+      fileName,
       url,
-      html: await compileMarkdown(markdown, [
+      html: await compileMarkdown(content, [
         leftAlignTables,
-        incrementHeadingLevels,
-        incrementHeadingLevels,
-        document => prefixHeadingIds(document, `agents-${lib}`),
+        ...Array(levels).fill(incrementHeadingLevels),
+        document => prefixHeadingIds(document, idPrefix),
       ]),
     });
   }
@@ -210,13 +236,14 @@ async function compileAiAgents({ agents }) {
   return aiAgents;
 }
 
-async function compileAiDocs({ skills }) {
+async function compileAiDocs({ guides }) {
   const aiDocs = {};
   const extraTransformers = [removeFirstH1, incrementHeadingLevels];
 
-  for (const { name, packageName, description, url, raw, body } of skills) {
+  for (const { name, packageName, packageSkill, description, url, raw, body } of guides) {
     aiDocs[name] = {
       packageName,
+      packageSkill,
       description,
       url,
       raw,
