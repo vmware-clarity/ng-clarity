@@ -6,7 +6,9 @@
  */
 
 import {
+  FormatWidth,
   FormStyle,
+  getLocaleDateFormat,
   getLocaleDayNames,
   getLocaleFirstDayOfWeek,
   getLocaleMonthNames,
@@ -26,6 +28,7 @@ export class LocaleHelperService {
   private _localeDays: ReadonlyArray<ClrDayOfWeek>;
   private _localeMonthsAbbreviated: ReadonlyArray<string>;
   private _localeMonthsWide: ReadonlyArray<string>;
+  private _localeDateFormat: string;
 
   constructor(@Inject(LOCALE_ID) public locale: string) {
     this.initializeLocaleData();
@@ -52,6 +55,10 @@ export class LocaleHelperService {
     return this._localeMonthsWide;
   }
 
+  get localeDateFormat(): string {
+    return this._localeDateFormat;
+  }
+
   /**
    * Overrides the first day of the week regardless of locale.
    * Accepts a `ClrWeekday` value (Sunday=0 through Saturday=6), or null to revert to locale default.
@@ -76,6 +83,7 @@ export class LocaleHelperService {
   private initializeLocaleData(): void {
     // Order in which these functions is called is very important.
     this.initializeLocaleFirstDayOfWeek();
+    this.initializeLocaleDateFormat();
     this.initializeLocaleMonthsAbbreviated();
     this.initializeLocaleMonthsWide();
     this.initializeLocaleDays();
@@ -133,5 +141,9 @@ export class LocaleHelperService {
    */
   private initializeLocaleFirstDayOfWeek(): void {
     this._firstDayOfWeek = getLocaleFirstDayOfWeek(this.locale);
+  }
+
+  private initializeLocaleDateFormat(): void {
+    this._localeDateFormat = getLocaleDateFormat(this.locale, FormatWidth.Short);
   }
 }
