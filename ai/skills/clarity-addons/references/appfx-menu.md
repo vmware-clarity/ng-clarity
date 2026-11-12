@@ -1,10 +1,3 @@
----
-name: appfx-menu
-description: Build context menus with the AppFX menu (`<appfx-menu>` from `@clr/addons/menu`) — a declarative menu over `clr-dropdown` shown at x/y coordinates, with headers, separators, nested submenus, icons, shortcuts, viewport-aware positioning, and zoom support. Use when adding a right-click/context menu or changing `appfx-menu`, `appfx-menu-action`, `appfx-menu-header`, `appfx-menu-separator`, or `menu-outlet`.
-metadata:
-  docs: /documentation/menu
----
-
 # AppFX menu (`appfx-menu`)
 
 ## When to use it vs `clr-dropdown`

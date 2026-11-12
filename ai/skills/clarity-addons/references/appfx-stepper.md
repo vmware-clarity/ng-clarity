@@ -1,10 +1,3 @@
----
-name: appfx-stepper
-description: Build inline multi-step forms with the AppFX stepper (`<appfx-stepper>` from `@clr/addons/stepper`) — a `Step[]` + workflow-model driven wrapper over `clr-stepper` with data injection between steps (`Var`, `@In`/`@Out`), async validation, loading/error handling, conditional steps, and per-step summaries. Use when adding or changing an `appfx-stepper` or its `Step` definitions.
-metadata:
-  docs: /documentation/stepper-addon
----
-
 # AppFX stepper (`appfx-stepper`)
 
 ## When to use it vs `clr-stepper`
@@ -92,4 +85,4 @@ steps: Step[] = [
 ## References
 
 - API: `@clr/addons/types/clr-addons-stepper.d.ts`, `@clr/addons/types/clr-addons-var.d.ts`
-- Model concepts in detail: the appfx-wizard skill
+- Model concepts in detail: the appfx-wizard guide

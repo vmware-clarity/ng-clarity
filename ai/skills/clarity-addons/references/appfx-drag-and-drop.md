@@ -1,10 +1,3 @@
----
-name: appfx-drag-and-drop
-description: Connect Angular CDK drop lists across components by group name with the AppFX `DragAndDropGroupService` from `@clr/addons/drag-and-drop`, so items can be dragged between lists that do not share a template. Use when wiring `cdkDropList` groups across components, `cdkDropListConnectedTo`, or `DragAndDropGroupService`.
-metadata:
-  docs: /documentation/drag-and-drop
----
-
 # AppFX drag and drop (`DragAndDropGroupService`)
 
 ## When to use

@@ -1,10 +1,3 @@
----
-name: appfx-certificate-viewer
-description: Display parsed X.509 certificate chains (general info and detailed field tree per certificate) with the AppFX certificate viewer (`<appfx-certificate-viewer>` from `@clr/addons/certificate-viewer`) from PEM strings. Use when showing SSL/TLS certificates, PEM certificate chains, or adding an `appfx-certificate-viewer`.
-metadata:
-  docs: /documentation/certificate-viewer
----
-
 # AppFX certificate viewer (`appfx-certificate-viewer`)
 
 ## When to use
@@ -55,7 +48,7 @@ Inside a modal:
 
 - `pemEncodedCertificatesChain` is a `string[]`, one full PEM block (with BEGIN/END lines) per entry. Assign a new array to re-parse; parsing runs on input change.
 - Set `topHeadingLevel` (1–5, default 5) so headings fit the page outline — one level below the surrounding heading.
-- Field labels are translated through AppFX translate; sync the locale via `AppfxTranslateService` (see the appfx-translate skill).
+- Field labels are translated through AppFX translate; sync the locale via `AppfxTranslateService` (see the appfx-translate guide).
 
 ## References
 
