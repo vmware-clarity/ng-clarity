@@ -6,6 +6,7 @@
  */
 
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { ClrAlertModule } from '@clr/angular';
 
 import { ColorTypeDemo } from './color-type/color-type.demo';
@@ -32,6 +33,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     ColorTypeDemo,
     DoDontComponent,
     ColorizeCapitalizeLettersPipe,
+    RouterLink,
   ],
 })
 export class TypographyDemo extends ClarityDocComponent {

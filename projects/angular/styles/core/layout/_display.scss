@@ -7,6 +7,7 @@
 
 @use '../tokens/variables.tokens' as tokens;
 @use 'mixins/mixins.display' as display-mixins;
+@use '../../mixins' as clr-mixins;
 
 [cds-layout~='display:none'] {
   display: none !important;
@@ -28,16 +29,16 @@
   display: inline !important;
 }
 
-@media (min-width: tokens.$cds-global-layout-width-sm-static) {
+@include clr-mixins.breakpoint-query('min-width: #{tokens.$cds-global-layout-width-sm-static}') {
   @include display-mixins.display('sm');
 }
-@media (min-width: tokens.$cds-global-layout-width-md-static) {
+@include clr-mixins.breakpoint-query('min-width: #{tokens.$cds-global-layout-width-md-static}') {
   @include display-mixins.display('md');
 }
-@media (min-width: tokens.$cds-global-layout-width-lg-static) {
+@include clr-mixins.breakpoint-query('min-width: #{tokens.$cds-global-layout-width-lg-static}') {
   @include display-mixins.display('lg');
 }
-@media (min-width: tokens.$cds-global-layout-width-xl-static) {
+@include clr-mixins.breakpoint-query('min-width: #{tokens.$cds-global-layout-width-xl-static}') {
   @include display-mixins.display('xl');
 }
 
