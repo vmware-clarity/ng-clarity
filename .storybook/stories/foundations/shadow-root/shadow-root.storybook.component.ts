@@ -53,6 +53,16 @@ export class ShadowRootTypographyComponent {
   selector: 'shadow-root-container-queries',
   template: `
     <div [attr.cds-theme]="theme" [attr.clr-density]="density" clr-layout-container>
+      <div class="caption" cds-text="caption">
+        clr-col-12 clr-col-sm-6 clr-col-md-4 clr-col-lg-3 clr-col-xl-2: 1, 2, 3, 4 and 6 per row
+      </div>
+      <div class="clr-row">
+        @for (column of columns; track column) {
+          <div class="clr-col-12 clr-col-sm-6 clr-col-md-4 clr-col-lg-3 clr-col-xl-2">
+            <span>{{ column }}</span>
+          </div>
+        }
+      </div>
       <div class="clr-row">
         <div class="clr-col-12 clr-col-md-6"><span>clr-col-12 clr-col-md-6</span></div>
         <div class="clr-col-12 clr-col-md-6"><span>clr-col-12 clr-col-md-6</span></div>
@@ -62,6 +72,7 @@ export class ShadowRootTypographyComponent {
         <div class="clr-col-sm-4"><span>clr-col-sm-4</span></div>
         <div class="clr-col-sm-4"><span>clr-col-sm-4</span></div>
       </div>
+      <div class="caption" cds-text="caption">cds-layout follows the viewport</div>
       <div cds-layout="grid cols@sm:6 gap:md">
         <span>cds-layout cols&#64;sm:6</span>
         <span>cds-layout cols&#64;sm:6</span>
@@ -75,6 +86,7 @@ export class ShadowRootTypographyComponent {
 export class ShadowRootContainerQueriesComponent {
   protected readonly theme = pageAttribute('cds-theme');
   protected readonly density = pageAttribute('clr-density');
+  protected readonly columns = [1, 2, 3, 4, 5, 6];
 }
 
 /**

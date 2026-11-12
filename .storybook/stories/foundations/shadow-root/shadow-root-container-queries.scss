@@ -19,3 +19,7 @@ span {
   background: var(--cds-alias-object-container-background-tint);
   border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
 }
+
+.caption {
+  margin-bottom: var(--cds-global-space-3);
+}
