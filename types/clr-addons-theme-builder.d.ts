@@ -151,6 +151,10 @@ declare class ThemeBuilderComponent implements OnInit, AfterViewInit {
         };
     };
     readonly timelineStates: typeof ClrTimelineStepState;
+    private initialized;
+    private pendingTheme;
+    private readonly injector;
+    private readonly changeDetectorRef;
     private _presets;
     constructor();
     /**
@@ -185,7 +189,8 @@ declare class ThemeBuilderComponent implements OnInit, AfterViewInit {
      * preset (see `applyGroupOverrides`). CSS that `validateGeneratedCSS` rejects is not
      * applied at all, so the current colors are left untouched.
      *
-     * @returns `true` when the CSS was applied, `false` when it was rejected as malformed.
+     * Before initialization, the latest valid CSS or preset request is retained and applied after the preview renders.
+     * @returns `true` when the CSS was accepted, `false` when it was rejected as malformed.
      */
     importCSS(css: string): boolean;
     resetAllThemeColors(theme: string): void;

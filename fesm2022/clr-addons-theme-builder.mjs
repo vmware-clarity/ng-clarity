@@ -1,7 +1,7 @@
 import * as i21 from '@angular/common';
 import { CommonModule } from '@angular/common';
 import * as i0 from '@angular/core';
-import { EventEmitter, Input, ViewChild, Output, ChangeDetectionStrategy, Component } from '@angular/core';
+import { EventEmitter, inject, Injector, ChangeDetectorRef, afterNextRender, Input, ViewChild, Output, ChangeDetectionStrategy, Component } from '@angular/core';
 import * as i22 from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { ClrTimelineStepState, ClarityIcons, sunIcon, moonIcon, undoIcon, homeIcon, cogIcon, userIcon, ClarityModule } from '@clr/angular';
@@ -742,6 +742,9 @@ class ThemeBuilderComponent {
             confirm: { agree: false },
         };
         this.timelineStates = ClrTimelineStepState;
+        this.initialized = false;
+        this.injector = inject(Injector);
+        this.changeDetectorRef = inject(ChangeDetectorRef);
         this._presets = [CLARITY_DEFAULT_PRESET, ...PRESETS];
         ClarityIcons.addIcons(sunIcon, moonIcon, undoIcon, homeIcon, cogIcon, userIcon);
     }
@@ -767,8 +770,21 @@ class ThemeBuilderComponent {
         this.activePreset = this.presets?.[0] ?? null;
     }
     ngAfterViewInit() {
-        this.buildColorStructure();
-        this.applyPreviewStyles();
+        // Computed colors require the rendered preview. Initialize after the current check so
+        // populating the controls and emitting the initial CSS cannot change checked bindings.
+        afterNextRender(() => {
+            this.buildColorStructure();
+            this.initialized = true;
+            const pendingTheme = this.pendingTheme;
+            this.pendingTheme = undefined;
+            if (pendingTheme) {
+                pendingTheme();
+            }
+            else {
+                this.applyPreviewStyles();
+            }
+            this.changeDetectorRef.markForCheck();
+        }, { injector: this.injector });
     }
     toggleActiveTheme() {
         this.activeTheme = this.activeTheme === 'dark' ? 'light' : 'dark';
@@ -793,6 +809,10 @@ class ThemeBuilderComponent {
      * that derivation.
      */
     applyPreset(preset) {
+        if (!this.initialized) {
+            this.pendingTheme = () => this.applyPreset(preset);
+            return;
+        }
         this.activePreset = preset;
         for (const theme of ['light', 'dark']) {
             this.resetAllThemeColors(theme);
@@ -822,11 +842,16 @@ class ThemeBuilderComponent {
      * preset (see `applyGroupOverrides`). CSS that `validateGeneratedCSS` rejects is not
      * applied at all, so the current colors are left untouched.
      *
-     * @returns `true` when the CSS was applied, `false` when it was rejected as malformed.
+     * Before initialization, the latest valid CSS or preset request is retained and applied after the preview renders.
+     * @returns `true` when the CSS was accepted, `false` when it was rejected as malformed.
      */
     importCSS(css) {
         if (!validateGeneratedCSS(css).valid) {
             return false;
+        }
+        if (!this.initialized) {
+            this.pendingTheme = () => this.importCSS(css);
+            return true;
         }
         const parsed = parseGeneratedCSS(css);
         for (const theme of ['light', 'dark']) {
