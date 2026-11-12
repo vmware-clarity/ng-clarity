@@ -83,6 +83,7 @@ shown as a wizard, a stepper, tabs or a dialog.
 | Addon                                                   | Entry point                                            | Built on                            |
 | :------------------------------------------------------ | :----------------------------------------------------- | :---------------------------------- |
 | [Advanced Datagrid](/documentation/advanced-datagrid)   | `@clr/addons/datagrid`, `@clr/addons/datagrid-filters` | [Datagrid](/documentation/datagrid) |
+| [Datagrid Filters](/documentation/datagrid-filters)     | `@clr/addons/datagrid-filters`                         | [Datagrid](/documentation/datagrid) |
 | [Property View](/documentation/property-view)           | `@clr/addons/property-view`                            |                                     |
 | [Card Container](/documentation/card-container)         | `@clr/addons/card-container`                           |                                     |
 | [Certificate Viewer](/documentation/certificate-viewer) | `@clr/addons/certificate-viewer`                       |                                     |

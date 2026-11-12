@@ -6,6 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import {
   circleIcon,
   ClarityIcons,
@@ -250,6 +251,7 @@ const additionalFiles = {
     ThemedImageComponent,
     CodeSnippetComponent,
     AiSkillComponent,
+    RouterLink,
     ClrAccordionModule,
     ClrDatagridModule,
     ClrIfExpanded,

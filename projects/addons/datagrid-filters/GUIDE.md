@@ -2,7 +2,7 @@
 name: appfx-datagrid-filters
 description: Build a standalone filter bar with `<appfx-datagrid-filters>` from `@clr/addons/datagrid-filters` — quick search, advanced filter pills, predefined, semi-predefined and toggle filters, presets, and two-way `[(propertyFilters)]` sync with saved views or URLs. Use when placing `appfx-datagrid-filters` yourself (e.g. over a `clr-datagrid`), or when restoring, storing or syncing `PropertyFilter[]`.
 metadata:
-  docs: /documentation/advanced-datagrid
+  docs: /documentation/datagrid-filters
 ---
 
 # AppFX datagrid filters (`appfx-datagrid-filters`)

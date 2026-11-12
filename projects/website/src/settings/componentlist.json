@@ -319,6 +319,13 @@
       "basedOn": "datagrid"
     },
     {
+      "url": "datagrid-filters",
+      "text": "Datagrid Filters",
+      "type": "addons",
+      "storybookPath": "addons-datagrid-filters",
+      "storybookLink": true
+    },
+    {
       "url": "advanced-stepper",
       "text": "Advanced Stepper",
       "type": "addons",

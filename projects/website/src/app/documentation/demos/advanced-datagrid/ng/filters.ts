@@ -167,6 +167,9 @@ export class FiltersGridComponent {
   protected selectedFilterMode: FilterMode | undefined = FilterMode.AdvancedOnly;
   protected errorRetrievingDomains = false;
   protected errorRetrievingUsers = false;
+  // The latest search term and filters. Combined mode applies both; in the other modes the latest one replaces the other.
+  private searchTerm = '';
+  private propertyFilters: PropertyFilter[] = [];
 
   constructor(
     private inventory: Inventory,
@@ -197,10 +200,44 @@ export class FiltersGridComponent {
   }
 
   onAdvancedFilterChange(filterCriteria: PropertyFilter[]): void {
+    this.propertyFilters = filterCriteria ?? [];
+    if (this.selectedFilterMode !== FilterMode.Combined) {
+      this.searchTerm = '';
+    }
+    this.applyFilters();
+  }
+
+  protected onFilterModeChange(filterMode: string): void {
+    this.searchTerm = '';
+    this.propertyFilters = [];
     this.filteredItems = this.allItems;
 
-    if (filterCriteria?.length > 0) {
-      filterCriteria
+    if (filterMode === FilterMode.Quick.toString()) {
+      this.selectedFilterMode = FilterMode.Quick;
+    } else if (filterMode === FilterMode.Advanced.toString()) {
+      this.selectedFilterMode = FilterMode.Advanced;
+    } else if (filterMode === FilterMode.AdvancedOnly.toString()) {
+      this.selectedFilterMode = FilterMode.AdvancedOnly;
+    } else if (filterMode === FilterMode.Combined.toString()) {
+      this.selectedFilterMode = FilterMode.Combined;
+    } else {
+      this.selectedFilterMode = undefined;
+    }
+  }
+
+  protected onSearchTermChange(searchTerm: string): void {
+    this.searchTerm = searchTerm ?? '';
+    if (this.selectedFilterMode !== FilterMode.Combined) {
+      this.propertyFilters = [];
+    }
+    this.applyFilters();
+  }
+
+  private applyFilters(): void {
+    this.filteredItems = this.allItems;
+
+    if (this.propertyFilters.length > 0) {
+      this.propertyFilters
         .filter(propFilter => propFilter?.criteria?.length > 0)
         .forEach(propFilter => {
           const filteredItems: VmItem[] = [];
@@ -221,31 +258,15 @@ export class FiltersGridComponent {
           this.filteredItems = filteredItems;
         });
     }
-  }
 
-  protected onFilterModeChange(filterMode: string): void {
-    this.filteredItems = this.allItems;
-
-    if (filterMode === FilterMode.Quick.toString()) {
-      this.selectedFilterMode = FilterMode.Quick;
-    } else if (filterMode === FilterMode.Advanced.toString()) {
-      this.selectedFilterMode = FilterMode.Advanced;
-    } else if (filterMode === FilterMode.AdvancedOnly.toString()) {
-      this.selectedFilterMode = FilterMode.AdvancedOnly;
-    } else {
-      this.selectedFilterMode = undefined;
+    const lowerCaseSearch = this.searchTerm.trim().toLowerCase();
+    if (lowerCaseSearch) {
+      this.filteredItems = this.filteredItems.filter((item: VmItem) =>
+        [item.name, item.state, item.status, item.usedSpace].some(field =>
+          field.toLowerCase().includes(lowerCaseSearch)
+        )
+      );
     }
-  }
-
-  protected onSearchTermChange(searchTerm: string): void {
-    if (!searchTerm || searchTerm.trim() === '') {
-      this.filteredItems = this.allItems;
-    }
-
-    const lowerCaseSearch = searchTerm.toLowerCase();
-    this.filteredItems = this.allItems.filter((item: VmItem) =>
-      [item.name, item.state, item.status, item.usedSpace].some(field => field.toLowerCase().includes(lowerCaseSearch))
-    );
   }
 
   private initFilterableProperties(): void {

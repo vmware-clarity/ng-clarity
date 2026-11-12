@@ -372,6 +372,12 @@ export const documentationRoutes: Routes = [
       },
       {
         matcher: documentationRouteMatcher,
+        data: { routePath: 'datagrid-filters/:tab?' },
+        loadChildren: () =>
+          import('./demos/datagrid-filters/datagrid-filters.demo.module').then(m => m.DatagridFiltersDemoModule),
+      },
+      {
+        matcher: documentationRouteMatcher,
         data: { routePath: 'drag-and-drop/:tab?' },
         loadChildren: () =>
           import('./demos/drag-and-drop/drag-and-drop.demo.module').then(m => m.DragAndDropDemoModule),
