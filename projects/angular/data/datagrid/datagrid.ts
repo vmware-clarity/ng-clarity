@@ -497,12 +497,12 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // that triggered the change. This helps us to easily resolve the k/b only case together with the mouse selection case.
     this.zone.runOutsideAngular(() => {
       this._subscriptions.push(
-        fromEvent(this.document.body, 'keydown').subscribe((event: KeyboardEvent) => {
+        fromEvent<KeyboardEvent>(this.document.body, 'keydown').subscribe((event: KeyboardEvent) => {
           if (event.key === 'Shift') {
             this.selection.shiftPressed = true;
           }
         }),
-        fromEvent(this.document.body, 'keyup').subscribe((event: KeyboardEvent) => {
+        fromEvent<KeyboardEvent>(this.document.body, 'keyup').subscribe((event: KeyboardEvent) => {
           if (event.key === 'Shift') {
             this.selection.shiftPressed = false;
           }

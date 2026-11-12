@@ -79,7 +79,7 @@ export class KeyNavigationGridController implements OnDestroy {
     }
 
     this.zone.runOutsideAngular(() => {
-      fromEvent(this.keyNavUtils.grid, 'mousedown')
+      fromEvent<MouseEvent>(this.keyNavUtils.grid, 'mousedown')
         .pipe(takeUntil(this.destroy$))
         .subscribe((e: MouseEvent) => {
           // preserve right click for context menus & keyboard mouse control https://apple.stackexchange.com/questions/32715/how-do-i-open-the-context-menu-from-a-mac-keyboard
@@ -105,7 +105,7 @@ export class KeyNavigationGridController implements OnDestroy {
           this.nextCellCoordsEmitter.emit(null);
         });
 
-      fromEvent(this.keyNavUtils.grid, 'keydown')
+      fromEvent<KeyboardEvent>(this.keyNavUtils.grid, 'keydown')
         .pipe(takeUntil(this.destroy$))
         .subscribe((e: KeyboardEvent) => {
           // Skip column resize events

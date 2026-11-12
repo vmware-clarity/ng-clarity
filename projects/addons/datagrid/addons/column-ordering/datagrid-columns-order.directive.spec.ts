@@ -25,7 +25,7 @@ const firstName = 'First Name';
 // tests tell a real pinned column from one that only has `pinned` set on its definition.
 function pinnedHeaders(this: any): string[] {
   return Array.from(
-    (this.fixture.nativeElement as HTMLElement).querySelectorAll('.datagrid-pinned-cells clr-dg-column')
+    (this.fixture.nativeElement as HTMLElement).querySelectorAll<HTMLElement>('.datagrid-pinned-cells clr-dg-column')
   ).map((column: HTMLElement) => column.querySelector('.datagrid-column-title')?.textContent.trim());
 }
 

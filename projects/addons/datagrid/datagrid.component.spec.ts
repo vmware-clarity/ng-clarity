@@ -1289,7 +1289,7 @@ describe('DatagridComponent', () => {
       });
 
       function columnElementByTitle(fixture: ComponentFixture<DatagridHostComponent>, title: string): HTMLElement {
-        return Array.from(fixture.debugElement.nativeElement.querySelectorAll('clr-dg-column')).find(
+        return Array.from<HTMLElement>(fixture.debugElement.nativeElement.querySelectorAll('clr-dg-column')).find(
           (el: HTMLElement) => el.querySelector('.datagrid-column-title')?.textContent.trim() === title
         ) as HTMLElement;
       }
@@ -1344,7 +1344,7 @@ describe('DatagridComponent', () => {
 
       it('never moves a column out of its own container', function (this: DatagridSpecContext) {
         const pinnedHeaders = () =>
-          Array.from(
+          Array.from<HTMLElement>(
             this.fixture.nativeElement.querySelectorAll('.datagrid-pinned-cells clr-dg-column .datagrid-column-title')
           ).map((element: HTMLElement) => element.textContent.trim());
 
@@ -1407,13 +1407,13 @@ describe('DatagridComponent', () => {
       }
 
       function pinnedHeaders(fixture: ComponentFixture<DatagridHostComponent>): string[] {
-        return Array.from(
+        return Array.from<HTMLElement>(
           fixture.nativeElement.querySelectorAll('.datagrid-pinned-cells clr-dg-column .datagrid-column-title')
         ).map((element: HTMLElement) => element.textContent.trim());
       }
 
       function columnElementByTitle(fixture: ComponentFixture<DatagridHostComponent>, title: string): HTMLElement {
-        return Array.from(fixture.nativeElement.querySelectorAll('clr-dg-column')).find(
+        return Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('clr-dg-column')).find(
           (el: HTMLElement) => el.querySelector('.datagrid-column-title')?.textContent.trim() === title
         ) as HTMLElement;
       }
