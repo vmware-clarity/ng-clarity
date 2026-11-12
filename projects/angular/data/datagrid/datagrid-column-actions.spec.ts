@@ -10,7 +10,7 @@ import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { ClrDropdown, ClrDropdownItem } from '@clr/angular/popover/dropdown';
-import { TestContext } from '@clr/angular/testing';
+import { TestContext, TestHelpers } from '@clr/angular/testing';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { ClrDatagrid } from './datagrid';
@@ -209,7 +209,7 @@ export default function (): void {
         }
       }
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, ColumnActionsTest);
         element = context.clarityElement;
       });
@@ -272,7 +272,7 @@ export default function (): void {
         }
       }
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, ColumnActionsTest);
         element = context.clarityElement;
         commonStrings = new ClrCommonStringsService();
@@ -338,7 +338,7 @@ export default function (): void {
       let context: TestContext<ClrDatagrid, ProjectedActionTest>;
       let element: HTMLElement;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, ProjectedActionTest);
         element = context.clarityElement;
       });
@@ -460,7 +460,7 @@ export default function (): void {
       let context: TestContext<ClrDatagrid, ProjectedOrderTest>;
       let commonStrings: ClrCommonStringsService;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, ProjectedOrderTest);
         commonStrings = TestBed.inject(ClrCommonStringsService);
       });
@@ -556,7 +556,7 @@ export default function (): void {
         closeMenu();
       }
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, ColumnActionsTest);
         element = context.clarityElement;
         commonStrings = new ClrCommonStringsService();
@@ -748,7 +748,7 @@ export default function (): void {
         return document.querySelector('.datagrid-filter');
       }
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, AutoFilterTest);
         element = context.clarityElement;
         commonStrings = new ClrCommonStringsService();
@@ -907,7 +907,7 @@ export default function (): void {
         }
       }
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, NoFilterTest);
         element = context.clarityElement;
       });
@@ -943,7 +943,7 @@ export default function (): void {
         }
       }
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, KeepFilterInHeaderTest);
         element = context.clarityElement;
         commonStrings = new ClrCommonStringsService();

@@ -8,7 +8,7 @@
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import { animationFrameTick, delay, TestContext } from '@clr/angular/testing';
+import { animationFrameTick, delay, TestContext, TestHelpers } from '@clr/angular/testing';
 import { DomAdapter } from '@clr/angular/utils';
 
 import { DatagridNumericFilter } from './datagrid-numeric-filter';
@@ -30,7 +30,7 @@ export default function (): void {
       context.detectChanges();
     }
 
-    beforeEach(function () {
+    beforeEach(function (this: TestHelpers) {
       context = this.create(DatagridNumericFilter, AccessibilityTest, PROVIDERS);
     });
 
@@ -72,7 +72,7 @@ export default function (): void {
       context.detectChanges();
     }
 
-    beforeEach(function () {
+    beforeEach(function (this: TestHelpers) {
       filter = new TestFilter();
       context = this.create(DatagridNumericFilter, FullTest, PROVIDERS);
       filtersInstance = TestBed.inject(FiltersProvider);

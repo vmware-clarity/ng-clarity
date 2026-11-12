@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestContext } from '@clr/angular/testing';
+import { TestContext, TestHelpers } from '@clr/angular/testing';
 
 import { ClrDatagridPageSize } from './datagrid-page-size';
 import { Page } from './providers/page';
@@ -17,7 +17,7 @@ export default function (): void {
     describe('Template API', function () {
       let context: TestContext<ClrDatagridPageSize, FullTest>;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagridPageSize, FullTest, [Page, StateDebouncer]);
       });
 
@@ -36,9 +36,9 @@ export default function (): void {
 
     describe('View', function () {
       describe('Default View Without Input Test', function () {
-        let context: TestContext<ClrDatagridPageSize, FullTest>;
+        let context: TestContext<ClrDatagridPageSize, SimpleTest>;
 
-        beforeEach(function () {
+        beforeEach(function (this: TestHelpers) {
           context = this.create(ClrDatagridPageSize, SimpleTest, [Page, StateDebouncer]);
         });
 
@@ -52,7 +52,7 @@ export default function (): void {
       describe('Inside Form Test', function () {
         let context: TestContext<ClrDatagridPageSize, FormTest>;
 
-        beforeEach(function () {
+        beforeEach(function (this: TestHelpers) {
           context = this.create(ClrDatagridPageSize, FormTest, [Page, StateDebouncer]);
         });
 
@@ -67,7 +67,7 @@ export default function (): void {
         let context: TestContext<ClrDatagridPageSize, FullTest>;
         let pageProvider: Page;
 
-        beforeEach(function () {
+        beforeEach(function (this: TestHelpers) {
           context = this.create(ClrDatagridPageSize, FullTest, [Page, StateDebouncer]);
           pageProvider = context.getClarityProvider(Page);
         });

@@ -6,13 +6,20 @@
  */
 
 import { ChangeDetectionStrategy, Component, Injectable, ViewChild } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrLoading, ClrLoadingState } from './loading';
 import { LoadingListener } from './loading-listener';
 
+interface Context {
+  fixture: ComponentFixture<FullTest>;
+  testComponent: FullTest;
+  clarityDirective: ClrLoading;
+  listener: DummyListener;
+}
+
 describe('Loading directive', function () {
-  beforeEach(function () {
+  beforeEach(function (this: Context) {
     TestBed.configureTestingModule({
       declarations: [ClrLoading, FullTest],
       providers: [{ provide: LoadingListener, useClass: DummyListener }],
@@ -21,14 +28,14 @@ describe('Loading directive', function () {
     this.fixture.detectChanges();
     this.testComponent = this.fixture.componentInstance;
     this.clarityDirective = this.fixture.componentInstance.loadingDirective;
-    this.listener = TestBed.inject(LoadingListener);
+    this.listener = TestBed.inject(LoadingListener) as DummyListener;
   });
 
-  afterEach(function () {
+  afterEach(function (this: Context) {
     this.fixture.destroy();
   });
 
-  it('notifies the listener when the [clrLoading] input changes', function () {
+  it('notifies the listener when the [clrLoading] input changes', function (this: Context) {
     expect(this.listener.loading).toBe(false);
     this.testComponent.loading = true;
     this.fixture.detectChanges();
@@ -38,7 +45,7 @@ describe('Loading directive', function () {
     expect(this.listener.loading).toBe(false);
   });
 
-  it('ignores successive inputs with the same value', function () {
+  it('ignores successive inputs with the same value', function (this: Context) {
     spyOn(this.listener, 'loadingStateChange');
     this.testComponent.loading = false;
     this.fixture.detectChanges();
@@ -52,7 +59,7 @@ describe('Loading directive', function () {
     expect(this.listener.loadingStateChange).toHaveBeenCalledTimes(1);
   });
 
-  it('handles null or other falsy values as false', function () {
+  it('handles null or other falsy values as false', function (this: Context) {
     this.testComponent.loading = null;
     this.fixture.detectChanges();
     expect(this.clarityDirective.loadingState).toEqual(ClrLoadingState.DEFAULT);
@@ -64,7 +71,7 @@ describe('Loading directive', function () {
     expect(this.clarityDirective.loadingState).toEqual(ClrLoadingState.DEFAULT);
   });
 
-  it('stops loading when destroyed', function () {
+  it('stops loading when destroyed', function (this: Context) {
     this.testComponent.loading = true;
     this.fixture.detectChanges();
     expect(this.listener.loading).toBe(true);
@@ -75,7 +82,7 @@ describe('Loading directive', function () {
 });
 
 describe('Loading directive without listener', function () {
-  beforeEach(function () {
+  beforeEach(function (this: Context) {
     TestBed.configureTestingModule({
       declarations: [ClrLoading, FullTest],
     });
@@ -85,11 +92,11 @@ describe('Loading directive without listener', function () {
     this.clarityDirective = this.fixture.componentInstance.loadingDirective;
   });
 
-  afterEach(function () {
+  afterEach(function (this: Context) {
     this.fixture.destroy();
   });
 
-  it('keeps loading state without exceptions', function () {
+  it('keeps loading state without exceptions', function (this: Context) {
     expect(this.clarityDirective.loadingState).toEqual(ClrLoadingState.DEFAULT);
     this.testComponent.loading = true;
     this.fixture.detectChanges();
@@ -111,7 +118,7 @@ class FullTest {
   @ViewChild(ClrLoading) loadingDirective: ClrLoading;
 
   displayed = true;
-  loading = false;
+  loading: boolean | ClrLoadingState = false;
 }
 
 @Injectable()

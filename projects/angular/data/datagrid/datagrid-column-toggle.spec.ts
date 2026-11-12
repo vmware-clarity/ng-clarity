@@ -7,7 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import { delay, TestContext } from '@clr/angular/testing';
+import { delay, TestContext, TestHelpers } from '@clr/angular/testing';
 
 import { ClrDatagridColumnToggle } from './datagrid-column-toggle';
 import { ColumnsService } from './providers/columns.service';
@@ -41,7 +41,7 @@ export default function (): void {
     let columnsService: MockColumnsService;
     let columnToggle: ClrDatagridColumnToggle;
 
-    beforeEach(function () {
+    beforeEach(function (this: TestHelpers) {
       context = this.create(
         ClrDatagridColumnToggle,
         ColumnToggleTest,

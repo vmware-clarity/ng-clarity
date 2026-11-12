@@ -7,7 +7,7 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import { TestContext } from '@clr/angular/testing';
+import { TestContext, TestHelpers } from '@clr/angular/testing';
 import { Keys } from '@clr/angular/utils';
 
 import { DayModel } from './model/day.model';
@@ -33,7 +33,7 @@ export default function () {
     }
 
     describe('View Basics', () => {
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         initializeCalendar(new DayModel(2015, selectedMonth, 1));
 
         context = this.create(ClrMonthpicker, TestComponent, [
@@ -120,7 +120,7 @@ export default function () {
     });
 
     describe('Typescript API', () => {
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         initializeCalendar(new DayModel(2015, selectedMonth, 1));
 
         context = this.create(ClrMonthpicker, TestComponent, [
@@ -190,7 +190,7 @@ export default function () {
       //  May   |   Nov
       //  Jun   |   Dec
 
-      function createMonthPicker(scope: any, selectedDay: DayModel) {
+      function createMonthPicker(scope: TestHelpers, selectedDay: DayModel) {
         initializeCalendar(selectedDay);
 
         context = scope.create(ClrMonthpicker, TestComponent, [
@@ -203,7 +203,7 @@ export default function () {
         ]);
       }
 
-      it('handles the up arrow', function () {
+      it('handles the up arrow', function (this: TestHelpers) {
         createMonthPicker(this, new DayModel(2015, 11, 1));
 
         expect(context.clarityDirective.getTabIndex(11)).toBe(0, "Month 11 doesn't have tabindex 0");
@@ -223,7 +223,7 @@ export default function () {
         expect(context.clarityDirective.getTabIndex(1)).toBe(0, "Month 0 does't have tabindex 0");
       });
 
-      it('handles the down arrow', function () {
+      it('handles the down arrow', function (this: TestHelpers) {
         createMonthPicker(this, new DayModel(2015, 0, 1));
 
         expect(context.clarityDirective.getTabIndex(0)).toBe(0, "Month 0 doesn't have tabindex 0");
@@ -243,7 +243,7 @@ export default function () {
         expect(context.clarityDirective.getTabIndex(10)).toBe(0, "Month 11 does't have tabindex 0");
       });
 
-      it('handles the right arrow', function () {
+      it('handles the right arrow', function (this: TestHelpers) {
         createMonthPicker(this, new DayModel(2015, 0, 1));
 
         for (let i = 0; i < 12; i++) {
@@ -257,7 +257,7 @@ export default function () {
         }
       });
 
-      it('handles the left arrow', function () {
+      it('handles the left arrow', function (this: TestHelpers) {
         createMonthPicker(this, new DayModel(2015, 11, 1));
 
         for (let i = 11; i > -1; i--) {

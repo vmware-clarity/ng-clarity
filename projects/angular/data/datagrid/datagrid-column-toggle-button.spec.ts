@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestContext } from '@clr/angular/testing';
+import { TestContext, TestHelpers } from '@clr/angular/testing';
 import { BehaviorSubject } from 'rxjs';
 
 import { ClrDatagridColumnToggleButton } from './datagrid-column-toggle-button';
@@ -24,7 +24,7 @@ export default function (): void {
       return columnsService.columns.filter(column => column.value.titleTemplateRef);
     };
 
-    beforeEach(function () {
+    beforeEach(function (this: TestHelpers) {
       context = this.create(
         ClrDatagridColumnToggleButton,
         ButtonTest,

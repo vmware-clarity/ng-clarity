@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestContext } from '@clr/angular/testing';
+import { TestContext, TestHelpers } from '@clr/angular/testing';
 
 import { DatagridCellRenderer } from './cell-renderer';
 import { HIDDEN_COLUMN_CLASS, STRICT_WIDTH_CLASS } from './constants';
@@ -27,7 +27,7 @@ export default function (): void {
     let context: TestContext<DatagridCellRenderer, SimpleTest>;
     let organizer: MockDatagridRenderOrganizer;
 
-    beforeEach(function () {
+    beforeEach(function (this: TestHelpers) {
       context = this.create(DatagridCellRenderer, SimpleTest, [MOCK_ORGANIZER_PROVIDER]);
       organizer = context.getClarityProvider(DatagridRenderOrganizer) as MockDatagridRenderOrganizer;
     });

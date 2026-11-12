@@ -7,7 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
 import { ClrPopoverService, POPOVER_HOST_ORIGIN } from '@clr/angular/popover/common';
-import { TestContext } from '@clr/angular/testing';
+import { TestContext, TestHelpers } from '@clr/angular/testing';
 
 import { ComboboxModel } from './model/combobox.model';
 import { SingleSelectComboboxModel } from './model/single-select-combobox.model';
@@ -40,7 +40,7 @@ export default function (): void {
     let optionSelectionService: OptionSelectionService<string>;
 
     describe('View Basics', function () {
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.createOnly(ClrOption, TestComponent, []);
         popoverService = context.getClarityProvider(ClrPopoverService);
         optionSelectionService = context.getClarityProvider(OptionSelectionService) as OptionSelectionService<string>;
@@ -77,7 +77,7 @@ export default function (): void {
     });
 
     describe('Typescript API', function () {
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.createOnly(ClrOption, TestComponent, []);
         popoverService = context.getClarityProvider(ClrPopoverService);
         optionSelectionService = context.getClarityProvider(OptionSelectionService) as OptionSelectionService<string>;
@@ -120,7 +120,7 @@ export default function (): void {
     });
 
     describe('Template API', function () {
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.createOnly(ClrOption, TestComponent, []);
       });
 

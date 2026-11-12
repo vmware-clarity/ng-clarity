@@ -14,7 +14,7 @@ import {
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
-import { delay, TestContext } from '@clr/angular/testing';
+import { delay, TestContext, TestHelpers } from '@clr/angular/testing';
 import { ClrCommonStringsService, ClrLoading, ClrLoadingState } from '@clr/angular/utils';
 
 import { ClrDatagrid } from './datagrid';
@@ -408,7 +408,7 @@ export default function (): void {
     describe('Reordering', function () {
       let context: TestContext<ClrDatagrid, ReorderableColumnsTest>;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, ReorderableColumnsTest);
       });
 
@@ -446,7 +446,7 @@ export default function (): void {
         let context: TestContext<ClrDatagrid, PinnedWidthCapTest>;
         let element: HTMLElement;
 
-        beforeEach(function () {
+        beforeEach(function (this: TestHelpers) {
           context = this.create(ClrDatagrid, PinnedWidthCapTest);
           element = context.clarityElement;
         });
@@ -495,7 +495,7 @@ export default function (): void {
         let context: TestContext<ClrDatagrid, PinnedWidthCapVirtualScrollTest>;
         let element: HTMLElement;
 
-        beforeEach(function () {
+        beforeEach(function (this: TestHelpers) {
           context = this.create(ClrDatagrid, PinnedWidthCapVirtualScrollTest);
           element = context.clarityElement;
         });
@@ -524,7 +524,7 @@ export default function (): void {
       let context: TestContext<ClrDatagrid, PinnableTest>;
       let element: HTMLElement;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, PinnableTest);
         element = context.clarityElement;
       });
@@ -650,7 +650,7 @@ export default function (): void {
         return pinToggle().querySelector('cds-icon').getAttribute('shape');
       }
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, PinToggleTest);
         element = context.clarityElement;
       });
@@ -776,7 +776,7 @@ export default function (): void {
           .width;
       }
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, PinnedWithRowControlsTest);
         element = context.clarityElement;
       });
@@ -802,7 +802,7 @@ export default function (): void {
       let context: TestContext<ClrDatagrid, RowDetailTest>;
       let element: HTMLElement;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, RowDetailTest);
         element = context.clarityElement;
       });
@@ -899,7 +899,7 @@ export default function (): void {
         context.detectChanges();
       }
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, LoadingRowDetailTest, [], [TestFakeLoader]);
         element = context.clarityElement;
       });
@@ -937,7 +937,7 @@ export default function (): void {
       let context: TestContext<ClrDatagrid, LoadingCellsRowDetailTest>;
       let element: HTMLElement;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, LoadingCellsRowDetailTest);
         element = context.clarityElement;
       });
@@ -960,7 +960,7 @@ export default function (): void {
       let detailService: DetailService;
       let element: HTMLElement;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, PinnableWithDetailTest);
         detailService = context.getClarityProvider(DetailService);
         element = context.clarityElement;
@@ -1009,7 +1009,7 @@ export default function (): void {
         context.detectChanges();
       }
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, PinnedNotFirstWithDetailTest);
         detailService = context.getClarityProvider(DetailService);
         element = context.clarityElement;

@@ -6,7 +6,13 @@
  */
 
 import { ChangeDetectionStrategy, Component, EmbeddedViewRef, Input, TrackByFunction } from '@angular/core';
-import { delay, expectActiveElementNotToBe, expectActiveElementToBe, TestContext } from '@clr/angular/testing';
+import {
+  delay,
+  expectActiveElementNotToBe,
+  expectActiveElementToBe,
+  TestContext,
+  TestHelpers,
+} from '@clr/angular/testing';
 import { Subject } from 'rxjs';
 
 import { DatagridPropertyStringFilter } from './built-in/filters/datagrid-property-string-filter';
@@ -609,12 +615,16 @@ class PanelInitializeOpenedTest {
   preState = this.items[0];
 }
 
+interface Context extends TestHelpers {
+  context: TestContext<ClrDatagrid, NgForTest | FullTest>;
+}
+
 export default function (): void {
   describe('ClrDatagrid component', function () {
     describe('Typescript API', function () {
       let context: TestContext<ClrDatagrid<number>, FullTest>;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, FullTest);
       });
 
@@ -645,7 +655,7 @@ export default function (): void {
     describe('Template API', function () {
       let context: TestContext<ClrDatagrid<number>, FullTest>;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, FullTest);
       });
 
@@ -843,7 +853,7 @@ export default function (): void {
     describe('View basics', function () {
       let context: TestContext<ClrDatagrid<number>, FullTest>;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, FullTest);
       });
 
@@ -872,13 +882,13 @@ export default function (): void {
     });
 
     describe('Iterators', function () {
-      it('projects rows when using ngFor', function () {
+      it('projects rows when using ngFor', function (this: Context) {
         this.context = this.create(ClrDatagrid, NgForTest);
         const rows = this.context.clarityElement.querySelectorAll('.datagrid-cell');
         expect(['1', '1', '2', '4', '3', '9']).toEqual([...rows].map(r => r.textContent));
       });
 
-      it('uses the rows template when using clrDgItems', function () {
+      it('uses the rows template when using clrDgItems', function (this: Context) {
         this.context = this.create(ClrDatagrid, FullTest);
         const rows = this.context.clarityElement.querySelectorAll('.datagrid-cell');
         expect(['1', '1', '2', '4', '3', '9']).toEqual([...rows].map(r => r.textContent));
@@ -892,7 +902,7 @@ export default function (): void {
       let actionOverflowCell: HTMLElement[];
       let actionOverflow: HTMLElement[];
 
-      it('it has cells for action overflows if there is at least one of them.', function () {
+      it('it has cells for action overflows if there is at least one of them.', function (this: TestHelpers) {
         context = this.create(ClrDatagrid, ActionableRowTest);
         rowActionService = context.getClarityProvider(RowActionService);
         expect(rowActionService.hasActionableRow).toBe(true);
@@ -905,7 +915,7 @@ export default function (): void {
         expect(actionOverflow.length).toEqual(3);
       });
 
-      it('it has no cells for action overflows if there is none of them.', function () {
+      it('it has no cells for action overflows if there is none of them.', function (this: TestHelpers) {
         context = this.create(ClrDatagrid, ActionableRowTest);
         rowActionService = context.getClarityProvider(RowActionService);
         context.testComponent.showIfGreaterThan = 10;
@@ -920,7 +930,7 @@ export default function (): void {
         expect(actionOverflowCell.length).toEqual(0);
       });
 
-      it('should have screen reader only text with value `Select one of actionable rows`', function () {
+      it('should have screen reader only text with value `Select one of actionable rows`', function (this: TestHelpers) {
         context = this.create(ClrDatagrid, ActionableRowTest);
         context.getClarityProvider(RowActionService);
         expect(
@@ -931,7 +941,7 @@ export default function (): void {
     });
 
     describe('Expandable rows', function () {
-      it('detects if there is at least one expandable row', function () {
+      it('detects if there is at least one expandable row', function (this: TestHelpers) {
         const context = this.create(ClrDatagrid, ExpandableRowTest);
         const globalExpandableRows: ExpandableRowsCount = context.getClarityProvider(ExpandableRowsCount);
         expect(globalExpandableRows.hasExpandableRow).toBe(true);
@@ -942,7 +952,7 @@ export default function (): void {
         expect(context.clarityElement.querySelector('.datagrid-column.datagrid-expandable-caret')).toBeNull();
       });
 
-      it('can expand rows on initialization', async function () {
+      it('can expand rows on initialization', async function (this: TestHelpers) {
         const context = this.create(ClrDatagrid, ExpandedOnInitTest);
         const caretIcon = context.clarityElement.querySelector('.datagrid-expandable-caret-icon');
         expect(caretIcon).not.toBeNull();
@@ -951,7 +961,7 @@ export default function (): void {
         expect(rowDetail).not.toBeNull();
       });
 
-      it('hides cells in dg-row-detail when column is hidden and rows are replaced', function () {
+      it('hides cells in dg-row-detail when column is hidden and rows are replaced', function (this: TestHelpers) {
         const context = this.create(ClrDatagrid, ExpandedCellsTest);
         context.testComponent.replaceCells = true;
         context.testComponent.firstColumnHidden = true;
@@ -962,7 +972,7 @@ export default function (): void {
         expect(window.getComputedStyle(hiddenCell).display).toBe('none');
       });
 
-      it('shows cells in dg-row-detail when column is shown and rows are replaced', function () {
+      it('shows cells in dg-row-detail when column is shown and rows are replaced', function (this: TestHelpers) {
         const context = this.create(ClrDatagrid, ExpandedCellsTest);
         context.testComponent.replaceCells = true;
         context.testComponent.firstColumnHidden = false;
@@ -974,7 +984,7 @@ export default function (): void {
       });
 
       // regression test for CDE-2199
-      it('does not hide cells in nested datagrid', function () {
+      it('does not hide cells in nested datagrid', function (this: TestHelpers) {
         const context = this.create(ClrDatagrid, ExpandedCellsTest);
         context.testComponent.firstColumnHidden = false;
         context.testComponent.detailItem = context.testComponent.items[0];
@@ -995,7 +1005,7 @@ export default function (): void {
         expect(window.getComputedStyle(nestedDatagridCell).display).toBe('block');
       });
 
-      it('can render mixed expandable/non-expandable', function () {
+      it('can render mixed expandable/non-expandable', function (this: TestHelpers) {
         const context = this.create(ClrDatagrid, MixedExpandableRowTest);
         const caretIcons = context.clarityElement.querySelectorAll('.datagrid-expandable-caret-icon');
         expect(caretIcons.length).toBe(2);
@@ -1003,7 +1013,7 @@ export default function (): void {
         expect(datagridCells.length).toBe(8); // 4 items * (1 for the data + 1 for the caret/placeholder)
       });
 
-      it('should have aria-label with value `Expand one of the rows`', function () {
+      it('should have aria-label with value `Expand one of the rows`', function (this: TestHelpers) {
         const context = this.create(ClrDatagrid, ExpandableRowTest);
         context.getClarityProvider(RowActionService);
         expect(
@@ -1018,7 +1028,7 @@ export default function (): void {
       let context: TestContext<ClrDatagrid<number>, SingleSelectionTest>;
       let selection: Selection<number>;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, SingleSelectionTest, [Selection]);
         selection = context.getClarityProvider(Selection) as Selection<number>;
       });
@@ -1138,7 +1148,7 @@ export default function (): void {
       let context: TestContext<ClrDatagrid<number>, OnPushTest>;
       let selection: Selection<number>;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, OnPushTest, [Selection], [MultiSelectionTest]);
         selection = context.getClarityProvider(Selection) as Selection<number>;
       });
@@ -1161,7 +1171,7 @@ export default function (): void {
       let context: TestContext<ClrDatagrid<number>, MultiSelectionSimpleTest>;
       let selection: Selection<number>;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, MultiSelectionSimpleTest, [Selection]);
         selection = context.getClarityProvider(Selection) as Selection<number>;
       });
@@ -1375,7 +1385,7 @@ export default function (): void {
     describe('Multi selection with @for', function () {
       let context: TestContext<ClrDatagrid, MultiSelectionNgForTest>;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, MultiSelectionNgForTest, [Selection]);
       });
 
@@ -1429,14 +1439,14 @@ export default function (): void {
     });
 
     describe('Rows becoming actionable or expandable late', function () {
-      function expectFixedColumns(context: TestContext<ClrDatagrid, any>, actions: boolean, expandable: boolean) {
+      function expectFixedColumns(context: TestContext<unknown, unknown>, actions: boolean, expandable: boolean) {
         const header = context.clarityElement.querySelector('.datagrid-header');
         expect(!!header.querySelector('.datagrid-row-actions')).toBe(actions);
         expect(!!header.querySelector('.datagrid-expandable-caret')).toBe(expandable);
       }
 
       describe('clrDgItems', function () {
-        it('renders the action column when a row gets an action overflow', function () {
+        it('renders the action column when a row gets an action overflow', function (this: TestHelpers) {
           const context = this.create(ClrDatagrid, LateRowFeaturesClrDgItemsTest);
           expectFixedColumns(context, false, false);
           context.testComponent.action = true;
@@ -1444,7 +1454,7 @@ export default function (): void {
           expectFixedColumns(context, true, false);
         });
 
-        it('renders the expand column when a row gets a row detail', function () {
+        it('renders the expand column when a row gets a row detail', function (this: TestHelpers) {
           const context = this.create(ClrDatagrid, LateRowFeaturesClrDgItemsTest);
           context.testComponent.expandable = true;
           expect(() => context.detectChanges()).not.toThrow();
@@ -1453,7 +1463,7 @@ export default function (): void {
       });
 
       describe('ngFor', function () {
-        it('renders the action column when a row gets an action overflow', function () {
+        it('renders the action column when a row gets an action overflow', function (this: TestHelpers) {
           const context = this.create(ClrDatagrid, LateRowFeaturesForTest);
           expectFixedColumns(context, false, false);
           context.testComponent.action = true;
@@ -1461,7 +1471,7 @@ export default function (): void {
           expectFixedColumns(context, true, false);
         });
 
-        it('renders the expand column when a row gets a row detail', function () {
+        it('renders the expand column when a row gets a row detail', function (this: TestHelpers) {
           const context = this.create(ClrDatagrid, LateRowFeaturesForTest);
           context.testComponent.expandable = true;
           expect(() => context.detectChanges()).not.toThrow();
@@ -1470,12 +1480,12 @@ export default function (): void {
       });
 
       describe('column hidden by default', function () {
-        it('renders columns hidden by default without errors', function () {
+        it('renders columns hidden by default without errors', function (this: TestHelpers) {
           const context = this.create(ClrDatagrid, HiddenColumnTest);
           expect(() => context.detectChanges()).not.toThrow();
         });
 
-        it('hides the separator on the last visible column', function () {
+        it('hides the separator on the last visible column', function (this: TestHelpers) {
           const context = this.create(ClrDatagrid, HiddenColumnTest);
           context.detectChanges();
           const visibleHeaders = context.clarityElement.querySelectorAll(
@@ -1488,10 +1498,10 @@ export default function (): void {
     });
 
     describe('Content Projection', function () {
-      let context: TestContext<ClrDatagrid, OnPushTest>;
+      let context: TestContext<ClrDatagrid, ProjectionTest>;
       let displayModeService: MockDisplayModeService;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.createWithOverrideComponent(ClrDatagrid, ProjectionTest, [], [], DATAGRID_SPEC_PROVIDERS);
         displayModeService = context.getClarityProvider(DisplayModeService) as MockDisplayModeService;
       });
@@ -1566,7 +1576,7 @@ export default function (): void {
     describe('Integration with TabsContent and *clrIfActive', function () {
       let context: TestContext<ClrDatagrid, TabsIntegrationTest>;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, TabsIntegrationTest, DATAGRID_SPEC_PROVIDERS);
       });
 
@@ -1593,7 +1603,7 @@ export default function (): void {
       let context: TestContext<ClrDatagrid, PanelTrackByTest>;
       let detailService;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, PanelTrackByTest, DATAGRID_SPEC_PROVIDERS);
         detailService = context.getClarityProvider(DetailService) as DetailService;
       });
@@ -1625,7 +1635,7 @@ export default function (): void {
       let context: TestContext<ClrDatagrid, PanelTrackByTest>;
       let detailService: DetailService;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, PanelTrackByTest, DATAGRID_SPEC_PROVIDERS);
         detailService = context.getClarityProvider(DetailService) as DetailService;
         context.detectChanges();
@@ -1655,7 +1665,7 @@ export default function (): void {
     describe('initialize datagrid with opened detail', function () {
       let context: TestContext<ClrDatagrid, PanelInitializeOpenedTest>;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagrid, PanelInitializeOpenedTest, DATAGRID_SPEC_PROVIDERS);
       });
 

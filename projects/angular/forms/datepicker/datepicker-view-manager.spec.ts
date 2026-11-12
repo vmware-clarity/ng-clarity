@@ -7,7 +7,7 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import { TestContext } from '@clr/angular/testing';
+import { TestContext, TestHelpers } from '@clr/angular/testing';
 
 import { ClrDatepickerViewManager } from './datepicker-view-manager';
 import { DateFormControlService } from './providers/date-form-control.service';
@@ -26,7 +26,7 @@ export default function () {
 
     let testElement;
 
-    beforeEach(function () {
+    beforeEach(function (this: TestHelpers) {
       context = this.create(ClrDatepickerViewManager, TestComponent, [
         ViewManagerService,
         DatepickerFocusService,

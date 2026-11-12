@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestContext } from '@clr/angular/testing';
+import { TestContext, TestHelpers } from '@clr/angular/testing';
 
 import { ClrDatagridActionBar } from './datagrid-action-bar';
 import { FiltersProvider } from './providers/filters';
@@ -19,7 +19,7 @@ export default function (): void {
   describe('DatagridActionBar component', function () {
     let context: TestContext<ClrDatagridActionBar, SimpleTest>;
 
-    beforeEach(function () {
+    beforeEach(function (this: TestHelpers) {
       context = this.create(ClrDatagridActionBar, SimpleTest, [Selection, Items, FiltersProvider, Sort, Page]);
     });
 

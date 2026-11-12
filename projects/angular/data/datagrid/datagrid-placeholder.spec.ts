@@ -7,7 +7,7 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { TestContext } from '@clr/angular/testing';
+import { TestContext, TestHelpers } from '@clr/angular/testing';
 
 import { ClrDatagridPlaceholder } from './datagrid-placeholder';
 import { FiltersProvider } from './providers/filters';
@@ -16,16 +16,22 @@ import { Page } from './providers/page';
 import { Sort } from './providers/sort';
 import { StateDebouncer } from './providers/state-debouncer.provider';
 
+interface Context {
+  pageProvider: Page;
+  itemsProvider: Items;
+  component: ClrDatagridPlaceholder;
+}
+
 export default function (): void {
   describe('ClrDatagridPlaceholder component', function () {
     describe('Typescript API', function () {
-      beforeEach(function () {
+      beforeEach(function (this: Context) {
         this.pageProvider = new Page(new StateDebouncer());
         this.itemsProvider = new Items(null, null, this.pageProvider);
         this.component = new ClrDatagridPlaceholder(this.itemsProvider);
       });
 
-      it('detects if the Datagrid is empty', function () {
+      it('detects if the Datagrid is empty', function (this: Context) {
         expect(this.component.emptyDatagrid).toBe(true);
         this.itemsProvider.all = new Array(1);
         expect(this.component.emptyDatagrid).toBe(false);
@@ -38,7 +44,7 @@ export default function (): void {
       let context: TestContext<ClrDatagridPlaceholder<void>, SimpleTest>;
       let itemsProvider: Items<void>;
 
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         context = this.create(ClrDatagridPlaceholder, SimpleTest, [Items, Page, Sort, FiltersProvider, StateDebouncer]);
         itemsProvider = TestBed.inject(Items);
       });

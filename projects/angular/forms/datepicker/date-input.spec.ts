@@ -17,7 +17,13 @@ import {
   NgControlService,
 } from '@clr/angular/forms/common';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import { delay, expectActiveElementNotToBe, expectActiveElementToBe, TestContext } from '@clr/angular/testing';
+import {
+  delay,
+  expectActiveElementNotToBe,
+  expectActiveElementToBe,
+  TestContext,
+  TestHelpers,
+} from '@clr/angular/testing';
 
 import { ClrFormsModule } from '../forms.module';
 import { ClrDateContainer } from './date-container';
@@ -58,7 +64,7 @@ export default function () {
     ];
 
     describe('Basics', () => {
-      beforeEach(function () {
+      beforeEach(function (this: TestHelpers) {
         TestBed.overrideComponent(ClrDateContainer, {
           set: {
             providers: [{ provide: DatepickerEnabledService, useClass: MockDatepickerEnabledService }],
@@ -428,7 +434,9 @@ export default function () {
     });
 
     describe('Mobile Datepicker with Reactive Forms', () => {
-      beforeEach(function () {
+      let context: TestContext<ClrDateInput, TestComponentWithReactiveForms>;
+
+      beforeEach(function (this: TestHelpers) {
         TestBed.configureTestingModule({
           imports: [ReactiveFormsModule, ClrFormsModule],
           declarations: [TestComponentWithReactiveForms],

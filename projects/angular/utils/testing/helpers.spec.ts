@@ -76,7 +76,7 @@ export function spec<C, H>(
   moduleMetadata: TestModuleMetadata = {},
   autoInit = true
 ) {
-  beforeEach(function () {
+  beforeEach(function (this: TestContext<C, H>) {
     /*
      * I feel slightly dirty writing this, but Jasmine creates plain objects
      * and modifying their prototype is definitely a bad idea
@@ -121,14 +121,43 @@ export function spec<C, H>(
   });
 }
 
+/*
+ * The directive type `D` comes from the type the result is assigned to, e.g. `TestContext<ClrDatagrid<number>, FullTest>`
+ * for the generic `ClrDatagrid`, because the class alone can't say which `T` the test uses.
+ */
+type CreateTestContext = <D, C>(
+  clarityDirective: Type<unknown>,
+  testComponent: Type<C>,
+  providers?: any[],
+  extraDirectives?: Type<any>[]
+) => TestContext<D, C>;
+
+type CreateTestContextWithOverrides = <D, C>(
+  clarityDirective: Type<unknown>,
+  testComponent: Type<C>,
+  providers: any[],
+  extraDirectives: Type<any>[],
+  serviceOverrides: any[]
+) => TestContext<D, C>;
+
+/**
+ * The jasmine `this` of the specs run after {@link addHelpers}.
+ */
+export interface TestHelpers {
+  create: CreateTestContext;
+  createOnly: CreateTestContext;
+  createWithOverrideComponent: CreateTestContextWithOverrides;
+  createWithOverrideDirective: CreateTestContextWithOverrides;
+}
+
+interface TestHelpersContext extends TestHelpers {
+  _context: TestContext<unknown, unknown>;
+}
+
 export function addHelpers(): void {
-  beforeEach(function () {
-    /*
-     * Ideally we would just make "this" a TestContext, but typing "this" in typescript
-     * is a bit too new for all IDEs to correctly process it.
-     */
+  beforeEach(function (this: TestHelpersContext) {
     this.create = <D, C>(
-      clarityDirective: Type<D>,
+      clarityDirective: Type<unknown>,
       testComponent: Type<C>,
       providers: any[] = [],
       extraDirectives: Type<any>[] = []
@@ -139,11 +168,11 @@ export function addHelpers(): void {
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
         providers: providers,
       });
-      return (this._context = new TestContext<D, C>(clarityDirective, testComponent));
+      return (this._context = new TestContext<D, C>(clarityDirective as Type<D>, testComponent));
     };
 
     this.createOnly = <D, C>(
-      clarityDirective: Type<D>,
+      clarityDirective: Type<unknown>,
       testComponent: Type<C>,
       providers: any[] = [],
       extraDirectives: Type<any>[] = []
@@ -153,11 +182,11 @@ export function addHelpers(): void {
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
         providers: providers,
       });
-      return (this._context = new TestContext<D, C>(clarityDirective, testComponent));
+      return (this._context = new TestContext<D, C>(clarityDirective as Type<D>, testComponent));
     };
 
     this.createWithOverrideComponent = <D, C>(
-      clarityDirective: Type<D>,
+      clarityDirective: Type<unknown>,
       testComponent: Type<C>,
       providers: any[] = [],
       extraDirectives: Type<any>[] = [],
@@ -173,11 +202,11 @@ export function addHelpers(): void {
           providers: serviceOverrides,
         },
       });
-      return (this._context = new TestContext<D, C>(clarityDirective, testComponent));
+      return (this._context = new TestContext<D, C>(clarityDirective as Type<D>, testComponent));
     };
 
     this.createWithOverrideDirective = <D, C>(
-      clarityDirective: Type<D>,
+      clarityDirective: Type<unknown>,
       testComponent: Type<C>,
       providers: any[] = [],
       extraDirectives: Type<any>[] = [],
@@ -193,11 +222,11 @@ export function addHelpers(): void {
           providers: serviceOverrides,
         },
       });
-      return (this._context = new TestContext<D, C>(clarityDirective, testComponent));
+      return (this._context = new TestContext<D, C>(clarityDirective as Type<D>, testComponent));
     };
   });
 
-  afterEach(function () {
+  afterEach(function (this: TestHelpersContext) {
     if (this._context) {
       this._context.fixture.destroy();
     }

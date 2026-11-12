@@ -6,16 +6,20 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestContext } from '@clr/angular/testing';
+import { TestContext, TestHelpers } from '@clr/angular/testing';
 
 import { ClrDatagridCell } from './datagrid-cell';
 import { DatagridRenderOrganizer } from './render/render-organizer';
+
+interface Context extends TestHelpers {
+  directive: ClrDatagridCell;
+}
 
 export default function (): void {
   describe('ClrDatagridCell component', function () {
     let context: TestContext<ClrDatagridCell, SimpleTest>;
 
-    beforeEach(function () {
+    beforeEach(function (this: Context) {
       context = this.create(ClrDatagridCell, SimpleTest, [DatagridRenderOrganizer]);
     });
 
@@ -25,7 +29,7 @@ export default function (): void {
       popoverContent.forEach(content => document.body.removeChild(content));
     });
 
-    it('provides a wrapped view for the content', function () {
+    it('provides a wrapped view for the content', function (this: Context) {
       this.directive = context.clarityDirective;
       expect(this.directive._view).toBeDefined();
     });

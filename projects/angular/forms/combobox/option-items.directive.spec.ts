@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, TrackByFunction, ViewChild } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 
 import { ClrComboboxModule } from './combobox.module';
@@ -24,9 +24,9 @@ import { OptionSelectionService } from './providers/option-selection.service';
   standalone: false,
 })
 class FullTest {
-  @ViewChild(ClrOptionItems) optionItems: ClrOptionItems<number>;
-  numbers = [0, 1, 2, 3];
-  trackBy: TrackByFunction<number>;
+  @ViewChild(ClrOptionItems) optionItems: ClrOptionItems<number | string>;
+  numbers: (number | string)[] = [0, 1, 2, 3];
+  trackBy: TrackByFunction<number | string>;
 }
 
 @Component({
@@ -56,17 +56,23 @@ class TrackByIndexTest {
   standalone: false,
 })
 class ObjectDataTest {
-  @ViewChild(ClrOptionItems) optionItems: ClrOptionItems<number>;
-  numbers = [{ a: 0 }, { a: 1 }, { a: 2 }, { a: 3 }];
+  @ViewChild(ClrOptionItems) optionItems: ClrOptionItems<{ a: number | string }>;
+  numbers: { a: number | string }[] = [{ a: 0 }, { a: 1 }, { a: 2 }, { a: 3 }];
   trackBy: TrackByFunction<number> = index => index;
 }
 
 const OPTION_ITEM_PROVIDERS = [OptionSelectionService, ClrPopoverService];
 
+interface Context<C extends { optionItems: unknown }> {
+  fixture: ComponentFixture<C>;
+  testComponent: C;
+  clarityDirective: C['optionItems'];
+}
+
 export default function (): void {
   describe('ClrOptionItems directive', function () {
     describe('correctly initializes', () => {
-      beforeEach(function () {
+      beforeEach(function (this: Context<FullTest>) {
         TestBed.configureTestingModule({
           imports: [ClrComboboxModule],
           declarations: [FullTest],
@@ -78,11 +84,11 @@ export default function (): void {
         this.clarityDirective = this.testComponent.optionItems;
       });
 
-      afterEach(function () {
+      afterEach(function (this: Context<FullTest>) {
         this.fixture.destroy();
       });
 
-      it('can handle changes', function () {
+      it('can handle changes', function (this: Context<FullTest>) {
         const initialContent = this.fixture.elementRef.nativeElement.textContent;
         expect(initialContent.trim()).toEqual('0123');
         this.testComponent.numbers.push(6);
@@ -92,58 +98,58 @@ export default function (): void {
         expect(updatedContent.trim()).toEqual('01236');
       });
 
-      it('handles a null input for the array of items', function () {
+      it('handles a null input for the array of items', function (this: Context<FullTest>) {
         this.testComponent.numbers = null;
         this.fixture.detectChanges();
-        expect(this.clarityDirective._rawItems).toEqual([]);
+        expect(this.clarityDirective['_rawItems']).toEqual([]);
       });
 
-      it('handles an undefined input for the array of items', function () {
+      it('handles an undefined input for the array of items', function (this: Context<FullTest>) {
         this.testComponent.numbers = undefined;
         this.fixture.detectChanges();
-        expect(this.clarityDirective._rawItems).toEqual([]);
+        expect(this.clarityDirective['_rawItems']).toEqual([]);
       });
 
-      it('will not filter on first open', function () {
-        expect(this.clarityDirective.iterableProxy._ngForOf).toEqual([0, 1, 2, 3]);
+      it('will not filter on first open', function (this: Context<FullTest>) {
+        expect(this.clarityDirective['iterableProxy']['_ngForOf']).toEqual([0, 1, 2, 3]);
         const optionService: OptionSelectionService<any> = TestBed.inject(OptionSelectionService);
         this.testComponent.numbers.push(12);
         optionService.currentInput = '1';
         this.fixture.detectChanges();
-        expect(this.clarityDirective.iterableProxy._ngForOf).toEqual([0, 1, 2, 3, 12]);
+        expect(this.clarityDirective['iterableProxy']['_ngForOf']).toEqual([0, 1, 2, 3, 12]);
       });
 
-      it('can filter out items based on the option service currentInput field', function () {
-        expect(this.clarityDirective.iterableProxy._ngForOf).toEqual([0, 1, 2, 3]);
+      it('can filter out items based on the option service currentInput field', function (this: Context<FullTest>) {
+        expect(this.clarityDirective['iterableProxy']['_ngForOf']).toEqual([0, 1, 2, 3]);
         const optionService: OptionSelectionService<any> = TestBed.inject(OptionSelectionService);
         optionService.showAllOptions = false;
         this.testComponent.numbers.push(12);
         optionService.currentInput = '1';
         this.fixture.detectChanges();
-        expect(this.clarityDirective.iterableProxy._ngForOf).toEqual([1, 12]);
+        expect(this.clarityDirective['iterableProxy']['_ngForOf']).toEqual([1, 12]);
       });
 
-      it('has case-insensitive filter', function () {
+      it('has case-insensitive filter', function (this: Context<FullTest>) {
         const optionService: OptionSelectionService<any> = TestBed.inject(OptionSelectionService);
         optionService.showAllOptions = false;
         this.testComponent.numbers.push('Room', 'Broom');
         optionService.currentInput = 'ro';
         this.fixture.detectChanges();
-        expect(this.clarityDirective.iterableProxy._ngForOf).toEqual(['Room', 'Broom']);
+        expect(this.clarityDirective['iterableProxy']['_ngForOf']).toEqual(['Room', 'Broom']);
       });
 
-      it('has diacritic-insensitive filter', function () {
+      it('has diacritic-insensitive filter', function (this: Context<FullTest>) {
         const optionService: OptionSelectionService<any> = TestBed.inject(OptionSelectionService);
         optionService.showAllOptions = false;
         this.testComponent.numbers.push('Ardèche', 'Ardennes', 'Ariège');
         optionService.currentInput = 'arde';
         this.fixture.detectChanges();
-        expect(this.clarityDirective.iterableProxy._ngForOf).toEqual(['Ardèche', 'Ardennes']);
+        expect(this.clarityDirective['iterableProxy']['_ngForOf']).toEqual(['Ardèche', 'Ardennes']);
       });
     });
 
     describe('handles arrays of simple data correctly', () => {
-      beforeEach(function () {
+      beforeEach(function (this: Context<TrackByIndexTest>) {
         TestBed.configureTestingModule({
           imports: [ClrComboboxModule],
           declarations: [TrackByIndexTest],
@@ -155,15 +161,15 @@ export default function (): void {
         this.clarityDirective = this.fixture.componentInstance.optionItems;
       });
 
-      afterEach(function () {
+      afterEach(function (this: Context<TrackByIndexTest>) {
         this.fixture.destroy();
       });
 
-      it('receives an input for the trackBy option', function () {
-        expect(this.clarityDirective.iterableProxy.ngForTrackBy).toBe(this.testComponent.trackBy);
+      it('receives an input for the trackBy option', function (this: Context<TrackByIndexTest>) {
+        expect(this.clarityDirective['iterableProxy'].ngForTrackBy).toBe(this.testComponent.trackBy);
       });
 
-      it('correctly mutates and resets an array with trackBy', function () {
+      it('correctly mutates and resets an array with trackBy', function (this: Context<TrackByIndexTest>) {
         // Initial state
         this.fixture.nativeElement.querySelectorAll('li:first-child').forEach(li => (li.style.color = 'red'));
         const firstItem = this.fixture.nativeElement.querySelector('li');
@@ -174,7 +180,7 @@ export default function (): void {
         this.testComponent.numbers.unshift(42);
         this.fixture.detectChanges();
         const unshiftedItem = this.fixture.nativeElement.querySelector('li');
-        expect(this.clarityDirective._rawItems).toEqual([42, 0, 1, 2, 3]);
+        expect(this.clarityDirective['_rawItems']).toEqual([42, 0, 1, 2, 3]);
         expect(unshiftedItem.style.color).toBe('red');
 
         // Resetting
@@ -186,7 +192,7 @@ export default function (): void {
     });
 
     describe('handles object arrays correctly', () => {
-      beforeEach(function () {
+      beforeEach(function (this: Context<ObjectDataTest>) {
         TestBed.configureTestingModule({
           imports: [ClrComboboxModule],
           declarations: [ObjectDataTest],
@@ -198,44 +204,44 @@ export default function (): void {
         this.clarityDirective = this.fixture.componentInstance.optionItems;
       });
 
-      afterEach(function () {
+      afterEach(function (this: Context<ObjectDataTest>) {
         this.fixture.destroy();
       });
 
-      it('generates content', function () {
+      it('generates content', function (this: Context<ObjectDataTest>) {
         const initialContent = this.fixture.elementRef.nativeElement.textContent;
         expect(initialContent.trim()).toEqual('0123');
       });
 
-      it('sets display field', function () {
+      it('sets display field', function (this: Context<ObjectDataTest>) {
         const optionService: OptionSelectionService<any> = TestBed.inject(OptionSelectionService);
-        expect(this.clarityDirective._filterField).toEqual('a');
+        expect(this.clarityDirective['_filterField']).toEqual('a');
         expect(optionService.displayField).toEqual('a');
       });
 
-      it('handles null values', function () {
+      it('handles null values', function (this: Context<ObjectDataTest>) {
         expect(() => {
           this.testComponent.numbers = [{ a: null }, ...this.testComponent.numbers];
           this.fixture.detectChanges();
         }).not.toThrow();
       });
 
-      it('has case-insensitive filter', function () {
+      it('has case-insensitive filter', function (this: Context<ObjectDataTest>) {
         const optionService: OptionSelectionService<any> = TestBed.inject(OptionSelectionService);
         optionService.showAllOptions = false;
         this.testComponent.numbers.push({ a: 'Room' }, { a: 'Broom' });
         optionService.currentInput = 'ro';
         this.fixture.detectChanges();
-        expect(this.clarityDirective.iterableProxy._ngForOf).toEqual([{ a: 'Room' }, { a: 'Broom' }]);
+        expect(this.clarityDirective['iterableProxy']['_ngForOf']).toEqual([{ a: 'Room' }, { a: 'Broom' }]);
       });
 
-      it('has diacritic-insensitive filter', function () {
+      it('has diacritic-insensitive filter', function (this: Context<ObjectDataTest>) {
         const optionService: OptionSelectionService<any> = TestBed.inject(OptionSelectionService);
         optionService.showAllOptions = false;
         this.testComponent.numbers.push({ a: 'Ardèche' }, { a: 'Ardennes' }, { a: 'Ariège' });
         optionService.currentInput = 'arde';
         this.fixture.detectChanges();
-        expect(this.clarityDirective.filteredItems).toEqual([{ a: 'Ardèche' }, { a: 'Ardennes' }]);
+        expect(this.clarityDirective['filteredItems']).toEqual([{ a: 'Ardèche' }, { a: 'Ardennes' }]);
       });
     });
   });

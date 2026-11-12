@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestContext } from '@clr/angular/testing';
+import { TestContext, TestHelpers } from '@clr/angular/testing';
 
 import { ClrFilterHighlight } from './filter-highlight.directive';
 import { OptionSelectionService } from './providers/option-selection.service';
@@ -29,7 +29,7 @@ export default function () {
     let context: TestContext<ClrFilterHighlight<string>, TestComponent>;
     let optionService: OptionSelectionService<string>;
 
-    beforeEach(function () {
+    beforeEach(function (this: TestHelpers) {
       context = this.createOnly(ClrFilterHighlight, TestComponent, [OptionSelectionService]);
       optionService = context.getClarityProvider(OptionSelectionService) as OptionSelectionService<string>;
     });
