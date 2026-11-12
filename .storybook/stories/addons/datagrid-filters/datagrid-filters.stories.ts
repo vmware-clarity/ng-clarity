@@ -25,7 +25,7 @@ import {
 type DatagridFiltersArgs = DatagridFiltersStoryWrapperComponent;
 
 const meta = {
-  title: 'Addons/Datagrid Filters',
+  title: 'Addons/Advanced Filters',
   component: DataGridFiltersComponent,
   decorators: [
     moduleMetadata({

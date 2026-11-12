@@ -17,12 +17,12 @@
 </form>
 
 <div cds-layout="m-t:md">
-  <appfx-datagrid-filters
+  <clr-advanced-filters
     [filterMode]="filterMode"
     [filterableProperties]="filterableProperties"
     (searchTermChange)="searchTerm = $event"
     (propertyFiltersChange)="filters = $event"
-  ></appfx-datagrid-filters>
+  ></clr-advanced-filters>
 </div>
 
 <app-applied-filters [filters]="filters" [searchTerm]="searchTerm" [showSearchTerm]="true"></app-applied-filters>

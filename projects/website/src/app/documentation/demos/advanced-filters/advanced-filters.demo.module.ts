@@ -8,10 +8,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { DatagridFiltersDemo } from './datagrid-filters.demo';
+import { AdvancedFiltersDemo } from './advanced-filters.demo';
 
 @NgModule({
-  imports: [RouterModule.forChild([{ path: '', component: DatagridFiltersDemo }]), DatagridFiltersDemo],
-  exports: [DatagridFiltersDemo],
+  imports: [RouterModule.forChild([{ path: '', component: AdvancedFiltersDemo }]), AdvancedFiltersDemo],
+  exports: [AdvancedFiltersDemo],
 })
-export class DatagridFiltersDemoModule {}
+export class AdvancedFiltersDemoModule {}

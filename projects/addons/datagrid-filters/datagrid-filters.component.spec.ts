@@ -7,7 +7,7 @@
 
 import { A11yModule } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -30,6 +30,53 @@ export interface ThisTest {
   fixture: ComponentFixture<DataGridFiltersComponent>;
   component: DataGridFiltersComponent;
 }
+
+@Component({
+  selector: 'appfx-filters-selector-host',
+  standalone: false,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <clr-advanced-filters></clr-advanced-filters>
+    <appfx-datagrid-filters></appfx-datagrid-filters>
+    <appfx-datagrid-filters></appfx-datagrid-filters>
+  `,
+})
+class FiltersSelectorHostComponent {}
+
+describe('DataGridFiltersComponent selectors', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        ClrComboboxModule,
+        ClrInputModule,
+        ClrSelectModule,
+        ClrSignpostModule,
+        ClrPopoverModuleNext,
+        ClrTooltipModule,
+        A11yModule,
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        ClrIcon,
+      ],
+      declarations: [DataGridFiltersComponent, CompositeFiltersComponent, FiltersSelectorHostComponent],
+      providers: [DatagridFiltersStrings, DismissableDirective],
+    });
+  });
+
+  it('renders with clr-advanced-filters and the deprecated appfx-datagrid-filters, warning for each deprecated one', () => {
+    const warn = spyOn(console, 'warn');
+    const fixture = TestBed.createComponent(FiltersSelectorHostComponent);
+    fixture.detectChanges();
+
+    expect(fixture.debugElement.queryAll(By.directive(DataGridFiltersComponent)).length).toBe(3);
+    const deprecationWarnings = warn.calls
+      .allArgs()
+      .filter(args => String(args[0]).includes('`appfx-datagrid-filters` selector is deprecated'));
+    expect(deprecationWarnings.length).toBe(2);
+    fixture.destroy();
+  });
+});
 
 describe('DataGridFiltersComponent', () => {
   beforeEach(function (this: ThisTest) {

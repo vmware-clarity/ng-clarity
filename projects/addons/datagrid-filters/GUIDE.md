@@ -1,15 +1,15 @@
 ---
-name: appfx-datagrid-filters
-description: Build a standalone filter bar with `<appfx-datagrid-filters>` from `@clr/addons/datagrid-filters` — quick search, advanced filter pills, predefined, semi-predefined and toggle filters, presets, and two-way `[(propertyFilters)]` sync with saved views or URLs. Use when placing `appfx-datagrid-filters` yourself (e.g. over a `clr-datagrid`), or when restoring, storing or syncing `PropertyFilter[]`.
+name: appfx-advanced-filters
+description: Build a standalone filter bar with `<clr-advanced-filters>` from `@clr/addons/datagrid-filters` — quick search, advanced filter pills, predefined, semi-predefined and toggle filters, presets, and two-way `[(propertyFilters)]` sync with saved views or URLs. Use when placing `clr-advanced-filters` (deprecated alias `appfx-datagrid-filters`) yourself (e.g. over a `clr-datagrid`), or when restoring, storing or syncing `PropertyFilter[]`.
 metadata:
-  docs: /documentation/datagrid-filters
+  docs: /documentation/advanced-filters
 ---
 
-# AppFX datagrid filters (`appfx-datagrid-filters`)
+# Advanced filters (`clr-advanced-filters`)
 
 ## When to use it
 
-Inside `appfx-datagrid`, the filter bar is built in; configure it on the grid (see the appfx-datagrid skill). Use `appfx-datagrid-filters` directly when you host it yourself, for example in a `clr-datagrid` action bar, or when you need inputs the grid does not pass on: `presetFilters`, `predefinedFilters`, `semiPredefinedFilters`, `toggleFilters`, `propertyFilters`.
+Inside `appfx-datagrid`, the filter bar is built in; configure it on the grid (see the appfx-datagrid skill). Use `clr-advanced-filters` directly when you host it yourself, for example in a `clr-datagrid` action bar, or when you need inputs the grid does not pass on: `presetFilters`, `predefinedFilters`, `semiPredefinedFilters`, `toggleFilters`, `propertyFilters`.
 
 ## Setup
 
@@ -45,12 +45,12 @@ export class VmFilters {
 ```
 
 ```html
-<appfx-datagrid-filters
+<clr-advanced-filters
   [filterMode]="FilterMode.Advanced"
   [filterableProperties]="filterableProperties"
   [(propertyFilters)]="filters"
   (searchTermChange)="onSearch($event)"
-></appfx-datagrid-filters>
+></clr-advanced-filters>
 ```
 
 The component only **emits** filters. Apply `PropertyFilter[]` (each `{ criteria: PropertyPredicate[], operator }`) and the search term to the data yourself.
@@ -72,6 +72,7 @@ The component only **emits** filters. Apply `PropertyFilter[]` (each `{ criteria
 
 ## Rules
 
+- Use the `clr-advanced-filters` selector. `appfx-datagrid-filters` is deprecated (logs a console warning) and will be removed in v20.
 - OnPush: assign new arrays for every input; never mutate them.
 - `PropertyPredicate.value` is `undefined` for `ComparisonOperator.IsEmpty` — check the operator first.
 - Date-time values are local date-times with the local UTC offset (`2026-03-29T00:00:00+02:00`). **Equals** a day is emitted as `>= day 00:00` AND `< next day 00:00`.

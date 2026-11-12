@@ -14,7 +14,7 @@ import {
 } from '@clr/addons/datagrid-filters';
 
 @Component({
-  selector: 'appfx-datagrid-filters',
+  selector: 'clr-advanced-filters, appfx-datagrid-filters',
   standalone: false,
   changeDetection: ChangeDetectionStrategy.Eager,
   template: '',
@@ -32,13 +32,15 @@ export class MockDatagridFiltersComponent {
 
   @Input() presetFilters: PropertyFilter[];
 
+  @Input() propertyFilters: PropertyFilter[] = [];
+
   @Output() searchTermChange = new EventEmitter<string>();
 
   @Output() propertyFiltersChange = new EventEmitter<PropertyFilter[]>();
 }
 
 @Component({
-  selector: 'appfx-datagrid-filters',
+  selector: 'clr-advanced-filters, appfx-datagrid-filters',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.Eager,
   template: '',

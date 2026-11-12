@@ -372,9 +372,9 @@ export const documentationRoutes: Routes = [
       },
       {
         matcher: documentationRouteMatcher,
-        data: { routePath: 'datagrid-filters/:tab?' },
+        data: { routePath: 'advanced-filters/:tab?' },
         loadChildren: () =>
-          import('./demos/datagrid-filters/datagrid-filters.demo.module').then(m => m.DatagridFiltersDemoModule),
+          import('./demos/advanced-filters/advanced-filters.demo.module').then(m => m.AdvancedFiltersDemoModule),
       },
       {
         matcher: documentationRouteMatcher,

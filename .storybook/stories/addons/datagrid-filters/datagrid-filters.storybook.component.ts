@@ -179,7 +179,7 @@ export function lastWeekPresetFilters(): PropertyFilter[] {
   imports: [CommonModule, AppfxDatagridFiltersModule],
   providers: [{ provide: DatagridFiltersUserService, useClass: StoryUserService }],
   template: `
-    <appfx-datagrid-filters
+    <clr-advanced-filters
       [filterMode]="filterMode"
       [filterableProperties]="filterableProperties"
       [presetFilters]="presetFilters"
@@ -188,7 +188,7 @@ export function lastWeekPresetFilters(): PropertyFilter[] {
       [toggleFilters]="toggleFilters"
       [(propertyFilters)]="propertyFilters"
       (searchTermChange)="searchTerm = $event"
-    ></appfx-datagrid-filters>
+    ></clr-advanced-filters>
 
     @if (savedView.length) {
       <div cds-layout="m-t:md">

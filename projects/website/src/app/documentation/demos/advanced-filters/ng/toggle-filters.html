@@ -4,16 +4,11 @@
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
-<appfx-datagrid-filters
+<clr-advanced-filters
   [filterMode]="FilterMode.AdvancedOnly"
   [filterableProperties]="filterableProperties"
   [toggleFilters]="toggleFilters"
-  [(propertyFilters)]="filters"
-></appfx-datagrid-filters>
-
-<div cds-layout="m-t:md">
-  <button type="button" class="btn btn-sm btn-outline" (click)="restoreSavedView()">Restore saved view</button>
-  <button type="button" class="btn btn-sm btn-link" (click)="clearFromHost()">Clear from host</button>
-</div>
+  (propertyFiltersChange)="filters = $event"
+></clr-advanced-filters>
 
 <app-applied-filters [filters]="filters"></app-applied-filters>

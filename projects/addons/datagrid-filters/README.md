@@ -1,20 +1,22 @@
 ## Overview & Rationale
 
-AppFx Datagrid Filters component provides an enhanced user experience for datagrid filtering.
+Advanced Filters component provides an enhanced user experience for datagrid filtering.
 It is expected to be hosted in the datagrid action bar and can be used in three modes - quick, advanced and advanced only. <br/>
 Advanced modes allow users to build and manage complex filtering queries. Quick mode is suitable for quick search filtering.
 
 #### Advanced Filter
 
-![Datagrid Filters example screen](assets/appfx/datagrid-advanced-filter-overview.png)
+![Advanced Filters example screen](assets/appfx/datagrid-advanced-filter-overview.png)
 
 #### Quick Filter
 
-![Datagrid Filters example screen](assets/appfx/datagrid-quick-filter-overview.png)
+![Advanced Filters example screen](assets/appfx/datagrid-quick-filter-overview.png)
 
 ## Component API
 
-#### appfx-datagrid-filters
+#### clr-advanced-filters
+
+> The `appfx-datagrid-filters` selector is deprecated and will be removed in v20. Use `clr-advanced-filters`. Each filter bar that uses the deprecated selector logs a console warning.
 
 | Property                | Input/Output | Type                             | Description                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | ----------------------- | ------------ | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -43,13 +45,13 @@ The popover applies changes only on **Apply**. **Cancel**, Escape, and outside c
 String and numeric filters support any number of conditions, joined by one shared **AND** or **OR** operator. **Add condition** appends another row; individual rows can be removed while keeping at least one. Setting `singleCondition` to `true` limits the field to one condition.
 
 ```html
-<appfx-datagrid-filters
+<clr-advanced-filters
   [filterMode]="filterMode"
   [filterableProperties]="filterableProperties"
   [predefinedFilters]="predefinedFilters"
   [presetFilters]="presetFilters"
   (propertyFiltersChange)="onAdvancedFilterCriteriaChange($event)"
-></appfx-datagrid-filters>
+></clr-advanced-filters>
 ```
 
 For example, `predefinedFilters = [nameProperty, statusProperty]` permanently shows the name and status filters independently of their initial values. Unlike a flag on `FilterablePropertyDefinition`, this input lets each grid choose visibility and order while sharing the same field definitions.
@@ -59,18 +61,18 @@ For example, `predefinedFilters = [nameProperty, statusProperty]` permanently sh
 Use `[(propertyFilters)]` when the host keeps the active filters, for example to restore a saved view or a URL:
 
 ```html
-<appfx-datagrid-filters
+<clr-advanced-filters
   [filterMode]="filterMode"
   [filterableProperties]="filterableProperties"
   [toggleFilters]="toggleFilters"
   [(propertyFilters)]="filters"
-></appfx-datagrid-filters>
+></clr-advanced-filters>
 ```
 
 - A new `propertyFilters` value replaces the active filters. A filter with exactly a toggle's criteria turns that toggle ON; a toggle missing from the value turns OFF. The filter bar copies the array and never changes it.
 - Setting `propertyFilters` does not emit `propertyFiltersChange`, so passing the emitted value back does not loop. The exception is a filter on a semi-predefined field that had to be removed; the corrected list is emitted.
 - `presetFilters` are applied once, at start-up. For the same field, a preset wins over a `propertyFilters` filter. If the start-up result differs from what `propertyFilters` passed in (or there is no `propertyFilters` binding and presets are set), `propertyFiltersChange` emits it once, after the first change detection, so the host is in sync from the start.
-- Switching `appfx-datagrid-filters` to quick mode clears the filters and emits `[]`.
+- Switching `clr-advanced-filters` to quick mode clears the filters and emits `[]`.
 
 Filters built by the editors carry an `editorState`, which keeps the choices the criteria cannot express (e.g. _Last week_, or a value typed in another unit). Keep it when storing filters in memory. When it is missing, for example in a host preset or after storing only the criteria, the filter bar derives what it can from the criteria.
 
@@ -184,14 +186,14 @@ Date-time filters emit local date-times followed by the local UTC offset, e.g. `
 datagrid-filters-demo.component.html
 
 ```html
-<appfx-datagrid-filters
+<clr-advanced-filters
   [filterMode]="filterMode"
   [filterableProperties]="filterableProperties"
   [presetFilters]="presetFilters"
   (searchTermChange)="onAdvancedSearchTermChange($event)"
   (propertyFiltersChange)="onAdvancedFilterCriteriaChange($event)"
 >
-</appfx-datagrid-filters>
+</clr-advanced-filters>
 ```
 
 datagrid-filters-demo.component.ts

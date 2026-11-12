@@ -634,6 +634,8 @@ export class MockDatagridFiltersComponent {
     // (undocumented)
     presetFilters: PropertyFilter[];
     // (undocumented)
+    propertyFilters: PropertyFilter[];
+    // (undocumented)
     propertyFiltersChange: EventEmitter<PropertyFilter[]>;
     // (undocumented)
     searchTermChange: EventEmitter<string>;
@@ -646,7 +648,7 @@ export class MockDatagridFiltersComponent {
     // (undocumented)
     toggleFilters: PropertyFilter[];
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridFiltersComponent, "appfx-datagrid-filters", never, { "filterMode": { "alias": "filterMode"; "required": false; }; "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "predefinedFilters": { "alias": "predefinedFilters"; "required": false; }; "semiPredefinedFilters": { "alias": "semiPredefinedFilters"; "required": false; }; "toggleFilters": { "alias": "toggleFilters"; "required": false; }; "presetFilters": { "alias": "presetFilters"; "required": false; }; }, { "searchTermChange": "searchTermChange"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridFiltersComponent, "clr-advanced-filters, appfx-datagrid-filters", never, { "filterMode": { "alias": "filterMode"; "required": false; }; "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "predefinedFilters": { "alias": "predefinedFilters"; "required": false; }; "semiPredefinedFilters": { "alias": "semiPredefinedFilters"; "required": false; }; "toggleFilters": { "alias": "toggleFilters"; "required": false; }; "presetFilters": { "alias": "presetFilters"; "required": false; }; "propertyFilters": { "alias": "propertyFilters"; "required": false; }; }, { "searchTermChange": "searchTermChange"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockDatagridFiltersComponent, never>;
 }
@@ -654,7 +656,7 @@ export class MockDatagridFiltersComponent {
 // @public (undocumented)
 export class MockDatagridFiltersStandaloneComponent extends MockDatagridFiltersComponent {
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridFiltersStandaloneComponent, "appfx-datagrid-filters", never, {}, {}, never, never, true, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridFiltersStandaloneComponent, "clr-advanced-filters, appfx-datagrid-filters", never, {}, {}, never, never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockDatagridFiltersStandaloneComponent, never>;
 }

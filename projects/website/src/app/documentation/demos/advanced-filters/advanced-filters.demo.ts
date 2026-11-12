@@ -51,8 +51,8 @@ const additionalFiles = {
 };
 
 @Component({
-  selector: 'clr-datagrid-filters-demo',
-  templateUrl: './datagrid-filters.demo.html',
+  selector: 'clr-advanced-filters-demo',
+  templateUrl: './advanced-filters.demo.html',
   host: {
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
@@ -74,7 +74,7 @@ const additionalFiles = {
     DatagridFiltersDateTimeDemoComponent,
   ],
 })
-export class DatagridFiltersDemo extends ClarityDocComponent {
+export class AdvancedFiltersDemo extends ClarityDocComponent {
   filterModesHtml = FilterModesHtml;
   filterModesTs = FilterModesTs;
   predefinedHtml = PredefinedHtml;
@@ -92,6 +92,6 @@ export class DatagridFiltersDemo extends ClarityDocComponent {
   additionalFiles = additionalFiles;
 
   constructor() {
-    super('datagrid-filters');
+    super('advanced-filters');
   }
 }
