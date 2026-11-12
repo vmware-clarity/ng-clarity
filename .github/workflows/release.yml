@@ -12,7 +12,7 @@ jobs:
   release:
     name: Release
     timeout-minutes: 30
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -42,6 +42,7 @@ jobs:
           NPM_TOKEN: ${{secrets.NPM_TOKEN}}
         run: npx semantic-release --extends ./.releaserc.release.js
       - name: Update Figma Tokens
+        continue-on-error: true
         env:
           FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
           FIGMA_FILE_KEY: ${{ secrets.FIGMA_FILE_KEY }}

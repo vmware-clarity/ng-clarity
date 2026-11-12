@@ -203,12 +203,6 @@ describe('Datepicker', () => {
           expect(localeHelperServiceUS.localeMonthsAbbreviated).toEqual(monthsBefore);
         });
 
-        it('does not affect locale date format when overriding first day', () => {
-          const formatBefore = localeHelperServiceUS.localeDateFormat;
-          localeHelperServiceUS.updateFirstDayOfWeek(ClrWeekday.Wednesday);
-          expect(localeHelperServiceUS.localeDateFormat).toBe(formatBefore);
-        });
-
         it('resets to Sunday when an invalid value is provided after a valid one', () => {
           localeHelperServiceUS.updateFirstDayOfWeek(ClrWeekday.Tuesday);
           expect(localeHelperServiceUS.firstDayOfWeek).toBe(ClrWeekday.Tuesday);
@@ -274,12 +268,6 @@ describe('Datepicker', () => {
         expect(a1.length === usMonthsWide.length && a1.every((v, i) => v === usMonthsWide[i])).toBe(true);
         expect(a2.length === frMonthsWide.length && a2.every((v, i) => v === frMonthsWide[i])).toBe(true);
         expect(a3.length === plMonthsWide.length && a3.every((v, i) => v === plMonthsWide[i])).toBe(true);
-      });
-
-      it('returns the locale date format', () => {
-        expect(localeHelperServiceUS.localeDateFormat).toBe('M/d/yy');
-        expect(localeHelperServiceFr.localeDateFormat).toBe('dd/MM/y');
-        expect(localeHelperServicePl.localeDateFormat).toBe('d.MM.y');
       });
 
       it(

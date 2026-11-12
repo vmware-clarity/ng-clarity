@@ -124,6 +124,19 @@ describe('Combobox component', () => {
         expect(testContext.popoverService.open).toBe(false);
       });
 
+      it('removes keyboard and blur listeners when destroyed', () => {
+        testContext.focusHandler.ngOnDestroy();
+        testContext.testComponent.textInput.nativeElement.dispatchEvent(
+          new KeyboardEvent('keydown', { key: Keys.ArrowDown })
+        );
+        expect(testContext.popoverService.open).toBe(false);
+        testContext.popoverService.open = true;
+        testContext.testComponent.textInput.nativeElement.dispatchEvent(new FocusEvent('blur'));
+        testContext.testComponent.trigger.nativeElement.dispatchEvent(new FocusEvent('blur'));
+        testContext.testComponent.listbox.nativeElement.dispatchEvent(new FocusEvent('blur'));
+        expect(testContext.popoverService.open).toBe(true);
+      });
+
       it('can set focus on textInput', () => {
         vi.spyOn(testContext.testComponent.textInput.nativeElement, 'focus').mockImplementation(() => undefined);
         testContext.focusHandler.focusInput();
