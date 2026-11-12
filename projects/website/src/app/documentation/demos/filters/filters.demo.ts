@@ -83,9 +83,7 @@ export class CustomUserService extends DatagridFiltersUserService {
 
 @Component({
   templateUrl: 'datagrid-filters-demo.component.html',
-  providers: [
-    { provide: DatagridFiltersUserService, useClass: CustomUserService },
-  ],
+  providers: [{ provide: DatagridFiltersUserService, useClass: CustomUserService }],
 })
 export class DatagridFiltersDemoComponent implements OnInit {
   @Output()
