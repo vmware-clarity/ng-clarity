@@ -45,38 +45,56 @@ export class ShadowRootTypographyComponent {
   protected readonly density = pageAttribute('clr-density');
 }
 
+/** One slot inside each grid breakpoint range. The widest still fits the 1280px snapshot viewport. */
+const SLOTS = [
+  { width: 400, label: 'xs: below 576px' },
+  { width: 650, label: 'sm: 576px to 767px' },
+  { width: 850, label: 'md: 768px to 991px' },
+  { width: 1100, label: 'lg: 992px to 1199px' },
+  { width: 1220, label: 'xl: 1200px and up' },
+];
+
 /**
- * Grid and `cds-layout` breakpoints in a shadow root whose host is narrower than the viewport. Inside the
- * `clr-layout-container` element the grid columns follow its width; `cds-layout` follows the viewport.
+ * Grid and `cds-layout` breakpoints in `clr-layout-container` slots narrower than the viewport, one slot per
+ * breakpoint range, all in one shadow root. Inside a slot the grid columns follow its width; `cds-layout` follows
+ * the viewport.
  */
 @Component({
   selector: 'shadow-root-container-queries',
   template: `
-    <div [attr.cds-theme]="theme" [attr.clr-density]="density" clr-layout-container>
-      <div class="caption" cds-text="caption">
-        clr-col-12 clr-col-sm-6 clr-col-md-4 clr-col-lg-3 clr-col-xl-2: 1, 2, 3, 4 and 6 per row
-      </div>
-      <div class="clr-row">
-        @for (column of columns; track column) {
-          <div class="clr-col-12 clr-col-sm-6 clr-col-md-4 clr-col-lg-3 clr-col-xl-2">
-            <span>{{ column }}</span>
-          </div>
+    <div [attr.cds-theme]="theme" [attr.clr-density]="density">
+      @for (slot of slots; track slot.width; let first = $first) {
+        @if (!first) {
+          <hr />
         }
-      </div>
-      <div class="clr-row">
-        <div class="clr-col-12 clr-col-md-6"><span>clr-col-12 clr-col-md-6</span></div>
-        <div class="clr-col-12 clr-col-md-6"><span>clr-col-12 clr-col-md-6</span></div>
-      </div>
-      <div class="clr-row">
-        <div class="clr-col-sm-4"><span>clr-col-sm-4</span></div>
-        <div class="clr-col-sm-4"><span>clr-col-sm-4</span></div>
-        <div class="clr-col-sm-4"><span>clr-col-sm-4</span></div>
-      </div>
-      <div class="caption" cds-text="caption">cds-layout follows the viewport</div>
-      <div cds-layout="grid cols@sm:6 gap:md">
-        <span>cds-layout cols&#64;sm:6</span>
-        <span>cds-layout cols&#64;sm:6</span>
-      </div>
+        <h4 class="slot-label">{{ slot.width }}px slot ({{ slot.label }})</h4>
+        <div clr-layout-container [style.width.px]="slot.width">
+          <div class="caption" cds-text="caption">
+            clr-col-12 clr-col-sm-6 clr-col-md-4 clr-col-lg-3 clr-col-xl-2: 1, 2, 3, 4 and 6 per row
+          </div>
+          <div class="clr-row">
+            @for (column of columns; track column) {
+              <div class="clr-col-12 clr-col-sm-6 clr-col-md-4 clr-col-lg-3 clr-col-xl-2">
+                <span>{{ column }}</span>
+              </div>
+            }
+          </div>
+          <div class="clr-row">
+            <div class="clr-col-12 clr-col-md-6"><span>clr-col-12 clr-col-md-6</span></div>
+            <div class="clr-col-12 clr-col-md-6"><span>clr-col-12 clr-col-md-6</span></div>
+          </div>
+          <div class="clr-row">
+            <div class="clr-col-sm-4"><span>clr-col-sm-4</span></div>
+            <div class="clr-col-sm-4"><span>clr-col-sm-4</span></div>
+            <div class="clr-col-sm-4"><span>clr-col-sm-4</span></div>
+          </div>
+          <div class="caption" cds-text="caption">cds-layout follows the viewport</div>
+          <div cds-layout="grid cols@sm:6 gap:md">
+            <span>cds-layout cols&#64;sm:6</span>
+            <span>cds-layout cols&#64;sm:6</span>
+          </div>
+        </div>
+      }
     </div>
   `,
   styleUrls: ['../../../../projects/ui/src/clr-ui.scss', './shadow-root-container-queries.scss'],
@@ -86,6 +104,7 @@ export class ShadowRootTypographyComponent {
 export class ShadowRootContainerQueriesComponent {
   protected readonly theme = pageAttribute('cds-theme');
   protected readonly density = pageAttribute('clr-density');
+  protected readonly slots = SLOTS;
   protected readonly columns = [1, 2, 3, 4, 5, 6];
 }
 
