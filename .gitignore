@@ -61,6 +61,7 @@ Thumbs.db
 projects/website/src/compiled-content/*.json
 projects/website/src/compiled-ai/
 projects/website/src/assets/clarity-icons.zip
+projects/website/src/index.vrt.html
 
 #Storybook
 debug-storybook.log

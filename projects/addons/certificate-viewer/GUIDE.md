@@ -55,7 +55,7 @@ Inside a modal:
 
 - `pemEncodedCertificatesChain` is a `string[]`, one full PEM block (with BEGIN/END lines) per entry. Assign a new array to re-parse; parsing runs on input change.
 - Set `topHeadingLevel` (1–5, default 5) so headings fit the page outline — one level below the surrounding heading.
-- Field labels are translated through AppFX translate; sync the locale via `AppfxTranslateService` (see the appfx-translate skill).
+- Field labels are translated through AppFX translate; sync the locale via `AppfxTranslateService` (see the appfx-translate guide).
 
 ## References
 

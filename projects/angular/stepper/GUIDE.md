@@ -15,7 +15,7 @@ metadata:
 From the [stepper design guidance](https://guidance.clarity.design/1030):
 
 - **Stepper**: the steps are a form inline with the page content, users may leave to other parts of the app mid-flow, there are many steps with little data each, and each step needs a description or a summary of what was entered. Best with more than two steps.
-- **Wizard** (`clr-wizard`, see the clr-wizard skill): a modal, self-contained flow that blocks the rest of the app until finished or cancelled ([wizard guidance](https://guidance.clarity.design/1039)).
+- **Wizard** (`clr-wizard`, see the clr-wizard guide): a modal, self-contained flow that blocks the rest of the app until finished or cancelled ([wizard guidance](https://guidance.clarity.design/1039)).
 - **Timeline** (`clr-timeline`): fewer steps with longer content, or a read-only view of progress ([timeline guidance](https://guidance.clarity.design/1036)).
 - Keep each step short. Give every panel a title and a description.
 

@@ -475,6 +475,22 @@ describe('DatagridComponent', () => {
     });
   });
 
+  // The width is a style binding, not a style attribute, which a Content-Security-Policy without unsafe-inline blocks.
+  it('renders the drag handle column 20px wide', function (this: any) {
+    this.component.columnsDefs = this.columnsDefs;
+    this.component.data = this.data;
+    this.component.serverDrivenDatagrid = true;
+    this.component.dragConfig = { fieldName: 'name' };
+    this.fixture.detectChanges(true);
+
+    const dragHandleCells: HTMLElement[] = Array.from(
+      this.fixture.nativeElement.querySelectorAll('clr-dg-column.draggableCell, clr-dg-cell.draggableCell')
+    );
+
+    expect(dragHandleCells.length).toEqual(1 + this.data.length);
+    dragHandleCells.forEach(cell => expect(cell.style.width).toEqual('20px'));
+  });
+
   it('can render cell data with the help of column renderer', function (this: any) {
     const testColumnsDefs: Array<ColumnDefinition<any>> = [
       {
@@ -1488,10 +1504,10 @@ describe('DatagridComponent', () => {
             { displayName: 'Name', field: 'name', sortAndFilterByField: 'name' },
             { displayName: 'State', field: 'powerState' },
           ] as Array<ColumnDefinition<any>>);
-          setHidden(this.fixture, 'State', true);
         });
 
         it('keeps an applied filter', function (this: DatagridSpecContext) {
+          setHidden(this.fixture, 'State', true);
           const gridHelper = new GridHelper(this.fixture.debugElement);
           gridHelper.openFilter('Name');
           this.fixture.detectChanges();
@@ -1517,6 +1533,8 @@ describe('DatagridComponent', () => {
           const resizedWidth = columnElementByTitle(this.fixture, 'Name').style.width;
           expect(resizedWidth).not.toBe('');
 
+          // Resize while Name has a following scrollable column, then rebuild the views.
+          setHidden(this.fixture, 'State', true);
           setHidden(this.fixture, 'State', false);
 
           expect(columnElementByTitle(this.fixture, 'Name').style.width).toBe(resizedWidth);

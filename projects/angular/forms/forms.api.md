@@ -1206,6 +1206,16 @@ export class ClrLayout implements OnInit {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrLayout, never>;
 }
 
+// @public
+export class ClrLocaleDateFormat {
+    constructor(
+    locale: string);
+    format(date: Date | null | undefined): string;
+    readonly locale: string;
+    parse(text: string): Date | null;
+    get placeholder(): string;
+}
+
 // @public (undocumented)
 export class ClrMonthpicker implements AfterViewInit {
     constructor(_localeHelperService: LocaleHelperService, _dateNavigationService: DateNavigationService, _datepickerFocusService: DatepickerFocusService, _elRef: ElementRef, _viewManagerService: ViewManagerService, commonStrings: ClrCommonStringsService);
@@ -1958,7 +1968,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-forms-combobox.d.ts:252:657 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-forms.d.ts
+// dist/clr-angular/types/clr-angular-forms-combobox.d.ts:258:657 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-forms.d.ts
 
 // (No @packageDocumentation comment for this package)
 
