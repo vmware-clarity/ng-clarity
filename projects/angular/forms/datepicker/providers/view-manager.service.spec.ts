@@ -7,48 +7,50 @@
 
 import { ViewManagerService } from './view-manager.service';
 
-export default function () {
-  describe('View Manager Service', () => {
-    let viewManagerService: ViewManagerService;
+describe('Datepicker', () => {
+  describe('Providers', () => {
+    describe('View Manager Service', () => {
+      let viewManagerService: ViewManagerService;
 
-    beforeEach(() => {
-      viewManagerService = new ViewManagerService();
-    });
+      beforeEach(() => {
+        viewManagerService = new ViewManagerService();
+      });
 
-    it('Initializes the View Manager with the DayPicker', () => {
-      expect(viewManagerService.isDayView).toBe(true);
-      expect(viewManagerService.isMonthView).toBe(false);
-      expect(viewManagerService.isYearView).toBe(false);
-    });
+      it('Initializes the View Manager with the DayPicker', () => {
+        expect(viewManagerService.isDayView).toBe(true);
+        expect(viewManagerService.isMonthView).toBe(false);
+        expect(viewManagerService.isYearView).toBe(false);
+      });
 
-    it('provides a method to change to month view', () => {
-      viewManagerService.changeToMonthView();
+      it('provides a method to change to month view', () => {
+        viewManagerService.changeToMonthView();
 
-      expect(viewManagerService.isDayView).toBe(false);
-      expect(viewManagerService.isMonthView).toBe(true);
-      expect(viewManagerService.isYearView).toBe(false);
-    });
+        expect(viewManagerService.isDayView).toBe(false);
+        expect(viewManagerService.isMonthView).toBe(true);
+        expect(viewManagerService.isYearView).toBe(false);
+      });
 
-    it('provides a method to change to year view', () => {
-      viewManagerService.changeToYearView();
+      it('provides a method to change to year view', () => {
+        viewManagerService.changeToYearView();
 
-      expect(viewManagerService.isDayView).toBe(false);
-      expect(viewManagerService.isMonthView).toBe(false);
-      expect(viewManagerService.isYearView).toBe(true);
-    });
+        expect(viewManagerService.isDayView).toBe(false);
+        expect(viewManagerService.isMonthView).toBe(false);
+        expect(viewManagerService.isYearView).toBe(true);
+      });
 
-    it('provides a method to change to day view', () => {
-      viewManagerService.changeToMonthView();
+      it('provides a method to change to day view', () => {
+        viewManagerService.changeToMonthView();
 
-      expect(viewManagerService.isDayView).toBe(false);
-      expect(viewManagerService.isMonthView).toBe(true);
-      expect(viewManagerService.isYearView).toBe(false);
+        expect(viewManagerService.isDayView).toBe(false);
+        expect(viewManagerService.isMonthView).toBe(true);
+        expect(viewManagerService.isYearView).toBe(false);
 
-      viewManagerService.changeToDayView();
+        viewManagerService.changeToDayView();
 
-      expect(viewManagerService.isDayView).toBe(true);
-      expect(viewManagerService.isMonthView).toBe(false);
-      expect(viewManagerService.isYearView).toBe(false);
+        expect(viewManagerService.isDayView).toBe(true);
+        expect(viewManagerService.isMonthView).toBe(false);
+        expect(viewManagerService.isYearView).toBe(false);
+      });
     });
   });
-}
+});

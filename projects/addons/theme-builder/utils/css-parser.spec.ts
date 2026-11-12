@@ -139,12 +139,10 @@ describe('validateGeneratedCSS', () => {
     for (const value of ['hsl(281deg, 50%, 20%)', 'hsl(281, 50%, 20%)', 'hsl(281 50% 20%)', 'hsl(281deg 50% 20%)']) {
       const css = `[cds-theme~='light'] {\n  --cds-alias-primary: ${value};\n}`;
 
-      expect(validateGeneratedCSS(css))
-        .withContext(value)
-        .toEqual({ valid: true, ...NO_ISSUES });
-      expect(colorsByName(parseGeneratedCSS(css).light.primary))
-        .withContext(value)
-        .toEqual({ '--cds-alias-primary': new HslColor(281, 50, 20) });
+      expect(validateGeneratedCSS(css), value).toEqual({ valid: true, ...NO_ISSUES });
+      expect(colorsByName(parseGeneratedCSS(css).light.primary), value).toEqual({
+        '--cds-alias-primary': new HslColor(281, 50, 20),
+      });
     }
   });
 

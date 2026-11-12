@@ -11,33 +11,38 @@ interface ThisTest {
   target: CaseInsensitiveContainsStringFilter;
 }
 
-describe('string-filters.spec', function () {
-  describe('WHEN provided with valid filter property name', function () {
-    it('THEN it filters by it', function (this: ThisTest) {
+describe('string-filters.spec', () => {
+  let testContext: ThisTest;
+  beforeEach(() => {
+    testContext = {} as ThisTest;
+  });
+
+  describe('WHEN provided with valid filter property name', () => {
+    it('THEN it filters by it', () => {
       const item = {
         propA: 'ABC',
         propB: 'DEF',
       };
 
-      this.target = new CaseInsensitiveContainsStringFilter('propA');
+      testContext.target = new CaseInsensitiveContainsStringFilter('propA');
 
       // NOTE: Seems Clarity grid always feeds the search string in lower case -
       // so we use lowercase as a search string too.
-      expect(this.target.accepts(item, 'a')).toBeTruthy();
-      expect(this.target.accepts(item, 'd')).toBeFalsy();
+      expect(testContext.target.accepts(item, 'a')).toBeTruthy();
+      expect(testContext.target.accepts(item, 'd')).toBeFalsy();
     });
   });
 
-  describe('WHEN provided with INVALID filter property name', function () {
-    it('THEN noting pass the filter', function (this: ThisTest) {
+  describe('WHEN provided with INVALID filter property name', () => {
+    it('THEN noting pass the filter', () => {
       const item = {
         propA: 'ABC',
         propB: 'DEF',
       };
 
-      this.target = new CaseInsensitiveContainsStringFilter('propAA');
+      testContext.target = new CaseInsensitiveContainsStringFilter('propAA');
 
-      expect(this.target.accepts(item, 'a')).toBeFalsy();
+      expect(testContext.target.accepts(item, 'a')).toBeFalsy();
     });
   });
 });

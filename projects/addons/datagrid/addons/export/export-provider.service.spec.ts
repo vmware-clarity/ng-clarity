@@ -92,7 +92,12 @@ class MockDatagrid {}
 class MockElementRef {}
 
 describe('ExportProviderService', () => {
-  beforeEach(function (this: any) {
+  let testContext: any;
+  beforeEach(() => {
+    testContext = {};
+  });
+
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ClrDatagridHostComponent],
       providers: [
@@ -112,33 +117,33 @@ describe('ExportProviderService', () => {
       ],
     });
 
-    this.fixture = TestBed.createComponent(ClrDatagridHostComponent);
-    this.clrDatagridHostComponent = this.fixture.componentInstance;
-    this.clrDatagrid = this.clrDatagridHostComponent.clrDatagrid;
+    testContext.fixture = TestBed.createComponent(ClrDatagridHostComponent);
+    testContext.clrDatagridHostComponent = testContext.fixture.componentInstance;
+    testContext.clrDatagrid = testContext.clrDatagridHostComponent.clrDatagrid;
 
-    this.datagridItemSet = {
-      totalDatagridItems: this.clrDatagridHostComponent.serialKeyLicenseItems,
-      selectedItems: this.clrDatagridHostComponent.serialKeyLicenseItems[1],
+    testContext.datagridItemSet = {
+      totalDatagridItems: testContext.clrDatagridHostComponent.serialKeyLicenseItems,
+      selectedItems: testContext.clrDatagridHostComponent.serialKeyLicenseItems[1],
       filteredDatagridItems: [
-        this.clrDatagridHostComponent.serialKeyLicenseItems[1],
-        this.clrDatagridHostComponent.serialKeyLicenseItems[3],
+        testContext.clrDatagridHostComponent.serialKeyLicenseItems[1],
+        testContext.clrDatagridHostComponent.serialKeyLicenseItems[3],
       ],
     };
 
-    this.columnDef = [];
-    this.exportProperties = {
+    testContext.columnDef = [];
+    testContext.exportProperties = {
       exportedFileName: 'LicenseAssets',
-      columnDefinitions: this.columnDef,
+      columnDefinitions: testContext.columnDef,
     };
   });
 
-  afterEach(function (this: any) {
-    this.fixture.destroy();
-    this.fixture = null;
-    this.clrDatagrid = null;
+  afterEach(() => {
+    testContext.fixture.destroy();
+    testContext.fixture = null;
+    testContext.clrDatagrid = null;
   });
 
-  it('exportUIOnlyData with all items export option creates CSV data of all datagrid items and downloads file', function (this: any) {
+  it('exportUIOnlyData with all items export option creates CSV data of all datagrid items and downloads file', () => {
     const exportProviderService = TestBed.inject(ExportProviderService);
     const csvHelperService = TestBed.inject(CsvHelperService);
     const exportStatus: ExportStatus = {
@@ -146,17 +151,23 @@ describe('ExportProviderService', () => {
       exportType: ExportType.ALL,
     };
 
-    spyOn(csvHelperService, 'getData');
-    spyOn(exportProviderService, 'downloadFile');
-    exportProviderService.exportUIOnlyData(this.exportProperties, exportStatus, this.datagridItemSet);
+    vi.spyOn(csvHelperService, 'getData').mockImplementation(() => undefined);
+    vi.spyOn(exportProviderService, 'downloadFile').mockImplementation(() => undefined);
+    exportProviderService.exportUIOnlyData(testContext.exportProperties, exportStatus, testContext.datagridItemSet);
 
-    expect(csvHelperService.getData).toHaveBeenCalledWith(this.datagridItemSet.totalDatagridItems, this.columnDef);
+    expect(csvHelperService.getData).toHaveBeenCalledWith(
+      testContext.datagridItemSet.totalDatagridItems,
+      testContext.columnDef
+    );
 
-    const csvData = csvHelperService.getData(this.datagridItemSet.totalDatagridItems, this.columnDef);
-    expect(exportProviderService.downloadFile).toHaveBeenCalledWith(csvData, this.exportProperties.exportedFileName);
+    const csvData = csvHelperService.getData(testContext.datagridItemSet.totalDatagridItems, testContext.columnDef);
+    expect(exportProviderService.downloadFile).toHaveBeenCalledWith(
+      csvData,
+      testContext.exportProperties.exportedFileName
+    );
   });
 
-  it('exportUIOnlyData with selected items export option creates CSV data of selected datagrid items and downloads file', function (this: any) {
+  it('exportUIOnlyData with selected items export option creates CSV data of selected datagrid items and downloads file', () => {
     const exportProviderService = TestBed.inject(ExportProviderService);
     const csvHelperService = TestBed.inject(CsvHelperService);
     const exportStatus: ExportStatus = {
@@ -164,38 +175,53 @@ describe('ExportProviderService', () => {
       exportType: ExportType.SELECTED_ONLY,
     };
 
-    spyOn(csvHelperService, 'getData');
-    spyOn(exportProviderService, 'downloadFile');
-    exportProviderService.exportUIOnlyData(this.exportProperties, exportStatus, this.datagridItemSet);
+    vi.spyOn(csvHelperService, 'getData').mockImplementation(() => undefined);
+    vi.spyOn(exportProviderService, 'downloadFile').mockImplementation(() => undefined);
+    exportProviderService.exportUIOnlyData(testContext.exportProperties, exportStatus, testContext.datagridItemSet);
 
-    expect(csvHelperService.getData).toHaveBeenCalledWith(this.datagridItemSet.selectedItems, this.columnDef);
+    expect(csvHelperService.getData).toHaveBeenCalledWith(
+      testContext.datagridItemSet.selectedItems,
+      testContext.columnDef
+    );
 
-    const csvData = csvHelperService.getData(this.datagridItemSet.selectedItems, this.columnDef);
-    expect(exportProviderService.downloadFile).toHaveBeenCalledWith(csvData, this.exportProperties.exportedFileName);
+    const csvData = csvHelperService.getData(testContext.datagridItemSet.selectedItems, testContext.columnDef);
+    expect(exportProviderService.downloadFile).toHaveBeenCalledWith(
+      csvData,
+      testContext.exportProperties.exportedFileName
+    );
   });
 
   it(
     'exportUIOnlyData with filtered items export option creates CSV data of filtered datagrid' +
       'items and downloads file',
-    function (this: any) {
+    () => {
       const exportProviderService = TestBed.inject(ExportProviderService);
       const csvHelperService = TestBed.inject(CsvHelperService);
       const exportStatus: ExportStatus = {
         inProgress: false,
         exportType: ExportType.MATCHING_FILTERS,
       };
-      spyOn(csvHelperService, 'getData');
-      spyOn(exportProviderService, 'downloadFile');
-      exportProviderService.exportUIOnlyData(this.exportProperties, exportStatus, this.datagridItemSet);
+      vi.spyOn(csvHelperService, 'getData').mockImplementation(() => undefined);
+      vi.spyOn(exportProviderService, 'downloadFile').mockImplementation(() => undefined);
+      exportProviderService.exportUIOnlyData(testContext.exportProperties, exportStatus, testContext.datagridItemSet);
 
-      expect(csvHelperService.getData).toHaveBeenCalledWith(this.datagridItemSet.filteredDatagridItems, this.columnDef);
+      expect(csvHelperService.getData).toHaveBeenCalledWith(
+        testContext.datagridItemSet.filteredDatagridItems,
+        testContext.columnDef
+      );
 
-      const csvData = csvHelperService.getData(this.datagridItemSet.filteredDatagridItems, this.columnDef);
-      expect(exportProviderService.downloadFile).toHaveBeenCalledWith(csvData, this.exportProperties.exportedFileName);
+      const csvData = csvHelperService.getData(
+        testContext.datagridItemSet.filteredDatagridItems,
+        testContext.columnDef
+      );
+      expect(exportProviderService.downloadFile).toHaveBeenCalledWith(
+        csvData,
+        testContext.exportProperties.exportedFileName
+      );
     }
   );
 
-  it('should handle error in exportUIOnlyData and show error message', function (this: any) {
+  it('should handle error in exportUIOnlyData and show error message', () => {
     const exportProviderService = TestBed.inject(ExportProviderService);
     const csvHelperService = TestBed.inject(CsvHelperService);
     const exportStatus: ExportStatus = {
@@ -203,16 +229,18 @@ describe('ExportProviderService', () => {
       exportType: ExportType.ALL,
     };
 
-    spyOn(csvHelperService, 'getData').and.throwError('Test error');
-    spyOn(exportProviderService as any, 'showExportError');
+    vi.spyOn(csvHelperService, 'getData').mockImplementation(() => {
+      throw new Error('Test error');
+    });
+    vi.spyOn(exportProviderService as any, 'showExportError').mockImplementation(() => undefined);
 
-    exportProviderService.exportUIOnlyData(this.exportProperties, exportStatus, this.datagridItemSet);
+    exportProviderService.exportUIOnlyData(testContext.exportProperties, exportStatus, testContext.datagridItemSet);
 
-    expect(exportStatus.inProgress).toBeFalse();
+    expect(exportStatus.inProgress).toBe(false);
     expect(exportProviderService['showExportError']).toHaveBeenCalled();
   });
 
-  it('should sort items when sort configuration is provided', function (this: any) {
+  it('should sort items when sort configuration is provided', () => {
     const exportProviderService = TestBed.inject(ExportProviderService);
     const csvHelperService = TestBed.inject(CsvHelperService);
     const exportStatus: ExportStatus = {
@@ -220,23 +248,25 @@ describe('ExportProviderService', () => {
       exportType: ExportType.ALL,
     };
 
-    this.exportProperties.sort = true;
-    this.exportProperties.sortOrder = {
+    testContext.exportProperties.sort = true;
+    testContext.exportProperties.sortOrder = {
       column: { field: 'name' },
       sortOrder: ClrDatagridSortOrder.DESC,
     };
 
-    spyOn(csvHelperService, 'getData');
-    spyOn(exportProviderService, 'downloadFile');
+    vi.spyOn(csvHelperService, 'getData').mockImplementation(() => undefined);
+    vi.spyOn(exportProviderService, 'downloadFile').mockImplementation(() => undefined);
 
-    exportProviderService.exportUIOnlyData(this.exportProperties, exportStatus, this.datagridItemSet);
+    exportProviderService.exportUIOnlyData(testContext.exportProperties, exportStatus, testContext.datagridItemSet);
 
     // Verify items were sorted before being passed to getData
-    const sortedItems = [...this.datagridItemSet.totalDatagridItems].sort((a, b) => b.name.localeCompare(a.name));
-    expect(csvHelperService.getData).toHaveBeenCalledWith(sortedItems, this.columnDef);
+    const sortedItems = [...testContext.datagridItemSet.totalDatagridItems].sort((a, b) =>
+      b.name.localeCompare(a.name)
+    );
+    expect(csvHelperService.getData).toHaveBeenCalledWith(sortedItems, testContext.columnDef);
   });
 
-  it('should handle missing errorNotifiableService', function (this: any) {
+  it('should handle missing errorNotifiableService', () => {
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({
       imports: [ClrDatagridHostComponent],
@@ -252,14 +282,14 @@ describe('ExportProviderService', () => {
     });
 
     const exportProviderService = TestBed.inject(ExportProviderService);
-    spyOn(console, 'error');
+    vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
     exportProviderService['showExportError']();
 
     expect(console.error).toHaveBeenCalled();
   });
 
-  it('should handle null values in sorting', function (this: any) {
+  it('should handle null values in sorting', () => {
     const exportProviderService = TestBed.inject(ExportProviderService);
     const csvHelperService = TestBed.inject(CsvHelperService);
     const exportStatus: ExportStatus = {
@@ -267,25 +297,25 @@ describe('ExportProviderService', () => {
       exportType: ExportType.ALL,
     };
 
-    this.datagridItemSet.totalDatagridItems = [{ name: null }, { name: 'B' }, { name: null }, { name: 'A' }];
+    testContext.datagridItemSet.totalDatagridItems = [{ name: null }, { name: 'B' }, { name: null }, { name: 'A' }];
 
-    this.exportProperties.sort = true;
-    this.exportProperties.sortOrder = {
+    testContext.exportProperties.sort = true;
+    testContext.exportProperties.sortOrder = {
       column: { field: 'name' },
       sortOrder: ClrDatagridSortOrder.ASC,
     };
 
-    spyOn(csvHelperService, 'getData');
-    spyOn(exportProviderService, 'downloadFile');
+    vi.spyOn(csvHelperService, 'getData').mockImplementation(() => undefined);
+    vi.spyOn(exportProviderService, 'downloadFile').mockImplementation(() => undefined);
 
-    exportProviderService.exportUIOnlyData(this.exportProperties, exportStatus, this.datagridItemSet);
+    exportProviderService.exportUIOnlyData(testContext.exportProperties, exportStatus, testContext.datagridItemSet);
 
     // Verify items were sorted with nulls at the end
     const expectedOrder = [{ name: 'A' }, { name: 'B' }, { name: null }, { name: null }];
-    expect(csvHelperService.getData).toHaveBeenCalledWith(expectedOrder, this.columnDef);
+    expect(csvHelperService.getData).toHaveBeenCalledWith(expectedOrder, testContext.columnDef);
   });
 
-  it('should handle missing properties in sorting', function (this: any) {
+  it('should handle missing properties in sorting', () => {
     const exportProviderService = TestBed.inject(ExportProviderService);
     const csvHelperService = TestBed.inject(CsvHelperService);
     const exportStatus: ExportStatus = {
@@ -293,20 +323,28 @@ describe('ExportProviderService', () => {
       exportType: ExportType.ALL,
     };
 
-    this.datagridItemSet.totalDatagridItems = [{ other: 'value' }, { name: 'B' }, { other: 'value2' }, { name: 'A' }];
+    testContext.datagridItemSet.totalDatagridItems = [
+      { other: 'value' },
+      { name: 'B' },
+      { other: 'value2' },
+      { name: 'A' },
+    ];
 
-    this.exportProperties.sort = true;
-    this.exportProperties.sortOrder = {
+    testContext.exportProperties.sort = true;
+    testContext.exportProperties.sortOrder = {
       column: { field: 'name' },
       sortOrder: ClrDatagridSortOrder.ASC,
     };
 
-    spyOn(csvHelperService, 'getData');
-    spyOn(exportProviderService, 'downloadFile');
+    vi.spyOn(csvHelperService, 'getData').mockImplementation(() => undefined);
+    vi.spyOn(exportProviderService, 'downloadFile').mockImplementation(() => undefined);
 
-    exportProviderService.exportUIOnlyData(this.exportProperties, exportStatus, this.datagridItemSet);
+    exportProviderService.exportUIOnlyData(testContext.exportProperties, exportStatus, testContext.datagridItemSet);
 
     // Items without the sorted property should be preserved in their original order
-    expect(csvHelperService.getData).toHaveBeenCalledWith(this.datagridItemSet.totalDatagridItems, this.columnDef);
+    expect(csvHelperService.getData).toHaveBeenCalledWith(
+      testContext.datagridItemSet.totalDatagridItems,
+      testContext.columnDef
+    );
   });
 });

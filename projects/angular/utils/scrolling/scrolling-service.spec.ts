@@ -23,12 +23,12 @@ describe('ScrollingService', () => {
     const second = TestBed.runInInjectionContext(() => new ScrollingService(document));
     scrollingService.stopScrolling();
     second.resumeScrolling();
-    expect(document.body.classList.contains('no-scrolling')).toBeTrue();
+    expect(document.body.classList.contains('no-scrolling')).toBe(true);
     second.stopScrolling();
     scrollingService.resumeScrolling();
-    expect(document.body.classList.contains('no-scrolling')).toBeTrue();
+    expect(document.body.classList.contains('no-scrolling')).toBe(true);
     second.resumeScrolling();
-    expect(document.body.classList.contains('no-scrolling')).toBeFalse();
+    expect(document.body.classList.contains('no-scrolling')).toBe(false);
   });
 
   it('makes repeated stop and resume requests idempotent', () => {
@@ -36,9 +36,9 @@ describe('ScrollingService', () => {
     scrollingService.stopScrolling();
     scrollingService.resumeScrolling();
     scrollingService.resumeScrolling();
-    expect(document.body.classList.contains('no-scrolling')).toBeFalse();
+    expect(document.body.classList.contains('no-scrolling')).toBe(false);
     scrollingService.stopScrolling();
-    expect(document.body.classList.contains('no-scrolling')).toBeTrue();
+    expect(document.body.classList.contains('no-scrolling')).toBe(true);
     scrollingService.resumeScrolling();
   });
 

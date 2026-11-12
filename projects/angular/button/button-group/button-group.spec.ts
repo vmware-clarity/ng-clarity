@@ -11,7 +11,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClrButtonGroup } from './button-group';
 import { ClrButtonGroupModule } from './button-group.module';
 
-export default function (): void {
+describe('Button Group Directives', () => {
   describe('Button Group', () => {
     let fixture: ComponentFixture<any>;
     let compiled: any;
@@ -493,7 +493,7 @@ export default function (): void {
       });
     });
   });
-}
+});
 
 @Component({
   template: `

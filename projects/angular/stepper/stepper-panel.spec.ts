@@ -159,7 +159,7 @@ describe('ClrStep Reactive Forms', () => {
       const stepperService = fixture.debugElement.query(By.directive(ClrStepperPanel)).injector.get(StepperService);
       const input = fixture.nativeElement.querySelector('.clr-stepper-header-button');
 
-      spyOn(input, 'focus');
+      vi.spyOn(input, 'focus').mockImplementation(() => undefined);
       expect(input.focus).not.toHaveBeenCalled();
 
       (stepperService as MockStepperService).activeStep.next('groupName');

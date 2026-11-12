@@ -13,40 +13,45 @@ import { ClrAlert } from './alert';
 import { ClrAlerts } from './alerts';
 import { MultiAlertService } from './providers/multi-alert.service';
 
-export default function () {
-  describe('ClrAlerts component', function () {
-    describe('Typescript API', function () {
+describe('Alert Tests', () => {
+  describe('ClrAlerts component', () => {
+    let testContext: any;
+    beforeEach(() => {
+      testContext = {};
+    });
+
+    describe('Typescript API', () => {
       let component: ClrAlerts;
       let service: MultiAlertService;
       let queryList: QueryList<ClrAlert>;
 
-      beforeEach(function () {
+      beforeEach(() => {
         service = new MultiAlertService();
 
         TestBed.configureTestingModule({ imports: [ClrEmphasisModule] });
 
         const alertFixture = TestBed.createComponent(ClrAlert);
-        this.alert = alertFixture.componentInstance;
+        testContext.alert = alertFixture.componentInstance;
 
         const anotherAlertFixture = TestBed.createComponent(ClrAlert);
-        this.anotherAlert = anotherAlertFixture.componentInstance;
+        testContext.anotherAlert = anotherAlertFixture.componentInstance;
 
         queryList = new QueryList<ClrAlert>();
-        queryList.reset([this.alert, this.anotherAlert]);
+        queryList.reset([testContext.alert, testContext.anotherAlert]);
         service.manage(queryList);
         component = new ClrAlerts(service);
       });
 
-      it('knows the current alert', function () {
-        expect(component.currentAlert).toEqual(this.alert);
+      it('knows the current alert', () => {
+        expect(component.currentAlert).toEqual(testContext.alert);
       });
     });
 
-    describe('Template API', function () {
+    describe('Template API', () => {
       let fixture: ComponentFixture<any>;
 
-      beforeEach(function () {
-        this.create = <T>(componentType: Type<T>) => {
+      beforeEach(() => {
+        testContext.create = <T>(componentType: Type<T>) => {
           TestBed.configureTestingModule({ imports: [ClrEmphasisModule], declarations: [componentType] });
 
           fixture = TestBed.createComponent(componentType);
@@ -58,8 +63,8 @@ export default function () {
         fixture.destroy();
       });
 
-      it('offers two way binding on the alert index', function () {
-        this.create(TestComponent);
+      it('offers two way binding on the alert index', () => {
+        testContext.create(TestComponent);
         const testComponent = fixture.componentInstance;
         fixture.detectChanges();
         testComponent.currentAlertIndex = 0;
@@ -70,8 +75,8 @@ export default function () {
         expect(testComponent.currentAlertIndex).toEqual(1);
       });
 
-      it('allows changing alert index from 1 to 0', function () {
-        this.create(TestComponent);
+      it('allows changing alert index from 1 to 0', () => {
+        testContext.create(TestComponent);
         const testComponent = fixture.componentInstance;
         fixture.detectChanges();
         testComponent.currentAlertIndex = 1;
@@ -82,8 +87,8 @@ export default function () {
         expect(testComponent.alertsInstance.currentAlertIndex).toEqual(0);
       });
 
-      it('does not allow invalid indexes (undefined, null, -1, 1.5, string)', function () {
-        this.create(TestComponent);
+      it('does not allow invalid indexes (undefined, null, -1, 1.5, string)', () => {
+        testContext.create(TestComponent);
         const testComponent = fixture.componentInstance;
         fixture.detectChanges();
         testComponent.currentAlertIndex = undefined;
@@ -103,8 +108,8 @@ export default function () {
         expect(testComponent.alertsInstance.currentAlertIndex).toEqual(0);
       });
 
-      it('offers two way binding on the alert instance', function () {
-        this.create(TestAlertInstance);
+      it('offers two way binding on the alert instance', () => {
+        testContext.create(TestAlertInstance);
         fixture.detectChanges();
 
         const clarityComponent = fixture.componentInstance.alertsInstance;
@@ -124,7 +129,7 @@ export default function () {
       });
     });
 
-    describe('View basics', function () {
+    describe('View basics', () => {
       let fixture: ComponentFixture<TestComponent>;
       let compiled: any;
       let alertElements: Array<Element>;
@@ -143,7 +148,7 @@ export default function () {
         fixture.destroy();
       });
 
-      it('projects content based on clrCurrentAlertIndex', function () {
+      it('projects content based on clrCurrentAlertIndex', () => {
         expect(alertElements[0].textContent).toMatch(/This is the first alert/);
         expect(alertElements[0].classList).not.toContain('alert-hidden');
         expect(alertElements[1].classList).toContain('alert-hidden');
@@ -156,7 +161,7 @@ export default function () {
         expect(alertElements[0].classList).toContain('alert-hidden');
       });
 
-      it('makes the previous alert active when the current alert is closed', function () {
+      it('makes the previous alert active when the current alert is closed', () => {
         fixture.componentInstance.currentAlertIndex = 1;
         fixture.detectChanges();
         expect(alertElements[0].classList).toContain('alert-hidden');
@@ -166,15 +171,15 @@ export default function () {
         expect(alertElements[0].classList).not.toContain('alert-hidden');
       });
 
-      it('shows the pager only when there is more than one alert', function () {
+      it('shows the pager only when there is more than one alert', () => {
         expect(compiled.querySelectorAll('clr-alerts-pager').length).toBe(1);
         fixture.componentInstance.alertInstances.toArray()[0].close();
         fixture.detectChanges();
         expect(compiled.querySelectorAll('clr-alerts-pager').length).toBe(0);
       });
 
-      describe('sets classname as expected', function () {
-        it('sets danger classname as expected', function () {
+      describe('sets classname as expected', () => {
+        it('sets danger classname as expected', () => {
           const alertsContainer: Element = fixture.nativeElement.querySelector('.alerts');
           const myAlert: ClrAlert = fixture.componentInstance.alertsInstance.currentAlert;
           myAlert.alertType = 'danger';
@@ -183,7 +188,7 @@ export default function () {
           expect(alertsContainer.classList.contains('alert-danger')).toBe(true);
         });
 
-        it('sets info classname as expected', function () {
+        it('sets info classname as expected', () => {
           const alertsContainer: Element = fixture.nativeElement.querySelector('.alerts');
           const myAlert: ClrAlert = fixture.componentInstance.alertsInstance.currentAlert;
           myAlert.alertType = 'info';
@@ -192,7 +197,7 @@ export default function () {
           expect(alertsContainer.classList.contains('alert-info')).toBe(true);
         });
 
-        it('sets success classname as expected', function () {
+        it('sets success classname as expected', () => {
           const alertsContainer: Element = fixture.nativeElement.querySelector('.alerts');
           const myAlert: ClrAlert = fixture.componentInstance.alertsInstance.currentAlert;
           myAlert.alertType = 'success';
@@ -201,7 +206,7 @@ export default function () {
           expect(alertsContainer.classList.contains('alert-success')).toBe(true);
         });
 
-        it('sets warning classname as expected', function () {
+        it('sets warning classname as expected', () => {
           const alertsContainer: Element = fixture.nativeElement.querySelector('.alerts');
           const myAlert: ClrAlert = fixture.componentInstance.alertsInstance.currentAlert;
           myAlert.alertType = 'warning';
@@ -213,7 +218,7 @@ export default function () {
         // and only changes an alert type when given a known value.
       });
 
-      it('sets an aria label on the icon', function () {
+      it('sets an aria label on the icon', () => {
         const myAlert: ClrAlert = fixture.componentInstance.alertsInstance.currentAlert;
         myAlert.alertType = 'warning';
         fixture.detectChanges();
@@ -223,18 +228,18 @@ export default function () {
       });
     });
 
-    describe('Supports dynamic alerts', function () {
-      beforeEach(function () {
+    describe('Supports dynamic alerts', () => {
+      beforeEach(() => {
         TestBed.configureTestingModule({ imports: [ClrEmphasisModule], declarations: [DynamicAlerts] });
 
-        this.fixture = TestBed.createComponent(DynamicAlerts);
-        this.compiled = this.fixture.nativeElement;
-        this.fixture.detectChanges();
+        testContext.fixture = TestBed.createComponent(DynamicAlerts);
+        testContext.compiled = testContext.fixture.nativeElement;
+        testContext.fixture.detectChanges();
       });
 
-      it('contains dynamic alerts and set an initial index', function () {
-        expect(this.fixture.componentInstance.alertsInstance.currentAlertIndex).toEqual(0);
-        expect(this.fixture.componentInstance.alertInstances.length).toEqual(2);
+      it('contains dynamic alerts and set an initial index', () => {
+        expect(testContext.fixture.componentInstance.alertsInstance.currentAlertIndex).toEqual(0);
+        expect(testContext.fixture.componentInstance.alertInstances.length).toEqual(2);
       });
     });
   });
@@ -269,7 +274,7 @@ export default function () {
       // test will pass if no error is thrown
     });
   });
-}
+});
 
 @Component({
   template: `

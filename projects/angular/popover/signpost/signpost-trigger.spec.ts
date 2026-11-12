@@ -14,7 +14,7 @@ import { SignpostFocusManager } from './providers/signpost-focus-manager.service
 import { SignpostIdService } from './providers/signpost-id.service';
 import { ClrSignpostModule } from './signpost.module';
 
-export default function (): void {
+describe('Signpost', () => {
   describe('SignpostToggle component', function () {
     let fixture: ComponentFixture<any>;
     let clarityElement: any;
@@ -80,7 +80,7 @@ export default function (): void {
       expect(trigger.getAttribute('aria-expanded')).toBe('false');
     });
   });
-}
+});
 
 @Component({
   template: `

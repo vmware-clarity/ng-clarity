@@ -10,7 +10,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ClrFileInput } from './file-input';
 import { ClrFileInputContainer } from './file-input-container';
-import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
+import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control';
 
 @Component({
   template: `<input type="file" clrFileInput />`,

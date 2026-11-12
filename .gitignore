@@ -65,3 +65,6 @@ projects/website/src/index.vrt.html
 
 #Storybook
 debug-storybook.log
+
+# Vitest browser failure attachments
+.vitest-attachments/

@@ -41,7 +41,7 @@ describe('getNestedProperty', () => {
     expect(getNestedProperty(item, 'zero')).toEqual({ value: 0, isValid: true });
     expect(getNestedProperty(item, 'boolFalse')).toEqual({ value: false, isValid: true });
     expect(getNestedProperty(item, 'nullVal')).toEqual({ value: null, isValid: true });
-    expect(getNestedProperty(item, 'undefinedVal')).toEqual({ value: undefined, isValid: true });
+    expect(getNestedProperty(item, 'undefinedVal')).toStrictEqual({ value: undefined, isValid: true });
   });
 
   it('should return invalid if a top-level property does not exist', () => {

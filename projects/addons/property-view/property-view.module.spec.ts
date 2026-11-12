@@ -20,8 +20,9 @@ describe('#pvStringsServiceFactory()', () => {
 
 describe('AppfxPropertyViewModule', () => {
   it('registers clarity icons on initialization', () => {
-    spyOn(ClarityIcons, 'addIcons').and.returnValue();
+    vi.spyOn(ClarityIcons, 'addIcons').mockReturnValue();
     new AppfxPropertyViewModule();
-    expect(ClarityIcons.addIcons).toHaveBeenCalledOnceWith(angleIcon);
+    expect(ClarityIcons.addIcons).toHaveBeenCalledTimes(1);
+    expect(ClarityIcons.addIcons).toHaveBeenCalledWith(angleIcon);
   });
 });

@@ -10,7 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrTimelineStepDescription } from './timeline-step-description';
 
-export default function (): void {
+describe('Timeline', () => {
   describe('ClrTimelineStepDescription', () => {
     let fixture: ComponentFixture<TestTimelineStepDescription>;
     let nativeElement: HTMLElement;
@@ -38,7 +38,7 @@ export default function (): void {
       });
     });
   });
-}
+});
 
 @Component({
   template: `<clr-timeline-step-description>Description Content</clr-timeline-step-description>`,

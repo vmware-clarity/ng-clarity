@@ -151,392 +151,424 @@ class LazyExpandAllTestComponent {
   };
 }
 
-export default function (): void {
-  type Context = TestContext<ClrTree<void>, TestComponent>;
+describe('Tree View', () => {
+  describe('Components', () => {
+    type Context = TestContext<ClrTree<void>, TestComponent>;
 
-  describe('ClrTree Component', function () {
-    spec(ClrTree, TestComponent, ClrTreeViewModule);
+    describe('ClrTree Component', () => {
+      let testContext: Context;
 
-    it('declares a TreeFeaturesService provider', function (this: Context) {
-      expect(this.getClarityProvider(TreeFeaturesService, null)).not.toBeNull();
+      const getContext = spec(ClrTree, TestComponent, ClrTreeViewModule, { imports: [] });
+      beforeEach(() => {
+        testContext = getContext() as Context;
+      });
+
+      it('declares a TreeFeaturesService provider', () => {
+        expect(testContext.getClarityProvider(TreeFeaturesService, null)).not.toBeNull();
+      });
+
+      it('accepts a [clrLazy] input and forwards it to the TreeFeaturesService', () => {
+        const featuresService = testContext.getClarityProvider(TreeFeaturesService);
+        expect(featuresService.eager).toBe(true);
+        testContext.testComponent.lazy = true;
+        testContext.detectChanges();
+        expect(featuresService.eager).toBe(false);
+      });
+
+      it('projects content', () => {
+        expect(testContext.clarityElement.textContent).toContain('Hello world');
+      });
+
+      it('adds the aria-multiselectable if tree is selectable and has children', () => {
+        expect(testContext.clarityElement.getAttribute('aria-multiselectable')).toBeNull();
+        testContext.getClarityProvider(TreeFeaturesService).selectable = true;
+        testContext.testComponent.hasChild = true;
+        testContext.detectChanges();
+        expect(testContext.clarityElement.getAttribute('aria-multiselectable')).toBe('true');
+      });
+
+      it('creates a clr-recursive-children component if the tree is recursive', () => {
+        expect(testContext.fixture.debugElement.query(By.directive(RecursiveChildren))).toBeFalsy();
+        // Using an empty tree and checking reference equality because I don't want to create full models for this.
+        const emptyTree = [];
+        testContext.getClarityProvider(TreeFeaturesService).recursion = {
+          template: null,
+          root: emptyTree,
+        };
+        testContext.detectChanges();
+        const recursiveChildrenDE = testContext.fixture.debugElement.query(By.directive(RecursiveChildren));
+        expect(recursiveChildrenDE).toBeTruthy();
+        expect((recursiveChildrenDE.componentInstance as RecursiveChildren<void>).children).toBe(emptyTree);
+      });
+
+      it('gets tree role by default', () => {
+        expect(testContext.clarityElement.getAttribute('role')).toBe('tree');
+      });
+
+      it('calls focusManager.focusFirstVisibleNode when focus is received and should not run change detection', () => {
+        const appRef = TestBed.inject(ApplicationRef);
+        vi.spyOn(appRef, 'tick').mockImplementation(() => undefined);
+        const focusManager = testContext.getClarityProvider(TreeFocusManagerService);
+        vi.spyOn(focusManager, 'focusFirstVisibleNode').mockImplementation(() => undefined);
+        testContext.clarityElement.focus();
+        expect(appRef.tick).not.toHaveBeenCalled();
+        expect(focusManager.focusFirstVisibleNode).toHaveBeenCalled();
+      });
+
+      it('removes tabindex once focus is shifted to the first visible child', () => {
+        expect(testContext.clarityElement.getAttribute('tabindex')).toEqual('0');
+        testContext.clarityElement.focus();
+        expect(testContext.clarityElement.hasAttribute('tabindex')).toEqual(false);
+      });
     });
 
-    it('accepts a [clrLazy] input and forwards it to the TreeFeaturesService', function (this: Context) {
-      const featuresService = this.getClarityProvider(TreeFeaturesService);
-      expect(featuresService.eager).toBe(true);
-      this.testComponent.lazy = true;
-      this.detectChanges();
-      expect(featuresService.eager).toBe(false);
+    describe('Type-Ahead in ClrTree Component', () => {
+      let testContext: Context;
+
+      let forTypeAheadDirectiveDEs: DebugElement[];
+      let forTypeAheadDirectives: ClrTreeNode<any>[];
+
+      const getContext = spec(ClrTree, TreeTypeAhead, ClrTreeViewModule, { imports: [] });
+      beforeEach(() => {
+        testContext = getContext() as Context;
+      });
+
+      beforeEach(() => {
+        forTypeAheadDirectiveDEs = testContext.fixture.debugElement.queryAll(By.directive(ClrTreeNode));
+        forTypeAheadDirectives = forTypeAheadDirectiveDEs.map(de => de.componentInstance);
+        testContext.fixture.detectChanges();
+      });
+
+      it('focuses node whose text content that starts with pressed keys', async () => {
+        forTypeAheadDirectives[0].focusTreeNode();
+        expect(document.activeElement.textContent.trim()).toBe('California');
+        document.activeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 's' }));
+        await delay(200);
+        expect(document.activeElement.textContent.trim()).toBe('San Francisco');
+        document.activeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 's' }));
+        await delay(200);
+        expect(document.activeElement.textContent.trim()).toBe('Seattle');
+      });
+
+      it('skips and focuses node whose text content that starts with pressed keys', async () => {
+        forTypeAheadDirectives[0].focusTreeNode();
+        expect(document.activeElement.textContent.trim()).toBe('California');
+        document.activeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'se' }));
+        await delay(200);
+        expect(document.activeElement.textContent.trim()).toBe('Seattle');
+      });
+
+      it('should skip node even if its text content starts with pressed keys', async () => {
+        forTypeAheadDirectives[0].focusTreeNode();
+        expect(document.activeElement.textContent.trim()).toBe('California');
+        document.activeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'b' }));
+        await delay(200);
+        expect(
+          document.activeElement.textContent.trim(),
+          'Should skip Burlington because the containing node is not expanded'
+        ).toBe('California');
+      });
     });
 
-    it('projects content', function (this: Context) {
-      expect(this.clarityElement.textContent).toContain('Hello world');
-    });
+    describe('Expand all in ClrTree Component', () => {
+      let testContext: ExpandAllContext;
 
-    it('adds the aria-multiselectable if tree is selectable and has children', function (this: Context) {
-      expect(this.clarityElement.getAttribute('aria-multiselectable')).toBeNull();
-      this.getClarityProvider(TreeFeaturesService).selectable = true;
-      this.testComponent.hasChild = true;
-      this.detectChanges();
-      expect(this.clarityElement.getAttribute('aria-multiselectable')).toBe('true');
-    });
+      type ExpandAllContext = TestContext<ClrTree<void>, ExpandAllTestComponent>;
 
-    it('creates a clr-recursive-children component if the tree is recursive', function (this: Context) {
-      expect(this.fixture.debugElement.query(By.directive(RecursiveChildren))).toBeFalsy();
-      // Using an empty tree and checking reference equality because I don't want to create full models for this.
-      const emptyTree = [];
-      this.getClarityProvider(TreeFeaturesService).recursion = {
-        template: null,
-        root: emptyTree,
-      };
-      this.detectChanges();
-      const recursiveChildrenDE = this.fixture.debugElement.query(By.directive(RecursiveChildren));
-      expect(recursiveChildrenDE).toBeTruthy();
-      expect((recursiveChildrenDE.componentInstance as RecursiveChildren<void>).children).toBe(emptyTree);
-    });
+      const getContext = spec(ClrTree, ExpandAllTestComponent, ClrTreeViewModule, { imports: [] });
+      beforeEach(() => {
+        testContext = getContext() as ExpandAllContext;
+      });
 
-    it('gets tree role by default', function (this: Context) {
-      expect(this.clarityElement.getAttribute('role')).toBe('tree');
-    });
-
-    it('calls focusManager.focusFirstVisibleNode when focus is received and should not run change detection', function (this: Context) {
-      const appRef = TestBed.inject(ApplicationRef);
-      spyOn(appRef, 'tick');
-      const focusManager = this.getClarityProvider(TreeFocusManagerService);
-      spyOn(focusManager, 'focusFirstVisibleNode');
-      this.clarityElement.focus();
-      expect(appRef.tick).not.toHaveBeenCalled();
-      expect(focusManager.focusFirstVisibleNode).toHaveBeenCalled();
-    });
-
-    it('removes tabindex once focus is shifted to the first visible child', function (this: Context) {
-      expect(this.clarityElement.getAttribute('tabindex')).toEqual('0');
-      this.clarityElement.focus();
-      expect(this.clarityElement.hasAttribute('tabindex')).toEqual(false);
-    });
-  });
-
-  describe('Type-Ahead in ClrTree Component', function () {
-    let forTypeAheadDirectiveDEs: DebugElement[];
-    let forTypeAheadDirectives: ClrTreeNode<any>[];
-
-    spec(ClrTree, TreeTypeAhead, ClrTreeViewModule);
-
-    beforeEach(function (this: Context) {
-      forTypeAheadDirectiveDEs = this.fixture.debugElement.queryAll(By.directive(ClrTreeNode));
-      forTypeAheadDirectives = forTypeAheadDirectiveDEs.map(de => de.componentInstance);
-      this.fixture.detectChanges();
-    });
-
-    it('focuses node whose text content that starts with pressed keys', async function () {
-      forTypeAheadDirectives[0].focusTreeNode();
-      expect(document.activeElement.textContent.trim()).toBe('California');
-      document.activeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 's' }));
-      await delay(200);
-      expect(document.activeElement.textContent.trim()).toBe('San Francisco');
-      document.activeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 's' }));
-      await delay(200);
-      expect(document.activeElement.textContent.trim()).toBe('Seattle');
-    });
-
-    it('skips and focuses node whose text content that starts with pressed keys', async function () {
-      forTypeAheadDirectives[0].focusTreeNode();
-      expect(document.activeElement.textContent.trim()).toBe('California');
-      document.activeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'se' }));
-      await delay(200);
-      expect(document.activeElement.textContent.trim()).toBe('Seattle');
-    });
-
-    it('should skip node even if its text content starts with pressed keys', async function () {
-      forTypeAheadDirectives[0].focusTreeNode();
-      expect(document.activeElement.textContent.trim()).toBe('California');
-      document.activeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'b' }));
-      await delay(200);
-      expect(document.activeElement.textContent.trim()).toBe(
-        'California',
-        'Should skip Burlington because the containing node is not expanded'
-      );
-    });
-  });
-
-  describe('Expand all in ClrTree Component', function () {
-    type ExpandAllContext = TestContext<ClrTree<void>, ExpandAllTestComponent>;
-
-    spec(ClrTree, ExpandAllTestComponent, ClrTreeViewModule);
-
-    function allNodes(context: ExpandAllContext): ClrTreeNode<void>[] {
-      return context.fixture.debugElement.queryAll(By.directive(ClrTreeNode)).map(de => de.componentInstance);
-    }
-
-    function expandedNodes(context: ExpandAllContext): number {
-      return context.clarityElement.querySelectorAll('[aria-expanded="true"]').length;
-    }
-
-    function tabStops(context: ExpandAllContext): HTMLElement[] {
-      return Array.from(
-        context.clarityElement.querySelectorAll('.clr-tree-node-content-container[tabindex="0"]')
-      ) as HTMLElement[];
-    }
-
-    it('expandAll() expands every expandable node and leaves the leaves alone', function (this: ExpandAllContext) {
-      this.testComponent.tree.expandAll();
-      this.detectChanges();
-      expect(this.testComponent.california.expanded).toBeTrue();
-      expect(this.testComponent.sanFrancisco.expanded).toBeTrue();
-      expect(this.testComponent.washington.expanded).toBeTrue();
-      expect(this.testComponent.seattle.expanded).toBeTrue();
-      expect(this.testComponent.losAngeles.expanded).toBeFalse();
-      expect(this.testComponent.sanFrancisco._model.expanded).toBeTrue();
-      expect(expandedNodes(this)).toBe(4);
-    });
-
-    it('collapseAll() collapses every node', function (this: ExpandAllContext) {
-      this.testComponent.tree.expandAll();
-      this.detectChanges();
-      this.testComponent.tree.collapseAll();
-      this.detectChanges();
-      expect(allNodes(this).every(node => !node.expanded)).toBeTrue();
-      expect(expandedNodes(this)).toBe(0);
-    });
-
-    it('leaves disabled nodes and their children untouched', function (this: ExpandAllContext) {
-      this.testComponent.tree.expandAll();
-      this.detectChanges();
-      expect(this.testComponent.oregon.expanded).toBeFalse();
-      expect(this.testComponent.portland.expanded).toBeFalse();
-
-      this.testComponent.oregon.disabled = false;
-      this.testComponent.oregon.expanded = true;
-      this.testComponent.portland.expanded = true;
-      this.testComponent.oregon.disabled = true;
-      this.testComponent.tree.collapseAll();
-      this.detectChanges();
-      expect(this.testComponent.oregon.expanded).toBeTrue();
-      expect(this.testComponent.portland.expanded).toBeTrue();
-    });
-
-    it('keeps the two-way bindings of the nodes in sync', function (this: ExpandAllContext) {
-      this.testComponent.tree.expandAll();
-      expect(this.testComponent.californiaExpanded).toBeTrue();
-      this.testComponent.tree.collapseAll();
-      expect(this.testComponent.californiaExpanded).toBeFalse();
-    });
-
-    it('does not emit clrExpandedChange for the nodes it leaves alone', function (this: ExpandAllContext) {
-      const leaf = spyOn(this.testComponent.losAngeles.expandedChange, 'emit');
-      const disabled = spyOn(this.testComponent.oregon.expandedChange, 'emit');
-      this.testComponent.tree.expandAll();
-      this.detectChanges();
-      expect(leaf).not.toHaveBeenCalled();
-      expect(disabled).not.toHaveBeenCalled();
-    });
-
-    it('expands nodes added to the tree while everything is expanded', function (this: ExpandAllContext) {
-      this.testComponent.tree.expandAll();
-      this.detectChanges();
-      this.testComponent.hasVermont = true;
-      this.detectChanges();
-      expect(this.testComponent.vermont.expanded).toBeTrue();
-      expect(this.testComponent.vermont._model.expanded).toBeTrue();
-    });
-
-    it('leaves leaves added to the tree while everything is expanded alone', function (this: ExpandAllContext) {
-      this.testComponent.tree.expandAll();
-      this.detectChanges();
-      this.testComponent.hasVermont = true;
-      this.detectChanges();
-      expect(this.testComponent.maine.expanded).toBeFalse();
-      expect(this.testComponent.maineExpanded).toBeFalse();
-      const spy = spyOn(this.testComponent.maine.expandedChange, 'emit');
-      this.testComponent.tree.collapseAll();
-      expect(spy).not.toHaveBeenCalled();
-    });
-
-    it('does not expand nodes added to the tree after a node was collapsed', function (this: ExpandAllContext) {
-      this.testComponent.tree.expandAll();
-      this.detectChanges();
-      this.testComponent.seattle.expanded = false;
-      this.testComponent.hasVermont = true;
-      this.detectChanges();
-      expect(this.testComponent.vermont.expanded).toBeFalse();
-    });
-
-    it('cascades again once the tree is expanded anew after a collapse', function (this: ExpandAllContext) {
-      this.testComponent.tree.expandAll();
-      this.detectChanges();
-      this.testComponent.seattle.expanded = false;
-      this.detectChanges();
-      this.testComponent.tree.expandAll();
-      this.detectChanges();
-      this.testComponent.hasVermont = true;
-      this.detectChanges();
-      expect(this.testComponent.vermont.expanded).toBeTrue();
-    });
-
-    it('does not throw when the tree is destroyed right after a bulk operation', function (this: ExpandAllContext) {
-      this.testComponent.tree.expandAll();
-      this.testComponent.hasTree = false;
-      expect(() => this.detectChanges()).not.toThrow();
-    });
-
-    it('expandDescendants() on a node only expands its own subtree', function (this: ExpandAllContext) {
-      this.testComponent.washington.expandDescendants();
-      this.detectChanges();
-      expect(this.testComponent.washington.expanded).toBeTrue();
-      expect(this.testComponent.seattle.expanded).toBeTrue();
-      expect(this.testComponent.california.expanded).toBeFalse();
-      expect(this.testComponent.sanFrancisco.expanded).toBeFalse();
-
-      this.testComponent.washington.collapseDescendants();
-      this.detectChanges();
-      expect(this.testComponent.washington.expanded).toBeFalse();
-      expect(this.testComponent.seattle.expanded).toBeFalse();
-    });
-
-    it('expands nodes added to a subtree that was expanded on its own', function (this: ExpandAllContext) {
-      this.testComponent.hasVermont = true;
-      this.detectChanges();
-      this.testComponent.vermont.collapseDescendants();
-      this.detectChanges();
-      expect(this.testComponent.vermont.expanded).toBeFalse();
-
-      this.testComponent.vermont.expandDescendants();
-      this.detectChanges();
-      expect(this.testComponent.vermont.expanded).toBeTrue();
-      // A subtree operation leaves the rest of the tree alone
-      expect(this.testComponent.california.expanded).toBeFalse();
-    });
-
-    it('does nothing when a bulk operation is called on a disabled node', function (this: ExpandAllContext) {
-      const spy = spyOn(this.testComponent.oregon.expandedChange, 'emit');
-      this.testComponent.oregon.expandDescendants();
-      this.detectChanges();
-      expect(this.testComponent.oregon.expanded).toBeFalse();
-      expect(this.testComponent.portland.expanded).toBeFalse();
-      expect(spy).not.toHaveBeenCalled();
-
-      // And it does not stop the tree from cascading into nodes added later either
-      this.testComponent.tree.expandAll();
-      this.detectChanges();
-      this.testComponent.hasVermont = true;
-      this.detectChanges();
-      expect(this.testComponent.vermont.expanded).toBeTrue();
-    });
-
-    it('skips the animation for bulk changes only', function (this: ExpandAllContext) {
-      const node = this.testComponent.california;
-      expect(node.childrenAnimationState).toBe('collapsed');
-      this.testComponent.tree.expandAll();
-      expect(node.childrenAnimationState).toBe('expandedInstant');
-      node.expandService.toggle();
-      expect(node.childrenAnimationState).toBe('collapsed');
-      node.expandService.toggle();
-      expect(node.childrenAnimationState).toBe('expanded');
-      this.testComponent.tree.collapseAll();
-      expect(node.childrenAnimationState).toBe('collapsedInstant');
-    });
-
-    it('skips the animation for nodes added while the tree is expanded', function (this: ExpandAllContext) {
-      this.testComponent.tree.expandAll();
-      this.detectChanges();
-      this.testComponent.hasVermont = true;
-      this.detectChanges();
-      expect(this.testComponent.vermont.childrenAnimationState).toBe('expandedInstant');
-    });
-
-    it('does not leave the tab stop inside a subtree collapsed by collapseAll()', function (this: ExpandAllContext) {
-      this.testComponent.tree.expandAll();
-      this.detectChanges();
-      this.testComponent.sanFrancisco.focusTreeNode();
-      this.detectChanges();
-      expect(tabStops(this).length).toBe(1);
-
-      this.testComponent.tree.collapseAll();
-      this.detectChanges();
-
-      // A collapsed subtree is inert, so a tab stop left inside one makes the tree unreachable by keyboard
-      const stops = tabStops(this);
-      expect(stops.length).toBe(1);
-      expect(stops[0].closest('.clr-treenode-children')).toBeNull();
-    });
-
-    it('does not leave the tab stop inside a subtree collapsed by collapseDescendants()', function (this: ExpandAllContext) {
-      this.testComponent.tree.expandAll();
-      this.detectChanges();
-      this.testComponent.seattle.focusTreeNode();
-      this.detectChanges();
-
-      this.testComponent.washington.collapseDescendants();
-      this.detectChanges();
-
-      const stops = tabStops(this);
-      expect(stops.length).toBe(1);
-      expect(stops[0].textContent.trim()).toBe('Washington');
-    });
-
-    it('leaves the tab stop alone when it is still visible after a collapse', function (this: ExpandAllContext) {
-      this.testComponent.california.focusTreeNode();
-      this.detectChanges();
-      this.testComponent.tree.collapseAll();
-      this.detectChanges();
-
-      const stops = tabStops(this);
-      expect(stops.length).toBe(1);
-      expect(stops[0].textContent.trim()).toBe('California');
-    });
-  });
-
-  describe('Expand all in a lazy-loaded recursive ClrTree Component', function () {
-    type LazyContext = TestContext<ClrTree<LazyNode>, LazyExpandAllTestComponent>;
-
-    spec(ClrTree, LazyExpandAllTestComponent, ClrTreeViewModule);
-
-    async function settleLoading(context: LazyContext, rounds = 6) {
-      for (let i = 0; i < rounds; i++) {
-        await delay(0);
-        context.detectChanges();
+      function allNodes(context: ExpandAllContext): ClrTreeNode<void>[] {
+        return context.fixture.debugElement.queryAll(By.directive(ClrTreeNode)).map(de => de.componentInstance);
       }
-    }
 
-    function nodeByName(context: LazyContext, name: string): ClrTreeNode<LazyNode> {
-      const de = context.fixture.debugElement.query(By.css(`[data-name="${name}"]`));
-      return de && de.componentInstance;
-    }
+      function expandedNodes(context: ExpandAllContext): number {
+        return context.clarityElement.querySelectorAll('[aria-expanded="true"]').length;
+      }
 
-    it('cascades through lazy-loaded levels as they get loaded', async function (this: LazyContext) {
-      expect(nodeByName(this, 'AA')).toBeFalsy();
-      this.testComponent.tree.expandAll();
-      await settleLoading(this);
-      expect(nodeByName(this, 'A').expanded).toBeTrue();
-      expect(nodeByName(this, 'AA').expanded).toBeTrue();
-      expect(nodeByName(this, 'AAA').expanded).toBeTrue();
-      expect(nodeByName(this, 'AAAA')).toBeTruthy();
-      // Leaves are not expandable and never fetch children
-      expect(this.testComponent.fetches).toEqual(['A', 'AA', 'AAA']);
+      function tabStops(context: ExpandAllContext): HTMLElement[] {
+        return Array.from(
+          context.clarityElement.querySelectorAll('.clr-tree-node-content-container[tabindex="0"]')
+        ) as HTMLElement[];
+      }
+
+      it('expandAll() expands every expandable node and leaves the leaves alone', () => {
+        testContext.testComponent.tree.expandAll();
+        testContext.detectChanges();
+        expect(testContext.testComponent.california.expanded).toBe(true);
+        expect(testContext.testComponent.sanFrancisco.expanded).toBe(true);
+        expect(testContext.testComponent.washington.expanded).toBe(true);
+        expect(testContext.testComponent.seattle.expanded).toBe(true);
+        expect(testContext.testComponent.losAngeles.expanded).toBe(false);
+        expect(testContext.testComponent.sanFrancisco._model.expanded).toBe(true);
+        expect(expandedNodes(testContext)).toBe(4);
+      });
+
+      it('collapseAll() collapses every node', () => {
+        testContext.testComponent.tree.expandAll();
+        testContext.detectChanges();
+        testContext.testComponent.tree.collapseAll();
+        testContext.detectChanges();
+        expect(allNodes(testContext).every(node => !node.expanded)).toBe(true);
+        expect(expandedNodes(testContext)).toBe(0);
+      });
+
+      it('leaves disabled nodes and their children untouched', () => {
+        testContext.testComponent.tree.expandAll();
+        testContext.detectChanges();
+        expect(testContext.testComponent.oregon.expanded).toBe(false);
+        expect(testContext.testComponent.portland.expanded).toBe(false);
+
+        testContext.testComponent.oregon.disabled = false;
+        testContext.testComponent.oregon.expanded = true;
+        testContext.testComponent.portland.expanded = true;
+        testContext.testComponent.oregon.disabled = true;
+        testContext.testComponent.tree.collapseAll();
+        testContext.detectChanges();
+        expect(testContext.testComponent.oregon.expanded).toBe(true);
+        expect(testContext.testComponent.portland.expanded).toBe(true);
+      });
+
+      it('keeps the two-way bindings of the nodes in sync', () => {
+        testContext.testComponent.tree.expandAll();
+        expect(testContext.testComponent.californiaExpanded).toBe(true);
+        testContext.testComponent.tree.collapseAll();
+        expect(testContext.testComponent.californiaExpanded).toBe(false);
+      });
+
+      it('does not emit clrExpandedChange for the nodes it leaves alone', () => {
+        const leaf = vi
+          .spyOn(testContext.testComponent.losAngeles.expandedChange, 'emit')
+          .mockImplementation(() => undefined);
+        const disabled = vi
+          .spyOn(testContext.testComponent.oregon.expandedChange, 'emit')
+          .mockImplementation(() => undefined);
+        testContext.testComponent.tree.expandAll();
+        testContext.detectChanges();
+        expect(leaf).not.toHaveBeenCalled();
+        expect(disabled).not.toHaveBeenCalled();
+      });
+
+      it('expands nodes added to the tree while everything is expanded', () => {
+        testContext.testComponent.tree.expandAll();
+        testContext.detectChanges();
+        testContext.testComponent.hasVermont = true;
+        testContext.detectChanges();
+        expect(testContext.testComponent.vermont.expanded).toBe(true);
+        expect(testContext.testComponent.vermont._model.expanded).toBe(true);
+      });
+
+      it('leaves leaves added to the tree while everything is expanded alone', () => {
+        testContext.testComponent.tree.expandAll();
+        testContext.detectChanges();
+        testContext.testComponent.hasVermont = true;
+        testContext.detectChanges();
+        expect(testContext.testComponent.maine.expanded).toBe(false);
+        expect(testContext.testComponent.maineExpanded).toBe(false);
+        const spy = vi
+          .spyOn(testContext.testComponent.maine.expandedChange, 'emit')
+          .mockImplementation(() => undefined);
+        testContext.testComponent.tree.collapseAll();
+        expect(spy).not.toHaveBeenCalled();
+      });
+
+      it('does not expand nodes added to the tree after a node was collapsed', () => {
+        testContext.testComponent.tree.expandAll();
+        testContext.detectChanges();
+        testContext.testComponent.seattle.expanded = false;
+        testContext.testComponent.hasVermont = true;
+        testContext.detectChanges();
+        expect(testContext.testComponent.vermont.expanded).toBe(false);
+      });
+
+      it('cascades again once the tree is expanded anew after a collapse', () => {
+        testContext.testComponent.tree.expandAll();
+        testContext.detectChanges();
+        testContext.testComponent.seattle.expanded = false;
+        testContext.detectChanges();
+        testContext.testComponent.tree.expandAll();
+        testContext.detectChanges();
+        testContext.testComponent.hasVermont = true;
+        testContext.detectChanges();
+        expect(testContext.testComponent.vermont.expanded).toBe(true);
+      });
+
+      it('does not throw when the tree is destroyed right after a bulk operation', () => {
+        testContext.testComponent.tree.expandAll();
+        testContext.testComponent.hasTree = false;
+        expect(() => testContext.detectChanges()).not.toThrow();
+      });
+
+      it('expandDescendants() on a node only expands its own subtree', () => {
+        testContext.testComponent.washington.expandDescendants();
+        testContext.detectChanges();
+        expect(testContext.testComponent.washington.expanded).toBe(true);
+        expect(testContext.testComponent.seattle.expanded).toBe(true);
+        expect(testContext.testComponent.california.expanded).toBe(false);
+        expect(testContext.testComponent.sanFrancisco.expanded).toBe(false);
+
+        testContext.testComponent.washington.collapseDescendants();
+        testContext.detectChanges();
+        expect(testContext.testComponent.washington.expanded).toBe(false);
+        expect(testContext.testComponent.seattle.expanded).toBe(false);
+      });
+
+      it('expands nodes added to a subtree that was expanded on its own', () => {
+        testContext.testComponent.hasVermont = true;
+        testContext.detectChanges();
+        testContext.testComponent.vermont.collapseDescendants();
+        testContext.detectChanges();
+        expect(testContext.testComponent.vermont.expanded).toBe(false);
+
+        testContext.testComponent.vermont.expandDescendants();
+        testContext.detectChanges();
+        expect(testContext.testComponent.vermont.expanded).toBe(true);
+        // A subtree operation leaves the rest of the tree alone
+        expect(testContext.testComponent.california.expanded).toBe(false);
+      });
+
+      it('does nothing when a bulk operation is called on a disabled node', () => {
+        const spy = vi
+          .spyOn(testContext.testComponent.oregon.expandedChange, 'emit')
+          .mockImplementation(() => undefined);
+        testContext.testComponent.oregon.expandDescendants();
+        testContext.detectChanges();
+        expect(testContext.testComponent.oregon.expanded).toBe(false);
+        expect(testContext.testComponent.portland.expanded).toBe(false);
+        expect(spy).not.toHaveBeenCalled();
+
+        // And it does not stop the tree from cascading into nodes added later either
+        testContext.testComponent.tree.expandAll();
+        testContext.detectChanges();
+        testContext.testComponent.hasVermont = true;
+        testContext.detectChanges();
+        expect(testContext.testComponent.vermont.expanded).toBe(true);
+      });
+
+      it('skips the animation for bulk changes only', () => {
+        const node = testContext.testComponent.california;
+        expect(node.childrenAnimationState).toBe('collapsed');
+        testContext.testComponent.tree.expandAll();
+        expect(node.childrenAnimationState).toBe('expandedInstant');
+        node.expandService.toggle();
+        expect(node.childrenAnimationState).toBe('collapsed');
+        node.expandService.toggle();
+        expect(node.childrenAnimationState).toBe('expanded');
+        testContext.testComponent.tree.collapseAll();
+        expect(node.childrenAnimationState).toBe('collapsedInstant');
+      });
+
+      it('skips the animation for nodes added while the tree is expanded', () => {
+        testContext.testComponent.tree.expandAll();
+        testContext.detectChanges();
+        testContext.testComponent.hasVermont = true;
+        testContext.detectChanges();
+        expect(testContext.testComponent.vermont.childrenAnimationState).toBe('expandedInstant');
+      });
+
+      it('does not leave the tab stop inside a subtree collapsed by collapseAll()', () => {
+        testContext.testComponent.tree.expandAll();
+        testContext.detectChanges();
+        testContext.testComponent.sanFrancisco.focusTreeNode();
+        testContext.detectChanges();
+        expect(tabStops(testContext).length).toBe(1);
+
+        testContext.testComponent.tree.collapseAll();
+        testContext.detectChanges();
+
+        // A collapsed subtree is inert, so a tab stop left inside one makes the tree unreachable by keyboard
+        const stops = tabStops(testContext);
+        expect(stops.length).toBe(1);
+        expect(stops[0].closest('.clr-treenode-children')).toBeNull();
+      });
+
+      it('does not leave the tab stop inside a subtree collapsed by collapseDescendants()', () => {
+        testContext.testComponent.tree.expandAll();
+        testContext.detectChanges();
+        testContext.testComponent.seattle.focusTreeNode();
+        testContext.detectChanges();
+
+        testContext.testComponent.washington.collapseDescendants();
+        testContext.detectChanges();
+
+        const stops = tabStops(testContext);
+        expect(stops.length).toBe(1);
+        expect(stops[0].textContent.trim()).toBe('Washington');
+      });
+
+      it('leaves the tab stop alone when it is still visible after a collapse', () => {
+        testContext.testComponent.california.focusTreeNode();
+        testContext.detectChanges();
+        testContext.testComponent.tree.collapseAll();
+        testContext.detectChanges();
+
+        const stops = tabStops(testContext);
+        expect(stops.length).toBe(1);
+        expect(stops[0].textContent.trim()).toBe('California');
+      });
     });
 
-    it('stops cascading once a node gets collapsed', async function (this: LazyContext) {
-      this.testComponent.tree.expandAll();
-      await settleLoading(this);
-      // Collapsing clears the lazy-loaded children...
-      nodeByName(this, 'AA').expanded = false;
-      await settleLoading(this);
-      expect(nodeByName(this, 'AAA')).toBeFalsy();
-      // ...and re-expanding it does not expand the reloaded children anymore
-      nodeByName(this, 'AA').expanded = true;
-      await settleLoading(this);
-      expect(nodeByName(this, 'AAA').expanded).toBeFalse();
-    });
+    describe('Expand all in a lazy-loaded recursive ClrTree Component', () => {
+      let testContext: LazyContext;
 
-    it('cascades a subtree through lazy-loaded levels', async function (this: LazyContext) {
-      nodeByName(this, 'A').expanded = true;
-      await settleLoading(this);
-      nodeByName(this, 'AA').expandDescendants();
-      await settleLoading(this);
-      expect(nodeByName(this, 'AAA').expanded).toBeTrue();
-      expect(nodeByName(this, 'AAAA')).toBeTruthy();
-      // A subtree operation leaves the sibling root alone
-      expect(nodeByName(this, 'B').expanded).toBeFalse();
+      type LazyContext = TestContext<ClrTree<LazyNode>, LazyExpandAllTestComponent>;
+
+      const getContext = spec(ClrTree, LazyExpandAllTestComponent, ClrTreeViewModule, {
+        imports: [],
+      });
+      beforeEach(() => {
+        testContext = getContext() as LazyContext;
+      });
+
+      async function settleLoading(context: LazyContext, rounds = 6) {
+        for (let i = 0; i < rounds; i++) {
+          await delay(0);
+          context.detectChanges();
+        }
+      }
+
+      function nodeByName(context: LazyContext, name: string): ClrTreeNode<LazyNode> {
+        const de = context.fixture.debugElement.query(By.css(`[data-name="${name}"]`));
+        return de && de.componentInstance;
+      }
+
+      it('cascades through lazy-loaded levels as they get loaded', async () => {
+        expect(nodeByName(testContext, 'AA')).toBeFalsy();
+        testContext.testComponent.tree.expandAll();
+        await settleLoading(testContext);
+        expect(nodeByName(testContext, 'A').expanded).toBe(true);
+        expect(nodeByName(testContext, 'AA').expanded).toBe(true);
+        expect(nodeByName(testContext, 'AAA').expanded).toBe(true);
+        expect(nodeByName(testContext, 'AAAA')).toBeTruthy();
+        // Leaves are not expandable and never fetch children
+        expect(testContext.testComponent.fetches).toEqual(['A', 'AA', 'AAA']);
+      });
+
+      it('stops cascading once a node gets collapsed', async () => {
+        testContext.testComponent.tree.expandAll();
+        await settleLoading(testContext);
+        // Collapsing clears the lazy-loaded children...
+        nodeByName(testContext, 'AA').expanded = false;
+        await settleLoading(testContext);
+        expect(nodeByName(testContext, 'AAA')).toBeFalsy();
+        // ...and re-expanding it does not expand the reloaded children anymore
+        nodeByName(testContext, 'AA').expanded = true;
+        await settleLoading(testContext);
+        expect(nodeByName(testContext, 'AAA').expanded).toBe(false);
+      });
+
+      it('cascades a subtree through lazy-loaded levels', async () => {
+        nodeByName(testContext, 'A').expanded = true;
+        await settleLoading(testContext);
+        nodeByName(testContext, 'AA').expandDescendants();
+        await settleLoading(testContext);
+        expect(nodeByName(testContext, 'AAA').expanded).toBe(true);
+        expect(nodeByName(testContext, 'AAAA')).toBeTruthy();
+        // A subtree operation leaves the sibling root alone
+        expect(nodeByName(testContext, 'B').expanded).toBe(false);
+      });
     });
   });
-}
+});

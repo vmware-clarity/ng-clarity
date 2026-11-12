@@ -11,8 +11,9 @@ import { AppfxCertificateViewerModule } from './certificate-viewer.module';
 
 describe('AppfxCertificateViewerModule', () => {
   it('registers clarity icons on initialization', () => {
-    spyOn(ClarityIcons, 'addIcons').and.returnValue();
+    vi.spyOn(ClarityIcons, 'addIcons').mockReturnValue();
     new AppfxCertificateViewerModule();
-    expect(ClarityIcons.addIcons).toHaveBeenCalledOnceWith(angleIcon);
+    expect(ClarityIcons.addIcons).toHaveBeenCalledTimes(1);
+    expect(ClarityIcons.addIcons).toHaveBeenCalledWith(angleIcon);
   });
 });

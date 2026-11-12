@@ -21,7 +21,7 @@ import { ClrStackViewModule } from './stack-view.module';
 })
 class TestComponent {}
 
-export default function (): void {
+describe('Stack View directives', () => {
   'use strict';
   describe('StackContentInput component', () => {
     let fixture: ComponentFixture<any>;
@@ -49,4 +49,4 @@ export default function (): void {
       expect(compiled.querySelector('input').attributes.getNamedItem('aria-labelledby').value).toContain('clr-id-');
     });
   });
-}
+});

@@ -11,72 +11,70 @@ import { ColumnsService } from './columns.service';
 import { ALL_COLUMN_CHANGES, DatagridColumnChanges } from '../enums/column-changes.enum';
 import { ColumnState } from '../interfaces/column-state.interface';
 
-export default function (): void {
-  describe('ColumnsService provider', function () {
-    let provider: ColumnsService;
-    let subscription: Subscription;
-    let state: ColumnState = null;
-    const col1 = { width: 100 };
-    const col2 = { hideable: true };
+describe('ColumnsService provider', function () {
+  let provider: ColumnsService;
+  let subscription: Subscription;
+  let state: ColumnState = null;
+  const col1 = { width: 100 };
+  const col2 = { hideable: true };
 
-    beforeEach(function () {
-      provider = new ColumnsService();
-      state = null;
-      provider.columns = [new BehaviorSubject<ColumnState>({ ...col1 }), new BehaviorSubject<ColumnState>({ ...col2 })];
-    });
-
-    afterEach(() => {
-      if (subscription) {
-        subscription.unsubscribe();
-      }
-    });
-
-    it('returns the current states', () => {
-      expect(provider.columnStates).toEqual([col1, col2]);
-    });
-
-    it('can emitStateChange to a column directly', () => {
-      subscription = provider.columns[0].subscribe(value => (state = value));
-      const diff = { changes: [DatagridColumnChanges.HIDDEN], hidden: true };
-      provider.emitStateChange(provider.columns[0], diff);
-      expect(state).toEqual({ ...col1, ...diff });
-    });
-
-    it('can emitStateChange by column index', () => {
-      subscription = provider.columns[0].subscribe(value => (state = value));
-      const diff = { changes: [DatagridColumnChanges.HIDDEN], hidden: true };
-      provider.emitStateChangeAt(0, diff);
-      expect(state).toEqual({ ...col1, ...diff });
-    });
-
-    it('can detect if hideable columns are enabled', () => {
-      expect(provider.hasHideableColumns).toBeTrue();
-      provider.columns[1] = new BehaviorSubject<ColumnState>({ hideable: false });
-      expect(provider.hasHideableColumns).toBeFalse();
-    });
-
-    it('can cache the state, and reset to all columns', () => {
-      subscription = provider.columns[0].subscribe(value => (state = value));
-      provider.cache();
-      const diff = { changes: [DatagridColumnChanges.HIDDEN], hidden: true };
-      provider.emitStateChangeAt(0, diff);
-      expect(provider.columns[0].value).toEqual({ ...col1, ...diff });
-      provider.resetToLastCache();
-      expect(provider.columns[0].value).toEqual({ ...col1, changes: ALL_COLUMN_CHANGES });
-      expect(provider.hasCache()).toBeFalse();
-    });
-
-    it('does not emit a reset if there is no cache', () => {
-      spyOn(provider.columns[0], 'next');
-      provider.resetToLastCache();
-      expect(provider.columns[0].next).not.toHaveBeenCalled();
-    });
-
-    it('can detect if there is a cache', () => {
-      provider.resetToLastCache();
-      expect(provider.hasCache()).toBeFalse();
-      provider.cache();
-      expect(provider.hasCache()).toBeTrue();
-    });
+  beforeEach(function () {
+    provider = new ColumnsService();
+    state = null;
+    provider.columns = [new BehaviorSubject<ColumnState>({ ...col1 }), new BehaviorSubject<ColumnState>({ ...col2 })];
   });
-}
+
+  afterEach(() => {
+    if (subscription) {
+      subscription.unsubscribe();
+    }
+  });
+
+  it('returns the current states', () => {
+    expect(provider.columnStates).toEqual([col1, col2]);
+  });
+
+  it('can emitStateChange to a column directly', () => {
+    subscription = provider.columns[0].subscribe(value => (state = value));
+    const diff = { changes: [DatagridColumnChanges.HIDDEN], hidden: true };
+    provider.emitStateChange(provider.columns[0], diff);
+    expect(state).toEqual({ ...col1, ...diff });
+  });
+
+  it('can emitStateChange by column index', () => {
+    subscription = provider.columns[0].subscribe(value => (state = value));
+    const diff = { changes: [DatagridColumnChanges.HIDDEN], hidden: true };
+    provider.emitStateChangeAt(0, diff);
+    expect(state).toEqual({ ...col1, ...diff });
+  });
+
+  it('can detect if hideable columns are enabled', () => {
+    expect(provider.hasHideableColumns).toBe(true);
+    provider.columns[1] = new BehaviorSubject<ColumnState>({ hideable: false });
+    expect(provider.hasHideableColumns).toBe(false);
+  });
+
+  it('can cache the state, and reset to all columns', () => {
+    subscription = provider.columns[0].subscribe(value => (state = value));
+    provider.cache();
+    const diff = { changes: [DatagridColumnChanges.HIDDEN], hidden: true };
+    provider.emitStateChangeAt(0, diff);
+    expect(provider.columns[0].value).toEqual({ ...col1, ...diff });
+    provider.resetToLastCache();
+    expect(provider.columns[0].value).toEqual({ ...col1, changes: ALL_COLUMN_CHANGES });
+    expect(provider.hasCache()).toBe(false);
+  });
+
+  it('does not emit a reset if there is no cache', () => {
+    vi.spyOn(provider.columns[0], 'next').mockImplementation(() => undefined);
+    provider.resetToLastCache();
+    expect(provider.columns[0].next).not.toHaveBeenCalled();
+  });
+
+  it('can detect if there is a cache', () => {
+    provider.resetToLastCache();
+    expect(provider.hasCache()).toBe(false);
+    provider.cache();
+    expect(provider.hasCache()).toBe(true);
+  });
+});

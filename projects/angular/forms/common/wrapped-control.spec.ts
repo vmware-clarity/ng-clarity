@@ -19,6 +19,7 @@ import {
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { ClrIcon } from '@clr/angular/icon';
 import { delay } from '@clr/angular/testing';
 import { ClrHostWrappingModule, HostWrapper } from '@clr/angular/utils';
 
@@ -288,11 +289,16 @@ interface TestContext {
   layoutService?: LayoutService;
 }
 
-export default function (): void {
+describe('Forms common utilities', () => {
   describe('WrappedFormControl', () => {
+    let testContext: TestContext;
+    beforeEach(() => {
+      testContext = {} as TestContext;
+    });
+
     function setupTest<T>(testContext: TestContext, testComponent: Type<T>, testControl: any, includeProviders = true) {
       TestBed.configureTestingModule({
-        imports: [WrappedFormControlTestModule, FormsModule, ReactiveFormsModule],
+        imports: [ClrIcon, WrappedFormControlTestModule, FormsModule, ReactiveFormsModule],
         declarations: [testComponent, ClrControlError, ClrControlHelper, ClrControlSuccess],
         providers: includeProviders ? [MarkControlService, ControlClassService, NgControlService, LayoutService] : [],
       });
@@ -318,205 +324,217 @@ export default function (): void {
     }
 
     // These two tests are expected to throw errors which are swallowed with try / catch in setupTest
-    describe('getProviderFromContainer', function () {
-      it('gets a provider from the container', function (this: TestContext) {
-        setupTest(this, WithWrapperNoId, TestControl, false);
-        expect(this.control.getProviderFromContainer(ControlIdService)).toEqual(this.controlIdService);
+    describe('getProviderFromContainer', () => {
+      it('gets a provider from the container', () => {
+        setupTest(testContext, WithWrapperNoId, TestControl, false);
+        expect(testContext.control.getProviderFromContainer(ControlIdService)).toEqual(testContext.controlIdService);
       });
 
-      it('returns not found if provider is missing', function (this: TestContext) {
-        setupTest(this, WithWrapperNoId, TestControl, false);
-        expect(this.control.getProviderFromContainer(MarkControlService, false)).toBeFalse();
+      it('returns not found if provider is missing', () => {
+        setupTest(testContext, WithWrapperNoId, TestControl, false);
+        expect(testContext.control.getProviderFromContainer(MarkControlService, false)).toBe(false);
       });
     });
 
-    describe('with an explicit wrapper', function () {
-      it('uses HostWrapper to inject the ControlIdService', function (this: TestContext) {
-        spyOn(HostWrapper.prototype, 'get').and.callThrough();
-        setupTest(this, WithWrapperNoId, TestControl);
+    describe('with an explicit wrapper', () => {
+      it('uses HostWrapper to inject the ControlIdService', () => {
+        vi.spyOn(HostWrapper.prototype, 'get');
+        setupTest(testContext, WithWrapperNoId, TestControl);
         expect(HostWrapper.prototype.get).toHaveBeenCalledWith(ControlIdService);
       });
 
-      it('sets the id of the host to the id given by the service', function (this: TestContext) {
-        setupTest(this, WithWrapperNoId, TestControl);
-        expect(this.input.getAttribute('id')).toBe(this.controlIdService.id);
+      it('sets the id of the host to the id given by the service', () => {
+        setupTest(testContext, WithWrapperNoId, TestControl);
+        expect(testContext.input.getAttribute('id')).toBe(testContext.controlIdService.id);
       });
 
-      it('updates the service to the correct id if it exists', function (this: TestContext) {
-        setupTest(this, WithWrapperWithId, TestControl);
-        expect(this.input.getAttribute('id')).toBe('hello');
-        expect(this.controlIdService.id).toBe('hello');
+      it('updates the service to the correct id if it exists', () => {
+        setupTest(testContext, WithWrapperWithId, TestControl);
+        expect(testContext.input.getAttribute('id')).toBe('hello');
+        expect(testContext.controlIdService.id).toBe('hello');
       });
     });
 
-    describe('without an explicit wrapper', function () {
-      it('uses HostWrapper to inject the ControlIdService', function (this: TestContext) {
-        spyOn(HostWrapper.prototype, 'get').and.callThrough();
-        setupTest(this, NoWrapperNoId, TestControl);
+    describe('without an explicit wrapper', () => {
+      it('uses HostWrapper to inject the ControlIdService', () => {
+        vi.spyOn(HostWrapper.prototype, 'get');
+        setupTest(testContext, NoWrapperNoId, TestControl);
         expect(HostWrapper.prototype.get).toHaveBeenCalledWith(ControlIdService);
       });
 
-      it('sets the id of the host to the id given by the service', function (this: TestContext) {
-        setupTest(this, NoWrapperNoId, TestControl);
-        expect(this.input.getAttribute('id')).toBe(this.controlIdService.id);
+      it('sets the id of the host to the id given by the service', () => {
+        setupTest(testContext, NoWrapperNoId, TestControl);
+        expect(testContext.input.getAttribute('id')).toBe(testContext.controlIdService.id);
       });
 
-      it('updates the service to the correct id if it exists', function (this: TestContext) {
-        setupTest(this, NoWrapperWithId, TestControl);
-        expect(this.input.getAttribute('id')).toBe('hello');
-        expect(this.controlIdService.id).toBe('hello');
-      });
-    });
-
-    describe('with multiple projection slots', function () {
-      it('projects into the second slot when configured', function (this: TestContext) {
-        setupTest(this, WithMultipleNgContent, TestControl);
-        expect(this.fixture.nativeElement.querySelector('#first').innerHTML).toBe('');
-        expect(this.fixture.nativeElement.querySelector('#second').querySelector('input')).toBeTruthy();
+      it('updates the service to the correct id if it exists', () => {
+        setupTest(testContext, NoWrapperWithId, TestControl);
+        expect(testContext.input.getAttribute('id')).toBe('hello');
+        expect(testContext.controlIdService.id).toBe('hello');
       });
     });
 
-    describe('with a real NgControl', function () {
-      it('sets the control class', function (this: TestContext) {
-        spyOn(ControlClassService.prototype, 'initControlClass').and.callThrough();
-        setupTest(this, WithControl, TestControl3);
+    describe('with multiple projection slots', () => {
+      it('projects into the second slot when configured', () => {
+        setupTest(testContext, WithMultipleNgContent, TestControl);
+        expect(testContext.fixture.nativeElement.querySelector('#first').innerHTML).toBe('');
+        expect(testContext.fixture.nativeElement.querySelector('#second').querySelector('input')).toBeTruthy();
+      });
+    });
+
+    describe('with a real NgControl', () => {
+      it('sets the control class', () => {
+        vi.spyOn(ControlClassService.prototype, 'initControlClass');
+        setupTest(testContext, WithControl, TestControl3);
         expect(ControlClassService.prototype.initControlClass).toHaveBeenCalled();
       });
 
-      it('subscribes to requests to mark as touched', function (this: TestContext) {
-        setupTest(this, WithControl, TestControl3);
-        expect(this.input.className).not.toContain('ng-touched');
-        this.markControlService.markAsTouched();
-        this.fixture.detectChanges();
-        expect(this.input.className).toContain('ng-touched');
+      it('subscribes to requests to mark as touched', () => {
+        setupTest(testContext, WithControl, TestControl3);
+        expect(testContext.input.className).not.toContain('ng-touched');
+        testContext.markControlService.markAsTouched();
+        testContext.fixture.detectChanges();
+        expect(testContext.input.className).toContain('ng-touched');
       });
 
-      it('sets the control on ngControlService', function (this: TestContext) {
-        spyOn(NgControlService.prototype, 'addControl').and.callThrough();
-        setupTest(this, WithControl, TestControl3);
+      it('sets the control on ngControlService', () => {
+        vi.spyOn(NgControlService.prototype, 'addControl');
+        setupTest(testContext, WithControl, TestControl3);
         expect(NgControlService.prototype.addControl).toHaveBeenCalled();
       });
 
-      it('triggers status changes on blur', function (this: TestContext) {
-        setupTest(this, WithControl, TestControl3);
-        spyOn(TestControl3.prototype, 'triggerValidation').and.callThrough();
-        this.input.focus();
-        this.input.blur();
-        this.fixture.detectChanges();
+      it('triggers status changes on blur', () => {
+        setupTest(testContext, WithControl, TestControl3);
+        vi.spyOn(TestControl3.prototype, 'triggerValidation');
+        testContext.input.focus();
+        testContext.input.blur();
+        testContext.fixture.detectChanges();
         expect(TestControl3.prototype.triggerValidation).toHaveBeenCalled();
       });
 
-      it('blur marks the control as touched', function (this: TestContext) {
-        setupTest(this, WithNumberControl, TestControl3);
-        this.input.focus();
-        this.input.blur();
-        this.fixture.detectChanges();
-        expect(this.input.className).toContain('ng-touched');
-        expect(this.fixture.nativeElement.querySelector('#control2').className).toContain('ng-untouched');
+      it('blur marks the control as touched', () => {
+        setupTest(testContext, WithNumberControl, TestControl3);
+        testContext.input.focus();
+        testContext.input.blur();
+        testContext.fixture.detectChanges();
+        expect(testContext.input.className).toContain('ng-touched');
+        expect(testContext.fixture.nativeElement.querySelector('#control2').className).toContain('ng-untouched');
       });
 
-      it('implements ngOnDestroy', function (this: TestContext) {
-        setupTest(this, WithControl, TestControl3);
-        expect(this.control.ngOnDestroy).toBeDefined();
+      it('implements ngOnDestroy', () => {
+        setupTest(testContext, WithControl, TestControl3);
+        expect(testContext.control.ngOnDestroy).toBeDefined();
       });
     });
 
-    describe('with dynamic controls', function () {
-      it('with form-control directive', function (this: TestContext) {
-        setupTest(this, WithDynamicFormControl, TestControl3);
-        spyOn<any>(TestControl3.prototype, 'triggerValidation').and.callThrough();
-        this.fixture.componentInstance.addControl();
-        this.fixture.detectChanges();
+    describe('with dynamic controls', () => {
+      it('with form-control directive', () => {
+        setupTest(testContext, WithDynamicFormControl, TestControl3);
+        vi.spyOn<any, any>(TestControl3.prototype, 'triggerValidation');
+        testContext.fixture.componentInstance.addControl();
+        testContext.fixture.detectChanges();
         expect(TestControl3.prototype.triggerValidation).toHaveBeenCalled();
       });
 
-      it('with ng-control directive', function (this: TestContext) {
-        setupTest(this, WithDynamicNgControl, TestControl3);
-        spyOn(TestControl3.prototype, 'triggerValidation').and.callThrough();
-        this.fixture.componentInstance.addControl();
-        this.fixture.detectChanges();
+      it('with ng-control directive', () => {
+        setupTest(testContext, WithDynamicNgControl, TestControl3);
+        vi.spyOn(TestControl3.prototype, 'triggerValidation');
+        testContext.fixture.componentInstance.addControl();
+        testContext.fixture.detectChanges();
         expect(TestControl3.prototype.triggerValidation).toHaveBeenCalled();
       });
     });
 
-    describe('aria roles', function () {
-      it('adds the aria-describedby for helper', function () {
-        setupTest(this, WithControlAndHelper, TestControl3);
-        this.control.triggerValidation();
-        expect(this.input.getAttribute('aria-describedby')).toContain('-helper');
+    describe('aria roles', () => {
+      it('adds the aria-describedby for helper', () => {
+        const untypedContext: any = testContext;
+
+        setupTest(untypedContext, WithControlAndHelper, TestControl3);
+        untypedContext.control.triggerValidation();
+        expect(untypedContext.input.getAttribute('aria-describedby')).toContain('-helper');
       });
 
-      it('does not set aria-describedby unless helper is present', function () {
-        setupTest(this, WithControl, TestControl3);
-        this.control.triggerValidation();
-        expect(this.input.getAttribute('aria-describedby')).toBe(null);
+      it('does not set aria-describedby unless helper is present', () => {
+        const untypedContext: any = testContext;
+
+        setupTest(untypedContext, WithControl, TestControl3);
+        untypedContext.control.triggerValidation();
+        expect(untypedContext.input.getAttribute('aria-describedby')).toBe(null);
       });
 
-      it('adds the aria-describedby with helper and error ids', async function (this: TestContext) {
-        setupTest(this, WithControlAndError, TestControl3);
-        this.input.focus();
-        this.input.blur();
-        this.fixture.detectChanges();
+      it('adds the aria-describedby with helper and error ids', async () => {
+        setupTest(testContext, WithControlAndError, TestControl3);
+        testContext.input.focus();
+        testContext.input.blur();
+        testContext.fixture.detectChanges();
         await delay();
-        expect(this.input.getAttribute('aria-describedby')).toEqual(`${this.input.id}-helper ${this.input.id}-error`);
+        expect(testContext.input.getAttribute('aria-describedby')).toEqual(
+          `${testContext.input.id}-helper ${testContext.input.id}-error`
+        );
       });
 
-      it('adds the aria-describedby for error messages', async function (this: TestContext) {
-        setupTest(this, WithControlAndError, TestControl3);
-        this.input.focus();
-        this.input.blur();
-        this.fixture.detectChanges();
+      it('adds the aria-describedby for error messages', async () => {
+        setupTest(testContext, WithControlAndError, TestControl3);
+        testContext.input.focus();
+        testContext.input.blur();
+        testContext.fixture.detectChanges();
         await delay();
-        expect(this.input.getAttribute('aria-describedby')).toContain('-error');
+        expect(testContext.input.getAttribute('aria-describedby')).toContain('-error');
       });
 
-      it('does not set aria-describedby unless error helper is present', function () {
-        setupTest(this, WithControl, TestControl3);
-        this.input.focus();
-        this.input.blur();
-        this.fixture.detectChanges();
+      it('does not set aria-describedby unless error helper is present', () => {
+        const untypedContext: any = testContext;
 
-        expect(this.input.getAttribute('aria-describedby')).toBe(null);
+        setupTest(untypedContext, WithControl, TestControl3);
+        untypedContext.input.focus();
+        untypedContext.input.blur();
+        untypedContext.fixture.detectChanges();
+
+        expect(untypedContext.input.getAttribute('aria-describedby')).toBe(null);
       });
 
-      it('adds the aria-describedby for success messages', async function (this: TestContext) {
-        setupTest(this, WithControlAndSuccess, TestControl3);
-        this.input.focus();
-        this.fixture.componentInstance.model = 'test';
-        this.fixture.detectChanges();
+      it('adds the aria-describedby for success messages', async () => {
+        setupTest(testContext, WithControlAndSuccess, TestControl3);
+        testContext.input.focus();
+        testContext.fixture.componentInstance.model = 'test';
+        testContext.fixture.detectChanges();
         await delay();
 
-        this.input.blur();
-        this.fixture.detectChanges();
+        testContext.input.blur();
+        testContext.fixture.detectChanges();
         await delay();
 
-        expect(this.input.getAttribute('aria-describedby')).toContain('-success');
+        expect(testContext.input.getAttribute('aria-describedby')).toContain('-success');
       });
 
-      it('adds the aria-describedby with helper and success ids', async function (this: TestContext) {
-        setupTest(this, WithControlAndSuccess, TestControl3);
-        this.input.focus();
-        this.fixture.componentInstance.model = 'test';
-        this.fixture.detectChanges();
+      it('adds the aria-describedby with helper and success ids', async () => {
+        setupTest(testContext, WithControlAndSuccess, TestControl3);
+        testContext.input.focus();
+        testContext.fixture.componentInstance.model = 'test';
+        testContext.fixture.detectChanges();
         await delay();
 
-        this.input.blur();
-        this.fixture.detectChanges();
+        testContext.input.blur();
+        testContext.fixture.detectChanges();
         await delay();
 
-        expect(this.input.getAttribute('aria-describedby')).toEqual(`${this.input.id}-helper ${this.input.id}-success`);
+        expect(testContext.input.getAttribute('aria-describedby')).toEqual(
+          `${testContext.input.id}-helper ${testContext.input.id}-success`
+        );
       });
 
-      it('does not set aria-describedby unless success helper is present', async function () {
-        setupTest(this, WithControl, TestControl3);
-        this.input.focus();
-        this.fixture.componentInstance.model = 'test';
-        this.input.blur();
-        this.fixture.detectChanges();
+      it('does not set aria-describedby unless success helper is present', async () => {
+        const untypedContext: any = testContext;
+
+        setupTest(untypedContext, WithControl, TestControl3);
+        untypedContext.input.focus();
+        untypedContext.fixture.componentInstance.model = 'test';
+        untypedContext.input.blur();
+        untypedContext.fixture.detectChanges();
         await delay();
 
-        expect(this.input.getAttribute('aria-describedby')).toBe(null);
+        expect(untypedContext.input.getAttribute('aria-describedby')).toBe(null);
       });
     });
   });
-}
+});

@@ -13,7 +13,7 @@ import { ClrCommonFormsModule } from '@clr/angular/forms/common';
 
 import { ClrNumberInput } from './number-input';
 import { ClrNumberInputContainer } from './number-input-container';
-import { ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
+import { ReactiveSpec, TemplateDrivenSpec } from '../tests/control';
 
 @Component({
   template: `<input clrNumberInput type="number" />`,
@@ -61,7 +61,7 @@ class ReactiveTest {
   });
 }
 
-export default function (): void {
+describe('Number Input component', () => {
   describe('Input directive', () => {
     describe('invalid use', () => {
       it('should throw an error when used without a number-input container', () => {
@@ -119,7 +119,7 @@ export default function (): void {
       });
     });
   });
-}
+});
 
 function inputSpec(description, testContainer, testControl, testComponent) {
   describe('Input specific value change tests ' + description, () => {
@@ -160,8 +160,8 @@ function inputSpec(description, testContainer, testControl, testComponent) {
     });
 
     it('should increase or decrease value on step buttons click', () => {
-      spyOn(clarityDirective, 'stepUp').and.callThrough();
-      spyOn(clarityDirective, 'stepDown').and.callThrough();
+      vi.spyOn(clarityDirective, 'stepUp');
+      vi.spyOn(clarityDirective, 'stepDown');
 
       const inputGroup = control.nativeElement.closest('.clr-input-group');
       const stepDownButton = inputGroup.querySelector('button:has(cds-icon[shape="minus"])');
@@ -180,7 +180,7 @@ function inputSpec(description, testContainer, testControl, testComponent) {
     });
 
     it('should trigger blur after clicking step buttons and focusing different element', () => {
-      spyOn(control.nativeElement, 'onblur').and.callThrough();
+      control.nativeElement.onblur = vi.fn();
 
       const inputGroup = control.nativeElement.closest('.clr-input-group');
       const stepUpButton = inputGroup.querySelector('button:has(cds-icon[shape="plus"])');
@@ -192,7 +192,7 @@ function inputSpec(description, testContainer, testControl, testComponent) {
     });
 
     it('should trigger change after clicking step buttons', () => {
-      spyOn(control.nativeElement, 'onchange').and.callThrough();
+      control.nativeElement.onchange = vi.fn();
 
       const inputGroup = control.nativeElement.closest('.clr-input-group');
       const stepUpButton = inputGroup.querySelector('button:has(cds-icon[shape="plus"])');
@@ -203,7 +203,7 @@ function inputSpec(description, testContainer, testControl, testComponent) {
     });
 
     it('should trigger validation when stepUp is called', () => {
-      spyOn(clarityDirective, 'triggerValidation').and.callThrough();
+      vi.spyOn(clarityDirective, 'triggerValidation');
 
       clarityDirective.stepUp();
       fixture.detectChanges();
@@ -212,7 +212,7 @@ function inputSpec(description, testContainer, testControl, testComponent) {
     });
 
     it('should trigger validation when stepDown is called', () => {
-      spyOn(clarityDirective, 'triggerValidation').and.callThrough();
+      vi.spyOn(clarityDirective, 'triggerValidation');
 
       clarityDirective.stepDown();
       fixture.detectChanges();
@@ -222,22 +222,22 @@ function inputSpec(description, testContainer, testControl, testComponent) {
 
     it('should mark the control as touched after stepUp', () => {
       const ngControl = control.injector.get(NgControl);
-      expect(ngControl.control.touched).toBeFalse();
+      expect(ngControl.control.touched).toBe(false);
 
       clarityDirective.stepUp();
       fixture.detectChanges();
 
-      expect(ngControl.control.touched).toBeTrue();
+      expect(ngControl.control.touched).toBe(true);
     });
 
     it('should mark the control as touched after stepDown', () => {
       const ngControl = control.injector.get(NgControl);
-      expect(ngControl.control.touched).toBeFalse();
+      expect(ngControl.control.touched).toBe(false);
 
       clarityDirective.stepDown();
       fixture.detectChanges();
 
-      expect(ngControl.control.touched).toBeTrue();
+      expect(ngControl.control.touched).toBe(true);
     });
   });
 }

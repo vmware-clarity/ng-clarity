@@ -9,7 +9,7 @@ import { ControlClassService } from './control-class.service';
 import { LayoutService } from './layout.service';
 import { CONTROL_STATE } from '../if-control-state/control-state.enum';
 
-export default function (): void {
+describe('Forms common utilities', () => {
   describe('ControlClassService', function () {
     let controlClassService: ControlClassService;
     let layoutService: LayoutService;
@@ -46,7 +46,7 @@ export default function (): void {
 
     it('should init the control class', function () {
       const renderer = {
-        removeClass: jasmine.createSpy(),
+        removeClass: vi.fn(),
       };
       const element = document.createElement('input');
       element.className = 'test-class';
@@ -78,4 +78,4 @@ export default function (): void {
       );
     });
   });
-}
+});

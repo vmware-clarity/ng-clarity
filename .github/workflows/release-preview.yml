@@ -23,7 +23,11 @@ jobs:
         run: npm run lint
       - name: Build
         run: npm run build
+      - name: Install Unit Test Browser
+        run: npx playwright install --with-deps chromium
       - name: Test
+        env:
+          VITEST_SEED: '3219'
         run: npm run test
       - name: Public Api Check
         run: npm run public-api:check

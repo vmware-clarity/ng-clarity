@@ -18,55 +18,60 @@ interface ThisTest {
   component: PropertyViewPropertyValueContainerComponent<MockModel>;
 }
 
-describe('PropertyViewPropertyValueContainerComponent', function () {
-  beforeEach(function (this: ThisTest) {
+describe('PropertyViewPropertyValueContainerComponent', () => {
+  let testContext: ThisTest;
+  beforeEach(() => {
+    testContext = {} as ThisTest;
+  });
+
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [CommonModule, TestModule],
       declarations: [PropertyViewPropertyValueContainerComponent],
     });
-    this.fixture = TestBed.createComponent<PropertyViewPropertyValueContainerComponent<MockModel>>(
+    testContext.fixture = TestBed.createComponent<PropertyViewPropertyValueContainerComponent<MockModel>>(
       PropertyViewPropertyValueContainerComponent
     );
-    this.component = this.fixture.componentInstance;
-    this.component.componentType = MockComponent;
-    this.component.componentModel = {
+    testContext.component = testContext.fixture.componentInstance;
+    testContext.component.componentType = MockComponent;
+    testContext.component.componentModel = {
       text: 'text',
     };
-    this.fixture.detectChanges();
+    testContext.fixture.detectChanges();
   });
 
-  it('should be created', function (this: ThisTest) {
-    expect(this.component).toBeDefined();
-    expect(this.fixture.debugElement.query(By.directive(MockComponent))).toBeDefined();
-    expect(this.fixture.debugElement.query(By.directive(MockComponent)).componentInstance.model).toEqual({
+  it('should be created', () => {
+    expect(testContext.component).toBeDefined();
+    expect(testContext.fixture.debugElement.query(By.directive(MockComponent))).toBeDefined();
+    expect(testContext.fixture.debugElement.query(By.directive(MockComponent)).componentInstance.model).toEqual({
       text: 'text',
     });
   });
 
-  it('on componentModel changes, should change model', function (this: ThisTest) {
-    this.component.componentModel = { text: 'text2' };
-    this.component.ngOnChanges({
+  it('on componentModel changes, should change model', () => {
+    testContext.component.componentModel = { text: 'text2' };
+    testContext.component.ngOnChanges({
       componentModel: new SimpleChange({ text: 'text' }, { text: 'text2' }, false),
     });
-    expect(this.fixture.debugElement.query(By.directive(MockComponent)).componentInstance.model).toEqual({
+    expect(testContext.fixture.debugElement.query(By.directive(MockComponent)).componentInstance.model).toEqual({
       text: 'text2',
     });
   });
 
-  it('on componentType changes, should recreate component', function (this: ThisTest) {
-    this.component.componentType = Mock2Component;
-    this.component.componentModel = { text: 'text2' };
-    this.component.ngOnChanges({
+  it('on componentType changes, should recreate component', () => {
+    testContext.component.componentType = Mock2Component;
+    testContext.component.componentModel = { text: 'text2' };
+    testContext.component.ngOnChanges({
       componentType: new SimpleChange(MockComponent, Mock2Component, false),
     });
-    expect(this.fixture.debugElement.query(By.directive(Mock2Component)).componentInstance.model).toEqual({
+    expect(testContext.fixture.debugElement.query(By.directive(Mock2Component)).componentInstance.model).toEqual({
       text: 'text2',
     });
   });
 
-  it('on ngDestroy, clear view', function (this: ThisTest) {
-    this.component.ngOnDestroy();
-    expect(this.fixture.debugElement.query(By.directive(MockComponent))).toBeNull();
+  it('on ngDestroy, clear view', () => {
+    testContext.component.ngOnDestroy();
+    expect(testContext.fixture.debugElement.query(By.directive(MockComponent))).toBeNull();
   });
 });
 

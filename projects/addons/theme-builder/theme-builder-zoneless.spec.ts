@@ -68,7 +68,7 @@ for (const zoneless of [true, false]) {
 
     it('cancels pending initialization when destroyed before rendering', async () => {
       const pending = TestBed.createComponent(ThemeBuilderComponent);
-      const applyStyles = spyOn(pending.componentInstance, 'applyPreviewStyles');
+      const applyStyles = vi.spyOn(pending.componentInstance, 'applyPreviewStyles').mockImplementation(() => undefined);
       pending.componentInstance.ngAfterViewInit();
       pending.destroy();
       fixture.componentInstance.css.set('Render after destruction');

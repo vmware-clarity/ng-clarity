@@ -23,83 +23,90 @@ function observableChildren(node: string): Observable<string[]> {
   return of(synchronousChildren(node));
 }
 
-export default function (): void {
-  describe('RecursiveTreeNodeModel', () => {
-    it('fetches children through the given function', function () {
-      const root = new RecursiveTreeNodeModel('A', null, synchronousChildren, this.featureService);
-      expect(root.children.map(c => c.model)).toEqual(['AA', 'AB']);
-    });
+describe('Tree View', () => {
+  describe('Models', () => {
+    describe('RecursiveTreeNodeModel', () => {
+      let testContext: any;
+      beforeEach(() => {
+        testContext = {};
+      });
 
-    it('offers a fetchChildren() method that fetches the children only once', function () {
-      let nbFetch = 0;
-      const root = new RecursiveTreeNodeModel(
-        'A',
-        null,
-        node => {
-          nbFetch++;
-          return synchronousChildren(node);
-        },
-        this.featureService
-      );
-      expect(nbFetch).toBe(0);
-      root.fetchChildren();
-      expect(nbFetch).toBe(1);
-      root.fetchChildren();
-      expect(nbFetch).toBe(1);
-    });
+      it('fetches children through the given function', () => {
+        const root = new RecursiveTreeNodeModel('A', null, synchronousChildren, testContext.featureService);
+        expect(root.children.map(c => c.model)).toEqual(['AA', 'AB']);
+      });
 
-    it('offers a clearChildren() method that forces the children to be fetched again next time', function () {
-      let nbFetch = 0;
-      const root = new RecursiveTreeNodeModel(
-        'A',
-        null,
-        node => {
-          nbFetch++;
-          return synchronousChildren(node);
-        },
-        this.featureService
-      );
-      root.fetchChildren();
-      expect(nbFetch).toBe(1);
-      root.clearChildren();
-      root.fetchChildren();
-      expect(nbFetch).toBe(2);
-    });
+      it('offers a fetchChildren() method that fetches the children only once', () => {
+        let nbFetch = 0;
+        const root = new RecursiveTreeNodeModel(
+          'A',
+          null,
+          node => {
+            nbFetch++;
+            return synchronousChildren(node);
+          },
+          testContext.featureService
+        );
+        expect(nbFetch).toBe(0);
+        root.fetchChildren();
+        expect(nbFetch).toBe(1);
+        root.fetchChildren();
+        expect(nbFetch).toBe(1);
+      });
 
-    it('declares itself as parent for created children', function () {
-      const root = new RecursiveTreeNodeModel('A', null, synchronousChildren, this.featureService);
-      expect(root.children.map(c => c.parent)).toEqual([root, root]);
-    });
+      it('offers a clearChildren() method that forces the children to be fetched again next time', () => {
+        let nbFetch = 0;
+        const root = new RecursiveTreeNodeModel(
+          'A',
+          null,
+          node => {
+            nbFetch++;
+            return synchronousChildren(node);
+          },
+          testContext.featureService
+        );
+        root.fetchChildren();
+        expect(nbFetch).toBe(1);
+        root.clearChildren();
+        root.fetchChildren();
+        expect(nbFetch).toBe(2);
+      });
 
-    it('can unwrap a Promise for the children', async function () {
-      const root = new RecursiveTreeNodeModel('A', null, promiseChildren, this.featureService);
-      root.fetchChildren();
-      await delay();
-      expect(root.children.map(c => c.model)).toEqual(['AA', 'AB']);
-    });
-    it('can unwrap an Observable for the children', function () {
-      const root = new RecursiveTreeNodeModel('A', null, observableChildren, this.featureService);
-      expect(root.children.map(c => c.model)).toEqual(['AA', 'AB']);
-    });
+      it('declares itself as parent for created children', () => {
+        const root = new RecursiveTreeNodeModel('A', null, synchronousChildren, testContext.featureService);
+        expect(root.children.map(c => c.parent)).toEqual([root, root]);
+      });
 
-    it('marks itself as loading while waiting for children from a Promise', async function () {
-      const root = new RecursiveTreeNodeModel('A', null, promiseChildren, this.featureService);
-      root.fetchChildren();
-      expect(root.loading).toBeTrue();
-      await delay();
-      expect(root.loading).toBeFalse();
-    });
-    it('marks itself as loading while waiting for children from an Observable', async function () {
-      const root = new RecursiveTreeNodeModel(
-        'A',
-        null,
-        node => observableChildren(node).pipe(rxDelay(0)),
-        this.featureService
-      );
-      root.fetchChildren();
-      expect(root.loading).toBeTrue();
-      await delay();
-      expect(root.loading).toBeFalse();
+      it('can unwrap a Promise for the children', async () => {
+        const root = new RecursiveTreeNodeModel('A', null, promiseChildren, testContext.featureService);
+        root.fetchChildren();
+        await delay();
+        expect(root.children.map(c => c.model)).toEqual(['AA', 'AB']);
+      });
+      it('can unwrap an Observable for the children', () => {
+        const root = new RecursiveTreeNodeModel('A', null, observableChildren, testContext.featureService);
+        expect(root.children.map(c => c.model)).toEqual(['AA', 'AB']);
+      });
+
+      it('marks itself as loading while waiting for children from a Promise', async () => {
+        const root = new RecursiveTreeNodeModel('A', null, promiseChildren, testContext.featureService);
+        root.fetchChildren();
+        expect(root.loading).toBe(true);
+        await delay();
+        expect(root.loading).toBe(false);
+      });
+      it('marks itself as loading while waiting for children from an Observable', async () => {
+        const root = new RecursiveTreeNodeModel(
+          'A',
+          null,
+          node => observableChildren(node).pipe(rxDelay(0)),
+          testContext.featureService
+        );
+        root.fetchChildren();
+        expect(root.loading).toBe(true);
+        await delay();
+        expect(root.loading).toBe(false);
+      });
     });
   });
-}
+});

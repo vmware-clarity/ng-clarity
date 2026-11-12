@@ -15,7 +15,7 @@ import { ClrIcon } from '@clr/angular/icon';
 import { ClrCheckbox } from './checkbox';
 import { ClrCheckboxContainer } from './checkbox-container';
 import { ClrCheckboxWrapper } from './checkbox-wrapper';
-import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
+import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container';
 
 @Component({
   template: `
@@ -79,7 +79,7 @@ class ReactiveTest {
   });
 }
 
-export default function (): void {
+describe('Checkbox component', () => {
   describe('ClrCheckboxContainer', () => {
     ContainerNoLabelSpec(ClrCheckboxContainer, [ClrCheckboxWrapper, ClrCheckbox], NoLabelTest);
     TemplateDrivenSpec(
@@ -119,4 +119,4 @@ export default function (): void {
       });
     });
   });
-}
+});

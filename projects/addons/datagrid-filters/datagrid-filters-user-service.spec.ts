@@ -28,7 +28,7 @@ describe('DatagridFiltersUserService', () => {
     it('should return an empty array by default', async () => {
       const domains = await firstValueFrom(service.getDomains());
 
-      expect(Array.isArray(domains)).toBeTrue();
+      expect(Array.isArray(domains)).toBe(true);
       expect(domains.length).toBe(0);
     });
   });
@@ -37,7 +37,7 @@ describe('DatagridFiltersUserService', () => {
     it('should return an empty array by default regardless of input', async () => {
       const users = await firstValueFrom(service.searchUsers('test-user', 'test-domain'));
 
-      expect(Array.isArray(users)).toBeTrue();
+      expect(Array.isArray(users)).toBe(true);
       expect(users.length).toBe(0);
     });
 

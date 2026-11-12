@@ -5,31 +5,33 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { TestContext } from '@clr/angular/testing';
+import { createTestHelpers, TestContext } from '@clr/angular/testing';
 
 import { HeaderActionsTestComponent } from '../test-components/header-action-wizard.mock';
 import { ClrWizard } from '../wizard';
 import { HeaderActionService } from './header-actions.service';
 import { WizardNavigationService } from './wizard-navigation.service';
 
-export default function (): void {
-  describe('Header Actions Service', function () {
+describe('New Wizard Tests', () => {
+  describe('Header Actions Service', () => {
+    const helpers = createTestHelpers();
+
     let context: TestContext<ClrWizard, HeaderActionsTestComponent>;
     let headerActionService: HeaderActionService;
     let wizardNavigationService: WizardNavigationService;
 
-    beforeEach(function () {
-      context = this.create(ClrWizard, HeaderActionsTestComponent);
+    beforeEach(() => {
+      context = helpers.create(ClrWizard, HeaderActionsTestComponent);
       headerActionService = context.getClarityProvider(HeaderActionService);
       wizardNavigationService = context.getClarityProvider(WizardNavigationService);
       context.detectChanges();
     });
 
-    it('.wizardHasHeaderActions indicates if wizard has header actions', function () {
+    it('.wizardHasHeaderActions indicates if wizard has header actions', () => {
       expect(headerActionService.wizardHasHeaderActions).toBe(true);
     });
 
-    it('.currentPageHasHeaderActions indicates if the current page has header actions', function () {
+    it('.currentPageHasHeaderActions indicates if the current page has header actions', () => {
       const lastPage = wizardNavigationService.pageCollection.lastPage;
 
       expect(headerActionService.currentPageHasHeaderActions).toBe(true);
@@ -37,7 +39,7 @@ export default function (): void {
       expect(headerActionService.currentPageHasHeaderActions).toBe(false);
     });
 
-    it('.showWizardHeaderActions indicates if other pages have the header actions', function () {
+    it('.showWizardHeaderActions indicates if other pages have the header actions', () => {
       const lastPage = wizardNavigationService.pageCollection.lastPage;
       expect(headerActionService.showWizardHeaderActions).toBe(false);
 
@@ -45,4 +47,4 @@ export default function (): void {
       expect(headerActionService.showWizardHeaderActions).toBe(true);
     });
   });
-}
+});

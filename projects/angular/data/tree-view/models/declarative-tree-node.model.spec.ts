@@ -8,37 +8,39 @@
 import { DeclarativeTreeNodeModel } from './declarative-tree-node.model';
 import { TreeNodeModel } from './tree-node.model';
 
-export default function (): void {
-  describe('DeclarativeTreeNodeModel', () => {
-    let parent: DeclarativeTreeNodeModel<void>;
+describe('Tree View', () => {
+  describe('Models', () => {
+    describe('DeclarativeTreeNodeModel', () => {
+      let parent: DeclarativeTreeNodeModel<void>;
 
-    beforeEach(function () {
-      parent = new DeclarativeTreeNodeModel(null);
-    });
+      beforeEach(function () {
+        parent = new DeclarativeTreeNodeModel(null);
+      });
 
-    afterEach(function () {
-      parent.destroy();
-    });
+      afterEach(function () {
+        parent.destroy();
+      });
 
-    it('extends TreeNodeModel', function () {
-      expect(parent instanceof TreeNodeModel).toBeTrue();
-    });
+      it('extends TreeNodeModel', function () {
+        expect(parent instanceof TreeNodeModel).toBe(true);
+      });
 
-    it('registers to its parent on creation and the parent keeps track of the children', function () {
-      const child1 = new DeclarativeTreeNodeModel<void>(parent);
-      const child2 = new DeclarativeTreeNodeModel<void>(parent);
-      expect(parent.children).toEqual([child1, child2]);
-      child1.destroy();
-      child2.destroy();
-    });
+      it('registers to its parent on creation and the parent keeps track of the children', function () {
+        const child1 = new DeclarativeTreeNodeModel<void>(parent);
+        const child2 = new DeclarativeTreeNodeModel<void>(parent);
+        expect(parent.children).toEqual([child1, child2]);
+        child1.destroy();
+        child2.destroy();
+      });
 
-    it('unregisters from its parent when destroyed', function () {
-      const child1 = new DeclarativeTreeNodeModel<void>(parent);
-      const child2 = new DeclarativeTreeNodeModel<void>(parent);
-      child1.destroy();
-      expect(parent.children).toEqual([child2]);
-      child2.destroy();
-      expect(parent.children).toEqual([]);
+      it('unregisters from its parent when destroyed', function () {
+        const child1 = new DeclarativeTreeNodeModel<void>(parent);
+        const child2 = new DeclarativeTreeNodeModel<void>(parent);
+        child1.destroy();
+        expect(parent.children).toEqual([child2]);
+        child2.destroy();
+        expect(parent.children).toEqual([]);
+      });
     });
   });
-}
+});

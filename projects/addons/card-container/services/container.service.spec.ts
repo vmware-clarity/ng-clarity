@@ -13,7 +13,7 @@ import {
   SampleCardComponent,
   sampleCardsSettings,
 } from '@clr/addons/testing';
-import { of } from 'rxjs';
+import { firstValueFrom, of } from 'rxjs';
 
 import { AppfxCardInternal } from '../appfx-card-container.interface';
 import { ContainerService } from './container.service';
@@ -89,26 +89,20 @@ describe('#ContainerService', () => {
     expect(containerService).toBeDefined();
   });
 
-  it('when call getCardsWithOrder then should return cards with sorted order and by filtering hidden cards', (done: DoneFn) => {
-    spyOn(persistenceService, 'retrieve').and.returnValue(of(sampleCardsSettings));
+  it('when call getCardsWithOrder then should return cards with sorted order and by filtering hidden cards', async () => {
+    vi.spyOn(persistenceService, 'retrieve').mockReturnValue(of(sampleCardsSettings));
     const expectedCards = [sampleContainerCards[0], { ...sampleContainerCards[2], order: 1 }];
-    containerService.getCardsWithOrder().subscribe((cards: AppfxCardInternal[]) => {
-      expect(cards).toEqual(expectedCards);
-      done();
-    });
+    expect(await firstValueFrom(containerService.getCardsWithOrder())).toEqual(expectedCards);
   });
 
-  it('when call getCardWithOrder then should return card with order and hidden properties', (done: DoneFn) => {
-    spyOn(persistenceService, 'retrieve').and.returnValue(of(sampleCardsSettings));
+  it('when call getCardWithOrder then should return card with order and hidden properties', async () => {
+    vi.spyOn(persistenceService, 'retrieve').mockReturnValue(of(sampleCardsSettings));
     const expectedCard = { ...sampleContainerCards[2], order: 5 };
-    containerService.getCardWithOrder(sampleContainerCards[2]).subscribe((card: AppfxCardInternal) => {
-      expect(card).toEqual(expectedCard);
-      done();
-    });
+    expect(await firstValueFrom(containerService.getCardWithOrder(sampleContainerCards[2]))).toEqual(expectedCard);
   });
 
   it('when call toggleCardVisibility then should return card with hidden property flipped', () => {
-    spyOn(persistenceService, 'retrieve').and.returnValue(of(sampleCardsSettings));
+    vi.spyOn(persistenceService, 'retrieve').mockReturnValue(of(sampleCardsSettings));
     const expectedCard = { ...sampleContainerCards[2], order: 5, hidden: true };
     const card = containerService.toggleCardVisibility(CardIds.third);
     expect(card).toEqual(expectedCard);
@@ -116,10 +110,10 @@ describe('#ContainerService', () => {
 
   describe('when call moveCard', () => {
     it('then should detach and attach card to move position', () => {
-      spyOn(cardContainer, 'get').and.returnValue(<ViewRef>{});
-      spyOn(cardContainer, 'detach').and.returnValue(<ViewRef>{});
-      spyOn(cardContainer, 'insert').and.returnValue(<ViewRef>{});
-      spyOn(containerService, 'updateCardsOrder').and.callThrough();
+      vi.spyOn(cardContainer, 'get').mockReturnValue(<ViewRef>{});
+      vi.spyOn(cardContainer, 'detach').mockReturnValue(<ViewRef>{});
+      vi.spyOn(cardContainer, 'insert').mockReturnValue(<ViewRef>{});
+      vi.spyOn(containerService, 'updateCardsOrder');
       containerService.moveCard(0, 1);
       expect(cardContainer.get).toHaveBeenCalledWith(0);
       expect(cardContainer.detach).toHaveBeenCalledWith(0);
@@ -127,10 +121,10 @@ describe('#ContainerService', () => {
     });
 
     it('then should not perform move operation if fromIndex === toIndex', () => {
-      spyOn(cardContainer, 'get').and.returnValue(<ViewRef>{});
-      spyOn(cardContainer, 'detach').and.returnValue(<ViewRef>{});
-      spyOn(cardContainer, 'insert').and.returnValue(<ViewRef>{});
-      spyOn(containerService, 'updateCardsOrder').and.callThrough();
+      vi.spyOn(cardContainer, 'get').mockReturnValue(<ViewRef>{});
+      vi.spyOn(cardContainer, 'detach').mockReturnValue(<ViewRef>{});
+      vi.spyOn(cardContainer, 'insert').mockReturnValue(<ViewRef>{});
+      vi.spyOn(containerService, 'updateCardsOrder');
       containerService.moveCard(0, 0);
       expect(cardContainer.get).not.toHaveBeenCalled();
       expect(cardContainer.detach).not.toHaveBeenCalled();
@@ -175,7 +169,7 @@ describe('#ContainerService', () => {
   });
 
   it('when call updateCardsOrder then should update card order and save in persistence service', () => {
-    spyOn(persistenceService, 'save').and.callThrough();
+    vi.spyOn(persistenceService, 'save');
     containerService.updateCardsOrder();
     const cards = containerService.getContainerCards();
     expect(persistenceService.save).toHaveBeenCalledWith(cards);
@@ -186,12 +180,8 @@ describe('#ContainerService', () => {
       const cards = containerService.getContainerCards();
       expect(cards.length).toEqual(3);
       const expectedError = "Card with id 'sample-card-1' already exist";
-      try {
-        containerService.addCard(cards[0]);
-      } catch (err) {
-        expect(err).toMatch(expectedError);
-        expect(cards.length).toEqual(3);
-      }
+      expect(() => containerService.addCard(cards[0])).toThrow(expectedError);
+      expect(cards.length).toEqual(3);
     });
 
     it('then should add card if card id is different', () => {

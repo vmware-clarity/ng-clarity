@@ -141,14 +141,14 @@ describe('Side Panel', () => {
   });
 
   it('should not open if already opened', async () => {
-    spyOn(sidePanel.openChange, 'emit');
+    vi.spyOn(sidePanel.openChange, 'emit').mockImplementation(() => undefined);
     sidePanel.open();
     expect(sidePanel.openChange.emit).not.toHaveBeenCalled();
   });
 
   it('should not close when already closed', async () => {
     fixture.componentInstance.opened = false;
-    spyOn(sidePanel, 'close');
+    vi.spyOn(sidePanel, 'close').mockImplementation(() => undefined);
     expect(sidePanel.close).not.toHaveBeenCalled();
   });
 
@@ -252,8 +252,8 @@ describe('Side Panel', () => {
 
     const maybeTitleWrapper = modalHeader.children[0];
     const maybleCloseButton = modalHeader.children[1];
-    expect(maybeTitleWrapper.classList.contains('modal-title-wrapper')).toBeTrue();
-    expect(maybleCloseButton.classList.contains('close')).toBeTrue();
+    expect(maybeTitleWrapper.classList.contains('modal-title-wrapper')).toBe(true);
+    expect(maybleCloseButton.classList.contains('close')).toBe(true);
   });
 
   it('should NOT add pinned classes to modalHost when panel is closed with pinned=true by default', () => {
@@ -268,7 +268,7 @@ describe('Side Panel', () => {
 
     const host = document.body;
     const hasPinnedClass = Array.from(host.classList).some(c => c.startsWith('clr-side-panel-pinned-'));
-    expect(hasPinnedClass).toBeFalse();
+    expect(hasPinnedClass).toBe(false);
     testFixture.destroy();
   });
 
@@ -284,12 +284,12 @@ describe('Side Panel', () => {
 
     const host = document.body;
     const hasPinnedClass = Array.from(host.classList).some(c => c.startsWith('clr-side-panel-pinned-'));
-    expect(hasPinnedClass).toBeTrue();
+    expect(hasPinnedClass).toBe(true);
     testFixture.destroy();
   });
 
   it('registers the pin and unpin icons', () => {
-    spyOn(ClarityIcons, 'addIcons');
+    vi.spyOn(ClarityIcons, 'addIcons').mockImplementation(() => undefined);
 
     new ClrSidePanelModule();
 

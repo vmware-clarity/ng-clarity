@@ -22,31 +22,43 @@ class TestHost {
   @ViewChild('testOrigin', { read: ElementRef, static: true }) origin: ElementRef<HTMLButtonElement>;
 }
 
-export default function (): void {
-  describe('ClrPopoverOrigin', function () {
-    type Context = TestContext<ClrPopoverOrigin, TestHost> & {
-      popoverService: ClrPopoverService;
-    };
+describe('ClrPopover', () => {
+  describe('Directive', () => {
+    describe('ClrPopoverOrigin', () => {
+      type Context = TestContext<ClrPopoverOrigin, TestHost> & {
+        popoverService: ClrPopoverService;
+      };
 
-    describe('Template API', () => {
-      spec(ClrPopoverOrigin, TestHost, undefined);
+      describe('Template API', () => {
+        let testContext: Context;
 
-      beforeEach(function (this: Context) {
-        this.popoverService = this.getClarityProvider(ClrPopoverService);
-        this.detectChanges();
+        const getContext = spec(ClrPopoverOrigin, TestHost, undefined);
+        beforeEach(() => {
+          testContext = getContext() as Context;
+        });
+
+        beforeEach(() => {
+          testContext.popoverService = testContext.getClarityProvider(ClrPopoverService);
+          testContext.detectChanges();
+        });
+
+        it('registers the element as the popover origin', () => {
+          expect(testContext.popoverService.origin).toEqual(testContext.testComponent.origin);
+        });
       });
 
-      it('registers the element as the popover origin', function (this: Context) {
-        expect(this.popoverService.origin).toEqual(this.testComponent.origin);
-      });
-    });
+      describe('View Basics', () => {
+        let testContext: Context;
 
-    describe('View Basics', function (this: Context) {
-      spec(ClrPopoverOrigin, TestHost, undefined);
+        const getContext = spec(ClrPopoverOrigin, TestHost, undefined);
+        beforeEach(() => {
+          testContext = getContext() as Context;
+        });
 
-      it('adds the clr-popover-origin classname', function (this: Context) {
-        expect(this.clarityElement.classList).toContain('clr-popover-origin');
+        it('adds the clr-popover-origin classname', () => {
+          expect(testContext.clarityElement.classList).toContain('clr-popover-origin');
+        });
       });
     });
   });
-}
+});

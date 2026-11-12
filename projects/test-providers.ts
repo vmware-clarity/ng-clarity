@@ -5,10 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import PasswordContainerSpecs from './password-container.spec';
-import PasswordSpecs from './password.spec';
+import { provideZoneChangeDetection } from '@angular/core';
 
-describe('ClrPassword', function () {
-  PasswordContainerSpecs();
-  PasswordSpecs();
-});
+export default [provideZoneChangeDetection({ eventCoalescing: true })];

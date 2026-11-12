@@ -34,7 +34,7 @@ describe('#PersistenceService', () => {
 
   describe('when called retrieve', () => {
     it('then should fetch settings from container', () => {
-      spyOn(containerStore, 'retrieve').and.returnValue(of([]));
+      vi.spyOn(containerStore, 'retrieve').mockReturnValue(of([]));
       persistenceService.retrieve().subscribe((cardSettings: AppfxCardSettings[]) => {
         expect(cardSettings).toEqual([]);
       });
@@ -54,7 +54,7 @@ describe('#PersistenceService', () => {
     });
 
     it('then should generate and save card settings properly', () => {
-      spyOn(containerStore, 'save').and.callThrough();
+      vi.spyOn(containerStore, 'save');
       persistenceService.save(cards);
       expect(containerStore.save).toHaveBeenCalledWith(expectedSettings);
     });
@@ -70,7 +70,7 @@ describe('#PersistenceService', () => {
         ...sampleCards[1],
         hidden: false,
       };
-      spyOn(containerStore, 'save').and.callThrough();
+      vi.spyOn(containerStore, 'save');
       persistenceService.save([sampleCardOne]);
       const expectedMergedCardSettings = expectedSettings.map((cardSetting: AppfxCardSettings) => {
         if (cardSetting.id === sampleCardOne.id) {
@@ -99,7 +99,7 @@ describe('#PersistenceService', () => {
         hidden: false,
         view: undefined as unknown as EmbeddedViewRef<void>,
       };
-      spyOn(containerStore, 'save').and.callThrough();
+      vi.spyOn(containerStore, 'save');
       persistenceService.save([newCard]);
       const expectedMergedCardSettings = [...expectedSettings, { id: 'custom-attributes', order: 3, hidden: false }];
       expect(containerStore.save).toHaveBeenCalledWith(expectedMergedCardSettings);

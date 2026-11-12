@@ -12,6 +12,9 @@ import {
   PropertyViewPropertyValueModel,
 } from '@clr/addons/property-view';
 
+// Uses the consumer's test runner (Jasmine, Jest or Vitest), so the library build needs no runner types.
+declare const expect: (actual: unknown) => any;
+
 export function verifyPropertyViewProperty(key: string, value: string[], propertyModel: PropertyViewPropertyModel) {
   expect(propertyModel.type).toEqual(PropertyViewModelType.Property);
   expect(propertyModel.key.text).toEqual(key);

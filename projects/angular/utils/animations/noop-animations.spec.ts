@@ -18,16 +18,16 @@ describe('noopAnimations', () => {
   it('is true when the application provides the noop animations', () => {
     TestBed.configureTestingModule({ providers: [provideNoopAnimations()] });
 
-    expect(check()).toBeTrue();
+    expect(check()).toBe(true);
   });
 
   it('is false when the application provides the browser animations', () => {
     TestBed.configureTestingModule({ providers: [provideAnimations()] });
 
-    expect(check()).toBeFalse();
+    expect(check()).toBe(false);
   });
 
   it('is false when the application provides no animations module', () => {
-    expect(check()).toBeFalse();
+    expect(check()).toBe(false);
   });
 });

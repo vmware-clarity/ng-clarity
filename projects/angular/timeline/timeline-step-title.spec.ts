@@ -11,7 +11,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TimelineStepIdService } from './providers/timeline-step-id.service';
 import { ClrTimelineStepTitle } from './timeline-step-title';
 
-export default function (): void {
+describe('Timeline', () => {
   describe('ClrTimelineStepTitle', () => {
     let fixture: ComponentFixture<TestTimelineStepTitle>;
     let nativeElement: HTMLElement;
@@ -44,7 +44,7 @@ export default function (): void {
       });
     });
   });
-}
+});
 
 @Component({
   template: `<clr-timeline-step-title>Title Content</clr-timeline-step-title>`,

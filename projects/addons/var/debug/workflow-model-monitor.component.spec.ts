@@ -17,9 +17,10 @@ describe('WorkflowModelMonitor', () => {
   let mockModelManager: WorkflowModelManager;
   let component: WorkflowModelMonitorComponent;
   let fixture: ComponentFixture<WorkflowModelMonitorComponent>;
-  const onStepChange$ = new Subject();
+  let onStepChange$: Subject<unknown>;
 
   beforeEach(() => {
+    onStepChange$ = new Subject();
     mockModelManager = {
       onModelChange$: new Subject(),
       onStepChange$: onStepChange$,
@@ -67,7 +68,7 @@ describe('WorkflowModelMonitor', () => {
 
   it('should reset debugModel', () => {
     (component as any).resetDebugModel();
-    expect(component.debugModel.every((property: any) => !property.changed)).toBeTrue();
+    expect(component.debugModel.every((property: any) => !property.changed)).toBe(true);
   });
 
   it('should update debugModel', () => {
@@ -81,10 +82,10 @@ describe('WorkflowModelMonitor', () => {
 
     expect(component.debugModel.length).toBe(4);
     expect(component.debugModel[0].value).toBe('NewValue1');
-    expect(component.debugModel[0].changed).toBeTrue();
+    expect(component.debugModel[0].changed).toBe(true);
     expect(component.debugModel[2].name).toBe('property3');
     expect(component.debugModel[2].value).toBe('NewValue3');
-    expect(component.debugModel[2].changed).toBeTrue();
+    expect(component.debugModel[2].changed).toBe(true);
   });
 
   it('should add non existing properties to the model', () => {
@@ -99,10 +100,10 @@ describe('WorkflowModelMonitor', () => {
 
     expect(component.debugModel[4].name).toBe('property6');
     expect(component.debugModel[4].value).toBe('NewValue1');
-    expect(component.debugModel[4].changed).toBeTrue();
+    expect(component.debugModel[4].changed).toBe(true);
     expect(component.debugModel[5].name).toBe('property7');
     expect(component.debugModel[5].value).toBe('NewValue3');
-    expect(component.debugModel[5].changed).toBeTrue();
+    expect(component.debugModel[5].changed).toBe(true);
   });
 
   it('should ignore the property value if it is a function', () => {
@@ -131,12 +132,12 @@ describe('WorkflowModelMonitor', () => {
     expect(component.debugModel.length).toBe(5);
     expect(component.debugModel[4].name).toEqual('property6');
     expect(component.debugModel[4].value).toEqual('{object}');
-    expect(component.debugModel[4].changed).toBeTrue();
+    expect(component.debugModel[4].changed).toBe(true);
   });
 
   it('should set isOpen to false on ngOnInit', () => {
     component.ngOnInit();
-    expect(component.isOpen).toBeFalse();
+    expect(component.isOpen).toBe(false);
   });
 
   it('should detach outside click listener when spContent is set', () => {
@@ -152,6 +153,6 @@ describe('WorkflowModelMonitor', () => {
     (component as any).updateDebugModel([{ propertyName: 'property3', newValue: Var.of('NewValue3') }]);
     onStepChange$.next({ changes: [] });
 
-    expect(component.debugModel.every((property: any) => !property.changed)).toBeTrue();
+    expect(component.debugModel.every((property: any) => !property.changed)).toBe(true);
   });
 });

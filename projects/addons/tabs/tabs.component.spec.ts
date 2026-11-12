@@ -71,7 +71,11 @@ class MockElementRef extends ElementRef {
 class DummyIfTabActiveDirective {
   @Input() activeClass: string;
 
-  constructor(@Host() @Self() private tab: ClrTab) {}
+  constructor(
+    @Host()
+    @Self()
+    private tab: ClrTab
+  ) {}
 
   @Input()
   set activateTab(value: boolean) {
@@ -93,8 +97,13 @@ interface ThisTest {
 }
 
 describe('Appfx Tabs', () => {
-  beforeEach(function (this: ThisTest) {
-    this.tabsModel = {};
+  let testContext: ThisTest;
+  beforeEach(() => {
+    testContext = {} as ThisTest;
+  });
+
+  beforeEach(() => {
+    testContext.tabsModel = {};
 
     TestBed.configureTestingModule({
       imports: [ClrTabsModule, ClrIcon, MockWorkflowTestModule],
@@ -119,33 +128,33 @@ describe('Appfx Tabs', () => {
         },
       ],
     });
-    this.fixture = TestBed.createComponent(TabsComponent);
+    testContext.fixture = TestBed.createComponent(TabsComponent);
 
-    this.modelManager = this.fixture.debugElement.injector.get(WorkflowModelManager);
-    this.mockElementRef = this.fixture.debugElement.injector.get(ElementRef);
+    testContext.modelManager = testContext.fixture.debugElement.injector.get(WorkflowModelManager);
+    testContext.mockElementRef = testContext.fixture.debugElement.injector.get(ElementRef);
 
-    this.component = this.fixture.componentInstance;
-    this.component.model = this.tabsModel;
+    testContext.component = testContext.fixture.componentInstance;
+    testContext.component.model = testContext.tabsModel;
 
-    spyOn(this.modelManager, 'injectPropertiesToPendingStep').and.callThrough();
-    spyOn(this.modelManager, 'ejectPropertiesFromCurrentStep').and.callThrough();
+    vi.spyOn(testContext.modelManager, 'injectPropertiesToPendingStep');
+    vi.spyOn(testContext.modelManager, 'ejectPropertiesFromCurrentStep');
 
-    this.fixture.detectChanges();
+    testContext.fixture.detectChanges();
   });
 
-  afterEach(function (this: ThisTest) {
-    this.fixture.destroy();
+  afterEach(() => {
+    testContext.fixture.destroy();
   });
 
   const ipAllocationStepTitle = 'IP Allocation';
   describe('when all steps are valid', () => {
-    beforeEach(function (this: ThisTest) {
-      this.firstStepModel = new MockStepModel('resourcesProperty');
-      this.steps = [
+    beforeEach(() => {
+      testContext.firstStepModel = new MockStepModel('resourcesProperty');
+      testContext.steps = [
         {
           title: 'Resources',
           componentClass: MockStepComponent,
-          model: this.firstStepModel,
+          model: testContext.firstStepModel,
           instantiateLazy: true,
         },
         {
@@ -162,36 +171,36 @@ describe('Appfx Tabs', () => {
         },
       ];
 
-      this.component.tabs = this.steps;
-      this.fixture.detectChanges();
+      testContext.component.tabs = testContext.steps;
+      testContext.fixture.detectChanges();
     });
 
-    it('renders pages disabled when disableTabContent = true', function (this: ThisTest) {
-      this.component.disableTabsContent = true;
-      this.fixture.detectChanges();
+    it('renders pages disabled when disableTabContent = true', () => {
+      testContext.component.disableTabsContent = true;
+      testContext.fixture.detectChanges();
 
       expect(
-        this.fixture.nativeElement.querySelectorAll('appfx-step-container')[0].classList.contains('div-disabled')
+        testContext.fixture.nativeElement.querySelectorAll('appfx-step-container')[0].classList.contains('div-disabled')
       ).toEqual(true);
 
-      this.component.onStepActiveChange(this.steps[2], true);
-      this.fixture.detectChanges();
+      testContext.component.onStepActiveChange(testContext.steps[2], true);
+      testContext.fixture.detectChanges();
 
       expect(
-        this.fixture.nativeElement.querySelectorAll('appfx-step-container')[0].classList.contains('div-disabled')
+        testContext.fixture.nativeElement.querySelectorAll('appfx-step-container')[0].classList.contains('div-disabled')
       ).toEqual(true);
     });
 
-    it('the first page is always instantiateLazy = false', function (this: ThisTest) {
-      expect(this.steps[0].instantiateLazy).toEqual(false);
-      expect(this.steps[1].instantiateLazy).toEqual(true);
-      expect(this.steps[2].instantiateLazy).toEqual(true);
+    it('the first page is always instantiateLazy = false', () => {
+      expect(testContext.steps[0].instantiateLazy).toEqual(false);
+      expect(testContext.steps[1].instantiateLazy).toEqual(true);
+      expect(testContext.steps[2].instantiateLazy).toEqual(true);
     });
   });
 
   describe('when one step is invalid', () => {
-    beforeEach(function (this: ThisTest) {
-      this.steps = [
+    beforeEach(() => {
+      testContext.steps = [
         {
           title: 'Resources',
           componentClass: MockStepComponent,
@@ -212,246 +221,240 @@ describe('Appfx Tabs', () => {
         },
       ];
 
-      this.component.tabs = this.steps;
-      this.fixture.detectChanges();
+      testContext.component.tabs = testContext.steps;
+      testContext.fixture.detectChanges();
     });
 
     it(
       'renders page tabs links correctly, shows the first page and clicking' +
         ' on a page tab opens the page associated with that tab',
-      waitForAsync(function (this: ThisTest) {
-        this.fixture.whenStable().then(() => {
-          expect(this.modelManager.injectPropertiesToPendingStep).toHaveBeenCalledWith(this.steps[0]);
+      waitForAsync(() => {
+        testContext.fixture.whenStable().then(() => {
+          expect(testContext.modelManager.injectPropertiesToPendingStep).toHaveBeenCalledWith(testContext.steps[0]);
 
-          const tabsHelper = new TabsHelper(this.fixture.debugElement);
+          const tabsHelper = new TabsHelper(testContext.fixture.debugElement);
           const labels: string[] = tabsHelper
             .getLinkList()
             .map((link: DebugElement) => link.nativeElement.textContent.trim());
           expect(labels).toEqual(['Resources', ipAllocationStepTitle, 'Details']);
 
-          this.component.onStepActiveChange(this.steps[2], true);
-          this.fixture.detectChanges();
+          testContext.component.onStepActiveChange(testContext.steps[2], true);
+          testContext.fixture.detectChanges();
 
-          expect(this.modelManager.injectPropertiesToPendingStep).toHaveBeenCalledWith(this.steps[2]);
-          expect(this.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(this.steps[0]);
+          expect(testContext.modelManager.injectPropertiesToPendingStep).toHaveBeenCalledWith(testContext.steps[2]);
+          expect(testContext.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(testContext.steps[0]);
         });
       })
     );
 
-    it('activates the next page when navigating to another page', function (this: ThisTest) {
-      verifyAllStepPagesNotValidated(this.steps);
+    it('activates the next page when navigating to another page', () => {
+      verifyAllStepPagesNotValidated(testContext.steps);
 
-      this.component.onStepActiveChange(this.steps[1], true);
-      this.fixture.detectChanges();
+      testContext.component.onStepActiveChange(testContext.steps[1], true);
+      testContext.fixture.detectChanges();
 
-      expect((this.steps[1].model as MockStepModel).isActivated).toEqual(true);
-      expect((this.steps[2].model as MockStepModel).isActivated).toEqual(false);
+      expect((testContext.steps[1].model as MockStepModel).isActivated).toEqual(true);
+      expect((testContext.steps[2].model as MockStepModel).isActivated).toEqual(false);
 
-      this.component.onStepActiveChange(this.steps[2], true);
-      this.fixture.detectChanges();
+      testContext.component.onStepActiveChange(testContext.steps[2], true);
+      testContext.fixture.detectChanges();
 
-      expect((this.steps[2].model as MockStepModel).isActivated).toEqual(true);
+      expect((testContext.steps[2].model as MockStepModel).isActivated).toEqual(true);
     });
 
-    it('validates the current page when navigating to another page', function (this: ThisTest) {
-      expect((this.steps[0].model as MockStepModel).isValidated).toEqual(false);
+    it('validates the current page when navigating to another page', () => {
+      expect((testContext.steps[0].model as MockStepModel).isValidated).toEqual(false);
 
-      this.component.onStepActiveChange(this.steps[1], true);
+      testContext.component.onStepActiveChange(testContext.steps[1], true);
 
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
 
-      expect((this.steps[0].model as MockStepModel).isValidated).toEqual(true);
-      expect((this.steps[1].model as MockStepModel).isValidated).toEqual(false);
+      expect((testContext.steps[0].model as MockStepModel).isValidated).toEqual(true);
+      expect((testContext.steps[1].model as MockStepModel).isValidated).toEqual(false);
 
-      this.component.onStepActiveChange(this.steps[0], true);
-      this.fixture.detectChanges();
+      testContext.component.onStepActiveChange(testContext.steps[0], true);
+      testContext.fixture.detectChanges();
 
-      expect((this.steps[1].model as MockStepModel).isValidated).toEqual(true);
+      expect((testContext.steps[1].model as MockStepModel).isValidated).toEqual(true);
     });
 
-    it('does not validate the current page when navigating to another page when disableTabsContent = true', function (this: ThisTest) {
-      this.component.disableTabsContent = true;
-      this.fixture.detectChanges();
+    it('does not validate the current page when navigating to another page when disableTabsContent = true', () => {
+      testContext.component.disableTabsContent = true;
+      testContext.fixture.detectChanges();
 
-      expect((this.steps[0].model as MockStepModel).isValidated).toEqual(false);
-      expect((this.steps[1].model as MockStepModel).isValidated).toEqual(false);
-      this.component.onStepActiveChange(this.steps[1], true);
+      expect((testContext.steps[0].model as MockStepModel).isValidated).toEqual(false);
+      expect((testContext.steps[1].model as MockStepModel).isValidated).toEqual(false);
+      testContext.component.onStepActiveChange(testContext.steps[1], true);
 
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
 
-      expect((this.steps[0].model as MockStepModel).isValidated).toEqual(false);
-      expect((this.steps[1].model as MockStepModel).isValidated).toEqual(false);
+      expect((testContext.steps[0].model as MockStepModel).isValidated).toEqual(false);
+      expect((testContext.steps[1].model as MockStepModel).isValidated).toEqual(false);
     });
 
-    it('return true when validate$ method is called and all steps are valid', function (this: ThisTest) {
-      expect((this.steps[0].model as MockStepModel).isValidated).toEqual(false);
-      expect((this.steps[1].model as MockStepModel).isValidated).toEqual(false);
+    it('return true when validate$ method is called and all steps are valid', () => {
+      expect((testContext.steps[0].model as MockStepModel).isValidated).toEqual(false);
+      expect((testContext.steps[1].model as MockStepModel).isValidated).toEqual(false);
 
-      this.component.onStepActiveChange(this.steps[1], true);
-      this.fixture.detectChanges();
+      testContext.component.onStepActiveChange(testContext.steps[1], true);
+      testContext.fixture.detectChanges();
 
-      expect((this.steps[0].model as MockStepModel).isValidated).toEqual(true);
-      expect(this.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(this.steps[0]);
+      expect((testContext.steps[0].model as MockStepModel).isValidated).toEqual(true);
+      expect(testContext.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(testContext.steps[0]);
 
-      expect((this.steps[1].model as MockStepModel).isValidated).toEqual(false);
+      expect((testContext.steps[1].model as MockStepModel).isValidated).toEqual(false);
 
       let isValid = false;
-      this.component
+      testContext.component
         .validate$()
         .pipe(take(1))
         .subscribe(valid => {
           isValid = valid;
         });
 
-      expect((this.steps[1].model as MockStepModel).isValidated).toEqual(true);
-      expect(this.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(this.steps[1]);
-      expect(isValid).withContext('All steps should be valid').toBeTruthy();
+      expect((testContext.steps[1].model as MockStepModel).isValidated).toEqual(true);
+      expect(testContext.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(testContext.steps[1]);
+      expect(isValid, 'All steps should be valid').toBeTruthy();
     });
 
-    it('validates all visited pages when validate$ is called and navigates to the invalid page', waitForAsync(function (
-      this: ThisTest
-    ) {
-      verifyAllStepPagesNotValidated(this.steps);
+    it('validates all visited pages when validate$ is called and navigates to the invalid page', waitForAsync(() => {
+      verifyAllStepPagesNotValidated(testContext.steps);
 
       // Activate the invalid page
-      this.component.onStepActiveChange(this.steps[2], true);
-      this.fixture.detectChanges();
+      testContext.component.onStepActiveChange(testContext.steps[2], true);
+      testContext.fixture.detectChanges();
 
-      expect(this.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(this.steps[0]);
+      expect(testContext.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(testContext.steps[0]);
 
-      expect(this.steps.map(step => (step.model as MockStepModel).isValidated))
-        .withContext('First page should be validated')
-        .toEqual([true, false, false]);
+      expect(
+        testContext.steps.map(step => (step.model as MockStepModel).isValidated),
+        'First page should be validated'
+      ).toEqual([true, false, false]);
 
-      expect((this.steps[2].model as MockStepModel).isActivated).toEqual(true);
+      expect((testContext.steps[2].model as MockStepModel).isActivated).toEqual(true);
 
       // Go to the second valid page
-      this.component.onStepActiveChange(this.steps[1], true);
-      this.fixture.detectChanges();
+      testContext.component.onStepActiveChange(testContext.steps[1], true);
+      testContext.fixture.detectChanges();
 
-      expect(this.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(this.steps[2]);
+      expect(testContext.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(testContext.steps[2]);
 
-      expect((this.steps[2].model as MockStepModel).isValidated).toEqual(true);
+      expect((testContext.steps[2].model as MockStepModel).isValidated).toEqual(true);
 
       let isValid = false;
-      this.component
+      testContext.component
         .validate$()
         .pipe(take(1))
         .subscribe(valid => {
           isValid = valid;
         });
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
 
       // The user is navigated to the first invalid page and it is activated
-      expect(this.modelManager.injectPropertiesToPendingStep).toHaveBeenCalledWith(this.steps[2]);
+      expect(testContext.modelManager.injectPropertiesToPendingStep).toHaveBeenCalledWith(testContext.steps[2]);
 
       // The validate$ returns false
-      expect(isValid).withContext('The third page should be invalid').toBeFalsy();
+      expect(isValid, 'The third page should be invalid').toBeFalsy();
     }));
 
-    it('does not validate pages when validate$ is called, one step is invalid and disableTabsContent = true', function (this: ThisTest) {
-      this.component.disableTabsContent = true;
-      this.fixture.detectChanges();
+    it('does not validate pages when validate$ is called, one step is invalid and disableTabsContent = true', () => {
+      testContext.component.disableTabsContent = true;
+      testContext.fixture.detectChanges();
 
-      verifyAllStepPagesNotValidated(this.steps);
+      verifyAllStepPagesNotValidated(testContext.steps);
 
-      this.component.onStepActiveChange(this.steps[1], true);
-      this.fixture.detectChanges();
+      testContext.component.onStepActiveChange(testContext.steps[1], true);
+      testContext.fixture.detectChanges();
 
-      expect((this.steps[0].model as MockStepModel).isValidated).toEqual(false);
-      expect(this.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(this.steps[0]);
+      expect((testContext.steps[0].model as MockStepModel).isValidated).toEqual(false);
+      expect(testContext.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(testContext.steps[0]);
 
       let isValid = false;
-      this.component
+      testContext.component
         .validate$()
         .pipe(take(1))
         .subscribe(valid => {
           isValid = valid;
         });
 
-      expect((this.steps[1].model as MockStepModel).isValidated).toEqual(false);
-      expect(this.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(this.steps[1]);
-      expect(isValid).withContext('The second page should be valid').toBeTruthy();
+      expect((testContext.steps[1].model as MockStepModel).isValidated).toEqual(false);
+      expect(testContext.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(testContext.steps[1]);
+      expect(isValid, 'The second page should be valid').toBeTruthy();
     });
 
-    it('validates the active pages when validateActiveTab$ is called and current tab is valid', waitForAsync(function (
-      this: ThisTest
-    ) {
-      verifyAllStepPagesNotValidated(this.steps);
+    it('validates the active pages when validateActiveTab$ is called and current tab is valid', waitForAsync(() => {
+      verifyAllStepPagesNotValidated(testContext.steps);
 
       // Activate the invalid page
-      this.component.onStepActiveChange(this.steps[2], true);
-      this.fixture.detectChanges();
+      testContext.component.onStepActiveChange(testContext.steps[2], true);
+      testContext.fixture.detectChanges();
 
-      expect(this.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(this.steps[0]);
+      expect(testContext.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(testContext.steps[0]);
 
-      expect(this.steps.map(step => (step.model as MockStepModel).isValidated))
-        .withContext('Only first page should be validated')
-        .toEqual([true, false, false]);
+      expect(
+        testContext.steps.map(step => (step.model as MockStepModel).isValidated),
+        'Only first page should be validated'
+      ).toEqual([true, false, false]);
 
-      expect((this.steps[2].model as MockStepModel).isActivated)
-        .withContext('Third page should be activated')
-        .toEqual(true);
+      expect((testContext.steps[2].model as MockStepModel).isActivated, 'Third page should be activated').toEqual(true);
 
       // Go to the second valid page
-      this.component.onStepActiveChange(this.steps[1], true);
-      this.fixture.detectChanges();
+      testContext.component.onStepActiveChange(testContext.steps[1], true);
+      testContext.fixture.detectChanges();
 
-      expect(this.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(this.steps[2]);
+      expect(testContext.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(testContext.steps[2]);
 
-      expect((this.steps[2].model as MockStepModel).isValidated)
-        .withContext('Third page should be validated')
-        .toEqual(true);
+      expect((testContext.steps[2].model as MockStepModel).isValidated, 'Third page should be validated').toEqual(true);
 
       let isValid = false;
-      this.component
+      testContext.component
         .validateActiveTab$()
         .pipe(take(1))
         .subscribe(valid => {
           isValid = valid;
         });
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
 
-      expect(isValid).withContext('The second page should be valid').toBeTrue();
+      expect(isValid, 'The second page should be valid').toBe(true);
     }));
 
-    it('validates the active pages when validateActiveTab$ is called and current tab is invalid', waitForAsync(function (
-      this: ThisTest
-    ) {
-      verifyAllStepPagesNotValidated(this.steps);
+    it('validates the active pages when validateActiveTab$ is called and current tab is invalid', waitForAsync(() => {
+      verifyAllStepPagesNotValidated(testContext.steps);
 
       // Activate the invalid page
-      this.component.onStepActiveChange(this.steps[2], true);
-      this.fixture.detectChanges();
+      testContext.component.onStepActiveChange(testContext.steps[2], true);
+      testContext.fixture.detectChanges();
 
-      expect(this.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(this.steps[0]);
+      expect(testContext.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(testContext.steps[0]);
 
-      expect(this.steps.map(step => (step.model as MockStepModel).isValidated))
-        .withContext('Only first page should be validated')
-        .toEqual([true, false, false]);
+      expect(
+        testContext.steps.map(step => (step.model as MockStepModel).isValidated),
+        'Only first page should be validated'
+      ).toEqual([true, false, false]);
 
       let isValid = true;
-      this.component
+      testContext.component
         .validateActiveTab$()
         .pipe(take(1))
         .subscribe(valid => {
           isValid = valid;
         });
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
 
-      expect(isValid).withContext('The third page should not be valid').toBeFalse();
+      expect(isValid, 'The third page should not be valid').toBe(false);
     }));
 
     function verifyAllStepPagesNotValidated(steps: Step[]) {
-      expect(steps.map(step => (step.model as MockStepModel).isValidated))
-        .withContext('All pages should not be validated')
-        .toEqual([false, false, false]);
+      expect(
+        steps.map(step => (step.model as MockStepModel).isValidated),
+        'All pages should not be validated'
+      ).toEqual([false, false, false]);
     }
   });
 
   describe('when the first step is skipped', () => {
-    beforeEach(function (this: ThisTest) {
-      this.steps = [
+    beforeEach(() => {
+      testContext.steps = [
         {
           title: 'Resources - skipped',
           componentClass: MockStepComponent,
@@ -473,30 +476,30 @@ describe('Appfx Tabs', () => {
       ];
 
       const relevanceProperty: Var<boolean> = Var.of<boolean>();
-      this.steps[0].isRelevant = Var.from(relevanceProperty).by(prop => of(prop));
+      testContext.steps[0].isRelevant = Var.from(relevanceProperty).by(prop => of(prop));
       relevanceProperty.value = false;
 
-      this.component.tabs = this.steps;
+      testContext.component.tabs = testContext.steps;
 
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
     });
 
-    it('the first page is skipped', function (this: ThisTest) {
-      expect((<StepInternal>this.steps[0]).isSkipped).toEqual(true);
-      expect((<StepInternal>this.steps[1]).isSkipped).toBeUndefined();
-      expect((<StepInternal>this.steps[2]).isSkipped).toBeUndefined();
+    it('the first page is skipped', () => {
+      expect((<StepInternal>testContext.steps[0]).isSkipped).toEqual(true);
+      expect((<StepInternal>testContext.steps[1]).isSkipped).toBeUndefined();
+      expect((<StepInternal>testContext.steps[2]).isSkipped).toBeUndefined();
     });
 
-    it('the second page is activated if the first one is skipped', function (this: ThisTest) {
-      expect((this.steps[0].model as MockStepModel).isActivated).toEqual(false);
-      expect((this.steps[1].model as MockStepModel).isActivated).toEqual(true);
+    it('the second page is activated if the first one is skipped', () => {
+      expect((testContext.steps[0].model as MockStepModel).isActivated).toEqual(false);
+      expect((testContext.steps[1].model as MockStepModel).isActivated).toEqual(true);
     });
 
-    it('renders page tabs links correctly', waitForAsync(function (this: ThisTest) {
-      this.fixture.whenStable().then(() => {
-        expect(this.modelManager.injectPropertiesToPendingStep).toHaveBeenCalledWith(this.steps[1]);
+    it('renders page tabs links correctly', waitForAsync(() => {
+      testContext.fixture.whenStable().then(() => {
+        expect(testContext.modelManager.injectPropertiesToPendingStep).toHaveBeenCalledWith(testContext.steps[1]);
 
-        const tabsHelper = new TabsHelper(this.fixture.debugElement);
+        const tabsHelper = new TabsHelper(testContext.fixture.debugElement);
         const labels: string[] = tabsHelper
           .getLinkList()
           .map((link: DebugElement) => link.nativeElement.textContent.trim());
@@ -508,8 +511,8 @@ describe('Appfx Tabs', () => {
   describe('vertical tabs zoom accessibility', () => {
     let queryTabLinks: () => DebugElement;
 
-    beforeEach(function (this: ThisTest) {
-      this.steps = [
+    beforeEach(() => {
+      testContext.steps = [
         {
           title: 'Step 1',
           componentClass: MockStepComponent,
@@ -542,131 +545,132 @@ describe('Appfx Tabs', () => {
         },
       ];
 
-      this.zoomLevelService = TestBed.inject(ZoomLevelService);
-      this.component.tabs = this.steps;
-      this.component.tabLayout = TabLayout.vertical;
-      this.fixture.detectChanges();
-      this.component.ngOnChanges({
+      testContext.zoomLevelService = TestBed.inject(ZoomLevelService);
+      testContext.component.tabs = testContext.steps;
+      testContext.component.tabLayout = TabLayout.vertical;
+      testContext.fixture.detectChanges();
+      testContext.component.ngOnChanges({
         tabLayout: new SimpleChange({} as TabLayout, TabLayout.vertical, true),
       });
-      queryTabLinks = () => this.fixture.debugElement.query(By.css('appfx-tab-links'));
+      queryTabLinks = () => testContext.fixture.debugElement.query(By.css('appfx-tab-links'));
     });
 
     describe('WHEN showTabLinks = false', () => {
-      beforeEach(function (this: ThisTest) {
-        this.component.showTabLinks = false;
-        this.fixture.detectChanges();
+      beforeEach(() => {
+        testContext.component.showTabLinks = false;
+        testContext.fixture.detectChanges();
       });
 
-      it('appfx-tab-links is not visible', function (this: ThisTest) {
+      it('appfx-tab-links is not visible', () => {
         const appfxTabLinks = queryTabLinks();
         expect(appfxTabLinks).toBeFalsy();
       });
 
-      it('tab nav is not visible', function (this: ThisTest) {
-        const tabNav = this.fixture.debugElement.query(By.css('.nav'));
+      it('tab nav is not visible', () => {
+        const tabNav = testContext.fixture.debugElement.query(By.css('.nav'));
         const isVisible = getComputedStyle(tabNav.nativeElement)['display'] !== 'none';
         expect(isVisible).toBeFalsy();
       });
     });
 
     describe('zoom2x', () => {
-      beforeEach(function (this: ThisTest) {
-        this.zoomLevelService['resizeSubject'].next(ZoomLevel.x2);
-        this.fixture.detectChanges();
+      beforeEach(() => {
+        testContext.zoomLevelService['resizeSubject'].next(ZoomLevel.x2);
+        testContext.fixture.detectChanges();
       });
 
-      it('appfx-tab-links is visible', function (this: ThisTest) {
+      it('appfx-tab-links is visible', () => {
         const appfxTabLinks = queryTabLinks();
         expect(appfxTabLinks).toBeTruthy();
       });
 
-      it('tabs panel is hidden by default', function (this: ThisTest) {
-        const tabsHelper = new TabsHelper(this.fixture.debugElement);
+      it('tabs panel is hidden by default', () => {
+        const tabsHelper = new TabsHelper(testContext.fixture.debugElement);
         expect(tabsHelper.areTabsVisible()).toBeFalsy();
       });
 
-      it('`Show tabs` burger icon is visible by default', function (this: ThisTest) {
-        const showTabsIcon = this.fixture.debugElement.query(By.css(`.btn-show-tabs`));
+      it('`Show tabs` burger icon is visible by default', () => {
+        const showTabsIcon = testContext.fixture.debugElement.query(By.css(`.btn-show-tabs`));
         const isVisible = getComputedStyle(showTabsIcon.nativeElement)['display'] !== 'none';
         expect(isVisible).toBeTruthy();
       });
 
-      it('tab name is visible in the header', function (this: ThisTest) {
-        const activeTabTitle = this.fixture.debugElement.query(By.css(`.nav-step-title`)).nativeElement.innerText;
-        expect(activeTabTitle).toEqual(this.steps[0].title);
+      it('tab name is visible in the header', () => {
+        const activeTabTitle = testContext.fixture.debugElement.query(By.css(`.nav-step-title`)).nativeElement
+          .innerText;
+        expect(activeTabTitle).toEqual(testContext.steps[0].title);
       });
 
-      it('only the active tab-content is visible by default', function (this: ThisTest) {
-        const tabContents = this.fixture.debugElement.queryAll(By.css(`.tab-content`));
+      it('only the active tab-content is visible by default', () => {
+        const tabContents = testContext.fixture.debugElement.queryAll(By.css(`.tab-content`));
         tabContents.forEach((tabContent, index) => {
           const isVisible = getComputedStyle(tabContent.nativeElement)['display'] !== 'none';
           expect(isVisible).toBe(index === 0);
         });
       });
 
-      it('tab nav is not visible by default', function (this: ThisTest) {
-        const tabNav = this.fixture.debugElement.query(By.css('.nav'));
+      it('tab nav is not visible by default', () => {
+        const tabNav = testContext.fixture.debugElement.query(By.css('.nav'));
         const isVisible = getComputedStyle(tabNav.nativeElement)['display'] !== 'none';
         expect(isVisible).toBeFalsy();
       });
 
       describe('when `Show tabs` burger icon is clicked', () => {
-        beforeEach(function (this: ThisTest) {
-          const showTabsIcon = this.fixture.debugElement.query(By.css(`.btn-show-tabs`));
+        beforeEach(() => {
+          const showTabsIcon = testContext.fixture.debugElement.query(By.css(`.btn-show-tabs`));
           showTabsIcon.nativeElement.click();
-          this.fixture.detectChanges();
+          testContext.fixture.detectChanges();
         });
 
-        it('tabs panel is opened', function (this: ThisTest) {
-          const tabsHelper = new TabsHelper(this.fixture.debugElement);
+        it('tabs panel is opened', () => {
+          const tabsHelper = new TabsHelper(testContext.fixture.debugElement);
           expect(tabsHelper.areTabsVisible()).toBeTruthy();
         });
 
-        it('showTabsLink is true', function (this: ThisTest) {
-          expect(this.component.tabLinksOpened).toBeTruthy();
+        it('showTabsLink is true', () => {
+          expect(testContext.component.tabLinksOpened).toBeTruthy();
         });
 
-        it('tab-content is hidden', function (this: ThisTest) {
-          const tabContents = this.fixture.debugElement.queryAll(By.css(`.tab-content`));
+        it('tab-content is hidden', () => {
+          const tabContents = testContext.fixture.debugElement.queryAll(By.css(`.tab-content`));
           tabContents.forEach(tabContent => {
             const isVisible = getComputedStyle(tabContent.nativeElement)['display'] !== 'none';
             expect(isVisible).toBeFalsy();
           });
         });
 
-        it('tab nav is visible', function (this: ThisTest) {
-          const tabNav = this.fixture.debugElement.query(By.css('.nav'));
+        it('tab nav is visible', () => {
+          const tabNav = testContext.fixture.debugElement.query(By.css('.nav'));
           const isVisible = getComputedStyle(tabNav.nativeElement)['display'] !== 'none';
           expect(isVisible).toBeTruthy();
         });
 
         describe('when `Close tabs` icon is clicked', () => {
-          beforeEach(function (this: ThisTest) {
-            const closeTabsIcon = this.fixture.debugElement.query(By.css(`.btn-close-tabs`));
+          beforeEach(() => {
+            const closeTabsIcon = testContext.fixture.debugElement.query(By.css(`.btn-close-tabs`));
             closeTabsIcon.nativeElement.click();
-            this.fixture.detectChanges();
+            testContext.fixture.detectChanges();
           });
 
-          it('tabs panel is closed', function (this: ThisTest) {
-            const tabsHelper = new TabsHelper(this.fixture.debugElement);
+          it('tabs panel is closed', () => {
+            const tabsHelper = new TabsHelper(testContext.fixture.debugElement);
             expect(tabsHelper.areTabsVisible()).toBeFalsy();
           });
 
-          it('showTabsLink is false', function (this: ThisTest) {
-            expect(this.component.tabLinksOpened).toBeFalsy();
+          it('showTabsLink is false', () => {
+            expect(testContext.component.tabLinksOpened).toBeFalsy();
           });
 
-          it('only the active tab-content is visible', function (this: ThisTest) {
-            const tabContents = this.fixture.debugElement.queryAll(By.css(`.tab-content`));
+          it('only the active tab-content is visible', () => {
+            const tabContents = testContext.fixture.debugElement.queryAll(By.css(`.tab-content`));
             tabContents.forEach((tabContent, index) => {
               const isVisible = getComputedStyle(tabContent.nativeElement)['display'] !== 'none';
               expect(isVisible).toBe(index === 0);
             });
           });
 
-          it('tab nav is not visible', function (this: ThisTest) {
-            const tabNav = this.fixture.debugElement.query(By.css('.nav'));
+          it('tab nav is not visible', () => {
+            const tabNav = testContext.fixture.debugElement.query(By.css('.nav'));
             const isVisible = getComputedStyle(tabNav.nativeElement)['display'] !== 'none';
             expect(isVisible).toBeFalsy();
           });
@@ -675,102 +679,103 @@ describe('Appfx Tabs', () => {
     });
 
     describe('zoom4x', () => {
-      beforeEach(function (this: ThisTest) {
-        this.zoomLevelService['resizeSubject'].next(ZoomLevel.x4);
-        this.fixture.detectChanges();
+      beforeEach(() => {
+        testContext.zoomLevelService['resizeSubject'].next(ZoomLevel.x4);
+        testContext.fixture.detectChanges();
       });
 
-      it('appfx-tab-links is visible', function (this: ThisTest) {
+      it('appfx-tab-links is visible', () => {
         const appfxTabLinks = queryTabLinks();
         expect(appfxTabLinks).toBeTruthy();
       });
 
-      it('tabs panel is hidden by default', function (this: ThisTest) {
-        const tabsHelper = new TabsHelper(this.fixture.debugElement);
+      it('tabs panel is hidden by default', () => {
+        const tabsHelper = new TabsHelper(testContext.fixture.debugElement);
         expect(tabsHelper.areTabsVisible()).toBeFalsy();
       });
 
-      it('`Show tabs` burger icon is visible by default', function (this: ThisTest) {
-        const showTabsIcon = this.fixture.debugElement.query(By.css(`.btn-show-tabs`));
+      it('`Show tabs` burger icon is visible by default', () => {
+        const showTabsIcon = testContext.fixture.debugElement.query(By.css(`.btn-show-tabs`));
         const isVisible = getComputedStyle(showTabsIcon.nativeElement)['display'] !== 'none';
         expect(isVisible).toBeTruthy();
       });
 
-      it('tab name is visible in the header', function (this: ThisTest) {
-        const activeTabTitle = this.fixture.debugElement.query(By.css(`.nav-step-title`)).nativeElement.innerText;
-        expect(activeTabTitle).toEqual(this.steps[0].title);
+      it('tab name is visible in the header', () => {
+        const activeTabTitle = testContext.fixture.debugElement.query(By.css(`.nav-step-title`)).nativeElement
+          .innerText;
+        expect(activeTabTitle).toEqual(testContext.steps[0].title);
       });
 
-      it('only the active tab-content is visible by default', function (this: ThisTest) {
-        const tabContents = this.fixture.debugElement.queryAll(By.css(`.tab-content`));
+      it('only the active tab-content is visible by default', () => {
+        const tabContents = testContext.fixture.debugElement.queryAll(By.css(`.tab-content`));
         tabContents.forEach((tabContent, index) => {
           const isVisible = getComputedStyle(tabContent.nativeElement)['display'] !== 'none';
           expect(isVisible).toBe(index === 0);
         });
       });
 
-      it('tab nav is not visible by default', function (this: ThisTest) {
-        const tabNav = this.fixture.debugElement.query(By.css('.nav'));
+      it('tab nav is not visible by default', () => {
+        const tabNav = testContext.fixture.debugElement.query(By.css('.nav'));
         const isVisible = getComputedStyle(tabNav.nativeElement)['display'] !== 'none';
         expect(isVisible).toBeFalsy();
       });
 
       describe('when `Show tabs` burger icon is clicked', () => {
-        beforeEach(function (this: ThisTest) {
-          const showTabsIcon = this.fixture.debugElement.query(By.css(`.btn-show-tabs`));
+        beforeEach(() => {
+          const showTabsIcon = testContext.fixture.debugElement.query(By.css(`.btn-show-tabs`));
           showTabsIcon.nativeElement.click();
-          this.fixture.detectChanges();
+          testContext.fixture.detectChanges();
         });
 
-        it('tabs panel is opened', function (this: ThisTest) {
-          const tabsHelper = new TabsHelper(this.fixture.debugElement);
+        it('tabs panel is opened', () => {
+          const tabsHelper = new TabsHelper(testContext.fixture.debugElement);
           expect(tabsHelper.areTabsVisible()).toBeTruthy();
         });
 
-        it('showTabsLink is true', function (this: ThisTest) {
-          expect(this.component.tabLinksOpened).toBeTruthy();
+        it('showTabsLink is true', () => {
+          expect(testContext.component.tabLinksOpened).toBeTruthy();
         });
 
-        it('tab-content is hidden', function (this: ThisTest) {
-          const tabContents = this.fixture.debugElement.queryAll(By.css(`.tab-content`));
+        it('tab-content is hidden', () => {
+          const tabContents = testContext.fixture.debugElement.queryAll(By.css(`.tab-content`));
           tabContents.forEach(tabContent => {
             const isVisible = getComputedStyle(tabContent.nativeElement)['display'] !== 'none';
             expect(isVisible).toBeFalsy();
           });
         });
 
-        it('tab nav is visible', function (this: ThisTest) {
-          const tabNav = this.fixture.debugElement.query(By.css('.nav'));
+        it('tab nav is visible', () => {
+          const tabNav = testContext.fixture.debugElement.query(By.css('.nav'));
           const isVisible = getComputedStyle(tabNav.nativeElement)['display'] !== 'none';
           expect(isVisible).toBeTruthy();
         });
 
         describe('when `Close tabs` icon is clicked', () => {
-          beforeEach(function (this: ThisTest) {
-            const closeTabsIcon = this.fixture.debugElement.query(By.css(`.btn-close-tabs`));
+          beforeEach(() => {
+            const closeTabsIcon = testContext.fixture.debugElement.query(By.css(`.btn-close-tabs`));
             closeTabsIcon.nativeElement.click();
-            this.fixture.detectChanges();
+            testContext.fixture.detectChanges();
           });
 
-          it('tabs panel is closed', function (this: ThisTest) {
-            const tabsHelper = new TabsHelper(this.fixture.debugElement);
+          it('tabs panel is closed', () => {
+            const tabsHelper = new TabsHelper(testContext.fixture.debugElement);
             expect(tabsHelper.areTabsVisible()).toBeFalsy();
           });
 
-          it('showTabsLink is false', function (this: ThisTest) {
-            expect(this.component.tabLinksOpened).toBeFalsy();
+          it('showTabsLink is false', () => {
+            expect(testContext.component.tabLinksOpened).toBeFalsy();
           });
 
-          it('only the active tab-content is visible', function (this: ThisTest) {
-            const tabContents = this.fixture.debugElement.queryAll(By.css(`.tab-content`));
+          it('only the active tab-content is visible', () => {
+            const tabContents = testContext.fixture.debugElement.queryAll(By.css(`.tab-content`));
             tabContents.forEach((tabContent, index) => {
               const isVisible = getComputedStyle(tabContent.nativeElement)['display'] !== 'none';
               expect(isVisible).toBe(index === 0);
             });
           });
 
-          it('tab nav is not visible', function (this: ThisTest) {
-            const tabNav = this.fixture.debugElement.query(By.css('.nav'));
+          it('tab nav is not visible', () => {
+            const tabNav = testContext.fixture.debugElement.query(By.css('.nav'));
             const isVisible = getComputedStyle(tabNav.nativeElement)['display'] !== 'none';
             expect(isVisible).toBeFalsy();
           });

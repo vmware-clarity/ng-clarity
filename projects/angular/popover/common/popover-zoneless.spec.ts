@@ -109,13 +109,13 @@ for (const zoneless of [false, true]) {
       popover.open = true;
       await fixture.whenStable();
       expect(button.getAttribute('aria-expanded')).toBe('true');
-      expect(button.classList.contains('active')).toBeTrue();
+      expect(button.classList.contains('active')).toBe(true);
       const outside = trigger('.outside');
       outside.focus();
       outside.click();
       await fixture.whenStable();
       expect(button.getAttribute('aria-expanded')).toBe('false');
-      expect(button.classList.contains('active')).toBeFalse();
+      expect(button.classList.contains('active')).toBe(false);
       expect(document.querySelector('clr-signpost-content')).toBeNull();
       expect(document.activeElement).toBe(outside);
     });
@@ -129,7 +129,7 @@ for (const zoneless of [false, true]) {
       document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
       await fixture.whenStable();
       expect(input.getAttribute('aria-expanded')).toBe('false');
-      expect(popover.open).toBeFalse();
+      expect(popover.open).toBe(false);
     });
 
     it('updates combobox pseudo-focus and closes on native blur', async () => {
@@ -138,7 +138,7 @@ for (const zoneless of [false, true]) {
       input.focus();
       input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
       await fixture.whenStable();
-      expect(popover.open).toBeTrue();
+      expect(popover.open).toBe(true);
       expect(input.getAttribute('aria-expanded')).toBe('true');
       const active = document.getElementById(input.getAttribute('aria-activedescendant'));
       expect(active).not.toBeNull();
@@ -146,13 +146,13 @@ for (const zoneless of [false, true]) {
       trigger('.outside').focus();
       await fixture.whenStable();
       expect(input.getAttribute('aria-expanded')).toBe('false');
-      expect(popover.open).toBeFalse();
+      expect(popover.open).toBe(false);
     });
 
     it('notifies the host when the origin observer closes the popover and disconnects it', async () => {
       let callback: IntersectionObserverCallback;
-      const observer = jasmine.createSpyObj<IntersectionObserver>('IntersectionObserver', ['observe', 'disconnect']);
-      spyOn(window, 'IntersectionObserver').and.callFake(function (cb) {
+      const observer = { observe: vi.fn(), disconnect: vi.fn() } as unknown as IntersectionObserver;
+      vi.spyOn(window, 'IntersectionObserver').mockImplementation(function (cb) {
         callback = cb;
         return observer;
       });
@@ -162,7 +162,7 @@ for (const zoneless of [false, true]) {
       callback([{ intersectionRatio: 1 } as IntersectionObserverEntry], observer);
       callback([{ intersectionRatio: 0 } as IntersectionObserverEntry], observer);
       await fixture.whenStable();
-      expect(popover.open).toBeFalse();
+      expect(popover.open).toBe(false);
       expect(trigger('[clrSignpostTrigger]').getAttribute('aria-expanded')).toBe('false');
       expect(observer.disconnect).toHaveBeenCalled();
       expect(document.querySelector('clr-signpost-content')).toBeNull();
@@ -178,15 +178,15 @@ for (const zoneless of [false, true]) {
         await fixture.whenStable();
         await new Promise(resolve => requestAnimationFrame(resolve));
         await new Promise(resolve => requestAnimationFrame(resolve));
-        expect(popover.open).toBeTrue();
+        expect(popover.open).toBe(true);
         document.dispatchEvent(new Event('scroll'));
         await fixture.whenStable();
-        expect(popover.open).toBeTrue();
+        expect(popover.open).toBe(true);
         window.scrollTo(0, 0);
         await new Promise(resolve => requestAnimationFrame(resolve));
         await new Promise(resolve => requestAnimationFrame(resolve));
         await fixture.whenStable();
-        expect(popover.open).toBeFalse();
+        expect(popover.open).toBe(false);
       } finally {
         host.style.marginTop = '';
         window.scrollTo(0, 0);
@@ -222,10 +222,10 @@ for (const zoneless of [false, true]) {
           })
         );
         await fixture.whenStable();
-        expect(popover.open).toBeTrue();
+        expect(popover.open).toBe(true);
         popover.open = false;
         await fixture.whenStable();
-        expect(popover.open).toBeFalse();
+        expect(popover.open).toBe(false);
         expect(runs).toBe(1);
         ref.destroy();
       }
@@ -240,13 +240,15 @@ for (const zoneless of [false, true]) {
         }
       });
       const error = new Error('focus failed');
-      const handler = spyOn(TestBed.inject(ErrorHandler), 'handleError');
+      const handler = vi.spyOn(TestBed.inject(ErrorHandler), 'handleError').mockImplementation(() => undefined);
       const menu = fixture.nativeElement.querySelector('.persistent clr-dropdown-menu');
-      spyOn(menu, 'focus').and.throwError(error);
+      vi.spyOn(menu, 'focus').mockImplementation(() => {
+        throw error;
+      });
       popover.open = true;
       await fixture.whenStable();
       expect(contexts).toEqual([!zoneless]);
-      expect(handler).toHaveBeenCalledOnceWith(error);
+      expect(handler).toHaveBeenCalledExactlyOnceWith(error);
     });
 
     it('keeps openChange synchronous and emits only actual changes', async () => {
@@ -297,18 +299,18 @@ for (const zoneless of [false, true]) {
       popover.open = true;
       popover.open = false;
       await fixture.whenStable();
-      expect(focusHandler.pseudoFocus.isEmpty()).toBeTrue();
+      expect(focusHandler.pseudoFocus.isEmpty()).toBe(true);
     });
 
     it('coalesces combobox focus requests and cancels them on close or destruction', async () => {
       const popover = service('clr-combobox');
       const handler = fixture.debugElement.query(By.css('clr-combobox')).injector.get(ComboboxFocusHandler);
-      const focus = spyOn(handler, 'focusFirstActive');
+      const focus = vi.spyOn(handler, 'focusFirstActive').mockImplementation(() => undefined);
       handler.scheduleFocusFirstActive();
       handler.scheduleFocusFirstActive();
       await new Promise(resolve => setTimeout(resolve, 0));
       expect(focus).toHaveBeenCalledTimes(1);
-      focus.calls.reset();
+      focus.mockClear();
       popover.open = true;
       handler.scheduleFocusFirstActive();
       popover.open = false;

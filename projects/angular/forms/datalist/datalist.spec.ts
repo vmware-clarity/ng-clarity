@@ -39,35 +39,42 @@ export class TestNativeDatalist {}
 
 type Context = TestContext<ClrDatalist, TestDatalistId>;
 
-export default function (): void {
-  describe('Clarity Datalist Element', function () {
+describe('ClrDatalist', () => {
+  describe('Clarity Datalist Element', () => {
+    let testContext: Context;
+
     let datalistIdService: DatalistIdService;
-    spec(ClrDatalist, TestDatalistId, undefined, {
+    const getContext = spec(ClrDatalist, TestDatalistId, undefined, {
       providers: [DatalistIdService],
     });
-
-    beforeEach(function () {
-      datalistIdService = this.getClarityProvider(DatalistIdService);
+    beforeEach(() => {
+      testContext = getContext() as Context;
     });
 
-    it('id attribute is generated if no id is provided', function (this: Context) {
-      expect(datalistIdService.id).toEqual(this.clarityElement.id);
+    beforeEach(() => {
+      const untypedContext: any = testContext;
+
+      datalistIdService = untypedContext.getClarityProvider(DatalistIdService);
     });
 
-    it('id attribute is used when provided on the element', function (this: Context) {
-      this.testComponent.testId = 'custom-id';
-      this.detectChanges();
-      expect(datalistIdService.id).toEqual(this.clarityElement.id);
-      expect(this.clarityElement.id).toEqual('custom-id');
+    it('id attribute is generated if no id is provided', () => {
+      expect(datalistIdService.id).toEqual(testContext.clarityElement.id);
+    });
+
+    it('id attribute is used when provided on the element', () => {
+      testContext.testComponent.testId = 'custom-id';
+      testContext.detectChanges();
+      expect(datalistIdService.id).toEqual(testContext.clarityElement.id);
+      expect(testContext.clarityElement.id).toEqual('custom-id');
     });
   });
 
-  describe('Native Datalist Element', function () {
+  describe('Native Datalist Element', () => {
     spec(ClrDatalist, TestNativeDatalist);
 
-    it('handles native datalist element without any errors', function () {
+    it('handles native datalist element without any errors', () => {
       const nativeDatalist: HTMLElement = document.getElementById('native-datalist');
       expect(nativeDatalist).toBeTruthy();
     });
   });
-}
+});

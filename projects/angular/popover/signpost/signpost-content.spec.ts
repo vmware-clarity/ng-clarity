@@ -10,18 +10,20 @@ import { TestBed } from '@angular/core/testing';
 // I'm giving up, I'm using the datagrid ones for now.
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrPopoverPosition, ClrPopoverService, POPOVER_HOST_ORIGIN } from '@clr/angular/popover/common';
-import { TestContext } from '@clr/angular/testing';
+import { createTestHelpers, TestContext } from '@clr/angular/testing';
 
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
 import { ClrSignpostContent } from './signpost-content';
 
-export default function (): void {
-  describe('ClrSignpostContent', function () {
+describe('Signpost', () => {
+  describe('ClrSignpostContent', () => {
+    const helpers = createTestHelpers();
+
     let context: TestContext<ClrSignpostContent, SimpleTest>;
 
-    beforeEach(function () {
-      context = this.createOnly(ClrSignpostContent, SimpleTest, [
+    beforeEach(() => {
+      context = helpers.createOnly(ClrSignpostContent, SimpleTest, [
         SignpostIdService,
         ClrPopoverService,
         SignpostFocusManager,
@@ -37,31 +39,31 @@ export default function (): void {
       expect(context.clarityElement.getAttribute('id')).toBeDefined();
     });
 
-    it('projects content when open', function () {
+    it('projects content when open', () => {
       expect(context.clarityElement.textContent).toContain('Signpost content');
     });
 
-    it('has a close button that updates the ClrPopoverService.open value', function () {
+    it('has a close button that updates the ClrPopoverService.open value', () => {
       const closer: HTMLElement = context.clarityElement.querySelector('.signpost-action');
       expect(closer).toBeDefined();
       const service = TestBed.inject(ClrPopoverService);
       service.open = true;
       closer.click();
       context.detectChanges();
-      expect(service.open).toBeFalse();
+      expect(service.open).toBe(false);
     });
 
-    it('takes an input for position', function () {
+    it('takes an input for position', () => {
       context.testComponent.position = ClrPopoverPosition.TOP_MIDDLE;
       context.detectChanges();
       expect(context.clarityDirective.position).toBe(ClrPopoverPosition.TOP_MIDDLE);
     });
 
-    it('has a default signpost content position', function () {
+    it('has a default signpost content position', () => {
       expect(context.clarityDirective.position).toBe(ClrPopoverPosition.RIGHT_MIDDLE);
     });
   });
-}
+});
 
 @Component({
   template: `

@@ -7,34 +7,41 @@
 
 import { DatagridPropertyNumericFilter } from './datagrid-property-numeric-filter';
 
-export default function (): void {
-  describe('DatagridPropertyNumericFilter', function () {
-    it('checks if a number is within the range', function () {
-      this.filter = new DatagridPropertyNumericFilter('a');
-      expect(this.filter.accepts({ a: 1 }, null, 10)).toBe(true);
-      expect(this.filter.accepts({ a: 1 }, null, -1)).toBe(false);
-      expect(this.filter.accepts({ a: 9 }, 1, null)).toBe(true);
-      expect(this.filter.accepts({ a: 9 }, 10, null)).toBe(false);
-    });
+describe('Datagrid', () => {
+  describe('Built-in', () => {
+    describe('DatagridPropertyNumericFilter', () => {
+      let testContext: any;
+      beforeEach(() => {
+        testContext = {};
+      });
 
-    it('accepts strings when not active', function () {
-      this.filter = new DatagridPropertyNumericFilter('a');
-      expect(this.filter.accepts({ a: 'not a number' }, null, null)).toBe(true);
-    });
+      it('checks if a number is within the range', () => {
+        testContext.filter = new DatagridPropertyNumericFilter('a');
+        expect(testContext.filter.accepts({ a: 1 }, null, 10)).toBe(true);
+        expect(testContext.filter.accepts({ a: 1 }, null, -1)).toBe(false);
+        expect(testContext.filter.accepts({ a: 9 }, 1, null)).toBe(true);
+        expect(testContext.filter.accepts({ a: 9 }, 10, null)).toBe(false);
+      });
 
-    it('rejects strings when active', function () {
-      this.filter = new DatagridPropertyNumericFilter('a');
-      expect(this.filter.accepts({ a: 'not a number' }, null, 1)).toBe(false);
-    });
+      it('accepts strings when not active', () => {
+        testContext.filter = new DatagridPropertyNumericFilter('a');
+        expect(testContext.filter.accepts({ a: 'not a number' }, null, null)).toBe(true);
+      });
 
-    it('always rejects undefined', function () {
-      this.filter = new DatagridPropertyNumericFilter('a');
-      expect(this.filter.accepts({}, null, null)).toBe(false);
-    });
+      it('rejects strings when active', () => {
+        testContext.filter = new DatagridPropertyNumericFilter('a');
+        expect(testContext.filter.accepts({ a: 'not a number' }, null, 1)).toBe(false);
+      });
 
-    it('supports nested properties', function () {
-      this.filter = new DatagridPropertyNumericFilter('a.b');
-      expect(this.filter.accepts({ a: { b: 1 } }, 0, 10)).toBe(true);
+      it('always rejects undefined', () => {
+        testContext.filter = new DatagridPropertyNumericFilter('a');
+        expect(testContext.filter.accepts({}, null, null)).toBe(false);
+      });
+
+      it('supports nested properties', () => {
+        testContext.filter = new DatagridPropertyNumericFilter('a.b');
+        expect(testContext.filter.accepts({ a: { b: 1 } }, 0, 10)).toBe(true);
+      });
     });
   });
-}
+});

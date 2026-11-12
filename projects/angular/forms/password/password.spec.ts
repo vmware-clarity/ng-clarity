@@ -14,7 +14,7 @@ import { ClrIcon } from '@clr/angular/icon';
 
 import { ClrPassword } from './password';
 import { ClrPasswordContainer } from './password-container';
-import { ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
+import { ReactiveSpec, TemplateDrivenSpec } from '../tests/control';
 
 @Component({
   template: `<input type="password" clrPassword />`,
@@ -53,7 +53,7 @@ class ReactiveTest {
   });
 }
 
-export default function (): void {
+describe('ClrPassword', () => {
   describe('ClrPassword', () => {
     describe('invalid use', () => {
       it('should throw an error when used without a password container', () => {
@@ -90,4 +90,4 @@ export default function (): void {
       });
     });
   });
-}
+});

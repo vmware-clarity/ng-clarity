@@ -129,11 +129,11 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
     });
 
     it('sets error classes and displays the icon when invalid', () => {
-      expect(containerEl.querySelector('.clr-control-container').classList.contains('clr-error')).toBeFalse();
+      expect(containerEl.querySelector('.clr-control-container').classList.contains('clr-error')).toBe(false);
       expect(containerEl.querySelector('.clr-validate-icon')).toBeFalsy();
       setValid(false);
       fixture.detectChanges();
-      expect(containerEl.querySelector('.clr-control-container').classList.contains('clr-error')).toBeTrue();
+      expect(containerEl.querySelector('.clr-control-container').classList.contains('clr-error')).toBe(true);
       expect(containerEl.querySelector('.clr-validate-icon')).toBeTruthy();
     });
 
@@ -187,10 +187,10 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
     });
 
     it('tracks the validity of the form control', () => {
-      expect(container.showInvalid).toBeFalse();
+      expect(container.showInvalid).toBe(false);
       markControlService.markAsTouched();
       fixture.detectChanges();
-      expect(container.showInvalid).toBeTrue();
+      expect(container.showInvalid).toBe(true);
     });
 
     it('tracks the disabled state', async () => {

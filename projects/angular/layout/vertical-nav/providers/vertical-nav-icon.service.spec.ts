@@ -7,36 +7,38 @@
 
 import { VerticalNavIconService } from './vertical-nav-icon.service';
 
-export default function (): void {
-  describe('Vertical Nav Icon Service', function () {
-    let vertNavService: VerticalNavIconService;
+describe('Vertical Nav', () => {
+  describe('Providers', () => {
+    describe('Vertical Nav Icon Service', function () {
+      let vertNavService: VerticalNavIconService;
 
-    beforeEach(() => {
-      vertNavService = new VerticalNavIconService();
-    });
+      beforeEach(() => {
+        vertNavService = new VerticalNavIconService();
+      });
 
-    afterEach(() => {
-      vertNavService = null;
-    });
+      afterEach(() => {
+        vertNavService = null;
+      });
 
-    it('supports registration of icons', () => {
-      expect(vertNavService.hasIcons).toBe(false);
+      it('supports registration of icons', () => {
+        expect(vertNavService.hasIcons).toBe(false);
 
-      vertNavService.registerIcon();
+        vertNavService.registerIcon();
 
-      expect(vertNavService.hasIcons).toBe(true);
-    });
+        expect(vertNavService.hasIcons).toBe(true);
+      });
 
-    it('supports unregisration of icons', () => {
-      expect(vertNavService.hasIcons).toBe(false);
+      it('supports unregisration of icons', () => {
+        expect(vertNavService.hasIcons).toBe(false);
 
-      vertNavService.registerIcon();
+        vertNavService.registerIcon();
 
-      expect(vertNavService.hasIcons).toBe(true);
+        expect(vertNavService.hasIcons).toBe(true);
 
-      vertNavService.unregisterIcon();
+        vertNavService.unregisterIcon();
 
-      expect(vertNavService.hasIcons).toBe(false);
+        expect(vertNavService.hasIcons).toBe(false);
+      });
     });
   });
-}
+});

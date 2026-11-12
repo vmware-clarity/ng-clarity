@@ -83,7 +83,12 @@ export interface ThisTest {
 }
 
 describe('CompositeFiltersComponent', () => {
-  beforeEach(function (this: ThisTest) {
+  let testContext: ThisTest;
+  beforeEach(() => {
+    testContext = {} as ThisTest;
+  });
+
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         ClrCheckboxModule,
@@ -107,93 +112,99 @@ describe('CompositeFiltersComponent', () => {
       ],
       providers: [DatagridFiltersStrings],
     });
-    this.fixture = TestBed.createComponent(CompositeFiltersComponent);
-    this.component = this.fixture.componentInstance;
-    this.component.filterableProperties = filterableProperties;
+    testContext.fixture = TestBed.createComponent(CompositeFiltersComponent);
+    testContext.component = testContext.fixture.componentInstance;
+    testContext.component.filterableProperties = filterableProperties;
   });
 
-  afterEach(function (this: ThisTest) {
-    this.fixture.destroy();
+  afterEach(() => {
+    testContext.fixture.destroy();
   });
-  it('is properly initialized', function (this: ThisTest) {
-    this.fixture.detectChanges();
-    expect(this.component).toBeTruthy();
-    expect(this.component.selectedFilterableProperty).toEqual(stringProperty);
-    expect(this.component.propertyType).toEqual(PropertyType.String);
-    expect(this.component.stringProperty).toEqual(stringProperty);
+  it('is properly initialized', () => {
+    testContext.fixture.detectChanges();
+    expect(testContext.component).toBeTruthy();
+    expect(testContext.component.selectedFilterableProperty).toEqual(stringProperty);
+    expect(testContext.component.propertyType).toEqual(PropertyType.String);
+    expect(testContext.component.stringProperty).toEqual(stringProperty);
   });
-  it('on property change', function (this: ThisTest) {
-    const addNewButton: HTMLButtonElement = this.fixture.debugElement.nativeElement.querySelector(
+  it('on property change', () => {
+    const addNewButton: HTMLButtonElement = testContext.fixture.debugElement.nativeElement.querySelector(
       'button[data-test-id="add-button"]'
     );
     expect(addNewButton).toBeTruthy();
     addNewButton.click();
-    this.fixture.detectChanges();
-    expect(this.component.signPostOpened).toBeTruthy();
+    testContext.fixture.detectChanges();
+    expect(testContext.component.signPostOpened).toBeTruthy();
     const propertySelect: HTMLSelectElement = document.body.querySelector('select');
     expect(propertySelect).toBeTruthy();
     expect(propertySelect.options.length).toEqual(2);
 
     propertySelect.value = propertySelect.options[1].value;
     propertySelect.dispatchEvent(new Event('change'));
-    this.fixture.detectChanges();
-    expect(this.component.selectedFilterableProperty).toEqual(filterableProperties[1]);
-    expect(this.component.propertyType).toEqual(PropertyType.Enum);
-    expect(this.component.enumProperty).toEqual(enumProperty);
+    testContext.fixture.detectChanges();
+    expect(testContext.component.selectedFilterableProperty).toEqual(filterableProperties[1]);
+    expect(testContext.component.propertyType).toEqual(PropertyType.Enum);
+    expect(testContext.component.enumProperty).toEqual(enumProperty);
   });
-  it('displays property filters', function (this: ThisTest) {
-    this.component.propertyFilters.push(stringPropertyFilter);
-    this.component.propertyFilters.push(enumPropertyFilter);
-    this.fixture.detectChanges();
-    expect(this.component.propertyFilters.length).toEqual(2);
+  it('displays property filters', () => {
+    testContext.component.propertyFilters.push(stringPropertyFilter);
+    testContext.component.propertyFilters.push(enumPropertyFilter);
+    testContext.fixture.detectChanges();
+    expect(testContext.component.propertyFilters.length).toEqual(2);
     const propertyFilterElements: HTMLElement[] =
-      this.fixture.debugElement.nativeElement.querySelectorAll('appfx-manage-filter');
-    const clearAllButtonElement: HTMLButtonElement = this.fixture.debugElement.nativeElement.querySelector(
+      testContext.fixture.debugElement.nativeElement.querySelectorAll('appfx-manage-filter');
+    const clearAllButtonElement: HTMLButtonElement = testContext.fixture.debugElement.nativeElement.querySelector(
       'button[data-test-id="clear-all-button"]'
     );
     expect(propertyFilterElements.length).toEqual(2);
     expect(clearAllButtonElement).toBeTruthy();
   });
-  it('emits property filter change event', function (this: ThisTest) {
-    spyOn(this.component.propertyFiltersChange, 'emit');
-    this.component.onFilterCriteriaChange(stringPropertyFilter);
-    expect(this.component.propertyFilters.length).toEqual(1);
-    expect(this.component.propertyFiltersChange.emit).toHaveBeenCalledWith([stringPropertyFilter]);
-    this.component.onFilterCriteriaChange(enumPropertyFilter);
-    expect(this.component.propertyFilters.length).toEqual(2);
-    expect(this.component.propertyFiltersChange.emit).toHaveBeenCalledWith([stringPropertyFilter, enumPropertyFilter]);
+  it('emits property filter change event', () => {
+    vi.spyOn(testContext.component.propertyFiltersChange, 'emit').mockImplementation(() => undefined);
+    testContext.component.onFilterCriteriaChange(stringPropertyFilter);
+    expect(testContext.component.propertyFilters.length).toEqual(1);
+    expect(testContext.component.propertyFiltersChange.emit).toHaveBeenCalledWith([stringPropertyFilter]);
+    testContext.component.onFilterCriteriaChange(enumPropertyFilter);
+    expect(testContext.component.propertyFilters.length).toEqual(2);
+    expect(testContext.component.propertyFiltersChange.emit).toHaveBeenCalledWith([
+      stringPropertyFilter,
+      enumPropertyFilter,
+    ]);
 
     const modifiedStringFilter = new PropertyFilter();
     modifiedStringFilter.criteria = [stringPredicate1];
     modifiedStringFilter.operator = LogicalOperator.And;
-    this.component.onFilterCriteriaChange(modifiedStringFilter);
-    expect(this.component.propertyFilters.length).toEqual(2);
-    expect(this.component.propertyFiltersChange.emit).toHaveBeenCalledWith([modifiedStringFilter, enumPropertyFilter]);
+    testContext.component.onFilterCriteriaChange(modifiedStringFilter);
+    expect(testContext.component.propertyFilters.length).toEqual(2);
+    expect(testContext.component.propertyFiltersChange.emit).toHaveBeenCalledWith([
+      modifiedStringFilter,
+      enumPropertyFilter,
+    ]);
 
     modifiedStringFilter.criteria.splice(0);
-    this.component.onFilterCriteriaChange(modifiedStringFilter);
-    expect(this.component.propertyFilters.length).toEqual(1);
-    expect(this.component.propertyFiltersChange.emit).toHaveBeenCalledWith([enumPropertyFilter]);
+    testContext.component.onFilterCriteriaChange(modifiedStringFilter);
+    expect(testContext.component.propertyFilters.length).toEqual(1);
+    expect(testContext.component.propertyFiltersChange.emit).toHaveBeenCalledWith([enumPropertyFilter]);
   });
-  it('removes all filters on clear all click', function (this: ThisTest) {
-    spyOn(this.component.propertyFiltersChange, 'emit');
-    this.component.propertyFilters.push(stringPropertyFilter);
-    this.component.propertyFilters.push(enumPropertyFilter);
-    this.fixture.detectChanges();
-    const clearAllButtonElement: HTMLButtonElement = this.fixture.debugElement.nativeElement.querySelector(
+  it('removes all filters on clear all click', () => {
+    vi.spyOn(testContext.component.propertyFiltersChange, 'emit').mockImplementation(() => undefined);
+    testContext.component.propertyFilters.push(stringPropertyFilter);
+    testContext.component.propertyFilters.push(enumPropertyFilter);
+    testContext.fixture.detectChanges();
+    const clearAllButtonElement: HTMLButtonElement = testContext.fixture.debugElement.nativeElement.querySelector(
       'button[data-test-id="clear-all-button"]'
     );
     expect(clearAllButtonElement).toBeTruthy();
     clearAllButtonElement.click();
-    this.fixture.detectChanges();
-    expect(this.component.propertyFilters.length).toEqual(0);
-    expect(this.component.propertyFiltersChange.emit).toHaveBeenCalledWith([]);
+    testContext.fixture.detectChanges();
+    expect(testContext.component.propertyFilters.length).toEqual(0);
+    expect(testContext.component.propertyFiltersChange.emit).toHaveBeenCalledWith([]);
   });
-  it('shows/hides the display filters on show/hide button click', function (this: ThisTest) {
-    this.component.propertyFilters.push(stringPropertyFilter);
-    this.component.propertyFilters.push(enumPropertyFilter);
-    this.fixture.detectChanges();
-    const hideButtonElement: HTMLButtonElement = this.fixture.debugElement.nativeElement.querySelector(
+  it('shows/hides the display filters on show/hide button click', () => {
+    testContext.component.propertyFilters.push(stringPropertyFilter);
+    testContext.component.propertyFilters.push(enumPropertyFilter);
+    testContext.fixture.detectChanges();
+    const hideButtonElement: HTMLButtonElement = testContext.fixture.debugElement.nativeElement.querySelector(
       'button[data-test-id="hide-filters"]'
     );
     expect(hideButtonElement).toBeTruthy();
@@ -201,9 +212,9 @@ describe('CompositeFiltersComponent', () => {
     expect(hideButtonElement.getAttribute(ariaLabelAttributeName)).toEqual('Hide filters');
 
     hideButtonElement.click();
-    this.fixture.detectChanges();
+    testContext.fixture.detectChanges();
     const propertyFilterElements: HTMLElement[] =
-      this.fixture.debugElement.nativeElement.querySelectorAll('appfx-manage-filter');
+      testContext.fixture.debugElement.nativeElement.querySelectorAll('appfx-manage-filter');
     expect(hideButtonElement.innerText.trim()).toEqual('SHOW(2)');
     expect(hideButtonElement.getAttribute(ariaLabelAttributeName)).toEqual('Show 2 filters');
     expect(propertyFilterElements.length).toEqual(2);
@@ -211,7 +222,7 @@ describe('CompositeFiltersComponent', () => {
     expect(propertyFilterElements[1].hasAttribute('hidden')).toBeTruthy();
 
     hideButtonElement.click();
-    this.fixture.detectChanges();
+    testContext.fixture.detectChanges();
     expect(hideButtonElement.innerText.trim()).toEqual('HIDE');
     expect(hideButtonElement.getAttribute(ariaLabelAttributeName)).toEqual('Hide filters');
     expect(propertyFilterElements.length).toEqual(2);

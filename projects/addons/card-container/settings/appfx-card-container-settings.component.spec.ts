@@ -48,14 +48,14 @@ describe('AppfxCardContainerSettingsComponent', () => {
 
   describe('when call toggleShowHide', () => {
     it('then emit event with cardId', () => {
-      spyOn(component.toggleCardVisibility, 'emit').and.callThrough();
+      vi.spyOn(component.toggleCardVisibility, 'emit');
       component.toggleShowHide(sampleContainerCards[0]);
       fixture.detectChanges();
       expect(component.toggleCardVisibility.emit).toHaveBeenCalledWith(sampleContainerCards[0].id);
     });
 
     it('then should not emit event when canHide property of the card is false', () => {
-      spyOn(component.toggleCardVisibility, 'emit').and.callThrough();
+      vi.spyOn(component.toggleCardVisibility, 'emit');
       component.toggleShowHide(sampleContainerCards[2]);
       fixture.detectChanges();
       expect(component.toggleCardVisibility.emit).not.toHaveBeenCalled();

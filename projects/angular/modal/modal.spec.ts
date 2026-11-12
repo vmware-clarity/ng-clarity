@@ -131,7 +131,7 @@ describe('Modal', () => {
   });
 
   it('should not open if already opened', async () => {
-    spyOn(modal._openChanged, 'emit');
+    vi.spyOn(modal._openChanged, 'emit').mockImplementation(() => undefined);
     modal.open();
     expect(modal._openChanged.emit).not.toHaveBeenCalled();
   });
@@ -139,7 +139,7 @@ describe('Modal', () => {
   it('emits clrModalOpenChange only once when the two-way binding propagates the closing', async () => {
     // The closing render emits the notification, which updates the two-way bound property, and the next change
     // detection feeds the input back as false.
-    spyOn(modal._openChanged, 'emit').and.callThrough();
+    vi.spyOn(modal._openChanged, 'emit');
     modal.close();
     fixture.detectChanges();
     await delay();
@@ -147,30 +147,30 @@ describe('Modal', () => {
 
     fixture.detectChanges();
     await delay();
-    expect(modal._openChanged.emit).toHaveBeenCalledOnceWith(false);
+    expect(modal._openChanged.emit).toHaveBeenCalledExactlyOnceWith(false);
   });
 
   it('stops tracking the modal in the modal stack when destroyed while open', () => {
     const modalStackService = TestBed.inject(ModalStackService);
-    spyOn(modalStackService, 'trackModalClose');
+    vi.spyOn(modalStackService, 'trackModalClose').mockImplementation(() => undefined);
     fixture.destroy();
     expect(modalStackService.trackModalClose).toHaveBeenCalledWith(modal);
   });
 
   it('emits clrModalOpenChange once the modal has been removed after closing', async () => {
-    spyOn(modal._openChanged, 'emit');
+    vi.spyOn(modal._openChanged, 'emit').mockImplementation(() => undefined);
     modal.close();
     expect(modal._openChanged.emit).not.toHaveBeenCalled();
 
     fixture.detectChanges();
     await delay();
-    expect(modal._openChanged.emit).toHaveBeenCalledOnceWith(false);
+    expect(modal._openChanged.emit).toHaveBeenCalledExactlyOnceWith(false);
     expect(fixture.nativeElement.querySelector('.modal-dialog')).toBeNull();
   });
 
   it('should not close when already closed', async () => {
     fixture.componentInstance.opened = false;
-    spyOn(modal, 'close');
+    vi.spyOn(modal, 'close').mockImplementation(() => undefined);
     expect(modal.close).not.toHaveBeenCalled();
   });
 
@@ -278,7 +278,7 @@ describe('Modal', () => {
     const backdrop: HTMLElement = compiled.querySelector('div.modal-backdrop');
     const modalDialog: HTMLElement = compiled.querySelector('.modal-dialog');
 
-    expect(backdrop.classList.contains('static')).toBeTrue();
+    expect(backdrop.classList.contains('static')).toBe(true);
 
     backdrop.click();
     fixture.detectChanges();
@@ -288,7 +288,7 @@ describe('Modal', () => {
     fixture.detectChanges();
     await fixture.whenStable();
 
-    expect(modalDialog.contains(document.activeElement)).toBeTrue();
+    expect(modalDialog.contains(document.activeElement)).toBe(true);
   });
 
   it('traps user focus', () => {
@@ -352,8 +352,8 @@ describe('Modal', () => {
 
     const maybeTitleWrapper = modalHeader.children[0];
     const maybleCloseButton = modalHeader.children[1];
-    expect(maybeTitleWrapper.classList.contains('modal-title-wrapper')).toBeTrue();
-    expect(maybleCloseButton.classList.contains('close')).toBeTrue();
+    expect(maybeTitleWrapper.classList.contains('modal-title-wrapper')).toBe(true);
+    expect(maybleCloseButton.classList.contains('close')).toBe(true);
   });
 });
 
@@ -421,7 +421,7 @@ describe('Modal with animations', () => {
     opener.focus();
     await open();
     await fixture.whenStable();
-    expect(query('.modal-dialog').contains(document.activeElement)).toBeTrue();
+    expect(query('.modal-dialog').contains(document.activeElement)).toBe(true);
 
     modal.close();
     fixture.detectChanges();
@@ -463,7 +463,7 @@ describe('Modal with animations', () => {
 
   it('does not notify the closing when destroyed right after closing', async () => {
     await open();
-    spyOn(modal._openChanged, 'emit');
+    vi.spyOn(modal._openChanged, 'emit').mockImplementation(() => undefined);
 
     modal.close();
     fixture.destroy();
