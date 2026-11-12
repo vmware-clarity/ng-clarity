@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, PLATFORM_ID, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, PLATFORM_ID, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flushMicrotasks, TestBed } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { ClrIcon } from '@clr/angular/icon';
@@ -135,6 +135,10 @@ describe('Tree View', () => {
           const stringsService = new ClrCommonStringsService();
           testContext.focusManagerService = new TreeFocusManagerService<void>();
           const platformID = { provide: PLATFORM_ID, useValue: 'browser' };
+          TestBed.configureTestingModule({
+            providers: [{ provide: ChangeDetectorRef, useValue: { markForCheck: vi.fn() } }],
+          });
+          // Direct construction needs the node's injected rendering and animation dependencies.
           TestBed.runInInjectionContext(() => {
             testContext.parent = new ClrTreeNode(
               platformID,
