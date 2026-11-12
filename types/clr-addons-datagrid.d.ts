@@ -1575,8 +1575,8 @@ declare class DatagridColumnToggleComponent implements OnDestroy {
     columnHiddenStateChange: EventEmitter<ColumnHiddenState>;
     positions: ConnectionPositionPair[];
     openState: boolean;
-    viewId: string | undefined;
     overlay: CdkConnectedOverlay;
+    protected readonly viewId: i0.WritableSignal<string>;
     constructor(dgStrings: DatagridStrings);
     get hasOnlyOneVisibleColumn(): boolean;
     ngOnDestroy(): void;
