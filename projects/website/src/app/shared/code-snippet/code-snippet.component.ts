@@ -8,12 +8,8 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { ChangeDetectionStrategy, Component, input, Input } from '@angular/core';
 import { ClarityIcons, ClrIcon, copyIcon } from '@clr/angular';
-import prismjs from 'prismjs';
 
-// add languages for code highlighting
-import 'prismjs/components/prism-typescript';
-import 'prismjs/components/prism-bash';
-import 'prismjs/components/prism-json';
+import prismjs from './prism';
 
 /**
  * Describe ES5/6 module import
