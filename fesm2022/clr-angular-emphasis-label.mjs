@@ -1,75 +1,92 @@
-import * as i0 from '@angular/core';
-import { HostListener, Input, ChangeDetectionStrategy, Component } from '@angular/core';
-import { ClrBadge } from '@clr/angular/emphasis/badge';
-import { Type } from '@clr/angular/emphasis/common';
-
-/*
- * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
+import * as i0 from "@angular/core";
+import { ChangeDetectionStrategy, Component, HostListener, Input } from "@angular/core";
+import { ClrBadge } from "@clr/angular/emphasis/badge";
+import { Type } from "@clr/angular/emphasis/common";
 var ClrLabelColors;
-(function (ClrLabelColors) {
-    ClrLabelColors["None"] = "";
-    ClrLabelColors["Info"] = "info";
-    ClrLabelColors["Warning"] = "warning";
-    ClrLabelColors["Danger"] = "danger";
-    ClrLabelColors["Success"] = "success";
-    ClrLabelColors["Gray"] = "gray";
-    ClrLabelColors["Blue"] = "blue";
-    ClrLabelColors["LightBlue"] = "light-blue";
-    ClrLabelColors["Orange"] = "orange";
-    ClrLabelColors["Purple"] = "purple";
+(function(ClrLabelColors) {
+	ClrLabelColors["None"] = "";
+	ClrLabelColors["Info"] = "info";
+	ClrLabelColors["Warning"] = "warning";
+	ClrLabelColors["Danger"] = "danger";
+	ClrLabelColors["Success"] = "success";
+	ClrLabelColors["Gray"] = "gray";
+	ClrLabelColors["Blue"] = "blue";
+	ClrLabelColors["LightBlue"] = "light-blue";
+	ClrLabelColors["Orange"] = "orange";
+	ClrLabelColors["Purple"] = "purple";
 })(ClrLabelColors || (ClrLabelColors = {}));
-class ClrLabel {
-    constructor(el) {
-        this.el = el;
-        this.color = ClrLabelColors.None;
-        this.badgeText = '';
-        this.textContent = '';
-        this.clickable = false;
-        this.disabled = false;
-        this.type = Type.Outlined;
-        this.stopClickIfDisabled = ($event) => {
-            if (this.clickable && this.disabled) {
-                $event.preventDefault();
-                $event.stopImmediatePropagation();
-            }
-        };
-        // Capture phase, so it runs before the click handlers that the app binds on the same element.
-        // No removeEventListener needed: the listener lives on the host element and only references this
-        // instance, so both are garbage-collected together once Angular destroys the component.
-        el.nativeElement.addEventListener('click', this.stopClickIfDisabled, true);
-    }
-    get isSolid() {
-        return this.type === Type.Solid;
-    }
-    get colorClass() {
-        return this.color ? `label-${this.color}` : '';
-    }
-    onActivationKeydown($event) {
-        if (this.clickable && !this.disabled && $event.target === this.el.nativeElement) {
-            $event.preventDefault(); // keep space from scrolling the page
-            this.el.nativeElement.click();
-        }
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrLabel, deps: [{ token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "22.1.2", type: ClrLabel, isStandalone: true, selector: "clr-label", inputs: { color: ["clrColor", "color"], badgeText: ["clrBadgeText", "badgeText"], textContent: ["clrText", "textContent"], clickable: ["clrClickable", "clickable"], disabled: ["clrDisabled", "disabled"], type: ["clrType", "type"] }, host: { listeners: { "keydown.enter": "onActivationKeydown($event)", "keydown.space": "onActivationKeydown($event)" }, properties: { "class.clickable": "clickable", "class.disabled": "disabled", "attr.role": "clickable ? 'button' : null", "attr.tabindex": "clickable && !disabled ? 0 : null", "attr.aria-disabled": "clickable && disabled ? 'true' : null", "class.solid": "isSolid", "class": "colorClass" }, classAttribute: "label" }, ngImport: i0, template: `@if (textContent) {
-      <span class="text">{{ textContent }}</span>
-    }
-
-    @if (badgeText) {
-      <clr-badge>{{ badgeText }}</clr-badge>
-    }
-
-    <ng-content></ng-content>`, isInline: true, dependencies: [{ kind: "component", type: ClrBadge, selector: "clr-badge", inputs: ["clrColor", "clrType"] }], changeDetection: i0.ChangeDetectionStrategy.Eager }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrLabel, decorators: [{
-            type: Component,
-            args: [{
-                    selector: 'clr-label',
-                    template: `@if (textContent) {
+var ClrLabel = class ClrLabel {
+	constructor(el) {
+		this.el = el;
+		this.color = ClrLabelColors.None;
+		this.badgeText = "";
+		this.textContent = "";
+		this.clickable = false;
+		this.disabled = false;
+		this.type = Type.Outlined;
+		this.stopClickIfDisabled = ($event) => {
+			if (this.clickable && this.disabled) {
+				$event.preventDefault();
+				$event.stopImmediatePropagation();
+			}
+		};
+		el.nativeElement.addEventListener("click", this.stopClickIfDisabled, true);
+	}
+	get isSolid() {
+		return this.type === Type.Solid;
+	}
+	get colorClass() {
+		return this.color ? `label-${this.color}` : "";
+	}
+	onActivationKeydown($event) {
+		if (this.clickable && !this.disabled && $event.target === this.el.nativeElement) {
+			$event.preventDefault();
+			this.el.nativeElement.click();
+		}
+	}
+	static {
+		this.ɵfac = i0.ɵɵngDeclareFactory({
+			minVersion: "12.0.0",
+			version: "22.2.4",
+			ngImport: i0,
+			type: ClrLabel,
+			deps: [{ token: i0.ElementRef }],
+			target: i0.ɵɵFactoryTarget.Component
+		});
+	}
+	static {
+		this.ɵcmp = i0.ɵɵngDeclareComponent({
+			minVersion: "17.0.0",
+			version: "22.2.4",
+			type: ClrLabel,
+			isStandalone: true,
+			selector: "clr-label",
+			inputs: {
+				color: ["clrColor", "color"],
+				badgeText: ["clrBadgeText", "badgeText"],
+				textContent: ["clrText", "textContent"],
+				clickable: ["clrClickable", "clickable"],
+				disabled: ["clrDisabled", "disabled"],
+				type: ["clrType", "type"]
+			},
+			host: {
+				listeners: {
+					"keydown.enter": "onActivationKeydown($event)",
+					"keydown.space": "onActivationKeydown($event)"
+				},
+				properties: {
+					"class.clickable": "clickable",
+					"class.disabled": "disabled",
+					"attr.role": "clickable ? 'button' : null",
+					"attr.tabindex": "clickable && !disabled ? 0 : null",
+					"attr.aria-disabled": "clickable && disabled ? 'true' : null",
+					"class.solid": "isSolid",
+					"class": "colorClass"
+				},
+				classAttribute: "label"
+			},
+			ngImport: i0,
+			template: `@if (textContent) {
       <span class="text">{{ textContent }}</span>
     }
 
@@ -78,55 +95,84 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImpor
     }
 
     <ng-content></ng-content>`,
-                    host: {
-                        class: 'label',
-                        '[class.clickable]': 'clickable',
-                        '[class.disabled]': 'disabled',
-                        '[attr.role]': "clickable ? 'button' : null",
-                        '[attr.tabindex]': 'clickable && !disabled ? 0 : null',
-                        '[attr.aria-disabled]': "clickable && disabled ? 'true' : null",
-                        '[class.solid]': 'isSolid',
-                        '[class]': 'colorClass',
-                    },
-                    imports: [ClrBadge],
-                    changeDetection: ChangeDetectionStrategy.Eager,
-                }]
-        }], ctorParameters: () => [{ type: i0.ElementRef }], propDecorators: { color: [{
-                type: Input,
-                args: ['clrColor']
-            }], badgeText: [{
-                type: Input,
-                args: ['clrBadgeText']
-            }], textContent: [{
-                type: Input,
-                args: ['clrText']
-            }], clickable: [{
-                type: Input,
-                args: ['clrClickable']
-            }], disabled: [{
-                type: Input,
-                args: ['clrDisabled']
-            }], type: [{
-                type: Input,
-                args: ['clrType']
-            }], onActivationKeydown: [{
-                type: HostListener,
-                args: ['keydown.enter', ['$event']]
-            }, {
-                type: HostListener,
-                args: ['keydown.space', ['$event']]
-            }] } });
+			isInline: true,
+			dependencies: [{
+				kind: "component",
+				type: ClrBadge,
+				selector: "clr-badge",
+				inputs: ["clrColor", "clrType"]
+			}],
+			changeDetection: i0.ChangeDetectionStrategy.Eager
+		});
+	}
+};
+i0.ɵɵngDeclareClassMetadata({
+	minVersion: "12.0.0",
+	version: "22.2.4",
+	ngImport: i0,
+	type: ClrLabel,
+	decorators: [{
+		type: Component,
+		args: [{
+			selector: "clr-label",
+			template: `@if (textContent) {
+      <span class="text">{{ textContent }}</span>
+    }
 
-/*
- * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
+    @if (badgeText) {
+      <clr-badge>{{ badgeText }}</clr-badge>
+    }
 
-/**
- * Generated bundle index. Do not edit.
- */
-
+    <ng-content></ng-content>`,
+			host: {
+				class: "label",
+				"[class.clickable]": "clickable",
+				"[class.disabled]": "disabled",
+				"[attr.role]": "clickable ? 'button' : null",
+				"[attr.tabindex]": "clickable && !disabled ? 0 : null",
+				"[attr.aria-disabled]": "clickable && disabled ? 'true' : null",
+				"[class.solid]": "isSolid",
+				"[class]": "colorClass"
+			},
+			imports: [ClrBadge],
+			changeDetection: ChangeDetectionStrategy.Eager
+		}]
+	}],
+	ctorParameters: () => [{ type: i0.ElementRef }],
+	propDecorators: {
+		color: [{
+			type: Input,
+			args: ["clrColor"]
+		}],
+		badgeText: [{
+			type: Input,
+			args: ["clrBadgeText"]
+		}],
+		textContent: [{
+			type: Input,
+			args: ["clrText"]
+		}],
+		clickable: [{
+			type: Input,
+			args: ["clrClickable"]
+		}],
+		disabled: [{
+			type: Input,
+			args: ["clrDisabled"]
+		}],
+		type: [{
+			type: Input,
+			args: ["clrType"]
+		}],
+		onActivationKeydown: [{
+			type: HostListener,
+			args: ["keydown.enter", ["$event"]]
+		}, {
+			type: HostListener,
+			args: ["keydown.space", ["$event"]]
+		}]
+	}
+});
 export { ClrLabel, ClrLabelColors };
+
 //# sourceMappingURL=clr-angular-emphasis-label.mjs.map
