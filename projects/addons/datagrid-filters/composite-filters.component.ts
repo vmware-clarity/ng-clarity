@@ -107,42 +107,73 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   @Output() propertyFiltersChange: EventEmitter<PropertyFilter[]> = new EventEmitter<PropertyFilter[]>();
 
   readonly stringPropertyType: PropertyType = PropertyType.String;
+
   readonly enumPropertyType: PropertyType = PropertyType.Enum;
+
   readonly numericPropertyType: PropertyType = PropertyType.Numeric;
+
   readonly dateTimePropertyType: PropertyType = PropertyType.DateTime;
+
   readonly userPropertyType: PropertyType = PropertyType.User;
 
-  readonly popoverId = uniqueIdFactory();
-  readonly popoverPosition = ClrPopoverPosition.BOTTOM_LEFT;
-  readonly popoverType = ClrPopoverType.DROPDOWN;
   selectedFilterableProperty: FilterablePropertyDefinition;
+
   propertyType: PropertyType;
+
   stringProperty: StringPropertyDefinition;
+
   enumProperty: EnumPropertyDefinition;
+
   numericProperty: NumericPropertyDefinition;
+
   dateTimeProperty: DateTimePropertyDefinition;
+
   userProperty: UserPropertyDefinition;
+
   collapsedFilters = false;
+
   showHideFiltersArrowDir = 'left';
+
   showHideFiltersLabel: string;
+
   showHideFiltersAriaLabel: string;
 
+  protected readonly popoverId = uniqueIdFactory();
+
+  protected readonly popoverPosition = ClrPopoverPosition.BOTTOM_LEFT;
+
+  protected readonly popoverType = ClrPopoverType.DROPDOWN;
+
   @ViewChild(ClrCombobox) private fieldCombobox: ClrCombobox<FilterablePropertyDefinition>;
+
   @ViewChild('addButton', { static: true }) private addButton: ElementRef<HTMLButtonElement>;
+
   @ViewChild('filterContainer') private filterContainer: ElementRef<HTMLElement>;
+
   private readonly injector = inject(Injector);
+
   private readonly destroyRef = inject(DestroyRef);
+
   private destroyed = false;
+
   /** Keys (see toggleKey) of the toggle filters that are ON. */
   private rawPredefinedFilters: FilterablePropertyDefinition[] = [];
+
   private rawSemiPredefinedFilters: EnumPropertyDefinition[] = [];
+
   private rawToggleFilters: ToggleFilter[] = [];
+
   private resolvedPredefinedFilters: FilterablePropertyDefinition[] = [];
+
   private resolvedSemiPredefinedFilters: EnumPropertyDefinition[] = [];
+
   private resolvedToggleFilters: ToggleFilter[] = [];
+
   /** Fields ignored by the last resolution, reported with console.warn. */
   private ignoredFieldEntries: string[] = [];
+
   private initialized = false;
+
   private readonly activeToggleKeys = new Set<string>();
 
   constructor(
@@ -166,6 +197,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   get predefinedFilters(): FilterablePropertyDefinition[] {
     return this.resolvedPredefinedFilters;
   }
+
   set predefinedFilters(value: FilterablePropertyDefinition[]) {
     this.rawPredefinedFilters = value;
     this.resolveFieldOwners();
@@ -180,6 +212,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   get semiPredefinedFilters(): EnumPropertyDefinition[] {
     return this.resolvedSemiPredefinedFilters;
   }
+
   set semiPredefinedFilters(value: EnumPropertyDefinition[]) {
     this.rawSemiPredefinedFilters = value;
     this.resolveFieldOwners();
@@ -197,6 +230,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   get toggleFilters(): ToggleFilter[] {
     return this.resolvedToggleFilters;
   }
+
   set toggleFilters(value: ToggleFilter[]) {
     this.rawToggleFilters = value;
     this.resolveFieldOwners();
@@ -210,7 +244,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     this.popoverService.open = open;
   }
 
-  get visibleProperties(): FilterablePropertyDefinition[] {
+  protected get visibleProperties(): FilterablePropertyDefinition[] {
     const properties = new Map<string, FilterablePropertyDefinition>();
     for (const property of [...this.predefinedFilters, ...this.activeFilters()]) {
       if (!properties.has(property.property) && !this.isSemiPredefined(property)) {
@@ -220,7 +254,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     return [...properties.values()];
   }
 
-  get availableProperties(): FilterablePropertyDefinition[] {
+  protected get availableProperties(): FilterablePropertyDefinition[] {
     const visibleKeys = new Set(
       [...this.visibleProperties, ...this.semiPredefinedFilters, ...this.toggleProperties()].map(
         property => property.property
@@ -229,124 +263,26 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     return (this.filterableProperties || []).filter(property => !visibleKeys.has(property.property));
   }
 
-  get userAddedFiltersCount(): number {
+  protected get userAddedFiltersCount(): number {
     return this.activeFilters().filter(property => !this.isPredefined(property) && !this.isSemiPredefined(property))
       .length;
   }
 
-  get predefinedProperties(): FilterablePropertyDefinition[] {
+  protected get predefinedProperties(): FilterablePropertyDefinition[] {
     return this.visibleProperties.filter(property => this.isPredefined(property));
   }
 
-  get userAddedProperties(): FilterablePropertyDefinition[] {
+  protected get userAddedProperties(): FilterablePropertyDefinition[] {
     return this.visibleProperties.filter(property => !this.isPredefined(property));
   }
 
   /** True when the predefined group has content (toggles or predefined pills). */
-  get hasPredefinedGroup(): boolean {
+  protected get hasPredefinedGroup(): boolean {
     return this.toggleFilters.length > 0 || this.predefinedProperties.length > 0;
   }
 
-  get hasActiveCriteria(): boolean {
+  protected get hasActiveCriteria(): boolean {
     return this.propertyFilters.length > 0 || this.activeToggleKeys.size > 0;
-  }
-
-  /**
-   * Stable identity of a toggle: field, operator and value of each criterion, plus the logical
-   * operator when there is more than one criterion.
-   */
-  toggleKey(filter: PropertyFilter): string {
-    const criteria = filter.criteria.map(predicate => [
-      predicate.filterableProperty?.property,
-      predicate.operator,
-      predicate.value,
-    ]);
-    return JSON.stringify(criteria.length > 1 ? [filter.operator, criteria] : criteria);
-  }
-
-  isToggleOn(toggle: ToggleFilter): boolean {
-    return this.activeToggleKeys.has(this.toggleKey(toggle.filter));
-  }
-
-  toggleFilter(toggle: ToggleFilter): void {
-    const key = this.toggleKey(toggle.filter);
-    if (this.activeToggleKeys.has(key)) {
-      this.activeToggleKeys.delete(key);
-    } else {
-      this.activeToggleKeys.add(key);
-    }
-    this.emitFilters();
-  }
-
-  /** The host's label as given, or the text generated from the criteria when there is no (or an empty) label. */
-  toggleText(toggle: ToggleFilter): string {
-    return toggle.label?.trim() ? toggle.label : this.toggleCriteriaText(toggle.filter);
-  }
-
-  /**
-   * FIELD_NAME: VALUE for Equals, FIELD_NAME: CONDITION for Is empty, FIELD_NAME: CONDITION VALUE otherwise.
-   * Multiple criteria are joined with the filter's logical operator, e.g. "Status: Running Or Stopped".
-   */
-  toggleCriteriaText(toggle: PropertyFilter): string {
-    const property = toggle.criteria[0]?.filterableProperty;
-    const conditions = toggle.criteria.map(predicate => {
-      if (predicate.operator === ComparisonOperator.IsEmpty) {
-        return this.filterStrings.getOperatorDisplayName(predicate.operator);
-      }
-      const value =
-        property instanceof EnumPropertyDefinition
-          ? (property.values.get(predicate.value) ?? predicate.value)
-          : predicate.value;
-      return predicate.operator === ComparisonOperator.Equals
-        ? `${value}`
-        : `${this.filterStrings.getOperatorDisplayName(predicate.operator)} ${value}`;
-    });
-    const conjoiner =
-      toggle.operator !== undefined ? ` ${this.filterStrings.getConjoinerDisplayName(toggle.operator)} ` : ', ';
-    return `${property?.displayName}: ${conditions.join(conjoiner)}`;
-  }
-
-  isSemiPredefined(property: FilterablePropertyDefinition): boolean {
-    return this.semiPredefinedFilters.some(semi => semi.property === property.property);
-  }
-
-  /** Option pills of a semi-predefined filter, in the order of the enum values map. */
-  semiOptions(property: EnumPropertyDefinition): { key: string; label: string }[] {
-    return Array.from(property.values, ([key, label]) => ({ key, label }));
-  }
-
-  isOptionSelected(property: EnumPropertyDefinition, key: string): boolean {
-    return !!this.filterFor(property)?.criteria.some(
-      predicate => predicate.operator === ComparisonOperator.Equals && predicate.value === key
-    );
-  }
-
-  toggleOption(property: EnumPropertyDefinition, key: string): void {
-    const selected = this.semiOptions(property)
-      .map(option => option.key)
-      .filter(optionKey => (optionKey === key) !== this.isOptionSelected(property, optionKey));
-    const filter = new PropertyFilter();
-    filter.operator = LogicalOperator.Or;
-    filter.criteria = selected.map(value => {
-      const predicate = new PropertyPredicate();
-      predicate.filterableProperty = property;
-      predicate.operator = ComparisonOperator.Equals;
-      predicate.value = value;
-      return predicate;
-    });
-    if (filter.criteria.length) {
-      this.onFilterCriteriaChange(filter);
-    } else {
-      this.clearFilter(property);
-    }
-  }
-
-  isPredefined(property: FilterablePropertyDefinition): boolean {
-    return this.predefinedFilters.some(predefined => predefined.property === property.property);
-  }
-
-  filterFor(property: FilterablePropertyDefinition): PropertyFilter | undefined {
-    return this.propertyFilters.find(filter => filter.criteria[0]?.filterableProperty.property === property.property);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -503,7 +439,103 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     this.moveFocusToActiveButton();
   }
 
-  clearFilter(property: FilterablePropertyDefinition): void {
+  showHideAllFilters(): void {
+    this.collapsedFilters = !this.collapsedFilters;
+    this.updateShowHideLabel();
+    this.showHideFiltersArrowDir = this.collapsedFilters ? 'right' : 'left';
+  }
+
+  /**
+   * Stable identity of a toggle: field, operator and value of each criterion, plus the logical
+   * operator when there is more than one criterion.
+   */
+  protected toggleKey(filter: PropertyFilter): string {
+    const criteria = filter.criteria.map(predicate => [
+      predicate.filterableProperty?.property,
+      predicate.operator,
+      predicate.value,
+    ]);
+    return JSON.stringify(criteria.length > 1 ? [filter.operator, criteria] : criteria);
+  }
+
+  protected isToggleOn(toggle: ToggleFilter): boolean {
+    return this.activeToggleKeys.has(this.toggleKey(toggle.filter));
+  }
+
+  protected toggleFilter(toggle: ToggleFilter): void {
+    const key = this.toggleKey(toggle.filter);
+    if (this.activeToggleKeys.has(key)) {
+      this.activeToggleKeys.delete(key);
+    } else {
+      this.activeToggleKeys.add(key);
+    }
+    this.emitFilters();
+  }
+
+  /** The host's label as given, or the text generated from the criteria when there is no (or an empty) label. */
+  protected toggleText(toggle: ToggleFilter): string {
+    return toggle.label?.trim() ? toggle.label : this.toggleCriteriaText(toggle.filter);
+  }
+
+  /**
+   * FIELD_NAME: VALUE for Equals, FIELD_NAME: CONDITION for Is empty, FIELD_NAME: CONDITION VALUE otherwise.
+   * Multiple criteria are joined with the filter's logical operator, e.g. "Status: Running Or Stopped".
+   */
+  protected toggleCriteriaText(toggle: PropertyFilter): string {
+    const property = toggle.criteria[0]?.filterableProperty;
+    const conditions = toggle.criteria.map(predicate => {
+      if (predicate.operator === ComparisonOperator.IsEmpty) {
+        return this.filterStrings.getOperatorDisplayName(predicate.operator);
+      }
+      const value =
+        property instanceof EnumPropertyDefinition
+          ? (property.values.get(predicate.value) ?? predicate.value)
+          : predicate.value;
+      return predicate.operator === ComparisonOperator.Equals
+        ? `${value}`
+        : `${this.filterStrings.getOperatorDisplayName(predicate.operator)} ${value}`;
+    });
+    const conjoiner =
+      toggle.operator !== undefined ? ` ${this.filterStrings.getConjoinerDisplayName(toggle.operator)} ` : ', ';
+    return `${property?.displayName}: ${conditions.join(conjoiner)}`;
+  }
+
+  /** Option pills of a semi-predefined filter, in the order of the enum values map. */
+  protected semiOptions(property: EnumPropertyDefinition): { key: string; label: string }[] {
+    return Array.from(property.values, ([key, label]) => ({ key, label }));
+  }
+
+  protected isOptionSelected(property: EnumPropertyDefinition, key: string): boolean {
+    return !!this.filterFor(property)?.criteria.some(
+      predicate => predicate.operator === ComparisonOperator.Equals && predicate.value === key
+    );
+  }
+
+  protected toggleOption(property: EnumPropertyDefinition, key: string): void {
+    const selected = this.semiOptions(property)
+      .map(option => option.key)
+      .filter(optionKey => (optionKey === key) !== this.isOptionSelected(property, optionKey));
+    const filter = new PropertyFilter();
+    filter.operator = LogicalOperator.Or;
+    filter.criteria = selected.map(value => {
+      const predicate = new PropertyPredicate();
+      predicate.filterableProperty = property;
+      predicate.operator = ComparisonOperator.Equals;
+      predicate.value = value;
+      return predicate;
+    });
+    if (filter.criteria.length) {
+      this.onFilterCriteriaChange(filter);
+    } else {
+      this.clearFilter(property);
+    }
+  }
+
+  protected filterFor(property: FilterablePropertyDefinition): PropertyFilter | undefined {
+    return this.propertyFilters.find(filter => filter.criteria[0]?.filterableProperty.property === property.property);
+  }
+
+  protected clearFilter(property: FilterablePropertyDefinition): void {
     this.propertyFilters = this.propertyFilters.filter(
       filter => filter.criteria[0]?.filterableProperty.property !== property.property
     );
@@ -516,10 +548,12 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     }
   }
 
-  showHideAllFilters(): void {
-    this.collapsedFilters = !this.collapsedFilters;
-    this.updateShowHideLabel();
-    this.showHideFiltersArrowDir = this.collapsedFilters ? 'right' : 'left';
+  private isSemiPredefined(property: FilterablePropertyDefinition): boolean {
+    return this.semiPredefinedFilters.some(semi => semi.property === property.property);
+  }
+
+  private isPredefined(property: FilterablePropertyDefinition): boolean {
+    return this.predefinedFilters.some(predefined => predefined.property === property.property);
   }
 
   /**

@@ -631,6 +631,8 @@ export class MockDatagridFiltersComponent {
     filterMode: FilterMode;
     // (undocumented)
     predefinedFilters: FilterablePropertyDefinition[];
+    // Warning: (ae-forgotten-export) The symbol "PropertyFilter" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
     // (undocumented)
     presetFilters: PropertyFilter[];
     // (undocumented)
@@ -643,10 +645,10 @@ export class MockDatagridFiltersComponent {
     //
     // (undocumented)
     semiPredefinedFilters: EnumPropertyDefinition[];
-    // Warning: (ae-forgotten-export) The symbol "PropertyFilter" needs to be exported by the entry point clr-addons-testing.d.ts
+    // Warning: (ae-forgotten-export) The symbol "ToggleFilter" needs to be exported by the entry point clr-addons-testing.d.ts
     //
     // (undocumented)
-    toggleFilters: PropertyFilter[];
+    toggleFilters: ToggleFilter[];
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridFiltersComponent, "appfx-datagrid-filters", never, { "filterMode": { "alias": "filterMode"; "required": false; }; "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "predefinedFilters": { "alias": "predefinedFilters"; "required": false; }; "semiPredefinedFilters": { "alias": "semiPredefinedFilters"; "required": false; }; "toggleFilters": { "alias": "toggleFilters"; "required": false; }; "presetFilters": { "alias": "presetFilters"; "required": false; }; "propertyFilters": { "alias": "propertyFilters"; "required": false; }; }, { "searchTermChange": "searchTermChange"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
     // (undocumented)

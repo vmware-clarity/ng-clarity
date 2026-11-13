@@ -37,6 +37,12 @@ import {
 } from './model/datagrid-filters.interfaces';
 import { SkipFiltersPipe } from './skip-filters.pipe';
 
+/** aria-pressed of the semi-predefined option pill with this label. */
+const optionPressed = (label: string) =>
+  Array.from(document.querySelectorAll<HTMLButtonElement>('[data-test-id="semi-filter-option"]'))
+    .find(option => option.textContent.trim() === label)
+    ?.getAttribute('aria-pressed');
+
 /** Toggles without a label, from their filters. */
 const asToggles = (...filters: PropertyFilter[]): ToggleFilter[] => filters.map(filter => ({ filter }));
 
@@ -173,7 +179,7 @@ describe('CompositeFiltersComponent', () => {
     this.fixture.destroy();
   });
 
-  it('shows empty predefined pills without emitting active filters', function (this: ThisTest) {
+  it('shows empty predefined pills without emitting active filters', async function (this: ThisTest) {
     this.component.predefinedFilters = [stringProperty];
     spyOn(this.component.propertyFiltersChange, 'emit');
     this.fixture.detectChanges();
@@ -182,18 +188,18 @@ describe('CompositeFiltersComponent', () => {
     expect(pill.classList.contains('filter-pill-active')).toBeFalse();
     expect(this.component.propertyFilters).toEqual([]);
     expect(this.component.propertyFiltersChange.emit).not.toHaveBeenCalled();
-    expect(this.component.availableProperties).toEqual([enumProperty]);
     expect(this.component.selectedFilterableProperty).toBe(enumProperty);
+    expect(await offeredFields(this.fixture)).toEqual([enumProperty.displayName]);
   });
 
-  it('deduplicates predefined fields and presets by property key', function (this: ThisTest) {
+  it('deduplicates predefined fields and presets by property key', async function (this: ThisTest) {
     const equivalentProperty = new StringPropertyDefinition('Another label', stringProperty.property);
     this.component.predefinedFilters = [stringProperty, equivalentProperty];
     this.component.presetFilters = [stringPropertyFilter];
     this.fixture.detectChanges();
     expect(this.fixture.nativeElement.querySelectorAll('.filter-pill').length).toBe(1);
     expect(this.component.propertyFilters).toEqual([stringPropertyFilter]);
-    expect(this.component.availableProperties).toEqual([enumProperty]);
+    expect(await offeredFields(this.fixture)).toEqual([enumProperty.displayName]);
   });
 
   it('keeps predefined pills visible when hiding and clearing active filters', function (this: ThisTest) {
@@ -228,7 +234,10 @@ describe('CompositeFiltersComponent', () => {
     this.fixture.detectChanges();
     this.fixture.componentRef.setInput('predefinedFilters', [enumProperty]);
     this.fixture.detectChanges();
-    expect(this.component.visibleProperties).toEqual([enumProperty, stringProperty]);
+    const pillFields = this.fixture.debugElement
+      .queryAll(By.directive(ManageFilterComponent))
+      .map(pill => (pill.componentInstance as ManageFilterComponent).filterProperty);
+    expect(pillFields).toEqual([enumProperty, stringProperty]);
     expect(this.component.propertyFilters).toEqual([stringPropertyFilter]);
   });
 
@@ -340,20 +349,21 @@ describe('CompositeFiltersComponent', () => {
     expect(document.querySelector('.filter-popover')).toBeNull();
   });
   it('runs the first ngOnChanges before ngOnInit and preselects the first available field', function (this: ThisTest) {
-    // Angular reads ngOnInit from the class, so the order is checked with the flag that only ngOnInit sets.
-    const seenInOnChanges: { initialized: boolean; selected: FilterablePropertyDefinition }[] = [];
+    // Angular reads ngOnInit from the class, so the order is checked through the presets, which only ngOnInit applies.
+    const seenInOnChanges: { applied: number; selected: FilterablePropertyDefinition }[] = [];
     spyOn(this.component, 'ngOnChanges').and.callFake(function (this: CompositeFiltersComponent, changes) {
       CompositeFiltersComponent.prototype.ngOnChanges.call(this, changes);
-      seenInOnChanges.push({ initialized: this['initialized'], selected: this.selectedFilterableProperty });
+      seenInOnChanges.push({ applied: this.propertyFilters.length, selected: this.selectedFilterableProperty });
     });
     // setInput goes through Angular's input handling, as a template binding does.
     this.fixture.componentRef.setInput('filterableProperties', filterableProperties);
     this.fixture.componentRef.setInput('predefinedFilters', [stringProperty]);
+    this.fixture.componentRef.setInput('presetFilters', [stringPropertyFilter]);
     this.fixture.detectChanges();
-    // One ngOnChanges, before ngOnInit, which already picked the first available field.
-    expect(seenInOnChanges).toEqual([{ initialized: false, selected: enumProperty }]);
-    // ngOnInit ran afterwards and kept the same field.
-    expect(this.component['initialized']).toBeTrue();
+    // One ngOnChanges, before ngOnInit (no preset applied yet), which already picked the first available field.
+    expect(seenInOnChanges).toEqual([{ applied: 0, selected: enumProperty }]);
+    // ngOnInit ran afterwards: it applied the preset and kept the same field.
+    expect(this.component.propertyFilters).toEqual([stringPropertyFilter]);
     expect(this.component.selectedFilterableProperty).toBe(enumProperty);
   });
 
@@ -479,6 +489,9 @@ describe('CompositeFiltersComponent', () => {
       );
     const bar = (host: ComponentFixture<TwoWayHostComponent>): CompositeFiltersComponent =>
       host.debugElement.query(By.directive(CompositeFiltersComponent)).componentInstance;
+    /** aria-pressed of the (only) toggle. */
+    const toggleState = (host: ComponentFixture<TwoWayHostComponent>) =>
+      host.nativeElement.querySelector('[data-test-id="toggle-filter"]').getAttribute('aria-pressed');
     const redToggle = (): PropertyFilter => ({
       operator: LogicalOperator.Or,
       criteria: [{ filterableProperty: enumProperty, operator: ComparisonOperator.Equals, value: 'red' }],
@@ -503,12 +516,12 @@ describe('CompositeFiltersComponent', () => {
 
       host.componentInstance.filters = [redToggle()];
       host.detectChanges();
-      expect(bar(host).isToggleOn({ filter: redToggle() })).toBeTrue();
+      expect(toggleState(host)).toBe('true');
       expect(pillNames(host)).toEqual([]);
 
       host.componentInstance.filters = [];
       host.detectChanges();
-      expect(bar(host).isToggleOn({ filter: redToggle() })).toBeFalse();
+      expect(toggleState(host)).toBe('false');
       host.destroy();
     });
 
@@ -588,7 +601,7 @@ describe('CompositeFiltersComponent', () => {
       host.componentInstance.filters = [redToggle()];
       host.detectChanges();
       await host.whenStable();
-      expect(bar(host).isToggleOn({ filter: redToggle() })).toBeTrue();
+      expect(toggleState(host)).toBe('true');
 
       spyOn(console, 'warn');
       host.componentInstance.predefinedFilters = [enumProperty];
@@ -596,7 +609,7 @@ describe('CompositeFiltersComponent', () => {
       await host.whenStable();
       host.detectChanges();
       expect(host.componentInstance.filters).toEqual([]);
-      expect(bar(host).hasActiveCriteria).toBeFalse();
+      expect(host.nativeElement.querySelector('[data-test-id="clear-all-button"]')).toBeNull();
       host.destroy();
     });
 
@@ -681,7 +694,7 @@ describe('CompositeFiltersComponent', () => {
       criteria: [{ filterableProperty: enumProperty, operator: ComparisonOperator.Equals, value: 'red' }],
     });
 
-    it('shows FIELD: VALUE for Equals and FIELD: CONDITION VALUE otherwise', function (this: ThisTest) {
+    it('shows FIELD: VALUE for Equals and FIELD: CONDITION VALUE otherwise', async function (this: ThisTest) {
       const notEquals: PropertyFilter = {
         operator: LogicalOperator.And,
         criteria: [{ filterableProperty: stringProperty, operator: ComparisonOperator.Contains, value: 'demo' }],
@@ -692,8 +705,8 @@ describe('CompositeFiltersComponent', () => {
         `${enumProperty.displayName}: ${enumProperty.values.get('red')}`,
         `${stringProperty.displayName}: Contains demo`,
       ]);
-      expect(this.component.availableProperties).not.toContain(enumProperty);
-      expect(this.component.availableProperties).not.toContain(stringProperty);
+      // Both fields are taken by toggles, so Add filter has nothing to offer.
+      expect(await offeredFields(this.fixture)).toEqual([]);
     });
 
     it('shows Is empty without a value and joins criteria with the logical operator', function (this: ThisTest) {
@@ -763,7 +776,7 @@ describe('CompositeFiltersComponent', () => {
       expect(emitted[emitted.length - 1]).toEqual([equalsToggle()]);
       this.fixture.componentRef.setInput('toggleFilters', asToggles());
       this.fixture.detectChanges();
-      expect(this.component.hasActiveCriteria).toBeFalse();
+      expect(this.fixture.nativeElement.querySelector('[data-test-id="clear-all-button"]')).toBeNull();
       // The host is told the toggle is no longer applied, after change detection.
       await this.fixture.whenStable();
       expect(emitted[emitted.length - 1]).toEqual([]);
@@ -779,7 +792,7 @@ describe('CompositeFiltersComponent', () => {
       this.component.toggleFilters = asToggles(toggle);
       this.component.presetFilters = [otherValue, stringPropertyFilter];
       this.fixture.detectChanges();
-      expect(this.component.isToggleOn({ filter: toggle })).toBeFalse();
+      expect(toggles()[0].getAttribute('aria-pressed')).toBe('false');
       // The toggle owns its field, so only the filter on another field is kept.
       expect(this.component.propertyFilters).toEqual([stringPropertyFilter]);
       expect((console.warn as jasmine.Spy).calls.mostRecent().args[0]).toContain(
@@ -842,12 +855,12 @@ describe('CompositeFiltersComponent', () => {
       this.component.toggleFilters = asToggles(toggle);
       this.component.presetFilters = [equalsToggle()];
       this.fixture.detectChanges();
-      expect(this.component.isToggleOn({ filter: toggle })).toBeTrue();
+      expect(toggles()[0].getAttribute('aria-pressed')).toBe('true');
       expect(this.component.propertyFilters.length).toBe(0);
 
       this.fixture.nativeElement.querySelector('[data-test-id="clear-all-button"]').click();
       this.fixture.detectChanges();
-      expect(this.component.isToggleOn({ filter: toggle })).toBeFalse();
+      expect(toggles()[0].getAttribute('aria-pressed')).toBe('false');
     });
   });
 
@@ -930,7 +943,8 @@ describe('CompositeFiltersComponent', () => {
       this.component.presetFilters = [selection];
       this.fixture.detectChanges();
       expect(this.component.propertyFilters).toEqual([selection]);
-      expect(this.component.isOptionSelected(enumProperty, first)).toBeTrue();
+      this.fixture.detectChanges();
+      expect(optionPressed(enumProperty.values.get(first))).toBe('true');
     });
 
     it('removes a filter that becomes invalid when its field turns semi-predefined', async function (this: ThisTest) {
@@ -967,11 +981,12 @@ describe('CompositeFiltersComponent', () => {
       this.component.presetFilters = [equals];
       this.fixture.detectChanges();
       spyOn(this.component.propertyFiltersChange, 'emit');
-      this.component.semiPredefinedFilters = [enumProperty];
-      this.component.ngOnChanges({ semiPredefinedFilters: new SimpleChange([], [enumProperty], false) });
+      // setInput runs ngOnChanges and re-renders the OnPush view.
+      this.fixture.componentRef.setInput('semiPredefinedFilters', [enumProperty]);
+      this.fixture.detectChanges();
       expect(this.component.propertyFilters).toEqual([equals]);
       expect(this.component.propertyFiltersChange.emit).not.toHaveBeenCalled();
-      expect(this.component.isOptionSelected(enumProperty, key)).toBeTrue();
+      expect(optionPressed(enumProperty.values.get(key))).toBe('true');
     });
 
     it('does not warn without conflicts', function (this: ThisTest) {
@@ -993,12 +1008,13 @@ describe('CompositeFiltersComponent', () => {
       this.fixture.detectChanges();
     });
 
-    it('renders the field label and one pill per option, after the predefined pills', function (this: ThisTest) {
+    it('renders the field label and one pill per option, after the predefined pills', async function (this: ThisTest) {
       const group: HTMLElement = this.fixture.nativeElement.querySelector('[data-test-id="semi-filter-group"]');
       expect(group.querySelector('.semi-filter-label').textContent.trim()).toBe(enumProperty.displayName + ':');
       expect(options().map(option => option.textContent.trim())).toEqual(Array.from(enumProperty.values.values()));
       expect(group.previousElementSibling.getAttribute('role')).toBe('separator');
-      expect(this.component.availableProperties).not.toContain(enumProperty);
+      // Name is predefined and Status semi-predefined, so Add filter has nothing to offer.
+      expect(await offeredFields(this.fixture)).toEqual([]);
     });
 
     it('separates multiple semi-predefined filters', function (this: ThisTest) {
@@ -1016,20 +1032,23 @@ describe('CompositeFiltersComponent', () => {
       options()[0].click();
       options()[1].click();
       this.fixture.detectChanges();
-      const filter = this.component.filterFor(enumProperty);
+      const emitted = (this.component.propertyFiltersChange.emit as jasmine.Spy).calls.mostRecent().args[0];
+      const filter = emitted.find(
+        (candidate: PropertyFilter) => candidate.criteria[0].filterableProperty.property === enumProperty.property
+      );
       expect(filter.operator).toBe(LogicalOperator.Or);
       expect(filter.criteria.map(predicate => predicate.value)).toEqual(keys.slice(0, 2));
       expect(options()[0].getAttribute('aria-pressed')).toBe('true');
       expect(options()[0].querySelector('cds-icon[shape="check"]')).toBeTruthy();
       expect(options()[0].closest('clr-label').classList).toContain('label-info');
       // Semi-predefined filters are not user-added pills.
-      expect(this.component.userAddedFiltersCount).toBe(0);
+      expect(this.fixture.nativeElement.querySelector('[data-test-id="hide-filters"]')).toBeNull();
       expect(this.fixture.nativeElement.querySelectorAll('appfx-manage-filter').length).toBe(1);
 
       options()[0].click();
       options()[1].click();
       this.fixture.detectChanges();
-      expect(this.component.filterFor(enumProperty)).toBeUndefined();
+      expect((this.component.propertyFiltersChange.emit as jasmine.Spy).calls.mostRecent().args[0]).toEqual([]);
       expect(this.component.propertyFiltersChange.emit).toHaveBeenCalledTimes(4);
     });
 
@@ -1120,6 +1139,25 @@ describe('CompositeFiltersComponent', () => {
     expect(propertyFilterElements[1].hasAttribute('hidden')).toBeFalsy();
   });
 });
+
+/** Display names of the fields Add filter offers, read from its combobox. Empty when Add filter is disabled. */
+async function offeredFields(fixture: ComponentFixture<CompositeFiltersComponent>): Promise<string[]> {
+  fixture.detectChanges();
+  if (fixture.nativeElement.querySelector('button[data-test-id="add-button"]').disabled) {
+    return [];
+  }
+  await openAddFilter(fixture);
+  document.querySelector<HTMLButtonElement>('.filter-popover .clr-combobox-trigger').click();
+  fixture.detectChanges();
+  await fixture.whenStable();
+  fixture.detectChanges();
+  // Each option also has a screen-reader-only state ("Selected"); read only the visible label.
+  return Array.from(document.querySelectorAll<HTMLElement>('clr-option')).map(option => {
+    const label = option.cloneNode(true) as HTMLElement;
+    label.querySelectorAll('.clr-sr-only').forEach(hidden => hidden.remove());
+    return label.textContent.trim();
+  });
+}
 
 async function openAddFilter(fixture: ComponentFixture<CompositeFiltersComponent>): Promise<void> {
   fixture.detectChanges();

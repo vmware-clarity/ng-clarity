@@ -73,3 +73,15 @@ Some fields became accessors: `IfExpandService.expandable`, `hasExpandTemplate`,
 `isNavLevel2OnPage`. This is source compatible unless a subclass redeclares them as fields.
 
 When upgrading through v18, remove any `*WillyWonka` / `*OompaLoompa` imports left by the v18 rename schematic.
+
+## Datagrid Filters (Addons)
+
+Two `DatagridFiltersStrings` keys from `@clr/addons/datagrid-filters` have been removed, because the new filter pills no
+longer show them:
+
+- `clearAllButtonLabel` ("Clear all"): Clear all is now an icon button. Its accessible name and tooltip use
+  `clearAllButtonAriaLabel`.
+- `appliedText` ("applied"): a pill with several conditions now shows the first condition and a `+N` badge instead of
+  "N applied".
+
+Remove any overrides or translations of these keys.

@@ -179,11 +179,6 @@ export class DatagridFiltersStrings {
    */
   readonly selectAll: string = 'Select all';
 
-  /**
-   * Applied filters text.
-   */
-  readonly appliedText: string = 'applied';
-
   readonly editFilterText: string = 'Edit filter';
 
   readonly removeFilterText: string = 'Remove filter';
@@ -197,8 +192,6 @@ export class DatagridFiltersStrings {
   readonly filtersText: string = 'filters';
 
   readonly filterText: string = 'filter';
-
-  readonly clearAllButtonLabel: string = 'Clear all';
 
   readonly clearAllButtonAriaLabel: string = 'Clear all filters';
 

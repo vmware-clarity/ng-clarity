@@ -141,12 +141,12 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     constructor(filterStrings: DatagridFiltersStrings, cdr: ChangeDetectorRef, popoverService: ClrPopoverService);
     activeFilters(): FilterablePropertyDefinition[];
     // (undocumented)
-    get availableProperties(): FilterablePropertyDefinition[];
+    protected get availableProperties(): FilterablePropertyDefinition[];
     clearAll: EventEmitter<void>;
     // (undocumented)
     clearAllFilters(): void;
     // (undocumented)
-    clearFilter(property: FilterablePropertyDefinition): void;
+    protected clearFilter(property: FilterablePropertyDefinition): void;
     // (undocumented)
     collapsedFilters: boolean;
     // (undocumented)
@@ -161,20 +161,16 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     // (undocumented)
     filterableProperties: FilterablePropertyDefinition[];
     // (undocumented)
-    filterFor(property: FilterablePropertyDefinition): PropertyFilter | undefined;
+    protected filterFor(property: FilterablePropertyDefinition): PropertyFilter | undefined;
     // (undocumented)
     filterStrings: DatagridFiltersStrings;
     // (undocumented)
-    get hasActiveCriteria(): boolean;
-    get hasPredefinedGroup(): boolean;
+    protected get hasActiveCriteria(): boolean;
+    protected get hasPredefinedGroup(): boolean;
     // (undocumented)
-    isOptionSelected(property: EnumPropertyDefinition, key: string): boolean;
+    protected isOptionSelected(property: EnumPropertyDefinition, key: string): boolean;
     // (undocumented)
-    isPredefined(property: FilterablePropertyDefinition): boolean;
-    // (undocumented)
-    isSemiPredefined(property: FilterablePropertyDefinition): boolean;
-    // (undocumented)
-    isToggleOn(toggle: PropertyFilter): boolean;
+    protected isToggleOn(toggle: ToggleFilter): boolean;
     // (undocumented)
     static ngAcceptInputType_predefinedFilters: FilterablePropertyDefinition[] | null | undefined;
     // (undocumented)
@@ -182,7 +178,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     // (undocumented)
     static ngAcceptInputType_semiPredefinedFilters: EnumPropertyDefinition[] | null | undefined;
     // (undocumented)
-    static ngAcceptInputType_toggleFilters: PropertyFilter[] | null | undefined;
+    static ngAcceptInputType_toggleFilters: ToggleFilter[] | null | undefined;
     // (undocumented)
     ngOnChanges(changes: SimpleChanges): void;
     // (undocumented)
@@ -196,15 +192,15 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     // (undocumented)
     onPropertyChange(): void;
     // (undocumented)
-    readonly popoverId: string;
+    protected readonly popoverId: string;
     // (undocumented)
-    readonly popoverPosition = ClrPopoverPosition.BOTTOM_LEFT;
+    protected readonly popoverPosition = ClrPopoverPosition.BOTTOM_LEFT;
     // (undocumented)
-    readonly popoverType = ClrPopoverType.DROPDOWN;
+    protected readonly popoverType = ClrPopoverType.DROPDOWN;
     get predefinedFilters(): FilterablePropertyDefinition[];
     set predefinedFilters(value: FilterablePropertyDefinition[]);
     // (undocumented)
-    get predefinedProperties(): FilterablePropertyDefinition[];
+    protected get predefinedProperties(): FilterablePropertyDefinition[];
     presetFilters: PropertyFilter[];
     propertyFilters: PropertyFilter[];
     propertyFiltersChange: EventEmitter<PropertyFilter[]>;
@@ -212,7 +208,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     propertyType: PropertyType;
     // (undocumented)
     selectedFilterableProperty: FilterablePropertyDefinition;
-    semiOptions(property: EnumPropertyDefinition): {
+    protected semiOptions(property: EnumPropertyDefinition): {
         key: string;
         label: string;
     }[];
@@ -233,24 +229,25 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     stringProperty: StringPropertyDefinition;
     // (undocumented)
     readonly stringPropertyType: PropertyType;
+    protected toggleCriteriaText(toggle: PropertyFilter): string;
     // (undocumented)
-    toggleFilter(toggle: PropertyFilter): void;
-    get toggleFilters(): PropertyFilter[];
-    set toggleFilters(value: PropertyFilter[]);
-    toggleKey(filter: PropertyFilter): string;
+    protected toggleFilter(toggle: ToggleFilter): void;
+    get toggleFilters(): ToggleFilter[];
+    set toggleFilters(value: ToggleFilter[]);
+    protected toggleKey(filter: PropertyFilter): string;
     // (undocumented)
-    toggleOption(property: EnumPropertyDefinition, key: string): void;
-    toggleText(toggle: PropertyFilter): string;
+    protected toggleOption(property: EnumPropertyDefinition, key: string): void;
+    protected toggleText(toggle: ToggleFilter): string;
     // (undocumented)
-    get userAddedFiltersCount(): number;
+    protected get userAddedFiltersCount(): number;
     // (undocumented)
-    get userAddedProperties(): FilterablePropertyDefinition[];
+    protected get userAddedProperties(): FilterablePropertyDefinition[];
     // (undocumented)
     userProperty: UserPropertyDefinition;
     // (undocumented)
     readonly userPropertyType: PropertyType;
     // (undocumented)
-    get visibleProperties(): FilterablePropertyDefinition[];
+    protected get visibleProperties(): FilterablePropertyDefinition[];
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<CompositeFiltersComponent, "appfx-composite-filter", never, { "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "presetFilters": { "alias": "presetFilters"; "required": false; }; "propertyFilters": { "alias": "propertyFilters"; "required": false; }; "externalCriteriaActive": { "alias": "externalCriteriaActive"; "required": false; }; "predefinedFilters": { "alias": "predefinedFilters"; "required": false; }; "semiPredefinedFilters": { "alias": "semiPredefinedFilters"; "required": false; }; "toggleFilters": { "alias": "toggleFilters"; "required": false; }; }, { "clearAll": "clearAll"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
@@ -265,7 +262,7 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
     // (undocumented)
     readonly advancedOnlyMode: FilterMode;
     // (undocumented)
-    readonly combinedMode: FilterMode;
+    protected readonly combinedMode: FilterMode;
     filterableProperties: FilterablePropertyDefinition[];
     set filterMode(filterMode: FilterMode);
     // (undocumented)
@@ -276,7 +273,7 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
     ngAfterViewInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
-    onClearAll(): void;
+    protected onClearAll(): void;
     // (undocumented)
     onFilterCriteriaChange(propertyFilters: PropertyFilter[]): void;
     // (undocumented)
@@ -299,7 +296,7 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
     // (undocumented)
     selectedFilterMode: FilterMode;
     semiPredefinedFilters: EnumPropertyDefinition[];
-    toggleFilters: PropertyFilter[];
+    toggleFilters: ToggleFilter[];
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<DataGridFiltersComponent, "appfx-datagrid-filters", never, { "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "presetFilters": { "alias": "presetFilters"; "required": false; }; "predefinedFilters": { "alias": "predefinedFilters"; "required": false; }; "semiPredefinedFilters": { "alias": "semiPredefinedFilters"; "required": false; }; "toggleFilters": { "alias": "toggleFilters"; "required": false; }; "filterMode": { "alias": "filterMode"; "required": false; }; "propertyFilters": { "alias": "propertyFilters"; "required": false; }; }, { "searchTermChange": "searchTermChange"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
     // (undocumented)
@@ -315,13 +312,10 @@ export class DatagridFiltersStrings {
     readonly advancedFilter: string;
     // (undocumented)
     readonly allSearchResults: string;
-    readonly appliedText: string;
     readonly apply: string;
     readonly cancel: string;
     // (undocumented)
     readonly clearAllButtonAriaLabel: string;
-    // (undocumented)
-    readonly clearAllButtonLabel: string;
     readonly clearFilter: string;
     readonly dateFormat: string;
     readonly dateRangeLabel: string;
@@ -610,6 +604,12 @@ export enum TimeSpan {
     Weeks = 3,
     // (undocumented)
     Years = 5
+}
+
+// @public
+export interface ToggleFilter {
+    filter: PropertyFilter;
+    label?: string;
 }
 
 // @public (undocumented)
