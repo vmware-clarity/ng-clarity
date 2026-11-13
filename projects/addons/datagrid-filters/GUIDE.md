@@ -59,7 +59,7 @@ The component only **emits** filters. Apply `PropertyFilter[]` (each `{ criteria
 
 - `predefinedFilters: FilterablePropertyDefinition[]` — pills always shown, in this order, even when empty.
 - `semiPredefinedFilters: EnumPropertyDefinition[]` — a label with option pills; selected options are ORed and applied at once. Only `Equals` on option keys combined with OR is valid for these fields; anything else is removed with a console warning.
-- `toggleFilters: PropertyFilter[]` — ready-made on/off pills. A filter with exactly a toggle's criteria turns it ON.
+- `toggleFilters: ToggleFilter[]` (`{ label?: string; filter: PropertyFilter }`) — ready-made on/off pills. `label` is free text shown as given; without it the text comes from the criteria. A filter with exactly a toggle's criteria turns it ON; any other filter on a toggle's field is removed with a console warning.
 - Each field is used once: `predefinedFilters`, then `semiPredefinedFilters`, then `toggleFilters` claim fields left to right; claimed fields are not offered in **Add filter**.
 
 ## Keeping filters in sync

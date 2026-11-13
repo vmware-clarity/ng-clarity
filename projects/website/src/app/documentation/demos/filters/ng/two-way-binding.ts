@@ -12,6 +12,7 @@ import {
   FilterMode,
   LogicalOperator,
   PropertyFilter,
+  ToggleFilter,
 } from '@clr/addons/datagrid-filters';
 
 import { AppliedFiltersComponent } from './applied-filters';
@@ -34,9 +35,19 @@ export class DatagridFiltersTwoWayDemoComponent {
   readonly FilterMode = FilterMode;
   readonly filterableProperties = vmProperties;
 
-  readonly toggleFilters: PropertyFilter[] = [
-    createPropertyFilter(LogicalOperator.Or, createPredicate(stateProperty, ComparisonOperator.Equals, 'Powered On')),
-    createPropertyFilter(LogicalOperator.Or, createPredicate(statusProperty, ComparisonOperator.Equals, 'Alert')),
+  readonly toggleFilters: ToggleFilter[] = [
+    {
+      filter: createPropertyFilter(
+        LogicalOperator.Or,
+        createPredicate(stateProperty, ComparisonOperator.Equals, 'Powered On')
+      ),
+    },
+    {
+      filter: createPropertyFilter(
+        LogicalOperator.Or,
+        createPredicate(statusProperty, ComparisonOperator.Equals, 'Alert')
+      ),
+    },
   ];
 
   // A saved view, e.g. read from a URL. Its second filter matches a toggle, so the toggle turns ON.

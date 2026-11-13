@@ -20,6 +20,7 @@ import {
   PropertyFilter,
   PropertyPredicate,
   StringPropertyDefinition,
+  ToggleFilter,
   UserPropertyDefinition,
 } from '@clr/addons/datagrid-filters';
 import { DateRangeOption } from '@clr/angular';
@@ -156,9 +157,22 @@ export const presetFilters: PropertyFilter[] = [
 export const semiPredefinedFilters = [guestOsProperty];
 
 /** Ready-made filters shown as on/off pills. */
-export const toggleFilters: PropertyFilter[] = [
-  createPropertyFilter(LogicalOperator.Or, createPredicate(stateProperty, ComparisonOperator.Equals, 'Powered On')),
-  createPropertyFilter(LogicalOperator.Or, createPredicate(statusProperty, ComparisonOperator.Equals, 'Alert')),
+export const toggleFilters: ToggleFilter[] = [
+  // A label is any free text, shown as given; the tooltip shows the criteria.
+  {
+    label: 'Running VMs',
+    filter: createPropertyFilter(
+      LogicalOperator.Or,
+      createPredicate(stateProperty, ComparisonOperator.Equals, 'Powered On')
+    ),
+  },
+  // Without a label, the text is generated from the criteria: "Status: Alert".
+  {
+    filter: createPropertyFilter(
+      LogicalOperator.Or,
+      createPredicate(statusProperty, ComparisonOperator.Equals, 'Alert')
+    ),
+  },
 ];
 
 /** A saved view restored through `[(propertyFilters)]`. Its second filter matches a toggle, so the toggle turns ON. */
@@ -260,7 +274,7 @@ export class DatagridFiltersStoryWrapperComponent {
   @Input() presetFilters: PropertyFilter[] = [];
   @Input() predefinedFilters: FilterablePropertyDefinition[] = [];
   @Input() semiPredefinedFilters: EnumPropertyDefinition[] = [];
-  @Input() toggleFilters: PropertyFilter[] = [];
+  @Input() toggleFilters: ToggleFilter[] = [];
   /** Filters the host restores through `[(propertyFilters)]`. The host buttons are hidden when empty. */
   @Input() savedView: PropertyFilter[] = [];
 

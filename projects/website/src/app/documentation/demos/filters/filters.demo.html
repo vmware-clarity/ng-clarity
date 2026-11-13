@@ -198,8 +198,12 @@
 
     <h3 data-toc-item id="toggle-filters" cds-text="section" class="clr-mt-32px">Toggle filters</h3>
     <p cds-text="body" class="clr-mt-16px">
-      <code cds-text="code">toggleFilters</code> shows ready-made filters as on/off pills. ON applies the filter as
-      configured.
+      <code cds-text="code">toggleFilters</code> shows ready-made filters as on/off pills. Each toggle is
+      <code cds-text="code">&#123; label?, filter &#125;</code>, and ON applies its <code cds-text="code">filter</code>.
+      The <code cds-text="code">label</code> is free text, shown as given, so the host translates it; without a label,
+      the text comes from the criteria ("Status: Alert"). The tooltip always shows the criteria. A toggle owns its
+      field: a preset or <code cds-text="code">propertyFilters</code> entry with exactly its criteria turns it ON, and
+      any other filter on that field is removed, with a console warning.
     </p>
     <div class="clr-mt-24px">
       <app-datagrid-filters-toggle-demo></app-datagrid-filters-toggle-demo>
@@ -358,8 +362,10 @@
         <tr>
           <td class="left"><code cds-text="code">toggleFilters</code></td>
           <td class="left">Input</td>
-          <td class="left"><code cds-text="code">PropertyFilter[]</code></td>
-          <td class="left">Ready-made filters shown as on/off pills.</td>
+          <td class="left"><code cds-text="code">ToggleFilter[]</code></td>
+          <td class="left">
+            Ready-made filters shown as on/off pills: <code cds-text="code">&#123; label?, filter &#125;</code>.
+          </td>
         </tr>
         <tr>
           <td class="left"><code cds-text="code">propertyFilters</code></td>

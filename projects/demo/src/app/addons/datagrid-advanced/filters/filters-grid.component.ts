@@ -21,6 +21,7 @@ import {
   PropertyFilter,
   PropertyPredicate,
   StringPropertyDefinition,
+  ToggleFilter,
   UserPropertyDefinition,
 } from '@clr/addons/datagrid-filters';
 import { ClarityModule, SelectionType } from '@clr/angular';
@@ -180,7 +181,7 @@ export class FiltersGridComponent {
   protected filterableProperties: FilterablePropertyDefinition[] = [];
   protected predefinedFilters: FilterablePropertyDefinition[] = [];
   protected semiPredefinedFilters: EnumPropertyDefinition[] = [];
-  protected toggleFilters: PropertyFilter[] = [];
+  protected toggleFilters: ToggleFilter[] = [];
   protected presetFilters: PropertyFilter[] = [];
   protected predefinedFilteredItems: VmItem[] = [];
   protected combinedFilteredItems: VmItem[] = [];
@@ -334,12 +335,15 @@ export class FiltersGridComponent {
     );
     // Priority: (Low) (Medium) (High) and Category: (User Login) (User Logout) (Password Changed)
     this.semiPredefinedFilters = [priorityProperty, new EnumPropertyDefinition('Category', 'event', categoryOptions)];
-    // On/off filter: OFF = not applied, ON = State equals Powered On.
+    // On/off filter: OFF = not applied, ON = State equals Powered On. The label is free text, shown as given.
     const stateProperty = new EnumPropertyDefinition('State', 'state', stateEnumMap);
     this.toggleFilters = [
       {
-        operator: LogicalOperator.Or,
-        criteria: [{ filterableProperty: stateProperty, operator: ComparisonOperator.Equals, value: 'Powered On' }],
+        label: 'Running VMs',
+        filter: {
+          operator: LogicalOperator.Or,
+          criteria: [{ filterableProperty: stateProperty, operator: ComparisonOperator.Equals, value: 'Powered On' }],
+        },
       },
     ];
     this.presetFilters = [

@@ -12,6 +12,7 @@ import {
   FilterMode,
   LogicalOperator,
   PropertyFilter,
+  ToggleFilter,
 } from '@clr/addons/datagrid-filters';
 
 import { AppliedFiltersComponent } from './applied-filters';
@@ -27,10 +28,23 @@ export class DatagridFiltersToggleDemoComponent {
   readonly FilterMode = FilterMode;
   readonly filterableProperties = vmProperties;
 
-  // Ready-made filters shown as on/off pills. ON applies the filter as configured.
-  readonly toggleFilters: PropertyFilter[] = [
-    createPropertyFilter(LogicalOperator.Or, createPredicate(stateProperty, ComparisonOperator.Equals, 'Powered On')),
-    createPropertyFilter(LogicalOperator.Or, createPredicate(statusProperty, ComparisonOperator.Equals, 'Alert')),
+  // Ready-made filters shown as on/off pills. ON applies the toggle's filter.
+  readonly toggleFilters: ToggleFilter[] = [
+    // A label is any free text, shown as given; the tooltip shows the criteria.
+    {
+      label: 'Running VMs',
+      filter: createPropertyFilter(
+        LogicalOperator.Or,
+        createPredicate(stateProperty, ComparisonOperator.Equals, 'Powered On')
+      ),
+    },
+    // Without a label, the text is generated from the criteria: "Status: Alert".
+    {
+      filter: createPropertyFilter(
+        LogicalOperator.Or,
+        createPredicate(statusProperty, ComparisonOperator.Equals, 'Alert')
+      ),
+    },
   ];
 
   filters: PropertyFilter[] = [];
