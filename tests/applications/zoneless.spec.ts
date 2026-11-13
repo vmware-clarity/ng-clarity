@@ -16,6 +16,12 @@ async function openZoneless(page: Page, url: string) {
 let errors: string[];
 
 test.beforeEach(async ({ page }) => {
+  // The tests don't use the network: the website's version list is empty, and the other external requests (Google
+  // Analytics) get an empty answer.
+  await page.route(
+    url => url.hostname !== 'localhost',
+    route => route.fulfill(route.request().url().endsWith('/versions.json') ? { json: [] } : { body: '' })
+  );
   errors = [];
   page.on('console', message => {
     if (message.type() === 'error') {
@@ -23,6 +29,13 @@ test.beforeEach(async ({ page }) => {
       if (
         message.location().url === 'http://localhost:8085/favicon.ico' &&
         message.text() === 'Failed to load resource: the server responded with a status of 404 (Not Found)'
+      ) {
+        return;
+      }
+      // Storybook's own preview runtime adds a <style> element without the nonce (its highlight menu).
+      if (
+        message.location().url === 'http://localhost:8085/sb-preview/runtime.js' &&
+        message.text().startsWith('Applying inline style violates the following Content Security Policy directive')
       ) {
         return;
       }
@@ -110,6 +123,32 @@ test('demo: server-driven datagrid replaces its loading state with rows', async 
   await expect(grid.locator('clr-dg-row')).toHaveCount(10);
 });
 
+// The tree data examples load their top-level rows from a delayed Observable, after the first render.
+test('demo: tree datagrids replace their loading state with the first page', async ({ page }) => {
+  await openZoneless(page, 'http://localhost:8082/demo/datagrid/tree');
+  const grid = page.locator('clr-datagrid-tree-demo > clr-datagrid');
+  await expect(grid.locator('clr-dg-footer')).toContainText('1 - 10 of 23 datacenters');
+  await expect(grid.locator('.datagrid-spinner')).toBeHidden();
+  const advancedGrid = page.locator('clr-datagrid-tree-appfx-demo appfx-datagrid');
+  await expect(advancedGrid.locator('clr-dg-footer')).toContainText('1 - 10 of 23 datacenters');
+  await expect(advancedGrid.locator('.datagrid-spinner')).toBeHidden();
+});
+
+test('website: the tree data example replaces its loading state with the first page', async ({ page }) => {
+  await openZoneless(page, 'http://localhost:8083/documentation/datagrid/code/tree-data');
+  const grid = page.locator('clr-datagrid-tree-files-example clr-datagrid');
+  await expect(grid.locator('clr-dg-footer')).toContainText('1 - 5 of 7 items');
+  await expect(grid.locator('.datagrid-spinner')).toBeHidden();
+});
+
+test('website: the advanced tree data example replaces its loading state with the first page', async ({ page }) => {
+  await openZoneless(page, 'http://localhost:8083/documentation/advanced-datagrid/code');
+  await page.locator('xpath=//h3[@id="tree-data"]/following::clr-accordion[1]').getByRole('button').first().click();
+  const grid = page.locator('app-tree-data-advanced-grid-demo appfx-datagrid');
+  await expect(grid.locator('clr-dg-row')).toHaveCount(5);
+  await expect(grid.locator('.datagrid-spinner')).toBeHidden();
+});
+
 test('demo: advanced virtual scroll finishes resetting and refreshing', async ({ page }) => {
   await openZoneless(page, 'http://localhost:8082/demo/datagrid-advanced/virtual-scroll');
   const grid = page.locator('appfx-datagrid');
@@ -193,9 +232,7 @@ test('website: API renderer code is highlighted without bootstrap timing', async
 
 for (const inline of [false, true]) {
   test(`demo: addon ${inline ? 'stepper' : 'wizard'} reports changing validation progress`, async ({ page }) => {
-    if (inline) {
-      await page.clock.install();
-    }
+    await page.clock.install();
     await openZoneless(page, 'http://localhost:8082/demo/wizard-addon');
     if (inline) {
       await page.getByLabel('Inline Wizard (Stepper)', { exact: true }).check();
@@ -211,11 +248,20 @@ for (const inline of [false, true]) {
       await page.clock.runFor(50);
     }
     const activeStep = inline ? page.locator('.clr-stepper-panel-open') : page.getByRole('dialog');
-    const name = activeStep.getByLabel('Virtual machine name:');
-    await name.fill('Zoneless VM');
-    await activeStep.getByRole('button', { name: 'Next', exact: true }).click();
-    await expect(page.getByText('Validating VM name: 0%', { exact: true })).toBeVisible();
-    await expect(page.getByText('Validating VM name: 12%', { exact: true })).toBeVisible();
-    await expect(page.getByText('Validating VM name: 24%', { exact: true })).toBeVisible();
+    // The validation reports its progress every 500 ms. Stop the clock so that each report stays on screen until it
+    // has been checked, then move it on by one report at a time. A stopped clock also stops the animation frames, so
+    // the click doesn't wait for them, and each render Angular schedules needs the clock moved on.
+    await activeStep.getByLabel('Virtual machine name:').fill('Zoneless VM');
+    const next = activeStep.getByRole('button', { name: 'Next', exact: true });
+    await expect(next).toBeEnabled();
+    await page.clock.pauseAt(await page.evaluate(() => Date.now() + 100));
+    await next.dispatchEvent('click');
+    await page.clock.runFor(1);
+    const progress = page.getByText(/Validating VM name: \d+%/);
+    await expect(progress).toHaveText('Validating VM name: 0%');
+    await page.clock.runFor(500);
+    await expect(progress).toHaveText('Validating VM name: 12%');
+    await page.clock.runFor(500);
+    await expect(progress).toHaveText('Validating VM name: 24%');
   });
 }

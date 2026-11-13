@@ -28,35 +28,35 @@ import { ProgressBarExamplesDemo } from './progress-bar-examples';
   selector: 'clr-progress-bar-story-demo',
   template: `
     <div class="story-message" style="margin-bottom: 0.5rem">
-      @if (storyProgressBar.value <= 25) {
+      @if (storyProgressBar.value() <= 25) {
         <p>
           <clr-icon shape="cog" size="24"></clr-icon>
           Configuring the system
           <clr-icon shape="ellipsis-horizontal" size="24"></clr-icon>
         </p>
       }
-      @if (storyProgressBar.value > 25 && storyProgressBar.value <= 50) {
+      @if (storyProgressBar.value() > 25 && storyProgressBar.value() <= 50) {
         <p>
           <clr-icon shape="install" size="24"></clr-icon>
           Installing the system
           <clr-icon shape="ellipsis-horizontal" size="24"></clr-icon>
         </p>
       }
-      @if (storyProgressBar.value > 50 && storyProgressBar.value <= 75) {
+      @if (storyProgressBar.value() > 50 && storyProgressBar.value() <= 75) {
         <p>
           <clr-icon shape="download-cloud" size="24"></clr-icon>
           Updating the system
           <clr-icon shape="ellipsis-horizontal" size="24"></clr-icon>
         </p>
       }
-      @if (storyProgressBar.value > 75 && storyProgressBar.value < 100) {
+      @if (storyProgressBar.value() > 75 && storyProgressBar.value() < 100) {
         <p>
           <clr-icon shape="step-forward-2" size="24"></clr-icon>
           Starting the system
           <clr-icon shape="ellipsis-horizontal" size="24"></clr-icon>
         </p>
       }
-      @if (storyProgressBar.value == 100) {
+      @if (storyProgressBar.value() == 100) {
         <p>
           <clr-icon shape="success-standard" size="24"></clr-icon>
           The process is done. The system is ready.
@@ -65,9 +65,9 @@ import { ProgressBarExamplesDemo } from './progress-bar-examples';
     </div>
     <div [ngClass]="storyProgressBar.cssClassnames()">
       <progress
-        value="{{ storyProgressBar.value }}"
+        value="{{ storyProgressBar.value() }}"
         max="100"
-        [attr.data-displayval]="storyProgressBar.value + '%'"
+        [attr.data-displayval]="storyProgressBar.value() + '%'"
       ></progress>
     </div>
   `,
@@ -104,7 +104,7 @@ export class ProgressBarStoryDemo {
   }
 
   tellStoryAgain() {
-    if (this.storyProgressBar.isFinished()) {
+    if (this.storyProgressBar.complete()) {
       this.storyProgressBar.start();
     }
   }

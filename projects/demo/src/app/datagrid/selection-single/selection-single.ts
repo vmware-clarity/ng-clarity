@@ -68,8 +68,6 @@ export class DatagridSelectionSingleDemo {
       this.loading = false;
       this.changeDetectorRef.markForCheck();
     });
-
-    this.changeDetectorRef.markForCheck();
   }
 
   selectItems() {

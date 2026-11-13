@@ -10,13 +10,14 @@ import express from 'express';
 import * as fs from 'fs';
 import * as path from 'path';
 
-// Serves a built app directory for the visual regression tests.
+// Serves a built app directory for the browser tests.
 //
-// Usage: node --experimental-strip-types ./scripts/start-static-server.ts <root> <port> [--spa[=<path>]] [--unsafe-eval]
+// Usage:
+//   node --experimental-strip-types ./scripts/start-static-server.ts <root> <port> [--spa[=<path>]] [--unsafe-eval]
 //
-// --spa or --spa=<path>: fall back to index.html (or the given path) for unknown paths. The website is a single-page application,
-// so its routes must resolve to index.html (the same behavior as the redirect rule in
-// netlify-website.toml).
+// --spa or --spa=<path>: fall back to index.html (or the given page) for unknown paths. The website is a single-page
+// application, so its routes must resolve to index.html (the same behavior as the redirect rule in
+// netlify-website.toml). The demo's routes resolve to demo/index.html.
 //
 // --unsafe-eval: allow eval() in the Content-Security-Policy. Storybook compiles the story
 // templates at runtime with the Angular JIT compiler, which needs it.
@@ -44,6 +45,8 @@ function contentSecurityPolicy(nonce: string) {
     // The stories and the website pages use style attributes. The library must not: eslint.config.js reports the ones
     // in its source, and the report-only policy below reports every style attribute at runtime.
     "style-src-attr 'unsafe-inline'",
+    // The website reads its version list from clarity.design (projects/website/src/environments/environment.prod.ts).
+    "connect-src 'self' https://clarity.design",
     "img-src 'self' data: blob:",
     "font-src 'self' data:",
     "object-src 'none'",

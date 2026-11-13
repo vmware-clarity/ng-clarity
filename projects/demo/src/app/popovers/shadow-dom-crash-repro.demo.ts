@@ -58,7 +58,8 @@ import { Subscription } from 'rxjs';
       1. Click "Relocate Triggers" to move both widgets below into a <code>ShadowRoot</code> hosted inside an iframe (a
       separate JS realm), mirroring a micro-frontend/Web Component architecture.<br />
       2. Click a relocated trigger inside the dashed box. Check that the popover opens and inspect the browser console
-      for errors. The status below confirms that the overlay finished becoming visible.<br />
+      for errors. The status below only confirms that the overlay finished becoming visible: a crash shows in the
+      console, not here.<br />
       3. With a popover open, scroll either the dashed box's own inner content or the rest of this page. The dropdown
       closes on scroll (it opts into <code>scrollToClose</code>); the signpost instead tracks the trigger and stays
       open, since it leaves <code>scrollToClose</code> at its default of <code>false</code> - both behaviors should be

@@ -13,20 +13,13 @@ export class ProgBarExample {
   intervalId: any;
   demoId: string = 'prog-example-toggle-' + id++;
   intervalTimeInMs = 100;
-  private readonly progress = signal(0);
+  readonly value = signal(0);
 
   constructor(
     private label: string = 'demo',
     public title: string = 'Progress Bar',
     public isLabeled: boolean = false
   ) {}
-
-  get value() {
-    return this.progress();
-  }
-  set value(value: number) {
-    this.progress.set(value);
-  }
 
   cssClassnames(): string {
     return ['progress', this.label].join(' ');
@@ -38,7 +31,7 @@ export class ProgBarExample {
 
   reset(): void {
     this.stop();
-    this.value = 0;
+    this.value.set(0);
     this.intervalId = -1;
   }
 
@@ -53,21 +46,21 @@ export class ProgBarExample {
   }
 
   run(): void {
-    let myProgress: number = this.value;
+    let myProgress: number = this.value();
     const maxProgressIncrement = 15;
     const minProgressIncrement = 4;
 
     myProgress += Math.random() * (maxProgressIncrement - minProgressIncrement) + minProgressIncrement;
 
     if (myProgress > 99) {
-      this.value = 100;
+      this.value.set(100);
       this.stop();
     } else if (myProgress < 1 || isNaN(myProgress)) {
-      this.value = 1;
+      this.value.set(1);
     } else {
       // typescript decides to be fun and complains if the first parameter here is not a string.
       // many good things about TS. but this one is pretty lame...
-      this.value = parseInt(myProgress + '', 10);
+      this.value.set(parseInt(myProgress + '', 10));
     }
   }
 }

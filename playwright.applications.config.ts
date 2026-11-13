@@ -28,7 +28,7 @@ export default defineConfig({
       port: 8083,
     },
     {
-      command: 'node --experimental-strip-types scripts/start-static-server.ts dist/docs 8085',
+      command: 'node --experimental-strip-types scripts/start-static-server.ts dist/docs 8085 --unsafe-eval',
       port: 8085,
     },
   ],

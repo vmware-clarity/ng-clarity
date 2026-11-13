@@ -104,8 +104,8 @@ export class ThemeBuilderComponent implements OnDestroy {
     this.refreshSavedPresets();
 
     this.cssToImportChanges.pipe(debounceTime(IMPORT_VALIDATION_DEBOUNCE_MS), takeUntilDestroyed()).subscribe(css => {
+      this.validateCssToImport(css);
       cd.markForCheck();
-      return this.validateCssToImport(css);
     });
   }
 

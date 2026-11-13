@@ -7,26 +7,11 @@
 
 import { expect, test } from '@playwright/test';
 
-for (const mode of ['zone', 'zoneless']) {
+import { modes, openConsumerForEachTest } from './helpers';
+
+for (const mode of modes) {
   test.describe(`${mode} built package consumer`, () => {
-    let errors: string[];
-
-    test.beforeEach(async ({ page }) => {
-      errors = [];
-      page.on('pageerror', error => errors.push(error.message));
-      page.on('console', message => {
-        if (message.type() === 'error') {
-          errors.push(message.text());
-        }
-      });
-      await page.goto(`/${mode}/?mode=${mode}`);
-      await expect(page.getByTestId('mode')).toHaveText(mode);
-      expect(await page.evaluate(() => typeof (globalThis as { Zone?: unknown }).Zone !== 'undefined')).toBe(
-        mode === 'zone'
-      );
-    });
-
-    test.afterEach(() => expect(errors).toEqual([]));
+    openConsumerForEachTest(mode);
 
     test('tabs and accordion react to consumer clicks', async ({ page }) => {
       await page.getByRole('tab', { name: 'Details', exact: true }).click();

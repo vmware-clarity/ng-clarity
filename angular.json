@@ -28,7 +28,7 @@
               "browser": ""
             },
             "index": "projects/demo/src/index.html",
-            "polyfills": ["projects/demo/src/polyfills.ts"],
+            "polyfills": [],
             "tsConfig": "projects/demo/tsconfig.app.json",
             "assets": ["projects/demo/src/favicon.ico", "projects/demo/src/assets"],
             "styles": [
@@ -70,6 +70,12 @@
                   "maximumError": "9kb"
                 }
               ]
+            },
+            "vrt": {
+              "index": {
+                "input": "projects/demo/src/index.vrt.html",
+                "output": "index.html"
+              }
             }
           },
           "defaultConfiguration": ""
@@ -170,7 +176,7 @@
               "browser": ""
             },
             "index": "projects/website/src/index.html",
-            "polyfills": ["projects/website/src/polyfills.ts"],
+            "polyfills": [],
             "browser": "projects/website/src/main.ts",
             "tsConfig": "projects/website/tsconfig.app.json",
             "allowedCommonJsDependencies": ["prismjs"],
@@ -297,7 +303,7 @@
               "base": "dist/consumer-smoke/zoneless",
               "browser": ""
             },
-            "styles": ["projects/angular/main.scss"],
+            "styles": ["dist/clr-ui/clr-ui.min.css"],
             "polyfills": [],
             "optimization": false,
             "sourceMap": false,
