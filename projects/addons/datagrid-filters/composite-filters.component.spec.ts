@@ -33,8 +33,12 @@ import {
   PropertyFilter,
   PropertyPredicate,
   StringPropertyDefinition,
+  ToggleFilter,
 } from './model/datagrid-filters.interfaces';
 import { SkipFiltersPipe } from './skip-filters.pipe';
+
+/** Toggles without a label, from their filters. */
+const asToggles = (...filters: PropertyFilter[]): ToggleFilter[] => filters.map(filter => ({ filter }));
 
 const property = 'vmName';
 const propertyDisplayName = 'Name';
@@ -119,7 +123,7 @@ class TwoWayHostComponent {
   presetFilters: PropertyFilter[] = [];
   predefinedFilters: FilterablePropertyDefinition[] = [];
   semiPredefinedFilters: EnumPropertyDefinition[] = [];
-  toggleFilters: PropertyFilter[] = [];
+  toggleFilters: ToggleFilter[] = [];
   filters: PropertyFilter[] = [];
 }
 
@@ -369,11 +373,11 @@ describe('CompositeFiltersComponent', () => {
       operator: LogicalOperator.And,
       criteria: [{ filterableProperty: stringProperty, operator: ComparisonOperator.Contains, value: 'demo' }],
     };
-    this.component.toggleFilters = [nameToggle];
-    this.component.ngOnChanges({ toggleFilters: new SimpleChange([], [nameToggle], false) });
+    this.component.toggleFilters = asToggles(nameToggle);
+    this.component.ngOnChanges({ toggleFilters: new SimpleChange([], asToggles(nameToggle), false) });
     expect(this.component.selectedFilterableProperty).toBe(enumProperty);
     expect(propertyChange).not.toHaveBeenCalled();
-    this.component.toggleFilters = [];
+    this.component.toggleFilters = asToggles();
 
     // A new array with an equal field keeps the choice and switches to the new definition.
     const newEnumProperty = new EnumPropertyDefinition(
@@ -494,17 +498,17 @@ describe('CompositeFiltersComponent', () => {
 
     it('turns a toggle ON when the host value contains its criteria, and OFF when it no longer does', function (this: ThisTest) {
       const host = TestBed.createComponent(TwoWayHostComponent);
-      host.componentInstance.toggleFilters = [redToggle()];
+      host.componentInstance.toggleFilters = asToggles(redToggle());
       host.detectChanges();
 
       host.componentInstance.filters = [redToggle()];
       host.detectChanges();
-      expect(bar(host).isToggleOn(redToggle())).toBeTrue();
+      expect(bar(host).isToggleOn({ filter: redToggle() })).toBeTrue();
       expect(pillNames(host)).toEqual([]);
 
       host.componentInstance.filters = [];
       host.detectChanges();
-      expect(bar(host).isToggleOn(redToggle())).toBeFalse();
+      expect(bar(host).isToggleOn({ filter: redToggle() })).toBeFalse();
       host.destroy();
     });
 
@@ -547,7 +551,7 @@ describe('CompositeFiltersComponent', () => {
 
     it('does not emit at start-up when the result is what the host passed in', async function (this: ThisTest) {
       const host = TestBed.createComponent(TwoWayHostComponent);
-      host.componentInstance.toggleFilters = [redToggle()];
+      host.componentInstance.toggleFilters = asToggles(redToggle());
       // New but equal objects, in another order than the bar emits them (pills first, then toggles).
       host.componentInstance.filters = [redToggle(), stringPropertyFilter];
       host.detectChanges();
@@ -580,11 +584,11 @@ describe('CompositeFiltersComponent', () => {
 
     it('tells the host when a toggle that is ON loses its field to a predefined filter', async function (this: ThisTest) {
       const host = TestBed.createComponent(TwoWayHostComponent);
-      host.componentInstance.toggleFilters = [redToggle()];
+      host.componentInstance.toggleFilters = asToggles(redToggle());
       host.componentInstance.filters = [redToggle()];
       host.detectChanges();
       await host.whenStable();
-      expect(bar(host).isToggleOn(redToggle())).toBeTrue();
+      expect(bar(host).isToggleOn({ filter: redToggle() })).toBeTrue();
 
       spyOn(console, 'warn');
       host.componentInstance.predefinedFilters = [enumProperty];
@@ -682,7 +686,7 @@ describe('CompositeFiltersComponent', () => {
         operator: LogicalOperator.And,
         criteria: [{ filterableProperty: stringProperty, operator: ComparisonOperator.Contains, value: 'demo' }],
       };
-      this.component.toggleFilters = [equalsToggle(), notEquals];
+      this.component.toggleFilters = asToggles(equalsToggle(), notEquals);
       this.fixture.detectChanges();
       expect(toggles().map(toggle => toggle.textContent.trim())).toEqual([
         `${enumProperty.displayName}: ${enumProperty.values.get('red')}`,
@@ -704,7 +708,7 @@ describe('CompositeFiltersComponent', () => {
           { filterableProperty: enumProperty, operator: ComparisonOperator.Equals, value: 'green' },
         ],
       };
-      this.component.toggleFilters = [isEmpty, redOrGreen];
+      this.component.toggleFilters = asToggles(isEmpty, redOrGreen);
       this.fixture.detectChanges();
       expect(toggles().map(toggle => toggle.textContent.trim())).toEqual([
         `${stringProperty.displayName}: Is empty`,
@@ -714,7 +718,7 @@ describe('CompositeFiltersComponent', () => {
 
     it('applies the filter only while ON', function (this: ThisTest) {
       const toggle = equalsToggle();
-      this.component.toggleFilters = [toggle];
+      this.component.toggleFilters = asToggles(toggle);
       this.fixture.detectChanges();
       spyOn(this.component.propertyFiltersChange, 'emit');
       expect(toggles()[0].getAttribute('aria-pressed')).toBe('false');
@@ -735,12 +739,12 @@ describe('CompositeFiltersComponent', () => {
     it('keeps the ON state when the host passes equal but new toggle objects', function (this: ThisTest) {
       const emitted: PropertyFilter[][] = [];
       this.component.propertyFiltersChange.subscribe(value => emitted.push(value));
-      this.fixture.componentRef.setInput('toggleFilters', [equalsToggle()]);
+      this.fixture.componentRef.setInput('toggleFilters', asToggles(equalsToggle()));
       this.fixture.detectChanges();
       toggles()[0].click();
       this.fixture.detectChanges();
 
-      this.fixture.componentRef.setInput('toggleFilters', [equalsToggle()]);
+      this.fixture.componentRef.setInput('toggleFilters', asToggles(equalsToggle()));
       this.fixture.detectChanges();
       expect(toggles()[0].getAttribute('aria-pressed')).toBe('true');
 
@@ -753,11 +757,11 @@ describe('CompositeFiltersComponent', () => {
     it('drops the ON state of a toggle that is no longer configured', async function (this: ThisTest) {
       const emitted: PropertyFilter[][] = [];
       this.component.propertyFiltersChange.subscribe(value => emitted.push(value));
-      this.fixture.componentRef.setInput('toggleFilters', [equalsToggle()]);
+      this.fixture.componentRef.setInput('toggleFilters', asToggles(equalsToggle()));
       this.fixture.detectChanges();
       toggles()[0].click();
       expect(emitted[emitted.length - 1]).toEqual([equalsToggle()]);
-      this.fixture.componentRef.setInput('toggleFilters', []);
+      this.fixture.componentRef.setInput('toggleFilters', asToggles());
       this.fixture.detectChanges();
       expect(this.component.hasActiveCriteria).toBeFalse();
       // The host is told the toggle is no longer applied, after change detection.
@@ -765,18 +769,63 @@ describe('CompositeFiltersComponent', () => {
       expect(emitted[emitted.length - 1]).toEqual([]);
     });
 
-    it('turns a toggle ON only for a preset with the same criteria', function (this: ThisTest) {
+    it('removes a preset with other criteria on a toggle field, with a warning', function (this: ThisTest) {
       const toggle = equalsToggle();
       const otherValue: PropertyFilter = {
         operator: LogicalOperator.Or,
         criteria: [{ filterableProperty: enumProperty, operator: ComparisonOperator.Equals, value: 'green' }],
       };
-      this.component.toggleFilters = [toggle];
-      this.component.presetFilters = [otherValue];
+      spyOn(console, 'warn');
+      this.component.toggleFilters = asToggles(toggle);
+      this.component.presetFilters = [otherValue, stringPropertyFilter];
       this.fixture.detectChanges();
-      expect(this.component.isToggleOn(toggle)).toBeFalse();
-      // The preset is kept as a normal pill with its own value.
-      expect(this.component.propertyFilters).toEqual([otherValue]);
+      expect(this.component.isToggleOn({ filter: toggle })).toBeFalse();
+      // The toggle owns its field, so only the filter on another field is kept.
+      expect(this.component.propertyFilters).toEqual([stringPropertyFilter]);
+      expect((console.warn as jasmine.Spy).calls.mostRecent().args[0]).toContain(
+        'Removed filters for: ' + enumProperty.property
+      );
+    });
+
+    it('removes a host filter with other criteria on a toggle field and emits the corrected list', async function (this: ThisTest) {
+      const toggle = equalsToggle();
+      const otherValue: PropertyFilter = {
+        operator: LogicalOperator.Or,
+        criteria: [{ filterableProperty: enumProperty, operator: ComparisonOperator.Equals, value: 'green' }],
+      };
+      this.fixture.componentRef.setInput('toggleFilters', asToggles(toggle));
+      this.fixture.detectChanges();
+      await this.fixture.whenStable();
+      spyOn(console, 'warn');
+      spyOn(this.component.propertyFiltersChange, 'emit');
+      this.fixture.componentRef.setInput('propertyFilters', [otherValue, stringPropertyFilter]);
+      this.fixture.detectChanges();
+      await this.fixture.whenStable();
+      expect(this.component.propertyFilters).toEqual([stringPropertyFilter]);
+      expect(this.component.propertyFiltersChange.emit).toHaveBeenCalledOnceWith([stringPropertyFilter]);
+    });
+
+    it('shows a label as given, with the criteria in the tooltip', function (this: ThisTest) {
+      this.component.toggleFilters = [{ label: 'Only red', filter: equalsToggle() }];
+      this.fixture.detectChanges();
+      expect(toggles()[0].textContent.trim()).toBe('Only red');
+      const tooltip: HTMLElement = this.fixture.nativeElement.querySelector('clr-tooltip-content');
+      expect(tooltip.textContent.trim()).toBe(`${enumProperty.displayName}: ${enumProperty.values.get('red')}`);
+    });
+
+    it('falls back to the criteria text for an empty label', function (this: ThisTest) {
+      this.component.toggleFilters = [{ label: '  ', filter: equalsToggle() }];
+      this.fixture.detectChanges();
+      expect(toggles()[0].textContent.trim()).toBe(`${enumProperty.displayName}: ${enumProperty.values.get('red')}`);
+    });
+
+    it('emits only the filter of a labelled toggle', function (this: ThisTest) {
+      const toggle = equalsToggle();
+      this.component.toggleFilters = [{ label: 'Only red', filter: toggle }];
+      this.fixture.detectChanges();
+      spyOn(this.component.propertyFiltersChange, 'emit');
+      toggles()[0].click();
+      expect(this.component.propertyFiltersChange.emit).toHaveBeenCalledWith([toggle]);
     });
 
     it('renders when the array inputs are undefined', function (this: ThisTest) {
@@ -790,15 +839,15 @@ describe('CompositeFiltersComponent', () => {
 
     it('starts ON from a preset and is turned OFF by Clear all', function (this: ThisTest) {
       const toggle = equalsToggle();
-      this.component.toggleFilters = [toggle];
+      this.component.toggleFilters = asToggles(toggle);
       this.component.presetFilters = [equalsToggle()];
       this.fixture.detectChanges();
-      expect(this.component.isToggleOn(toggle)).toBeTrue();
+      expect(this.component.isToggleOn({ filter: toggle })).toBeTrue();
       expect(this.component.propertyFilters.length).toBe(0);
 
       this.fixture.nativeElement.querySelector('[data-test-id="clear-all-button"]').click();
       this.fixture.detectChanges();
-      expect(this.component.isToggleOn(toggle)).toBeFalse();
+      expect(this.component.isToggleOn({ filter: toggle })).toBeFalse();
     });
   });
 
@@ -811,7 +860,7 @@ describe('CompositeFiltersComponent', () => {
     it('keeps a field in predefinedFilters over semi-predefined and toggle filters', function (this: ThisTest) {
       this.component.predefinedFilters = [enumProperty];
       this.component.semiPredefinedFilters = [enumProperty];
-      this.component.toggleFilters = [enumToggle('red')];
+      this.component.toggleFilters = asToggles(enumToggle('red'));
       this.fixture.detectChanges();
       expect(this.component.predefinedFilters).toEqual([enumProperty]);
       expect(this.component.semiPredefinedFilters).toEqual([]);
@@ -821,19 +870,19 @@ describe('CompositeFiltersComponent', () => {
 
     it('keeps a semi-predefined field over a toggle', function (this: ThisTest) {
       this.component.semiPredefinedFilters = [enumProperty];
-      this.component.toggleFilters = [enumToggle('red')];
+      this.component.toggleFilters = asToggles(enumToggle('red'));
       expect(this.component.semiPredefinedFilters).toEqual([enumProperty]);
       expect(this.component.toggleFilters).toEqual([]);
     });
 
     it('keeps only the first toggle per field', function (this: ThisTest) {
       const first = enumToggle('red');
-      this.component.toggleFilters = [first, enumToggle('blue')];
-      expect(this.component.toggleFilters).toEqual([first]);
+      this.component.toggleFilters = asToggles(first, enumToggle('blue'));
+      expect(this.component.toggleFilters).toEqual(asToggles(first));
     });
 
     it('restores an ignored entry when the conflicting one is removed', function (this: ThisTest) {
-      this.component.toggleFilters = [enumToggle('red')];
+      this.component.toggleFilters = asToggles(enumToggle('red'));
       this.component.predefinedFilters = [enumProperty];
       expect(this.component.toggleFilters).toEqual([]);
       this.component.predefinedFilters = [];

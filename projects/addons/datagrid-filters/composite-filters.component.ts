@@ -41,6 +41,7 @@ import {
   PropertyFilter,
   PropertyPredicate,
   StringPropertyDefinition,
+  ToggleFilter,
   UserPropertyDefinition,
 } from './model/datagrid-filters.interfaces';
 
@@ -55,6 +56,10 @@ function toEnumPropertyArray(value: EnumPropertyDefinition[] | null | undefined)
 
 function toFilterArray(value: PropertyFilter[] | null | undefined): PropertyFilter[] {
   return value ?? [];
+}
+
+function toToggleArray(value: ToggleFilter[] | null | undefined): ToggleFilter[] {
+  return (value ?? []).filter(toggle => !!toggle?.filter?.criteria?.length);
 }
 
 /**
@@ -131,10 +136,10 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   /** Keys (see toggleKey) of the toggle filters that are ON. */
   private rawPredefinedFilters: FilterablePropertyDefinition[] = [];
   private rawSemiPredefinedFilters: EnumPropertyDefinition[] = [];
-  private rawToggleFilters: PropertyFilter[] = [];
+  private rawToggleFilters: ToggleFilter[] = [];
   private resolvedPredefinedFilters: FilterablePropertyDefinition[] = [];
   private resolvedSemiPredefinedFilters: EnumPropertyDefinition[] = [];
-  private resolvedToggleFilters: PropertyFilter[] = [];
+  private resolvedToggleFilters: ToggleFilter[] = [];
   /** Fields ignored by the last resolution, reported with console.warn. */
   private ignoredFieldEntries: string[] = [];
   private initialized = false;
@@ -182,15 +187,17 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
 
   /**
    * Ready-made filters shown as on/off pills in the predefined group. OFF means not applied;
-   * ON applies the filter as configured. A preset filter with the same criteria starts the toggle ON.
+   * ON applies the toggle's `filter`. A preset filter with the same criteria starts the toggle ON.
    * Toggles are identified by their criteria, so the host may pass new but equal objects.
    * Toggles on a field already in `predefinedFilters`, `semiPredefinedFilters` or an earlier toggle are ignored.
+   * The toggle owns its field: any other filter on it (a preset or a `propertyFilters` entry) is removed, with a
+   * console warning.
    */
-  @Input({ transform: toFilterArray })
-  get toggleFilters(): PropertyFilter[] {
+  @Input({ transform: toToggleArray })
+  get toggleFilters(): ToggleFilter[] {
     return this.resolvedToggleFilters;
   }
-  set toggleFilters(value: PropertyFilter[]) {
+  set toggleFilters(value: ToggleFilter[]) {
     this.rawToggleFilters = value;
     this.resolveFieldOwners();
   }
@@ -257,12 +264,12 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     return JSON.stringify(criteria.length > 1 ? [filter.operator, criteria] : criteria);
   }
 
-  isToggleOn(toggle: PropertyFilter): boolean {
-    return this.activeToggleKeys.has(this.toggleKey(toggle));
+  isToggleOn(toggle: ToggleFilter): boolean {
+    return this.activeToggleKeys.has(this.toggleKey(toggle.filter));
   }
 
-  toggleFilter(toggle: PropertyFilter): void {
-    const key = this.toggleKey(toggle);
+  toggleFilter(toggle: ToggleFilter): void {
+    const key = this.toggleKey(toggle.filter);
     if (this.activeToggleKeys.has(key)) {
       this.activeToggleKeys.delete(key);
     } else {
@@ -271,11 +278,16 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     this.emitFilters();
   }
 
+  /** The host's label as given, or the text generated from the criteria when there is no (or an empty) label. */
+  toggleText(toggle: ToggleFilter): string {
+    return toggle.label?.trim() ? toggle.label : this.toggleCriteriaText(toggle.filter);
+  }
+
   /**
    * FIELD_NAME: VALUE for Equals, FIELD_NAME: CONDITION for Is empty, FIELD_NAME: CONDITION VALUE otherwise.
    * Multiple criteria are joined with the filter's logical operator, e.g. "Status: Running Or Stopped".
    */
-  toggleText(toggle: PropertyFilter): string {
+  toggleCriteriaText(toggle: PropertyFilter): string {
     const property = toggle.criteria[0]?.filterableProperty;
     const conditions = toggle.criteria.map(predicate => {
       if (predicate.operator === ComparisonOperator.IsEmpty) {
@@ -353,9 +365,9 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     if (fieldsChanged || filtersChanged) {
       // Precedence can hand a field to another input after init: a semi-predefined field's filter may no longer be
       // valid, and a toggle that was ON may be gone. Tell the host what is still applied.
-      const removedSemi = this.initialized && this.removeInvalidSemiFilters();
+      const removedFilters = this.initialized && this.removeInvalidFilters();
       const removedToggle = this.removeUnresolvedToggleKeys();
-      if (this.initialized && (removedSemi || removedToggle)) {
+      if (this.initialized && (removedFilters || removedToggle)) {
         this.emitFiltersLater();
       }
     }
@@ -378,7 +390,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     );
     const passedIn = this.propertyFilters;
     this.applyFilters([...presets, ...bound]);
-    this.removeInvalidSemiFilters();
+    this.removeInvalidFilters();
     this.initialized = true;
     if (!this.sameFilters(this.currentFilters(), passedIn)) {
       // Presets or clean-up changed what the host passed in: tell it once, so a [(propertyFilters)] binding is in sync.
@@ -516,7 +528,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
    */
   private toggleProperties(): FilterablePropertyDefinition[] {
     return this.toggleFilters
-      .map(toggle => toggle.criteria[0]?.filterableProperty)
+      .map(toggle => toggle.filter.criteria[0]?.filterableProperty)
       .filter((property): property is FilterablePropertyDefinition => !!property);
   }
 
@@ -526,7 +538,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
    * is never changed.
    */
   private applyFilters(filters: PropertyFilter[]): void {
-    const toggleKeys = new Set(this.toggleFilters.map(toggle => this.toggleKey(toggle)));
+    const toggleKeys = new Set(this.toggleFilters.map(toggle => this.toggleKey(toggle.filter)));
     this.activeToggleKeys.clear();
     this.propertyFilters = filters.filter(filter => {
       if (!filter?.criteria?.length) {
@@ -560,7 +572,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
 
   /** Drops ON states of toggles that are no longer configured or lost their field. True if any was ON. */
   private removeUnresolvedToggleKeys(): boolean {
-    const keys = new Set(this.toggleFilters.map(toggle => this.toggleKey(toggle)));
+    const keys = new Set(this.toggleFilters.map(toggle => this.toggleKey(toggle.filter)));
     let removed = false;
     this.activeToggleKeys.forEach(key => {
       if (!keys.has(key)) {
@@ -573,7 +585,10 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
 
   /** The user filters plus the toggle filters that are ON, as emitted. */
   private currentFilters(): PropertyFilter[] {
-    return [...this.propertyFilters, ...this.toggleFilters.filter(toggle => this.isToggleOn(toggle))];
+    return [
+      ...this.propertyFilters,
+      ...this.toggleFilters.filter(toggle => this.isToggleOn(toggle)).map(toggle => toggle.filter),
+    ];
   }
 
   /** Same filters by criteria (field, operator, value and logical operator), in any order. */
@@ -714,7 +729,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     );
     this.resolvedToggleFilters = this.rawToggleFilters.filter(toggle =>
       claim(
-        [...new Set(toggle.criteria.map(predicate => predicate.filterableProperty?.property).filter(Boolean))],
+        [...new Set(toggle.filter.criteria.map(predicate => predicate.filterableProperty?.property).filter(Boolean))],
         'toggleFilters'
       )
     );
@@ -752,6 +767,34 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     console.warn(
       'appfx-composite-filter: filters on semiPredefinedFilters fields must select options ' +
         '(Equals on option keys, combined with OR). Removed filters for: ' +
+        invalid.map(filter => filter.criteria[0].filterableProperty.property).join(', ')
+    );
+    return true;
+  }
+
+  /** Removes filters that their field's owner does not allow. Returns true when something was removed. */
+  private removeInvalidFilters(): boolean {
+    const removedSemi = this.removeInvalidSemiFilters();
+    const removedToggleField = this.removeToggleFieldFilters();
+    return removedSemi || removedToggleField;
+  }
+
+  /**
+   * A toggle owns its field. A filter with exactly a toggle's criteria turns the toggle ON (see applyFilters), so a
+   * filter still on a toggle's field has other criteria. Removes it and writes a console warning. Returns true when
+   * something was removed.
+   */
+  private removeToggleFieldFilters(): boolean {
+    const toggleFields = new Set(this.toggleProperties().map(property => property.property));
+    const invalid = this.propertyFilters.filter(filter =>
+      filter.criteria.some(predicate => toggleFields.has(predicate.filterableProperty?.property))
+    );
+    if (!invalid.length) {
+      return false;
+    }
+    this.propertyFilters = this.propertyFilters.filter(filter => !invalid.includes(filter));
+    console.warn(
+      'appfx-composite-filter: a toggleFilters field accepts only the toggle filter itself. Removed filters for: ' +
         invalid.map(filter => filter.criteria[0].filterableProperty.property).join(', ')
     );
     return true;

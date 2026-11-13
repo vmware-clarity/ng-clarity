@@ -33,6 +33,7 @@ export {
   PropertyFilter,
   PropertyPredicate,
   StringPropertyDefinition,
+  ToggleFilter,
   UserPropertyDefinition,
 } from './model/datagrid-filters.interfaces';
 

@@ -260,6 +260,20 @@ export interface FilterEditorState {
   units?: Unit[];
 }
 
+/**
+ * An on/off pill for `toggleFilters`: ON applies `filter`, OFF applies nothing.
+ */
+export interface ToggleFilter {
+  /**
+   * Text of the pill, shown as given (any free text, translated by the host). Without a label, or with an empty
+   * one, the text is generated from the filter's criteria, e.g. "Status: Warning". The tooltip always shows the
+   * criteria.
+   */
+  label?: string;
+  /** The filter applied while the toggle is ON. Toggles are identified by its criteria, not by the label. */
+  filter: PropertyFilter;
+}
+
 export class PropertyFilter {
   /**
    *  Filter criteria

@@ -11,6 +11,7 @@ import {
   FilterablePropertyDefinition,
   FilterMode,
   PropertyFilter,
+  ToggleFilter,
 } from '@clr/addons/datagrid-filters';
 
 @Component({
@@ -28,7 +29,7 @@ export class MockDatagridFiltersComponent {
 
   @Input() semiPredefinedFilters: EnumPropertyDefinition[] = [];
 
-  @Input() toggleFilters: PropertyFilter[] = [];
+  @Input() toggleFilters: ToggleFilter[] = [];
 
   @Input() presetFilters: PropertyFilter[];
 

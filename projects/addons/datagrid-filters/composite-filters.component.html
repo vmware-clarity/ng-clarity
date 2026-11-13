@@ -15,20 +15,27 @@
           data-test-id="filter-group-separator"
         ></span>
       </ng-template>
-      @for (toggle of toggleFilters; track toggleKey(toggle)) {
+      @for (toggle of toggleFilters; track toggleKey(toggle.filter)) {
         <clr-label class="semi-filter-option-label" [clrColor]="isToggleOn(toggle) ? 'info' : ''">
-          <button
-            type="button"
-            class="semi-filter-option"
-            data-test-id="toggle-filter"
-            [attr.aria-pressed]="isToggleOn(toggle)"
-            (click)="toggleFilter(toggle)"
-          >
-            @if (isToggleOn(toggle)) {
-              <cds-icon shape="check" size="16" aria-hidden="true"></cds-icon>
-            }
-            <span class="semi-filter-option-text">{{ toggleText(toggle) }}</span>
-          </button>
+          <clr-tooltip>
+            <button
+              type="button"
+              class="semi-filter-option"
+              data-test-id="toggle-filter"
+              clrTooltipTrigger
+              [attr.aria-pressed]="isToggleOn(toggle)"
+              (click)="toggleFilter(toggle)"
+            >
+              @if (isToggleOn(toggle)) {
+                <cds-icon shape="check" size="16" aria-hidden="true"></cds-icon>
+              }
+              <span class="semi-filter-option-text">{{ toggleText(toggle) }}</span>
+            </button>
+            <!-- The exact condition, also for a toggle with its own label. -->
+            <clr-tooltip-content clrPosition="top-right" clrSize="lg">{{
+              toggleCriteriaText(toggle.filter)
+            }}</clr-tooltip-content>
+          </clr-tooltip>
         </clr-label>
       }
       @for (property of predefinedProperties; track property.property) {

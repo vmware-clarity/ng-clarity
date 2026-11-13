@@ -23,6 +23,7 @@ import {
   EnumPropertyDefinition,
   FilterablePropertyDefinition,
   PropertyFilter,
+  ToggleFilter,
 } from './model/datagrid-filters.interfaces';
 
 const enterKey = 'Enter';
@@ -78,7 +79,7 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
    * Ready-made filters shown as on/off pills in the predefined group. OFF means not applied;
    * ON applies the filter as configured.
    */
-  @Input() toggleFilters: PropertyFilter[] = [];
+  @Input() toggleFilters: ToggleFilter[] = [];
 
   /**
    * Event emitter to tell hosting view that search term, used for filtering
