@@ -206,6 +206,10 @@ describe('GeneralFilterComponent', () => {
       this.component.conditions.at(0).controls.operator.setValue(ComparisonOperator.IsEmpty);
       this.fixture.detectChanges();
       expect(andInput.disabled).toBeTrue();
+      // The input is hidden, so the visible button carries the disabled state; Or stays enabled.
+      const [andButton, orButton] = this.fixture.nativeElement.querySelectorAll('.filter-logic .radio.btn');
+      expect(andButton.classList).toContain('disabled');
+      expect(orButton.classList).not.toContain('disabled');
       expect(this.component.generalFilterForm.value.logicalOperator).toBe(LogicalOperator.Or);
 
       andInput.click();
@@ -214,6 +218,7 @@ describe('GeneralFilterComponent', () => {
       this.component.conditions.at(0).controls.operator.setValue(ComparisonOperator.Equals);
       this.fixture.detectChanges();
       expect(andInput.disabled).toBeFalse();
+      expect(andButton.classList).not.toContain('disabled');
       andInput.click();
       expect(this.component.generalFilterForm.value.logicalOperator).toBe(LogicalOperator.And);
     });

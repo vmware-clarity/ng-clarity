@@ -23,7 +23,8 @@
         "
       >
         @for (operator of logicalOperators; track operator) {
-          <div class="radio btn">
+          <!-- The input is hidden, so the button shows the disabled state (And is not allowed with Is empty). -->
+          <div class="radio btn" [class.disabled]="operator === LogicalOperator.And && hasEmptyPredicate">
             <input
               type="radio"
               [id]="id + '-logic-' + operator"
