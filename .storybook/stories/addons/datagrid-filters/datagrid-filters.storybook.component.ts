@@ -96,6 +96,9 @@ function createdRangeOptions(): DateRangeOption[] {
 
 const createdProperty = new DateTimePropertyDefinition('Created', 'created', undefined, false, createdRangeOptions());
 
+/** A date-time field with seconds: its time inputs take seconds, and the pill shows them. */
+const modifiedProperty = new DateTimePropertyDefinition('Last modified', 'modified', undefined, true);
+
 const userProperty = new UserPropertyDefinition('User', 'user');
 
 const filterableProperties: FilterablePropertyDefinition[] = [
@@ -105,11 +108,15 @@ const filterableProperties: FilterablePropertyDefinition[] = [
   guestOsProperty,
   usedSpaceProperty,
   createdProperty,
+  modifiedProperty,
   userProperty,
 ];
 
 /** The Created field alone, as a predefined pill, to try its preset ranges. */
 export const createdOnly = [createdProperty];
+
+/** The Last modified field alone, as a predefined pill, to try times with seconds. */
+export const modifiedOnly = [modifiedProperty];
 
 export const predefinedFilters = [nameProperty, statusProperty, usedSpaceProperty, createdProperty, userProperty];
 

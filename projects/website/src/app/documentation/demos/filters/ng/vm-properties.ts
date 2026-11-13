@@ -77,6 +77,9 @@ export const createdProperty = new DateTimePropertyDefinition(
   createdRangeOptions()
 );
 
+/** A date-time field with seconds (`includeSeconds`): its time inputs take seconds, and the pill shows them. */
+export const modifiedProperty = new DateTimePropertyDefinition('Last modified', 'modified', undefined, true);
+
 export const vmProperties: FilterablePropertyDefinition[] = [
   nameProperty,
   stateProperty,

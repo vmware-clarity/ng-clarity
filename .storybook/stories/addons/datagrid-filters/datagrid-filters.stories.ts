@@ -15,6 +15,7 @@ import {
   DatagridFiltersStoryWrapperComponent,
   equalsDayPresetFilters,
   lastWeekPresetFilters,
+  modifiedOnly,
   predefinedFilters,
   presetFilters,
   savedView,
@@ -181,5 +182,13 @@ export const DateTimePresetRanges: Story = {
     filterMode: FilterMode.AdvancedOnly,
     // Open Created, choose Custom range: the ranges are in the date picker, or buttons once a time is added.
     predefinedFilters: createdOnly,
+  },
+};
+
+export const DateTimeWithSeconds: Story = {
+  args: {
+    filterMode: FilterMode.AdvancedOnly,
+    // Open Last modified and add a time: the time inputs take seconds (includeSeconds).
+    predefinedFilters: modifiedOnly,
   },
 };

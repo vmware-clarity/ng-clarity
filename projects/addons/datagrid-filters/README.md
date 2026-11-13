@@ -1,16 +1,16 @@
 ## Overview & Rationale
 
 AppFx Filters component provides an enhanced user experience for datagrid filtering.
-It is expected to be hosted in the datagrid action bar and can be used in three modes - quick, advanced and advanced only. <br/>
-Advanced modes allow users to build and manage complex filtering queries. Quick mode is suitable for quick search filtering.
+It is expected to be hosted in the datagrid action bar and can be used in four modes - quick, advanced, advanced only and combined. <br/>
+Advanced modes allow users to build and manage complex filtering queries. Quick mode is suitable for quick search filtering. Combined mode shows the quick search and the advanced filter pills together.
 
 #### Advanced Filter
 
-![Filters example screen](assets/appfx/datagrid-advanced-filter-overview.png)
+![Filters example screen](../../website/src/assets/images/documentation/advanced-datagrid/datagrid-advanced-filter-overview.png)
 
 #### Quick Filter
 
-![Filters example screen](assets/appfx/datagrid-quick-filter-overview.png)
+![Filters example screen](../../website/src/assets/images/documentation/advanced-datagrid/datagrid-quick-filter-overview.png)
 
 ## Component API
 
@@ -32,7 +32,7 @@ Advanced modes allow users to build and manage complex filtering queries. Quick 
 
 The optional `predefinedFilters: FilterablePropertyDefinition[]` input selects the properties whose pills are always visible in advanced mode. Supply their definitions in the desired display order. Properties are matched by their `property` key, so a predefined field is not offered again in **Add filter**.
 
-Predefined pills start empty and use a gray outline with the field name. Set initial criteria through the existing `presetFilters` input. Active pills use a blue outline and background, display the first condition, and show `+N` for additional conditions. Operators other than equality remain visible in the summary.
+Predefined pills start empty and use a gray outline with the field name. Set initial criteria through the existing `presetFilters` input. Active pills use a blue outline and background, display the first condition, and show `+N` for additional conditions. The summary shows the operator, e.g. `Status: Equals Warning`.
 
 Opening a pill edits its criteria in a popover. **Clear filter** returns a predefined pill to its empty state; user-added filters can be removed. **Clear all** clears all criteria and removes user-added pills while retaining predefined pills. **Hide** only hides user-added pills. Empty pills are not included in `propertyFiltersChange`.
 
@@ -68,7 +68,7 @@ Use `[(propertyFilters)]` when the host keeps the active filters, for example to
 ```
 
 - A new `propertyFilters` value replaces the active filters. A filter with exactly a toggle's criteria turns that toggle ON; a toggle missing from the value turns OFF. The filter bar copies the array and never changes it.
-- Setting `propertyFilters` does not emit `propertyFiltersChange`, so passing the emitted value back does not loop. The exception is a filter on a semi-predefined field that had to be removed; the corrected list is emitted.
+- Setting `propertyFilters` does not emit `propertyFiltersChange`, so passing the emitted value back does not loop. The exceptions are a filter on a semi-predefined field that had to be removed, and a toggle that was ON and is no longer configured (or lost its field to another input). The corrected list is then emitted once, after change detection, so a `[(propertyFilters)]` binding stays safe.
 - `presetFilters` are applied once, at start-up. For the same field, a preset wins over a `propertyFilters` filter. If the start-up result differs from what `propertyFilters` passed in (or there is no `propertyFilters` binding and presets are set), `propertyFiltersChange` emits it once, after the first change detection, so the host is in sync from the start.
 - Switching `appfx-datagrid-filters` to quick mode clears the filters and emits `[]`.
 
@@ -168,8 +168,11 @@ Date-time filters emit local date-times followed by the local UTC offset, e.g. `
 Pass `rangeOptions` (Clarity's `DateRangeOption[]` from `@clr/angular`) as the fifth constructor argument to offer ready-made ranges for **Custom range**. Without times they are listed in the date range picker; with times they are buttons under the operator. A click fills From and To, which the user can still change before **Apply**; the pill then shows the dates.
 
 ```ts
-const today = new Date();
-const daysAgo = (days: number) => new Date(today.getFullYear(), today.getMonth(), today.getDate() - days);
+// Build ranges from midnight: with times, 00:00 means the whole day. `new Date()` would keep the current time,
+// so "Today" would cover a single minute.
+const now = new Date();
+const daysAgo = (days: number) => new Date(now.getFullYear(), now.getMonth(), now.getDate() - days);
+const today = daysAgo(0);
 
 new DateTimePropertyDefinition('Created', 'created', undefined, false, [
   { label: 'Today', value: [today, today] },

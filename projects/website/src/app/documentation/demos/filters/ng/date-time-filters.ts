@@ -15,7 +15,13 @@ import {
 } from '@clr/addons/datagrid-filters';
 
 import { AppliedFiltersComponent } from './applied-filters';
-import { createdProperty, createPredicate, createPropertyFilter, vmProperties } from './vm-properties';
+import {
+  createdProperty,
+  createPredicate,
+  createPropertyFilter,
+  modifiedProperty,
+  vmProperties,
+} from './vm-properties';
 
 @Component({
   selector: 'app-datagrid-filters-date-time-demo',
@@ -25,8 +31,8 @@ import { createdProperty, createPredicate, createPropertyFilter, vmProperties } 
 })
 export class DatagridFiltersDateTimeDemoComponent {
   readonly FilterMode = FilterMode;
-  readonly filterableProperties = vmProperties;
-  readonly predefinedFilters = [createdProperty];
+  readonly filterableProperties = [...vmProperties, modifiedProperty];
+  readonly predefinedFilters = [createdProperty, modifiedProperty];
 
   filters: PropertyFilter[] = [];
 
@@ -48,6 +54,17 @@ export class DatagridFiltersDateTimeDemoComponent {
         LogicalOperator.And,
         createPredicate(createdProperty, ComparisonOperator.GreaterThanOrEqualTo, '2026-03-01'),
         createPredicate(createdProperty, ComparisonOperator.LessThan, '2026-03-08')
+      ),
+    ];
+  }
+
+  // With seconds, Equals covers one second: from that second to the next.
+  showEqualsSecond(): void {
+    this.filters = [
+      createPropertyFilter(
+        LogicalOperator.And,
+        createPredicate(modifiedProperty, ComparisonOperator.GreaterThanOrEqualTo, '2026-03-29T10:30:15'),
+        createPredicate(modifiedProperty, ComparisonOperator.LessThan, '2026-03-29T10:30:16')
       ),
     ];
   }

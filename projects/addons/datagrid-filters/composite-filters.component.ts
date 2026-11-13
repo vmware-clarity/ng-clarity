@@ -127,6 +127,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   @ViewChild('filterContainer') private filterContainer: ElementRef<HTMLElement>;
   private readonly injector = inject(Injector);
   private readonly destroyRef = inject(DestroyRef);
+  private destroyed = false;
   /** Keys (see toggleKey) of the toggle filters that are ON. */
   private rawPredefinedFilters: FilterablePropertyDefinition[] = [];
   private rawSemiPredefinedFilters: EnumPropertyDefinition[] = [];
@@ -146,6 +147,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   ) {
     this.showHideFiltersLabel = filterStrings.hideButtonLabel;
     this.showHideFiltersAriaLabel = filterStrings.hideButtonAriaLabel;
+    this.destroyRef.onDestroy(() => (this.destroyed = true));
   }
 
   /**
@@ -336,38 +338,29 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['predefinedFilters'] || changes['semiPredefinedFilters'] || changes['toggleFilters']) {
+    const fieldsChanged = ['predefinedFilters', 'semiPredefinedFilters', 'toggleFilters'].some(
+      input => input in changes
+    );
+    const filtersChanged = 'propertyFilters' in changes;
+    if (fieldsChanged) {
       this.warnIgnoredFields();
-      // Precedence can hand a field to semiPredefinedFilters after init; its current filter may no longer be valid.
-      if (this.initialized && this.removeInvalidSemiFilters()) {
-        this.emitFilters();
-      }
     }
-    if (changes['propertyFilters'] && this.initialized) {
+    if (filtersChanged && this.initialized) {
       // The host replaced the active filters. The value is the full state, so it also sets which toggles are ON.
       this.applyFilters(changes['propertyFilters'].currentValue ?? []);
-      if (this.removeInvalidSemiFilters()) {
-        this.emitFilters();
-      }
       this.updateShowHideLabel();
     }
-    if (changes['toggleFilters']) {
-      // Drop ON states of toggles that are no longer configured.
-      const keys = new Set(this.toggleFilters.map(toggle => this.toggleKey(toggle)));
-      this.activeToggleKeys.forEach(key => {
-        if (!keys.has(key)) {
-          this.activeToggleKeys.delete(key);
-        }
-      });
+    if (fieldsChanged || filtersChanged) {
+      // Precedence can hand a field to another input after init: a semi-predefined field's filter may no longer be
+      // valid, and a toggle that was ON may be gone. Tell the host what is still applied.
+      const removedSemi = this.initialized && this.removeInvalidSemiFilters();
+      const removedToggle = this.removeUnresolvedToggleKeys();
+      if (this.initialized && (removedSemi || removedToggle)) {
+        this.emitFiltersLater();
+      }
     }
     // Only these inputs change which fields Add filter can offer.
-    if (
-      changes['propertyFilters'] ||
-      changes['filterableProperties'] ||
-      changes['predefinedFilters'] ||
-      changes['semiPredefinedFilters'] ||
-      changes['toggleFilters']
-    ) {
+    if (fieldsChanged || filtersChanged || 'filterableProperties' in changes) {
       this.keepOrPreselectProperty();
     }
   }
@@ -389,14 +382,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     this.initialized = true;
     if (!this.sameFilters(this.currentFilters(), passedIn)) {
       // Presets or clean-up changed what the host passed in: tell it once, so a [(propertyFilters)] binding is in sync.
-      // Deferred, because emitting during the first change detection would change a parent value already checked.
-      let destroyed = false;
-      this.destroyRef.onDestroy(() => (destroyed = true));
-      Promise.resolve().then(() => {
-        if (!destroyed) {
-          this.emitFilters();
-        }
-      });
+      this.emitFiltersLater();
     }
     this.preselectFirstProperty();
   }
@@ -558,6 +544,31 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   /** Emits the user filters plus the toggle filters that are ON. */
   private emitFilters(): void {
     this.propertyFiltersChange.emit(this.currentFilters());
+  }
+
+  /**
+   * Emits after the current change detection. Lifecycle hooks run while the parent is being checked, so emitting
+   * there would change a `[(propertyFilters)]` value Angular has already checked (NG0100).
+   */
+  private emitFiltersLater(): void {
+    Promise.resolve().then(() => {
+      if (!this.destroyed) {
+        this.emitFilters();
+      }
+    });
+  }
+
+  /** Drops ON states of toggles that are no longer configured or lost their field. True if any was ON. */
+  private removeUnresolvedToggleKeys(): boolean {
+    const keys = new Set(this.toggleFilters.map(toggle => this.toggleKey(toggle)));
+    let removed = false;
+    this.activeToggleKeys.forEach(key => {
+      if (!keys.has(key)) {
+        this.activeToggleKeys.delete(key);
+        removed = true;
+      }
+    });
+    return removed;
   }
 
   /** The user filters plus the toggle filters that are ON, as emitted. */

@@ -241,6 +241,12 @@
       local date-times followed by the UTC offset, and a day runs from midnight to midnight, also on daylight saving
       days.
     </p>
+    <p cds-text="body" class="clr-mt-16px">
+      The Last modified field passes <code cds-text="code">includeSeconds</code> as the fourth argument of
+      <code cds-text="code">DateTimePropertyDefinition</code>: its time inputs take seconds, the pill shows them, and an
+      inclusive time steps by a second instead of a minute, so Equals 10:30:15 covers 10:30:15 to 10:30:16. Try
+      <strong>Equals a second</strong>, or open the pill and add a time.
+    </p>
     <div class="clr-mt-24px">
       <app-datagrid-filters-date-time-demo></app-datagrid-filters-date-time-demo>
     </div>

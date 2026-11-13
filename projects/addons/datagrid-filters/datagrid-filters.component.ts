@@ -98,7 +98,7 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
   constructor(public filterStrings: DatagridFiltersStrings) {}
 
   /**
-   * Quick, Advanced or AdvancedOnly. Default Quick.
+   * Quick, Advanced, AdvancedOnly or Combined. Default Quick.
    */
   @Input()
   set filterMode(filterMode: FilterMode) {

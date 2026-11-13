@@ -23,6 +23,7 @@ export interface VmItem {
   usedSpace: string;
   cpus: string;
   creation: string;
+  modified: string;
   color: string;
   event: string;
   user: string;
@@ -56,6 +57,8 @@ export class Inventory {
         // Every 4th item was created in the last 60 days, about 3 per week starting today,
         // so Last day / week / month and time spans match rows.
         creation: i % 4 === 0 ? this.getRecentDate((i / 4) * 2.4) : this.getRandomDate(),
+        // A date-time with seconds, 37 seconds apart going back from now, for filters with seconds.
+        modified: this.getRecentDateTime(i * 37),
         event: this.getItem(i, events),
         user: this.getItem(i, users),
       });
@@ -106,6 +109,15 @@ export class Inventory {
   // Used by an iterator to pull an item out of an array in a repeatable way.
   private getItem<T>(num: number, array: T[]): T {
     return array[num % array.length];
+  }
+
+  private getRecentDateTime(secondsAgo: number): string {
+    // Same date format as Created, plus the time with seconds, e.g. "November 13, 2026 01:23:15 PM".
+    // Date.parse reads it back, which the demo's date filter relies on.
+    const date = new Date(Date.now() - secondsAgo * 1000);
+    const day = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const time = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    return `${day} ${time}`;
   }
 
   private getRecentDate(daysAgo: number): string {

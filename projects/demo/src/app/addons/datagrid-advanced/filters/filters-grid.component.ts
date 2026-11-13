@@ -169,6 +169,10 @@ export class FiltersGridComponent {
       displayName: 'Created',
       field: 'creation',
     },
+    {
+      displayName: 'Last modified',
+      field: 'modified',
+    },
   ];
 
   protected filteredItems: VmItem[] = [];
@@ -309,6 +313,8 @@ export class FiltersGridComponent {
 
     const userProp = new UserPropertyDefinition('User', 'user');
     const createdProp = new DateTimePropertyDefinition('Created', 'creation');
+    // includeSeconds: the time inputs take seconds, and the pill shows them.
+    const modifiedProp = new DateTimePropertyDefinition('Last modified', 'modified', undefined, true);
 
     this.filterableProperties.push(
       stringNameProperty,
@@ -317,7 +323,8 @@ export class FiltersGridComponent {
       priorityProperty,
       categoryEnumProp,
       userProp,
-      createdProp
+      createdProp,
+      modifiedProp
     );
 
     this.predefinedFilters = [stringNameProperty, enumProperty];

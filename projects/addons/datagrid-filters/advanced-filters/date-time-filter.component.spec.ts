@@ -789,6 +789,38 @@ describe('DateTimeFilterComponent', () => {
       expect(primaryPredicate.value).toContain('2023-08-09T12:30:45');
     });
 
+    describe('with seconds, inclusive times step by a second', () => {
+      function apply(this: ThisTest, operator: ComparisonOperator): PropertyFilter {
+        this.component.includeSeconds = true;
+        this.component.enableTimePredicate();
+        this.fixture.detectChanges();
+        this.component.dateTimeFilterForm.controls['operator'].setValue(operator);
+        this.component.dateTimeFilterForm.controls['dateValue'].setValue(toInput(augustNinth));
+        this.component.dateTimeFilterForm.controls['timeValue'].setValue('12:30:45');
+        spyOn(this.component.filterCriteriaChange, 'emit');
+        this.component.onApplyButtonClick();
+        return (this.component.filterCriteriaChange.emit as jasmine.Spy).calls.mostRecent().args[0];
+      }
+
+      it('Before or equal to ends before the next second', function (this: ThisTest) {
+        const filter = apply.call(this, ComparisonOperator.BeforeOrEqualTo);
+        expect(filter.criteria[0].operator).toBe(ComparisonOperator.LessThan);
+        expect(filter.criteria[0].value).toContain('2023-08-09T12:30:46');
+      });
+
+      it('After starts at the next second', function (this: ThisTest) {
+        const filter = apply.call(this, ComparisonOperator.After);
+        expect(filter.criteria[0].operator).toBe(ComparisonOperator.GreaterThanOrEqualTo);
+        expect(filter.criteria[0].value).toContain('2023-08-09T12:30:46');
+      });
+
+      it('Equals covers one second', function (this: ThisTest) {
+        const filter = apply.call(this, ComparisonOperator.Equals);
+        expect(filter.criteria[0].value).toContain('2023-08-09T12:30:45');
+        expect(filter.criteria[1].value).toContain('2023-08-09T12:30:46');
+      });
+    });
+
     it('should submit form when Enter key is pressed and form is valid', function (this: ThisTest) {
       spyOn(this.component, 'onApplyButtonClick');
 

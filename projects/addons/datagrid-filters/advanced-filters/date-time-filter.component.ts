@@ -36,7 +36,15 @@ import {
   PropertyFilter,
   PropertyPredicate,
 } from '../model/datagrid-filters.interfaces';
-import { oneDayMs, oneHourMs, oneMinuteMs, oneMonthMs, oneWeekMs, oneYearMs } from '../model/date-time-constants';
+import {
+  oneDayMs,
+  oneHourMs,
+  oneMinuteMs,
+  oneMonthMs,
+  oneSecondMs,
+  oneWeekMs,
+  oneYearMs,
+} from '../model/date-time-constants';
 import { addDays, dateTimeEditorState, parseLocalDateTime, toIsoDate } from '../model/date-time-editor-state';
 
 const enterKey = 'Enter';
@@ -122,6 +130,14 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
   }
   set filterProperty(filterProperty: DateTimePropertyDefinition) {
     this.#filterProperty = filterProperty;
+  }
+
+  /**
+   * The smallest time the inputs can express: a second with `includeSeconds`, otherwise a minute. An inclusive time
+   * becomes exclusive by adding it, so "Before or equal to 10:30:15" ends before 10:30:16, not 10:31:15.
+   */
+  private get timeStepMs(): number {
+    return this.includeSeconds ? oneSecondMs : oneMinuteMs;
   }
 
   ngOnInit() {
@@ -438,7 +454,7 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
     this.primaryPredicate = this.getFromDateTimePredicate();
     this.secondaryPredicate.operator = ComparisonOperator.LessThan;
     if (this.timePredicate) {
-      this.secondaryPredicate.value = this.getCustomDate(this.primaryPredicate.value, oneMinuteMs);
+      this.secondaryPredicate.value = this.getCustomDate(this.primaryPredicate.value, this.timeStepMs);
     } else {
       this.secondaryPredicate.value = this.getNextDay(this.primaryPredicate.value);
     }
@@ -475,7 +491,7 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
     if (this.timePredicate) {
       fromValue += 'T' + this.dateTimeFilterForm.value.timeValue + (this.includeSeconds ? '' : ':00');
       if (adjustTime) {
-        fromValue = this.getCustomDate(fromValue, oneMinuteMs);
+        fromValue = this.getCustomDate(fromValue, this.timeStepMs);
       }
     } else {
       fromValue += 'T00:00:00';
@@ -493,7 +509,7 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
     let toValue: string = this.isoDate('dateValueTo');
     if (this.timePredicate) {
       toValue += 'T' + this.dateTimeFilterForm.value.timeValueTo + (this.includeSeconds ? '' : ':00');
-      toValue = this.getCustomDate(toValue, oneMinuteMs);
+      toValue = this.getCustomDate(toValue, this.timeStepMs);
     } else {
       toValue += 'T00:00:00';
       toValue = this.getNextDay(toValue);

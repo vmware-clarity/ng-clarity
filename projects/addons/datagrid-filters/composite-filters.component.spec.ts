@@ -106,6 +106,8 @@ class CompositeFiltersHostComponent {
   template: `<appfx-composite-filter
     [filterableProperties]="filterableProperties"
     [presetFilters]="presetFilters"
+    [predefinedFilters]="predefinedFilters"
+    [semiPredefinedFilters]="semiPredefinedFilters"
     [toggleFilters]="toggleFilters"
     [(propertyFilters)]="filters"
   ></appfx-composite-filter>`,
@@ -115,6 +117,8 @@ class CompositeFiltersHostComponent {
 class TwoWayHostComponent {
   filterableProperties = filterableProperties;
   presetFilters: PropertyFilter[] = [];
+  predefinedFilters: FilterablePropertyDefinition[] = [];
+  semiPredefinedFilters: EnumPropertyDefinition[] = [];
   toggleFilters: PropertyFilter[] = [];
   filters: PropertyFilter[] = [];
 }
@@ -553,6 +557,45 @@ describe('CompositeFiltersComponent', () => {
       host.destroy();
     });
 
+    it('corrects the host value without NG0100 when a field turns semi-predefined', async function (this: ThisTest) {
+      const host = TestBed.createComponent(TwoWayHostComponent);
+      host.componentInstance.semiPredefinedFilters = [enumProperty];
+      host.detectChanges();
+      await host.whenStable();
+      const key = Array.from(enumProperty.values.keys())[0];
+      host.componentInstance.filters = [
+        {
+          operator: LogicalOperator.Or,
+          criteria: [{ filterableProperty: enumProperty, operator: ComparisonOperator.DoesNotEqual, value: key }],
+        },
+        stringPropertyFilter,
+      ];
+      spyOn(console, 'warn');
+      expect(() => host.detectChanges()).not.toThrow();
+      await host.whenStable();
+      host.detectChanges();
+      expect(host.componentInstance.filters).toEqual([stringPropertyFilter]);
+      host.destroy();
+    });
+
+    it('tells the host when a toggle that is ON loses its field to a predefined filter', async function (this: ThisTest) {
+      const host = TestBed.createComponent(TwoWayHostComponent);
+      host.componentInstance.toggleFilters = [redToggle()];
+      host.componentInstance.filters = [redToggle()];
+      host.detectChanges();
+      await host.whenStable();
+      expect(bar(host).isToggleOn(redToggle())).toBeTrue();
+
+      spyOn(console, 'warn');
+      host.componentInstance.predefinedFilters = [enumProperty];
+      expect(() => host.detectChanges()).not.toThrow();
+      await host.whenStable();
+      host.detectChanges();
+      expect(host.componentInstance.filters).toEqual([]);
+      expect(bar(host).hasActiveCriteria).toBeFalse();
+      host.destroy();
+    });
+
     it('lets a preset win over a bound filter for the same field at start-up', function (this: ThisTest) {
       const host = TestBed.createComponent(TwoWayHostComponent);
       const presetForName: PropertyFilter = {
@@ -707,16 +750,18 @@ describe('CompositeFiltersComponent', () => {
       expect(emitted[emitted.length - 1]).toEqual([]);
     });
 
-    it('drops the ON state of a toggle that is no longer configured', function (this: ThisTest) {
+    it('drops the ON state of a toggle that is no longer configured', async function (this: ThisTest) {
       const emitted: PropertyFilter[][] = [];
       this.component.propertyFiltersChange.subscribe(value => emitted.push(value));
       this.fixture.componentRef.setInput('toggleFilters', [equalsToggle()]);
       this.fixture.detectChanges();
       toggles()[0].click();
+      expect(emitted[emitted.length - 1]).toEqual([equalsToggle()]);
       this.fixture.componentRef.setInput('toggleFilters', []);
       this.fixture.detectChanges();
       expect(this.component.hasActiveCriteria).toBeFalse();
-      this.component.clearFilter(stringProperty);
+      // The host is told the toggle is no longer applied, after change detection.
+      await this.fixture.whenStable();
       expect(emitted[emitted.length - 1]).toEqual([]);
     });
 
@@ -839,7 +884,7 @@ describe('CompositeFiltersComponent', () => {
       expect(this.component.isOptionSelected(enumProperty, first)).toBeTrue();
     });
 
-    it('removes a filter that becomes invalid when its field turns semi-predefined', function (this: ThisTest) {
+    it('removes a filter that becomes invalid when its field turns semi-predefined', async function (this: ThisTest) {
       const key = Array.from(enumProperty.values.keys())[0];
       const notEquals: PropertyFilter = {
         operator: LogicalOperator.Or,
@@ -848,12 +893,16 @@ describe('CompositeFiltersComponent', () => {
       const valid = stringPropertyFilter;
       this.component.presetFilters = [notEquals, valid];
       this.fixture.detectChanges();
+      await this.fixture.whenStable();
       expect(this.component.propertyFilters).toEqual([notEquals, valid]);
       spyOn(console, 'warn');
       spyOn(this.component.propertyFiltersChange, 'emit');
       this.component.semiPredefinedFilters = [enumProperty];
       this.component.ngOnChanges({ semiPredefinedFilters: new SimpleChange([], [enumProperty], false) });
       expect(this.component.propertyFilters).toEqual([valid]);
+      // Emitted after change detection, not from ngOnChanges.
+      expect(this.component.propertyFiltersChange.emit).not.toHaveBeenCalled();
+      await this.fixture.whenStable();
       expect(this.component.propertyFiltersChange.emit).toHaveBeenCalledOnceWith([valid]);
       expect((console.warn as jasmine.Spy).calls.mostRecent().args[0]).toContain(
         'Removed filters for: ' + enumProperty.property

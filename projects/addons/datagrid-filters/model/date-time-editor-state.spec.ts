@@ -48,6 +48,27 @@ describe('dateTimeEditorState', () => {
     });
   });
 
+  it('reads [second, next second) as Equals on a field with seconds', () => {
+    const withSeconds = new DateTimePropertyDefinition('Created', 'created', undefined, true);
+    const filter = range('2026-08-09T10:30:15', '2026-08-09T10:30:16');
+    filter.criteria.forEach(predicate => (predicate.filterableProperty = withSeconds));
+    expect(dateTimeEditorState(filter)).toEqual({
+      operator: ComparisonOperator.Equals,
+      value: '2026-08-09T10:30:15',
+    });
+  });
+
+  it('reads a custom range end a second before the exclusive end on a field with seconds', () => {
+    const withSeconds = new DateTimePropertyDefinition('Created', 'created', undefined, true);
+    const filter = range('2026-08-09T10:30:15', '2026-08-09T12:00:16');
+    filter.criteria.forEach(predicate => (predicate.filterableProperty = withSeconds));
+    expect(dateTimeEditorState(filter)).toEqual({
+      operator: ComparisonOperator.CustomRange,
+      value: '2026-08-09T10:30:15',
+      valueTo: '2026-08-09T12:00:15',
+    });
+  });
+
   it('reads a custom range with its inclusive end date', () => {
     expect(dateTimeEditorState(range('2026-08-01T00:00:00', '2026-08-10T00:00:00'))).toEqual({
       operator: ComparisonOperator.CustomRange,

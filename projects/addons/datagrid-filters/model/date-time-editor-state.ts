@@ -6,8 +6,8 @@
  */
 
 import { ComparisonOperator, LogicalOperator } from './datagrid-filters.enums';
-import { FilterEditorState, PropertyFilter } from './datagrid-filters.interfaces';
-import { oneMinuteMs } from './date-time-constants';
+import { DateTimePropertyDefinition, FilterEditorState, PropertyFilter } from './datagrid-filters.interfaces';
+import { oneMinuteMs, oneSecondMs } from './date-time-constants';
 
 // Internal helpers for date-time filters. Not exported from the package.
 
@@ -101,15 +101,19 @@ export function dateTimeEditorState(filter: PropertyFilter | undefined): FilterE
     if (!start || !end) {
       return null;
     }
-    // The editor writes Equals as [day, next day) or [minute, next minute). A day is midnight to the next midnight,
+    // The editor steps by a second on a field with seconds, otherwise by a minute.
+    const prop = criteria[0].filterableProperty;
+    const stepMs = prop instanceof DateTimePropertyDefinition && prop.includeSeconds ? oneSecondMs : oneMinuteMs;
+
+    // The editor writes Equals as [day, next day) or [time, time + step). A day is midnight to the next midnight,
     // however many hours it has.
     const isWholeDay = isMidnight(start.date) && end.date.getTime() === addDays(start.date, 1).getTime();
-    const isOneMinute = end.date.getTime() - start.date.getTime() === oneMinuteMs;
-    if (isWholeDay || isOneMinute) {
+    const isOneStep = end.date.getTime() - start.date.getTime() === stepMs;
+    if (isWholeDay || isOneStep) {
       return { operator: ComparisonOperator.Equals, value: normalize(from.value) };
     }
-    // A custom range ends at the midnight after its (inclusive) end date, or a minute after its end time.
-    const inclusiveEnd = isMidnight(end.date) ? addDays(end.date, -1) : new Date(end.date.getTime() - oneMinuteMs);
+    // A custom range ends at the midnight after its (inclusive) end date, or a step after its end time.
+    const inclusiveEnd = isMidnight(end.date) ? addDays(end.date, -1) : new Date(end.date.getTime() - stepMs);
     return {
       operator: ComparisonOperator.CustomRange,
       value: normalize(from.value),
