@@ -13,7 +13,7 @@
 <clr-datagrid
   #grid
   [clrDgItemsIdentityFn]="identity"
-  [clrDgLoading]="loading"
+  [clrDgLoading]="loading()"
   clrDgSelectionType="multi"
   [(clrDgSelected)]="selected"
   (clrDgRefresh)="refresh($event)"
@@ -24,7 +24,7 @@
   <clr-dg-column clrDgSortBy="modified">Modified</clr-dg-column>
 
   <clr-dg-row
-    *clrDgTreeItems="let item of files; getChildren: getChildren; cascadeSelection: true"
+    *clrDgTreeItems="let item of files(); getChildren: getChildren; cascadeSelection: true"
     [clrDgItem]="item"
     [clrDgTreeExpandable]="item.type === 'Folder'"
   >
@@ -37,8 +37,8 @@
   <clr-dg-placeholder>No files found</clr-dg-placeholder>
 
   <clr-dg-footer>
-    <clr-dg-pagination #pagination [clrDgPageSize]="5" [clrDgTotalItems]="total">
-      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ total }} items
+    <clr-dg-pagination #pagination [clrDgPageSize]="5" [clrDgTotalItems]="total()">
+      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ total() }} items
     </clr-dg-pagination>
   </clr-dg-footer>
 </clr-datagrid>
