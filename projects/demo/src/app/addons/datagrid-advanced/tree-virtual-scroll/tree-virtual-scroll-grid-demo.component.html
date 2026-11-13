@@ -1,0 +1,36 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<p>
+  A virtual scroll over {{ dataRange.total }} datacenters, loaded by range as they scroll into view. Expanded rows add
+  their children to the rows to scroll through; the range the grid asks for still counts datacenters.
+</p>
+
+<div class="btn-group btn-sm">
+  <button type="button" class="btn btn-outline" (click)="grid.expandAllTreeRows()">Expand all</button>
+  <button type="button" class="btn btn-outline" (click)="grid.collapseAllTreeRows()">Collapse all</button>
+</div>
+
+<p>Datacenters asked for: {{ requested.join(', ') }}</p>
+<p>Selected: {{ selected.length }}</p>
+
+<appfx-datagrid
+  #grid
+  trackByGridItemProperty="id"
+  [serverDrivenDatagrid]="true"
+  [virtualScrolling]="true"
+  [dataRange]="dataRange"
+  [totalItems]="dataRange.total"
+  [columns]="columns"
+  [selectionType]="SelectionType.Multi"
+  [selectedItems]="selected"
+  [treeConfig]="treeConfig"
+  [layoutModel]="{ stretchToParentHeight: true }"
+  (selectedItemsChange)="selected = $event"
+  (refreshVirtualGridData)="loadRoots($event)"
+>
+</appfx-datagrid>

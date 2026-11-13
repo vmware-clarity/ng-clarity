@@ -7,13 +7,5 @@
     "noImplicitOverride": true,
     "types": []
   },
-  "exclude": [
-    "**/*.spec.ts",
-    "**/*.mock.ts",
-    "**/*.stories.ts",
-    "schematics/**",
-    "utils/testing/**",
-    "forms/tests/**",
-    "data/datagrid/helpers.ts"
-  ]
+  "exclude": ["**/*.spec.ts", "**/*.mock.ts", "**/*.stories.ts", "schematics/**", "utils/testing/**", "forms/tests/**"]
 }

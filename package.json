@@ -42,6 +42,7 @@
     "_build:addons": "ng build clr-addons --configuration production && node ./scripts/copy-ai-files.js addons",
     "_build:demo": "ng build clr-demo --configuration production",
     "_build:website": "npm-run-all prebuild:website && ng build clr-website --configuration production",
+    "_build:website:vrt": "npm-run-all prebuild:website && node ./projects/website/scripts/write-vrt-index.js && ng build clr-website --configuration production,vrt",
     "_build:storybook": "ng run clr-angular:build-storybook",
     "_build:ui": "npm-run-all _build:ui:css _build:ui:prefix _build:ui:optimize _build:ui:required-files _build:ui:style-docs",
     "_build:ui:css": "sass ./projects/ui/src:./dist/clr-ui --precision=8 --load-path=node_modules",

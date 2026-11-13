@@ -22,7 +22,7 @@ import { renderFixture } from '@clr/angular/utils/testing';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
-import { DATAGRID_SPEC_PROVIDERS } from './helpers';
+import { DATAGRID_SPEC_PROVIDERS } from './helpers.mock';
 import { ClarityModule } from '../../clr-angular.module';
 import { ClrDatagridVirtualScrollRangeInterface } from './interfaces/virtual-scroll-data-range.interface';
 
@@ -383,6 +383,16 @@ describe('Datagrid', () => {
           expect(spyVirtualScroll).toHaveBeenCalledWith(dataRange.skip, dataRange.data);
 
           fixture.destroy();
+        });
+
+        it('accepts a data range too large to spread into function arguments', () => {
+          fixture.detectChanges();
+          const data = Array.from({ length: 200_000 }, (_, index) => ({ index }));
+
+          expect(() => instance.updateDataRange({ total: data.length, skip: 0, data })).not.toThrow();
+          expect(() => fixture.detectChanges()).not.toThrow();
+          expect(instance.virtualScroll.cdkVirtualForOf.length).toBe(data.length);
+          expect(instance.virtualScroll.cdkVirtualForOf[199_999]).toBe(data[199_999]);
         });
 
         it('Moves focus on PageDown and PageUp', async () => {

@@ -20,7 +20,7 @@ import { DatagridStringFilterImpl } from './built-in/filters/datagrid-string-fil
 import { ClrDatagrid } from './datagrid';
 import { DatagridDisplayMode } from './enums/display-mode.enum';
 import { SelectionType } from './enums/selection-type';
-import { DATAGRID_SPEC_PROVIDERS } from './helpers';
+import { DATAGRID_SPEC_PROVIDERS } from './helpers.mock';
 import { ClrDatagridComparatorInterface } from './interfaces/comparator.interface';
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
 import { ClrDatagridStateInterface } from './interfaces/state.interface';

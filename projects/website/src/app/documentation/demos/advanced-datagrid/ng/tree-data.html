@@ -1,0 +1,34 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<p>Selected: {{ selected.length }} · Last toggled: {{ lastExpanded || 'none' }}</p>
+
+<div class="btn-group btn-sm">
+  <button type="button" class="btn btn-outline" (click)="grid.expandAllTreeRows()">Expand all</button>
+  <button type="button" class="btn btn-outline" (click)="grid.collapseAllTreeRows()">Collapse all</button>
+</div>
+
+<appfx-datagrid
+  #grid
+  [serverDrivenDatagrid]="true"
+  [gridItems]="roots"
+  [totalItems]="total"
+  [loading]="loading"
+  [columns]="columns"
+  [trackByGridItemProperty]="'id'"
+  [treeConfig]="treeConfig"
+  [selectionType]="SelectionType.Multi"
+  [selectedItems]="selected"
+  [pageSize]="5"
+  [pageSizeOptions]="[5, 10]"
+  [layoutModel]="{ stretchToParentHeight: false }"
+  [footerModel]="{ showFooter: true }"
+  (refreshGridData)="refresh($event)"
+  (selectedItemsChange)="selected = $event"
+  (treeExpandedChange)="onTreeExpandedChange($event)"
+>
+</appfx-datagrid>

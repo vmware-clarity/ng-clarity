@@ -140,6 +140,7 @@ describe('Tree View', () => {
           TestBed.configureTestingModule({
             providers: [{ provide: ChangeDetectorRef, useValue: { markForCheck: vi.fn() } }],
           });
+          // Direct construction needs the node's injected rendering and animation dependencies.
           TestBed.runInInjectionContext(() => {
             testContext.parent = new ClrTreeNode(
               platformID,

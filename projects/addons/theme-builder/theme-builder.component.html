@@ -24,7 +24,7 @@
 
 <!-- ── Preview DARK card ── -->
 <!-- Invisible for filling the dark values on initial load -->
-<div style="display: none" #previewDarkWrapper cds-theme="dark"></div>
+<div hidden #previewDarkWrapper cds-theme="dark"></div>
 
 <!-- ── Two-column layout: controls | preview ── -->
 <div class="tb-layout" cds-layout="m-t:lg m-b:lg">
@@ -68,7 +68,7 @@
             </clr-stack-header>
             <clr-stack-block [clrStackViewLevel]="1">
               <clr-stack-label class="tb-stack-label">{{ colorGroup.base.label }}</clr-stack-label>
-              <clr-stack-content style="width: 52%">
+              <clr-stack-content class="tb-stack-content">
                 <div class="tb-color-input-wrap">
                   <input
                     type="color"
