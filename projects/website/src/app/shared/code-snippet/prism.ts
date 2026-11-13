@@ -5,6 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+// Must come first, see prism-manual.ts.
+import './prism-manual';
+
 import prismjs from 'prismjs';
 
 // add languages for code highlighting
