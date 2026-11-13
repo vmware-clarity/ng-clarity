@@ -386,11 +386,11 @@ describe('Datagrid', () => {
         });
 
         it('accepts a data range too large to spread into function arguments', () => {
-          fixture.detectChanges();
+          renderFixture(fixture);
           const data = Array.from({ length: 200_000 }, (_, index) => ({ index }));
 
           expect(() => instance.updateDataRange({ total: data.length, skip: 0, data })).not.toThrow();
-          expect(() => fixture.detectChanges()).not.toThrow();
+          expect(() => renderFixture(fixture)).not.toThrow();
           expect(instance.virtualScroll.cdkVirtualForOf.length).toBe(data.length);
           expect(instance.virtualScroll.cdkVirtualForOf[199_999]).toBe(data[199_999]);
         });
