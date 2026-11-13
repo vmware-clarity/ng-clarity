@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, signal, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TestContext } from '@clr/angular/testing';
 import { renderFixture } from '@clr/angular/utils/testing';
@@ -66,6 +66,21 @@ class PointContent {
     x: number;
     y: number;
   } | null = null;
+}
+
+@Component({
+  template: `
+    <div *clrPopoverContent="open(); at: 'bottom-left'; outsideClickToClose: true; origin: point()">
+      Late origin content
+    </div>
+  `,
+  providers: [ClrPopoverService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
+})
+class LateOriginContent {
+  readonly open = signal(false);
+  readonly point = signal<{ x: number; y: number } | null>(null);
 }
 
 describe('ClrPopover', () => {
@@ -820,6 +835,28 @@ describe('ClrPopover', () => {
         expect(popoverService.open).toBe(false);
 
         fixture.destroy();
+      });
+    });
+
+    describe('an origin that comes in after the popover opened', () => {
+      it('shows the popover once the origin is set, and nothing before', async () => {
+        TestBed.configureTestingModule({
+          imports: [ClrPopoverModuleNext],
+          declarations: [LateOriginContent],
+        });
+        const fixture = TestBed.createComponent(LateOriginContent);
+        fixture.autoDetectChanges();
+        await fixture.whenStable();
+
+        // Without an origin the CDK position strategy would throw from its render callback.
+        fixture.componentInstance.open.set(true);
+        await fixture.whenStable();
+        expect(document.body.querySelector('div.clr-popover-content')).toBeNull();
+
+        fixture.componentInstance.point.set({ x: 150, y: 250 });
+        await fixture.whenStable();
+        expect(document.body.querySelector('div.clr-popover-content')?.textContent.trim()).toBe('Late origin content');
+        expect(fixture.debugElement.injector.get(ClrPopoverService).originPoint).toEqual({ x: 150, y: 250 });
       });
     });
 

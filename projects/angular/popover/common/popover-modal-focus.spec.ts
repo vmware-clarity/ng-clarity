@@ -5,13 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  provideCheckNoChangesConfig,
-  provideZonelessChangeDetection,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClrDatagridModule } from '@clr/angular/data/datagrid';
 import { ClrModalModule } from '@clr/angular/modal';
@@ -54,7 +48,6 @@ describe('Popover focus in a zoneless modal', () => {
       declarations: [ModalActionsHost],
       animationsEnabled: true,
       imports: [ClrModalModule, ClrDatagridModule],
-      providers: [provideZonelessChangeDetection(), provideCheckNoChangesConfig({ exhaustive: true })],
     });
     fixture = TestBed.createComponent(ModalActionsHost);
     fixture.autoDetectChanges();

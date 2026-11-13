@@ -14,6 +14,16 @@ const isZoneImport = value => /(^|\/)zone\.js($|\/)/.test(normalizePath(value));
 
 const zoneHelpers = new Set(['fakeAsync', 'waitForAsync', 'tick', 'flush', 'flushMicrotasks', 'discardPeriodicTasks']);
 
+/** The name of the method a call calls (`a.b()` and `a['b']()` call `b`). */
+function calledMethod(call) {
+  const expression = call.expression;
+  return ts.isPropertyAccessExpression(expression)
+    ? expression.name.text
+    : ts.isElementAccessExpression(expression) && ts.isStringLiteral(expression.argumentExpression)
+      ? expression.argumentExpression.text
+      : undefined;
+}
+
 function checkSource(source, filename) {
   const errors = [];
   const sourceFile = ts.createSourceFile(filename, source, ts.ScriptTarget.Latest, true);
@@ -33,6 +43,27 @@ function checkSource(source, filename) {
     }
   }
   function visit(node) {
+    if (ts.isExportDeclaration(node) && node.moduleSpecifier && ts.isStringLiteral(node.moduleSpecifier)) {
+      // A re-export would hand the Zone helpers to the specs that import them from here.
+      const moduleName = node.moduleSpecifier.text;
+      const names = node.exportClause && ts.isNamedExports(node.exportClause) ? node.exportClause.elements : null;
+      if (isZoneImport(moduleName)) {
+        errors.push(`${filename}: exports ${moduleName}`);
+      } else if (['@angular/core/testing', '@angular/core'].includes(moduleName)) {
+        if (!names) {
+          errors.push(`${filename}: use named Angular testing exports`);
+        }
+        for (const binding of names || []) {
+          const name = (binding.propertyName || binding.name).text;
+          if (
+            (moduleName === '@angular/core/testing' && zoneHelpers.has(name)) ||
+            (moduleName === '@angular/core' && name === 'provideZoneChangeDetection')
+          ) {
+            errors.push(`${filename}: exports ${name}`);
+          }
+        }
+      }
+    }
     if (ts.isImportDeclaration(node) && ts.isStringLiteral(node.moduleSpecifier)) {
       const moduleName = node.moduleSpecifier.text;
       if (isZoneImport(moduleName)) {
@@ -69,14 +100,20 @@ function checkSource(source, filename) {
       ) {
         errors.push(`${filename}: imports ${imported.text}`);
       }
+      const method = calledMethod(node);
+      // `detectChanges(false)` and `autoDetectChanges(false)` skip or stop the checks, so only `true` may be passed,
+      // which the script can tell from the source.
       if (
-        ((ts.isPropertyAccessExpression(node.expression) && node.expression.name.text === 'detectChanges') ||
-          (ts.isElementAccessExpression(node.expression) &&
-            ts.isStringLiteral(node.expression.argumentExpression) &&
-            node.expression.argumentExpression.text === 'detectChanges')) &&
-        node.arguments[0]?.kind === ts.SyntaxKind.FalseKeyword
+        ['detectChanges', 'autoDetectChanges'].includes(method) &&
+        node.arguments.length &&
+        node.arguments[0].kind !== ts.SyntaxKind.TrueKeyword
       ) {
-        errors.push(`${filename}: detectChanges(false) disables the exhaustive check; keep checks enabled`);
+        errors.push(
+          `${filename}: ${method}(${node.arguments[0].getText(sourceFile)}) can turn the checks off; call it without arguments`
+        );
+      }
+      if (method === 'useFakeTimers' && filename !== 'projects/test-timers.ts') {
+        errors.push(`${filename}: use useTestTimers() from projects/test-timers.ts, which restores the real timers`);
       }
       if (ts.isIdentifier(node.expression) && checkConfigNames.has(node.expression.text)) {
         const options = node.arguments[0];
@@ -103,10 +140,17 @@ function checkSource(source, filename) {
   return errors;
 }
 
+/**
+ * Counts the forced checks of a spec: `detectChanges()`, `tick()`, `renderFixture()` and `animationFrameTick(fixture)`
+ * calls (also under the names they are imported as), and each call of a function of the file that makes one. A
+ * function that wraps a forced check counts once per call, not once for the whole file.
+ */
 function countForcedChecks(source, filename) {
-  let count = 0;
   const sourceFile = ts.createSourceFile(filename, source, ts.ScriptTarget.Latest, true);
-  const helperNames = new Set(['renderFixture']);
+  const helpers = new Map([
+    ['renderFixture', 'renderFixture'],
+    ['animationFrameTick', 'animationFrameTick'],
+  ]);
   for (const node of sourceFile.statements) {
     if (
       !ts.isImportDeclaration(node) ||
@@ -116,30 +160,62 @@ function countForcedChecks(source, filename) {
       continue;
     }
     for (const binding of node.importClause.namedBindings.elements) {
-      if ((binding.propertyName || binding.name).text === 'renderFixture') {
-        helperNames.add(binding.name.text);
+      const imported = (binding.propertyName || binding.name).text;
+      if (helpers.has(imported)) {
+        helpers.set(binding.name.text, imported);
       }
     }
   }
-  function visit(node) {
-    if (ts.isCallExpression(node)) {
-      const expression = node.expression;
-      const name = ts.isPropertyAccessExpression(expression)
-        ? expression.name.text
-        : ts.isElementAccessExpression(expression) && ts.isStringLiteral(expression.argumentExpression)
-          ? expression.argumentExpression.text
-          : undefined;
-      if (
-        ['detectChanges', 'tick', 'renderFixture'].includes(name) ||
-        (ts.isIdentifier(expression) && helperNames.has(expression.text))
-      ) {
-        count++;
+  const isForcedCheck = call => {
+    const method = calledMethod(call);
+    if (['detectChanges', 'tick', 'renderFixture'].includes(method)) {
+      return true;
+    }
+    const helper = ts.isIdentifier(call.expression) ? helpers.get(call.expression.text) : undefined;
+    return helper === 'renderFixture' || (helper === 'animationFrameTick' && call.arguments.length > 0);
+  };
+
+  // The functions of the file by name, and the calls in each of them.
+  const functions = new Map();
+  const callsIn = body => {
+    const calls = [];
+    const visit = node => {
+      if (ts.isCallExpression(node)) {
+        calls.push(node);
+      }
+      ts.forEachChild(node, visit);
+    };
+    visit(body);
+    return calls;
+  };
+  const collect = node => {
+    if (ts.isFunctionDeclaration(node) && node.name && node.body) {
+      functions.set(node.name.text, callsIn(node.body));
+    } else if (
+      ts.isVariableDeclaration(node) &&
+      ts.isIdentifier(node.name) &&
+      node.initializer &&
+      (ts.isArrowFunction(node.initializer) || ts.isFunctionExpression(node.initializer))
+    ) {
+      functions.set(node.name.text, callsIn(node.initializer.body));
+    }
+    ts.forEachChild(node, collect);
+  };
+  collect(sourceFile);
+  const isWrapperCall = (call, wrappers) => ts.isIdentifier(call.expression) && wrappers.has(call.expression.text);
+  // A function that calls a wrapper is one too.
+  const wrappers = new Set();
+  let grown = true;
+  while (grown) {
+    grown = false;
+    for (const [name, calls] of functions) {
+      if (!wrappers.has(name) && calls.some(call => isForcedCheck(call) || isWrapperCall(call, wrappers))) {
+        wrappers.add(name);
+        grown = true;
       }
     }
-    ts.forEachChild(node, visit);
   }
-  visit(sourceFile);
-  return count;
+  return callsIn(sourceFile).filter(call => isForcedCheck(call) || isWrapperCall(call, wrappers)).length;
 }
 
 function hasZonelessProviders(source) {

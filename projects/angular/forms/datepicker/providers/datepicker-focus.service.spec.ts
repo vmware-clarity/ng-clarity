@@ -5,16 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  inject,
-  PLATFORM_ID,
-  provideCheckNoChangesConfig,
-  provideZonelessChangeDetection,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, PLATFORM_ID, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DatepickerFocusService } from './datepicker-focus.service';
@@ -26,7 +17,6 @@ describe('Datepicker focus (zoneless, OnPush host)', () => {
   beforeEach(async () => {
     TestBed.configureTestingModule({
       declarations: [TestComponent],
-      providers: [provideZonelessChangeDetection(), provideCheckNoChangesConfig({ exhaustive: true })],
     });
     fixture = TestBed.createComponent(TestComponent);
     fixture.autoDetectChanges();

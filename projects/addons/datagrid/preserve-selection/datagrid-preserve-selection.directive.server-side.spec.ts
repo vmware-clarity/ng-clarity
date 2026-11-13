@@ -364,7 +364,6 @@ describe('datagrid-preserve-selection-directive.server-side', () => {
     });
 
     it('selection is preserve when move between pages', async () => {
-      useTestTimers();
       const gridHelper = new GridHelper(testContext.fixture.debugElement);
       expect(gridHelper.getRows()[1].isRowSingleSelectable()).toBeTruthy();
       await testContext.selectRows([0]);
@@ -398,7 +397,6 @@ describe('datagrid-preserve-selection-directive.server-side', () => {
     });
 
     it('selection is preserve when refresh data', async () => {
-      useTestTimers();
       await testContext.selectRows([1]);
       testContext.verifySelectedRows([1]);
       await testContext.moveToTheNextPageAndSelectRows([]);

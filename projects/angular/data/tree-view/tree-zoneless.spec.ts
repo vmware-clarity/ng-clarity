@@ -5,14 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  NgZone,
-  provideCheckNoChangesConfig,
-  provideZonelessChangeDetection,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, NgZone, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
@@ -66,7 +59,6 @@ describe('recursive tree in a zoneless OnPush host', () => {
     TestBed.configureTestingModule({
       declarations: [TreeHost],
       imports: [ClrTreeViewModule],
-      providers: [provideZonelessChangeDetection(), provideCheckNoChangesConfig({ exhaustive: true })],
     });
     fixture = TestBed.createComponent(TreeHost);
     host = fixture.componentInstance;

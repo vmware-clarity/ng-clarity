@@ -8,13 +8,7 @@
 import { A11yModule } from '@angular/cdk/a11y';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  provideCheckNoChangesConfig,
-  provideZonelessChangeDetection,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
@@ -44,7 +38,7 @@ describe(`Column toggle (zoneless, OnPush host)`, () => {
     TestBed.configureTestingModule({
       declarations: [ToggleHost, DatagridColumnToggleComponent],
       imports: [CommonModule, FormsModule, OverlayModule, A11yModule, ClarityModule],
-      providers: [DatagridStrings, provideZonelessChangeDetection(), provideCheckNoChangesConfig({ exhaustive: true })],
+      providers: [DatagridStrings],
     });
     fixture = TestBed.createComponent(ToggleHost);
     fixture.autoDetectChanges();

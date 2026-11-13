@@ -5,14 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  PLATFORM_ID,
-  provideCheckNoChangesConfig,
-  provideZonelessChangeDetection,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, PLATFORM_ID, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrDatagridModule } from './datagrid.module';
@@ -47,11 +40,7 @@ for (const platform of ['browser', 'server']) {
       TestBed.configureTestingModule({
         declarations: [ColumnActionsHost],
         imports: [ClrDatagridModule],
-        providers: [
-          { provide: PLATFORM_ID, useValue: platform },
-          provideZonelessChangeDetection(),
-          provideCheckNoChangesConfig({ exhaustive: true }),
-        ],
+        providers: [{ provide: PLATFORM_ID, useValue: platform }],
       });
       fixture = TestBed.createComponent(ColumnActionsHost);
       fixture.autoDetectChanges();

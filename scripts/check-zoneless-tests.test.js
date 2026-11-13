@@ -215,3 +215,47 @@ test('allows reductions and updates their baseline without accepting increases',
   assert.match(checkRepository(root, { update: true }).errors.join('\n'), /forced checks increased/);
   assert.deepEqual(JSON.parse(fs.readFileSync(baselineFile, 'utf8')), {});
 });
+
+test('rejects re-exported Zone helpers and arguments that can turn the checks off', () => {
+  const errors = checkSource(
+    `
+    export { fakeAsync } from '@angular/core/testing';
+    export * from '@angular/core/testing';
+    fixture.detectChanges(checkNoChanges);
+    fixture.autoDetectChanges(false);
+    fixture.detectChanges(true);
+  `,
+    'example.spec.ts'
+  );
+  assert.equal(errors.length, 4);
+  assert.match(errors.join('\n'), /exports fakeAsync/);
+  assert.match(errors.join('\n'), /detectChanges\(checkNoChanges\)/);
+  assert.match(errors.join('\n'), /autoDetectChanges\(false\)/);
+});
+
+test('rejects fake timers installed outside useTestTimers()', () => {
+  assert.equal(checkSource('vi.useFakeTimers();', 'example.spec.ts').length, 1);
+  assert.deepEqual(checkSource('vi.useFakeTimers({ toFake });', 'projects/test-timers.ts'), []);
+});
+
+test('counts each call of a local function that forces a check', () => {
+  assert.equal(
+    countForcedChecks(
+      `
+    import { animationFrameTick as frame } from '@clr/angular/testing';
+    const render = async () => { fixture.detectChanges(); await fixture.whenStable(); };
+    function open() { render(); }
+    it('opens', async () => {
+      await render();
+      await render();
+      open();
+      await frame(fixture);
+      await frame();
+    });
+  `,
+      'example.spec.ts'
+    ),
+    // The check inside render, two calls of render, the call of render inside open, the call of open, and frame(fixture).
+    6
+  );
+});

@@ -333,7 +333,6 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
       await vi.advanceTimersByTimeAsync(0);
     });
     it('selection is preserved when move between pages', async () => {
-      useTestTimers();
       await testContext.selectRows([0, 1]);
       testContext.verifySelectedRows([0, 1]);
 
@@ -363,7 +362,6 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
     });
 
     it('selection is preserved when refresh data', async () => {
-      useTestTimers();
       await testContext.selectRows([0, 1]);
       testContext.verifySelectedRows([0, 1]);
       await testContext.moveToTheNextPageAndSelectRows([0]);
@@ -383,7 +381,6 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
     });
 
     it('calls onSelectedItemsChange() method of datagrid when grid items are updated', async () => {
-      useTestTimers();
       await testContext.selectRows([0, 1]);
       testContext.verifySelectedRows([0, 1]);
       vi.spyOn(testContext.appfxDatagridHostComponent.datagridComponent, 'onSelectedItemsChange').mockImplementation(
@@ -411,7 +408,6 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
     });
 
     it('selection is preserved when move between pages', async () => {
-      useTestTimers();
       const gridHelper = new GridHelper(testContext.fixture.debugElement);
       expect(gridHelper.getRows()[1].isRowSingleSelectable()).toBeTruthy();
       await testContext.selectRows([0]);

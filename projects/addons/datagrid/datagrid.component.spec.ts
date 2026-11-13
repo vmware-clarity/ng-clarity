@@ -2228,8 +2228,7 @@ describe('DatagridComponent', () => {
       const untypedContext: any = testContext;
 
       // required to execute the async callbacks in Clarity's Datagrid component
-      vi.useRealTimers();
-      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval'] });
+      useTestTimers(['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval']);
       untypedContext.component.selectionType = SelectionType.Multi;
       untypedContext.component.columnsDefs = untypedContext.columnsDefs;
       untypedContext.component.data = untypedContext.data;
@@ -2240,10 +2239,6 @@ describe('DatagridComponent', () => {
       untypedContext.component.appfxDatagridComponent.selectedItems = []; // reset
       renderFixture(untypedContext.fixture);
       vi.advanceTimersByTime(10);
-    });
-
-    afterEach(() => {
-      vi.useRealTimers();
     });
 
     it('let the user to select several items', () => {

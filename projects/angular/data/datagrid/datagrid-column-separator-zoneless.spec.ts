@@ -5,15 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  provideCheckNoChangesConfig,
-  provideZonelessChangeDetection,
-  QueryList,
-  signal,
-  ViewChildren,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, QueryList, signal, ViewChildren } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrDatagridColumn } from './datagrid-column';
@@ -52,7 +44,6 @@ describe(`column separators in a zoneless OnPush host`, () => {
     TestBed.configureTestingModule({
       declarations: [SeparatorHost],
       imports: [ClrDatagridModule],
-      providers: [provideZonelessChangeDetection(), provideCheckNoChangesConfig({ exhaustive: true })],
     });
     fixture = TestBed.createComponent(SeparatorHost);
     fixture.autoDetectChanges();

@@ -5,16 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  effect,
-  ErrorHandler,
-  NgZone,
-  provideCheckNoChangesConfig,
-  provideZonelessChangeDetection,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, ErrorHandler, NgZone, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -76,7 +67,6 @@ describe('Popover notifications (zoneless, OnPush host)', () => {
     TestBed.configureTestingModule({
       declarations: [PopoverHost],
       imports: [FormsModule, ClrDropdownModule, ClrSignpostModule, ClrComboboxModule, ClrPopoverModuleNext],
-      providers: [provideZonelessChangeDetection(), provideCheckNoChangesConfig({ exhaustive: true })],
     });
     fixture = TestBed.createComponent(PopoverHost);
     fixture.autoDetectChanges();
