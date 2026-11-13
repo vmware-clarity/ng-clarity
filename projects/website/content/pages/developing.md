@@ -145,6 +145,54 @@ export class AppModule { }
 npm start
 ```
 
+## Using Clarity in a Shadow Root or a Narrow Area
+
+These steps apply when Clarity renders inside another application, for example as a plugin in a
+shadow root or in a side panel.
+
+### Theme and Density in a Shadow Root
+
+Load Clarity's styles inside the shadow root. The page's `cds-theme` and `clr-density` attributes do
+not reach into the shadow root, so set them again on an element inside it. Without them, the content
+of the shadow root uses the light theme and the default density, also on a dark or compact page.
+
+```html
+<div cds-theme="dark" clr-density="compact">...</div>
+```
+
+### Breakpoints That Follow a Container
+
+The grid breakpoints follow the viewport. When your layout lives in an area narrower than the
+viewport, add the `clr-layout-container` attribute to the element that holds the layout. Inside that
+element, the grid columns, offsets and order follow its width instead of the viewport. In a shadow
+root, put the attribute on an element inside it.
+
+```html
+<div clr-layout-container>
+  <div class="clr-row">
+    <div class="clr-col-12 clr-col-md-6">...</div>
+    <div class="clr-col-12 clr-col-md-6">...</div>
+  </div>
+</div>
+```
+
+The attribute only sets `container: clr-layout / inline-size`, so you can also set that in your own
+CSS instead. The element can't be inline, so give a custom element `display: block`. Outside it
+nothing changes, and a modal inside it keeps following the viewport. The other breakpoint utilities,
+the `cds-layout` breakpoints and the component styles keep following the viewport.
+
+If you compile Clarity from Sass, you can instead switch every grid and `cds-layout` breakpoint of
+your build to container queries by setting `$clr-breakpoint-query` to `container` before loading
+Clarity. Its default, `media`, keeps the viewport breakpoints. The layout then needs an ancestor
+with `container: clr-layout / inline-size`, and content outside it matches no breakpoint.
+
+```scss
+@use '@clr/ui/styles/variables/variables.layout' with (
+  $clr-breakpoint-query: container
+);
+@use '@clr/ui/main';
+```
+
 ## Contributing to Clarity
 
 The Clarity team welcomes contributions from the community. See our

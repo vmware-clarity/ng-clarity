@@ -189,5 +189,12 @@
   },
   "overrides": {
     "piscina": "^5.3.2"
+  },
+  "allowScripts": {
+    "@parcel/watcher": false,
+    "esbuild": false,
+    "fsevents": false,
+    "lmdb": false,
+    "msgpackr-extract": false
   }
 }

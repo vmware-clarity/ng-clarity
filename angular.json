@@ -31,7 +31,12 @@
             "polyfills": ["projects/demo/src/polyfills.ts"],
             "tsConfig": "projects/demo/tsconfig.app.json",
             "assets": ["projects/demo/src/favicon.ico", "projects/demo/src/assets"],
-            "styles": ["projects/angular/main.scss", "projects/demo/src/styles.scss"],
+            "styles": [
+              { "input": "projects/angular/main.scss", "bundleName": "global" },
+              { "input": "projects/demo/src/styles.scss", "bundleName": "global" },
+              { "input": "projects/angular/main.scss", "bundleName": "styles", "inject": false },
+              { "input": "projects/demo/src/styles.scss", "bundleName": "styles", "inject": false }
+            ],
             "scripts": [],
             "baseHref": "/demo/",
             "extractLicenses": false,

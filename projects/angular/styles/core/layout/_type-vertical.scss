@@ -8,6 +8,7 @@
 @use './mixins/mixins' as mixins;
 @use 'mixins/mixins.type-vertical' as vertical-mixins;
 @use 'optimize';
+@use '../../mixins' as clr-mixins;
 
 [#{optimize.$layout}~='#{optimize.$vertical}'] {
   width: 100%;
@@ -20,7 +21,7 @@
 @include vertical-mixins.generateVerticalAlignments();
 
 @each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
-  @media (min-width: $breakpoint-value) {
+  @include clr-mixins.breakpoint-query('min-width: #{$breakpoint-value}') {
     @include vertical-mixins.generateVerticalAlignments($breakpoint);
   }
 }
