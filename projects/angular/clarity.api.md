@@ -4623,6 +4623,16 @@ export enum ClrLoadingState {
     SUCCESS = 2
 }
 
+// @public
+export class ClrLocaleDateFormat {
+    constructor(
+    locale: string);
+    format(date: Date | null | undefined): string;
+    readonly locale: string;
+    parse(text: string): Date | null;
+    get placeholder(): string;
+}
+
 // @public (undocumented)
 export class ClrMainContainer implements OnDestroy, OnInit {
     constructor(elRef: ElementRef<HTMLElement>, responsiveNavService: ResponsiveNavigationService);
