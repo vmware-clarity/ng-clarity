@@ -8,6 +8,7 @@
 @use './mixins/mixins';
 @use 'mixins/mixins.type-horizontal' as horizontal-mixins;
 @use 'optimize';
+@use '../../mixins' as clr-mixins;
 
 [#{optimize.$layout}~='#{optimize.$horizontal}'] {
   display: flex;
@@ -27,7 +28,7 @@
 @include horizontal-mixins.generateHorizontalAlignments();
 
 @each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
-  @media (min-width: $breakpoint-value) {
+  @include clr-mixins.breakpoint-query('min-width: #{$breakpoint-value}') {
     @include horizontal-mixins.generateHorizontalAlignments($breakpoint);
   }
 }
