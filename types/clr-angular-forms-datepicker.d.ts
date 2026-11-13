@@ -54,12 +54,14 @@ declare class LocaleHelperService {
     private _localeDays;
     private _localeMonthsAbbreviated;
     private _localeMonthsWide;
+    private _localeDateFormat;
     constructor(locale: string);
     get firstDayOfWeek(): number;
     get localeDays(): ReadonlyArray<ClrDayOfWeek>;
     get localeDaysNarrow(): ReadonlyArray<string>;
     get localeMonthsAbbreviated(): ReadonlyArray<string>;
     get localeMonthsWide(): ReadonlyArray<string>;
+    get localeDateFormat(): string;
     /**
      * Overrides the first day of the week regardless of locale.
      * Accepts a `ClrWeekday` value (Sunday=0 through Saturday=6), or null to revert to locale default.
@@ -89,6 +91,7 @@ declare class LocaleHelperService {
      * Initializes the first day of the week based on the locale.
      */
     private initializeLocaleFirstDayOfWeek;
+    private initializeLocaleDateFormat;
     static ɵfac: i0.ɵɵFactoryDeclaration<LocaleHelperService, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<LocaleHelperService>;
 }
@@ -146,10 +149,12 @@ declare class DateIOService {
      * Unless a minDate or maxDate is set with the native HTML5 api the range is all dates
      */
     disabledDates: DateRange;
+    cldrLocaleDateFormat: string;
     minDateChange: Subject<DayModel>;
     maxDateChange: Subject<DayModel>;
     private dateRangeOptions;
-    private readonly localeDateFormat;
+    private localeDisplayFormat;
+    private delimiters;
     constructor(localeHelperService: LocaleHelperService);
     get placeholderText(): string;
     setMinDate(date: string): void;
@@ -159,6 +164,24 @@ declare class DateIOService {
     toLocaleDisplayFormatString(date: Date): string;
     getDateValueFromDateString(date: string): Date;
     private validateDateRangeOptions;
+    private initializeLocaleDisplayFormat;
+    private extractDelimiters;
+    /**
+     * Checks if the month entered by the user is valid or not.
+     * Note: Month is 0 based.
+     */
+    private isValidMonth;
+    /**
+     * Checks if the date is valid depending on the year and month provided.
+     */
+    private isValidDate;
+    /**
+     * Validates the parameters provided and returns the date.
+     * If the parameters are not
+     * valid then return null.
+     * NOTE: (Month here is 1 based since the user has provided that as an input)
+     */
+    private validateAndGetDate;
     static ɵfac: i0.ɵɵFactoryDeclaration<DateIOService, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<DateIOService>;
 }
@@ -951,82 +974,6 @@ declare class ClrDatepickerActions {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatepickerActions, "clr-datepicker-actions", never, {}, {}, never, never, false, never>;
 }
 
-/**
- * The date format that Clarity date inputs use for a locale: the order of day, month and year and the
- * delimiters between them, read from the Angular locale short date format (`getLocaleDateFormat(locale,
- * FormatWidth.Short)`). Use it to format and parse dates exactly as `clrDate`, `clrStartDate` and
- * `clrEndDate` show and accept them, e.g. to convert a date input's form value.
- *
- * Instances are immutable and depend on the locale only, so they need no providers. Create one per locale
- * and share it (e.g. as a component field) rather than one per call: the constructor reads the locale data
- * and logs an error for an unexpected date format.
- *
- * ```ts
- * // In a field initializer or constructor, where inject() is available:
- * private readonly dateFormat = new ClrLocaleDateFormat(inject(LOCALE_ID));
- *
- * this.dateFormat.placeholder; // "MM/DD/YYYY" for en-US
- * this.dateFormat.format(new Date(2015, 1, 1)); // "02/01/2015"
- * this.dateFormat.parse('02/01/2015'); // Date for 1 February 2015, local midnight
- * ```
- */
-declare class ClrLocaleDateFormat {
-    /**
-     * The Angular locale id the format was read from.
-     */
-    readonly locale: string;
-    private readonly displayFormat;
-    private readonly delimiters;
-    /**
-     * @param locale An Angular locale id whose locale data is registered, such as the app's `LOCALE_ID`.
-     */
-    constructor(
-    /**
-     * The Angular locale id the format was read from.
-     */
-    locale: string);
-    /**
-     * The format as placeholder text, e.g. "MM/DD/YYYY" for en-US or "DD.MM.YYYY" for bg.
-     */
-    get placeholder(): string;
-    /**
-     * Formats a date as the date inputs show it, e.g. "02/01/2015" for en-US.
-     * Returns an empty string for `null`, `undefined` or an invalid date.
-     */
-    format(date: Date | null | undefined): string;
-    /**
-     * Parses text typed in the locale's format into a `Date` at local midnight. Any non-digit characters
-     * delimit the parts. Returns `null` when the text does not have three parts, the month or day does not
-     * exist, or the year is not accepted. Minimum and maximum dates are not checked.
-     *
-     * Years, the same rules as the date picker:
-     * - `1000`–`9999` are used as typed.
-     * - `10`–`99` are expanded to the year in the current century, or the previous one when that would be
-     *   more than 20 years ahead. In 2026, `46` is 2046 and `47` is 1947.
-     * - `0`–`9`, including `00`–`09`, are rejected, so 2000–2009 must be typed with four digits.
-     * - `101`–`998` and anything above `9999` are rejected.
-     * - `100` and `999` (or `0999`) are expanded like two-digit years, e.g. to 2000 and 2899 in 2026.
-     */
-    parse(text: string): Date | null;
-    private getDisplayFormat;
-    private extractDelimiters;
-    /**
-     * Checks if the month entered by the user is valid or not.
-     * Note: Month is 0 based.
-     */
-    private isValidMonth;
-    /**
-     * Checks if the date is valid depending on the year and month provided.
-     */
-    private isValidDate;
-    /**
-     * Validates the parameters provided and returns the date.
-     * If the parameters are not valid then return null.
-     * NOTE: (Month here is 1 based since the user has provided that as an input)
-     */
-    private validateAndGetDate;
-}
-
 declare const CLR_DATEPICKER_DIRECTIVES: Type<any>[];
 declare class ClrDatepickerModule {
     constructor();
@@ -1035,5 +982,5 @@ declare class ClrDatepickerModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrDatepickerModule>;
 }
 
-export { CLR_DATEPICKER_DIRECTIVES, ClrCalendar, ClrDateContainer, ClrDateInput, ClrDateInputBase, ClrDateInputValidator, ClrDatepickerActions, ClrDatepickerModule, ClrDatepickerViewManager, ClrDay, ClrDaypicker, ClrEndDateInput, ClrEndDateInputValidator, ClrLocaleDateFormat, ClrMonthpicker, ClrStartDateInput, ClrStartDateInputValidator, ClrWeekday, ClrYearpicker };
+export { CLR_DATEPICKER_DIRECTIVES, ClrCalendar, ClrDateContainer, ClrDateInput, ClrDateInputBase, ClrDateInputValidator, ClrDatepickerActions, ClrDatepickerModule, ClrDatepickerViewManager, ClrDay, ClrDaypicker, ClrEndDateInput, ClrEndDateInputValidator, ClrMonthpicker, ClrStartDateInput, ClrStartDateInputValidator, ClrWeekday, ClrYearpicker };
 export type { ClrDayOfWeek, DateRangeOption };
