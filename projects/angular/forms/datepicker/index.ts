@@ -21,6 +21,5 @@ export * from './datepicker-action-buttons';
 export * from './interfaces/day-of-week.interface';
 export { DateRangeOption } from './interfaces/date-range.interface';
 export * from './enums/weekday.enum';
-export { ClrLocaleDateFormat } from './utils/locale-date-format';
 
 export * from './datepicker.module';
