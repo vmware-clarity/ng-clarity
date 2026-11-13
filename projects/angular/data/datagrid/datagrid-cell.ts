@@ -19,7 +19,7 @@ import {
 import { ClrSignpost } from '@clr/angular/popover/signpost';
 import { HostWrapper, uniqueIdFactory } from '@clr/angular/utils';
 
-import { DatagridTreeRow } from './interfaces/tree-row.interface';
+import { DATAGRID_TREE_ROW } from './interfaces/tree-row.interface';
 import { DatagridTreeNode } from './providers/tree-node.model';
 import { WrappedCell } from './wrapped-cell';
 
@@ -60,13 +60,11 @@ export class ClrDatagridCell implements OnInit {
    */
   @ContentChildren(ClrSignpost) signpost: QueryList<ClrSignpost>;
 
-  /**
-   * Set by the row on its cells when the datagrid renders a tree; `null` otherwise.
-   */
-  _treeRow: DatagridTreeRow | null = null;
-
   private wrappedInjector: Injector;
   private el = inject<ElementRef<HTMLElement>>(ElementRef);
+  // Found by injection rather than set by the row, so the cell knows its row when it is first checked:
+  // cells rendered in a loop inside the row are checked before the row's content hooks run.
+  private row = inject(DATAGRID_TREE_ROW, { optional: true });
 
   constructor(private vcr: ViewContainerRef) {}
 
@@ -90,7 +88,7 @@ export class ClrDatagridCell implements OnInit {
    * The tree node of the row, on the cells that carry the indentation and the toggle.
    */
   protected get treeNode(): DatagridTreeNode<unknown> | undefined {
-    const tree = this._treeRow?._tree;
+    const tree = this.row?._tree;
     return tree?.toggleCells.has(this) ? tree.node : undefined;
   }
 
@@ -100,7 +98,7 @@ export class ClrDatagridCell implements OnInit {
    * drag handle.
    */
   protected get treeToggleLabelIds(): string {
-    const leading = this._treeRow?._tree?.labelCell;
+    const leading = this.row?._tree?.labelCell;
     return leading && leading !== this ? `${leading._treeId} ${this._treeId}` : this._treeId;
   }
 

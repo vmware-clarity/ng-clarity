@@ -3253,6 +3253,8 @@ describe('DatagridComponent', () => {
       expect(untypedContext.component.treeExpandedChanges).toEqual([{ item: untypedContext.data[0], expanded: true }]);
 
       element.querySelector<HTMLLabelElement>('clr-dg-row .datagrid-select label').click();
+      // Selection emits through an RxJS zero-delay timer, outside Angular rendering stability.
+      await new Promise(resolve => setTimeout(resolve));
       await untypedContext.fixture.whenStable();
       const selected: any[] = vi.mocked(untypedContext.component.changeSelection).mock.lastCall[0];
       expect(selected.map(item => item.name).sort()).toEqual(['vm0', 'vm0-a']);
