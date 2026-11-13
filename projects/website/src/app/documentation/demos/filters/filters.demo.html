@@ -162,6 +162,29 @@
       ></app-stackblitz-example>
     </div>
 
+    <h3 data-toc-item id="combined-load" cds-text="section" class="clr-mt-32px">Combined mode: one load per change</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      In Combined mode the search and the filters are separate outputs. <strong>Clear all</strong> clears both, so it
+      emits <code cds-text="code">propertyFiltersChange</code> and then <code cds-text="code">searchTermChange</code>,
+      in the same turn. A host that loads from a server can store both values and load once at the end of the turn, with
+      <code cds-text="code">queueMicrotask</code> as below, or by combining the two outputs with RxJS (<code
+        cds-text="code"
+        >combineLatest</code
+      >
+      and <code cds-text="code">debounceTime(0)</code>) or signals.
+    </p>
+    <div class="clr-mt-24px">
+      <app-datagrid-filters-combined-load-demo></app-datagrid-filters-combined-load-demo>
+    </div>
+    <div class="clr-mt-24px">
+      <app-stackblitz-example
+        name="datagrid-filters-combined-load"
+        [componentTemplate]="combinedLoadHtml"
+        [componentClass]="combinedLoadTs"
+        [additionalFiles]="additionalFiles"
+      ></app-stackblitz-example>
+    </div>
+
     <h3 data-toc-item id="predefined-filters" cds-text="section" class="clr-mt-32px">Predefined filters</h3>
     <p cds-text="body" class="clr-mt-16px">
       <code cds-text="code">predefinedFilters</code> keeps pills visible in the given order, even without criteria.

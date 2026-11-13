@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ClrAccordionModule, ClrIfExpanded } from '@clr/angular';
 
+import { DatagridFiltersCombinedLoadDemoComponent } from './ng/combined-load';
 import { DatagridFiltersDateTimeDemoComponent } from './ng/date-time-filters';
 import { DatagridFiltersModesDemoComponent } from './ng/filter-modes';
 import { DatagridFiltersPredefinedDemoComponent } from './ng/predefined-filters';
@@ -32,6 +33,8 @@ const replaceComponentName = (file: string) =>
     .replace(/templateUrl: '[^']+'/, "templateUrl: './example.component.html'");
 
 const AppliedFiltersTs = require('!raw-loader!./ng/applied-filters.ts').default;
+const CombinedLoadHtml = require('!raw-loader!./ng/combined-load.html').default;
+const CombinedLoadTs = replaceComponentName(require('!raw-loader!./ng/combined-load.ts').default);
 const DateTimeHtml = require('!raw-loader!./ng/date-time-filters.html').default;
 const DateTimeTs = replaceComponentName(require('!raw-loader!./ng/date-time-filters.ts').default);
 const FilterModesHtml = require('!raw-loader!./ng/filter-modes.html').default;
@@ -73,6 +76,7 @@ const additionalFiles = {
     ClrAccordionModule,
     ClrIfExpanded,
     DatagridFiltersModesDemoComponent,
+    DatagridFiltersCombinedLoadDemoComponent,
     DatagridFiltersPredefinedDemoComponent,
     DatagridFiltersSemiPredefinedDemoComponent,
     DatagridFiltersToggleDemoComponent,
@@ -84,6 +88,8 @@ const additionalFiles = {
 export class FiltersDemo extends ClarityDocComponent {
   filterModesHtml = FilterModesHtml;
   filterModesTs = FilterModesTs;
+  combinedLoadHtml = CombinedLoadHtml;
+  combinedLoadTs = CombinedLoadTs;
   predefinedHtml = PredefinedHtml;
   predefinedTs = PredefinedTs;
   semiPredefinedHtml = SemiPredefinedHtml;

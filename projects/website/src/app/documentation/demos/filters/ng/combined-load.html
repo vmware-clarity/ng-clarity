@@ -1,0 +1,26 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<appfx-datagrid-filters
+  [filterMode]="FilterMode.Combined"
+  [filterableProperties]="filterableProperties"
+  (searchTermChange)="onSearchTermChange($event)"
+  (propertyFiltersChange)="onPropertyFiltersChange($event)"
+></appfx-datagrid-filters>
+
+<div cds-layout="m-t:md">
+  <p cds-text="body medium">Loads</p>
+  @if (loads().length) {
+  <ul cds-list="unstyled" aria-live="polite">
+    @for (load of loads(); track $index) {
+    <li cds-text="body">{{ load }}</li>
+    }
+  </ul>
+  } @else {
+  <p cds-text="body">None yet. Search, add a filter, then use Clear all: it loads once.</p>
+  }
+</div>
