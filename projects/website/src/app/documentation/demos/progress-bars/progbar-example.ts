@@ -5,18 +5,33 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { signal } from '@angular/core';
+
 export class ProgBarExample {
   intervalId: any;
-  value = 0;
   intervalTimeInMs = 450;
-  running = false;
-  complete = false;
+  private readonly valueState = signal(0);
+  private readonly completeState = signal(false);
 
   constructor(
     public label: string = 'demo',
     public title: string = 'Progress Bar',
     public isLabeled: boolean = false
   ) {}
+
+  get value(): number {
+    return this.valueState();
+  }
+  set value(value: number) {
+    this.valueState.set(value);
+  }
+
+  get complete(): boolean {
+    return this.completeState();
+  }
+  set complete(value: boolean) {
+    this.completeState.set(value);
+  }
 
   cssClassnames(): string {
     return ['progress', this.label].join(' ');
@@ -43,10 +58,6 @@ export class ProgBarExample {
     }, this.intervalTimeInMs);
   }
 
-  isRunning(): boolean {
-    return this.running;
-  }
-
   isFinished(): boolean {
     return this.complete;
   }
@@ -55,7 +66,6 @@ export class ProgBarExample {
     let myProgress: number = this.value;
     const maxProgressIncrement = 15;
     const minProgressIncrement = 4;
-    this.running = true;
     this.complete = false;
 
     myProgress += Math.random() * (maxProgressIncrement - minProgressIncrement) + minProgressIncrement;

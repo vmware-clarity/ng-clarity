@@ -12,9 +12,9 @@ import * as path from 'path';
 
 // Serves a built app directory for the visual regression tests.
 //
-// Usage: node --experimental-strip-types ./scripts/start-static-server.ts <root> <port> [--spa] [--unsafe-eval]
+// Usage: node --experimental-strip-types ./scripts/start-static-server.ts <root> <port> [--spa[=<path>]] [--unsafe-eval]
 //
-// --spa: fall back to index.html for unknown paths. The website is a single-page application,
+// --spa or --spa=<path>: fall back to index.html (or the given path) for unknown paths. The website is a single-page application,
 // so its routes must resolve to index.html (the same behavior as the redirect rule in
 // netlify-website.toml).
 //
@@ -29,7 +29,8 @@ import * as path from 'path';
 // that have none (Storybook's own).
 
 const [root, port, ...flags] = process.argv.slice(2);
-const spaFallback = flags.includes('--spa');
+const spaIndex = flags.find(flag => flag.startsWith('--spa='))?.slice('--spa='.length);
+const spaFallback = flags.includes('--spa') || !!spaIndex;
 const unsafeEval = flags.includes('--unsafe-eval');
 const rootPath = path.resolve(root);
 
@@ -103,9 +104,10 @@ app.use((request, response, next) => {
 app.use(express.static(rootPath));
 
 if (spaFallback) {
-  const indexHtml = htmlPages.get('/index.html');
+  const indexPath = '/' + (spaIndex || 'index.html');
+  const indexHtml = htmlPages.get(indexPath);
   if (indexHtml === undefined) {
-    throw new Error(`--spa needs an index.html in ${rootPath}`);
+    throw new Error(`--spa needs ${indexPath} in ${rootPath}`);
   }
   // Serve index.html for any path the static middleware did not find.
   app.use((_request, response) => sendHtml(indexHtml, response));

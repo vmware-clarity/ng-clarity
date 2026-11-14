@@ -4,7 +4,6 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-import 'zone.js';
 import { loadCoreIconSet, loadEssentialIconSet } from '@clr/angular';
 import { setCompodocJson } from '@storybook/addon-docs/angular';
 import { applicationConfig } from '@storybook/angular';
@@ -13,7 +12,7 @@ import docs from '../documentation.json';
 import { DENSITY, THEMES } from './helpers/constants';
 import { cdsThemeAttribute, isDarkThemeMatcher, setDocsTheme } from './helpers/theme.helper';
 import AutoDocsTemplate from './stories/auto-docs.mdx';
-import { CSP_NONCE, provideZoneChangeDetection } from '@angular/core';
+import { CSP_NONCE, provideZonelessChangeDetection } from '@angular/core';
 
 const privateModifier = 121;
 const clrDensityAttribute = 'clr-density';
@@ -147,7 +146,7 @@ export const decorators = [
   densityDecorator,
   applicationConfig({
     providers: [
-      provideZoneChangeDetection({ eventCoalescing: true }),
+      provideZonelessChangeDetection(),
       // The visual regression test server (scripts/start-static-server.ts) serves the stories with a
       // Content-Security-Policy and adds its nonce to Storybook's inline scripts. Angular adds it to the
       // component styles it injects.

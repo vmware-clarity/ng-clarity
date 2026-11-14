@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ClrLoadingState } from '@clr/angular';
 
 @Component({
@@ -26,12 +26,14 @@ export class ButtonLoadingDemo {
   validateSmState = false;
   submitSmState: ClrLoadingState = ClrLoadingState.DEFAULT;
   validateFalsyState: any;
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   disabledDemo() {
     this.disabledState = ClrLoadingState.LOADING;
     setTimeout(() => {
       this.disabledState = ClrLoadingState.SUCCESS;
       this.disabledStateDisabled = true;
+      this.changeDetectorRef.markForCheck();
     }, 1500);
   }
 
@@ -40,6 +42,7 @@ export class ButtonLoadingDemo {
     setTimeout(() => {
       this.enabledState = ClrLoadingState.SUCCESS;
       this.enabledStateDisabled = false;
+      this.changeDetectorRef.markForCheck();
     }, 1500);
   }
 
@@ -47,6 +50,7 @@ export class ButtonLoadingDemo {
     this.validateState = ClrLoadingState.LOADING;
     setTimeout(() => {
       this.validateState = ClrLoadingState.SUCCESS;
+      this.changeDetectorRef.markForCheck();
     }, 1500);
   }
 
@@ -54,6 +58,7 @@ export class ButtonLoadingDemo {
     this.submitState = ClrLoadingState.LOADING;
     setTimeout(() => {
       this.submitState = ClrLoadingState.DEFAULT;
+      this.changeDetectorRef.markForCheck();
     }, 1500);
   }
 
@@ -61,6 +66,7 @@ export class ButtonLoadingDemo {
     this.validateSmState = true;
     setTimeout(() => {
       this.validateSmState = false;
+      this.changeDetectorRef.markForCheck();
     }, 1500);
   }
 
@@ -68,6 +74,7 @@ export class ButtonLoadingDemo {
     this.submitSmState = ClrLoadingState.LOADING;
     setTimeout(() => {
       this.submitSmState = ClrLoadingState.DEFAULT;
+      this.changeDetectorRef.markForCheck();
     }, 1500);
   }
 
@@ -75,6 +82,7 @@ export class ButtonLoadingDemo {
     this.validateFalsyState = true;
     setTimeout(() => {
       this.validateFalsyState = null;
+      this.changeDetectorRef.markForCheck();
     }, 1500);
   }
 }

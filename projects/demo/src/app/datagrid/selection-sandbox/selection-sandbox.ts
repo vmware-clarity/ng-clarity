@@ -113,6 +113,7 @@ export class DatagridSelectionSandboxDemo implements OnInit {
         this.log = [];
         this.recreateDatagrid();
       }
+      this.cdr.markForCheck();
     });
   }
 

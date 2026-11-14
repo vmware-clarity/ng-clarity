@@ -1,0 +1,16 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../../dist/out-tsc/consumer-smoke",
+    "types": [],
+    "paths": {
+      "@clr/angular": ["../../../dist/clr-angular"],
+      "@clr/angular/*": ["../../../dist/clr-angular/*"],
+      "@clr/addons": ["../../../dist/clr-addons"],
+      "@clr/addons/*": ["../../../dist/clr-addons/*"]
+    }
+  },
+  "files": ["main.ts"],
+  "include": [],
+  "exclude": []
+}

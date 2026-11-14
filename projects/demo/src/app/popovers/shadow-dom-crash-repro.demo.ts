@@ -8,9 +8,10 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
-  NgZone,
+  inject,
   OnDestroy,
   ViewChild,
 } from '@angular/core';
@@ -56,8 +57,8 @@ import { Subscription } from 'rxjs';
     <p>
       1. Click "Relocate Triggers" to move both widgets below into a <code>ShadowRoot</code> hosted inside an iframe (a
       separate JS realm), mirroring a micro-frontend/Web Component architecture.<br />
-      2. Click a relocated trigger inside the dashed box. Watch for the error banner (bug present) vs. a normally
-      opening popover with no banner (bug fixed).<br />
+      2. Click a relocated trigger inside the dashed box. Check that the popover opens and inspect the browser console
+      for errors. The status below confirms that the overlay finished becoming visible.<br />
       3. With a popover open, scroll either the dashed box's own inner content or the rest of this page. The dropdown
       closes on scroll (it opts into <code>scrollToClose</code>); the signpost instead tracks the trigger and stays
       open, since it leaves <code>scrollToClose</code> at its default of <code>false</code> - both behaviors should be
@@ -93,20 +94,13 @@ import { Subscription } from 'rxjs';
       status text never shifts the page layout - a layout shift here would itself trigger
       a scroll of Clarity's own .content-area, which can close the open popover.
     -->
-    <div
-      class="repro-status"
-      [class.repro-status-error]="errorMessage"
-      [class.repro-status-success]="!errorMessage && (dropdownOpened || signpostOpened)"
-    >
-      @if (errorMessage) {
-        <cds-icon shape="exclamation-circle"></cds-icon>
-        <span>Reproduced crash: {{ errorMessage }}</span>
-      } @else if (dropdownOpened) {
+    <div class="repro-status" [class.repro-status-success]="dropdownOpened || signpostOpened">
+      @if (dropdownOpened) {
         <cds-icon shape="check-circle"></cds-icon>
-        <span>Dropdown opened with no errors. Fix is working.</span>
+        <span>Dropdown became visible.</span>
       } @else if (signpostOpened) {
         <cds-icon shape="check-circle"></cds-icon>
-        <span>Signpost opened with no errors. Fix is working.</span>
+        <span>Signpost became visible.</span>
       }
     </div>
   `,
@@ -120,31 +114,24 @@ export class ShadowDomCrashReproDemo implements AfterViewInit, OnDestroy {
   relocated = false;
   dropdownOpened = false;
   signpostOpened = false;
-  errorMessage: string | null = null;
 
   private subscriptions: Subscription[] = [];
-
-  constructor(private ngZone: NgZone) {}
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   ngAfterViewInit() {
-    // window 'error' events never fire here: zone.js intercepts the thrown error and
-    // routes it to Angular's default ErrorHandler (console.error), it never becomes a
-    // real uncaught exception. NgZone.onError is the same signal Angular's own error
-    // handling pipeline listens to, so it reliably observes the crash too.
+    // Visibility is emitted after scroll-parent discovery succeeds. An open request alone
+    // cannot prove the cross-realm overlay initialized successfully.
     this.subscriptions.push(
-      this.ngZone.onError.subscribe((error: unknown) => {
-        const message = error instanceof Error ? error.message : String(error);
-        if (this.relocated && message.includes('getComputedStyle')) {
-          this.errorMessage = message;
-        }
+      this.dropdown.popoverService.popoverVisible.subscribe(visible => {
+        this.dropdownOpened = visible;
+        this.changeDetectorRef.markForCheck();
       })
     );
-
     this.subscriptions.push(
-      this.dropdown.popoverService.openChange.subscribe(open => this.trackOpenState(open, 'dropdownOpened'))
-    );
-    this.subscriptions.push(
-      this.signpostPopoverService.openChange.subscribe(open => this.trackOpenState(open, 'signpostOpened'))
+      this.signpostPopoverService.popoverVisible.subscribe(visible => {
+        this.signpostOpened = visible;
+        this.changeDetectorRef.markForCheck();
+      })
     );
   }
 
@@ -186,24 +173,7 @@ export class ShadowDomCrashReproDemo implements AfterViewInit, OnDestroy {
     shadowRoot.appendChild(this.reproContainer.nativeElement);
 
     this.relocated = true;
-    this.errorMessage = null;
     this.dropdownOpened = false;
     this.signpostOpened = false;
-  }
-
-  private trackOpenState(open: boolean, flag: 'dropdownOpened' | 'signpostOpened') {
-    if (!open) {
-      this[flag] = false;
-      return;
-    }
-
-    // popoverService.open flips synchronously on click, before the crash-prone
-    // getScrollableParents() call runs (it's deferred inside a setTimeout in
-    // showOverlay()). Wait for that to have a chance to throw before declaring success.
-    setTimeout(() => {
-      if (!this.errorMessage) {
-        this[flag] = true;
-      }
-    }, 50);
   }
 }

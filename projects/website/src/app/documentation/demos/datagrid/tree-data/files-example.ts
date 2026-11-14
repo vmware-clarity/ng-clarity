@@ -6,7 +6,7 @@
  */
 
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, signal } from '@angular/core';
 import { ClrDatagridModule, ClrDatagridStateInterface } from '@clr/angular';
 import { Observable, of, Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
@@ -87,9 +87,9 @@ function fromServer<T>(value: T): Observable<T> {
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DatagridTreeFilesExample implements OnDestroy {
-  files: FileItem[] = [];
-  total = 0;
-  loading = true;
+  readonly files = signal<FileItem[]>([]);
+  readonly total = signal(0);
+  readonly loading = signal(true);
   selected: FileItem[] = [];
 
   private request: Subscription | undefined;
@@ -108,12 +108,12 @@ export class DatagridTreeFilesExample implements OnDestroy {
     const size = state.page?.size || 5;
     const from = ((state.page?.current || 1) - 1) * size;
 
-    this.loading = true;
+    this.loading.set(true);
     this.request?.unsubscribe();
     this.request = fromServer(sorted.slice(from, from + size)).subscribe(files => {
-      this.files = files;
-      this.total = FILES.length;
-      this.loading = false;
+      this.files.set(files);
+      this.total.set(FILES.length);
+      this.loading.set(false);
     });
   }
 

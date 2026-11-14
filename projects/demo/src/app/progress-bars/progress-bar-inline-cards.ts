@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 
 @Component({
   selector: 'clr-progress-bar-inline-cards-demo',
@@ -18,6 +18,7 @@ export class ProgressBarInlineCardsDemo implements OnInit {
   value1 = 0;
   value2 = 0;
   value3 = 0;
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   getNewValue(): number {
     const random: number = Math.floor(Math.random() * 98) + 1;
@@ -40,6 +41,7 @@ export class ProgressBarInlineCardsDemo implements OnInit {
   ngOnInit(): void {
     setTimeout(() => {
       this.setInitialValues();
+      this.changeDetectorRef.markForCheck();
     }, 500);
   }
 }
