@@ -21,7 +21,6 @@
     @include mixins.clr-appearance-normal();
   }
 
-  // @TODO un-nest the checkbox from the wrapper, after old forms are removed
   .clr-checkbox-wrapper {
     @include forms-mixins.form-flatten-validate-text();
 
