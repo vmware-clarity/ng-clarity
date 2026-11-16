@@ -6,6 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { ClrAlertModule } from '@clr/angular';
 
 import { GridAutoLayout1Demo } from './grid-auto-layout-1';
@@ -52,6 +53,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     GridItemsHorizontalAlignmentDemo,
     GridNestingDemo,
     StyleDocsComponent,
+    RouterLink,
   ],
 })
 export class GridDemo extends ClarityDocComponent {

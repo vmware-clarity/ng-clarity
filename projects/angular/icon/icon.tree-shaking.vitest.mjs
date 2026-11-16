@@ -9,12 +9,11 @@ import { build } from 'esbuild';
 import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
-import { rollup } from 'rollup';
-import { minify } from 'terser';
+import { rolldown } from 'rolldown';
 import webpack from 'webpack';
 
-// Bundles the built package with esbuild (Angular CLI), Rollup and webpack to make sure unused icon shapes are
-// tree-shaken. Needs `npm run _build:angular` first.
+// Bundles the built package with esbuild (Angular CLI), Rolldown (Vite) and webpack to make sure unused icon shapes
+// are tree-shaken. Needs `npm run _build:angular` first.
 const iconEntryPoint = resolve('dist/clr-angular/fesm2022/clr-angular-icon.mjs');
 const isExternal = id => /^(@angular|rxjs|tslib)(\/|$)/.test(id);
 
@@ -37,8 +36,8 @@ const bundlers = {
     });
     return result.outputFiles[0].text;
   },
-  async rollup(entry) {
-    const bundle = await rollup({
+  async rolldown(entry) {
+    const bundle = await rolldown({
       input: 'entry',
       external: isExternal,
       plugins: [
@@ -46,8 +45,8 @@ const bundlers = {
       ],
       onwarn: () => {},
     });
-    const { output } = await bundle.generate({ format: 'es' });
-    return (await minify(output[0].code, { module: true })).code;
+    const { output } = await bundle.generate({ format: 'es', minify: true });
+    return output[0].code;
   },
   async webpack(entry) {
     const dir = mkdtempSync(join(tmpdir(), 'clr-icon-tree-shaking-'));
