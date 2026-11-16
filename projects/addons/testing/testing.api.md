@@ -945,6 +945,26 @@ export class MockDatagridFiltersComponent {
             "alias": "filterableProperties";
             "required": false;
         };
+        "predefinedFilters": {
+            "alias": "predefinedFilters";
+            "required": false;
+        };
+        "semiPredefinedFilters": {
+            "alias": "semiPredefinedFilters";
+            "required": false;
+        };
+        "toggleFilters": {
+            "alias": "toggleFilters";
+            "required": false;
+        };
+        "presetFilters": {
+            "alias": "presetFilters";
+            "required": false;
+        };
+        "propertyFilters": {
+            "alias": "propertyFilters";
+            "required": false;
+        };
     }, {
         "searchTermChange": "searchTermChange";
         "propertyFiltersChange": "propertyFiltersChange";

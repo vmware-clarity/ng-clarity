@@ -240,6 +240,8 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     // (undocumented)
     readonly userPropertyType: PropertyType;
     // (undocumented)
+    protected get visibleProperties(): FilterablePropertyDefinition[];
+    // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<CompositeFiltersComponent, "appfx-composite-filter", never, {
         "filterableProperties": {
             "alias": "filterableProperties";
@@ -249,9 +251,34 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
             "alias": "presetFilters";
             "required": false;
         };
+        "propertyFilters": {
+            "alias": "propertyFilters";
+            "required": false;
+        };
+        "externalCriteriaActive": {
+            "alias": "externalCriteriaActive";
+            "required": false;
+        };
+        "predefinedFilters": {
+            "alias": "predefinedFilters";
+            "required": false;
+        };
+        "semiPredefinedFilters": {
+            "alias": "semiPredefinedFilters";
+            "required": false;
+        };
+        "toggleFilters": {
+            "alias": "toggleFilters";
+            "required": false;
+        };
     }, {
+        "clearAll": "clearAll";
         "propertyFiltersChange": "propertyFiltersChange";
-    }, never, never, false, never>;
+    }, never, never, false, [{
+        directive: typeof i1.ClrPopoverHostDirective;
+        inputs: {};
+        outputs: {};
+    }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<CompositeFiltersComponent, never>;
 }
@@ -309,8 +336,24 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
             "alias": "presetFilters";
             "required": false;
         };
+        "predefinedFilters": {
+            "alias": "predefinedFilters";
+            "required": false;
+        };
+        "semiPredefinedFilters": {
+            "alias": "semiPredefinedFilters";
+            "required": false;
+        };
+        "toggleFilters": {
+            "alias": "toggleFilters";
+            "required": false;
+        };
         "filterMode": {
             "alias": "filterMode";
+            "required": false;
+        };
+        "propertyFilters": {
+            "alias": "propertyFilters";
             "required": false;
         };
     }, {
@@ -545,7 +588,7 @@ export class FilterFormComponent {
     }, {
         "cancel": "cancel";
         "apply": "apply";
-    }, never, ["*"], false, never>;
+    }, never, ["*", "[filterActions]"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<FilterFormComponent, never>;
 }
