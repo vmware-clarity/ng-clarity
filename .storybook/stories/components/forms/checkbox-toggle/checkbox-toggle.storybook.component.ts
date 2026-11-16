@@ -138,7 +138,7 @@ export class CheckboxToggleStorybookComponent {
   @Input() clrInline = false;
   @Input() type: CheckboxType | string = CheckboxType.Checkbox;
   @Input() label = 'Option';
-  @Input() containerLabel: string;
+  @Input() containerLabel?: string;
   @Input() checked = false;
   @Input() disabled = false;
   @Input() showHelperText = false;
