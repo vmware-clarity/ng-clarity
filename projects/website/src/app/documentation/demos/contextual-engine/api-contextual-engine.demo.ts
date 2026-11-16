@@ -7,9 +7,38 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
+import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
+
+const REGISTRY_EXAMPLE = `
+import { DestroyRef, inject, Injectable } from '@angular/core';
+import { ClrContextRegistryService } from '@clr/angular/ai';
+
+@Injectable({ providedIn: 'root' })
+export class CreateVmWorkflow {
+  step = 'compute-resource';
+  vmName = '';
+
+  constructor() {
+    const unregister = inject(ClrContextRegistryService).register({
+      getClrContext: () => ({
+        type: 'workflow',
+        label: 'Create virtual machine',
+        state: { step: this.step, vmName: this.vmName },
+        // Untrusted callers, such as window.clrContext(), see only these keys.
+        publicKeys: ['step'],
+      }),
+    });
+    inject(DestroyRef).onDestroy(unregister);
+  }
+}
+`;
+
 @Component({
   changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'clr-api-contextual-engine-demo',
   templateUrl: './api-contextual-engine.demo.html',
+  imports: [CodeSnippetComponent],
 })
-export class ApiContextualEngineDemo {}
+export class ApiContextualEngineDemo {
+  registryExample = REGISTRY_EXAMPLE;
+}
