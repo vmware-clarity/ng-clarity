@@ -1,6 +1,6 @@
 [
   {
-    "target": "span.spinner.spinner-inline.clr-loading-btn-leave",
+    "target": "span.spinner.spinner-inline",
     "name": "clr-fade-out",
     "startedAt": 0,
     "duration": 100,
@@ -63,7 +63,7 @@
     ]
   },
   {
-    "target": "span.spinner.spinner-inline.clr-loading-btn-leave",
+    "target": "span.spinner.spinner-inline",
     "name": "clr-fade-out",
     "startedAt": 0,
     "duration": 100,

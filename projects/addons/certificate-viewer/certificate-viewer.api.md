@@ -8,7 +8,6 @@ import { AbstractControl } from '@angular/forms';
 import { AfterContentInit } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
-import * as _angular_cdk_overlay from '@angular/cdk/overlay';
 import { AnimationCallbackEvent } from '@angular/core';
 import { ApplicationRef } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
@@ -17,7 +16,7 @@ import { CdkFixedSizeVirtualScroll } from '@angular/cdk/scrolling';
 import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { CdkVirtualForOf } from '@angular/cdk/scrolling';
 import { CdkVirtualForOfContext } from '@angular/cdk/scrolling';
-import { Certificate as Certificate_2 } from 'pkijs';
+import { Certificate } from 'pkijs';
 import { ChangeDetectorRef } from '@angular/core';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { ControlValueAccessor } from '@angular/forms';
@@ -61,7 +60,6 @@ import { Renderer2 } from '@angular/core';
 import { RendererFactory2 } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { RouterLinkActive } from '@angular/router';
-import * as rxjs from 'rxjs';
 import { SafeHtml } from '@angular/platform-browser';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
@@ -76,6 +74,7 @@ import { ValidationErrors } from '@angular/forms';
 import { Validator } from '@angular/forms';
 import { ViewContainerRef } from '@angular/core';
 import { ViewportRuler } from '@angular/cdk/scrolling';
+import { WritableSignal } from '@angular/core';
 
 // @public (undocumented)
 class AppfxCertificateViewerModule {
@@ -117,7 +116,16 @@ export class CertificateViewerComponent implements OnChanges {
     // Warning: (ae-forgotten-export) The symbol "TopHeadingLevel" needs to be exported by the entry point clr-addons-certificate-viewer.d.ts
     topHeadingLevel: TopHeadingLevel;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<CertificateViewerComponent, "appfx-certificate-viewer", never, { "pemEncodedCertificatesChain": { "alias": "pemEncodedCertificatesChain"; "required": false; }; "topHeadingLevel": { "alias": "topHeadingLevel"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<CertificateViewerComponent, "appfx-certificate-viewer", never, {
+        "pemEncodedCertificatesChain": {
+            "alias": "pemEncodedCertificatesChain";
+            "required": false;
+        };
+        "topHeadingLevel": {
+            "alias": "topHeadingLevel";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<CertificateViewerComponent, never>;
 }
