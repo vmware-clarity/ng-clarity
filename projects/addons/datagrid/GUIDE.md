@@ -13,7 +13,7 @@ Use `appfx-datagrid` for complex, configuration-driven grids: columns are data (
 
 For a simple list or table, `clr-datagrid` is the default. Don't switch an existing `clr-datagrid` to `appfx-datagrid` unless asked.
 
-Use plain `clr-datagrid` (see the clr-datagrid skill) when every cell needs custom markup or you need structures the column model can't express. The AppFX column-ordering, toggle, export, and cell/filter container pieces are internal — they cannot be used on a plain `clr-datagrid`.
+Use plain `clr-datagrid` (see the clr-datagrid guide in the `clarity-angular` skill) when every cell needs custom markup or you need structures the column model can't express. The AppFX column-ordering, toggle, export, and cell/filter container pieces are internal — they cannot be used on a plain `clr-datagrid`.
 
 ## Setup
 

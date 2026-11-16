@@ -15,6 +15,7 @@
 // [type]-[side]@[breakpoint]:[size]
 
 @use './mixins/mixins';
+@use '../../mixins' as clr-mixins;
 
 @include mixins.generateGaps();
 @include mixins.spacers();
@@ -22,7 +23,7 @@
 @include mixins.sideSpacers();
 
 @each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
-  @media (min-width: $breakpoint-value) {
+  @include clr-mixins.breakpoint-query('min-width: #{$breakpoint-value}') {
     @include mixins.generateGaps($breakpoint);
     @include mixins.spacers($breakpoint);
     @include mixins.axisSpacers($breakpoint);

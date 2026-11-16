@@ -103,16 +103,16 @@ describe('DatagridColumnToggleComponent', () => {
     } as unknown as CdkConnectedOverlay;
 
     component.onAttach(overlayMock);
-    expect(component.viewId).toEqual('test-id');
+    expect(component['viewId']()).toEqual('test-id');
     expect(component.overlay).toEqual(overlayMock);
   });
 
   it('should reset viewId and openState on onDetach', () => {
-    component.viewId = 'test-id';
+    component['viewId'].set('test-id');
     component.openState = true;
 
     component.onDetach();
-    expect(component.viewId).toBeUndefined();
+    expect(component['viewId']()).toBeUndefined();
     expect(component.openState).toBe(false);
   });
 
