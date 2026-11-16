@@ -179,11 +179,12 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   /* reference to the enum so that template can access */
   SELECTION_TYPE = SelectionType;
 
+  protected readonly tree = inject<DatagridTreeService<T>>(DatagridTreeService);
+
   private teardownElementContext?: () => void;
   private teardownElementMutator?: () => void;
   private rowCellsCache: Map<ClrDatagridRow<T>, { excluded: string; cells: string[] }> | null = null;
   private contentInitialized = false;
-  protected readonly tree = inject<DatagridTreeService<T>>(DatagridTreeService);
 
   @ViewChild('selectAllCheckbox') private selectAllCheckbox: ElementRef<HTMLInputElement>;
   @ViewChild('rowControls', { read: ElementRef }) private rowControls: ElementRef<HTMLElement>;

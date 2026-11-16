@@ -14,6 +14,7 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
+  DestroyRef,
   ElementRef,
   EventEmitter,
   Host,
@@ -136,6 +137,7 @@ export class ClrCombobox<T>
 
   private resizeObserver: ResizeObserver;
   private readonly renderInjector = inject(Injector);
+  private readonly destroyRef = inject(DestroyRef);
   private containerWidthChange = new Subject();
   @ContentChild(ClrOptions) private options: ClrOptions<T>;
   @ContentChild(ClrOptionItems) private optionItems: ClrOptionItems<T> | undefined;
@@ -382,7 +384,8 @@ export class ClrCombobox<T>
   loadingStateChange(state: ClrLoadingState): void {
     this.optionSelectionService.loading = state === ClrLoadingState.LOADING;
 
-    if (state !== ClrLoadingState.LOADING && isPlatformBrowser(this.platformId)) {
+    // A loading directive resets its state when it is destroyed, which can be after this combobox is.
+    if (state !== ClrLoadingState.LOADING && isPlatformBrowser(this.platformId) && !this.destroyRef.destroyed) {
       afterNextRender(() => this.popoverService?.resetPositions(), { injector: this.renderInjector });
       this.focusFirstActive();
     }

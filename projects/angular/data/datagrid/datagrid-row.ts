@@ -310,14 +310,6 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
   get identifyBy() {
     return this.items.identifyBy;
   }
-  /** Stated only where there is a choice: never without selection, and on a locked row only when selected. */
-  protected get ariaSelected(): boolean | null {
-    if (this.selection.selectionType === SelectionType.None) {
-      return null;
-    }
-    const selected = this.selection.isSelected(this.item);
-    return selected || this.clrDgSelectable ? selected : null;
-  }
 
   /**
    * What the cells of this row render of the tree, when the datagrid renders one. The row and its
@@ -331,6 +323,15 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
       this.treeCells = this.workOutTreeCells();
     }
     return this.treeCells;
+  }
+
+  /** Stated only where there is a choice: never without selection, and on a locked row only when selected. */
+  protected get ariaSelected(): boolean | null {
+    if (this.selection.selectionType === SelectionType.None) {
+      return null;
+    }
+    const selected = this.selection.isSelected(this.item);
+    return selected || this.clrDgSelectable ? selected : null;
   }
 
   /**
