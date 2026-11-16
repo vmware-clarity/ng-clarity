@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="path/to/node_modules/@clr/ui/clr-ui.min.css">
     ```
 
+    For layouts in an area narrower than the screen, add the `clr-layout-container` attribute to the element that holds the layout. Inside it, the grid columns follow that element's width instead of the screen.
+
 3.  Add the `cds-theme="light"` (or `cds-theme="dark"` for dark theme) to the body tag:
 
     ```

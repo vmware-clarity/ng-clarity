@@ -150,9 +150,78 @@ class DialogComponent implements OnInit, OnDestroy {
     // (undocumented)
     ZoomLevel: typeof ZoomLevel;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<DialogComponent, "appfx-dialog", never, { "title": { "alias": "title"; "required": false; }; "size": { "alias": "size"; "required": false; }; "height": { "alias": "height"; "required": false; }; "defaultButton": { "alias": "defaultButton"; "required": false; }; "cancelButtonLabel": { "alias": "cancelButtonLabel"; "required": false; }; "okButtonLabel": { "alias": "okButtonLabel"; "required": false; }; "tabLayout": { "alias": "tabLayout"; "required": false; }; "disableTabsContent": { "alias": "disableTabsContent"; "required": false; }; "loading": { "alias": "loading"; "required": false; }; "steps": { "alias": "steps"; "required": false; }; "model": { "alias": "model"; "required": false; }; "closeHandler": { "alias": "closeHandler"; "required": false; }; "showTabLinks": { "alias": "showTabLinks"; "required": false; }; "subTitle": { "alias": "subTitle"; "required": false; }; "opened": { "alias": "opened"; "required": false; }; }, { "onModelChange": "onModelChange"; "onClose": "onClose"; "openedChange": "openedChange"; }, never, ["appfx-dialog-header"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DialogComponent, "appfx-dialog", never, {
+        "title": {
+            "alias": "title";
+            "required": false;
+        };
+        "size": {
+            "alias": "size";
+            "required": false;
+        };
+        "height": {
+            "alias": "height";
+            "required": false;
+        };
+        "defaultButton": {
+            "alias": "defaultButton";
+            "required": false;
+        };
+        "cancelButtonLabel": {
+            "alias": "cancelButtonLabel";
+            "required": false;
+        };
+        "okButtonLabel": {
+            "alias": "okButtonLabel";
+            "required": false;
+        };
+        "tabLayout": {
+            "alias": "tabLayout";
+            "required": false;
+        };
+        "disableTabsContent": {
+            "alias": "disableTabsContent";
+            "required": false;
+        };
+        "loading": {
+            "alias": "loading";
+            "required": false;
+        };
+        "steps": {
+            "alias": "steps";
+            "required": false;
+        };
+        "model": {
+            "alias": "model";
+            "required": false;
+        };
+        "closeHandler": {
+            "alias": "closeHandler";
+            "required": false;
+        };
+        "showTabLinks": {
+            "alias": "showTabLinks";
+            "required": false;
+        };
+        "subTitle": {
+            "alias": "subTitle";
+            "required": false;
+        };
+        "opened": {
+            "alias": "opened";
+            "required": false;
+        };
+    }, {
+        "onModelChange": "onModelChange";
+        "onClose": "onClose";
+        "openedChange": "openedChange";
+    }, never, ["appfx-dialog-header"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<DialogComponent, [null, null, null, { optional: true; }, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DialogComponent, [null, null, null, {
+        optional: true;
+    }, {
+        optional: true;
+    }]>;
 }
 export { DialogComponent as Dialog }
 export { DialogComponent }
@@ -195,7 +264,26 @@ class ToggleComponent {
     toggleState: boolean;
     toggleStateChange: EventEmitter<boolean>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ToggleComponent, "appfx-toggle", never, { "toggleState": { "alias": "toggleState"; "required": false; }; "toggleId": { "alias": "toggleId"; "required": false; }; "label": { "alias": "label"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; }, { "toggleStateChange": "toggleStateChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ToggleComponent, "appfx-toggle", never, {
+        "toggleState": {
+            "alias": "toggleState";
+            "required": false;
+        };
+        "toggleId": {
+            "alias": "toggleId";
+            "required": false;
+        };
+        "label": {
+            "alias": "label";
+            "required": false;
+        };
+        "disabled": {
+            "alias": "disabled";
+            "required": false;
+        };
+    }, {
+        "toggleStateChange": "toggleStateChange";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ToggleComponent, never>;
 }

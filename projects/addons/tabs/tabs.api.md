@@ -21,7 +21,7 @@ import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
 import { FormGroup } from '@angular/forms';
 import { FormGroupName } from '@angular/forms';
 import * as i0 from '@angular/core';
-import * as i10 from '@angular/forms';
+import * as i10_2 from '@angular/forms';
 import * as i9 from '@angular/common';
 import { InjectionToken } from '@angular/core';
 import { Injector } from '@angular/core';
@@ -59,7 +59,7 @@ export class AppfxTabsModule {
     // Warning: (ae-forgotten-export) The symbol "i8" needs to be exported by the entry point clr-addons-tabs.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxTabsModule, [typeof TabsComponent, typeof TabLinksComponent, typeof IfTabActiveDirective, typeof RenderAsButtonDirective], [typeof i5.AppfxWorkflowCoreModule, typeof i6_2.AppfxA11yModule, typeof i7_2.ClrTabsModule, typeof i8.ClrIcon, typeof i9.CommonModule, typeof i10.FormsModule, typeof i10.ReactiveFormsModule], [typeof TabsComponent, typeof TabLinksComponent, typeof IfTabActiveDirective]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxTabsModule, [typeof TabsComponent, typeof TabLinksComponent, typeof IfTabActiveDirective, typeof RenderAsButtonDirective], [typeof i5.AppfxWorkflowCoreModule, typeof i6_2.AppfxA11yModule, typeof i7_2.ClrTabsModule, typeof i8.ClrIcon, typeof i9.CommonModule, typeof i10_2.FormsModule, typeof i10_2.ReactiveFormsModule], [typeof TabsComponent, typeof TabLinksComponent, typeof IfTabActiveDirective]>;
 }
 
 // @public
@@ -79,9 +79,23 @@ class IfTabActiveDirective implements OnInit, OnDestroy {
     // (undocumented)
     tab: ClrTab;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<IfTabActiveDirective, "[appfxIfTabActive]", never, { "activeClass": { "alias": "activeClass"; "required": false; }; "activateTab": { "alias": "activateTab"; "required": false; }; }, { "appfxIfTabActiveChange": "appfxIfTabActiveChange"; }, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<IfTabActiveDirective, "[appfxIfTabActive]", never, {
+        "activeClass": {
+            "alias": "activeClass";
+            "required": false;
+        };
+        "activateTab": {
+            "alias": "activateTab";
+            "required": false;
+        };
+    }, {
+        "appfxIfTabActiveChange": "appfxIfTabActiveChange";
+    }, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<IfTabActiveDirective, [{ host: true; self: true; }, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<IfTabActiveDirective, [{
+        host: true;
+        self: true;
+    }, null]>;
 }
 export { IfTabActiveDirective as IfTabActive }
 export { IfTabActiveDirective }
@@ -106,7 +120,18 @@ class TabLinksComponent {
     // (undocumented)
     workflowStrings: WorkflowStrings;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<TabLinksComponent, "appfx-tab-links", never, { "opened": { "alias": "opened"; "required": false; }; "title": { "alias": "title"; "required": false; }; }, { "openedChange": "openedChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<TabLinksComponent, "appfx-tab-links", never, {
+        "opened": {
+            "alias": "opened";
+            "required": false;
+        };
+        "title": {
+            "alias": "title";
+            "required": false;
+        };
+    }, {
+        "openedChange": "openedChange";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<TabLinksComponent, never>;
 }
@@ -194,9 +219,48 @@ class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterContentIni
     // (undocumented)
     ZoomLevel: typeof ZoomLevel;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<TabsComponent, "appfx-tabs", never, { "disableTabsContent": { "alias": "disableTabsContent"; "required": false; }; "loading": { "alias": "loading"; "required": false; }; "tabLayout": { "alias": "tabLayout"; "required": false; }; "showLoadingIndicator": { "alias": "showLoadingIndicator"; "required": false; }; "autoCollapseTabLinks": { "alias": "autoCollapseTabLinks"; "required": false; }; "showTabLinks": { "alias": "showTabLinks"; "required": false; }; "tabs": { "alias": "tabs"; "required": false; }; "model": { "alias": "model"; "required": false; }; }, { "onModelChange": "onModelChange"; "tabLinksOpenedChange": "tabLinksOpenedChange"; "activeTabChange": "activeTabChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<TabsComponent, "appfx-tabs", never, {
+        "disableTabsContent": {
+            "alias": "disableTabsContent";
+            "required": false;
+        };
+        "loading": {
+            "alias": "loading";
+            "required": false;
+        };
+        "tabLayout": {
+            "alias": "tabLayout";
+            "required": false;
+        };
+        "showLoadingIndicator": {
+            "alias": "showLoadingIndicator";
+            "required": false;
+        };
+        "autoCollapseTabLinks": {
+            "alias": "autoCollapseTabLinks";
+            "required": false;
+        };
+        "showTabLinks": {
+            "alias": "showTabLinks";
+            "required": false;
+        };
+        "tabs": {
+            "alias": "tabs";
+            "required": false;
+        };
+        "model": {
+            "alias": "model";
+            "required": false;
+        };
+    }, {
+        "onModelChange": "onModelChange";
+        "tabLinksOpenedChange": "tabLinksOpenedChange";
+        "activeTabChange": "activeTabChange";
+    }, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<TabsComponent, [null, null, null, null, null, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<TabsComponent, [null, null, null, null, null, {
+        optional: true;
+    }]>;
 }
 export { TabsComponent as AppfxTabsComponent }
 export { TabsComponent as Tabs }
