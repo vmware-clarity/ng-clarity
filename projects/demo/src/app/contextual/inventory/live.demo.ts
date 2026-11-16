@@ -5,10 +5,18 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
+import { CLR_AI_METADATA_ATTRIBUTE } from '@clr/angular/ai';
 
 import { ContextInventoryComponent } from '../inventory/inventory.component';
 import { ContextLivePanelComponent } from '../live-panel/live-panel.component';
+
+/** What this view is for; an app would usually put it on `<body>` in index.html. */
+const VIEW_METADATA = {
+  purpose: 'Review the hosts of a datacenter and add new ones',
+  tasks: ['Find disconnected hosts', 'Put hosts into maintenance', 'Add a host'],
+};
 
 @Component({
   changeDetection: ChangeDetectionStrategy.Eager,
@@ -17,4 +25,11 @@ import { ContextLivePanelComponent } from '../live-panel/live-panel.component';
   imports: [ContextInventoryComponent, ContextLivePanelComponent],
   templateUrl: './live.demo.html',
 })
-export class ContextualLiveDemo {}
+export class ContextualLiveDemo {
+  constructor() {
+    // On the view root (the body), the metadata describes the whole view: it becomes the snapshot's `metadata`.
+    const body = inject(DOCUMENT).body;
+    body.setAttribute(CLR_AI_METADATA_ATTRIBUTE, JSON.stringify(VIEW_METADATA));
+    inject(DestroyRef).onDestroy(() => body.removeAttribute(CLR_AI_METADATA_ATTRIBUTE));
+  }
+}
