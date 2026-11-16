@@ -14,7 +14,7 @@ metadata:
 From the [wizard design guidance](https://guidance.clarity.design/1039):
 
 - **Wizard**: a self-contained flow of at least two steps that needs no other part of the app. It is a modal that blocks the page until finished or cancelled.
-- **Stepper** (`form[clrStepper]`, see the clr-stepper skill): the form stays inline with the page, users may navigate away mid-flow, or each step needs a description/summary ([stepper guidance](https://guidance.clarity.design/1030)).
+- **Stepper** (`form[clrStepper]`, see the clr-stepper guide): the form stays inline with the page, users may navigate away mid-flow, or each step needs a description/summary ([stepper guidance](https://guidance.clarity.design/1030)).
 - Use a stepper or a saved draft when users must leave and resume later; a wizard loses its state.
 - Never open a wizard from a modal or a modal from a wizard.
 - The wizard title describes the whole workflow; each page title matches its step name. Keep page content short.

@@ -8,16 +8,16 @@
 import { DOCUMENT } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, ViewEncapsulation } from '@angular/core';
 
-/** The page's `cds-theme` does not reach into a shadow root, so plugins set it again inside. */
-function pageTheme() {
-  return inject(DOCUMENT).body.getAttribute('cds-theme');
+/** The page's `cds-theme` and `clr-density` do not reach into a shadow root, so plugins set them again inside. */
+function pageAttribute(name: string) {
+  return inject(DOCUMENT).body.getAttribute(name);
 }
 
 /** Clarity's global CSS loaded inside a shadow root, the way shadow-root hosted plugins load it. */
 @Component({
   selector: 'shadow-root-typography',
   template: `
-    <div [attr.cds-theme]="theme">
+    <div [attr.cds-theme]="theme" [attr.clr-density]="density">
       <h3>Heading</h3>
       <p>Paragraph</p>
       <p class="p0">Paragraph p0</p>
@@ -41,27 +41,60 @@ function pageTheme() {
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ShadowRootTypographyComponent {
-  protected readonly theme = pageTheme();
+  protected readonly theme = pageAttribute('cds-theme');
+  protected readonly density = pageAttribute('clr-density');
 }
 
-/** Grid and `cds-layout` breakpoints in a shadow root whose host is narrower than the viewport. */
+/** One slot inside each grid breakpoint range. The widest still fits the 1280px snapshot viewport. */
+const SLOTS = [
+  { width: 400, label: 'xs: below 576px' },
+  { width: 650, label: 'sm: 576px to 767px' },
+  { width: 850, label: 'md: 768px to 991px' },
+  { width: 1100, label: 'lg: 992px to 1199px' },
+  { width: 1220, label: 'xl: 1200px and up' },
+];
+
+/**
+ * Grid and `cds-layout` breakpoints in `clr-layout-container` slots narrower than the viewport, one slot per
+ * breakpoint range, all in one shadow root. Inside a slot the grid columns follow its width; `cds-layout` follows
+ * the viewport.
+ */
 @Component({
   selector: 'shadow-root-container-queries',
   template: `
-    <div [attr.cds-theme]="theme">
-      <div class="clr-row">
-        <div class="clr-col-12 clr-col-md-6"><span>clr-col-12 clr-col-md-6</span></div>
-        <div class="clr-col-12 clr-col-md-6"><span>clr-col-12 clr-col-md-6</span></div>
-      </div>
-      <div class="clr-row">
-        <div class="clr-col-sm-4"><span>clr-col-sm-4</span></div>
-        <div class="clr-col-sm-4"><span>clr-col-sm-4</span></div>
-        <div class="clr-col-sm-4"><span>clr-col-sm-4</span></div>
-      </div>
-      <div cds-layout="grid cols@sm:6 gap:md">
-        <span>cds-layout cols&#64;sm:6</span>
-        <span>cds-layout cols&#64;sm:6</span>
-      </div>
+    <div [attr.cds-theme]="theme" [attr.clr-density]="density">
+      @for (slot of slots; track slot.width; let first = $first) {
+        @if (!first) {
+          <hr />
+        }
+        <h4 class="slot-label">{{ slot.width }}px slot ({{ slot.label }})</h4>
+        <div clr-layout-container [style.width.px]="slot.width">
+          <div class="caption" cds-text="caption">
+            clr-col-12 clr-col-sm-6 clr-col-md-4 clr-col-lg-3 clr-col-xl-2: 1, 2, 3, 4 and 6 per row
+          </div>
+          <div class="clr-row">
+            @for (column of columns; track column) {
+              <div class="clr-col-12 clr-col-sm-6 clr-col-md-4 clr-col-lg-3 clr-col-xl-2">
+                <span>{{ column }}</span>
+              </div>
+            }
+          </div>
+          <div class="clr-row">
+            <div class="clr-col-12 clr-col-md-6"><span>clr-col-12 clr-col-md-6</span></div>
+            <div class="clr-col-12 clr-col-md-6"><span>clr-col-12 clr-col-md-6</span></div>
+          </div>
+          <div class="clr-row">
+            <div class="clr-col-sm-4"><span>clr-col-sm-4</span></div>
+            <div class="clr-col-sm-4"><span>clr-col-sm-4</span></div>
+            <div class="clr-col-sm-4"><span>clr-col-sm-4</span></div>
+          </div>
+          <div class="caption" cds-text="caption">cds-layout follows the viewport</div>
+          <div cds-layout="grid cols@sm:6 gap:md">
+            <span>cds-layout cols&#64;sm:6</span>
+            <span>cds-layout cols&#64;sm:6</span>
+          </div>
+        </div>
+      }
     </div>
   `,
   styleUrls: ['../../../../projects/ui/src/clr-ui.scss', './shadow-root-container-queries.scss'],
@@ -69,5 +102,47 @@ export class ShadowRootTypographyComponent {
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ShadowRootContainerQueriesComponent {
-  protected readonly theme = pageTheme();
+  protected readonly theme = pageAttribute('cds-theme');
+  protected readonly density = pageAttribute('clr-density');
+  protected readonly slots = SLOTS;
+  protected readonly columns = [1, 2, 3, 4, 5, 6];
+}
+
+/**
+ * A modal inside a narrow `clr-layout-container` slot. The modal is fixed to the viewport, so its grid keeps
+ * following the viewport while the grid next to it follows the slot.
+ */
+@Component({
+  selector: 'shadow-root-container-queries-modal',
+  template: `
+    <div [attr.cds-theme]="theme" [attr.clr-density]="density" clr-layout-container>
+      <div class="clr-row">
+        <div class="clr-col-12 clr-col-md-6"><span>Slot: clr-col-12 clr-col-md-6</span></div>
+        <div class="clr-col-12 clr-col-md-6"><span>Slot: clr-col-12 clr-col-md-6</span></div>
+      </div>
+      <div class="modal">
+        <div class="modal-dialog modal-lg" role="dialog" aria-labelledby="modal-title">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3 class="modal-title" id="modal-title">Modal inside the slot</h3>
+            </div>
+            <div class="modal-body">
+              <div class="clr-row">
+                <div class="clr-col-12 clr-col-md-6"><span>Modal: clr-col-12 clr-col-md-6</span></div>
+                <div class="clr-col-12 clr-col-md-6"><span>Modal: clr-col-12 clr-col-md-6</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-backdrop" aria-hidden="true"></div>
+    </div>
+  `,
+  styleUrls: ['../../../../projects/ui/src/clr-ui.scss', './shadow-root-container-queries.scss'],
+  encapsulation: ViewEncapsulation.ShadowDom,
+  changeDetection: ChangeDetectionStrategy.Eager,
+})
+export class ShadowRootContainerQueriesModalComponent {
+  protected readonly theme = pageAttribute('cds-theme');
+  protected readonly density = pageAttribute('clr-density');
 }

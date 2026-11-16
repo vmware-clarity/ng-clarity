@@ -38,17 +38,19 @@ describe('ThemeBuilderComponent', () => {
     this.fixture.destroy();
   });
 
-  it('defaults presets to the Clarity Default preset plus the built-in PRESETS list, selecting the first one', function (this: ThisTest) {
-    this.fixture.detectChanges(false);
+  it('defaults presets to the Clarity Default preset plus the built-in PRESETS list, selecting the first one', async function (this: ThisTest) {
+    this.fixture.autoDetectChanges();
+    await this.fixture.whenStable();
 
     expect(this.component.presets[0]).toBe(CLARITY_DEFAULT_PRESET);
     PRESETS.forEach((preset, i) => expect(this.component.presets[i + 1]).toBe(preset));
     expect(this.component.activePreset).toBe(CLARITY_DEFAULT_PRESET);
   });
 
-  it('always prepends the Clarity Default preset to a custom [presets] input and selects it', function (this: ThisTest) {
+  it('always prepends the Clarity Default preset to a custom [presets] input and selects it', async function (this: ThisTest) {
     this.component.presets = testPresets;
-    this.fixture.detectChanges(false);
+    this.fixture.autoDetectChanges();
+    await this.fixture.whenStable();
 
     expect(this.component.presets[0]).toBe(CLARITY_DEFAULT_PRESET);
     expect(this.component.presets[1]).toBe(testPresets[0]);
@@ -80,25 +82,28 @@ describe('ThemeBuilderComponent', () => {
     );
   });
 
-  it('renders the built-in preview by default', function (this: ThisTest) {
-    this.fixture.detectChanges(false);
+  it('renders the built-in preview by default', async function (this: ThisTest) {
+    this.fixture.autoDetectChanges();
+    await this.fixture.whenStable();
 
     const host: HTMLElement = this.fixture.nativeElement;
     expect(host.querySelector('clr-breadcrumbs')).toBeTruthy();
   });
 
-  it('emits generatedCSS reporting no changes once the initial color structure is built', function (this: ThisTest) {
+  it('emits generatedCSS reporting no changes once the initial color structure is built', async function (this: ThisTest) {
     const emitted: string[] = [];
     this.component.generatedCSS.subscribe((css: string) => emitted.push(css));
 
-    this.fixture.detectChanges(false);
+    this.fixture.autoDetectChanges();
+    await this.fixture.whenStable();
 
     expect(emitted.length).toBeGreaterThan(0);
     expect(emitted[emitted.length - 1]).toContain('NO changes');
   });
 
-  it('emits updated generatedCSS and clears the active preset when a color is edited', function (this: ThisTest) {
-    this.fixture.detectChanges(false);
+  it('emits updated generatedCSS and clears the active preset when a color is edited', async function (this: ThisTest) {
+    this.fixture.autoDetectChanges();
+    await this.fixture.whenStable();
 
     const emitted: string[] = [];
     this.component.generatedCSS.subscribe((css: string) => emitted.push(css));
@@ -111,8 +116,9 @@ describe('ThemeBuilderComponent', () => {
     expect(emitted[emitted.length - 1]).toContain('--cds-alias-primary:');
   });
 
-  it('recomputes tint/shade/dark variants from an edited base color', function (this: ThisTest) {
-    this.fixture.detectChanges(false);
+  it('recomputes tint/shade/dark variants from an edited base color', async function (this: ThisTest) {
+    this.fixture.autoDetectChanges();
+    await this.fixture.whenStable();
 
     const primaryGroup: Color[] = this.component.colorStruct['light']['primary'];
     const primaryBase = primaryGroup.find(c => c.label === 'Base');
@@ -125,8 +131,9 @@ describe('ThemeBuilderComponent', () => {
     expect(shade.color.h).toBe(primaryBase.color.h);
   });
 
-  it('ignores non-hex input in setCurrentColor', function (this: ThisTest) {
-    this.fixture.detectChanges(false);
+  it('ignores non-hex input in setCurrentColor', async function (this: ThisTest) {
+    this.fixture.autoDetectChanges();
+    await this.fixture.whenStable();
 
     const primaryBase = this.component.colorStruct['light']['primary'][0];
     const before = primaryBase.hsl;
@@ -136,9 +143,10 @@ describe('ThemeBuilderComponent', () => {
     expect(primaryBase.hsl).toBe(before);
   });
 
-  it('applies a preset to both the light and dark color structures', function (this: ThisTest) {
+  it('applies a preset to both the light and dark color structures', async function (this: ThisTest) {
     this.component.presets = testPresets;
-    this.fixture.detectChanges(false);
+    this.fixture.autoDetectChanges();
+    await this.fixture.whenStable();
 
     this.component.applyPreset(testPresets[1]);
 
@@ -150,9 +158,10 @@ describe('ThemeBuilderComponent', () => {
     expect(this.component.activePreset).toBe(testPresets[1]);
   });
 
-  it("derives each theme's primary variants from that theme's base when applying a preset", function (this: ThisTest) {
+  it("derives each theme's primary variants from that theme's base when applying a preset", async function (this: ThisTest) {
     this.component.presets = testPresets;
-    this.fixture.detectChanges(false);
+    this.fixture.autoDetectChanges();
+    await this.fixture.whenStable();
 
     this.component.applyPreset(testPresets[1]);
 
@@ -175,9 +184,10 @@ describe('ThemeBuilderComponent', () => {
     });
   });
 
-  it('restores original colors when re-applying the null (Clarity Default) preset', function (this: ThisTest) {
+  it('restores original colors when re-applying the null (Clarity Default) preset', async function (this: ThisTest) {
     this.component.presets = testPresets;
-    this.fixture.detectChanges(false);
+    this.fixture.autoDetectChanges();
+    await this.fixture.whenStable();
 
     this.component.applyPreset(testPresets[1]);
     this.component.applyPreset(testPresets[0]);
@@ -186,7 +196,7 @@ describe('ThemeBuilderComponent', () => {
     expect(lightPrimary.isOriginalColor).toBe(true);
   });
 
-  it('applies a preset that specifies a full set of variants for a group, not just the base', function (this: ThisTest) {
+  it('applies a preset that specifies a full set of variants for a group, not just the base', async function (this: ThisTest) {
     const fullVariantPreset: ThemePreset = {
       name: 'Full variants',
       light: {
@@ -197,7 +207,8 @@ describe('ThemeBuilderComponent', () => {
       },
       dark: {},
     };
-    this.fixture.detectChanges(false);
+    this.fixture.autoDetectChanges();
+    await this.fixture.whenStable();
 
     this.component.applyPreset(fullVariantPreset);
 
@@ -213,7 +224,7 @@ describe('ThemeBuilderComponent', () => {
     expect(tint.color.h).toBe(base.color.h);
   });
 
-  it('ignores a group override whose base token name has no match in that color group', function (this: ThisTest) {
+  it('ignores a group override whose base token name has no match in that color group', async function (this: ThisTest) {
     // A malformed/stale preset: the "primary" group's override is tagged as a base
     // token (its name is one of TOKEN_KEYS.baseTokens), but it's actually the "info"
     // group's base token name, so it has no match inside colorStruct['light']['primary'].
@@ -222,7 +233,8 @@ describe('ThemeBuilderComponent', () => {
       light: { primary: [new Color('--cds-alias-status-info', 'hsl(160deg 69% 36%)')] },
       dark: {},
     };
-    this.fixture.detectChanges(false);
+    this.fixture.autoDetectChanges();
+    await this.fixture.whenStable();
 
     expect(() => this.component.applyPreset(malformedPreset)).not.toThrow();
 
@@ -230,8 +242,9 @@ describe('ThemeBuilderComponent', () => {
     expect(base.isOriginalColor).toBe(true);
   });
 
-  it('resets an individual color back to its original value', function (this: ThisTest) {
-    this.fixture.detectChanges(false);
+  it('resets an individual color back to its original value', async function (this: ThisTest) {
+    this.fixture.autoDetectChanges();
+    await this.fixture.whenStable();
 
     const primaryBase = this.component.colorStruct['light']['primary'][0];
     this.component.setCurrentColor(primaryBase, '#112233');
@@ -243,8 +256,9 @@ describe('ThemeBuilderComponent', () => {
     expect(primaryBase.isOriginalColor).toBe(true);
   });
 
-  it('toggles the active preview theme between light and dark', function (this: ThisTest) {
-    this.fixture.detectChanges(false);
+  it('toggles the active preview theme between light and dark', async function (this: ThisTest) {
+    this.fixture.autoDetectChanges();
+    await this.fixture.whenStable();
 
     expect(this.component.activeTheme).toBe('light');
     this.component.toggleActiveTheme();
@@ -254,8 +268,9 @@ describe('ThemeBuilderComponent', () => {
     expect(this.component.activeTheme).toBe('light');
   });
 
-  it('includes the warning-text override in generatedCSS only while enabled', function (this: ThisTest) {
-    this.fixture.detectChanges(false);
+  it('includes the warning-text override in generatedCSS only while enabled', async function (this: ThisTest) {
+    this.fixture.autoDetectChanges();
+    await this.fixture.whenStable();
 
     const warningBase = this.component.colorStruct['light']['warning'][0];
     this.component.setCurrentColor(warningBase, '#f0a000');
@@ -270,8 +285,9 @@ describe('ThemeBuilderComponent', () => {
   });
 
   describe('importCSS', () => {
-    it('re-applies a color exported via generatedCss, deriving its variants', function (this: ThisTest) {
-      this.fixture.detectChanges(false);
+    it('re-applies a color exported via generatedCss, deriving its variants', async function (this: ThisTest) {
+      this.fixture.autoDetectChanges();
+      await this.fixture.whenStable();
 
       const primaryGroup = this.component.colorStruct['light']['primary'];
       const primaryBase = primaryGroup.find(c => c.label === 'Base');
@@ -291,8 +307,9 @@ describe('ThemeBuilderComponent', () => {
       expect(this.component.activePreset).toBeNull();
     });
 
-    it('clears colors not present in the imported CSS', function (this: ThisTest) {
-      this.fixture.detectChanges(false);
+    it('clears colors not present in the imported CSS', async function (this: ThisTest) {
+      this.fixture.autoDetectChanges();
+      await this.fixture.whenStable();
 
       const primaryGroup = this.component.colorStruct['light']['primary'];
       const primaryBase = primaryGroup.find(c => c.label === 'Base');
@@ -311,8 +328,9 @@ describe('ThemeBuilderComponent', () => {
       expect(infoBase.isOriginalColor).toBe(true);
     });
 
-    it('leaves the current colors untouched and returns false for malformed CSS', function (this: ThisTest) {
-      this.fixture.detectChanges(false);
+    it('leaves the current colors untouched and returns false for malformed CSS', async function (this: ThisTest) {
+      this.fixture.autoDetectChanges();
+      await this.fixture.whenStable();
 
       const primaryGroup = this.component.colorStruct['light']['primary'];
       const primaryBase = primaryGroup.find(c => c.label === 'Base');
@@ -326,8 +344,9 @@ describe('ThemeBuilderComponent', () => {
       }
     });
 
-    it('returns true when the CSS is applied', function (this: ThisTest) {
-      this.fixture.detectChanges(false);
+    it('returns true when the CSS is applied', async function (this: ThisTest) {
+      this.fixture.autoDetectChanges();
+      await this.fixture.whenStable();
 
       const primaryGroup = this.component.colorStruct['light']['primary'];
       const primaryBase = primaryGroup.find(c => c.label === 'Base');
@@ -336,8 +355,9 @@ describe('ThemeBuilderComponent', () => {
       expect(this.component.importCSS(this.component.generatedCss)).toBe(true);
     });
 
-    it("refuses the generated CSS of an unchanged theme (the '/* NO changes */' output)", function (this: ThisTest) {
-      this.fixture.detectChanges(false);
+    it("refuses the generated CSS of an unchanged theme (the '/* NO changes */' output)", async function (this: ThisTest) {
+      this.fixture.autoDetectChanges();
+      await this.fixture.whenStable();
 
       expect(this.component.generatedCss).toContain('NO changes');
       expect(this.component.importCSS(this.component.generatedCss)).toBe(false);
@@ -345,8 +365,9 @@ describe('ThemeBuilderComponent', () => {
   });
 
   describe('presetSwatchColor', () => {
-    it("returns the preset's light primary base color as a hex string", function (this: ThisTest) {
-      this.fixture.detectChanges(false);
+    it("returns the preset's light primary base color as a hex string", async function (this: ThisTest) {
+      this.fixture.autoDetectChanges();
+      await this.fixture.whenStable();
 
       const primaryColor = new Color('--cds-alias-primary', 'hsl(160deg 69% 36%)');
       const preset: ThemePreset = { name: 'Swatch test', light: { primary: [primaryColor] }, dark: {} };
@@ -354,16 +375,18 @@ describe('ThemeBuilderComponent', () => {
       expect(this.component.presetSwatchColor(preset)).toBe('#1c9b71');
     });
 
-    it('returns undefined when the preset has no light colors (e.g. Clarity Default)', function (this: ThisTest) {
-      this.fixture.detectChanges(false);
+    it('returns undefined when the preset has no light colors (e.g. Clarity Default)', async function (this: ThisTest) {
+      this.fixture.autoDetectChanges();
+      await this.fixture.whenStable();
 
       const preset: ThemePreset = { name: 'Clarity Default', light: null, dark: null };
 
       expect(this.component.presetSwatchColor(preset)).toBeUndefined();
     });
 
-    it("returns undefined when the preset's light colors don't include a primary group", function (this: ThisTest) {
-      this.fixture.detectChanges(false);
+    it("returns undefined when the preset's light colors don't include a primary group", async function (this: ThisTest) {
+      this.fixture.autoDetectChanges();
+      await this.fixture.whenStable();
 
       const preset: ThemePreset = {
         name: 'No primary',
@@ -374,8 +397,9 @@ describe('ThemeBuilderComponent', () => {
       expect(this.component.presetSwatchColor(preset)).toBeUndefined();
     });
 
-    it('returns undefined when the preset has an empty primary group', function (this: ThisTest) {
-      this.fixture.detectChanges(false);
+    it('returns undefined when the preset has an empty primary group', async function (this: ThisTest) {
+      this.fixture.autoDetectChanges();
+      await this.fixture.whenStable();
 
       const preset: ThemePreset = { name: 'Empty primary', light: { primary: [] }, dark: {} };
 
@@ -409,8 +433,9 @@ describe('ThemeBuilderComponent with projected content', () => {
     fixture.destroy();
   });
 
-  it('renders projected content above the built-in preview', () => {
-    fixture.detectChanges(false);
+  it('renders projected content above the built-in preview', async () => {
+    fixture.autoDetectChanges();
+    await fixture.whenStable();
 
     const host: HTMLElement = fixture.nativeElement;
     const marker = host.querySelector('.custom-preview-marker');
