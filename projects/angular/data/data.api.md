@@ -1301,7 +1301,7 @@ export class ClrDatagridSingleSelectionValueAccessor implements ControlValueAcce
     // (undocumented)
     setDisabledState(isDisabled: boolean): void;
     // (undocumented)
-    value: any;
+    value: unknown;
     // (undocumented)
     writeValue(value: any): void;
     // (undocumented)
