@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -77,7 +77,7 @@ export default function (): void {
 
     describe('password toggle', () => {
       let fixture: ComponentFixture<TemplateDrivenTest>;
-      let containerDE;
+      let containerDE: DebugElement;
       let containerEl: HTMLElement;
 
       beforeEach(() => {

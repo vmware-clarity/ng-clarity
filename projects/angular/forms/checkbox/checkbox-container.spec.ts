@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, Type } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -174,7 +174,7 @@ export default function (): void {
 
     describe('inline buttons', () => {
       let fixture: ComponentFixture<TemplateDrivenTest>;
-      let containerDE;
+      let containerDE: DebugElement;
       let containerEl: HTMLElement;
 
       beforeEach(() => {
