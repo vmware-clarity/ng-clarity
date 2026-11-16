@@ -86,7 +86,7 @@ export class DateIOService {
   }
 
   private validateDateRangeOptions(rangeOptions: DateRangeOption[]): DateRangeOption[] {
-    const validOptions = [];
+    const validOptions: DateRangeOption[] = [];
     rangeOptions?.forEach((rangeOption: DateRangeOption) => {
       if (
         rangeOption?.value?.length !== 2 ||

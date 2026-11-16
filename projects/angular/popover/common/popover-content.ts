@@ -77,7 +77,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   };
   private intersectionObserver: IntersectionObserver | null = null;
   private readonly injector = inject(Injector);
-  private pendingRender: AfterRenderRef;
+  private pendingRender: AfterRenderRef | null = null;
   private readonly errorHandler = inject(ErrorHandler);
 
   constructor(
@@ -199,7 +199,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.openCloseSubscription.unsubscribe();
+    this.openCloseSubscription?.unsubscribe();
     this.openCloseSubscription = this.popoverService.openChange.subscribe(open => {
       if (open) {
         this.showOverlay();
