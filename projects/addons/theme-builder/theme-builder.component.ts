@@ -7,11 +7,15 @@
 
 import { CommonModule } from '@angular/common';
 import {
+  afterNextRender,
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
+  inject,
+  Injector,
   Input,
   OnInit,
   Output,
@@ -96,6 +100,11 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
 
   readonly timelineStates = ClrTimelineStepState;
 
+  private initialized = false;
+  private pendingTheme: (() => void) | undefined;
+  private readonly injector = inject(Injector);
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+
   private _presets: ThemePreset[] = [CLARITY_DEFAULT_PRESET, ...PRESETS];
 
   constructor() {
@@ -130,9 +139,23 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.buildColorStructure();
-
-    this.applyPreviewStyles();
+    // Computed colors require the rendered preview. Initialize after the current check so
+    // populating the controls and emitting the initial CSS cannot change checked bindings.
+    afterNextRender(
+      () => {
+        this.buildColorStructure();
+        this.initialized = true;
+        const pendingTheme = this.pendingTheme;
+        this.pendingTheme = undefined;
+        if (pendingTheme) {
+          pendingTheme();
+        } else {
+          this.applyPreviewStyles();
+        }
+        this.changeDetectorRef.markForCheck();
+      },
+      { injector: this.injector }
+    );
   }
 
   toggleActiveTheme(): void {
@@ -163,6 +186,10 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
    * that derivation.
    */
   applyPreset(preset: ThemePreset): void {
+    if (!this.initialized) {
+      this.pendingTheme = () => this.applyPreset(preset);
+      return;
+    }
     this.activePreset = preset;
 
     for (const theme of ['light', 'dark'] as const) {
@@ -201,11 +228,17 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
    * preset (see `applyGroupOverrides`). CSS that `validateGeneratedCSS` rejects is not
    * applied at all, so the current colors are left untouched.
    *
-   * @returns `true` when the CSS was applied, `false` when it was rejected as malformed.
+   * Before initialization, the latest valid CSS or preset request is retained and applied after the preview renders.
+   * @returns `true` when the CSS was accepted, `false` when it was rejected as malformed.
    */
   importCSS(css: string): boolean {
     if (!validateGeneratedCSS(css).valid) {
       return false;
+    }
+
+    if (!this.initialized) {
+      this.pendingTheme = () => this.importCSS(css);
+      return true;
     }
 
     const parsed = parseGeneratedCSS(css);

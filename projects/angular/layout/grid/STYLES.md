@@ -60,3 +60,5 @@
 | md         | >= 768px    |
 | lg         | >= 992px    |
 | xl         | >= 1200px   |
+
+Inside an element with the `clr-layout-container` attribute (or any element with `container: clr-layout / inline-size`), the column, offset and order breakpoints follow that element's width instead of the screen. A modal inside it keeps following the screen.

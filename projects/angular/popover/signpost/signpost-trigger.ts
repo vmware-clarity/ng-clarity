@@ -6,7 +6,17 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import { Directive, DOCUMENT, ElementRef, HostListener, Inject, OnDestroy, PLATFORM_ID } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Directive,
+  DOCUMENT,
+  ElementRef,
+  HostListener,
+  Inject,
+  inject,
+  OnDestroy,
+  PLATFORM_ID,
+} from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { Subscription } from 'rxjs';
 
@@ -36,6 +46,7 @@ export class ClrSignpostTrigger implements OnDestroy {
   ariaControl: string;
   isOpen: boolean;
 
+  private readonly cdr = inject(ChangeDetectorRef);
   private document: Document;
   private subscriptions: Subscription[] = [];
 
@@ -56,6 +67,7 @@ export class ClrSignpostTrigger implements OnDestroy {
     this.subscriptions.push(
       this.popoverService.openChange.subscribe((isOpen: boolean) => {
         this.ariaExpanded = isOpen;
+        this.cdr.markForCheck();
 
         const prevIsOpen = this.isOpen;
         this.isOpen = isOpen;
@@ -67,7 +79,10 @@ export class ClrSignpostTrigger implements OnDestroy {
           this.focusOnClose();
         }
       }),
-      this.signpostIdService.id.subscribe(idChange => (this.ariaControl = idChange))
+      this.signpostIdService.id.subscribe(idChange => {
+        this.ariaControl = idChange;
+        this.cdr.markForCheck();
+      })
     );
   }
 

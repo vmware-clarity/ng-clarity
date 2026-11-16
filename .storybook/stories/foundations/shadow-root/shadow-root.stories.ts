@@ -8,7 +8,11 @@
 import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
 import { CommonModules } from '@storybook-helpers/common';
 
-import { ShadowRootContainerQueriesComponent, ShadowRootTypographyComponent } from './shadow-root.storybook.component';
+import {
+  ShadowRootContainerQueriesComponent,
+  ShadowRootContainerQueriesModalComponent,
+  ShadowRootTypographyComponent,
+} from './shadow-root.storybook.component';
 
 /** The stories are fixed markup inside a shadow root; none of them takes an arg. */
 type ShadowRootArgs = Record<never, never>;
@@ -17,7 +21,12 @@ const meta = {
   title: 'Foundations/Shadow Root',
   decorators: [
     moduleMetadata({
-      imports: [...CommonModules, ShadowRootTypographyComponent, ShadowRootContainerQueriesComponent],
+      imports: [
+        ...CommonModules,
+        ShadowRootTypographyComponent,
+        ShadowRootContainerQueriesComponent,
+        ShadowRootContainerQueriesModalComponent,
+      ],
     }),
   ],
   render: () => ({
@@ -34,15 +43,19 @@ type Story = StoryObj<ShadowRootArgs>;
 export const Typography: Story = {};
 
 export const ContainerQueries: Story = {
-  // eslint-disable-next-line no-restricted-syntax -- this story renders the container-query component at two container widths instead of the typography component of the meta template
+  // eslint-disable-next-line no-restricted-syntax -- renders the container-query component instead of the typography component of the meta template
   render: () => ({
     template: `
-      <div style="width: 400px">
-        <shadow-root-container-queries></shadow-root-container-queries>
-      </div>
-      <div style="width: 900px">
-        <shadow-root-container-queries></shadow-root-container-queries>
-      </div>
+      <shadow-root-container-queries></shadow-root-container-queries>
+    `,
+  }),
+};
+
+export const ContainerQueriesModal: Story = {
+  // eslint-disable-next-line no-restricted-syntax -- renders the modal component in a 400px slot instead of the typography component of the meta template
+  render: () => ({
+    template: `
+      <div style="width: 400px"><shadow-root-container-queries-modal></shadow-root-container-queries-modal></div>
     `,
   }),
 };

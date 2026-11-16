@@ -25,12 +25,13 @@
 @use './mixins/mixins';
 @use './mixins/mixins.shadow-dom' as shadow-dom-mixins;
 @use 'optimize';
+@use '../../mixins' as clr-mixins;
 
 @include shadow-dom-mixins.generateShadowDomVerticalStretch();
 @include shadow-dom-mixins.generateShadowDomVerticalItemAlignment();
 
 @each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
-  @media (min-width: $breakpoint-value) {
+  @include clr-mixins.breakpoint-query('min-width: #{$breakpoint-value}') {
     @include shadow-dom-mixins.generateShadowDomVerticalStretch($breakpoint);
     @include shadow-dom-mixins.generateShadowDomVerticalItemAlignment($breakpoint);
   }
@@ -40,7 +41,7 @@
 @include shadow-dom-mixins.generateShadowDomHorizontalItemAlignment();
 
 @each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
-  @media (min-width: $breakpoint-value) {
+  @include clr-mixins.breakpoint-query('min-width: #{$breakpoint-value}') {
     @include shadow-dom-mixins.generateShadowDomHorizontalStretch($breakpoint);
     @include shadow-dom-mixins.generateShadowDomHorizontalItemAlignment($breakpoint);
   }
