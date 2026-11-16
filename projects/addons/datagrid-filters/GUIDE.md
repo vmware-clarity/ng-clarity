@@ -58,7 +58,7 @@ The component only **emits** filters. Apply `PropertyFilter[]` (each `{ criteria
 ## Inputs that shape the bar
 
 - `predefinedFilters: FilterablePropertyDefinition[]` — pills always shown, in this order, even when empty.
-- `semiPredefinedFilters: EnumPropertyDefinition[]` — a label with option pills; selected options are ORed and applied at once. Only `Equals` on option keys combined with OR is valid for these fields; anything else is removed with a console warning.
+- `semiPredefinedFilters: EnumPropertyDefinition[]` — a label with option pills; selecting several options matches entries with any of them (`LogicalOperator.Or`), applied at once. Only `Equals` on option keys combined with `LogicalOperator.Or` is valid for these fields; anything else is removed with a console warning.
 - `toggleFilters: ToggleFilter[]` (`{ label?: string; filter: PropertyFilter }`) — ready-made on/off pills. `label` is free text shown as given; without it the text comes from the criteria. A filter with exactly a toggle's criteria turns it ON; any other filter on a toggle's field is removed with a console warning.
 - Each field is used once: `predefinedFilters`, then `semiPredefinedFilters`, then `toggleFilters` claim fields left to right; claimed fields are not offered in **Add filter**.
 

@@ -85,3 +85,11 @@ longer show them:
   "N applied".
 
 Remove any overrides or translations of these keys.
+
+The defaults of three keys have changed. Apps that provide their own `DatagridFiltersStrings` are not affected, but
+tests that look for the old text are:
+
+- `addNew`: "Add new" is now "Add filter".
+- `addNewAriaLabel`: "Add new filter" is now "Add filter".
+- `removeConditionAriaLabel`: "Remove second condition" is now "Remove condition". The condition number is now added
+  after it ("Remove condition 2"), so remove any ordinal from translations.
