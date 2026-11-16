@@ -16,38 +16,41 @@ Both packages include an `ai/` folder that matches the installed version:
 
 ```text
 node_modules/@clr/angular/ai/
-  AGENTS.md                       rules for all Clarity UI
-  skills/<skill-name>/SKILL.md    detailed guide for one component
+  AGENTS.md                                       short pointer to the skill
+  skills/clarity-angular/SKILL.md                 rules for all Clarity UI, plus an index of the guides
+  skills/clarity-angular/references/<guide>.md    detailed guide for one component
 node_modules/@clr/addons/ai/
   AGENTS.md
-  skills/<skill-name>/SKILL.md
+  skills/clarity-addons/SKILL.md
+  skills/clarity-addons/references/<guide>.md
 ```
 
-- **AGENTS.md** is short. It holds rules that apply to all Clarity UI, plus an index of the skills.
-  Installing the package does not make an agent load it. Whether and when it is loaded depends on your
-  setup and the agent (see below).
-- **SKILL.md** files are detailed and meant to be read only when a task needs them. Each covers one
-  component: which mode to pick, working examples, and common mistakes. An agent can read them from
-  `node_modules` by following the index, or load them as native skills if it supports that.
+- **One skill per package.** Agents keep only each skill's name and description in context, so two skills
+  cost a few lines on every request. The rules and the guide index load when a task involves Clarity.
+- **Component guides** are read only when a task needs that component. Each covers one component: which
+  mode to pick, working examples, and common mistakes.
+- **AGENTS.md** is a few lines that tell agents without skill support where to find the skill.
 
 ## Set up your project
 
 ### Any agent that can read local files
 
-Add an instruction like this to your agent's project-instruction mechanism, or paste it into a prompt:
+Add the `AGENTS.md` sections for the packages you use to the `AGENTS.md` file at the root of your project.
+Copy them from `node_modules/@clr/*/ai/AGENTS.md`, or download them below. They point the agent to the skill
+in `node_modules`, which always matches the installed version, so there is nothing to copy again after an
+update.
 
-```text
-This project uses Clarity. Before writing Clarity UI, read
-node_modules/@clr/angular/ai/AGENTS.md (and node_modules/@clr/addons/ai/AGENTS.md if the project uses
-@clr/addons), then read only the component guides in ai/skills/ that the task needs.
+### Agents with native skills
+
+To have the agent load the skill on its own, copy the skill folders into your agent's project skills folder,
+as its documentation describes. The skill locations that these agents document do not include `node_modules`.
+
+```bash
+cp -r node_modules/@clr/angular/ai/skills/clarity-angular <your-agent-skills-folder>/
+cp -r node_modules/@clr/addons/ai/skills/clarity-addons <your-agent-skills-folder>/
 ```
 
-This works without native skill support. The files in `node_modules` always match the installed version.
-
-### Agent-specific setup
-
-The skill locations that these agents document do not include `node_modules`, so copy the files into your
-project. If your agent is not listed, use the portable instruction above.
+Repeat the copy after you update Clarity, so the skill matches the new version.
 
 | Agent          | Project instructions                                    | Skills                                                                                          |
 | -------------- | ------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
@@ -56,35 +59,24 @@ project. If your agent is not listed, use the portable instruction above.
 | Cursor         | Reads `AGENTS.md`                                       | [Cursor skills](https://cursor.com/docs/skills)                                                 |
 | GitHub Copilot | Reads `AGENTS.md`, or `.github/copilot-instructions.md` | [Copilot customization](https://docs.github.com/en/copilot/reference/customization-cheat-sheet) |
 
-1. Add the `AGENTS.md` sections for the packages you use to the `AGENTS.md` file at the root of your
-   project. Copy them from `node_modules/@clr/*/ai/AGENTS.md`, or download them below.
-2. Copy the skill folders into your agent's project skills folder, as its documentation describes:
-
-```bash
-cp -r node_modules/@clr/angular/ai/skills/* <your-agent-skills-folder>/
-cp -r node_modules/@clr/addons/ai/skills/* <your-agent-skills-folder>/
-```
-
-3. Repeat these steps after you update Clarity, so the files match the new version.
-
 Skill support differs between agents, and between the surfaces of one agent, so check your agent's
 documentation.
 
-## AGENTS.md
+## AGENTS.md and SKILL.md
 
 <!-- ai:agents -->
 
-## Skills
+## Component guides
 
 ### @clr/angular
 
-<!-- ai:skills:angular -->
+<!-- ai:guides:angular -->
 
 ### @clr/addons
 
-<!-- ai:skills:addons -->
+<!-- ai:guides:addons -->
 
-Each component page also shows its skill in the **AI** tab.
+Each component page also shows its guide in the **AI** tab.
 
 ## For agents that read the web
 
