@@ -60,9 +60,6 @@
     margin: 0;
     padding: var(--clr-base-vertical-offset-m) var(--clr-base-horizontal-offset-m);
     min-width: 170px;
-    // A button, as the card applies a preset.
-    font: inherit;
-    cursor: pointer;
 
     &.tb-preset-card-active {
       outline: var(--cds-alias-object-border-width-200) solid var(--cds-alias-primary);
