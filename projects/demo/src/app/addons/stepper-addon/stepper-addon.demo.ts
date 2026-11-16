@@ -9,7 +9,7 @@ import { CommonModule, JsonPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppfxStepperModule } from '@clr/addons/stepper';
-import { Out, Step, StepModel, StepModelHolder, Var } from '@clr/addons/var';
+import { ModelChange, Out, Step, StepModel, StepModelHolder, Var } from '@clr/addons/var';
 
 class NameModel implements StepModel {
   @Out() name: Var<string> = Var.of('Test');
@@ -96,7 +96,7 @@ export class StepperAddonDemo implements OnInit {
     this.submitted = true;
   }
 
-  onModelChange(event: unknown) {
+  onModelChange(event: ModelChange[]) {
     console.log(event);
   }
 
