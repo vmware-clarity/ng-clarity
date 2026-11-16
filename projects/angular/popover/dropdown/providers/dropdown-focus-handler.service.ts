@@ -53,7 +53,9 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
               ? this.recoverFocus.pipe(
                   switchMap(() => timer(0)),
                   switchMap(() =>
-                    document.activeElement === document.body ? (parent ? this.right : this.down).pipe(take(1)) : EMPTY
+                    document.activeElement === document.body
+                      ? ((parent ? this.right : this.down)?.pipe(take(1)) ?? EMPTY)
+                      : EMPTY
                   )
                 )
               : EMPTY
