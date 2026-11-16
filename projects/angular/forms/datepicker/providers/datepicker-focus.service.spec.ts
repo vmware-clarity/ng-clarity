@@ -85,9 +85,9 @@ export default function () {
         providers: [DatepickerFocusService, { provide: PLATFORM_ID, useValue: 'server' }],
       });
       const service = TestBed.inject(DatepickerFocusService);
-      service.focusCell(new ElementRef(null));
-      service.focusInput(null);
-      expect(service.elementIsFocused(null)).toBeFalse();
+      service.focusCell(new ElementRef<HTMLElement>(null!));
+      service.focusInput(null!);
+      expect(service.elementIsFocused(null!)).toBeFalse();
     });
   });
 }

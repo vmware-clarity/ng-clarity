@@ -50,19 +50,19 @@ export default function () {
     });
 
     it('parses text in the order of the locale', () => {
-      assertEqualDates(new ClrLocaleDateFormat('en-US').parse('02/01/2015'), new Date(2015, 1, 1));
-      assertEqualDates(new ClrLocaleDateFormat('bg').parse('01.02.2015'), new Date(2015, 1, 1));
-      assertEqualDates(new ClrLocaleDateFormat('ja').parse('2015/02/01'), new Date(2015, 1, 1));
+      assertEqualDates(new ClrLocaleDateFormat('en-US').parse('02/01/2015')!, new Date(2015, 1, 1));
+      assertEqualDates(new ClrLocaleDateFormat('bg').parse('01.02.2015')!, new Date(2015, 1, 1));
+      assertEqualDates(new ClrLocaleDateFormat('ja').parse('2015/02/01')!, new Date(2015, 1, 1));
     });
 
     it('accepts any delimiter and one-digit day and month', () => {
       const dateFormat = new ClrLocaleDateFormat('en-US');
-      assertEqualDates(dateFormat.parse('2-1-2015'), new Date(2015, 1, 1));
-      assertEqualDates(dateFormat.parse('2.1.2015'), new Date(2015, 1, 1));
+      assertEqualDates(dateFormat.parse('2-1-2015')!, new Date(2015, 1, 1));
+      assertEqualDates(dateFormat.parse('2.1.2015')!, new Date(2015, 1, 1));
     });
 
     it('expands two-digit years', () => {
-      const date = new ClrLocaleDateFormat('en-US').parse('02/01/15');
+      const date = new ClrLocaleDateFormat('en-US').parse('02/01/15')!;
       expect(date.getFullYear()).toBe(2015);
     });
 
@@ -83,13 +83,13 @@ export default function () {
       const dateFormat = new ClrLocaleDateFormat('ar');
       expect(dateFormat.placeholder).toBe('DD/MM/YYYY');
       expect(dateFormat.format(new Date(2015, 1, 1))).toBe('01/02/2015');
-      assertEqualDates(dateFormat.parse('01/02/2015'), new Date(2015, 1, 1));
+      assertEqualDates(dateFormat.parse('01/02/2015')!, new Date(2015, 1, 1));
     });
 
     it('round-trips its own output', () => {
       for (const locale of ['en-US', 'bg', 'ja', 'hr', 'nl']) {
         const dateFormat = new ClrLocaleDateFormat(locale);
-        assertEqualDates(dateFormat.parse(dateFormat.format(new Date(2024, 10, 30))), new Date(2024, 10, 30));
+        assertEqualDates(dateFormat.parse(dateFormat.format(new Date(2024, 10, 30)))!, new Date(2024, 10, 30));
       }
     });
   });

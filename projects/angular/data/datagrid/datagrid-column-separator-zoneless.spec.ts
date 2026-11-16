@@ -43,7 +43,7 @@ class SeparatorHost {
     { id: 'Third', pinned: false },
   ]);
   readonly items = [1];
-  @ViewChildren(ClrDatagridColumn) columnComponents: QueryList<ClrDatagridColumn>;
+  @ViewChildren(ClrDatagridColumn) columnComponents!: QueryList<ClrDatagridColumn>;
 }
 
 for (const zoneless of [true, false]) {
