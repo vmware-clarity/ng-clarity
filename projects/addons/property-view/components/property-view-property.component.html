@@ -20,9 +20,9 @@
       <a
         *ngIf="value.link"
         class="pv-property-value-link"
-        href="javascript:void(0)"
+        href="#"
         [innerText]="value.text"
-        (click)="handleLinkClick(value.link)"
+        (click)="$event.preventDefault(); handleLinkClick(value.link)"
       ></a>
       <span
         *ngIf="!value.link"
