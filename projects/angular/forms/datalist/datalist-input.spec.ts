@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule, LayoutService, NgControlService } from '@clr/angular/forms/common';
@@ -79,7 +79,7 @@ export default function (): void {
     ReactiveSpec(ClrDatalistContainer, ClrDatalistInput, ReactiveTest, 'clr-input');
 
     describe('set datalist type', () => {
-      let fixture;
+      let fixture: ComponentFixture<TemplateDrivenTest>;
       let containerDE: DebugElement;
 
       beforeEach(() => {
