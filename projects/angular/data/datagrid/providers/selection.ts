@@ -395,6 +395,12 @@ export class Selection<T = any> {
   private deselectItem(indexOfItem: number): void {
     const current = this.current ?? [];
     this.current = current.slice(0, indexOfItem).concat(current.slice(indexOfItem + 1));
+    if (indexOfItem < this.currentSelectionRefs.length) {
+      // Keep selected refs array in sync
+      const removedItems = this.currentSelectionRefs[indexOfItem] as ArrayLike<T>;
+      // locked reference is no longer needed (if any)
+      this.lockedRefs = this.lockedRefs.filter(locked => locked !== removedItems[0]);
+    }
   }
 
   /**
