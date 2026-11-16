@@ -154,6 +154,8 @@ test('demo: advanced virtual scroll finishes resetting and refreshing', async ({
   const grid = page.locator('appfx-datagrid');
   await expect(grid).toBeVisible();
   await expect(grid.locator('clr-dg-row').first()).toBeVisible();
+  // The first load ends with loading = false, which would cut a refresh started before it short.
+  await expect(grid.locator('.datagrid-spinner')).toBeHidden();
   await page.getByRole('button', { name: 'Refresh data', exact: true }).click();
   await expect(grid.locator('.datagrid-spinner')).toBeVisible();
   await expect(grid.locator('.datagrid-spinner')).toBeHidden();
