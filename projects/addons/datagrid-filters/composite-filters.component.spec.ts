@@ -16,7 +16,6 @@ import { ClrLabel } from '@clr/angular/emphasis/label';
 import { ClrCheckboxModule, ClrCombobox, ClrComboboxModule, ClrInputModule, ClrSelectModule } from '@clr/angular/forms';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrPopoverModuleNext } from '@clr/angular/popover/common';
-import { ClrSignpostModule } from '@clr/angular/popover/signpost';
 import { ClrTooltipModule } from '@clr/angular/popover/tooltip';
 
 import { EnumFilterComponent } from './advanced-filters/enum-filter.component';
@@ -24,7 +23,6 @@ import { FilterFormComponent } from './advanced-filters/filter-form.component';
 import { GeneralFilterComponent } from './advanced-filters/general-filter.component';
 import { CompositeFiltersComponent } from './composite-filters.component';
 import { DatagridFiltersStrings } from './datagrid-filters-strings.service';
-import { DismissableDirective } from './manage-filters/dismissable.directive';
 import { ManageFilterComponent } from './manage-filters/manage-filter.component';
 import { ComparisonOperator, LogicalOperator, PropertyType } from './model/datagrid-filters.enums';
 import {
@@ -35,7 +33,6 @@ import {
   StringPropertyDefinition,
   ToggleFilter,
 } from './model/datagrid-filters.interfaces';
-import { SkipFiltersPipe } from './skip-filters.pipe';
 
 /** aria-pressed of the semi-predefined option pill with this label. */
 const optionPressed = (label: string) =>
@@ -148,7 +145,6 @@ describe('CompositeFiltersComponent', () => {
         ClrComboboxModule,
         ClrInputModule,
         ClrSelectModule,
-        ClrSignpostModule,
         ClrPopoverModuleNext,
         ClrTooltipModule,
         CommonModule,
@@ -161,11 +157,9 @@ describe('CompositeFiltersComponent', () => {
         CompositeFiltersComponent,
         CompositeFiltersHostComponent,
         TwoWayHostComponent,
-        DismissableDirective,
         EnumFilterComponent,
         FilterFormComponent,
         ManageFilterComponent,
-        SkipFiltersPipe,
         GeneralFilterComponent,
       ],
       providers: [DatagridFiltersStrings],

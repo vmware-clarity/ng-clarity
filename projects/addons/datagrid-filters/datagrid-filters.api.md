@@ -18,7 +18,6 @@ import { DatePipe } from '@angular/common';
 import { DoCheck } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ElementRef } from '@angular/core';
-import { EnvironmentInjector } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { FactoryProvider } from '@angular/core';
 import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
@@ -26,9 +25,9 @@ import { FormArray } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
-import * as i12 from '@angular/cdk/a11y';
-import * as i21 from '@angular/common';
-import * as i22 from '@angular/forms';
+import * as i17 from '@angular/common';
+import * as i18 from '@angular/forms';
+import * as i9 from '@angular/cdk/a11y';
 import { InjectionToken } from '@angular/core';
 import { Injector } from '@angular/core';
 import { IterableDiffers } from '@angular/core';
@@ -67,24 +66,20 @@ class AppfxDatagridFiltersModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<AppfxDatagridFiltersModule>;
     // Warning: (ae-forgotten-export) The symbol "DateTimeFilterComponent" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
-    // Warning: (ae-forgotten-export) The symbol "DismissableDirective" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
     // Warning: (ae-forgotten-export) The symbol "EnumFilterComponent" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
-    // Warning: (ae-forgotten-export) The symbol "FilterPopoverRepositionDirective" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
     // Warning: (ae-forgotten-export) The symbol "GeneralFilterComponent" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
     // Warning: (ae-forgotten-export) The symbol "ManageFilterComponent" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
-    // Warning: (ae-forgotten-export) The symbol "SkipFiltersPipe" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
     // Warning: (ae-forgotten-export) The symbol "UsersFilterComponent" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i10" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i11" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i12" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
     // Warning: (ae-forgotten-export) The symbol "i13" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i14" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
     // Warning: (ae-forgotten-export) The symbol "i15" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
     // Warning: (ae-forgotten-export) The symbol "i16" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i17" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i19" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i20" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridFiltersModule, [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof DateTimeFilterComponent, typeof DismissableDirective, typeof EnumFilterComponent, typeof FilterFormComponent, typeof FilterPopoverRepositionDirective, typeof GeneralFilterComponent, typeof ManageFilterComponent, typeof SkipFiltersPipe, typeof UsersFilterComponent], [typeof i12.A11yModule, typeof i13.ClrBadge, typeof i14.ClrLabel, typeof i15.ClrCheckboxModule, typeof i15.ClrComboboxModule, typeof i15.ClrDatepickerModule, typeof i16.ClrIcon, typeof i15.ClrInputModule, typeof i15.ClrRadioModule, typeof i15.ClrSelectModule, typeof i17.ClrSignpostModule, typeof i1.ClrPopoverModuleNext, typeof i19.ClrSpinnerModule, typeof i20.ClrTooltipModule, typeof i21.CommonModule, typeof i22.FormsModule, typeof i22.ReactiveFormsModule], [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof FilterFormComponent]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridFiltersModule, [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof DateTimeFilterComponent, typeof EnumFilterComponent, typeof FilterFormComponent, typeof GeneralFilterComponent, typeof ManageFilterComponent, typeof UsersFilterComponent], [typeof i9.A11yModule, typeof i10.ClrBadge, typeof i11.ClrLabel, typeof i12.ClrCheckboxModule, typeof i12.ClrComboboxModule, typeof i12.ClrDatepickerModule, typeof i13.ClrIcon, typeof i12.ClrInputModule, typeof i12.ClrRadioModule, typeof i12.ClrSelectModule, typeof i1.ClrPopoverModuleNext, typeof i15.ClrSpinnerModule, typeof i16.ClrTooltipModule, typeof i17.CommonModule, typeof i18.FormsModule, typeof i18.ReactiveFormsModule], [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof FilterFormComponent]>;
 }
 export { AppfxDatagridFiltersModule }
 export { AppfxDatagridFiltersModule as DatagridFiltersModule }
@@ -137,8 +132,7 @@ export enum ComparisonOperator {
 
 // @public
 export class CompositeFiltersComponent implements OnInit, OnChanges {
-    // Warning: (ae-forgotten-export) The symbol "ClrPopoverService" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
-    constructor(filterStrings: DatagridFiltersStrings, cdr: ChangeDetectorRef, popoverService: ClrPopoverService);
+    constructor(filterStrings: DatagridFiltersStrings, cdr: ChangeDetectorRef);
     activeFilters(): FilterablePropertyDefinition[];
     // (undocumented)
     protected get availableProperties(): FilterablePropertyDefinition[];

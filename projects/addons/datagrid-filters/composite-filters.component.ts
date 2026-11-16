@@ -154,6 +154,8 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
 
   private readonly destroyRef = inject(DestroyRef);
 
+  private readonly popoverService = inject(ClrPopoverService);
+
   private destroyed = false;
 
   /** Keys (see toggleKey) of the toggle filters that are ON. */
@@ -178,8 +180,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
 
   constructor(
     public filterStrings: DatagridFiltersStrings,
-    private cdr: ChangeDetectorRef,
-    private popoverService: ClrPopoverService
+    private cdr: ChangeDetectorRef
   ) {
     this.showHideFiltersLabel = filterStrings.hideButtonLabel;
     this.showHideFiltersAriaLabel = filterStrings.hideButtonAriaLabel;

@@ -83,6 +83,7 @@ export class ManageFilterComponent implements OnInit, OnChanges {
   editFilterAriaLabel = '';
 
   private readonly locale = inject(LOCALE_ID);
+  private readonly popoverService = inject(ClrPopoverService);
   private readonly noDisplayValueOperators: ComparisonOperator[] = [
     ComparisonOperator.IsEmpty,
     ComparisonOperator.LastDay,
@@ -91,10 +92,7 @@ export class ManageFilterComponent implements OnInit, OnChanges {
     ComparisonOperator.LastYear,
   ];
 
-  constructor(
-    public filterStrings: DatagridFiltersStrings,
-    private popoverService: ClrPopoverService
-  ) {}
+  constructor(public filterStrings: DatagridFiltersStrings) {}
 
   /**
    * The pill button sits inside clr-tooltip, which provides its own popover service.

@@ -21,7 +21,6 @@ import {
 } from '@clr/angular/forms';
 import { angleIcon, checkIcon, ClarityIcons, ClrIcon, plusIcon, searchIcon, windowCloseIcon } from '@clr/angular/icon';
 import { ClrPopoverModuleNext } from '@clr/angular/popover/common';
-import { ClrSignpostModule } from '@clr/angular/popover/signpost';
 import { ClrTooltipModule } from '@clr/angular/popover/tooltip';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
 
@@ -34,10 +33,7 @@ import { CompositeFiltersComponent } from './composite-filters.component';
 import { DatagridFiltersStrings } from './datagrid-filters-strings.service';
 import { DatagridFiltersUserService } from './datagrid-filters-user-service';
 import { DataGridFiltersComponent } from './datagrid-filters.component';
-import { FilterPopoverRepositionDirective } from './filter-popover-reposition-directive';
-import { DismissableDirective } from './manage-filters/dismissable.directive';
 import { ManageFilterComponent } from './manage-filters/manage-filter.component';
-import { SkipFiltersPipe } from './skip-filters.pipe';
 
 export function datagridFiltersStringsServiceFactory(existing: DatagridFiltersStrings) {
   return existing || new DatagridFiltersStrings();
@@ -52,13 +48,10 @@ export function datagridFiltersUserServiceFactory(existing: DatagridFiltersUserS
     CompositeFiltersComponent,
     DataGridFiltersComponent,
     DateTimeFilterComponent,
-    DismissableDirective,
     EnumFilterComponent,
     FilterFormComponent,
-    FilterPopoverRepositionDirective,
     GeneralFilterComponent,
     ManageFilterComponent,
-    SkipFiltersPipe,
     UsersFilterComponent,
   ],
   imports: [
@@ -72,7 +65,6 @@ export function datagridFiltersUserServiceFactory(existing: DatagridFiltersUserS
     ClrInputModule,
     ClrRadioModule,
     ClrSelectModule,
-    ClrSignpostModule,
     ClrPopoverModuleNext,
     ClrSpinnerModule,
     ClrTooltipModule,

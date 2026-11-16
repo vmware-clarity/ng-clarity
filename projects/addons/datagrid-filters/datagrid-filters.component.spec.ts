@@ -14,17 +14,24 @@ import { By } from '@angular/platform-browser';
 import { ClrComboboxModule, ClrInputModule, ClrSelectModule } from '@clr/angular/forms';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrPopoverModuleNext } from '@clr/angular/popover/common';
-import { ClrSignpostModule } from '@clr/angular/popover/signpost';
 import { ClrTooltipModule } from '@clr/angular/popover/tooltip';
 
 import { CompositeFiltersComponent } from './composite-filters.component';
 import { DatagridFiltersStrings } from './datagrid-filters-strings.service';
 import { DataGridFiltersComponent } from './datagrid-filters.component';
-import { DismissableDirective } from './manage-filters/dismissable.directive';
 import { ComparisonOperator, FilterMode, LogicalOperator } from './model/datagrid-filters.enums';
 import { PropertyFilter, StringPropertyDefinition } from './model/datagrid-filters.interfaces';
 
 const testInput = 'Test input';
+
+/** Types the term into the search input and presses Enter, so it is applied and emitted straight away. */
+function applySearch(fixture: ComponentFixture<DataGridFiltersComponent>, term: string): void {
+  const input: HTMLInputElement = fixture.nativeElement.querySelector('input[clrInput]');
+  input.value = term;
+  input.dispatchEvent(new Event('input'));
+  input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
+  fixture.detectChanges();
+}
 
 export interface ThisTest {
   fixture: ComponentFixture<DataGridFiltersComponent>;
@@ -38,7 +45,6 @@ describe('DataGridFiltersComponent', () => {
         ClrComboboxModule,
         ClrInputModule,
         ClrSelectModule,
-        ClrSignpostModule,
         ClrPopoverModuleNext,
         ClrTooltipModule,
         A11yModule,
@@ -48,7 +54,7 @@ describe('DataGridFiltersComponent', () => {
         ClrIcon,
       ],
       declarations: [DataGridFiltersComponent, CompositeFiltersComponent],
-      providers: [DatagridFiltersStrings, DismissableDirective],
+      providers: [DatagridFiltersStrings],
     });
     this.fixture = TestBed.createComponent(DataGridFiltersComponent);
     this.component = this.fixture.componentInstance;
@@ -98,14 +104,10 @@ describe('DataGridFiltersComponent', () => {
   it('clears the search and the pills on Clear all in combined mode', function (this: ThisTest) {
     this.component.filterMode = FilterMode.Combined;
     this.fixture.detectChanges();
+    // The user has already searched for "Test".
+    applySearch(this.fixture, 'Test');
     spyOn(this.component.searchTermChange, 'emit');
     spyOn(this.component.propertyFiltersChange, 'emit');
-    // Type into the search, as a user would, so the view is updated.
-    const input: HTMLInputElement = this.fixture.nativeElement.querySelector('input[clrInput]');
-    input.value = 'Test';
-    input.dispatchEvent(new Event('input'));
-    this.component['lastSearchTerm'] = 'Test';
-    this.fixture.detectChanges();
 
     const clearAll: HTMLButtonElement = this.fixture.nativeElement.querySelector('[data-test-id="clear-all-button"]');
     expect(clearAll).toBeTruthy();
@@ -116,9 +118,10 @@ describe('DataGridFiltersComponent', () => {
     expect(this.component.propertyFiltersChange.emit).toHaveBeenCalledWith([]);
   });
   it('clears quick filter on mode switch', function (this: ThisTest) {
+    this.fixture.detectChanges();
+    // The user has already searched for "Test".
+    applySearch(this.fixture, 'Test');
     spyOn(this.component.searchTermChange, 'emit');
-    this.component.searchTerm = 'Test';
-    this.component['lastSearchTerm'] = 'Test';
     this.component.selectedFilterMode = FilterMode.Advanced;
     this.component.onFilterModeChange();
     expect(this.component.searchTermChange.emit).toHaveBeenCalledWith('');
@@ -184,12 +187,11 @@ describe('DataGridFiltersComponent', () => {
     filterInput.value = testInput;
     filterInput.dispatchEvent(new Event('input'));
     this.fixture.detectChanges();
-    expect(this.component['lastSearchTerm']).toEqual('');
+    expect(this.component.searchTermChange.emit).not.toHaveBeenCalled();
     tick(2000);
     expect(filterInput).toBeTruthy();
     expect(this.component.onSearchTermChanged).toHaveBeenCalledWith(testInput);
     expect(this.component.searchTerm).toEqual(testInput);
-    expect(this.component['lastSearchTerm']).toEqual(testInput);
     expect(this.component.searchTermChange.emit).toHaveBeenCalledWith(testInput);
   }));
   it('emits an event on enter key press', function (this: ThisTest) {
@@ -206,7 +208,6 @@ describe('DataGridFiltersComponent', () => {
     this.fixture.detectChanges();
     expect(this.component.onSearchInputKeyPress).toHaveBeenCalledWith(keyDownEvent);
     expect(this.component.searchTerm).toEqual('Key press');
-    expect(this.component['lastSearchTerm']).toEqual('Key press');
     expect(this.component.searchTermChange.emit).toHaveBeenCalledWith('Key press');
   });
   it('is properly initialized in advanced only mode', function (this: ThisTest) {

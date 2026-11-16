@@ -68,12 +68,14 @@ The component only **emits** filters. Apply `PropertyFilter[]` (each `{ criteria
 - Setting `propertyFilters` does not emit `propertyFiltersChange`, so passing the emitted value back does not loop.
 - `presetFilters` is read **once** at start-up; later changes are ignored. For the same field a preset wins over `propertyFilters`. When the start-up result differs from what was passed in, `propertyFiltersChange` emits once after the first change detection.
 - Quick mode clears the filters and emits `[]`.
+- `FilterMode.Combined`: search and filters are separate outputs, applied together (AND). **Clear all** emits `propertyFiltersChange` and then `searchTermChange` in the same turn; to load from a server once, store both values and load at the end of the turn (e.g. `queueMicrotask`).
 - Keep `PropertyFilter.editorState` when storing filters in memory: it restores editor choices the criteria cannot express (e.g. _Last week_). Filters without it (host presets) are read from their criteria.
 
 ## Rules
 
 - OnPush: assign new arrays for every input; never mutate them.
 - `PropertyPredicate.value` is `undefined` for `ComparisonOperator.IsEmpty` — check the operator first.
+- `DateTimePropertyDefinition`'s fourth argument `includeSeconds` shows seconds in the time inputs and makes **Equals** match one second instead of one minute.
 - `DateTimePropertyDefinition`'s fifth argument `rangeOptions: DateRangeOption[]` (`{ label, value: [start, end] }`, both inclusive) adds preset ranges to **Custom range**. Dates are used as given; a `Date` at 00:00 means the whole day.
 - Date-time values are local date-times with the local UTC offset (`2026-03-29T00:00:00+02:00`). **Equals** a day is emitted as `>= day 00:00` AND `< next day 00:00`.
 - `UserPropertyDefinition` requires providing `DatagridFiltersUserService`.
