@@ -10,7 +10,7 @@ import { defineConfig, devices, PlaywrightTestConfig } from '@playwright/test';
 import { browser } from './tests/helpers/vrt';
 
 const storybookServer = {
-  command: 'node --experimental-strip-types ./scripts/start-static-server.ts ./dist/docs 8080',
+  command: 'node --experimental-strip-types ./scripts/start-static-server.ts ./dist/docs 8080 --unsafe-eval',
   port: 8080,
 };
 

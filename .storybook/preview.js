@@ -13,7 +13,7 @@ import docs from '../documentation.json';
 import { DENSITY, THEMES } from './helpers/constants';
 import { cdsThemeAttribute, isDarkThemeMatcher, setDocsTheme } from './helpers/theme.helper';
 import AutoDocsTemplate from './stories/auto-docs.mdx';
-import { provideZoneChangeDetection } from '@angular/core';
+import { CSP_NONCE, provideZoneChangeDetection } from '@angular/core';
 
 const privateModifier = 121;
 const clrDensityAttribute = 'clr-density';
@@ -146,7 +146,13 @@ export const decorators = [
   themeDecorator,
   densityDecorator,
   applicationConfig({
-    providers: [provideZoneChangeDetection({ eventCoalescing: true })],
+    providers: [
+      provideZoneChangeDetection({ eventCoalescing: true }),
+      // The visual regression test server (scripts/start-static-server.ts) serves the stories with a
+      // Content-Security-Policy and adds its nonce to Storybook's inline scripts. Angular adds it to the
+      // component styles it injects.
+      { provide: CSP_NONCE, useFactory: () => document.querySelector('script[nonce]')?.nonce || null },
+    ],
   }),
 ];
 

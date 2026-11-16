@@ -88,9 +88,50 @@ export class ClrAlert implements OnInit, OnChanges, OnDestroy {
     // (undocumented)
     open(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlert, "clr-alert", never, { "isSmall": { "alias": "clrAlertSizeSmall"; "required": false; }; "closable": { "alias": "clrAlertClosable"; "required": false; }; "isAppLevel": { "alias": "clrAlertAppLevel"; "required": false; }; "clrCloseButtonAriaLabel": { "alias": "clrCloseButtonAriaLabel"; "required": false; }; "liveRole": { "alias": "clrAlertRole"; "required": false; }; "isLightweight": { "alias": "clrAlertLightweight"; "required": false; }; "alertType": { "alias": "clrAlertType"; "required": false; }; "alertIconShape": { "alias": "clrAlertIcon"; "required": false; }; "closed": { "alias": "clrAlertClosed"; "required": false; }; }, { "_closedChanged": "clrAlertClosedChange"; }, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlert, "clr-alert", never, {
+        "isSmall": {
+            "alias": "clrAlertSizeSmall";
+            "required": false;
+        };
+        "closable": {
+            "alias": "clrAlertClosable";
+            "required": false;
+        };
+        "isAppLevel": {
+            "alias": "clrAlertAppLevel";
+            "required": false;
+        };
+        "clrCloseButtonAriaLabel": {
+            "alias": "clrCloseButtonAriaLabel";
+            "required": false;
+        };
+        "liveRole": {
+            "alias": "clrAlertRole";
+            "required": false;
+        };
+        "isLightweight": {
+            "alias": "clrAlertLightweight";
+            "required": false;
+        };
+        "alertType": {
+            "alias": "clrAlertType";
+            "required": false;
+        };
+        "alertIconShape": {
+            "alias": "clrAlertIcon";
+            "required": false;
+        };
+        "closed": {
+            "alias": "clrAlertClosed";
+            "required": false;
+        };
+    }, {
+        "_closedChanged": "clrAlertClosedChange";
+    }, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlert, [null, null, { optional: true; }, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlert, [null, null, {
+        optional: true;
+    }, null, null, null]>;
 }
 
 // @public (undocumented)
@@ -144,7 +185,19 @@ export class ClrAlerts implements AfterContentInit, OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlerts, "clr-alerts", never, { "_inputCurrentIndex": { "alias": "clrCurrentAlertIndex"; "required": false; }; "currentAlert": { "alias": "clrCurrentAlert"; "required": false; }; }, { "currentAlertChange": "clrCurrentAlertChange"; "currentAlertIndexChange": "clrCurrentAlertIndexChange"; }, ["allAlerts"], ["clr-alert"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlerts, "clr-alerts", never, {
+        "_inputCurrentIndex": {
+            "alias": "clrCurrentAlertIndex";
+            "required": false;
+        };
+        "currentAlert": {
+            "alias": "clrCurrentAlert";
+            "required": false;
+        };
+    }, {
+        "currentAlertChange": "clrCurrentAlertChange";
+        "currentAlertIndexChange": "clrCurrentAlertIndexChange";
+    }, ["allAlerts"], ["clr-alert"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlerts, never>;
 }
@@ -177,7 +230,19 @@ export class ClrAlertsPager implements OnInit, OnDestroy {
     // (undocumented)
     protected get previousAlertAriaLabel(): string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlertsPager, "clr-alerts-pager", never, { "currentAlert": { "alias": "clrCurrentAlert"; "required": false; }; "currentAlertIndex": { "alias": "clrCurrentAlertIndex"; "required": false; }; }, { "currentAlertChange": "clrCurrentAlertChange"; "currentAlertIndexChange": "clrCurrentAlertIndexChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlertsPager, "clr-alerts-pager", never, {
+        "currentAlert": {
+            "alias": "clrCurrentAlert";
+            "required": false;
+        };
+        "currentAlertIndex": {
+            "alias": "clrCurrentAlertIndex";
+            "required": false;
+        };
+    }, {
+        "currentAlertChange": "clrCurrentAlertChange";
+        "currentAlertIndexChange": "clrCurrentAlertIndexChange";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlertsPager, never>;
 }
@@ -203,7 +268,16 @@ export class ClrBadge {
     // (undocumented)
     type: Type | string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrBadge, "clr-badge", never, { "color": { "alias": "clrColor"; "required": false; }; "type": { "alias": "clrType"; "required": false; }; }, {}, never, ["*"], true, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrBadge, "clr-badge", never, {
+        "color": {
+            "alias": "clrColor";
+            "required": false;
+        };
+        "type": {
+            "alias": "clrType";
+            "required": false;
+        };
+    }, {}, never, ["*"], true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrBadge, never>;
 }
@@ -266,7 +340,32 @@ export class ClrLabel {
     // (undocumented)
     type: Type | string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrLabel, "clr-label", never, { "color": { "alias": "clrColor"; "required": false; }; "badgeText": { "alias": "clrBadgeText"; "required": false; }; "textContent": { "alias": "clrText"; "required": false; }; "clickable": { "alias": "clrClickable"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; "type": { "alias": "clrType"; "required": false; }; }, {}, never, ["*"], true, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrLabel, "clr-label", never, {
+        "color": {
+            "alias": "clrColor";
+            "required": false;
+        };
+        "badgeText": {
+            "alias": "clrBadgeText";
+            "required": false;
+        };
+        "textContent": {
+            "alias": "clrText";
+            "required": false;
+        };
+        "clickable": {
+            "alias": "clrClickable";
+            "required": false;
+        };
+        "disabled": {
+            "alias": "clrDisabled";
+            "required": false;
+        };
+        "type": {
+            "alias": "clrType";
+            "required": false;
+        };
+    }, {}, never, ["*"], true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrLabel, never>;
 }

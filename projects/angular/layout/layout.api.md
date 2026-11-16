@@ -120,7 +120,14 @@ export class ClrBreadcrumbs {
     // (undocumented)
     protected max: number;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrBreadcrumbs, "clr-breadcrumbs", never, { "items": { "alias": "items"; "required": false; }; }, { "clrBreadcrumbItemClick": "clrBreadcrumbItemClick"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrBreadcrumbs, "clr-breadcrumbs", never, {
+        "items": {
+            "alias": "items";
+            "required": false;
+        };
+    }, {
+        "clrBreadcrumbItemClick": "clrBreadcrumbItemClick";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrBreadcrumbs, never>;
 }
@@ -172,7 +179,12 @@ export class ClrHeader implements OnDestroy {
     // @deprecated (undocumented)
     toggleNav(navLevel: number): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrHeader, "clr-header", never, { "role": { "alias": "role"; "required": false; }; }, {}, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrHeader, "clr-header", never, {
+        "role": {
+            "alias": "role";
+            "required": false;
+        };
+    }, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrHeader, never>;
 }
@@ -271,7 +283,20 @@ export class ClrNavLevel implements OnInit {
     // (undocumented)
     protected showNavigation(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrNavLevel, "[clr-nav-level]", never, { "_level": { "alias": "clr-nav-level"; "required": false; }; "closeButtonAriaLabel": { "alias": "closeAriaLabel"; "required": false; }; }, {}, never, never, false, [{ directive: typeof i1_2.ClrStandaloneCdkTrapFocus; inputs: {}; outputs: {}; }]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrNavLevel, "[clr-nav-level]", never, {
+        "_level": {
+            "alias": "clr-nav-level";
+            "required": false;
+        };
+        "closeButtonAriaLabel": {
+            "alias": "closeAriaLabel";
+            "required": false;
+        };
+    }, {}, never, never, false, [{
+        directive: typeof i1_2.ClrStandaloneCdkTrapFocus;
+        inputs: {};
+        outputs: {};
+    }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrNavLevel, never>;
 }
@@ -324,9 +349,20 @@ export class ClrTabContent implements OnDestroy {
     // (undocumented)
     tabContentId: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabContent, "clr-tab-content", never, { "tabContentId": { "alias": "id"; "required": false; }; }, {}, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabContent, "clr-tab-content", never, {
+        "tabContentId": {
+            "alias": "id";
+            "required": false;
+        };
+    }, {}, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabContent, [{ optional: true; }, { optional: true; }, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabContent, [{
+        optional: true;
+    }, {
+        optional: true;
+    }, {
+        optional: true;
+    }]>;
 }
 
 // @public (undocumented)
@@ -360,9 +396,26 @@ export class ClrTabLink {
     // (undocumented)
     templateRefContainer: TemplateRefContainer;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTabLink, "[clrTabLink]", never, { "tabLinkId": { "alias": "id"; "required": false; }; "inOverflow": { "alias": "clrTabLinkInOverflow"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTabLink, "[clrTabLink]", never, {
+        "tabLinkId": {
+            "alias": "id";
+            "required": false;
+        };
+        "inOverflow": {
+            "alias": "clrTabLinkInOverflow";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabLink, [{ optional: true; }, { optional: true; }, null, null, { optional: true; }, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabLink, [{
+        optional: true;
+    }, {
+        optional: true;
+    }, null, null, {
+        optional: true;
+    }, {
+        optional: true;
+    }]>;
 }
 
 // @public (undocumented)
@@ -434,7 +487,16 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
     // (undocumented)
     toggleOverflowOnPosition(position: number): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabs, "clr-tabs", never, { "layout": { "alias": "clrLayout"; "required": false; }; }, {}, ["tabsActions", "tabs"], ["clr-tabs-actions"], false, [{ directive: typeof i1_3.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabs, "clr-tabs", never, {
+        "layout": {
+            "alias": "clrLayout";
+            "required": false;
+        };
+    }, {}, ["tabsActions", "tabs"], ["clr-tabs-actions"], false, [{
+        directive: typeof i1_3.ClrPopoverHostDirective;
+        inputs: {};
+        outputs: {};
+    }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabs, never>;
 }
@@ -444,7 +506,12 @@ export class ClrTabsActions {
     // (undocumented)
     position: ClrTabsActionsPosition;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabsActions, "clr-tabs-actions", never, { "position": { "alias": "position"; "required": false; }; }, {}, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabsActions, "clr-tabs-actions", never, {
+        "position": {
+            "alias": "position";
+            "required": false;
+        };
+    }, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabsActions, never>;
 }
@@ -495,9 +562,28 @@ export class ClrVerticalNav implements OnInit, AfterViewChecked, OnDestroy {
     // (undocumented)
     toggleLabel: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNav, "clr-vertical-nav", never, { "toggleLabel": { "alias": "clrVerticalNavToggleLabel"; "required": false; }; "collapsible": { "alias": "clrVerticalNavCollapsible"; "required": false; }; "collapsed": { "alias": "clrVerticalNavCollapsed"; "required": false; }; }, { "_collapsedChanged": "clrVerticalNavCollapsedChange"; }, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNav, "clr-vertical-nav", never, {
+        "toggleLabel": {
+            "alias": "clrVerticalNavToggleLabel";
+            "required": false;
+        };
+        "collapsible": {
+            "alias": "clrVerticalNavCollapsible";
+            "required": false;
+        };
+        "collapsed": {
+            "alias": "clrVerticalNavCollapsed";
+            "required": false;
+        };
+    }, {
+        "_collapsedChanged": "clrVerticalNavCollapsedChange";
+    }, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNav, [null, null, null, null, { optional: true; }, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNav, [null, null, null, null, {
+        optional: true;
+    }, {
+        optional: true;
+    }]>;
 }
 
 // @public (undocumented)
@@ -535,7 +621,14 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     // (undocumented)
     set userExpandedInput(value: boolean | string);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNavGroup, "clr-vertical-nav-group", never, { "userExpandedInput": { "alias": "clrVerticalNavGroupExpanded"; "required": false; }; }, { "expandedChange": "clrVerticalNavGroupExpandedChange"; }, never, ["[clrVerticalNavLink]", "[clrVerticalNavIcon]", "*", "[clrIfExpanded], clr-vertical-nav-group-children"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNavGroup, "clr-vertical-nav-group", never, {
+        "userExpandedInput": {
+            "alias": "clrVerticalNavGroupExpanded";
+            "required": false;
+        };
+    }, {
+        "expandedChange": "clrVerticalNavGroupExpandedChange";
+    }, never, ["[clrVerticalNavLink]", "[clrVerticalNavIcon]", "*", "[clrIfExpanded], clr-vertical-nav-group-children"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNavGroup, never>;
 }
@@ -567,7 +660,9 @@ export class ClrVerticalNavLink implements OnDestroy {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNavLink, "[clrVerticalNavLink]", never, {}, {}, never, ["[clrVerticalNavIcon]", "*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNavLink, [null, null, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNavLink, [null, null, {
+        optional: true;
+    }]>;
 }
 
 // @public (undocumented)
@@ -641,12 +736,12 @@ export class ResponsiveNavigationService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ResponsiveNavigationService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<ResponsiveNavigationService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-layout-tabs.d.ts:115:194 - (ae-forgotten-export) The symbol "i1_3" needs to be exported by the entry point clr-angular-layout.d.ts
+// dist/clr-angular/types/clr-angular-layout-tabs.d.ts:143:5 - (ae-forgotten-export) The symbol "i1_3" needs to be exported by the entry point clr-angular-layout.d.ts
 
 // (No @packageDocumentation comment for this package)
 

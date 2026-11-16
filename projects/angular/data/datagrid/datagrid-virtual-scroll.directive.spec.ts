@@ -368,6 +368,16 @@ export default function (): void {
         fixture.destroy();
       });
 
+      it('accepts a data range too large to spread into function arguments', () => {
+        fixture.detectChanges();
+        const data = Array.from({ length: 200_000 }, (_, index) => ({ index }));
+
+        expect(() => instance.updateDataRange({ total: data.length, skip: 0, data })).not.toThrow();
+        expect(() => fixture.detectChanges()).not.toThrow();
+        expect(instance.virtualScroll.cdkVirtualForOf.length).toBe(data.length);
+        expect(instance.virtualScroll.cdkVirtualForOf[199_999]).toBe(data[199_999]);
+      });
+
       it('Moves focus on PageDown and PageUp', async () => {
         await finishInit(fixture);
         fixture.autoDetectChanges();

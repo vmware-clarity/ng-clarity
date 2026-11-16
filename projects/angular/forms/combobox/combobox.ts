@@ -8,6 +8,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import {
   AfterContentInit,
+  afterNextRender,
   booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -18,6 +19,7 @@ import {
   Host,
   HostListener,
   Inject,
+  inject,
   Injector,
   Input,
   NgZone,
@@ -133,6 +135,7 @@ export class ClrCombobox<T>
   protected isTotalSelection = false;
 
   private resizeObserver: ResizeObserver;
+  private readonly renderInjector = inject(Injector);
   private containerWidthChange = new Subject();
   @ContentChild(ClrOptions) private options: ClrOptions<T>;
   @ContentChild(ClrOptionItems) private optionItems: ClrOptionItems<T> | undefined;
@@ -380,9 +383,7 @@ export class ClrCombobox<T>
     this.optionSelectionService.loading = state === ClrLoadingState.LOADING;
 
     if (state !== ClrLoadingState.LOADING && isPlatformBrowser(this.platformId)) {
-      setTimeout(() => {
-        this.popoverService?.resetPositions();
-      });
+      afterNextRender(() => this.popoverService?.resetPositions(), { injector: this.renderInjector });
       this.focusFirstActive();
     }
   }
@@ -424,9 +425,7 @@ export class ClrCombobox<T>
   }
 
   focusFirstActive() {
-    setTimeout(() => {
-      this.focusHandler.focusFirstActive();
-    });
+    this.focusHandler.scheduleFocusFirstActive();
   }
 
   writeValue(value: T | T[]): void {
@@ -579,15 +578,14 @@ export class ClrCombobox<T>
         }
 
         if (this.multiSelect) {
-          setTimeout(() => {
-            this.popoverService?.updatePosition();
-          });
+          afterNextRender(() => this.popoverService?.updatePosition(), { injector: this.renderInjector });
         }
       })
     );
 
     this.subscriptions.push(
       this.popoverService.openChange.subscribe(open => {
+        this.cdr.markForCheck();
         if (this.editable && !this.multiSelect) {
           if (this.searchText) {
             this.optionSelectionService.showAllOptions = false;

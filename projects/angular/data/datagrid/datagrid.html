@@ -11,7 +11,7 @@
     <div class="datagrid" #datagrid [attr.aria-hidden]="detailService.isOpen ? true : null">
       <div class="datagrid-table-wrapper">
         <div
-          role="grid"
+          [attr.role]="tree.enabled() ? 'treegrid' : 'grid'"
           class="datagrid-table"
           tabindex="-1"
           [attr.aria-multiselectable]="selection.selectionType === SELECTION_TYPE.Multi ? true : null"

@@ -285,7 +285,24 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
     state: Record<string, unknown> | null;
     type: string;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContext, "[clrContext]", never, { "label": { "alias": "clrContext"; "required": false; }; "type": { "alias": "clrContextType"; "required": false; }; "state": { "alias": "clrContextState"; "required": false; }; "publicKeys": { "alias": "clrContextPublicKeys"; "required": false; }; }, {}, never, never, true, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContext, "[clrContext]", never, {
+        "label": {
+            "alias": "clrContext";
+            "required": false;
+        };
+        "type": {
+            "alias": "clrContextType";
+            "required": false;
+        };
+        "state": {
+            "alias": "clrContextState";
+            "required": false;
+        };
+        "publicKeys": {
+            "alias": "clrContextPublicKeys";
+            "required": false;
+        };
+    }, {}, never, never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContext, never>;
 }
@@ -360,7 +377,7 @@ export class ClrContextEngineService implements OnDestroy {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextEngineService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrContextEngineService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public
@@ -442,7 +459,7 @@ export class ClrContextRegistryService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextRegistryService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrContextRegistryService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public
@@ -479,7 +496,7 @@ export class ClrContextTrackerService implements OnDestroy {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextTrackerService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrContextTrackerService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public
@@ -552,7 +569,7 @@ export class ClrMutationEngineService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrMutationEngineService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrMutationEngineService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public
