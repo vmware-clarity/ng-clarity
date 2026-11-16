@@ -15,7 +15,7 @@ export class DragAndDropGroupService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DragAndDropGroupService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<DragAndDropGroupService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // (No @packageDocumentation comment for this package)
