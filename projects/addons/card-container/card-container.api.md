@@ -103,9 +103,20 @@ export class AppfxCardComponent implements OnInit, AfterViewInit, OnDestroy {
     // (undocumented)
     selectCard(event: Event): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<AppfxCardComponent, "appfx-card", never, { "card": { "alias": "card"; "required": false; }; "dropGroup": { "alias": "dropGroup"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<AppfxCardComponent, "appfx-card", never, {
+        "card": {
+            "alias": "card";
+            "required": false;
+        };
+        "dropGroup": {
+            "alias": "dropGroup";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<AppfxCardComponent, [null, null, null, null, null, null, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<AppfxCardComponent, [null, null, null, null, null, null, {
+        optional: true;
+    }]>;
 }
 
 // @public
@@ -132,7 +143,28 @@ export class AppfxCardContainerComponent implements OnInit, DoCheck {
     // (undocumented)
     showCardContainerSettings: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<AppfxCardContainerComponent, "appfx-card-container", never, { "containerId": { "alias": "containerId"; "required": false; }; "cards": { "alias": "cards"; "required": false; }; "persistenceStore": { "alias": "persistenceStore"; "required": false; }; "showCardContainerSettings": { "alias": "showCardContainerSettings"; "required": false; }; "dragDropEnabled": { "alias": "dragDropEnabled"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<AppfxCardContainerComponent, "appfx-card-container", never, {
+        "containerId": {
+            "alias": "containerId";
+            "required": false;
+        };
+        "cards": {
+            "alias": "cards";
+            "required": false;
+        };
+        "persistenceStore": {
+            "alias": "persistenceStore";
+            "required": false;
+        };
+        "showCardContainerSettings": {
+            "alias": "showCardContainerSettings";
+            "required": false;
+        };
+        "dragDropEnabled": {
+            "alias": "dragDropEnabled";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<AppfxCardContainerComponent, never>;
 }
@@ -162,7 +194,14 @@ export class AppfxCardContainerSettingsComponent {
     // (undocumented)
     trackByFn(index: number, item: AppfxCardInternal): string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<AppfxCardContainerSettingsComponent, "appfx-card-container-settings", never, { "containerCards": { "alias": "containerCards"; "required": false; }; }, { "toggleCardVisibility": "toggleCardVisibility"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<AppfxCardContainerSettingsComponent, "appfx-card-container-settings", never, {
+        "containerCards": {
+            "alias": "containerCards";
+            "required": false;
+        };
+    }, {
+        "toggleCardVisibility": "toggleCardVisibility";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<AppfxCardContainerSettingsComponent, never>;
 }

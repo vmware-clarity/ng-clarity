@@ -36,4 +36,18 @@
   .clr-break-row {
     width: 100%;
   }
+
+  [clr-layout-container] {
+    container: clr-layout / inline-size;
+  }
+
+  // The media rules above stay as they are. This block only applies inside a `clr-layout`
+  // container: it puts the breakpoint classes back to their small state, then applies them again
+  // from the container's width. A modal covers the viewport, so its grid keeps the media rules.
+  @container clr-layout (min-width: 0) {
+    :where(:not(.modal, .modal *)) > {
+      @include grid-framework.clr-reset-grid-breakpoints();
+      @include grid-framework.clr-make-grid-columns($query: container);
+    }
+  }
 }
