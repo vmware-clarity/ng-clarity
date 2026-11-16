@@ -129,7 +129,7 @@
 </p>
 
 <p class="clr-mt-16px" cds-text="body">
-  A projected action renders its own <code cds-text="code">cds-icon</code>, so register whatever shape it names.
+  A projected action renders its own <code cds-text="code">clr-icon</code>, so register whatever shape it names.
 </p>
 
 <p class="clr-mt-16px" cds-text="body">Last action: <b cds-text="medium">{{ lastAction || 'none yet' }}</b></p>
@@ -139,11 +139,11 @@
     Name
     <clr-dg-column-actions>
       <button type="button" clrDgColumnAction (click)="renameColumn()">
-        <cds-icon shape="pencil" aria-hidden="true"></cds-icon>
+        <clr-icon shape="pencil" aria-hidden="true"></clr-icon>
         Rename column
       </button>
       <button type="button" clrDgColumnAction [clrDisabled]="true">
-        <cds-icon shape="trash" aria-hidden="true"></cds-icon>
+        <clr-icon shape="trash" aria-hidden="true"></clr-icon>
         Clear column
       </button>
     </clr-dg-column-actions>

@@ -8,7 +8,7 @@
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { BreadcrumbItem, ClrBreadcrumbsModule, ClrIcon, ClrIconModule, ClrVerticalNavModule } from '@clr/angular';
+import { BreadcrumbItem, ClrBreadcrumbsModule, ClrIcon, ClrVerticalNavModule } from '@clr/angular';
 import { Observable } from 'rxjs';
 import { filter, map, startWith } from 'rxjs/operators';
 
@@ -123,7 +123,6 @@ const additionalFiles = {
     RouterLink,
     RouterLinkActive,
     ClrIcon,
-    ClrIconModule,
     ClrVerticalNavModule,
     ClrBreadcrumbsModule,
     RouterOutlet,

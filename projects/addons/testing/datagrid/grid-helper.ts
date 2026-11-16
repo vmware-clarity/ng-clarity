@@ -606,7 +606,7 @@ export class GridRowTestHelper {
   }
 
   getSingleRowActionMenuButton(): HTMLElement {
-    return this.rowElement.querySelector('.datagrid-action-toggle > cds-icon') as HTMLElement;
+    return this.rowElement.querySelector('.datagrid-action-toggle > clr-icon') as HTMLElement;
   }
 
   openSingleRowActionMenu(): boolean {

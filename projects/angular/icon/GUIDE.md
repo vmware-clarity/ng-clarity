@@ -9,8 +9,7 @@ metadata:
 # Clarity icons
 
 - The tag is `<clr-icon>` (component `ClrIcon`).
-- `cds-icon` resolves to the same component, but that selector is scheduled for removal in v19.
-- `ClrIconModule`, `ClrIconCustomTag` and `CdsIconCustomTag` are deprecated.
+- There is no `cds-icon` selector and no `ClrIconModule` (both removed in v19); import `ClrIcon`.
 
 ## When to use
 
@@ -86,8 +85,7 @@ Shape names must be unique. Collections already register built-in aliases (e.g. 
 ## Rules
 
 - Bind a dynamic shape with `[shape]="expr"`. Never use `[attr.shape]`: the component writes its `shape` input back to the attribute, so the icon renders as the unknown placeholder.
-- Use `<clr-icon>`. The older `cds-icon` selector is an alias of the same component that is removed in v19; replace it when you touch that code.
-- Do not import `ClrIconModule` (deprecated) — import `ClrIcon`.
+- Use `<clr-icon>` and import `ClrIcon`. Never write `<cds-icon>` or import `ClrIconModule`: both were removed in v19.
 - Do not use `<img>`, icon fonts, or inline `<svg>` for library icons.
 - Prefer the `direction` input over CSS `transform: rotate()`, and `size` over CSS width/height.
 

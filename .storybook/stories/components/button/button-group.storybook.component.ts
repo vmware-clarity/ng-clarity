@@ -51,7 +51,7 @@ import { createArray } from '@storybook-helpers/common';
       >
         @for (_ of createArray(buttonCount); track $index; let i = $index) {
           <clr-button [clrInMenu]="false" [clrLoading]="loading" [disabled]="disabledButtonsPosition.includes(i + 1)">
-            <cds-icon shape="home"></cds-icon>
+            <clr-icon shape="home"></clr-icon>
             {{ content }} {{ i + 1 }}
           </clr-button>
         }

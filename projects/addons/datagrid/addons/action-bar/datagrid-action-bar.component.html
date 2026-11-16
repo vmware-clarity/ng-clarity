@@ -17,7 +17,7 @@
           [ngClass]="action.class"
         >
           {{ action.label }}
-          <cds-icon shape="angle" direction="down"></cds-icon>
+          <clr-icon shape="angle" direction="down"></clr-icon>
         </button>
         <clr-dropdown-menu *clrIfOpen [clrPosition]="dropdownOrientation">
           @for (childAction of action.children; track childAction) {
@@ -56,7 +56,7 @@
   @if (hasDropdownActions()) {
     <clr-dropdown class="dropdown-container" [clrCloseMenuOnItemClick]="true">
       <button type="button" clrDropdownTrigger [ngClass]="actions[0].class">
-        <cds-icon shape="ellipsis-horizontal"></cds-icon>
+        <clr-icon shape="ellipsis-horizontal"></clr-icon>
       </button>
       <ng-template [(clrIfOpen)]="isDropdownOpened">
         <clr-dropdown-menu clrPosition="bottom-right">

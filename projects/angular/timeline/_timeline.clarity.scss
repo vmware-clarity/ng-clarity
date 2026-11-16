@@ -26,33 +26,28 @@
     min-width: mixins.baselinePx(175);
     gap: timeline-variables.$clr-timeline-step-internal-spacing;
 
-    > cds-icon:not([size]),
     > clr-icon:not([size]) {
       @include mixins.min-equilateral(timeline-variables.$clr-timeline-icon-size);
     }
 
-    > cds-icon[shape='circle'],
     > clr-icon[shape='circle'] {
       color: timeline-variables.$clr-timeline-incomplete-step-color;
     }
 
-    > cds-icon[shape='dot-circle'],
     > clr-icon[shape='dot-circle'] {
       color: timeline-variables.$clr-timeline-current-step-color;
     }
 
-    > cds-icon[shape='success-standard'],
     > clr-icon[shape='success-standard'] {
       color: timeline-variables.$clr-timeline-success-step-color;
     }
 
-    > cds-icon[shape='error-standard'],
     > clr-icon[shape='error-standard'] {
       color: timeline-variables.$clr-timeline-error-step-color;
     }
 
     > clr-spinner.spinner {
-      margin: tokens.$cds-global-space-2; // Simulates the padding in CDS-ICONs
+      margin: tokens.$cds-global-space-2; // Simulates the padding in clr-icon
       &,
       &::after,
       &::before {

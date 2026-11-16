@@ -46,7 +46,7 @@ import { Page } from './providers/page';
             [attr.aria-label]="commonStrings.keys.firstPage"
           >
             <span class="clr-sr-only">{{ commonStrings.keys.firstPage }}</span>
-            <cds-icon shape="step-forward-2" direction="down"></cds-icon>
+            <clr-icon shape="step-forward-2" direction="down"></clr-icon>
           </button>
           <button
             type="button"
@@ -56,7 +56,7 @@ import { Page } from './providers/page';
             [attr.aria-label]="commonStrings.keys.previousPage"
           >
             <span class="clr-sr-only">{{ commonStrings.keys.previousPage }}</span>
-            <cds-icon shape="angle" direction="left"></cds-icon>
+            <clr-icon shape="angle" direction="left"></clr-icon>
           </button>
           <div class="pagination-pages">
             @if (!disableCurrentPageInput) {
@@ -83,7 +83,7 @@ import { Page } from './providers/page';
             [attr.aria-label]="commonStrings.keys.nextPage"
           >
             <span class="clr-sr-only">{{ commonStrings.keys.nextPage }}</span>
-            <cds-icon shape="angle" direction="right"></cds-icon>
+            <clr-icon shape="angle" direction="right"></clr-icon>
           </button>
           <button
             type="button"
@@ -93,7 +93,7 @@ import { Page } from './providers/page';
             [attr.aria-label]="commonStrings.keys.lastPage"
           >
             <span class="clr-sr-only">{{ commonStrings.keys.lastPage }}</span>
-            <cds-icon shape="step-forward-2" direction="up"></cds-icon>
+            <clr-icon shape="step-forward-2" direction="up"></clr-icon>
           </button>
         </div>
       }
@@ -111,7 +111,7 @@ import { Page } from './providers/page';
           [attr.aria-label]="commonStrings.keys.previousPage"
         >
           <span class="clr-sr-only">{{ commonStrings.keys.previousPage }}</span>
-          <cds-icon shape="angle" direction="left"></cds-icon>
+          <clr-icon shape="angle" direction="left"></clr-icon>
         </button>
         <span>{{ page.current }}</span>
         <button
@@ -122,7 +122,7 @@ import { Page } from './providers/page';
           [attr.aria-label]="commonStrings.keys.nextPage"
         >
           <span class="clr-sr-only">{{ commonStrings.keys.nextPage }}</span>
-          <cds-icon shape="angle" direction="right"></cds-icon>
+          <clr-icon shape="angle" direction="right"></clr-icon>
         </button>
       </div>
     }

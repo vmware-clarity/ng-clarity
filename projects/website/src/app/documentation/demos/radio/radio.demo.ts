@@ -8,7 +8,7 @@
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { FormsModule, NgModel } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { ClrCommonFormsModule, ClrIcon, ClrIconModule, ClrRadioModule, ClrSelectModule } from '@clr/angular';
+import { ClrCommonFormsModule, ClrIcon, ClrRadioModule, ClrSelectModule } from '@clr/angular';
 
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -66,7 +66,6 @@ export class ExampleComponent {
     ClrCommonFormsModule,
     FormsModule,
     ClrIcon,
-    ClrIconModule,
     ThemedImageComponent,
     ClrSelectModule,
     RouterLink,

@@ -125,7 +125,7 @@ const meta = {
               <clr-dropdown>
                 <button type="button" class="btn btn-sm btn-secondary" clrDropdownTrigger>
                   Per Page
-                  <cds-icon shape="angle" direction="down"></cds-icon>
+                  <clr-icon shape="angle" direction="down"></clr-icon>
                 </button>
                 <clr-dropdown-menu *clrIfOpen>
                   <button type="button" clrDropdownItem>10</button>
@@ -142,7 +142,7 @@ const meta = {
               <clr-dropdown>
                 <button type="button" class="btn btn-sm btn-secondary" clrDropdownTrigger>
                   Per Page
-                  <cds-icon shape="angle" direction="down"></cds-icon>
+                  <clr-icon shape="angle" direction="down"></clr-icon>
                 </button>
                 <clr-dropdown-menu *clrIfOpen>
                   <button type="button" clrDropdownItem>10</button>
@@ -157,7 +157,7 @@ const meta = {
               <clr-dropdown>
                 <button type="button" class="btn btn-sm btn-secondary" clrDropdownTrigger>
                   Per Page
-                  <cds-icon shape="angle" direction="down"></cds-icon>
+                  <clr-icon shape="angle" direction="down"></clr-icon>
                 </button>
                 <clr-dropdown-menu *clrIfOpen>
                   <button type="button" clrDropdownItem>10</button>

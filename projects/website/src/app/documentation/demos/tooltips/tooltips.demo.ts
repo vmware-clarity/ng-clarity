@@ -9,7 +9,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   ClarityIcons,
   ClrIcon,
-  ClrIconModule,
   ClrPopoverContent,
   ClrPopoverHostDirective,
   ClrStopEscapePropagationDirective,
@@ -58,7 +57,6 @@ const EXAMPLE2 = `
     ClrPopoverHostDirective,
     ClrTooltipModule,
     ClrIcon,
-    ClrIconModule,
     ClrPopoverContent,
     StackblitzExampleComponent,
     TooltipsSizesDemo,

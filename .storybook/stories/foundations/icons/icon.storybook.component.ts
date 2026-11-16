@@ -45,7 +45,7 @@ const ICON_COLLECTIONS: { name: string; load: () => void }[] = [
       <div class="icon-grid">
         @for (icon of icons; track icon) {
           <div class="icon-grid__item" [title]="icon">
-            <cds-icon [shape]="icon" size="md" role="img" [attr.aria-label]="icon + ' icon'"></cds-icon>
+            <clr-icon [shape]="icon" size="md" role="img" [attr.aria-label]="icon + ' icon'"></clr-icon>
             <span cds-text="smallcaption">{{ icon }}</span>
           </div>
         }

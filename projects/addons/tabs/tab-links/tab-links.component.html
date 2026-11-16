@@ -5,12 +5,12 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 <button class="btn-close-tabs" [attr.aria-label]="workflowStrings.closeStepNavAriaLabel" (click)="changeOpened(false)">
-  <cds-icon direction="left" shape="angle" class="tabs-close"></cds-icon>
+  <clr-icon direction="left" shape="angle" class="tabs-close"></clr-icon>
 </button>
 
 <div class="nav-step-title-wrapper">
   <button class="btn-show-tabs" [attr.aria-label]="workflowStrings.openStepNavAriaLabel" (click)="changeOpened(true)">
-    <cds-icon shape="bars"></cds-icon>
+    <clr-icon shape="bars"></clr-icon>
   </button>
   <h3 class="nav-step-title" [textContent]="title"></h3>
 </div>

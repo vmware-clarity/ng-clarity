@@ -29,11 +29,11 @@ import { ViewManagerService } from './providers/view-manager.service';
           (click)="previousDecade()"
           [attr.aria-label]="commonStrings.keys.datepickerPreviousDecade"
         >
-          <cds-icon
+          <clr-icon
             shape="angle"
             direction="left"
             [attr.title]="commonStrings.keys.datepickerPreviousDecade"
-          ></cds-icon>
+          ></clr-icon>
         </button>
         <button
           class="calendar-btn switcher"
@@ -41,7 +41,7 @@ import { ViewManagerService } from './providers/view-manager.service';
           (click)="currentDecade()"
           [attr.aria-label]="commonStrings.keys.datepickerCurrentDecade"
         >
-          <cds-icon shape="event" [attr.title]="commonStrings.keys.datepickerCurrentDecade"></cds-icon>
+          <clr-icon shape="event" [attr.title]="commonStrings.keys.datepickerCurrentDecade"></clr-icon>
         </button>
         <button
           class="calendar-btn switcher"
@@ -49,7 +49,7 @@ import { ViewManagerService } from './providers/view-manager.service';
           (click)="nextDecade()"
           [attr.aria-label]="commonStrings.keys.datepickerNextDecade"
         >
-          <cds-icon shape="angle" direction="right" [attr.title]="commonStrings.keys.datepickerNextDecade"></cds-icon>
+          <clr-icon shape="angle" direction="right" [attr.title]="commonStrings.keys.datepickerNextDecade"></clr-icon>
         </button>
       </div>
     </div>

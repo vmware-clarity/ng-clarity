@@ -49,13 +49,13 @@
     <clr-input-container cds-layout="m-t:xs">
       <label class="clr-sr-only">{{ filterStrings.searchPlaceholder }}</label>
       <input clrInput type="text" [placeholder]="filterStrings.searchPlaceholder" formControlName="searchTerm" />
-      <cds-icon shape="search" clrInputPrefix></cds-icon>
-      <cds-icon
+      <clr-icon shape="search" clrInputPrefix></clr-icon>
+      <clr-icon
         *ngIf="usersSelectionForm.get('searchTerm')?.value"
         shape="window-close"
         clrInputSuffix
         (click)="clearSearch()"
-      ></cds-icon>
+      ></clr-icon>
     </clr-input-container>
 
     <div cds-layout="m-t:xs m-l:xxs" class="selection-counter">

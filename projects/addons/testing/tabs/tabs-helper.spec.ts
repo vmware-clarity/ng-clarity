@@ -22,7 +22,7 @@ import { TabsHelper } from './tabs-helper';
       <clr-tab>
         <button clrTabLink>
           Tab 1
-          <cds-icon shape="link"></cds-icon>
+          <clr-icon shape="link"></clr-icon>
         </button>
         <clr-tab-content *clrIfActive="true">
           <div>tab 1 content</div>
@@ -105,7 +105,7 @@ describe('TabsHelper', () => {
 
   it('should find link icon by index', () => {
     const foundIcon = tabsHelper.findLinkIcon(0);
-    const actualIcon = fixture.debugElement.query(By.css('cds-icon'));
+    const actualIcon = fixture.debugElement.query(By.css('clr-icon'));
 
     expect(foundIcon).toBe(actualIcon);
   });

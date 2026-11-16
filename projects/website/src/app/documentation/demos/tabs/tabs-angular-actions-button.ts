@@ -9,7 +9,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   ClarityIcons,
   ClrIcon,
-  ClrIconModule,
   ClrPopoverHostDirective,
   ClrStopEscapePropagationDirective,
   ClrTabsModule,
@@ -87,7 +86,6 @@ export class ExampleComponent {
     ClrPopoverHostDirective,
     ClrTabsModule,
     ClrIcon,
-    ClrIconModule,
     StackblitzExampleComponent,
   ],
 })

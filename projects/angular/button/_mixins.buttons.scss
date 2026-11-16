@@ -98,7 +98,6 @@
   @include button-css-var($button-type, background-color, bg-color);
   @include button-css-var($button-type, color);
 
-  cds-icon,
   clr-icon {
     @include button-css-var($button-type, color);
 
@@ -111,7 +110,6 @@
     @include button-css-var($button-type, background-color, hover-bg-color);
     @include button-css-var($button-type, color, hover-color);
 
-    cds-icon,
     clr-icon {
       @include button-css-var($button-type, color, hover-color);
     }
@@ -121,7 +119,6 @@
     @include button-css-var($button-type, background-color, active-bg-color);
     @include button-css-var($button-type, color, active-color);
 
-    cds-icon,
     clr-icon {
       @include button-css-var($button-type, color, active-color);
     }
@@ -136,7 +133,6 @@
     @include button-css-var($button-type, background-color, disabled-bg-color);
     @include button-css-var($button-type, border-color, disabled-border-color);
 
-    cds-icon,
     clr-icon {
       @include button-css-var($button-type, color, disabled-color);
     }
@@ -149,8 +145,7 @@
     @include button-css-var($button-type, color, checked-color);
 
     // override icon colors on inverted backgrounds
-    & > clr-icon,
-    & > cds-icon {
+    & > clr-icon {
       @include button-css-var($button-type, color, checked-color);
     }
   }
@@ -160,8 +155,7 @@
     @include button-css-var($button-type, color, checked-hover-color);
 
     // override icon colors on inverted backgrounds
-    & > clr-icon,
-    & > cds-icon {
+    & > clr-icon {
       @include button-css-var($button-type, color, checked-hover-color);
     }
   }
@@ -171,8 +165,7 @@
     @include button-css-var($button-type, color, checked-active-color);
 
     // override icon colors on inverted backgrounds
-    & > clr-icon,
-    & > cds-icon {
+    & > clr-icon {
       @include button-css-var($button-type, color, checked-active-color);
     }
   }
@@ -182,8 +175,7 @@
     @include button-css-var($button-type, color, checked-disabled-color);
     @include button-css-var($button-type, background-color, checked-disabled-bg-color);
     // override icon colors on inverted backgrounds
-    & > clr-icon,
-    & > cds-icon {
+    & > clr-icon {
       @include button-css-var($button-type, color, checked-disabled-color);
     }
   }

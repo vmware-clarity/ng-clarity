@@ -26,7 +26,7 @@ import { ClrTimelineStepTitle } from './timeline-step-title';
     <ng-content select="clr-timeline-step-header"></ng-content>
     <span class="clr-sr-only">{{ stepTitleText }}</span>
     @if (!isProcessing) {
-      <cds-icon [status]="iconStatus" [shape]="iconShape" [attr.aria-label]="iconAriaLabel" role="img"></cds-icon>
+      <clr-icon [status]="iconStatus" [shape]="iconShape" [attr.aria-label]="iconAriaLabel" role="img"></clr-icon>
     } @else {
       <clr-spinner clrMedium [attr.aria-label]="iconAriaLabel"></clr-spinner>
     }

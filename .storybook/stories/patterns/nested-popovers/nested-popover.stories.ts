@@ -44,7 +44,7 @@ const meta = {
           <clr-dropdown>
             <button class="btn btn-outline-primary" clrDropdownTrigger>
               Dropdown
-              <cds-icon shape="angle" direction="down"></cds-icon>
+              <clr-icon shape="angle" direction="down"></clr-icon>
             </button>
             <clr-dropdown-menu>
               <div aria-label="Action 1" clrDropdownItem>Action 1</div>

@@ -16,7 +16,7 @@ import { ClrFormLayout } from '@clr/angular';
       <clr-input-container>
         <label>With icon on right side</label>
         <input type="text" clrInput name="text" formControlName="text" />
-        <cds-icon shape="calendar" clrInputPrefix></cds-icon>
+        <clr-icon shape="calendar" clrInputPrefix></clr-icon>
         <clr-control-helper>Helper Subtext</clr-control-helper>
         <clr-control-error>State Subtext</clr-control-error>
         <clr-control-success>State Subtext</clr-control-success>
@@ -24,7 +24,7 @@ import { ClrFormLayout } from '@clr/angular';
       <clr-input-container>
         <label>With icon on left side</label>
         <input type="text" clrInput name="text" formControlName="text" />
-        <cds-icon shape="calendar" clrInputSuffix></cds-icon>
+        <clr-icon shape="calendar" clrInputSuffix></clr-icon>
         <clr-control-helper>Helper Subtext</clr-control-helper>
         <clr-control-error>State Subtext</clr-control-error>
         <clr-control-success>State Subtext</clr-control-success>
@@ -32,8 +32,8 @@ import { ClrFormLayout } from '@clr/angular';
       <clr-input-container>
         <label>With icon on both sides</label>
         <input type="text" clrInput name="text" formControlName="text" />
-        <cds-icon shape="calendar" clrInputSuffix></cds-icon>
-        <cds-icon shape="calendar" clrInputPrefix></cds-icon>
+        <clr-icon shape="calendar" clrInputSuffix></clr-icon>
+        <clr-icon shape="calendar" clrInputPrefix></clr-icon>
         <clr-control-helper>Helper Subtext</clr-control-helper>
         <clr-control-error>State Subtext</clr-control-error>
         <clr-control-success>State Subtext</clr-control-success>

@@ -12,7 +12,6 @@ import {
   ClrDatagridModule,
   ClrDatagridSortOrder,
   ClrIcon,
-  ClrIconModule,
   ClrPopoverHostDirective,
   ClrStopEscapePropagationDirective,
 } from '@clr/angular';
@@ -32,7 +31,6 @@ import { CommonFiles } from '../utils/stackblitz-common-data';
   changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ClrIcon,
-    ClrIconModule,
     ClrAlertModule,
     ClrDatagridModule,
     ClrStopEscapePropagationDirective,

@@ -4,17 +4,14 @@
 
 ```ts
 
-import { AfterViewInit } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ElementRef } from '@angular/core';
 import * as i0 from '@angular/core';
-import * as i2 from '@angular/common';
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { PipeTransform } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
-import { Type } from '@angular/core';
 
 // @public (undocumented)
 export const accessibility1Icon: IconShapeTuple;
@@ -436,14 +433,6 @@ export const cdDvdIcon: IconShapeTuple;
 // @public (undocumented)
 export const cdDvdIconName = "cd-dvd";
 
-// @public @deprecated (undocumented)
-export class CdsIconCustomTag {
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<CdsIconCustomTag, "cds-icon", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<CdsIconCustomTag, never>;
-}
-
 // @public (undocumented)
 export const centerTextIcon: IconShapeTuple;
 
@@ -582,10 +571,7 @@ export const cloudTrafficIcon: IconShapeTuple;
 export const cloudTrafficIconName = "cloud-traffic";
 
 // @public (undocumented)
-export const CLR_ICON_DIRECTIVES: Type<any>[];
-
-// @public (undocumented)
-export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
+export class ClrIcon implements OnInit, OnDestroy {
     constructor(el: ElementRef<HTMLElement>, cdr: ChangeDetectorRef);
     // (undocumented)
     get badge(): string | boolean;
@@ -614,8 +600,6 @@ export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
     // (undocumented)
     static ngAcceptInputType_solid: unknown;
     // (undocumented)
-    ngAfterViewInit(): void;
-    // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
     ngOnInit(): void;
@@ -638,7 +622,7 @@ export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
     // (undocumented)
     updateInnerOffset(value: number): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrIcon, "clr-icon, cds-icon", never, {
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrIcon, "clr-icon", never, {
         "shape": {
             "alias": "shape";
             "required": false;
@@ -678,24 +662,6 @@ export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
     }, {}, never, never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIcon, never>;
-}
-
-// @public @deprecated (undocumented)
-export class ClrIconCustomTag {
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIconCustomTag, "clr-icon", never, {}, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIconCustomTag, never>;
-}
-
-// @public @deprecated (undocumented)
-export class ClrIconModule {
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIconModule, never>;
-    // (undocumented)
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrIconModule>;
-    // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrIconModule, [typeof ClrIconCustomTag, typeof CdsIconCustomTag], [typeof i2.CommonModule], [typeof ClrIconCustomTag, typeof CdsIconCustomTag]>;
 }
 
 // @public (undocumented)

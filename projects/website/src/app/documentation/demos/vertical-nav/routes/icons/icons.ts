@@ -7,7 +7,7 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { ClrIcon, ClrIconModule, ClrVerticalNavModule } from '@clr/angular';
+import { ClrIcon, ClrVerticalNavModule } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../../../shared/stackblitz-example/stackblitz-example.component';
 import { pokemonTypeComponents } from '../stackblitz-examples/pokemon-component-generator';
@@ -72,15 +72,7 @@ const additionalFiles = {
   templateUrl: './icons.html',
   styleUrl: '../../vertical-nav.demo.scss',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [
-    ClrIcon,
-    ClrIconModule,
-    ClrVerticalNavModule,
-    RouterLink,
-    RouterLinkActive,
-    RouterOutlet,
-    StackblitzExampleComponent,
-  ],
+  imports: [ClrIcon, ClrVerticalNavModule, RouterLink, RouterLinkActive, RouterOutlet, StackblitzExampleComponent],
 })
 export class IconLinksDemo {
   htmlExample = HTML_EXAMPLE;

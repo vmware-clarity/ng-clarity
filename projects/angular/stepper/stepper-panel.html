@@ -19,12 +19,12 @@
       #headerButton
     >
       <span class="clr-step-status">
-        <cds-icon shape="angle" direction="right" class="clr-stepper-angle clr-step-angle"></cds-icon>
+        <clr-icon shape="angle" direction="right" class="clr-stepper-angle clr-step-angle"></clr-icon>
         <span class="clr-step-status-icon">
           @if (getPanelStatus(panel) === PanelStatus.Error) {
-          <cds-icon status="danger" shape="error-standard" class="clr-step-error-icon"></cds-icon>
+          <clr-icon status="danger" shape="error-standard" class="clr-step-error-icon"></clr-icon>
           } @if (getPanelStatus(panel) === PanelStatus.Complete) {
-          <cds-icon status="success" shape="success-standard" class="clr-step-complete-icon"></cds-icon>
+          <clr-icon status="success" shape="success-standard" class="clr-step-complete-icon"></clr-icon>
           }
         </span>
       </span>

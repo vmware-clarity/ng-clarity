@@ -336,7 +336,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       return;
     }
 
-    // web components (cds-icon) register as outside pointer events, so if the event target is inside the content panel return early
+    // web components (clr-icon) register as outside pointer events, so if the event target is inside the content panel return early
     if (this.elementRef?.nativeElement?.contains(event.target as Node)) {
       return;
     }

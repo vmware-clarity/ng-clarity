@@ -218,7 +218,7 @@ export default function () {
         myAlert.alertType = 'warning';
         fixture.detectChanges();
 
-        const icon: Element = fixture.nativeElement.querySelector('cds-icon[role="img"]');
+        const icon: Element = fixture.nativeElement.querySelector('clr-icon[role="img"]');
         expect(icon.getAttribute('aria-label')).toEqual('Warning');
       });
     });

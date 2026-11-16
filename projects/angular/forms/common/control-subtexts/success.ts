@@ -14,7 +14,7 @@ import { ControlIdService } from '../providers/control-id.service';
 @Component({
   selector: 'clr-control-success',
   template: `
-    <cds-icon class="clr-validate-icon" shape="success-standard" status="success" aria-hidden="true"></cds-icon>
+    <clr-icon class="clr-validate-icon" shape="success-standard" status="success" aria-hidden="true"></clr-icon>
     <span class="clr-subtext">
       <ng-content></ng-content>
     </span>

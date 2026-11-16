@@ -45,7 +45,7 @@ import { startWith } from 'rxjs/operators';
             [attr.aria-expanded]="panel.open"
           >
             <span class="clr-collapsible-status">
-              <cds-icon shape="angle" direction="right" class="clr-collapsible-angle"></cds-icon>
+              <clr-icon shape="angle" direction="right" class="clr-collapsible-angle"></clr-icon>
             </span>
             <span class="clr-collapsible-title"><ng-content select="[panelTitle]"></ng-content></span>
           </button>

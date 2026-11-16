@@ -34,7 +34,7 @@ export class DatagridColumnActionsDemo {
   lastAction = '';
 
   constructor(inventory: Inventory) {
-    // A projected action renders its own cds-icon, so the shape has to be registered.
+    // A projected action renders its own clr-icon, so the shape has to be registered.
     ClarityIcons.addIcons(pencilIcon, trashIcon);
 
     inventory.size = 10;

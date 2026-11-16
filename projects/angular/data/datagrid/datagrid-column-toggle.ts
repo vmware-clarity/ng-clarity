@@ -59,7 +59,7 @@ import { ColumnsService } from './providers/columns.service';
           type="button"
           [attr.aria-label]="commonStrings.keys.close"
         >
-          <cds-icon shape="window-close" aria-hidden="true" [attr.title]="commonStrings.keys.close"></cds-icon>
+          <clr-icon shape="window-close" aria-hidden="true" [attr.title]="commonStrings.keys.close"></clr-icon>
           <span class="clr-sr-only">{{ commonStrings.keys.close }}</span>
         </button>
       </div>

@@ -116,7 +116,7 @@
             [columnIndex]="index"
             [clrDisabled]="moveLeft.disabled"
           >
-            <cds-icon shape="angle" direction="left" aria-hidden="true"></cds-icon>
+            <clr-icon shape="angle" direction="left" aria-hidden="true"></clr-icon>
             {{ dgStrings.moveColumnLeft }}
           </button>
           <button
@@ -128,7 +128,7 @@
             [columnIndex]="index"
             [clrDisabled]="moveRight.disabled"
           >
-            <cds-icon shape="angle" direction="right" aria-hidden="true"></cds-icon>
+            <clr-icon shape="angle" direction="right" aria-hidden="true"></clr-icon>
             {{ dgStrings.moveColumnRight }}
           </button>
           @let customColumnActions = getColumnActions(column);
@@ -151,7 +151,7 @@
                     [attr.title]="action.tooltip"
                   >
                     @if (action.icon) {
-                      <cds-icon [shape]="action.icon" aria-hidden="true"></cds-icon>
+                      <clr-icon [shape]="action.icon" aria-hidden="true"></clr-icon>
                     }
                     {{ action.label }}
                   </button>
@@ -166,7 +166,7 @@
                         (click)="onColumnActionClick(childAction, column)"
                       >
                         @if (childAction.icon) {
-                          <cds-icon [shape]="childAction.icon" aria-hidden="true"></cds-icon>
+                          <clr-icon [shape]="childAction.icon" aria-hidden="true"></clr-icon>
                         }
                         {{ childAction.label }}
                       </button>
@@ -183,7 +183,7 @@
                   (click)="onColumnActionClick(action, column)"
                 >
                   @if (action.icon) {
-                    <cds-icon [shape]="action.icon" aria-hidden="true"></cds-icon>
+                    <clr-icon [shape]="action.icon" aria-hidden="true"></clr-icon>
                   }
                   {{ action.label }}
                 </button>
@@ -506,7 +506,7 @@
                 [attr.aria-label]="action.ariaLabel"
               >
                 {{ action.label }}
-                <cds-icon shape="angle" direction="up"></cds-icon>
+                <clr-icon shape="angle" direction="up"></clr-icon>
               </button>
               <clr-dropdown-menu clrPosition="top-left" *clrIfOpen>
                 @for (childAction of action.children; track childAction) {
@@ -583,7 +583,7 @@
       (cdkDragStarted)="onDragStart(item)"
       (cdkDragMoved)="onDragMove()"
     >
-      <cds-icon shape="drag-handle" size="22" cdkDragHandle> </cds-icon>
+      <clr-icon shape="drag-handle" size="22" cdkDragHandle> </clr-icon>
       <div class="custom-placeholder" *cdkDragPlaceholder></div>
       <div class="custom-preview" *cdkDragPreview>
         @if (draggedItems.length === 1) {
@@ -604,8 +604,8 @@
 </ng-template>
 
 <ng-template #draggableGhostContent let-item>
-  <cds-icon class="drop-status drop-status-valid" shape="plus" size="18"></cds-icon>
-  <cds-icon class="drop-status drop-status-invalid" shape="ban" size="18"></cds-icon>
+  <clr-icon class="drop-status drop-status-valid" shape="plus" size="18"></clr-icon>
+  <clr-icon class="drop-status drop-status-invalid" shape="ban" size="18"></clr-icon>
   <i class="{{ item.primaryIconId }}"></i>
   <span>{{ item[dragConfig.fieldName] }}</span>
 </ng-template>

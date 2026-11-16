@@ -6,14 +6,14 @@
  */
 
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { ClrIcon, ClrIconModule, ClrVerticalNavModule } from '@clr/angular';
+import { ClrIcon, ClrVerticalNavModule } from '@clr/angular';
 
 @Component({
   selector: 'clr-vertical-nav-groups-demo',
   templateUrl: './nav-groups.html',
   styleUrl: '../vertical-nav.demo.scss',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ClrVerticalNavModule, ClrIcon, ClrIconModule],
+  imports: [ClrVerticalNavModule, ClrIcon],
 })
 export class NavGroupsDemo {
   readonly demoHideIcons = input(false);

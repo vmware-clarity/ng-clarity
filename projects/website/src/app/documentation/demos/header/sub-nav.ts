@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ClrIcon, ClrIconModule } from '@clr/angular';
+import { ClrIcon } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
@@ -52,7 +52,7 @@ const EXAMPLE = `
   styleUrl: './sub-nav.demo.scss',
   templateUrl: './sub-nav.demo.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ClrIcon, ClrIconModule, StackblitzExampleComponent],
+  imports: [ClrIcon, StackblitzExampleComponent],
 })
 export class SubNavDemo {
   example = EXAMPLE;

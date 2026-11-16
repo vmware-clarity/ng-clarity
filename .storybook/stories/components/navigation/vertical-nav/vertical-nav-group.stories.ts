@@ -83,7 +83,7 @@ const meta = {
               (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
             >
               @if (includeIcons) {
-                <cds-icon shape="bars" clrVerticalNavIcon></cds-icon>
+                <clr-icon shape="bars" clrVerticalNavIcon></clr-icon>
               }
               Menu
               <clr-vertical-nav-group-children>
@@ -95,7 +95,7 @@ const meta = {
                     (click)="activeIndex = index"
                   >
                     @if (includeIcons) {
-                      <cds-icon [shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
+                      <clr-icon [shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></clr-icon>
                     }
                     {{ navLink.text }}
                   </a>

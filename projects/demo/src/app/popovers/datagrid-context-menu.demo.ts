@@ -72,7 +72,7 @@ interface FileItem {
         </clr-dropdown>
         <div class="dropdown-divider" role="separator"></div>
         <button type="button" clrDropdownItem (click)="doAction('Delete', contextFile)">
-          <cds-icon shape="trash" style="margin-right: 4px"></cds-icon> Delete
+          <clr-icon shape="trash" style="margin-right: 4px"></clr-icon> Delete
         </button>
       </clr-dropdown-menu>
     </clr-dropdown>

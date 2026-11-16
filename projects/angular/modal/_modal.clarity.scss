@@ -218,7 +218,6 @@
       font-size: initial;
       line-height: initial;
 
-      cds-icon,
       clr-icon {
         fill: modal-variables.$clr-modal-close-color;
 
@@ -230,13 +229,11 @@
       }
 
       &:hover {
-        cds-icon,
         clr-icon {
           fill: variables.$clr-close-color-hover;
         }
 
         &:active {
-          cds-icon,
           clr-icon {
             fill: variables.$clr-close-color-active;
           }

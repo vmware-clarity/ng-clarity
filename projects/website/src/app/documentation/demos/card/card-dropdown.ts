@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { angleIcon, ClarityIcons, ClrIcon, ClrIconModule } from '@clr/angular';
+import { angleIcon, ClarityIcons, ClrIcon } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
@@ -49,7 +49,7 @@ const HTML_EXAMPLE = `
   styleUrl: './card.demo.scss',
   templateUrl: './card-dropdown.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ClrIcon, ClrIconModule, StackblitzExampleComponent],
+  imports: [ClrIcon, StackblitzExampleComponent],
 })
 export class CardDropdownDemo {
   htmlExample = HTML_EXAMPLE;

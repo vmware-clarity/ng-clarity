@@ -62,7 +62,7 @@ import { ClrFileError, ClrFileSuccess } from './file-messages';
           [disabled]="disabled"
           (click)="browse()"
         >
-          <cds-icon shape="folder-open"></cds-icon>
+          <clr-icon shape="folder-open"></clr-icon>
           <span class="clr-file-input-browse-button-text">{{ browseButtonText }}</span>
         </button>
         @if (!fileList && fileInput?.selection?.fileCount) {
@@ -72,7 +72,7 @@ import { ClrFileError, ClrFileSuccess } from './file-messages';
             [attr.aria-label]="fileInput?.selection?.clearFilesButtonLabel"
             (click)="clearSelectedFiles()"
           >
-            <cds-icon shape="times" status="neutral"></cds-icon>
+            <clr-icon shape="times" status="neutral"></clr-icon>
           </button>
         }
       </div>

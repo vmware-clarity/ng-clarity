@@ -10,7 +10,7 @@
     <header class="header">
       <div class="branding">
         <a href="#">
-          <cds-icon shape="vm-bug"></cds-icon>
+          <clr-icon shape="vm-bug"></clr-icon>
           <span class="title">Project Clarity</span>
         </a>
       </div>
@@ -21,7 +21,7 @@
       </form>
       <div class="settings">
         <a href="javascript://" class="nav-link nav-icon">
-          <cds-icon shape="cog" inverse></cds-icon>
+          <clr-icon shape="cog" inverse></clr-icon>
         </a>
       </div>
     </header>
@@ -39,7 +39,7 @@
             [routerLinkActiveOptions]="{exact:true}"
             clrVerticalNavLink
           >
-            <cds-icon shape="home" clrVerticalNavIcon></cds-icon>
+            <clr-icon shape="home" clrVerticalNavIcon></clr-icon>
             The Beatles
           </a>
           <ng-template [clrIfExpanded]="groupExpand" (clrIfExpandedChange)="updateGroupExpand($event)">
@@ -57,7 +57,7 @@
             [routerLinkActiveOptions]="{exact:true}"
             clrVerticalNavLink
           >
-            <cds-icon shape="home" clrVerticalNavIcon></cds-icon>
+            <clr-icon shape="home" clrVerticalNavIcon></clr-icon>
             The Killers
           </a>
           <ng-template clrIfExpanded>
@@ -69,7 +69,7 @@
           </ng-template>
         </clr-vertical-nav-group>
         <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./wikipedia']">
-          <cds-icon shape="certificate" clrVerticalNavIcon></cds-icon>
+          <clr-icon shape="certificate" clrVerticalNavIcon></clr-icon>
           Wikipedia
         </a>
       </clr-vertical-nav>
@@ -80,7 +80,7 @@
         (clrVerticalNavCollapsedChange)="updateNavCollapsed($event)"
       >
         <clr-vertical-nav-group routerLinkActive="active">
-          <cds-icon shape="home" clrVerticalNavIcon></cds-icon>
+          <clr-icon shape="home" clrVerticalNavIcon></clr-icon>
           The Beatles
           <ng-template [clrIfExpanded]="groupExpand" (clrIfExpandedChange)="updateGroupExpand($event)">
             <clr-vertical-nav-group-children>
@@ -91,7 +91,7 @@
           </ng-template>
         </clr-vertical-nav-group>
         <clr-vertical-nav-group routerLinkActive="active">
-          <cds-icon shape="home" clrVerticalNavIcon></cds-icon>
+          <clr-icon shape="home" clrVerticalNavIcon></clr-icon>
           The Killers
           <ng-template clrIfExpanded>
             <clr-vertical-nav-group-children>
@@ -102,7 +102,7 @@
           </ng-template>
         </clr-vertical-nav-group>
         <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./wikipedia']">
-          <cds-icon shape="certificate" clrVerticalNavIcon></cds-icon>
+          <clr-icon shape="certificate" clrVerticalNavIcon></clr-icon>
           Wikipedia
         </a>
       </clr-vertical-nav>
@@ -114,7 +114,7 @@
       >
         <clr-vertical-nav-group routerLinkActive="active">
           <a hidden aria-hidden="true" [routerLink]="['./beatles']"></a>
-          <cds-icon shape="home" clrVerticalNavIcon></cds-icon>
+          <clr-icon shape="home" clrVerticalNavIcon></clr-icon>
           The Beatles
           <ng-template [clrIfExpanded]="groupExpand" (clrIfExpandedChange)="updateGroupExpand($event)">
             <clr-vertical-nav-group-children>
@@ -126,7 +126,7 @@
         </clr-vertical-nav-group>
         <clr-vertical-nav-group routerLinkActive="active">
           <a hidden aria-hidden="true" [routerLink]="['./killers']"></a>
-          <cds-icon shape="home" clrVerticalNavIcon></cds-icon>
+          <clr-icon shape="home" clrVerticalNavIcon></clr-icon>
           The Killers
           <ng-template clrIfExpanded>
             <clr-vertical-nav-group-children>
@@ -137,7 +137,7 @@
           </ng-template>
         </clr-vertical-nav-group>
         <a routerLinkActive="active" clrVerticalNavLink [routerLink]="['./wikipedia']">
-          <cds-icon shape="certificate" clrVerticalNavIcon></cds-icon>
+          <clr-icon shape="certificate" clrVerticalNavIcon></clr-icon>
           Wikipedia
         </a>
       </clr-vertical-nav>

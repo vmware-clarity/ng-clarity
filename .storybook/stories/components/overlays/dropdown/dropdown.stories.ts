@@ -52,9 +52,9 @@ const meta = {
               <span>Dropdown</span>
             }
             @if (iconButton) {
-              <cds-icon shape="exclamation-circle" class="is-error" size="24"></cds-icon>
+              <clr-icon shape="exclamation-circle" class="is-error" size="24"></clr-icon>
             }
-            <cds-icon shape="angle" direction="down"></cds-icon>
+            <clr-icon shape="angle" direction="down"></clr-icon>
           </button>
           <clr-dropdown-menu *clrIfOpen="open">
             <div aria-label="Action 1" clrDropdownItem>Action 1</div>

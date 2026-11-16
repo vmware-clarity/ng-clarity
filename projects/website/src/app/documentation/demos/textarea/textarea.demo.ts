@@ -8,7 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { ClrCommonFormsModule, ClrIcon, ClrIconModule, ClrTextareaModule } from '@clr/angular';
+import { ClrCommonFormsModule, ClrIcon, ClrTextareaModule } from '@clr/angular';
 
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -62,7 +62,6 @@ export class ExampleComponent {
     ThemedImageComponent,
     StackblitzExampleComponent,
     ClrIcon,
-    ClrIconModule,
     StyleDocsComponent,
     NestingTableComponent,
   ],

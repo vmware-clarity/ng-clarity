@@ -206,7 +206,7 @@ describe('ManageFilterComponent', () => {
       this.fixture.debugElement.nativeElement.querySelectorAll(removeFilterSelector);
     expect(removeFilterIcons.length).toEqual(2);
     removeFilterIcons.forEach(icon => {
-      expect(icon.tagName.toLowerCase()).toEqual('cds-icon');
+      expect(icon.tagName.toLowerCase()).toEqual('clr-icon');
       expect(icon.getAttribute('shape')).toEqual('window-close');
       expect(icon.closest('.badge')).toBeTruthy();
       const svg = (icon.shadowRoot ?? icon).querySelector('svg');

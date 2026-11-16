@@ -8,7 +8,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   ClrIcon,
-  ClrIconModule,
   ClrIfActive,
   ClrPopoverHostDirective,
   ClrSpinnerModule,
@@ -233,7 +232,6 @@ export class ExampleComponent {
     ClrTabsModule,
     ClrIfActive,
     ClrIcon,
-    ClrIconModule,
     ClrSpinnerModule,
     StackblitzExampleComponent,
     ClrTimelineModule,

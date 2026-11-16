@@ -59,7 +59,7 @@
       [attr.aria-label]="filterStrings.addCondition"
       (click)="enableSecondaryPredicate()"
     >
-      <cds-icon shape="plus" class="is-solid"></cds-icon>
+      <clr-icon shape="plus" class="is-solid"></clr-icon>
       {{ filterStrings.addCondition }}
     </button>
   }
@@ -109,7 +109,7 @@
           [attr.aria-label]="filterStrings.removeConditionAriaLabel"
           (click)="disableSecondaryPredicate()"
         >
-          <cds-icon size="20" shape="window-close"></cds-icon>
+          <clr-icon size="20" shape="window-close"></clr-icon>
         </button>
       </div>
       @if (!isEmptySecondaryPredicate) {

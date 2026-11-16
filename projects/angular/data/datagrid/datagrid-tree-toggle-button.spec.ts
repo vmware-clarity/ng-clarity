@@ -100,12 +100,12 @@ export default function (): void {
       node.expanded = true;
       fixture.detectChanges();
       expect(button().querySelector('clr-spinner')).not.toBeNull();
-      expect(button().querySelector('cds-icon')).toBeNull();
+      expect(button().querySelector('clr-icon')).toBeNull();
 
       node.request = null;
       fixture.detectChanges();
       expect(button().querySelector('clr-spinner')).toBeNull();
-      expect(button().querySelector('cds-icon')).not.toBeNull();
+      expect(button().querySelector('clr-icon')).not.toBeNull();
     });
 
     // The animations renderer takes the button out of the page after it is destroyed, the default one

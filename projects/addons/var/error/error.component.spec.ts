@@ -110,7 +110,7 @@ describe('ErrorComponent', () => {
     });
 
     it('should have icon', function (this: ThisTest) {
-      const icon = this.fixture.debugElement.query(By.css('div.card-footer.text-right button cds-icon'));
+      const icon = this.fixture.debugElement.query(By.css('div.card-footer.text-right button clr-icon'));
       expect(icon.nativeElement.attributes.getNamedItem('shape').value).toEqual('refresh');
     });
 

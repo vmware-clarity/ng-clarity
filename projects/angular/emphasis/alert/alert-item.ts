@@ -17,12 +17,12 @@ import { AlertIconAndTypesService } from './providers/icon-and-types.service';
         <clr-spinner class="alert-spinner" clrInline></clr-spinner>
       }
       @if (iconService.alertIconShape !== 'loading') {
-        <cds-icon
+        <clr-icon
           class="alert-icon"
           role="img"
           [shape]="iconService.alertIconShape"
           [attr.aria-label]="iconService.alertIconTitle"
-        ></cds-icon>
+        ></clr-icon>
       }
     </div>
     <ng-content></ng-content>

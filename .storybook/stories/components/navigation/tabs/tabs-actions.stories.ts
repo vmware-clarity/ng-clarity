@@ -71,7 +71,7 @@ const meta = {
       <clr-tabs [clrLayout]="clrLayout">
         <clr-tabs-actions [position]="tabsActionsPosition">
           <button class="btn btn-icon btn-link" (click)="clickTabAction()" clrTabAction>
-            <cds-icon shape="plus"></cds-icon>
+            <clr-icon shape="plus"></clr-icon>
             Tab Action
           </button>
         </clr-tabs-actions>

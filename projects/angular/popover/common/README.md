@@ -92,7 +92,7 @@ To use the popover utility, a host component must provide the `ClrPopoverService
 
 ```html
 <button class="btn" clrPopoverOpenCloseButton clrPopoverOrigin [attr.aria-owns]="popoverId">
-  <cds-icon shape="home"></cds-icon> Popover Origin
+  <clr-icon shape="home"></clr-icon> Popover Origin
 </button>
 <div
   [id]="popoverId"
@@ -104,7 +104,7 @@ To use the popover utility, a host component must provide the `ClrPopoverService
   <div role="heading">
     Overlay Header
     <button class="btn btn-sm btn-outline-neutral btn-icon" clrPopoverCloseButton>
-      <cds-icon shape="times"></cds-icon>
+      <clr-icon shape="times"></clr-icon>
     </button>
   </div>
   <div>Overlay Content</div>

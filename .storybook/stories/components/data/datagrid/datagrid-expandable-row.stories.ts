@@ -139,7 +139,7 @@ const meta = {
         >
           <clr-dg-cell>
             <clr-tooltip>
-              <cds-icon clrTooltipTrigger shape="exclamation-circle" solid></cds-icon>
+              <clr-icon clrTooltipTrigger shape="exclamation-circle" solid></clr-icon>
               <clr-tooltip-content clrPosition="bottom-right" clrSize="lg">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed
                 quam. Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget,
@@ -192,7 +192,7 @@ const meta = {
             @if (detailColumns) {
               <clr-dg-cell>
                 <clr-tooltip>
-                  <cds-icon clrTooltipTrigger shape="exclamation-circle" solid></cds-icon>
+                  <clr-icon clrTooltipTrigger shape="exclamation-circle" solid></clr-icon>
                   <clr-tooltip-content clrPosition="bottom-right" clrSize="lg">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque in ante placerat mattis id sed
                     quam. Proin rhoncus lacus et tempor dignissim. Vivamus sem quam, pellentesque aliquet suscipit eget,
@@ -300,5 +300,5 @@ export const ExpandedColumnExpandableRowsTooltipOpened: Story = {
 };
 
 function focusTooltip({ canvasElement }: StoryContext) {
-  canvasElement.querySelector<HTMLButtonElement>('cds-icon[clrTooltipTrigger]')?.focus();
+  canvasElement.querySelector<HTMLButtonElement>('clr-icon[clrTooltipTrigger]')?.focus();
 }

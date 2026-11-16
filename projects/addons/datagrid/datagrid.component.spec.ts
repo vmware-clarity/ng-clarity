@@ -914,7 +914,7 @@ describe('DatagridComponent', () => {
         this.component.data = this.data;
         this.component.enableColumnActions = true;
         this.component.columnActions = [
-          // 'angle' rather than something like 'copy' because cds-icon rewrites the shape of an icon
+          // 'angle' rather than something like 'copy' because clr-icon rewrites the shape of an icon
           // that is not registered to 'unknown', and this asserts the binding, not the icon registry.
           // An application does have to register whatever shape it names here.
           { id: 'copy', label: 'Copy values', enabled: true, icon: 'angle' },
@@ -974,8 +974,8 @@ describe('DatagridComponent', () => {
       it('leads an action with its icon when one is given', function (this: DatagridSpecContext) {
         toggleMenu(this.fixture, 0);
 
-        expect(menuItem('Copy values').querySelector('cds-icon')?.getAttribute('shape')).toBe('angle');
-        expect(menuItem('About column').querySelector('cds-icon')).toBeNull();
+        expect(menuItem('Copy values').querySelector('clr-icon')?.getAttribute('shape')).toBe('angle');
+        expect(menuItem('About column').querySelector('clr-icon')).toBeNull();
       });
 
       // Bound through [attr.title], so an action without a tooltip gets no title at all rather than
@@ -3251,7 +3251,7 @@ class DatagridHostComponent {
   template: `
     <div ng-non-bindable class="object">
       <span [attr.title]="label">
-        <cds-icon [shape]="icon" class="is-solid"></cds-icon>
+        <clr-icon [shape]="icon" class="is-solid"></clr-icon>
         {{ label }}</span
       >
     </div>

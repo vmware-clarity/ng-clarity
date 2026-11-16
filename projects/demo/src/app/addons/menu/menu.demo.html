@@ -37,39 +37,39 @@
   <p class="menu-hint">Right-click a node to open its context menu</p>
   <clr-tree>
     <clr-tree-node [clrExpanded]="true">
-      <cds-icon shape="building"></cds-icon>
+      <clr-icon shape="building"></clr-icon>
       Datacenter
 
       <clr-tree-node [clrExpanded]="true">
         <button class="clr-treenode-link" (contextmenu)="onOpenMenu($event)">
-          <cds-icon shape="cluster"></cds-icon>
+          <clr-icon shape="cluster"></clr-icon>
           Production Cluster
         </button>
 
         <clr-tree-node>
           <button class="clr-treenode-link" (contextmenu)="onOpenMenu($event)">
-            <cds-icon shape="host" badge="warning-triangle"></cds-icon>
+            <clr-icon shape="host" badge="warning-triangle"></clr-icon>
             192.0.2.80
           </button>
         </clr-tree-node>
 
         <clr-tree-node>
           <button class="clr-treenode-link" (contextmenu)="onOpenMenu($event)">
-            <cds-icon shape="host" badge="danger"></cds-icon>
+            <clr-icon shape="host" badge="danger"></clr-icon>
             192.0.2.81 (disconnected)
           </button>
         </clr-tree-node>
 
         <clr-tree-node>
           <button class="clr-treenode-link" (contextmenu)="onOpenMenu($event)">
-            <cds-icon shape="host"></cds-icon>
+            <clr-icon shape="host"></clr-icon>
             192.0.2.82
           </button>
         </clr-tree-node>
 
         <clr-tree-node>
           <button class="clr-treenode-link" (contextmenu)="onOpenMenu($event)">
-            <cds-icon shape="host"></cds-icon>
+            <clr-icon shape="host"></clr-icon>
             192.0.2.83
           </button>
         </clr-tree-node>
@@ -77,14 +77,14 @@
 
       <clr-tree-node>
         <button class="clr-treenode-link" (contextmenu)="onOpenMenu($event)">
-          <cds-icon shape="host"></cds-icon>
+          <clr-icon shape="host"></clr-icon>
           192.0.2.98
         </button>
       </clr-tree-node>
 
       <clr-tree-node>
         <button class="clr-treenode-link" (contextmenu)="onOpenMenu($event)">
-          <cds-icon shape="host"></cds-icon>
+          <clr-icon shape="host"></clr-icon>
           192.0.2.103
         </button>
       </clr-tree-node>
@@ -104,7 +104,7 @@
 
   @for (vm of vms; track vm.name) {
   <clr-dg-row (contextmenu)="onOpenMenu($event)">
-    <clr-dg-cell><cds-icon shape="vm"></cds-icon> {{ vm.name }}</clr-dg-cell>
+    <clr-dg-cell><clr-icon shape="vm"></clr-icon> {{ vm.name }}</clr-dg-cell>
     <clr-dg-cell>{{ vm.state }}</clr-dg-cell>
     <clr-dg-cell>{{ vm.status }}</clr-dg-cell>
     <clr-dg-cell>{{ vm.provisionedSpace }}</clr-dg-cell>
@@ -120,7 +120,7 @@
 @if (activeMode === 'button') {
 <div class="menu-button-container">
   <button class="btn btn-sm btn-action btn-link" aria-haspopup="menu" (click)="onOpenButtonMenu($event)">
-    <cds-icon shape="ellipsis-vertical" class="btn-action-icon"></cds-icon>
+    <clr-icon shape="ellipsis-vertical" class="btn-action-icon"></clr-icon>
     Actions
   </button>
 </div>

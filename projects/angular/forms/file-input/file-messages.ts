@@ -33,7 +33,7 @@ export class ClrFileInfo {}
   // We check for success here so that consumers don't have to.
   template: `
     @if (context.success) {
-      <cds-icon class="clr-validate-icon" shape="success-standard" status="success" aria-hidden="true"></cds-icon>
+      <clr-icon class="clr-validate-icon" shape="success-standard" status="success" aria-hidden="true"></clr-icon>
       <span class="clr-subtext">
         <ng-content></ng-content>
       </span>
@@ -55,7 +55,7 @@ export class ClrFileSuccess {
   selector: 'clr-file-error',
   // The host should have an `*ngIf` or `@if` that checks for the relevant error.
   template: `
-    <cds-icon class="clr-validate-icon" shape="error-standard" status="danger" aria-hidden="true"></cds-icon>
+    <clr-icon class="clr-validate-icon" shape="error-standard" status="danger" aria-hidden="true"></clr-icon>
     <span class="clr-subtext">
       <ng-content></ng-content>
     </span>

@@ -17,17 +17,17 @@ import { bellIcon, ClarityIcons, cloudIcon, warningStandardIcon } from '@clr/ang
       <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
       <clr-wizard-button [type]="'finish'">Fait Accompli</clr-wizard-button>
       <clr-wizard-header-action (actionClicked)="headerActionClicked($event)">
-        <cds-icon shape="cloud" solid></cds-icon>
+        <clr-icon shape="cloud" solid></clr-icon>
       </clr-wizard-header-action>
       <clr-wizard-page>
         <ng-template clrPageTitle>Longer Title for Page 1</ng-template>
         <p>Content for step 1</p>
         <ng-template clrPageHeaderActions>
           <clr-wizard-header-action (actionClicked)="headerActionClicked($event)" id="bell">
-            <cds-icon shape="bell"></cds-icon>
+            <clr-icon shape="bell"></clr-icon>
           </clr-wizard-header-action>
           <clr-wizard-header-action (actionClicked)="headerActionClicked($event)" id="warning">
-            <cds-icon shape="warning"></cds-icon>
+            <clr-icon shape="warning"></clr-icon>
           </clr-wizard-header-action>
         </ng-template>
       </clr-wizard-page>

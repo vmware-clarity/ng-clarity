@@ -6,14 +6,14 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ClarityIcons, ClrIcon, ClrIconModule, ClrSidePanelModule, resizeIcon } from '@clr/angular';
+import { ClarityIcons, ClrIcon, ClrSidePanelModule, resizeIcon } from '@clr/angular';
 
 @Component({
   selector: 'clr-side-panel-size-design-demo',
   templateUrl: './side-panel-size-design.demo.html',
   styleUrl: './side-panel-size-design-demo.scss',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ClrIcon, ClrIconModule, ClrSidePanelModule],
+  imports: [ClrIcon, ClrSidePanelModule],
 })
 export class SidePanelSizeDesignDemo {
   // Booleans to open each example side panel

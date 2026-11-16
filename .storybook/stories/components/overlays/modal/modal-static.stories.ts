@@ -69,7 +69,7 @@ const meta = {
             <div class="modal-content">
               <div class="modal-header">
                 <button aria-label="Close" class="close" type="button">
-                  <cds-icon aria-hidden="true" shape="window-close"></cds-icon>
+                  <clr-icon aria-hidden="true" shape="window-close"></clr-icon>
                 </button>
                 <h3 class="modal-title">{{ title }}</h3>
               </div>

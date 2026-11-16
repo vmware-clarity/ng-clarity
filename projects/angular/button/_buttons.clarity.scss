@@ -192,7 +192,6 @@
     &:visited {
       @include button-mixins.button-css-var(link, color, visited-color);
 
-      cds-icon,
       clr-icon {
         @include button-mixins.button-css-var(link, color, visited-color);
       }
@@ -200,7 +199,6 @@
       &:hover {
         @include button-mixins.button-css-var(link, color, visited-hover-color);
 
-        cds-icon,
         clr-icon {
           @include button-mixins.button-css-var(link, color, visited-hover-color);
         }
@@ -269,7 +267,6 @@
 
   //Small Icon Button
   .btn-sm:not(.btn-link) {
-    cds-icon,
     clr-icon {
       &:not([size]) {
         height: buttons-variables.$clr-btn-appearance-standard-icon-size;
@@ -389,7 +386,6 @@
     }
   }
 
-  .radio.btn,
   .radio.btn {
     @include button-mixins.btn-checked-styles(default, radio);
 

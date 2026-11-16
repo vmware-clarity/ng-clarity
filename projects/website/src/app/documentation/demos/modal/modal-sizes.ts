@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ClrIcon, ClrIconModule, ClrModalModule } from '@clr/angular';
+import { ClrIcon, ClrModalModule } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
@@ -97,7 +97,7 @@ const FULL_SCREEN_EXAMPLE = `
   selector: 'clr-modal-sizes-demo',
   templateUrl: './modal-sizes.demo.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ClrIcon, ClrIconModule, ClrModalModule, StackblitzExampleComponent],
+  imports: [ClrIcon, ClrModalModule, StackblitzExampleComponent],
 })
 export class ModalSizesDemo {
   smallExample = SMALL_EXAMPLE;

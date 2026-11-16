@@ -70,7 +70,6 @@
     .clr-accordion-status {
       width: auto;
 
-      cds-icon,
       clr-icon {
         &:not([size]) {
           @include mixins.min-equilateral(density.$clr-base-icon-size-s);

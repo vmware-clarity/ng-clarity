@@ -15,7 +15,6 @@ import {
   ClrAlertModule,
   ClrCommonFormsModule,
   ClrIcon,
-  ClrIconModule,
   ClrInputModule,
   ClrSelectModule,
   ClrWizard,
@@ -152,7 +151,6 @@ const defaultModel = {
     ClrSelectModule,
     ClrAlertModule,
     ClrIcon,
-    ClrIconModule,
     WizardBasic,
   ],
 })

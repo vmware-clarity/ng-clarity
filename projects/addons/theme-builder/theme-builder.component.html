@@ -96,7 +96,7 @@
                     (click)="resetColor($event, colorGroup.base, colorStruct[activeTheme][colorGroup.key])"
                     title="Back to original color"
                   >
-                    <cds-icon shape="undo"></cds-icon>
+                    <clr-icon shape="undo"></clr-icon>
                   </button>
                 </div>
               </clr-stack-content>
@@ -126,7 +126,7 @@
                         (click)="resetColor($event, colorVariant)"
                         title="Back to original color"
                       >
-                        <cds-icon shape="undo"></cds-icon>
+                        <clr-icon shape="undo"></clr-icon>
                       </button>
                     </div>
                   </clr-stack-content>
@@ -161,7 +161,7 @@
         [attr.aria-label]="'Switch to ' + (isDarkTheme ? 'light' : 'dark') + ' theme'"
         (click)="toggleActiveTheme()"
       >
-        <cds-icon [shape]="isDarkTheme ? 'moon' : 'sun'" [solid]="true" [size]="'md'"></cds-icon>
+        <clr-icon [shape]="isDarkTheme ? 'moon' : 'sun'" [solid]="true" [size]="'md'"></clr-icon>
         {{ isDarkTheme ? 'Dark' : 'Light' }}
       </button>
     </div>
@@ -258,7 +258,7 @@
           <clr-alert-item>
             <span class="alert-text">This is an app level info.</span>
             <div class="alert-actions">
-              <button class="btn alert-action"><cds-icon shape="user"></cds-icon>Thanks</button>
+              <button class="btn alert-action"><clr-icon shape="user"></clr-icon>Thanks</button>
             </div>
           </clr-alert-item>
         </clr-alert>
@@ -266,7 +266,7 @@
           <clr-alert-item>
             <span class="alert-text">This is an app level alert.</span>
             <div class="alert-actions">
-              <button class="btn alert-action"><cds-icon shape="user"></cds-icon>Fix</button>
+              <button class="btn alert-action"><clr-icon shape="user"></clr-icon>Fix</button>
             </div>
           </clr-alert-item>
         </clr-alert>
@@ -274,7 +274,7 @@
           <clr-alert-item>
             <span class="alert-text">This is an app level warning.</span>
             <div class="alert-actions">
-              <button class="btn alert-action"><cds-icon shape="user"></cds-icon>Check</button>
+              <button class="btn alert-action"><clr-icon shape="user"></clr-icon>Check</button>
             </div>
           </clr-alert-item>
         </clr-alert>
@@ -282,7 +282,7 @@
           <clr-alert-item>
             <span class="alert-text">This is an app level success.</span>
             <div class="alert-actions">
-              <button class="btn alert-action"><cds-icon shape="user"></cds-icon>Great</button>
+              <button class="btn alert-action"><clr-icon shape="user"></clr-icon>Great</button>
             </div>
           </clr-alert-item>
         </clr-alert>
@@ -380,7 +380,7 @@
         <div class="tb-nav-preview-wrap">
           <clr-vertical-nav [clrVerticalNavCollapsible]="true">
             <clr-vertical-nav-group clrVerticalNavGroupExpanded>
-              <cds-icon shape="home" clrVerticalNavIcon></cds-icon>
+              <clr-icon shape="home" clrVerticalNavIcon></clr-icon>
               Dashboard
               <clr-vertical-nav-group-children>
                 <a clrVerticalNavLink href="javascript:void(0)" class="active">Overview</a>
@@ -388,7 +388,7 @@
               </clr-vertical-nav-group-children>
             </clr-vertical-nav-group>
             <clr-vertical-nav-group>
-              <cds-icon shape="cog" clrVerticalNavIcon></cds-icon>
+              <clr-icon shape="cog" clrVerticalNavIcon></clr-icon>
               Settings
               <clr-vertical-nav-group-children>
                 <a clrVerticalNavLink href="javascript:void(0)">Profile</a>

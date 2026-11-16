@@ -7,7 +7,7 @@
 
 import { AsyncPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input, OnChanges } from '@angular/core';
-import { ClarityIcons, ClrIcon, ClrIconModule, IconShapeTuple } from '@clr/angular';
+import { ClarityIcons, ClrIcon, IconShapeTuple } from '@clr/angular';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, map, Observable } from 'rxjs';
 
 import { IconBadgePipe } from './icon-badge.pipe';
@@ -26,7 +26,7 @@ export interface IconGroupsFormOptions {
   templateUrl: './icon-groups.component.html',
   styleUrl: './icon-groups.component.scss',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [NgClass, ClrIcon, ClrIconModule, IconDetailsComponent, AsyncPipe, IconBadgePipe],
+  imports: [NgClass, ClrIcon, IconDetailsComponent, AsyncPipe, IconBadgePipe],
 })
 export class IconGroupsComponent implements OnChanges {
   readonly formOptions = input<IconGroupsFormOptions | undefined>(undefined);

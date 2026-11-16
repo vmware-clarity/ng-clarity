@@ -39,7 +39,7 @@ import { RenderComponentStorybook } from '@storybook-helpers/render-component';
                     <clr-dropdown>
                       <button clrDropdownTrigger>
                         Actions
-                        <cds-icon shape="angle" direction="down"></cds-icon>
+                        <clr-icon shape="angle" direction="down"></clr-icon>
                       </button>
                       <clr-dropdown-menu *clrIfOpen="openContextMenu" clrPosition="bottom-right">
                         <button clrDropdownItem>Shutdown</button>

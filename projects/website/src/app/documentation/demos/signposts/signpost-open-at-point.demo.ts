@@ -8,7 +8,6 @@
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import {
   ClrIcon,
-  ClrIconModule,
   ClrIfOpen,
   ClrPopoverContent,
   ClrPopoverHostDirective,
@@ -76,7 +75,6 @@ export class ExampleComponent {
     ClrPopoverHostDirective,
     ClrSignpostModule,
     ClrIcon,
-    ClrIconModule,
     ClrIfOpen,
     ClrPopoverContent,
     StackblitzExampleComponent,

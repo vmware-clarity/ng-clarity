@@ -68,7 +68,7 @@ const meta = {
         <clr-dropdown>
           <button class="btn btn-outline-primary" clrDropdownTrigger>
             Dropdown
-            <cds-icon shape="angle" direction="down"></cds-icon>
+            <clr-icon shape="angle" direction="down"></clr-icon>
           </button>
           <clr-dropdown-menu [clrPosition]="clrPosition" *clrIfOpen="true">
             <label class="dropdown-header" aria-hidden="true">{{ menuHeader }}</label>
@@ -76,7 +76,7 @@ const meta = {
               <clr-dropdown>
                 <button clrDropdownTrigger>
                   @if (showIcon) {
-                    <cds-icon shape="user"></cds-icon>
+                    <clr-icon shape="user"></clr-icon>
                   }
                   <div [attr.cds-text]="truncateMenuItemText ? 'truncate' : undefined">
                     {{ menuItemText }} {{ menuIndex + 1 }}
@@ -92,7 +92,7 @@ const meta = {
                   @for (_ of createArray(actionCount); track $index; let actionIndex = $index) {
                     <div [attr.aria-label]="'Action' + (actionIndex + 1)" clrDropdownItem>
                       @if (showIcon) {
-                        <cds-icon shape="user"></cds-icon>
+                        <clr-icon shape="user"></clr-icon>
                       }
                       Action {{ menuIndex * actionCount + actionIndex + 1 }}
                     </div>
@@ -140,7 +140,7 @@ export const Showcase: Story = {
             <clr-dropdown [clrCloseMenuOnItemClick]="false">
               <button class="btn btn-outline-primary" clrDropdownTrigger>
                 {{ position }}
-                <cds-icon shape="angle" direction="down"></cds-icon>
+                <clr-icon shape="angle" direction="down"></clr-icon>
               </button>
               <clr-dropdown-menu [clrPosition]="position" *clrIfOpen="true">
                 <label class="dropdown-header" aria-hidden="true">{{ menuHeader }}</label>

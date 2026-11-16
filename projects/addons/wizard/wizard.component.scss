@@ -13,7 +13,7 @@
     background: transparent;
     padding: 0;
 
-    cds-icon {
+    clr-icon {
       cursor: pointer;
     }
   }
@@ -23,7 +23,7 @@
     border: 0;
     background: transparent;
 
-    cds-icon {
+    clr-icon {
       cursor: pointer;
     }
   }
@@ -112,7 +112,7 @@
       padding-left: 0;
     }
 
-    .btn-show-stepnav cds-icon {
+    .btn-show-stepnav clr-icon {
       fill: var(--clr-wizard-main-text-color);
     }
 
@@ -130,7 +130,7 @@
       .btn-close-stepnav {
         display: inherit;
 
-        cds-icon {
+        clr-icon {
           vertical-align: baseline;
           fill: var(--clr-wizard-main-text-color);
         }

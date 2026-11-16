@@ -180,10 +180,10 @@ export default function (): void {
        * This test assumes that if
        */
       it('does not display the default trigger', function (this: Context) {
-        const triggerIcon: HTMLElement = this.testElement.querySelector('cds-icon');
+        const triggerIcon: HTMLElement = this.testElement.querySelector('clr-icon');
 
         /**********
-         * If there is a cds-icon we are testing that it is not the same shape
+         * If there is a clr-icon we are testing that it is not the same shape
          * used for the default trigger.
          */
         if (triggerIcon) {

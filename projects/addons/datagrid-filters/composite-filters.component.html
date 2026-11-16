@@ -13,7 +13,7 @@
       [attr.aria-label]="filterStrings.addNewAriaLabel"
       [disabled]="filterableProperties.length === propertyFilters.length"
     >
-      <cds-icon size="20" shape="filter-grid" class="is-solid"></cds-icon>
+      <clr-icon size="20" shape="filter-grid" class="is-solid"></clr-icon>
       {{ filterStrings.addNew }}
     </button>
     <ng-template [(clrIfOpen)]="signPostOpened">
@@ -83,7 +83,7 @@
         [attr.aria-label]="showHideFiltersAriaLabel"
         (click)="showHideAllFilters()"
       >
-        <cds-icon shape="angle" class="is-solid" [direction]="showHideFiltersArrowDir"></cds-icon>
+        <clr-icon shape="angle" class="is-solid" [direction]="showHideFiltersArrowDir"></clr-icon>
         {{ showHideFiltersLabel }}
       </button>
       <button

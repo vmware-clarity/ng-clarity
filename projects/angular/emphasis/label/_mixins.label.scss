@@ -20,7 +20,6 @@
     color: map.get($badge-colors, color);
   }
 
-  & > cds-icon,
   & > clr-icon {
     color: map.get($colors, color);
   }
@@ -55,7 +54,6 @@
       color: map.get($badge-colors, color);
     }
 
-    & > cds-icon,
     & > clr-icon {
       color: map.get($colors, solid-color);
     }

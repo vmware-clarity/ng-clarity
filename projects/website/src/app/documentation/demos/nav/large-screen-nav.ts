@@ -7,12 +7,12 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLinkActive } from '@angular/router';
-import { ClrCommonFormsModule, ClrIcon, ClrIconModule, ClrVerticalNavModule } from '@clr/angular';
+import { ClrCommonFormsModule, ClrIcon, ClrVerticalNavModule } from '@clr/angular';
 
 @Component({
   selector: 'clr-layout-large-screen-nav',
   templateUrl: './large-screen-nav.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ClrIcon, ClrIconModule, ClrCommonFormsModule, ClrVerticalNavModule, RouterLinkActive],
+  imports: [ClrIcon, ClrCommonFormsModule, ClrVerticalNavModule, RouterLinkActive],
 })
 export class LargeScreenNavDemo {}

@@ -40,7 +40,7 @@ import { ClrStackViewLabel } from './stack-view-custom-tags';
       [attr.aria-expanded]="ariaExpanded"
       [attr.aria-controls]="getStackChildrenId()"
     >
-      <cds-icon shape="angle" class="stack-block-caret" [direction]="caretDirection"></cds-icon>
+      <clr-icon shape="angle" class="stack-block-caret" [direction]="caretDirection"></clr-icon>
       @if (getChangedValue) {
         <span class="clr-sr-only">{{ commonStrings.keys.stackViewChanged }}</span>
       }

@@ -10,7 +10,6 @@ import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core';
 import {
   ClarityIcons,
   ClrIcon,
-  ClrIconModule,
   cogIcon,
   downloadCloudIcon,
   ellipsisHorizontalIcon,
@@ -72,7 +71,7 @@ import { ProgressBarExamplesDemo } from './progress-bar-examples';
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ClrIcon, ClrIconModule, NgClass, ProgressBarExamplesDemo],
+  imports: [ClrIcon, NgClass, ProgressBarExamplesDemo],
 })
 export class ProgressBarStoryDemo {
   @HostBinding('style.width.%') width = 100;

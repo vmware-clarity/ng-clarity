@@ -21,7 +21,7 @@ import { RenderComponentStorybook } from '@storybook-helpers/render-component';
             <span class="badge">{{ badgeText }}</span>
           }
           @if (closeIcon) {
-            <cds-icon shape="close"></cds-icon>
+            <clr-icon shape="close"></clr-icon>
           }
         </span>
       } @else {
@@ -37,7 +37,7 @@ import { RenderComponentStorybook } from '@storybook-helpers/render-component';
             <span class="text">Projected {{ content }}</span>
           }
           @if (closeIcon) {
-            <cds-icon shape="close"></cds-icon>
+            <clr-icon shape="close"></clr-icon>
           }
         </clr-label>
       }

@@ -155,7 +155,7 @@ const meta = {
                 (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
               >
                 @if (includeIcons) {
-                  <cds-icon [shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
+                  <clr-icon [shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></clr-icon>
                 }
                 {{ navLink.text }}
                 <clr-vertical-nav-group-children>
@@ -204,7 +204,7 @@ export const Showcase: Story = {
                     (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
                   >
                     @if (state?.includeIcons) {
-                      <cds-icon [shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
+                      <clr-icon [shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></clr-icon>
                     }
                     {{ navLink.text }}
                     <clr-vertical-nav-group-children>

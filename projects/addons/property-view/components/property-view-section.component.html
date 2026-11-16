@@ -13,7 +13,7 @@
       [attr.aria-label]="getSectionTitleToggleButtonAriaLabel()"
       (click)="toggleExpandedState()"
     >
-      <cds-icon shape="angle" aria-hidden="true" [direction]="expanded ? 'down' : 'right'"></cds-icon>
+      <clr-icon shape="angle" aria-hidden="true" [direction]="expanded ? 'down' : 'right'"></clr-icon>
     </button>
     <span *ngIf="data.titleIcon" class="pv-section-title-icon" aria-hidden="true" [ngClass]="data.titleIcon"></span>
     <span
@@ -33,7 +33,7 @@
     <clr-dropdown *ngIf="data.actions.length > 0" class="pv-section-actions-dropdown">
       <button type="button" class="btn btn-link" clrDropdownTrigger>
         {{ propertyViewStrings.actions }}
-        <cds-icon shape="angle" direction="down" aria-hidden="true"></cds-icon>
+        <clr-icon shape="angle" direction="down" aria-hidden="true"></clr-icon>
       </button>
       <clr-dropdown-menu *clrIfOpen>
         <div

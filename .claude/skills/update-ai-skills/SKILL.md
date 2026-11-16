@@ -72,7 +72,7 @@ For each changed CIP:
 - Verify every name against the report before writing it. Do not rely on memory.
 - Keep guides short and pattern-focused: when to use what, minimal examples, pitfalls. Do not paste API tables.
 - Do not change a guide's `name` (it is its file name under `references/` and its website URL) unless the user asks. Keep `metadata.docs` pointing at the component's website page.
-- Examples use the app style from the guides: NgModule imports, `@for`/`@if`, `clr-icon` (the `cds-icon` alias is deprecated), `type="button"`, `aria-label` on icon-only buttons.
+- Examples use the app style from the guides: NgModule imports, `@for`/`@if`, `clr-icon`, `type="button"`, `aria-label` on icon-only buttons.
 - Do not run `npm run public-api:update`, builds, or `eslint:fix`. If the reports look stale, ask the user to update them.
 - Exception: `npm run check-for-ai-skill-changes` in step 1 may be run; it needs a library build in `dist/`, so if it fails for that, ask the user to build.
 

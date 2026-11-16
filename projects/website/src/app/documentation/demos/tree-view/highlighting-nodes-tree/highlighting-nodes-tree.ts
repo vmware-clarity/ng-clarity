@@ -6,14 +6,14 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ClrIcon, ClrIconModule, ClrTreeViewModule } from '@clr/angular';
+import { ClrIcon, ClrTreeViewModule } from '@clr/angular';
 
 @Component({
   selector: 'app-highlighting-nodes-tree-demo',
   styleUrl: '../tree-view.demo.scss',
   templateUrl: './highlighting-nodes-tree.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ClrTreeViewModule, ClrIcon, ClrIconModule],
+  imports: [ClrTreeViewModule, ClrIcon],
 })
 export class HighlightNodesTreeDemo {
   rootDirectory = [

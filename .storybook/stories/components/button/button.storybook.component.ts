@@ -21,7 +21,7 @@ import { RenderComponentStorybook } from '@storybook-helpers/render-component';
       @case ('default') {
         <button class="btn" [ngClass]="getButtonClass({ buttonType, buttonStyle, btnSmallSize })" [disabled]="disabled">
           @if (iconShape) {
-            <cds-icon [shape]="iconShape"></cds-icon>
+            <clr-icon [shape]="iconShape"></clr-icon>
           }
           {{ content }}
           <ng-container #renderContainer></ng-container>
@@ -35,7 +35,7 @@ import { RenderComponentStorybook } from '@storybook-helpers/render-component';
           [disabled]="disabled"
         >
           @if (iconShape) {
-            <cds-icon [shape]="iconShape"></cds-icon>
+            <clr-icon [shape]="iconShape"></clr-icon>
           }
           {{ content }}
         </a>
@@ -43,12 +43,12 @@ import { RenderComponentStorybook } from '@storybook-helpers/render-component';
       @case ('loading') {
         <h6>{{ stateName }}</h6>
         <button [clrLoading]="validateState" class="btn btn-sm btn-primary">
-          <cds-icon shape="home"></cds-icon>
+          <clr-icon shape="home"></clr-icon>
           Validate
         </button>
         <button [clrLoading]="validateState" class="btn btn-primary">Validate</button>
         <button [clrLoading]="submitState" type="submit" class="btn btn-success-outline">
-          <cds-icon shape="home"></cds-icon>
+          <clr-icon shape="home"></clr-icon>
           Submit
         </button>
       }
@@ -59,7 +59,7 @@ import { RenderComponentStorybook } from '@storybook-helpers/render-component';
         <h6>Primary Buttons</h6>
         @for (type of BUTTON_TYPES; track type) {
           <button [class]="'btn btn-' + type">
-            <cds-icon shape="user"></cds-icon>
+            <clr-icon shape="user"></clr-icon>
             {{ type }}
           </button>
         }
@@ -68,7 +68,7 @@ import { RenderComponentStorybook } from '@storybook-helpers/render-component';
         @for (type of BUTTON_TYPES; track type) {
           <button [class]="'btn btn-' + type + '-outline'">
             {{ type }}
-            <cds-icon shape="home"></cds-icon>
+            <clr-icon shape="home"></clr-icon>
           </button>
         }
 
@@ -90,9 +90,9 @@ import { RenderComponentStorybook } from '@storybook-helpers/render-component';
 
         <h6>Block Buttons</h6>
         <button href="javascript://" class="btn btn-block">
-          <cds-icon shape="user"></cds-icon>
+          <clr-icon shape="user"></clr-icon>
           Block Button
-          <cds-icon shape="home"></cds-icon>
+          <clr-icon shape="home"></clr-icon>
         </button>
 
         <h6>Small Primary Buttons</h6>
@@ -103,9 +103,9 @@ import { RenderComponentStorybook } from '@storybook-helpers/render-component';
         <h6>Small Outline Buttons</h6>
         @for (type of BUTTON_TYPES; track type) {
           <button [class]="'btn btn-sm btn-' + type + '-outline'">
-            <cds-icon shape="user"></cds-icon>
+            <clr-icon shape="user"></clr-icon>
             {{ type }}
-            <cds-icon shape="home"></cds-icon>
+            <clr-icon shape="home"></clr-icon>
           </button>
         }
 
@@ -125,9 +125,9 @@ import { RenderComponentStorybook } from '@storybook-helpers/render-component';
         <h6>New Outline Links</h6>
         @for (type of BUTTON_TYPES; track type) {
           <a href="javascript://" [class]="'btn btn-outline-' + type">
-            <cds-icon shape="user"></cds-icon>
+            <clr-icon shape="user"></clr-icon>
             {{ type }}
-            <cds-icon shape="home"></cds-icon>
+            <clr-icon shape="home"></clr-icon>
           </a>
         }
 
@@ -137,9 +137,9 @@ import { RenderComponentStorybook } from '@storybook-helpers/render-component';
           <a href="javascript://" [class]="'btn btn-link-' + type">{{ type }}</a>
         }
         <a href="javascript://" class="btn btn-link btn-sm">
-          <cds-icon shape="user"></cds-icon>
+          <clr-icon shape="user"></clr-icon>
           Link
-          <cds-icon shape="home"></cds-icon>
+          <clr-icon shape="home"></clr-icon>
         </a>
 
         <h6>Flat Buttons</h6>
@@ -148,9 +148,9 @@ import { RenderComponentStorybook } from '@storybook-helpers/render-component';
           <button [class]="'btn btn-link-' + type">{{ type }}</button>
         }
         <button class="btn btn-link btn-sm">
-          <cds-icon shape="user"></cds-icon>
+          <clr-icon shape="user"></clr-icon>
           Flat
-          <cds-icon shape="home"></cds-icon>
+          <clr-icon shape="home"></clr-icon>
         </button>
 
         <h6>Inverse Links</h6>

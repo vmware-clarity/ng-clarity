@@ -6,16 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import {
-  ClarityIcons,
-  cloudIcon,
-  ClrIcon,
-  ClrIconModule,
-  cogIcon,
-  ellipsisHorizontalIcon,
-  homeIcon,
-  userIcon,
-} from '@clr/angular';
+import { ClarityIcons, cloudIcon, ClrIcon, cogIcon, ellipsisHorizontalIcon, homeIcon, userIcon } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
@@ -79,7 +70,7 @@ const HTML_EXAMPLE_2 = `
   selector: 'clr-button-group-icons-demo',
   templateUrl: './icons.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ClrIcon, ClrIconModule, StackblitzExampleComponent],
+  imports: [ClrIcon, StackblitzExampleComponent],
 })
 export class ButtonGroupIconsDemo {
   htmlExample = HTML_EXAMPLE;

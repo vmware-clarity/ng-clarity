@@ -9,6 +9,15 @@
     "migrate-v18": {
       "description": "Applies automated @clr/angular v17→v18 source migrations (templates, imports, CSS). Run with: ng generate @clr/angular:migrate-v18",
       "factory": "./ng-update/index#migrate"
+    },
+    "migration-v19": {
+      "version": "19.0.0",
+      "description": "Migrates @clr/angular from v18 to v19",
+      "factory": "./ng-update/v19/index#migrate"
+    },
+    "migrate-v19": {
+      "description": "Applies automated @clr/angular v18→v19 source migrations (cds-icon → clr-icon, ClrIconModule → ClrIcon). Run with: ng generate @clr/angular:migrate-v19",
+      "factory": "./ng-update/v19/index#migrate"
     }
   }
 }

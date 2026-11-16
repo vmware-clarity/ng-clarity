@@ -12,7 +12,6 @@ import {
   bugIcon,
   ClarityIcons,
   ClrIcon,
-  ClrIconModule,
   ClrVerticalNavModule,
   downloadCloudIcon,
   flameIcon,
@@ -27,7 +26,7 @@ import {
   templateUrl: './icons.html',
   styleUrl: '../vertical-nav.demo.scss',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ClrVerticalNavModule, ClrIcon, ClrIconModule],
+  imports: [ClrVerticalNavModule, ClrIcon],
 })
 export class VerticalNavIconsDemo {
   readonly demoHideIcons = input(false);

@@ -36,7 +36,7 @@ const meta = {
       <header>
         <div class="branding">
           <a href="#" class="nav-link">
-            <cds-icon shape="vm-bug"></cds-icon>
+            <clr-icon shape="vm-bug"></clr-icon>
             <span class="title">Clarity Design</span>
           </a>
         </div>
@@ -46,7 +46,7 @@ const meta = {
         </div>
         <div class="header-actions">
           <a href="#" class="nav-link nav-icon" aria-label="settings">
-            <cds-icon shape="cog"></cds-icon>
+            <clr-icon shape="cog"></clr-icon>
           </a>
         </div>
       </header>
@@ -54,7 +54,7 @@ const meta = {
       <header>
         <div class="branding">
           <a href="#" class="nav-link">
-            <cds-icon shape="vm-bug"></cds-icon>
+            <clr-icon shape="vm-bug"></clr-icon>
             <span class="title">Clarity Design</span>
           </a>
         </div>
@@ -65,11 +65,11 @@ const meta = {
         </form>
         <div class="header-actions">
           <a href="javascript://" class="nav-link nav-icon-text">
-            <cds-icon shape="user" inverse></cds-icon>
+            <clr-icon shape="user" inverse></clr-icon>
             <span class="nav-text">username</span>
           </a>
           <a href="#" class="nav-link nav-icon" aria-label="settings">
-            <cds-icon shape="cog"></cds-icon>
+            <clr-icon shape="cog"></clr-icon>
           </a>
           <a href="javascript://" class="nav-link nav-text">Log Out</a>
         </div>
@@ -78,15 +78,15 @@ const meta = {
       <header>
         <div class="branding">
           <a href="#" class="nav-link">
-            <cds-icon shape="vm-bug"></cds-icon>
+            <clr-icon shape="vm-bug"></clr-icon>
             <span class="title">Clarity Design</span>
           </a>
         </div>
         <div class="header-actions">
           <clr-dropdown>
             <button class="nav-icon" clrDropdownTrigger aria-label="toggle settings menu">
-              <cds-icon shape="cog"></cds-icon>
-              <cds-icon shape="angle" direction="down"></cds-icon>
+              <clr-icon shape="cog"></clr-icon>
+              <clr-icon shape="angle" direction="down"></clr-icon>
             </button>
             <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
               <a href="#" clrDropdownItem>About</a>
@@ -100,7 +100,7 @@ const meta = {
       <header>
         <div class="branding">
           <a href="#" class="nav-link">
-            <cds-icon shape="vm-bug"></cds-icon>
+            <clr-icon shape="vm-bug"></clr-icon>
             <span class="title">Clarity Design</span>
           </a>
         </div>
@@ -112,13 +112,13 @@ const meta = {
       <header>
         <div class="branding">
           <a href="javascript://" class="nav-link">
-            <cds-icon shape="vm-bug"></cds-icon>
+            <clr-icon shape="vm-bug"></clr-icon>
             <span class="title">Clarity Design</span>
           </a>
         </div>
         <div class="header-actions">
           <a href="javascript://" class="nav-link nav-icon-text">
-            <cds-icon shape="user"></cds-icon>
+            <clr-icon shape="user"></clr-icon>
             <span class="nav-text">username</span>
           </a>
         </div>
@@ -127,7 +127,7 @@ const meta = {
       <header>
         <div class="branding">
           <a href="#" class="nav-link">
-            <cds-icon shape="vm-bug"></cds-icon>
+            <clr-icon shape="vm-bug"></clr-icon>
             <span class="title">Clarity Design</span>
           </a>
         </div>
@@ -135,7 +135,7 @@ const meta = {
           <clr-dropdown>
             <button class="nav-text" clrDropdownTrigger aria-label="open user profile">
               john.doe&#64;vmware.com
-              <cds-icon shape="angle" direction="down"></cds-icon>
+              <clr-icon shape="angle" direction="down"></clr-icon>
             </button>
             <clr-dropdown-menu *clrIfOpen="true" clrPosition="bottom-right">
               <a href="#" clrDropdownItem>Preferences</a>

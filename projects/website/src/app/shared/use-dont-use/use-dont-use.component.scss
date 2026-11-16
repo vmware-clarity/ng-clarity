@@ -21,11 +21,11 @@
   }
 
   &__icon {
-    #{$heading}--use & cds-icon {
+    #{$heading}--use & clr-icon {
       --color: #{tokens.$cds-alias-status-success};
     }
 
-    #{$heading}--dont-use & cds-icon {
+    #{$heading}--dont-use & clr-icon {
       --color: #{tokens.$cds-alias-status-danger};
     }
   }

@@ -20,7 +20,7 @@
       [attr.aria-label]="workflowStrings.closeStepNavAriaLabel"
       (click)="showNav = false"
     >
-      <cds-icon direction="left" shape="angle" class="stepnav-close"></cds-icon>
+      <clr-icon direction="left" shape="angle" class="stepnav-close"></clr-icon>
     </button>
     {{ title }}
   </clr-wizard-title>
@@ -31,7 +31,7 @@
       [attr.aria-label]="workflowStrings.closeStepNavAriaLabel"
       (click)="showNav = false"
     >
-      <cds-icon direction="left" shape="angle" class="stepnav-close"></cds-icon>
+      <clr-icon direction="left" shape="angle" class="stepnav-close"></clr-icon>
     </button>
     {{ title }}
   </clr-wizard-title>
@@ -84,28 +84,28 @@
           [attr.aria-label]="workflowStrings.openStepNavAriaLabel"
           (click)="openStepNavPanel()"
         >
-          <cds-icon shape="bars"></cds-icon>
+          <clr-icon shape="bars"></clr-icon>
         </button>
         <span class="page-index">{{ activeStepIndex }}.&nbsp;</span>{{ page.title }}
       </ng-template>
 
       <ng-template clrPageNavTitle>
-        <!-- TODO: Should remove these cds-icon tags when clarity fixes https://github.com/vmware/clarity/issues/3976 -->
-        <cds-icon
+        <!-- TODO: Should remove these clr-icon tags when clarity fixes https://github.com/vmware/clarity/issues/3976 -->
+        <clr-icon
           shape="success-standard"
           class="clr-sr-only"
           status="success"
           *ngIf="clrWizardPage.completed"
           [class.is-inverse]="clrWizardPage.current"
           [attr.title]="workflowStrings.step.completed"
-        ></cds-icon>
-        <cds-icon
+        ></clr-icon>
+        <clr-icon
           shape="pencil"
           class="clr-sr-only"
           *ngIf="clrWizardPage.enabled && !clrWizardPage.completed"
           [class.is-inverse]="clrWizardPage.current"
           [attr.title]="workflowStrings.step.inProgress"
-        ></cds-icon>
+        ></clr-icon>
         {{ page.navTitle || page.title }}
       </ng-template>
       <appfx-step-container [step]="page" [description]="page.description" class="content-container clr-flex-column">

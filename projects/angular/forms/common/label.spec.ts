@@ -63,7 +63,7 @@ class ExistingGridTest {}
   template: `
     <label>
       <clr-signpost>
-        <cds-icon id="signpost-trigger" shape="info-standard" clrSignpostTrigger>Trigger</cds-icon>
+        <clr-icon id="signpost-trigger" shape="info-standard" clrSignpostTrigger>Trigger</clr-icon>
         <clr-signpost-content *clrIfOpen>Signpost content</clr-signpost-content>
       </clr-signpost>
     </label>

@@ -601,27 +601,23 @@
         background-repeat: no-repeat;
         background-size: contain;
 
-        cds-icon,
         clr-icon {
           color: tokens.$cds-alias-object-interaction-color;
         }
 
         &:hover {
-          cds-icon,
           clr-icon {
             color: tokens.$cds-alias-object-interaction-color-hover;
           }
         }
 
         &.datagrid-filter-open {
-          cds-icon,
           clr-icon {
             color: tokens.$cds-alias-object-interaction-color-active;
           }
         }
 
         &.datagrid-filtered {
-          cds-icon,
           clr-icon {
             color: tokens.$cds-alias-object-interaction-color-selected;
           }
@@ -649,15 +645,15 @@
           justify-content: center;
           margin-left: density.$clr-base-horizontal-offset-s;
 
-          cds-icon {
+          clr-icon {
             color: tokens.$cds-alias-object-interaction-color;
           }
 
-          &:hover cds-icon {
+          &:hover clr-icon {
             color: tokens.$cds-alias-object-interaction-color-hover;
           }
 
-          &:active cds-icon {
+          &:active clr-icon {
             color: tokens.$cds-alias-object-interaction-color-active;
           }
 
@@ -666,7 +662,7 @@
           &.datagrid-column-actions-filtered {
             padding: tokens.$cds-global-space-1;
 
-            cds-icon {
+            clr-icon {
               color: tokens.$cds-alias-object-interaction-color-selected;
             }
           }
@@ -695,15 +691,15 @@
         margin-left: density.$clr-base-horizontal-offset-s;
         padding: density.$clr-base-vertical-offset-2xs density.$clr-base-horizontal-offset-2xs;
 
-        cds-icon {
+        clr-icon {
           color: tokens.$cds-alias-object-interaction-color;
         }
 
-        &:hover cds-icon {
+        &:hover clr-icon {
           color: tokens.$cds-alias-object-interaction-color-hover;
         }
 
-        &:active cds-icon {
+        &:active clr-icon {
           color: tokens.$cds-alias-object-interaction-color-active;
         }
       }
@@ -866,13 +862,11 @@
         @include mixins.clr-no-styles-button();
         @include datagrid-mixins.datagrid-action-button-styles();
 
-        cds-icon,
         clr-icon {
           color: datagrid-variables.$clr-datagrid-icon-color;
         }
 
         &:active {
-          cds-icon,
           clr-icon {
             // Fixed active state on this button for Safari.
             color: datagrid-variables.$clr-datagrid-action-toggle-color;
@@ -1157,7 +1151,6 @@
             flex-basis: mixins.baselinePx(20);
 
             button {
-              cds-icon,
               clr-icon {
                 &:not([size]) {
                   @include mixins.min-equilateral(mixins.baselinePx(20));
@@ -1279,15 +1272,6 @@
     }
 
     .datagrid-signpost-trigger .signpost .signpost-trigger {
-      cds-icon:not(
-        [size],
-        [shape='info-circle'],
-        [shape='exclamation-triangle'],
-        [shape='exclamation-circle'],
-        [shape='check-circle'],
-        [shape='info'],
-        [shape='error']
-      ),
       clr-icon:not(
         [size],
         [shape='info-circle'],
@@ -1651,7 +1635,6 @@
         padding: 0;
         border: 0;
 
-        cds-icon,
         clr-icon {
           @include mixins.min-equilateral(datagrid-variables.$clr-datagrid-detail-pane-close-icon-size);
 
@@ -1692,7 +1675,6 @@
       @include datagrid-mixins.datagrid-action-button-styles();
 
       &:disabled {
-        cds-icon,
         clr-icon {
           &.datagrid-detail-caret-icon {
             --color: #{tokens.$cds-alias-object-interaction-color-disabled};
@@ -1792,7 +1774,6 @@
         margin: 0;
         padding: 0;
 
-        cds-icon,
         clr-icon {
           color: datagrid-variables.$clr-datagrid-column-switch-header-font-color;
 

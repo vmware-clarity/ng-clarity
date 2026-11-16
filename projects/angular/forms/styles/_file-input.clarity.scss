@@ -40,7 +40,6 @@
       min-width: unset;
       border: 0;
 
-      cds-icon:not([size]),
       clr-icon:not([size]) {
         @include mixins.equilateral(density.$clr-base-icon-size-l);
       }
@@ -104,7 +103,6 @@
 
       @include mixins.min-equilateral(density.$clr-base-icon-size-s);
 
-      cds-icon,
       clr-icon {
         margin: 0;
       }

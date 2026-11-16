@@ -6,14 +6,14 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { barsIcon, ClarityIcons, ClrCommonFormsModule, ClrIcon, ClrIconModule } from '@clr/angular';
+import { barsIcon, ClarityIcons, ClrCommonFormsModule, ClrIcon } from '@clr/angular';
 
 @Component({
   selector: 'clr-layout-small-screen-nav',
   templateUrl: './small-screen-nav.html',
   styleUrl: './layout.demo.scss',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ClrIcon, ClrIconModule, ClrCommonFormsModule],
+  imports: [ClrIcon, ClrCommonFormsModule],
 })
 export class SmallScreenNavDemo {
   constructor() {

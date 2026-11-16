@@ -51,7 +51,7 @@ const meta = {
       <header [class]="color">
         <div class="branding">
           <a href="javascript://" class="nav-link">
-            <cds-icon shape="vm-bug"></cds-icon>
+            <clr-icon shape="vm-bug"></clr-icon>
             <span class="title">Clarity Design</span>
           </a>
         </div>
@@ -76,7 +76,7 @@ export const Showcase: Story = {
           <header [class]="color">
             <div class="branding">
               <a href="javascript://" class="nav-link">
-                <cds-icon shape="vm-bug"></cds-icon>
+                <clr-icon shape="vm-bug"></clr-icon>
                 <span class="title">Clarity Design</span>
               </a>
             </div>

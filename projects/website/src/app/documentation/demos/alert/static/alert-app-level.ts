@@ -10,7 +10,6 @@ import {
   ClarityIcons,
   ClrAlertModule,
   ClrIcon,
-  ClrIconModule,
   downloadIcon,
   exclamationCircleIcon,
   exclamationTriangleIcon,
@@ -149,7 +148,7 @@ const HTML_EXAMPLE_3 = `
   styleUrl: '../alerts.demo.scss',
   templateUrl: './alert-app-level.demo.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ClrIcon, ClrIconModule, ClrAlertModule, StackblitzExampleComponent],
+  imports: [ClrIcon, ClrAlertModule, StackblitzExampleComponent],
 })
 export class AlertAppLevelDemo {
   htmlExample1 = HTML_EXAMPLE_1;

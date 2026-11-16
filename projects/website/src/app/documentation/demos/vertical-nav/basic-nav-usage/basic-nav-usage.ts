@@ -6,14 +6,14 @@
  */
 
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { ClrIcon, ClrIconModule, ClrVerticalNavModule } from '@clr/angular';
+import { ClrIcon, ClrVerticalNavModule } from '@clr/angular';
 
 @Component({
   selector: 'clr-basic-vertical-nav-usage-demo',
   templateUrl: './basic-nav-usage.html',
   styleUrl: '../vertical-nav.demo.scss',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ClrIcon, ClrIconModule, ClrVerticalNavModule],
+  imports: [ClrIcon, ClrVerticalNavModule],
 })
 export class BasicNavUsage {
   readonly demoToggleDont = input(false);

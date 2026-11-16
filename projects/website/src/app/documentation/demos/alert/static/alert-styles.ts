@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ClrAlertModule, ClrIcon, ClrIconModule } from '@clr/angular';
+import { ClrAlertModule, ClrIcon } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../../shared/stackblitz-example/stackblitz-example.component';
 
@@ -113,7 +113,7 @@ const HTML_EXAMPLE = `
   styleUrl: '../alerts.demo.scss',
   templateUrl: './alert-styles.demo.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ClrIcon, ClrIconModule, ClrAlertModule, StackblitzExampleComponent],
+  imports: [ClrIcon, ClrAlertModule, StackblitzExampleComponent],
 })
 export class AlertStylesDemo {
   htmlExample = HTML_EXAMPLE;

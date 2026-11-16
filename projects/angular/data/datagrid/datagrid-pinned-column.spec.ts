@@ -647,7 +647,7 @@ export default function (): void {
       }
 
       function pinIconShape(): string {
-        return pinToggle().querySelector('cds-icon').getAttribute('shape');
+        return pinToggle().querySelector('clr-icon').getAttribute('shape');
       }
 
       beforeEach(function () {

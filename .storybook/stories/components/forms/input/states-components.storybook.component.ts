@@ -80,7 +80,7 @@ import { ClrFormLayout } from '@clr/angular';
         <label>Combobox</label>
         <clr-combobox name="combobox" formControlName="selectedOptionCombobox" [clrMulti]="true">
           <ng-container *clrOptionSelected="let selected">
-            <cds-icon shape="sun" size="12" role="img" aria-label="welcome home"></cds-icon>
+            <clr-icon shape="sun" size="12" role="img" aria-label="welcome home"></clr-icon>
             {{ selected }}
           </ng-container>
           <clr-options>

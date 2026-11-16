@@ -73,3 +73,24 @@ Some fields became accessors: `IfExpandService.expandable`, `hasExpandTemplate`,
 `isNavLevel2OnPage`. This is source compatible unless a subclass redeclares them as fields.
 
 When upgrading through v18, remove any `*WillyWonka` / `*OompaLoompa` imports left by the v18 rename schematic.
+
+## Removed `cds-icon` selector and `ClrIconModule`
+
+The `ClrIcon` component no longer matches the `cds-icon` selector, and `@clr/ui` no longer styles `cds-icon`
+elements. Replace every `<cds-icon>` tag with `<clr-icon>`, and update CSS selectors and queries (for example
+`querySelector('cds-icon')`) that target the old tag. The inputs are the same.
+
+`ng update @clr/angular` makes these changes for you. It renames `cds-icon` in templates, inline templates, style
+files and TypeScript strings, and replaces `ClrIconModule` with `ClrIcon`. To run it again later, use
+`ng generate @clr/angular:migrate-v19`.
+
+```html
+<!-- Before -->
+<cds-icon shape="user" size="24"></cds-icon>
+
+<!-- After -->
+<clr-icon shape="user" size="24"></clr-icon>
+```
+
+The deprecated `ClrIconModule`, `ClrIconCustomTag`, `CdsIconCustomTag` and `CLR_ICON_DIRECTIVES` have been removed.
+Import the standalone `ClrIcon` component instead. `ClarityModule` still exports `ClrIcon`.

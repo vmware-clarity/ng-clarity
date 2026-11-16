@@ -6,13 +6,13 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ClrIcon, ClrIconModule, ClrTreeViewModule } from '@clr/angular';
+import { ClrIcon, ClrTreeViewModule } from '@clr/angular';
 
 @Component({
   selector: 'app-disabled-nodes-overview-demo',
   styleUrl: '../tree-view.demo.scss',
   templateUrl: 'disabled-nodes-overview.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ClrTreeViewModule, ClrIcon, ClrIconModule],
+  imports: [ClrTreeViewModule, ClrIcon],
 })
 export class DisabledNodesOverviewDemo {}

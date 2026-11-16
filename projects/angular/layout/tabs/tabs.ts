@@ -66,11 +66,11 @@ import { TABS_ID, TABS_ID_PROVIDER } from './tabs-id.provider';
               (click)="toggleOverflowOnClick()"
               [attr.title]="commonStrings.keys.more"
             >
-              <cds-icon
+              <clr-icon
                 shape="ellipsis-horizontal"
                 [status]="popoverService.open ? 'info' : null"
                 [attr.title]="commonStrings.keys.more"
-              ></cds-icon>
+              ></clr-icon>
             </button>
           </li>
           <!--tab links in overflow menu-->

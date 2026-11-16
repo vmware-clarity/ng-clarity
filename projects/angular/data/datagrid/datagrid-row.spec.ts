@@ -430,7 +430,7 @@ export default function (): void {
       });
 
       it('displays a clickable caret when the row is expandable', function () {
-        expect(context.clarityElement.querySelector('button cds-icon[shape^=angle]')).not.toBeNull();
+        expect(context.clarityElement.querySelector('button clr-icon[shape^=angle]')).not.toBeNull();
       });
 
       it('displays a spinner instead of the caret when the details are loading', function () {
@@ -699,20 +699,20 @@ export default function (): void {
         const button = context.clarityElement.querySelector('button.datagrid-detail-caret-button');
         const detailBody = document.querySelector('div.clr-dg-detail-body-wrapper') as HTMLElement;
 
-        expect(button.querySelector('cds-icon[shape^=angle-double][direction^=left]')).not.toBeNull();
+        expect(button.querySelector('clr-icon[shape^=angle-double][direction^=left]')).not.toBeNull();
         expect(detailBody.innerText).toBe('' + context.testComponent.preState.id);
         expect(context.clarityElement.querySelector('clr-dg-detail')).not.toBeNull();
       });
       it('open and close the details', async function () {
         const button = context.clarityElement.querySelector('button.datagrid-detail-caret-button');
-        expect(button.querySelector('cds-icon[shape^=angle-double][direction^=right]')).not.toBeNull();
+        expect(button.querySelector('clr-icon[shape^=angle-double][direction^=right]')).not.toBeNull();
 
         button.click();
         await delay();
         context.detectChanges();
 
         const detailBody = document.querySelector('div.clr-dg-detail-body-wrapper') as HTMLElement;
-        expect(button.querySelector('cds-icon[shape^=angle-double][direction^=left]')).not.toBeNull();
+        expect(button.querySelector('clr-icon[shape^=angle-double][direction^=left]')).not.toBeNull();
         expect(detailBody.innerText).toBe('' + context.testComponent.items[0].id);
         expect(context.clarityElement.querySelector('clr-dg-detail')).not.toBeNull();
 
@@ -720,7 +720,7 @@ export default function (): void {
         await delay();
         context.detectChanges();
 
-        expect(button.querySelector('cds-icon[shape^=angle-double][direction^=right]')).not.toBeNull();
+        expect(button.querySelector('clr-icon[shape^=angle-double][direction^=right]')).not.toBeNull();
         expect(context.clarityElement.querySelector('clr-dg-detail')).toBeNull();
       });
       it('try open the disabled details', async function () {
@@ -730,7 +730,7 @@ export default function (): void {
 
         const button = context.clarityElement.querySelector('button.datagrid-detail-caret-button[disabled]');
         expect(button).not.toBeNull();
-        expect(button.querySelector('cds-icon[shape^=angle-double][direction^=right]')).not.toBeNull();
+        expect(button.querySelector('clr-icon[shape^=angle-double][direction^=right]')).not.toBeNull();
         expect(context.clarityElement.querySelector('clr-dg-detail')).toBeNull();
 
         button.click();
@@ -738,7 +738,7 @@ export default function (): void {
         context.detectChanges();
 
         expect(button).not.toBeNull();
-        expect(button.querySelector('cds-icon[shape^=angle-double][direction^=right]')).not.toBeNull();
+        expect(button.querySelector('clr-icon[shape^=angle-double][direction^=right]')).not.toBeNull();
         expect(context.clarityElement.querySelector('clr-dg-detail')).toBeNull();
       });
       it('check if detail button is hidden', async function () {

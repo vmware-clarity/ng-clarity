@@ -6,14 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import {
-  ClarityIcons,
-  ClrAlertModule,
-  ClrIcon,
-  ClrIconModule,
-  ClrStackViewModule,
-  exclamationTriangleIcon,
-} from '@clr/angular';
+import { ClarityIcons, ClrAlertModule, ClrIcon, ClrStackViewModule, exclamationTriangleIcon } from '@clr/angular';
 
 import { RemoveStackViewHeadingsDirective } from './remove-stack-view-headings.directive';
 import { StackViewAngularBasicDemo } from './stack-view-angular-basic';
@@ -41,7 +34,6 @@ import { ClarityDocComponent } from '../clarity-doc';
     StackViewAngularModalEditDemo,
     StackViewAngularLazyloadDemo,
     ClrIcon,
-    ClrIconModule,
     ClrAlertModule,
     StackViewStaticDemo,
     ClrStackViewModule,

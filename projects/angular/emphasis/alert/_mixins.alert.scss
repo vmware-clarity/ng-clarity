@@ -14,7 +14,6 @@
   & .alert-items .alert-item a:not(.dropdown-item, .badge, .label) {
     color: alert-variables.getAlertColor($alertType, color);
 
-    cds-icon,
     clr-icon {
       fill: alert-variables.getAlertColor($alertType, color);
     }
@@ -47,7 +46,6 @@
       border-color: $myActionSassVar;
       color: $myActionSassVar;
 
-      cds-icon,
       clr-icon {
         color: $myActionSassVar;
       }
@@ -55,7 +53,6 @@
       &:active {
         color: $myActionSassVar;
 
-        cds-icon,
         clr-icon {
           color: $myActionSassVar;
         }
@@ -66,7 +63,6 @@
   .close {
     color: alert-variables.getAlertColor($alertType, close-icon);
 
-    cds-icon,
     clr-icon {
       fill: alert-variables.getAlertColor($alertType, close-icon);
     }
@@ -76,7 +72,6 @@
     &:active {
       color: alert-variables.getAlertColor($alertType, close-icon-hover);
 
-      cds-icon,
       clr-icon {
         fill: alert-variables.getAlertColor($alertType, close-icon-hover);
       }

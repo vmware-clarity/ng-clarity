@@ -6,25 +6,25 @@
   -->
 <clr-tree>
   <clr-tree-node [clrExpanded]="true">
-    <cds-icon shape="building"></cds-icon>
+    <clr-icon shape="building"></clr-icon>
     Datacenter
 
     <clr-tree-node [clrExpanded]="true">
       <button class="clr-treenode-link" (contextmenu)="onContextMenu($event)">
-        <cds-icon shape="cluster"></cds-icon>
+        <clr-icon shape="cluster"></clr-icon>
         Production Cluster
       </button>
 
       <clr-tree-node>
         <button class="clr-treenode-link" (contextmenu)="onContextMenu($event)">
-          <cds-icon shape="host"></cds-icon>
+          <clr-icon shape="host"></clr-icon>
           192.0.2.80
         </button>
       </clr-tree-node>
 
       <clr-tree-node>
         <button class="clr-treenode-link" (contextmenu)="onContextMenu($event)">
-          <cds-icon shape="host"></cds-icon>
+          <clr-icon shape="host"></clr-icon>
           192.0.2.81
         </button>
       </clr-tree-node>

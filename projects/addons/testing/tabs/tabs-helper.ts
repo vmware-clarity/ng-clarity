@@ -89,7 +89,7 @@ export class TabsHelper {
    */
   findLinkIcon(linkIndex: number): DebugElement | undefined {
     const tabLinkElement = this.findLink(linkIndex);
-    return (tabLinkElement && tabLinkElement.query(By.css('cds-icon'))) || undefined;
+    return (tabLinkElement && tabLinkElement.query(By.css('clr-icon'))) || undefined;
   }
 
   /**

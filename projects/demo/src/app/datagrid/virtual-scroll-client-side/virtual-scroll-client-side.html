@@ -81,7 +81,7 @@
     <clr-dropdown>
       <button class="btn btn-sm btn-outline-neutral" clrDropdownTrigger aria-label="Dropdown demo button">
         Smooth Jump to
-        <cds-icon shape="angle" direction="down"></cds-icon>
+        <clr-icon shape="angle" direction="down"></clr-icon>
       </button>
       <clr-dropdown-menu *clrIfOpen [clrPosition]="'top-right'">
         @for (index of getIndexes(data.rows); track index) {
@@ -95,25 +95,25 @@
       class="btn btn-sm btn-link-neutral footer-button"
       (click)="dynamicRowsDatagrid.virtualScroll.scrollToIndex(0, 'smooth')"
     >
-      <cds-icon shape="step-forward-2" direction="left"></cds-icon>
+      <clr-icon shape="step-forward-2" direction="left"></clr-icon>
     </button>
     <button
       class="btn btn-sm btn-link-neutral footer-button"
       (click)="dynamicRowsDatagrid.virtualScroll.scrollUp(19, 'smooth')"
     >
-      <cds-icon shape="angle" direction="up"></cds-icon>
+      <clr-icon shape="angle" direction="up"></clr-icon>
     </button>
     <button
       class="btn btn-sm btn-link-neutral footer-button"
       (click)="dynamicRowsDatagrid.virtualScroll.scrollDown(19, 'smooth')"
     >
-      <cds-icon shape="angle" direction="down"></cds-icon>
+      <clr-icon shape="angle" direction="down"></clr-icon>
     </button>
     <button
       class="btn btn-sm btn-link-neutral footer-button"
       (click)="dynamicRowsDatagrid.virtualScroll.scrollToIndex(data.rows.length, 'smooth')"
     >
-      <cds-icon shape="step-forward-2" direction="right"></cds-icon>
+      <clr-icon shape="step-forward-2" direction="right"></clr-icon>
     </button>
   </clr-dg-footer>
 </clr-datagrid>
@@ -185,7 +185,7 @@
     <clr-dropdown>
       <button class="btn btn-sm btn-outline-neutral" clrDropdownTrigger aria-label="Dropdown demo button">
         Snap Jump to
-        <cds-icon shape="angle" direction="down"></cds-icon>
+        <clr-icon shape="angle" direction="down"></clr-icon>
       </button>
       <clr-dropdown-menu *clrIfOpen [clrPosition]="'top-right'">
         @for (index of getIndexes(data.users); track index) {
@@ -197,25 +197,25 @@
       class="btn btn-sm btn-link-neutral footer-button"
       (click)="usersDatagrid.virtualScroll.scrollToIndex(0, 'auto')"
     >
-      <cds-icon shape="step-forward-2" direction="left"></cds-icon>
+      <clr-icon shape="step-forward-2" direction="left"></clr-icon>
     </button>
     <button
       class="btn btn-sm btn-link-neutral footer-button"
       (click)="usersDatagrid.virtualScroll.scrollUp(19, 'auto')"
     >
-      <cds-icon shape="angle" direction="up"></cds-icon>
+      <clr-icon shape="angle" direction="up"></clr-icon>
     </button>
     <button
       class="btn btn-sm btn-link-neutral footer-button"
       (click)="usersDatagrid.virtualScroll.scrollDown(19, 'auto')"
     >
-      <cds-icon shape="angle" direction="down"></cds-icon>
+      <clr-icon shape="angle" direction="down"></clr-icon>
     </button>
     <button
       class="btn btn-sm btn-link-neutral footer-button"
       (click)="usersDatagrid.virtualScroll.scrollToIndex(data.users.length, 'auto')"
     >
-      <cds-icon shape="step-forward-2" direction="right"></cds-icon>
+      <clr-icon shape="step-forward-2" direction="right"></clr-icon>
     </button>
   </clr-dg-footer>
 </clr-datagrid>

@@ -6,14 +6,14 @@
  */
 
 import { ChangeDetectionStrategy, Component, viewChild } from '@angular/core';
-import { ClarityIcons, ClrIcon, ClrIconModule, ClrWizard, ClrWizardModule, resizeIcon } from '@clr/angular';
+import { ClarityIcons, ClrIcon, ClrWizard, ClrWizardModule, resizeIcon } from '@clr/angular';
 
 @Component({
   selector: 'clr-wizard-design-size-demo',
   templateUrl: './wizard-design-size.demo.html',
   styleUrl: './wizard-design-size.demo.scss',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ClrIcon, ClrIconModule, ClrWizardModule],
+  imports: [ClrIcon, ClrWizardModule],
 })
 export class WizardDesignSizeDemo {
   readonly wizard = viewChild<ClrWizard>('wizard');

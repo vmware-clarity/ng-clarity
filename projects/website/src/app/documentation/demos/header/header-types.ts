@@ -10,7 +10,6 @@ import {
   ClrCommonFormsModule,
   ClrDropdownModule,
   ClrIcon,
-  ClrIconModule,
   ClrIfOpen,
   ClrPopoverContent,
   ClrPopoverHostDirective,
@@ -149,7 +148,6 @@ header {
   changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ClrIcon,
-    ClrIconModule,
     ClrCommonFormsModule,
     ClrStopEscapePropagationDirective,
     ClrPopoverHostDirective,

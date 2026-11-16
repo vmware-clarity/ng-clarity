@@ -7,7 +7,7 @@
 
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ClrIcon, ClrIconModule, ClrTreeViewModule } from '@clr/angular';
+import { ClrIcon, ClrTreeViewModule } from '@clr/angular';
 import { of, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -67,7 +67,7 @@ const additionalFiles = {
   styleUrl: '../tree-view.demo.scss',
   templateUrl: './lazy-loading-recursive-tree.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ClrTreeViewModule, ClrIcon, ClrIconModule, StackblitzExampleComponent, AsyncPipe],
+  imports: [ClrTreeViewModule, ClrIcon, StackblitzExampleComponent, AsyncPipe],
 })
 export class LazyLoadingRecursiveTreeDemo {
   exampleHtml = EXAMPLE_HTML;

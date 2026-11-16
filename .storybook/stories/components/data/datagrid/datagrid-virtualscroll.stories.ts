@@ -208,7 +208,7 @@ const meta = {
                 <clr-dropdown>
                   <button class="btn btn-sm btn-outline-neutral" clrDropdownTrigger aria-label="Dropdown demo button">
                     Jump to
-                    <cds-icon shape="angle" direction="down"></cds-icon>
+                    <clr-icon shape="angle" direction="down"></clr-icon>
                   </button>
                   <clr-dropdown-menu *clrIfOpen [clrPosition]="'top-right'">
                     <div (click)="datagrid.virtualScroll.scrollToIndex(20, scrollToIndexBehavior)" clrDropdownItem>
@@ -230,25 +230,25 @@ const meta = {
                   class="btn btn-sm btn-link-neutral footer-button"
                   (click)="datagrid.virtualScroll.scrollToIndex(0, scrollToIndexBehavior)"
                 >
-                  <cds-icon shape="step-forward-2" direction="left"></cds-icon>
+                  <clr-icon shape="step-forward-2" direction="left"></clr-icon>
                 </button>
                 <button
                   class="btn btn-sm btn-link-neutral footer-button"
                   (click)="datagrid.virtualScroll.scrollUp(scrollOffset, scrollToIndexBehavior)"
                 >
-                  <cds-icon shape="angle" direction="up"></cds-icon>
+                  <clr-icon shape="angle" direction="up"></clr-icon>
                 </button>
                 <button
                   class="btn btn-sm btn-link-neutral footer-button"
                   (click)="datagrid.virtualScroll.scrollDown(scrollOffset, scrollToIndexBehavior)"
                 >
-                  <cds-icon shape="angle" direction="down"></cds-icon>
+                  <clr-icon shape="angle" direction="down"></clr-icon>
                 </button>
                 <button
                   class="btn btn-sm btn-link-neutral footer-button"
                   (click)="datagrid.virtualScroll.scrollToIndex(data.elements?.length, scrollToIndexBehavior)"
                 >
-                  <cds-icon shape="step-forward-2" direction="right"></cds-icon>
+                  <clr-icon shape="step-forward-2" direction="right"></clr-icon>
                 </button>
               </div>
             }

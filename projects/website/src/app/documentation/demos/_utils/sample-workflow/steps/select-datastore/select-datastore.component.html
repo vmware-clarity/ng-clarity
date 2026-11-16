@@ -9,7 +9,7 @@
   <clr-dropdown>
     <button *ngIf="selectedPolicy" class="dropdown-toggle btn btn-link" clrDropdownTrigger>
       {{ selectedPolicy.name }}
-      <cds-icon shape="angle" direction="down"></cds-icon>
+      <clr-icon shape="angle" direction="down"></clr-icon>
     </button>
     <clr-dropdown-menu *clrIfOpen>
       <div *ngFor="let policy of model.storagePolicies" clrDropdownItem (click)="selectPolicy(policy)">

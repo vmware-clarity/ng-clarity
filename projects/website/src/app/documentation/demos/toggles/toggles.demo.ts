@@ -8,7 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { ClrCheckboxModule, ClrCommonFormsModule, ClrIcon, ClrIconModule } from '@clr/angular';
+import { ClrCheckboxModule, ClrCommonFormsModule, ClrIcon } from '@clr/angular';
 
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -68,7 +68,6 @@ const UiSuccess = require('raw-loader!./ui/success.html').default;
     ClrCommonFormsModule,
     FormsModule,
     ClrIcon,
-    ClrIconModule,
     ThemedImageComponent,
     RouterLink,
     LinkCardsComponent,

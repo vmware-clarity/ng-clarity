@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { ClrIcon, ClrIconModule, ClrVerticalNavModule } from '@clr/angular';
+import { ClrIcon, ClrVerticalNavModule } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
@@ -46,7 +46,7 @@ const EXAMPLE = `
   templateUrl: './layout-no-subnav.html',
   styleUrl: './layout.demo.scss',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ClrIcon, ClrIconModule, ClrVerticalNavModule, StackblitzExampleComponent],
+  imports: [ClrIcon, ClrVerticalNavModule, StackblitzExampleComponent],
 })
 export class LayoutNoSubnavDemo {
   readonly showCode = input(true);
