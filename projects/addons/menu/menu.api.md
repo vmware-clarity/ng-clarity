@@ -68,7 +68,26 @@ export class MenuActionComponent extends MenuItem {
     // (undocumented)
     type: MenuItemType;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<MenuActionComponent, "appfx-menu-action", never, { "iconClass": { "alias": "iconClass"; "required": false; }; "text": { "alias": "text"; "required": false; }; "shortcut": { "alias": "shortcut"; "required": false; }; "enabled": { "alias": "enabled"; "required": false; }; }, { "handle": "handle"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MenuActionComponent, "appfx-menu-action", never, {
+        "iconClass": {
+            "alias": "iconClass";
+            "required": false;
+        };
+        "text": {
+            "alias": "text";
+            "required": false;
+        };
+        "shortcut": {
+            "alias": "shortcut";
+            "required": false;
+        };
+        "enabled": {
+            "alias": "enabled";
+            "required": false;
+        };
+    }, {
+        "handle": "handle";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MenuActionComponent, never>;
 }
@@ -121,9 +140,19 @@ export class MenuComponent extends NestedMenu implements Menu, OnInit, OnDestroy
     // (undocumented)
     ZoomLevel: typeof ZoomLevel;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<MenuComponent, "appfx-menu", never, { "text": { "alias": "text"; "required": false; }; }, { "opened": "opened"; "closed": "closed"; }, ["menuItems"], never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MenuComponent, "appfx-menu", never, {
+        "text": {
+            "alias": "text";
+            "required": false;
+        };
+    }, {
+        "opened": "opened";
+        "closed": "closed";
+    }, ["menuItems"], never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<MenuComponent, [null, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<MenuComponent, [null, {
+        optional: true;
+    }]>;
 }
 
 // @public (undocumented)
@@ -135,7 +164,16 @@ export class MenuHeaderComponent extends MenuItem {
     // (undocumented)
     type: MenuItemType;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<MenuHeaderComponent, "appfx-menu-header", never, { "iconClass": { "alias": "iconClass"; "required": false; }; "text": { "alias": "text"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<MenuHeaderComponent, "appfx-menu-header", never, {
+        "iconClass": {
+            "alias": "iconClass";
+            "required": false;
+        };
+        "text": {
+            "alias": "text";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MenuHeaderComponent, never>;
 }
@@ -187,7 +225,7 @@ export class MenuOutletService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MenuOutletService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<MenuOutletService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public (undocumented)

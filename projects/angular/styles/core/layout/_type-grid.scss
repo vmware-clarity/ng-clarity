@@ -9,6 +9,7 @@
 @use './mixins/mixins';
 @use './mixins/mixins.grid' as grid-mixins;
 @use 'optimize';
+@use '../../mixins' as clr-mixins;
 
 [#{optimize.$layout}~='#{optimize.$grid}'] {
   display: grid;
@@ -45,22 +46,22 @@
 @include grid-mixins.generateAlignments();
 
 @each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
-  @media (min-width: $breakpoint-value) {
+  @include clr-mixins.breakpoint-query('min-width: #{$breakpoint-value}') {
     @include grid-mixins.generateColumnsAndRows($breakpoint);
   }
 }
 @each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
-  @media (min-width: $breakpoint-value) {
+  @include clr-mixins.breakpoint-query('min-width: #{$breakpoint-value}') {
     @include grid-mixins.generateExplicitColumnAndRow($breakpoint);
   }
 }
 @each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
-  @media (min-width: $breakpoint-value) {
+  @include clr-mixins.breakpoint-query('min-width: #{$breakpoint-value}') {
     @include grid-mixins.generatePositions($breakpoint);
   }
 }
 @each $breakpoint, $breakpoint-value in mixins.$cds-layout-breakpoints {
-  @media (min-width: $breakpoint-value) {
+  @include clr-mixins.breakpoint-query('min-width: #{$breakpoint-value}') {
     @include grid-mixins.generateAlignments($breakpoint);
   }
 }
