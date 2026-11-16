@@ -156,7 +156,76 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     // (undocumented)
     protected wizardTitle: ClrWizardTitle;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, { "stepnavAriaLabel": { "alias": "clrWizardStepnavAriaLabel"; "required": false; }; "stepnavLayout": { "alias": "clrWizardStepnavLayout"; "required": false; }; "size": { "alias": "clrWizardSize"; "required": false; }; "inPage": { "alias": "clrWizardInPage"; "required": false; }; "inPageFillContentArea": { "alias": "clrWizardInPageFillContentArea"; "required": false; }; "hideFooter": { "alias": "clrWizardHideFooter"; "required": false; }; "_footerAlign": { "alias": "clrWizardFooterAlign"; "required": false; }; "closable": { "alias": "clrWizardClosable"; "required": false; }; "_stopModalAnimations": { "alias": "clrWizardPreventModalAnimation"; "required": false; }; "forceForward": { "alias": "clrWizardForceForwardNavigation"; "required": false; }; "clrWizardOpen": { "alias": "clrWizardOpen"; "required": false; }; "stopNext": { "alias": "clrWizardPreventDefaultNext"; "required": false; }; "stopCancel": { "alias": "clrWizardPreventDefaultCancel"; "required": false; }; "stopNavigation": { "alias": "clrWizardPreventNavigation"; "required": false; }; "disableStepnav": { "alias": "clrWizardDisableStepnav"; "required": false; }; }, { "_openChanged": "clrWizardOpenChange"; "onCancel": "clrWizardOnCancel"; "wizardFinished": "clrWizardOnFinish"; "onReset": "clrWizardOnReset"; "currentPageChange": "clrWizardCurrentPageChange"; "onMoveNext": "clrWizardOnNext"; "onMovePrevious": "clrWizardOnPrevious"; }, ["wizardTitle", "pages", "wizardButtons", "headerActions"], ["*", "clr-wizard-button", "clr-wizard-title", "clr-wizard-header-action"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, {
+        "stepnavAriaLabel": {
+            "alias": "clrWizardStepnavAriaLabel";
+            "required": false;
+        };
+        "stepnavLayout": {
+            "alias": "clrWizardStepnavLayout";
+            "required": false;
+        };
+        "size": {
+            "alias": "clrWizardSize";
+            "required": false;
+        };
+        "inPage": {
+            "alias": "clrWizardInPage";
+            "required": false;
+        };
+        "inPageFillContentArea": {
+            "alias": "clrWizardInPageFillContentArea";
+            "required": false;
+        };
+        "hideFooter": {
+            "alias": "clrWizardHideFooter";
+            "required": false;
+        };
+        "_footerAlign": {
+            "alias": "clrWizardFooterAlign";
+            "required": false;
+        };
+        "closable": {
+            "alias": "clrWizardClosable";
+            "required": false;
+        };
+        "_stopModalAnimations": {
+            "alias": "clrWizardPreventModalAnimation";
+            "required": false;
+        };
+        "forceForward": {
+            "alias": "clrWizardForceForwardNavigation";
+            "required": false;
+        };
+        "clrWizardOpen": {
+            "alias": "clrWizardOpen";
+            "required": false;
+        };
+        "stopNext": {
+            "alias": "clrWizardPreventDefaultNext";
+            "required": false;
+        };
+        "stopCancel": {
+            "alias": "clrWizardPreventDefaultCancel";
+            "required": false;
+        };
+        "stopNavigation": {
+            "alias": "clrWizardPreventNavigation";
+            "required": false;
+        };
+        "disableStepnav": {
+            "alias": "clrWizardDisableStepnav";
+            "required": false;
+        };
+    }, {
+        "_openChanged": "clrWizardOpenChange";
+        "onCancel": "clrWizardOnCancel";
+        "wizardFinished": "clrWizardOnFinish";
+        "onReset": "clrWizardOnReset";
+        "currentPageChange": "clrWizardCurrentPageChange";
+        "onMoveNext": "clrWizardOnNext";
+        "onMovePrevious": "clrWizardOnPrevious";
+    }, ["wizardTitle", "pages", "wizardButtons", "headerActions"], ["*", "clr-wizard-button", "clr-wizard-title", "clr-wizard-header-action"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizard, never>;
 }
@@ -197,7 +266,22 @@ export class ClrWizardButton {
     // (undocumented)
     wasClicked: EventEmitter<string>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardButton, "clr-wizard-button", never, { "type": { "alias": "type"; "required": false; }; "disabled": { "alias": "clrWizardButtonDisabled"; "required": false; }; "hidden": { "alias": "clrWizardButtonHidden"; "required": false; }; }, { "wasClicked": "clrWizardButtonClicked"; }, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardButton, "clr-wizard-button", never, {
+        "type": {
+            "alias": "type";
+            "required": false;
+        };
+        "disabled": {
+            "alias": "clrWizardButtonDisabled";
+            "required": false;
+        };
+        "hidden": {
+            "alias": "clrWizardButtonHidden";
+            "required": false;
+        };
+    }, {
+        "wasClicked": "clrWizardButtonClicked";
+    }, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardButton, never>;
 }
@@ -225,7 +309,22 @@ export class ClrWizardHeaderAction {
     // (undocumented)
     title: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardHeaderAction, "clr-wizard-header-action", never, { "title": { "alias": "title"; "required": false; }; "_id": { "alias": "id"; "required": false; }; "disabled": { "alias": "clrWizardHeaderActionDisabled"; "required": false; }; }, { "headerActionClicked": "actionClicked"; }, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardHeaderAction, "clr-wizard-header-action", never, {
+        "title": {
+            "alias": "title";
+            "required": false;
+        };
+        "_id": {
+            "alias": "id";
+            "required": false;
+        };
+        "disabled": {
+            "alias": "clrWizardHeaderActionDisabled";
+            "required": false;
+        };
+    }, {
+        "headerActionClicked": "actionClicked";
+    }, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardHeaderAction, never>;
 }
@@ -300,7 +399,49 @@ export class ClrWizardPage implements OnInit {
     set stopNext(val: boolean);
     get title(): TemplateRef<any>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardPage, "clr-wizard-page", never, { "_id": { "alias": "id"; "required": false; }; "preventDefault": { "alias": "clrWizardPagePreventDefault"; "required": false; }; "nextStepDisabled": { "alias": "clrWizardPageNextDisabled"; "required": false; }; "previousStepDisabled": { "alias": "clrWizardPagePreviousDisabled"; "required": false; }; "hasError": { "alias": "clrWizardPageHasError"; "required": false; }; "stopCancel": { "alias": "clrWizardPagePreventDefaultCancel"; "required": false; }; "stopNext": { "alias": "clrWizardPagePreventDefaultNext"; "required": false; }; }, { "nextStepDisabledChange": "clrWizardPageNextDisabledChange"; "previousStepDisabledChange": "clrWizardPagePreviousDisabledChange"; "stopCancelChange": "clrWizardPagePreventDefaultCancelChange"; "onCommit": "clrWizardPageOnCommit"; "onLoad": "clrWizardPageOnLoad"; "pageOnCancel": "clrWizardPageOnCancel"; "finishButtonClicked": "clrWizardPageFinish"; "previousButtonClicked": "clrWizardPagePrevious"; "nextButtonClicked": "clrWizardPageNext"; "dangerButtonClicked": "clrWizardPageDanger"; "primaryButtonClicked": "clrWizardPagePrimary"; "customButtonClicked": "clrWizardPageCustomButton"; }, ["pageTitle", "pageNavTitle", "_buttons", "_headerActions"], ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardPage, "clr-wizard-page", never, {
+        "_id": {
+            "alias": "id";
+            "required": false;
+        };
+        "preventDefault": {
+            "alias": "clrWizardPagePreventDefault";
+            "required": false;
+        };
+        "nextStepDisabled": {
+            "alias": "clrWizardPageNextDisabled";
+            "required": false;
+        };
+        "previousStepDisabled": {
+            "alias": "clrWizardPagePreviousDisabled";
+            "required": false;
+        };
+        "hasError": {
+            "alias": "clrWizardPageHasError";
+            "required": false;
+        };
+        "stopCancel": {
+            "alias": "clrWizardPagePreventDefaultCancel";
+            "required": false;
+        };
+        "stopNext": {
+            "alias": "clrWizardPagePreventDefaultNext";
+            "required": false;
+        };
+    }, {
+        "nextStepDisabledChange": "clrWizardPageNextDisabledChange";
+        "previousStepDisabledChange": "clrWizardPagePreviousDisabledChange";
+        "stopCancelChange": "clrWizardPagePreventDefaultCancelChange";
+        "onCommit": "clrWizardPageOnCommit";
+        "onLoad": "clrWizardPageOnLoad";
+        "pageOnCancel": "clrWizardPageOnCancel";
+        "finishButtonClicked": "clrWizardPageFinish";
+        "previousButtonClicked": "clrWizardPagePrevious";
+        "nextButtonClicked": "clrWizardPageNext";
+        "dangerButtonClicked": "clrWizardPageDanger";
+        "primaryButtonClicked": "clrWizardPagePrimary";
+        "customButtonClicked": "clrWizardPageCustomButton";
+    }, ["pageTitle", "pageNavTitle", "_buttons", "_headerActions"], ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardPage, never>;
 }
@@ -348,7 +489,12 @@ export class ClrWizardPageTitle {
     // (undocumented)
     pageTitleTemplateRef: TemplateRef<any>;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardPageTitle, "[clrPageTitle]", never, { "headingLevel": { "alias": "clrHeadingLevel"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardPageTitle, "[clrPageTitle]", never, {
+        "headingLevel": {
+            "alias": "clrHeadingLevel";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardPageTitle, never>;
 }
@@ -375,7 +521,12 @@ export class ClrWizardStepnav implements AfterViewInit, OnDestroy {
     // (undocumented)
     protected get stepnavLayout(): ClrWizardStepnavLayout;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnav, "clr-wizard-stepnav", never, { "label": { "alias": "label"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnav, "clr-wizard-stepnav", never, {
+        "label": {
+            "alias": "label";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardStepnav, never>;
 }
@@ -431,7 +582,12 @@ export class ClrWizardStepnavItem implements OnInit, OnDestroy {
     // (undocumented)
     protected get stepTitleId(): string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnavItem, "[clr-wizard-stepnav-item]", never, { "page": { "alias": "page"; "required": false; }; }, {}, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardStepnavItem, "[clr-wizard-stepnav-item]", never, {
+        "page": {
+            "alias": "page";
+            "required": false;
+        };
+    }, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardStepnavItem, never>;
 }
@@ -449,7 +605,12 @@ export class ClrWizardTitle {
     // (undocumented)
     headingLevel: HeadingLevel;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardTitle, "clr-wizard-title", never, { "headingLevel": { "alias": "clrHeadingLevel"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardTitle, "clr-wizard-title", never, {
+        "headingLevel": {
+            "alias": "clrHeadingLevel";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardTitle, never>;
 }

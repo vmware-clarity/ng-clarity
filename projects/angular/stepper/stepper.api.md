@@ -5,13 +5,13 @@
 ```ts
 
 import { AfterViewInit } from '@angular/core';
-import * as _angular_forms from '@angular/forms';
 import { AnimationCallbackEvent } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ChangeDetectorRef } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ElementRef } from '@angular/core';
 import { EventEmitter } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { FormGroupDirective } from '@angular/forms';
 import { FormGroupName } from '@angular/forms';
 import * as i0 from '@angular/core';
@@ -43,9 +43,18 @@ export class ClrStepButton implements OnInit {
     // (undocumented)
     type: ClrStepButtonType | string;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStepButton, "[clrStepButton]", never, { "type": { "alias": "clrStepButton"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStepButton, "[clrStepButton]", never, {
+        "type": {
+            "alias": "clrStepButton";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepButton, [{ optional: true; }, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepButton, [{
+        optional: true;
+    }, {
+        optional: true;
+    }]>;
 }
 
 // @public (undocumented)
@@ -92,9 +101,18 @@ export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
     // (undocumented)
     panels: QueryList<ClrStepperPanel>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepper, "form[clrStepper]", never, { "initialPanel": { "alias": "clrInitialStep"; "required": false; }; }, {}, ["panels"], ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepper, "form[clrStepper]", never, {
+        "initialPanel": {
+            "alias": "clrInitialStep";
+            "required": false;
+        };
+    }, {}, ["panels"], ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepper, [{ optional: true; }, { optional: true; }, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepper, [{
+        optional: true;
+    }, {
+        optional: true;
+    }, null]>;
 }
 
 // @public (undocumented)
@@ -125,7 +143,7 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
     // (undocumented)
     disabled: boolean;
     // (undocumented)
-    get formGroup(): _angular_forms.FormGroup<any>;
+    get formGroup(): FormGroup<any>;
     // (undocumented)
     getContentId(id: string): string;
     // (undocumented)
@@ -158,7 +176,13 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepperPanel, "clr-stepper-panel", never, {}, {}, ["stepDescription"], ["clr-step-title", "clr-step-description", "*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperPanel, [null, null, { optional: true; }, { optional: true; }, { optional: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperPanel, [null, null, {
+        optional: true;
+    }, {
+        optional: true;
+    }, {
+        optional: true;
+    }, null, null]>;
 }
 
 // @public (undocumented)
@@ -217,7 +241,7 @@ export class StepperService extends CollapsiblePanelService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<StepperService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<StepperService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // (No @packageDocumentation comment for this package)
