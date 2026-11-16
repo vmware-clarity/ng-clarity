@@ -22,7 +22,7 @@ import {
   loadTextEditIconSet,
   loadTravelIconSet,
 } from '@clr/angular';
-import { elements } from '@storybook-helpers/elements.data';
+import { type Element, elements } from '@storybook-helpers/elements.data';
 
 import { organization } from './organization';
 import { VerticalNavIconService } from '../../../../projects/angular/layout/vertical-nav/providers/vertical-nav-icon.service';
@@ -39,7 +39,7 @@ import { VerticalNavIconService } from '../../../../projects/angular/layout/vert
 export class ApplicationLayoutStorybookComponent {
   rootDirectory = organization;
   elements = elements;
-  selected: unknown[] = [];
+  selected: Element[] = [];
   breadcrumbs = [
     { label: 'Framework', href: '/framework' },
     { label: 'Angular', href: '/framework/angular' },
