@@ -13,4 +13,4 @@ export const THEMES = {
 export const DENSITY = {
   NONE: 'default',
   COMPACT: 'compact',
-};
+} as const;
