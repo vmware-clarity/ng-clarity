@@ -291,10 +291,16 @@ export async function animationFrameTick(fixture?: ComponentFixture<any>) {
  */
 // reportSlowSpecs();
 
-export function expectActiveElementToBe(element: Element, failOutput = ''): void {
-  expect(document.activeElement).withContext(failOutput).toBe(element);
+export function expectActiveElementToBe(element: Element, failOutput?: string): void {
+  expectActiveElement(failOutput).toBe(element);
 }
 
-export function expectActiveElementNotToBe(element: Element, failOutput = ''): void {
-  expect(document.activeElement).withContext(failOutput).not.toBe(element);
+export function expectActiveElementNotToBe(element: Element, failOutput?: string): void {
+  expectActiveElement(failOutput).not.toBe(element);
+}
+
+// Jasmine prefixes every failure message with the context, so only add one when there is a message.
+function expectActiveElement(failOutput?: string) {
+  const expectation = expect(document.activeElement);
+  return failOutput ? expectation.withContext(failOutput) : expectation;
 }
