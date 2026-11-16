@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { JsonPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
@@ -17,7 +18,7 @@ import { DEMO_HOSTS, DemoHost } from '../hosts';
   changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'clr-context-inventory',
   standalone: true,
-  imports: [FormsModule, ClarityModule, ClrContext],
+  imports: [JsonPipe, FormsModule, ClarityModule, ClrContext],
   templateUrl: './inventory.component.html',
 })
 export class ContextInventoryComponent {
@@ -26,4 +27,10 @@ export class ContextInventoryComponent {
   alertVisible = true;
   addHostOpen = false;
   newHostName = '';
+
+  /** What the grid cannot show; reported as the grid's `state.metadata`. */
+  readonly gridMetadata = {
+    owner: 'Infrastructure team',
+    statusValues: ['Connected', 'Maintenance', 'Disconnected'],
+  };
 }
