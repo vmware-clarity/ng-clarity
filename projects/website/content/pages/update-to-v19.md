@@ -80,6 +80,10 @@ The `ClrIcon` component no longer matches the `cds-icon` selector, and `@clr/ui`
 elements. Replace every `<cds-icon>` tag with `<clr-icon>`, and update CSS selectors and queries (for example
 `querySelector('cds-icon')`) that target the old tag. The inputs are the same.
 
+`ng update @clr/angular` makes these changes for you. It renames `cds-icon` in templates, inline templates, style
+files and TypeScript strings, and replaces `ClrIconModule` with `ClrIcon`. To run it again later, use
+`ng generate @clr/angular:migrate-v19`.
+
 ```html
 <!-- Before -->
 <cds-icon shape="user" size="24"></cds-icon>
