@@ -199,7 +199,7 @@ clr-datagrid {
         flex-direction: row;
         align-items: center;
 
-        cds-icon {
+        clr-icon {
           cursor: pointer;
         }
       }
@@ -259,7 +259,7 @@ clr-datagrid {
           justify-content: space-between;
           align-items: center;
 
-          cds-icon {
+          clr-icon {
             flex: 0 1 auto;
           }
 
@@ -301,7 +301,7 @@ clr-datagrid {
     width: 0;
   }
 
-  cds-icon[shape='drag-handle'] {
+  clr-icon[shape='drag-handle'] {
     cursor: grab;
   }
 }

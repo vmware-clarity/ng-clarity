@@ -55,11 +55,11 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
         [class.datagrid-filter-open]="open"
         [class.datagrid-filtered]="active"
       >
-        <cds-icon
+        <clr-icon
           [status]="active ? 'info' : null"
           [shape]="active ? 'filter-grid-circle' : 'filter-grid'"
           solid
-        ></cds-icon>
+        ></clr-icon>
       </button>
     }
 
@@ -73,7 +73,7 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
     >
       <div class="datagrid-filter-close-wrapper">
         <button type="button" class="close" clrPopoverCloseButton>
-          <cds-icon shape="window-close" [attr.title]="commonStrings.keys.close"></cds-icon>
+          <clr-icon shape="window-close" [attr.title]="commonStrings.keys.close"></clr-icon>
         </button>
       </div>
 

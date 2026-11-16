@@ -136,7 +136,7 @@ describe('ClrCardHeader', () => {
     });
 
     it('swaps aria-expanded and aria-label based on the expanded state', () => {
-      const icon = headerElement.querySelector('cds-icon');
+      const icon = headerElement.querySelector('clr-icon');
       expect(icon.getAttribute('shape')).toBe('angle');
       const collapseLabel = button.getAttribute('aria-label');
 

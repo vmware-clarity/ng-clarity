@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { ClrIcon, ClrIconModule } from '@clr/angular';
+import { ClrIcon } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
@@ -41,7 +41,7 @@ const EXAMPLE = `
   templateUrl: './layout-only-header.html',
   styleUrl: './layout.demo.scss',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ClrIcon, ClrIconModule, StackblitzExampleComponent],
+  imports: [ClrIcon, StackblitzExampleComponent],
 })
 export class LayoutOnlyHeaderDemo {
   readonly showCode = input(true);

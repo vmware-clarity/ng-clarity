@@ -15,7 +15,7 @@ import { APP_ROUTES } from './app.routing';
   template: `
     <clr-vertical-nav [clrVerticalNavCollapsible]="true">
       <clr-vertical-nav-group>
-        <cds-icon shape="applications" clrVerticalNavIcon></cds-icon>
+        <clr-icon shape="applications" clrVerticalNavIcon></clr-icon>
         Components
         <ng-template [clrIfExpanded]="componentsExpanded" (clrIfExpandedChange)="componentsExpanded = $event">
           <clr-vertical-nav-group-children>
@@ -29,7 +29,7 @@ import { APP_ROUTES } from './app.routing';
       </clr-vertical-nav-group>
 
       <clr-vertical-nav-group>
-        <cds-icon shape="plugin" clrVerticalNavIcon></cds-icon>
+        <clr-icon shape="plugin" clrVerticalNavIcon></clr-icon>
         Addons
         <ng-template [clrIfExpanded]="addonsExpanded" (clrIfExpandedChange)="addonsExpanded = $event">
           <clr-vertical-nav-group-children>

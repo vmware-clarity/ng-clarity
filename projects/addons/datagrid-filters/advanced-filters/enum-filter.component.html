@@ -29,13 +29,13 @@
     <clr-input-container *ngIf="filterProperty.searchable" cds-layout="m-t:xs">
       <label class="clr-sr-only">{{ filterStrings.searchOptions }}</label>
       <input clrInput type="text" [placeholder]="filterStrings.searchPlaceholder" formControlName="searchTerm" />
-      <cds-icon shape="search" clrInputPrefix></cds-icon>
-      <cds-icon
+      <clr-icon shape="search" clrInputPrefix></clr-icon>
+      <clr-icon
         *ngIf="enumFilterForm.get('searchTerm')?.value"
         shape="window-close"
         clrInputSuffix
         (click)="clearSearch()"
-      ></cds-icon>
+      ></clr-icon>
       <clr-control-helper *ngIf="filteredOptions.length">
         {{
           filterStrings.formatString(filterStrings.showingFormat, [

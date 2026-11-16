@@ -22,7 +22,7 @@
   <clr-dg-row>
     <clr-dg-cell>{{user.id}}</clr-dg-cell>
     <clr-dg-cell>
-      <cds-icon shape="user"></cds-icon>
+      <clr-icon shape="user"></clr-icon>
       {{user.name}}
     </clr-dg-cell>
     <clr-dg-cell>{{user.pokemon.name}}</clr-dg-cell>
@@ -44,7 +44,7 @@
     <clr-dg-row>
       <clr-dg-cell>{{user.id}}</clr-dg-cell>
       <clr-dg-cell>
-        <cds-icon shape="user"></cds-icon>
+        <clr-icon shape="user"></clr-icon>
         {{user.name}}
       </clr-dg-cell>
       <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
@@ -149,11 +149,11 @@
     <clr-dg-row *clrDgItems="let user of nonPaginatedUsers" [clrDgItem]="user">
       <clr-dg-action-overflow>
         <button class="action-item" (click)="onEdit(user)">
-          <cds-icon shape="note"></cds-icon>
+          <clr-icon shape="note"></clr-icon>
           Edit
         </button>
         <button class="action-item" (click)="onDelete(user)">
-          <cds-icon shape="trash"></cds-icon>
+          <clr-icon shape="trash"></clr-icon>
           Delete
         </button>
       </clr-dg-action-overflow>
@@ -401,7 +401,7 @@
         {{user.id}}
         <clr-signpost>
           <button type="button" class="signpost-action btn btn-sm btn-link" clrSignpostTrigger>
-            <cds-icon shape="help-info"></cds-icon>
+            <clr-icon shape="help-info"></clr-icon>
           </button>
           <clr-signpost-content *clrIfOpen [clrPosition]="'top-middle'">The pokemon is strong.</clr-signpost-content>
         </clr-signpost>

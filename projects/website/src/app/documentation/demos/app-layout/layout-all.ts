@@ -11,7 +11,6 @@ import {
   cloudIcon,
   ClrAlertModule,
   ClrIcon,
-  ClrIconModule,
   ClrVerticalNavModule,
   folderIcon,
   infoCircleIcon,
@@ -103,7 +102,7 @@ const HTML_EXAMPLE = `
   templateUrl: './layout-all.html',
   styleUrl: './layout.demo.scss',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ClrIcon, ClrIconModule, ClrAlertModule, ClrVerticalNavModule, StackblitzExampleComponent],
+  imports: [ClrIcon, ClrAlertModule, ClrVerticalNavModule, StackblitzExampleComponent],
 })
 export class LayoutAllDemo {
   readonly showCode = input(false);

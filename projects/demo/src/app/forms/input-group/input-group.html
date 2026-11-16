@@ -23,7 +23,7 @@
       </div>
       <span class="clr-subtext">Helper Text</span>
       <div class="clr-subtext-wrapper error">
-        <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
+        <clr-icon class="clr-validate-icon" shape="error-standard" status="danger"></clr-icon>
         <span class="clr-subtext">Error Text</span>
       </div>
     </div>
@@ -33,7 +33,7 @@
     <div class="clr-control-container">
       <div class="clr-input-wrapper">
         <div class="clr-input-group" [ngClass]="{ 'clr-focus': focusInputGroup }">
-          <span class="clr-input-group-addon"><cds-icon shape="calendar"></cds-icon></span>
+          <span class="clr-input-group-addon"><clr-icon shape="calendar"></clr-icon></span>
           <input
             type="text"
             placeholder="Enter value here"
@@ -41,7 +41,7 @@
             (focus)="focusInputGroup = true"
             (blur)="focusInputGroup = false"
           />
-          <span class="clr-input-group-addon"><cds-icon shape="calendar"></cds-icon></span>
+          <span class="clr-input-group-addon"><clr-icon shape="calendar"></clr-icon></span>
         </div>
       </div>
       <span class="clr-subtext">Helper Text</span>
@@ -53,7 +53,7 @@
     <div class="clr-control-container clr-error">
       <div class="clr-input-wrapper">
         <div class="clr-input-group" [ngClass]="{ 'clr-focus': focusInputGroup }">
-          <span class="clr-input-group-addon"><cds-icon shape="calendar"></cds-icon></span>
+          <span class="clr-input-group-addon"><clr-icon shape="calendar"></clr-icon></span>
           <input
             type="text"
             placeholder="Enter value here"
@@ -61,12 +61,12 @@
             (focus)="focusInputGroup = true"
             (blur)="focusInputGroup = false"
           />
-          <span class="clr-input-group-addon"><cds-icon shape="calendar"></cds-icon></span>
+          <span class="clr-input-group-addon"><clr-icon shape="calendar"></clr-icon></span>
         </div>
       </div>
       <span class="clr-subtext">Helper Text</span>
       <div class="clr-subtext-wrapper error">
-        <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
+        <clr-icon class="clr-validate-icon" shape="error-standard" status="danger"></clr-icon>
         <span class="clr-subtext">Error Text</span>
       </div>
     </div>
@@ -156,10 +156,10 @@
             (blur)="focusPasswordGroup = false"
           />
           <button (click)="showPassword = !showPassword" class="clr-input-group-icon-action" type="button">
-            <cds-icon
+            <clr-icon
               [shape]="showPassword ? 'eye-hide' : 'eye'"
               [attr.title]="showPassword ? commonStrings.keys.hide : commonStrings.keys.show"
-            ></cds-icon>
+            ></clr-icon>
           </button>
         </div>
       </div>
@@ -183,16 +183,16 @@
             (blur)="focusPasswordGroup = false"
           />
           <button (click)="showPassword = !showPassword" class="clr-input-group-icon-action" type="button">
-            <cds-icon
+            <clr-icon
               [shape]="showPassword ? 'eye-hide' : 'eye'"
               [attr.title]="showPassword ? commonStrings.keys.hide : commonStrings.keys.show"
-            ></cds-icon>
+            ></clr-icon>
           </button>
         </div>
       </div>
       <span class="clr-subtext">Helper Text</span>
       <div class="clr-subtext-wrapper error">
-        <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
+        <clr-icon class="clr-validate-icon" shape="error-standard" status="danger"></clr-icon>
         <span class="clr-subtext">Helper Text</span>
       </div>
     </div>

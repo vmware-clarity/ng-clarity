@@ -75,7 +75,7 @@ import { FiltersProvider } from './providers/filters';
       [class.datagrid-column-actions-filtered]="filterActive"
       [attr.aria-label]="triggerLabel"
     >
-      <cds-icon
+      <clr-icon
         [size]="filterActive ? '16' : '12'"
         [shape]="filterActive ? 'ellipsis-grid-circle' : 'ellipsis-vertical'"
         [status]="filterActive ? 'info' : null"
@@ -98,7 +98,7 @@ import { FiltersProvider } from './providers/filters';
           [class.active]="sortOrder === ClrDatagridSortOrder.ASC"
           (click)="sort(false)"
         >
-          <cds-icon shape="arrow" direction="up" aria-hidden="true"></cds-icon>
+          <clr-icon shape="arrow" direction="up" aria-hidden="true"></clr-icon>
           {{ commonStrings.keys.sortColumnAscending }}
         </button>
         <button
@@ -109,12 +109,12 @@ import { FiltersProvider } from './providers/filters';
           [class.active]="sortOrder === ClrDatagridSortOrder.DESC"
           (click)="sort(true)"
         >
-          <cds-icon shape="arrow" direction="down" aria-hidden="true"></cds-icon>
+          <clr-icon shape="arrow" direction="down" aria-hidden="true"></clr-icon>
           {{ commonStrings.keys.sortColumnDescending }}
         </button>
         @if (canClearSort) {
           <button type="button" clrDropdownItem (click)="column.clearSort()">
-            <cds-icon shape="times" aria-hidden="true"></cds-icon>
+            <clr-icon shape="times" aria-hidden="true"></clr-icon>
             {{ commonStrings.keys.clearColumnSort }}
           </button>
         }
@@ -125,13 +125,13 @@ import { FiltersProvider } from './providers/filters';
           <div class="dropdown-divider" role="separator"></div>
         }
         <button type="button" clrDropdownItem (click)="togglePinned()">
-          <cds-icon
+          <clr-icon
             [shape]="column.pinned ? 'unpin' : 'pin'"
             solid
             size="12"
             class="datagrid-column-actions-pin-icon"
             aria-hidden="true"
-          ></cds-icon>
+          ></clr-icon>
           {{ column.pinned ? commonStrings.keys.unpinColumn : commonStrings.keys.pinColumn }}
         </button>
       }
@@ -153,7 +153,7 @@ import { FiltersProvider } from './providers/filters';
           [attr.aria-controls]="filterPopoverId"
           (click)="openFilter($event)"
         >
-          <cds-icon [shape]="filterActive ? 'filter-grid-circle' : 'filter-grid'" solid aria-hidden="true"></cds-icon>
+          <clr-icon [shape]="filterActive ? 'filter-grid-circle' : 'filter-grid'" solid aria-hidden="true"></clr-icon>
           {{ commonStrings.keys.filterColumn }}
         </button>
       }

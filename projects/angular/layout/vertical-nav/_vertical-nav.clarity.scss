@@ -125,7 +125,6 @@ $width-transition: width tokens.$cds-global-animation-duration-quick tokens.$cds
       padding: 0;
 
       //Others
-      cds-icon[shape='angle-double'],
       clr-icon[shape='angle-double'] {
         color: vertical-nav-variables.$clr-vertical-nav-toggle-icon-color;
 
@@ -140,7 +139,6 @@ $width-transition: width tokens.$cds-global-animation-duration-quick tokens.$cds
 
       &:disabled,
       &.disabled {
-        cds-icon[shape='angle-double'],
         clr-icon[shape='angle-double'] {
           color: vertical-nav-variables.$clr-vertical-nav-toggle-icon-disabled-color;
         }
@@ -161,7 +159,6 @@ $width-transition: width tokens.$cds-global-animation-duration-quick tokens.$cds
       height: vertical-nav-variables.$clr-vertical-nav-item-height;
       padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-xl;
 
-      cds-icon,
       clr-icon {
         margin-right: 0;
 
@@ -171,7 +168,6 @@ $width-transition: width tokens.$cds-global-animation-duration-quick tokens.$cds
       }
 
       &.on-collapse {
-        cds-icon,
         clr-icon {
           margin: 0;
         }
@@ -440,7 +436,6 @@ $width-transition: width tokens.$cds-global-animation-duration-quick tokens.$cds
         //Dims
         padding-left: 0;
 
-        cds-icon,
         clr-icon {
           &.nav-group-trigger-icon {
             width: density.$clr-base-icon-size-s;

@@ -92,16 +92,16 @@
     <clr-dg-column-actions [clrDgKeepFilterInHeader]="true">
       <div class="dropdown-divider" role="separator"></div>
       <button type="button" clrDgColumnAction (click)="export('User ID')">
-        <cds-icon shape="export" aria-hidden="true"></cds-icon>
+        <clr-icon shape="export" aria-hidden="true"></clr-icon>
         Export column
       </button>
       <button type="button" clrDgColumnAction (click)="copyColumn('User ID', 'id')">
-        <cds-icon shape="copy" aria-hidden="true"></cds-icon>
+        <clr-icon shape="copy" aria-hidden="true"></clr-icon>
         Copy values
       </button>
       <!-- clrDisabled keeps the item in the menu but out of the arrow key order. -->
       <button type="button" clrDgColumnAction clrDisabled>
-        <cds-icon shape="trash" aria-hidden="true"></cds-icon>
+        <clr-icon shape="trash" aria-hidden="true"></clr-icon>
         Delete column
       </button>
     </clr-dg-column-actions>
@@ -111,11 +111,11 @@
     <clr-dg-column-actions>
       <div class="dropdown-divider" role="separator"></div>
       <button type="button" clrDgColumnAction (click)="export('Name')">
-        <cds-icon shape="export" aria-hidden="true"></cds-icon>
+        <clr-icon shape="export" aria-hidden="true"></clr-icon>
         Export column
       </button>
       <button type="button" clrDgColumnAction (click)="copyColumn('Name', 'name')">
-        <cds-icon shape="copy" aria-hidden="true"></cds-icon>
+        <clr-icon shape="copy" aria-hidden="true"></clr-icon>
         Copy values
       </button>
     </clr-dg-column-actions>

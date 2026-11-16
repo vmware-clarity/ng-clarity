@@ -99,13 +99,13 @@ import { Subscription } from 'rxjs';
       [class.repro-status-success]="!errorMessage && (dropdownOpened || signpostOpened)"
     >
       @if (errorMessage) {
-        <cds-icon shape="exclamation-circle"></cds-icon>
+        <clr-icon shape="exclamation-circle"></clr-icon>
         <span>Reproduced crash: {{ errorMessage }}</span>
       } @else if (dropdownOpened) {
-        <cds-icon shape="check-circle"></cds-icon>
+        <clr-icon shape="check-circle"></clr-icon>
         <span>Dropdown opened with no errors. Fix is working.</span>
       } @else if (signpostOpened) {
-        <cds-icon shape="check-circle"></cds-icon>
+        <clr-icon shape="check-circle"></clr-icon>
         <span>Signpost opened with no errors. Fix is working.</span>
       }
     </div>

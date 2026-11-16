@@ -27,11 +27,11 @@
     (focus)="focusTreeNode()"
     [disabled]="disabled"
   >
-    <cds-icon
+    <clr-icon
       class="clr-treenode-caret-icon"
       shape="angle"
       [direction]="expandService.expanded ? 'down' : 'right'"
-    ></cds-icon>
+    ></clr-icon>
   </button>
   } @if (expandService.loading || isModelLoading) {
   <div class="clr-treenode-spinner-container">

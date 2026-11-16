@@ -68,7 +68,7 @@ import { ViewManagerService } from './providers/view-manager.service';
               class="clr-input-group-icon-action"
               [disabled]="isInputDateDisabled"
             >
-              <cds-icon status="info" shape="calendar"></cds-icon>
+              <clr-icon status="info" shape="calendar"></clr-icon>
             </button>
           }
           <clr-datepicker-view-manager

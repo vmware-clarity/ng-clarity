@@ -7,7 +7,7 @@
 
 import { isPlatformBrowser } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
-import { ClrIcon, ClrIconModule, ClrModalModule } from '@clr/angular';
+import { ClrIcon, ClrModalModule } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
@@ -82,7 +82,7 @@ export class ExampleComponent implements OnInit, OnDestroy {
   selector: 'clr-modal-animation-demo',
   templateUrl: './modal-animation.demo.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ClrIcon, ClrIconModule, ClrModalModule, StackblitzExampleComponent],
+  imports: [ClrIcon, ClrModalModule, StackblitzExampleComponent],
 })
 export class ModalAnimationDemo implements OnInit, OnDestroy {
   animatedExampleIn = false;

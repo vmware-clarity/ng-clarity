@@ -416,14 +416,14 @@ export default function (): void {
         expect(masterRow(0).getAttribute('aria-busy')).toBe('true');
         // The toggle stays, with a spinner in place of its icon.
         expect(toggleButton(0).querySelector('.spinner')).not.toBeNull();
-        expect(toggleButton(0).querySelector('cds-icon')).toBeNull();
+        expect(toggleButton(0).querySelector('clr-icon')).toBeNull();
 
         context.respond('a', 2);
         fixture.detectChanges();
         expect(rowNames()).toEqual(['a', 'a1', 'a2', 'b', 'c']);
         expect(masterRow(0).getAttribute('aria-busy')).toBeNull();
         expect(toggleButton(0).querySelector('.spinner')).toBeNull();
-        expect(toggleButton(0).querySelector('cds-icon')).not.toBeNull();
+        expect(toggleButton(0).querySelector('clr-icon')).not.toBeNull();
         expect(masterRow(1).getAttribute('aria-level')).toBe('2');
         expect(masterRow(1).getAttribute('aria-posinset')).toBe('1');
         expect(masterRow(1).getAttribute('aria-setsize')).toBe('2');

@@ -37,7 +37,7 @@ const meta = {
     template: `
       <clr-tree>
         <clr-tree-node [clrExpanded]="true" [clrSelected]="selected">
-          <cds-icon shape="folder"></cds-icon>
+          <clr-icon shape="folder"></clr-icon>
           Drawer
           <clr-tree-node [clrExpanable]="true">
             Multi-line content.
@@ -47,7 +47,7 @@ const meta = {
             should be aligned to the top of the node.
             <clr-tree-node [clrSelected]="selected">
               You opened a secret node. You find an orange
-              <cds-icon shape="circle" solid="true" style="color: orange"></cds-icon>
+              <clr-icon shape="circle" solid="true" style="color: orange"></clr-icon>
             </clr-tree-node>
           </clr-tree-node>
         </clr-tree-node>

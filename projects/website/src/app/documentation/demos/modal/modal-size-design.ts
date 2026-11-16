@@ -6,14 +6,14 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ClarityIcons, ClrIcon, ClrIconModule, ClrModalModule, resizeIcon } from '@clr/angular';
+import { ClarityIcons, ClrIcon, ClrModalModule, resizeIcon } from '@clr/angular';
 
 @Component({
   selector: 'clr-modal-size-design-demo',
   templateUrl: './modal-size-design.demo.html',
   styleUrl: './modal-size-design-demo.scss',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ClrIcon, ClrIconModule, ClrModalModule],
+  imports: [ClrIcon, ClrModalModule],
 })
 export class ModalSizeDesignDemo {
   // Booleans to open each example modal

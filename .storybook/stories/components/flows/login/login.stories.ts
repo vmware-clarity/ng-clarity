@@ -48,7 +48,7 @@ const meta = {
               <clr-dropdown [clrCloseMenuOnItemClick]="clrCloseMenuOnItemClick">
                 <button class="btn btn-link btn-sm" clrDropdownTrigger>
                   Language
-                  <cds-icon shape="angle" direction="down"></cds-icon>
+                  <clr-icon shape="angle" direction="down"></clr-icon>
                 </button>
                 <clr-dropdown-menu>
                   <div aria-label="Language 1" clrDropdownItem>Language 1</div>

@@ -7,7 +7,7 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { ClrAlertModule, ClrIcon, ClrIconModule, ClrVerticalNavModule } from '@clr/angular';
+import { ClrAlertModule, ClrIcon, ClrVerticalNavModule } from '@clr/angular';
 
 import { CodeSnippetComponent } from '../../../../../shared/code-snippet/code-snippet.component';
 import { StackblitzExampleComponent } from '../../../../../shared/stackblitz-example/stackblitz-example.component';
@@ -78,7 +78,6 @@ const additionalFiles = {
   changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ClrIcon,
-    ClrIconModule,
     ClrVerticalNavModule,
     RouterLinkActive,
     RouterLink,

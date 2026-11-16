@@ -12,7 +12,7 @@ import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/s
 
 const EXAMPLE = `
 <button class="btn btn-outline" clrPopoverOpenCloseButton clrPopoverOrigin>
-  <cds-icon shape="home"></cds-icon>
+  <clr-icon shape="home"></clr-icon>
   Open Popover
 </button>
 <div
@@ -34,7 +34,7 @@ const EXAMPLE = `
   </p>
   <button class="btn btn-sm btn-outline" clrPopoverCloseButton>
     Close
-    <cds-icon shape="times"></cds-icon>
+    <clr-icon shape="times"></clr-icon>
   </button>
 </div>
 `;

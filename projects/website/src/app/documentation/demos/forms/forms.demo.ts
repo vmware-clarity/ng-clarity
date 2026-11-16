@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ClrAlertModule, ClrIcon, ClrIconModule } from '@clr/angular';
+import { ClrAlertModule, ClrIcon } from '@clr/angular';
 
 import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { DoDontComponent } from '../../../shared/do-dont/do-dont.component';
@@ -61,7 +61,6 @@ const NgValidateTs = require('!raw-loader!./ng/validate.ts').default;
     StackblitzExampleComponent,
     ClrAlertModule,
     ClrIcon,
-    ClrIconModule,
     StyleDocsComponent,
     AiSkillComponent,
   ],

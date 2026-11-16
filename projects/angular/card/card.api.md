@@ -4,7 +4,6 @@
 
 ```ts
 
-import { AfterViewInit } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ElementRef } from '@angular/core';
@@ -15,7 +14,6 @@ import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { PipeTransform } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
-import { Type } from '@angular/core';
 
 // @public (undocumented)
 export class ClrCard {

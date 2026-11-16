@@ -7,14 +7,7 @@
 
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import {
-  ClrDatagridModule,
-  ClrIcon,
-  ClrIconModule,
-  ClrIfExpanded,
-  ClrLoadingModule,
-  ClrTreeViewModule,
-} from '@clr/angular';
+import { ClrDatagridModule, ClrIcon, ClrIfExpanded, ClrLoadingModule, ClrTreeViewModule } from '@clr/angular';
 import { Observable, timer } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
@@ -72,7 +65,6 @@ export class ExampleComponent {
     ClrTreeViewModule,
     ClrLoadingModule,
     ClrIcon,
-    ClrIconModule,
     ClrDatagridModule,
     ClrIfExpanded,
     StackblitzExampleComponent,

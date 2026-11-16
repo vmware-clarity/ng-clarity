@@ -10,7 +10,7 @@
 
   @for (vm of vms; track vm.name) {
   <clr-dg-row (contextmenu)="onContextMenu($event)">
-    <clr-dg-cell><cds-icon shape="vm"></cds-icon> {{ vm.name }}</clr-dg-cell>
+    <clr-dg-cell><clr-icon shape="vm"></clr-icon> {{ vm.name }}</clr-dg-cell>
     <clr-dg-cell>{{ vm.state }}</clr-dg-cell>
   </clr-dg-row>
   }

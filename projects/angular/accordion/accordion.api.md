@@ -22,7 +22,6 @@ import { QueryList } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Type } from '@angular/core';
 
 // Warning: (ae-forgotten-export) The symbol "CollapsiblePanelGroupModel" needs to be exported by the entry point clr-angular-accordion.d.ts
 //

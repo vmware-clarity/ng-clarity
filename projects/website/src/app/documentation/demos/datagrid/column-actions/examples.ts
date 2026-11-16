@@ -55,11 +55,11 @@ const customActionsExample = `
     Name
     <clr-dg-column-actions>
       <button type="button" clrDgColumnAction (click)="renameColumn()">
-        <cds-icon shape="pencil" aria-hidden="true"></cds-icon>
+        <clr-icon shape="pencil" aria-hidden="true"></clr-icon>
         Rename column
       </button>
       <button type="button" clrDgColumnAction [clrDisabled]="true">
-        <cds-icon shape="trash" aria-hidden="true"></cds-icon>
+        <clr-icon shape="trash" aria-hidden="true"></clr-icon>
         Clear column
       </button>
     </clr-dg-column-actions>
@@ -96,7 +96,7 @@ export class ExampleComponent {
   lastAction = '';
 
   constructor(inventory: Inventory) {
-    // A projected action renders its own cds-icon, so the shape has to be registered.
+    // A projected action renders its own clr-icon, so the shape has to be registered.
     ClarityIcons.addIcons(pencilIcon, trashIcon);
 
     inventory.size = 10;

@@ -762,7 +762,7 @@
         <clr-alert-item>
           <span class="alert-text">
             An action that sets <code cds-text="code">icon</code> names a Clarity icon shape, and the application has to
-            register that shape itself, the same as it would for a <code cds-text="code">cds-icon</code> of its own. An
+            register that shape itself, the same as it would for a <code cds-text="code">clr-icon</code> of its own. An
             action without an icon is allowed, it just does not line up with the items that have one. A disabled action
             stays in the menu, announced as disabled, rather than being hidden.
           </span>
@@ -1489,7 +1489,7 @@
 &#64;Component({{ '{' }}
     selector: 'demo-text-renderer',
     template: `
-        &lt;cds-icon shape="exclamation-circle" class="is-error" size="24"&gt;&lt;/cds-icon&gt;
+        &lt;clr-icon shape="exclamation-circle" class="is-error" size="24"&gt;&lt;/clr-icon&gt;
         &lt;span&gt;{{ '{' }}{{ '{' }} displayText {{ '}' }}{{ '}' }} cell custom HTML&lt;/span&gt;
     `,
 {{ '}' }})
@@ -1561,7 +1561,7 @@ class DemoTextRendererComponent implements ColumnRenderer&lt;unknown&gt;, OnInit
           <td>
             Name of a registered Clarity icon shape to lead the action with. Applies to column actions, where the
             built-in items all carry an icon. The application registers the shape itself, the same as it would for a
-            <code cds-text="code">cds-icon</code> of its own.
+            <code cds-text="code">clr-icon</code> of its own.
           </td>
           <td>No</td>
         </tr>

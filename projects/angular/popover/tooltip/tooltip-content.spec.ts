@@ -19,7 +19,7 @@ import { ClrTooltipModule } from './tooltip.module';
 @Component({
   template: `
     <clr-tooltip>
-      <cds-icon clrTooltipTrigger shape="exclamation-circle" solid></cds-icon>
+      <clr-icon clrTooltipTrigger shape="exclamation-circle" solid></clr-icon>
       <clr-tooltip-content>Hello world</clr-tooltip-content>
     </clr-tooltip>
   `,
@@ -31,7 +31,7 @@ class DefaultTest {}
 @Component({
   template: `
     <clr-tooltip>
-      <cds-icon clrTooltipTrigger shape="exclamation-circle" solid></cds-icon>
+      <clr-icon clrTooltipTrigger shape="exclamation-circle" solid></clr-icon>
       <clr-tooltip-content [id]="idValue">Hello world</clr-tooltip-content>
     </clr-tooltip>
   `,
@@ -47,7 +47,7 @@ class IdTest {
     <div style="padding: 150px">
       For top spacing
       <clr-tooltip>
-        <cds-icon clrTooltipTrigger shape="exclamation-circle" solid></cds-icon>
+        <clr-icon clrTooltipTrigger shape="exclamation-circle" solid></clr-icon>
         <clr-tooltip-content [clrPosition]="position" [clrSize]="size">Hello world</clr-tooltip-content>
       </clr-tooltip>
     </div>

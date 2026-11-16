@@ -29,7 +29,7 @@ import { DatalistIdService } from './providers/datalist-id.service';
         <div class="clr-input-group" [class.clr-focus]="focus" #datalist>
           <ng-content select="[clrDatalistInput]"></ng-content>
           <ng-content select="datalist"></ng-content>
-          <cds-icon shape="angle" class="clr-datalist-caret" direction="down" (click)="showPicker(datalist)"></cds-icon>
+          <clr-icon shape="angle" class="clr-datalist-caret" direction="down" (click)="showPicker(datalist)"></clr-icon>
         </div>
       </div>
       @if (showHelper) {

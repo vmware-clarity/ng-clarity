@@ -6,15 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import {
-  ClarityIcons,
-  ClrIcon,
-  ClrIconModule,
-  ClrModalModule,
-  ClrSidePanelModule,
-  pinIcon,
-  unpinIcon,
-} from '@clr/angular';
+import { ClarityIcons, ClrIcon, ClrModalModule, ClrSidePanelModule, pinIcon, unpinIcon } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
@@ -73,7 +65,7 @@ export class ExampleComponent {
   selector: 'clr-side-panel-angular-pinnable-demo',
   templateUrl: './side-panel-angular-pinnable-demo.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ClrModalModule, ClrSidePanelModule, ClrIcon, ClrIconModule, StackblitzExampleComponent],
+  imports: [ClrModalModule, ClrSidePanelModule, ClrIcon, StackblitzExampleComponent],
 })
 export class SidePanelAngularPinnableDemo {
   readonly showCode = input(true);

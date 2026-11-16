@@ -27,7 +27,6 @@ import { QueryList } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Type } from '@angular/core';
 
 // @public (undocumented)
 export class ClrStepButton implements OnInit {

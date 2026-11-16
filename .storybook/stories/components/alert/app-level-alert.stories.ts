@@ -34,7 +34,7 @@ const meta = {
   argTypes: {
     // inputs
     clrAlertIcon: {
-      description: 'Changes the leading icon of an alert from the default icon to the icon cds-icon value specified',
+      description: 'Changes the leading icon of an alert from the default icon to the icon clr-icon value specified',
       control: { type: 'radio' },
       options: ['Default', 'settings'],
       mapping: { Default: '' },

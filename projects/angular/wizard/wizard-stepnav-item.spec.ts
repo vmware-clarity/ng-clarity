@@ -488,7 +488,7 @@ export default function (): void {
           );
         });
 
-        it('should have a cds-icon when page has an error', () => {
+        it('should have a clr-icon when page has an error', () => {
           expect(myStepnavItem.classList.contains('error')).toBe(
             false,
             'stepnav item does not have .error class when page has no error'
@@ -497,12 +497,12 @@ export default function (): void {
           fakeOutPage.hasError = true;
           fixture.detectChanges();
 
-          const iconElement = myStepnavItem.querySelector('cds-icon[shape="error-standard"]');
+          const iconElement = myStepnavItem.querySelector('clr-icon[shape="error-standard"]');
           expect(iconElement).not.toBeNull();
           expect(iconElement.getAttribute('aria-label')).toBe('Error');
         });
 
-        it('should have a cds-icon when page has is complete', () => {
+        it('should have a clr-icon when page has is complete', () => {
           expect(myStepnavItem.classList.contains('error')).toBe(
             false,
             'stepnav item does not have .error class when page has no error'
@@ -511,7 +511,7 @@ export default function (): void {
           fakeOutPage.hasError = false;
           fixture.detectChanges();
 
-          const iconElement = myStepnavItem.querySelector('cds-icon[shape="success-standard"]');
+          const iconElement = myStepnavItem.querySelector('clr-icon[shape="success-standard"]');
           expect(iconElement).not.toBeNull();
           expect(iconElement.getAttribute('aria-label')).toBe('Completed');
         });

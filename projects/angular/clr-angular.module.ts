@@ -12,7 +12,7 @@ import { ClrCardModule } from '@clr/angular/card';
 import { ClrDataModule } from '@clr/angular/data';
 import { ClrEmphasisModule } from '@clr/angular/emphasis';
 import { ClrFormsModule } from '@clr/angular/forms';
-import { ClrIcon, ClrIconModule } from '@clr/angular/icon';
+import { ClrIcon } from '@clr/angular/icon';
 import { ClrLayoutModule } from '@clr/angular/layout';
 import { ClrModalModule, ClrSidePanelModule } from '@clr/angular/modal';
 import { ClrPopoverModule } from '@clr/angular/popover';
@@ -30,7 +30,6 @@ import { ClrWizardModule } from '@clr/angular/wizard';
     ClrEmphasisModule,
     ClrDataModule,
     ClrIcon,
-    ClrIconModule,
     ClrModalModule,
     ClrLoadingModule,
     ClrConditionalModule,

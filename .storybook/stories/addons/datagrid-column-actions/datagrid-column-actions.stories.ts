@@ -43,7 +43,7 @@ type ColumnActionsArgs = {
 };
 
 // An action names an icon shape, so whoever configures it registers the shape, the same as for a
-// cds-icon of its own.
+// clr-icon of its own.
 ClarityIcons.addIcons(copyIcon, infoStandardIcon);
 
 // Offered in every column's menu, after the built-in items. The disabled one is here to show that a

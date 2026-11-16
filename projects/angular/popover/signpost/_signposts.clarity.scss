@@ -30,7 +30,6 @@
       border-width: 0;
       color: signpost-variables.$clr-signpost-action-color;
 
-      cds-icon,
       clr-icon {
         &:not([size]) {
           @include mixins.equilateral(density.$clr-base-icon-size-l);
@@ -39,13 +38,11 @@
         color: signpost-variables.$clr-signpost-action-color;
       }
 
-      cds-icon:hover,
       clr-icon:hover,
       &:hover {
         color: signpost-variables.$clr-signpost-action-hover-color;
       }
 
-      &.active cds-icon,
       &.active clr-icon,
       &.active {
         color: signpost-variables.$clr-signpost-action-active-color;
@@ -91,7 +88,6 @@
 
       @include mixins.min-equilateral(density.$clr-base-icon-size-s);
 
-      cds-icon:not([size]),
       clr-icon:not([size]) {
         @include mixins.min-equilateral(density.$clr-base-icon-size-s);
       }

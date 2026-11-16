@@ -8,14 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import {
-  ClrAlertModule,
-  ClrCommonFormsModule,
-  ClrIcon,
-  ClrIconModule,
-  ClrInputModule,
-  ClrNumberInputModule,
-} from '@clr/angular';
+import { ClrAlertModule, ClrCommonFormsModule, ClrIcon, ClrInputModule, ClrNumberInputModule } from '@clr/angular';
 
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -76,7 +69,6 @@ export class ExampleComponent {
     ClrCommonFormsModule,
     ClrNumberInputModule,
     ClrIcon,
-    ClrIconModule,
     ThemedImageComponent,
     LinkCardsComponent,
     StyleDocsComponent,

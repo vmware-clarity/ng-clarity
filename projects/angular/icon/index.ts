@@ -6,8 +6,6 @@
  */
 
 export * from './utils/icon-html.pipe';
-export * from './icon';
-export * from './icon.module';
 export * from './icon.component';
 export * from './icon.service';
 export * from './interfaces/icon.interfaces';

@@ -42,7 +42,7 @@ const meta = {
         <clr-dropdown [clrCloseMenuOnItemClick]="clrCloseMenuOnItemClick">
           <button class="btn btn-outline-primary" clrDropdownTrigger>
             Dropdown
-            <cds-icon shape="angle" direction="down"></cds-icon>
+            <clr-icon shape="angle" direction="down"></clr-icon>
           </button>
           <clr-dropdown-menu>
             <div clrDropdownItem (click)="modalOpen = true">Open Modal</div>

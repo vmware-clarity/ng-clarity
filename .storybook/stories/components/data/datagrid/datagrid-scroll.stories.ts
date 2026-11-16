@@ -45,7 +45,7 @@ const meta = {
           <clr-dg-cell>
             {{ element.name }}
             <clr-tooltip>
-              <cds-icon clrTooltipTrigger shape="info-circle"></cds-icon>
+              <clr-icon clrTooltipTrigger shape="info-circle"></clr-icon>
               <clr-tooltip-content [clrPosition]="'top-right'" [clrSize]="'sm'">
                 This is a basic tooltip
               </clr-tooltip-content>
@@ -55,7 +55,7 @@ const meta = {
           <clr-dg-cell>
             {{ element.number }}
             <clr-signpost>
-              <cds-icon clrSignpostTrigger shape="info-circle" solid></cds-icon>
+              <clr-icon clrSignpostTrigger shape="info-circle" solid></clr-icon>
               <clr-signpost-content>This is a signpost.</clr-signpost-content>
             </clr-signpost>
           </clr-dg-cell>
@@ -72,7 +72,7 @@ const meta = {
             <br />
 
             <clr-tooltip>
-              <cds-icon clrTooltipTrigger shape="info-circle"></cds-icon>
+              <clr-icon clrTooltipTrigger shape="info-circle"></clr-icon>
               <clr-tooltip-content [clrPosition]="'top-right'" [clrSize]="'sm'">
                 This is a basic tooltip. With long text This is a basic tooltip. With long text This is a basic tooltip.
                 With long text This is a basic tooltip. With long text This is a basic tooltip. With long text This is a
@@ -85,7 +85,7 @@ const meta = {
             <clr-dropdown>
               <button class="btn btn-outline-primary" clrDropdownTrigger>
                 Dropdown
-                <cds-icon shape="angle" direction="down"></cds-icon>
+                <clr-icon shape="angle" direction="down"></clr-icon>
               </button>
               <clr-dropdown-menu>
                 <div aria-label="Action 1" clrDropdownItem>Action 1</div>

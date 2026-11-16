@@ -41,7 +41,7 @@ import {
     >
       @if (showCloseButton) {
         <button class="btn btn-sm btn-link-neutral btn-icon" clrPopoverCloseButton>
-          <cds-icon shape="times"></cds-icon>
+          <clr-icon shape="times"></clr-icon>
         </button>
         <br />
       }

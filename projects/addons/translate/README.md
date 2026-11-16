@@ -13,7 +13,7 @@ choice for the application.
     <div class="alert-items">
         <div class="alert-item static">
             <div class="alert-icon-wrapper">
-                <cds-icon class="alert-icon" shape="info-circle"></cds-icon>
+                <clr-icon class="alert-icon" shape="info-circle"></clr-icon>
             </div>
             <span class="alert-text">
                 Consumers of the AppFx library should only use the AppfxTranslateService to

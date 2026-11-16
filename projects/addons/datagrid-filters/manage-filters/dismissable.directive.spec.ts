@@ -44,7 +44,7 @@ describe('Directive: DismissableDirective', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     badge = fixture.nativeElement.querySelector('.badge');
-    icon = badge.querySelector('cds-icon.remove-filter');
+    icon = badge.querySelector('clr-icon.remove-filter');
   });
 
   afterEach(() => {
@@ -83,7 +83,7 @@ describe('Directive: DismissableDirective', () => {
   it('removes the icon together with the badge', () => {
     component.show = false;
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('cds-icon')).toBeNull();
+    expect(fixture.nativeElement.querySelector('clr-icon')).toBeNull();
     expect(document.body.contains(icon)).toBeFalse();
   });
 });

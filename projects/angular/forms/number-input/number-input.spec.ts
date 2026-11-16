@@ -104,8 +104,8 @@ export default function (): void {
 
       it('should not throw when step buttons are clicked without an associated form control', () => {
         const inputGroup = control.nativeElement.closest('.clr-input-group');
-        const stepDownButton = inputGroup.querySelector('button:has(cds-icon[shape="minus"])');
-        const stepUpButton = inputGroup.querySelector('button:has(cds-icon[shape="plus"])');
+        const stepDownButton = inputGroup.querySelector('button:has(clr-icon[shape="minus"])');
+        const stepUpButton = inputGroup.querySelector('button:has(clr-icon[shape="plus"])');
 
         expect(() => {
           stepUpButton.click();
@@ -164,8 +164,8 @@ function inputSpec(description, testContainer, testControl, testComponent) {
       spyOn(clarityDirective, 'stepDown').and.callThrough();
 
       const inputGroup = control.nativeElement.closest('.clr-input-group');
-      const stepDownButton = inputGroup.querySelector('button:has(cds-icon[shape="minus"])');
-      const stepUpButton = inputGroup.querySelector('button:has(cds-icon[shape="plus"])');
+      const stepDownButton = inputGroup.querySelector('button:has(clr-icon[shape="minus"])');
+      const stepUpButton = inputGroup.querySelector('button:has(clr-icon[shape="plus"])');
       stepUpButton.click();
       fixture.detectChanges();
 
@@ -183,7 +183,7 @@ function inputSpec(description, testContainer, testControl, testComponent) {
       spyOn(control.nativeElement, 'onblur').and.callThrough();
 
       const inputGroup = control.nativeElement.closest('.clr-input-group');
-      const stepUpButton = inputGroup.querySelector('button:has(cds-icon[shape="plus"])');
+      const stepUpButton = inputGroup.querySelector('button:has(clr-icon[shape="plus"])');
       stepUpButton.focus();
       stepUpButton.blur();
       fixture.detectChanges();
@@ -195,7 +195,7 @@ function inputSpec(description, testContainer, testControl, testComponent) {
       spyOn(control.nativeElement, 'onchange').and.callThrough();
 
       const inputGroup = control.nativeElement.closest('.clr-input-group');
-      const stepUpButton = inputGroup.querySelector('button:has(cds-icon[shape="plus"])');
+      const stepUpButton = inputGroup.querySelector('button:has(clr-icon[shape="plus"])');
       stepUpButton.click();
       fixture.detectChanges();
 

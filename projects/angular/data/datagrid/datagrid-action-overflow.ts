@@ -49,7 +49,7 @@ let clrDgActionId = 0;
       clrPopoverOpenCloseButton
       (click)="$event.stopPropagation()"
     >
-      <cds-icon shape="ellipsis-vertical" [attr.title]="buttonLabel || commonStrings.keys.rowActions"></cds-icon>
+      <clr-icon shape="ellipsis-vertical" [attr.title]="buttonLabel || commonStrings.keys.rowActions"></clr-icon>
     </button>
 
     <div

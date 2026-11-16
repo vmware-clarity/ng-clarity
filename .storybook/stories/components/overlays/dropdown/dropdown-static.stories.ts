@@ -34,13 +34,13 @@ const meta = {
         <div class="dropdown open">
           <button class="dropdown-toggle btn btn-primary" type="button">
             Dropdown
-            <cds-icon shape="angle" direction="down"></cds-icon>
+            <clr-icon shape="angle" direction="down"></clr-icon>
           </button>
           <div class="dropdown-menu" role="menu">
             <label class="dropdown-header" aria-hidden="true">Dropdown header</label>
             <div aria-label="Dropdown header Action" class="dropdown-item active" role="menuitem">
               @if (showIcon) {
-                <cds-icon shape="user"></cds-icon>
+                <clr-icon shape="user"></clr-icon>
               }
               <span>Action</span>
             </div>
@@ -51,7 +51,7 @@ const meta = {
               aria-disabled="true"
             >
               @if (showIcon) {
-                <cds-icon shape="user"></cds-icon>
+                <clr-icon shape="user"></clr-icon>
               }
               <span>Disabled Link</span>
             </div>
@@ -64,7 +64,7 @@ const meta = {
               <div class="dropdown-menu" role="menu">
                 <button class="dropdown-item" role="menuitem">
                   @if (showIcon) {
-                    <cds-icon shape="user"></cds-icon>
+                    <clr-icon shape="user"></clr-icon>
                   }
                   <span>Foo.</span>
                 </button>
@@ -76,14 +76,14 @@ const meta = {
                     aria-haspopup="menu"
                   >
                     @if (showIcon) {
-                      <cds-icon shape="user"></cds-icon>
+                      <clr-icon shape="user"></clr-icon>
                     }
                     <span>Bar</span>
                   </button>
                   <div class="dropdown-menu" role="menu">
                     <div class="dropdown-item" role="menuitem">
                       @if (showIcon) {
-                        <cds-icon shape="user"></cds-icon>
+                        <clr-icon shape="user"></clr-icon>
                       }
                       <span>Baz</span>
                     </div>

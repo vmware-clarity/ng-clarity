@@ -24,7 +24,7 @@ clr-vertical-nav {
   display: flex;
   margin: var(--clr-base-vertical-offset-l) 0;
 
-  > cds-icon {
+  > clr-icon {
     margin-right: var(--clr-base-horizontal-offset-m);
 
     &:not([size]) {

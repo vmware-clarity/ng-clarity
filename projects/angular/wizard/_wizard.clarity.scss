@@ -66,7 +66,6 @@ $_modal-path: '> clr-modal > .modal > .modal-dialog > .clr-wizard-content-wrappe
         color: wizard-variables.$clr-wizard-header-action-color--hovered;
       }
 
-      cds-icon:not([size]),
       clr-icon:not([size]) {
         @include mixins.equilateral(density.$clr-base-icon-size-l);
       }
@@ -97,7 +96,7 @@ $_modal-path: '> clr-modal > .modal > .modal-dialog > .clr-wizard-content-wrappe
         color: inherit;
         background-color: inherit;
 
-        cds-icon {
+        clr-icon {
           color: wizard-variables.$clr-wizard-stepnav-link-selected-icon-color;
         }
       }
@@ -142,7 +141,6 @@ $_modal-path: '> clr-modal > .modal > .modal-dialog > .clr-wizard-content-wrappe
         border-color: wizard-variables.$clr-wizard-stepnav-item-complete-border-color;
 
         .clr-wizard-stepnav-link-icon {
-          cds-icon,
           clr-icon {
             --color: #{wizard-variables.$clr-wizard-stepnav-link-complete-icon-color};
           }
@@ -157,7 +155,6 @@ $_modal-path: '> clr-modal > .modal > .modal-dialog > .clr-wizard-content-wrappe
         }
 
         .clr-wizard-stepnav-link-icon {
-          cds-icon,
           clr-icon {
             --color: #{wizard-variables.$clr-wizard-stepnav-link-error-icon-color};
           }
@@ -314,7 +311,6 @@ $_modal-path: '> clr-modal > .modal > .modal-dialog > .clr-wizard-content-wrappe
       font-size: initial;
       line-height: initial;
 
-      cds-icon,
       clr-icon {
         fill: modal-variables.$clr-modal-close-color;
 
@@ -324,13 +320,11 @@ $_modal-path: '> clr-modal > .modal > .modal-dialog > .clr-wizard-content-wrappe
       }
 
       &:hover {
-        cds-icon,
         clr-icon {
           fill: variables.$clr-close-color-hover;
         }
 
         &:active {
-          cds-icon,
           clr-icon {
             fill: variables.$clr-close-color-active;
           }

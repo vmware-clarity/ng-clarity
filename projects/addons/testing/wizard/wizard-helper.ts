@@ -17,7 +17,7 @@ export class WizardHelper {
   constructor(private wizard: DebugElement) {}
 
   get pageNavTitles(): Array<string | undefined> {
-    // getlastTextNode is needed because cds-icon contains a span with text labels for
+    // getlastTextNode is needed because clr-icon contains a span with text labels for
     // the icons which we don't care about.
     return this.wizard
       .queryAll(By.css(this.#navitemSelector + ' .clr-wizard-stepnav-link-title'))

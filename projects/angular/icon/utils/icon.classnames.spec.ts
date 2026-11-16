@@ -245,7 +245,7 @@ describe('Icon classname helpers: ', () => {
 });
 
 @Component({
-  template: ` <cds-icon></cds-icon> `,
+  template: ` <clr-icon></clr-icon> `,
   changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })

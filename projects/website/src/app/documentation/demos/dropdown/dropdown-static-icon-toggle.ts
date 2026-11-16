@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ClrCommonFormsModule, ClrIcon, ClrIconModule } from '@clr/angular';
+import { ClrCommonFormsModule, ClrIcon } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
@@ -32,7 +32,7 @@ const EXAMPLE = `
   styleUrl: './dropdown.demo.scss',
   templateUrl: './dropdown-static-icon-toggle.demo.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ClrIcon, ClrIconModule, ClrCommonFormsModule, StackblitzExampleComponent],
+  imports: [ClrIcon, ClrCommonFormsModule, StackblitzExampleComponent],
 })
 export class DropdownStaticIconToggleDemo {
   example = EXAMPLE;

@@ -8,7 +8,7 @@
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { FormsModule, NgModel } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { ClrCommonFormsModule, ClrDatalistModule, ClrIcon, ClrIconModule, ClrSelectModule } from '@clr/angular';
+import { ClrCommonFormsModule, ClrDatalistModule, ClrIcon, ClrSelectModule } from '@clr/angular';
 
 import { DatalistBasicDemo } from './datalist-basic.demo';
 import { DatalistReactiveValidationDemo } from './datalist-reactive-validation.demo';
@@ -38,7 +38,6 @@ import { formsPatternLink } from '../pattern-links';
     ClrDatalistModule,
     ThemedImageComponent,
     ClrIcon,
-    ClrIconModule,
     LinkCardsComponent,
     RouterLink,
     DatalistBasicDemo,

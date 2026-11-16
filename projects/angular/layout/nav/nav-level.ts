@@ -222,7 +222,7 @@ export class ClrNavLevel implements OnInit {
     closeButton.className = 'clr-nav-close';
 
     const iconRef = createComponent(ClrIcon, {
-      hostElement: this._document.createElement('cds-icon'),
+      hostElement: this._document.createElement('clr-icon'),
       environmentInjector: this.environmentInjector,
       elementInjector: this.injector,
     });

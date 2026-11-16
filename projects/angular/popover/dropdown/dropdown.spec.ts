@@ -410,7 +410,7 @@ export default function (): void {
     <clr-dropdown [clrCloseMenuOnItemClick]="menuClosable">
       <button class="btn btn-primary" type="button" clrDropdownTrigger>
         Dropdown
-        <cds-icon shape="angle" direction="down"></cds-icon>
+        <clr-icon shape="angle" direction="down"></clr-icon>
       </button>
       <clr-dropdown-menu *clrIfOpen>
         <label class="dropdown-header">Header</label>
@@ -449,7 +449,7 @@ class TestComponent {
     <clr-dropdown [clrCloseMenuOnItemClick]="menuClosable">
       <button class="btn btn-primary" type="button" clrDropdownTrigger>
         Dropdown
-        <cds-icon shape="angle" direction="down"></cds-icon>
+        <clr-icon shape="angle" direction="down"></clr-icon>
       </button>
       <clr-dropdown-menu *clrIfOpen>
         <label class="dropdown-header">Header</label>
@@ -522,7 +522,7 @@ class DropdownItemThatDestroysAncestorTestComponent {
     <clr-dropdown>
       <button class="btn btn-primary" type="button" clrDropdownTrigger>
         Dropdown
-        <cds-icon shape="angle" direction="down"></cds-icon>
+        <clr-icon shape="angle" direction="down"></clr-icon>
       </button>
       <clr-dropdown-menu *clrIfOpen>
         <button clrDropdownItem (click)="modalOpen = true">Open Modal</button>

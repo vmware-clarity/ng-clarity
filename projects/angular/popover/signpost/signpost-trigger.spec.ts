@@ -92,7 +92,7 @@ export default function (): void {
       [attr.aria-label]="label"
       clrSignpostTrigger
     >
-      <cds-icon shape="info-circle"></cds-icon>
+      <clr-icon shape="info-circle"></clr-icon>
     </button>
   `,
   changeDetection: ChangeDetectionStrategy.Eager,

@@ -7,7 +7,7 @@
 
 import { JsonPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { ClrIcon, ClrIconModule, ClrTreeViewModule } from '@clr/angular';
+import { ClrIcon, ClrTreeViewModule } from '@clr/angular';
 
 import { organization } from './organization';
 import { StackblitzExampleComponent } from '../../../../shared/stackblitz-example/stackblitz-example.component';
@@ -79,7 +79,7 @@ const additionalFiles = {
   styleUrl: '../tree-view.demo.scss',
   templateUrl: './tree-view-dynamic.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ClrTreeViewModule, ClrIcon, ClrIconModule, StackblitzExampleComponent, JsonPipe],
+  imports: [ClrTreeViewModule, ClrIcon, StackblitzExampleComponent, JsonPipe],
 })
 export class TreeViewDynamicDemo {
   readonly showCode = input(false, { alias: 'clrDemoShowCode' });

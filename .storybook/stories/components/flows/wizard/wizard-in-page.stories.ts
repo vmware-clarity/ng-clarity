@@ -162,7 +162,7 @@ const meta = {
         <clr-header>
           <div class="branding">
             <a href="javascript://" class="nav-link">
-              <cds-icon shape="vm-bug"></cds-icon>
+              <clr-icon shape="vm-bug"></clr-icon>
               <span class="title">Page Header</span>
             </a>
           </div>

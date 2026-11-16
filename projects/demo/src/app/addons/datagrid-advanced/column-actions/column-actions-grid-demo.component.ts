@@ -96,7 +96,7 @@ export class ColumnActionsGridDemoComponent {
 
   constructor(inventory: Inventory) {
     // An action names an icon shape, so the application has to register it, the same as it would for
-    // a cds-icon of its own.
+    // a clr-icon of its own.
     ClarityIcons.addIcons(clockIcon, copyIcon, infoStandardIcon);
 
     inventory.size = 25;

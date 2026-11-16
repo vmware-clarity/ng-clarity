@@ -62,7 +62,6 @@
       padding: 0 density.$clr-base-horizontal-offset-s;
       cursor: pointer;
 
-      cds-icon,
       clr-icon {
         fill: forms-variables.$clr-forms-icon-color;
 
@@ -94,7 +93,6 @@
       color: forms-variables.$clr-forms-text-disabled-color;
       cursor: not-allowed;
 
-      cds-icon,
       clr-icon {
         fill: forms-variables.$clr-forms-input-group-icon-disabled-color;
       }

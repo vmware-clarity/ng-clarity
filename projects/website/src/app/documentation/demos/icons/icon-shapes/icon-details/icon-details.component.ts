@@ -8,7 +8,7 @@
 import { JsonPipe, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, input, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ClrIcon, ClrIconModule } from '@clr/angular';
+import { ClrIcon } from '@clr/angular';
 
 import { IconAliasesPipe } from './icon-aliases.pipe';
 import { IconAriaLabelPipe } from './icon-aria-label.pipe';
@@ -27,7 +27,6 @@ import { Icon } from '../icon-groups/icon-inventory';
     CodeSnippetComponent,
     NgClass,
     ClrIcon,
-    ClrIconModule,
     RouterLink,
     JsonPipe,
     IconAliasesPipe,

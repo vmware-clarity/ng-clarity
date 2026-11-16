@@ -891,7 +891,7 @@ export default function (): void {
 
         openMenu();
 
-        const filterIcon = itemLabelled(commonStrings.keys.filterColumn)?.querySelector('cds-icon');
+        const filterIcon = itemLabelled(commonStrings.keys.filterColumn)?.querySelector('clr-icon');
         expect(filterIcon.getAttribute('shape')).toContain('filter-grid-circle');
       });
     });

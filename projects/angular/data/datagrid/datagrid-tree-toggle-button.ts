@@ -25,7 +25,7 @@ import { DatagridTreeService } from './providers/tree.service';
     @if (node.loading && node.expanded) {
       <clr-spinner clrSmall>{{ commonStrings.keys.loading }}</clr-spinner>
     } @else {
-      <cds-icon shape="angle" [direction]="node.expanded ? 'down' : 'right'"></cds-icon>
+      <clr-icon shape="angle" [direction]="node.expanded ? 'down' : 'right'"></clr-icon>
     }
   `,
   host: {

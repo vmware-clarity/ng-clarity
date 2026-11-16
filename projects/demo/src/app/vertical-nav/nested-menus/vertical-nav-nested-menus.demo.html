@@ -11,7 +11,7 @@
     <header class="header">
       <div class="branding">
         <a href="#">
-          <cds-icon shape="vm-bug"></cds-icon>
+          <clr-icon shape="vm-bug"></clr-icon>
           <span class="title">Project Clarity</span>
         </a>
       </div>
@@ -22,7 +22,7 @@
       </form>
       <div class="settings">
         <a href="javascript://" class="nav-link nav-icon">
-          <cds-icon shape="cog" inverse></cds-icon>
+          <clr-icon shape="cog" inverse></clr-icon>
         </a>
       </div>
     </header>
@@ -35,7 +35,7 @@
         @for (item of case.items; track item) { @if (item['children']) {
         <clr-vertical-nav-group>
           @if (item['icon']) {
-          <cds-icon [shape]="item.icon" clrVerticalNavIcon></cds-icon>
+          <clr-icon [shape]="item.icon" clrVerticalNavIcon></clr-icon>
           } {{item.label}}
           <clr-vertical-nav-group-children *clrIfExpanded>
             @for (childItem of item.children; track childItem) {
@@ -48,7 +48,7 @@
         @if (item['children']) {
         <clr-vertical-nav-group>
           @if (item['icon']) {
-          <cds-icon [shape]="item.icon" clrVerticalNavIcon></cds-icon>
+          <clr-icon [shape]="item.icon" clrVerticalNavIcon></clr-icon>
           } {{item.label}}
           <clr-vertical-nav-group-children *clrIfExpanded>
             @for (childItem of item.children; track childItem) {
@@ -82,7 +82,7 @@
     <header class="header">
       <div class="branding">
         <a href="#">
-          <cds-icon shape="vm-bug"></cds-icon>
+          <clr-icon shape="vm-bug"></clr-icon>
           <span class="title">Project Clarity</span>
         </a>
       </div>
@@ -93,7 +93,7 @@
       </form>
       <div class="settings">
         <a href="javascript://" class="nav-link nav-icon">
-          <cds-icon shape="cog" inverse></cds-icon>
+          <clr-icon shape="cog" inverse></clr-icon>
         </a>
       </div>
     </header>
@@ -103,7 +103,7 @@
         <clr-vertical-nav-group>
           <a href="javascript://" clrVerticalNavLink>
             @if (item['icon']) {
-            <cds-icon [shape]="item.icon" clrVerticalNavIcon></cds-icon>
+            <clr-icon [shape]="item.icon" clrVerticalNavIcon></clr-icon>
             } {{item.label}}
           </a>
           <clr-vertical-nav-group-children *clrIfExpanded>

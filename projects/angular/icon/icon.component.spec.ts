@@ -16,7 +16,7 @@ import { GlobalStateService } from './services/global.service'; // Static import
 const testIcon = renderIcon('test');
 
 @Component({
-  template: ` <cds-icon></cds-icon> `,
+  template: ` <clr-icon></clr-icon> `,
   changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })

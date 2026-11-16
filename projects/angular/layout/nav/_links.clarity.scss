@@ -22,7 +22,6 @@
         &:hover {
           color: nav-variables.$clr-link-hover-color;
 
-          cds-icon,
           clr-icon {
             color: nav-variables.$clr-link-hover-color;
           }
@@ -32,7 +31,6 @@
       &:visited {
         color: nav-variables.$clr-link-visited-color;
 
-        cds-icon,
         clr-icon {
           color: nav-variables.$clr-link-visited-color;
         }
@@ -40,7 +38,6 @@
         &:hover {
           color: nav-variables.$clr-link-visited-color-hover;
 
-          cds-icon,
           clr-icon {
             color: nav-variables.$clr-link-visited-color-hover;
           }
@@ -52,7 +49,6 @@
         &:active {
           color: nav-variables.$clr-link-active-color;
 
-          cds-icon,
           clr-icon {
             color: nav-variables.$clr-link-active-color;
           }

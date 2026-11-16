@@ -7,7 +7,7 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ClrAlert, ClrAlertModule, ClrIcon, ClrIconModule, ClrModalModule, FOCUS_ON_VIEW_INIT } from '@clr/angular';
+import { ClrAlert, ClrAlertModule, ClrIcon, ClrModalModule, FOCUS_ON_VIEW_INIT } from '@clr/angular';
 
 import { AlertAngularAppLevelDemo } from './angular/alert-angular-app-level';
 import { AlertAngularAppLevelAlertsDemo } from './angular/alert-angular-app-level-alerts';
@@ -49,7 +49,6 @@ import { notificationsPatternLink } from '../pattern-links';
     LinkCardsComponent,
     ClrAlertModule,
     ClrIcon,
-    ClrIconModule,
     ClrModalModule,
     ThemedImageComponent,
     AlertAngularNotClosableDemo,

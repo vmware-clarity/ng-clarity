@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ClarityIcons, ClrIcon, ClrIconModule, ellipsisHorizontalIcon } from '@clr/angular';
+import { ClarityIcons, ClrIcon, ellipsisHorizontalIcon } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
@@ -39,7 +39,7 @@ const HTML_EXAMPLE_2 = `
   selector: 'clr-button-group-basic-structure-demo',
   templateUrl: './basic-structure.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [StackblitzExampleComponent, ClrIcon, ClrIconModule],
+  imports: [StackblitzExampleComponent, ClrIcon],
 })
 export class ButtonGroupBasicStructureDemo {
   htmlExample1 = HTML_EXAMPLE_1;

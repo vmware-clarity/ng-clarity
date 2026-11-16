@@ -18,7 +18,7 @@ import { ClrIcon, ClrMainContainerModule, ClrNavigationModule } from '@clr/angul
       <clr-header [role]="role">
         <div class="branding">
           <a href="javascript://" class="nav-link">
-            <cds-icon shape="vm-bug"></cds-icon>
+            <clr-icon shape="vm-bug"></clr-icon>
             <span class="title">Project Clarity</span>
           </a>
         </div>
@@ -29,7 +29,7 @@ import { ClrIcon, ClrMainContainerModule, ClrNavigationModule } from '@clr/angul
         </div>
         <div class="header-actions">
           <a href="javascript://" class="nav-link">
-            <cds-icon shape="cog"></cds-icon>
+            <clr-icon shape="cog"></clr-icon>
           </a>
         </div>
       </clr-header>

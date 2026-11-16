@@ -26,7 +26,7 @@
   <clr-header class="header">
     <div class="branding">
       <a href="..." class="nav-link">
-        <cds-icon shape="vm-bug-new"></cds-icon>
+        <clr-icon shape="vm-bug-new"></clr-icon>
         <span class="title">Clarity Design</span>
       </a>
     </div>
@@ -37,19 +37,19 @@
     </form>
     <div class="header-actions">
       <a class="nav-link nav-icon" aria-label="refresh">
-        <cds-icon shape="refresh"></cds-icon>
+        <clr-icon shape="refresh"></clr-icon>
       </a>
       <a class="nav-link nav-icon" aria-label="feedback">
-        <cds-icon shape="happy-face"></cds-icon>
+        <clr-icon shape="happy-face"></clr-icon>
       </a>
       <a class="nav-link nav-icon" aria-label="notifications">
-        <cds-icon shape="bell"></cds-icon>
+        <clr-icon shape="bell"></clr-icon>
       </a>
       <clr-dropdown>
         <button class="nav-text" clrDropdownTrigger aria-label="open user profile">
-          <cds-icon shape="user" size="md"></cds-icon>
+          <clr-icon shape="user" size="md"></clr-icon>
           john.doe&#64;vmware.com
-          <cds-icon shape="angle" direction="down"></cds-icon>
+          <clr-icon shape="angle" direction="down"></clr-icon>
         </button>
         <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
           <a clrDropdownItem>Preferences</a>
@@ -57,7 +57,7 @@
         </clr-dropdown-menu>
       </clr-dropdown>
       <a class="nav-link nav-icon" aria-label="help">
-        <cds-icon shape="help"></cds-icon>
+        <clr-icon shape="help"></clr-icon>
       </a>
     </div>
   </clr-header>
@@ -65,52 +65,52 @@
     @if (level1Navigation) {
       <clr-vertical-nav [clrVerticalNavCollapsible]="true">
         <a clrVerticalNavLink>
-          <cds-icon clrVerticalNavIcon shape="user"></cds-icon>
+          <clr-icon clrVerticalNavIcon shape="user"></clr-icon>
           Normal
         </a>
         <a clrVerticalNavLink>
-          <cds-icon clrVerticalNavIcon shape="bolt"></cds-icon>
+          <clr-icon clrVerticalNavIcon shape="bolt"></clr-icon>
           Electric
         </a>
         <a clrVerticalNavLink>
-          <cds-icon clrVerticalNavIcon shape="sad-face"></cds-icon>
+          <clr-icon clrVerticalNavIcon shape="sad-face"></clr-icon>
           Poison
         </a>
         <a clrVerticalNavLink>
-          <cds-icon clrVerticalNavIcon shape="bug"></cds-icon>
+          <clr-icon clrVerticalNavIcon shape="bug"></clr-icon>
           Grass
         </a>
         <a clrVerticalNavLink>
-          <cds-icon clrVerticalNavIcon shape="shield"></cds-icon>
+          <clr-icon clrVerticalNavIcon shape="shield"></clr-icon>
           Fighting
         </a>
         <a clrVerticalNavLink>
-          <cds-icon clrVerticalNavIcon shape="certificate"></cds-icon>
+          <clr-icon clrVerticalNavIcon shape="certificate"></clr-icon>
           Credit
         </a>
         <div class="nav-divider"></div>
         <a clrVerticalNavLink>
-          <cds-icon clrVerticalNavIcon shape="user"></cds-icon>
+          <clr-icon clrVerticalNavIcon shape="user"></clr-icon>
           Normal
         </a>
         <a clrVerticalNavLink>
-          <cds-icon clrVerticalNavIcon shape="bolt"></cds-icon>
+          <clr-icon clrVerticalNavIcon shape="bolt"></clr-icon>
           Electric
         </a>
         <a clrVerticalNavLink>
-          <cds-icon clrVerticalNavIcon shape="sad-face"></cds-icon>
+          <clr-icon clrVerticalNavIcon shape="sad-face"></clr-icon>
           Poison
         </a>
         <a clrVerticalNavLink>
-          <cds-icon clrVerticalNavIcon shape="bug"></cds-icon>
+          <clr-icon clrVerticalNavIcon shape="bug"></clr-icon>
           Grass
         </a>
         <a clrVerticalNavLink>
-          <cds-icon clrVerticalNavIcon shape="shield"></cds-icon>
+          <clr-icon clrVerticalNavIcon shape="shield"></clr-icon>
           Fighting
         </a>
         <a clrVerticalNavLink>
-          <cds-icon clrVerticalNavIcon shape="certificate"></cds-icon>
+          <clr-icon clrVerticalNavIcon shape="certificate"></clr-icon>
           Credit
         </a>
       </clr-vertical-nav>
@@ -120,12 +120,12 @@
         <clr-tree>
           @for (directory of rootDirectory; track directory.name) {
             <clr-tree-node [(clrExpanded)]="directory.expanded">
-              <cds-icon [shape]="directory.icon"></cds-icon>
+              <clr-icon [shape]="directory.icon"></clr-icon>
               {{ directory.name }}
               @for (file of directory.files; track file.name) {
                 <clr-tree-node>
                   <button class="clr-treenode-link" [class.active]="file.active">
-                    <cds-icon [shape]="file.icon"></cds-icon>
+                    <clr-icon [shape]="file.icon"></clr-icon>
                     {{ file.name }}
                   </button>
                 </clr-tree-node>
@@ -138,13 +138,13 @@
     <div class="content-area">
       <clr-breadcrumbs [items]="breadcrumbs"></clr-breadcrumbs>
       <div class="page-heading">
-        <cds-icon shape="cluster"></cds-icon>
+        <clr-icon shape="cluster"></clr-icon>
         <h5>H5 Title</h5>
         <span class="divider"></span>
         <clr-dropdown>
           <button class="btn btn-sm btn-link" clrDropdownTrigger>
             Actions
-            <cds-icon shape="angle" direction="down"></cds-icon>
+            <clr-icon shape="angle" direction="down"></clr-icon>
           </button>
           <clr-dropdown-menu clrPosition="bottom-left" *clrIfOpen>
             <label class="dropdown-header" aria-hidden="true">Dropdown header</label>
@@ -241,7 +241,7 @@
       <ul class="clr-timeline" cds-layout="m-t:md">
         <li class="clr-timeline-step disabled">
           <div class="clr-timeline-step-header">11:59 am</div>
-          <cds-icon role="img" shape="circle" aria-label="Not started"></cds-icon>
+          <clr-icon role="img" shape="circle" aria-label="Not started"></clr-icon>
           <div class="clr-timeline-step-body">
             <span class="clr-timeline-step-title">Add KMS</span>
             <span class="clr-timeline-step-description">Root CA certificate requested.</span>
@@ -249,7 +249,7 @@
         </li>
         <li class="clr-timeline-step">
           <div class="clr-timeline-step-header">11:59 am</div>
-          <cds-icon role="img" shape="dot-circle" aria-label="Current"></cds-icon>
+          <clr-icon role="img" shape="dot-circle" aria-label="Current"></clr-icon>
           <div class="clr-timeline-step-body">
             <span class="clr-timeline-step-title">Add KMS</span>
             <span class="clr-timeline-step-description">
@@ -271,7 +271,7 @@
         </li>
         <li class="clr-timeline-step">
           <div class="clr-timeline-step-header">11:59 am</div>
-          <cds-icon role="img" shape="success-standard" aria-label="Completed"></cds-icon>
+          <clr-icon role="img" shape="success-standard" aria-label="Completed"></clr-icon>
           <div class="clr-timeline-step-body">
             <span class="clr-timeline-step-title">Make KMS trust vCenter</span>
             <span class="clr-timeline-step-description"
@@ -282,7 +282,7 @@
         </li>
         <li class="clr-timeline-step">
           <div class="clr-timeline-step-header">11:59 am</div>
-          <cds-icon role="img" shape="error-standard" aria-label="Error"></cds-icon>
+          <clr-icon role="img" shape="error-standard" aria-label="Error"></clr-icon>
           <div class="clr-timeline-step-body">
             <span class="clr-timeline-step-title">Connected</span>
             <span class="clr-timeline-step-description">No. It's not connected.</span>

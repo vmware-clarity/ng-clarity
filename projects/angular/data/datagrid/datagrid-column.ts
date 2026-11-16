@@ -60,12 +60,12 @@ import { WrappedColumn } from './wrapped-column';
       @if (sortable) {
         <button class="datagrid-column-title" (click)="sort()" type="button" #titleContainer>
           <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
-          <cds-icon
+          <clr-icon
             [shape]="sortDirection ? 'arrow' : 'two-way-arrows'"
             [direction]="sortDirection ? sortDirection : 'left'"
             aria-hidden="true"
             class="sort-icon"
-          ></cds-icon>
+          ></clr-icon>
         </button>
       }
       <!-- I'm really not happy with that select since it's not very scalable -->
@@ -111,7 +111,7 @@ import { WrappedColumn } from './wrapped-column';
           [attr.aria-label]="pinned ? commonStrings.keys.unpinColumn : commonStrings.keys.pinColumn"
           (click)="onPinToggleClick($event)"
         >
-          <cds-icon [size]="'12'" [shape]="pinned ? 'unpin' : 'pin'" solid aria-hidden="true"></cds-icon>
+          <clr-icon [size]="'12'" [shape]="pinned ? 'unpin' : 'pin'" solid aria-hidden="true"></clr-icon>
         </button>
       }
 

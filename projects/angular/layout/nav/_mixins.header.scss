@@ -71,7 +71,6 @@
     }
 
     .clr-icon,
-    cds-icon,
     clr-icon {
       flex-grow: 0;
       flex-shrink: 0;
@@ -104,7 +103,6 @@
       @include mixins.generate-typography-token('BODY-14-RG-EXP');
     }
 
-    cds-icon,
     clr-icon {
       color: header-variables.$clr-header-font-color;
     }
@@ -116,7 +114,6 @@
       position: relative;
       text-align: center;
 
-      cds-icon:not([size]),
       clr-icon:not([size]) {
         @include mixins.equilateral(header-variables.$clr-header-clarity-icons-size);
       }
@@ -124,7 +121,6 @@
       &.nav-icon-text {
         gap: density.$clr-base-gap-s;
 
-        cds-icon,
         clr-icon {
           transform: none;
         }
@@ -198,7 +194,6 @@
       }
 
       .dropdown-toggle.nav-icon {
-        cds-icon,
         clr-icon {
           &:not([size], [shape^='angle']) {
             @include mixins.equilateral(header-variables.$clr-header-clarity-icons-size);

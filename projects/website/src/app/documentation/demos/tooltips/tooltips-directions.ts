@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ClrIcon, ClrIconModule } from '@clr/angular';
+import { ClrIcon } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
@@ -56,7 +56,7 @@ const EXAMPLE6 = `
   styleUrl: './tooltips.demo.scss',
   templateUrl: './tooltips-directions.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ClrIcon, ClrIconModule, StackblitzExampleComponent],
+  imports: [ClrIcon, StackblitzExampleComponent],
 })
 export class TooltipsDirectionsDemo {
   example1 = EXAMPLE1;

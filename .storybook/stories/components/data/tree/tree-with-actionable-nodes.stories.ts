@@ -41,7 +41,7 @@ const meta = {
     template: `
       <clr-tree>
         <clr-tree-node [clrExpanded]="true">
-          <cds-icon shape="folder"></cds-icon>
+          <clr-icon shape="folder"></clr-icon>
           Fruits
           <clr-tree-node>
             <button
@@ -50,13 +50,13 @@ const meta = {
               class="clr-treenode-link"
               [class.active]="active === 'apples'"
             >
-              <cds-icon shape="file"></cds-icon>
+              <clr-icon shape="file"></clr-icon>
               Apples (button)
             </button>
           </clr-tree-node>
           <clr-tree-node>
             <button (click)="active = 'oranges'" class="clr-treenode-link" [class.active]="active === 'oranges'">
-              <cds-icon shape="file"></cds-icon>
+              <clr-icon shape="file"></clr-icon>
               Oranges (button)
             </button>
           </clr-tree-node>
@@ -67,7 +67,7 @@ const meta = {
               class="clr-treenode-link"
               [class.active]="active === 'pumpkins'"
             >
-              <cds-icon shape="file"></cds-icon>
+              <clr-icon shape="file"></clr-icon>
               Pumpkins (anchor)
             </a>
           </clr-tree-node>

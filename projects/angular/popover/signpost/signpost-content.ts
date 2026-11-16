@@ -49,7 +49,7 @@ import { SignpostIdService } from './providers/signpost-id.service';
           (click)="close()"
           [attr.aria-controls]="signpostContentId"
         >
-          <cds-icon shape="window-close" [attr.title]="commonStrings.keys.close"></cds-icon>
+          <clr-icon shape="window-close" [attr.title]="commonStrings.keys.close"></clr-icon>
         </button>
       </div>
       <div class="signpost-content-body" tabindex="0">

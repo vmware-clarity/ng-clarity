@@ -34,7 +34,7 @@ import { ClrWizardStepnavItem } from './wizard-stepnav-item';
         (click)="scrollLeft()"
         tabindex="-1"
       >
-        <cds-icon shape="angle" direction="left"></cds-icon>
+        <clr-icon shape="angle" direction="left"></clr-icon>
       </button>
     }
 
@@ -62,7 +62,7 @@ import { ClrWizardStepnavItem } from './wizard-stepnav-item';
         (click)="scrollRight()"
         tabindex="-1"
       >
-        <cds-icon shape="angle" direction="right"></cds-icon>
+        <clr-icon shape="angle" direction="right"></clr-icon>
       </button>
     }
   `,

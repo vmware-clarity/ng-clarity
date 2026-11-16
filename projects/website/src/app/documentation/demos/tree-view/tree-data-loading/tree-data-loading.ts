@@ -7,14 +7,7 @@
 
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import {
-  ClrDatagridModule,
-  ClrIcon,
-  ClrIconModule,
-  ClrIfExpanded,
-  ClrLoadingModule,
-  ClrTreeViewModule,
-} from '@clr/angular';
+import { ClrDatagridModule, ClrIcon, ClrIfExpanded, ClrLoadingModule, ClrTreeViewModule } from '@clr/angular';
 import { map, Observable, tap, timer } from 'rxjs';
 
 @Component({
@@ -22,7 +15,7 @@ import { map, Observable, tap, timer } from 'rxjs';
   styleUrl: '../tree-view.demo.scss',
   templateUrl: 'tree-data-loading.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ClrTreeViewModule, ClrIcon, ClrIconModule, ClrLoadingModule, ClrDatagridModule, ClrIfExpanded, AsyncPipe],
+  imports: [ClrTreeViewModule, ClrIcon, ClrLoadingModule, ClrDatagridModule, ClrIfExpanded, AsyncPipe],
 })
 export class TreeDataLoadingDemo {
   apps$: Observable<string[]> | undefined;

@@ -26,7 +26,7 @@ import { DetailService } from './providers/detail.service';
         (click)="detailService.close()"
         [attr.aria-label]="commonStrings.keys.close"
       >
-        <cds-icon shape="times"></cds-icon>
+        <clr-icon shape="times"></clr-icon>
       </button>
     </div>
   `,

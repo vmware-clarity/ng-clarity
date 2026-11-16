@@ -35,7 +35,7 @@ import { ClrNumberInput } from './number-input';
               (click)="input.stepDown()"
               [disabled]="control?.disabled ?? null"
             >
-              <cds-icon shape="minus" size="sm"></cds-icon>
+              <clr-icon shape="minus" size="sm"></clr-icon>
             </button>
             <div class="clr-number-input-separator"></div>
             <button
@@ -44,7 +44,7 @@ import { ClrNumberInput } from './number-input';
               (click)="input.stepUp()"
               [disabled]="control?.disabled ?? null"
             >
-              <cds-icon shape="plus" size="sm"></cds-icon>
+              <clr-icon shape="plus" size="sm"></clr-icon>
             </button>
           </div>
         </div>

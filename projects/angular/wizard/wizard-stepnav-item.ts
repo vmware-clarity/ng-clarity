@@ -26,13 +26,13 @@ import { ClrWizardPage } from './wizard-page';
     >
       <div class="clr-wizard-stepnav-link-icon">
         @if (icon; as icon) {
-          <cds-icon
+          <clr-icon
             [id]="stepIconId"
             role="img"
             class="clr-wizard-stepnav-link-icon"
             [shape]="icon.shape"
             [attr.aria-label]="icon.label"
-          ></cds-icon>
+          ></clr-icon>
         }
       </div>
 

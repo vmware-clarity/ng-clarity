@@ -57,7 +57,7 @@ import { RenderComponentStorybook } from '@storybook-helpers/render-component';
         <ng-container #renderContainer></ng-container>
         @if (showAction) {
           <a href="javascript://">
-            <cds-icon shape="user"></cds-icon>
+            <clr-icon shape="user"></clr-icon>
             Reset to green
           </a>
         }
@@ -69,7 +69,7 @@ import { RenderComponentStorybook } from '@storybook-helpers/render-component';
           <clr-dropdown>
             <button clrDropdownTrigger>
               Actions
-              <cds-icon shape="angle" direction="down"></cds-icon>
+              <clr-icon shape="angle" direction="down"></clr-icon>
             </button>
             <clr-dropdown-menu clrPosition="bottom-right">
               <button clrDropdownItem>Shutdown</button>

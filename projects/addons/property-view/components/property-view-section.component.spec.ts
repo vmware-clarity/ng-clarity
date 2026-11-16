@@ -60,7 +60,7 @@ describe('PropertyViewSectionComponent', function () {
   const titleContainerClass = 'pv-section-title-container';
   const titleContainerSelector = `tr.${titleContainerClass}`;
   const titleExpandButtonSelector = `${titleContainerSelector} .pv-section-title-expand-button`;
-  const titleExpandButtonIconSelector = `${titleExpandButtonSelector} cds-icon`;
+  const titleExpandButtonIconSelector = `${titleExpandButtonSelector} clr-icon`;
   const titleIconElementSelector = `${titleContainerSelector} .pv-section-title-icon`;
   const titleTextElementSelector = `${titleContainerSelector} .pv-section-title-text`;
   const titleActionsDropdownTriggersSelector =
@@ -188,7 +188,7 @@ describe('PropertyViewSectionComponent', function () {
         });
         this.fixture.detectChanges();
         expect(this.getTitleExpandButtonElements().length).toEqual(1);
-        expect(this.getTitleExpandButtonElements()[0].querySelectorAll('cds-icon').length).toEqual(1);
+        expect(this.getTitleExpandButtonElements()[0].querySelectorAll('clr-icon').length).toEqual(1);
         expect(this.getTitleExpandButtonIconElements().length).toEqual(1);
         expect(this.getTitleExpandButtonIconElements()[0].getAttribute('shape')).toEqual('angle');
       });

@@ -179,7 +179,7 @@ Example of custom column renderer
 @Component({
   selector: 'demo-text-renderer',
   template: `
-    <cds-icon shape="exclamation-circle" class="is-error" size="24"></cds-icon>
+    <clr-icon shape="exclamation-circle" class="is-error" size="24"></clr-icon>
     <span>{{ displayText }} cell custom HTML</span>
   `,
 })

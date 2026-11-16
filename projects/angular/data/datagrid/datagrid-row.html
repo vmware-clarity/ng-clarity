@@ -87,12 +87,12 @@
           [attr.aria-label]="expand.expanded ? clrDgDetailCloseLabel : clrDgDetailOpenLabel"
           [attr.aria-controls]="expand.hasExpandTemplate && !expand.expanded ? null : expandableId"
         >
-          <cds-icon
+          <clr-icon
             shape="angle"
             class="datagrid-expandable-caret-icon"
             [direction]="expand.expanded ? 'down' : 'right'"
             [attr.title]="expand.expanded ? commonStrings.keys.collapse : commonStrings.keys.expand"
-          ></cds-icon>
+          ></clr-icon>
         </button>
         } @if (expand.loading) {
         <clr-spinner clrSmall>{{ commonStrings.keys.loading }}</clr-spinner>
@@ -114,12 +114,12 @@
           [attr.aria-controls]="detailService.id"
           aria-haspopup="dialog"
         >
-          <cds-icon
+          <clr-icon
             shape="angle-double"
             [direction]="detailService.isRowOpen(item) ? 'left' : 'right'"
             class="datagrid-detail-caret-icon"
             [attr.title]="detailService.isRowOpen(item) ? commonStrings.keys.close: commonStrings.keys.open"
-          ></cds-icon>
+          ></clr-icon>
         </button>
         }
       </div>

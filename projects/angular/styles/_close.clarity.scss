@@ -30,7 +30,6 @@
     line-height: inherit;
     color: variables.$clr-close-color;
 
-    cds-icon,
     clr-icon {
       fill: variables.$clr-close-color;
     }
@@ -38,7 +37,6 @@
     &:hover {
       color: variables.$clr-close-color-hover;
 
-      cds-icon,
       clr-icon {
         fill: variables.$clr-close-color-hover;
       }
@@ -47,7 +45,6 @@
     &:active {
       color: variables.$clr-close-color-active;
 
-      cds-icon,
       clr-icon {
         fill: variables.$clr-close-color-active;
       }

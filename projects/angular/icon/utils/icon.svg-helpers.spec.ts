@@ -23,7 +23,7 @@ const testIcon: IconShapeCollection = {
 };
 
 @Component({
-  template: ` <cds-icon shape="test"></cds-icon> `,
+  template: ` <clr-icon shape="test"></clr-icon> `,
   changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })

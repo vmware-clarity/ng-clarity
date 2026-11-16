@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ClarityIcons, ClrAlertModule, ClrIcon, ClrIconModule, exclamationTriangleIcon } from '@clr/angular';
+import { ClarityIcons, ClrAlertModule, ClrIcon, exclamationTriangleIcon } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
@@ -56,7 +56,7 @@ const HTML_EXAMPLE = `
   styleUrl: './card.demo.scss',
   templateUrl: './card-alert.demo.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ClrIcon, ClrIconModule, ClrAlertModule, StackblitzExampleComponent],
+  imports: [ClrIcon, ClrAlertModule, StackblitzExampleComponent],
 })
 export class CardAlertDemo {
   htmlExample = HTML_EXAMPLE;

@@ -60,7 +60,7 @@ const meta = {
             @if (showBodyIcons) {
               <div>
                 Color 'danger' and size 'lg' of icon should not change:
-                <cds-icon status="danger" size="lg" shape="dot-circle"></cds-icon>
+                <clr-icon status="danger" size="lg" shape="dot-circle"></clr-icon>
               </div>
             }
             <button class="btn btn-sm">Action</button>
@@ -77,7 +77,7 @@ const meta = {
             @if (showBodyIcons) {
               <div>
                 Color 'warning' and size 'md' of icon should not change:
-                <cds-icon status="warning" size="md" shape="success-standard"></cds-icon>
+                <clr-icon status="warning" size="md" shape="success-standard"></clr-icon>
               </div>
             }
             <button class="btn btn-sm">Action</button>
@@ -94,7 +94,7 @@ const meta = {
             @if (showBodyIcons) {
               <div>
                 Color 'info' and size 'xxl' of icon should not change:
-                <cds-icon status="info" size="xxl" shape="error-standard"></cds-icon>
+                <clr-icon status="info" size="xxl" shape="error-standard"></clr-icon>
               </div>
             }
             <button class="btn btn-sm">Action</button>
@@ -107,7 +107,7 @@ const meta = {
             @if (showBodyIcons) {
               <div>
                 Color 'success' and size 'sm' of icon should not change:
-                <cds-icon status="success" size="sm" shape="circle"></cds-icon>
+                <clr-icon status="success" size="sm" shape="circle"></clr-icon>
               </div>
             }
             This is the current step.
@@ -128,7 +128,7 @@ const meta = {
             @if (showBodyIcons) {
               <div>
                 Color 'neutral' and size of icon should not change:
-                <cds-icon status="neutral" shape="times"></cds-icon>
+                <clr-icon status="neutral" shape="times"></clr-icon>
               </div>
             }
             <button class="btn btn-sm">Action</button>

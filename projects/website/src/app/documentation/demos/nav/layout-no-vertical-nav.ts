@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { ClrIcon, ClrIconModule } from '@clr/angular';
+import { ClrIcon } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
@@ -54,7 +54,7 @@ const EXAMPLE = `
   templateUrl: './layout-no-vertical-nav.html',
   styleUrl: './layout.demo.scss',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [ClrIcon, ClrIconModule, StackblitzExampleComponent],
+  imports: [ClrIcon, StackblitzExampleComponent],
 })
 export class LayoutNoVerticalNavDemo {
   readonly showCode = input(true);

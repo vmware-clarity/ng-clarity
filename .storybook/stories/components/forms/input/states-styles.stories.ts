@@ -55,10 +55,10 @@ const meta = {
             <span class="clr-subtext">Helper Subtext</span>
             @if (isSuccess || isError) {
               <div class="clr-subtext-wrapper" [ngClass]="{ success: isSuccess, error: isError }">
-                <cds-icon
+                <clr-icon
                   class="clr-validate-icon"
                   [shape]="isSuccess ? 'success-standard' : 'error-standard'"
-                ></cds-icon>
+                ></clr-icon>
                 <span class="clr-subtext">State Subtext</span>
               </div>
             }
@@ -74,10 +74,10 @@ const meta = {
             <span class="clr-subtext">Helper Subtext</span>
             @if (isSuccess || isError) {
               <div class="clr-subtext-wrapper" [ngClass]="{ success: isSuccess, error: isError }">
-                <cds-icon
+                <clr-icon
                   class="clr-validate-icon"
                   [shape]="isSuccess ? 'success-standard' : 'error-standard'"
-                ></cds-icon>
+                ></clr-icon>
                 <span class="clr-subtext">State Subtext</span>
               </div>
             }
@@ -102,10 +102,10 @@ const meta = {
             <span class="clr-subtext">Helper Subtext</span>
             @if (isSuccess || isError) {
               <div class="clr-subtext-wrapper" [ngClass]="{ success: isSuccess, error: isError }">
-                <cds-icon
+                <clr-icon
                   class="clr-validate-icon"
                   [shape]="isSuccess ? 'success-standard' : 'error-standard'"
-                ></cds-icon>
+                ></clr-icon>
                 <span class="clr-subtext">State Subtext</span>
               </div>
             }
@@ -126,10 +126,10 @@ const meta = {
             <span class="clr-subtext">Helper Subtext</span>
             @if (isSuccess || isError) {
               <div class="clr-subtext-wrapper" [ngClass]="{ success: isSuccess, error: isError }">
-                <cds-icon
+                <clr-icon
                   class="clr-validate-icon"
                   [shape]="isSuccess ? 'success-standard' : 'error-standard'"
-                ></cds-icon>
+                ></clr-icon>
                 <span class="clr-subtext">State Subtext</span>
               </div>
             }
@@ -149,10 +149,10 @@ const meta = {
             <span class="clr-subtext">Helper Subtext</span>
             @if (isSuccess || isError) {
               <div class="clr-subtext-wrapper" [ngClass]="{ success: isSuccess, error: isError }">
-                <cds-icon
+                <clr-icon
                   class="clr-validate-icon"
                   [shape]="isSuccess ? 'success-standard' : 'error-standard'"
-                ></cds-icon>
+                ></clr-icon>
                 <span class="clr-subtext">State Subtext</span>
               </div>
             }
@@ -177,10 +177,10 @@ const meta = {
             <span class="clr-subtext">Helper Subtext</span>
             @if (isSuccess || isError) {
               <div class="clr-subtext-wrapper" [ngClass]="{ success: isSuccess, error: isError }">
-                <cds-icon
+                <clr-icon
                   class="clr-validate-icon"
                   [shape]="isSuccess ? 'success-standard' : 'error-standard'"
-                ></cds-icon>
+                ></clr-icon>
                 <span class="clr-subtext">State Subtext</span>
               </div>
             }
@@ -229,10 +229,10 @@ const meta = {
             <span class="clr-subtext">Helper Subtext</span>
             @if (isSuccess || isError) {
               <div class="clr-subtext-wrapper" [ngClass]="{ success: isSuccess, error: isError }">
-                <cds-icon
+                <clr-icon
                   class="clr-validate-icon"
                   [shape]="isSuccess ? 'success-standard' : 'error-standard'"
-                ></cds-icon>
+                ></clr-icon>
                 <span class="clr-subtext">State Subtext</span>
               </div>
             }
@@ -257,10 +257,10 @@ const meta = {
             <span class="clr-subtext">Helper Subtext</span>
             @if (isSuccess || isError) {
               <div class="clr-subtext-wrapper" [ngClass]="{ success: isSuccess, error: isError }">
-                <cds-icon
+                <clr-icon
                   class="clr-validate-icon"
                   [shape]="isSuccess ? 'success-standard' : 'error-standard'"
-                ></cds-icon>
+                ></clr-icon>
                 <span class="clr-subtext">State Subtext</span>
               </div>
             }

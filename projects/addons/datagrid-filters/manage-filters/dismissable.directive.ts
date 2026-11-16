@@ -46,12 +46,12 @@ export class DismissableDirective implements AfterViewInit {
   ) {}
 
   ngAfterViewInit() {
-    // `cds-icon` is an Angular component (ClrIcon), so it has to be created through Angular
+    // `clr-icon` is an Angular component (ClrIcon), so it has to be created through Angular
     // instead of as a plain DOM element, otherwise the icon SVG is never rendered.
     // Inserting the host view into the view container ties its lifecycle and change detection
     // to the host view; the rendered element is then moved inside the badge.
     const iconRef = createComponent(ClrIcon, {
-      hostElement: this.renderer.createElement('cds-icon'),
+      hostElement: this.renderer.createElement('clr-icon'),
       environmentInjector: this.environmentInjector,
       elementInjector: this.injector,
     });

@@ -8,7 +8,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   ClrIcon,
-  ClrIconModule,
   ClrIfOpen,
   ClrPopoverContent,
   ClrPopoverHostDirective,
@@ -75,7 +74,6 @@ const html = `
     ClrPopoverHostDirective,
     ClrSignpostModule,
     ClrIcon,
-    ClrIconModule,
     ClrIfOpen,
     ClrPopoverContent,
     StackblitzExampleComponent,

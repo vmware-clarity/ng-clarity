@@ -192,7 +192,7 @@
         <clr-dropdown>
           <button type="button" class="btn btn-sm btn-secondary" clrDropdownTrigger>
             Export
-            <cds-icon shape="angle" direction="down"></cds-icon>
+            <clr-icon shape="angle" direction="down"></clr-icon>
           </button>
           <clr-dropdown-menu clrPosition="bottom-left" *clrIfOpen>
             <button type="button" (click)="onExportAll()" clrDropdownItem>Export All</button>
@@ -212,11 +212,11 @@
     <clr-dg-row *clrDgItems="let user of nonPaginatedUsers" [clrDgItem]="user">
       <clr-dg-action-overflow>
         <button class="action-item" (click)="onEdit(user)">
-          <cds-icon shape="note"></cds-icon>
+          <clr-icon shape="note"></clr-icon>
           Edit
         </button>
         <button class="action-item" (click)="onDelete(user)">
-          <cds-icon shape="trash"></cds-icon>
+          <clr-icon shape="trash"></clr-icon>
           Delete
         </button>
       </clr-dg-action-overflow>

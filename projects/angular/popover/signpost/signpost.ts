@@ -23,7 +23,7 @@ import { ClrSignpostTrigger } from './signpost-trigger';
         clrSignpostTrigger
         [attr.aria-label]="signpostTriggerAriaLabel || commonStrings.keys.signpostToggle"
       >
-        <cds-icon shape="info-circle" [attr.title]="commonStrings.keys.info"></cds-icon>
+        <clr-icon shape="info-circle" [attr.title]="commonStrings.keys.info"></clr-icon>
       </button>
     }
 

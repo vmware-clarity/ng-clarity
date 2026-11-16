@@ -22,11 +22,11 @@
           <ng-container *ngIf="parentMenu !== rootDropdownMenu && currentZoomLevel === ZoomLevel.x4">
             <div class="dropdown-header" aria-hidden="true">
               <button class="btn-close-submenu" (click)="parentDropdown.popoverService.toggleWithEvent($event)">
-                <cds-icon size="18" shape="angle" direction="left"></cds-icon>
+                <clr-icon size="18" shape="angle" direction="left"></clr-icon>
               </button>
               <span class="submenu-header-text">{{ parentText }}</span>
               <button type="button" class="close" (click)="this.close($event)">
-                <cds-icon class="btn-close-menu" shape="window-close"></cds-icon>
+                <clr-icon class="btn-close-menu" shape="window-close"></clr-icon>
               </button>
             </div>
           </ng-container>
@@ -43,7 +43,7 @@
                   class="close"
                   (click)="this.close($event)"
                 >
-                  <cds-icon class="btn-close-menu" shape="window-close"></cds-icon>
+                  <clr-icon class="btn-close-menu" shape="window-close"></clr-icon>
                 </button>
               </div>
 

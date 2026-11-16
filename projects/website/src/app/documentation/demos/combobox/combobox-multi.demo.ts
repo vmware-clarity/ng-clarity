@@ -11,7 +11,6 @@ import {
   ClrComboboxModule,
   ClrCommonFormsModule,
   ClrIcon,
-  ClrIconModule,
   ClrPopoverHostDirective,
   ClrStopEscapePropagationDirective,
 } from '@clr/angular';
@@ -74,7 +73,6 @@ const additionalFiles = {
     ClrPopoverHostDirective,
     FormsModule,
     ClrIcon,
-    ClrIconModule,
     StackblitzExampleComponent,
   ],
 })
