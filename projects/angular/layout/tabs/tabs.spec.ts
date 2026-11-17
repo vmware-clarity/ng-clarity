@@ -53,8 +53,8 @@ import { ClrTabs } from './tabs';
   standalone: false,
 })
 class TestComponent {
-  @ViewChild(ClrTabs) tabsInstance: ClrTabs;
-  @ViewChild('first') firstTab: ClrTab;
+  @ViewChild(ClrTabs) tabsInstance!: ClrTabs;
+  @ViewChild('first') firstTab!: ClrTab;
   inOverflow = false;
   layout: TabsLayout = TabsLayout.HORIZONTAL;
 }
@@ -78,7 +78,7 @@ class TestComponent {
   standalone: false,
 })
 class NgIfFirstTest {
-  @ViewChild('first') firstTab: ClrTab;
+  @ViewChild('first') firstTab!: ClrTab;
 }
 
 @Component({
@@ -100,7 +100,7 @@ class NgIfFirstTest {
   standalone: false,
 })
 class NgIfSecondTest {
-  @ViewChild('first', { static: true }) firstTab: ClrTab;
+  @ViewChild('first', { static: true }) firstTab!: ClrTab;
 }
 
 @Component({
@@ -133,7 +133,7 @@ class NgIfSecondTest {
   standalone: false,
 })
 class NestedTabsTest {
-  @ViewChild(ClrTabs, { static: true }) tabsInstance: ClrTabs;
+  @ViewChild(ClrTabs, { static: true }) tabsInstance!: ClrTabs;
 }
 
 @Component({
@@ -153,7 +153,7 @@ class NestedTabsTest {
   standalone: false,
 })
 class NoClrIfActiveTest {
-  @ViewChild(ClrTabs, { static: true }) tabsInstance: ClrTabs;
+  @ViewChild(ClrTabs, { static: true }) tabsInstance!: ClrTabs;
 }
 
 @Component({
@@ -173,7 +173,7 @@ class NoClrIfActiveTest {
   standalone: false,
 })
 class ScalingTestComponent {
-  @ViewChild('content') content: ElementRef<HTMLElement>;
+  @ViewChild('content') content!: ElementRef<HTMLElement>;
 }
 
 describe('Tabs', () => {
@@ -255,9 +255,9 @@ describe('Tabs', () => {
       ifActiveService.current = -1;
       context.detectChanges();
       // get back to initial tab
-      ifActiveService.current = originalId;
+      ifActiveService.current = originalId!;
       context.detectChanges();
-      expect(tabsService.tabContentViewContainer.indexOf(initialView)).toBe(-1);
+      expect(tabsService.tabContentViewContainer.indexOf(initialView!)).toBe(-1);
       expect(compiled.querySelectorAll('section').length).toEqual(1);
     });
   });

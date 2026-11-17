@@ -20,7 +20,7 @@ describe('ModalHost for SidePanel', () => {
     });
     fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();
-    modalHostElement = fixture.componentInstance.testElement.nativeElement.querySelector('&>.clr-modal-host');
+    modalHostElement = fixture.componentInstance.testElement.nativeElement.querySelector('&>.clr-modal-host')!;
   });
 
   it('adds clr-modal-host class to the host element', function () {

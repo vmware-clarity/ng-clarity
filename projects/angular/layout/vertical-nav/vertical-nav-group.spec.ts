@@ -113,7 +113,7 @@ describe('Vertical Nav', () => {
           'contains the links even if the nav group is not in ' + 'expanded state when clrIfExpanded is not used',
           () => {
             expect(navGroup.expanded).toBe(false);
-            expect(compiled.querySelector('.nav-group-children').children.length).toBeGreaterThan(0);
+            expect(compiled.querySelector('.nav-group-children')!.children.length).toBeGreaterThan(0);
           }
         );
       });
@@ -136,18 +136,18 @@ describe('Vertical Nav', () => {
           'does not contains the links if the nav group is not in ' + 'expanded state when clrIfExpanded is used',
           () => {
             expect(navGroup.expanded).toBe(false);
-            expect(compiled.querySelector('.nav-group-children').children.length).toBe(0);
+            expect(compiled.querySelector('.nav-group-children')!.children.length).toBe(0);
           }
         );
 
         it('contains the links if the nav group is not in ' + 'expanded state when clrIfExpanded is used', () => {
           expect(navGroup.expanded).toBe(false);
-          expect(compiled.querySelector('.nav-group-children').children.length).toBe(0);
+          expect(compiled.querySelector('.nav-group-children')!.children.length).toBe(0);
 
           navGroup.expanded = true;
           fixture.detectChanges();
 
-          expect(compiled.querySelector('.nav-group-children').children.length).toBeGreaterThan(0);
+          expect(compiled.querySelector('.nav-group-children')!.children.length).toBeGreaterThan(0);
         });
       });
 
@@ -218,7 +218,7 @@ describe('Vertical Nav', () => {
         it('toggles the expanded state when the .nav-group-trigger is clicked', () => {
           expect(navGroup.expanded).toBe(false);
 
-          const button: HTMLElement = compiled.querySelector('.nav-group-trigger');
+          const button: HTMLElement = compiled.querySelector('.nav-group-trigger')!;
 
           button.click();
 
@@ -228,7 +228,7 @@ describe('Vertical Nav', () => {
         });
 
         it('updates the buttons aria-expanded attribute', () => {
-          const button: HTMLButtonElement = compiled.querySelector('.nav-group-trigger');
+          const button: HTMLButtonElement = compiled.querySelector('.nav-group-trigger')!;
           expect(button.getAttribute('aria-expanded')).toBe('false');
           navGroup.expanded = true;
           fixture.detectChanges();
@@ -252,7 +252,7 @@ describe('Vertical Nav', () => {
   standalone: false,
 })
 class GroupInternalsTestComponent {
-  @ViewChild('group') navGroup: ClrVerticalNavGroup;
+  @ViewChild('group') navGroup!: ClrVerticalNavGroup;
 }
 
 @Component({
@@ -270,7 +270,7 @@ class GroupInternalsTestComponent {
   standalone: false,
 })
 class IfExpandedTestComponent {
-  @ViewChild('group') navGroup: ClrVerticalNavGroup;
+  @ViewChild('group') navGroup!: ClrVerticalNavGroup;
 }
 
 @Component({
@@ -290,11 +290,11 @@ class IfExpandedTestComponent {
   standalone: false,
 })
 class TemplateAPITestComponent {
-  @ViewChild('group') navGroup: ClrVerticalNavGroup;
+  @ViewChild('group') navGroup!: ClrVerticalNavGroup;
 
   expanded = false;
 
-  expandedChange: boolean;
+  expandedChange!: boolean;
 
   updateExpanded(value: boolean) {
     this.expandedChange = value;
@@ -316,7 +316,7 @@ class TemplateAPITestComponent {
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 class AnimatedGroupTestComponent {
-  @ViewChild('group') navGroup: ClrVerticalNavGroup;
+  @ViewChild('group') navGroup!: ClrVerticalNavGroup;
 
   expanded = false;
 }

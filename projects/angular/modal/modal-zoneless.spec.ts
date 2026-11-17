@@ -189,7 +189,7 @@ for (const zoneless of [false, true]) {
       await fixture.whenStable();
       const modal = fixture.debugElement
         .queryAll(By.directive(ClrModal))
-        .find(el => el.nativeElement.classList.contains('imperative')).componentInstance as ClrModal;
+        .find(el => el.nativeElement.classList.contains('imperative'))!.componentInstance as ClrModal;
       modal._openChanged.subscribe(open => {
         if (open) {
           modal.close();
@@ -248,7 +248,7 @@ for (const zoneless of [false, true]) {
     it('supports repeated imperative opening and closing without an input binding', async () => {
       const modal = fixture.debugElement
         .queryAll(By.directive(ClrModal))
-        .find(el => el.nativeElement.classList.contains('imperative')).componentInstance as ClrModal;
+        .find(el => el.nativeElement.classList.contains('imperative'))!.componentInstance as ClrModal;
       const changes: boolean[] = [];
       modal._openChanged.subscribe(open => changes.push(open));
       for (let i = 0; i < 2; i++) {
@@ -270,7 +270,7 @@ for (const zoneless of [false, true]) {
     it('does not retain an overlay closed before its first render', async () => {
       const modal = fixture.debugElement
         .queryAll(By.directive(ClrModal))
-        .find(el => el.nativeElement.classList.contains('imperative')).componentInstance as ClrModal;
+        .find(el => el.nativeElement.classList.contains('imperative'))!.componentInstance as ClrModal;
       modal.open();
       modal.close();
       await fixture.whenStable();
@@ -285,7 +285,7 @@ for (const zoneless of [false, true]) {
     it('does not reopen a destroyed instance or reacquire its scroll lock', () => {
       const modal = fixture.debugElement
         .queryAll(By.directive(ClrModal))
-        .find(el => el.nativeElement.classList.contains('imperative')).componentInstance as ClrModal;
+        .find(el => el.nativeElement.classList.contains('imperative'))!.componentInstance as ClrModal;
       const emit = vi.spyOn(modal._openChanged, 'emit').mockImplementation(() => undefined);
       fixture.destroy();
       expect(() => modal.open()).not.toThrow();

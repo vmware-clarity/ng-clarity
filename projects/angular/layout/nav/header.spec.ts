@@ -98,7 +98,7 @@ describe('Header with custom role', () => {
   });
 
   it('uses provided custom role', () => {
-    expect(nativeElement.querySelector('clr-header').getAttribute('role')).toBe('generic');
+    expect(nativeElement.querySelector('clr-header')!.getAttribute('role')).toBe('generic');
   });
 });
 
@@ -123,6 +123,6 @@ describe('Header without role', () => {
   });
 
   it('does not have a role attribute', () => {
-    expect(nativeElement.querySelector('clr-header').hasAttribute('role')).toBe(false);
+    expect(nativeElement.querySelector('clr-header')!.hasAttribute('role')).toBe(false);
   });
 });
