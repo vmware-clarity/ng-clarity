@@ -1911,7 +1911,7 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
     // (undocumented)
     protected get allCheckboxesDisabled(): boolean;
     // (undocumented)
-    ariaLabelledBy?: string | null;
+    ariaLabelledBy: string | null;
     // (undocumented)
     checkboxes: QueryList<ClrCheckbox>;
     // (undocumented)
@@ -6585,7 +6585,7 @@ export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
     constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
     // (undocumented)
-    ariaLabelledBy?: string | null;
+    ariaLabelledBy: string | null;
     // (undocumented)
     get clrInline(): boolean | string;
     set clrInline(value: boolean | string);

@@ -60,7 +60,7 @@ import { ClrRadio } from './radio';
 })
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
   role: string | null = null;
-  ariaLabelledBy?: string | null;
+  ariaLabelledBy: string | null = null;
 
   @ContentChildren(ClrRadio, { descendants: true }) radios!: QueryList<ClrRadio>;
 
@@ -107,6 +107,6 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
       this.label.idAttr = this._generatedId;
     }
 
-    this.ariaLabelledBy = this.radios?.length && this.label ? this.label.idAttr : null;
+    this.ariaLabelledBy = this.radios?.length && this.label?.idAttr ? this.label.idAttr : null;
   }
 }

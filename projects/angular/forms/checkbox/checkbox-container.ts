@@ -60,7 +60,7 @@ import { ClrCheckbox } from './checkbox';
 })
 export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterContentInit {
   role: string | null = null;
-  ariaLabelledBy?: string | null;
+  ariaLabelledBy: string | null = null;
 
   @ContentChildren(ClrCheckbox, { descendants: true }) checkboxes!: QueryList<ClrCheckbox>;
 
@@ -115,6 +115,6 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
       this.label.idAttr = this._generatedId;
     }
 
-    this.ariaLabelledBy = this.checkboxes?.length && this.label ? this.label.idAttr : null;
+    this.ariaLabelledBy = this.checkboxes?.length && this.label?.idAttr ? this.label.idAttr : null;
   }
 }
