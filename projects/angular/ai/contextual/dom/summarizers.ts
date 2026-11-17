@@ -6,7 +6,6 @@
  */
 
 import { getAriaReferenceIds } from '@angular/cdk/a11y';
-import { ClrContextSnapshotOptions } from '@clr/angular/utils';
 
 import { accessibleName } from './accessible-name';
 import { ariaEnumValue } from './aria-state';
@@ -14,12 +13,13 @@ import { resolveRole } from './roles';
 import { CELL_SELECTOR, ITEM_CONTAINER_SELECTORS, ITEM_SELECTORS } from './tables/selectors';
 import { isHiddenFromContext, isRedactedWithin, isVisible } from './visibility';
 import { ownEntry } from '../lookup';
+import type { ResolvedSnapshotOptions } from '../snapshot-options';
 
 /** Describes a homogeneous collection by its ARIA role, so a grid is not walked row by row. */
 export type RoleSummarizer = (element: Element, scope: SummaryScope) => Record<string, unknown>;
 
 interface SummaryScope {
-  readonly options: Required<ClrContextSnapshotOptions>;
+  readonly options: ResolvedSnapshotOptions;
   readonly withheld: string;
 }
 
@@ -39,7 +39,7 @@ const ROLE_SUMMARIZERS: Record<string, RoleSummarizer> = {
 export function summarizeRole(
   element: Element,
   role: string | null,
-  options: Required<ClrContextSnapshotOptions>,
+  options: ResolvedSnapshotOptions,
   withheld = ''
 ): Record<string, unknown> | null {
   const summarizer = role ? ownEntry(ROLE_SUMMARIZERS, role) : undefined;
@@ -92,7 +92,7 @@ function summarizeGrid(element: Element, scope: SummaryScope): Record<string, un
   return state;
 }
 
-function listsItems(options: Required<ClrContextSnapshotOptions>): boolean {
+function listsItems(options: ResolvedSnapshotOptions): boolean {
   return options.collectionItems !== 'summary';
 }
 

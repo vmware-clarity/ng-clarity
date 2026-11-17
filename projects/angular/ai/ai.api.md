@@ -5,9 +5,7 @@
 ```ts
 
 import { DoCheck } from '@angular/core';
-import { EnvironmentProviders } from '@angular/core';
 import * as i0 from '@angular/core';
-import { InjectionToken } from '@angular/core';
 import { Observable } from 'rxjs';
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
@@ -24,9 +22,6 @@ export const CLR_CONTEXT_DIRECTIVES: Type<any>[];
 
 // @public
 export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
-
-// @public
-export const CLR_CONTEXT_OPTIONS: InjectionToken<ClrContextSnapshotOptions>;
 
 // @public
 export const CLR_CONTEXT_PRESETS: Readonly<Record<ClrContextPreset, Readonly<ClrContextSnapshotOptions>>>;
@@ -85,9 +80,6 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
 export type ClrContextCategory = 'layout' | 'actions' | 'forms' | 'headings' | 'collections' | 'dialogs' | 'status' | 'images' | 'text' | 'frames';
 
 // @public
-export function clrContextCategoryRoles(categories: readonly ClrContextCategory[]): string[];
-
-// @public
 export interface ClrContextChange {
     added: ClrComponentContext[];
     changed: ClrComponentContextChange[];
@@ -107,23 +99,16 @@ export interface ClrContextCollectOptions {
 }
 
 // @public
-export interface ClrContextDomExtractor {
-    extract(element: HTMLElement, options: Required<ClrContextSnapshotOptions>): ClrPublishedContext | null;
-    selector: string;
+export interface ClrContextConfig {
+    extractors?: ClrContextDomExtractor[];
+    routes?: boolean;
+    scope?: ClrContextPreset | ClrContextSnapshotOptions;
 }
 
 // @public
-export class ClrContextEngineService implements OnDestroy {
-    disableGlobalAccess(): void;
-    enableGlobalAccess(propertyName?: string, hostOptions?: ClrContextGlobalAccessOptions): void;
-    getSnapshot(options?: ClrContextSnapshotOptions): ClrPageContext;
-    // (undocumented)
-    ngOnDestroy(): void;
-    registerDomExtractor(extractor: ClrContextDomExtractor): () => void;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextEngineService, never>;
-    // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrContextEngineService>;
+export interface ClrContextDomExtractor {
+    extract(element: HTMLElement, options: Required<ClrContextSnapshotOptions>): ClrPublishedContext | null;
+    selector: string;
 }
 
 // @public
@@ -146,9 +131,6 @@ export class ClrContextModule {
 export type ClrContextPreset = 'full' | 'interactive' | 'minimal';
 
 // @public
-export function clrContextPreset(preset: ClrContextPreset, overrides?: ClrContextSnapshotOptions): ClrContextSnapshotOptions;
-
-// @public
 export interface ClrContextProvider {
     getClrContext(): ClrPublishedContext | null;
 }
@@ -156,8 +138,10 @@ export interface ClrContextProvider {
 // @public
 export type ClrContextRegionFilter = (element: Element | null) => 'keep' | 'drop' | 'redact';
 
+// Warning: (ae-forgotten-export) The symbol "ResolvedSnapshotOptions" needs to be exported by the entry point clr-angular-ai.d.ts
+//
 // @public
-export type ClrContextRegionLimits = Pick<Required<ClrContextSnapshotOptions>, 'maxTextLength' | 'maxItemsPerCollection'>;
+export type ClrContextRegionLimits = Pick<ResolvedSnapshotOptions, 'maxTextLength' | 'maxItemsPerCollection'>;
 
 // @public
 export class ClrContextRegistryService {
@@ -174,21 +158,26 @@ export class ClrContextRegistryService {
 }
 
 // @public
+export class ClrContextService implements OnDestroy {
+    configure(config: ClrContextConfig): void;
+    disableGlobalAccess(): void;
+    enableGlobalAccess(propertyName?: string, hostOptions?: ClrContextGlobalAccessOptions): void;
+    // (undocumented)
+    ngOnDestroy(): void;
+    snapshot(options?: ClrContextSnapshotOptions): Promise<ClrPageContext>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextService, never>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<ClrContextService>;
+}
+
+// @public
 export interface ClrContextSnapshotOptions {
-    collectionItems?: 'all' | 'summary';
     excludeCategories?: ClrContextCategory[];
-    excludeRoles?: string[];
     excludeSelectors?: string[];
-    focus?: 'page' | 'modal';
-    includeDomComponents?: boolean;
-    includeFrames?: boolean;
-    includeRoutes?: boolean;
-    includeText?: boolean;
     maxComponents?: number;
-    maxDepth?: number;
     maxItemsPerCollection?: number;
-    maxTextLength?: number;
-    rootSelector?: string;
+    root?: string;
 }
 
 // @public
@@ -227,9 +216,6 @@ export interface ClrRouteContext {
     queryParams?: Record<string, string | string[]>;
     url: string;
 }
-
-// @public
-export function provideClrContextOptions(options: ClrContextPreset | ClrContextSnapshotOptions, overrides?: ClrContextSnapshotOptions): EnvironmentProviders;
 
 // @public
 export function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void;

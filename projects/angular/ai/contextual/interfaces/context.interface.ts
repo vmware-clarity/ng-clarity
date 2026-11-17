@@ -47,7 +47,7 @@ export interface ClrPageContext {
   url?: string;
   /** Route information, present when the application uses the Angular router. */
   route?: ClrRouteContext;
-  /** Routable paths, when `includeRoutes` is set; at least 50 entries, without wildcards or redirects. */
+  /** Routable paths, when configured with `routes: true`; at least 50 entries, without wildcards or redirects. */
   availableRoutes?: ClrAvailableRoute[];
   /** Application-provided contexts from the `clrContext` directive or a {@link ClrContextProvider}. */
   regions: ClrComponentContext[];

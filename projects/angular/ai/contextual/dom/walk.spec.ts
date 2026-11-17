@@ -9,7 +9,7 @@ import { ClrComponentContext, ClrContextSnapshotOptions, publishElementContext }
 
 import { withoutValues } from './aria-state';
 import { ClrContextTreeResult, collectContextTreeWithin } from './walk';
-import { resolveSnapshotOptions } from '../snapshot-options';
+import { ResolvedSnapshotOptions, resolveSnapshotOptions } from '../snapshot-options';
 
 /** The element each spec renders into, attached to the page for the spec's duration. */
 let container: HTMLElement;
@@ -23,17 +23,18 @@ function useContainer(): void {
   afterEach(() => container.remove());
 }
 
-function budgets(overrides: Partial<ClrContextSnapshotOptions> = {}): Required<ClrContextSnapshotOptions> {
-  return resolveSnapshotOptions({ maxComponents: 100, ...overrides });
+/** Resolved options with internal ones (`excludeRoles`, `rootSelector`...) set directly, to test the walk itself. */
+function budgets(overrides: Partial<ResolvedSnapshotOptions> = {}): ResolvedSnapshotOptions {
+  return { ...resolveSnapshotOptions({ maxComponents: 100, ...overrides }), ...overrides };
 }
 
 /** Renders `html` into the container and walks it. */
-function collectTree(html: string, overrides: Partial<ClrContextSnapshotOptions> = {}): ClrContextTreeResult {
+function collectTree(html: string, overrides: Partial<ResolvedSnapshotOptions> = {}): ClrContextTreeResult {
   container.innerHTML = html;
   return collectContextTreeWithin(container, budgets(overrides));
 }
 
-function collect(html: string, overrides: Partial<ClrContextSnapshotOptions> = {}): ClrComponentContext[] {
+function collect(html: string, overrides: Partial<ResolvedSnapshotOptions> = {}): ClrComponentContext[] {
   return collectTree(html, overrides).components;
 }
 
@@ -1009,46 +1010,6 @@ describe('collectContextTreeWithin, choosing what to collect', () => {
     expect(capped.components[0].children?.length).toBe(2);
   });
 
-  it('caps nesting depth, counting only nodes that appear in the snapshot', () => {
-    const one = collectTree(PAGE, { maxDepth: 1 }).components;
-    expect(types(one)).toEqual(['banner', 'main', 'contentinfo']);
-    expect(one.every(node => !node.children)).toBe(true);
-
-    const two = collectTree(PAGE, { maxDepth: 2 }).components;
-    expect(types(two[1].children)).toEqual(['heading', 'text', 'form']);
-    expect(two[1].children?.[2].children).toBeUndefined();
-  });
-
-  it('marks a snapshot cut at the depth limit as truncated', () => {
-    expect(collectTree(PAGE, { maxDepth: 2 }).truncated).toBe(true);
-    expect(collectTree(PAGE, { maxDepth: 20 }).truncated).toBe(false);
-    expect(collectTree('<main><div><div></div></div></main>', { maxDepth: 1 }).truncated).toBe(false);
-  });
-
-  it('keeps wrappers and published children within the depth limit', () => {
-    const parts = collectTree('<x-actions><button>A</button><button>B</button></x-actions>', { maxDepth: 1 });
-    expect(parts.components).toEqual([
-      { type: 'button', element: 'x-actions', label: 'A' },
-      { type: 'button', element: 'x-actions', label: 'B' },
-    ]);
-    const [wrapper] = collect('<x-actions><button>A</button><button>B</button></x-actions>', { maxDepth: 2 });
-    expect(wrapper.element).toBe('x-actions');
-    expect(types(wrapper.children)).toEqual(['button', 'button']);
-
-    container.innerHTML = '<section aria-label="Usage"></section>';
-    const teardown = publishElementContext(container.querySelector('section') as HTMLElement, () => ({
-      type: 'group',
-      children: [{ type: 'text', label: 'Inner' }],
-    }));
-    try {
-      const published = collectContextTreeWithin(container, budgets({ maxDepth: 1 }));
-      expect(published.components[0].children).toBeUndefined();
-      expect(published.truncated).toBe(true);
-    } finally {
-      teardown();
-    }
-  });
-
   it('describes only the open modal dialog under modal focus', () => {
     const result = collectTree(
       `${PAGE}<div role="dialog" aria-modal="true" aria-label="Add host"><input aria-label="Name" /><button>Add</button></div>`,
@@ -1073,12 +1034,12 @@ describe('collectContextTreeWithin, choosing what to collect', () => {
     // A dialog opened with show(), and an alert dialog that does not say it is modal,
     // leave the page in use.
     dialog.show();
-    expect(collectContextTreeWithin(container, resolveSnapshotOptions({ focus: 'modal' })).focus).toBeUndefined();
+    expect(collectContextTreeWithin(container, resolveSnapshotOptions({ root: 'modal' })).focus).toBeUndefined();
 
     dialog.close();
     dialog.showModal();
     try {
-      const result = collectContextTreeWithin(container, resolveSnapshotOptions({ focus: 'modal' }));
+      const result = collectContextTreeWithin(container, resolveSnapshotOptions({ root: 'modal' }));
       expect(result.focus).toBe('modal');
       expect(result.components.map(node => node.label)).toEqual(['Tip']);
     } finally {
@@ -1362,8 +1323,7 @@ describe('collectContextTreeWithin, markup it did not expect', () => {
       expect(json).toContain('secret-row-1');
 
       const excluded = JSON.stringify(
-        collectContextTreeWithin(container, resolveSnapshotOptions({ maxComponents: 100, excludeRoles: ['grid'] }))
-          .components
+        collectContextTreeWithin(container, budgets({ excludeRoles: ['grid'] })).components
       );
       expect(excluded).not.toContain('secret-row');
       // A component that holds the excluded role only inside another component still speaks.

@@ -6,18 +6,12 @@
  */
 
 export * from './interfaces/context.interface';
-export * from './providers/context-options';
 export * from './providers/context-registry.service';
 export * from './providers/contextual-engine.service';
 export { CLR_CONTEXT_DEFAULT_OPTIONS } from './dom/dom-context-collector';
 export type { ClrContextDomExtractor } from './dom/dom-context-collector';
 export * from './diff';
-export {
-  CLR_CONTEXT_CATEGORIES,
-  CLR_CONTEXT_PRESETS,
-  clrContextCategoryRoles,
-  clrContextPreset,
-} from './snapshot-options';
+export { CLR_CONTEXT_CATEGORIES, CLR_CONTEXT_PRESETS } from './snapshot-options';
 export type { ClrContextPreset } from './snapshot-options';
 // Re-exported from @clr/angular/utils, where components publish without depending on this entry point.
 export { CLR_ELEMENT_CONTEXT_PROPERTY, publishElementContext } from '@clr/angular/utils';

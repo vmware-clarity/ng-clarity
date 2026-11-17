@@ -97,7 +97,7 @@
       <li>
         One walk reads at most 25,000 elements. A page with more is cut there, and the snapshot carries
         <code cds-text="code">truncated: true</code>. Narrow a large page with
-        <code cds-text="code">rootSelector</code> or a smaller preset.
+        <code cds-text="code">root</code> or a smaller preset.
       </li>
       <li>
         Only what is rendered can be read. Rows a virtual scroller has not rendered are invisible, and so is anything
@@ -127,7 +127,7 @@
       summary: its columns, its row count, how many rows are selected, and the form controls inside its cells — a field,
       a checkbox, a select — each described where it sits. Other cell content is not listed, and that includes buttons,
       links and menus in the cells: an agent learns what the collection holds and what it can edit in it, not each row's
-      actions. With <code cds-text="code">collectionItems: 'summary'</code>, the form controls in cells are left out as
+      actions. With <code cds-text="code">maxItemsPerCollection: 0</code>, the form controls in cells are left out as
       well.
     </p>
     <p class="clr-mt-16px" cds-text="body">
@@ -172,7 +172,7 @@
       </thead>
       <tbody>
         <tr>
-          <td class="left">The application's own code (<code cds-text="code">getSnapshot()</code>)</td>
+          <td class="left">The application's own code (<code cds-text="code">snapshot()</code>)</td>
           <td class="left">Any, over the application-wide ones</td>
           <td class="left">Reported, except what is redacted</td>
           <td class="left">Full URL, route parameters and data, title</td>
@@ -215,8 +215,8 @@
 
     <h3 id="taking-a-snapshot" class="clr-mt-32px" cds-text="section">Taking a snapshot</h3>
     <p class="clr-mt-16px" cds-text="body">
-      <code cds-text="code">ClrContextEngineService.getSnapshot()</code> computes a snapshot on demand from the live DOM
-      and live registrations.
+      <code cds-text="code">ClrContextService.snapshot()</code> computes a snapshot on demand from the live DOM and live
+      registrations, and resolves with it.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="snapshotExample" language="typescript"></app-code-snippet>
@@ -315,7 +315,7 @@
           <td class="left">Merged into its host element's node, with <code cds-text="code">publicKeys</code></td>
         </tr>
         <tr>
-          <td class="left"><code cds-text="code">registerDomExtractor</code></td>
+          <td class="left"><code cds-text="code">extractors</code> in <code cds-text="code">configure()</code></td>
           <td class="left">
             Markup you do not own carries no role or name, and you cannot change it to publish anything.
           </td>
@@ -411,8 +411,7 @@
       Everything in a snapshot is bounded, and every budget can be tuned per call. Note that
       <code cds-text="code">maxComponents</code> stops the walk when it is reached, so a low value drops whatever comes
       last in the document rather than sampling evenly — and the snapshot then carries
-      <code cds-text="code">truncated: true</code>. A snapshot cut at <code cds-text="code">maxDepth</code> carries it
-      too.
+      <code cds-text="code">truncated: true</code>. Text longer than 100 characters is cut.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="budgetsExample" language="typescript"></app-code-snippet>
@@ -428,21 +427,22 @@
       <code cds-text="code">actions</code> (buttons, links, menus), <code cds-text="code">forms</code>,
       <code cds-text="code">headings</code>, <code cds-text="code">collections</code>,
       <code cds-text="code">dialogs</code>, <code cds-text="code">status</code>, <code cds-text="code">images</code>,
-      <code cds-text="code">text</code>, <code cds-text="code">frames</code> — and
-      <code cds-text="code">excludeRoles</code> does the same for a single ARIA role;
-      <code cds-text="code">excludeSelectors</code> and <code cds-text="code">rootSelector</code> do it by CSS selector,
-      <code cds-text="code">maxDepth</code> caps nesting, <code cds-text="code">focus: 'modal'</code> describes only the
-      open modal while one is open, and <code cds-text="code">collectionItems: 'summary'</code> reduces lists, options
-      and tabs to counts and the current selection.
+      <code cds-text="code">text</code>, <code cds-text="code">frames</code>.
+      <code cds-text="code">excludeSelectors</code> leaves out elements by CSS selector.
+      <code cds-text="code">root</code> chooses what to describe: <code cds-text="code">'page'</code>,
+      <code cds-text="code">'modal'</code> (the open modal while one is open) or a CSS selector. And
+      <code cds-text="code">maxItemsPerCollection: 0</code> reduces lists, options and tabs to counts and the current
+      selection.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="optionsExample" language="typescript"></app-code-snippet>
     </div>
     <p class="clr-mt-16px" cds-text="body">
-      Set them once for the whole application rather than at every call site. Three presets bundle the common choices:
-      <code cds-text="code">full</code> (the defaults), <code cds-text="code">interactive</code> (no prose, no layout)
-      and <code cds-text="code">minimal</code> (no prose or layout, summary collections, shorter text, a lower budget,
-      modal focus). Per-call options are applied over the application's.
+      Set them once for the whole application with <code cds-text="code">configure()</code> rather than at every call
+      site. Three presets bundle the common choices: <code cds-text="code">full</code> (the defaults),
+      <code cds-text="code">interactive</code> (no prose, no layout) and <code cds-text="code">minimal</code> (no prose
+      or layout, counts instead of item lists, a lower budget, the open modal only). Per-call options are applied over
+      the configured ones.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="provideExample" language="typescript"></app-code-snippet>

@@ -18,34 +18,34 @@ const INSTALL_EXAMPLE = `npm install @clr/angular --save`;
 
 const QUICKSTART_EXAMPLE = `
 import { Component, inject } from '@angular/core';
-import { ClrContextEngineService } from '@clr/angular/ai';
+import { ClrContextService } from '@clr/angular/ai';
 
 @Component({
   selector: 'app-assistant',
   template: '...',
 })
 export class AssistantComponent {
-  private readonly engine = inject(ClrContextEngineService);
+  private readonly engine = inject(ClrContextService);
 
-  ask(question: string) {
+  async ask(question: string) {
     // One snapshot, taken now. Send it to your model as data, delimited from your prompt.
-    return { question, page: this.engine.getSnapshot() };
+    return { question, page: await this.engine.snapshot() };
   }
 }
 `;
 
 const SNAPSHOT_EXAMPLE = `
 import { Component, inject } from '@angular/core';
-import { ClrContextEngineService } from '@clr/angular/ai';
+import { ClrContextService } from '@clr/angular/ai';
 
 @Component({
   // ...
 })
 export class AssistantPanelComponent {
-  private readonly contextEngine = inject(ClrContextEngineService);
+  private readonly contextEngine = inject(ClrContextService);
 
-  askAssistant(question: string) {
-    const context = this.contextEngine.getSnapshot();
+  async askAssistant(question: string) {
+    const context = await this.contextEngine.snapshot();
     // Hand the question and the page context to your AI backend together.
   }
 }
@@ -135,18 +135,22 @@ this.teardown?.();
 `;
 
 const EXTRACTOR_EXAMPLE = `
-const unregister = this.contextEngine.registerDomExtractor({
-  selector: 'chat-message-list',
-  extract: element => ({
-    type: 'chat-log',
-    state: { messages: element.children.length },
-    publicKeys: ['messages'], // shared with window.clrContext() too
-  }),
+this.contextEngine.configure({
+  extractors: [
+    {
+      selector: 'chat-message-list',
+      extract: element => ({
+        type: 'chat-log',
+        state: { messages: element.children.length },
+        publicKeys: ['messages'], // shared with window.clrContext() too
+      }),
+    },
+  ],
 });
 `;
 
 const FORM_CONTEXT_EXAMPLE = `
-const context = contextEngine.getSnapshot();
+const context = await contextEngine.snapshot();
 
 // A field carries what it is, what it permits, and what it currently holds:
 // {
@@ -183,28 +187,27 @@ this.contextEngine.enableGlobalAccess('clrContext', { shareFormValues: true });
 `;
 
 const OPTIONS_EXAMPLE = `
-this.contextEngine.getSnapshot({
-  excludeCategories: ['layout', 'actions'], // no header/navigation/footer, no buttons or links
-  excludeRoles: ['heading'], // or any single ARIA role
+await this.contextEngine.snapshot({
+  root: 'main', // 'page' (default), 'modal' for the open modal, or a CSS selector
   excludeSelectors: ['clr-header'], // drop layout that cannot be annotated
-  rootSelector: 'main', // describe only the content area
-  maxDepth: 3, // no nesting deeper than three levels
-  focus: 'modal', // while a modal is open, describe only the modal
-  collectionItems: 'summary', // counts and selection only, no item lists
+  excludeCategories: ['layout', 'actions'], // no header/navigation/footer, no buttons or links
+  maxComponents: 100, // at most 100 components overall
+  maxItemsPerCollection: 0, // counts and selection only, no item lists
 });
 `;
 
 const PROVIDE_EXAMPLE = `
-import { provideClrContextOptions, clrContextPreset } from '@clr/angular/ai';
+import { CLR_CONTEXT_PRESETS, ClrContextService } from '@clr/angular/ai';
 
-// app.config.ts — every snapshot starts from these; per-call options are applied over them
-providers: [provideClrContextOptions('interactive', { excludeSelectors: ['clr-header'] })];
+// Once, at startup (for example in the root component): every snapshot starts from this scope,
+// and per-call options are applied over it.
+inject(ClrContextService).configure({ scope: 'interactive' });
 
-// or explicit options
-providers: [provideClrContextOptions({ maxComponents: 200, includeText: false })];
-
-// a preset with overrides, for a single call
-this.contextEngine.getSnapshot(clrContextPreset('minimal', { maxComponents: 200 }));
+// or explicit options, or a preset with changes
+inject(ClrContextService).configure({
+  scope: { ...CLR_CONTEXT_PRESETS.interactive, excludeSelectors: ['clr-header'] },
+  routes: true, // also list the router's routes
+});
 `;
 
 const CHANGES_EXAMPLE = `
@@ -219,11 +222,9 @@ if (!clrIsEmptyContextChange(change)) {
 `;
 
 const BUDGETS_EXAMPLE = `
-this.contextEngine.getSnapshot({
-  maxTextLength: 60, // truncate any text beyond 60 characters
+await this.contextEngine.snapshot({
   maxItemsPerCollection: 10, // at most 10 rows/tabs/links/options per component
   maxComponents: 30, // at most 30 components overall, counted across the whole tree
-  includeDomComponents: false, // skip DOM scanning entirely (regions + route only)
 });
 `;
 
