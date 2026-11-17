@@ -8,42 +8,48 @@
 import { Directive, DoCheck, ElementRef, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { CLR_CONTEXT_IGNORE_SELECTOR } from '@clr/angular/utils';
 
+import { CLR_CONTEXT_ANNOTATION_PROPERTY } from './dom/annotations';
 import { closestAcrossShadow } from './dom/shadow';
-import { ClrContextProvider, ClrPublishedContext } from './interfaces/context.interface';
+import { ClrPublishedContext } from './interfaces/context.interface';
 import { ClrContextRegistryService } from './providers/context-registry.service';
 
 /**
- * Annotates a piece of UI with context for AI agents, such as what a section is for:
+ * Annotates the element it sits on with context for AI agents, such as what a section is for:
  * ```html
  * <section clrContext="Firewall rules for the selected cluster" [clrContextState]="{ cluster: clusterName }">
  * ```
+ * The annotation is reported on that element's node in `components`, merged over what the DOM says about it.
  */
 @Directive({
   selector: '[clrContext]',
 })
-export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvider {
+export class ClrContext implements OnInit, DoCheck, OnDestroy {
   /** Human-readable description of what this piece of UI is about. */
   @Input('clrContext') label = '';
-  /** Kind of UI this annotation describes. Defaults to `'region'`. */
-  @Input('clrContextType') type = 'region';
+  /** Kind of UI this annotation describes; by default the element's role, or `'group'` without one. */
+  @Input('clrContextType') type = '';
   /** Current application state an agent should know about, as a small serializable object. */
   @Input('clrContextState') state: Record<string, unknown> | null = null;
   /** State keys untrusted callers (`window.clrContext()`, frames) may see; every other key is withheld. */
   @Input('clrContextPublicKeys') publicKeys: readonly string[] | null = null;
 
   private lastReported = '';
+  private annotated: Element | null = null;
   private readonly host: ElementRef<Element> | null = inject(ElementRef, { optional: true });
   private readonly contextRegistry = inject(ClrContextRegistryService);
 
   ngOnInit(): void {
     this.lastReported = this.serialized();
-    this.contextRegistry.register(this, this.anchor() ?? undefined);
+    this.annotated = this.anchor();
+    if (this.annotated) {
+      (this.annotated as unknown as Record<string, unknown>)[CLR_CONTEXT_ANNOTATION_PROPERTY] = this;
+      this.contextRegistry.notifyChanged();
+    }
   }
 
   ngDoCheck(): void {
     // An annotation inside an ignored region never reaches a snapshot, so its changes don't count.
-    const anchor = this.anchor();
-    if (anchor && closestAcrossShadow(anchor, CLR_CONTEXT_IGNORE_SELECTOR)) {
+    if (this.annotated && closestAcrossShadow(this.annotated, CLR_CONTEXT_IGNORE_SELECTOR)) {
       return;
     }
     // Serialised on every check to catch a state object edited in place; keep the state small.
@@ -55,20 +61,27 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
   }
 
   ngOnDestroy(): void {
-    this.contextRegistry.unregister(this);
+    const host = this.annotated as unknown as Record<string, unknown> | null;
+    if (host?.[CLR_CONTEXT_ANNOTATION_PROPERTY] === this) {
+      delete host[CLR_CONTEXT_ANNOTATION_PROPERTY];
+      this.contextRegistry.notifyChanged();
+    }
   }
 
-  /** The context this element publishes, or `null` when it is ignored. */
-  getClrContext(): ClrPublishedContext | null {
+  /** The annotation as it is now, or `null` when it says nothing. */
+  getClrContext(): Partial<ClrPublishedContext> | null {
     const serialized = this.serialized();
     return serialized ? JSON.parse(serialized) : null;
   }
 
-  private annotation(): ClrPublishedContext | null {
-    if (!this.label && !this.state) {
+  private annotation(): Partial<ClrPublishedContext> | null {
+    if (!this.label && !this.state && !this.type) {
       return null;
     }
-    const context: ClrPublishedContext = { type: this.type };
+    const context: Partial<ClrPublishedContext> = {};
+    if (this.type) {
+      context.type = this.type;
+    }
     if (this.label) {
       context.label = this.label;
     }
