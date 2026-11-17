@@ -15,7 +15,7 @@ export const MIN_DETAIL_WIDTH = 0;
 
 @Injectable()
 export class DetailService {
-  id: string;
+  id!: string;
   detailWidth = DEFAULT_DETAIL_WIDTH;
 
   private registeredPanes = 0;
@@ -23,7 +23,7 @@ export class DetailService {
   private preventScroll = false;
   private toggleState = false;
   private cache: any;
-  private button: HTMLButtonElement;
+  private button?: HTMLButtonElement | null;
   private readonly _enabled = signal(false);
   private _state = new BehaviorSubject<boolean | null>(this.toggleState);
 

@@ -80,8 +80,8 @@ import { Selection } from './providers/selection';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
-  @Input('clrRowDetailBeginningAriaText') _beginningOfExpandableContentAriaText: string;
-  @Input('clrRowDetailEndAriaText') _endOfExpandableContentAriaText: string;
+  @Input('clrRowDetailBeginningAriaText') _beginningOfExpandableContentAriaText?: string;
+  @Input('clrRowDetailEndAriaText') _endOfExpandableContentAriaText?: string;
 
   replacedRow = false;
 
@@ -95,16 +95,16 @@ export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, Af
   /* reference to the enum so that template can access it */
   SELECTION_TYPE = SelectionType;
 
-  @ContentChildren(ClrDatagridCell) cells: QueryList<ClrDatagridCell>;
+  @ContentChildren(ClrDatagridCell) cells!: QueryList<ClrDatagridCell>;
 
-  @ViewChild('pinnedCells', { read: ViewContainerRef }) private _pinnedCells: ViewContainerRef;
-  @ViewChild('scrollableCells', { read: ViewContainerRef }) private _scrollableCells: ViewContainerRef;
-  @ViewChild('plainCells', { read: ViewContainerRef }) private _plainCells: ViewContainerRef;
+  @ViewChild('pinnedCells', { read: ViewContainerRef }) private _pinnedCells!: ViewContainerRef;
+  @ViewChild('scrollableCells', { read: ViewContainerRef }) private _scrollableCells!: ViewContainerRef;
+  @ViewChild('plainCells', { read: ViewContainerRef }) private _plainCells!: ViewContainerRef;
 
   private subscriptions: Subscription[] = [];
   private cellsMoved = false;
-  private lastLayout: string;
-  private hadCells: boolean;
+  private lastLayout?: string;
+  private hadCells = false;
 
   constructor(
     public selection: Selection,

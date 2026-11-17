@@ -58,14 +58,14 @@ export class ClrDatagridCell implements OnInit {
    * On the host, we set the .datagrid-signpost-trigger class on the cell when signpost.length is greater than 0.
    *
    */
-  @ContentChildren(ClrSignpost) signpost: QueryList<ClrSignpost>;
+  @ContentChildren(ClrSignpost) signpost!: QueryList<ClrSignpost>;
 
   /**
    * Set by the row on its cells when the datagrid renders a tree; `null` otherwise.
    */
   _treeRow: DatagridTreeRow | null = null;
 
-  private wrappedInjector: Injector;
+  private wrappedInjector!: Injector;
   private el = inject<ElementRef<HTMLElement>>(ElementRef);
 
   constructor(private vcr: ViewContainerRef) {}

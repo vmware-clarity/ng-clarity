@@ -75,7 +75,7 @@ let clrDgActionId = 0;
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDatagridActionOverflow implements OnDestroy {
-  @Input('clrDgActionOverflowButtonLabel') buttonLabel: string;
+  @Input('clrDgActionOverflowButtonLabel') buttonLabel?: string;
 
   @Output('clrDgActionOverflowOpenChange') openChange = new EventEmitter<boolean>(false);
 
@@ -139,8 +139,8 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     if (isPlatformBrowser(this.platformId)) {
       const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('button.action-item'));
 
-      if (buttons.length) {
-        const keyFocus = this.keyFocus();
+      const keyFocus = this.keyFocus();
+      if (buttons.length && keyFocus) {
         keyFocus.current = 0;
         keyFocus.focusableItems = buttons;
 
