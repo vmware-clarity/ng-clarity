@@ -118,7 +118,7 @@ describe('Loading directive without listener', () => {
   standalone: false,
 })
 class FullTest {
-  @ViewChild(ClrLoading) loadingDirective: ClrLoading;
+  @ViewChild(ClrLoading) loadingDirective!: ClrLoading;
 
   displayed = true;
   loading = false;

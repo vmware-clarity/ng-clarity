@@ -146,7 +146,7 @@ describe('IfExpanded directive', () => {
   standalone: false,
 })
 class SimpleTest {
-  @ViewChild(ClrIfExpanded) ifExpanded: ClrIfExpanded;
+  @ViewChild(ClrIfExpanded) ifExpanded!: ClrIfExpanded;
 
   constructor(
     @Inject('counter')
@@ -163,7 +163,7 @@ class SimpleTest {
   standalone: false,
 })
 class SimpleTemplateTest {
-  @ViewChild(ClrIfExpanded) ifExpanded: ClrIfExpanded;
+  @ViewChild(ClrIfExpanded) ifExpanded!: ClrIfExpanded;
 
   constructor(
     @Inject('counter')

@@ -82,7 +82,7 @@ describe('Outside click', () => {
   standalone: false,
 })
 class FullTest {
-  @ViewChild(OutsideClick) outslideClick: OutsideClick;
+  @ViewChild(OutsideClick) outslideClick!: OutsideClick;
   strict = false;
   nbClicks = 0;
 

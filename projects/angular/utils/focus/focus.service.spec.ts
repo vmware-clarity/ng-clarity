@@ -63,7 +63,7 @@ describe('Focus management', () => {
       beforeEach(() => {
         TestBed.configureTestingModule({ declarations: [SimpleHost] });
         const fixture = TestBed.createComponent(SimpleHost);
-        testContext.focusService = fixture.debugElement.injector.get(FocusService, null);
+        testContext.focusService = fixture.debugElement.injector.get(FocusService, null)!;
       });
 
       function setupContainer(context: TestContext) {
@@ -160,7 +160,7 @@ describe('Focus management', () => {
       });
 
       it('can listen to arrow keys on an element', () => {
-        const spy = vi.spyOn(testContext.focusService, 'move').mockImplementation(() => undefined);
+        const spy = vi.spyOn(testContext.focusService, 'move').mockImplementation(() => false);
         const el = document.createElement('div');
         testContext.focusService.registerContainer(el);
         el.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp' }));
@@ -174,14 +174,14 @@ describe('Focus management', () => {
       });
 
       it('activates the current item when pressing Enter on the container', () => {
-        const spy = vi.spyOn(testContext.focusService, 'activateCurrent').mockImplementation(() => undefined);
+        const spy = vi.spyOn(testContext.focusService, 'activateCurrent').mockImplementation(() => false);
         const container = setupContainer(testContext);
         container.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
         expect(spy).toHaveBeenCalled();
       });
 
       it('activates the current item when pressing Space on the container', () => {
-        const spy = vi.spyOn(testContext.focusService, 'activateCurrent').mockImplementation(() => undefined);
+        const spy = vi.spyOn(testContext.focusService, 'activateCurrent').mockImplementation(() => false);
         const container = setupContainer(testContext);
         container.dispatchEvent(new KeyboardEvent('keydown', { key: ' ' }));
         expect(spy).toHaveBeenCalled();
