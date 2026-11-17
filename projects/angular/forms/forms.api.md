@@ -1591,7 +1591,7 @@ export class ClrOptionGroup<T> {
     // (undocumented)
     protected clrOptionItems: ClrOptionItems<T>;
     // (undocumented)
-    label?: string;
+    label: string;
     // (undocumented)
     protected labelId: string;
     // (undocumented)
