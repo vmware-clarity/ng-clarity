@@ -139,11 +139,11 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
     return `${this.label?.forAttr} ${this.fileInput.elementRef.nativeElement.getAttribute('aria-describedby')}`;
   }
 
-  protected override get successMessagePresent() {
+  protected override get successMessagePresent(): boolean {
     return super.successMessagePresent || !!this.fileSuccessComponent;
   }
 
-  protected override get errorMessagePresent() {
+  protected override get errorMessagePresent(): boolean {
     return super.errorMessagePresent || !!this.fileErrorComponent;
   }
 
