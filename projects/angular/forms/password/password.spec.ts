@@ -88,7 +88,7 @@ describe('ClrPassword', () => {
       });
 
       it('should set the password type attribute', () => {
-        expect(containerEl.querySelector('input').type).toEqual('password');
+        expect(containerEl.querySelector('input')!.type).toEqual('password');
       });
     });
   });

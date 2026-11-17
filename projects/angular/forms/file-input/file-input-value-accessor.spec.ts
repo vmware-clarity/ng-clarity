@@ -13,7 +13,7 @@ import { ClrFormsModule } from '../forms.module';
 import { buildFileList, selectFiles } from './file-input.helpers';
 
 interface TestComponent {
-  get control(): FormControl<FileList>;
+  get control(): FormControl<FileList | null | undefined>;
 }
 
 @Component({
@@ -43,7 +43,7 @@ interface TestComponent {
 })
 class ReactiveTest implements TestComponent {
   readonly form = new FormGroup({
-    files: new FormControl<FileList>(undefined, Validators.required),
+    files: new FormControl<FileList | undefined>(undefined, Validators.required),
   });
 
   get control() {
@@ -79,9 +79,9 @@ class ReactiveTest implements TestComponent {
   standalone: false,
 })
 class TemplateDrivenTest implements TestComponent {
-  files: FileList;
+  files!: FileList;
 
-  @ViewChild('ngModel') private readonly ngModel: NgModel;
+  @ViewChild('ngModel') private readonly ngModel!: NgModel;
 
   get control() {
     return this.ngModel.control;
@@ -112,7 +112,7 @@ function fileInputValueAccessorSpec(testComponent: Type<TestComponent>) {
     fixture = TestBed.createComponent(testComponent);
 
     nativeElement = fixture.nativeElement;
-    fileInputElement = nativeElement.querySelector('input[type="file"]');
+    fileInputElement = nativeElement.querySelector('input[type="file"]')!;
 
     fixture.detectChanges();
   });
@@ -164,7 +164,7 @@ function fileInputValueAccessorSpec(testComponent: Type<TestComponent>) {
 
     fixture.componentInstance.control.setValue(undefined);
 
-    expect(fileInputElement.files.length).toBe(0);
+    expect(fileInputElement.files!.length).toBe(0);
   });
 
   it('should handle writing value: null (clear selected files)', () => {
@@ -172,7 +172,7 @@ function fileInputValueAccessorSpec(testComponent: Type<TestComponent>) {
 
     fixture.componentInstance.control.setValue(null);
 
-    expect(fileInputElement.files.length).toBe(0);
+    expect(fileInputElement.files!.length).toBe(0);
   });
 
   it('should handle writing value: FileList', () => {

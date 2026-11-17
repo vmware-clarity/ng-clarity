@@ -150,7 +150,7 @@ describe('Datepicker', () => {
           it('should handle big endien date strings for min inputs', () => {
             // NOTE: big endian date format is yyyy-mm-dd
             const testComponent = context.fixture.componentInstance;
-            const [minYear, minMonth, minDay] = testComponent.minDate.split('-').map(n => parseInt(n, 10));
+            const [minYear, minMonth, minDay] = testComponent.minDate!.split('-').map(n => parseInt(n, 10));
             const testMinDateModel = new DayModel(minYear, minMonth - 1, minDay);
             expect(testMinDateModel).toEqual(dateIOService.disabledDates.minDate);
           });
@@ -158,7 +158,7 @@ describe('Datepicker', () => {
           it('should handle big endien date strings for max inputs', () => {
             // NOTE: big endian date format is yyyy-mm-dd
             const testComponent = context.fixture.componentInstance;
-            const [maxYear, maxMonth, maxDay] = testComponent.maxDate.split('-').map(n => parseInt(n, 10));
+            const [maxYear, maxMonth, maxDay] = testComponent.maxDate!.split('-').map(n => parseInt(n, 10));
             const testMaxDateModel = new DayModel(maxYear, maxMonth - 1, maxDay);
             expect(testMaxDateModel).toEqual(dateIOService.disabledDates.maxDate);
           });
@@ -273,7 +273,7 @@ describe('Datepicker', () => {
           });
 
           it('calls the DateIOService toLocaleDisplayFormatString method to display the selectedDay', () => {
-            vi.spyOn(dateIOService, 'toLocaleDisplayFormatString').mockImplementation(() => undefined);
+            vi.spyOn(dateIOService, 'toLocaleDisplayFormatString').mockImplementation(() => '');
             dateNavigationService.notifySelectedDayChanged(new DayModel(2015, 1, 1));
             expect(dateIOService.toLocaleDisplayFormatString).toHaveBeenCalled();
           });
@@ -304,7 +304,7 @@ describe('Datepicker', () => {
 
           it('binds to the min attribute', () => {
             const testComponent = context.fixture.componentInstance;
-            const [minYear, minMonth, minDay] = testComponent.minDate.split('-').map(n => parseInt(n, 10));
+            const [minYear, minMonth, minDay] = testComponent.minDate!.split('-').map(n => parseInt(n, 10));
             const testMinDateModel = new DayModel(minYear, minMonth - 1, minDay);
             expect(testMinDateModel).toEqual(dateIOService.disabledDates.minDate);
 
@@ -326,7 +326,7 @@ describe('Datepicker', () => {
 
           it('binds to the max attribute', () => {
             const testComponent = context.fixture.componentInstance;
-            const [maxYear, maxMonth, maxDay] = testComponent.maxDate.split('-').map(n => parseInt(n, 10));
+            const [maxYear, maxMonth, maxDay] = testComponent.maxDate!.split('-').map(n => parseInt(n, 10));
             const testMaxDateModel = new DayModel(maxYear, maxMonth - 1, maxDay);
             expect(testMaxDateModel).toEqual(dateIOService.disabledDates.maxDate);
 
@@ -506,21 +506,21 @@ describe('Datepicker', () => {
         });
 
         it('initializes the input and the selected day with the value set by the user', () => {
-          expect(fixture.componentInstance.testForm.get('date').value).not.toBeNull();
+          expect(fixture.componentInstance.testForm.get('date')!.value).not.toBeNull();
 
           expect(dateInputDebugElement.nativeElement.value).toBe(fixture.componentInstance.dateInput);
-          expect(dateNavigationService.selectedDay.year).toBe(2015);
-          expect(dateNavigationService.selectedDay.month).toBe(0);
-          expect(dateNavigationService.selectedDay.date).toBe(1);
+          expect(dateNavigationService.selectedDay!.year).toBe(2015);
+          expect(dateNavigationService.selectedDay!.month).toBe(0);
+          expect(dateNavigationService.selectedDay!.date).toBe(1);
         });
 
         it('updates the input and the selected day when the value is updated by the user', () => {
           fixture.componentInstance.testForm.setValue({ date: '05/05/2018' });
 
           expect(dateInputDebugElement.nativeElement.value).toBe('05/05/2018');
-          expect(dateNavigationService.selectedDay.year).toBe(2018);
-          expect(dateNavigationService.selectedDay.month).toBe(4);
-          expect(dateNavigationService.selectedDay.date).toBe(5);
+          expect(dateNavigationService.selectedDay!.year).toBe(2018);
+          expect(dateNavigationService.selectedDay!.month).toBe(4);
+          expect(dateNavigationService.selectedDay!.date).toBe(5);
         });
 
         it('outputs the date when the user manually changes the date', () => {
@@ -548,7 +548,7 @@ describe('Datepicker', () => {
         });
 
         it('marks the form as touched when the markAsTouched event is received', () => {
-          const date = fixture.componentInstance.testForm.get('date');
+          const date = fixture.componentInstance.testForm.get('date')!;
           expect(date.touched).toBe(false);
 
           dateFormControlService.markAsTouched();
@@ -557,7 +557,7 @@ describe('Datepicker', () => {
         });
 
         it('marks the form as dirty when the markAsDirty event is received', () => {
-          const date = fixture.componentInstance.testForm.get('date');
+          const date = fixture.componentInstance.testForm.get('date')!;
           expect(date.dirty).toBe(false);
 
           dateFormControlService.markAsDirty();
@@ -593,23 +593,23 @@ describe('Datepicker', () => {
         it('marks the form as touched when the markAsTouched event is received', async () => {
           await fixture.whenStable();
           const form = fixture.componentInstance.templateForm.form;
-          expect(form.get('date').touched).toBe(false);
+          expect(form.get('date')!.touched).toBe(false);
 
           dateFormControlService.markAsTouched();
 
           fixture.detectChanges();
-          expect(form.get('date').touched).toBe(true);
+          expect(form.get('date')!.touched).toBe(true);
         });
 
         it('marks the form as dirty when the markAsDirty event is received', async () => {
           await fixture.whenStable();
           const form = fixture.componentInstance.templateForm.form;
-          expect(form.get('date').dirty).toBe(false);
+          expect(form.get('date')!.dirty).toBe(false);
 
           dateFormControlService.markAsDirty();
 
           fixture.detectChanges();
-          expect(form.get('date').dirty).toBe(true);
+          expect(form.get('date')!.dirty).toBe(true);
         });
 
         it('outputs the date when the user manually changes the date', () => {
@@ -682,18 +682,18 @@ describe('Datepicker', () => {
 
           fixture.detectChanges();
 
-          expect(dateNavigationService.selectedDay.year).toBe(date.getFullYear());
-          expect(dateNavigationService.selectedDay.month).toBe(date.getMonth());
-          expect(dateNavigationService.selectedDay.date).toBe(date.getDate());
+          expect(dateNavigationService.selectedDay!.year).toBe(date.getFullYear());
+          expect(dateNavigationService.selectedDay!.month).toBe(date.getMonth());
+          expect(dateNavigationService.selectedDay!.date).toBe(date.getDate());
 
           // Change the Date
           fixture.componentInstance.date = new Date(2015, 1, 1);
 
           fixture.detectChanges();
 
-          expect(dateNavigationService.selectedDay.year).toBe(2015);
-          expect(dateNavigationService.selectedDay.month).toBe(1);
-          expect(dateNavigationService.selectedDay.date).toBe(1);
+          expect(dateNavigationService.selectedDay!.year).toBe(2015);
+          expect(dateNavigationService.selectedDay!.month).toBe(1);
+          expect(dateNavigationService.selectedDay!.date).toBe(1);
         });
 
         it('emits the output date correctly if using clarity datepicker', () => {
@@ -705,9 +705,9 @@ describe('Datepicker', () => {
           );
           fixture.detectChanges();
 
-          expect(fixture.componentInstance.date.getFullYear()).toBe(date.getFullYear());
-          expect(fixture.componentInstance.date.getMonth()).toBe(date.getMonth());
-          expect(fixture.componentInstance.date.getDate()).toBe(date.getDate());
+          expect(fixture.componentInstance.date!.getFullYear()).toBe(date.getFullYear());
+          expect(fixture.componentInstance.date!.getMonth()).toBe(date.getMonth());
+          expect(fixture.componentInstance.date!.getDate()).toBe(date.getDate());
         });
 
         it('emits the output date correctly if using native datepicker', () => {
@@ -716,9 +716,9 @@ describe('Datepicker', () => {
           dateInputDebugElement.nativeElement.value = '02/19/2015';
           dateInputDebugElement.nativeElement.dispatchEvent(new Event('change'));
 
-          expect(fixture.componentInstance.date.getFullYear()).toBe(2015);
-          expect(fixture.componentInstance.date.getMonth()).toBe(1);
-          expect(fixture.componentInstance.date.getDate()).toBe(19);
+          expect(fixture.componentInstance.date!.getFullYear()).toBe(2015);
+          expect(fixture.componentInstance.date!.getMonth()).toBe(1);
+          expect(fixture.componentInstance.date!.getDate()).toBe(19);
         });
 
         it('outputs the date appropriately when switching between user updates and programmatic updates', () => {
@@ -726,7 +726,7 @@ describe('Datepicker', () => {
 
           dateNavigationService.notifySelectedDayChanged(new DayModel(2015, 1, 1));
           fixture.detectChanges();
-          expect(fixture.componentInstance.date.getFullYear()).toBe(2015);
+          expect(fixture.componentInstance.date!.getFullYear()).toBe(2015);
 
           fixture.componentInstance.date = new Date(2019, 1, 1);
           fixture.detectChanges();
@@ -743,9 +743,9 @@ describe('Datepicker', () => {
 
           fixture.detectChanges();
 
-          expect(fixture.componentInstance.date.getFullYear()).toBe(2015);
-          expect(fixture.componentInstance.date.getMonth()).toBe(0);
-          expect(fixture.componentInstance.date.getDate()).toBe(2);
+          expect(fixture.componentInstance.date!.getFullYear()).toBe(2015);
+          expect(fixture.componentInstance.date!.getMonth()).toBe(0);
+          expect(fixture.componentInstance.date!.getDate()).toBe(2);
 
           dateInputDebugElement.nativeElement.value = '01/02/201';
           dateInputDebugElement.nativeElement.dispatchEvent(new Event('change'));
@@ -798,9 +798,9 @@ describe('Datepicker', () => {
   standalone: false,
 })
 class TestComponent {
-  date: Date;
-  minDate = '2019-11-15';
-  maxDate = '2019-11-20';
+  date!: Date;
+  minDate?: string | null = '2019-11-15';
+  maxDate?: string | null = '2019-11-20';
   dateChanged(date: Date) {
     this.date = date;
   }
@@ -815,9 +815,9 @@ class TestComponent {
   standalone: false,
 })
 class TestComponentWithNgModel {
-  dateValue: string;
+  dateValue!: string;
 
-  @ViewChild(ClrDateInput) dateInputInstance: ClrDateInput;
+  @ViewChild(ClrDateInput) dateInputInstance!: ClrDateInput;
 }
 
 @Component({
@@ -826,7 +826,7 @@ class TestComponentWithNgModel {
   standalone: false,
 })
 class TestComponentWithClrDate {
-  date: Date;
+  date?: Date | null;
   disabled = false;
 }
 
@@ -844,7 +844,7 @@ class TestComponentWithReactiveForms {
   dateInput = '01/01/2015';
   testForm = new FormGroup({ date: new FormControl(this.dateInput) });
 
-  dateOutput: Date;
+  dateOutput!: Date;
 
   dateChanged(date: Date) {
     this.dateOutput = date;
@@ -861,9 +861,9 @@ class TestComponentWithReactiveForms {
   standalone: false,
 })
 class TestComponentWithTemplateDrivenForms {
-  @ViewChild('templateForm') templateForm: NgForm;
+  @ViewChild('templateForm') templateForm!: NgForm;
   dateInput = '01/01/2015';
-  dateOutput: Date;
+  dateOutput!: Date;
 
   dateChanged(date: Date) {
     this.dateOutput = date;
