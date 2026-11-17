@@ -35,7 +35,7 @@ import {
   provideClrMutationPolicy,
 } from './mutation.interface';
 import { descriptionMatches } from './write';
-import { ClrPageContext } from '../interfaces/context.interface';
+import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
 import { ClrContextService } from '../providers/contextual-engine.service';
 
 /** A third-party toggle: a custom element carrying the binding, rendering a checkbox. */
@@ -749,13 +749,13 @@ describe('ClrMutationEngineService write path', () => {
   describe('scope', () => {
     it('does not write what a snapshot with the options of the write would leave out, whatever snapshot the ref came from', async () => {
       const ref = refOf(contextEngine['read'](undefined, false), 'Name');
-      const write = async (snapshotOptions: object) =>
+      const write = async (snapshotOptions: ClrContextSnapshotOptions) =>
         (await engine.apply([{ operation: 'setValue', ref, description: 'Name', value: 'Ada' }], snapshotOptions))
           .results[0];
 
       expect((await write({ excludeSelectors: ['clr-input-container'] })).refused).toBe('hidden');
-      expect((await write({ excludeRoles: ['form'] })).refused).toBe('hidden');
-      expect((await write({ rootSelector: 'clr-select-container' })).refused).toBe('hidden');
+      expect((await write({ excludeCategories: ['forms'] })).refused).toBe('hidden');
+      expect((await write({ root: 'clr-select-container' })).refused).toBe('hidden');
       expect(host.form.value.name).toBe('');
 
       expect((await write({})).applied).toBeTrue();
