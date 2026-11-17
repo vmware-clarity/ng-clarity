@@ -93,13 +93,13 @@ for (const platform of ['browser', 'server']) {
 
       it('stops reading the title after the datagrid is destroyed', async () => {
         const title = fixture.nativeElement.querySelector('.datagrid-column-title');
-        const read = spyOnProperty(title, 'textContent', 'get').and.callThrough();
+        const read = vi.spyOn(title, 'textContent', 'get');
         fixture.componentInstance.title.set('Before destroy');
         await fixture.whenStable();
         expect(read).toHaveBeenCalled();
         fixture.componentInstance.show.set(false);
         await fixture.whenStable();
-        read.calls.reset();
+        read.mockClear();
         fixture.componentInstance.title.set('After destroy');
         fixture.componentInstance.unrelated.set(1);
         await fixture.whenStable();

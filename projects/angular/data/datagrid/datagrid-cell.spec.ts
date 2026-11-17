@@ -6,54 +6,59 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestContext, TestHelpers } from '@clr/angular/testing';
+import { createTestHelpers, TestContext } from '@clr/angular/testing';
 
 import { ClrDatagridCell } from './datagrid-cell';
 import { DatagridRenderOrganizer } from './render/render-organizer';
 
-interface Context extends TestHelpers {
-  directive: ClrDatagridCell;
-}
+describe('Datagrid', () => {
+  describe('Components', () => {
+    describe('ClrDatagridCell component', () => {
+      const helpers = createTestHelpers();
 
-export default function (): void {
-  describe('ClrDatagridCell component', function () {
-    let context: TestContext<ClrDatagridCell, SimpleTest>;
+      let testContext: any;
+      beforeEach(() => {
+        testContext = {};
+      });
 
-    beforeEach(function (this: Context) {
-      context = this.create(ClrDatagridCell, SimpleTest, [DatagridRenderOrganizer]);
-    });
+      let context: TestContext<ClrDatagridCell, SimpleTest>;
 
-    afterEach(() => {
-      context.fixture.destroy();
-      const popoverContent = document.querySelectorAll('.clr-popover-content');
-      popoverContent.forEach(content => document.body.removeChild(content));
-    });
+      beforeEach(() => {
+        context = helpers.create(ClrDatagridCell, SimpleTest, [DatagridRenderOrganizer]);
+      });
 
-    it('provides a wrapped view for the content', function (this: Context) {
-      this.directive = context.clarityDirective;
-      expect(this.directive._view).toBeDefined();
-    });
+      afterEach(() => {
+        context.fixture.destroy();
+        const popoverContent = document.querySelectorAll('.clr-popover-content');
+        popoverContent.forEach(content => document.body.removeChild(content));
+      });
 
-    it('projects content', function () {
-      expect(context.clarityElement.textContent.trim()).toMatch('Hello world');
-    });
+      it('provides a wrapped view for the content', () => {
+        testContext.directive = context.clarityDirective;
+        expect(testContext.directive._view).toBeDefined();
+      });
 
-    it('adds the .datagrid-cell class to the host', function () {
-      expect(context.clarityElement.classList.contains('datagrid-cell')).toBeTruthy();
-    });
+      it('projects content', () => {
+        expect(context.clarityElement.textContent.trim()).toMatch('Hello world');
+      });
 
-    it('does only adds .datagrid-signpost-trigger class when there is a signpost', function () {
-      expect(context.clarityElement.classList.contains('datagrid-signpost-trigger')).toBeFalsy();
-      context.testComponent.signpostTest = true;
-      context.detectChanges();
-      expect(context.clarityElement.classList.contains('datagrid-signpost-trigger')).toBeTruthy();
-    });
+      it('adds the .datagrid-cell class to the host', () => {
+        expect(context.clarityElement.classList.contains('datagrid-cell')).toBeTruthy();
+      });
 
-    it('adds a11y roles to the cell', function () {
-      expect(context.clarityElement.attributes.role.value).toBe('gridcell');
+      it('does only adds .datagrid-signpost-trigger class when there is a signpost', () => {
+        expect(context.clarityElement.classList.contains('datagrid-signpost-trigger')).toBeFalsy();
+        context.testComponent.signpostTest = true;
+        context.detectChanges();
+        expect(context.clarityElement.classList.contains('datagrid-signpost-trigger')).toBeTruthy();
+      });
+
+      it('adds a11y roles to the cell', () => {
+        expect(context.clarityElement.attributes.role.value).toBe('gridcell');
+      });
     });
   });
-}
+});
 
 @Component({
   template: `

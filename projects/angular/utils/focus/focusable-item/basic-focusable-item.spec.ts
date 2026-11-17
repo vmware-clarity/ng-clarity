@@ -25,48 +25,53 @@ interface TestContext {
   id: string;
 }
 
-export default function (): void {
-  describe('Basic focusable item', function () {
-    beforeEach(function (this: TestContext) {
+describe('Focus management', () => {
+  describe('Basic focusable item', () => {
+    let testContext: TestContext;
+    beforeEach(() => {
+      testContext = {} as TestContext;
+    });
+
+    beforeEach(() => {
       // Because the "service" uses ElementRef and Renderer (it's not really a service),
       // we need to use Angular's testing tools to run this spec.
       TestBed.configureTestingModule({ declarations: [SimpleHost] });
       const fixture = TestBed.createComponent(SimpleHost);
-      this.el = fixture.debugElement.nativeElement;
-      this.item = fixture.debugElement.injector.get(FocusableItem, null);
-      this.id = this.item.id;
+      testContext.el = fixture.debugElement.nativeElement;
+      testContext.item = fixture.debugElement.injector.get(FocusableItem, null);
+      testContext.id = testContext.item.id;
     });
 
-    it('declares a default id', function (this: TestContext) {
-      expect(this.id).toBeTruthy();
+    it('declares a default id', () => {
+      expect(testContext.id).toBeTruthy();
     });
 
-    it('declares itself as a FocusableItem provider', function (this: TestContext) {
-      expect(this.item).toBeTruthy();
+    it('declares itself as a FocusableItem provider', () => {
+      expect(testContext.item).toBeTruthy();
     });
 
-    it('sets the id attribute of the host', function (this: TestContext) {
-      expect(this.el.getAttribute('id')).toBe(this.id);
+    it('sets the id attribute of the host', () => {
+      expect(testContext.el.getAttribute('id')).toBe(testContext.id);
     });
 
-    it('removes the host from tab order', function (this: TestContext) {
-      expect(this.el.getAttribute('tabindex')).toBe('-1');
+    it('removes the host from tab order', () => {
+      expect(testContext.el.getAttribute('tabindex')).toBe('-1');
     });
 
-    it('removes the .clr-focus class from the host when not focused', function (this: TestContext) {
-      this.item.focus();
-      this.item.blur();
-      expect(this.el.classList).not.toContain('clr-focus');
+    it('removes the .clr-focus class from the host when not focused', () => {
+      testContext.item.focus();
+      testContext.item.blur();
+      expect(testContext.el.classList).not.toContain('clr-focus');
     });
 
-    it('triggers a click on the host when activated', function (this: TestContext) {
+    it('triggers a click on the host when activated', () => {
       let clicks = 0;
-      this.el.addEventListener('click', () => clicks++);
+      testContext.el.addEventListener('click', () => clicks++);
       expect(clicks).toBe(0);
-      this.item.activate();
+      testContext.item.activate();
       expect(clicks).toBe(1);
-      this.item.activate();
+      testContext.item.activate();
       expect(clicks).toBe(2);
     });
   });
-}
+});

@@ -63,7 +63,7 @@ describe('#LayoutService', () => {
 
   describe('when all card-block, card-header and card-footer is present ', () => {
     it('then should set card size and scrolling properties accordingly  ', () => {
-      const rendererSpy = spyOn(mockRenderer, 'setStyle').and.callThrough();
+      const rendererSpy = vi.spyOn(mockRenderer, 'setStyle');
 
       //  1 unit width -> 258px
       //  5 unit height -> 58*5 + 18*4 -> 362px
@@ -72,19 +72,27 @@ describe('#LayoutService', () => {
       expect(rendererSpy).toHaveBeenCalledTimes(5);
       const [cardEl, cardHeaderEl, cardBlockEl, cardFooterEl] = getCardElements(cardElement);
 
-      expect(rendererSpy.calls.all()[0].args).toEqual([cardEl, 'width', `${calculateCardWidth(1)}px`]);
-      expect(rendererSpy.calls.all()[1].args).toEqual([cardHeaderEl, 'height', `${cardSize.headerHeightInPixels}px`]);
-      expect(rendererSpy.calls.all()[2].args).toEqual([cardFooterEl, 'height', `${cardSize.footerHeightInPixels}px`]);
-      expect(rendererSpy.calls.all()[3].args).toEqual([
+      expect(vi.mocked(rendererSpy).mock.calls[0]).toEqual([cardEl, 'width', `${calculateCardWidth(1)}px`]);
+      expect(vi.mocked(rendererSpy).mock.calls[1]).toEqual([
+        cardHeaderEl,
+        'height',
+        `${cardSize.headerHeightInPixels}px`,
+      ]);
+      expect(vi.mocked(rendererSpy).mock.calls[2]).toEqual([
+        cardFooterEl,
+        'height',
+        `${cardSize.footerHeightInPixels}px`,
+      ]);
+      expect(vi.mocked(rendererSpy).mock.calls[3]).toEqual([
         cardBlockEl,
         'height',
         `${calculateCardHeight(5) - cardSize.headerHeightInPixels - cardSize.footerHeightInPixels}px`,
       ]);
-      expect(rendererSpy.calls.all()[4].args).toEqual([cardBlockEl, overflowStyle, 'auto']);
+      expect(vi.mocked(rendererSpy).mock.calls[4]).toEqual([cardBlockEl, overflowStyle, 'auto']);
     });
 
     it('then should set card size with adjusting gutter with and scrolling properties accordingly  ', () => {
-      const rendererSpy = spyOn(mockRenderer, 'setStyle').and.callThrough();
+      const rendererSpy = vi.spyOn(mockRenderer, 'setStyle');
 
       //  2 unit width -> 258*2 + 18 -> 534px
       //  5 unit height -> 58*5 + 18*4 -> 362px
@@ -93,28 +101,36 @@ describe('#LayoutService', () => {
       expect(rendererSpy).toHaveBeenCalledTimes(5);
       const [cardEl, cardHeaderEl, cardBlockEl, cardFooterEl] = getCardElements(cardElement);
 
-      expect(rendererSpy.calls.all()[0].args).toEqual([cardEl, 'width', `${calculateCardWidth(2)}px`]);
-      expect(rendererSpy.calls.all()[1].args).toEqual([cardHeaderEl, 'height', `${cardSize.headerHeightInPixels}px`]);
-      expect(rendererSpy.calls.all()[2].args).toEqual([cardFooterEl, 'height', `${cardSize.footerHeightInPixels}px`]);
-      expect(rendererSpy.calls.all()[3].args).toEqual([
+      expect(vi.mocked(rendererSpy).mock.calls[0]).toEqual([cardEl, 'width', `${calculateCardWidth(2)}px`]);
+      expect(vi.mocked(rendererSpy).mock.calls[1]).toEqual([
+        cardHeaderEl,
+        'height',
+        `${cardSize.headerHeightInPixels}px`,
+      ]);
+      expect(vi.mocked(rendererSpy).mock.calls[2]).toEqual([
+        cardFooterEl,
+        'height',
+        `${cardSize.footerHeightInPixels}px`,
+      ]);
+      expect(vi.mocked(rendererSpy).mock.calls[3]).toEqual([
         cardBlockEl,
         'height',
         `${calculateCardHeight(5) - cardSize.headerHeightInPixels - cardSize.footerHeightInPixels}px`,
       ]);
-      expect(rendererSpy.calls.all()[4].args).toEqual([cardBlockEl, overflowStyle, 'auto']);
+      expect(vi.mocked(rendererSpy).mock.calls[4]).toEqual([cardBlockEl, overflowStyle, 'auto']);
     });
 
     it('then should remove card style width and height if -1 unitWidth and unitHeight are provided ', () => {
-      spyOn(mockRenderer, 'setStyle').and.callThrough();
-      const rendererSpy = spyOn(mockRenderer, 'removeStyle').and.callThrough();
+      vi.spyOn(mockRenderer, 'setStyle');
+      const rendererSpy = vi.spyOn(mockRenderer, 'removeStyle');
       layoutService.updateCardSize(cardElement, -1, -1);
 
       expect(rendererSpy).toHaveBeenCalledTimes(2);
       const [cardEl, cardHeaderEl, cardBlockEl, cardFooterEl] = getCardElements(cardElement);
       expect(cardHeaderEl).toBeTruthy();
       expect(cardFooterEl).toBeTruthy();
-      expect(rendererSpy.calls.all()[0].args).toEqual([cardEl, 'width']);
-      expect(rendererSpy.calls.all()[1].args).toEqual([cardBlockEl, 'height']);
+      expect(vi.mocked(rendererSpy).mock.calls[0]).toEqual([cardEl, 'width']);
+      expect(vi.mocked(rendererSpy).mock.calls[1]).toEqual([cardBlockEl, 'height']);
     });
   });
 });
@@ -144,7 +160,7 @@ describe('#LayoutService SampleCardWithoutFooter', () => {
 
   describe('when only card-block and card-header is present', () => {
     it('then should set card block height accordingly and should add scroll to block', () => {
-      const rendererSpy = spyOn(mockRenderer, 'setStyle').and.callThrough();
+      const rendererSpy = vi.spyOn(mockRenderer, 'setStyle');
 
       //  1 unit width -> 258px
       //  5 unit height -> 58*5 + 18*4 -> 362px
@@ -153,14 +169,18 @@ describe('#LayoutService SampleCardWithoutFooter', () => {
       expect(rendererSpy).toHaveBeenCalledTimes(4);
       const [cardEl, cardHeaderEl, cardBlockEl] = getCardElements(cardElement);
 
-      expect(rendererSpy.calls.all()[0].args).toEqual([cardEl, 'width', `${calculateCardWidth(1)}px`]);
-      expect(rendererSpy.calls.all()[1].args).toEqual([cardHeaderEl, 'height', `${cardSize.headerHeightInPixels}px`]);
-      expect(rendererSpy.calls.all()[2].args).toEqual([
+      expect(vi.mocked(rendererSpy).mock.calls[0]).toEqual([cardEl, 'width', `${calculateCardWidth(1)}px`]);
+      expect(vi.mocked(rendererSpy).mock.calls[1]).toEqual([
+        cardHeaderEl,
+        'height',
+        `${cardSize.headerHeightInPixels}px`,
+      ]);
+      expect(vi.mocked(rendererSpy).mock.calls[2]).toEqual([
         cardBlockEl,
         'height',
         `${calculateCardHeight(5) - cardSize.headerHeightInPixels}px`,
       ]);
-      expect(rendererSpy.calls.all()[3].args).toEqual([cardBlockEl, 'overflow-y', 'auto']);
+      expect(vi.mocked(rendererSpy).mock.calls[3]).toEqual([cardBlockEl, 'overflow-y', 'auto']);
     });
   });
 });
@@ -190,7 +210,7 @@ describe('#LayoutService SampleCardWithoutHeader', () => {
 
   describe('when only card-block and card-footer is present', () => {
     it('then should set card block height accordingly and should add scroll to block', () => {
-      const rendererSpy = spyOn(mockRenderer, 'setStyle').and.callThrough();
+      const rendererSpy = vi.spyOn(mockRenderer, 'setStyle');
 
       //  1 unit width -> 258px
       //  5 unit height -> 58*5 + 18*4 -> 362px
@@ -199,9 +219,13 @@ describe('#LayoutService SampleCardWithoutHeader', () => {
       expect(rendererSpy).toHaveBeenCalledTimes(3);
       const [cardEl, cardHeaderEl, cardBlockEl, cardFooterEl] = getCardElements(cardElement);
 
-      expect(rendererSpy.calls.all()[0].args).toEqual([cardEl, 'width', `${calculateCardWidth(1)}px`]);
-      expect(rendererSpy.calls.all()[1].args).toEqual([cardFooterEl, 'height', `${cardSize.footerHeightInPixels}px`]);
-      expect(rendererSpy.calls.all()[2].args).toEqual([
+      expect(vi.mocked(rendererSpy).mock.calls[0]).toEqual([cardEl, 'width', `${calculateCardWidth(1)}px`]);
+      expect(vi.mocked(rendererSpy).mock.calls[1]).toEqual([
+        cardFooterEl,
+        'height',
+        `${cardSize.footerHeightInPixels}px`,
+      ]);
+      expect(vi.mocked(rendererSpy).mock.calls[2]).toEqual([
         cardBlockEl,
         'height',
         `${calculateCardHeight(5) - cardSize.headerHeightInPixels}px`,

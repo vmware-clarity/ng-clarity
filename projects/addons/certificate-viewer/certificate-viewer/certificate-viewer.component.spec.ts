@@ -59,8 +59,11 @@ describe('CertificateViewerComponent', () => {
       loading: new SimpleChange(undefined, undefined, true),
       ngOnChanges: new SimpleChange(undefined, undefined, true),
     });
-    const promise = (component as unknown as { certificateChainPromise: Promise<CertificateChain> })
-      .certificateChainPromise;
+    const promise = (
+      component as unknown as {
+        certificateChainPromise: Promise<CertificateChain>;
+      }
+    ).certificateChainPromise;
     let errorCaught = false;
     try {
       await promise;
@@ -68,7 +71,7 @@ describe('CertificateViewerComponent', () => {
       expect(err).toEqual(new Error("Object's schema was not verified against input data for Certificate"));
       errorCaught = true;
     }
-    expect(errorCaught).toBeTrue();
+    expect(errorCaught).toBe(true);
   });
 
   it('should update the parsed certificate chain', async () => {
@@ -76,7 +79,9 @@ describe('CertificateViewerComponent', () => {
     const certificateChainResult = {
       poo: 'certificateChainResult',
     } as unknown as CertificateChain;
-    spyOn(CertificateChain, 'fromPemEncodedCertificatesChain').and.returnValue(Promise.resolve(certificateChainResult));
+    vi.spyOn(CertificateChain, 'fromPemEncodedCertificatesChain').mockReturnValue(
+      Promise.resolve(certificateChainResult)
+    );
 
     component.ngOnChanges({
       pemEncodedCertificatesChain: new SimpleChange(['foo'], component.pemEncodedCertificatesChain, false),
@@ -86,7 +91,11 @@ describe('CertificateViewerComponent', () => {
       ngOnChanges: new SimpleChange(undefined, undefined, true),
     });
 
-    await (component as unknown as { certificateChainPromise: Promise<CertificateChain> }).certificateChainPromise;
+    await (
+      component as unknown as {
+        certificateChainPromise: Promise<CertificateChain>;
+      }
+    ).certificateChainPromise;
 
     expect(component.certificateChain).toEqual(certificateChainResult);
   });

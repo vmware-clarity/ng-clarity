@@ -6,143 +6,138 @@
  */
 
 import { ChangeDetectionStrategy, Component, Inject, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
 import { ClrIfExpanded } from './if-expanded.directive';
 import { IfExpandService } from './if-expanded.service';
 
-interface Context<C> {
-  fixture: ComponentFixture<C>;
-  testComponent: C;
-  testElement: HTMLElement;
-  clarityDirective: ClrIfExpanded;
-  expand: IfExpandService;
-}
+describe('IfExpanded directive', () => {
+  let testContext: any;
+  beforeEach(() => {
+    testContext = {};
+  });
 
-export default function (): void {
-  describe('IfExpanded directive', function () {
-    describe('View', function () {
-      beforeEach(function (this: Context<SimpleTest>) {
-        /*
-         * Since IfExpanded is a structural directive that isn't rendered in the DOM immediately,
-         * we can't use our usual shortcut, we need to rely on @ViewChild.
-         * A quick investigation didn't reveal a better solution yet, we might want to look into it more.
-         */
-        TestBed.configureTestingModule({
-          imports: [ClrIfExpanded],
-          declarations: [SimpleTest, TestCounter],
-          providers: [IfExpandService],
-        });
-        this.fixture = TestBed.createComponent(SimpleTest);
-        this.fixture.detectChanges();
-        this.testComponent = this.fixture.componentInstance;
-        this.testElement = this.fixture.nativeElement;
-        this.clarityDirective = this.fixture.componentInstance.ifExpanded;
-        this.expand = TestBed.inject(IfExpandService);
+  describe('View', () => {
+    beforeEach(() => {
+      /*
+       * Since IfExpanded is a structural directive that isn't rendered in the DOM immediately,
+       * we can't use our usual shortcut, we need to rely on @ViewChild.
+       * A quick investigation didn't reveal a better solution yet, we might want to look into it more.
+       */
+      TestBed.configureTestingModule({
+        imports: [ClrIfExpanded],
+        declarations: [SimpleTest, TestCounter],
+        providers: [IfExpandService],
       });
-
-      afterEach(function (this: Context<SimpleTest>) {
-        this.fixture.destroy();
-      });
-
-      it("doesn't display anything by default", function (this: Context<SimpleTest>) {
-        expect(this.testElement.textContent.trim()).toBe('');
-      });
-
-      it('displays the content when the parent becomes expanded', function (this: Context<SimpleTest>) {
-        this.expand.expanded = true;
-        this.fixture.detectChanges();
-        expect(this.testElement.textContent.trim()).toBe('1');
-      });
-
-      it('removes the content when the parent becomes collapsed again', function (this: Context<SimpleTest>) {
-        this.expand.expanded = true;
-        this.fixture.detectChanges();
-        this.expand.expanded = false;
-        this.fixture.detectChanges();
-        expect(this.testElement.textContent.trim()).toBe('');
-      });
-
-      it("doesn't instantiate until the content is actually needed", function (this: Context<SimpleTest>) {
-        expect(this.testComponent.counter.total).toBe(0);
-      });
-
-      it('re-instantiates the content every time it is displayed', function (this: Context<SimpleTest>) {
-        this.expand.expanded = true;
-        this.fixture.detectChanges();
-        expect(this.testElement.textContent.trim()).toBe('1');
-        this.expand.expanded = false;
-        this.fixture.detectChanges();
-        this.expand.expanded = true;
-        this.fixture.detectChanges();
-        expect(this.testElement.textContent.trim()).toBe('2');
-      });
-
-      it('have template reference', function (this: Context<SimpleTest>) {
-        expect(this.expand.hasExpandTemplate).toBe(true);
-      });
+      testContext.fixture = TestBed.createComponent(SimpleTest);
+      testContext.fixture.detectChanges();
+      testContext.testComponent = testContext.fixture.componentInstance;
+      testContext.testElement = testContext.fixture.nativeElement;
+      testContext.clarityDirective = testContext.fixture.componentInstance.ifExpanded;
+      testContext.expand = TestBed.inject(IfExpandService);
     });
 
-    describe('Template Ref', function () {
-      beforeEach(function (this: Context<SimpleTemplateTest>) {
-        /*
-         * Since IfExpanded is a structural directive that isn't rendered in the DOM immediately,
-         * we can't use our usual shortcut, we need to rely on @ViewChild.
-         * A quick investigation didn't reveal a better solution yet, we might want to look into it more.
-         */
-        TestBed.configureTestingModule({
-          imports: [ClrIfExpanded],
-          declarations: [SimpleTemplateTest, TestCounter],
-          providers: [IfExpandService],
-        });
-        this.fixture = TestBed.createComponent(SimpleTemplateTest);
-        this.fixture.detectChanges();
-        this.expand = TestBed.inject(IfExpandService);
-      });
-
-      afterEach(function (this: Context<SimpleTemplateTest>) {
-        this.fixture.destroy();
-      });
-
-      it("don't have template reference", function (this: Context<SimpleTemplateTest>) {
-        expect(this.expand.hasExpandTemplate).toBe(false);
-      });
+    afterEach(() => {
+      testContext.fixture.destroy();
     });
 
-    describe('Parent interaction', function () {
-      beforeEach(function (this: Context<NgIfTest>) {
-        /*
-         * Since IfExpanded is a structural directive that isn't rendered in the DOM immediately,
-         * we can't use our usual shortcut, we need to rely on @ViewChild.
-         * A quick investigation didn't reveal a better solution yet, we might want to look into it more.
-         */
-        TestBed.configureTestingModule({
-          imports: [ClrIfExpanded],
-          declarations: [NgIfTest],
-          providers: [IfExpandService],
-        });
-        this.fixture = TestBed.createComponent(NgIfTest);
-        this.fixture.detectChanges();
-        this.testComponent = this.fixture.componentInstance;
-        this.expand = TestBed.inject(IfExpandService);
-      });
+    it("doesn't display anything by default", () => {
+      expect(testContext.testElement.textContent.trim()).toBe('');
+    });
 
-      afterEach(function (this: Context<NgIfTest>) {
-        this.fixture.destroy();
-      });
+    it('displays the content when the parent becomes expanded', () => {
+      testContext.expand.expanded = true;
+      testContext.fixture.detectChanges();
+      expect(testContext.testElement.textContent.trim()).toBe('1');
+    });
 
-      it('sets the parent as expandable', function (this: Context<NgIfTest>) {
-        expect(this.expand.expandable).toBeGreaterThan(0);
-      });
+    it('removes the content when the parent becomes collapsed again', () => {
+      testContext.expand.expanded = true;
+      testContext.fixture.detectChanges();
+      testContext.expand.expanded = false;
+      testContext.fixture.detectChanges();
+      expect(testContext.testElement.textContent.trim()).toBe('');
+    });
 
-      it('sets the parent as not expandable when destroyed', function (this: Context<NgIfTest>) {
-        this.testComponent.expandable = false;
-        this.fixture.detectChanges();
-        expect(this.expand.expandable).toBe(0);
-      });
+    it("doesn't instantiate until the content is actually needed", () => {
+      expect(testContext.testComponent.counter.total).toBe(0);
+    });
+
+    it('re-instantiates the content every time it is displayed', () => {
+      testContext.expand.expanded = true;
+      testContext.fixture.detectChanges();
+      expect(testContext.testElement.textContent.trim()).toBe('1');
+      testContext.expand.expanded = false;
+      testContext.fixture.detectChanges();
+      testContext.expand.expanded = true;
+      testContext.fixture.detectChanges();
+      expect(testContext.testElement.textContent.trim()).toBe('2');
+    });
+
+    it('have template reference', () => {
+      expect(testContext.expand.hasExpandTemplate).toBe(true);
     });
   });
-}
+
+  describe('Template Ref', () => {
+    beforeEach(() => {
+      /*
+       * Since IfExpanded is a structural directive that isn't rendered in the DOM immediately,
+       * we can't use our usual shortcut, we need to rely on @ViewChild.
+       * A quick investigation didn't reveal a better solution yet, we might want to look into it more.
+       */
+      TestBed.configureTestingModule({
+        imports: [ClrIfExpanded],
+        declarations: [SimpleTemplateTest, TestCounter],
+        providers: [IfExpandService],
+      });
+      testContext.fixture = TestBed.createComponent(SimpleTemplateTest);
+      testContext.fixture.detectChanges();
+      testContext.expand = TestBed.inject(IfExpandService);
+    });
+
+    afterEach(() => {
+      testContext.fixture.destroy();
+    });
+
+    it("don't have template reference", () => {
+      expect(testContext.expand.hasExpandTemplate).toBe(false);
+    });
+  });
+
+  describe('Parent interaction', () => {
+    beforeEach(() => {
+      /*
+       * Since IfExpanded is a structural directive that isn't rendered in the DOM immediately,
+       * we can't use our usual shortcut, we need to rely on @ViewChild.
+       * A quick investigation didn't reveal a better solution yet, we might want to look into it more.
+       */
+      TestBed.configureTestingModule({
+        imports: [ClrIfExpanded],
+        declarations: [NgIfTest],
+        providers: [IfExpandService],
+      });
+      testContext.fixture = TestBed.createComponent(NgIfTest);
+      testContext.fixture.detectChanges();
+      testContext.testComponent = testContext.fixture.componentInstance;
+      testContext.expand = TestBed.inject(IfExpandService);
+    });
+
+    afterEach(() => {
+      testContext.fixture.destroy();
+    });
+
+    it('sets the parent as expandable', () => {
+      expect(testContext.expand.expandable).toBeGreaterThan(0);
+    });
+
+    it('sets the parent as not expandable when destroyed', () => {
+      testContext.testComponent.expandable = false;
+      testContext.fixture.detectChanges();
+      expect(testContext.expand.expandable).toBe(0);
+    });
+  });
+});
 
 @Component({
   template: `<test-counter *clrIfExpanded></test-counter>`,
@@ -153,7 +148,12 @@ export default function (): void {
 class SimpleTest {
   @ViewChild(ClrIfExpanded) ifExpanded: ClrIfExpanded;
 
-  constructor(@Inject('counter') public counter: { total: number }) {}
+  constructor(
+    @Inject('counter')
+    public counter: {
+      total: number;
+    }
+  ) {}
 }
 
 @Component({
@@ -165,7 +165,12 @@ class SimpleTest {
 class SimpleTemplateTest {
   @ViewChild(ClrIfExpanded) ifExpanded: ClrIfExpanded;
 
-  constructor(@Inject('counter') public counter: { total: number }) {}
+  constructor(
+    @Inject('counter')
+    public counter: {
+      total: number;
+    }
+  ) {}
 }
 
 @Component({
@@ -177,7 +182,12 @@ class SimpleTemplateTest {
 class TestCounter {
   count: number;
 
-  constructor(@Inject('counter') counter: { total: number }) {
+  constructor(
+    @Inject('counter')
+    counter: {
+      total: number;
+    }
+  ) {
     this.count = ++counter.total;
   }
 }

@@ -7,27 +7,30 @@
 
 import { NestedProperty } from './nested-property';
 
-interface Context {
-  property: NestedProperty;
-}
+describe('Datagrid', () => {
+  describe('Built-in', () => {
+    describe('NestedProperty (internal)', () => {
+      let testContext: any;
+      beforeEach(() => {
+        testContext = {};
+      });
 
-export default function (): void {
-  describe('NestedProperty (internal)', function () {
-    it('accesses root properties', function (this: Context) {
-      this.property = new NestedProperty('a');
-      expect(this.property.getPropValue({ a: 42 })).toBe(42);
-    });
+      it('accesses root properties', () => {
+        testContext.property = new NestedProperty('a');
+        expect(testContext.property.getPropValue({ a: 42 })).toBe(42);
+      });
 
-    it('accesses deep properties', function (this: Context) {
-      this.property = new NestedProperty('my.deep.prop');
-      expect(this.property.getPropValue({ my: { deep: { prop: 42 } } })).toBe(42);
-    });
+      it('accesses deep properties', () => {
+        testContext.property = new NestedProperty('my.deep.prop');
+        expect(testContext.property.getPropValue({ my: { deep: { prop: 42 } } })).toBe(42);
+      });
 
-    it('returns gracefully undefined when any of the intermediate properties is missing', function (this: Context) {
-      this.property = new NestedProperty('my.deep.prop');
-      expect(this.property.getPropValue({})).toBeUndefined();
-      expect(this.property.getPropValue({ my: {} })).toBeUndefined();
-      expect(this.property.getPropValue({ my: { deep: {} } })).toBeUndefined();
+      it('returns gracefully undefined when any of the intermediate properties is missing', () => {
+        testContext.property = new NestedProperty('my.deep.prop');
+        expect(testContext.property.getPropValue({})).toBeUndefined();
+        expect(testContext.property.getPropValue({ my: {} })).toBeUndefined();
+        expect(testContext.property.getPropValue({ my: { deep: {} } })).toBeUndefined();
+      });
     });
   });
-}
+});

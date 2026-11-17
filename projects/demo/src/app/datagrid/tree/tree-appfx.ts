@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, signal } from '@angular/core';
 import { ColumnDefinition, ColumnOrderChanged, DatagridTreeConfig } from '@clr/addons/datagrid';
 import { ClrDatagridStateInterface, SelectionType } from '@clr/angular';
 import { Subscription } from 'rxjs';
@@ -20,9 +20,9 @@ import { Resource, ResourceBackend } from './resource-backend';
 })
 export class DatagridTreeAppfxDemo implements OnDestroy {
   backend = new ResourceBackend();
-  roots: Resource[] = [];
-  total = 0;
-  loading = true;
+  readonly roots = signal<Resource[]>([]);
+  readonly total = signal(0);
+  readonly loading = signal(true);
   selected: Resource[] = [];
   SelectionType = SelectionType;
 
@@ -85,12 +85,12 @@ export class DatagridTreeAppfxDemo implements OnDestroy {
   }
 
   refresh(state: ClrDatagridStateInterface) {
-    this.loading = true;
+    this.loading.set(true);
     this.request?.unsubscribe();
     this.request = this.backend.page(state).subscribe(result => {
-      this.roots = result.items;
-      this.total = result.total;
-      this.loading = false;
+      this.roots.set(result.items);
+      this.total.set(result.total);
+      this.loading.set(false);
     });
   }
 

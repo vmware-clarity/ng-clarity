@@ -67,8 +67,14 @@ jobs:
           npm run _build:storybook
           npm run _build:demo
           npm run _build:website
+      - name: Install Unit Test Browser
+        run: npx playwright install --with-deps chromium
       - name: Test
-        run: npm run test
+        env:
+          VITEST_SEED: ${{ github.run_id }}
+        run: |
+          echo "Vitest shuffle seed: ${VITEST_SEED}"
+          npm run test
       - name: Public Api Check
         if: ${{ matrix.primary }}
         run: npm run public-api:check
@@ -90,6 +96,71 @@ jobs:
         with:
           name: coverage
           path: coverage/
+      - name: Upload Built Consumer Libraries
+        if: ${{ matrix.primary }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: consumer-libraries
+          path: |
+            dist/clr-angular/
+            dist/clr-addons/
+            dist/clr-ui/
+
+  zoneless-smoke:
+    needs: pr-build
+    name: Zoneless applications and consumer compatibility
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+      - name: Install Dependencies and Chromium
+        run: |
+          npm ci --ignore-scripts
+          npx playwright install --with-deps chromium
+      - name: Download Built Documentation
+        uses: actions/download-artifact@v4
+        with:
+          name: docs
+          path: dist/docs
+      - name: Download Built Libraries and UI Assets
+        uses: actions/download-artifact@v4
+        with:
+          name: consumer-libraries
+          path: dist
+      # The demo and the website are built with the CSP nonce placeholder, see scripts/write-vrt-index.js. The website
+      # build is the one the website visual regression test caches.
+      - name: Build Demo
+        run: npm run _build:demo:vrt
+      - name: Cache Website Build
+        id: website-cache
+        uses: actions/cache@v4
+        with:
+          path: dist/website
+          key: website-vrt-build-${{hashFiles('package-lock.json', 'projects/website/**', 'projects/angular/**', 'projects/ui/**', 'projects/addons/**', 'angular.json', 'tsconfig.json', 'scripts/write-vrt-index.js')}}
+      - name: Build Website
+        if: steps.website-cache.outputs.cache-hit != 'true'
+        run: npm run _build:website:vrt
+      - name: Build Zone.js and Zoneless Consumers
+        run: npm run _build:consumer-smoke
+      - name: Verify Zone.js and Zoneless Consumers
+        run: npm run test:consumer-smoke
+      - name: Verify Zoneless Applications
+        if: ${{ !cancelled() }}
+        run: npm run test:applications-smoke
+      - name: Upload Failure Traces
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: zoneless-smoke-traces
+          path: test-results/
 
   pr-visual-regression-test:
     name: PR Visual Regression Test (${{matrix.browser}}, ${{matrix.theme}}, ${{matrix.density}}, shard ${{matrix.shard}}/2)
@@ -271,8 +342,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: dist/website
-          key: website-vrt-build-${{hashFiles('package-lock.json', 'projects/website/**', 'projects/angular/**', 'projects/ui/**', 'projects/addons/**', 'angular.json', 'tsconfig.json')}}
-      # The production build with the CSP nonce placeholder, see projects/website/scripts/write-vrt-index.js.
+          key: website-vrt-build-${{hashFiles('package-lock.json', 'projects/website/**', 'projects/angular/**', 'projects/ui/**', 'projects/addons/**', 'angular.json', 'tsconfig.json', 'scripts/write-vrt-index.js')}}
+      # The production build with the CSP nonce placeholder, see scripts/write-vrt-index.js.
       - name: Build Website
         if: steps.website-cache.outputs.cache-hit != 'true'
         run: npm run _build:website:vrt
