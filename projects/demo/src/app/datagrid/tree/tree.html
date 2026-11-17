@@ -46,7 +46,7 @@
   [clrDgSelectionType]="selectionType"
   [(clrDgSelected)]="selected"
   [clrDgItemsIdentityFn]="identity"
-  [clrDgLoading]="loading"
+  [clrDgLoading]="loading()"
   (clrDgRefresh)="refresh($event)"
 >
   <clr-dg-column [clrDgPinned]="pinName" clrDgSortBy="name">Name</clr-dg-column>
@@ -57,7 +57,7 @@
   <clr-dg-column clrDgSortBy="childCount">Children</clr-dg-column>
 
   <clr-dg-row
-    *clrDgTreeItems="let resource of roots; getChildren: getChildren; cascadeSelection: cascadeSelection"
+    *clrDgTreeItems="let resource of roots(); getChildren: getChildren; cascadeSelection: cascadeSelection"
     [clrDgItem]="resource"
     [clrDgTreeExpandable]="resource.childCount > 0"
   >
@@ -82,9 +82,9 @@
   </clr-dg-detail>
 
   <clr-dg-footer>
-    <clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems]="total">
+    <clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems]="total()">
       <clr-dg-page-size [clrPageSizeOptions]="[5, 10, 20, 50]">Datacenters per page</clr-dg-page-size>
-      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ total }} datacenters
+      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ total() }} datacenters
     </clr-dg-pagination>
   </clr-dg-footer>
 </clr-datagrid>

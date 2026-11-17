@@ -52,7 +52,7 @@ describe('DatagridColumnToggleComponent', () => {
   });
 
   it('emits notification and shows all columns on select all', () => {
-    spyOn(component.columnHiddenStateChange, 'emit');
+    vi.spyOn(component.columnHiddenStateChange, 'emit').mockImplementation(() => undefined);
     component.onSelectAll();
     expect(component.columns[1].hidden).toBeFalsy();
     expect(component.columnHiddenStateChange.emit).toHaveBeenCalledWith({
@@ -68,8 +68,8 @@ describe('DatagridColumnToggleComponent', () => {
   });
 
   it('should hide and show a column using showColumn and hideColumn methods', () => {
-    spyOn(component.columnsChange, 'emit');
-    spyOn(component.columnHiddenStateChange, 'emit');
+    vi.spyOn(component.columnsChange, 'emit').mockImplementation(() => undefined);
+    vi.spyOn(component.columnHiddenStateChange, 'emit').mockImplementation(() => undefined);
 
     // Hide column
     component.hideColumn(component.columns[0].field);

@@ -22,11 +22,11 @@ describe('WorkflowConfigurationService', () => {
 
   it('should initialize debugValue to false by default', () => {
     expect(service).toBeTruthy();
-    expect(service.debug).toBeFalse();
+    expect(service.debug).toBe(false);
   });
 
   it('should set and get debugValue correctly', () => {
     service.debug = true;
-    expect(service.debug).toBeTrue();
+    expect(service.debug).toBe(true);
   });
 });

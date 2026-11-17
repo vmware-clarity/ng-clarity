@@ -71,8 +71,8 @@ function fullTest(
     let datalistIdService: DatalistIdService;
 
     beforeEach(() => {
-      spyOn(WrappedFormControl.prototype, 'ngOnInit').and.callThrough();
-      spyOn(ControlClassService.prototype, 'initControlClass').and.callThrough();
+      vi.spyOn(WrappedFormControl.prototype, 'ngOnInit');
+      vi.spyOn(ControlClassService.prototype, 'initControlClass');
       TestBed.configureTestingModule({
         imports: [FormsModule, ClrIcon, ClrCommonFormsModule, ReactiveFormsModule],
         declarations: [testContainer, testControl, testComponent],
@@ -112,7 +112,7 @@ function fullTest(
 
     it('correctly extends WrappedFormControl', () => {
       expect(control.injector.get(testControl)['wrapperType']).toBe(testContainer);
-      expect(testControl.prototype instanceof WrappedFormControl).toBeTrue();
+      expect(testControl.prototype instanceof WrappedFormControl).toBe(true);
     });
 
     it('should set the class on the control with ControlClassService', () => {
@@ -122,7 +122,7 @@ function fullTest(
     });
 
     it('should handle blur events', () => {
-      spyOn<any>(testControl.prototype, 'triggerValidation').and.callThrough();
+      vi.spyOn<any, any>(testControl.prototype, 'triggerValidation');
 
       // control must be both invalid and blurred to register the validity
       if (control.nativeElement.type === 'file') {

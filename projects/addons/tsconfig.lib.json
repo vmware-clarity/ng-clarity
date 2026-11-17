@@ -25,5 +25,5 @@
     "strictInjectionParameters": true
   },
   "include": ["**/*.ts"],
-  "exclude": ["test.ts", "**/*.spec.ts"]
+  "exclude": ["**/*.spec.ts"]
 }

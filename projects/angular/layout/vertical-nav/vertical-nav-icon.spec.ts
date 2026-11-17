@@ -11,42 +11,46 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { VerticalNavIconService } from './providers/vertical-nav-icon.service';
 import { ClrVerticalNavIcon } from './vertical-nav-icon';
 
-export default function (): void {
-  describe('Vertical Nav Icons', () => {
-    let fixture: ComponentFixture<any>;
-    let verticalNavIconService: VerticalNavIconService;
+describe('Vertical Nav', () => {
+  describe('Directives', () => {
+    describe('Vertical Nav Icons', () => {
+      let fixture: ComponentFixture<any>;
+      let verticalNavIconService: VerticalNavIconService;
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        declarations: [ClrVerticalNavIcon, TestComponent],
-        providers: [VerticalNavIconService],
+      beforeEach(() => {
+        TestBed.configureTestingModule({
+          declarations: [ClrVerticalNavIcon, TestComponent],
+          providers: [VerticalNavIconService],
+        });
+        verticalNavIconService = TestBed.inject(VerticalNavIconService);
+        fixture = TestBed.createComponent(TestComponent);
+        fixture.detectChanges();
       });
-      verticalNavIconService = TestBed.inject(VerticalNavIconService);
-      fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges();
-    });
 
-    it('registers itself on the service', () => {
-      expect(verticalNavIconService.hasIcons).toBe(true);
+      it('registers itself on the service', () => {
+        expect(verticalNavIconService.hasIcons).toBe(true);
 
-      fixture.destroy();
-    });
+        fixture.destroy();
+      });
 
-    it('adds a nav-icon class to the host', () => {
-      expect(fixture.debugElement.componentInstance.navIcon.nativeElement.classList.contains('nav-icon')).toBeTruthy();
+      it('adds a nav-icon class to the host', () => {
+        expect(
+          fixture.debugElement.componentInstance.navIcon.nativeElement.classList.contains('nav-icon')
+        ).toBeTruthy();
 
-      fixture.destroy();
-    });
+        fixture.destroy();
+      });
 
-    it('unregisters the icon when the fixture is destroyed', () => {
-      expect(verticalNavIconService.hasIcons).toBe(true);
+      it('unregisters the icon when the fixture is destroyed', () => {
+        expect(verticalNavIconService.hasIcons).toBe(true);
 
-      fixture.destroy();
+        fixture.destroy();
 
-      expect(verticalNavIconService.hasIcons).toBe(false);
+        expect(verticalNavIconService.hasIcons).toBe(false);
+      });
     });
   });
-}
+});
 
 @Component({
   template: `<div clrVerticalNavIcon #navIcon></div>`,

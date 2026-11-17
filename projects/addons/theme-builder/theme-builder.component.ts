@@ -88,9 +88,9 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
 
   // State backing the built-in default preview content.
   breadcrumbs = [
-    { label: 'Framework', href: 'javascript://' },
-    { label: 'Angular', href: 'javascript://' },
-    { label: 'Clarity', href: 'javascript://' },
+    { label: 'Framework', href: '#' },
+    { label: 'Angular', href: '#' },
+    { label: 'Clarity', href: '#' },
   ];
   wizardOpen = false;
   rows: DataRow[] = SAMPLE_ROWS;

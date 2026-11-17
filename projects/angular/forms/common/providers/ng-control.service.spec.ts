@@ -9,7 +9,7 @@ import { FormControl, NgControl } from '@angular/forms';
 
 import { NgControlService } from './ng-control.service';
 
-export default function (): void {
+describe('Forms common utilities', () => {
   describe('NgControlService', function () {
     let service: NgControlService;
     let testControl: FormControl;
@@ -20,7 +20,7 @@ export default function (): void {
     });
 
     it('provides observable for control changes, passing the control', () => {
-      const cb = jasmine.createSpy('cb');
+      const cb = vi.fn();
       const sub = service.controlsChanges.subscribe(controls => cb(controls[0]));
       expect(cb).not.toHaveBeenCalled();
       service.addControl(testControl as unknown as NgControl);
@@ -28,4 +28,4 @@ export default function (): void {
       sub.unsubscribe();
     });
   });
-}
+});

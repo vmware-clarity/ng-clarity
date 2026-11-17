@@ -44,6 +44,10 @@ The build process consists of the following five stages. Each stage can be ran i
 3. `npm run build`: builds all projects
 
 4. `npm run test`: verifies all tests pass
+   - Install Chromium first with `npx playwright install chromium`. The library suites run in a real browser through Vitest and Playwright.
+
+   - See [Testing](TESTING.md) for headless runs, coverage thresholds, and reproducing randomized failures.
+
    - `npm run test:watch`: runs a watcher on all tests
 
 5. `npm run public-api:check`: verifies the public API has not changed
@@ -56,6 +60,12 @@ Other commands
 - `npm run preview`: performs a dry-run of the release process and shows you what a release would look like (branch must exist remotely).
 
 - `npm run start`: serves and launches the demo project
+
+- `npm run test:applications-smoke`: runs the demo, website and Storybook builds without Zone.js in the browser, see
+  [tests/applications/README.md](../tests/applications/README.md)
+
+- `npm run _build:consumer-smoke` and `npm run test:consumer-smoke`: build an application from the built packages,
+  with and without Zone.js, and test it in the browser, see [tests/consumer/README.md](../tests/consumer/README.md)
 
 ## Commit Hooks
 

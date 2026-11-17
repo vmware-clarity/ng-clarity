@@ -111,13 +111,13 @@ describe('ClrAccordionPanel', () => {
     });
 
     it('should add panel to service', () => {
-      spyOn(panelService, 'addPanel');
+      vi.spyOn(panelService, 'addPanel').mockImplementation(() => undefined);
       accordionPanel.ngOnInit();
       expect(panelService.addPanel).toHaveBeenCalled();
     });
 
     it('should toggle panel', () => {
-      spyOn(panelService, 'togglePanel');
+      vi.spyOn(panelService, 'togglePanel').mockImplementation(() => undefined);
       accordionPanel.togglePanel();
       expect(panelService.togglePanel).toHaveBeenCalled();
     });
@@ -179,7 +179,7 @@ describe('ClrAccordionPanel', () => {
         const fixture: ComponentFixture<TestNoBindingComponent> = TestBed.createComponent(TestNoBindingComponent);
         const component = fixture.componentInstance;
         const accordionPanel = fixture.debugElement.query(By.directive(ClrAccordionPanel)).componentInstance;
-        spyOn(component, 'change');
+        vi.spyOn(component, 'change').mockImplementation(() => undefined);
 
         // First render
         fixture.detectChanges();
@@ -198,7 +198,7 @@ describe('ClrAccordionPanel', () => {
       it('emit value for [clrAccordionPanelOpen] when there is a binding to it', () => {
         const component = fixture.componentInstance;
         const accordionPanel = fixture.debugElement.query(By.directive(ClrAccordionPanel)).componentInstance;
-        spyOn(component, 'change');
+        vi.spyOn(component, 'change').mockImplementation(() => undefined);
 
         // First render
         fixture.detectChanges();
@@ -293,7 +293,7 @@ describe('ClrAccordionPanel', () => {
 
     it('should not have the [role]="group" attribute', () => {
       const panelGroup = panelElement.querySelector('[role="group"]');
-      expect(panelGroup).toBeNull('clr-accordion-panels should not have a role');
+      expect(panelGroup, 'clr-accordion-panels should not have a role').toBeNull();
     });
 
     it('should apply the appropriate class to header if the header has a description', () => {
