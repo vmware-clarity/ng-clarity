@@ -57,6 +57,12 @@ Other commands
 
 - `npm run start`: serves and launches the demo project
 
+- `npm run test:applications-smoke`: runs the demo, website and Storybook builds without Zone.js in the browser, see
+  [tests/applications/README.md](../tests/applications/README.md)
+
+- `npm run _build:consumer-smoke` and `npm run test:consumer-smoke`: build an application from the built packages,
+  with and without Zone.js, and test it in the browser, see [tests/consumer/README.md](../tests/consumer/README.md)
+
 ## Commit Hooks
 
 This repository uses Husky to execute the following client-side commit hooks.
