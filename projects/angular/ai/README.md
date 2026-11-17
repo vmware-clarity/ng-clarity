@@ -12,10 +12,9 @@ surfaces are planned under the same entry point.
 
 ## Quickstart
 
-Inject `ClrContextEngineService` for a snapshot of the page now, or `ClrContextTrackerService` for the
-current page as it changes. The "Contextual Engine" guide on the Clarity website
-(`/documentation/contextual-engine`) has a complete example and a privacy checklist to read before a
-snapshot goes to a model.
+Inject `ClrContextService` and call `snapshot()` for the page now or `watch()` for the page as it changes; call `configure()` once at startup to set the scope. The "Contextual Engine" guide on the
+Clarity website (`/documentation/contextual-engine`) has a complete example and a privacy checklist to read
+before a snapshot goes to a model.
 
 ### Annotating the application
 

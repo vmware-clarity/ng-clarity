@@ -10,7 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ClrContextEngineService } from '@clr/angular/ai';
+import { ClrContextService } from '@clr/angular/ai';
 import { ClrComponentContext } from '@clr/angular/utils';
 
 import { ClrDateContainer } from './date-container';
@@ -68,7 +68,7 @@ describe('ClrDateContainer, as page-context tooling sees it', () => {
       .injector.get(DateNavigationService)
       .notifySelectedDayChanged(new DayModel(1984, 2, 2));
     fixture.detectChanges();
-    return TestBed.inject(ClrContextEngineService).getSnapshot().components;
+    return (await TestBed.inject(ClrContextService).snapshot()).components;
   }
 
   function toggle(): HTMLButtonElement {
@@ -100,7 +100,7 @@ describe('ClrDateContainer, as page-context tooling sees it', () => {
 
   it('keeps the selected date from a consumer the application does not control', async () => {
     await snapshot(true);
-    const engine = TestBed.inject(ClrContextEngineService);
+    const engine = TestBed.inject(ClrContextService);
     engine.enableGlobalAccess('testDatepickerClrContext');
     try {
       const accessor = (window as unknown as Record<string, () => unknown>)['testDatepickerClrContext'];

@@ -30,7 +30,7 @@ import {
 } from './mutation.interface';
 import { resolveWriteTarget } from './write';
 import { ClrPageContext } from '../interfaces/context.interface';
-import { ClrContextEngineService } from '../providers/contextual-engine.service';
+import { ClrContextService } from '../providers/contextual-engine.service';
 
 interface Item {
   id: number;
@@ -196,7 +196,7 @@ describe('ClrMutationEngineService', () => {
     afterEach(() => fixture.destroy());
 
     it('hands out no refs and refuses everything as unclassified', async () => {
-      const snapshot = TestBed.inject(ClrContextEngineService).getSnapshot();
+      const snapshot = TestBed.inject(ClrContextService)['read'](undefined, false);
       expect(allRefs(snapshot.components)).toEqual([]);
 
       const report = await TestBed.inject(ClrMutationEngineService).apply([
@@ -212,7 +212,7 @@ describe('ClrMutationEngineService', () => {
   describe('with a policy', () => {
     let fixture: ComponentFixture<Host>;
     let host: Host;
-    let contextEngine: ClrContextEngineService;
+    let contextEngine: ClrContextService;
     let engine: ClrMutationEngineService;
     let classify: jasmine.Spy<(target: ClrMutationTarget) => ClrMutationConsequence>;
     let confirm: jasmine.Spy<(target: ClrMutationTarget) => boolean | Promise<boolean>>;
@@ -229,14 +229,14 @@ describe('ClrMutationEngineService', () => {
       fixture = TestBed.createComponent(Host);
       host = fixture.componentInstance;
       await settle(fixture);
-      contextEngine = TestBed.inject(ClrContextEngineService);
+      contextEngine = TestBed.inject(ClrContextService);
       engine = TestBed.inject(ClrMutationEngineService);
     });
 
     afterEach(() => fixture.destroy());
 
     function snapshot(): ClrPageContext {
-      return contextEngine.getSnapshot();
+      return contextEngine['read'](undefined, false);
     }
 
     async function set(ref: string, description: string, value: unknown): Promise<ClrElementMutationResult> {
@@ -452,7 +452,7 @@ describe('ClrMutationEngineService', () => {
         expect(refused.detail).toContain('"esx-01 | Running"');
       });
 
-      it('writes nothing to a component whose role the options exclude, published or rendered', async () => {
+      it('writes nothing to a component whose category the options exclude, published or rendered', async () => {
         const page = snapshot();
         const grid = nodeOf(
           page,
@@ -466,7 +466,7 @@ describe('ClrMutationEngineService', () => {
             { operation: 'setValue', ref: String(grid.ref), description: '', value: ['esx-02'] },
             { operation: 'setValue', ref: cluster, description: 'Cluster', value: 'Beta cluster' },
           ],
-          { excludeRoles: ['grid', 'combobox'] }
+          { excludeCategories: ['collections', 'forms'] }
         );
         await settle(fixture);
 

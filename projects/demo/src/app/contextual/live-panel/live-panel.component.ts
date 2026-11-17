@@ -8,12 +8,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
-import {
-  ClrContextPreset,
-  clrContextPreset,
-  ClrContextTrackerService,
-  ClrContextTrackingOptions,
-} from '@clr/angular/ai';
+import { CLR_CONTEXT_PRESETS, ClrContextPreset, ClrContextService, ClrPageContext } from '@clr/angular/ai';
 import { Subscription } from 'rxjs';
 
 /** The live page snapshot; `data-clr-context-ignore` keeps it out of tracking and the context. */
@@ -38,7 +33,7 @@ export class ContextLivePanelComponent implements OnInit, OnDestroy {
 
   private trackingSubscription: Subscription | null = null;
 
-  constructor(private readonly contextTracker: ClrContextTrackerService) {}
+  constructor(private readonly context: ClrContextService) {}
 
   ngOnInit(): void {
     this.track();
@@ -53,23 +48,25 @@ export class ContextLivePanelComponent implements OnInit, OnDestroy {
     this.track();
   }
 
-  refreshNow(): void {
-    this.contextTracker.refresh();
+  async refreshNow(): Promise<void> {
+    this.render(await this.context.snapshot(this.options()));
   }
 
-  /** Through `track()`, so tracking stops with the subscription when the panel goes away. */
+  /** Through `watch()`, so watching stops with the subscription when the panel goes away. */
   private track(): void {
     this.trackingSubscription?.unsubscribe();
-    this.trackingSubscription = this.contextTracker.track(this.trackingOptions()).subscribe(snapshot => {
-      this.snapshotCount++;
-      this.snapshotTruncated = snapshot.truncated === true;
-      this.snapshotFocus = snapshot.focus ?? null;
-      this.snapshotBytes = JSON.stringify(snapshot).length;
-      this.snapshotJson = JSON.stringify(snapshot, null, 2);
-    });
+    this.trackingSubscription = this.context.watch(this.options()).subscribe(snapshot => this.render(snapshot));
   }
 
-  private trackingOptions(): ClrContextTrackingOptions {
-    return { snapshot: clrContextPreset(this.profile, { maxComponents: this.maxComponents }) };
+  private render(snapshot: ClrPageContext): void {
+    this.snapshotCount++;
+    this.snapshotTruncated = snapshot.truncated === true;
+    this.snapshotFocus = snapshot.focus ?? null;
+    this.snapshotBytes = JSON.stringify(snapshot).length;
+    this.snapshotJson = JSON.stringify(snapshot, null, 2);
+  }
+
+  private options() {
+    return { ...CLR_CONTEXT_PRESETS[this.profile], maxComponents: this.maxComponents };
   }
 }

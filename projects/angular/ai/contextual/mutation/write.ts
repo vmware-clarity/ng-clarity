@@ -10,7 +10,6 @@ import { AbstractControl, NgControl } from '@angular/forms';
 import {
   CLR_CONTEXT_DEFAULT_MAX_ITEMS,
   CLR_CONTEXT_WITHHELD_SELECTOR,
-  ClrContextSnapshotOptions,
   ClrElementMutation,
   ClrElementMutator,
   normalizeContextText,
@@ -28,9 +27,9 @@ import { resolveRole } from '../dom/roles';
 import { isRedactedWithin } from '../dom/visibility';
 import { jsonSafe, STATE_DEPTH } from '../json-safe';
 import { ownEntry } from '../lookup';
-import { CLR_CONTEXT_DEFAULT_OPTIONS } from '../snapshot-options';
+import { MAX_TEXT_LENGTH, ResolvedSnapshotOptions } from '../snapshot-options';
 
-const MAX_LABEL_LENGTH = CLR_CONTEXT_DEFAULT_OPTIONS.maxTextLength;
+const MAX_LABEL_LENGTH = MAX_TEXT_LENGTH;
 
 /**
  * How a control takes a value: written by the component (`custom`), chosen in the DOM (`select`,
@@ -50,7 +49,7 @@ export interface WriteTarget {
   kind: ControlKind;
   ngControl: NgControl | null;
   mutator: ClrElementMutator | null;
-  options?: Required<ClrContextSnapshotOptions>;
+  options?: ResolvedSnapshotOptions;
   /** The only modal dialogs that count as obstacles, when not all open ones do. */
   knownModals?: ReadonlySet<Element>;
 }
@@ -111,7 +110,7 @@ const OBSTACLE_DETAILS = {
 export function resolveWriteTarget(
   ref: ContextRefTarget,
   application: ApplicationRef | null,
-  options?: Required<ClrContextSnapshotOptions>,
+  options?: ResolvedSnapshotOptions,
   knownModals?: ReadonlySet<Element>
 ): TargetResolution {
   const { elements, type } = ref;
@@ -728,7 +727,7 @@ function radioLabelWithin(radio: HTMLInputElement, withheld = ''): string {
   return accessibleName(radio, 'radio', MAX_LABEL_LENGTH, withheld) || radio.value;
 }
 
-function withheldBy(element: Element, options?: Required<ClrContextSnapshotOptions>): string {
+function withheldBy(element: Element, options?: ResolvedSnapshotOptions): string {
   return options ? usableSelectors(element.ownerDocument, options.excludeSelectors) : '';
 }
 

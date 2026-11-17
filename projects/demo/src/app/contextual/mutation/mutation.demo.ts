@@ -11,7 +11,7 @@ import { ClarityModule } from '@clr/angular';
 import {
   ClrComponentContext,
   ClrContext,
-  ClrContextTrackerService,
+  ClrContextService,
   ClrMutationEngineService,
   ClrMutationOperation,
 } from '@clr/angular/ai';
@@ -64,15 +64,14 @@ export class ContextualMutationDemo implements OnInit, OnDestroy {
   private trackingSubscription: Subscription | null = null;
 
   constructor(
-    private contextTracker: ClrContextTrackerService,
+    private context: ClrContextService,
     private mutationEngine: ClrMutationEngineService,
     private changeDetectorRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    // The tracker is shared with the app-shell inspector and stops once neither needs it.
-    const tracking = this.contextTracker.track({ snapshot: { maxComponents: 500 } });
-    this.trackingSubscription = tracking.subscribe(snapshot => {
+    // The watcher is shared with the app-shell inspector and stops once neither needs it.
+    this.trackingSubscription = this.context.watch({ maxComponents: 500 }).subscribe(snapshot => {
       this.writableTargets = writableTargets(snapshot.components);
       if (!this.writableTargets.some(target => target.ref === this.targetRef)) {
         this.targetRef = this.writableTargets[0]?.ref ?? '';

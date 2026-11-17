@@ -40,10 +40,9 @@ import { attempt } from '../attempt';
 import { ClrContextChange, clrDiffContext } from '../diff';
 import { isOutsideSnapshot, openModalDialogs } from '../dom/walk';
 import { ClrContextSnapshotOptions } from '../interfaces/context.interface';
-import { CLR_CONTEXT_OPTIONS } from '../providers/context-options';
-import { ClrContextEngineService } from '../providers/contextual-engine.service';
+import { ClrContextService } from '../providers/contextual-engine.service';
 import { availableRoutes } from '../routes';
-import { resolveSnapshotOptions, withCallOptions } from '../snapshot-options';
+import { ResolvedSnapshotOptions } from '../snapshot-options';
 
 const CONFIRM_TIMEOUT_MS = 120_000;
 
@@ -53,13 +52,12 @@ const CONFIRM_TIMEOUT_MS = 120_000;
  */
 @Injectable({ providedIn: 'root' })
 export class ClrMutationEngineService {
-  private readonly contextEngine = inject(ClrContextEngineService);
+  private readonly context = inject(ClrContextService);
   private readonly refs = inject(ContextRefRegistryService);
   private readonly policy = inject(CLR_MUTATION_POLICY, { optional: true });
   private readonly router = inject(Router, { optional: true });
   private readonly zone = inject(NgZone);
   private readonly application = inject(ApplicationRef);
-  private readonly contextOptions = inject(CLR_CONTEXT_OPTIONS, { optional: true });
   // Batches run one at a time so agent turns do not interleave.
   private queue: Promise<unknown> = Promise.resolve();
 
@@ -92,7 +90,7 @@ export class ClrMutationEngineService {
     operations: ClrMutationOperation[],
     snapshotOptions?: ClrContextSnapshotOptions
   ): Promise<ClrMutationReport> {
-    const before = this.contextEngine.getSnapshot(snapshotOptions);
+    const before = await this.context.snapshot(snapshotOptions);
     const options = this.scopeOptions(snapshotOptions);
     const results: ClrMutationResult[] = [];
     for (const operation of listOf(operations)) {
@@ -103,7 +101,7 @@ export class ClrMutationEngineService {
       }
     }
     await this.catchUp();
-    const snapshot = this.contextEngine.getSnapshot(snapshotOptions);
+    const snapshot = await this.context.snapshot(snapshotOptions);
     const report: ClrMutationReport = {
       results,
       snapshot,
@@ -140,7 +138,7 @@ export class ClrMutationEngineService {
 
   private async applyOne(
     operation: ClrMutationOperation,
-    options: Required<ClrContextSnapshotOptions>
+    options: ResolvedSnapshotOptions
   ): Promise<ClrMutationResult> {
     let prepared = this.prepare(operation, options);
     if ('refused' in prepared) {
@@ -178,7 +176,7 @@ export class ClrMutationEngineService {
   private async confirmAndRecheck(
     operation: ClrMutationOperation,
     prepared: Prepared,
-    options: Required<ClrContextSnapshotOptions>
+    options: ResolvedSnapshotOptions
   ): Promise<Prepared | Refused> {
     // Modals open now are obstacles; one the application opens to ask the person is not.
     const knownModals = new Set(
@@ -211,10 +209,7 @@ export class ClrMutationEngineService {
     await settle(this.zone);
   }
 
-  private prepareSafely(
-    operation: ClrMutationOperation,
-    options: Required<ClrContextSnapshotOptions>
-  ): Prepared | Refused {
+  private prepareSafely(operation: ClrMutationOperation, options: ResolvedSnapshotOptions): Prepared | Refused {
     try {
       return this.prepare(operation, options);
     } catch (error) {
@@ -222,13 +217,13 @@ export class ClrMutationEngineService {
     }
   }
 
-  private scopeOptions(snapshotOptions?: ClrContextSnapshotOptions): Required<ClrContextSnapshotOptions> {
-    return resolveSnapshotOptions(withCallOptions(this.contextOptions, snapshotOptions));
+  private scopeOptions(snapshotOptions?: ClrContextSnapshotOptions): ResolvedSnapshotOptions {
+    return this.context.resolveScope(snapshotOptions);
   }
 
   private prepare(
     operation: ClrMutationOperation,
-    options: Required<ClrContextSnapshotOptions>,
+    options: ResolvedSnapshotOptions,
     knownModals?: ReadonlySet<Element>
   ): Prepared | Refused {
     if (!this.policy) {

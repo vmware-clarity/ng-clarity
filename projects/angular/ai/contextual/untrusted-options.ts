@@ -9,23 +9,21 @@ import { attempt } from './attempt';
 import { withoutStateKeys, withoutValues } from './dom/aria-state';
 import { UNTRUSTED_WITHHELD_STATE_KEYS } from './dom/tables/aria';
 import { ClrComponentContext, ClrContextSnapshotOptions, ClrPageContext } from './interfaces/context.interface';
-import { BUDGET_KEYS, MAX_LIST_ENTRIES, SWITCH_KEYS } from './snapshot-options';
+import { BUDGET_KEYS, MAX_LIST_ENTRIES } from './snapshot-options';
 
 type OptionKey = keyof ClrContextSnapshotOptions;
 
-const UNTRUSTED_LIST_KEYS: readonly OptionKey[] = ['excludeCategories', 'excludeRoles'];
+/** The scopes an untrusted caller may ask for; a selector would let it probe the page's markup. */
+const UNTRUSTED_ROOTS: readonly string[] = ['page', 'modal'];
 
-const ENUM_KEYS: readonly OptionKey[] = ['focus', 'collectionItems'];
-
-/** Snapshot budgets a caller the application does not control may set; content rules are not negotiable. */
+/** Snapshot options a caller the application does not control may set; content rules are not negotiable. */
 export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: readonly (keyof ClrContextSnapshotOptions)[] = Object.freeze([
   ...BUDGET_KEYS,
-  ...SWITCH_KEYS,
-  ...UNTRUSTED_LIST_KEYS,
-  ...ENUM_KEYS,
-]);
+  'excludeCategories',
+  'root',
+] as OptionKey[]);
 
-const MAX_ENUM_LENGTH = 32;
+const MAX_NAME_LENGTH = 32;
 
 /** Reduces an untrusted caller's options to typed budgets, so no getter, object, `NaN` or selector gets through. */
 export function sanitizeUntrustedSnapshotOptions(options?: unknown): ClrContextSnapshotOptions | undefined {
@@ -47,15 +45,12 @@ function acceptedValue(key: OptionKey, value: unknown): unknown {
   if (typeof value === 'number') {
     return Number.isFinite(value) && (BUDGET_KEYS as readonly string[]).includes(key) ? value : undefined;
   }
-  if (typeof value === 'boolean') {
-    return (SWITCH_KEYS as readonly string[]).includes(key) ? value : undefined;
-  }
   if (typeof value === 'string') {
-    return value.length <= MAX_ENUM_LENGTH && ENUM_KEYS.includes(key) ? value : undefined;
+    return key === 'root' && UNTRUSTED_ROOTS.includes(value) ? value : undefined;
   }
-  if (Array.isArray(value) && UNTRUSTED_LIST_KEYS.includes(key)) {
+  if (Array.isArray(value) && key === 'excludeCategories') {
     return value
-      .filter(entry => typeof entry === 'string' && entry.length <= MAX_ENUM_LENGTH)
+      .filter(entry => typeof entry === 'string' && entry.length <= MAX_NAME_LENGTH)
       .slice(0, MAX_LIST_ENTRIES);
   }
   return undefined;

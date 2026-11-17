@@ -10,9 +10,8 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import Ajv from 'ajv';
 
-import { provideClrContextApplication } from './providers/context-options';
 import { ClrContextRegistryService } from './providers/context-registry.service';
-import { ClrContextEngineService } from './providers/contextual-engine.service';
+import { ClrContextService } from './providers/contextual-engine.service';
 import { CLR_PAGE_CONTEXT_SCHEMA } from './schema';
 
 @Component({ template: '', changeDetection: ChangeDetectionStrategy.Eager })
@@ -49,24 +48,21 @@ describe('CLR_PAGE_CONTEXT_SCHEMA', () => {
   });
 
   function engineWith(views: 'all' | 'enabled' = 'all') {
-    TestBed.configureTestingModule({
-      providers: [
-        provideClrContextApplication({ id: 'inventory', viewId: () => 'host-list', views }),
-        provideRouter([{ path: 'hosts', component: RoutedComponent }]),
-      ],
-    });
+    TestBed.configureTestingModule({ providers: [provideRouter([{ path: 'hosts', component: RoutedComponent }])] });
     TestBed.inject(ClrContextRegistryService).register({
       getClrContext: () => ({ type: 'region', label: 'Hosts', state: { count: 3 }, extra: 'dropped' }) as never,
     });
-    return TestBed.inject(ClrContextEngineService);
+    const engine = TestBed.inject(ClrContextService);
+    engine.configure({ application: { id: 'inventory', viewId: () => 'host-list' }, views });
+    return engine;
   }
 
   function expectValid(snapshot: unknown) {
     expect(validate(snapshot)).withContext(JSON.stringify(validate.errors)).toBeTrue();
   }
 
-  it('describes a page with provider regions and shadow content', () => {
-    const snapshot = engineWith().getSnapshot();
+  it('describes a page with provider regions and shadow content', async () => {
+    const snapshot = await engineWith().snapshot();
 
     expect(JSON.stringify(snapshot.components)).toContain('Pin');
     expect(snapshot.regions.length).toBe(1);
@@ -78,29 +74,25 @@ describe('CLR_PAGE_CONTEXT_SCHEMA', () => {
     const engine = engineWith();
 
     await TestBed.inject(Router).navigateByUrl('/hosts?tag=a&tag=b&page=2');
-    const snapshot = engine.getSnapshot();
+    const snapshot = await engine.snapshot();
 
     expect(snapshot.route?.queryParams).toEqual({ tag: ['a', 'b'], page: '2' });
     expectValid(snapshot);
   });
 
-  it('describes the snapshot of a view that is not enabled', () => {
-    const snapshot = engineWith('enabled').getSnapshot();
+  it('describes the snapshot of a view that is not enabled', async () => {
+    const snapshot = await engineWith('enabled').snapshot();
 
     expect(snapshot.enabled).toBeFalse();
     expectValid(snapshot);
   });
 
-  it('describes an async snapshot', async () => {
-    expectValid(await engineWith().getSnapshotAsync());
+  it('accepts top-level fields a later release adds', async () => {
+    expectValid({ ...(await engineWith().snapshot()), addedLater: true });
   });
 
-  it('accepts top-level fields a later release adds', () => {
-    expectValid({ ...engineWith().getSnapshot(), addedLater: true });
-  });
-
-  it('rejects unknown properties below the top level, a missing enabled flag and a different schema version', () => {
-    const { enabled, ...withoutEnabled } = engineWith().getSnapshot();
+  it('rejects unknown properties below the top level, a missing enabled flag and a different schema version', async () => {
+    const { enabled, ...withoutEnabled } = await engineWith().snapshot();
     const snapshot = { ...withoutEnabled, enabled };
 
     expect(validate({ ...snapshot, application: { ...snapshot.application, extra: true } })).toBeFalse();

@@ -827,7 +827,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
     const maxItems = this.budgetOf(snapshotOptions);
     // The cells are not walked, so the rows are where their data shows; selection names rows the same way.
-    if (snapshotOptions?.collectionItems !== 'summary') {
+    // `0` asks for counts and the selection only.
+    if (maxItems > 0) {
       const listed = firstRowLabels(this.rows.toArray(), row => this.rowLabel(row, excluded), maxItems);
       if (listed.length) {
         state.rows = listed;
@@ -836,7 +837,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
     if (this.selection.selectable) {
       state.selectionMode = this.selection.selectionType === SelectionType.Single ? 'single' : 'multi';
-      const selected = this.selectedRowLabels(excluded, maxItems);
+      const selected = this.selectedRowLabels(excluded, maxItems || CLR_CONTEXT_DEFAULT_MAX_ITEMS);
       if (selected.length) {
         state.selection = selected;
       }
