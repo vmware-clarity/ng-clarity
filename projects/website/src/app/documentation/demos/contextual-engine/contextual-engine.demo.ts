@@ -69,8 +69,9 @@ const SNAPSHOT_SHAPE_EXAMPLE = `
   "title": "Cluster overview",
   "url": "https://app.example/clusters/42",
   "route": { "url": "/clusters/42", "path": "clusters/:id", "params": { "id": "42" } },
-  "regions": [{ "type": "region", "label": "Firewall rules for cluster 42" }],
+  "regions": [],
   "components": [
+    { "type": "group", "label": "Firewall rules for cluster 42", "state": { "ruleCount": 12 } },
     {
       "type": "grid",
       "element": "clr-datagrid",
@@ -143,13 +144,16 @@ const ATTRIBUTES_EXAMPLE = `
 `;
 
 const VIEW_METADATA_EXAMPLE = `
-<main data-ai-metadata='{"viewId": "host-list", "purpose": "Lists the hosts of a cluster"}'>
+<!-- With root: 'main', main is the view root: this annotation describes the view. -->
+<main data-clr-context-state='{"viewId": "host-list", "purpose": "Lists the hosts of a cluster"}'>
   ...
-  <clr-datagrid data-ai-metadata='{"help": "https://docs.example.com/hosts"}'>...</clr-datagrid>
+  <!-- Anywhere else, an annotation describes its element. -->
+  <clr-datagrid [clrContextState]="{ help: 'https://docs.example.com/hosts' }">...</clr-datagrid>
 </main>
 
-<!-- Or loaded from the same origin, and cached for the session -->
-<main data-ai-metadata-url="/assets/ai/host-list.json">...</main>
+<!-- Or loaded from the same origin, and cached for the session:
+     { "state": { "viewId": "host-list", "purpose": "..." } } -->
+<main data-clr-context-url="/assets/ai/host-list.json">...</main>
 `;
 
 const VIEW_CONFIG_EXAMPLE = `

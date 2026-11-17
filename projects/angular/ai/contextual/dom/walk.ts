@@ -95,7 +95,7 @@ interface Walk {
   elementDepth: number;
   /** Shared across the whole walk, probes included. */
   visited: { count: number };
-  /** Where the view starts; `data-ai-metadata` on these and their ancestors describes the view, not a node. */
+  /** Where the view starts; an annotation on these and their ancestors describes the view, not a node. */
   viewRoots: Element[];
 }
 
@@ -866,13 +866,12 @@ function finish(
   return pruneEmpty(described, { foreign: unpruned });
 }
 
-/** The context annotation attributes give the element; view metadata is not the element's own. */
-function annotationOf(element: Element, walk: Walk): Partial<ClrComponentContext> | null {
-  if (!hasAnnotation(element)) {
+/** The element's annotation; on a view root or an ancestor of one, it describes the view instead. */
+function annotationOf(element: Element, walk: Walk): Partial<ClrPublishedContext> | null {
+  if (!hasAnnotation(element) || walk.viewRoots.some(root => containsAcrossShadow(element, root))) {
     return null;
   }
-  const isViewLevel = walk.viewRoots.some(root => containsAcrossShadow(element, root));
-  return annotationContext(element, !isViewLevel);
+  return annotationContext(element);
 }
 
 /** The element a snapshot of the whole of `root` starts from. */

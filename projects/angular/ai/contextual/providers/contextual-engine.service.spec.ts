@@ -1200,43 +1200,6 @@ describe('ClrContextService, asynchronous providers', () => {
     expect(second.regions).toEqual(first.regions);
   });
 
-  it('withholds the state of an answer whose element is in a redacted region by the time it arrives', async () => {
-    const section = document.createElement('section');
-    document.body.appendChild(section);
-    let answer: (context: ClrComponentContext) => void = () => undefined;
-    registry.register({ getClrContext: () => new Promise(resolve => (answer = resolve)) }, section);
-    try {
-      const snapshot = engine.snapshot(quiet);
-      section.setAttribute('data-clr-context-redact', '');
-      answer({ type: 'region', label: 'Payment', state: { card: '4111111111111111' } });
-
-      expect((await snapshot).regions).toEqual([{ type: 'region', label: 'Payment', state: { redacted: true } }]);
-    } finally {
-      section.remove();
-    }
-  });
-
-  it('withholds an answer whose element is redacted while another provider is still pending', async () => {
-    const section = document.createElement('section');
-    document.body.appendChild(section);
-    let answerSlow: (context: ClrComponentContext) => void = () => undefined;
-    registry.register(
-      { getClrContext: async () => ({ type: 'region', label: 'Payment', state: { card: '4111' } }) },
-      section
-    );
-    registry.register({ getClrContext: () => new Promise(resolve => (answerSlow = resolve)) });
-    try {
-      const snapshot = engine.snapshot(quiet);
-      await new Promise(resolve => setTimeout(resolve));
-      section.setAttribute('data-clr-context-redact', '');
-      answerSlow({ type: 'region', label: 'Hosts' });
-
-      expect(JSON.stringify((await snapshot).regions)).not.toContain('4111');
-    } finally {
-      section.remove();
-    }
-  });
-
   it('reads the page once providers have answered, so a region redacted meanwhile is withheld', async () => {
     const page = document.createElement('section');
     page.innerHTML = '<label>Card <input value="4111" /></label>';

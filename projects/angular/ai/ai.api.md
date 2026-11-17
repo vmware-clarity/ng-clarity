@@ -12,12 +12,6 @@ import { OnInit } from '@angular/core';
 import { Type } from '@angular/core';
 
 // @public
-export const CLR_AI_METADATA_ATTRIBUTE = "data-ai-metadata";
-
-// @public
-export const CLR_AI_METADATA_URL_ATTRIBUTE = "data-ai-metadata-url";
-
-// @public
 export const CLR_CONTEXT_CATEGORIES: Readonly<Record<ClrContextCategory, readonly string[]>>;
 
 // @public
@@ -39,6 +33,9 @@ export const CLR_CONTEXT_LOADING_TYPE = "clr-loading";
 export const CLR_CONTEXT_PRESETS: Readonly<Record<ClrContextPreset, Readonly<ClrContextSnapshotOptions>>>;
 
 // @public
+export const CLR_CONTEXT_PUBLIC_KEYS_ATTRIBUTE = "data-clr-context-public-keys";
+
+// @public
 export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
 
 // @public
@@ -52,6 +49,9 @@ export const CLR_CONTEXT_UNAVAILABLE_TYPE = "clr-unavailable";
 
 // @public
 export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: readonly (keyof ClrContextSnapshotOptions)[];
+
+// @public
+export const CLR_CONTEXT_URL_ATTRIBUTE = "data-clr-context-url";
 
 // @public
 export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
@@ -241,8 +241,8 @@ export interface ClrComponentContextChange {
 }
 
 // @public
-export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvider {
-    getClrContext(): ClrPublishedContext | null;
+export class ClrContext implements OnInit, DoCheck, OnDestroy {
+    getClrContext(): Partial<ClrPublishedContext> | null;
     label: string;
     // (undocumented)
     ngDoCheck(): void;
@@ -288,7 +288,6 @@ export interface ClrContextChange {
 
 // @public
 export interface ClrContextCollectOptions {
-    filter?: ClrContextRegionFilter;
     limits?: ClrContextRegionLimits;
     untrusted?: boolean;
 }
@@ -337,9 +336,6 @@ export interface ClrContextProvider {
     getClrContext(): ClrPublishedContext | null | Promise<ClrPublishedContext | null>;
 }
 
-// @public
-export type ClrContextRegionFilter = (element: Element | null) => 'keep' | 'drop' | 'redact';
-
 // Warning: (ae-forgotten-export) The symbol "ResolvedSnapshotOptions" needs to be exported by the entry point clr-angular-ai.d.ts
 //
 // @public
@@ -352,7 +348,7 @@ export class ClrContextRegistryService {
     collect(options?: ClrContextCollectOptions): ClrComponentContext[];
     collectAsync(options?: ClrContextAsyncCollectOptions): Promise<ClrComponentContext[]>;
     notifyChanged(): void;
-    register(provider: ClrContextProvider, element?: Element): () => void;
+    register(provider: ClrContextProvider): () => void;
     unregister(provider: ClrContextProvider): void;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextRegistryService, never>;

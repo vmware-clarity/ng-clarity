@@ -61,13 +61,14 @@ describe('ClrContextService, view metadata', () => {
 
   afterEach(() => {
     page.remove();
-    document.body.removeAttribute('data-ai-metadata');
+    document.body.removeAttribute('data-clr-context-state');
+    document.body.removeAttribute('data-clr-context');
   });
 
-  describe('data-ai-metadata', () => {
+  describe('data-clr-context-state', () => {
     it('reads the view metadata from the view root and its ancestors, inner winning', () => {
-      document.body.setAttribute('data-ai-metadata', '{"viewId":"page","purpose":"Page","owner":"core"}');
-      page.setAttribute('data-ai-metadata', '{"viewId":"hosts","purpose":"Hosts"}');
+      document.body.setAttribute('data-clr-context-state', '{"viewId":"page","purpose":"Page","owner":"core"}');
+      page.setAttribute('data-clr-context-state', '{"viewId":"hosts","purpose":"Hosts"}');
       const engine = engineWith({
         application: { viewId: () => 'provided', metadata: () => ({ owner: 'app', team: 'infra' }) },
       });
@@ -78,15 +79,33 @@ describe('ClrContextService, view metadata', () => {
       expect(snapshot.metadata).toEqual({ viewId: 'hosts', purpose: 'Hosts', owner: 'core', team: 'infra' });
     });
 
+    it('adds the label, and gives an untrusted caller only the state keys marked public', () => {
+      document.body.setAttribute('data-clr-context', 'Host list');
+      document.body.setAttribute('data-clr-context-state', '{"viewId":"hosts","owner":"ada","purpose":"Hosts"}');
+      document.body.setAttribute('data-clr-context-public-keys', 'purpose');
+      const engine = engineWith();
+
+      expect(now(engine, quiet).metadata).toEqual({
+        label: 'Host list',
+        viewId: 'hosts',
+        owner: 'ada',
+        purpose: 'Hosts',
+      });
+      const shared: ClrPageContext = engine['read'](quiet, true);
+      expect(shared.metadata).toEqual({ label: 'Host list', purpose: 'Hosts', withheld: true });
+      expect(shared.viewId).toBe('hosts');
+      document.body.removeAttribute('data-clr-context-public-keys');
+    });
+
     it('ignores metadata outside the view root', () => {
-      page.setAttribute('data-ai-metadata', '{"purpose":"Hosts"}');
+      page.setAttribute('data-clr-context-state', '{"purpose":"Hosts"}');
       const engine = engineWith();
 
       expect(now(engine, quiet).metadata).toBeUndefined();
     });
 
     it('enables a view that has page metadata', () => {
-      document.body.setAttribute('data-ai-metadata', '{"purpose":"Hosts"}');
+      document.body.setAttribute('data-clr-context-state', '{"purpose":"Hosts"}');
       const engine = engineWith({ views: 'enabled' });
 
       expect(now(engine, quiet).enabled).toBeTrue();
@@ -94,7 +113,7 @@ describe('ClrContextService, view metadata', () => {
 
     it('leaves out metadata that is not a JSON object', () => {
       spyOn(console, 'warn');
-      document.body.setAttribute('data-ai-metadata', '["not", "an", "object"]');
+      document.body.setAttribute('data-clr-context-state', '["not", "an", "object"]');
       const engine = engineWith();
 
       expect(now(engine, quiet).metadata).toBeUndefined();
@@ -102,7 +121,7 @@ describe('ClrContextService, view metadata', () => {
     });
 
     it('leaves out metadata in an ignored, redacted or excluded region', () => {
-      page.setAttribute('data-ai-metadata', '{"accountSecret":"s3cr3t"}');
+      page.setAttribute('data-clr-context-state', '{"accountSecret":"s3cr3t"}');
       const engine = engineWith();
       for (const marker of ['data-clr-context-ignore', 'data-clr-context-redact']) {
         document.body.setAttribute(marker, '');
@@ -131,14 +150,14 @@ describe('ClrContextService, view metadata', () => {
     });
   });
 
-  describe('data-ai-metadata-url', () => {
+  describe('data-clr-context-url', () => {
     beforeEach(() => {
-      page.setAttribute('data-ai-metadata-url', '/assets/hosts.json');
-      page.setAttribute('data-ai-metadata', '{"purpose":"Inline"}');
+      page.setAttribute('data-clr-context-url', '/assets/hosts.json');
+      page.setAttribute('data-clr-context-state', '{"purpose":"Inline"}');
     });
 
     it('reports the URL as loading, then merges what it loaded under the inline metadata', async () => {
-      const fetch = respondWith({ purpose: 'Loaded', help: 'https://docs.example.com' });
+      const fetch = respondWith({ state: { purpose: 'Loaded', help: 'https://docs.example.com' } });
       const engine = engineWith();
       const options = { ...quiet, root: '.test-page' };
 
@@ -174,8 +193,8 @@ describe('ClrContextService, view metadata', () => {
     });
 
     it('loads from another origin only when the application allows it', async () => {
-      page.setAttribute('data-ai-metadata-url', 'https://help.example.com/hosts.json');
-      const fetch = respondWith({ help: 'loaded' });
+      page.setAttribute('data-clr-context-url', 'https://help.example.com/hosts.json');
+      const fetch = respondWith({ state: { help: 'loaded' } });
       const options = { ...quiet, root: '.test-page' };
 
       expect((await engineWith().snapshot(options)).metadataState).toBe('unavailable');
@@ -223,7 +242,7 @@ describe('ClrContextService, view metadata', () => {
     });
 
     it('lets the page metadata win over the configuration', async () => {
-      document.body.setAttribute('data-ai-metadata', '{"viewId":"host","purpose":"From the page"}');
+      document.body.setAttribute('data-clr-context-state', '{"viewId":"host","purpose":"From the page"}');
       const engine = routedEngine('all');
 
       await TestBed.inject(Router).navigateByUrl('/hosts/7');
@@ -273,7 +292,7 @@ describe('ClrContextService, view metadata', () => {
 
     it('returns no metadata for a disabled view, only which view it is', () => {
       page.innerHTML = '<div class="wizard"></div>';
-      document.body.setAttribute('data-ai-metadata', '{"viewId":"wizard","secret":"s3cr3t"}');
+      document.body.setAttribute('data-clr-context-state', '{"viewId":"wizard","secret":"s3cr3t"}');
       const snapshot = now(routedEngine('all'), quiet);
 
       expect(snapshot.enabled).toBeFalse();

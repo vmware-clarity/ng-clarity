@@ -6,22 +6,16 @@
  */
 
 import { isDevMode } from '@angular/core';
-import { ClrComponentContext } from '@clr/angular/utils';
 
 import { parentAcrossShadow } from './shadow';
 import { attempt } from '../attempt';
+import { ClrPublishedContext } from '../interfaces/context.interface';
 import { jsonSafe, REGION_DEPTH } from '../json-safe';
 
-/**
- * A JSON object about the view when it sits on the view's root or an ancestor of it, or about the
- * piece of UI it sits on anywhere else, where it is reported as the node's `state.metadata`.
- */
-export const CLR_AI_METADATA_ATTRIBUTE = 'data-ai-metadata';
+/** Host element property through which `[clrContext]` annotates the element it sits on. */
+export const CLR_CONTEXT_ANNOTATION_PROPERTY = 'clrContextAnnotation';
 
-/** The URL of a JSON object about the view; read on the view's root and its ancestors. */
-export const CLR_AI_METADATA_URL_ATTRIBUTE = 'data-ai-metadata-url';
-
-/** What a piece of UI is about, as `[clrContext]` sets it, for pages without Angular. */
+/** What the element is about, as `[clrContext]` sets it, for markup without Angular. */
 export const CLR_CONTEXT_LABEL_ATTRIBUTE = 'data-clr-context';
 
 /** The kind of UI annotated, as `[clrContextType]` sets it. */
@@ -30,15 +24,23 @@ export const CLR_CONTEXT_TYPE_ATTRIBUTE = 'data-clr-context-type';
 /** The annotated UI's state as a JSON object, as `[clrContextState]` sets it. */
 export const CLR_CONTEXT_STATE_ATTRIBUTE = 'data-clr-context-state';
 
-const ANNOTATION_ATTRIBUTES = [
-  CLR_CONTEXT_LABEL_ATTRIBUTE,
-  CLR_CONTEXT_TYPE_ATTRIBUTE,
-  CLR_CONTEXT_STATE_ATTRIBUTE,
-  CLR_AI_METADATA_ATTRIBUTE,
-];
+/** The state keys untrusted callers may see, separated by spaces, as `[clrContextPublicKeys]` sets them. */
+export const CLR_CONTEXT_PUBLIC_KEYS_ATTRIBUTE = 'data-clr-context-public-keys';
 
-/** Metadata in an attribute is meant to be small. */
+/**
+ * The URL of an annotation as JSON (`{ "label", "type", "state", "publicKeys" }`), loaded once per session.
+ * Read on the view's root and its ancestors, where it describes the view.
+ */
+export const CLR_CONTEXT_URL_ATTRIBUTE = 'data-clr-context-url';
+
+const ANNOTATION_ATTRIBUTES = [CLR_CONTEXT_LABEL_ATTRIBUTE, CLR_CONTEXT_TYPE_ATTRIBUTE, CLR_CONTEXT_STATE_ATTRIBUTE];
+
+/** An annotation in an attribute is meant to be small. */
 const MAX_ATTRIBUTE_LENGTH = 8 * 1024;
+
+interface Annotation {
+  getClrContext(): Partial<ClrPublishedContext> | null;
+}
 
 /** The JSON object in `text`; `null`, with a dev-mode warning, when it is too long, invalid or not an object. */
 export function parseJsonObject(
@@ -62,14 +64,13 @@ export function parseJsonObject(
   return isRecord(safe) ? safe : null;
 }
 
-/** Elements carrying view metadata: each root and its ancestors, outermost first. */
-export function viewMetadataHosts(roots: Element[]): Element[] {
+/** Elements whose annotation describes the view: each root and its annotated ancestors, outermost first. */
+export function viewAnnotationHosts(roots: Element[]): Element[] {
   const hosts: Element[] = [];
   for (const root of roots) {
     const chain: Element[] = [];
     for (let element: Element | null = root; element; element = parentAcrossShadow(element)) {
-      const annotated =
-        element.hasAttribute(CLR_AI_METADATA_ATTRIBUTE) || element.hasAttribute(CLR_AI_METADATA_URL_ATTRIBUTE);
+      const annotated = hasAnnotation(element) || element.hasAttribute(CLR_CONTEXT_URL_ATTRIBUTE);
       if (annotated && !hosts.includes(element)) {
         chain.unshift(element);
       }
@@ -79,30 +80,72 @@ export function viewMetadataHosts(roots: Element[]): Element[] {
   return hosts;
 }
 
+/** Whether the element carries an annotation that says something. */
 export function hasAnnotation(element: Element): boolean {
-  return ANNOTATION_ATTRIBUTES.some(attribute => element.hasAttribute(attribute));
+  return (
+    (CLR_CONTEXT_ANNOTATION_PROPERTY in element && annotationContext(element) !== null) ||
+    ANNOTATION_ATTRIBUTES.some(attribute => element.hasAttribute(attribute))
+  );
 }
 
-/** The context the annotation attributes give the element; `data-ai-metadata` only when `withMetadata`. */
-export function annotationContext(element: Element, withMetadata: boolean): Partial<ClrComponentContext> | null {
-  const label = element.getAttribute(CLR_CONTEXT_LABEL_ATTRIBUTE);
-  const type = element.getAttribute(CLR_CONTEXT_TYPE_ATTRIBUTE);
-  const state = parseJsonObject(element.getAttribute(CLR_CONTEXT_STATE_ATTRIBUTE), CLR_CONTEXT_STATE_ATTRIBUTE);
-  const metadata = withMetadata
-    ? parseJsonObject(element.getAttribute(CLR_AI_METADATA_ATTRIBUTE), CLR_AI_METADATA_ATTRIBUTE)
-    : null;
-  if (!label && !type && !state && !metadata) {
+/**
+ * What the application says about the element: its label, type, state and the state keys that are public.
+ * `[clrContext]` wins over the attributes, which are for markup without Angular.
+ */
+export function annotationContext(element: Element): Partial<ClrPublishedContext> | null {
+  const directive = (element as Element & { [CLR_CONTEXT_ANNOTATION_PROPERTY]?: Annotation })[
+    CLR_CONTEXT_ANNOTATION_PROPERTY
+  ];
+  const annotated = attempt(() => directive?.getClrContext() ?? null, null);
+  return annotated ?? attributeAnnotation(element);
+}
+
+/** An annotation as JSON, such as one loaded from a URL, reduced to its known fields. */
+export function annotationFrom(value: unknown): Partial<ClrPublishedContext> | null {
+  if (!isRecord(value)) {
     return null;
   }
-  const context: Partial<ClrComponentContext> = {};
+  const { label, type, state, publicKeys } = value;
+  return annotation(
+    typeof label === 'string' ? label : null,
+    typeof type === 'string' ? type : null,
+    isRecord(state) ? state : null,
+    Array.isArray(publicKeys) ? publicKeys.filter((key): key is string => typeof key === 'string') : []
+  );
+}
+
+function attributeAnnotation(element: Element): Partial<ClrPublishedContext> | null {
+  const state = parseJsonObject(element.getAttribute(CLR_CONTEXT_STATE_ATTRIBUTE), CLR_CONTEXT_STATE_ATTRIBUTE);
+  const publicKeys = element.getAttribute(CLR_CONTEXT_PUBLIC_KEYS_ATTRIBUTE)?.split(/\s+/).filter(Boolean) ?? [];
+  return annotation(
+    element.getAttribute(CLR_CONTEXT_LABEL_ATTRIBUTE),
+    element.getAttribute(CLR_CONTEXT_TYPE_ATTRIBUTE),
+    state,
+    publicKeys
+  );
+}
+
+function annotation(
+  label: string | null,
+  type: string | null,
+  state: Record<string, unknown> | null,
+  publicKeys: string[]
+): Partial<ClrPublishedContext> | null {
+  if (!label && !type && !state) {
+    return null;
+  }
+  const context: Partial<ClrPublishedContext> = {};
   if (type) {
     context.type = type;
   }
   if (label) {
     context.label = label;
   }
-  if (state || metadata) {
-    context.state = metadata ? { ...state, metadata } : { ...state };
+  if (state) {
+    context.state = state;
+  }
+  if (publicKeys.length) {
+    context.publicKeys = publicKeys;
   }
   return context;
 }

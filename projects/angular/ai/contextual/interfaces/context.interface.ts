@@ -54,13 +54,14 @@ export interface ClrPageContext {
   /** The application, from `configure({ application })`; the page's host name when none is configured. */
   application: ClrApplicationContext;
   /**
-   * The view the user is on: `viewId` in the page's `data-ai-metadata`, then `application.viewId`, the route's
-   * `data.viewId` and the configured views.
+   * The view the user is on: `viewId` in the state of the view root's annotation, then `application.viewId`,
+   * the route's `data.viewId` and the configured views.
    */
   viewId?: string;
   /**
-   * Metadata about the current view, merged from the configured views, `application.metadata`,
-   * `data-ai-metadata-url` and `data-ai-metadata`, later ones winning.
+   * Metadata about the current view, merged from the configured views, `application.metadata` and the
+   * annotation on the view root (`data-clr-context-url`, then the annotation itself), later ones winning.
+   * An untrusted caller sees only the annotation state keys marked public.
    */
   metadata?: Record<string, unknown>;
   /** Set while a metadata URL is loading, or when one could not be loaded. */
@@ -79,7 +80,7 @@ export interface ClrPageContext {
   route?: ClrRouteContext;
   /** Routable paths, when configured with `routes: true`; at least 50 entries, without wildcards or redirects. */
   availableRoutes?: ClrAvailableRoute[];
-  /** Application-provided contexts from the `clrContext` directive or a {@link ClrContextProvider}. */
+  /** Context that no element shows, from the providers registered with `ClrContextRegistryService`. */
   regions: ClrComponentContext[];
   /** Everything rendered with a role, name or text, as a tree; collections are summarised. */
   components: ClrComponentContext[];

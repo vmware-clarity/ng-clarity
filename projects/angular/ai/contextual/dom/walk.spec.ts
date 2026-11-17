@@ -1771,16 +1771,25 @@ describe('collectContextTree, annotation attributes', () => {
     ]);
   });
 
-  it('reports data-ai-metadata inside the view as the metadata of the node it sits on', () => {
+  it('reports an annotation inside the view as the state of the node it sits on', () => {
     const nodes = collect(
-      `<nav aria-label="Hosts" data-ai-metadata='{"purpose":"Pick a host"}'><a href="#">h1</a></nav>`
+      `<nav aria-label="Hosts" data-clr-context-state='{"purpose":"Pick a host"}'><a href="#">h1</a></nav>`
     );
 
-    expect(nodes[0].state).toEqual({ metadata: { purpose: 'Pick a host' } });
+    expect(nodes[0].state).toEqual({ purpose: 'Pick a host' });
   });
 
-  it('leaves the view metadata on the view root to the snapshot', () => {
-    container.setAttribute('data-ai-metadata', '{"purpose":"Hosts"}');
+  it('cuts an annotation to the keys its attribute marks public for an untrusted caller', () => {
+    const html = `<nav aria-label="Hosts" data-clr-context-state='{"purpose":"Pick a host","owner":"ada"}'
+      data-clr-context-public-keys="purpose"><a href="#">h1</a></nav>`;
+    container.innerHTML = html;
+    const { components } = collectContextTreeWithin(container, resolveSnapshotOptions(), [], true);
+
+    expect(components[0].state).toEqual({ purpose: 'Pick a host', withheld: true });
+  });
+
+  it('leaves the annotation on the view root to the snapshot', () => {
+    container.setAttribute('data-clr-context-state', '{"purpose":"Hosts"}');
 
     expect(collect('<button>Add</button>')).toEqual([{ type: 'button', label: 'Add' }]);
   });

@@ -21,21 +21,21 @@ import { CLR_CONTEXT_IGNORE_SELECTOR, CLR_CONTEXT_REDACT_SELECTOR, usableSelecto
 import { defer, map, Observable } from 'rxjs';
 
 import { ContextMetadataLoader } from './context-metadata-loader';
-import { ClrContextRegionFilter, ClrContextRegistryService } from './context-registry.service';
+import { ClrContextRegistryService } from './context-registry.service';
 import { attempt, usableTimeout } from '../attempt';
 import { ContextTracker } from './context-tracker';
 import { charged } from '../budget';
 import { ClrContextChange, clrDiffContext } from '../diff';
 import {
-  CLR_AI_METADATA_ATTRIBUTE,
-  CLR_AI_METADATA_URL_ATTRIBUTE,
+  annotationContext,
+  annotationFrom,
+  CLR_CONTEXT_URL_ATTRIBUTE,
   isRecord,
-  parseJsonObject,
-  viewMetadataHosts,
+  viewAnnotationHosts,
 } from '../dom/annotations';
 import { ClrContextDomExtractor } from '../dom/dom-context-collector';
-import { closestAcrossShadow, containsAcrossShadow } from '../dom/shadow';
-import { collectContextTreeWithin, engineScope, isHiddenFromEngine } from '../dom/walk';
+import { closestAcrossShadow } from '../dom/shadow';
+import { collectContextTreeWithin, engineScope } from '../dom/walk';
 import {
   ClrApplicationContext,
   ClrComponentContext,
@@ -44,6 +44,7 @@ import {
   ClrRouteContext,
 } from '../interfaces/context.interface';
 import { jsonSafe, REGION_DEPTH, ROUTE_DATA_DEPTH } from '../json-safe';
+import { publicState } from '../public-keys';
 import { availableRoutes, routePatternFor } from '../routes';
 import { CLR_PAGE_CONTEXT_SCHEMA_VERSION } from '../schema';
 import {
@@ -112,7 +113,7 @@ export interface ClrContextConfig {
    */
   viewConfig?: ClrContextViewConfig[] | string;
   /**
-   * Origins other than the page's own that `data-ai-metadata-url` and a `viewConfig` URL may load from,
+   * Origins other than the page's own that `data-clr-context-url` and a `viewConfig` URL may load from,
    * e.g. `['https://help.example.com']`.
    */
   metadataOrigins?: string[];
@@ -272,7 +273,7 @@ export class ClrContextService implements OnDestroy {
    * disables it, while a `viewConfig` URL has not loaded, or, with `views: 'enabled'`, when nothing gives it
    * metadata. Once `settled`, a metadata URL that has not loaded is reported as unavailable.
    */
-  private viewSnapshot(options: ResolvedSnapshotOptions, settled: boolean): ClrPageContext {
+  private viewSnapshot(options: ResolvedSnapshotOptions, settled: boolean, untrusted: boolean): ClrPageContext {
     const route = this.routeContext();
     const snapshot: ClrPageContext = {
       schemaVersion: CLR_PAGE_CONTEXT_SCHEMA_VERSION,
@@ -295,16 +296,21 @@ export class ClrContextService implements OnDestroy {
     }
     const config = this.matchingView(route);
     const provided = attempt(() => this.config.application?.metadata?.(), undefined);
-    const fromPage = this.pageMetadata(options);
+    const fromPage = this.pageMetadata(options, false);
     // A copy, so a consumer cannot change the configuration or the loaded metadata, and a cycle cannot break it.
-    const metadata = recordOrEmpty(
-      jsonSafe({ ...recordOrEmpty(config?.metadata), ...recordOrEmpty(provided), ...fromPage }, REGION_DEPTH, true)
-    );
+    const viewMetadata = (page: Record<string, unknown>) =>
+      recordOrEmpty(
+        jsonSafe({ ...recordOrEmpty(config?.metadata), ...recordOrEmpty(provided), ...page }, REGION_DEPTH, true)
+      );
+    // What a view is and whether it is read do not depend on who asks; only what its annotations say does.
+    const metadata = viewMetadata(untrusted ? this.pageMetadata(options, true) : fromPage);
     const enabled =
       typeof config?.enabled === 'boolean'
         ? config.enabled
         : // An empty object from the application still enables the view.
-          !readsEnabledViewsOnly(this.config.views) || Object.keys(metadata).length > 0 || isRecord(provided);
+          !readsEnabledViewsOnly(this.config.views) ||
+          Object.keys(viewMetadata(fromPage)).length > 0 ||
+          isRecord(provided);
     const viewId = [fromPage['viewId'], this.providedViewId(), this.routedViewId(), config?.viewId].find(
       id => typeof id === 'string' && id
     );
@@ -325,13 +331,22 @@ export class ClrContextService implements OnDestroy {
     return snapshot;
   }
 
-  /** Metadata from `data-ai-metadata` and `data-ai-metadata-url` on the view's roots and their ancestors, inner winning. */
-  private pageMetadata(options: ResolvedSnapshotOptions): Record<string, unknown> {
+  /**
+   * The annotations on the view's roots and their ancestors, inner winning: their state is the view's metadata,
+   * with `label` when one is given. For an `untrusted` caller, each is cut to the keys it marks public.
+   */
+  private pageMetadata(options: ResolvedSnapshotOptions, untrusted: boolean): Record<string, unknown> {
     const metadata: Record<string, unknown> = {};
     for (const host of this.metadataHosts(options)) {
-      const url = host.getAttribute(CLR_AI_METADATA_URL_ATTRIBUTE);
-      const inline = parseJsonObject(host.getAttribute(CLR_AI_METADATA_ATTRIBUTE), CLR_AI_METADATA_ATTRIBUTE);
-      Object.assign(metadata, url ? this.metadataLoader.read(url) : null, inline);
+      const url = host.getAttribute(CLR_CONTEXT_URL_ATTRIBUTE);
+      for (const annotation of [url ? annotationFrom(this.metadataLoader.read(url)) : null, annotationContext(host)]) {
+        const state = annotation?.state ?? {};
+        Object.assign(
+          metadata,
+          annotation?.label ? { label: annotation.label } : null,
+          annotation && untrusted ? publicState(annotation, state) : state
+        );
+      }
     }
     return metadata;
   }
@@ -343,7 +358,7 @@ export class ClrContextService implements OnDestroy {
     const roots = engineScope(this.document, options).roots ?? [this.document.body ?? this.document.documentElement];
     const excludeSelector = usableSelectors(this.document, options.excludeSelectors);
     // Metadata in a region kept from agents is kept with it.
-    return viewMetadataHosts(roots.filter(Boolean)).filter(
+    return viewAnnotationHosts(roots.filter(Boolean)).filter(
       host =>
         !closestAcrossShadow(host, `${CLR_CONTEXT_IGNORE_SELECTOR}, ${CLR_CONTEXT_REDACT_SELECTOR}`) &&
         !(excludeSelector && closestAcrossShadow(host, excludeSelector))
@@ -353,7 +368,7 @@ export class ClrContextService implements OnDestroy {
   /** The configuration and metadata URLs the view's description depends on. */
   private metadataUrls(options: ResolvedSnapshotOptions): string[] {
     const urls = this.metadataHosts(options)
-      .map(host => host.getAttribute(CLR_AI_METADATA_URL_ATTRIBUTE))
+      .map(host => host.getAttribute(CLR_CONTEXT_URL_ATTRIBUTE))
       .filter((url): url is string => !!url);
     const source = this.config.viewConfig;
     return typeof source === 'string' ? [source, ...urls] : urls;
@@ -381,11 +396,11 @@ export class ClrContextService implements OnDestroy {
   private read(options: ClrContextSnapshotOptions | undefined, untrusted: boolean): ClrPageContext {
     this.snapshotTaken = true;
     const resolved = resolveSnapshotOptions(withCallOptions(this.scope, options));
-    const snapshot = this.viewSnapshot(resolved, false);
+    const snapshot = this.viewSnapshot(resolved, false, untrusted);
     if (!snapshot.enabled) {
       return snapshot;
     }
-    const regions = this.contextRegistry.collect({ filter: this.regionFilter(resolved), limits: resolved, untrusted });
+    const regions = this.contextRegistry.collect({ limits: resolved, untrusted });
     return this.describePage(snapshot, resolved, regions, untrusted);
   }
 
@@ -405,18 +420,17 @@ export class ClrContextService implements OnDestroy {
     if (urls.length) {
       await this.metadataLoader.settle(urls, waitMs);
     }
-    const view = this.viewSnapshot(resolved, true);
+    const view = this.viewSnapshot(resolved, true, untrusted);
     if (!view.enabled) {
       return view;
     }
     const address = this.address();
     const regions = await this.contextRegistry.collectAsync({
-      filter: this.regionFilter(resolved),
       timeoutMs: waitMs,
       limits: resolved,
       untrusted,
     });
-    const snapshot = this.viewSnapshot(resolved, true);
+    const snapshot = this.viewSnapshot(resolved, true, untrusted);
     // The answers are the old view's: a view id is optional, so the address is compared too.
     if (snapshot.viewId !== view.viewId || snapshot.enabled !== view.enabled || this.address() !== address) {
       return retries > 0 ? this.readAsync(options, untrusted, retries - 1) : this.read(options, untrusted);
@@ -471,30 +485,6 @@ export class ClrContextService implements OnDestroy {
       route = route.firstChild;
     }
     return route?.routeConfig?.data?.['viewId'];
-  }
-
-  /** Annotations follow their element: left out where it would be, stateless inside a redacted region. */
-  private regionFilter(options: ResolvedSnapshotOptions): ClrContextRegionFilter {
-    if (!isPlatformBrowser(this.platformId)) {
-      return () => 'keep';
-    }
-    const scope = engineScope(this.document, options);
-    const excludeSelector = usableSelectors(this.document, options.excludeSelectors);
-    return element => {
-      if (!element) {
-        return 'keep';
-      }
-      if (isHiddenFromEngine(element, excludeSelector)) {
-        return 'drop';
-      }
-      if (
-        scope.roots &&
-        !scope.roots.some(root => containsAcrossShadow(root, element) || containsAcrossShadow(element, root))
-      ) {
-        return 'drop';
-      }
-      return closestAcrossShadow(element, CLR_CONTEXT_REDACT_SELECTOR) ? 'redact' : 'keep';
-    };
   }
 
   /** The most an untrusted caller may get: the host can narrow the application's options, never widen them. */

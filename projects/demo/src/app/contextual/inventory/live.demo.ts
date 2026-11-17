@@ -7,7 +7,7 @@
 
 import { DOCUMENT } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
-import { CLR_AI_METADATA_ATTRIBUTE } from '@clr/angular/ai';
+import { CLR_CONTEXT_STATE_ATTRIBUTE } from '@clr/angular/ai';
 
 import { ContextInventoryComponent } from '../inventory/inventory.component';
 import { ContextLivePanelComponent } from '../live-panel/live-panel.component';
@@ -27,9 +27,9 @@ const VIEW_METADATA = {
 })
 export class ContextualLiveDemo {
   constructor() {
-    // On the view root (the body), the metadata describes the whole view: it becomes the snapshot's `metadata`.
+    // On the view root (the body), the annotation describes the whole view: its state becomes the snapshot's `metadata`.
     const body = inject(DOCUMENT).body;
-    body.setAttribute(CLR_AI_METADATA_ATTRIBUTE, JSON.stringify(VIEW_METADATA));
-    inject(DestroyRef).onDestroy(() => body.removeAttribute(CLR_AI_METADATA_ATTRIBUTE));
+    body.setAttribute(CLR_CONTEXT_STATE_ATTRIBUTE, JSON.stringify(VIEW_METADATA));
+    inject(DestroyRef).onDestroy(() => body.removeAttribute(CLR_CONTEXT_STATE_ATTRIBUTE));
   }
 }
