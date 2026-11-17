@@ -14,6 +14,7 @@ export const CONTROL_SUFFIX = {
   HELPER: 'helper',
   ERROR: 'error',
   SUCCESS: 'success',
+  NONE: '',
 };
 
 @Directive()
