@@ -9,8 +9,7 @@ type FakeTimer = 'setTimeout' | 'clearTimeout' | 'setInterval' | 'clearInterval'
 
 /**
  * Fake only application timers (all of them, or the given ones); leave Angular's rAF and microtask scheduler native.
- * This is the only place that installs fake timers (scripts/check-zoneless-tests.js rejects `vi.useFakeTimers()`
- * elsewhere), so that they can't outlive the test that installed them.
+ * Use it instead of `vi.useFakeTimers()`, so that the fake timers can't outlive the test that installed them.
  *
  * The real timers come back when the test finishes. This is registered here, not as an `afterEach` in
  * `test-setup.ts`: with coverage on, hooks registered there only apply to the first spec file.

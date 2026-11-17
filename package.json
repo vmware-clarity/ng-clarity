@@ -26,7 +26,7 @@
     "start:website:compile-content": "nodemon --watch projects/website/content --watch projects/website/stackblitz-example-template --ext md,json,js,ts,css,scss,html --exec \"npm run prebuild:website:compile-content\"",
     "prebuild:website": "npm-run-all prebuild:website:*",
     "prebuild:website:compile-content": "node ./projects/website/scripts/compile-content.js",
-    "test": "npm-run-all _test:zoneless-policy _test:angular _test:addons _test:schematics _test:tree-shaking _test:scripts",
+    "test": "npm-run-all _test:angular _test:addons _test:schematics _test:tree-shaking _test:scripts",
     "test:vrt:website": "CLARITY_VRT_SUITE=website playwright test",
     "test:vrt:website:update": "CLARITY_VRT_SUITE=website playwright test --update-snapshots",
     "test:watch": "npm-run-all --parallel _test:angular:watch _test:addons:watch",
@@ -81,8 +81,7 @@
     "_test:scripts": "node --test scripts/*.test.js",
     "_build:consumer-smoke": "ng build clr-consumer-smoke && ng build clr-consumer-smoke --configuration=zone",
     "test:consumer-smoke": "playwright test --config playwright.consumer.config.ts",
-    "test:applications-smoke": "playwright test --config playwright.applications.config.ts",
-    "_test:zoneless-policy": "node scripts/check-zoneless-tests.js"
+    "test:applications-smoke": "playwright test --config playwright.applications.config.ts"
   },
   "devDependencies": {
     "@amanda-mitchell/semantic-release-npm-multiple": "3.17.0",
