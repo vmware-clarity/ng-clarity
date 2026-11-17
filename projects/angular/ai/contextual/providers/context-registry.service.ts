@@ -14,28 +14,24 @@ import { jsonSafe, REGION_DEPTH } from '../json-safe';
 import { publicState } from '../public-keys';
 import type { ResolvedSnapshotOptions } from '../snapshot-options';
 
-/** Decides, from the element an annotation sits on, whether it is kept, dropped or stripped of state. */
-export type ClrContextRegionFilter = (element: Element | null) => 'keep' | 'drop' | 'redact';
-
-/** Registry of live context providers; they are polled at snapshot time, so nothing goes stale. */
+/**
+ * Registry of live context providers for what no element shows, such as the signed-in user's role; they are
+ * polled at snapshot time, so nothing goes stale. Context about an element goes on it with `[clrContext]`.
+ */
 @Injectable({ providedIn: 'root' })
 export class ClrContextRegistryService {
   /** Emits when a provider joins, leaves or reports a change, which may not touch the DOM. */
   readonly changes$: Observable<void>;
 
   private readonly providers: ClrContextProvider[] = [];
-  private readonly elements = new WeakMap<ClrContextProvider, Element>();
   private readonly changesSubject = new Subject<void>();
 
   constructor() {
     this.changes$ = this.changesSubject.asObservable();
   }
 
-  /** Registers a provider and returns its teardown; with `element`, it follows that element's visibility. */
-  register(provider: ClrContextProvider, element?: Element): () => void {
-    if (element) {
-      this.elements.set(provider, element);
-    }
+  /** Registers a provider and returns its teardown. */
+  register(provider: ClrContextProvider): () => void {
     if (!this.providers.includes(provider)) {
       this.providers.push(provider);
       this.changesSubject.next();
@@ -62,8 +58,7 @@ export class ClrContextRegistryService {
     const collected: ClrComponentContext[] = [];
     for (const provider of this.providers) {
       try {
-        const verdict = options.filter ? options.filter(this.elements.get(provider) ?? null) : 'keep';
-        const context = verdict === 'drop' ? null : reported(provider.getClrContext(), verdict, options);
+        const context = attempt(() => copied(provider.getClrContext(), options), null);
         if (context) {
           collected.push(context);
         }
@@ -77,8 +72,6 @@ export class ClrContextRegistryService {
 
 /** How {@link ClrContextRegistryService.collect} collects. */
 export interface ClrContextCollectOptions {
-  /** Decides from each provider's element whether it is kept, dropped or stripped of state. */
-  filter?: ClrContextRegionFilter;
   /** Cuts text and lists in what providers report. */
   limits?: ClrContextRegionLimits;
   /** For a caller the application does not control: state is cut to the keys each provider marks public. */
@@ -87,15 +80,6 @@ export interface ClrContextCollectOptions {
 
 /** How long text and lists in a provider's report may be. */
 export type ClrContextRegionLimits = Pick<ResolvedSnapshotOptions, 'maxTextLength' | 'maxItemsPerCollection'>;
-
-function reported(
-  context: ClrPublishedContext | null,
-  verdict: 'keep' | 'redact',
-  options: ClrContextCollectOptions
-): ClrComponentContext | null {
-  const copy = attempt(() => copied(context, options), null);
-  return copy && verdict === 'redact' ? withheldState(copy) : copy;
-}
 
 function copied(context: ClrPublishedContext | null, options: ClrContextCollectOptions): ClrComponentContext | null {
   return componentNode(jsonSafe(context, REGION_DEPTH, true, options.limits), !!options.untrusted);
@@ -130,12 +114,4 @@ function componentNode(value: unknown, untrusted: boolean): ClrComponentContext 
       .filter((child): child is ClrComponentContext => !!child);
   }
   return node;
-}
-
-function withheldState(context: ClrComponentContext): ClrComponentContext {
-  const reported: ClrComponentContext = { type: context.type, state: { redacted: true } };
-  if (context.label) {
-    reported.label = context.label;
-  }
-  return reported;
 }

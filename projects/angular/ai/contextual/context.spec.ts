@@ -7,11 +7,28 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { publishElementContext } from '@clr/angular/utils';
 
 import { ClrContext } from './context';
 import { ClrContextModule } from './contextual.module';
+import { ClrComponentContext, ClrContextSnapshotOptions, ClrPageContext } from './interfaces/context.interface';
 import { ClrContextRegistryService } from './providers/context-registry.service';
 import { ClrContextService } from './providers/contextual-engine.service';
+
+function nodes(components: ClrComponentContext[]): ClrComponentContext[] {
+  return components.flatMap(node => [node, ...nodes(node.children ?? [])]);
+}
+
+/** The node labelled `label` in a snapshot read now, without waiting for asynchronous providers. */
+function nodeLabelled(label: string, options?: ClrContextSnapshotOptions, untrusted = false) {
+  const snapshot: ClrPageContext = TestBed.inject(ClrContextService)['read'](options, untrusted);
+  return nodes(snapshot.components).find(node => node.label === label);
+}
+
+function labels(options?: ClrContextSnapshotOptions): string[] {
+  const snapshot: ClrPageContext = TestBed.inject(ClrContextService)['read'](options, false);
+  return nodes(snapshot.components).map(node => node.label ?? '');
+}
 
 @Component({
   changeDetection: ChangeDetectionStrategy.Eager,
@@ -50,51 +67,69 @@ describe('ClrContext directive', () => {
     fixture.destroy();
   });
 
-  it('contributes its label, type and state to snapshots', () => {
-    const contexts = registry.collect();
-
-    expect(contexts).toEqual([{ type: 'section', label: 'User management', state: { cluster: 'alpha' } }]);
+  it('describes the element it sits on with its label, type and state', () => {
+    expect(nodeLabelled('User management')).toEqual(
+      jasmine.objectContaining({ type: 'section', label: 'User management', state: { cluster: 'alpha' } })
+    );
+    expect(registry.collect()).toEqual([]);
   });
 
   it('shares with untrusted callers only the state keys it marks public', () => {
     fixture.componentInstance.state = { cluster: 'alpha', query: 's3cr3t' };
     fixture.detectChanges();
-    expect(registry.collect({ untrusted: true })[0].state).toEqual({ withheld: true });
+    expect(nodeLabelled('User management', undefined, true)?.state).toEqual({ withheld: true });
 
     fixture.componentInstance.publicKeys = ['cluster'];
     fixture.detectChanges();
-    expect(registry.collect({ untrusted: true })[0].state).toEqual({ cluster: 'alpha', withheld: true });
-    expect(registry.collect()[0].state).toEqual({ cluster: 'alpha', query: 's3cr3t' });
+    expect(nodeLabelled('User management', undefined, true)?.state).toEqual({ cluster: 'alpha', withheld: true });
+    expect(nodeLabelled('User management')?.state).toEqual({ cluster: 'alpha', query: 's3cr3t' });
+  });
+
+  it('merges with what a component publishes on the same element, each source keeping its own public keys', () => {
+    const section: Element = fixture.nativeElement.querySelector('section');
+    const unpublish = publishElementContext(section, () => ({
+      state: { total: 3, owner: 'ada' },
+      publicKeys: ['total'],
+    }));
+    fixture.componentInstance.publicKeys = ['cluster'];
+    fixture.detectChanges();
+
+    expect(nodeLabelled('User management')?.state).toEqual({ cluster: 'alpha', total: 3, owner: 'ada' });
+    expect(nodeLabelled('User management', undefined, true)?.state).toEqual({
+      cluster: 'alpha',
+      total: 3,
+      withheld: true,
+    });
+    unpublish();
   });
 
   it('marks state withheld only when a private value had something in it', () => {
     fixture.componentInstance.state = { cluster: 'alpha', query: '', picks: [] };
     fixture.componentInstance.publicKeys = ['cluster'];
     fixture.detectChanges();
-    expect(registry.collect({ untrusted: true })[0].state).toEqual({ cluster: 'alpha' });
+    expect(nodeLabelled('User management', undefined, true)?.state).toEqual({ cluster: 'alpha' });
   });
 
   it('reads its inputs at snapshot time', () => {
     fixture.componentInstance.state = { cluster: 'omega' };
     fixture.detectChanges();
 
-    expect(registry.collect()[0].state).toEqual({ cluster: 'omega' });
+    expect(nodeLabelled('User management')?.state).toEqual({ cluster: 'omega' });
   });
 
-  it('contributes nothing while it has no label and no state', () => {
-    fixture.componentInstance.show = false;
-    fixture.detectChanges();
-
-    expect(registry.collect()).toEqual([]);
+  it('adds no node for an element while it says nothing', () => {
+    expect(labels()).toEqual(['User management']);
   });
 
-  it('unregisters when the annotated element is destroyed', () => {
+  it('leaves the element when it is destroyed, and a label given later shows', () => {
+    const section = fixture.nativeElement.querySelector('section');
     fixture.componentInstance.show = false;
-    fixture.detectChanges();
     fixture.componentInstance.emptyLabel = 'still here';
     fixture.detectChanges();
 
-    expect(registry.collect()).toEqual([{ type: 'region', label: 'still here' }]);
+    expect('clrContextAnnotation' in section).toBeFalse();
+    expect(labels()).toEqual(['still here']);
+    expect(nodeLabelled('still here')?.type).toBe('group');
   });
 });
 
@@ -128,18 +163,18 @@ describe('ClrContext directive, announcing its changes', () => {
     fixture.detectChanges();
 
     expect(changes).toBe(before + 1);
-    expect(registry.collect()[0].state).toEqual({ cluster: 'omega' });
+    expect(nodeLabelled('User management')?.state).toEqual({ cluster: 'omega' });
   });
 
   it('hands out a copy of its state, so an in-place edit reads as a change between two snapshots', () => {
     const state = fixture.componentInstance.state as Record<string, unknown>;
-    const earlier = registry.collect()[0].state;
+    const earlier = nodeLabelled('User management')?.state;
     state.cluster = 'omega';
     fixture.detectChanges();
 
     expect(earlier).toEqual({ cluster: 'alpha' });
-    expect(registry.collect()[0].state).toEqual({ cluster: 'omega' });
-    expect(registry.collect()[0].state).not.toBe(state);
+    expect(nodeLabelled('User management')?.state).toEqual({ cluster: 'omega' });
+    expect(nodeLabelled('User management')?.state).not.toBe(state);
   });
 
   it('neither throws nor contributes while its state cannot be serialised', () => {
@@ -148,7 +183,7 @@ describe('ClrContext directive, announcing its changes', () => {
     fixture.componentInstance.state = circular;
 
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(registry.collect()).toEqual([]);
+    expect(labels()).not.toContain('User management');
     const before = changes;
     fixture.detectChanges();
     expect(changes).toBe(before);
@@ -202,31 +237,28 @@ describe('ClrContext directive, following the element it annotates', () => {
 
   afterEach(() => fixture.destroy());
 
-  it('reports an annotation inside a redacted region without its state', async () => {
-    const regions = (await engine.snapshot()).regions;
+  it('withholds the state of an annotation inside a redacted region', async () => {
+    const snapshot = await engine.snapshot();
 
-    expect(regions).toContain(jasmine.objectContaining({ label: 'Visible', state: { step: 1 } }));
-    expect(regions).toContain({ type: 'region', label: 'Payment', state: { redacted: true } });
-    expect(JSON.stringify(regions)).not.toContain('4111');
+    expect(nodeLabelled('Visible')?.state).toEqual({ step: 1 });
+    expect(JSON.stringify(snapshot)).not.toContain('4111');
+    expect(snapshot.regions).toEqual([]);
   });
 
-  it('follows the element an annotation on an <ng-container> sits in', async () => {
-    const regions = (await engine.snapshot()).regions;
+  it('describes the element an annotation on an <ng-container> sits in', async () => {
+    const plain = nodes((await engine.snapshot()).components).find(node => node.state?.['open'] === true);
 
-    expect(regions).toContain(jasmine.objectContaining({ label: 'Inside a container', state: { open: true } }));
-    expect(regions).toContain({ type: 'region', label: 'Redacted container', state: { redacted: true } });
-    expect(JSON.stringify(regions)).not.toContain('5500');
+    expect(plain?.label).toBe('Inside a container');
+    expect(JSON.stringify(await engine.snapshot())).not.toContain('5500');
   });
 
-  it('leaves out an annotation inside an ignored region', async () => {
-    expect((await engine.snapshot()).regions.map(region => region.label)).not.toContain('Chat');
+  it('leaves out an annotation inside an ignored region', () => {
+    expect(labels()).not.toContain('Chat');
   });
 
-  it('leaves out an annotation outside the snapshot root, and keeps one that contains it', async () => {
-    const labels = (await engine.snapshot({ root: '#main' })).regions.map(region => region.label);
-
-    expect(labels).toContain('Visible');
-    expect(labels).not.toContain('Footer notes');
+  it('leaves out an annotation outside the snapshot root', () => {
+    expect(labels({ root: '#main' })).toContain('Visible');
+    expect(labels({ root: '#main' })).not.toContain('Footer notes');
   });
 
   it('does not announce changes to an annotation inside an ignored region', () => {
@@ -255,9 +287,9 @@ describe('ClrContext directive, imported by a standalone component', () => {
     const fixture = TestBed.createComponent(StandaloneHostComponent);
     fixture.detectChanges();
 
-    expect(TestBed.inject(ClrContextRegistryService).collect()).toEqual([
-      { type: 'region', label: 'Standalone annotation', state: { step: 2 } },
-    ]);
+    expect(nodeLabelled('Standalone annotation')).toEqual(
+      jasmine.objectContaining({ type: 'group', label: 'Standalone annotation', state: { step: 2 } })
+    );
     fixture.destroy();
   });
 });
