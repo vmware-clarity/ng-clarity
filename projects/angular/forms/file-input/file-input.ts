@@ -23,8 +23,8 @@ import { ClrFileInputContainer } from './file-input-container';
 
 export interface ClrFileInputSelection {
   fileCount: number;
-  buttonLabel: string | undefined;
-  clearFilesButtonLabel: string | undefined;
+  buttonLabel: string;
+  clearFilesButtonLabel: string;
 }
 
 @Directive({
@@ -61,8 +61,8 @@ export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
       return;
     }
 
-    let selectionButtonLabel: string | undefined;
-    let clearFilesButtonLabel: string | undefined;
+    let selectionButtonLabel = '';
+    let clearFilesButtonLabel = '';
 
     if (files.length === 1) {
       const filename = files[0].name;
