@@ -549,7 +549,7 @@ class ExpandedCellsTest {
     { id: 2, value: 2 },
     { id: 3, value: 3 },
   ];
-  detailItem = null;
+  detailItem: { id: number; value: number } | null = null;
   replaceCells = false;
   firstColumnHidden = false;
 }
@@ -895,7 +895,7 @@ describe('Datagrid', () => {
           expect(row.attributes.role.value).toEqual('row');
 
           const columns = context.clarityElement.querySelectorAll('.datagrid-column');
-          columns.forEach(column => expect(column.attributes.role.value).toEqual('columnheader'));
+          columns.forEach((column: HTMLElement) => expect(column.getAttribute('role')).toEqual('columnheader'));
         });
       });
 
@@ -1651,7 +1651,7 @@ describe('Datagrid', () => {
 
       describe('detail pane and track by', () => {
         let context: TestContext<ClrDatagrid, PanelTrackByTest>;
-        let detailService;
+        let detailService: DetailService;
 
         beforeEach(() => {
           context = helpers.create(ClrDatagrid, PanelTrackByTest, DATAGRID_SPEC_PROVIDERS);

@@ -206,7 +206,9 @@ describe('Datagrid', () => {
 
         it('correctly mutates and resets an array with trackBy', () => {
           // Initial state
-          testContext.fixture.nativeElement.querySelectorAll('li:first-child').forEach(li => (li.style.color = 'red'));
+          testContext.fixture.nativeElement
+            .querySelectorAll('li:first-child')
+            .forEach((li: HTMLElement) => (li.style.color = 'red'));
           const firstItem = testContext.fixture.nativeElement.querySelector('li');
           expect(firstItem.style.color).toBe('red');
           expect(firstItem.textContent.trim()).toBe('1');

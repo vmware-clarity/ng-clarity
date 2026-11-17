@@ -255,10 +255,10 @@ export async function animationFrameTick(fixture?: ComponentFixture<any>) {
   }
 }
 
-export function expectActiveElementToBe(element: Element, failOutput = null): void {
+export function expectActiveElementToBe(element: Element, failOutput?: string): void {
   expect(document.activeElement, failOutput).toBe(element);
 }
 
-export function expectActiveElementNotToBe(element: Element, failOutput = null): void {
+export function expectActiveElementNotToBe(element: Element, failOutput?: string): void {
   expect(document.activeElement, failOutput).not.toBe(element);
 }

@@ -100,5 +100,5 @@ describe('Signpost', () => {
   standalone: false,
 })
 class TestTrigger {
-  label = null;
+  label: string | null = null;
 }

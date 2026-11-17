@@ -118,7 +118,7 @@ describe('DatagridComponent', () => {
         {
           provide: DragAndDropGroupService,
           useValue: {
-            getGroupItems: () => [],
+            getGroupItems: (): CdkDropList[] => [],
           },
         },
       ],

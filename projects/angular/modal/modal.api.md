@@ -111,7 +111,51 @@ export class ClrModal implements OnChanges, OnDestroy {
     // (undocumented)
     title: ElementRef<HTMLElement>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, { "_open": { "alias": "clrModalOpen"; "required": false; }; "closable": { "alias": "clrModalClosable"; "required": false; }; "closeButtonAriaLabel": { "alias": "clrModalCloseButtonAriaLabel"; "required": false; }; "size": { "alias": "clrModalSize"; "required": false; }; "staticBackdrop": { "alias": "clrModalStaticBackdrop"; "required": false; }; "skipAnimation": { "alias": "clrModalSkipAnimation"; "required": false; }; "stopClose": { "alias": "clrModalPreventClose"; "required": false; }; "labelledBy": { "alias": "clrModalLabelledById"; "required": false; }; "bypassScrollService": { "alias": "clrModalOverrideScrollService"; "required": false; }; "inOverlay": { "alias": "clrModalInOverlay"; "required": false; }; }, { "_openChanged": "clrModalOpenChange"; "altClose": "clrModalAlternateClose"; }, ["modalContentTemplate"], [".leading-button", ".modal-title", ".modal-body", ".modal-footer"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, {
+        "_open": {
+            "alias": "clrModalOpen";
+            "required": false;
+        };
+        "closable": {
+            "alias": "clrModalClosable";
+            "required": false;
+        };
+        "closeButtonAriaLabel": {
+            "alias": "clrModalCloseButtonAriaLabel";
+            "required": false;
+        };
+        "size": {
+            "alias": "clrModalSize";
+            "required": false;
+        };
+        "staticBackdrop": {
+            "alias": "clrModalStaticBackdrop";
+            "required": false;
+        };
+        "skipAnimation": {
+            "alias": "clrModalSkipAnimation";
+            "required": false;
+        };
+        "stopClose": {
+            "alias": "clrModalPreventClose";
+            "required": false;
+        };
+        "labelledBy": {
+            "alias": "clrModalLabelledById";
+            "required": false;
+        };
+        "bypassScrollService": {
+            "alias": "clrModalOverrideScrollService";
+            "required": false;
+        };
+        "inOverlay": {
+            "alias": "clrModalInOverlay";
+            "required": false;
+        };
+    }, {
+        "_openChanged": "clrModalOpenChange";
+        "altClose": "clrModalAlternateClose";
+    }, ["modalContentTemplate"], [".leading-button", ".modal-title", ".modal-body", ".modal-footer"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrModal, never>;
 }
@@ -136,7 +180,7 @@ export class ClrModalConfigurationService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalConfigurationService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrModalConfigurationService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public (undocumented)
@@ -213,7 +257,59 @@ export class ClrSidePanel implements OnInit, OnDestroy {
     // (undocumented)
     togglePinned(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSidePanel, "clr-side-panel", never, { "closeButtonAriaLabel": { "alias": "clrSidePanelCloseButtonAriaLabel"; "required": false; }; "skipAnimation": { "alias": "clrSidePanelSkipAnimation"; "required": false; }; "labelledById": { "alias": "clrSidePanelLabelledById"; "required": false; }; "staticBackdrop": { "alias": "clrSidePanelStaticBackdrop"; "required": false; }; "closable": { "alias": "clrSidePanelClosable"; "required": false; }; "preventClose": { "alias": "clrSidePanelPreventClose"; "required": false; }; "_open": { "alias": "clrSidePanelOpen"; "required": false; }; "size": { "alias": "clrSidePanelSize"; "required": false; }; "position": { "alias": "clrSidePanelPosition"; "required": false; }; "pinned": { "alias": "clrSidePanelPinned"; "required": false; }; "clrSidePanelBackdrop": { "alias": "clrSidePanelBackdrop"; "required": false; }; "clrSidePanelPinnable": { "alias": "clrSidePanelPinnable"; "required": false; }; }, { "openChange": "clrSidePanelOpenChange"; "altClose": "clrSidePanelAlternateClose"; }, never, [".side-panel-title", ".side-panel-body", ".side-panel-footer"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrSidePanel, "clr-side-panel", never, {
+        "closeButtonAriaLabel": {
+            "alias": "clrSidePanelCloseButtonAriaLabel";
+            "required": false;
+        };
+        "skipAnimation": {
+            "alias": "clrSidePanelSkipAnimation";
+            "required": false;
+        };
+        "labelledById": {
+            "alias": "clrSidePanelLabelledById";
+            "required": false;
+        };
+        "staticBackdrop": {
+            "alias": "clrSidePanelStaticBackdrop";
+            "required": false;
+        };
+        "closable": {
+            "alias": "clrSidePanelClosable";
+            "required": false;
+        };
+        "preventClose": {
+            "alias": "clrSidePanelPreventClose";
+            "required": false;
+        };
+        "_open": {
+            "alias": "clrSidePanelOpen";
+            "required": false;
+        };
+        "size": {
+            "alias": "clrSidePanelSize";
+            "required": false;
+        };
+        "position": {
+            "alias": "clrSidePanelPosition";
+            "required": false;
+        };
+        "pinned": {
+            "alias": "clrSidePanelPinned";
+            "required": false;
+        };
+        "clrSidePanelBackdrop": {
+            "alias": "clrSidePanelBackdrop";
+            "required": false;
+        };
+        "clrSidePanelPinnable": {
+            "alias": "clrSidePanelPinnable";
+            "required": false;
+        };
+    }, {
+        "openChange": "clrSidePanelOpenChange";
+        "altClose": "clrSidePanelAlternateClose";
+    }, never, [".side-panel-title", ".side-panel-body", ".side-panel-footer"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidePanel, never>;
 }
@@ -239,7 +335,7 @@ export class ModalStackService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ModalStackService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<ModalStackService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // (No @packageDocumentation comment for this package)

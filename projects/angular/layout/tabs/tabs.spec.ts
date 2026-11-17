@@ -429,7 +429,7 @@ describe('Tabs', () => {
   describe('Without *clrIfActive', () => {
     let context: TestContext<ClrTabs, NoClrIfActiveTest>;
     let compiled: any;
-    let contents: HTMLElement;
+    let contents: NodeListOf<HTMLElement>;
 
     beforeEach(() => {
       context = helpers.create(ClrTabs, NoClrIfActiveTest);

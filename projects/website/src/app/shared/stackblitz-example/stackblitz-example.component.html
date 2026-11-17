@@ -44,7 +44,7 @@
 <div class="addons">
   <button class="btn btn-link" (click)="copyCode()" [attr.aria-label]="'Copy ' + name() + ' example code to clipboard'">
     <clr-icon shape="copy"></clr-icon>
-    {{ copied ? 'Copied!' : 'Copy Code' }}
+    {{ copied() ? 'Copied!' : 'Copy Code' }}
   </button>
   <button
     class="btn btn-link"

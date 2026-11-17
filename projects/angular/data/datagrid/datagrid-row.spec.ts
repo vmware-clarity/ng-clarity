@@ -834,7 +834,7 @@ class SelectableRow {
   standalone: false,
 })
 class SelectableRowOrder {
-  clrDgSelectable = undefined;
+  clrDgSelectable: boolean | undefined = undefined;
   item: Item = { id: 42 };
   ariaLabel = 'uniq aria-label';
 }

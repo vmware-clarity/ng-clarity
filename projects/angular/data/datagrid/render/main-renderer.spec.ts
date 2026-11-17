@@ -108,7 +108,8 @@ describe('Datagrid', () => {
 
       describe('dynamic loading', () => {
         let context: TestContext<DatagridMainRenderer, DynamicTest>;
-        let resizeSpy, rowsSpy: Mock;
+        let resizeSpy: Mock;
+        let rowsSpy: Mock;
 
         beforeEach(async () => {
           resizeSpy = vi.spyOn(DatagridRenderOrganizer.prototype, 'resize').mockImplementation(() => undefined);
@@ -410,7 +411,7 @@ describe('Datagrid', () => {
   standalone: false,
 })
 class RenderWidthTest {
-  currentTest;
+  currentTest: string;
   expandable = false;
   hasActions = false;
   selected: any[] = [];

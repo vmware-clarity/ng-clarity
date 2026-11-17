@@ -272,7 +272,7 @@ class WithDynamicFormControl {
   standalone: false,
 })
 class WithDynamicNgControl {
-  form = {};
+  form: Record<string, string> = {};
   addControl() {
     this.form['control'] = 'TEST';
   }

@@ -44,7 +44,7 @@ class TestComponent {
   disabled = false;
   showDescription = false;
   headingLevel: HeadingLevel;
-  change = state => {
+  change = (state: boolean) => {
     return state;
   };
 }
@@ -84,7 +84,7 @@ class TestNestedAccordionComponent {}
   standalone: false,
 })
 class TestNoBindingComponent {
-  change = state => {
+  change = (state: boolean) => {
     return state;
   };
 }

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, DebugElement, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, Type, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
@@ -56,7 +56,7 @@ let fixture: ComponentFixture<any>;
 let componentInstance: TestComponent;
 
 let directiveDebugElement: DebugElement;
-let clarityDirective: ClrExpandableAnimationDirective;
+let clarityDirective: ClrExpandableAnimation | ClrExpandableAnimationDirective;
 let clarityElement: HTMLElement;
 
 describe('Expandable animation component', () => {
@@ -78,7 +78,7 @@ describe('Expandable animation directive with noop animations', () => {
   noopAnimationsSpec(TestComponentDirective, ClrExpandableAnimationDirective);
 });
 
-function noopAnimationsSpec(testComponent, component) {
+function noopAnimationsSpec(testComponent: Type<unknown>, component: Type<BaseExpandableAnimation>) {
   it('does not animate the height', async () => {
     TestBed.configureTestingModule({
       imports: [ClrExpandableAnimationModule],
@@ -106,7 +106,7 @@ function noopAnimationsSpec(testComponent, component) {
   });
 }
 
-function heightAnimationSpec(testComponent, component) {
+function heightAnimationSpec(testComponent: Type<unknown>, component: Type<BaseExpandableAnimation>) {
   let expandable: BaseExpandableAnimation;
   let element: HTMLElement;
 
@@ -159,7 +159,10 @@ function heightAnimationSpec(testComponent, component) {
   });
 }
 
-function expandableAnimationSpec(testComponent, component) {
+function expandableAnimationSpec(
+  testComponent: Type<unknown>,
+  component: Type<ClrExpandableAnimation | ClrExpandableAnimationDirective>
+) {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ClrExpandableAnimationModule],

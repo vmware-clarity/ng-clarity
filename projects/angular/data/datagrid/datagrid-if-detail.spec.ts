@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrIfDetail } from './datagrid-if-detail';
@@ -15,7 +15,8 @@ import { DetailService } from './providers/detail.service';
 const content = 'Detail Pane';
 
 describe('ClrIfDetail Directive', function () {
-  let fixture, testElement;
+  let fixture: ComponentFixture<IfDetailTest>;
+  let testElement: HTMLElement;
   let detailService: DetailService;
   let testComponent: IfDetailTest;
 
@@ -98,5 +99,5 @@ describe('ClrIfDetail Directive', function () {
 })
 class IfDetailTest {
   @ViewChild(ClrIfDetail) detail: ClrIfDetail;
-  detailState = null;
+  detailState: unknown = null;
 }

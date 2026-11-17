@@ -54,7 +54,7 @@ class TestStylesComponent {}
 describe('ClrProgressBar component', () => {
   describe('View', () => {
     let fixture: ComponentFixture<any>;
-    let clrProgressBar;
+    let clrProgressBar: HTMLElement;
 
     beforeEach(function () {
       TestBed.configureTestingModule({

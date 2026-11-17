@@ -10,6 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrIcon } from '@clr/angular/icon';
 import { renderFixture } from '@clr/angular/utils/testing';
+import { MockInstance } from 'vitest';
 
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
 import { VerticalNavGroupService } from './providers/vertical-nav-group.service';
@@ -24,7 +25,7 @@ describe('Vertical Nav', () => {
     describe('Vertical Nav Links', () => {
       let fixture: ComponentFixture<any>;
       let compiled: HTMLElement;
-      let addEventListener: ReturnType<typeof vi.spyOn>;
+      let addEventListener: MockInstance<EventTarget['addEventListener']>;
 
       beforeEach(() => {
         addEventListener = vi.spyOn(EventTarget.prototype, 'addEventListener');

@@ -185,8 +185,8 @@ describe('DatagridColumnsOrderDirective', () => {
 
     beforeEach(async () => {
       // The visible columns are Name, State and Status. Name is the pinned one.
-      testContext.datagridHostComponent.columns = testContext.datagridHostComponent.columns.map((column, index) =>
-        index === 0 ? { ...column, pinned: true } : column
+      testContext.datagridHostComponent.columns = testContext.datagridHostComponent.columns.map(
+        (column: ColumnDefinition<any>, index: number) => (index === 0 ? { ...column, pinned: true } : column)
       );
       await testContext.fixture.whenStable();
     });
@@ -283,8 +283,8 @@ describe('DatagridColumnsOrderDirective', () => {
     describe('when a column is pinned', () => {
       beforeEach(async () => {
         // The visible columns are Name, State and Status. Name is the pinned one.
-        testContext.datagridHostComponent.columns = testContext.datagridHostComponent.columns.map((column, index) =>
-          index === 0 ? { ...column, pinned: true } : column
+        testContext.datagridHostComponent.columns = testContext.datagridHostComponent.columns.map(
+          (column: ColumnDefinition<any>, index: number) => (index === 0 ? { ...column, pinned: true } : column)
         );
         await testContext.fixture.whenStable();
       });
@@ -317,8 +317,8 @@ describe('DatagridColumnsOrderDirective', () => {
       // A pinned column cannot be moved at all, not even inside the sticky container next to another
       // pinned one - the only way to change where it sits is to unpin it.
       it('never moves a pinned column, even next to another pinned one', async () => {
-        testContext.datagridHostComponent.columns = testContext.datagridHostComponent.columns.map((column, index) =>
-          index === 2 ? { ...column, pinned: true } : column
+        testContext.datagridHostComponent.columns = testContext.datagridHostComponent.columns.map(
+          (column: ColumnDefinition<any>, index: number) => (index === 2 ? { ...column, pinned: true } : column)
         );
         await testContext.fixture.whenStable();
         expect(pinnedHeaders(testContext)).toEqual(['Name', 'State']);
@@ -339,8 +339,8 @@ describe('DatagridColumnsOrderDirective', () => {
       // Status is the only column left in the scrollable container, so it has nothing to step past
       // even though the array has columns on both sides of it.
       it('refuses both steps for the only column in its group', async () => {
-        testContext.datagridHostComponent.columns = testContext.datagridHostComponent.columns.map((column, index) =>
-          index === 2 ? { ...column, pinned: true } : column
+        testContext.datagridHostComponent.columns = testContext.datagridHostComponent.columns.map(
+          (column: ColumnDefinition<any>, index: number) => (index === 2 ? { ...column, pinned: true } : column)
         );
         await testContext.fixture.whenStable();
 

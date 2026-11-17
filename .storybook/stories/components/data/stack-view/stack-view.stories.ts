@@ -57,7 +57,7 @@ const meta = {
   },
   args: {
     // story helpers
-    openIndices: [],
+    openIndices: [] as boolean[],
     createArray: n => new Array(n),
     blockCount: 4,
     label: 'Block',
