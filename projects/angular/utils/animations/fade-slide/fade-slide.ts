@@ -10,7 +10,7 @@ import { defaultAnimationTiming } from '../constants';
 
 /** @deprecated Clarity no longer uses Angular animations; use the `clr-fade-slide-<direction>-enter` / `-leave` classes instead. */
 export function fadeSlide(direction: string): ClrAnimationMetadata[] {
-  let transform: string = null;
+  let transform: string | null = null;
   if (direction === 'up') {
     transform = 'translate(0, 25%)';
   } else if (direction === 'down') {

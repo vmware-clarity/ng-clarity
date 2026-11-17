@@ -36,7 +36,7 @@ export class ClrSidePanel implements OnInit, OnDestroy {
   @Output('clrSidePanelOpenChange') openChange = new EventEmitter<boolean>(false);
   @Input('clrSidePanelCloseButtonAriaLabel') closeButtonAriaLabel: string | undefined;
   @Input('clrSidePanelSkipAnimation') skipAnimation = false;
-  @Input('clrSidePanelLabelledById') labelledById: string;
+  @Input('clrSidePanelLabelledById') labelledById?: string;
   @Input('clrSidePanelStaticBackdrop') staticBackdrop = false;
   @Input('clrSidePanelClosable') closable = true;
   @Input('clrSidePanelPreventClose') preventClose = false;
@@ -44,9 +44,9 @@ export class ClrSidePanel implements OnInit, OnDestroy {
 
   private _pinnable = false;
   private _pinned = false;
-  private originalStopClose: boolean;
+  private originalStopClose!: boolean;
   private _position = 'right';
-  private _modal: ClrModal;
+  private _modal!: ClrModal;
   private __open = false;
 
   private _size = 'md';

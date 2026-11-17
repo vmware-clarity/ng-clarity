@@ -17,5 +17,5 @@ import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild } from '@ang
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class TemplateRefContainer {
-  @ViewChild(TemplateRef) template: TemplateRef<any>;
+  @ViewChild(TemplateRef) template!: TemplateRef<any>;
 }

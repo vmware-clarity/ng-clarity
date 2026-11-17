@@ -105,13 +105,13 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
   // we are using this _mousedown flag
   _mousedown = false;
 
-  @ViewChild(ClrKeyFocus, { static: true }) keyFocus: ClrKeyFocus;
+  @ViewChild(ClrKeyFocus, { static: true }) keyFocus!: ClrKeyFocus;
 
-  @ContentChildren(ClrTabAction, { read: ElementRef, descendants: true }) tabsActions: QueryList<ElementRef>;
-  @ContentChildren(ClrTab) private tabs: QueryList<ClrTab>;
+  @ContentChildren(ClrTabAction, { read: ElementRef, descendants: true }) tabsActions!: QueryList<ElementRef>;
+  @ContentChildren(ClrTab) private tabs!: QueryList<ClrTab>;
 
   private subscriptions: Subscription[] = [];
-  private _tabOverflowEl: HTMLElement;
+  private _tabOverflowEl!: HTMLElement;
   private _tabLinkDirectives: ClrTabLink[] = [];
 
   constructor(
@@ -143,7 +143,9 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
   }
 
   get activeTabInOverflow() {
-    return this.tabsService.overflowTabs.indexOf(this.tabsService.activeTab) > -1;
+    const activeTab = this.tabsService.activeTab;
+
+    return !!activeTab && this.tabsService.overflowTabs.indexOf(activeTab) > -1;
   }
 
   get activeTabPosition() {

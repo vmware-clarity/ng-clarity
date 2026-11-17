@@ -63,24 +63,24 @@ export class ClrButton implements LoadingListener {
     get inMenu(): boolean;
     set inMenu(value: boolean);
     // (undocumented)
-    loading: boolean;
+    loading?: boolean;
     // Warning: (ae-forgotten-export) The symbol "ClrLoadingState" needs to be exported by the entry point clr-angular-button.d.ts
     //
     // (undocumented)
     loadingStateChange(state: ClrLoadingState): void;
     // (undocumented)
-    get name(): string;
+    get name(): string | null;
     set name(value: string);
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
-    get role(): string;
+    get role(): string | null;
     // (undocumented)
-    routerLinkActiveClasses: string;
+    routerLinkActiveClasses?: string;
     // (undocumented)
     templateRef: TemplateRef<ClrButton>;
     // (undocumented)
-    get type(): string;
+    get type(): string | null;
     set type(value: string);
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrButton, "clr-button", never, {

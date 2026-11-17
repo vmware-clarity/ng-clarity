@@ -7,7 +7,7 @@
 <clr-modal
   [clrModalOpen]="_open"
   (clrModalOpenChange)="handleModalOpen($event)"
-  [clrModalCloseButtonAriaLabel]="closeButtonAriaLabel"
+  [clrModalCloseButtonAriaLabel]="closeButtonAriaLabel || commonStrings.keys.close"
   [clrModalSize]="size"
   [clrModalSkipAnimation]="skipAnimation"
   [clrModalStaticBackdrop]="staticBackdrop"
