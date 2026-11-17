@@ -190,7 +190,7 @@ export declare class ThemeBuilderComponent implements OnInit, AfterViewInit {
    * @returns `true` when the CSS was accepted, `false` when it was rejected as malformed.
    */
   importCSS(css: string): boolean;
-  resetAllThemeColors(theme: string): void;
+  resetAllThemeColors(theme: ThemeType): void;
   resetColor($event: Event, color: Color, colorGroup?: Color[]): void;
   onWarningTextOverrideChange(): void;
   applyPreviewStyles(): void;
