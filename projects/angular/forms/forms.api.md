@@ -1171,9 +1171,9 @@ export class ClrFileInputModule {
 // @public (undocumented)
 export interface ClrFileInputSelection {
     // (undocumented)
-    buttonLabel: string | undefined;
+    buttonLabel: string;
     // (undocumented)
-    clearFilesButtonLabel: string | undefined;
+    clearFilesButtonLabel: string;
     // (undocumented)
     fileCount: number;
 }
