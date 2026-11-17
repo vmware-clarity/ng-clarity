@@ -90,7 +90,7 @@ export class DragDropGridDemoComponent {
     return this.groupService?.getGroupItems(group) ?? [];
   }
 
-  protected drop(event: CdkDragDrop<unknown[]>) {
+  protected drop(event: CdkDragDrop<string[]>) {
     document.body.classList.remove('drag-valid-target');
     event.item.data?.forEach((item: VmItem) => {
       if (this.receivedItems.includes(item.name)) {
