@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrComponentContext, ClrContextSnapshotOptions, ClrPublishedContext } from '@clr/angular/utils';
+import { ClrComponentContext, ClrPublishedContext } from '@clr/angular/utils';
 
 /** Re-exported from `@clr/angular/utils`, so components can publish without depending on this entry point. */
 export type {
@@ -14,12 +14,6 @@ export type {
   ClrContextSnapshotOptions,
   ClrPublishedContext,
 } from '@clr/angular/utils';
-
-/** Options for `getSnapshotAsync`: the snapshot's, and how long to wait for each asynchronous provider. */
-export interface ClrContextAsyncSnapshotOptions extends ClrContextSnapshotOptions {
-  /** Milliseconds to wait for each asynchronous provider. Default `2000`. */
-  timeoutMs?: number;
-}
 
 /** The active route, when the application uses the Angular router. */
 export interface ClrRouteContext {
@@ -53,7 +47,7 @@ export interface ClrPageContext {
   url?: string;
   /** Route information, present when the application uses the Angular router. */
   route?: ClrRouteContext;
-  /** Routable paths, when `includeRoutes` is set; at least 50 entries, without wildcards or redirects. */
+  /** Routable paths, when configured with `routes: true`; at least 50 entries, without wildcards or redirects. */
   availableRoutes?: ClrAvailableRoute[];
   /** Application-provided contexts from the `clrContext` directive or a {@link ClrContextProvider}. */
   regions: ClrComponentContext[];
@@ -69,8 +63,9 @@ export interface ClrPageContext {
 
 /**
  * Contributes context to snapshots. Asked once per snapshot; return `null` when there is nothing to report.
- * A promise is awaited by `getSnapshotAsync` and reported as `{ type: 'clr-loading' }` by `getSnapshot`;
- * while it is pending, later snapshots wait for it instead of asking again. A promise that rejects or
+ * A promise is awaited by `snapshot()` and `watch()`; `watch()` first reports it as `{ type: 'clr-loading' }`, and
+ * `window.clrContext()`, which answers at once, always does. While it is pending, later snapshots wait for it
+ * instead of asking again. A promise that rejects or
  * outlasts the timeout is reported as `{ type: 'clr-unavailable' }`. Untrusted consumers see only the
  * state keys listed in `publicKeys`.
  */

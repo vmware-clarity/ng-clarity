@@ -5,13 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { provideClrContextOptions } from './providers/context-options';
 import {
   capSnapshotOptions,
   CLR_CONTEXT_CATEGORIES,
   CLR_CONTEXT_DEFAULT_OPTIONS,
   CLR_CONTEXT_PRESETS,
-  clrContextPreset,
+  presetOrOptions,
   resolveSnapshotOptions,
   withCallOptions,
 } from './snapshot-options';
@@ -20,125 +19,121 @@ import { CLR_CONTEXT_UNTRUSTED_OPTION_KEYS, sanitizeUntrustedSnapshotOptions } f
 describe('snapshot options', () => {
   describe('resolveSnapshotOptions', () => {
     it('applies the defaults when nothing was asked', () => {
-      expect(resolveSnapshotOptions()).toEqual(CLR_CONTEXT_DEFAULT_OPTIONS);
-      expect(resolveSnapshotOptions({})).toEqual(CLR_CONTEXT_DEFAULT_OPTIONS);
+      expect(resolveSnapshotOptions()).toEqual(jasmine.objectContaining(CLR_CONTEXT_DEFAULT_OPTIONS));
+      expect(resolveSnapshotOptions({})).toEqual(resolveSnapshotOptions());
+    });
+
+    it('describes the whole page with prose, frames and item lists by default', () => {
+      const resolved = resolveSnapshotOptions();
+      expect(resolved.focus).toBe('page');
+      expect(resolved.rootSelector).toBe('');
+      expect(resolved.includeText).toBe(true);
+      expect(resolved.includeFrames).toBe(true);
+      expect(resolved.collectionItems).toBe('all');
+      expect(resolved.excludeRoles).toEqual([]);
+      expect(resolved.maxTextLength).toBe(100);
     });
 
     it('honours budgets inside their ranges', () => {
-      expect(resolveSnapshotOptions({ maxComponents: 7, maxTextLength: 20 })).toEqual({
-        ...CLR_CONTEXT_DEFAULT_OPTIONS,
-        maxComponents: 7,
-        maxTextLength: 20,
-      });
+      const resolved = resolveSnapshotOptions({ maxComponents: 7, maxItemsPerCollection: 3 });
+      expect(resolved.maxComponents).toBe(7);
+      expect(resolved.maxItemsPerCollection).toBe(3);
     });
 
     it('falls back to the default for a budget that is not a finite number, never to unbounded', () => {
-      expect(resolveSnapshotOptions({ maxComponents: Number.NaN }).maxComponents).toBe(
-        CLR_CONTEXT_DEFAULT_OPTIONS.maxComponents
-      );
-      expect(resolveSnapshotOptions({ maxComponents: Number.POSITIVE_INFINITY }).maxComponents).toBe(
-        CLR_CONTEXT_DEFAULT_OPTIONS.maxComponents
-      );
-      expect(resolveSnapshotOptions({ maxTextLength: '50' as unknown as number }).maxTextLength).toBe(
-        CLR_CONTEXT_DEFAULT_OPTIONS.maxTextLength
+      expect(resolveSnapshotOptions({ maxComponents: Number.NaN }).maxComponents).toBe(300);
+      expect(resolveSnapshotOptions({ maxComponents: Number.POSITIVE_INFINITY }).maxComponents).toBe(300);
+      expect(resolveSnapshotOptions({ maxItemsPerCollection: '5' as unknown as number }).maxItemsPerCollection).toBe(
+        25
       );
     });
 
     it('holds a budget to its range', () => {
       expect(resolveSnapshotOptions({ maxComponents: -5 }).maxComponents).toBe(0);
-      expect(resolveSnapshotOptions({ maxTextLength: -5 }).maxTextLength).toBe(1);
       expect(resolveSnapshotOptions({ maxComponents: 1e9 }).maxComponents).toBe(10_000);
       expect(resolveSnapshotOptions({ maxItemsPerCollection: 2.9 }).maxItemsPerCollection).toBe(2);
+      expect(resolveSnapshotOptions({ maxItemsPerCollection: -1 }).maxItemsPerCollection).toBe(0);
+    });
+
+    it('reports counts and selection only when no items are asked for', () => {
+      expect(resolveSnapshotOptions({ maxItemsPerCollection: 0 }).collectionItems).toBe('summary');
+    });
+
+    it('reads root as the page, the open modal, or a selector', () => {
+      expect(resolveSnapshotOptions({ root: 'page' })).toEqual(
+        jasmine.objectContaining({ focus: 'page', rootSelector: '' })
+      );
+      expect(resolveSnapshotOptions({ root: 'modal' })).toEqual(
+        jasmine.objectContaining({ focus: 'modal', rootSelector: '' })
+      );
+      expect(resolveSnapshotOptions({ root: ' main ' })).toEqual(
+        jasmine.objectContaining({ root: 'main', focus: 'page', rootSelector: 'main' })
+      );
+      expect(resolveSnapshotOptions({ root: '  ' }).root).toBe('page');
+      expect(resolveSnapshotOptions({ root: 7 as unknown as string }).root).toBe('page');
+    });
+
+    it('keeps only usable selectors and known categories', () => {
+      const resolved = resolveSnapshotOptions({
+        excludeSelectors: [' .ads ', '', 7 as unknown as string],
+        excludeCategories: ['layout', 'nonsense' as never],
+      });
+      expect(resolved.excludeSelectors).toEqual(['.ads']);
+      expect(resolved.excludeCategories).toEqual(['layout']);
     });
   });
 
-  describe('capSnapshotOptions', () => {
-    it('lets a caller ask for less than the ceiling', () => {
-      expect(capSnapshotOptions({ maxComponents: 5 }, { maxComponents: 50 })).toEqual({ maxComponents: 5 });
+  describe('categories', () => {
+    it('expand into the roles they stand for', () => {
+      expect(resolveSnapshotOptions({ excludeCategories: ['layout', 'headings'] }).excludeRoles).toEqual([
+        ...CLR_CONTEXT_CATEGORIES.layout,
+        'heading',
+      ]);
     });
 
-    it('never lets a caller ask for more than the ceiling', () => {
-      expect(capSnapshotOptions({ maxComponents: 500 }, { maxComponents: 50 })).toEqual({ maxComponents: 50 });
-    });
-
-    it('applies the ceiling where the caller asked for nothing', () => {
-      expect(capSnapshotOptions(undefined, { maxComponents: 50, maxTextLength: 40 })).toEqual({
-        maxComponents: 50,
-        maxTextLength: 40,
-      });
-    });
-
-    it('leaves the request alone where there is no ceiling', () => {
-      expect(capSnapshotOptions({ maxComponents: 500 }, undefined)).toEqual({ maxComponents: 500 });
-      expect(capSnapshotOptions({ maxComponents: 500 }, { maxTextLength: 40 })).toEqual({
-        maxComponents: 500,
-        maxTextLength: 40,
-      });
-    });
-
-    it('keeps the ceiling exclusions when the request carries a list that is not one', () => {
-      const request = { excludeRoles: 'grid', excludeCategories: 'text' } as unknown as Parameters<
-        typeof capSnapshotOptions
-      >[0];
-      expect(capSnapshotOptions(request, { excludeRoles: ['navigation'], excludeCategories: ['dialogs'] })).toEqual({
-        excludeRoles: ['navigation'],
-        excludeCategories: ['dialogs'],
-      });
-    });
-
-    it('cannot be talked into DOM collection the ceiling switched off', () => {
-      expect(capSnapshotOptions({ includeDomComponents: true }, { includeDomComponents: false })).toEqual({
-        includeDomComponents: false,
-      });
+    it('leave out prose and frames', () => {
+      const resolved = resolveSnapshotOptions({ excludeCategories: ['text', 'frames'] });
+      expect(resolved.includeText).toBe(false);
+      expect(resolved.includeFrames).toBe(false);
+      expect(resolved.excludeRoles).toEqual([]);
     });
   });
 
-  describe('sanitizeUntrustedSnapshotOptions', () => {
-    it('drops a budget that is not a finite number', () => {
-      expect(sanitizeUntrustedSnapshotOptions({ maxComponents: Number.NaN, maxTextLength: 10 })).toEqual({
-        maxTextLength: 10,
-      });
-      expect(sanitizeUntrustedSnapshotOptions({ maxComponents: Number.POSITIVE_INFINITY })).toEqual({});
+  describe('presets', () => {
+    it('narrow from the full defaults', () => {
+      expect(CLR_CONTEXT_PRESETS.full).toEqual({});
+      expect(CLR_CONTEXT_PRESETS.interactive).toEqual({ excludeCategories: ['layout', 'text'] });
+      expect(resolveSnapshotOptions(CLR_CONTEXT_PRESETS.minimal)).toEqual(
+        jasmine.objectContaining({ focus: 'modal', collectionItems: 'summary', maxComponents: 150 })
+      );
     });
 
-    it('drops a list entry longer than any role or category name', () => {
-      expect(sanitizeUntrustedSnapshotOptions({ excludeRoles: ['button', 'x'.repeat(33)] })).toEqual({
-        excludeRoles: ['button'],
-      });
+    it('are handed out as copies the caller may change', () => {
+      const options = presetOrOptions('interactive');
+      options.maxComponents = 1;
+      expect(CLR_CONTEXT_PRESETS.interactive.maxComponents).toBeUndefined();
     });
 
-    it('takes a list only where a list is expected, and a name only where a name is', () => {
-      expect(
-        sanitizeUntrustedSnapshotOptions({
-          excludeRoles: 'grid',
-          excludeCategories: 'text',
-          focus: ['modal'],
-          collectionItems: 'summary',
-        })
-      ).toEqual({ collectionItems: 'summary' });
+    it('report a name that is not a preset, and give no options for it', () => {
+      const warn = spyOn(console, 'warn');
+      expect(presetOrOptions('everything' as never)).toEqual({});
+      expect(warn).toHaveBeenCalledTimes(1);
     });
 
-    it('takes a number only for a budget and a boolean only for a switch', () => {
-      expect(
-        sanitizeUntrustedSnapshotOptions({
-          excludeRoles: 7,
-          excludeCategories: true,
-          focus: 3,
-          collectionItems: false,
-          maxComponents: true,
-          includeText: 0,
-          maxDepth: 2,
-          includeFrames: false,
-        })
-      ).toEqual({ maxDepth: 2, includeFrames: false });
+    it('say that an exclusion list given as something else will be ignored', () => {
+      const warn = spyOn(console, 'warn');
+      presetOrOptions({ excludeSelectors: '.secret' as unknown as string[] });
+      expect(warn).toHaveBeenCalledOnceWith(
+        'Clarity context options: excludeSelectors must be a list, so ".secret" was ignored.'
+      );
     });
   });
 
   describe('withCallOptions', () => {
-    it('lets a call set budgets and switches over the application’s', () => {
-      expect(withCallOptions({ maxComponents: 10, includeText: false }, { includeText: true })).toEqual({
-        maxComponents: 10,
-        includeText: true,
+    it('lets a call set budgets and the root over the application’s', () => {
+      expect(withCallOptions({ maxComponents: 10, root: 'main' }, { maxComponents: 20, root: 'modal' })).toEqual({
+        maxComponents: 20,
+        root: 'modal',
       });
     });
 
@@ -147,248 +142,102 @@ describe('snapshot options', () => {
     });
 
     it('adds a call’s exclusions to the application’s, so an empty list removes none', () => {
-      const application = {
-        excludeSelectors: ['.billing'],
-        excludeRoles: ['img'],
-        excludeCategories: ['text' as const],
-      };
-      expect(withCallOptions(application, { excludeSelectors: [], excludeRoles: ['img', 'link'] })).toEqual({
-        excludeSelectors: ['.billing'],
-        excludeRoles: ['img', 'link'],
-        excludeCategories: ['text'],
+      const application = { excludeSelectors: ['nav'], excludeCategories: ['layout' as const] };
+      expect(withCallOptions(application, { excludeSelectors: ['aside'], excludeCategories: [] })).toEqual({
+        excludeSelectors: ['nav', 'aside'],
+        excludeCategories: ['layout'],
       });
     });
 
     it('ignores an exclusion list that is not a list, so the application’s stays', () => {
-      const application = {
-        excludeSelectors: ['.secret'],
-        excludeRoles: ['grid'],
-        excludeCategories: ['text' as const],
-      };
-      const call = { excludeSelectors: null, excludeRoles: 'img', excludeCategories: null } as unknown as Parameters<
-        typeof withCallOptions
-      >[1];
       const warn = spyOn(console, 'warn');
-      const resolved = resolveSnapshotOptions(withCallOptions(application, call));
-
-      expect(warn).toHaveBeenCalledTimes(3);
-      expect(String(warn.calls.first().args[0])).toContain('must be a list');
-      expect(resolved.excludeSelectors).toEqual(['.secret']);
-      expect(resolved.excludeRoles).toContain('grid');
-      expect(resolved.excludeCategories).toEqual(['text']);
+      expect(
+        withCallOptions({ excludeSelectors: ['nav'] }, { excludeSelectors: 'aside' as unknown as string[] })
+      ).toEqual({ excludeSelectors: ['nav'] });
+      expect(warn).toHaveBeenCalledTimes(1);
     });
 
     it('says a value it cannot print was ignored, rather than throwing while saying so', () => {
+      const warn = spyOn(console, 'warn');
       const circular: Record<string, unknown> = {};
       circular['self'] = circular;
-      const call = { excludeSelectors: circular, excludeRoles: BigInt(1) } as unknown as Parameters<
-        typeof withCallOptions
-      >[1];
-      const warn = spyOn(console, 'warn');
-
-      expect(() => withCallOptions({}, call)).not.toThrow();
-      expect(warn.calls.allArgs().map(args => String(args[0]))).toEqual([
-        'Clarity context options: excludeSelectors must be a list, so an object was ignored.',
-        'Clarity context options: excludeRoles must be a list, so a bigint was ignored.',
+      withCallOptions({}, { excludeSelectors: circular as never });
+      withCallOptions({}, { excludeSelectors: BigInt(1) as never });
+      expect(warn.calls.allArgs()).toEqual([
+        ['Clarity context options: excludeSelectors must be a list, so an object was ignored.'],
+        ['Clarity context options: excludeSelectors must be a list, so a bigint was ignored.'],
       ]);
     });
   });
-});
 
-describe('provideClrContextOptions', () => {
-  it('says that an exclusion list given as something else was ignored', () => {
-    const warn = spyOn(console, 'warn');
-    provideClrContextOptions({ excludeSelectors: '.secret', excludeRoles: 'grid' } as unknown as Parameters<
-      typeof provideClrContextOptions
-    >[0]);
-
-    expect(warn.calls.allArgs().map(args => String(args[0]))).toEqual([
-      'Clarity context options: excludeRoles must be a list, so "grid" was ignored.',
-      'Clarity context options: excludeSelectors must be a list, so ".secret" was ignored.',
-    ]);
-  });
-
-  it('says nothing about lists that are lists', () => {
-    const warn = spyOn(console, 'warn');
-    provideClrContextOptions({ excludeSelectors: ['.secret'] }, { excludeRoles: ['grid'] });
-
-    expect(warn).not.toHaveBeenCalled();
-  });
-});
-
-describe('snapshot option switches', () => {
-  it('default to describing text and frames', () => {
-    expect(resolveSnapshotOptions().includeText).toBe(true);
-    expect(resolveSnapshotOptions().includeFrames).toBe(true);
-  });
-
-  it('can be turned off by the caller, and stay off when the ceiling turned them off', () => {
-    expect(resolveSnapshotOptions({ includeText: false }).includeText).toBe(false);
-    expect(capSnapshotOptions({ includeFrames: true }, { includeFrames: false }).includeFrames).toBe(false);
-    expect(capSnapshotOptions({ includeFrames: false }, { includeFrames: true }).includeFrames).toBe(false);
-  });
-});
-
-describe('snapshot options, choosing what to collect', () => {
-  it('resolves lists, the root selector and the enumerations, dropping what is not usable', () => {
-    const resolved = resolveSnapshotOptions({
-      excludeRoles: ['navigation', 3 as unknown as string, ' banner '],
-      excludeSelectors: ['clr-header'],
-      rootSelector: ' main ',
-      maxDepth: 2.7,
-      focus: 'modal',
-      collectionItems: 'bogus' as 'all',
+  describe('capSnapshotOptions', () => {
+    it('lets a caller ask for less than the ceiling, never more', () => {
+      expect(capSnapshotOptions({ maxComponents: 5 }, { maxComponents: 50 })).toEqual({ maxComponents: 5 });
+      expect(capSnapshotOptions({ maxComponents: 500 }, { maxComponents: 50 })).toEqual({ maxComponents: 50 });
     });
-    expect(resolved.excludeRoles).toEqual(['navigation', 'banner']);
-    expect(resolved.excludeSelectors).toEqual(['clr-header']);
-    expect(resolved.rootSelector).toBe('main');
-    expect(resolved.maxDepth).toBe(2);
-    expect(resolved.focus).toBe('modal');
-    expect(resolved.collectionItems).toBe('all');
-  });
 
-  it('bounds the lists an untrusted caller may send, and never cuts the application’s own', () => {
-    const many = Array.from({ length: 80 }, (_, index) => `role-${index}`);
-    expect(resolveSnapshotOptions({ excludeRoles: many }).excludeRoles.length).toBe(80);
-    expect(resolveSnapshotOptions({ excludeSelectors: many }).excludeSelectors).toEqual(many);
-    expect(sanitizeUntrustedSnapshotOptions({ excludeRoles: many, excludeSelectors: ['x'] })).toEqual({
-      excludeRoles: many.slice(0, 50),
+    it('applies the ceiling where the caller asked for nothing', () => {
+      expect(capSnapshotOptions({}, { maxItemsPerCollection: 0 })).toEqual({ maxItemsPerCollection: 0 });
+    });
+
+    it('leaves the request alone where there is no ceiling', () => {
+      expect(capSnapshotOptions({ maxComponents: 5 }, undefined)).toEqual({ maxComponents: 5 });
+    });
+
+    it('adds exclusions up and keeps the ceiling’s exclusions when the request’s list is not one', () => {
+      expect(capSnapshotOptions({ excludeCategories: ['text'] }, { excludeCategories: ['layout'] })).toEqual({
+        excludeCategories: ['layout', 'text'],
+      });
+      expect(
+        capSnapshotOptions({ excludeSelectors: 'x' as unknown as string[] }, { excludeSelectors: ['nav'] })
+      ).toEqual({ excludeSelectors: ['nav'] });
+    });
+
+    it('keeps a narrowing the ceiling chose', () => {
+      expect(capSnapshotOptions({ root: 'page' }, { root: 'main' }).root).toBe('main');
+      expect(capSnapshotOptions({ root: 'page' }, { root: 'modal' }).root).toBe('modal');
+      expect(capSnapshotOptions({ root: 'modal' }, { root: 'page' }).root).toBe('modal');
     });
   });
 
-  it('never shortens the application’s own selectors', () => {
-    const long = `${Array.from({ length: 60 }, (_, index) => `.pad-${index}`).join(', ')}, .account-number`;
-    expect(resolveSnapshotOptions({ excludeSelectors: [long], rootSelector: long }).excludeSelectors).toEqual([long]);
-    expect(resolveSnapshotOptions({ rootSelector: long }).rootSelector).toBe(long);
-  });
-
-  it('adds exclusions up and keeps a narrowing the ceiling chose', () => {
-    const capped = capSnapshotOptions(
-      { excludeRoles: ['banner'], maxDepth: 5, focus: 'page', collectionItems: 'all', rootSelector: 'body' },
-      { excludeRoles: ['navigation'], maxDepth: 3, focus: 'modal', collectionItems: 'summary', rootSelector: 'main' }
-    );
-    expect(capped.excludeRoles).toEqual(['navigation', 'banner']);
-    expect(capped.maxDepth).toBe(3);
-    expect(capped.focus).toBe('modal');
-    expect(capped.collectionItems).toBe('summary');
-    expect(capped.rootSelector).toBe('main');
-  });
-
-  it('treats an unlimited depth ceiling as the largest, not the smallest', () => {
-    expect(capSnapshotOptions({ maxDepth: 4 }, { maxDepth: 0 }).maxDepth).toBe(4);
-    expect(capSnapshotOptions({ maxDepth: 0 }, { maxDepth: 3 }).maxDepth).toBe(3);
-  });
-
-  describe('presets', () => {
-    it('start from the full defaults and narrow from there', () => {
-      expect(clrContextPreset('full')).toEqual({});
-      expect(clrContextPreset('interactive').excludeCategories).toEqual(['layout', 'text']);
-      expect(resolveSnapshotOptions(clrContextPreset('interactive')).includeText).toBe(false);
-      expect(resolveSnapshotOptions(clrContextPreset('interactive')).excludeRoles).toContain('navigation');
-      expect(clrContextPreset('minimal').collectionItems).toBe('summary');
-      expect(clrContextPreset('minimal').focus).toBe('modal');
+  describe('sanitizeUntrustedSnapshotOptions', () => {
+    it('takes budgets, categories and the page or modal scope only', () => {
+      expect(CLR_CONTEXT_UNTRUSTED_OPTION_KEYS).toEqual([
+        'maxComponents',
+        'maxItemsPerCollection',
+        'excludeCategories',
+        'root',
+      ]);
+      expect(
+        sanitizeUntrustedSnapshotOptions({
+          maxComponents: 5,
+          maxItemsPerCollection: Number.NaN,
+          excludeCategories: ['layout', 7, 'x'.repeat(40)],
+          excludeSelectors: ['nav'],
+          root: 'modal',
+        })
+      ).toEqual({ maxComponents: 5, excludeCategories: ['layout'], root: 'modal' });
     });
 
-    it('refuse a name that is not a preset, rather than silently giving the defaults', () => {
-      const unknown = 'interactiv' as unknown as Parameters<typeof clrContextPreset>[0];
-      expect(() => clrContextPreset(unknown)).toThrowError(
-        /"interactiv" is not a preset; use one of full, interactive, minimal/
+    it('refuses a selector as the scope, and a value of the wrong kind', () => {
+      expect(sanitizeUntrustedSnapshotOptions({ root: 'main', maxComponents: '5', excludeCategories: 'text' })).toEqual(
+        {}
       );
-      expect(() => clrContextPreset('toString' as unknown as Parameters<typeof clrContextPreset>[0])).toThrowError();
+      expect(sanitizeUntrustedSnapshotOptions('nonsense')).toBeUndefined();
     });
 
-    it('apply overrides over the preset', () => {
-      const overridden = resolveSnapshotOptions(clrContextPreset('minimal', { maxComponents: 500 }));
-      expect(overridden.maxComponents).toBe(500);
-      expect(overridden.includeText).toBe(false);
-    });
-
-    it('keep the preset’s exclusions when an override’s list is not a list', () => {
-      const overrides = { excludeCategories: null, excludeRoles: 'grid' } as unknown as Parameters<
-        typeof clrContextPreset
-      >[1];
-      const warn = spyOn(console, 'warn');
-      const options = clrContextPreset('interactive', overrides);
-
-      expect(warn).toHaveBeenCalledTimes(2);
-      expect(options.excludeCategories).toEqual(['layout', 'text']);
-      expect(options.excludeRoles).toBeUndefined();
+    it('bounds the category list an untrusted caller may send', () => {
+      const junk = Array.from({ length: 60 }, (_, index) => `junk-${index}`);
+      expect(sanitizeUntrustedSnapshotOptions({ excludeCategories: junk })?.excludeCategories?.length).toBe(50);
     });
   });
-});
 
-describe('snapshot options, categories', () => {
-  it('expands a category into the roles it stands for, on top of any roles given', () => {
-    const resolved = resolveSnapshotOptions({ excludeCategories: ['actions'], excludeRoles: ['heading'] });
-    expect(resolved.excludeRoles).toContain('button');
-    expect(resolved.excludeRoles).toContain('link');
-    expect(resolved.excludeRoles).toContain('menuitem');
-    expect(resolved.excludeRoles).toContain('heading');
-    expect(resolved.excludeCategories).toEqual(['actions']);
-  });
-
-  it('maps the text and frames categories onto their switches', () => {
-    const resolved = resolveSnapshotOptions({ excludeCategories: ['text', 'frames'] });
-    expect(resolved.includeText).toBe(false);
-    expect(resolved.includeFrames).toBe(false);
-    expect(resolved.excludeRoles).toEqual([]);
-  });
-
-  it('drops a category it does not know', () => {
-    expect(resolveSnapshotOptions({ excludeCategories: ['widgets' as never, 'layout'] }).excludeCategories).toEqual([
-      'layout',
-    ]);
-  });
-
-  it('adds a ceiling’s categories to the caller’s', () => {
-    expect(
-      capSnapshotOptions({ excludeCategories: ['actions'] }, { excludeCategories: ['layout'] }).excludeCategories
-    ).toEqual(['layout', 'actions']);
-  });
-
-  it('is what the presets are built from', () => {
-    expect(clrContextPreset('interactive').excludeCategories).toEqual(['layout', 'text']);
-    expect(resolveSnapshotOptions(clrContextPreset('interactive')).includeText).toBe(false);
-    expect(resolveSnapshotOptions(clrContextPreset('interactive')).excludeRoles).toContain('navigation');
-  });
-});
-
-describe('snapshot options, the exported constants', () => {
-  it('cannot be changed by an application, since they decide what every snapshot and caller gets', () => {
-    expect(() => ((CLR_CONTEXT_DEFAULT_OPTIONS as { maxComponents: number }).maxComponents = 1e6)).toThrow();
-    expect(() => (CLR_CONTEXT_CATEGORIES.forms as string[]).push('dialog')).toThrow();
-    expect(() => (CLR_CONTEXT_PRESETS.minimal.excludeCategories as string[]).pop()).toThrow();
-    expect(() => (CLR_CONTEXT_UNTRUSTED_OPTION_KEYS as string[]).push('rootSelector')).toThrow();
-    expect(CLR_CONTEXT_DEFAULT_OPTIONS.maxComponents).toBe(300);
-  });
-
-  it('adds an override’s exclusions to the preset’s rather than replacing them', () => {
-    expect(clrContextPreset('interactive', { excludeCategories: ['images', 'layout'] }).excludeCategories).toEqual([
-      'layout',
-      'text',
-      'images',
-    ]);
-    expect(clrContextPreset('interactive', { excludeRoles: ['tree'] }).excludeRoles).toEqual(['tree']);
-  });
-
-  it('never lets a requester push the ceiling’s exclusions out of a bounded list', () => {
-    const junk = Array.from({ length: 60 }, (_, index) => `junk-${index}`);
-    const capped = capSnapshotOptions(
-      { excludeRoles: junk, excludeCategories: junk as never[] },
-      { excludeRoles: ['navigation'], excludeCategories: ['layout'] }
-    );
-    const resolved = resolveSnapshotOptions(capped);
-
-    expect(resolved.excludeRoles).toContain('navigation');
-    expect(resolved.excludeCategories).toEqual(['layout']);
-  });
-
-  it('hands out presets as copies the caller may change', () => {
-    const preset = clrContextPreset('minimal');
-    preset.excludeCategories?.push('dialogs');
-    preset.maxComponents = 5;
-
-    expect(CLR_CONTEXT_PRESETS.minimal.excludeCategories).toEqual(['layout', 'text']);
-    expect(CLR_CONTEXT_PRESETS.minimal.maxComponents).toBe(150);
+  describe('the exported constants', () => {
+    it('cannot be changed by an application, since they decide what every snapshot and caller gets', () => {
+      expect(Object.isFrozen(CLR_CONTEXT_DEFAULT_OPTIONS)).toBe(true);
+      expect(Object.isFrozen(CLR_CONTEXT_PRESETS.minimal)).toBe(true);
+      expect(Object.isFrozen(CLR_CONTEXT_CATEGORIES.layout)).toBe(true);
+      expect(Object.isFrozen(CLR_CONTEXT_UNTRUSTED_OPTION_KEYS)).toBe(true);
+    });
   });
 });

@@ -6,13 +6,13 @@
  */
 
 import { Injectable } from '@angular/core';
-import { ClrContextSnapshotOptions } from '@clr/angular/utils';
 import { Observable, Subject } from 'rxjs';
 
 import { attempt, TIMED_OUT, usableTimeout, withTimeout } from '../attempt';
 import { ClrComponentContext, ClrContextProvider, ClrPublishedContext } from '../interfaces/context.interface';
 import { jsonSafe, REGION_DEPTH } from '../json-safe';
 import { publicState } from '../public-keys';
+import type { ResolvedSnapshotOptions } from '../snapshot-options';
 
 /** Decides, from the element an annotation sits on, whether it is kept, dropped or stripped of state. */
 export type ClrContextRegionFilter = (element: Element | null) => 'keep' | 'drop' | 'redact';
@@ -163,10 +163,7 @@ export interface ClrContextAsyncCollectOptions extends ClrContextCollectOptions 
 }
 
 /** How long text and lists in a provider's report may be. */
-export type ClrContextRegionLimits = Pick<
-  Required<ClrContextSnapshotOptions>,
-  'maxTextLength' | 'maxItemsPerCollection'
->;
+export type ClrContextRegionLimits = Pick<ResolvedSnapshotOptions, 'maxTextLength' | 'maxItemsPerCollection'>;
 
 /** Type of the placeholder region reported for a provider whose answer is pending. */
 export const CLR_CONTEXT_LOADING_TYPE = 'clr-loading';

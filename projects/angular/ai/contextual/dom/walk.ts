@@ -40,6 +40,7 @@ import {
   renderedChildNodes,
 } from './shadow';
 import { summarizeRole } from './summarizers';
+import type { ResolvedSnapshotOptions } from '../snapshot-options';
 import { WRITABLE_ROLES } from './tables/roles';
 import {
   CELL_SELECTOR,
@@ -71,7 +72,7 @@ export interface ClrContextDomExtractor {
 const MAX_ELEMENTS_VISITED = 25_000;
 
 interface Walk {
-  readonly options: Required<ClrContextSnapshotOptions>;
+  readonly options: ResolvedSnapshotOptions;
   /** For a caller the application does not control: published state is cut to the keys marked public. */
   readonly untrusted: boolean;
   readonly extractors: ClrContextDomExtractor[];
@@ -107,7 +108,7 @@ export interface ClrContextTreeResult {
 
 export function collectContextTreeWithin(
   root: ParentNode,
-  options: Required<ClrContextSnapshotOptions>,
+  options: ResolvedSnapshotOptions,
   extractors: ClrContextDomExtractor[] = [],
   untrusted = false
 ): ClrContextTreeResult {
@@ -154,7 +155,7 @@ export interface ClrContextScope {
 }
 
 /** The whole page, the `rootSelector` roots, or with modal focus the topmost open dialog inside them. */
-export function engineScope(root: ParentNode, options: Required<ClrContextSnapshotOptions>): ClrContextScope {
+export function engineScope(root: ParentNode, options: ResolvedSnapshotOptions): ClrContextScope {
   const excludeSelector = usableSelectors(root, options.excludeSelectors);
   const excludedRoles = new Set(options.excludeRoles);
   const roots = options.rootSelector ? selectedRoots(root, options.rootSelector, excludeSelector, excludedRoles) : null;
@@ -280,12 +281,11 @@ function describeScope(root: ParentNode, roots: Element[] | null, walk: Walk): C
 }
 
 /** Probes the leftovers with a budget of one: the snapshot is only truncated if they would produce a node. */
-function noteUndescribed(element: Element, walk: Walk, owner: Element | null, pastDepth = false): void {
+function noteUndescribed(element: Element, walk: Walk, owner: Element | null): void {
   if (walk.probing || walk.truncated) {
     return;
   }
-  const options = pastDepth ? { ...walk.options, maxDepth: 0 } : walk.options;
-  const probe: Walk = { ...walk, options, remaining: 1, truncated: false, probing: true };
+  const probe: Walk = { ...walk, remaining: 1, truncated: false, probing: true };
   if (describeElement(element, probe, owner).length) {
     walk.truncated = true;
   }
@@ -538,9 +538,7 @@ function describeAnonymousCustomElement(element: Element, tagName: string, walk:
     return listOf(finish(only, element, walk, { published }));
   }
   if (rendered.length > 1) {
-    // A wrapper adds a level, so the parts are returned as they are when that level would pass `maxDepth`.
-    const { maxDepth } = walk.options;
-    if (walk.remaining <= 0 || (maxDepth > 0 && walk.depth + 1 + treeDepth(rendered) > maxDepth)) {
+    if (walk.remaining <= 0) {
       return rendered;
     }
     walk.remaining--;
@@ -556,10 +554,6 @@ function describeAnonymousCustomElement(element: Element, tagName: string, walk:
     return [];
   }
   return null;
-}
-
-function treeDepth(nodes: ClrComponentContext[]): number {
-  return nodes.reduce((deepest, node) => Math.max(deepest, 1 + treeDepth(node.children ?? [])), 0);
 }
 
 /** Application controls in a summarised collection's cells, which the summary does not cover. */
@@ -737,15 +731,6 @@ function describeNested(
   owner: Element | null,
   looseText?: LooseText
 ): ClrComponentContext[] {
-  const { maxDepth } = walk.options;
-  if (maxDepth > 0 && walk.depth + 1 >= maxDepth) {
-    for (const child of renderedChildNodes(parent)) {
-      if (child.nodeType === Node.ELEMENT_NODE) {
-        noteUndescribed(child as Element, walk, owner, true);
-      }
-    }
-    return [];
-  }
   return within(walk, ['depth'], () => describeChildren(parent, walk, owner, looseText));
 }
 
@@ -858,9 +843,7 @@ function finish(
   }
   // Published children are not walked, so they are charged to the budget here.
   if (described.children && (foreign || described.children !== node.children)) {
-    const { maxDepth } = walk.options;
-    const levels = maxDepth > 0 ? maxDepth - walk.depth - 1 : Infinity;
-    described = { ...described, children: charged(described.children, walk, walk.excludeRoles, levels) };
+    described = { ...described, children: charged(described.children, walk, walk.excludeRoles) };
   }
   const unpruned = foreign || described !== node;
 

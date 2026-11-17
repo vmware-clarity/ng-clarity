@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { ClrContextEngineService } from '@clr/angular/ai';
+import { ClrContextService } from '@clr/angular/ai';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.Eager,
@@ -16,18 +16,18 @@ import { ClrContextEngineService } from '@clr/angular/ai';
   standalone: false,
 })
 export class ContextualDemo implements OnInit, OnDestroy {
-  constructor(private contextEngine: ClrContextEngineService) {}
+  constructor(private context: ClrContextService) {}
 
   ngOnInit(): void {
     // The engine won't replace a global it does not own, e.g. an element with that id.
     try {
-      this.contextEngine.enableGlobalAccess();
+      this.context.enableGlobalAccess();
     } catch (error) {
       console.warn(error);
     }
   }
 
   ngOnDestroy(): void {
-    this.contextEngine.disableGlobalAccess();
+    this.context.disableGlobalAccess();
   }
 }
