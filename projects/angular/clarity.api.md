@@ -88,7 +88,7 @@ export abstract class AbstractIfState {
     // Warning: (ae-forgotten-export) The symbol "CONTROL_STATE" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    protected state: CONTROL_STATE;
+    protected state: CONTROL_STATE | undefined;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<AbstractIfState, never, never, {}, {}, never, never, true, never>;
     // (undocumented)
@@ -1685,7 +1685,7 @@ export class ClrCalendar implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "CalendarViewModel" needs to be exported by the entry point clr-angular.d.ts
     calendarViewModel: CalendarViewModel;
     // (undocumented)
-    get focusedDay(): DayModel;
+    get focusedDay(): DayModel | null | undefined;
     get localeDays(): ReadonlyArray<ClrDayOfWeek>;
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
@@ -1693,9 +1693,9 @@ export class ClrCalendar implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "DayModel" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    get selectedDay(): DayModel;
+    get selectedDay(): DayModel | null | undefined;
     // (undocumented)
-    get selectedEndDay(): DayModel;
+    get selectedEndDay(): DayModel | null | undefined;
     // (undocumented)
     setSelectedDay(day: DayModel): void;
     // (undocumented)
@@ -1911,7 +1911,7 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
     // (undocumented)
     protected get allCheckboxesDisabled(): boolean;
     // (undocumented)
-    ariaLabelledBy: string;
+    ariaLabelledBy: string | null;
     // (undocumented)
     checkboxes: QueryList<ClrCheckbox>;
     // (undocumented)
@@ -1926,7 +1926,7 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
     // (undocumented)
     protected ngControlService: NgControlService;
     // (undocumented)
-    role: string;
+    role: string | null;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrCheckboxContainer, "clr-checkbox-container,clr-toggle-container", never, {
         "clrInline": {
@@ -2004,7 +2004,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     control: NgControl;
     // (undocumented)
-    get displayField(): string;
+    get displayField(): string | undefined;
     // (undocumented)
     get editable(): boolean;
     set editable(value: boolean);
@@ -2037,7 +2037,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     get multiSelect(): boolean | string;
     set multiSelect(value: boolean | string);
     // (undocumented)
-    get multiSelectModel(): T[];
+    get multiSelectModel(): T[] | null | undefined;
     // (undocumented)
     static ngAcceptInputType_showSelectAll: unknown;
     // (undocumented)
@@ -2465,11 +2465,11 @@ export class ClrControlLabel implements OnInit, OnDestroy {
     // (undocumented)
     disableGrid(): void;
     // (undocumented)
-    forAttr: string;
+    forAttr?: string;
     // (undocumented)
-    idAttr: string;
+    idAttr?: string;
     // (undocumented)
-    idInput: string;
+    idInput?: string;
     // (undocumented)
     get labelText(): string;
     // (undocumented)
@@ -3992,7 +3992,7 @@ export class ClrDatagridVirtualTree<T> extends DatagridTreeRenderer<T> {
 export class ClrDatalist implements AfterContentInit {
     constructor(datalistIdService: DatalistIdService);
     // (undocumented)
-    datalistId: string;
+    datalistId?: string;
     // (undocumented)
     set id(idValue: string);
     // (undocumented)
@@ -4165,7 +4165,7 @@ export class ClrDateInput extends ClrDateInputBase {
     // (undocumented)
     set min(dateString: string);
     // (undocumented)
-    protected updateDayModel(dayModel: DayModel): void;
+    protected updateDayModel(dayModel: DayModel | null): void;
     // (undocumented)
     protected get userSelectedDayChange(): Observable<DayModel>;
     // (undocumented)
@@ -4195,7 +4195,7 @@ export abstract class ClrDateInputBase extends WrappedFormControl<ClrDateContain
     // (undocumented)
     protected control: NgControl;
     // (undocumented)
-    protected abstract dateChange: EventEmitter<Date>;
+    protected abstract dateChange: EventEmitter<Date | null>;
     // (undocumented)
     protected dateIOService: DateIOService;
     // (undocumented)
@@ -4205,7 +4205,7 @@ export abstract class ClrDateInputBase extends WrappedFormControl<ClrDateContain
     // (undocumented)
     protected datepickerHasFormControl(): boolean;
     // (undocumented)
-    get disabled(): boolean | string;
+    get disabled(): boolean | null;
     set disabled(value: boolean | string);
     // (undocumented)
     protected el: ElementRef<HTMLInputElement>;
@@ -4222,7 +4222,7 @@ export abstract class ClrDateInputBase extends WrappedFormControl<ClrDateContain
     // (undocumented)
     onValueChange(target: HTMLInputElement): void;
     // (undocumented)
-    placeholder: string;
+    placeholder?: string;
     // (undocumented)
     get placeholderText(): string;
     // (undocumented)
@@ -4236,9 +4236,9 @@ export abstract class ClrDateInputBase extends WrappedFormControl<ClrDateContain
     // (undocumented)
     triggerValidation(): void;
     // (undocumented)
-    protected abstract updateDayModel(dayModel: DayModel): void;
+    protected abstract updateDayModel(dayModel: DayModel | null): void;
     // (undocumented)
-    protected abstract get userSelectedDayChange(): Observable<DayModel>;
+    protected abstract get userSelectedDayChange(): Observable<DayModel | null | undefined>;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateInputBase, never, never, {
         "placeholder": {
@@ -4273,7 +4273,7 @@ export abstract class ClrDateInputBase extends WrappedFormControl<ClrDateContain
 export class ClrDateInputValidator implements Validator {
     constructor(dateIOService: DateIOService);
     // (undocumented)
-    validate(control: AbstractControl): ValidationErrors;
+    validate(control: AbstractControl): ValidationErrors | null;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateInputValidator, "[clrDate], [clrStartDate], [clrEndDate]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -4551,7 +4551,7 @@ export class ClrEndDateInput extends ClrDateInputBase {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    protected updateDayModel(dayModel: DayModel): void;
+    protected updateDayModel(dayModel: DayModel | null): void;
     // (undocumented)
     protected get userSelectedDayChange(): Observable<DayModel>;
     // (undocumented)
@@ -4575,7 +4575,7 @@ export class ClrEndDateInput extends ClrDateInputBase {
 export class ClrEndDateInputValidator implements Validator {
     constructor(dateIOService: DateIOService, dateNavigationService: DateNavigationService);
     // (undocumented)
-    validate(control: AbstractControl): ValidationErrors;
+    validate(control: AbstractControl): ValidationErrors | null;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrEndDateInputValidator, "[clrEndDate]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -4680,7 +4680,7 @@ export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
     // (undocumented)
     readonly elementRef: ElementRef<HTMLInputElement>;
     // (undocumented)
-    selection: ClrFileInputSelection;
+    selection: ClrFileInputSelection | undefined;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrFileInput, "input[type=\"file\"][clrFileInput]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -4695,7 +4695,7 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
     // (undocumented)
     protected get accept(): string;
     // (undocumented)
-    protected addFilesToSelection(newFiles: FileList): void;
+    protected addFilesToSelection(newFiles: FileList | null): void;
     // (undocumented)
     protected browse(): void;
     // (undocumented)
@@ -4705,7 +4705,7 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
     // (undocumented)
     protected clearSelectedFiles(): void;
     // (undocumented)
-    customButtonLabel: string;
+    customButtonLabel?: string;
     // (undocumented)
     protected get disabled(): boolean;
     // (undocumented)
@@ -4745,9 +4745,9 @@ export class ClrFileInputModule {
 // @public (undocumented)
 export interface ClrFileInputSelection {
     // (undocumented)
-    buttonLabel: string;
+    buttonLabel: string | undefined;
     // (undocumented)
-    clearFilesButtonLabel: string;
+    clearFilesButtonLabel: string | undefined;
     // (undocumented)
     fileCount: number;
 }
@@ -4756,11 +4756,11 @@ export interface ClrFileInputSelection {
 export class ClrFileInputValidator implements Validator {
     constructor(elementRef: ElementRef<HTMLInputElement>);
     // (undocumented)
-    maxFileSize: number;
+    maxFileSize?: number;
     // (undocumented)
-    minFileSize: number;
+    minFileSize?: number;
     // (undocumented)
-    validate(control: AbstractControl<FileList>): ValidationErrors;
+    validate(control: AbstractControl<FileList>): ValidationErrors | null;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrFileInputValidator, "input[type=\"file\"][clrFileInput]", never, {
         "minFileSize": {
@@ -4780,13 +4780,13 @@ export class ClrFileInputValidator implements Validator {
 export class ClrFileInputValueAccessor implements ControlValueAccessor {
     constructor(elementRef: ElementRef<HTMLInputElement>);
     // (undocumented)
-    registerOnChange(fn: (value: FileList) => void): void;
+    registerOnChange(fn: (value: FileList | null) => void): void;
     // (undocumented)
     registerOnTouched(fn: () => void): void;
     // (undocumented)
     setDisabledState(isDisabled: boolean): void;
     // (undocumented)
-    writeValue(value: FileList): void;
+    writeValue(value: FileList | null | undefined): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrFileInputValueAccessor, "input[type=\"file\"][clrFileInput]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -5182,7 +5182,7 @@ export class ClrIfError extends AbstractIfState {
     get error(): string;
     set error(value: string);
     // (undocumented)
-    protected handleState(state: CONTROL_STATE): void;
+    protected handleState(state: CONTROL_STATE | undefined): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfError, "[clrIfError]", never, {
         "error": {
@@ -5774,7 +5774,7 @@ export class ClrModalModule {
 // @public (undocumented)
 export class ClrMonthpicker implements AfterViewInit {
     constructor(_localeHelperService: LocaleHelperService, _dateNavigationService: DateNavigationService, _datepickerFocusService: DatepickerFocusService, _elRef: ElementRef, _viewManagerService: ViewManagerService, commonStrings: ClrCommonStringsService);
-    get calendarEndMonthIndex(): number;
+    get calendarEndMonthIndex(): number | undefined;
     get calendarMonthIndex(): number;
     get calendarYear(): number;
     changeMonth(monthIndex: number): void;
@@ -6069,7 +6069,7 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
     // (undocumented)
     get showSelectAll(): boolean;
     // (undocumented)
-    toggleSelectAll(event?: Event): void;
+    toggleSelectAll(event?: Event | null): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrOptions<any>, "clr-options", never, {
         "optionsId": {
@@ -6089,7 +6089,7 @@ export class ClrOptionSelected<T> {
         $implicit: T;
     }>);
     // (undocumented)
-    selected: T;
+    selected?: T;
     // (undocumented)
     template: TemplateRef<{
         $implicit: T;
@@ -6585,7 +6585,7 @@ export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
     constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
     // (undocumented)
-    ariaLabelledBy: string;
+    ariaLabelledBy: string | null;
     // (undocumented)
     get clrInline(): boolean | string;
     set clrInline(value: boolean | string);
@@ -6600,7 +6600,7 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
     // (undocumented)
     radios: QueryList<ClrRadio>;
     // (undocumented)
-    role: string;
+    role: string | null;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrRadioContainer, "clr-radio-container", never, {
         "clrInline": {
@@ -7270,7 +7270,7 @@ export class ClrStartDateInput extends ClrDateInputBase {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    protected updateDayModel(dayModel: DayModel): void;
+    protected updateDayModel(dayModel: DayModel | null): void;
     // (undocumented)
     protected get userSelectedDayChange(): Observable<DayModel>;
     // (undocumented)
@@ -7294,7 +7294,7 @@ export class ClrStartDateInput extends ClrDateInputBase {
 export class ClrStartDateInputValidator implements Validator {
     constructor(dateIOService: DateIOService, dateNavigationService: DateNavigationService);
     // (undocumented)
-    validate(control: AbstractControl): ValidationErrors;
+    validate(control: AbstractControl): ValidationErrors | null;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStartDateInputValidator, "[clrStartDate]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -8825,9 +8825,9 @@ export class ClrYearpicker implements AfterViewInit {
     onKeyDown(event: KeyboardEvent): void;
     previousDecade(): void;
     // (undocumented)
-    get selectedEndYear(): number;
+    get selectedEndYear(): number | undefined;
     // (undocumented)
-    get selectedStartYear(): number;
+    get selectedStartYear(): number | undefined;
     // Warning: (ae-forgotten-export) The symbol "YearRangeModel" needs to be exported by the entry point clr-angular.d.ts
     yearRangeModel: YearRangeModel;
     // (undocumented)
@@ -9066,7 +9066,7 @@ export class ControlClassService {
     // (undocumented)
     className: string;
     // (undocumented)
-    controlClass(state: string, grid?: boolean, additional?: string): string;
+    controlClass(state: string | null, grid?: boolean, additional?: string): string;
     // (undocumented)
     initControlClass(renderer: Renderer2, element: HTMLElement): void;
     // (undocumented)
@@ -10848,7 +10848,7 @@ export class NgControlService {
     // (undocumented)
     addControl(control: NgControl): void;
     // (undocumented)
-    container: ClrAbstractContainer;
+    container?: ClrAbstractContainer;
     // (undocumented)
     get controls(): NgControl[];
     // (undocumented)
@@ -12223,7 +12223,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     // (undocumented)
     protected index: number;
     // (undocumented)
-    protected ngControlService: NgControlService;
+    protected ngControlService: NgControlService | null;
     // (undocumented)
     ngDoCheck(): void;
     // (undocumented)

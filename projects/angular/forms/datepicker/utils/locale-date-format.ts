@@ -106,7 +106,7 @@ export class ClrLocaleDateFormat {
     if (!text || typeof text !== 'string') {
       return null;
     }
-    const dateParts: string[] = text.match(USER_INPUT_REGEX);
+    const dateParts = text.match(USER_INPUT_REGEX);
     if (!dateParts || dateParts.length !== 3) {
       return null;
     }
