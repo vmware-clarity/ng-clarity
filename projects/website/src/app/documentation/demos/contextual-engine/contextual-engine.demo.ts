@@ -25,11 +25,11 @@ import { ClrContextService } from '@clr/angular/ai';
   template: '...',
 })
 export class AssistantComponent {
-  private readonly engine = inject(ClrContextService);
+  private readonly context = inject(ClrContextService);
 
   async ask(question: string) {
     // One snapshot, taken now. Send it to your model as data, delimited from your prompt.
-    return { question, page: await this.engine.snapshot() };
+    return { question, page: await this.context.snapshot() };
   }
 }
 `;
@@ -42,10 +42,10 @@ import { ClrContextService } from '@clr/angular/ai';
   // ...
 })
 export class AssistantPanelComponent {
-  private readonly contextEngine = inject(ClrContextService);
+  private readonly context = inject(ClrContextService);
 
   async askAssistant(question: string) {
-    const context = await this.contextEngine.snapshot();
+    const page = await this.context.snapshot();
     // Hand the question and the page context to your AI backend together.
   }
 }
@@ -135,7 +135,7 @@ this.teardown?.();
 `;
 
 const EXTRACTOR_EXAMPLE = `
-this.contextEngine.configure({
+this.context.configure({
   extractors: [
     {
       selector: 'chat-message-list',
@@ -150,7 +150,7 @@ this.contextEngine.configure({
 `;
 
 const FORM_CONTEXT_EXAMPLE = `
-const context = await contextEngine.snapshot();
+const page = await context.snapshot();
 
 // A field carries what it is, what it permits, and what it currently holds:
 // {
@@ -177,17 +177,17 @@ const REDACT_EXAMPLE = `
 `;
 
 const GLOBAL_ACCESS_EXAMPLE = `
-this.contextEngine.enableGlobalAccess();
+this.context.enableGlobalAccess();
 // Browser-driving agents can now call window.clrContext() for a fresh snapshot.
 // Values the user typed are withheld, because any script on the page can call it.
 // Published state reaches it only under the keys its publisher lists in publicKeys.
 
 // Share them deliberately, if that is what you mean:
-this.contextEngine.enableGlobalAccess('clrContext', { shareFormValues: true });
+this.context.enableGlobalAccess('clrContext', { shareFormValues: true });
 `;
 
 const OPTIONS_EXAMPLE = `
-await this.contextEngine.snapshot({
+await this.context.snapshot({
   root: 'main', // 'page' (default), 'modal' for the open modal, or a CSS selector
   excludeSelectors: ['clr-header'], // drop layout that cannot be annotated
   excludeCategories: ['layout', 'actions'], // no header/navigation/footer, no buttons or links
@@ -222,7 +222,7 @@ if (!clrIsEmptyContextChange(change)) {
 `;
 
 const BUDGETS_EXAMPLE = `
-await this.contextEngine.snapshot({
+await this.context.snapshot({
   maxItemsPerCollection: 10, // at most 10 rows/tabs/links/options per component
   maxComponents: 30, // at most 30 components overall, counted across the whole tree
 });
