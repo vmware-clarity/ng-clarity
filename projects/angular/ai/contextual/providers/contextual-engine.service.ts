@@ -17,17 +17,15 @@ import {
   runInInjectionContext,
 } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
-import { CLR_CONTEXT_REDACT_SELECTOR, usableSelectors } from '@clr/angular/utils';
 import { defer, map, Observable } from 'rxjs';
 
-import { ClrContextRegionFilter, ClrContextRegistryService } from './context-registry.service';
+import { ClrContextRegistryService } from './context-registry.service';
 import { usableTimeout } from '../attempt';
 import { ContextTracker } from './context-tracker';
 import { charged } from '../budget';
 import { ClrContextChange, clrDiffContext } from '../diff';
 import { ClrContextDomExtractor } from '../dom/dom-context-collector';
-import { closestAcrossShadow, containsAcrossShadow } from '../dom/shadow';
-import { collectContextTreeWithin, engineScope, isHiddenFromEngine } from '../dom/walk';
+import { collectContextTreeWithin } from '../dom/walk';
 import {
   ClrComponentContext,
   ClrContextSnapshotOptions,
@@ -232,7 +230,7 @@ export class ClrContextService implements OnDestroy {
     this.snapshotTaken = true;
     const snapshot = this.emptySnapshot();
     const resolved = resolveSnapshotOptions(withCallOptions(this.scope, options));
-    const regions = this.contextRegistry.collect({ filter: this.regionFilter(resolved), limits: resolved, untrusted });
+    const regions = this.contextRegistry.collect({ limits: resolved, untrusted });
     return this.describePage(snapshot, resolved, regions, untrusted);
   }
 
@@ -241,7 +239,6 @@ export class ClrContextService implements OnDestroy {
     this.snapshotTaken = true;
     const resolved = resolveSnapshotOptions(withCallOptions(this.scope, options));
     const regions = await this.contextRegistry.collectAsync({
-      filter: this.regionFilter(resolved),
       timeoutMs: usableTimeout(this.config.timeoutMs, DEFAULT_SOURCE_TIMEOUT_MS),
       limits: resolved,
       untrusted,
@@ -274,30 +271,6 @@ export class ClrContextService implements OnDestroy {
       }
     }
     return snapshot;
-  }
-
-  /** Annotations follow their element: left out where it would be, stateless inside a redacted region. */
-  private regionFilter(options: ResolvedSnapshotOptions): ClrContextRegionFilter {
-    if (!isPlatformBrowser(this.platformId)) {
-      return () => 'keep';
-    }
-    const scope = engineScope(this.document, options);
-    const excludeSelector = usableSelectors(this.document, options.excludeSelectors);
-    return element => {
-      if (!element) {
-        return 'keep';
-      }
-      if (isHiddenFromEngine(element, excludeSelector)) {
-        return 'drop';
-      }
-      if (
-        scope.roots &&
-        !scope.roots.some(root => containsAcrossShadow(root, element) || containsAcrossShadow(element, root))
-      ) {
-        return 'drop';
-      }
-      return closestAcrossShadow(element, CLR_CONTEXT_REDACT_SELECTOR) ? 'redact' : 'keep';
-    };
   }
 
   /** The most an untrusted caller may get: the host can narrow the application's options, never widen them. */
