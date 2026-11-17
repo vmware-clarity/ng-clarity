@@ -273,9 +273,9 @@
     <h3 id="annotating" class="clr-mt-32px" cds-text="section">Annotating the application</h3>
     <p class="clr-mt-16px" cds-text="body">
       The DOM only knows <em>what</em> is on the page. The <code cds-text="code">clrContext</code> directive lets the
-      application add the <em>why</em> — knowledge only it has. Annotations register when the element appears,
-      unregister when it is destroyed, and are read at snapshot time, so they are never stale. The directive annotates
-      markup in the application's own templates, while the optional
+      application add the <em>why</em> — knowledge only it has. An annotation is reported on the node of the element it
+      sits on, merged with what the DOM and any Clarity component there say about it, and it is read at snapshot time,
+      so it is never stale. The directive annotates markup in the application's own templates, while the optional
       <code cds-text="code">window.clrContext()</code> accessor is what agents outside the application call to read the
       page.
     </p>
@@ -326,7 +326,10 @@
           <td class="left">
             A template knows what a section is for, or holds a little state about it. This is the usual choice.
           </td>
-          <td class="left">A region, with <code cds-text="code">[clrContextPublicKeys]</code></td>
+          <td class="left">
+            The element's node in <code cds-text="code">components</code>, with
+            <code cds-text="code">[clrContextPublicKeys]</code>
+          </td>
         </tr>
         <tr>
           <td class="left">
@@ -334,10 +337,12 @@
             <code cds-text="code">ClrContextRegistryService</code>
           </td>
           <td class="left">
-            The knowledge lives in a service rather than a template, or has to be fetched. A provider may answer with a
-            promise.
+            The knowledge lives in a service and belongs to no element, such as the user's role, or has to be fetched.
+            A provider may answer with a promise.
           </td>
-          <td class="left">A region, with <code cds-text="code">publicKeys</code></td>
+          <td class="left">
+            A node in <code cds-text="code">regions</code>, with <code cds-text="code">publicKeys</code>
+          </td>
         </tr>
         <tr>
           <td class="left"><code cds-text="code">publishElementContext</code></td>
