@@ -44,7 +44,7 @@ describe('Published datagrid assertion helpers', () => {
   });
 
   it('checks absent cells with a single-argument expect', () => {
-    const row = new GridRowTestHelper(undefined, document.createElement('div'));
+    const row = new GridRowTestHelper(undefined as unknown as GridHelper, document.createElement('div'));
 
     assert(() => row.assertCellValues([undefined])).not.toThrow();
     assert(() => row.assertCellValues([], [undefined])).toThrow();
@@ -53,7 +53,7 @@ describe('Published datagrid assertion helpers', () => {
   it('checks present cells with a single-argument expect', () => {
     const element = document.createElement('div');
     element.append(document.createElement('clr-dg-cell'));
-    const row = new GridRowTestHelper(undefined, element);
+    const row = new GridRowTestHelper(undefined as unknown as GridHelper, element);
 
     assert(() => row.assertCellValues([], [undefined])).not.toThrow();
     assert(() => row.assertCellValues([undefined])).toThrow();

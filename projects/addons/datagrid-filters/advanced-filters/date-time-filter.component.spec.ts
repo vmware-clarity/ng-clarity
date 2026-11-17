@@ -494,7 +494,7 @@ describe('DateTimeFilterComponent', () => {
 
       // Assert
       const emitSpy = testContext.component.filterCriteriaChange.emit as Mock;
-      const emittedFilter = vi.mocked(emitSpy).mock.lastCall[0] as PropertyFilter;
+      const emittedFilter = vi.mocked(emitSpy).mock.lastCall![0] as PropertyFilter;
       const primaryPredicate = emittedFilter.criteria[0];
 
       // Should contain the explicit seconds provided, not appended with :00
@@ -564,7 +564,7 @@ describe('DateTimeFilterComponent', () => {
 
         // Assert
         const emitSpy = testContext.component.filterCriteriaChange.emit as Mock;
-        const filter = vi.mocked(emitSpy).mock.lastCall[0] as PropertyFilter;
+        const filter = vi.mocked(emitSpy).mock.lastCall![0] as PropertyFilter;
 
         // Before 2023-08-09 means < 2023-08-09T00:00:00
         expect(filter.criteria[0].operator).toEqual(ComparisonOperator.LessThan);
@@ -581,7 +581,7 @@ describe('DateTimeFilterComponent', () => {
 
         // Assert
         const emitSpy = testContext.component.filterCriteriaChange.emit as Mock;
-        const filter = vi.mocked(emitSpy).mock.lastCall[0] as PropertyFilter;
+        const filter = vi.mocked(emitSpy).mock.lastCall![0] as PropertyFilter;
 
         // BeforeOrEqualTo uses getFromDateTimePredicate(true), which adds 1 day (if no time)
         // So <= 08-09 effectively becomes < 08-10
@@ -599,7 +599,7 @@ describe('DateTimeFilterComponent', () => {
 
         // Assert
         const emitSpy = testContext.component.filterCriteriaChange.emit as Mock;
-        const filter = vi.mocked(emitSpy).mock.lastCall[0] as PropertyFilter;
+        const filter = vi.mocked(emitSpy).mock.lastCall![0] as PropertyFilter;
 
         // After uses getFromDateTimePredicate(true), adding 1 day
         // After 08-09 effectively means >= 08-10
@@ -627,7 +627,7 @@ describe('DateTimeFilterComponent', () => {
 
       // Assert
       const emitSpy = testContext.component.filterCriteriaChange.emit as Mock;
-      const filter = vi.mocked(emitSpy).mock.lastCall[0] as PropertyFilter;
+      const filter = vi.mocked(emitSpy).mock.lastCall![0] as PropertyFilter;
 
       // Index 0 is Primary (From), Index 1 is Secondary (To)
       const toPredicate = filter.criteria[1];

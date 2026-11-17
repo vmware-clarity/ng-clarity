@@ -25,9 +25,9 @@ type Spy<T extends (...args: any[]) => any = (...args: any[]) => any> = Mock<T>;
   template: '',
 })
 class PropertyViewCategoryMockComponent {
-  @Input() componentId: string;
+  @Input() componentId!: string;
 
-  @Input() data: PropertyViewCategoryModel;
+  @Input() data!: PropertyViewCategoryModel;
 }
 
 class PropertyViewCategoriesSectionsExpandedStateManagerMock {

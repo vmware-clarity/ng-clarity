@@ -7,6 +7,8 @@
 
 import { ChangeDetectorRef, QueryList, SimpleChange } from '@angular/core';
 import { fakeAsync, flush } from '@angular/core/testing';
+import { ZoomLevelService } from '@clr/addons/a11y';
+import { DragAndDropGroupService } from '@clr/addons/drag-and-drop';
 import { ClrDatagrid, SelectionType } from '@clr/angular/data/datagrid';
 import type { MockInstance } from 'vitest';
 
@@ -24,8 +26,8 @@ describe('Datagrid deferred row notifications', () => {
       'test',
       {} as ChangeDetectorRef,
       {} as ExportProviderService,
-      null,
-      null
+      null as unknown as DragAndDropGroupService,
+      null as unknown as ZoomLevelService
     );
     component.serverDrivenDatagrid = true;
     component.selectionType = SelectionType.Multi;

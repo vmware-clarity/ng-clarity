@@ -22,9 +22,9 @@ import { TopHeadingLevel } from '../models/heading-level.model';
   template: ``,
 })
 export class CertificateViewerGeneralMockComponent {
-  @Input() certificate: Certificate;
-  @Input() topHeadingLevel: TopHeadingLevel;
-  @Input() headingTemplate: TemplateRef<unknown>;
+  @Input() certificate!: Certificate;
+  @Input() topHeadingLevel!: TopHeadingLevel;
+  @Input() headingTemplate!: TemplateRef<unknown>;
 }
 
 describe('CertificateViewerComponent', () => {

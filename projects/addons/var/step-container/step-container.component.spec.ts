@@ -45,7 +45,7 @@ class MockPageModel implements StepModel {
 })
 class MockPageComponent implements OnStepActivate, OnStepValidate, StepModelHolder {
   componentProperty = 'defaultcomponentPropertyValue';
-  model: MockPageModel;
+  model!: MockPageModel;
 
   activate() {
     this.model.activateCallsCount += 1;

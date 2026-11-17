@@ -26,7 +26,7 @@ import { ThemeBuilderComponent } from './theme-builder.component';
 class ThemeBuilderHost {
   readonly css = signal('');
   restore: ((builder: ThemeBuilderComponent) => void) | undefined;
-  @ViewChild(ThemeBuilderComponent) builder: ThemeBuilderComponent;
+  @ViewChild(ThemeBuilderComponent) builder!: ThemeBuilderComponent;
   ngAfterViewInit() {
     this.restore?.(this.builder);
   }
@@ -87,7 +87,7 @@ for (const zoneless of [true, false]) {
       expect(fixture.componentInstance.css()).toContain('--cds-alias-primary:');
       expect(
         fixture.componentInstance.builder.previewWrapper.nativeElement.style.getPropertyValue('--cds-alias-primary')
-      ).toBe(preset.light.primary[0].hsl);
+      ).toBe(preset.light!.primary![0].hsl);
     });
 
     for (const request of ['preset', 'css'] as const) {
@@ -108,7 +108,7 @@ for (const zoneless of [true, false]) {
         expect(early.nativeElement.querySelector('output').textContent).toContain('--cds-alias-primary:');
         expect(
           early.componentInstance.builder.previewWrapper.nativeElement.style.getPropertyValue('--cds-alias-primary')
-        ).toBe(preset.light.primary[0].hsl);
+        ).toBe(preset.light!.primary![0].hsl);
         expect(early.componentInstance.builder.activePreset).toBe(request === 'preset' ? preset : null);
         early.destroy();
       });
@@ -132,7 +132,7 @@ for (const zoneless of [true, false]) {
       expect(early.componentInstance.builder.activePreset).toBe(last);
       expect(
         early.componentInstance.builder.previewWrapper.nativeElement.style.getPropertyValue('--cds-alias-primary')
-      ).toBe(last.light.primary[0].hsl);
+      ).toBe(last.light!.primary![0].hsl);
       expect(early.nativeElement.querySelector('output').textContent).toContain('--cds-alias-primary:');
       early.destroy();
     });

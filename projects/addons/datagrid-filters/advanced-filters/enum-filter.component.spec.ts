@@ -283,13 +283,13 @@ describe('EnumFilterComponent', () => {
       component.optionsFormArray.at(0).setValue(true);
       component.onOptionChange();
       component.onApplyButtonClick();
-      const emittedAnd = vi.mocked(component.filterCriteriaChange.emit as Mock).mock.lastCall[0] as PropertyFilter;
+      const emittedAnd = vi.mocked(component.filterCriteriaChange.emit as Mock).mock.lastCall![0] as PropertyFilter;
       expect(emittedAnd.operator).toBe(LogicalOperator.And);
 
       // Change back to Equals
       opControl?.setValue(ComparisonOperator.Equals);
       component.onApplyButtonClick();
-      const emittedOr = vi.mocked(component.filterCriteriaChange.emit as Mock).mock.lastCall[0] as PropertyFilter;
+      const emittedOr = vi.mocked(component.filterCriteriaChange.emit as Mock).mock.lastCall![0] as PropertyFilter;
       expect(emittedOr.operator).toBe(LogicalOperator.Or);
     });
 
@@ -326,7 +326,7 @@ describe('EnumFilterComponent', () => {
       component.onApplyButtonClick();
 
       const emitSpy = component.filterCriteriaChange.emit as Mock;
-      const emittedCriteria = vi.mocked(emitSpy).mock.lastCall[0] as PropertyFilter;
+      const emittedCriteria = vi.mocked(emitSpy).mock.lastCall![0] as PropertyFilter;
       expect(emittedCriteria.criteria.length).toBe(1);
       expect(emittedCriteria.criteria[0].value).toBe('green');
     });
@@ -349,7 +349,7 @@ describe('EnumFilterComponent', () => {
       component.onApplyButtonClick();
 
       const emitSpy = component.filterCriteriaChange.emit as Mock;
-      const emittedCriteria = vi.mocked(emitSpy).mock.lastCall[0] as PropertyFilter;
+      const emittedCriteria = vi.mocked(emitSpy).mock.lastCall![0] as PropertyFilter;
       expect(emittedCriteria.criteria.length).toBe(2);
       expect(emittedCriteria.criteria[0].value).toBe('red');
       expect(emittedCriteria.criteria[1].value).toBe('blue');

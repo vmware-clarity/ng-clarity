@@ -130,8 +130,8 @@ describe('ThemeBuilderComponent', () => {
     await testContext.fixture.whenStable();
 
     const primaryGroup: Color[] = testContext.component.colorStruct['light']['primary'];
-    const primaryBase = primaryGroup.find(c => c.label === 'Base');
-    const shade = primaryGroup.find(c => c.label === 'Shade');
+    const primaryBase = primaryGroup.find(c => c.label === 'Base')!;
+    const shade = primaryGroup.find(c => c.label === 'Shade')!;
     const originalShadeHsl = shade.hsl;
 
     testContext.component.setCurrentColor(primaryBase, '#112233', primaryGroup);
@@ -159,8 +159,8 @@ describe('ThemeBuilderComponent', () => {
 
     testContext.component.applyPreset(testPresets[1]);
 
-    const lightPrimary = testContext.component.colorStruct['light']['primary'].find(c => c.label === 'Base');
-    const darkPrimary = testContext.component.colorStruct['dark']['primary'].find(c => c.label === 'Base');
+    const lightPrimary = testContext.component.colorStruct['light']['primary'].find(c => c.label === 'Base')!;
+    const darkPrimary = testContext.component.colorStruct['dark']['primary'].find(c => c.label === 'Base')!;
 
     expect(lightPrimary.hsl).toBe('hsl(160deg, 69%, 36%)');
     expect(darkPrimary.hsl).toBe('hsl(160deg, 69%, 53%)');
@@ -201,7 +201,7 @@ describe('ThemeBuilderComponent', () => {
     testContext.component.applyPreset(testPresets[1]);
     testContext.component.applyPreset(testPresets[0]);
 
-    const lightPrimary = testContext.component.colorStruct['light']['primary'].find(c => c.label === 'Base');
+    const lightPrimary = testContext.component.colorStruct['light']['primary'].find(c => c.label === 'Base')!;
     expect(lightPrimary.isOriginalColor).toBe(true);
   });
 
@@ -222,9 +222,9 @@ describe('ThemeBuilderComponent', () => {
     testContext.component.applyPreset(fullVariantPreset);
 
     const primaryGroup = testContext.component.colorStruct['light']['primary'];
-    const base = primaryGroup.find(c => c.label === 'Base');
-    const shade = primaryGroup.find(c => c.label === 'Shade');
-    const tint = primaryGroup.find(c => c.label === 'Tint');
+    const base = primaryGroup.find(c => c.label === 'Base')!;
+    const shade = primaryGroup.find(c => c.label === 'Shade')!;
+    const tint = primaryGroup.find(c => c.label === 'Tint')!;
 
     expect(base.hsl).toBe('hsl(160deg, 69%, 36%)');
     // The preset's explicit shade overrides what colorBuilder would have derived from the base.
@@ -247,7 +247,7 @@ describe('ThemeBuilderComponent', () => {
 
     expect(() => testContext.component.applyPreset(malformedPreset)).not.toThrow();
 
-    const base = testContext.component.colorStruct['light']['primary'].find(c => c.label === 'Base');
+    const base = testContext.component.colorStruct['light']['primary'].find(c => c.label === 'Base')!;
     expect(base.isOriginalColor).toBe(true);
   });
 
@@ -299,7 +299,7 @@ describe('ThemeBuilderComponent', () => {
       await testContext.fixture.whenStable();
 
       const primaryGroup = testContext.component.colorStruct['light']['primary'];
-      const primaryBase = primaryGroup.find(c => c.label === 'Base');
+      const primaryBase = primaryGroup.find(c => c.label === 'Base')!;
       testContext.component.setCurrentColor(primaryBase, '#112233', primaryGroup);
 
       const css = testContext.component.generatedCss;
@@ -309,7 +309,7 @@ describe('ThemeBuilderComponent', () => {
 
       testContext.component.importCSS(css);
 
-      const shade = primaryGroup.find(c => c.label === 'Shade');
+      const shade = primaryGroup.find(c => c.label === 'Shade')!;
       expect(primaryBase.isOriginalColor).toBe(false);
       expect(primaryBase.hex).toBe('#112233');
       expect(shade.color.h).toBe(primaryBase.color.h);
@@ -321,11 +321,11 @@ describe('ThemeBuilderComponent', () => {
       await testContext.fixture.whenStable();
 
       const primaryGroup = testContext.component.colorStruct['light']['primary'];
-      const primaryBase = primaryGroup.find(c => c.label === 'Base');
+      const primaryBase = primaryGroup.find(c => c.label === 'Base')!;
       testContext.component.setCurrentColor(primaryBase, '#112233', primaryGroup);
 
       const infoGroup = testContext.component.colorStruct['light']['info'];
-      const infoBase = infoGroup.find(c => c.label === 'Base');
+      const infoBase = infoGroup.find(c => c.label === 'Base')!;
       testContext.component.setCurrentColor(infoBase, '#332211', infoGroup);
 
       // CSS mentioning only the primary change — info should be reset back to original.
@@ -342,7 +342,7 @@ describe('ThemeBuilderComponent', () => {
       await testContext.fixture.whenStable();
 
       const primaryGroup = testContext.component.colorStruct['light']['primary'];
-      const primaryBase = primaryGroup.find(c => c.label === 'Base');
+      const primaryBase = primaryGroup.find(c => c.label === 'Base')!;
       testContext.component.setCurrentColor(primaryBase, '#112233', primaryGroup);
 
       const malformed = `[cds-theme~='light'] {\n  ${primaryBase.name}: hsl(1.2.3deg 50% 50%);\n}`;
@@ -358,7 +358,7 @@ describe('ThemeBuilderComponent', () => {
       await testContext.fixture.whenStable();
 
       const primaryGroup = testContext.component.colorStruct['light']['primary'];
-      const primaryBase = primaryGroup.find(c => c.label === 'Base');
+      const primaryBase = primaryGroup.find(c => c.label === 'Base')!;
       testContext.component.setCurrentColor(primaryBase, '#112233', primaryGroup);
 
       expect(testContext.component.importCSS(testContext.component.generatedCss)).toBe(true);
@@ -427,7 +427,7 @@ describe('ThemeBuilderComponent', () => {
   `,
 })
 class ProjectedContentHostComponent {
-  @ViewChild(ThemeBuilderComponent) themeBuilder: ThemeBuilderComponent;
+  @ViewChild(ThemeBuilderComponent) themeBuilder!: ThemeBuilderComponent;
 }
 
 describe('ThemeBuilderComponent with projected content', () => {
@@ -452,6 +452,6 @@ describe('ThemeBuilderComponent with projected content', () => {
 
     expect(marker).toBeTruthy();
     expect(breadcrumbs).toBeTruthy();
-    expect(marker.compareDocumentPosition(breadcrumbs) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(marker!.compareDocumentPosition(breadcrumbs!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 });

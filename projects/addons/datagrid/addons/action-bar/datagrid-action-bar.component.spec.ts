@@ -47,7 +47,7 @@ class TestContainerComponent {
 
   @HostBinding('style.width') width: string = this.normalSize;
 
-  actions: ActionDefinition[];
+  actions!: ActionDefinition[];
 
   actionClick: EventEmitter<ActionDefinition> = new EventEmitter();
 

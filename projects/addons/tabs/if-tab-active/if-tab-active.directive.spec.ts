@@ -38,7 +38,7 @@ describe('Directive: IfTabActive', () => {
     </clr-tabs>`,
   })
   class TestComponent {
-    @Input() activate: string;
+    @Input() activate!: string;
     onTabActiveChange: (isActive: boolean) => void = () => {
       // no action
     };

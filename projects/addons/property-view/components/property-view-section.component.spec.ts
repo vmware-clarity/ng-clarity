@@ -27,7 +27,7 @@ import { PropertyViewSectionComponent } from './property-view-section.component'
   template: '',
 })
 class PropertyViewMessageMockComponent {
-  @Input() data: PropertyViewMessageModel;
+  @Input() data!: PropertyViewMessageModel;
 }
 
 @Component({
@@ -37,7 +37,7 @@ class PropertyViewMessageMockComponent {
   template: '',
 })
 class PropertyViewPropertyMockComponent {
-  @Input() data: PropertyViewPropertyModel;
+  @Input() data!: PropertyViewPropertyModel;
 }
 
 interface ThisTest {

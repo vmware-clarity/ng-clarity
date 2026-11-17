@@ -158,7 +158,9 @@ describe('ManageFilterComponent', () => {
     testContext.fixture.destroy();
   });
   it('manages string property filter', () => {
-    vi.spyOn(testContext.component.filterStrings, 'getConjoinerDisplayName').mockImplementation(() => undefined);
+    vi.spyOn(testContext.component.filterStrings, 'getConjoinerDisplayName').mockImplementation(
+      () => undefined as unknown as string
+    );
     testContext.component.propertyFilter = stringPropertyFilter;
     stringPropertyFilter.criteria = [stringPredicate1, stringPredicate2];
     testContext.fixture.detectChanges();
@@ -192,7 +194,9 @@ describe('ManageFilterComponent', () => {
     expect(testContext.component.secondaryConditionDisplayText).toEqual('Equals: Normal');
   });
   it('manages numeric property filter', () => {
-    vi.spyOn(testContext.component.filterStrings, 'getConjoinerDisplayName').mockImplementation(() => undefined);
+    vi.spyOn(testContext.component.filterStrings, 'getConjoinerDisplayName').mockImplementation(
+      () => undefined as unknown as string
+    );
     testContext.component.propertyFilter = numericPropertyFilter;
     numericPropertyFilter.criteria = [numericPredicate1, numericPredicate2];
     numericProperty.selectedValue = [176, 50];
@@ -220,7 +224,7 @@ describe('ManageFilterComponent', () => {
       expect(icon.closest('.badge')).toBeTruthy();
       const svg = (icon.shadowRoot ?? icon).querySelector('svg');
       expect(svg).toBeTruthy();
-      expect(svg.innerHTML).toContain('path');
+      expect(svg!.innerHTML).toContain('path');
     });
   });
   it('removes string property filter', () => {
