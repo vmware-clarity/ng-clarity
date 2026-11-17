@@ -43,7 +43,7 @@ export class CompositeFiltersComponent implements OnInit {
   // Array of filterable properties
   @Input() filterableProperties!: FilterablePropertyDefinition[];
 
-  @Input() presetFilters: PropertyFilter[] = [];
+  @Input() presetFilters?: PropertyFilter[];
 
   /**
    * Event emitter to tell hosting view that the filtering conditions have changed
