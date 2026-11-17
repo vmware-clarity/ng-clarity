@@ -44,6 +44,6 @@ import { ClrWizard } from '../wizard';
   standalone: false,
 })
 export class BasicWizardTestComponent {
-  @ViewChild('wizard', { static: true }) wizard: ClrWizard;
+  @ViewChild('wizard', { static: true }) wizard!: ClrWizard;
   open = true;
 }

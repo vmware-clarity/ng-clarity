@@ -14,7 +14,7 @@ export class MockPage {
   completed = false;
   readyToComplete = false;
   hasError = false;
-  navTitle: TemplateRef<any>;
+  navTitle!: TemplateRef<any>;
 
   constructor(pageIndex: number) {
     this.id = 'this-is-my-page-id-' + pageIndex++;

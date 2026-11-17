@@ -31,12 +31,12 @@ describe('New Wizard Tests', () => {
     it('currentPage should set the current page and emit the event', () => {
       wizardNavigationService.currentPage = pageCollectionService.getPageByIndex(1);
       expect(wizardNavigationService.currentPage).toEqual(pageCollectionService.getPageByIndex(1));
-      wizardNavigationService.currentPage = pageCollectionService.lastPage;
+      wizardNavigationService.currentPage = pageCollectionService.lastPage!;
       expect(wizardNavigationService.currentPage).toEqual(pageCollectionService.lastPage);
     });
 
     it('.next() should call finish() if the current page is the last page.', () => {
-      const testPage = wizardNavigationService.pageCollection.lastPage;
+      const testPage = wizardNavigationService.pageCollection.lastPage!;
       const wizard = context.clarityDirective;
 
       wizardNavigationService.currentPage = testPage;
@@ -81,7 +81,7 @@ describe('New Wizard Tests', () => {
     });
 
     it('.finish() should commit the current page and emit the event', () => {
-      const testPage = wizardNavigationService.pageCollection.lastPage;
+      const testPage = wizardNavigationService.pageCollection.lastPage!;
 
       vi.spyOn(testPage.primaryButtonClicked, 'emit').mockImplementation(() => undefined);
       vi.spyOn(testPage.onCommit, 'emit').mockImplementation(() => undefined);
@@ -120,10 +120,10 @@ describe('New Wizard Tests', () => {
     });
 
     it('.previous() should do nothing if the current page is the first page', () => {
-      const testPage = wizardNavigationService.pageCollection.firstPage;
+      const testPage = wizardNavigationService.pageCollection.firstPage!;
       const pageCollectionSpy = vi
         .spyOn(wizardNavigationService.pageCollection, 'getPreviousPage')
-        .mockImplementation(() => undefined);
+        .mockImplementation(() => null);
       wizardNavigationService.currentPage = testPage;
       wizardNavigationService.previous();
       expect(wizardNavigationService.currentPage).toBe(testPage);
@@ -165,7 +165,7 @@ describe('New Wizard Tests', () => {
       const startPage = navSvc.pageCollection.getPageByIndex(0);
       const testPage = navSvc.pageCollection.getPageByIndex(1);
       const goToPage = navSvc.pageCollection.getPageByIndex(1);
-      const pageCollectionSpy = vi.spyOn(navSvc.pageCollection, 'getPageIndex').mockImplementation(() => undefined);
+      const pageCollectionSpy = vi.spyOn(navSvc.pageCollection, 'getPageIndex').mockImplementation(() => -1);
 
       startPage.completed = true;
       navSvc.currentPage = testPage;
@@ -325,7 +325,7 @@ describe('New Wizard Tests', () => {
     it('.goTo() should emit the current page for navItemChanged subject', () => {
       // const startPage = wizardNavigationService.pageCollection.getPageByIndex(0);
       const secondPage = wizardNavigationService.pageCollection.getPageByIndex(1);
-      let pageTest: ClrWizardPage;
+      let pageTest: ClrWizardPage | undefined;
       wizardNavigationService.currentPageChange.subscribe(page => (pageTest = page));
 
       expect(pageTest).toBeUndefined();
@@ -346,7 +346,7 @@ describe('New Wizard Tests', () => {
     });
 
     it(".forceNext() should throw an error if there's no next page to go to", () => {
-      const testPage = wizardNavigationService.pageCollection.lastPage;
+      const testPage = wizardNavigationService.pageCollection.lastPage!;
       wizardNavigationService.currentPage = testPage;
       expect(wizardNavigationService.currentPage).toEqual(testPage);
       expect(() => {
@@ -355,7 +355,7 @@ describe('New Wizard Tests', () => {
     });
 
     it('.forceNext() should do nothing if stop navigation is set', () => {
-      const testPage = wizardNavigationService.pageCollection.firstPage;
+      const testPage = wizardNavigationService.pageCollection.firstPage!;
       wizardNavigationService.currentPage = testPage;
       expect(wizardNavigationService.currentPage).toEqual(testPage);
       wizardNavigationService.wizardStopNavigation = true;
@@ -381,7 +381,7 @@ describe('New Wizard Tests', () => {
 
     describe('.checkAndCommitCurrentPage() -- ', () => {
       it('should do nothing if the current page is not ready to complete', () => {
-        const currentPage = wizardNavigationService.currentPage;
+        const currentPage = wizardNavigationService.currentPage!;
         currentPage.nextStepDisabled = true;
 
         // whole lotta spies!
@@ -401,7 +401,7 @@ describe('New Wizard Tests', () => {
       });
 
       it('should do nothing if stop navigation is set to true', () => {
-        const currentPage = wizardNavigationService.currentPage;
+        const currentPage = wizardNavigationService.currentPage!;
         currentPage.nextStepDisabled = false;
         wizardNavigationService.wizardStopNavigation = true;
 
@@ -422,9 +422,9 @@ describe('New Wizard Tests', () => {
       });
 
       it('should do nothing if the action type is finish and stop navigation is true', () => {
-        const lastPage = wizardNavigationService.pageCollection.lastPage;
+        const lastPage = wizardNavigationService.pageCollection.lastPage!;
         wizardNavigationService.currentPage = lastPage;
-        const currentPage = wizardNavigationService.currentPage;
+        const currentPage = wizardNavigationService.currentPage!;
         wizardNavigationService.wizardStopNavigation = true;
         currentPage.nextStepDisabled = false;
 
@@ -446,7 +446,7 @@ describe('New Wizard Tests', () => {
 
       it('should do nothing if the action type is finish and current page is not the last page', () => {
         const lastPage = wizardNavigationService.pageCollection.getPageByIndex(3);
-        const currentPage = wizardNavigationService.currentPage;
+        const currentPage = wizardNavigationService.currentPage!;
         const lastPageIsNotCurrent = wizardNavigationService.currentPage !== lastPage;
 
         // whole lotta spies!
@@ -466,18 +466,18 @@ describe('New Wizard Tests', () => {
       });
 
       it('should emit that a primary button was clicked', () => {
-        const currentPage = wizardNavigationService.currentPage;
+        const currentPage = wizardNavigationService.currentPage!;
         vi.spyOn(currentPage.primaryButtonClicked, 'emit').mockImplementation(() => undefined);
         wizardNavigationService.checkAndCommitCurrentPage('next');
         expect(currentPage.primaryButtonClicked.emit).toHaveBeenCalledTimes(1);
       });
 
       it('should emit finish button was clicked', () => {
-        const lastPage = wizardNavigationService.pageCollection.lastPage;
+        const lastPage = wizardNavigationService.pageCollection.lastPage!;
 
         wizardNavigationService.currentPage = lastPage;
         context.detectChanges();
-        const currentPage = wizardNavigationService.currentPage;
+        const currentPage = wizardNavigationService.currentPage!;
 
         const lastPageIsCurrent = currentPage === lastPage;
         expect(lastPageIsCurrent, 'verify last page is the current page').toBe(true);
@@ -492,12 +492,12 @@ describe('New Wizard Tests', () => {
       });
 
       it('should emit danger button was clicked', () => {
-        const lastPage = wizardNavigationService.pageCollection.lastPage;
+        const lastPage = wizardNavigationService.pageCollection.lastPage!;
 
         wizardNavigationService.currentPage = lastPage;
         context.detectChanges();
 
-        const currentPage = wizardNavigationService.currentPage;
+        const currentPage = wizardNavigationService.currentPage!;
         const lastPageIsCurrent = currentPage === lastPage;
         expect(lastPageIsCurrent, 'verify last page is the current page').toBe(true);
 
@@ -515,7 +515,7 @@ describe('New Wizard Tests', () => {
       });
 
       it('should emit next button was clicked', () => {
-        const currentPage = wizardNavigationService.currentPage;
+        const currentPage = wizardNavigationService.currentPage!;
 
         vi.spyOn(currentPage.primaryButtonClicked, 'emit').mockImplementation(() => undefined);
         vi.spyOn(currentPage.nextButtonClicked, 'emit').mockImplementation(() => undefined);
@@ -531,7 +531,7 @@ describe('New Wizard Tests', () => {
       });
 
       it('should commit the current page -- but only once', () => {
-        const currentPage = wizardNavigationService.currentPage;
+        const currentPage = wizardNavigationService.currentPage!;
         vi.spyOn(currentPage.onCommit, 'emit').mockImplementation(() => undefined);
         wizardNavigationService.checkAndCommitCurrentPage('next');
         expect(currentPage.onCommit.emit).toHaveBeenCalledTimes(1);
@@ -539,7 +539,7 @@ describe('New Wizard Tests', () => {
 
       it('should only commit page once on last page if there are wizard overrides', () => {
         const wiz = context.clarityDirective;
-        const testPage = pageCollectionService.lastPage;
+        const testPage = pageCollectionService.lastPage!;
         vi.spyOn(testPage.onCommit, 'emit').mockImplementation(() => undefined);
 
         wiz.navService.currentPage = testPage;
@@ -560,11 +560,11 @@ describe('New Wizard Tests', () => {
         const checkMe = wizardNavigationService.wizardFinished.subscribe(() => {
           calledAsExpected = true;
         });
-        const lastPage = wizardNavigationService.pageCollection.lastPage;
+        const lastPage = wizardNavigationService.pageCollection.lastPage!;
 
         wizardNavigationService.currentPage = lastPage;
         context.detectChanges();
-        const currentPage = wizardNavigationService.currentPage;
+        const currentPage = wizardNavigationService.currentPage!;
 
         const lastPageIsCurrent = currentPage === lastPage;
         expect(lastPageIsCurrent, 'verify last page is the current page').toBe(true);
@@ -581,11 +581,11 @@ describe('New Wizard Tests', () => {
         const checkMe = wizardNavigationService.wizardFinished.subscribe(() => {
           calledAsExpected = true;
         });
-        const lastPage = wizardNavigationService.pageCollection.lastPage;
+        const lastPage = wizardNavigationService.pageCollection.lastPage!;
 
         wizardNavigationService.currentPage = lastPage;
         context.detectChanges();
-        const currentPage = wizardNavigationService.currentPage;
+        const currentPage = wizardNavigationService.currentPage!;
 
         const lastPageIsCurrent = currentPage === lastPage;
         expect(lastPageIsCurrent, 'verify last page is the current page').toBe(true);
@@ -642,7 +642,7 @@ describe('New Wizard Tests', () => {
       });
 
       it('should emit onCommit if next overridden at page level', () => {
-        const currentPage = wizardNavigationService.currentPage;
+        const currentPage = wizardNavigationService.currentPage!;
         vi.spyOn(currentPage.onCommit, 'emit').mockImplementation(() => undefined);
 
         currentPage.stopNext = true;
@@ -654,7 +654,7 @@ describe('New Wizard Tests', () => {
       });
 
       it('should emit onCommit if next overridden at wizard level', () => {
-        const currentPage = wizardNavigationService.currentPage;
+        const currentPage = wizardNavigationService.currentPage!;
         vi.spyOn(currentPage.onCommit, 'emit').mockImplementation(() => undefined);
 
         wizardNavigationService.wizardHasAltNext = true;
@@ -664,7 +664,7 @@ describe('New Wizard Tests', () => {
       });
 
       it('should not commit page, fire events, or navigate if next overridden at wizard level', () => {
-        const currentPage = wizardNavigationService.currentPage;
+        const currentPage = wizardNavigationService.currentPage!;
         const expectedPage = wizardNavigationService.pageCollection.getPageByIndex(0);
 
         vi.spyOn(currentPage.primaryButtonClicked, 'emit').mockImplementation(() => undefined);
@@ -688,7 +688,7 @@ describe('New Wizard Tests', () => {
       });
 
       it('should not commit page, fire events, or navigate if next overridden at page level', () => {
-        const currentPage = wizardNavigationService.currentPage;
+        const currentPage = wizardNavigationService.currentPage!;
         const expectedPage = wizardNavigationService.pageCollection.getPageByIndex(0);
 
         vi.spyOn(currentPage.primaryButtonClicked, 'emit').mockImplementation(() => undefined);
@@ -714,7 +714,7 @@ describe('New Wizard Tests', () => {
       });
 
       it('should not commit page, fire events, or navigate if stop navigation is set', () => {
-        const currentPage = wizardNavigationService.currentPage;
+        const currentPage = wizardNavigationService.currentPage!;
         const expectedPage = wizardNavigationService.pageCollection.getPageByIndex(0);
 
         vi.spyOn(currentPage.primaryButtonClicked, 'emit').mockImplementation(() => undefined);
@@ -737,7 +737,7 @@ describe('New Wizard Tests', () => {
       });
 
       it('should navigate if not overridden and next clicked', () => {
-        const currentPage = wizardNavigationService.currentPage;
+        const currentPage = wizardNavigationService.currentPage!;
         const expectedPage = wizardNavigationService.pageCollection.getPageByIndex(1);
 
         vi.spyOn(currentPage.primaryButtonClicked, 'emit').mockImplementation(() => undefined);
@@ -764,7 +764,7 @@ describe('New Wizard Tests', () => {
       });
 
       it('should navigate if not overridden and danger-next clicked', () => {
-        const currentPage = wizardNavigationService.currentPage;
+        const currentPage = wizardNavigationService.currentPage!;
         const expectedPage = wizardNavigationService.pageCollection.getPageByIndex(1);
 
         vi.spyOn(currentPage.primaryButtonClicked, 'emit').mockImplementation(() => undefined);
@@ -795,7 +795,7 @@ describe('New Wizard Tests', () => {
 
     describe('.canGoTo() -- ', () => {
       it('should return false if pages parameter is falsy', () => {
-        expect(wizardNavigationService.canGoTo(null), 'null returns false').toBe(false);
+        expect(wizardNavigationService.canGoTo(null!), 'null returns false').toBe(false);
       });
 
       it('should return false if pages parameter is empty array', () => {

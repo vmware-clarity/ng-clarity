@@ -865,7 +865,7 @@ describe('New Wizard Tests', () => {
         });
 
         it("should not error out if type isn't truthy", () => {
-          myTestComponent.btnType = null;
+          myTestComponent.btnType = null!;
           fixture.detectChanges();
           expect(buttonComponent.type, 'button type should reflect input').toBe(null);
           expect(buttonComponent.isPrimaryAction, 'null button type should not be primary').toBe(false);
@@ -1004,7 +1004,7 @@ describe('New Wizard Tests', () => {
         buttonDebugEl = fixture.debugElement.query(By.directive(ClrWizardButton));
         buttonComponent = buttonDebugEl.componentInstance;
         buttonElement = buttonDebugEl.nativeElement;
-        actualButton = buttonElement.querySelector('button');
+        actualButton = buttonElement.querySelector('button')!;
         myTestComponent = fixture.componentInstance;
       });
 

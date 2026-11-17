@@ -30,8 +30,8 @@ const fakeOutPage = new MockPage(pageIndex);
   standalone: false,
 })
 class TestComponent implements AfterContentInit {
-  @ViewChild(ClrWizardStepnavItem, { static: true }) stepNavItem: ClrWizardStepnavItem;
-  @ViewChild(ClrWizardPageNavTitle, { static: true }) navTitleRef: ClrWizardPageNavTitle;
+  @ViewChild(ClrWizardStepnavItem, { static: true }) stepNavItem!: ClrWizardStepnavItem;
+  @ViewChild(ClrWizardPageNavTitle, { static: true }) navTitleRef!: ClrWizardPageNavTitle;
 
   page: MockPage;
   projector = 'foo';
@@ -84,14 +84,14 @@ describe('New Wizard Tests', () => {
         it('should call page collection service for step item id', () => {
           const pageCollectionSpy = vi
             .spyOn(testItemComponent.pageCollection, 'getStepItemIdForPage')
-            .mockImplementation(() => undefined);
+            .mockImplementation(() => undefined!);
           testItemComponent.page._id = 'try-a-different-id';
           fixture.detectChanges();
           expect(pageCollectionSpy).toHaveBeenCalledWith(testItemComponent.page);
         });
 
         it('should throw an error if page is not present', () => {
-          testItemComponent.page = null;
+          testItemComponent.page = null!;
           expect(() => {
             fixture.detectChanges();
           }).toThrow();
@@ -138,7 +138,7 @@ describe('New Wizard Tests', () => {
         });
 
         it('should throw an error if page is not present', () => {
-          testItemComponent.page = null;
+          testItemComponent.page = null!;
           expect(() => {
             testItemComponent.click();
           }).toThrow();
@@ -170,7 +170,7 @@ describe('New Wizard Tests', () => {
         });
 
         it('should throw an error if page is not present', () => {
-          testItemComponent.page = null;
+          testItemComponent.page = null!;
           expect(() => {
             testItemComponent.click();
           }).toThrow();
@@ -190,7 +190,7 @@ describe('New Wizard Tests', () => {
         });
 
         it('should throw an error if page is not present', () => {
-          testItemComponent.page = null;
+          testItemComponent.page = null!;
           expect(() => {
             testItemComponent.click();
           }).toThrow();
@@ -210,7 +210,7 @@ describe('New Wizard Tests', () => {
         });
 
         it('should throw an error if page is not present', () => {
-          testItemComponent.page = null;
+          testItemComponent.page = null!;
           expect(() => {
             testItemComponent.click();
           }).toThrow();
@@ -248,7 +248,7 @@ describe('New Wizard Tests', () => {
         });
 
         it('should throw an error if page is not present', () => {
-          testItemComponent.page = null;
+          testItemComponent.page = null!;
           expect(() => {
             testItemComponent.click();
           }).toThrow();
@@ -263,7 +263,7 @@ describe('New Wizard Tests', () => {
         const expectedUpdatedTitle = 'This is my bar';
 
         it('projects page nav title as expected', () => {
-          const titleElement = myStepnavItem.querySelector('.clr-wizard-stepnav-link-title');
+          const titleElement = myStepnavItem.querySelector('.clr-wizard-stepnav-link-title')!;
 
           expect(titleElement.textContent.trim(), 'projects initial value').toBe(expectedInitialTitle);
           fixture.componentInstance.projector = 'bar';
@@ -291,7 +291,7 @@ describe('New Wizard Tests', () => {
         });
 
         it('should have aria-labelledby attribute on the button', () => {
-          const stepNavButton = myStepnavItem.querySelector<HTMLButtonElement>('button.clr-wizard-stepnav-link');
+          const stepNavButton = myStepnavItem.querySelector<HTMLButtonElement>('button.clr-wizard-stepnav-link')!;
 
           expect(stepNavButton.getAttribute('aria-labelledby')).toBe(
             'mock-id-step-text mock-id-step-number mock-id-step-title'
@@ -302,7 +302,7 @@ describe('New Wizard Tests', () => {
           fakeOutPage.completed = true;
           fixture.detectChanges();
 
-          const stepNavButton = myStepnavItem.querySelector<HTMLButtonElement>('button.clr-wizard-stepnav-link');
+          const stepNavButton = myStepnavItem.querySelector<HTMLButtonElement>('button.clr-wizard-stepnav-link')!;
 
           expect(stepNavButton.getAttribute('aria-labelledby')).toBe(
             'mock-id-step-icon mock-id-step-text mock-id-step-number mock-id-step-title'
@@ -312,7 +312,7 @@ describe('New Wizard Tests', () => {
         it('should add disabled attribute when isDisabled return true', () => {
           fakeOutPage.disabled = true;
           fixture.detectChanges();
-          expect(myStepnavItem.querySelector('button.clr-wizard-stepnav-link').hasAttribute('disabled')).toBeTruthy();
+          expect(myStepnavItem.querySelector('button.clr-wizard-stepnav-link')!.hasAttribute('disabled')).toBeTruthy();
         });
 
         it('should have clr-nav-link and nav-item classes', () => {
@@ -503,7 +503,7 @@ describe('New Wizard Tests', () => {
 
           const iconElement = myStepnavItem.querySelector('cds-icon[shape="error-standard"]');
           expect(iconElement).not.toBeNull();
-          expect(iconElement.getAttribute('aria-label')).toBe('Error');
+          expect(iconElement!.getAttribute('aria-label')).toBe('Error');
         });
 
         it('should have a cds-icon when page has is complete', () => {
@@ -517,7 +517,7 @@ describe('New Wizard Tests', () => {
 
           const iconElement = myStepnavItem.querySelector('cds-icon[shape="success-standard"]');
           expect(iconElement).not.toBeNull();
-          expect(iconElement.getAttribute('aria-label')).toBe('Completed');
+          expect(iconElement!.getAttribute('aria-label')).toBe('Completed');
         });
       });
 
@@ -529,7 +529,7 @@ describe('New Wizard Tests', () => {
           fakeOutPage.reset();
           fixture.detectChanges();
           navServiceSpy = vi.spyOn(testItemComponent.navService, 'goTo').mockImplementation(() => undefined);
-          myClickTarget = myStepnavItem.querySelector('button');
+          myClickTarget = myStepnavItem.querySelector('button')!;
         });
 
         it('should not register the click action if disabled', () => {
