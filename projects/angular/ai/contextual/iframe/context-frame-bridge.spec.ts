@@ -147,10 +147,10 @@ describe('Context frame bridge', () => {
     });
 
     it('only forwards known snapshot options from the embedded frame', () => {
-      dispatchRequest(frameRequest('request-2', { maxComponents: 5, includeDomComponents: false, injected: 'nope' }));
+      dispatchRequest(frameRequest('request-2', { maxComponents: 5, excludeCategories: ['text'], injected: 'nope' }));
 
       const requested = getSnapshot.calls.mostRecent().args[0];
-      expect(requested).toEqual(jasmine.objectContaining({ maxComponents: 5, includeDomComponents: false }));
+      expect(requested).toEqual(jasmine.objectContaining({ maxComponents: 5, excludeCategories: ['text'] }));
       expect('injected' in requested).toBe(false);
     });
 
@@ -162,12 +162,10 @@ describe('Context frame bridge', () => {
       expect('shareFullUrl' in requested).toBe(false);
     });
 
-    it('holds a frame to the default budgets and switches when the host sets no ceiling', () => {
-      dispatchRequest(frameRequest('request-2c', { maxComponents: 100_000, includeRoutes: true }));
+    it('holds a frame to the default budgets when the host sets no ceiling', () => {
+      dispatchRequest(frameRequest('request-2c', { maxComponents: 100_000 }));
 
-      expect(getSnapshot.calls.mostRecent().args[0]).toEqual(
-        jasmine.objectContaining({ maxComponents: 300, includeRoutes: false })
-      );
+      expect(getSnapshot.calls.mostRecent().args[0]).toEqual(jasmine.objectContaining({ maxComponents: 300 }));
     });
 
     it('caps the budgets a frame asks for at what the host allows', () => {

@@ -8,7 +8,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer, SafeHtml, SafeResourceUrl } from '@angular/platform-browser';
 import { ClarityModule } from '@clr/angular';
-import { ClrContext, ClrContextEngineService } from '@clr/angular/ai';
+import { ClrContext, ClrContextService } from '@clr/angular/ai';
 
 import { ContextLivePanelComponent } from '../live-panel/live-panel.component';
 
@@ -108,7 +108,7 @@ export class ContextualFramesDemo implements OnInit, OnDestroy {
   private destroyed = false;
 
   constructor(
-    private contextEngine: ClrContextEngineService,
+    private context: ClrContextService,
     private changeDetectorRef: ChangeDetectorRef,
     private sanitizer: DomSanitizer
   ) {
@@ -116,13 +116,13 @@ export class ContextualFramesDemo implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.contextEngine.enableFrameBridge();
+    this.context.enableFrameBridge();
     this.resolveThirdPartyPlugin();
   }
 
   ngOnDestroy(): void {
     this.destroyed = true;
-    this.contextEngine.disableFrameBridge();
+    this.context.disableFrameBridge();
   }
 
   private async resolveThirdPartyPlugin(): Promise<void> {
@@ -139,7 +139,7 @@ export class ContextualFramesDemo implements OnInit, OnDestroy {
       if (found) {
         this.thirdPartyOrigin = candidate.origin;
         this.thirdPartyPluginUrl = this.sanitizer.bypassSecurityTrustResourceUrl(candidate.href);
-        this.contextEngine.enableFrameBridge({ allowedOrigins: [window.location.origin, candidate.origin] });
+        this.context.enableFrameBridge({ allowedOrigins: [window.location.origin, candidate.origin] });
         break;
       }
     }

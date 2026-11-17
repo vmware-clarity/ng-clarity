@@ -6,21 +6,19 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import { DOCUMENT, ErrorHandler, inject, Injectable, NgZone, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { DOCUMENT, ErrorHandler, inject, NgZone, PLATFORM_ID } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { CLR_CONTEXT_IGNORE_ATTRIBUTE, CLR_CONTEXT_IGNORE_SELECTOR } from '@clr/angular/utils';
-import { defer, EMPTY, filter, Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
+import { defer, EMPTY, filter, Observable, ReplaySubject, Subscription } from 'rxjs';
 
 import { CLR_CONTEXT_LOADING_TYPE, ClrContextRegistryService } from './context-registry.service';
-import { ClrContextEngineService } from './contextual-engine.service';
 import { attempt, usableTimeout } from '../attempt';
-import { ClrContextChange, clrDiffContext } from '../diff';
 import { closestAcrossShadow, openShadowRoots } from '../dom/shadow';
 import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
 import { serialize } from '../json-safe';
 
 /** How the tracker paces its snapshots and what each one collects; see `start`. */
-export interface ClrContextTrackingOptions {
+export interface ContextTrackingOptions {
   /** Budgets applied to every snapshot the tracker takes. */
   snapshot?: ClrContextSnapshotOptions;
   /** Milliseconds of quiet after the last DOM change before the page is scraped. Default `300`, at least `10`. */
@@ -35,22 +33,19 @@ const DEFAULT_MAX_WAIT_MS = 2000;
 const MIN_DEBOUNCE_MS = 10;
 
 /**
- * Streams the page context, re-scraping after DOM, value and annotation changes. Each scrape waits for
- * asynchronous providers, as `getSnapshotAsync` does; one runs at a time, and changes made meanwhile
- * lead to one more. A provider whose answer changes the page, such as a loading bar, is asked again
- * after the next quiet period, so it is never asked more often than `debounceMs` allows.
+ * Streams the page context, re-scraping after DOM, value and annotation changes. Internal: `ClrContextService`
+ * creates one in its injection context and exposes it as `watch()` and `changes()`. Each scrape waits for
+ * asynchronous providers; one runs at a time, and changes made meanwhile lead to one more. A provider whose
+ * answer changes the page, such as a loading bar, is asked again after the next quiet period, so it is never
+ * asked more often than `debounceMs` allows.
  */
-@Injectable({ providedIn: 'root' })
-export class ClrContextTrackerService implements OnDestroy {
+export class ContextTracker {
   /** Emits the latest page context, replaying the most recent one to new subscribers. */
   readonly context$: Observable<ClrPageContext>;
-  /** What changed with each {@link context$} emission. Not replayed: subscribe before `start()` or `track()`. */
-  readonly changes$: Observable<ClrContextChange>;
 
   private readonly errorHandler = inject(ErrorHandler);
   private readonly contextSubject = new ReplaySubject<ClrPageContext>(1);
-  private readonly changesSubject = new Subject<ClrContextChange>();
-  private trackingOptions: ClrContextTrackingOptions = {};
+  private trackingOptions: ContextTrackingOptions = {};
   private tracking = false;
   private observer: MutationObserver | null = null;
   private quietTimer: ReturnType<typeof setTimeout> | null = null;
@@ -68,20 +63,27 @@ export class ClrContextTrackerService implements OnDestroy {
   private scrapeInFlight = false;
   private scrapeDirty = false;
   private destroyed = false;
-  private sharedUsers = 0;
-  private sharedStarted = false;
+  private subscribers = 0;
 
   private readonly platformId = inject(PLATFORM_ID);
   private readonly document = inject(DOCUMENT);
-  private readonly contextEngine = inject(ClrContextEngineService);
   private readonly contextRegistry = inject(ClrContextRegistryService);
   private readonly zone = inject(NgZone);
   private readonly router = inject(Router, { optional: true });
 
-  constructor() {
+  /**
+   * @param read takes one snapshot with the given options over the application's scope, reporting
+   *   asynchronous providers as loading.
+   * @param readAsync takes one snapshot, waiting for asynchronous providers.
+   * @param defaults the pacing and options used when tracking starts without any.
+   */
+  constructor(
+    private readonly read: (options?: ClrContextSnapshotOptions) => ClrPageContext,
+    private readonly readAsync: (options?: ClrContextSnapshotOptions) => Promise<ClrPageContext>,
+    private readonly defaults: () => ContextTrackingOptions = () => ({})
+  ) {
     // A completed ReplaySubject still replays: once destroyed, a new subscriber gets nothing.
     this.context$ = defer(() => (this.destroyed ? EMPTY : this.contextSubject.asObservable()));
-    this.changes$ = this.changesSubject.asObservable();
   }
 
   /** The latest snapshot, or `null` before tracking starts. */
@@ -94,35 +96,23 @@ export class ClrContextTrackerService implements OnDestroy {
     return this.tracking;
   }
 
-  ngOnDestroy(): void {
+  destroy(): void {
     this.destroyed = true;
     this.stop();
     // The last snapshot describes the whole page and should not outlive the injector.
     this.latest = null;
     this.latestSerialized = null;
     this.contextSubject.complete();
-    this.changesSubject.complete();
-  }
-
-  /**
-   * Starts tracking with an immediate snapshot. Calling it again restarts with the new options. Tracking
-   * started here runs until `stop`, even after the last `track()` subscriber leaves. An open shadow root
-   * attached to an element already on the page is watched from the next snapshot; `refresh` takes one.
-   */
-  start(options: ClrContextTrackingOptions = {}): void {
-    this.sharedStarted = false;
-    this.begin(options);
   }
 
   /**
    * The page context, tracked while anyone subscribes; the last subscriber to leave stops tracking.
-   * Options apply to every consumer, since there is one tracker.
+   * Options restart tracking and apply to every consumer, since there is one tracker. An open shadow root
+   * attached to an element already on the page is watched from the next snapshot.
    */
-  track(options?: ClrContextTrackingOptions): Observable<ClrPageContext> {
+  track(options?: ContextTrackingOptions): Observable<ClrPageContext> {
     return new Observable<ClrPageContext>(subscriber => {
-      if (this.sharedUsers++ === 0) {
-        this.sharedStarted = !this.tracking;
-      }
+      this.subscribers++;
       if (options || !this.tracking) {
         try {
           this.begin(options);
@@ -133,8 +123,7 @@ export class ClrContextTrackerService implements OnDestroy {
       const subscription = this.context$.subscribe(subscriber);
       return () => {
         subscription.unsubscribe();
-        if (--this.sharedUsers === 0 && this.sharedStarted) {
-          this.sharedStarted = false;
+        if (--this.subscribers === 0) {
           this.stop();
         }
       };
@@ -163,14 +152,11 @@ export class ClrContextTrackerService implements OnDestroy {
     this.clearTimers();
   }
 
-  /**
-   * Takes a new snapshot now instead of waiting for a change; asynchronous providers follow when they
-   * answer, even when the tracker is not started.
-   */
-  refresh(): void {
+  /** Takes a new snapshot now; asynchronous providers follow when they answer. */
+  private refresh(): void {
     // A scrape already under way describes the page as it was; its result is dropped.
     this.scrapeRun++;
-    const snapshot = this.contextEngine.getSnapshot(this.trackingOptions.snapshot);
+    const snapshot = this.read(this.trackingOptions.snapshot);
     this.emit(snapshot);
     this.zone.runOutsideAngular(() => this.observeShadowRootsIn(this.document));
     if (!snapshot.regions.some(region => region.type === CLR_CONTEXT_LOADING_TYPE)) {
@@ -179,11 +165,11 @@ export class ClrContextTrackerService implements OnDestroy {
     if (this.scrapeInFlight) {
       this.scrapeDirty = true;
     } else {
-      this.zone.runOutsideAngular(() => this.scrape(true));
+      this.zone.runOutsideAngular(() => this.scrape());
     }
   }
 
-  private begin(options: ClrContextTrackingOptions = {}): void {
+  private begin(options: ContextTrackingOptions = this.defaults()): void {
     if (!isPlatformBrowser(this.platformId)) {
       return;
     }
@@ -210,13 +196,9 @@ export class ClrContextTrackerService implements OnDestroy {
   }
 
   private emit(snapshot: ClrPageContext, serialized: string | null = serializeSnapshot(snapshot)): void {
-    const previous = this.latest;
     this.latest = snapshot;
     this.latestSerialized = serialized;
     this.contextSubject.next(snapshot);
-    if (this.changesSubject.observed) {
-      this.changesSubject.next(clrDiffContext(previous, snapshot));
-    }
   }
 
   private onMutations(records: MutationRecord[]): void {
@@ -264,10 +246,10 @@ export class ClrContextTrackerService implements OnDestroy {
     });
   }
 
-  /** Scrapes once at a time; `pending` also runs it untracked, to settle a `refresh`. */
-  private async scrape(pending = false): Promise<void> {
+  /** Scrapes once at a time. */
+  private async scrape(): Promise<void> {
     this.clearTimers();
-    if (!this.tracking && !pending) {
+    if (!this.tracking) {
       return;
     }
     if (this.scrapeInFlight) {
@@ -277,7 +259,7 @@ export class ClrContextTrackerService implements OnDestroy {
     this.scrapeInFlight = true;
     const run = ++this.scrapeRun;
     try {
-      const snapshot = await this.contextEngine.getSnapshotAsync(this.trackingOptions.snapshot);
+      const snapshot = await this.readAsync(this.trackingOptions.snapshot);
       if (run !== this.scrapeRun) {
         return;
       }
@@ -296,12 +278,7 @@ export class ClrContextTrackerService implements OnDestroy {
         this.observeShadowRootsIn(this.document);
         if (this.scrapeDirty) {
           this.scrapeDirty = false;
-          // Untracked, only a `refresh` marks the page dirty, and it is still owed its answer.
-          if (this.tracking) {
-            this.scheduleScrape();
-          } else {
-            this.scrape(true);
-          }
+          this.scheduleScrape();
         }
       });
     }
