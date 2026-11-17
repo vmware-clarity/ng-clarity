@@ -12,6 +12,7 @@ import { ContextualDemo } from './contextual.demo';
 import { ContextualFramesDemo } from './frames/frames.demo';
 import { ContextualLiveDemo } from './inventory/live.demo';
 import { ContextualMutationDemo } from './mutation/mutation.demo';
+import { ContextualMutationSpikeDemo } from './mutation-spike/mutation-spike.demo';
 
 const ROUTES: Routes = [
   {
@@ -21,6 +22,7 @@ const ROUTES: Routes = [
       { path: '', redirectTo: 'live', pathMatch: 'full' },
       { path: 'live', component: ContextualLiveDemo, data: { viewId: 'host-inventory' } },
       { path: 'mutation', component: ContextualMutationDemo },
+      { path: 'mutation-spike', component: ContextualMutationSpikeDemo },
       { path: 'frames', component: ContextualFramesDemo },
     ],
   },

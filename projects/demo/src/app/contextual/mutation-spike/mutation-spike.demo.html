@@ -1,0 +1,257 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h3 id="spike-heading">Generic mutation spike</h3>
+<p>
+  One writer for every control: through the Angular binding's <code class="clr-code">NgControl</code> when there is one,
+  otherwise the native property plus <code class="clr-code">input</code> and <code class="clr-code">change</code>
+  events. No component-specific code, no clicks. Each example shows its bound model live.
+</p>
+
+<div class="spike-grid">
+  <form clrForm clrLayout="vertical" class="spike-card">
+    <h4>Template-driven (ngModel)</h4>
+    <clr-input-container>
+      <label>Text</label>
+      <input
+        clrInput
+        id="spike-text"
+        name="text"
+        [(ngModel)]="m.text"
+        (ngModelChange)="textChanges = textChanges + 1"
+      />
+      <clr-control-helper>model: {{ show(m.text) }}, ngModelChange x{{ textChanges }}</clr-control-helper>
+    </clr-input-container>
+    <clr-input-container>
+      <label>Number</label>
+      <input clrInput id="spike-number" type="number" name="num" [(ngModel)]="m.num" />
+      <clr-control-helper>model: {{ show(m.num) }}</clr-control-helper>
+    </clr-input-container>
+    <clr-textarea-container>
+      <label>Textarea</label>
+      <textarea clrTextarea id="spike-area" name="area" [(ngModel)]="m.area"></textarea>
+      <clr-control-helper>model: {{ show(m.area) }}</clr-control-helper>
+    </clr-textarea-container>
+    <clr-checkbox-container>
+      <label>Checkbox</label>
+      <clr-checkbox-wrapper>
+        <input type="checkbox" clrCheckbox id="spike-check" name="check" [(ngModel)]="m.check" />
+        <label>Accept</label>
+      </clr-checkbox-wrapper>
+      <clr-control-helper>model: {{ show(m.check) }}</clr-control-helper>
+    </clr-checkbox-container>
+    <clr-toggle-container>
+      <label>Toggle</label>
+      <clr-toggle-wrapper>
+        <input type="checkbox" clrToggle id="spike-toggle" name="toggle" [(ngModel)]="m.toggle" />
+        <label>Enabled</label>
+      </clr-toggle-wrapper>
+      <clr-control-helper>model: {{ show(m.toggle) }}</clr-control-helper>
+    </clr-toggle-container>
+    <clr-radio-container>
+      <label>Size</label>
+      <clr-radio-wrapper>
+        <input type="radio" clrRadio name="size" value="small" [(ngModel)]="m.size" />
+        <label>Small</label>
+      </clr-radio-wrapper>
+      <clr-radio-wrapper>
+        <input type="radio" clrRadio name="size" value="medium" [(ngModel)]="m.size" />
+        <label>Medium</label>
+      </clr-radio-wrapper>
+      <clr-radio-wrapper>
+        <input type="radio" clrRadio id="spike-size-large" name="size" value="large" [(ngModel)]="m.size" />
+        <label>Large</label>
+      </clr-radio-wrapper>
+      <clr-control-helper>model: {{ show(m.size) }}</clr-control-helper>
+    </clr-radio-container>
+    <clr-input-container>
+      <label>Disabled</label>
+      <input clrInput id="spike-disabled" name="disabledText" [(ngModel)]="m.disabledText" disabled />
+      <clr-control-helper>model: {{ show(m.disabledText) }}</clr-control-helper>
+    </clr-input-container>
+  </form>
+
+  <form clrForm clrLayout="vertical" class="spike-card">
+    <h4>Choices and dates (ngModel)</h4>
+    <clr-select-container>
+      <label>Select, string values</label>
+      <select clrSelect id="spike-region" name="region" [(ngModel)]="m.region">
+        @for (region of regions; track region.value) {
+        <option [value]="region.value">{{ region.label }}</option>
+        }
+      </select>
+      <clr-control-helper>model: {{ show(m.region) }}</clr-control-helper>
+    </clr-select-container>
+    <clr-select-container>
+      <label>Select, [ngValue] objects</label>
+      <select clrSelect id="spike-city" name="city" [(ngModel)]="m.city">
+        @for (city of cities; track city.id) {
+        <option [ngValue]="city">{{ city.name }}</option>
+        }
+      </select>
+      <clr-control-helper>model: {{ show(m.city) }}</clr-control-helper>
+    </clr-select-container>
+    <clr-combobox-container>
+      <label>Combobox, strings</label>
+      <clr-combobox data-spike="letter" name="letter" [(ngModel)]="m.letter">
+        <clr-options>
+          <clr-option *clrOptionItems="let letter of letters" [clrValue]="letter">{{ letter }}</clr-option>
+        </clr-options>
+      </clr-combobox>
+      <clr-control-helper>model: {{ show(m.letter) }}</clr-control-helper>
+    </clr-combobox-container>
+    <clr-combobox-container>
+      <label>Combobox, objects</label>
+      <clr-combobox data-spike="combo-city" name="comboCity" [(ngModel)]="m.comboCity">
+        <ng-container *clrOptionSelected="let selected">{{ selected?.name }}</ng-container>
+        <clr-options>
+          <clr-option *clrOptionItems="let city of cities; field: 'name'" [clrValue]="city">{{ city.name }}</clr-option>
+        </clr-options>
+      </clr-combobox>
+      <clr-control-helper>model: {{ show(m.comboCity) }}</clr-control-helper>
+    </clr-combobox-container>
+    <clr-combobox-container>
+      <label>Combobox, multi</label>
+      <clr-combobox data-spike="multi" name="comboMulti" clrMulti="true" [(ngModel)]="m.comboMulti">
+        <ng-container *clrOptionSelected="let selected">{{ selected }}</ng-container>
+        <clr-options>
+          <clr-option *clrOptionItems="let letter of letters" [clrValue]="letter">{{ letter }}</clr-option>
+        </clr-options>
+      </clr-combobox>
+      <clr-control-helper>model: {{ show(m.comboMulti) }}</clr-control-helper>
+    </clr-combobox-container>
+    <clr-date-container>
+      <label>Date, [(clrDate)] Date model</label>
+      <input type="date" autocomplete="off" clrDate id="spike-date" name="date" [(clrDate)]="m.date" />
+      <clr-control-helper>model: {{ show(m.date) }}</clr-control-helper>
+    </clr-date-container>
+    <clr-date-container>
+      <label>Date, ngModel string model</label>
+      <input type="date" autocomplete="off" clrDate id="spike-date-text" name="dateText" [(ngModel)]="m.dateText" />
+      <clr-control-helper>model: {{ show(m.dateText) }}</clr-control-helper>
+    </clr-date-container>
+  </form>
+
+  <form clrForm clrLayout="vertical" class="spike-card" [formGroup]="reactive">
+    <h4>Reactive (formControlName)</h4>
+    <clr-input-container>
+      <label>Name (required, max 12)</label>
+      <input clrInput id="spike-r-name" formControlName="name" />
+      <clr-control-error *clrIfError="'required'">Required</clr-control-error>
+      <clr-control-error *clrIfError="'maxlength'">Too long</clr-control-error>
+    </clr-input-container>
+    <clr-select-container>
+      <label>Region</label>
+      <select clrSelect id="spike-r-region" formControlName="region">
+        @for (region of regions; track region.value) {
+        <option [value]="region.value">{{ region.label }}</option>
+        }
+      </select>
+    </clr-select-container>
+    <clr-checkbox-container>
+      <label>Agree</label>
+      <clr-checkbox-wrapper>
+        <input type="checkbox" clrCheckbox id="spike-r-agree" formControlName="agree" />
+        <label>I agree</label>
+      </clr-checkbox-wrapper>
+    </clr-checkbox-container>
+    <clr-combobox-container>
+      <label>City (objects)</label>
+      <clr-combobox data-spike="r-city" formControlName="city">
+        <ng-container *clrOptionSelected="let selected">{{ selected?.name }}</ng-container>
+        <clr-options>
+          <clr-option *clrOptionItems="let city of cities; field: 'name'" [clrValue]="city">{{ city.name }}</clr-option>
+        </clr-options>
+      </clr-combobox>
+    </clr-combobox-container>
+    <p class="spike-model">
+      value: <code>{{ show(reactive.value) }}</code><br />
+      dirty {{ reactive.dirty }}, touched {{ reactive.touched }}, valid {{ reactive.valid }}
+    </p>
+  </form>
+
+  <div class="spike-card">
+    <h4>Plain HTML, no Angular binding</h4>
+    <label class="spike-plain">
+      Text
+      <input id="spike-plain-text" #plainText (input)="plain.text = plainText.value" />
+    </label>
+    <label class="spike-plain">
+      Select
+      <select id="spike-plain-select" #plainSelect (change)="plain.select = plainSelect.value">
+        <option value="a">Alpha</option>
+        <option value="b">Beta</option>
+        <option value="c">Gamma</option>
+      </select>
+    </label>
+    <label class="spike-plain">
+      <input type="checkbox" id="spike-plain-check" #plainCheck (change)="plain.check = plainCheck.checked" />
+      Checkbox
+    </label>
+    <p class="spike-model">listeners saw: <code>{{ show(plain) }}</code></p>
+
+    <h4>App control (ControlValueAccessor)</h4>
+    <clr-spike-star-rating id="spike-rating" name="rating" [(ngModel)]="m.rating"></clr-spike-star-rating>
+    <p class="spike-model">model: <code>{{ show(m.rating) }}</code></p>
+
+    <h4>Signal forms ([formField])</h4>
+    <label class="spike-plain">
+      Name (required)
+      <input id="spike-s-name" [formField]="signalForm.name" />
+    </label>
+    <label class="spike-plain">
+      Count
+      <input id="spike-s-count" type="number" [formField]="signalForm.count" />
+    </label>
+    <p class="spike-model">
+      model: <code>{{ show(signalModel()) }}</code>, dirty {{ signalForm().dirty() }}, valid {{ signalForm().valid() }}
+    </p>
+  </div>
+</div>
+
+<div class="spike-results" data-clr-context-ignore>
+  <button type="button" class="btn btn-primary" id="spike-run" [disabled]="running" (click)="runScript()">
+    Run scripted writes
+  </button>
+  @if (results.length) {
+  <table class="table table-compact spike-table" id="spike-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Control</th>
+        <th>Agent value</th>
+        <th>Path</th>
+        <th>Applied</th>
+        <th>Refused / detail</th>
+        <th>Written</th>
+        <th>Model after</th>
+        <th>DOM after</th>
+        <th>D/T/V</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (row of results; track row.n) {
+      <tr [class.spike-refused]="!row.applied">
+        <td>{{ row.n }}</td>
+        <td class="left">{{ row.control }}</td>
+        <td class="left">{{ row.value }}</td>
+        <td>{{ row.path }}</td>
+        <td>{{ row.applied ? 'yes' : 'no' }}</td>
+        <td class="left">{{ row.refused }} {{ row.detail }}</td>
+        <td class="left">{{ show(row.written) }}</td>
+        <td class="left">{{ row.modelAfter }}</td>
+        <td class="left">{{ row.domAfter }}</td>
+        <td>
+          {{ row.dirty === undefined ? '' : (row.dirty ? 'D' : '-') + (row.touched ? 'T' : '-') + (row.valid ? 'V' :
+          '!') }}
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+  }
+</div>

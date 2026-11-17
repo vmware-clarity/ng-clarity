@@ -1,0 +1,51 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+.spike-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: var(--cds-global-space-7);
+  margin-top: var(--cds-global-space-7);
+}
+
+.spike-card {
+  border: 1px solid var(--cds-alias-object-border-color);
+  border-radius: var(--cds-alias-object-border-radius-100);
+  padding: var(--cds-global-space-6);
+}
+
+.spike-plain {
+  display: block;
+  margin: var(--cds-global-space-4) 0;
+}
+
+.spike-model {
+  margin-top: var(--cds-global-space-5);
+  word-break: break-word;
+}
+
+.spike-results {
+  margin-top: var(--cds-global-space-9);
+}
+
+.spike-table {
+  font-size: 0.75rem;
+
+  td {
+    word-break: break-word;
+  }
+
+  td:nth-child(1),
+  td:nth-child(4) {
+    white-space: nowrap;
+    word-break: normal;
+  }
+
+  .spike-refused {
+    background: var(--cds-alias-status-warning-tint);
+  }
+}
