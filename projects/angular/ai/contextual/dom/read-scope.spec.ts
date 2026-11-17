@@ -5,11 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrContextSnapshotOptions } from '@clr/angular/utils';
-
 import { readScope, withinReadScope } from './read-scope';
 import { collectContextTreeWithin } from './walk';
-import { resolveSnapshotOptions } from '../snapshot-options';
+import { ResolvedSnapshotOptions, resolveSnapshotOptions } from '../snapshot-options';
 
 describe('withinReadScope', () => {
   it('keeps lookups for the duration of a read, joined by a nested one, and none after', () => {
@@ -35,7 +33,7 @@ describe('withinReadScope', () => {
 
 describe('a walk’s lookups', () => {
   let container: HTMLElement;
-  const options: Required<ClrContextSnapshotOptions> = resolveSnapshotOptions({});
+  const options: ResolvedSnapshotOptions = resolveSnapshotOptions({});
 
   beforeEach(() => {
     container = document.createElement('div');
