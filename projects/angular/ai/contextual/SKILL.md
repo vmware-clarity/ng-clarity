@@ -11,23 +11,22 @@ metadata:
 
 ```ts
 import { inject } from '@angular/core';
-import { ClrContextEngineService, ClrContextTrackerService } from '@clr/angular/ai';
+import { ClrContextService } from '@clr/angular/ai';
 
 export class Assistant {
-  private readonly engine = inject(ClrContextEngineService);
-  private readonly tracker = inject(ClrContextTrackerService);
+  private readonly context = inject(ClrContextService);
 
   snapshot() {
-    return this.engine.getSnapshot(); // one snapshot, now
+    return this.context.snapshot(); // a Promise of one snapshot, now
   }
 
   live() {
-    return this.tracker.track(); // Observable<ClrPageContext>, re-emits when the page changes
+    return this.context.watch(); // Observable<ClrPageContext>, re-emits when the page changes
   }
 }
 ```
 
-Options for the whole app: `provideClrContextOptions('interactive')` (a preset, or `ClrContextSnapshotOptions`). Name the app with `provideClrContextApplication({ id: 'inventory' })`. Name each view with `data: { viewId: 'vm-list' }` on its route; `viewId` and `metadata` given to `provideClrContextApplication` are functions, read on every snapshot.
+Configure once at startup: `context.configure({ scope: 'interactive', routes: true })`. `scope` is a preset (`full`, `interactive`, `minimal`) or options: `root` (`'page'`, `'modal'` or a selector), `excludeSelectors`, `excludeCategories`, `maxComponents`, `maxItemsPerCollection` (0 summarizes collections). Name the app with `configure({ application: { id: 'inventory' } })`. Name each view with `data: { viewId: 'vm-list' }` on its route; `application.viewId` and `application.metadata` are functions, read on every snapshot.
 
 ## Privacy first
 
@@ -40,10 +39,12 @@ Options for the whole app: `provideClrContextOptions('interactive')` (a preset, 
 
 | Need                                             | Use                                                                    |
 | ------------------------------------------------ | ---------------------------------------------------------------------- |
-| Say what a section of a view is for              | `clrContext` directive (`[clrContextState]`, `[clrContextPublicKeys]`) |
-| Context from a service, maybe asynchronous       | `ClrContextProvider` registered on `ClrContextRegistryService`         |
+| Say what an element of a view is for             | `clrContext` directive (`[clrContextState]`, `[clrContextPublicKeys]`) |
+| Context no element shows, maybe asynchronous     | `ClrContextProvider` registered on `ClrContextRegistryService`         |
 | A component's state the DOM cannot show          | `publishElementContext(host, callback)` from `@clr/angular/utils`      |
-| Markup from another library with no role or name | `engine.registerDomExtractor({ selector, extract })`                   |
+| Markup from another library with no role or name | `configure({ extractors: [{ selector, extract }] })`                   |
+| The same annotation in markup without Angular    | `data-clr-context`, `-type`, `-state` (JSON), `-public-keys`           |
+| Describe the view (metadata, `viewId`)           | The annotation on the view root, `data-clr-context-url`, `viewConfig`  |
 
 ```ts
 import { ClrContext } from '@clr/angular/ai';
@@ -68,13 +69,13 @@ export class Firewall {
 
 - Published state is private to untrusted callers unless its key is in `publicKeys`; list only keys that carry no user data.
 - Keep `[clrContextState]` small and replace the object instead of mutating it: the directive serialises it on every change detection.
+- `clrContext` is reported on the node of the element it sits on (on an `<ng-container>`, the element around it), merged with what a Clarity component there publishes; the component's values win where both set a key. Registered providers are reported in `regions`.
 - An element holds one published context: `publishElementContext` on the host of a Clarity component replaces what the component publishes, or is replaced by it. Publish from an element of your own.
 - A grid is summarised, not walked: its `rows` list each row's cells in one string, such as `esx-01 | ok`, up to `maxItemsPerCollection`, so there is no need to publish them.
-- `focus: 'modal'` reads only the open modal dialog, such as a wizard, and reads the whole page while none is open, so it can be set once for the application.
+- `root: 'modal'` reads only the open modal dialog, such as a wizard, and reads the whole page while none is open, so it can be set once for the application.
 - Prefer semantic HTML and ARIA over annotations: the engine reads the accessibility tree, so an unlabelled control is unnamed to the agent too.
-- `getSnapshotAsync({ timeoutMs })` waits for asynchronous providers; `getSnapshot()` reports a pending one as `{ type: 'clr-loading' }`.
+- A provider may answer with a promise: `snapshot()` waits for it (`configure({ timeoutMs })`, default 2000), `watch()` first reports it as `{ type: 'clr-loading' }`.
 - Unrendered virtual-scroll rows, canvas content, closed shadow roots and cross-origin frames are invisible to it.
-- The frame bridge goes one way: `enableFrameBridge()` lets an embedded frame, such as a chat UI or a plugin, read this page with `clrRequestHostContext()`. It does not read the frames. A same-origin frame is described in place; a cross-origin one, or one behind a closed shadow root, is not.
 
 ## Writing back
 
@@ -82,3 +83,4 @@ export class Firewall {
 - `mutationEngine.apply(operations)` resolves with a result per operation; a refusal carries `refused` and a `detail`, so show it to the user. `announce` on the policy hears the same report.
 - The combobox, the date input and the datagrid's row selection can be written as they are. A custom control whose value is not what the agent sees is refused as `unsupported` until it publishes `publishElementMutator(host, { coerce, write, read })`.
 - Password and other always-withheld fields, and controls without an Angular form binding, are never written (`redacted`, `unbound`).
+- The frame bridge goes one way: `enableFrameBridge()` lets an embedded frame, such as a chat UI or a plugin, read this page with `clrRequestHostContext()`. It does not read the frames. A same-origin frame is described in place; a cross-origin one, or one behind a closed shadow root, is not.

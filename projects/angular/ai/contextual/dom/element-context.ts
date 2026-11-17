@@ -6,16 +6,17 @@
  */
 
 import { isDevMode } from '@angular/core';
-import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrComponentContext, ClrContextSnapshotOptions } from '@clr/angular/utils';
+import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrComponentContext, ClrPublishedContext } from '@clr/angular/utils';
 
 import { truncate } from './text';
 import { defineOwn, jsonSafe, STATE_DEPTH } from '../json-safe';
 import { publicState } from '../public-keys';
+import type { ResolvedSnapshotOptions } from '../snapshot-options';
 
 /** Reads an element's published context. A callback that throws counts as nothing, with a dev-mode warning. */
 export function readClrElementContext(
   element: Element,
-  options: Required<ClrContextSnapshotOptions>
+  options: ResolvedSnapshotOptions
 ): Partial<ClrComponentContext> | null {
   const callback = (element as Element & { [CLR_ELEMENT_CONTEXT_PROPERTY]?: unknown })[CLR_ELEMENT_CONTEXT_PROPERTY];
   if (typeof callback !== 'function') {
@@ -40,28 +41,25 @@ function warnLeftOut(element: Element, error: unknown): void {
 }
 
 /**
- * Merges the context from an element's annotation attributes, then its published context, over the
- * DOM-extracted one; published values win. For an `untrusted` caller, only the state keys the published
- * context marks public are merged.
+ * Merges the element's annotation, then its published context, over the DOM-extracted one; published values
+ * win. For an `untrusted` caller, each source's state is cut to the keys that source marks public.
  */
 export function mergeElementContext(
   base: ClrComponentContext,
   element: Element,
-  options: Required<ClrContextSnapshotOptions>,
-  annotation: Partial<ClrComponentContext> | null = null,
+  options: ResolvedSnapshotOptions,
+  annotation: Partial<ClrPublishedContext> | null = null,
   untrusted = false
 ): ClrComponentContext {
   const published = readClrElementContext(element, options);
-  const source =
-    annotation && published
-      ? { ...annotation, ...published, state: { ...annotation.state, ...published.state } }
-      : (published ?? annotation);
-  if (!source) {
+  if (!published && !annotation) {
     return base;
   }
   let own: Partial<ClrComponentContext>;
   try {
-    own = publishedParts(source, options, untrusted, PUBLISHED_DEPTH);
+    const annotated = annotation ? publishedParts(annotation, options, untrusted, PUBLISHED_DEPTH) : {};
+    const component = published ? publishedParts(published, options, untrusted, PUBLISHED_DEPTH) : {};
+    own = { ...annotated, ...component, state: { ...annotated.state, ...component.state } };
   } catch (error) {
     warnLeftOut(element, error);
     return base;
@@ -90,7 +88,7 @@ const PUBLISHED_DEPTH = 4;
  */
 export function publishedNode(
   value: unknown,
-  options: Required<ClrContextSnapshotOptions>,
+  options: ResolvedSnapshotOptions,
   untrusted = false,
   depth = PUBLISHED_DEPTH
 ): ClrComponentContext | null {
@@ -121,7 +119,7 @@ export function publishedNode(
 
 function publishedParts(
   value: unknown,
-  options: Required<ClrContextSnapshotOptions>,
+  options: ResolvedSnapshotOptions,
   untrusted: boolean,
   depth: number
 ): Partial<ClrComponentContext> {

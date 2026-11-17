@@ -11,8 +11,8 @@
 </p>
 <p>
   Metadata adds what the page cannot show. The <code>metadata</code> and <code>viewId</code> at the top of the snapshot
-  come from <code>data-ai-metadata</code> on the body and the route's <code>data.viewId</code>. The hosts grid carries
-  its own <code>data-ai-metadata</code>, reported as the grid's <code>state.metadata</code>.
+  come from the annotation on the body (<code>data-clr-context-state</code>) and the route's <code>data.viewId</code>.
+  The hosts grid carries its own <code>[clrContextState]</code>, merged into the grid's <code>state</code>.
 </p>
 
 <div class="clr-row">

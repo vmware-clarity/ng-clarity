@@ -14,8 +14,9 @@
 
     <h2 id="quickstart" class="clr-mt-48px" cds-text="title">Quickstart</h2>
     <p class="clr-mt-16px" cds-text="body">
-      Inject the engine for a snapshot of the page now, or the tracker for the current page as it changes. There is
-      nothing to configure first. Letting an agent write back — fill a form, go to a route — takes a policy first, as
+      Inject <code cds-text="code">ClrContextService</code>: <code cds-text="code">snapshot()</code> describes the page
+      now, and <code cds-text="code">watch()</code> keeps describing it as it changes. Letting an agent write back —
+      fill a form, go to a route — takes a policy first, as
       <a routerLink="/documentation/contextual-engine/code" fragment="writing-back">Writing back</a> shows.
     </p>
     <div class="clr-mt-16px">
@@ -105,8 +106,8 @@
     <ul class="list clr-mt-16px" cds-text="body">
       <li>
         One walk reads at most 25,000 elements. A page with more is cut there, and the snapshot carries
-        <code cds-text="code">truncated: true</code>. Narrow a large page with
-        <code cds-text="code">rootSelector</code> or a smaller preset.
+        <code cds-text="code">truncated: true</code>. Narrow a large page with <code cds-text="code">root</code> or a
+        smaller preset.
       </li>
       <li>
         Only what is rendered can be read. Rows a virtual scroller has not rendered are invisible, and so is anything
@@ -123,7 +124,7 @@
     <h2 id="principles" class="clr-mt-48px" cds-text="title">What it guarantees</h2>
     <p class="clr-mt-16px" cds-text="body">
       <strong cds-text="medium">Always the live page.</strong> A snapshot is computed from the live DOM at the moment it
-      is requested — or, by the tracker, when the page changes. Nothing is cached, so a snapshot cannot describe UI that
+      is requested — or, while watched, when the page changes. Nothing is cached, so a snapshot cannot describe UI that
       has been closed, destroyed or navigated away from.
     </p>
     <p class="clr-mt-16px" cds-text="body">
@@ -136,7 +137,7 @@
       summary: its columns, its row count, how many rows are selected, and the form controls inside its cells — a field,
       a checkbox, a select — each described where it sits. Other cell content is not listed, and that includes buttons,
       links and menus in the cells: an agent learns what the collection holds and what it can edit in it, not each row's
-      actions. With <code cds-text="code">collectionItems: 'summary'</code>, the form controls in cells are left out as
+      actions. With <code cds-text="code">maxItemsPerCollection: 0</code>, the form controls in cells are left out as
       well.
     </p>
     <p class="clr-mt-16px" cds-text="body">
@@ -168,8 +169,8 @@
     <h2 id="who-it-is-for" class="clr-mt-48px" cds-text="title">Who consumes it</h2>
     <p class="clr-mt-16px" cds-text="body">
       An assistant inside your application injects the service and asks for a snapshot per question, or subscribes to
-      the tracker to always hold the current page. An assistant embedded in an iframe — possibly built with a different
-      stack entirely — pulls context over a framework-agnostic
+      <code cds-text="code">watch()</code> to always hold the current page. An assistant embedded in an iframe —
+      possibly built with a different stack entirely — pulls context over a framework-agnostic
       <code cds-text="code">postMessage</code> protocol. An agent driving the browser from outside reads
       <code cds-text="code">window.clrContext()</code>. Each of those is a different trust boundary, and each is
       configured separately.
@@ -185,7 +186,9 @@
       </thead>
       <tbody>
         <tr>
-          <td class="left">The application's own code (<code cds-text="code">getSnapshot()</code>, the tracker)</td>
+          <td class="left">
+            The application's own code (<code cds-text="code">snapshot()</code>, <code cds-text="code">watch()</code>)
+          </td>
           <td class="left">Any, over the application-wide ones</td>
           <td class="left">Reported, except what is redacted</td>
           <td class="left">Full URL, route parameters and data, title</td>
@@ -237,8 +240,8 @@
 
     <h3 id="taking-a-snapshot" class="clr-mt-32px" cds-text="section">Taking a snapshot</h3>
     <p class="clr-mt-16px" cds-text="body">
-      <code cds-text="code">ClrContextEngineService.getSnapshot()</code> computes a snapshot on demand from the live DOM
-      and live registrations.
+      <code cds-text="code">ClrContextService.snapshot()</code> computes a snapshot on demand from the live DOM and live
+      registrations, and resolves with it.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="snapshotExample" language="typescript"></app-code-snippet>
@@ -255,29 +258,32 @@
     <h3 id="live-context" class="clr-mt-32px" cds-text="section">Keeping a live page context</h3>
     <p class="clr-mt-16px" cds-text="body">
       Consumers that always want the context of the page the user is currently on subscribe to
-      <code cds-text="code">ClrContextTrackerService</code>. It watches the DOM with a
+      <code cds-text="code">watch()</code>. While anyone subscribes, it watches the DOM with a
       <code cds-text="code">MutationObserver</code> created outside the Angular zone, and watches
       <code cds-text="code">input</code> and <code cds-text="code">change</code> too, because typing changes a property
       rather than an attribute and is invisible to an observer. Both feed one quiet window of
       <code cds-text="code">debounceMs</code> (default 300), bounded by <code cds-text="code">maxWaitMs</code> (default
       2000), so a burst of activity results in a single scrape and an emission happens only when the context actually
-      changed. <code cds-text="code">debounceMs</code> is at least 10, so <code cds-text="code">0</code> becomes 10 and
-      a value that is not a number falls back to the default. <code cds-text="code">maxWaitMs</code> is never shorter
-      than <code cds-text="code">debounceMs</code>.
+      changed. Both are set with <code cds-text="code">configure()</code>. <code cds-text="code">debounceMs</code> is at
+      least 10, so <code cds-text="code">0</code> becomes 10 and a value that is not a number falls back to the default.
+      <code cds-text="code">maxWaitMs</code> is never shorter than <code cds-text="code">debounceMs</code>. Every
+      subscriber shares one watcher, and it stops when the last one leaves.
     </p>
     <div class="clr-mt-16px">
-      <app-code-snippet [code]="trackerExample" language="typescript"></app-code-snippet>
+      <app-code-snippet [code]="watchExample" language="typescript"></app-code-snippet>
     </div>
     <p class="clr-mt-16px" cds-text="body">
-      Neither service depends on zone.js, and both work in a zoneless application. The tracker's emissions arrive from a
-      timer, so a view that shows them should read them through the <code cds-text="code">async</code> pipe or a signal
-      (<code cds-text="code">toSignal</code>), which schedule change detection themselves. The mutation engine runs
-      change detection once a batch of writes is done, so every view that shows a written value is up to date by the
-      time <code cds-text="code">apply()</code> resolves.
+      The service does not depend on zone.js and works in a zoneless application. Watched snapshots arrive from a timer,
+      so a view that shows them should read them through the <code cds-text="code">async</code> pipe or a signal (<code
+        cds-text="code"
+        >toSignal</code
+      >), which schedule change detection themselves. The mutation engine runs change detection once a batch of writes
+      is done, so every view that shows a written value is up to date by the time
+      <code cds-text="code">apply()</code> resolves.
     </p>
     <p class="clr-mt-16px" cds-text="body">
       Mark UI that renders the context with <code cds-text="code">data-clr-context-ignore</code>. Such regions are
-      invisible to the engine end to end, so a panel re-rendering the context cannot re-trigger tracking or describe
+      invisible to the engine end to end, so a panel re-rendering the context cannot re-trigger watching or describe
       itself into the page context.
     </p>
     <div class="clr-mt-16px">
@@ -287,9 +293,9 @@
     <h3 id="annotating" class="clr-mt-32px" cds-text="section">Annotating the application</h3>
     <p class="clr-mt-16px" cds-text="body">
       The DOM only knows <em>what</em> is on the page. The <code cds-text="code">clrContext</code> directive lets the
-      application add the <em>why</em> — knowledge only it has. Annotations register when the element appears,
-      unregister when it is destroyed, and are read at snapshot time, so they are never stale. The directive annotates
-      markup in the application's own templates, while the optional
+      application add the <em>why</em> — knowledge only it has. An annotation is reported on the node of the element it
+      sits on, merged with what the DOM and any Clarity component there say about it, and it is read at snapshot time,
+      so it is never stale. The directive annotates markup in the application's own templates, while the optional
       <code cds-text="code">window.clrContext()</code> accessor is what agents outside the application call to read the
       page.
     </p>
@@ -322,9 +328,11 @@
     <p class="clr-mt-16px" cds-text="body">
       Pages without Angular, such as a same-origin iframe built with another framework, annotate with attributes
       instead: <code cds-text="code">data-clr-context</code> for the label,
-      <code cds-text="code">data-clr-context-type</code> for the kind of UI and
-      <code cds-text="code">data-clr-context-state</code> for the state as a JSON object. The annotation is reported on
-      the element's node in <code cds-text="code">components</code>.
+      <code cds-text="code">data-clr-context-type</code> for the kind of UI,
+      <code cds-text="code">data-clr-context-state</code> for the state as a JSON object and
+      <code cds-text="code">data-clr-context-public-keys</code> for the state keys untrusted callers may see, separated
+      by spaces. The annotation is reported on the element's node in <code cds-text="code">components</code>, like the
+      directive's.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="attributesExample" language="html"></app-code-snippet>
@@ -332,13 +340,12 @@
 
     <h3 id="view-metadata" class="clr-mt-32px" cds-text="section">Describing views</h3>
     <p class="clr-mt-16px" cds-text="body">
-      <code cds-text="code">data-ai-metadata</code> holds a small JSON object about the view when it sits on the view's
-      root or an ancestor of it, and is reported as the snapshot's <code cds-text="code">metadata</code>; a
-      <code cds-text="code">viewId</code> in it names the view. Anywhere else it describes the element it sits on and is
-      reported as that node's <code cds-text="code">state.metadata</code>.
-      <code cds-text="code">data-ai-metadata-url</code> loads the same object from the page's origin, or from origins
-      listed in <code cds-text="code">metadataOrigins</code>; until it loads, or when it cannot be loaded, the
-      snapshot's <code cds-text="code">metadataState</code> says so.
+      The same annotation describes the view when it sits on the view's root or an ancestor of it: its state, with its
+      label, is reported as the snapshot's <code cds-text="code">metadata</code>, and a
+      <code cds-text="code">viewId</code> in it names the view. Untrusted callers see the label and the state keys
+      marked public, as for any annotation. <code cds-text="code">data-clr-context-url</code> on the view root loads an
+      annotation as JSON from the page's origin, or from origins listed in <code cds-text="code">metadataOrigins</code>;
+      until it loads, or when it cannot be loaded, the snapshot's <code cds-text="code">metadataState</code> says so.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="viewMetadataExample" language="html"></app-code-snippet>
@@ -380,7 +387,10 @@
           <td class="left">
             A template knows what a section is for, or holds a little state about it. This is the usual choice.
           </td>
-          <td class="left">A region, with <code cds-text="code">[clrContextPublicKeys]</code></td>
+          <td class="left">
+            The element's node in <code cds-text="code">components</code>, with
+            <code cds-text="code">[clrContextPublicKeys]</code>
+          </td>
         </tr>
         <tr>
           <td class="left">
@@ -388,10 +398,12 @@
             <code cds-text="code">ClrContextRegistryService</code>
           </td>
           <td class="left">
-            The knowledge lives in a service rather than a template, or has to be fetched. A provider may answer with a
-            promise.
+            The knowledge lives in a service and belongs to no element, such as the user's role, or has to be fetched. A
+            provider may answer with a promise.
           </td>
-          <td class="left">A region, with <code cds-text="code">publicKeys</code></td>
+          <td class="left">
+            A node in <code cds-text="code">regions</code>, with <code cds-text="code">publicKeys</code>
+          </td>
         </tr>
         <tr>
           <td class="left"><code cds-text="code">publishElementContext</code></td>
@@ -403,7 +415,7 @@
           <td class="left">Merged into its host element's node, with <code cds-text="code">publicKeys</code></td>
         </tr>
         <tr>
-          <td class="left"><code cds-text="code">registerDomExtractor</code></td>
+          <td class="left"><code cds-text="code">extractors</code> in <code cds-text="code">configure()</code></td>
           <td class="left">
             Markup you do not own carries no role or name, and you cannot change it to publish anything.
           </td>
@@ -563,8 +575,7 @@
       Everything in a snapshot is bounded, and every budget can be tuned per call. Note that
       <code cds-text="code">maxComponents</code> stops the walk when it is reached, so a low value drops whatever comes
       last in the document rather than sampling evenly — and the snapshot then carries
-      <code cds-text="code">truncated: true</code>. A snapshot cut at <code cds-text="code">maxDepth</code> carries it
-      too.
+      <code cds-text="code">truncated: true</code>. Text longer than 100 characters is cut.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="budgetsExample" language="typescript"></app-code-snippet>
@@ -580,21 +591,22 @@
       <code cds-text="code">actions</code> (buttons, links, menus), <code cds-text="code">forms</code>,
       <code cds-text="code">headings</code>, <code cds-text="code">collections</code>,
       <code cds-text="code">dialogs</code>, <code cds-text="code">status</code>, <code cds-text="code">images</code>,
-      <code cds-text="code">text</code>, <code cds-text="code">frames</code> — and
-      <code cds-text="code">excludeRoles</code> does the same for a single ARIA role;
-      <code cds-text="code">excludeSelectors</code> and <code cds-text="code">rootSelector</code> do it by CSS selector,
-      <code cds-text="code">maxDepth</code> caps nesting, <code cds-text="code">focus: 'modal'</code> describes only the
-      open modal while one is open, and <code cds-text="code">collectionItems: 'summary'</code> reduces lists, options
-      and tabs to counts and the current selection.
+      <code cds-text="code">text</code>, <code cds-text="code">frames</code>.
+      <code cds-text="code">excludeSelectors</code> leaves out elements by CSS selector.
+      <code cds-text="code">root</code> chooses what to describe: <code cds-text="code">'page'</code>,
+      <code cds-text="code">'modal'</code> (the open modal while one is open) or a CSS selector. And
+      <code cds-text="code">maxItemsPerCollection: 0</code> reduces lists, options and tabs to counts and the current
+      selection.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="optionsExample" language="typescript"></app-code-snippet>
     </div>
     <p class="clr-mt-16px" cds-text="body">
-      Set them once for the whole application rather than at every call site. Three presets bundle the common choices:
-      <code cds-text="code">full</code> (the defaults), <code cds-text="code">interactive</code> (no prose, no layout)
-      and <code cds-text="code">minimal</code> (no prose or layout, summary collections, shorter text, a lower budget,
-      modal focus). Per-call options are applied over the application's.
+      Set them once for the whole application with <code cds-text="code">configure()</code> rather than at every call
+      site. Three presets bundle the common choices: <code cds-text="code">full</code> (the defaults),
+      <code cds-text="code">interactive</code> (no prose, no layout) and <code cds-text="code">minimal</code> (no prose
+      or layout, counts instead of item lists, a lower budget, the open modal only). Per-call options are applied over
+      the configured ones.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="provideExample" language="typescript"></app-code-snippet>
@@ -613,12 +625,9 @@
     <h3 id="changes" class="clr-mt-32px" cds-text="section">Sending only what changed</h3>
     <p class="clr-mt-16px" cds-text="body">
       In a conversation the page is described once; after that, what a model needs is the difference.
-      <code cds-text="code">ClrContextTrackerService.changes$</code> emits alongside every
-      <code cds-text="code">context$</code> emission: nodes added (with their subtrees), removed, and changed in their
-      own state, plus whether the route, title or annotations moved. The first emission after
-      <code cds-text="code">start()</code> lists everything as added; it is not replayed, so subscribe to
-      <code cds-text="code">changes$</code> before calling <code cds-text="code">start()</code> or
-      <code cds-text="code">track()</code>, or begin from <code cds-text="code">currentContext</code>.
+      <code cds-text="code">changes()</code> watches the page like <code cds-text="code">watch()</code> and emits what
+      changed with each snapshot: nodes added (with their subtrees), removed, and changed in their own state, plus
+      whether the route, title or annotations moved. Its first emission lists everything as added.
       <code cds-text="code">clrDiffContext()</code> is the same comparison as a plain function.
     </p>
     <div class="clr-mt-16px">

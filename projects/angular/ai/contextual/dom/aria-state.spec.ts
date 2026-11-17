@@ -5,13 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrContextSnapshotOptions } from '@clr/angular/utils';
-
 import { ariaState } from './aria-state';
-import { resolveSnapshotOptions } from '../snapshot-options';
+import { ResolvedSnapshotOptions, resolveSnapshotOptions } from '../snapshot-options';
 
 describe('ariaState', () => {
-  const budgets = (): Required<ClrContextSnapshotOptions> => resolveSnapshotOptions({ maxComponents: 100 });
+  const budgets = (): ResolvedSnapshotOptions => resolveSnapshotOptions({ maxComponents: 100 });
 
   let container: HTMLElement;
 
@@ -219,7 +217,7 @@ describe('ariaState', () => {
 });
 
 describe('ariaState, native values as an agent should read them', () => {
-  const budgets = (): Required<ClrContextSnapshotOptions> => resolveSnapshotOptions({ maxComponents: 100 });
+  const budgets = (): ResolvedSnapshotOptions => resolveSnapshotOptions({ maxComponents: 100 });
 
   let container: HTMLElement;
 

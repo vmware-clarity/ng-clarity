@@ -2458,20 +2458,11 @@ export type ClrContextCategory = 'layout' | 'actions' | 'forms' | 'headings' | '
 
 // @public
 export interface ClrContextSnapshotOptions {
-    collectionItems?: 'all' | 'summary';
     excludeCategories?: ClrContextCategory[];
-    excludeRoles?: string[];
     excludeSelectors?: string[];
-    focus?: 'page' | 'modal';
-    includeDomComponents?: boolean;
-    includeFrames?: boolean;
-    includeRoutes?: boolean;
-    includeText?: boolean;
     maxComponents?: number;
-    maxDepth?: number;
     maxItemsPerCollection?: number;
-    maxTextLength?: number;
-    rootSelector?: string;
+    root?: string;
 }
 
 // @public (undocumented)

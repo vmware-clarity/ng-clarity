@@ -12,27 +12,38 @@ import { provideRouter, Router, withHashLocation } from '@angular/router';
 import {
   ClrContextApplicationOptions,
   ClrContextConfig,
-  provideClrContextApplication,
-  provideClrContextConfig,
-} from './context-options';
-import { ClrContextEngineService } from './contextual-engine.service';
+  ClrContextService,
+  ClrContextViewConfig,
+} from './contextual-engine.service';
+import { ClrContextCategory, ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
+import { CLR_CONTEXT_CATEGORIES } from '../snapshot-options';
 
 @Component({ template: '', changeDetection: ChangeDetectionStrategy.Eager })
 class RoutedComponent {}
 
-const quiet = { includeDomComponents: false };
+const quiet = { excludeCategories: Object.keys(CLR_CONTEXT_CATEGORIES) as ClrContextCategory[] };
 
-describe('ClrContextEngineService, view metadata', () => {
+describe('ClrContextService, view metadata', () => {
   let page: HTMLElement;
 
   function engineWith(
-    application: Partial<ClrContextApplicationOptions> = {},
+    {
+      application,
+      ...config
+    }: Omit<ClrContextConfig, 'application'> & {
+      application?: Partial<ClrContextApplicationOptions>;
+    } = {},
     ...providers: (Provider | EnvironmentProviders)[]
-  ): ClrContextEngineService {
-    TestBed.configureTestingModule({
-      providers: [provideClrContextApplication({ id: 'inventory', ...application }), ...providers],
-    });
-    return TestBed.inject(ClrContextEngineService);
+  ): ClrContextService {
+    TestBed.configureTestingModule({ providers });
+    const engine = TestBed.inject(ClrContextService);
+    engine.configure({ ...config, application: { id: 'inventory', ...application } });
+    return engine;
+  }
+
+  /** The snapshot `watch()` and `window.clrContext()` take at once, reporting what still loads as loading. */
+  function now(engine: ClrContextService, options?: ClrContextSnapshotOptions): ClrPageContext {
+    return engine['read'](options, false);
   }
 
   function respondWith(...bodies: (object | null)[]): jasmine.Spy {
@@ -50,94 +61,113 @@ describe('ClrContextEngineService, view metadata', () => {
 
   afterEach(() => {
     page.remove();
-    document.body.removeAttribute('data-ai-metadata');
+    document.body.removeAttribute('data-clr-context-state');
+    document.body.removeAttribute('data-clr-context');
   });
 
-  describe('data-ai-metadata', () => {
+  describe('data-clr-context-state', () => {
     it('reads the view metadata from the view root and its ancestors, inner winning', () => {
-      document.body.setAttribute('data-ai-metadata', '{"viewId":"page","purpose":"Page","owner":"core"}');
-      page.setAttribute('data-ai-metadata', '{"viewId":"hosts","purpose":"Hosts"}');
-      const engine = engineWith({ viewId: () => 'provided', metadata: () => ({ owner: 'app', team: 'infra' }) });
+      document.body.setAttribute('data-clr-context-state', '{"viewId":"page","purpose":"Page","owner":"core"}');
+      page.setAttribute('data-clr-context-state', '{"viewId":"hosts","purpose":"Hosts"}');
+      const engine = engineWith({
+        application: { viewId: () => 'provided', metadata: () => ({ owner: 'app', team: 'infra' }) },
+      });
 
-      const snapshot = engine.getSnapshot({ ...quiet, rootSelector: '.test-page' });
+      const snapshot = now(engine, { ...quiet, root: '.test-page' });
 
       expect(snapshot.viewId).toBe('hosts');
       expect(snapshot.metadata).toEqual({ viewId: 'hosts', purpose: 'Hosts', owner: 'core', team: 'infra' });
     });
 
-    it('ignores metadata outside the view root', () => {
-      page.setAttribute('data-ai-metadata', '{"purpose":"Hosts"}');
+    it('adds the label, and gives an untrusted caller only the state keys marked public', () => {
+      document.body.setAttribute('data-clr-context', 'Host list');
+      document.body.setAttribute('data-clr-context-state', '{"viewId":"hosts","owner":"ada","purpose":"Hosts"}');
+      document.body.setAttribute('data-clr-context-public-keys', 'purpose');
       const engine = engineWith();
 
-      expect(engine.getSnapshot(quiet).metadata).toBeUndefined();
+      expect(now(engine, quiet).metadata).toEqual({
+        label: 'Host list',
+        viewId: 'hosts',
+        owner: 'ada',
+        purpose: 'Hosts',
+      });
+      const shared: ClrPageContext = engine['read'](quiet, true);
+      expect(shared.metadata).toEqual({ label: 'Host list', purpose: 'Hosts', withheld: true });
+      expect(shared.viewId).toBe('hosts');
+      document.body.removeAttribute('data-clr-context-public-keys');
+    });
+
+    it('ignores metadata outside the view root', () => {
+      page.setAttribute('data-clr-context-state', '{"purpose":"Hosts"}');
+      const engine = engineWith();
+
+      expect(now(engine, quiet).metadata).toBeUndefined();
     });
 
     it('enables a view that has page metadata', () => {
-      document.body.setAttribute('data-ai-metadata', '{"purpose":"Hosts"}');
+      document.body.setAttribute('data-clr-context-state', '{"purpose":"Hosts"}');
       const engine = engineWith({ views: 'enabled' });
 
-      expect(engine.getSnapshot(quiet).enabled).toBeTrue();
+      expect(now(engine, quiet).enabled).toBeTrue();
     });
 
     it('leaves out metadata that is not a JSON object', () => {
       spyOn(console, 'warn');
-      document.body.setAttribute('data-ai-metadata', '["not", "an", "object"]');
+      document.body.setAttribute('data-clr-context-state', '["not", "an", "object"]');
       const engine = engineWith();
 
-      expect(engine.getSnapshot(quiet).metadata).toBeUndefined();
+      expect(now(engine, quiet).metadata).toBeUndefined();
       expect(console.warn).toHaveBeenCalled();
     });
 
     it('leaves out metadata in an ignored, redacted or excluded region', () => {
-      page.setAttribute('data-ai-metadata', '{"accountSecret":"s3cr3t"}');
+      page.setAttribute('data-clr-context-state', '{"accountSecret":"s3cr3t"}');
       const engine = engineWith();
       for (const marker of ['data-clr-context-ignore', 'data-clr-context-redact']) {
         document.body.setAttribute(marker, '');
         try {
-          expect(JSON.stringify(engine.getSnapshot(quiet)))
+          expect(JSON.stringify(now(engine, quiet)))
             .withContext(marker)
             .not.toContain('s3cr3t');
         } finally {
           document.body.removeAttribute(marker);
         }
       }
-      expect(JSON.stringify(engine.getSnapshot({ ...quiet, excludeSelectors: ['.test-page'] }))).not.toContain(
-        's3cr3t'
-      );
+      expect(JSON.stringify(now(engine, { ...quiet, excludeSelectors: ['.test-page'] }))).not.toContain('s3cr3t');
     });
 
     it('gives each snapshot its own copy of the metadata, so a consumer cannot change the next one', () => {
       const settings: Record<string, unknown> = { allowed: true };
       settings['self'] = settings;
-      const engine = engineWith({ metadata: () => ({ settings }) });
+      const engine = engineWith({ application: { metadata: () => ({ settings }) } });
 
-      const snapshot = engine.getSnapshot(quiet);
+      const snapshot = now(engine, quiet);
       (snapshot.metadata?.['settings'] as Record<string, unknown>)['allowed'] = false;
 
       expect(() => JSON.stringify(snapshot)).not.toThrow();
       expect(settings['allowed']).toBeTrue();
-      expect((engine.getSnapshot(quiet).metadata?.['settings'] as Record<string, unknown>)['allowed']).toBeTrue();
+      expect((now(engine, quiet).metadata?.['settings'] as Record<string, unknown>)['allowed']).toBeTrue();
     });
   });
 
-  describe('data-ai-metadata-url', () => {
+  describe('data-clr-context-url', () => {
     beforeEach(() => {
-      page.setAttribute('data-ai-metadata-url', '/assets/hosts.json');
-      page.setAttribute('data-ai-metadata', '{"purpose":"Inline"}');
+      page.setAttribute('data-clr-context-url', '/assets/hosts.json');
+      page.setAttribute('data-clr-context-state', '{"purpose":"Inline"}');
     });
 
     it('reports the URL as loading, then merges what it loaded under the inline metadata', async () => {
-      const fetch = respondWith({ purpose: 'Loaded', help: 'https://docs.example.com' });
+      const fetch = respondWith({ state: { purpose: 'Loaded', help: 'https://docs.example.com' } });
       const engine = engineWith();
-      const options = { ...quiet, rootSelector: '.test-page' };
+      const options = { ...quiet, root: '.test-page' };
 
-      const loading = engine.getSnapshot(options);
-      const loaded = await engine.getSnapshotAsync(options);
+      const loading = now(engine, options);
+      const loaded = await engine.snapshot(options);
 
       expect(loading.metadataState).toBe('loading');
       expect(loaded.metadataState).toBeUndefined();
       expect(loaded.metadata).toEqual({ purpose: 'Inline', help: 'https://docs.example.com' });
-      expect(engine.getSnapshot(options).metadata).toEqual(loaded.metadata);
+      expect(now(engine, options).metadata).toEqual(loaded.metadata);
       expect(fetch).toHaveBeenCalledOnceWith(new URL('/assets/hosts.json', document.baseURI).href, {
         credentials: 'same-origin',
       });
@@ -147,7 +177,7 @@ describe('ClrContextEngineService, view metadata', () => {
       respondWith(null);
       const engine = engineWith();
 
-      const snapshot = await engine.getSnapshotAsync({ ...quiet, rootSelector: '.test-page' });
+      const snapshot = await engine.snapshot({ ...quiet, root: '.test-page' });
 
       expect(snapshot.metadataState).toBe('unavailable');
       expect(snapshot.metadata).toEqual({ purpose: 'Inline' });
@@ -155,40 +185,37 @@ describe('ClrContextEngineService, view metadata', () => {
 
     it('reports a URL that did not answer in time as unavailable', async () => {
       spyOn(window, 'fetch').and.returnValue(new Promise<Response>(() => undefined));
-      const engine = engineWith();
+      const engine = engineWith({ timeoutMs: 10 });
 
-      const snapshot = await engine.getSnapshotAsync({ ...quiet, rootSelector: '.test-page', timeoutMs: 10 });
+      const snapshot = await engine.snapshot({ ...quiet, root: '.test-page' });
 
       expect(snapshot.metadataState).toBe('unavailable');
     });
 
     it('loads from another origin only when the application allows it', async () => {
-      page.setAttribute('data-ai-metadata-url', 'https://help.example.com/hosts.json');
-      const fetch = respondWith({ help: 'loaded' });
-      const options = { ...quiet, rootSelector: '.test-page' };
+      page.setAttribute('data-clr-context-url', 'https://help.example.com/hosts.json');
+      const fetch = respondWith({ state: { help: 'loaded' } });
+      const options = { ...quiet, root: '.test-page' };
 
-      expect((await engineWith().getSnapshotAsync(options)).metadataState).toBe('unavailable');
+      expect((await engineWith().snapshot(options)).metadataState).toBe('unavailable');
       expect(fetch).not.toHaveBeenCalled();
 
       TestBed.resetTestingModule();
       const allowed = engineWith({ metadataOrigins: ['https://help.example.com'] });
-      expect((await allowed.getSnapshotAsync(options)).metadata).toEqual({ help: 'loaded', purpose: 'Inline' });
+      expect((await allowed.snapshot(options)).metadata).toEqual({ help: 'loaded', purpose: 'Inline' });
     });
   });
 
   describe('views configuration', () => {
-    const config: ClrContextConfig = {
-      views: [
-        { route: '/hosts/:id', viewId: 'host-detail', metadata: { purpose: 'One host' } },
-        { selector: '.test-page .wizard', enabled: false },
-        { route: 'settings', enabled: true },
-      ],
-    };
+    const config: ClrContextViewConfig[] = [
+      { route: '/hosts/:id', viewId: 'host-detail', metadata: { purpose: 'One host' } },
+      { selector: '.test-page .wizard', enabled: false },
+      { route: 'settings', enabled: true },
+    ];
 
-    function routedEngine(views: 'all' | 'enabled', configOrUrl: ClrContextConfig | string = config) {
+    function routedEngine(views: 'all' | 'enabled', viewConfig: ClrContextViewConfig[] | string = config) {
       return engineWith(
-        { views },
-        provideClrContextConfig(configOrUrl),
+        { views, viewConfig },
         provideRouter(
           [
             { path: 'hosts/:id', component: RoutedComponent },
@@ -207,7 +234,7 @@ describe('ClrContextEngineService, view metadata', () => {
       const engine = routedEngine('enabled');
 
       await TestBed.inject(Router).navigateByUrl('/hosts/7');
-      const snapshot = engine.getSnapshot(quiet);
+      const snapshot = now(engine, quiet);
 
       expect(snapshot.viewId).toBe('host-detail');
       expect(snapshot.metadata).toEqual({ purpose: 'One host' });
@@ -215,36 +242,36 @@ describe('ClrContextEngineService, view metadata', () => {
     });
 
     it('lets the page metadata win over the configuration', async () => {
-      document.body.setAttribute('data-ai-metadata', '{"viewId":"host","purpose":"From the page"}');
+      document.body.setAttribute('data-clr-context-state', '{"viewId":"host","purpose":"From the page"}');
       const engine = routedEngine('all');
 
       await TestBed.inject(Router).navigateByUrl('/hosts/7');
 
-      expect(engine.getSnapshot(quiet).metadata).toEqual({ viewId: 'host', purpose: 'From the page' });
-      expect(engine.getSnapshot(quiet).viewId).toBe('host');
+      expect(now(engine, quiet).metadata).toEqual({ viewId: 'host', purpose: 'From the page' });
+      expect(now(engine, quiet).viewId).toBe('host');
     });
 
     it('enables or disables views whatever the mode', async () => {
       page.innerHTML = '<div class="wizard"></div>';
       const engine = routedEngine('all');
 
-      expect(engine.getSnapshot(quiet).enabled).toBeFalse();
+      expect(now(engine, quiet).enabled).toBeFalse();
 
       page.innerHTML = '';
       TestBed.resetTestingModule();
       const enabledOnly = routedEngine('enabled');
       await TestBed.inject(Router).navigateByUrl('/settings');
-      expect(enabledOnly.getSnapshot(quiet).enabled).toBeTrue();
+      expect(now(enabledOnly, quiet).enabled).toBeTrue();
     });
 
     it('loads the configuration from a URL', async () => {
-      respondWith(config);
+      respondWith({ views: config });
       const engine = routedEngine('all', '/assets/ai-config.json');
 
       await TestBed.inject(Router).navigateByUrl('/hosts/7');
 
-      expect(engine.getSnapshot(quiet).metadataState).toBe('loading');
-      const loaded = await engine.getSnapshotAsync(quiet);
+      expect(now(engine, quiet).metadataState).toBe('loading');
+      const loaded = await engine.snapshot(quiet);
       expect(loaded.viewId).toBe('host-detail');
       expect(loaded.metadataState).toBeUndefined();
     });
@@ -254,19 +281,19 @@ describe('ClrContextEngineService, view metadata', () => {
       respondWith(null);
       const engine = routedEngine('all', '/assets/ai-config.json');
 
-      const loading = engine.getSnapshot();
+      const loading = now(engine);
       expect(loading.enabled).toBeFalse();
       expect(JSON.stringify(loading)).not.toContain('Private');
 
-      const failed = await engine.getSnapshotAsync();
+      const failed = await engine.snapshot();
       expect(failed.enabled).toBeFalse();
       expect(JSON.stringify(failed)).not.toContain('Private');
     });
 
     it('returns no metadata for a disabled view, only which view it is', () => {
       page.innerHTML = '<div class="wizard"></div>';
-      document.body.setAttribute('data-ai-metadata', '{"viewId":"wizard","secret":"s3cr3t"}');
-      const snapshot = routedEngine('all').getSnapshot(quiet);
+      document.body.setAttribute('data-clr-context-state', '{"viewId":"wizard","secret":"s3cr3t"}');
+      const snapshot = now(routedEngine('all'), quiet);
 
       expect(snapshot.enabled).toBeFalse();
       expect(snapshot.viewId).toBe('wizard');

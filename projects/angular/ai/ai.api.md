@@ -14,19 +14,7 @@ import { OnInit } from '@angular/core';
 import { Type } from '@angular/core';
 
 // @public
-export const CLR_AI_METADATA_ATTRIBUTE = "data-ai-metadata";
-
-// @public
-export const CLR_AI_METADATA_URL_ATTRIBUTE = "data-ai-metadata-url";
-
-// @public
-export const CLR_CONTEXT_APPLICATION: InjectionToken<ClrContextApplicationOptions>;
-
-// @public
 export const CLR_CONTEXT_CATEGORIES: Readonly<Record<ClrContextCategory, readonly string[]>>;
-
-// @public
-export const CLR_CONTEXT_CONFIG: InjectionToken<string | ClrContextConfig>;
 
 // @public
 export const CLR_CONTEXT_DEFAULT_OPTIONS: Readonly<Required<ClrContextSnapshotOptions>>;
@@ -44,13 +32,13 @@ export const CLR_CONTEXT_LABEL_ATTRIBUTE = "data-clr-context";
 export const CLR_CONTEXT_LOADING_TYPE = "clr-loading";
 
 // @public
-export const CLR_CONTEXT_OPTIONS: InjectionToken<ClrContextSnapshotOptions>;
-
-// @public
 export const CLR_CONTEXT_PRESETS: Readonly<Record<ClrContextPreset, Readonly<ClrContextSnapshotOptions>>>;
 
 // @public
 export const CLR_CONTEXT_PROTOCOL = "ui-context/v1";
+
+// @public
+export const CLR_CONTEXT_PUBLIC_KEYS_ATTRIBUTE = "data-clr-context-public-keys";
 
 // @public
 export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
@@ -66,6 +54,9 @@ export const CLR_CONTEXT_UNAVAILABLE_TYPE = "clr-unavailable";
 
 // @public
 export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: readonly (keyof ClrContextSnapshotOptions)[];
+
+// @public
+export const CLR_CONTEXT_URL_ATTRIBUTE = "data-clr-context-url";
 
 // @public
 export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
@@ -272,8 +263,8 @@ export interface ClrComponentContextChange {
 }
 
 // @public
-export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvider {
-    getClrContext(): ClrPublishedContext | null;
+export class ClrContext implements OnInit, DoCheck, OnDestroy {
+    getClrContext(): Partial<ClrPublishedContext> | null;
     label: string;
     // (undocumented)
     ngDoCheck(): void;
@@ -310,9 +301,7 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
 // @public
 export interface ClrContextApplicationOptions extends ClrApplicationContext {
     metadata?: () => Record<string, unknown> | null | undefined;
-    metadataOrigins?: string[];
     viewId?: () => string | null | undefined;
-    views?: 'all' | 'enabled';
 }
 
 // @public
@@ -321,15 +310,7 @@ export interface ClrContextAsyncCollectOptions extends ClrContextCollectOptions 
 }
 
 // @public
-export interface ClrContextAsyncSnapshotOptions extends ClrContextSnapshotOptions {
-    timeoutMs?: number;
-}
-
-// @public
 export type ClrContextCategory = 'layout' | 'actions' | 'forms' | 'headings' | 'collections' | 'dialogs' | 'status' | 'images' | 'text' | 'frames';
-
-// @public
-export function clrContextCategoryRoles(categories: readonly ClrContextCategory[]): string[];
 
 // @public
 export interface ClrContextChange {
@@ -346,38 +327,28 @@ export interface ClrContextChange {
 
 // @public
 export interface ClrContextCollectOptions {
-    filter?: ClrContextRegionFilter;
     limits?: ClrContextRegionLimits;
     untrusted?: boolean;
 }
 
 // @public
 export interface ClrContextConfig {
-    views: ClrContextViewConfig[];
+    application?: ClrContextApplicationOptions;
+    debounceMs?: number;
+    extractors?: ClrContextDomExtractor[];
+    maxWaitMs?: number;
+    metadataOrigins?: string[];
+    routes?: boolean;
+    scope?: ClrContextPreset | ClrContextSnapshotOptions;
+    timeoutMs?: number;
+    viewConfig?: ClrContextViewConfig[] | string;
+    views?: 'all' | 'enabled';
 }
 
 // @public
 export interface ClrContextDomExtractor {
     extract(element: HTMLElement, options: Required<ClrContextSnapshotOptions>): ClrPublishedContext | null;
     selector: string;
-}
-
-// @public
-export class ClrContextEngineService implements OnDestroy {
-    disableFrameBridge(): void;
-    disableGlobalAccess(): void;
-    enableFrameBridge(options?: ClrContextFrameHostOptions): void;
-    enableGlobalAccess(propertyName?: string, hostOptions?: ClrContextGlobalAccessOptions): void;
-    getSnapshot(options?: ClrContextSnapshotOptions): ClrPageContext;
-    getSnapshotAsync(asyncOptions?: ClrContextAsyncSnapshotOptions): Promise<ClrPageContext>;
-    // (undocumented)
-    ngOnDestroy(): void;
-    registerDomExtractor(extractor: ClrContextDomExtractor): () => void;
-    requestHostContext(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextEngineService, never>;
-    // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public
@@ -434,18 +405,14 @@ export class ClrContextModule {
 export type ClrContextPreset = 'full' | 'interactive' | 'minimal';
 
 // @public
-export function clrContextPreset(preset: ClrContextPreset, overrides?: ClrContextSnapshotOptions): ClrContextSnapshotOptions;
-
-// @public
 export interface ClrContextProvider {
     getClrContext(): ClrPublishedContext | null | Promise<ClrPublishedContext | null>;
 }
 
+// Warning: (ae-forgotten-export) The symbol "ResolvedSnapshotOptions" needs to be exported by the entry point clr-angular-ai.d.ts
+//
 // @public
-export type ClrContextRegionFilter = (element: Element | null) => 'keep' | 'drop' | 'redact';
-
-// @public
-export type ClrContextRegionLimits = Pick<Required<ClrContextSnapshotOptions>, 'maxTextLength' | 'maxItemsPerCollection'>;
+export type ClrContextRegionLimits = Pick<ResolvedSnapshotOptions, 'maxTextLength' | 'maxItemsPerCollection'>;
 
 // @public
 export class ClrContextRegistryService {
@@ -454,7 +421,7 @@ export class ClrContextRegistryService {
     collect(options?: ClrContextCollectOptions): ClrComponentContext[];
     collectAsync(options?: ClrContextAsyncCollectOptions): Promise<ClrComponentContext[]>;
     notifyChanged(): void;
-    register(provider: ClrContextProvider, element?: Element): () => void;
+    register(provider: ClrContextProvider): () => void;
     unregister(provider: ClrContextProvider): void;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextRegistryService, never>;
@@ -463,47 +430,33 @@ export class ClrContextRegistryService {
 }
 
 // @public
-export interface ClrContextSnapshotOptions {
-    collectionItems?: 'all' | 'summary';
-    excludeCategories?: ClrContextCategory[];
-    excludeRoles?: string[];
-    excludeSelectors?: string[];
-    focus?: 'page' | 'modal';
-    includeDomComponents?: boolean;
-    includeFrames?: boolean;
-    includeRoutes?: boolean;
-    includeText?: boolean;
-    maxComponents?: number;
-    maxDepth?: number;
-    maxItemsPerCollection?: number;
-    maxTextLength?: number;
-    rootSelector?: string;
-}
-
-// @public
-export class ClrContextTrackerService implements OnDestroy {
-    constructor();
-    readonly changes$: Observable<ClrContextChange>;
-    readonly context$: Observable<ClrPageContext>;
-    get currentContext(): ClrPageContext | null;
-    get isTracking(): boolean;
+export class ClrContextService implements OnDestroy {
+    changes(options?: ClrContextSnapshotOptions): Observable<ClrContextChange>;
+    configure(config: ClrContextConfig): void;
+    disableFrameBridge(): void;
+    disableGlobalAccess(): void;
+    enableFrameBridge(options?: ClrContextFrameHostOptions): void;
+    enableGlobalAccess(propertyName?: string, hostOptions?: ClrContextGlobalAccessOptions): void;
     // (undocumented)
     ngOnDestroy(): void;
-    refresh(): void;
-    start(options?: ClrContextTrackingOptions): void;
-    stop(): void;
-    track(options?: ClrContextTrackingOptions): Observable<ClrPageContext>;
+    requestHostContext(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null>;
+    // @internal
+    resolveScope(options?: ClrContextSnapshotOptions): ResolvedSnapshotOptions;
+    snapshot(options?: ClrContextSnapshotOptions): Promise<ClrPageContext>;
+    watch(options?: ClrContextSnapshotOptions): Observable<ClrPageContext>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextTrackerService, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextService, never>;
     // (undocumented)
     static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public
-export interface ClrContextTrackingOptions {
-    debounceMs?: number;
-    maxWaitMs?: number;
-    snapshot?: ClrContextSnapshotOptions;
+export interface ClrContextSnapshotOptions {
+    excludeCategories?: ClrContextCategory[];
+    excludeSelectors?: string[];
+    maxComponents?: number;
+    maxItemsPerCollection?: number;
+    root?: string;
 }
 
 // @public
@@ -685,15 +638,6 @@ export interface ClrSetValueOperation {
     ref: string;
     value: unknown;
 }
-
-// @public
-export function provideClrContextApplication(application: ClrContextApplicationOptions): EnvironmentProviders;
-
-// @public
-export function provideClrContextConfig(config: ClrContextConfig | string): EnvironmentProviders;
-
-// @public
-export function provideClrContextOptions(options: ClrContextPreset | ClrContextSnapshotOptions, overrides?: ClrContextSnapshotOptions): EnvironmentProviders;
 
 // @public
 export function provideClrMutationPolicy(policy: ClrMutationPolicy): EnvironmentProviders;

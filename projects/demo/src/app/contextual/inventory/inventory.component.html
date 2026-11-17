@@ -20,11 +20,7 @@
     </clr-alert>
   }
 
-  <clr-datagrid
-    [(clrDgSelected)]="selectedHosts"
-    [clrDgSelectionType]="'multi'"
-    [attr.data-ai-metadata]="gridMetadata | json"
-  >
+  <clr-datagrid [(clrDgSelected)]="selectedHosts" [clrDgSelectionType]="'multi'" [clrContextState]="gridMetadata">
     <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
     <clr-dg-column [clrDgField]="'cluster'">Cluster</clr-dg-column>
     <clr-dg-column>Status</clr-dg-column>

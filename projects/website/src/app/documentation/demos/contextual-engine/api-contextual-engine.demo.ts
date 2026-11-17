@@ -33,6 +33,16 @@ export class CreateVmWorkflow {
 }
 `;
 
+const VIEW_METADATA_EXAMPLE = `
+<main
+  data-clr-context="Virtual machines"
+  data-clr-context-state='{ "viewId": "vm-list", "purpose": "Manage the cluster VMs" }'
+  data-clr-context-public-keys="viewId purpose"
+>
+  ...
+</main>
+`;
+
 @Component({
   changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'clr-api-contextual-engine-demo',
@@ -41,4 +51,5 @@ export class CreateVmWorkflow {
 })
 export class ApiContextualEngineDemo {
   registryExample = REGISTRY_EXAMPLE;
+  viewMetadataExample = VIEW_METADATA_EXAMPLE;
 }

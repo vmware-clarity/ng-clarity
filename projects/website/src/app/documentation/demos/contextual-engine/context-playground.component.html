@@ -38,79 +38,29 @@
         </div>
         <div class="clr-col-6">
           <clr-number-input-container>
-            <label>maxDepth (0 = unlimited)</label>
-            <input
-              clrNumberInput
-              type="number"
-              name="maxDepth"
-              min="0"
-              max="20"
-              [(ngModel)]="maxDepth"
-              (ngModelChange)="edited()"
-            />
-          </clr-number-input-container>
-        </div>
-        <div class="clr-col-6">
-          <clr-number-input-container>
             <label>maxItemsPerCollection</label>
             <input
               clrNumberInput
               type="number"
               name="maxItemsPerCollection"
-              min="1"
+              min="0"
               max="200"
               [(ngModel)]="maxItemsPerCollection"
               (ngModelChange)="edited()"
             />
-          </clr-number-input-container>
-        </div>
-        <div class="clr-col-6">
-          <clr-number-input-container>
-            <label>maxTextLength</label>
-            <input
-              clrNumberInput
-              type="number"
-              name="maxTextLength"
-              min="1"
-              max="1000"
-              [(ngModel)]="maxTextLength"
-              (ngModelChange)="edited()"
-            />
+            <clr-control-helper>0 reports counts and selection only.</clr-control-helper>
           </clr-number-input-container>
         </div>
       </div>
 
-      <clr-checkbox-container clrInline>
-        <label>Narrow</label>
-        <clr-checkbox-wrapper>
-          <input
-            type="checkbox"
-            clrCheckbox
-            name="summary"
-            [(ngModel)]="summaryCollections"
-            (ngModelChange)="edited()"
-          />
-          <label>collections as summary only</label>
-        </clr-checkbox-wrapper>
-        <clr-checkbox-wrapper>
-          <input type="checkbox" clrCheckbox name="focusModal" [(ngModel)]="focusModal" (ngModelChange)="edited()" />
-          <label>only the modal while one is open</label>
-        </clr-checkbox-wrapper>
-      </clr-checkbox-container>
-
-      <clr-checkbox-container clrInline>
-        <label>Add</label>
-        <clr-checkbox-wrapper>
-          <input
-            type="checkbox"
-            clrCheckbox
-            name="includeRoutes"
-            [(ngModel)]="includeRoutes"
-            (ngModelChange)="edited()"
-          />
-          <label>the routes the application can navigate to</label>
-        </clr-checkbox-wrapper>
-      </clr-checkbox-container>
+      <clr-input-container>
+        <label>root</label>
+        <input clrInput name="root" placeholder="page" [(ngModel)]="root" (ngModelChange)="edited()" />
+        <clr-control-helper
+          ><code class="clr-code">page</code>, <code class="clr-code">modal</code> (the open modal while one is open),
+          or a CSS selector such as <code class="clr-code">main</code>.</clr-control-helper
+        >
+      </clr-input-container>
 
       <clr-checkbox-container>
         <label>Leave out</label>
@@ -128,23 +78,11 @@
             >
           </clr-checkbox-wrapper>
         }
-        <clr-control-helper>
-          Each category is a name for a set of roles (<code class="clr-code">excludeCategories</code>); anything finer
-          goes in <code class="clr-code">excludeRoles</code> below.
-        </clr-control-helper>
+        <clr-control-helper
+          >Each category is a name for a set of roles (<code class="clr-code">excludeCategories</code
+          >).</clr-control-helper
+        >
       </clr-checkbox-container>
-
-      <clr-input-container>
-        <label>excludeRoles</label>
-        <input
-          clrInput
-          name="excludeRoles"
-          placeholder="button, heading"
-          [(ngModel)]="excludeRoles"
-          (ngModelChange)="edited()"
-        />
-        <clr-control-helper>Comma-separated ARIA roles, left out with their subtree.</clr-control-helper>
-      </clr-input-container>
 
       <clr-input-container>
         <label>excludeSelectors</label>
@@ -158,17 +96,11 @@
         <clr-control-helper>Comma-separated CSS selectors, left out with their subtree.</clr-control-helper>
       </clr-input-container>
 
-      <clr-input-container>
-        <label>rootSelector</label>
-        <input clrInput name="rootSelector" placeholder="main" [(ngModel)]="rootSelector" (ngModelChange)="edited()" />
-        <clr-control-helper>Describe only what this selector matches.</clr-control-helper>
-      </clr-input-container>
-
       <button type="button" class="btn btn-sm btn-primary clr-mt-16px" (click)="run()">Snapshot this page again</button>
     </form>
 
     <details class="clr-mt-16px">
-      <summary>Options as passed to <code class="clr-code">getSnapshot()</code></summary>
+      <summary>Options as passed to <code class="clr-code">snapshot()</code></summary>
       <pre class="playground-json" tabindex="0" role="region" aria-label="Options JSON">{{ optionsJson }}</pre>
     </details>
   </div>
@@ -182,9 +114,6 @@
       }
       @if (focus) {
         <span class="label label-success">focus: {{ focus }}</span>
-      }
-      @if (routes) {
-        <span class="label">{{ routes }} routes</span>
       }
     </div>
     @if (change) {

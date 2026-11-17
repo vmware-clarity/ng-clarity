@@ -35,7 +35,8 @@ import {
   provideClrMutationPolicy,
 } from './mutation.interface';
 import { descriptionMatches } from './write';
-import { ClrContextEngineService } from '../providers/contextual-engine.service';
+import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
+import { ClrContextService } from '../providers/contextual-engine.service';
 
 /** A third-party toggle: a custom element carrying the binding, rendering a checkbox. */
 @Component({
@@ -365,7 +366,7 @@ const DECLARATIONS = [Host, AppToggle, AppRating, AppBroken, AppStars, AppCount,
 describe('ClrMutationEngineService write path', () => {
   let fixture: ComponentFixture<Host>;
   let host: Host;
-  let contextEngine: ClrContextEngineService;
+  let contextEngine: ClrContextService;
   let engine: ClrMutationEngineService;
   let classify: jasmine.Spy<(target: ClrMutationTarget) => ClrMutationConsequence>;
   let confirm: jasmine.Spy<(target: ClrMutationTarget) => boolean | Promise<boolean>>;
@@ -398,14 +399,14 @@ describe('ClrMutationEngineService write path', () => {
     fixture = TestBed.createComponent(Host);
     host = fixture.componentInstance;
     await settle(fixture);
-    contextEngine = TestBed.inject(ClrContextEngineService);
+    contextEngine = TestBed.inject(ClrContextService);
     engine = TestBed.inject(ClrMutationEngineService);
   });
 
   afterEach(() => fixture.destroy());
 
   async function set(label: string, value: unknown, description = label): Promise<ClrElementMutationResult> {
-    const ref = refOf(contextEngine.getSnapshot(), label);
+    const ref = refOf(contextEngine['read'](undefined, false), label);
     const report = await engine.apply([{ operation: 'setValue', ref, description, value }]);
     await settle(fixture);
     return report.results[0] as ClrElementMutationResult;
@@ -430,7 +431,7 @@ describe('ClrMutationEngineService write path', () => {
     });
 
     it('refuses a number outside the bounds a custom slider or spinbutton states through ARIA', async () => {
-      const page = contextEngine.getSnapshot();
+      const page = contextEngine['read'](undefined, false);
       expect(findNode(page.components, node => node.label === 'Stars')?.state).toEqual(
         jasmine.objectContaining({ min: 1, max: 5 })
       );
@@ -476,7 +477,7 @@ describe('ClrMutationEngineService write path', () => {
       const component = fixture.debugElement.query(debug => debug.componentInstance instanceof AppBroken)
         .componentInstance as AppBroken;
       component.armed = true;
-      const page = contextEngine.getSnapshot();
+      const page = contextEngine['read'](undefined, false);
 
       const report = await engine.apply([
         { operation: 'setValue', ref: refOf(page, 'Broken'), description: 'Broken', value: 'x' },
@@ -567,7 +568,7 @@ describe('ClrMutationEngineService write path', () => {
     });
 
     it('clears a select with no empty option to nothing, never to its first option', async () => {
-      const ref = refOf(contextEngine.getSnapshot(), 'Office');
+      const ref = refOf(contextEngine['read'](undefined, false), 'Office');
       const report = await engine.apply([{ operation: 'clear', ref, description: 'Office' }]);
       await settle(fixture);
       const result = report.results[0] as ClrElementMutationResult;
@@ -610,17 +611,16 @@ describe('ClrMutationEngineService write path', () => {
     });
 
     it('reports a number field as a number in the snapshot, the result and the snapshot after', async () => {
-      const valueOf = (page: ReturnType<ClrContextEngineService['getSnapshot']>) =>
-        findNode(page.components, node => node.label === 'CPU count')?.state;
-      expect(valueOf(contextEngine.getSnapshot())?.['value']).toBe(2);
+      const valueOf = (page: ClrPageContext) => findNode(page.components, node => node.label === 'CPU count')?.state;
+      expect(valueOf(contextEngine['read'](undefined, false))?.['value']).toBe(2);
 
-      const ref = refOf(contextEngine.getSnapshot(), 'CPU count');
+      const ref = refOf(contextEngine['read'](undefined, false), 'CPU count');
       const report = await engine.apply([{ operation: 'setValue', ref, description: 'CPU count', value: '8' }]);
       await settle(fixture);
 
       expect(report.results[0]).toEqual(jasmine.objectContaining({ applied: true, value: 8, previous: 2 }));
       expect(valueOf(report.snapshot)?.['value']).toBe(8);
-      expect(valueOf(contextEngine.getSnapshot())?.['value']).toBe(8);
+      expect(valueOf(contextEngine['read'](undefined, false))?.['value']).toBe(8);
       expect(host.form.value.cpus).toBe(8);
     });
 
@@ -704,7 +704,7 @@ describe('ClrMutationEngineService write path', () => {
     const options = { excludeSelectors: ['.secret'] };
 
     async function setWith(label: string, value: unknown): Promise<ClrElementMutationResult> {
-      const ref = refOf(contextEngine.getSnapshot(options), label);
+      const ref = refOf(contextEngine['read'](options, false), label);
       const report = await engine.apply([{ operation: 'setValue', ref, description: label, value }], options);
       await settle(fixture);
       return report.results[0] as ClrElementMutationResult;
@@ -748,14 +748,14 @@ describe('ClrMutationEngineService write path', () => {
 
   describe('scope', () => {
     it('does not write what a snapshot with the options of the write would leave out, whatever snapshot the ref came from', async () => {
-      const ref = refOf(contextEngine.getSnapshot(), 'Name');
-      const write = async (snapshotOptions: object) =>
+      const ref = refOf(contextEngine['read'](undefined, false), 'Name');
+      const write = async (snapshotOptions: ClrContextSnapshotOptions) =>
         (await engine.apply([{ operation: 'setValue', ref, description: 'Name', value: 'Ada' }], snapshotOptions))
           .results[0];
 
       expect((await write({ excludeSelectors: ['clr-input-container'] })).refused).toBe('hidden');
-      expect((await write({ excludeRoles: ['form'] })).refused).toBe('hidden');
-      expect((await write({ rootSelector: 'clr-select-container' })).refused).toBe('hidden');
+      expect((await write({ excludeCategories: ['forms'] })).refused).toBe('hidden');
+      expect((await write({ root: 'clr-select-container' })).refused).toBe('hidden');
       expect(host.form.value.name).toBe('');
 
       expect((await write({})).applied).toBeTrue();
@@ -763,10 +763,10 @@ describe('ClrMutationEngineService write path', () => {
     });
 
     it('does not write a custom control whose rendered input the options leave out', async () => {
-      const ref = refOf(contextEngine.getSnapshot(), 'Enabled');
+      const ref = refOf(contextEngine['read'](undefined, false), 'Enabled');
       const options = { excludeSelectors: ['input[role="switch"]'] };
 
-      expect(JSON.stringify(contextEngine.getSnapshot(options).components)).not.toContain('Enabled');
+      expect(JSON.stringify(contextEngine['read'](options, false).components)).not.toContain('Enabled');
       const report = await engine.apply(
         [{ operation: 'setValue', ref, description: 'Enabled', value: false }],
         options
@@ -777,14 +777,19 @@ describe('ClrMutationEngineService write path', () => {
     });
 
     it('refuses a field behind an open modal dialog, and writes the one inside it', async () => {
-      const page = contextEngine.getSnapshot();
+      const page = contextEngine['read'](undefined, false);
       const behind = refOf(page, 'Name');
       host.modalOpen = true;
       await settle(fixture);
 
       const report = await engine.apply([
         { operation: 'setValue', ref: behind, description: 'Name', value: 'x' },
-        { operation: 'setValue', ref: refOf(contextEngine.getSnapshot(), 'Inside'), description: 'Inside', value: 'y' },
+        {
+          operation: 'setValue',
+          ref: refOf(contextEngine['read'](undefined, false), 'Inside'),
+          description: 'Inside',
+          value: 'y',
+        },
       ]);
 
       expect(report.results[0].refused).toBe('hidden');
@@ -795,7 +800,7 @@ describe('ClrMutationEngineService write path', () => {
     it('hands out no ref behind an open modal dialog, even in a snapshot of the whole page', async () => {
       host.modalOpen = true;
       await settle(fixture);
-      const page = contextEngine.getSnapshot();
+      const page = contextEngine['read'](undefined, false);
 
       expect(findNode(page.components, node => node.label === 'Name')?.ref).toBeUndefined();
       expect(findNode(page.components, node => node.label === 'Inside')?.ref).toBeDefined();
@@ -804,7 +809,7 @@ describe('ClrMutationEngineService write path', () => {
     it('hands out refs only inside the dialog of a modal-focused snapshot that starts at the component around it', async () => {
       host.renameOpen = true;
       await settle(fixture);
-      const modal = contextEngine.getSnapshot({ focus: 'modal' });
+      const modal = contextEngine['read']({ root: 'modal' }, false);
 
       // The walk starts at the component, so the state it publishes lands on the dialog's
       // node. That node carries no ref, and the only one handed out is inside the dialog.
@@ -827,8 +832,8 @@ describe('ClrMutationEngineService write path', () => {
     });
 
     it('keeps a ref valid across a narrower snapshot taken by someone else', async () => {
-      const ref = refOf(contextEngine.getSnapshot(), 'Name');
-      contextEngine.getSnapshot({ rootSelector: 'app-toggle' });
+      const ref = refOf(contextEngine['read'](undefined, false), 'Name');
+      contextEngine['read']({ root: 'app-toggle' }, false);
 
       const report = await engine.apply([{ operation: 'setValue', ref, description: 'Name', value: 'Ada' }]);
 
@@ -836,7 +841,7 @@ describe('ClrMutationEngineService write path', () => {
     });
 
     it('never hands out a ref an agent could work out from another', () => {
-      const refs = allRefs(contextEngine.getSnapshot().components);
+      const refs = allRefs(contextEngine['read'](undefined, false).components);
 
       expect(refs.length).toBeGreaterThan(3);
       expect(refs.every(ref => /^e[0-9a-z]{8}$/.test(ref))).toBeTrue();
@@ -862,7 +867,7 @@ describe('ClrMutationEngineService write path', () => {
       classify.and.returnValue('consequential');
       let answer: (value: boolean) => void = () => undefined;
       confirm.and.returnValue(new Promise<boolean>(resolve => (answer = resolve)));
-      const ref = refOf(contextEngine.getSnapshot(), 'Plan');
+      const ref = refOf(contextEngine['read'](undefined, false), 'Plan');
 
       const pending = engine.apply([{ operation: 'setValue', ref, description: 'Plan', value: 'Team' }]);
       await new Promise(resolve => setTimeout(resolve));
@@ -899,7 +904,7 @@ describe('ClrMutationEngineService write path', () => {
       const unconfirmed = TestBed.createComponent(Host);
       unconfirmed.detectChanges();
       await unconfirmed.whenStable();
-      const page = TestBed.inject(ClrContextEngineService).getSnapshot();
+      const page = TestBed.inject(ClrContextService)['read'](undefined, false);
       const mutation = TestBed.inject(ClrMutationEngineService);
       const operation = { operation: 'setValue' as const, ref: refOf(page, 'Name'), description: 'Name', value: 'x' };
 
@@ -922,7 +927,7 @@ describe('ClrMutationEngineService write path', () => {
     it('declines an operation whose confirmation is not answered in time, and goes on with the next call', async () => {
       classify.and.callFake(target => (target.label === 'Name' ? 'consequential' : 'reversible'));
       confirm.and.returnValue(new Promise<boolean>(() => undefined));
-      const page = contextEngine.getSnapshot();
+      const page = contextEngine['read'](undefined, false);
 
       const stuck = engine.apply([
         { operation: 'setValue', ref: refOf(page, 'Name'), description: 'Name', value: 'x' },
@@ -942,7 +947,7 @@ describe('ClrMutationEngineService write path', () => {
       classify.and.returnValue('consequential');
       let answer: (value: boolean) => void = () => undefined;
       confirm.and.returnValue(new Promise<boolean>(resolve => (answer = resolve)));
-      const ref = refOf(contextEngine.getSnapshot(), 'Name');
+      const ref = refOf(contextEngine['read'](undefined, false), 'Name');
 
       const pending = engine.apply([{ operation: 'setValue', ref, description: 'Name', value: 'written too late' }]);
       await new Promise(resolve => setTimeout(resolve));

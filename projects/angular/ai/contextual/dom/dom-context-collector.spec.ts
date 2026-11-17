@@ -416,10 +416,10 @@ describe('DOM context collector - hand-authored markup', () => {
     expect(collectComponents(root, { maxComponents: 2 }).length).toBe(2);
   });
 
-  it('truncates long text to the configured budget', () => {
+  it('truncates long text to 100 characters', () => {
     root.innerHTML = `<button>${'x'.repeat(200)}</button>`;
 
-    expect(collectComponents(root, { maxTextLength: 10 })[0].label?.length).toBe(10);
+    expect(collectComponents(root)[0].label?.length).toBe(100);
   });
 });
 
@@ -505,13 +505,13 @@ describe('DOM context collector - component-published context', () => {
       extra: circular,
     }));
 
-    const widget = collectComponents(root, { maxTextLength: 50 })[0];
+    const widget = collectComponents(root)[0];
 
     expect(() => JSON.stringify(widget)).not.toThrow();
     expect(widget.children?.length).toBe(2);
     expect(widget.children?.[0].state?.['node']).toBeUndefined();
     expect(widget.children?.[0].state?.['fn']).toBeUndefined();
-    expect((widget.children?.[0].state?.['name'] as string).length).toBeLessThanOrEqual(50);
+    expect((widget.children?.[0].state?.['name'] as string).length).toBeLessThanOrEqual(100);
     expect(widget.children?.[1].label).toBeUndefined();
     expect('extra' in widget).toBe(false);
   });
@@ -523,10 +523,10 @@ describe('DOM context collector - component-published context', () => {
       state: { rows: ['R'.repeat(300)] },
     }));
 
-    const widget = collectComponents(root, { maxTextLength: 40 })[0];
+    const widget = collectComponents(root)[0];
 
-    expect((widget.label as string).length).toBeLessThanOrEqual(40);
-    expect((widget.state?.['rows'] as string[])[0].length).toBeLessThanOrEqual(40);
+    expect((widget.label as string).length).toBeLessThanOrEqual(100);
+    expect((widget.state?.['rows'] as string[])[0].length).toBeLessThanOrEqual(100);
   });
 
   it('keeps a publisher from breaking the snapshot with state that cannot be serialised', () => {
