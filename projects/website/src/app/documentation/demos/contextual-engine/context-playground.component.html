@@ -57,8 +57,8 @@
         <label>root</label>
         <input clrInput name="root" placeholder="page" [(ngModel)]="root" (ngModelChange)="edited()" />
         <clr-control-helper
-          ><code class="clr-code">page</code>, <code class="clr-code">modal</code> (the open modal while one is open), or
-          a CSS selector such as <code class="clr-code">main</code>.</clr-control-helper
+          ><code class="clr-code">page</code>, <code class="clr-code">modal</code> (the open modal while one is open),
+          or a CSS selector such as <code class="clr-code">main</code>.</clr-control-helper
         >
       </clr-input-container>
 
@@ -78,7 +78,10 @@
             >
           </clr-checkbox-wrapper>
         }
-        <clr-control-helper>Each category is a name for a set of roles (<code class="clr-code">excludeCategories</code>).</clr-control-helper>
+        <clr-control-helper
+          >Each category is a name for a set of roles (<code class="clr-code">excludeCategories</code
+          >).</clr-control-helper
+        >
       </clr-checkbox-container>
 
       <clr-input-container>
