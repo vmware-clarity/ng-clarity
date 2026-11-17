@@ -13,7 +13,7 @@ import { ClrCommonFormsModule, NgControlService } from '@clr/angular/forms/commo
 
 import { ClrCheckbox } from './checkbox';
 import { ClrCheckboxWrapper } from './checkbox-wrapper';
-import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
+import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control';
 
 @Component({
   template: `<input type="checkbox" clrToggle />`,
@@ -44,7 +44,7 @@ class ReactiveTest {
   });
 }
 
-export default function (): void {
+describe('Checkbox component', () => {
   describe('ClrToggle directive', () => {
     ControlStandaloneSpec(StandaloneUseTest);
     TemplateDrivenSpec(ClrCheckboxWrapper, ClrCheckbox, TemplateDrivenTest, 'clr-checkbox');
@@ -71,4 +71,4 @@ export default function (): void {
       expect(containerEl.getAttribute('role')).toBe('switch');
     });
   });
-}
+});

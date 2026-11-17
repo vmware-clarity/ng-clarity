@@ -104,7 +104,12 @@ const columns = [
 ];
 
 describe('datagridPage directive', () => {
-  beforeEach(function (this: any) {
+  let testContext: any;
+  beforeEach(() => {
+    testContext = {};
+  });
+
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         FormsModule,
@@ -123,94 +128,102 @@ describe('datagridPage directive', () => {
       providers: [{ provide: DatagridStrings, useClass: DatagridStrings }],
     }).overrideProvider(ExportProviderService, {
       useValue: {
-        exportUIOnlyData: jasmine.createSpy('exportUIOnlyData'),
+        exportUIOnlyData: vi.fn(),
       },
     });
   });
 
   describe('on client side grid', () => {
-    beforeEach(function (this: any) {
-      this.fixture = TestBed.createComponent(DatagridForClientSideGridHostComponent);
-      this.appfxDatagridHostComponent = this.fixture.componentInstance;
+    beforeEach(() => {
+      testContext.fixture = TestBed.createComponent(DatagridForClientSideGridHostComponent);
+      testContext.appfxDatagridHostComponent = testContext.fixture.componentInstance;
     });
 
-    it('set initial page', fakeAsync(function (this: any) {
-      this.fixture.detectChanges(false);
+    it('set initial page', fakeAsync(() => {
+      testContext.fixture.detectChanges(false);
       tick();
-      expect(this.appfxDatagridHostComponent.appfxDatagridComponent.clrDatagridPagination.currentPage).toEqual(
-        this.appfxDatagridHostComponent.currentPageIndex
+      expect(testContext.appfxDatagridHostComponent.appfxDatagridComponent.clrDatagridPagination.currentPage).toEqual(
+        testContext.appfxDatagridHostComponent.currentPageIndex
       );
     }));
-    it('change grid page', fakeAsync(function (this: any) {
-      this.appfxDatagridHostComponent.currentPageIndex = 1;
-      this.fixture.detectChanges(false);
+    it('change grid page', fakeAsync(() => {
+      testContext.appfxDatagridHostComponent.currentPageIndex = 1;
+      testContext.fixture.detectChanges(false);
       tick();
-      expect(this.appfxDatagridHostComponent.appfxDatagridComponent.clrDatagridPagination.currentPage).toEqual(
-        this.appfxDatagridHostComponent.currentPageIndex
+      expect(testContext.appfxDatagridHostComponent.appfxDatagridComponent.clrDatagridPagination.currentPage).toEqual(
+        testContext.appfxDatagridHostComponent.currentPageIndex
       );
-      this.appfxDatagridHostComponent.currentPageIndex = 3;
-      this.fixture.detectChanges(false);
+      testContext.appfxDatagridHostComponent.currentPageIndex = 3;
+      testContext.fixture.detectChanges(false);
       tick();
-      expect(this.appfxDatagridHostComponent.appfxDatagridComponent.clrDatagridPagination.currentPage).toEqual(
-        this.appfxDatagridHostComponent.currentPageIndex
+      expect(testContext.appfxDatagridHostComponent.appfxDatagridComponent.clrDatagridPagination.currentPage).toEqual(
+        testContext.appfxDatagridHostComponent.currentPageIndex
       );
     }));
-    it('emit grid page when is changed', fakeAsync(function (this: any) {
-      this.fixture.detectChanges(false);
+    it('emit grid page when is changed', fakeAsync(() => {
+      testContext.fixture.detectChanges(false);
       tick();
-      expect(this.appfxDatagridHostComponent.newPageIndex).toEqual(this.appfxDatagridHostComponent.currentPageIndex);
-      this.appfxDatagridHostComponent.currentPageIndex = 3;
-      this.fixture.detectChanges(false);
+      expect(testContext.appfxDatagridHostComponent.newPageIndex).toEqual(
+        testContext.appfxDatagridHostComponent.currentPageIndex
+      );
+      testContext.appfxDatagridHostComponent.currentPageIndex = 3;
+      testContext.fixture.detectChanges(false);
       tick();
-      expect(this.appfxDatagridHostComponent.newPageIndex).toEqual(this.appfxDatagridHostComponent.currentPageIndex);
+      expect(testContext.appfxDatagridHostComponent.newPageIndex).toEqual(
+        testContext.appfxDatagridHostComponent.currentPageIndex
+      );
     }));
   });
 
   describe('on server side grid', () => {
-    beforeEach(function (this: any) {
-      this.fixture = TestBed.createComponent(DatagridForServerSideGridHostComponent);
-      this.appfxDatagridHostComponent = this.fixture.componentInstance;
+    beforeEach(() => {
+      testContext.fixture = TestBed.createComponent(DatagridForServerSideGridHostComponent);
+      testContext.appfxDatagridHostComponent = testContext.fixture.componentInstance;
 
-      this.appfxDatagridHostComponent.appfxDatagridComponent.ngOnInit();
-      this.fixture.detectChanges(false);
+      testContext.appfxDatagridHostComponent.appfxDatagridComponent.ngOnInit();
+      testContext.fixture.detectChanges(false);
 
-      this.fixture.detectChanges();
-      this.appfxDatagridHostComponent.appfxDatagridComponent.selectedItems = []; // reset
-      this.fixture.detectChanges(false);
+      testContext.fixture.detectChanges();
+      testContext.appfxDatagridHostComponent.appfxDatagridComponent.selectedItems = []; // reset
+      testContext.fixture.detectChanges(false);
     });
 
-    it('set initial page', function (this: any) {
-      expect(this.appfxDatagridHostComponent.appfxDatagridComponent.clrDatagridPagination.currentPage).toEqual(
-        this.appfxDatagridHostComponent.currentPageIndex
+    it('set initial page', () => {
+      expect(testContext.appfxDatagridHostComponent.appfxDatagridComponent.clrDatagridPagination.currentPage).toEqual(
+        testContext.appfxDatagridHostComponent.currentPageIndex
       );
     });
-    it('change grid page', function (this: any) {
-      this.appfxDatagridHostComponent.currentPageIndex = 1;
-      this.fixture.detectChanges(false);
-      expect(this.appfxDatagridHostComponent.appfxDatagridComponent.clrDatagridPagination.currentPage).toEqual(
-        this.appfxDatagridHostComponent.currentPageIndex
+    it('change grid page', () => {
+      testContext.appfxDatagridHostComponent.currentPageIndex = 1;
+      testContext.fixture.detectChanges(false);
+      expect(testContext.appfxDatagridHostComponent.appfxDatagridComponent.clrDatagridPagination.currentPage).toEqual(
+        testContext.appfxDatagridHostComponent.currentPageIndex
       );
-      this.appfxDatagridHostComponent.currentPageIndex = 3;
-      this.fixture.detectChanges(false);
-      expect(this.appfxDatagridHostComponent.appfxDatagridComponent.clrDatagridPagination.currentPage).toEqual(
-        this.appfxDatagridHostComponent.currentPageIndex
+      testContext.appfxDatagridHostComponent.currentPageIndex = 3;
+      testContext.fixture.detectChanges(false);
+      expect(testContext.appfxDatagridHostComponent.appfxDatagridComponent.clrDatagridPagination.currentPage).toEqual(
+        testContext.appfxDatagridHostComponent.currentPageIndex
       );
     });
 
-    it('emit grid page when is changed', function (this: any) {
-      expect(this.appfxDatagridHostComponent.newPageIndex).toEqual(this.appfxDatagridHostComponent.currentPageIndex);
-      this.appfxDatagridHostComponent.currentPageIndex = 3;
-      this.fixture.detectChanges(false);
-      expect(this.appfxDatagridHostComponent.newPageIndex).toEqual(this.appfxDatagridHostComponent.currentPageIndex);
+    it('emit grid page when is changed', () => {
+      expect(testContext.appfxDatagridHostComponent.newPageIndex).toEqual(
+        testContext.appfxDatagridHostComponent.currentPageIndex
+      );
+      testContext.appfxDatagridHostComponent.currentPageIndex = 3;
+      testContext.fixture.detectChanges(false);
+      expect(testContext.appfxDatagridHostComponent.newPageIndex).toEqual(
+        testContext.appfxDatagridHostComponent.currentPageIndex
+      );
     });
   });
 
-  afterEach(function (this: any) {
-    this.fixture.destroy();
-    this.appfxDatagridHostComponent.columnsDefs = null;
-    this.appfxDatagridHostComponent.data = null;
-    this.appfxDatagridHostComponent = null;
-    this.directive = null;
+  afterEach(() => {
+    testContext.fixture.destroy();
+    testContext.appfxDatagridHostComponent.columnsDefs = null;
+    testContext.appfxDatagridHostComponent.data = null;
+    testContext.appfxDatagridHostComponent = null;
+    testContext.directive = null;
   });
 });
 

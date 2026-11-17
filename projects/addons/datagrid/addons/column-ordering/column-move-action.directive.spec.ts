@@ -22,18 +22,23 @@ import { ColumnDefinition } from '../../shared/column/column-definitions';
 // subtree, so it has to be read through plain document queries rather than fixture.debugElement -
 // the same reason the core clr-dg-column-actions spec does the same thing.
 describe('ColumnMoveActionDirective', () => {
-  beforeEach(function (this: any) {
+  let testContext: any;
+  beforeEach(() => {
+    testContext = {};
+  });
+
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ClrDatagridModule, CommonModule, DragDropModule, TestClrDatagridHostComponent],
     });
 
-    this.fixture = TestBed.createComponent(TestClrDatagridHostComponent);
-    this.fixture.detectChanges();
+    testContext.fixture = TestBed.createComponent(TestClrDatagridHostComponent);
+    testContext.fixture.detectChanges();
   });
 
-  function toggleMenu(this: any, columnIndex: number) {
-    this.fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle'))[columnIndex].nativeElement.click();
-    this.fixture.detectChanges();
+  function toggleMenu(context: any, columnIndex: number) {
+    context.fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle'))[columnIndex].nativeElement.click();
+    context.fixture.detectChanges();
   }
 
   function moveButton(label: string): HTMLElement {
@@ -42,43 +47,43 @@ describe('ColumnMoveActionDirective', () => {
     );
   }
 
-  it('is enabled in the middle and disabled at both edges', function (this: any) {
-    toggleMenu.call(this, 0);
+  it('is enabled in the middle and disabled at both edges', () => {
+    toggleMenu(testContext, 0);
     expect(moveButton('Move Left').getAttribute('aria-disabled')).toBe('true');
     expect(moveButton('Move Right').getAttribute('aria-disabled')).toBe('false');
-    toggleMenu.call(this, 0);
+    toggleMenu(testContext, 0);
 
-    toggleMenu.call(this, 1);
+    toggleMenu(testContext, 1);
     expect(moveButton('Move Left').getAttribute('aria-disabled')).toBe('false');
     expect(moveButton('Move Right').getAttribute('aria-disabled')).toBe('false');
-    toggleMenu.call(this, 1);
+    toggleMenu(testContext, 1);
 
-    toggleMenu.call(this, 2);
+    toggleMenu(testContext, 2);
     expect(moveButton('Move Left').getAttribute('aria-disabled')).toBe('false');
     expect(moveButton('Move Right').getAttribute('aria-disabled')).toBe('true');
-    toggleMenu.call(this, 2);
+    toggleMenu(testContext, 2);
   });
 
-  it('moves the column when clicked', function (this: any) {
-    expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['Name', 'State', 'Status']);
+  it('moves the column when clicked', () => {
+    expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['Name', 'State', 'Status']);
 
-    toggleMenu.call(this, 0);
+    toggleMenu(testContext, 0);
     moveButton('Move Right').click();
-    this.fixture.detectChanges();
+    testContext.fixture.detectChanges();
 
-    expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['State', 'Name', 'Status']);
+    expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['State', 'Name', 'Status']);
   });
 
-  it('does nothing when a disabled action is clicked', function (this: any) {
-    toggleMenu.call(this, 0);
+  it('does nothing when a disabled action is clicked', () => {
+    toggleMenu(testContext, 0);
     moveButton('Move Left').click();
-    this.fixture.detectChanges();
+    testContext.fixture.detectChanges();
 
-    expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['Name', 'State', 'Status']);
+    expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['Name', 'State', 'Status']);
   });
 
-  afterEach(function (this: any) {
-    this.fixture.destroy();
+  afterEach(() => {
+    testContext.fixture.destroy();
   });
 });
 
