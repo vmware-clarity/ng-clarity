@@ -61,7 +61,7 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
 
   @Input('clrOptionItemsField')
   set field(field: string | undefined) {
-    this._filterField = field;
+    this._filterField = field ?? '';
     this.optionService.displayField = field;
   }
 
