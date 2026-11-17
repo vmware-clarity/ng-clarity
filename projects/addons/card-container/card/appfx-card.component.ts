@@ -83,7 +83,7 @@ export class AppfxCardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild(CdkDrag, { read: ElementRef }) private cdkDragElementRefs?: ElementRef;
 
-  @ViewChild('cardView', { read: ViewContainerRef, static: true }) private cardViewContainer!: ViewContainerRef;
+  @ViewChild('cardViewContainer', { read: ViewContainerRef, static: true }) private cardViewContainer!: ViewContainerRef;
 
   // Store current set card unit width
   private currentUnitWidth: number | undefined;
