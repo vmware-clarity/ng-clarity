@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
+import { DateRangeOption } from './interfaces/date-range.interface';
 import { DateIOService } from './providers/date-io.service';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
@@ -69,7 +70,7 @@ export class ClrDatepickerViewManager {
     return this.dateIOService.getRangeOptions();
   }
 
-  onRangeOptionSelect(selectedRange) {
+  onRangeOptionSelect(selectedRange: DateRangeOption) {
     const startDate = this.dateNavigationService.convertDateToDayModel(selectedRange?.value[0]),
       endDate = this.dateNavigationService.convertDateToDayModel(selectedRange?.value[1]);
     this.dateNavigationService.notifySelectedDayChanged({ startDate, endDate }, { emitEvent: !this.hasActionButtons });

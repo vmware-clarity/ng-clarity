@@ -430,7 +430,7 @@ describe('Datagrid', () => {
       });
 
       describe('Build-in string and numeric filters', () => {
-        let context;
+        let context: TestContext<ClrDatagridColumn, ColTypeTest>;
 
         beforeEach(() => {
           context = helpers.create(ClrDatagridColumn, ColTypeTest, DATAGRID_SPEC_PROVIDERS);

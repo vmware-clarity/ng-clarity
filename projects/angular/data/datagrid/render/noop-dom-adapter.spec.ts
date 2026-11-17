@@ -10,8 +10,8 @@ import { NoopDomAdapter } from './noop-dom-adapter';
 describe('Datagrid', () => {
   describe('Render', () => {
     describe('NoopDomAdapter', function () {
-      let domAdapter;
-      let element;
+      let domAdapter: NoopDomAdapter;
+      let element: HTMLElement;
       beforeEach(() => {
         domAdapter = new NoopDomAdapter();
         element = document.createElement('div');

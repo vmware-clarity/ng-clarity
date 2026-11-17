@@ -21,7 +21,7 @@ describe('Expand provider', () => {
 
   it('starts with the correct default settings', () => {
     let doesReplace = null;
-    testContext.expand.replace.subscribe(expandChange => {
+    testContext.expand.replace.subscribe((expandChange: boolean) => {
       doesReplace = expandChange;
     });
     expect(testContext.expand.expandable, 'not expandable').toBe(0);
@@ -32,7 +32,7 @@ describe('Expand provider', () => {
 
   it('notifies when cells are replaced', () => {
     let isReplaced = null;
-    testContext.expand.replace.subscribe(replaceChange => {
+    testContext.expand.replace.subscribe((replaceChange: boolean) => {
       isReplaced = replaceChange;
     });
     expect(isReplaced).toBe(false);

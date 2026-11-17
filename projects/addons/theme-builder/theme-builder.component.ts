@@ -49,6 +49,8 @@ import {
 import { CdsThemeStructure, ContrastResult, DataRow, HslColor, ThemeColor, ThemePreset } from './utils/types';
 import { contrastRatio, wcagScore } from './utils/wcag';
 
+const THEMES: readonly ThemeType[] = ['light', 'dark'];
+
 @Component({
   changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'clr-theme-builder',
@@ -192,7 +194,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     }
     this.activePreset = preset;
 
-    for (const theme of ['light', 'dark'] as const) {
+    for (const theme of THEMES) {
       this.resetAllThemeColors(theme);
 
       const themeColors = preset[theme];
@@ -201,8 +203,8 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
         continue;
       }
 
-      for (const key of Object.keys(themeColors)) {
-        this.applyGroupOverrides(theme, key, themeColors[key]);
+      for (const [key, colors] of Object.entries(themeColors)) {
+        this.applyGroupOverrides(theme, key, colors);
       }
     }
 
@@ -243,7 +245,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
 
     const parsed = parseGeneratedCSS(css);
 
-    for (const theme of ['light', 'dark'] as const) {
+    for (const theme of THEMES) {
       this.resetAllThemeColors(theme);
 
       for (const key of Object.keys(parsed[theme])) {
@@ -258,7 +260,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     return true;
   }
 
-  resetAllThemeColors(theme: string) {
+  resetAllThemeColors(theme: ThemeType) {
     for (const key of Object.keys(this.colorStruct[theme])) {
       const tokenGroup = this.colorStruct[theme][key];
 
