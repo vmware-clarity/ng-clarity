@@ -6,7 +6,7 @@
  */
 
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ClrCheckboxModule,
@@ -386,6 +386,7 @@ export class DatagridFullDemo {
 
   pokemonComparator = new PokemonComparator();
   pokemonFilter = new PokemonFilter();
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   constructor(private inventory: Inventory) {
     this.reset();
@@ -411,6 +412,7 @@ export class DatagridFullDemo {
         this.users = this.inventory.all;
       }
       this.resetting = false;
+      this.changeDetectorRef.markForCheck();
     });
   }
 
@@ -441,6 +443,7 @@ export class DatagridFullDemo {
         this.users = result.users;
         this.total = result.length;
         this.loading = false;
+        this.changeDetectorRef.markForCheck();
       });
   }
 

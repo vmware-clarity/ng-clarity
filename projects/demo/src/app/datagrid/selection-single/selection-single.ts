@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, TrackByFunction } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, TrackByFunction } from '@angular/core';
 import { ClrDatagridItemsIdentityFunction, ClrDatagridStateInterface } from '@clr/angular';
 
 import { Inventory } from '../inventory/inventory';
@@ -34,6 +34,7 @@ export class DatagridSelectionSingleDemo {
 
   loading = true;
   total = 0;
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   constructor(private inventory: Inventory) {
     inventory.size = 100;
@@ -65,6 +66,7 @@ export class DatagridSelectionSingleDemo {
       this.trackByIdServerUsers = result.users;
       this.total = result.length;
       this.loading = false;
+      this.changeDetectorRef.markForCheck();
     });
   }
 

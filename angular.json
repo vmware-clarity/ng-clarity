@@ -28,7 +28,7 @@
               "browser": ""
             },
             "index": "projects/demo/src/index.html",
-            "polyfills": ["projects/demo/src/polyfills.ts"],
+            "polyfills": [],
             "tsConfig": "projects/demo/tsconfig.app.json",
             "assets": ["projects/demo/src/favicon.ico", "projects/demo/src/assets"],
             "styles": [
@@ -70,6 +70,12 @@
                   "maximumError": "9kb"
                 }
               ]
+            },
+            "vrt": {
+              "index": {
+                "input": "projects/demo/src/index.vrt.html",
+                "output": "index.html"
+              }
             }
           },
           "defaultConfiguration": ""
@@ -195,7 +201,7 @@
               "browser": ""
             },
             "index": "projects/website/src/index.html",
-            "polyfills": ["projects/website/src/polyfills.ts"],
+            "polyfills": [],
             "browser": "projects/website/src/main.ts",
             "tsConfig": "projects/website/tsconfig.app.json",
             "allowedCommonJsDependencies": ["prismjs"],
@@ -326,6 +332,41 @@
             "styles": ["projects/ui/src/clr-ui.scss"],
             "polyfills": ["zone.js", "zone.js/testing", "zone.js/plugins/vitest-patch"],
             "aot": false
+          }
+        }
+      }
+    },
+    "clr-consumer-smoke": {
+      "projectType": "application",
+      "root": "tests/consumer/app",
+      "sourceRoot": "tests/consumer/app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "tests/consumer/app/main.ts",
+            "index": "tests/consumer/app/index.html",
+            "tsConfig": "tests/consumer/app/tsconfig.json",
+            "outputPath": {
+              "base": "dist/consumer-smoke/zoneless",
+              "browser": ""
+            },
+            "styles": ["dist/clr-ui/clr-ui.min.css"],
+            "polyfills": [],
+            "optimization": false,
+            "sourceMap": false,
+            "extractLicenses": false,
+            "baseHref": "/zoneless/"
+          },
+          "configurations": {
+            "zone": {
+              "polyfills": ["zone.js"],
+              "outputPath": {
+                "base": "dist/consumer-smoke/zone",
+                "browser": ""
+              },
+              "baseHref": "/zone/"
+            }
           }
         }
       }
