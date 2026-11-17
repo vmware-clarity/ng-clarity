@@ -526,7 +526,7 @@ shows up as a broken snapshot. `tests/csp.spec.ts` checks that the policy is enf
 
 - The Storybook preview provides the nonce to Angular through `CSP_NONCE` (`.storybook/preview.js`). The website
   suite tests its own build, `npm run _build:website:vrt`, whose `index.html` adds `ngCspNonce` to `<app-root>`
-  (`projects/website/scripts/write-vrt-index.js`). The production website has no nonce placeholder.
+  (`scripts/write-vrt-index.js`). The production website has no nonce placeholder.
 - The Storybook server also allows `'unsafe-eval'`: the story templates are compiled at runtime by the
   Angular JIT compiler. The website suite does not allow it.
 - Style attributes are allowed (`style-src-attr 'unsafe-inline'`), because stories and website pages use
@@ -592,7 +592,7 @@ export const StatusIndicators: Story = {
 ```
 
 **Do not use `play` for assertions.** A story is a fixture, not a test. Behavioural assertions belong in the
-component's Karma spec under `projects/angular/`, where they run in the test suite, report failures usefully,
+component's Vitest spec under `projects/angular/` (see [Testing](TESTING.md)), where they run in the test suite, report failures usefully,
 and do not cost 8 PNGs.
 
 **A `play` function that runs before a screenshot must leave the UI deterministic.** This is the part that

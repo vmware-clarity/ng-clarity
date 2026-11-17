@@ -459,10 +459,10 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
   /**
    * @deprecated related to clrDgRowSelection, which is deprecated
    */
-  protected selectRow(selected = !this.selected, $event) {
+  protected selectRow(selected = !this.selected, $event: MouseEvent) {
     // The label also captures clicks that bubble up to the row event listener, causing
     // this handler to run twice. This exits early to prevent toggling the checkbox twice.
-    if (!this.selection.rowSelectionMode || $event.target.tagName === 'LABEL' || !this._selectable) {
+    if (!this.selection.rowSelectionMode || ($event.target as HTMLElement).tagName === 'LABEL' || !this._selectable) {
       return;
     }
     if (this.selection.selectionType === this.SELECTION_TYPE.Single) {

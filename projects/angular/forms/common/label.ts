@@ -94,12 +94,12 @@ export class ClrControlLabel implements OnInit, OnDestroy {
    * @param event
    */
   @HostListener('click', ['$event'])
-  private onClick(event) {
+  private onClick(event: MouseEvent) {
     this.preventDefaultOnSignpostTarget(event);
   }
 
-  private preventDefaultOnSignpostTarget(event) {
-    if (this.signpost && this.signpost.nativeElement && this.signpost.nativeElement.contains(event.target)) {
+  private preventDefaultOnSignpostTarget(event: MouseEvent) {
+    if (this.signpost && this.signpost.nativeElement && this.signpost.nativeElement.contains(event.target as Node)) {
       event.preventDefault();
     }
   }

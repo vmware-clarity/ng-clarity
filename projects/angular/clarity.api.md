@@ -2047,7 +2047,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    onBlur(event: any): void;
+    onBlur(event: FocusEvent): void;
     // (undocumented)
     onChange(): void;
     // (undocumented)
@@ -2055,7 +2055,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     onKeyUp(event: KeyboardEvent): void;
     // (undocumented)
-    onWrapperClick(event: any): void;
+    onWrapperClick(event: MouseEvent): void;
     // (undocumented)
     get openState(): boolean;
     // (undocumented)
@@ -3556,7 +3556,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
     // (undocumented)
     SELECTION_TYPE: typeof SelectionType;
     // @deprecated (undocumented)
-    protected selectRow(selected: boolean, $event: any): void;
+    protected selectRow(selected: boolean, $event: MouseEvent): void;
     // (undocumented)
     skeletonLoading: boolean;
     // (undocumented)
@@ -3723,7 +3723,7 @@ export class ClrDatagridSingleSelectionValueAccessor implements ControlValueAcce
     // (undocumented)
     setDisabledState(isDisabled: boolean): void;
     // (undocumented)
-    value: any;
+    value: unknown;
     // (undocumented)
     writeValue(value: any): void;
     // (undocumented)
@@ -4113,7 +4113,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     // (undocumented)
     protected popoverType: ClrPopoverType;
     // (undocumented)
-    set rangeOptions(rangeOptions: any);
+    set rangeOptions(rangeOptions: DateRangeOption[]);
     // (undocumented)
     protected renderer: Renderer2;
     set showActionButtons(flag: boolean);
@@ -4316,7 +4316,7 @@ export class ClrDatepickerViewManager {
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
-    protected get dateRangeOptions(): any;
+    protected get dateRangeOptions(): DateRangeOption[];
     // (undocumented)
     protected get hasActionButtons(): boolean;
     // (undocumented)
@@ -4325,7 +4325,7 @@ export class ClrDatepickerViewManager {
     get isMonthView(): boolean;
     get isYearView(): boolean;
     // (undocumented)
-    onRangeOptionSelect(selectedRange: any): void;
+    onRangeOptionSelect(selectedRange: DateRangeOption): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatepickerViewManager, "clr-datepicker-view-manager", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -5306,7 +5306,7 @@ export class ClrKeyFocus {
     // (undocumented)
     protected currentFocusIsNotLastItem(): boolean;
     // (undocumented)
-    get currentItem(): any;
+    get currentItem(): FocusableItem$1;
     // (undocumented)
     get currentItemElement(): HTMLElement;
     // Warning: (ae-forgotten-export) The symbol "ClrFocusDirection" needs to be exported by the entry point clr-angular.d.ts
@@ -5314,7 +5314,7 @@ export class ClrKeyFocus {
     // (undocumented)
     direction: ClrFocusDirection | string;
     // Warning: (ae-forgotten-export) The symbol "FocusableItem$1" needs to be exported by the entry point clr-angular.d.ts
-    get focusableItems(): Array<FocusableItem$1> | any;
+    get focusableItems(): FocusableItem$1[];
     set focusableItems(elements: Array<FocusableItem$1> | any);
     // (undocumented)
     focusCurrent(): void;

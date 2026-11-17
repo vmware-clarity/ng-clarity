@@ -30,7 +30,7 @@ export class DateIOService {
   minDateChange = new Subject<DayModel>();
   maxDateChange = new Subject<DayModel>();
 
-  private dateRangeOptions;
+  private dateRangeOptions: DateRangeOption[];
   // Locale-only formatting and parsing; the state above is per date picker.
   private readonly localeDateFormat: ClrLocaleDateFormat;
 
@@ -86,7 +86,7 @@ export class DateIOService {
   }
 
   private validateDateRangeOptions(rangeOptions: DateRangeOption[]): DateRangeOption[] {
-    const validOptions = [];
+    const validOptions: DateRangeOption[] = [];
     rangeOptions?.forEach((rangeOption: DateRangeOption) => {
       if (
         rangeOption?.value?.length !== 2 ||

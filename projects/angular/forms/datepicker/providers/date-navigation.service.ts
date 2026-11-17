@@ -200,14 +200,14 @@ export class DateNavigationService {
     return new DayModel(date.getFullYear(), date.getMonth(), date.getDate());
   }
 
-  private setSelectedDay(dayModel: DayModel | null | undefined, emitEvent): void {
+  private setSelectedDay(dayModel: DayModel | null | undefined, emitEvent: boolean): void {
     this.selectedDay = dayModel;
     if (emitEvent) {
       this._selectedDayChange.next(dayModel);
     }
   }
 
-  private setSelectedEndDay(dayModel: DayModel | null | undefined, emitEvent): void {
+  private setSelectedEndDay(dayModel: DayModel | null | undefined, emitEvent: boolean): void {
     this.selectedEndDay = dayModel;
     if (emitEvent) {
       this._selectedEndDayChange.next(dayModel);

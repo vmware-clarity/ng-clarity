@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule, LayoutService, NgControlService } from '@clr/angular/forms/common';
@@ -14,7 +14,7 @@ import { ClrIcon } from '@clr/angular/icon';
 
 import { ClrPassword } from './password';
 import { ClrPasswordContainer } from './password-container';
-import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
+import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container';
 
 @Component({
   template: `
@@ -69,14 +69,16 @@ class ReactiveTest {
   });
 }
 
-export default function (): void {
+describe('ClrPassword', () => {
   describe('ClrPasswordContainer', () => {
     ContainerNoLabelSpec(ClrPasswordContainer, ClrPassword, NoLabelTest);
     TemplateDrivenSpec(ClrPasswordContainer, ClrPassword, TemplateDrivenTest, '.clr-input-wrapper [clrPassword]');
     ReactiveSpec(ClrPasswordContainer, ClrPassword, ReactiveTest, '.clr-input-wrapper [clrPassword]');
 
     describe('password toggle', () => {
-      let fixture, containerDE, containerEl;
+      let fixture: ComponentFixture<TemplateDrivenTest>;
+      let containerDE: DebugElement;
+      let containerEl: HTMLElement;
 
       beforeEach(() => {
         TestBed.configureTestingModule({
@@ -115,4 +117,4 @@ export default function (): void {
       });
     });
   });
-}
+});

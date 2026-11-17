@@ -8,7 +8,7 @@
 import { Directive, Optional } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgControl } from '@angular/forms';
-import { merge, of, tap } from 'rxjs';
+import { EMPTY, merge, of, tap } from 'rxjs';
 import { startWith, switchMap } from 'rxjs/operators';
 
 import { CONTROL_STATE } from './control-state.enum';
@@ -29,7 +29,7 @@ export abstract class AbstractIfState {
           }),
           switchMap(controls => {
             if (!controls || controls.length === 0) {
-              return [];
+              return EMPTY;
             }
 
             const statusStreams = controls.map(c => this.getControlStatusChangesObservable(c));

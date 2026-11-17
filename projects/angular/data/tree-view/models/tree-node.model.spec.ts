@@ -31,238 +31,240 @@ class FakeTreeNode {
   }
 }
 
-export default function (): void {
-  describe('TreeNodeModel', () => {
-    let root: TestModel;
-    let child: TestModel;
-
-    beforeEach(function () {
-      root = new TestModel('A', null);
-      child = new TestModel('AA', root);
-      child.children = [new TestModel('AAA', child), new TestModel('AAB', child)];
-      root.children = [child, new TestModel('AB', root)];
-    });
-
-    afterEach(function () {
-      child.children.forEach(c => c.destroy());
-      root.children.forEach(c => c.destroy());
-      root.destroy();
-    });
-
-    it('offers a selected BehaviorSubject', function () {
-      expect(root.selected instanceof BehaviorSubject).toBeTrue();
-    });
-
-    it('starts unselected', function () {
-      expect(root.selected.value).toBe(ClrSelectedState.UNSELECTED);
-    });
-
-    it('allows to set the selection state of a node without propagating', function () {
-      // Selected
-      child.setSelected(ClrSelectedState.SELECTED, false, false);
-      expect(child.selected.value).toBe(ClrSelectedState.SELECTED);
-      [root, ...child.children].forEach(n => expect(n.selected.value).toBe(ClrSelectedState.UNSELECTED));
-      // Indeterminate
-      child.setSelected(ClrSelectedState.INDETERMINATE, false, false);
-      expect(child.selected.value).toBe(ClrSelectedState.INDETERMINATE);
-      [root, ...child.children].forEach(n => expect(n.selected.value).toBe(ClrSelectedState.UNSELECTED));
-    });
-
-    it('emits selection changes only when it actually changes', function () {
-      let nbChanges = 0;
-      child.selected.subscribe(() => nbChanges++);
-      // BehaviorSubject sends us the first state on subscription
-      expect(nbChanges).toBe(1);
-      child.setSelected(ClrSelectedState.UNSELECTED, false, false);
-      expect(nbChanges).toBe(1);
-      child.setSelected(ClrSelectedState.SELECTED, false, false);
-      expect(nbChanges).toBe(2);
-      child.setSelected(ClrSelectedState.SELECTED, false, false);
-      expect(nbChanges).toBe(2);
-    });
-
-    it('can propagate the selection to parents', function () {
-      // Selecting only one grandchild sets all parents up the tree to indeterminate
-      child.children[0].setSelected(ClrSelectedState.SELECTED, true, false);
-      expect(child.selected.value).toBe(ClrSelectedState.INDETERMINATE);
-      expect(root.selected.value).toBe(ClrSelectedState.INDETERMINATE);
-      // Selecting all children of a node will make it selected
-      child.children[1].setSelected(ClrSelectedState.SELECTED, true, false);
-      expect(child.selected.value).toBe(ClrSelectedState.SELECTED);
-      root.children[1].setSelected(ClrSelectedState.SELECTED, true, false);
-      expect(root.selected.value).toBe(ClrSelectedState.SELECTED);
-    });
-
-    it('can propagate the selection to children', function () {
-      // Selecting a parent selects all the children down the tree
-      root.setSelected(ClrSelectedState.SELECTED, false, true);
-      [...root.children, ...child.children].forEach(n => expect(n.selected.value).toBe(ClrSelectedState.SELECTED));
-      // Unselecting a parent unselects all the children down the tree
-      root.setSelected(ClrSelectedState.UNSELECTED, false, true);
-      [...root.children, ...child.children].forEach(n => expect(n.selected.value).toBe(ClrSelectedState.UNSELECTED));
-    });
-
-    it('does not propagate indeterminate state down', function () {
-      child.setSelected(ClrSelectedState.SELECTED, false, true);
-      root.setSelected(ClrSelectedState.INDETERMINATE, false, true);
-      // The children are left untouched, in whatever state they were before
-      expect(root.children[1].selected.value).toBe(ClrSelectedState.UNSELECTED);
-      [child, ...child.children].forEach(n => expect(n.selected.value).toBe(ClrSelectedState.SELECTED));
-    });
-
-    it('toggles from unselected to selected', function () {
-      child.setSelected(ClrSelectedState.UNSELECTED, false, false);
-      const spy = spyOn(child, 'setSelected');
-      child.toggleSelection(true);
-      expect(spy).toHaveBeenCalledWith(ClrSelectedState.SELECTED, true, true);
-    });
-
-    it('toggles from selected to unselected', function () {
-      child.setSelected(ClrSelectedState.SELECTED, false, false);
-      const spy = spyOn(child, 'setSelected');
-      child.toggleSelection(true);
-      expect(spy).toHaveBeenCalledWith(ClrSelectedState.UNSELECTED, true, true);
-    });
-
-    it('toggles from indeterminate to selected', function () {
-      child.setSelected(ClrSelectedState.INDETERMINATE, false, false);
-      const spy = spyOn(child, 'setSelected');
-      child.toggleSelection(true);
-      expect(spy).toHaveBeenCalledWith(ClrSelectedState.SELECTED, true, true);
-    });
-
-    it('can toggle without propagating down', function () {
-      const spy = spyOn(child, 'setSelected');
-      child.toggleSelection(false);
-      expect(spy).toHaveBeenCalledWith(ClrSelectedState.SELECTED, true, false);
-    });
-
-    it('completes the selected Observable on destroy', function () {
-      let complete = false;
-      root.selected.subscribe({ complete: () => (complete = true) });
-      root.destroy();
-      expect(complete).toBeTrue();
-    });
-
-    it('unselected disabled node can not be selected', function () {
-      child.disabled = true;
-      child.toggleSelection(true);
-      expect(child.selected.value).toBe(ClrSelectedState.UNSELECTED);
-    });
-
-    it('selected disabled node can not be unselected', function () {
-      child.setSelected(ClrSelectedState.SELECTED, false, false);
-      child.disabled = true;
-      expect(child.selected.value).toBe(ClrSelectedState.SELECTED);
-      child.toggleSelection(true);
-      expect(child.selected.value).toBe(ClrSelectedState.SELECTED);
-    });
-
-    it('disabled parent node can not select children', function () {
-      child.disabled = true;
-      child.toggleSelection(true);
-      [...root.children, ...child.children].forEach(n => expect(n.selected.value).toBe(ClrSelectedState.UNSELECTED));
-    });
-
-    it('re enabled disabled root node do not change children disable status', function () {
-      child.disabled = true;
-
-      expect(root.disabled).toBeFalse();
-      expect(child.disabled).toBeTrue();
-
-      root.disabled = true;
-      expect(root.disabled).toBeTrue();
-      expect(child.disabled).toBeTrue();
-
-      root.disabled = false;
-      expect(root.disabled).toBeFalse();
-      expect(child.disabled).toBeTrue();
-    });
-
-    it('knows whether a node is inside a subtree expected to be expanded', function () {
-      expect(child.children[0]._isInExpandedSubtree()).toBeFalse();
-      child._descendantsExpanded = true;
-      expect(child._isInExpandedSubtree()).toBeTrue();
-      expect(child.children[0]._isInExpandedSubtree()).toBeTrue();
-      expect(root._isInExpandedSubtree()).toBeFalse();
-      expect(root.children[1]._isInExpandedSubtree()).toBeFalse();
-    });
-
-    it('exposes the children it already knows about', function () {
-      expect(root._loadedChildren).toBe(root.children);
-    });
-
-    describe('bulk expansion', function () {
-      let nodes: Map<TestModel, FakeTreeNode>;
+describe('Tree View', () => {
+  describe('Models', () => {
+    describe('TreeNodeModel', () => {
+      let root: TestModel;
+      let child: TestModel;
 
       beforeEach(function () {
-        nodes = new Map();
-        [root, child, ...root.children, ...child.children].forEach(model => {
-          const node = new FakeTreeNode();
-          nodes.set(model, node);
-          model._node = node as unknown as ClrTreeNode<string>;
+        root = new TestModel('A', null);
+        child = new TestModel('AA', root);
+        child.children = [new TestModel('AAA', child), new TestModel('AAB', child)];
+        root.children = [child, new TestModel('AB', root)];
+      });
+
+      afterEach(function () {
+        child.children.forEach(c => c.destroy());
+        root.children.forEach(c => c.destroy());
+        root.destroy();
+      });
+
+      it('offers a selected BehaviorSubject', function () {
+        expect(root.selected instanceof BehaviorSubject).toBe(true);
+      });
+
+      it('starts unselected', function () {
+        expect(root.selected.value).toBe(ClrSelectedState.UNSELECTED);
+      });
+
+      it('allows to set the selection state of a node without propagating', function () {
+        // Selected
+        child.setSelected(ClrSelectedState.SELECTED, false, false);
+        expect(child.selected.value).toBe(ClrSelectedState.SELECTED);
+        [root, ...child.children].forEach(n => expect(n.selected.value).toBe(ClrSelectedState.UNSELECTED));
+        // Indeterminate
+        child.setSelected(ClrSelectedState.INDETERMINATE, false, false);
+        expect(child.selected.value).toBe(ClrSelectedState.INDETERMINATE);
+        [root, ...child.children].forEach(n => expect(n.selected.value).toBe(ClrSelectedState.UNSELECTED));
+      });
+
+      it('emits selection changes only when it actually changes', function () {
+        let nbChanges = 0;
+        child.selected.subscribe(() => nbChanges++);
+        // BehaviorSubject sends us the first state on subscription
+        expect(nbChanges).toBe(1);
+        child.setSelected(ClrSelectedState.UNSELECTED, false, false);
+        expect(nbChanges).toBe(1);
+        child.setSelected(ClrSelectedState.SELECTED, false, false);
+        expect(nbChanges).toBe(2);
+        child.setSelected(ClrSelectedState.SELECTED, false, false);
+        expect(nbChanges).toBe(2);
+      });
+
+      it('can propagate the selection to parents', function () {
+        // Selecting only one grandchild sets all parents up the tree to indeterminate
+        child.children[0].setSelected(ClrSelectedState.SELECTED, true, false);
+        expect(child.selected.value).toBe(ClrSelectedState.INDETERMINATE);
+        expect(root.selected.value).toBe(ClrSelectedState.INDETERMINATE);
+        // Selecting all children of a node will make it selected
+        child.children[1].setSelected(ClrSelectedState.SELECTED, true, false);
+        expect(child.selected.value).toBe(ClrSelectedState.SELECTED);
+        root.children[1].setSelected(ClrSelectedState.SELECTED, true, false);
+        expect(root.selected.value).toBe(ClrSelectedState.SELECTED);
+      });
+
+      it('can propagate the selection to children', function () {
+        // Selecting a parent selects all the children down the tree
+        root.setSelected(ClrSelectedState.SELECTED, false, true);
+        [...root.children, ...child.children].forEach(n => expect(n.selected.value).toBe(ClrSelectedState.SELECTED));
+        // Unselecting a parent unselects all the children down the tree
+        root.setSelected(ClrSelectedState.UNSELECTED, false, true);
+        [...root.children, ...child.children].forEach(n => expect(n.selected.value).toBe(ClrSelectedState.UNSELECTED));
+      });
+
+      it('does not propagate indeterminate state down', function () {
+        child.setSelected(ClrSelectedState.SELECTED, false, true);
+        root.setSelected(ClrSelectedState.INDETERMINATE, false, true);
+        // The children are left untouched, in whatever state they were before
+        expect(root.children[1].selected.value).toBe(ClrSelectedState.UNSELECTED);
+        [child, ...child.children].forEach(n => expect(n.selected.value).toBe(ClrSelectedState.SELECTED));
+      });
+
+      it('toggles from unselected to selected', function () {
+        child.setSelected(ClrSelectedState.UNSELECTED, false, false);
+        const spy = vi.spyOn(child, 'setSelected').mockImplementation(() => undefined);
+        child.toggleSelection(true);
+        expect(spy).toHaveBeenCalledWith(ClrSelectedState.SELECTED, true, true);
+      });
+
+      it('toggles from selected to unselected', function () {
+        child.setSelected(ClrSelectedState.SELECTED, false, false);
+        const spy = vi.spyOn(child, 'setSelected').mockImplementation(() => undefined);
+        child.toggleSelection(true);
+        expect(spy).toHaveBeenCalledWith(ClrSelectedState.UNSELECTED, true, true);
+      });
+
+      it('toggles from indeterminate to selected', function () {
+        child.setSelected(ClrSelectedState.INDETERMINATE, false, false);
+        const spy = vi.spyOn(child, 'setSelected').mockImplementation(() => undefined);
+        child.toggleSelection(true);
+        expect(spy).toHaveBeenCalledWith(ClrSelectedState.SELECTED, true, true);
+      });
+
+      it('can toggle without propagating down', function () {
+        const spy = vi.spyOn(child, 'setSelected').mockImplementation(() => undefined);
+        child.toggleSelection(false);
+        expect(spy).toHaveBeenCalledWith(ClrSelectedState.SELECTED, true, false);
+      });
+
+      it('completes the selected Observable on destroy', function () {
+        let complete = false;
+        root.selected.subscribe({ complete: () => (complete = true) });
+        root.destroy();
+        expect(complete).toBe(true);
+      });
+
+      it('unselected disabled node can not be selected', function () {
+        child.disabled = true;
+        child.toggleSelection(true);
+        expect(child.selected.value).toBe(ClrSelectedState.UNSELECTED);
+      });
+
+      it('selected disabled node can not be unselected', function () {
+        child.setSelected(ClrSelectedState.SELECTED, false, false);
+        child.disabled = true;
+        expect(child.selected.value).toBe(ClrSelectedState.SELECTED);
+        child.toggleSelection(true);
+        expect(child.selected.value).toBe(ClrSelectedState.SELECTED);
+      });
+
+      it('disabled parent node can not select children', function () {
+        child.disabled = true;
+        child.toggleSelection(true);
+        [...root.children, ...child.children].forEach(n => expect(n.selected.value).toBe(ClrSelectedState.UNSELECTED));
+      });
+
+      it('re enabled disabled root node do not change children disable status', function () {
+        child.disabled = true;
+
+        expect(root.disabled).toBe(false);
+        expect(child.disabled).toBe(true);
+
+        root.disabled = true;
+        expect(root.disabled).toBe(true);
+        expect(child.disabled).toBe(true);
+
+        root.disabled = false;
+        expect(root.disabled).toBe(false);
+        expect(child.disabled).toBe(true);
+      });
+
+      it('knows whether a node is inside a subtree expected to be expanded', function () {
+        expect(child.children[0]._isInExpandedSubtree()).toBe(false);
+        child._descendantsExpanded = true;
+        expect(child._isInExpandedSubtree()).toBe(true);
+        expect(child.children[0]._isInExpandedSubtree()).toBe(true);
+        expect(root._isInExpandedSubtree()).toBe(false);
+        expect(root.children[1]._isInExpandedSubtree()).toBe(false);
+      });
+
+      it('exposes the children it already knows about', function () {
+        expect(root._loadedChildren).toBe(root.children);
+      });
+
+      describe('bulk expansion', function () {
+        let nodes: Map<TestModel, FakeTreeNode>;
+
+        beforeEach(function () {
+          nodes = new Map();
+          [root, child, ...root.children, ...child.children].forEach(model => {
+            const node = new FakeTreeNode();
+            nodes.set(model, node);
+            model._node = node as unknown as ClrTreeNode<string>;
+          });
         });
-      });
 
-      it('expands or collapses a node and every descendant it already knows about', function () {
-        root._setExpandedRecursive(true);
-        nodes.forEach(node => expect(node.expanded).toBeTrue());
+        it('expands or collapses a node and every descendant it already knows about', function () {
+          root._setExpandedRecursive(true);
+          nodes.forEach(node => expect(node.expanded).toBe(true));
 
-        child._setExpandedRecursive(false);
-        expect(nodes.get(root).expanded).toBeTrue();
-        expect(nodes.get(child).expanded).toBeFalse();
-        child.children.forEach(c => expect(nodes.get(c).expanded).toBeFalse());
-      });
+          child._setExpandedRecursive(false);
+          expect(nodes.get(root).expanded).toBe(true);
+          expect(nodes.get(child).expanded).toBe(false);
+          child.children.forEach(c => expect(nodes.get(c).expanded).toBe(false));
+        });
 
-      it('leaves disabled nodes and their descendants untouched', function () {
-        child.disabled = true;
-        root._setExpandedRecursive(true);
-        expect(nodes.get(root).expanded).toBeTrue();
-        expect(nodes.get(child).expanded).toBeFalse();
-        child.children.forEach(c => expect(nodes.get(c).expanded).toBeFalse());
-      });
+        it('leaves disabled nodes and their descendants untouched', function () {
+          child.disabled = true;
+          root._setExpandedRecursive(true);
+          expect(nodes.get(root).expanded).toBe(true);
+          expect(nodes.get(child).expanded).toBe(false);
+          child.children.forEach(c => expect(nodes.get(c).expanded).toBe(false));
+        });
 
-      it('does nothing for a node that is not rendered', function () {
-        const orphan = new TestModel('X', null);
-        expect(() => orphan._setExpandedRecursive(true)).not.toThrow();
-      });
+        it('does nothing for a node that is not rendered', function () {
+          const orphan = new TestModel('X', null);
+          expect(() => orphan._setExpandedRecursive(true)).not.toThrow();
+        });
 
-      it('records the cascade flag on every node it walks', function () {
-        root._setExpandedRecursive(true);
-        expect(root._descendantsExpanded).toBeTrue();
-        expect(child._descendantsExpanded).toBeTrue();
+        it('records the cascade flag on every node it walks', function () {
+          root._setExpandedRecursive(true);
+          expect(root._descendantsExpanded).toBe(true);
+          expect(child._descendantsExpanded).toBe(true);
 
-        root._setExpandedRecursive(false);
-        expect(root._descendantsExpanded).toBeFalse();
-        expect(child._descendantsExpanded).toBeFalse();
-      });
+          root._setExpandedRecursive(false);
+          expect(root._descendantsExpanded).toBe(false);
+          expect(child._descendantsExpanded).toBe(false);
+        });
 
-      it('leaves the cascade flag of a disabled branch alone', function () {
-        child.disabled = true;
-        root._setExpandedRecursive(true);
-        expect(root._descendantsExpanded).toBeTrue();
-        expect(child._descendantsExpanded).toBeFalse();
-      });
+        it('leaves the cascade flag of a disabled branch alone', function () {
+          child.disabled = true;
+          root._setExpandedRecursive(true);
+          expect(root._descendantsExpanded).toBe(true);
+          expect(child._descendantsExpanded).toBe(false);
+        });
 
-      it('stops the cascade for every ancestor when a node is collapsed on its own', function () {
-        root._setExpandedRecursive(true);
-        expect(root._descendantsExpanded).toBeTrue();
+        it('stops the cascade for every ancestor when a node is collapsed on its own', function () {
+          root._setExpandedRecursive(true);
+          expect(root._descendantsExpanded).toBe(true);
 
-        child.children[0]._clearExpandedSubtree();
+          child.children[0]._clearExpandedSubtree();
 
-        expect(root._descendantsExpanded).toBeFalse();
-        expect(child._descendantsExpanded).toBeFalse();
-        expect(child.children[0]._descendantsExpanded).toBeFalse();
-        // Siblings outside the chain keep theirs, they are still fully expanded
-        expect(root.children[1]._descendantsExpanded).toBeTrue();
-      });
+          expect(root._descendantsExpanded).toBe(false);
+          expect(child._descendantsExpanded).toBe(false);
+          expect(child.children[0]._descendantsExpanded).toBe(false);
+          // Siblings outside the chain keep theirs, they are still fully expanded
+          expect(root.children[1]._descendantsExpanded).toBe(true);
+        });
 
-      it('drops its reference to the node on destroy', function () {
-        const model = new TestModel('Y', null);
-        model._node = new FakeTreeNode() as unknown as ClrTreeNode<string>;
-        model.destroy();
-        expect(model._node).toBeNull();
+        it('drops its reference to the node on destroy', function () {
+          const model = new TestModel('Y', null);
+          model._node = new FakeTreeNode() as unknown as ClrTreeNode<string>;
+          model.destroy();
+          expect(model._node).toBeNull();
+        });
       });
     });
   });
-}
+});

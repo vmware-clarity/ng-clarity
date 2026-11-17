@@ -49,7 +49,7 @@ export class DateRangePickerDemo implements OnInit {
     console.log(date);
   }
 
-  addDays(date = new Date(), days) {
+  addDays(date = new Date(), days: number) {
     return new Date(date.getTime() + 86400000 * days);
   }
 }

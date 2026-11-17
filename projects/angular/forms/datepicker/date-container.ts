@@ -34,6 +34,7 @@ import { ClrCommonStringsService } from '@clr/angular/utils';
 import { startWith } from 'rxjs/operators';
 
 import { ClrWeekday } from './enums/weekday.enum';
+import { DateRangeOption } from './interfaces/date-range.interface';
 import { DayModel } from './model/day.model';
 import { DateFormControlService } from './providers/date-form-control.service';
 import { DateIOService } from './providers/date-io.service';
@@ -197,7 +198,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
   }
 
   @Input()
-  set rangeOptions(rangeOptions) {
+  set rangeOptions(rangeOptions: DateRangeOption[]) {
     this.dateIOService.setRangeOptions(rangeOptions);
   }
 

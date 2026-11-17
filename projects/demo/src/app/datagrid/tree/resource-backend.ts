@@ -27,7 +27,12 @@ export interface ResourceBackendOptions {
   latency: number;
 }
 
-const CHILD_KIND = { Datacenter: 'Cluster', Cluster: 'Host', Host: 'VM', VM: null } as const;
+const CHILD_KIND: Record<Resource['kind'], Resource['kind'] | null> = {
+  Datacenter: 'Cluster',
+  Cluster: 'Host',
+  Host: 'VM',
+  VM: null,
+};
 
 /**
  * A fake backend for the tree demos: datacenters, then clusters, hosts and VMs.

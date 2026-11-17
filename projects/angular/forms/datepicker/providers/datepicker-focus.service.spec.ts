@@ -20,77 +20,79 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DatepickerFocusService } from './datepicker-focus.service';
 
-export default function () {
-  for (const zoneless of [false, true]) {
-    describe(`Datepicker focus (${zoneless ? 'zoneless' : 'zone-based'}, OnPush host)`, () => {
-      let fixture: ComponentFixture<TestComponent>;
-      let service: DatepickerFocusService;
+describe('Datepicker', () => {
+  describe('Providers', () => {
+    for (const zoneless of [false, true]) {
+      describe(`Datepicker focus (${zoneless ? 'zoneless' : 'zone-based'}, OnPush host)`, () => {
+        let fixture: ComponentFixture<TestComponent>;
+        let service: DatepickerFocusService;
 
-      beforeEach(async () => {
-        TestBed.configureTestingModule({
-          declarations: [TestComponent],
-          providers: [
-            zoneless ? provideZonelessChangeDetection() : provideZoneChangeDetection(),
-            provideCheckNoChangesConfig({ exhaustive: true }),
-          ],
+        beforeEach(async () => {
+          TestBed.configureTestingModule({
+            declarations: [TestComponent],
+            providers: [
+              zoneless ? provideZonelessChangeDetection() : provideZoneChangeDetection(),
+              provideCheckNoChangesConfig({ exhaustive: true }),
+            ],
+          });
+          fixture = TestBed.createComponent(TestComponent);
+          fixture.autoDetectChanges();
+          service = fixture.componentInstance.focusService;
+          await fixture.whenStable();
         });
-        fixture = TestBed.createComponent(TestComponent);
-        fixture.autoDetectChanges();
-        service = fixture.componentInstance.focusService;
-        await fixture.whenStable();
-      });
 
-      afterEach(() => fixture.destroy());
+        afterEach(() => fixture.destroy());
 
-      it('focuses the cell after its tab index has rendered', async () => {
-        const button: HTMLButtonElement = fixture.nativeElement.querySelector('button');
-        fixture.componentInstance.tabIndex.set('0');
-        service.focusCell(fixture.componentInstance.elementRef);
-        expect(document.activeElement).not.toBe(button);
-        await fixture.whenStable();
-        expect(document.activeElement).toBe(button);
-      });
+        it('focuses the cell after its tab index has rendered', async () => {
+          const button: HTMLButtonElement = fixture.nativeElement.querySelector('button');
+          fixture.componentInstance.tabIndex.set('0');
+          service.focusCell(fixture.componentInstance.elementRef);
+          expect(document.activeElement).not.toBe(button);
+          await fixture.whenStable();
+          expect(document.activeElement).toBe(button);
+        });
 
-      it('leaves focus alone when there is no focusable cell', async () => {
-        const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
-        input.focus();
-        service.focusCell(fixture.componentInstance.elementRef);
-        await fixture.whenStable();
-        expect(document.activeElement).toBe(input);
-      });
+        it('leaves focus alone when there is no focusable cell', async () => {
+          const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
+          input.focus();
+          service.focusCell(fixture.componentInstance.elementRef);
+          await fixture.whenStable();
+          expect(document.activeElement).toBe(input);
+        });
 
-      it('restores focus to the input after rendering', async () => {
-        const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
-        expect(service.elementIsFocused(input)).toBeFalse();
-        service.focusInput(input);
-        expect(service.elementIsFocused(input)).toBeFalse();
-        await fixture.whenStable();
-        expect(service.elementIsFocused(input)).toBeTrue();
-      });
+        it('restores focus to the input after rendering', async () => {
+          const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
+          expect(service.elementIsFocused(input)).toBe(false);
+          service.focusInput(input);
+          expect(service.elementIsFocused(input)).toBe(false);
+          await fixture.whenStable();
+          expect(service.elementIsFocused(input)).toBe(true);
+        });
 
-      it('cancels pending focus when its host is destroyed', async () => {
-        const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
-        const focus = spyOn(input, 'focus');
-        service.focusInput(input);
-        fixture.destroy();
-        await fixture.whenStable();
-        expect(focus).not.toHaveBeenCalled();
+        it('cancels pending focus when its host is destroyed', async () => {
+          const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
+          const focus = vi.spyOn(input, 'focus').mockImplementation(() => undefined);
+          service.focusInput(input);
+          fixture.destroy();
+          await fixture.whenStable();
+          expect(focus).not.toHaveBeenCalled();
+        });
       });
-    });
-  }
+    }
 
-  describe('Datepicker focus on the server', () => {
-    it('does not access the DOM', () => {
-      TestBed.configureTestingModule({
-        providers: [DatepickerFocusService, { provide: PLATFORM_ID, useValue: 'server' }],
+    describe('Datepicker focus on the server', () => {
+      it('does not access the DOM', () => {
+        TestBed.configureTestingModule({
+          providers: [DatepickerFocusService, { provide: PLATFORM_ID, useValue: 'server' }],
+        });
+        const service = TestBed.inject(DatepickerFocusService);
+        service.focusCell(new ElementRef(null));
+        service.focusInput(null);
+        expect(service.elementIsFocused(null)).toBe(false);
       });
-      const service = TestBed.inject(DatepickerFocusService);
-      service.focusCell(new ElementRef(null));
-      service.focusInput(null);
-      expect(service.elementIsFocused(null)).toBeFalse();
     });
   });
-}
+});
 
 @Component({
   template: `
