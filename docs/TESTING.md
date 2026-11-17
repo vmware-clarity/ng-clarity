@@ -38,8 +38,8 @@ Each library has a dedicated application build target for its test-specific styl
 
 Shared configuration:
 
-- `vitest.config.mts`: mock restoration, shuffled execution, seed selection, browser execution, and slow-test reporting.
-- `projects/test-setup.ts`: the `cds-theme` body attribute and the animation defaults.
+- `vitest.config.mts`: mock restoration, the timers to fake, shuffled execution, seed selection, browser execution, and slow-test reporting.
+- `projects/test-setup.ts`: the `cds-theme` body attribute, the animation defaults and timer cleanup.
 - `projects/test-providers.ts`: zoneless scheduling and exhaustive check-no-changes validation for both library suites.
 - `angular.json`: browser viewport, coverage, setup files, and CI targets.
 
@@ -50,15 +50,13 @@ New specs should use `fixture.autoDetectChanges()` for setup and await `fixture.
 When testing debounce or timeout behavior, use Vitest timers and await advancement:
 
 ```typescript
-import { useTestTimers } from '../test-timers'; // Adjust the relative path for the spec.
-
-useTestTimers();
+vi.useFakeTimers();
 // Trigger the behavior under test.
 await vi.advanceTimersByTimeAsync(300);
 await fixture.whenStable();
 ```
 
-Keep `requestAnimationFrame` and microtasks real so Angular can schedule rendering. Prefer advancing the specific timeout to draining all timers, especially when a component has repeating timers. `useTestTimers()` restores the real timers when its test finishes, and takes the timers to fake when a spec needs fewer (`useTestTimers(['Date'])`). Call it once per test, in `beforeEach` or in the test: a second call installs a new clock and drops the timers scheduled on the first. Hooks registered in `projects/test-setup.ts` are not an option for this: with coverage on, the builder runs that file's top level once, so they only apply to the first spec file. Zone compatibility belongs in the separate consumer smoke tests; the library suites always test the absence of Zone.
+`vitest.config.mts` fakes only `setTimeout`, `setInterval` and `Date`, so `requestAnimationFrame` and microtasks stay real and Angular can still schedule rendering. Pass `toFake` when a spec needs fewer (`vi.useFakeTimers({ toFake: ['Date'] })`). `projects/test-setup.ts` restores the real timers after every test. Prefer advancing the specific timeout to draining all timers, especially when a component has repeating timers. Zone compatibility belongs in the separate consumer smoke tests; the library suites always test the absence of Zone.
 
 Each spec file registers its own suites. The old `all.spec.ts` aggregators are removed, with their suite names retained in the individual files. Support-only modules use ordinary `.ts` filenames. This avoids empty suites and duplicate registration under Vitest and also enables previously unregistered spec factories.
 

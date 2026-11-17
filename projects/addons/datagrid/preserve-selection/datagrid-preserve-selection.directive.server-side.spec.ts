@@ -22,7 +22,6 @@ import {
 import { SelectionType } from '@clr/angular/data/datagrid';
 import { renderFixture } from '@clr/angular/utils/testing';
 
-import { useTestTimers } from '../../../test-timers';
 import { DatagridColumnsOrderModule } from '../addons/column-ordering/datagrid-columns-order.module';
 import { ExportProviderService } from '../addons/export/export-provider.service';
 import { DatagridComponent } from '../datagrid.component';
@@ -292,7 +291,7 @@ describe('datagrid-preserve-selection-directive.server-side', () => {
 
   describe('when the grid is with multi-selection', () => {
     it('selection is preserve when move between pages', async () => {
-      useTestTimers();
+      vi.useFakeTimers();
       await testContext.selectRows([0, 1]);
       testContext.verifySelectedRows([0, 1]);
       //Move to second page
@@ -323,7 +322,7 @@ describe('datagrid-preserve-selection-directive.server-side', () => {
     });
 
     it('selection is preserve when refresh data', async () => {
-      useTestTimers();
+      vi.useFakeTimers();
       await testContext.selectRows([0, 1]);
       testContext.verifySelectedRows([0, 1]);
       await testContext.moveToTheNextPageAndSelectRows([0]);
@@ -356,7 +355,7 @@ describe('datagrid-preserve-selection-directive.server-side', () => {
 
   describe('when the grid is with single selection', () => {
     beforeEach(async () => {
-      useTestTimers();
+      vi.useFakeTimers();
       testContext.appfxDatagridHostComponent.datagridComponent.selectionType = SelectionType.Single;
       testContext.appfxDatagridHostComponent.datagridComponent.onModelChange();
       renderFixture(testContext.fixture);

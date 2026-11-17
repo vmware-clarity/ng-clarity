@@ -13,7 +13,6 @@ import { ClrIcon } from '@clr/angular/icon';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
 import type { Mock } from 'vitest';
 
-import { useTestTimers } from '../../../test-timers';
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
 import { EnumFilterComponent } from './enum-filter.component';
 import { FilterFormComponent } from './filter-form.component';
@@ -93,7 +92,7 @@ describe('EnumFilterComponent', () => {
     component = fixture.componentInstance;
     // Default setup
     fixture.componentRef.setInput('filterProperty', enumPropertySmall);
-    useTestTimers();
+    vi.useFakeTimers();
   });
 
   afterEach(() => {

@@ -9,7 +9,6 @@ import { Step, StepInternal } from '@clr/addons/var';
 import { take } from 'rxjs/operators';
 
 import { StepperStateService, StepState } from './stepper-state.service';
-import { useTestTimers } from '../../../test-timers';
 import { SummaryService } from '../summary/summary.service';
 
 describe('StepperStateService', () => {
@@ -23,7 +22,7 @@ describe('StepperStateService', () => {
   describe('#stepActivated', () => {
     describe('WHEN called with expanded step which was previously collapsed', () => {
       it('THEN onStepActivated$ to emit the new step state for the step', async () => {
-        useTestTimers();
+        vi.useFakeTimers();
         const stepperStateService: StepperStateService = new StepperStateService(new SummaryService());
         const expectedStepState: StepState = {
           step: <Step>{},
@@ -45,7 +44,7 @@ describe('StepperStateService', () => {
 
     describe('WHEN called with collapsed step', () => {
       it('THEN onStepActivated$ to does not emit the new step state for the step', async () => {
-        useTestTimers();
+        vi.useFakeTimers();
         const stepperStateService: StepperStateService = new StepperStateService(new SummaryService());
         let resultStepState: StepState | undefined;
         stepperStateService.onStepActivated$.subscribe((stepState: StepState) => {
@@ -62,7 +61,7 @@ describe('StepperStateService', () => {
 
   describe('#markStepValid', () => {
     it('sets the valid flag in the step state according to the passed state', async function () {
-      useTestTimers();
+      vi.useFakeTimers();
       let stepState1: StepState;
       let stepState2: StepState;
 
@@ -90,7 +89,7 @@ describe('StepperStateService', () => {
   const panelStateProperty = 'panelState$';
   describe('#resetNextStepsValidStates', () => {
     it('sets the valid states of all steps after the step provided as argument as invalid', async function () {
-      useTestTimers();
+      vi.useFakeTimers();
       const step0: Step = <Step>{};
       const step1: Step = <Step>{};
       const step2: Step = <Step>{};
@@ -120,7 +119,7 @@ describe('StepperStateService', () => {
 
   describe('#getIndexOfFirstIncompleteStep', () => {
     it('returns the index of first step that is not skipped and not valid', async function () {
-      useTestTimers();
+      vi.useFakeTimers();
       const step0: Step = <Step>{};
       const step1: Step = <StepInternal>{ isSkipped: true };
       const step2: Step = <Step>{};
@@ -144,7 +143,7 @@ describe('StepperStateService', () => {
     });
 
     it('returns the correct index of the last not skipped step when all are completed', async function () {
-      useTestTimers();
+      vi.useFakeTimers();
       const step0: Step = <Step>{};
       const step1: Step = <Step>{};
       const step2: Step = <StepInternal>{ isSkipped: true };
@@ -166,7 +165,7 @@ describe('StepperStateService', () => {
 
   describe('#getFirstIncompleteStepContainerIndex', () => {
     it('omits the skipped steps when determining the first invalid step', async function () {
-      useTestTimers();
+      vi.useFakeTimers();
       const step0: Step = <Step>{};
       const step1: Step = <StepInternal>{ isSkipped: true };
       const step2: Step = <StepInternal>{ isSkipped: true };
@@ -205,7 +204,7 @@ describe('StepperStateService', () => {
 
   describe('#areAllStepsCompleted', () => {
     it('determines correctly whether all non-skip steps are valid', async function () {
-      useTestTimers();
+      vi.useFakeTimers();
       const step0: Step = <Step>{};
       const step1: Step = <StepInternal>{ isSkipped: true };
       const step2: Step = <Step>{};
@@ -232,7 +231,7 @@ describe('StepperStateService', () => {
 
   describe('#isStepActivated', () => {
     it('determines correctly if step is activated or not based on its expanded state', async function () {
-      useTestTimers();
+      vi.useFakeTimers();
       const step0: Step = <Step>{};
       const step1: Step = <StepInternal>{ isSkipped: true };
       const step2: Step = <Step>{};

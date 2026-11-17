@@ -22,7 +22,6 @@ import {
 import { SelectionType } from '@clr/angular/data/datagrid';
 import { renderFixture } from '@clr/angular/utils/testing';
 
-import { useTestTimers } from '../../../test-timers';
 import { DatagridColumnsOrderModule } from '../addons/column-ordering/datagrid-columns-order.module';
 import { ExportProviderService } from '../addons/export/export-provider.service';
 import { DatagridComponent } from '../datagrid.component';
@@ -326,7 +325,7 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
 
   describe('when the grid is with multi-selection', () => {
     beforeEach(async () => {
-      useTestTimers();
+      vi.useFakeTimers();
       testContext.appfxDatagridHostComponent.pageSize = 2;
       testContext.appfxDatagridHostComponent.data = allGridData;
       renderFixture(testContext.fixture);
@@ -399,7 +398,7 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
 
   describe('when the grid is with single selection', () => {
     beforeEach(async () => {
-      useTestTimers();
+      vi.useFakeTimers();
       testContext.appfxDatagridHostComponent.pageSize = 2;
       testContext.appfxDatagridHostComponent.data = allGridData;
       testContext.appfxDatagridHostComponent.selectionType = SelectionType.Single;
@@ -441,7 +440,7 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
     });
 
     it('selection is preserve when refreshing data', async () => {
-      useTestTimers();
+      vi.useFakeTimers();
       await testContext.selectRows([1]);
       testContext.verifySelectedRows([1]);
       await testContext.moveToTheNextPageAndSelectRows([]);
@@ -461,7 +460,7 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
   });
 
   it("does not preserve selection when 'preserveExistingSelection' is set to falsy", async () => {
-    useTestTimers();
+    vi.useFakeTimers();
     testContext.appfxDatagridHostComponent.preserveSelection = false;
     testContext.appfxDatagridHostComponent.pageSize = 2;
     testContext.appfxDatagridHostComponent.data = allGridData;

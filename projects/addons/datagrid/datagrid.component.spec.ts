@@ -52,7 +52,6 @@ import { ClrIcon } from '@clr/angular/icon';
 import { renderFixture } from '@clr/angular/utils/testing';
 import { Observable, Subject } from 'rxjs';
 
-import { useTestTimers } from '../../test-timers';
 import { DatagridColumnsOrderModule } from './addons/column-ordering/datagrid-columns-order.module';
 import { DatagridColumnToggleComponent } from './addons/column-toggle/datagrid-column-toggle.component';
 import { ExportProviderService } from './addons/export/export-provider.service';
@@ -2019,7 +2018,7 @@ describe('DatagridComponent', () => {
     });
 
     it('when returns false', async () => {
-      useTestTimers();
+      vi.useFakeTimers();
       const untypedContext: any = testContext;
       vi.spyOn(untypedContext.component, 'isRowLocked').mockReturnValue(false);
       renderFixture(untypedContext.fixture);
@@ -2037,7 +2036,7 @@ describe('DatagridComponent', () => {
     });
 
     it('when returns true', async () => {
-      useTestTimers();
+      vi.useFakeTimers();
       const untypedContext: any = testContext;
       vi.spyOn(untypedContext.component, 'isRowLocked').mockReturnValue(true);
       renderFixture(untypedContext.fixture);
@@ -2068,7 +2067,7 @@ describe('DatagridComponent', () => {
     });
 
     it('is set by default', async () => {
-      useTestTimers();
+      vi.useFakeTimers();
       renderFixture(testContext.fixture);
 
       const gridHelper = new GridHelper(testContext.fixture.debugElement);
@@ -2093,7 +2092,7 @@ describe('DatagridComponent', () => {
     });
 
     it('let the user to select only one item', async () => {
-      useTestTimers();
+      vi.useFakeTimers();
       renderFixture(testContext.fixture);
       renderFixture(testContext.fixture);
       await vi.advanceTimersByTimeAsync(0);
@@ -2118,7 +2117,7 @@ describe('DatagridComponent', () => {
     });
 
     it('can be changed to multi-selection mode and reset to single selection mode', async () => {
-      useTestTimers();
+      vi.useFakeTimers();
       renderFixture(testContext.fixture);
       await vi.advanceTimersByTimeAsync(0);
       renderFixture(testContext.fixture);
@@ -2154,7 +2153,7 @@ describe('DatagridComponent', () => {
     });
 
     it('allows selected items to be changed from the host component', async () => {
-      useTestTimers();
+      vi.useFakeTimers();
       testContext.component.appfxDatagridComponent.selectionType = SelectionType.Single;
 
       renderFixture(testContext.fixture);
@@ -2194,7 +2193,7 @@ describe('DatagridComponent', () => {
     });
 
     it('the user can not select an item', async () => {
-      useTestTimers();
+      vi.useFakeTimers();
       renderFixture(testContext.fixture);
       await vi.advanceTimersByTimeAsync(0);
       renderFixture(testContext.fixture);
@@ -2228,7 +2227,7 @@ describe('DatagridComponent', () => {
       const untypedContext: any = testContext;
 
       // required to execute the async callbacks in Clarity's Datagrid component
-      useTestTimers(['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval']);
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval'] });
       untypedContext.component.selectionType = SelectionType.Multi;
       untypedContext.component.columnsDefs = untypedContext.columnsDefs;
       untypedContext.component.data = untypedContext.data;
@@ -2358,7 +2357,7 @@ describe('DatagridComponent', () => {
     });
 
     it('is set by default', async () => {
-      useTestTimers();
+      vi.useFakeTimers();
       renderFixture(testContext.fixture);
       await vi.advanceTimersByTimeAsync(0);
       renderFixture(testContext.fixture);
@@ -2372,7 +2371,7 @@ describe('DatagridComponent', () => {
     });
 
     it('can be disabled', async () => {
-      useTestTimers();
+      vi.useFakeTimers();
       const detectChanges = async () => {
         await vi.advanceTimersByTimeAsync(0);
         renderFixture(testContext.fixture);
@@ -2980,7 +2979,7 @@ describe('DatagridComponent', () => {
     });
 
     it('should preserve detail state and not recreate row when items are updated by reference but trackByProperty matches', async () => {
-      useTestTimers();
+      vi.useFakeTimers();
       class TestItem {
         constructor(
           public name: string,

@@ -20,7 +20,6 @@ import { TreeFeaturesService } from './tree-features.service';
 import { TreeFocusManagerService } from './tree-focus-manager.service';
 import { ClrTreeNode } from './tree-node';
 import { ClrTreeViewModule } from './tree-view.module';
-import { useTestTimers } from '../../../test-timers';
 
 @Component({
   template: `
@@ -363,7 +362,7 @@ describe('Tree View', () => {
         });
 
         it('shows the spinner once the model starts loading, in a microtask', async () => {
-          useTestTimers();
+          vi.useFakeTimers();
           // The loading state can flip in the middle of a change detection pass, so it is not applied synchronously.
           testContext.clarityDirective._model.loading = true;
           expect(testContext.clarityDirective.isModelLoading).toBe(false);

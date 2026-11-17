@@ -23,7 +23,6 @@ import type { Mock } from 'vitest';
 import { appfxDatagridPersistSettingsToken } from './appfx-datagrid-persist-settings.token';
 import { DatagridPersistSettingsDirective } from './datagrid-persist-settings.directive';
 import { PersistDatagridSettingsService, PersistedDatagridState } from './datagrid-persist-settings.interfaces';
-import { useTestTimers } from '../../../../test-timers';
 import { DatagridComponent } from '../../datagrid.component';
 import { AppfxDatagridModule } from '../../datagrid.module';
 import { DatagridStrings } from '../../i18n/datagrid-strings.service';
@@ -197,7 +196,7 @@ describe('DatagridPersistSettingsDirective', () => {
     });
 
     it('when column visible state is changes ', async () => {
-      useTestTimers();
+      vi.useFakeTimers();
       let persistedData: PersistedDatagridState = {};
       (localStorageService.setUserData as Spy).mockImplementation((key: string, data: PersistedDatagridState) => {
         persistedData = data;
@@ -218,7 +217,7 @@ describe('DatagridPersistSettingsDirective', () => {
     });
 
     it('when column is resized state is changes ', async () => {
-      useTestTimers();
+      vi.useFakeTimers();
       let persistedData: PersistedDatagridState = {};
       (localStorageService.setUserData as Spy).mockImplementation((key: string, data: PersistedDatagridState) => {
         persistedData = data;
@@ -237,7 +236,7 @@ describe('DatagridPersistSettingsDirective', () => {
     });
 
     it('when column order is changes ', async () => {
-      useTestTimers();
+      vi.useFakeTimers();
       let persistedData: PersistedDatagridState = {};
       (localStorageService.setUserData as Spy).mockImplementation((key: string, data: PersistedDatagridState) => {
         persistedData = data;

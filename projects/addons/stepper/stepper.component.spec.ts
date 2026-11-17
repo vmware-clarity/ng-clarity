@@ -38,7 +38,6 @@ import { Observable, of, Subject } from 'rxjs';
 import { first } from 'rxjs/operators';
 import type { Mock } from 'vitest';
 
-import { useTestTimers } from '../../test-timers';
 import { MockStepperStateService } from './mock/stepper.mock';
 import { StepperStateService } from './state/stepper-state.service';
 import { StepperComponent } from './stepper.component';
@@ -467,7 +466,7 @@ describe('Stepper', () => {
 
     describe('WHEN finish is clicked', () => {
       it('WHEN last step is not valid THEN onFormSubmit and onFinish are not invoked', async () => {
-        useTestTimers();
+        vi.useFakeTimers();
         // Add only steps that return valid states
         testContext.fixture.componentRef.setInput('steps', [testContext.step1, testContext.step2]);
         renderFixture(testContext.fixture);
@@ -491,7 +490,7 @@ describe('Stepper', () => {
       });
 
       it('WHEN all steps are valid THEN onFormSubmit and onFinish are invoked', async () => {
-        useTestTimers();
+        vi.useFakeTimers();
         // Add only steps that return valid states
         testContext.fixture.componentRef.setInput('steps', [testContext.step1, testContext.step3]);
         renderFixture(testContext.fixture);
@@ -530,7 +529,7 @@ describe('Stepper', () => {
 
     describe('WHEN navigating using step header', () => {
       beforeEach(async () => {
-        useTestTimers();
+        vi.useFakeTimers();
         renderFixture(testContext.fixture);
 
         // go to step2 using next
@@ -571,7 +570,7 @@ describe('Stepper', () => {
       });
 
       it('WHEN already completed panel gets expanded, collapsed and then expanded again, it remains open', async () => {
-        useTestTimers();
+        vi.useFakeTimers();
         const toggleStepState = (index: number) => {
           steps[index].nativeElement.click();
           renderFixture(testContext.fixture);
@@ -679,7 +678,7 @@ describe('Stepper', () => {
       });
 
       it('THEN Back button is visible on the second visible step and has the correct style', async () => {
-        useTestTimers();
+        vi.useFakeTimers();
         testContext.fixture.componentRef.setInput('showBackButton', true);
         vi.spyOn(testContext.stateService, 'isFirstVisibleStep').mockImplementation((index: number) => {
           return index === 0;

@@ -36,7 +36,6 @@ import { renderFixture } from '@clr/angular/utils/testing';
 import { of, throwError } from 'rxjs';
 
 import { DialogComponent } from './multi-page-dialog.component';
-import { useTestTimers } from '../../test-timers';
 
 class MockElementRef extends ElementRef {
   nativeElement = {
@@ -310,7 +309,7 @@ describe('Appfx Multi Page Dialog', () => {
 
     it(`validates all visited pages when OK is clicked
             and does not call onSubmit when #tabs.validate$ return false`, async () => {
-      useTestTimers();
+      vi.useFakeTimers();
       vi.spyOn(testContext.component.tabs, 'validate$').mockReturnValue(of(false));
 
       testContext.component.onOkButtonClick();
@@ -365,7 +364,7 @@ describe('Appfx Multi Page Dialog', () => {
     });
 
     it('renders page tabs links correctly', async () => {
-      useTestTimers();
+      vi.useFakeTimers();
       testContext.fixture.whenStable().then(() => {
         const tabsHelper = new TabsHelper(testContext.fixture.debugElement);
         const labels: string[] = tabsHelper

@@ -17,7 +17,6 @@ import { renderFixture } from '@clr/angular/utils/testing';
 import { of } from 'rxjs';
 
 import { AppfxCardContainerComponent } from './appfx-card-container.component';
-import { useTestTimers } from '../../../test-timers';
 import { AppfxCardComponent } from '../card/appfx-card.component';
 import { ContainerService } from '../services/container.service';
 import { PersistenceService } from '../services/persistence.service';
@@ -71,7 +70,7 @@ describe('AppfxCardContainerComponent', () => {
   });
 
   it('should insert card to container', async () => {
-    useTestTimers();
+    vi.useFakeTimers();
     const card = sampleCards[0];
     vi.spyOn(component, 'insertCardToContainer' as any).mockReturnValue({});
     vi.spyOn(mockContainerService, 'addCard').mockImplementation(() => undefined);

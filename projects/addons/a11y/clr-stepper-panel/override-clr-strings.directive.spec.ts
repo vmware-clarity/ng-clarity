@@ -12,7 +12,6 @@ import { ClrStepperModule, ClrStepperPanel } from '@clr/angular/stepper';
 import { ClrCommonStrings, ClrCommonStringsService } from '@clr/angular/utils';
 import { renderFixture } from '@clr/angular/utils/testing';
 
-import { useTestTimers } from '../../../test-timers';
 import { AppfxA11yModule } from '../a11y.module';
 
 const successText = 'Step {STEP} complete';
@@ -83,7 +82,7 @@ describe('OverrideClrStringsDirective', () => {
   });
 
   it('ClrStepperPanel.commonStrings has correct values', async () => {
-    useTestTimers();
+    vi.useFakeTimers();
     Object.assign(testContext, createThisTest());
 
     const panel: ClrStepperPanel | undefined = testContext.component.stepperPanels.get(0);

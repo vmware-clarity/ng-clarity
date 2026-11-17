@@ -50,7 +50,6 @@ import { renderFixture } from '@clr/angular/utils/testing';
 import { ClrWizardModule } from '@clr/angular/wizard';
 import { Observable, of, Subject, throwError } from 'rxjs';
 
-import { useTestTimers } from '../../test-timers';
 import { SummaryComponent } from './summary/summary.component';
 import { SummaryModel } from './summary/summary.model';
 import { WorkflowService } from './wizard-workflow.service';
@@ -385,7 +384,7 @@ describe('appfx-wizard', () => {
       });
 
       it('THEN should render mock popup', async () => {
-        useTestTimers();
+        vi.useFakeTimers();
         renderFixture(testContext.fixture);
         await vi.advanceTimersByTimeAsync(0);
 

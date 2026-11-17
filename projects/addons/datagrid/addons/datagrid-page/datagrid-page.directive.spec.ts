@@ -20,7 +20,6 @@ import { SelectionType } from '@clr/angular/data/datagrid';
 import { renderFixture } from '@clr/angular/utils/testing';
 
 import { DatagridPageDirective } from './datagrid-page.directive';
-import { useTestTimers } from '../../../../test-timers';
 import { DatagridComponent } from '../../datagrid.component';
 import { AppfxDatagridModule } from '../../datagrid.module';
 import { DatagridStrings } from '../../i18n/datagrid-strings.service';
@@ -142,7 +141,7 @@ describe('datagridPage directive', () => {
     });
 
     it('set initial page', async () => {
-      useTestTimers();
+      vi.useFakeTimers();
       renderFixture(testContext.fixture);
       await vi.advanceTimersByTimeAsync(0);
       expect(testContext.appfxDatagridHostComponent.appfxDatagridComponent.clrDatagridPagination.currentPage).toEqual(
@@ -150,7 +149,7 @@ describe('datagridPage directive', () => {
       );
     });
     it('change grid page', async () => {
-      useTestTimers();
+      vi.useFakeTimers();
       testContext.appfxDatagridHostComponent.currentPageIndex = 1;
       renderFixture(testContext.fixture);
       await vi.advanceTimersByTimeAsync(0);
@@ -165,7 +164,7 @@ describe('datagridPage directive', () => {
       );
     });
     it('emit grid page when is changed', async () => {
-      useTestTimers();
+      vi.useFakeTimers();
       renderFixture(testContext.fixture);
       await vi.advanceTimersByTimeAsync(0);
       expect(testContext.appfxDatagridHostComponent.newPageIndex).toEqual(

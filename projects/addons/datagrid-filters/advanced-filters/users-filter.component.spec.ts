@@ -15,7 +15,6 @@ import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
 import { renderFixture } from '@clr/angular/utils/testing';
 import { of, throwError } from 'rxjs';
 
-import { useTestTimers } from '../../../test-timers';
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
 import { DatagridFiltersUserService } from '../datagrid-filters-user-service';
 import { FilterFormComponent } from './filter-form.component';
@@ -77,7 +76,7 @@ describe('UsersFilterComponent', () => {
   });
 
   beforeEach(async () => {
-    useTestTimers();
+    vi.useFakeTimers();
     fixture = TestBed.createComponent(UsersFilterComponent);
     component = fixture.componentInstance;
     fixture.componentRef.setInput('filterProperty', mockFilterProperty);

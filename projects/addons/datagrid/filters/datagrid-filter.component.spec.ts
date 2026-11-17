@@ -13,7 +13,6 @@ import { Observable, of } from 'rxjs';
 
 import { DatagridFilterComponent } from './datagrid-filter.component';
 import { CaseInsensitiveContainsStringFilter } from './string-filters';
-import { useTestTimers } from '../../../test-timers';
 import { DatagridStrings } from '../i18n/datagrid-strings.service';
 
 class ClrPopoverServiceMock {
@@ -171,7 +170,7 @@ describe('DatagridFilterComponent', () => {
   });
 
   it('should focus the input field when the filter dropdown is opened', async () => {
-    useTestTimers();
+    vi.useFakeTimers();
     const input: HTMLElement = testContext.fixture.nativeElement.querySelector('input');
 
     vi.spyOn(input, 'focus').mockImplementation(() => undefined);
