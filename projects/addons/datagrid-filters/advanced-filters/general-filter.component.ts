@@ -36,8 +36,8 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
   readonly logicalOperators: LogicalOperator[];
   readonly isEmptyOperator: ComparisonOperator = ComparisonOperator.IsEmpty;
 
-  generalFilterForm: FormGroup;
-  comparisonOperators: ComparisonOperator[];
+  generalFilterForm!: FormGroup;
+  comparisonOperators!: ComparisonOperator[];
   units: Unit[] = [];
   isNumericUnitProperty = false;
   additionalPredicate = false;
@@ -46,7 +46,7 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
   /**
    * In case the component is used for filter editing
    */
-  @Input() propertyFilter: PropertyFilter;
+  @Input() propertyFilter?: PropertyFilter;
 
   /**
    * Event emitter to tell hosting view that filtering criteria have changed
@@ -60,7 +60,7 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
   /**
    * Property used for filtering
    */
-  #filterProperty: StringPropertyDefinition | NumericPropertyDefinition;
+  #filterProperty!: StringPropertyDefinition | NumericPropertyDefinition;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -225,7 +225,7 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
   }
 
   private initOperator(index: number): ComparisonOperator {
-    const selectedOperator: ComparisonOperator = this.propertyFilter?.criteria[index]?.operator;
+    const selectedOperator: ComparisonOperator | undefined = this.propertyFilter?.criteria[index]?.operator;
     const defaultOperator: ComparisonOperator =
       this.filterProperty instanceof StringPropertyDefinition ? ComparisonOperator.Contains : ComparisonOperator.Equals;
     return selectedOperator || defaultOperator;
@@ -290,8 +290,9 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
 
   private initUnit(index: number): Unit {
     if (this.isNumericUnitProperty) {
-      if (this.propertyFilter?.criteria[index]) {
-        return this.getSelectedUnit(index);
+      const predicate = this.propertyFilter?.criteria[index];
+      if (predicate) {
+        return this.getSelectedUnit(predicate, index);
       } else {
         return this.units.length > 0 ? this.units[0] : Unit.MB;
       }
@@ -299,8 +300,8 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
     return Unit.MB;
   }
 
-  private getSelectedUnit(index: number): Unit {
-    const selectedUnit: Unit = this.propertyFilter.criteria[index].filterableProperty.selectedUnit[index] as Unit;
+  private getSelectedUnit(predicate: PropertyPredicate, index: number): Unit {
+    const selectedUnit: Unit = predicate.filterableProperty.selectedUnit[index] as Unit;
     return selectedUnit;
   }
 

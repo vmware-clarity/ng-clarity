@@ -13,9 +13,9 @@ import { ZoomLevelService } from './zoom-level.service';
 
 @Directive({ selector: '[zoomLevelIndicator]', standalone: false })
 export class ZoomLevelIndicatorDirective implements OnInit, OnDestroy {
-  @HostBinding('class') zoomLevel: ZoomLevel;
+  @HostBinding('class') zoomLevel?: ZoomLevel;
 
-  private subscription: Subscription;
+  private subscription?: Subscription;
 
   constructor(@Optional() private zoomLevelService: ZoomLevelService) {}
 

@@ -35,9 +35,9 @@ declare function setTimeout(handler: (...args: any[]) => void, timeout: number):
 export class DatagridPersistSettingsDirective implements OnDestroy, AfterViewInit {
   private subs = new Subscription();
   private datagridKeyChange$ = new Subject<string>();
-  private saveColumnsStateTimerId: number;
+  private saveColumnsStateTimerId?: number;
 
-  private datagridKey: string;
+  private datagridKey?: string;
 
   private storePageSize = true;
 
