@@ -6,7 +6,7 @@
  */
 
 import { isDevMode } from '@angular/core';
-import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrComponentContext } from '@clr/angular/utils';
+import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrComponentContext, ClrPublishedContext } from '@clr/angular/utils';
 
 import { truncate } from './text';
 import { defineOwn, jsonSafe, STATE_DEPTH } from '../json-safe';
@@ -41,22 +41,25 @@ function warnLeftOut(element: Element, error: unknown): void {
 }
 
 /**
- * Merges an element's published context over the DOM-extracted one; published values win. For an `untrusted`
- * caller, only the published state keys marked public are merged.
+ * Merges the element's annotation, then its published context, over the DOM-extracted one; published values
+ * win. For an `untrusted` caller, each source's state is cut to the keys that source marks public.
  */
 export function mergeElementContext(
   base: ClrComponentContext,
   element: Element,
   options: ResolvedSnapshotOptions,
+  annotation: Partial<ClrPublishedContext> | null = null,
   untrusted = false
 ): ClrComponentContext {
   const published = readClrElementContext(element, options);
-  if (!published) {
+  if (!published && !annotation) {
     return base;
   }
   let own: Partial<ClrComponentContext>;
   try {
-    own = publishedParts(published, options, untrusted, PUBLISHED_DEPTH);
+    const annotated = annotation ? publishedParts(annotation, options, untrusted, PUBLISHED_DEPTH) : {};
+    const component = published ? publishedParts(published, options, untrusted, PUBLISHED_DEPTH) : {};
+    own = { ...annotated, ...component, state: { ...annotated.state, ...component.state } };
   } catch (error) {
     warnLeftOut(element, error);
     return base;

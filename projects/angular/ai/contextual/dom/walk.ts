@@ -18,6 +18,7 @@ import {
 } from '@clr/angular/utils';
 
 import { accessibleName } from './accessible-name';
+import { annotationContext, hasAnnotation } from './annotations';
 import { ariaEnumValue, ariaState, isContentEditable, isRedacted, redactNode } from './aria-state';
 import { mergeElementContext, publishedNode, readClrElementContext } from './element-context';
 import { withinReadScope } from './read-scope';
@@ -242,6 +243,7 @@ function rendersOnly(parent: Element, part: Element, excludeSelector: string): b
     }
     if (
       CLR_ELEMENT_CONTEXT_PROPERTY in element ||
+      hasAnnotation(element) ||
       element.matches(DESCRIBABLE_SELECTOR) ||
       hasRendered(element, DESCRIBABLE_SELECTOR)
     ) {
@@ -432,6 +434,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
     role === 'listitem' &&
     walk.summarizedListDepth > 0 &&
     !(CLR_ELEMENT_CONTEXT_PROPERTY in element) &&
+    !hasAnnotation(element) &&
     !Array.from(element.attributes).some(attribute => attribute.name.startsWith('aria-')) &&
     !hasRendered(element, CONTROL_SELECTOR)
   ) {
@@ -443,7 +446,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
   const redacted = walk.redactedDepth > 0;
   const label = nameSafely(element, redacted ? null : role, walk);
 
-  if (!role && !label) {
+  if (!role && !label && !hasAnnotation(element)) {
     if (!isCustomElement) {
       return isTextBlock(element, walk)
         ? describeTextBlock(element, walk, owner)
@@ -549,6 +552,7 @@ function describeAnonymousCustomElement(element: Element, tagName: string, walk:
   }
   if (
     !readClrElementContext(element, walk.options) &&
+    !hasAnnotation(element) &&
     !accessibleText(element, undefined, walk.excludeSelector).trim()
   ) {
     return [];
@@ -788,6 +792,7 @@ function isPhrasing(element: Element, walk: Walk): boolean {
     !element.hasAttribute('aria-live') &&
     !element.hasAttribute(CLR_CONTEXT_REDACT_ATTRIBUTE) &&
     !(CLR_ELEMENT_CONTEXT_PROPERTY in element) &&
+    !hasAnnotation(element) &&
     !isLabel(element, walk) &&
     !element.matches(DESCRIBABLE_SELECTOR) &&
     !hasRendered(element, DESCRIBABLE_SELECTOR) &&
@@ -840,7 +845,7 @@ function finish(
   if (published) {
     described = redacted
       ? withoutOverriddenLabel(node, element, walk)
-      : mergeElementContext(node, element, walk.options, walk.untrusted);
+      : mergeElementContext(node, element, walk.options, annotationContext(element), walk.untrusted);
   }
   if (walk.excludeRoles.has(described.type)) {
     walk.remaining++;

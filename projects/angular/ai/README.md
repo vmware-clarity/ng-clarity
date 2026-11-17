@@ -18,8 +18,8 @@ before a snapshot goes to a model.
 
 ### Annotating the application
 
-The `clrContext` directive adds what only the application knows, such as what a section is for. It
-is standalone: a standalone component imports `ClrContext` directly, and an NgModule application can
+The `clrContext` directive adds what only the application knows, such as what a section is for, to
+the node of the element it sits on. It is standalone: a standalone component imports `ClrContext` directly, and an NgModule application can
 keep importing `ClrContextModule`.
 
 ```ts

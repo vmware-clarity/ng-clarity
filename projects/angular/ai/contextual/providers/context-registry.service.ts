@@ -14,17 +14,16 @@ import { jsonSafe, REGION_DEPTH } from '../json-safe';
 import { publicState } from '../public-keys';
 import type { ResolvedSnapshotOptions } from '../snapshot-options';
 
-/** Decides, from the element an annotation sits on, whether it is kept, dropped or stripped of state. */
-export type ClrContextRegionFilter = (element: Element | null) => 'keep' | 'drop' | 'redact';
-
-/** Registry of live context providers; they are polled at snapshot time, so nothing goes stale. */
+/**
+ * Registry of live context providers for what no element shows, such as the signed-in user's role; they are
+ * polled at snapshot time, so nothing goes stale. Context about an element goes on it with `[clrContext]`.
+ */
 @Injectable({ providedIn: 'root' })
 export class ClrContextRegistryService {
   /** Emits when a provider joins, leaves or reports a change, which may not touch the DOM. */
   readonly changes$: Observable<void>;
 
   private readonly providers: ClrContextProvider[] = [];
-  private readonly elements = new WeakMap<ClrContextProvider, Element>();
   private readonly changesSubject = new Subject<void>();
   /** Answers still pending, shared by every snapshot taken until they settle. */
   private readonly pending = new Map<ClrContextProvider, Promise<ClrPublishedContext | null>>();
@@ -33,11 +32,8 @@ export class ClrContextRegistryService {
     this.changes$ = this.changesSubject.asObservable();
   }
 
-  /** Registers a provider and returns its teardown; with `element`, it follows that element's visibility. */
-  register(provider: ClrContextProvider, element?: Element): () => void {
-    if (element) {
-      this.elements.set(provider, element);
-    }
+  /** Registers a provider and returns its teardown. */
+  register(provider: ClrContextProvider): () => void {
     if (!this.providers.includes(provider)) {
       this.providers.push(provider);
       this.changesSubject.next();
@@ -62,36 +58,27 @@ export class ClrContextRegistryService {
 
   /** Polls live providers, skipping ones that return `null` or throw; a pending one is reported as loading. */
   collect(options: ClrContextCollectOptions = {}): ClrComponentContext[] {
-    return this.poll(options.filter).flatMap(({ result, verdict }) =>
-      isPromise(result) ? [{ type: CLR_CONTEXT_LOADING_TYPE }] : listOf(reported(result, verdict, options))
+    return this.poll().flatMap(({ result }) =>
+      isPromise(result) ? [{ type: CLR_CONTEXT_LOADING_TYPE }] : listOf(reported(result, options))
     );
   }
 
   /**
    * Like {@link collect}, awaiting each pending provider for up to `timeoutMs` (2 seconds by default).
-   * One that fails or takes longer is reported as unavailable. The filter is applied again once every
-   * provider has answered, as an element may have moved or been redacted meanwhile.
+   * One that fails or takes longer is reported as unavailable, and one unregistered meanwhile is left out.
    */
   async collectAsync(options: ClrContextAsyncCollectOptions = {}): Promise<ClrComponentContext[]> {
-    const { filter } = options;
     const timeoutMs = usableTimeout(options.timeoutMs, DEFAULT_TIMEOUT_MS);
-    const polled = this.poll(filter);
+    const polled = this.poll();
     const answers = await Promise.all(
       polled.map(({ provider, result }) => (isPromise(result) ? this.settle(provider, result, timeoutMs) : result))
     );
     return polled.flatMap(({ provider }, index) => {
-      const verdict = !this.providers.includes(provider)
-        ? 'drop'
-        : filter
-          ? attempt(() => filter(this.elements.get(provider) ?? null), 'drop')
-          : 'keep';
       const answer = answers[index];
-      if (verdict === 'drop') {
+      if (!this.providers.includes(provider)) {
         return [];
       }
-      return answer === TIMED_OUT
-        ? [{ type: CLR_CONTEXT_UNAVAILABLE_TYPE }]
-        : listOf(reported(answer, verdict, options));
+      return answer === TIMED_OUT ? [{ type: CLR_CONTEXT_UNAVAILABLE_TYPE }] : listOf(reported(answer, options));
     });
   }
 
@@ -108,14 +95,11 @@ export class ClrContextRegistryService {
     return answer;
   }
 
-  private poll(filter?: ClrContextRegionFilter): PolledProvider[] {
+  private poll(): PolledProvider[] {
     const polled: PolledProvider[] = [];
     for (const provider of this.providers) {
       try {
-        const verdict = filter ? filter(this.elements.get(provider) ?? null) : 'keep';
-        if (verdict !== 'drop') {
-          polled.push({ provider, result: this.ask(provider), verdict });
-        }
+        polled.push({ provider, result: this.ask(provider) });
       } catch {
         // A faulty provider must not break the whole snapshot.
       }
@@ -148,8 +132,6 @@ export class ClrContextRegistryService {
 
 /** How {@link ClrContextRegistryService.collect} collects. */
 export interface ClrContextCollectOptions {
-  /** Decides from each provider's element whether it is kept, dropped or stripped of state. */
-  filter?: ClrContextRegionFilter;
   /** Cuts text and lists in what providers report. */
   limits?: ClrContextRegionLimits;
   /** For a caller the application does not control: state is cut to the keys each provider marks public. */
@@ -176,21 +158,16 @@ const DEFAULT_TIMEOUT_MS = 2000;
 interface PolledProvider {
   provider: ClrContextProvider;
   result: ClrPublishedContext | null | Promise<ClrPublishedContext | null>;
-  verdict: 'keep' | 'redact';
 }
 
 function isPromise<T>(value: T | Promise<T>): value is Promise<T> {
   return typeof (value as Promise<T> | null)?.then === 'function';
 }
 
-function reported(
-  context: ClrPublishedContext | null,
-  verdict: 'keep' | 'redact',
-  options: ClrContextCollectOptions
-): ClrComponentContext | null {
-  const copy = attempt(() => copied(context, options), null);
-  return copy && verdict === 'redact' ? withheldState(copy) : copy;
+function reported(context: ClrPublishedContext | null, options: ClrContextCollectOptions): ClrComponentContext | null {
+  return attempt(() => copied(context, options), null);
 }
+
 function listOf(context: ClrComponentContext | null): ClrComponentContext[] {
   return context ? [context] : [];
 }
@@ -228,12 +205,4 @@ function componentNode(value: unknown, untrusted: boolean): ClrComponentContext 
       .filter((child): child is ClrComponentContext => !!child);
   }
   return node;
-}
-
-function withheldState(context: ClrComponentContext): ClrComponentContext {
-  const reported: ClrComponentContext = { type: context.type, state: { redacted: true } };
-  if (context.label) {
-    reported.label = context.label;
-  }
-  return reported;
 }

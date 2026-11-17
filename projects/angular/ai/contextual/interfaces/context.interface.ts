@@ -70,7 +70,7 @@ export interface ClrPageContext {
   route?: ClrRouteContext;
   /** Routable paths, when configured with `routes: true`; at least 50 entries, without wildcards or redirects. */
   availableRoutes?: ClrAvailableRoute[];
-  /** Application-provided contexts from the `clrContext` directive or a {@link ClrContextProvider}. */
+  /** Context that no element shows, from the providers registered with `ClrContextRegistryService`. */
   regions: ClrComponentContext[];
   /** Everything rendered with a role, name or text, as a tree; collections are summarised. */
   components: ClrComponentContext[];

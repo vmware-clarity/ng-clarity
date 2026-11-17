@@ -69,8 +69,9 @@ const SNAPSHOT_SHAPE_EXAMPLE = `
   "title": "Cluster overview",
   "url": "https://app.example/clusters/42",
   "route": { "url": "/clusters/42", "path": "clusters/:id", "params": { "id": "42" } },
-  "regions": [{ "type": "region", "label": "Firewall rules for cluster 42" }],
+  "regions": [],
   "components": [
+    { "type": "group", "label": "Firewall rules for cluster 42", "state": { "ruleCount": 12 } },
     {
       "type": "grid",
       "element": "clr-datagrid",
