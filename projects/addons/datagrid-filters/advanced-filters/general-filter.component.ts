@@ -292,17 +292,12 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
     if (this.isNumericUnitProperty) {
       const predicate = this.propertyFilter?.criteria[index];
       if (predicate) {
-        return this.getSelectedUnit(predicate, index);
+        return predicate.filterableProperty.selectedUnit[index] as Unit;
       } else {
         return this.units.length > 0 ? this.units[0] : Unit.MB;
       }
     }
     return Unit.MB;
-  }
-
-  private getSelectedUnit(predicate: PropertyPredicate, index: number): Unit {
-    const selectedUnit: Unit = predicate.filterableProperty.selectedUnit[index] as Unit;
-    return selectedUnit;
   }
 
   private initValue(index: number): any {
