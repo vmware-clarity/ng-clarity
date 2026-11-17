@@ -242,8 +242,8 @@ export interface ClrComponentContextChange {
 }
 
 // @public
-export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvider {
-    getClrContext(): ClrPublishedContext | null;
+export class ClrContext implements OnInit, DoCheck, OnDestroy {
+    getClrContext(): Partial<ClrPublishedContext> | null;
     label: string;
     // (undocumented)
     ngDoCheck(): void;
@@ -289,7 +289,6 @@ export interface ClrContextChange {
 
 // @public
 export interface ClrContextCollectOptions {
-    filter?: ClrContextRegionFilter;
     limits?: ClrContextRegionLimits;
     untrusted?: boolean;
 }
@@ -336,9 +335,6 @@ export interface ClrContextProvider {
     getClrContext(): ClrPublishedContext | null | Promise<ClrPublishedContext | null>;
 }
 
-// @public
-export type ClrContextRegionFilter = (element: Element | null) => 'keep' | 'drop' | 'redact';
-
 // Warning: (ae-forgotten-export) The symbol "ResolvedSnapshotOptions" needs to be exported by the entry point clr-angular-ai.d.ts
 //
 // @public
@@ -351,7 +347,7 @@ export class ClrContextRegistryService {
     collect(options?: ClrContextCollectOptions): ClrComponentContext[];
     collectAsync(options?: ClrContextAsyncCollectOptions): Promise<ClrComponentContext[]>;
     notifyChanged(): void;
-    register(provider: ClrContextProvider, element?: Element): () => void;
+    register(provider: ClrContextProvider): () => void;
     unregister(provider: ClrContextProvider): void;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextRegistryService, never>;
