@@ -78,7 +78,7 @@ import { WritableSignal } from '@angular/core';
 export abstract class AbstractIfState {
     protected constructor(ngControlService: NgControlService);
     // (undocumented)
-    protected controls: NgControl[];
+    protected controls: NgControl[] | undefined;
     // (undocumented)
     protected displayedContent: boolean;
     // (undocumented)
