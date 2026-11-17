@@ -10,7 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ClrContextEngineService } from '@clr/angular/ai';
+import { ClrContextService } from '@clr/angular/ai';
 import { publishedOn } from '@clr/angular/testing';
 import {
   CLR_ELEMENT_CONTEXT_PROPERTY,
@@ -103,7 +103,7 @@ describe('ClrCombobox element context', () => {
     expect(context.state.options).toEqual(['Apple', 'Pear']);
   });
 
-  it('is described once while open, not again as the list in its overlay', () => {
+  it('is described once while open, not again as the list in its overlay', async () => {
     fixture.nativeElement.querySelector('button.clr-combobox-trigger').click();
     fixture.detectChanges();
 
@@ -113,7 +113,7 @@ describe('ClrCombobox element context', () => {
         types.push(node.type);
         visit(node.children ?? []);
       });
-    visit(TestBed.inject(ClrContextEngineService).getSnapshot().components);
+    visit((await TestBed.inject(ClrContextService).snapshot()).components);
 
     expect(document.querySelector('[role="listbox"]')).not.toBeNull();
     expect(types).toContain('combobox');
@@ -168,7 +168,7 @@ describe('ClrCombobox element context, other shapes', () => {
     expect(context.state.value).toEqual(['Apple', 'Plum']);
   });
 
-  it('is not described again through its selection pills, which would count the selection', () => {
+  it('is not described again through its selection pills, which would count the selection', async () => {
     const grids: ClrComponentContext[] = [];
     const visit = (nodes: ClrComponentContext[]) =>
       nodes.forEach(node => {
@@ -177,7 +177,7 @@ describe('ClrCombobox element context, other shapes', () => {
         }
         visit(node.children ?? []);
       });
-    visit(TestBed.inject(ClrContextEngineService).getSnapshot().components);
+    visit((await TestBed.inject(ClrContextService).snapshot()).components);
 
     expect(fixture.nativeElement.querySelector('.clr-combobox-pills[role="grid"]')).not.toBeNull();
     expect(grids).toEqual([]);
@@ -521,7 +521,7 @@ class FilteredOptionsTestComponent {
 describe('ClrCombobox element context, options narrowed to what the user typed', () => {
   const accessorName = 'testComboboxClrContext';
   let fixture: ComponentFixture<FilteredOptionsTestComponent>;
-  let engine: ClrContextEngineService;
+  let engine: ClrContextService;
 
   async function settle() {
     fixture.detectChanges();
@@ -553,7 +553,7 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
 
   beforeEach(async () => {
     fixture = await create(FilteredOptionsTestComponent, [ClrLoadingModule]);
-    engine = TestBed.inject(ClrContextEngineService);
+    engine = TestBed.inject(ClrContextService);
   });
 
   afterEach(() => {
@@ -670,7 +670,7 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     expect(published(fixture, '.async-search').state['matchingOptions']).toEqual(['Alice Smith']);
     expect(published(fixture, '.async-search').state['options']).toBeUndefined();
     expect(sharedState(3)).toEqual({ multiSelect: false, withheld: true });
-    expect(sharedState(3, { collectionItems: 'summary' })).toEqual({ multiSelect: false, withheld: true });
+    expect(sharedState(3, { maxItemsPerCollection: 0 })).toEqual({ multiSelect: false, withheld: true });
   });
 
   it('tells every consumer an application search has no results yet before anything is typed', () => {
@@ -735,12 +735,12 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
   });
 
   it('counts the options rather than listing them in a summary snapshot', () => {
-    expect(published(fixture, 'clr-combobox', { collectionItems: 'summary' }).state).toEqual({
+    expect(published(fixture, 'clr-combobox', { maxItemsPerCollection: 0 }).state).toEqual({
       multiSelect: false,
       optionCount: 5,
       value: null,
     });
-    const summary = shared({ collectionItems: 'summary' });
+    const summary = shared({ maxItemsPerCollection: 0 });
     expect(summary).toContain('"optionCount":5');
     expect(summary).not.toContain('Alice');
   });
@@ -749,14 +749,14 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     open();
     type('Smi');
 
-    expect(published(fixture, 'clr-combobox', { collectionItems: 'summary' }).state).toEqual({
+    expect(published(fixture, 'clr-combobox', { maxItemsPerCollection: 0 }).state).toEqual({
       multiSelect: false,
       matchingOptionCount: 3,
       value: null,
     });
-    expect(shared({ collectionItems: 'summary' })).not.toMatch(/Smi|"matchingOptionCount"/);
+    expect(shared({ maxItemsPerCollection: 0 })).not.toMatch(/Smi|"matchingOptionCount"/);
     // Not the narrowed count under the other key either.
-    expect(sharedState(0, { collectionItems: 'summary' })).toEqual({ multiSelect: false, withheld: true });
+    expect(sharedState(0, { maxItemsPerCollection: 0 })).toEqual({ multiSelect: false, withheld: true });
   });
 
   it('withholds every option of a list that mixes written-out options with *clrOptionItems', () => {

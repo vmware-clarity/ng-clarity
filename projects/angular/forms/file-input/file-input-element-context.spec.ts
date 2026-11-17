@@ -8,7 +8,7 @@
 import { ChangeDetectionStrategy, Component, Type, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, NgModel } from '@angular/forms';
-import { ClrContextEngineService } from '@clr/angular/ai';
+import { ClrContextService } from '@clr/angular/ai';
 import { publishedOn } from '@clr/angular/testing';
 import { ClrComponentContext } from '@clr/angular/utils';
 
@@ -99,7 +99,7 @@ describe('ClrFileInputContainer, as page-context tooling sees it', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
-    return TestBed.inject(ClrContextEngineService).getSnapshot().components;
+    return (await TestBed.inject(ClrContextService).snapshot()).components;
   }
 
   it('reports how many files are chosen, never their names', async () => {
@@ -140,7 +140,7 @@ describe('ClrFileInputContainer, as page-context tooling sees it', () => {
 
   it('keeps the names and how many there are from a consumer the application does not control', async () => {
     await create(FileListTest, ['a-4111.pdf', 'b-4222.pdf']);
-    const engine = TestBed.inject(ClrContextEngineService);
+    const engine = TestBed.inject(ClrContextService);
     engine.enableGlobalAccess('testFileClrContext');
     try {
       const accessor = (window as unknown as Record<string, () => unknown>)['testFileClrContext'];
@@ -160,7 +160,7 @@ describe('ClrFileInputContainer, as page-context tooling sees it', () => {
 
     (fixture.componentInstance as ValidatedFileTest).control.control.markAsTouched();
     fixture.detectChanges();
-    const components = TestBed.inject(ClrContextEngineService).getSnapshot().components;
+    const components = (await TestBed.inject(ClrContextService).snapshot()).components;
 
     expect(JSON.stringify(components)).toContain('Choose a statement to upload');
     expect(findNode(components, 'clr-file-input-container')?.state).toEqual(

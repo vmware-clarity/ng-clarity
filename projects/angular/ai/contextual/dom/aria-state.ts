@@ -6,7 +6,7 @@
  */
 
 import { getAriaReferenceIds } from '@angular/cdk/a11y';
-import { CLR_CONTEXT_REDACT_SELECTOR, ClrComponentContext, ClrContextSnapshotOptions } from '@clr/angular/utils';
+import { CLR_CONTEXT_REDACT_SELECTOR, ClrComponentContext } from '@clr/angular/utils';
 
 import { closestAcrossShadow } from './shadow';
 import {
@@ -22,6 +22,7 @@ import {
 import { CONTENT_ROLES } from './tables/roles';
 import { accessibleText, referencedText, truncate } from './text';
 import { isHiddenFromContext, isRedactedWithin } from './visibility';
+import type { ResolvedSnapshotOptions } from '../snapshot-options';
 
 export function ariaEnumValue(element: Element, attribute: string): string | null {
   const definition = ENUM_ATTRIBUTES.find(candidate => candidate.attribute === attribute);
@@ -35,7 +36,7 @@ export function ariaEnumValue(element: Element, attribute: string): string | nul
 /** The element's ARIA and native state as a flat, JSON-safe object. */
 export function ariaState(
   element: Element,
-  options: Required<ClrContextSnapshotOptions>,
+  options: ResolvedSnapshotOptions,
   insideRedactedRegion?: boolean,
   withheld = ''
 ): Record<string, unknown> {
@@ -93,11 +94,7 @@ export function ariaState(
   return state;
 }
 
-function assignNativeState(
-  element: Element,
-  state: Record<string, unknown>,
-  options: Required<ClrContextSnapshotOptions>
-): void {
+function assignNativeState(element: Element, state: Record<string, unknown>, options: ResolvedSnapshotOptions): void {
   const tagName = element.tagName.toLowerCase();
 
   if ((tagName === 'details' || tagName === 'dialog') && element.hasAttribute('open')) {
@@ -136,7 +133,7 @@ function assignNativeState(
 function assignValueState(
   element: Element,
   state: Record<string, unknown>,
-  options: Required<ClrContextSnapshotOptions>,
+  options: ResolvedSnapshotOptions,
   insideRedactedRegion?: boolean,
   withheld = ''
 ): void {

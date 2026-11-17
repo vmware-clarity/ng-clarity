@@ -10,11 +10,11 @@ import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import {
   CLR_CONTEXT_DEFAULT_OPTIONS,
+  CLR_CONTEXT_PRESETS,
   ClrContextCategory,
   ClrContextChange,
-  ClrContextEngineService,
-  clrContextPreset,
   ClrContextPreset,
+  ClrContextService,
   ClrContextSnapshotOptions,
   clrDiffContext,
   ClrPageContext,
@@ -52,28 +52,21 @@ export class ContextPlaygroundComponent implements OnInit {
   preset: ClrContextPreset | 'custom' = 'full';
   maxComponents = CLR_CONTEXT_DEFAULT_OPTIONS.maxComponents;
   maxItemsPerCollection = CLR_CONTEXT_DEFAULT_OPTIONS.maxItemsPerCollection;
-  maxTextLength = CLR_CONTEXT_DEFAULT_OPTIONS.maxTextLength;
-  maxDepth = CLR_CONTEXT_DEFAULT_OPTIONS.maxDepth;
-  focusModal = false;
-  summaryCollections = false;
-  includeRoutes = false;
+  root = '';
   excluded: Record<string, boolean> = {};
-  excludeRoles = '';
   excludeSelectors = '';
-  rootSelector = '';
 
   snapshotJson = '';
   bytes = 0;
   nodes = 0;
   truncated = false;
-  routes = 0;
   focus: string | null = null;
   change: ClrContextChange | null = null;
   optionsJson = '{}';
 
   private previous: ClrPageContext | null = null;
 
-  constructor(private readonly contextEngine: ClrContextEngineService) {}
+  constructor(private readonly contextEngine: ClrContextService) {}
 
   ngOnInit(): void {
     this.run();
@@ -84,27 +77,15 @@ export class ContextPlaygroundComponent implements OnInit {
     if (preset === 'custom') {
       return;
     }
-    const options = { ...CLR_CONTEXT_DEFAULT_OPTIONS, ...clrContextPreset(preset) };
+    const options = { ...CLR_CONTEXT_DEFAULT_OPTIONS, ...CLR_CONTEXT_PRESETS[preset] };
     this.maxComponents = options.maxComponents;
     this.maxItemsPerCollection = options.maxItemsPerCollection;
-    this.maxTextLength = options.maxTextLength;
-    this.maxDepth = options.maxDepth;
-    this.focusModal = options.focus === 'modal';
-    this.summaryCollections = options.collectionItems === 'summary';
-    this.includeRoutes = options.includeRoutes === true;
-    const categories = new Set<string>(options.excludeCategories ?? []);
-    if (options.includeText === false) {
-      categories.add('text');
-    }
-    if (options.includeFrames === false) {
-      categories.add('frames');
-    }
+    this.root = options.root === 'page' ? '' : options.root;
+    const categories = new Set<string>(options.excludeCategories);
     for (const { name } of CATEGORIES) {
       this.excluded[name] = categories.has(name);
     }
-    this.excludeRoles = (options.excludeRoles ?? []).join(', ');
-    this.excludeSelectors = (options.excludeSelectors ?? []).join(', ');
-    this.rootSelector = options.rootSelector ?? '';
+    this.excludeSelectors = options.excludeSelectors.join(', ');
     this.run();
   }
 
@@ -117,47 +98,29 @@ export class ContextPlaygroundComponent implements OnInit {
     const options: ClrContextSnapshotOptions = {
       maxComponents: Math.min(this.maxComponents, this.maxBudget),
       maxItemsPerCollection: this.maxItemsPerCollection,
-      maxTextLength: this.maxTextLength,
     };
-    if (this.maxDepth > 0) {
-      options.maxDepth = this.maxDepth;
-    }
-    if (this.focusModal) {
-      options.focus = 'modal';
-    }
-    if (this.summaryCollections) {
-      options.collectionItems = 'summary';
-    }
-    if (this.includeRoutes) {
-      options.includeRoutes = true;
+    if (this.root.trim()) {
+      options.root = this.root.trim();
     }
     const categories = CATEGORIES.map(({ name }) => name).filter(name => this.excluded[name]);
     if (categories.length) {
       options.excludeCategories = categories;
     }
-    const roles = list(this.excludeRoles);
-    if (roles.length) {
-      options.excludeRoles = roles;
-    }
     const selectors = list(this.excludeSelectors);
     if (selectors.length) {
       options.excludeSelectors = selectors;
     }
-    if (this.rootSelector.trim()) {
-      options.rootSelector = this.rootSelector.trim();
-    }
     return options;
   }
 
-  run(): void {
+  async run(): Promise<void> {
     const options = this.currentOptions();
-    const snapshot = this.contextEngine.getSnapshot(options);
+    const snapshot = await this.contextEngine.snapshot(options);
     this.optionsJson = JSON.stringify(options, null, 2);
     this.snapshotJson = JSON.stringify(snapshot, null, 2);
     this.bytes = JSON.stringify(snapshot).length;
     this.nodes = snapshot.components.reduce((total, node) => total + countNodes(node), 0);
     this.truncated = snapshot.truncated === true;
-    this.routes = snapshot.availableRoutes?.length ?? 0;
     this.focus = snapshot.focus ?? null;
     this.change = this.previous ? clrDiffContext(this.previous, snapshot) : null;
     this.previous = snapshot;

@@ -11,16 +11,15 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router, withHashLocation } from '@angular/router';
 import { publishElementContext } from '@clr/angular/utils';
 
-import {
-  CLR_CONTEXT_OPTIONS,
-  ClrContextApplicationOptions,
-  provideClrContextApplication,
-  provideClrContextOptions,
-} from './context-options';
 import { ClrContextRegistryService } from './context-registry.service';
-import { ClrContextEngineService } from './contextual-engine.service';
-import { ClrComponentContext, ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
-import { CLR_CONTEXT_DEFAULT_OPTIONS } from '../snapshot-options';
+import { ClrContextConfig, ClrContextService } from './contextual-engine.service';
+import {
+  ClrComponentContext,
+  ClrContextCategory,
+  ClrContextSnapshotOptions,
+  ClrPageContext,
+} from '../interfaces/context.interface';
+import { CLR_CONTEXT_CATEGORIES, CLR_CONTEXT_DEFAULT_OPTIONS, CLR_CONTEXT_PRESETS } from '../snapshot-options';
 
 @Component({ template: '', changeDetection: ChangeDetectionStrategy.Eager })
 class RoutedComponent {}
@@ -36,21 +35,21 @@ function removeGlobal(name: string): void {
   delete (window as unknown as Record<string, unknown>)[name];
 }
 
-describe('ClrContextEngineService', () => {
+describe('ClrContextService', () => {
   describe('without configured routes', () => {
-    let engine: ClrContextEngineService;
+    let engine: ClrContextService;
 
     beforeEach(() => {
       TestBed.configureTestingModule({});
-      engine = TestBed.inject(ClrContextEngineService);
+      engine = TestBed.inject(ClrContextService);
     });
 
     afterEach(() => {
       removeGlobal('testClrContext');
     });
 
-    it('snapshots the document and reports no route for an unconfigured router', () => {
-      const snapshot = engine.getSnapshot();
+    it('snapshots the document and reports no route for an unconfigured router', async () => {
+      const snapshot = await engine.snapshot();
 
       expect(snapshot.title).toBe(document.title);
       expect(snapshot.url).toBe(document.location.href);
@@ -58,36 +57,29 @@ describe('ClrContextEngineService', () => {
       expect(new Date(snapshot.collectedAt).getTime()).not.toBeNaN();
     });
 
-    it('includes application-registered regions', () => {
+    it('includes application-registered regions', async () => {
       const registry = TestBed.inject(ClrContextRegistryService);
       const unregister = registry.register({ getClrContext: () => ({ type: 'region', label: 'inventory' }) });
 
-      expect(engine.getSnapshot().regions).toEqual([{ type: 'region', label: 'inventory' }]);
+      expect((await engine.snapshot()).regions).toEqual([{ type: 'region', label: 'inventory' }]);
 
       unregister();
-      expect(engine.getSnapshot().regions).toEqual([]);
+      expect((await engine.snapshot()).regions).toEqual([]);
     });
 
-    it('can skip DOM collection entirely', () => {
-      const snapshot = engine.getSnapshot({ includeDomComponents: false });
-
-      expect(snapshot.components).toEqual([]);
-    });
-
-    it('lets other UI libraries register their own DOM extractors', () => {
+    it('lets other UI libraries register their own DOM extractors', async () => {
       const widget = document.createElement('div');
       widget.className = 'chat-widget';
       document.body.appendChild(widget);
-      const unregister = engine.registerDomExtractor({
-        selector: '.chat-widget',
-        extract: () => ({ type: 'chat', label: 'Support chat' }),
+      engine.configure({
+        extractors: [{ selector: '.chat-widget', extract: () => ({ type: 'chat', label: 'Support chat' }) }],
       });
 
       try {
-        expect(engine.getSnapshot().components).toContain(jasmine.objectContaining({ type: 'chat' }));
+        expect((await engine.snapshot()).components).toContain(jasmine.objectContaining({ type: 'chat' }));
 
-        unregister();
-        expect(engine.getSnapshot().components).not.toContain(jasmine.objectContaining({ type: 'chat' }));
+        engine.configure({});
+        expect((await engine.snapshot()).components).not.toContain(jasmine.objectContaining({ type: 'chat' }));
       } finally {
         widget.remove();
       }
@@ -152,7 +144,7 @@ describe('ClrContextEngineService', () => {
         expect(json).toContain('"optionCount":2');
       });
 
-      it('withholds which toggle buttons the user pressed, a choice like a ticked box', () => {
+      it('withholds which toggle buttons the user pressed, a choice like a ticked box', async () => {
         form.innerHTML +=
           '<button type="button" aria-pressed="true">Pay anonymously</button>' +
           '<div role="group" aria-label="Billing"><button type="button" aria-pressed="false">Monthly</button>' +
@@ -162,7 +154,7 @@ describe('ClrContextEngineService', () => {
         const json = JSON.stringify(snapshotVia());
         expect(json).toContain('Pay anonymously');
         expect(json).not.toContain('"pressed"');
-        expect(JSON.stringify(engine.getSnapshot())).toContain('"pressed":true');
+        expect(JSON.stringify(await engine.snapshot())).toContain('"pressed":true');
       });
 
       it('shares what the user typed only when the application says so', () => {
@@ -221,10 +213,10 @@ describe('ClrContextEngineService', () => {
           ]),
         ],
       });
-      const engine = TestBed.inject(ClrContextEngineService);
+      const engine = TestBed.inject(ClrContextService);
 
       await TestBed.inject(Router).navigateByUrl('/items/42?tab=general');
-      const route = engine.getSnapshot({ includeDomComponents: false }).route;
+      const route = (await engine.snapshot()).route;
 
       expect(route?.url).toBe('/items/42?tab=general');
       expect(route?.path).toBe('items/:id');
@@ -246,19 +238,19 @@ describe('ClrContextEngineService', () => {
           ]),
         ],
       });
-      const engine = TestBed.inject(ClrContextEngineService);
+      const engine = TestBed.inject(ClrContextService);
 
       await TestBed.inject(Router).navigateByUrl('/account');
-      const snapshot = engine.getSnapshot({ includeDomComponents: false });
+      const snapshot = await engine.snapshot();
 
       expect(snapshot.route?.data).toEqual({ section: 'account' });
-      expect(JSON.stringify(snapshot)).not.toContain('secret');
+      expect(JSON.stringify(snapshot.route)).not.toContain('secret');
     });
   });
 });
 
-describe('ClrContextEngineService, the global accessor as a boundary', () => {
-  let engine: ClrContextEngineService;
+describe('ClrContextService, the global accessor as a boundary', () => {
+  let engine: ClrContextService;
   let form: HTMLElement;
 
   function snapshotVia(options?: unknown): ClrPageContext {
@@ -267,7 +259,7 @@ describe('ClrContextEngineService, the global accessor as a boundary', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    engine = TestBed.inject(ClrContextEngineService);
+    engine = TestBed.inject(ClrContextService);
     form = document.createElement('div');
     form.innerHTML = '<button>one</button><button>two</button><button>three</button>';
     document.body.appendChild(form);
@@ -317,13 +309,13 @@ describe('ClrContextEngineService, the global accessor as a boundary', () => {
   });
 });
 
-describe('ClrContextEngineService, saying when a snapshot is cut off', () => {
-  let engine: ClrContextEngineService;
+describe('ClrContextService, saying when a snapshot is cut off', () => {
+  let engine: ClrContextService;
   let widgets: HTMLElement;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    engine = TestBed.inject(ClrContextEngineService);
+    engine = TestBed.inject(ClrContextService);
     widgets = document.createElement('div');
     widgets.innerHTML = '<button>one</button><button>two</button><button>three</button>';
     document.body.appendChild(widgets);
@@ -331,16 +323,16 @@ describe('ClrContextEngineService, saying when a snapshot is cut off', () => {
 
   afterEach(() => widgets.remove());
 
-  it('flags a snapshot whose component budget ran out', () => {
-    expect(engine.getSnapshot({ maxComponents: 1 }).truncated).toBe(true);
+  it('flags a snapshot whose component budget ran out', async () => {
+    expect((await engine.snapshot({ maxComponents: 1 })).truncated).toBe(true);
   });
 
-  it('carries no flag when everything fit', () => {
-    expect('truncated' in engine.getSnapshot({ maxComponents: 5000 })).toBe(false);
+  it('carries no flag when everything fit', async () => {
+    expect('truncated' in (await engine.snapshot({ maxComponents: 5000 }))).toBe(false);
   });
 });
 
-describe('ClrContextEngineService, configured once for the application', () => {
+describe('ClrContextService, configured once for the application', () => {
   let widgets: HTMLElement;
 
   beforeEach(() => {
@@ -353,77 +345,85 @@ describe('ClrContextEngineService, configured once for the application', () => {
 
   afterEach(() => widgets.remove());
 
-  function engineWith(...providers: unknown[]): ClrContextEngineService {
-    TestBed.configureTestingModule({ providers: providers as never[] });
-    return TestBed.inject(ClrContextEngineService);
+  function engineWith(config: ClrContextConfig): ClrContextService {
+    TestBed.configureTestingModule({});
+    const engine = TestBed.inject(ClrContextService);
+    engine.configure(config);
+    return engine;
   }
 
   function types(snapshot: ClrPageContext): string[] {
     return snapshot.components.map(node => node.type);
   }
 
-  it('applies a preset provided for the whole application', () => {
-    const engine = engineWith(provideClrContextOptions('interactive'));
-    const snapshot = engine.getSnapshot({ rootSelector: 'main, nav' });
+  it('applies a preset configured for the whole application', async () => {
+    const engine = engineWith({ scope: 'interactive' });
+    const snapshot = await engine.snapshot({ root: 'main, nav' });
     expect(types(snapshot)).toEqual(['main']);
     expect(snapshot.components[0].children?.map(node => node.type)).toEqual(['button']);
   });
 
-  it('lets a call override the application’s budgets and switches', () => {
-    const engine = engineWith(provideClrContextOptions({ rootSelector: 'main', includeText: false }));
-    const [main] = engine.getSnapshot({ includeText: true }).components;
-    expect(main.children?.map(node => node.type)).toEqual(['text', 'button']);
+  it('lets a call override the application’s budgets', async () => {
+    const engine = engineWith({ scope: { root: 'main', maxComponents: 1 } });
+    expect((await engine.snapshot()).truncated).toBe(true);
+    expect((await engine.snapshot({ maxComponents: 50 })).truncated).toBeUndefined();
   });
 
-  it('adds the overrides’ exclusions to explicit options, as it does to a preset', () => {
-    const engine = engineWith(
-      provideClrContextOptions({ rootSelector: 'main, nav', excludeSelectors: ['nav'] }, { excludeRoles: ['button'] })
-    );
-    expect(TestBed.inject(CLR_CONTEXT_OPTIONS)).toEqual(
-      jasmine.objectContaining({ excludeSelectors: ['nav'], excludeRoles: ['button'] })
-    );
-    expect(types(engine.getSnapshot())).toEqual(['main']);
-
-    TestBed.resetTestingModule();
-    engineWith(provideClrContextOptions({ excludeSelectors: ['nav'] }, { excludeSelectors: ['aside'] }));
-    expect(TestBed.inject(CLR_CONTEXT_OPTIONS).excludeSelectors).toEqual(['nav', 'aside']);
+  it('adds a call’s exclusions to the application’s rather than replacing them', async () => {
+    const engine = engineWith({
+      scope: { ...CLR_CONTEXT_PRESETS.interactive, root: 'main, nav', excludeSelectors: ['nav'] },
+    });
+    expect(types(await engine.snapshot({ excludeCategories: [], excludeSelectors: [] }))).toEqual(['main']);
+    expect((await engine.snapshot({ excludeCategories: ['actions'] })).components[0].children).toBeUndefined();
   });
 
-  it('adds a call’s exclusions to the application’s rather than replacing them', () => {
-    const engine = engineWith(
-      provideClrContextOptions('interactive', { rootSelector: 'main, nav', excludeSelectors: ['nav'] })
-    );
-    expect(types(engine.getSnapshot({ excludeCategories: [], excludeSelectors: [] }))).toEqual(['main']);
-    expect(engine.getSnapshot({ excludeRoles: ['button'] }).components[0].children).toBeUndefined();
-  });
-
-  it('narrows to the open modal and says so', () => {
-    const engine = engineWith(provideClrContextOptions('minimal'));
-    const snapshot = engine.getSnapshot();
+  it('narrows to the open modal and says so', async () => {
+    const engine = engineWith({ scope: 'minimal' });
+    const snapshot = await engine.snapshot();
     expect(snapshot.focus).toBe('modal');
     expect(types(snapshot)).toEqual(['dialog']);
   });
 
-  it('accepts the options themselves, not only a preset name', () => {
-    const engine = engineWith(provideClrContextOptions({ rootSelector: 'main' }, { includeText: false }));
-    const snapshot = engine.getSnapshot();
+  it('accepts the options themselves, not only a preset name', async () => {
+    const engine = engineWith({ scope: { root: 'main', excludeCategories: ['text'] } });
+    const snapshot = await engine.snapshot();
     expect(types(snapshot)).toEqual(['main']);
     expect(snapshot.components[0].children?.map(node => node.type)).toEqual(['button']);
   });
 
-  it('holds a caller the application does not control to the application options', () => {
-    const engine = engineWith(
-      provideClrContextOptions({
-        includeText: false,
-        excludeRoles: ['navigation'],
-        rootSelector: 'main, nav',
-        maxComponents: 5,
-      })
+  it('warns when configured again, or after a snapshot used the defaults', async () => {
+    TestBed.configureTestingModule({});
+    const engine = TestBed.inject(ClrContextService);
+    const warn = spyOn(console, 'warn');
+
+    await engine.snapshot();
+    engine.configure({ scope: 'interactive' });
+    engine.configure({ scope: 'minimal' });
+
+    expect(warn.calls.allArgs()).toEqual([
+      ['ClrContextService.configure: called after a snapshot was taken; that snapshot used the defaults.'],
+      ['ClrContextService.configure: called again; the new configuration replaces the previous one.'],
+    ]);
+  });
+
+  it('warns about an unknown preset and reads the whole page', async () => {
+    const warn = spyOn(console, 'warn');
+    const engine = engineWith({ scope: 'everything' as never });
+
+    expect(warn).toHaveBeenCalledOnceWith(
+      'Clarity context options: "everything" is not a preset; use one of full, interactive, minimal.'
     );
+    expect(types(await engine.snapshot())).toContain('main');
+  });
+
+  it('holds a caller the application does not control to the application options', () => {
+    const engine = engineWith({
+      scope: { excludeCategories: ['text', 'layout'], root: 'main, nav', maxComponents: 5 },
+    });
     engine.enableGlobalAccess('testClrContextCeiling');
     try {
       const accessor = globalAccessor('testClrContextCeiling');
-      const snapshot = accessor({ includeText: true, excludeRoles: [], maxComponents: 10_000 });
+      const snapshot = accessor({ excludeCategories: [], root: 'page', maxComponents: 10_000 });
       expect(types(snapshot)).toEqual(['main']);
       expect(snapshot.components[0].children?.map(node => node.type)).toEqual(['button']);
     } finally {
@@ -432,38 +432,38 @@ describe('ClrContextEngineService, configured once for the application', () => {
   });
 
   it('keeps the application exclusions when an untrusted caller sends as many of its own as a list may hold', () => {
-    const engine = engineWith(provideClrContextOptions({ excludeRoles: ['navigation'], rootSelector: 'main, nav' }));
+    const engine = engineWith({ scope: { excludeCategories: ['layout'], root: 'main, nav' } });
     engine.enableGlobalAccess('testClrContextPadding', { excludeCategories: ['dialogs'] });
     try {
       const accessor = globalAccessor('testClrContextPadding');
       const junk = Array.from({ length: 60 }, (_, index) => `junk-${index}`);
 
-      expect(types(accessor({ excludeRoles: junk, excludeCategories: junk }))).toEqual(['main']);
+      expect(types(accessor({ excludeCategories: junk }))).toEqual(['main']);
     } finally {
       engine.disableGlobalAccess();
     }
   });
 
-  it('ignores an exclusion list an untrusted caller sends as a string, rather than failing', () => {
-    const engine = engineWith(provideClrContextOptions({ excludeRoles: ['navigation'], rootSelector: 'main, nav' }));
+  it('ignores an exclusion list or a selector an untrusted caller sends, rather than failing', () => {
+    const engine = engineWith({ scope: { excludeCategories: ['layout'], root: 'main, nav' } });
     engine.enableGlobalAccess('testClrContextStringList', { excludeCategories: ['dialogs'] });
     try {
       const accessor = globalAccessor('testClrContextStringList');
 
-      expect(types(accessor({ excludeRoles: 'main', excludeCategories: 'text' }))).toEqual(['main']);
+      expect(types(accessor({ excludeCategories: 'text', root: 'nav' }))).toEqual(['main']);
     } finally {
       engine.disableGlobalAccess();
     }
   });
 
   it('does not let an untrusted caller set off a warning about the application’s options', () => {
-    const engine = engineWith(provideClrContextOptions({ excludeRoles: ['navigation'], rootSelector: 'main, nav' }));
+    const engine = engineWith({ scope: { excludeCategories: ['layout'], root: 'main, nav' } });
     engine.enableGlobalAccess('testClrContextWrongKinds');
     const warn = spyOn(console, 'warn');
     try {
       const accessor = globalAccessor('testClrContextWrongKinds');
 
-      expect(types(accessor({ excludeRoles: 7, excludeCategories: true, excludeSelectors: 1 }))).toEqual(['main']);
+      expect(types(accessor({ excludeCategories: true, excludeSelectors: 1 }))).toEqual(['main']);
       expect(warn).not.toHaveBeenCalled();
     } finally {
       engine.disableGlobalAccess();
@@ -471,21 +471,21 @@ describe('ClrContextEngineService, configured once for the application', () => {
   });
 
   it('says when the global accessor’s own ceiling has an exclusion list that is not one', () => {
-    const engine = engineWith(provideClrContextOptions({}));
+    const engine = engineWith({});
     const warn = spyOn(console, 'warn');
-    engine.enableGlobalAccess('testClrContextBadCeiling', { excludeRoles: 'grid' } as unknown as Parameters<
+    engine.enableGlobalAccess('testClrContextBadCeiling', { excludeSelectors: 'grid' } as unknown as Parameters<
       typeof engine.enableGlobalAccess
     >[1]);
     engine.disableGlobalAccess();
 
     expect(warn).toHaveBeenCalledOnceWith(
-      'Clarity context options: excludeRoles must be a list, so "grid" was ignored.'
+      'Clarity context options: excludeSelectors must be a list, so "grid" was ignored.'
     );
   });
 });
 
-describe('ClrContextEngineService, the routes an application can navigate to', () => {
-  it('lists configured paths with their titles, leaving wildcards and redirects out', () => {
+describe('ClrContextService, the routes an application can navigate to', () => {
+  it('lists configured paths with their titles, leaving wildcards and redirects out', async () => {
     TestBed.configureTestingModule({
       providers: [
         provideRouter([
@@ -502,9 +502,10 @@ describe('ClrContextEngineService, the routes an application can navigate to', (
         ]),
       ],
     });
-    const engine = TestBed.inject(ClrContextEngineService);
+    const engine = TestBed.inject(ClrContextService);
+    engine.configure({ routes: true });
 
-    const routes = engine.getSnapshot({ includeDomComponents: false, includeRoutes: true }).availableRoutes;
+    const routes = (await engine.snapshot()).availableRoutes;
 
     expect(routes).toEqual([
       { path: 'hosts', title: 'Hosts' },
@@ -514,21 +515,22 @@ describe('ClrContextEngineService, the routes an application can navigate to', (
     ]);
   });
 
-  it('lists the root path as "/", and never fewer than fifty routes however small the collection budget', () => {
+  it('lists the root path as "/", and never fewer than fifty routes however small the collection budget', async () => {
     const many = Array.from({ length: 70 }, (_, index) => ({ path: `page-${index}`, component: RoutedComponent }));
     TestBed.configureTestingModule({
       providers: [provideRouter([{ path: '', component: RoutedComponent, title: 'Home' }, ...many])],
     });
-    const engine = TestBed.inject(ClrContextEngineService);
+    const engine = TestBed.inject(ClrContextService);
+    engine.configure({ routes: true });
 
-    const few = engine.getSnapshot({ includeDomComponents: false, includeRoutes: true, maxItemsPerCollection: 5 });
+    const few = await engine.snapshot({ maxItemsPerCollection: 5 });
     expect(few.availableRoutes?.[0]).toEqual({ path: '/', title: 'Home' });
     expect(few.availableRoutes?.length).toBe(50);
-    const more = engine.getSnapshot({ includeDomComponents: false, includeRoutes: true, maxItemsPerCollection: 60 });
+    const more = await engine.snapshot({ maxItemsPerCollection: 60 });
     expect(more.availableRoutes?.length).toBe(60);
   });
 
-  it('leaves out routes matched by a custom matcher, which have no pattern to navigate by, and lists each path once', () => {
+  it('leaves out routes matched by a custom matcher, which have no pattern to navigate by, and lists each path once', async () => {
     TestBed.configureTestingModule({
       providers: [
         provideRouter([
@@ -545,9 +547,10 @@ describe('ClrContextEngineService, the routes an application can navigate to', (
         ]),
       ],
     });
-    const engine = TestBed.inject(ClrContextEngineService);
+    const engine = TestBed.inject(ClrContextService);
+    engine.configure({ routes: true });
 
-    const routes = engine.getSnapshot({ includeDomComponents: false, includeRoutes: true }).availableRoutes;
+    const routes = (await engine.snapshot()).availableRoutes;
 
     expect(routes).toEqual([{ path: 'docs/intro' }, { path: 'hosts' }]);
   });
@@ -563,52 +566,45 @@ describe('ClrContextEngineService, the routes an application can navigate to', (
         ]),
       ],
     });
-    const engine = TestBed.inject(ClrContextEngineService);
+    const engine = TestBed.inject(ClrContextService);
+    engine.configure({ routes: true });
 
     await TestBed.inject(Router).navigateByUrl('/docs/contextual-engine/code');
 
-    expect(engine.getSnapshot({ includeDomComponents: false }).route?.path).toBe('docs/*/*');
+    expect((await engine.snapshot()).route?.path).toBe('docs/*/*');
   });
 
-  it('lists nothing unless asked', () => {
+  it('lists nothing unless asked', async () => {
     TestBed.configureTestingModule({ providers: [provideRouter([{ path: 'hosts', component: RoutedComponent }])] });
-    const engine = TestBed.inject(ClrContextEngineService);
-    expect('availableRoutes' in engine.getSnapshot({ includeDomComponents: false })).toBe(false);
+    const engine = TestBed.inject(ClrContextService);
+    expect('availableRoutes' in (await engine.snapshot())).toBe(false);
   });
 
   describe('for the global accessor', () => {
-    function accessorWith(applicationOptions: ClrContextSnapshotOptions, hostOptions = {}): Accessor {
-      TestBed.configureTestingModule({
-        providers: [
-          provideRouter([{ path: 'hosts', component: RoutedComponent }]),
-          provideClrContextOptions(applicationOptions),
-        ],
-      });
-      TestBed.inject(ClrContextEngineService).enableGlobalAccess('testClrContextRoutes', hostOptions);
+    function accessorWith(config: ClrContextConfig): Accessor {
+      TestBed.configureTestingModule({ providers: [provideRouter([{ path: 'hosts', component: RoutedComponent }])] });
+      const engine = TestBed.inject(ClrContextService);
+      engine.configure(config);
+      engine.enableGlobalAccess('testClrContextRoutes');
       return globalAccessor('testClrContextRoutes');
     }
 
-    afterEach(() => TestBed.inject(ClrContextEngineService).disableGlobalAccess());
+    afterEach(() => TestBed.inject(ClrContextService).disableGlobalAccess());
 
-    it('lists the routes when the application turned them on, and the host said nothing', () => {
-      const accessor = accessorWith({ includeRoutes: true, includeDomComponents: false });
-
-      expect(accessor().availableRoutes).toEqual([{ path: 'hosts' }]);
-      expect(accessor({ includeRoutes: false }).availableRoutes).toBeUndefined();
+    it('lists the routes when the application turned them on', () => {
+      expect(accessorWith({ routes: true })().availableRoutes).toEqual([{ path: 'hosts' }]);
     });
 
-    it('does not let the host or a caller turn on routes the application turned off', () => {
-      const accessor = accessorWith({ includeRoutes: false, includeDomComponents: false }, { includeRoutes: true });
-
-      expect(accessor({ includeRoutes: true }).availableRoutes).toBeUndefined();
+    it('does not let a caller turn on routes the application left off', () => {
+      expect(accessorWith({})({ routes: true }).availableRoutes).toBeUndefined();
     });
   });
 });
 
-describe('ClrContextEngineService, links for the global accessor under other routing setups', () => {
+describe('ClrContextService, links for the global accessor under other routing setups', () => {
   let page: HTMLElement;
 
-  function hrefs(engine: ClrContextEngineService): unknown[] {
+  function hrefs(engine: ClrContextService): unknown[] {
     engine.enableGlobalAccess('testClrContext');
     const snapshot = globalAccessor()();
     engine.disableGlobalAccess();
@@ -632,7 +628,7 @@ describe('ClrContextEngineService, links for the global accessor under other rou
     });
     page.innerHTML = '<a href="/app/clusters/7?token=x">In the app</a><a href="/clusters/7">Outside it</a>';
 
-    expect(hrefs(TestBed.inject(ClrContextEngineService))).toEqual(['/clusters/:id', undefined]);
+    expect(hrefs(TestBed.inject(ClrContextService))).toEqual(['/clusters/:id', undefined]);
   });
 
   it('reads routes from the fragment with hash routing', () => {
@@ -641,12 +637,12 @@ describe('ClrContextEngineService, links for the global accessor under other rou
     });
     page.innerHTML = '<a href="#/clusters/7?token=x">Cluster</a><a href="#/nowhere/at/all">Nowhere</a>';
 
-    expect(hrefs(TestBed.inject(ClrContextEngineService))).toEqual(['/clusters/:id', undefined]);
+    expect(hrefs(TestBed.inject(ClrContextService))).toEqual(['/clusters/:id', undefined]);
   });
 });
 
-describe('ClrContextEngineService, what the global accessor keeps back', () => {
-  let engine: ClrContextEngineService;
+describe('ClrContextService, what the global accessor keeps back', () => {
+  let engine: ClrContextService;
   let page: HTMLElement;
 
   function accessor(): Accessor {
@@ -669,7 +665,7 @@ describe('ClrContextEngineService, what the global accessor keeps back', () => {
         ]),
       ],
     });
-    engine = TestBed.inject(ClrContextEngineService);
+    engine = TestBed.inject(ClrContextService);
     // The accessor describes the whole page, and fixtures are not torn down after each
     // spec here (`destroyAfterEach: false`): an earlier spec's root would be described too.
     document.querySelectorAll('body > [ng-version]').forEach(root => root.remove());
@@ -713,26 +709,26 @@ describe('ClrContextEngineService, what the global accessor keeps back', () => {
   });
 
   it('withholds a selection as much as a typed value', () => {
-    const unregister = engine.registerDomExtractor({
-      selector: 'a',
-      extract: () => ({
-        type: 'grid',
-        label: 'Users',
-        state: { selection: ['Ada'], rowCount: 3 },
-        publicKeys: ['rowCount', 'selection'],
-      }),
+    engine.configure({
+      extractors: [
+        {
+          selector: 'a',
+          extract: () => ({
+            type: 'grid',
+            label: 'Users',
+            state: { selection: ['Ada'], rowCount: 3 },
+            publicKeys: ['rowCount', 'selection'],
+          }),
+        },
+      ],
     });
     engine.enableGlobalAccess('testClrContext');
 
-    try {
-      const grid = find(accessor()().components, node => node.type === 'grid')[0];
-      expect(grid.state).toEqual({ rowCount: 3, withheld: true });
-    } finally {
-      unregister();
-    }
+    const grid = find(accessor()().components, node => node.type === 'grid')[0];
+    expect(grid.state).toEqual({ rowCount: 3, withheld: true });
   });
 
-  it('withholds published state its publisher did not mark public', () => {
+  it('withholds published state its publisher did not mark public', async () => {
     page.innerHTML = '<div class="search">Find hosts</div>';
     const search = page.querySelector('.search') as HTMLElement;
     const unpublish = publishElementContext(search, () => ({
@@ -759,7 +755,7 @@ describe('ClrContextEngineService, what the global accessor keeps back', () => {
       expect(JSON.stringify(shared)).not.toContain('s3cr3t');
       expect(JSON.stringify(shared)).not.toContain('4111');
 
-      const trusted = engine.getSnapshot();
+      const trusted = await engine.snapshot();
       expect(find(trusted.components, node => node.type === 'search')[0].state?.['query']).toBe('4111 1111');
       expect(trusted.regions[0].state).toEqual({ coupon: 's3cr3t', items: 2 });
     } finally {
@@ -803,23 +799,17 @@ describe('ClrContextEngineService, what the global accessor keeps back', () => {
     }
   });
 
-  it('does not let a caller turn on what the application left at its default', () => {
+  it('does not let a caller turn on routes the application left off', () => {
     engine.enableGlobalAccess('testClrContext');
 
-    expect(accessor()({ includeRoutes: true }).availableRoutes).toBeUndefined();
+    expect(accessor()({ routes: true }).availableRoutes).toBeUndefined();
   });
 
-  it('lets a caller turn on what the application allowed', () => {
-    engine.enableGlobalAccess('testClrContext', { includeRoutes: true });
+  it('reads the scope only as the page or the modal, never as a selector', () => {
+    engine.enableGlobalAccess('testClrContext');
 
-    expect(accessor()({ includeRoutes: true }).availableRoutes?.length).toBeGreaterThan(0);
-  });
-
-  it('reads a switch only as a boolean', () => {
-    engine.enableGlobalAccess('testClrContext', { includeRoutes: true });
-
-    expect(accessor()({ includeRoutes: 'yes' }).availableRoutes).toBeUndefined();
-    expect(accessor()({ includeDomComponents: 0 }).components.length).toBeGreaterThan(0);
+    expect(accessor()({ root: 'main' }).components.length).toBeGreaterThan(0);
+    expect(accessor()({ root: 7 }).components.length).toBeGreaterThan(0);
   });
 
   it('does not let a caller raise a budget past the default', () => {
@@ -833,25 +823,33 @@ describe('ClrContextEngineService, what the global accessor keeps back', () => {
   });
 
   it('lists the routes of a lazy module once it has loaded', async () => {
-    const before = engine.getSnapshot({ includeDomComponents: false, includeRoutes: true }).availableRoutes;
+    engine.configure({ routes: true });
+    const before = (await engine.snapshot()).availableRoutes;
     expect(before).toContain({ path: 'billing', lazy: true });
 
     await TestBed.inject(Router).navigateByUrl('/billing/invoices');
 
-    const after = engine.getSnapshot({ includeDomComponents: false, includeRoutes: true }).availableRoutes;
+    const after = (await engine.snapshot()).availableRoutes;
     expect(after).toContain({ path: 'billing/invoices', title: 'Invoices' });
     expect(after?.some(route => route.lazy)).toBe(false);
   });
 });
 
-describe('ClrContextEngineService, identifying the application and view', () => {
-  const quiet = { includeDomComponents: false };
+/** The service, configured with `config` once the testing module is set up. */
+function configuredService(config: ClrContextConfig): ClrContextService {
+  const service = TestBed.inject(ClrContextService);
+  service.configure(config);
+  return service;
+}
+
+describe('ClrContextService, identifying the application and view', () => {
+  const quiet = { excludeCategories: Object.keys(CLR_CONTEXT_CATEGORIES) as ClrContextCategory[] };
 
   afterEach(() => removeGlobal('testClrContext'));
 
-  it('versions every snapshot and names the host when no application is provided', () => {
+  it('versions every snapshot and names the host when no application is configured', async () => {
     TestBed.configureTestingModule({});
-    const snapshot = TestBed.inject(ClrContextEngineService).getSnapshot(quiet);
+    const snapshot = await TestBed.inject(ClrContextService).snapshot(quiet);
 
     expect(snapshot.schemaVersion).toBe('1');
     expect(snapshot.application).toEqual({ id: document.location.hostname });
@@ -859,29 +857,26 @@ describe('ClrContextEngineService, identifying the application and view', () => 
     expect(snapshot.metadata).toBeUndefined();
   });
 
-  it('reports the provided application, view id and serializable metadata', () => {
-    TestBed.configureTestingModule({
-      providers: [
-        provideClrContextApplication({
-          id: 'inventory',
-          version: '2.4.0',
-          viewId: () => 'host-list',
-          metadata: () => ({ purpose: 'Lists hosts', load: () => 'not serializable' }),
-        }),
-      ],
-    });
-    const snapshot = TestBed.inject(ClrContextEngineService).getSnapshot(quiet);
+  it('reports the configured application, view id and serializable metadata', async () => {
+    TestBed.configureTestingModule({});
+    const snapshot = await configuredService({
+      application: {
+        id: 'inventory',
+        version: '2.4.0',
+        viewId: () => 'host-list',
+        metadata: () => ({ purpose: 'Lists hosts', load: () => 'not serializable' }),
+      },
+    }).snapshot(quiet);
 
     expect(snapshot.application).toEqual({ id: 'inventory', version: '2.4.0' });
     expect(snapshot.viewId).toBe('host-list');
     expect(snapshot.metadata).toEqual({ purpose: 'Lists hosts' });
   });
 
-  it('takes the view id from the provider first, then from the deepest route', async () => {
+  it('takes the view id from the application first, then from the deepest route', async () => {
     let provided: string | undefined = 'from-provider';
     TestBed.configureTestingModule({
       providers: [
-        provideClrContextApplication({ id: 'inventory', viewId: () => provided }),
         provideRouter([
           {
             path: 'hosts',
@@ -891,18 +886,17 @@ describe('ClrContextEngineService, identifying the application and view', () => 
         ]),
       ],
     });
-    const engine = TestBed.inject(ClrContextEngineService);
+    const engine = configuredService({ application: { id: 'inventory', viewId: () => provided } });
     await TestBed.inject(Router).navigateByUrl('/hosts/7');
 
-    expect(engine.getSnapshot(quiet).viewId).toBe('from-provider');
+    expect((await engine.snapshot(quiet)).viewId).toBe('from-provider');
     provided = undefined;
-    expect(engine.getSnapshot(quiet).viewId).toBe('host-detail');
+    expect((await engine.snapshot(quiet)).viewId).toBe('host-detail');
   });
 
   it('does not give a child route the view id of its parent route', async () => {
     TestBed.configureTestingModule({
       providers: [
-        provideClrContextApplication({ id: 'inventory' }),
         provideRouter([
           {
             path: 'hosts',
@@ -912,37 +906,35 @@ describe('ClrContextEngineService, identifying the application and view', () => 
         ]),
       ],
     });
-    const engine = TestBed.inject(ClrContextEngineService);
+    const engine = configuredService({ application: { id: 'inventory' } });
     await TestBed.inject(Router).navigateByUrl('/hosts/7');
 
-    expect(engine.getSnapshot(quiet).viewId).toBeUndefined();
+    expect((await engine.snapshot(quiet)).viewId).toBeUndefined();
   });
 
-  it('survives a provider that throws', () => {
-    TestBed.configureTestingModule({
-      providers: [
-        provideClrContextApplication({
-          id: 'inventory',
-          viewId: () => {
-            throw new Error('broken');
-          },
-          metadata: () => {
-            throw new Error('broken');
-          },
-        }),
-      ],
-    });
-    const snapshot = TestBed.inject(ClrContextEngineService).getSnapshot(quiet);
+  it('survives an application callback that throws', async () => {
+    TestBed.configureTestingModule({});
+    const snapshot = await configuredService({
+      application: {
+        id: 'inventory',
+        viewId: () => {
+          throw new Error('broken');
+        },
+        metadata: () => {
+          throw new Error('broken');
+        },
+      },
+    }).snapshot(quiet);
 
     expect(snapshot.viewId).toBeUndefined();
     expect(snapshot.metadata).toBeUndefined();
   });
 
   it('shares the application and view id with the global accessor', () => {
-    TestBed.configureTestingModule({
-      providers: [provideClrContextApplication({ id: 'inventory', version: '2.4.0', viewId: () => 'host-list' })],
-    });
-    TestBed.inject(ClrContextEngineService).enableGlobalAccess('testClrContext');
+    TestBed.configureTestingModule({});
+    configuredService({
+      application: { id: 'inventory', version: '2.4.0', viewId: () => 'host-list' },
+    }).enableGlobalAccess('testClrContext');
     const snapshot = globalAccessor()(quiet);
 
     expect(snapshot.application).toEqual({ id: 'inventory', version: '2.4.0' });
@@ -950,51 +942,50 @@ describe('ClrContextEngineService, identifying the application and view', () => 
   });
 });
 
-describe('ClrContextEngineService, reading only enabled views', () => {
+describe('ClrContextService, reading only enabled views', () => {
   let metadata: Record<string, unknown> | null;
-  let engine: ClrContextEngineService;
+  let engine: ClrContextService;
   let registry: ClrContextRegistryService;
 
   beforeEach(() => {
     metadata = null;
-    TestBed.configureTestingModule({
-      providers: [
-        provideClrContextApplication({
-          id: 'inventory',
-          viewId: () => 'host-list',
-          metadata: () => metadata,
-          views: 'enabled',
-        }),
-      ],
+    TestBed.configureTestingModule({});
+    engine = configuredService({
+      application: { id: 'inventory', viewId: () => 'host-list', metadata: () => metadata },
+      views: 'enabled',
     });
-    engine = TestBed.inject(ClrContextEngineService);
     registry = TestBed.inject(ClrContextRegistryService);
   });
 
   it('reports a view without metadata as not enabled, with nothing about the page', async () => {
     const provider = jasmine.createSpy('getClrContext').and.returnValue({ type: 'region', label: 'Hosts' });
     registry.register({ getClrContext: provider });
+    engine.enableGlobalAccess('testClrContext');
 
-    for (const snapshot of [engine.getSnapshot(), await engine.getSnapshotAsync()]) {
-      expect(snapshot).toEqual({
-        schemaVersion: '1',
-        application: { id: 'inventory' },
-        viewId: 'host-list',
-        enabled: false,
-        title: '',
-        regions: [],
-        components: [],
-        collectedAt: jasmine.any(String),
-      });
+    try {
+      for (const snapshot of [globalAccessor()(), await engine.snapshot()]) {
+        expect(snapshot).toEqual({
+          schemaVersion: '1',
+          application: { id: 'inventory' },
+          viewId: 'host-list',
+          enabled: false,
+          title: '',
+          regions: [],
+          components: [],
+          collectedAt: jasmine.any(String),
+        });
+      }
+      expect(provider).not.toHaveBeenCalled();
+    } finally {
+      removeGlobal('testClrContext');
     }
-    expect(provider).not.toHaveBeenCalled();
   });
 
-  it('reads a view once it has metadata', () => {
+  it('reads a view once it has metadata', async () => {
     metadata = { purpose: 'Lists hosts' };
     registry.register({ getClrContext: () => ({ type: 'region', label: 'Hosts' }) });
 
-    const snapshot = engine.getSnapshot();
+    const snapshot = await engine.snapshot();
 
     expect(snapshot.enabled).toBeTrue();
     expect(snapshot.metadata).toEqual({ purpose: 'Lists hosts' });
@@ -1002,27 +993,27 @@ describe('ClrContextEngineService, reading only enabled views', () => {
     expect(snapshot.regions).toEqual([{ type: 'region', label: 'Hosts' }]);
   });
 
-  it('reads a view whose metadata is an empty object', () => {
+  it('reads a view whose metadata is an empty object', async () => {
     metadata = {};
 
-    expect(engine.getSnapshot().enabled).toBeTrue();
+    expect((await engine.snapshot()).enabled).toBeTrue();
   });
 });
 
-describe('ClrContextEngineService, a view that changes while providers answer', () => {
+describe('ClrContextService, a view that changes while providers answer', () => {
+  const quiet = { excludeCategories: Object.keys(CLR_CONTEXT_CATEGORIES) as ClrContextCategory[] };
+
   it('describes the new view instead of mixing answers from the old one into it', async () => {
     let view = 'hosts';
-    TestBed.configureTestingModule({
-      providers: [provideClrContextApplication({ id: 'inventory', viewId: () => view })],
-    });
-    const engine = TestBed.inject(ClrContextEngineService);
+    TestBed.configureTestingModule({});
+    const engine = configuredService({ application: { id: 'inventory', viewId: () => view } });
     let answer: (context: ClrComponentContext) => void = () => undefined;
     TestBed.inject(ClrContextRegistryService).register({
       getClrContext: () =>
         view === 'hosts' ? new Promise(resolve => (answer = resolve)) : { type: 'region', label: 'VMs' },
     });
 
-    const snapshot = engine.getSnapshotAsync({ includeDomComponents: false });
+    const snapshot = engine.snapshot(quiet);
     view = 'vms';
     answer({ type: 'region', label: 'Hosts' });
 
@@ -1039,7 +1030,7 @@ describe('ClrContextEngineService, a view that changes while providers answer', 
         ]),
       ],
     });
-    const engine = TestBed.inject(ClrContextEngineService);
+    const engine = TestBed.inject(ClrContextService);
     const router = TestBed.inject(Router);
     const answers: ((context: ClrComponentContext) => void)[] = [];
     TestBed.inject(ClrContextRegistryService).register({
@@ -1047,7 +1038,7 @@ describe('ClrContextEngineService, a view that changes while providers answer', 
     });
     await router.navigateByUrl('/hosts');
 
-    const snapshot = engine.getSnapshotAsync({ includeDomComponents: false });
+    const snapshot = engine.snapshot(quiet);
     await router.navigateByUrl('/vms');
     answers[0]({ type: 'region', label: 'Hosts' });
     for (let wait = 0; answers.length < 2 && wait < 50; wait++) {
@@ -1061,45 +1052,47 @@ describe('ClrContextEngineService, a view that changes while providers answer', 
   });
 });
 
-describe('ClrContextEngineService, an unrecognised views setting', () => {
-  it('reads only enabled views, with a dev-mode warning', () => {
+describe('ClrContextService, an unrecognised views setting', () => {
+  it('reads only enabled views, with a dev-mode warning', async () => {
     spyOn(console, 'warn');
-    TestBed.configureTestingModule({
-      providers: [
-        provideClrContextApplication({
-          id: 'inventory',
-          views: 'enable' as unknown as ClrContextApplicationOptions['views'],
-        }),
-      ],
+    TestBed.configureTestingModule({});
+    const engine = configuredService({
+      application: { id: 'inventory' },
+      views: 'enable' as unknown as ClrContextConfig['views'],
     });
 
-    expect(TestBed.inject(ClrContextEngineService).getSnapshot().enabled).toBeFalse();
+    expect((await engine.snapshot()).enabled).toBeFalse();
     expect(console.warn).toHaveBeenCalled();
   });
 });
 
-describe('ClrContextEngineService, asynchronous providers', () => {
-  let engine: ClrContextEngineService;
+describe('ClrContextService, asynchronous providers', () => {
+  let engine: ClrContextService;
   let registry: ClrContextRegistryService;
-  const quiet = { includeDomComponents: false };
+  const quiet = { excludeCategories: Object.keys(CLR_CONTEXT_CATEGORIES) as ClrContextCategory[] };
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    engine = TestBed.inject(ClrContextEngineService);
+    engine = TestBed.inject(ClrContextService);
     registry = TestBed.inject(ClrContextRegistryService);
   });
+
+  /** The snapshot `window.clrContext()` and `watch()` take at once, reporting pending providers as loading. */
+  function readNow(options: ClrContextSnapshotOptions): ClrPageContext {
+    return engine['read'](options, false);
+  }
 
   it('reports a pending provider as loading in a synchronous snapshot', () => {
     registry.register({ getClrContext: () => new Promise<null>(() => undefined) });
 
-    expect(engine.getSnapshot(quiet).regions).toEqual([{ type: 'clr-loading' }]);
+    expect(readNow(quiet).regions).toEqual([{ type: 'clr-loading' }]);
   });
 
   it('merges what an asynchronous provider resolves to', async () => {
     registry.register({ getClrContext: () => ({ type: 'region', label: 'sync' }) });
     registry.register({ getClrContext: async () => ({ type: 'region', label: 'async' }) });
 
-    const snapshot = await engine.getSnapshotAsync(quiet);
+    const snapshot = await engine.snapshot(quiet);
 
     expect(snapshot.regions).toEqual([
       { type: 'region', label: 'sync' },
@@ -1108,9 +1101,10 @@ describe('ClrContextEngineService, asynchronous providers', () => {
   });
 
   it('reports a provider that does not answer in time as unavailable', async () => {
+    engine.configure({ timeoutMs: 10 });
     registry.register({ getClrContext: () => new Promise<null>(() => undefined) });
 
-    const snapshot = await engine.getSnapshotAsync({ ...quiet, timeoutMs: 10 });
+    const snapshot = await engine.snapshot(quiet);
 
     expect(snapshot.regions).toEqual([{ type: 'clr-unavailable' }]);
   });
@@ -1119,11 +1113,11 @@ describe('ClrContextEngineService, asynchronous providers', () => {
     const rows = Array.from({ length: 5000 }, (_, index) => ({ type: 'row', label: `${index} ${'x'.repeat(2000)}` }));
     registry.register({ getClrContext: () => ({ type: 'region', label: 'Hosts', children: rows }) });
 
-    const snapshot = engine.getSnapshot({ ...quiet, maxComponents: 20, maxItemsPerCollection: 100, maxTextLength: 50 });
+    const snapshot = readNow({ ...quiet, maxComponents: 20, maxItemsPerCollection: 100 });
 
     expect(snapshot.truncated).toBeTrue();
     expect(snapshot.regions[0].children?.length).toBe(19);
-    expect(snapshot.regions[0].children?.[0].label?.length).toBeLessThanOrEqual(50);
+    expect(snapshot.regions[0].children?.[0].label?.length).toBeLessThanOrEqual(100);
     expect(JSON.stringify(snapshot).length).toBeLessThan(5000);
   });
 
@@ -1133,17 +1127,18 @@ describe('ClrContextEngineService, asynchronous providers', () => {
     region['children'] = [{ type: 'row', label: 'esx-01', state: { owner: region } }];
     registry.register({ getClrContext: () => region as unknown as ClrComponentContext });
 
-    expect(engine.getSnapshot(quiet).regions).toEqual([
+    expect(readNow(quiet).regions).toEqual([
       { type: 'region', label: 'Hosts', state: { count: 1 }, children: [{ type: 'row', label: 'esx-01' }] },
     ]);
   });
 
   it('asks again a provider whose answer did not arrive in time', async () => {
+    engine.configure({ timeoutMs: 10 });
     const getClrContext = jasmine.createSpy('getClrContext').and.returnValue(new Promise<null>(() => undefined));
     registry.register({ getClrContext });
 
-    await engine.getSnapshotAsync({ ...quiet, timeoutMs: 10 });
-    await engine.getSnapshotAsync({ ...quiet, timeoutMs: 10 });
+    await engine.snapshot(quiet);
+    await engine.snapshot(quiet);
 
     expect(getClrContext).toHaveBeenCalledTimes(2);
   });
@@ -1152,8 +1147,8 @@ describe('ClrContextEngineService, asynchronous providers', () => {
     const getClrContext = jasmine.createSpy('getClrContext').and.callFake(() => Promise.reject(new Error('down')));
     registry.register({ getClrContext });
 
-    await engine.getSnapshotAsync(quiet);
-    await engine.getSnapshotAsync(quiet);
+    await engine.snapshot(quiet);
+    await engine.snapshot(quiet);
 
     expect(getClrContext).toHaveBeenCalledTimes(2);
   });
@@ -1162,11 +1157,11 @@ describe('ClrContextEngineService, asynchronous providers', () => {
     const getClrContext = jasmine.createSpy('getClrContext').and.returnValue(new Promise<null>(() => undefined));
     const provider = { getClrContext };
     registry.register(provider);
-    engine.getSnapshot(quiet);
+    readNow(quiet);
 
     registry.unregister(provider);
     registry.register(provider);
-    engine.getSnapshot(quiet);
+    readNow(quiet);
 
     expect(getClrContext).toHaveBeenCalledTimes(2);
   });
@@ -1174,7 +1169,7 @@ describe('ClrContextEngineService, asynchronous providers', () => {
   it('reports a provider that rejects as unavailable, like one that does not answer in time', async () => {
     registry.register({ getClrContext: () => Promise.reject(new Error('offline')) });
 
-    expect((await engine.getSnapshotAsync(quiet)).regions).toEqual([{ type: 'clr-unavailable' }]);
+    expect((await engine.snapshot(quiet)).regions).toEqual([{ type: 'clr-unavailable' }]);
   });
 
   it('accepts thenables without catch, and ignores a provider whose then throws', async () => {
@@ -1187,8 +1182,8 @@ describe('ClrContextEngineService, asynchronous providers', () => {
     registry.register({ getClrContext: () => thenable as unknown as Promise<ClrComponentContext> });
     registry.register({ getClrContext: () => broken as Promise<ClrComponentContext> });
 
-    expect(() => engine.getSnapshot(quiet)).not.toThrow();
-    expect((await engine.getSnapshotAsync(quiet)).regions).toContain({ type: 'region', label: 'thenable' });
+    expect(() => readNow(quiet)).not.toThrow();
+    expect((await engine.snapshot(quiet)).regions).toContain({ type: 'region', label: 'thenable' });
   });
 
   it('asks a pending provider once, however many snapshots wait for it', async () => {
@@ -1197,8 +1192,8 @@ describe('ClrContextEngineService, asynchronous providers', () => {
       .and.callFake(() => new Promise(resolve => setTimeout(() => resolve({ type: 'region', label: 'late' }), 10)));
     registry.register({ getClrContext });
 
-    engine.getSnapshot(quiet);
-    const [first, second] = await Promise.all([engine.getSnapshotAsync(quiet), engine.getSnapshotAsync(quiet)]);
+    readNow(quiet);
+    const [first, second] = await Promise.all([engine.snapshot(quiet), engine.snapshot(quiet)]);
 
     expect(getClrContext).toHaveBeenCalledTimes(1);
     expect(first.regions).toEqual([{ type: 'region', label: 'late' }]);
@@ -1211,7 +1206,7 @@ describe('ClrContextEngineService, asynchronous providers', () => {
     let answer: (context: ClrComponentContext) => void = () => undefined;
     registry.register({ getClrContext: () => new Promise(resolve => (answer = resolve)) }, section);
     try {
-      const snapshot = engine.getSnapshotAsync(quiet);
+      const snapshot = engine.snapshot(quiet);
       section.setAttribute('data-clr-context-redact', '');
       answer({ type: 'region', label: 'Payment', state: { card: '4111111111111111' } });
 
@@ -1231,7 +1226,7 @@ describe('ClrContextEngineService, asynchronous providers', () => {
     );
     registry.register({ getClrContext: () => new Promise(resolve => (answerSlow = resolve)) });
     try {
-      const snapshot = engine.getSnapshotAsync(quiet);
+      const snapshot = engine.snapshot(quiet);
       await new Promise(resolve => setTimeout(resolve));
       section.setAttribute('data-clr-context-redact', '');
       answerSlow({ type: 'region', label: 'Hosts' });
@@ -1249,7 +1244,8 @@ describe('ClrContextEngineService, asynchronous providers', () => {
     let answer: (context: ClrComponentContext | null) => void = () => undefined;
     registry.register({ getClrContext: () => new Promise(resolve => (answer = resolve)) });
     try {
-      const snapshot = engine.getSnapshotAsync({ timeoutMs: 1000 });
+      engine.configure({ timeoutMs: 1000 });
+      const snapshot = engine.snapshot();
       page.setAttribute('data-clr-context-redact', '');
       answer(null);
 
@@ -1260,6 +1256,7 @@ describe('ClrContextEngineService, asynchronous providers', () => {
   });
 
   it('does not let a late answer forget a newer one that is still pending', async () => {
+    engine.configure({ timeoutMs: 10 });
     let resolveFirst: (context: ClrComponentContext | null) => void = () => undefined;
     const getClrContext = jasmine
       .createSpy('getClrContext')
@@ -1270,11 +1267,11 @@ describe('ClrContextEngineService, asynchronous providers', () => {
       );
     registry.register({ getClrContext });
 
-    await engine.getSnapshotAsync({ ...quiet, timeoutMs: 10 });
-    engine.getSnapshot(quiet);
+    await engine.snapshot(quiet);
+    readNow(quiet);
     resolveFirst(null);
     await new Promise(resolve => setTimeout(resolve));
-    engine.getSnapshot(quiet);
+    readNow(quiet);
 
     expect(getClrContext).toHaveBeenCalledTimes(2);
   });
@@ -1290,7 +1287,7 @@ describe('ClrContextEngineService, asynchronous providers', () => {
         }) as unknown as ClrComponentContext,
     });
 
-    expect(engine.getSnapshot(quiet).regions).toEqual([
+    expect(readNow(quiet).regions).toEqual([
       { type: 'region', label: 'Hosts', children: [{ type: 'button', label: 'Add' }] },
     ]);
   });
@@ -1300,15 +1297,17 @@ describe('ClrContextEngineService, asynchronous providers', () => {
       getClrContext: () => new Promise(resolve => setTimeout(() => resolve({ type: 'region', label: 'late' }), 20)),
     });
 
+    spyOn(console, 'warn');
     for (const timeoutMs of [Infinity, NaN, 2 ** 40]) {
-      expect((await engine.getSnapshotAsync({ ...quiet, timeoutMs })).regions)
+      engine.configure({ timeoutMs });
+      expect((await engine.snapshot(quiet)).regions)
         .withContext(String(timeoutMs))
         .toEqual([{ type: 'region', label: 'late' }]);
     }
   });
 });
 
-describe('ClrContextEngineService, slotted content', () => {
+describe('ClrContextService, slotted content', () => {
   let page: HTMLElement;
 
   beforeEach(() => {
@@ -1321,8 +1320,8 @@ describe('ClrContextEngineService, slotted content', () => {
 
   afterEach(() => page.remove());
 
-  it('withholds what a redacted wrapper in a shadow root shows', () => {
-    const snapshot = TestBed.inject(ClrContextEngineService).getSnapshot();
+  it('withholds what a redacted wrapper in a shadow root shows', async () => {
+    const snapshot = await TestBed.inject(ClrContextService).snapshot();
     const text = JSON.stringify(snapshot.components);
 
     expect(text).toContain('Pay');

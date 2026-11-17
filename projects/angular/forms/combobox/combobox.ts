@@ -622,7 +622,8 @@ export class ClrCombobox<T>
       const keys = narrowed
         ? { list: 'matchingOptions', redacted: 'redactedMatchingOptions', count: 'matchingOptionCount' }
         : { list: 'options', redacted: 'redactedOptions', count: 'optionCount' };
-      if (snapshotOptions?.collectionItems === 'summary') {
+      // `0` asks for counts and the selection only.
+      if (maxItems === 0) {
         state[keys.count] = listed.length;
       } else {
         state[keys.list] = named.slice(0, maxItems).map(entry => this.optionLabel(entry.option, excluded));

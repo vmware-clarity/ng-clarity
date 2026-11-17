@@ -8,7 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ClrContextEngineService } from '@clr/angular/ai';
+import { ClrContextService } from '@clr/angular/ai';
 import { publishedOn, publishedState } from '@clr/angular/testing';
 import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrComponentContext } from '@clr/angular/utils';
 
@@ -126,8 +126,8 @@ describe('ClrWizard element context', () => {
 
   // A modal-focused walk starts at clr-wizard, the custom element around the open dialog,
   // so the state the wizard publishes on its host reaches the snapshot.
-  it('puts the published steps on the dialog node of a modal-focused snapshot', () => {
-    const snapshot = TestBed.inject(ClrContextEngineService).getSnapshot({ focus: 'modal' });
+  it('puts the published steps on the dialog node of a modal-focused snapshot', async () => {
+    const snapshot = await TestBed.inject(ClrContextService).snapshot({ root: 'modal' });
     expect(snapshot.focus).toBe('modal');
 
     const dialogs: ClrComponentContext[] = [];
