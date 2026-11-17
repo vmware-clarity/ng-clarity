@@ -233,7 +233,7 @@ describe('Datagrid', () => {
   standalone: false,
 })
 class FullTest {
-  ariaLabelledBy: string;
-  ariaLabel: string;
+  ariaLabelledBy!: string;
+  ariaLabel!: string;
   detailWidth: number | null | undefined;
 }

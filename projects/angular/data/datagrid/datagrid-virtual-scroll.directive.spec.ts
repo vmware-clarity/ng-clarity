@@ -86,7 +86,7 @@ export interface Cells {
   standalone: false,
 })
 class FullTest implements OnInit {
-  @ViewChild(ClrDatagridVirtualScrollDirective) virtualScroll: ClrDatagridVirtualScrollDirective<any>;
+  @ViewChild(ClrDatagridVirtualScrollDirective) virtualScroll!: ClrDatagridVirtualScrollDirective<any>;
   _totalRows = 1000;
   dataRange: ClrDatagridVirtualScrollRangeInterface<Row> | undefined;
 

@@ -45,7 +45,7 @@ describe('ClrIfDetail Directive', function () {
       const input = 'projected state';
       testComponent.detailState = input;
       fixture.detectChanges();
-      expect(testElement.querySelector('.state').textContent).toBe(input);
+      expect(testElement.querySelector('.state')!.textContent).toBe(input);
     });
 
     it('should emit changes', () => {
@@ -97,6 +97,6 @@ describe('ClrIfDetail Directive', function () {
   standalone: false,
 })
 class IfDetailTest {
-  @ViewChild(ClrIfDetail) detail: ClrIfDetail;
+  @ViewChild(ClrIfDetail) detail!: ClrIfDetail;
   detailState: unknown = null;
 }

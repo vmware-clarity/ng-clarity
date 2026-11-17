@@ -43,7 +43,7 @@ class TreeHost {
   readonly show = signal(true);
   readonly roots: Node[] = [{ name: 'root', children: [{ name: 'child' }] }];
   kind: 'observable' | 'promise' = 'observable';
-  completeRequest: () => void;
+  completeRequest!: () => void;
   cancellations = 0;
   requests = 0;
 

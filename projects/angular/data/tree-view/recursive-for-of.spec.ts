@@ -40,8 +40,8 @@ const TEST_ROOT: TestNode = {
   standalone: false,
 })
 class TestComponent {
-  @ViewChild(ClrRecursiveForOf) recursiveForOf: ClrRecursiveForOf<TestNode>;
-  @ViewChild(TemplateRef) template: TemplateRef<ClrRecursiveForOfContext<TestNode>>;
+  @ViewChild(ClrRecursiveForOf) recursiveForOf!: ClrRecursiveForOf<TestNode>;
+  @ViewChild(TemplateRef) template!: TemplateRef<ClrRecursiveForOfContext<TestNode>>;
 
   root: TestNode | TestNode[] = TEST_ROOT;
   getChildren = getChildren;
@@ -85,19 +85,19 @@ describe('Tree View', () => {
 
       it('initializes the recursion service with the correct values', () => {
         expect(testContext.featuresService.recursion).toBeTruthy();
-        expect(testContext.featuresService.recursion.template.elementRef.nativeElement).toBe(
+        expect(testContext.featuresService.recursion!.template.elementRef.nativeElement).toBe(
           testContext.testComponent.template.elementRef.nativeElement
         );
-        expect(testContext.featuresService.recursion.root).toEqual([
+        expect(testContext.featuresService.recursion!.root).toEqual([
           new RecursiveTreeNodeModel(TEST_ROOT, null, getChildren, testContext.featuresService),
         ]);
       });
 
       it('updates the recursion service if the nodes change', () => {
-        testContext.testComponent.root = TEST_ROOT.children[0];
+        testContext.testComponent.root = TEST_ROOT.children![0];
         testContext.fixture.detectChanges();
-        expect(testContext.featuresService.recursion.root).toEqual([
-          new RecursiveTreeNodeModel(TEST_ROOT.children[0], null, getChildren, testContext.featuresService),
+        expect(testContext.featuresService.recursion!.root).toEqual([
+          new RecursiveTreeNodeModel(TEST_ROOT.children![0], null, getChildren, testContext.featuresService),
         ]);
       });
 
@@ -119,7 +119,7 @@ describe('Tree View', () => {
         testContext.testComponent.root = [TEST_ROOT, TEST_ROOT];
         testContext.fixture.detectChanges();
         const wrappedRoot = new RecursiveTreeNodeModel(TEST_ROOT, null, getChildren, testContext.featuresService);
-        expect(testContext.featuresService.recursion.root).toEqual([wrappedRoot, wrappedRoot]);
+        expect(testContext.featuresService.recursion!.root).toEqual([wrappedRoot, wrappedRoot]);
       });
     });
   });

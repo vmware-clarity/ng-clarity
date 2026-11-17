@@ -36,10 +36,10 @@ function getChildren(node: TestNode) {
   standalone: false,
 })
 class TestComponent {
-  @ViewChild('template') template: TemplateRef<ClrRecursiveForOfContext<TestNode>>;
+  @ViewChild('template') template!: TemplateRef<ClrRecursiveForOfContext<TestNode>>;
 
-  parent: RecursiveTreeNodeModel<TestNode>;
-  children: RecursiveTreeNodeModel<TestNode>[];
+  parent?: RecursiveTreeNodeModel<TestNode>;
+  children!: RecursiveTreeNodeModel<TestNode>[];
 }
 
 describe('Tree View', () => {
@@ -135,7 +135,7 @@ describe('Tree View', () => {
       });
 
       it('does not destroy the children when he parent becomes collapsed if the tree is eager', () => {
-        const spy = vi.spyOn(testContext.testComponent.parent, 'clearChildren').mockImplementation(() => undefined);
+        const spy = vi.spyOn(testContext.testComponent.parent!, 'clearChildren').mockImplementation(() => undefined);
         testContext.expandService.expanded = true;
         expect(spy).not.toHaveBeenCalled();
         testContext.expandService.expanded = false;
@@ -144,7 +144,7 @@ describe('Tree View', () => {
 
       it('destroys the children when he parent becomes collapsed if the tree is lazy', () => {
         testContext.featuresService.eager = false;
-        const spy = vi.spyOn(testContext.testComponent.parent, 'clearChildren').mockImplementation(() => undefined);
+        const spy = vi.spyOn(testContext.testComponent.parent!, 'clearChildren').mockImplementation(() => undefined);
         testContext.expandService.expanded = true;
         expect(spy).not.toHaveBeenCalled();
         testContext.expandService.expanded = false;
