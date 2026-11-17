@@ -18,7 +18,7 @@ import { NgControlService } from '../providers/ng-control.service';
 export abstract class AbstractIfState {
   protected state: CONTROL_STATE | undefined;
   protected displayedContent = false;
-  protected controls: NgControl[] = [];
+  protected controls: NgControl[] | undefined;
 
   protected constructor(@Optional() protected ngControlService: NgControlService) {
     if (ngControlService) {
