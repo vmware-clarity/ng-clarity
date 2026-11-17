@@ -17,15 +17,14 @@ import {
   runInInjectionContext,
 } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
-import { CLR_CONTEXT_REDACT_SELECTOR, usableSelectors } from '@clr/angular/utils';
 import { defer, map, Observable } from 'rxjs';
 
-import { ClrContextRegionFilter, ClrContextRegistryService } from './context-registry.service';
+import { ClrContextRegistryService } from './context-registry.service';
 import { ContextTracker } from './context-tracker';
 import { charged } from '../budget';
 import { ClrContextChange, clrDiffContext } from '../diff';
 import { ClrContextDomExtractor } from '../dom/dom-context-collector';
-import { collectContextTreeWithin, engineScope, isHiddenFromEngine } from '../dom/walk';
+import { collectContextTreeWithin } from '../dom/walk';
 import {
   ClrComponentContext,
   ClrContextSnapshotOptions,
@@ -224,7 +223,7 @@ export class ClrContextService implements OnDestroy {
     this.snapshotTaken = true;
     const snapshot = this.emptySnapshot();
     const resolved = resolveSnapshotOptions(withCallOptions(this.scope, options));
-    const regions = this.contextRegistry.collect({ filter: this.regionFilter(resolved), limits: resolved, untrusted });
+    const regions = this.contextRegistry.collect({ limits: resolved, untrusted });
     return this.describePage(snapshot, resolved, regions, untrusted);
   }
 
@@ -252,27 +251,6 @@ export class ClrContextService implements OnDestroy {
       }
     }
     return snapshot;
-  }
-
-  /** Annotations follow their element: left out where it would be, stateless inside a redacted region. */
-  private regionFilter(options: ResolvedSnapshotOptions): ClrContextRegionFilter {
-    if (!isPlatformBrowser(this.platformId)) {
-      return () => 'keep';
-    }
-    const scope = engineScope(this.document, options);
-    const excludeSelector = usableSelectors(this.document, options.excludeSelectors);
-    return element => {
-      if (!element) {
-        return 'keep';
-      }
-      if (isHiddenFromEngine(element, excludeSelector)) {
-        return 'drop';
-      }
-      if (scope.roots && !scope.roots.some(root => root.contains(element) || element.contains(root))) {
-        return 'drop';
-      }
-      return element.closest(CLR_CONTEXT_REDACT_SELECTOR) ? 'redact' : 'keep';
-    };
   }
 
   /** The most an untrusted caller may get: the host can narrow the application's options, never widen them. */
