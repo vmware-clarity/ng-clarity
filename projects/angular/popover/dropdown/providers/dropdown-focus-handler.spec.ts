@@ -63,7 +63,7 @@ describe('Dropdown', () => {
           testContext.fixture = TestBed.createComponent(SimpleHost);
           testContext.popoverService = testContext.fixture.debugElement.injector.get(ClrPopoverService);
           testContext.focusService = testContext.fixture.debugElement.injector.get(FocusService);
-          testContext.focusHandler = testContext.fixture.debugElement.injector.get(DropdownFocusHandler, null);
+          testContext.focusHandler = testContext.fixture.debugElement.injector.get(DropdownFocusHandler, null)!;
           testContext.trigger = document.createElement('button');
           testContext.container = document.createElement('div');
           testContext.outside = document.createElement('button');
@@ -146,15 +146,15 @@ describe('Dropdown', () => {
         });
 
         it('points down to the first child', () => {
-          let down: FocusableItem;
-          testContext.focusHandler.down.subscribe(child => (down = child));
+          let down: FocusableItem | undefined;
+          testContext.focusHandler.down!.subscribe(child => (down = child));
           testContext.focusHandler.addChildren(testContext.children);
           expect(down).toBe(testContext.children[0]);
         });
 
         it('points up to the last child', () => {
-          let up: FocusableItem;
-          testContext.focusHandler.up.subscribe(child => (up = child));
+          let up: FocusableItem | undefined;
+          testContext.focusHandler.up!.subscribe(child => (up = child));
           testContext.focusHandler.addChildren(testContext.children);
           expect(up).toBe(testContext.children[testContext.children.length - 1]);
         });
@@ -166,9 +166,9 @@ describe('Dropdown', () => {
         });
 
         it('points correctly even if children have been added early', () => {
-          let down: FocusableItem;
+          let down: FocusableItem | undefined;
           testContext.focusHandler.addChildren(testContext.children);
-          testContext.focusHandler.down.subscribe(child => (down = child));
+          testContext.focusHandler.down!.subscribe(child => (down = child));
           expect(down).toBe(testContext.children[0]);
         });
 
@@ -177,8 +177,8 @@ describe('Dropdown', () => {
           testContext.focusHandler.resetChildren();
           const down = vi.fn();
           const up = vi.fn();
-          const downSubscription = testContext.focusHandler.down.subscribe(down);
-          const upSubscription = testContext.focusHandler.up.subscribe(up);
+          const downSubscription = testContext.focusHandler.down!.subscribe(down);
+          const upSubscription = testContext.focusHandler.up!.subscribe(up);
           try {
             expect(down).not.toHaveBeenCalled();
             expect(up).not.toHaveBeenCalled();
@@ -190,10 +190,10 @@ describe('Dropdown', () => {
 
         it('opens the dropdown when trying to go down or up', () => {
           expect(testContext.popoverService.open).toBeFalsy();
-          testContext.focusHandler.down.subscribe(() => null);
+          testContext.focusHandler.down!.subscribe(() => null);
           expect(testContext.popoverService.open).toBeTruthy();
           testContext.popoverService.open = false;
-          testContext.focusHandler.up.subscribe(() => null);
+          testContext.focusHandler.up!.subscribe(() => null);
           expect(testContext.popoverService.open).toBeTruthy();
         });
 
@@ -227,7 +227,7 @@ describe('Dropdown', () => {
         it('moves to the first child when opened with a click', async () => {
           testContext.focusHandler.addChildren(testContext.children);
           const moveTo = vi.spyOn(testContext.focusService, 'moveTo').mockImplementation(() => undefined);
-          const move = vi.spyOn(testContext.focusService, 'move').mockImplementation(() => undefined);
+          const move = vi.spyOn(testContext.focusService, 'move').mockImplementation(() => false);
           testContext.popoverService.toggleWithEvent({});
           await delay();
 
@@ -246,7 +246,7 @@ describe('Dropdown', () => {
           const nestedInjector = testContext.fixture.debugElement.query(By.directive(SimpleHost)).injector;
           testContext.popoverService = nestedInjector.get(ClrPopoverService);
           testContext.focusService = nestedInjector.get(FocusService);
-          testContext.focusHandler = nestedInjector.get(DropdownFocusHandler, null);
+          testContext.focusHandler = nestedInjector.get(DropdownFocusHandler, null)!;
           testContext.trigger = document.createElement('button');
           testContext.container = document.createElement('div');
           // We need the elements in the DOM to be able to focus them
@@ -289,8 +289,8 @@ describe('Dropdown', () => {
         });
 
         it('points right to the first child', () => {
-          let right: FocusableItem;
-          testContext.focusHandler.right.subscribe(child => (right = child));
+          let right: FocusableItem | undefined;
+          testContext.focusHandler.right!.subscribe(child => (right = child));
           testContext.focusHandler.addChildren(testContext.children);
           expect(right).toBe(testContext.children[0]);
         });
@@ -320,7 +320,7 @@ describe('Dropdown', () => {
         it('moves to the first child when opened with a click', async () => {
           testContext.focusHandler.addChildren(testContext.children);
           const moveTo = vi.spyOn(testContext.focusService, 'moveTo').mockImplementation(() => undefined);
-          const move = vi.spyOn(testContext.focusService, 'move').mockImplementation(() => undefined);
+          const move = vi.spyOn(testContext.focusService, 'move').mockImplementation(() => false);
           testContext.popoverService.toggleWithEvent({});
           await delay();
 

@@ -76,7 +76,7 @@ for (const zoneless of [false, true]) {
       await Promise.all(animations.map((animation: Animation) => animation.finished));
       await fixture.whenStable();
       expect(document.activeElement).toBe(document.querySelector('.datagrid-action-overflow .action-item'));
-      expect(document.activeElement.textContent).toBe('Edit');
+      expect(document.activeElement!.textContent).toBe('Edit');
     });
 
     it('keeps the action menu focused when modal and menu are recreated together', async () => {
@@ -85,7 +85,7 @@ for (const zoneless of [false, true]) {
       fixture.componentInstance.open.set(true);
       await fixture.whenStable();
       expect(document.activeElement).toBe(document.querySelector('.datagrid-action-overflow .action-item'));
-      expect(document.activeElement.textContent).toBe('Edit');
+      expect(document.activeElement!.textContent).toBe('Edit');
     });
   });
 }

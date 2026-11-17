@@ -102,6 +102,6 @@ class TestPopoverHostComponent {
 class TestComponent {
   @Input() modalOpen = false;
 
-  @ViewChild(ClrModal) readonly modal: ClrModal;
-  @ViewChild(TestPopoverHostComponent) readonly popoverHostComponent: TestPopoverHostComponent;
+  @ViewChild(ClrModal) readonly modal!: ClrModal;
+  @ViewChild(TestPopoverHostComponent) readonly popoverHostComponent!: TestPopoverHostComponent;
 }

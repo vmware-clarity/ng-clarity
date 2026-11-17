@@ -64,7 +64,7 @@ describe('ClrPopover', () => {
 
         it('emits an openChange event', () => {
           let nbChanges = 0;
-          let currentChange: boolean;
+          let currentChange: boolean | undefined;
           testContext.testComponent.directive.openChange.subscribe((change: boolean) => {
             currentChange = change;
             nbChanges++;
@@ -118,6 +118,6 @@ describe('ClrPopover', () => {
   standalone: false,
 })
 class IfOpenTest {
-  @ViewChild(ClrIfOpen) directive: ClrIfOpen;
+  @ViewChild(ClrIfOpen) directive!: ClrIfOpen;
   openState = false;
 }

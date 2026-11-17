@@ -65,7 +65,7 @@ import { ClrPopoverService } from './providers/popover.service';
 class PopoverHost {
   readonly closed: string[] = [];
   readonly show = signal(true);
-  readonly selection = signal<string>(null);
+  readonly selection = signal<string | null>(null);
 }
 
 for (const zoneless of [false, true]) {
@@ -140,9 +140,9 @@ for (const zoneless of [false, true]) {
       await fixture.whenStable();
       expect(popover.open).toBe(true);
       expect(input.getAttribute('aria-expanded')).toBe('true');
-      const active = document.getElementById(input.getAttribute('aria-activedescendant'));
+      const active = document.getElementById(input.getAttribute('aria-activedescendant')!);
       expect(active).not.toBeNull();
-      expect(active.textContent).toContain('First');
+      expect(active!.textContent).toContain('First');
       trigger('.outside').focus();
       await fixture.whenStable();
       expect(input.getAttribute('aria-expanded')).toBe('false');
@@ -150,7 +150,7 @@ for (const zoneless of [false, true]) {
     });
 
     it('notifies the host when the origin observer closes the popover and disconnects it', async () => {
-      let callback: IntersectionObserverCallback;
+      let callback!: IntersectionObserverCallback;
       const observer = { observe: vi.fn(), disconnect: vi.fn() } as unknown as IntersectionObserver;
       vi.spyOn(window, 'IntersectionObserver').mockImplementation(function (cb) {
         callback = cb;
