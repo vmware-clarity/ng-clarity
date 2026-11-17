@@ -53,7 +53,7 @@ describe('#ContainerService', () => {
     persistenceService = TestBed.inject(PersistenceService);
     fixture = TestBed.createComponent(MockCardContainerComponent);
     containerComponent = fixture.componentInstance;
-    cardContainer = containerComponent.cardContainer!;
+    cardContainer = containerComponent.cardContainer;
     sampleContainerCards = [
       {
         id: CardIds.first,

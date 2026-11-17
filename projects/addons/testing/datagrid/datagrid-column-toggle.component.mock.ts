@@ -14,7 +14,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   template: ``,
 })
 export class MockDatagridColumnToggleComponent {
-  @Input() columns: unknown[];
+  @Input() columns!: unknown[];
 
   showColumn(): void {}
 

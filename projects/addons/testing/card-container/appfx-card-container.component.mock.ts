@@ -14,7 +14,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   template: '',
 })
 export class MockAppfxCardContainerComponent {
-  @Input() containerId: string;
+  @Input() containerId!: string;
 
   @Input() cards: unknown[] = [];
 
