@@ -48,10 +48,12 @@ describe('Datagrid', () => {
       it('properly updates the view mode when organizer resizes', () => {
         let currentChange: DatagridDisplayMode;
         let displayChangeCount = 0;
-        testContext.displayViewServiceSubscription = testContext.displayService.view.subscribe(viewChange => {
-          displayChangeCount++;
-          currentChange = viewChange;
-        });
+        testContext.displayViewServiceSubscription = testContext.displayService.view.subscribe(
+          (viewChange: DatagridDisplayMode) => {
+            displayChangeCount++;
+            currentChange = viewChange;
+          }
+        );
         expect(currentChange).toBe(DatagridDisplayMode.DISPLAY);
         testContext.organizer.resize();
         expect(currentChange).toBe(DatagridDisplayMode.DISPLAY);
@@ -63,7 +65,7 @@ describe('Datagrid', () => {
 
         const viewObservable = untypedContext.displayService.view;
         let currentView = null;
-        untypedContext.displayViewServiceSubscription = viewObservable.subscribe(viewChange => {
+        untypedContext.displayViewServiceSubscription = viewObservable.subscribe((viewChange: DatagridDisplayMode) => {
           currentView = viewChange;
         });
         expect(currentView).toBe(DatagridDisplayMode.DISPLAY);
@@ -74,7 +76,7 @@ describe('Datagrid', () => {
 
         const viewObservable = untypedContext.displayService.view;
         let currentView = null;
-        untypedContext.displayViewServiceSubscription = viewObservable.subscribe(viewChange => {
+        untypedContext.displayViewServiceSubscription = viewObservable.subscribe((viewChange: DatagridDisplayMode) => {
           currentView = viewChange;
         });
         untypedContext.organizer.updateRenderStep.next(DatagridRenderStep.CALCULATE_MODE_OFF);
@@ -86,7 +88,7 @@ describe('Datagrid', () => {
 
         const viewObservable = untypedContext.displayService.view;
         let currentView = null;
-        untypedContext.displayViewServiceSubscription = viewObservable.subscribe(viewChange => {
+        untypedContext.displayViewServiceSubscription = viewObservable.subscribe((viewChange: DatagridDisplayMode) => {
           currentView = viewChange;
         });
         untypedContext.organizer.updateRenderStep.next(DatagridRenderStep.CALCULATE_MODE_ON);

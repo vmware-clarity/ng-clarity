@@ -13,6 +13,7 @@ import { ClrNavLevel } from './nav-level';
 import { ClrNavigationModule } from './navigation.module';
 import { ResponsiveNavigationService } from './providers/responsive-navigation.service';
 import { ResponsiveNavCodes } from './responsive-nav-codes';
+import { ResponsiveNavControlMessage } from './responsive-nav-control-message';
 
 @Component({
   template: `
@@ -100,7 +101,7 @@ describe('NavLevelDirective', () => {
       const service = new ResponsiveNavigationService();
 
       service.registerNav(ResponsiveNavCodes.NAV_LEVEL_1);
-      service.registeredNavs.subscribe(navArray => {
+      service.registeredNavs.subscribe((navArray: number[]) => {
         expect(navArray[0]).toBe(ResponsiveNavCodes.NAV_LEVEL_1);
       });
     });
@@ -108,7 +109,7 @@ describe('NavLevelDirective', () => {
     it('#sends the open code on controlNavSubject in the service when open() is called', () => {
       const navLevel = testContext.clarityDirective;
       const service = testContext.clarityDirective.responsiveNavService;
-      service.navControl.subscribe(controlMessage => {
+      service.navControl.subscribe((controlMessage: ResponsiveNavControlMessage) => {
         expect(controlMessage.controlCode).toBe(ResponsiveNavCodes.NAV_OPEN);
       });
       navLevel.open();
@@ -117,7 +118,7 @@ describe('NavLevelDirective', () => {
     it('#sends the close code on controlNavSubject when close() is called', () => {
       const navLevel = testContext.clarityDirective;
       const service = testContext.clarityDirective.responsiveNavService;
-      service.navControl.subscribe(controlMessage => {
+      service.navControl.subscribe((controlMessage: ResponsiveNavControlMessage) => {
         expect(controlMessage.controlCode).toBe(ResponsiveNavCodes.NAV_CLOSE);
       });
       navLevel.close();
@@ -127,7 +128,7 @@ describe('NavLevelDirective', () => {
       const navLevel = testContext.clarityDirective;
       const service = testContext.clarityDirective.responsiveNavService;
       navLevel.ngOnDestroy();
-      service.registeredNavs.subscribe(navArray => {
+      service.registeredNavs.subscribe((navArray: number[]) => {
         expect(navArray.length).toBe(0);
       });
     });

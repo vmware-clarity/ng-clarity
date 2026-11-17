@@ -9,7 +9,7 @@ import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { JsonPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ClarityModule, ClrPopoverService } from '@clr/angular';
+import { ClarityModule, ClrPopoverPosition, ClrPopoverService } from '@clr/angular';
 
 import {
   ClrPopoverType,
@@ -73,7 +73,7 @@ export class StorybookPopoverComponent {
   @Input() offsetX = 0;
   @Input() offsetY = 0;
   @Input() useConnectedPosition = false;
-  @Input('scrollPositions') availablePositionKeys = [];
+  @Input('scrollPositions') availablePositionKeys: ClrPopoverPosition[] = [];
 
   get connectedPosition(): ConnectedPosition {
     return {
@@ -99,7 +99,7 @@ export class StorybookPopoverComponent {
   }
 
   get availablePositions() {
-    const result = [];
+    const result: ConnectedPosition[] = [];
 
     this.availablePositionKeys.forEach(position => {
       result.push(mapPopoverKeyToPosition(position, this.type));

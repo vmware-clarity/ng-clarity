@@ -41,7 +41,7 @@ class ExplicitForTest {
   standalone: false,
 })
 class ContainerizedTest {
-  @ViewChild(ClrControlLabel, { static: true }) label;
+  @ViewChild(ClrControlLabel, { static: true }) label: ClrControlLabel;
 }
 
 @Component({

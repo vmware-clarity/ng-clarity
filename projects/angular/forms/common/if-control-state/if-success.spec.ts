@@ -6,8 +6,8 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
-import { FormControl, FormsModule, Validators } from '@angular/forms';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormControl, FormsModule, NgControl, Validators } from '@angular/forms';
 import { ClrInput, ClrInputContainer } from '@clr/angular/forms/input';
 import { ClrIcon } from '@clr/angular/icon';
 
@@ -44,7 +44,8 @@ describe('ClrIfSuccess', () => {
   });
 
   describe('general success', () => {
-    let fixture, ngControlService;
+    let fixture: ComponentFixture<GeneralSuccessTest>;
+    let ngControlService: NgControlService;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -64,7 +65,7 @@ describe('ClrIfSuccess', () => {
       expect(fixture.nativeElement.innerHTML).not.toContain(successMessage);
       const control = new FormControl('abc', Validators.required);
       control.markAsTouched();
-      ngControlService.addControl(control);
+      ngControlService.addControl(control as unknown as NgControl);
       control.markAsTouched();
       fixture.detectChanges();
       expect(fixture.nativeElement.innerHTML).toContain(successMessage);

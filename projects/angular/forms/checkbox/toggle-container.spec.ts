@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule, LayoutService, NgControlService } from '@clr/angular/forms/common';
@@ -96,7 +96,9 @@ describe('Checkbox component', () => {
     );
 
     describe('inline buttons', () => {
-      let fixture, containerDE, containerEl;
+      let fixture: ComponentFixture<TemplateDrivenTest>;
+      let containerDE: DebugElement;
+      let containerEl: HTMLElement;
 
       beforeEach(() => {
         TestBed.configureTestingModule({
