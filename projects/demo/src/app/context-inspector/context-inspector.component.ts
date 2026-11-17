@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { ClrContextTrackerService, ClrPageContext } from '@clr/angular/ai';
+import { ClrContextService, ClrPageContext } from '@clr/angular/ai';
 import { Subscription } from 'rxjs';
 
 /** App-shell panel showing what the context engine sees, on every demo page. */
@@ -25,7 +25,7 @@ export class ContextInspectorComponent implements OnDestroy {
 
   private subscription?: Subscription;
 
-  constructor(private contextTracker: ClrContextTrackerService) {}
+  constructor(private context: ClrContextService) {}
 
   toggle(): void {
     this.setOpen(!this.open);
@@ -36,12 +36,12 @@ export class ContextInspectorComponent implements OnDestroy {
     this.subscription?.unsubscribe();
     this.subscription = undefined;
     if (open) {
-      this.subscription = this.contextTracker.track().subscribe(snapshot => this.render(snapshot));
+      this.subscription = this.context.watch().subscribe(snapshot => this.render(snapshot));
     }
   }
 
-  refresh(): void {
-    this.contextTracker.refresh();
+  async refresh(): Promise<void> {
+    this.render(await this.context.snapshot());
   }
 
   ngOnDestroy(): void {

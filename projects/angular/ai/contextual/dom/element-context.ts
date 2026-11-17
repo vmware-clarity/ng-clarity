@@ -6,16 +6,17 @@
  */
 
 import { isDevMode } from '@angular/core';
-import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrComponentContext, ClrContextSnapshotOptions } from '@clr/angular/utils';
+import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrComponentContext } from '@clr/angular/utils';
 
 import { truncate } from './text';
 import { defineOwn, jsonSafe, STATE_DEPTH } from '../json-safe';
 import { publicState } from '../public-keys';
+import type { ResolvedSnapshotOptions } from '../snapshot-options';
 
 /** Reads an element's published context. A callback that throws counts as nothing, with a dev-mode warning. */
 export function readClrElementContext(
   element: Element,
-  options: Required<ClrContextSnapshotOptions>
+  options: ResolvedSnapshotOptions
 ): Partial<ClrComponentContext> | null {
   const callback = (element as Element & { [CLR_ELEMENT_CONTEXT_PROPERTY]?: unknown })[CLR_ELEMENT_CONTEXT_PROPERTY];
   if (typeof callback !== 'function') {
@@ -47,7 +48,7 @@ function warnLeftOut(element: Element, error: unknown): void {
 export function mergeElementContext(
   base: ClrComponentContext,
   element: Element,
-  options: Required<ClrContextSnapshotOptions>,
+  options: ResolvedSnapshotOptions,
   annotation: Partial<ClrComponentContext> | null = null,
   untrusted = false
 ): ClrComponentContext {
@@ -90,7 +91,7 @@ const PUBLISHED_DEPTH = 4;
  */
 export function publishedNode(
   value: unknown,
-  options: Required<ClrContextSnapshotOptions>,
+  options: ResolvedSnapshotOptions,
   untrusted = false,
   depth = PUBLISHED_DEPTH
 ): ClrComponentContext | null {
@@ -121,7 +122,7 @@ export function publishedNode(
 
 function publishedParts(
   value: unknown,
-  options: Required<ClrContextSnapshotOptions>,
+  options: ResolvedSnapshotOptions,
   untrusted: boolean,
   depth: number
 ): Partial<ClrComponentContext> {

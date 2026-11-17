@@ -5,9 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DOCUMENT, inject, Injectable } from '@angular/core';
-
-import { CLR_CONTEXT_APPLICATION } from './context-options';
 import { attempt, withTimeout } from '../attempt';
 import { parseJsonObject } from '../dom/annotations';
 
@@ -21,11 +18,14 @@ interface Loaded {
 }
 
 /** Loads the JSON objects behind metadata and configuration URLs, once per URL for the session. */
-@Injectable({ providedIn: 'root' })
-export class ClrContextMetadataLoader {
-  private readonly document = inject(DOCUMENT);
-  private readonly application = inject(CLR_CONTEXT_APPLICATION, { optional: true });
+export class ContextMetadataLoader {
   private readonly loaded = new Map<string, Loaded>();
+
+  /** @param allowedOrigins origins other than the page's own that URLs may load from. */
+  constructor(
+    private readonly document: Document,
+    private readonly allowedOrigins: () => readonly string[]
+  ) {}
 
   /** The JSON object at `url`: `undefined` while it loads, `null` when it could not be loaded. */
   read(url: string): Record<string, unknown> | null | undefined {
@@ -67,6 +67,6 @@ export class ClrContextMetadataLoader {
 
   private isAllowed(url: URL): boolean {
     const own = this.document.location?.origin;
-    return url.origin === own || !!this.application?.metadataOrigins?.includes(url.origin);
+    return url.origin === own || this.allowedOrigins().includes(url.origin);
   }
 }

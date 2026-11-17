@@ -19,43 +19,42 @@ const INSTALL_EXAMPLE = `npm install @clr/angular --save`;
 const QUICKSTART_EXAMPLE = `
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ClrContextEngineService, ClrContextTrackerService } from '@clr/angular/ai';
+import { ClrContextService } from '@clr/angular/ai';
 
 @Component({
   selector: 'app-assistant',
   template: '...',
 })
 export class AssistantComponent {
-  private readonly engine = inject(ClrContextEngineService);
-  private readonly tracker = inject(ClrContextTrackerService);
+  private readonly context = inject(ClrContextService);
 
   constructor() {
     // The current page, kept up to date: emits whenever what is on screen changes.
-    this.tracker
-      .track()
+    this.context
+      .watch()
       .pipe(takeUntilDestroyed(inject(DestroyRef)))
-      .subscribe(context => console.log(context.components));
+      .subscribe(page => console.log(page.components));
   }
 
-  ask(question: string) {
+  async ask(question: string) {
     // Or one snapshot, taken now. Send it to your model as data, delimited from your prompt.
-    return { question, page: this.engine.getSnapshot() };
+    return { question, page: await this.context.snapshot() };
   }
 }
 `;
 
 const SNAPSHOT_EXAMPLE = `
 import { Component, inject } from '@angular/core';
-import { ClrContextEngineService } from '@clr/angular/ai';
+import { ClrContextService } from '@clr/angular/ai';
 
 @Component({
   // ...
 })
 export class AssistantPanelComponent {
-  private readonly contextEngine = inject(ClrContextEngineService);
+  private readonly context = inject(ClrContextService);
 
-  askAssistant(question: string) {
-    const context = this.contextEngine.getSnapshot();
+  async askAssistant(question: string) {
+    const page = await this.context.snapshot();
     // Hand the question and the page context to your AI backend together.
   }
 }
@@ -94,23 +93,23 @@ const SNAPSHOT_SHAPE_EXAMPLE = `
 }
 `;
 
-const TRACKER_EXAMPLE = `
+const WATCH_EXAMPLE = `
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ClrContextTrackerService } from '@clr/angular/ai';
+import { ClrContextService } from '@clr/angular/ai';
 
 @Component({
   // ...
 })
 export class AssistantPanelComponent implements OnInit {
-  private readonly tracker = inject(ClrContextTrackerService);
+  private readonly context = inject(ClrContextService);
   private readonly destroyRef = inject(DestroyRef);
 
   ngOnInit() {
-    // The tracker is shared: track() starts it if nobody has, and stops it once the
-    // last consumer that asked for it is gone.
-    this.tracker
-      .track({ snapshot: { maxComponents: 50 } })
+    // One watcher is shared: watch() starts it if nobody has, and stops it once the
+    // last subscriber is gone.
+    this.context
+      .watch({ maxComponents: 50 })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(context => this.setPageContext(context));
   }
@@ -119,7 +118,7 @@ export class AssistantPanelComponent implements OnInit {
 
 const IGNORE_EXAMPLE = `
 <!-- The assistant panel renders the context, so the engine must not describe it
-     and the tracker must not react to its re-renders. -->
+     and watch() must not react to its re-renders. -->
 <aside class="assistant-panel" data-clr-context-ignore>...</aside>
 `;
 
@@ -154,12 +153,11 @@ const VIEW_METADATA_EXAMPLE = `
 `;
 
 const VIEW_CONFIG_EXAMPLE = `
-bootstrapApplication(AppComponent, {
-  providers: [
-    // Read only the views that have metadata, and describe views without editing them.
-    provideClrContextApplication({ id: 'inventory', version: '2.4.0', views: 'enabled' }),
-    provideClrContextConfig('/assets/ai-config.json'),
-  ],
+// Read only the views that have metadata, and describe views without editing them.
+inject(ClrContextService).configure({
+  application: { id: 'inventory', version: '2.4.0' },
+  views: 'enabled',
+  viewConfig: '/assets/ai-config.json',
 });
 `;
 
@@ -215,18 +213,22 @@ this.teardown?.();
 `;
 
 const EXTRACTOR_EXAMPLE = `
-const unregister = this.contextEngine.registerDomExtractor({
-  selector: 'chat-message-list',
-  extract: element => ({
-    type: 'chat-log',
-    state: { messages: element.children.length },
-    publicKeys: ['messages'], // shared with window.clrContext() too
-  }),
+this.context.configure({
+  extractors: [
+    {
+      selector: 'chat-message-list',
+      extract: element => ({
+        type: 'chat-log',
+        state: { messages: element.children.length },
+        publicKeys: ['messages'], // shared with window.clrContext() too
+      }),
+    },
+  ],
 });
 `;
 
 const FORM_CONTEXT_EXAMPLE = `
-const context = contextEngine.getSnapshot();
+const page = await context.snapshot();
 
 // A field carries what it is, what it permits, and what it currently holds:
 // {
@@ -253,42 +255,41 @@ const REDACT_EXAMPLE = `
 `;
 
 const GLOBAL_ACCESS_EXAMPLE = `
-this.contextEngine.enableGlobalAccess();
+this.context.enableGlobalAccess();
 // Browser-driving agents can now call window.clrContext() for a fresh snapshot.
 // Values the user typed are withheld, because any script on the page can call it.
 // Published state reaches it only under the keys its publisher lists in publicKeys.
 
 // Share them deliberately, if that is what you mean:
-this.contextEngine.enableGlobalAccess('clrContext', { shareFormValues: true });
+this.context.enableGlobalAccess('clrContext', { shareFormValues: true });
 `;
 
 const OPTIONS_EXAMPLE = `
-this.contextEngine.getSnapshot({
-  excludeCategories: ['layout', 'actions'], // no header/navigation/footer, no buttons or links
-  excludeRoles: ['heading'], // or any single ARIA role
+await this.context.snapshot({
+  root: 'main', // 'page' (default), 'modal' for the open modal, or a CSS selector
   excludeSelectors: ['clr-header'], // drop layout that cannot be annotated
-  rootSelector: 'main', // describe only the content area
-  maxDepth: 3, // no nesting deeper than three levels
-  focus: 'modal', // while a modal is open, describe only the modal
-  collectionItems: 'summary', // counts and selection only, no item lists
+  excludeCategories: ['layout', 'actions'], // no header/navigation/footer, no buttons or links
+  maxComponents: 100, // at most 100 components overall
+  maxItemsPerCollection: 0, // counts and selection only, no item lists
 });
 `;
 
 const PROVIDE_EXAMPLE = `
-import { provideClrContextOptions, clrContextPreset } from '@clr/angular/ai';
+import { CLR_CONTEXT_PRESETS, ClrContextService } from '@clr/angular/ai';
 
-// app.config.ts — every snapshot starts from these; per-call options are applied over them
-providers: [provideClrContextOptions('interactive', { excludeSelectors: ['clr-header'] })];
+// Once, at startup (for example in the root component): every snapshot starts from this scope,
+// and per-call options are applied over it.
+inject(ClrContextService).configure({ scope: 'interactive' });
 
-// or explicit options
-providers: [provideClrContextOptions({ maxComponents: 200, includeText: false })];
-
-// a preset with overrides, for a single call
-this.contextTracker.start({ snapshot: clrContextPreset('minimal', { maxComponents: 200 }) });
+// or explicit options, or a preset with changes
+inject(ClrContextService).configure({
+  scope: { ...CLR_CONTEXT_PRESETS.interactive, excludeSelectors: ['clr-header'] },
+  routes: true, // also list the router's routes
+});
 `;
 
 const CHANGES_EXAMPLE = `
-this.contextTracker.changes$.subscribe(change => {
+this.context.changes().subscribe(change => {
   // change.added   — nodes that were not there before, with their subtrees
   // change.removed — nodes that are gone
   // change.changed — nodes whose own state differs: { before, after }
@@ -304,11 +305,9 @@ const change = clrDiffContext(previousSnapshot, currentSnapshot);
 `;
 
 const BUDGETS_EXAMPLE = `
-this.contextEngine.getSnapshot({
-  maxTextLength: 60, // truncate any text beyond 60 characters
+await this.context.snapshot({
   maxItemsPerCollection: 10, // at most 10 rows/tabs/links/options per component
   maxComponents: 30, // at most 30 components overall, counted across the whole tree
-  includeDomComponents: false, // skip DOM scanning entirely (regions + route only)
 });
 `;
 
@@ -332,7 +331,7 @@ export class ContextualEngineDemo extends ClarityDocComponent {
   quickstartExample = QUICKSTART_EXAMPLE;
   snapshotExample = SNAPSHOT_EXAMPLE;
   snapshotShapeExample = SNAPSHOT_SHAPE_EXAMPLE;
-  trackerExample = TRACKER_EXAMPLE;
+  watchExample = WATCH_EXAMPLE;
   ignoreExample = IGNORE_EXAMPLE;
   directiveExample = DIRECTIVE_EXAMPLE;
   attributesExample = ATTRIBUTES_EXAMPLE;

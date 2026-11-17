@@ -8,12 +8,12 @@
 import { ClrContextSnapshotOptions } from '@clr/angular/utils';
 
 import { summarizeRole } from './summarizers';
-import { resolveSnapshotOptions } from '../snapshot-options';
+import { ResolvedSnapshotOptions, resolveSnapshotOptions } from '../snapshot-options';
 
 describe('summarizeRole', () => {
   let container: HTMLElement;
 
-  const budgets = (overrides: Partial<ClrContextSnapshotOptions> = {}): Required<ClrContextSnapshotOptions> =>
+  const budgets = (overrides: Partial<ClrContextSnapshotOptions> = {}): ResolvedSnapshotOptions =>
     resolveSnapshotOptions({ maxComponents: 100, ...overrides });
 
   beforeEach(() => {
@@ -59,7 +59,7 @@ describe('summarizeRole', () => {
     expect(first?.rowCount).toBe(3);
     expect(first?.rows).toEqual(['a', 'b']);
 
-    const summary = summarize(html, 'table', { collectionItems: 'summary' });
+    const summary = summarize(html, 'table', { maxItemsPerCollection: 0 });
     expect(summary?.rowCount).toBe(3);
     expect('rows' in (summary ?? {})).toBe(false);
   });
@@ -274,7 +274,7 @@ describe('summarizeRole', () => {
 describe('summarizeRole, collections the first version misread', () => {
   let container: HTMLElement;
 
-  const budgets = (overrides: Partial<ClrContextSnapshotOptions> = {}): Required<ClrContextSnapshotOptions> =>
+  const budgets = (overrides: Partial<ClrContextSnapshotOptions> = {}): ResolvedSnapshotOptions =>
     resolveSnapshotOptions({ maxComponents: 100, ...overrides });
 
   beforeEach(() => {
