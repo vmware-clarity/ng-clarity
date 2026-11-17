@@ -124,7 +124,7 @@ describe('Button Group Directives', () => {
 
         fixture.detectChanges();
 
-        const dropdownMenu: HTMLElement = document.querySelector('.dropdown-menu');
+        const dropdownMenu: HTMLElement = document.querySelector('.dropdown-menu')!;
         expect(dropdownMenu.children.length).toBe(3);
 
         // Should be a button
@@ -228,7 +228,7 @@ describe('Button Group Directives', () => {
 
         fixture.detectChanges();
 
-        const overflowMenu: HTMLElement = document.querySelector('.dropdown-menu');
+        const overflowMenu: HTMLElement = document.querySelector('.dropdown-menu')!;
 
         expect(overflowMenu.children.length).toBe(1);
 
@@ -263,7 +263,7 @@ describe('Button Group Directives', () => {
         dropdownToggle.click();
 
         fixture.detectChanges();
-        const overflow = document.querySelector('.dropdown-menu');
+        const overflow = document.querySelector('.dropdown-menu')!;
 
         expect(overflow.textContent).toMatch(/Button 5/);
       });
@@ -393,7 +393,7 @@ describe('Button Group Directives', () => {
 
         fixture.detectChanges();
 
-        const overflowMenu: HTMLElement = document.querySelector('.dropdown-menu');
+        const overflowMenu: HTMLElement = document.querySelector('.dropdown-menu')!;
         expect(overflowMenu.children.length).toBe(5);
 
         // Should be a button
@@ -418,8 +418,8 @@ describe('Button Group Directives', () => {
         // unguarded threw "Cannot read properties of undefined (reading 'nativeElement')"
         // and aborted the handler.
         const popoverService = (testBtnGroup as any).popoverService;
-        testBtnGroup.menu = undefined;
-        testBtnGroup.menuToggle = undefined;
+        testBtnGroup.menu = undefined!;
+        testBtnGroup.menuToggle = undefined!;
 
         expect(() => popoverService.popoverVisibleEmit(true)).not.toThrow();
       });
@@ -443,7 +443,7 @@ describe('Button Group Directives', () => {
         // In this case only the first dropdown is opened
         dropdownToggle1.click();
         fixture.detectChanges();
-        let overflowMenu = document.querySelector('.dropdown-menu');
+        let overflowMenu = document.querySelector('.dropdown-menu')!;
 
         expect(compiled.textContent).toMatch(/Button 1/);
         expect(compiled.textContent).toMatch(/Button 2/);
@@ -460,7 +460,7 @@ describe('Button Group Directives', () => {
         // Now second is opened, first is closed
         dropdownToggle2.click();
         fixture.detectChanges();
-        overflowMenu = document.querySelector('.dropdown-menu');
+        overflowMenu = document.querySelector('.dropdown-menu')!;
 
         expect(compiled.textContent).toMatch(/Button 1/);
         expect(compiled.textContent).toMatch(/Button 2/);
@@ -477,7 +477,7 @@ describe('Button Group Directives', () => {
         // Back to the first, second is closed
         dropdownToggle1.click();
         fixture.detectChanges();
-        overflowMenu = document.querySelector('.dropdown-menu');
+        overflowMenu = document.querySelector('.dropdown-menu')!;
 
         expect(compiled.textContent).toMatch(/Button 1/);
         expect(compiled.textContent).toMatch(/Button 2/);
@@ -509,7 +509,7 @@ describe('Button Group Directives', () => {
   standalone: false,
 })
 class BtnGroupInlineViewContainer {
-  @ViewChild(ClrButtonGroup) btnGroup: ClrButtonGroup;
+  @ViewChild(ClrButtonGroup) btnGroup!: ClrButtonGroup;
 }
 
 @Component({
@@ -526,7 +526,7 @@ class BtnGroupInlineViewContainer {
   standalone: false,
 })
 class BtnGroupBothViewContainersTest {
-  @ViewChild(ClrButtonGroup) btnGroup: ClrButtonGroup;
+  @ViewChild(ClrButtonGroup) btnGroup!: ClrButtonGroup;
 
   clrToggleButtonAriaLabel = 'Button Group Menu Toggle';
 }
@@ -545,7 +545,7 @@ class BtnGroupBothViewContainersTest {
   standalone: false,
 })
 class BtnGroupFlipTest1 {
-  @ViewChild(ClrButtonGroup) btnGroup: ClrButtonGroup;
+  @ViewChild(ClrButtonGroup) btnGroup!: ClrButtonGroup;
 
   flip = false;
 }
@@ -564,7 +564,7 @@ class BtnGroupFlipTest1 {
   standalone: false,
 })
 class BtnGroupFlipTest2 {
-  @ViewChild(ClrButtonGroup) btnGroup: ClrButtonGroup;
+  @ViewChild(ClrButtonGroup) btnGroup!: ClrButtonGroup;
 
   flip = false;
 }
@@ -589,7 +589,7 @@ class BtnGroupFlipTest2 {
   standalone: false,
 })
 class BtnGroupProjectionUpdateTest {
-  @ViewChild(ClrButtonGroup) btnGroup: ClrButtonGroup;
+  @ViewChild(ClrButtonGroup) btnGroup!: ClrButtonGroup;
 
   show = true;
 }
@@ -609,7 +609,7 @@ class BtnGroupProjectionUpdateTest {
   standalone: false,
 })
 class BtnGroupMenuViewContainer {
-  @ViewChild(ClrButtonGroup) btnGroup: ClrButtonGroup;
+  @ViewChild(ClrButtonGroup) btnGroup!: ClrButtonGroup;
 }
 
 /*
@@ -638,6 +638,6 @@ class BtnGroupMenuViewContainer {
   standalone: false,
 })
 class BtnGroupEHCAIWCTest {
-  @ViewChild('btnGroup1') btnGroup1: ClrButtonGroup;
-  @ViewChild('btnGroup2') btnGroup2: ClrButtonGroup;
+  @ViewChild('btnGroup1') btnGroup1!: ClrButtonGroup;
+  @ViewChild('btnGroup2') btnGroup2!: ClrButtonGroup;
 }

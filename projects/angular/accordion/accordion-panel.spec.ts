@@ -42,7 +42,7 @@ class TestComponent {
   open = false;
   disabled = false;
   showDescription = false;
-  headingLevel: HeadingLevel;
+  headingLevel!: HeadingLevel;
   change = (state: boolean) => {
     return state;
   };
@@ -179,7 +179,7 @@ describe('ClrAccordionPanel', () => {
         const fixture: ComponentFixture<TestNoBindingComponent> = TestBed.createComponent(TestNoBindingComponent);
         const component = fixture.componentInstance;
         const accordionPanel = fixture.debugElement.query(By.directive(ClrAccordionPanel)).componentInstance;
-        vi.spyOn(component, 'change').mockImplementation(() => undefined);
+        vi.spyOn(component, 'change').mockImplementation(() => false);
 
         // First render
         fixture.detectChanges();
@@ -198,7 +198,7 @@ describe('ClrAccordionPanel', () => {
       it('emit value for [clrAccordionPanelOpen] when there is a binding to it', () => {
         const component = fixture.componentInstance;
         const accordionPanel = fixture.debugElement.query(By.directive(ClrAccordionPanel)).componentInstance;
-        vi.spyOn(component, 'change').mockImplementation(() => undefined);
+        vi.spyOn(component, 'change').mockImplementation(() => false);
 
         // First render
         fixture.detectChanges();
@@ -229,17 +229,17 @@ describe('ClrAccordionPanel', () => {
     });
 
     it('projects content', () => {
-      panelElement.querySelector('button').click();
+      panelElement.querySelector('button')!.click();
       fixture.detectChanges();
       expect(fixture.nativeElement.textContent.trim()).toMatch('panel');
     });
 
     it('toggles content when header button is clicked', () => {
-      panelElement.querySelector('button').click();
+      panelElement.querySelector('button')!.click();
       fixture.detectChanges();
       expect(fixture.nativeElement.textContent).toContain('panel');
 
-      panelElement.querySelector('button').click();
+      panelElement.querySelector('button')!.click();
       fixture.detectChanges();
       expect(fixture.nativeElement.textContent).toContain('');
     });
@@ -249,8 +249,8 @@ describe('ClrAccordionPanel', () => {
     });
 
     it('should set the appropriate aria attribute values', () => {
-      const panelRegion = panelElement.querySelector('[role="region"]');
-      const headerButton = panelElement.querySelector('button');
+      const panelRegion = panelElement.querySelector('[role="region"]')!;
+      const headerButton = panelElement.querySelector('button')!;
 
       expect(panelRegion.getAttribute('aria-labelledby')).toBe(headerButton.getAttribute('id'));
       expect(panelRegion.getAttribute('aria-hidden')).toBe('true');
@@ -268,7 +268,7 @@ describe('ClrAccordionPanel', () => {
     });
 
     it('should set proper disable attribute when disabled programmatically', () => {
-      const headerButton = panelElement.querySelector('button');
+      const headerButton = panelElement.querySelector('button')!;
       expect(headerButton.getAttribute('disabled')).toBe(null);
 
       fixture.componentInstance.disabled = true;
@@ -278,8 +278,8 @@ describe('ClrAccordionPanel', () => {
     });
 
     it('should get the appropriate panel class based on current panel state', () => {
-      const panelGroup = panelElement.querySelector('[class*=clr-accordion-panel]');
-      const headerButton = panelElement.querySelector('button');
+      const panelGroup = panelElement.querySelector('[class*=clr-accordion-panel]')!;
+      const headerButton = panelElement.querySelector('button')!;
 
       expect(panelGroup.classList.contains('clr-accordion-panel-closed')).toBe(true);
       expect(panelGroup.classList.contains('clr-accordion-panel-open')).toBe(false);
@@ -308,7 +308,7 @@ describe('ClrAccordionPanel', () => {
 
       fixture.componentInstance.headingLevel = 5;
       fixture.detectChanges();
-      const panelHeading = panelElement.querySelector('[role="heading"]');
+      const panelHeading = panelElement.querySelector('[role="heading"]')!;
 
       expect(panelHeading).not.toBeNull();
       expect(panelHeading.getAttribute('aria-level')).toBe('5');
@@ -323,7 +323,7 @@ describe('ClrAccordionPanel', () => {
 
       expect(panelHeading).toBeNull();
 
-      const nestedAccordionPanel = accordionPanel.querySelector('#nested-accordion-panel');
+      const nestedAccordionPanel = accordionPanel.querySelector('#nested-accordion-panel')!;
       const nestedPanelHeading = nestedAccordionPanel.querySelector('[role="heading"]');
 
       expect(nestedPanelHeading).toBeNull();
@@ -360,14 +360,14 @@ describe('ClrAccordionPanel animations', () => {
   it('does not animate the content open on the first render', async () => {
     await render(true);
 
-    expect(content().getAnimations().length).toBe(0);
+    expect(content()!.getAnimations().length).toBe(0);
   });
 
   it('expands the content when the panel opens', async () => {
     await render(false);
     await render(true);
 
-    const [animation] = content().getAnimations();
+    const [animation] = content()!.getAnimations();
     expect((animation.effect as KeyframeEffect).getKeyframes()[0].height).toBe('0px');
   });
 
@@ -376,7 +376,7 @@ describe('ClrAccordionPanel animations', () => {
     await render(false);
     await render(true);
 
-    expect(content().getAnimations().length).toBe(1);
+    expect(content()!.getAnimations().length).toBe(1);
   });
 
   it('removes the content as soon as the panel closes', async () => {

@@ -30,9 +30,9 @@ import { ButtonInGroupService } from '../providers/button-in-group.service';
   standalone: false,
 })
 class TestButtonComponent {
-  @ViewChild('button1') button1: ClrButton;
-  @ViewChild('button2') button2: ClrButton;
-  @ViewChild('button3') button3: ClrButton;
+  @ViewChild('button1') button1!: ClrButton;
+  @ViewChild('button2') button2!: ClrButton;
+  @ViewChild('button3') button3!: ClrButton;
 
   flag = false;
   button2InMenu = true;
@@ -57,9 +57,9 @@ class TestButtonComponent {
   standalone: false,
 })
 export class ButtonViewTestComponent {
-  @ViewChild('button1') button1: ClrButton;
-  @ViewChild('button2') button2: ClrButton;
-  @ViewChild('button3') button3: ClrButton;
+  @ViewChild('button1') button1!: ClrButton;
+  @ViewChild('button2') button2!: ClrButton;
+  @ViewChild('button3') button3!: ClrButton;
 
   load = true;
 }

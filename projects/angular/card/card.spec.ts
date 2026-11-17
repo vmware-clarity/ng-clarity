@@ -194,7 +194,7 @@ describe('ClrCard', () => {
       it('emits a value without a [clrCardExpanded] binding present', () => {
         const noBindingFixture = TestBed.createComponent(TestNoBindingComponent);
         const component = noBindingFixture.componentInstance;
-        vi.spyOn(component, 'change').mockImplementation(() => undefined);
+        vi.spyOn(component, 'change').mockImplementation(() => false);
 
         noBindingFixture.detectChanges();
         const card = noBindingFixture.debugElement.query(By.directive(ClrCard)).componentInstance as ClrCard;
@@ -207,7 +207,7 @@ describe('ClrCard', () => {
       });
 
       it('does not emit when the input is changed programmatically', () => {
-        vi.spyOn(testComponent, 'change').mockImplementation(() => undefined);
+        vi.spyOn(testComponent, 'change').mockImplementation(() => false);
         testComponent.expanded = false;
         fixture.detectChanges();
         expect(testComponent.change).not.toHaveBeenCalled();
@@ -271,8 +271,8 @@ describe('ClrCard', () => {
     });
 
     it('renders a region labelled by the header content, not the header toggle', () => {
-      const region = cardElement.querySelector('[role="region"]');
-      const headerContent = cardElement.querySelector('.clr-card-header-content');
+      const region = cardElement.querySelector('[role="region"]')!;
+      const headerContent = cardElement.querySelector('.clr-card-header-content')!;
 
       expect(region).not.toBeNull();
       expect(region.getAttribute('aria-hidden')).toBe('false');
@@ -295,23 +295,23 @@ describe('ClrCard', () => {
       fixture.componentInstance.expanded = false;
       fixture.detectChanges();
 
-      const region = cardElement.querySelector('[role="region"]');
+      const region = cardElement.querySelector('[role="region"]')!;
       expect(region.getAttribute('aria-hidden')).toBe('true');
       expect(region.hasAttribute('inert')).toBe(true);
       expect(region.textContent).toContain('Body text');
     });
 
     it('collapses via the header toggle button', () => {
-      const headerButton = cardElement.querySelector<HTMLButtonElement>('button');
+      const headerButton = cardElement.querySelector<HTMLButtonElement>('button')!;
       headerButton.click();
       fixture.detectChanges();
 
       expect(fixture.componentInstance.expanded).toBe(false);
-      expect(cardElement.querySelector('[role="region"]').getAttribute('aria-hidden')).toBe('true');
+      expect(cardElement.querySelector('[role="region"]')!.getAttribute('aria-hidden')).toBe('true');
     });
 
     it('collapses the footer along with the body by default', () => {
-      const region = cardElement.querySelector('[role="region"]');
+      const region = cardElement.querySelector('[role="region"]')!;
       expect(region.textContent).toContain('Footer text');
     });
 
@@ -320,7 +320,7 @@ describe('ClrCard', () => {
       fixture.componentInstance.expanded = false;
       fixture.detectChanges();
 
-      const region = cardElement.querySelector('[role="region"]');
+      const region = cardElement.querySelector('[role="region"]')!;
       expect(region.textContent).not.toContain('Footer text');
       expect(cardElement.textContent).toContain('Footer text');
     });
@@ -329,7 +329,7 @@ describe('ClrCard', () => {
       fixture.componentInstance.footerCollapsible = false;
       fixture.detectChanges();
 
-      const region = cardElement.querySelector('[role="region"]');
+      const region = cardElement.querySelector('[role="region"]')!;
       expect(region.textContent).toContain('Body text');
       expect(region.textContent).not.toContain('Footer text');
       expect(cardElement.textContent).toContain('Footer text');
@@ -347,7 +347,7 @@ describe('ClrCard', () => {
       fixture.detectChanges();
 
       const cardElement = fixture.debugElement.query(By.directive(ClrCard)).nativeElement as HTMLElement;
-      const region = cardElement.querySelector('[role="region"]');
+      const region = cardElement.querySelector('[role="region"]')!;
 
       expect(cardElement.classList.contains('card-collapsed')).toBe(true);
       expect(region.getAttribute('aria-hidden')).toBe('true');

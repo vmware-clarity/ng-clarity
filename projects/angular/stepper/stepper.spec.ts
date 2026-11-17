@@ -51,9 +51,9 @@ class MultiFieldReactiveFormsTestComponent {
   standalone: false,
 })
 class ReactiveFormsTestComponent {
-  @ViewChild(ClrStepper) stepper: ClrStepper;
-  @ViewChild('panel1') panel1: ClrStepperPanel;
-  @ViewChild('panel2') panel2: ClrStepperPanel;
+  @ViewChild(ClrStepper) stepper!: ClrStepper;
+  @ViewChild('panel1') panel1!: ClrStepperPanel;
+  @ViewChild('panel2') panel2!: ClrStepperPanel;
   showSecondStep = true;
   initialStep = '';
   form = new FormGroup({
@@ -81,8 +81,8 @@ class ReactiveFormsTestComponent {
   standalone: false,
 })
 class TemplateFormsTestComponent {
-  @ViewChild(ClrStepper) stepper: ClrStepper;
-  @ViewChild('testForm') form: FormGroup;
+  @ViewChild(ClrStepper) stepper!: ClrStepper;
+  @ViewChild('testForm') form!: FormGroup;
   showSecondStep = true;
   submit() {
     // Do nothing

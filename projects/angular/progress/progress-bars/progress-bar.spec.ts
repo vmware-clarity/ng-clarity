@@ -72,7 +72,7 @@ describe('ClrProgressBar component', () => {
       it('expect to project content', () => {
         clrProgressBar = fixture.debugElement.query(By.directive(ClrProgressBar)).nativeElement;
 
-        expect(clrProgressBar.querySelector('progress').getAttribute('id')).toBe('randomId');
+        expect(clrProgressBar.querySelector('progress')!.getAttribute('id')).toBe('randomId');
         expect(clrProgressBar.getAttribute('class')).toBe('progress');
       });
     });
@@ -96,7 +96,7 @@ describe('ClrProgressBar component', () => {
       fixture.componentInstance.maxValue = 105;
 
       fixture.detectChanges();
-      expect(clrProgressBar.querySelector('span').innerText).toBe('100%');
+      expect(clrProgressBar.querySelector('span')!.innerText).toBe('100%');
     });
 
     describe('Style & Animations', () => {
@@ -108,7 +108,7 @@ describe('ClrProgressBar component', () => {
 
       it('should add classes based on attributes "labeled fade loop danger flash flash-danger"', () => {
         const klasses = clrProgressBar
-          .getAttribute('class')
+          .getAttribute('class')!
           .split(' ')
           .sort((a, b) => (a > b ? 1 : -1))
           .join(' ');
@@ -120,7 +120,7 @@ describe('ClrProgressBar component', () => {
       });
 
       it('if no "id" attribute is set - auto add one', () => {
-        expect(clrProgressBar.querySelector('progress').getAttribute('id')).not.toBe(null);
+        expect(clrProgressBar.querySelector('progress')!.getAttribute('id')).not.toBe(null);
       });
     });
   });
