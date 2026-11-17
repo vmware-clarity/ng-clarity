@@ -1034,10 +1034,10 @@ var GridHelper = class {
 	assertHeaderLabels(includeLabelList, excludeLabelList) {
 		const gridHeaderLabelList = this.getHeaders();
 		if (Array.isArray(includeLabelList)) gridHeaderLabelList.forEach((headerLabel, index) => {
-			expect(headerLabel).toEqual(includeLabelList[index], `Cannot find "${headerLabel}" column.`);
+			expect(headerLabel).toEqual(includeLabelList[index]);
 		});
 		if (Array.isArray(excludeLabelList)) excludeLabelList.forEach((undefinedLabel) => {
-			expect(gridHeaderLabelList.indexOf(undefinedLabel)).toBeLessThan(0, `There is a "${undefinedLabel}" column.`);
+			expect(gridHeaderLabelList.indexOf(undefinedLabel)).toBeLessThan(0);
 		});
 	}
 	isRowDetailConfigured() {
@@ -1255,12 +1255,12 @@ var GridRowTestHelper = class {
 				if (Array.isArray(cellValue)) expect(cellValue.reduce((matched, phrase) => matched && gridCell.getText().includes(phrase), true)).toBe(true);
 				else expect(gridCell.getText()).toEqual(String(cellValue));
 			} else if (Array.isArray(cellValue)) expect(cellValue.reduce((matched, phrase) => matched && gridCell.getText().includes(phrase), true)).toBe(false);
-			else expect(gridCell.getElement()).toBeNull(`There is no cell at position index ${index}.`);
+			else expect(gridCell.getElement()).toBeNull();
 		});
 		if (Array.isArray(excludeValueList)) excludeValueList.forEach((cellValue, index) => {
 			const gridCell = this.getCellAt(index);
 			if (cellValue !== void 0) expect(gridCell.getText()).not.toEqual(String(cellValue));
-			else expect(gridCell.getElement()).not.toBeNull(`There is a no cell at position index ${index}.`);
+			else expect(gridCell.getElement()).not.toBeNull();
 		});
 	}
 	select() {
