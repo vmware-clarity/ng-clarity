@@ -1219,7 +1219,7 @@ export declare class ClrDatagridRow<T = any> implements OnChanges, DoCheck, Afte
   /**
    * @deprecated related to clrDgRowSelection, which is deprecated
    */
-  protected selectRow(selected: boolean, $event: any): void;
+  protected selectRow(selected: boolean, $event: MouseEvent): void;
   private destroyFixedCellViews;
   /**
    * Projects the cells into the display containers. Cells of pinned columns go into their static
@@ -2708,10 +2708,10 @@ declare class DatagridStringFilterImpl<T = any> implements ClrDatagridFilterInte
   constructor(filterFn: ClrDatagridStringFilterInterface<T>);
   get changes(): Observable<string>;
   get lowerCaseValue(): string;
-  get state(): this | {
+  get state(): {
     property: string;
     value: string;
-  };
+  } | this;
   get value(): string;
   /**
    * Common setter for the input value
@@ -2814,11 +2814,11 @@ declare class DatagridNumericFilterImpl<T = any> implements ClrDatagridFilterInt
   set low(low: number);
   get high(): number;
   set high(high: number);
-  get state(): this | {
+  get state(): {
     property: string;
-    low: number;
-    high: number;
-  };
+    low: number | null;
+    high: number | null;
+  } | this;
   /**
    * Indicates if the filter is currently active, (at least one input is set)
    */
@@ -3079,7 +3079,7 @@ export declare class DatagridRowDetailRenderer extends DatagridRowRenderer imple
 export declare class ClrDatagridSingleSelectionValueAccessor implements ControlValueAccessor {
   private renderer;
   private elementRef;
-  value: any;
+  value: unknown;
   clrDgIdentityFn: (value: any) => unknown;
   private state;
   constructor(renderer: Renderer2, elementRef: ElementRef<HTMLInputElement>);

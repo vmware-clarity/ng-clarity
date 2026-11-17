@@ -187,7 +187,7 @@ export declare class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContai
   popoverPosition: ClrPopoverPosition;
   protected index: number;
   protected popoverType: ClrPopoverType;
-  protected containerWidth: any;
+  protected containerWidth: number | null;
   protected selectionExpanded: boolean;
   protected calculatedLimit: number | undefined;
   protected shouldCalculate: boolean;
@@ -231,7 +231,7 @@ export declare class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContai
   inputId(): string;
   loadingStateChange(state: ClrLoadingState): void;
   unselect(item: T): void;
-  onBlur(event: any): void;
+  onBlur(event: FocusEvent): void;
   onFocus(): void;
   onChange(): void;
   getSelectionAriaLabel(): string;
@@ -241,7 +241,7 @@ export declare class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContai
   registerOnChange(onChange: any): void;
   getActiveDescendant(): string;
   setDisabledState(): void;
-  onWrapperClick(event: any): void;
+  onWrapperClick(event: MouseEvent): void;
   toggleSelectionExpand(): void;
   private initialiseObserver;
   private calculateLimit;

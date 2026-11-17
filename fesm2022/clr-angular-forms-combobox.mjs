@@ -1371,7 +1371,7 @@ var ClrCombobox = class ClrCombobox extends WrappedFormControl {
 		}
 		this.applyLimit(fitCount);
 	}
-	applyLimit(limit = void 0) {
+	applyLimit(limit) {
 		this.zone.run(() => {
 			this.calculatedLimit = limit === 0 ? 1 : limit;
 			this.shouldCalculate = false;

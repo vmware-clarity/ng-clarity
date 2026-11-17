@@ -1,6 +1,6 @@
 import * as i0 from "@angular/core";
 import { ChangeDetectionStrategy, Component, ContentChild, ContentChildren, Directive, ElementRef, HostBinding, HostListener, Injectable, Input, KeyValueDiffers, NgModule, Optional, Self } from "@angular/core";
-import { BehaviorSubject, Subject, merge, of, tap } from "rxjs";
+import { BehaviorSubject, EMPTY, Subject, merge, of, tap } from "rxjs";
 import * as i3 from "@clr/angular/icon";
 import { ClarityIcons, ClrIcon, errorStandardIcon, successStandardIcon } from "@clr/angular/icon";
 import { ClrSignpost } from "@clr/angular/popover/signpost";
@@ -1336,7 +1336,7 @@ var AbstractIfState = class AbstractIfState {
 		if (ngControlService) ngControlService.controlsChanges.pipe(tap((controls) => {
 			this.controls = controls;
 		}), switchMap((controls) => {
-			if (!controls || controls.length === 0) return [];
+			if (!controls || controls.length === 0) return EMPTY;
 			const statusStreams = controls.map((c) => this.getControlStatusChangesObservable(c));
 			return merge(...statusStreams);
 		}), takeUntilDestroyed()).subscribe((status) => {

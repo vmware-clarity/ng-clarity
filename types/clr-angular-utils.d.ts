@@ -748,12 +748,12 @@ export declare class ClrKeyFocus {
    * Here we use `any` cause any other type require reworking all methods below and a lot of more ifs.
    * this method will only work with array with FocusableItems anyway so any other value will be ignored.
    */
-  get focusableItems(): Array<FocusableItem$1> | any;
+  get focusableItems(): FocusableItem$1[];
   set focusableItems(elements: Array<FocusableItem$1> | any);
   get nativeElement(): HTMLElement;
   get current(): number;
   set current(value: number);
-  get currentItem(): any;
+  get currentItem(): FocusableItem$1;
   get currentItemElement(): HTMLElement;
   ngAfterContentInit(): void;
   ngOnDestroy(): void;

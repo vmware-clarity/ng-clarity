@@ -24,6 +24,48 @@ export declare enum ClrWeekday {
   Friday = 5,
   Saturday = 6
 }
+declare class DayModel {
+  readonly year: number;
+  readonly month: number;
+  readonly date: number;
+  constructor(year: number, month: number, date: number);
+  /**
+   * Checks if the passed CalendarDate is equal to itself.
+   */
+  isEqual(day: DayModel): boolean;
+  toDate(): Date;
+  /**
+   * Returns a new DayModel which is incremented based on the value passed.
+   */
+  incrementBy(value: number): DayModel;
+  /**
+   * Clones the current day model.
+   */
+  clone(): DayModel;
+  toComparisonString(): string;
+  toDateString(): string;
+  /**
+   * Compares the dates and returns boolean value based on the value passed
+   */
+  isBefore(day: DayModel, dayInclusive?: boolean): boolean;
+  /**
+   * Compares the dates and returns boolean value based on the value passed
+   */
+  isAfter(day: DayModel, dayInclusive?: boolean): boolean;
+  private pad;
+}
+interface DateRange {
+  minDate?: DayModel;
+  maxDate?: DayModel;
+}
+interface DateRangeInput {
+  startDate: DayModel;
+  endDate?: DayModel;
+}
+export interface DateRangeOption {
+  label: string;
+  value: Date[];
+}
 declare class DateFormControlService {
   disabled: boolean;
   private _touchedChange;
@@ -87,48 +129,6 @@ declare class LocaleHelperService {
   static ɵfac: i0.ɵɵFactoryDeclaration<LocaleHelperService, never>;
   static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
-declare class DayModel {
-  readonly year: number;
-  readonly month: number;
-  readonly date: number;
-  constructor(year: number, month: number, date: number);
-  /**
-   * Checks if the passed CalendarDate is equal to itself.
-   */
-  isEqual(day: DayModel): boolean;
-  toDate(): Date;
-  /**
-   * Returns a new DayModel which is incremented based on the value passed.
-   */
-  incrementBy(value: number): DayModel;
-  /**
-   * Clones the current day model.
-   */
-  clone(): DayModel;
-  toComparisonString(): string;
-  toDateString(): string;
-  /**
-   * Compares the dates and returns boolean value based on the value passed
-   */
-  isBefore(day: DayModel, dayInclusive?: boolean): boolean;
-  /**
-   * Compares the dates and returns boolean value based on the value passed
-   */
-  isAfter(day: DayModel, dayInclusive?: boolean): boolean;
-  private pad;
-}
-interface DateRange {
-  minDate?: DayModel;
-  maxDate?: DayModel;
-}
-interface DateRangeInput {
-  startDate: DayModel;
-  endDate?: DayModel;
-}
-export interface DateRangeOption {
-  label: string;
-  value: Date[];
-}
 declare class DateIOService {
   /**
    * This is the default range. It approximates the beginning of time to the end of time.
@@ -147,7 +147,7 @@ declare class DateIOService {
   setMinDate(date: string): void;
   setMaxDate(date: string): void;
   setRangeOptions(rangeOptions: DateRangeOption[]): void;
-  getRangeOptions(): any;
+  getRangeOptions(): DateRangeOption[];
   toLocaleDisplayFormatString(date: Date): string;
   getDateValueFromDateString(date: string): Date;
   private validateDateRangeOptions;
@@ -335,7 +335,7 @@ export declare class ClrDateContainer extends ClrAbstractContainer implements Af
    */
   set showActionButtons(flag: boolean);
   set clrPosition(position: string | ClrPopoverPosition);
-  set rangeOptions(rangeOptions: any);
+  set rangeOptions(rangeOptions: DateRangeOption[]);
   set min(dateString: string);
   set max(dateString: string);
   set actionButton(button: ElementRef<HTMLButtonElement>);
@@ -610,8 +610,8 @@ export declare class ClrDatepickerViewManager {
   get isDayView(): boolean;
   get hasRangeOptions(): boolean;
   protected get hasActionButtons(): boolean;
-  protected get dateRangeOptions(): any;
-  onRangeOptionSelect(selectedRange: any): void;
+  protected get dateRangeOptions(): DateRangeOption[];
+  onRangeOptionSelect(selectedRange: DateRangeOption): void;
   static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatepickerViewManager, never>;
   static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatepickerViewManager, "clr-datepicker-view-manager", never, {}, {}, never, never, false, never>;
 }
