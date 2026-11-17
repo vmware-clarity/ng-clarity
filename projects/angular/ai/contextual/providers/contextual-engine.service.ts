@@ -6,13 +6,24 @@
  */
 
 import { HashLocationStrategy, isPlatformBrowser, LocationStrategy } from '@angular/common';
-import { DOCUMENT, inject, Injectable, OnDestroy, PLATFORM_ID } from '@angular/core';
+import {
+  DOCUMENT,
+  inject,
+  Injectable,
+  Injector,
+  isDevMode,
+  OnDestroy,
+  PLATFORM_ID,
+  runInInjectionContext,
+} from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { CLR_CONTEXT_REDACT_SELECTOR, usableSelectors } from '@clr/angular/utils';
+import { defer, map, Observable } from 'rxjs';
 
-import { CLR_CONTEXT_OPTIONS } from './context-options';
 import { ClrContextRegionFilter, ClrContextRegistryService } from './context-registry.service';
+import { ContextTracker } from './context-tracker';
 import { charged } from '../budget';
+import { ClrContextChange, clrDiffContext } from '../diff';
 import { ClrContextDomExtractor } from '../dom/dom-context-collector';
 import { collectContextTreeWithin, engineScope, isHiddenFromEngine } from '../dom/walk';
 import {
@@ -23,7 +34,14 @@ import {
 } from '../interfaces/context.interface';
 import { jsonSafe, ROUTE_DATA_DEPTH } from '../json-safe';
 import { availableRoutes, routePatternFor } from '../routes';
-import { capSnapshotOptions, resolveSnapshotOptions, withCallOptions } from '../snapshot-options';
+import {
+  capSnapshotOptions,
+  ClrContextPreset,
+  presetOrOptions,
+  ResolvedSnapshotOptions,
+  resolveSnapshotOptions,
+  withCallOptions,
+} from '../snapshot-options';
 import { sanitizeUntrustedSnapshotOptions, withoutFormValues, withoutUrlDetails } from '../untrusted-options';
 
 const DEFAULT_GLOBAL_PROPERTY = 'clrContext';
@@ -42,38 +60,84 @@ export interface ClrContextGlobalAccessOptions extends ClrContextSnapshotOptions
   shareFullUrl?: boolean;
 }
 
-/** Builds on-demand, read-only snapshots of the current page: route, rendered components and registered context. */
+/** How the application wants its context read; set once with `ClrContextService.configure`. */
+export interface ClrContextConfig {
+  /** What every snapshot reads: a preset name, or snapshot options. Default: the whole page. */
+  scope?: ClrContextPreset | ClrContextSnapshotOptions;
+  /** List the router's routes in `availableRoutes`. Default `false`. */
+  routes?: boolean;
+  /** Describe markup with neither a role nor an accessible name, such as other libraries' components. */
+  extractors?: ClrContextDomExtractor[];
+  /** For `watch()`: milliseconds of quiet after the last change before the page is read again. Default `300`. */
+  debounceMs?: number;
+  /** For `watch()`: the longest a change waits to be read while the page never goes quiet. Default `2000`. */
+  maxWaitMs?: number;
+}
+
+/** Reads the current page for an AI agent: route, rendered components and registered context. */
 @Injectable({ providedIn: 'root' })
-export class ClrContextEngineService implements OnDestroy {
-  private readonly customExtractors: ClrContextDomExtractor[] = [];
-  private readonly applicationOptions = inject(CLR_CONTEXT_OPTIONS, { optional: true });
+export class ClrContextService implements OnDestroy {
+  private config: ClrContextConfig = {};
+  private scope: ClrContextSnapshotOptions = {};
+  private configured = false;
+  private snapshotTaken = false;
   private readonly locationStrategy = inject(LocationStrategy, { optional: true });
   private readonly platformId = inject(PLATFORM_ID);
   private readonly document = inject(DOCUMENT);
   private readonly contextRegistry = inject(ClrContextRegistryService);
   private readonly router = inject(Router, { optional: true });
+  private readonly injector = inject(Injector);
   private globalProperty: string | null = null;
+  private tracker: ContextTracker | null = null;
 
   ngOnDestroy(): void {
     this.disableGlobalAccess();
+    this.tracker?.destroy();
   }
 
-  /** Takes a fresh snapshot, applying `options` over the application-wide ones. */
-  getSnapshot(options?: ClrContextSnapshotOptions): ClrPageContext {
-    return this.snapshot(options, false);
-  }
-
-  /** Registers a DOM extractor for other libraries' components. Returns a function that removes it. */
-  registerDomExtractor(extractor: ClrContextDomExtractor): () => void {
-    if (!this.customExtractors.includes(extractor)) {
-      this.customExtractors.push(extractor);
+  /**
+   * Sets how the application wants its context read. Call it once, at startup: a snapshot taken before uses the
+   * defaults, and a second call replaces the whole configuration.
+   */
+  configure(config: ClrContextConfig): void {
+    if (isDevMode() && (this.configured || this.snapshotTaken)) {
+      console.warn(
+        this.configured
+          ? 'ClrContextService.configure: called again; the new configuration replaces the previous one.'
+          : 'ClrContextService.configure: called after a snapshot was taken; that snapshot used the defaults.'
+      );
     }
-    return () => {
-      const index = this.customExtractors.indexOf(extractor);
-      if (index > -1) {
-        this.customExtractors.splice(index, 1);
-      }
-    };
+    this.config = { ...config };
+    this.scope = presetOrOptions(config.scope);
+    this.configured = true;
+  }
+
+  /** A fresh snapshot of the page, with `options` applied over the configured scope. */
+  snapshot(options?: ClrContextSnapshotOptions): Promise<ClrPageContext> {
+    return Promise.resolve(this.read(options, false));
+  }
+
+  /**
+   * The page as it changes: a snapshot now, and another after each change to the DOM, a value, an annotation or
+   * the route. The page is watched while anyone subscribes, and every subscriber shares one watcher, so `options`
+   * given here apply to all of them.
+   */
+  watch(options?: ClrContextSnapshotOptions): Observable<ClrPageContext> {
+    return defer(() => this.contextTracker().track(options && { ...this.pacing(), snapshot: options }));
+  }
+
+  /** What changed with each `watch()` snapshot: the first lists everything as added. */
+  changes(options?: ClrContextSnapshotOptions): Observable<ClrContextChange> {
+    return defer(() => {
+      let previous: ClrPageContext | null = null;
+      return this.watch(options).pipe(
+        map(current => {
+          const change = clrDiffContext(previous, current);
+          previous = current;
+          return change;
+        })
+      );
+    });
   }
 
   /**
@@ -85,7 +149,7 @@ export class ClrContextEngineService implements OnDestroy {
     hostOptions: ClrContextGlobalAccessOptions = {}
   ): void {
     if (!GLOBAL_PROPERTY_PATTERN.test(propertyName)) {
-      throw new Error(`ClrContextEngineService: "${propertyName}" is not a valid name for a global accessor.`);
+      throw new Error(`ClrContextService: "${propertyName}" is not a valid name for a global accessor.`);
     }
     const window = this.browserWindow();
     if (!window) {
@@ -95,14 +159,14 @@ export class ClrContextEngineService implements OnDestroy {
     const host = window as unknown as Record<string, unknown>;
     // A refused name leaves the existing accessor in place.
     if (propertyName in host && propertyName !== this.globalProperty) {
-      throw new Error(`ClrContextEngineService: window.${propertyName} already exists and will not be replaced.`);
+      throw new Error(`ClrContextService: window.${propertyName} already exists and will not be replaced.`);
     }
     this.disableGlobalAccess();
     this.globalProperty = propertyName;
     const ceiling = this.untrustedCeiling(budgets);
     const accessor = (options?: unknown) => {
       // The caller may ask for less than the application allows, never for more.
-      const snapshot = this.snapshot(capSnapshotOptions(sanitizeUntrustedSnapshotOptions(options), ceiling), true);
+      const snapshot = this.read(capSnapshotOptions(sanitizeUntrustedSnapshotOptions(options), ceiling), true);
       const shared = shareFormValues ? snapshot : withoutFormValues(snapshot);
       return shareFullUrl ? shared : withoutUrlDetails(shared, url => this.routePattern(url), this.document.baseURI);
     };
@@ -124,6 +188,22 @@ export class ClrContextEngineService implements OnDestroy {
     this.globalProperty = null;
   }
 
+  private contextTracker(): ContextTracker {
+    this.tracker ??= runInInjectionContext(
+      this.injector,
+      () =>
+        new ContextTracker(
+          options => this.read(options, false),
+          () => this.pacing()
+        )
+    );
+    return this.tracker;
+  }
+
+  private pacing() {
+    return { debounceMs: this.config.debounceMs, maxWaitMs: this.config.maxWaitMs };
+  }
+
   /** The route, with nothing about the page yet. */
   private emptySnapshot(): ClrPageContext {
     const snapshot: ClrPageContext = {
@@ -140,28 +220,29 @@ export class ClrContextEngineService implements OnDestroy {
   }
 
   /** With `untrusted`, what application code published is cut to the state keys it marks public. */
-  private snapshot(options: ClrContextSnapshotOptions | undefined, untrusted: boolean): ClrPageContext {
+  private read(options: ClrContextSnapshotOptions | undefined, untrusted: boolean): ClrPageContext {
+    this.snapshotTaken = true;
     const snapshot = this.emptySnapshot();
-    const resolved = resolveSnapshotOptions(withCallOptions(this.applicationOptions, options));
+    const resolved = resolveSnapshotOptions(withCallOptions(this.scope, options));
     const regions = this.contextRegistry.collect({ filter: this.regionFilter(resolved), limits: resolved, untrusted });
     return this.describePage(snapshot, resolved, regions, untrusted);
   }
 
   private describePage(
     snapshot: ClrPageContext,
-    resolved: Required<ClrContextSnapshotOptions>,
+    resolved: ResolvedSnapshotOptions,
     regions: ClrComponentContext[],
     untrusted: boolean
   ): ClrPageContext {
     snapshot.title = this.document.title;
     snapshot.url = this.currentUrl();
     setRegions(snapshot, regions, resolved);
-    if (resolved.includeRoutes && this.router?.config.length) {
+    if (this.config.routes && this.router?.config.length) {
       const limit = Math.max(resolved.maxItemsPerCollection, MIN_ROUTE_LIMIT);
       snapshot.availableRoutes = availableRoutes(this.router.config, limit);
     }
-    if (isPlatformBrowser(this.platformId) && resolved.includeDomComponents) {
-      const tree = collectContextTreeWithin(this.document, resolved, this.customExtractors, untrusted);
+    if (isPlatformBrowser(this.platformId)) {
+      const tree = collectContextTreeWithin(this.document, resolved, this.config.extractors ?? [], untrusted);
       snapshot.components = tree.components;
       if (tree.truncated) {
         snapshot.truncated = true;
@@ -174,7 +255,7 @@ export class ClrContextEngineService implements OnDestroy {
   }
 
   /** Annotations follow their element: left out where it would be, stateless inside a redacted region. */
-  private regionFilter(options: Required<ClrContextSnapshotOptions>): ClrContextRegionFilter {
+  private regionFilter(options: ResolvedSnapshotOptions): ClrContextRegionFilter {
     if (!isPlatformBrowser(this.platformId)) {
       return () => 'keep';
     }
@@ -196,8 +277,7 @@ export class ClrContextEngineService implements OnDestroy {
 
   /** The most an untrusted caller may get: the host can narrow the application's options, never widen them. */
   private untrustedCeiling(hostCeiling?: ClrContextSnapshotOptions): ClrContextSnapshotOptions {
-    const application = this.applicationOptions ?? undefined;
-    return resolveSnapshotOptions(capSnapshotOptions(withCallOptions(application, hostCeiling), application));
+    return resolveSnapshotOptions(capSnapshotOptions(withCallOptions(this.scope, hostCeiling), this.scope));
   }
 
   private browserWindow(): Window | null {
@@ -279,11 +359,7 @@ export class ClrContextEngineService implements OnDestroy {
 }
 
 /** Regions are not walked, so they get a component budget of their own. */
-function setRegions(
-  snapshot: ClrPageContext,
-  regions: ClrComponentContext[],
-  options: Required<ClrContextSnapshotOptions>
-): void {
+function setRegions(snapshot: ClrPageContext, regions: ClrComponentContext[], options: ResolvedSnapshotOptions): void {
   const budget = { remaining: options.maxComponents, truncated: false };
   snapshot.regions = charged(regions, budget);
   if (budget.truncated) {

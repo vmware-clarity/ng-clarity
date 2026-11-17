@@ -9,10 +9,11 @@ import { ChangeDetectionStrategy, Component, ErrorHandler } from '@angular/core'
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { CLR_CONTEXT_IGNORE_ATTRIBUTE } from '@clr/angular/utils';
+import { Subscription } from 'rxjs';
 
 import { ClrContextRegistryService } from './context-registry.service';
-import { ClrContextTrackerService } from './context-tracker.service';
-import { ClrContextEngineService } from './contextual-engine.service';
+import { ContextTracker, ContextTrackingOptions } from './context-tracker';
+import { ClrContextService } from './contextual-engine.service';
 import { ClrContextChange } from '../diff';
 import { ClrComponentContext, ClrPageContext } from '../interfaces/context.interface';
 
@@ -92,8 +93,31 @@ async function elapse(ms: number): Promise<void> {
   await flushMutations();
 }
 
-describe('ClrContextTrackerService', () => {
-  let tracker: ClrContextTrackerService;
+/** The tracker `ClrContextService` watches the page with. */
+function createTracker(): ContextTracker {
+  return TestBed.inject(ClrContextService)['contextTracker']();
+}
+
+/** One snapshot read, which a spec can make fail. */
+function spyOnRead(): jasmine.Spy {
+  const service = TestBed.inject(ClrContextService) as unknown as { read: () => ClrPageContext };
+  return spyOn(service, 'read').and.callThrough();
+}
+
+const running: Subscription[] = [];
+
+/** Keeps `tracker` tracking with `options` until {@link stopAll}. */
+function start(tracker: ContextTracker, options?: ContextTrackingOptions): void {
+  running.push(tracker.track(options).subscribe());
+}
+
+function stopAll(tracker: ContextTracker): void {
+  running.splice(0).forEach(subscription => subscription.unsubscribe());
+  tracker.stop();
+}
+
+describe('ContextTracker', () => {
+  let tracker: ContextTracker;
   let emitted: ClrPageContext[];
   let addedElements: Element[];
 
@@ -113,14 +137,14 @@ describe('ClrContextTrackerService', () => {
   beforeEach(() => {
     useFakeTimers();
     TestBed.configureTestingModule({});
-    tracker = TestBed.inject(ClrContextTrackerService);
+    tracker = createTracker();
     emitted = [];
     addedElements = [];
     tracker.context$.subscribe(context => emitted.push(context));
   });
 
   afterEach(() => {
-    tracker.stop();
+    stopAll(tracker);
     for (const element of addedElements) {
       element.remove();
     }
@@ -132,7 +156,7 @@ describe('ClrContextTrackerService', () => {
   });
 
   it('emits an initial snapshot when tracking starts', () => {
-    tracker.start();
+    start(tracker);
 
     expect(emitted.length).toBe(1);
     expect(emitted[0].title).toBe(document.title);
@@ -140,7 +164,7 @@ describe('ClrContextTrackerService', () => {
   });
 
   it('replays the latest snapshot to late subscribers', () => {
-    tracker.start();
+    start(tracker);
 
     const late: ClrPageContext[] = [];
     tracker.context$.subscribe(context => late.push(context));
@@ -149,7 +173,7 @@ describe('ClrContextTrackerService', () => {
   });
 
   it('scrapes and emits after the DOM changes', async () => {
-    tracker.start({ debounceMs: 20 });
+    start(tracker, { debounceMs: 20 });
     const countAfterStart = emitted.length;
 
     addWidget('Chat widget');
@@ -162,7 +186,7 @@ describe('ClrContextTrackerService', () => {
   });
 
   it('waits at least 10 ms, whatever pacing it is given', async () => {
-    tracker.start({ debounceMs: 0, maxWaitMs: NaN });
+    start(tracker, { debounceMs: 0, maxWaitMs: NaN });
     const countAfterStart = emitted.length;
 
     addWidget('Chat widget');
@@ -174,7 +198,7 @@ describe('ClrContextTrackerService', () => {
   });
 
   it('coalesces a burst of changes into a single emission', async () => {
-    tracker.start({ debounceMs: 150 });
+    start(tracker, { debounceMs: 150 });
     const countAfterStart = emitted.length;
 
     addWidget('First');
@@ -194,7 +218,7 @@ describe('ClrContextTrackerService', () => {
   });
 
   it('does not emit when the page context did not meaningfully change', async () => {
-    tracker.start({ debounceMs: 20 });
+    start(tracker, { debounceMs: 20 });
     const countAfterStart = emitted.length;
 
     // A plain div is a DOM change but contributes nothing to the context.
@@ -211,7 +235,7 @@ describe('ClrContextTrackerService', () => {
     ignored.setAttribute(CLR_CONTEXT_IGNORE_ATTRIBUTE, '');
     document.body.appendChild(ignored);
     addedElements.push(ignored);
-    tracker.start({ debounceMs: 20 });
+    start(tracker, { debounceMs: 20 });
     const countAfterStart = emitted.length;
 
     addWidget('Panel internals', ignored);
@@ -223,7 +247,7 @@ describe('ClrContextTrackerService', () => {
 
   it('drops a region from the tracked context once it is marked ignored', async () => {
     const widget = addWidget('Sensitive');
-    tracker.start({ debounceMs: 20 });
+    start(tracker, { debounceMs: 20 });
     expect(widgetLabels(tracker.currentContext)).toEqual(['Sensitive']);
 
     widget.setAttribute(CLR_CONTEXT_IGNORE_ATTRIBUTE, '');
@@ -234,8 +258,8 @@ describe('ClrContextTrackerService', () => {
 
   it('does not re-scrape when a style only moves or resizes something, and does when it hides it', async () => {
     const widget = addWidget('Popover');
-    tracker.start({ debounceMs: 20 });
-    const scrapes = spyOn(TestBed.inject(ClrContextEngineService), 'getSnapshot').and.callThrough();
+    start(tracker, { debounceMs: 20 });
+    const scrapes = spyOnRead().and.callThrough();
 
     (widget as HTMLElement).style.left = '10px';
     (widget as HTMLElement).style.width = '120px';
@@ -251,7 +275,7 @@ describe('ClrContextTrackerService', () => {
   it('re-scrapes when a custom property that may drive visibility changes', async () => {
     const widget = addWidget('Panel') as HTMLElement;
     widget.setAttribute('style', '--panel-display: block; display: var(--panel-display)');
-    tracker.start({ debounceMs: 20 });
+    start(tracker, { debounceMs: 20 });
     expect(widgetLabels(tracker.currentContext)).toEqual(['Panel']);
 
     widget.style.setProperty('--panel-display', 'none');
@@ -261,7 +285,7 @@ describe('ClrContextTrackerService', () => {
   });
 
   it('still scrapes at the max-wait bound when the page never goes quiet', async () => {
-    tracker.start({ debounceMs: 200, maxWaitMs: 500 });
+    start(tracker, { debounceMs: 200, maxWaitMs: 500 });
     const countAfterStart = emitted.length;
 
     const noise = document.createElement('div');
@@ -283,7 +307,7 @@ describe('ClrContextTrackerService', () => {
   });
 
   it('stops reacting to DOM changes once stopped', async () => {
-    tracker.start({ debounceMs: 20 });
+    start(tracker, { debounceMs: 20 });
     tracker.stop();
     const countWhenStopped = emitted.length;
 
@@ -294,7 +318,7 @@ describe('ClrContextTrackerService', () => {
   });
 
   it('applies the configured snapshot budgets to tracked scrapes', async () => {
-    tracker.start({ debounceMs: 20, snapshot: { includeDomComponents: false } });
+    start(tracker, { debounceMs: 20, snapshot: { maxComponents: 0 } });
 
     addWidget('Never collected');
     await elapse(20);
@@ -303,8 +327,8 @@ describe('ClrContextTrackerService', () => {
   });
 
   it('restarts with new options when started again', async () => {
-    tracker.start({ debounceMs: 20 });
-    tracker.start({ debounceMs: 20, snapshot: { includeDomComponents: false } });
+    start(tracker, { debounceMs: 20 });
+    start(tracker, { debounceMs: 20, snapshot: { maxComponents: 0 } });
 
     addWidget('Ignored by new budget');
     await elapse(20);
@@ -313,8 +337,8 @@ describe('ClrContextTrackerService', () => {
   });
 
   it('replays nothing once destroyed', () => {
-    tracker.start();
-    tracker.ngOnDestroy();
+    start(tracker);
+    tracker.destroy();
 
     const late: ClrPageContext[] = [];
     tracker.context$.subscribe(context => late.push(context));
@@ -334,18 +358,9 @@ describe('ClrContextTrackerService', () => {
       expect(tracker.isTracking).toBeFalse();
     });
 
-    it('keeps tracking that was started by hand after a subscriber leaves', () => {
-      const subscription = tracker.track().subscribe();
-      tracker.start();
-
-      subscription.unsubscribe();
-
-      expect(tracker.isTracking).toBeTrue();
-    });
-
     it('stops when the last subscriber leaves, even when the first snapshot failed', () => {
       const handleError = spyOn(TestBed.inject(ErrorHandler), 'handleError');
-      const getSnapshot = spyOn(TestBed.inject(ClrContextEngineService), 'getSnapshot').and.throwError('boom');
+      const getSnapshot = spyOnRead().and.throwError('boom');
 
       const first = tracker.track().subscribe();
       expect(handleError).toHaveBeenCalledWith(jasmine.objectContaining({ message: 'boom' }));
@@ -366,15 +381,8 @@ describe('ClrContextTrackerService', () => {
       subscription.unsubscribe();
     });
 
-    it('leaves running the tracking someone started before', () => {
-      tracker.start();
-      tracker.track().subscribe().unsubscribe();
-
-      expect(tracker.isTracking).toBeTrue();
-    });
-
     it('restarts with the options it is given, and joins as it is without', async () => {
-      const first = tracker.track({ debounceMs: 20, snapshot: { includeDomComponents: false } }).subscribe();
+      const first = tracker.track({ debounceMs: 20, snapshot: { maxComponents: 0 } }).subscribe();
       const second = tracker.track().subscribe();
 
       addWidget('Ignored by the first options');
@@ -386,22 +394,14 @@ describe('ClrContextTrackerService', () => {
     });
   });
 
-  it('emits fresh snapshots on manual refresh', () => {
-    tracker.start();
-    tracker.refresh();
-
-    expect(emitted.length).toBe(2);
-    expect(emitted[1]).not.toBe(emitted[0]);
-  });
-
   describe('with a router', () => {
     it('reads the current route at scrape time, so navigations are tracked through their DOM changes', async () => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
         providers: [provideRouter([{ path: 'inventory', component: RoutedComponent }])],
       });
-      const routedTracker = TestBed.inject(ClrContextTrackerService);
-      routedTracker.start({ debounceMs: 20 });
+      const routedTracker = createTracker();
+      start(routedTracker, { debounceMs: 20 });
 
       try {
         await TestBed.inject(Router).navigateByUrl('/inventory');
@@ -411,7 +411,7 @@ describe('ClrContextTrackerService', () => {
 
         expect(routedTracker.currentContext?.route?.url).toBe('/inventory');
       } finally {
-        routedTracker.stop();
+        stopAll(routedTracker);
       }
     });
 
@@ -420,10 +420,10 @@ describe('ClrContextTrackerService', () => {
       TestBed.configureTestingModule({
         providers: [provideRouter([{ path: 'inventory', component: RoutedComponent }])],
       });
-      const routedTracker = TestBed.inject(ClrContextTrackerService);
+      const routedTracker = createTracker();
       const router = TestBed.inject(Router);
       await router.navigateByUrl('/inventory?a=1');
-      routedTracker.start({ debounceMs: 20 });
+      start(routedTracker, { debounceMs: 20 });
 
       try {
         await router.navigateByUrl('/inventory?a=2');
@@ -431,7 +431,7 @@ describe('ClrContextTrackerService', () => {
 
         expect(routedTracker.currentContext?.route?.url).toBe('/inventory?a=2');
       } finally {
-        routedTracker.stop();
+        stopAll(routedTracker);
       }
     });
   });
@@ -456,7 +456,7 @@ describe('ClrContextTrackerService', () => {
 
     it('re-emits when a value changes, which mutates no DOM', async () => {
       const input = addInput('original');
-      tracker.start({ debounceMs: 20, maxWaitMs: 60 });
+      start(tracker, { debounceMs: 20, maxWaitMs: 60 });
       await elapse(60);
       const before = emitted.length;
 
@@ -471,7 +471,7 @@ describe('ClrContextTrackerService', () => {
 
     it('coalesces a burst of typing into a single scrape', async () => {
       const input = addInput('a');
-      tracker.start({ debounceMs: 40, maxWaitMs: 500 });
+      start(tracker, { debounceMs: 40, maxWaitMs: 500 });
       await elapse(80);
       const before = emitted.length;
 
@@ -496,7 +496,7 @@ describe('ClrContextTrackerService', () => {
       document.body.appendChild(ignored);
       addedElements.push(ignored);
       const input = addInput('original', ignored);
-      tracker.start({ debounceMs: 20, maxWaitMs: 60 });
+      start(tracker, { debounceMs: 20, maxWaitMs: 60 });
       await elapse(60);
       const before = emitted.length;
 
@@ -509,28 +509,28 @@ describe('ClrContextTrackerService', () => {
   });
 });
 
-describe('ClrContextTrackerService, tracking application context', () => {
-  let tracker: ClrContextTrackerService;
+describe('ContextTracker, tracking application context', () => {
+  let tracker: ContextTracker;
   let registry: ClrContextRegistryService;
   let emitted: ClrPageContext[];
 
   beforeEach(() => {
     useFakeTimers();
     TestBed.configureTestingModule({});
-    tracker = TestBed.inject(ClrContextTrackerService);
+    tracker = createTracker();
     registry = TestBed.inject(ClrContextRegistryService);
     emitted = [];
     tracker.context$.subscribe(context => emitted.push(context));
   });
 
   afterEach(() => {
-    tracker.stop();
+    stopAll(tracker);
   });
 
   it('re-scrapes when an annotation reports a change, which mutates no DOM', async () => {
     const state: Record<string, unknown> = { cluster: 'alpha' };
     const unregister = registry.register({ getClrContext: () => ({ type: 'region', state }) });
-    tracker.start({ debounceMs: 10 });
+    start(tracker, { debounceMs: 10 });
     expect(emitted[emitted.length - 1].regions[0].state).toEqual({ cluster: 'alpha' });
 
     state.cluster = 'omega';
@@ -543,7 +543,7 @@ describe('ClrContextTrackerService, tracking application context', () => {
 
   it('re-scrapes when a provider leaves', async () => {
     const unregister = registry.register({ getClrContext: () => ({ type: 'region', label: 'transient' }) });
-    tracker.start({ debounceMs: 10 });
+    start(tracker, { debounceMs: 10 });
     expect(emitted[emitted.length - 1].regions.length).toBe(1);
 
     unregister();
@@ -553,8 +553,8 @@ describe('ClrContextTrackerService, tracking application context', () => {
   });
 });
 
-describe('ClrContextTrackerService, tracking embedded frames', () => {
-  let tracker: ClrContextTrackerService;
+describe('ContextTracker, tracking embedded frames', () => {
+  let tracker: ContextTracker;
   let emitted: ClrPageContext[];
   let frame: HTMLIFrameElement;
 
@@ -591,7 +591,7 @@ describe('ClrContextTrackerService, tracking embedded frames', () => {
   beforeEach(() => {
     useFakeTimers();
     TestBed.configureTestingModule({});
-    tracker = TestBed.inject(ClrContextTrackerService);
+    tracker = createTracker();
     emitted = [];
     tracker.context$.subscribe(context => emitted.push(context));
     frame = document.createElement('iframe');
@@ -600,13 +600,13 @@ describe('ClrContextTrackerService, tracking embedded frames', () => {
   });
 
   afterEach(() => {
-    tracker.stop();
+    stopAll(tracker);
     frame.remove();
   });
 
   it('re-scrapes when the DOM inside a same-origin frame changes', async () => {
     await loadFrame('<button>Run</button>');
-    tracker.start({ debounceMs: 10 });
+    start(tracker, { debounceMs: 10 });
     expect(frameButtons(tracker.currentContext)).toEqual(['Run']);
 
     addFrameButton('Stop');
@@ -618,8 +618,8 @@ describe('ClrContextTrackerService, tracking embedded frames', () => {
   it('does not watch a frame the engine is told to ignore', async () => {
     frame.setAttribute(CLR_CONTEXT_IGNORE_ATTRIBUTE, '');
     await loadFrame('<p>Streaming</p>');
-    tracker.start({ debounceMs: 10 });
-    const getSnapshot = spyOn(TestBed.inject(ClrContextEngineService), 'getSnapshot').and.callThrough();
+    start(tracker, { debounceMs: 10 });
+    const getSnapshot = spyOnRead().and.callThrough();
 
     addFrameButton('Token');
     frameBody().ownerDocument.querySelector('p')?.append(' more');
@@ -630,9 +630,9 @@ describe('ClrContextTrackerService, tracking embedded frames', () => {
 
   it('hands a snapshot that fails to the application’s error handler, and carries on', async () => {
     await loadFrame('<button>Run</button>');
-    tracker.start({ debounceMs: 10 });
+    start(tracker, { debounceMs: 10 });
     const handleError = spyOn(TestBed.inject(ErrorHandler), 'handleError');
-    const getSnapshot = spyOn(TestBed.inject(ClrContextEngineService), 'getSnapshot').and.throwError('boom');
+    const getSnapshot = spyOnRead().and.throwError('boom');
 
     addFrameButton('Stop');
     await elapse(10);
@@ -645,7 +645,7 @@ describe('ClrContextTrackerService, tracking embedded frames', () => {
   });
 
   it('picks a frame up once it loads, and again when it navigates', async () => {
-    tracker.start({ debounceMs: 10 });
+    start(tracker, { debounceMs: 10 });
     await loadFrame('<button>First</button>');
     await elapse(10);
     expect(frameButtons(emitted[emitted.length - 1])).toEqual(['First']);
@@ -661,7 +661,7 @@ describe('ClrContextTrackerService, tracking embedded frames', () => {
 
   it('drops a frame that leaves the page and no longer reacts to its detached document', async () => {
     await loadFrame('<button>Run</button>');
-    tracker.start({ debounceMs: 20 });
+    start(tracker, { debounceMs: 20 });
     await elapse(20);
     expect(frameButtons(tracker.currentContext)).toEqual(['Run']);
     const detached = frameBody();
@@ -680,7 +680,7 @@ describe('ClrContextTrackerService, tracking embedded frames', () => {
 
   it('stops watching a frame once tracking stops', async () => {
     await loadFrame('<button>Run</button>');
-    tracker.start({ debounceMs: 10 });
+    start(tracker, { debounceMs: 10 });
     const before = emitted.length;
     tracker.stop();
 
@@ -691,34 +691,39 @@ describe('ClrContextTrackerService, tracking embedded frames', () => {
   });
 });
 
-describe('ClrContextTrackerService, reporting what changed', () => {
-  let tracker: ClrContextTrackerService;
+describe('ClrContextService watching the page', () => {
+  let context: ClrContextService;
   let changes: ClrContextChange[];
+  let subscription: Subscription;
   let widget: HTMLElement | null;
+
+  function addButton(label: string): void {
+    widget = document.createElement('button');
+    widget.textContent = label;
+    document.body.appendChild(widget);
+  }
 
   beforeEach(() => {
     useFakeTimers();
     TestBed.configureTestingModule({});
-    tracker = TestBed.inject(ClrContextTrackerService);
+    context = TestBed.inject(ClrContextService);
+    context.configure({ debounceMs: 10 });
     changes = [];
     widget = null;
-    tracker.changes$.subscribe(change => changes.push(change));
+    subscription = context.changes().subscribe(change => changes.push(change));
   });
 
   afterEach(() => {
-    tracker.stop();
+    subscription.unsubscribe();
     widget?.remove();
   });
 
   it('lists the first snapshot as all added, then only the difference', async () => {
-    tracker.start({ debounceMs: 10 });
     expect(changes.length).toBe(1);
     expect(changes[0].previous).toBeNull();
     expect(changes[0].added.length).toBe(changes[0].current.components.length);
 
-    widget = document.createElement('button');
-    widget.textContent = 'Provision';
-    document.body.appendChild(widget);
+    addButton('Provision');
     await elapse(10);
 
     expect(changes.length).toBe(2);
@@ -728,19 +733,20 @@ describe('ClrContextTrackerService, reporting what changed', () => {
     expect(latest.removed).toEqual([]);
   });
 
-  it('lists everything as added again after a restart', () => {
-    tracker.start({ debounceMs: 10 });
-    tracker.stop();
-    tracker.start({ debounceMs: 10 });
+  it('lists everything as added again for a new subscriber', () => {
+    const late: ClrContextChange[] = [];
+    context
+      .changes()
+      .subscribe(change => late.push(change))
+      .unsubscribe();
 
-    const restarted = changes[changes.length - 1];
-    expect(restarted.previous).toBeNull();
-    expect(restarted.added.length).toBe(restarted.current.components.length);
+    expect(late.length).toBe(1);
+    expect(late[0].previous).toBeNull();
+    expect(late[0].added.length).toBe(late[0].current.components.length);
   });
 
   it('reports a change of the document title alone, which touches nothing in the body', async () => {
     const originalTitle = document.title;
-    tracker.start({ debounceMs: 10 });
     try {
       document.title = 'Hosts (3 alerts)';
       await elapse(10);
@@ -751,5 +757,29 @@ describe('ClrContextTrackerService, reporting what changed', () => {
     } finally {
       document.title = originalTitle;
     }
+  });
+
+  it('shares one watcher between subscribers, and stops watching when the last one leaves', async () => {
+    const snapshots: ClrPageContext[] = [];
+    const watching = context.watch().subscribe(page => snapshots.push(page));
+    expect(snapshots.length).toBe(1);
+
+    subscription.unsubscribe();
+    watching.unsubscribe();
+    addButton('Unwatched');
+    await elapse(10);
+
+    expect(snapshots.length).toBe(1);
+    expect(changes.length).toBe(1);
+  });
+
+  it('reads with the options given to watch()', () => {
+    let page: ClrPageContext | undefined;
+    context
+      .watch({ maxComponents: 0 })
+      .subscribe(snapshot => (page = snapshot))
+      .unsubscribe();
+
+    expect(page?.components).toEqual([]);
   });
 });
