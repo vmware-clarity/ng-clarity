@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, signal } from '@angular/core';
 import { AppfxDatagridModule, ColumnDefinition, DatagridTreeConfig, TreeExpandedState } from '@clr/addons/datagrid';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import { SelectionType } from '@clr/angular/data/datagrid';
@@ -52,9 +52,9 @@ function fromServer<T>(value: T): Observable<T> {
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class TreeDataGridDemoComponent implements OnDestroy {
-  roots: Resource[] = [];
-  total = 0;
-  loading = true;
+  readonly roots = signal<Resource[]>([]);
+  readonly total = signal(0);
+  readonly loading = signal(true);
   selected: Resource[] = [];
   lastExpanded = '';
   SelectionType = SelectionType;
@@ -85,12 +85,12 @@ export class TreeDataGridDemoComponent implements OnDestroy {
     const size = state.page?.size || 5;
     const from = ((state.page?.current || 1) - 1) * size;
 
-    this.loading = true;
+    this.loading.set(true);
     this.request?.unsubscribe();
     this.request = fromServer(DATACENTERS.slice(from, from + size)).subscribe(roots => {
-      this.roots = roots;
-      this.total = DATACENTERS.length;
-      this.loading = false;
+      this.roots.set(roots);
+      this.total.set(DATACENTERS.length);
+      this.loading.set(false);
     });
   }
 

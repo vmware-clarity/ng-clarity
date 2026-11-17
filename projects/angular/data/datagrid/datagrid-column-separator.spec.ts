@@ -26,115 +26,117 @@ import { DatagridRenderOrganizer } from './render/render-organizer';
 })
 class TestComponent {}
 
-export default function (): void {
-  describe('ClrDatagridColumnSeparator component', function () {
-    let fixture: ComponentFixture<any>;
+describe('Datagrid', () => {
+  describe('Components', () => {
+    describe('ClrDatagridColumnSeparator component', function () {
+      let fixture: ComponentFixture<any>;
 
-    let columnSeparatorDebugElement: DebugElement;
-    let columnSeparatorComponent: ClrDatagridColumnSeparator;
-    let resizeTrackerEl: HTMLElement;
-    let columnHandleEl: HTMLElement;
-    let columnResizerService: ColumnResizerService;
-    let tableSizeService: TableSizeService;
+      let columnSeparatorDebugElement: DebugElement;
+      let columnSeparatorComponent: ClrDatagridColumnSeparator;
+      let resizeTrackerEl: HTMLElement;
+      let columnHandleEl: HTMLElement;
+      let columnResizerService: ColumnResizerService;
+      let tableSizeService: TableSizeService;
 
-    beforeEach(function () {
-      TestBed.configureTestingModule({
-        declarations: [TestComponent, ClrDatagridColumnSeparator],
-        providers: [DomAdapter, DatagridRenderOrganizer],
+      beforeEach(function () {
+        TestBed.configureTestingModule({
+          declarations: [TestComponent, ClrDatagridColumnSeparator],
+          providers: [DomAdapter, DatagridRenderOrganizer],
+        });
+
+        fixture = TestBed.createComponent(TestComponent);
+
+        fixture.detectChanges();
+
+        columnSeparatorDebugElement = fixture.debugElement.query(By.directive(ClrDatagridColumnSeparator));
+
+        columnSeparatorComponent = columnSeparatorDebugElement.injector.get(ClrDatagridColumnSeparator);
+        resizeTrackerEl = fixture.nativeElement.querySelector('.datagrid-column-resize-tracker');
+        columnHandleEl = fixture.nativeElement.querySelector('.datagrid-column-handle');
+        columnResizerService = columnSeparatorDebugElement.injector.get(ColumnResizerService);
+        tableSizeService = columnSeparatorDebugElement.injector.get(TableSizeService);
       });
 
-      fixture = TestBed.createComponent(TestComponent);
+      afterEach(function () {
+        fixture.destroy();
+        const popoverContent = document.querySelectorAll('.clr-popover-content');
+        popoverContent.forEach(content => document.body.removeChild(content));
+      });
 
-      fixture.detectChanges();
+      it('has aria-label and aria-describedby attributes on its resize handle button', function () {
+        expect(columnHandleEl.hasAttribute('aria-label')).toEqual(true);
+        expect(columnHandleEl.hasAttribute('aria-describedby')).toEqual(true);
+      });
 
-      columnSeparatorDebugElement = fixture.debugElement.query(By.directive(ClrDatagridColumnSeparator));
+      it('shows resize tracker when resizing starts', function () {
+        columnSeparatorComponent.showTracker();
+        expect(resizeTrackerEl.style.height).toBe(tableSizeService.getColumnDragHeight());
+      });
 
-      columnSeparatorComponent = columnSeparatorDebugElement.injector.get(ClrDatagridColumnSeparator);
-      resizeTrackerEl = fixture.nativeElement.querySelector('.datagrid-column-resize-tracker');
-      columnHandleEl = fixture.nativeElement.querySelector('.datagrid-column-handle');
-      columnResizerService = columnSeparatorDebugElement.injector.get(ColumnResizerService);
-      tableSizeService = columnSeparatorDebugElement.injector.get(TableSizeService);
-    });
+      it('moves resize tracker during resizing', function () {
+        columnSeparatorComponent.showTracker();
+        expect(resizeTrackerEl.style.transform).toBe('');
+        columnSeparatorComponent.moveTracker(-50);
+        expect(resizeTrackerEl.style.transform).toBe(`translateX(${columnResizerService.resizedBy}px)`);
+      });
 
-    afterEach(function () {
-      fixture.destroy();
-      const popoverContent = document.querySelectorAll('.clr-popover-content');
-      popoverContent.forEach(content => document.body.removeChild(content));
-    });
+      it('hides resize tracker when resizing ends', function () {
+        columnSeparatorComponent.showTracker();
+        columnSeparatorComponent.moveTracker(-50);
+        columnSeparatorComponent.hideTracker();
+        expect(resizeTrackerEl.style.display).toBe('none');
+        expect(resizeTrackerEl.style.transform).toBe('translateX(0px)');
+      });
 
-    it('has aria-label and aria-describedby attributes on its resize handle button', function () {
-      expect(columnHandleEl.hasAttribute('aria-label')).toEqual(true);
-      expect(columnHandleEl.hasAttribute('aria-describedby')).toEqual(true);
-    });
+      it('redflags resize tracker if resizing exceeds max range', function () {
+        columnSeparatorComponent.showTracker();
+        columnResizerService.isWithinMaxResizeRange = false;
+        columnSeparatorComponent.moveTracker(-123);
+        expect(resizeTrackerEl.classList.contains('exceeded-max')).toBe(true);
+        columnResizerService.isWithinMaxResizeRange = true;
+        columnSeparatorComponent.moveTracker(123);
+        expect(resizeTrackerEl.classList.contains('exceeded-max')).toBe(false);
+      });
 
-    it('shows resize tracker when resizing starts', function () {
-      columnSeparatorComponent.showTracker();
-      expect(resizeTrackerEl.style.height).toBe(tableSizeService.getColumnDragHeight());
-    });
+      it('shows resize tracker on first arrow right key down event', function () {
+        expect(resizeTrackerEl.style.height).toBe('');
+        columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(resizeTrackerEl.style.height).toBe(tableSizeService.getColumnDragHeight());
+      });
 
-    it('moves resize tracker during resizing', function () {
-      columnSeparatorComponent.showTracker();
-      expect(resizeTrackerEl.style.transform).toBe('');
-      columnSeparatorComponent.moveTracker(-50);
-      expect(resizeTrackerEl.style.transform).toBe(`translateX(${columnResizerService.resizedBy}px)`);
-    });
+      it('shows resize tracker on first arrow left key down event', function () {
+        expect(resizeTrackerEl.style.height).toBe('');
+        columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
+        expect(resizeTrackerEl.style.height).toBe(tableSizeService.getColumnDragHeight());
+      });
 
-    it('hides resize tracker when resizing ends', function () {
-      columnSeparatorComponent.showTracker();
-      columnSeparatorComponent.moveTracker(-50);
-      columnSeparatorComponent.hideTracker();
-      expect(resizeTrackerEl.style.display).toBe('none');
-      expect(resizeTrackerEl.style.transform).toBe('translateX(0px)');
-    });
+      it('moves resize tracker on horizontal arrow key down events', function () {
+        expect(resizeTrackerEl.style.transform).toBe('');
+        columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
+        columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
+        columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
+        expect(resizeTrackerEl.style.transform).toBe('translateX(-36px)');
+        columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(resizeTrackerEl.style.transform).toBe('translateX(-12px)');
+      });
 
-    it('redflags resize tracker if resizing exceeds max range', function () {
-      columnSeparatorComponent.showTracker();
-      columnResizerService.isWithinMaxResizeRange = false;
-      columnSeparatorComponent.moveTracker(-123);
-      expect(resizeTrackerEl.classList.contains('exceeded-max')).toBeTrue();
-      columnResizerService.isWithinMaxResizeRange = true;
-      columnSeparatorComponent.moveTracker(123);
-      expect(resizeTrackerEl.classList.contains('exceeded-max')).toBeFalse();
-    });
+      it('hides resize tracker on horizontal arrow key up events', function () {
+        expect(resizeTrackerEl.style.height).toBe('');
+        columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
+        expect(resizeTrackerEl.style.height).toBe(tableSizeService.getColumnDragHeight());
+        columnHandleEl.dispatchEvent(new KeyboardEvent('keyup', { key: Keys.ArrowRight }));
+        expect(resizeTrackerEl.style.display).toBe('none');
+        expect(resizeTrackerEl.style.transform).toBe('translateX(0px)');
+      });
 
-    it('shows resize tracker on first arrow right key down event', function () {
-      expect(resizeTrackerEl.style.height).toBe('');
-      columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-      expect(resizeTrackerEl.style.height).toBe(tableSizeService.getColumnDragHeight());
-    });
-
-    it('shows resize tracker on first arrow left key down event', function () {
-      expect(resizeTrackerEl.style.height).toBe('');
-      columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-      expect(resizeTrackerEl.style.height).toBe(tableSizeService.getColumnDragHeight());
-    });
-
-    it('moves resize tracker on horizontal arrow key down events', function () {
-      expect(resizeTrackerEl.style.transform).toBe('');
-      columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-      columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-      columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-      expect(resizeTrackerEl.style.transform).toBe('translateX(-36px)');
-      columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-      columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-      expect(resizeTrackerEl.style.transform).toBe('translateX(-12px)');
-    });
-
-    it('hides resize tracker on horizontal arrow key up events', function () {
-      expect(resizeTrackerEl.style.height).toBe('');
-      columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
-      expect(resizeTrackerEl.style.height).toBe(tableSizeService.getColumnDragHeight());
-      columnHandleEl.dispatchEvent(new KeyboardEvent('keyup', { key: Keys.ArrowRight }));
-      expect(resizeTrackerEl.style.display).toBe('none');
-      expect(resizeTrackerEl.style.transform).toBe('translateX(0px)');
-    });
-
-    it('focuses column handle after arrow key up events', function () {
-      expectActiveElementNotToBe(columnHandleEl);
-      columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
-      expect(resizeTrackerEl.style.height).toBe(tableSizeService.getColumnDragHeight());
-      columnHandleEl.dispatchEvent(new KeyboardEvent('keyup', { key: Keys.ArrowRight }));
-      expectActiveElementToBe(columnHandleEl);
+      it('focuses column handle after arrow key up events', function () {
+        expectActiveElementNotToBe(columnHandleEl);
+        columnHandleEl.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
+        expect(resizeTrackerEl.style.height).toBe(tableSizeService.getColumnDragHeight());
+        columnHandleEl.dispatchEvent(new KeyboardEvent('keyup', { key: Keys.ArrowRight }));
+        expectActiveElementToBe(columnHandleEl);
+      });
     });
   });
-}
+});

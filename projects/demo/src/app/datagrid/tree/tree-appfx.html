@@ -44,9 +44,9 @@
 <appfx-datagrid
   #grid
   [serverDrivenDatagrid]="true"
-  [gridItems]="roots"
-  [totalItems]="total"
-  [loading]="loading"
+  [gridItems]="roots()"
+  [totalItems]="total()"
+  [loading]="loading()"
   [columns]="columns"
   [trackByGridItemProperty]="'id'"
   [selectionType]="SelectionType.Multi"

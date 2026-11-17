@@ -5,13 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { signal } from '@angular/core';
+
 let id = 0;
 
 export class ProgBarExample {
   intervalId: any;
   demoId: string = 'prog-example-toggle-' + id++;
-  value = 0;
   intervalTimeInMs = 100;
+  readonly value = signal(0);
 
   constructor(
     private label: string = 'demo',
@@ -29,7 +31,7 @@ export class ProgBarExample {
 
   reset(): void {
     this.stop();
-    this.value = 0;
+    this.value.set(0);
     this.intervalId = -1;
   }
 
@@ -44,21 +46,21 @@ export class ProgBarExample {
   }
 
   run(): void {
-    let myProgress: number = this.value;
+    let myProgress: number = this.value();
     const maxProgressIncrement = 15;
     const minProgressIncrement = 4;
 
     myProgress += Math.random() * (maxProgressIncrement - minProgressIncrement) + minProgressIncrement;
 
     if (myProgress > 99) {
-      this.value = 100;
+      this.value.set(100);
       this.stop();
     } else if (myProgress < 1 || isNaN(myProgress)) {
-      this.value = 1;
+      this.value.set(1);
     } else {
       // typescript decides to be fun and complains if the first parameter here is not a string.
       // many good things about TS. but this one is pretty lame...
-      this.value = parseInt(myProgress + '', 10);
+      this.value.set(parseInt(myProgress + '', 10));
     }
   }
 }

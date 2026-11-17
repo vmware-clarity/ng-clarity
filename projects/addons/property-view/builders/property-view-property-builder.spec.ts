@@ -104,7 +104,7 @@ describe('PropertyViewPropertyBuilder', function () {
 
         const keyBuilder = new PropertyViewPropertyKeyBuilder(nullPropertyBuilder).text('key');
 
-        spyOn(propertyBuilder, 'keyBuilder').and.returnValue(keyBuilder);
+        vi.spyOn(propertyBuilder, 'keyBuilder').mockReturnValue(keyBuilder);
 
         expect(propertyBuilder.build().key).toEqual(keyBuilder.build());
       });
@@ -118,7 +118,7 @@ describe('PropertyViewPropertyBuilder', function () {
         const valueBuilder2 = new PropertyViewPropertyValueBuilder(nullPropertyBuilder);
         const valueBuilder3 = new PropertyViewPropertyValueComponentBuilder(nullPropertyBuilder);
 
-        spyOn(propertyBuilder, 'getValueBuilders').and.returnValue([valueBuilder1, valueBuilder3, valueBuilder2]);
+        vi.spyOn(propertyBuilder, 'getValueBuilders').mockReturnValue([valueBuilder1, valueBuilder3, valueBuilder2]);
 
         expect(propertyBuilder.build().content).toEqual([
           valueBuilder1.build(),
@@ -142,14 +142,14 @@ describe('PropertyViewPropertyBuilder', function () {
       const propertyBuilder = new PropertyViewPropertyBuilder(nullSectionBuilder);
 
       const keyBuilder = new PropertyViewPropertyKeyBuilder(nullPropertyBuilder);
-      const keyBuilderCloneSpy = spyOn(keyBuilder, 'clone').and.callThrough();
+      const keyBuilderCloneSpy = vi.spyOn(keyBuilder, 'clone');
 
-      spyOn(propertyBuilder, 'keyBuilder').and.returnValue(keyBuilder);
+      vi.spyOn(propertyBuilder, 'keyBuilder').mockReturnValue(keyBuilder);
 
       const propertyBuilderClone = propertyBuilder.clone(nullSectionBuilder);
-      expect(keyBuilderCloneSpy.calls.mostRecent().args).toEqual([propertyBuilderClone]);
+      expect(vi.mocked(keyBuilderCloneSpy).mock.lastCall).toEqual([propertyBuilderClone]);
 
-      const keyBuilderClone: PropertyViewPropertyKeyBuilder = keyBuilderCloneSpy.calls.mostRecent().returnValue;
+      const keyBuilderClone: PropertyViewPropertyKeyBuilder = keyBuilderCloneSpy.mock.results.at(-1)?.value;
       expect(propertyBuilderClone.keyBuilder()).toBe(keyBuilderClone);
     });
 
@@ -157,20 +157,22 @@ describe('PropertyViewPropertyBuilder', function () {
       const propertyBuilder = new PropertyViewPropertyBuilder(nullSectionBuilder);
 
       const valueBuilder1 = new PropertyViewPropertyValueBuilder(nullPropertyBuilder);
-      const valueBuilder1CloneSpy = spyOn(valueBuilder1, 'clone').and.callThrough();
+      const valueBuilder1CloneSpy = vi.spyOn(valueBuilder1, 'clone');
 
       const valueBuilder2 = new PropertyViewPropertyValueBuilder(nullPropertyBuilder);
-      const valueBuilder2CloneSpy = spyOn(valueBuilder2, 'clone').and.callThrough();
+      const valueBuilder2CloneSpy = vi.spyOn(valueBuilder2, 'clone');
 
-      spyOn(propertyBuilder, 'getValueBuilders').and.returnValue([valueBuilder1, valueBuilder2]);
+      vi.spyOn(propertyBuilder, 'getValueBuilders').mockReturnValue([valueBuilder1, valueBuilder2]);
 
       const propertyBuilderClone = propertyBuilder.clone(nullSectionBuilder);
-      expect(valueBuilder1CloneSpy.calls.mostRecent().args).toEqual([propertyBuilderClone]);
-      expect(valueBuilder2CloneSpy.calls.mostRecent().args).toEqual([propertyBuilderClone]);
+      expect(vi.mocked(valueBuilder1CloneSpy).mock.lastCall).toEqual([propertyBuilderClone]);
+      expect(vi.mocked(valueBuilder2CloneSpy).mock.lastCall).toEqual([propertyBuilderClone]);
 
       const propertyBuilderCloneValueBuilders = propertyBuilderClone.getValueBuilders();
-      const valueBuilder1Clone: PropertyViewPropertyValueBuilder = valueBuilder1CloneSpy.calls.mostRecent().returnValue;
-      const valueBuilder2Clone: PropertyViewPropertyValueBuilder = valueBuilder2CloneSpy.calls.mostRecent().returnValue;
+
+      const valueBuilder1Clone: PropertyViewPropertyValueBuilder = valueBuilder1CloneSpy.mock.results.at(-1)?.value;
+
+      const valueBuilder2Clone: PropertyViewPropertyValueBuilder = valueBuilder2CloneSpy.mock.results.at(-1)?.value;
       expect(propertyBuilderCloneValueBuilders.length).toEqual(2);
       expect(propertyBuilderCloneValueBuilders[0]).toBe(valueBuilder1Clone);
       expect(propertyBuilderCloneValueBuilders[1]).toBe(valueBuilder2Clone);

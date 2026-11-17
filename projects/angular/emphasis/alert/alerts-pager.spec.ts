@@ -14,9 +14,14 @@ import { ClrAlertsPager } from './alerts-pager';
 import { ClrEmphasisModule } from '../emphasis.module';
 import { MultiAlertService } from './providers/multi-alert.service';
 
-export default function () {
-  describe('ClrAlerts pager component', function () {
-    describe('Typescript API', function () {
+describe('Alert Tests', () => {
+  describe('ClrAlerts pager component', () => {
+    let testContext: any;
+    beforeEach(() => {
+      testContext = {};
+    });
+
+    describe('Typescript API', () => {
       let component: ClrAlertsPager;
       let service: MultiAlertService;
 
@@ -30,16 +35,16 @@ export default function () {
         component = null;
       });
 
-      it('page up calls the multi alert service', function () {
-        spyOn(service, 'next').and.callFake(() => {
+      it('page up calls the multi alert service', () => {
+        vi.spyOn(service, 'next').mockImplementation(() => {
           // Do nothing
         });
         component.pageUp();
         expect(service.next).toHaveBeenCalled();
       });
 
-      it('page down calls the multi alert service', function () {
-        spyOn(service, 'previous').and.callFake(() => {
+      it('page down calls the multi alert service', () => {
+        vi.spyOn(service, 'previous').mockImplementation(() => {
           // Do nothingno
         });
         component.pageDown();
@@ -47,61 +52,61 @@ export default function () {
       });
     });
 
-    describe('Template API', function () {
-      beforeEach(function () {
+    describe('Template API', () => {
+      beforeEach(() => {
         const service = new MultiAlertService();
         const queryList = new QueryList<ClrAlert>();
 
-        this.create = <T>(componentType: Type<T>) => {
+        testContext.create = <T>(componentType: Type<T>) => {
           TestBed.configureTestingModule({
             imports: [ClrEmphasisModule],
             declarations: [componentType],
             providers: [{ provide: MultiAlertService, useValue: service }],
           });
-          this.fixture = TestBed.createComponent(componentType);
+          testContext.fixture = TestBed.createComponent(componentType);
 
-          this.alertFixture = TestBed.createComponent(ClrAlert);
-          this.alert = this.alertFixture.componentInstance;
-          this.secondAlertFixture = TestBed.createComponent(ClrAlert);
-          this.secondAlert = this.secondAlertFixture.componentInstance;
+          testContext.alertFixture = TestBed.createComponent(ClrAlert);
+          testContext.alert = testContext.alertFixture.componentInstance;
+          testContext.secondAlertFixture = TestBed.createComponent(ClrAlert);
+          testContext.secondAlert = testContext.secondAlertFixture.componentInstance;
 
-          queryList.reset([this.alert, this.secondAlert]);
+          queryList.reset([testContext.alert, testContext.secondAlert]);
           service.manage(queryList);
 
-          this.fixture.detectChanges();
+          testContext.fixture.detectChanges();
         };
       });
 
-      afterEach(function () {
-        this.fixture.destroy();
-        this.alertFixture.destroy();
-        this.secondAlertFixture.destroy();
+      afterEach(() => {
+        testContext.fixture.destroy();
+        testContext.alertFixture.destroy();
+        testContext.secondAlertFixture.destroy();
       });
 
-      it('offers two way binding on the alert index', function () {
-        this.create(TestIndex);
-        this.fixture.componentInstance.index = 1;
-        this.fixture.detectChanges();
-        expect(this.fixture.componentInstance.pagerInstance.currentAlertIndex).toEqual(1);
+      it('offers two way binding on the alert index', () => {
+        testContext.create(TestIndex);
+        testContext.fixture.componentInstance.index = 1;
+        testContext.fixture.detectChanges();
+        expect(testContext.fixture.componentInstance.pagerInstance.currentAlertIndex).toEqual(1);
 
-        this.fixture.componentInstance.pagerInstance.currentAlertIndex = 0;
-        this.fixture.detectChanges();
-        expect(this.fixture.componentInstance.index).toEqual(0);
+        testContext.fixture.componentInstance.pagerInstance.currentAlertIndex = 0;
+        testContext.fixture.detectChanges();
+        expect(testContext.fixture.componentInstance.index).toEqual(0);
       });
 
-      it('offers two way binding on the alert instance', function () {
-        this.create(TestInstance);
-        this.fixture.componentInstance.currentAlert = this.secondAlert;
-        this.fixture.detectChanges();
-        expect(this.fixture.componentInstance.pagerInstance.currentAlert).toEqual(this.secondAlert);
+      it('offers two way binding on the alert instance', () => {
+        testContext.create(TestInstance);
+        testContext.fixture.componentInstance.currentAlert = testContext.secondAlert;
+        testContext.fixture.detectChanges();
+        expect(testContext.fixture.componentInstance.pagerInstance.currentAlert).toEqual(testContext.secondAlert);
 
-        this.fixture.componentInstance.pagerInstance.currentAlert = this.alert;
-        this.fixture.detectChanges();
-        expect(this.fixture.componentInstance.currentAlert).toEqual(this.alert);
+        testContext.fixture.componentInstance.pagerInstance.currentAlert = testContext.alert;
+        testContext.fixture.detectChanges();
+        expect(testContext.fixture.componentInstance.currentAlert).toEqual(testContext.alert);
       });
     });
 
-    describe('View Basics', function () {
+    describe('View Basics', () => {
       let fixture: ComponentFixture<TestBasics>;
       let pagerInstance: ClrAlertsPager;
 
@@ -120,11 +125,11 @@ export default function () {
         pagerInstance = fixture.componentInstance.pagerInstance;
       });
 
-      afterEach(function () {
+      afterEach(() => {
         fixture.destroy();
       });
 
-      it('next alert aria-label is correct after page change', function () {
+      it('next alert aria-label is correct after page change', () => {
         const button = fixture.nativeElement.querySelector('.alerts-page-up button');
         expect(button.getAttribute('aria-label')).toBe('Next alert message, 2 of 4');
         pagerInstance.pageUp();
@@ -132,7 +137,7 @@ export default function () {
         expect(button.getAttribute('aria-label')).toBe('Next alert message, 3 of 4');
       });
 
-      it('previous alert aria-label is correct after page change', function () {
+      it('previous alert aria-label is correct after page change', () => {
         const button = fixture.nativeElement.querySelector('.alerts-page-down button');
         expect(button.getAttribute('aria-label')).toBe('Previous alert message, 4 of 4');
         pagerInstance.pageUp();
@@ -141,7 +146,7 @@ export default function () {
       });
     });
   });
-}
+});
 
 @Component({
   template: `<clr-alerts-pager [(clrCurrentAlertIndex)]="index"></clr-alerts-pager>`,
