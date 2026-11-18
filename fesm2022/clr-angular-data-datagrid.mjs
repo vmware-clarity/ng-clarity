@@ -530,6 +530,7 @@ var RegisteredFilter = class {
 var Sort = class Sort {
 	constructor(stateDebouncer) {
 		this.stateDebouncer = stateDebouncer;
+		this._comparator = null;
 		this._reverse = false;
 		this._change = new Subject();
 	}
@@ -730,11 +731,12 @@ var Selection = class Selection {
 		this._currentSelectionRefs = [];
 		this.valueCollector = new Subject();
 		this._selectionType = SelectionType.None;
+		this._current = [];
 		this._change = new Subject();
 		this.subscriptions = [];
 		this.id = "clr-dg-selection" + nbSelection++;
 		this.identifyBy = _items.identifyBy;
-		this._differ = differs.find(this._current || []).create(this.identifyBy);
+		this._differ = differs.find(this._current).create(this.identifyBy);
 		this.subscriptions.push(filters.change.subscribe(() => {
 			if (!this.selectable || this.preserveSelection) return;
 			this.clearSelection();
@@ -795,7 +797,6 @@ var Selection = class Selection {
 	set selectionType(value) {
 		if (value === this.selectionType) return;
 		this._selectionType = value ?? SelectionType.None;
-		if (!this._current && this._selectionType !== SelectionType.None) this._current = [];
 	}
 	get current() {
 		return this._current;
@@ -805,7 +806,7 @@ var Selection = class Selection {
 		this.updateCurrentSelectionRefs();
 	}
 	get currentSingle() {
-		return this._current?.length ? this._current[0] : void 0;
+		return this._current.length ? this._current[0] : void 0;
 	}
 	get change() {
 		return this._change.asObservable();
@@ -904,7 +905,7 @@ var Selection = class Selection {
 		this._change.next(this.current);
 	}
 	updateCurrentSelectionRefs() {
-		this._currentSelectionRefs = this._current?.map((item) => this._items.identifyBy(item)) || [];
+		this._currentSelectionRefs = this._current.map((item) => this._items.identifyBy(item));
 	}
 	static {
 		this.ɵfac = i0.ɵɵngDeclareFactory({
@@ -985,7 +986,7 @@ var DatagridTreeService = class DatagridTreeService {
 		this.getChildren = getChildren;
 		this.cascadeSelection = !!cascadeSelection;
 		this.setRoots(roots);
-		if (this.cascading && !cascaded && this.selection.current?.length) this.setSelected(this.selection.current || [], true);
+		if (this.cascading && !cascaded && this.selection.current.length) this.setSelected(this.selection.current, true);
 	}
 	setRoots(items) {
 		const previous = this.loadedRoots();
@@ -1060,7 +1061,7 @@ var DatagridTreeService = class DatagridTreeService {
 		this.update();
 	}
 	setSelected(items, selected) {
-		const selection = new Map((this.selection.current || []).map((item) => [this.identify(item), item]));
+		const selection = new Map(this.selection.current.map((item) => [this.identify(item), item]));
 		const set = (node, value) => {
 			if (node.locked) return;
 			if (value) selection.set(this.identify(node.item), node.item);
@@ -1083,7 +1084,7 @@ var DatagridTreeService = class DatagridTreeService {
 	}
 	isIndeterminate(item) {
 		if (this.indeterminate?.selection !== this.selection.current) {
-			const selected = new Set((this.selection.current || []).map((selectedItem) => this.identify(selectedItem)));
+			const selected = new Set(this.selection.current.map((selectedItem) => this.identify(selectedItem)));
 			const nodes = /* @__PURE__ */ new Set();
 			const walk = (node) => {
 				const self = selected.has(this.identify(node.item));
@@ -1110,7 +1111,7 @@ var DatagridTreeService = class DatagridTreeService {
 		if (node.locked) {
 			const ref = this.identify(node.item);
 			queueMicrotask(() => {
-				this.selection.current = (this.selection.current || []).filter((selected) => this.identify(selected) !== ref);
+				this.selection.current = this.selection.current.filter((selected) => this.identify(selected) !== ref);
 			});
 		}
 	}
@@ -3328,6 +3329,7 @@ var ClrDatagridColumn = class ClrDatagridColumn extends DatagridFilterRegistrar 
 		this.columnActions = inject(ColumnActionsService);
 		this._colType = "string";
 		this._sortOrder = ClrDatagridSortOrder.UNSORTED;
+		this._sortDirection = null;
 		this.subscriptions = [];
 		this._showSeparator = signal(true, ...ngDevMode ? [{ debugName: "_showSeparator" }] : /* istanbul ignore next */ []);
 		this._pinned = signal(false, ...ngDevMode ? [{ debugName: "_pinned" }] : /* istanbul ignore next */ []);
@@ -9500,7 +9502,7 @@ var ClrDatagridFooter = class ClrDatagridFooter {
 			host: { properties: { "class.datagrid-footer": "true" } },
 			ngImport: i0,
 			template: `
-    @if (selection.selectionType === SELECTION_TYPE.Multi && selection.current?.length > 0) {
+    @if (selection.selectionType === SELECTION_TYPE.Multi && selection.current.length > 0) {
       <div class="clr-form-control-disabled">
         <clr-checkbox-wrapper class="datagrid-footer-select">
           <input clrCheckbox type="checkbox" checked="checked" disabled />
@@ -9557,7 +9559,7 @@ i0.ɵɵngDeclareClassMetadata({
 		args: [{
 			selector: "clr-dg-footer",
 			template: `
-    @if (selection.selectionType === SELECTION_TYPE.Multi && selection.current?.length > 0) {
+    @if (selection.selectionType === SELECTION_TYPE.Multi && selection.current.length > 0) {
       <div class="clr-form-control-disabled">
         <clr-checkbox-wrapper class="datagrid-footer-select">
           <input clrCheckbox type="checkbox" checked="checked" disabled />

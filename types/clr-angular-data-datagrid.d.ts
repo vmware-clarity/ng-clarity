@@ -293,8 +293,8 @@ declare class Sort<T = any> {
    */
   private _change;
   constructor(stateDebouncer: StateDebouncer);
-  get comparator(): ClrDatagridComparatorInterface<T>;
-  set comparator(value: ClrDatagridComparatorInterface<T>);
+  get comparator(): ClrDatagridComparatorInterface<T> | null;
+  set comparator(value: ClrDatagridComparatorInterface<T> | null);
   get reverse(): boolean;
   set reverse(value: boolean);
   get change(): Observable<Sort<T>>;
