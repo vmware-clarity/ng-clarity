@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, signal, Type, WritableSignal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ClrCommonStringsService } from '@clr/angular/utils';
 import { Subject } from 'rxjs';
 
 import { ClrDatagridModule } from './datagrid.module';
@@ -305,6 +306,13 @@ hosts.forEach(([description, hostType]) => {
       expect(query('.datagrid-detail-pane-content')).toBeNull();
       expect(query('.datagrid').hasAttribute('aria-hidden')).toBe(false);
       expect(query('.datagrid-detail-caret-button.is-open')).toBeNull();
+    });
+
+    it('shows strings localized after it was rendered', async () => {
+      await change(() => host.set('pageSize', 2));
+      await change(() => TestBed.inject(ClrCommonStringsService).localize({ selectAll: 'Alle', nextPage: 'Weiter' }));
+      expect(query('.datagrid-header .datagrid-select input').getAttribute('aria-label')).toBe('Alle');
+      expect(query('.pagination-next').getAttribute('aria-label')).toBe('Weiter');
     });
 
     describe('late children', () => {
