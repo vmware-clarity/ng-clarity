@@ -5,6 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { signal } from '@angular/core';
+
 import { TreeNodeModel } from './tree-node.model';
 
 /*
@@ -14,7 +16,9 @@ import { TreeNodeModel } from './tree-node.model';
 export class DeclarativeTreeNodeModel<T> extends TreeNodeModel<T> {
   // Override for a more precise type
   parent: DeclarativeTreeNodeModel<T> | null;
-  children: DeclarativeTreeNodeModel<T>[];
+
+  // A signal, so that the parent node is refreshed when a child node is added or removed after it was checked.
+  private readonly _children = signal<DeclarativeTreeNodeModel<T>[]>([]);
 
   constructor(parent: DeclarativeTreeNodeModel<T> | null) {
     super();
@@ -22,7 +26,13 @@ export class DeclarativeTreeNodeModel<T> extends TreeNodeModel<T> {
     if (parent) {
       parent._addChild(this);
     }
-    this.children = [];
+  }
+
+  get children(): DeclarativeTreeNodeModel<T>[] {
+    return this._children();
+  }
+  set children(value: DeclarativeTreeNodeModel<T>[]) {
+    this._children.set(value);
   }
 
   override destroy() {
@@ -33,13 +43,10 @@ export class DeclarativeTreeNodeModel<T> extends TreeNodeModel<T> {
   }
 
   _addChild(child: DeclarativeTreeNodeModel<T>) {
-    this.children.push(child);
+    this._children.update(children => [...children, child]);
   }
 
   _removeChild(child: DeclarativeTreeNodeModel<T>) {
-    const index = this.children.indexOf(child);
-    if (index > -1) {
-      this.children.splice(index, 1);
-    }
+    this._children.update(children => children.filter(existing => existing !== child));
   }
 }

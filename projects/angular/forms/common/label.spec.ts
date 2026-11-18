@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrInput, ClrInputContainer } from '@clr/angular/forms/input';
@@ -14,10 +14,25 @@ import { ClrSignpostModule, ClrSignpostTrigger } from '@clr/angular/popover/sign
 import { expectActiveElementToBe } from '@clr/angular/testing';
 import { renderFixture } from '@clr/angular/utils/testing';
 
+import { ClrCommonFormsModule } from './common.module';
 import { ClrControlLabel } from './label';
 import { ControlIdService } from './providers/control-id.service';
 import { ClrFormLayout, LayoutService } from './providers/layout.service';
 import { NgControlService } from './providers/ng-control.service';
+
+@Component({
+  template: `
+    @if (show()) {
+      <label>Name</label>
+    }
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [ClrCommonFormsModule],
+})
+class OnPushLateLabelTest {
+  readonly show = signal(true);
+  @ViewChild(ClrControlLabel) label: ClrControlLabel;
+}
 
 @Component({
   template: `<label></label>`,
@@ -320,6 +335,22 @@ describe('Forms common utilities', () => {
       renderFixture(fixture);
       const input = fixture.nativeElement.querySelector('input');
       expectActiveElementToBe(input);
+    });
+  });
+
+  describe('in an OnPush view', () => {
+    it('renders id and for written after the view was checked', async () => {
+      const fixture = TestBed.createComponent(OnPushLateLabelTest);
+      await fixture.whenStable();
+      const label: HTMLLabelElement = fixture.nativeElement.querySelector('label');
+
+      fixture.componentInstance.label.forAttr = 'control-id';
+      fixture.componentInstance.label.idAttr = 'control-id-label';
+      await fixture.whenStable();
+
+      expect(label.getAttribute('for')).toBe('control-id');
+      expect(label.getAttribute('id')).toBe('control-id-label');
+      fixture.destroy();
     });
   });
 });
