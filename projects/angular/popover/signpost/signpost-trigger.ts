@@ -6,19 +6,10 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import {
-  ChangeDetectorRef,
-  Directive,
-  DOCUMENT,
-  ElementRef,
-  HostListener,
-  Inject,
-  inject,
-  OnDestroy,
-  PLATFORM_ID,
-} from '@angular/core';
+import { Directive, DOCUMENT, ElementRef, HostListener, Inject, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 import { SignpostFocusManager } from './providers/signpost-focus-manager.service';
 import { SignpostIdService } from './providers/signpost-id.service';
@@ -42,13 +33,8 @@ import { SignpostIdService } from './providers/signpost-id.service';
  *
  */
 export class ClrSignpostTrigger implements OnDestroy {
-  ariaExpanded = false;
-  ariaControl: string;
-  isOpen: boolean;
-
-  private readonly cdr = inject(ChangeDetectorRef);
   private document: Document;
-  private subscriptions: Subscription[] = [];
+  private subscription: Subscription;
 
   constructor(
     private popoverService: ClrPopoverService,
@@ -61,33 +47,30 @@ export class ClrSignpostTrigger implements OnDestroy {
     this.document = document;
   }
 
+  get isOpen(): boolean {
+    return this.popoverService.open;
+  }
+
+  get ariaExpanded(): boolean {
+    return this.isOpen;
+  }
+
+  /**
+   * The id of the signpost content, which the trigger controls.
+   */
+  get ariaControl(): string {
+    return this.signpostIdService.id();
+  }
+
   ngOnInit() {
     this.popoverService.origin = this.el;
     this.signpostFocusManager.triggerEl = this.el.nativeElement;
-    this.subscriptions.push(
-      this.popoverService.openChange.subscribe((isOpen: boolean) => {
-        this.ariaExpanded = isOpen;
-        this.cdr.markForCheck();
-
-        const prevIsOpen = this.isOpen;
-        this.isOpen = isOpen;
-
-        // openChange fires false on initialization because signpost starts as closed by default
-        // but we shouldn't focus on that initial false value
-        // we should focus back only if it's closed after being opened
-        if (!this.isOpen && prevIsOpen) {
-          this.focusOnClose();
-        }
-      }),
-      this.signpostIdService.id.subscribe(idChange => {
-        this.ariaControl = idChange;
-        this.cdr.markForCheck();
-      })
-    );
+    // openChange only emits false when an open signpost closes.
+    this.subscription = this.popoverService.openChange.pipe(filter(open => !open)).subscribe(() => this.focusOnClose());
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
+    this.subscription?.unsubscribe();
   }
 
   /**********
@@ -106,7 +89,7 @@ export class ClrSignpostTrigger implements OnDestroy {
     }
     // we have to set the focus back on the trigger only if the focus is reset back to the body element
     // if the focus is on another element, we are not allowed to move that focus back to this trigger again.
-    if (!this.isOpen && this.document.activeElement === this.document.body) {
+    if (this.document.activeElement === this.document.body) {
       this.signpostFocusManager.focusTrigger();
     }
   }

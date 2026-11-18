@@ -45,7 +45,7 @@ const defaultSize = 'sm';
   },
   standalone: false,
   hostDirectives: [ClrPopoverContent],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrTooltipContent implements OnInit {
   private _id: string;
@@ -84,7 +84,7 @@ export class ClrTooltipContent implements OnInit {
     const id = value || '';
 
     this._id = id;
-    this.tooltipIdService.updateId(id);
+    this.tooltipIdService.id.set(id);
   }
 
   @Input('clrPosition')

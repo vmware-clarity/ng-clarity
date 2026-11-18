@@ -6937,7 +6937,8 @@ export class ClrSignpost {
     get showDefaultTrigger(): boolean;
     // (undocumented)
     signpostTriggerAriaLabel: string;
-    useCustomTrigger: boolean;
+    get useCustomTrigger(): boolean;
+    set useCustomTrigger(value: boolean);
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpost, "clr-signpost", never, {
         "signpostTriggerAriaLabel": {
@@ -7024,12 +7025,11 @@ export class ClrSignpostTitle {
 // @public (undocumented)
 export class ClrSignpostTrigger implements OnDestroy {
     constructor(popoverService: ClrPopoverService, el: ElementRef<HTMLElement>, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, document: any, platformId: any);
+    get ariaControl(): string;
     // (undocumented)
-    ariaControl: string;
+    get ariaExpanded(): boolean;
     // (undocumented)
-    ariaExpanded: boolean;
-    // (undocumented)
-    isOpen: boolean;
+    get isOpen(): boolean;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -7912,12 +7912,9 @@ export class ClrTooltipModule {
 // @public (undocumented)
 export class ClrTooltipTrigger {
     constructor(popoverService: ClrPopoverService, tooltipIdService: TooltipIdService, tooltipMouseService: TooltipMouseService, element: ElementRef);
-    // (undocumented)
-    ariaDescribedBy: string;
+    get ariaDescribedBy(): string;
     // (undocumented)
     hideTooltip(): void;
-    // (undocumented)
-    ngOnDestroy(): void;
     // (undocumented)
     showTooltip(): void;
     // (undocumented)

@@ -7,7 +7,6 @@
 
 import { Directive, ElementRef, HostListener } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import { Subscription } from 'rxjs';
 
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { TooltipMouseService } from './providers/tooltip-mouse.service';
@@ -23,22 +22,20 @@ import { TooltipMouseService } from './providers/tooltip-mouse.service';
   standalone: false,
 })
 export class ClrTooltipTrigger {
-  ariaDescribedBy: string;
-  private subs: Subscription[] = [];
-
   constructor(
     private popoverService: ClrPopoverService,
-    tooltipIdService: TooltipIdService,
+    private tooltipIdService: TooltipIdService,
     private tooltipMouseService: TooltipMouseService,
     element: ElementRef
   ) {
-    // The aria-described by comes from the id of content. It
-    this.subs.push(tooltipIdService.id.subscribe(tooltipId => (this.ariaDescribedBy = tooltipId)));
     popoverService.origin = element;
   }
 
-  ngOnDestroy() {
-    this.subs.forEach(sub => sub.unsubscribe());
+  /**
+   * The id of the tooltip content, which describes the trigger.
+   */
+  get ariaDescribedBy(): string {
+    return this.tooltipIdService.id();
   }
 
   @HostListener('focus')
