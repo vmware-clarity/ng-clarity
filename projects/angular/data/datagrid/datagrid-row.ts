@@ -560,9 +560,13 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
     if (!items) {
       return;
     }
-    const rangeStart = this.selection.rangeStart;
-    const startIx = rangeStart === null ? -1 : items.indexOf(rangeStart);
-    if (rangeStart && this.selection.current.includes(rangeStart) && this.selection.shiftPressed && startIx !== -1) {
+    const startIx = items.indexOf(this.selection.rangeStart);
+    if (
+      this.selection.rangeStart &&
+      this.selection.current.includes(this.selection.rangeStart) &&
+      this.selection.shiftPressed &&
+      startIx !== -1
+    ) {
       const endIx = items.indexOf(this.item);
       // Using Set to remove duplicates
       const newSelection = new Set(
