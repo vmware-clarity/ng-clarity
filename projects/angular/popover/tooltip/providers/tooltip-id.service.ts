@@ -5,18 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
 
 @Injectable()
 export class TooltipIdService {
-  private _id = new Subject<string>();
-
-  get id(): Observable<string> {
-    return this._id.asObservable();
-  }
-
-  updateId(id: string) {
-    this._id.next(id);
-  }
+  readonly id = signal<string | undefined>(undefined);
 }

@@ -60,15 +60,10 @@ describe('Tooltip', () => {
       it('responds to the TooltipIdService', () => {
         const untypedContext: any = testContext;
 
-        let testId;
-        untypedContext.tooltipIdService.id.subscribe((idChange: string) => {
-          testId = idChange;
-        });
-        expect(untypedContext.clarityDirective.ariaDescribedBy).toEqual(testId);
-
-        untypedContext.tooltipIdService.updateId('clr-id-99');
+        untypedContext.tooltipIdService.id.set('clr-id-99');
         untypedContext.detectChanges();
-        expect(untypedContext.clarityDirective.ariaDescribedBy).toEqual(testId);
+        expect(untypedContext.clarityDirective.ariaDescribedBy).toEqual('clr-id-99');
+        expect(untypedContext.clarityElement.getAttribute('aria-describedby')).toEqual('clr-id-99');
       });
     });
 

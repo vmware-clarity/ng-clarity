@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, ContentChild, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChild, Input, signal } from '@angular/core';
 import { ClrPopoverHostDirective, ClrPopoverPoint, ClrPopoverService } from '@clr/angular/popover/common';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
@@ -33,7 +33,7 @@ import { ClrSignpostTrigger } from './signpost-trigger';
   providers: [SignpostFocusManager, SignpostIdService],
   hostDirectives: [ClrPopoverHostDirective],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 /*********
@@ -46,15 +46,6 @@ import { ClrSignpostTrigger } from './signpost-trigger';
  *
  */
 export class ClrSignpost {
-  /**********
-   * @property useCustomTrigger
-   *
-   * @description
-   * Flag used to determine if we need to use the default trigger or a user supplied trigger element.
-   *
-   */
-  useCustomTrigger = false;
-
   @Input('clrSignpostTriggerAriaLabel') signpostTriggerAriaLabel: string;
   /**
    * Hides the default trigger button. Use when the signpost is opened
@@ -62,10 +53,28 @@ export class ClrSignpost {
    */
   @Input('clrSignpostHideTrigger') hideTrigger = false;
 
+  // Set by the content query, which runs outside this component's own check, so it has to notify.
+  private readonly _useCustomTrigger = signal(false);
+
   constructor(
     public commonStrings: ClrCommonStringsService,
     private popoverService: ClrPopoverService
   ) {}
+
+  /**********
+   * @property useCustomTrigger
+   *
+   * @description
+   * Flag used to determine if we need to use the default trigger or a user supplied trigger element.
+   *
+   */
+  get useCustomTrigger(): boolean {
+    return this._useCustomTrigger();
+  }
+  set useCustomTrigger(value: boolean) {
+    this._useCustomTrigger.set(value);
+  }
+
   /**********
    * @property signPostTrigger
    *

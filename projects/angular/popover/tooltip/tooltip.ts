@@ -20,6 +20,6 @@ import { TooltipMouseService } from './providers/tooltip-mouse.service';
   providers: [TooltipIdService, TooltipMouseService],
   hostDirectives: [ClrPopoverHostDirective],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrTooltip {}

@@ -5,8 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Observable } from 'rxjs';
-
 import { SignpostIdService } from './signpost-id.service';
 
 interface TestContext {
@@ -24,19 +22,13 @@ describe('Signpost', () => {
       testContext.idService = new SignpostIdService();
     });
 
-    it('should set an id', () => {
-      let currentId;
-      testContext.idService.id.subscribe(newId => {
-        currentId = newId;
-      });
-      testContext.idService.setId('clr-id-1');
-      expect(currentId).toBe('clr-id-1');
+    it('starts without an id', () => {
+      expect(testContext.idService.id()).toBeUndefined();
     });
 
-    it('exposes and observable for latest id', () => {
-      const idObservable = testContext.idService.id;
-      expect(idObservable).toBeDefined();
-      expect(idObservable instanceof Observable).toBe(true);
+    it('should set an id', () => {
+      testContext.idService.id.set('clr-id-1');
+      expect(testContext.idService.id()).toBe('clr-id-1');
     });
   });
 });

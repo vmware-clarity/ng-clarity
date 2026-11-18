@@ -70,7 +70,7 @@ describe('Signpost', () => {
       });
 
       it('allows a custom aria-label for the default trigger', () => {
-        testContext.fixture.componentInstance.signpost.signpostTriggerAriaLabel = 'custom label';
+        (testContext.fixture.componentInstance as TestDefaultSignpost).signpostTriggerAriaLabel = 'custom label';
         testContext.detectChanges();
         const signpostToggle: HTMLElement = testContext.testElement.querySelector('.signpost-action');
 
@@ -268,16 +268,12 @@ describe('Signpost', () => {
       });
 
       it('are correct when content is opened', () => {
-        let currentId;
-        testContext.signpostIdService.id.subscribe(idChange => {
-          currentId = idChange;
-        });
-
         // First open
         testContext.triggerButton.click();
         renderFixture(testContext.fixture);
 
-        checkAriaControlsId(currentId, document.body.querySelector('.clr-signpost-container'));
+        const firstId = testContext.signpostIdService.id();
+        checkAriaControlsId(firstId, document.body.querySelector('.clr-signpost-container'));
 
         // Close it
         testContext.triggerButton.click();
@@ -287,7 +283,9 @@ describe('Signpost', () => {
         testContext.triggerButton.click();
         renderFixture(testContext.fixture);
 
-        checkAriaControlsId(currentId, document.body.querySelector('.clr-signpost-container'));
+        // Each opening creates new content, with an id of its own.
+        expect(testContext.signpostIdService.id()).not.toBe(firstId);
+        checkAriaControlsId(testContext.signpostIdService.id(), document.body.querySelector('.clr-signpost-container'));
       });
     });
   });
