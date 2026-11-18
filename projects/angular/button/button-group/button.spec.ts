@@ -19,7 +19,6 @@ import {
   RouterLinkButtonGroupDemoRouteThreeComponent,
   RouterLinkButtonGroupDemoRouteTwoComponent,
 } from '../../../demo/src/app/button-group/angular/router-link/router-link-button-group';
-import { ButtonInGroupService } from '../providers/button-in-group.service';
 
 @Component({
   template: `
@@ -105,7 +104,6 @@ describe('Button Group Directives', () => {
         TestBed.configureTestingModule({
           imports: [ClrButtonGroupModule],
           declarations: [TestButtonComponent],
-          providers: [ButtonInGroupService],
         });
 
         fixture = TestBed.createComponent(TestButtonComponent);
@@ -171,7 +169,7 @@ describe('Button Group Directives', () => {
       });
 
       it('sets loading to true on start loading', () => {
-        expect(componentInstance.button1.loading).toBeUndefined();
+        expect(componentInstance.button1.loading).toBe(false);
 
         componentInstance.button1.loadingStateChange(ClrLoadingState.LOADING);
 
@@ -179,17 +177,10 @@ describe('Button Group Directives', () => {
       });
 
       it('sets loading to false on done loading', () => {
-        expect(componentInstance.button1.loading).toBeUndefined();
-
+        componentInstance.button1.loadingStateChange(ClrLoadingState.LOADING);
         componentInstance.button1.loadingStateChange(ClrLoadingState.DEFAULT);
 
         expect(componentInstance.button1.loading).toBe(false);
-      });
-
-      it('has access to the button in group service if the parent declares it', () => {
-        expect(componentInstance.button1.buttonInGroupService).not.toBeNull();
-        expect(componentInstance.button2.buttonInGroupService).not.toBeNull();
-        expect(componentInstance.button3.buttonInGroupService).not.toBeNull();
       });
 
       it('sets inMenu to false by default', () => {
@@ -210,18 +201,6 @@ describe('Button Group Directives', () => {
         expect(componentInstance.button2.templateRef).not.toBeNull();
         expect(componentInstance.button3.templateRef).not.toBeNull();
       });
-
-      it('updates the button in group service when the inMenu input changes', () => {
-        const buttonInGroupService: ButtonInGroupService =
-          debugEl.injector.get<ButtonInGroupService>(ButtonInGroupService);
-        vi.spyOn(buttonInGroupService, 'updateButtonGroup').mockImplementation(() => undefined);
-
-        componentInstance.button1.inMenu = true;
-        expect(buttonInGroupService.updateButtonGroup).toHaveBeenCalled();
-
-        componentInstance.button1.inMenu = false;
-        expect(buttonInGroupService.updateButtonGroup).toHaveBeenCalled();
-      });
     });
 
     describe('View Test', () => {
@@ -229,7 +208,6 @@ describe('Button Group Directives', () => {
         TestBed.configureTestingModule({
           imports: [ClrButtonGroupModule, ClrLoadingModule],
           declarations: [ButtonViewTestComponent],
-          providers: [ButtonInGroupService],
         });
 
         fixture = TestBed.createComponent(ButtonViewTestComponent);
