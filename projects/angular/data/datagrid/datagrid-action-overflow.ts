@@ -56,7 +56,6 @@ let clrDgActionId = 0;
       class="datagrid-action-overflow"
       [id]="popoverId"
       [attr.aria-hidden]="!open"
-      [attr.id]="popoverId"
       clrKeyFocus
       cdkTrapFocus
       (click)="closeOverflowContent($event)"

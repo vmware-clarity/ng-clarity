@@ -31,7 +31,7 @@
     </ng-template>
   </div>
 
-  <div class="modal-body" [ngStyle]="heightStyle">
+  <div class="modal-body" [style]="heightStyle">
     <appfx-spinner *ngIf="isLoading" [message]="workflowStrings.loading"></appfx-spinner>
     <appfx-validation-banner [state]="closeHandlerValidationState"> </appfx-validation-banner>
 

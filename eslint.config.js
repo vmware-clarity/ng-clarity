@@ -19,8 +19,9 @@ const importPlugin = require('eslint-plugin-import');
 const unusedImports = require('eslint-plugin-unused-imports');
 const decoratorPosition = require('eslint-plugin-decorator-position');
 const licenseHeader = require('eslint-plugin-license-header');
-const htmlParser = require('@html-eslint/parser');
-const htmlPlugin = require('@html-eslint/eslint-plugin');
+const angularPlugin = require('@angular-eslint/eslint-plugin');
+const angularTemplatePlugin = require('@angular-eslint/eslint-plugin-template');
+const angularTemplateParser = require('@angular-eslint/template-parser');
 // eslint-plugin-storybook ships as ESM with a default export; `require` of it yields the module namespace.
 const storybookPluginModule = require('eslint-plugin-storybook');
 const storybookPlugin = storybookPluginModule.default ?? storybookPluginModule;
@@ -63,6 +64,43 @@ const storybookRecommendedStoryRules = Object.fromEntries(
 // Matches an argTypes key whose value is exactly `{ disable: true }`.
 const HIDDEN_ARG_TYPE =
   '[value.properties.length=1][value.properties.0.key.name="disable"][value.properties.0.value.value=true]';
+
+// angular-eslint rules the libraries already follow. A migration enables its rule once it is done (prefer-standalone,
+// prefer-inject, prefer-signals, template/prefer-control-flow, ...).
+const ANGULAR_RULES = Object.fromEntries(
+  [
+    'computed-must-return',
+    'contextual-decorator',
+    'contextual-lifecycle',
+    'no-async-lifecycle-method',
+    'no-duplicates-in-metadata-arrays',
+    'no-empty-lifecycle-method',
+    'no-implicit-take-until-destroyed',
+    'no-inputs-metadata-property',
+    'no-outputs-metadata-property',
+    'prefer-signal-model',
+    'require-lifecycle-on-prototype',
+    'use-component-view-encapsulation',
+    'use-pipe-transform-interface',
+  ].map(rule => [`@angular-eslint/${rule}`, 'error'])
+);
+const ANGULAR_TEMPLATE_RULES = Object.fromEntries(
+  [
+    'alt-text',
+    'banana-in-box',
+    'no-autofocus',
+    'no-empty-control-flow',
+    'no-negated-async',
+    'no-positive-tabindex',
+    'prefer-at-else',
+    'prefer-at-empty',
+    'prefer-built-in-pipes',
+    'prefer-ngsrc',
+    'prefer-style-binding',
+    'table-scope',
+    'valid-aria',
+  ].map(rule => [`@angular-eslint/template/${rule}`, 'error'])
+);
 
 module.exports = [
   // Base JS/recommended + globals
@@ -214,6 +252,17 @@ module.exports = [
     },
   },
 
+  // The libraries' Angular code. The processor lints inline templates with the HTML template rules below.
+  {
+    files: ['projects/angular/**/*.ts', 'projects/addons/**/*.ts'],
+    ignores: ['**/*.spec.ts', 'projects/angular/schematics/**'],
+    plugins: {
+      '@angular-eslint': angularPlugin,
+    },
+    processor: angularTemplatePlugin.processors['extract-inline-html'],
+    rules: ANGULAR_RULES,
+  },
+
   // Storybook story files (see docs/CONTRIBUTING_STORYBOOK.md for the canonical story shape).
   // These are errors: every story file conforms, and the point is to keep it that way.
   {
@@ -299,33 +348,39 @@ module.exports = [
     },
   },
 
-  // HTML files (license header validation)
+  // HTML files: Angular templates, and the inline templates of the libraries (see the processor above).
   {
     files: ['**/*.html'],
     languageOptions: {
-      parser: htmlParser,
+      parser: angularTemplateParser,
     },
+    rules: {
+      'license-header/header': 'off',
+    },
+  },
+  {
+    files: ['**/*.html'],
+    ignores: ['**/*inline-template-*.component.html'],
     plugins: {
       'ng-clarity-eslint-rules': ngClarityRules,
     },
     rules: {
-      'license-header/header': 'off',
       'ng-clarity-eslint-rules/html-license-header': ['error', './.license-header.html'],
     },
   },
-
   {
     files: ['projects/angular/**/*.html', 'projects/addons/**/*.html'],
     plugins: {
-      '@html-eslint': htmlPlugin,
+      '@angular-eslint/template': angularTemplatePlugin,
+      'ng-clarity-eslint-rules': ngClarityRules,
     },
     rules: {
-      '@html-eslint/no-inline-styles': 'error',
-      '@html-eslint/no-restricted-tags': ['error', { tagPatterns: ['^style$'], message: NO_INLINE_STYLES_MESSAGE }],
-      '@html-eslint/no-restricted-attrs': [
-        'error',
-        { tagPatterns: ['.*'], attrPatterns: ['^\\[attr\\.style\\]$'], message: NO_INLINE_STYLES_MESSAGE },
-      ],
+      ...ANGULAR_TEMPLATE_RULES,
+      '@angular-eslint/template/eqeqeq': ['error', { allowNullOrUndefined: true }],
+      // A static class next to a [class] binding is merged by Angular.
+      '@angular-eslint/template/no-duplicate-attributes': ['error', { allowStylePrecedenceDuplicates: true }],
+      '@angular-eslint/template/no-inline-styles': ['error', { allowNgStyle: true, allowBindToStyle: true }],
+      'ng-clarity-eslint-rules/html-no-style-element': ['error', NO_INLINE_STYLES_MESSAGE],
     },
   },
 

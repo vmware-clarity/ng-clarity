@@ -82,8 +82,7 @@
             <label> {{ filterStrings.getConjoinerDisplayName(logicalOperators[1]) }} </label>
           </clr-radio-wrapper>
         </clr-radio-container>
-      }
-      @if (filterProperty.logicalOperator != undefined) {
+      } @else {
         <div class="clr-control-container" cds-layout="m-t:sm">
           <span data-test-id="logical-operator" cds-text="body medium">{{
             filterStrings.getConjoinerDisplayName(filterProperty.logicalOperator)

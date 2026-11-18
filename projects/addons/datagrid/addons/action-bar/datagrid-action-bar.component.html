@@ -94,9 +94,8 @@
                   }
                 </clr-dropdown-menu>
               </clr-dropdown>
-            }
-            <!-- Action has no children -->
-            @if (!action.children) {
+            } @else {
+              <!-- Action has no children -->
               <button
                 clrDropdownItem
                 type="button"

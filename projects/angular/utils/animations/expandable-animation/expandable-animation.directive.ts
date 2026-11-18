@@ -58,6 +58,7 @@ export class ClrExpandableAnimationDirective extends BaseExpandableAnimation imp
   }
 
   /** @deprecated Kept so that subclasses calling `super.ngOnDestroy()` still compile. */
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy() {
     // Nothing to clean up.
   }

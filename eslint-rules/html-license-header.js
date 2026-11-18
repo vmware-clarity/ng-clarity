@@ -35,40 +35,45 @@ module.exports = {
     ],
   },
   create(context) {
-    const sourceCode = context.sourceCode || context.getSourceCode();
-    const text = sourceCode.getText();
+    const text = context.sourceCode.text;
     const newlineChar = (text.match(/\r\n|[\r\n]/) || ['\n'])[0];
+    const licenseHeader = normalizeNewlines(readLicenseFile(context.options[0]), newlineChar);
 
-    const rawHeader = readLicenseFile(context.options[0]);
-    const licenseHeader = normalizeNewlines(rawHeader, newlineChar);
-
+    // Works on the source text, so that it does not depend on the HTML parser.
     return {
-      Document(documentNode) {
-        const firstChild = documentNode.children[0];
-
-        if (firstChild && firstChild.type === 'Comment') {
-          const commentText = sourceCode.getText(firstChild);
-
-          if (commentText === licenseHeader) {
-            checkSpacingAfter(firstChild, documentNode.children[1]);
-            return;
-          }
-
-          if (isLicenseComment(firstChild.value.value)) {
+      Program(node) {
+        if (text.startsWith(licenseHeader)) {
+          const newlinesAfter = text.slice(licenseHeader.length).match(/^\s*/)[0].match(LINEBREAK_MATCHER) || [];
+          if (newlinesAfter.length > 2) {
             context.report({
-              node: firstChild,
-              message: 'Invalid license header',
+              node,
+              loc: { line: licenseHeader.split(newlineChar).length, column: 0 },
+              message: 'Superfluous new lines after license header',
               fix(fixer) {
-                return fixer.replaceTextRange(firstChild.range, licenseHeader);
+                const end = licenseHeader.length + text.slice(licenseHeader.length).match(/^\s*/)[0].length;
+                return fixer.replaceTextRange([licenseHeader.length, end], newlineChar + newlineChar);
               },
             });
-            return;
           }
+          return;
         }
 
-        const targetNode = firstChild || documentNode;
+        const firstComment = text.match(/^<!--[\s\S]*?-->/);
+        if (firstComment && isLicenseComment(firstComment[0])) {
+          context.report({
+            node,
+            loc: { line: 1, column: 0 },
+            message: 'Invalid license header',
+            fix(fixer) {
+              return fixer.replaceTextRange([0, firstComment[0].length], licenseHeader);
+            },
+          });
+          return;
+        }
+
         context.report({
-          node: targetNode,
+          node,
+          loc: { line: 1, column: 0 },
           message: 'Missing license header',
           fix(fixer) {
             return fixer.insertTextBeforeRange([0, 0], licenseHeader + newlineChar);
@@ -79,27 +84,6 @@ module.exports = {
 
     function isLicenseComment(value) {
       return /(Copyright|@license|SPDX-License-Identifier)\b/i.test(value);
-    }
-
-    function checkSpacingAfter(commentNode, nextSibling) {
-      if (!nextSibling) {
-        return;
-      }
-
-      const commentEndLine = commentNode.loc.end.line;
-      const nextStartLine = nextSibling.loc.start.line;
-      const gap = nextStartLine - commentEndLine;
-
-      if (gap > 2) {
-        context.report({
-          node: commentNode,
-          loc: commentNode.loc.end,
-          message: 'Superfluous new lines after license header',
-          fix(fixer) {
-            return fixer.replaceTextRange([commentNode.range[1], nextSibling.range[0]], newlineChar);
-          },
-        });
-      }
     }
   },
 };

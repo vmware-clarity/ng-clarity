@@ -97,8 +97,7 @@ import { Page } from './providers/page';
           </button>
         </div>
       }
-    }
-    @if (detailService.isOpen) {
+    } @else {
       <div class="pagination-description-compact">
         {{ page.firstItem + 1 }}-{{ page.lastItem + 1 }} / {{ page.totalItems }}
       </div>

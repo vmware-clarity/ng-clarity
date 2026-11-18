@@ -55,7 +55,7 @@
       <ng-container [ngTemplateOutlet]="treenodeContent"></ng-container>
     </label>
   </div>
-  } @if (!featuresService.selectable) {
+  } @else {
   <div class="clr-treenode-content" (mouseup)="focusTreeNode()">
     <ng-container [ngTemplateOutlet]="treenodeContent"></ng-container>
   </div>

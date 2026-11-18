@@ -94,7 +94,7 @@
             [attr.title]="expand.expanded ? commonStrings.keys.collapse : commonStrings.keys.expand"
           ></cds-icon>
         </button>
-        } @if (expand.loading) {
+        } @else {
         <clr-spinner clrSmall>{{ commonStrings.keys.loading }}</clr-spinner>
         } }
       </div>

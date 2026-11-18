@@ -561,8 +561,7 @@
         <span class="pagination">
           {{ getFooterMessage(totalItems, undefined, dataRange.skip + 1, dataRange.skip + dataRange.data.length) }}
         </span>
-      }
-      @if (showCustomPagination) {
+      } @else {
         <div>
           <ng-container *ngTemplateOutlet="customPagination"></ng-container>
         </div>

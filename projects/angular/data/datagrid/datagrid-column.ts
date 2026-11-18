@@ -71,14 +71,14 @@ import { WrappedColumn } from './wrapped-column';
       <!-- I'm really not happy with that select since it's not very scalable -->
       <ng-content select="clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter"></ng-content>
 
-      @if (field && !customFilter && colType == 'string') {
+      @if (field && !customFilter && colType === 'string') {
         <clr-dg-string-filter
           [clrFilterPlaceholder]="filterStringPlaceholder"
           [clrDgStringFilter]="registered"
           [(clrFilterValue)]="filterValue"
         ></clr-dg-string-filter>
       }
-      @if (field && !customFilter && colType == 'number') {
+      @if (field && !customFilter && colType === 'number') {
         <clr-dg-numeric-filter
           [clrFilterMaxPlaceholder]="filterNumberMaxPlaceholder"
           [clrFilterMinPlaceholder]="filterNumberMinPlaceholder"

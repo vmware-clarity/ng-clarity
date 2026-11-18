@@ -15,8 +15,7 @@ import { AlertIconAndTypesService } from './providers/icon-and-types.service';
     <div class="alert-icon-wrapper">
       @if (iconService.alertIconShape === 'loading') {
         <clr-spinner class="alert-spinner" clrInline></clr-spinner>
-      }
-      @if (iconService.alertIconShape !== 'loading') {
+      } @else {
         <cds-icon
           class="alert-icon"
           role="img"

@@ -6,16 +6,16 @@
   -->
 
 @if (_open) {
-<div class="modal" [class.modal-full-screen]="size == 'full-screen'">
+<div class="modal" [class.modal-full-screen]="size === 'full-screen'">
   <div
     #dialog
     cdkTrapFocus
     [cdkTrapFocusAutoCapture]="true"
     [animate.enter]="dialogEnterClass"
     class="modal-dialog"
-    [class.modal-sm]="size == 'sm'"
-    [class.modal-lg]="size == 'lg'"
-    [class.modal-xl]="size == 'xl'"
+    [class.modal-sm]="size === 'sm'"
+    [class.modal-lg]="size === 'lg'"
+    [class.modal-xl]="size === 'xl'"
     role="dialog"
     aria-modal="true"
     [attr.aria-hidden]="!_open"
