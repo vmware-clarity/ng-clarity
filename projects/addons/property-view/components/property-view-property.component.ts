@@ -11,13 +11,10 @@ import {
   HostBinding,
   Input,
   OnChanges,
-  OnDestroy,
-  OnInit,
   Optional,
   SimpleChanges,
 } from '@angular/core';
 import { ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
-import { Subscription } from 'rxjs';
 
 import { PropertyViewConfigProvider } from '../property-view-config-provider';
 import {
@@ -33,9 +30,10 @@ import {
   standalone: false,
   templateUrl: 'property-view-property.component.html',
   styleUrls: ['property-view-property.component.scss'],
+  // Stays Eager: see PropertyViewComponent.
   changeDetection: ChangeDetectionStrategy.Eager,
 })
-export class PropertyViewPropertyComponent implements OnInit, OnChanges, OnDestroy {
+export class PropertyViewPropertyComponent implements OnChanges {
   readonly PropertyViewModelType = PropertyViewModelType;
 
   @Input() data: PropertyViewPropertyModel;
@@ -44,14 +42,15 @@ export class PropertyViewPropertyComponent implements OnInit, OnChanges, OnDestr
 
   propertyValueComponentModelContent: PropertyViewPropertyValueComponentModel<unknown>[];
 
-  @HostBinding('class.zoom4x') is4xZoomed = false;
-
-  private zoomLevelSubscription: Subscription | undefined;
-
   constructor(
     public propertyViewConfigProvider: PropertyViewConfigProvider,
     @Optional() private zoomLevelService?: ZoomLevelService
   ) {}
+
+  @HostBinding('class.zoom4x')
+  get is4xZoomed(): boolean {
+    return this.zoomLevelService?.level() === ZoomLevel.x4;
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.data) {
@@ -71,15 +70,5 @@ export class PropertyViewPropertyComponent implements OnInit, OnChanges, OnDestr
 
   getValueTrackingId(index: number) {
     return index;
-  }
-
-  ngOnInit(): void {
-    this.zoomLevelSubscription = this.zoomLevelService?.onChange.subscribe(
-      (level: ZoomLevel) => (this.is4xZoomed = level === ZoomLevel.x4)
-    );
-  }
-
-  ngOnDestroy() {
-    this.zoomLevelSubscription?.unsubscribe();
   }
 }

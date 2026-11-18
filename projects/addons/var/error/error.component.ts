@@ -15,7 +15,7 @@ import { ActivationError } from './interfaces';
   standalone: false,
   templateUrl: 'error.component.html',
   styleUrls: ['error.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ErrorComponent {
   @Input() error?: ActivationError;

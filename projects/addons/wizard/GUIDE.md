@@ -57,6 +57,7 @@ export class NamePage implements StepModelHolder {
 - `@In()` injects a workflow property into the page model; `@Out()` writes it back. Use `Mappings` when names differ.
 - Page components may implement `OnStepActivate.activate(changes)` and `OnStepValidate.validate(): Observable<boolean>`.
 - Set `model.loading`, `model.validationState` (`StepValidationState`) to show spinners and messages.
+- Assign new message lists (`validationState.errors = [...]`) rather than `push()`, so OnPush and zoneless hosts show them. The workflow components stay Eager, so a step's own field changes and in-place changes still render in Zone apps.
 - Derived/async data: `Var.from(model.host).by(host => this.api.datastores(host))`.
 
 ## Wizard

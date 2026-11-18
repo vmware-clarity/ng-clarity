@@ -18,6 +18,7 @@ import * as i10 from '@angular/common';
 import { InjectionToken } from '@angular/core';
 import { NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
+import { OnChanges } from '@angular/core';
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { Optional } from '@angular/core';
@@ -27,6 +28,7 @@ import { PipeTransform } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
+import { Signal } from '@angular/core';
 import { TemplateRef } from '@angular/core';
 import { Type } from '@angular/core';
 import { ViewContainerRef } from '@angular/core';
@@ -54,13 +56,15 @@ export interface Menu {
 }
 
 // @public (undocumented)
-export class MenuActionComponent extends MenuItem {
+export class MenuActionComponent extends MenuItem implements OnChanges {
     // (undocumented)
     enabled?: boolean;
     // (undocumented)
     handle: EventEmitter<void>;
     // (undocumented)
     iconClass?: string;
+    // (undocumented)
+    ngOnChanges(): void;
     // (undocumented)
     shortcut?: string;
     // (undocumented)
@@ -93,9 +97,9 @@ export class MenuActionComponent extends MenuItem {
 }
 
 // @public (undocumented)
-export class MenuComponent extends NestedMenu implements Menu, OnInit, OnDestroy, AfterContentInit {
+export class MenuComponent extends NestedMenu implements Menu, OnChanges, OnInit, OnDestroy, AfterContentInit {
     // Warning: (ae-forgotten-export) The symbol "ZoomLevelService" needs to be exported by the entry point clr-addons-menu.d.ts
-    constructor(cdr: ChangeDetectorRef, zoomLevelService?: ZoomLevelService);
+    constructor(zoomLevelService?: ZoomLevelService);
     // Warning: (ae-forgotten-export) The symbol "ClrPopoverPoint" needs to be exported by the entry point clr-addons-menu.d.ts
     //
     // (undocumented)
@@ -104,10 +108,8 @@ export class MenuComponent extends NestedMenu implements Menu, OnInit, OnDestroy
     close(e: Event): void;
     // (undocumented)
     closed: EventEmitter<void>;
-    // Warning: (ae-forgotten-export) The symbol "ZoomLevel" needs to be exported by the entry point clr-addons-menu.d.ts
-    //
     // (undocumented)
-    currentZoomLevel: ZoomLevel;
+    get currentZoomLevel(): ZoomLevel | undefined;
     // (undocumented)
     documentContextMenu(event: Event): void;
     // Warning: (ae-forgotten-export) The symbol "ClrDropdown" needs to be exported by the entry point clr-addons-menu.d.ts
@@ -121,6 +123,8 @@ export class MenuComponent extends NestedMenu implements Menu, OnInit, OnDestroy
     // (undocumented)
     handleAction(actionItem: MenuActionComponent): void;
     // (undocumented)
+    itemChanged(): void;
+    // (undocumented)
     itemTypes: typeof MenuItemType;
     // (undocumented)
     protected menuHasIcons(menuItems: Iterable<MenuItem>): boolean;
@@ -128,6 +132,8 @@ export class MenuComponent extends NestedMenu implements Menu, OnInit, OnDestroy
     menuItems: QueryList<MenuItem>;
     // (undocumented)
     ngAfterContentInit(): void;
+    // (undocumented)
+    ngOnChanges(): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -137,6 +143,8 @@ export class MenuComponent extends NestedMenu implements Menu, OnInit, OnDestroy
     // (undocumented)
     show(e: Event, x: number, y: number, trigger?: HTMLElement): void;
     text: string;
+    // Warning: (ae-forgotten-export) The symbol "ZoomLevel" needs to be exported by the entry point clr-addons-menu.d.ts
+    //
     // (undocumented)
     ZoomLevel: typeof ZoomLevel;
     // (undocumented)
@@ -150,15 +158,17 @@ export class MenuComponent extends NestedMenu implements Menu, OnInit, OnDestroy
         "closed": "closed";
     }, ["menuItems"], never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<MenuComponent, [null, {
+    static ɵfac: i0.ɵɵFactoryDeclaration<MenuComponent, [{
         optional: true;
     }]>;
 }
 
 // @public (undocumented)
-export class MenuHeaderComponent extends MenuItem {
+export class MenuHeaderComponent extends MenuItem implements OnChanges {
     // (undocumented)
     iconClass: string;
+    // (undocumented)
+    ngOnChanges(): void;
     // (undocumented)
     text: string;
     // (undocumented)
@@ -242,6 +252,7 @@ export class MenuSeparatorComponent extends MenuItem {
 export class NestedMenu extends MenuItem {
     // (undocumented)
     iconClass?: string;
+    itemChanged(): void;
     // (undocumented)
     menuItems: Iterable<MenuItem>;
     // (undocumented)

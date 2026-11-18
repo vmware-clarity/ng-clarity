@@ -18,6 +18,9 @@ import { PropertyViewCategoryModel, PropertyViewModel } from '../property-view.m
   templateUrl: 'property-view.component.html',
   styleUrls: ['property-view.component.scss'],
   providers: [PropertyViewConfigProvider, PropertyViewSectionsExpandedStateManager],
+  // Stays Eager, like the other property view components: they render consumer value components and the
+  // consumer's model objects, which apps may change in place (see ngDoCheck). In a Zone app both refresh with
+  // every change detection; OnPush views would skip them.
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class PropertyViewComponent implements DoCheck {

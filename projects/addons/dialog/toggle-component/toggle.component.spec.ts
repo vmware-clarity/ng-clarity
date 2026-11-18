@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -61,5 +62,49 @@ describe('ToggleComponent', () => {
 
     const input: HTMLInputElement = fixture.debugElement.query(By.css('input[type="checkbox"]')).nativeElement;
     expect(input.disabled).toBeTruthy();
+  });
+});
+
+@Component({
+  standalone: false,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: '<appfx-toggle [label]="label()" [(toggleState)]="enabled"></appfx-toggle>',
+})
+class OnPushHostComponent {
+  readonly label = signal('Advanced');
+  readonly enabled = signal(false);
+}
+
+describe('ToggleComponent in an OnPush host', () => {
+  let fixture: ComponentFixture<OnPushHostComponent>;
+  let input: HTMLInputElement;
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      imports: [FormsModule, ClrCheckboxModule],
+      declarations: [ToggleComponent, OnPushHostComponent],
+    });
+    fixture = TestBed.createComponent(OnPushHostComponent);
+    fixture.autoDetectChanges();
+    await fixture.whenStable();
+    input = fixture.nativeElement.querySelector('input');
+  });
+
+  afterEach(() => fixture.destroy());
+
+  it('renders state and label changes made by the host', async () => {
+    fixture.componentInstance.enabled.set(true);
+    fixture.componentInstance.label.set('Expert');
+    await fixture.whenStable();
+
+    expect(input.checked).toBe(true);
+    expect(fixture.nativeElement.querySelector('label.toggle-label').textContent.trim()).toBe('Expert');
+  });
+
+  it('reports a click to the host', async () => {
+    input.click();
+    await fixture.whenStable();
+
+    expect(fixture.componentInstance.enabled()).toBe(true);
   });
 });

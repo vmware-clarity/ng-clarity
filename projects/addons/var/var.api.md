@@ -39,6 +39,7 @@ import { PipeTransform } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
+import { Signal } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Subscription } from 'rxjs';
@@ -173,8 +174,7 @@ export class RelevanceService {
     checkComplete$(): Observable<Step[]>;
     // (undocumented)
     destroy(): void;
-    // (undocumented)
-    loading: boolean;
+    get loading(): boolean;
     onStepRelevanceChange$(): Observable<StepInternal>;
     set steps(steps: Step[]);
     // (undocumented)
@@ -311,7 +311,7 @@ export interface StepModelHolder {
     model: StepModel;
 }
 
-// @public (undocumented)
+// @public
 export class StepValidationState {
     constructor(errors?: string[], warnings?: string[], infos?: string[]);
     // (undocumented)
@@ -495,7 +495,7 @@ class WorkflowModelMonitorComponent implements OnInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "NameValue" needs to be exported by the entry point clr-addons-var.d.ts
     //
     // (undocumented)
-    debugModel: NameValue[];
+    get debugModel(): NameValue[];
     // (undocumented)
     isOpen: boolean;
     // (undocumented)

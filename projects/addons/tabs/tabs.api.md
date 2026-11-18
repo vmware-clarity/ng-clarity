@@ -39,6 +39,7 @@ import { PipeTransform } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
+import { Signal } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Subscription } from 'rxjs';
@@ -102,7 +103,7 @@ export { IfTabActiveDirective }
 
 // @public (undocumented)
 class TabLinksComponent {
-    constructor(workflowStrings: WorkflowStrings, cdr: ChangeDetectorRef);
+    constructor(workflowStrings: WorkflowStrings);
     // (undocumented)
     changeOpened(opened: boolean): void;
     // Warning: (ae-forgotten-export) The symbol "ZoomLevel" needs to be exported by the entry point clr-addons-tabs.d.ts
@@ -139,15 +140,15 @@ export { TabLinksComponent as TabLinks }
 export { TabLinksComponent }
 
 // @public
-class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterContentInit, OnDestroy {
+class TabsComponent implements OnChanges, AfterViewInit, AfterContentInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "RelevanceService" needs to be exported by the entry point clr-addons-tabs.d.ts
     // Warning: (ae-forgotten-export) The symbol "ZoomLevelService" needs to be exported by the entry point clr-addons-tabs.d.ts
     constructor(modelMgr: WorkflowModelManager, relevanceService: RelevanceService, cdr: ChangeDetectorRef, workflowStrings: WorkflowStrings, configService: WorkflowConfigurationService, zoomLevelService?: ZoomLevelService);
     // Warning: (ae-forgotten-export) The symbol "Step" needs to be exported by the entry point clr-addons-tabs.d.ts
     activeTabChange: EventEmitter<Step>;
-    // (undocumented)
-    activeTabStep: Step;
+    get activeTabStep(): Step;
     autoCollapseTabLinks: boolean;
+    get busy(): boolean;
     // (undocumented)
     clrTabsLayout: TabLayout;
     // Warning: (ae-forgotten-export) The symbol "WorkflowConfigurationService" needs to be exported by the entry point clr-addons-tabs.d.ts
@@ -155,10 +156,9 @@ class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterContentIni
     // (undocumented)
     configService: WorkflowConfigurationService;
     // (undocumented)
-    currentZoomLevel: ZoomLevel;
+    get currentZoomLevel(): ZoomLevel;
     disableTabsContent: boolean;
-    // (undocumented)
-    errorIconVisibleList: boolean[];
+    get errorIconVisibleList(): boolean[];
     // (undocumented)
     get isLoading(): boolean;
     // (undocumented)
@@ -184,8 +184,6 @@ class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterContentIni
     ngOnChanges(changes: SimpleChanges): void;
     // (undocumented)
     ngOnDestroy(): void;
-    // (undocumented)
-    ngOnInit(): void;
     // Warning: (ae-forgotten-export) The symbol "ModelChange" needs to be exported by the entry point clr-addons-tabs.d.ts
     readonly onModelChange: EventEmitter<ModelChange[]>;
     onStepActiveChange(step: StepInternal, isStepActive: boolean): void;

@@ -40,6 +40,7 @@ import { PipeTransform } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
+import { Signal } from '@angular/core';
 import { SimpleChange } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
@@ -103,7 +104,7 @@ class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterContentI
     constructor(cdr: ChangeDetectorRef, modelMgr: WorkflowModelManager, relevanceService: RelevanceService, configService: WorkflowConfigurationService, workflowStrings: WorkflowStrings, zoomLevelService?: ZoomLevelService,
     openModalComponent?: boolean);
     // (undocumented)
-    activeStepIndex: number;
+    get activeStepIndex(): number;
     // (undocumented)
     cancelPageValidation(): void;
     // (undocumented)
@@ -118,13 +119,11 @@ class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterContentI
     //
     // (undocumented)
     configService: WorkflowConfigurationService;
-    // Warning: (ae-forgotten-export) The symbol "ZoomLevel" needs to be exported by the entry point clr-addons-wizard.d.ts
-    //
     // (undocumented)
-    currentZoomLevel: ZoomLevel;
+    get currentZoomLevel(): ZoomLevel | undefined;
     footer: WizardFooterConfig;
     // (undocumented)
-    footerComponentInputs: Record<string, unknown>;
+    get footerComponentInputs(): Record<string, unknown>;
     // (undocumented)
     get isLoading(): boolean;
     // (undocumented)
@@ -184,6 +183,8 @@ class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterContentI
     //
     // (undocumented)
     workflowStrings: WorkflowStrings;
+    // Warning: (ae-forgotten-export) The symbol "ZoomLevel" needs to be exported by the entry point clr-addons-wizard.d.ts
+    //
     // (undocumented)
     ZoomLevel: typeof ZoomLevel;
     // (undocumented)
