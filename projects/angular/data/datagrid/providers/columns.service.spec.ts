@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { computed } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { ColumnsService } from './columns.service';
@@ -47,6 +48,24 @@ describe('ColumnsService provider', function () {
     const diff = { changes: [DatagridColumnChanges.HIDDEN], hidden: true };
     provider.emitStateChangeAt(0, diff);
     expect(state).toEqual({ ...col1, ...diff });
+  });
+
+  it('tells the views that match cells to columns when the columns are reordered, but not when one is resized', () => {
+    const [first, second] = provider.columns;
+    let runs = 0;
+    const firstColumn = computed(() => {
+      runs++;
+      return provider.columnAt(0);
+    });
+    expect(firstColumn()).toBe(first);
+
+    provider.emitStateChange(first, { changes: [DatagridColumnChanges.WIDTH], width: 120 });
+    expect(firstColumn()).toBe(first);
+    expect(runs).toBe(1);
+
+    provider.setColumn(0, second);
+    provider.setColumn(1, first);
+    expect(firstColumn()).toBe(second);
   });
 
   it('can detect if hideable columns are enabled', () => {

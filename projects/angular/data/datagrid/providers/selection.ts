@@ -44,8 +44,13 @@ export class Selection<T = any> {
   /** Identities of the selected items, in the order of the selection. */
   private readonly selectedRefs = signal<unknown[]>([]);
 
-  /** Identities of the items that can't be selected or deselected. */
-  private readonly lockedRefs = signal<unknown[]>([]);
+  /**
+   * Identities of the items that can't be selected or deselected. It is set again whenever the items change, so it
+   * only tells the views when the locked items are different.
+   */
+  private readonly lockedRefs = signal<unknown[]>([], {
+    equal: (a, b) => a.length === b.length && a.every((ref, i) => ref === b[i]),
+  });
 
   private readonly _selectionType = signal(SelectionType.None);
   private readonly _rowSelectionMode = signal(false);

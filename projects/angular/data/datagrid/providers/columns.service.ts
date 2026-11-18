@@ -25,12 +25,23 @@ export class ColumnsService {
   /** The state of every column, for the views that show it. */
   private readonly states = signal<ColumnState[]>([]);
 
-  /** Which columns are hidden and pinned. Unlike the states, it doesn't change when a column is resized. */
+  /**
+   * Which column is where, and whether it is hidden and pinned. Unlike the states, it doesn't change when a column is
+   * resized.
+   */
   private readonly layout = computed(
-    () => this.states().map(state => ({ hidden: !!state.hidden, pinned: !!state.pinned })),
+    () =>
+      this.states().map((state, index) => ({
+        column: this.columns[index],
+        hidden: !!state.hidden,
+        pinned: !!state.pinned,
+      })),
     {
       equal: (a, b) =>
-        a.length === b.length && a.every((column, i) => column.hidden === b[i].hidden && column.pinned === b[i].pinned),
+        a.length === b.length &&
+        a.every(
+          (entry, i) => entry.column === b[i].column && entry.hidden === b[i].hidden && entry.pinned === b[i].pinned
+        ),
     }
   );
 
@@ -63,6 +74,11 @@ export class ColumnsService {
 
   isHidden(columnIndex: number): boolean {
     return !!this.layout()[columnIndex]?.hidden;
+  }
+
+  /** The column at the given index, for the views that have to follow when the columns are reordered. */
+  columnAt(columnIndex: number): BehaviorSubject<ColumnState> | undefined {
+    return this.layout()[columnIndex]?.column;
   }
 
   setColumn(index: number, column: BehaviorSubject<ColumnState>) {

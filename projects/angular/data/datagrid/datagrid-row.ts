@@ -509,7 +509,6 @@ export class ClrDatagridRow<T = any> implements OnChanges, AfterContentInit, Aft
     if (!node) {
       return null;
     }
-    const columns = this.columnsService.columns;
     const toggleColumns = this.tree.toggleColumns();
     const marked = new Set<ClrDatagridCell>();
     let first: ClrDatagridCell | undefined;
@@ -522,7 +521,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, AfterContentInit, Aft
       if (this.columnsService.isPinned(index)) {
         pinned ??= cell;
       }
-      if (toggleColumns.has(columns[index])) {
+      if (toggleColumns.has(this.columnsService.columnAt(index))) {
         marked.add(cell);
       }
     });
