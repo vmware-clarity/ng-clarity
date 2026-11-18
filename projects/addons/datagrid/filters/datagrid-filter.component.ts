@@ -9,13 +9,16 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   OnInit,
   Output,
   ViewChild,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ClrDatagridFilterInterface, ClrDatagridStringFilterInterface } from '@clr/angular/data/datagrid';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { asyncScheduler, Subject } from 'rxjs';
@@ -41,7 +44,7 @@ import { DatagridStrings } from '../i18n/datagrid-strings.service';
       />
     </clr-input-container>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DatagridFilterComponent implements ClrDatagridFilterInterface<any>, OnInit, AfterViewInit {
   @Input() filterValue: any;
@@ -53,6 +56,8 @@ export class DatagridFilterComponent implements ClrDatagridFilterInterface<any>,
   value: string;
   changes = new Subject<any>();
 
+  readonly #destroyRef = inject(DestroyRef);
+
   constructor(
     public dgStrings: DatagridStrings,
     private popoverService: ClrPopoverService
@@ -63,11 +68,13 @@ export class DatagridFilterComponent implements ClrDatagridFilterInterface<any>,
   }
 
   ngAfterViewInit() {
-    this.popoverService.openChange.pipe(observeOn(asyncScheduler)).subscribe(openChange => {
-      if (openChange) {
-        this.input.nativeElement.focus();
-      }
-    });
+    this.popoverService.openChange
+      .pipe(observeOn(asyncScheduler), takeUntilDestroyed(this.#destroyRef))
+      .subscribe(openChange => {
+        if (openChange) {
+          this.input.nativeElement.focus();
+        }
+      });
   }
 
   onKey(event: any) {

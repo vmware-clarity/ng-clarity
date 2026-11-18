@@ -38,6 +38,8 @@ const resources = {
   standalone: false,
   templateUrl: 'datagrid-action-bar.component.html',
   styleUrls: ['datagrid-action-bar.component.scss'],
+  // Eager on purpose: it shows fields of the application's actions (`enabled`, `label`), which apps change in
+  // place, for example on selection. They must keep refreshing with the grid as in Zone apps today.
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DatagridActionBarComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {

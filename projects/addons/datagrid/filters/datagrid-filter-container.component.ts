@@ -31,6 +31,8 @@ import { ColumnFilter } from '../interfaces/column-filter';
   selector: 'appfx-dg-filter-container',
   standalone: false,
   template: ` <ng-template #filterContainer></ng-template>`,
+  // Eager on purpose: it hosts the application's filter component, which must keep refreshing with the grid
+  // as in Zone apps today.
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DatagridFilterContainerComponent implements AfterViewInit, OnDestroy {

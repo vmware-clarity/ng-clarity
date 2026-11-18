@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, signal } from '@angular/core';
 
 import { ExportType } from './export-type';
 import { ExportStatus } from './export.interface';
@@ -16,7 +16,7 @@ import { DatagridStrings } from '../../i18n/datagrid-strings.service';
   standalone: false,
   templateUrl: 'export-datagrid.component.html',
   styleUrls: ['export-datagrid.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExportDatagridComponent {
   /**
@@ -43,7 +43,7 @@ export class ExportDatagridComponent {
   selectedRowsCount: string;
   matchedFilterRowsCount: string;
   exportType: any;
-  exportStatus: ExportStatus = { inProgress: false, exportType: ExportType.ALL };
+  exportStatus: ExportStatus = createExportStatus();
 
   constructor(public dgStrings: DatagridStrings) {
     this.exportType = ExportType;
@@ -87,4 +87,21 @@ export class ExportDatagridComponent {
     this.exportStatus.exportType = exportType;
     this.exportEventEmitter.emit(this.exportStatus);
   }
+}
+
+/**
+ * Apps set `inProgress` on the emitted status object, often after an async export finished. Holding it in a
+ * signal keeps the button's `[clrLoading]` binding current then, without anything having to check the grid.
+ */
+function createExportStatus(): ExportStatus {
+  const inProgress = signal<boolean | undefined>(false);
+  return {
+    exportType: ExportType.ALL,
+    get inProgress() {
+      return inProgress();
+    },
+    set inProgress(value: boolean | undefined) {
+      inProgress.set(value);
+    },
+  };
 }

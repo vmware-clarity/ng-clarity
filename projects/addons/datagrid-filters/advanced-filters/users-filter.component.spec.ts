@@ -6,7 +6,6 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClrCheckboxModule, ClrInputModule, ClrRadioModule, ClrSelectModule } from '@clr/angular/forms';
@@ -26,7 +25,6 @@ describe('UsersFilterComponent', () => {
   let component: UsersFilterComponent;
   let fixture: ComponentFixture<UsersFilterComponent>;
   let userServiceMock: any;
-  let cdrMock: any;
   let datagridFiltersStrings: DatagridFiltersStrings;
 
   const exampleDomain = 'example.com';
@@ -48,10 +46,6 @@ describe('UsersFilterComponent', () => {
       searchUsers: vi.fn().mockReturnValue(of(mockUsers)),
     };
 
-    cdrMock = {
-      markForCheck: vi.fn().mockName('ChangeDetectorRef.markForCheck'),
-    };
-
     await TestBed.configureTestingModule({
       declarations: [UsersFilterComponent, FilterFormComponent],
       imports: [
@@ -69,7 +63,6 @@ describe('UsersFilterComponent', () => {
         FormBuilder,
         { provide: DatagridFiltersUserService, useValue: userServiceMock },
         DatagridFiltersStrings,
-        { provide: ChangeDetectorRef, useValue: cdrMock },
       ],
     }).compileComponents();
     datagridFiltersStrings = TestBed.inject(DatagridFiltersStrings);
@@ -93,7 +86,7 @@ describe('UsersFilterComponent', () => {
     it('should initialize form and load domains on init', () => {
       expect(component.usersSelectionForm).toBeDefined();
       expect(userServiceMock.getDomains).toHaveBeenCalled();
-      expect(component.domains).toEqual(mockDomains);
+      expect(component.domains()).toEqual(mockDomains);
       // Should select first domain by default if none selected
       expect(component.usersSelectionForm.get('domain')?.value).toEqual(mockDomains[0]);
     });
@@ -116,10 +109,9 @@ describe('UsersFilterComponent', () => {
       await vi.advanceTimersByTimeAsync(1);
       await fixture.whenStable();
 
-      // Add a new user to the selection
-      component.optionsFormArray.at(2)?.setValue(true);
-      component.onOptionChange(2);
-      renderFixture(fixture);
+      // Add a new user to the selection (the first checkbox is "select all")
+      fixture.nativeElement.querySelectorAll('.enum-options input[type=checkbox]')[3].click();
+      await fixture.whenStable();
 
       const spy = vi.spyOn(component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
       component.onApplyButtonClick();
@@ -208,8 +200,8 @@ describe('UsersFilterComponent', () => {
       await vi.advanceTimersByTimeAsync(200); // Wait for debounce
 
       expect(userServiceMock.searchUsers).toHaveBeenCalledWith(searchTerm, exampleDomain);
-      expect(component.allFetchedUsers).toEqual(['alice', 'bob', 'charlie']);
-      expect(component.visibleUsers.length).toBe(4); // incldue al
+      expect(component.allFetchedUsers()).toEqual(['alice', 'bob', 'charlie']);
+      expect(component.visibleUsers().length).toBe(4); // incldue al
     });
 
     it('should handle search errors gracefully by returning search term as fallback', async () => {
@@ -219,10 +211,10 @@ describe('UsersFilterComponent', () => {
       component.usersSelectionForm.get('searchTerm')?.setValue(searchTerm);
       await vi.advanceTimersByTimeAsync(200);
 
-      expect(component.errorSearchingUsers).toBe(datagridFiltersStrings.errorSearchingUsers);
+      expect(component.errorSearchingUsers()).toBe(datagridFiltersStrings.errorSearchingUsers);
       // The catchError logic returns of([searchTerm]) if searchTerm exists
-      expect(component.allFetchedUsers).toEqual([searchTerm]);
-      expect(component.visibleUsers).toContain(searchTerm);
+      expect(component.allFetchedUsers()).toEqual([searchTerm]);
+      expect(component.visibleUsers()).toContain(searchTerm);
     });
 
     it('should clear search term when clearSearch is called', () => {
@@ -310,23 +302,23 @@ describe('UsersFilterComponent', () => {
     beforeEach(() => {
       // Mock a large list of users
       const largeList = Array.from({ length: 60 }, (x, i) => `user${i}`);
-      component.allFetchedUsers = largeList;
+      component.allFetchedUsers.set(largeList);
       // Force page size to 50 (default)
       (component as any).currentMaxShown = 50;
       (component as any).rebuildCheckboxList();
     });
 
     it('should show only pageSize items initially', () => {
-      expect(component.visibleUsers.length).toBe(50);
-      expect(component.hasMoreItems).toBe(true);
+      expect(component.visibleUsers().length).toBe(50);
+      expect(component.hasMoreItems()).toBe(true);
     });
 
     it('should load next page when loadMore is called', () => {
       const event = new Event('click');
       component.loadMore(event);
 
-      expect(component.visibleUsers.length).toBe(60); // 50 + 10 remaining
-      expect(component.hasMoreItems).toBe(false);
+      expect(component.visibleUsers().length).toBe(60); // 50 + 10 remaining
+      expect(component.hasMoreItems()).toBe(false);
     });
   });
 
@@ -341,7 +333,7 @@ describe('UsersFilterComponent', () => {
       await vi.advanceTimersByTimeAsync(200);
 
       // Expect "frank" to be in visible users
-      expect(component.visibleUsers).toContain(term);
+      expect(component.visibleUsers()).toContain(term);
     });
 
     it('should NOT duplicate search term if it IS in the results', async () => {
@@ -352,7 +344,7 @@ describe('UsersFilterComponent', () => {
       component.usersSelectionForm.get('searchTerm')?.setValue(term);
       await vi.advanceTimersByTimeAsync(200);
 
-      const occurrences = component.visibleUsers.filter(u => u === 'alice').length;
+      const occurrences = component.visibleUsers().filter(u => u === 'alice').length;
       expect(occurrences).toBe(1);
     });
   });
@@ -401,8 +393,8 @@ describe('UsersFilterComponent', () => {
       await vi.advanceTimersByTimeAsync(200);
       await fixture.whenStable();
 
-      expect(component.errorRetrievingDomains).toBe(datagridFiltersStrings.errorLoadingDomains);
-      expect(component.isLoading).toBe(false);
+      expect(component.errorRetrievingDomains()).toBe(datagridFiltersStrings.errorLoadingDomains);
+      expect(component.isLoading()).toBe(false);
     });
   });
 
@@ -430,7 +422,7 @@ describe('UsersFilterComponent', () => {
       component.selectedValues.add('Charlie'); // Exact Match
 
       // 2. Mock Search Results (Backend returns nothing for this test to isolate selectedValues logic)
-      component.allFetchedUsers = [];
+      component.allFetchedUsers.set([]);
 
       // 3. Set Search Term
       component.usersSelectionForm.get('searchTerm')?.setValue('Charlie');
@@ -445,19 +437,19 @@ describe('UsersFilterComponent', () => {
       component.usersSelectionForm.get('searchTerm')?.setValue('Ali');
       await vi.advanceTimersByTimeAsync(200);
 
-      expect(component.visibleUsers).toContain('Alice');
-      expect(component.visibleUsers).toContain('Ali');
-      expect(component.visibleUsers).not.toContain('Bob');
+      expect(component.visibleUsers()).toContain('Alice');
+      expect(component.visibleUsers()).toContain('Ali');
+      expect(component.visibleUsers()).not.toContain('Bob');
 
       // Because exact match was found in selected values, it shouldn't be added again as a "custom user"
       // Count occurrences of "Ali"
-      const count = component.visibleUsers.filter(u => u === 'Ali').length;
+      const count = component.visibleUsers().filter(u => u === 'Ali').length;
       expect(count).toBe(1);
     });
 
     it('should handle empty visible users in updateSelectAllState', () => {
       // Setup empty state
-      component.visibleUsers = [];
+      component.visibleUsers.set([]);
 
       // Call the private method (or trigger via onOptionChange/rebuild)
       (component as any).updateSelectAllState();

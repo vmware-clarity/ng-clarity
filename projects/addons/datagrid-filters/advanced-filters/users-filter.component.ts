@@ -7,14 +7,15 @@
 
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
+  computed,
   EventEmitter,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   Output,
+  signal,
   SimpleChanges,
 } from '@angular/core';
 import {
@@ -44,7 +45,7 @@ export enum ErrorType {
   standalone: false,
   templateUrl: 'users-filter.component.html',
   styleUrls: ['users-filter.component.scss', '../common-styles.scss', 'enum-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UsersFilterComponent implements OnInit, OnDestroy, OnChanges {
   @Input() filterProperty: UserPropertyDefinition;
@@ -52,12 +53,14 @@ export class UsersFilterComponent implements OnInit, OnDestroy, OnChanges {
   @Output() filterCriteriaChange: EventEmitter<PropertyFilter> = new EventEmitter<PropertyFilter>();
 
   usersSelectionForm: FormGroup;
-  isLoading = false;
-  domains: string[] = [''];
-  errorRetrievingDomains?: string;
-  errorSearchingUsers?: string;
-  allFetchedUsers: string[] = [];
-  visibleUsers: string[] = [];
+  // Signals, because the user service answers asynchronously and the host view is OnPush.
+  readonly isLoading = signal(false);
+  readonly domains = signal<string[]>(['']);
+  readonly errorRetrievingDomains = signal<string | undefined>(undefined);
+  readonly errorSearchingUsers = signal<string | undefined>(undefined);
+  readonly allFetchedUsers = signal<string[]>([]);
+  readonly visibleUsers = signal<string[]>([]);
+  readonly hasMoreItems = computed(() => this.visibleUsers().length < this.allFetchedUsers().length);
   selectedValues: Set<string> = new Set<string>();
 
   readonly #pageSize = 50;
@@ -68,17 +71,12 @@ export class UsersFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(
     private fb: FormBuilder,
-    private cdr: ChangeDetectorRef,
     public filterStrings: DatagridFiltersStrings,
     private userService: DatagridFiltersUserService
   ) {}
 
   get optionsFormArray(): FormArray {
     return this.usersSelectionForm?.get('options') as FormArray;
-  }
-
-  get hasMoreItems(): boolean {
-    return this.visibleUsers.length < this.allFetchedUsers.length;
   }
 
   trackByOperator(_index: number, operator: ComparisonOperator): ComparisonOperator {
@@ -125,7 +123,7 @@ export class UsersFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   onOptionChange(index: number): void {
-    const user = this.visibleUsers[index];
+    const user = this.visibleUsers()[index];
     const isChecked = this.optionsFormArray.at(index).value;
 
     if (isChecked) {
@@ -145,7 +143,7 @@ export class UsersFilterComponent implements OnInit, OnDestroy, OnChanges {
       (ctrl as FormControl).setValue(selectAllValue, { emitEvent: false });
     });
 
-    this.visibleUsers.forEach(user => {
+    this.visibleUsers().forEach(user => {
       if (selectAllValue) {
         this.selectedValues.add(user);
       } else {
@@ -163,13 +161,12 @@ export class UsersFilterComponent implements OnInit, OnDestroy, OnChanges {
   handleError(error: any, errorType: ErrorType): Observable<string[]> {
     if (errorType === ErrorType.USER_SEARCH) {
       console.error('Error searching users: ', error);
-      this.errorSearchingUsers = this.filterStrings.errorSearchingUsers;
+      this.errorSearchingUsers.set(this.filterStrings.errorSearchingUsers);
     } else if (errorType === ErrorType.DOMAIN) {
       console.error('Error loading domains: ', error);
-      this.errorRetrievingDomains = this.filterStrings.errorLoadingDomains;
+      this.errorRetrievingDomains.set(this.filterStrings.errorLoadingDomains);
     }
-    this.isLoading = false;
-    this.cdr.markForCheck();
+    this.isLoading.set(false);
     if (errorType === ErrorType.DOMAIN) {
       return of([]);
     } else {
@@ -179,13 +176,11 @@ export class UsersFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   showLoading(): void {
-    this.isLoading = true;
-    this.cdr.markForCheck();
+    this.isLoading.set(true);
   }
 
   hideLoading(): void {
-    this.isLoading = false;
-    this.cdr.markForCheck();
+    this.isLoading.set(false);
   }
 
   onCancelButtonClick() {
@@ -209,14 +204,14 @@ export class UsersFilterComponent implements OnInit, OnDestroy, OnChanges {
         takeUntil(this.#destroy$),
         tap(() => {
           this.showLoading();
-          this.errorSearchingUsers = undefined;
+          this.errorSearchingUsers.set(undefined);
         }),
         debounceTime(this.#searchTermDebounceTime),
         switchMap((term: string) =>
           this.fetchUsers(term).pipe(catchError((error: any) => this.handleError(error, ErrorType.USER_SEARCH)))
         ),
         tap((results: string[]) => {
-          this.allFetchedUsers = results;
+          this.allFetchedUsers.set(results);
           this.resetPagination();
           this.rebuildCheckboxList();
           this.hideLoading();
@@ -251,7 +246,7 @@ export class UsersFilterComponent implements OnInit, OnDestroy, OnChanges {
         catchError((error: any) => this.handleError(error, ErrorType.DOMAIN))
       )
       .subscribe((domains: string[]) => {
-        this.domains = domains;
+        this.domains.set(domains);
         const currentDomain = this.usersSelectionForm.get('domain')?.value;
         if (domains.length > 0 && !currentDomain) {
           this.usersSelectionForm.get('domain')?.setValue(domains[0]);
@@ -293,8 +288,8 @@ export class UsersFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private rebuildCheckboxList(): void {
-    const slicedUsers = this.allFetchedUsers.slice(0, this.#currentMaxShown);
-    this.visibleUsers = [];
+    const slicedUsers = this.allFetchedUsers().slice(0, this.#currentMaxShown);
+    const visibleUsers: string[] = [];
     const visibleUsersSet = new Set<string>();
     const searchTerm = this.usersSelectionForm.get('searchTerm')?.value;
     let searchTermMatchCustomUser = false;
@@ -302,7 +297,7 @@ export class UsersFilterComponent implements OnInit, OnDestroy, OnChanges {
     if (searchTerm) {
       this.selectedValues.forEach((user: string) => {
         if (user.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase())) {
-          this.visibleUsers.push(user);
+          visibleUsers.push(user);
           visibleUsersSet.add(user);
         }
         if (user === searchTerm) {
@@ -310,41 +305,40 @@ export class UsersFilterComponent implements OnInit, OnDestroy, OnChanges {
         }
       });
       if (!searchTermMatchCustomUser) {
-        this.visibleUsers.push(searchTerm);
+        visibleUsers.push(searchTerm);
         visibleUsersSet.add(searchTerm);
       }
     } else {
       this.selectedValues.forEach(user => {
         if (!visibleUsersSet.has(user)) {
-          this.visibleUsers.push(user);
+          visibleUsers.push(user);
           visibleUsersSet.add(user);
         }
       });
     }
 
-    slicedUsers
-      .filter(user => !visibleUsersSet.has(user))
-      .forEach(filteredUser => this.visibleUsers.push(filteredUser));
+    slicedUsers.filter(user => !visibleUsersSet.has(user)).forEach(filteredUser => visibleUsers.push(filteredUser));
 
     const optionsArr = this.optionsFormArray;
     optionsArr.clear();
 
-    this.visibleUsers.forEach(user => {
+    visibleUsers.forEach(user => {
       const isSelected = this.selectedValues.has(user);
       optionsArr.push(new FormControl(isSelected));
     });
 
+    this.visibleUsers.set(visibleUsers);
     this.updateSelectAllState();
-    this.cdr.markForCheck();
   }
 
   private updateSelectAllState(): void {
-    if (this.visibleUsers.length === 0) {
+    const visibleUsers = this.visibleUsers();
+    if (visibleUsers.length === 0) {
       this.usersSelectionForm.get('selectAll')?.setValue(false, { emitEvent: false });
       return;
     }
 
-    const allVisibleSelected = this.visibleUsers.every(u => this.selectedValues.has(u));
+    const allVisibleSelected = visibleUsers.every(u => this.selectedValues.has(u));
     this.usersSelectionForm.get('selectAll')?.setValue(allVisibleSelected, { emitEvent: false });
   }
 

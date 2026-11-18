@@ -7,6 +7,7 @@
 
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ComponentRef,
   Input,
@@ -29,6 +30,8 @@ import { ColumnDefinition, ColumnRenderer } from './shared/column/column-definit
     <ng-template #cellContainer></ng-template>
   `,
   styles: [':host { width: 100%; }'],
+  // Eager on purpose: the cell shows fields of the application's row items, which apps may change in place,
+  // and it hosts the application's renderer. Both must refresh whenever the row does, as in Zone apps today.
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DatagridCellContainerComponent implements OnInit, OnDestroy, OnChanges {
@@ -44,6 +47,8 @@ export class DatagridCellContainerComponent implements OnInit, OnDestroy, OnChan
   ngOnChanges(): void {
     if (this.instance && typeof this.instance.onChange === 'function') {
       this.instance.onChange(this.item || {}, this.column);
+      // The renderer may be OnPush (the Angular default), and it only learns about the change from this call.
+      this.componentRef?.injector.get(ChangeDetectorRef).markForCheck();
     }
   }
 
