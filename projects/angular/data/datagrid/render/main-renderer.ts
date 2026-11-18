@@ -106,11 +106,11 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
     // hidden by default gets initialised without being visible and breakes rendering cycle.
     // Should run only the first time if the datagrid is not visible on first initialization.
     if (this.el.nativeElement.offsetParent === null) {
-      this.intersectionObserver = new IntersectionObserver(([entry], observer) => {
+      this.intersectionObserver = new IntersectionObserver(([entry]) => {
         if ((this.el.nativeElement.offsetParent || entry.isIntersecting) && this.columnsSizesStable) {
           this.columnsSizesStable = false;
           this.changeDetectorRef.markForCheck();
-          observer.disconnect();
+          this.intersectionObserver?.disconnect();
         }
       });
       this.intersectionObserver.observe(this.el.nativeElement);
