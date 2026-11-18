@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, signal, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ClrCommonStringsService } from '@clr/angular/utils';
 import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrModal } from './modal';
@@ -172,6 +173,20 @@ describe('Modal change detection: OnPush host driven by signals', () => {
     host.closable.set(false);
     await fixture.whenStable();
     expect(query(fixture, 'clr-modal .close')).toBeNull();
+  });
+
+  it('renders localized strings changed while open', async () => {
+    host.open.set(true);
+    host.panelOpen.set(true);
+    await fixture.whenStable();
+
+    TestBed.inject(ClrCommonStringsService).localize({
+      modalContentStart: 'Start',
+      sidePanelPin: 'Pin it',
+    });
+    await fixture.whenStable();
+    expect(query(fixture, 'clr-modal .clr-sr-only').textContent).toBe('Start');
+    expect(query(fixture, 'clr-side-panel .pinnable').getAttribute('aria-label')).toBe('Pin it');
   });
 
   it('refreshes projected content and content added after opening', async () => {
