@@ -18,7 +18,7 @@ export class ModalStackService {
   private readonly modalStack: Closable[] = [];
   private readonly keyUpEventListener = this.onKeyUp.bind(this);
 
-  constructor(@Inject(PLATFORM_ID) private readonly platformId: any) {}
+  constructor(@Inject(PLATFORM_ID) private readonly platformId: Object) {}
 
   trackModalOpen(openedModal: Closable) {
     if (this.modalStack.includes(openedModal) === false) {
