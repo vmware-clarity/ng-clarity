@@ -5,14 +5,26 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { signal } from '@angular/core';
+
 export type ClrComboboxIdentityFunction<T> = (item: T) => any;
 
 export type ClrComboboxResolverFunction<T> = (input: string) => T;
 
-export abstract class ComboboxModel<T> {
-  model: T | T[];
+export abstract class ComboboxModel<T, M extends T | T[] = T | T[]> {
   displayField?: string;
+  // Every write notifies, because the multi-select model changes its array in place.
+  private readonly value = signal<M>(undefined, { equal: () => false });
+
+  get model(): M {
+    return this.value();
+  }
+  set model(model: M) {
+    this.value.set(model);
+  }
+
   identityFn: ClrComboboxIdentityFunction<T> = (item: T) => item;
+
   abstract containsItem(item: T): boolean;
   abstract select(item: T): void;
   abstract unselect(item: T): void;

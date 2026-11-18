@@ -1989,7 +1989,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     get ariaOwns(): string;
     // (undocumented)
-    protected calculatedLimit: number | undefined;
+    protected readonly calculatedLimit: WritableSignal<number>;
     // (undocumented)
     calculationPills: QueryList<ElementRef<HTMLElement>>;
     // (undocumented)
@@ -1999,7 +1999,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     clrOpenChange: Observable<boolean>;
     // Warning: (ae-forgotten-export) The symbol "ComboboxModel" needs to be exported by the entry point clr-angular.d.ts
-    clrSelectionChange: Observable<ComboboxModel<T>>;
+    clrSelectionChange: Observable<ComboboxModel<T, T | T[]>>;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
@@ -2033,7 +2033,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     inputId(): string;
     // (undocumented)
-    protected isTotalSelection: boolean;
+    protected readonly isTotalSelection: WritableSignal<boolean>;
     // (undocumented)
     loadingStateChange(state: ClrLoadingState): void;
     // (undocumented)
@@ -2083,11 +2083,11 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     get searchText(): string;
     set searchText(text: string);
     // (undocumented)
-    protected selectionExpanded: boolean;
+    protected readonly selectionExpanded: WritableSignal<boolean>;
     // (undocumented)
     setDisabledState(): void;
     // (undocumented)
-    protected shouldCalculate: boolean;
+    protected readonly shouldCalculate: WritableSignal<boolean>;
     // (undocumented)
     get showAllText(): string;
     // (undocumented)

@@ -29,6 +29,7 @@ import {
   QueryList,
   Renderer2,
   Self,
+  signal,
   ViewChild,
   ViewChildren,
   ViewContainerRef,
@@ -75,10 +76,10 @@ import { OptionSelectionService } from './providers/option-selection.service';
   host: {
     '[class.aria-required]': 'true',
     '[class.clr-combobox]': 'true',
-    '[class.clr-combobox-disabled]': 'control?.disabled',
+    '[class.clr-combobox-disabled]': 'controlState().disabled',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrCombobox<T>
   extends WrappedFormControl<ClrComboboxContainer>
@@ -111,17 +112,17 @@ export class ClrCombobox<T>
   protected popoverType = ClrPopoverType.DROPDOWN;
 
   protected containerWidth: number | null = null;
-  protected selectionExpanded = false;
-  protected calculatedLimit: number | undefined;
-  protected shouldCalculate = true;
-  protected isTotalSelection = false;
+  protected readonly selectionExpanded = signal(false);
+  protected readonly calculatedLimit = signal<number | undefined>(undefined);
+  protected readonly shouldCalculate = signal(true);
+  protected readonly isTotalSelection = signal(false);
 
   private resizeObserver: ResizeObserver;
   private readonly renderInjector = inject(Injector);
   private containerWidthChange = new Subject();
   @ContentChild(ClrOptions) private options: ClrOptions<T>;
 
-  private _searchText = '';
+  private readonly _searchText = signal('');
   private onTouchedCallback: () => any;
   private onChangeCallback: (model: T | T[]) => any;
 
@@ -204,15 +205,15 @@ export class ClrCombobox<T>
   }
 
   get searchText(): string {
-    return this._searchText;
+    return this._searchText();
   }
   set searchText(text: string) {
     // if input text has changed since last time, fire a change event so application can react to it
-    if (text !== this._searchText) {
+    if (text !== this._searchText()) {
       if (this.popoverService.open) {
         this.optionSelectionService.showAllOptions = false;
       }
-      this._searchText = text;
+      this._searchText.set(text);
       this.clrInputChange.emit(this.searchText);
     }
     // We need to trigger this even if unchanged, so the option-items directive will update its list
@@ -261,14 +262,14 @@ export class ClrCombobox<T>
   }
 
   get showIndividualPills(): boolean {
-    return !this.isTotalSelection || this.selectionExpanded;
+    return !this.isTotalSelection() || this.selectionExpanded();
   }
 
   get showTruncationToggle(): boolean {
     return (
-      this.selectionExpanded ||
-      this.isTotalSelection ||
-      (this.calculatedLimit !== null && this.calculatedLimit < this.multiSelectModel.length)
+      this.selectionExpanded() ||
+      this.isTotalSelection() ||
+      (this.calculatedLimit() !== null && this.calculatedLimit() < this.multiSelectModel.length)
     );
   }
 
@@ -322,7 +323,7 @@ export class ClrCombobox<T>
       const multiModel: T[] = this.optionSelectionService.selectionModel.model as T[];
       switch (event.key) {
         case Keys.Backspace:
-          if (!this._searchText.length) {
+          if (!this.searchText.length) {
             if (multiModel && multiModel.length > 0) {
               const lastItem: T = multiModel[multiModel.length - 1];
               this.control?.control.markAsTouched();
@@ -331,8 +332,8 @@ export class ClrCombobox<T>
           }
           break;
         case Keys.Enter:
-          if (this.editable && this._searchText.length > 0 && this.options.emptyOptions) {
-            const parsedInput = this.optionSelectionService.editableResolver(this._searchText);
+          if (this.editable && this.searchText.length > 0 && this.options.emptyOptions) {
+            const parsedInput = this.optionSelectionService.editableResolver(this.searchText);
             this.control?.control.markAsTouched();
             this.optionSelectionService.select(parsedInput);
             this.searchText = '';
@@ -379,7 +380,7 @@ export class ClrCombobox<T>
 
   onChange() {
     if (this.editable && !this.multiSelect && this.options.emptyOptions) {
-      const parsedInput = this.optionSelectionService.editableResolver(this._searchText);
+      const parsedInput = this.optionSelectionService.editableResolver(this.searchText);
       this.optionSelectionService.setSelectionValue(parsedInput);
     }
   }
@@ -428,8 +429,8 @@ export class ClrCombobox<T>
   }
 
   toggleSelectionExpand() {
-    this.selectionExpanded = !this.selectionExpanded;
-    if (this.selectionExpanded) {
+    this.selectionExpanded.update(expanded => !expanded);
+    if (this.selectionExpanded()) {
       this.applyLimit(this.multiSelectModel.length);
     } else {
       this.containerWidthChange.next(this.containerWidth);
@@ -462,7 +463,7 @@ export class ClrCombobox<T>
   }
 
   private calculateLimit() {
-    this.shouldCalculate = true;
+    this.shouldCalculate.set(true);
     this.cdr.detectChanges();
     if (!this.calculationPills || this.calculationPills.length === 0) {
       this.applyLimit();
@@ -492,15 +493,14 @@ export class ClrCombobox<T>
 
   private applyLimit(limit?: number) {
     this.zone.run(() => {
-      this.calculatedLimit = limit === 0 ? 1 : limit;
-      this.shouldCalculate = false;
-      this.cdr.markForCheck();
+      this.calculatedLimit.set(limit === 0 ? 1 : limit);
+      this.shouldCalculate.set(false);
     });
   }
 
   private updateTotalSelection() {
     if (!this.multiSelect || !this.multiSelectModel?.length) {
-      this.isTotalSelection = false;
+      this.isTotalSelection.set(false);
       return;
     }
     // Skip recalculation when items are filtered to zero (e.g. "no results")
@@ -508,18 +508,16 @@ export class ClrCombobox<T>
     if (!this.options?.items?.length) {
       return;
     }
-    this.isTotalSelection = this.optionSelectionService.containsAll(this.options.items.map(option => option.value));
+    this.isTotalSelection.set(this.optionSelectionService.containsAll(this.options.items.map(option => option.value)));
   }
 
   private initializeSubscriptions(): void {
-    this.subscriptions.push(this.focusHandler.pseudoFocus.focusChanged.subscribe(() => this.cdr.markForCheck()));
-
     this.subscriptions.push(
       this.optionSelectionService.selectionChanged.subscribe((newSelection: ComboboxModel<T>) => {
         this.updateInputValue(newSelection);
         if (newSelection.isEmpty()) {
-          this.selectionExpanded = false;
-          this.isTotalSelection = false;
+          this.selectionExpanded.set(false);
+          this.isTotalSelection.set(false);
         } else {
           if (!this.multiSelect) {
             this.popoverService.open = false;
@@ -528,7 +526,7 @@ export class ClrCombobox<T>
         }
 
         this.updateControlValue();
-        if (this.selectionExpanded) {
+        if (this.selectionExpanded()) {
           this.applyLimit(this.multiSelectModel.length);
         } else {
           this.calculateLimit();
@@ -542,7 +540,6 @@ export class ClrCombobox<T>
 
     this.subscriptions.push(
       this.popoverService.openChange.subscribe(open => {
-        this.cdr.markForCheck();
         if (this.editable && !this.multiSelect) {
           if (this.searchText) {
             this.optionSelectionService.showAllOptions = false;
@@ -562,7 +559,7 @@ export class ClrCombobox<T>
         }
       }),
       this.containerWidthChange.pipe(debounceTime(0)).subscribe(() => {
-        if (!this.selectionExpanded && !this.isTotalSelection) {
+        if (!this.selectionExpanded() && !this.isTotalSelection()) {
           this.calculateLimit();
         }
       })

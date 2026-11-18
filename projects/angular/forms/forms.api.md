@@ -54,6 +54,7 @@ import { Type } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
 import { Validator } from '@angular/forms';
 import { ViewContainerRef } from '@angular/core';
+import { WritableSignal } from '@angular/core';
 
 // @public (undocumented)
 export abstract class AbstractIfState {
@@ -293,7 +294,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     get ariaOwns(): string;
     // (undocumented)
-    protected calculatedLimit: number | undefined;
+    protected readonly calculatedLimit: WritableSignal<number>;
     // (undocumented)
     calculationPills: QueryList<ElementRef<HTMLElement>>;
     // (undocumented)
@@ -303,7 +304,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     clrOpenChange: Observable<boolean>;
     // Warning: (ae-forgotten-export) The symbol "ComboboxModel" needs to be exported by the entry point clr-angular-forms.d.ts
-    clrSelectionChange: Observable<ComboboxModel<T>>;
+    clrSelectionChange: Observable<ComboboxModel<T, T | T[]>>;
     // Warning: (ae-forgotten-export) The symbol "ClrCommonStringsService" needs to be exported by the entry point clr-angular-forms.d.ts
     //
     // (undocumented)
@@ -339,7 +340,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     inputId(): string;
     // (undocumented)
-    protected isTotalSelection: boolean;
+    protected readonly isTotalSelection: WritableSignal<boolean>;
     // Warning: (ae-forgotten-export) The symbol "ClrLoadingState" needs to be exported by the entry point clr-angular-forms.d.ts
     //
     // (undocumented)
@@ -395,11 +396,11 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     get searchText(): string;
     set searchText(text: string);
     // (undocumented)
-    protected selectionExpanded: boolean;
+    protected readonly selectionExpanded: WritableSignal<boolean>;
     // (undocumented)
     setDisabledState(): void;
     // (undocumented)
-    protected shouldCalculate: boolean;
+    protected readonly shouldCalculate: WritableSignal<boolean>;
     // (undocumented)
     get showAllText(): string;
     // (undocumented)
@@ -2339,7 +2340,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-forms-combobox.d.ts:293:5 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-forms.d.ts
+// dist/clr-angular/types/clr-angular-forms-combobox.d.ts:300:5 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-forms.d.ts
 
 // (No @packageDocumentation comment for this package)
 
