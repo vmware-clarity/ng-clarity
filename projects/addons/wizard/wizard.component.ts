@@ -119,7 +119,6 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
    */
   @Output() onClose: EventEmitter<Reason> = new EventEmitter<Reason>();
 
-  currentZoomLevel: ZoomLevel;
   ZoomLevel = ZoomLevel;
   showNav = false;
 
@@ -202,6 +201,10 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
           this.recalculateSummaryPageSkipState();
         })
     );
+  }
+
+  get currentZoomLevel(): ZoomLevel | undefined {
+    return this.zoomLevelService?.level();
   }
 
   get pagesInternal(): StepInternal[] {
@@ -304,14 +307,6 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
         this.invalidateNextSteps();
       })
     );
-    if (this.zoomLevelService) {
-      this.subscriptions.add(
-        this.zoomLevelService.onChange.subscribe((level: ZoomLevel) => {
-          this.currentZoomLevel = level;
-          this.cdr.detectChanges();
-        })
-      );
-    }
   }
 
   ngOnDestroy() {

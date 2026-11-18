@@ -140,7 +140,7 @@ export { TabLinksComponent as TabLinks }
 export { TabLinksComponent }
 
 // @public
-class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterContentInit, OnDestroy {
+class TabsComponent implements OnChanges, AfterViewInit, AfterContentInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "RelevanceService" needs to be exported by the entry point clr-addons-tabs.d.ts
     // Warning: (ae-forgotten-export) The symbol "ZoomLevelService" needs to be exported by the entry point clr-addons-tabs.d.ts
     constructor(modelMgr: WorkflowModelManager, relevanceService: RelevanceService, cdr: ChangeDetectorRef, workflowStrings: WorkflowStrings, configService: WorkflowConfigurationService, zoomLevelService?: ZoomLevelService);
@@ -156,7 +156,7 @@ class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterContentIni
     // (undocumented)
     configService: WorkflowConfigurationService;
     // (undocumented)
-    currentZoomLevel: ZoomLevel;
+    get currentZoomLevel(): ZoomLevel;
     disableTabsContent: boolean;
     get errorIconVisibleList(): boolean[];
     // (undocumented)
@@ -184,8 +184,6 @@ class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterContentIni
     ngOnChanges(changes: SimpleChanges): void;
     // (undocumented)
     ngOnDestroy(): void;
-    // (undocumented)
-    ngOnInit(): void;
     // Warning: (ae-forgotten-export) The symbol "ModelChange" needs to be exported by the entry point clr-addons-tabs.d.ts
     readonly onModelChange: EventEmitter<ModelChange[]>;
     onStepActiveChange(step: StepInternal, isStepActive: boolean): void;

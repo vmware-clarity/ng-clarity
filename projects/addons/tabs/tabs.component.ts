@@ -16,7 +16,6 @@ import {
   Input,
   OnChanges,
   OnDestroy,
-  OnInit,
   Optional,
   Output,
   QueryList,
@@ -68,7 +67,7 @@ import { debounceTime, filter, map, shareReplay, switchMap, take, tap } from 'rx
   styleUrls: ['tabs.component.scss', 'tabs.a11y.scss'],
   providers: [RelevanceService, WorkflowModelManager],
 })
-export class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterContentInit, OnDestroy {
+export class TabsComponent implements OnChanges, AfterViewInit, AfterContentInit, OnDestroy {
   /** Disable the content of the tabs. */
   @Input() disableTabsContent: boolean;
 
@@ -97,7 +96,6 @@ export class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterCon
 
   clrTabsLayout: TabLayout;
   TabLayout = TabLayout;
-  currentZoomLevel = ZoomLevel.none;
   ZoomLevel = ZoomLevel;
   tabLinksOpened = false;
   isVerticalLayout: boolean;
@@ -204,6 +202,10 @@ export class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterCon
     return this.showTabLinks && (this.showAppfxTabLinks ? this.tabLinksOpened : true);
   }
 
+  get currentZoomLevel(): ZoomLevel {
+    return this.zoomLevelService?.level() ?? ZoomLevel.none;
+  }
+
   get showTabContent(): boolean {
     return !this.tabLinksOpened;
   }
@@ -223,17 +225,6 @@ export class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterCon
       hasIncompletePage = this.pagesContainers.some(p => !p.readyToComplete);
     }
     return !(hasIncompletePage || this.isLoading || this.#errorActivatingStep());
-  }
-
-  ngOnInit(): void {
-    if (this.zoomLevelService) {
-      this.subscriptions.add(
-        this.zoomLevelService.onChange.subscribe((level: ZoomLevel) => {
-          this.currentZoomLevel = level;
-          this.cdr.detectChanges();
-        })
-      );
-    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {

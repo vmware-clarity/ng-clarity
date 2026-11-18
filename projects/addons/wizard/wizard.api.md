@@ -119,10 +119,8 @@ class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterContentI
     //
     // (undocumented)
     configService: WorkflowConfigurationService;
-    // Warning: (ae-forgotten-export) The symbol "ZoomLevel" needs to be exported by the entry point clr-addons-wizard.d.ts
-    //
     // (undocumented)
-    currentZoomLevel: ZoomLevel;
+    get currentZoomLevel(): ZoomLevel | undefined;
     footer: WizardFooterConfig;
     // (undocumented)
     get footerComponentInputs(): Record<string, unknown>;
@@ -185,6 +183,8 @@ class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterContentI
     //
     // (undocumented)
     workflowStrings: WorkflowStrings;
+    // Warning: (ae-forgotten-export) The symbol "ZoomLevel" needs to be exported by the entry point clr-addons-wizard.d.ts
+    //
     // (undocumented)
     ZoomLevel: typeof ZoomLevel;
     // (undocumented)

@@ -8,6 +8,8 @@
 import { ChangeDetectionStrategy, Component, inject, Injectable, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
+import { ZoomLevelServiceMock } from '@clr/addons/testing';
 import { OnStepActivate, Step, StepModel, StepModelHolder, StepValidationState, Var } from '@clr/addons/var';
 import { renderFixture } from '@clr/angular/utils/testing';
 import { Observable, Subject } from 'rxjs';
@@ -162,4 +164,42 @@ describe('workflow change detection', () => {
       });
     });
   }
+
+  describe('zoom level changes in an OnPush host', () => {
+    const zoomTemplate = {
+      wizard: template.wizard,
+      tabs: `<appfx-tabs [tabs]="state.steps" [model]="state.model" tabLayout="vertical"></appfx-tabs>`,
+    };
+    // What each component shows at 2x zoom
+    const zoomed = { wizard: '.app-wizard.zoom2x', tabs: 'appfx-tab-links' };
+
+    for (const name of Object.keys(zoomTemplate) as (keyof typeof zoomTemplate)[]) {
+      it(`updates appfx-${name}`, async () => {
+        @Component({
+          selector: 'zoom-host',
+          changeDetection: ChangeDetectionStrategy.OnPush,
+          imports: [AppfxWorkflowsModule],
+          template: zoomTemplate[name],
+        })
+        class ZoomHost {
+          readonly state = inject(WorkflowState);
+        }
+        const zoomLevelService = new ZoomLevelServiceMock();
+        TestBed.configureTestingModule({
+          imports: [AppfxWorkflowsModule],
+          providers: [{ provide: WorkflowState, useValue: new WorkflowState() }],
+        });
+        // The module provides the service, so the host's standalone injector needs the override too.
+        TestBed.overrideProvider(ZoomLevelService, { useValue: zoomLevelService });
+        const fixture = TestBed.createComponent(ZoomHost);
+        await fixture.whenStable();
+        expect(fixture.nativeElement.querySelector(zoomed[name])).toBeNull();
+
+        zoomLevelService.resizeSubject.next(ZoomLevel.x2);
+        await fixture.whenStable();
+
+        expect(fixture.nativeElement.querySelector(zoomed[name])).not.toBeNull();
+      });
+    }
+  });
 });
