@@ -82,7 +82,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // Warning: (ae-forgotten-export) The symbol "CellCoordinates" needs to be exported by the entry point clr-angular-data.d.ts
     //
     // (undocumented)
-    activeCellCoords?: CellCoordinates | null;
+    activeCellCoords?: CellCoordinates;
     get allSelected(): boolean;
     set allSelected(value: boolean);
     // (undocumented)

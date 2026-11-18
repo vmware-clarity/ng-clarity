@@ -66,7 +66,7 @@ export class KeyNavigationUtils {
       ariaRowIndex = this.rows[cellCoords.y - 1].getAttribute('aria-rowindex');
     }
 
-    cellCoords.ariaRowIndex = ariaRowIndex;
+    cellCoords.ariaRowIndex = ariaRowIndex ?? undefined;
   }
 
   getNextItemCoordinate(e: KeyboardEvent) {
