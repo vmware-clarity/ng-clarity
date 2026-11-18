@@ -12,6 +12,7 @@ import { ClrPopoverService } from '@clr/angular/popover/common';
 import { ClrDropdownModule } from '@clr/angular/popover/dropdown';
 import { ClrSignpost, ClrSignpostContent, ClrSignpostModule } from '@clr/angular/popover/signpost';
 import { ClrTooltipModule } from '@clr/angular/popover/tooltip';
+import { ClrCommonStringsService } from '@clr/angular/utils';
 
 // These hosts are OnPush and change only through signals or through code that notifies nothing,
 // the way a Zone application changes them from a timer or an HTTP callback. The exhaustive
@@ -141,6 +142,19 @@ describe('Popover components under an OnPush host', () => {
       host.hideTrigger.set(false);
       await fixture.whenStable();
       expect(defaultTrigger()).not.toBeNull();
+    });
+
+    it('renders common strings localized after the first render', async () => {
+      defaultTrigger().click();
+      await fixture.whenStable();
+
+      TestBed.inject(ClrCommonStringsService).localize({
+        signpostToggle: 'Show details',
+        signpostClose: 'Hide details',
+      });
+      await fixture.whenStable();
+      expect(defaultTrigger().getAttribute('aria-label')).toBe('Show details');
+      expect(overlay('clr-signpost-content .close').getAttribute('aria-label')).toBe('Hide details');
     });
 
     it('swaps the default trigger for a custom trigger projected later, and back', async () => {
