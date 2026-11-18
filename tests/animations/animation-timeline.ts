@@ -80,6 +80,8 @@ export class AnimationTimeline {
     await this.page.clock.runFor(time - this.time);
     this.time = time;
     await this.page.evaluate(time => window.__clrAnimationFreezer.seek(time), time);
+    // Animation completion can schedule a zoneless render. Flush it without advancing the sampled frame.
+    await this.page.clock.runFor(0);
   }
 
   /** The animations that started in the first `time` milliseconds after the step. */

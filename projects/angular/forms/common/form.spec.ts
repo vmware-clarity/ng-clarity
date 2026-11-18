@@ -5,12 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ChangeDetectionStrategy, Component, DebugElement, ElementRef, ViewChild } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ClrInputModule } from '@clr/angular/forms/input';
 import { ClrCommonStringsService } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrForm } from './form';
 import { LayoutService } from './providers/layout.service';
@@ -32,18 +33,20 @@ import { MarkControlService } from './providers/mark-control.service';
 class SimpleTest {
   @ViewChild(ClrForm, { static: true }) form: ClrForm;
 
-  @ViewChild('submitBtn', { static: true }) submitBtn;
+  @ViewChild('submitBtn', { static: true }) submitBtn: ElementRef<HTMLButtonElement>;
 
-  @ViewChild('testLabel', { static: true }) testLabel;
+  @ViewChild('testLabel', { static: true }) testLabel: ElementRef<HTMLLabelElement>;
 
   model = new FormGroup({
     testControl: new FormControl('', [Validators.required]),
   });
 }
 
-export default function (): void {
+describe('Forms common utilities', () => {
   describe('ClrForm', () => {
-    let fixture, directive, layoutService;
+    let fixture: ComponentFixture<SimpleTest>;
+    let directive: DebugElement;
+    let layoutService: LayoutService;
 
     beforeEach(function () {
       TestBed.configureTestingModule({
@@ -57,30 +60,30 @@ export default function (): void {
     });
 
     it('adds the .clr-form class to host', function () {
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(directive.nativeElement.className).toContain('clr-form');
     });
 
     it('adds the horizontal layout class to host', function () {
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(directive.nativeElement.className).toContain('clr-form-horizontal');
     });
 
     it('adds the vertical layout class to host', function () {
       layoutService.layout = 'vertical';
-      fixture.detectChanges();
+      renderFixture(fixture);
       // There is no need to put `clr-form-vertical` because its the default behavior in CSS
       expect(directive.nativeElement.className).toContain('clr-form');
     });
 
     it('adds the compact layout class to host', function () {
       layoutService.layout = 'compact';
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(directive.nativeElement.className).toContain('clr-form-compact');
     });
 
     it('provides the LayoutService', function () {
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(directive.injector.get(LayoutService)).toBeTruthy();
     });
 
@@ -90,7 +93,7 @@ export default function (): void {
 
     it('calls markAsTouched', function () {
       const service = directive.injector.get(MarkControlService);
-      spyOn(service, 'markAsTouched');
+      vi.spyOn(service, 'markAsTouched').mockImplementation(() => undefined);
       directive.componentInstance.form.markAsTouched();
       expect(service.markAsTouched).toHaveBeenCalled();
     });
@@ -100,11 +103,11 @@ export default function (): void {
     });
 
     it('responds when the form is submitted', function () {
-      fixture.detectChanges();
-      spyOn(directive.componentInstance.form, 'onFormSubmit');
+      renderFixture(fixture);
+      vi.spyOn(directive.componentInstance.form, 'onFormSubmit').mockImplementation(() => undefined);
       fixture.componentInstance.submitBtn.nativeElement.click();
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(directive.componentInstance.form.onFormSubmit).toHaveBeenCalled();
     });
   });
-}
+});

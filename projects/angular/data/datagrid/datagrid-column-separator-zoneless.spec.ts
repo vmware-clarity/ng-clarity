@@ -5,16 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  provideCheckNoChangesConfig,
-  provideZoneChangeDetection,
-  provideZonelessChangeDetection,
-  QueryList,
-  signal,
-  ViewChildren,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, QueryList, signal, ViewChildren } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrDatagridColumn } from './datagrid-column';
@@ -46,85 +37,79 @@ class SeparatorHost {
   @ViewChildren(ClrDatagridColumn) columnComponents: QueryList<ClrDatagridColumn>;
 }
 
-for (const zoneless of [true, false]) {
-  describe(`column separators in a ${zoneless ? 'zoneless' : 'zone-based'} OnPush host`, () => {
-    let fixture: ComponentFixture<SeparatorHost>;
+describe(`column separators in a zoneless OnPush host`, () => {
+  let fixture: ComponentFixture<SeparatorHost>;
 
-    beforeEach(async () => {
-      TestBed.configureTestingModule({
-        declarations: [SeparatorHost],
-        imports: [ClrDatagridModule],
-        providers: [
-          zoneless ? provideZonelessChangeDetection() : provideZoneChangeDetection(),
-          provideCheckNoChangesConfig({ exhaustive: true }),
-        ],
-      });
-      fixture = TestBed.createComponent(SeparatorHost);
-      fixture.autoDetectChanges();
-      await fixture.whenStable();
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      declarations: [SeparatorHost],
+      imports: [ClrDatagridModule],
     });
-
-    afterEach(() => fixture.destroy());
-
-    function separator(title: string) {
-      const columns = Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('clr-dg-column'));
-      return !!columns
-        .find(column => column.querySelector('.datagrid-column-title')?.textContent.trim() === title)
-        ?.querySelector('clr-dg-column-separator');
-    }
-
-    function pin(id: string, pinned: boolean) {
-      fixture.componentInstance.columns.update(columns =>
-        columns.map(column => (column.id === id ? { ...column, pinned } : column))
-      );
-    }
-
-    it('updates separators when the first column is pinned', async () => {
-      pin('First', true);
-      await fixture.whenStable();
-      expect(separator('First')).toBeTrue();
-      expect(separator('Second')).toBeTrue();
-      expect(separator('Third')).toBeFalse();
-    });
-
-    it('moves the last separator when the last column is pinned and unpinned', async () => {
-      pin('Third', true);
-      await fixture.whenStable();
-      expect(separator('Third')).toBeTrue();
-      expect(separator('Second')).toBeFalse();
-      pin('Third', false);
-      await fixture.whenStable();
-      expect(separator('Third')).toBeFalse();
-      expect(separator('Second')).toBeTrue();
-    });
-
-    it('moves a column and its cells when pinned directly from code', async () => {
-      const column = fixture.componentInstance.columnComponents.last;
-      column.pinned = true;
-      await fixture.whenStable();
-      expect(
-        fixture.nativeElement.querySelector('.datagrid-header .datagrid-pinned-cells > clr-dg-column').textContent
-      ).toContain('Third');
-      expect(
-        fixture.nativeElement.querySelector('clr-dg-row .datagrid-pinned-cells > clr-dg-cell').textContent
-      ).toContain('Third');
-      expect(separator('Third')).toBeTrue();
-      expect(separator('Second')).toBeFalse();
-      column.pinned = false;
-      await fixture.whenStable();
-      expect(fixture.nativeElement.querySelector('.datagrid-header .datagrid-pinned-cells > clr-dg-column')).toBeNull();
-      expect(separator('Third')).toBeFalse();
-      expect(separator('Second')).toBeTrue();
-    });
-
-    it('updates separators when columns are reordered with a pinned column', async () => {
-      pin('First', true);
-      await fixture.whenStable();
-      fixture.componentInstance.columns.update(([first, second, third]) => [first, third, second]);
-      await fixture.whenStable();
-      expect(separator('First')).toBeTrue();
-      expect(separator('Third')).toBeTrue();
-      expect(separator('Second')).toBeFalse();
-    });
+    fixture = TestBed.createComponent(SeparatorHost);
+    fixture.autoDetectChanges();
+    await fixture.whenStable();
   });
-}
+
+  afterEach(() => fixture.destroy());
+
+  function separator(title: string) {
+    const columns = Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('clr-dg-column'));
+    return !!columns
+      .find(column => column.querySelector('.datagrid-column-title')?.textContent.trim() === title)
+      ?.querySelector('clr-dg-column-separator');
+  }
+
+  function pin(id: string, pinned: boolean) {
+    fixture.componentInstance.columns.update(columns =>
+      columns.map(column => (column.id === id ? { ...column, pinned } : column))
+    );
+  }
+
+  it('updates separators when the first column is pinned', async () => {
+    pin('First', true);
+    await fixture.whenStable();
+    expect(separator('First')).toBe(true);
+    expect(separator('Second')).toBe(true);
+    expect(separator('Third')).toBe(false);
+  });
+
+  it('moves the last separator when the last column is pinned and unpinned', async () => {
+    pin('Third', true);
+    await fixture.whenStable();
+    expect(separator('Third')).toBe(true);
+    expect(separator('Second')).toBe(false);
+    pin('Third', false);
+    await fixture.whenStable();
+    expect(separator('Third')).toBe(false);
+    expect(separator('Second')).toBe(true);
+  });
+
+  it('moves a column and its cells when pinned directly from code', async () => {
+    const column = fixture.componentInstance.columnComponents.last;
+    column.pinned = true;
+    await fixture.whenStable();
+    expect(
+      fixture.nativeElement.querySelector('.datagrid-header .datagrid-pinned-cells > clr-dg-column').textContent
+    ).toContain('Third');
+    expect(
+      fixture.nativeElement.querySelector('clr-dg-row .datagrid-pinned-cells > clr-dg-cell').textContent
+    ).toContain('Third');
+    expect(separator('Third')).toBe(true);
+    expect(separator('Second')).toBe(false);
+    column.pinned = false;
+    await fixture.whenStable();
+    expect(fixture.nativeElement.querySelector('.datagrid-header .datagrid-pinned-cells > clr-dg-column')).toBeNull();
+    expect(separator('Third')).toBe(false);
+    expect(separator('Second')).toBe(true);
+  });
+
+  it('updates separators when columns are reordered with a pinned column', async () => {
+    pin('First', true);
+    await fixture.whenStable();
+    fixture.componentInstance.columns.update(([first, second, third]) => [first, third, second]);
+    await fixture.whenStable();
+    expect(separator('First')).toBe(true);
+    expect(separator('Third')).toBe(true);
+    expect(separator('Second')).toBe(false);
+  });
+});

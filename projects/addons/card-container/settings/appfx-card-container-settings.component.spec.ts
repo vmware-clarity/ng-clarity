@@ -10,6 +10,7 @@ import { sampleCards, sortCardsFn } from '@clr/addons/testing';
 import { AppfxTranslateModule } from '@clr/addons/translate';
 import { ClrCheckboxModule } from '@clr/angular/forms/checkbox';
 import { ClrDropdownModule } from '@clr/angular/popover/dropdown';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { AppfxCardInternal } from '../appfx-card-container.interface';
 import { AppfxCardContainerSettingsComponent } from './appfx-card-container-settings.component';
@@ -30,8 +31,8 @@ describe('AppfxCardContainerSettingsComponent', () => {
   });
 
   beforeEach(() => {
-    component.containerCards = [...sampleContainerCards];
-    fixture.detectChanges();
+    fixture.componentRef.setInput('containerCards', [...sampleContainerCards]);
+    renderFixture(fixture);
   });
 
   it('should create component', () => {
@@ -48,16 +49,16 @@ describe('AppfxCardContainerSettingsComponent', () => {
 
   describe('when call toggleShowHide', () => {
     it('then emit event with cardId', () => {
-      spyOn(component.toggleCardVisibility, 'emit').and.callThrough();
+      vi.spyOn(component.toggleCardVisibility, 'emit');
       component.toggleShowHide(sampleContainerCards[0]);
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.toggleCardVisibility.emit).toHaveBeenCalledWith(sampleContainerCards[0].id);
     });
 
     it('then should not emit event when canHide property of the card is false', () => {
-      spyOn(component.toggleCardVisibility, 'emit').and.callThrough();
+      vi.spyOn(component.toggleCardVisibility, 'emit');
       component.toggleShowHide(sampleContainerCards[2]);
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.toggleCardVisibility.emit).not.toHaveBeenCalled();
     });
   });

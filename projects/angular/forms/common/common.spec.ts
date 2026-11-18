@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, Directive, NgModule, Type, ViewCont
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrHostWrappingModule } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrCommonFormsModule } from './common.module';
 import { ControlIdService } from './providers/control-id.service';
@@ -90,19 +91,19 @@ class WithWrapperNoId {}
 })
 class WithWrapperWithId {}
 
-export default function (): void {
+describe('Forms common utilities', () => {
   describe('Common forms integration', () => {
     function assertMatching<T>(testComponent: Type<T>, projectedLabels: boolean, expectedId?: string) {
       return function () {
         TestBed.configureTestingModule({ imports: [CommonFormsTestModule], declarations: [testComponent] });
         const fixture = TestBed.createComponent(testComponent);
-        fixture.detectChanges();
+        renderFixture(fixture);
         if (!expectedId) {
           const wrapperDebug = fixture.debugElement.query(By.directive(GenericWrapper));
           expectedId = wrapperDebug.injector.get(ControlIdService).id;
         }
         const input = fixture.nativeElement.querySelector('input');
-        expect(input.getAttribute('id')).toBe(expectedId, 'input has the wrong id attribute');
+        expect(input.getAttribute('id'), 'input has the wrong id attribute').toBe(expectedId);
 
         const labels = ['#container-view-label-before', '#container-view-label-after'];
         if (projectedLabels) {
@@ -110,7 +111,7 @@ export default function (): void {
         }
         for (const labelSelector of labels) {
           const label = fixture.nativeElement.querySelector(labelSelector);
-          expect(label.getAttribute('for')).toBe(expectedId, labelSelector + ' has the wrong for attribute');
+          expect(label.getAttribute('for'), labelSelector + ' has the wrong for attribute').toBe(expectedId);
         }
       };
     }
@@ -123,4 +124,4 @@ export default function (): void {
 
     it('works with an explicit wrapper and with an id', assertMatching(WithWrapperWithId, true, 'hello'));
   });
-}
+});

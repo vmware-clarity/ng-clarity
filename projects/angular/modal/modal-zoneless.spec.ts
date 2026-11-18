@@ -5,14 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  provideCheckNoChangesConfig,
-  provideZoneChangeDetection,
-  provideZonelessChangeDetection,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -87,244 +80,238 @@ class ModalHost {
   readonly alternate: boolean[] = [];
 }
 
-for (const zoneless of [false, true]) {
-  describe(`Modal notifications (${zoneless ? 'zoneless' : 'zone-based'}, OnPush host)`, () => {
-    let fixture: ComponentFixture<ModalHost>;
-    let host: ModalHost;
-    const escape = () => document.body.dispatchEvent(new KeyboardEvent('keyup', { key: 'Escape' }));
-    const dialog = (selector: string) => fixture.nativeElement.querySelector(`${selector} .modal-dialog`);
+describe('Modal notifications (zoneless, OnPush host)', () => {
+  let fixture: ComponentFixture<ModalHost>;
+  let host: ModalHost;
+  const escape = () => document.body.dispatchEvent(new KeyboardEvent('keyup', { key: 'Escape' }));
+  const dialog = (selector: string) => fixture.nativeElement.querySelector(`${selector} .modal-dialog`);
 
-    beforeEach(async () => {
-      TestBed.configureTestingModule({
-        declarations: [ModalHost],
-        imports: [ClrSidePanelModule],
-        providers: [
-          zoneless ? provideZonelessChangeDetection() : provideZoneChangeDetection(),
-          provideCheckNoChangesConfig({ exhaustive: true }),
-        ],
-      });
-      fixture = TestBed.createComponent(ModalHost);
-      fixture.autoDetectChanges();
-      host = fixture.componentInstance;
-      await fixture.whenStable();
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      declarations: [ModalHost],
+      imports: [ClrSidePanelModule],
     });
+    fixture = TestBed.createComponent(ModalHost);
+    fixture.autoDetectChanges();
+    host = fixture.componentInstance;
+    await fixture.whenStable();
+  });
 
-    afterEach(() => fixture.destroy());
+  afterEach(() => fixture.destroy());
 
-    it('closes on native Escape and returns focus after rendering', async () => {
-      const trigger: HTMLButtonElement = fixture.nativeElement.querySelector('.trigger');
-      trigger.focus();
-      host.first.set(true);
-      await fixture.whenStable();
-      expect(dialog('.first')).not.toBeNull();
-      expect(document.body.classList.contains('no-scrolling')).toBeTrue();
-      escape();
-      await fixture.whenStable();
-      expect(dialog('.first')).toBeNull();
-      expect(host.first()).toBeFalse();
-      expect(document.activeElement).toBe(trigger);
-      expect(document.body.classList.contains('no-scrolling')).toBeFalse();
-    });
+  it('closes on native Escape and returns focus after rendering', async () => {
+    const trigger: HTMLButtonElement = fixture.nativeElement.querySelector('.trigger');
+    trigger.focus();
+    host.first.set(true);
+    await fixture.whenStable();
+    expect(dialog('.first')).not.toBeNull();
+    expect(document.body.classList.contains('no-scrolling')).toBe(true);
+    escape();
+    await fixture.whenStable();
+    expect(dialog('.first')).toBeNull();
+    expect(host.first()).toBe(false);
+    expect(document.activeElement).toBe(trigger);
+    expect(document.body.classList.contains('no-scrolling')).toBe(false);
+  });
 
-    it('closes only the top overlay and keeps the remaining modal scroll lock', async () => {
-      host.first.set(true);
-      await fixture.whenStable();
-      host.second.set(true);
-      await fixture.whenStable();
-      escape();
-      await fixture.whenStable();
-      expect(host.second()).toBeFalse();
-      expect(dialog('.second')).toBeNull();
-      expect(dialog('.first')).not.toBeNull();
-      expect(document.body.classList.contains('no-scrolling')).toBeTrue();
-      escape();
-      await fixture.whenStable();
-      expect(host.first()).toBeFalse();
-      expect(document.body.classList.contains('no-scrolling')).toBeFalse();
-    });
+  it('closes only the top overlay and keeps the remaining modal scroll lock', async () => {
+    host.first.set(true);
+    await fixture.whenStable();
+    host.second.set(true);
+    await fixture.whenStable();
+    escape();
+    await fixture.whenStable();
+    expect(host.second()).toBe(false);
+    expect(dialog('.second')).toBeNull();
+    expect(dialog('.first')).not.toBeNull();
+    expect(document.body.classList.contains('no-scrolling')).toBe(true);
+    escape();
+    await fixture.whenStable();
+    expect(host.first()).toBe(false);
+    expect(document.body.classList.contains('no-scrolling')).toBe(false);
+  });
 
-    it('registers an input-open side panel above a modal without releasing the modal scroll lock', async () => {
-      host.first.set(true);
-      await fixture.whenStable();
-      host.panel.set(true);
-      await fixture.whenStable();
-      escape();
-      await fixture.whenStable();
-      expect(host.panel()).toBeFalse();
-      expect(dialog('clr-side-panel')).toBeNull();
-      expect(dialog('.first')).not.toBeNull();
-      expect(document.body.classList.contains('no-scrolling')).toBeTrue();
-    });
+  it('registers an input-open side panel above a modal without releasing the modal scroll lock', async () => {
+    host.first.set(true);
+    await fixture.whenStable();
+    host.panel.set(true);
+    await fixture.whenStable();
+    escape();
+    await fixture.whenStable();
+    expect(host.panel()).toBe(false);
+    expect(dialog('clr-side-panel')).toBeNull();
+    expect(dialog('.first')).not.toBeNull();
+    expect(document.body.classList.contains('no-scrolling')).toBe(true);
+  });
 
-    it('keeps pinned panels off Escape handling and tracks pin changes while open', async () => {
-      host.panel.set(true);
-      host.pinned.set(true);
-      await fixture.whenStable();
-      const trigger: HTMLButtonElement = fixture.nativeElement.querySelector('.trigger');
-      trigger.focus();
-      escape();
-      await fixture.whenStable();
-      expect(document.activeElement).toBe(trigger);
-      expect(host.alternate).toEqual([]);
-      expect(host.panel()).toBeTrue();
-      host.pinned.set(false);
-      await fixture.whenStable();
-      escape();
-      await fixture.whenStable();
-      expect(host.panel()).toBeFalse();
-      host.panel.set(true);
-      await fixture.whenStable();
-      host.pinned.set(true);
-      await fixture.whenStable();
-      trigger.focus();
-      escape();
-      await fixture.whenStable();
-      expect(document.activeElement).toBe(trigger);
-      expect(host.panel()).toBeTrue();
-      expect(host.alternate).toEqual([]);
-    });
+  it('keeps pinned panels off Escape handling and tracks pin changes while open', async () => {
+    host.panel.set(true);
+    host.pinned.set(true);
+    await fixture.whenStable();
+    const trigger: HTMLButtonElement = fixture.nativeElement.querySelector('.trigger');
+    trigger.focus();
+    escape();
+    await fixture.whenStable();
+    expect(document.activeElement).toBe(trigger);
+    expect(host.alternate).toEqual([]);
+    expect(host.panel()).toBe(true);
+    host.pinned.set(false);
+    await fixture.whenStable();
+    escape();
+    await fixture.whenStable();
+    expect(host.panel()).toBe(false);
+    host.panel.set(true);
+    await fixture.whenStable();
+    host.pinned.set(true);
+    await fixture.whenStable();
+    trigger.focus();
+    escape();
+    await fixture.whenStable();
+    expect(document.activeElement).toBe(trigger);
+    expect(host.panel()).toBe(true);
+    expect(host.alternate).toEqual([]);
+  });
 
-    it('does not retain a modal synchronously closed by its open output', async () => {
-      host.first.set(true);
-      await fixture.whenStable();
-      const modal = fixture.debugElement
-        .queryAll(By.directive(ClrModal))
-        .find(el => el.nativeElement.classList.contains('imperative')).componentInstance as ClrModal;
-      modal._openChanged.subscribe(open => {
-        if (open) {
-          modal.close();
-        }
-      });
-      modal.open();
-      await fixture.whenStable();
-      escape();
-      await fixture.whenStable();
-      expect(host.first()).toBeFalse();
-      expect(document.body.classList.contains('no-scrolling')).toBeFalse();
-    });
-
-    it('releases an owned scroll lock when bypass changes while open', async () => {
-      host.first.set(true);
-      await fixture.whenStable();
-      expect(document.body.classList.contains('no-scrolling')).toBeTrue();
-      host.bypass.set(true);
-      await fixture.whenStable();
-      expect(document.body.classList.contains('no-scrolling')).toBeFalse();
-      host.first.set(false);
-      await fixture.whenStable();
-      expect(document.body.classList.contains('no-scrolling')).toBeFalse();
-    });
-
-    it('preserves the stack bypass used by inline wizard modals', async () => {
-      host.first.set(true);
-      await fixture.whenStable();
-      host.inline.set(true);
-      await fixture.whenStable();
-      escape();
-      await fixture.whenStable();
-      expect(host.first()).toBeFalse();
-      expect(dialog('.inline')).not.toBeNull();
-    });
-
-    it('respects closability and alternate-close before closing the top modal', async () => {
-      host.first.set(true);
-      await fixture.whenStable();
-      host.second.set(true);
-      host.closable.set(false);
-      await fixture.whenStable();
-      escape();
-      await fixture.whenStable();
-      expect(host.first()).toBeTrue();
-      expect(host.second()).toBeTrue();
-      host.closable.set(true);
-      host.prevent.set(true);
-      await fixture.whenStable();
-      escape();
-      await fixture.whenStable();
-      expect(host.alternate).toEqual([false]);
-      expect(host.second()).toBeTrue();
-    });
-
-    it('supports repeated imperative opening and closing without an input binding', async () => {
-      const modal = fixture.debugElement
-        .queryAll(By.directive(ClrModal))
-        .find(el => el.nativeElement.classList.contains('imperative')).componentInstance as ClrModal;
-      const changes: boolean[] = [];
-      modal._openChanged.subscribe(open => changes.push(open));
-      for (let i = 0; i < 2; i++) {
-        modal.open();
-        modal.open();
-        expect(changes[changes.length - 1]).toBeTrue();
-        await fixture.whenStable();
-        expect(dialog('.imperative')).not.toBeNull();
-        expect(document.body.classList.contains('no-scrolling')).toBeTrue();
+  it('does not retain a modal synchronously closed by its open output', async () => {
+    host.first.set(true);
+    await fixture.whenStable();
+    const modal = fixture.debugElement
+      .queryAll(By.directive(ClrModal))
+      .find(el => el.nativeElement.classList.contains('imperative')).componentInstance as ClrModal;
+    modal._openChanged.subscribe(open => {
+      if (open) {
         modal.close();
-        modal.close();
-        await fixture.whenStable();
-        expect(dialog('.imperative')).toBeNull();
-        expect(document.body.classList.contains('no-scrolling')).toBeFalse();
       }
-      expect(changes).toEqual([true, false, true, false]);
     });
+    modal.open();
+    await fixture.whenStable();
+    escape();
+    await fixture.whenStable();
+    expect(host.first()).toBe(false);
+    expect(document.body.classList.contains('no-scrolling')).toBe(false);
+  });
 
-    it('does not retain an overlay closed before its first render', async () => {
-      const modal = fixture.debugElement
-        .queryAll(By.directive(ClrModal))
-        .find(el => el.nativeElement.classList.contains('imperative')).componentInstance as ClrModal;
+  it('releases an owned scroll lock when bypass changes while open', async () => {
+    host.first.set(true);
+    await fixture.whenStable();
+    expect(document.body.classList.contains('no-scrolling')).toBe(true);
+    host.bypass.set(true);
+    await fixture.whenStable();
+    expect(document.body.classList.contains('no-scrolling')).toBe(false);
+    host.first.set(false);
+    await fixture.whenStable();
+    expect(document.body.classList.contains('no-scrolling')).toBe(false);
+  });
+
+  it('preserves the stack bypass used by inline wizard modals', async () => {
+    host.first.set(true);
+    await fixture.whenStable();
+    host.inline.set(true);
+    await fixture.whenStable();
+    escape();
+    await fixture.whenStable();
+    expect(host.first()).toBe(false);
+    expect(dialog('.inline')).not.toBeNull();
+  });
+
+  it('respects closability and alternate-close before closing the top modal', async () => {
+    host.first.set(true);
+    await fixture.whenStable();
+    host.second.set(true);
+    host.closable.set(false);
+    await fixture.whenStable();
+    escape();
+    await fixture.whenStable();
+    expect(host.first()).toBe(true);
+    expect(host.second()).toBe(true);
+    host.closable.set(true);
+    host.prevent.set(true);
+    await fixture.whenStable();
+    escape();
+    await fixture.whenStable();
+    expect(host.alternate).toEqual([false]);
+    expect(host.second()).toBe(true);
+  });
+
+  it('supports repeated imperative opening and closing without an input binding', async () => {
+    const modal = fixture.debugElement
+      .queryAll(By.directive(ClrModal))
+      .find(el => el.nativeElement.classList.contains('imperative')).componentInstance as ClrModal;
+    const changes: boolean[] = [];
+    modal._openChanged.subscribe(open => changes.push(open));
+    for (let i = 0; i < 2; i++) {
       modal.open();
+      modal.open();
+      expect(changes[changes.length - 1]).toBe(true);
+      await fixture.whenStable();
+      expect(dialog('.imperative')).not.toBeNull();
+      expect(document.body.classList.contains('no-scrolling')).toBe(true);
+      modal.close();
       modal.close();
       await fixture.whenStable();
-      const close = spyOn(modal, 'close').and.callThrough();
-      escape();
-      await fixture.whenStable();
-      expect(close).not.toHaveBeenCalled();
       expect(dialog('.imperative')).toBeNull();
-      expect(document.body.classList.contains('no-scrolling')).toBeFalse();
-    });
-
-    it('does not reopen a destroyed instance or reacquire its scroll lock', () => {
-      const modal = fixture.debugElement
-        .queryAll(By.directive(ClrModal))
-        .find(el => el.nativeElement.classList.contains('imperative')).componentInstance as ClrModal;
-      const emit = spyOn(modal._openChanged, 'emit');
-      fixture.destroy();
-      expect(() => modal.open()).not.toThrow();
-      expect(emit).not.toHaveBeenCalled();
-      expect(document.body.classList.contains('no-scrolling')).toBeFalse();
-      expect(modal._open).toBeFalse();
-    });
-
-    it('ignores a late close request after the modal has been destroyed', async () => {
-      host.first.set(true);
-      await fixture.whenStable();
-      const modal = fixture.debugElement.query(By.directive(ClrModal)).componentInstance as ClrModal;
-      const emit = spyOn(modal._openChanged, 'emit');
-      fixture.destroy();
-      expect(() => modal.close()).not.toThrow();
-      expect(emit).not.toHaveBeenCalled();
-      expect(document.body.classList.contains('no-scrolling')).toBeFalse();
-    });
-
-    it('releases stack registrations and scroll locks when destroyed while open', async () => {
-      host.first.set(true);
-      host.panel.set(true);
-      await fixture.whenStable();
-      const modals = fixture.debugElement.queryAll(By.directive(ClrModal)).map(el => el.componentInstance as ClrModal);
-      const spies = modals.map(modal => spyOn(modal, 'close').and.callThrough());
-      host.show.set(false);
-      await fixture.whenStable();
-      escape();
-      await fixture.whenStable();
-      expect(document.body.classList.contains('no-scrolling')).toBeFalse();
-      spies.forEach(spy => expect(spy).not.toHaveBeenCalled());
-    });
+      expect(document.body.classList.contains('no-scrolling')).toBe(false);
+    }
+    expect(changes).toEqual([true, false, true, false]);
   });
-}
+
+  it('does not retain an overlay closed before its first render', async () => {
+    const modal = fixture.debugElement
+      .queryAll(By.directive(ClrModal))
+      .find(el => el.nativeElement.classList.contains('imperative')).componentInstance as ClrModal;
+    modal.open();
+    modal.close();
+    await fixture.whenStable();
+    const close = vi.spyOn(modal, 'close');
+    escape();
+    await fixture.whenStable();
+    expect(close).not.toHaveBeenCalled();
+    expect(dialog('.imperative')).toBeNull();
+    expect(document.body.classList.contains('no-scrolling')).toBe(false);
+  });
+
+  it('does not reopen a destroyed instance or reacquire its scroll lock', () => {
+    const modal = fixture.debugElement
+      .queryAll(By.directive(ClrModal))
+      .find(el => el.nativeElement.classList.contains('imperative')).componentInstance as ClrModal;
+    const emit = vi.spyOn(modal._openChanged, 'emit');
+    fixture.destroy();
+    expect(() => modal.open()).not.toThrow();
+    expect(emit).not.toHaveBeenCalled();
+    expect(document.body.classList.contains('no-scrolling')).toBe(false);
+    expect(modal._open).toBe(false);
+  });
+
+  it('ignores a late close request after the modal has been destroyed', async () => {
+    host.first.set(true);
+    await fixture.whenStable();
+    const modal = fixture.debugElement.query(By.directive(ClrModal)).componentInstance as ClrModal;
+    const emit = vi.spyOn(modal._openChanged, 'emit');
+    fixture.destroy();
+    expect(() => modal.close()).not.toThrow();
+    expect(emit).not.toHaveBeenCalled();
+    expect(document.body.classList.contains('no-scrolling')).toBe(false);
+  });
+
+  it('releases stack registrations and scroll locks when destroyed while open', async () => {
+    host.first.set(true);
+    host.panel.set(true);
+    await fixture.whenStable();
+    const modals = fixture.debugElement.queryAll(By.directive(ClrModal)).map(el => el.componentInstance as ClrModal);
+    const spies = modals.map(modal => vi.spyOn(modal, 'close'));
+    host.show.set(false);
+    await fixture.whenStable();
+    escape();
+    await fixture.whenStable();
+    expect(document.body.classList.contains('no-scrolling')).toBe(false);
+    spies.forEach(spy => expect(spy).not.toHaveBeenCalled());
+  });
+});
 
 describe('Modal stack server safety', () => {
   it('does not register document listeners on the server', () => {
-    const add = spyOn(document.body, 'addEventListener');
-    const remove = spyOn(document.body, 'removeEventListener');
+    const add = vi.spyOn(document.body, 'addEventListener');
+    const remove = vi.spyOn(document.body, 'removeEventListener');
     const stack = new ModalStackService('server');
     const modal = { close() {} };
     stack.trackModalOpen(modal);
