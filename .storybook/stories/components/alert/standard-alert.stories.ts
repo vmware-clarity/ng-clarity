@@ -73,7 +73,7 @@ const meta = {
         'The live-region role of the alert: `alert` interrupts, `status` waits its turn, `none` renders no live region. Left at Default, the alert chooses.',
       control: { type: 'radio' },
       options: ['Default', 'alert', 'status', 'none'],
-      mapping: { Default: undefined, none: null },
+      mapping: { Default: undefined, none: null } as Record<string, unknown>,
     },
     // outputs
     clrAlertClosedChange: { control: { disable: true } },
