@@ -7189,8 +7189,7 @@ export class ClrStackContentInput {
 // @public (undocumented)
 export class ClrStackHeader {
     constructor(stackView: ClrStackView);
-    get ariaLevel(): HeadingLevel;
-    set ariaLevel(value: HeadingLevel);
+    ariaLevel: HeadingLevel;
     // (undocumented)
     stackView: ClrStackView;
     // (undocumented)
