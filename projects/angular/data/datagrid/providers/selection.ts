@@ -41,7 +41,7 @@ export class Selection<T = any> {
   /**
    * The current selection
    */
-  private _current: T[] | undefined;
+  private _current: T[] = [];
 
   /**
    * The Observable that lets other classes subscribe to selection changes
@@ -66,7 +66,7 @@ export class Selection<T = any> {
   ) {
     this.id = 'clr-dg-selection' + nbSelection++;
     this.identifyBy = _items.identifyBy;
-    this._differ = differs.find(this._current || []).create<T>(this.identifyBy as TrackByFunction<T>);
+    this._differ = differs.find(this._current).create<T>(this.identifyBy as TrackByFunction<T>);
 
     this.subscriptions.push(
       filters.change.subscribe(() => {
@@ -115,8 +115,7 @@ export class Selection<T = any> {
           }
 
           case SelectionType.Multi: {
-            const current = this.current ?? [];
-            let leftOver = current.slice();
+            let leftOver = this.current.slice();
             let selectionUpdated = false;
 
             // Duplicate loop, when the issue is issue#2342 is revisited keep in mind that
@@ -155,7 +154,7 @@ export class Selection<T = any> {
               // present
               if (_items.smart) {
                 leftOver = leftOver.filter(selected => updatedItems.indexOf(selected) > -1);
-                if (current.length !== leftOver.length) {
+                if (this.current.length !== leftOver.length) {
                   selectionUpdated = true;
                 }
               }
@@ -188,13 +187,9 @@ export class Selection<T = any> {
     }
 
     this._selectionType = value ?? SelectionType.None;
-
-    if (!this._current && this._selectionType !== SelectionType.None) {
-      this._current = [];
-    }
   }
 
-  get current(): T[] | undefined {
+  get current(): T[] {
     return this._current;
   }
   set current(value: T[]) {
@@ -203,7 +198,7 @@ export class Selection<T = any> {
   }
 
   get currentSingle(): T | undefined {
-    return this._current?.length ? this._current[0] : undefined;
+    return this._current.length ? this._current[0] : undefined;
   }
 
   // We do not want to expose the Subject itself, but the Observable which is read-only
@@ -380,15 +375,14 @@ export class Selection<T = any> {
    * Selects an item
    */
   private selectItem(item: T): void {
-    this.current = (this.current ?? []).concat(item);
+    this.current = this.current.concat(item);
   }
 
   /**
    * Deselects an item
    */
   private deselectItem(indexOfItem: number): void {
-    const current = this.current ?? [];
-    this.current = current.slice(0, indexOfItem).concat(current.slice(indexOfItem + 1));
+    this.current = this.current.slice(0, indexOfItem).concat(this.current.slice(indexOfItem + 1));
     if (indexOfItem < this.currentSelectionRefs.length) {
       // Keep selected refs array in sync
       const removedItems = this.currentSelectionRefs[indexOfItem] as ArrayLike<T>;
@@ -405,10 +399,10 @@ export class Selection<T = any> {
   }
 
   private emitChange() {
-    this._change.next(this.current ?? []);
+    this._change.next(this.current);
   }
 
   private updateCurrentSelectionRefs() {
-    this._currentSelectionRefs = this._current?.map(item => this._items.identifyBy(item)) || [];
+    this._currentSelectionRefs = this._current.map(item => this._items.identifyBy(item));
   }
 }

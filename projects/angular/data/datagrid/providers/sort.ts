@@ -16,7 +16,7 @@ export class Sort<T = any> {
   /**
    * Currently active comparator
    */
-  private _comparator?: ClrDatagridComparatorInterface<T> | null;
+  private _comparator: ClrDatagridComparatorInterface<T> | null = null;
 
   /**
    * Ascending order if false, descending if true
@@ -30,7 +30,7 @@ export class Sort<T = any> {
 
   constructor(private stateDebouncer: StateDebouncer) {}
 
-  get comparator(): ClrDatagridComparatorInterface<T> | null | undefined {
+  get comparator(): ClrDatagridComparatorInterface<T> | null {
     return this._comparator;
   }
   set comparator(value: ClrDatagridComparatorInterface<T> | null) {

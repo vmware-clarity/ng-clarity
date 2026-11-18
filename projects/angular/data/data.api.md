@@ -426,7 +426,7 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     get sortBy(): ClrDatagridComparatorInterface<T> | undefined;
     set sortBy(comparator: ClrDatagridComparatorInterface<T> | string);
     // (undocumented)
-    get sortDirection(): 'up' | 'down' | null | undefined;
+    get sortDirection(): 'up' | 'down' | null;
     // (undocumented)
     get sortOrder(): ClrDatagridSortOrder;
     set sortOrder(value: ClrDatagridSortOrder);
@@ -2269,7 +2269,7 @@ class Selection_2<T = any> {
     // (undocumented)
     clearSelection(): void;
     // (undocumented)
-    get current(): T[] | undefined;
+    get current(): T[];
     set current(value: T[]);
     // (undocumented)
     get currentSingle(): T | undefined;

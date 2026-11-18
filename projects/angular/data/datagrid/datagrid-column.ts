@@ -185,7 +185,7 @@ export class ClrDatagridColumn<T = any>
    */
   private _sortOrder: ClrDatagridSortOrder = ClrDatagridSortOrder.UNSORTED;
 
-  private _sortDirection?: 'up' | 'down' | null;
+  private _sortDirection: 'up' | 'down' | null = null;
 
   // This property holds filter value temporarily while this.filter property is not yet registered
   // When this.filter is registered, this property value would be used update this.filter.value
@@ -408,7 +408,7 @@ export class ClrDatagridColumn<T = any>
     }
   }
 
-  get sortDirection(): 'up' | 'down' | null | undefined {
+  get sortDirection(): 'up' | 'down' | null {
     return this._sortDirection;
   }
 
