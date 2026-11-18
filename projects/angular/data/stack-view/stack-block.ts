@@ -8,13 +8,14 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ContentChild,
+  contentChild,
   EventEmitter,
   HostBinding,
   Input,
   OnInit,
   Optional,
   Output,
+  signal,
   SkipSelf,
 } from '@angular/core';
 import { ClrCommonStringsService, HeadingLevel, uniqueIdFactory } from '@clr/angular/utils';
@@ -82,12 +83,9 @@ import { ClrStackViewLabel } from './stack-view-custom-tags';
     '[attr.aria-level]': 'ariaLevel ? ariaLevel : null',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrStackBlock implements OnInit {
-  @Input('clrSbExpanded') @HostBinding('class.stack-block-expanded') expanded = false;
-  @Input('clrSbExpandable') @HostBinding('class.stack-block-expandable') expandable = false;
-
   /**
    * Depth of the stack view starting from 1 for first level
    */
@@ -95,12 +93,13 @@ export class ClrStackBlock implements OnInit {
 
   @Output('clrSbExpandedChange') expandedChange = new EventEmitter<boolean>(false);
 
-  @ContentChild(ClrStackViewLabel) stackBlockTitle: any;
-
   focused = false;
   uniqueId = uniqueIdFactory();
 
-  private _changedChildren = 0;
+  private readonly _expanded = signal(false);
+  private readonly _expandable = signal(false);
+  private readonly changedChildren = signal(0);
+  private readonly stackLabel = contentChild(ClrStackViewLabel);
   private _fullyInitialized = false;
   private _changed = false;
 
@@ -120,27 +119,45 @@ export class ClrStackBlock implements OnInit {
     }
   }
 
+  @Input('clrSbExpanded')
+  @HostBinding('class.stack-block-expanded')
+  get expanded(): boolean {
+    return this._expanded();
+  }
+  set expanded(value: boolean) {
+    this._expanded.set(value);
+  }
+
+  @Input('clrSbExpandable')
+  @HostBinding('class.stack-block-expandable')
+  get expandable(): boolean {
+    return this._expandable();
+  }
+  set expandable(value: boolean) {
+    this._expandable.set(value);
+  }
+
   @Input('clrSbNotifyChange')
   set setChangedValue(value: boolean) {
     this._changed = value;
 
     if (this.parent && this._fullyInitialized) {
-      if (value) {
-        this.parent._changedChildren++;
-      } else {
-        this.parent._changedChildren--;
-      }
+      this.parent.changedChildren.update(count => (value ? count + 1 : count - 1));
     }
   }
 
   @HostBinding('class.stack-block-changed')
   get getChangedValue(): boolean {
-    return this._changed || (this._changedChildren > 0 && !this.expanded);
+    return this._changed || (this.changedChildren() > 0 && !this.expanded);
   }
 
   @HostBinding('class.on-focus')
   get onStackLabelFocus(): boolean {
     return this.expandable && !this.expanded && this.focused;
+  }
+
+  get stackBlockTitle(): ClrStackViewLabel {
+    return this.stackLabel();
   }
 
   get labelledById() {
@@ -174,7 +191,7 @@ export class ClrStackBlock implements OnInit {
   }
 
   addChild(): void {
-    this.expandable = true;
+    this._expandable.set(true);
   }
 
   toggleExpand(event?: Event): void {
@@ -183,7 +200,7 @@ export class ClrStackBlock implements OnInit {
     }
 
     if (this.expandable) {
-      this.expanded = !this.expanded;
+      this._expanded.update(expanded => !expanded);
       this.expandedChange.emit(this.expanded);
     }
   }

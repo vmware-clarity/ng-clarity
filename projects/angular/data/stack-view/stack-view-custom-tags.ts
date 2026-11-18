@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, Directive, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Directive, Input, OnInit, signal } from '@angular/core';
 import { uniqueIdFactory } from '@clr/angular/utils';
 
 @Directive({
@@ -24,22 +24,22 @@ export class ClrStackViewCustomTags {
     '[attr.id]': 'id',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrStackViewLabel implements OnInit {
   private _generatedId: string = null;
 
-  private _id: string = null;
+  private readonly _id = signal<string>(null);
 
   @Input()
   get id() {
-    return this._id;
+    return this._id();
   }
   set id(val: string) {
     if (typeof val === 'string' && val !== '') {
-      this._id = val;
+      this._id.set(val);
     } else {
-      this._id = this._generatedId + '';
+      this._id.set(this._generatedId + '');
     }
   }
 
@@ -47,7 +47,7 @@ export class ClrStackViewLabel implements OnInit {
     this._generatedId = 'clr-stack-label-' + uniqueIdFactory();
 
     if (!this.id) {
-      this._id = this._generatedId + '';
+      this._id.set(this._generatedId + '');
     }
   }
 }

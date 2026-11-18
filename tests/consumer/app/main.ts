@@ -19,6 +19,7 @@ import { ClarityModule } from '@clr/angular';
 
 import { OverlayAcceptance } from './overlay-acceptance';
 import { RuntimeAcceptance } from './runtime-acceptance';
+import { StackViewAcceptance } from './stack-view-acceptance';
 
 @Component({
   selector: 'consumer-app',
@@ -109,10 +110,15 @@ class ConsumerApp {
 }
 
 async function main() {
-  const useZone = new URLSearchParams(location.search).get('mode') === 'zone';
-  await bootstrapApplication(ConsumerApp, {
-    providers: [useZone ? provideZoneChangeDetection() : provideZonelessChangeDetection()],
-  });
+  const params = new URLSearchParams(location.search);
+  const providers = [params.get('mode') === 'zone' ? provideZoneChangeDetection() : provideZonelessChangeDetection()];
+  await bootstrapApplication(ConsumerApp, { providers });
+
+  if (params.get('suite') === 'stack-view') {
+    // A second application whose root is Eager, like an application written for Zone.js.
+    document.body.append(document.createElement('stack-view-acceptance'));
+    await bootstrapApplication(StackViewAcceptance, { providers });
+  }
 }
 
 main().catch(error => console.error(error));
