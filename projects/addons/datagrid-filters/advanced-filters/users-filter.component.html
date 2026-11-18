@@ -11,7 +11,7 @@
   (apply)="onApplyButtonClick()"
 >
   <div class="user-filter-wrapper" cds-layout="p-b:xxxs">
-    <div *ngIf="isLoading" class="loading-overlay">
+    <div *ngIf="isLoading()" class="loading-overlay">
       <div class="loading-content">
         <clr-spinner clrMedium>{{ filterStrings.loading }}</clr-spinner>
       </div>
@@ -32,10 +32,10 @@
     </clr-select-container>
 
     <!-- Domain -->
-    <clr-select-container *ngIf="domains && domains.length > 0">
+    <clr-select-container *ngIf="domains().length > 0">
       <label>{{ filterStrings.domain }}</label>
       <select clrSelect name="domain" formControlName="domain">
-        <option *ngFor="let domain of domains; trackBy: trackByDomain" [value]="domain">
+        <option *ngFor="let domain of domains(); trackBy: trackByDomain" [value]="domain">
           {{ domain }}
         </option>
       </select>
@@ -66,14 +66,14 @@
 
     <div cds-layout="m-t:xs">
       <clr-checkbox-container class="enum-options">
-        <clr-checkbox-wrapper *ngIf="visibleUsers.length > 0" cds-layout="m-b:xs">
+        <clr-checkbox-wrapper *ngIf="visibleUsers().length > 0" cds-layout="m-b:xs">
           <input type="checkbox" clrCheckbox formControlName="selectAll" (change)="onSelectAllChange()" />
           <label>
             {{ usersSelectionForm.get('searchTerm')?.value ? filterStrings.allSearchResults : filterStrings.selectAll }}
           </label>
         </clr-checkbox-wrapper>
 
-        <clr-checkbox-wrapper *ngFor="let user of visibleUsers; let i = index">
+        <clr-checkbox-wrapper *ngFor="let user of visibleUsers(); let i = index">
           <input
             type="checkbox"
             clrCheckbox
@@ -86,16 +86,16 @@
         </clr-checkbox-wrapper>
       </clr-checkbox-container>
 
-      <div *ngIf="errorSearchingUsers" class="clr-subtext clr-error error">
-        {{ errorSearchingUsers }}
+      <div *ngIf="errorSearchingUsers()" class="clr-subtext clr-error error">
+        {{ errorSearchingUsers() }}
       </div>
 
-      <div *ngIf="errorRetrievingDomains" class="clr-subtext clr-error error">
-        {{ errorRetrievingDomains }}
+      <div *ngIf="errorRetrievingDomains()" class="clr-subtext clr-error error">
+        {{ errorRetrievingDomains() }}
       </div>
     </div>
 
-    <button *ngIf="hasMoreItems" class="btn btn-link" (click)="loadMore($event)">
+    <button *ngIf="hasMoreItems()" class="btn btn-link" (click)="loadMore($event)">
       {{ filterStrings.loadMore }}
     </button>
   </div>
