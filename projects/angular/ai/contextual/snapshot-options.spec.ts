@@ -19,7 +19,7 @@ import { CLR_CONTEXT_UNTRUSTED_OPTION_KEYS, sanitizeUntrustedSnapshotOptions } f
 describe('snapshot options', () => {
   describe('resolveSnapshotOptions', () => {
     it('applies the defaults when nothing was asked', () => {
-      expect(resolveSnapshotOptions()).toEqual(jasmine.objectContaining(CLR_CONTEXT_DEFAULT_OPTIONS));
+      expect(resolveSnapshotOptions()).toEqual(expect.objectContaining(CLR_CONTEXT_DEFAULT_OPTIONS));
       expect(resolveSnapshotOptions({})).toEqual(resolveSnapshotOptions());
     });
 
@@ -61,13 +61,13 @@ describe('snapshot options', () => {
 
     it('reads root as the page, the open modal, or a selector', () => {
       expect(resolveSnapshotOptions({ root: 'page' })).toEqual(
-        jasmine.objectContaining({ focus: 'page', rootSelector: '' })
+        expect.objectContaining({ focus: 'page', rootSelector: '' })
       );
       expect(resolveSnapshotOptions({ root: 'modal' })).toEqual(
-        jasmine.objectContaining({ focus: 'modal', rootSelector: '' })
+        expect.objectContaining({ focus: 'modal', rootSelector: '' })
       );
       expect(resolveSnapshotOptions({ root: ' main ' })).toEqual(
-        jasmine.objectContaining({ root: 'main', focus: 'page', rootSelector: 'main' })
+        expect.objectContaining({ root: 'main', focus: 'page', rootSelector: 'main' })
       );
       expect(resolveSnapshotOptions({ root: '  ' }).root).toBe('page');
       expect(resolveSnapshotOptions({ root: 7 as unknown as string }).root).toBe('page');
@@ -104,7 +104,7 @@ describe('snapshot options', () => {
       expect(CLR_CONTEXT_PRESETS.full).toEqual({});
       expect(CLR_CONTEXT_PRESETS.interactive).toEqual({ excludeCategories: ['layout', 'text'] });
       expect(resolveSnapshotOptions(CLR_CONTEXT_PRESETS.minimal)).toEqual(
-        jasmine.objectContaining({ focus: 'modal', collectionItems: 'summary', maxComponents: 150 })
+        expect.objectContaining({ focus: 'modal', collectionItems: 'summary', maxComponents: 150 })
       );
     });
 
@@ -115,15 +115,15 @@ describe('snapshot options', () => {
     });
 
     it('report a name that is not a preset, and give no options for it', () => {
-      const warn = spyOn(console, 'warn');
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
       expect(presetOrOptions('everything' as never)).toEqual({});
       expect(warn).toHaveBeenCalledTimes(1);
     });
 
     it('say that an exclusion list given as something else will be ignored', () => {
-      const warn = spyOn(console, 'warn');
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
       presetOrOptions({ excludeSelectors: '.secret' as unknown as string[] });
-      expect(warn).toHaveBeenCalledOnceWith(
+      expect(warn).toHaveBeenCalledExactlyOnceWith(
         'Clarity context options: excludeSelectors must be a list, so ".secret" was ignored.'
       );
     });
@@ -150,7 +150,7 @@ describe('snapshot options', () => {
     });
 
     it('ignores an exclusion list that is not a list, so the application’s stays', () => {
-      const warn = spyOn(console, 'warn');
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
       expect(
         withCallOptions({ excludeSelectors: ['nav'] }, { excludeSelectors: 'aside' as unknown as string[] })
       ).toEqual({ excludeSelectors: ['nav'] });
@@ -158,12 +158,12 @@ describe('snapshot options', () => {
     });
 
     it('says a value it cannot print was ignored, rather than throwing while saying so', () => {
-      const warn = spyOn(console, 'warn');
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
       const circular: Record<string, unknown> = {};
       circular['self'] = circular;
       withCallOptions({}, { excludeSelectors: circular as never });
       withCallOptions({}, { excludeSelectors: BigInt(1) as never });
-      expect(warn.calls.allArgs()).toEqual([
+      expect(warn.mock.calls).toEqual([
         ['Clarity context options: excludeSelectors must be a list, so an object was ignored.'],
         ['Clarity context options: excludeSelectors must be a list, so a bigint was ignored.'],
       ]);

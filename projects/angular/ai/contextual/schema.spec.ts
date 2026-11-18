@@ -58,7 +58,7 @@ describe('CLR_PAGE_CONTEXT_SCHEMA', () => {
   }
 
   function expectValid(snapshot: unknown) {
-    expect(validate(snapshot)).withContext(JSON.stringify(validate.errors)).toBeTrue();
+    expect(validate(snapshot), JSON.stringify(validate.errors)).toBe(true);
   }
 
   it('describes a page with provider regions and shadow content', async () => {
@@ -83,7 +83,7 @@ describe('CLR_PAGE_CONTEXT_SCHEMA', () => {
   it('describes the snapshot of a view that is not enabled', async () => {
     const snapshot = await engineWith('enabled').snapshot();
 
-    expect(snapshot.enabled).toBeFalse();
+    expect(snapshot.enabled).toBe(false);
     expectValid(snapshot);
   });
 
@@ -95,9 +95,9 @@ describe('CLR_PAGE_CONTEXT_SCHEMA', () => {
     const { enabled, ...withoutEnabled } = await engineWith().snapshot();
     const snapshot = { ...withoutEnabled, enabled };
 
-    expect(validate({ ...snapshot, application: { ...snapshot.application, extra: true } })).toBeFalse();
-    expect(validate({ ...snapshot, components: [{ type: 'button', extra: true }] })).toBeFalse();
-    expect(validate(withoutEnabled)).toBeFalse();
-    expect(validate({ ...snapshot, schemaVersion: '2' })).toBeFalse();
+    expect(validate({ ...snapshot, application: { ...snapshot.application, extra: true } })).toBe(false);
+    expect(validate({ ...snapshot, components: [{ type: 'button', extra: true }] })).toBe(false);
+    expect(validate(withoutEnabled)).toBe(false);
+    expect(validate({ ...snapshot, schemaVersion: '2' })).toBe(false);
   });
 });

@@ -7,11 +7,15 @@
 
 import { CommonModule } from '@angular/common';
 import {
+  afterNextRender,
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
+  inject,
+  Injector,
   Input,
   OnInit,
   Output,
@@ -44,6 +48,8 @@ import {
 } from './utils/presets';
 import { CdsThemeStructure, ContrastResult, DataRow, HslColor, ThemeColor, ThemePreset } from './utils/types';
 import { contrastRatio, wcagScore } from './utils/wcag';
+
+const THEMES: readonly ThemeType[] = ['light', 'dark'];
 
 @Component({
   changeDetection: ChangeDetectionStrategy.Eager,
@@ -82,9 +88,9 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
 
   // State backing the built-in default preview content.
   breadcrumbs = [
-    { label: 'Framework', href: 'javascript://' },
-    { label: 'Angular', href: 'javascript://' },
-    { label: 'Clarity', href: 'javascript://' },
+    { label: 'Framework', href: '#' },
+    { label: 'Angular', href: '#' },
+    { label: 'Clarity', href: '#' },
   ];
   wizardOpen = false;
   rows: DataRow[] = SAMPLE_ROWS;
@@ -95,6 +101,11 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
   };
 
   readonly timelineStates = ClrTimelineStepState;
+
+  private initialized = false;
+  private pendingTheme: (() => void) | undefined;
+  private readonly injector = inject(Injector);
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   private _presets: ThemePreset[] = [CLARITY_DEFAULT_PRESET, ...PRESETS];
 
@@ -130,9 +141,23 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.buildColorStructure();
-
-    this.applyPreviewStyles();
+    // Computed colors require the rendered preview. Initialize after the current check so
+    // populating the controls and emitting the initial CSS cannot change checked bindings.
+    afterNextRender(
+      () => {
+        this.buildColorStructure();
+        this.initialized = true;
+        const pendingTheme = this.pendingTheme;
+        this.pendingTheme = undefined;
+        if (pendingTheme) {
+          pendingTheme();
+        } else {
+          this.applyPreviewStyles();
+        }
+        this.changeDetectorRef.markForCheck();
+      },
+      { injector: this.injector }
+    );
   }
 
   toggleActiveTheme(): void {
@@ -163,9 +188,13 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
    * that derivation.
    */
   applyPreset(preset: ThemePreset): void {
+    if (!this.initialized) {
+      this.pendingTheme = () => this.applyPreset(preset);
+      return;
+    }
     this.activePreset = preset;
 
-    for (const theme of ['light', 'dark'] as const) {
+    for (const theme of THEMES) {
       this.resetAllThemeColors(theme);
 
       const themeColors = preset[theme];
@@ -174,8 +203,8 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
         continue;
       }
 
-      for (const key of Object.keys(themeColors)) {
-        this.applyGroupOverrides(theme, key, themeColors[key]);
+      for (const [key, colors] of Object.entries(themeColors)) {
+        this.applyGroupOverrides(theme, key, colors);
       }
     }
 
@@ -201,16 +230,22 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
    * preset (see `applyGroupOverrides`). CSS that `validateGeneratedCSS` rejects is not
    * applied at all, so the current colors are left untouched.
    *
-   * @returns `true` when the CSS was applied, `false` when it was rejected as malformed.
+   * Before initialization, the latest valid CSS or preset request is retained and applied after the preview renders.
+   * @returns `true` when the CSS was accepted, `false` when it was rejected as malformed.
    */
   importCSS(css: string): boolean {
     if (!validateGeneratedCSS(css).valid) {
       return false;
     }
 
+    if (!this.initialized) {
+      this.pendingTheme = () => this.importCSS(css);
+      return true;
+    }
+
     const parsed = parseGeneratedCSS(css);
 
-    for (const theme of ['light', 'dark'] as const) {
+    for (const theme of THEMES) {
       this.resetAllThemeColors(theme);
 
       for (const key of Object.keys(parsed[theme])) {
@@ -225,7 +260,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     return true;
   }
 
-  resetAllThemeColors(theme: string) {
+  resetAllThemeColors(theme: ThemeType) {
     for (const key of Object.keys(this.colorStruct[theme])) {
       const tokenGroup = this.colorStruct[theme][key];
 

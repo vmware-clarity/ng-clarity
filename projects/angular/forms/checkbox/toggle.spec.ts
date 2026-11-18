@@ -5,15 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule, NgControlService } from '@clr/angular/forms/common';
 
 import { ClrCheckbox } from './checkbox';
 import { ClrCheckboxWrapper } from './checkbox-wrapper';
-import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
+import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control';
 
 @Component({
   template: `<input type="checkbox" clrToggle />`,
@@ -44,7 +44,7 @@ class ReactiveTest {
   });
 }
 
-export default function (): void {
+describe('Checkbox component', () => {
   describe('ClrToggle directive', () => {
     ControlStandaloneSpec(StandaloneUseTest);
     TemplateDrivenSpec(ClrCheckboxWrapper, ClrCheckbox, TemplateDrivenTest, 'clr-checkbox');
@@ -52,7 +52,9 @@ export default function (): void {
   });
 
   describe('a11y', () => {
-    let fixture, containerDE, containerEl;
+    let fixture: ComponentFixture<TemplateDrivenTest>;
+    let containerDE: DebugElement;
+    let containerEl: HTMLElement;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -71,4 +73,4 @@ export default function (): void {
       expect(containerEl.getAttribute('role')).toBe('switch');
     });
   });
-}
+});

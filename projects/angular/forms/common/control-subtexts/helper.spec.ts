@@ -21,7 +21,7 @@ import { ControlIdService } from '../providers/control-id.service';
 })
 class SimpleTest {}
 
-export default function (): void {
+describe('Forms common utilities', () => {
   describe('ClrControlHelper', () => {
     describe('Default:', () => {
       let fixture: ComponentFixture<SimpleTest>;
@@ -42,7 +42,7 @@ export default function (): void {
       });
 
       it('adds the .clr-subtext class to host', function () {
-        expect(element.classList.contains('clr-subtext')).toBeTrue();
+        expect(element.classList.contains('clr-subtext')).toBe(true);
       });
 
       it('adds the id to host', function () {
@@ -71,4 +71,4 @@ export default function (): void {
       });
     });
   });
-}
+});

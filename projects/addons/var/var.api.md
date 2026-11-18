@@ -93,7 +93,14 @@ export class ErrorComponent {
     // (undocumented)
     workflowStrings: WorkflowStrings;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ErrorComponent, "appfx-error", never, { "error": { "alias": "error"; "required": false; }; }, { "onRetry": "onRetry"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ErrorComponent, "appfx-error", never, {
+        "error": {
+            "alias": "error";
+            "required": false;
+        };
+    }, {
+        "onRetry": "onRetry";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ErrorComponent, never>;
 }
@@ -173,7 +180,7 @@ export class RelevanceService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<RelevanceService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<RelevanceService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public (undocumented)
@@ -188,7 +195,34 @@ class SpinnerComponent {
     progressDetails: string;
     showActionButton: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<SpinnerComponent, "appfx-spinner", never, { "message": { "alias": "message"; "required": false; }; "politeness": { "alias": "politeness"; "required": false; }; "isModal": { "alias": "isModal"; "required": false; }; "progressDetails": { "alias": "progressDetails"; "required": false; }; "showActionButton": { "alias": "showActionButton"; "required": false; }; "actionButtonLabel": { "alias": "actionButtonLabel"; "required": false; }; }, { "actionClick": "actionClick"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<SpinnerComponent, "appfx-spinner", never, {
+        "message": {
+            "alias": "message";
+            "required": false;
+        };
+        "politeness": {
+            "alias": "politeness";
+            "required": false;
+        };
+        "isModal": {
+            "alias": "isModal";
+            "required": false;
+        };
+        "progressDetails": {
+            "alias": "progressDetails";
+            "required": false;
+        };
+        "showActionButton": {
+            "alias": "showActionButton";
+            "required": false;
+        };
+        "actionButtonLabel": {
+            "alias": "actionButtonLabel";
+            "required": false;
+        };
+    }, {
+        "actionClick": "actionClick";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<SpinnerComponent, never>;
 }
@@ -212,8 +246,7 @@ export interface Step {
 }
 
 // @public @deprecated
-export interface StepComponent extends StepModelHolder, OnStepActivate, OnStepValidate {
-}
+export interface StepComponent extends StepModelHolder, OnStepActivate, OnStepValidate {}
 
 // @public
 class StepContainerComponent implements OnInit, OnDestroy {
@@ -234,7 +267,18 @@ class StepContainerComponent implements OnInit, OnDestroy {
     // (undocumented)
     step: StepInternal;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<StepContainerComponent, "appfx-step-container", never, { "step": { "alias": "step"; "required": false; }; "description": { "alias": "description"; "required": false; }; }, { "onRetry": "onRetry"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<StepContainerComponent, "appfx-step-container", never, {
+        "step": {
+            "alias": "step";
+            "required": false;
+        };
+        "description": {
+            "alias": "description";
+            "required": false;
+        };
+    }, {
+        "onRetry": "onRetry";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<StepContainerComponent, never>;
 }
@@ -309,7 +353,16 @@ class ValidationBannerComponent {
     // (undocumented)
     state?: StepValidationState;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ValidationBannerComponent, "appfx-validation-banner", never, { "state": { "alias": "state"; "required": false; }; "closable": { "alias": "closable"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ValidationBannerComponent, "appfx-validation-banner", never, {
+        "state": {
+            "alias": "state";
+            "required": false;
+        };
+        "closable": {
+            "alias": "closable";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ValidationBannerComponent, never>;
 }
@@ -328,7 +381,24 @@ class ValidationBannerInternalComponent {
     // (undocumented)
     type: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ValidationBannerInternalComponent, "appfx-validation-banner-internal", never, { "type": { "alias": "type"; "required": false; }; "closable": { "alias": "closable"; "required": false; }; "closed": { "alias": "closed"; "required": false; }; "items": { "alias": "items"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ValidationBannerInternalComponent, "appfx-validation-banner-internal", never, {
+        "type": {
+            "alias": "type";
+            "required": false;
+        };
+        "closable": {
+            "alias": "closable";
+            "required": false;
+        };
+        "closed": {
+            "alias": "closed";
+            "required": false;
+        };
+        "items": {
+            "alias": "items";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ValidationBannerInternalComponent, never>;
 }
@@ -395,7 +465,7 @@ export class WorkflowConfigurationService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<WorkflowConfigurationService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<WorkflowConfigurationService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public
@@ -417,7 +487,7 @@ export class WorkflowModelManager {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<WorkflowModelManager, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<WorkflowModelManager>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public
@@ -439,7 +509,12 @@ class WorkflowModelMonitorComponent implements OnInit, OnDestroy {
     // (undocumented)
     set popoverContent(popoverContent: ClrPopoverContent);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<WorkflowModelMonitorComponent, "appfx-model-popup", never, { "modelMgr": { "alias": "modelMgr"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<WorkflowModelMonitorComponent, "appfx-model-popup", never, {
+        "modelMgr": {
+            "alias": "modelMgr";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<WorkflowModelMonitorComponent, never>;
 }

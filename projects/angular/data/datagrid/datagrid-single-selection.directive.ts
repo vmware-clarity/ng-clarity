@@ -23,10 +23,10 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   },
 })
 export class ClrDatagridSingleSelectionValueAccessor implements ControlValueAccessor {
-  @Input() value;
+  @Input() value: unknown;
   @Input() clrDgIdentityFn!: (value: any) => unknown;
 
-  private state: any;
+  private state: unknown;
 
   constructor(
     private renderer: Renderer2,
@@ -54,7 +54,7 @@ export class ClrDatagridSingleSelectionValueAccessor implements ControlValueAcce
     this.updateChecked();
   }
 
-  private keyOf(value: any): unknown {
+  private keyOf(value: unknown): unknown {
     if (value && this.clrDgIdentityFn) {
       return this.clrDgIdentityFn(value);
     }

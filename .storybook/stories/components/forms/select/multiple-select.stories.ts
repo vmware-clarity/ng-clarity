@@ -40,7 +40,7 @@ const meta = {
     // story helpers
     createArray: n => new Array(n),
     optionCount: 3,
-    selectedOptions: [],
+    selectedOptions: [] as number[],
   },
   render: args => ({
     template: `
