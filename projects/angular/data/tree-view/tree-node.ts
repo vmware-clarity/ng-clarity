@@ -11,10 +11,12 @@ import {
   afterNextRender,
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChildren,
   ElementRef,
   EventEmitter,
+  inject,
   Inject,
   Injector,
   Input,
@@ -98,6 +100,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   private typeAheadKeyBuffer = '';
   private typeAheadKeyEvent = new Subject<string>();
   private subscriptions: Subscription[] = [];
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   @ViewChild('contentContainer', { read: ElementRef, static: true }) private contentContainer: ElementRef<HTMLElement>;
   @ViewChild('children', { static: true }) private children: ElementRef<HTMLElement>;
@@ -260,9 +263,10 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     // fetched node in lazy trees. The current value is read directly instead of debouncing the replayed initial one.
     this.isModelLoading = this._model.loading;
     this.subscriptions.push(
-      this._model.loading$
-        .pipe(skip(1), debounceTime(0, asapScheduler))
-        .subscribe(isLoading => (this.isModelLoading = isLoading))
+      this._model.loading$.pipe(skip(1), debounceTime(0, asapScheduler)).subscribe(isLoading => {
+        this.isModelLoading = isLoading;
+        this.changeDetectorRef.markForCheck();
+      })
     );
   }
 

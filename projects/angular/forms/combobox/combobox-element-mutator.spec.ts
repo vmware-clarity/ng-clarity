@@ -127,7 +127,7 @@ class ComboboxMutatorHost {
     person: new FormControl<string | null>(null),
     labels: new FormControl<string[]>([]),
   });
-  resolve = jasmine.createSpy('resolve').and.callFake((text: string) => `custom:${text.toUpperCase()}`);
+  resolve = vi.fn((text: string) => `custom:${text.toUpperCase()}`);
 }
 
 function findNode(
@@ -231,7 +231,7 @@ describe('ClrCombobox element mutator', () => {
     it('takes free text through the editable resolver and the model holds what it resolved', async () => {
       const result = await write('city', 'Lisbon');
 
-      expect(host.resolve).toHaveBeenCalledOnceWith('Lisbon');
+      expect(host.resolve).toHaveBeenCalledExactlyOnceWith('Lisbon');
       expect(result).toEqual({ value: 'custom:LISBON', display: 'Lisbon' });
       expect(host.form.value.city).toBe('custom:LISBON');
       expect(read('city')).toBe('custom:LISBON');
@@ -240,7 +240,7 @@ describe('ClrCombobox element mutator', () => {
     it('trims free text before resolving it', () => {
       coerce('city', '  Lisbon  ');
 
-      expect(host.resolve).toHaveBeenCalledOnceWith('Lisbon');
+      expect(host.resolve).toHaveBeenCalledExactlyOnceWith('Lisbon');
     });
 
     it('still chooses an option by label, without the resolver', async () => {
@@ -271,10 +271,10 @@ describe('ClrCombobox element mutator', () => {
     it('writes free text through the mutation engine', async () => {
       const result = await set('City', 'Lisbon');
 
-      expect(result.applied).toBeTrue();
+      expect(result.applied).toBe(true);
       expect(result.value).toBe('custom:LISBON');
       expect(host.form.value.city).toBe('custom:LISBON');
-      expect(host.resolve).toHaveBeenCalledOnceWith('Lisbon');
+      expect(host.resolve).toHaveBeenCalledExactlyOnceWith('Lisbon');
     });
   });
 
@@ -302,7 +302,7 @@ describe('ClrCombobox element mutator', () => {
     it('reports [] as the previous value through the mutation engine', async () => {
       const result = await set('Fruits', ['Pear']);
 
-      expect(result.applied).toBeTrue();
+      expect(result.applied).toBe(true);
       expect(result.previous).toEqual([]);
     });
   });
@@ -354,13 +354,13 @@ describe('ClrCombobox element mutator', () => {
     it('selects several labels through the mutation engine and refuses an unknown one', async () => {
       const result = await set('Fruits', ['Plum', 'Apple']);
 
-      expect(result.applied).toBeTrue();
+      expect(result.applied).toBe(true);
       expect(result.value).toEqual(['Plum', 'Apple']);
       expect(host.form.value.fruits).toEqual(['plum', 'apple']);
 
       const refused = await set('Fruits', ['Pear', 'Kiwi']);
 
-      expect(refused.applied).toBeFalse();
+      expect(refused.applied).toBe(false);
       expect(refused.refused).toBe('invalid');
       expect(refused.detail).toContain('"Apple", "Pear", "Plum"');
       expect(host.form.value.fruits).toEqual(['plum', 'apple']);
@@ -416,7 +416,7 @@ describe('ClrCombobox element mutator', () => {
       expect(serialized(added)).not.toContain('6011');
 
       // The selection is still kept, as the write leaves it.
-      expect((await set('Cards', 'Visa')).applied).toBeTrue();
+      expect((await set('Cards', 'Visa')).applied).toBe(true);
       expect(host.form.value.cards).toEqual(['6011 0000', 'visa']);
     });
   });

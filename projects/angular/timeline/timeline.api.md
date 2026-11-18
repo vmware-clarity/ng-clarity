@@ -23,7 +23,12 @@ export class ClrTimeline {
     // (undocumented)
     layout: ClrTimelineLayout;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTimeline, "clr-timeline", never, { "layout": { "alias": "clrLayout"; "required": false; }; }, {}, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTimeline, "clr-timeline", never, {
+        "layout": {
+            "alias": "clrLayout";
+            "required": false;
+        };
+    }, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTimeline, never>;
 }
@@ -73,7 +78,12 @@ export class ClrTimelineStep implements OnDestroy {
     // (undocumented)
     stepTitleText: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTimelineStep, "clr-timeline-step", never, { "state": { "alias": "clrState"; "required": false; }; }, {}, ["stepTitle"], ["clr-timeline-step-header", "clr-timeline-step-title", "clr-timeline-step-description"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTimelineStep, "clr-timeline-step", never, {
+        "state": {
+            "alias": "clrState";
+            "required": false;
+        };
+    }, {}, ["stepTitle"], ["clr-timeline-step-header", "clr-timeline-step-title", "clr-timeline-step-description"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTimelineStep, [null, null, { optional: true; }]>;
 }

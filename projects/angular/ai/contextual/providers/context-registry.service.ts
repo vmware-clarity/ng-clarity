@@ -124,7 +124,7 @@ export class ClrContextRegistryService {
         this.pending.delete(provider);
       }
     });
-    answer.catch(() => undefined);
+    answer.catch((): void => undefined);
     this.pending.set(provider, answer);
     return answer;
   }

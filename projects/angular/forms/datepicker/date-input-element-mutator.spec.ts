@@ -186,12 +186,14 @@ describe('ClrDateInput element mutator', () => {
     // method; should it be renamed, a destroyed input would go on hearing its control.
     it('stops following model writes once destroyed', () => {
       const injector = fixture.debugElement.query(By.directive(ClrDateInput)).injector;
-      spyOn(injector.get(DatepickerFocusService), 'elementIsFocused').and.returnValue(true);
-      const updateDate = spyOn<any>(injector.get(ClrDateInput), 'updateDate');
+      vi.spyOn(injector.get(DatepickerFocusService), 'elementIsFocused').mockReturnValue(true);
+      const updateDate = vi
+        .spyOn(injector.get(ClrDateInput) as unknown as { updateDate: () => void }, 'updateDate')
+        .mockImplementation(() => undefined);
 
       control.setValue('03/05/2026');
       expect(updateDate).toHaveBeenCalled();
-      updateDate.calls.reset();
+      updateDate.mockClear();
 
       fixture.destroy();
       control.setValue('04/06/2026');
@@ -369,7 +371,7 @@ describe('ClrDateInput element mutator', () => {
       it('accepts a Date made in another frame, which instanceof would reject', async () => {
         const ForeignDate = (frame.contentWindow as unknown as { Date: DateConstructor }).Date;
         const foreign = new ForeignDate(2026, 2, 5);
-        expect(foreign instanceof Date).toBeFalse();
+        expect(foreign instanceof Date).toBe(false);
 
         const result = await write(foreign);
 
@@ -397,7 +399,7 @@ describe('ClrDateInput element mutator', () => {
       it('writes an ISO date as exactly that day and reads it back', async () => {
         const result = await set('2026-03-05');
 
-        expect(result.applied).toBeTrue();
+        expect(result.applied).toBe(true);
         expect(result.value).toBe('03/05/2026');
         expect(control.value).toBe('03/05/2026');
         expect(input.value).toBe('03/05/2026');
@@ -422,7 +424,7 @@ describe('ClrDateInput element mutator', () => {
 
         const result = await set('2026-03-05');
 
-        expect(result.applied).toBeTrue();
+        expect(result.applied).toBe(true);
         expect(control.value).toBe('03/05/2026');
         expectSelectedDay(2026, 2, 5);
       });
@@ -430,7 +432,7 @@ describe('ClrDateInput element mutator', () => {
       it('writes the calendar day an ISO date-time names', async () => {
         const result = await set('2026-03-05T23:30:00-05:00');
 
-        expect(result.applied).toBeTrue();
+        expect(result.applied).toBe(true);
         expect(control.value).toBe('03/05/2026');
       });
 
@@ -440,7 +442,7 @@ describe('ClrDateInput element mutator', () => {
         for (const proposal of ['2026-02-30', 'not a date']) {
           const result = await set(proposal);
 
-          expect(result.applied).toBeFalse();
+          expect(result.applied).toBe(false);
           expect(result.refused).toBe('invalid');
           expect(result.detail).toContain('YYYY-MM-DD');
           expect(control.value).toBe('03/05/2026');
@@ -455,7 +457,7 @@ describe('ClrDateInput element mutator', () => {
 
           const result = await set(new ForeignDate(2026, 6, 14));
 
-          expect(result.applied).toBeTrue();
+          expect(result.applied).toBe(true);
           expect(control.value).toBe('07/14/2026');
         } finally {
           frame.remove();
@@ -529,7 +531,7 @@ describe('ClrDateInput element mutator', () => {
       ]);
       await settle();
 
-      expect(report.results[0].applied).toBeTrue();
+      expect(report.results[0].applied).toBe(true);
       expect(control.value).toBe('2026-11-02');
       expect(input.value).toBe('2026-11-02');
       expectSelectedDay(2026, 10, 2);

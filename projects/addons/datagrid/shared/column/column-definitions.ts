@@ -69,6 +69,14 @@ export interface ColumnDefinition<T> {
   pinnable?: boolean;
 
   /**
+   * In a tree (`treeConfig`), puts the expand toggle and the indentation in this column, which
+   * keeps them when it is moved or pinned. Several columns can have it.
+   *
+   * @default false - Without any column with the toggle, the column defined first carries the toggle.
+   */
+  treeToggle?: boolean;
+
+  /**
    * Application actions to offer in this column's actions menu, after the built-in ones and after
    * any actions given to the grid as a whole through `columnActions`. Use these for something that
    * only applies to this column - anything that applies to every column belongs on the grid instead.

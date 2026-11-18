@@ -99,9 +99,10 @@ describe('ClrWizard element context', () => {
       stepnav.setAttribute(marker, '');
 
       const steps = publishedState(wizard()).steps as Record<string, unknown>[];
-      expect(steps.some(step => 'title' in step))
-        .withContext(marker)
-        .toBe(false);
+      expect(
+        steps.some(step => 'title' in step),
+        marker
+      ).toBe(false);
       stepnav.removeAttribute(marker);
     }
   });

@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule, LayoutService, NgControlService } from '@clr/angular/forms/common';
@@ -15,7 +15,7 @@ import { CLR_CONTEXT_REDACT_ATTRIBUTE } from '@clr/angular/utils';
 
 import { ClrPassword } from './password';
 import { ClrPasswordContainer, TOGGLE_SERVICE } from './password-container';
-import { ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
+import { ReactiveSpec, TemplateDrivenSpec } from '../tests/control';
 
 @Component({
   template: `<input type="password" clrPassword />`,
@@ -54,7 +54,7 @@ class ReactiveTest {
   });
 }
 
-export default function (): void {
+describe('ClrPassword', () => {
   describe('ClrPassword', () => {
     describe('invalid use', () => {
       it('should throw an error when used without a password container', () => {
@@ -72,7 +72,9 @@ export default function (): void {
     ReactiveSpec(ClrPasswordContainer, ClrPassword, ReactiveTest, 'clr-input');
 
     describe('set password type', () => {
-      let fixture, containerDE, containerEl;
+      let fixture: ComponentFixture<TemplateDrivenTest>;
+      let containerDE: DebugElement;
+      let containerEl: HTMLElement;
 
       beforeEach(() => {
         TestBed.configureTestingModule({
@@ -103,4 +105,4 @@ export default function (): void {
       });
     });
   });
-}
+});
