@@ -9,6 +9,7 @@ import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppfxTranslateModule } from '@clr/addons/translate';
 import { ClrTreeViewModule } from '@clr/angular';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { CertificateViewerDetailsComponent } from './certificate-viewer-details.component';
 import { CertificateViewerTranslateFieldPipeMock } from '../certificate-viewer-translate-field/certificate-viewer-translate-field.pipe.mock';
@@ -33,7 +34,7 @@ describe('CertificateViewerDetailsComponent', () => {
 
     fixture = TestBed.createComponent(CertificateViewerDetailsComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    renderFixture(fixture);
   });
 
   afterEach(() => {
@@ -45,7 +46,7 @@ describe('CertificateViewerDetailsComponent', () => {
   });
 
   it('#ngOnChanges() loads the leaf cert of a certificate chain as the current selected cert', () => {
-    component.certificateChain = certificateChain;
+    fixture.componentRef.setInput('certificateChain', certificateChain);
     component.ngOnChanges({
       certificateChain: new SimpleChange(undefined, certificateChain, true),
     });
@@ -86,7 +87,7 @@ describe('CertificateViewerDetailsComponent', () => {
 
     expect(component.getNextCertificate(undefined)).toEqual([]);
 
-    component.certificateChain = mockCertificate;
+    fixture.componentRef.setInput('certificateChain', mockCertificate);
     expect(component.getNextCertificate(nextCertificate)).toEqual([nextCertificate]);
   });
 

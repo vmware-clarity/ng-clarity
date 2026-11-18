@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component, ViewChild, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { IF_ACTIVE_ID_PROVIDER, IfActiveService } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { TabsService } from './providers/tabs.service';
 import { ClrTabContent } from './tab-content';
@@ -48,7 +49,7 @@ describe('TabContent', () => {
       providers: [IfActiveService, IF_ACTIVE_ID_PROVIDER, TabsService],
     });
     fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
     compiled = fixture.nativeElement;
   });
 

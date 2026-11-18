@@ -11,6 +11,7 @@ import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { delay } from '@clr/angular/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrAriaCurrentLink } from './aria-current-link';
 import { ClrNavigationModule } from './navigation.module';
@@ -50,7 +51,7 @@ describe('AriaCurrentLink Directive', () => {
 
     fixture = TestBed.createComponent(TestComponent);
     router = TestBed.inject(Router);
-    fixture.detectChanges();
+    renderFixture(fixture);
   });
 
   afterEach(() => {
@@ -60,7 +61,7 @@ describe('AriaCurrentLink Directive', () => {
   it('decorates the active link with aria-current', async () => {
     router.navigate(['/home']);
     await delay();
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     const link1 = fixture.debugElement.query(By.css('#link1'));
     const link2 = fixture.debugElement.query(By.css('#link2'));
@@ -70,7 +71,7 @@ describe('AriaCurrentLink Directive', () => {
 
     router.navigate(['/patterns']);
     await delay();
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(link1.nativeElement.getAttribute('aria-current')).toBeNull();
     expect(link2.nativeElement.getAttribute('aria-current')).toEqual('page');
