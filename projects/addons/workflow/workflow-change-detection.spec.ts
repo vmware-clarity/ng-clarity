@@ -79,7 +79,11 @@ describe('workflow change detection', () => {
       function create(hostType: Type<{ state: WorkflowState }>, setUp?: (state: WorkflowState) => void) {
         const state = new WorkflowState();
         setUp?.(state);
-        TestBed.configureTestingModule({ providers: [{ provide: WorkflowState, useValue: state }] });
+        TestBed.configureTestingModule({
+          // Importing the module here makes TestBed apply its scope again, after specs that declare its components.
+          imports: [AppfxWorkflowsModule],
+          providers: [{ provide: WorkflowState, useValue: state }],
+        });
         fixture = TestBed.createComponent(hostType);
       }
 
@@ -90,8 +94,6 @@ describe('workflow change detection', () => {
       function consumerStep(): ConsumerStep {
         return fixture.debugElement.query(By.directive(ConsumerStep)).componentInstance;
       }
-
-      afterEach(() => fixture.destroy());
 
       // After every async task, a Zone app checks all Eager views without any notification from the code.
       // `zoneTick()` does the same check from the root view here.
