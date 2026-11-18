@@ -453,7 +453,7 @@ export class ClrMutationEngineService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrMutationEngineService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrMutationEngineService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public
