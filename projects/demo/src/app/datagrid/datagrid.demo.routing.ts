@@ -43,6 +43,7 @@ import { DatagridSmartIteratorDemo } from './smart-iterator/smart-iterator';
 import { DatagridSortingDemo } from './sorting/sorting';
 import { DatagridTestCasesDemo } from './test-cases/test-cases';
 import { DatagridTestCasesAsyncDemo } from './test-cases-async/test-cases-async';
+import { DatagridTreeDemo } from './tree/tree';
 import { DatagridVirtualScrollClientSideDemo } from './virtual-scroll-client-side/virtual-scroll-client-side';
 import { DatagridVirtualScrollEmptyRowsDemo } from './virtual-scroll-empty-rows/virtual-scroll-empty-rows';
 import { DatagridVirtualScrollServerSideDemo } from './virtual-scroll-server-side/virtual-scroll-server-side';
@@ -79,6 +80,7 @@ const ROUTES: Routes = [
       { path: 'scrolling', component: DatagridScrollingDemo },
       { path: 'column-sizing', component: DatagridColumnSizingDemo },
       { path: 'pinnable-columns', component: DatagridPinnableColumnsDemo },
+      { path: 'tree', component: DatagridTreeDemo },
       { path: 'column-actions', component: DatagridColumnActionsDemo },
       { path: 'compact', component: DatagridCompactDemo },
       { path: 'density', component: DatagridDensityDemo },

@@ -8,6 +8,7 @@
 import { Page } from '@playwright/test';
 
 import { AnimationStep } from './animation-scenarios';
+import { addStyleWithNonce } from '../helpers/vrt';
 
 declare global {
   interface Window {
@@ -28,7 +29,7 @@ const NO_FOCUS_RINGS = '*:focus, *:focus-visible { outline: none !important; }';
 export async function openStory(page: Page, story: string) {
   const params = new URLSearchParams({ id: story, args: 'highlight:false', viewMode: 'story' });
   await page.goto(`http://localhost:8080/iframe.html?${params}`);
-  await page.addStyleTag({ content: NO_FOCUS_RINGS });
+  await addStyleWithNonce(page, NO_FOCUS_RINGS);
   await page.locator('#storybook-root > *').first().waitFor();
   await page.waitForTimeout(RENDER_TIME);
 }

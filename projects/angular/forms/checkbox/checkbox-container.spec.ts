@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, Type } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ChangeDetectionStrategy, Component, DebugElement, Type } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule, LayoutService, NgControlService } from '@clr/angular/forms/common';
@@ -15,7 +15,7 @@ import { ClrIcon } from '@clr/angular/icon';
 import { ClrCheckbox } from './checkbox';
 import { ClrCheckboxContainer } from './checkbox-container';
 import { ClrCheckboxWrapper } from './checkbox-wrapper';
-import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
+import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container';
 
 @Component({
   template: `
@@ -116,7 +116,7 @@ class ReactiveTest {
   });
 }
 
-export default function (): void {
+describe('Checkbox component', () => {
   describe('ClrCheckboxContainer', () => {
     ContainerNoLabelSpec(ClrCheckboxContainer, [ClrCheckboxWrapper, ClrCheckbox], NoLabelTest);
     TemplateDrivenSpec(
@@ -173,7 +173,9 @@ export default function (): void {
     });
 
     describe('inline buttons', () => {
-      let fixture, containerDE, containerEl;
+      let fixture: ComponentFixture<TemplateDrivenTest>;
+      let containerDE: DebugElement;
+      let containerEl: HTMLElement;
 
       beforeEach(() => {
         TestBed.configureTestingModule({
@@ -196,4 +198,4 @@ export default function (): void {
       });
     });
   });
-}
+});

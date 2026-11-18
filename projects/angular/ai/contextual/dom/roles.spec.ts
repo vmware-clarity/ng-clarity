@@ -219,7 +219,7 @@ describe('roleCandidateSelector', () => {
         roles.includes(resolveRole(element) ?? '')
       );
       const found = candidates(roles).map(element => element.outerHTML);
-      expected.forEach(element => expect(found).withContext(roles[0]).toContain(element.outerHTML));
+      expected.forEach(element => expect(found, roles[0]).toContain(element.outerHTML));
     }
     // A plain span can carry none of these roles and is never looked at.
     expect(candidates(['table']).some(element => element.tagName === 'SPAN')).toBe(false);

@@ -130,7 +130,12 @@ export interface ThisTest {
 }
 
 describe('ManageFilterComponent', () => {
-  beforeEach(function (this: ThisTest) {
+  let testContext: ThisTest;
+  beforeEach(() => {
+    testContext = {} as ThisTest;
+  });
+
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         ClrInputModule,
@@ -145,65 +150,69 @@ describe('ManageFilterComponent', () => {
       declarations: [DismissableDirective, FilterFormComponent, ManageFilterComponent, GeneralFilterComponent],
       providers: [DatagridFiltersStrings],
     });
-    this.fixture = TestBed.createComponent(ManageFilterComponent);
-    this.component = this.fixture.componentInstance;
+    testContext.fixture = TestBed.createComponent(ManageFilterComponent);
+    testContext.component = testContext.fixture.componentInstance;
   });
 
-  afterEach(function (this: ThisTest) {
-    this.fixture.destroy();
+  afterEach(() => {
+    testContext.fixture.destroy();
   });
-  it('manages string property filter', function (this: ThisTest) {
-    spyOn(this.component.filterStrings, 'getConjoinerDisplayName');
-    this.component.propertyFilter = stringPropertyFilter;
+  it('manages string property filter', () => {
+    vi.spyOn(testContext.component.filterStrings, 'getConjoinerDisplayName').mockImplementation(() => undefined);
+    testContext.component.propertyFilter = stringPropertyFilter;
     stringPropertyFilter.criteria = [stringPredicate1, stringPredicate2];
-    this.fixture.detectChanges();
-    expect(this.component.managedProperty).toEqual(stringProperty);
-    expect(this.component.managedPropertyType).toEqual(PropertyType.String);
-    expect(this.component.stringProperty).toEqual(stringProperty);
-    expect(this.component.primaryConditionDisplayText).toEqual('Equals: vm 1');
-    expect(this.component.secondaryConditionDisplayText).toEqual('Is empty');
-    expect(this.component.filterStrings.getConjoinerDisplayName).toHaveBeenCalledWith(stringPropertyFilter.operator);
+    testContext.fixture.detectChanges();
+    expect(testContext.component.managedProperty).toEqual(stringProperty);
+    expect(testContext.component.managedPropertyType).toEqual(PropertyType.String);
+    expect(testContext.component.stringProperty).toEqual(stringProperty);
+    expect(testContext.component.primaryConditionDisplayText).toEqual('Equals: vm 1');
+    expect(testContext.component.secondaryConditionDisplayText).toEqual('Is empty');
+    expect(testContext.component.filterStrings.getConjoinerDisplayName).toHaveBeenCalledWith(
+      stringPropertyFilter.operator
+    );
 
     const editFilterSignpostTrigger: HTMLSpanElement[] =
-      this.fixture.debugElement.nativeElement.querySelectorAll('.edit-filter');
+      testContext.fixture.debugElement.nativeElement.querySelectorAll('.edit-filter');
     expect(editFilterSignpostTrigger.length).toEqual(2);
 
     editFilterSignpostTrigger[0].click();
-    this.fixture.detectChanges();
-    expect(this.component.openPrimaryConditionSignPost).toBeTruthy();
+    testContext.fixture.detectChanges();
+    expect(testContext.component.openPrimaryConditionSignPost).toBeTruthy();
     editFilterSignpostTrigger[1].click();
-    this.fixture.detectChanges();
-    expect(this.component.openSecondaryConditionSignPost).toBeTruthy();
+    testContext.fixture.detectChanges();
+    expect(testContext.component.openSecondaryConditionSignPost).toBeTruthy();
   });
-  it('manages enum property filter', function (this: ThisTest) {
-    this.component.propertyFilter = enumPropertyFilter;
-    this.fixture.detectChanges();
-    expect(this.component.managedProperty).toEqual(enumProperty);
-    expect(this.component.managedPropertyType).toEqual(PropertyType.Enum);
-    expect(this.component.enumProperty).toEqual(enumProperty);
-    expect(this.component.primaryConditionDisplayText).toEqual('Equals: Alert');
-    expect(this.component.secondaryConditionDisplayText).toEqual('Equals: Normal');
+  it('manages enum property filter', () => {
+    testContext.component.propertyFilter = enumPropertyFilter;
+    testContext.fixture.detectChanges();
+    expect(testContext.component.managedProperty).toEqual(enumProperty);
+    expect(testContext.component.managedPropertyType).toEqual(PropertyType.Enum);
+    expect(testContext.component.enumProperty).toEqual(enumProperty);
+    expect(testContext.component.primaryConditionDisplayText).toEqual('Equals: Alert');
+    expect(testContext.component.secondaryConditionDisplayText).toEqual('Equals: Normal');
   });
-  it('manages numeric property filter', function (this: ThisTest) {
-    spyOn(this.component.filterStrings, 'getConjoinerDisplayName');
-    this.component.propertyFilter = numericPropertyFilter;
+  it('manages numeric property filter', () => {
+    vi.spyOn(testContext.component.filterStrings, 'getConjoinerDisplayName').mockImplementation(() => undefined);
+    testContext.component.propertyFilter = numericPropertyFilter;
     numericPropertyFilter.criteria = [numericPredicate1, numericPredicate2];
     numericProperty.selectedValue = [176, 50];
     numericProperty.selectedUnit = [Unit.MB, Unit.GB];
-    this.fixture.detectChanges();
-    expect(this.component.managedProperty).toEqual(numericProperty);
-    expect(this.component.managedPropertyType).toEqual(PropertyType.Numeric);
-    expect(this.component.numericProperty).toEqual(numericProperty);
-    expect(this.component.primaryConditionDisplayText).toEqual('Equals: 176 MB');
-    expect(this.component.secondaryConditionDisplayText).toEqual('Greater than: 50 GB');
-    expect(this.component.filterStrings.getConjoinerDisplayName).toHaveBeenCalledWith(numericPropertyFilter.operator);
+    testContext.fixture.detectChanges();
+    expect(testContext.component.managedProperty).toEqual(numericProperty);
+    expect(testContext.component.managedPropertyType).toEqual(PropertyType.Numeric);
+    expect(testContext.component.numericProperty).toEqual(numericProperty);
+    expect(testContext.component.primaryConditionDisplayText).toEqual('Equals: 176 MB');
+    expect(testContext.component.secondaryConditionDisplayText).toEqual('Greater than: 50 GB');
+    expect(testContext.component.filterStrings.getConjoinerDisplayName).toHaveBeenCalledWith(
+      numericPropertyFilter.operator
+    );
   });
-  it('renders the remove filter icons with their SVG content', function (this: ThisTest) {
-    this.component.propertyFilter = stringPropertyFilter;
+  it('renders the remove filter icons with their SVG content', () => {
+    testContext.component.propertyFilter = stringPropertyFilter;
     stringPropertyFilter.criteria = [stringPredicate1, stringPredicate2];
-    this.fixture.detectChanges();
+    testContext.fixture.detectChanges();
     const removeFilterIcons: NodeListOf<HTMLElement> =
-      this.fixture.debugElement.nativeElement.querySelectorAll(removeFilterSelector);
+      testContext.fixture.debugElement.nativeElement.querySelectorAll(removeFilterSelector);
     expect(removeFilterIcons.length).toEqual(2);
     removeFilterIcons.forEach(icon => {
       expect(icon.tagName.toLowerCase()).toEqual('cds-icon');
@@ -214,85 +223,87 @@ describe('ManageFilterComponent', () => {
       expect(svg.innerHTML).toContain('path');
     });
   });
-  it('removes string property filter', function (this: ThisTest) {
-    spyOn(this.component.filterCriteriaChange, 'emit');
-    this.component.propertyFilter = stringPropertyFilter;
+  it('removes string property filter', () => {
+    vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
+    testContext.component.propertyFilter = stringPropertyFilter;
     stringPropertyFilter.criteria = [stringPredicate1, stringPredicate2];
-    this.fixture.detectChanges();
+    testContext.fixture.detectChanges();
     let removeFilterIcon: HTMLElement[] =
-      this.fixture.debugElement.nativeElement.querySelectorAll(removeFilterSelector);
+      testContext.fixture.debugElement.nativeElement.querySelectorAll(removeFilterSelector);
     expect(removeFilterIcon.length).toEqual(2);
 
     const modifiedPropertyFilter = new PropertyFilter();
     modifiedPropertyFilter.criteria = [stringPredicate2];
     modifiedPropertyFilter.operator = LogicalOperator.And;
     removeFilterIcon[0].click();
-    this.fixture.detectChanges();
-    expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(modifiedPropertyFilter);
+    testContext.fixture.detectChanges();
+    expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(modifiedPropertyFilter);
 
     modifiedPropertyFilter.criteria = [];
-    removeFilterIcon = this.fixture.debugElement.nativeElement.querySelectorAll(removeFilterSelector);
+    removeFilterIcon = testContext.fixture.debugElement.nativeElement.querySelectorAll(removeFilterSelector);
     expect(removeFilterIcon.length).toEqual(1);
     removeFilterIcon[0].click();
-    this.fixture.detectChanges();
-    expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(modifiedPropertyFilter);
+    testContext.fixture.detectChanges();
+    expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(modifiedPropertyFilter);
   });
-  it('removes numeric property filter', function (this: ThisTest) {
-    spyOn(this.component.filterCriteriaChange, 'emit');
-    this.component.propertyFilter = numericPropertyFilter;
+  it('removes numeric property filter', () => {
+    vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
+    testContext.component.propertyFilter = numericPropertyFilter;
     numericPropertyFilter.criteria = [numericPredicate1, numericPredicate2];
-    this.fixture.detectChanges();
+    testContext.fixture.detectChanges();
     const removeFilterIcon: HTMLElement[] =
-      this.fixture.debugElement.nativeElement.querySelectorAll(removeFilterSelector);
+      testContext.fixture.debugElement.nativeElement.querySelectorAll(removeFilterSelector);
     expect(removeFilterIcon.length).toEqual(2);
 
     const modifiedPropertyFilter = new PropertyFilter();
     modifiedPropertyFilter.criteria = [numericPredicate2];
     modifiedPropertyFilter.operator = LogicalOperator.Or;
     removeFilterIcon[0].click();
-    this.fixture.detectChanges();
+    testContext.fixture.detectChanges();
     expect(numericProperty.selectedValue).toEqual([50]);
     expect(numericProperty.selectedUnit).toEqual([Unit.GB]);
-    expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(modifiedPropertyFilter);
+    expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(modifiedPropertyFilter);
 
     removeFilterIcon[0].click();
-    this.fixture.detectChanges();
+    testContext.fixture.detectChanges();
     modifiedPropertyFilter.criteria = [];
-    expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(modifiedPropertyFilter);
+    expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(modifiedPropertyFilter);
   });
-  it('manages date-time property filter normal operator', function (this: ThisTest) {
-    this.component.propertyFilter = dateTimePropertyFilter;
+  it('manages date-time property filter normal operator', () => {
+    testContext.component.propertyFilter = dateTimePropertyFilter;
     dateTimeProperty.selectedOperator = ComparisonOperator.BeforeOrEqualTo;
     dateTimeProperty.selectedValue = '2023-02-02T13:23';
-    this.fixture.detectChanges();
-    expect(this.component.managedProperty).toEqual(dateTimeProperty);
-    expect(this.component.managedPropertyType).toEqual(PropertyType.DateTime);
-    expect(this.component.dateTimeProperty).toEqual(dateTimeProperty);
+    testContext.fixture.detectChanges();
+    expect(testContext.component.managedProperty).toEqual(dateTimeProperty);
+    expect(testContext.component.managedPropertyType).toEqual(PropertyType.DateTime);
+    expect(testContext.component.dateTimeProperty).toEqual(dateTimeProperty);
 
-    expect(this.component.primaryConditionDisplayText).toEqual('Before or equal to: 2023-02-02 13:23');
+    expect(testContext.component.primaryConditionDisplayText).toEqual('Before or equal to: 2023-02-02 13:23');
   });
-  it('manages date-time property filter custom range operator', function (this: ThisTest) {
+  it('manages date-time property filter custom range operator', () => {
     dateTimeProperty.selectedOperator = ComparisonOperator.CustomRange;
     dateTimeProperty.selectedValueTo = '2023-02-07T13:28';
-    this.component.propertyFilter = dateTimePropertyFilter;
-    this.fixture.detectChanges();
+    testContext.component.propertyFilter = dateTimePropertyFilter;
+    testContext.fixture.detectChanges();
 
-    expect(this.component.primaryConditionDisplayText).toEqual('' + 'From: 2023-02-02 13:23 ' + 'To: 2023-02-07 13:28');
+    expect(testContext.component.primaryConditionDisplayText).toEqual(
+      '' + 'From: 2023-02-02 13:23 ' + 'To: 2023-02-07 13:28'
+    );
   });
-  it('manages date-time property filter relative operator', function (this: ThisTest) {
+  it('manages date-time property filter relative operator', () => {
     dateTimeProperty.selectedOperator = ComparisonOperator.LastYear;
-    this.component.propertyFilter = dateTimePropertyFilter;
-    this.fixture.detectChanges();
+    testContext.component.propertyFilter = dateTimePropertyFilter;
+    testContext.fixture.detectChanges();
 
-    expect(this.component.primaryConditionDisplayText).toEqual('Last year');
+    expect(testContext.component.primaryConditionDisplayText).toEqual('Last year');
   });
-  it('manages date-time property filter time span operator', function (this: ThisTest) {
+  it('manages date-time property filter time span operator', () => {
     dateTimeProperty.selectedOperator = ComparisonOperator.TimeSpan;
     dateTimeProperty.selectedTimeSpanValue = '300';
     dateTimeProperty.selectedTimeSpan = TimeSpan.Weeks;
-    this.component.propertyFilter = dateTimePropertyFilter;
-    this.fixture.detectChanges();
+    testContext.component.propertyFilter = dateTimePropertyFilter;
+    testContext.fixture.detectChanges();
 
-    expect(this.component.primaryConditionDisplayText).toEqual('Time span: 300 Weeks');
+    expect(testContext.component.primaryConditionDisplayText).toEqual('Time span: 300 Weeks');
   });
 });

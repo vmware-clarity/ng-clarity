@@ -11,7 +11,15 @@ import * as path from 'path';
 
 import { websiteScreenshotOptions } from './screenshot-options';
 import { ScreenshotOptions } from '../helpers/screenshot-options.interface';
-import { browser, density, matrixKey, screenshotExpectOptions, screenshotPathFor, theme } from '../helpers/vrt';
+import {
+  addStyleWithNonce,
+  browser,
+  density,
+  matrixKey,
+  screenshotExpectOptions,
+  screenshotPathFor,
+  theme,
+} from '../helpers/vrt';
 
 const baseUrl = 'http://localhost:8081';
 const defaultViewport = { width: 1280, height: 720 };
@@ -220,7 +228,7 @@ async function capturePage(page: Page, pageName: string, view: string, route: st
     throw new Error(`${route} redirected to ${landedPath}; exclude it or capture it under its own name`);
   }
 
-  await page.addStyleTag({ content: growPageWithContentStyles(viewport.height) });
+  await addStyleWithNonce(page, growPageWithContentStyles(viewport.height));
   await page.evaluate(() => document.fonts.ready);
 
   for (const selector of options.waitForSelectors ?? []) {

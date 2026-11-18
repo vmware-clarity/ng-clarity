@@ -60,10 +60,10 @@ describe('MenuComponent', () => {
   it('should handle action', () => {
     const actionItem = {
       enabled: true,
-      handle: { next: jasmine.createSpy() },
+      handle: { next: vi.fn() },
     } as unknown as MenuActionComponent;
 
-    spyOn(component, 'handleAction').and.callThrough();
+    vi.spyOn(component, 'handleAction');
 
     component.handleAction(actionItem);
 
@@ -74,9 +74,9 @@ describe('MenuComponent', () => {
   it('should handle document context menu', () => {
     const event = new Event('contextmenu');
 
-    spyOn(component.dropdownElRef.nativeElement, 'contains').and.returnValue(true);
+    vi.spyOn(component.dropdownElRef.nativeElement, 'contains').mockReturnValue(true);
 
-    const preventDefaultSpy = spyOn(Event.prototype, 'preventDefault');
+    const preventDefaultSpy = vi.spyOn(Event.prototype, 'preventDefault').mockImplementation(() => undefined);
 
     component.documentContextMenu(event);
 
@@ -86,8 +86,8 @@ describe('MenuComponent', () => {
   it('should prevent default when context menu event is inside the menu', () => {
     const event = new Event('contextmenu');
 
-    spyOn(component.dropdownElRef.nativeElement, 'contains').and.returnValue(true);
-    const preventDefaultSpy = spyOn(event, 'preventDefault');
+    vi.spyOn(component.dropdownElRef.nativeElement, 'contains').mockReturnValue(true);
+    const preventDefaultSpy = vi.spyOn(event, 'preventDefault').mockImplementation(() => undefined);
 
     component.documentContextMenu(event);
 
@@ -97,8 +97,8 @@ describe('MenuComponent', () => {
   it('should close menu when context menu event is outside the menu', () => {
     const event = new Event('contextmenu');
 
-    spyOn(component.dropdownElRef.nativeElement, 'contains').and.returnValue(false);
-    const closeSpy = spyOn(component, 'close');
+    vi.spyOn(component.dropdownElRef.nativeElement, 'contains').mockReturnValue(false);
+    const closeSpy = vi.spyOn(component, 'close').mockImplementation(() => undefined);
 
     component.documentContextMenu(event);
 

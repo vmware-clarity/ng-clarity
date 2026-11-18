@@ -10,11 +10,11 @@
   @for (option of dateRangeOptions; track option) {
   <a
     clrVerticalNavLink
-    href="javascript:void(0)"
+    href="#"
     [attr.aria-label]="option?.label"
     tabindex="0"
     (keyup.enter)="onRangeOptionSelect(option)"
-    (click)="onRangeOptionSelect(option)"
+    (click)="$event.preventDefault(); onRangeOptionSelect(option)"
   >
     {{option.label}}
   </a>
