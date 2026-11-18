@@ -36,7 +36,7 @@ export class AccordionDemo {
     },
   ];
 
-  change(event) {
+  change(event: boolean) {
     console.log('Accordion Changed', event);
   }
 }

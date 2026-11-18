@@ -38,10 +38,10 @@ describe('accessibleText', () => {
   it('does not read inside a hidden subtree', () => {
     container.innerHTML = '<span>Shown</span><div style="display: none"><span>a</span><span>b</span></div>';
     const hiddenSpans = Array.from(container.querySelectorAll(':scope > div span'));
-    const getComputedStyle = spyOn(window, 'getComputedStyle').and.callThrough();
+    const getComputedStyle = vi.spyOn(window, 'getComputedStyle');
 
     expect(accessibleText(container).trim()).toBe('Shown');
-    expect(getComputedStyle.calls.allArgs().some(([element]) => hiddenSpans.includes(element))).toBeFalse();
+    expect(getComputedStyle.mock.calls.some(([element]) => hiddenSpans.includes(element))).toBe(false);
   });
 
   it('leaves out what `withholds` picks', () => {

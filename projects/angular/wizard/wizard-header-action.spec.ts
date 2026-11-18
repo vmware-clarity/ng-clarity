@@ -52,7 +52,7 @@ class TestComponent {
   }
 }
 
-export default function (): void {
+describe('New Wizard Tests', () => {
   describe('New Wizard Header Action', () => {
     let fixture: ComponentFixture<any>;
     let testComponent: TestComponent;
@@ -83,10 +83,10 @@ export default function (): void {
 
         it('should return expected id', () => {
           const haToTest = testComponent.idHA;
-          expect(haToTest.id).toBe('clr-wizard-header-action-ohai', 'id reflects input that is set');
+          expect(haToTest.id, 'id reflects input that is set').toBe('clr-wizard-header-action-ohai');
           haToTest._id = 'onoez';
           fixture.detectChanges();
-          expect(haToTest.id).toBe('clr-wizard-header-action-onoez', 'id honors internal changes to id');
+          expect(haToTest.id, 'id honors internal changes to id').toBe('clr-wizard-header-action-onoez');
         });
       });
 
@@ -96,7 +96,7 @@ export default function (): void {
 
         beforeEach(() => {
           clicker = testComponent.clickedHA;
-          onClickSpy = spyOn(clicker.headerActionClicked, 'emit');
+          onClickSpy = vi.spyOn(clicker.headerActionClicked, 'emit').mockImplementation(() => undefined);
         });
 
         it('should emit event', () => {
@@ -126,10 +126,10 @@ export default function (): void {
 
         it('should be able to change via host component', () => {
           const myHA = testComponent.clickedHA;
-          expect(myHA.title).toBe('title to update', 'should init with expected value');
+          expect(myHA.title, 'should init with expected value').toBe('title to update');
           testComponent.titleToUpdate = 'updated title';
           fixture.detectChanges();
-          expect(myHA.title).toBe('updated title', 'should update as expected');
+          expect(myHA.title, 'should update as expected').toBe('updated title');
         });
       });
 
@@ -153,19 +153,17 @@ export default function (): void {
 
         it('should be able to handle a component without an id defined', () => {
           const unsetHA = testComponent.plainDefaultHA;
-          expect(unsetHA.id).toBeTruthy('id exists on unset header action');
-          expect(unsetHA.id).toContain('clr-wizard-header-action-', 'id should have ' + 'format of header action id');
+          expect(unsetHA.id, 'id exists on unset header action').toBeTruthy();
+          expect(unsetHA.id, 'id should have ' + 'format of header action id').toContain('clr-wizard-header-action-');
           testComponent.myId = null;
           fixture.detectChanges();
-          expect(haToTest.id).not.toBe(haToTestDefaultId, 'nulling id should change id');
-          expect(unsetHA.id).toBeTruthy('id exists on null id header action');
-          expect(unsetHA.id).toContain(
-            'clr-wizard-header-action-',
-            'new id ' + ' on null id should have format of header action id'
+          expect(haToTest.id, 'nulling id should change id').not.toBe(haToTestDefaultId);
+          expect(unsetHA.id, 'id exists on null id header action').toBeTruthy();
+          expect(unsetHA.id, 'new id ' + ' on null id should have format of header action id').toContain(
+            'clr-wizard-header-action-'
           );
-          expect(unsetHA.id).not.toContain(
-            '-null',
-            'new id ' + ' on null id should not contain null keyword in the id'
+          expect(unsetHA.id, 'new id ' + ' on null id should not contain null keyword in the id').not.toContain(
+            '-null'
           );
         });
       });
@@ -181,10 +179,10 @@ export default function (): void {
 
         it('should be able to be enabled/disabled via input', () => {
           const testMe = testComponent.projectedHA;
-          expect(testMe.disabled).toBe(false, 'disabled input is initted to false');
+          expect(testMe.disabled, 'disabled input is initted to false').toBe(false);
           testComponent.disableMe = true;
           fixture.detectChanges();
-          expect(testMe.disabled).toBe(true, 'disabled input has been changed to true');
+          expect(testMe.disabled, 'disabled input has been changed to true').toBe(true);
         });
       });
 
@@ -217,13 +215,12 @@ export default function (): void {
 
         it('should update projected content as expected', () => {
           const newContent = 'rice';
-          expect(projectedEl.textContent.trim()).toBe(
-            testComponent.projector,
-            'verify that projected content is initted properly'
+          expect(projectedEl.textContent.trim(), 'verify that projected content is initted properly').toBe(
+            testComponent.projector
           );
           testComponent.projector = newContent;
           fixture.detectChanges();
-          expect(projectedEl.textContent.trim()).toBe(newContent, 'verify that projected content is updated properly');
+          expect(projectedEl.textContent.trim(), 'verify that projected content is updated properly').toBe(newContent);
         });
       });
     });
@@ -250,34 +247,34 @@ export default function (): void {
         it('should have .disabled class if set to be disabled', () => {
           testComponent.disableMe = true;
           fixture.detectChanges();
-          expect(testComponent.projectedHA.disabled).toBe(true, 'verify component disabled as expected');
+          expect(testComponent.projectedHA.disabled, 'verify component disabled as expected').toBe(true);
           const testMe = debugEl.nativeElement.querySelector('#clr-wizard-header-action-projection');
-          expect(testMe.classList.contains('disabled')).toBe(true, 'disabled header action has .disabled');
+          expect(testMe.classList.contains('disabled'), 'disabled header action has .disabled').toBe(true);
         });
       });
 
       describe('title', () => {
         it('should be empty string by default', () => {
-          expect(testComponent.projectedHA.title).toBe('', 'verify inits as empty string');
+          expect(testComponent.projectedHA.title, 'verify inits as empty string').toBe('');
           const testMe = debugEl.nativeElement.querySelector('#clr-wizard-header-action-projection');
-          expect(testMe.getAttribute('title')).toBe('', 'verify DOM title is also an empty string');
+          expect(testMe.getAttribute('title'), 'verify DOM title is also an empty string').toBe('');
         });
 
         it('should be settable', () => {
-          expect(testComponent.idHA.title).toBe('I have a title', 'verify title is set');
+          expect(testComponent.idHA.title, 'verify title is set').toBe('I have a title');
           const testMe = debugEl.nativeElement.querySelector('#clr-wizard-header-action-ohai');
-          expect(testMe.getAttribute('title')).toBe('I have a title', 'verify DOM title is also set');
+          expect(testMe.getAttribute('title'), 'verify DOM title is also set').toBe('I have a title');
         });
 
         it('should update', () => {
-          expect(testComponent.clickedHA.title).toBe('title to update', 'verify title is set');
+          expect(testComponent.clickedHA.title, 'verify title is set').toBe('title to update');
           const testMe = debugEl.nativeElement.querySelector('#clr-wizard-header-action-gotklikz');
-          expect(testMe.getAttribute('title')).toBe('title to update', 'verify DOM title updated');
+          expect(testMe.getAttribute('title'), 'verify DOM title updated').toBe('title to update');
           testComponent.titleToUpdate = 'updated title';
           fixture.detectChanges();
-          expect(testMe.getAttribute('title')).toBe('updated title', 'verify DOM title updated');
+          expect(testMe.getAttribute('title'), 'verify DOM title updated').toBe('updated title');
         });
       });
     });
   });
-}
+});

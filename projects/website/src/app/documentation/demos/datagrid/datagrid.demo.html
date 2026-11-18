@@ -371,6 +371,34 @@
       </clr-datagrid>
     </div>
 
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="tree-data">Tree Data</h3>
+    <p cds-text="body" class="clr-mt-16px">
+      Use tree data when the rows have rows of their own, like folders and files, or datacenters, clusters and hosts.
+      Children show below their parent, indented, in the same columns, so users can compare items across levels and
+      sort, select and act on any of them. Children are loaded the first time their parent is expanded.
+    </p>
+
+    <h4 id="tree-data-usage" class="clr-mt-24px" cds-text="subsection">Usage</h4>
+    <div class="clr-mt-8px">
+      <ul class="list">
+        <li>Use it when every level has the same columns. For details of a row, use the detail pane.</li>
+        <li>Pagination, sorting and filters apply to the top-level rows; children are sorted with them.</li>
+        <li>Selecting a row can also select the rows below it.</li>
+      </ul>
+    </div>
+
+    <h4 id="tree-data-accessibility" class="clr-mt-24px" cds-text="subsection">Accessibility</h4>
+    <div class="clr-mt-8px">
+      <ul class="list">
+        <li>The datagrid becomes a treegrid: each row announces its level and whether it is expanded.</li>
+        <li>On the toggle, the Right arrow key expands a row and Left collapses it.</li>
+      </ul>
+    </div>
+
+    <div class="clr-mt-24px">
+      <clr-datagrid-tree-files-example></clr-datagrid-tree-files-example>
+    </div>
+
     <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="Compact-datagrid">Compact Datagrid</h3>
     <p cds-text="body" class="clr-mt-16px">
       You can increase the information density of your datagrid to decrease the amount of space it takes up.

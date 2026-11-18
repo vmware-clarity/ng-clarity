@@ -39,8 +39,8 @@ describe('RenderAsButtonDirective', () => {
 
   it('should toggle classes based on renderAsButton value', () => {
     const testElement = mockElementRef.nativeElement;
-    spyOn(mockRenderer, 'addClass');
-    spyOn(mockRenderer, 'removeClass');
+    vi.spyOn(mockRenderer, 'addClass').mockImplementation(() => undefined);
+    vi.spyOn(mockRenderer, 'removeClass').mockImplementation(() => undefined);
 
     directive.renderAsButton = true;
     directive.ngOnChanges();
@@ -54,8 +54,8 @@ describe('RenderAsButtonDirective', () => {
   });
 
   it('should not modify classes if in overflow', () => {
-    spyOn(mockRenderer, 'addClass');
-    spyOn(mockRenderer, 'removeClass');
+    vi.spyOn(mockRenderer, 'addClass').mockImplementation(() => undefined);
+    vi.spyOn(mockRenderer, 'removeClass').mockImplementation(() => undefined);
 
     mockClrTabLink.inOverflow = true;
 
@@ -69,14 +69,14 @@ describe('RenderAsButtonDirective', () => {
     const mockInvalidElementRef = new ElementRef(null);
     const directiveWithInvalidRef = new RenderAsButtonDirective(mockClrTabLink, mockRenderer, mockInvalidElementRef);
 
-    spyOn(console, 'error');
+    vi.spyOn(console, 'error').mockImplementation(() => undefined);
     directiveWithInvalidRef.ngOnChanges();
     expect(console.error).toHaveBeenCalledWith('RenderAsButtonDirective: Unable to find the element');
   });
 
   it('should not modify classes if renderAsButton value does not change', () => {
-    spyOn(mockRenderer, 'addClass');
-    spyOn(mockRenderer, 'removeClass');
+    vi.spyOn(mockRenderer, 'addClass').mockImplementation(() => undefined);
+    vi.spyOn(mockRenderer, 'removeClass').mockImplementation(() => undefined);
 
     directive.renderAsButton = false;
     directive.ngOnChanges(); // First call to set initial state

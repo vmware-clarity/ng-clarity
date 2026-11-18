@@ -6,8 +6,7 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import { ElementRef, Inject, Injectable, NgZone, PLATFORM_ID } from '@angular/core';
-import { filter, first } from 'rxjs/operators';
+import { afterNextRender, ElementRef, Inject, Injectable, Injector, PLATFORM_ID } from '@angular/core';
 
 /**
  * This service focuses the day that is focusable in the calendar.
@@ -15,34 +14,25 @@ import { filter, first } from 'rxjs/operators';
 @Injectable()
 export class DatepickerFocusService {
   constructor(
-    private _ngZone: NgZone,
+    private injector: Injector,
     @Inject(PLATFORM_ID) private platformId: any
   ) {}
 
   focusCell(elRef: ElementRef<HTMLElement>): void {
-    this._ngZone.runOutsideAngular(() => {
-      this.ngZoneIsStableInBrowser().subscribe(() => {
-        const focusEl = elRef.nativeElement.querySelector<HTMLElement>('[tabindex="0"]');
-        if (focusEl) {
-          focusEl.focus();
-        }
+    if (isPlatformBrowser(this.platformId)) {
+      afterNextRender(() => elRef.nativeElement.querySelector<HTMLElement>('[tabindex="0"]')?.focus(), {
+        injector: this.injector,
       });
-    });
+    }
   }
 
   focusInput(element: HTMLInputElement): void {
-    this._ngZone.runOutsideAngular(() => this.ngZoneIsStableInBrowser().subscribe(() => element.focus()));
+    if (isPlatformBrowser(this.platformId)) {
+      afterNextRender(() => element.focus(), { injector: this.injector });
+    }
   }
 
   elementIsFocused(element: HTMLInputElement) {
     return isPlatformBrowser(this.platformId) && document.activeElement === element;
-  }
-
-  private ngZoneIsStableInBrowser() {
-    // Credit: Material: https://github.com/angular/material2/blob/master/src/lib/datepicker/calendar.ts
-    return this._ngZone.onStable.asObservable().pipe(
-      first(),
-      filter(() => isPlatformBrowser(this.platformId))
-    );
   }
 }

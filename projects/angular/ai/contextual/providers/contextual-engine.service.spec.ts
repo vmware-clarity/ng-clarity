@@ -71,10 +71,10 @@ describe('ClrContextService', () => {
       });
 
       try {
-        expect((await engine.snapshot()).components).toContain(jasmine.objectContaining({ type: 'chat' }));
+        expect((await engine.snapshot()).components).toContainEqual(expect.objectContaining({ type: 'chat' }));
 
         engine.configure({});
-        expect((await engine.snapshot()).components).not.toContain(jasmine.objectContaining({ type: 'chat' }));
+        expect((await engine.snapshot()).components).not.toContainEqual(expect.objectContaining({ type: 'chat' }));
       } finally {
         widget.remove();
       }
@@ -171,13 +171,13 @@ describe('ClrContextService', () => {
       const host = window as unknown as Record<string, unknown>;
 
       // Specs run as modules, in strict mode, where assigning to a read-only property throws.
-      expect(() => (host['testClrContext'] = () => ({ components: [] }))).toThrowError(TypeError);
+      expect(() => (host['testClrContext'] = () => ({ components: [] as unknown[] }))).toThrowError(TypeError);
       expect(globalAccessor()).toBe(installed);
 
       engine.disableGlobalAccess();
       expect(globalAccessor()).toBeUndefined();
       engine.enableGlobalAccess('testClrContext');
-      expect(globalAccessor()).toEqual(jasmine.any(Function));
+      expect(globalAccessor()).toEqual(expect.any(Function));
       engine.disableGlobalAccess();
     });
 
@@ -389,23 +389,23 @@ describe('ClrContextService, configured once for the application', () => {
   it('warns when configured again, or after a snapshot used the defaults', async () => {
     TestBed.configureTestingModule({});
     const engine = TestBed.inject(ClrContextService);
-    const warn = spyOn(console, 'warn');
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
 
     await engine.snapshot();
     engine.configure({ scope: 'interactive' });
     engine.configure({ scope: 'minimal' });
 
-    expect(warn.calls.allArgs()).toEqual([
+    expect(warn.mock.calls).toEqual([
       ['ClrContextService.configure: called after a snapshot was taken; that snapshot used the defaults.'],
       ['ClrContextService.configure: called again; the new configuration replaces the previous one.'],
     ]);
   });
 
   it('warns about an unknown preset and reads the whole page', async () => {
-    const warn = spyOn(console, 'warn');
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
     const engine = engineWith({ scope: 'everything' as never });
 
-    expect(warn).toHaveBeenCalledOnceWith(
+    expect(warn).toHaveBeenCalledExactlyOnceWith(
       'Clarity context options: "everything" is not a preset; use one of full, interactive, minimal.'
     );
     expect(types(await engine.snapshot())).toContain('main');
@@ -454,7 +454,7 @@ describe('ClrContextService, configured once for the application', () => {
   it('does not let an untrusted caller set off a warning about the application’s options', () => {
     const engine = engineWith({ scope: { excludeCategories: ['layout'], root: 'main, nav' } });
     engine.enableGlobalAccess('testClrContextWrongKinds');
-    const warn = spyOn(console, 'warn');
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
     try {
       const accessor = globalAccessor('testClrContextWrongKinds');
 
@@ -467,13 +467,13 @@ describe('ClrContextService, configured once for the application', () => {
 
   it('says when the global accessor’s own ceiling has an exclusion list that is not one', () => {
     const engine = engineWith({});
-    const warn = spyOn(console, 'warn');
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
     engine.enableGlobalAccess('testClrContextBadCeiling', { excludeSelectors: 'grid' } as unknown as Parameters<
       typeof engine.enableGlobalAccess
     >[1]);
     engine.disableGlobalAccess();
 
-    expect(warn).toHaveBeenCalledOnceWith(
+    expect(warn).toHaveBeenCalledExactlyOnceWith(
       'Clarity context options: excludeSelectors must be a list, so "grid" was ignored.'
     );
   });
@@ -820,12 +820,12 @@ describe('ClrContextService, what the global accessor keeps back', () => {
   it('lists the routes of a lazy module once it has loaded', async () => {
     engine.configure({ routes: true });
     const before = (await engine.snapshot()).availableRoutes;
-    expect(before).toContain({ path: 'billing', lazy: true });
+    expect(before).toContainEqual({ path: 'billing', lazy: true });
 
     await TestBed.inject(Router).navigateByUrl('/billing/invoices');
 
     const after = (await engine.snapshot()).availableRoutes;
-    expect(after).toContain({ path: 'billing/invoices', title: 'Invoices' });
+    expect(after).toContainEqual({ path: 'billing/invoices', title: 'Invoices' });
     expect(after?.some(route => route.lazy)).toBe(false);
   });
 });

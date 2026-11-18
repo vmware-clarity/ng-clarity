@@ -37,7 +37,7 @@ const meta = {
     // inputs
     clrAccordionMultiPanel: false,
     // story helpers
-    openIndices: [],
+    openIndices: [] as boolean[],
     panelCount: 4,
     title: 'Title',
     content: 'Hello World!',

@@ -40,14 +40,12 @@ describe('visibility', () => {
 
   it('judges visibility the same way with and without Element.checkVisibility', () => {
     for (const [name, html, visible] of CASES) {
-      expect(isVisible(element(html)))
-        .withContext(`${name}, native`)
-        .toBe(visible);
+      expect(isVisible(element(html)), `${name}, native`).toBe(visible);
 
       // As in jsdom, where application unit tests run: the method does not exist.
       const target = element(html);
       Object.defineProperty(target, 'checkVisibility', { value: undefined, configurable: true });
-      expect(isVisible(target)).withContext(`${name}, without checkVisibility`).toBe(visible);
+      expect(isVisible(target), `${name}, without checkVisibility`).toBe(visible);
     }
   });
 

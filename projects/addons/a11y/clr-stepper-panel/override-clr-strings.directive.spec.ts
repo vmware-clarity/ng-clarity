@@ -69,21 +69,26 @@ function createThisTest(): ThisTest {
 }
 
 describe('OverrideClrStringsDirective', () => {
-  afterEach(function (this: ThisTest) {
-    if (this.fixture) {
-      this.fixture.destroy();
+  let testContext: ThisTest;
+  beforeEach(() => {
+    testContext = {} as ThisTest;
+  });
+
+  afterEach(() => {
+    if (testContext.fixture) {
+      testContext.fixture.destroy();
     }
   });
 
-  it('ClrStepperPanel.commonStrings has correct values', fakeAsync(function (this: ThisTest) {
-    Object.assign(this, createThisTest());
+  it('ClrStepperPanel.commonStrings has correct values', fakeAsync(() => {
+    Object.assign(testContext, createThisTest());
 
-    const panel: ClrStepperPanel | undefined = this.component.stepperPanels.get(0);
+    const panel: ClrStepperPanel | undefined = testContext.component.stepperPanels.get(0);
     expect(panel?.commonStrings.keys.stepComplete).toEqual(successText);
     expect(panel?.commonStrings.keys.stepError).toEqual(dangerText);
 
     // Verify that original strings in ClrCommonStringsService are not modified.
-    expect(this.clrStringsService.keys.success).not.toBe(successText);
-    expect(this.clrStringsService.keys.danger).not.toBe(dangerText);
+    expect(testContext.clrStringsService.keys.success).not.toBe(successText);
+    expect(testContext.clrStringsService.keys.danger).not.toBe(dangerText);
   }));
 });

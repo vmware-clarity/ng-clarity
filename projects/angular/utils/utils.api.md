@@ -101,7 +101,7 @@ export class BasicFocusableItem implements FocusableItem {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<BasicFocusableItem, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<BasicFocusableItem>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public
@@ -445,7 +445,7 @@ export class ClrCommonStringsService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCommonStringsService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrCommonStringsService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public
@@ -486,7 +486,7 @@ export class ClrDestroyService extends Subject<void> implements OnDestroy {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDestroyService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrDestroyService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public
@@ -513,7 +513,12 @@ export class ClrExpandableAnimation extends BaseExpandableAnimation implements O
     // (undocumented)
     ngOnChanges(changes: SimpleChanges): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrExpandableAnimation, "clr-expandable-animation", never, { "clrExpandTrigger": { "alias": "clrExpandTrigger"; "required": false; }; }, {}, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrExpandableAnimation, "clr-expandable-animation", never, {
+        "clrExpandTrigger": {
+            "alias": "clrExpandTrigger";
+            "required": false;
+        };
+    }, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimation, never>;
 }
@@ -529,9 +534,16 @@ export class ClrExpandableAnimationDirective extends BaseExpandableAnimation imp
     // (undocumented)
     playAnimation(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrExpandableAnimationDirective, "[clrExpandableAnimation]", never, { "expanded": { "alias": "clrExpandableAnimation"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrExpandableAnimationDirective, "[clrExpandableAnimation]", never, {
+        "expanded": {
+            "alias": "clrExpandableAnimation";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimationDirective, [null, null, null, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimationDirective, [null, null, null, {
+        optional: true;
+    }]>;
 }
 
 // @public (undocumented)
@@ -554,7 +566,12 @@ export class ClrFocusOnViewInit implements AfterViewInit, OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrFocusOnViewInit, "[clrFocusOnViewInit]", never, { "isEnabled": { "alias": "clrFocusOnViewInit"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrFocusOnViewInit, "[clrFocusOnViewInit]", never, {
+        "isEnabled": {
+            "alias": "clrFocusOnViewInit";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrFocusOnViewInit, never>;
 }
@@ -592,7 +609,14 @@ export class ClrIfActive implements OnDestroy {
     ngOnDestroy(): void;
     updateView(value: boolean): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfActive, "[clrIfActive]", never, { "active": { "alias": "clrIfActive"; "required": false; }; }, { "activeChange": "clrIfActiveChange"; }, never, never, true, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfActive, "[clrIfActive]", never, {
+        "active": {
+            "alias": "clrIfActive";
+            "required": false;
+        };
+    }, {
+        "activeChange": "clrIfActiveChange";
+    }, never, never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfActive, never>;
 }
@@ -610,9 +634,18 @@ export class ClrIfExpanded implements OnInit, OnDestroy {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfExpanded, "[clrIfExpanded]", never, { "expanded": { "alias": "clrIfExpanded"; "required": false; }; }, { "expandedChange": "clrIfExpandedChange"; }, never, never, true, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfExpanded, "[clrIfExpanded]", never, {
+        "expanded": {
+            "alias": "clrIfExpanded";
+            "required": false;
+        };
+    }, {
+        "expandedChange": "clrIfExpandedChange";
+    }, never, never, true, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfExpanded, [{ optional: true; }, null, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfExpanded, [{
+        optional: true;
+    }, null, null, null, null]>;
 }
 
 // @public (undocumented)
@@ -628,7 +661,7 @@ export class ClrKeyFocus {
     // (undocumented)
     protected currentFocusIsNotLastItem(): boolean;
     // (undocumented)
-    get currentItem(): any;
+    get currentItem(): FocusableItem$1;
     // (undocumented)
     get currentItemElement(): HTMLElement;
     // Warning: (ae-forgotten-export) The symbol "ClrFocusDirection" needs to be exported by the entry point clr-angular-utils.d.ts
@@ -636,7 +669,7 @@ export class ClrKeyFocus {
     // (undocumented)
     direction: ClrFocusDirection | string;
     // Warning: (ae-forgotten-export) The symbol "FocusableItem$1" needs to be exported by the entry point clr-angular-utils.d.ts
-    get focusableItems(): Array<FocusableItem$1> | any;
+    get focusableItems(): FocusableItem$1[];
     set focusableItems(elements: Array<FocusableItem$1> | any);
     // (undocumented)
     focusCurrent(): void;
@@ -665,7 +698,22 @@ export class ClrKeyFocus {
     // (undocumented)
     protected subscriptions: Subscription[];
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrKeyFocus, "[clrKeyFocus]", never, { "direction": { "alias": "clrDirection"; "required": false; }; "focusOnLoad": { "alias": "clrFocusOnLoad"; "required": false; }; "focusableItems": { "alias": "clrKeyFocus"; "required": false; }; }, { "focusChange": "clrFocusChange"; }, ["clrKeyFocusItems"], ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrKeyFocus, "[clrKeyFocus]", never, {
+        "direction": {
+            "alias": "clrDirection";
+            "required": false;
+        };
+        "focusOnLoad": {
+            "alias": "clrFocusOnLoad";
+            "required": false;
+        };
+        "focusableItems": {
+            "alias": "clrKeyFocus";
+            "required": false;
+        };
+    }, {
+        "focusChange": "clrFocusChange";
+    }, ["clrKeyFocusItems"], ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrKeyFocus, never>;
 }
@@ -704,9 +752,16 @@ export class ClrLoading implements OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrLoading, "[clrLoading]", never, { "loadingState": { "alias": "clrLoading"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrLoading, "[clrLoading]", never, {
+        "loadingState": {
+            "alias": "clrLoading";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoading, [{ optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoading, [{
+        optional: true;
+    }]>;
 }
 
 // @public (undocumented)
@@ -790,7 +845,16 @@ export class ClrRovingTabindex extends ClrKeyFocus {
     // (undocumented)
     setClickedItemCurrent(event: any): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrRovingTabindex, "[clrRovingTabindex]", never, { "rovingIndexItems": { "alias": "clrRovingTabindex"; "required": false; }; "rovingTabindexDisabled": { "alias": "clrRovingTabindexDisabled"; "required": false; }; }, {}, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrRovingTabindex, "[clrRovingTabindex]", never, {
+        "rovingIndexItems": {
+            "alias": "clrRovingTabindex";
+            "required": false;
+        };
+        "rovingTabindexDisabled": {
+            "alias": "clrRovingTabindexDisabled";
+            "required": false;
+        };
+    }, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrRovingTabindex, never>;
 }
@@ -857,7 +921,7 @@ export class DomAdapter {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DomAdapter, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<DomAdapter>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public (undocumented)
@@ -934,7 +998,7 @@ export class FocusService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<FocusService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<FocusService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public (undocumented)
@@ -964,7 +1028,7 @@ export class IfActiveService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<IfActiveService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<IfActiveService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public (undocumented)
@@ -996,7 +1060,7 @@ export class IfExpandService implements LoadingListener {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<IfExpandService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<IfExpandService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public (undocumented)
@@ -1085,7 +1149,7 @@ export class MockDomAdapter extends DomAdapter {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockDomAdapter, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<MockDomAdapter>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public (undocumented)
@@ -1127,7 +1191,14 @@ export class OutsideClick implements OnDestroy {
     // (undocumented)
     strict: boolean;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<OutsideClick, "[clrOutsideClick]", never, { "strict": { "alias": "clrStrict"; "required": false; }; }, { "outsideClick": "clrOutsideClick"; }, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<OutsideClick, "[clrOutsideClick]", never, {
+        "strict": {
+            "alias": "clrStrict";
+            "required": false;
+        };
+    }, {
+        "outsideClick": "clrOutsideClick";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<OutsideClick, never>;
 }
@@ -1148,7 +1219,7 @@ export class ScrollingService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ScrollingService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<ScrollingService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public @deprecated (undocumented)
