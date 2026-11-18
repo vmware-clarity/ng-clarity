@@ -5,17 +5,21 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 @Injectable()
 export class VerticalNavGroupRegistrationService {
-  navGroupCount = 0;
+  private readonly _navGroupCount = signal(0);
+
+  get navGroupCount(): number {
+    return this._navGroupCount();
+  }
 
   registerNavGroup() {
-    this.navGroupCount++;
+    this._navGroupCount.update(count => count + 1);
   }
 
   unregisterNavGroup(): void {
-    this.navGroupCount--;
+    this._navGroupCount.update(count => count - 1);
   }
 }
