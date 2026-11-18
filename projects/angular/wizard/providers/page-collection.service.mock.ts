@@ -5,13 +5,21 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { signal } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 export class PageCollectionMock {
-  _previousPageIsCompleted = true;
+  private readonly previousCompleted = signal(true);
 
   private _pagesReset = new Subject<boolean>();
   private _stepItemIdWasCalled = false;
+
+  get _previousPageIsCompleted(): boolean {
+    return this.previousCompleted();
+  }
+  set _previousPageIsCompleted(value: boolean) {
+    this.previousCompleted.set(value);
+  }
 
   get pagesReset(): Observable<boolean> {
     return this._pagesReset.asObservable();

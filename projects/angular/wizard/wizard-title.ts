@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, Input } from '@angular/core';
+import { Directive, Input, signal } from '@angular/core';
 import { HeadingLevel } from '@clr/angular/utils';
 
 @Directive({
@@ -13,5 +13,14 @@ import { HeadingLevel } from '@clr/angular/utils';
   standalone: false,
 })
 export class ClrWizardTitle {
-  @Input('clrHeadingLevel') headingLevel: HeadingLevel;
+  // The wizard renders the level, so it is a signal.
+  private readonly level = signal<HeadingLevel>(undefined);
+
+  @Input('clrHeadingLevel')
+  get headingLevel(): HeadingLevel {
+    return this.level();
+  }
+  set headingLevel(value: HeadingLevel) {
+    this.level.set(value);
+  }
 }

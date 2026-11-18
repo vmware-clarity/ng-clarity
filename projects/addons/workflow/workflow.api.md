@@ -55,6 +55,7 @@ import { UntypedFormBuilder } from '@angular/forms';
 import { UntypedFormGroup } from '@angular/forms';
 import { ValidationErrors } from '@angular/forms';
 import { ViewContainerRef } from '@angular/core';
+import { WritableSignal } from '@angular/core';
 
 // @public (undocumented)
 export class AppfxWorkflowsModule {

@@ -36,6 +36,7 @@ import { PipeTransform } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
+import { Signal } from '@angular/core';
 import { SimpleChange } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
@@ -43,6 +44,7 @@ import { Subscription } from 'rxjs';
 import { TemplateRef } from '@angular/core';
 import { Type } from '@angular/core';
 import { ViewContainerRef } from '@angular/core';
+import { WritableSignal } from '@angular/core';
 
 // @public (undocumented)
 export const CLR_WIZARD_DIRECTIVES: any[];
@@ -119,7 +121,8 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     onReset: EventEmitter<any>;
     open(): void;
     // (undocumented)
-    _open: boolean;
+    get _open(): boolean;
+    set _open(open: boolean);
     _openChanged: EventEmitter<boolean>;
     // Warning: (ae-forgotten-export) The symbol "PageCollectionService" needs to be exported by the entry point clr-angular-wizard.d.ts
     //
@@ -154,7 +157,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     // (undocumented)
     wizardId: string;
     // (undocumented)
-    protected wizardTitle: ClrWizardTitle;
+    protected readonly wizardTitle: Signal<ClrWizardTitle>;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, {
         "stepnavAriaLabel": {
@@ -368,7 +371,8 @@ export class ClrWizardPage implements OnInit {
     get headerActions(): TemplateRef<any>;
     _headerActions: ClrWizardPageHeaderActions;
     get id(): string;
-    _id: any;
+    get _id(): any;
+    set _id(value: any);
     makeCurrent(): void;
     get navTitle(): TemplateRef<any>;
     nextButtonClicked: EventEmitter<ClrWizardPage>;
@@ -400,12 +404,12 @@ export class ClrWizardPage implements OnInit {
     get title(): TemplateRef<any>;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardPage, "clr-wizard-page", never, {
-        "_id": {
-            "alias": "id";
-            "required": false;
-        };
         "preventDefault": {
             "alias": "clrWizardPagePreventDefault";
+            "required": false;
+        };
+        "_id": {
+            "alias": "id";
             "required": false;
         };
         "nextStepDisabled": {
@@ -485,7 +489,8 @@ export class ClrWizardPageTitle {
     // Warning: (ae-forgotten-export) The symbol "HeadingLevel" needs to be exported by the entry point clr-angular-wizard.d.ts
     //
     // (undocumented)
-    headingLevel: HeadingLevel;
+    get headingLevel(): HeadingLevel;
+    set headingLevel(value: HeadingLevel);
     // (undocumented)
     pageTitleTemplateRef: TemplateRef<any>;
     // (undocumented)
@@ -515,9 +520,9 @@ export class ClrWizardStepnav implements AfterViewInit, OnDestroy {
     // (undocumented)
     protected scrollRight(): void;
     // (undocumented)
-    protected showScrollLeftButton: boolean;
+    protected readonly showScrollLeftButton: WritableSignal<boolean>;
     // (undocumented)
-    protected showScrollRightButton: boolean;
+    protected readonly showScrollRightButton: WritableSignal<boolean>;
     // (undocumented)
     protected get stepnavLayout(): ClrWizardStepnavLayout;
     // (undocumented)
@@ -603,7 +608,8 @@ export enum ClrWizardStepnavLayout {
 // @public (undocumented)
 export class ClrWizardTitle {
     // (undocumented)
-    headingLevel: HeadingLevel;
+    get headingLevel(): HeadingLevel;
+    set headingLevel(value: HeadingLevel);
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardTitle, "clr-wizard-title", never, {
         "headingLevel": {
