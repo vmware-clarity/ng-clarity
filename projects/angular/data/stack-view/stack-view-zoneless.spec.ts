@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, signal, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { ClrStackBlock } from './stack-block';
 import { ClrStackViewModule } from './stack-view.module';
@@ -212,6 +213,19 @@ describe('ClrStackView (zoneless, OnPush host)', () => {
     await fixture.whenStable();
     expect(element('.parent').classList).not.toContain('stack-block-changed');
     expect(label('.parent').querySelector('.clr-sr-only')).toBeNull();
+  });
+
+  it('renders strings localized after the first render', async () => {
+    host.showChild.set(true);
+    await fixture.whenStable();
+    host.childChanged.set(true);
+    await fixture.whenStable();
+    expect(label('.parent').querySelector('.clr-sr-only').textContent).toBe('Value changed.');
+
+    TestBed.inject(ClrCommonStringsService).localize({ stackViewChanged: 'Changed value.' });
+    await fixture.whenStable();
+
+    expect(label('.parent').querySelector('.clr-sr-only').textContent).toBe('Changed value.');
   });
 
   it('renders expanded state set on the block instance, as the lazy loading example does', async () => {
