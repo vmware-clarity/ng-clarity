@@ -25,7 +25,6 @@ import {
   Optional,
   Output,
   QueryList,
-  Renderer2,
   signal,
   SimpleChanges,
   TemplateRef,
@@ -39,7 +38,7 @@ import {
   IfExpandService,
   LoadingListener,
 } from '@clr/angular/utils';
-import { combineLatest, ReplaySubject, Subscription } from 'rxjs';
+import { ReplaySubject, Subscription } from 'rxjs';
 
 import { ClrDatagridCell } from './datagrid-cell';
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
@@ -65,6 +64,7 @@ let nbRow = 0;
     '[class.datagrid-row]': 'true',
     '[class.datagrid-row-skeleton]': 'skeletonLoading',
     '[class.datagrid-selected]': 'selected',
+    '[class.datagrid-row-replaced]': 'replaced',
     '[attr.aria-owns]': 'id',
     role: 'rowgroup',
   },
@@ -95,9 +95,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
   radioId: string;
   checkboxId: string;
   expandableId: string;
-  replaced: boolean;
   displayCells = false;
-  expandAnimationTrigger = false;
 
   /* reference to the enum so that template can access */
   SELECTION_TYPE = SelectionType;
@@ -155,6 +153,9 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
   // The expanded state in a tree, kept to be applied to the item when it is set, like the selectable state.
   private _treeExpanded: boolean | undefined;
 
+  /** Flipped to run the expand animation. */
+  private readonly animationTrigger = signal(false);
+
   constructor(
     @Optional() public selection: Selection<T>,
     @Optional() public rowActionService: RowActionService,
@@ -163,7 +164,6 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
     @Optional() public detailService: DetailService,
     @Optional() private displayMode: DisplayModeService,
     private vcr: ViewContainerRef,
-    renderer: Renderer2,
     public el: ElementRef<HTMLElement>,
     public commonStrings: ClrCommonStringsService,
     @Optional() private items: Items,
@@ -187,20 +187,6 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
     this.checkboxId = 'clr-dg-row-cb' + nbRow;
     this.expandableId = expand.expandableId;
 
-    this.subscriptions.push(
-      combineLatest(expand.replace, expand.expandChange).subscribe(([expandReplaceValue, expandChangeValue]) => {
-        if (expandReplaceValue && expandChangeValue) {
-          // replaced and expanding
-          this.replaced = true;
-          renderer.addClass(el.nativeElement, 'datagrid-row-replaced');
-        } else {
-          this.replaced = false;
-          // Handles these cases: not replaced and collapsing & replaced and
-          // collapsing and not replaced and expanding.
-          renderer.removeClass(el.nativeElement, 'datagrid-row-replaced');
-        }
-      })
-    );
     if (this.tree) {
       // In a tree, the rows report their expanded state like expandable rows do.
       this.subscriptions.push(
@@ -274,7 +260,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
   @Input('clrDgExpanded')
   get expanded() {
     const node = this._tree?.node;
-    return node ? node.expanded : this.expand.expanded;
+    return node ? node.expanded() : this.expand.expanded;
   }
   set expanded(value: boolean | string) {
     if (this.tree?.enabled()) {
@@ -308,6 +294,15 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
   }
   set clrDgRowSelectionLabel(label: string) {
     this._rowSelectionLabel = label;
+  }
+
+  /** The detail replaces the row while it is expanded. */
+  get replaced(): boolean {
+    return this.expand.replace() && this.expand.expanded;
+  }
+
+  get expandAnimationTrigger(): boolean {
+    return this.animationTrigger();
   }
 
   get _view() {
@@ -418,7 +413,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
         }
       }),
       this.expand.animate.subscribe(() => {
-        this.expandAnimationTrigger = !this.expandAnimationTrigger;
+        this.animationTrigger.update(trigger => !trigger);
       })
     );
   }
@@ -530,19 +525,19 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
       return null;
     }
     const columns = this.columnsService.columns;
+    const toggleColumns = this.tree.toggleColumns();
     const marked = new Set<ClrDatagridCell>();
     let first: ClrDatagridCell | undefined;
     let pinned: ClrDatagridCell | undefined;
     this.dgCells?.forEach((cell, index) => {
-      const column = columns[index];
-      if (column?.value.hidden) {
+      if (this.columnsService.isHidden(index)) {
         return;
       }
       first ??= cell;
-      if (column?.value.pinned) {
+      if (this.columnsService.isPinned(index)) {
         pinned ??= cell;
       }
-      if (this.tree.toggleColumns.has(column)) {
+      if (toggleColumns.has(columns[index])) {
         marked.add(cell);
       }
     });

@@ -42,7 +42,7 @@ export class ClrDatagridColumnToggleButton {
   }
 
   get allHideablesVisible() {
-    return this.hideableColumns().filter(column => column.value.hidden).length === 0;
+    return !this.columnsService.columnStates.some(state => state.hideable && state.hidden);
   }
 
   selectAll() {

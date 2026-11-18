@@ -99,7 +99,7 @@ describe('Datagrid', () => {
 
           // mock a hideable column
           const columnsService = context.getClarityProvider(ColumnsService) as MockColumnsService;
-          columnsService.columns.push(new BehaviorSubject({} as any));
+          columnsService.setColumn(columnsService.columns.length, new BehaviorSubject({} as any));
           columnsService.mockAllHideable();
 
           context.detectChanges();

@@ -124,12 +124,11 @@ export class ClrDatagridColumnToggle implements OnDestroy {
   }
 
   get hideableColumnStates(): ColumnState[] {
-    const hideables = this.columnsService.columns.filter(column => column.value.hideable);
-    return hideables.map(column => column.value);
+    return this.columnsService.columnStates.filter(state => state.hideable);
   }
 
   get hasOnlyOneVisibleColumn(): boolean {
-    const nbNonHideableColumns = this.columnsService.columns.length - this.hideableColumnStates.length;
+    const nbNonHideableColumns = this.columnsService.columnStates.length - this.hideableColumnStates.length;
     // this should only return true when there is no non-hideable columns.
     return (
       nbNonHideableColumns === 0 && this.hideableColumnStates.filter(columnState => !columnState.hidden).length === 1

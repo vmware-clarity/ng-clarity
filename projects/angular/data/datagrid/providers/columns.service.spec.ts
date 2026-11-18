@@ -21,7 +21,8 @@ describe('ColumnsService provider', function () {
   beforeEach(function () {
     provider = new ColumnsService();
     state = null;
-    provider.columns = [new BehaviorSubject<ColumnState>({ ...col1 }), new BehaviorSubject<ColumnState>({ ...col2 })];
+    provider.setColumn(0, new BehaviorSubject<ColumnState>({ ...col1 }));
+    provider.setColumn(1, new BehaviorSubject<ColumnState>({ ...col2 }));
   });
 
   afterEach(() => {
@@ -50,7 +51,7 @@ describe('ColumnsService provider', function () {
 
   it('can detect if hideable columns are enabled', () => {
     expect(provider.hasHideableColumns).toBe(true);
-    provider.columns[1] = new BehaviorSubject<ColumnState>({ hideable: false });
+    provider.setColumn(1, new BehaviorSubject<ColumnState>({ hideable: false }));
     expect(provider.hasHideableColumns).toBe(false);
   });
 

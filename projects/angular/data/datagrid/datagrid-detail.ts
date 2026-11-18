@@ -54,25 +54,25 @@ export class ClrDatagridDetail {
 
   @Input('clrDetailWidth')
   get detailWidth(): number {
-    return this.detailService.detailWidth;
+    return this.detailService.detailWidth();
   }
   set detailWidth(value: number | null | undefined) {
     if (value === null || value === undefined) {
-      this.detailService.detailWidth = DEFAULT_DETAIL_WIDTH;
+      this.detailService.detailWidth.set(DEFAULT_DETAIL_WIDTH);
       return;
     }
 
     if (value < MIN_DETAIL_WIDTH) {
-      this.detailService.detailWidth = MIN_DETAIL_WIDTH;
+      this.detailService.detailWidth.set(MIN_DETAIL_WIDTH);
       return;
     }
 
     if (value > MAX_DETAIL_WIDTH) {
-      this.detailService.detailWidth = MAX_DETAIL_WIDTH;
+      this.detailService.detailWidth.set(MAX_DETAIL_WIDTH);
       return;
     }
 
-    this.detailService.detailWidth = value;
+    this.detailService.detailWidth.set(value);
   }
 
   get isCustomWidth(): boolean {

@@ -37,14 +37,10 @@ describe('Datagrid', () => {
 
       it('updates the Expand provider with the [clrDgReplace] input', () => {
         const expand: DatagridIfExpandService = context.getClarityProvider(DatagridIfExpandService);
-        let expandState = false;
-        expand.replace.subscribe(state => {
-          expandState = state;
-        });
-        expect(expandState).toBe(false);
+        expect(expand.replace()).toBe(false);
         context.testComponent.replace = true;
         context.detectChanges();
-        expect(expandState).toBe(true);
+        expect(expand.replace()).toBe(true);
       });
 
       it('should add helper text', () => {

@@ -310,7 +310,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   }
 
   protected get isDetailOverlay(): boolean {
-    return this.detailService.detailWidth === MAX_DETAIL_WIDTH;
+    return this.detailService.detailWidth() === MAX_DETAIL_WIDTH;
   }
 
   ngAfterContentInit() {

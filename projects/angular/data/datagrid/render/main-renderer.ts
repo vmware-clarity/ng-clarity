@@ -192,7 +192,7 @@ export class DatagridMainRenderer implements AfterContentInit, AfterViewInit, Af
 
   private setupColumns() {
     this.headers.forEach((header, index) => header.setColumnState(index));
-    this.columnsService.columns.splice(this.headers.length); // Trim any old columns
+    this.columnsService.trim(this.headers.length); // Trim any old columns
     // Sets columnIndex for each column
     this.columnsService.columns.forEach((column, index) => {
       this.columnsService.emitStateChange(column, { changes: [DatagridColumnChanges.INITIALIZE], columnIndex: index });

@@ -59,7 +59,7 @@ export class DatagridHeaderRenderer implements OnDestroy {
   }
 
   setColumnState(index: number) {
-    this.columnsService.columns[index] = this.columnState;
+    this.columnsService.setColumn(index, this.columnState);
   }
 
   setWidth(state: ColumnState) {

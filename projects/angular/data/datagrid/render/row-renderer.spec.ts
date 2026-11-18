@@ -44,8 +44,8 @@ describe('Datagrid', () => {
         displayModeService.updateView(DatagridDisplayMode.CALCULATE);
         displayModeService.updateView(DatagridDisplayMode.DISPLAY);
 
-        columnsService.columns[0] = new BehaviorSubject<ColumnState>({ width: 41 });
-        columnsService.columns[1] = new BehaviorSubject<ColumnState>({ width: 23 });
+        columnsService.setColumn(0, new BehaviorSubject<ColumnState>({ width: 41 }));
+        columnsService.setColumn(1, new BehaviorSubject<ColumnState>({ width: 23 }));
 
         columnStateSpy = vi.spyOn(DatagridCellRenderer.prototype, 'resetState');
         context.clarityDirective.setCellsState();

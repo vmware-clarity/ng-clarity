@@ -77,7 +77,7 @@ describe('Datagrid', () => {
         expect(name()).toBe('Expand vm0');
         expect(button().getAttribute('aria-expanded')).toBe('false');
 
-        fixture.componentInstance.node.expanded = true;
+        fixture.componentInstance.node.expanded.set(true);
         renderFixture(fixture);
         expect(name()).toBe('Collapse vm0');
         expect(button().getAttribute('aria-expanded')).toBe('true');
@@ -88,7 +88,7 @@ describe('Datagrid', () => {
         button().click();
         expect(tree.setExpanded).toHaveBeenCalledWith(node, true);
 
-        node.expanded = true;
+        node.expanded.set(true);
         button().click();
         expect(tree.setExpanded).toHaveBeenCalledWith(node, false);
         expect(fixture.componentInstance.cellClicks).toBe(0);
@@ -96,16 +96,16 @@ describe('Datagrid', () => {
 
       it('shows a spinner instead of the icon while the children of its expanded row load', function () {
         const node = fixture.componentInstance.node;
-        node.request = {};
+        node.request.set({});
         renderFixture(fixture);
         expect(button().querySelector('clr-spinner')).toBeNull();
 
-        node.expanded = true;
+        node.expanded.set(true);
         renderFixture(fixture);
         expect(button().querySelector('clr-spinner')).not.toBeNull();
         expect(button().querySelector('cds-icon')).toBeNull();
 
-        node.request = null;
+        node.request.set(null);
         renderFixture(fixture);
         expect(button().querySelector('clr-spinner')).toBeNull();
         expect(button().querySelector('cds-icon')).not.toBeNull();

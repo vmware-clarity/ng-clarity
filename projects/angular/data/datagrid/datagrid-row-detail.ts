@@ -85,8 +85,6 @@ export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, Af
   @Input('clrRowDetailBeginningAriaText') _beginningOfExpandableContentAriaText: string;
   @Input('clrRowDetailEndAriaText') _endOfExpandableContentAriaText: string;
 
-  replacedRow = false;
-
   /**
    * Whether the detail lays its cells out in the same columns as the row, which it does when it
    * holds one cell per column and at least one of those columns is pinned. The cells of the pinned
@@ -121,7 +119,11 @@ export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, Af
 
   @Input('clrDgReplace')
   set replace(value: boolean) {
-    this.expand.setReplace(!!value);
+    this.expand.replace.set(!!value);
+  }
+
+  get replacedRow(): boolean {
+    return this.expand.replace();
   }
 
   get beginningOfExpandableContentAriaText() {
@@ -140,9 +142,6 @@ export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, Af
 
   ngAfterContentInit() {
     this.subscriptions.push(
-      this.expand.replace.subscribe(replaceChange => {
-        this.replacedRow = replaceChange;
-      }),
       // New cells have to be moved even when the columns did not change.
       this.cells.changes.subscribe(() => this.syncColumnAlignment(true)),
       // Content behind a `clrLoading` template is created whenever it has loaded, which nothing tells
