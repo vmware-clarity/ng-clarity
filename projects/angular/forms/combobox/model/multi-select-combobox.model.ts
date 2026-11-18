@@ -7,8 +7,7 @@
 
 import { ComboboxModel } from './combobox.model';
 
-export class MultiSelectComboboxModel<T> extends ComboboxModel<T> {
-  override model: T[];
+export class MultiSelectComboboxModel<T> extends ComboboxModel<T, T[]> {
   override displayField: string;
 
   containsItem(item: T): boolean {
@@ -75,8 +74,9 @@ export class MultiSelectComboboxModel<T> extends ComboboxModel<T> {
 
   private addItem(item: T) {
     if (!this.containsItem(item)) {
-      this.model = this.model || [];
-      this.model.push(item);
+      const model = this.model || [];
+      model.push(item);
+      this.model = model;
     }
   }
 
@@ -92,8 +92,6 @@ export class MultiSelectComboboxModel<T> extends ComboboxModel<T> {
     }
 
     // we intentionally set the model to null for form validation
-    if (this.model.length === 0) {
-      this.model = null;
-    }
+    this.model = this.model.length ? this.model : null;
   }
 }
