@@ -162,7 +162,7 @@ export class ClrCalendar implements OnDestroy {
     // (undocumented)
     get calendar(): CalendarModel;
     // Warning: (ae-forgotten-export) The symbol "CalendarViewModel" needs to be exported by the entry point clr-angular-forms.d.ts
-    calendarViewModel: CalendarViewModel;
+    get calendarViewModel(): CalendarViewModel;
     // (undocumented)
     get focusedDay(): DayModel;
     get localeDays(): ReadonlyArray<ClrDayOfWeek>;
