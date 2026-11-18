@@ -12,7 +12,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
   standalone: false,
   templateUrl: 'spinner.component.html',
   styleUrls: ['spinner.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SpinnerComponent {
   /**

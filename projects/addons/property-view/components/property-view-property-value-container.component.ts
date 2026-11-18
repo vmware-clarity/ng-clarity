@@ -28,6 +28,7 @@ import { PropertyViewPropertyValueComponent } from '../property-view.model';
   selector: 'appfx-property-view-property-value-component',
   standalone: false,
   template: '',
+  // Stays Eager: it hosts the consumer value component. See PropertyViewComponent.
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class PropertyViewPropertyValueContainerComponent<T> implements OnInit, OnChanges, OnDestroy {

@@ -1351,6 +1351,9 @@ export class WizardHelper {
 
 // @public (undocumented)
 export class ZoomLevelServiceMock {
+    constructor();
+    // (undocumented)
+    readonly level: WritableSignal<ZoomLevel>;
     // (undocumented)
     onChange: Observable<ZoomLevel>;
     // Warning: (ae-forgotten-export) The symbol "ZoomLevel" needs to be exported by the entry point clr-addons-testing.d.ts

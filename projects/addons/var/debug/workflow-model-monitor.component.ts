@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import { ClrPopoverContent } from '@clr/angular/popover/common';
 import { Subscription } from 'rxjs';
 import { bufferTime, map } from 'rxjs/operators';
@@ -23,21 +23,25 @@ import { ModelChange, StepWithChanges, WorkflowModelManager } from '../model/wor
   standalone: false,
   templateUrl: 'workflow-model-monitor.component.html',
   styleUrls: ['workflow-model-monitor.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WorkflowModelMonitorComponent implements OnInit, OnDestroy {
   @Input() modelMgr: WorkflowModelManager;
 
   isOpen = false;
-  debugModel: NameValue[] = [];
 
   private subscriptions: Subscription = new Subscription();
+  private readonly entries = signal<NameValue[]>([]);
 
   @ViewChild(ClrPopoverContent)
   set popoverContent(popoverContent: ClrPopoverContent) {
     if (popoverContent) {
       popoverContent.outsideClickClose = false;
     }
+  }
+
+  get debugModel(): NameValue[] {
+    return this.entries();
   }
 
   ngOnInit(): void {
@@ -74,52 +78,35 @@ export class WorkflowModelMonitorComponent implements OnInit, OnDestroy {
   }
 
   private updateDebugModel(changes: ModelChange[]): void {
-    if (!this.modelMgr.model) {
+    const model = this.modelMgr.model as any;
+    if (!model || !changes.length) {
       return;
     }
-
+    const entries = new Map(this.entries().map(entry => [entry.name, entry]));
     for (const change of changes) {
-      const propertyModelValue = (this.modelMgr.model as any)[change.propertyName];
-      const nameValue = this.getPropertyNameValue(change.propertyName, propertyModelValue);
-      const existing = this.debugModel.find(value => value.name === change.propertyName);
-      if (!nameValue) {
-        // The property is a function. Ignore it.
-        continue;
-      }
-
-      if (existing) {
-        existing.value = nameValue.value;
-        existing.changed = true;
-      } else {
-        nameValue.changed = true;
-        this.debugModel.push(nameValue);
-        // Sort model properties alphabetically.
-        this.debugModel.sort((a: NameValue, b: NameValue) => a.name.localeCompare(b.name));
+      const nameValue = this.getPropertyNameValue(change.propertyName, model[change.propertyName]);
+      // A null value is a function property. Ignore it.
+      if (nameValue) {
+        entries.set(nameValue.name, { ...nameValue, changed: true });
       }
     }
+    this.entries.set(sortByName([...entries.values()]));
   }
 
   private initDebugModel(): void {
-    this.debugModel = [];
-    if (!this.modelMgr.model) {
+    const model = this.modelMgr.model;
+    if (!model) {
+      this.entries.set([]);
       return;
     }
-
-    for (const [name, value] of Object.entries(this.modelMgr.model)) {
-      const nameValue = this.getPropertyNameValue(name, value);
-      if (nameValue) {
-        this.debugModel.push(nameValue);
-      }
-    }
-
-    // Sort model properties alphabetically.
-    this.debugModel.sort((a: NameValue, b: NameValue) => a.name.localeCompare(b.name));
+    const entries = Object.entries(model)
+      .map(([name, value]) => this.getPropertyNameValue(name, value))
+      .filter((entry): entry is NameValue => !!entry);
+    this.entries.set(sortByName(entries));
   }
 
   private resetDebugModel(): void {
-    for (const entry of this.debugModel) {
-      entry.changed = false;
-    }
+    this.entries.update(entries => entries.map(entry => ({ ...entry, changed: false })));
   }
 
   private getPropertyNameValue(name: string, value: any): NameValue | null {
@@ -162,6 +149,10 @@ export class WorkflowModelMonitorComponent implements OnInit, OnDestroy {
       changed: false,
     };
   }
+}
+
+function sortByName(entries: NameValue[]): NameValue[] {
+  return entries.sort((a, b) => a.name.localeCompare(b.name));
 }
 
 interface NameValue {
