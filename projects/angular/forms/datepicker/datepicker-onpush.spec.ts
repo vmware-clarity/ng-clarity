@@ -344,6 +344,19 @@ describe('Datepicker OnPush views', () => {
       expect(containers[1].querySelector<HTMLButtonElement>('.clr-input-group-icon-action').disabled).toBe(true);
     });
 
+    it('shows the focus ring while the input has focus', async () => {
+      const input: HTMLInputElement = containers[0].querySelector('input');
+      const group = containers[0].querySelector('.clr-input-group');
+
+      input.focus();
+      await fixture.whenStable();
+      expect(group.classList).toContain('clr-focus');
+
+      input.blur();
+      await fixture.whenStable();
+      expect(group.classList).not.toContain('clr-focus');
+    });
+
     it('projects a helper the host adds later', () => {
       fixture.componentInstance.showHelper = true;
       zoneTick(fixture);
