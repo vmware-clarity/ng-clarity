@@ -23,7 +23,7 @@ export class DetailService {
   private preventScroll = false;
   private toggleState = false;
   private cache: any;
-  private button?: HTMLButtonElement | null;
+  private button?: HTMLButtonElement;
   private readonly _enabled = signal(false);
   private _state = new BehaviorSubject<boolean | null>(this.toggleState);
 
@@ -75,7 +75,7 @@ export class DetailService {
           this.close();
         }
         this.cache = undefined;
-        this.button = null;
+        this.button = undefined;
       }
     };
   }
@@ -98,7 +98,7 @@ export class DetailService {
   returnFocus() {
     if (this.button) {
       this.button.focus({ preventScroll: this.preventFocusScroll });
-      this.button = null;
+      this.button = undefined;
     }
   }
 
