@@ -14,7 +14,6 @@ import {
   CdkVirtualForOf,
   CdkVirtualForOfContext,
   CdkVirtualScrollable,
-  CdkVirtualScrollableElement,
   CdkVirtualScrollViewport,
   FixedSizeVirtualScrollStrategy,
   ScrollDispatcher,
@@ -249,16 +248,17 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
 
   ngAfterViewInit() {
     runInInjectionContext(this.injector, () => {
-      this.virtualScrollViewport = this.createVirtualScrollViewportForDatagrid(
+      this.virtualScrollViewport = this.createCdkVirtualScrollViewport(
+        this.datagrid.contentWrapper,
+        this.datagrid.rowsWrapper,
         this.changeDetectorRef,
         this.ngZone,
         this.renderer2,
+        this.virtualScrollStrategy,
         this.directionality,
         this.scrollDispatcher,
         this.viewportRuler,
-        this.datagrid.contentWrapper,
-        this.datagrid.rowsWrapper,
-        this.virtualScrollStrategy
+        null
       );
 
       this.cdkVirtualFor = this.createCdkVirtualForOfDirective(
@@ -398,31 +398,6 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     }
   }
 
-  private createVirtualScrollViewportForDatagrid(
-    changeDetectorRef: ChangeDetectorRef,
-    ngZone: NgZone,
-    renderer2: Renderer2,
-    directionality: Directionality,
-    scrollDispatcher: ScrollDispatcher,
-    viewportRuler: ViewportRuler,
-    datagridContentElementRef: ElementRef<HTMLElement>,
-    datagridRowsElementRef: ElementRef<HTMLElement>,
-    virtualScrollStrategy: FixedSizeVirtualScrollStrategy
-  ) {
-    return this.createCdkVirtualScrollViewport(
-      datagridContentElementRef,
-      datagridRowsElementRef,
-      changeDetectorRef,
-      ngZone,
-      renderer2,
-      virtualScrollStrategy,
-      directionality,
-      scrollDispatcher,
-      viewportRuler,
-      null as any as CdkVirtualScrollableElement
-    );
-  }
-
   private createCdkVirtualScrollViewport(
     datagridDivElementRef: ElementRef<HTMLElement>,
     contentWrapper: ElementRef<HTMLElement>,
@@ -433,7 +408,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     directionality: Directionality,
     scrollDispatcher: ScrollDispatcher,
     viewportRuler: ViewportRuler,
-    scrollable: CdkVirtualScrollable
+    scrollable: CdkVirtualScrollable | null
   ) {
     const injector = createEnvironmentInjector(
       [
