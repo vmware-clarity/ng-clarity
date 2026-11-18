@@ -386,7 +386,8 @@ export class ClrTabLink {
     // (undocumented)
     get tabindex(): 0 | -1;
     // (undocumented)
-    tabLinkId: string;
+    get tabLinkId(): string;
+    set tabLinkId(id: string);
     // (undocumented)
     tabsId: number;
     // Warning: (ae-forgotten-export) The symbol "TemplateRefContainer" needs to be exported by the entry point clr-angular-layout.d.ts
@@ -471,7 +472,7 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
     // (undocumented)
     get tabLinkDirectives(): ClrTabLink[];
     // (undocumented)
-    tabLinkElements: HTMLElement[];
+    get tabLinkElements(): HTMLElement[];
     // (undocumented)
     set tabOverflowEl(value: ElementRef<HTMLElement>);
     // (undocumented)
@@ -732,7 +733,7 @@ export class ResponsiveNavigationService {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-layout-tabs.d.ts:143:5 - (ae-forgotten-export) The symbol "i1_3" needs to be exported by the entry point clr-angular-layout.d.ts
+// dist/clr-angular/types/clr-angular-layout-tabs.d.ts:146:5 - (ae-forgotten-export) The symbol "i1_3" needs to be exported by the entry point clr-angular-layout.d.ts
 
 // (No @packageDocumentation comment for this package)
 
