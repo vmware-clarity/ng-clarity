@@ -101,6 +101,25 @@ class EagerContainerHost {
   disabled = false;
 }
 
+@Component({
+  template: `
+    <form clrForm clrLayout="horizontal">
+      <clr-date-container>
+        @if (showLabel) {
+          <label>Date</label>
+        }
+        <input clrDate name="date" [(ngModel)]="date" />
+      </clr-date-container>
+    </form>
+  `,
+  standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
+})
+class EagerHorizontalHost {
+  showLabel = false;
+  date = '';
+}
+
 function overlay(): HTMLElement {
   return document.querySelector('clr-datepicker-view-manager');
 }
@@ -136,7 +155,7 @@ describe('Datepicker OnPush views', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, ReactiveFormsModule, ClrCommonFormsModule, ClrDatepickerModule],
-      declarations: [OnPushDateHost, EagerRangeHost, EagerReactiveHost, EagerContainerHost],
+      declarations: [OnPushDateHost, EagerRangeHost, EagerReactiveHost, EagerContainerHost, EagerHorizontalHost],
     });
   });
 
@@ -363,6 +382,19 @@ describe('Datepicker OnPush views', () => {
 
       expect(containers[0].querySelector('clr-control-helper').textContent).toBe('Pick a date');
     });
+  });
+
+  it('replaces the empty grid label with a label the host adds later', async () => {
+    const fixture = TestBed.createComponent(EagerHorizontalHost);
+    await fixture.whenStable();
+    const container: HTMLElement = fixture.nativeElement.querySelector('clr-date-container');
+    expect(Array.from(container.querySelectorAll('label')).map(label => label.textContent)).toEqual(['']);
+
+    fixture.componentInstance.showLabel = true;
+    zoneTick(fixture);
+
+    expect(Array.from(container.querySelectorAll('label')).map(label => label.textContent)).toEqual(['Date']);
+    fixture.destroy();
   });
 
   it('removes the calendar and stops listening when the host is destroyed while open', async () => {
