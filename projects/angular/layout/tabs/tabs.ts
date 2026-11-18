@@ -143,9 +143,7 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
   }
 
   get activeTabInOverflow() {
-    const activeTab = this.tabsService.activeTab;
-
-    return !!activeTab && this.tabsService.overflowTabs.indexOf(activeTab) > -1;
+    return this.tabsService.overflowTabs.indexOf(this.tabsService.activeTab as ClrTab) > -1;
   }
 
   get activeTabPosition() {
