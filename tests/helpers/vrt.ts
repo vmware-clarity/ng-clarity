@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { Page } from '@playwright/test';
 import * as path from 'path';
 
 export const browser = process.env['CLARITY_VRT_BROWSER'];
@@ -30,4 +31,22 @@ export const screenshotExpectOptions = {
  */
 export function screenshotPathFor(group: string, name: string) {
   return path.join(browser, group, `${name}-${theme}-${density}.png`);
+}
+
+/**
+ * Adds a <style> element to the page. The test server serves the pages with a Content-Security-Policy that blocks
+ * page.addStyleTag(), so the element carries the page's nonce, read from one of the page's own nonce'd elements.
+ * Throws when the policy still blocks the element, as page.addStyleTag() would.
+ */
+export async function addStyleWithNonce(page: Page, content: string) {
+  await page.evaluate(css => {
+    const style = document.createElement('style');
+    style.nonce = document.querySelector<HTMLElement>('[nonce]')?.nonce ?? '';
+    style.textContent = css;
+    document.head.append(style);
+    // A style element the Content-Security-Policy blocks gets no style sheet.
+    if (!style.sheet) {
+      throw new Error('The Content-Security-Policy blocked the test style: the page has no nonce.');
+    }
+  }, content);
 }

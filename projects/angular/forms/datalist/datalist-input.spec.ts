@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule, LayoutService, NgControlService } from '@clr/angular/forms/common';
@@ -14,7 +14,7 @@ import { ClrIcon } from '@clr/angular/icon';
 
 import { ClrDatalistContainer } from './datalist-container';
 import { ClrDatalistInput } from './datalist-input';
-import { ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
+import { ReactiveSpec, TemplateDrivenSpec } from '../tests/control';
 
 @Component({
   template: `<input clrDatalistInput />`,
@@ -61,7 +61,7 @@ class ReactiveTest {
   });
 }
 
-export default function (): void {
+describe('ClrDatalist', () => {
   describe('ClrDatalistInput', () => {
     describe('invalid use', () => {
       it('should throw an error when used without a datalist container', () => {
@@ -79,7 +79,8 @@ export default function (): void {
     ReactiveSpec(ClrDatalistContainer, ClrDatalistInput, ReactiveTest, 'clr-input');
 
     describe('set datalist type', () => {
-      let fixture, containerDE, containerEl;
+      let fixture: ComponentFixture<TemplateDrivenTest>;
+      let containerDE: DebugElement;
 
       beforeEach(() => {
         TestBed.configureTestingModule({
@@ -89,13 +90,13 @@ export default function (): void {
         });
         fixture = TestBed.createComponent(TemplateDrivenTest);
         containerDE = fixture.debugElement.query(By.directive(ClrDatalistContainer));
-        containerEl = containerDE.nativeElement;
         fixture.detectChanges();
       });
 
       it('should set the list', () => {
-        expect(containerEl.attributes.list).toEqual(containerDE.componentInstance.listValue);
+        const input = containerDE.query(By.directive(ClrDatalistInput));
+        expect(input.nativeElement.getAttribute('list')).toEqual(input.injector.get(ClrDatalistInput).listValue);
       });
     });
   });
-}
+});

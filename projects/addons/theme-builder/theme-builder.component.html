@@ -9,22 +9,22 @@
 <div class="tb-presets" cds-layout="m-t:lg">
   <div class="tb-preset-cards clr-row">
     @for (preset of presets; track preset.name) {
-      <a
-        href="javascript://"
+      <button
+        type="button"
         class="card clickable tb-preset-card clr-col-1"
         [class.tb-preset-card-active]="activePreset?.name === preset.name"
         (click)="applyPreset(preset)"
       >
         <div class="tb-preset-swatch" [style.background-color]="presetSwatchColor(preset)"></div>
         <div class="card-text">{{ preset.name }}</div>
-      </a>
+      </button>
     }
   </div>
 </div>
 
 <!-- ── Preview DARK card ── -->
 <!-- Invisible for filling the dark values on initial load -->
-<div style="display: none" #previewDarkWrapper cds-theme="dark"></div>
+<div hidden #previewDarkWrapper cds-theme="dark"></div>
 
 <!-- ── Two-column layout: controls | preview ── -->
 <div class="tb-layout" cds-layout="m-t:lg m-b:lg">
@@ -68,7 +68,7 @@
             </clr-stack-header>
             <clr-stack-block [clrStackViewLevel]="1">
               <clr-stack-label class="tb-stack-label">{{ colorGroup.base.label }}</clr-stack-label>
-              <clr-stack-content style="width: 52%">
+              <clr-stack-content class="tb-stack-content">
                 <div class="tb-color-input-wrap">
                   <input
                     type="color"
@@ -172,7 +172,8 @@
       <!-- Breadcrumbs -->
       <div class="tb-preview-section">
         <p cds-text="subsection uppercase bold">Breadcrumbs</p>
-        <div class="tb-preview-row">
+        <!-- The links of the preview go nowhere. -->
+        <div class="tb-preview-row" (click)="$event.preventDefault()">
           <clr-breadcrumbs [items]="breadcrumbs"></clr-breadcrumbs>
         </div>
       </div>
@@ -377,22 +378,22 @@
       <!-- Vertical nav -->
       <div class="tb-preview-section">
         <p cds-text="subsection uppercase bold">Vertical Navigation</p>
-        <div class="tb-nav-preview-wrap">
+        <div class="tb-nav-preview-wrap" (click)="$event.preventDefault()">
           <clr-vertical-nav [clrVerticalNavCollapsible]="true">
             <clr-vertical-nav-group clrVerticalNavGroupExpanded>
               <cds-icon shape="home" clrVerticalNavIcon></cds-icon>
               Dashboard
               <clr-vertical-nav-group-children>
-                <a clrVerticalNavLink href="javascript:void(0)" class="active">Overview</a>
-                <a clrVerticalNavLink href="javascript:void(0)">Analytics</a>
+                <a clrVerticalNavLink href="#" class="active">Overview</a>
+                <a clrVerticalNavLink href="#">Analytics</a>
               </clr-vertical-nav-group-children>
             </clr-vertical-nav-group>
             <clr-vertical-nav-group>
               <cds-icon shape="cog" clrVerticalNavIcon></cds-icon>
               Settings
               <clr-vertical-nav-group-children>
-                <a clrVerticalNavLink href="javascript:void(0)">Profile</a>
-                <a clrVerticalNavLink href="javascript:void(0)">Security</a>
+                <a clrVerticalNavLink href="#">Profile</a>
+                <a clrVerticalNavLink href="#">Security</a>
               </clr-vertical-nav-group-children>
             </clr-vertical-nav-group>
           </clr-vertical-nav>

@@ -10,6 +10,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { CLR_CONTEXT_IGNORE_ATTRIBUTE } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
+import type { MockInstance } from 'vitest';
 
 import { ClrContextRegistryService } from './context-registry.service';
 import { ContextTracker, ContextTrackingOptions } from './context-tracker';
@@ -21,8 +22,8 @@ import { ClrComponentContext, ClrPageContext } from '../interfaces/context.inter
 class RoutedComponent {}
 
 /*
- * The tracker's timers are faked here: zone.js replaces the global timers after Jasmine boots, so
- * `jasmine.clock()` refuses to install. MutationObserver delivers on a microtask; see `flushMutations`.
+ * The tracker's timers are faked here, by `elapse`, so a spec decides when they run. MutationObserver
+ * delivers on a microtask; see `flushMutations`.
  */
 
 interface FakeTimer {
@@ -39,7 +40,7 @@ function useFakeTimers(): void {
   now = 0;
   nextTimerId = 1;
   pendingTimers.clear();
-  spyOn(window, 'setTimeout').and.callFake((handler: TimerHandler, timeout?: number, ...args: unknown[]) => {
+  vi.spyOn(window, 'setTimeout').mockImplementation((handler: TimerHandler, timeout?: number, ...args: unknown[]) => {
     if (typeof handler !== 'function') {
       throw new Error('the fake timers only take a function');
     }
@@ -47,7 +48,7 @@ function useFakeTimers(): void {
     pendingTimers.set(id, { at: now + (timeout ?? 0), callback: () => handler(...args) });
     return id;
   });
-  spyOn(window, 'clearTimeout').and.callFake((id?: number) => {
+  vi.spyOn(window, 'clearTimeout').mockImplementation((id?: number) => {
     if (id !== undefined) {
       pendingTimers.delete(id);
     }
@@ -99,15 +100,15 @@ function createTracker(): ContextTracker {
 }
 
 /** One snapshot read, which a spec can make fail. */
-function spyOnRead(): jasmine.Spy {
+function spyOnRead(): MockInstance<() => ClrPageContext> {
   const service = TestBed.inject(ClrContextService) as unknown as { read: () => ClrPageContext };
-  return spyOn(service, 'read').and.callThrough();
+  return vi.spyOn(service, 'read');
 }
 
 /** One snapshot read that waits for asynchronous providers. */
-function spyOnReadAsync(): jasmine.Spy {
+function spyOnReadAsync(): MockInstance<() => Promise<ClrPageContext>> {
   const service = TestBed.inject(ClrContextService) as unknown as { readAsync: () => Promise<ClrPageContext> };
-  return spyOn(service, 'readAsync').and.callThrough();
+  return vi.spyOn(service, 'readAsync');
 }
 
 const running: Subscription[] = [];
@@ -265,7 +266,7 @@ describe('ContextTracker', () => {
   it('does not re-scrape when a style only moves or resizes something, and does when it hides it', async () => {
     const widget = addWidget('Popover');
     start(tracker, { debounceMs: 20 });
-    const scrapes = spyOnReadAsync().and.callThrough();
+    const scrapes = spyOnReadAsync();
 
     (widget as HTMLElement).style.left = '10px';
     (widget as HTMLElement).style.width = '120px';
@@ -356,26 +357,28 @@ describe('ContextTracker', () => {
     it('tracks while anyone subscribes, and stops when the last one leaves', () => {
       const first = tracker.track().subscribe();
       const second = tracker.track().subscribe();
-      expect(tracker.isTracking).toBeTrue();
+      expect(tracker.isTracking).toBe(true);
 
       first.unsubscribe();
-      expect(tracker.isTracking).toBeTrue();
+      expect(tracker.isTracking).toBe(true);
       second.unsubscribe();
-      expect(tracker.isTracking).toBeFalse();
+      expect(tracker.isTracking).toBe(false);
     });
 
     it('stops when the last subscriber leaves, even when the first snapshot failed', () => {
-      const handleError = spyOn(TestBed.inject(ErrorHandler), 'handleError');
-      const getSnapshot = spyOnRead().and.throwError('boom');
+      const handleError = vi.spyOn(TestBed.inject(ErrorHandler), 'handleError').mockImplementation(() => undefined);
+      const getSnapshot = spyOnRead().mockImplementation(() => {
+        throw new Error('boom');
+      });
 
       const first = tracker.track().subscribe();
-      expect(handleError).toHaveBeenCalledWith(jasmine.objectContaining({ message: 'boom' }));
-      expect(tracker.isTracking).toBeTrue();
+      expect(handleError).toHaveBeenCalledWith(expect.objectContaining({ message: 'boom' }));
+      expect(tracker.isTracking).toBe(true);
 
-      getSnapshot.and.callThrough();
+      getSnapshot.mockRestore();
       tracker.track().subscribe().unsubscribe();
       first.unsubscribe();
-      expect(tracker.isTracking).toBeFalse();
+      expect(tracker.isTracking).toBe(false);
     });
 
     it('delivers the page context to each subscriber', () => {
@@ -625,7 +628,7 @@ describe('ContextTracker, tracking embedded frames', () => {
     frame.setAttribute(CLR_CONTEXT_IGNORE_ATTRIBUTE, '');
     await loadFrame('<p>Streaming</p>');
     start(tracker, { debounceMs: 10 });
-    const getSnapshot = spyOnReadAsync().and.callThrough();
+    const getSnapshot = spyOnReadAsync();
 
     addFrameButton('Token');
     frameBody().ownerDocument.querySelector('p')?.append(' more');
@@ -637,14 +640,16 @@ describe('ContextTracker, tracking embedded frames', () => {
   it('hands a snapshot that fails to the application’s error handler, and carries on', async () => {
     await loadFrame('<button>Run</button>');
     start(tracker, { debounceMs: 10 });
-    const handleError = spyOn(TestBed.inject(ErrorHandler), 'handleError');
-    const getSnapshot = spyOnReadAsync().and.throwError('boom');
+    const handleError = vi.spyOn(TestBed.inject(ErrorHandler), 'handleError').mockImplementation(() => undefined);
+    const getSnapshot = spyOnReadAsync().mockImplementation(() => {
+      throw new Error('boom');
+    });
 
     addFrameButton('Stop');
     await elapse(10);
-    expect(handleError).toHaveBeenCalledWith(jasmine.objectContaining({ message: 'boom' }));
+    expect(handleError).toHaveBeenCalledWith(expect.objectContaining({ message: 'boom' }));
 
-    getSnapshot.and.callThrough();
+    getSnapshot.mockRestore();
     addFrameButton('Again');
     await elapse(10);
     expect(frameButtons(emitted[emitted.length - 1])).toEqual(['Run', 'Stop', 'Again']);

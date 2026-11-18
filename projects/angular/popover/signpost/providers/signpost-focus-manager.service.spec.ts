@@ -9,7 +9,7 @@ import { expectActiveElementNotToBe, expectActiveElementToBe } from '@clr/angula
 
 import { SignpostFocusManager } from './signpost-focus-manager.service';
 
-export default function (): void {
+describe('Signpost', () => {
   describe('Signpost Focus Manager', () => {
     let signpostFocusManager: SignpostFocusManager;
     let appendedElement: HTMLElement;
@@ -47,4 +47,4 @@ export default function (): void {
       scrollContainer.remove();
     });
   });
-}
+});

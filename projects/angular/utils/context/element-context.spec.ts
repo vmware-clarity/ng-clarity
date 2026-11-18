@@ -30,7 +30,7 @@ describe('publishElementContext', () => {
 
   it('removes the callback when the returned teardown runs', () => {
     const teardown = publishElementContext(host, () => ({ type: 'combobox' }));
-    expect(CLR_ELEMENT_CONTEXT_PROPERTY in host).toBe(true, 'expected the callback to be published first');
+    expect(CLR_ELEMENT_CONTEXT_PROPERTY in host, 'expected the callback to be published first').toBe(true);
 
     teardown();
 
