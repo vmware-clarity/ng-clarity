@@ -27,5 +27,8 @@ forms and validation, modal and dropdown actions, and the property-view addon. I
 checks datepicker focus, native overlay callbacks, nested modal/menu focus, rapid close
 and destruction, column labels and separators, column-picker ARIA state, theme-builder
 initialization and early restoration, direct component pinning, native column-picker Escape,
-and Promise/Observable recursive-tree loading. Tests use the packages' exported API (the retained-tree check also
-reads `ClrTreeNode._model`) and ordinary UI actions without forcing Angular rendering.
+and Promise/Observable recursive-tree loading.
+With `&suite=zone-datagrid`, the Zone.js build also bootstraps an Eager root with plain fields that change in
+timers, the way most Zone.js applications are written, and checks that the OnPush datagrid follows them: items,
+loading, pages, an in-place selection, a custom filter, the detail pane and tree children.
+Tests use the packages' exported API (the retained-tree check also reads `ClrTreeNode._model`) and ordinary UI actions without forcing Angular rendering.
