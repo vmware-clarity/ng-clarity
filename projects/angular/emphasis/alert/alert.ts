@@ -7,19 +7,15 @@
 
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
-  ElementRef,
   EventEmitter,
   Input,
-  OnDestroy,
-  OnInit,
+  linkedSignal,
   Optional,
   Output,
-  Renderer2,
+  signal,
 } from '@angular/core';
 import { ClrCommonStringsService } from '@clr/angular/utils';
-import { Subscription } from 'rxjs';
 
 import { AlertIconAndTypesService } from './providers/icon-and-types.service';
 import { MultiAlertService } from './providers/multi-alert.service';
@@ -28,10 +24,11 @@ import { MultiAlertService } from './providers/multi-alert.service';
   selector: 'clr-alert',
   providers: [AlertIconAndTypesService],
   templateUrl: './alert.html',
+  host: { '[class.alert-hidden]': 'hidden' },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClrAlert implements OnInit, OnDestroy {
+export class ClrAlert {
   @Input('clrAlertSizeSmall') isSmall = false;
   @Input('clrAlertClosable') closable = true;
   @Input('clrAlertAppLevel') isAppLevel = false;
@@ -39,20 +36,20 @@ export class ClrAlert implements OnInit, OnDestroy {
 
   @Output('clrAlertClosedChange') _closedChanged = new EventEmitter<boolean>(false);
 
-  _closed = false;
-
-  private _hidden: boolean;
-  private subscriptions: Subscription[] = [];
+  private readonly isClosed = signal(false);
+  /**
+   * In a `clr-alerts` group, every alert except the current one is hidden.
+   */
+  private readonly isHidden = linkedSignal(
+    () => !!this.multiAlertService && this.multiAlertService.currentAlert !== this
+  );
   private _isLightweight = false;
   private _origAlertType: string;
 
   constructor(
     private iconService: AlertIconAndTypesService,
-    private cdr: ChangeDetectorRef,
     @Optional() private multiAlertService: MultiAlertService,
-    private commonStrings: ClrCommonStringsService,
-    private renderer: Renderer2,
-    private hostElement: ElementRef<HTMLElement>
+    private commonStrings: ClrCommonStringsService
   ) {}
 
   @Input('clrAlertLightweight')
@@ -89,39 +86,22 @@ export class ClrAlert implements OnInit, OnDestroy {
     }
   }
 
+  get _closed() {
+    return this.isClosed();
+  }
+  set _closed(value: boolean) {
+    this.isClosed.set(value);
+  }
+
   get alertClass(): string {
     return this.iconService.iconInfoFromType(this.iconService.alertType).cssClass;
   }
 
   get hidden() {
-    return this._hidden;
+    return this.isHidden();
   }
   set hidden(value: boolean) {
-    if (value !== this._hidden) {
-      this._hidden = value;
-
-      // CDE-1249 @HostBinding('class.alert-hidden') decoration will raise error in console https://angular.io/errors/NG0100
-      if (this._hidden) {
-        this.renderer.addClass(this.hostElement.nativeElement, 'alert-hidden');
-      } else {
-        this.renderer.removeClass(this.hostElement.nativeElement, 'alert-hidden');
-      }
-      this.cdr.detectChanges();
-    }
-  }
-
-  ngOnInit() {
-    if (this.multiAlertService) {
-      this.subscriptions.push(
-        this.multiAlertService.changes.subscribe(() => {
-          this.hidden = this.multiAlertService.currentAlert !== this;
-        })
-      );
-    }
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.isHidden.set(value);
   }
 
   configAlertType(val: string) {
@@ -142,7 +122,7 @@ export class ClrAlert implements OnInit, OnDestroy {
     }
     const isCurrentAlert = this.multiAlertService?.currentAlert === this;
     this._closed = true;
-    if (this.multiAlertService?.activeAlerts) {
+    if (this.multiAlertService) {
       this.multiAlertService.close(isCurrentAlert);
     }
     this._closedChanged.emit(true);

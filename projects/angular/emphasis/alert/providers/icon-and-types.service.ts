@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { AlertInfoObject } from '../utils/alert-info-object';
@@ -14,36 +14,29 @@ import { ALERT_TYPES } from '../utils/alert-types';
 @Injectable()
 export class AlertIconAndTypesService {
   private defaultIconShape = 'info-standard';
-  private _alertIconShape = '';
-  private _alertType = 'info';
+  private readonly iconShape = signal('');
+  private readonly type = signal('info');
 
   constructor(private commonStrings: ClrCommonStringsService) {}
 
   get alertType(): string {
-    return this._alertType;
+    return this.type();
   }
   set alertType(val: string) {
     if (ALERT_TYPES.indexOf(val) > -1) {
-      this._alertType = val;
+      this.type.set(val);
     }
   }
 
   get alertIconShape(): string {
-    if ('' === this._alertIconShape) {
-      return this.iconInfoFromType(this._alertType).shape;
-    }
-    return this._alertIconShape;
+    return this.iconShape() || this.iconInfoFromType(this.alertType).shape;
   }
   set alertIconShape(val: string) {
-    if (!val) {
-      this._alertIconShape = '';
-    } else if (val !== this._alertIconShape) {
-      this._alertIconShape = val;
-    }
+    this.iconShape.set(val || '');
   }
 
   get alertIconTitle(): string {
-    return this.iconInfoFromType(this._alertType).title;
+    return this.iconInfoFromType(this.alertType).title;
   }
 
   iconInfoFromType(type: string): AlertInfoObject {
