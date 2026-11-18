@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClrCheckboxModule, ClrInputModule, ClrSelectModule } from '@clr/angular/forms';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrSignpostModule } from '@clr/angular/popover/signpost';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { EnumFilterComponent } from './advanced-filters/enum-filter.component';
 import { FilterFormComponent } from './advanced-filters/filter-form.component';
@@ -114,14 +115,14 @@ describe('CompositeFiltersComponent', () => {
     });
     testContext.fixture = TestBed.createComponent(CompositeFiltersComponent);
     testContext.component = testContext.fixture.componentInstance;
-    testContext.component.filterableProperties = filterableProperties;
+    testContext.fixture.componentRef.setInput('filterableProperties', filterableProperties);
   });
 
   afterEach(() => {
     testContext.fixture.destroy();
   });
   it('is properly initialized', () => {
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.component).toBeTruthy();
     expect(testContext.component.selectedFilterableProperty).toEqual(stringProperty);
     expect(testContext.component.propertyType).toEqual(PropertyType.String);
@@ -133,7 +134,7 @@ describe('CompositeFiltersComponent', () => {
     );
     expect(addNewButton).toBeTruthy();
     addNewButton.click();
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.component.signPostOpened).toBeTruthy();
     const propertySelect: HTMLSelectElement = document.body.querySelector('select');
     expect(propertySelect).toBeTruthy();
@@ -141,7 +142,7 @@ describe('CompositeFiltersComponent', () => {
 
     propertySelect.value = propertySelect.options[1].value;
     propertySelect.dispatchEvent(new Event('change'));
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.component.selectedFilterableProperty).toEqual(filterableProperties[1]);
     expect(testContext.component.propertyType).toEqual(PropertyType.Enum);
     expect(testContext.component.enumProperty).toEqual(enumProperty);
@@ -149,7 +150,7 @@ describe('CompositeFiltersComponent', () => {
   it('displays property filters', () => {
     testContext.component.propertyFilters.push(stringPropertyFilter);
     testContext.component.propertyFilters.push(enumPropertyFilter);
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.component.propertyFilters.length).toEqual(2);
     const propertyFilterElements: HTMLElement[] =
       testContext.fixture.debugElement.nativeElement.querySelectorAll('appfx-manage-filter');
@@ -190,20 +191,20 @@ describe('CompositeFiltersComponent', () => {
     vi.spyOn(testContext.component.propertyFiltersChange, 'emit').mockImplementation(() => undefined);
     testContext.component.propertyFilters.push(stringPropertyFilter);
     testContext.component.propertyFilters.push(enumPropertyFilter);
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     const clearAllButtonElement: HTMLButtonElement = testContext.fixture.debugElement.nativeElement.querySelector(
       'button[data-test-id="clear-all-button"]'
     );
     expect(clearAllButtonElement).toBeTruthy();
     clearAllButtonElement.click();
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.component.propertyFilters.length).toEqual(0);
     expect(testContext.component.propertyFiltersChange.emit).toHaveBeenCalledWith([]);
   });
   it('shows/hides the display filters on show/hide button click', () => {
     testContext.component.propertyFilters.push(stringPropertyFilter);
     testContext.component.propertyFilters.push(enumPropertyFilter);
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     const hideButtonElement: HTMLButtonElement = testContext.fixture.debugElement.nativeElement.querySelector(
       'button[data-test-id="hide-filters"]'
     );
@@ -212,7 +213,7 @@ describe('CompositeFiltersComponent', () => {
     expect(hideButtonElement.getAttribute(ariaLabelAttributeName)).toEqual('Hide filters');
 
     hideButtonElement.click();
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     const propertyFilterElements: HTMLElement[] =
       testContext.fixture.debugElement.nativeElement.querySelectorAll('appfx-manage-filter');
     expect(hideButtonElement.innerText.trim()).toEqual('SHOW(2)');
@@ -222,7 +223,7 @@ describe('CompositeFiltersComponent', () => {
     expect(propertyFilterElements[1].hasAttribute('hidden')).toBeTruthy();
 
     hideButtonElement.click();
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(hideButtonElement.innerText.trim()).toEqual('HIDE');
     expect(hideButtonElement.getAttribute(ariaLabelAttributeName)).toEqual('Hide filters');
     expect(propertyFilterElements.length).toEqual(2);

@@ -5,12 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule, LayoutService, NgControlService } from '@clr/angular/forms/common';
 import { ClrIcon } from '@clr/angular/icon';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrPassword } from './password';
 import { ClrPasswordContainer } from './password-container';
@@ -63,7 +64,7 @@ describe('ClrPassword', () => {
         });
         expect(() => {
           const fixture = TestBed.createComponent(InvalidUseTest);
-          fixture.detectChanges();
+          renderFixture(fixture);
         }).toThrow();
       });
     });
@@ -71,7 +72,9 @@ describe('ClrPassword', () => {
     ReactiveSpec(ClrPasswordContainer, ClrPassword, ReactiveTest, 'clr-input');
 
     describe('set password type', () => {
-      let fixture, containerDE, containerEl;
+      let fixture: ComponentFixture<TemplateDrivenTest>;
+      let containerDE: DebugElement;
+      let containerEl: HTMLElement;
 
       beforeEach(() => {
         TestBed.configureTestingModule({
@@ -82,7 +85,7 @@ describe('ClrPassword', () => {
         fixture = TestBed.createComponent(TemplateDrivenTest);
         containerDE = fixture.debugElement.query(By.directive(ClrPasswordContainer));
         containerEl = containerDE.nativeElement;
-        fixture.detectChanges();
+        renderFixture(fixture);
       });
 
       it('should set the password type attribute', () => {

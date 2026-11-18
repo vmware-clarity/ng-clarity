@@ -61,7 +61,7 @@ describe('Tooltip', () => {
         const untypedContext: any = testContext;
 
         let testId;
-        untypedContext.tooltipIdService.id.subscribe(idChange => {
+        untypedContext.tooltipIdService.id.subscribe((idChange: string) => {
           testId = idChange;
         });
         expect(untypedContext.clarityDirective.ariaDescribedBy).toEqual(testId);

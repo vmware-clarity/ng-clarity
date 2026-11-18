@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { createTestHelpers, delay, TestContext } from '@clr/angular/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrDatagridColumnToggle } from './datagrid-column-toggle';
 import { ColumnsService } from './providers/columns.service';
@@ -145,7 +146,7 @@ describe('Datagrid', () => {
           columnToggle.toggleSwitchPanel();
           context.detectChanges();
           await delay();
-          expect(document.querySelector('button.column-toggle-action').attributes['aria-controls'].value).toBe(
+          expect(document.querySelector('button.column-toggle-action').getAttribute('aria-controls')).toBe(
             document.querySelector('div.column-switch').getAttribute('id')
           );
         });
@@ -155,9 +156,7 @@ describe('Datagrid', () => {
           columnToggle.toggleSwitchPanel();
           context.detectChanges();
           await delay();
-          expect(document.querySelector('button.toggle-switch-close-button').attributes['aria-label'].value).toBe(
-            'Close'
-          );
+          expect(document.querySelector('button.toggle-switch-close-button').getAttribute('aria-label')).toBe('Close');
         });
 
         it('projects template as switch content', () => {
@@ -238,21 +237,21 @@ describe('Datagrid', () => {
         it('shows default title in switch panel', () => {
           columnsService.mockAllHideable();
           columnToggle.openState = true;
-          context.fixture.detectChanges();
+          renderFixture(context.fixture);
           expect(document.querySelector('.switch-header').textContent).toMatch(/Show Columns/);
         });
 
         it('shows toggle button in switch panel', () => {
           columnsService.mockAllHideable();
           columnToggle.openState = true;
-          context.fixture.detectChanges();
+          renderFixture(context.fixture);
           expect(document.querySelector('button.switch-button').textContent).toMatch(/Select All/);
         });
 
         it('disables toggle button when all columns are hideable and all of them are visible', () => {
           columnsService.mockAllHideable();
           columnToggle.openState = true;
-          context.fixture.detectChanges();
+          renderFixture(context.fixture);
           const disabledButton: HTMLButtonElement = document.querySelector('button.switch-button');
           expect(disabledButton.disabled).toBeTruthy();
         });
@@ -261,7 +260,7 @@ describe('Datagrid', () => {
           columnsService.mockAllHideable();
           columnsService.mockHideableAt(1, true);
           columnToggle.openState = true;
-          context.fixture.detectChanges();
+          renderFixture(context.fixture);
           const toggleButton: HTMLButtonElement = document.querySelector('button.switch-button');
           expect(toggleButton.disabled).toBeFalsy();
         });

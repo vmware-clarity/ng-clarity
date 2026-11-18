@@ -8,6 +8,7 @@
 import { ApplicationRef, ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { expectActiveElementToBe } from '@clr/angular/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrFocusOnViewInit } from './focus-on-view-init';
 import { ClrFocusOnViewInitModule } from './focus-on-view-init.module';
@@ -79,18 +80,18 @@ describe('ClrFocusOnViewInit', () => {
       });
       fixture = TestBed.createComponent(TestComponent);
       component = fixture.componentInstance;
-      fixture.detectChanges();
+      renderFixture(fixture);
     });
 
     it('sets negative tabindex if no tabindex', () => {
       component.displayNoExistingTabindex = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.focusOnItElRef.nativeElement.getAttribute('tabindex')).toBe('-1');
     });
 
     it('should use existing tabindex', () => {
       component.displayExistingTabindex = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.focusOnItElRef.nativeElement.getAttribute('tabindex')).toBe('5');
     });
 
@@ -98,13 +99,13 @@ describe('ClrFocusOnViewInit', () => {
       component.buttonElRef.nativeElement.focus();
       expectActiveElementToBe(component.buttonElRef.nativeElement);
       component.displayNoExistingTabindex = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expectActiveElementToBe(component.focusOnItElRef.nativeElement);
     });
 
     it('should remove tabindex on focusout event and should not run change detection', () => {
       component.displayNoExistingTabindex = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
       const appRef = TestBed.inject(ApplicationRef);
       vi.spyOn(appRef, 'tick').mockImplementation(() => undefined);
       expect(component.focusOnItElRef.nativeElement.getAttribute('tabindex')).toBe('-1');
@@ -115,10 +116,10 @@ describe('ClrFocusOnViewInit', () => {
 
     it('should not remove tabindex if it was pre-existing tabindex', () => {
       component.displayExistingTabindex = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.focusOnItElRef.nativeElement.getAttribute('tabindex')).toBe('5');
       component.buttonElRef.nativeElement.focus();
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.focusOnItElRef.nativeElement.getAttribute('tabindex')).toBe('5');
     });
 
@@ -126,7 +127,7 @@ describe('ClrFocusOnViewInit', () => {
       component.buttonElRef.nativeElement.focus();
       expectActiveElementToBe(component.buttonElRef.nativeElement);
       component.displayDisabled = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expectActiveElementToBe(component.buttonElRef.nativeElement);
     });
   });
@@ -145,12 +146,12 @@ describe('ClrFocusOnViewInit', () => {
       focusOnViewInitProvider.useValue = true;
       fixture = TestBed.createComponent(TestDisablingViaInjection);
       component = fixture.componentInstance;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       component.buttonElRef.nativeElement.focus();
       expectActiveElementToBe(component.buttonElRef.nativeElement);
       component.display = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expectActiveElementToBe(component.focusOnItElRef.nativeElement);
     });
 
@@ -158,12 +159,12 @@ describe('ClrFocusOnViewInit', () => {
       focusOnViewInitProvider.useValue = false;
       fixture = TestBed.createComponent(TestDisablingViaInjection);
       component = fixture.componentInstance;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       component.buttonElRef.nativeElement.focus();
       expectActiveElementToBe(component.buttonElRef.nativeElement);
       component.display = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expectActiveElementToBe(component.buttonElRef.nativeElement);
     });
   });

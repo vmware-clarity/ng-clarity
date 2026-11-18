@@ -25,7 +25,7 @@ import { ColorFilter } from '../utils/color-filter';
 export class DatagridVirtualScrollServerSideDemo implements OnInit {
   users: Observable<User[]>;
   currentPageSize = 100;
-  _inventory = null;
+  _inventory: Inventory;
   loading: boolean;
   loadingMoreItems = false;
   selected: User[] = [];
@@ -52,7 +52,7 @@ export class DatagridVirtualScrollServerSideDemo implements OnInit {
     });
   }
 
-  setExpanded($event, user: User) {
+  setExpanded($event: boolean, user: User) {
     user.expanded = $event;
   }
 

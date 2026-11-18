@@ -8,6 +8,7 @@
 import { AfterContentInit, ChangeDetectionStrategy, Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ButtonHubService } from './providers/button-hub.service';
 import { PageCollectionService } from './providers/page-collection.service';
@@ -68,7 +69,7 @@ describe('New Wizard Tests', () => {
         ],
       });
       fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
       testItemComponent = fixture.componentInstance.stepNavItem;
       debugEl = fixture.debugElement.query(By.directive(ClrWizardStepnavItem));
       myStepnavItem = debugEl.nativeElement;
@@ -86,14 +87,14 @@ describe('New Wizard Tests', () => {
             .spyOn(testItemComponent.pageCollection, 'getStepItemIdForPage')
             .mockImplementation(() => undefined);
           testItemComponent.page._id = 'try-a-different-id';
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(pageCollectionSpy).toHaveBeenCalledWith(testItemComponent.page);
         });
 
         it('should throw an error if page is not present', () => {
           testItemComponent.page = null;
           expect(() => {
-            fixture.detectChanges();
+            renderFixture(fixture);
           }).toThrow();
         });
       });
@@ -114,14 +115,14 @@ describe('New Wizard Tests', () => {
 
         it('should not call to navService if stopNavigation is true on navService', () => {
           testItemComponent.navService.wizardStopNavigation = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           testItemComponent.click();
           expect(navServiceSpy).not.toHaveBeenCalled();
         });
 
         it('should not call to navService if disableStepnav is true on navService', () => {
           testItemComponent.navService.wizardDisableStepnav = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           testItemComponent.click();
           expect(navServiceSpy).not.toHaveBeenCalled();
         });
@@ -150,22 +151,22 @@ describe('New Wizard Tests', () => {
           // mock inits/resets with all false
           expect(testItemComponent.isDisabled, 'inits as false').toBe(false);
           fakeOutPage.disabled = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testItemComponent.isDisabled, 'updates when page is updated').toBe(true);
           fakeOutPage.reset();
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testItemComponent.isDisabled, 'resets when page is reset').toBe(false);
         });
 
         it('should return true if navService is set to stop navigation', () => {
           testItemComponent.navService.wizardStopNavigation = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testItemComponent.isDisabled).toBe(true);
         });
 
         it('should return true if navService has disabled stepnav', () => {
           testItemComponent.navService.wizardDisableStepnav = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testItemComponent.isDisabled).toBe(true);
         });
 
@@ -182,10 +183,10 @@ describe('New Wizard Tests', () => {
           // mock inits/resets with all false
           expect(testItemComponent.isCurrent, 'inits as false').toBe(false);
           fakeOutPage.current = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testItemComponent.isCurrent, 'updates when page is updated').toBe(true);
           fakeOutPage.reset();
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testItemComponent.isCurrent, 'resets when page is reset').toBe(false);
         });
 
@@ -202,10 +203,10 @@ describe('New Wizard Tests', () => {
           // mock inits/resets with all false
           expect(testItemComponent.isComplete, 'inits as false').toBe(false);
           fakeOutPage.completed = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testItemComponent.isComplete, 'updates when page is updated').toBe(true);
           fakeOutPage.reset();
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testItemComponent.isComplete, 'resets when page is reset').toBe(false);
         });
 
@@ -223,10 +224,10 @@ describe('New Wizard Tests', () => {
           expect(testItemComponent.hasError, 'inits as false').toBe(false);
           fakeOutPage.completed = true;
           fakeOutPage.hasError = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testItemComponent.hasError, 'updates when page is updated').toBe(true);
           fakeOutPage.reset();
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testItemComponent.hasError, 'resets when page is reset').toBe(false);
         });
 
@@ -234,7 +235,7 @@ describe('New Wizard Tests', () => {
           // mock inits/resets with all false
           expect(testItemComponent.hasError, 'inits as false').toBe(false);
           fakeOutPage.hasError = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testItemComponent.hasError, 'not updating when page is updated').toBe(false);
         });
       });
@@ -267,7 +268,7 @@ describe('New Wizard Tests', () => {
 
           expect(titleElement.textContent.trim(), 'projects initial value').toBe(expectedInitialTitle);
           fixture.componentInstance.projector = 'bar';
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(titleElement.textContent.trim(), 'projects updated value').toBe(expectedUpdatedTitle);
         });
       });
@@ -300,7 +301,7 @@ describe('New Wizard Tests', () => {
 
         it('should have aria-labelledby attribute on the button including the icon when is complete', () => {
           fakeOutPage.completed = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           const stepNavButton = myStepnavItem.querySelector<HTMLButtonElement>('button.clr-wizard-stepnav-link');
 
@@ -311,7 +312,7 @@ describe('New Wizard Tests', () => {
 
         it('should add disabled attribute when isDisabled return true', () => {
           fakeOutPage.disabled = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(myStepnavItem.querySelector('button.clr-wizard-stepnav-link').hasAttribute('disabled')).toBeTruthy();
         });
 
@@ -329,7 +330,7 @@ describe('New Wizard Tests', () => {
 
         it('aria-current should be true if page is current', () => {
           fakeOutPage.current = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(myStepnavItem.hasAttribute('aria-current'), 'stepnav item has aria-current attr').toBeTruthy();
           expect(myStepnavItem.getAttribute('aria-current'), 'aria-current should be set if page is current').toBe(
             'step'
@@ -342,7 +343,7 @@ describe('New Wizard Tests', () => {
             'false'
           );
           fakeOutPage.current = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(myStepnavItem.hasAttribute('aria-current'), 'stepnav item has aria-current attr').toBeTruthy();
           expect(myStepnavItem.getAttribute('aria-current'), 'aria-current should be true if page is current').toBe(
             'step'
@@ -358,7 +359,7 @@ describe('New Wizard Tests', () => {
 
         it('should have .active class if page is current', () => {
           fakeOutPage.current = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(
             myStepnavItem.classList.contains('active'),
             'stepnav item has .active class when page is current'
@@ -371,7 +372,7 @@ describe('New Wizard Tests', () => {
             'stepnav item does not have .active class when page is not current'
           ).toBe(false);
           fakeOutPage.current = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(
             myStepnavItem.classList.contains('active'),
             'stepnav item has .active class when page is current'
@@ -387,7 +388,7 @@ describe('New Wizard Tests', () => {
 
         it('should have .disabled class if page is disabled', () => {
           fakeOutPage.disabled = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(
             myStepnavItem.classList.contains('disabled'),
             'stepnav item has .disabled class when page is disabled'
@@ -396,7 +397,7 @@ describe('New Wizard Tests', () => {
 
         it('should have .disabled class if navService is set to stop navigation', () => {
           testItemComponent.navService.wizardStopNavigation = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(
             myStepnavItem.classList.contains('disabled'),
             'stepnav item has .disabled class when page is disabled'
@@ -409,7 +410,7 @@ describe('New Wizard Tests', () => {
             'stepnav item does not have .disabled class when page is not disabled'
           ).toBe(false);
           fakeOutPage.disabled = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(
             myStepnavItem.classList.contains('disabled'),
             'stepnav item has .disabled class when page is disabled'
@@ -425,7 +426,7 @@ describe('New Wizard Tests', () => {
 
         it('should have .complete class if page is completed', () => {
           fakeOutPage.completed = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(
             myStepnavItem.classList.contains('complete'),
             'stepnav item has .complete class when page is completed'
@@ -438,7 +439,7 @@ describe('New Wizard Tests', () => {
             'stepnav item does not have .complete class when page is not completed'
           ).toBe(false);
           fakeOutPage.completed = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(
             myStepnavItem.classList.contains('complete'),
             'stepnav item has .complete class when page is completed'
@@ -448,7 +449,7 @@ describe('New Wizard Tests', () => {
         it('should have .error class if page has an error', () => {
           fakeOutPage.completed = true;
           fakeOutPage.hasError = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(
             myStepnavItem.classList.contains('error'),
             'stepnav item has .error class when page has an error'
@@ -462,7 +463,7 @@ describe('New Wizard Tests', () => {
           ).toBe(false);
           fakeOutPage.completed = true;
           fakeOutPage.hasError = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(myStepnavItem.classList.contains('error'), 'stepnav item has .error class when page has error').toBe(
             true
           );
@@ -471,7 +472,7 @@ describe('New Wizard Tests', () => {
         it('should not have .error class if page has an error and page is not completed', () => {
           fakeOutPage.completed = false;
           fakeOutPage.hasError = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(
             myStepnavItem.classList.contains('error'),
             'stepnav item does not have .error class when page has an error and page is not completed'
@@ -485,7 +486,7 @@ describe('New Wizard Tests', () => {
           ).toBe(false);
           fakeOutPage.completed = false;
           fakeOutPage.hasError = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(
             myStepnavItem.classList.contains('error'),
             'stepnav item does not have .error class when page has error and page is not completed'
@@ -499,7 +500,7 @@ describe('New Wizard Tests', () => {
           ).toBe(false);
           fakeOutPage.completed = true;
           fakeOutPage.hasError = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           const iconElement = myStepnavItem.querySelector('cds-icon[shape="error-standard"]');
           expect(iconElement).not.toBeNull();
@@ -513,7 +514,7 @@ describe('New Wizard Tests', () => {
           ).toBe(false);
           fakeOutPage.completed = true;
           fakeOutPage.hasError = false;
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           const iconElement = myStepnavItem.querySelector('cds-icon[shape="success-standard"]');
           expect(iconElement).not.toBeNull();
@@ -527,35 +528,35 @@ describe('New Wizard Tests', () => {
 
         beforeEach(() => {
           fakeOutPage.reset();
-          fixture.detectChanges();
+          renderFixture(fixture);
           navServiceSpy = vi.spyOn(testItemComponent.navService, 'goTo').mockImplementation(() => undefined);
           myClickTarget = myStepnavItem.querySelector('button');
         });
 
         it('should not register the click action if disabled', () => {
           fakeOutPage.disabled = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           myClickTarget.click();
           expect(navServiceSpy).not.toHaveBeenCalled();
         });
 
         it('should not register the click action if navService is set to stop navigation', () => {
           testItemComponent.navService.wizardStopNavigation = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           myClickTarget.click();
           expect(navServiceSpy).not.toHaveBeenCalled();
         });
 
         it('should not register the click action if navService is set to disable the stepnav', () => {
           testItemComponent.navService.wizardDisableStepnav = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           myClickTarget.click();
           expect(navServiceSpy).not.toHaveBeenCalled();
         });
 
         it('should not register the click action if current', () => {
           fakeOutPage.current = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           myClickTarget.click();
           expect(navServiceSpy).not.toHaveBeenCalled();
         });
@@ -564,29 +565,29 @@ describe('New Wizard Tests', () => {
           // mock inits as !current and !disabled, being explicit here tho
           fakeOutPage.current = false;
           fakeOutPage.disabled = false;
-          fixture.detectChanges();
+          renderFixture(fixture);
           myClickTarget.click();
           expect(navServiceSpy).toHaveBeenCalledWith(fakeOutPage);
         });
 
         it('should be able to click an item that was current and was then made not current', () => {
           fakeOutPage.current = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           myClickTarget.click();
           expect(navServiceSpy).not.toHaveBeenCalled();
           fakeOutPage.current = false;
-          fixture.detectChanges();
+          renderFixture(fixture);
           myClickTarget.click();
           expect(navServiceSpy).toHaveBeenCalledWith(fakeOutPage);
         });
 
         it('should be able to click an item that was disabled and was then made not disabled', () => {
           fakeOutPage.disabled = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           myClickTarget.click();
           expect(navServiceSpy).not.toHaveBeenCalled();
           fakeOutPage.disabled = false;
-          fixture.detectChanges();
+          renderFixture(fixture);
           myClickTarget.click();
           expect(navServiceSpy).toHaveBeenCalledWith(fakeOutPage);
         });

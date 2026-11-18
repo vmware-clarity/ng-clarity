@@ -5,11 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ChangeDetectionStrategy, Component, DebugElement, Type } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule } from '@clr/angular/forms/common';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrNumberInput } from './number-input';
 import { ClrNumberInputContainer } from './number-input-container';
@@ -71,7 +72,7 @@ describe('Number Input component', () => {
         });
         expect(() => {
           const fixture = TestBed.createComponent(InvalidUseTest);
-          fixture.detectChanges();
+          renderFixture(fixture);
         }).toThrow();
       });
     });
@@ -81,7 +82,9 @@ describe('Number Input component', () => {
     inputSpec('reactive', ClrNumberInputContainer, ClrNumberInput, ReactiveTest);
 
     describe('without a form control', () => {
-      let fixture, control, clarityDirective: ClrNumberInput;
+      let fixture: ComponentFixture<NoFormControlTest>;
+      let control: DebugElement;
+      let clarityDirective: ClrNumberInput;
 
       beforeEach(() => {
         TestBed.configureTestingModule({
@@ -91,7 +94,7 @@ describe('Number Input component', () => {
         fixture = TestBed.createComponent(NoFormControlTest);
         control = fixture.debugElement.query(By.directive(ClrNumberInput));
         clarityDirective = control.injector.get(ClrNumberInput);
-        fixture.detectChanges();
+        renderFixture(fixture);
       });
 
       it('should not throw when stepUp is called without an associated form control', () => {
@@ -109,21 +112,28 @@ describe('Number Input component', () => {
 
         expect(() => {
           stepUpButton.click();
-          fixture.detectChanges();
+          renderFixture(fixture);
         }).not.toThrow();
 
         expect(() => {
           stepDownButton.click();
-          fixture.detectChanges();
+          renderFixture(fixture);
         }).not.toThrow();
       });
     });
   });
 });
 
-function inputSpec(description, testContainer, testControl, testComponent) {
+function inputSpec(
+  description: string,
+  testContainer: Type<unknown>,
+  testControl: Type<ClrNumberInput>,
+  testComponent: Type<unknown>
+) {
   describe('Input specific value change tests ' + description, () => {
-    let control, fixture, clarityDirective: ClrNumberInput;
+    let control: DebugElement;
+    let fixture: ComponentFixture<unknown>;
+    let clarityDirective: ClrNumberInput;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -133,7 +143,7 @@ function inputSpec(description, testContainer, testControl, testComponent) {
       fixture = TestBed.createComponent(testComponent);
       control = fixture.debugElement.query(By.directive(testControl));
       clarityDirective = control.injector.get(testControl);
-      fixture.detectChanges();
+      renderFixture(fixture);
     });
 
     it('should handle valueChanges calls', () => {
@@ -146,7 +156,7 @@ function inputSpec(description, testContainer, testControl, testComponent) {
       // make sure blur alone does not trigger valueChanges
       control.nativeElement.dispatchEvent(new Event('focus'));
       control.nativeElement.dispatchEvent(new Event('blur'));
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(valueChanges).toBe(0);
 
       // now make sure input change triggers valueChanges
@@ -155,7 +165,7 @@ function inputSpec(description, testContainer, testControl, testComponent) {
 
       control.nativeElement.dispatchEvent(new Event('input'));
       control.nativeElement.dispatchEvent(new Event('blur'));
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(valueChanges).toBe(1);
     });
 
@@ -167,13 +177,13 @@ function inputSpec(description, testContainer, testControl, testComponent) {
       const stepDownButton = inputGroup.querySelector('button:has(cds-icon[shape="minus"])');
       const stepUpButton = inputGroup.querySelector('button:has(cds-icon[shape="plus"])');
       stepUpButton.click();
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(control.nativeElement.value).toBe('1');
       expect(clarityDirective.stepUp).toHaveBeenCalled();
 
       stepDownButton.click();
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(control.nativeElement.value).toBe('0');
       expect(clarityDirective.stepDown).toHaveBeenCalled();
@@ -186,7 +196,7 @@ function inputSpec(description, testContainer, testControl, testComponent) {
       const stepUpButton = inputGroup.querySelector('button:has(cds-icon[shape="plus"])');
       stepUpButton.focus();
       stepUpButton.blur();
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(control.nativeElement.onblur).toHaveBeenCalled();
     });
@@ -197,7 +207,7 @@ function inputSpec(description, testContainer, testControl, testComponent) {
       const inputGroup = control.nativeElement.closest('.clr-input-group');
       const stepUpButton = inputGroup.querySelector('button:has(cds-icon[shape="plus"])');
       stepUpButton.click();
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(control.nativeElement.onchange).toHaveBeenCalled();
     });
@@ -206,7 +216,7 @@ function inputSpec(description, testContainer, testControl, testComponent) {
       vi.spyOn(clarityDirective, 'triggerValidation');
 
       clarityDirective.stepUp();
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(clarityDirective.triggerValidation).toHaveBeenCalled();
     });
@@ -215,7 +225,7 @@ function inputSpec(description, testContainer, testControl, testComponent) {
       vi.spyOn(clarityDirective, 'triggerValidation');
 
       clarityDirective.stepDown();
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(clarityDirective.triggerValidation).toHaveBeenCalled();
     });
@@ -225,7 +235,7 @@ function inputSpec(description, testContainer, testControl, testComponent) {
       expect(ngControl.control.touched).toBe(false);
 
       clarityDirective.stepUp();
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(ngControl.control.touched).toBe(true);
     });
@@ -235,7 +245,7 @@ function inputSpec(description, testContainer, testControl, testComponent) {
       expect(ngControl.control.touched).toBe(false);
 
       clarityDirective.stepDown();
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(ngControl.control.touched).toBe(true);
     });

@@ -16,6 +16,8 @@ if (seedValue.trim() === '' || !Number.isSafeInteger(seed) || seed < 0) {
 export default defineConfig({
   test: {
     restoreMocks: true,
+    // Fake only the application timers. Zoneless Angular renders through requestAnimationFrame and microtasks.
+    fakeTimers: { toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date'] },
     browser: { screenshotFailures: false },
     slowTestThreshold: 250,
     sequence: { shuffle: true, seed },

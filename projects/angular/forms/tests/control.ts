@@ -5,7 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { TestBed } from '@angular/core/testing';
+import { DebugElement, Type } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import {
@@ -20,8 +21,9 @@ import {
 import { DatalistIdService } from '@clr/angular/forms/datalist';
 import { selectFiles } from '@clr/angular/forms/file-input';
 import { ClrIcon } from '@clr/angular/icon';
+import { renderFixture } from '@clr/angular/utils/testing';
 
-export function ControlStandaloneSpec(testComponent): void {
+export function ControlStandaloneSpec(testComponent: Type<unknown>): void {
   describe('standalone use', () => {
     it('should not throw an error when used without a form control', () => {
       TestBed.configureTestingModule({
@@ -30,23 +32,44 @@ export function ControlStandaloneSpec(testComponent): void {
       });
       expect(() => {
         const fixture = TestBed.createComponent(testComponent);
-        fixture.detectChanges();
+        renderFixture(fixture);
       }).not.toThrow();
     });
   });
 }
 
-export function TemplateDrivenSpec(testContainer, testControl, testComponent, controlClass): void {
+export function TemplateDrivenSpec(
+  testContainer: Type<unknown>,
+  testControl: Type<WrappedFormControl<unknown>>,
+  testComponent: Type<unknown>,
+  controlClass: string
+): void {
   fullTest('template-driven', testContainer, testControl, testComponent, controlClass);
 }
 
-export function ReactiveSpec(testContainer, testControl, testComponent, controlClass): void {
+export function ReactiveSpec(
+  testContainer: Type<unknown>,
+  testControl: Type<WrappedFormControl<unknown>>,
+  testComponent: Type<unknown>,
+  controlClass: string
+): void {
   fullTest('reactive', testContainer, testControl, testComponent, controlClass);
 }
 
-function fullTest(description, testContainer, testControl, testComponent, controlClass) {
+function fullTest(
+  description: string,
+  testContainer: Type<unknown>,
+  testControl: Type<WrappedFormControl<unknown>>,
+  testComponent: Type<unknown>,
+  controlClass: string
+) {
   describe(description, () => {
-    let control, fixture, controlClassService, markControlService, controlIdService, datalistIdService;
+    let control: DebugElement;
+    let fixture: ComponentFixture<unknown>;
+    let controlClassService: ControlClassService;
+    let markControlService: MarkControlService;
+    let controlIdService: ControlIdService;
+    let datalistIdService: DatalistIdService;
 
     beforeEach(() => {
       vi.spyOn(WrappedFormControl.prototype, 'ngOnInit');
@@ -69,7 +92,7 @@ function fullTest(description, testContainer, testControl, testComponent, contro
       markControlService = control.injector.get(MarkControlService);
       controlIdService = control.injector.get(ControlIdService);
       datalistIdService = control.injector.get(DatalistIdService);
-      fixture.detectChanges();
+      renderFixture(fixture);
     });
 
     it('should have the ControlIdService', () => {
@@ -89,7 +112,7 @@ function fullTest(description, testContainer, testControl, testComponent, contro
     });
 
     it('correctly extends WrappedFormControl', () => {
-      expect(control.injector.get(testControl).wrapperType).toBe(testContainer);
+      expect(control.injector.get(testControl)['wrapperType']).toBe(testContainer);
       expect(testControl.prototype instanceof WrappedFormControl).toBe(true);
     });
 
@@ -111,7 +134,7 @@ function fullTest(description, testContainer, testControl, testComponent, contro
       }
 
       control.nativeElement.dispatchEvent(new Event('blur'));
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(testControl.prototype.triggerValidation).toHaveBeenCalled();
     });
 
