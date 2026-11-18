@@ -8,6 +8,7 @@
 import { ApplicationRef, ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { ClrHeader } from './header';
 import { ClrNavLevel } from './nav-level';
@@ -218,6 +219,18 @@ describe('ClrHeader (zoneless, OnPush host)', () => {
       navLevel(NAV_LEVEL_1).close();
       await fixture.whenStable();
       expect(labels()).toEqual({ ...closed, overflow: 'Close navigation overflow menu' });
+    });
+
+    it('relabels the triggers after localize()', async () => {
+      header.openNav(NAV_LEVEL_1);
+      await fixture.whenStable();
+
+      TestBed.inject(ClrCommonStringsService).localize({
+        responsiveNavToggleClose: 'Menü schließen',
+        responsiveNavOverflowOpen: 'Überlaufmenü öffnen',
+      });
+      await fixture.whenStable();
+      expect(labels()).toEqual({ hamburger: 'Menü schließen', overflow: 'Überlaufmenü öffnen' });
     });
 
     it('toggles with the deprecated toggleNav()', async () => {
