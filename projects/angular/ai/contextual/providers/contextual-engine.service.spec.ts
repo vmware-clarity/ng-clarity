@@ -10,9 +10,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router, withHashLocation } from '@angular/router';
 import { ClrPublishedContext, publishElementContext } from '@clr/angular/utils';
+import type { Mock } from 'vitest';
 
 import { ClrContextRegistryService } from './context-registry.service';
 import { ClrContextConfig, ClrContextService } from './contextual-engine.service';
+import { CLR_CONTEXT_PROTOCOL } from '../iframe/context-frame-bridge';
 import {
   ClrComponentContext,
   ClrContextCategory,
@@ -170,6 +172,10 @@ describe('ClrContextService', () => {
       });
     });
 
+    it('resolves host context with null when the page is not embedded', async () => {
+      expect(await engine.requestHostContext()).toBeNull();
+    });
+
     it('defines the global accessor so that assigning to it does not replace it, and still removes it', () => {
       engine.enableGlobalAccess('testClrContext');
       const installed = globalAccessor();
@@ -186,11 +192,140 @@ describe('ClrContextService', () => {
       engine.disableGlobalAccess();
     });
 
-    it('removes the global accessor when destroyed', () => {
-      engine.enableGlobalAccess('testClrContext');
-      engine.ngOnDestroy();
+    describe('frame bridge', () => {
+      let frame: HTMLIFrameElement;
+      let postMessage: Mock;
 
-      expect(globalAccessor()).toBeUndefined();
+      /** A request from the frame embedded in this page, dispatched the way a browser would. */
+      function requestFrom(requestId: string): void {
+        window.dispatchEvent(
+          new MessageEvent('message', {
+            data: { protocol: CLR_CONTEXT_PROTOCOL, kind: 'context-request', requestId },
+            origin: window.location.origin,
+            source: frame.contentWindow,
+          })
+        );
+      }
+
+      beforeEach(() => {
+        frame = document.createElement('iframe');
+        document.body.appendChild(frame);
+        postMessage = vi.spyOn(frame.contentWindow as Window, 'postMessage').mockImplementation(() => undefined);
+      });
+
+      afterEach(() => {
+        engine.disableFrameBridge();
+        frame.remove();
+      });
+
+      /** Lets the bridge finish its asynchronous snapshot and answer. */
+      function answered(): Promise<void> {
+        return new Promise(resolve => setTimeout(resolve));
+      }
+
+      it('serves snapshots to embedded frames only while the frame bridge is enabled', async () => {
+        // A title of its own, so the assertion below proves the bridge withholds it rather
+        // than passing because the test page happens to have none.
+        const title = document.title;
+        document.title = 'Invoice 4711 - Acme Corp';
+
+        engine.enableFrameBridge();
+        requestFrom('frame-request-1');
+        document.title = title;
+        await answered();
+
+        expect(postMessage).toHaveBeenCalledWith(
+          expect.objectContaining({
+            kind: 'context-response',
+            requestId: 'frame-request-1',
+            context: expect.objectContaining({ title: '' }),
+          }),
+          expect.anything()
+        );
+
+        engine.disableFrameBridge();
+        requestFrom('frame-request-1');
+        await answered();
+
+        expect(postMessage).toHaveBeenCalledTimes(1);
+      });
+
+      it('serves a frame what the global accessor serves, withheld markers included', async () => {
+        const form = document.createElement('div');
+        form.innerHTML =
+          '<label for="filled">Token</label><input id="filled" value="user-typed-secret" />' +
+          '<label for="empty">Note</label><input id="empty" />' +
+          '<a href="/invoices/4711?token=secret">Invoice</a><div class="search">Find</div>';
+        document.body.appendChild(form);
+        const unpublish = publishElementContext(form.querySelector('.search') as HTMLElement, () => ({
+          type: 'search',
+          state: { query: 'published-secret', resultCount: 2 },
+          publicKeys: ['resultCount'],
+        }));
+
+        try {
+          engine.enableFrameBridge();
+          engine.enableGlobalAccess('testClrContext');
+          requestFrom('frame-request-parity');
+          await answered();
+          const viaAccessor = globalAccessor()();
+          const viaFrame = postMessage.mock.lastCall[0].context as ClrPageContext;
+
+          const textboxes = viaFrame.components.filter(component => component.type === 'textbox');
+          expect(textboxes.map(textbox => textbox.state?.['withheld'])).toEqual([true, undefined]);
+          expect(JSON.stringify(viaFrame)).not.toContain('secret');
+          // Collected moments apart, so only the time may differ.
+          expect(JSON.stringify(viaFrame)).toContain('resultCount');
+          expect({ ...viaFrame, collectedAt: '' }).toEqual({ ...viaAccessor, collectedAt: '' });
+        } finally {
+          unpublish();
+          form.remove();
+          engine.disableGlobalAccess();
+        }
+      });
+
+      it('keeps the running frame bridge when a new configuration is refused', async () => {
+        engine.enableFrameBridge();
+        expect(() => engine.enableFrameBridge({ allowedOrigins: ['chat.example'] })).toThrowError(/not an origin/);
+
+        requestFrom('frame-request-3');
+        await answered();
+
+        expect(postMessage).toHaveBeenCalledWith(
+          expect.objectContaining({ kind: 'context-response', requestId: 'frame-request-3' }),
+          expect.anything()
+        );
+      });
+
+      it('stops the previous frame bridge when a new one replaces it', () => {
+        engine.enableFrameBridge();
+        engine.enableFrameBridge({ allowedOrigins: ['https://chat.example'] });
+
+        requestFrom('frame-request-4');
+
+        expect(postMessage).not.toHaveBeenCalled();
+      });
+
+      it('says once when its ceiling has an exclusion list that is not one', () => {
+        const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+        engine.enableFrameBridge({ snapshot: { excludeSelectors: '.secret' } as unknown as ClrContextSnapshotOptions });
+
+        expect(warn).toHaveBeenCalledExactlyOnceWith(
+          'Clarity context options: excludeSelectors must be a list, so ".secret" was ignored.'
+        );
+      });
+
+      it('cleans up the frame bridge and global accessor when destroyed', () => {
+        engine.enableFrameBridge();
+        engine.enableGlobalAccess('testClrContext');
+        engine.ngOnDestroy();
+
+        requestFrom('frame-request-2');
+
+        expect(postMessage).not.toHaveBeenCalled();
+        expect(globalAccessor()).toBeUndefined();
+      });
     });
   });
 

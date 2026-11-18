@@ -9,6 +9,7 @@ import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { ContextualDemo } from './contextual.demo';
+import { ContextualFramesDemo } from './frames/frames.demo';
 import { ContextualLiveDemo } from './inventory/live.demo';
 import { ContextualMutationDemo } from './mutation/mutation.demo';
 
@@ -18,8 +19,9 @@ const ROUTES: Routes = [
     component: ContextualDemo,
     children: [
       { path: '', redirectTo: 'live', pathMatch: 'full' },
-      { path: 'live', component: ContextualLiveDemo },
+      { path: 'live', component: ContextualLiveDemo, data: { viewId: 'host-inventory' } },
       { path: 'mutation', component: ContextualMutationDemo },
+      { path: 'frames', component: ContextualFramesDemo },
     ],
   },
 ];

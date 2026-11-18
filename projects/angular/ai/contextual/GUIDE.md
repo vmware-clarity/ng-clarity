@@ -43,6 +43,8 @@ Configure once at startup: `context.configure({ scope: 'interactive', routes: tr
 | Context no element shows, maybe asynchronous     | `ClrContextProvider` registered on `ClrContextRegistryService`         |
 | A component's state the DOM cannot show          | `publishElementContext(host, callback)` from `@clr/angular/utils`      |
 | Markup from another library with no role or name | `configure({ extractors: [{ selector, extract }] })`                   |
+| The same annotation in markup without Angular    | `data-clr-context`, `-type`, `-state` (JSON), `-public-keys`           |
+| Describe the view (metadata, `viewId`)           | The annotation on the view root, `data-clr-context-url`, `viewConfig`  |
 
 ```ts
 import { ClrContext } from '@clr/angular/ai';
@@ -81,3 +83,4 @@ export class Firewall {
 - `mutationEngine.apply(operations)` resolves with a result per operation; a refusal carries `refused` and a `detail`, so show it to the user. `announce` on the policy hears the same report.
 - The combobox, the date input and the datagrid's row selection can be written as they are. A custom control whose value is not what the agent sees is refused as `unsupported` until it publishes `publishElementMutator(host, { coerce, write, read })`.
 - Password and other always-withheld fields, and controls without an Angular form binding, are never written (`redacted`, `unbound`).
+- The frame bridge goes one way: `enableFrameBridge()` lets an embedded frame, such as a chat UI or a plugin, read this page with `clrRequestHostContext()`. It does not read the frames. A same-origin frame is described in place; a cross-origin one, or one behind a closed shadow root, is not.
