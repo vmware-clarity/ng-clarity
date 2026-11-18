@@ -218,7 +218,16 @@
     --clr-base-progress-bar-height: #{mixins.baselinePx(10)};
     --clr-base-control-group-gap: #{tokens.$cds-global-space-2};
 
-    .datagrid .datagrid-cell:not(.datagrid-detail-caret, .datagrid-expandable-caret, .datagrid-row-actions) {
+    // A tree cell is left out for its toggle, which places its icon by its padding; the icons of its
+    // text line up like those of any other cell.
+    .datagrid
+      .datagrid-cell:not(
+        .datagrid-detail-caret,
+        .datagrid-expandable-caret,
+        .datagrid-row-actions,
+        .datagrid-tree-cell
+      ),
+    .datagrid .datagrid-tree-cell-text {
       @include mixins.cell-children-aligment();
     }
   }

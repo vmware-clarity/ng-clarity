@@ -9,79 +9,81 @@ import { Subscription } from 'rxjs';
 
 import { VerticalNavService } from './vertical-nav.service';
 
-export default function (): void {
-  describe('Vertical Nav Service', function () {
-    let vertNavService: VerticalNavService;
+describe('Vertical Nav', () => {
+  describe('Providers', () => {
+    describe('Vertical Nav Service', function () {
+      let vertNavService: VerticalNavService;
 
-    beforeEach(() => {
-      vertNavService = new VerticalNavService();
-    });
-
-    afterEach(() => {
-      vertNavService = null;
-    });
-
-    it('exposes an observable to animate when the collapsed property of the vertical nav changes', () => {
-      expect(vertNavService.animateOnCollapsed).not.toBeNull();
-    });
-
-    it('does not set collapsed when collapsible is false', () => {
-      expect(vertNavService.collapsible).toBe(false);
-
-      let testVal: boolean;
-      const sub: Subscription = vertNavService.animateOnCollapsed.subscribe((val: boolean) => {
-        testVal = val;
+      beforeEach(() => {
+        vertNavService = new VerticalNavService();
       });
 
-      vertNavService.collapsed = true;
-
-      expect(vertNavService.collapsed).toBe(false);
-      expect(testVal).toBeUndefined();
-
-      sub.unsubscribe();
-    });
-
-    it('emits an animate flag when the observable property is changed && nav is collapsible', () => {
-      vertNavService.collapsible = true;
-
-      let testVal: boolean;
-      const sub: Subscription = vertNavService.animateOnCollapsed.subscribe((val: boolean) => {
-        testVal = val;
+      afterEach(() => {
+        vertNavService = null;
       });
 
-      expect(vertNavService.animateOnCollapsed).toBeDefined();
-      vertNavService.collapsed = true;
-
-      expect(testVal).not.toBeUndefined();
-      expect(testVal).toBe(true);
-
-      expect(vertNavService.animateOnCollapsed).toBeDefined();
-      vertNavService.collapsed = false;
-
-      expect(testVal).not.toBeUndefined();
-      expect(testVal).toBe(false);
-
-      sub.unsubscribe();
-    });
-
-    it('expands a collapsed nav when collapsible behavior is turned off', () => {
-      expect(vertNavService.collapsible).toBe(false);
-
-      let testVal: boolean;
-      const sub: Subscription = vertNavService.animateOnCollapsed.subscribe((val: boolean) => {
-        testVal = val;
+      it('exposes an observable to animate when the collapsed property of the vertical nav changes', () => {
+        expect(vertNavService.animateOnCollapsed).not.toBeNull();
       });
 
-      vertNavService.collapsible = true;
-      vertNavService.collapsed = true;
+      it('does not set collapsed when collapsible is false', () => {
+        expect(vertNavService.collapsible).toBe(false);
 
-      expect(testVal).toBeTruthy();
+        let testVal: boolean;
+        const sub: Subscription = vertNavService.animateOnCollapsed.subscribe((val: boolean) => {
+          testVal = val;
+        });
 
-      vertNavService.collapsible = false;
+        vertNavService.collapsed = true;
 
-      expect(testVal).toBeFalsy();
+        expect(vertNavService.collapsed).toBe(false);
+        expect(testVal).toBeUndefined();
 
-      sub.unsubscribe();
+        sub.unsubscribe();
+      });
+
+      it('emits an animate flag when the observable property is changed && nav is collapsible', () => {
+        vertNavService.collapsible = true;
+
+        let testVal: boolean;
+        const sub: Subscription = vertNavService.animateOnCollapsed.subscribe((val: boolean) => {
+          testVal = val;
+        });
+
+        expect(vertNavService.animateOnCollapsed).toBeDefined();
+        vertNavService.collapsed = true;
+
+        expect(testVal).not.toBeUndefined();
+        expect(testVal).toBe(true);
+
+        expect(vertNavService.animateOnCollapsed).toBeDefined();
+        vertNavService.collapsed = false;
+
+        expect(testVal).not.toBeUndefined();
+        expect(testVal).toBe(false);
+
+        sub.unsubscribe();
+      });
+
+      it('expands a collapsed nav when collapsible behavior is turned off', () => {
+        expect(vertNavService.collapsible).toBe(false);
+
+        let testVal: boolean;
+        const sub: Subscription = vertNavService.animateOnCollapsed.subscribe((val: boolean) => {
+          testVal = val;
+        });
+
+        vertNavService.collapsible = true;
+        vertNavService.collapsed = true;
+
+        expect(testVal).toBeTruthy();
+
+        vertNavService.collapsible = false;
+
+        expect(testVal).toBeFalsy();
+
+        sub.unsubscribe();
+      });
     });
   });
-}
+});

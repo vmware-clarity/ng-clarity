@@ -89,7 +89,7 @@ describe('animateHeight', () => {
   });
 
   it('does not animate when the user prefers reduced motion', () => {
-    spyOn(window, 'matchMedia').and.returnValue({ matches: true } as MediaQueryList);
+    vi.spyOn(window, 'matchMedia').mockReturnValue({ matches: true } as MediaQueryList);
 
     expect(animateHeight(element, { from: 0, to: 80 })).toBeNull();
   });

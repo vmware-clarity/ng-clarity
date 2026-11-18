@@ -47,7 +47,6 @@ import { PipeTransform } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
 import { RendererFactory2 } from '@angular/core';
-import * as rxjs from 'rxjs';
 import { SafeHtml } from '@angular/platform-browser';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
 import { SimpleChanges } from '@angular/core';
@@ -190,7 +189,18 @@ export class CompositeFiltersComponent implements OnInit {
     // (undocumented)
     readonly userPropertyType: PropertyType;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<CompositeFiltersComponent, "appfx-composite-filter", never, { "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "presetFilters": { "alias": "presetFilters"; "required": false; }; }, { "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<CompositeFiltersComponent, "appfx-composite-filter", never, {
+        "filterableProperties": {
+            "alias": "filterableProperties";
+            "required": false;
+        };
+        "presetFilters": {
+            "alias": "presetFilters";
+            "required": false;
+        };
+    }, {
+        "propertyFiltersChange": "propertyFiltersChange";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<CompositeFiltersComponent, never>;
 }
@@ -231,7 +241,23 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
     // (undocumented)
     selectedFilterMode: FilterMode;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<DataGridFiltersComponent, "appfx-datagrid-filters", never, { "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "presetFilters": { "alias": "presetFilters"; "required": false; }; "filterMode": { "alias": "filterMode"; "required": false; }; }, { "searchTermChange": "searchTermChange"; "propertyFiltersChange": "propertyFiltersChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DataGridFiltersComponent, "appfx-datagrid-filters", never, {
+        "filterableProperties": {
+            "alias": "filterableProperties";
+            "required": false;
+        };
+        "presetFilters": {
+            "alias": "presetFilters";
+            "required": false;
+        };
+        "filterMode": {
+            "alias": "filterMode";
+            "required": false;
+        };
+    }, {
+        "searchTermChange": "searchTermChange";
+        "propertyFiltersChange": "propertyFiltersChange";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DataGridFiltersComponent, never>;
 }
@@ -384,7 +410,7 @@ export class DatagridFiltersStrings {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridFiltersStrings, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<DatagridFiltersStrings>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public
@@ -396,7 +422,7 @@ export class DatagridFiltersUserService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridFiltersUserService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<DatagridFiltersUserService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public (undocumented)
@@ -438,7 +464,15 @@ export class FilterFormComponent {
     onCancelButtonClick(): void;
     valid: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<FilterFormComponent, "appfx-filter-form", never, { "valid": { "alias": "valid"; "required": false; }; }, { "cancel": "cancel"; "apply": "apply"; }, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<FilterFormComponent, "appfx-filter-form", never, {
+        "valid": {
+            "alias": "valid";
+            "required": false;
+        };
+    }, {
+        "cancel": "cancel";
+        "apply": "apply";
+    }, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<FilterFormComponent, never>;
 }

@@ -10,7 +10,7 @@ permissions:
 jobs:
   pr-preview:
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: haya14busa/action-workflow_run-status@v1
       - name: Get PR Event

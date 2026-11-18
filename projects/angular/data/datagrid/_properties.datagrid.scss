@@ -41,6 +41,8 @@
         #{density.$clr-base-icon-size-s} + (#{density.$clr-base-horizontal-offset-xl} * 2)
       );
       --clr-datagrid-icon-size: #{density.$clr-base-icon-size-s};
+      // Size of the expand toggle of a tree row. Each level is indented by it and a gap.
+      --clr-datagrid-tree-toggle-size: #{density.$clr-base-layout-space-l};
     }
 
     &,

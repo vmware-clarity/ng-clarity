@@ -62,7 +62,7 @@ const meta = {
   },
   args: {
     // inputs
-    clrAlertIcon: null,
+    clrAlertIcon: null as string | null,
     clrCloseButtonAriaLabel: commonStringsDefault.alertCloseButtonAriaLabel,
     clrAlertClosable: false,
     // outputs

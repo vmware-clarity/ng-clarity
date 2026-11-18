@@ -34,14 +34,14 @@ describe('getNestedProperty', () => {
       emptyString: '',
       zero: 0,
       boolFalse: false,
-      nullVal: null,
-      undefinedVal: undefined,
+      nullVal: null as unknown,
+      undefinedVal: undefined as unknown,
     };
     expect(getNestedProperty(item, 'emptyString')).toEqual({ value: '', isValid: true });
     expect(getNestedProperty(item, 'zero')).toEqual({ value: 0, isValid: true });
     expect(getNestedProperty(item, 'boolFalse')).toEqual({ value: false, isValid: true });
     expect(getNestedProperty(item, 'nullVal')).toEqual({ value: null, isValid: true });
-    expect(getNestedProperty(item, 'undefinedVal')).toEqual({ value: undefined, isValid: true });
+    expect(getNestedProperty(item, 'undefinedVal')).toStrictEqual({ value: undefined, isValid: true });
   });
 
   it('should return invalid if a top-level property does not exist', () => {
@@ -56,10 +56,10 @@ describe('getNestedProperty', () => {
   });
 
   it('should return invalid if an intermediate property is null or undefined', () => {
-    const item1 = { a: null };
+    const item1 = { a: null as unknown };
     expect(getNestedProperty(item1, 'a.b')).toEqual({ isValid: false });
 
-    const item2 = { a: undefined };
+    const item2 = { a: undefined as unknown };
     expect(getNestedProperty(item2, 'a.b')).toEqual({ isValid: false });
   });
 

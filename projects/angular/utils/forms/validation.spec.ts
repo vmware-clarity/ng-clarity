@@ -75,7 +75,7 @@ describe('clrHasRequiredValidator', () => {
 
   it('watches a control once however often its validity is recomputed', () => {
     const control = new FormControl('', Validators.minLength(3));
-    const subscribe = spyOn(control.statusChanges, 'subscribe').and.callThrough();
+    const subscribe = vi.spyOn(control.statusChanges, 'subscribe');
     for (let edit = 0; edit < 5; edit++) {
       clrHasRequiredValidator(control);
       control.setValue(`value ${edit}`);
