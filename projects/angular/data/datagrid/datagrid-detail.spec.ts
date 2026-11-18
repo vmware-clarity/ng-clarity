@@ -5,7 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ModalStackService } from '@clr/angular/modal';
 import { createTestHelpers, TestContext } from '@clr/angular/testing';
 
 import { ClrDatagridDetail } from './datagrid-detail';
@@ -131,9 +132,16 @@ describe('Datagrid', () => {
         let detailService: DetailService;
 
         beforeEach(() => {
-          context = helpers.create(ClrDatagridDetail, FullTest, [DetailService]);
+          // The datagrid gives the service its id when it creates it, before anything renders.
+          const detailServiceWithId = () => {
+            const service = new DetailService(inject(ModalStackService));
+            service.id = 'clr-id-1';
+            return service;
+          };
+          context = helpers.create(ClrDatagridDetail, FullTest, [
+            { provide: DetailService, useFactory: detailServiceWithId },
+          ]);
           detailService = context.getClarityProvider(DetailService);
-          detailService.id = 'clr-id-1';
           context.detectChanges();
         });
 

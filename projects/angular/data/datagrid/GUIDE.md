@@ -77,7 +77,7 @@ Pagination or virtual scroll is also a UX choice: use pagination when users jump
 - `clrDgField` (property path, e.g. `'address.city'`) enables default sort **and** a string filter. `[clrDgColType]="'number'"` switches to a numeric range filter.
 - `clrDgField` filters on the raw value as text. For boolean or enum columns (e.g. shown as Yes/No), add a custom `clr-dg-filter` or leave the column unfiltered.
 - Custom sort: `[clrDgSortBy]="comparator"` (`ClrDatagridComparatorInterface<T>` → `compare(a, b): number`), initial order via `[(clrDgSortOrder)]` (`ClrDatagridSortOrder.ASC | DESC | UNSORTED`).
-- Custom filter: `<clr-dg-string-filter [clrDgStringFilter]="f">` (`accepts(item, search)`), `<clr-dg-numeric-filter [clrDgNumericFilter]="f">`, or fully custom `<clr-dg-filter [clrDgFilter]="f">` implementing `ClrDatagridFilterInterface<T>` (`accepts`, `changes`, `isActive`, optional `state`). Form controls inside a custom filter use the Clarity directives like any other form, e.g. `<clr-checkbox-wrapper><input type="checkbox" clrCheckbox /><label>…</label></clr-checkbox-wrapper>`.
+- Custom filter: `<clr-dg-string-filter [clrDgStringFilter]="f">` (`accepts(item, search)`), `<clr-dg-numeric-filter [clrDgNumericFilter]="f">`, or fully custom `<clr-dg-filter [clrDgFilter]="f">` implementing `ClrDatagridFilterInterface<T>` (`accepts`, `changes`, `isActive`, optional `state`); emit `changes` whenever what `accepts` or `isActive` return changes, or the datagrid won't show it. Form controls inside a custom filter use the Clarity directives like any other form, e.g. `<clr-checkbox-wrapper><input type="checkbox" clrCheckbox /><label>…</label></clr-checkbox-wrapper>`.
 
 ## Server-driven
 

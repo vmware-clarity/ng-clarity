@@ -479,7 +479,7 @@ describe('Datagrid', () => {
         it("doesn't display the details when collapsed", () => {
           expect(context.clarityElement.textContent).toMatch('Hello world');
           expect(context.clarityElement.textContent).not.toMatch('Detail');
-          expand.setReplace(true);
+          expand.replace.set(true);
           context.detectChanges();
           expect(context.clarityElement.textContent).toMatch('Hello world');
           expect(context.clarityElement.textContent).not.toMatch('Detail');
@@ -487,7 +487,7 @@ describe('Datagrid', () => {
 
         it("doesn't display the details when collapsed and replacing cells", () => {
           expect(context.clarityElement.textContent).not.toMatch('Detail');
-          expand.setReplace(true);
+          expand.replace.set(true);
           context.detectChanges();
           expect(context.clarityElement.textContent).not.toMatch('Detail');
         });
@@ -499,7 +499,7 @@ describe('Datagrid', () => {
           expect(context.clarityElement.textContent).toMatch('Detail');
         });
         it('displays only the details when expanded and replacing', async () => {
-          expand.setReplace(true);
+          expand.replace.set(true);
           expand.expanded = true;
           await delay();
           context.detectChanges();
@@ -547,7 +547,7 @@ describe('Datagrid', () => {
         it('adds the correct class when replaced and expanded', async () => {
           expect(context.clarityElement.classList.contains('datagrid-row-replaced')).toBeFalsy();
           context.testComponent.expanded = true;
-          expand.setReplace(true);
+          expand.replace.set(true);
           await flushAnimations();
           expect(context.clarityElement.classList.contains('datagrid-row-replaced')).toBeTruthy();
         });
@@ -565,7 +565,7 @@ describe('Datagrid', () => {
           const beforeReplaced = context.clarityElement.querySelector('.is-replaced');
           expect(beforeReplaced).toBeNull();
           context.testComponent.expanded = true;
-          expand.setReplace(true);
+          expand.replace.set(true);
           await flushAnimations();
           const afterReplaced = context.clarityElement.querySelector('.is-replaced');
           expect(afterReplaced.classList.contains('is-replaced')).toBeTruthy();

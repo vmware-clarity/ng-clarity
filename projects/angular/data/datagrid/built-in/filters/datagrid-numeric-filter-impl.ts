@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { signal } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 import { DatagridPropertyNumericFilter } from './datagrid-property-numeric-filter';
@@ -20,8 +21,8 @@ export class DatagridNumericFilterImpl<T = any> implements ClrDatagridFilterInte
   /**
    * Internal values and accessor
    */
-  private _low: number | null = null;
-  private _high: number | null = null;
+  private readonly _low = signal<number | null>(null);
+  private readonly _high = signal<number | null>(null);
 
   constructor(public filterFn: ClrDatagridNumericFilterInterface<T>) {}
 
@@ -31,35 +32,35 @@ export class DatagridNumericFilterImpl<T = any> implements ClrDatagridFilterInte
   }
 
   get value(): [number, number] {
-    return [this._low, this._high];
+    return [this._low(), this._high()];
   }
   set value(vals: [number, number]) {
     const low = vals[0];
     const high = vals[1];
-    if (low !== this._low || high !== this._high) {
-      this._low = low;
-      this._high = high;
-      this._changes.next([this._low, this._high]);
+    if (low !== this._low() || high !== this._high()) {
+      this._low.set(low);
+      this._high.set(high);
+      this._changes.next([this._low(), this._high()]);
     }
   }
 
   get low() {
-    return this._low;
+    return this._low();
   }
   set low(low: number) {
-    if (low !== this._low) {
-      this._low = low;
-      this._changes.next([this._low, this._high]);
+    if (low !== this._low()) {
+      this._low.set(low);
+      this._changes.next([this._low(), this._high()]);
     }
   }
 
   get high() {
-    return this._high;
+    return this._high();
   }
   set high(high: number) {
-    if (high !== this._high) {
-      this._high = high;
-      this._changes.next([this._low, this._high]);
+    if (high !== this._high()) {
+      this._high.set(high);
+      this._changes.next([this._low(), this._high()]);
     }
   }
 
@@ -67,8 +68,8 @@ export class DatagridNumericFilterImpl<T = any> implements ClrDatagridFilterInte
     if (this.filterFn instanceof DatagridPropertyNumericFilter) {
       return {
         property: this.filterFn.prop,
-        low: this._low,
-        high: this._high,
+        low: this._low(),
+        high: this._high(),
       };
     }
     return this;
@@ -78,7 +79,7 @@ export class DatagridNumericFilterImpl<T = any> implements ClrDatagridFilterInte
    * Indicates if the filter is currently active, (at least one input is set)
    */
   isActive(): boolean {
-    return this._low !== null || this.high !== null;
+    return this._low() !== null || this.high !== null;
   }
 
   /**
@@ -87,7 +88,7 @@ export class DatagridNumericFilterImpl<T = any> implements ClrDatagridFilterInte
   accepts(item: T): boolean {
     // We have a filter function in case someone wants to implement a numeric
     // filter that always passes nulls or similar
-    return this.filterFn.accepts(item, this._low, this._high);
+    return this.filterFn.accepts(item, this._low(), this._high());
   }
 
   equals(other: ClrDatagridFilterInterface<T, any>): boolean {
@@ -96,8 +97,8 @@ export class DatagridNumericFilterImpl<T = any> implements ClrDatagridFilterInte
         return (
           this.filterFn instanceof DatagridPropertyNumericFilter &&
           other.filterFn.prop === this.filterFn.prop &&
-          other.low === this._low &&
-          other.high === this._high
+          other.low === this._low() &&
+          other.high === this._high()
         );
       }
       return other === this;

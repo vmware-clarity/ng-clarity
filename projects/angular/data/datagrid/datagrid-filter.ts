@@ -81,7 +81,7 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
     </div>
   `,
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrDatagridFilter<T = any>
   extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>>
@@ -89,7 +89,6 @@ export class ClrDatagridFilter<T = any>
 {
   @Output('clrDgFilterOpenChange') openChange = new EventEmitter<boolean>(false);
 
-  ariaExpanded = false;
   popoverId = uniqueIdFactory();
 
   // Smart Popover
@@ -110,7 +109,6 @@ export class ClrDatagridFilter<T = any>
     super(_filters);
     this.subs.push(
       popoverService.openChange.subscribe(change => {
-        this.ariaExpanded = change;
         this.openChange.emit(change);
 
         // Set here rather than in the open setter, so it applies however the filter is opened - its
@@ -144,8 +142,12 @@ export class ClrDatagridFilter<T = any>
   /**
    * Indicates if the filter is currently active
    */
+  get ariaExpanded(): boolean {
+    return this.popoverService.open;
+  }
+
   get active() {
-    return !!this.filter && this.filter.isActive();
+    return !!this.filter && this.filters.active().includes(this.filter);
   }
 
   override ngOnDestroy(): void {

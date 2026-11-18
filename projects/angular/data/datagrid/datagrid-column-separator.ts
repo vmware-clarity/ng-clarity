@@ -49,7 +49,7 @@ const KEYBOARD_RESIZE_LENGTH = 12;
     '[class.datagrid-column-separator]': 'true',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
   columnSeparatorId = uniqueIdFactory();

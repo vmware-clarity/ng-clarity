@@ -277,15 +277,17 @@ export class ClrDatagridColumn<T = any>
    */
   @Input({ alias: 'clrDgTreeToggle', transform: booleanAttribute })
   get treeToggle(): boolean {
-    return !!this.columnState && !!this.tree?.toggleColumns.has(this.columnState);
+    return !!this.columnState && !!this.tree?.toggleColumns().has(this.columnState);
   }
   set treeToggle(value: boolean) {
     if (this.tree && this.columnState) {
+      const columns = new Set(this.tree.toggleColumns());
       if (value) {
-        this.tree.toggleColumns.add(this.columnState);
+        columns.add(this.columnState);
       } else {
-        this.tree.toggleColumns.delete(this.columnState);
+        columns.delete(this.columnState);
       }
+      this.tree.toggleColumns.set(columns);
     }
   }
 

@@ -19,13 +19,13 @@ import { DatagridTreeService } from './providers/tree.service';
   template: `
     <!-- Named "Expand <row>": this word, then the cells that name the row. -->
     <span hidden [id]="actionId">
-      {{ node.expanded ? commonStrings.keys.collapse : commonStrings.keys.expand }}
+      {{ node.expanded() ? commonStrings.keys.collapse : commonStrings.keys.expand }}
     </span>
     <!-- The button stays while the children load, so it keeps the focus. -->
-    @if (node.loading && node.expanded) {
+    @if (node.loading && node.expanded()) {
       <clr-spinner clrSmall>{{ commonStrings.keys.loading }}</clr-spinner>
     } @else {
-      <cds-icon shape="angle" [direction]="node.expanded ? 'down' : 'right'"></cds-icon>
+      <cds-icon shape="angle" [direction]="node.expanded() ? 'down' : 'right'"></cds-icon>
     }
   `,
   host: {
@@ -33,12 +33,12 @@ import { DatagridTreeService } from './providers/tree.service';
     class: 'datagrid-tree-toggle',
     tabindex: '-1',
     '[attr.aria-labelledby]': 'actionId + " " + labelIds',
-    '[attr.aria-expanded]': 'node.expanded',
+    '[attr.aria-expanded]': 'node.expanded()',
     '(click)': 'toggle($event)',
     '(focus)': 'onFocus()',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrDatagridTreeToggleButton implements OnDestroy {
   @Input({ alias: 'clrDgTreeToggleButton', required: true }) node: DatagridTreeNode<unknown>;
@@ -85,6 +85,6 @@ export class ClrDatagridTreeToggleButton implements OnDestroy {
   protected toggle(event: MouseEvent) {
     // Expanding is not selecting, even in row selection mode.
     event.stopPropagation();
-    this.tree.setExpanded(this.node, !this.node.expanded);
+    this.tree.setExpanded(this.node, !this.node.expanded());
   }
 }

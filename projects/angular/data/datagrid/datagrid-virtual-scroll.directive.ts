@@ -42,6 +42,7 @@ import {
   Output,
   Renderer2,
   runInInjectionContext,
+  signal,
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
@@ -78,7 +79,8 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
 
   private gridRoleElement: HTMLElement | null | undefined;
   private readonly virtualScrollStrategy: FixedSizeVirtualScrollStrategy;
-  private virtualScrollViewport: CdkVirtualScrollViewport;
+  /** Created after the view, so the datagrid's view is told when it is there. */
+  private readonly virtualScrollViewport = signal<CdkVirtualScrollViewport | undefined>(undefined);
   private cdkVirtualFor: CdkVirtualForOf<T>;
   private subscriptions: Subscription[] = [];
   private topIndex = 0;
@@ -157,7 +159,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
 
   get totalContentHeight() {
     // TODO(CDE-3230): `_totalContentHeight` is private CDK API and may change in any CDK release.
-    return this.virtualScrollViewport?._totalContentHeight() || '';
+    return this.virtualScrollViewport()?._totalContentHeight() || '';
   }
 
   @Input('clrVirtualRowsOf')
@@ -249,26 +251,28 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
 
   ngAfterViewInit() {
     runInInjectionContext(this.injector, () => {
-      this.virtualScrollViewport = this.createVirtualScrollViewportForDatagrid(
-        this.changeDetectorRef,
-        this.ngZone,
-        this.renderer2,
-        this.directionality,
-        this.scrollDispatcher,
-        this.viewportRuler,
-        this.datagridElementRef,
-        this.virtualScrollStrategy
+      this.virtualScrollViewport.set(
+        this.createVirtualScrollViewportForDatagrid(
+          this.changeDetectorRef,
+          this.ngZone,
+          this.renderer2,
+          this.directionality,
+          this.scrollDispatcher,
+          this.viewportRuler,
+          this.datagridElementRef,
+          this.virtualScrollStrategy
+        )
       );
 
       this.cdkVirtualFor = this.createCdkVirtualForOfDirective(
         this.viewContainerRef,
         this.templateRef,
         this.iterableDiffers,
-        this.virtualScrollViewport,
+        this.virtualScrollViewport(),
         this.ngZone
       );
 
-      this.virtualScrollViewport.ngOnInit();
+      this.virtualScrollViewport().ngOnInit();
     });
 
     this.gridRoleElement = this.datagridElementRef.nativeElement.querySelector<HTMLElement>(
@@ -287,10 +291,10 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
       this.cdkVirtualFor.dataStream.subscribe(data => {
         this.updateAriaRowCount(data.length);
       }),
-      this.virtualScrollViewport.scrolledIndexChange.subscribe(index => {
+      this.virtualScrollViewport().scrolledIndexChange.subscribe(index => {
         this.topIndex = index;
       }),
-      this.virtualScrollViewport.renderedRangeStream.subscribe(renderedRange => {
+      this.virtualScrollViewport().renderedRangeStream.subscribe(renderedRange => {
         this.renderedRangeChange.emit(renderedRange);
         this.shouldUpdateAriaRowIndexes = true;
       }),
@@ -338,7 +342,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   }
 
   scrollToIndex(index: number, behavior: ScrollBehavior = 'auto') {
-    this.virtualScrollViewport?.scrollToIndex(index, behavior);
+    this.virtualScrollViewport()?.scrollToIndex(index, behavior);
   }
 
   private updateDataRange(skip: number, data: T[]) {

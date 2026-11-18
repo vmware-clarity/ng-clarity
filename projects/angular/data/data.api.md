@@ -26,6 +26,7 @@ import { EnvironmentInjector } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { FactoryProvider } from '@angular/core';
 import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
+import { FormControlStatus } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
 import * as i40 from '@angular/common';
@@ -52,12 +53,14 @@ import { ReplaySubject } from 'rxjs';
 import { SafeHtml } from '@angular/platform-browser';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
+import { Signal } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Subscription } from 'rxjs';
 import { TemplateRef } from '@angular/core';
 import { TrackByFunction } from '@angular/core';
 import { Type } from '@angular/core';
+import { ValidationErrors } from '@angular/forms';
 import { ViewContainerRef } from '@angular/core';
 import { ViewportRuler } from '@angular/cdk/scrolling';
 import { WritableSignal } from '@angular/core';
@@ -160,7 +163,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     ngDoCheck(): void;
     // (undocumented)
     ngOnDestroy(): void;
-    placeholder: ClrDatagridPlaceholder<T>;
+    get placeholder(): ClrDatagridPlaceholder<T>;
+    set placeholder(placeholder: ClrDatagridPlaceholder<T>);
     // (undocumented)
     _projectedCalculationColumns: ViewContainerRef;
     // (undocumented)
@@ -612,7 +616,7 @@ export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
 }
 
 // @public (undocumented)
-export class ClrDatagridColumnToggle implements OnDestroy {
+export class ClrDatagridColumnToggle {
     constructor(commonStrings: ClrCommonStringsService, columnsService: ColumnsService, popoverService: ClrPopoverService);
     // (undocumented)
     allColumnsSelected(): void;
@@ -626,9 +630,8 @@ export class ClrDatagridColumnToggle implements OnDestroy {
     // (undocumented)
     get hideableColumnStates(): ColumnState[];
     // (undocumented)
-    ngOnDestroy(): void;
-    // (undocumented)
-    openState: boolean;
+    get openState(): boolean;
+    set openState(open: boolean);
     // (undocumented)
     popoverId: string;
     // (undocumented)
@@ -695,7 +698,8 @@ export class ClrDatagridDetail {
     get detailWidth(): number;
     set detailWidth(value: number | null | undefined);
     // (undocumented)
-    header: ClrDatagridDetailHeader;
+    get header(): ClrDatagridDetailHeader;
+    set header(header: ClrDatagridDetailHeader);
     // (undocumented)
     get isCustomWidth(): boolean;
     // (undocumented)
@@ -755,11 +759,11 @@ export class ClrDatagridDetailHeader implements AfterViewInit {
 // @public
 export class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>> implements CustomFilter, OnDestroy {
     constructor(_filters: FiltersProvider<T>, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, keyNavigation: KeyNavigationGridController, columnActions: ColumnActionsService);
+    // (undocumented)
     get active(): boolean;
     // (undocumented)
     anchor: ElementRef<HTMLButtonElement>;
-    // (undocumented)
-    ariaExpanded: boolean;
+    get ariaExpanded(): boolean;
     // (undocumented)
     protected columnActions: ColumnActionsService;
     // (undocumented)
@@ -985,10 +989,11 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
     ngOnInit(): void;
     // (undocumented)
     page: Page;
+    // (undocumented)
     get pageSize(): number;
     set pageSize(size: number);
-    // (undocumented)
-    _pageSizeComponent: ClrDatagridPageSize;
+    get _pageSizeComponent(): ClrDatagridPageSize;
+    set _pageSizeComponent(pageSize: ClrDatagridPageSize);
     previous(): void;
     get totalItems(): number;
     set totalItems(total: number);
@@ -1035,8 +1040,8 @@ export class ClrDatagridPlaceholder<T = any> {
 }
 
 // @public (undocumented)
-export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContentInit, AfterViewInit {
-    constructor(selection: Selection_2<T>, rowActionService: RowActionService, globalExpandable: ExpandableRowsCount, expand: DatagridIfExpandService, detailService: DetailService, displayMode: DisplayModeService, vcr: ViewContainerRef, renderer: Renderer2, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, items: Items, columnsService: ColumnsService, document: any);
+export class ClrDatagridRow<T = any> implements OnChanges, AfterContentInit, AfterViewInit {
+    constructor(selection: Selection_2<T>, rowActionService: RowActionService, globalExpandable: ExpandableRowsCount, expand: DatagridIfExpandService, detailService: DetailService, displayMode: DisplayModeService, vcr: ViewContainerRef, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, items: Items, columnsService: ColumnsService, document: any);
     // (undocumented)
     _calculatedCells: ViewContainerRef;
     // (undocumented)
@@ -1080,7 +1085,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
     // (undocumented)
     expandAnimation: ClrExpandableAnimationDirective;
     // (undocumented)
-    expandAnimationTrigger: boolean;
+    get expandAnimationTrigger(): boolean;
     get expanded(): boolean | string;
     set expanded(value: boolean | string);
     // (undocumented)
@@ -1104,8 +1109,6 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
-    ngDoCheck(): void;
-    // (undocumented)
     ngOnChanges(changes: SimpleChanges): void;
     // (undocumented)
     ngOnDestroy(): void;
@@ -1117,8 +1120,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
     _pinnedCells: ViewContainerRef;
     // (undocumented)
     radioId: string;
-    // (undocumented)
-    replaced: boolean;
+    get replaced(): boolean;
     // (undocumented)
     rowActionService: RowActionService;
     // (undocumented)
@@ -1210,7 +1212,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
         optional: true;
     }, {
         optional: true;
-    }, null, null, null, null, {
+    }, null, null, null, {
         optional: true;
     }, {
         optional: true;
@@ -1237,6 +1239,7 @@ export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, Af
     expand: DatagridIfExpandService;
     // (undocumented)
     expandableRows: ExpandableRowsCount;
+    protected readonly hasCells: WritableSignal<boolean>;
     // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
@@ -1248,7 +1251,7 @@ export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, Af
     // (undocumented)
     set replace(value: boolean);
     // (undocumented)
-    replacedRow: boolean;
+    get replacedRow(): boolean;
     // (undocumented)
     rowActionService: RowActionService;
     // (undocumented)
@@ -2262,7 +2265,6 @@ class Selection_2<T = any> {
     constructor(_items: Items<T>, filters: FiltersProvider<T>, differs: IterableDiffers);
     // (undocumented)
     get change(): Observable<T[]>;
-    // (undocumented)
     checkForChanges(): void;
     // (undocumented)
     clearSelection(): void;
@@ -2282,7 +2284,8 @@ class Selection_2<T = any> {
     preserveSelection: boolean;
     rangeStart: T;
     // @deprecated (undocumented)
-    rowSelectionMode: boolean;
+    get rowSelectionMode(): boolean;
+    set rowSelectionMode(value: boolean);
     // (undocumented)
     get selectable(): boolean;
     // (undocumented)
@@ -2406,7 +2409,7 @@ export class WrappedRow implements AfterViewInit, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1790:5 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
+// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1834:5 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
 
 // (No @packageDocumentation comment for this package)
 

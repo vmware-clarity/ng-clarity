@@ -1696,17 +1696,17 @@ describe('Datagrid', () => {
         });
 
         it('should add datagrid-detail-overlay class when detailWidth is 100', () => {
-          detailService.detailWidth = 100;
+          detailService.detailWidth.set(100);
           context.detectChanges();
           expect(context.clarityElement.classList).toContain('datagrid-detail-overlay');
         });
 
         it('should remove datagrid-detail-overlay class when detailWidth is no longer 100', () => {
-          detailService.detailWidth = 100;
+          detailService.detailWidth.set(100);
           context.detectChanges();
           expect(context.clarityElement.classList).toContain('datagrid-detail-overlay');
 
-          detailService.detailWidth = 80;
+          detailService.detailWidth.set(80);
           context.detectChanges();
           expect(context.clarityElement.classList).not.toContain('datagrid-detail-overlay');
         });

@@ -11,8 +11,8 @@ import {
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
+  computed,
   ContentChildren,
-  DoCheck,
   DOCUMENT,
   ElementRef,
   EmbeddedViewRef,
@@ -25,7 +25,6 @@ import {
   Optional,
   Output,
   QueryList,
-  Renderer2,
   signal,
   SimpleChanges,
   TemplateRef,
@@ -39,7 +38,7 @@ import {
   IfExpandService,
   LoadingListener,
 } from '@clr/angular/utils';
-import { combineLatest, ReplaySubject, Subscription } from 'rxjs';
+import { ReplaySubject, Subscription } from 'rxjs';
 
 import { ClrDatagridCell } from './datagrid-cell';
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
@@ -65,6 +64,7 @@ let nbRow = 0;
     '[class.datagrid-row]': 'true',
     '[class.datagrid-row-skeleton]': 'skeletonLoading',
     '[class.datagrid-selected]': 'selected',
+    '[class.datagrid-row-replaced]': 'replaced',
     '[attr.aria-owns]': 'id',
     role: 'rowgroup',
   },
@@ -75,9 +75,9 @@ let nbRow = 0;
     { provide: DATAGRID_TREE_ROW, useExisting: ClrDatagridRow },
   ],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContentInit, AfterViewInit {
+export class ClrDatagridRow<T = any> implements OnChanges, AfterContentInit, AfterViewInit {
   @Output('clrDgSelectedChange') selectedChanged = new EventEmitter<boolean>(false);
   @Output('clrDgExpandedChange') expandedChange = new EventEmitter<boolean>(false);
   @Input('clrDgDetailDisabled') detailDisabled = false;
@@ -95,9 +95,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
   radioId: string;
   checkboxId: string;
   expandableId: string;
-  replaced: boolean;
   displayCells = false;
-  expandAnimationTrigger = false;
 
   /* reference to the enum so that template can access */
   SELECTION_TYPE = SelectionType;
@@ -126,19 +124,18 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
 
   protected readonly tree = inject<DatagridTreeService<T>>(DatagridTreeService, { optional: true });
 
-  private _item: T;
+  private readonly _item = signal<T>(undefined);
   private _selected = false;
   private _detailOpenLabel = '';
   private _detailCloseLabel = '';
   private _rowSelectionLabel = '';
   private wrappedInjector: Injector;
-  /** What `_tree` worked out in this check; `undefined` until it is read. */
-  private treeCells: DatagridTreeRowCells<T> | null | undefined;
   /**
-   * Counts the changes of the cells of the row. The cells rendered in a loop inside the row are
-   * checked before the row knows them, in its content hooks; reading this makes them checked again.
+   * The cells of the row. The cells rendered in a loop inside the row are checked before the row knows
+   * them, in its content hooks, and are checked again once it does.
    */
-  private readonly cellChanges = signal(0);
+  private readonly cells = signal<readonly ClrDatagridCell[]>([]);
+  private readonly treeCells = computed(() => this.workOutTreeCells());
   private subscriptions: Subscription[] = [];
 
   /**
@@ -155,6 +152,9 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
   // The expanded state in a tree, kept to be applied to the item when it is set, like the selectable state.
   private _treeExpanded: boolean | undefined;
 
+  /** Flipped to run the expand animation. */
+  private readonly animationTrigger = signal(false);
+
   constructor(
     @Optional() public selection: Selection<T>,
     @Optional() public rowActionService: RowActionService,
@@ -163,7 +163,6 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
     @Optional() public detailService: DetailService,
     @Optional() private displayMode: DisplayModeService,
     private vcr: ViewContainerRef,
-    renderer: Renderer2,
     public el: ElementRef<HTMLElement>,
     public commonStrings: ClrCommonStringsService,
     @Optional() private items: Items,
@@ -187,20 +186,6 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
     this.checkboxId = 'clr-dg-row-cb' + nbRow;
     this.expandableId = expand.expandableId;
 
-    this.subscriptions.push(
-      combineLatest(expand.replace, expand.expandChange).subscribe(([expandReplaceValue, expandChangeValue]) => {
-        if (expandReplaceValue && expandChangeValue) {
-          // replaced and expanding
-          this.replaced = true;
-          renderer.addClass(el.nativeElement, 'datagrid-row-replaced');
-        } else {
-          this.replaced = false;
-          // Handles these cases: not replaced and collapsing & replaced and
-          // collapsing and not replaced and expanding.
-          renderer.removeClass(el.nativeElement, 'datagrid-row-replaced');
-        }
-      })
-    );
     if (this.tree) {
       // In a tree, the rows report their expanded state like expandable rows do.
       this.subscriptions.push(
@@ -218,10 +203,10 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
    */
   @Input('clrDgItem')
   get item(): T {
-    return this._item;
+    return this._item();
   }
   set item(item: T) {
-    this._item = item;
+    this._item.set(item);
     this.itemChanges.next(item);
     this.clrDgSelectable = this._selectable;
   }
@@ -274,7 +259,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
   @Input('clrDgExpanded')
   get expanded() {
     const node = this._tree?.node;
-    return node ? node.expanded : this.expand.expanded;
+    return node ? node.expanded() : this.expand.expanded;
   }
   set expanded(value: boolean | string) {
     if (this.tree?.enabled()) {
@@ -310,6 +295,15 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
     this._rowSelectionLabel = label;
   }
 
+  /** The detail replaces the row while it is expanded. */
+  get replaced(): boolean {
+    return this.expand.replace() && this.expand.expanded;
+  }
+
+  get expandAnimationTrigger(): boolean {
+    return this.animationTrigger();
+  }
+
   get _view() {
     return this.wrappedInjector.get(WrappedRow, this.vcr).rowView;
   }
@@ -320,17 +314,10 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
 
   /**
    * What the cells of this row render of the tree, when the datagrid renders one. The row and its
-   * cells read it many times per check, so it is worked out at the first read of each check.
-   *
-   * The cells read it while they are checked, which can be before the row's own content hooks run,
-   * when the cells are rendered in a loop inside the row; the row's `ngDoCheck` runs before them.
+   * cells read it many times per check, so it is worked out once per change of what it depends on.
    */
   get _tree(): DatagridTreeRowCells<T> | null {
-    this.cellChanges();
-    if (this.treeCells === undefined) {
-      this.treeCells = this.workOutTreeCells();
-    }
-    return this.treeCells;
+    return this.treeCells();
   }
 
   /**
@@ -362,10 +349,6 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
   ngOnInit() {
     this.wrappedInjector = new HostWrapper(WrappedRow, this.vcr);
     this.selection.lockItem(this.item, this.clrDgSelectable === false);
-  }
-
-  ngDoCheck() {
-    this.treeCells = undefined;
   }
 
   ngAfterContentInit() {
@@ -418,7 +401,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
         }
       }),
       this.expand.animate.subscribe(() => {
-        this.expandAnimationTrigger = !this.expandAnimationTrigger;
+        this.animationTrigger.update(trigger => !trigger);
       })
     );
   }
@@ -509,10 +492,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
   }
 
   private cellsChanged() {
-    if (this.tree?.enabled()) {
-      this.treeCells = undefined;
-      this.cellChanges.update(changes => changes + 1);
-    }
+    this.cells.set(this.dgCells.toArray());
   }
 
   /**
@@ -529,20 +509,19 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
     if (!node) {
       return null;
     }
-    const columns = this.columnsService.columns;
+    const toggleColumns = this.tree.toggleColumns();
     const marked = new Set<ClrDatagridCell>();
     let first: ClrDatagridCell | undefined;
     let pinned: ClrDatagridCell | undefined;
-    this.dgCells?.forEach((cell, index) => {
-      const column = columns[index];
-      if (column?.value.hidden) {
+    this.cells().forEach((cell, index) => {
+      if (this.columnsService.isHidden(index)) {
         return;
       }
       first ??= cell;
-      if (column?.value.pinned) {
+      if (this.columnsService.isPinned(index)) {
         pinned ??= cell;
       }
-      if (this.tree.toggleColumns.has(column)) {
+      if (toggleColumns.has(this.columnsService.columnAt(index))) {
         marked.add(cell);
       }
     });

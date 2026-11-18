@@ -28,7 +28,7 @@ export class MockColumnsService extends ColumnsService {
 
   mockColumns(columnNumber: number) {
     for (let i = 0; i < columnNumber; i++) {
-      this.columns.push(columnStateFactory());
+      this.setColumn(this.columns.length, columnStateFactory());
     }
   }
 

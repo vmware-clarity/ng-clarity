@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 import { Page } from './page';
@@ -14,6 +14,12 @@ import { ClrDatagridFilterInterface } from '../interfaces/filter.interface';
 
 @Injectable()
 export class FiltersProvider<T = any> {
+  /**
+   * The filters that are active, for the views that show it. Updated on every filter change, so a custom filter
+   * that tells the datagrid of its changes is shown as active or not, also when it changes outside the datagrid.
+   */
+  readonly active = signal<ClrDatagridFilterInterface<T>[]>([]);
+
   /**
    * This subject is the list of filters that changed last, not the whole list.
    * We emit a list rather than just one filter to allow batch changes to several at once.
@@ -106,6 +112,7 @@ export class FiltersProvider<T = any> {
     // filtering may change the page number such that current page number doesn't exist in the filtered dataset.
     // So here we always set the current page to 1 so that it'll fetch first page's data with the given filter.
     this._page.current = 1;
+    this.active.set(this.getActiveFilters());
     this._change.next(filters);
     this.stateDebouncer.changeDone();
   }

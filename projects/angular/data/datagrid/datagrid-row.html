@@ -14,10 +14,10 @@
   [class.datagrid-row-clickable]="selection.rowSelectionMode"
   [class.datagrid-row-detail-open]="detailService.isRowOpen(item)"
   [attr.aria-level]="treeNode?.level"
-  [attr.aria-expanded]="treeNode?.expandable ? treeNode.expanded : null"
+  [attr.aria-expanded]="treeNode?.expandable ? treeNode.expanded() : null"
   [attr.aria-posinset]="treeNode ? tree.posInSet(treeNode) : null"
   [attr.aria-setsize]="treeNode ? tree.setSize(treeNode) : null"
-  [attr.aria-busy]="(treeNode?.loading && treeNode.expanded) || null"
+  [attr.aria-busy]="(treeNode?.loading && treeNode.expanded()) || null"
 >
   <div class="datagrid-row-sticky">
     <!-- Sticky elements here -->
