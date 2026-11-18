@@ -92,8 +92,8 @@ describe('Button Group Directives', () => {
       });
 
       it('initializes the buttons correctly', () => {
-        expect(testContext.testBtnGroup.inlineButtons.length).toBe(2);
-        expect(testContext.testBtnGroup.menuButtons.length).toBe(3);
+        expect(testContext.testBtnGroup['inlineButtons']().length).toBe(2);
+        expect(testContext.testBtnGroup['menuButtons']().length).toBe(3);
       });
 
       it('button group menu is opened', () => {

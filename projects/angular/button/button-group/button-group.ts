@@ -6,14 +6,13 @@
  */
 
 import {
-  AfterContentInit,
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  ContentChildren,
+  computed,
+  contentChildren,
   ElementRef,
   Input,
-  QueryList,
   ViewChild,
 } from '@angular/core';
 import {
@@ -37,35 +36,33 @@ import {
   ButtonGroupFocusHandler,
 } from '../providers/button-group-focus-handler.service';
 import { InitialFocus } from '../providers/button-group-focus.enum';
-import { ButtonInGroupService } from '../providers/button-in-group.service';
 
 @Component({
   selector: 'clr-button-group',
   templateUrl: 'button-group.html',
-  providers: [ButtonInGroupService, ClrDestroyService, BUTTON_GROUP_FOCUS_HANDLER_PROVIDER, FOCUS_SERVICE_PROVIDER],
+  providers: [ClrDestroyService, BUTTON_GROUP_FOCUS_HANDLER_PROVIDER, FOCUS_SERVICE_PROVIDER],
   hostDirectives: [ClrPopoverHostDirective],
   host: { '[class.btn-group]': 'true' },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
+export class ClrButtonGroup implements AfterViewInit {
   @Input('clrToggleButtonAriaLabel') clrToggleButtonAriaLabel: string = this.commonStrings.keys.rowActions;
 
   @ViewChild('menuToggle') menuToggle: ElementRef<HTMLElement>;
   @ViewChild('menu') menu: ElementRef<HTMLElement>;
 
-  @ContentChildren(ClrButton) buttons: QueryList<ClrButton>;
-
   popoverId = uniqueIdFactory();
   InitialFocus = InitialFocus;
 
-  inlineButtons: ClrButton[] = [];
-  menuButtons: ClrButton[] = [];
+  // Both lists follow the projected buttons and their `clrInMenu` input, in the order of the buttons.
+  protected readonly inlineButtons = computed(() => this.buttons().filter(button => !button.inMenu));
+  protected readonly menuButtons = computed(() => this.buttons().filter(button => button.inMenu));
   protected popoverType = ClrPopoverType.DROPDOWN;
   private _menuPosition = ClrPopoverPosition.BOTTOM_LEFT;
+  private readonly buttons = contentChildren(ClrButton);
 
   constructor(
-    public buttonGroupNewService: ButtonInGroupService,
     private popoverService: ClrPopoverService,
     public commonStrings: ClrCommonStringsService,
     private destroy$: ClrDestroyService,
@@ -94,47 +91,8 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
     return this.popoverService.open;
   }
 
-  /**
-   * 1. Initializes the initial Button Group View
-   * 2. Subscribes to changes on the ContentChildren
-   *    in case the user content projection changes
-   */
-  ngAfterContentInit() {
-    this.initializeButtons();
-    this.buttonGroupNewService.changes.pipe(takeUntil(this.destroy$)).subscribe(button => this.rearrangeButton(button));
-    this.buttons.changes.subscribe(() => {
-      this.initializeButtons();
-    });
-  }
-
   ngAfterViewInit() {
     this.handleFocusOnMenuOpen();
-  }
-
-  /**
-   * Moves the button into the other ViewContainer
-   * when an update is received.
-   *
-   * @param button
-   */
-  rearrangeButton(button: ClrButton): void {
-    let fromView: ClrButton[];
-    let toView: ClrButton[];
-    if (button.inMenu) {
-      fromView = this.inlineButtons;
-      toView = this.menuButtons;
-    } else {
-      fromView = this.menuButtons;
-      toView = this.inlineButtons;
-    }
-    const index: number = fromView.indexOf(button);
-    if (index > -1) {
-      fromView.splice(index, 1);
-      const moveIndex = this.getMoveIndex(button);
-      if (moveIndex <= toView.length) {
-        toView.splice(moveIndex, 0, button);
-      }
-    }
   }
 
   openMenu(event: Event, initialFocus: InitialFocus) {
@@ -142,33 +100,6 @@ export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
     if (!this.popoverService.open) {
       this.popoverService.toggleWithEvent(event);
     }
-  }
-
-  /**
-   * Author: Eudes
-   *
-   * Finds the order of a button w.r.t other buttons
-   *
-   * @param buttonToMove
-   * @returns
-   */
-  getMoveIndex(buttonToMove: ClrButton): number {
-    const tempArr: ClrButton[] = this.buttons.filter(button => button.inMenu === buttonToMove.inMenu);
-    return tempArr.indexOf(buttonToMove);
-  }
-
-  initializeButtons(): void {
-    const tempInlineButtons: ClrButton[] = [];
-    const tempInMenuButtons: ClrButton[] = [];
-    this.buttons.forEach(button => {
-      if (button.inMenu) {
-        tempInMenuButtons.push(button);
-      } else {
-        tempInlineButtons.push(button);
-      }
-    });
-    this.inlineButtons = tempInlineButtons;
-    this.menuButtons = tempInMenuButtons;
   }
 
   private handleFocusOnMenuOpen() {

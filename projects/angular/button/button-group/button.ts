@@ -12,14 +12,12 @@ import {
   Input,
   Optional,
   Output,
-  SkipSelf,
+  signal,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
 import { RouterLinkActive } from '@angular/router';
 import { ClrLoadingState, LoadingListener, uniqueIdFactory } from '@clr/angular/utils';
-
-import { ButtonInGroupService } from '../providers/button-in-group.service';
 
 @Component({
   selector: 'clr-button',
@@ -43,7 +41,7 @@ import { ButtonInGroupService } from '../providers/button-in-group.service';
   `,
   providers: [{ provide: LoadingListener, useExisting: ClrButton }],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrButton implements LoadingListener {
   @Output('click') _click = new EventEmitter<boolean>(false);
@@ -51,35 +49,27 @@ export class ClrButton implements LoadingListener {
 
   @ViewChild('buttonProjectedRef', { static: true }) templateRef: TemplateRef<ClrButton>;
 
-  loading: boolean;
-
-  private _inMenu = false;
-  private _enableService = false;
+  private readonly _inMenu = signal(false);
+  private readonly _loading = signal(false);
   private _classNames = 'btn';
   private _name: string = null;
   private _type: string = null;
   private _disabled: any = null;
   private _id: string = uniqueIdFactory();
 
-  constructor(
-    @Optional() private readonly routerLinkActive: RouterLinkActive,
-    @SkipSelf() @Optional() public buttonInGroupService: ButtonInGroupService
-  ) {}
+  constructor(@Optional() private readonly routerLinkActive: RouterLinkActive) {}
 
+  /** Whether the button group shows the button in its overflow menu. */
   @Input('clrInMenu')
   get inMenu(): boolean {
-    return this._inMenu;
+    return this._inMenu();
   }
   set inMenu(value: boolean) {
-    value = !!value;
-    if (this._inMenu !== value) {
-      this._inMenu = value;
-      // We check if the service flag is enabled
-      // and if the service exists because the service is optional
-      if (this._enableService && this.buttonInGroupService) {
-        this.buttonInGroupService.updateButtonGroup(this);
-      }
-    }
+    this._inMenu.set(!!value);
+  }
+
+  get loading(): boolean {
+    return this._loading();
   }
 
   @Input('class')
@@ -142,12 +132,8 @@ export class ClrButton implements LoadingListener {
     return this.inMenu ? 'menuitem' : null;
   }
 
-  ngAfterViewInit() {
-    this._enableService = true;
-  }
-
   loadingStateChange(state: ClrLoadingState): void {
-    this.loading = state === ClrLoadingState.LOADING;
+    this._loading.set(state === ClrLoadingState.LOADING);
   }
 
   emitClick(): void {
