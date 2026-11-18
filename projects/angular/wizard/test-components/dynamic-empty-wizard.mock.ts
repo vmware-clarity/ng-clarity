@@ -32,6 +32,6 @@ import { ClrWizard } from '../wizard';
 export class DynamicEmptyWizardTestComponent {
   @ViewChild('wizard', { static: true }) wizard: ClrWizard;
   open = true;
-  pages = [];
+  pages: number[] = [];
   preventNavigation = true;
 }

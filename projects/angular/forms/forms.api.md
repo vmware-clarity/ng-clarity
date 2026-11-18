@@ -41,7 +41,6 @@ import { PipeTransform } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
 import { RendererFactory2 } from '@angular/core';
-import * as rxjs from 'rxjs';
 import { SafeHtml } from '@angular/platform-browser';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
 import { SimpleChanges } from '@angular/core';
@@ -72,7 +71,9 @@ export abstract class AbstractIfState {
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<AbstractIfState, never, never, {}, {}, never, never, true, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<AbstractIfState, [{ optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<AbstractIfState, [{
+        optional: true;
+    }]>;
 }
 
 // @public (undocumented)
@@ -142,7 +143,9 @@ export abstract class ClrAbstractContainer implements OnDestroy {
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAbstractContainer, never, never, {}, {}, ["label", "controlSuccessComponent", "controlErrorComponent", "controlHelperComponent"], never, true, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAbstractContainer, [{ optional: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAbstractContainer, [{
+        optional: true;
+    }, null, null]>;
 }
 
 // @public (undocumented)
@@ -194,7 +197,12 @@ export class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> {
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrCheckbox, "[clrCheckbox],[clrToggle]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrCheckbox, [null, null, { optional: true; self: true; }, null, null, { attribute: "clrToggle"; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrCheckbox, [null, null, {
+        optional: true;
+        self: true;
+    }, null, null, {
+        attribute: "clrToggle";
+    }]>;
 }
 
 // @public (undocumented)
@@ -220,9 +228,16 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
     // (undocumented)
     role: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCheckboxContainer, "clr-checkbox-container,clr-toggle-container", never, { "clrInline": { "alias": "clrInline"; "required": false; }; }, {}, ["checkboxes"], ["label", "clr-checkbox-wrapper,clr-toggle-wrapper", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCheckboxContainer, "clr-checkbox-container,clr-toggle-container", never, {
+        "clrInline": {
+            "alias": "clrInline";
+            "required": false;
+        };
+    }, {}, ["checkboxes"], ["label", "clr-checkbox-wrapper,clr-toggle-wrapper", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrCheckboxContainer, [{ optional: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrCheckboxContainer, [{
+        optional: true;
+    }, null, null]>;
 }
 
 // @public (undocumented)
@@ -283,15 +298,15 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     clrInputChange: EventEmitter<string>;
     // (undocumented)
-    clrOpenChange: rxjs.Observable<boolean>;
+    clrOpenChange: Observable<boolean>;
     // Warning: (ae-forgotten-export) The symbol "ComboboxModel" needs to be exported by the entry point clr-angular-forms.d.ts
-    clrSelectionChange: rxjs.Observable<ComboboxModel<T>>;
+    clrSelectionChange: Observable<ComboboxModel<T>>;
     // Warning: (ae-forgotten-export) The symbol "ClrCommonStringsService" needs to be exported by the entry point clr-angular-forms.d.ts
     //
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
-    protected containerWidth: any;
+    protected containerWidth: number | null;
     // (undocumented)
     control: NgControl;
     // (undocumented)
@@ -340,7 +355,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    onBlur(event: any): void;
+    onBlur(event: FocusEvent): void;
     // (undocumented)
     onChange(): void;
     // (undocumented)
@@ -348,7 +363,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     onKeyUp(event: KeyboardEvent): void;
     // (undocumented)
-    onWrapperClick(event: any): void;
+    onWrapperClick(event: MouseEvent): void;
     // (undocumented)
     get openState(): boolean;
     // (undocumented)
@@ -406,9 +421,50 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     writeValue(value: T | T[]): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCombobox<any>, "clr-combobox", never, { "placeholder": { "alias": "placeholder"; "required": false; }; "showSelectAll": { "alias": "showSelectAll"; "required": false; }; "editable": { "alias": "clrEditable"; "required": false; }; "editableResolver": { "alias": "clrEditableResolverFn"; "required": false; }; "identityFn": { "alias": "clrComboboxIdentityFn"; "required": false; }; "multiSelect": { "alias": "clrMulti"; "required": false; }; }, { "clrInputChange": "clrInputChange"; "clrOpenChange": "clrOpenChange"; "clrSelectionChange": "clrSelectionChange"; }, ["optionSelected", "options", "optionItems"], ["*"], false, [{ directive: typeof i1_2.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCombobox<any>, "clr-combobox", never, {
+        "placeholder": {
+            "alias": "placeholder";
+            "required": false;
+        };
+        "showSelectAll": {
+            "alias": "showSelectAll";
+            "required": false;
+        };
+        "editable": {
+            "alias": "clrEditable";
+            "required": false;
+        };
+        "editableResolver": {
+            "alias": "clrEditableResolverFn";
+            "required": false;
+        };
+        "identityFn": {
+            "alias": "clrComboboxIdentityFn";
+            "required": false;
+        };
+        "multiSelect": {
+            "alias": "clrMulti";
+            "required": false;
+        };
+    }, {
+        "clrInputChange": "clrInputChange";
+        "clrOpenChange": "clrOpenChange";
+        "clrSelectionChange": "clrSelectionChange";
+    }, ["optionSelected", "options"], ["*"], false, [{
+        directive: typeof i1_2.ClrPopoverHostDirective;
+        inputs: {};
+        outputs: {};
+    }]>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrCombobox<any>, [null, null, { optional: true; self: true; }, null, null, null, null, null, { optional: true; }, null, null, null, null, { optional: true; host: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrCombobox<any>, [null, null, {
+        optional: true;
+        self: true;
+    }, null, null, null, null, null, {
+        optional: true;
+    }, null, null, null, null, {
+        optional: true;
+        host: true;
+    }]>;
 }
 
 // @public (undocumented)
@@ -425,7 +481,9 @@ export class ClrComboboxContainer extends ClrAbstractContainer implements AfterC
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrComboboxContainer, "clr-combobox-container", never, {}, {}, never, ["label", "clr-combobox", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrComboboxContainer, [{ optional: true; }, null, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrComboboxContainer, [{
+        optional: true;
+    }, null, null, null, null]>;
 }
 
 // @public (undocumented)
@@ -466,7 +524,10 @@ export class ClrControl extends WrappedFormControl<ClrControlContainer> {
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrControl, "[clrControl]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrControl, [null, null, { optional: true; self: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrControl, [null, null, {
+        optional: true;
+        self: true;
+    }, null, null]>;
 }
 
 // @public (undocumented)
@@ -491,7 +552,11 @@ export class ClrControlError extends ClrAbstractControl {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrControlError, "clr-control-error", never, {}, {}, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrControlError, [{ optional: true; }, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrControlError, [{
+        optional: true;
+    }, {
+        optional: true;
+    }]>;
 }
 
 // @public (undocumented)
@@ -506,7 +571,11 @@ export class ClrControlHelper extends ClrAbstractControl {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrControlHelper, "clr-control-helper", never, {}, {}, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrControlHelper, [{ optional: true; }, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrControlHelper, [{
+        optional: true;
+    }, {
+        optional: true;
+    }]>;
 }
 
 // @public (undocumented)
@@ -527,9 +596,24 @@ export class ClrControlLabel implements OnInit, OnDestroy {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrControlLabel, "label", never, { "idInput": { "alias": "id"; "required": false; }; "forAttr": { "alias": "for"; "required": false; }; }, {}, ["signpost"], never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrControlLabel, "label", never, {
+        "idInput": {
+            "alias": "id";
+            "required": false;
+        };
+        "forAttr": {
+            "alias": "for";
+            "required": false;
+        };
+    }, {}, ["signpost"], never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrControlLabel, [{ optional: true; }, { optional: true; }, { optional: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrControlLabel, [{
+        optional: true;
+    }, {
+        optional: true;
+    }, {
+        optional: true;
+    }, null, null]>;
 }
 
 // @public (undocumented)
@@ -544,7 +628,11 @@ export class ClrControlSuccess extends ClrAbstractControl {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrControlSuccess, "clr-control-success", never, {}, {}, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrControlSuccess, [{ optional: true; }, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrControlSuccess, [{
+        optional: true;
+    }, {
+        optional: true;
+    }]>;
 }
 
 // @public (undocumented)
@@ -559,9 +647,16 @@ export class ClrDatalist implements AfterContentInit {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatalist, "datalist", never, { "id": { "alias": "id"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatalist, "datalist", never, {
+        "id": {
+            "alias": "id";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatalist, [{ optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatalist, [{
+        optional: true;
+    }]>;
 }
 
 // @public (undocumented)
@@ -574,7 +669,9 @@ export class ClrDatalistContainer extends ClrAbstractContainer {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatalistContainer, "clr-datalist-container", never, {}, {}, never, ["label", "[clrDatalistInput]", "datalist", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatalistContainer, [null, { optional: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatalistContainer, [null, {
+        optional: true;
+    }, null, null]>;
 }
 
 // @public (undocumented)
@@ -591,7 +688,12 @@ export class ClrDatalistInput extends WrappedFormControl<ClrDatalistContainer> i
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatalistInput, "[clrDatalistInput]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatalistInput, [{ optional: true; }, null, null, { optional: true; self: true; }, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatalistInput, [{
+        optional: true;
+    }, null, null, {
+        optional: true;
+        self: true;
+    }, null, null, null]>;
 }
 
 // @public (undocumented)
@@ -640,22 +742,51 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     // (undocumented)
     protected ngControlService: NgControlService;
     // (undocumented)
-    ngOnDestroy(): void;
-    // (undocumented)
     get open(): boolean;
     // (undocumented)
     get popoverPosition(): ClrPopoverPosition;
     // (undocumented)
     protected popoverType: ClrPopoverType;
     // (undocumented)
-    set rangeOptions(rangeOptions: any);
+    set rangeOptions(rangeOptions: DateRangeOption[]);
     // (undocumented)
     protected renderer: Renderer2;
     set showActionButtons(flag: boolean);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDateContainer, "clr-date-container, clr-date-range-container", never, { "firstDayOfWeek": { "alias": "clrFirstDayOfWeek"; "required": false; }; "showActionButtons": { "alias": "showActionButtons"; "required": false; }; "clrPosition": { "alias": "clrPosition"; "required": false; }; "rangeOptions": { "alias": "rangeOptions"; "required": false; }; "min": { "alias": "min"; "required": false; }; "max": { "alias": "max"; "required": false; }; }, {}, never, ["label", "[clrStartDate]", "[clrEndDate]", "[clrDate]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, [{ directive: typeof i1_2.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDateContainer, "clr-date-container, clr-date-range-container", never, {
+        "firstDayOfWeek": {
+            "alias": "clrFirstDayOfWeek";
+            "required": false;
+        };
+        "showActionButtons": {
+            "alias": "showActionButtons";
+            "required": false;
+        };
+        "clrPosition": {
+            "alias": "clrPosition";
+            "required": false;
+        };
+        "rangeOptions": {
+            "alias": "rangeOptions";
+            "required": false;
+        };
+        "min": {
+            "alias": "min";
+            "required": false;
+        };
+        "max": {
+            "alias": "max";
+            "required": false;
+        };
+    }, {}, never, ["label", "[clrStartDate]", "[clrEndDate]", "[clrDate]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, [{
+        directive: typeof i1_2.ClrPopoverHostDirective;
+        inputs: {};
+        outputs: {};
+    }]>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateContainer, [null, null, null, null, null, null, null, null, null, null, null, { optional: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateContainer, [null, null, null, null, null, null, null, null, null, null, null, {
+        optional: true;
+    }, null, null]>;
 }
 
 // @public (undocumented)
@@ -671,9 +802,24 @@ export class ClrDateInput extends ClrDateInputBase {
     // (undocumented)
     protected updateDayModel(dayModel: DayModel): void;
     // (undocumented)
-    protected get userSelectedDayChange(): rxjs.Observable<DayModel>;
+    protected get userSelectedDayChange(): Observable<DayModel>;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateInput, "[clrDate]", never, { "date": { "alias": "clrDate"; "required": false; }; "min": { "alias": "min"; "required": false; }; "max": { "alias": "max"; "required": false; }; }, { "dateChange": "clrDateChange"; }, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateInput, "[clrDate]", never, {
+        "date": {
+            "alias": "clrDate";
+            "required": false;
+        };
+        "min": {
+            "alias": "min";
+            "required": false;
+        };
+        "max": {
+            "alias": "max";
+            "required": false;
+        };
+    }, {
+        "dateChange": "clrDateChange";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateInput, never>;
 }
@@ -729,9 +875,33 @@ export abstract class ClrDateInputBase extends WrappedFormControl<ClrDateContain
     // (undocumented)
     protected abstract get userSelectedDayChange(): Observable<DayModel>;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateInputBase, never, never, { "placeholder": { "alias": "placeholder"; "required": false; }; "disabled": { "alias": "disabled"; "required": false; }; }, {}, never, never, true, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateInputBase, never, never, {
+        "placeholder": {
+            "alias": "placeholder";
+            "required": false;
+        };
+        "disabled": {
+            "alias": "disabled";
+            "required": false;
+        };
+    }, {}, never, never, true, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateInputBase, [null, null, null, null, { optional: true; self: true; }, { optional: true; }, { optional: true; }, { optional: true; }, { optional: true; }, { optional: true; }, null, { optional: true; }, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateInputBase, [null, null, null, null, {
+        optional: true;
+        self: true;
+    }, {
+        optional: true;
+    }, {
+        optional: true;
+    }, {
+        optional: true;
+    }, {
+        optional: true;
+    }, {
+        optional: true;
+    }, null, {
+        optional: true;
+    }, null]>;
 }
 
 // @public (undocumented)
@@ -742,7 +912,9 @@ export class ClrDateInputValidator implements Validator {
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateInputValidator, "[clrDate], [clrStartDate], [clrEndDate]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateInputValidator, [{ optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateInputValidator, [{
+        optional: true;
+    }]>;
 }
 
 // @public (undocumented)
@@ -779,7 +951,7 @@ export class ClrDatepickerViewManager {
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
-    protected get dateRangeOptions(): any;
+    protected get dateRangeOptions(): DateRangeOption[];
     // (undocumented)
     protected get hasActionButtons(): boolean;
     // (undocumented)
@@ -788,7 +960,7 @@ export class ClrDatepickerViewManager {
     get isMonthView(): boolean;
     get isYearView(): boolean;
     // (undocumented)
-    onRangeOptionSelect(selectedRange: any): void;
+    onRangeOptionSelect(selectedRange: DateRangeOption): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatepickerViewManager, "clr-datepicker-view-manager", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -814,7 +986,14 @@ export class ClrDay {
     onSelectDay: EventEmitter<DayModel>;
     selectDay(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDay, "clr-day", never, { "dayView": { "alias": "clrDayView"; "required": false; }; }, { "onSelectDay": "selectDay"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDay, "clr-day", never, {
+        "dayView": {
+            "alias": "clrDayView";
+            "required": false;
+        };
+    }, {
+        "onSelectDay": "selectDay";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDay, never>;
 }
@@ -864,9 +1043,20 @@ export class ClrEndDateInput extends ClrDateInputBase {
     // (undocumented)
     protected updateDayModel(dayModel: DayModel): void;
     // (undocumented)
-    protected get userSelectedDayChange(): rxjs.Observable<DayModel>;
+    protected get userSelectedDayChange(): Observable<DayModel>;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrEndDateInput, "[clrEndDate]", never, { "inputWidth": { "alias": "inputWidth"; "required": false; }; "date": { "alias": "clrEndDate"; "required": false; }; }, { "dateChange": "clrEndDateChange"; }, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrEndDateInput, "[clrEndDate]", never, {
+        "inputWidth": {
+            "alias": "inputWidth";
+            "required": false;
+        };
+        "date": {
+            "alias": "clrEndDate";
+            "required": false;
+        };
+    }, {
+        "dateChange": "clrEndDateChange";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrEndDateInput, never>;
 }
@@ -879,7 +1069,11 @@ export class ClrEndDateInputValidator implements Validator {
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrEndDateInputValidator, "[clrEndDate]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrEndDateInputValidator, [{ optional: true; }, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrEndDateInputValidator, [{
+        optional: true;
+    }, {
+        optional: true;
+    }]>;
 }
 
 // @public (undocumented)
@@ -916,7 +1110,10 @@ export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrFileInput, "input[type=\"file\"][clrFileInput]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrFileInput, [null, null, null, null, { optional: true; self: true; }, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrFileInput, [null, null, null, null, {
+        optional: true;
+        self: true;
+    }, null]>;
 }
 
 // @public (undocumented)
@@ -948,11 +1145,14 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
     // (undocumented)
     protected get multiple(): boolean;
     // (undocumented)
-    ngOnDestroy(): void;
-    // (undocumented)
     protected get successMessagePresent(): boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrFileInputContainer, "clr-file-input-container", never, { "customButtonLabel": { "alias": "clrButtonLabel"; "required": false; }; }, {}, ["fileInput", "fileList", "fileSuccessComponent", "fileErrorComponent"], ["label", "[clrFileInput]", "clr-control-helper", "clr-control-error", "clr-control-success", "clr-file-list"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrFileInputContainer, "clr-file-input-container", never, {
+        "customButtonLabel": {
+            "alias": "clrButtonLabel";
+            "required": false;
+        };
+    }, {}, ["fileInput", "fileList", "fileSuccessComponent", "fileErrorComponent"], ["label", "[clrFileInput]", "clr-control-helper", "clr-control-error", "clr-control-success", "clr-file-list"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrFileInputContainer, never>;
 }
@@ -988,7 +1188,16 @@ export class ClrFileInputValidator implements Validator {
     // (undocumented)
     validate(control: AbstractControl<FileList>): ValidationErrors;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrFileInputValidator, "input[type=\"file\"][clrFileInput]", never, { "minFileSize": { "alias": "clrMinFileSize"; "required": false; }; "maxFileSize": { "alias": "clrMaxFileSize"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrFileInputValidator, "input[type=\"file\"][clrFileInput]", never, {
+        "minFileSize": {
+            "alias": "clrMinFileSize";
+            "required": false;
+        };
+        "maxFileSize": {
+            "alias": "clrMaxFileSize";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrFileInputValidator, never>;
 }
@@ -1103,7 +1312,12 @@ export class ClrForm {
     // (undocumented)
     onFormSubmit(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrForm, "[clrForm]", never, { "labelSize": { "alias": "clrLabelSize"; "required": false; }; }, {}, ["labels"], never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrForm, "[clrForm]", never, {
+        "labelSize": {
+            "alias": "clrLabelSize";
+            "required": false;
+        };
+    }, {}, ["labels"], never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrForm, never>;
 }
@@ -1149,9 +1363,16 @@ export class ClrIfError extends AbstractIfState {
     // (undocumented)
     protected handleState(state: CONTROL_STATE): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfError, "[clrIfError]", never, { "error": { "alias": "clrIfError"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfError, "[clrIfError]", never, {
+        "error": {
+            "alias": "clrIfError";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfError, [{ optional: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfError, [{
+        optional: true;
+    }, null, null]>;
 }
 
 // @public (undocumented)
@@ -1162,7 +1383,9 @@ export class ClrIfSuccess extends AbstractIfState {
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfSuccess, "[clrIfSuccess]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfSuccess, [{ optional: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfSuccess, [{
+        optional: true;
+    }, null, null]>;
 }
 
 // @public (undocumented)
@@ -1173,7 +1396,10 @@ export class ClrInput extends WrappedFormControl<ClrInputContainer> {
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrInput, "[clrInput]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrInput, [null, null, { optional: true; self: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrInput, [null, null, {
+        optional: true;
+        self: true;
+    }, null, null]>;
 }
 
 // @public (undocumented)
@@ -1205,9 +1431,24 @@ export class ClrLayout implements OnInit {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrLayout, "[clrForm][clrLayout]", never, { "layout": { "alias": "clrLayout"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrLayout, "[clrForm][clrLayout]", never, {
+        "layout": {
+            "alias": "clrLayout";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrLayout, never>;
+}
+
+// @public
+export class ClrLocaleDateFormat {
+    constructor(
+    locale: string);
+    format(date: Date | null | undefined): string;
+    readonly locale: string;
+    parse(text: string): Date | null;
+    get placeholder(): string;
 }
 
 // @public (undocumented)
@@ -1269,7 +1510,12 @@ export class ClrNumberInput extends WrappedFormControl<ClrNumberInputContainer> 
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrNumberInput, "input[type=\"number\"][clrNumberInput]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrNumberInput, [{ optional: true; }, null, null, { optional: true; self: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrNumberInput, [{
+        optional: true;
+    }, null, null, {
+        optional: true;
+        self: true;
+    }, null, null]>;
 }
 
 // @public (undocumented)
@@ -1284,7 +1530,9 @@ export class ClrNumberInputContainer extends ClrAbstractContainer {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrNumberInputContainer, "clr-number-input-container", never, {}, {}, ["input"], ["label", "[clrNumberInput]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrNumberInputContainer, [null, { optional: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrNumberInputContainer, [null, {
+        optional: true;
+    }, null, null]>;
 }
 
 // @public (undocumented)
@@ -1324,7 +1572,16 @@ export class ClrOption<T> implements OnInit {
     get value(): T;
     set value(value: T);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrOption<any>, "clr-option", never, { "optionId": { "alias": "id"; "required": false; }; "value": { "alias": "clrValue"; "required": false; }; }, {}, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrOption<any>, "clr-option", never, {
+        "optionId": {
+            "alias": "id";
+            "required": false;
+        };
+        "value": {
+            "alias": "clrValue";
+            "required": false;
+        };
+    }, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrOption<any>, never>;
 }
@@ -1338,7 +1595,12 @@ export class ClrOptionGroup<T> {
     // (undocumented)
     protected labelId: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrOptionGroup<any>, "clr-option-group", never, { "label": { "alias": "clrOptionGroupLabel"; "required": false; }; }, {}, ["clrOptionItems"], ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrOptionGroup<any>, "clr-option-group", never, {
+        "label": {
+            "alias": "clrOptionGroupLabel";
+            "required": false;
+        };
+    }, {}, ["clrOptionItems"], ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrOptionGroup<any>, never>;
 }
@@ -1361,7 +1623,20 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
     // (undocumented)
     set trackBy(value: TrackByFunction<T>);
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrOptionItems<any>, "[clrOptionItems][clrOptionItemsOf]", never, { "rawItems": { "alias": "clrOptionItemsOf"; "required": false; }; "trackBy": { "alias": "clrOptionItemsTrackBy"; "required": false; }; "field": { "alias": "clrOptionItemsField"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrOptionItems<any>, "[clrOptionItems][clrOptionItemsOf]", never, {
+        "rawItems": {
+            "alias": "clrOptionItemsOf";
+            "required": false;
+        };
+        "trackBy": {
+            "alias": "clrOptionItemsTrackBy";
+            "required": false;
+        };
+        "field": {
+            "alias": "clrOptionItemsField";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrOptionItems<any>, never>;
 }
@@ -1410,9 +1685,16 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
     // (undocumented)
     toggleSelectAll(event?: Event): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrOptions<any>, "clr-options", never, { "optionsId": { "alias": "id"; "required": false; }; }, {}, ["items"], ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrOptions<any>, "clr-options", never, {
+        "optionsId": {
+            "alias": "id";
+            "required": false;
+        };
+    }, {}, ["items"], ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrOptions<any>, [null, null, null, null, null, null, { optional: true; }, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrOptions<any>, [null, null, null, null, null, null, {
+        optional: true;
+    }, null]>;
 }
 
 // @public (undocumented)
@@ -1427,7 +1709,12 @@ export class ClrOptionSelected<T> {
         $implicit: T;
     }>;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrOptionSelected<any>, "[clrOptionSelected]", never, { "selected": { "alias": "clrOptionSelected"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrOptionSelected<any>, "[clrOptionSelected]", never, {
+        "selected": {
+            "alias": "clrOptionSelected";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrOptionSelected<any>, never>;
 }
@@ -1444,7 +1731,14 @@ export class ClrPassword extends WrappedFormControl<ClrPasswordContainer> implem
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPassword, "[clrPassword]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPassword, [null, null, { optional: true; self: true; }, null, null, { optional: true; }, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPassword, [null, null, {
+        optional: true;
+        self: true;
+    }, null, null, {
+        optional: true;
+    }, {
+        optional: true;
+    }]>;
 }
 
 // @public (undocumented)
@@ -1468,9 +1762,16 @@ export class ClrPasswordContainer extends ClrAbstractContainer {
     // (undocumented)
     toggle(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrPasswordContainer, "clr-password-container", never, { "clrToggle": { "alias": "clrToggle"; "required": false; }; }, {}, never, ["label", "[clrPassword]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrPasswordContainer, "clr-password-container", never, {
+        "clrToggle": {
+            "alias": "clrToggle";
+            "required": false;
+        };
+    }, {}, never, ["label", "[clrPassword]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPasswordContainer, [{ optional: true; }, null, null, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrPasswordContainer, [{
+        optional: true;
+    }, null, null, null, null, null]>;
 }
 
 // @public (undocumented)
@@ -1490,7 +1791,10 @@ export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRadio, "[clrRadio]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrRadio, [null, null, { optional: true; self: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrRadio, [null, null, {
+        optional: true;
+        self: true;
+    }, null, null]>;
 }
 
 // @public (undocumented)
@@ -1514,9 +1818,16 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
     // (undocumented)
     role: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrRadioContainer, "clr-radio-container", never, { "clrInline": { "alias": "clrInline"; "required": false; }; }, {}, ["radios"], ["label", "clr-radio-wrapper", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrRadioContainer, "clr-radio-container", never, {
+        "clrInline": {
+            "alias": "clrInline";
+            "required": false;
+        };
+    }, {}, ["radios"], ["label", "clr-radio-wrapper", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrRadioContainer, [{ optional: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrRadioContainer, [{
+        optional: true;
+    }, null, null]>;
 }
 
 // @public (undocumented)
@@ -1548,7 +1859,10 @@ export class ClrRange extends WrappedFormControl<ClrRangeContainer> {
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRange, "[clrRange]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrRange, [null, null, { optional: true; self: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrRange, [null, null, {
+        optional: true;
+        self: true;
+    }, null, null]>;
 }
 
 // @public (undocumented)
@@ -1560,9 +1874,16 @@ export class ClrRangeContainer extends ClrAbstractContainer {
     get hasProgress(): boolean;
     set hasProgress(val: boolean);
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrRangeContainer, "clr-range-container", never, { "hasProgress": { "alias": "clrRangeHasProgress"; "required": false; }; }, {}, never, ["label", "[clrRange]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrRangeContainer, "clr-range-container", never, {
+        "hasProgress": {
+            "alias": "clrRangeHasProgress";
+            "required": false;
+        };
+    }, {}, never, ["label", "[clrRange]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrRangeContainer, [{ optional: true; }, null, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrRangeContainer, [{
+        optional: true;
+    }, null, null, null, null]>;
 }
 
 // @public (undocumented)
@@ -1584,7 +1905,10 @@ export class ClrSelect extends WrappedFormControl<ClrSelectContainer> {
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrSelect, "[clrSelect]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSelect, [null, null, { optional: true; self: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSelect, [null, null, {
+        optional: true;
+        self: true;
+    }, null, null]>;
 }
 
 // @public (undocumented)
@@ -1603,7 +1927,9 @@ export class ClrSelectContainer extends ClrAbstractContainer {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrSelectContainer, "clr-select-container", never, {}, {}, ["multiple"], ["label", "[clrSelect]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSelectContainer, [{ optional: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrSelectContainer, [{
+        optional: true;
+    }, null, null]>;
 }
 
 // @public (undocumented)
@@ -1642,9 +1968,20 @@ export class ClrStartDateInput extends ClrDateInputBase {
     // (undocumented)
     protected updateDayModel(dayModel: DayModel): void;
     // (undocumented)
-    protected get userSelectedDayChange(): rxjs.Observable<DayModel>;
+    protected get userSelectedDayChange(): Observable<DayModel>;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStartDateInput, "[clrStartDate]", never, { "inputWidth": { "alias": "inputWidth"; "required": false; }; "date": { "alias": "clrStartDate"; "required": false; }; }, { "dateChange": "clrStartDateChange"; }, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStartDateInput, "[clrStartDate]", never, {
+        "inputWidth": {
+            "alias": "inputWidth";
+            "required": false;
+        };
+        "date": {
+            "alias": "clrStartDate";
+            "required": false;
+        };
+    }, {
+        "dateChange": "clrStartDateChange";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStartDateInput, never>;
 }
@@ -1657,7 +1994,11 @@ export class ClrStartDateInputValidator implements Validator {
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStartDateInputValidator, "[clrStartDate]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStartDateInputValidator, [{ optional: true; }, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStartDateInputValidator, [{
+        optional: true;
+    }, {
+        optional: true;
+    }]>;
 }
 
 // @public (undocumented)
@@ -1668,7 +2009,10 @@ export class ClrTextarea extends WrappedFormControl<ClrTextareaContainer> {
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTextarea, "[clrTextarea]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTextarea, [null, null, { optional: true; self: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTextarea, [null, null, {
+        optional: true;
+        self: true;
+    }, null, null]>;
 }
 
 // @public (undocumented)
@@ -1753,7 +2097,7 @@ export class ContainerIdService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ContainerIdService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<ContainerIdService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public (undocumented)
@@ -1766,9 +2110,11 @@ export class ControlClassService {
     // (undocumented)
     initControlClass(renderer: Renderer2, element: HTMLElement): void;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ControlClassService, [{ optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ControlClassService, [{
+        optional: true;
+    }]>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<ControlClassService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public (undocumented)
@@ -1781,7 +2127,7 @@ export class ControlIdService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ControlIdService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<ControlIdService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public (undocumented)
@@ -1794,7 +2140,7 @@ export class DatalistIdService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DatalistIdService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<DatalistIdService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public (undocumented)
@@ -1814,7 +2160,7 @@ export class FormsFocusService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<FormsFocusService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<FormsFocusService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public (undocumented)
@@ -1867,7 +2213,7 @@ export class LayoutService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<LayoutService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<LayoutService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public (undocumented)
@@ -1879,7 +2225,7 @@ export class MarkControlService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MarkControlService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<MarkControlService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public (undocumented)
@@ -1899,7 +2245,7 @@ export class NgControlService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<NgControlService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<NgControlService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public (undocumented)
@@ -1955,14 +2301,19 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     // (undocumented)
     protected wrapperType: Type<W>;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<WrappedFormControl<any>, never, never, { "id": { "alias": "id"; "required": false; }; }, {}, never, never, true, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<WrappedFormControl<any>, never, never, {
+        "id": {
+            "alias": "id";
+            "required": false;
+        };
+    }, {}, never, never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<WrappedFormControl<any>, never>;
 }
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-forms-combobox.d.ts:276:672 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-forms.d.ts
+// dist/clr-angular/types/clr-angular-forms-combobox.d.ts:293:5 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-forms.d.ts
 
 // (No @packageDocumentation comment for this package)
 

@@ -14,7 +14,8 @@
 @mixin clr-make-grid-columns(
   $columns: variables.$clr-grid-columns,
   $gutter: variables.$clr-grid-column-padding,
-  $breakpoints: variables.$clr-grid-breakpoints
+  $breakpoints: variables.$clr-grid-breakpoints,
+  $query: variables.$clr-breakpoint-query
 ) {
   // Common properties for all breakpoints
   %clr-grid-column {
@@ -40,7 +41,7 @@
       @extend %clr-grid-column;
     }
 
-    @include breakpoint.clr-media-breakpoint-up($breakpoint, $breakpoints) {
+    @include breakpoint.clr-media-breakpoint-up($breakpoint, $breakpoints, $query) {
       // Provide basic `.clr-col-{bp}` classes for equal-width flexbox columns
       .clr-col#{$infix} {
         flex-basis: 0;
@@ -85,6 +86,30 @@
           }
           /* stylelint-enable */
         }
+      }
+    }
+  }
+}
+
+// Puts the breakpoint classes back to how they look below their breakpoint. A grid scoped to a
+// container includes this first, so the viewport rules of clr-ui.css no longer apply inside it.
+@mixin clr-reset-grid-breakpoints($breakpoints: variables.$clr-grid-breakpoints) {
+  @each $breakpoint in map.keys($breakpoints) {
+    $infix: breakpoint.clr-breakpoint-infix($breakpoint, $breakpoints);
+
+    @if $infix != '' {
+      [class*='clr-col#{$infix}'] {
+        flex: 0 1 auto;
+        width: 100%;
+        max-width: none;
+      }
+
+      [class*='clr-order#{$infix}-'] {
+        order: 0;
+      }
+
+      [class*='clr-offset#{$infix}-'] {
+        margin-left: 0;
       }
     }
   }

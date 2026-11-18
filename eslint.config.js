@@ -16,11 +16,11 @@ const tsPlugin = require('@typescript-eslint/eslint-plugin');
 
 // Plugins
 const importPlugin = require('eslint-plugin-import');
-const jasminePlugin = require('eslint-plugin-jasmine');
 const unusedImports = require('eslint-plugin-unused-imports');
 const decoratorPosition = require('eslint-plugin-decorator-position');
 const licenseHeader = require('eslint-plugin-license-header');
 const htmlParser = require('@html-eslint/parser');
+const htmlPlugin = require('@html-eslint/eslint-plugin');
 // eslint-plugin-storybook ships as ESM with a default export; `require` of it yields the module namespace.
 const storybookPluginModule = require('eslint-plugin-storybook');
 const storybookPlugin = storybookPluginModule.default ?? storybookPluginModule;
@@ -36,6 +36,20 @@ const EXPLICIT_CHANGE_DETECTION = {
     "Decorator > CallExpression:matches([callee.name='Component'], [callee.property.name='Component']):not(:has(Property:matches([key.name='changeDetection'], [key.value='changeDetection'])))",
   message: 'Declare changeDetection explicitly in @Component.',
 };
+
+// The library ships no style attributes or <style> elements in its templates and markup strings (icon shapes): a
+// Content-Security-Policy without 'unsafe-inline' blocks them. Style bindings ([style.width.px]) are applied through the
+// CSSOM and are allowed; [attr.style], a host style attribute and setAttribute('style', ...) are not.
+const NO_INLINE_STYLES_MESSAGE =
+  'Use a class instead of inline styles: a Content-Security-Policy without unsafe-inline blocks them.';
+const INLINE_STYLE_MARKUP = '/\\sstyle=|<style[\\s>]|\\[attr\\.style\\]/i';
+const NO_INLINE_STYLES = [
+  `Literal[value=${INLINE_STYLE_MARKUP}]`,
+  `TemplateElement[value.raw=${INLINE_STYLE_MARKUP}]`,
+  "Property[key.name='host'] > ObjectExpression > Property:matches([key.name=/^style$/i], [key.value=/^style$/i])",
+  "Decorator > CallExpression[callee.name='HostBinding'] > Literal[value=/^attr\\.style$/i]",
+  "CallExpression[callee.property.name='setAttribute'] > Literal[value=/^style$/i]",
+].map(selector => ({ selector, message: NO_INLINE_STYLES_MESSAGE }));
 
 // The story-file rules of eslint-plugin-storybook's flat/recommended config, at their recommended
 // severities.
@@ -65,7 +79,7 @@ module.exports = [
       globals: {
         ...globals.browser,
         ...globals.node,
-        ...globals.jasmine,
+        ...globals.vitest,
       },
     },
     plugins: {
@@ -84,7 +98,7 @@ module.exports = [
 
   // TypeScript files
   {
-    files: ['**/*.ts'],
+    files: ['**/*.{ts,mts}'],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
@@ -94,12 +108,11 @@ module.exports = [
       globals: {
         ...globals.browser,
         ...globals.node,
-        ...globals.jasmine,
+        ...globals.vitest,
       },
     },
     plugins: {
       '@typescript-eslint': tsPlugin,
-      jasmine: jasminePlugin,
       'unused-imports': unusedImports,
       'decorator-position': decoratorPosition,
       'ng-clarity-eslint-rules': ngClarityRules,
@@ -154,8 +167,14 @@ module.exports = [
       // Decorators
       'decorator-position/decorator-position': 'error',
 
-      // Jasmine
-      'jasmine/no-focused-tests': 'error',
+      // Focused tests must not reach CI.
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: 'MemberExpression[property.name="only"][object.name=/^(it|test|describe|suite)$/]',
+          message: 'Remove focused tests before committing.',
+        },
+      ],
 
       // Custom rules
       'ng-clarity-eslint-rules/no-parameter-property-this-in-constructor': 'error',
@@ -184,6 +203,14 @@ module.exports = [
     ],
     rules: {
       'no-restricted-syntax': ['error', EXPLICIT_CHANGE_DETECTION],
+    },
+  },
+
+  {
+    files: ['projects/angular/**/*.ts', 'projects/addons/**/*.ts'],
+    ignores: ['**/*.spec.ts', 'projects/angular/schematics/**'],
+    rules: {
+      'no-restricted-syntax': ['error', EXPLICIT_CHANGE_DETECTION, ...NO_INLINE_STYLES],
     },
   },
 
@@ -284,6 +311,21 @@ module.exports = [
     rules: {
       'license-header/header': 'off',
       'ng-clarity-eslint-rules/html-license-header': ['error', './.license-header.html'],
+    },
+  },
+
+  {
+    files: ['projects/angular/**/*.html', 'projects/addons/**/*.html'],
+    plugins: {
+      '@html-eslint': htmlPlugin,
+    },
+    rules: {
+      '@html-eslint/no-inline-styles': 'error',
+      '@html-eslint/no-restricted-tags': ['error', { tagPatterns: ['^style$'], message: NO_INLINE_STYLES_MESSAGE }],
+      '@html-eslint/no-restricted-attrs': [
+        'error',
+        { tagPatterns: ['.*'], attrPatterns: ['^\\[attr\\.style\\]$'], message: NO_INLINE_STYLES_MESSAGE },
+      ],
     },
   },
 

@@ -68,9 +68,9 @@ const meta = {
     clrDgSelectionType: SelectionType.None,
     clrDgPageInputDisabled: false,
     clrDgPageSize: 10,
-    clrDgPage: null,
-    clrDgLastPage: null,
-    clrDgTotalItems: null,
+    clrDgPage: null as number | null,
+    clrDgLastPage: null as number | null,
+    clrDgTotalItems: null as number | null,
     // outputs
     clrDgPageChange: action('clrDgPageChange'),
     // story helpers

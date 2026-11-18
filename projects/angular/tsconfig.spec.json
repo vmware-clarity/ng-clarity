@@ -1,9 +1,10 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "types": ["jasmine"]
+    "types": ["vitest/globals"],
+    "rootDir": "../.."
   },
-  "files": ["test.ts"],
   "include": ["**/*.spec.ts", "**/*.d.ts"],
-  "exclude": ["schematics/**"]
+  "exclude": ["schematics/**"],
+  "files": ["../test-setup.ts", "../test-providers.ts"]
 }

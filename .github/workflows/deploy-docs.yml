@@ -5,7 +5,7 @@ jobs:
   deploy-docs:
     name: Deploy Docs
     timeout-minutes: 30
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v3

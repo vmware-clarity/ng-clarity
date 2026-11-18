@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ClrDatagridStateInterface } from '@clr/angular';
 
 import { Inventory } from '../inventory/inventory';
@@ -23,6 +23,7 @@ export class DatagridServerDrivenDemo {
   users: User[];
   total: number;
   loading = true;
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   constructor(private inventory: Inventory) {
     inventory.size = 103;
@@ -47,5 +48,7 @@ export class DatagridServerDrivenDemo {
     this.users = result.users;
     this.total = result.length;
     this.loading = false;
+
+    this.changeDetectorRef.markForCheck();
   }
 }
