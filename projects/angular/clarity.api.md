@@ -4956,7 +4956,7 @@ export class ClrFormsModule {
 }
 
 // @public (undocumented)
-export class ClrHeader implements OnDestroy {
+export class ClrHeader {
     constructor(responsiveNavService: ResponsiveNavigationService, commonStrings: ClrCommonStringsService);
     // (undocumented)
     closeOpenNav(): void;
@@ -4971,11 +4971,10 @@ export class ClrHeader implements OnDestroy {
     get isNavLevel2OnPage(): boolean;
     set isNavLevel2OnPage(value: boolean);
     // (undocumented)
-    ngOnDestroy(): void;
-    // (undocumented)
     openNav(navLevel: number): void;
     // (undocumented)
-    openNavLevel: number;
+    get openNavLevel(): number;
+    set openNavLevel(value: number);
     // (undocumented)
     resetNavTriggers(): void;
     // (undocumented)
@@ -11259,6 +11258,7 @@ export class ResponsiveNavigationService {
     isNavRegistered(navLevel: number): boolean;
     // (undocumented)
     get navControl(): Observable<ResponsiveNavControlMessage>;
+    readonly openNavLevel: WritableSignal<number>;
     // (undocumented)
     get registeredNavs(): Observable<number[]>;
     // (undocumented)

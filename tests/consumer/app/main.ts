@@ -17,12 +17,20 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { AppfxPropertyViewModule, PropertyViewBuilder } from '@clr/addons/property-view';
 import { ClarityModule } from '@clr/angular';
 
+import { HeaderAcceptance } from './header-acceptance';
 import { OverlayAcceptance } from './overlay-acceptance';
 import { RuntimeAcceptance } from './runtime-acceptance';
 
 @Component({
   selector: 'consumer-app',
-  imports: [ClarityModule, FormsModule, AppfxPropertyViewModule, OverlayAcceptance, RuntimeAcceptance],
+  imports: [
+    ClarityModule,
+    FormsModule,
+    AppfxPropertyViewModule,
+    OverlayAcceptance,
+    RuntimeAcceptance,
+    HeaderAcceptance,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <h1>Built package consumer</h1>
@@ -81,6 +89,7 @@ import { RuntimeAcceptance } from './runtime-acceptance';
     <appfx-property-view [data]="properties"></appfx-property-view>
     <overlay-acceptance />
     <runtime-acceptance />
+    <header-acceptance />
   `,
 })
 class ConsumerApp {
