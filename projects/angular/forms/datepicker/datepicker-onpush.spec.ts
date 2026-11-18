@@ -7,7 +7,8 @@
 
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ClrCommonFormsModule } from '@clr/angular/forms/common';
 
 import { ClrDatepickerModule } from './datepicker.module';
 import { ClrWeekday } from './enums/weekday.enum';
@@ -75,6 +76,31 @@ function zoneTick(fixture: ComponentFixture<unknown>) {
   fixture.checkNoChanges();
 }
 
+@Component({
+  template: `
+    <clr-date-container>
+      <label>Date</label>
+      <input clrDate [formControl]="control" />
+      @if (showHelper) {
+        <clr-control-helper>Pick a date</clr-control-helper>
+      }
+      <clr-control-error>Required</clr-control-error>
+    </clr-date-container>
+    <clr-date-container>
+      <label>Date</label>
+      <input clrDate [(ngModel)]="date" [disabled]="disabled" />
+    </clr-date-container>
+  `,
+  standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
+})
+class EagerContainerHost {
+  control = new FormControl('', Validators.required);
+  showHelper = false;
+  date = '';
+  disabled = false;
+}
+
 function overlay(): HTMLElement {
   return document.querySelector('clr-datepicker-view-manager');
 }
@@ -109,8 +135,8 @@ function monthTrigger(): HTMLButtonElement {
 describe('Datepicker OnPush views', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule, ClrDatepickerModule],
-      declarations: [OnPushDateHost, EagerRangeHost, EagerReactiveHost],
+      imports: [FormsModule, ReactiveFormsModule, ClrCommonFormsModule, ClrDatepickerModule],
+      declarations: [OnPushDateHost, EagerRangeHost, EagerReactiveHost, EagerContainerHost],
     });
   });
 
@@ -277,6 +303,52 @@ describe('Datepicker OnPush views', () => {
       expect(selectedDays()).toEqual(['9']);
 
       fixture.destroy();
+    });
+  });
+
+  describe('date container in an Eager host (Zone app)', () => {
+    let fixture: ComponentFixture<EagerContainerHost>;
+    let containers: HTMLElement[];
+
+    beforeEach(async () => {
+      fixture = TestBed.createComponent(EagerContainerHost);
+      await fixture.whenStable();
+      containers = Array.from(fixture.nativeElement.querySelectorAll('clr-date-container'));
+    });
+
+    afterEach(() => fixture.destroy());
+
+    it('shows the error after the host marks the form as touched', () => {
+      expect(containers[0].querySelector('clr-control-error')).toBeNull();
+
+      fixture.componentInstance.control.markAsTouched();
+      zoneTick(fixture);
+
+      expect(containers[0].querySelector('clr-control-error')).not.toBeNull();
+      expect(containers[0].querySelector('.clr-control-container').classList).toContain('clr-error');
+    });
+
+    it('disables the toggle when the host disables the control from code', () => {
+      fixture.componentInstance.control.disable();
+      zoneTick(fixture);
+
+      expect(containers[0].classList).toContain('clr-form-control-disabled');
+      expect(containers[0].querySelector<HTMLButtonElement>('.clr-input-group-icon-action').disabled).toBe(true);
+    });
+
+    it('disables the toggle when the host binds disabled on the input', () => {
+      fixture.componentInstance.disabled = true;
+      zoneTick(fixture);
+
+      expect(containers[1].classList).toContain('clr-form-control-disabled');
+      expect(containers[1].querySelector<HTMLButtonElement>('.clr-input-group-icon-action').disabled).toBe(true);
+    });
+
+    it('projects a helper the host adds later', () => {
+      fixture.componentInstance.showHelper = true;
+      zoneTick(fixture);
+
+      expect(containers[0].querySelector('clr-control-helper').textContent).toBe('Pick a date');
     });
   });
 
