@@ -24,6 +24,7 @@ import { ClrWizardModule } from './wizard.module';
       #clicker
       id="gotklikz"
       [title]="titleToUpdate"
+      [clrWizardHeaderActionDisabled]="disableClicker"
       (actionClicked)="click($event)"
     ></clr-wizard-header-action>
   `,
@@ -40,6 +41,7 @@ class TestComponent {
   projector = 'montana';
   myId = 'ohai';
   disableMe = false;
+  disableClicker = false;
   titleToUpdate = 'title to update';
 
   private _lastClickedHeaderAction = '';
@@ -85,7 +87,7 @@ describe('New Wizard Tests', () => {
         it('should return expected id', () => {
           const haToTest = testComponent.idHA;
           expect(haToTest.id, 'id reflects input that is set').toBe('clr-wizard-header-action-ohai');
-          haToTest._id = 'onoez';
+          testComponent.myId = 'onoez';
           renderFixture(fixture);
           expect(haToTest.id, 'id honors internal changes to id').toBe('clr-wizard-header-action-onoez');
         });
@@ -106,7 +108,7 @@ describe('New Wizard Tests', () => {
         });
 
         it('should not emit event if disabled', () => {
-          clicker.disabled = true;
+          testComponent.disableClicker = true;
           renderFixture(fixture);
           clicker.click();
           expect(onClickSpy).not.toHaveBeenCalled();
@@ -194,7 +196,7 @@ describe('New Wizard Tests', () => {
         });
 
         it('should not emit event when disabled', () => {
-          testComponent.clickedHA.disabled = true;
+          testComponent.disableClicker = true;
           renderFixture(fixture);
           testComponent.clickedHA.click();
           expect(testComponent.lastClickedHeaderAction).toBe('');

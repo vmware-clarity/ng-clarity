@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable, OnDestroy, TemplateRef } from '@angular/core';
+import { Injectable, OnDestroy, signal, TemplateRef } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
 
 import { ClrWizardStepnavLayout } from '../interfaces/wizard-stepnav-layout';
@@ -131,34 +131,14 @@ export class WizardNavigationService implements OnDestroy {
   wizardHasAltNext = false;
 
   /**
-   * A boolean flag shared across the Wizard subcomponents that follows the value
-   * of the Wizard.stopNavigation (clrWizardPreventNavigation) input. When true, all
-   * navigational elements in the wizard are disabled.
-   *
-   * This is intended to freeze the wizard in place. Events are not fired so this is
-   * not a way to implement alternate functionality for navigation.
-   *
-   * @memberof WizardNavigationService
-   */
-  wizardStopNavigation = false;
-
-  /**
-   * A boolean flag shared with the stepnav items that prevents user clicks on
-   * stepnav items from navigating the wizard.
-   *
-   * @memberof WizardNavigationService
-   */
-  wizardDisableStepnav = false;
-
-  /**
    * The layout of the wizard stepnav, either 'vertical' or 'horizontal'.
    */
   stepnavLayout: ClrWizardStepnavLayout = ClrWizardStepnavLayout.VERTICAL;
 
-  /**
-   * @memberof WizardNavigationService
-   */
-  private _currentPage: ClrWizardPage;
+  // Views read these, so they are signals: a change refreshes the OnPush views that show it.
+  private readonly _currentPage = signal<ClrWizardPage>(null);
+  private readonly _stopNavigation = signal(false);
+  private readonly _disableStepnav = signal(false);
 
   /**
    *
@@ -245,6 +225,36 @@ export class WizardNavigationService implements OnDestroy {
   }
 
   /**
+   * A boolean flag shared across the Wizard subcomponents that follows the value
+   * of the Wizard.stopNavigation (clrWizardPreventNavigation) input. When true, all
+   * navigational elements in the wizard are disabled.
+   *
+   * This is intended to freeze the wizard in place. Events are not fired so this is
+   * not a way to implement alternate functionality for navigation.
+   *
+   * @memberof WizardNavigationService
+   */
+  get wizardStopNavigation(): boolean {
+    return this._stopNavigation();
+  }
+  set wizardStopNavigation(value: boolean) {
+    this._stopNavigation.set(value);
+  }
+
+  /**
+   * A boolean flag shared with the stepnav items that prevents user clicks on
+   * stepnav items from navigating the wizard.
+   *
+   * @memberof WizardNavigationService
+   */
+  get wizardDisableStepnav(): boolean {
+    return this._disableStepnav();
+  }
+  set wizardDisableStepnav(value: boolean) {
+    this._disableStepnav.set(value);
+  }
+
+  /**
    * An Observable that is predominantly used amongst the subcomponents and services
    * of the wizard. It is recommended that users listen to the ClrWizardPage.onLoad
    * (clrWizardPageOnLoad) output instead of this Observable.
@@ -296,10 +306,7 @@ export class WizardNavigationService implements OnDestroy {
    * @memberof WizardNavigationService
    */
   get currentPage(): ClrWizardPage {
-    if (!this._currentPage) {
-      return null;
-    }
-    return this._currentPage;
+    return this._currentPage() || null;
   }
 
   /**
@@ -313,8 +320,8 @@ export class WizardNavigationService implements OnDestroy {
    * @memberof WizardNavigationService
    */
   set currentPage(page: ClrWizardPage) {
-    if (this._currentPage !== page && !this.wizardStopNavigation) {
-      this._currentPage = page;
+    if (this._currentPage() !== page && !this.wizardStopNavigation) {
+      this._currentPage.set(page);
       page.onLoad.emit(page.id);
       this._currentChanged.next(page);
     }

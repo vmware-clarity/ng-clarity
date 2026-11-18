@@ -70,7 +70,7 @@
 </ng-template>
 
 <ng-template #wizardTitleTemplate>
-  <div class="clr-wizard-title" [id]="wizardId" role="heading" [attr.aria-level]="wizardTitle?.headingLevel || 1">
+  <div class="clr-wizard-title" [id]="wizardId" role="heading" [attr.aria-level]="wizardTitle()?.headingLevel || 1">
     <ng-content select="clr-wizard-title"></ng-content>
   </div>
 </ng-template>

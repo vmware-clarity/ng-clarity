@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, DebugElement, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, signal, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { renderFixture } from '@clr/angular/utils/testing';
@@ -18,19 +18,13 @@ import { MockPage } from './wizard-page.mock';
 import { ClrWizardStepnav } from './wizard-stepnav';
 import { ClrWizardModule } from './wizard.module';
 
-let mockPages: MockPage[];
-
 class StepnavPageCollection extends PageCollectionMock {
-  get pages(): MockPage[] {
-    return mockPages;
+  readonly pageList = signal([new MockPage(0), new MockPage(1), new MockPage(2)]);
+
+  get pagesAsArray(): MockPage[] {
+    return this.pageList();
   }
 }
-
-function resetMockPages(): MockPage[] {
-  return [new MockPage(0), new MockPage(1), new MockPage(2)];
-}
-
-mockPages = resetMockPages();
 
 @Component({
   template: `<clr-wizard-stepnav></clr-wizard-stepnav>`,
@@ -70,7 +64,6 @@ describe('New Wizard Tests', () => {
 
     afterEach(() => {
       fixture.destroy();
-      mockPages = resetMockPages();
     });
 
     // Inputs, Outputs, and initialization of component based on content-children
@@ -81,15 +74,15 @@ describe('New Wizard Tests', () => {
         });
 
         it('should keep up with deletions to collection of pages', () => {
-          mockPages.splice(1, 1);
+          pageCollection.pageList.update(pages => pages.filter((_page, index) => index !== 1));
           renderFixture(fixture);
           expect(myStepnavEl.querySelectorAll('.clr-wizard-stepnav-item').length).toBe(2);
         });
 
         it('should keep up with additions to collection of pages', () => {
-          mockPages[mockPages.length] = new MockPage(3);
+          pageCollection.pageList.update(pages => [...pages, new MockPage(3)]);
           renderFixture(fixture);
-          expect(mockPages.length).toBe(4);
+          expect(pageCollection.pagesAsArray.length).toBe(4);
           expect(myStepnavEl.querySelectorAll('.clr-wizard-stepnav-item').length).toBe(4);
         });
       });

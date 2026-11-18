@@ -13,6 +13,7 @@ import {
   Input,
   OnInit,
   Output,
+  signal,
   TemplateRef,
 } from '@angular/core';
 
@@ -47,22 +48,9 @@ let wizardPageIndex = 0;
     '[class.clr-wizard-page]': 'true',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrWizardPage implements OnInit {
-  /**
-   * An input value that is used internally to generate the ClrWizardPage ID as
-   * well as the step nav item ID.
-   *
-   * Typed as any because it should be able to accept numbers as well as
-   * strings. Passing an index for wizard whose pages are created with an
-   * ngFor loop is a common use case.
-   *
-   * @memberof WizardPage
-   *
-   */
-  @Input('id') _id: any = (wizardPageIndex++).toString();
-
   /**
    * Overrides all actions from the page level, so you can use an alternate function for
    * validation or data-munging with a ClrWizardPage.onCommit (clrWizardPageOnCommit output),
@@ -284,26 +272,12 @@ export class ClrWizardPage implements OnInit {
    */
   @ContentChild(ClrWizardPageHeaderActions, { static: true }) _headerActions: ClrWizardPageHeaderActions;
 
-  /**
-   *
-   * @memberof WizardPage
-   *
-   */
-  private _nextStepDisabled = false;
-
-  /**
-   *
-   * @memberof WizardPage
-   *
-   */
-  private _previousStepDisabled = false;
-
-  /**
-   *
-   * @memberof WizardPage
-   *
-   */
-  private _hasError = false;
+  // The stepnav and the buttons show these, so they are signals.
+  private readonly pageId = signal<any>((wizardPageIndex++).toString());
+  private readonly _nextStepDisabled = signal(false);
+  private readonly _previousStepDisabled = signal(false);
+  private readonly _hasError = signal(false);
+  private readonly _complete = signal(false);
 
   /**
    *
@@ -320,13 +294,6 @@ export class ClrWizardPage implements OnInit {
   private _stopNext = false;
 
   /**
-   *
-   * @memberof WizardPage
-   *
-   */
-  private _complete = false;
-
-  /**
    * Creates an instance of ClrWizardPage.
    *
    * @memberof WizardPage
@@ -337,6 +304,27 @@ export class ClrWizardPage implements OnInit {
     public buttonService: ButtonHubService
   ) {}
 
+  /**
+   * An input value that is used internally to generate the ClrWizardPage ID as
+   * well as the step nav item ID.
+   *
+   * Typed as any because it should be able to accept numbers as well as
+   * strings. Passing an index for wizard whose pages are created with an
+   * ngFor loop is a common use case.
+   *
+   * @memberof WizardPage
+   *
+   */
+  @Input('id')
+  get _id(): any {
+    return this.pageId();
+  }
+  set _id(value: any) {
+    // covers things like null, undefined, false, empty string and negative numbers,
+    // while allowing zero to pass
+    const isValidId = (!!value || value === 0) && !(value < 0);
+    this.pageId.set(isValidId ? value : (wizardPageIndex++).toString());
+  }
   /**
    * A property that tells whether or not the wizard should be allowed
    * to move to the next page.
@@ -353,12 +341,12 @@ export class ClrWizardPage implements OnInit {
    */
   @Input('clrWizardPageNextDisabled')
   get nextStepDisabled(): boolean {
-    return this._nextStepDisabled;
+    return this._nextStepDisabled();
   }
   set nextStepDisabled(val: boolean) {
     const valBool = !!val;
-    if (valBool !== this._nextStepDisabled) {
-      this._nextStepDisabled = valBool;
+    if (valBool !== this._nextStepDisabled()) {
+      this._nextStepDisabled.set(valBool);
       this.nextStepDisabledChange.emit(valBool);
     }
   }
@@ -379,12 +367,12 @@ export class ClrWizardPage implements OnInit {
    */
   @Input('clrWizardPagePreviousDisabled')
   get previousStepDisabled(): boolean {
-    return this._previousStepDisabled;
+    return this._previousStepDisabled();
   }
   set previousStepDisabled(val: boolean) {
     const valBool = !!val;
-    if (valBool !== this._previousStepDisabled) {
-      this._previousStepDisabled = valBool;
+    if (valBool !== this._previousStepDisabled()) {
+      this._previousStepDisabled.set(valBool);
       this.previousStepDisabledChange.emit(valBool);
     }
   }
@@ -399,13 +387,10 @@ export class ClrWizardPage implements OnInit {
    */
   @Input('clrWizardPageHasError')
   get hasError(): boolean {
-    return this._hasError;
+    return this._hasError();
   }
   set hasError(val: boolean) {
-    const valBool = !!val;
-    if (valBool !== this._hasError) {
-      this._hasError = valBool;
-    }
+    this._hasError.set(!!val);
   }
 
   /**
@@ -468,16 +453,6 @@ export class ClrWizardPage implements OnInit {
    * @memberof ClrWizardPage
    */
   get id(): string {
-    // covers things like null, undefined, false, and empty string
-    // while allowing zero to pass
-    const idIsNonZeroFalsy = !this._id && this._id !== 0;
-
-    // in addition to non-zero falsy we also want to make sure _id is not a negative
-    // number.
-    if (idIsNonZeroFalsy || this._id < 0) {
-      // guard here in the event that input becomes undefined or null by accident
-      this._id = (wizardPageIndex++).toString();
-    }
     return `clr-wizard-page-${this._id}`;
   }
 
@@ -506,7 +481,7 @@ export class ClrWizardPage implements OnInit {
    *
    */
   get completed(): boolean {
-    return this._complete && this.readyToComplete;
+    return this._complete() && this.readyToComplete;
 
     // FOR V2: UNWIND COMPLETED, READYTOCOMPLETE, AND ERRORS
     // SUCH THAT ERRORS IS ITS OWN INPUT. IF A STEP IS
@@ -523,7 +498,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof ClrWizardPage
    */
   set completed(value: boolean) {
-    this._complete = value;
+    this._complete.set(value);
   }
 
   /**

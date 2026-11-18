@@ -65,13 +65,23 @@ describe('New Wizard Tests', () => {
 
       @Component({
         changeDetection: ChangeDetectionStrategy.Eager,
-        template: `<clr-wizard-button></clr-wizard-button>`,
+        template: `<clr-wizard-button
+          [type]="type"
+          [clrWizardButtonDisabled]="disabled"
+          [clrWizardButtonHidden]="hidden"
+        ></clr-wizard-button>`,
         standalone: false,
       })
-      class TestComponent {}
+      class TestComponent {
+        type = '';
+        disabled = false;
+        hidden = false;
+      }
 
-      function runTypeConstantCheck(component: any, fnToTest: any, buttonType: string, typeConstant: any) {
-        buttonComponent.type = 'next';
+      let host: TestComponent;
+
+      function runTypeConstantCheck(fnToTest: any, buttonType: string, typeConstant: any) {
+        host.type = 'next';
         renderFixture(fixture);
         expect(buttonComponent.isCancel, 'next button type is not cancel').toBe(false);
 
@@ -79,7 +89,7 @@ describe('New Wizard Tests', () => {
           if (Object.prototype.hasOwnProperty.call(typeConstant, key) && key !== buttonType) {
             const typeToTest = typeConstant[key];
             const testMsg = typeToTest + ' button type is not ' + buttonType;
-            component.type = typeToTest;
+            host.type = typeToTest;
             renderFixture(fixture);
             expect(fnToTest, testMsg).toBe(false);
           }
@@ -98,14 +108,14 @@ describe('New Wizard Tests', () => {
         };
         const myFn: any = component[FUNCTIONS_TO_TEST[buttonType]];
 
-        component.type = EMPTY_BUTTON_TYPE;
+        host.type = EMPTY_BUTTON_TYPE;
         renderFixture(fixture);
         expect(myFn, 'empty button type is not ' + buttonType).toBe(false);
 
-        runTypeConstantCheck(component, myFn, buttonType, DEFAULT_BUTTON_TYPES);
-        runTypeConstantCheck(component, myFn, buttonType, CUSTOM_BUTTON_TYPES);
+        runTypeConstantCheck(myFn, buttonType, DEFAULT_BUTTON_TYPES);
+        runTypeConstantCheck(myFn, buttonType, CUSTOM_BUTTON_TYPES);
 
-        component.type = UNKNOWN_BUTTON_TYPE;
+        host.type = UNKNOWN_BUTTON_TYPE;
         renderFixture(fixture);
         expect(myFn, 'unknown button type is not ' + buttonType).toBe(false);
       }
@@ -126,6 +136,7 @@ describe('New Wizard Tests', () => {
         fixture = TestBed.createComponent(TestComponent);
         buttonHub.buttonsReady = true;
         renderFixture(fixture);
+        host = fixture.componentInstance;
         buttonDebugEl = fixture.debugElement.query(By.directive(ClrWizardButton));
         buttonComponent = buttonDebugEl.componentInstance;
       });
@@ -136,13 +147,13 @@ describe('New Wizard Tests', () => {
 
       describe('isCancel', () => {
         it('returns true for button type cancel', () => {
-          buttonComponent.type = DEFAULT_BUTTON_TYPES.cancel;
+          host.type = DEFAULT_BUTTON_TYPES.cancel;
           renderFixture(fixture);
           expect(buttonComponent.isCancel).toBe(true);
         });
 
         it('returns true for button type custom-cancel', () => {
-          buttonComponent.type = CUSTOM_BUTTON_TYPES.cancel;
+          host.type = CUSTOM_BUTTON_TYPES.cancel;
           renderFixture(fixture);
           expect(buttonComponent.isCancel).toBe(true);
         });
@@ -154,13 +165,13 @@ describe('New Wizard Tests', () => {
 
       describe('isNext', () => {
         it('returns true for button type next', () => {
-          buttonComponent.type = DEFAULT_BUTTON_TYPES.next;
+          host.type = DEFAULT_BUTTON_TYPES.next;
           renderFixture(fixture);
           expect(buttonComponent.isNext).toBe(true);
         });
 
         it('returns true for button type custom-next', () => {
-          buttonComponent.type = CUSTOM_BUTTON_TYPES.next;
+          host.type = CUSTOM_BUTTON_TYPES.next;
           renderFixture(fixture);
           expect(buttonComponent.isNext).toBe(true);
         });
@@ -172,13 +183,13 @@ describe('New Wizard Tests', () => {
 
       describe('isPrevious', () => {
         it('returns true for button type previous', () => {
-          buttonComponent.type = DEFAULT_BUTTON_TYPES.previous;
+          host.type = DEFAULT_BUTTON_TYPES.previous;
           renderFixture(fixture);
           expect(buttonComponent.isPrevious).toBe(true);
         });
 
         it('returns true for button type custom-previous', () => {
-          buttonComponent.type = CUSTOM_BUTTON_TYPES.previous;
+          host.type = CUSTOM_BUTTON_TYPES.previous;
           renderFixture(fixture);
           expect(buttonComponent.isPrevious).toBe(true);
         });
@@ -190,13 +201,13 @@ describe('New Wizard Tests', () => {
 
       describe('isFinish', () => {
         it('returns true for button type finish', () => {
-          buttonComponent.type = DEFAULT_BUTTON_TYPES.finish;
+          host.type = DEFAULT_BUTTON_TYPES.finish;
           renderFixture(fixture);
           expect(buttonComponent.isFinish).toBe(true);
         });
 
         it('returns true for button type custom-finish', () => {
-          buttonComponent.type = CUSTOM_BUTTON_TYPES.finish;
+          host.type = CUSTOM_BUTTON_TYPES.finish;
           renderFixture(fixture);
           expect(buttonComponent.isFinish).toBe(true);
         });
@@ -208,13 +219,13 @@ describe('New Wizard Tests', () => {
 
       describe('isDanger', () => {
         it('returns true for button type danger', () => {
-          buttonComponent.type = DEFAULT_BUTTON_TYPES.danger;
+          host.type = DEFAULT_BUTTON_TYPES.danger;
           renderFixture(fixture);
           expect(buttonComponent.isDanger).toBe(true);
         });
 
         it('returns true for button type custom-danger', () => {
-          buttonComponent.type = CUSTOM_BUTTON_TYPES.danger;
+          host.type = CUSTOM_BUTTON_TYPES.danger;
           renderFixture(fixture);
           expect(buttonComponent.isDanger).toBe(true);
         });
@@ -226,63 +237,63 @@ describe('New Wizard Tests', () => {
 
       describe('isPrimaryAction', () => {
         it('returns true for button type next', () => {
-          buttonComponent.type = DEFAULT_BUTTON_TYPES.next;
+          host.type = DEFAULT_BUTTON_TYPES.next;
           renderFixture(fixture);
           expect(buttonComponent.isPrimaryAction).toBe(true);
         });
 
         it('returns true for button type custom-next', () => {
-          buttonComponent.type = CUSTOM_BUTTON_TYPES.next;
+          host.type = CUSTOM_BUTTON_TYPES.next;
           renderFixture(fixture);
           expect(buttonComponent.isPrimaryAction).toBe(true);
         });
 
         it('returns true for button type danger', () => {
-          buttonComponent.type = DEFAULT_BUTTON_TYPES.danger;
+          host.type = DEFAULT_BUTTON_TYPES.danger;
           renderFixture(fixture);
           expect(buttonComponent.isPrimaryAction).toBe(true);
         });
 
         it('returns true for button type custom-danger', () => {
-          buttonComponent.type = CUSTOM_BUTTON_TYPES.danger;
+          host.type = CUSTOM_BUTTON_TYPES.danger;
           renderFixture(fixture);
           expect(buttonComponent.isPrimaryAction).toBe(true);
         });
 
         it('returns true for button type finish', () => {
-          buttonComponent.type = DEFAULT_BUTTON_TYPES.finish;
+          host.type = DEFAULT_BUTTON_TYPES.finish;
           renderFixture(fixture);
           expect(buttonComponent.isPrimaryAction).toBe(true);
         });
 
         it('returns true for button type custom-finish', () => {
-          buttonComponent.type = CUSTOM_BUTTON_TYPES.finish;
+          host.type = CUSTOM_BUTTON_TYPES.finish;
           renderFixture(fixture);
           expect(buttonComponent.isPrimaryAction).toBe(true);
         });
 
         it('returns false for all other button types', () => {
-          buttonComponent.type = 'custom-custom';
+          host.type = 'custom-custom';
           renderFixture(fixture);
           expect(buttonComponent.isPrimaryAction, 'unknown button type is not primary').toBe(false);
 
-          buttonComponent.type = DEFAULT_BUTTON_TYPES.cancel;
+          host.type = DEFAULT_BUTTON_TYPES.cancel;
           renderFixture(fixture);
           expect(buttonComponent.isPrimaryAction, 'cancel button is not primary').toBe(false);
 
-          buttonComponent.type = CUSTOM_BUTTON_TYPES.cancel;
+          host.type = CUSTOM_BUTTON_TYPES.cancel;
           renderFixture(fixture);
           expect(buttonComponent.isPrimaryAction, 'custom cancel button is not primary').toBe(false);
 
-          buttonComponent.type = DEFAULT_BUTTON_TYPES.previous;
+          host.type = DEFAULT_BUTTON_TYPES.previous;
           renderFixture(fixture);
           expect(buttonComponent.isPrimaryAction, 'previous button is not primary').toBe(false);
 
-          buttonComponent.type = CUSTOM_BUTTON_TYPES.previous;
+          host.type = CUSTOM_BUTTON_TYPES.previous;
           renderFixture(fixture);
           expect(buttonComponent.isPrimaryAction, 'custom previous button is not primary').toBe(false);
 
-          buttonComponent.type = '';
+          host.type = '';
           renderFixture(fixture);
           expect(buttonComponent.isPrimaryAction, 'empty button type is not primary').toBe(false);
         });
@@ -291,7 +302,7 @@ describe('New Wizard Tests', () => {
       describe('isDisabled', () => {
         describe('disabled override', () => {
           it('returns true if disabled', () => {
-            buttonComponent.disabled = true;
+            host.disabled = true;
             renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(true);
           });
@@ -309,29 +320,29 @@ describe('New Wizard Tests', () => {
 
         describe('...and cancel buttons', () => {
           it('returns false for button of type cancel that is NOT disabled', () => {
-            buttonComponent.disabled = false;
-            buttonComponent.type = DEFAULT_BUTTON_TYPES.cancel;
+            host.disabled = false;
+            host.type = DEFAULT_BUTTON_TYPES.cancel;
             renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(false);
           });
 
           it('returns false for button of type custom-cancel that is NOT disabled', () => {
-            buttonComponent.disabled = false;
-            buttonComponent.type = CUSTOM_BUTTON_TYPES.cancel;
+            host.disabled = false;
+            host.type = CUSTOM_BUTTON_TYPES.cancel;
             renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(false);
           });
 
           it('returns true for button of type cancel that is disabled', () => {
-            buttonComponent.disabled = true;
-            buttonComponent.type = DEFAULT_BUTTON_TYPES.cancel;
+            host.disabled = true;
+            host.type = DEFAULT_BUTTON_TYPES.cancel;
             renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(true);
           });
 
           it('returns true for button of type custom-cancel that is disabled', () => {
-            buttonComponent.disabled = true;
-            buttonComponent.type = CUSTOM_BUTTON_TYPES.cancel;
+            host.disabled = true;
+            host.type = CUSTOM_BUTTON_TYPES.cancel;
             renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(true);
           });
@@ -339,32 +350,32 @@ describe('New Wizard Tests', () => {
 
         describe('...and danger buttons', () => {
           it('returns false for button of type danger when page is ready to complete', () => {
-            buttonComponent.disabled = false;
-            buttonComponent.type = DEFAULT_BUTTON_TYPES.danger;
+            host.disabled = false;
+            host.type = DEFAULT_BUTTON_TYPES.danger;
             navService.currentPage.readyToComplete = true;
             renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(false);
           });
 
           it('returns false for button of type custom-danger when page is ready to complete', () => {
-            buttonComponent.disabled = false;
-            buttonComponent.type = CUSTOM_BUTTON_TYPES.danger;
+            host.disabled = false;
+            host.type = CUSTOM_BUTTON_TYPES.danger;
             navService.currentPage.readyToComplete = true;
             renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(false);
           });
 
           it('returns true for button of type danger when page is NOT ready to complete', () => {
-            buttonComponent.disabled = false;
-            buttonComponent.type = DEFAULT_BUTTON_TYPES.danger;
+            host.disabled = false;
+            host.type = DEFAULT_BUTTON_TYPES.danger;
             navService.currentPage.readyToComplete = false;
             renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(true);
           });
 
           it('returns true for button of type custom-danger when page is NOT ready to complete', () => {
-            buttonComponent.disabled = false;
-            buttonComponent.type = CUSTOM_BUTTON_TYPES.danger;
+            host.disabled = false;
+            host.type = CUSTOM_BUTTON_TYPES.danger;
             navService.currentPage.readyToComplete = false;
             renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(true);
@@ -373,8 +384,8 @@ describe('New Wizard Tests', () => {
           it(
             'returns true for button of type danger when disabled is true,' + 'even if page is ready to complete',
             () => {
-              buttonComponent.disabled = true;
-              buttonComponent.type = DEFAULT_BUTTON_TYPES.danger;
+              host.disabled = true;
+              host.type = DEFAULT_BUTTON_TYPES.danger;
               navService.currentPage.readyToComplete = true;
               renderFixture(fixture);
               expect(buttonComponent.isDisabled).toBe(true);
@@ -385,8 +396,8 @@ describe('New Wizard Tests', () => {
             'returns true for button of type custom-danger when disabled is true,' +
               'even if page is ready to complete',
             () => {
-              buttonComponent.disabled = true;
-              buttonComponent.type = CUSTOM_BUTTON_TYPES.danger;
+              host.disabled = true;
+              host.type = CUSTOM_BUTTON_TYPES.danger;
               navService.currentPage.readyToComplete = true;
               renderFixture(fixture);
               expect(buttonComponent.isDisabled).toBe(true);
@@ -396,8 +407,8 @@ describe('New Wizard Tests', () => {
 
         describe('...and next buttons', () => {
           it('returns false for button of type next when page' + 'is not the last page and ready to complete', () => {
-            buttonComponent.disabled = false;
-            buttonComponent.type = DEFAULT_BUTTON_TYPES.next;
+            host.disabled = false;
+            host.type = DEFAULT_BUTTON_TYPES.next;
             navService.currentPage.readyToComplete = true;
             navService.currentPageIsLast = false;
             renderFixture(fixture);
@@ -407,8 +418,8 @@ describe('New Wizard Tests', () => {
           it(
             'returns false for button of type custom-next when page' + 'is not the last page and ready to complete',
             () => {
-              buttonComponent.disabled = false;
-              buttonComponent.type = CUSTOM_BUTTON_TYPES.next;
+              host.disabled = false;
+              host.type = CUSTOM_BUTTON_TYPES.next;
               navService.currentPage.readyToComplete = true;
               navService.currentPageIsLast = false;
               renderFixture(fixture);
@@ -417,8 +428,8 @@ describe('New Wizard Tests', () => {
           );
 
           it('returns true for button of type next when page' + 'is the last page', () => {
-            buttonComponent.disabled = false;
-            buttonComponent.type = DEFAULT_BUTTON_TYPES.next;
+            host.disabled = false;
+            host.type = DEFAULT_BUTTON_TYPES.next;
             navService.currentPage.readyToComplete = true;
             navService.currentPageIsLast = true;
             renderFixture(fixture);
@@ -426,8 +437,8 @@ describe('New Wizard Tests', () => {
           });
 
           it('returns true for button of type custom-next when page' + 'is the last page', () => {
-            buttonComponent.disabled = false;
-            buttonComponent.type = CUSTOM_BUTTON_TYPES.next;
+            host.disabled = false;
+            host.type = CUSTOM_BUTTON_TYPES.next;
             navService.currentPage.readyToComplete = true;
             navService.currentPageIsLast = true;
             renderFixture(fixture);
@@ -435,8 +446,8 @@ describe('New Wizard Tests', () => {
           });
 
           it('returns true for button of type next when page' + 'is not ready to complete', () => {
-            buttonComponent.disabled = false;
-            buttonComponent.type = DEFAULT_BUTTON_TYPES.next;
+            host.disabled = false;
+            host.type = DEFAULT_BUTTON_TYPES.next;
             navService.currentPage.readyToComplete = false;
             navService.currentPageIsLast = false;
             renderFixture(fixture);
@@ -444,8 +455,8 @@ describe('New Wizard Tests', () => {
           });
 
           it('returns true for button of type custom-next when page' + 'is not ready to complete', () => {
-            buttonComponent.disabled = false;
-            buttonComponent.type = CUSTOM_BUTTON_TYPES.next;
+            host.disabled = false;
+            host.type = CUSTOM_BUTTON_TYPES.next;
             navService.currentPage.readyToComplete = false;
             navService.currentPageIsLast = false;
             renderFixture(fixture);
@@ -456,8 +467,8 @@ describe('New Wizard Tests', () => {
             'returns true for button of type next when disabled is true,' +
               'even if page is ready to complete and not the last page',
             () => {
-              buttonComponent.disabled = true;
-              buttonComponent.type = DEFAULT_BUTTON_TYPES.next;
+              host.disabled = true;
+              host.type = DEFAULT_BUTTON_TYPES.next;
               navService.currentPage.readyToComplete = true;
               navService.currentPageIsLast = false;
               renderFixture(fixture);
@@ -469,8 +480,8 @@ describe('New Wizard Tests', () => {
             'returns true for button of type custom-next when disabled is true,' +
               'even if page is ready to complete and not the last page',
             () => {
-              buttonComponent.disabled = true;
-              buttonComponent.type = CUSTOM_BUTTON_TYPES.next;
+              host.disabled = true;
+              host.type = CUSTOM_BUTTON_TYPES.next;
               navService.currentPage.readyToComplete = true;
               navService.currentPageIsLast = false;
               renderFixture(fixture);
@@ -481,8 +492,8 @@ describe('New Wizard Tests', () => {
 
         describe('...and finish buttons', () => {
           it('returns false for button of type finish when page' + 'is the last page and ready to complete', () => {
-            buttonComponent.disabled = false;
-            buttonComponent.type = DEFAULT_BUTTON_TYPES.finish;
+            host.disabled = false;
+            host.type = DEFAULT_BUTTON_TYPES.finish;
             navService.currentPage.readyToComplete = true;
             navService.currentPageIsLast = true;
             renderFixture(fixture);
@@ -492,8 +503,8 @@ describe('New Wizard Tests', () => {
           it(
             'returns false for button of type custom-finish when page' + 'is the last page and ready to complete',
             () => {
-              buttonComponent.disabled = false;
-              buttonComponent.type = CUSTOM_BUTTON_TYPES.finish;
+              host.disabled = false;
+              host.type = CUSTOM_BUTTON_TYPES.finish;
               navService.currentPage.readyToComplete = true;
               navService.currentPageIsLast = true;
               renderFixture(fixture);
@@ -502,8 +513,8 @@ describe('New Wizard Tests', () => {
           );
 
           it('returns true for button of type finish when page' + 'is NOT the last page', () => {
-            buttonComponent.disabled = false;
-            buttonComponent.type = DEFAULT_BUTTON_TYPES.finish;
+            host.disabled = false;
+            host.type = DEFAULT_BUTTON_TYPES.finish;
             navService.currentPage.readyToComplete = true;
             navService.currentPageIsLast = false;
             renderFixture(fixture);
@@ -511,8 +522,8 @@ describe('New Wizard Tests', () => {
           });
 
           it('returns true for button of type custom-finish when page' + 'is NOT the last page', () => {
-            buttonComponent.disabled = false;
-            buttonComponent.type = CUSTOM_BUTTON_TYPES.finish;
+            host.disabled = false;
+            host.type = CUSTOM_BUTTON_TYPES.finish;
             navService.currentPage.readyToComplete = true;
             navService.currentPageIsLast = false;
             renderFixture(fixture);
@@ -520,8 +531,8 @@ describe('New Wizard Tests', () => {
           });
 
           it('returns true for button of type finish when page' + 'is not ready to complete', () => {
-            buttonComponent.disabled = false;
-            buttonComponent.type = DEFAULT_BUTTON_TYPES.finish;
+            host.disabled = false;
+            host.type = DEFAULT_BUTTON_TYPES.finish;
             navService.currentPage.readyToComplete = false;
             navService.currentPageIsLast = true;
             renderFixture(fixture);
@@ -529,8 +540,8 @@ describe('New Wizard Tests', () => {
           });
 
           it('returns true for button of type custom-finish when page' + 'is not ready to complete', () => {
-            buttonComponent.disabled = false;
-            buttonComponent.type = CUSTOM_BUTTON_TYPES.finish;
+            host.disabled = false;
+            host.type = CUSTOM_BUTTON_TYPES.finish;
             navService.currentPage.readyToComplete = false;
             navService.currentPageIsLast = true;
             renderFixture(fixture);
@@ -541,8 +552,8 @@ describe('New Wizard Tests', () => {
             'returns true for button of type finish when disabled is true,' +
               'even if page is ready to complete and also the last page',
             () => {
-              buttonComponent.disabled = true;
-              buttonComponent.type = DEFAULT_BUTTON_TYPES.finish;
+              host.disabled = true;
+              host.type = DEFAULT_BUTTON_TYPES.finish;
               navService.currentPage.readyToComplete = true;
               navService.currentPageIsLast = true;
               renderFixture(fixture);
@@ -554,8 +565,8 @@ describe('New Wizard Tests', () => {
             'returns true for button of type custom-finish when disabled is true,' +
               'even if page is ready to complete and also the last page',
             () => {
-              buttonComponent.disabled = true;
-              buttonComponent.type = CUSTOM_BUTTON_TYPES.finish;
+              host.disabled = true;
+              host.type = CUSTOM_BUTTON_TYPES.finish;
               navService.currentPage.readyToComplete = true;
               navService.currentPageIsLast = true;
               renderFixture(fixture);
@@ -566,15 +577,15 @@ describe('New Wizard Tests', () => {
 
         describe('...and fallthrough', () => {
           it('returns false for button of unknown type that is not set to disabled', () => {
-            buttonComponent.disabled = false;
-            buttonComponent.type = 'custom-jabberwocky';
+            host.disabled = false;
+            host.type = 'custom-jabberwocky';
             renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(false);
           });
 
           it('returns true for button of unknown type that is set to disabled', () => {
-            buttonComponent.disabled = true;
-            buttonComponent.type = 'custom-jabberwocky';
+            host.disabled = true;
+            host.type = 'custom-jabberwocky';
             renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(true);
           });
@@ -584,7 +595,7 @@ describe('New Wizard Tests', () => {
       describe('isHidden', () => {
         describe('hidden override', () => {
           it('returns true if hidden', () => {
-            buttonComponent.hidden = true;
+            host.hidden = true;
             renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(true);
           });
@@ -592,29 +603,29 @@ describe('New Wizard Tests', () => {
 
         describe('...and cancel buttons', () => {
           it('always returns false for cancel buttons that are not explicitly hidden', () => {
-            buttonComponent.hidden = false;
-            buttonComponent.type = DEFAULT_BUTTON_TYPES.cancel;
+            host.hidden = false;
+            host.type = DEFAULT_BUTTON_TYPES.cancel;
             renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(false);
           });
 
           it('always returns false for custom-cancel buttons that are not explicitly hidden', () => {
-            buttonComponent.hidden = false;
-            buttonComponent.type = CUSTOM_BUTTON_TYPES.cancel;
+            host.hidden = false;
+            host.type = CUSTOM_BUTTON_TYPES.cancel;
             renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(false);
           });
 
           it('returns true for cancel buttons that are explicitly hidden', () => {
-            buttonComponent.hidden = true;
-            buttonComponent.type = DEFAULT_BUTTON_TYPES.cancel;
+            host.hidden = true;
+            host.type = DEFAULT_BUTTON_TYPES.cancel;
             renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(true);
           });
 
           it('always returns true for custom-cancel buttons that are explicitly hidden', () => {
-            buttonComponent.hidden = true;
-            buttonComponent.type = CUSTOM_BUTTON_TYPES.cancel;
+            host.hidden = true;
+            host.type = CUSTOM_BUTTON_TYPES.cancel;
             renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(true);
           });
@@ -622,32 +633,32 @@ describe('New Wizard Tests', () => {
 
         describe('...and previous buttons', () => {
           it('returns false for previous buttons when current page is not first', () => {
-            buttonComponent.hidden = false;
-            buttonComponent.type = DEFAULT_BUTTON_TYPES.previous;
+            host.hidden = false;
+            host.type = DEFAULT_BUTTON_TYPES.previous;
             navService.currentPageIsFirst = false;
             renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(false);
           });
 
           it('returns false for custom-previous buttons when current page is not first', () => {
-            buttonComponent.hidden = false;
-            buttonComponent.type = CUSTOM_BUTTON_TYPES.previous;
+            host.hidden = false;
+            host.type = CUSTOM_BUTTON_TYPES.previous;
             navService.currentPageIsFirst = false;
             renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(false);
           });
 
           it('returns true for previous buttons when current page is first', () => {
-            buttonComponent.hidden = false;
-            buttonComponent.type = DEFAULT_BUTTON_TYPES.previous;
+            host.hidden = false;
+            host.type = DEFAULT_BUTTON_TYPES.previous;
             navService.currentPageIsFirst = true;
             renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(true);
           });
 
           it('returns true for custom-previous buttons when current page is first', () => {
-            buttonComponent.hidden = false;
-            buttonComponent.type = CUSTOM_BUTTON_TYPES.previous;
+            host.hidden = false;
+            host.type = CUSTOM_BUTTON_TYPES.previous;
             navService.currentPageIsFirst = true;
             renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(true);
@@ -657,8 +668,8 @@ describe('New Wizard Tests', () => {
             'returns true for previous buttons that are ' +
               'explicitly set to hidden even if current page is not first',
             () => {
-              buttonComponent.hidden = true;
-              buttonComponent.type = DEFAULT_BUTTON_TYPES.previous;
+              host.hidden = true;
+              host.type = DEFAULT_BUTTON_TYPES.previous;
               navService.currentPageIsFirst = false;
               renderFixture(fixture);
               expect(buttonComponent.isHidden).toBe(true);
@@ -669,8 +680,8 @@ describe('New Wizard Tests', () => {
             'returns true for custom-previous buttons that are ' +
               'explicitly set to hidden even if current page is not first',
             () => {
-              buttonComponent.hidden = true;
-              buttonComponent.type = CUSTOM_BUTTON_TYPES.previous;
+              host.hidden = true;
+              host.type = CUSTOM_BUTTON_TYPES.previous;
               navService.currentPageIsFirst = false;
               renderFixture(fixture);
               expect(buttonComponent.isHidden).toBe(true);
@@ -680,40 +691,40 @@ describe('New Wizard Tests', () => {
 
         describe('...and next buttons', () => {
           it('returns false for button of type next when page' + 'is not the last page', () => {
-            buttonComponent.hidden = false;
-            buttonComponent.type = DEFAULT_BUTTON_TYPES.next;
+            host.hidden = false;
+            host.type = DEFAULT_BUTTON_TYPES.next;
             navService.currentPageIsLast = false;
             renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(false);
           });
 
           it('returns false for button of type custom-next when page' + 'is not the last page', () => {
-            buttonComponent.hidden = false;
-            buttonComponent.type = CUSTOM_BUTTON_TYPES.next;
+            host.hidden = false;
+            host.type = CUSTOM_BUTTON_TYPES.next;
             navService.currentPageIsLast = false;
             renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(false);
           });
 
           it('returns true for button of type next when page' + 'is the last page', () => {
-            buttonComponent.hidden = false;
-            buttonComponent.type = DEFAULT_BUTTON_TYPES.next;
+            host.hidden = false;
+            host.type = DEFAULT_BUTTON_TYPES.next;
             navService.currentPageIsLast = true;
             renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(true);
           });
 
           it('returns true for button of type custom-next when page' + 'is the last page', () => {
-            buttonComponent.hidden = false;
-            buttonComponent.type = CUSTOM_BUTTON_TYPES.next;
+            host.hidden = false;
+            host.type = CUSTOM_BUTTON_TYPES.next;
             navService.currentPageIsLast = true;
             renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(true);
           });
 
           it('returns true for button of type next when hidden is true,' + 'even if page is not the last page', () => {
-            buttonComponent.hidden = true;
-            buttonComponent.type = DEFAULT_BUTTON_TYPES.next;
+            host.hidden = true;
+            host.type = DEFAULT_BUTTON_TYPES.next;
             navService.currentPageIsLast = false;
             renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(true);
@@ -722,8 +733,8 @@ describe('New Wizard Tests', () => {
           it(
             'returns true for button of type custom-next when hidden is true,' + 'even if page is not the last page',
             () => {
-              buttonComponent.hidden = true;
-              buttonComponent.type = CUSTOM_BUTTON_TYPES.next;
+              host.hidden = true;
+              host.type = CUSTOM_BUTTON_TYPES.next;
               navService.currentPageIsLast = false;
               renderFixture(fixture);
               expect(buttonComponent.isHidden).toBe(true);
@@ -733,40 +744,40 @@ describe('New Wizard Tests', () => {
 
         describe('...and finish buttons', () => {
           it('returns false for button of type finish when page' + 'is the last page', () => {
-            buttonComponent.hidden = false;
-            buttonComponent.type = DEFAULT_BUTTON_TYPES.finish;
+            host.hidden = false;
+            host.type = DEFAULT_BUTTON_TYPES.finish;
             navService.currentPageIsLast = true;
             renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(false);
           });
 
           it('returns false for button of type custom-finish when page' + 'is the last page', () => {
-            buttonComponent.hidden = false;
-            buttonComponent.type = CUSTOM_BUTTON_TYPES.finish;
+            host.hidden = false;
+            host.type = CUSTOM_BUTTON_TYPES.finish;
             navService.currentPageIsLast = true;
             renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(false);
           });
 
           it('returns true for button of type finish when page' + 'is NOT the last page', () => {
-            buttonComponent.hidden = false;
-            buttonComponent.type = DEFAULT_BUTTON_TYPES.finish;
+            host.hidden = false;
+            host.type = DEFAULT_BUTTON_TYPES.finish;
             navService.currentPageIsLast = false;
             renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(true);
           });
 
           it('returns true for button of type custom-finish when page' + 'is NOT the last page', () => {
-            buttonComponent.hidden = false;
-            buttonComponent.type = CUSTOM_BUTTON_TYPES.finish;
+            host.hidden = false;
+            host.type = CUSTOM_BUTTON_TYPES.finish;
             navService.currentPageIsLast = false;
             renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(true);
           });
 
           it('returns true for button of type finish when hidden is true,' + 'even if page is the last page', () => {
-            buttonComponent.hidden = true;
-            buttonComponent.type = DEFAULT_BUTTON_TYPES.finish;
+            host.hidden = true;
+            host.type = DEFAULT_BUTTON_TYPES.finish;
             navService.currentPageIsLast = true;
             renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(true);
@@ -775,8 +786,8 @@ describe('New Wizard Tests', () => {
           it(
             'returns true for button of type custom-finish when hidden is true,' + 'even if page is the last page',
             () => {
-              buttonComponent.hidden = true;
-              buttonComponent.type = CUSTOM_BUTTON_TYPES.finish;
+              host.hidden = true;
+              host.type = CUSTOM_BUTTON_TYPES.finish;
               navService.currentPageIsLast = true;
               renderFixture(fixture);
               expect(buttonComponent.isHidden).toBe(true);
@@ -786,15 +797,15 @@ describe('New Wizard Tests', () => {
 
         describe('...and fallthrough', () => {
           it('returns false for button of unknown type that is not set to be hidden', () => {
-            buttonComponent.hidden = false;
-            buttonComponent.type = 'onoez';
+            host.hidden = false;
+            host.type = 'onoez';
             renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(false);
           });
 
           it('returns true for button of unknown type that is set to be hidden', () => {
-            buttonComponent.hidden = true;
-            buttonComponent.type = 'onoez';
+            host.hidden = true;
+            host.type = 'onoez';
             renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(true);
           });

@@ -27,5 +27,6 @@ forms and validation, modal and dropdown actions, and the property-view addon. I
 checks datepicker focus, native overlay callbacks, nested modal/menu focus, rapid close
 and destruction, column labels and separators, column-picker ARIA state, theme-builder
 initialization and early restoration, direct component pinning, native column-picker Escape,
-and Promise/Observable recursive-tree loading. Tests use the packages' exported API (the retained-tree check also
+Promise/Observable recursive-tree loading, and (Zone.js build only) an Eager wizard consumer whose
+plain-field changes after a timer must reach the OnPush wizard. Tests use the packages' exported API (the retained-tree check also
 reads `ClrTreeNode._model`) and ordinary UI actions without forcing Angular rendering.

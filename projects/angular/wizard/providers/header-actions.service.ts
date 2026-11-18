@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable, QueryList } from '@angular/core';
+import { Injectable, QueryList, signal } from '@angular/core';
 
 import { ClrWizardHeaderAction } from '../wizard-header-action';
 import { WizardNavigationService } from './wizard-navigation.service';
@@ -15,16 +15,22 @@ export class HeaderActionService {
   // this service communicates information about the presence/display of header actions
   // across the wizard
 
-  wizardHeaderActions: QueryList<ClrWizardHeaderAction>;
+  private _wizardHeaderActions: QueryList<ClrWizardHeaderAction>;
+  private readonly headerActionCount = signal(0);
 
   constructor(public navService: WizardNavigationService) {}
 
+  // The wizard assigns the list again each time it changes, so the header refreshes.
+  get wizardHeaderActions(): QueryList<ClrWizardHeaderAction> {
+    return this._wizardHeaderActions;
+  }
+  set wizardHeaderActions(headerActions: QueryList<ClrWizardHeaderAction>) {
+    this._wizardHeaderActions = headerActions;
+    this.headerActionCount.set(headerActions ? headerActions.length : 0);
+  }
+
   get wizardHasHeaderActions(): boolean {
-    const wizardHdrActions = this.wizardHeaderActions;
-    if (!wizardHdrActions) {
-      return false;
-    }
-    return wizardHdrActions.toArray().length > 0;
+    return this.headerActionCount() > 0;
   }
 
   get currentPageHasHeaderActions(): boolean {

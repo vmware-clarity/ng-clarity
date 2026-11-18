@@ -59,7 +59,7 @@ import { ClrWizardPage } from './wizard-page';
     '(focusin)': 'scrollIntoView()',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrWizardStepnavItem implements OnInit, OnDestroy {
   @Input('page') page: ClrWizardPage;

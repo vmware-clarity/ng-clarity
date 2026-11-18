@@ -49,7 +49,7 @@ export const CUSTOM_BUTTON_TYPES: any = {
   `,
   host: { class: 'clr-wizard-btn-wrapper', '[attr.aria-hidden]': 'isHidden' },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrWizardButton {
   @Input('type') type = '';
