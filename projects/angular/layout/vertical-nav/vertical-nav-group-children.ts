@@ -11,6 +11,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   selector: 'clr-vertical-nav-group-children',
   template: `<ng-content></ng-content>`,
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrVerticalNavGroupChildren {}

@@ -5,15 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 @Injectable()
 export class VerticalNavService {
   private _animateOnCollapsed = new Subject<boolean>();
   private _collapsedChanged = new Subject<boolean>();
-  private _collapsed = false;
-  private _collapsible = false;
+  // Signals, so that OnPush views reading the state are refreshed when it changes, whatever changes it.
+  private readonly _collapsed = signal(false);
+  private readonly _collapsible = signal(false);
 
   get animateOnCollapsed(): Observable<boolean> {
     return this._animateOnCollapsed.asObservable();
@@ -24,31 +25,31 @@ export class VerticalNavService {
   }
 
   get collapsed(): boolean {
-    return this._collapsed;
+    return this._collapsed();
   }
   set collapsed(value: boolean) {
     value = !!value;
-    if (this.collapsible && this._collapsed !== value) {
+    if (this.collapsible && this.collapsed !== value) {
       this.updateCollapseBehavior(value);
     }
   }
 
   get collapsible(): boolean {
-    return this._collapsible;
+    return this._collapsible();
   }
   set collapsible(value: boolean) {
     value = !!value;
-    if (this._collapsible !== value) {
+    if (this.collapsible !== value) {
       if (!value && this.collapsed) {
         this.updateCollapseBehavior(false);
       }
-      this._collapsible = value;
+      this._collapsible.set(value);
     }
   }
 
   private updateCollapseBehavior(value: boolean): void {
     this._animateOnCollapsed.next(value);
-    this._collapsed = value;
+    this._collapsed.set(value);
     this._collapsedChanged.next(value);
   }
 }
