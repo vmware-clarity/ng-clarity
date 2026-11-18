@@ -7565,7 +7565,8 @@ export class ClrTabLink {
     // (undocumented)
     get tabindex(): 0 | -1;
     // (undocumented)
-    tabLinkId: string;
+    get tabLinkId(): string;
+    set tabLinkId(id: string);
     // (undocumented)
     tabsId: number;
     // (undocumented)
@@ -7644,7 +7645,7 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
     // (undocumented)
     get tabLinkDirectives(): ClrTabLink[];
     // (undocumented)
-    tabLinkElements: HTMLElement[];
+    get tabLinkElements(): HTMLElement[];
     // (undocumented)
     set tabOverflowEl(value: ElementRef<HTMLElement>);
     // (undocumented)

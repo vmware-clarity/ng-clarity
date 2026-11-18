@@ -13,6 +13,7 @@ import {
   Inject,
   Input,
   Optional,
+  signal,
   ViewContainerRef,
 } from '@angular/core';
 import { IF_ACTIVE_ID, IfActiveService, TemplateRefContainer } from '@clr/angular/utils';
@@ -33,11 +34,11 @@ let nbTabLinkComponents = 0;
   standalone: false,
 })
 export class ClrTabLink {
-  @Input('id') @HostBinding('id') tabLinkId: string;
-
   templateRefContainer: TemplateRefContainer;
 
-  private _inOverflow: boolean;
+  // Signals, because the tabs and the tab content read them in their own (OnPush) views.
+  private readonly _tabLinkId = signal('clr-tab-link-' + nbTabLinkComponents++);
+  private readonly _inOverflow = signal(false);
 
   constructor(
     @Optional() public ifActiveService: IfActiveService,
@@ -50,9 +51,6 @@ export class ClrTabLink {
     if (!ifActiveService || !tabsService || id === null || id === undefined) {
       throw new Error('clrTabLink and clr-tab-content should only be used inside of a clr-tabs');
     }
-    if (!this.tabLinkId) {
-      this.tabLinkId = 'clr-tab-link-' + nbTabLinkComponents++;
-    }
 
     // Tab links can be rendered in one of two places: in the main area or inside the overflow dropdown menu.
     // Here, we create a container so that its template can be used to create embeddedView on the fly.
@@ -62,12 +60,21 @@ export class ClrTabLink {
     }).instance;
   }
 
+  @Input('id')
+  @HostBinding('id')
+  get tabLinkId(): string {
+    return this._tabLinkId();
+  }
+  set tabLinkId(id: string) {
+    this._tabLinkId.set(id);
+  }
+
   @Input('clrTabLinkInOverflow')
   get inOverflow(): boolean {
-    return this._inOverflow && this.tabsService.layout !== TabsLayout.VERTICAL;
+    return this._inOverflow() && this.tabsService.layout !== TabsLayout.VERTICAL;
   }
-  set inOverflow(inOverflow) {
-    this._inOverflow = inOverflow;
+  set inOverflow(inOverflow: boolean) {
+    this._inOverflow.set(inOverflow);
   }
 
   @HostBinding('class.btn-link')

@@ -40,7 +40,7 @@ let nbTabContentComponents = 0;
     </ng-template>
   `,
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrTabContent implements OnDestroy {
   @Input('id') tabContentId: string;

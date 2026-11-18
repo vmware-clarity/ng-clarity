@@ -16,6 +16,7 @@ import {
   Input,
   OnDestroy,
   QueryList,
+  signal,
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
@@ -96,11 +97,9 @@ import { TABS_ID, TABS_ID_PROVIDER } from './tabs-id.provider';
   providers: [IfActiveService, TabsService, TABS_ID_PROVIDER],
   hostDirectives: [ClrPopoverHostDirective],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrTabs implements AfterContentInit, OnDestroy {
-  tabLinkElements: HTMLElement[] = [];
-
   // in order to check focus is triggered by click
   // we are using this _mousedown flag
   _mousedown = false;
@@ -112,7 +111,10 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
 
   private subscriptions: Subscription[] = [];
   private _tabOverflowEl: HTMLElement;
-  private _tabLinkDirectives: ClrTabLink[] = [];
+
+  // Signals, so that this OnPush view is refreshed when tabs or tab actions are added or removed.
+  private readonly _tabLinkDirectives = signal<ClrTabLink[]>([]);
+  private readonly _tabLinkElements = signal<HTMLElement[]>([]);
 
   constructor(
     public ifActiveService: IfActiveService,
@@ -139,7 +141,11 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
   }
 
   get tabLinkDirectives(): ClrTabLink[] {
-    return this._tabLinkDirectives;
+    return this._tabLinkDirectives();
+  }
+
+  get tabLinkElements(): HTMLElement[] {
+    return this._tabLinkElements();
   }
 
   get activeTabInOverflow() {
@@ -147,7 +153,7 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
   }
 
   get activeTabPosition() {
-    return this._tabLinkDirectives.findIndex(link => link.active);
+    return this.tabLinkDirectives.findIndex(link => link.active);
   }
 
   get isCurrentInOverflow() {
@@ -170,7 +176,7 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
   }
 
   private get overflowPosition() {
-    return this._tabLinkDirectives.filter(link => !link.inOverflow).length;
+    return this.tabLinkDirectives.filter(link => !link.inOverflow).length;
   }
 
   @ViewChild('tabContentViewContainer', { static: true, read: ViewContainerRef })
@@ -273,11 +279,12 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
   }
 
   private setTabLinkElements() {
-    this._tabLinkDirectives = this.tabs.map(tab => tab.tabLink);
-    this.tabLinkElements = this._tabLinkDirectives.map(tab => tab.el.nativeElement);
-    if (this.tabsActions && this.tabsActions) {
-      this.tabLinkElements.push(...this.tabsActions.map(action => action.nativeElement));
-    }
+    const tabLinks = this.tabs.map(tab => tab.tabLink);
+    this._tabLinkDirectives.set(tabLinks);
+    this._tabLinkElements.set([
+      ...tabLinks.map(tabLink => tabLink.el.nativeElement),
+      ...this.tabsActions.map(action => action.nativeElement),
+    ]);
   }
 
   private listenForTabLinkChanges() {
