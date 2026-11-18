@@ -27,6 +27,13 @@ interface ThisTest {
   template: '<div zoomLevelIndicator></div>',
 })
 class DummyComponent {}
+
+@Component({
+  standalone: false,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: '<div zoomLevelIndicator></div>',
+})
+class OnPushHostComponent {}
 describe('ZoomLevelIndicatorDirective', () => {
   let testContext: ThisTest;
   beforeEach(() => {
@@ -41,7 +48,7 @@ describe('ZoomLevelIndicatorDirective', () => {
           useClass: ZoomLevelServiceMock,
         },
       ],
-      declarations: [ZoomLevelIndicatorDirective, DummyComponent],
+      declarations: [ZoomLevelIndicatorDirective, DummyComponent, OnPushHostComponent],
     });
 
     testContext.fixture = TestBed.createComponent(DummyComponent);
@@ -60,6 +67,24 @@ describe('ZoomLevelIndicatorDirective', () => {
 
     it('Then emitted class is applied on the DOM element', () => {
       expect(testContext.fixture.debugElement.query(By.css('.no-zoom'))).toBeTruthy();
+    });
+  });
+
+  describe('When the zoom level changes after an OnPush host was rendered', () => {
+    it('Then the new class is applied on the DOM element', async () => {
+      const fixture = TestBed.createComponent(OnPushHostComponent);
+      fixture.autoDetectChanges();
+      (testContext.service as any).resizeSubject.next(ZoomLevel.none);
+      await fixture.whenStable();
+      const element: HTMLElement = fixture.nativeElement.querySelector('div');
+      expect(element.classList).toContain(ZoomLevel.none);
+
+      (testContext.service as any).resizeSubject.next(ZoomLevel.x4);
+      await fixture.whenStable();
+
+      expect(element.classList).toContain(ZoomLevel.x4);
+      expect(element.classList).not.toContain(ZoomLevel.none);
+      fixture.destroy();
     });
   });
 });

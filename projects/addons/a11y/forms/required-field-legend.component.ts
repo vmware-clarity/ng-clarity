@@ -22,6 +22,6 @@ import { translations } from './required-field-legend.l10n';
       useValue: translations,
     },
   ],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RequiredFieldLegendComponent {}

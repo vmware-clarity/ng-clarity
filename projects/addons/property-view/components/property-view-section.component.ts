@@ -15,6 +15,7 @@ import { PropertyViewActionModel, PropertyViewModelType, PropertyViewSectionMode
   standalone: false,
   templateUrl: 'property-view-section.component.html',
   styleUrls: ['property-view-section.component.scss'],
+  // Stays Eager: see PropertyViewComponent.
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class PropertyViewSectionComponent {
