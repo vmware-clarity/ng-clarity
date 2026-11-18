@@ -99,7 +99,7 @@ export class ClrStackBlock implements OnInit {
   private readonly _expanded = signal(false);
   private readonly _expandable = signal(false);
   private readonly changedChildren = signal(0);
-  private readonly label = contentChild(ClrStackViewLabel);
+  private readonly stackLabel = contentChild(ClrStackViewLabel);
   private _fullyInitialized = false;
   private _changed = false;
 
@@ -157,7 +157,7 @@ export class ClrStackBlock implements OnInit {
   }
 
   get stackBlockTitle(): ClrStackViewLabel {
-    return this.label();
+    return this.stackLabel();
   }
 
   get labelledById() {

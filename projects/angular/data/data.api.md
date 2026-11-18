@@ -1723,7 +1723,7 @@ export class ClrStackBlock implements OnInit {
         };
     }, {
         "expandedChange": "clrSbExpandedChange";
-    }, ["label"], ["clr-stack-label", "*", "clr-stack-block"], false, never>;
+    }, ["stackLabel"], ["clr-stack-label", "*", "clr-stack-block"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackBlock, [{
         optional: true;
