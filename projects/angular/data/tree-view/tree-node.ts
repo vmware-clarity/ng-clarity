@@ -11,12 +11,10 @@ import {
   afterNextRender,
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
-  ContentChildren,
+  contentChildren,
   ElementRef,
   EventEmitter,
-  inject,
   Inject,
   Injector,
   Input,
@@ -25,7 +23,6 @@ import {
   Optional,
   Output,
   PLATFORM_ID,
-  QueryList,
   SkipSelf,
   ViewChild,
 } from '@angular/core';
@@ -41,8 +38,8 @@ import {
   preventArrowKeyScroll,
   uniqueIdFactory,
 } from '@clr/angular/utils';
-import { asapScheduler, Subject, Subscription } from 'rxjs';
-import { debounceTime, filter, skip } from 'rxjs/operators';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime, filter } from 'rxjs/operators';
 
 import { DeclarativeTreeNodeModel } from './models/declarative-tree-node.model';
 import { ClrSelectedState } from './models/selected-state.enum';
@@ -66,7 +63,7 @@ const TREE_TYPE_AHEAD_TIMEOUT = 200;
     '[class.disabled]': 'this._model.disabled',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
   // Allows the consumer to override our logic deciding if a node is expandable.
@@ -77,7 +74,6 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   @Output('clrExpandedChange') expandedChange = new EventEmitter<boolean>();
 
   STATES = ClrSelectedState;
-  isModelLoading = false;
   nodeId = uniqueIdFactory();
   contentContainerTabindex = -1;
   _model: TreeNodeModel<T>;
@@ -98,14 +94,12 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   private typeAheadKeyBuffer = '';
   private typeAheadKeyEvent = new Subject<string>();
   private subscriptions: Subscription[] = [];
-  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   @ViewChild('contentContainer', { read: ElementRef, static: true }) private contentContainer: ElementRef<HTMLElement>;
   @ViewChild('children', { static: true }) private children: ElementRef<HTMLElement>;
 
-  // @ContentChild would have been more succinct
-  // but it doesn't offer a way to query only an immediate child
-  @ContentChildren(ClrTreeNodeLink, { descendants: false }) private treeNodeLinkList: QueryList<ClrTreeNodeLink>;
+  // Only the links of this node, not the ones of nested nodes. A signal query, so that a link added later is rendered.
+  private readonly treeNodeLinks = contentChildren(ClrTreeNodeLink, { descendants: false });
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
@@ -194,8 +188,12 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     }
   }
 
-  get treeNodeLink() {
-    return this.treeNodeLinkList && this.treeNodeLinkList.first;
+  get treeNodeLink(): ClrTreeNodeLink {
+    return this.treeNodeLinks()[0];
+  }
+
+  get isModelLoading(): boolean {
+    return this._model.loading;
   }
 
   /** @deprecated No longer used: the children animate without Angular animations. To be removed in a future major version. */
@@ -243,18 +241,6 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
       }),
       this.focusManager.focusChange.subscribe(nodeId => {
         this.checkTabIndex(nodeId);
-      })
-    );
-
-    // The loading state can flip in the middle of a change detection pass (a lazy fetch starts when the template
-    // reads the children), so it is applied in a microtask rather than synchronously. Using a macrotask timer here
-    // would schedule one timer per node when a large tree gets created, and one extra change detection pass per
-    // fetched node in lazy trees. The current value is read directly instead of debouncing the replayed initial one.
-    this.isModelLoading = this._model.loading;
-    this.subscriptions.push(
-      this._model.loading$.pipe(skip(1), debounceTime(0, asapScheduler)).subscribe(isLoading => {
-        this.isModelLoading = isLoading;
-        this.changeDetectorRef.markForCheck();
       })
     );
   }

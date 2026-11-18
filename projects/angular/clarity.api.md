@@ -6685,17 +6685,15 @@ export class ClrRangeModule {
 }
 
 // @public (undocumented)
-export class ClrRecursiveForOf<T> implements OnChanges, OnDestroy {
+export class ClrRecursiveForOf<T> implements OnChanges {
     // Warning: (ae-forgotten-export) The symbol "TreeFeaturesService" needs to be exported by the entry point clr-angular.d.ts
-    constructor(template: TemplateRef<ClrRecursiveForOfContext<T>>, featuresService: TreeFeaturesService<T>, cdr: ChangeDetectorRef);
+    constructor(template: TemplateRef<ClrRecursiveForOfContext<T>>, featuresService: TreeFeaturesService<T>);
     // Warning: (ae-forgotten-export) The symbol "AsyncArray" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
     getChildren: (node: T) => AsyncArray<T>;
     // (undocumented)
     ngOnChanges(): void;
-    // (undocumented)
-    ngOnDestroy(): void;
     // (undocumented)
     nodes: T | T[];
     // (undocumented)
@@ -7995,7 +7993,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     // (undocumented)
     isExpandable(): boolean;
     // (undocumented)
-    isModelLoading: boolean;
+    get isModelLoading(): boolean;
     // (undocumented)
     isSelectable(): boolean;
     // (undocumented)
@@ -8052,7 +8050,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     }, {
         "selectedChange": "clrSelectedChange";
         "expandedChange": "clrExpandedChange";
-    }, ["treeNodeLinkList"], ["*", "clr-tree-node", "[clrIfExpanded]"], false, never>;
+    }, ["treeNodeLinks"], ["*", "clr-tree-node", "[clrIfExpanded]"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeNode<any>, [null, {
         optional: true;
@@ -8061,12 +8059,14 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
 }
 
 // @public (undocumented)
-export class ClrTreeNodeLink {
+export class ClrTreeNodeLink implements OnDestroy {
     constructor(el: ElementRef<HTMLElement>);
     // (undocumented)
     activate(): void;
     // (undocumented)
     get active(): boolean;
+    // (undocumented)
+    ngOnDestroy(): void;
     // (undocumented)
     tabindex: number;
     // (undocumented)
@@ -9516,7 +9516,8 @@ export class DeclarativeTreeNodeModel<T> extends TreeNodeModel<T> {
     // (undocumented)
     _addChild(child: DeclarativeTreeNodeModel<T>): void;
     // (undocumented)
-    children: DeclarativeTreeNodeModel<T>[];
+    get children(): DeclarativeTreeNodeModel<T>[];
+    set children(value: DeclarativeTreeNodeModel<T>[]);
     // (undocumented)
     destroy(): void;
     // (undocumented)
@@ -11165,7 +11166,7 @@ export const radarIconName = "radar";
 
 // @public (undocumented)
 export class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
-    constructor(model: T, parent: RecursiveTreeNodeModel<T> | null, getChildren: (node: T) => AsyncArray<T> | undefined, featuresService: TreeFeaturesService<T> | undefined);
+    constructor(model: T, parent: RecursiveTreeNodeModel<T> | null, getChildren: (node: T) => AsyncArray<T> | undefined, _featuresService?: TreeFeaturesService<T>);
     // (undocumented)
     get children(): RecursiveTreeNodeModel<T>[];
     set children(value: RecursiveTreeNodeModel<T>[]);

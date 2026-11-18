@@ -63,6 +63,13 @@ describe('Tree View', () => {
         testContext = {} as Context;
       });
 
+      function expectRoots(nodes: TestNode[]) {
+        const roots = testContext.featuresService.recursion.root;
+        expect(roots.every(root => root instanceof RecursiveTreeNodeModel && root.parent === null)).toBe(true);
+        expect(roots.map(root => root.model)).toEqual(nodes);
+        expect(roots.map(root => root.children.map(child => child.model))).toEqual(nodes.map(node => node.children));
+      }
+
       // Can't use our helpers in their current state because it's a structural directive
       beforeEach(() => {
         TestBed.configureTestingModule({
@@ -89,39 +96,19 @@ describe('Tree View', () => {
         expect(testContext.featuresService.recursion.template.elementRef.nativeElement).toBe(
           testContext.testComponent.template.elementRef.nativeElement
         );
-        expect(testContext.featuresService.recursion.root).toEqual([
-          new RecursiveTreeNodeModel(TEST_ROOT, null, getChildren, testContext.featuresService),
-        ]);
+        expectRoots([TEST_ROOT]);
       });
 
       it('updates the recursion service if the nodes change', () => {
         testContext.testComponent.root = TEST_ROOT.children[0];
         renderFixture(testContext.fixture);
-        expect(testContext.featuresService.recursion.root).toEqual([
-          new RecursiveTreeNodeModel(TEST_ROOT.children[0], null, getChildren, testContext.featuresService),
-        ]);
-      });
-
-      it('refreshes the tree once per burst of fetched children, in a microtask', async () => {
-        vi.useFakeTimers();
-        // Children fetched while the tree renders arrive in bursts, one notification per node.
-        const detectChanges = vi
-          .spyOn((testContext.clarityDirective as any).cdr, 'detectChanges')
-          .mockImplementation(() => undefined);
-        for (let i = 0; i < 5; i++) {
-          testContext.featuresService.childrenFetched.next();
-        }
-        expect(detectChanges).not.toHaveBeenCalled();
-        // A microtask is enough: no timer, and so no separate change detection pass per burst.
-        await Promise.resolve();
-        expect(detectChanges).toHaveBeenCalledTimes(1);
+        expectRoots([TEST_ROOT.children[0]]);
       });
 
       it('accepts multiple roots', () => {
         testContext.testComponent.root = [TEST_ROOT, TEST_ROOT];
         renderFixture(testContext.fixture);
-        const wrappedRoot = new RecursiveTreeNodeModel(TEST_ROOT, null, getChildren, testContext.featuresService);
-        expect(testContext.featuresService.recursion.root).toEqual([wrappedRoot, wrappedRoot]);
+        expectRoots([TEST_ROOT, TEST_ROOT]);
       });
     });
   });
