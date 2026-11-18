@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ClrCommonStringsService, commonStringsDefault } from '@clr/angular/utils';
 
 import { buildFileList, selectFiles } from './file-input.helpers';
 import { ClrFileInputModule } from './file-input.module';
@@ -171,6 +172,41 @@ describe('ClrFileInputContainer (zoneless, OnPush host)', () => {
       expect(fileNames(fixture.componentInstance.control)).toEqual([]);
       expect(browseButton(fixture).textContent.trim()).toBe('Browse');
       expect(clearButton(fixture)).toBeNull();
+    });
+
+    it('disables the browse button when the control is disabled from outside the template', async () => {
+      await Promise.resolve().then(() => fixture.componentInstance.control.disable());
+      await fixture.whenStable();
+
+      expect(browseButton(fixture).disabled).toBe(true);
+      expect(query(fixture, 'clr-file-input-container').classList).toContain('clr-form-control-disabled');
+
+      await Promise.resolve().then(() => fixture.componentInstance.control.enable());
+      await fixture.whenStable();
+
+      expect(browseButton(fixture).disabled).toBe(false);
+    });
+
+    it('renders localized strings set after the first render', async () => {
+      const commonStrings = TestBed.inject(ClrCommonStringsService);
+      selectFiles(fileInput(fixture), [textFile('a.txt'), textFile('b.txt')]);
+      await fixture.whenStable();
+
+      try {
+        commonStrings.localize({ fileCount: '{COUNT} Dateien', clearFiles: '{COUNT} Dateien entfernen' });
+        await fixture.whenStable();
+
+        expect(browseButton(fixture).textContent.trim()).toBe('2 Dateien');
+        expect(clearButton(fixture).getAttribute('aria-label')).toBe('2 Dateien entfernen');
+
+        selectFiles(fileInput(fixture), []);
+        commonStrings.localize({ browse: 'Durchsuchen' });
+        await fixture.whenStable();
+
+        expect(browseButton(fixture).textContent.trim()).toBe('Durchsuchen');
+      } finally {
+        commonStrings.localize(commonStringsDefault);
+      }
     });
 
     it('updates a custom button label', async () => {

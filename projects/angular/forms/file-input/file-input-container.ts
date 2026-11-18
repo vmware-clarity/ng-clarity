@@ -139,7 +139,7 @@ export class ClrFileInputContainer extends ClrAbstractContainer implements After
   }
 
   protected get disabled() {
-    return this.control ? this.control.disabled : this.inputAttributes().disabled;
+    return this.control ? this.controlState().disabled : this.inputAttributes().disabled;
   }
 
   protected get browseButtonText() {

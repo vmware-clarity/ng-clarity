@@ -104,7 +104,7 @@ export class ClrFileList {
   }
 
   protected createFileMessagesTemplateContext(file: File): ClrFileMessagesTemplateContext {
-    const fileInputErrors: ClrFileListValidationErrors = this.ngControlService.controls[0].errors || {};
+    const fileInputErrors: ClrFileListValidationErrors = this.ngControlService.states()[0]?.errors || {};
 
     const errors: ClrSingleFileValidationErrors = {
       accept: fileInputErrors.accept?.find(error => error.name === file.name),
