@@ -79,7 +79,7 @@ describe('icon element', () => {
     it('shape should not run an update if the shape is assigned the value it already has', async () => {
       component.shape = 'testing';
       fixture.detectChanges();
-      spyOn(component, 'updateIcon').and.callThrough();
+      vi.spyOn(component, 'updateIcon');
       component.shape = 'testing';
       fixture.detectChanges();
       expect(component.updateIcon).not.toHaveBeenCalled();
@@ -89,7 +89,7 @@ describe('icon element', () => {
       const testShape = 'testing';
       component.shape = testShape;
       fixture.detectChanges();
-      spyOn(component, 'updateIcon').and.callThrough();
+      vi.spyOn(component, 'updateIcon');
 
       component.shape = '';
       fixture.detectChanges();
@@ -105,7 +105,7 @@ describe('icon element', () => {
     });
 
     it('does not subscribe to the global state handler after the element is disconnected', async () => {
-      const spy = spyOn(GlobalStateService.stateUpdates, 'subscribe').and.callThrough();
+      const spy = vi.spyOn(GlobalStateService.stateUpdates, 'subscribe');
 
       // Create a component, which subscribes in ngOnInit
       fixture = TestBed.createComponent(TestComponent);
@@ -116,7 +116,7 @@ describe('icon element', () => {
       fixture.destroy();
 
       // Create a new component
-      spy.calls.reset();
+      spy.mockClear();
       fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
       expect(spy).toHaveBeenCalledTimes(1);
@@ -127,7 +127,7 @@ describe('icon element', () => {
     it('should update if assigned a new value', async () => {
       component.size = 'xl';
       fixture.detectChanges();
-      spyOn(component, 'updateIconSize').and.callThrough();
+      vi.spyOn(component, 'updateIconSize');
       component.size = 'md';
       fixture.detectChanges();
       expect(component.updateIconSize).toHaveBeenCalled();
@@ -136,7 +136,7 @@ describe('icon element', () => {
     it('should not run an update if assigned the value it already has', async () => {
       component.size = 'md';
       fixture.detectChanges();
-      spyOn(component, 'updateIconSize').and.callThrough();
+      vi.spyOn(component, 'updateIconSize');
       component.size = 'md';
       fixture.detectChanges();
       expect(component.updateIconSize).not.toHaveBeenCalled();
@@ -241,7 +241,7 @@ describe('icon element', () => {
     it('should update if assigned a new value', async () => {
       component.innerOffset = 4;
       fixture.detectChanges();
-      spyOn(component, 'updateInnerOffset').and.callThrough();
+      vi.spyOn(component, 'updateInnerOffset');
       component.innerOffset = 8;
       fixture.detectChanges();
       expect(component.updateInnerOffset).toHaveBeenCalled();
@@ -250,7 +250,7 @@ describe('icon element', () => {
     it('should not run an update if assigned the value it already has', async () => {
       component.innerOffset = 4;
       fixture.detectChanges();
-      spyOn(component, 'updateInnerOffset').and.callThrough();
+      vi.spyOn(component, 'updateInnerOffset');
       component.innerOffset = 4;
       fixture.detectChanges();
       expect(component.updateInnerOffset).not.toHaveBeenCalled();
@@ -284,7 +284,7 @@ describe('icon element', () => {
 
   describe('registry access performance: ', () => {
     it('updateIcon should not copy the whole icon registry via the registry getter', () => {
-      const registrySpy = spyOnProperty(ClarityIcons, 'registry', 'get').and.callThrough();
+      const registrySpy = vi.spyOn(ClarityIcons, 'registry', 'get');
 
       component.shape = 'testing';
       fixture.detectChanges();

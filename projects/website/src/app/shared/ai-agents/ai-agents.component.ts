@@ -16,13 +16,13 @@ import { SafeHtmlPipe } from '../pipes/safe-html.pipe';
   selector: 'app-ai-agents',
   template: `
     <clr-accordion cds-layout="m-t:md">
-      @for (agents of AI_AGENTS; track agents.packageName) {
+      @for (agents of AI_AGENTS; track agents.url) {
         <clr-accordion-panel>
-          <clr-accordion-title>AGENTS.md for {{ agents.packageName }}</clr-accordion-title>
+          <clr-accordion-title>{{ agents.fileName }} for {{ agents.packageName }}</clr-accordion-title>
           <clr-accordion-content>
             <div [innerHTML]="agents.html | appSafeHtml"></div>
             <p cds-text="body" cds-layout="m-t:md">
-              <a [href]="agents.url" download="AGENTS.md">Download AGENTS.md</a>
+              <a [href]="agents.url" [download]="agents.fileName">Download {{ agents.fileName }}</a>
             </p>
           </clr-accordion-content>
         </clr-accordion-panel>

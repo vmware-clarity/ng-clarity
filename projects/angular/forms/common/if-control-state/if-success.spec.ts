@@ -6,8 +6,8 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
-import { FormControl, FormsModule, Validators } from '@angular/forms';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormControl, FormsModule, NgControl, Validators } from '@angular/forms';
 import { ClrInput, ClrInputContainer } from '@clr/angular/forms/input';
 import { ClrIcon } from '@clr/angular/icon';
 
@@ -32,44 +32,43 @@ class InvalidUseTest {}
 })
 class GeneralSuccessTest {}
 
-export default function (): void {
-  describe('ClrIfSuccess', () => {
-    describe('invalid use', () => {
-      it('throws error when used outside of a control container', () => {
-        TestBed.configureTestingModule({ declarations: [ClrIfSuccess, InvalidUseTest] });
-        expect(() => {
-          const fixture = TestBed.createComponent(InvalidUseTest);
-          fixture.detectChanges();
-        }).toThrow();
-      });
-    });
-
-    describe('general success', () => {
-      let fixture, ngControlService;
-
-      beforeEach(() => {
-        TestBed.configureTestingModule({
-          imports: [ClrIcon, FormsModule],
-          declarations: [ClrInput, ClrControlSuccess, ClrInputContainer, ClrIfSuccess, GeneralSuccessTest],
-        });
-        fixture = TestBed.createComponent(GeneralSuccessTest);
+describe('ClrIfSuccess', () => {
+  describe('invalid use', () => {
+    it('throws error when used outside of a control container', () => {
+      TestBed.configureTestingModule({ declarations: [ClrIfSuccess, InvalidUseTest] });
+      expect(() => {
+        const fixture = TestBed.createComponent(InvalidUseTest);
         fixture.detectChanges();
-        ngControlService = fixture.debugElement.injector.get(NgControlService);
-      });
-
-      it('hides the success initially', () => {
-        expect(fixture.nativeElement.innerHTML).not.toContain(successMessage);
-      });
-
-      it('displays the success message after touched', () => {
-        expect(fixture.nativeElement.innerHTML).not.toContain(successMessage);
-        const control = new FormControl('abc', Validators.required);
-        control.markAsTouched();
-        ngControlService.addControl(control);
-        control.markAsTouched();
-        fixture.detectChanges();
-        expect(fixture.nativeElement.innerHTML).toContain(successMessage);
-      });
+      }).toThrow();
     });
   });
-}
+
+  describe('general success', () => {
+    let fixture: ComponentFixture<GeneralSuccessTest>;
+    let ngControlService: NgControlService;
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [ClrIcon, FormsModule],
+        declarations: [ClrInput, ClrControlSuccess, ClrInputContainer, ClrIfSuccess, GeneralSuccessTest],
+      });
+      fixture = TestBed.createComponent(GeneralSuccessTest);
+      fixture.detectChanges();
+      ngControlService = fixture.debugElement.injector.get(NgControlService);
+    });
+
+    it('hides the success initially', () => {
+      expect(fixture.nativeElement.innerHTML).not.toContain(successMessage);
+    });
+
+    it('displays the success message after touched', () => {
+      expect(fixture.nativeElement.innerHTML).not.toContain(successMessage);
+      const control = new FormControl('abc', Validators.required);
+      control.markAsTouched();
+      ngControlService.addControl(control as unknown as NgControl);
+      control.markAsTouched();
+      fixture.detectChanges();
+      expect(fixture.nativeElement.innerHTML).toContain(successMessage);
+    });
+  });
+});

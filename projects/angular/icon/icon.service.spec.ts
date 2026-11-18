@@ -76,7 +76,7 @@ describe('ClarityIcons service: ', () => {
       const [, testShape] = testIcons.justOutline;
       ClarityIcons.addIcons(['test10', testShape]);
 
-      const registrySpy = spyOnProperty(ClarityIcons, 'registry', 'get').and.callThrough();
+      const registrySpy = vi.spyOn(ClarityIcons, 'registry', 'get');
 
       expect(ClarityIcons.getIconShape('test10')).toEqual(renderIcon(testShape));
       expect(registrySpy).not.toHaveBeenCalled();

@@ -103,6 +103,11 @@ export const screenshotOptions: ScreenshotOptions = {
   'components/alert/standard-alert--with-long-content-and-open-actions-dropdown': {
     fullPageScreenshot: true,
   },
+  'components/data/datagrid/datagrid-column-actions--column-actions-opened': {
+    // The story's play function focuses the menu's first item; wait for it, so the screenshot never catches the focus
+    // ring still on the toggle.
+    waitForSelectors: ['.dropdown-item:focus'],
+  },
   'components/flows/wizard': {
     fullPageScreenshot: true,
   },

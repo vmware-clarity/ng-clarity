@@ -13,7 +13,9 @@ import { FocusableItemCollectorComponent } from './focusable-item-collector.comp
 import { FocusableItemProvider } from './focusable-item-provider';
 
 describe('FocusableItemCollectorComponent', () => {
-  const mockDropdownMenu = jasmine.createSpyObj('ClrDropdownMenu', ['addChildren']);
+  const mockDropdownMenu = {
+    addChildren: vi.fn().mockName('ClrDropdownMenu.addChildren'),
+  };
 
   let fixture: ComponentFixture<FocusableItemCollectorComponent>;
   let component: FocusableItemCollectorComponent;
@@ -29,9 +31,8 @@ describe('FocusableItemCollectorComponent', () => {
   });
 
   it('should override focusHandler.addChildren and handle item changes', () => {
-    const mockFocusHandler = {
-      addChildren: jasmine.createSpy('addChildren'),
-    };
+    const addChildren = vi.fn();
+    const mockFocusHandler = { addChildren };
 
     component.parentMenu = {
       focusHandler: mockFocusHandler,
@@ -43,12 +44,11 @@ describe('FocusableItemCollectorComponent', () => {
     component.items = new QueryList<FocusableItemProvider>();
     component.items.reset([item1, item2]);
 
-    spyOn((component as any).parentMenu, 'focusHandler').and.returnValue(mockFocusHandler);
-
     component.ngAfterContentInit();
 
     component.items.notifyOnChanges();
 
-    expect(mockFocusHandler.addChildren).toHaveBeenCalledWith([item1.getFocusableItem(), item2.getFocusableItem()]);
+    expect(mockFocusHandler.addChildren).not.toBe(addChildren);
+    expect(addChildren).toHaveBeenCalledWith([item1.getFocusableItem(), item2.getFocusableItem()]);
   });
 });

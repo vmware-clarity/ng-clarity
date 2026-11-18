@@ -93,11 +93,11 @@ describe('ClrSpinner component', () => {
     });
 
     describe('Sizes', () => {
-      function componentWidth(fix): number {
+      function componentWidth(fix: ComponentFixture<unknown>): number {
         return Math.floor(fix.debugElement.query(By.directive(ClrSpinner)).nativeElement.getBoundingClientRect().width);
       }
 
-      function componentHeight(fix): number {
+      function componentHeight(fix: ComponentFixture<unknown>): number {
         return Math.floor(
           fix.debugElement.query(By.directive(ClrSpinner)).nativeElement.getBoundingClientRect().height
         );

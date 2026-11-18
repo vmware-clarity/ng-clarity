@@ -22,7 +22,7 @@ import { FormGroup } from '@angular/forms';
 import { FormGroupName } from '@angular/forms';
 import * as i0 from '@angular/core';
 import * as i7_2 from '@angular/common';
-import * as i8 from '@angular/forms';
+import * as i8_2 from '@angular/forms';
 import { InjectionToken } from '@angular/core';
 import { Injector } from '@angular/core';
 import { IterableDiffers } from '@angular/core';
@@ -60,7 +60,7 @@ export class AppfxWizardModule {
     // Warning: (ae-forgotten-export) The symbol "i6" needs to be exported by the entry point clr-addons-wizard.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxWizardModule, [typeof SummaryComponent, typeof WizardComponent], [typeof i3.AppfxPropertyViewModule, typeof i4.AppfxWorkflowCoreModule, typeof i5_2.ClrWizardModule, typeof i6.ClrIcon, typeof i7_2.CommonModule, typeof i8.FormsModule, typeof i8.ReactiveFormsModule], [typeof WizardComponent]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxWizardModule, [typeof SummaryComponent, typeof WizardComponent], [typeof i3.AppfxPropertyViewModule, typeof i4.AppfxWorkflowCoreModule, typeof i5_2.ClrWizardModule, typeof i6.ClrIcon, typeof i7_2.CommonModule, typeof i8_2.FormsModule, typeof i8_2.ReactiveFormsModule], [typeof WizardComponent]>;
 }
 
 // @public
@@ -187,9 +187,51 @@ class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterContentI
     // (undocumented)
     ZoomLevel: typeof ZoomLevel;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<WizardComponent, "appfx-wizard", never, { "title": { "alias": "title"; "required": false; }; "loading": { "alias": "loading"; "required": false; }; "closeHandler": { "alias": "closeHandler"; "required": false; }; "footer": { "alias": "footer"; "required": false; }; "size": { "alias": "size"; "required": false; }; "pages": { "alias": "pages"; "required": false; }; "wizardModel": { "alias": "wizardModel"; "required": false; }; "opened": { "alias": "opened"; "required": false; }; }, { "openedChange": "openedChange"; "onModelChange": "onModelChange"; "onFinish": "onFinish"; "onClose": "onClose"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<WizardComponent, "appfx-wizard", never, {
+        "title": {
+            "alias": "title";
+            "required": false;
+        };
+        "loading": {
+            "alias": "loading";
+            "required": false;
+        };
+        "closeHandler": {
+            "alias": "closeHandler";
+            "required": false;
+        };
+        "footer": {
+            "alias": "footer";
+            "required": false;
+        };
+        "size": {
+            "alias": "size";
+            "required": false;
+        };
+        "pages": {
+            "alias": "pages";
+            "required": false;
+        };
+        "wizardModel": {
+            "alias": "wizardModel";
+            "required": false;
+        };
+        "opened": {
+            "alias": "opened";
+            "required": false;
+        };
+    }, {
+        "openedChange": "openedChange";
+        "onModelChange": "onModelChange";
+        "onFinish": "onFinish";
+        "onClose": "onClose";
+    }, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<WizardComponent, [null, null, null, null, null, { optional: true; }, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<WizardComponent, [null, null, null, null, null, {
+        optional: true;
+    }, {
+        optional: true;
+    }]>;
 }
 export { WizardComponent as Wizard }
 export { WizardComponent }

@@ -41,6 +41,7 @@ export {
 } from './interfaces/column-state';
 export { ContextMenuEvent } from './interfaces/context-menu-event';
 export { DatagridDragConfig } from './interfaces/datagrid-drag-config';
+export { DatagridTreeConfig, TreeExpandedState } from './interfaces/datagrid-tree-config';
 export { appfxDatagridErrorNotifiableToken, ErrorNotifiable } from './interfaces/tokens';
 export {
   appfxPreselectableComponentToken,
