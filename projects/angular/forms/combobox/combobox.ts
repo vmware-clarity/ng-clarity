@@ -8,6 +8,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import {
   AfterContentInit,
+  afterNextRender,
   booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -18,6 +19,7 @@ import {
   Host,
   HostListener,
   Inject,
+  inject,
   Injector,
   Input,
   NgZone,
@@ -108,13 +110,14 @@ export class ClrCombobox<T>
 
   protected popoverType = ClrPopoverType.DROPDOWN;
 
-  protected containerWidth = null;
+  protected containerWidth: number | null = null;
   protected selectionExpanded = false;
   protected calculatedLimit: number | undefined;
   protected shouldCalculate = true;
   protected isTotalSelection = false;
 
   private resizeObserver: ResizeObserver;
+  private readonly renderInjector = inject(Injector);
   private containerWidthChange = new Subject();
   @ContentChild(ClrOptions) private options: ClrOptions<T>;
 
@@ -347,9 +350,7 @@ export class ClrCombobox<T>
     this.optionSelectionService.loading = state === ClrLoadingState.LOADING;
 
     if (state !== ClrLoadingState.LOADING && isPlatformBrowser(this.platformId)) {
-      setTimeout(() => {
-        this.popoverService?.resetPositions();
-      });
+      afterNextRender(() => this.popoverService?.resetPositions(), { injector: this.renderInjector });
       this.focusFirstActive();
     }
   }
@@ -360,8 +361,8 @@ export class ClrCombobox<T>
     }
   }
 
-  onBlur(event) {
-    if (!event.relatedTarget || !this.options.el?.nativeElement.contains(event.relatedTarget)) {
+  onBlur(event: FocusEvent) {
+    if (!event.relatedTarget || !this.options.el?.nativeElement.contains(event.relatedTarget as Node)) {
       this.onTouchedCallback?.();
       this.triggerValidation();
       this.focused = false;
@@ -391,9 +392,7 @@ export class ClrCombobox<T>
   }
 
   focusFirstActive() {
-    setTimeout(() => {
-      this.focusHandler.focusFirstActive();
-    });
+    this.focusHandler.scheduleFocusFirstActive();
   }
 
   writeValue(value: T | T[]): void {
@@ -418,12 +417,12 @@ export class ClrCombobox<T>
     // do nothing
   }
 
-  onWrapperClick(event) {
+  onWrapperClick(event: MouseEvent) {
     if (this.disabled) {
       return;
     }
     this.focusHandler.focusInput();
-    if (this.editable || (!this.editable && this.trigger.nativeElement.contains(event.target))) {
+    if (this.editable || (!this.editable && this.trigger.nativeElement.contains(event.target as Node))) {
       this.popoverService.toggleWithEvent(event);
     }
   }
@@ -491,7 +490,7 @@ export class ClrCombobox<T>
     this.applyLimit(fitCount);
   }
 
-  private applyLimit(limit = undefined) {
+  private applyLimit(limit?: number) {
     this.zone.run(() => {
       this.calculatedLimit = limit === 0 ? 1 : limit;
       this.shouldCalculate = false;
@@ -536,15 +535,14 @@ export class ClrCombobox<T>
         }
 
         if (this.multiSelect) {
-          setTimeout(() => {
-            this.popoverService?.updatePosition();
-          });
+          afterNextRender(() => this.popoverService?.updatePosition(), { injector: this.renderInjector });
         }
       })
     );
 
     this.subscriptions.push(
       this.popoverService.openChange.subscribe(open => {
+        this.cdr.markForCheck();
         if (this.editable && !this.multiSelect) {
           if (this.searchText) {
             this.optionSelectionService.showAllOptions = false;

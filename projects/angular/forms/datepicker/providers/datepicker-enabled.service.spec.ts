@@ -9,37 +9,39 @@ import { DATEPICKER_ENABLE_BREAKPOINT } from '@clr/angular/utils';
 
 import { DatepickerEnabledService } from './datepicker-enabled.service';
 
-export default function () {
-  describe('Datepicker Enabled Service', () => {
-    function initializeSpies(userAgent: string, innerWidth: number): DatepickerEnabledService {
-      spyOnProperty(document.defaultView.navigator, 'userAgent', 'get').and.returnValue(userAgent);
-      spyOnProperty(document.defaultView, 'innerWidth', 'get').and.returnValue(innerWidth);
-      return new DatepickerEnabledService(document);
-    }
+describe('Datepicker', () => {
+  describe('Providers', () => {
+    describe('Datepicker Enabled Service', () => {
+      function initializeSpies(userAgent: string, innerWidth: number): DatepickerEnabledService {
+        vi.spyOn(document.defaultView.navigator, 'userAgent', 'get').mockReturnValue(userAgent);
+        vi.spyOn(document.defaultView, 'innerWidth', 'get').mockReturnValue(innerWidth);
+        return new DatepickerEnabledService(document);
+      }
 
-    it("sets isEnabled to false if the user agent has 'Mobi' and inner width is less than DATEPICKER_ENABLE_BREAKPOINT", () => {
-      const service: DatepickerEnabledService = initializeSpies('Mobi', DATEPICKER_ENABLE_BREAKPOINT - 10);
-      expect(service.isEnabled).toBe(false);
-    });
+      it("sets isEnabled to false if the user agent has 'Mobi' and inner width is less than DATEPICKER_ENABLE_BREAKPOINT", () => {
+        const service: DatepickerEnabledService = initializeSpies('Mobi', DATEPICKER_ENABLE_BREAKPOINT - 10);
+        expect(service.isEnabled).toBe(false);
+      });
 
-    it("sets isEnabled to false if the user agent has 'mobi' and inner width is less than DATEPICKER_ENABLE_BREAKPOINT", () => {
-      const service1: DatepickerEnabledService = initializeSpies('mobi', DATEPICKER_ENABLE_BREAKPOINT - 10);
-      expect(service1.isEnabled).toBe(false);
-    });
+      it("sets isEnabled to false if the user agent has 'mobi' and inner width is less than DATEPICKER_ENABLE_BREAKPOINT", () => {
+        const service1: DatepickerEnabledService = initializeSpies('mobi', DATEPICKER_ENABLE_BREAKPOINT - 10);
+        expect(service1.isEnabled).toBe(false);
+      });
 
-    it("sets isEnabled to true if the user agent does not have 'Mobi' and inner width is less than DATEPICKER_ENABLE_BREAKPOINT", () => {
-      const service: DatepickerEnabledService = initializeSpies('Test', DATEPICKER_ENABLE_BREAKPOINT - 10);
-      expect(service.isEnabled).toBe(true);
-    });
+      it("sets isEnabled to true if the user agent does not have 'Mobi' and inner width is less than DATEPICKER_ENABLE_BREAKPOINT", () => {
+        const service: DatepickerEnabledService = initializeSpies('Test', DATEPICKER_ENABLE_BREAKPOINT - 10);
+        expect(service.isEnabled).toBe(true);
+      });
 
-    it("sets isEnabled to true if the user agent has 'Mobi' and inner width is greater than DATEPICKER_ENABLE_BREAKPOINT", () => {
-      const service: DatepickerEnabledService = initializeSpies('Mobi', DATEPICKER_ENABLE_BREAKPOINT + 10);
-      expect(service.isEnabled).toBe(true);
-    });
+      it("sets isEnabled to true if the user agent has 'Mobi' and inner width is greater than DATEPICKER_ENABLE_BREAKPOINT", () => {
+        const service: DatepickerEnabledService = initializeSpies('Mobi', DATEPICKER_ENABLE_BREAKPOINT + 10);
+        expect(service.isEnabled).toBe(true);
+      });
 
-    it("sets isEnabled to true if the user agent does not have 'Mobi' and inner width is greater than DATEPICKER_ENABLE_BREAKPOINT", () => {
-      const service: DatepickerEnabledService = initializeSpies('Test', DATEPICKER_ENABLE_BREAKPOINT + 10);
-      expect(service.isEnabled).toBe(true);
+      it("sets isEnabled to true if the user agent does not have 'Mobi' and inner width is greater than DATEPICKER_ENABLE_BREAKPOINT", () => {
+        const service: DatepickerEnabledService = initializeSpies('Test', DATEPICKER_ENABLE_BREAKPOINT + 10);
+        expect(service.isEnabled).toBe(true);
+      });
     });
   });
-}
+});

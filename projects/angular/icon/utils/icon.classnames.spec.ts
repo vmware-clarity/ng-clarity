@@ -75,9 +75,9 @@ describe('Icon classname helpers: ', () => {
       stylesArray.forEach(tup => {
         const [style, value] = tup;
         if (expectAuto && (style === 'width' || style === 'height')) {
-          expect(value).toBe('auto', `${style} is set to auto as expected`);
+          expect(value, `${style} is set to auto as expected`).toBe('auto');
         } else {
-          expect(value).toBe(myRem, `${style} is set to rem as expected`);
+          expect(value, `${style} is set to rem as expected`).toBe(myRem);
         }
       });
     }

@@ -63,7 +63,6 @@ import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
 import { RendererFactory2 } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
-import * as rxjs from 'rxjs';
 import { SafeHtml } from '@angular/platform-browser';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
@@ -77,6 +76,7 @@ import { ValidationErrors } from '@angular/forms';
 import { Validator } from '@angular/forms';
 import { ViewContainerRef } from '@angular/core';
 import { ViewportRuler } from '@angular/cdk/scrolling';
+import { WritableSignal } from '@angular/core';
 
 // @public
 export enum ActionBarLayout {
@@ -197,6 +197,7 @@ export interface ColumnDefinition<T> {
     // Warning: (ae-forgotten-export) The symbol "ClrDatagridComparatorInterface" needs to be exported by the entry point clr-addons-datagrid.d.ts
     sortComparator?: ClrDatagridComparatorInterface<T> | string;
     stringFilter?: ClrDatagridStringFilterInterface<T>;
+    treeToggle?: boolean;
     uid?: string;
     width?: string;
 }
@@ -277,7 +278,7 @@ export class CsvHelperService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<CsvHelperService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<CsvHelperService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public (undocumented)
@@ -285,7 +286,7 @@ export class DatagridActionBarComponent implements OnInit, OnChanges, AfterViewI
     // Warning: (ae-forgotten-export) The symbol "ElementResizeService" needs to be exported by the entry point clr-addons-datagrid.d.ts
     constructor(cdr: ChangeDetectorRef, el: ElementRef<HTMLElement>, elementResizeService: ElementResizeService);
     // (undocumented)
-    readonly actions$: rxjs.Observable<ActionDefinition<string>[]>;
+    readonly actions$: Observable<ActionDefinition<string>[]>;
     // (undocumented)
     actions: ActionDefinition[];
     // (undocumented)
@@ -316,7 +317,22 @@ export class DatagridActionBarComponent implements OnInit, OnChanges, AfterViewI
     // (undocumented)
     queryActionBtnElementList: QueryList<ElementRef<HTMLButtonElement>>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridActionBarComponent, "appfx-datagrid-action-bar", never, { "actions": { "alias": "actions"; "required": false; }; "btnLayout": { "alias": "btnLayout"; "required": false; }; "dropdownOrientation": { "alias": "dropdownOrientation"; "required": false; }; }, { "invokeAction": "invokeAction"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridActionBarComponent, "appfx-datagrid-action-bar", never, {
+        "actions": {
+            "alias": "actions";
+            "required": false;
+        };
+        "btnLayout": {
+            "alias": "btnLayout";
+            "required": false;
+        };
+        "dropdownOrientation": {
+            "alias": "dropdownOrientation";
+            "required": false;
+        };
+    }, {
+        "invokeAction": "invokeAction";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridActionBarComponent, never>;
 }
@@ -339,6 +355,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     //
     // (undocumented)
     clrDatagridPagination: ClrDatagridPagination;
+    collapseAllTreeRows(): void;
     columnActions: ActionDefinition[] | null;
     columnDefsChange: EventEmitter<ColumnDefinition<T>[]>;
     columnFilterChange: EventEmitter<ColumnFilterChange>;
@@ -382,6 +399,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     protected enableSingleRowActions: boolean;
     // (undocumented)
     protected get enableToolBar(): boolean;
+    expandAllTreeRows(): void;
     exportDataEvent: EventEmitter<ExportStatus>;
     // Warning: (ae-forgotten-export) The symbol "FilterablePropertyDefinition" needs to be exported by the entry point clr-addons-datagrid.d.ts
     filterableProperties: FilterablePropertyDefinition[];
@@ -403,6 +421,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     gridItemsChange: EventEmitter<T[]>;
     // (undocumented)
     protected gridLayoutModel: GridLayoutModel;
+    protected hasTreeToggle(column: ColumnDefinition<T>): boolean;
     // (undocumented)
     protected isItemSelected(item: T): boolean;
     isRowLocked: (rowItem: T) => boolean;
@@ -469,6 +488,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     // Warning: (ae-forgotten-export) The symbol "ClrDatagridStateInterface" needs to be exported by the entry point clr-addons-datagrid.d.ts
     refreshGridData: EventEmitter<ClrDatagridStateInterface>;
     refreshVirtualGridData: EventEmitter<ClrDatagridStateInterface>;
+    reloadTreeChildren(item?: T): void;
     renderedRangeChange($event: ListRange): void;
     // (undocumented)
     resize(): void;
@@ -506,6 +526,8 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     trackByFunction: TrackByFunction<T>;
     trackByGridItemFn: (item: T) => T;
     trackByGridItemProperty: string;
+    treeConfig?: DatagridTreeConfig<T>;
+    treeExpandedChange: EventEmitter<TreeExpandedState<T>>;
     virtualScrolling: boolean;
     // (undocumented)
     visibleColumns: ColumnDefinition<T>[];
@@ -516,9 +538,183 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     // (undocumented)
     protected zoomLevel: ZoomLevel;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridComponent<any>, "appfx-datagrid", never, { "loading": { "alias": "loading"; "required": false; }; "loadingMoreItems": { "alias": "loadingMoreItems"; "required": false; }; "preSelectFirstItem": { "alias": "preSelectFirstItem"; "required": false; }; "pageSizeOptions": { "alias": "pageSizeOptions"; "required": false; }; "totalItems": { "alias": "totalItems"; "required": false; }; "showCustomPagination": { "alias": "showCustomPagination"; "required": false; }; "serverDrivenDatagrid": { "alias": "serverDrivenDatagrid"; "required": false; }; "listItemsCount": { "alias": "listItemsCount"; "required": false; }; "rowDetailContent": { "alias": "rowDetailContent"; "required": false; }; "rowsExpandedByDefault": { "alias": "rowsExpandedByDefault"; "required": false; }; "trackByFunction": { "alias": "trackByFunction"; "required": false; }; "trackByGridItemProperty": { "alias": "trackByGridItemProperty"; "required": false; }; "detailHeader": { "alias": "detailHeader"; "required": false; }; "detailBody": { "alias": "detailBody"; "required": false; }; "detailState": { "alias": "detailState"; "required": false; }; "isRowLocked": { "alias": "isRowLocked"; "required": false; }; "dragConfig": { "alias": "dragConfig"; "required": false; }; "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "filterMode": { "alias": "filterMode"; "required": false; }; "singleRowActions": { "alias": "singleRowActions"; "required": false; }; "preserveExistingSelectionOnFilter": { "alias": "preserveExistingSelectionOnFilter"; "required": false; }; "virtualScrolling": { "alias": "virtualScrolling"; "required": false; }; "disableUnsort": { "alias": "disableUnsort"; "required": false; }; "enableColumnActions": { "alias": "enableColumnActions"; "required": false; }; "columnActions": { "alias": "columnActions"; "required": false; }; "dataRange": { "alias": "dataRange"; "required": false; }; "gridItems": { "alias": "gridItems"; "required": false; }; "layoutModel": { "alias": "layoutModel"; "required": false; }; "footerModel": { "alias": "footerModel"; "required": false; }; "columns": { "alias": "columns"; "required": false; }; "selectionType": { "alias": "selectionType"; "required": false; }; "selectedItems": { "alias": "selectedItems"; "required": false; }; "rowSelectionMode": { "alias": "rowSelectionMode"; "required": false; }; "actionBarActions": { "alias": "actionBarActions"; "required": false; }; "pageSize": { "alias": "pageSize"; "required": false; }; "datagridLabels": { "alias": "datagridLabels"; "required": false; }; }, { "detailStateChange": "detailStateChange"; "pageSizeChange": "pageSizeChange"; "gridItemsChange": "gridItemsChange"; "advancedFilterChange": "advancedFilterChange"; "columnDefsChange": "columnDefsChange"; "selectedItemsChange": "selectedItemsChange"; "exportDataEvent": "exportDataEvent"; "searchTermChange": "searchTermChange"; "columnResize": "columnResize"; "columnSortOrderChange": "columnSortOrderChange"; "columnHiddenStateChange": "columnHiddenStateChange"; "columnPinnedChange": "columnPinnedChange"; "columnFilterChange": "columnFilterChange"; "refreshGridData": "refreshGridData"; "refreshVirtualGridData": "refreshVirtualGridData"; "actionClick": "actionClick"; "rowActionMenuOpenChange": "rowActionMenuOpenChange"; "openContextMenu": "openContextMenu"; "columnOrderChange": "columnOrderChange"; }, never, [".custom-placeholder-content", ".custom-footer-content", "*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridComponent<any>, "appfx-datagrid", never, {
+        "loading": {
+            "alias": "loading";
+            "required": false;
+        };
+        "loadingMoreItems": {
+            "alias": "loadingMoreItems";
+            "required": false;
+        };
+        "preSelectFirstItem": {
+            "alias": "preSelectFirstItem";
+            "required": false;
+        };
+        "pageSizeOptions": {
+            "alias": "pageSizeOptions";
+            "required": false;
+        };
+        "totalItems": {
+            "alias": "totalItems";
+            "required": false;
+        };
+        "showCustomPagination": {
+            "alias": "showCustomPagination";
+            "required": false;
+        };
+        "serverDrivenDatagrid": {
+            "alias": "serverDrivenDatagrid";
+            "required": false;
+        };
+        "listItemsCount": {
+            "alias": "listItemsCount";
+            "required": false;
+        };
+        "rowDetailContent": {
+            "alias": "rowDetailContent";
+            "required": false;
+        };
+        "rowsExpandedByDefault": {
+            "alias": "rowsExpandedByDefault";
+            "required": false;
+        };
+        "trackByFunction": {
+            "alias": "trackByFunction";
+            "required": false;
+        };
+        "trackByGridItemProperty": {
+            "alias": "trackByGridItemProperty";
+            "required": false;
+        };
+        "detailHeader": {
+            "alias": "detailHeader";
+            "required": false;
+        };
+        "detailBody": {
+            "alias": "detailBody";
+            "required": false;
+        };
+        "detailState": {
+            "alias": "detailState";
+            "required": false;
+        };
+        "isRowLocked": {
+            "alias": "isRowLocked";
+            "required": false;
+        };
+        "dragConfig": {
+            "alias": "dragConfig";
+            "required": false;
+        };
+        "filterableProperties": {
+            "alias": "filterableProperties";
+            "required": false;
+        };
+        "filterMode": {
+            "alias": "filterMode";
+            "required": false;
+        };
+        "singleRowActions": {
+            "alias": "singleRowActions";
+            "required": false;
+        };
+        "preserveExistingSelectionOnFilter": {
+            "alias": "preserveExistingSelectionOnFilter";
+            "required": false;
+        };
+        "virtualScrolling": {
+            "alias": "virtualScrolling";
+            "required": false;
+        };
+        "disableUnsort": {
+            "alias": "disableUnsort";
+            "required": false;
+        };
+        "enableColumnActions": {
+            "alias": "enableColumnActions";
+            "required": false;
+        };
+        "columnActions": {
+            "alias": "columnActions";
+            "required": false;
+        };
+        "dataRange": {
+            "alias": "dataRange";
+            "required": false;
+        };
+        "gridItems": {
+            "alias": "gridItems";
+            "required": false;
+        };
+        "treeConfig": {
+            "alias": "treeConfig";
+            "required": false;
+        };
+        "layoutModel": {
+            "alias": "layoutModel";
+            "required": false;
+        };
+        "footerModel": {
+            "alias": "footerModel";
+            "required": false;
+        };
+        "columns": {
+            "alias": "columns";
+            "required": false;
+        };
+        "selectionType": {
+            "alias": "selectionType";
+            "required": false;
+        };
+        "selectedItems": {
+            "alias": "selectedItems";
+            "required": false;
+        };
+        "rowSelectionMode": {
+            "alias": "rowSelectionMode";
+            "required": false;
+        };
+        "actionBarActions": {
+            "alias": "actionBarActions";
+            "required": false;
+        };
+        "pageSize": {
+            "alias": "pageSize";
+            "required": false;
+        };
+        "datagridLabels": {
+            "alias": "datagridLabels";
+            "required": false;
+        };
+    }, {
+        "detailStateChange": "detailStateChange";
+        "pageSizeChange": "pageSizeChange";
+        "gridItemsChange": "gridItemsChange";
+        "advancedFilterChange": "advancedFilterChange";
+        "columnDefsChange": "columnDefsChange";
+        "selectedItemsChange": "selectedItemsChange";
+        "exportDataEvent": "exportDataEvent";
+        "searchTermChange": "searchTermChange";
+        "columnResize": "columnResize";
+        "columnSortOrderChange": "columnSortOrderChange";
+        "columnHiddenStateChange": "columnHiddenStateChange";
+        "columnPinnedChange": "columnPinnedChange";
+        "columnFilterChange": "columnFilterChange";
+        "refreshGridData": "refreshGridData";
+        "refreshVirtualGridData": "refreshVirtualGridData";
+        "actionClick": "actionClick";
+        "rowActionMenuOpenChange": "rowActionMenuOpenChange";
+        "openContextMenu": "openContextMenu";
+        "columnOrderChange": "columnOrderChange";
+        "treeExpandedChange": "treeExpandedChange";
+    }, never, [".custom-placeholder-content", ".custom-footer-content", "*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridComponent<any>, [null, null, null, null, { optional: true; }, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridComponent<any>, [null, null, null, null, {
+        optional: true;
+    }, {
+        optional: true;
+    }]>;
 }
 
 // @public (undocumented)
@@ -529,7 +725,11 @@ export class DatagridContentNoWrapDirective implements OnDestroy {
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridContentNoWrapDirective, "appfx-datagrid", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridContentNoWrapDirective, [{ host: true; }, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridContentNoWrapDirective, [{
+        host: true;
+    }, {
+        optional: true;
+    }]>;
 }
 
 // @public
@@ -543,7 +743,7 @@ export class DatagridFeatureStates {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridFeatureStates, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<DatagridFeatureStates>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public (undocumented)
@@ -577,7 +777,22 @@ export class DatagridFilterComponent implements ClrDatagridFilterInterface<any>,
     // (undocumented)
     value: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridFilterComponent, "appfx-datagrid-filter", never, { "filterValue": { "alias": "filterValue"; "required": false; }; "stringFilterType": { "alias": "stringFilterType"; "required": false; }; "fieldName": { "alias": "fieldName"; "required": false; }; }, { "filterValueChange": "filterValueChange"; }, never, never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridFilterComponent, "appfx-datagrid-filter", never, {
+        "filterValue": {
+            "alias": "filterValue";
+            "required": false;
+        };
+        "stringFilterType": {
+            "alias": "stringFilterType";
+            "required": false;
+        };
+        "fieldName": {
+            "alias": "fieldName";
+            "required": false;
+        };
+    }, {
+        "filterValueChange": "filterValueChange";
+    }, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridFilterComponent, never>;
 }
@@ -604,9 +819,18 @@ export class DatagridPageDirective implements AfterViewInit, OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridPageDirective, "[datagridPage]", never, { "datagridPage": { "alias": "datagridPage"; "required": false; }; }, { "datagridPageChange": "datagridPageChange"; }, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridPageDirective, "[datagridPage]", never, {
+        "datagridPage": {
+            "alias": "datagridPage";
+            "required": false;
+        };
+    }, {
+        "datagridPageChange": "datagridPageChange";
+    }, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridPageDirective, [{ host: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridPageDirective, [{
+        host: true;
+    }]>;
 }
 
 // @public
@@ -620,9 +844,26 @@ export class DatagridPersistSettingsDirective implements OnDestroy, AfterViewIni
     set persistPageSize(value: boolean);
     set persistSortOrder(value: boolean);
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridPersistSettingsDirective, "appfx-datagrid[appfxPersistDatagridSettings]", never, { "appfxPersistDatagridSettings": { "alias": "appfxPersistDatagridSettings"; "required": false; }; "persistPageSize": { "alias": "persistPageSize"; "required": false; }; "persistSortOrder": { "alias": "persistSortOrder"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridPersistSettingsDirective, "appfx-datagrid[appfxPersistDatagridSettings]", never, {
+        "appfxPersistDatagridSettings": {
+            "alias": "appfxPersistDatagridSettings";
+            "required": false;
+        };
+        "persistPageSize": {
+            "alias": "persistPageSize";
+            "required": false;
+        };
+        "persistSortOrder": {
+            "alias": "persistSortOrder";
+            "required": false;
+        };
+    }, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridPersistSettingsDirective, [{ host: true; }, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridPersistSettingsDirective, [{
+        host: true;
+    }, {
+        optional: true;
+    }]>;
 }
 
 // @public
@@ -640,9 +881,18 @@ export class DatagridPreserveSelectionDirective implements AfterViewInit, OnDest
     // (undocumented)
     updateSelectedItems(items: any[]): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridPreserveSelectionDirective, "[appfxPreserveSelection]", never, { "preserveExistingSelection": { "alias": "preserveExistingSelection"; "required": false; }; }, { "selectedItemsUpdated": "selectedItemsUpdated"; }, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridPreserveSelectionDirective, "[appfxPreserveSelection]", never, {
+        "preserveExistingSelection": {
+            "alias": "preserveExistingSelection";
+            "required": false;
+        };
+    }, {
+        "selectedItemsUpdated": "selectedItemsUpdated";
+    }, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridPreserveSelectionDirective, [{ host: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridPreserveSelectionDirective, [{
+        host: true;
+    }]>;
 }
 
 // @public
@@ -674,7 +924,15 @@ export class DatagridStrings {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridStrings, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<DatagridStrings>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
+}
+
+// @public
+export interface DatagridTreeConfig<T> {
+    cascadeSelection?: boolean;
+    // Warning: (ae-forgotten-export) The symbol "ClrDatagridTreeChildrenFunction" needs to be exported by the entry point clr-addons-datagrid.d.ts
+    getChildren: ClrDatagridTreeChildrenFunction<T>;
+    hasChildren?: (item: T) => boolean;
 }
 
 // @public (undocumented)
@@ -703,9 +961,11 @@ export class ExportProviderService {
     // (undocumented)
     exportUIOnlyData(datagridProperties: ClientSideExportConfig, exportStatus: ExportStatus, datagridItemSet: DatagridItemSet): void;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ExportProviderService, [null, null, null, null, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ExportProviderService, [null, null, null, null, {
+        optional: true;
+    }]>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<ExportProviderService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public
@@ -805,6 +1065,14 @@ export interface SingleRowActionOpen<T = any> {
     actions: ActionDefinition[] | null;
     context: T;
     open: boolean;
+}
+
+// @public
+export interface TreeExpandedState<T> {
+    // (undocumented)
+    expanded: boolean;
+    // (undocumented)
+    item: T;
 }
 
 // (No @packageDocumentation comment for this package)

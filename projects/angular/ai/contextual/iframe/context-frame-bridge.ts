@@ -161,7 +161,7 @@ export class ClrContextFrameHost {
       const requested = capSnapshotOptions(sanitizeUntrustedSnapshotOptions(event.data.options), this.snapshotCeiling);
       const snapshot = this.getSnapshot(requested);
       if (snapshot instanceof Promise) {
-        snapshot.then(answer).catch(() => undefined);
+        snapshot.then(answer).catch((): void => undefined);
       } else {
         answer(snapshot);
       }

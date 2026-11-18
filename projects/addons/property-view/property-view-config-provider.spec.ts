@@ -14,32 +14,37 @@ interface ThisTest {
   propertyViewConfigProvider: PropertyViewConfigProvider;
 }
 
-describe('PropertyViewConfigProvider', function () {
-  beforeEach(function (this: ThisTest) {
+describe('PropertyViewConfigProvider', () => {
+  let testContext: ThisTest;
+  beforeEach(() => {
+    testContext = {} as ThisTest;
+  });
+
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [PropertyViewConfigProvider],
     });
 
-    this.propertyViewConfigProvider = TestBed.inject(PropertyViewConfigProvider);
+    testContext.propertyViewConfigProvider = TestBed.inject(PropertyViewConfigProvider);
   });
 
-  it('getConfig() returns the last value set through setConfig()', function (this: ThisTest) {
-    expect(this.propertyViewConfigProvider.getConfig()).toBeUndefined();
-    this.propertyViewConfigProvider.setConfig({ propertyKeyWidthInRem: 20 });
-    expect(this.propertyViewConfigProvider.getConfig()).toEqual({ propertyKeyWidthInRem: 20 });
+  it('getConfig() returns the last value set through setConfig()', () => {
+    expect(testContext.propertyViewConfigProvider.getConfig()).toBeUndefined();
+    testContext.propertyViewConfigProvider.setConfig({ propertyKeyWidthInRem: 20 });
+    expect(testContext.propertyViewConfigProvider.getConfig()).toEqual({ propertyKeyWidthInRem: 20 });
   });
 
-  it('config$() method emits the last value', function (this: ThisTest) {
+  it('config$() method emits the last value', () => {
     const emittedValues: Array<PropertyViewConfig | undefined> = [];
-    this.propertyViewConfigProvider.config$().subscribe(value => {
+    testContext.propertyViewConfigProvider.config$().subscribe(value => {
       emittedValues.push(value);
     });
     expect(emittedValues).toEqual([undefined]);
 
-    this.propertyViewConfigProvider.setConfig({ propertyKeyWidthInRem: 20 });
+    testContext.propertyViewConfigProvider.setConfig({ propertyKeyWidthInRem: 20 });
     expect(emittedValues).toEqual([undefined, { propertyKeyWidthInRem: 20 }]);
 
-    this.propertyViewConfigProvider.config$().subscribe(value => {
+    testContext.propertyViewConfigProvider.config$().subscribe(value => {
       emittedValues.push(value);
     });
     expect(emittedValues).toEqual([undefined, { propertyKeyWidthInRem: 20 }, { propertyKeyWidthInRem: 20 }]);

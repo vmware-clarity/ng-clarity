@@ -88,7 +88,7 @@ describe('shadow DOM helpers', () => {
 
       expect(parentAcrossShadow(slotted)).toBe(root.querySelector('slot'));
       expect(closestAcrossShadow(slotted, '.wrapper')).toBe(root.querySelector('.wrapper'));
-      expect(containsAcrossShadow(root.querySelector('.wrapper') as Element, slotted)).toBeTrue();
+      expect(containsAcrossShadow(root.querySelector('.wrapper') as Element, slotted)).toBe(true);
       expect(closestAcrossShadow(root.querySelector('.wrapper') as Element, 'div:not(.wrapper)')).toBe(container);
     });
 
@@ -96,7 +96,7 @@ describe('shadow DOM helpers', () => {
       const { host: element, root } = host('<b></b>');
 
       expect(parentAcrossShadow(root.querySelector('b') as Element)).toBe(element);
-      expect(containsAcrossShadow(container, root.querySelector('b') as Element)).toBeTrue();
+      expect(containsAcrossShadow(container, root.querySelector('b') as Element)).toBe(true);
     });
   });
 
@@ -145,11 +145,11 @@ describe('shadow DOM helpers', () => {
 
   it('answers for light DOM with one plain query', () => {
     container.innerHTML = '<div><slot></slot><i></i></div>';
-    const queries = spyOn(Element.prototype, 'querySelectorAll').and.callThrough();
+    const queries = vi.spyOn(Element.prototype, 'querySelectorAll');
 
-    expect(hasRendered(container, 'b')).toBeFalse();
+    expect(hasRendered(container, 'b')).toBe(false);
     expect(queryRendered(container, 'i').length).toBe(1);
-    expect(queries.calls.allArgs().map(([selector]) => selector)).not.toContain('slot');
+    expect(queries.mock.calls.map(([selector]) => selector)).not.toContain('slot');
   });
 
   it('does not scan below an element whose scanned ancestor has no shadow root', () => {
@@ -158,7 +158,7 @@ describe('shadow DOM helpers', () => {
 
     withinReadScope(() => {
       expect(openShadowRoots(container)).toEqual([]);
-      const scans = spyOn(Element.prototype, 'querySelectorAll').and.callThrough();
+      const scans = vi.spyOn(Element.prototype, 'querySelectorAll');
 
       expect(openShadowRoots(deepest)).toEqual([]);
       expect(scans).not.toHaveBeenCalled();
