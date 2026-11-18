@@ -675,22 +675,6 @@ declare class DatagridTreeNode<T> {
   /** The node and its loaded descendants, depth-first. */
   descendants(): DatagridTreeNode<T>[];
 }
-/**
- * What the cells of a tree row render: the node of the row, the cells that carry the indentation and
- * the expand toggle, and the cell that names the row on its toggles.
- */
-interface DatagridTreeRowCells<T = unknown> {
-  readonly node: DatagridTreeNode<T>;
-  readonly toggleCells: ReadonlySet<ClrDatagridCell>;
-  readonly labelCell: ClrDatagridCell | undefined;
-}
-/**
- * What a cell needs from its row to render the tree toggle.
- */
-interface DatagridTreeRow {
-  /** `null` while the row has no tree node, like the rows of items still loading. */
-  readonly _tree: DatagridTreeRowCells | null;
-}
 export declare class ClrDatagridCell implements OnInit {
   private vcr;
   /*********
@@ -702,12 +686,9 @@ export declare class ClrDatagridCell implements OnInit {
    *
    */
   signpost: QueryList<ClrSignpost>;
-  /**
-   * Set by the row on its cells when the datagrid renders a tree; `null` otherwise.
-   */
-  _treeRow: DatagridTreeRow | null;
   private wrappedInjector;
   private el;
+  private row;
   constructor(vcr: ViewContainerRef);
   /**
    * The id of the cell, by which the toggles of a tree row are named. Given only to the cells that
@@ -758,6 +739,15 @@ export declare enum SelectionType {
   Multi = "multi"
 }
 export declare function selectionTypeAttribute(value: SelectionType | string): SelectionType;
+/**
+ * What the cells of a tree row render: the node of the row, the cells that carry the indentation and
+ * the expand toggle, and the cell that names the row on its toggles.
+ */
+interface DatagridTreeRowCells<T = unknown> {
+  readonly node: DatagridTreeNode<T>;
+  readonly toggleCells: ReadonlySet<ClrDatagridCell>;
+  readonly labelCell: ClrDatagridCell | undefined;
+}
 declare enum DatagridDisplayMode {
   DISPLAY = 0,
   CALCULATE = 1
@@ -1152,6 +1142,11 @@ export declare class ClrDatagridRow<T = any> implements OnChanges, DoCheck, Afte
   private wrappedInjector;
   /** What `_tree` worked out in this check; `undefined` until it is read. */
   private treeCells;
+  /**
+   * Counts the changes of the cells of the row. The cells rendered in a loop inside the row are
+   * checked before the row knows them, in its content hooks; reading this makes them checked again.
+   */
+  private readonly cellChanges;
   private subscriptions;
   /**
    * The placeholder cells we create from `fixedCellTemplate` for the calculate pass. Unlike the
@@ -1228,11 +1223,7 @@ export declare class ClrDatagridRow<T = any> implements OnChanges, DoCheck, Afte
    * aligned with the header.
    */
   private insertCellViews;
-  /**
-   * Lets the cells of a tree row find out which of them carries the toggle. Rows of other
-   * datagrids leave their cells alone, so they pay nothing for trees.
-   */
-  private markTreeCell;
+  private cellsChanged;
   /**
    * The cells that carry the indentation and the expand toggle are those of the toggle columns, so
    * they move with their column when it is reordered or pinned. The toggle columns are the ones marked
@@ -2535,6 +2526,7 @@ export declare class ClrDatagridRowDetail implements AfterContentInit, AfterView
   private cellsMoved;
   private lastLayout;
   private hadCells;
+  private readonly changeDetectorRef;
   constructor(selection: Selection, rowActionService: RowActionService, expand: DatagridIfExpandService, expandableRows: ExpandableRowsCount, commonStrings: ClrCommonStringsService, columnsService: ColumnsService, displayMode: DisplayModeService);
   set replace(value: boolean);
   get beginningOfExpandableContentAriaText(): string;

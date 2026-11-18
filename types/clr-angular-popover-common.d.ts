@@ -96,6 +96,7 @@ export declare class ClrPopoverContent implements OnDestroy, AfterViewInit {
   private view;
   private elementRef;
   private overlayRef;
+  private viewInitialized;
   private popoverType;
   private _availablePositions;
   private _position;

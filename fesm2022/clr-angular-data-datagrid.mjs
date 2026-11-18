@@ -4093,6 +4093,7 @@ i0.ɵɵngDeclareClassMetadata({
 	}],
 	ctorParameters: () => [{ type: Items }]
 });
+const DATAGRID_TREE_ROW = new InjectionToken("DATAGRID_TREE_ROW");
 var WrappedCell = class WrappedCell {
 	ngAfterViewInit() {
 		this.cellView = this.templateRef.createEmbeddedView(null);
@@ -4312,8 +4313,8 @@ i0.ɵɵngDeclareClassMetadata({
 var ClrDatagridCell = class ClrDatagridCell {
 	constructor(vcr) {
 		this.vcr = vcr;
-		this._treeRow = null;
 		this.el = inject(ElementRef);
+		this.row = inject(DATAGRID_TREE_ROW, { optional: true });
 	}
 	get _treeId() {
 		const cell = this.el.nativeElement;
@@ -4324,11 +4325,11 @@ var ClrDatagridCell = class ClrDatagridCell {
 		return this.wrappedInjector.get(WrappedCell, this.vcr).cellView;
 	}
 	get treeNode() {
-		const tree = this._treeRow?._tree;
+		const tree = this.row?._tree;
 		return tree?.toggleCells.has(this) ? tree.node : void 0;
 	}
 	get treeToggleLabelIds() {
-		const leading = this._treeRow?._tree?.labelCell;
+		const leading = this.row?._tree?.labelCell;
 		return leading && leading !== this ? `${leading._treeId} ${this._treeId}` : this._treeId;
 	}
 	ngOnInit() {
@@ -4869,6 +4870,7 @@ var ClrDatagridRow = class ClrDatagridRow {
 		this._detailOpenLabel = "";
 		this._detailCloseLabel = "";
 		this._rowSelectionLabel = "";
+		this.cellChanges = signal(0, ...ngDevMode ? [{ debugName: "cellChanges" }] : /* istanbul ignore next */ []);
 		this.subscriptions = [];
 		this.fixedCellViews = [];
 		this._selectable = true;
@@ -4956,6 +4958,7 @@ var ClrDatagridRow = class ClrDatagridRow {
 		return this.items.identifyBy;
 	}
 	get _tree() {
+		this.cellChanges();
 		if (this.treeCells === void 0) this.treeCells = this.workOutTreeCells();
 		return this.treeCells;
 	}
@@ -4982,9 +4985,9 @@ var ClrDatagridRow = class ClrDatagridRow {
 		this.treeCells = void 0;
 	}
 	ngAfterContentInit() {
-		this.markTreeCell();
+		this.cellsChanged();
 		this.dgCells.changes.subscribe(() => {
-			this.markTreeCell();
+			this.cellsChanged();
 			this.insertCellViews();
 		});
 	}
@@ -5061,9 +5064,11 @@ var ClrDatagridRow = class ClrDatagridRow {
 			(this.columnsService.isPinned(index) ? this._pinnedCells : this._scrollableCells).insert(cell._view);
 		});
 	}
-	markTreeCell() {
-		const treeRow = this.tree?.enabled() ? this : null;
-		this.dgCells.forEach((cell) => cell._treeRow = treeRow);
+	cellsChanged() {
+		if (this.tree?.enabled()) {
+			this.treeCells = void 0;
+			this.cellChanges.update((changes) => changes + 1);
+		}
 	}
 	workOutTreeCells() {
 		const node = this.tree?.enabled() && this.item !== void 0 ? this.tree.nodeFor(this.item) : void 0;
@@ -5186,6 +5191,10 @@ var ClrDatagridRow = class ClrDatagridRow {
 				{
 					provide: LoadingListener,
 					useExisting: DatagridIfExpandService
+				},
+				{
+					provide: DATAGRID_TREE_ROW,
+					useExisting: ClrDatagridRow
 				}
 			],
 			queries: [{
@@ -5388,6 +5397,10 @@ i0.ɵɵngDeclareClassMetadata({
 				{
 					provide: LoadingListener,
 					useExisting: DatagridIfExpandService
+				},
+				{
+					provide: DATAGRID_TREE_ROW,
+					useExisting: ClrDatagridRow
 				}
 			],
 			standalone: false,
@@ -9178,6 +9191,7 @@ var ClrDatagridRowDetail = class ClrDatagridRowDetail {
 		this.SELECTION_TYPE = SelectionType;
 		this.subscriptions = [];
 		this.cellsMoved = false;
+		this.changeDetectorRef = inject(ChangeDetectorRef);
 	}
 	set replace(value) {
 		this.expand.setReplace(!!value);
@@ -9191,7 +9205,7 @@ var ClrDatagridRowDetail = class ClrDatagridRowDetail {
 	ngAfterContentInit() {
 		this.subscriptions.push(this.expand.replace.subscribe((replaceChange) => {
 			this.replacedRow = replaceChange;
-		}), this.cells.changes.subscribe(() => this.syncColumnAlignment(true)));
+		}), this.cells.changes.subscribe(() => this.syncColumnAlignment(true)), this.expand.animate.subscribe(() => this.changeDetectorRef.markForCheck()));
 	}
 	ngAfterViewInit() {
 		this.subscriptions.push(this.displayMode.view.subscribe(() => this.syncColumnAlignment()));

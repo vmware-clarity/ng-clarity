@@ -536,6 +536,7 @@ var ClrPopoverContent = class ClrPopoverContent {
 		this.platformId = platformId;
 		this._outsideClickClose = true;
 		this._scrollToClose = false;
+		this.viewInitialized = false;
 		this.popoverType = ClrPopoverType.DEFAULT;
 		this._availablePositions = [];
 		this._position = ClrPopoverPosition.BOTTOM_LEFT;
@@ -597,6 +598,7 @@ var ClrPopoverContent = class ClrPopoverContent {
 	set contentOrigin(origin) {
 		if (origin?.nodeType === Node.ELEMENT_NODE) this.popoverService.origin = new ElementRef(origin);
 		else this.popoverService.origin = origin;
+		if (this.viewInitialized && this.popoverService.open && !this.overlayRef) this.showOverlay();
 	}
 	get positionStrategy() {
 		const origin = resolveCrossWindowOrigin(this.popoverService.origin);
@@ -607,6 +609,7 @@ var ClrPopoverContent = class ClrPopoverContent {
 		return mapPopoverKeyToPosition(this._position, this.popoverType);
 	}
 	ngAfterViewInit() {
+		this.viewInitialized = true;
 		this.openCloseSubscription.unsubscribe();
 		this.openCloseSubscription = this.popoverService.openChange.subscribe((open) => {
 			if (open) this.showOverlay();
@@ -628,7 +631,7 @@ var ClrPopoverContent = class ClrPopoverContent {
 		this.subscriptions.push(merge(this.popoverService.resetPositionsChange, this.popoverService.getPositionChange()).subscribe(() => {
 			this.resetPosition();
 		}), this.popoverService.updatePositionChange().subscribe(() => {
-			this.overlayRef?.updatePosition();
+			if (this.popoverService.origin) this.overlayRef?.updatePosition();
 		}), this.createEscapeSubscription(), this.popoverService.originPoint ? this.createPointBasedOutsideClickSubscription() : this.createElementBasedOutsideClickSubscription());
 	}
 	createPointBasedOutsideClickSubscription() {
@@ -678,7 +681,7 @@ var ClrPopoverContent = class ClrPopoverContent {
 		});
 	}
 	resetPosition() {
-		if (this.overlayRef) {
+		if (this.overlayRef && this.popoverService.origin) {
 			this.overlayRef.updatePositionStrategy(this.positionStrategy);
 			this.overlayRef.updatePosition();
 		}
@@ -693,6 +696,7 @@ var ClrPopoverContent = class ClrPopoverContent {
 		}
 	}
 	showOverlay() {
+		if (!this.popoverService.origin) return;
 		if (!this.overlayRef) this._createOverlayRef();
 		if (!this.view && this.template) {
 			this.view = this.container.createEmbeddedView(this.template);
