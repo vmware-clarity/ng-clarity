@@ -145,7 +145,7 @@ export class ClrDatagridFilter<T = any>
    * Indicates if the filter is currently active
    */
   get active() {
-    return !!this.filter && this.filter.isActive();
+    return !!this.filter && this.filters.active().includes(this.filter);
   }
 
   override ngOnDestroy(): void {
