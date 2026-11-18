@@ -129,7 +129,7 @@ export class ClrCombobox<T>
 
   protected popoverType = ClrPopoverType.DROPDOWN;
 
-  protected containerWidth = null;
+  protected containerWidth: number | null = null;
   protected selectionExpanded = false;
   protected calculatedLimit: number | undefined;
   protected shouldCalculate = true;
@@ -384,7 +384,7 @@ export class ClrCombobox<T>
   loadingStateChange(state: ClrLoadingState): void {
     this.optionSelectionService.loading = state === ClrLoadingState.LOADING;
 
-    // A loading directive resets its state when it is destroyed, which can be after this combobox is.
+    // ClrLoading reports DEFAULT from its own ngOnDestroy, after this view is gone.
     if (state !== ClrLoadingState.LOADING && isPlatformBrowser(this.platformId) && !this.destroyRef.destroyed) {
       afterNextRender(() => this.popoverService?.resetPositions(), { injector: this.renderInjector });
       this.focusFirstActive();
@@ -397,8 +397,8 @@ export class ClrCombobox<T>
     }
   }
 
-  onBlur(event) {
-    if (!event.relatedTarget || !this.options.el?.nativeElement.contains(event.relatedTarget)) {
+  onBlur(event: FocusEvent) {
+    if (!event.relatedTarget || !this.options.el?.nativeElement.contains(event.relatedTarget as Node)) {
       this.onTouchedCallback?.();
       this.triggerValidation();
       this.focused = false;
@@ -453,12 +453,12 @@ export class ClrCombobox<T>
     // do nothing
   }
 
-  onWrapperClick(event) {
+  onWrapperClick(event: MouseEvent) {
     if (this.disabled) {
       return;
     }
     this.focusHandler.focusInput();
-    if (this.editable || (!this.editable && this.trigger.nativeElement.contains(event.target))) {
+    if (this.editable || (!this.editable && this.trigger.nativeElement.contains(event.target as Node))) {
       this.popoverService.toggleWithEvent(event);
     }
   }
@@ -536,7 +536,7 @@ export class ClrCombobox<T>
     this.applyLimit(fitCount);
   }
 
-  private applyLimit(limit = undefined) {
+  private applyLimit(limit?: number) {
     this.zone.run(() => {
       this.calculatedLimit = limit === 0 ? 1 : limit;
       this.shouldCalculate = false;

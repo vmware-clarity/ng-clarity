@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component, EnvironmentProviders, Provider } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router, withHashLocation } from '@angular/router';
+import type { Mock } from 'vitest';
 
 import {
   ClrContextApplicationOptions,
@@ -46,11 +47,14 @@ describe('ClrContextService, view metadata', () => {
     return engine['read'](options, false);
   }
 
-  function respondWith(...bodies: (object | null)[]): jasmine.Spy {
+  function respondWith(...bodies: (object | null)[]): Mock {
     const responses = bodies.map(body =>
       body ? new Response(JSON.stringify(body)) : new Response('', { status: 404 })
     );
-    return spyOn(window, 'fetch').and.returnValues(...responses.map(response => Promise.resolve(response)));
+    // Answers these in turn, then nothing, without reaching the network.
+    const fetch = vi.spyOn(window, 'fetch').mockImplementation(() => undefined as unknown as Promise<Response>);
+    responses.forEach(response => fetch.mockResolvedValueOnce(response));
+    return fetch;
   }
 
   beforeEach(() => {
@@ -108,11 +112,11 @@ describe('ClrContextService, view metadata', () => {
       document.body.setAttribute('data-clr-context-state', '{"purpose":"Hosts"}');
       const engine = engineWith({ views: 'enabled' });
 
-      expect(now(engine, quiet).enabled).toBeTrue();
+      expect(now(engine, quiet).enabled).toBe(true);
     });
 
     it('leaves out metadata that is not a JSON object', () => {
-      spyOn(console, 'warn');
+      vi.spyOn(console, 'warn').mockImplementation(() => undefined);
       document.body.setAttribute('data-clr-context-state', '["not", "an", "object"]');
       const engine = engineWith();
 
@@ -126,9 +130,7 @@ describe('ClrContextService, view metadata', () => {
       for (const marker of ['data-clr-context-ignore', 'data-clr-context-redact']) {
         document.body.setAttribute(marker, '');
         try {
-          expect(JSON.stringify(now(engine, quiet)))
-            .withContext(marker)
-            .not.toContain('s3cr3t');
+          expect(JSON.stringify(now(engine, quiet)), marker).not.toContain('s3cr3t');
         } finally {
           document.body.removeAttribute(marker);
         }
@@ -145,8 +147,8 @@ describe('ClrContextService, view metadata', () => {
       (snapshot.metadata?.['settings'] as Record<string, unknown>)['allowed'] = false;
 
       expect(() => JSON.stringify(snapshot)).not.toThrow();
-      expect(settings['allowed']).toBeTrue();
-      expect((now(engine, quiet).metadata?.['settings'] as Record<string, unknown>)['allowed']).toBeTrue();
+      expect(settings['allowed']).toBe(true);
+      expect((now(engine, quiet).metadata?.['settings'] as Record<string, unknown>)['allowed']).toBe(true);
     });
   });
 
@@ -168,7 +170,7 @@ describe('ClrContextService, view metadata', () => {
       expect(loaded.metadataState).toBeUndefined();
       expect(loaded.metadata).toEqual({ purpose: 'Inline', help: 'https://docs.example.com' });
       expect(now(engine, options).metadata).toEqual(loaded.metadata);
-      expect(fetch).toHaveBeenCalledOnceWith(new URL('/assets/hosts.json', document.baseURI).href, {
+      expect(fetch).toHaveBeenCalledExactlyOnceWith(new URL('/assets/hosts.json', document.baseURI).href, {
         credentials: 'same-origin',
       });
     });
@@ -184,7 +186,7 @@ describe('ClrContextService, view metadata', () => {
     });
 
     it('reports a URL that did not answer in time as unavailable', async () => {
-      spyOn(window, 'fetch').and.returnValue(new Promise<Response>(() => undefined));
+      vi.spyOn(window, 'fetch').mockReturnValue(new Promise<Response>(() => undefined));
       const engine = engineWith({ timeoutMs: 10 });
 
       const snapshot = await engine.snapshot({ ...quiet, root: '.test-page' });
@@ -238,7 +240,7 @@ describe('ClrContextService, view metadata', () => {
 
       expect(snapshot.viewId).toBe('host-detail');
       expect(snapshot.metadata).toEqual({ purpose: 'One host' });
-      expect(snapshot.enabled).toBeTrue();
+      expect(snapshot.enabled).toBe(true);
     });
 
     it('lets the page metadata win over the configuration', async () => {
@@ -255,13 +257,13 @@ describe('ClrContextService, view metadata', () => {
       page.innerHTML = '<div class="wizard"></div>';
       const engine = routedEngine('all');
 
-      expect(now(engine, quiet).enabled).toBeFalse();
+      expect(now(engine, quiet).enabled).toBe(false);
 
       page.innerHTML = '';
       TestBed.resetTestingModule();
       const enabledOnly = routedEngine('enabled');
       await TestBed.inject(Router).navigateByUrl('/settings');
-      expect(now(enabledOnly, quiet).enabled).toBeTrue();
+      expect(now(enabledOnly, quiet).enabled).toBe(true);
     });
 
     it('loads the configuration from a URL', async () => {
@@ -282,11 +284,11 @@ describe('ClrContextService, view metadata', () => {
       const engine = routedEngine('all', '/assets/ai-config.json');
 
       const loading = now(engine);
-      expect(loading.enabled).toBeFalse();
+      expect(loading.enabled).toBe(false);
       expect(JSON.stringify(loading)).not.toContain('Private');
 
       const failed = await engine.snapshot();
-      expect(failed.enabled).toBeFalse();
+      expect(failed.enabled).toBe(false);
       expect(JSON.stringify(failed)).not.toContain('Private');
     });
 
@@ -295,7 +297,7 @@ describe('ClrContextService, view metadata', () => {
       document.body.setAttribute('data-clr-context-state', '{"viewId":"wizard","secret":"s3cr3t"}');
       const snapshot = now(routedEngine('all'), quiet);
 
-      expect(snapshot.enabled).toBeFalse();
+      expect(snapshot.enabled).toBe(false);
       expect(snapshot.viewId).toBe('wizard');
       expect(snapshot.metadata).toBeUndefined();
     });

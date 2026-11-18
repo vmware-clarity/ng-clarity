@@ -412,7 +412,7 @@ describe('ClrDatagrid element mutator', () => {
       expect(grid().state?.['selection']).toBeUndefined();
 
       const result = await select(['esx-01']);
-      expect(result.applied).toBeTrue();
+      expect(result.applied).toBe(true);
       expect(result.value).toEqual(['esx-01']);
       expect(names(host.selected).sort()).toEqual(['esx-01', 'esx-02']);
     });
@@ -455,7 +455,7 @@ describe('ClrDatagrid element mutator', () => {
       );
       await settle();
 
-      expect(report.results[0].applied).toBeTrue();
+      expect(report.results[0].applied).toBe(true);
       expect(names(host.selected)).toEqual(['esx-02']);
     });
 
@@ -473,7 +473,7 @@ describe('ClrDatagrid element mutator', () => {
       await settle();
 
       expect(report.results[0].refused).toBeUndefined();
-      expect(report.results[0].applied).toBeTrue();
+      expect(report.results[0].applied).toBe(true);
       expect(names(host.selected)).toEqual(['esx-02']);
     });
   });
@@ -486,7 +486,7 @@ describe('ClrDatagrid element mutator', () => {
 
       const result = await select('Running');
 
-      expect(result.applied).toBeFalse();
+      expect(result.applied).toBe(false);
       expect(result.refused).toBe('invalid');
       expect(result.detail).toContain('"Running" fits 2 rows');
       expect(result.detail).toContain('"esx-01 | Running"');
@@ -507,14 +507,14 @@ describe('ClrDatagrid element mutator', () => {
     it('does not tell the application the selection changed when a write repeats it', async () => {
       await create(MultiHost);
       const datagrid = fixture.debugElement.query(By.directive(ClrDatagrid)).componentInstance as ClrDatagrid<Server>;
-      const changes = jasmine.createSpy('clrDgSelectedChange');
+      const changes = vi.fn();
       const subscription = datagrid.selectedChanged.subscribe(changes);
 
-      expect((await select(['esx-02'])).applied).toBeTrue();
-      const afterFirst = changes.calls.count();
+      expect((await select(['esx-02'])).applied).toBe(true);
+      const afterFirst = changes.mock.calls.length;
       expect(afterFirst).toBeGreaterThan(0);
-      expect((await select(['esx-02'])).applied).toBeTrue();
-      expect(changes.calls.count()).toBe(afterFirst);
+      expect((await select(['esx-02'])).applied).toBe(true);
+      expect(changes.mock.calls.length).toBe(afterFirst);
       subscription.unsubscribe();
     });
 
@@ -523,7 +523,7 @@ describe('ClrDatagrid element mutator', () => {
 
       const result = await select('esx-02 | Running');
 
-      expect(result.applied).toBeTrue();
+      expect(result.applied).toBe(true);
       expect(names(host.selected)).toEqual(['esx-02']);
     });
 
@@ -539,7 +539,7 @@ describe('ClrDatagrid element mutator', () => {
 
       // "esx-02" is a name shown, and a state hidden: only the row it names is selected.
       const result = await select('esx-02');
-      expect(result.applied).toBeTrue();
+      expect(result.applied).toBe(true);
       expect(names(host.selected)).toEqual(['esx-02']);
     });
 
@@ -550,14 +550,14 @@ describe('ClrDatagrid element mutator', () => {
       expect(grid().state?.['rows']).toEqual(['esx-01 | esx-02', 'esx-02 | Running']);
 
       expect((await select('esx-02')).detail).toContain('fits 2 rows');
-      expect((await select('Running')).applied).toBeTrue();
+      expect((await select('Running')).applied).toBe(true);
       expect(names(host.selected)).toEqual(['esx-02']);
     });
 
     it('names a row by a number its cell shows', async () => {
       const host = await create(NumberedHost);
 
-      expect((await select(20)).applied).toBeTrue();
+      expect((await select(20)).applied).toBe(true);
       expect(names(host.selected)).toEqual(['esx-02']);
     });
   });
@@ -571,7 +571,7 @@ describe('ClrDatagrid element mutator', () => {
 
       const result = await select(['esx-03']);
 
-      expect(result.applied).toBeTrue();
+      expect(result.applied).toBe(true);
       expect(result.value).toEqual(['esx-01 | Running', 'esx-03 | Stopped']);
       expect(names(host.selected)).toEqual(['esx-01', 'esx-03']);
     });
@@ -585,7 +585,7 @@ describe('ClrDatagrid element mutator', () => {
 
       const again = await select(first.value);
 
-      expect(again.applied).toBeTrue();
+      expect(again.applied).toBe(true);
       expect(names(host.selected)).toEqual(['esx-01', 'esx-03']);
     });
 
@@ -598,7 +598,7 @@ describe('ClrDatagrid element mutator', () => {
       const report = await engine.apply([{ operation: 'clear', ref: String(grid().ref), description: '' }]);
       await settle();
 
-      expect(report.results[0].applied).toBeTrue();
+      expect(report.results[0].applied).toBe(true);
       expect(names(host.selected)).toEqual(['esx-01']);
     });
 
@@ -639,7 +639,7 @@ describe('ClrDatagrid element mutator', () => {
 
       const result = await select('esx-02');
 
-      expect(result.applied).toBeTrue();
+      expect(result.applied).toBe(true);
       expect(result.value).toBe('esx-02');
       expect(names(host.selected)).toEqual(['esx-02']);
     });
@@ -656,7 +656,7 @@ describe('ClrDatagrid element mutator', () => {
 
       const result = await select(['esx-02']);
 
-      expect(result.applied).toBeTrue();
+      expect(result.applied).toBe(true);
       expect(result.value).toEqual(['esx-02 | Running']);
       // esx-03 is on page two and stays; esx-01 is on this page and was left out, so it goes.
       expect(host.selected.map(server => server.id)).toEqual([3, 2]);
@@ -669,7 +669,7 @@ describe('ClrDatagrid element mutator', () => {
 
       const result = await select([]);
 
-      expect(result.applied).toBeTrue();
+      expect(result.applied).toBe(true);
       expect(host.selected.map(server => server.id)).toEqual([4]);
     });
   });
@@ -693,7 +693,7 @@ describe('ClrDatagrid element mutator', () => {
     it('still selects a row while nothing is selected', async () => {
       const host = await create(SinglePagedHost);
 
-      expect((await select('esx-02')).applied).toBeTrue();
+      expect((await select('esx-02')).applied).toBe(true);
       expect(host.selected.map(server => server.id)).toEqual([2]);
     });
   });
@@ -710,18 +710,18 @@ describe('ClrDatagrid element mutator', () => {
       const host = await create(ToggleHost);
       const element: HTMLElement = fixture.nativeElement.querySelector('clr-datagrid');
 
-      expect(CLR_ELEMENT_MUTATOR_PROPERTY in element).toBeFalse();
+      expect(CLR_ELEMENT_MUTATOR_PROPERTY in element).toBe(false);
       expect(grid().ref).toBeUndefined();
       expect(grid().state?.['selectionMode']).toBeUndefined();
 
       host.mode = 'multi';
       await settle();
 
-      expect(CLR_ELEMENT_MUTATOR_PROPERTY in element).toBeTrue();
+      expect(CLR_ELEMENT_MUTATOR_PROPERTY in element).toBe(true);
       const ref = grid().ref;
       expect(ref).toBeDefined();
       expect(grid().state?.['selectionMode']).toBe('multi');
-      expect((await write(String(ref), 'esx-02')).applied).toBeTrue();
+      expect((await write(String(ref), 'esx-02')).applied).toBe(true);
       expect(names(host.selected)).toEqual(['esx-02']);
     });
 
@@ -734,20 +734,20 @@ describe('ClrDatagrid element mutator', () => {
       host.mode = 'none';
       await settle();
 
-      expect(CLR_ELEMENT_MUTATOR_PROPERTY in fixture.nativeElement.querySelector('clr-datagrid')).toBeFalse();
+      expect(CLR_ELEMENT_MUTATOR_PROPERTY in fixture.nativeElement.querySelector('clr-datagrid')).toBe(false);
       expect(grid().ref).toBeUndefined();
-      expect((await write(ref, 'esx-01')).applied).toBeFalse();
+      expect((await write(ref, 'esx-01')).applied).toBe(false);
       expect(host.selected).toEqual([]);
     });
 
     it('stops publishing the mutator once the datagrid is destroyed', async () => {
       await create(MultiHost);
       const element: HTMLElement = fixture.nativeElement.querySelector('clr-datagrid');
-      expect(CLR_ELEMENT_MUTATOR_PROPERTY in element).toBeTrue();
+      expect(CLR_ELEMENT_MUTATOR_PROPERTY in element).toBe(true);
 
       fixture.destroy();
 
-      expect(CLR_ELEMENT_MUTATOR_PROPERTY in element).toBeFalse();
+      expect(CLR_ELEMENT_MUTATOR_PROPERTY in element).toBe(false);
     });
 
     it('lets a plan see the refusal a selection would meet, without selecting anything', async () => {
@@ -776,7 +776,7 @@ describe('ClrDatagrid element mutator', () => {
 
       const result = await write(String(input?.ref), 'rebooted', 'Note for esx-02');
 
-      expect(result.applied).toBeTrue();
+      expect(result.applied).toBe(true);
       expect(host.notes[1].value).toBe('rebooted');
       expect(host.notes[0].value).toBe('');
       expect(host.selected).toEqual([]);
@@ -797,7 +797,7 @@ describe('ClrDatagrid element mutator', () => {
       expect(fixture.nativeElement.textContent).toContain('detail-esx-01');
 
       expect(grid().state?.['rows']).toEqual(['esx-01', 'esx-02']);
-      expect((await select('esx-02')).applied).toBeTrue();
+      expect((await select('esx-02')).applied).toBe(true);
       expect(names(host.selected)).toEqual(['esx-02']);
     });
 
@@ -809,7 +809,7 @@ describe('ClrDatagrid element mutator', () => {
 
       const result = await write(ref, 'esx-02');
 
-      expect(result.applied).toBeTrue();
+      expect(result.applied).toBe(true);
       expect(result.value).toEqual(['esx-02 | Running']);
       expect(names(host.selected)).toEqual(['esx-02']);
     });
@@ -821,7 +821,7 @@ describe('ClrDatagrid element mutator', () => {
       const page = contextEngine['read'](undefined, false);
       const redacted = gridOf(page);
 
-      expect(redacted.state?.['redacted']).toBeTrue();
+      expect(redacted.state?.['redacted']).toBe(true);
       expect(redacted.state?.['rows']).toBeUndefined();
       expect(redacted.state?.['selection']).toBeUndefined();
       expect(redacted.ref).toBeUndefined();

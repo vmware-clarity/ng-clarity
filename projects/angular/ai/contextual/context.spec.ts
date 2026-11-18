@@ -69,7 +69,7 @@ describe('ClrContext directive', () => {
 
   it('describes the element it sits on with its label, type and state', () => {
     expect(nodeLabelled('User management')).toEqual(
-      jasmine.objectContaining({ type: 'section', label: 'User management', state: { cluster: 'alpha' } })
+      expect.objectContaining({ type: 'section', label: 'User management', state: { cluster: 'alpha' } })
     );
     expect(registry.collect()).toEqual([]);
   });
@@ -127,7 +127,7 @@ describe('ClrContext directive', () => {
     fixture.componentInstance.emptyLabel = 'still here';
     fixture.detectChanges();
 
-    expect('clrContextAnnotation' in section).toBeFalse();
+    expect('clrContextAnnotation' in section).toBe(false);
     expect(labels()).toEqual(['still here']);
     expect(nodeLabelled('still here')?.type).toBe('group');
   });
@@ -288,7 +288,7 @@ describe('ClrContext directive, imported by a standalone component', () => {
     fixture.detectChanges();
 
     expect(nodeLabelled('Standalone annotation')).toEqual(
-      jasmine.objectContaining({ type: 'group', label: 'Standalone annotation', state: { step: 2 } })
+      expect.objectContaining({ type: 'group', label: 'Standalone annotation', state: { step: 2 } })
     );
     fixture.destroy();
   });

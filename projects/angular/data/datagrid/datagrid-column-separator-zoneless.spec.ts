@@ -82,20 +82,20 @@ for (const zoneless of [true, false]) {
     it('updates separators when the first column is pinned', async () => {
       pin('First', true);
       await fixture.whenStable();
-      expect(separator('First')).toBeTrue();
-      expect(separator('Second')).toBeTrue();
-      expect(separator('Third')).toBeFalse();
+      expect(separator('First')).toBe(true);
+      expect(separator('Second')).toBe(true);
+      expect(separator('Third')).toBe(false);
     });
 
     it('moves the last separator when the last column is pinned and unpinned', async () => {
       pin('Third', true);
       await fixture.whenStable();
-      expect(separator('Third')).toBeTrue();
-      expect(separator('Second')).toBeFalse();
+      expect(separator('Third')).toBe(true);
+      expect(separator('Second')).toBe(false);
       pin('Third', false);
       await fixture.whenStable();
-      expect(separator('Third')).toBeFalse();
-      expect(separator('Second')).toBeTrue();
+      expect(separator('Third')).toBe(false);
+      expect(separator('Second')).toBe(true);
     });
 
     it('moves a column and its cells when pinned directly from code', async () => {
@@ -108,13 +108,13 @@ for (const zoneless of [true, false]) {
       expect(
         fixture.nativeElement.querySelector('clr-dg-row .datagrid-pinned-cells > clr-dg-cell').textContent
       ).toContain('Third');
-      expect(separator('Third')).toBeTrue();
-      expect(separator('Second')).toBeFalse();
+      expect(separator('Third')).toBe(true);
+      expect(separator('Second')).toBe(false);
       column.pinned = false;
       await fixture.whenStable();
       expect(fixture.nativeElement.querySelector('.datagrid-header .datagrid-pinned-cells > clr-dg-column')).toBeNull();
-      expect(separator('Third')).toBeFalse();
-      expect(separator('Second')).toBeTrue();
+      expect(separator('Third')).toBe(false);
+      expect(separator('Second')).toBe(true);
     });
 
     it('updates separators when columns are reordered with a pinned column', async () => {
@@ -122,9 +122,9 @@ for (const zoneless of [true, false]) {
       await fixture.whenStable();
       fixture.componentInstance.columns.update(([first, second, third]) => [first, third, second]);
       await fixture.whenStable();
-      expect(separator('First')).toBeTrue();
-      expect(separator('Third')).toBeTrue();
-      expect(separator('Second')).toBeFalse();
+      expect(separator('First')).toBe(true);
+      expect(separator('Third')).toBe(true);
+      expect(separator('Second')).toBe(false);
     });
   });
 }

@@ -146,10 +146,14 @@ export class DatagridVirtualScrollEmptyRowsDemo {
     } else {
       await this.getData($event);
     }
+
+    this.cdr.markForCheck();
   }
 
   async loadBatch(listRange: ListRange = { start: 200, end: 300 }) {
     await this.getData(listRange);
+
+    this.cdr.markForCheck();
   }
 
   jumpTo(index: number) {
@@ -173,7 +177,7 @@ export class DatagridVirtualScrollEmptyRowsDemo {
     return result;
   }
 
-  setExpanded($event, user: User) {
+  setExpanded($event: boolean, user: User) {
     if (user) {
       user.expanded = $event;
     }

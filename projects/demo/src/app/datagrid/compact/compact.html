@@ -179,11 +179,11 @@
     <clr-dg-column>Favorite color</clr-dg-column>
 
     <clr-dg-placeholder>We couldn't find any users!</clr-dg-placeholder>
-    @for (user of []; track user) {
+    @for (user of noUsers; track user) {
     <clr-dg-row></clr-dg-row>
     }
 
-    <clr-dg-footer>{{[].length}} users</clr-dg-footer>
+    <clr-dg-footer>{{noUsers.length}} users</clr-dg-footer>
   </clr-datagrid>
 </div>
 

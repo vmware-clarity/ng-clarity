@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, signal } from '@angular/core';
 import { AppfxDatagridModule, ColumnDefinition, DatagridTreeConfig } from '@clr/addons/datagrid';
 import { ClrDatagridStateInterface, ClrDatagridVirtualScrollRangeInterface, SelectionType } from '@clr/angular';
 import { Subscription } from 'rxjs';
@@ -23,11 +23,11 @@ export class TreeVirtualScrollGridDemoComponent implements OnDestroy {
   protected readonly backend = new ResourceBackend({ roots: 5000, latency: 500 });
 
   // The roots not loaded yet are skeleton rows until the grid asks for them.
-  protected dataRange: ClrDatagridVirtualScrollRangeInterface<Resource> = {
+  protected readonly dataRange = signal<ClrDatagridVirtualScrollRangeInterface<Resource>>({
     total: this.backend.roots.length,
     skip: 0,
     data: [],
-  };
+  });
   protected selected: Resource[] = [];
   protected requested: string[] = [];
 
@@ -58,7 +58,7 @@ export class TreeVirtualScrollGridDemoComponent implements OnDestroy {
     this.requested = [...this.requested.slice(-4), `${from + 1} - ${from + size}`];
     this.requests.add(
       this.backend.range(from, size).subscribe(result => {
-        this.dataRange = { total: result.total, skip: from, data: result.items };
+        this.dataRange.set({ total: result.total, skip: from, data: result.items });
       })
     );
   }

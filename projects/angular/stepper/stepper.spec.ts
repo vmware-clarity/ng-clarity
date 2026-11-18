@@ -108,7 +108,7 @@ describe('ClrStepper', () => {
     });
 
     it('should override the initial panel if developer overrides it via [clrInitialStep]', () => {
-      spyOn(stepperService, 'overrideInitialPanel');
+      vi.spyOn(stepperService, 'overrideInitialPanel').mockImplementation(() => undefined);
       fixture.detectChanges();
       expect(stepperService.overrideInitialPanel).not.toHaveBeenCalled();
 
@@ -126,7 +126,7 @@ describe('ClrStepper', () => {
       const localStepperService = localFixture.debugElement
         .query(By.directive(ClrStepper))
         .injector.get(StepperService);
-      spyOn(localStepperService, 'overrideInitialPanel');
+      vi.spyOn(localStepperService, 'overrideInitialPanel').mockImplementation(() => undefined);
 
       localFixture.detectChanges();
 
@@ -134,7 +134,7 @@ describe('ClrStepper', () => {
     });
 
     it('should call overrideInitialPanel when initialStep input changes after initial render', () => {
-      spyOn(stepperService, 'overrideInitialPanel');
+      vi.spyOn(stepperService, 'overrideInitialPanel').mockImplementation(() => undefined);
 
       testComponent.initialStep = 'group';
       fixture.detectChanges();
@@ -144,7 +144,7 @@ describe('ClrStepper', () => {
 
     it('should reset if a previously completed panel is revisited and put into an invalid state', () => {
       // all setup...
-      spyOn(stepperService, 'setPanelInvalid');
+      vi.spyOn(stepperService, 'setPanelInvalid').mockImplementation(() => undefined);
       const group1 = testComponent.form.controls.group as FormGroup;
       group1.controls.name.setValue('lmnop');
       fixture.detectChanges();
@@ -153,18 +153,18 @@ describe('ClrStepper', () => {
       fixture.detectChanges();
 
       // we navigated to the second panel
-      expect(group1.valid).toBe(true, 'first panel form is now valid');
+      expect(group1.valid, 'first panel form is now valid').toBe(true);
 
       group1.controls.name.setValue(''); // set required input to invalid value
       fixture.detectChanges();
 
-      expect(group1.valid).toBe(false, 'first panel form is now invalid');
+      expect(group1.valid, 'first panel form is now invalid').toBe(false);
       expect(stepperService.setPanelInvalid).not.toHaveBeenCalled();
     });
 
     it('should not set the panel status to invalid immediately', () => {
       // setup
-      spyOn(stepperService, 'setPanelInvalid');
+      vi.spyOn(stepperService, 'setPanelInvalid').mockImplementation(() => undefined);
       const form = testComponent.form.controls.group;
 
       // act (make form invalid)
@@ -177,7 +177,7 @@ describe('ClrStepper', () => {
 
     it('should set the panel status to valid if form was previously invalid', () => {
       // setup
-      spyOn(stepperService, 'setPanelValid');
+      vi.spyOn(stepperService, 'setPanelValid').mockImplementation(() => undefined);
       const form = testComponent.form.controls.group;
 
       // act 1 (make form invalid)
@@ -200,7 +200,7 @@ describe('ClrStepper', () => {
 
     it('should not set the panel status to valid if the form was not previously invalid', () => {
       // setup
-      spyOn(stepperService, 'setPanelInvalid');
+      vi.spyOn(stepperService, 'setPanelInvalid').mockImplementation(() => undefined);
       const form = testComponent.form.controls.group;
 
       // act (make form valid)
@@ -228,7 +228,7 @@ describe('ClrStepper', () => {
     });
 
     it('should not call setPanelInvalid when typing in one touched control while the form remains invalid', () => {
-      spyOn(stepperService, 'setPanelInvalid');
+      vi.spyOn(stepperService, 'setPanelInvalid').mockImplementation(() => undefined);
       const group = fixture.componentInstance.form.controls.group as FormGroup;
 
       // simulate blur of firstName (touches it but leaves lastName empty)
@@ -255,7 +255,7 @@ describe('ClrStepper', () => {
     });
 
     it('should still call setPanelValid on a genuine INVALID -> VALID transition', () => {
-      spyOn(stepperService, 'setPanelValid');
+      vi.spyOn(stepperService, 'setPanelValid').mockImplementation(() => undefined);
       const group = fixture.componentInstance.form.controls.group as FormGroup;
 
       // touch + fill firstName
@@ -296,21 +296,21 @@ describe('ClrStepper', () => {
     });
 
     it('should reset panels when form is reset', () => {
-      spyOn(stepperService, 'resetPanels');
+      vi.spyOn(stepperService, 'resetPanels').mockImplementation(() => undefined);
       testComponent.form.reset();
       fixture.detectChanges();
       expect(stepperService.resetPanels).toHaveBeenCalled();
     });
 
     it('should not reset panels when form is patched', () => {
-      spyOn(stepperService, 'resetPanels');
+      vi.spyOn(stepperService, 'resetPanels').mockImplementation(() => undefined);
       testComponent.form.patchValue({});
       fixture.detectChanges();
       expect(stepperService.resetPanels).not.toHaveBeenCalled();
     });
 
     it('should trigger ngSubmit event when all panels have completed', () => {
-      spyOn(testComponent, 'submit');
+      vi.spyOn(testComponent, 'submit').mockImplementation(() => undefined);
       (testComponent.form.controls.group as FormGroup).controls.name.setValue('1');
       stepperService.navigateToNextPanel('group');
       stepperService.navigateToNextPanel('group2');
@@ -318,7 +318,7 @@ describe('ClrStepper', () => {
     });
 
     it('should update panels for form errors', () => {
-      spyOn(stepperService, 'setPanelsWithErrors');
+      vi.spyOn(stepperService, 'setPanelsWithErrors').mockImplementation(() => undefined);
 
       (testComponent.form.controls.group as FormGroup).controls.name.markAsTouched();
       stepperService.navigateToNextPanel('group');
@@ -349,14 +349,14 @@ describe('ClrStepper Template Forms', () => {
     });
 
     it('should reset steps when form is reset', () => {
-      spyOn(stepperService, 'resetPanels');
+      vi.spyOn(stepperService, 'resetPanels').mockImplementation(() => undefined);
       testComponent.form.reset();
       fixture.detectChanges();
       expect(stepperService.resetPanels).toHaveBeenCalled();
     });
 
     it('should trigger ngSubmit event when all steps have completed', () => {
-      spyOn(testComponent, 'submit');
+      vi.spyOn(testComponent, 'submit').mockImplementation(() => undefined);
       stepperService.navigateToNextPanel('group');
       stepperService.navigateToNextPanel('group2');
       expect(testComponent.submit).toHaveBeenCalled();

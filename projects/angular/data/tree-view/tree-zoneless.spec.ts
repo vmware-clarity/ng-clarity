@@ -128,10 +128,10 @@ for (const zoneless of [true, false]) {
       await open();
       const model = fixture.debugElement.query(By.directive(ClrTreeNode)).componentInstance._model;
       const children = model._loadedChildren;
-      const loading = spyOn(model.loading$, 'next').and.callThrough();
+      const loading = vi.spyOn(model.loading$, 'next');
       host.show.set(false);
       await fixture.whenStable();
-      loading.calls.reset();
+      loading.mockClear();
       await completeOutsideAngular();
       expect(model._loadedChildren).toBe(children);
       expect(loading).not.toHaveBeenCalled();

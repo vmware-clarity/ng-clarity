@@ -60,7 +60,7 @@ class TestComponent {
 })
 class LiveRegionTestComponent {}
 
-export default function (): void {
+describe('Alert Tests', () => {
   describe('Alert', () => {
     let fixture: ComponentFixture<any>;
     let compiled: any;
@@ -98,8 +98,8 @@ export default function (): void {
         fixture.detectChanges();
 
         const alert = compiled.querySelector('.alert');
-        expect(alert.getAttribute('role')).withContext(type).toBe('status');
-        expect(alert.getAttribute('aria-atomic')).withContext(type).toBe('false');
+        expect(alert.getAttribute('role'), type).toBe('status');
+        expect(alert.getAttribute('aria-atomic'), type).toBe('false');
       }
     });
 
@@ -110,8 +110,8 @@ export default function (): void {
         fixture.detectChanges();
 
         const alert = compiled.querySelector('.alert');
-        expect(alert.getAttribute('role')).withContext(type).toBe('alert');
-        expect(alert.hasAttribute('aria-atomic')).withContext(type).toBe(false);
+        expect(alert.getAttribute('role'), type).toBe('alert');
+        expect(alert.hasAttribute('aria-atomic'), type).toBe(false);
       }
     });
 
@@ -299,4 +299,4 @@ export default function (): void {
       expect(compiled.querySelector('.alert-lightweight')).not.toBeNull();
     });
   });
-}
+});

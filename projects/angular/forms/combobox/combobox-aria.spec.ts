@@ -75,7 +75,7 @@ describe('ClrCombobox required state', () => {
     // so that styles or queries written against it do not break.
     const host = fixture.nativeElement.querySelector('clr-combobox');
     expect(host.classList).toContain('aria-required');
-    expect(host.hasAttribute('aria-required')).toBeFalse();
+    expect(host.hasAttribute('aria-required')).toBe(false);
   });
 });
 
@@ -156,8 +156,8 @@ describe('ClrCombobox required state, static attribute', () => {
     fixture.detectChanges();
 
     const [model, control] = Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('[role="combobox"]'));
-    expect(model.getAttribute('aria-required')).withContext('ngModel').toBe('true');
-    expect(control.getAttribute('aria-required')).withContext('formControl').toBe('true');
+    expect(model.getAttribute('aria-required'), 'ngModel').toBe('true');
+    expect(control.getAttribute('aria-required'), 'formControl').toBe('true');
     fixture.destroy();
   });
 });

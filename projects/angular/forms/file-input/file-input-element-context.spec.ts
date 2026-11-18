@@ -109,7 +109,7 @@ describe('ClrFileInputContainer, as page-context tooling sees it', () => {
     // The name is on the browse button and on the clear button's label.
     expect(fixture.nativeElement.textContent).toContain('payslip-4111.pdf');
     expect(node?.label).toBe('Statement');
-    expect(node?.state).toEqual(jasmine.objectContaining({ fileCount: 1, redacted: true }));
+    expect(node?.state).toEqual(expect.objectContaining({ fileCount: 1, redacted: true }));
     expect(JSON.stringify(components)).not.toContain('4111');
   });
 
@@ -164,7 +164,7 @@ describe('ClrFileInputContainer, as page-context tooling sees it', () => {
 
     expect(JSON.stringify(components)).toContain('Choose a statement to upload');
     expect(findNode(components, 'clr-file-input-container')?.state).toEqual(
-      jasmine.objectContaining({ fileCount: 0, redacted: true })
+      expect.objectContaining({ fileCount: 0, redacted: true })
     );
   });
 

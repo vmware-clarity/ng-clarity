@@ -5,6 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import type { Mock } from 'vitest';
+
 import {
   CLR_CONTEXT_PROTOCOL,
   ClrContextFrameHost,
@@ -21,14 +23,14 @@ import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context
  * A stand-in for a frame's window: enough surface for the bridge, and a spy to assert on.
  * It is a frame of this window, as the bridge requires of anything it serves.
  */
-type FakeWindow = Window & { postMessage: jasmine.Spy };
+type FakeWindow = Window & { postMessage: Mock };
 
 /**
  * A same-origin window by default, whose origin a request can read; pass `null` for one
  * it cannot, whose location throws as a cross-origin window's does.
  */
 function fakeWindow(parent: unknown = window, origin: string | null = window.location.origin): FakeWindow {
-  const fake = { postMessage: jasmine.createSpy('postMessage'), parent };
+  const fake = { postMessage: vi.fn(), parent };
   Object.defineProperty(fake, 'location', {
     get: () => {
       if (!origin) {
@@ -89,12 +91,12 @@ describe('Context frame bridge', () => {
   }
 
   function servedContext(target: FakeWindow): ClrPageContext {
-    return (target.postMessage.calls.mostRecent().args[0] as ClrContextFrameResponse).context;
+    return (target.postMessage.mock.lastCall[0] as ClrContextFrameResponse).context;
   }
 
   describe('ClrContextFrameHost', () => {
     let host: ClrContextFrameHost;
-    let getSnapshot: jasmine.Spy;
+    let getSnapshot: Mock;
     let frame: FakeWindow;
 
     function dispatchRequest(request: unknown, origin: string = window.location.origin, source: unknown = frame) {
@@ -113,7 +115,7 @@ describe('Context frame bridge', () => {
     }
 
     beforeEach(() => {
-      getSnapshot = jasmine.createSpy('getSnapshot').and.callFake(() => JSON.parse(JSON.stringify(pageContext)));
+      getSnapshot = vi.fn(() => JSON.parse(JSON.stringify(pageContext)));
       frame = fakeWindow();
       host = new ClrContextFrameHost(getSnapshot, window, { minRequestIntervalMs: 0 });
       host.start();
@@ -143,21 +145,21 @@ describe('Context frame bridge', () => {
     it('answers only the origin that asked, never every origin', () => {
       dispatchRequest(frameRequest('request-1'));
 
-      expect(frame.postMessage.calls.mostRecent().args[1]).toEqual({ targetOrigin: window.location.origin });
+      expect(frame.postMessage.mock.lastCall[1]).toEqual({ targetOrigin: window.location.origin });
     });
 
     it('only forwards known snapshot options from the embedded frame', () => {
       dispatchRequest(frameRequest('request-2', { maxComponents: 5, excludeCategories: ['text'], injected: 'nope' }));
 
-      const requested = getSnapshot.calls.mostRecent().args[0];
-      expect(requested).toEqual(jasmine.objectContaining({ maxComponents: 5, excludeCategories: ['text'] }));
+      const requested = getSnapshot.mock.lastCall[0];
+      expect(requested).toEqual(expect.objectContaining({ maxComponents: 5, excludeCategories: ['text'] }));
       expect('injected' in requested).toBe(false);
     });
 
     it('discards anything in the request that is not a budget', () => {
       dispatchRequest(frameRequest('request-2b', { shareFormValues: true, shareFullUrl: true }));
 
-      const requested = getSnapshot.calls.mostRecent().args[0];
+      const requested = getSnapshot.mock.lastCall[0];
       expect('shareFormValues' in requested).toBe(false);
       expect('shareFullUrl' in requested).toBe(false);
     });
@@ -165,24 +167,24 @@ describe('Context frame bridge', () => {
     it('holds a frame to the default budgets when the host sets no ceiling', () => {
       dispatchRequest(frameRequest('request-2c', { maxComponents: 100_000 }));
 
-      expect(getSnapshot.calls.mostRecent().args[0]).toEqual(jasmine.objectContaining({ maxComponents: 300 }));
+      expect(getSnapshot.mock.lastCall[0]).toEqual(expect.objectContaining({ maxComponents: 300 }));
     });
 
     it('caps the budgets a frame asks for at what the host allows', () => {
       restartHost({ snapshot: { maxComponents: 20 } });
 
       dispatchRequest(frameRequest('big', { maxComponents: 5000 }));
-      expect(getSnapshot.calls.mostRecent().args[0].maxComponents).toBe(20);
+      expect(getSnapshot.mock.lastCall[0].maxComponents).toBe(20);
 
       dispatchRequest(frameRequest('small', { maxComponents: 3 }));
-      expect(getSnapshot.calls.mostRecent().args[0].maxComponents).toBe(3);
+      expect(getSnapshot.mock.lastCall[0].maxComponents).toBe(3);
     });
 
     it('drops a budget that is not a finite number rather than walking without bound', () => {
       dispatchRequest(frameRequest('nan', { maxComponents: Number.NaN }));
 
       // Dropped, so the default ceiling applies.
-      expect(getSnapshot.calls.mostRecent().args[0].maxComponents).toBe(300);
+      expect(getSnapshot.mock.lastCall[0].maxComponents).toBe(300);
     });
 
     it('ignores requests from origins that are not allowed', () => {
@@ -304,8 +306,8 @@ describe('Context frame bridge', () => {
     });
 
     it('keeps serving after one request blows up', () => {
-      getSnapshot.and.callFake(() => {
-        if (getSnapshot.calls.count() === 1) {
+      getSnapshot.mockImplementation(() => {
+        if (getSnapshot.mock.calls.length === 1) {
           throw new Error('broken publisher');
         }
         return JSON.parse(JSON.stringify(pageContext));
@@ -318,7 +320,7 @@ describe('Context frame bridge', () => {
     });
 
     it('answers a request a same-origin frame posts itself, and only that frame', async () => {
-      getSnapshot.and.returnValue({
+      getSnapshot.mockReturnValue({
         title: 'Host page',
         regions: [],
         components: [{ type: 'button', label: 'Save' }],
@@ -477,7 +479,7 @@ describe('Context frame bridge', () => {
 
       it('does not alter the snapshot it was given', () => {
         const snapshot = JSON.parse(JSON.stringify(pageContext)) as ClrPageContext;
-        getSnapshot.and.returnValue(snapshot);
+        getSnapshot.mockReturnValue(snapshot);
 
         dispatchRequest(frameRequest('request-no-mutation'));
 
@@ -498,20 +500,20 @@ describe('Context frame bridge', () => {
       });
 
       it('serves a frame again once the interval has passed', () => {
-        const now = spyOn(performance, 'now').and.returnValue(1_000_000);
+        const now = vi.spyOn(performance, 'now').mockReturnValue(1_000_000);
         dispatchRequest(frameRequest('first'));
         dispatchRequest(frameRequest('too-soon'));
-        now.and.returnValue(1_000_000 + 10_001);
+        now.mockReturnValue(1_000_000 + 10_001);
         dispatchRequest(frameRequest('later'));
 
         expect(getSnapshot).toHaveBeenCalledTimes(2);
       });
 
       it('is not stopped by a wall clock set back', () => {
-        spyOn(Date, 'now').and.returnValue(0);
-        const now = spyOn(performance, 'now').and.returnValue(1_000_000);
+        vi.spyOn(Date, 'now').mockReturnValue(0);
+        const now = vi.spyOn(performance, 'now').mockReturnValue(1_000_000);
         dispatchRequest(frameRequest('first'));
-        now.and.returnValue(1_000_000 + 10_001);
+        now.mockReturnValue(1_000_000 + 10_001);
         dispatchRequest(frameRequest('later'));
 
         expect(getSnapshot).toHaveBeenCalledTimes(2);
@@ -543,7 +545,7 @@ describe('Context frame bridge', () => {
           dispatchRequest(frameRequest(`frame-${index}`), window.location.origin, fakeWindow());
         }
 
-        expect(getSnapshot.calls.count()).toBe(5);
+        expect(getSnapshot.mock.calls.length).toBe(5);
       });
 
       it('keeps the default throttle when given an interval that is not a number', () => {
@@ -567,7 +569,7 @@ describe('Context frame bridge', () => {
       from: { response?: Partial<ClrContextFrameResponse>; source?: unknown; origin?: string } = {}
     ): FakeWindow {
       const target = fakeWindow();
-      target.postMessage.and.callFake((message: ClrContextFrameRequest) => {
+      target.postMessage.mockImplementation((message: ClrContextFrameRequest) => {
         setTimeout(() =>
           dispatchMessage({
             data: {
@@ -601,7 +603,7 @@ describe('Context frame bridge', () => {
 
       await ask(target);
 
-      expect(target.postMessage.calls.mostRecent().args[1]).toEqual({ targetOrigin: window.location.origin });
+      expect(target.postMessage.mock.lastCall[1]).toEqual({ targetOrigin: window.location.origin });
     });
 
     it('reaches a same-origin srcdoc frame, which reports no origin of its own but shares this one', async () => {
@@ -618,7 +620,7 @@ describe('Context frame bridge', () => {
 
         await ask(target, { timeoutMs: 20 });
 
-        expect(await received).toEqual(jasmine.objectContaining({ kind: 'context-request' }));
+        expect(await received).toEqual(expect.objectContaining({ kind: 'context-request' }));
       } finally {
         frame.remove();
       }
@@ -628,9 +630,9 @@ describe('Context frame bridge', () => {
       const target = answering(pageContext);
 
       await ask(target);
-      const first = (target.postMessage.calls.mostRecent().args[0] as ClrContextFrameRequest).requestId;
+      const first = (target.postMessage.mock.lastCall[0] as ClrContextFrameRequest).requestId;
       await ask(target);
-      const second = (target.postMessage.calls.mostRecent().args[0] as ClrContextFrameRequest).requestId;
+      const second = (target.postMessage.mock.lastCall[0] as ClrContextFrameRequest).requestId;
 
       expect(first).not.toBe(second);
       expect(first.length).toBeGreaterThanOrEqual(32);
@@ -658,13 +660,13 @@ describe('Context frame bridge', () => {
       const hostOrigin = `${window.location.origin.toUpperCase()}/`;
 
       expect(await ask(target, { hostOrigin })).toEqual(pageContext);
-      expect(target.postMessage).toHaveBeenCalledWith(jasmine.anything(), { targetOrigin: window.location.origin });
+      expect(target.postMessage).toHaveBeenCalledWith(expect.anything(), { targetOrigin: window.location.origin });
     });
 
     it('rejects a host origin that is not an origin', async () => {
       const target = answering(pageContext);
 
-      await expectAsync(ask(target, { hostOrigin: '/app' })).toBeRejectedWithError(/is not an origin/);
+      await expect(ask(target, { hostOrigin: '/app' })).rejects.toThrow(/is not an origin/);
       expect(target.postMessage).not.toHaveBeenCalled();
     });
 
@@ -676,7 +678,7 @@ describe('Context frame bridge', () => {
 
     it('ignores responses for other requests until the right one arrives', async () => {
       const target = fakeWindow();
-      target.postMessage.and.callFake((message: ClrContextFrameRequest) => {
+      target.postMessage.mockImplementation((message: ClrContextFrameRequest) => {
         setTimeout(() => {
           dispatchMessage({
             data: {
@@ -710,13 +712,15 @@ describe('Context frame bridge', () => {
 
     it('rejects and stops listening when the request cannot be sent', async () => {
       const target = fakeWindow();
-      target.postMessage.and.throwError(new DOMException('could not be cloned', 'DataCloneError'));
-      const removeEventListener = spyOn(window, 'removeEventListener').and.callThrough();
-      const clearTimer = spyOn(window, 'clearTimeout').and.callThrough();
+      target.postMessage.mockImplementation(() => {
+        throw new DOMException('could not be cloned', 'DataCloneError');
+      });
+      const removeEventListener = vi.spyOn(window, 'removeEventListener');
+      const clearTimer = vi.spyOn(window, 'clearTimeout');
 
-      await expectAsync(ask(target, { timeoutMs: 60_000 })).toBeRejectedWithError(/could not be cloned/);
+      await expect(ask(target, { timeoutMs: 60_000 })).rejects.toThrow(/could not be cloned/);
 
-      expect(removeEventListener).toHaveBeenCalledWith('message', jasmine.any(Function));
+      expect(removeEventListener).toHaveBeenCalledWith('message', expect.any(Function));
       expect(clearTimer).toHaveBeenCalled();
     });
 
@@ -727,7 +731,7 @@ describe('Context frame bridge', () => {
         delays = [];
         const realSetTimeout = window.setTimeout.bind(window);
         // Recorded, then run at once, so each request settles within its test.
-        spyOn(window, 'setTimeout').and.callFake(((handler: () => void, delay?: number) => {
+        vi.spyOn(window, 'setTimeout').mockImplementation(((handler: () => void, delay?: number) => {
           delays.push(delay);
           return realSetTimeout(handler);
         }) as typeof window.setTimeout);
@@ -756,23 +760,23 @@ describe('Context frame bridge', () => {
 
       await ask(target, { timeoutMs: 10 });
 
-      expect(target.postMessage.calls.mostRecent().args[1]).toEqual({ targetOrigin: 'https://other.example' });
+      expect(target.postMessage.mock.lastCall[1]).toEqual({ targetOrigin: 'https://other.example' });
     });
 
     it('rejects asking another window whose origin it cannot read without a hostOrigin', async () => {
       const target = fakeWindow(window, null);
 
-      await expectAsync(ask(target)).toBeRejectedWithError(/needs a hostOrigin/);
+      await expect(ask(target)).rejects.toThrow(/needs a hostOrigin/);
       expect(target.postMessage).not.toHaveBeenCalled();
     });
 
     describe('without a hostOrigin, in development', () => {
-      let warn: jasmine.Spy;
+      let warn: Mock;
 
       beforeEach(() => {
         resetNoHostOriginWarning();
-        warn = spyOn(console, 'warn');
-        spyOnProperty(window, 'parent').and.returnValue(fakeWindow());
+        warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+        vi.spyOn(window, 'parent', 'get').mockReturnValue(fakeWindow());
       });
 
       afterEach(() => resetNoHostOriginWarning());
@@ -782,7 +786,7 @@ describe('Context frame bridge', () => {
         await clrRequestHostContext({ timeoutMs: 10 });
 
         expect(warn).toHaveBeenCalledTimes(1);
-        expect(String(warn.calls.mostRecent().args[0])).toContain('no hostOrigin');
+        expect(String(warn.mock.lastCall[0])).toContain('no hostOrigin');
       });
 
       it('does not warn when a hostOrigin is given', async () => {

@@ -461,7 +461,7 @@ describe('DOM context collector - component-published context', () => {
   });
 
   it('treats a publisher that throws as having nothing to add', () => {
-    spyOn(console, 'warn');
+    vi.spyOn(console, 'warn').mockImplementation(() => undefined);
     root.innerHTML = '<clr-fake-widget aria-label="DOM label">content</clr-fake-widget>';
     publishElementContext(root.querySelector('clr-fake-widget') as Element, () => {
       throw new Error('broken publisher');

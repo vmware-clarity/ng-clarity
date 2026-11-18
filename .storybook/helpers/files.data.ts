@@ -82,7 +82,7 @@ export const filesRoot: File[] = [
 export function getFileTreeNodeMarkup(
   files: File[] = filesRoot,
   args: { asLink?: boolean; clrSelected?: boolean; hasIcon?: boolean } = {}
-) {
+): string {
   return files
     .map(file => {
       const data = args.hasIcon

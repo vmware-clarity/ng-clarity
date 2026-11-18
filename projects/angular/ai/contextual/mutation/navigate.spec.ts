@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { DefaultUrlSerializer, provideRouter, Router } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
+import type { Mock } from 'vitest';
 
 import { ClrMutationEngineService } from './mutation-engine.service';
 import {
@@ -66,12 +67,12 @@ describe('ClrMutationEngineService navigate', () => {
   let harness: RouterTestingHarness;
   let engine: ClrMutationEngineService;
   let router: Router;
-  let classify: jasmine.Spy<(target: ClrMutationTarget) => ClrMutationConsequence>;
+  let classify: Mock<(target: ClrMutationTarget) => ClrMutationConsequence>;
   let releaseSlowGuard: (allowed: boolean) => void;
   let slowGuard: Promise<boolean>;
 
   beforeEach(async () => {
-    classify = jasmine.createSpy('classify').and.returnValue('reversible');
+    classify = vi.fn().mockReturnValue('reversible');
     slowGuard = new Promise(resolve => (releaseSlowGuard = resolve));
     TestBed.configureTestingModule({
       providers: [
@@ -112,7 +113,7 @@ describe('ClrMutationEngineService navigate', () => {
     const result = await navigate('clusters/:id', { id: '42' }, { tab: 'hosts' });
 
     expect(result).toEqual(
-      jasmine.objectContaining({
+      expect.objectContaining({
         operation: 'navigate',
         path: 'clusters/:id',
         applied: true,
@@ -122,13 +123,13 @@ describe('ClrMutationEngineService navigate', () => {
     );
     expect(router.url).toBe('/clusters/42?tab=hosts');
     expect(classify).toHaveBeenCalledWith(
-      jasmine.objectContaining({ operation: 'navigate', path: 'clusters/:id', url: '/clusters/42?tab=hosts' })
+      expect.objectContaining({ operation: 'navigate', path: 'clusters/:id', url: '/clusters/42?tab=hosts' })
     );
   });
 
   it('refuses a path the snapshot did not list, and a route missing a parameter', async () => {
-    expect(await navigate('/clusters/42')).toEqual(jasmine.objectContaining({ applied: false, refused: 'noRoute' }));
-    expect(await navigate('nowhere')).toEqual(jasmine.objectContaining({ applied: false, refused: 'noRoute' }));
+    expect(await navigate('/clusters/42')).toEqual(expect.objectContaining({ applied: false, refused: 'noRoute' }));
+    expect(await navigate('nowhere')).toEqual(expect.objectContaining({ applied: false, refused: 'noRoute' }));
     const missing = await navigate('clusters/:id');
     expect(missing.refused).toBe('invalid');
     expect(missing.detail).toContain('"id"');
@@ -153,7 +154,7 @@ describe('ClrMutationEngineService navigate', () => {
   it('navigates to a route whose module has not loaded yet', async () => {
     const result = await navigate('billing');
 
-    expect(result).toEqual(jasmine.objectContaining({ applied: true, outcome: 'navigated', url: '/billing' }));
+    expect(result).toEqual(expect.objectContaining({ applied: true, outcome: 'navigated', url: '/billing' }));
   });
 
   it('reports where a guard redirect actually went', async () => {
@@ -161,13 +162,13 @@ describe('ClrMutationEngineService navigate', () => {
 
     expect(result.outcome).toBe('redirected');
     expect(result.url).toBe('/hosts');
-    expect(result.applied).toBeTrue();
+    expect(result.applied).toBe(true);
   });
 
   it('reports a guard that refused', async () => {
     const result = await navigate('admin');
 
-    expect(result).toEqual(jasmine.objectContaining({ applied: false, outcome: 'rejected', url: '/' }));
+    expect(result).toEqual(expect.objectContaining({ applied: false, outcome: 'rejected', url: '/' }));
   });
 
   it('reports a navigation another one overtook', async () => {
@@ -176,7 +177,7 @@ describe('ClrMutationEngineService navigate', () => {
     await router.navigateByUrl('/hosts');
     releaseSlowGuard(true);
 
-    expect(await pending).toEqual(jasmine.objectContaining({ applied: false, outcome: 'superseded' }));
+    expect(await pending).toEqual(expect.objectContaining({ applied: false, outcome: 'superseded' }));
     expect(router.url).toBe('/hosts');
   });
 
@@ -184,7 +185,7 @@ describe('ClrMutationEngineService navigate', () => {
     const result = await navigate('broken');
 
     expect(result).toEqual(
-      jasmine.objectContaining({ applied: false, outcome: 'failed', detail: 'resolver broke', url: '/' })
+      expect.objectContaining({ applied: false, outcome: 'failed', detail: 'resolver broke', url: '/' })
     );
   });
 
@@ -193,7 +194,7 @@ describe('ClrMutationEngineService navigate', () => {
   });
 
   it('is subject to the policy like any other operation', async () => {
-    classify.and.returnValue('forbidden');
+    classify.mockReturnValue('forbidden');
     expect((await navigate('hosts')).refused).toBe('forbidden');
     expect(router.url).toBe('/');
   });

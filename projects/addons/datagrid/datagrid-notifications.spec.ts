@@ -8,6 +8,7 @@
 import { ChangeDetectorRef, QueryList, SimpleChange } from '@angular/core';
 import { fakeAsync, flush } from '@angular/core/testing';
 import { ClrDatagrid, SelectionType } from '@clr/angular/data/datagrid';
+import type { MockInstance } from 'vitest';
 
 import { ExportProviderService } from './addons/export/export-provider.service';
 import { DatagridComponent } from './datagrid.component';
@@ -15,7 +16,7 @@ import { DatagridStrings } from './i18n/datagrid-strings.service';
 
 describe('Datagrid deferred row notifications', () => {
   let component: DatagridComponent<unknown>;
-  let notify: jasmine.Spy;
+  let notify: MockInstance;
 
   beforeEach(() => {
     component = new DatagridComponent(
@@ -31,7 +32,7 @@ describe('Datagrid deferred row notifications', () => {
     component.trackByGridItemProperty = 'id';
     component.gridItems = [];
     const rows = new QueryList<unknown>();
-    notify = spyOn(rows, 'notifyOnChanges');
+    notify = vi.spyOn(rows, 'notifyOnChanges').mockImplementation(() => undefined);
     component['clrDatagrid'] = { rows } as unknown as ClrDatagrid;
   });
 

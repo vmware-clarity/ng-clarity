@@ -18,8 +18,9 @@ import { ClrInputModule } from '@clr/angular/forms/input';
 import { ClrPasswordModule } from '@clr/angular/forms/password';
 import { ClrRadioModule } from '@clr/angular/forms/radio';
 import { ClrSelectModule } from '@clr/angular/forms/select';
+import type { Mock } from 'vitest';
 
-import { allNodes, allRefs, findNode, nodeOf, refOf, settle } from './helpers.spec';
+import { allNodes, allRefs, findNode, nodeOf, refOf, settle } from './helpers.mock';
 import { ClrMutationEngineService } from './mutation-engine.service';
 import {
   ClrElementMutationResult,
@@ -205,7 +206,7 @@ describe('ClrMutationEngineService', () => {
       ]);
 
       expect(report.results.map(result => result.refused)).toEqual(['unclassified', 'unclassified']);
-      expect(report.results.every(result => !result.applied)).toBeTrue();
+      expect(report.results.every(result => !result.applied)).toBe(true);
     });
   });
 
@@ -214,12 +215,12 @@ describe('ClrMutationEngineService', () => {
     let host: Host;
     let contextEngine: ClrContextService;
     let engine: ClrMutationEngineService;
-    let classify: jasmine.Spy<(target: ClrMutationTarget) => ClrMutationConsequence>;
-    let confirm: jasmine.Spy<(target: ClrMutationTarget) => boolean | Promise<boolean>>;
+    let classify: Mock<(target: ClrMutationTarget) => ClrMutationConsequence>;
+    let confirm: Mock<(target: ClrMutationTarget) => boolean | Promise<boolean>>;
 
     beforeEach(async () => {
-      classify = jasmine.createSpy('classify').and.returnValue('reversible');
-      confirm = jasmine.createSpy('confirm').and.returnValue(true);
+      classify = vi.fn().mockReturnValue('reversible');
+      confirm = vi.fn().mockReturnValue(true);
       const policy: ClrMutationPolicy = { classify: target => classify(target), confirm: target => confirm(target) };
       TestBed.configureTestingModule({
         imports: IMPORTS,
@@ -250,12 +251,12 @@ describe('ClrMutationEngineService', () => {
         const page = snapshot();
         const withRefs = (label: string) => !!findNode(page.components, node => node.label === label && !!node.ref);
 
-        expect(withRefs('Name')).toBeTrue();
-        expect(withRefs('Agree')).toBeTrue();
-        expect(withRefs('Size')).toBeTrue();
-        expect(withRefs('Cluster')).toBeTrue();
+        expect(withRefs('Name')).toBe(true);
+        expect(withRefs('Agree')).toBe(true);
+        expect(withRefs('Size')).toBe(true);
+        expect(withRefs('Cluster')).toBe(true);
         // A control without a form binding could never be written to, so it is not offered.
-        expect(withRefs('Loose')).toBeFalse();
+        expect(withRefs('Loose')).toBe(false);
         expect(findNode(page.components, node => node.element === 'clr-datagrid')?.ref).toBeDefined();
         expect(findNode(page.components, node => node.type === 'columnheader')?.ref).toBeUndefined();
         expect(findNode(page.components, node => node.type === 'button')?.ref).toBeUndefined();
@@ -270,8 +271,8 @@ describe('ClrMutationEngineService', () => {
 
         expect(comboboxes.length).toBe(1);
         // The combobox's own type, which it publishes over the group a role-less tag is.
-        expect(comboboxes[0]).toEqual(jasmine.objectContaining({ type: 'combobox', element: 'clr-combobox' }));
-        expect(comboboxes[0].state).toEqual(jasmine.objectContaining({ value: null }));
+        expect(comboboxes[0]).toEqual(expect.objectContaining({ type: 'combobox', element: 'clr-combobox' }));
+        expect(comboboxes[0].state).toEqual(expect.objectContaining({ value: null }));
         expect(comboboxes[0].children?.map(child => child.label)).toEqual(['Show options']);
       });
 
@@ -279,7 +280,7 @@ describe('ClrMutationEngineService', () => {
         const page = snapshot();
         const secret = nodeOf(page, node => node.label === 'Secret', 'secret');
 
-        expect(secret.state?.['redacted']).toBeTrue();
+        expect(secret.state?.['redacted']).toBe(true);
         expect(secret.ref).toBeUndefined();
       });
 
@@ -305,7 +306,7 @@ describe('ClrMutationEngineService', () => {
         const result = await set(ref, 'Name', 'Ada');
 
         expect(result).toEqual(
-          jasmine.objectContaining({
+          expect.objectContaining({
             operation: 'setValue',
             ref,
             applied: true,
@@ -316,15 +317,15 @@ describe('ClrMutationEngineService', () => {
         );
         expect(result.errors).toBeUndefined();
         expect(host.form.value.name).toBe('Ada');
-        expect(host.form.controls.name.dirty).toBeTrue();
-        expect(host.form.controls.name.touched).toBeTrue();
+        expect(host.form.controls.name.dirty).toBe(true);
+        expect(host.form.controls.name.touched).toBe(true);
       });
 
       it('reports a validation failure as a result, and Clarity shows it', async () => {
         const ref = refOf(snapshot(), 'Name');
         const result = await set(ref, 'Name', '');
 
-        expect(result.applied).toBeTrue();
+        expect(result.applied).toBe(true);
         expect(result.status).toBe('INVALID');
         expect(result.errors).toEqual({ required: true });
         expect(fixture.nativeElement.querySelector('clr-control-error')?.textContent).toContain('Name is required');
@@ -336,7 +337,7 @@ describe('ClrMutationEngineService', () => {
         expect(host.form.value.amount).toBe(42);
 
         const refused = await set(ref, 'Amount', 'lots');
-        expect(refused.applied).toBeFalse();
+        expect(refused.applied).toBe(false);
         expect(refused.refused).toBe('invalid');
         expect(host.form.value.amount).toBe(42);
       });
@@ -345,9 +346,9 @@ describe('ClrMutationEngineService', () => {
         const ref = refOf(snapshot(), 'Agree');
         const result = await set(ref, 'Agree', true);
 
-        expect(result.value).toBeTrue();
-        expect(result.previous).toBeFalse();
-        expect(host.form.value.agree).toBeTrue();
+        expect(result.value).toBe(true);
+        expect(result.previous).toBe(false);
+        expect(host.form.value.agree).toBe(true);
         expect((await set(ref, 'Agree', 'maybe')).refused).toBe('invalid');
       });
 
@@ -355,11 +356,11 @@ describe('ClrMutationEngineService', () => {
         const ref = refOf(snapshot(), 'Size');
         const result = await set(ref, 'Size', 'Large');
 
-        expect(result.applied).toBeTrue();
+        expect(result.applied).toBe(true);
         expect(result.value).toBe('Large');
         expect(result.previous).toBeNull();
         expect(host.form.value.size).toBe('l');
-        expect(host.form.controls.size.touched).toBeTrue();
+        expect(host.form.controls.size.touched).toBe(true);
 
         const refused = await set(ref, 'Size', 'Huge');
         expect(refused.refused).toBe('invalid');
@@ -372,7 +373,7 @@ describe('ClrMutationEngineService', () => {
 
         expect(result.value).toBe('Two');
         expect(host.form.value.item).toBe(ITEMS[1]);
-        expect(host.form.controls.item.dirty).toBeTrue();
+        expect(host.form.controls.item.dirty).toBe(true);
 
         const refused = await set(ref, 'Item', 'Three');
         expect(refused.refused).toBe('invalid');
@@ -386,7 +387,7 @@ describe('ClrMutationEngineService', () => {
         expect(result.value).toBe('Beta cluster');
         expect(result.previous).toBeNull();
         expect(host.form.value.cluster).toBe('beta');
-        expect(host.form.controls.cluster.touched).toBeTrue();
+        expect(host.form.controls.cluster.touched).toBe(true);
       });
 
       it('refuses a combobox label no option has, naming the options', async () => {
@@ -411,7 +412,7 @@ describe('ClrMutationEngineService', () => {
         const result = await set(ref, 'When', '2026-03-06');
 
         const input = fixture.nativeElement.querySelector('input[formcontrolname="when"]') as HTMLInputElement;
-        expect(result.applied).toBeTrue();
+        expect(result.applied).toBe(true);
         expect(typeof host.form.value.when).toBe('string');
         expect(host.form.value.when).toContain('2026');
         expect(input.value).toBe(host.form.value.when ?? '');
@@ -427,7 +428,7 @@ describe('ClrMutationEngineService', () => {
         const ref = refOf(snapshot(), 'Nickname');
         const result = await set(ref, 'Nickname', 'Grace');
 
-        expect(result.applied).toBeTrue();
+        expect(result.applied).toBe(true);
         expect(host.tplName).toBe('Grace');
         expect(host.changes).toBe(1);
       });
@@ -443,7 +444,7 @@ describe('ClrMutationEngineService', () => {
 
         const result = await set(String(grid.ref), '', ['esx-02', 'esx-01 | Running']);
 
-        expect(result.applied).toBeTrue();
+        expect(result.applied).toBe(true);
         expect(result.value).toEqual(['esx-01 | Running', 'esx-02 | Stopped']);
         expect(host.selectedHosts.map(selected => selected.name)).toEqual(['esx-02', 'esx-01']);
 
@@ -524,7 +525,7 @@ describe('ClrMutationEngineService', () => {
 
         const report = await engine.apply([{ operation: 'clear', ref: String(grid.ref), description: '' }]);
 
-        expect(report.results[0].applied).toBeTrue();
+        expect(report.results[0].applied).toBe(true);
         expect(host.selectedHosts).toEqual([]);
       });
     });
@@ -564,15 +565,15 @@ describe('ClrMutationEngineService', () => {
 
       it('accepts a description that names the node loosely', async () => {
         const ref = refOf(snapshot(), 'Name');
-        expect((await set(ref, 'the name field', 'Ada')).applied).toBeTrue();
-        expect((await set(ref, '  NAME ', 'Bob')).applied).toBeTrue();
+        expect((await set(ref, 'the name field', 'Ada')).applied).toBe(true);
+        expect((await set(ref, '  NAME ', 'Bob')).applied).toBe(true);
       });
 
       it('refuses a control without an Angular form binding, should a ref reach one', () => {
         const loose = fixture.nativeElement.querySelector('[aria-label="Loose"]') as HTMLInputElement;
         const resolution = resolveWriteTarget({ elements: [loose], type: 'textbox', label: 'Loose' }, null);
 
-        expect(resolution).toEqual({ refused: 'unbound', detail: jasmine.stringContaining('formControlName') });
+        expect(resolution).toEqual({ refused: 'unbound', detail: expect.stringContaining('formControlName') });
       });
 
       it('refuses a control that became disabled or hidden since the snapshot', async () => {
@@ -631,7 +632,7 @@ describe('ClrMutationEngineService', () => {
         await set(ref, 'Cluster', 'Alpha cluster');
 
         expect(classify).toHaveBeenCalledWith(
-          jasmine.objectContaining({
+          expect.objectContaining({
             operation: 'setValue',
             ref,
             label: 'Cluster',
@@ -640,11 +641,11 @@ describe('ClrMutationEngineService', () => {
           })
         );
         // A component that translates the value itself keeps its model to itself.
-        expect('modelValue' in classify.calls.mostRecent().args[0]).toBeFalse();
+        expect('modelValue' in classify.mock.lastCall[0]).toBe(false);
       });
 
       it('refuses what the policy forbids', async () => {
-        classify.and.returnValue('forbidden');
+        classify.mockReturnValue('forbidden');
         const result = await set(refOf(snapshot(), 'Name'), 'Name', 'x');
 
         expect(result.refused).toBe('forbidden');
@@ -652,33 +653,33 @@ describe('ClrMutationEngineService', () => {
       });
 
       it('asks before a consequential operation and honours the answer', async () => {
-        classify.and.returnValue('consequential');
+        classify.mockReturnValue('consequential');
         const ref = refOf(snapshot(), 'Name');
 
-        confirm.and.returnValue(Promise.resolve(false));
+        confirm.mockReturnValue(Promise.resolve(false));
         expect((await set(ref, 'Name', 'x')).refused).toBe('declined');
         expect(host.form.value.name).toBe('seed');
 
-        confirm.and.returnValue(true);
-        expect((await set(ref, 'Name', 'Ada')).applied).toBeTrue();
-        expect(confirm).toHaveBeenCalledWith(jasmine.objectContaining({ ref, value: 'Ada' }));
+        confirm.mockReturnValue(true);
+        expect((await set(ref, 'Name', 'Ada')).applied).toBe(true);
+        expect(confirm).toHaveBeenCalledWith(expect.objectContaining({ ref, value: 'Ada' }));
       });
 
       it('writes what the person confirmed in a modal dialog of the application, while that dialog is still leaving', async () => {
-        classify.and.returnValue('consequential');
+        classify.mockReturnValue('consequential');
         const ref = refOf(snapshot(), 'Name');
         const dialog = document.createElement('div');
         dialog.setAttribute('role', 'dialog');
         dialog.setAttribute('aria-modal', 'true');
         dialog.textContent = 'Change the name?';
         // The application asks in its own modal, and answers before the dialog is gone.
-        confirm.and.callFake(() => {
+        confirm.mockImplementation(() => {
           document.body.appendChild(dialog);
           return Promise.resolve(true);
         });
         try {
           const result = await set(ref, 'Name', 'Ada');
-          expect(result.applied).toBeTrue();
+          expect(result.applied).toBe(true);
           expect(host.form.value.name).toBe('Ada');
         } finally {
           dialog.remove();
@@ -686,32 +687,32 @@ describe('ClrMutationEngineService', () => {
       });
 
       it('still refuses a write behind a modal dialog that was open before the question', async () => {
-        classify.and.returnValue('consequential');
+        classify.mockReturnValue('consequential');
         const ref = refOf(snapshot(), 'Name');
         const dialog = document.createElement('div');
         dialog.setAttribute('role', 'dialog');
         dialog.setAttribute('aria-modal', 'true');
         dialog.textContent = 'Session expiring';
         let asked = false;
-        confirm.and.callFake(() => {
+        confirm.mockImplementation(() => {
           asked = true;
           return true;
         });
         document.body.appendChild(dialog);
         try {
           expect((await set(ref, 'Name', 'Ada')).refused).toBe('hidden');
-          expect(asked).toBeFalse();
+          expect(asked).toBe(false);
         } finally {
           dialog.remove();
         }
       });
 
       it('refuses as stale a write whose field was renamed while the person was asked', async () => {
-        classify.and.returnValue('consequential');
+        classify.mockReturnValue('consequential');
         const ref = refOf(snapshot(), 'Name');
         const label = fixture.nativeElement.querySelector('clr-input-container label') as HTMLLabelElement;
         // The field is relabelled in place while the question is open, and the page is read again.
-        confirm.and.callFake(() => {
+        confirm.mockImplementation(() => {
           label.textContent = 'My name';
           snapshot();
           return true;
@@ -724,10 +725,10 @@ describe('ClrMutationEngineService', () => {
       });
 
       it('refuses as stale a write whose field was renamed while the person was asked, with no new snapshot', async () => {
-        classify.and.returnValue('consequential');
+        classify.mockReturnValue('consequential');
         const ref = refOf(snapshot(), 'Name');
         const label = fixture.nativeElement.querySelector('clr-input-container label') as HTMLLabelElement;
-        confirm.and.callFake(() => {
+        confirm.mockImplementation(() => {
           label.textContent = 'Account name';
           return true;
         });
@@ -739,10 +740,10 @@ describe('ClrMutationEngineService', () => {
       });
 
       it('refuses as stale a select write whose option was bound to another value while the person was asked', async () => {
-        classify.and.returnValue('consequential');
+        classify.mockReturnValue('consequential');
         const ref = refOf(snapshot(), 'Item');
         const replacement: Item = { id: 2, label: 'Two' };
-        confirm.and.callFake(() => {
+        confirm.mockImplementation(() => {
           // Tracked by id, the option element stays and only its ngValue changes.
           host.items = [ITEMS[0], replacement];
           fixture.detectChanges();
@@ -756,14 +757,16 @@ describe('ClrMutationEngineService', () => {
       });
 
       it('treats a policy that throws as forbidding', async () => {
-        classify.and.throwError('boom');
+        classify.mockImplementation(() => {
+          throw new Error('boom');
+        });
         expect((await set(refOf(snapshot(), 'Name'), 'Name', 'x')).refused).toBe('forbidden');
       });
     });
 
     describe('plan', () => {
       it('says what would happen without doing it', () => {
-        classify.and.callFake(target => (target.label === 'Agree' ? 'consequential' : 'reversible'));
+        classify.mockImplementation(target => (target.label === 'Agree' ? 'consequential' : 'reversible'));
         const page = snapshot();
 
         const plan = engine.plan([
@@ -777,7 +780,7 @@ describe('ClrMutationEngineService', () => {
         expect(plan[1].consequence).toBe('consequential');
         expect(plan[2].refused).toBe('invalid');
         expect(host.form.value.name).toBe('seed');
-        expect(host.form.value.agree).toBeFalse();
+        expect(host.form.value.agree).toBe(false);
       });
 
       it('tolerates what is not a list of operations, as apply() does', async () => {
@@ -801,8 +804,8 @@ describe('ClrMutationEngineService', () => {
 
         const report = await engine.apply([{ operation: 'setValue', ref, description: 'Name', value: 'Ada' }]);
 
-        expect('previous' in report.changes).toBeFalse();
-        expect('current' in report.changes).toBeFalse();
+        expect('previous' in report.changes).toBe(false);
+        expect('current' in report.changes).toBe(false);
         const changed = report.changes.changed.find(change => change.after.ref === ref);
         expect(changed?.after.state?.['value']).toBe('Ada');
         expect(refOf(report.snapshot, 'Name')).toBe(ref);

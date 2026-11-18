@@ -43,11 +43,13 @@ Once the project is built, you can publish your library by following these steps
 
 ## Running unit tests
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+To run the addons unit tests with Vitest and Playwright Chromium, run this command from the repository root:
 
 ```bash
-ng test
+npm run _test:addons
 ```
+
+See [Testing](../../docs/TESTING.md) for browser installation, coverage, and reproducing shuffled test runs.
 
 ## Running end-to-end tests
 

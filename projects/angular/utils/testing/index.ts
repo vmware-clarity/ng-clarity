@@ -5,6 +5,5 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './element-context.spec';
-export * from './helpers.spec';
-export * from './slow-specs.spec';
+export * from './element-context';
+export * from './helpers';

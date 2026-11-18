@@ -291,7 +291,7 @@ describe('collectContextTreeWithin', () => {
         throw new Error('boom');
       },
     };
-    const declining = { selector: 'my-widget', extract: () => null };
+    const declining = { selector: 'my-widget', extract: (): null => null };
     const broken = { selector: '[[[', extract: () => ({ type: 'never' }) };
     for (const extractors of [[throwing], [declining], [broken]]) {
       expect(types(collectContextTreeWithin(container, budgets(), extractors).components)).toEqual(['button']);
@@ -577,20 +577,20 @@ describe('collectContextTreeWithin, what a summary must not hide', () => {
     const count = (nodes: ClrComponentContext[] = []): number =>
       nodes.reduce((total, node) => total + 1 + count(node.children), 0);
 
-    expect(result.truncated).toBeTrue();
+    expect(result.truncated).toBe(true);
     expect(count(result.components)).toBe(5);
     expect(JSON.stringify(result.components)).not.toContain('"table"');
   });
 
   it('leaves out what a component fails to publish, and says so on the console in development', () => {
-    const warn = spyOn(console, 'warn');
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
     container.innerHTML = '<my-widget aria-label="Widget"><button>Go</button></my-widget>';
     publishElementContext(container.querySelector('my-widget') as Element, () => {
       throw new Error('publisher broke');
     });
 
     expect(collectContextTreeWithin(container, budgets()).components.map(node => node.element)).toEqual(['my-widget']);
-    expect(warn).toHaveBeenCalledWith(jasmine.stringContaining('<my-widget>'), jasmine.any(Error));
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('<my-widget>'), expect.any(Error));
   });
 
   it('gives what a single-part component publishes to the part that stands in for it', () => {
@@ -1160,12 +1160,11 @@ describe('collectContextTreeWithin, markup it did not expect', () => {
       const { components } = collectTree(
         `<div role="${name}">x</div><select role="${name}"><option>a</option></select><input type="${name}" aria-label="F" /><button>ok</button>`
       );
-      expect(components.some(node => node.type === 'button'))
-        .withContext(name)
-        .toBe(true);
-      expect(() => structuredClone(components))
-        .withContext(name)
-        .not.toThrow();
+      expect(
+        components.some(node => node.type === 'button'),
+        name
+      ).toBe(true);
+      expect(() => structuredClone(components), name).not.toThrow();
     }
   });
 
@@ -1177,7 +1176,7 @@ describe('collectContextTreeWithin, markup it did not expect', () => {
        <div contenteditable role="searchbox" aria-label="Search">query</div>`
     );
     expect(components.map(node => node.type)).toEqual(['textbox', 'textbox', 'textbox', 'searchbox']);
-    const labels = JSON.stringify(components.map(node => ({ ...node, state: undefined })));
+    const labels = JSON.stringify(components.map(node => ({ ...node, state: undefined as unknown })));
     expect(labels).not.toContain('typed secret');
   });
 
@@ -1348,7 +1347,7 @@ describe('collectContextTreeWithin, markup it did not expect', () => {
     );
     const json = JSON.stringify(components);
     for (const secret of ['ACC-1234', 'Gold', 'SECRET-TIER', 'HIDDEN-PLACEHOLDER', 'EXCLUDED-NOTE']) {
-      expect(json).withContext(secret).not.toContain(secret);
+      expect(json, secret).not.toContain(secret);
     }
     expect(json).toContain('"value":"Visible"');
   });
@@ -1572,7 +1571,7 @@ describe('collectContextTreeWithin, open shadow roots', () => {
 
     expect(nodes.find(node => node.type === 'form')?.label).toBe('Login');
     expect(nodes.find(node => node.type === 'textbox')).toEqual(
-      jasmine.objectContaining({ label: 'User', state: jasmine.objectContaining({ value: 'ada' }) })
+      expect.objectContaining({ label: 'User', state: expect.objectContaining({ value: 'ada' }) })
     );
     expect(nodes.find(node => node.type === 'button')?.label).toBe('Sign in');
   });
@@ -1604,7 +1603,7 @@ describe('collectContextTreeWithin, open shadow roots', () => {
     const nodes = all(collectContextTreeWithin(container, budgets()).components);
 
     expect(JSON.stringify(nodes)).not.toContain('hunter2');
-    expect(nodes.find(node => node.label === 'Secret')).toEqual(jasmine.objectContaining({ type: 'textbox' }));
+    expect(nodes.find(node => node.label === 'Secret')).toEqual(expect.objectContaining({ type: 'textbox' }));
   });
 
   describe('markers on slots and around them', () => {
@@ -1722,8 +1721,8 @@ describe('collectContextTreeWithin, open shadow roots', () => {
 
     const inSection = all(collectContextTreeWithin(container, budgets()).components);
 
-    expect(nodes.some(node => node.type === 'banner')).toBeTrue();
-    expect(inSection.some(node => node.type === 'banner')).toBeFalse();
+    expect(nodes.some(node => node.type === 'banner')).toBe(true);
+    expect(inSection.some(node => node.type === 'banner')).toBe(false);
   });
 
   it('describes icons by their host and never reads the styles in their shadow roots', () => {
@@ -1739,7 +1738,7 @@ describe('collectContextTreeWithin, open shadow roots', () => {
     // Read as a leaf: neither the shadow root's text nor its controls show up.
     expect(JSON.stringify(nodes)).not.toContain('color');
     expect(JSON.stringify(nodes)).not.toContain('Icon internals');
-    expect(nodes.some(node => node.label === 'Inner')).toBeFalse();
+    expect(nodes.some(node => node.label === 'Inner')).toBe(false);
     expect(nodes.find(node => node.type === 'button')?.label).toBe('Profile');
     expect(nodes.find(node => node.type === 'img')?.label).toBe('Warning');
   });
@@ -1750,9 +1749,9 @@ describe('collectContextTreeWithin, open shadow roots', () => {
     shadowHost.attachShadow({ mode: 'open' }).innerHTML = '<input aria-label="Name" />';
     const input = shadowHost.shadowRoot?.querySelector('input') as HTMLInputElement;
 
-    expect(isOutsideSnapshot(input, budgets({ excludeSelectors: ['app-shadow-proof'] }))).toBeTrue();
-    expect(isOutsideSnapshot(input, budgets({ rootSelector: 'app-shadow-proof' }))).toBeFalse();
-    expect(isOutsideSnapshot(input, budgets())).toBeFalse();
+    expect(isOutsideSnapshot(input, budgets({ excludeSelectors: ['app-shadow-proof'] }))).toBe(true);
+    expect(isOutsideSnapshot(input, budgets({ rootSelector: 'app-shadow-proof' }))).toBe(false);
+    expect(isOutsideSnapshot(input, budgets())).toBe(false);
   });
 
   it('never reads a style element in a shadow root as text', () => {
@@ -1806,7 +1805,7 @@ describe('collectContextTree, annotation attributes', () => {
   });
 
   it('leaves out invalid JSON and keeps the rest of the annotation', () => {
-    spyOn(console, 'warn');
+    vi.spyOn(console, 'warn').mockImplementation(() => undefined);
 
     const nodes = collect(`<div data-clr-context="Rules" data-clr-context-state="{oops"><button>Add</button></div>`);
 

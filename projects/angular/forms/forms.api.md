@@ -308,7 +308,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
-    protected containerWidth: any;
+    protected containerWidth: number | null;
     // (undocumented)
     control: NgControl;
     // (undocumented)
@@ -358,7 +358,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    onBlur(event: any): void;
+    onBlur(event: FocusEvent): void;
     // (undocumented)
     onChange(): void;
     // (undocumented)
@@ -366,7 +366,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     onKeyUp(event: KeyboardEvent): void;
     // (undocumented)
-    onWrapperClick(event: any): void;
+    onWrapperClick(event: MouseEvent): void;
     // (undocumented)
     get openState(): boolean;
     // (undocumented)
@@ -455,7 +455,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
         "clrInputChange": "clrInputChange";
         "clrOpenChange": "clrOpenChange";
         "clrSelectionChange": "clrSelectionChange";
-    }, ["optionSelected", "options", "optionItems"], ["*"], false, [{
+    }, ["optionSelected", "options"], ["*"], false, [{
         directive: typeof i1_2.ClrPopoverHostDirective;
         inputs: {};
         outputs: {};
@@ -747,15 +747,13 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     // (undocumented)
     protected ngControlService: NgControlService;
     // (undocumented)
-    ngOnDestroy(): void;
-    // (undocumented)
     get open(): boolean;
     // (undocumented)
     get popoverPosition(): ClrPopoverPosition;
     // (undocumented)
     protected popoverType: ClrPopoverType;
     // (undocumented)
-    set rangeOptions(rangeOptions: any);
+    set rangeOptions(rangeOptions: DateRangeOption[]);
     // (undocumented)
     protected renderer: Renderer2;
     set showActionButtons(flag: boolean);
@@ -860,8 +858,6 @@ export abstract class ClrDateInputBase extends WrappedFormControl<ClrDateContain
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
-    ngOnDestroy(): void;
-    // (undocumented)
     ngOnInit(): void;
     // (undocumented)
     onValueChange(target: HTMLInputElement): void;
@@ -960,7 +956,7 @@ export class ClrDatepickerViewManager {
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
-    protected get dateRangeOptions(): any;
+    protected get dateRangeOptions(): DateRangeOption[];
     // (undocumented)
     protected get hasActionButtons(): boolean;
     // (undocumented)
@@ -969,7 +965,7 @@ export class ClrDatepickerViewManager {
     get isMonthView(): boolean;
     get isYearView(): boolean;
     // (undocumented)
-    onRangeOptionSelect(selectedRange: any): void;
+    onRangeOptionSelect(selectedRange: DateRangeOption): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatepickerViewManager, "clr-datepicker-view-manager", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -1154,8 +1150,6 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
     focusBrowseButton(): void;
     // (undocumented)
     protected get multiple(): boolean;
-    // (undocumented)
-    ngOnDestroy(): void;
     // (undocumented)
     protected get successMessagePresent(): boolean;
     // (undocumented)
@@ -2333,7 +2327,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-forms-combobox.d.ts:335:5 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-forms.d.ts
+// dist/clr-angular/types/clr-angular-forms-combobox.d.ts:299:5 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-forms.d.ts
 
 // (No @packageDocumentation comment for this package)
 

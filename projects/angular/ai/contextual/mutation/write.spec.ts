@@ -24,8 +24,9 @@ import { ClrInputModule } from '@clr/angular/forms/input';
 import { ClrRadioModule } from '@clr/angular/forms/radio';
 import { ClrSelectModule } from '@clr/angular/forms/select';
 import { publishElementContext } from '@clr/angular/utils';
+import type { Mock } from 'vitest';
 
-import { allRefs, findNode, refOf, settle } from './helpers.spec';
+import { allRefs, findNode, refOf, settle } from './helpers.mock';
 import { ClrMutationEngineService } from './mutation-engine.service';
 import {
   ClrElementMutationResult,
@@ -347,7 +348,7 @@ class Host {
     card: new FormControl<string | null>(null),
     seats: new FormControl<string[]>(['staff']),
     grade: new FormControl('gold'),
-    strict: new FormControl('', (control: AbstractControl) => {
+    strict: new FormControl('', (control: AbstractControl): null => {
       if (control.value === 'boom') {
         throw new Error('The validator exploded.');
       }
@@ -368,14 +369,14 @@ describe('ClrMutationEngineService write path', () => {
   let host: Host;
   let contextEngine: ClrContextService;
   let engine: ClrMutationEngineService;
-  let classify: jasmine.Spy<(target: ClrMutationTarget) => ClrMutationConsequence>;
-  let confirm: jasmine.Spy<(target: ClrMutationTarget) => boolean | Promise<boolean>>;
-  let announce: jasmine.Spy<(report: ClrMutationReport) => void>;
+  let classify: Mock<(target: ClrMutationTarget) => ClrMutationConsequence>;
+  let confirm: Mock<(target: ClrMutationTarget) => boolean | Promise<boolean>>;
+  let announce: Mock<(report: ClrMutationReport) => void>;
 
   beforeEach(async () => {
-    classify = jasmine.createSpy('classify').and.returnValue('reversible');
-    confirm = jasmine.createSpy('confirm').and.returnValue(true);
-    announce = jasmine.createSpy('announce');
+    classify = vi.fn().mockReturnValue('reversible');
+    confirm = vi.fn().mockReturnValue(true);
+    announce = vi.fn();
     TestBed.configureTestingModule({
       imports: [
         NoopAnimationsModule,
@@ -416,9 +417,9 @@ describe('ClrMutationEngineService write path', () => {
     it('writes a boolean to a custom toggle judged by the role it renders, and unticks it', async () => {
       const result = await set('Enabled', false);
 
-      expect(result.applied).toBeTrue();
+      expect(result.applied).toBe(true);
       expect(host.form.value.enabled).toBe(false);
-      expect(fixture.nativeElement.querySelector('app-toggle input').checked).toBeFalse();
+      expect(fixture.nativeElement.querySelector('app-toggle input').checked).toBe(false);
       expect((await set('Enabled', 'maybe')).refused).toBe('invalid');
     });
 
@@ -433,7 +434,7 @@ describe('ClrMutationEngineService write path', () => {
     it('refuses a number outside the bounds a custom slider or spinbutton states through ARIA', async () => {
       const page = contextEngine['read'](undefined, false);
       expect(findNode(page.components, node => node.label === 'Stars')?.state).toEqual(
-        jasmine.objectContaining({ min: 1, max: 5 })
+        expect.objectContaining({ min: 1, max: 5 })
       );
 
       const high = await set('Stars', 9);
@@ -443,7 +444,7 @@ describe('ClrMutationEngineService write path', () => {
       expect(host.form.value.stars).toBe(3);
       expect(host.form.value.count).toBe(2);
 
-      expect((await set('Stars', 5)).applied).toBeTrue();
+      expect((await set('Stars', 5)).applied).toBe(true);
       expect(host.form.value.stars).toBe(5);
     });
 
@@ -458,7 +459,7 @@ describe('ClrMutationEngineService write path', () => {
     it('chooses a radio of a custom radio group by its label', async () => {
       const result = await set('Size', 'l');
 
-      expect(result).toEqual(jasmine.objectContaining({ applied: true, value: 'L', previous: 'M' }));
+      expect(result).toEqual(expect.objectContaining({ applied: true, value: 'L', previous: 'M' }));
       expect(host.form.value.size).toBe('L');
       expect((await set('Size', 'XXL')).detail).toBe('No such option. The options are: "S", "M", "L".');
       expect((await set('Size', 'XL')).detail).toBe('The option "XL" cannot be chosen right now.');
@@ -485,21 +486,21 @@ describe('ClrMutationEngineService write path', () => {
       ]);
 
       expect(report.results[0]).toEqual(
-        jasmine.objectContaining({ applied: false, refused: 'invalid', detail: 'The broken control refused.' })
+        expect.objectContaining({ applied: false, refused: 'invalid', detail: 'The broken control refused.' })
       );
-      expect(report.results[1].applied).toBeTrue();
+      expect(report.results[1].applied).toBe(true);
       expect(host.form.value.name).toBe('Ada');
       // The refused write leaves the control as the user left it, value included.
       expect(host.form.controls.broken.value).toBe('');
       expect(host.form.getRawValue().broken).toBe('');
-      expect(host.form.controls.broken.touched).toBeFalse();
-      expect(host.form.controls.broken.dirty).toBeFalse();
+      expect(host.form.controls.broken.touched).toBe(false);
+      expect(host.form.controls.broken.dirty).toBe(false);
     });
 
     it('puts the view back too when a validator throws on the value', async () => {
       const result = await set('Strict', 'boom');
 
-      expect(result).toEqual(jasmine.objectContaining({ applied: false, refused: 'invalid' }));
+      expect(result).toEqual(expect.objectContaining({ applied: false, refused: 'invalid' }));
       expect(host.form.controls.strict.value).toBe('');
       expect((fixture.nativeElement.querySelector('#strict') as HTMLInputElement).value).toBe('');
     });
@@ -522,7 +523,7 @@ describe('ClrMutationEngineService write path', () => {
       expect(ambiguous.detail).toContain('Several options read "Main"');
       expect(host.form.value.office).toBe('ber');
 
-      expect((await set('Office', 'par')).applied).toBeTrue();
+      expect((await set('Office', 'par')).applied).toBe(true);
       expect(host.form.value.office).toBe('par');
     });
 
@@ -543,13 +544,13 @@ describe('ClrMutationEngineService write path', () => {
     it('takes a select value that updates on blur, and reads it back from the model', async () => {
       const result = await set('Colour', 'Blue');
 
-      expect(result).toEqual(jasmine.objectContaining({ applied: true, value: 'Blue', previous: 'Red' }));
+      expect(result).toEqual(expect.objectContaining({ applied: true, value: 'Blue', previous: 'Red' }));
       expect(host.form.value.colour).toBe('blue');
     });
 
     it('writes a select without running the application’s own change or blur handlers', async () => {
-      expect((await set('Colour', 'Blue')).applied).toBeTrue();
-      expect((await set('Plan', 'Team')).applied).toBeTrue();
+      expect((await set('Colour', 'Blue')).applied).toBe(true);
+      expect((await set('Plan', 'Team')).applied).toBe(true);
 
       expect(host.colourEvents).toBe(0);
       expect(host.form.value.plan).toBe('team');
@@ -573,8 +574,8 @@ describe('ClrMutationEngineService write path', () => {
       await settle(fixture);
       const result = report.results[0] as ClrElementMutationResult;
 
-      expect(result).toEqual(jasmine.objectContaining({ applied: true, value: null, previous: 'Berlin' }));
-      expect(classify).toHaveBeenCalledWith(jasmine.objectContaining({ label: 'Office', value: null }));
+      expect(result).toEqual(expect.objectContaining({ applied: true, value: null, previous: 'Berlin' }));
+      expect(classify).toHaveBeenCalledWith(expect.objectContaining({ label: 'Office', value: null }));
       expect(host.form.value.office).toBeNull();
       expect(fixture.nativeElement.querySelector('select[formControlName="office"]').selectedIndex).toBe(-1);
     });
@@ -591,14 +592,14 @@ describe('ClrMutationEngineService write path', () => {
     it('takes a date input only in the format the browser accepts', async () => {
       expect((await set('Due', 'next Tuesday')).refused).toBe('invalid');
       expect(host.form.value.due).toBe('');
-      expect((await set('Due', '2026-03-06')).applied).toBeTrue();
+      expect((await set('Due', '2026-03-06')).applied).toBe(true);
       expect(host.form.value.due).toBe('2026-03-06');
     });
 
     it('takes a colour in either case, as the lower-case value the field shows', async () => {
       const result = await set('Tint', '#AABBCC');
 
-      expect(result).toEqual(jasmine.objectContaining({ applied: true, value: '#aabbcc' }));
+      expect(result).toEqual(expect.objectContaining({ applied: true, value: '#aabbcc' }));
       expect(host.form.value.tint).toBe('#aabbcc');
       expect((await set('Tint', 'teal')).refused).toBe('invalid');
     });
@@ -606,7 +607,7 @@ describe('ClrMutationEngineService write path', () => {
     it('refuses a number outside the input’s bounds or off its step', async () => {
       expect((await set('Volume', 20)).detail).toContain('at most 10');
       expect((await set('Volume', 3)).detail).toContain('multiple of 2');
-      expect((await set('Volume', 8)).applied).toBeTrue();
+      expect((await set('Volume', 8)).applied).toBe(true);
       expect(host.form.value.volume).toBe(8);
     });
 
@@ -618,7 +619,7 @@ describe('ClrMutationEngineService write path', () => {
       const report = await engine.apply([{ operation: 'setValue', ref, description: 'CPU count', value: '8' }]);
       await settle(fixture);
 
-      expect(report.results[0]).toEqual(jasmine.objectContaining({ applied: true, value: 8, previous: 2 }));
+      expect(report.results[0]).toEqual(expect.objectContaining({ applied: true, value: 8, previous: 2 }));
       expect(valueOf(report.snapshot)?.['value']).toBe(8);
       expect(valueOf(contextEngine['read'](undefined, false))?.['value']).toBe(8);
       expect(host.form.value.cpus).toBe(8);
@@ -630,7 +631,7 @@ describe('ClrMutationEngineService write path', () => {
       expect(long.detail).toContain('at most 4 characters');
       expect(host.form.value.code).toBe('');
 
-      expect((await set('Code', 'ABCD')).applied).toBeTrue();
+      expect((await set('Code', 'ABCD')).applied).toBe(true);
       expect(host.form.value.code).toBe('ABCD');
     });
   });
@@ -650,13 +651,13 @@ describe('ClrMutationEngineService write path', () => {
       await set('Name', 'Ada');
 
       expect(announce).toHaveBeenCalledTimes(1);
-      expect(announce.calls.mostRecent().args[0].results[0].applied).toBeTrue();
+      expect(announce.mock.lastCall[0].results[0].applied).toBe(true);
     });
   });
 
   describe('descriptions', () => {
     it('matches whole words, not fragments', async () => {
-      expect((await set('Name', 'Ada', 'the name field')).applied).toBeTrue();
+      expect((await set('Name', 'Ada', 'the name field')).applied).toBe(true);
       expect((await set('Name', 'Bob', 'e')).refused).toBe('mismatch');
       expect((await set('Name', 'Bob', '')).refused).toBe('mismatch');
     });
@@ -664,39 +665,39 @@ describe('ClrMutationEngineService write path', () => {
     it('refuses a description that warns it is about something else', async () => {
       expect((await set('Name', 'Ada', 'the wrong name')).refused).toBe('mismatch');
       expect((await set('Name', 'Ada', 'no name')).refused).toBe('mismatch');
-      expect((await set('Name', 'Ada', 'the name input field')).applied).toBeTrue();
+      expect((await set('Name', 'Ada', 'the name input field')).applied).toBe(true);
     });
 
     it('tells a field from its pair, and writes to a field whose own name negates', () => {
-      expect(descriptionMatches('email', 'Email address')).toBeFalse();
-      expect(descriptionMatches('the email address field', 'Email address')).toBeTrue();
-      expect(descriptionMatches('Confirm email', 'Email')).toBeFalse();
-      expect(descriptionMatches('email', 'Confirm email')).toBeFalse();
-      expect(descriptionMatches('the confirm email field', 'Confirm email')).toBeTrue();
-      expect(descriptionMatches('last name', 'Name')).toBeFalse();
-      expect(descriptionMatches('Other income', 'Other income')).toBeTrue();
-      expect(descriptionMatches('income', 'Other income')).toBeFalse();
-      expect(descriptionMatches('No. of seats', 'No. of seats')).toBeTrue();
-      expect(descriptionMatches('Never expires', 'Never expires')).toBeTrue();
-      expect(descriptionMatches('not the other income', 'Other income')).toBeFalse();
+      expect(descriptionMatches('email', 'Email address')).toBe(false);
+      expect(descriptionMatches('the email address field', 'Email address')).toBe(true);
+      expect(descriptionMatches('Confirm email', 'Email')).toBe(false);
+      expect(descriptionMatches('email', 'Confirm email')).toBe(false);
+      expect(descriptionMatches('the confirm email field', 'Confirm email')).toBe(true);
+      expect(descriptionMatches('last name', 'Name')).toBe(false);
+      expect(descriptionMatches('Other income', 'Other income')).toBe(true);
+      expect(descriptionMatches('income', 'Other income')).toBe(false);
+      expect(descriptionMatches('No. of seats', 'No. of seats')).toBe(true);
+      expect(descriptionMatches('Never expires', 'Never expires')).toBe(true);
+      expect(descriptionMatches('not the other income', 'Other income')).toBe(false);
     });
 
     it('tells a field from its pair in a language the word lists do not know', () => {
-      expect(descriptionMatches('E-Mail', 'E-Mail bestätigen')).toBeFalse();
-      expect(descriptionMatches('Mot de passe', 'Nouveau mot de passe')).toBeFalse();
-      expect(descriptionMatches('Парола', 'Потвърди парола')).toBeFalse();
-      expect(descriptionMatches('E-Mail bestätigen', 'E-Mail bestätigen')).toBeTrue();
-      expect(descriptionMatches('nouveau mot de passe', 'Nouveau mot de passe')).toBeTrue();
+      expect(descriptionMatches('E-Mail', 'E-Mail bestätigen')).toBe(false);
+      expect(descriptionMatches('Mot de passe', 'Nouveau mot de passe')).toBe(false);
+      expect(descriptionMatches('Парола', 'Потвърди парола')).toBe(false);
+      expect(descriptionMatches('E-Mail bestätigen', 'E-Mail bestätigen')).toBe(true);
+      expect(descriptionMatches('nouveau mot de passe', 'Nouveau mot de passe')).toBe(true);
     });
 
     it('matches a label the snapshot cut short on the words it kept', () => {
-      expect(descriptionMatches('Street address of the head office', 'Street address of…')).toBeTrue();
-      expect(descriptionMatches('Phone number', 'Street address of…')).toBeFalse();
+      expect(descriptionMatches('Street address of the head office', 'Street address of…')).toBe(true);
+      expect(descriptionMatches('Phone number', 'Street address of…')).toBe(false);
     });
 
     it('refuses a description that only mentions the label among other words', async () => {
       expect((await set('Name', 'Ada', 'not the name, the password')).refused).toBe('mismatch');
-      expect((await set('Name', 'Ada', 'the name textbox')).applied).toBeTrue();
+      expect((await set('Name', 'Ada', 'the name textbox')).applied).toBe(true);
     });
   });
 
@@ -716,7 +717,7 @@ describe('ClrMutationEngineService write path', () => {
       expect(JSON.stringify(refused)).not.toContain('4111');
 
       const result = await setWith('Card', 'Visa');
-      expect(result.applied).toBeTrue();
+      expect(result.applied).toBe(true);
       expect(JSON.stringify(result)).not.toContain('4111');
       expect(host.form.value.card).toBe('visa');
     });
@@ -729,7 +730,7 @@ describe('ClrMutationEngineService write path', () => {
 
       host.form.controls.grade.setValue('');
       await settle(fixture);
-      expect((await setWith('Grade', 'Basic')).applied).toBeTrue();
+      expect((await setWith('Grade', 'Basic')).applied).toBe(true);
       expect(host.form.value.grade).toBe('basic');
     });
 
@@ -740,7 +741,7 @@ describe('ClrMutationEngineService write path', () => {
       expect((await setWith('Seats', ['Internal staff plan'])).refused).toBe('invalid');
 
       const result = await setWith('Seats', ['Team']);
-      expect(result.applied).toBeTrue();
+      expect(result.applied).toBe(true);
       expect(result.value).toEqual(['Team']);
       expect(host.form.value.seats).toEqual(['staff', 'team']);
     });
@@ -758,7 +759,7 @@ describe('ClrMutationEngineService write path', () => {
       expect((await write({ root: 'clr-select-container' })).refused).toBe('hidden');
       expect(host.form.value.name).toBe('');
 
-      expect((await write({})).applied).toBeTrue();
+      expect((await write({})).applied).toBe(true);
       expect(host.form.value.name).toBe('Ada');
     });
 
@@ -773,7 +774,7 @@ describe('ClrMutationEngineService write path', () => {
       );
 
       expect(report.results[0].refused).toBe('hidden');
-      expect(host.form.value.enabled).toBeTrue();
+      expect(host.form.value.enabled).toBe(true);
     });
 
     it('refuses a field behind an open modal dialog, and writes the one inside it', async () => {
@@ -793,7 +794,7 @@ describe('ClrMutationEngineService write path', () => {
       ]);
 
       expect(report.results[0].refused).toBe('hidden');
-      expect(report.results[1].applied).toBeTrue();
+      expect(report.results[1].applied).toBe(true);
       expect(host.inside.value).toBe('y');
     });
 
@@ -815,10 +816,10 @@ describe('ClrMutationEngineService write path', () => {
       // node. That node carries no ref, and the only one handed out is inside the dialog.
       expect(modal.focus).toBe('modal');
       expect(modal.components[0]).toEqual(
-        jasmine.objectContaining({
+        expect.objectContaining({
           type: 'dialog',
           element: 'app-rename',
-          state: jasmine.objectContaining({ step: 1 }),
+          state: expect.objectContaining({ step: 1 }),
         })
       );
       expect(allRefs(modal.components).length).toBe(1);
@@ -827,7 +828,7 @@ describe('ClrMutationEngineService write path', () => {
         { operation: 'setValue', ref: refOf(modal, 'New name'), description: 'New name', value: 'web-02' },
       ]);
 
-      expect(report.results[0].applied).toBeTrue();
+      expect(report.results[0].applied).toBe(true);
       expect(host.renamed.value).toBe('web-02');
     });
 
@@ -837,14 +838,14 @@ describe('ClrMutationEngineService write path', () => {
 
       const report = await engine.apply([{ operation: 'setValue', ref, description: 'Name', value: 'Ada' }]);
 
-      expect(report.results[0].applied).toBeTrue();
+      expect(report.results[0].applied).toBe(true);
     });
 
     it('never hands out a ref an agent could work out from another', () => {
       const refs = allRefs(contextEngine['read'](undefined, false).components);
 
       expect(refs.length).toBeGreaterThan(3);
-      expect(refs.every(ref => /^e[0-9a-z]{8}$/.test(ref))).toBeTrue();
+      expect(refs.every(ref => /^e[0-9a-z]{8}$/.test(ref))).toBe(true);
       expect(refs).not.toContain('e1');
     });
   });
@@ -853,20 +854,18 @@ describe('ClrMutationEngineService write path', () => {
     it('shows the policy the value in a person’s terms and the model value apart', async () => {
       await set('Plan', 'Team');
 
-      expect(classify).toHaveBeenCalledWith(jasmine.objectContaining({ value: 'Team', label: 'Plan' }));
+      expect(classify).toHaveBeenCalledWith(expect.objectContaining({ value: 'Team', label: 'Plan' }));
       // A native select's model value is only known once Angular's accessor maps the option.
-      expect('modelValue' in classify.calls.mostRecent().args[0]).toBeFalse();
+      expect('modelValue' in classify.mock.lastCall[0]).toBe(false);
 
       await set('Tier', 'Basic');
-      expect(classify.calls.mostRecent().args[0]).toEqual(
-        jasmine.objectContaining({ value: 'Basic', modelValue: 'basic' })
-      );
+      expect(classify.mock.lastCall[0]).toEqual(expect.objectContaining({ value: 'Basic', modelValue: 'basic' }));
     });
 
     it('refuses as stale a choice whose option was replaced by another with the same label while confirming', async () => {
-      classify.and.returnValue('consequential');
+      classify.mockReturnValue('consequential');
       let answer: (value: boolean) => void = () => undefined;
-      confirm.and.returnValue(new Promise<boolean>(resolve => (answer = resolve)));
+      confirm.mockReturnValue(new Promise<boolean>(resolve => (answer = resolve)));
       const ref = refOf(contextEngine['read'](undefined, false), 'Plan');
 
       const pending = engine.apply([{ operation: 'setValue', ref, description: 'Plan', value: 'Team' }]);
@@ -915,18 +914,18 @@ describe('ClrMutationEngineService write path', () => {
     });
 
     it('treats a confirmation that throws as declined, and an unknown verdict as forbidden', async () => {
-      classify.and.returnValue('consequential');
-      confirm.and.callFake(() => Promise.reject(new Error('dialog failed')));
+      classify.mockReturnValue('consequential');
+      confirm.mockImplementation(() => Promise.reject(new Error('dialog failed')));
       expect((await set('Name', 'x')).refused).toBe('declined');
 
-      classify.and.returnValue('maybe' as never);
+      classify.mockReturnValue('maybe' as never);
       expect((await set('Name', 'x')).refused).toBe('forbidden');
       expect(host.form.value.name).toBe('');
     });
 
     it('declines an operation whose confirmation is not answered in time, and goes on with the next call', async () => {
-      classify.and.callFake(target => (target.label === 'Name' ? 'consequential' : 'reversible'));
-      confirm.and.returnValue(new Promise<boolean>(() => undefined));
+      classify.mockImplementation(target => (target.label === 'Name' ? 'consequential' : 'reversible'));
+      confirm.mockReturnValue(new Promise<boolean>(() => undefined));
       const page = contextEngine['read'](undefined, false);
 
       const stuck = engine.apply([
@@ -939,14 +938,14 @@ describe('ClrMutationEngineService write path', () => {
       const declined = (await stuck).results[0];
       expect(declined.refused).toBe('declined');
       expect(declined.detail).toContain('not answered in time');
-      expect((await next).results[0].applied).toBeTrue();
+      expect((await next).results[0].applied).toBe(true);
       expect(host.form.value.name).toBe('');
     });
 
     it('checks the field again after confirmation, and does not write one disabled meanwhile', async () => {
-      classify.and.returnValue('consequential');
+      classify.mockReturnValue('consequential');
       let answer: (value: boolean) => void = () => undefined;
-      confirm.and.returnValue(new Promise<boolean>(resolve => (answer = resolve)));
+      confirm.mockReturnValue(new Promise<boolean>(resolve => (answer = resolve)));
       const ref = refOf(contextEngine['read'](undefined, false), 'Name');
 
       const pending = engine.apply([{ operation: 'setValue', ref, description: 'Name', value: 'written too late' }]);

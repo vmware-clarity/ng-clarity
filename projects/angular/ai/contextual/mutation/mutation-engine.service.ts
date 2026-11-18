@@ -82,7 +82,7 @@ export class ClrMutationEngineService {
   /** Applies the operations in order and reports each result, a fresh snapshot and the changes. */
   apply(operations: ClrMutationOperation[], snapshotOptions?: ClrContextSnapshotOptions): Promise<ClrMutationReport> {
     const run = this.queue.then(() => this.run(operations, snapshotOptions));
-    this.queue = run.catch(() => undefined);
+    this.queue = run.catch((): void => undefined);
     return run;
   }
 
