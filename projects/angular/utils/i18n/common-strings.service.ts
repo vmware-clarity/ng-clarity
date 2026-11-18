@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 import { commonStringsDefault } from './common-strings.default';
 import { ClrCommonStrings } from './common-strings.interface';
@@ -14,20 +14,21 @@ import { ClrCommonStrings } from './common-strings.interface';
   providedIn: 'root',
 })
 export class ClrCommonStringsService {
-  private _strings = commonStringsDefault;
+  private readonly _strings = signal<ClrCommonStrings>(commonStringsDefault);
 
   /**
-   * Access to all of the keys as strings
+   * Access to all of the keys as strings.
+   * Reading it in a template or a computed tracks `localize()` calls.
    */
   get keys(): Readonly<ClrCommonStrings> {
-    return this._strings;
+    return this._strings();
   }
 
   /**
    * Allows you to pass in new overrides for localization
    */
   localize(overrides: Partial<ClrCommonStrings>) {
-    this._strings = { ...this._strings, ...overrides };
+    this._strings.update(strings => ({ ...strings, ...overrides }));
   }
 
   /**
