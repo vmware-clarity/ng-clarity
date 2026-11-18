@@ -37,7 +37,7 @@ import { ClrTimelineStepTitle } from './timeline-step-title';
   `,
   host: { '[class.clr-timeline-step]': 'true', '[attr.role]': '"listitem"' },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrTimelineStep {
   @Input('clrState') state: ClrTimelineStepState = ClrTimelineStepState.NOT_STARTED;
