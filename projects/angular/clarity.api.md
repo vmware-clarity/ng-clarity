@@ -10776,7 +10776,7 @@ export class MockFocusableItem implements FocusableItem {
 
 // @public (undocumented)
 export class ModalStackService {
-    constructor(platformId: any);
+    constructor(platformId: Object);
     // (undocumented)
     trackModalClose(closedModal: Closable): void;
     // (undocumented)
