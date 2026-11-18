@@ -15,12 +15,12 @@ jobs:
       - uses: haya14busa/action-workflow_run-status@v1
       - name: Get PR Event
         id: get-pr-event
-        uses: potiuk/get-workflow-origin@v1_5
+        uses: potiuk/get-workflow-origin@v1_6
         with:
           token: ${{secrets.GITHUB_TOKEN}}
           sourceRunId: ${{github.event.workflow_run.id}}
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: ${{steps.get-pr-event.outputs.sourceHeadBranch}}
           sparse-checkout: |
@@ -29,12 +29,12 @@ jobs:
             .nvmrc
           sparse-checkout-cone-mode: false
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version-file: '.nvmrc'
       - name: Download Docs Artifact
         id: download-docs
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: docs
           path: dist
@@ -42,7 +42,7 @@ jobs:
           github-token: ${{ github.token }}
       - name: Download Website Artifact
         id: download-website
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: website
           path: dist
@@ -50,7 +50,7 @@ jobs:
           github-token: ${{ github.token }}
       - name: Download Coverage Artifact
         id: download-coverage
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: coverage
           path: dist/docs

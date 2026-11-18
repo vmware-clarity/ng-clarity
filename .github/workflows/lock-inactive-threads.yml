@@ -11,8 +11,10 @@ jobs:
     timeout-minutes: 5
     runs-on: ubuntu-24.04
     steps:
-      - uses: dessant/lock-threads@v4
+      - uses: dessant/lock-threads@v6
         with:
+          # v5+ also locks discussions by default.
+          process-only: 'issues, prs'
           issue-inactive-days: '14'
           issue-comment: 'Hi there 👋, this is an automated message. To help Clarity keep track of discussions, we automatically lock closed issues after 14 days. Please look for another open issue or open a new issue with updated details and reference this one as necessary.'
           issue-lock-reason: ''

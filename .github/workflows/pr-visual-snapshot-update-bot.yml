@@ -16,7 +16,7 @@ jobs:
       - uses: haya14busa/action-workflow_run-status@v1
       - name: Get PR Event
         id: get-pr-event
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const prs = context.payload.workflow_run.pull_requests;
@@ -27,12 +27,12 @@ jobs:
               core.setFailed('No PR found');
             }
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: ${{ github.repository }}
           ref: ${{ github.event.workflow_run.head_sha }}
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -41,7 +41,7 @@ jobs:
       - name: Create Temp Directory for Diff Artifacts
         run: mkdir -p ${{runner.temp}}/artifacts/
       - name: Download Changes
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: visual-snapshot-changes-*.diff
           path: ${{runner.temp}}/artifacts/
@@ -96,7 +96,7 @@ jobs:
           echo "commit-sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
       - name: Comment
         if: ${{steps.diff.outputs.status == 'dirty'}}
-        uses: peter-evans/create-or-update-comment@v2
+        uses: peter-evans/create-or-update-comment@v5
         with:
           issue-number: ${{steps.get-pr-event.outputs.pullRequestNumber}}
           body: |

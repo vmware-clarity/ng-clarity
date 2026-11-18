@@ -14,7 +14,7 @@ jobs:
       major: ${{ steps.version.outputs.major }}
       matrix: ${{ steps.version.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Read repository Angular version
         id: version
         run: node scripts/angular-ci-matrix.js
@@ -33,9 +33,9 @@ jobs:
       GH_TOKEN: ${{ github.token }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -80,25 +80,25 @@ jobs:
         run: npm run public-api:check
       - name: Upload Docs Artifact
         if: ${{ matrix.primary }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: docs
           path: dist/docs/
       - name: Upload Website Artifact
         if: ${{ matrix.primary }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: website
           path: dist/website/
       - name: Upload Coverage Artifact
         if: ${{ matrix.primary }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage
           path: coverage/
       - name: Upload Built Consumer Libraries
         if: ${{ matrix.primary }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: consumer-libraries
           path: |
@@ -115,9 +115,9 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -126,12 +126,12 @@ jobs:
           npm ci --ignore-scripts
           npx playwright install --with-deps chromium
       - name: Download Built Documentation
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: docs
           path: dist/docs
       - name: Download Built Libraries and UI Assets
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: consumer-libraries
           path: dist
@@ -141,7 +141,7 @@ jobs:
         run: npm run _build:demo:vrt
       - name: Cache Website Build
         id: website-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: dist/website
           key: website-vrt-build-${{hashFiles('package-lock.json', 'projects/website/**', 'projects/angular/**', 'projects/ui/**', 'projects/addons/**', 'angular.json', 'tsconfig.json', 'scripts/write-vrt-index.js')}}
@@ -157,7 +157,7 @@ jobs:
         run: npm run test:applications-smoke
       - name: Upload Failure Traces
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: zoneless-smoke-traces
           path: test-results/
@@ -181,9 +181,9 @@ jobs:
       CLARITY_VRT_SHARD: ${{matrix.shard}}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -193,7 +193,7 @@ jobs:
         run: npx playwright install --with-deps ${{matrix.browser}}
       - name: Cache Storybook Build
         id: storybook-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: dist/docs
           key: storybook-build-${{hashFiles('package-lock.json', 'projects/angular/**', 'projects/ui/**', '.storybook/**', 'angular.json')}}
@@ -208,7 +208,7 @@ jobs:
           git add .
           git diff --cached --binary > visual-snapshot-changes-${{matrix.browser}}-${{matrix.theme}}-${{matrix.density}}-${{matrix.shard}}.diff
       - name: Upload Changes
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: visual-snapshot-changes-${{matrix.browser}}-${{matrix.theme}}-${{matrix.density}}-${{matrix.shard}}.diff
           path: visual-snapshot-changes-${{matrix.browser}}-${{matrix.theme}}-${{matrix.density}}-${{matrix.shard}}.diff
@@ -227,9 +227,9 @@ jobs:
       CLARITY_VRT_SUITE: animations
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -240,7 +240,7 @@ jobs:
       # Unlike the visual regression tests' cache, the key includes the addons: a scenario animates an addons card.
       - name: Cache Storybook Build
         id: storybook-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: dist/docs
           key: animation-storybook-build-${{hashFiles('package-lock.json', 'projects/angular/**', 'projects/addons/**', 'projects/ui/**', '.storybook/**', 'angular.json')}}
@@ -269,13 +269,13 @@ jobs:
       # Only when there are changes: the bot cannot apply an empty patch.
       - name: Upload Changes
         if: ${{ steps.animation-changes.outputs.changed == 'true' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: visual-snapshot-changes-animations.diff
           path: visual-snapshot-changes-animations.diff
       - name: Upload Animation Report
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: animation-report
           path: playwright-report/
@@ -292,14 +292,14 @@ jobs:
       - name: Find Animation Report Comment
         id: find-comment
         if: ${{ !cancelled() && github.event.pull_request.head.repo.full_name == github.repository && steps.test.outcome != 'skipped' }}
-        uses: peter-evans/find-comment@v2
+        uses: peter-evans/find-comment@v4
         with:
           issue-number: ${{github.event.pull_request.number}}
           comment-author: 'github-actions[bot]'
           body-includes: 'Animation Report'
       - name: Comment Animation Report
         if: ${{ !cancelled() && github.event.pull_request.head.repo.full_name == github.repository && steps.test.outcome != 'skipped' }}
-        uses: peter-evans/create-or-update-comment@v2
+        uses: peter-evans/create-or-update-comment@v5
         with:
           comment-id: ${{steps.find-comment.outputs.comment-id}}
           issue-number: ${{github.event.pull_request.number}}
@@ -327,9 +327,9 @@ jobs:
       CLARITY_VRT_SUITE: website
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
@@ -339,7 +339,7 @@ jobs:
         run: npx playwright install --with-deps ${{matrix.browser}}
       - name: Cache Website Build
         id: website-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: dist/website
           key: website-vrt-build-${{hashFiles('package-lock.json', 'projects/website/**', 'projects/angular/**', 'projects/ui/**', 'projects/addons/**', 'angular.json', 'tsconfig.json', 'scripts/write-vrt-index.js')}}
@@ -355,7 +355,7 @@ jobs:
           git add .
           git diff --cached --binary > visual-snapshot-changes-website-${{matrix.browser}}-${{matrix.theme}}-${{matrix.density}}.diff
       - name: Upload Changes
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: visual-snapshot-changes-website-${{matrix.browser}}-${{matrix.theme}}-${{matrix.density}}.diff
           path: visual-snapshot-changes-website-${{matrix.browser}}-${{matrix.theme}}-${{matrix.density}}.diff
