@@ -85,7 +85,9 @@ export class ClrTimelineStep implements OnDestroy {
         };
     }, {}, ["stepTitle"], ["clr-timeline-step-header", "clr-timeline-step-title", "clr-timeline-step-description"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTimelineStep, [null, null, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTimelineStep, [null, null, {
+        optional: true;
+    }]>;
 }
 
 // @public (undocumented)
