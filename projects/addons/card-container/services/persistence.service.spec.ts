@@ -10,8 +10,8 @@ import { TestBed } from '@angular/core/testing';
 import { SampleCardComponent, sampleCards } from '@clr/addons/testing';
 import { of } from 'rxjs';
 
-import { AppfxCardInternal, AppfxCardSettings } from '../appfx-card-container.interface';
 import { PersistenceService } from './persistence.service';
+import { AppfxCardInternal, AppfxCardSettings } from '../appfx-card-container.interface';
 import { AppfxCardContainerStore } from '../utils/appfx-card-container-store';
 
 describe('#PersistenceService', () => {

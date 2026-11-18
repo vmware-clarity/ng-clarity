@@ -13,15 +13,15 @@ import { createTestHelpers, delay, TestContext } from '@clr/angular/testing';
 import { renderFixture } from '@clr/angular/utils/testing';
 import type { Mock } from 'vitest';
 
-import { ClrDatagridColumn } from '../datagrid-column';
-import { ClrDatagridModule } from '../datagrid.module';
 import { DatagridHeaderRenderer } from './header-renderer';
-import { DATAGRID_SPEC_PROVIDERS } from '../helpers.mock';
 import { DatagridMainRenderer } from './main-renderer';
 import { DatagridRenderOrganizer } from './render-organizer';
 import { MockDatagridRenderOrganizer } from './render-organizer.mock';
 import { DatagridRowRenderer } from './row-renderer';
+import { ClrDatagridColumn } from '../datagrid-column';
+import { ClrDatagridModule } from '../datagrid.module';
 import { DatagridRenderStep } from '../enums/render-step.enum';
+import { DATAGRID_SPEC_PROVIDERS } from '../helpers.mock';
 import { ColumnsService } from '../providers/columns.service';
 
 describe('Datagrid', () => {

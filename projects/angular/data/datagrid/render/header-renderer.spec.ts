@@ -11,12 +11,12 @@ import { createTestHelpers, delay, TestContext } from '@clr/angular/testing';
 import { DomAdapter, MOCK_DOM_ADAPTER_PROVIDER, MockDomAdapter } from '@clr/angular/utils';
 import { BehaviorSubject } from 'rxjs';
 
-import { ClrDatagrid } from '../datagrid';
-import { ClrDatagridColumnSeparator } from '../datagrid-column-separator';
 import { HIDDEN_COLUMN_CLASS, STRICT_WIDTH_CLASS } from './constants';
 import { DatagridHeaderRenderer } from './header-renderer';
 import { DatagridRenderOrganizer } from './render-organizer';
 import { MOCK_ORGANIZER_PROVIDER, MockDatagridRenderOrganizer } from './render-organizer.mock';
+import { ClrDatagrid } from '../datagrid';
+import { ClrDatagridColumnSeparator } from '../datagrid-column-separator';
 import { DatagridColumnChanges } from '../enums/column-changes.enum';
 import { DatagridRenderStep } from '../enums/render-step.enum';
 import { ColumnState } from '../interfaces/column-state.interface';

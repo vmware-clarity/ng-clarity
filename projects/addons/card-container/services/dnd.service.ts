@@ -7,8 +7,8 @@
 
 import { Injectable } from '@angular/core';
 
-import { cardDefaults } from '../appfx-card-container-constants';
 import { ContainerService } from './container.service';
+import { cardDefaults } from '../appfx-card-container-constants';
 
 /**
  * Provides functionality to drag and drop cards with clr drag drop directives.

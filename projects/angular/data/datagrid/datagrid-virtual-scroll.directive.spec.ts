@@ -23,8 +23,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 import { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
 import { DATAGRID_SPEC_PROVIDERS } from './helpers.mock';
-import { ClarityModule } from '../../clr-angular.module';
 import { ClrDatagridVirtualScrollRangeInterface } from './interfaces/virtual-scroll-data-range.interface';
+import { ClarityModule } from '../../clr-angular.module';
 
 export interface Column {
   index: number;

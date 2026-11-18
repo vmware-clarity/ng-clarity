@@ -14,6 +14,8 @@ import { WorkflowConfigurationService } from '@clr/addons/var';
 import { AppfxWizardModule } from '@clr/addons/wizard';
 import { ClarityModule } from '@clr/angular';
 
+import { SampleStepperComponent } from './sample/sample-stepper.component';
+import { SampleWizardComponent } from './sample/sample-wizard.component';
 import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
@@ -22,8 +24,6 @@ import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/s
 import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.component';
 import { SampleWorkflowService } from '../_utils/sample-workflow/sample-workflow.service';
 import { ClarityDocComponent } from '../clarity-doc';
-import { SampleStepperComponent } from './sample/sample-stepper.component';
-import { SampleWizardComponent } from './sample/sample-wizard.component';
 
 const BasicWizardHtml = require('!raw-loader!./ng/basic-wizard.html').default;
 const BasicWizardTs = require('!raw-loader!./ng/basic-wizard.ts').default;

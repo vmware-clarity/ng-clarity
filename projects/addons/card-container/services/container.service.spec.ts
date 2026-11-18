@@ -15,9 +15,9 @@ import {
 } from '@clr/addons/testing';
 import { firstValueFrom, of } from 'rxjs';
 
-import { AppfxCardInternal } from '../appfx-card-container.interface';
 import { ContainerService } from './container.service';
 import { PersistenceService } from './persistence.service';
+import { AppfxCardInternal } from '../appfx-card-container.interface';
 
 enum CardIds {
   first = 'sample-card-1',

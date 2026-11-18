@@ -7,9 +7,9 @@
 
 import { ElementRef, EmbeddedViewRef, Injectable, TemplateRef } from '@angular/core';
 
-import { ClrDatagridHideableColumn } from '../datagrid-hideable-column';
 import { columnStateFactory } from './column-state.provider';
 import { ColumnsService } from './columns.service';
+import { ClrDatagridHideableColumn } from '../datagrid-hideable-column';
 import { DatagridColumnChanges } from '../enums/column-changes.enum';
 
 class MockHideableColumnTemplateRef extends TemplateRef<ClrDatagridHideableColumn> {

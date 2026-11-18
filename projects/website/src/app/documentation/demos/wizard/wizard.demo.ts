@@ -8,11 +8,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
-import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
-import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
-import { ClarityDocComponent } from '../clarity-doc';
-import { multiStepPatternLink } from '../pattern-links';
 import { WizardAltCancelDemo } from './wizard-alt-cancel.demo';
 import { WizardAltNextDemo } from './wizard-alt-next.demo';
 import { WizardAsyncCompletion } from './wizard-async-completion.demo';
@@ -35,10 +30,15 @@ import { WizardResetDemo } from './wizard-reset.demo';
 import { WizardSimple } from './wizard-simple.demo';
 import { WizardStopNavigation } from './wizard-stop-navigation.demo';
 import { WizardTitlesDemo } from './wizard-titles.demo';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
+import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
+import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { LinkCardsComponent, LinkCardsLink } from '../../../shared/link-cards/link-cards.component';
 import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.component';
 import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.component';
+import { ClarityDocComponent } from '../clarity-doc';
+import { multiStepPatternLink } from '../pattern-links';
 
 const WIZARD_EXAMPLE_TYPESCRIPT = `
 import { ClrWizard } from '@clr/angular';

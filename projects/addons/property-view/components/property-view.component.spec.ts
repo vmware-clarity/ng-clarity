@@ -11,11 +11,11 @@ import { By } from '@angular/platform-browser';
 import { renderFixture } from '@clr/angular/utils/testing';
 import type { Mock } from 'vitest';
 
+import { PropertyViewCategoryComponent } from './property-view-category.component';
+import { PropertyViewComponent } from './property-view.component';
 import { PropertyViewConfigProvider } from '../property-view-config-provider';
 import { PropertyViewSectionsExpandedStateManager } from '../property-view-sections-expanded-state.manager';
 import { PropertyViewCategoryModel, PropertyViewModel, PropertyViewModelType } from '../property-view.model';
-import { PropertyViewCategoryComponent } from './property-view-category.component';
-import { PropertyViewComponent } from './property-view.component';
 
 type Spy<T extends (...args: any[]) => any = (...args: any[]) => any> = Mock<T>;
 

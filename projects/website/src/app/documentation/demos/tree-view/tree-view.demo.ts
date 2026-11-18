@@ -26,7 +26,6 @@ import {
   tasksIcon,
 } from '@clr/angular';
 
-import { ClarityDocComponent } from '../clarity-doc';
 import { TreeBasicDemo } from './basic-tree/tree-basic';
 import { TreeBasicDMDemo } from './basic-tree-DM/tree-basic-DM';
 import { BooleanSelectionTreeDemo } from './boolean-selection-tree/boolean-selection-tree';
@@ -51,6 +50,7 @@ import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.component';
 import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.component';
+import { ClarityDocComponent } from '../clarity-doc';
 
 @Component({
   selector: 'clr-tree-view-demo',

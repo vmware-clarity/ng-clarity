@@ -8,6 +8,8 @@
 import { fromBER } from 'asn1js';
 import { ECPublicKey, Certificate as PkijsCertificate, RSAPublicKey } from 'pkijs';
 
+import { CertificateField } from './certificate-field.model';
+import { Line, TranslatableValue, Value } from './partial-translate.model';
 import { AlgorithmName, KnownOids } from '../certificate.constants';
 import {
   computeCertificateHash,
@@ -15,8 +17,6 @@ import {
   pemToBerBuffer,
   pkijsAttributeAndValuesToMap,
 } from '../certificate.util';
-import { CertificateField } from './certificate-field.model';
-import { Line, TranslatableValue, Value } from './partial-translate.model';
 
 /**
  * Contains the Relative Distinguished Names of the subject and issuer in a given certificate.

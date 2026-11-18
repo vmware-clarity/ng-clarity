@@ -8,8 +8,8 @@
 import { BehaviorSubject } from 'rxjs';
 
 import { ClrSelectedState } from './selected-state.enum';
-import type { ClrTreeNode } from '../tree-node';
 import { TreeNodeModel } from './tree-node.model';
+import type { ClrTreeNode } from '../tree-node';
 
 class TestModel extends TreeNodeModel<string> {
   children: TestModel[] = [];

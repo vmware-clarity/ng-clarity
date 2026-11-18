@@ -7,8 +7,8 @@
 
 import { Observable } from 'rxjs';
 
-import { ArrowKeyDirection } from '../arrow-key-direction.enum';
 import { FocusableItem } from './focusable-item';
+import { ArrowKeyDirection } from '../arrow-key-direction.enum';
 
 export class Linkers {
   /**

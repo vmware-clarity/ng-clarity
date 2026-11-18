@@ -7,7 +7,6 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { ClarityDocComponent } from '../clarity-doc';
 import { ColorInteractionDemo } from './color-interaction/color-interaction.demo';
 import { ColorObjectBorderDemo } from './color-object-border/color-object-border.demo';
 import { ColorPaletteDemo } from './color-palette/color-palette.demo';
@@ -16,6 +15,7 @@ import { ColorTypeDemo } from './color-type/color-type.demo';
 import { ColorUtilityDemo } from './color-utility/color-utility.demo';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
+import { ClarityDocComponent } from '../clarity-doc';
 
 @Component({
   selector: 'clr-color-demo',

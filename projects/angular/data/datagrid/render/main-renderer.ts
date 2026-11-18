@@ -23,11 +23,11 @@ import {
 import { DomAdapter } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
-import { ClrDatagrid } from '../datagrid';
 import { DatagridHeaderRenderer } from './header-renderer';
 import { NoopDomAdapter } from './noop-dom-adapter';
 import { DatagridRenderOrganizer } from './render-organizer';
 import { DatagridRowRenderer } from './row-renderer';
+import { ClrDatagrid } from '../datagrid';
 import { DatagridColumnChanges } from '../enums/column-changes.enum';
 import { DatagridRenderStep } from '../enums/render-step.enum';
 import { ColumnState, ColumnStateDiff } from '../interfaces/column-state.interface';

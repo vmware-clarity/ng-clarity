@@ -10,7 +10,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DomAdapter } from '@clr/angular/utils';
 import { renderFixture } from '@clr/angular/utils/testing';
 
-import { ClrDatagridModule } from '../datagrid.module';
 import { ColumnsService } from './columns.service';
 import { DetailService } from './detail.service';
 import { FiltersProvider } from './filters';
@@ -18,6 +17,7 @@ import { Page } from './page';
 import { Sort } from './sort';
 import { StateDebouncer } from './state-debouncer.provider';
 import { TableSizeService } from './table-size.service';
+import { ClrDatagridModule } from '../datagrid.module';
 import { DatagridRenderOrganizer } from '../render/render-organizer';
 
 @Component({

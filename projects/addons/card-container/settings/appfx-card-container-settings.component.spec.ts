@@ -12,8 +12,8 @@ import { ClrCheckboxModule } from '@clr/angular/forms/checkbox';
 import { ClrDropdownModule } from '@clr/angular/popover/dropdown';
 import { renderFixture } from '@clr/angular/utils/testing';
 
-import { AppfxCardInternal } from '../appfx-card-container.interface';
 import { AppfxCardContainerSettingsComponent } from './appfx-card-container-settings.component';
+import { AppfxCardInternal } from '../appfx-card-container.interface';
 
 describe('AppfxCardContainerSettingsComponent', () => {
   let fixture: ComponentFixture<AppfxCardContainerSettingsComponent>;

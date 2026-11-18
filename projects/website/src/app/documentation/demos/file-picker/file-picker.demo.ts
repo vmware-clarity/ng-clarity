@@ -10,12 +10,12 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { FilePickerApi } from './api/file-picker-api';
 import { FilePickerCode } from './code/file-picker-code';
+import { FilePickerOverview } from './overview/file-picker-overview';
 import { DocTabActiveDirective } from '../../../shared/doc-tabs/doc-tab-active.directive';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { ComponentList, NestingTableComponent } from '../../../shared/nesting-table/nesting-table.component';
 import { ClarityDocComponent } from '../clarity-doc';
-import { FilePickerOverview } from './overview/file-picker-overview';
 
 @Component({
   selector: 'app-file-picker-demo',

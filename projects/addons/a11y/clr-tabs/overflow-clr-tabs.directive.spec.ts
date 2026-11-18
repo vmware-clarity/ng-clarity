@@ -11,8 +11,8 @@ import { By } from '@angular/platform-browser';
 import { ClrTab, ClrTabLink, ClrTabs, ClrTabsModule } from '@clr/angular/layout/tabs';
 import { Observable, Subject } from 'rxjs';
 
-import { AppfxA11yModule } from '../a11y.module';
 import { resources } from './overflow-clr-tabs.directive';
+import { AppfxA11yModule } from '../a11y.module';
 import { ElementResizeService } from '../resize/element-resize.service';
 
 @Component({

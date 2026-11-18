@@ -9,11 +9,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { createTestHelpers, TestContext } from '@clr/angular/testing';
 import { IfExpandService } from '@clr/angular/utils';
 
+import { DetailService } from './detail.service';
+import { ExpandableRowsCount } from './global-expandable-rows';
 import { ClrDatagrid } from '../datagrid';
 import { DatagridDetailRegisterer } from '../datagrid-detail-registerer';
 import { DatagridIfExpandService } from '../datagrid-if-expanded.service';
-import { DetailService } from './detail.service';
-import { ExpandableRowsCount } from './global-expandable-rows';
 
 describe('DatagridDetailRegisterer directive', () => {
   const helpers = createTestHelpers();

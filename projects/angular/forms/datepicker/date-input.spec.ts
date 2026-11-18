@@ -26,7 +26,6 @@ import {
 } from '@clr/angular/testing';
 import { renderFixture } from '@clr/angular/utils/testing';
 
-import { ClrFormsModule } from '../forms.module';
 import { ClrDateContainer } from './date-container';
 import { ClrDateInput } from './date-single-input';
 import { DayModel } from './model/day.model';
@@ -38,6 +37,7 @@ import { MockDatepickerEnabledService } from './providers/datepicker-enabled.ser
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
+import { ClrFormsModule } from '../forms.module';
 
 describe('Datepicker', () => {
   describe('Components', () => {

@@ -9,10 +9,10 @@ import { ChangeDetectionStrategy, Component, QueryList, Type, ViewChild, ViewChi
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { renderFixture } from '@clr/angular/utils/testing';
 
-import { ClrEmphasisModule } from '../emphasis.module';
 import { ClrAlert } from './alert';
 import { ClrAlerts } from './alerts';
 import { MultiAlertService } from './providers/multi-alert.service';
+import { ClrEmphasisModule } from '../emphasis.module';
 
 describe('Alert Tests', () => {
   describe('ClrAlerts component', () => {

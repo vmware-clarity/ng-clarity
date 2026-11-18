@@ -12,8 +12,8 @@ import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrAlert } from './alert';
 import { ClrAlertsPager } from './alerts-pager';
-import { ClrEmphasisModule } from '../emphasis.module';
 import { MultiAlertService } from './providers/multi-alert.service';
+import { ClrEmphasisModule } from '../emphasis.module';
 
 describe('Alert Tests', () => {
   describe('ClrAlerts pager component', () => {

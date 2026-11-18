@@ -11,12 +11,12 @@ import { createTestHelpers, TestContext } from '@clr/angular/testing';
 import { BehaviorSubject } from 'rxjs';
 import type { Mock } from 'vitest';
 
-import { DatagridColumnChanges } from '../enums/column-changes.enum';
-import { DatagridDisplayMode } from '../enums/display-mode.enum';
-import { DATAGRID_SPEC_PROVIDERS } from '../helpers.mock';
 import { DatagridCellRenderer } from './cell-renderer';
 import { STRICT_WIDTH_CLASS } from './constants';
 import { DatagridRowRenderer } from './row-renderer';
+import { DatagridColumnChanges } from '../enums/column-changes.enum';
+import { DatagridDisplayMode } from '../enums/display-mode.enum';
+import { DATAGRID_SPEC_PROVIDERS } from '../helpers.mock';
 import { ColumnState } from '../interfaces/column-state.interface';
 import { ColumnsService } from '../providers/columns.service';
 import { MockDisplayModeService } from '../providers/display-mode.mock';

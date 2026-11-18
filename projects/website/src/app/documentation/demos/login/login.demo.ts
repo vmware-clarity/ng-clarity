@@ -7,14 +7,14 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
+import { LoginExampleDemo } from './login-example.demo';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { LinkCardsComponent, LinkCardsLink } from '../../../shared/link-cards/link-cards.component';
-import { ClarityDocComponent } from '../clarity-doc';
-import { onboardingPatternLink } from '../pattern-links';
-import { LoginExampleDemo } from './login-example.demo';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.component';
+import { ClarityDocComponent } from '../clarity-doc';
+import { onboardingPatternLink } from '../pattern-links';
 
 const EXAMPLE = `
 <div class="login-wrapper">

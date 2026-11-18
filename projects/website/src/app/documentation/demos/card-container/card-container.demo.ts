@@ -9,16 +9,16 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AppfxCardContainerModule } from '@clr/addons/card-container';
 import { ClarityModule } from '@clr/angular';
 
+import { DynamicCardComponent } from './cards/dynamic/dynamic.component';
+import { NotesCardComponent } from './cards/notes/notes.component';
+import { SummaryCardComponent } from './cards/summary/summary.component';
+import { TagsCardComponent } from './cards/tags/tags.component';
 import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 import { ClarityDocComponent } from '../clarity-doc';
-import { DynamicCardComponent } from './cards/dynamic/dynamic.component';
-import { NotesCardComponent } from './cards/notes/notes.component';
-import { SummaryCardComponent } from './cards/summary/summary.component';
-import { TagsCardComponent } from './cards/tags/tags.component';
 
 const BasicCardContainerHtml = require('!raw-loader!./ng/basic-card-container.html').default;
 const BasicCardContainerTs = require('!raw-loader!./ng/basic-card-container.ts').default;

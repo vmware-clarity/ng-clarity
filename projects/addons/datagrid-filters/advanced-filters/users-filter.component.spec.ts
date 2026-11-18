@@ -15,10 +15,10 @@ import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
 import { renderFixture } from '@clr/angular/utils/testing';
 import { of, throwError } from 'rxjs';
 
-import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
-import { DatagridFiltersUserService } from '../datagrid-filters-user-service';
 import { FilterFormComponent } from './filter-form.component';
 import { ErrorType, UsersFilterComponent } from './users-filter.component';
+import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
+import { DatagridFiltersUserService } from '../datagrid-filters-user-service';
 import { ComparisonOperator, LogicalOperator } from '../model/datagrid-filters.enums';
 import { PropertyFilter, PropertyPredicate, UserPropertyDefinition } from '../model/datagrid-filters.interfaces';
 

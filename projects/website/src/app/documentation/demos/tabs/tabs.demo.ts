@@ -8,10 +8,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
-import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
-import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
-import { ClarityDocComponent } from '../clarity-doc';
 import { TabsAngularDemo } from './tabs-angular';
 import { TabsAngularActionsButtonDemo } from './tabs-angular-actions-button';
 import { TabsAngularDynamicSelectionDemo } from './tabs-angular-dynamic-selection';
@@ -20,7 +16,11 @@ import { TabsAngularSimpleDemo } from './tabs-angular-simple';
 import { TabsAngularVerticalDemo } from './tabs-angular-vertical';
 import { TabsStaticDemo } from './tabs-static';
 import { TabsStaticVerticalDemo } from './tabs-static-vertical';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
+import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
+import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.component';
+import { ClarityDocComponent } from '../clarity-doc';
 
 @Component({
   selector: 'clr-tabs-demo',

@@ -5,10 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ArrowKeyDirection } from '../arrow-key-direction.enum';
 import { FocusableItem } from './focusable-item';
 import { MockFocusableItem } from './focusable-item.mock';
 import { Linkers } from './linkers';
+import { ArrowKeyDirection } from '../arrow-key-direction.enum';
 
 describe('Focus management', () => {
   describe('linkParent()', () => {

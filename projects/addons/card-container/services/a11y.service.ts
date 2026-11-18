@@ -8,8 +8,8 @@
 import { Injectable } from '@angular/core';
 import { a11ykeys } from '@clr/addons/a11y';
 
-import { cardDefaults } from '../appfx-card-container-constants';
 import { ContainerService } from './container.service';
+import { cardDefaults } from '../appfx-card-container-constants';
 
 /**
  * Provides functionality to drag and drop cards with keyboard interaction

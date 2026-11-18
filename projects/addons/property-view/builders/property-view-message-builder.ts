@@ -6,8 +6,8 @@
  */
 
 /* eslint-disable @typescript-eslint/parameter-properties */
-import { PropertyViewMessageModel, PropertyViewModelType } from '../property-view.model';
 import { PropertyViewSectionBuilder } from './property-view-section-builder';
+import { PropertyViewMessageModel, PropertyViewModelType } from '../property-view.model';
 
 export class PropertyViewMessageBuilder {
   private parent: PropertyViewSectionBuilder;

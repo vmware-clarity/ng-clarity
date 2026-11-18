@@ -9,9 +9,9 @@ import { EmbeddedViewRef, Injectable, ViewContainerRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { PersistenceService } from './persistence.service';
 import { cardDefaults } from '../appfx-card-container-constants';
 import { AppfxCard, AppfxCardInternal, AppfxCardSettings } from '../appfx-card-container.interface';
-import { PersistenceService } from './persistence.service';
 
 /**
  * Keep track of the cards in the container with their properties like order, hidden etc.

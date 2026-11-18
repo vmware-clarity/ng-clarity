@@ -7,10 +7,10 @@
 
 import { createTestHelpers, TestContext } from '@clr/angular/testing';
 
-import { HeaderActionsTestComponent } from '../test-components/header-action-wizard.mock';
-import { ClrWizard } from '../wizard';
 import { HeaderActionService } from './header-actions.service';
 import { WizardNavigationService } from './wizard-navigation.service';
+import { HeaderActionsTestComponent } from '../test-components/header-action-wizard.mock';
+import { ClrWizard } from '../wizard';
 
 describe('New Wizard Tests', () => {
   describe('Header Actions Service', () => {

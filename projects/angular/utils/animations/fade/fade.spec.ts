@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { fade } from './index';
 import {
   animationStyle,
   ClrAnimationAnimateMetadata,
@@ -12,8 +13,6 @@ import {
   ClrAnimationStyleMetadata,
   ClrAnimationTransitionMetadata,
 } from '../animation-metadata';
-
-import { fade } from './index';
 
 describe('Fade', () => {
   describe('default', () => {

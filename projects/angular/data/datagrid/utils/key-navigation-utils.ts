@@ -8,10 +8,10 @@
 import { Keys } from '@clr/angular/utils';
 
 import { CellCoordinates, KeyNavigationGridConfig } from './key-navigation-grid.controller';
-import { KeyNavigationGridStrategyInterface } from '../interfaces/key-nav-grid-strategy.interface';
 import { DefaultKeyNavigationStrategy } from './key-navigation-strategies/default';
 import { ExpandedColumnsRowKeyNavigationStrategy } from './key-navigation-strategies/expanded-columns-row';
 import { ExpandedRowKeyNavigationStrategy } from './key-navigation-strategies/expanded-row';
+import { KeyNavigationGridStrategyInterface } from '../interfaces/key-nav-grid-strategy.interface';
 
 export class KeyNavigationUtils {
   constructor(

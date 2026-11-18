@@ -11,8 +11,8 @@ import { By } from '@angular/platform-browser';
 import { ClrIcon } from '@clr/angular/icon';
 import { renderFixture } from '@clr/angular/utils/testing';
 
-import { CONTROL_SUFFIX } from '../abstract-control';
 import { ClrControlError } from './error';
+import { CONTROL_SUFFIX } from '../abstract-control';
 import { ContainerIdService } from '../providers/container-id.service';
 import { ControlIdService } from '../providers/control-id.service';
 

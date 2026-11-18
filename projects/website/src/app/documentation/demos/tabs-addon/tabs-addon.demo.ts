@@ -12,16 +12,16 @@ import { RouterModule } from '@angular/router';
 import { AppfxTabsModule } from '@clr/addons/tabs';
 import { ClarityModule } from '@clr/angular';
 
+import { DisabledTabsDemoComponent } from './ng/disabled-tabs';
+import { HorizontalTabsDemoComponent } from './ng/horizontal-tabs';
+import { SecondaryTabsDemoComponent } from './ng/secondary-tabs';
+import { VerticalTabsDemoComponent } from './ng/vertical-tabs';
 import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 import { ClarityDocComponent } from '../clarity-doc';
-import { DisabledTabsDemoComponent } from './ng/disabled-tabs';
-import { HorizontalTabsDemoComponent } from './ng/horizontal-tabs';
-import { SecondaryTabsDemoComponent } from './ng/secondary-tabs';
-import { VerticalTabsDemoComponent } from './ng/vertical-tabs';
 
 const DisabledTabsHtml = require('!raw-loader!./ng/disabled-tabs.html').default;
 const DisabledTabsTs = require('!raw-loader!./ng/disabled-tabs.ts').default;

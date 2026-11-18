@@ -8,8 +8,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { renderFixture } from '@clr/angular/utils/testing';
 
-import { PropertyViewMessageModel, PropertyViewModelType } from '../property-view.model';
 import { PropertyViewMessageComponent } from './property-view-message.component';
+import { PropertyViewMessageModel, PropertyViewModelType } from '../property-view.model';
 
 interface ThisTest {
   fixture: ComponentFixture<PropertyViewMessageComponent>;

@@ -6,8 +6,8 @@
  */
 
 /* eslint-disable @typescript-eslint/parameter-properties */
-import { PropertyViewLinkModel, PropertyViewModelType, PropertyViewPropertyValueModel } from '../property-view.model';
 import { PropertyViewPropertyBuilder } from './property-view-property-builder';
+import { PropertyViewLinkModel, PropertyViewModelType, PropertyViewPropertyValueModel } from '../property-view.model';
 
 export class PropertyViewPropertyValueBuilder {
   private parent: PropertyViewPropertyBuilder;

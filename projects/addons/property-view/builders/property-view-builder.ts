@@ -5,9 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { PropertyViewModel } from '../property-view.model';
 import { PropertyViewCategoryBuilder } from './property-view-category-builder';
 import { PropertyViewSectionBuilder } from './property-view-section-builder';
+import { PropertyViewModel } from '../property-view.model';
 
 export class PropertyViewBuilder {
   static readonly #allCategoryId = 'all';

@@ -10,7 +10,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 
-import { UtilsDemoModule } from '../_utils/utils.module';
 import { EagerDeclarativeTreeDemo } from './eager-declarative-tree/eager-declarative-tree';
 import { EagerRecursiveTreeDemo } from './eager-recursive-tree/eager-recursive-tree';
 import { ExpandAllPerformanceDemo } from './expand-all-performance/expand-all-performance';
@@ -24,6 +23,7 @@ import { TreeNodeRoutingRevolverDemo } from './tree-node-routing/tree-node-routi
 import { TreeNodeRoutingRubberSoulDemo } from './tree-node-routing/tree-node-routing-rubber-soul';
 import { TreeViewDemo } from './tree-view.demo';
 import { ROUTING } from './tree-view.demo.routing';
+import { UtilsDemoModule } from '../_utils/utils.module';
 
 @NgModule({
   imports: [CommonModule, FormsModule, ClarityModule, ROUTING, UtilsDemoModule],

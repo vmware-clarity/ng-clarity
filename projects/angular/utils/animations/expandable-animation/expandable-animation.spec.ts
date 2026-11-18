@@ -15,9 +15,8 @@ import { renderFixture } from '@clr/angular/utils/testing';
 import { BaseExpandableAnimation } from './base-expandable-animation';
 import { ClrExpandableAnimationDirective } from './expandable-animation.directive';
 import { ClrExpandableAnimationModule } from './expandable-animation.module';
-import { DomAdapter } from '../../dom-adapter/dom-adapter';
-
 import { ClrExpandableAnimation } from './index';
+import { DomAdapter } from '../../dom-adapter/dom-adapter';
 
 @Component({
   template: `

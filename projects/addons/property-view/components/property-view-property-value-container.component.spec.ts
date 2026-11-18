@@ -11,8 +11,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { renderFixture } from '@clr/angular/utils/testing';
 
-import { PropertyViewPropertyValueComponent } from '../property-view.model';
 import { PropertyViewPropertyValueContainerComponent } from './property-view-property-value-container.component';
+import { PropertyViewPropertyValueComponent } from '../property-view.model';
 
 interface ThisTest {
   fixture: ComponentFixture<PropertyViewPropertyValueContainerComponent<any>>;

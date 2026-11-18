@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { collapse } from './index';
 import {
   animationStyle,
   ClrAnimationAnimateMetadata,
@@ -13,8 +14,6 @@ import {
   ClrAnimationStyleMetadata,
   ClrAnimationTransitionMetadata,
 } from '../animation-metadata';
-
-import { collapse } from './index';
 
 describe('Collapse', () => {
   const myCollapse: ClrAnimationMetadata[] = collapse();

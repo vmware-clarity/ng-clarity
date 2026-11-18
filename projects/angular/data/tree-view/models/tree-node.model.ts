@@ -7,8 +7,8 @@
 
 import { BehaviorSubject } from 'rxjs';
 
-import type { ClrTreeNode } from '../tree-node';
 import { ClrSelectedState } from './selected-state.enum';
+import type { ClrTreeNode } from '../tree-node';
 
 export abstract class TreeNodeModel<T> {
   nodeId: string;

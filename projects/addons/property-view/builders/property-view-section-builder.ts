@@ -6,10 +6,10 @@
  */
 
 /* eslint-disable @typescript-eslint/parameter-properties */
-import { PropertyViewActionModel, PropertyViewModelType, PropertyViewSectionModel } from '../property-view.model';
 import { PropertyViewCategoryBuilder } from './property-view-category-builder';
 import { PropertyViewMessageBuilder } from './property-view-message-builder';
 import { PropertyViewPropertyBuilder } from './property-view-property-builder';
+import { PropertyViewActionModel, PropertyViewModelType, PropertyViewSectionModel } from '../property-view.model';
 
 type PropertyValueTextItemType = string | number | boolean;
 

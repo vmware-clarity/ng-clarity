@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CellCoordinates } from '../key-navigation-grid.controller';
 import { ExpandedRowKeyNavigationStrategy } from './expanded-row';
+import { CellCoordinates } from '../key-navigation-grid.controller';
 
 export class ExpandedColumnsRowKeyNavigationStrategy extends ExpandedRowKeyNavigationStrategy {
   override keyUp(currentCellCoords: CellCoordinates) {

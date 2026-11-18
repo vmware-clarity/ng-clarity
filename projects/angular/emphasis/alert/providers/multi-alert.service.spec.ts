@@ -8,9 +8,9 @@
 import { QueryList } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { MultiAlertService } from './multi-alert.service';
 import { ClrEmphasisModule } from '../../emphasis.module';
 import { ClrAlert } from '../alert';
-import { MultiAlertService } from './multi-alert.service';
 
 describe('Alert Tests', () => {
   describe('Multi Alert provider', function () {

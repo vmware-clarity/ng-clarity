@@ -6,11 +6,11 @@
  */
 
 /* eslint-disable @typescript-eslint/parameter-properties */
-import { PropertyViewModelType, PropertyViewPropertyModel } from '../property-view.model';
 import { PropertyViewPropertyKeyBuilder } from './property-view-property-key-builder';
 import { PropertyViewPropertyValueBuilder } from './property-view-property-value-builder';
 import { PropertyViewPropertyValueComponentBuilder } from './property-view-property-value-component-builder';
 import { PropertyViewSectionBuilder } from './property-view-section-builder';
+import { PropertyViewModelType, PropertyViewPropertyModel } from '../property-view.model';
 
 export class PropertyViewPropertyBuilder {
   private parent: PropertyViewSectionBuilder;

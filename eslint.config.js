@@ -15,7 +15,7 @@ const tsParser = require('@typescript-eslint/parser');
 const tsPlugin = require('@typescript-eslint/eslint-plugin');
 
 // Plugins
-const importPlugin = require('eslint-plugin-import');
+const importPlugin = require('eslint-plugin-import-x');
 const unusedImports = require('eslint-plugin-unused-imports');
 const decoratorPosition = require('eslint-plugin-decorator-position');
 const licenseHeader = require('eslint-plugin-license-header');
@@ -83,7 +83,7 @@ module.exports = [
       },
     },
     plugins: {
-      import: importPlugin,
+      'import-x': importPlugin,
       'license-header': licenseHeader,
       json,
     },
@@ -117,7 +117,7 @@ module.exports = [
       'decorator-position': decoratorPosition,
       'ng-clarity-eslint-rules': ngClarityRules,
       'license-header': licenseHeader,
-      import: importPlugin,
+      'import-x': importPlugin,
     },
     rules: {
       // @typescript-eslint
@@ -137,10 +137,10 @@ module.exports = [
       'no-irregular-whitespace': ['error', { skipTemplates: true }],
 
       // import plugin
-      'import/no-absolute-path': 'error',
-      'import/no-useless-path-segments': 'error',
-      'import/no-duplicates': 'error',
-      'import/order': [
+      'import-x/no-absolute-path': 'error',
+      'import-x/no-useless-path-segments': 'error',
+      'import-x/no-duplicates': 'error',
+      'import-x/order': [
         'error',
         {
           alphabetize: { order: 'asc', caseInsensitive: true },
@@ -148,11 +148,14 @@ module.exports = [
             ['builtin', 'external'],
             ['parent', 'sibling'],
           ],
+          // Sibling (./) imports before parent (../) ones, with no blank line between them.
+          pathGroups: [{ pattern: './**', group: 'parent', position: 'before' }],
+          distinctGroup: false,
           'newlines-between': 'always',
         },
       ],
 
-      // Sorting (let import/order handle grouping; this one only sorts within groups)
+      // Sorting (let import-x/order handle grouping; this one only sorts within groups)
       'sort-imports': [
         'error',
         {

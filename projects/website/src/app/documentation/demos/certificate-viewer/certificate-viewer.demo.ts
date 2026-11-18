@@ -11,13 +11,13 @@ import { FormsModule } from '@angular/forms';
 import { AppfxCertificateViewerModule } from '@clr/addons/certificate-viewer';
 import { ClarityModule } from '@clr/angular';
 
+import googleCerts from './certs/google-certs.json';
 import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 import { ClarityDocComponent } from '../clarity-doc';
-import googleCerts from './certs/google-certs.json';
 
 const BasicCertHtml = require('!raw-loader!./ng/basic-cert.html').default;
 const BasicCertTs = require('!raw-loader!./ng/basic-cert.ts').default;

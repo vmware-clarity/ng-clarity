@@ -11,6 +11,7 @@ import { By } from '@angular/platform-browser';
 import { ClrDropdownModule } from '@clr/angular/popover/dropdown';
 import { renderFixture } from '@clr/angular/utils/testing';
 
+import { PropertyViewSectionComponent } from './property-view-section.component';
 import { MockPropertyViewStrings } from '../../testing';
 import { PropertyViewStrings } from '../property-view-strings.service';
 import {
@@ -19,7 +20,6 @@ import {
   PropertyViewPropertyModel,
   PropertyViewSectionModel,
 } from '../property-view.model';
-import { PropertyViewSectionComponent } from './property-view-section.component';
 
 @Component({
   selector: '[appfx-property-view-message]',

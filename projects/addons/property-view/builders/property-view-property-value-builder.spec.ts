@@ -5,10 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { PropertyViewLinkModel, PropertyViewModelType } from '../property-view.model';
 import { PropertyViewPropertyBuilder } from './property-view-property-builder';
 import { PropertyViewPropertyValueBuilder } from './property-view-property-value-builder';
 import { PropertyViewSectionBuilder } from './property-view-section-builder';
+import { PropertyViewLinkModel, PropertyViewModelType } from '../property-view.model';
 
 describe('PropertyViewPropertyValueBuilder', function () {
   const nullPropertyBuilder: PropertyViewPropertyBuilder = <any>null;

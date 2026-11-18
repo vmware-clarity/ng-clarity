@@ -22,11 +22,11 @@ import {
 import { SelectionType } from '@clr/angular/data/datagrid';
 import { renderFixture } from '@clr/angular/utils/testing';
 
+import { DatagridPreserveSelectionDirective } from './datagrid-preserve-selection.directive';
 import { DatagridColumnsOrderModule } from '../addons/column-ordering/datagrid-columns-order.module';
 import { ExportProviderService } from '../addons/export/export-provider.service';
 import { DatagridComponent } from '../datagrid.component';
 import { AppfxDatagridModule } from '../datagrid.module';
-import { DatagridPreserveSelectionDirective } from './datagrid-preserve-selection.directive';
 import { DatagridStrings } from '../i18n/datagrid-strings.service';
 import { ColumnDefinition } from '../shared/column/column-definitions';
 

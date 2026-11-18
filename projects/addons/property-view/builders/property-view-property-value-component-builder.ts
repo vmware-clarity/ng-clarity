@@ -8,12 +8,12 @@
 /* eslint-disable @typescript-eslint/parameter-properties */
 import { Type } from '@angular/core';
 
+import { PropertyViewPropertyBuilder } from './property-view-property-builder';
 import {
   PropertyViewModelType,
   PropertyViewPropertyValueComponent,
   PropertyViewPropertyValueComponentModel,
 } from '../property-view.model';
-import { PropertyViewPropertyBuilder } from './property-view-property-builder';
 
 export class PropertyViewPropertyValueComponentBuilder<T> {
   private parent: PropertyViewPropertyBuilder;

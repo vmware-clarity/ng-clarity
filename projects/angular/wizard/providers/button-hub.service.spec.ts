@@ -7,11 +7,11 @@
 
 import { createTestHelpers, TestContext } from '@clr/angular/testing';
 
-import { BasicWizardTestComponent } from '../test-components/basic-wizard.mock';
-import { ClrWizard } from '../wizard';
 import { ButtonHubService } from './button-hub.service';
 import { PageCollectionService } from './page-collection.service';
 import { WizardNavigationService } from './wizard-navigation.service';
+import { BasicWizardTestComponent } from '../test-components/basic-wizard.mock';
+import { ClrWizard } from '../wizard';
 
 describe('New Wizard Tests', () => {
   describe('Button Hub Service', () => {

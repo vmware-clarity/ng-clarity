@@ -7,10 +7,10 @@
 
 import { createTestHelpers, TestContext } from '@clr/angular/testing';
 
+import { PageCollectionService } from './page-collection.service';
 import { BasicWizardTestComponent } from '../test-components/basic-wizard.mock';
 import { ClrWizard } from '../wizard';
 import { ClrWizardPage } from '../wizard-page';
-import { PageCollectionService } from './page-collection.service';
 
 describe('New Wizard Tests', () => {
   describe('Page Collection Service', () => {

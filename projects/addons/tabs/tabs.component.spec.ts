@@ -26,6 +26,9 @@ import { renderFixture } from '@clr/angular/utils/testing';
 import { of } from 'rxjs';
 import { take } from 'rxjs/operators';
 
+import { RenderAsButtonDirective } from './render-as-button/render-as-button.directive';
+import { TabLinksComponent } from './tab-links/tab-links.component';
+import { TabsComponent } from './tabs.component';
 import {
   InvalidMockComponent,
   MockStepComponent,
@@ -34,9 +37,6 @@ import {
   MockWorkflowTestModule,
   TabsHelper,
 } from '../testing';
-import { RenderAsButtonDirective } from './render-as-button/render-as-button.directive';
-import { TabLinksComponent } from './tab-links/tab-links.component';
-import { TabsComponent } from './tabs.component';
 
 class MockWorkflowModelManager {
   injectPropertiesToPendingStep() {

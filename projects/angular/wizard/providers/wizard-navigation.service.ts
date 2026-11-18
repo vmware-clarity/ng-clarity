@@ -8,10 +8,10 @@
 import { Injectable, OnDestroy, TemplateRef } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
 
-import { ClrWizardStepnavLayout } from '../interfaces/wizard-stepnav-layout';
-import { ClrWizardPage } from '../wizard-page';
 import { ButtonHubService } from './button-hub.service';
 import { PageCollectionService } from './page-collection.service';
+import { ClrWizardStepnavLayout } from '../interfaces/wizard-stepnav-layout';
+import { ClrWizardPage } from '../wizard-page';
 
 /**
  * Performs navigation functions for a wizard and manages the current page. Presented as a

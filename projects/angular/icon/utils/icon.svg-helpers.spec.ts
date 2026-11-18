@@ -9,9 +9,9 @@ import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { renderFixture } from '@clr/angular/utils/testing';
 
+import { hasAlertBadge } from './icon.svg-helpers';
 import { ClrIcon } from '../icon.component';
 import { ClarityIcons } from '../icon.service';
-import { hasAlertBadge } from './icon.svg-helpers';
 import { IconShapeCollection } from '../interfaces/icon.interfaces';
 
 const testIcon: IconShapeCollection = {

@@ -21,9 +21,9 @@ import {
   RelativeDistinguishedNames,
 } from 'pkijs';
 
+import { Line, TranslatableValue, Value, ValueType } from './partial-translate.model';
 import { generalNamesTypeToLocaleKey, keyUsageBitIndexToLocaleKey, KnownOids } from '../certificate.constants';
 import { filterMapOverString, formatHexString, formatOid } from '../certificate.util';
-import { Line, TranslatableValue, Value, ValueType } from './partial-translate.model';
 
 /**
  * A parsed certificate field to be displayed in the certificate fields tree and the value area.

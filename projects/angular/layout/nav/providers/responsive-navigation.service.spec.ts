@@ -8,9 +8,9 @@
 import { computed } from '@angular/core';
 
 // Isolated tests for services: https://angular.io/docs/ts/latest/guide/testing.html#!#isolated-service-tests
+import { ResponsiveNavigationService } from './responsive-navigation.service';
 import { ResponsiveNavCodes } from '../responsive-nav-codes';
 import { ResponsiveNavControlMessage } from '../responsive-nav-control-message';
-import { ResponsiveNavigationService } from './responsive-navigation.service';
 
 describe('ResponsiveNavigationService', () => {
   let service: ResponsiveNavigationService;

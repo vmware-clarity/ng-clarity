@@ -13,9 +13,9 @@ import { ClrIcon } from '@clr/angular/icon';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
 import type { Mock } from 'vitest';
 
-import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
 import { EnumFilterComponent } from './enum-filter.component';
 import { FilterFormComponent } from './filter-form.component';
+import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
 import { ComparisonOperator, LogicalOperator } from '../model/datagrid-filters.enums';
 import { EnumPropertyDefinition, PropertyFilter, PropertyPredicate } from '../model/datagrid-filters.interfaces';
 

@@ -18,15 +18,15 @@ import { Observable, of } from 'rxjs';
 import type { Mock } from 'vitest';
 
 import { StepContainerComponent } from './step-container.component';
+import {
+  ValidationBannerComponent,
+  ValidationBannerInternalComponent,
+} from './validation-banner/validation-banner.component';
 import { ErrorComponent } from '../error/error.component';
 import { ActivationError } from '../error/interfaces';
 import { OnStepActivate, OnStepValidate, StepModelHolder } from '../model/step-interfaces';
 import { StepValidationState } from '../model/step-validation-state';
 import { StepModel } from '../model/step.model';
-import {
-  ValidationBannerComponent,
-  ValidationBannerInternalComponent,
-} from './validation-banner/validation-banner.component';
 
 type Spy<T extends (...args: any[]) => any = (...args: any[]) => any> = Mock<T>;
 

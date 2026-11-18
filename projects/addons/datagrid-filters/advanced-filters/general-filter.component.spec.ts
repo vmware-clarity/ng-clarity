@@ -12,9 +12,9 @@ import { ClrInputModule, ClrRadioModule, ClrSelectModule } from '@clr/angular/fo
 import { ClrIcon } from '@clr/angular/icon';
 import { renderFixture } from '@clr/angular/utils/testing';
 
-import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
 import { FilterFormComponent } from './filter-form.component';
 import { GeneralFilterComponent } from './general-filter.component';
+import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
 import { ComparisonOperator, LogicalOperator, Unit } from '../model/datagrid-filters.enums';
 import {
   NumericPropertyDefinition,

@@ -11,6 +11,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { renderFixture } from '@clr/angular/utils/testing';
 import type { Mock } from 'vitest';
 
+import { PropertyViewPropertyComponent } from './property-view-property.component';
 import { PropertyViewConfigProvider } from '../property-view-config-provider';
 import {
   PropertyViewModelType,
@@ -20,7 +21,6 @@ import {
   PropertyViewPropertyValueComponentModel,
   PropertyViewPropertyValueModel,
 } from '../property-view.model';
-import { PropertyViewPropertyComponent } from './property-view-property.component';
 
 type Spy<T extends (...args: any[]) => any = (...args: any[]) => any> = Mock<T>;
 

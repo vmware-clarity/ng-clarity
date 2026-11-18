@@ -10,8 +10,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgModel, ReactiveFormsModule, Validators } from '@angular/forms';
 import { renderFixture } from '@clr/angular/utils/testing';
 
-import { ClrFormsModule } from '../forms.module';
 import { buildFileList, selectFiles } from './file-input.helpers';
+import { ClrFormsModule } from '../forms.module';
 
 interface TestComponent {
   get control(): FormControl<FileList>;

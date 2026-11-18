@@ -7,8 +7,8 @@
 
 import { ComponentRef, Injectable } from '@angular/core';
 
-import { Menu } from '../menu.interface';
 import { MenuOutlet } from './menu-outlet';
+import { Menu } from '../menu.interface';
 
 @Injectable({ providedIn: 'root' })
 /**

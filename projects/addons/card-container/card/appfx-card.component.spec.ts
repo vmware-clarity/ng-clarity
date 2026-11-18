@@ -24,8 +24,8 @@ import { ClrIcon } from '@clr/angular/icon';
 import { enableCssAnimations } from '@clr/angular/testing';
 import { renderFixture } from '@clr/angular/utils/testing';
 
-import { AppfxCardInternal } from '../appfx-card-container.interface';
 import { AppfxCardComponent } from './appfx-card.component';
+import { AppfxCardInternal } from '../appfx-card-container.interface';
 import { A11yService } from '../services/a11y.service';
 import { DragDropService } from '../services/dnd.service';
 import { LayoutService } from '../services/layout.service';

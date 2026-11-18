@@ -11,7 +11,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppfxDatagridModule } from '@clr/addons/datagrid';
 import { ClarityModule } from '@clr/angular';
 
-import { UtilsDemoModule } from '../_utils/utils.module';
 import { DatagridBasicStructureDemo } from './basic-structure/basic-structure';
 import { DatagridBasicOnPushDemo } from './basic-with-on-push/basic-on-push';
 import { DatagridBasicOnPushWrapperDemo } from './basic-with-on-push/basic-on-push-wrapper';
@@ -57,6 +56,7 @@ import { ColorFilter } from './utils/color-filter';
 import { DatagridVirtualScrollClientSideDemo } from './virtual-scroll-client-side/virtual-scroll-client-side';
 import { DatagridVirtualScrollEmptyRowsDemo } from './virtual-scroll-empty-rows/virtual-scroll-empty-rows';
 import { DatagridVirtualScrollServerSideDemo } from './virtual-scroll-server-side/virtual-scroll-server-side';
+import { UtilsDemoModule } from '../_utils/utils.module';
 
 @NgModule({
   imports: [

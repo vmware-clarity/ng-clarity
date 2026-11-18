@@ -15,8 +15,8 @@ import {
   SampleCardWithoutHeaderComponent,
 } from '@clr/addons/testing';
 
-import { cardSize } from '../appfx-card-container-constants';
 import { LayoutService } from './layout.service';
+import { cardSize } from '../appfx-card-container-constants';
 
 const getCardElements = (cardHtmlElement: HTMLElement) => {
   const cardElement = cardHtmlElement.querySelector('.card') as HTMLElement;

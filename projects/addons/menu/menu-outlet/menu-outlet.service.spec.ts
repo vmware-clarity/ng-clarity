@@ -9,9 +9,9 @@ import { ChangeDetectionStrategy, Component, ComponentRef } from '@angular/core'
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
-import { Menu } from '../menu.interface';
 import { MenuOutletComponent } from './menu-outlet.component';
 import { MenuOutletService } from './menu-outlet.service';
+import { Menu } from '../menu.interface';
 
 @Component({
   selector: 'appfx-menu-outlet',
