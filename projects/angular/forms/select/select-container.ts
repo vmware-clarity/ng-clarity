@@ -57,11 +57,8 @@ export class ClrSelectContainer extends ClrAbstractContainer {
     super(layoutService, controlClassService, ngControlService);
   }
 
-  private get multi() {
-    return this.control?.valueAccessor instanceof SelectMultipleControlValueAccessor;
-  }
-
+  // The content query is ready before the first render; the control's value accessor can arrive later.
   wrapperClass() {
-    return this.multi ? 'clr-multiselect-wrapper' : 'clr-select-wrapper';
+    return this.multiple ? 'clr-multiselect-wrapper' : 'clr-select-wrapper';
   }
 }
