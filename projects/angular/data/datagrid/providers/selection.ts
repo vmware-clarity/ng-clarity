@@ -116,7 +116,7 @@ export class Selection<T = any> {
 
           case SelectionType.Multi: {
             const current = this.current ?? [];
-            let leftOver: any[] = current.slice();
+            let leftOver = current.slice();
             let selectionUpdated = false;
 
             // Duplicate loop, when the issue is issue#2342 is revisited keep in mind that
