@@ -28,6 +28,7 @@ import { EnvironmentInjector } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { FactoryProvider } from '@angular/core';
 import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
+import { FormControlStatus } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { FormGroupDirective } from '@angular/forms';
 import { FormGroupName } from '@angular/forms';
@@ -61,6 +62,7 @@ import { RouterLinkActive } from '@angular/router';
 import { SafeHtml } from '@angular/platform-browser';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
+import { Signal } from '@angular/core';
 import { SimpleChange } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
@@ -947,13 +949,14 @@ export abstract class ClrAbstractContainer implements OnDestroy {
     // (undocumented)
     protected controlClassService: ControlClassService;
     // (undocumented)
-    controlErrorComponent: ClrControlError;
+    get controlErrorComponent(): ClrControlError | undefined;
     // (undocumented)
-    controlHelperComponent: ClrControlHelper;
+    get controlHelperComponent(): ClrControlHelper | undefined;
     // (undocumented)
     controls: NgControl[];
+    protected readonly controlState: Signal<ControlState>;
     // (undocumented)
-    controlSuccessComponent: ClrControlSuccess;
+    get controlSuccessComponent(): ClrControlSuccess | undefined;
     // (undocumented)
     protected get errorMessagePresent(): boolean;
     get helpers(): {
@@ -963,7 +966,7 @@ export abstract class ClrAbstractContainer implements OnDestroy {
         showValid: boolean;
     };
     // (undocumented)
-    label: ClrControlLabel;
+    get label(): ClrControlLabel | undefined;
     // (undocumented)
     protected layoutService: LayoutService;
     // (undocumented)
@@ -980,7 +983,7 @@ export abstract class ClrAbstractContainer implements OnDestroy {
     // (undocumented)
     protected get successMessagePresent(): boolean;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAbstractContainer, never, never, {}, {}, ["label", "controlSuccessComponent", "controlErrorComponent", "controlHelperComponent"], never, true, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAbstractContainer, never, never, {}, {}, ["labelQuery", "successQuery", "errorQuery", "helperQuery"], never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAbstractContainer, [{
         optional: true;
@@ -1092,10 +1095,10 @@ export class ClrAccordionTitle {
 }
 
 // @public (undocumented)
-export class ClrAlert implements OnInit, OnDestroy {
+export class ClrAlert {
     // Warning: (ae-forgotten-export) The symbol "AlertIconAndTypesService" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "MultiAlertService" needs to be exported by the entry point clr-angular.d.ts
-    constructor(iconService: AlertIconAndTypesService, cdr: ChangeDetectorRef, multiAlertService: MultiAlertService, commonStrings: ClrCommonStringsService, renderer: Renderer2, hostElement: ElementRef<HTMLElement>);
+    constructor(iconService: AlertIconAndTypesService, multiAlertService: MultiAlertService, commonStrings: ClrCommonStringsService);
     // (undocumented)
     get alertClass(): string;
     // (undocumented)
@@ -1110,7 +1113,8 @@ export class ClrAlert implements OnInit, OnDestroy {
     // (undocumented)
     set closed(value: boolean);
     // (undocumented)
-    _closed: boolean;
+    get _closed(): boolean;
+    set _closed(value: boolean);
     // (undocumented)
     _closedChanged: EventEmitter<boolean>;
     // (undocumented)
@@ -1127,10 +1131,6 @@ export class ClrAlert implements OnInit, OnDestroy {
     set isLightweight(val: boolean);
     // (undocumented)
     isSmall: boolean;
-    // (undocumented)
-    ngOnDestroy(): void;
-    // (undocumented)
-    ngOnInit(): void;
     // (undocumented)
     open(): void;
     // (undocumented)
@@ -1171,9 +1171,9 @@ export class ClrAlert implements OnInit, OnDestroy {
         "_closedChanged": "clrAlertClosedChange";
     }, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlert, [null, null, {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlert, [null, {
         optional: true;
-    }, null, null, null]>;
+    }, null]>;
 }
 
 // @public (undocumented)
@@ -2465,9 +2465,11 @@ export class ClrControlLabel implements OnInit, OnDestroy {
     // (undocumented)
     disableGrid(): void;
     // (undocumented)
-    forAttr: string;
+    get forAttr(): string;
+    set forAttr(id: string);
     // (undocumented)
-    idAttr: string;
+    get idAttr(): string;
+    set idAttr(id: string);
     // (undocumented)
     idInput: string;
     // (undocumented)
@@ -9094,6 +9096,22 @@ export const controlLunIcon: IconShapeTuple;
 // @public (undocumented)
 export const controlLunIconName = "control-lun";
 
+// @public
+export interface ControlState {
+    // (undocumented)
+    readonly disabled: boolean;
+    // (undocumented)
+    readonly errors: ValidationErrors | null;
+    // (undocumented)
+    readonly invalid: boolean;
+    // (undocumented)
+    readonly status: FormControlStatus | null;
+    // (undocumented)
+    readonly touched: boolean;
+    // (undocumented)
+    readonly value: unknown;
+}
+
 // @public (undocumented)
 export const copyIcon: IconShapeTuple;
 
@@ -10531,7 +10549,8 @@ export class LayoutService {
     // (undocumented)
     labelSizeIsValid(labelSize: number): boolean;
     // (undocumented)
-    layout: ClrFormLayout | string;
+    get layout(): ClrFormLayout | string;
+    set layout(layout: ClrFormLayout | string);
     // (undocumented)
     get layoutClass(): string;
     // (undocumented)
@@ -10842,7 +10861,7 @@ export const newIcon: IconShapeTuple;
 export const newIconName = "new";
 
 // @public (undocumented)
-export class NgControlService {
+export class NgControlService implements OnDestroy {
     // (undocumented)
     addControl(control: NgControl): void;
     // (undocumented)
@@ -10855,6 +10874,9 @@ export class NgControlService {
     emitControlsChange(controls: NgControl[]): void;
     // (undocumented)
     get hasMultipleControls(): boolean;
+    // (undocumented)
+    ngOnDestroy(): void;
+    get states(): Signal<readonly ControlState[]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<NgControlService, never>;
     // (undocumented)
@@ -12209,6 +12231,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     constructor(vcr: ViewContainerRef, wrapperType: Type<W>, injector: Injector, ngControl: NgControl | null, renderer: Renderer2, el: ElementRef<HTMLElement>);
     // (undocumented)
     protected controlIdService: ControlIdService;
+    protected get controlState(): Signal<ControlState>;
     // (undocumented)
     protected el: ElementRef<HTMLElement>;
     // (undocumented)
