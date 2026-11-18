@@ -5,10 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ContentChild, Directive, OnDestroy, Optional } from '@angular/core';
+import { computed, contentChild, Directive, OnDestroy, Optional } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
+import { ControlState, NO_CONTROL_STATE } from './control-state';
 import { ClrControlError } from './control-subtexts/error';
 import { ClrControlHelper } from './control-subtexts/helper';
 import { ClrControlSuccess } from './control-subtexts/success';
@@ -20,14 +21,36 @@ import { NgControlService } from './providers/ng-control.service';
 
 @Directive()
 export abstract class ClrAbstractContainer implements OnDestroy {
-  @ContentChild(ClrControlLabel, { static: false }) label: ClrControlLabel;
-  @ContentChild(ClrControlSuccess) controlSuccessComponent: ClrControlSuccess;
-  @ContentChild(ClrControlError) controlErrorComponent: ClrControlError;
-  @ContentChild(ClrControlHelper) controlHelperComponent: ClrControlHelper;
-
   controls: NgControl[] = [];
 
   protected subscriptions: Subscription[] = [];
+
+  /**
+   * The state of the first control, for templates. Updates on every control event.
+   */
+  protected readonly controlState = computed<ControlState>(() => this.ngControlService.states()[0] ?? NO_CONTROL_STATE);
+
+  private readonly labelQuery = contentChild(ClrControlLabel);
+  private readonly successQuery = contentChild(ClrControlSuccess);
+  private readonly errorQuery = contentChild(ClrControlError);
+  private readonly helperQuery = contentChild(ClrControlHelper);
+
+  private readonly touched = computed(() => this.ngControlService.states().some(state => state.touched));
+
+  private readonly state = computed(() => {
+    const statuses = this.ngControlService.states().map(state => state.status);
+
+    // These status values are mutually exclusive, so a control
+    // cannot be both valid AND invalid or invalid AND disabled.
+    // if else order is important!
+    if (statuses.includes(CONTROL_STATE.INVALID)) {
+      return CONTROL_STATE.INVALID;
+    } else if (statuses.includes(CONTROL_STATE.VALID)) {
+      return CONTROL_STATE.VALID;
+    } else {
+      return null;
+    }
+  });
 
   constructor(
     @Optional() protected layoutService: LayoutService,
@@ -41,6 +64,22 @@ export abstract class ClrAbstractContainer implements OnDestroy {
     );
 
     ngControlService.container = this;
+  }
+
+  get label(): ClrControlLabel | undefined {
+    return this.labelQuery();
+  }
+
+  get controlSuccessComponent(): ClrControlSuccess | undefined {
+    return this.successQuery();
+  }
+
+  get controlErrorComponent(): ClrControlError | undefined {
+    return this.errorQuery();
+  }
+
+  get controlHelperComponent(): ClrControlHelper | undefined {
+    return this.helperQuery();
   }
 
   get control() {
@@ -87,11 +126,11 @@ export abstract class ClrAbstractContainer implements OnDestroy {
   }
 
   get showValid(): boolean {
-    return this.touched && this.state === CONTROL_STATE.VALID && this.successMessagePresent;
+    return this.touched() && this.state() === CONTROL_STATE.VALID && this.successMessagePresent;
   }
 
   get showInvalid(): boolean {
-    return this.touched && this.state === CONTROL_STATE.INVALID && this.errorMessagePresent;
+    return this.touched() && this.state() === CONTROL_STATE.INVALID && this.errorMessagePresent;
   }
 
   protected get successMessagePresent() {
@@ -100,27 +139,6 @@ export abstract class ClrAbstractContainer implements OnDestroy {
 
   protected get errorMessagePresent() {
     return !!this.controlErrorComponent;
-  }
-
-  private get touched() {
-    return !!this.controls?.some(control => control.touched);
-  }
-
-  private get state() {
-    const controlStatuses = this.controls.map((control: NgControl) => {
-      return control.status;
-    });
-
-    // These status values are mutually exclusive, so a control
-    // cannot be both valid AND invalid or invalid AND disabled.
-    // if else order is important!
-    if (controlStatuses.includes(CONTROL_STATE.INVALID)) {
-      return CONTROL_STATE.INVALID;
-    } else if (controlStatuses.includes(CONTROL_STATE.VALID)) {
-      return CONTROL_STATE.VALID;
-    } else {
-      return null;
-    }
   }
 
   ngOnDestroy() {
@@ -134,7 +152,7 @@ export abstract class ClrAbstractContainer implements OnDestroy {
      *   - container is valid and success component is implemented - use success class
      *   - Pass form control state and return string of classes to be applied to the container.
      */
-    const currentState = this.touched ? this.state : null;
+    const currentState = this.touched() ? this.state() : null;
 
     return this.controlClassService.controlClass(currentState, this.addGrid());
   }
