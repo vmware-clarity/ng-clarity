@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrCard } from './card';
 import { ClrCardModule } from './card.module';
@@ -119,7 +120,7 @@ describe('ClrCard', () => {
       });
 
       fixture = TestBed.createComponent(ClrCard);
-      fixture.detectChanges();
+      renderFixture(fixture);
       card = fixture.componentInstance;
     });
 
@@ -136,7 +137,7 @@ describe('ClrCard', () => {
       expect(card.expanded).toBe(true);
       expect(emitted).toEqual([]);
 
-      card.collapsible = true;
+      fixture.componentRef.setInput('clrCardCollapsible', true);
       card.toggle();
       expect(card.expanded).toBe(false);
       card.toggle();
@@ -148,8 +149,8 @@ describe('ClrCard', () => {
       const emitted: boolean[] = [];
       card.expandedChange.subscribe((value: boolean) => emitted.push(value));
 
-      card.collapsible = true;
-      card.expanded = false;
+      fixture.componentRef.setInput('clrCardCollapsible', true);
+      fixture.componentRef.setInput('clrCardExpanded', false);
       expect(card.expanded).toBe(false);
       expect(emitted).toEqual([]);
     });
@@ -168,24 +169,24 @@ describe('ClrCard', () => {
 
       fixture = TestBed.createComponent(TestComponent);
       fixture.componentInstance.collapsible = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
       testComponent = fixture.componentInstance;
       cardInstance = fixture.debugElement.query(By.directive(ClrCard)).componentInstance;
     });
 
     it('offers a [(clrCardExpanded)] two-way binding', () => {
       testComponent.expanded = false;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(cardInstance.expanded).toBe(false);
 
       cardInstance.toggle();
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(testComponent.expanded).toBe(true);
     });
 
     it('accepts clrCardExpanded as a bare attribute', () => {
       const bareFixture = TestBed.createComponent(TestBareAttributeComponent);
-      bareFixture.detectChanges();
+      renderFixture(bareFixture);
       const card = bareFixture.debugElement.query(By.directive(ClrCard)).componentInstance as ClrCard;
       expect(card.expanded).toBe(true);
     });
@@ -196,7 +197,7 @@ describe('ClrCard', () => {
         const component = noBindingFixture.componentInstance;
         vi.spyOn(component, 'change').mockImplementation(() => undefined);
 
-        noBindingFixture.detectChanges();
+        renderFixture(noBindingFixture);
         const card = noBindingFixture.debugElement.query(By.directive(ClrCard)).componentInstance as ClrCard;
 
         card.toggle();
@@ -209,7 +210,7 @@ describe('ClrCard', () => {
       it('does not emit when the input is changed programmatically', () => {
         vi.spyOn(testComponent, 'change').mockImplementation(() => undefined);
         testComponent.expanded = false;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(testComponent.change).not.toHaveBeenCalled();
       });
     });
@@ -226,7 +227,7 @@ describe('ClrCard', () => {
       });
 
       fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
       cardElement = fixture.debugElement.query(By.directive(ClrCard)).nativeElement;
     });
 
@@ -247,7 +248,7 @@ describe('ClrCard', () => {
 
     it('renders the region and the header toggle once made collapsible at runtime', () => {
       fixture.componentInstance.collapsible = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(cardElement.classList.contains('card-collapsible')).toBe(true);
       expect(cardElement.querySelector('[role="region"]')).not.toBeNull();
@@ -266,7 +267,7 @@ describe('ClrCard', () => {
       });
 
       fixture = TestBed.createComponent(TestCollapsibleComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
       cardElement = fixture.debugElement.query(By.directive(ClrCard)).nativeElement;
     });
 
@@ -287,13 +288,13 @@ describe('ClrCard', () => {
       expect(cardElement.querySelector('.card-collapsible-content > .card-collapsible-inner')).not.toBeNull();
 
       fixture.componentInstance.expanded = false;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(cardElement.classList.contains('card-collapsed')).toBe(true);
     });
 
     it('keeps the body in the DOM but hides it from assistive tech and focus once collapsed', () => {
       fixture.componentInstance.expanded = false;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       const region = cardElement.querySelector('[role="region"]');
       expect(region.getAttribute('aria-hidden')).toBe('true');
@@ -304,7 +305,7 @@ describe('ClrCard', () => {
     it('collapses via the header toggle button', () => {
       const headerButton = cardElement.querySelector<HTMLButtonElement>('button');
       headerButton.click();
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(fixture.componentInstance.expanded).toBe(false);
       expect(cardElement.querySelector('[role="region"]').getAttribute('aria-hidden')).toBe('true');
@@ -318,7 +319,7 @@ describe('ClrCard', () => {
     it('keeps the footer visible while collapsed when clrCardFooterCollapsible is false', () => {
       fixture.componentInstance.footerCollapsible = false;
       fixture.componentInstance.expanded = false;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       const region = cardElement.querySelector('[role="region"]');
       expect(region.textContent).not.toContain('Footer text');
@@ -327,7 +328,7 @@ describe('ClrCard', () => {
 
     it('keeps the footer outside the collapsible region while expanded when clrCardFooterCollapsible is false', () => {
       fixture.componentInstance.footerCollapsible = false;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       const region = cardElement.querySelector('[role="region"]');
       expect(region.textContent).toContain('Body text');
@@ -344,7 +345,7 @@ describe('ClrCard', () => {
       });
 
       const fixture = TestBed.createComponent(TestInitiallyCollapsedComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       const cardElement = fixture.debugElement.query(By.directive(ClrCard)).nativeElement as HTMLElement;
       const region = cardElement.querySelector('[role="region"]');
@@ -363,7 +364,7 @@ describe('ClrCard', () => {
       });
 
       const fixture = TestBed.createComponent(TestTwoCardsComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       const cards = fixture.debugElement.queryAll(By.directive(ClrCard)).map(el => el.componentInstance as ClrCard);
 

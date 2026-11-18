@@ -5,15 +5,23 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { TestBed } from '@angular/core/testing';
+import { DebugElement, Type } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule, LayoutService, NgControlService } from '@clr/angular/forms/common';
 import { ClrIcon } from '@clr/angular/icon';
+import { renderFixture } from '@clr/angular/utils/testing';
 
-export function WrapperNoLabelSpec(testContainer, testControl, testComponent): void {
+export function WrapperNoLabelSpec(
+  testContainer: Type<unknown>,
+  testControl: Type<unknown>,
+  testComponent: Type<unknown>
+): void {
   describe('no label', () => {
-    let fixture, containerDE, containerEl;
+    let fixture: ComponentFixture<unknown>;
+    let containerDE: DebugElement;
+    let containerEl: HTMLElement;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -28,16 +36,23 @@ export function WrapperNoLabelSpec(testContainer, testControl, testComponent): v
     });
 
     it('adds an empty label when no label is provided', () => {
-      fixture.detectChanges();
+      renderFixture(fixture);
       const labels = containerEl.querySelectorAll('label');
-      expect(Array.prototype.filter.call(labels, label => label.textContent === '').length).toBe(1);
+      expect(Array.prototype.filter.call(labels, (label: HTMLLabelElement) => label.textContent === '').length).toBe(1);
     });
   });
 }
 
-export function WrapperFullSpec(testContainer, testControl, testComponent, wrapperClass): void {
+export function WrapperFullSpec(
+  testContainer: Type<unknown>,
+  testControl: Type<unknown>,
+  testComponent: Type<unknown>,
+  wrapperClass: string
+): void {
   describe('full example', () => {
-    let fixture, containerDE, containerEl;
+    let fixture: ComponentFixture<unknown>;
+    let containerDE: DebugElement;
+    let containerEl: HTMLElement;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -49,7 +64,7 @@ export function WrapperFullSpec(testContainer, testControl, testComponent, wrapp
 
       containerDE = fixture.debugElement.query(By.directive(testContainer));
       containerEl = containerDE.nativeElement;
-      fixture.detectChanges();
+      renderFixture(fixture);
     });
 
     it('projects the control inside of the wrapper', () => {
@@ -74,9 +89,17 @@ export function WrapperFullSpec(testContainer, testControl, testComponent, wrapp
   });
 }
 
-export function WrapperContainerSpec(testContainer, testWrapper, testControl, testComponent, wrapperClass): void {
+export function WrapperContainerSpec(
+  testContainer: Type<unknown>,
+  testWrapper: Type<unknown>,
+  testControl: Type<unknown>,
+  testComponent: Type<unknown>,
+  wrapperClass: string
+): void {
   describe('wrapper in container', () => {
-    let fixture, wrapper, wrapperEl;
+    let fixture: ComponentFixture<unknown>;
+    let wrapper: DebugElement;
+    let wrapperEl: HTMLElement;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -88,7 +111,7 @@ export function WrapperContainerSpec(testContainer, testWrapper, testControl, te
 
       wrapper = fixture.debugElement.query(By.directive(testWrapper));
       wrapperEl = wrapper.nativeElement;
-      fixture.detectChanges();
+      renderFixture(fixture);
     });
 
     it('does not add the wrapper class inside a container', () => {

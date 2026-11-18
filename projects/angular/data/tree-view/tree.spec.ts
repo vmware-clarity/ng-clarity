@@ -9,7 +9,9 @@ import { ApplicationRef, ChangeDetectionStrategy, Component, DebugElement, ViewC
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { delay, spec, TestContext } from '@clr/angular/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
+import { RecursiveTreeNodeModel } from './models/recursive-tree-node.model';
 import { RecursiveChildren } from './recursive-children';
 import { ClrTree } from './tree';
 import { TreeFeaturesService } from './tree-features.service';
@@ -190,7 +192,7 @@ describe('Tree View', () => {
       it('creates a clr-recursive-children component if the tree is recursive', () => {
         expect(testContext.fixture.debugElement.query(By.directive(RecursiveChildren))).toBeFalsy();
         // Using an empty tree and checking reference equality because I don't want to create full models for this.
-        const emptyTree = [];
+        const emptyTree: RecursiveTreeNodeModel<unknown>[] = [];
         testContext.getClarityProvider(TreeFeaturesService).recursion = {
           template: null,
           root: emptyTree,
@@ -236,7 +238,7 @@ describe('Tree View', () => {
       beforeEach(() => {
         forTypeAheadDirectiveDEs = testContext.fixture.debugElement.queryAll(By.directive(ClrTreeNode));
         forTypeAheadDirectives = forTypeAheadDirectiveDEs.map(de => de.componentInstance);
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
       });
 
       it('focuses node whose text content that starts with pressed keys', async () => {

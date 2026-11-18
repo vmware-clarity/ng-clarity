@@ -5,10 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { TestBed } from '@angular/core/testing';
+import { DebugElement, Type } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import {
+  ClrAbstractContainer,
   ClrCommonFormsModule,
   ClrFormLayout,
   ControlIdService,
@@ -19,10 +21,18 @@ import {
 import { DatalistIdService } from '@clr/angular/forms/datalist';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrPopoverContent } from '@clr/angular/popover';
+import { renderFixture } from '@clr/angular/utils/testing';
 
-export function ContainerNoLabelSpec(testContainer, testControl, testComponent): void {
+export function ContainerNoLabelSpec(
+  testContainer: Type<unknown>,
+  testControl: Type<unknown> | Type<unknown>[],
+  testComponent: Type<unknown>
+): void {
   describe('no label', () => {
-    let fixture, containerDE, containerEl, layoutService;
+    let fixture: ComponentFixture<unknown>;
+    let containerDE: DebugElement;
+    let containerEl: HTMLElement;
+    let layoutService: LayoutService;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -38,38 +48,57 @@ export function ContainerNoLabelSpec(testContainer, testControl, testComponent):
     });
 
     it('adds an empty label when instantiated without vertical layout', () => {
-      fixture.detectChanges();
+      renderFixture(fixture);
       const labels = containerEl.querySelectorAll('label');
-      expect(Array.prototype.filter.call(labels, label => label.textContent === '').length).toBe(1);
+      expect(Array.prototype.filter.call(labels, (label: HTMLLabelElement) => label.textContent === '').length).toBe(1);
     });
 
     it('does not add an empty label when instantiated with vertical layout', () => {
       layoutService.layout = ClrFormLayout.VERTICAL;
-      fixture.detectChanges();
+      renderFixture(fixture);
       const labels = containerEl.querySelectorAll('label');
-      expect(Array.prototype.filter.call(labels, label => label.textContent === '').length).toBe(0);
+      expect(Array.prototype.filter.call(labels, (label: HTMLLabelElement) => label.textContent === '').length).toBe(0);
     });
   });
 }
 
-export function TemplateDrivenSpec(testContainer, testControl, testComponent, wrapperClass): void {
+export function TemplateDrivenSpec(
+  testContainer: Type<unknown>,
+  testControl: Type<unknown> | Type<unknown>[],
+  testComponent: Type<unknown>,
+  wrapperClass: string
+): void {
   fullSpec('template-driven', testContainer, testControl, testComponent, wrapperClass);
 }
 
-export function ReactiveSpec(testContainer, testControl, testComponent, wrapperClass): void {
+export function ReactiveSpec(
+  testContainer: Type<unknown>,
+  testControl: Type<unknown> | Type<unknown>[],
+  testComponent: Type<unknown>,
+  wrapperClass: string
+): void {
   fullSpec('reactive', testContainer, testControl, testComponent, wrapperClass);
 }
 
-function fullSpec(description, testContainer, directives: any | any[], testComponent, wrapperClass) {
+function fullSpec(
+  description: string,
+  testContainer: Type<unknown>,
+  directives: Type<unknown> | Type<unknown>[],
+  testComponent: Type<unknown>,
+  wrapperClass: string
+) {
   describe(description, () => {
-    let fixture, containerDE, container, containerEl, layoutService, markControlService;
-    if (!Array.isArray(directives)) {
-      directives = [directives];
-    }
+    let fixture: ComponentFixture<unknown>;
+    let containerDE: DebugElement;
+    let container: ClrAbstractContainer;
+    let containerEl: HTMLElement;
+    let layoutService: LayoutService;
+    let markControlService: MarkControlService;
+    const directiveList = Array.isArray(directives) ? directives : [directives];
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [ClrIcon, ClrCommonFormsModule, FormsModule, ReactiveFormsModule, ClrPopoverContent],
-        declarations: [testContainer, ...directives, testComponent],
+        declarations: [testContainer, ...directiveList, testComponent],
         providers: [NgControlService, LayoutService, MarkControlService, ControlIdService, DatalistIdService],
       });
       fixture = TestBed.createComponent(testComponent);
@@ -79,7 +108,7 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
       containerEl = containerDE.nativeElement;
       markControlService = containerDE.injector.get(MarkControlService);
       layoutService = containerDE.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
     });
 
     function setValid(valid: boolean) {
@@ -87,7 +116,7 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
       // The scenarios were additionally verified by manual testing in a patched Stackblitz demo:
       // https://stackblitz.com/edit/input-on-blur-issue-onpush-td-13-4-3
       markControlService.markAsTouched();
-      container.control.control.value = valid;
+      (container.control.control as { value: boolean }).value = valid;
       container.control.control.markAsDirty();
     }
 
@@ -97,7 +126,7 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
     });
 
     it('injects the container subscribes', () => {
-      expect(container.subscriptions[0]).toBeTruthy();
+      expect(container['subscriptions'][0]).toBeTruthy();
     });
 
     it('projects the label as first child', () => {
@@ -117,14 +146,14 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
     it('display the helper text when invalid', () => {
       expect(containerEl.querySelector('clr-control-helper')).toBeTruthy();
       setValid(false);
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(containerEl.querySelector('clr-control-helper')).toBeTruthy();
     });
 
     it('display the helper text when valid', () => {
       expect(containerEl.querySelector('clr-control-helper')).toBeTruthy();
       setValid(true);
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(containerEl.querySelector('clr-control-helper')).toBeTruthy();
     });
 
@@ -132,7 +161,7 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
       expect(containerEl.querySelector('.clr-control-container').classList.contains('clr-error')).toBe(false);
       expect(containerEl.querySelector('.clr-validate-icon')).toBeFalsy();
       setValid(false);
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(containerEl.querySelector('.clr-control-container').classList.contains('clr-error')).toBe(true);
       expect(containerEl.querySelector('.clr-validate-icon')).toBeTruthy();
     });
@@ -140,14 +169,14 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
     it('projects the error helper when invalid', () => {
       expect(containerEl.querySelector('clr-control-error')).toBeFalsy();
       setValid(false);
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(containerEl.querySelector('clr-control-error')).toBeTruthy();
     });
 
     it('projects the success content when valid', () => {
       setValid(true);
       container.control.control.updateValueAndValidity();
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(containerEl.querySelector('clr-control-error')).toBeFalsy();
       expect(containerEl.querySelector('clr-control-success')).toBeTruthy();
     });
@@ -155,7 +184,7 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
     it('should have the success icon when valid', () => {
       setValid(true);
       container.control.control.updateValueAndValidity();
-      fixture.detectChanges();
+      renderFixture(fixture);
       const icon: HTMLElement = containerEl.querySelector('cds-icon[shape=success-standard]');
       expect(icon).toBeTruthy();
     });
@@ -167,10 +196,10 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
     it('adds the .clr-row class to the host on non-vertical layouts', () => {
       expect(containerEl.classList).toContain('clr-row');
       layoutService.layout = ClrFormLayout.VERTICAL;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(containerEl.classList).not.toContain('clr-row');
       layoutService.layout = ClrFormLayout.COMPACT;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(containerEl.classList).toContain('clr-row');
     });
 
@@ -189,21 +218,21 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
     it('tracks the validity of the form control', () => {
       expect(container.showInvalid).toBe(false);
       markControlService.markAsTouched();
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(container.showInvalid).toBe(true);
     });
 
     it('tracks the disabled state', async () => {
       const test = fixture.debugElement.componentInstance;
       test.disabled = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
       // Have to wait for the whole control to settle or it doesn't track
       await fixture.whenStable();
       expect(containerEl.className).not.toContain('clr-form-control-disabled');
       if (test.form) {
         // Handle setting disabled based on reactive form
         test.form.get('model').reset({ value: '', disabled: true });
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(containerEl.className).toContain('clr-form-control-disabled');
       }
     });

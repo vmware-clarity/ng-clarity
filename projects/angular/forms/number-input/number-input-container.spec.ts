@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import {
@@ -18,6 +18,7 @@ import {
 } from '@clr/angular/forms/common';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrPopoverContent } from '@clr/angular/popover';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrNumberInput } from './number-input';
 import { ClrNumberInputContainer } from './number-input-container';
@@ -52,7 +53,7 @@ class SimpleTest {
   standalone: false,
 })
 class NoLabelTest {
-  model;
+  model: number;
 }
 
 @Component({
@@ -100,7 +101,8 @@ describe('Number Input component', () => {
     ReactiveSpec(ClrNumberInputContainer, ClrNumberInput, ReactiveTest, '.clr-number-input-wrapper  [clrNumberInput]');
 
     describe('host binding with missing input', () => {
-      let fixture, containerEl;
+      let fixture: ComponentFixture<NoInputTest>;
+      let containerEl: HTMLElement;
 
       beforeEach(() => {
         TestBed.configureTestingModule({
@@ -113,7 +115,7 @@ describe('Number Input component', () => {
       });
 
       it('should not throw when input ContentChild is undefined', () => {
-        expect(() => fixture.detectChanges()).not.toThrow();
+        expect(() => renderFixture(fixture)).not.toThrow();
         expect(containerEl.classList.contains('clr-form-control-readonly')).toBe(false);
       });
     });

@@ -12,6 +12,7 @@ import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule } from '@clr/angular/forms/common';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrPopoverContent } from '@clr/angular/popover/common';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrCombobox } from './combobox';
 import { ClrComboboxContainer } from './combobox-container';
@@ -45,7 +46,7 @@ class NoLabelTest {}
 class TemplateDrivenTest {
   inline = false;
   disabled = false;
-  model = [];
+  model: string[] = [];
 }
 
 @Component({
@@ -94,7 +95,7 @@ describe('Combobox component', () => {
           fixture = TestBed.createComponent(TemplateDrivenTest);
           containerDE = fixture.debugElement.query(By.directive(ClrComboboxContainer));
           containerService = containerDE.injector.get(ComboboxContainerService);
-          fixture.detectChanges();
+          renderFixture(fixture);
         });
 
         it('adds label offset', () => {

@@ -9,6 +9,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ClrCheckboxModule } from '@clr/angular/forms/checkbox';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ToggleComponent } from './toggle.component';
 
@@ -23,7 +24,7 @@ describe('ToggleComponent', () => {
     });
     fixture = TestBed.createComponent(ToggleComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    renderFixture(fixture);
   });
 
   it('is created', () => {
@@ -40,8 +41,8 @@ describe('ToggleComponent', () => {
   });
 
   it('renders the provided label', () => {
-    component.label = 'Enable feature';
-    fixture.detectChanges();
+    fixture.componentRef.setInput('label', 'Enable feature');
+    renderFixture(fixture);
 
     expect(fixture.nativeElement.querySelector('.toggle-label').textContent.trim()).toEqual('Enable feature');
   });
@@ -55,8 +56,8 @@ describe('ToggleComponent', () => {
   });
 
   it('disables the checkbox input when disabled is set', () => {
-    component.disabled = true;
-    fixture.detectChanges();
+    fixture.componentRef.setInput('disabled', true);
+    renderFixture(fixture);
 
     const input: HTMLInputElement = fixture.debugElement.query(By.css('input[type="checkbox"]')).nativeElement;
     expect(input.disabled).toBeTruthy();

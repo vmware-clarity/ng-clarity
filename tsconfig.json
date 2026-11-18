@@ -10,6 +10,7 @@
     "module": "es2022",
     "moduleResolution": "bundler",
     "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
     "noImplicitReturns": true,
     "outDir": "./dist/out-tsc",
     "sourceMap": true,

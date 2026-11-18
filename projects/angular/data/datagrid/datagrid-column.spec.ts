@@ -62,7 +62,7 @@ describe('Datagrid', () => {
 
         it('can sort according to the given comparator', () => {
           component.sortBy = comparator;
-          expect(sortService.comparator).toBeUndefined();
+          expect(sortService.comparator).toBeNull();
           component.sort();
           expect(sortService.comparator).toBe(component.sortBy);
           expect(sortService.reverse).toBe(false);
@@ -72,9 +72,9 @@ describe('Datagrid', () => {
         });
 
         it("doesn't sort without a comparator", () => {
-          expect(sortService.comparator).toBeUndefined();
+          expect(sortService.comparator).toBeNull();
           component.sort();
-          expect(sortService.comparator).toBeUndefined();
+          expect(sortService.comparator).toBeNull();
         });
 
         it('knows if the column is currently sorted', () => {
@@ -110,14 +110,14 @@ describe('Datagrid', () => {
 
         it('knows when the column has an ascending sortDirection', () => {
           component.sortBy = comparator;
-          expect(component.sortDirection).toBeUndefined();
+          expect(component.sortDirection).toBeNull();
           component.sort();
           expect(component.sortDirection).toBe('up');
         });
 
         it('knows when the column has a descending sortDirection', () => {
           component.sortBy = comparator;
-          expect(component.sortDirection).toBeUndefined();
+          expect(component.sortDirection).toBeNull();
           component.sort();
           component.sort();
           expect(component.sortDirection).toBe('down');
@@ -125,7 +125,7 @@ describe('Datagrid', () => {
 
         it('sets the column sortDirection to null when sort is cleared', () => {
           component.sortBy = comparator;
-          expect(component.sortDirection).toBeUndefined();
+          expect(component.sortDirection).toBeNull();
           component.sort();
           sortService.clear();
           expect(component.sortDirection).toBeNull();
@@ -133,7 +133,7 @@ describe('Datagrid', () => {
 
         it('sets the column sortDirection to null when sort is rotated to initial state', () => {
           component.sortBy = comparator;
-          expect(component.sortDirection).toBeUndefined();
+          expect(component.sortDirection).toBeNull();
           component.sort();
           component.sort();
           component.sort();
@@ -142,7 +142,7 @@ describe('Datagrid', () => {
 
         it('offers a shortcut to sort based on a property name', () => {
           component.field = 'test';
-          expect(sortService.comparator).toBeUndefined();
+          expect(sortService.comparator).toBeNull();
           component.sort();
           expect(sortService.comparator).toEqual(new DatagridPropertyComparator('test'));
         });
@@ -150,7 +150,7 @@ describe('Datagrid', () => {
         it('sorts based on a property name if sortyBy is undefined', () => {
           component.field = 'test';
           component.sortBy = undefined;
-          expect(sortService.comparator).toBeUndefined();
+          expect(sortService.comparator).toBeNull();
           component.sort();
           expect(sortService.comparator).toEqual(new DatagridPropertyComparator('test'));
         });
@@ -159,14 +159,14 @@ describe('Datagrid', () => {
           component.sortBy = comparator;
           component.field = 'test';
           component.sortBy = undefined;
-          expect(sortService.comparator).toBeUndefined();
+          expect(sortService.comparator).toBeNull();
           component.sort();
           expect(sortService.comparator).toEqual(new DatagridPropertyComparator('test'));
         });
 
         it('sorts based on a property shortcut for sortBy without a given comparator', () => {
           component.sortBy = 'test';
-          expect(sortService.comparator).toBeUndefined();
+          expect(sortService.comparator).toBeNull();
           component.sort();
           expect(sortService.comparator).toEqual(new DatagridPropertyComparator('test'));
         });
@@ -430,7 +430,7 @@ describe('Datagrid', () => {
       });
 
       describe('Build-in string and numeric filters', () => {
-        let context;
+        let context: TestContext<ClrDatagridColumn, ColTypeTest>;
 
         beforeEach(() => {
           context = helpers.create(ClrDatagridColumn, ColTypeTest, DATAGRID_SPEC_PROVIDERS);

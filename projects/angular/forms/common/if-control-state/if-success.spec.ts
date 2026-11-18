@@ -6,10 +6,11 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
-import { FormControl, FormsModule, Validators } from '@angular/forms';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormControl, FormsModule, NgControl, Validators } from '@angular/forms';
 import { ClrInput, ClrInputContainer } from '@clr/angular/forms/input';
 import { ClrIcon } from '@clr/angular/icon';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrIfSuccess } from './if-success';
 import { ClrControlSuccess } from '../control-subtexts/success';
@@ -38,13 +39,14 @@ describe('ClrIfSuccess', () => {
       TestBed.configureTestingModule({ declarations: [ClrIfSuccess, InvalidUseTest] });
       expect(() => {
         const fixture = TestBed.createComponent(InvalidUseTest);
-        fixture.detectChanges();
+        renderFixture(fixture);
       }).toThrow();
     });
   });
 
   describe('general success', () => {
-    let fixture, ngControlService;
+    let fixture: ComponentFixture<GeneralSuccessTest>;
+    let ngControlService: NgControlService;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -52,7 +54,7 @@ describe('ClrIfSuccess', () => {
         declarations: [ClrInput, ClrControlSuccess, ClrInputContainer, ClrIfSuccess, GeneralSuccessTest],
       });
       fixture = TestBed.createComponent(GeneralSuccessTest);
-      fixture.detectChanges();
+      renderFixture(fixture);
       ngControlService = fixture.debugElement.injector.get(NgControlService);
     });
 
@@ -64,9 +66,9 @@ describe('ClrIfSuccess', () => {
       expect(fixture.nativeElement.innerHTML).not.toContain(successMessage);
       const control = new FormControl('abc', Validators.required);
       control.markAsTouched();
-      ngControlService.addControl(control);
+      ngControlService.addControl(control as unknown as NgControl);
       control.markAsTouched();
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(fixture.nativeElement.innerHTML).toContain(successMessage);
     });
   });

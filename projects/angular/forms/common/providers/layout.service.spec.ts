@@ -9,7 +9,7 @@ import { ClrFormLayout, LayoutService } from './layout.service';
 
 describe('Forms common utilities', () => {
   describe('LayoutService', function () {
-    let service;
+    let service: LayoutService;
 
     beforeEach(() => {
       service = new LayoutService();

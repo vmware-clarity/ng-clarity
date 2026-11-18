@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrIcon } from '@clr/angular/icon';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { CONTROL_SUFFIX } from '../abstract-control';
 import { ClrControlError } from './error';
@@ -35,7 +36,7 @@ describe('Forms common utilities', () => {
           providers: [ControlIdService],
         });
         fixture = TestBed.createComponent(SimpleTest);
-        fixture.detectChanges();
+        renderFixture(fixture);
         element = fixture.debugElement.query(By.directive(ClrControlError)).nativeElement;
       });
 
@@ -64,7 +65,7 @@ describe('Forms common utilities', () => {
           providers: [ControlIdService, ContainerIdService],
         }).compileComponents();
         fixture = TestBed.createComponent(SimpleTest);
-        fixture.detectChanges();
+        renderFixture(fixture);
         element = fixture.debugElement.query(By.directive(ClrControlError)).nativeElement;
       });
 

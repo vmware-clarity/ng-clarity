@@ -41,7 +41,7 @@ export class Selection<T = any> {
   /**
    * The current selection
    */
-  private _current: T[];
+  private _current: T[] = [];
 
   /**
    * The Observable that lets other classes subscribe to selection changes
@@ -66,7 +66,7 @@ export class Selection<T = any> {
   ) {
     this.id = 'clr-dg-selection' + nbSelection++;
     this.identifyBy = _items.identifyBy;
-    this._differ = differs.find(this._current || []).create<T>(this.trackBy);
+    this._differ = differs.find(this._current).create<T>(this.trackBy);
 
     this.subscriptions.push(
       filters.change.subscribe(() => {
@@ -187,10 +187,6 @@ export class Selection<T = any> {
     }
 
     this._selectionType = value ?? SelectionType.None;
-
-    if (!this._current && this._selectionType !== SelectionType.None) {
-      this._current = [];
-    }
   }
 
   get current(): T[] {
@@ -202,7 +198,7 @@ export class Selection<T = any> {
   }
 
   get currentSingle(): T {
-    return this._current?.length ? this._current[0] : undefined;
+    return this._current.length ? this._current[0] : undefined;
   }
 
   // We do not want to expose the Subject itself, but the Observable which is read-only
@@ -395,7 +391,7 @@ export class Selection<T = any> {
     this.current = this.current.slice(0, indexOfItem).concat(this.current.slice(indexOfItem + 1));
     if (indexOfItem < this.currentSelectionRefs.length) {
       // Keep selected refs array in sync
-      const removedItems = this.currentSelectionRefs[indexOfItem];
+      const removedItems = this.currentSelectionRefs[indexOfItem] as ArrayLike<T>;
       // locked reference is no longer needed (if any)
       this.lockedRefs = this.lockedRefs.filter(locked => locked !== removedItems[0]);
     }
@@ -413,6 +409,6 @@ export class Selection<T = any> {
   }
 
   private updateCurrentSelectionRefs() {
-    this._currentSelectionRefs = this._current?.map(item => this._items.identifyBy(item)) || [];
+    this._currentSelectionRefs = this._current.map(item => this._items.identifyBy(item));
   }
 }
