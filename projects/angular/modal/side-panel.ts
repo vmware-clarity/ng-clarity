@@ -16,6 +16,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  signal,
   ViewChild,
 } from '@angular/core';
 import { ClrCommonStringsService } from '@clr/angular/utils';
@@ -30,7 +31,7 @@ import { ClrModalConfigurationService } from './modal-configuration.service';
     '[class.side-panel]': 'true',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrSidePanel implements OnInit, OnDestroy {
   @Output('clrSidePanelOpenChange') openChange = new EventEmitter<boolean>(false);
@@ -43,7 +44,8 @@ export class ClrSidePanel implements OnInit, OnDestroy {
   @Output('clrSidePanelAlternateClose') altClose = new EventEmitter<boolean>(false);
 
   private _pinnable = false;
-  private _pinned = false;
+  /** Whether the panel is pinned: a signal, so that togglePinned() also renders when called from code. */
+  private readonly isPinned = signal(false);
   private originalStopClose: boolean;
   private _position = 'right';
   private _modal: ClrModal;
@@ -105,11 +107,11 @@ export class ClrSidePanel implements OnInit, OnDestroy {
 
   @Input('clrSidePanelPinned')
   get pinned(): boolean {
-    return this._pinned;
+    return this.isPinned();
   }
 
   set pinned(pinned: boolean) {
-    this._pinned = pinned;
+    this.isPinned.set(pinned);
     if (this.modal) {
       this.updateModalState();
     }

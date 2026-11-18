@@ -95,7 +95,8 @@ export class ClrModal implements OnChanges, OnDestroy {
     // (undocumented)
     open(): void;
     // (undocumented)
-    _open: boolean;
+    get _open(): boolean;
+    set _open(open: boolean);
     // (undocumented)
     _openChanged: EventEmitter<boolean>;
     // (undocumented)
@@ -112,10 +113,6 @@ export class ClrModal implements OnChanges, OnDestroy {
     title: ElementRef<HTMLElement>;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, {
-        "_open": {
-            "alias": "clrModalOpen";
-            "required": false;
-        };
         "closable": {
             "alias": "clrModalClosable";
             "required": false;
@@ -152,6 +149,10 @@ export class ClrModal implements OnChanges, OnDestroy {
             "alias": "clrModalInOverlay";
             "required": false;
         };
+        "_open": {
+            "alias": "clrModalOpen";
+            "required": false;
+        };
     }, {
         "_openChanged": "clrModalOpenChange";
         "altClose": "clrModalAlternateClose";
@@ -174,9 +175,11 @@ export class ClrModalBody implements OnDestroy {
 // @public (undocumented)
 export class ClrModalConfigurationService {
     // (undocumented)
-    backdrop: boolean;
+    get backdrop(): boolean;
+    set backdrop(backdrop: boolean);
     // (undocumented)
-    fadeMove: string;
+    get fadeMove(): string;
+    set fadeMove(fadeMove: string);
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalConfigurationService, never>;
     // (undocumented)

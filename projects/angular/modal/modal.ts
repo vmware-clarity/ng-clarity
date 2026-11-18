@@ -8,7 +8,6 @@
 import {
   afterNextRender,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ContentChild,
   ElementRef,
@@ -20,6 +19,7 @@ import {
   OnChanges,
   OnDestroy,
   Output,
+  signal,
   SimpleChange,
   TemplateRef,
   ViewChild,
@@ -51,13 +51,12 @@ const FADE_MOVE_ENTER_CLASSES: Record<string, string> = {
     `,
   ],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrModal implements OnChanges, OnDestroy {
   modalId = uniqueIdFactory();
   @ViewChild('title') title: ElementRef<HTMLElement>;
 
-  @Input('clrModalOpen') @HostBinding('class.open') _open = false;
   @Output('clrModalOpenChange') _openChanged = new EventEmitter<boolean>(false);
 
   @Input('clrModalClosable') closable = true;
@@ -84,8 +83,9 @@ export class ClrModal implements OnChanges, OnDestroy {
   @ViewChild('dialog') private readonly dialogElementRef: ElementRef<HTMLElement>;
 
   private readonly injector = inject(Injector);
-  private readonly changeDetectorRef = inject(ChangeDetectorRef);
   private readonly noopAnimations = noopAnimations();
+  /** Whether the modal is open: a signal, so that open() and close() also render when called from code. */
+  private readonly isOpen = signal(false);
   private destroyed = false;
   /** Set when the modal closes, until it opens again: identifies the closing to notify. */
   private closeRequest: object | null = null;
@@ -96,6 +96,15 @@ export class ClrModal implements OnChanges, OnDestroy {
     private modalStackService: ModalStackService,
     private configuration: ClrModalConfigurationService
   ) {}
+
+  @Input('clrModalOpen')
+  @HostBinding('class.open')
+  get _open(): boolean {
+    return this.isOpen();
+  }
+  set _open(open: boolean) {
+    this.isOpen.set(open);
+  }
 
   get fadeMove(): string {
     return this.skipAnimation ? '' : this.configuration.fadeMove;
@@ -145,7 +154,6 @@ export class ClrModal implements OnChanges, OnDestroy {
     this._open = true;
     this.closeRequest = null;
     this.updateOverlayState();
-    this.changeDetectorRef.markForCheck();
     this._openChanged.emit(true);
   }
 
@@ -169,7 +177,6 @@ export class ClrModal implements OnChanges, OnDestroy {
       return;
     }
     this._open = false;
-    this.changeDetectorRef.markForCheck();
     this._scrollingService.resumeScrolling();
     this.notifyClosing();
   }
