@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { WrappedRow } from './wrapped-row';
 
@@ -24,25 +25,32 @@ interface TestContext {
   wrapper: WrappedRow;
 }
 
-export default function (): void {
-  describe('WrappedRow', () => {
-    beforeEach(function (this: TestContext) {
-      TestBed.configureTestingModule({ declarations: [WrappedRow, WrappedRowTest] });
-      this.fixture = TestBed.createComponent(WrappedRowTest);
-      this.wrapper = this.fixture.componentInstance.wrapper;
-      this.fixture.detectChanges();
-    });
+describe('Datagrid', () => {
+  describe('Components', () => {
+    describe('WrappedRow', () => {
+      let testContext: TestContext;
+      beforeEach(() => {
+        testContext = {} as TestContext;
+      });
 
-    it('should have a rowView', function (this: TestContext) {
-      expect(this.wrapper.rowView).toBeDefined();
-    });
+      beforeEach(() => {
+        TestBed.configureTestingModule({ declarations: [WrappedRow, WrappedRowTest] });
+        testContext.fixture = TestBed.createComponent(WrappedRowTest);
+        testContext.wrapper = testContext.fixture.componentInstance.wrapper;
+        renderFixture(testContext.fixture);
+      });
 
-    it('should have a templateRef to the portal', function (this: TestContext) {
-      expect(this.wrapper.templateRef).toBeDefined();
-    });
+      it('should have a rowView', () => {
+        expect(testContext.wrapper.rowView).toBeDefined();
+      });
 
-    it('should project content into the template', function (this: TestContext) {
-      expect(this.wrapper.rowView.rootNodes[0].textContent.trim()).toBe('Hello World!');
+      it('should have a templateRef to the portal', () => {
+        expect(testContext.wrapper.templateRef).toBeDefined();
+      });
+
+      it('should project content into the template', () => {
+        expect(testContext.wrapper.rowView.rootNodes[0].textContent.trim()).toBe('Hello World!');
+      });
     });
   });
-}
+});

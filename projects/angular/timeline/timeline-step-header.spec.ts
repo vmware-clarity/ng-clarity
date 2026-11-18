@@ -7,10 +7,11 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrTimelineStepHeader } from './timeline-step-header';
 
-export default function (): void {
+describe('Timeline', () => {
   describe('ClrTimelineStepHeader', () => {
     let fixture: ComponentFixture<TestTimelineStepHeader>;
     let nativeElement: HTMLElement;
@@ -21,7 +22,7 @@ export default function (): void {
       });
 
       fixture = TestBed.createComponent(TestTimelineStepHeader);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       nativeElement = fixture.nativeElement.querySelector('clr-timeline-step-header');
     });
@@ -38,7 +39,7 @@ export default function (): void {
       });
     });
   });
-}
+});
 
 @Component({
   template: `<clr-timeline-step-header>Header Content</clr-timeline-step-header>`,

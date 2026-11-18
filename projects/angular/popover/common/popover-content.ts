@@ -59,6 +59,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   private view: EmbeddedViewRef<void> | null = null;
   private elementRef: ElementRef | null = null;
   private overlayRef: OverlayRef | null = null;
+  private viewInitialized = false;
   private popoverType: ClrPopoverType = ClrPopoverType.DEFAULT;
   private _availablePositions: ConnectedPosition[] = [];
   private _position = ClrPopoverPosition.BOTTOM_LEFT;
@@ -175,6 +176,11 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     } else {
       this.popoverService.origin = origin;
     }
+
+    // An open popover waits for its origin (see showOverlay), so show it once the origin arrives.
+    if (this.viewInitialized && this.popoverService.open && !this.overlayRef) {
+      this.showOverlay();
+    }
   }
 
   private get positionStrategy() {
@@ -199,6 +205,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    this.viewInitialized = true;
     this.openCloseSubscription?.unsubscribe();
     this.openCloseSubscription = this.popoverService.openChange.subscribe(open => {
       if (open) {
@@ -235,7 +242,9 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
         this.resetPosition();
       }),
       this.popoverService.updatePositionChange().subscribe(() => {
-        this.overlayRef?.updatePosition();
+        if (this.popoverService.origin) {
+          this.overlayRef?.updatePosition();
+        }
       }),
       this.createEscapeSubscription(overlayRef),
 
@@ -439,7 +448,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   private resetPosition() {
-    if (this.overlayRef) {
+    if (this.overlayRef && this.popoverService.origin) {
       this.overlayRef.updatePositionStrategy(this.positionStrategy);
       this.overlayRef.updatePosition();
     }
@@ -467,6 +476,12 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   private showOverlay() {
+    // Without an origin the CDK position strategy reads null and throws from its render callback,
+    // which runs outside any caller that could catch it. contentOrigin shows the overlay once it is set.
+    if (!this.popoverService.origin) {
+      return;
+    }
+
     const overlayRef = this.overlayRef || this._createOverlayRef();
 
     if (!this.view && this.template) {

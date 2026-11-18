@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { StepperService } from './providers/stepper.service';
 import { ClrStepper } from './stepper';
@@ -102,22 +103,22 @@ describe('ClrStepper', () => {
       });
 
       fixture = TestBed.createComponent(ReactiveFormsTestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
       testComponent = fixture.componentInstance;
       stepperService = fixture.debugElement.query(By.directive(ClrStepper)).injector.get(StepperService);
     });
 
     it('should override the initial panel if developer overrides it via [clrInitialStep]', () => {
-      spyOn(stepperService, 'overrideInitialPanel');
-      fixture.detectChanges();
+      vi.spyOn(stepperService, 'overrideInitialPanel').mockImplementation(() => undefined);
+      renderFixture(fixture);
       expect(stepperService.overrideInitialPanel).not.toHaveBeenCalled();
 
       testComponent.initialStep = 'group';
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(stepperService.overrideInitialPanel).toHaveBeenCalled();
 
       testComponent.showSecondStep = false;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(stepperService.overrideInitialPanel).toHaveBeenCalled();
     });
 
@@ -126,50 +127,50 @@ describe('ClrStepper', () => {
       const localStepperService = localFixture.debugElement
         .query(By.directive(ClrStepper))
         .injector.get(StepperService);
-      spyOn(localStepperService, 'overrideInitialPanel');
+      vi.spyOn(localStepperService, 'overrideInitialPanel').mockImplementation(() => undefined);
 
-      localFixture.detectChanges();
+      renderFixture(localFixture);
 
       expect(localStepperService.overrideInitialPanel).not.toHaveBeenCalled();
     });
 
     it('should call overrideInitialPanel when initialStep input changes after initial render', () => {
-      spyOn(stepperService, 'overrideInitialPanel');
+      vi.spyOn(stepperService, 'overrideInitialPanel').mockImplementation(() => undefined);
 
       testComponent.initialStep = 'group';
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(stepperService.overrideInitialPanel).toHaveBeenCalledWith('group');
     });
 
     it('should reset if a previously completed panel is revisited and put into an invalid state', () => {
       // all setup...
-      spyOn(stepperService, 'setPanelInvalid');
+      vi.spyOn(stepperService, 'setPanelInvalid').mockImplementation(() => undefined);
       const group1 = testComponent.form.controls.group as FormGroup;
       group1.controls.name.setValue('lmnop');
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       stepperService.navigateToNextPanel('group', group1.valid);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       // we navigated to the second panel
-      expect(group1.valid).toBe(true, 'first panel form is now valid');
+      expect(group1.valid, 'first panel form is now valid').toBe(true);
 
       group1.controls.name.setValue(''); // set required input to invalid value
-      fixture.detectChanges();
+      renderFixture(fixture);
 
-      expect(group1.valid).toBe(false, 'first panel form is now invalid');
+      expect(group1.valid, 'first panel form is now invalid').toBe(false);
       expect(stepperService.setPanelInvalid).not.toHaveBeenCalled();
     });
 
     it('should not set the panel status to invalid immediately', () => {
       // setup
-      spyOn(stepperService, 'setPanelInvalid');
+      vi.spyOn(stepperService, 'setPanelInvalid').mockImplementation(() => undefined);
       const form = testComponent.form.controls.group;
 
       // act (make form invalid)
       form.controls.name.setValue('');
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       // assert
       expect(stepperService.setPanelInvalid).not.toHaveBeenCalled();
@@ -177,22 +178,22 @@ describe('ClrStepper', () => {
 
     it('should set the panel status to valid if form was previously invalid', () => {
       // setup
-      spyOn(stepperService, 'setPanelValid');
+      vi.spyOn(stepperService, 'setPanelValid').mockImplementation(() => undefined);
       const form = testComponent.form.controls.group;
 
       // act 1 (make form invalid)
       form.controls.name.setValue('');
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       form.controls.name.markAsTouched();
       form.controls.name.markAsDirty();
       form.controls.name.updateValueAndValidity();
 
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       // act 2 (make form valid)
       form.controls.name.setValue('Bob');
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       // assert
       expect(stepperService.setPanelValid).toHaveBeenCalledTimes(1);
@@ -200,12 +201,12 @@ describe('ClrStepper', () => {
 
     it('should not set the panel status to valid if the form was not previously invalid', () => {
       // setup
-      spyOn(stepperService, 'setPanelInvalid');
+      vi.spyOn(stepperService, 'setPanelInvalid').mockImplementation(() => undefined);
       const form = testComponent.form.controls.group;
 
       // act (make form valid)
       form.controls.name.setValue('Bob');
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       // assert
       expect(stepperService.setPanelInvalid).not.toHaveBeenCalled();
@@ -223,21 +224,21 @@ describe('ClrStepper', () => {
       });
 
       fixture = TestBed.createComponent(MultiFieldReactiveFormsTestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
       stepperService = fixture.debugElement.query(By.directive(ClrStepper)).injector.get(StepperService);
     });
 
     it('should not call setPanelInvalid when typing in one touched control while the form remains invalid', () => {
-      spyOn(stepperService, 'setPanelInvalid');
+      vi.spyOn(stepperService, 'setPanelInvalid').mockImplementation(() => undefined);
       const group = fixture.componentInstance.form.controls.group as FormGroup;
 
       // simulate blur of firstName (touches it but leaves lastName empty)
       group.controls.firstName.markAsTouched();
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       // simulate typing a letter into firstName; the group stays INVALID because lastName is still empty
       group.controls.firstName.setValue('J');
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       // the panel status did not actually transition (INVALID -> INVALID), so setPanelInvalid must not fire
       expect(stepperService.setPanelInvalid).not.toHaveBeenCalled();
@@ -248,25 +249,25 @@ describe('ClrStepper', () => {
 
       group.controls.firstName.markAsTouched();
       group.controls.firstName.setValue('J');
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(group.controls.lastName.touched).toBe(false);
       expect(group.controls.lastName.dirty).toBe(false);
     });
 
     it('should still call setPanelValid on a genuine INVALID -> VALID transition', () => {
-      spyOn(stepperService, 'setPanelValid');
+      vi.spyOn(stepperService, 'setPanelValid').mockImplementation(() => undefined);
       const group = fixture.componentInstance.form.controls.group as FormGroup;
 
       // touch + fill firstName
       group.controls.firstName.markAsTouched();
       group.controls.firstName.setValue('John');
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       // touch + fill lastName -> form transitions from INVALID to VALID
       group.controls.lastName.markAsTouched();
       group.controls.lastName.setValue('Doe');
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(stepperService.setPanelValid).toHaveBeenCalledTimes(1);
     });
@@ -284,7 +285,7 @@ describe('ClrStepper', () => {
       });
 
       fixture = TestBed.createComponent(ReactiveFormsTestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
       testComponent = fixture.componentInstance;
       stepperService = fixture.debugElement.query(By.directive(ClrStepper)).injector.get(StepperService);
     });
@@ -296,21 +297,21 @@ describe('ClrStepper', () => {
     });
 
     it('should reset panels when form is reset', () => {
-      spyOn(stepperService, 'resetPanels');
+      vi.spyOn(stepperService, 'resetPanels').mockImplementation(() => undefined);
       testComponent.form.reset();
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(stepperService.resetPanels).toHaveBeenCalled();
     });
 
     it('should not reset panels when form is patched', () => {
-      spyOn(stepperService, 'resetPanels');
+      vi.spyOn(stepperService, 'resetPanels').mockImplementation(() => undefined);
       testComponent.form.patchValue({});
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(stepperService.resetPanels).not.toHaveBeenCalled();
     });
 
     it('should trigger ngSubmit event when all panels have completed', () => {
-      spyOn(testComponent, 'submit');
+      vi.spyOn(testComponent, 'submit').mockImplementation(() => undefined);
       (testComponent.form.controls.group as FormGroup).controls.name.setValue('1');
       stepperService.navigateToNextPanel('group');
       stepperService.navigateToNextPanel('group2');
@@ -318,11 +319,11 @@ describe('ClrStepper', () => {
     });
 
     it('should update panels for form errors', () => {
-      spyOn(stepperService, 'setPanelsWithErrors');
+      vi.spyOn(stepperService, 'setPanelsWithErrors').mockImplementation(() => undefined);
 
       (testComponent.form.controls.group as FormGroup).controls.name.markAsTouched();
       stepperService.navigateToNextPanel('group');
-      fixture.detectChanges();
+      renderFixture(fixture);
       stepperService.navigateToNextPanel('group2');
 
       expect(stepperService.setPanelsWithErrors).toHaveBeenCalled();
@@ -343,20 +344,20 @@ describe('ClrStepper Template Forms', () => {
       });
 
       fixture = TestBed.createComponent(TemplateFormsTestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
       testComponent = fixture.componentInstance;
       stepperService = fixture.debugElement.query(By.directive(ClrStepper)).injector.get(StepperService);
     });
 
     it('should reset steps when form is reset', () => {
-      spyOn(stepperService, 'resetPanels');
+      vi.spyOn(stepperService, 'resetPanels').mockImplementation(() => undefined);
       testComponent.form.reset();
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(stepperService.resetPanels).toHaveBeenCalled();
     });
 
     it('should trigger ngSubmit event when all steps have completed', () => {
-      spyOn(testComponent, 'submit');
+      vi.spyOn(testComponent, 'submit').mockImplementation(() => undefined);
       stepperService.navigateToNextPanel('group');
       stepperService.navigateToNextPanel('group2');
       expect(testComponent.submit).toHaveBeenCalled();

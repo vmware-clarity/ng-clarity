@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { HeadingLevel } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrStackView } from './stack-view';
 import { ClrStackViewModule } from './stack-view.module';
@@ -27,7 +28,7 @@ class TestComponent {
   headingLevel: HeadingLevel = null;
 }
 
-export default function (): void {
+describe('Stack View directives', () => {
   'use strict';
   describe('StackHeader', () => {
     let fixture: ComponentFixture<any>;
@@ -41,7 +42,7 @@ export default function (): void {
         providers: [ClrStackView],
       });
       fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
       compiled = fixture.nativeElement;
       component = fixture.componentInstance;
     });
@@ -63,7 +64,7 @@ export default function (): void {
     });
 
     it('should not have heading role and aria-level attribute set if ariaLevel is not set', () => {
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       const stackTitle = compiled.querySelector('.stack-title');
       expect(stackTitle.getAttribute('role')).toBeNull();
@@ -72,11 +73,11 @@ export default function (): void {
 
     it('should have heading role and aria-level set when ariaLevel is set', () => {
       component.headingLevel = 1;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       const stackTitle = compiled.querySelector('.stack-title');
       expect(stackTitle.getAttribute('role')).toBe('heading');
       expect(stackTitle.getAttribute('aria-level')).toBe('1');
     });
   });
-}
+});

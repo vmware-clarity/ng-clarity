@@ -8,13 +8,14 @@
 import { ChangeDetectionStrategy, Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrTimelineLayout } from './enums/timeline-layout.enum';
 import { ClrTimeline } from './timeline';
 import { ClrTimelineStep } from './timeline-step';
 import { ClrTimelineModule } from './timeline.module';
 
-export default function (): void {
+describe('Timeline', () => {
   describe('ClrTimeline component', () => {
     describe('Template API', () => {
       let fixture: ComponentFixture<TestTimeline>;
@@ -29,7 +30,7 @@ export default function (): void {
         });
 
         fixture = TestBed.createComponent(TestTimeline);
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         testComponent = fixture.componentInstance;
         nativeElement = fixture.nativeElement.querySelector('#timeline');
@@ -48,7 +49,7 @@ export default function (): void {
         expect(nativeComponent.layout).toBe(ClrTimelineLayout.HORIZONTAL);
 
         testComponent.layout = ClrTimelineLayout.VERTICAL;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(nativeComponent.layout).toBe(ClrTimelineLayout.VERTICAL);
       });
 
@@ -56,11 +57,11 @@ export default function (): void {
         expect(nativeElement.className).toContain('clr-timeline');
 
         testComponent.layout = ClrTimelineLayout.HORIZONTAL;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(nativeElement.className).not.toContain('clr-timeline-vertical');
 
         testComponent.layout = ClrTimelineLayout.VERTICAL;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(nativeElement.className).toContain('clr-timeline-vertical');
       });
     });
@@ -76,18 +77,18 @@ export default function (): void {
         });
 
         fixture = TestBed.createComponent(TestTimelineContent);
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         timelineSteps = fixture.debugElement.queryAll(By.directive(ClrTimelineStep));
       });
 
       it('should project steps', () => {
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(timelineSteps.length).toBe(3);
       });
     });
   });
-}
+});
 
 @Component({
   template: `

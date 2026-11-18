@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { CONTROL_SUFFIX } from '../abstract-control';
 import { ClrControlHelper } from './helper';
@@ -21,7 +22,7 @@ import { ControlIdService } from '../providers/control-id.service';
 })
 class SimpleTest {}
 
-export default function (): void {
+describe('Forms common utilities', () => {
   describe('ClrControlHelper', () => {
     describe('Default:', () => {
       let fixture: ComponentFixture<SimpleTest>;
@@ -33,7 +34,7 @@ export default function (): void {
           providers: [ControlIdService],
         }).compileComponents();
         fixture = TestBed.createComponent(SimpleTest);
-        fixture.detectChanges();
+        renderFixture(fixture);
         element = fixture.debugElement.query(By.directive(ClrControlHelper)).nativeElement;
       });
 
@@ -42,7 +43,7 @@ export default function (): void {
       });
 
       it('adds the .clr-subtext class to host', function () {
-        expect(element.classList.contains('clr-subtext')).toBeTrue();
+        expect(element.classList.contains('clr-subtext')).toBe(true);
       });
 
       it('adds the id to host', function () {
@@ -61,7 +62,7 @@ export default function (): void {
           providers: [ControlIdService, ContainerIdService],
         }).compileComponents();
         fixture = TestBed.createComponent(SimpleTest);
-        fixture.detectChanges();
+        renderFixture(fixture);
         element = fixture.debugElement.query(By.directive(ClrControlHelper)).nativeElement;
       });
 
@@ -71,4 +72,4 @@ export default function (): void {
       });
     });
   });
-}
+});

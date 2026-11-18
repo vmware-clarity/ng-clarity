@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClrNavigationModule, ResponsiveNavCodes, ResponsiveNavControlMessage } from '@clr/angular/layout/nav';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrMainContainer } from './main-container';
 import { ClrMainContainerModule } from './main-container.module';
@@ -60,7 +61,7 @@ describe('MainContainer', () => {
     });
 
     fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
     compiled = fixture.nativeElement;
   });
 
