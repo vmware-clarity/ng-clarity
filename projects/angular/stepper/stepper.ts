@@ -97,11 +97,10 @@ export class ClrStepper implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
   private listenForDOMChanges() {
     return this.panels.changes.pipe(startWith(this.panels)).subscribe((panels: QueryList<ClrStepperPanel>) => {
-      this.stepperService.updatePanelOrder(panels.toArray().map(p => p.id));
-
-      if (this.initialPanel) {
-        this.stepperService.overrideInitialPanel(this.initialPanel);
-      }
+      this.stepperService.updatePanelOrder(
+        panels.toArray().map(p => p.id),
+        this.initialPanel
+      );
     });
   }
 }

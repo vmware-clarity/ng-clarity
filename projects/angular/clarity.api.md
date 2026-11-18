@@ -11600,6 +11600,7 @@ export class StepperService extends CollapsiblePanelService {
     setPanelsWithErrors(ids: string[]): void;
     // (undocumented)
     setPanelValid(panelId: string): void;
+    updatePanelOrder(ids: string[], initialPanel?: string): void;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<StepperService, never>;
     // (undocumented)

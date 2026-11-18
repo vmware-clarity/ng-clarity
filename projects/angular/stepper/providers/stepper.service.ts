@@ -32,6 +32,18 @@ export class StepperService extends CollapsiblePanelService {
     this.emitUpdatedPanels();
   }
 
+  /**
+   * Applies the DOM order of the panels and opens the initial panel in one update, so each panel renders its final
+   * state the first time it is checked.
+   */
+  override updatePanelOrder(ids: string[], initialPanel?: string) {
+    this.panelGroup.updatePanelOrder(ids);
+    if (initialPanel) {
+      this.panelGroup.overrideInitialPanel(initialPanel);
+    }
+    this.emitUpdatedPanels();
+  }
+
   setPanelValid(panelId: string) {
     this.panelGroup.setPanelValid(panelId);
     this.emitUpdatedPanels();

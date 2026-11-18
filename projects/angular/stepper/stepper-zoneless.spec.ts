@@ -160,3 +160,55 @@ describe('ClrStepper (zoneless, OnPush host)', () => {
     expect(probeTexts()).toEqual(['expanded']);
   });
 });
+
+@Component({
+  template: `
+    <form clrStepper [formGroup]="form" [clrInitialStep]="initialStep">
+      @for (step of steps(); track step) {
+        <clr-stepper-panel [formGroupName]="step">
+          <clr-step-title>{{ step }}</clr-step-title>
+          <clr-step-content>
+            <button clrStepButton="next">next</button>
+          </clr-step-content>
+        </clr-stepper-panel>
+      }
+    </form>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
+})
+class LatePanelsHost {
+  readonly steps = signal<string[]>([]);
+  initialStep = 'step1';
+  readonly form = new FormGroup({
+    step1: new FormGroup({ name: new FormControl('') }),
+    step2: new FormGroup({ name: new FormControl('') }),
+  });
+}
+
+describe('ClrStepper with panels added after the first render', () => {
+  let fixture: ComponentFixture<LatePanelsHost>;
+
+  function panelClasses(): string[] {
+    return fixture.debugElement
+      .queryAll(By.css('clr-stepper-panel > div'))
+      .map(panel => panel.nativeElement.className.trim());
+  }
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      declarations: [LatePanelsHost],
+      imports: [ClrStepperModule, ReactiveFormsModule],
+    });
+
+    fixture = TestBed.createComponent(LatePanelsHost);
+    await fixture.whenStable();
+  });
+
+  it('opens the initial panel in the same render', async () => {
+    fixture.componentInstance.steps.set(['step1', 'step2']);
+    await fixture.whenStable();
+
+    expect(panelClasses()).toEqual(['clr-stepper-panel-inactive clr-stepper-panel-open', 'clr-stepper-panel-inactive']);
+  });
+});
