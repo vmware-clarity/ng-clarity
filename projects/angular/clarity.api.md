@@ -7115,9 +7115,11 @@ export class ClrStackBlock implements OnInit {
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
-    expandable: boolean;
+    get expandable(): boolean;
+    set expandable(value: boolean);
     // (undocumented)
-    expanded: boolean;
+    get expanded(): boolean;
+    set expanded(value: boolean);
     // (undocumented)
     expandedChange: EventEmitter<boolean>;
     // (undocumented)
@@ -7127,7 +7129,7 @@ export class ClrStackBlock implements OnInit {
     // (undocumented)
     getStackChildrenId(): string;
     // (undocumented)
-    get labelledById(): any;
+    get labelledById(): string;
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
@@ -7139,7 +7141,7 @@ export class ClrStackBlock implements OnInit {
     // (undocumented)
     set setChangedValue(value: boolean);
     // (undocumented)
-    stackBlockTitle: any;
+    get stackBlockTitle(): ClrStackViewLabel;
     // (undocumented)
     get tabIndex(): string;
     // (undocumented)
@@ -7148,6 +7150,10 @@ export class ClrStackBlock implements OnInit {
     uniqueId: string;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackBlock, "clr-stack-block", never, {
+        "ariaLevel": {
+            "alias": "clrStackViewLevel";
+            "required": false;
+        };
         "expanded": {
             "alias": "clrSbExpanded";
             "required": false;
@@ -7156,17 +7162,13 @@ export class ClrStackBlock implements OnInit {
             "alias": "clrSbExpandable";
             "required": false;
         };
-        "ariaLevel": {
-            "alias": "clrStackViewLevel";
-            "required": false;
-        };
         "setChangedValue": {
             "alias": "clrSbNotifyChange";
             "required": false;
         };
     }, {
         "expandedChange": "clrSbExpandedChange";
-    }, ["stackBlockTitle"], ["clr-stack-label", "*", "clr-stack-block"], false, never>;
+    }, ["label"], ["clr-stack-label", "*", "clr-stack-block"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackBlock, [{
         optional: true;
@@ -7187,7 +7189,8 @@ export class ClrStackContentInput {
 // @public (undocumented)
 export class ClrStackHeader {
     constructor(stackView: ClrStackView);
-    ariaLevel: HeadingLevel;
+    get ariaLevel(): HeadingLevel;
+    set ariaLevel(value: HeadingLevel);
     // (undocumented)
     stackView: ClrStackView;
     // (undocumented)
