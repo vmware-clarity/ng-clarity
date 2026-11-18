@@ -24,6 +24,7 @@ import { StepValidationState } from '../../model/step-validation-state';
       <span class="alert-text" [textContent]="item"></span>
     </clr-alert-item>
   </clr-alert>`,
+  // Eager: consumers change the validation state lists in place (`errors.push()`).
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ValidationBannerInternalComponent {
@@ -82,6 +83,7 @@ export class ValidationBannerInternalComponent {
       }
     `,
   ],
+  // Eager: consumers change the validation state lists in place (`errors.push()`).
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ValidationBannerComponent {

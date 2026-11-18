@@ -173,8 +173,7 @@ export class RelevanceService {
     checkComplete$(): Observable<Step[]>;
     // (undocumented)
     destroy(): void;
-    // (undocumented)
-    loading: boolean;
+    get loading(): boolean;
     onStepRelevanceChange$(): Observable<StepInternal>;
     set steps(steps: Step[]);
     // (undocumented)
@@ -311,7 +310,7 @@ export interface StepModelHolder {
     model: StepModel;
 }
 
-// @public (undocumented)
+// @public
 export class StepValidationState {
     constructor(errors?: string[], warnings?: string[], infos?: string[]);
     // (undocumented)
@@ -493,9 +492,7 @@ export class WorkflowModelManager {
 // @public
 class WorkflowModelMonitorComponent implements OnInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "NameValue" needs to be exported by the entry point clr-addons-var.d.ts
-    //
-    // (undocumented)
-    debugModel: NameValue[];
+    get debugModel(): NameValue[];
     // (undocumented)
     isOpen: boolean;
     // (undocumented)

@@ -103,7 +103,7 @@ class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterContentI
     constructor(cdr: ChangeDetectorRef, modelMgr: WorkflowModelManager, relevanceService: RelevanceService, configService: WorkflowConfigurationService, workflowStrings: WorkflowStrings, zoomLevelService?: ZoomLevelService,
     openModalComponent?: boolean);
     // (undocumented)
-    activeStepIndex: number;
+    get activeStepIndex(): number;
     // (undocumented)
     cancelPageValidation(): void;
     // (undocumented)
@@ -124,7 +124,7 @@ class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterContentI
     currentZoomLevel: ZoomLevel;
     footer: WizardFooterConfig;
     // (undocumented)
-    footerComponentInputs: Record<string, unknown>;
+    get footerComponentInputs(): Record<string, unknown>;
     // (undocumented)
     get isLoading(): boolean;
     // (undocumented)

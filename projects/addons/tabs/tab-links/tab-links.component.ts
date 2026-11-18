@@ -5,20 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  HostBinding,
-  Input,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 import { ZoomLevel } from '@clr/addons/a11y';
 import { WorkflowStrings } from '@clr/addons/workflow/strings';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'appfx-tab-links',
   standalone: false,
   templateUrl: 'tab-links.component.html',
@@ -35,14 +27,10 @@ export class TabLinksComponent {
 
   currentZoomLevel = ZoomLevel.none;
 
-  constructor(
-    public workflowStrings: WorkflowStrings,
-    private cdr: ChangeDetectorRef
-  ) {}
+  constructor(public workflowStrings: WorkflowStrings) {}
 
   changeOpened(opened: boolean) {
     this.opened = opened;
     this.openedChange.emit(this.opened);
-    this.cdr.detectChanges(); // without this HostBinding not working
   }
 }

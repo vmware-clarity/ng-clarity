@@ -5,39 +5,44 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { signal, WritableSignal } from '@angular/core';
+
+/**
+ * Errors, warnings and infos of a step. Assigning a new list notifies the views that show it.
+ */
 export class StepValidationState {
-  #errors: string[];
-  #warnings: string[];
-  #infos: string[];
+  readonly #errors: WritableSignal<string[]>;
+  readonly #warnings: WritableSignal<string[]>;
+  readonly #infos: WritableSignal<string[]>;
 
   constructor(errors: string[] = [], warnings: string[] = [], infos: string[] = []) {
-    this.#errors = errors;
-    this.#warnings = warnings;
-    this.#infos = infos;
+    this.#errors = signal(errors);
+    this.#warnings = signal(warnings);
+    this.#infos = signal(infos);
   }
 
   get errors(): string[] {
-    return this.#errors || [];
+    return this.#errors() || [];
   }
 
   set errors(messages: string[]) {
-    this.#errors = messages;
+    this.#errors.set(messages);
   }
 
   get warnings(): string[] {
-    return this.#warnings || [];
+    return this.#warnings() || [];
   }
 
   set warnings(messages: string[]) {
-    this.#warnings = messages;
+    this.#warnings.set(messages);
   }
 
   get infos(): string[] {
-    return this.#infos || [];
+    return this.#infos() || [];
   }
 
   set infos(messages: string[]) {
-    this.#infos = messages;
+    this.#infos.set(messages);
   }
 
   isEmpty(): boolean {
@@ -45,6 +50,6 @@ export class StepValidationState {
   }
 
   isValid(): boolean {
-    return !this.#errors || this.#errors.length === 0;
+    return this.errors.length === 0;
   }
 }

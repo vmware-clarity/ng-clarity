@@ -32,6 +32,7 @@ import { StepModel } from '../model/step.model';
   selector: 'appfx-step-container',
   standalone: false,
   templateUrl: 'step-container.component.html',
+  // Eager: the consumer step component is created in this view and must refresh on every check of a Zone app.
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class StepContainerComponent implements OnInit, OnDestroy {
@@ -130,11 +131,9 @@ export class StepContainerComponent implements OnInit, OnDestroy {
   private loadErrorComponent(error: ActivationError): void {
     this.componentContainer.clear();
     const cr = this.componentContainer.createComponent(ErrorComponent);
+    cr.setInput('error', error);
     this.pageComponent = cr.instance;
-    (this.pageComponent as ErrorComponent).error = error;
-    this.retrySubscription = (this.pageComponent as ErrorComponent).onRetry
-      .pipe(take(1))
-      .subscribe(() => this.onRetry.emit(this.step));
+    this.retrySubscription = cr.instance.onRetry.pipe(take(1)).subscribe(() => this.onRetry.emit(this.step));
   }
 
   private unsubscribeRetry(): void {
