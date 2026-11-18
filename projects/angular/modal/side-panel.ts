@@ -35,24 +35,23 @@ import { ClrModalConfigurationService } from './modal-configuration.service';
 })
 export class ClrSidePanel implements OnInit, OnDestroy {
   @Output('clrSidePanelOpenChange') openChange = new EventEmitter<boolean>(false);
+  @Input('clrSidePanelCloseButtonAriaLabel') closeButtonAriaLabel: string | undefined;
+  @Input('clrSidePanelSkipAnimation') skipAnimation = false;
+  @Input('clrSidePanelLabelledById') labelledById: string;
+  @Input('clrSidePanelStaticBackdrop') staticBackdrop = false;
+  @Input('clrSidePanelClosable') closable = true;
+  @Input('clrSidePanelPreventClose') preventClose = false;
   @Output('clrSidePanelAlternateClose') altClose = new EventEmitter<boolean>(false);
 
-  // The state the template reads. Signals, so that a write from code (togglePinned() or a direct assignment) renders
-  // the OnPush view without a change detection call.
-  private readonly isOpen = signal(false);
-  private readonly closeButtonAriaLabelState = signal<string | undefined>(undefined);
-  private readonly skipAnimationState = signal(false);
-  private readonly labelledByIdState = signal<string>(undefined);
-  private readonly staticBackdropState = signal(false);
-  private readonly closableState = signal(true);
-  private readonly preventCloseState = signal(false);
-  private readonly sizeState = signal('md');
-  private readonly positionState = signal('right');
-  private readonly pinnedState = signal(false);
-  private readonly pinnableState = signal(false);
-
+  private _pinnable = false;
+  /** Whether the panel is pinned: a signal, so that togglePinned() also renders when called from code. */
+  private readonly isPinned = signal(false);
   private originalStopClose: boolean;
+  private _position = 'right';
   private _modal: ClrModal;
+  private __open = false;
+
+  private _size = 'md';
 
   constructor(
     private element: ElementRef<HTMLElement>,
@@ -62,76 +61,28 @@ export class ClrSidePanel implements OnInit, OnDestroy {
 
   @Input('clrSidePanelOpen')
   get _open(): boolean {
-    return this.isOpen();
+    return this.__open;
   }
   set _open(open: boolean) {
-    if (open !== this.isOpen()) {
-      this.isOpen.set(open);
+    if (open !== this.__open) {
+      this.__open = open;
       if (this.pinned) {
         this.updateModalState();
       }
     }
   }
 
-  @Input('clrSidePanelCloseButtonAriaLabel')
-  get closeButtonAriaLabel(): string | undefined {
-    return this.closeButtonAriaLabelState();
-  }
-  set closeButtonAriaLabel(label: string | undefined) {
-    this.closeButtonAriaLabelState.set(label);
-  }
-
-  @Input('clrSidePanelSkipAnimation')
-  get skipAnimation(): boolean {
-    return this.skipAnimationState();
-  }
-  set skipAnimation(skipAnimation: boolean) {
-    this.skipAnimationState.set(skipAnimation);
-  }
-
-  @Input('clrSidePanelLabelledById')
-  get labelledById(): string {
-    return this.labelledByIdState();
-  }
-  set labelledById(labelledById: string) {
-    this.labelledByIdState.set(labelledById);
-  }
-
-  @Input('clrSidePanelStaticBackdrop')
-  get staticBackdrop(): boolean {
-    return this.staticBackdropState();
-  }
-  set staticBackdrop(staticBackdrop: boolean) {
-    this.staticBackdropState.set(staticBackdrop);
-  }
-
-  @Input('clrSidePanelClosable')
-  get closable(): boolean {
-    return this.closableState();
-  }
-  set closable(closable: boolean) {
-    this.closableState.set(closable);
-  }
-
-  @Input('clrSidePanelPreventClose')
-  get preventClose(): boolean {
-    return this.preventCloseState();
-  }
-  set preventClose(preventClose: boolean) {
-    this.preventCloseState.set(preventClose);
-  }
-
   @Input('clrSidePanelSize')
   get size(): string {
-    return this.sizeState();
+    return this._size;
   }
 
   set size(value: string) {
     if (!value) {
       value = 'md';
     }
-    if (this.size !== value) {
-      this.sizeState.set(value);
+    if (this._size !== value) {
+      this._size = value;
       if (this.pinned) {
         this.updateModalState();
       }
@@ -140,15 +91,15 @@ export class ClrSidePanel implements OnInit, OnDestroy {
 
   @Input('clrSidePanelPosition')
   get position(): string {
-    return this.positionState();
+    return this._position;
   }
 
   set position(position: string) {
-    if (position && position !== this.position) {
-      this.positionState.set(position);
-      if (position === 'right') {
+    if (position && position !== this._position) {
+      this._position = position;
+      if (this._position === 'right') {
         this.configuration.fadeMove = 'fadeLeft';
-      } else if (position === 'bottom') {
+      } else if (this._position === 'bottom') {
         this.configuration.fadeMove = 'fadeUp';
       }
     }
@@ -156,11 +107,11 @@ export class ClrSidePanel implements OnInit, OnDestroy {
 
   @Input('clrSidePanelPinned')
   get pinned(): boolean {
-    return this.pinnedState();
+    return this.isPinned();
   }
 
   set pinned(pinned: boolean) {
-    this.pinnedState.set(pinned);
+    this.isPinned.set(pinned);
     if (this.modal) {
       this.updateModalState();
     }
@@ -179,11 +130,11 @@ export class ClrSidePanel implements OnInit, OnDestroy {
 
   @Input()
   get clrSidePanelPinnable(): boolean {
-    return this.pinnableState();
+    return this._pinnable;
   }
 
   set clrSidePanelPinnable(pinnable: boolean) {
-    this.pinnableState.set(pinnable);
+    this._pinnable = pinnable;
   }
 
   @ViewChild(ClrModal)
@@ -255,7 +206,7 @@ export class ClrSidePanel implements OnInit, OnDestroy {
     }
     if (this.pinned) {
       this.modal.stopClose = true;
-      if (this.isOpen()) {
+      if (this.__open) {
         this.updatePinnedClasses();
       }
     } else {

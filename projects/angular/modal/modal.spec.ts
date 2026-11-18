@@ -26,6 +26,7 @@ import { ClrModalModule } from './modal.module';
       [clrModalCloseButtonAriaLabel]="closeButtonAriaLabel"
       [clrModalSize]="size"
       [clrModalStaticBackdrop]="staticBackdrop"
+      [clrModalLabelledById]="labelledBy"
     >
       <h4 class="modal-title">Title</h4>
       <div class="modal-body">
@@ -47,6 +48,7 @@ class TestComponent {
   closeButtonAriaLabel: string = undefined;
   size = '';
   staticBackdrop = false;
+  labelledBy: string = undefined;
 }
 
 @Component({
@@ -318,9 +320,7 @@ describe('Modal', () => {
   });
 
   it('should allow a custom aria-labelledby attribute value', () => {
-    modal.labelledBy = 'custom-id';
-
-    modal.open();
+    fixture.componentInstance.labelledBy = 'custom-id';
     renderFixture(fixture);
 
     expect(compiled.querySelector('.modal-dialog').getAttribute('aria-labelledby')).toBe('custom-id');

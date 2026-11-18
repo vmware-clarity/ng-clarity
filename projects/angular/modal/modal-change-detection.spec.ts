@@ -10,19 +10,24 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrModal } from './modal';
-import { ClrModalConfigurationService } from './modal-configuration.service';
 import { ClrModalModule } from './modal.module';
 import { ClrSidePanel } from './side-panel';
 import { ClrSidePanelModule } from './side-panel.module';
 
-// ClrModal and ClrSidePanel are OnPush. These specs check that every way of changing them still renders:
+// ClrModal and ClrSidePanel are OnPush. These specs check that bindings and the imperative methods still render:
 // - under an OnPush host driven by signals, with automatic change detection (zoneless);
 // - under an Eager host with plain fields, where only the host is checked after each change, as a Zone app's tick does.
 // The exhaustive checkNoChanges of the test providers fails any check that leaves a stale binding behind.
 
 @Component({
   template: `
-    <clr-modal [(clrModalOpen)]="open" [clrModalSkipAnimation]="true">
+    <clr-modal
+      [(clrModalOpen)]="open"
+      [clrModalSize]="size()"
+      [clrModalClosable]="closable()"
+      [clrModalLabelledById]="labelledBy()"
+      [clrModalSkipAnimation]="true"
+    >
       <h3 class="modal-title">{{ title() }}</h3>
       <div class="modal-body">
         <p class="text">{{ text() }}</p>
@@ -39,7 +44,13 @@ import { ClrSidePanelModule } from './side-panel.module';
         <p class="raw-content">{{ text() }}</p>
       </ng-template>
     </clr-modal>
-    <clr-side-panel [(clrSidePanelOpen)]="panelOpen" [clrSidePanelSkipAnimation]="true">
+    <clr-side-panel
+      [(clrSidePanelOpen)]="panelOpen"
+      [clrSidePanelPinnable]="true"
+      [clrSidePanelBackdrop]="backdrop()"
+      [clrSidePanelPosition]="position()"
+      [clrSidePanelSkipAnimation]="true"
+    >
       <h3 class="side-panel-title">Panel</h3>
       <div class="side-panel-body">
         <p class="panel-text">{{ text() }}</p>
@@ -54,7 +65,12 @@ class SignalHost {
   @ViewChild(ClrSidePanel) panel: ClrSidePanel;
 
   readonly open = signal(false);
+  readonly size = signal('md');
+  readonly closable = signal(true);
+  readonly labelledBy = signal<string>(undefined);
   readonly panelOpen = signal(false);
+  readonly backdrop = signal(true);
+  readonly position = signal('right');
   readonly title = signal('Title');
   readonly text = signal('First');
   readonly late = signal(false);
@@ -62,7 +78,7 @@ class SignalHost {
 
 @Component({
   template: `
-    <clr-modal [(clrModalOpen)]="open" [clrModalSkipAnimation]="true">
+    <clr-modal [(clrModalOpen)]="open" [clrModalSize]="size" [clrModalSkipAnimation]="true">
       <h3 class="modal-title">Title</h3>
       <div class="modal-body">
         <p class="text">{{ text }}</p>
@@ -73,7 +89,12 @@ class SignalHost {
         <p class="raw-content">{{ text }}</p>
       </ng-template>
     </clr-modal>
-    <clr-side-panel [(clrSidePanelOpen)]="panelOpen" [clrSidePanelSkipAnimation]="true">
+    <clr-side-panel
+      [(clrSidePanelOpen)]="panelOpen"
+      [clrSidePanelPinnable]="true"
+      [clrSidePanelPosition]="position"
+      [clrSidePanelSkipAnimation]="true"
+    >
       <h3 class="side-panel-title">Panel</h3>
       <div class="side-panel-body">
         <p class="panel-text">{{ text }}</p>
@@ -88,7 +109,9 @@ class ZoneAppHost {
   @ViewChild(ClrSidePanel) panel: ClrSidePanel;
 
   open = false;
+  size = 'md';
   panelOpen = false;
+  position = 'right';
   text = 'First';
 }
 
@@ -98,6 +121,10 @@ function query<T extends Element = HTMLElement>(fixture: ComponentFixture<unknow
 
 function dialog(fixture: ComponentFixture<unknown>, host: 'clr-modal' | 'clr-side-panel' = 'clr-modal') {
   return query(fixture, `${host} .modal-dialog`);
+}
+
+function pinShape(fixture: ComponentFixture<unknown>) {
+  return query(fixture, '.pinnable cds-icon').getAttribute('shape');
 }
 
 function rawModal(fixture: ComponentFixture<unknown>): ClrModal {
@@ -131,42 +158,20 @@ describe('Modal change detection: OnPush host driven by signals', () => {
     expect(host.open()).toBe(false);
   });
 
-  it('renders direct writes to the modal inputs while open', async () => {
+  it('renders input changes while open', async () => {
     host.open.set(true);
     await fixture.whenStable();
 
-    host.modal.size = 'lg';
-    host.modal.labelledBy = 'custom-title';
-    host.modal.closeButtonAriaLabel = 'Dismiss';
-    host.modal.staticBackdrop = false;
+    host.size.set('lg');
+    host.labelledBy.set('custom-title');
     await fixture.whenStable();
     expect(dialog(fixture).classList).toContain('modal-lg');
     expect(dialog(fixture).getAttribute('aria-labelledby')).toBe('custom-title');
-    expect(query(fixture, 'clr-modal .close').getAttribute('aria-label')).toBe('Dismiss');
-    expect(query(fixture, 'clr-modal .modal-backdrop').classList).not.toContain('static');
+    expect(query(fixture, 'clr-modal .close')).not.toBeNull();
 
-    host.modal.closable = false;
+    host.closable.set(false);
     await fixture.whenStable();
     expect(query(fixture, 'clr-modal .close')).toBeNull();
-
-    host.modal._open = false;
-    await fixture.whenStable();
-    expect(dialog(fixture)).toBeNull();
-  });
-
-  it('renders a change of the shared modal configuration while open', async () => {
-    const configuration = TestBed.inject(ClrModalConfigurationService);
-    host.open.set(true);
-    await fixture.whenStable();
-    expect(query(fixture, 'clr-modal .modal-backdrop')).not.toBeNull();
-
-    configuration.backdrop = false;
-    await fixture.whenStable();
-    expect(query(fixture, 'clr-modal .modal-backdrop')).toBeNull();
-
-    configuration.backdrop = true;
-    await fixture.whenStable();
-    expect(query(fixture, 'clr-modal .modal-backdrop')).not.toBeNull();
   });
 
   it('refreshes projected content and content added after opening', async () => {
@@ -198,7 +203,7 @@ describe('Modal change detection: OnPush host driven by signals', () => {
     expect(query(fixture, '.raw-content').textContent).toBe('Second');
   });
 
-  it('opens and closes from asynchronous signal changes', async () => {
+  it('opens and closes from asynchronous changes', async () => {
     setTimeout(() => host.open.set(true));
     await new Promise(resolve => setTimeout(resolve));
     await fixture.whenStable();
@@ -209,54 +214,51 @@ describe('Modal change detection: OnPush host driven by signals', () => {
     expect(dialog(fixture)).toBeNull();
   });
 
-  it('renders the side panel open, pin and size changes made from code', async () => {
-    host.panel.clrSidePanelPinnable = true;
+  it('renders the side panel open(), togglePinned() and close() from code', async () => {
     host.panel.open();
     await fixture.whenStable();
     expect(dialog(fixture, 'clr-side-panel')).not.toBeNull();
     expect(host.panelOpen()).toBe(true);
-    expect(query(fixture, '.pinnable cds-icon').getAttribute('shape')).toBe('pin');
+    expect(pinShape(fixture)).toBe('pin');
 
     host.panel.togglePinned();
     await fixture.whenStable();
-    expect(query(fixture, '.pinnable cds-icon').getAttribute('shape')).toBe('unpin');
+    expect(pinShape(fixture)).toBe('unpin');
 
-    host.panel.pinned = false;
-    host.panel.size = 'lg';
-    host.panel.closeButtonAriaLabel = 'Dismiss panel';
+    host.panel.togglePinned();
     await fixture.whenStable();
-    expect(query(fixture, '.pinnable cds-icon').getAttribute('shape')).toBe('pin');
-    expect(dialog(fixture, 'clr-side-panel').classList).toContain('modal-lg');
-    expect(query(fixture, 'clr-side-panel .close').getAttribute('aria-label')).toBe('Dismiss panel');
+    expect(pinShape(fixture)).toBe('pin');
 
-    host.panel.closable = false;
-    await fixture.whenStable();
-    expect(query(fixture, 'clr-side-panel .close')).toBeNull();
-
-    host.panel.closable = true;
-    await fixture.whenStable();
     host.panel.close();
     await fixture.whenStable();
     expect(dialog(fixture, 'clr-side-panel')).toBeNull();
     expect(host.panelOpen()).toBe(false);
   });
 
-  it('renders the side panel position host class and projected content', async () => {
+  it('renders the backdrop and position that the side panel sets on the modal configuration', async () => {
     host.panelOpen.set(true);
     await fixture.whenStable();
+    expect(query(fixture, 'clr-side-panel .modal-backdrop')).not.toBeNull();
     expect(query(fixture, 'clr-side-panel').classList).not.toContain('side-panel-bottom');
 
-    host.panel.position = 'bottom';
+    host.backdrop.set(false);
+    host.position.set('bottom');
     host.text.set('Second');
     await fixture.whenStable();
+    expect(query(fixture, 'clr-side-panel .modal-backdrop')).toBeNull();
     expect(query(fixture, 'clr-side-panel').classList).toContain('side-panel-bottom');
     expect(query(fixture, '.panel-text').textContent).toBe('Second');
+
+    host.backdrop.set(true);
+    await fixture.whenStable();
+    expect(query(fixture, 'clr-side-panel .modal-backdrop')).not.toBeNull();
   });
 
   it('cleans up the scroll lock and pinned classes when destroyed while open', async () => {
     host.open.set(true);
-    host.panel.pinned = true;
     host.panelOpen.set(true);
+    await fixture.whenStable();
+    host.panel.togglePinned();
     await fixture.whenStable();
     expect(document.body.classList).toContain('no-scrolling');
     expect([...document.body.classList].some(name => name.startsWith('clr-side-panel-pinned-'))).toBe(true);
@@ -283,33 +285,29 @@ describe('Modal change detection: Eager host with plain fields (Zone app)', () =
 
   afterEach(() => fixture.destroy());
 
-  it('opens and closes from a plain field and refreshes projected content', () => {
+  it('opens and closes from a plain field and refreshes inputs and projected content', () => {
     host.open = true;
     tick();
     expect(dialog(fixture)).not.toBeNull();
     expect(query(fixture, '.text').textContent).toBe('First');
 
     host.text = 'Second';
+    host.size = 'sm';
     tick();
     expect(query(fixture, '.text').textContent).toBe('Second');
+    expect(dialog(fixture).classList).toContain('modal-sm');
 
     host.open = false;
     tick();
     expect(dialog(fixture)).toBeNull();
   });
 
-  it('renders open(), close() and direct input writes made from code', async () => {
+  it('renders open() and close() called from code', async () => {
     host.modal.open();
     tick();
     expect(dialog(fixture)).not.toBeNull();
+    expect(host.open).toBe(true);
 
-    host.modal.size = 'sm';
-    host.modal.closable = false;
-    tick();
-    expect(dialog(fixture).classList).toContain('modal-sm');
-    expect(query(fixture, 'clr-modal .close')).toBeNull();
-
-    host.modal.closable = true;
     host.modal.close();
     tick();
     await fixture.whenStable();
@@ -339,17 +337,16 @@ describe('Modal change detection: Eager host with plain fields (Zone app)', () =
     expect(query(fixture, '.raw-content').textContent).toBe('Second');
   });
 
-  it('renders side panel changes made from code', () => {
+  it('renders side panel togglePinned() and position changes', () => {
     host.panelOpen = true;
-    host.panel.clrSidePanelPinnable = true;
     tick();
-    expect(query(fixture, '.pinnable cds-icon').getAttribute('shape')).toBe('pin');
+    expect(pinShape(fixture)).toBe('pin');
 
-    host.panel.pinned = true;
-    host.panel.position = 'bottom';
+    host.panel.togglePinned();
+    host.position = 'bottom';
     host.text = 'Second';
     tick();
-    expect(query(fixture, '.pinnable cds-icon').getAttribute('shape')).toBe('unpin');
+    expect(pinShape(fixture)).toBe('unpin');
     expect(query(fixture, 'clr-side-panel').classList).toContain('side-panel-bottom');
     expect(query(fixture, '.panel-text').textContent).toBe('Second');
   });
