@@ -5,6 +5,7 @@
 ```ts
 
 import { AbstractControl } from '@angular/forms';
+import { AfterContentChecked } from '@angular/core';
 import { AfterContentInit } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
 import { AnimationCallbackEvent } from '@angular/core';
@@ -54,6 +55,7 @@ import { Type } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
 import { Validator } from '@angular/forms';
 import { ViewContainerRef } from '@angular/core';
+import { WritableSignal } from '@angular/core';
 
 // @public (undocumented)
 export abstract class AbstractIfState {
@@ -668,7 +670,7 @@ export class ClrDatalist implements AfterContentInit {
 export class ClrDatalistContainer extends ClrAbstractContainer {
     constructor(controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, focusService: FormsFocusService);
     // (undocumented)
-    focus: boolean;
+    get focus(): boolean;
     // (undocumented)
     showPicker(datalist: HTMLElement): void;
     // (undocumented)
@@ -1527,7 +1529,7 @@ export class ClrNumberInput extends WrappedFormControl<ClrNumberInputContainer> 
 export class ClrNumberInputContainer extends ClrAbstractContainer {
     constructor(controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, focusService: FormsFocusService);
     // (undocumented)
-    focus: boolean;
+    get focus(): boolean;
     // (undocumented)
     focusOut(): void;
     // (undocumented)
@@ -1747,7 +1749,7 @@ export class ClrPassword extends WrappedFormControl<ClrPasswordContainer> implem
 }
 
 // @public (undocumented)
-export class ClrPasswordContainer extends ClrAbstractContainer {
+export class ClrPasswordContainer extends ClrAbstractContainer implements AfterContentChecked {
     constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, focusService: FormsFocusService, toggleService: BehaviorSubject<boolean>, commonStrings: ClrCommonStringsService);
     // (undocumented)
     get clrToggle(): boolean;
@@ -1755,11 +1757,15 @@ export class ClrPasswordContainer extends ClrAbstractContainer {
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
-    focus: boolean;
+    get focus(): boolean;
     // (undocumented)
     focusService: FormsFocusService;
     // (undocumented)
     hidePasswordText(label: string): string;
+    // (undocumented)
+    protected readonly labelText: WritableSignal<string>;
+    // (undocumented)
+    ngAfterContentChecked(): void;
     // (undocumented)
     show: boolean;
     // (undocumented)
@@ -1871,24 +1877,26 @@ export class ClrRange extends WrappedFormControl<ClrRangeContainer> {
 }
 
 // @public (undocumented)
-export class ClrRangeContainer extends ClrAbstractContainer {
-    constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, renderer: Renderer2, idService: ControlIdService);
+export class ClrRangeContainer extends ClrAbstractContainer implements AfterContentChecked {
+    constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
     // (undocumented)
     getRangeProgressFillWidth(): string;
     // (undocumented)
     get hasProgress(): boolean;
     set hasProgress(val: boolean);
     // (undocumented)
+    ngAfterContentChecked(): void;
+    // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrRangeContainer, "clr-range-container", never, {
         "hasProgress": {
             "alias": "clrRangeHasProgress";
             "required": false;
         };
-    }, {}, never, ["label", "[clrRange]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
+    }, {}, ["input"], ["label", "[clrRange]", "clr-control-helper", "clr-control-error", "clr-control-success"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrRangeContainer, [{
         optional: true;
-    }, null, null, null, null]>;
+    }, null, null]>;
 }
 
 // @public (undocumented)
@@ -2178,6 +2186,7 @@ export class FormsFocusService {
     get focusChange(): Observable<boolean>;
     // (undocumented)
     set focused(state: boolean);
+    get isFocused(): Signal<boolean>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<FormsFocusService, never>;
     // (undocumented)

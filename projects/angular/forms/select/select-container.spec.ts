@@ -10,7 +10,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ClrSelect } from './select';
 import { ClrSelectContainer } from './select-container';
+import { ClrSelectModule } from './select.module';
 import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container';
+import { ContainerChangeDetectionSpec } from '../tests/onpush-container';
 
 @Component({
   template: `
@@ -137,5 +139,15 @@ describe('Select component', () => {
       );
       ReactiveSpec(ClrSelectContainer, ClrSelect, ReactiveMultipleTest, '.clr-multiselect-wrapper [clrSelect]');
     });
+  });
+
+  ContainerChangeDetectionSpec({
+    imports: [ClrSelectModule],
+    container: 'clr-select-container',
+    controlMarkup:
+      '<select clrSelect [formControl]="control"><option value="">None</option><option value="one">One</option></select>',
+    initialValue: '',
+    validValue: 'one',
+    validator: Validators.required,
   });
 });

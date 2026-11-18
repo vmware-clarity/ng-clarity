@@ -45,25 +45,25 @@ import { DatalistIdService } from './providers/datalist-id.service';
   `,
   host: {
     '[class.clr-form-control]': 'true',
-    '[class.clr-form-control-disabled]': 'control?.disabled',
+    '[class.clr-form-control-disabled]': 'controlState().disabled',
     '[class.clr-row]': 'addGrid()',
   },
   providers: [ControlClassService, ControlIdService, FormsFocusService, NgControlService, DatalistIdService],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrDatalistContainer extends ClrAbstractContainer {
-  focus = false;
-
   constructor(
     controlClassService: ControlClassService,
     @Optional() layoutService: LayoutService,
     ngControlService: NgControlService,
-    focusService: FormsFocusService
+    private focusService: FormsFocusService
   ) {
     super(layoutService, controlClassService, ngControlService);
+  }
 
-    this.subscriptions.push(focusService.focusChange.subscribe(state => (this.focus = state)));
+  get focus() {
+    return this.focusService.isFocused();
   }
 
   showPicker(datalist: HTMLElement) {

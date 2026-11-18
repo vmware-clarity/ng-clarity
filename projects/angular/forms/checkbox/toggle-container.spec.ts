@@ -16,7 +16,14 @@ import { renderFixture } from '@clr/angular/utils/testing';
 import { ClrCheckbox } from './checkbox';
 import { ClrCheckboxContainer } from './checkbox-container';
 import { ClrCheckboxWrapper } from './checkbox-wrapper';
+import { ClrCheckboxModule } from './checkbox.module';
 import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container';
+import {
+  ContainerChangeDetectionSpec,
+  ContainerTestHostOptions,
+  containerTestHosts,
+  eachContainerHost,
+} from '../tests/onpush-container';
 
 @Component({
   template: `
@@ -80,6 +87,17 @@ class ReactiveTest {
   });
 }
 
+const hostOptions: ContainerTestHostOptions = {
+  wrapperLabel: true,
+  imports: [ClrCheckboxModule],
+  container: 'clr-toggle-container',
+  controlMarkup:
+    '<clr-toggle-wrapper><input type="checkbox" clrToggle [formControl]="control" /><label>Option</label></clr-toggle-wrapper>',
+  initialValue: false,
+  validValue: true,
+  validator: Validators.requiredTrue,
+};
+
 describe('Checkbox component', () => {
   describe('ClrCheckboxContainer', () => {
     ContainerNoLabelSpec(ClrCheckboxContainer, [ClrCheckboxWrapper, ClrCheckbox], NoLabelTest);
@@ -119,6 +137,33 @@ describe('Checkbox component', () => {
         fixture.debugElement.componentInstance.inline = true;
         renderFixture(fixture);
         expect(containerEl.querySelector('.clr-control-container').className).toContain('clr-control-inline');
+      });
+    });
+  });
+
+  ContainerChangeDetectionSpec(hostOptions);
+
+  describe('clr-toggle-wrapper in a container', () => {
+    eachContainerHost(hostOptions.container, containerTestHosts(hostOptions), context => {
+      it('renders the wrapper and groups the control under the container label', () => {
+        const { containerEl } = context();
+        const label = containerEl.querySelector(':scope > label');
+
+        expect(containerEl.querySelector('clr-toggle-wrapper').classList).toContain('clr-toggle-wrapper');
+        expect(containerEl.getAttribute('aria-labelledby')).toBe(label.id);
+      });
+
+      it('marks the wrapper disabled when consumer code disables the control', async () => {
+        const { host, containerEl, settle } = context();
+        const wrapper = containerEl.querySelector('clr-toggle-wrapper');
+
+        host.control.disable();
+        await settle();
+        expect(wrapper.classList).toContain('clr-checkbox-wrapper-disabled');
+
+        host.control.enable();
+        await settle();
+        expect(wrapper.classList).not.toContain('clr-checkbox-wrapper-disabled');
       });
     });
   });

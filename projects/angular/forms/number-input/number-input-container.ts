@@ -33,7 +33,7 @@ import { ClrNumberInput } from './number-input';
               type="button"
               class="clr-input-group-icon-action"
               (click)="input.stepDown()"
-              [disabled]="control?.disabled ?? null"
+              [disabled]="controlState().disabled"
             >
               <cds-icon shape="minus" size="sm"></cds-icon>
             </button>
@@ -42,7 +42,7 @@ import { ClrNumberInput } from './number-input';
               type="button"
               class="clr-input-group-icon-action"
               (click)="input.stepUp()"
-              [disabled]="control?.disabled ?? null"
+              [disabled]="controlState().disabled"
             >
               <cds-icon shape="plus" size="sm"></cds-icon>
             </button>
@@ -62,28 +62,28 @@ import { ClrNumberInput } from './number-input';
   `,
   host: {
     '[class.clr-form-control]': 'true',
-    '[class.clr-form-control-disabled]': 'control?.disabled',
+    '[class.clr-form-control-disabled]': 'controlState().disabled',
     '[class.clr-form-control-readonly]': 'input?.readonly',
     '[class.clr-row]': 'addGrid()',
   },
   providers: [FormsFocusService, NgControlService, ControlIdService, ControlClassService],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrNumberInputContainer extends ClrAbstractContainer {
-  focus = false;
-
   @ContentChild(forwardRef(() => ClrNumberInput)) protected readonly input: ClrNumberInput;
 
   constructor(
     controlClassService: ControlClassService,
     @Optional() layoutService: LayoutService,
     ngControlService: NgControlService,
-    focusService: FormsFocusService
+    private focusService: FormsFocusService
   ) {
     super(layoutService, controlClassService, ngControlService);
+  }
 
-    this.subscriptions.push(focusService.focusChange.subscribe(state => (this.focus = state)));
+  get focus() {
+    return this.focusService.isFocused();
   }
 
   focusOut() {
