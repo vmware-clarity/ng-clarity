@@ -5,7 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrDateInput, ClrDatepickerModule, ClrEndDateInput, ClrFormsModule, ClrStartDateInput } from '@clr/angular';
+import {
+  ClrDateInput,
+  ClrDatepickerModule,
+  ClrEndDateInput,
+  ClrFormsModule,
+  ClrStartDateInput,
+  DateRangeOption,
+} from '@clr/angular';
 import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
 import { hideControls } from '@storybook-helpers/arg-types';
 import { CommonModules } from '@storybook-helpers/common';
@@ -91,7 +98,7 @@ const meta = {
     // DateRangePicker args
     clrStartDate: '',
     clrEndDate: '',
-    predefinedDateRanges: [],
+    predefinedDateRanges: [] as DateRangeOption[],
     // outputs
     clrDateChange: action('clrDateChange'),
     clrStartDateChange: action('clrStartDateChange'),

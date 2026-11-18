@@ -71,7 +71,24 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy {
     state: Record<string, unknown> | null;
     type: string;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContext, "[clrContext]", never, { "label": { "alias": "clrContext"; "required": false; }; "type": { "alias": "clrContextType"; "required": false; }; "state": { "alias": "clrContextState"; "required": false; }; "publicKeys": { "alias": "clrContextPublicKeys"; "required": false; }; }, {}, never, never, true, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContext, "[clrContext]", never, {
+        "label": {
+            "alias": "clrContext";
+            "required": false;
+        };
+        "type": {
+            "alias": "clrContextType";
+            "required": false;
+        };
+        "state": {
+            "alias": "clrContextState";
+            "required": false;
+        };
+        "publicKeys": {
+            "alias": "clrContextPublicKeys";
+            "required": false;
+        };
+    }, {}, never, never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContext, never>;
 }
@@ -150,7 +167,7 @@ export class ClrContextRegistryService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextRegistryService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrContextRegistryService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public
@@ -164,7 +181,7 @@ export class ClrContextService implements OnDestroy {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrContextService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public

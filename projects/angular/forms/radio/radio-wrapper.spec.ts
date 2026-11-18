@@ -10,7 +10,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrRadio } from './radio';
 import { ClrRadioContainer } from './radio-container';
 import { ClrRadioWrapper } from './radio-wrapper';
-import { WrapperContainerSpec, WrapperFullSpec, WrapperNoLabelSpec } from '../tests/wrapper.spec';
+import { WrapperContainerSpec, WrapperFullSpec, WrapperNoLabelSpec } from '../tests/wrapper';
 
 @Component({
   template: `
@@ -54,10 +54,10 @@ class ContainerTest {
   model = '';
 }
 
-export default function (): void {
+describe('Radio component', () => {
   describe('ClrRadioWrapper', () => {
     WrapperNoLabelSpec(ClrRadioWrapper, ClrRadio, NoLabelTest);
     WrapperFullSpec(ClrRadioWrapper, ClrRadio, FullTest, 'clr-radio-wrapper');
     WrapperContainerSpec(ClrRadioContainer, ClrRadioWrapper, ClrRadio, ContainerTest, 'clr-radio-wrapper');
   });
-}
+});

@@ -83,7 +83,12 @@ interface TestContext<T extends WrappingTest | ExplicitTest | NgIfTest> {
   wrapped: WrappedDirective;
 }
 
-describe('Host wrapping', function () {
+describe('Host wrapping', () => {
+  let testContext: TestContext<WrappingTest>;
+  beforeEach(() => {
+    testContext = {} as TestContext<WrappingTest>;
+  });
+
   function setupTest<T>(testContext: TestContext<T>, testComponent: Type<T>) {
     TestBed.configureTestingModule({
       imports: [ClrHostWrappingModule, HostWrappingTestModule],
@@ -97,71 +102,85 @@ describe('Host wrapping', function () {
       .injector.get(WrappedDirective);
   }
 
-  describe('with an explicit wrapper', function () {
-    beforeEach(function (this: TestContext<ExplicitTest>) {
-      setupTest(this, ExplicitTest);
+  describe('with an explicit wrapper', () => {
+    beforeEach(() => {
+      const typedContext = testContext as unknown as TestContext<ExplicitTest>;
+
+      setupTest(typedContext, ExplicitTest);
     });
 
-    afterEach(function (this: TestContext<ExplicitTest>) {
-      this.fixture.destroy();
+    afterEach(() => {
+      const typedContext = testContext as unknown as TestContext<ExplicitTest>;
+
+      typedContext.fixture.destroy();
     });
 
-    it('renders one wrapper and one child', function (this: TestContext<ExplicitTest>) {
-      expect(this.fixture.nativeElement.textContent.trim()).toBe('Hello World!');
+    it('renders one wrapper and one child', () => {
+      const typedContext = testContext as unknown as TestContext<ExplicitTest>;
+
+      expect(typedContext.fixture.nativeElement.textContent.trim()).toBe('Hello World!');
     });
 
-    it('proxies to the default injector', function (this: TestContext<ExplicitTest>) {
-      expect(this.wrapped.injected).toBe(42);
+    it('proxies to the default injector', () => {
+      const typedContext = testContext as unknown as TestContext<ExplicitTest>;
+
+      expect(typedContext.wrapped.injected).toBe(42);
     });
 
-    it("doesn't create extra elements", function (this: TestContext<WrappingTest>) {
-      expect(this.fixture.nativeElement.childElementCount).toBe(1);
-      expect(this.fixture.nativeElement.firstElementChild.childElementCount).toBe(1);
-    });
-  });
-
-  describe('without an explicit wrapper', function () {
-    beforeEach(function (this: TestContext<WrappingTest>) {
-      setupTest(this, WrappingTest);
-    });
-
-    afterEach(function (this: TestContext<WrappingTest>) {
-      this.fixture.destroy();
-    });
-
-    it('creates a wrapper and projects the host into it', function (this: TestContext<WrappingTest>) {
-      expect(this.fixture.nativeElement.textContent.trim()).toBe('Hello World!');
-    });
-
-    it("proxies to the newly created wrapper's injector", function (this: TestContext<WrappingTest>) {
-      expect(this.wrapped.injected).toBe(42);
-    });
-
-    it("doesn't leave useless elements", function (this: TestContext<WrappingTest>) {
-      expect(this.fixture.nativeElement.childElementCount).toBe(1);
-      expect(this.fixture.nativeElement.firstElementChild.childElementCount).toBe(1);
+    it("doesn't create extra elements", () => {
+      expect(testContext.fixture.nativeElement.childElementCount).toBe(1);
+      expect(testContext.fixture.nativeElement.firstElementChild.childElementCount).toBe(1);
     });
   });
 
-  describe('with @if', function () {
-    beforeEach(function (this: TestContext<NgIfTest>) {
-      setupTest(this, NgIfTest);
+  describe('without an explicit wrapper', () => {
+    beforeEach(() => {
+      setupTest(testContext, WrappingTest);
     });
 
-    afterEach(function (this: TestContext<NgIfTest>) {
-      this.fixture.destroy();
+    afterEach(() => {
+      testContext.fixture.destroy();
     });
 
-    it('correctly destroys and recreates everything', function (this: TestContext<NgIfTest>) {
-      expect(this.fixture.nativeElement.textContent.trim()).toBe('Hello World!');
+    it('creates a wrapper and projects the host into it', () => {
+      expect(testContext.fixture.nativeElement.textContent.trim()).toBe('Hello World!');
+    });
 
-      this.fixture.componentInstance.show = false;
-      this.fixture.detectChanges();
-      expect(this.fixture.nativeElement.textContent.trim()).toBe('');
+    it("proxies to the newly created wrapper's injector", () => {
+      expect(testContext.wrapped.injected).toBe(42);
+    });
 
-      this.fixture.componentInstance.show = true;
-      this.fixture.detectChanges();
-      expect(this.fixture.nativeElement.textContent.trim()).toBe('Hello World!');
+    it("doesn't leave useless elements", () => {
+      expect(testContext.fixture.nativeElement.childElementCount).toBe(1);
+      expect(testContext.fixture.nativeElement.firstElementChild.childElementCount).toBe(1);
+    });
+  });
+
+  describe('with @if', () => {
+    beforeEach(() => {
+      const typedContext = testContext as unknown as TestContext<NgIfTest>;
+
+      setupTest(typedContext, NgIfTest);
+    });
+
+    afterEach(() => {
+      const typedContext = testContext as unknown as TestContext<NgIfTest>;
+
+      typedContext.fixture.destroy();
+    });
+
+    it('correctly destroys and recreates everything', () => {
+      const typedContext = testContext as unknown as TestContext<NgIfTest>;
+
+      expect(typedContext.fixture.nativeElement.textContent.trim()).toBe('Hello World!');
+
+      typedContext.fixture.componentInstance.show = false;
+      typedContext.fixture.detectChanges();
+      expect(typedContext.fixture.nativeElement.textContent.trim()).toBe('');
+
+      typedContext.fixture.componentInstance.show = true;
+      typedContext.fixture.detectChanges();
+      expect(typedContext.fixture.nativeElement.textContent.trim()).toBe('Hello World!');
     });
   });
 });

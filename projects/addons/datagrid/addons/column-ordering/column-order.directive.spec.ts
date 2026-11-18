@@ -27,78 +27,83 @@ import { DatagridColumnsOrderService } from './datagrid-columns-order.service';
 import { ColumnDefinition } from '../../shared/column/column-definitions';
 
 describe('ColumnOrderDirective', () => {
+  let testContext: any;
+  beforeEach(() => {
+    testContext = {};
+  });
+
   let service: DatagridColumnsOrderService;
-  beforeEach(function (this: any) {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [CommonModule, ClrDatagridModule, DragDropModule, TestClrDatagridHostComponent],
     });
 
-    this.fixture = TestBed.createComponent(TestClrDatagridHostComponent);
-    service = this.fixture.debugElement
+    testContext.fixture = TestBed.createComponent(TestClrDatagridHostComponent);
+    service = testContext.fixture.debugElement
       .query(By.directive(DatagridColumnsOrderDirective))
       .injector.get(DatagridColumnsOrderService);
-    this.datagridHostComponent = this.fixture.componentInstance;
+    testContext.datagridHostComponent = testContext.fixture.componentInstance;
   });
 
   describe('emits null as grabbed column event', () => {
     let receivedDraggedColumnData: any[] = [];
-    beforeEach(function (this: any) {
+    beforeEach(() => {
       receivedDraggedColumnData = [];
-      this.fixture.detectChanges();
-      service.grabbedColumn.next(this.datagridHostComponent.columns[0]);
+      testContext.fixture.detectChanges();
+      service.grabbedColumn.next(testContext.datagridHostComponent.columns[0]);
       service.grabbedColumn.subscribe(data => {
         receivedDraggedColumnData.push(data);
       });
     });
 
-    it('when on a grabbed column an up arrow key is pressed', function (this: any) {
+    it('when on a grabbed column an up arrow key is pressed', () => {
       expect(receivedDraggedColumnData.length).toEqual(1);
       const keyDownEvent: KeyboardEvent = new KeyboardEvent('keydown', {
         code: 'ArrowUp',
       });
-      this.datagridHostComponent.content.elementRefs.first.nativeElement.dispatchEvent(keyDownEvent);
+      testContext.datagridHostComponent.content.elementRefs.first.nativeElement.dispatchEvent(keyDownEvent);
       //The initial value is gabbed column, then we expect null
       //as result of key down event
       expect(receivedDraggedColumnData.length).toEqual(2);
       expect(receivedDraggedColumnData[1]).toBeNull();
     });
 
-    it('when on a grabbed column a down arrow key is pressed', function (this: any) {
+    it('when on a grabbed column a down arrow key is pressed', () => {
       expect(receivedDraggedColumnData.length).toEqual(1);
       const keyDownEvent: KeyboardEvent = new KeyboardEvent('keydown', {
         code: 'ArrowDown',
       });
-      this.datagridHostComponent.content.elementRefs.first.nativeElement.dispatchEvent(keyDownEvent);
+      testContext.datagridHostComponent.content.elementRefs.first.nativeElement.dispatchEvent(keyDownEvent);
 
       expect(receivedDraggedColumnData.length).toEqual(2);
       expect(receivedDraggedColumnData[1]).toBeNull();
     });
 
-    it('when on a grabbed column an escape key is pressed', function (this: any) {
+    it('when on a grabbed column an escape key is pressed', () => {
       expect(receivedDraggedColumnData.length).toEqual(1);
       const keyDownEvent: KeyboardEvent = new KeyboardEvent('keydown', {
         code: 'Escape',
       });
-      this.datagridHostComponent.content.elementRefs.first.nativeElement.dispatchEvent(keyDownEvent);
+      testContext.datagridHostComponent.content.elementRefs.first.nativeElement.dispatchEvent(keyDownEvent);
 
       expect(receivedDraggedColumnData.length).toEqual(2);
       expect(receivedDraggedColumnData[1]).toBeNull();
     });
 
-    it('when on a grabbed column a space key is pressed', function (this: any) {
+    it('when on a grabbed column a space key is pressed', () => {
       expect(receivedDraggedColumnData.length).toEqual(1);
       const keyDownEvent: KeyboardEvent = new KeyboardEvent('keydown', {
         code: 'Space',
       });
-      this.datagridHostComponent.content.elementRefs.first.nativeElement.dispatchEvent(keyDownEvent);
+      testContext.datagridHostComponent.content.elementRefs.first.nativeElement.dispatchEvent(keyDownEvent);
 
       expect(receivedDraggedColumnData.length).toEqual(2);
       expect(receivedDraggedColumnData[1]).toBeNull();
     });
 
-    it('when a cdkDrag started event is emitted', function (this: any) {
+    it('when a cdkDrag started event is emitted', () => {
       expect(receivedDraggedColumnData.length).toEqual(1);
-      const cdkDrag = this.datagridHostComponent.content.cdkDragDirectives.first;
+      const cdkDrag = testContext.datagridHostComponent.content.cdkDragDirectives.first;
       cdkDrag.started.next({});
 
       expect(receivedDraggedColumnData.length).toEqual(2);
@@ -106,9 +111,9 @@ describe('ColumnOrderDirective', () => {
     });
   });
 
-  it('emits column as aa grabbed column event when on a not grabbed column a space key is pressed', function (this: any) {
+  it('emits column as aa grabbed column event when on a not grabbed column a space key is pressed', () => {
     const receivedDraggedColumnData: any[] = [];
-    this.fixture.detectChanges();
+    testContext.fixture.detectChanges();
     service.grabbedColumn.subscribe(data => {
       receivedDraggedColumnData.push(data);
     });
@@ -116,115 +121,115 @@ describe('ColumnOrderDirective', () => {
     const keyDownEvent: KeyboardEvent = new KeyboardEvent('keydown', {
       code: 'Space',
     });
-    this.datagridHostComponent.content.elementRefs.first.nativeElement.dispatchEvent(keyDownEvent);
+    testContext.datagridHostComponent.content.elementRefs.first.nativeElement.dispatchEvent(keyDownEvent);
     expect(receivedDraggedColumnData.length).toEqual(2);
     expect(receivedDraggedColumnData[0]).toEqual(null);
-    expect(receivedDraggedColumnData[1]).toEqual(this.datagridHostComponent.columns[0]);
+    expect(receivedDraggedColumnData[1]).toEqual(testContext.datagridHostComponent.columns[0]);
   });
 
   describe('emits moveVisibleColumn event when on a grabbed column', () => {
     let receivedData: any[] = [];
-    beforeEach(function (this: any) {
+    beforeEach(() => {
       receivedData = [];
-      this.fixture.detectChanges();
-      service.grabbedColumn.next(this.datagridHostComponent.columns[1]);
+      testContext.fixture.detectChanges();
+      service.grabbedColumn.next(testContext.datagridHostComponent.columns[1]);
       service.moveVisibleColumn.subscribe(data => {
         receivedData.push(data);
       });
     });
 
-    it('a left arrow key is pressed', function (this: any) {
+    it('a left arrow key is pressed', () => {
       const keyDownEvent: KeyboardEvent = new KeyboardEvent('keydown', {
         code: 'ArrowLeft',
       });
-      this.datagridHostComponent.content.elementRefs.get(1).nativeElement.dispatchEvent(keyDownEvent);
+      testContext.datagridHostComponent.content.elementRefs.get(1).nativeElement.dispatchEvent(keyDownEvent);
       expect(receivedData.length).toEqual(1);
       expect(receivedData[0].visibleColumnIndex).toEqual(1);
       expect(receivedData[0].moveLeft).toEqual(true);
     });
 
-    it('a right arrow key is pressed', function (this: any) {
+    it('a right arrow key is pressed', () => {
       const keyDownEvent: KeyboardEvent = new KeyboardEvent('keydown', {
         code: 'ArrowRight',
       });
-      this.datagridHostComponent.content.elementRefs.get(1).nativeElement.dispatchEvent(keyDownEvent);
+      testContext.datagridHostComponent.content.elementRefs.get(1).nativeElement.dispatchEvent(keyDownEvent);
       expect(receivedData.length).toEqual(1);
       expect(receivedData[0].visibleColumnIndex).toEqual(1);
       expect(receivedData[0].moveLeft).toEqual(false);
     });
   });
 
-  it('switch isGrabbed state when grabbed column event is received', function (this: any) {
-    this.fixture.detectChanges();
-    service.grabbedColumn.next(this.datagridHostComponent.columns[1]);
+  it('switch isGrabbed state when grabbed column event is received', () => {
+    testContext.fixture.detectChanges();
+    service.grabbedColumn.next(testContext.datagridHostComponent.columns[1]);
 
-    expect(this.datagridHostComponent.content.columnOrderDirectives.get(0).isGrabbed).toEqual(false);
-    expect(this.datagridHostComponent.content.columnOrderDirectives.get(1).isGrabbed).toEqual(true);
-    expect(this.datagridHostComponent.content.columnOrderDirectives.get(2).isGrabbed).toEqual(false);
-    service.grabbedColumn.next(this.datagridHostComponent.columns[2]);
+    expect(testContext.datagridHostComponent.content.columnOrderDirectives.get(0).isGrabbed).toEqual(false);
+    expect(testContext.datagridHostComponent.content.columnOrderDirectives.get(1).isGrabbed).toEqual(true);
+    expect(testContext.datagridHostComponent.content.columnOrderDirectives.get(2).isGrabbed).toEqual(false);
+    service.grabbedColumn.next(testContext.datagridHostComponent.columns[2]);
 
-    expect(this.datagridHostComponent.content.columnOrderDirectives.get(0).isGrabbed).toEqual(false);
-    expect(this.datagridHostComponent.content.columnOrderDirectives.get(1).isGrabbed).toEqual(false);
-    expect(this.datagridHostComponent.content.columnOrderDirectives.get(2).isGrabbed).toEqual(true);
+    expect(testContext.datagridHostComponent.content.columnOrderDirectives.get(0).isGrabbed).toEqual(false);
+    expect(testContext.datagridHostComponent.content.columnOrderDirectives.get(1).isGrabbed).toEqual(false);
+    expect(testContext.datagridHostComponent.content.columnOrderDirectives.get(2).isGrabbed).toEqual(true);
 
     service.grabbedColumn.next(null);
 
-    expect(this.datagridHostComponent.content.columnOrderDirectives.get(0).isGrabbed).toEqual(false);
-    expect(this.datagridHostComponent.content.columnOrderDirectives.get(1).isGrabbed).toEqual(false);
-    expect(this.datagridHostComponent.content.columnOrderDirectives.get(2).isGrabbed).toEqual(false);
+    expect(testContext.datagridHostComponent.content.columnOrderDirectives.get(0).isGrabbed).toEqual(false);
+    expect(testContext.datagridHostComponent.content.columnOrderDirectives.get(1).isGrabbed).toEqual(false);
+    expect(testContext.datagridHostComponent.content.columnOrderDirectives.get(2).isGrabbed).toEqual(false);
   });
 
   describe('pinned columns', () => {
-    function keydown(this: any, index: number, code: string) {
-      this.datagridHostComponent.content.elementRefs
+    function keydown(context: any, index: number, code: string) {
+      context.datagridHostComponent.content.elementRefs
         .get(index)
         .nativeElement.dispatchEvent(new KeyboardEvent('keydown', { code: code }));
     }
 
-    beforeEach(function (this: any) {
+    beforeEach(() => {
       // A pinned column is rendered in the sticky container, outside the reorderable group.
-      this.datagridHostComponent.columns[1].pinned = true;
-      this.fixture.detectChanges();
+      testContext.datagridHostComponent.columns[1].pinned = true;
+      testContext.fixture.detectChanges();
     });
 
-    it('cannot be grabbed with the keyboard', function (this: any) {
+    it('cannot be grabbed with the keyboard', () => {
       const grabbed: any[] = [];
       service.grabbedColumn.subscribe(data => grabbed.push(data));
 
-      keydown.call(this, 1, 'Space');
+      keydown(testContext, 1, 'Space');
 
       // Only the initial null of the BehaviorSubject, no grab.
       expect(grabbed).toEqual([null]);
     });
 
-    it('cannot be moved with the arrow keys', function (this: any) {
+    it('cannot be moved with the arrow keys', () => {
       const moves: any[] = [];
-      service.grabbedColumn.next(this.datagridHostComponent.columns[1]);
+      service.grabbedColumn.next(testContext.datagridHostComponent.columns[1]);
       service.moveVisibleColumn.subscribe(data => moves.push(data));
 
-      keydown.call(this, 1, 'ArrowLeft');
-      keydown.call(this, 1, 'ArrowRight');
+      keydown(testContext, 1, 'ArrowLeft');
+      keydown(testContext, 1, 'ArrowRight');
 
       expect(moves).toEqual([]);
     });
 
-    it('can still be released when it gets pinned while grabbed', function (this: any) {
+    it('can still be released when it gets pinned while grabbed', () => {
       const grabbed: any[] = [];
-      service.grabbedColumn.next(this.datagridHostComponent.columns[1]);
+      service.grabbedColumn.next(testContext.datagridHostComponent.columns[1]);
       service.grabbedColumn.subscribe(data => grabbed.push(data));
 
-      keydown.call(this, 1, 'Escape');
+      keydown(testContext, 1, 'Escape');
 
       expect(grabbed.length).toEqual(2);
       expect(grabbed[1]).toBeNull();
     });
 
-    it('leaves the columns that are not pinned reorderable', function (this: any) {
+    it('leaves the columns that are not pinned reorderable', () => {
       const moves: any[] = [];
-      service.grabbedColumn.next(this.datagridHostComponent.columns[2]);
+      service.grabbedColumn.next(testContext.datagridHostComponent.columns[2]);
       service.moveVisibleColumn.subscribe(data => moves.push(data));
 
-      keydown.call(this, 2, 'ArrowLeft');
+      keydown(testContext, 2, 'ArrowLeft');
 
       expect(moves.length).toEqual(1);
       expect(moves[0].visibleColumnIndex).toEqual(2);
@@ -232,26 +237,26 @@ describe('ColumnOrderDirective', () => {
     });
   });
 
-  it('focus grabbed column when focus grabbed column event is received', function (this: any) {
-    this.fixture.detectChanges();
-    const firstColumnElement = this.datagridHostComponent.content.elementRefs.get(0).nativeElement;
-    const secondColumnElement = this.datagridHostComponent.content.elementRefs.get(1).nativeElement;
-    spyOn(firstColumnElement, 'focus');
-    spyOn(secondColumnElement, 'focus');
-    service.grabbedColumn.next(this.datagridHostComponent.columns[1]);
+  it('focus grabbed column when focus grabbed column event is received', () => {
+    testContext.fixture.detectChanges();
+    const firstColumnElement = testContext.datagridHostComponent.content.elementRefs.get(0).nativeElement;
+    const secondColumnElement = testContext.datagridHostComponent.content.elementRefs.get(1).nativeElement;
+    vi.spyOn(firstColumnElement, 'focus').mockImplementation(() => undefined);
+    vi.spyOn(secondColumnElement, 'focus').mockImplementation(() => undefined);
+    service.grabbedColumn.next(testContext.datagridHostComponent.columns[1]);
     service.focusGrabbedColumn.next();
 
     expect(firstColumnElement.focus).not.toHaveBeenCalled();
     expect(secondColumnElement.focus).toHaveBeenCalled();
-    service.grabbedColumn.next(this.datagridHostComponent.columns[0]);
+    service.grabbedColumn.next(testContext.datagridHostComponent.columns[0]);
 
     expect(firstColumnElement.focus).not.toHaveBeenCalled();
     service.focusGrabbedColumn.next();
     expect(firstColumnElement.focus).toHaveBeenCalled();
   });
 
-  afterEach(function (this: any) {
-    this.fixture.destroy();
+  afterEach(() => {
+    testContext.fixture.destroy();
   });
 });
 

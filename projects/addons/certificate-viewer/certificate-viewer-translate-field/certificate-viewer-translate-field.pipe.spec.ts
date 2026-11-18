@@ -45,14 +45,14 @@ describe('CertificateViewerTranslateFieldPipe', () => {
 
   it('should translate the field name', () => {
     const certificateField = new CertificateField('boo');
-    spyOn(certificateField, 'translateName').and.returnValue('Translated Name');
+    vi.spyOn(certificateField, 'translateName').mockReturnValue('Translated Name');
     const result = pipe.transform(certificateField, 'name');
     expect(result).toEqual('Translated Name');
   });
 
   it('should translate the field value with date', () => {
     const certificateField = new CertificateField('roo');
-    spyOn(certificateField, 'translateValue').and.returnValue('Translated Value');
+    vi.spyOn(certificateField, 'translateValue').mockReturnValue('Translated Value');
 
     const result = pipe.transform(certificateField, 'value');
     expect(result).toEqual('Translated Value');
