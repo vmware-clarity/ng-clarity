@@ -139,8 +139,11 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     if (isPlatformBrowser(this.platformId)) {
       const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('button.action-item'));
 
-      const keyFocus = this.keyFocus();
-      if (buttons.length && keyFocus) {
+      if (buttons.length) {
+        const keyFocus = this.keyFocus();
+        if (!keyFocus) {
+          return;
+        }
         keyFocus.current = 0;
         keyFocus.focusableItems = buttons;
 
