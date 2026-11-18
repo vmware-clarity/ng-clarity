@@ -9,7 +9,7 @@ import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { delay } from '@clr/angular/testing';
-import { ClrLoadingModule, ClrLoadingState } from '@clr/angular/utils';
+import { ClrCommonStringsService, ClrLoadingModule, ClrLoadingState } from '@clr/angular/utils';
 
 import { ClrButtonGroupModule } from './button-group/button-group.module';
 import { ClrLoadingButtonModule } from './button-loading/loading-button.module';
@@ -199,6 +199,15 @@ describe('Button group (zoneless, OnPush host)', () => {
     button('Third').click();
     await fixture.whenStable();
     expect(fixture.nativeElement.querySelector('output').textContent).toBe('1');
+  });
+
+  it('shows the common strings localized after the first render', async () => {
+    const icon = () => overflow().querySelector('cds-icon');
+    expect(icon().getAttribute('title')).toBe('More');
+
+    TestBed.inject(ClrCommonStringsService).localize({ more: 'Plus' });
+    await fixture.whenStable();
+    expect(icon().getAttribute('title')).toBe('Plus');
   });
 
   it('closes the menu and removes its buttons when the group is destroyed', async () => {
