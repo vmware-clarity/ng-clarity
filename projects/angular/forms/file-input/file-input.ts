@@ -6,6 +6,7 @@
  */
 
 import {
+  computed,
   Directive,
   ElementRef,
   HostListener,
@@ -13,6 +14,8 @@ import {
   Optional,
   Renderer2,
   Self,
+  Signal,
+  signal,
   ViewContainerRef,
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
@@ -37,7 +40,12 @@ export interface ClrFileInputSelection {
   standalone: false,
 })
 export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
-  selection: ClrFileInputSelection = undefined;
+  /** The selected files, in the order of the native input. */
+  readonly files: Signal<readonly File[]>;
+
+  private readonly selectedFiles = signal<readonly File[]>([]);
+
+  private readonly selectionSummary = computed(() => this.summarize(this.files()));
 
   constructor(
     injector: Injector,
@@ -48,19 +56,24 @@ export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
     private readonly commonStrings: ClrCommonStringsService
   ) {
     super(viewContainerRef, ClrFileInputContainer, injector, control, renderer, elementRef);
+
+    this.files = this.selectedFiles.asReadonly();
+  }
+
+  get selection(): ClrFileInputSelection {
+    return this.selectionSummary();
   }
 
   @HostListener('change')
   private handleChange() {
-    this.updateSelection();
+    this.selectedFiles.set(Array.from(this.elementRef.nativeElement.files ?? []));
   }
 
-  private updateSelection() {
-    const files = this.elementRef.nativeElement.files;
+  private summarize(files: readonly File[]): ClrFileInputSelection {
     let selectionButtonLabel: string;
     let clearFilesButtonLabel: string;
 
-    if (files?.length === 1) {
+    if (files.length === 1) {
       const filename = files[0].name;
 
       selectionButtonLabel = filename;
@@ -68,7 +81,7 @@ export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
       clearFilesButtonLabel = this.commonStrings.parse(this.commonStrings.keys.clearFile, {
         FILE: filename,
       });
-    } else if (files?.length > 1) {
+    } else if (files.length > 1) {
       const fileCount = files.length.toString();
 
       selectionButtonLabel = this.commonStrings.parse(this.commonStrings.keys.fileCount, {
@@ -80,7 +93,7 @@ export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
       });
     }
 
-    this.selection = {
+    return {
       fileCount: files.length,
       buttonLabel: selectionButtonLabel,
       clearFilesButtonLabel,

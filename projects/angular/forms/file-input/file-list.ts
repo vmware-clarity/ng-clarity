@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, ContentChild, inject, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component, contentChild, inject, Injector } from '@angular/core';
 import { NgControlService } from '@clr/angular/forms/common';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
@@ -44,7 +44,7 @@ import {
               </button>
             </span>
           </div>
-          @if (fileMessagesTemplate) {
+          @if (fileMessagesTemplate(); as fileMessagesTemplate) {
             <ng-container
               [ngTemplateOutlet]="fileMessagesTemplate.templateRef"
               [ngTemplateOutletContext]="fileMessagesTemplateContext"
@@ -60,10 +60,10 @@ import {
     '[class.clr-file-list]': 'true',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrFileList {
-  @ContentChild(ClrFileMessagesTemplate) protected readonly fileMessagesTemplate: ClrFileMessagesTemplate;
+  protected readonly fileMessagesTemplate = contentChild(ClrFileMessagesTemplate);
 
   protected injectorCache = new Map<File, Injector>();
   private contextCache = new Map<File, ClrFileMessagesTemplateContext>();
@@ -80,13 +80,9 @@ export class ClrFileList {
   }
 
   protected get files() {
-    if (!this.fileInputContainer.fileInput) {
-      return [];
-    }
+    const files = this.fileInputContainer.fileInput?.files() ?? [];
 
-    const fileInputElement = this.fileInputContainer.fileInput.elementRef.nativeElement;
-
-    return Array.from(fileInputElement.files).sort((a, b) => a.name.localeCompare(b.name));
+    return [...files].sort((a, b) => a.name.localeCompare(b.name));
   }
 
   protected getClearFileLabel(filename: string) {
@@ -100,11 +96,10 @@ export class ClrFileList {
       return;
     }
 
-    const fileInputElement = this.fileInputContainer.fileInput.elementRef.nativeElement;
-    const files = Array.from(fileInputElement.files);
-    const newFiles = files.filter(file => file !== fileToRemove);
+    const fileInput = this.fileInputContainer.fileInput;
+    const newFiles = fileInput.files().filter(file => file !== fileToRemove);
 
-    selectFiles(fileInputElement, newFiles);
+    selectFiles(fileInput.elementRef.nativeElement, newFiles);
     this.fileInputContainer.focusBrowseButton();
   }
 

@@ -5,6 +5,7 @@
 ```ts
 
 import { AbstractControl } from '@angular/forms';
+import { AfterContentChecked } from '@angular/core';
 import { AfterContentInit } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
@@ -4682,8 +4683,9 @@ export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
     constructor(injector: Injector, renderer: Renderer2, viewContainerRef: ViewContainerRef, elementRef: ElementRef<HTMLInputElement>, control: NgControl, commonStrings: ClrCommonStringsService);
     // (undocumented)
     readonly elementRef: ElementRef<HTMLInputElement>;
+    readonly files: Signal<readonly File[]>;
     // (undocumented)
-    selection: ClrFileInputSelection;
+    get selection(): ClrFileInputSelection;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrFileInput, "input[type=\"file\"][clrFileInput]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -4694,7 +4696,7 @@ export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
 }
 
 // @public (undocumented)
-export class ClrFileInputContainer extends ClrAbstractContainer {
+export class ClrFileInputContainer extends ClrAbstractContainer implements AfterContentChecked {
     // (undocumented)
     protected get accept(): string;
     // (undocumented)
@@ -4714,13 +4716,15 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
     // (undocumented)
     protected get errorMessagePresent(): boolean;
     // (undocumented)
-    readonly fileInput: ClrFileInput;
+    get fileInput(): ClrFileInput;
     // (undocumented)
-    protected readonly fileList: ClrFileList;
+    protected readonly fileList: Signal<ClrFileList>;
     // (undocumented)
     focusBrowseButton(): void;
     // (undocumented)
     protected get multiple(): boolean;
+    // (undocumented)
+    ngAfterContentChecked(): void;
     // (undocumented)
     protected get successMessagePresent(): boolean;
     // (undocumented)
@@ -4729,7 +4733,7 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
             "alias": "clrButtonLabel";
             "required": false;
         };
-    }, {}, ["fileInput", "fileList", "fileSuccessComponent", "fileErrorComponent"], ["label", "[clrFileInput]", "clr-control-helper", "clr-control-error", "clr-control-success", "clr-file-list"], false, never>;
+    }, {}, ["fileList", "fileInputQuery", "fileSuccessComponent", "fileErrorComponent"], ["label", "[clrFileInput]", "clr-control-helper", "clr-control-error", "clr-control-success", "clr-file-list"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrFileInputContainer, never>;
 }
@@ -4804,7 +4808,7 @@ export class ClrFileList {
     // (undocumented)
     protected createFileMessagesTemplateContext(file: File): ClrFileMessagesTemplateContext;
     // (undocumented)
-    protected readonly fileMessagesTemplate: ClrFileMessagesTemplate;
+    protected readonly fileMessagesTemplate: Signal<ClrFileMessagesTemplate>;
     // (undocumented)
     protected get files(): File[];
     // (undocumented)

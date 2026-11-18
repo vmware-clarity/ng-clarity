@@ -6,13 +6,15 @@
  */
 
 import {
+  AfterContentChecked,
   ChangeDetectionStrategy,
   Component,
-  ContentChild,
+  contentChild,
   ElementRef,
   forwardRef,
   inject,
   Input,
+  signal,
   ViewChild,
 } from '@angular/core';
 import {
@@ -40,7 +42,7 @@ import { ClrFileError, ClrFileSuccess } from './file-messages';
         <ng-content select="[clrFileInput]"></ng-content>
 
         <!-- file input to handle adding new files to selection when file list is present (prevent replacing selected files on the main file input) -->
-        @if (fileList) {
+        @if (fileList()) {
           <input
             #fileListFileInput
             type="file"
@@ -65,7 +67,7 @@ import { ClrFileError, ClrFileSuccess } from './file-messages';
           <cds-icon shape="folder-open"></cds-icon>
           <span class="clr-file-input-browse-button-text">{{ browseButtonText }}</span>
         </button>
-        @if (!fileList && fileInput?.selection?.fileCount) {
+        @if (!fileList() && fileInput?.selection?.fileCount) {
           <button
             type="button"
             class="btn btn-sm clr-file-input-clear-button"
@@ -100,37 +102,48 @@ import { ClrFileError, ClrFileSuccess } from './file-messages';
   },
   providers: [NgControlService, ControlIdService, ControlClassService],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClrFileInputContainer extends ClrAbstractContainer {
+export class ClrFileInputContainer extends ClrAbstractContainer implements AfterContentChecked {
   @Input('clrButtonLabel') customButtonLabel: string;
 
-  @ContentChild(forwardRef(() => ClrFileInput)) readonly fileInput: ClrFileInput;
-  @ContentChild(forwardRef(() => ClrFileList)) protected readonly fileList: ClrFileList;
+  protected readonly fileList = contentChild<ClrFileList>(forwardRef(() => ClrFileList));
+
+  private readonly fileInputQuery = contentChild<ClrFileInput>(forwardRef(() => ClrFileInput));
 
   @ViewChild('browseButton') private browseButtonElementRef: ElementRef<HTMLButtonElement>;
   @ViewChild('fileListFileInput') private fileListFileInputElementRef: ElementRef<HTMLInputElement>;
 
   // These are for the "message present" override properties
-  @ContentChild(ClrFileSuccess) private readonly fileSuccessComponent: ClrFileSuccess;
-  @ContentChild(ClrFileError) private readonly fileErrorComponent: ClrFileError;
+  private readonly fileSuccessComponent = contentChild(ClrFileSuccess);
+  private readonly fileErrorComponent = contentChild(ClrFileError);
+
+  // Consumers bind these attributes on the native input, so they change without notifying the container.
+  private readonly inputAttributes = signal<InputAttributes>(
+    { accept: '', multiple: false, disabled: false },
+    { equal: sameAttributes }
+  );
 
   private readonly commonStrings = inject(ClrCommonStringsService);
 
+  get fileInput(): ClrFileInput {
+    return this.fileInputQuery();
+  }
+
   protected get accept() {
-    return this.fileInput.elementRef.nativeElement.accept;
+    return this.inputAttributes().accept;
   }
 
   protected get multiple() {
-    return this.fileInput.elementRef.nativeElement.multiple;
+    return this.inputAttributes().multiple;
   }
 
   protected get disabled() {
-    return this.control ? this.control.disabled : this.fileInput.elementRef.nativeElement.disabled;
+    return this.control ? this.control.disabled : this.inputAttributes().disabled;
   }
 
   protected get browseButtonText() {
-    const selectionButtonLabel = this.fileList ? undefined : this.fileInput?.selection?.buttonLabel;
+    const selectionButtonLabel = this.fileList() ? undefined : this.fileInput?.selection?.buttonLabel;
 
     return selectionButtonLabel || this.customButtonLabel || this.commonStrings.keys.browse;
   }
@@ -140,11 +153,20 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
   }
 
   protected override get successMessagePresent() {
-    return super.successMessagePresent || !!this.fileSuccessComponent;
+    return super.successMessagePresent || !!this.fileSuccessComponent();
   }
 
   protected override get errorMessagePresent() {
-    return super.errorMessagePresent || !!this.fileErrorComponent;
+    return super.errorMessagePresent || !!this.fileErrorComponent();
+  }
+
+  // Content is checked after the consumer's bindings on the native input ran, and before this view is checked.
+  ngAfterContentChecked() {
+    const input = this.fileInput?.elementRef.nativeElement;
+
+    if (input) {
+      this.inputAttributes.set({ accept: input.accept, multiple: input.multiple, disabled: input.disabled });
+    }
   }
 
   focusBrowseButton() {
@@ -153,7 +175,7 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
 
   protected browse() {
     const fileInputElementRef =
-      this.fileList && this.multiple ? this.fileListFileInputElementRef : this.fileInput.elementRef;
+      this.fileList() && this.multiple ? this.fileListFileInputElementRef : this.fileInput.elementRef;
 
     fileInputElementRef.nativeElement.click();
   }
@@ -174,7 +196,7 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
     const mergedFiles = [...newFiles];
 
     // add existing files if a new file doesn't have the same name
-    for (const existingFile of this.fileInput.elementRef.nativeElement.files) {
+    for (const existingFile of this.fileInput.files()) {
       if (!mergedFiles.some(file => file.name === existingFile.name)) {
         mergedFiles.push(existingFile);
       }
@@ -183,4 +205,10 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
     // update file selection
     selectFiles(this.fileInput.elementRef.nativeElement, mergedFiles);
   }
+}
+
+type InputAttributes = Pick<HTMLInputElement, 'accept' | 'multiple' | 'disabled'>;
+
+function sameAttributes(a: InputAttributes, b: InputAttributes) {
+  return a.accept === b.accept && a.multiple === b.multiple && a.disabled === b.disabled;
 }
