@@ -34,7 +34,7 @@ import { ClrModalConfigurationService } from './modal-configuration.service';
 })
 export class ClrSidePanel implements OnInit, OnDestroy {
   @Output('clrSidePanelOpenChange') openChange = new EventEmitter<boolean>(false);
-  @Input('clrSidePanelCloseButtonAriaLabel') closeButtonAriaLabel: string | undefined;
+  @Input('clrSidePanelCloseButtonAriaLabel') closeButtonAriaLabel = this.commonStrings.keys.close;
   @Input('clrSidePanelSkipAnimation') skipAnimation = false;
   @Input('clrSidePanelLabelledById') labelledById?: string;
   @Input('clrSidePanelStaticBackdrop') staticBackdrop = false;

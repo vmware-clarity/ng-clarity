@@ -6814,7 +6814,7 @@ export class ClrSidePanel implements OnInit, OnDestroy {
     // (undocumented)
     close(): void;
     // (undocumented)
-    closeButtonAriaLabel: string | undefined;
+    closeButtonAriaLabel: string;
     // (undocumented)
     get clrSidePanelBackdrop(): boolean;
     set clrSidePanelBackdrop(backdrop: boolean);
