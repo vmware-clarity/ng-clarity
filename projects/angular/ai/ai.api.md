@@ -24,22 +24,34 @@ export const CLR_CONTEXT_DIRECTIVES: Type<any>[];
 export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
 
 // @public
+export const CLR_CONTEXT_LABEL_ATTRIBUTE = "data-clr-context";
+
+// @public
 export const CLR_CONTEXT_LOADING_TYPE = "clr-loading";
 
 // @public
 export const CLR_CONTEXT_PRESETS: Readonly<Record<ClrContextPreset, Readonly<ClrContextSnapshotOptions>>>;
 
 // @public
-export const CLR_CONTEXT_PROTOCOL = "ui-context/v1";
+export const CLR_CONTEXT_PUBLIC_KEYS_ATTRIBUTE = "data-clr-context-public-keys";
 
 // @public
 export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
+
+// @public
+export const CLR_CONTEXT_STATE_ATTRIBUTE = "data-clr-context-state";
+
+// @public
+export const CLR_CONTEXT_TYPE_ATTRIBUTE = "data-clr-context-type";
 
 // @public
 export const CLR_CONTEXT_UNAVAILABLE_TYPE = "clr-unavailable";
 
 // @public
 export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: readonly (keyof ClrContextSnapshotOptions)[];
+
+// @public
+export const CLR_CONTEXT_URL_ATTRIBUTE = "data-clr-context-url";
 
 // @public
 export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
@@ -73,6 +85,9 @@ export const CLR_PAGE_CONTEXT_SCHEMA: {
         };
         readonly metadata: {
             readonly type: "object";
+        };
+        readonly metadataState: {
+            readonly enum: readonly ["loading", "unavailable"];
         };
         readonly enabled: {
             readonly type: "boolean";
@@ -300,9 +315,11 @@ export interface ClrContextConfig {
     debounceMs?: number;
     extractors?: ClrContextDomExtractor[];
     maxWaitMs?: number;
+    metadataOrigins?: string[];
     routes?: boolean;
     scope?: ClrContextPreset | ClrContextSnapshotOptions;
     timeoutMs?: number;
+    viewConfig?: ClrContextViewConfig[] | string;
     views?: 'all' | 'enabled';
 }
 
@@ -310,40 +327,6 @@ export interface ClrContextConfig {
 export interface ClrContextDomExtractor {
     extract(element: HTMLElement, options: Required<ClrContextSnapshotOptions>): ClrPublishedContext | null;
     selector: string;
-}
-
-// @public
-export interface ClrContextFrameHostOptions {
-    allowAnyOrigin?: boolean;
-    allowedOrigins?: string[];
-    minRequestIntervalMs?: number;
-    shareFormValues?: boolean;
-    shareFullUrl?: boolean;
-    snapshot?: ClrContextSnapshotOptions;
-}
-
-// @public
-export interface ClrContextFrameRequest {
-    kind: 'context-request';
-    options?: ClrContextSnapshotOptions;
-    protocol: typeof CLR_CONTEXT_PROTOCOL;
-    requestId: string;
-}
-
-// @public
-export interface ClrContextFrameRequestOptions {
-    hostOrigin?: string;
-    options?: ClrContextSnapshotOptions;
-    targetWindow?: Window;
-    timeoutMs?: number;
-}
-
-// @public
-export interface ClrContextFrameResponse {
-    context: ClrPageContext;
-    kind: 'context-response';
-    protocol: typeof CLR_CONTEXT_PROTOCOL;
-    requestId: string;
 }
 
 // @public
@@ -394,13 +377,10 @@ export class ClrContextRegistryService {
 export class ClrContextService implements OnDestroy {
     changes(options?: ClrContextSnapshotOptions): Observable<ClrContextChange>;
     configure(config: ClrContextConfig): void;
-    disableFrameBridge(): void;
     disableGlobalAccess(): void;
-    enableFrameBridge(options?: ClrContextFrameHostOptions): void;
     enableGlobalAccess(propertyName?: string, hostOptions?: ClrContextGlobalAccessOptions): void;
     // (undocumented)
     ngOnDestroy(): void;
-    requestHostContext(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null>;
     snapshot(options?: ClrContextSnapshotOptions): Promise<ClrPageContext>;
     watch(options?: ClrContextSnapshotOptions): Observable<ClrPageContext>;
     // (undocumented)
@@ -416,6 +396,15 @@ export interface ClrContextSnapshotOptions {
     maxComponents?: number;
     maxItemsPerCollection?: number;
     root?: string;
+}
+
+// @public
+export interface ClrContextViewConfig {
+    enabled?: boolean;
+    metadata?: Record<string, unknown>;
+    route?: string;
+    selector?: string;
+    viewId?: string;
 }
 
 // @public
@@ -436,6 +425,7 @@ export interface ClrPageContext {
     enabled: boolean;
     focus?: 'modal';
     metadata?: Record<string, unknown>;
+    metadataState?: 'loading' | 'unavailable';
     regions: ClrComponentContext[];
     route?: ClrRouteContext;
     schemaVersion: string;
@@ -450,9 +440,6 @@ export interface ClrPublishedContext extends ClrComponentContext {
     children?: ClrPublishedContext[];
     publicKeys?: readonly string[];
 }
-
-// @public
-export function clrRequestHostContext(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null>;
 
 // @public
 export interface ClrRouteContext {

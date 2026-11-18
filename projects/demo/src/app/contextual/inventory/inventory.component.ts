@@ -26,4 +26,10 @@ export class ContextInventoryComponent {
   alertVisible = true;
   addHostOpen = false;
   newHostName = '';
+
+  /** What the grid cannot show; merged into the grid's `state`. */
+  readonly gridMetadata = {
+    owner: 'Infrastructure team',
+    statusValues: ['Connected', 'Maintenance', 'Disconnected'],
+  };
 }

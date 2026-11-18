@@ -1761,3 +1761,65 @@ describe('collectContextTreeWithin, open shadow roots', () => {
     expect(JSON.stringify(nodes)).toContain('Visible');
   });
 });
+
+describe('collectContextTree, annotation attributes', () => {
+  useContainer();
+
+  it('describes an element annotated with data-clr-context like one with [clrContext]', () => {
+    const nodes = collect(
+      `<div data-clr-context="Firewall rules" data-clr-context-type="region"
+            data-clr-context-state='{"cluster":"east"}'><button>Add rule</button></div>`
+    );
+
+    expect(nodes).toEqual([
+      {
+        type: 'region',
+        label: 'Firewall rules',
+        state: { cluster: 'east' },
+        children: [{ type: 'button', label: 'Add rule' }],
+      },
+    ]);
+  });
+
+  it('reports an annotation inside the view as the state of the node it sits on', () => {
+    const nodes = collect(
+      `<nav aria-label="Hosts" data-clr-context-state='{"purpose":"Pick a host"}'><a href="#">h1</a></nav>`
+    );
+
+    expect(nodes[0].state).toEqual({ purpose: 'Pick a host' });
+  });
+
+  it('cuts an annotation to the keys its attribute marks public for an untrusted caller', () => {
+    const html = `<nav aria-label="Hosts" data-clr-context-state='{"purpose":"Pick a host","owner":"ada"}'
+      data-clr-context-public-keys="purpose"><a href="#">h1</a></nav>`;
+    container.innerHTML = html;
+    const { components } = collectContextTreeWithin(container, resolveSnapshotOptions(), [], true);
+
+    expect(components[0].state).toEqual({ purpose: 'Pick a host', withheld: true });
+  });
+
+  it('leaves the annotation on the view root to the snapshot', () => {
+    container.setAttribute('data-clr-context-state', '{"purpose":"Hosts"}');
+
+    expect(collect('<button>Add</button>')).toEqual([{ type: 'button', label: 'Add' }]);
+  });
+
+  it('leaves out invalid JSON and keeps the rest of the annotation', () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+    const nodes = collect(`<div data-clr-context="Rules" data-clr-context-state="{oops"><button>Add</button></div>`);
+
+    expect(nodes[0].label).toBe('Rules');
+    expect(nodes[0].state).toBeUndefined();
+    expect(console.warn).toHaveBeenCalled();
+  });
+
+  it('withholds the annotated state inside a redacted region', () => {
+    const nodes = collect(
+      `<div data-clr-context-redact><div data-clr-context="Card" data-clr-context-state='{"card":"4111"}'>
+        <button>Pay</button></div></div>`
+    );
+
+    expect(JSON.stringify(nodes)).not.toContain('4111');
+  });
+});

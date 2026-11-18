@@ -159,7 +159,9 @@ export class ContextTracker {
     const snapshot = this.read(this.trackingOptions.snapshot);
     this.emit(snapshot);
     this.zone.runOutsideAngular(() => this.observeShadowRootsIn(this.document));
-    if (!snapshot.regions.some(region => region.type === CLR_CONTEXT_LOADING_TYPE)) {
+    const loading =
+      snapshot.metadataState === 'loading' || snapshot.regions.some(region => region.type === CLR_CONTEXT_LOADING_TYPE);
+    if (!loading) {
       return;
     }
     if (this.scrapeInFlight) {

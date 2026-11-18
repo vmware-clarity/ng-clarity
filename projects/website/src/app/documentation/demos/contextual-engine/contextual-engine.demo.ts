@@ -135,6 +135,50 @@ const DIRECTIVE_EXAMPLE = `
 </section>
 `;
 
+const ATTRIBUTES_EXAMPLE = `
+<section
+  data-clr-context="Firewall rules for the selected cluster"
+  data-clr-context-state='{"cluster": "east"}'
+>
+  ...
+</section>
+`;
+
+const VIEW_METADATA_EXAMPLE = `
+<!-- With root: 'main', main is the view root: this annotation describes the view. -->
+<main data-clr-context-state='{"viewId": "host-list", "purpose": "Lists the hosts of a cluster"}'>
+  ...
+  <!-- Anywhere else, an annotation describes its element. -->
+  <clr-datagrid [clrContextState]="{ help: 'https://docs.example.com/hosts' }">...</clr-datagrid>
+</main>
+
+<!-- Or loaded from the same origin, and cached for the session:
+     { "state": { "viewId": "host-list", "purpose": "..." } } -->
+<main data-clr-context-url="/assets/ai/host-list.json">...</main>
+`;
+
+const VIEW_CONFIG_EXAMPLE = `
+// Read only the views that have metadata, and describe views without editing them.
+inject(ClrContextService).configure({
+  application: { id: 'inventory', version: '2.4.0' },
+  views: 'enabled',
+  viewConfig: '/assets/ai-config.json',
+});
+`;
+
+const AI_CONFIG_EXAMPLE = `
+{
+  "views": [
+    {
+      "route": "hosts/:id",
+      "viewId": "host-detail",
+      "metadata": { "purpose": "One host and its VMs" }
+    },
+    { "selector": "app-billing", "enabled": false }
+  ]
+}
+`;
+
 const DIRECTIVE_STANDALONE_EXAMPLE = `
 import { ClrContext } from '@clr/angular/ai';
 
@@ -486,6 +530,10 @@ export class ContextualEngineDemo extends ClarityDocComponent {
   watchExample = WATCH_EXAMPLE;
   ignoreExample = IGNORE_EXAMPLE;
   directiveExample = DIRECTIVE_EXAMPLE;
+  attributesExample = ATTRIBUTES_EXAMPLE;
+  viewMetadataExample = VIEW_METADATA_EXAMPLE;
+  viewConfigExample = VIEW_CONFIG_EXAMPLE;
+  aiConfigExample = AI_CONFIG_EXAMPLE;
   directiveStandaloneExample = DIRECTIVE_STANDALONE_EXAMPLE;
   directiveModuleExample = DIRECTIVE_MODULE_EXAMPLE;
   elementContextExample = ELEMENT_CONTEXT_EXAMPLE;

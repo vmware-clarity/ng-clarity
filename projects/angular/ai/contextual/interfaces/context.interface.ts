@@ -53,13 +53,23 @@ export interface ClrPageContext {
   schemaVersion: string;
   /** The application, from `configure({ application })`; the page's host name when none is configured. */
   application: ClrApplicationContext;
-  /** The view the user is on, from `application.viewId` or the route's `data.viewId`. */
-  viewId?: string;
-  /** Application metadata about the current view, from `application.metadata`. */
-  metadata?: Record<string, unknown>;
   /**
-   * Whether the engine reads this view: `false` when the application reads only enabled views and this one
-   * has no metadata, and then nothing else is read. It gates this engine only, not what the page renders.
+   * The view the user is on: `viewId` in the state of the view root's annotation, then `application.viewId`,
+   * the route's `data.viewId` and the configured views.
+   */
+  viewId?: string;
+  /**
+   * Metadata about the current view, merged from the configured views, `application.metadata` and the
+   * annotation on the view root (`data-clr-context-url`, then the annotation itself), later ones winning.
+   * An untrusted caller sees only the annotation state keys marked public.
+   */
+  metadata?: Record<string, unknown>;
+  /** Set while a metadata URL is loading, or when one could not be loaded. */
+  metadataState?: 'loading' | 'unavailable';
+  /**
+   * Whether the engine reads this view: `false` when a configured view disables it, or the application
+   * reads only enabled views and this one has no metadata, and then nothing else is read. It gates this engine
+   * only, not what the page renders.
    */
   enabled: boolean;
   /** The document title; empty for an untrusted caller unless it shares the full URL. */

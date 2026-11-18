@@ -109,6 +109,8 @@ interface Walk {
   /** Inside a component that publishes its own writing, so its rendered controls get no refs. */
   mutatorDepth: number;
   readonly refs: ClrContextRefSink | null;
+  /** Where the view starts; an annotation on these and their ancestors describes the view, not a node. */
+  viewRoots: Element[];
 }
 
 /** The result of a walk, and whether it ran out of budget before it ran out of page. */
@@ -149,11 +151,13 @@ export function collectContextTreeWithin(
     frameDepth: 0,
     mutatorDepth: 0,
     refs,
+    viewRoots: [],
   };
   return withinReadScope(() => {
     const rootScope = root.nodeType === Node.ELEMENT_NODE ? idScope(root as Element) : (root as IdScope);
     walk.referencedIds.set(rootScope, collectReferencedIds(root, walk));
     const scope = engineScope(root, walk.options);
+    walk.viewRoots = scope.roots ?? topOf(root);
     const components = describeScope(root, scope.roots, walk);
     const result: ClrContextTreeResult = { components, truncated: walk.truncated };
     if (scope.focus) {
@@ -497,7 +501,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
   const redacted = walk.redactedDepth > 0;
   const label = nameSafely(element, redacted ? null : role, walk);
 
-  if (!role && !label && !hasAnnotation(element)) {
+  if (!role && !label && !annotationOf(element, walk)) {
     if (!isCustomElement) {
       return isTextBlock(element, walk)
         ? describeTextBlock(element, walk, owner)
@@ -615,7 +619,7 @@ function describeAnonymousCustomElement(element: Element, tagName: string, walk:
   }
   if (
     !readClrElementContext(element, walk.options) &&
-    !hasAnnotation(element) &&
+    !annotationOf(element, walk) &&
     !accessibleText(element, undefined, walk.excludeSelector).trim()
   ) {
     return [];
@@ -908,7 +912,7 @@ function finish(
   if (published) {
     described = redacted
       ? withoutOverriddenLabel(node, element, walk)
-      : mergeElementContext(node, element, walk.options, annotationContext(element), walk.untrusted);
+      : mergeElementContext(node, element, walk.options, annotationOf(element, walk), walk.untrusted);
   }
   if (walk.excludeRoles.has(described.type)) {
     walk.remaining++;
@@ -940,6 +944,23 @@ function withoutOverriddenLabel(node: ClrComponentContext, element: Element, wal
   const unnamed = { ...node };
   delete unnamed.label;
   return unnamed;
+}
+
+/** The element's annotation; on a view root or an ancestor of one, it describes the view instead. */
+function annotationOf(element: Element, walk: Walk): Partial<ClrPublishedContext> | null {
+  if (!hasAnnotation(element) || walk.viewRoots.some(root => containsAcrossShadow(element, root))) {
+    return null;
+  }
+  return annotationContext(element);
+}
+
+/** The element a snapshot of the whole of `root` starts from. */
+function topOf(root: ParentNode): Element[] {
+  const top =
+    root.nodeType === Node.DOCUMENT_NODE
+      ? ((root as Document).body ?? (root as Document).documentElement)
+      : (root as Element);
+  return top ? [top] : [];
 }
 
 /** Whether a label read from content leaves the element out: only its resolved role counts, not any `role`. */
