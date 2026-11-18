@@ -583,24 +583,21 @@ export class DatagridTreeService<T = any> implements OnDestroy {
    */
   private update() {
     const visible: T[] = [];
-    const walk = (siblings: (DatagridTreeNode<T> | undefined)[]) => {
-      // entries() also visits the roots not loaded yet, which forEach would skip. Their rows have no
-      // item, like the rows of a virtual scroll that are not loaded yet.
-      for (const [index, node] of siblings.entries()) {
-        visible.push(node?.item as T);
+    const walk = (siblings: DatagridTreeNode<T>[], sorted: boolean) => {
+      const ordered =
+        sorted && this.sort.comparator ? siblings.slice().sort((a, b) => this.sort.compare(a.item, b.item)) : siblings;
+      // entries() also visits the roots not loaded yet, which forEach would skip.
+      for (const [index, node] of ordered.entries()) {
+        visible.push(node?.item);
         if (node) {
           node.index = index;
           if (node.expanded && node.children) {
-            walk(
-              this.sort.comparator
-                ? node.children.slice().sort((a, b) => this.sort.compare(a.item, b.item))
-                : node.children
-            );
+            walk(node.children, true);
           }
         }
       }
     };
-    walk(this.roots);
+    walk(this.roots as DatagridTreeNode<T>[], false);
     // The tree changed under the selection.
     this.indeterminate = null;
     this._change.next(visible);
