@@ -158,7 +158,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   @ViewChildren('stickyHeader', { emitDistinctChangesOnly: true }) stickyHeaders!: QueryList<ElementRef>;
 
   selectAllId: string;
-  activeCellCoords?: CellCoordinates | null;
+  activeCellCoords?: CellCoordinates;
 
   /* reference to the enum so that template can access */
   SELECTION_TYPE = SelectionType;
@@ -663,7 +663,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         }),
         this.keyNavigation.nextCellCoordsEmitter.subscribe(cellCoords => {
           if (!cellCoords?.ariaRowIndex) {
-            this.activeCellCoords = null;
+            this.activeCellCoords = undefined;
             return;
           }
 

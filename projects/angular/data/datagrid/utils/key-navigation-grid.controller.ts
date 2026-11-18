@@ -46,7 +46,7 @@ export interface KeyNavigationGridConfig {
 export interface CellCoordinates {
   x: number;
   y: number;
-  ariaRowIndex?: string | null;
+  ariaRowIndex?: string;
 }
 
 @Injectable()
