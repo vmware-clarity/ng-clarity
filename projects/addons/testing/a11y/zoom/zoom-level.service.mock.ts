@@ -5,10 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { signal } from '@angular/core';
 import { ZoomLevel } from '@clr/addons/a11y';
 import { ReplaySubject } from 'rxjs';
 
 export class ZoomLevelServiceMock {
   resizeSubject = new ReplaySubject<ZoomLevel>(1);
   onChange = this.resizeSubject.asObservable();
+  readonly level = signal<ZoomLevel | undefined>(undefined);
+
+  constructor() {
+    this.resizeSubject.subscribe(level => this.level.set(level));
+  }
 }

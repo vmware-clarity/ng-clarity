@@ -52,6 +52,9 @@ import { AppfxCardContainerStore } from '../utils/appfx-card-container-store';
   templateUrl: 'appfx-card-container.component.html',
   styleUrls: ['appfx-card-container.component.scss'],
   providers: [A11yService, ContainerService, DragDropService, LayoutService, PersistenceService],
+  // Stays Eager: the container hosts the cards, and each card hosts a consumer component. In a Zone app those
+  // refresh with every change detection; an OnPush ancestor would skip them. `cards` may also change in place
+  // (see ngDoCheck).
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class AppfxCardContainerComponent implements OnInit, DoCheck {

@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { sampleCards, sortCardsFn } from '@clr/addons/testing';
 import { AppfxTranslateModule } from '@clr/addons/translate';
@@ -61,5 +62,54 @@ describe('AppfxCardContainerSettingsComponent', () => {
       renderFixture(fixture);
       expect(component.toggleCardVisibility.emit).not.toHaveBeenCalled();
     });
+  });
+});
+
+@Component({
+  standalone: false,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `<appfx-card-container-settings
+    [containerCards]="cards()"
+    (toggleCardVisibility)="toggled.push($event)"
+  ></appfx-card-container-settings>`,
+})
+class OnPushHostComponent {
+  readonly cards = signal<AppfxCardInternal[]>(sampleCards.map(card => ({ ...card })));
+  toggled: string[] = [];
+}
+
+describe('AppfxCardContainerSettingsComponent in an OnPush host', () => {
+  let fixture: ComponentFixture<OnPushHostComponent>;
+
+  function checkboxes(): HTMLInputElement[] {
+    return Array.from(document.querySelectorAll('.container-settings input[type="checkbox"]'));
+  }
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      imports: [ClrDropdownModule, ClrCheckboxModule, AppfxTranslateModule],
+      declarations: [AppfxCardContainerSettingsComponent, OnPushHostComponent],
+    });
+    fixture = TestBed.createComponent(OnPushHostComponent);
+    fixture.autoDetectChanges();
+    await fixture.whenStable();
+    fixture.nativeElement.querySelector('.settings-btn').click();
+    await fixture.whenStable();
+  });
+
+  afterEach(() => fixture.destroy());
+
+  it('renders new cards given while the menu is open', async () => {
+    const [first, ...rest] = fixture.componentInstance.cards();
+    fixture.componentInstance.cards.set([{ ...first, hidden: true }, ...rest]);
+    await fixture.whenStable();
+
+    expect(checkboxes().map(checkbox => checkbox.checked)).toEqual([false, ...rest.map(card => !card.hidden)]);
+  });
+
+  it('emits the card to toggle', () => {
+    checkboxes()[0].click();
+
+    expect(fixture.componentInstance.toggled).toEqual([sampleCards[0].id]);
   });
 });

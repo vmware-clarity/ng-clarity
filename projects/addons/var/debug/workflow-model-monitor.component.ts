@@ -31,8 +31,7 @@ export class WorkflowModelMonitorComponent implements OnInit, OnDestroy {
   isOpen = false;
 
   private subscriptions: Subscription = new Subscription();
-
-  readonly #debugModel = signal<NameValue[]>([]);
+  private readonly entries = signal<NameValue[]>([]);
 
   @ViewChild(ClrPopoverContent)
   set popoverContent(popoverContent: ClrPopoverContent) {
@@ -41,11 +40,8 @@ export class WorkflowModelMonitorComponent implements OnInit, OnDestroy {
     }
   }
 
-  /**
-   * Workflow model properties, sorted by name.
-   */
   get debugModel(): NameValue[] {
-    return this.#debugModel();
+    return this.entries();
   }
 
   ngOnInit(): void {
@@ -82,35 +78,35 @@ export class WorkflowModelMonitorComponent implements OnInit, OnDestroy {
   }
 
   private updateDebugModel(changes: ModelChange[]): void {
-    if (!this.modelMgr.model || !changes.length) {
+    const model = this.modelMgr.model as any;
+    if (!model || !changes.length) {
       return;
     }
-
-    const entries = new Map(this.debugModel.map(entry => [entry.name, entry]));
+    const entries = new Map(this.entries().map(entry => [entry.name, entry]));
     for (const change of changes) {
-      const propertyModelValue = (this.modelMgr.model as any)[change.propertyName];
-      const nameValue = this.getPropertyNameValue(change.propertyName, propertyModelValue);
+      const nameValue = this.getPropertyNameValue(change.propertyName, model[change.propertyName]);
+      // A null value is a function property. Ignore it.
       if (nameValue) {
-        entries.set(change.propertyName, { ...nameValue, changed: true });
+        entries.set(nameValue.name, { ...nameValue, changed: true });
       }
     }
-    this.#debugModel.set(sortByName([...entries.values()]));
+    this.entries.set(sortByName([...entries.values()]));
   }
 
   private initDebugModel(): void {
-    if (!this.modelMgr.model) {
-      this.#debugModel.set([]);
+    const model = this.modelMgr.model;
+    if (!model) {
+      this.entries.set([]);
       return;
     }
-
-    const entries = Object.entries(this.modelMgr.model)
+    const entries = Object.entries(model)
       .map(([name, value]) => this.getPropertyNameValue(name, value))
       .filter((entry): entry is NameValue => !!entry);
-    this.#debugModel.set(sortByName(entries));
+    this.entries.set(sortByName(entries));
   }
 
   private resetDebugModel(): void {
-    this.#debugModel.update(entries => entries.map(entry => ({ ...entry, changed: false })));
+    this.entries.update(entries => entries.map(entry => ({ ...entry, changed: false })));
   }
 
   private getPropertyNameValue(name: string, value: any): NameValue | null {
@@ -155,14 +151,14 @@ export class WorkflowModelMonitorComponent implements OnInit, OnDestroy {
   }
 }
 
+function sortByName(entries: NameValue[]): NameValue[] {
+  return entries.sort((a, b) => a.name.localeCompare(b.name));
+}
+
 interface NameValue {
   name: string;
   value: string;
   computedVar: boolean;
   simpleVar: boolean;
   changed: boolean;
-}
-
-function sortByName(entries: NameValue[]): NameValue[] {
-  return entries.sort((a, b) => a.name.localeCompare(b.name));
 }

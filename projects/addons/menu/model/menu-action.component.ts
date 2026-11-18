@@ -5,9 +5,19 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, EventEmitter, forwardRef, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  forwardRef,
+  inject,
+  Input,
+  OnChanges,
+  Output,
+} from '@angular/core';
 
 import { MenuItem, MenuItemType } from './menu-item.token';
+import { NestedMenu } from './nested-menu';
 
 @Component({
   selector: 'appfx-menu-action',
@@ -19,9 +29,9 @@ import { MenuItem, MenuItemType } from './menu-item.token';
       useExisting: forwardRef(() => MenuActionComponent),
     },
   ],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MenuActionComponent extends MenuItem {
+export class MenuActionComponent extends MenuItem implements OnChanges {
   override type = MenuItemType.action;
 
   @Input() iconClass?: string;
@@ -33,4 +43,11 @@ export class MenuActionComponent extends MenuItem {
   @Input() enabled?: boolean = true;
 
   @Output() handle: EventEmitter<void> = new EventEmitter<void>(true);
+
+  private readonly menu = inject(NestedMenu, { optional: true });
+
+  ngOnChanges(): void {
+    // The menu renders this item, so it has to learn about the change.
+    this.menu?.itemChanged();
+  }
 }

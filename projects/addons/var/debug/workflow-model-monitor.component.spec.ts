@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClrSignpostContent, ClrSignpostModule } from '@clr/angular/popover/signpost';
 import { renderFixture } from '@clr/angular/utils/testing';
@@ -13,6 +14,15 @@ import { of, Subject } from 'rxjs';
 import { WorkflowModelMonitorComponent } from './workflow-model-monitor.component';
 import { ComputedVar, Var } from '../model/var';
 import { ModelChange, WorkflowModelManager } from '../model/workflow-model-manager.service';
+
+@Component({
+  standalone: false,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: '<appfx-model-popup [modelMgr]="modelMgr"></appfx-model-popup>',
+})
+class OnPushHostComponent {
+  readonly modelMgr = inject(WorkflowModelManager);
+}
 
 describe('WorkflowModelMonitor', () => {
   let mockModelManager: WorkflowModelManager;
@@ -41,8 +51,12 @@ describe('WorkflowModelMonitor', () => {
 
     TestBed.configureTestingModule({
       imports: [ClrSignpostModule],
-      declarations: [WorkflowModelMonitorComponent],
-      providers: [{ provide: ClrSignpostContent, useValue: {} }],
+      declarations: [WorkflowModelMonitorComponent, OnPushHostComponent],
+      providers: [
+        { provide: ClrSignpostContent, useValue: {} },
+        // For the OnPush host
+        { provide: WorkflowModelManager, useValue: mockModelManager },
+      ],
     });
     fixture = TestBed.createComponent(WorkflowModelMonitorComponent);
     component = fixture.componentInstance;
@@ -155,5 +169,47 @@ describe('WorkflowModelMonitor', () => {
     onStepChange$.next({ changes: [] });
 
     expect(component.debugModel.every((property: any) => !property.changed)).toBe(true);
+  });
+
+  describe('in an OnPush host', () => {
+    let hostFixture: ComponentFixture<OnPushHostComponent>;
+
+    function renderedValue(name: string): string | undefined {
+      const names = Array.from<HTMLElement>(document.querySelectorAll('.prop-name'));
+      const row = names.find(element => element.textContent?.trim() === name)?.closest('.clr-row');
+      return row?.querySelector('.prop-value')?.textContent?.trim();
+    }
+
+    beforeEach(async () => {
+      hostFixture = TestBed.createComponent(OnPushHostComponent);
+      hostFixture.autoDetectChanges();
+      // Waits without whenStable(): the monitor's buffered model changes keep an interval running, so a Zone
+      // fixture never becomes stable.
+      await vi.waitFor(() => expect(hostFixture.nativeElement.querySelector('.signpost-action')).not.toBeNull());
+      hostFixture.nativeElement.querySelector('.signpost-action').click();
+      await vi.waitFor(() => expect(renderedValue('property1')).toBe('Value1'));
+    });
+
+    afterEach(() => hostFixture.destroy());
+
+    it('renders model changes that arrive after it was opened', async () => {
+      const changes: ModelChange[] = [{ propertyName: 'property1', oldValue: undefined, newValue: Var.of('Changed') }];
+      updateModelManagerMock(changes);
+      (mockModelManager.onModelChange$ as Subject<ModelChange[]>).next(changes);
+
+      await vi.waitFor(() => expect(renderedValue('property1')).toBe('Changed'));
+      expect(document.querySelector('.prop-value.prop-changed')?.textContent?.trim()).toBe('Changed');
+    });
+
+    it('clears the changed marks when the step changes', async () => {
+      const changes: ModelChange[] = [{ propertyName: 'property1', oldValue: undefined, newValue: Var.of('Changed') }];
+      updateModelManagerMock(changes);
+      (mockModelManager.onModelChange$ as Subject<ModelChange[]>).next(changes);
+      await vi.waitFor(() => expect(document.querySelector('.prop-changed')).not.toBeNull());
+
+      onStepChange$.next({ changes: [] });
+
+      await vi.waitFor(() => expect(document.querySelector('.prop-changed')).toBeNull());
+    });
   });
 });

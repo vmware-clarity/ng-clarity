@@ -24,7 +24,8 @@ import { StepValidationState } from '../../model/step-validation-state';
       <span class="alert-text" [textContent]="item"></span>
     </clr-alert-item>
   </clr-alert>`,
-  // Eager: consumers change the validation state lists in place (`errors.push()`).
+  // Stays Eager, like ValidationBannerComponent: apps change the messages in place
+  // (`validationState.errors.push(...)`), which only a check of every view picks up.
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ValidationBannerInternalComponent {
@@ -83,7 +84,8 @@ export class ValidationBannerInternalComponent {
       }
     `,
   ],
-  // Eager: consumers change the validation state lists in place (`errors.push()`).
+  // Stays Eager: apps change the StepValidationState messages in place (`validationState.errors.push(...)`, as in
+  // our workflow examples), which only a check of every view picks up.
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ValidationBannerComponent {

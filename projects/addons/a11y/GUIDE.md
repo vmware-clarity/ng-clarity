@@ -84,9 +84,8 @@ In code:
 ```ts
 private readonly zoomLevelService = inject(ZoomLevelService);
 
-ngOnInit(): void {
-  this.sub = this.zoomLevelService.onChange.subscribe(zoom => (this.stacked = zoom !== ZoomLevel.none));
-}
+// `level` is a signal (undefined until the page is first measured). Views that read it refresh when it changes.
+readonly stacked = computed(() => (this.zoomLevelService.level() ?? ZoomLevel.none) !== ZoomLevel.none);
 ```
 
 `ElementResizeService.getResizeObservable(element)` emits on element resize; `a11ykeys` has `enter`, `arrowLeft`, `arrowRight` key names.
@@ -94,7 +93,7 @@ ngOnInit(): void {
 ## Rules
 
 - `ZoomLevelService` is provided by `AppfxA11yModule` — import the module (or provide the service) where you inject it.
-- Unsubscribe from `onChange` in `ngOnDestroy`.
+- Prefer `level()` for rendering. `onChange` emits outside Angular: a subscriber has to trigger change detection itself and unsubscribe in `ngOnDestroy`.
 - Required fields still need `required` / validators and `clr-required-mark` on the label; the legend only explains the asterisk.
 
 ## References
