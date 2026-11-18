@@ -4094,7 +4094,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     protected elem: ElementRef;
     set firstDayOfWeek(value: ClrWeekday | null);
     // (undocumented)
-    focus: boolean;
+    get focus(): boolean;
     get isEnabled(): boolean;
     get isInputDateDisabled(): boolean;
     // (undocumented)
@@ -10078,6 +10078,7 @@ export class FormsFocusService {
     get focusChange(): Observable<boolean>;
     // (undocumented)
     set focused(state: boolean);
+    get isFocused(): Signal<boolean>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<FormsFocusService, never>;
     // (undocumented)
