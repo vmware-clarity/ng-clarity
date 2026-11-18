@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component, QueryList, signal, ViewChild, ViewChildren } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ClrCommonStringsService } from '@clr/angular/utils';
 import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrAlert } from './alert';
@@ -317,6 +318,19 @@ describe('ClrAlerts (zoneless, OnPush host)', () => {
     await fixture.whenStable();
 
     expect(groupElement().classList).toContain('alert-warning');
+  });
+
+  it('follows localize() in the pager and alert item labels', async () => {
+    TestBed.inject(ClrCommonStringsService).localize({
+      next: 'Suivant',
+      info: 'Information',
+      alertNextAlertAriaLabel: 'Alerte suivante, {CURRENT} sur {COUNT}',
+    });
+    await fixture.whenStable();
+
+    expect(element.querySelector('.alerts-page-up button').getAttribute('aria-label')).toBe('Alerte suivante, 2 sur 2');
+    expect(element.querySelector('.alerts-page-up cds-icon').getAttribute('title')).toBe('Suivant');
+    expect(element.querySelector('cds-icon.alert-icon').getAttribute('aria-label')).toBe('Information');
   });
 
   it('stops reporting changes after it is destroyed', () => {
