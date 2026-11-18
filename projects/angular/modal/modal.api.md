@@ -62,11 +62,13 @@ export class ClrModal implements OnChanges, OnDestroy {
     // (undocumented)
     bypassScrollService: boolean;
     // (undocumented)
-    closable: boolean;
+    get closable(): boolean;
+    set closable(closable: boolean);
     // (undocumented)
     close(): void;
     // (undocumented)
-    closeButtonAriaLabel: string;
+    get closeButtonAriaLabel(): string;
+    set closeButtonAriaLabel(label: string);
     // Warning: (ae-forgotten-export) The symbol "ClrCommonStringsService" needs to be exported by the entry point clr-angular-modal.d.ts
     //
     // (undocumented)
@@ -81,7 +83,8 @@ export class ClrModal implements OnChanges, OnDestroy {
     set fadeMove(move: string);
     inOverlay: boolean | undefined;
     // (undocumented)
-    labelledBy: string;
+    get labelledBy(): string;
+    set labelledBy(labelledBy: string);
     // (undocumented)
     protected readonly modalContentTemplate: TemplateRef<any>;
     // (undocumented)
@@ -95,23 +98,39 @@ export class ClrModal implements OnChanges, OnDestroy {
     // (undocumented)
     open(): void;
     // (undocumented)
-    _open: boolean;
+    get _open(): boolean;
+    set _open(open: boolean);
     // (undocumented)
     _openChanged: EventEmitter<boolean>;
     // (undocumented)
     scrollTop(): void;
     // (undocumented)
-    size: string;
+    get size(): string;
+    set size(size: string);
     // (undocumented)
-    skipAnimation: boolean;
+    get skipAnimation(): boolean;
+    set skipAnimation(skipAnimation: boolean);
     // (undocumented)
-    staticBackdrop: boolean;
+    get staticBackdrop(): boolean;
+    set staticBackdrop(staticBackdrop: boolean);
     // (undocumented)
     stopClose: boolean;
     // (undocumented)
     title: ElementRef<HTMLElement>;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, {
+        "stopClose": {
+            "alias": "clrModalPreventClose";
+            "required": false;
+        };
+        "bypassScrollService": {
+            "alias": "clrModalOverrideScrollService";
+            "required": false;
+        };
+        "inOverlay": {
+            "alias": "clrModalInOverlay";
+            "required": false;
+        };
         "_open": {
             "alias": "clrModalOpen";
             "required": false;
@@ -136,20 +155,8 @@ export class ClrModal implements OnChanges, OnDestroy {
             "alias": "clrModalSkipAnimation";
             "required": false;
         };
-        "stopClose": {
-            "alias": "clrModalPreventClose";
-            "required": false;
-        };
         "labelledBy": {
             "alias": "clrModalLabelledById";
-            "required": false;
-        };
-        "bypassScrollService": {
-            "alias": "clrModalOverrideScrollService";
-            "required": false;
-        };
-        "inOverlay": {
-            "alias": "clrModalInOverlay";
             "required": false;
         };
     }, {
@@ -174,9 +181,11 @@ export class ClrModalBody implements OnDestroy {
 // @public (undocumented)
 export class ClrModalConfigurationService {
     // (undocumented)
-    backdrop: boolean;
+    get backdrop(): boolean;
+    set backdrop(backdrop: boolean);
     // (undocumented)
-    fadeMove: string;
+    get fadeMove(): string;
+    set fadeMove(fadeMove: string);
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalConfigurationService, never>;
     // (undocumented)
@@ -211,11 +220,13 @@ export class ClrSidePanel implements OnInit, OnDestroy {
     // (undocumented)
     altClose: EventEmitter<boolean>;
     // (undocumented)
-    closable: boolean;
+    get closable(): boolean;
+    set closable(closable: boolean);
     // (undocumented)
     close(): void;
     // (undocumented)
-    closeButtonAriaLabel: string | undefined;
+    get closeButtonAriaLabel(): string | undefined;
+    set closeButtonAriaLabel(label: string | undefined);
     // (undocumented)
     get clrSidePanelBackdrop(): boolean;
     set clrSidePanelBackdrop(backdrop: boolean);
@@ -227,7 +238,8 @@ export class ClrSidePanel implements OnInit, OnDestroy {
     // (undocumented)
     handleModalOpen(open: boolean): void;
     // (undocumented)
-    labelledById: string;
+    get labelledById(): string;
+    set labelledById(labelledById: string);
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -246,18 +258,25 @@ export class ClrSidePanel implements OnInit, OnDestroy {
     get position(): string;
     set position(position: string);
     // (undocumented)
-    preventClose: boolean;
+    get preventClose(): boolean;
+    set preventClose(preventClose: boolean);
     // (undocumented)
     get size(): string;
     set size(value: string);
     // (undocumented)
-    skipAnimation: boolean;
+    get skipAnimation(): boolean;
+    set skipAnimation(skipAnimation: boolean);
     // (undocumented)
-    staticBackdrop: boolean;
+    get staticBackdrop(): boolean;
+    set staticBackdrop(staticBackdrop: boolean);
     // (undocumented)
     togglePinned(): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrSidePanel, "clr-side-panel", never, {
+        "_open": {
+            "alias": "clrSidePanelOpen";
+            "required": false;
+        };
         "closeButtonAriaLabel": {
             "alias": "clrSidePanelCloseButtonAriaLabel";
             "required": false;
@@ -280,10 +299,6 @@ export class ClrSidePanel implements OnInit, OnDestroy {
         };
         "preventClose": {
             "alias": "clrSidePanelPreventClose";
-            "required": false;
-        };
-        "_open": {
-            "alias": "clrSidePanelOpen";
             "required": false;
         };
         "size": {
