@@ -21,7 +21,7 @@ import { BreadcrumbItem } from './model/breadcrumbs.model';
     '[attr.role]': '"navigation"',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrBreadcrumbs {
   isExpanded = false;
