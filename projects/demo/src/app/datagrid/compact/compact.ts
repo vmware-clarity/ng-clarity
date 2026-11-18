@@ -21,6 +21,7 @@ import { PokemonFilter } from '../utils/pokemon-filter';
   standalone: false,
 })
 export class DatagridCompactDemo {
+  noUsers: User[] = [];
   nonPaginatedUsers: User[];
   users: User[];
   sortOrder: ClrDatagridSortOrder = ClrDatagridSortOrder.UNSORTED;

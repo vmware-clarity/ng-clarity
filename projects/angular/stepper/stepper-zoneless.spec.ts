@@ -5,13 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  provideCheckNoChangesConfig,
-  provideZonelessChangeDetection,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -105,7 +99,6 @@ describe('ClrStepper (zoneless, OnPush host)', () => {
     TestBed.configureTestingModule({
       declarations: [ZonelessStepperHost, ExpandedProbe],
       imports: [ClrStepperModule, ReactiveFormsModule],
-      providers: [provideZonelessChangeDetection(), provideCheckNoChangesConfig({ exhaustive: true })],
     });
 
     fixture = TestBed.createComponent(ZonelessStepperHost);

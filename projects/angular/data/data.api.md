@@ -344,8 +344,6 @@ export class ClrDatagridCell implements OnInit {
     get _treeId(): string;
     // Warning: (ae-forgotten-export) The symbol "DatagridTreeNode" needs to be exported by the entry point clr-angular-data.d.ts
     protected get treeNode(): DatagridTreeNode<unknown> | undefined;
-    // Warning: (ae-forgotten-export) The symbol "DatagridTreeRow" needs to be exported by the entry point clr-angular-data.d.ts
-    _treeRow: DatagridTreeRow | null;
     protected get treeToggleLabelIds(): string;
     // (undocumented)
     get _view(): any;
@@ -1134,7 +1132,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
     // (undocumented)
     SELECTION_TYPE: typeof SelectionType;
     // @deprecated (undocumented)
-    protected selectRow(selected: boolean, $event: any): void;
+    protected selectRow(selected: boolean, $event: MouseEvent): void;
     // (undocumented)
     skeletonLoading: boolean;
     // (undocumented)
@@ -1301,7 +1299,7 @@ export class ClrDatagridSingleSelectionValueAccessor implements ControlValueAcce
     // (undocumented)
     setDisabledState(isDisabled: boolean): void;
     // (undocumented)
-    value: any;
+    value: unknown;
     // (undocumented)
     writeValue(value: any): void;
     // (undocumented)
@@ -2410,7 +2408,7 @@ export class WrappedRow implements AfterViewInit, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1799:5 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
+// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1790:5 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
 
 // (No @packageDocumentation comment for this package)
 

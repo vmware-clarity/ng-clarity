@@ -5,6 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { InjectionToken } from '@angular/core';
+
 import { ClrDatagridCell } from '../datagrid-cell';
 import { DatagridTreeNode } from '../providers/tree-node.model';
 
@@ -22,6 +24,12 @@ export interface DatagridTreeRowCells<T = unknown> {
  * What a cell needs from its row to render the tree toggle.
  */
 export interface DatagridTreeRow {
-  /** `null` while the row has no tree node, like the rows of items still loading. */
+  /**
+   * `null` when the datagrid renders no tree, or while the row has no tree node, like the rows of
+   * items still loading.
+   */
   readonly _tree: DatagridTreeRowCells | null;
 }
+
+/** The row a cell is declared in, which the cell asks what to render of the tree. */
+export const DATAGRID_TREE_ROW = new InjectionToken<DatagridTreeRow>('DATAGRID_TREE_ROW');

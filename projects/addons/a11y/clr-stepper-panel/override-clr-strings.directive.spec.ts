@@ -6,10 +6,11 @@
  */
 
 import { ChangeDetectionStrategy, Component, QueryList, ViewChildren } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { ClrStepperModule, ClrStepperPanel } from '@clr/angular/stepper';
 import { ClrCommonStrings, ClrCommonStringsService } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { AppfxA11yModule } from '../a11y.module';
 
@@ -59,7 +60,7 @@ function createThisTest(): ThisTest {
   });
 
   const fixture = TestBed.createComponent(TestClrStepperComponent);
-  fixture.detectChanges();
+  renderFixture(fixture);
 
   return {
     fixture: fixture,
@@ -69,21 +70,27 @@ function createThisTest(): ThisTest {
 }
 
 describe('OverrideClrStringsDirective', () => {
-  afterEach(function (this: ThisTest) {
-    if (this.fixture) {
-      this.fixture.destroy();
+  let testContext: ThisTest;
+  beforeEach(() => {
+    testContext = {} as ThisTest;
+  });
+
+  afterEach(() => {
+    if (testContext.fixture) {
+      testContext.fixture.destroy();
     }
   });
 
-  it('ClrStepperPanel.commonStrings has correct values', fakeAsync(function (this: ThisTest) {
-    Object.assign(this, createThisTest());
+  it('ClrStepperPanel.commonStrings has correct values', async () => {
+    vi.useFakeTimers();
+    Object.assign(testContext, createThisTest());
 
-    const panel: ClrStepperPanel | undefined = this.component.stepperPanels.get(0);
+    const panel: ClrStepperPanel | undefined = testContext.component.stepperPanels.get(0);
     expect(panel?.commonStrings.keys.stepComplete).toEqual(successText);
     expect(panel?.commonStrings.keys.stepError).toEqual(dangerText);
 
     // Verify that original strings in ClrCommonStringsService are not modified.
-    expect(this.clrStringsService.keys.success).not.toBe(successText);
-    expect(this.clrStringsService.keys.danger).not.toBe(dangerText);
-  }));
+    expect(testContext.clrStringsService.keys.success).not.toBe(successText);
+    expect(testContext.clrStringsService.keys.danger).not.toBe(dangerText);
+  });
 });

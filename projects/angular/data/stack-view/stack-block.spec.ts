@@ -10,12 +10,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { delay } from '@clr/angular/testing';
 import { Keys } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
+import type { Mock } from 'vitest';
 
 import { ClrStackBlock } from './stack-block';
 import { ClrStackView } from './stack-view';
 import { ClrStackViewModule } from './stack-view.module';
 
-import Spy = jasmine.Spy;
+type Spy<T extends (...args: any[]) => any = (...args: any[]) => any> = Mock<T>;
 
 @Component({
   template: `
@@ -132,7 +134,7 @@ class BlocksWithIinteractiveElements {
   testExpanded = false;
 }
 
-export default function (): void {
+describe('Stack View directives', () => {
   'use strict';
   describe('StackBlock', () => {
     let fixture: ComponentFixture<any>;
@@ -156,7 +158,7 @@ export default function (): void {
 
     it('projects content', () => {
       fixture = TestBed.createComponent(BasicBlock);
-      fixture.detectChanges();
+      renderFixture(fixture);
       compiled = fixture.nativeElement;
 
       expect(compiled.textContent).toMatch(/Label/);
@@ -165,28 +167,28 @@ export default function (): void {
 
     it('is not expandable by default', () => {
       fixture = TestBed.createComponent(BasicBlock);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(getBlockInstance(fixture).expandable).toBeFalsy();
     });
 
     it('is automatically expandable if has block children', () => {
       fixture = TestBed.createComponent(NestedBlocks);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(getBlockInstance(fixture).expandable).toBeTruthy();
     });
 
     it('can be made expandable without block children', () => {
       fixture = TestBed.createComponent(DynamicBlock);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(getBlockInstance(fixture).expandable).toBeTruthy();
     });
 
     it('displays a caret when the stack block is expandable', () => {
       fixture = TestBed.createComponent(DynamicBlock);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(
         fixture.nativeElement.querySelector('.stack-block-expandable > .stack-block-label .stack-block-caret')
@@ -194,7 +196,7 @@ export default function (): void {
 
       getBlockInstance(fixture).expandable = false;
 
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(
         fixture.nativeElement.querySelector('.stack-block-expandable > .stack-block-label .stack-block-caret')
@@ -203,14 +205,14 @@ export default function (): void {
 
     it('adds a unique id to the label', () => {
       fixture = TestBed.createComponent(BasicBlock);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(fixture.nativeElement.querySelector('.stack-block-label').id).toContain('clr-id-');
     });
 
     it('toggles the caret direction based on the expandable property', () => {
       fixture = TestBed.createComponent(DynamicBlock);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       const caret: HTMLElement = fixture.nativeElement.querySelector('.stack-block-caret');
 
@@ -218,14 +220,14 @@ export default function (): void {
 
       getBlockInstance(fixture).expanded = true;
 
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(caret.getAttribute('direction')).toBe('down');
     });
 
     it('adds the on-focus class when the stack label is focused in an expandable but collapsed stack block', () => {
       fixture = TestBed.createComponent(DynamicBlock);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       const block: HTMLElement = fixture.nativeElement.querySelector('clr-stack-block');
       const label: HTMLElement = fixture.nativeElement.querySelector('.stack-block-label');
@@ -233,22 +235,22 @@ export default function (): void {
       expect(block.classList.contains('on-focus')).toBe(false);
 
       label.focus();
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(block.classList.contains('on-focus')).toBe(true);
 
       label.blur();
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(block.classList.contains('on-focus')).toBe(false);
     });
 
     it('does not add the on-focus class when the stack block is not expandable', () => {
       fixture = TestBed.createComponent(DynamicBlock);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       getBlockInstance(fixture).expandable = false;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       const block: HTMLElement = fixture.nativeElement.querySelector('clr-stack-block');
       const label: HTMLElement = fixture.nativeElement.querySelector('.stack-block-label');
@@ -256,95 +258,95 @@ export default function (): void {
       expect(block.classList.contains('on-focus')).toBe(false);
 
       label.focus();
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(block.classList.contains('on-focus')).toBe(false);
     });
 
     it('adds a button role on a stack label in an expandable stack block', () => {
       fixture = TestBed.createComponent(DynamicBlock);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(fixture.nativeElement.querySelector('.stack-block-label').getAttribute('role')).toBe('button');
 
       getBlockInstance(fixture).expandable = false;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(fixture.nativeElement.querySelector('.stack-block-label').getAttribute('role')).toBeNull();
     });
 
     it('adds a tabindex on a stack label in an expandable stack block', () => {
       fixture = TestBed.createComponent(DynamicBlock);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(fixture.nativeElement.querySelector('.stack-block-label').getAttribute('tabindex')).toBe('0');
 
       getBlockInstance(fixture).expandable = false;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(fixture.nativeElement.querySelector('.stack-block-label').getAttribute('tabindex')).toBeNull();
     });
 
     it('adds the aria-expanded attribute when the stack block is expandable', () => {
       fixture = TestBed.createComponent(DynamicBlock);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(fixture.nativeElement.querySelector('.stack-block-label').getAttribute('aria-expanded')).not.toBeNull();
 
       getBlockInstance(fixture).expandable = false;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(fixture.nativeElement.querySelector('.stack-block-label').getAttribute('aria-expanded')).toBeNull();
     });
 
     it('sets the aria-expanded attribute to true when the stack block is expanded', () => {
       fixture = TestBed.createComponent(DynamicBlock);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(fixture.nativeElement.querySelector('.stack-block-label').getAttribute('aria-expanded')).toBe('false');
 
       getBlockInstance(fixture).expanded = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(fixture.nativeElement.querySelector('.stack-block-label').getAttribute('aria-expanded')).toBe('true');
     });
 
     it('starts collapsed', () => {
       fixture = TestBed.createComponent(DynamicBlock);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(getBlockInstance(fixture).expanded).toBeFalsy();
     });
 
     it('expands and collapses when clicking on the label', () => {
       fixture = TestBed.createComponent(DynamicBlock);
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(getBlockInstance(fixture).expanded).toBeFalsy();
 
       fixture.nativeElement.querySelector('clr-stack-label').click();
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(getBlockInstance(fixture).expanded).toBeTruthy();
 
       fixture.nativeElement.querySelector('clr-stack-label').click();
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(getBlockInstance(fixture).expanded).toBeFalsy();
     });
 
     it('offers two-way binding on clrSbExpanded', () => {
       fixture = TestBed.createComponent(DynamicBlock);
       fixture.componentInstance.expanded = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(getBlockInstance(fixture).expanded).toBeTruthy();
 
       fixture.nativeElement.querySelector('clr-stack-label').click();
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(fixture.componentInstance.expanded).toBeFalsy();
     });
 
     it('should skip children when block is not expanded', () => {
       fixture = TestBed.createComponent(DynamicBlockWithInput);
 
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(getBlockInstance(fixture).expanded).toBeFalsy();
 
@@ -355,13 +357,13 @@ export default function (): void {
 
     it('sets aria-controls attribute corresponding to stack-children id', () => {
       fixture = TestBed.createComponent(DynamicBlock);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       const stackLabel = fixture.nativeElement.querySelector('.stack-block-label');
       // make sure the attribute does not exist when collapsed
       expect(stackLabel.getAttribute('aria-controls')).toBeNull();
       fixture.componentInstance.expanded = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
       const controlsId = stackLabel.getAttribute('aria-controls');
       expect(controlsId).not.toBeNull();
       const childrenId = fixture.nativeElement.querySelector('.stack-children > [role="region"]').getAttribute('id');
@@ -370,10 +372,9 @@ export default function (): void {
 
     it('expandable child block is aria-labelledby the stack block title', () => {
       fixture = TestBed.createComponent(DynamicBlock);
-      fixture.detectChanges();
-      const component: ClrStackBlock = fixture.componentInstance;
-      component.expanded = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
+      fixture.componentInstance.expanded = true;
+      renderFixture(fixture);
       const stackLabel = fixture.nativeElement.querySelector('clr-stack-label');
       const stackLabelId = stackLabel.getAttribute('id');
       expect(stackLabelId).not.toBeNull();
@@ -385,7 +386,7 @@ export default function (): void {
 
       // but still works if id is removed
       stackLabel.setAttribute('id', null);
-      fixture.detectChanges();
+      renderFixture(fixture);
       const defaultStackLabelId = stackLabel.getAttribute('id');
       expect(defaultStackLabelId).not.toBeNull();
       const defaultBlockLabelledBy = fixture.nativeElement
@@ -397,11 +398,11 @@ export default function (): void {
 
     it('should not have heading role and aria-level attribute set if ariaLevel is not set', async () => {
       fixture = TestBed.createComponent(NestedBlocks);
-      fixture.detectChanges();
+      renderFixture(fixture);
       const component = fixture.componentInstance;
       component.blockInstance.expanded = true;
       await delay();
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       const topLevelBlock = fixture.nativeElement.querySelector('.stack-block-expandable');
       expect(topLevelBlock.getAttribute('role')).toBeNull();
@@ -417,12 +418,12 @@ export default function (): void {
 
     it('should have expected explicit heading roles and aria heading levels', async () => {
       fixture = TestBed.createComponent(NestedBlocks);
-      fixture.detectChanges();
+      renderFixture(fixture);
       const component = fixture.componentInstance;
       component.explicitHeadingLevels = true;
       component.blockInstance.expanded = true;
       await delay();
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       const topLevelBlock = fixture.nativeElement.querySelector('.stack-block-expandable');
       expect(topLevelBlock.getAttribute('role')).toBe('heading');
@@ -437,8 +438,8 @@ export default function (): void {
 
     describe('Space interaction with elements', () => {
       let spy: Spy<any>;
-      const keyDown = new KeyboardEvent('keydown', { key: Keys.Space, bubbles: true });
-      const keyUp = new KeyboardEvent('keyup', { key: Keys.Space, bubbles: true });
+      let keyDown: KeyboardEvent;
+      let keyUp: KeyboardEvent;
 
       function executeElementTest(elementName: string) {
         const element = fixture.nativeElement.querySelector(elementName) as HTMLElement;
@@ -447,16 +448,18 @@ export default function (): void {
 
         element.dispatchEvent(keyDown);
         element.dispatchEvent(keyUp);
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         expect(spy).toHaveBeenCalledWith(keyUp);
       }
 
       beforeEach(async () => {
+        keyDown = new KeyboardEvent('keydown', { key: Keys.Space, bubbles: true });
+        keyUp = new KeyboardEvent('keyup', { key: Keys.Space, bubbles: true });
         fixture = TestBed.createComponent(BlocksWithIinteractiveElements);
         fixture.whenRenderingDone();
-        fixture.detectChanges();
-        spy = spyOn(fixture.componentInstance.testBlockInstance, 'toggleExpand').and.callThrough();
+        renderFixture(fixture);
+        spy = vi.spyOn(fixture.componentInstance.testBlockInstance, 'toggleExpand');
       });
 
       it('Events sent through input element should NOT expand block', () => {
@@ -527,7 +530,7 @@ export default function (): void {
         const select = fixture.nativeElement.querySelector('select') as HTMLElement;
 
         select.click();
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         executeElementTest('option');
 
@@ -549,4 +552,4 @@ export default function (): void {
       });
     });
   });
-}
+});

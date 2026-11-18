@@ -6,6 +6,7 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { MockAppfxMenuActionComponent } from './menu-action.component.mock';
 
@@ -20,7 +21,7 @@ describe('MockAppfxMenuActionComponent', () => {
 
     fixture = TestBed.createComponent(MockAppfxMenuActionComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    renderFixture(fixture);
   });
 
   it('should create an instance of MockAppfxMenuActionComponent', () => {

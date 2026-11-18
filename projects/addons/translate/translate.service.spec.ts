@@ -7,6 +7,8 @@
 
 import { ChangeDetectionStrategy, Component, NgModule } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
+import type { Mock } from 'vitest';
 
 import { AppfxTranslateModule } from './translate.module';
 import {
@@ -106,7 +108,7 @@ describe('Service: Translate', () => {
       });
 
       component1 = testbed.createComponent(Test1Component);
-      component1.detectChanges();
+      renderFixture(component1);
     });
 
     it('has no translations outside the component', inject(
@@ -130,7 +132,7 @@ describe('Service: Translate', () => {
       });
 
       component2 = testbed.createComponent(Test2Component);
-      component2.detectChanges();
+      renderFixture(component2);
     });
 
     it('has no translations outside the component', inject(
@@ -155,9 +157,9 @@ describe('Service: Translate', () => {
       });
 
       component1 = testbed.createComponent(Test1Component);
-      component1.detectChanges();
+      renderFixture(component1);
       component2 = testbed.createComponent(Test2Component);
-      component2.detectChanges();
+      renderFixture(component2);
     });
 
     it('has no translations outside the components', inject(
@@ -176,10 +178,10 @@ describe('Service: Translate', () => {
     });
 
     describe('and the language is changed', () => {
-      let languageChangedSpy: jasmine.Spy;
+      let languageChangedSpy: Mock;
 
       beforeEach(inject([AppfxTranslateService], (service: AppfxTranslateService) => {
-        languageChangedSpy = jasmine.createSpy('next');
+        languageChangedSpy = vi.fn();
         const subscription = service.localeChanged$.subscribe({ next: languageChangedSpy });
         service.locale = AppfxLocale.Es;
         subscription.unsubscribe();
@@ -274,10 +276,10 @@ describe('Service: Translate', () => {
   describe('when a custom missing translations hook is specified', () => {
     const testTranslations = {};
     const testInterpolations = {};
-    let missingTranslationSpy: jasmine.Spy;
+    let missingTranslationSpy: Mock;
 
     beforeEach(() => {
-      missingTranslationSpy = jasmine.createSpy('missingTranslation');
+      missingTranslationSpy = vi.fn();
 
       TestBed.configureTestingModule({
         providers: [

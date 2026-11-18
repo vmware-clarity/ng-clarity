@@ -5,17 +5,18 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule, LayoutService, NgControlService } from '@clr/angular/forms/common';
 import { ClrIcon } from '@clr/angular/icon';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrCheckbox } from './checkbox';
 import { ClrCheckboxContainer } from './checkbox-container';
 import { ClrCheckboxWrapper } from './checkbox-wrapper';
-import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
+import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container';
 
 @Component({
   template: `
@@ -79,7 +80,7 @@ class ReactiveTest {
   });
 }
 
-export default function (): void {
+describe('Checkbox component', () => {
   describe('ClrCheckboxContainer', () => {
     ContainerNoLabelSpec(ClrCheckboxContainer, [ClrCheckboxWrapper, ClrCheckbox], NoLabelTest);
     TemplateDrivenSpec(
@@ -96,7 +97,9 @@ export default function (): void {
     );
 
     describe('inline buttons', () => {
-      let fixture, containerDE, containerEl;
+      let fixture: ComponentFixture<TemplateDrivenTest>;
+      let containerDE: DebugElement;
+      let containerEl: HTMLElement;
 
       beforeEach(() => {
         TestBed.configureTestingModule({
@@ -108,15 +111,15 @@ export default function (): void {
 
         containerDE = fixture.debugElement.query(By.directive(ClrCheckboxContainer));
         containerEl = containerDE.nativeElement;
-        fixture.detectChanges();
+        renderFixture(fixture);
       });
 
       it('sets the inline class', () => {
         expect(containerEl.querySelector('.clr-control-container').className).not.toContain('clr-control-inline');
         fixture.debugElement.componentInstance.inline = true;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(containerEl.querySelector('.clr-control-container').className).toContain('clr-control-inline');
       });
     });
   });
-}
+});

@@ -8,6 +8,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ClrIcon } from '@clr/angular/icon';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { CONTROL_SUFFIX } from '../abstract-control';
 import { ClrControlSuccess } from './success';
@@ -21,7 +23,7 @@ import { ControlIdService } from '../providers/control-id.service';
 })
 class SimpleTest {}
 
-export default function (): void {
+describe('Forms common utilities', () => {
   describe('ClrControlSuccess', () => {
     describe('Default:', () => {
       let fixture: ComponentFixture<SimpleTest>;
@@ -29,11 +31,12 @@ export default function (): void {
 
       beforeEach(function () {
         TestBed.configureTestingModule({
+          imports: [ClrIcon],
           declarations: [ClrControlSuccess, SimpleTest],
           providers: [ControlIdService],
         });
         fixture = TestBed.createComponent(SimpleTest);
-        fixture.detectChanges();
+        renderFixture(fixture);
         element = fixture.debugElement.query(By.directive(ClrControlSuccess)).nativeElement;
       });
 
@@ -42,7 +45,7 @@ export default function (): void {
       });
 
       it('adds the .clr-subtext-wrapper class to host', function () {
-        expect(element.classList.contains('clr-subtext-wrapper')).toBeTrue();
+        expect(element.classList.contains('clr-subtext-wrapper')).toBe(true);
       });
 
       it('should add id to host', function () {
@@ -57,11 +60,12 @@ export default function (): void {
 
       beforeEach(async function () {
         TestBed.configureTestingModule({
+          imports: [ClrIcon],
           declarations: [ClrControlSuccess, SimpleTest],
           providers: [ControlIdService, ContainerIdService],
         }).compileComponents();
         fixture = TestBed.createComponent(SimpleTest);
-        fixture.detectChanges();
+        renderFixture(fixture);
         element = fixture.debugElement.query(By.directive(ClrControlSuccess)).nativeElement;
       });
 
@@ -71,4 +75,4 @@ export default function (): void {
       });
     });
   });
-}
+});

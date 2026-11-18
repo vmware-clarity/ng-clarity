@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ClrRadioModule } from '@clr/angular/forms/radio';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrDatagridSingleSelectionValueAccessor } from './datagrid-single-selection.directive';
 
@@ -39,89 +40,91 @@ class TestHostComponent {
   identifyBy: ((item: RowItem) => unknown) | undefined = (item: RowItem) => item.id;
 }
 
-export default function (): void {
-  describe('ClrDatagridSingleSelectionValueAccessor', function () {
-    let fixture: ComponentFixture<TestHostComponent>;
-    let host: TestHostComponent;
-    let radio: HTMLInputElement;
+describe('Datagrid', () => {
+  describe('Components', () => {
+    describe('ClrDatagridSingleSelectionValueAccessor', function () {
+      let fixture: ComponentFixture<TestHostComponent>;
+      let host: TestHostComponent;
+      let radio: HTMLInputElement;
 
-    beforeEach(async () => {
-      await TestBed.configureTestingModule({
-        declarations: [TestHostComponent],
-        imports: [FormsModule, ClrRadioModule, ClrDatagridSingleSelectionValueAccessor],
-      }).compileComponents();
+      beforeEach(async () => {
+        await TestBed.configureTestingModule({
+          declarations: [TestHostComponent],
+          imports: [FormsModule, ClrRadioModule, ClrDatagridSingleSelectionValueAccessor],
+        }).compileComponents();
 
-      fixture = TestBed.createComponent(TestHostComponent);
-      host = fixture.componentInstance;
-      radio = fixture.debugElement.nativeElement.querySelector('input[type=radio]') as HTMLInputElement;
-    });
+        fixture = TestBed.createComponent(TestHostComponent);
+        host = fixture.componentInstance;
+        radio = fixture.debugElement.nativeElement.querySelector('input[type=radio]') as HTMLInputElement;
+      });
 
-    afterEach(() => {
-      fixture.destroy();
-    });
+      afterEach(() => {
+        fixture.destroy();
+      });
 
-    it('does not mark the radio as checked when there is no selection and the row item is a placeholder', async () => {
-      host.rowItem = undefined;
-      host.selected = undefined;
-      fixture.detectChanges();
-      await fixture.whenStable();
-      expect(radio.checked).toBe(false);
-    });
+      it('does not mark the radio as checked when there is no selection and the row item is a placeholder', async () => {
+        host.rowItem = undefined;
+        host.selected = undefined;
+        renderFixture(fixture);
+        await fixture.whenStable();
+        expect(radio.checked).toBe(false);
+      });
 
-    it('does not mark the radio as checked when there is no selection but the row item is real', async () => {
-      host.rowItem = { id: 1, name: 'a' };
-      host.selected = undefined;
-      fixture.detectChanges();
-      await fixture.whenStable();
-      expect(radio.checked).toBe(false);
-    });
+      it('does not mark the radio as checked when there is no selection but the row item is real', async () => {
+        host.rowItem = { id: 1, name: 'a' };
+        host.selected = undefined;
+        renderFixture(fixture);
+        await fixture.whenStable();
+        expect(radio.checked).toBe(false);
+      });
 
-    it('does not mark the radio as checked when row item is a placeholder even if selection exists', async () => {
-      host.rowItem = undefined;
-      host.selected = { id: 1, name: 'a' };
-      fixture.detectChanges();
-      await fixture.whenStable();
-      expect(radio.checked).toBe(false);
-    });
+      it('does not mark the radio as checked when row item is a placeholder even if selection exists', async () => {
+        host.rowItem = undefined;
+        host.selected = { id: 1, name: 'a' };
+        renderFixture(fixture);
+        await fixture.whenStable();
+        expect(radio.checked).toBe(false);
+      });
 
-    it('marks the radio as checked when selection identity matches the row item', async () => {
-      const item = { id: 1, name: 'a' };
-      host.rowItem = item;
-      host.selected = item;
-      fixture.detectChanges();
-      await fixture.whenStable();
-      expect(radio.checked).toBe(true);
-    });
+      it('marks the radio as checked when selection identity matches the row item', async () => {
+        const item = { id: 1, name: 'a' };
+        host.rowItem = item;
+        host.selected = item;
+        renderFixture(fixture);
+        await fixture.whenStable();
+        expect(radio.checked).toBe(true);
+      });
 
-    it('marks the radio as checked when selection matches the row item by identifyBy id (different reference)', async () => {
-      host.rowItem = { id: 1, name: 'a' };
-      host.selected = { id: 1, name: 'a-clone' };
-      fixture.detectChanges();
-      await fixture.whenStable();
-      expect(radio.checked).toBe(true);
-    });
+      it('marks the radio as checked when selection matches the row item by identifyBy id (different reference)', async () => {
+        host.rowItem = { id: 1, name: 'a' };
+        host.selected = { id: 1, name: 'a-clone' };
+        renderFixture(fixture);
+        await fixture.whenStable();
+        expect(radio.checked).toBe(true);
+      });
 
-    it('does not mark the radio as checked when identities differ', async () => {
-      host.rowItem = { id: 1, name: 'a' };
-      host.selected = { id: 2, name: 'b' };
-      fixture.detectChanges();
-      await fixture.whenStable();
-      expect(radio.checked).toBe(false);
-    });
+      it('does not mark the radio as checked when identities differ', async () => {
+        host.rowItem = { id: 1, name: 'a' };
+        host.selected = { id: 2, name: 'b' };
+        renderFixture(fixture);
+        await fixture.whenStable();
+        expect(radio.checked).toBe(false);
+      });
 
-    it('falls back to reference equality when no identifyBy is provided', async () => {
-      host.identifyBy = undefined;
-      const item = { id: 1, name: 'a' };
-      host.rowItem = item;
-      host.selected = item;
-      fixture.detectChanges();
-      await fixture.whenStable();
-      expect(radio.checked).toBe(true);
+      it('falls back to reference equality when no identifyBy is provided', async () => {
+        host.identifyBy = undefined;
+        const item = { id: 1, name: 'a' };
+        host.rowItem = item;
+        host.selected = item;
+        renderFixture(fixture);
+        await fixture.whenStable();
+        expect(radio.checked).toBe(true);
 
-      host.selected = { id: 1, name: 'a' };
-      fixture.detectChanges();
-      await fixture.whenStable();
-      expect(radio.checked).toBe(false);
+        host.selected = { id: 1, name: 'a' };
+        renderFixture(fixture);
+        await fixture.whenStable();
+        expect(radio.checked).toBe(false);
+      });
     });
   });
-}
+});

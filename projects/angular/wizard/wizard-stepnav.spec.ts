@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ButtonHubService } from './providers/button-hub.service';
 import { PageCollectionService } from './providers/page-collection.service';
@@ -40,12 +41,16 @@ class TestComponent {
   @ViewChild(ClrWizardStepnav, { static: true }) stepNav: ClrWizardStepnav;
 }
 
-export default function (): void {
+describe('New Wizard Tests', () => {
   describe('New Wizard Stepnav', () => {
     let fixture: ComponentFixture<any>;
     let debugEl: DebugElement;
     let myStepnavEl: HTMLElement;
-    const pageCollection = new StepnavPageCollection();
+    let pageCollection: StepnavPageCollection;
+
+    beforeEach(() => {
+      pageCollection = new StepnavPageCollection();
+    });
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -58,7 +63,7 @@ export default function (): void {
         ],
       });
       fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
       debugEl = fixture.debugElement.query(By.directive(ClrWizardStepnav));
       myStepnavEl = debugEl.nativeElement;
     });
@@ -77,13 +82,13 @@ export default function (): void {
 
         it('should keep up with deletions to collection of pages', () => {
           mockPages.splice(1, 1);
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(myStepnavEl.querySelectorAll('.clr-wizard-stepnav-item').length).toBe(2);
         });
 
         it('should keep up with additions to collection of pages', () => {
           mockPages[mockPages.length] = new MockPage(3);
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(mockPages.length).toBe(4);
           expect(myStepnavEl.querySelectorAll('.clr-wizard-stepnav-item').length).toBe(4);
         });
@@ -98,4 +103,4 @@ export default function (): void {
       });
     });
   });
-}
+});
