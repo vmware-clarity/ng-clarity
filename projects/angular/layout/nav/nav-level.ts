@@ -8,6 +8,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import {
   ApplicationRef,
+  ComponentRef,
   createComponent,
   Directive,
   DOCUMENT,
@@ -41,6 +42,7 @@ export class ClrNavLevel implements OnInit {
   private _isOpen = false;
   private _document: Document;
   private _subscription: Subscription;
+  private closeIcon: ComponentRef<ClrIcon>;
 
   constructor(
     @Inject(PLATFORM_ID) platformId: any,
@@ -131,6 +133,7 @@ export class ClrNavLevel implements OnInit {
   ngOnDestroy() {
     this.responsiveNavService.unregisterNav(this.level);
     this._subscription.unsubscribe();
+    this.closeIcon?.destroy();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -221,15 +224,15 @@ export class ClrNavLevel implements OnInit {
     closeButton.setAttribute('hidden', 'true');
     closeButton.className = 'clr-nav-close';
 
-    const iconRef = createComponent(ClrIcon, {
+    this.closeIcon = createComponent(ClrIcon, {
       hostElement: this._document.createElement('cds-icon'),
       environmentInjector: this.environmentInjector,
       elementInjector: this.injector,
     });
-    iconRef.instance.shape = 'times';
-    iconRef.instance.size = '32';
-    this.appRef.attachView(iconRef.hostView);
-    closeButton.appendChild(iconRef.location.nativeElement);
+    this.closeIcon.instance.shape = 'times';
+    this.closeIcon.instance.size = '32';
+    this.appRef.attachView(this.closeIcon.hostView);
+    closeButton.appendChild(this.closeIcon.location.nativeElement);
 
     return closeButton;
   }
