@@ -27,6 +27,7 @@ import {
   QueryList,
   Renderer2,
   RendererStyleFlags2,
+  signal,
   TemplateRef,
   ViewChild,
   ViewChildren,
@@ -89,7 +90,7 @@ import { CellCoordinates, KeyNavigationGridController } from './utils/key-naviga
     '[class.datagrid-virtual-scroll]': '!!virtualScroll',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy, DoCheck {
   @Input('clrLoadingMoreItems') loadingMoreItems: boolean;
@@ -125,11 +126,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    * We grab the smart iterator from projected content
    */
   @ContentChild(ClrDatagridItems) iterator: ClrDatagridItems<T>;
-
-  /**
-   * Custom placeholder detection
-   */
-  @ContentChild(ClrDatagridPlaceholder) placeholder: ClrDatagridPlaceholder<T>;
 
   /**
    * Hideable Column data source / detection.
@@ -183,6 +179,10 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    */
   private fixedColumnViews: EmbeddedViewRef<void>[] = [];
 
+  // Content the template reads, held in signals so that it is shown when it is added later.
+  private readonly _placeholder = signal<ClrDatagridPlaceholder<T> | undefined>(undefined);
+  private readonly virtualScrollDirective = signal<ClrDatagridVirtualScrollDirective<any> | undefined>(undefined);
+
   private cachedRowsHeight = 0;
   private cachedContentHeight = 0;
   private resizeObserver: ResizeObserver = new ResizeObserver(entries => {
@@ -219,6 +219,17 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
     this.selectAllId = 'clr-dg-select-all-' + datagridId;
     detailService.id = datagridId;
+  }
+
+  /**
+   * Custom placeholder detection
+   */
+  @ContentChild(ClrDatagridPlaceholder)
+  get placeholder(): ClrDatagridPlaceholder<T> {
+    return this._placeholder();
+  }
+  set placeholder(placeholder: ClrDatagridPlaceholder<T>) {
+    this._placeholder.set(placeholder);
   }
 
   /**
@@ -306,7 +317,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   }
 
   get virtualScroll(): ClrDatagridVirtualScrollDirective<any> {
-    return this._virtualScroll?.get(0);
+    return this.virtualScrollDirective();
   }
 
   protected get isDetailOverlay(): boolean {
@@ -314,6 +325,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   }
 
   ngAfterContentInit() {
+    this.virtualScrollDirective.set(this._virtualScroll.first);
     if (!this.items.smart) {
       this.items.all = this.rows.map((row: ClrDatagridRow<T>) => row.item);
     }
@@ -336,6 +348,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         }
       }),
       this._virtualScroll.changes.subscribe(() => {
+        this.virtualScrollDirective.set(this._virtualScroll.first);
         this.toggleVirtualScrollSubscriptions();
       }),
       this.rows.changes.subscribe(() => {

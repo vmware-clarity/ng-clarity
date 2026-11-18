@@ -18,6 +18,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     '[class.datagrid-detail-body]': 'true',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrDatagridDetailBody {}

@@ -403,13 +403,14 @@ describe('Datagrid', () => {
           expect(rowNames()).toEqual(['a', 'b', 'c']);
         });
 
-        it('works out the tree of a row once per check, however many times its cells read it', function () {
+        it('works out the tree of a row only when it changes, however many times its cells read it', function () {
           const rowComponents = fixture.debugElement
             .queryAll(By.directive(ClrDatagridRow))
             .map(row => row.componentInstance as ClrDatagridRow);
           const spies = rowComponents.map(row => vi.spyOn(row as any, 'workOutTreeCells'));
           renderFixture(fixture);
-          spies.forEach(spy => expect(spy).toHaveBeenCalledTimes(1));
+          rowComponents.forEach(row => [row._tree, row._tree, row._tree]);
+          spies.forEach(spy => expect(spy).not.toHaveBeenCalled());
         });
 
         it('leaves the cells of other datagrids alone', function () {

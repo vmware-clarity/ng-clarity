@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
 import {
   ClrPopoverHostDirective,
   ClrPopoverPosition,
@@ -13,7 +13,6 @@ import {
   ClrPopoverType,
 } from '@clr/angular/popover/common';
 import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
-import { Subscription } from 'rxjs';
 
 import { columnToggleTrackByFn } from './datagrid-column-toggle-trackby';
 import { DatagridColumnChanges } from './enums/column-changes.enum';
@@ -89,11 +88,10 @@ import { ColumnsService } from './providers/columns.service';
   host: { '[class.column-switch-wrapper]': 'true', '[class.active]': 'openState' },
   hostDirectives: [ClrPopoverHostDirective],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClrDatagridColumnToggle implements OnDestroy {
+export class ClrDatagridColumnToggle {
   popoverId = uniqueIdFactory();
-  openState = false;
 
   // Smart Popover
   popoverPosition = ClrPopoverPosition.TOP_LEFT;
@@ -104,16 +102,20 @@ export class ClrDatagridColumnToggle implements OnDestroy {
   readonly trackByFn = columnToggleTrackByFn;
 
   private _allColumnsVisible: boolean;
-  private subscription: Subscription;
 
   @ViewChild('allSelected', { read: ElementRef }) private allSelectedElement: ElementRef<HTMLElement>;
 
   constructor(
     public commonStrings: ClrCommonStringsService,
     private columnsService: ColumnsService,
-    popoverService: ClrPopoverService
-  ) {
-    this.subscription = popoverService.openChange.subscribe(change => (this.openState = change));
+    private popoverService: ClrPopoverService
+  ) {}
+
+  get openState(): boolean {
+    return this.popoverService.open;
+  }
+  set openState(open: boolean) {
+    this.popoverService.open = open;
   }
 
   get allColumnsVisible(): boolean {
@@ -133,10 +135,6 @@ export class ClrDatagridColumnToggle implements OnDestroy {
     return (
       nbNonHideableColumns === 0 && this.hideableColumnStates.filter(columnState => !columnState.hidden).length === 1
     );
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 
   toggleColumnState(columnState: ColumnState, event: boolean) {

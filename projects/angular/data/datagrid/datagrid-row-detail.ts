@@ -17,6 +17,7 @@ import {
   Input,
   OnDestroy,
   QueryList,
+  signal,
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
@@ -52,7 +53,7 @@ import { Selection } from './providers/selection';
       <ng-container #pinnedCells></ng-container>
     </div>
     <ng-container #scrollableCells></ng-container>
-    @if (this.cells?.length > 0) {
+    @if (hasCells()) {
       <ng-container [ngTemplateOutlet]="noCells"></ng-container>
       <!--
         Where the cells go back to when the detail stops being column aligned, because a column was
@@ -60,8 +61,7 @@ import { Selection } from './providers/selection';
         projection it came from, so it needs a container of its own in the same place.
       -->
       <ng-container #plainCells></ng-container>
-    }
-    @if (this.cells?.length === 0) {
+    } @else {
       <clr-dg-cell class="datagrid-container">
         <ng-container [ngTemplateOutlet]="noCells"></ng-container>
       </clr-dg-cell>
@@ -79,7 +79,7 @@ import { Selection } from './providers/selection';
     role: 'row',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
   @Input('clrRowDetailBeginningAriaText') _beginningOfExpandableContentAriaText: string;
@@ -96,6 +96,9 @@ export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, Af
   SELECTION_TYPE = SelectionType;
 
   @ContentChildren(ClrDatagridCell) cells: QueryList<ClrDatagridCell>;
+
+  /** Whether the detail has cells of its own, which can come in after it is rendered. */
+  protected readonly hasCells = signal(false);
 
   @ViewChild('pinnedCells', { read: ViewContainerRef }) private _pinnedCells: ViewContainerRef;
   @ViewChild('scrollableCells', { read: ViewContainerRef }) private _scrollableCells: ViewContainerRef;
@@ -141,9 +144,13 @@ export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, Af
   }
 
   ngAfterContentInit() {
+    this.hasCells.set(this.cells.length > 0);
     this.subscriptions.push(
       // New cells have to be moved even when the columns did not change.
-      this.cells.changes.subscribe(() => this.syncColumnAlignment(true)),
+      this.cells.changes.subscribe(() => {
+        this.hasCells.set(this.cells.length > 0);
+        this.syncColumnAlignment(true);
+      }),
       // Content behind a `clrLoading` template is created whenever it has loaded, which nothing tells
       // Angular about. Its cells are only found once the view declaring the detail is checked again.
       this.expand.animate.subscribe(() => this.changeDetectorRef.markForCheck())

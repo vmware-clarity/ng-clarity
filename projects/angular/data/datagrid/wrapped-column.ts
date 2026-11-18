@@ -23,7 +23,7 @@ import {
     </ng-template>
   `,
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WrappedColumn implements AfterViewInit, OnDestroy {
   @ViewChild('columnPortal') templateRef: TemplateRef<void>;

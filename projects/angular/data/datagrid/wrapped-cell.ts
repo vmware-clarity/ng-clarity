@@ -23,7 +23,7 @@ import {
     </ng-template>
   `,
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WrappedCell implements AfterViewInit, OnDestroy {
   @ViewChild('cellPortal') templateRef: TemplateRef<void>;

@@ -38,7 +38,7 @@ import { DatagridTreeService } from './providers/tree.service';
     '(focus)': 'onFocus()',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrDatagridTreeToggleButton implements OnDestroy {
   @Input({ alias: 'clrDgTreeToggleButton', required: true }) node: DatagridTreeNode<unknown>;

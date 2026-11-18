@@ -15,6 +15,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  signal,
   ViewChild,
 } from '@angular/core';
 import { ClrCommonStringsService } from '@clr/angular/utils';
@@ -129,14 +130,12 @@ import { Page } from './providers/page';
   `,
   host: { '[class.pagination]': 'true' },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrDatagridPagination implements OnDestroy, OnInit {
   @Input('clrDgPageInputDisabled') disableCurrentPageInput: boolean;
 
   @Output('clrDgPageChange') currentChanged = new EventEmitter<number>(false);
-
-  @ContentChild(ClrDatagridPageSize) _pageSizeComponent: ClrDatagridPageSize;
 
   @ViewChild('currentPageInput') currentPageInputRef: ElementRef<HTMLInputElement>;
 
@@ -144,6 +143,8 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
    * Subscription to the page service changes
    */
   private _pageSubscription: Subscription;
+  // A query the template reads, so it is held in a signal for a page size added later.
+  private readonly pageSizeComponent = signal<ClrDatagridPageSize | undefined>(undefined);
 
   constructor(
     public page: Page,
@@ -156,6 +157,14 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
   /**
    * Page size
    */
+  @ContentChild(ClrDatagridPageSize)
+  get _pageSizeComponent(): ClrDatagridPageSize {
+    return this.pageSizeComponent();
+  }
+  set _pageSizeComponent(pageSize: ClrDatagridPageSize) {
+    this.pageSizeComponent.set(pageSize);
+  }
+
   @Input('clrDgPageSize')
   get pageSize(): number {
     return this.page.size;
