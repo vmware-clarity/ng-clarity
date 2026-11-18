@@ -1,5 +1,5 @@
 import * as i0 from "@angular/core";
-import { ChangeDetectionStrategy, Component, Directive, HostBinding, Inject, Injectable, Input, NgModule, Optional } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Directive, HostBinding, Inject, Injectable, Input, NgModule, Optional, inject } from "@angular/core";
 import * as i1 from "@clr/addons/translate";
 import { AppfxTranslateModule, AppfxTranslateService, appfxTranslationsToken } from "@clr/addons/translate";
 import * as i1$2 from "@clr/angular/stepper";
@@ -174,6 +174,7 @@ var OverflowClrTabsDirective = class OverflowClrTabsDirective {
 			else this.addTabLinkClasses(tabLink);
 		});
 		this.cdr.detectChanges();
+		this.cdr.markForCheck();
 	}
 	isTabLinkOverflowing(container, clrTabLinkMargin, tabLink) {
 		const containerBcr = container.getBoundingClientRect();
@@ -398,10 +399,12 @@ i0.ɵɵngDeclareClassMetadata({
 var ZoomLevelIndicatorDirective = class ZoomLevelIndicatorDirective {
 	constructor(zoomLevelService) {
 		this.zoomLevelService = zoomLevelService;
+		this.changeDetectorRef = inject(ChangeDetectorRef);
 	}
 	ngOnInit() {
 		if (this.zoomLevelService) this.subscription = this.zoomLevelService.onChange.subscribe((v) => {
 			this.zoomLevel = v;
+			this.changeDetectorRef.markForCheck();
 		});
 	}
 	ngOnDestroy() {

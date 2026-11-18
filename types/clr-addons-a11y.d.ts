@@ -164,6 +164,7 @@ export declare class ZoomLevelIndicatorDirective implements OnInit, OnDestroy {
   private zoomLevelService;
   zoomLevel: ZoomLevel;
   private subscription;
+  private readonly changeDetectorRef;
   constructor(zoomLevelService: ZoomLevelService);
   ngOnInit(): void;
   ngOnDestroy(): void;
