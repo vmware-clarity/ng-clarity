@@ -13,24 +13,9 @@ module.exports = {
     ...baseReleaseConfig.plugins,
     './scripts/semantic-release-add-peer-dependency.js',
     '@semantic-release/github',
-    [
-      '@amanda-mitchell/semantic-release-npm-multiple',
-      {
-        registries: {
-          angular: {
-            npmPublish: true,
-            pkgRoot: './dist/clr-angular',
-          },
-          ui: {
-            npmPublish: true,
-            pkgRoot: './dist/clr-ui',
-          },
-          addons: {
-            npmPublish: true,
-            pkgRoot: './dist/clr-addons',
-          },
-        },
-      },
-    ],
+    // @semantic-release/npm once per published package; they share the registry and its authentication.
+    ['@semantic-release/npm', { pkgRoot: './dist/clr-angular' }],
+    ['@semantic-release/npm', { pkgRoot: './dist/clr-ui' }],
+    ['@semantic-release/npm', { pkgRoot: './dist/clr-addons' }],
   ],
 };

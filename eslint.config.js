@@ -127,7 +127,7 @@ module.exports = [
       '@typescript-eslint/no-non-null-assertion': 'error',
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/no-useless-constructor': 'error',
-      '@typescript-eslint/no-var-requires': 'error',
+      '@typescript-eslint/no-require-imports': 'error',
       '@typescript-eslint/parameter-properties': ['error', { prefer: 'parameter-property' }],
 
       // General
@@ -187,7 +187,7 @@ module.exports = [
   {
     files: ['projects/website/src/app/documentation/demos/**/*.ts'],
     rules: {
-      '@typescript-eslint/no-var-requires': 'off',
+      '@typescript-eslint/no-require-imports': 'off',
     },
   },
 
