@@ -73,3 +73,9 @@ Some fields became accessors: `IfExpandService.expandable`, `hasExpandTemplate`,
 `isNavLevel2OnPage`. This is source compatible unless a subclass redeclares them as fields.
 
 When upgrading through v18, remove any `*WillyWonka` / `*OompaLoompa` imports left by the v18 rename schematic.
+
+## Removed datagrid column toggle property
+
+`ClrDatagridColumnToggle.allColumnsVisible` has been removed. Clarity never read or set it, so it was always
+`undefined` unless application code assigned it. To know whether every hideable column is shown, track each column's
+`hidden` state with the `clrDgHidden` input and `clrDgHiddenChange` output of `clrDgHideableColumn`.
