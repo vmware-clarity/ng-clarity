@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, signal, viewChild, viewChildren } f
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClrIcon } from '@clr/angular/icon';
 import { delay } from '@clr/angular/testing';
+import { ClrCommonStringsService, commonStringsDefault } from '@clr/angular/utils';
 
 import { ClrVerticalNav } from './vertical-nav';
 import { ClrVerticalNavGroup } from './vertical-nav-group';
@@ -175,6 +176,19 @@ describe('ClrVerticalNav (zoneless, OnPush host)', () => {
       expect(navClasses()).toEqual([]);
       expect(trigger()).toBeNull();
       expect(nav().querySelector('.nav-btn')).toBeNull();
+    });
+
+    it('follows the strings localized after the first render', async () => {
+      const commonStrings = TestBed.inject(ClrCommonStringsService);
+      host.collapsed.set(true);
+      await fixture.whenStable();
+
+      commonStrings.localize({ verticalNavToggle: 'Navigation umschalten' });
+      await fixture.whenStable();
+
+      expect(trigger().getAttribute('aria-label')).toBe('Navigation umschalten');
+      expect(nav().querySelector('.nav-btn').getAttribute('aria-label')).toBe('Navigation umschalten');
+      commonStrings.localize(commonStringsDefault);
     });
 
     it('keeps refreshing projected content', async () => {
