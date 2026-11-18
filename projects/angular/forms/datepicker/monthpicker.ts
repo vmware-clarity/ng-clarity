@@ -78,7 +78,7 @@ import { ViewManagerService } from './providers/view-manager.service';
     role: 'application',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrMonthpicker implements AfterViewInit {
   /**

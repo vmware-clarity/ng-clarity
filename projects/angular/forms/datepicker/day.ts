@@ -37,7 +37,7 @@ import { DateNavigationService } from './providers/date-navigation.service';
   `,
   host: { '[class.day]': 'true' },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrDay {
   @Output('selectDay') onSelectDay = new EventEmitter<DayModel>();

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Observable, Subject, tap } from 'rxjs';
 
 import { DateRangeInput } from '../interfaces/date-range.interface';
@@ -22,21 +22,21 @@ import { DayModel } from '../model/day.model';
 export class DateNavigationService {
   persistedDate: DayModel;
   persistedEndDate: DayModel;
-  selectedDay: DayModel;
-  selectedEndDay: DayModel;
   focusedDay: DayModel;
-  hoveredDay: DayModel;
-  hoveredMonth: number;
-  hoveredYear: number;
-  isRangePicker = false;
-  hasActionButtons = false;
 
-  private _displayedCalendar: CalendarModel;
+  // State that the calendar views render. Signals, so that every view reading it refreshes when it changes.
+  private readonly _selectedDay = signal<DayModel>(undefined);
+  private readonly _selectedEndDay = signal<DayModel>(undefined);
+  private readonly _hoveredDay = signal<DayModel>(undefined);
+  private readonly _hoveredMonth = signal<number>(undefined);
+  private readonly _hoveredYear = signal<number>(undefined);
+  private readonly _isRangePicker = signal(false);
+  private readonly _hasActionButtons = signal(false);
+  private readonly _displayedCalendar = signal<CalendarModel>(undefined);
   private _todaysFullDate: Date = new Date();
   private _today: DayModel;
   private _selectedDayChange = new Subject<DayModel>();
   private _selectedEndDayChange = new Subject<DayModel>();
-  private _displayedCalendarChange = new Subject<void>();
   private _focusOnCalendarChange = new Subject<void>();
   private _refreshCalendarView = new Subject<void>();
   private _focusedDayChange = new Subject<DayModel>();
@@ -46,7 +46,56 @@ export class DateNavigationService {
   }
 
   get displayedCalendar(): CalendarModel {
-    return this._displayedCalendar;
+    return this._displayedCalendar();
+  }
+
+  get selectedDay(): DayModel {
+    return this._selectedDay();
+  }
+  set selectedDay(day: DayModel) {
+    this._selectedDay.set(day);
+  }
+
+  get selectedEndDay(): DayModel {
+    return this._selectedEndDay();
+  }
+  set selectedEndDay(day: DayModel) {
+    this._selectedEndDay.set(day);
+  }
+
+  get hoveredDay(): DayModel {
+    return this._hoveredDay();
+  }
+  set hoveredDay(day: DayModel) {
+    this._hoveredDay.set(day);
+  }
+
+  get hoveredMonth(): number {
+    return this._hoveredMonth();
+  }
+  set hoveredMonth(month: number) {
+    this._hoveredMonth.set(month);
+  }
+
+  get hoveredYear(): number {
+    return this._hoveredYear();
+  }
+  set hoveredYear(year: number) {
+    this._hoveredYear.set(year);
+  }
+
+  get isRangePicker(): boolean {
+    return this._isRangePicker();
+  }
+  set isRangePicker(value: boolean) {
+    this._isRangePicker.set(value);
+  }
+
+  get hasActionButtons(): boolean {
+    return this._hasActionButtons();
+  }
+  set hasActionButtons(value: boolean) {
+    this._hasActionButtons.set(value);
   }
 
   get selectedDayChange(): Observable<DayModel> {
@@ -55,13 +104,6 @@ export class DateNavigationService {
 
   get selectedEndDayChange(): Observable<DayModel> {
     return this._selectedEndDayChange.asObservable();
-  }
-
-  /**
-   * This observable lets the subscriber know that the displayed calendar has changed.
-   */
-  get displayedCalendarChange(): Observable<void> {
-    return this._displayedCalendarChange.asObservable();
   }
 
   /**
@@ -115,47 +157,44 @@ export class DateNavigationService {
   initializeCalendar(): void {
     this.focusedDay = null; // Can be removed later on the store focus
     this.initializeTodaysDate();
-    if (this.selectedDay) {
-      this._displayedCalendar = new CalendarModel(this.selectedDay.year, this.selectedDay.month);
-    } else {
-      this._displayedCalendar = new CalendarModel(this.today.year, this.today.month);
-    }
+    const day = this.selectedDay || this.today;
+    this._displayedCalendar.set(new CalendarModel(day.year, day.month));
   }
 
   changeMonth(month: number): void {
-    this.setDisplayedCalendar(new CalendarModel(this._displayedCalendar.year, month));
+    this.setDisplayedCalendar(new CalendarModel(this.displayedCalendar.year, month));
   }
 
   changeYear(year: number): void {
-    this.setDisplayedCalendar(new CalendarModel(year, this._displayedCalendar.month));
+    this.setDisplayedCalendar(new CalendarModel(year, this.displayedCalendar.month));
   }
 
   /**
    * Moves the displayed calendar to the next month.
    */
   moveToNextMonth(): void {
-    this.setDisplayedCalendar(this._displayedCalendar.nextMonth());
+    this.setDisplayedCalendar(this.displayedCalendar.nextMonth());
   }
 
   /**
    * Moves the displayed calendar to the previous month.
    */
   moveToPreviousMonth(): void {
-    this.setDisplayedCalendar(this._displayedCalendar.previousMonth());
+    this.setDisplayedCalendar(this.displayedCalendar.previousMonth());
   }
 
   /**
    * Moves the displayed calendar to the next year.
    */
   moveToNextYear(): void {
-    this.setDisplayedCalendar(this._displayedCalendar.nextYear());
+    this.setDisplayedCalendar(this.displayedCalendar.nextYear());
   }
 
   /**
    * Moves the displayed calendar to the previous year.
    */
   moveToPreviousYear(): void {
-    this.setDisplayedCalendar(this._displayedCalendar.previousYear());
+    this.setDisplayedCalendar(this.displayedCalendar.previousYear());
   }
 
   /**
@@ -176,7 +215,7 @@ export class DateNavigationService {
 
   incrementFocusDay(value: number): void {
     this.hoveredDay = this.focusedDay = this.focusedDay.incrementBy(value);
-    if (this._displayedCalendar.isDayInCalendar(this.focusedDay)) {
+    if (this.displayedCalendar.isDayInCalendar(this.focusedDay)) {
       this._focusedDayChange.next(this.focusedDay);
     } else {
       this.setDisplayedCalendar(new CalendarModel(this.focusedDay.year, this.focusedDay.month));
@@ -209,9 +248,8 @@ export class DateNavigationService {
 
   // not a setter because i want this to remain private
   private setDisplayedCalendar(value: CalendarModel) {
-    if (!this._displayedCalendar.isEqual(value)) {
-      this._displayedCalendar = value;
-      this._displayedCalendarChange.next();
+    if (!this.displayedCalendar.isEqual(value)) {
+      this._displayedCalendar.set(value);
     }
   }
 

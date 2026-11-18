@@ -27,7 +27,7 @@ import { ViewManagerService } from './providers/view-manager.service';
     role: 'dialog',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrDatepickerViewManager {
   constructor(
