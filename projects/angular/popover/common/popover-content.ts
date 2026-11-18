@@ -224,7 +224,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     this.openCloseSubscription?.unsubscribe();
   }
 
-  private _createOverlayRef(): OverlayRef {
+  private _createOverlayRef() {
     const overlayRef = this.overlay.create(
       new OverlayConfig({
         // This is where we can pass externally facing inputs into the angular overlay API, and essentially proxy behaviors our users want directly to the CDK if they have them.
@@ -252,8 +252,6 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
         ? this.createPointBasedOutsideClickSubscription(overlayRef)
         : this.createElementBasedOutsideClickSubscription(overlayRef)
     );
-
-    return overlayRef;
   }
 
   /**
@@ -482,7 +480,9 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       return;
     }
 
-    const overlayRef = this.overlayRef || this._createOverlayRef();
+    if (!this.overlayRef) {
+      this._createOverlayRef();
+    }
 
     if (!this.view && this.template) {
       this.view = this.container.createEmbeddedView(this.template);
@@ -495,7 +495,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
     if (!this.domPortal && this.elementRef) {
       this.domPortal = new DomPortal<HTMLElement>(this.elementRef);
-      overlayRef.attach(this.domPortal);
+      this.overlayRef?.attach(this.domPortal);
     }
 
     if (this.popoverService.originElement) {
