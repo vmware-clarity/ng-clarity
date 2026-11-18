@@ -15,7 +15,14 @@ import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrPassword } from './password';
 import { ClrPasswordContainer } from './password-container';
+import { ClrPasswordModule } from './password.module';
 import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container';
+import {
+  ContainerChangeDetectionSpec,
+  ContainerTestHostOptions,
+  containerTestHosts,
+  eachContainerHost,
+} from '../tests/onpush-container';
 
 @Component({
   template: `
@@ -70,6 +77,15 @@ class ReactiveTest {
   });
 }
 
+const hostOptions: ContainerTestHostOptions = {
+  imports: [ClrPasswordModule],
+  container: 'clr-password-container',
+  controlMarkup: '<input clrPassword [formControl]="control" />',
+  initialValue: '',
+  validValue: 'secret',
+  validator: Validators.required,
+};
+
 describe('ClrPassword', () => {
   describe('ClrPasswordContainer', () => {
     ContainerNoLabelSpec(ClrPasswordContainer, ClrPassword, NoLabelTest);
@@ -115,6 +131,58 @@ describe('ClrPassword', () => {
         button.click();
         renderFixture(fixture);
         expect(button.textContent.trim()).toEqual('Hide password for Hello World');
+      });
+    });
+  });
+
+  ContainerChangeDetectionSpec(hostOptions);
+
+  describe('ClrPasswordContainer change detection', () => {
+    eachContainerHost('clr-password-container', containerTestHosts(hostOptions), context => {
+      function input() {
+        return context().containerEl.querySelector('input');
+      }
+      function toggleButton() {
+        return context().containerEl.querySelector('button');
+      }
+
+      it('shows the focus state while the input has focus', async () => {
+        const { containerEl, settle } = context();
+        const group = containerEl.querySelector('.clr-input-group');
+
+        input().dispatchEvent(new Event('focus'));
+        await settle();
+        expect(group.classList).toContain('clr-focus');
+
+        input().dispatchEvent(new Event('blur'));
+        await settle();
+        expect(group.classList).not.toContain('clr-focus');
+      });
+
+      it('disables the toggle button when consumer code disables the control', async () => {
+        const { host, settle } = context();
+
+        host.control.disable();
+        await settle();
+        expect(toggleButton().disabled).toBe(true);
+
+        host.control.enable();
+        await settle();
+        expect(toggleButton().disabled).toBe(false);
+      });
+
+      it('uses the current label text in the toggle button text', async () => {
+        const { settle, set } = context();
+        expect(toggleButton().textContent.trim()).toBe('Show password for Name');
+
+        set('label', 'Secret');
+        await settle();
+        expect(toggleButton().textContent.trim()).toBe('Show password for Secret');
+
+        toggleButton().click();
+        await settle();
+        expect(toggleButton().textContent.trim()).toBe('Hide password for Secret');
+        expect(input().type).toBe('text');
       });
     });
   });

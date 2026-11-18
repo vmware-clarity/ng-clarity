@@ -5,7 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, Inject, InjectionToken, Input, Optional } from '@angular/core';
+import {
+  AfterContentChecked,
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  InjectionToken,
+  Input,
+  Optional,
+  signal,
+} from '@angular/core';
 import {
   ClrAbstractContainer,
   ControlClassService,
@@ -37,13 +46,13 @@ export const TOGGLE_SERVICE_PROVIDER = { provide: TOGGLE_SERVICE, useFactory: To
           @if (clrToggle) {
             <button
               (click)="toggle()"
-              [disabled]="control?.disabled ?? null"
+              [disabled]="controlState().disabled"
               class="clr-input-group-icon-action"
               type="button"
             >
               <cds-icon class="clr-password-eye-icon" [shape]="show ? 'eye-hide' : 'eye'"></cds-icon>
               <span class="clr-sr-only">
-                {{ show ? hidePasswordText(label?.labelText ?? null) : showPasswordText(label?.labelText ?? null) }}
+                {{ show ? hidePasswordText(labelText()) : showPasswordText(labelText()) }}
               </span>
             </button>
           }
@@ -62,16 +71,17 @@ export const TOGGLE_SERVICE_PROVIDER = { provide: TOGGLE_SERVICE, useFactory: To
   `,
   host: {
     '[class.clr-form-control]': 'true',
-    '[class.clr-form-control-disabled]': 'control?.disabled',
+    '[class.clr-form-control-disabled]': 'controlState().disabled',
     '[class.clr-row]': 'addGrid()',
   },
   providers: [NgControlService, ControlIdService, ControlClassService, FormsFocusService, TOGGLE_SERVICE_PROVIDER],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClrPasswordContainer extends ClrAbstractContainer {
+export class ClrPasswordContainer extends ClrAbstractContainer implements AfterContentChecked {
   show = false;
-  focus = false;
+
+  protected readonly labelText = signal<string | null>(null);
 
   private _toggle = true;
 
@@ -84,13 +94,10 @@ export class ClrPasswordContainer extends ClrAbstractContainer {
     public commonStrings: ClrCommonStringsService
   ) {
     super(layoutService, controlClassService, ngControlService);
+  }
 
-    /* The unsubscribe is handle inside the ClrAbstractContainer */
-    this.subscriptions.push(
-      focusService.focusChange.subscribe(state => {
-        this.focus = state;
-      })
-    );
+  get focus() {
+    return this.focusService.isFocused();
   }
 
   @Input('clrToggle')
@@ -102,6 +109,11 @@ export class ClrPasswordContainer extends ClrAbstractContainer {
     if (!state) {
       this.show = false;
     }
+  }
+
+  // Runs in the consumer's check after its text bindings, so a changed label text reaches this OnPush view.
+  ngAfterContentChecked() {
+    this.labelText.set(this.label?.labelText ?? null);
   }
 
   toggle() {

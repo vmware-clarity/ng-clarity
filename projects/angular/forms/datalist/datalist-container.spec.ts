@@ -10,7 +10,14 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ClrDatalistContainer } from './datalist-container';
 import { ClrDatalistInput } from './datalist-input';
+import { ClrDatalistModule } from './datalist.module';
 import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container';
+import {
+  ContainerChangeDetectionSpec,
+  ContainerTestHostOptions,
+  containerTestHosts,
+  eachContainerHost,
+} from '../tests/onpush-container';
 
 @Component({
   template: `
@@ -79,6 +86,15 @@ class ReactiveTest {
   });
 }
 
+const hostOptions: ContainerTestHostOptions = {
+  imports: [ClrDatalistModule],
+  container: 'clr-datalist-container',
+  controlMarkup: '<input clrDatalistInput [formControl]="control" /><datalist><option value="One"></option></datalist>',
+  initialValue: '',
+  validValue: 'One',
+  validator: Validators.required,
+};
+
 describe('ClrDatalist', () => {
   describe('ClrDatalistContainer', () => {
     ContainerNoLabelSpec(ClrDatalistContainer, ClrDatalistInput, NoLabelTest);
@@ -89,5 +105,25 @@ describe('ClrDatalist', () => {
       '.clr-input-wrapper [clrDatalistInput]'
     );
     ReactiveSpec(ClrDatalistContainer, ClrDatalistInput, ReactiveTest, '.clr-input-wrapper [clrDatalistInput]');
+  });
+
+  ContainerChangeDetectionSpec(hostOptions);
+
+  describe('ClrDatalistContainer change detection', () => {
+    eachContainerHost('clr-datalist-container', containerTestHosts(hostOptions), context => {
+      it('shows the focus state while the input has focus', async () => {
+        const { containerEl, settle } = context();
+        const input = containerEl.querySelector('input');
+        const group = containerEl.querySelector('.clr-input-group');
+
+        input.dispatchEvent(new Event('focus'));
+        await settle();
+        expect(group.classList).toContain('clr-focus');
+
+        input.dispatchEvent(new Event('blur'));
+        await settle();
+        expect(group.classList).not.toContain('clr-focus');
+      });
+    });
   });
 });

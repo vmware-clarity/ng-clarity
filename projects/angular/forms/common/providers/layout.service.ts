@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 export enum ClrFormLayout {
   VERTICAL = 'vertical',
@@ -18,17 +18,23 @@ export class LayoutService {
   readonly minLabelSize = 1;
   readonly maxLabelSize = 12;
 
-  layout: ClrFormLayout | string = ClrFormLayout.HORIZONTAL;
-
   private layoutValues: string[] = Object.values(ClrFormLayout);
-  private _labelSize = 2;
+  private readonly _layout = signal<ClrFormLayout | string>(ClrFormLayout.HORIZONTAL);
+  private readonly _labelSize = signal(2);
+
+  get layout(): ClrFormLayout | string {
+    return this._layout();
+  }
+  set layout(layout: ClrFormLayout | string) {
+    this._layout.set(layout);
+  }
 
   get labelSize(): number {
-    return this._labelSize;
+    return this._labelSize();
   }
   set labelSize(size: number) {
     if (this.labelSizeIsValid(size)) {
-      this._labelSize = size;
+      this._labelSize.set(size);
     }
   }
 

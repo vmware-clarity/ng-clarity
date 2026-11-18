@@ -16,7 +16,14 @@ import { renderFixture } from '@clr/angular/utils/testing';
 import { ClrRadio } from './radio';
 import { ClrRadioContainer } from './radio-container';
 import { ClrRadioWrapper } from './radio-wrapper';
+import { ClrRadioModule } from './radio.module';
 import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container';
+import {
+  ContainerChangeDetectionSpec,
+  ContainerTestHostOptions,
+  containerTestHosts,
+  eachContainerHost,
+} from '../tests/onpush-container';
 
 @Component({
   template: `
@@ -109,6 +116,17 @@ class ReactiveTest {
   });
 }
 
+const hostOptions: ContainerTestHostOptions = {
+  wrapperLabel: true,
+  imports: [ClrRadioModule],
+  container: 'clr-radio-container',
+  controlMarkup:
+    '<clr-radio-wrapper><input type="radio" clrRadio value="one" [formControl]="control" /><label>One</label></clr-radio-wrapper>',
+  initialValue: null,
+  validValue: 'one',
+  validator: Validators.required,
+};
+
 describe('Radio component', () => {
   describe('ClrRadioContainer', () => {
     ContainerNoLabelSpec(ClrRadioContainer, [ClrRadio, ClrRadioWrapper], NoLabelTest);
@@ -183,6 +201,20 @@ describe('Radio component', () => {
         fixture.debugElement.componentInstance.inline = true;
         renderFixture(fixture);
         expect(containerEl.querySelector('.clr-control-container').className).toContain('clr-control-inline');
+      });
+    });
+  });
+
+  ContainerChangeDetectionSpec(hostOptions);
+
+  describe('clr-radio-wrapper in a container', () => {
+    eachContainerHost(hostOptions.container, containerTestHosts(hostOptions), context => {
+      it('renders the wrapper and groups the control under the container label', () => {
+        const { containerEl } = context();
+        const label = containerEl.querySelector(':scope > label');
+
+        expect(containerEl.querySelector('clr-radio-wrapper').classList).toContain('clr-radio-wrapper');
+        expect(containerEl.getAttribute('aria-labelledby')).toBe(label.id);
       });
     });
   });

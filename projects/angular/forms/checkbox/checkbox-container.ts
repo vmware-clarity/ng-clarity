@@ -56,7 +56,7 @@ import { ClrCheckbox } from './checkbox';
   },
   providers: [NgControlService, ControlClassService, ContainerIdService],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterContentInit {
   role: string;
@@ -94,11 +94,8 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
   }
 
   protected get allCheckboxesDisabled() {
-    if (!this.controls?.length) {
-      return false;
-    }
-
-    return this.controls.every(control => control.disabled);
+    const states = this.ngControlService.states();
+    return states.length > 0 && states.every(state => state.disabled);
   }
 
   ngAfterContentInit() {

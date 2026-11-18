@@ -22,7 +22,7 @@ import { ClrControlLabel, ControlIdService } from '@clr/angular/forms/common';
   },
   providers: [ControlIdService],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrRadioWrapper implements OnInit {
   @ContentChild(ClrControlLabel, { static: true }) label: ClrControlLabel;
