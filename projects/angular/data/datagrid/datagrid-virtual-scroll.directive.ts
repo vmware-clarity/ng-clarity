@@ -258,6 +258,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
         this.directionality,
         this.scrollDispatcher,
         this.viewportRuler,
+        // No separate scrollable element: the viewport scrolls the datagrid content itself.
         null
       );
 
