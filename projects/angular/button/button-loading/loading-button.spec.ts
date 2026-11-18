@@ -276,7 +276,7 @@ describe('Loading Button driven as a loading listener', () => {
     const check = fixture.nativeElement.querySelector('.spinner-check');
 
     fixture.destroy();
-    spyOn(button.clrLoadingChange, 'emit');
+    vi.spyOn(button.clrLoadingChange, 'emit').mockImplementation(() => undefined);
     finishAnimations(check);
     // A finished CSS animation dispatches its `animationend` event on the next frame.
     await new Promise(resolve => requestAnimationFrame(resolve));

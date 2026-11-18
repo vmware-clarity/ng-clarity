@@ -52,7 +52,7 @@ class AppfxTranslateService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<AppfxTranslateService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<AppfxTranslateService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 export { AppfxTranslateService }
 export { AppfxTranslateService as TranslateService }
@@ -104,7 +104,7 @@ export class DateTimeService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DateTimeService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<DateTimeService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public

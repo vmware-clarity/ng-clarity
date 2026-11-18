@@ -10,7 +10,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ClrRange } from './range';
 import { ClrRangeContainer } from './range-container';
-import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
+import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control';
 
 @Component({
   template: `<input type="text" clrRange />`,
@@ -41,10 +41,10 @@ class ReactiveTest {
   });
 }
 
-export default function (): void {
+describe('Radio component', () => {
   describe('Range directive', () => {
     ControlStandaloneSpec(StandaloneUseTest);
     TemplateDrivenSpec(ClrRangeContainer, ClrRange, TemplateDrivenTest, 'clr-range');
     ReactiveSpec(ClrRangeContainer, ClrRange, ReactiveTest, 'clr-range');
   });
-}
+});

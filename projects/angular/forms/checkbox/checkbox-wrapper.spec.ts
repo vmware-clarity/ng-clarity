@@ -10,7 +10,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrCheckbox } from './checkbox';
 import { ClrCheckboxContainer } from './checkbox-container';
 import { ClrCheckboxWrapper } from './checkbox-wrapper';
-import { WrapperContainerSpec, WrapperFullSpec, WrapperNoLabelSpec } from '../tests/wrapper.spec';
+import { WrapperContainerSpec, WrapperFullSpec, WrapperNoLabelSpec } from '../tests/wrapper';
 
 @Component({
   template: `
@@ -54,10 +54,10 @@ class ContainerTest {
   model = '';
 }
 
-export default function (): void {
+describe('Checkbox component', () => {
   describe('ClrCheckboxWrapper', () => {
     WrapperNoLabelSpec(ClrCheckboxWrapper, ClrCheckbox, NoLabelTest);
     WrapperFullSpec(ClrCheckboxWrapper, ClrCheckbox, FullTest, 'clr-checkbox-wrapper');
     WrapperContainerSpec(ClrCheckboxContainer, ClrCheckboxWrapper, ClrCheckbox, ContainerTest, 'clr-checkbox-wrapper');
   });
-}
+});

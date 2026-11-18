@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestContext } from '@clr/angular/testing';
+import { createTestHelpers, TestContext } from '@clr/angular/testing';
 import { IfExpandService } from '@clr/angular/utils';
 
 import { ClrDatagrid } from '../datagrid';
@@ -15,25 +15,25 @@ import { DatagridIfExpandService } from '../datagrid-if-expanded.service';
 import { DetailService } from './detail.service';
 import { ExpandableRowsCount } from './global-expandable-rows';
 
-export default function (): void {
-  describe('DatagridDetailRegisterer directive', function () {
-    let context: TestContext<ClrDatagrid<void>, FullTest>;
+describe('DatagridDetailRegisterer directive', () => {
+  const helpers = createTestHelpers();
 
-    beforeEach(function () {
-      context = this.create(ClrDatagrid, FullTest, [
-        ExpandableRowsCount,
-        DatagridIfExpandService,
-        DetailService,
-        IfExpandService,
-        DatagridDetailRegisterer,
-      ]);
-    });
+  let context: TestContext<ClrDatagrid<void>, FullTest>;
 
-    it('is present', function () {
-      expect(context.getClarityProvider(DatagridDetailRegisterer)).toBeDefined();
-    });
+  beforeEach(() => {
+    context = helpers.create<ClrDatagrid<void>, FullTest>(ClrDatagrid, FullTest, [
+      ExpandableRowsCount,
+      DatagridIfExpandService,
+      DetailService,
+      IfExpandService,
+      DatagridDetailRegisterer,
+    ]);
   });
-}
+
+  it('is present', () => {
+    expect(context.getClarityProvider(DatagridDetailRegisterer)).toBeDefined();
+  });
+});
 
 // more of an integration test than anything else
 @Component({

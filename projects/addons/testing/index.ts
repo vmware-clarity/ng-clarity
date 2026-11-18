@@ -5,8 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-/// <reference types="jasmine" />
-
 export * from './a11y';
 export * from './card-container';
 export * from './datagrid';
