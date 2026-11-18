@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { LocaleHelperService } from './locale-helper.service';
@@ -30,7 +30,7 @@ export class DateIOService {
   minDateChange = new Subject<DayModel>();
   maxDateChange = new Subject<DayModel>();
 
-  private dateRangeOptions: DateRangeOption[];
+  private readonly dateRangeOptions = signal<DateRangeOption[]>(undefined);
   // Locale-only formatting and parsing; the state above is per date picker.
   private readonly localeDateFormat: ClrLocaleDateFormat;
 
@@ -70,11 +70,11 @@ export class DateIOService {
 
   setRangeOptions(rangeOptions: DateRangeOption[]) {
     const validatedRangeOption = this.validateDateRangeOptions(rangeOptions);
-    this.dateRangeOptions = validatedRangeOption || [];
+    this.dateRangeOptions.set(validatedRangeOption || []);
   }
 
   getRangeOptions() {
-    return this.dateRangeOptions;
+    return this.dateRangeOptions();
   }
 
   toLocaleDisplayFormatString(date: Date): string {

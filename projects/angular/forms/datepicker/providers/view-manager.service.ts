@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { ClrPopoverPosition } from '@clr/angular/popover/common';
 
 const enum DatepickerViewEnum {
@@ -19,31 +19,37 @@ const enum DatepickerViewEnum {
  */
 @Injectable()
 export class ViewManagerService {
-  position = ClrPopoverPosition.BOTTOM_LEFT;
+  private readonly _position = signal(ClrPopoverPosition.BOTTOM_LEFT);
+  private readonly _currentView = signal(DatepickerViewEnum.DAYVIEW);
 
-  private _currentView: DatepickerViewEnum = DatepickerViewEnum.DAYVIEW;
+  get position(): ClrPopoverPosition {
+    return this._position();
+  }
+  set position(value: ClrPopoverPosition) {
+    this._position.set(value);
+  }
 
   get isDayView(): boolean {
-    return this._currentView === DatepickerViewEnum.DAYVIEW;
+    return this._currentView() === DatepickerViewEnum.DAYVIEW;
   }
 
   get isYearView(): boolean {
-    return this._currentView === DatepickerViewEnum.YEARVIEW;
+    return this._currentView() === DatepickerViewEnum.YEARVIEW;
   }
 
   get isMonthView(): boolean {
-    return this._currentView === DatepickerViewEnum.MONTHVIEW;
+    return this._currentView() === DatepickerViewEnum.MONTHVIEW;
   }
 
   changeToMonthView(): void {
-    this._currentView = DatepickerViewEnum.MONTHVIEW;
+    this._currentView.set(DatepickerViewEnum.MONTHVIEW);
   }
 
   changeToYearView(): void {
-    this._currentView = DatepickerViewEnum.YEARVIEW;
+    this._currentView.set(DatepickerViewEnum.YEARVIEW);
   }
 
   changeToDayView(): void {
-    this._currentView = DatepickerViewEnum.DAYVIEW;
+    this._currentView.set(DatepickerViewEnum.DAYVIEW);
   }
 }

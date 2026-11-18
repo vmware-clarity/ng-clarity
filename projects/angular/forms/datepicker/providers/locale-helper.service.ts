@@ -12,7 +12,7 @@ import {
   getLocaleMonthNames,
   TranslationWidth,
 } from '@angular/common';
-import { Inject, Injectable, LOCALE_ID } from '@angular/core';
+import { Inject, Injectable, LOCALE_ID, signal } from '@angular/core';
 
 import { ClrWeekday } from '../enums/weekday.enum';
 import { ClrDayOfWeek } from '../interfaces/day-of-week.interface';
@@ -22,8 +22,9 @@ import { ClrDayOfWeek } from '../interfaces/day-of-week.interface';
  */
 @Injectable()
 export class LocaleHelperService {
-  private _firstDayOfWeek: number = ClrWeekday.Sunday;
-  private _localeDays: ReadonlyArray<ClrDayOfWeek>;
+  // Signals, because `clrFirstDayOfWeek` can change them after the calendar has rendered.
+  private readonly _firstDayOfWeek = signal<number>(ClrWeekday.Sunday);
+  private readonly _localeDays = signal<ReadonlyArray<ClrDayOfWeek>>([]);
   private _localeMonthsAbbreviated: ReadonlyArray<string>;
   private _localeMonthsWide: ReadonlyArray<string>;
 
@@ -32,16 +33,16 @@ export class LocaleHelperService {
   }
 
   get firstDayOfWeek(): number {
-    return this._firstDayOfWeek;
+    return this._firstDayOfWeek();
   }
 
   get localeDays(): ReadonlyArray<ClrDayOfWeek> {
-    return this._localeDays;
+    return this._localeDays();
   }
 
   // leave for backward compatibility
   get localeDaysNarrow(): ReadonlyArray<string> {
-    return this._localeDays.map(day => day.narrow);
+    return this.localeDays.map(day => day.narrow);
   }
 
   get localeMonthsAbbreviated(): ReadonlyArray<string> {
@@ -65,7 +66,7 @@ export class LocaleHelperService {
       return;
     }
 
-    this._firstDayOfWeek = day;
+    this._firstDayOfWeek.set(day);
 
     this.initializeLocaleDays();
   }
@@ -105,7 +106,7 @@ export class LocaleHelperService {
       tempArr.push(...prevDays);
     }
 
-    this._localeDays = tempArr;
+    this._localeDays.set(tempArr);
   }
 
   /**
@@ -132,6 +133,6 @@ export class LocaleHelperService {
    * Initializes the first day of the week based on the locale.
    */
   private initializeLocaleFirstDayOfWeek(): void {
-    this._firstDayOfWeek = getLocaleFirstDayOfWeek(this.locale);
+    this._firstDayOfWeek.set(getLocaleFirstDayOfWeek(this.locale));
   }
 }

@@ -129,24 +129,14 @@ describe('Datepicker', () => {
         });
 
         it('does not regenerate the current calendar ' + 'when the displayed calendar is already current', () => {
-          let count = 0;
-          const sub: Subscription = dateNavigationService.displayedCalendarChange.subscribe(() => {
-            count++;
-          });
-
           initalizeCalendar(new DayModel(2017, 0, 1));
-          expect(count).toBe(0);
 
           dateNavigationService.moveToCurrentMonth();
-          expect(count).toBe(1);
+          const current = dateNavigationService.displayedCalendar;
 
           dateNavigationService.moveToCurrentMonth();
-          expect(count).toBe(1);
-
           dateNavigationService.moveToCurrentMonth();
-          expect(count).toBe(1);
-
-          sub.unsubscribe();
+          expect(dateNavigationService.displayedCalendar).toBe(current);
         });
 
         it('supports the focused day property', () => {
@@ -177,24 +167,18 @@ describe('Datepicker', () => {
         });
 
         afterEach(() => {
-          sub.unsubscribe();
+          sub?.unsubscribe();
+          sub = undefined;
         });
 
-        it('notifies when the calendar has changed', () => {
-          let count = 0;
-          sub = dateNavigationService.displayedCalendarChange.subscribe(() => {
-            count++;
-          });
-
-          expect(count).toBe(0);
-
+        it('changes the displayed calendar when moving between months', () => {
           dateNavigationService.moveToPreviousMonth();
-
-          expect(count).toBe(1);
+          expect(dateNavigationService.displayedCalendar.month).toBe(11);
+          expect(dateNavigationService.displayedCalendar.year).toBe(2014);
 
           dateNavigationService.moveToNextMonth();
-
-          expect(count).toBe(2);
+          expect(dateNavigationService.displayedCalendar.month).toBe(0);
+          expect(dateNavigationService.displayedCalendar.year).toBe(2015);
         });
 
         it('notifies when the focus day has changed but remains in the same calendar', () => {

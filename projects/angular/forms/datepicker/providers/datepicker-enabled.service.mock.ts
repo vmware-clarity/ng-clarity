@@ -5,15 +5,23 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 import { DatepickerEnabledService } from './datepicker-enabled.service';
 
 @Injectable()
 export class MockDatepickerEnabledService extends DatepickerEnabledService {
-  fakeIsEnabled = true;
+  // The real service decides once, at creation. Specs switch it later, so the fake is a signal.
+  private readonly enabled = signal(true);
 
-  get isEnabled(): boolean {
-    return this.fakeIsEnabled;
+  get fakeIsEnabled(): boolean {
+    return this.enabled();
+  }
+  set fakeIsEnabled(value: boolean) {
+    this.enabled.set(value);
+  }
+
+  override get isEnabled(): boolean {
+    return this.enabled();
   }
 }

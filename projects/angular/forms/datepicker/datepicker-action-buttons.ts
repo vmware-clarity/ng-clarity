@@ -22,7 +22,7 @@ import { DateNavigationService } from './providers/date-navigation.service';
     '[class.datepicker-actions]': 'true',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrDatepickerActions {
   constructor(

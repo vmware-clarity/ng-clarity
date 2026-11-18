@@ -5,7 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, ElementRef, HostListener, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  ElementRef,
+  HostListener,
+  OnDestroy,
+  untracked,
+} from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { Keys } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
@@ -26,15 +34,31 @@ import { NO_OF_DAYS_IN_A_WEEK } from './utils/constants';
   selector: 'clr-calendar',
   templateUrl: './calendar.html',
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrCalendar implements OnDestroy {
-  /**
-   * Calendar View Model to generate the Calendar.
-   */
-  calendarViewModel: CalendarViewModel;
-
   private _subs: Subscription[] = [];
+
+  /**
+   * Builds a new calendar view each time the displayed month or the first day of the week changes.
+   * Selection and focus are read once here and kept up to date on the view by the subscriptions below.
+   */
+  private readonly _calendarViewModel = computed(() => {
+    const calendar = this._dateNavigationService.displayedCalendar;
+    const firstDayOfWeek = this._localeHelperService.firstDayOfWeek;
+    return untracked(
+      () =>
+        new CalendarViewModel(
+          calendar,
+          this.selectedDay,
+          this.selectedEndDay,
+          this.focusedDay,
+          this.today,
+          firstDayOfWeek,
+          this._dateIOService.disabledDates
+        )
+    );
+  });
 
   constructor(
     private _localeHelperService: LocaleHelperService,
@@ -45,8 +69,14 @@ export class ClrCalendar implements OnDestroy {
     private _dateFormControlService: DateFormControlService,
     private _popoverService: ClrPopoverService
   ) {
-    this.generateCalendarView();
     this.initializeSubscriptions();
+  }
+
+  /**
+   * Calendar View Model to generate the Calendar.
+   */
+  get calendarViewModel(): CalendarViewModel {
+    return this._calendarViewModel();
   }
 
   /**
@@ -131,17 +161,11 @@ export class ClrCalendar implements OnDestroy {
 
   /**
    * Initialize subscriptions to:
-   * 1. update the calendar view model.
-   * 2. update the focusable day in the calendar view model.
-   * 3. focus on the focusable day in the calendar.
+   * 1. update the focusable day in the calendar view model.
+   * 2. focus on the focusable day in the calendar.
+   * 3. update the selected days in the calendar view model.
    */
   private initializeSubscriptions(): void {
-    this._subs.push(
-      this._dateNavigationService.displayedCalendarChange.subscribe(() => {
-        this.generateCalendarView();
-      })
-    );
-
     this._subs.push(
       this._dateNavigationService.focusedDayChange.subscribe((focusedDay: DayModel) => {
         this.calendarViewModel.updateFocusableDay(focusedDay);
@@ -201,20 +225,5 @@ export class ClrCalendar implements OnDestroy {
     if (this._dateNavigationService.isRangePicker) {
       this.calendarViewModel.updateSelectedEndDay(this._dateNavigationService.selectedEndDay);
     }
-  }
-
-  /**
-   * Generates the Calendar View based on the calendar retrieved from the DateNavigationService.
-   */
-  private generateCalendarView(): void {
-    this.calendarViewModel = new CalendarViewModel(
-      this.calendar,
-      this.selectedDay,
-      this.selectedEndDay,
-      this.focusedDay,
-      this.today,
-      this._localeHelperService.firstDayOfWeek,
-      this._dateIOService.disabledDates
-    );
   }
 }
