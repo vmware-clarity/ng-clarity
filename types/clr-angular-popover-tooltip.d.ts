@@ -37,7 +37,7 @@ declare class TooltipMouseService {
 export declare class ClrTooltipTrigger {
   private popoverService;
   private tooltipMouseService;
-  ariaDescribedBy: string;
+  ariaDescribedBy?: string;
   private subs;
   constructor(popoverService: ClrPopoverService, tooltipIdService: TooltipIdService, tooltipMouseService: TooltipMouseService, element: ElementRef);
   ngOnDestroy(): void;

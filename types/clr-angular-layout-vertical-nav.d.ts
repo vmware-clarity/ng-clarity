@@ -97,7 +97,7 @@ export declare class ClrVerticalNav implements OnDestroy {
   private _navIconService;
   private _navGroupRegistrationService;
   commonStrings: ClrCommonStringsService;
-  toggleLabel: string;
+  toggleLabel?: string;
   contentId: string;
   private _collapsedChanged;
   private _sub;
@@ -108,7 +108,7 @@ export declare class ClrVerticalNav implements OnDestroy {
   set collapsed(value: boolean | string);
   get hasNavGroups(): boolean;
   get hasIcons(): boolean;
-  get ariaExpanded(): string;
+  get ariaExpanded(): string | null;
   ngOnDestroy(): void;
   toggleByButton(): void;
   static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNav, never>;

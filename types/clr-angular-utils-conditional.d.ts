@@ -41,7 +41,7 @@ export declare class IfActiveService {
    * And, broadcasts the new value to all subscribers.
    *
    */
-  get current(): number;
+  get current(): number | undefined;
   set current(value: number);
   static ɵfac: i0.ɵɵFactoryDeclaration<IfActiveService, never>;
   static ɵprov: i0.ɵɵInjectableDeclaration<any>;

@@ -839,7 +839,7 @@ function fade(opacity = 1) {
 	return [animationTransition("void => *", [animationStyle({ opacity: 0 }), animationAnimate(defaultAnimationTiming, animationStyle({ opacity }))]), animationTransition("* => void", [animationAnimate(defaultAnimationTiming, animationStyle({ opacity: 0 }))])];
 }
 function fadeSlide(direction) {
-	let transform = null;
+	let transform;
 	if (direction === "up") transform = "translate(0, 25%)";
 	else if (direction === "down") transform = "translate(0, -25%)";
 	else if (direction === "left") transform = "translate(25%, 0)";
@@ -854,7 +854,7 @@ function fadeSlide(direction) {
 	}))])];
 }
 function slide(direction) {
-	let transform = null;
+	let transform;
 	if (direction === "up") transform = "translate(0, 25%)";
 	else if (direction === "down") transform = "translate(0, -25%)";
 	else if (direction === "left") transform = "translate(25%, 0)";
@@ -1790,7 +1790,7 @@ var Linkers = class {
 };
 function wrapObservable(observable, onSubscribe, onUnsubscribe) {
 	return Observable.create((observer) => {
-		onSubscribe(observer);
+		if (onSubscribe) onSubscribe(observer);
 		const subscription = observable.subscribe(observer);
 		return () => {
 			subscription.unsubscribe();

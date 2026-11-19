@@ -212,8 +212,10 @@ var ClrAlert = class ClrAlert {
 		this.clrCloseButtonAriaLabel = this.commonStrings.keys.alertCloseButtonAriaLabel;
 		this._closedChanged = new EventEmitter(false);
 		this._closed = false;
+		this._hidden = false;
 		this.subscriptions = [];
 		this._isLightweight = false;
+		this._origAlertType = "";
 	}
 	get isLightweight() {
 		return this._isLightweight;

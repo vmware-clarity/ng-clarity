@@ -737,9 +737,10 @@ var Selection = class Selection {
 		this._current = [];
 		this._change = new Subject();
 		this.subscriptions = [];
+		this.trackBy = (_index, item) => this.identifyBy(item);
 		this.id = "clr-dg-selection" + nbSelection++;
 		this.identifyBy = _items.identifyBy;
-		this._differ = differs.find(this._current).create(this.identifyBy);
+		this._differ = differs.find(this._current).create(this.trackBy);
 		this.subscriptions.push(filters.change.subscribe(() => {
 			if (!this.selectable || this.preserveSelection) return;
 			this.clearSelection();

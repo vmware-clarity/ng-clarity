@@ -30,8 +30,8 @@ declare class TimelineIconAttributeService {
   private attributeMap;
   constructor(commonStrings: ClrCommonStringsService);
   getAriaLabel(step: ClrTimelineStepState): string;
-  getIconShape(step: ClrTimelineStepState): string;
-  getIconStatus(step: ClrTimelineStepState): string;
+  getIconShape(step: ClrTimelineStepState): string | undefined;
+  getIconStatus(step: ClrTimelineStepState): string | null;
   static ɵfac: i0.ɵɵFactoryDeclaration<TimelineIconAttributeService, never>;
   static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
@@ -43,8 +43,8 @@ export declare class ClrTimelineStep {
   stepTitleText: string;
   constructor(iconAttributeService: TimelineIconAttributeService, platformId: any);
   get iconAriaLabel(): string;
-  get iconShape(): string;
-  get iconStatus(): string;
+  get iconShape(): string | undefined;
+  get iconStatus(): string | null;
   get isProcessing(): boolean;
   ngAfterContentInit(): void;
   static ɵfac: i0.ɵɵFactoryDeclaration<ClrTimelineStep, never>;

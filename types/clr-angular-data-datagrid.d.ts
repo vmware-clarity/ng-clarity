@@ -853,6 +853,11 @@ export declare class Selection<T = any> {
    */
   toggleAll(): void;
   /**
+   * The differ calls its trackBy with `(index, item)`, while `identifyBy` takes only the item.
+   * It reads `identifyBy` on every call, so the differ follows a new identity function set through `clrDgItemsIdentityFn`.
+   */
+  private readonly trackBy;
+  /**
    * Selects an item
    */
   private selectItem;

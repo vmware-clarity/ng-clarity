@@ -536,11 +536,15 @@ var ClrPopoverContent = class ClrPopoverContent {
 		this.platformId = platformId;
 		this._outsideClickClose = true;
 		this._scrollToClose = false;
+		this.view = null;
+		this.elementRef = null;
+		this.overlayRef = null;
 		this.viewInitialized = false;
 		this.popoverType = ClrPopoverType.DEFAULT;
 		this._availablePositions = [];
 		this._position = ClrPopoverPosition.BOTTOM_LEFT;
 		this.subscriptions = [];
+		this.domPortal = null;
 		this.preferredPositionIsSet = false;
 		this.availablePositionsAreSet = false;
 		this._preferredPosition = {
@@ -550,7 +554,9 @@ var ClrPopoverContent = class ClrPopoverContent {
 			overlayY: "top",
 			panelClass: ClrPopoverPosition.LEFT_TOP
 		};
+		this.intersectionObserver = null;
 		this.injector = inject(Injector);
+		this.pendingRender = null;
 		this.errorHandler = inject(ErrorHandler);
 		popoverService.panelClass.push("clr-popover-content");
 		overlayContainer.getContainerElement().classList.add("clr-overlay-container");
@@ -610,7 +616,7 @@ var ClrPopoverContent = class ClrPopoverContent {
 	}
 	ngAfterViewInit() {
 		this.viewInitialized = true;
-		this.openCloseSubscription.unsubscribe();
+		this.openCloseSubscription?.unsubscribe();
 		this.openCloseSubscription = this.popoverService.openChange.subscribe((open) => {
 			if (open) this.showOverlay();
 			else this.closePopover();
@@ -632,10 +638,10 @@ var ClrPopoverContent = class ClrPopoverContent {
 			this.resetPosition();
 		}), this.popoverService.updatePositionChange().subscribe(() => {
 			if (this.popoverService.origin) this.overlayRef?.updatePosition();
-		}), this.createEscapeSubscription(), this.popoverService.originPoint ? this.createPointBasedOutsideClickSubscription() : this.createElementBasedOutsideClickSubscription());
+		}), this.createEscapeSubscription(this.overlayRef), this.popoverService.originPoint ? this.createPointBasedOutsideClickSubscription(this.overlayRef) : this.createElementBasedOutsideClickSubscription(this.overlayRef));
 	}
-	createPointBasedOutsideClickSubscription() {
-		const subscription = timer(500).pipe(switchMap(() => this.overlayRef.outsidePointerEvents())).subscribe((event) => this.handlePointOutsideClick(event));
+	createPointBasedOutsideClickSubscription(overlayRef) {
+		const subscription = timer(500).pipe(switchMap(() => overlayRef.outsidePointerEvents())).subscribe((event) => this.handlePointOutsideClick(event));
 		const crossWindowSubscription = this.createCrossWindowPointOutsideClickSubscription();
 		if (crossWindowSubscription) subscription.add(crossWindowSubscription);
 		return subscription;
@@ -651,8 +657,8 @@ var ClrPopoverContent = class ClrPopoverContent {
 		const originWindow = crossWindowOrigin.elementWindow;
 		return timer(500).pipe(switchMap(() => this.zone.runOutsideAngular(() => merge(fromEvent(originWindow.document, "click", { capture: true }), fromEvent(originWindow.document, "auxclick", { capture: true }))))).subscribe((event) => this.zone.run(() => this.handlePointOutsideClick(event)));
 	}
-	createElementBasedOutsideClickSubscription() {
-		const subscription = this.overlayRef.outsidePointerEvents().subscribe((event) => this.handleOutsideClick(event));
+	createElementBasedOutsideClickSubscription(overlayRef) {
+		const subscription = overlayRef.outsidePointerEvents().subscribe((event) => this.handleOutsideClick(event));
 		const crossWindowSubscription = this.createCrossWindowOutsideClickSubscription();
 		if (crossWindowSubscription) subscription.add(crossWindowSubscription);
 		return subscription;
@@ -671,9 +677,9 @@ var ClrPopoverContent = class ClrPopoverContent {
 		const originWindow = crossWindowOrigin.elementWindow;
 		return this.zone.runOutsideAngular(() => merge(fromEvent(originWindow.document, "click", { capture: true }), fromEvent(originWindow.document, "auxclick", { capture: true })).subscribe((event) => this.zone.run(() => this.handleOutsideClick(event))));
 	}
-	createEscapeSubscription() {
+	createEscapeSubscription(overlayRef) {
 		const crossWindowOrigin = getCrossWindowOriginContext(this.popoverService.origin);
-		return (crossWindowOrigin ? merge(this.overlayRef.keydownEvents(), this.zone.runOutsideAngular(() => fromEvent(crossWindowOrigin.elementWindow.document, "keydown"))) : this.overlayRef.keydownEvents()).subscribe((event) => {
+		return (crossWindowOrigin ? merge(overlayRef.keydownEvents(), this.zone.runOutsideAngular(() => fromEvent(crossWindowOrigin.elementWindow.document, "keydown"))) : overlayRef.keydownEvents()).subscribe((event) => {
 			if (isEscapeKey(event)) this.zone.run(() => {
 				event.preventDefault();
 				this.closePopover();
@@ -705,9 +711,9 @@ var ClrPopoverContent = class ClrPopoverContent {
 				this.elementRef = new ElementRef(rootNode);
 			}
 		}
-		if (!this.domPortal) {
+		if (!this.domPortal && this.elementRef) {
 			this.domPortal = new DomPortal(this.elementRef);
-			this.overlayRef.attach(this.domPortal);
+			this.overlayRef?.attach(this.domPortal);
 		}
 		if (this.popoverService.originElement) {
 			this.popoverService.originElement.nativeElement.scrollIntoView({

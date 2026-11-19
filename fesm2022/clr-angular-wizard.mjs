@@ -262,7 +262,7 @@ var WizardNavigationService = class WizardNavigationService {
 		this._cancelWizard = new Subject();
 		this.previousButtonSubscription = buttonService.previousBtnClicked.subscribe(() => {
 			const currentPage = this.currentPage;
-			if (this.currentPageIsFirst || currentPage.previousStepDisabled) return;
+			if (!currentPage || this.currentPageIsFirst || currentPage.previousStepDisabled) return;
 			currentPage.previousButtonClicked.emit(currentPage);
 			if (!currentPage.preventDefault) this.previous();
 		});
@@ -276,11 +276,13 @@ var WizardNavigationService = class WizardNavigationService {
 			this.checkAndCommitCurrentPage("finish");
 		});
 		this.customButtonSubscription = buttonService.customBtnClicked.subscribe((type) => {
-			if (!this.wizardStopNavigation) this.currentPage.customButtonClicked.emit(type);
+			const currentPage = this.currentPage;
+			if (currentPage && !this.wizardStopNavigation) currentPage.customButtonClicked.emit(type);
 		});
 		this.cancelButtonSubscription = buttonService.cancelBtnClicked.subscribe(() => {
-			if (this.wizardStopNavigation) return;
-			if (this.currentPage.preventDefault) this.currentPage.pageOnCancel.emit(this.currentPage);
+			const currentPage = this.currentPage;
+			if (!currentPage || this.wizardStopNavigation) return;
+			if (currentPage.preventDefault) currentPage.pageOnCancel.emit(currentPage);
 			else this.cancel();
 		});
 		this.pagesResetSubscription = pageCollection.pagesReset.subscribe(() => {
@@ -338,15 +340,15 @@ var WizardNavigationService = class WizardNavigationService {
 	}
 	forceNext() {
 		const currentPage = this.currentPage;
-		const nextPage = this.pageCollection.getNextPage(currentPage);
-		if (!nextPage) throw new Error("The wizard has no next page to go to.");
+		const nextPage = currentPage ? this.pageCollection.getNextPage(currentPage) : null;
+		if (!currentPage || !nextPage) throw new Error("The wizard has no next page to go to.");
 		if (this.wizardStopNavigation) return;
 		if (!currentPage.completed) this.pageCollection.commitPage(currentPage);
 		this.currentPage = nextPage;
 	}
 	checkAndCommitCurrentPage(buttonType) {
 		const currentPage = this.currentPage;
-		if (!currentPage.readyToComplete || this.wizardStopNavigation) return;
+		if (!currentPage || !currentPage.readyToComplete || this.wizardStopNavigation) return;
 		const iAmTheLastPage = this.currentPageIsLast;
 		const isNext = buttonType === "next";
 		const isDanger = buttonType === "danger";
@@ -377,11 +379,12 @@ var WizardNavigationService = class WizardNavigationService {
 		this.checkAndCommitCurrentPage("finish");
 	}
 	previous() {
-		if (this.currentPageIsFirst || this.wizardStopNavigation) return;
-		const previousPage = this.pageCollection.getPreviousPage(this.currentPage);
+		const currentPage = this.currentPage;
+		if (!currentPage || this.currentPageIsFirst || this.wizardStopNavigation) return;
+		const previousPage = this.pageCollection.getPreviousPage(currentPage);
 		if (!previousPage) return;
 		this._movedToPreviousPage.next(true);
-		if (this.forceForwardNavigation) this.currentPage.completed = false;
+		if (this.forceForwardNavigation) currentPage.completed = false;
 		this.currentPage = previousPage;
 	}
 	cancel() {
@@ -391,10 +394,10 @@ var WizardNavigationService = class WizardNavigationService {
 		const myPages = this.pageCollection;
 		const pageToGoTo = typeof pageToGoToOrId === "string" ? myPages.getPageById(pageToGoToOrId) : pageToGoToOrId;
 		const currentPage = this.currentPage;
-		if (pageToGoTo === currentPage || this.wizardStopNavigation) return;
+		if (!currentPage || pageToGoTo === currentPage || this.wizardStopNavigation) return;
 		const currentPageIndex = myPages.getPageIndex(currentPage);
 		const goingForward = myPages.getPageIndex(pageToGoTo) > currentPageIndex;
-		const pagesToCheck = myPages.getPageRangeFromPages(this.currentPage, pageToGoTo);
+		const pagesToCheck = myPages.getPageRangeFromPages(currentPage, pageToGoTo);
 		if (!(lazyComplete || this.canGoTo(pagesToCheck))) return;
 		if (goingForward && lazyComplete) pagesToCheck.forEach((page) => {
 			if (page !== pageToGoTo) page.completed = true;
@@ -434,7 +437,8 @@ var WizardNavigationService = class WizardNavigationService {
 	updateNavigation() {
 		let toSetCurrent;
 		this.pageCollection.updateCompletedStates();
-		if (this.pageCollection.pagesAsArray.indexOf(this.currentPage) < 0) {
+		const currentPage = this.currentPage;
+		if (!currentPage || this.pageCollection.pagesAsArray.indexOf(currentPage) < 0) {
 			toSetCurrent = this.pageCollection.findFirstIncompletePage();
 			this.currentPage = toSetCurrent;
 		}
@@ -1361,7 +1365,7 @@ var ClrWizardStepnavItem = class ClrWizardStepnavItem {
 		return this.pageCollection.getStepItemIdForPage(this.page);
 	}
 	get stepAriaCurrent() {
-		return this.isCurrent && "step";
+		return this.isCurrent ? "step" : false;
 	}
 	get isDisabled() {
 		this.pageGuard();
@@ -1632,10 +1636,11 @@ var ClrWizardStepnav = class ClrWizardStepnav {
 	}
 	ngAfterViewInit() {
 		if (this.stepnavLayout === ClrWizardStepnavLayout.HORIZONTAL) {
-			this.setupIntersectionObserver();
+			const intersectionObserver = this.createIntersectionObserver();
+			this.intersectionObserver = intersectionObserver;
 			this.stepnavItems.notifyOnChanges();
 			this.subscription = this.stepnavItems.changes.pipe(startWith(void 0)).subscribe(() => {
-				this.observeEdgeItems();
+				this.observeEdgeItems(intersectionObserver);
 			});
 		}
 	}
@@ -1649,9 +1654,9 @@ var ClrWizardStepnav = class ClrWizardStepnav {
 	scrollRight() {
 		this.scroll("right");
 	}
-	setupIntersectionObserver() {
+	createIntersectionObserver() {
 		const scrollContainer = this.elementRef.nativeElement.querySelector(".clr-wizard-stepnav-list");
-		this.intersectionObserver = new IntersectionObserver((entries) => {
+		return new IntersectionObserver((entries) => {
 			for (const entry of entries) {
 				const target = entry.target;
 				const isFirst = target === this.stepnavItems.first?.elementRef.nativeElement;
@@ -1667,17 +1672,18 @@ var ClrWizardStepnav = class ClrWizardStepnav {
 			threshold: .99
 		});
 	}
-	observeEdgeItems() {
-		this.intersectionObserver.disconnect();
+	observeEdgeItems(intersectionObserver) {
+		intersectionObserver.disconnect();
 		this.firstItemVisible = true;
 		this.lastItemVisible = true;
 		const first = this.stepnavItems.first;
 		const last = this.stepnavItems.last;
-		if (first) this.intersectionObserver.observe(first.elementRef.nativeElement);
-		if (last && last !== first) this.intersectionObserver.observe(last.elementRef.nativeElement);
+		if (first) intersectionObserver.observe(first.elementRef.nativeElement);
+		if (last && last !== first) intersectionObserver.observe(last.elementRef.nativeElement);
 	}
 	scroll(direction) {
 		const scrollContainer = this.elementRef.nativeElement.querySelector(".clr-wizard-stepnav-list");
+		if (!scrollContainer) return;
 		const scrollAmount = scrollContainer.clientWidth * .5;
 		scrollContainer.scrollBy({
 			left: direction === "left" ? -scrollAmount : scrollAmount,
@@ -1891,7 +1897,7 @@ var ClrWizard = class ClrWizard {
 		this._disableStepnav = false;
 		this.subscriptions = [];
 		this.subscriptions.push(this.listenForNextPageChanges(), this.listenForPreviousPageChanges(), this.listenForCancelChanges(), this.listenForFinishedChanges(), this.listenForPageChanges());
-		this.differ = differs.find([]).create(null);
+		this.differ = differs.find([]).create();
 	}
 	get forceForward() {
 		return this._forceForward;
@@ -2014,8 +2020,8 @@ var ClrWizard = class ClrWizard {
 	}
 	checkAndCancel() {
 		const currentPage = this.currentPage;
+		if (!currentPage || this.stopNavigation) return;
 		const currentPageHasOverrides = currentPage.stopCancel || currentPage.preventDefault;
-		if (this.stopNavigation) return;
 		currentPage.pageOnCancel.emit();
 		if (!currentPageHasOverrides) this.onCancel.emit();
 		if (!this.stopCancel && !currentPageHasOverrides) this.close();

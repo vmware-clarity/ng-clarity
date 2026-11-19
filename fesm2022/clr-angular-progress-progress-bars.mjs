@@ -7,6 +7,12 @@ var ClrProgressBar = class ClrProgressBar {
 		this.max = 100;
 		this.value = 0;
 		this.externalId = "";
+		this._labeled = false;
+		this._fade = false;
+		this._loop = false;
+		this._flash = false;
+		this._flashDanger = false;
+		this._compact = false;
 	}
 	get id() {
 		return this._ID;

@@ -68,8 +68,8 @@ export declare class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
   private _priorShape;
   constructor(el: ElementRef<HTMLElement>, cdr: ChangeDetectorRef);
   get shape(): string;
-  set shape(value: string);
-  get size(): string;
+  set shape(value: string | undefined);
+  get size(): string | undefined;
   set size(value: string);
   get direction(): string;
   set direction(value: string);
@@ -87,7 +87,7 @@ export declare class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
    * Given a pixel value, offsets any surrounding whitespace within the icon's svg,
    * growing it outward by that amount on every side so the visible glyph fills its box.
    */
-  get innerOffset(): number;
+  get innerOffset(): number | undefined;
   set innerOffset(value: number);
   ngOnInit(): void;
   ngAfterViewInit(): void;

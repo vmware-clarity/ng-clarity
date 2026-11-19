@@ -18,7 +18,7 @@ export declare class ClrTabContent implements OnDestroy {
   private viewRef;
   constructor(ifActiveService: IfActiveService, id: number, tabsService: TabsService);
   get active(): boolean;
-  get ariaLabelledBy(): string;
+  get ariaLabelledBy(): string | undefined;
   private set templateRef(value);
   ngOnDestroy(): void;
   static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabContent, [{
@@ -48,7 +48,7 @@ export declare class ClrTabLink {
   get inOverflow(): boolean;
   set inOverflow(inOverflow: boolean);
   get addLinkClasses(): boolean;
-  get ariaControls(): string;
+  get ariaControls(): string | undefined;
   get active(): boolean;
   get tabindex(): 0 | -1;
   activate(): void;

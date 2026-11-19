@@ -21,7 +21,7 @@ var DropdownFocusHandler = class DropdownFocusHandler {
 		this.recoverFocus = new Subject();
 		this.resetChildren();
 		this.moveToFirstItemWhenOpen();
-		this.subscriptions.add(popoverService.openChange.pipe(switchMap((open) => open ? this.recoverFocus.pipe(switchMap(() => timer(0)), switchMap(() => document.activeElement === document.body ? (parent ? this.right : this.down).pipe(take(1)) : EMPTY)) : EMPTY)).subscribe((item) => item && focusService.moveTo(item)));
+		this.subscriptions.add(popoverService.openChange.pipe(switchMap((open) => open ? this.recoverFocus.pipe(switchMap(() => timer(0)), switchMap(() => document.activeElement === document.body ? (parent ? this.right : this.down)?.pipe(take(1)) ?? EMPTY : EMPTY)) : EMPTY)).subscribe((item) => item && focusService.moveTo(item)));
 	}
 	get trigger() {
 		return this._trigger;
@@ -50,7 +50,7 @@ var DropdownFocusHandler = class DropdownFocusHandler {
 	ngOnDestroy() {
 		this.subscriptions.unsubscribe();
 		this._unlistenFuncs.forEach((unlisten) => unlisten());
-		this.focusService.detachListeners(this.container);
+		if (this.container) this.focusService.detachListeners(this.container);
 	}
 	moveToFirstItemWhenOpen() {
 		this.subscriptions.add(this.popoverService.openChange.pipe(switchMap((open) => open && this.popoverService.openEvent ? timer(0) : EMPTY)).subscribe(() => {
@@ -65,7 +65,7 @@ var DropdownFocusHandler = class DropdownFocusHandler {
 		if (this.trigger && isPlatformBrowser(this.platformId)) this.trigger.blur();
 	}
 	activate() {
-		if (isPlatformBrowser(this.platformId)) this.trigger.click();
+		if (this.trigger && isPlatformBrowser(this.platformId)) this.trigger.click();
 	}
 	moveTo(item) {
 		if (this.focusService.current === item) return;

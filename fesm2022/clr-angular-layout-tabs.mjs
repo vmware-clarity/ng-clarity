@@ -71,7 +71,7 @@ var ClrTabContent = class ClrTabContent {
 		this.id = id;
 		this.tabsService = tabsService;
 		if (!ifActiveService || !tabsService || id === null || id === void 0) throw new Error("clrTabLink and clr-tab-content should only be used inside of a clr-tabs");
-		if (!this.tabContentId) this.tabContentId = "clr-tab-content-" + nbTabContentComponents++;
+		this.tabContentId = "clr-tab-content-" + nbTabContentComponents++;
 	}
 	get active() {
 		return this.ifActiveService.current === this.id;
@@ -218,8 +218,9 @@ var ClrTabLink = class ClrTabLink {
 		this.el = el;
 		this.tabsService = tabsService;
 		this.tabsId = tabsId;
+		this._inOverflow = false;
 		if (!ifActiveService || !tabsService || id === null || id === void 0) throw new Error("clrTabLink and clr-tab-content should only be used inside of a clr-tabs");
-		if (!this.tabLinkId) this.tabLinkId = "clr-tab-link-" + nbTabLinkComponents++;
+		this.tabLinkId = "clr-tab-link-" + nbTabLinkComponents++;
 		this.templateRefContainer = viewContainerRef.createComponent(TemplateRefContainer, { projectableNodes: [[el.nativeElement]] }).instance;
 	}
 	get inOverflow() {

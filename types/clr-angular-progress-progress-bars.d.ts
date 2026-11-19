@@ -3,10 +3,10 @@ import { Type } from "@angular/core";
 import * as i2 from "@angular/common";
 export declare class ClrProgressBar {
   max: number | string;
-  displayval: string;
-  color: string;
+  displayval?: string;
+  color?: string;
   value: number | string;
-  externalId: string;
+  externalId: string | null;
   private _ID;
   private _labeled;
   private _fade;
@@ -14,7 +14,7 @@ export declare class ClrProgressBar {
   private _flash;
   private _flashDanger;
   private _compact;
-  get id(): string;
+  get id(): string | undefined;
   set id(value: string);
   get progressClass(): boolean;
   set clrCompact(value: boolean | string);

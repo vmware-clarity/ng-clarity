@@ -62,7 +62,7 @@ var CollapsiblePanelService = class CollapsiblePanelService {
 		this.panelGroup.togglePanel(panelId, open);
 		this.emitUpdatedPanels();
 	}
-	disablePanel(panelId, disabled) {
+	disablePanel(panelId, disabled = false) {
 		this.panelGroup.disablePanel(panelId, disabled);
 		this.emitUpdatedPanels();
 	}
@@ -110,6 +110,7 @@ var CollapsiblePanel = class CollapsiblePanel {
 		this.contentCollapsing = false;
 		this._id = uniqueIdFactory();
 		this.panelRendered = false;
+		this.collapsibleContent = null;
 		this.noopPanelAnimations = noopAnimations();
 		this.panelDestroyRef = inject(DestroyRef);
 		afterNextRender(() => this.panelRendered = true);
@@ -151,17 +152,17 @@ var CollapsiblePanel = class CollapsiblePanel {
 		}
 		if (panel.open) {
 			this.ifExpandService.expanded = true;
-			if (this.contentCollapsing) {
+			if (this.contentCollapsing && this.collapsibleContent) {
 				this.contentCollapsing = false;
 				animateHeight(this.collapsibleContent, { from: measureHeight(this.collapsibleContent) });
 			}
 		} else if (this.animatesCollapse && this.collapsibleContent) {
-			if (!this.contentCollapsing) this.collapseContent();
+			if (!this.contentCollapsing) this.collapseContent(this.collapsibleContent);
 		} else this.removeClosedContent();
 	}
-	collapseContent() {
-		const animation = animateHeight(this.collapsibleContent, {
-			from: measureHeight(this.collapsibleContent),
+	collapseContent(content) {
+		const animation = animateHeight(content, {
+			from: measureHeight(content),
 			to: 0
 		});
 		if (!animation) {

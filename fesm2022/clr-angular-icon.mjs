@@ -373,6 +373,7 @@ var ClrIcon = class ClrIcon {
 	constructor(el, cdr) {
 		this.el = el;
 		this.cdr = cdr;
+		this.iconSVG = "";
 		this.isStringIcon = false;
 		this._shape = "unknown";
 		this._solid = false;

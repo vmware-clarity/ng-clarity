@@ -15,7 +15,7 @@ export declare class ClrAccordionPanel extends CollapsiblePanel implements OnCha
   /**
    * Level of the accordion heading from 1 to 6.
    */
-  explicitHeadingLevel: HeadingLevel;
+  explicitHeadingLevel?: HeadingLevel;
   accordionDescription: QueryList<ClrAccordionDescription>;
   constructor(panelService: CollapsiblePanelService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
   ngOnChanges(changes: SimpleChanges): void;

@@ -17,7 +17,7 @@ export declare class ModalStackService implements OnDestroy {
   private readonly platformId;
   private readonly modalStack;
   private readonly keyUpEventListener;
-  constructor(platformId: unknown);
+  constructor(platformId: Object);
   ngOnDestroy(): void;
   trackModalOpen(openedModal: Closable): void;
   trackModalClose(closedModal: Closable): void;
@@ -41,7 +41,7 @@ export declare class ClrModal implements OnChanges, OnDestroy {
   skipAnimation: boolean;
   stopClose: boolean;
   altClose: EventEmitter<boolean>;
-  labelledBy: string;
+  labelledBy?: string;
   bypassScrollService: boolean;
   /** Whether this modal participates in overlay Escape handling, independently of scroll locking. */
   inOverlay: boolean | undefined;
@@ -164,9 +164,9 @@ export declare class ClrSidePanel implements OnInit, OnDestroy {
   private configuration;
   commonStrings: ClrCommonStringsService;
   openChange: EventEmitter<boolean>;
-  closeButtonAriaLabel: string | undefined;
+  closeButtonAriaLabel: string;
   skipAnimation: boolean;
-  labelledById: string;
+  labelledById?: string;
   staticBackdrop: boolean;
   closable: boolean;
   preventClose: boolean;

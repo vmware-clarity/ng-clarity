@@ -23,9 +23,9 @@ export declare class DropdownFocusHandler implements OnDestroy, FocusableItem {
   private readonly subscriptions;
   private readonly recoverFocus;
   constructor(renderer: Renderer2, parent: DropdownFocusHandler, popoverService: ClrPopoverService, focusService: FocusService, platformId: any);
-  get trigger(): HTMLElement;
+  get trigger(): HTMLElement | undefined;
   set trigger(el: HTMLElement);
-  get container(): HTMLElement;
+  get container(): HTMLElement | undefined;
   set container(el: HTMLElement);
   ngOnDestroy(): void;
   /**
@@ -148,7 +148,7 @@ export declare class ClrDropdownItem {
    */
   role: string;
   constructor(dropdown: ClrDropdown, _dropdownService: RootDropdownService, focusableItem: FocusableItem, el: ElementRef, renderer: Renderer2);
-  get disabled(): boolean | string;
+  get disabled(): boolean | undefined;
   set disabled(value: boolean | string);
   /**
    * Let you overwrite the focusable auto increment id.

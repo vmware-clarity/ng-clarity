@@ -686,6 +686,7 @@ var ClrLoadingButton = class ClrLoadingButton {
 	constructor(el, renderer) {
 		this.el = el;
 		this.renderer = renderer;
+		this.disabled = false;
 		this.clrLoadingChange = new EventEmitter(false);
 		this.buttonState = ClrLoadingState;
 		this.state = ClrLoadingState.DEFAULT;

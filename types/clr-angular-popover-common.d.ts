@@ -38,7 +38,7 @@ export interface ClrPopoverPoint {
   y: number;
 }
 export declare class ClrPopoverService {
-  parent: ClrPopoverContent;
+  parent: ClrPopoverContent | null;
   pointTargetElement: HTMLElement | undefined;
   origin: FlexibleConnectedPositionStrategyOrigin;
   closeButtonRef: ElementRef;
@@ -55,7 +55,7 @@ export declare class ClrPopoverService {
   get originPoint(): ClrPopoverPoint | null;
   get openChange(): Observable<boolean>;
   get popoverVisible(): Observable<boolean>;
-  get openEvent(): Event;
+  get openEvent(): Event | undefined;
   set openEvent(event: Event);
   get open(): boolean;
   set open(value: boolean);

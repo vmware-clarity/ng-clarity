@@ -45,6 +45,10 @@ declare class StepperModel extends CollapsiblePanelGroupModel {
   private getFirstPanel;
   private getNumberOfIncompletePanels;
   private getNumberOfOpenPanels;
+  /**
+   * A panel has no index until the panel order is known. It counts as the first panel until then.
+   */
+  private getPanelIndex;
 }
 export declare class StepperService extends CollapsiblePanelService {
   readonly activeStep: Observable<string>;

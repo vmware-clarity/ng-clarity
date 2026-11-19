@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable } from "rxjs";
 export declare class CollapsiblePanelModel {
   id: string;
   groupId: number | string;
-  index: number;
+  index: number | null;
   disabled: boolean;
   open: boolean;
   templateId: string;
@@ -26,7 +26,7 @@ export declare class CollapsiblePanelGroupModel {
 export declare class CollapsiblePanelService {
   protected panelGroup: CollapsiblePanelGroupModel;
   protected readonly _panelsChanges: BehaviorSubject<CollapsiblePanelModel[]>;
-  getPanelChanges(panelId: string): Observable<CollapsiblePanelModel>;
+  getPanelChanges(panelId: string): Observable<CollapsiblePanelModel | undefined>;
   addPanel(panelId: string, open?: boolean): void;
   togglePanel(panelId: string, open?: boolean): void;
   disablePanel(panelId: string, disabled?: boolean): void;
@@ -42,7 +42,7 @@ export declare abstract class CollapsiblePanel implements OnInit {
   panelOpen: boolean;
   panelOpenChange: EventEmitter<boolean>;
   panel: Observable<CollapsiblePanelModel>;
-  protected _panelIndex: number;
+  protected _panelIndex?: number | null;
   /**
    * Set to `true` to collapse the content of a closing panel: the template keeps the content while `contentCollapsing`
    * is set, and the projected content is removed once the content is collapsed.

@@ -46,6 +46,8 @@ var TooltipMouseService = class TooltipMouseService {
 	constructor(popoverService) {
 		this.popoverService = popoverService;
 		this.mouseOutDelay = 100;
+		this.mouseOverTrigger = false;
+		this.mouseOverContent = false;
 	}
 	onMouseEnterTrigger() {
 		this.mouseOverTrigger = true;

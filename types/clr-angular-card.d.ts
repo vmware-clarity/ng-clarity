@@ -46,7 +46,7 @@ export declare class ClrCardHeader {
   /**
    * Level of the card header heading from 1 to 6.
    */
-  explicitHeadingLevel: HeadingLevel;
+  explicitHeadingLevel?: HeadingLevel;
   constructor(card: ClrCard, commonStrings: ClrCommonStringsService);
   static ɵfac: i0.ɵɵFactoryDeclaration<ClrCardHeader, [{
     optional: true;
@@ -66,7 +66,7 @@ export declare class ClrCardBodyTitle {
   /**
    * Level of the card body title heading from 1 to 6.
    */
-  explicitHeadingLevel: HeadingLevel;
+  explicitHeadingLevel?: HeadingLevel;
   static ɵfac: i0.ɵɵFactoryDeclaration<ClrCardBodyTitle, never>;
   static ɵcmp: i0.ɵɵComponentDeclaration<ClrCardBodyTitle, "clr-card-body-title", never, {
     "explicitHeadingLevel": {

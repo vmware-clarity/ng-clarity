@@ -49,7 +49,7 @@ export declare class ClrHeader implements OnDestroy {
   private responsiveNavService;
   commonStrings: ClrCommonStringsService;
   role: string;
-  openNavLevel: number;
+  openNavLevel: number | null;
   responsiveNavCodes: typeof ResponsiveNavCodes;
   private _subscription;
   private readonly navTriggers;

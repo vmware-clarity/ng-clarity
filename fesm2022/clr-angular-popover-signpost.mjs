@@ -85,6 +85,7 @@ var ClrSignpostTrigger = class ClrSignpostTrigger {
 		this.signpostFocusManager = signpostFocusManager;
 		this.platformId = platformId;
 		this.ariaExpanded = false;
+		this.isOpen = false;
 		this.cdr = inject(ChangeDetectorRef);
 		this.subscriptions = [];
 		this.document = document;

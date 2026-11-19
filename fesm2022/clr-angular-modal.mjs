@@ -61,7 +61,7 @@ i0.ɵɵngDeclareClassMetadata({
 		args: [{ providedIn: "root" }]
 	}],
 	ctorParameters: () => [{
-		type: void 0,
+		type: Object,
 		decorators: [{
 			type: Inject,
 			args: [PLATFORM_ID]
@@ -411,6 +411,7 @@ var ClrModalBody = class ClrModalBody {
 		this.host = host;
 		this.tabindex = "0";
 		this.unlisteners = [];
+		this.observer = null;
 		ngZone.runOutsideAngular(() => {
 			this.observer = new ResizeObserver(() => this.addOrRemoveTabIndex());
 			this.observer.observe(host.nativeElement);
@@ -422,8 +423,9 @@ var ClrModalBody = class ClrModalBody {
 		});
 	}
 	ngOnDestroy() {
-		while (this.unlisteners.length) this.unlisteners.pop()();
-		this.observer.disconnect();
+		this.unlisteners.forEach((unlisten) => unlisten());
+		this.unlisteners = [];
+		this.observer?.disconnect();
 		this.observer = null;
 	}
 	addTabIndex() {
@@ -612,6 +614,7 @@ var ClrSidePanel = class ClrSidePanel {
 		this.configuration = configuration;
 		this.commonStrings = commonStrings;
 		this.openChange = new EventEmitter(false);
+		this.closeButtonAriaLabel = this.commonStrings.keys.close;
 		this.skipAnimation = false;
 		this.staticBackdrop = false;
 		this.closable = true;

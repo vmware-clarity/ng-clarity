@@ -28,7 +28,7 @@ export declare class ClrSignpostTrigger implements OnDestroy {
   private signpostFocusManager;
   private platformId;
   ariaExpanded: boolean;
-  ariaControl: string;
+  ariaControl?: string;
   isOpen: boolean;
   private readonly cdr;
   private document;
@@ -57,7 +57,7 @@ export declare class ClrSignpost {
    *
    */
   useCustomTrigger: boolean;
-  signpostTriggerAriaLabel: string;
+  signpostTriggerAriaLabel?: string;
   /**
    * Hides the default trigger button. Use when the signpost is opened
    * programmatically via `openAtPoint()` and no trigger icon is needed.
@@ -98,7 +98,7 @@ export declare class ClrSignpostContent implements OnDestroy, AfterViewInit {
   private document;
   private popoverService;
   private popoverContent;
-  signpostCloseAriaLabel: string;
+  signpostCloseAriaLabel?: string;
   closeButton: ElementRef<HTMLButtonElement>;
   signpostContentId: string;
   private _position;

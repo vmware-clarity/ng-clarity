@@ -3,6 +3,12 @@ import * as i0 from "@angular/core";
 import { ChangeDetectionStrategy, Component, HostBinding, Input, NgModule } from "@angular/core";
 import { isBooleanAttributeSet } from "@clr/angular/utils";
 var ClrSpinner = class ClrSpinner {
+	constructor() {
+		this._inline = false;
+		this._inverse = false;
+		this._small = false;
+		this._medium = false;
+	}
 	get spinnerClass() {
 		return true;
 	}

@@ -115,21 +115,21 @@ declare class PageCollectionService {
    *
    * @memberof PageCollectionService
    */
-  get penultimatePage(): ClrWizardPage;
+  get penultimatePage(): ClrWizardPage | null;
   /**
    * Returns the last page in the query list of pages. Operates as a getter
    * so that it isn't working with stale data.
    *
    * @memberof PageCollectionService
    */
-  get lastPage(): ClrWizardPage;
+  get lastPage(): ClrWizardPage | null;
   /**
    * Returns the first page in the query list of pages. Operates as a getter
    * so that it isn't working with stale data.
    *
    * @memberof PageCollectionService
    */
-  get firstPage(): ClrWizardPage;
+  get firstPage(): ClrWizardPage | null;
   /**
    * An observable that the navigation service listens to in order to know when
    * the page collection completed states have been reset to false so that way it
@@ -271,7 +271,7 @@ export declare class ClrWizardPageNavTitle {
 }
 export declare class ClrWizardPageTitle {
   pageTitleTemplateRef: TemplateRef<any>;
-  headingLevel: HeadingLevel;
+  headingLevel?: HeadingLevel;
   constructor(pageTitleTemplateRef: TemplateRef<any>);
   static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardPageTitle, never>;
   static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardPageTitle, "[clrPageTitle]", never, {
@@ -712,7 +712,7 @@ export declare class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  get headerActions(): TemplateRef<any>;
+  get headerActions(): TemplateRef<any> | undefined;
   /**
    *
    * @memberof WizardPage
@@ -724,7 +724,7 @@ export declare class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  get buttons(): TemplateRef<any>;
+  get buttons(): TemplateRef<any> | undefined;
   /**
    * A read-only getter that returns a boolean that says whether or
    * not the ClrWizardPage includes buttons. Used to determine if the
@@ -982,7 +982,7 @@ declare class WizardNavigationService implements OnDestroy {
   /**
    * @memberof WizardNavigationService
    */
-  get currentPageTitle(): TemplateRef<any>;
+  get currentPageTitle(): TemplateRef<any> | null;
   /**
    * Returns a Boolean that tells you whether or not the current page is the first
    * page in the Wizard.
@@ -1006,7 +1006,7 @@ declare class WizardNavigationService implements OnDestroy {
    *
    * @memberof WizardNavigationService
    */
-  get currentPage(): ClrWizardPage;
+  get currentPage(): ClrWizardPage | null;
   /**
    * Accepts a ClrWizardPage object, since that object to be the current/active
    * page in the wizard, and emits the ClrWizardPage.onLoad (clrWizardPageOnLoad)
@@ -1222,7 +1222,7 @@ export declare class ClrWizardButton {
   }, never, ["*"], false, never>;
 }
 export declare class ClrWizardTitle {
-  headingLevel: HeadingLevel;
+  headingLevel?: HeadingLevel;
   static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardTitle, never>;
   static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardTitle, "clr-wizard-title", never, {
     "headingLevel": {
@@ -1386,7 +1386,7 @@ export declare class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    */
   get disableStepnav(): boolean;
   set disableStepnav(value: boolean);
-  get currentPage(): ClrWizardPage;
+  get currentPage(): ClrWizardPage | null;
   set currentPage(page: ClrWizardPage);
   get isLast(): boolean;
   get isFirst(): boolean;
@@ -1573,7 +1573,7 @@ export declare class ClrWizardStepnav implements AfterViewInit, OnDestroy {
   pageService: PageCollectionService;
   private navService;
   private elementRef;
-  label: string;
+  label?: string;
   protected showScrollLeftButton: boolean;
   protected showScrollRightButton: boolean;
   private readonly stepnavItems;
@@ -1588,7 +1588,7 @@ export declare class ClrWizardStepnav implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void;
   protected scrollLeft(): void;
   protected scrollRight(): void;
-  private setupIntersectionObserver;
+  private createIntersectionObserver;
   private observeEdgeItems;
   private scroll;
   static ɵfac: i0.ɵɵFactoryDeclaration<ClrWizardStepnav, never>;
@@ -1612,7 +1612,7 @@ export declare class ClrWizardStepnavItem implements OnInit, OnDestroy {
   private skipNextScroll;
   constructor(navService: WizardNavigationService, pageCollection: PageCollectionService, commonStrings: ClrCommonStringsService, elementRef: ElementRef<HTMLElement>);
   get id(): string;
-  get stepAriaCurrent(): string;
+  get stepAriaCurrent(): 'step' | false;
   get isDisabled(): boolean;
   get isCurrent(): boolean;
   get isComplete(): boolean;

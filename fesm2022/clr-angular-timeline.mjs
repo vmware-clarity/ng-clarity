@@ -21,41 +21,42 @@ var ClrTimelineStepState;
 })(ClrTimelineStepState || (ClrTimelineStepState = {}));
 var TimelineIconAttributeService = class TimelineIconAttributeService {
 	constructor(commonStrings) {
-		this.attributeMap = /* @__PURE__ */ new Map();
-		this.attributeMap.set(ClrTimelineStepState.NOT_STARTED, {
-			iconShape: "circle",
-			iconStatus: null,
-			ariaLabel: commonStrings.keys.timelineStepNotStarted
-		});
-		this.attributeMap.set(ClrTimelineStepState.CURRENT, {
-			iconShape: "dot-circle",
-			iconStatus: null,
-			ariaLabel: commonStrings.keys.timelineStepCurrent
-		});
-		this.attributeMap.set(ClrTimelineStepState.PROCESSING, {
-			iconShape: void 0,
-			iconStatus: null,
-			ariaLabel: commonStrings.keys.timelineStepProcessing
-		});
-		this.attributeMap.set(ClrTimelineStepState.SUCCESS, {
-			iconShape: "success-standard",
-			iconStatus: "success",
-			ariaLabel: commonStrings.keys.timelineStepSuccess
-		});
-		this.attributeMap.set(ClrTimelineStepState.ERROR, {
-			iconShape: "error-standard",
-			iconStatus: "danger",
-			ariaLabel: commonStrings.keys.timelineStepError
-		});
+		this.attributeMap = {
+			[ClrTimelineStepState.NOT_STARTED]: {
+				iconShape: "circle",
+				iconStatus: null,
+				ariaLabel: commonStrings.keys.timelineStepNotStarted
+			},
+			[ClrTimelineStepState.CURRENT]: {
+				iconShape: "dot-circle",
+				iconStatus: null,
+				ariaLabel: commonStrings.keys.timelineStepCurrent
+			},
+			[ClrTimelineStepState.PROCESSING]: {
+				iconShape: void 0,
+				iconStatus: null,
+				ariaLabel: commonStrings.keys.timelineStepProcessing
+			},
+			[ClrTimelineStepState.SUCCESS]: {
+				iconShape: "success-standard",
+				iconStatus: "success",
+				ariaLabel: commonStrings.keys.timelineStepSuccess
+			},
+			[ClrTimelineStepState.ERROR]: {
+				iconShape: "error-standard",
+				iconStatus: "danger",
+				ariaLabel: commonStrings.keys.timelineStepError
+			}
+		};
 	}
 	getAriaLabel(step) {
-		return this.attributeMap.get(step).ariaLabel;
+		return this.attributeMap[step].ariaLabel;
 	}
 	getIconShape(step) {
-		return this.attributeMap.get(step).iconShape;
+		return this.attributeMap[step].iconShape;
 	}
 	getIconStatus(step) {
-		return this.attributeMap.get(step).iconStatus;
+		return this.attributeMap[step].iconStatus;
 	}
 	static {
 		this.ɵfac = i0.ɵɵngDeclareFactory({
@@ -205,6 +206,7 @@ var ClrTimelineStep = class ClrTimelineStep {
 		this.iconAttributeService = iconAttributeService;
 		this.platformId = platformId;
 		this.state = ClrTimelineStepState.NOT_STARTED;
+		this.stepTitleText = "";
 	}
 	get iconAriaLabel() {
 		return this.iconAttributeService.getAriaLabel(this.state);
