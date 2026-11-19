@@ -23,9 +23,9 @@ import { ClrPopoverService } from './providers/popover.service';
   standalone: false,
 })
 class TestHost {
-  @ViewChild('testAnchor', { read: ElementRef, static: true }) anchor: ElementRef<HTMLButtonElement>;
+  @ViewChild('testAnchor', { read: ElementRef, static: true }) anchor!: ElementRef<HTMLButtonElement>;
 
-  openState: boolean;
+  openState!: boolean;
 
   updateOpenState(event: boolean) {
     this.openState = event;

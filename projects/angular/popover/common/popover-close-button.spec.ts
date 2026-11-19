@@ -23,9 +23,9 @@ import { ClrPopoverService } from './providers/popover.service';
   standalone: false,
 })
 class TestHost {
-  @ViewChild('closeButton', { read: ElementRef, static: true }) closeButton: ElementRef<HTMLButtonElement>;
-  @ViewChild('toggleButton', { read: ElementRef, static: true }) toggleButton: ElementRef<HTMLButtonElement>;
-  openState: boolean;
+  @ViewChild('closeButton', { read: ElementRef, static: true }) closeButton!: ElementRef<HTMLButtonElement>;
+  @ViewChild('toggleButton', { read: ElementRef, static: true }) toggleButton!: ElementRef<HTMLButtonElement>;
+  openState!: boolean;
 
   handleClose() {
     this.openState = false;

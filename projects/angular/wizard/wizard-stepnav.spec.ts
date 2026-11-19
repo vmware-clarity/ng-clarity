@@ -38,7 +38,7 @@ mockPages = resetMockPages();
   standalone: false,
 })
 class TestComponent {
-  @ViewChild(ClrWizardStepnav, { static: true }) stepNav: ClrWizardStepnav;
+  @ViewChild(ClrWizardStepnav, { static: true }) stepNav!: ClrWizardStepnav;
 }
 
 describe('New Wizard Tests', () => {

@@ -17,7 +17,7 @@ describe('isAttributeSet', () => {
   });
 
   it('should return boolean false', () => {
-    expect(isBooleanAttributeSet(null)).toBeFalsy();
+    expect(isBooleanAttributeSet(null!)).toBeFalsy();
     expect(isBooleanAttributeSet(false)).toBeFalsy();
   });
 });

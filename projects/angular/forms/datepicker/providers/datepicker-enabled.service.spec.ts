@@ -13,8 +13,8 @@ describe('Datepicker', () => {
   describe('Providers', () => {
     describe('Datepicker Enabled Service', () => {
       function initializeSpies(userAgent: string, innerWidth: number): DatepickerEnabledService {
-        vi.spyOn(document.defaultView.navigator, 'userAgent', 'get').mockReturnValue(userAgent);
-        vi.spyOn(document.defaultView, 'innerWidth', 'get').mockReturnValue(innerWidth);
+        vi.spyOn(document.defaultView!.navigator, 'userAgent', 'get').mockReturnValue(userAgent);
+        vi.spyOn(document.defaultView!, 'innerWidth', 'get').mockReturnValue(innerWidth);
         return new DatepickerEnabledService(document);
       }
 

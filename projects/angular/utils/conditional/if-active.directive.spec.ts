@@ -64,7 +64,7 @@ describe('Conditional Utils', () => {
 
         it('emits an activeChange event only if the active state changes', () => {
           let nbChanges = 0;
-          let currentChange: boolean;
+          let currentChange!: boolean;
           testContext.testComponent.directive.activeChange.subscribe((change: boolean) => {
             currentChange = change;
             nbChanges++;
@@ -138,6 +138,6 @@ describe('Conditional Utils', () => {
   standalone: false,
 })
 class IfActiveTest {
-  @ViewChild(ClrIfActive) directive: ClrIfActive;
+  @ViewChild(ClrIfActive) directive!: ClrIfActive;
   activeState = false;
 }

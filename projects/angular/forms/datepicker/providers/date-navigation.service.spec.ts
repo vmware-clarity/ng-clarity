@@ -15,7 +15,7 @@ describe('Datepicker', () => {
     describe('Date Navigation Service', () => {
       let dateNavigationService: DateNavigationService;
 
-      function initalizeCalendar(selectedDay: DayModel) {
+      function initalizeCalendar(selectedDay: DayModel | null) {
         dateNavigationService.selectedDay = selectedDay;
         dateNavigationService.initializeCalendar();
       }
@@ -253,8 +253,8 @@ describe('Datepicker', () => {
         });
 
         it('notifies the updated selectedDay', () => {
-          let dayModel: DayModel;
-          sub = dateNavigationService.selectedDayChange.subscribe((newDayModel: DayModel) => {
+          let dayModel: DayModel | null | undefined;
+          sub = dateNavigationService.selectedDayChange.subscribe((newDayModel: DayModel | null | undefined) => {
             dayModel = newDayModel;
           });
 

@@ -29,7 +29,7 @@ const testIcon: IconShapeCollection = {
   standalone: false,
 })
 class TestComponent {
-  @ViewChild(ClrIcon) icon: ClrIcon;
+  @ViewChild(ClrIcon) icon!: ClrIcon;
 }
 
 /**

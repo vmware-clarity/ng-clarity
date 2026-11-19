@@ -7,7 +7,7 @@
 
 import { DebugElement, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import {
   ClrAbstractContainer,
@@ -111,13 +111,21 @@ function fullSpec(
       renderFixture(fixture);
     });
 
+    function getFormControl(): AbstractControl {
+      const control = container.control?.control;
+      if (!control) {
+        throw new Error('The container has no form control');
+      }
+      return control;
+    }
+
     function setValid(valid: boolean) {
       // NOTE The order of these two events should in theory be insignificant, but it's not.
       // The scenarios were additionally verified by manual testing in a patched Stackblitz demo:
       // https://stackblitz.com/edit/input-on-blur-issue-onpush-td-13-4-3
       markControlService.markAsTouched();
-      (container.control.control as { value: boolean }).value = valid;
-      container.control.control.markAsDirty();
+      (getFormControl() as { value: boolean }).value = valid;
+      getFormControl().markAsDirty();
     }
 
     it('injects the layoutService', () => {
@@ -132,7 +140,7 @@ function fullSpec(
     it('projects the label as first child', () => {
       const label = containerEl.querySelector('label');
       expect(label).toBeTruthy();
-      expect(label.previousElementSibling).toBeFalsy();
+      expect(label?.previousElementSibling).toBeFalsy();
     });
 
     it('projects the control inside of the wrapper', () => {
@@ -158,11 +166,11 @@ function fullSpec(
     });
 
     it('sets error classes and displays the icon when invalid', () => {
-      expect(containerEl.querySelector('.clr-control-container').classList.contains('clr-error')).toBe(false);
+      expect(containerEl.querySelector('.clr-control-container')?.classList.contains('clr-error')).toBe(false);
       expect(containerEl.querySelector('.clr-validate-icon')).toBeFalsy();
       setValid(false);
       renderFixture(fixture);
-      expect(containerEl.querySelector('.clr-control-container').classList.contains('clr-error')).toBe(true);
+      expect(containerEl.querySelector('.clr-control-container')?.classList.contains('clr-error')).toBe(true);
       expect(containerEl.querySelector('.clr-validate-icon')).toBeTruthy();
     });
 
@@ -175,7 +183,7 @@ function fullSpec(
 
     it('projects the success content when valid', () => {
       setValid(true);
-      container.control.control.updateValueAndValidity();
+      getFormControl().updateValueAndValidity();
       renderFixture(fixture);
       expect(containerEl.querySelector('clr-control-error')).toBeFalsy();
       expect(containerEl.querySelector('clr-control-success')).toBeTruthy();
@@ -183,9 +191,9 @@ function fullSpec(
 
     it('should have the success icon when valid', () => {
       setValid(true);
-      container.control.control.updateValueAndValidity();
+      getFormControl().updateValueAndValidity();
       renderFixture(fixture);
-      const icon: HTMLElement = containerEl.querySelector('cds-icon[shape=success-standard]');
+      const icon = containerEl.querySelector<HTMLElement>('cds-icon[shape=success-standard]');
       expect(icon).toBeTruthy();
     });
 

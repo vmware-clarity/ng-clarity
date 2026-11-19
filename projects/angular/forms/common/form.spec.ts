@@ -31,11 +31,11 @@ import { MarkControlService } from './providers/mark-control.service';
   standalone: false,
 })
 class SimpleTest {
-  @ViewChild(ClrForm, { static: true }) form: ClrForm;
+  @ViewChild(ClrForm, { static: true }) form!: ClrForm;
 
-  @ViewChild('submitBtn', { static: true }) submitBtn: ElementRef<HTMLButtonElement>;
+  @ViewChild('submitBtn', { static: true }) submitBtn!: ElementRef<HTMLButtonElement>;
 
-  @ViewChild('testLabel', { static: true }) testLabel: ElementRef<HTMLLabelElement>;
+  @ViewChild('testLabel', { static: true }) testLabel!: ElementRef<HTMLLabelElement>;
 
   model = new FormGroup({
     testControl: new FormControl('', [Validators.required]),

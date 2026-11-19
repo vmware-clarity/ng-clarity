@@ -34,17 +34,17 @@ describe('New Wizard Tests', () => {
     });
 
     it('.lastPage should return the last wizard page', () => {
-      expect(pageCollectionService.lastPage.id).toEqual(context.clarityDirective.pages.last.id);
+      expect(pageCollectionService.lastPage!.id).toEqual(context.clarityDirective.pages.last.id);
     });
 
     it('.firstPage should return the first wizard page', () => {
-      expect(pageCollectionService.firstPage.id).toEqual(context.clarityDirective.pages.first.id);
+      expect(pageCollectionService.firstPage!.id).toEqual(context.clarityDirective.pages.first.id);
     });
 
     it('.getPageById() should return the wizard page with a matching id', () => {
       // checkResults() method is tested here as well
       const firstPageId = context.clarityDirective.pages.first.id;
-      const firstPageIdNumber = firstPageId.match(/\d+/)[0];
+      const firstPageIdNumber = firstPageId.match(/\d+/)![0];
       const lastPageId = context.clarityDirective.pages.last.id;
       const nonExistingPageId = 'N0N-EX1ST1N-ID';
 
@@ -77,7 +77,7 @@ describe('New Wizard Tests', () => {
     });
 
     it('.getPageIndex() should return the index of a wizard page', () => {
-      expect(pageCollectionService.getPageIndex(pageCollectionService.firstPage)).toBe(0);
+      expect(pageCollectionService.getPageIndex(pageCollectionService.firstPage!)).toBe(0);
     });
 
     it('.pageRange() should return the range of wizard pages', () => {
@@ -97,20 +97,20 @@ describe('New Wizard Tests', () => {
 
       expect(pageCollectionService.pageRange(1, -3)).toEqual([]);
 
-      expect(pageCollectionService.pageRange(null, 3)).toEqual([]);
+      expect(pageCollectionService.pageRange(null!, 3)).toEqual([]);
 
-      expect(pageCollectionService.pageRange(3, undefined)).toEqual([]);
+      expect(pageCollectionService.pageRange(3, undefined!)).toEqual([]);
 
-      expect(pageCollectionService.pageRange(null, undefined)).toEqual([]);
+      expect(pageCollectionService.pageRange(null!, undefined!)).toEqual([]);
     });
 
     it('.getPageRangeFromPages() should return the range of wizard pages', () => {
       expect(
-        pageCollectionService.getPageRangeFromPages(pageCollectionService.firstPage, pageCollectionService.lastPage)
+        pageCollectionService.getPageRangeFromPages(pageCollectionService.firstPage!, pageCollectionService.lastPage!)
       ).toEqual(pageCollectionService.pageRange(0, 4));
 
       expect(
-        pageCollectionService.getPageRangeFromPages(pageCollectionService.firstPage, pageCollectionService.firstPage)
+        pageCollectionService.getPageRangeFromPages(pageCollectionService.firstPage!, pageCollectionService.firstPage!)
       ).toEqual(pageCollectionService.pageRange(0, 0));
 
       expect(
@@ -122,7 +122,7 @@ describe('New Wizard Tests', () => {
     });
 
     it('.getPreviousPage() should return the previous page of the current page', () => {
-      expect(pageCollectionService.getPreviousPage(pageCollectionService.lastPage)).toEqual(
+      expect(pageCollectionService.getPreviousPage(pageCollectionService.lastPage!)).toEqual(
         pageCollectionService.getPageByIndex(3)
       );
 
@@ -130,11 +130,11 @@ describe('New Wizard Tests', () => {
         pageCollectionService.getPageByIndex(1)
       );
 
-      expect(pageCollectionService.getPreviousPage(pageCollectionService.firstPage)).toBeNull();
+      expect(pageCollectionService.getPreviousPage(pageCollectionService.firstPage!)).toBeNull();
     });
 
     it('.getNextPage() should return the next page of the current page', () => {
-      expect(pageCollectionService.getNextPage(pageCollectionService.firstPage)).toEqual(
+      expect(pageCollectionService.getNextPage(pageCollectionService.firstPage!)).toEqual(
         pageCollectionService.getPageByIndex(1)
       );
 
@@ -142,7 +142,7 @@ describe('New Wizard Tests', () => {
         pageCollectionService.getPageByIndex(3)
       );
 
-      expect(pageCollectionService.getNextPage(pageCollectionService.lastPage)).toBeNull();
+      expect(pageCollectionService.getNextPage(pageCollectionService.lastPage!)).toBeNull();
     });
 
     it('.getStepItemIdForPage() should return the step id of the page', () => {
@@ -152,8 +152,8 @@ describe('New Wizard Tests', () => {
       const firstPageStepId = firstPageId.replace('page', 'step');
       const lastPageStepId = lastPageId.replace('page', 'step');
 
-      expect(pageCollectionService.getStepItemIdForPage(pageCollectionService.firstPage)).toBe(firstPageStepId);
-      expect(pageCollectionService.getStepItemIdForPage(pageCollectionService.lastPage)).toBe(lastPageStepId);
+      expect(pageCollectionService.getStepItemIdForPage(pageCollectionService.firstPage!)).toBe(firstPageStepId);
+      expect(pageCollectionService.getStepItemIdForPage(pageCollectionService.lastPage!)).toBe(lastPageStepId);
     });
 
     it(".commitPage() should set the page's completed property to true", () => {
@@ -193,30 +193,30 @@ describe('New Wizard Tests', () => {
     });
 
     it('.reset() should set the completed properties back to false.', () => {
-      pageCollectionService.firstPage.completed = true;
-      pageCollectionService.lastPage.completed = true;
+      pageCollectionService.firstPage!.completed = true;
+      pageCollectionService.lastPage!.completed = true;
 
       pageCollectionService.reset();
 
-      expect(pageCollectionService.firstPage.completed).toBe(false);
-      expect(pageCollectionService.lastPage.completed).toBe(false);
+      expect(pageCollectionService.firstPage!.completed).toBe(false);
+      expect(pageCollectionService.lastPage!.completed).toBe(false);
     });
 
     it('.previousPageIsCompleted() should return true if previous page is completed', () => {
       const secondPage = pageCollectionService.getPageByIndex(1);
-      pageCollectionService.firstPage.completed = true;
+      pageCollectionService.firstPage!.completed = true;
       context.detectChanges();
       expect(pageCollectionService.previousPageIsCompleted(secondPage)).toBe(true);
     });
 
     it('.previousPageIsCompleted() should return true if there is no previous page', () => {
-      const firstPage = pageCollectionService.firstPage;
+      const firstPage = pageCollectionService.firstPage!;
       expect(pageCollectionService.previousPageIsCompleted(firstPage)).toBe(true);
     });
 
     it('.previousPageIsCompleted() should return false if previous page is not complete', () => {
       const secondPage = pageCollectionService.getPageByIndex(1);
-      expect(pageCollectionService.firstPage.completed, 'verify first page is not completed').toBe(false);
+      expect(pageCollectionService.firstPage!.completed, 'verify first page is not completed').toBe(false);
       expect(
         pageCollectionService.previousPageIsCompleted(secondPage),
         "second page's previous page is not complete"
@@ -225,7 +225,7 @@ describe('New Wizard Tests', () => {
 
     it("updateCompletedStates() shouldn't update completed state if all pages completed", () => {
       const pageArray = [];
-      pageArray.push(pageCollectionService.firstPage);
+      pageArray.push(pageCollectionService.firstPage!);
       pageArray.push(pageCollectionService.getPageByIndex(1));
       pageArray.push(pageCollectionService.getPageByIndex(2));
       pageArray.push(pageCollectionService.getPageByIndex(3));
@@ -236,7 +236,7 @@ describe('New Wizard Tests', () => {
       });
       pageCollectionService.updateCompletedStates();
 
-      expect(pageCollectionService.firstPage.completed, 'first page not updated').toBe(true);
+      expect(pageCollectionService.firstPage!.completed, 'first page not updated').toBe(true);
       expect(pageCollectionService.getPageByIndex(1).completed, 'second page not updated').toBe(true);
       expect(pageCollectionService.getPageByIndex(2).completed, 'third page not updated').toBe(true);
       expect(pageCollectionService.getPageByIndex(3).completed, 'fourth page not updated').toBe(true);
@@ -245,7 +245,7 @@ describe('New Wizard Tests', () => {
 
     it('updateCompletedStates() should mark pages after first incomplete page as incomplete', () => {
       const pageArray = [];
-      pageArray.push(pageCollectionService.firstPage);
+      pageArray.push(pageCollectionService.firstPage!);
       pageArray.push(pageCollectionService.getPageByIndex(1));
       pageArray.push(pageCollectionService.getPageByIndex(3));
       pageArray.push(pageCollectionService.getPageByIndex(4));
@@ -256,7 +256,7 @@ describe('New Wizard Tests', () => {
 
       pageCollectionService.updateCompletedStates();
 
-      expect(pageCollectionService.firstPage.completed, 'first page not changed').toBe(true);
+      expect(pageCollectionService.firstPage!.completed, 'first page not changed').toBe(true);
       expect(pageCollectionService.getPageByIndex(1).completed, 'second page not changed').toBe(true);
       expect(pageCollectionService.getPageByIndex(2).completed, 'third page never set').toBe(false);
       expect(pageCollectionService.getPageByIndex(3).completed, 'fourth page changed').toBe(false);
@@ -264,7 +264,7 @@ describe('New Wizard Tests', () => {
     });
 
     it('findFirstIncompletePageIndex() should return index of first incomplete page', () => {
-      pageCollectionService.firstPage.completed = true;
+      pageCollectionService.firstPage!.completed = true;
       pageCollectionService.getPageByIndex(1).completed = false;
       pageCollectionService.getPageByIndex(2).completed = true;
       pageCollectionService.getPageByIndex(3).completed = false;
@@ -276,7 +276,7 @@ describe('New Wizard Tests', () => {
       const pageArray = [];
       const expectedIndex = pageCollectionService.pagesCount - 1;
 
-      pageArray.push(pageCollectionService.firstPage);
+      pageArray.push(pageCollectionService.firstPage!);
       pageArray.push(pageCollectionService.getPageByIndex(1));
       pageArray.push(pageCollectionService.getPageByIndex(2));
       pageArray.push(pageCollectionService.getPageByIndex(3));
