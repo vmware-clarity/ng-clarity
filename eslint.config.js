@@ -192,6 +192,8 @@ module.exports = [
   },
 
   // Specs may assert that a queried element or a test value exists: a wrong assertion fails the test.
+  // TODO: turn the rule back on for specs once they assert through a helper that fails with a clear message instead of
+  // using `!` (about 1000 places in 120 spec files).
   {
     files: ['**/*.spec.ts'],
     rules: {
