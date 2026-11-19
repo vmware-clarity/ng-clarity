@@ -29,7 +29,7 @@ import { ClrDropdown } from '@clr/angular';
   standalone: false,
 })
 export class DropdownAngularContextMenuDemo {
-  @ViewChild('contextDropdown', { static: true }) dropdown: ClrDropdown;
+  @ViewChild('contextDropdown', { static: true }) dropdown!: ClrDropdown;
 
   onContextMenu(event: MouseEvent) {
     event.preventDefault();

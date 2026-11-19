@@ -156,7 +156,7 @@ export class DatepickerAPIDemo {
   firstDayOfWeekExample = FIRST_DAY_OF_WEEK_EXAMPLE;
   firstDayOfWeekExampleTs = FIRST_DAY_OF_WEEK_EXAMPLE_TS;
 
-  weekdayOptions: { label: string; value: ClrWeekday }[] = [
+  weekdayOptions: { label: string; value: ClrWeekday | null }[] = [
     { label: 'Locale Default', value: null },
     { label: ClrWeekday[0], value: ClrWeekday.Sunday },
     { label: ClrWeekday[1], value: ClrWeekday.Monday },
@@ -174,5 +174,5 @@ export class DatepickerAPIDemo {
   actionButtonsDemo: string | undefined;
   firstDayDemo: string | undefined;
 
-  firstDayOfWeek: ClrWeekday = null;
+  firstDayOfWeek: ClrWeekday | null = null;
 }

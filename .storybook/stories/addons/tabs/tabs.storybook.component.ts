@@ -40,7 +40,7 @@ class ReviewModel implements StepModel {
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class TabsNameStepComponent implements StepModelHolder {
-  model: NameModel;
+  model!: NameModel;
 }
 
 @Component({
@@ -61,7 +61,7 @@ export class TabsNameStepComponent implements StepModelHolder {
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class TabsRegionStepComponent implements StepModelHolder {
-  model: RegionModel;
+  model!: RegionModel;
 }
 
 @Component({
@@ -76,7 +76,7 @@ export class TabsRegionStepComponent implements StepModelHolder {
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class TabsReviewStepComponent implements StepModelHolder {
-  model: ReviewModel;
+  model!: ReviewModel;
 }
 
 class TabsWorkflowModel {

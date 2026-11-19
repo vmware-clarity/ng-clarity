@@ -18,7 +18,7 @@ import { ClarityModule } from '@clr/angular';
   templateUrl: 'button-menu.html',
 })
 export class ButtonMenuDemoComponent {
-  @ViewChild('demoMenu') demoMenu: MenuComponent;
+  @ViewChild('demoMenu') demoMenu!: MenuComponent;
 
   onOpenMenu(event: MouseEvent) {
     const rect = (event.currentTarget as HTMLButtonElement).getBoundingClientRect();

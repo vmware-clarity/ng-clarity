@@ -89,7 +89,7 @@ export class ExampleComponent {
   ],
 })
 export class DropdownAngularContextMenuDemo {
-  @ViewChild('contextDropdown', { static: true }) dropdown: ClrDropdown;
+  @ViewChild('contextDropdown', { static: true }) dropdown!: ClrDropdown;
 
   example = EXAMPLE;
   exampleTs = EXAMPLE_TS;

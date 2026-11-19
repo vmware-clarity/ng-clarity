@@ -23,23 +23,23 @@
     <div class="flex-section">
       <div class="card" data-heading="Date Picker">
         <div class="card-content">
-          <clr-date-container [showActionButtons]="(dateForm.get('showActionButtons')?.value ?? null)">
+          <clr-date-container [showActionButtons]="dateForm.controls.showActionButtons.value">
             <label for="dateControl">Date</label>
             <input
               id="dateControl"
               type="date"
               clrDate
               formControlName="date"
-              [min]="dateForm.get('minDate').value"
-              [max]="dateForm.get('maxDate').value"
+              [min]="dateForm.controls.minDate.value"
+              [max]="dateForm.controls.maxDate.value"
             />
             <clr-control-error *clrIfError="'min'">
-              @if (dateForm.get('date').errors?.min?.min) { Minimum date should be
-              {{dateForm.get('date').errors?.min?.min}} }
+              @if (dateForm.controls.date.errors?.min?.min) { Minimum date should be
+              {{dateForm.controls.date.errors?.min?.min}} }
             </clr-control-error>
             <clr-control-error *clrIfError="'max'">
-              @if (dateForm.get('date').errors?.max?.max) { Maximum date should be
-              {{dateForm.get('date').errors?.max?.max}} }
+              @if (dateForm.controls.date.errors?.max?.max) { Maximum date should be
+              {{dateForm.controls.date.errors?.max?.max}} }
             </clr-control-error>
           </clr-date-container>
         </div>

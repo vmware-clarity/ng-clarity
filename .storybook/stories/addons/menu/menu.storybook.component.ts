@@ -54,7 +54,7 @@ import { AppfxMenuModule, MenuComponent } from '@clr/addons/menu';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class MenuStoryWrapperComponent {
-  @ViewChild('demoMenu') demoMenu: MenuComponent;
+  @ViewChild('demoMenu') demoMenu!: MenuComponent;
 
   headerText = 'Context Menu';
   lastAction = '';

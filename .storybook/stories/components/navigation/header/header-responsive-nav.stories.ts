@@ -44,14 +44,14 @@ type Story = StoryObj<HeaderResponsiveNavArgs>;
 
 export const Level1NavOpen: Story = {
   async play({ canvasElement, userEvent }) {
-    const hamburger = canvasElement.querySelector<HTMLButtonElement>('.header-hamburger-trigger');
+    const hamburger = canvasElement.querySelector('.header-hamburger-trigger') as HTMLButtonElement;
     await userEvent.click(hamburger);
   },
 };
 
 export const Level2NavOpen: Story = {
   async play({ canvasElement, userEvent }) {
-    const overflow = canvasElement.querySelector<HTMLButtonElement>('.header-overflow-trigger');
+    const overflow = canvasElement.querySelector('.header-overflow-trigger') as HTMLButtonElement;
     await userEvent.click(overflow);
   },
 };

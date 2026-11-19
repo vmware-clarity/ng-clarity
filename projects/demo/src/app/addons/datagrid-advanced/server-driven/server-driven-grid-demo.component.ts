@@ -69,7 +69,7 @@ export class ServerDrivenGridDemoComponent {
   ];
 
   protected resetting = true;
-  protected vmItems: VmItem[];
+  protected vmItems!: VmItem[];
   protected selectedVms: VmItem[] = [];
 
   constructor(
@@ -83,10 +83,11 @@ export class ServerDrivenGridDemoComponent {
   protected onRefreshGridData(state: ClrDatagridStateInterface): void {
     console.log('#refreshGridData emitted:', state);
     this.options.loading = true;
+    const { size = 0, current = 1 } = state.page ?? {};
     this.cdr.detectChanges();
     this.inventory
       .filter()
-      .fetch$(state.page.size * (state.page.current - 1), state.page.size)
+      .fetch$(size * (current - 1), size)
       .subscribe((result: FetchResult) => {
         this.vmItems = result.vms;
         this.options.loading = false;

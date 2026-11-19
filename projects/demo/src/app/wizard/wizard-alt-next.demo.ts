@@ -16,7 +16,7 @@ import { ClrWizard } from '@clr/angular';
   standalone: false,
 })
 export class WizardAltNextDemo implements OnInit {
-  @ViewChild('wizard') wizard: ClrWizard;
+  @ViewChild('wizard') wizard!: ClrWizard;
 
   model: any;
   stressText = false;

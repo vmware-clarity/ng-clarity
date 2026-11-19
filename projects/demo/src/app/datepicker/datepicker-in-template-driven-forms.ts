@@ -19,11 +19,11 @@ export class DatepickerInTemplateDrivenFormsDemo {
   date1 = '01/02/2015';
   date2 = '';
 
-  date1Changed(date: Date): void {
+  date1Changed(date: Date | null): void {
     console.log('Valid Date1 Entered', date);
   }
 
-  date2Changed(date: Date): void {
+  date2Changed(date: Date | null): void {
     console.log('Valid Date2 Entered', date);
   }
 }

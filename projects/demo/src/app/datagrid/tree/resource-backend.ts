@@ -64,6 +64,9 @@ export class ResourceBackend {
 
   children(parent: Resource): Observable<Resource[]> {
     const kind = CHILD_KIND[parent.kind];
+    if (!kind) {
+      return this.respond([]);
+    }
     const items = Array.from({ length: parent.childCount }, (_, i) =>
       this.make(`${parent.id}-${i + 1}`, `${kind} ${i + 1}`, kind, i + 1)
     );
@@ -72,10 +75,10 @@ export class ResourceBackend {
 
   // The datagrid sorts the children it has itself; the roots are sorted here, across pages.
   private sorted(sort: ClrDatagridStateInterface['sort']): Resource[] {
-    const field = sort?.by as keyof Resource;
-    if (typeof field !== 'string') {
+    if (typeof sort?.by !== 'string') {
       return this.roots;
     }
+    const field = sort.by as keyof Resource;
     const direction = sort.reverse ? -1 : 1;
     return [...this.roots].sort(
       (a, b) => direction * String(a[field]).localeCompare(String(b[field]), undefined, { numeric: true })
