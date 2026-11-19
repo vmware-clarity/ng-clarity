@@ -14,7 +14,7 @@ export declare class ClrStackHeader {
   /**
    * Depth of the stack view header starting from 1 for first level
    */
-  ariaLevel: HeadingLevel;
+  ariaLevel?: HeadingLevel;
   constructor(stackView: ClrStackView);
   static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackHeader, never>;
   static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackHeader, "clr-stack-header", never, {
@@ -32,7 +32,7 @@ export declare class ClrStackBlock implements OnInit {
   /**
    * Depth of the stack view starting from 1 for first level
    */
-  ariaLevel: HeadingLevel;
+  ariaLevel?: HeadingLevel;
   expandedChange: EventEmitter<boolean>;
   stackBlockTitle: any;
   focused: boolean;
@@ -46,9 +46,9 @@ export declare class ClrStackBlock implements OnInit {
   get onStackLabelFocus(): boolean;
   get labelledById(): any;
   get caretDirection(): string;
-  get role(): string;
-  get tabIndex(): string;
-  get ariaExpanded(): string;
+  get role(): string | null;
+  get tabIndex(): string | null;
+  get ariaExpanded(): string | null;
   ngOnInit(): void;
   addChild(): void;
   toggleExpand(event?: Event): void;
@@ -91,7 +91,7 @@ export declare class ClrStackViewCustomTags {
 export declare class ClrStackViewLabel implements OnInit {
   private _generatedId;
   private _id;
-  get id(): string;
+  get id(): string | null;
   set id(val: string);
   ngOnInit(): void;
   static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackViewLabel, never>;

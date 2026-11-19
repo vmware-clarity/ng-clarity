@@ -130,7 +130,7 @@ declare class ColumnsService {
   cache(): void;
   hasCache(): boolean;
   resetToLastCache(): void;
-  emitStateChangeAt(columnIndex: number, diff: ColumnStateDiff): void;
+  emitStateChangeAt(columnIndex: number | undefined, diff: ColumnStateDiff): void;
   emitStateChange(column: BehaviorSubject<ColumnState>, diff: ColumnStateDiff): void;
   static ɵfac: i0.ɵɵFactoryDeclaration<ColumnsService, never>;
   static ɵprov: i0.ɵɵInjectableDeclaration<any>;
@@ -143,7 +143,7 @@ declare class DetailService {
   private preventScroll;
   private toggleState;
   private cache;
-  private button;
+  private button?;
   private readonly _enabled;
   private _state;
   constructor(modalStackService: ModalStackService);
@@ -194,7 +194,7 @@ declare class Page {
   /**
    * Last page
    */
-  private _last;
+  private _last?;
   /**
    * Current page
    */
@@ -341,9 +341,9 @@ export declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<
   protected commonStrings: ClrCommonStringsService;
   private columnsService;
   private columnState;
-  filterStringPlaceholder: string;
-  filterNumberMaxPlaceholder: string;
-  filterNumberMinPlaceholder: string;
+  filterStringPlaceholder?: string;
+  filterNumberMaxPlaceholder?: string;
+  filterNumberMinPlaceholder?: string;
   disableUnsort: boolean;
   /**
    * Lets the user pin and unpin the column from within the datagrid. It only offers the control - the
@@ -362,17 +362,17 @@ export declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<
   customFilter: boolean;
   protected readonly columnActions: ColumnActionsService;
   private _colType;
-  private _field;
+  private _field?;
   /**
    * ClrDatagridComparatorInterface to use when sorting the column
    */
-  private _sortBy;
+  private _sortBy?;
   /**
    * Indicates how the column is currently sorted
    */
   private _sortOrder;
   private _sortDirection;
-  private initFilterValue;
+  private initFilterValue?;
   private wrappedInjector;
   /**
    * Subscription to the sort service changes
@@ -407,13 +407,13 @@ export declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<
   set treeToggle(value: boolean);
   get colType(): "string" | "number";
   set colType(value: 'string' | 'number');
-  get field(): string;
+  get field(): string | undefined;
   set field(field: string);
-  get sortBy(): ClrDatagridComparatorInterface<T> | string;
+  get sortBy(): ClrDatagridComparatorInterface<T> | undefined;
   set sortBy(comparator: ClrDatagridComparatorInterface<T> | string);
   get sortOrder(): ClrDatagridSortOrder;
   set sortOrder(value: ClrDatagridSortOrder);
-  set updateFilterValue(newValue: string | [number, number]);
+  set updateFilterValue(newValue: string | [number | null, number | null]);
   set projectedFilter(custom: any);
   /**
    * Indicates if the column is sortable
@@ -535,9 +535,9 @@ declare class Items<T = any> {
   /**
    * Subscriptions to the other providers changes.
    */
-  private _filtersSub;
-  private _sortSub;
-  private _pageSub;
+  private _filtersSub?;
+  private _sortSub?;
+  private _pageSub?;
   /**
    * Whether we should use smart items for this datagrid or let the user handle
    * everything.
@@ -784,7 +784,7 @@ export declare class Selection<T = any> {
   /**
    * Last selection, for use in range selection.
    */
-  rangeStart: T;
+  rangeStart: T | null;
   /**
    * Shift key state, for use in range selection.
    */
@@ -817,7 +817,7 @@ export declare class Selection<T = any> {
   set selectionType(value: SelectionType);
   get current(): T[];
   set current(value: T[]);
-  get currentSingle(): T;
+  get currentSingle(): T | undefined;
   get change(): Observable<T[]>;
   get selectable(): boolean;
   private get currentSelectionRefs();
@@ -937,8 +937,8 @@ declare class DatagridTreeService<T = any> implements OnDestroy {
    * Applies the inputs of the directive that renders the tree, all at once, so the roots are built
    * with the final loader.
    */
-  configure(roots: T[], getChildren: ClrDatagridTreeChildrenFunction<T>, cascadeSelection: boolean): void;
-  setRoots(items: T[]): void;
+  configure(roots: T[] | undefined, getChildren: ClrDatagridTreeChildrenFunction<T>, cascadeSelection: boolean): void;
+  setRoots(items: T[] | undefined): void;
   identify(item: T): any;
   /** The node of `item`, also when its row is on another page or a reload of its parent took it away. */
   nodeFor(item: T): DatagridTreeNode<T> | undefined;
@@ -1345,7 +1345,7 @@ export declare class ClrDatagridVirtualScrollDirective<T> implements AfterViewIn
   private readonly cdkInjectors;
   private mutationChanges;
   private cdkVirtualForInputs;
-  private _totalItems;
+  private _totalItems?;
   constructor(changeDetectorRef: ChangeDetectorRef, iterableDiffers: IterableDiffers, items: Items<T>, ngZone: NgZone, renderer2: Renderer2, templateRef: TemplateRef<CdkVirtualForOfContext<T>>, viewContainerRef: ViewContainerRef, directionality: Directionality, scrollDispatcher: ScrollDispatcher, viewportRuler: ViewportRuler, datagrid: ClrDatagrid, injector: EnvironmentInjector);
   get totalContentHeight(): string;
   get cdkVirtualForOf(): CdkVirtualForInputs<T>["cdkVirtualForOf"];
@@ -1363,7 +1363,7 @@ export declare class ClrDatagridVirtualScrollDirective<T> implements AfterViewIn
   get maxBufferPx(): CdkFixedSizeVirtualScrollInputs["maxBufferPx"];
   set maxBufferPx(value: CdkFixedSizeVirtualScrollInputs['maxBufferPx']);
   set dataRange(range: ClrDatagridVirtualScrollRangeInterface<T>);
-  get totalItems(): number;
+  get totalItems(): number | undefined;
   private set totalItems(value);
   ngAfterViewInit(): void;
   ngDoCheck(): void;
@@ -1377,7 +1377,6 @@ export declare class ClrDatagridVirtualScrollDirective<T> implements AfterViewIn
   private updateFixedSizeVirtualScrollInputs;
   private updateAriaRowCount;
   private updateAriaRowIndexes;
-  private createVirtualScrollViewportForDatagrid;
   private createCdkVirtualScrollViewport;
   /**
    * `Directionality`, `ScrollDispatcher` and `ViewportRuler` belong to the application, not to us.
@@ -1560,7 +1559,7 @@ export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterView
   _fixedColumnTemplate: TemplateRef<any>;
   stickyHeaders: QueryList<ElementRef>;
   selectAllId: string;
-  activeCellCoords: CellCoordinates;
+  activeCellCoords?: CellCoordinates;
   SELECTION_TYPE: typeof SelectionType;
   protected readonly tree: DatagridTreeService<T>;
   private selectAllCheckbox;
@@ -1619,7 +1618,7 @@ export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterView
    */
   get allSelected(): boolean;
   set allSelected(value: boolean);
-  get virtualScroll(): ClrDatagridVirtualScrollDirective<any>;
+  get virtualScroll(): ClrDatagridVirtualScrollDirective<any> | undefined;
   protected get isDetailOverlay(): boolean;
   ngAfterContentInit(): void;
   /**
@@ -1760,7 +1759,7 @@ export declare class ClrDatagridActionOverflow implements OnDestroy {
   commonStrings: ClrCommonStringsService;
   private platformId;
   private popoverService;
-  buttonLabel: string;
+  buttonLabel?: string;
   openChange: EventEmitter<boolean>;
   popoverId: string;
   smartPosition: ClrPopoverPosition;
@@ -1830,7 +1829,7 @@ export declare class ClrDatagridColumnActions extends ClrDropdown implements Aft
   private _menuPopoverContent;
   private trigger;
   private subs;
-  private projectedItemsSubscription;
+  private projectedItemsSubscription?;
   private readonly columnActionsFocusHandler;
   constructor(column: ClrDatagridColumn, commonStrings: ClrCommonStringsService, columnActions: ColumnActionsService, columnPopover: ClrPopoverService, changeDetectorRef: ChangeDetectorRef, injector: Injector, filters: FiltersProvider, parent: ClrDropdown, popoverService: ClrPopoverService, focusHandler: DropdownFocusHandler, dropdownService: RootDropdownService);
   /**
@@ -2046,10 +2045,10 @@ declare class TableSizeService {
   private platformId;
   private _tableRef;
   constructor(platformId: any);
-  get tableRef(): HTMLElement;
-  set tableRef(element: HTMLElement);
+  get tableRef(): HTMLElement | null;
+  set tableRef(element: HTMLElement | null);
   set table(table: ElementRef<HTMLElement>);
-  getColumnDragHeight(): string;
+  getColumnDragHeight(): string | null;
   static ɵfac: i0.ɵɵFactoryDeclaration<TableSizeService, never>;
   static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
@@ -2062,7 +2061,7 @@ export declare class ClrDatagridColumnSeparator implements AfterViewInit, OnDest
   private document;
   columnSeparatorId: string;
   private resizeStartedOnKeyDown;
-  private isWithinMaxResizeRange;
+  private isWithinMaxResizeRange?;
   private unlisteners;
   private resizeTrackerRef;
   private columnHandleRef;
@@ -2097,16 +2096,16 @@ export declare class ClrDatagridDetailHeader implements AfterViewInit {
 export declare class ClrDatagridDetail {
   detailService: DetailService;
   commonStrings: ClrCommonStringsService;
-  ariaLabelledBy: string;
-  ariaLabel: string;
+  ariaLabelledBy?: string;
+  ariaLabel?: string;
   header: ClrDatagridDetailHeader;
   constructor(detailService: DetailService, commonStrings: ClrCommonStringsService);
   get detailWidth(): number;
   set detailWidth(value: number | null | undefined);
   get isCustomWidth(): boolean;
   get width(): number | null;
-  get labelledBy(): string;
-  get label(): string;
+  get labelledBy(): string | null;
+  get label(): string | null;
   close(): void;
   static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridDetail, never>;
   static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridDetail, "clr-dg-detail", never, {
@@ -2139,7 +2138,7 @@ export declare class ClrDatagridHideableColumn implements OnDestroy {
    * Used to initialize the column with either hidden or visible state.
    *
    */
-  private _hidden;
+  private _hidden?;
   private subscriptions;
   constructor(titleTemplateRef: TemplateRef<any>, viewContainerRef: ViewContainerRef, columnsService: ColumnsService, columnState: BehaviorSubject<ColumnState>);
   /**
@@ -2277,7 +2276,7 @@ declare abstract class DatagridTreeRenderer<T> implements OnChanges, DoCheck, On
   private differs;
   private rootsDiffer;
   private subscription;
-  abstract roots: T[];
+  abstract roots: T[] | undefined;
   abstract getChildren: ClrDatagridTreeChildrenFunction<T>;
   abstract cascadeSelection: boolean;
   constructor();
@@ -2434,7 +2433,7 @@ export declare class ClrDatagridTreeToggleButton implements OnDestroy {
  * ```
  */
 export declare class ClrDatagridVirtualTree<T> extends DatagridTreeRenderer<T> {
-  roots: T[];
+  roots: T[] | undefined;
   getChildren: ClrDatagridTreeChildrenFunction<T>;
   /** Like `clrDgTreeItemsCascadeSelection`. */
   cascadeSelection: boolean;
@@ -2508,8 +2507,8 @@ export declare class ClrDatagridRowDetail implements AfterContentInit, AfterView
   commonStrings: ClrCommonStringsService;
   private columnsService;
   private displayMode;
-  _beginningOfExpandableContentAriaText: string;
-  _endOfExpandableContentAriaText: string;
+  _beginningOfExpandableContentAriaText?: string;
+  _endOfExpandableContentAriaText?: string;
   replacedRow: boolean;
   /**
    * Whether the detail lays its cells out in the same columns as the row, which it does when it
@@ -2524,7 +2523,7 @@ export declare class ClrDatagridRowDetail implements AfterContentInit, AfterView
   private _plainCells;
   private subscriptions;
   private cellsMoved;
-  private lastLayout;
+  private lastLayout?;
   private hadCells;
   private readonly changeDetectorRef;
   constructor(selection: Selection, rowActionService: RowActionService, expand: DatagridIfExpandService, expandableRows: ExpandableRowsCount, commonStrings: ClrCommonStringsService, columnsService: ColumnsService, displayMode: DisplayModeService);
@@ -2598,7 +2597,7 @@ export declare class ClrDatagridPagination implements OnDestroy, OnInit {
   /**
    * Subscription to the page service changes
    */
-  private _pageSubscription;
+  private _pageSubscription?;
   constructor(page: Page, commonStrings: ClrCommonStringsService, detailService: DetailService);
   /**
    * Page size
@@ -2681,7 +2680,7 @@ export interface ClrDatagridStringFilterInterface<T> {
   accepts(item: T, search: string): boolean;
 }
 export interface ClrDatagridNumericFilterInterface<T> {
-  accepts(item: T, low: number, high: number): boolean;
+  accepts(item: T, low: number | null, high: number | null): boolean;
 }
 declare class DatagridStringFilterImpl<T = any> implements ClrDatagridFilterInterface<T> {
   filterFn: ClrDatagridStringFilterInterface<T>;
@@ -2729,8 +2728,8 @@ export declare class DatagridStringFilter<T = any> extends DatagridFilterRegistr
   /**
    * Provide a way to pass external placeholder and aria-label to the filter input
    */
-  placeholder: string;
-  label: string;
+  placeholder?: string;
+  label?: string;
   filterValueChange: EventEmitter<any>;
   /**
    * Indicates if the filter dropdown is open
@@ -2745,7 +2744,7 @@ export declare class DatagridStringFilter<T = any> extends DatagridFilterRegistr
    */
   filterContainer: ClrDatagridFilter<T>;
   labelValue: string;
-  private initFilterValue;
+  private initFilterValue?;
   private subs;
   constructor(filters: FiltersProvider<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, elementRef: ElementRef<HTMLElement>, cdr: ChangeDetectorRef, ngZone: NgZone);
   /**
@@ -2799,13 +2798,13 @@ declare class DatagridNumericFilterImpl<T = any> implements ClrDatagridFilterInt
   private _low;
   private _high;
   constructor(filterFn: ClrDatagridNumericFilterInterface<T>);
-  get changes(): Observable<[number, number]>;
-  get value(): [number, number];
-  set value(vals: [number, number]);
-  get low(): number;
-  set low(low: number);
-  get high(): number;
-  set high(high: number);
+  get changes(): Observable<[number | null, number | null]>;
+  get value(): [number | null, number | null];
+  set value(vals: [number | null, number | null]);
+  get low(): number | null;
+  set low(low: number | null);
+  get high(): number | null;
+  set high(high: number | null);
   get state(): {
     property: string;
     low: number | null;
@@ -2826,10 +2825,10 @@ export declare class DatagridNumericFilter<T = any> extends DatagridFilterRegist
   commonStrings: ClrCommonStringsService;
   private popoverService;
   private ngZone;
-  minPlaceholder: string;
-  maxPlaceholder: string;
-  fromLabel: string;
-  toLabel: string;
+  minPlaceholder?: string;
+  maxPlaceholder?: string;
+  fromLabel?: string;
+  toLabel?: string;
   filterValueChange: EventEmitter<any>;
   /**
    * Indicates if the filter dropdown is open
@@ -2843,14 +2842,14 @@ export declare class DatagridNumericFilter<T = any> extends DatagridFilterRegist
    * We grab the ClrDatagridFilter we wrap to register this StringFilter to it.
    */
   filterContainer: ClrDatagridFilter<T>;
-  private initFilterValues;
+  private initFilterValues?;
   private subscriptions;
   constructor(filters: FiltersProvider<T>, domAdapter: DomAdapter, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, ngZone: NgZone);
   /**
    * Common setter for the input values
    */
-  get value(): [number, number];
-  set value(values: [number, number]);
+  get value(): [number | null, number | null];
+  set value(values: [number | null, number | null]);
   /**
    * Customizable filter logic based on high and low values
    */
@@ -2859,10 +2858,10 @@ export declare class DatagridNumericFilter<T = any> extends DatagridFilterRegist
   get minPlaceholderValue(): string;
   get fromLabelValue(): string;
   get toLabelValue(): string;
-  get low(): number | string;
-  set low(low: number | string);
-  get high(): number | string;
-  set high(high: number | string);
+  get low(): number | string | null;
+  set low(low: number | string | null);
+  get high(): number | string | null;
+  set high(high: number | string | null);
   ngAfterViewInit(): void;
   ngOnDestroy(): void;
   static ɵfac: i0.ɵɵFactoryDeclaration<DatagridNumericFilter<any>, never>;
@@ -2907,7 +2906,7 @@ export declare class DatagridPropertyNumericFilter<T = any> implements ClrDatagr
   exact: boolean;
   private nestedProp;
   constructor(prop: string, exact?: boolean);
-  accepts(item: T, low: number, high: number): boolean;
+  accepts(item: T, low: number | null, high: number | null): boolean;
 }
 export declare class DatagridPropertyComparator<T = any> implements ClrDatagridComparatorInterface<T> {
   prop: string;
@@ -2932,24 +2931,24 @@ export declare class DatagridDetailRegisterer {
   static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridDetailRegisterer, "[clrIfExpanded]", never, {}, {}, never, never, false, never>;
 }
 export declare class WrappedCell implements AfterViewInit, OnDestroy {
-  templateRef: TemplateRef<void>;
-  cellView: EmbeddedViewRef<void>;
+  templateRef: TemplateRef<null>;
+  cellView: EmbeddedViewRef<null>;
   ngAfterViewInit(): void;
   ngOnDestroy(): void;
   static ɵfac: i0.ɵɵFactoryDeclaration<WrappedCell, never>;
   static ɵcmp: i0.ɵɵComponentDeclaration<WrappedCell, "dg-wrapped-cell", never, {}, {}, never, ["*"], false, never>;
 }
 export declare class WrappedColumn implements AfterViewInit, OnDestroy {
-  templateRef: TemplateRef<void>;
-  columnView: EmbeddedViewRef<void>;
+  templateRef: TemplateRef<null>;
+  columnView: EmbeddedViewRef<null>;
   ngAfterViewInit(): void;
   ngOnDestroy(): void;
   static ɵfac: i0.ɵɵFactoryDeclaration<WrappedColumn, never>;
   static ɵcmp: i0.ɵɵComponentDeclaration<WrappedColumn, "dg-wrapped-column", never, {}, {}, never, ["*"], false, never>;
 }
 export declare class WrappedRow implements AfterViewInit, OnDestroy {
-  templateRef: TemplateRef<void>;
-  rowView: EmbeddedViewRef<void>;
+  templateRef: TemplateRef<null>;
+  rowView: EmbeddedViewRef<null>;
   ngAfterViewInit(): void;
   ngOnDestroy(): void;
   static ɵfac: i0.ɵɵFactoryDeclaration<WrappedRow, never>;
@@ -2958,7 +2957,7 @@ export declare class WrappedRow implements AfterViewInit, OnDestroy {
 export declare class DatagridCellRenderer implements OnDestroy {
   private el;
   private renderer;
-  private stateSubscription;
+  private stateSubscription?;
   private subscriptions;
   constructor(el: ElementRef<HTMLElement>, renderer: Renderer2, organizer: DatagridRenderOrganizer);
   ngOnDestroy(): void;
@@ -3029,7 +3028,7 @@ export declare class DatagridMainRenderer implements AfterContentInit, AfterView
   ngAfterViewInit(): void;
   ngAfterViewChecked(): void;
   ngOnDestroy(): void;
-  toggleDetailPane(state: boolean): void;
+  toggleDetailPane(state: boolean | null): void;
   private setupColumns;
   private shouldComputeHeight;
   private computeDatagridHeight;

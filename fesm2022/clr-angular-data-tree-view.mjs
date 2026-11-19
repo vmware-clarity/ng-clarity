@@ -61,6 +61,7 @@ const TREE_FEATURES_PROVIDER = {
 };
 var TreeFocusManagerService = class TreeFocusManagerService {
 	constructor() {
+		this.rootNodeModels = [];
 		this._focusRequest = new Subject();
 		this._focusChange = new Subject();
 	}
@@ -119,7 +120,7 @@ var TreeFocusManagerService = class TreeFocusManagerService {
 		return null;
 	}
 	findLastVisibleInTree() {
-		const lastRootNode = this.rootNodeModels && this.rootNodeModels.length && this.rootNodeModels[this.rootNodeModels.length - 1];
+		const lastRootNode = this.rootNodeModels[this.rootNodeModels.length - 1];
 		return this.findLastVisibleInNode(lastRootNode);
 	}
 	findNodeAbove(model) {
@@ -203,11 +204,14 @@ i0.ɵɵngDeclareClassMetadata({
 });
 var TreeNodeModel = class {
 	constructor() {
+		this.expanded = false;
 		this._descendantsExpanded = false;
 		this._node = null;
+		this.model = null;
 		this.loading$ = new BehaviorSubject(false);
 		this.selected = new BehaviorSubject(ClrSelectedState.UNSELECTED);
 		this._loading = false;
+		this._disabled = false;
 	}
 	get loading() {
 		return this._loading;
@@ -356,6 +360,7 @@ var RecursiveChildren = class RecursiveChildren {
 	constructor(featuresService, expandService) {
 		this.featuresService = featuresService;
 		this.expandService = expandService;
+		this.role = null;
 		this.contexts = /* @__PURE__ */ new WeakMap();
 		if (expandService) this.subscription = expandService.expandChange.subscribe((value) => {
 			if (!value && this.parent && !featuresService.eager && featuresService.recursion) this.parent.clearChildren();
@@ -415,7 +420,9 @@ var RecursiveChildren = class RecursiveChildren {
 			template: `
     @if (shouldRender()) {
       @for (child of parent?.children || children; track child) {
-        <ng-container *ngTemplateOutlet="featuresService.recursion.template; context: getContext(child)"></ng-container>
+        <ng-container
+          *ngTemplateOutlet="featuresService.recursion?.template; context: getContext(child)"
+        ></ng-container>
       }
     }
   `,
@@ -446,7 +453,9 @@ i0.ɵɵngDeclareClassMetadata({
 			template: `
     @if (shouldRender()) {
       @for (child of parent?.children || children; track child) {
-        <ng-container *ngTemplateOutlet="featuresService.recursion.template; context: getContext(child)"></ng-container>
+        <ng-container
+          *ngTemplateOutlet="featuresService.recursion?.template; context: getContext(child)"
+        ></ng-container>
       }
     }
   `,
@@ -1078,7 +1087,7 @@ i0.ɵɵngDeclareClassMetadata({
 	}
 });
 function isPromise(o) {
-	return o && typeof o.then === "function";
+	return !!o && typeof o.then === "function";
 }
 var RecursiveTreeNodeModel = class RecursiveTreeNodeModel extends TreeNodeModel {
 	constructor(model, parent, getChildren, featuresService) {
@@ -1108,7 +1117,7 @@ var RecursiveTreeNodeModel = class RecursiveTreeNodeModel extends TreeNodeModel 
 	}
 	clearChildren() {
 		this._children.forEach((child) => child.destroy());
-		delete this._children;
+		this._children = [];
 		this.childrenFetched = false;
 	}
 	fetchChildren() {

@@ -13,12 +13,12 @@ export declare enum ClrSelectedState {
 type AsyncArray<T> = T[] | null | undefined | Promise<T[] | null | undefined> | Observable<T[] | null | undefined>;
 declare class TreeFocusManagerService<T> {
   rootNodeModels: TreeNodeModel<T>[];
-  private focusedNodeId;
+  private focusedNodeId?;
   private _focusRequest;
   private _focusChange;
   get focusRequest(): Observable<string>;
   get focusChange(): Observable<string>;
-  focusNode(model: TreeNodeModel<T>): void;
+  focusNode(model: TreeNodeModel<T> | null): void;
   broadcastFocusedNode(nodeId: string): void;
   focusParent(model: TreeNodeModel<T>): void;
   focusFirstVisibleNode(): void;
@@ -73,7 +73,7 @@ export declare class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterVi
   protected animatesChildren: boolean;
   protected readonly noopAnimations: boolean;
   /** The latest expand or collapse of the children, so that an earlier one does not start its animation after it. */
-  private childrenHeightChange;
+  private childrenHeightChange?;
   private bulkChange;
   private skipAnimation;
   private skipEmitChange;
@@ -92,7 +92,7 @@ export declare class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterVi
   get expanded(): boolean;
   set expanded(value: boolean);
   set clrForTypeAhead(value: string);
-  get ariaSelected(): boolean;
+  get ariaSelected(): boolean | null;
   get treeNodeLink(): ClrTreeNodeLink;
   /** @deprecated No longer used: the children animate without Angular animations. To be removed in a future major version. */
   get childrenAnimationState(): string;
@@ -187,8 +187,9 @@ export declare abstract class TreeNodeModel<T> {
 export declare class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
   private getChildren;
   private featuresService;
+  model: T;
   parent: RecursiveTreeNodeModel<T> | null;
-  private subscription;
+  private subscription?;
   private childrenFetched;
   private destroyed;
   private _children;
@@ -211,7 +212,7 @@ export declare class ClrRecursiveForOf<T> implements OnChanges, OnDestroy {
   private cdr;
   nodes: T | T[];
   getChildren: (node: T) => AsyncArray<T>;
-  private childrenFetchSubscription;
+  private childrenFetchSubscription?;
   constructor(template: TemplateRef<ClrRecursiveForOfContext<T>>, featuresService: TreeFeaturesService<T>, cdr: ChangeDetectorRef);
   ngOnChanges(): void;
   ngOnDestroy(): void;
@@ -230,7 +231,7 @@ export declare class ClrRecursiveForOf<T> implements OnChanges, OnDestroy {
 declare class TreeFeaturesService<T> {
   selectable: boolean;
   eager: boolean;
-  recursion: {
+  recursion?: {
     template: TemplateRef<ClrRecursiveForOfContext<T>>;
     root: RecursiveTreeNodeModel<T>[];
   };
@@ -277,10 +278,10 @@ export declare class ClrTree<T> implements AfterContentInit, OnDestroy {
 declare class RecursiveChildren<T> {
   featuresService: TreeFeaturesService<T>;
   private expandService;
-  parent: TreeNodeModel<T>;
-  children: TreeNodeModel<T>[];
-  subscription: Subscription;
-  role: string;
+  parent?: TreeNodeModel<T>;
+  children?: TreeNodeModel<T>[];
+  subscription?: Subscription;
+  role: string | null;
   private contexts;
   constructor(featuresService: TreeFeaturesService<T>, expandService: IfExpandService);
   ngAfterContentInit(): void;
