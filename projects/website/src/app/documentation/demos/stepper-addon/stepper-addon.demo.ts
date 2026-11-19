@@ -66,7 +66,7 @@ export class MyModule {}
 })
 export class StepperAddonDemoComponent extends ClarityDocComponent implements OnInit {
   model = new ProjectWorkflowModel();
-  steps: Step[];
+  steps!: Step[];
   submitted = false;
   result: { name: string; team: string } | null = null;
 

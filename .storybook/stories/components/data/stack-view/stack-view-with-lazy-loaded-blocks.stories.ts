@@ -28,7 +28,7 @@ interface Block {
 
 class ElementsBlockService {
   loading = false;
-  blocks: Observable<Block[]>;
+  blocks?: Observable<Block[]>;
 
   getBlocks() {
     this.loading = true;

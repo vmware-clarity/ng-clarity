@@ -378,6 +378,8 @@ export const NoResults: Story = {
   play({ canvasElement }) {
     (canvasElement.querySelector('.clr-combobox-trigger') as HTMLElement).click();
     (canvasElement.querySelector('.clr-combobox-input') as HTMLInputElement).value = 'Lapis philosophorum';
-    canvasElement.querySelector('.clr-combobox-input').dispatchEvent(new Event('input', { bubbles: true }));
+    (canvasElement.querySelector('.clr-combobox-input') as HTMLInputElement).dispatchEvent(
+      new Event('input', { bubbles: true })
+    );
   },
 };

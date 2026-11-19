@@ -16,7 +16,7 @@ import { AppfxPropertyViewModule, PropertyViewBuilder, PropertyViewModel } from 
   templateUrl: 'basic-property-view.html',
 })
 export class BasicPropertyViewDemoComponent implements OnInit {
-  data: PropertyViewModel;
+  data!: PropertyViewModel;
 
   ngOnInit(): void {
     const builder = new PropertyViewBuilder();

@@ -33,7 +33,7 @@ export class NameModel implements StepModel {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VerticalTabsNameStepComponent implements StepModelHolder {
-  model: NameModel;
+  model!: NameModel;
 }
 
 // ─── Step 2 model ─────────────────────────────────────────────────────────────
@@ -61,7 +61,7 @@ export class RegionModel implements StepModel {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VerticalTabsRegionStepComponent implements StepModelHolder {
-  model: RegionModel;
+  model!: RegionModel;
 }
 
 // ─── Step 3 model ─────────────────────────────────────────────────────────────
@@ -82,7 +82,7 @@ export class ReviewModel implements StepModel {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VerticalTabsReviewStepComponent implements StepModelHolder {
-  model: ReviewModel;
+  model!: ReviewModel;
 }
 
 // ─── Workflow model ────────────────────────────────────────────────────────────

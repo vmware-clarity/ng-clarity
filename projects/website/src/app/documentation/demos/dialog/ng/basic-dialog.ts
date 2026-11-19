@@ -30,7 +30,7 @@ class ReviewModel {}
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasicDialogNameStepComponent {
-  model: NameModel;
+  model!: NameModel;
 }
 
 @Component({

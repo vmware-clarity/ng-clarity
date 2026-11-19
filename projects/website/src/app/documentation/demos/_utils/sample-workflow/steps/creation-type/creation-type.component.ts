@@ -21,5 +21,5 @@ import { CreationType, CreationTypeModel } from './creation-type.model';
 })
 export class CreationTypeComponent implements StepModelHolder {
   readonly CreationType = CreationType;
-  model: CreationTypeModel;
+  model!: CreationTypeModel;
 }

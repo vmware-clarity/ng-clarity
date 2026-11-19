@@ -63,7 +63,7 @@ export class DatagridTreeAppfxDemo implements OnDestroy {
     cascadeSelection: true,
   };
 
-  private request: Subscription;
+  private request?: Subscription;
 
   // A new object, as the grid is OnPush.
   get cascadeSelection() {

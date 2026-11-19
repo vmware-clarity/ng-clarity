@@ -23,8 +23,8 @@ import { User } from '../inventory/user';
 import { PokemonComparator } from '../utils/pokemon-comparator';
 
 class ChangeDetectionPerfRecord {
-  msPerTick: 0;
-  numTicks: 0;
+  msPerTick!: number;
+  numTicks!: number;
 }
 
 @Component({
@@ -37,13 +37,13 @@ class ChangeDetectionPerfRecord {
 })
 export class DatagridVirtualScrollClientSideDemo implements OnInit, AfterViewChecked {
   selectionType = SelectionType.Multi;
-  range: ListRange;
-  userRange: ListRange;
+  range!: ListRange;
+  userRange!: ListRange;
   totalRows = 10000;
   totalCols = 5;
-  cols: Column[];
+  cols!: Column[];
   rows: Observable<Row[]>;
-  users: Observable<User[]>;
+  users!: Observable<User[]>;
 
   selectedRows: Row[] = [];
   selectedUsers: User[] = [];

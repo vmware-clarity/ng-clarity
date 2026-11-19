@@ -163,7 +163,7 @@ export class FiltersGridComponent {
   protected allItems: VmItem[] = [];
   protected filterableProperties: FilterablePropertyDefinition[] = [];
   protected readonly FilterMode = FilterMode;
-  protected selectedFilterMode: FilterMode = FilterMode.AdvancedOnly;
+  protected selectedFilterMode: FilterMode | undefined = FilterMode.AdvancedOnly;
   protected errorRetrievingDomains = false;
   protected errorRetrievingUsers = false;
 

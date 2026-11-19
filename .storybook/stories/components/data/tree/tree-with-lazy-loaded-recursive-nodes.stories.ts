@@ -20,7 +20,7 @@ import { mapTo } from 'rxjs/operators';
 type LazyLoadedRecursiveNodesArgs = {
   clrLazy: boolean;
   files: Observable<File[]>;
-  getChildren: (file: File) => Observable<File[]>;
+  getChildren: (file: File) => Observable<File[] | undefined>;
 };
 
 const meta = {

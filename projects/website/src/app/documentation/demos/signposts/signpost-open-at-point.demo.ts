@@ -83,7 +83,7 @@ export class ExampleComponent {
   ],
 })
 export class SignpostOpenAtPointDemo {
-  @ViewChild('signpost', { static: true }) signpost: ClrSignpost;
+  @ViewChild('signpost', { static: true }) signpost!: ClrSignpost;
 
   example = EXAMPLE;
   exampleTs = EXAMPLE_TS;

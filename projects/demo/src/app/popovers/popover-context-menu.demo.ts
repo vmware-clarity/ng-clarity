@@ -40,7 +40,7 @@ import { ClrPopoverModuleNext, ClrPopoverService } from '@clr/angular';
 })
 export class PopoverContextMenuDemo {
   contextMenuOpen = false;
-  contextMenuPoint: { x: number; y: number } | null = null;
+  contextMenuPoint = { x: 0, y: 0 };
 
   constructor(private popoverService: ClrPopoverService) {}
 

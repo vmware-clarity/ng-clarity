@@ -67,10 +67,10 @@ export class DatalistDemo extends ClarityDocComponent {
   item6 = '';
   item7 = '';
 
-  @ViewChild('errorDatalist') errorDatalist: NgModel;
+  @ViewChild('errorDatalist') errorDatalist!: NgModel;
   errorDatalistModel = '';
 
-  @ViewChild('successDatalist') successDatalist: NgModel;
+  @ViewChild('successDatalist') successDatalist!: NgModel;
   successDatalistModel = 'Cherry';
 
   constructor() {

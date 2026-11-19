@@ -11,9 +11,9 @@ import { CancelableStepValidation, In, Out, StepModel, StepValidationState, Var 
 export class ObjectNameModel implements StepModel {
   loading = false;
   validationState = new StepValidationState();
-  cancelableValidation: CancelableStepValidation = undefined;
+  cancelableValidation: CancelableStepValidation | undefined = undefined;
 
-  @In({ optional: true }) defaultName: string;
+  @In({ optional: true }) defaultName?: string;
 
   @In({ optional: true })
   @Out()

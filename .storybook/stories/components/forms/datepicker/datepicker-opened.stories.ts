@@ -38,7 +38,7 @@ type DatepickerOpenedArgs = {
   clrDateChange: (date: Date) => void;
   clrStartDateChange: (date: Date) => void;
   clrEndDateChange: (date: Date) => void;
-  getDateString: (date: Date | number | string) => string;
+  getDateString: (date: Date | number | string) => string | number;
   // `argTypes`-only: `ClrDateInput` methods whose generated docs rows are hidden
   onValueChange: never;
   setFocusStates: never;
@@ -107,10 +107,14 @@ const meta = {
     getDateString: date => date && new Date(date).toISOString().split('T')[0],
   },
   play: async ({ canvasElement, userEvent }) => {
-    const smartOpenCloseButton = await canvasElement.querySelector('button.clr-smart-open-close');
+    const smartOpenCloseButton = (await canvasElement.querySelector(
+      'button.clr-smart-open-close'
+    )) as HTMLButtonElement;
     await userEvent.click(smartOpenCloseButton);
-    (canvasElement.parentElement.querySelector('button.day-btn.is-today') as HTMLElement)?.classList.remove('is-today');
-    (canvasElement.parentElement.querySelector('button:not(.is-excluded).day-btn') as HTMLElement)?.classList.add(
+    (canvasElement.parentElement?.querySelector('button.day-btn.is-today') as HTMLElement)?.classList.remove(
+      'is-today'
+    );
+    (canvasElement.parentElement?.querySelector('button:not(.is-excluded).day-btn') as HTMLElement)?.classList.add(
       'is-today'
     );
   },
@@ -174,27 +178,35 @@ export const ActionButtons: Story = {
 
 export const MonthView: Story = {
   play: async ({ canvasElement, userEvent }) => {
-    const smartOpenCloseButton = await canvasElement.querySelector('button.clr-smart-open-close');
+    const smartOpenCloseButton = (await canvasElement.querySelector(
+      'button.clr-smart-open-close'
+    )) as HTMLButtonElement;
     await userEvent.click(smartOpenCloseButton);
-    const monthpickerTriggerButton = await canvasElement.parentElement.querySelector('button.monthpicker-trigger');
+    const monthpickerTriggerButton = (await canvasElement.parentElement?.querySelector(
+      'button.monthpicker-trigger'
+    )) as HTMLButtonElement;
     await userEvent.click(monthpickerTriggerButton);
-    (canvasElement.parentElement.querySelector('button.calendar-btn.month.is-today') as HTMLElement)?.classList.remove(
+    (canvasElement.parentElement?.querySelector('button.calendar-btn.month.is-today') as HTMLElement)?.classList.remove(
       'is-today'
     );
-    (canvasElement.parentElement.querySelector('button.calendar-btn.month') as HTMLElement)?.classList.add('is-today');
+    (canvasElement.parentElement?.querySelector('button.calendar-btn.month') as HTMLElement)?.classList.add('is-today');
   },
 };
 
 export const YearView: Story = {
   play: async ({ canvasElement, userEvent }) => {
-    const smartOpenCloseButton = await canvasElement.querySelector('button.clr-smart-open-close');
+    const smartOpenCloseButton = (await canvasElement.querySelector(
+      'button.clr-smart-open-close'
+    )) as HTMLButtonElement;
     await userEvent.click(smartOpenCloseButton);
-    const yearpickerTriggerButton = await canvasElement.parentElement.querySelector('button.yearpicker-trigger');
+    const yearpickerTriggerButton = (await canvasElement.parentElement?.querySelector(
+      'button.yearpicker-trigger'
+    )) as HTMLButtonElement;
     await userEvent.click(yearpickerTriggerButton);
-    (canvasElement.parentElement.querySelector('button.calendar-btn.year.is-today') as HTMLElement)?.classList.remove(
+    (canvasElement.parentElement?.querySelector('button.calendar-btn.year.is-today') as HTMLElement)?.classList.remove(
       'is-today'
     );
-    (canvasElement.parentElement.querySelector('button.calendar-btn.year') as HTMLElement)?.classList.add('is-today');
+    (canvasElement.parentElement?.querySelector('button.calendar-btn.year') as HTMLElement)?.classList.add('is-today');
   },
 };
 
@@ -236,10 +248,14 @@ export const PredefinedDateRangesOpen: Story = {
     clrEndDate: staticEndDate,
   },
   play: async ({ canvasElement, userEvent }) => {
-    const smartOpenCloseButton = await canvasElement.querySelector('button.clr-smart-open-close');
+    const smartOpenCloseButton = (await canvasElement.querySelector(
+      'button.clr-smart-open-close'
+    )) as HTMLButtonElement;
     await userEvent.click(smartOpenCloseButton);
-    (canvasElement.parentElement.querySelector('button.day-btn.is-today') as HTMLElement)?.classList.remove('is-today');
-    (canvasElement.parentElement.querySelector('button:not(.is-excluded).day-btn') as HTMLElement)?.classList.add(
+    (canvasElement.parentElement?.querySelector('button.day-btn.is-today') as HTMLElement)?.classList.remove(
+      'is-today'
+    );
+    (canvasElement.parentElement?.querySelector('button:not(.is-excluded).day-btn') as HTMLElement)?.classList.add(
       'is-today'
     );
   },

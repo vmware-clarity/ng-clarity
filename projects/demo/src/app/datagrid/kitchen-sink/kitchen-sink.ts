@@ -24,7 +24,7 @@ export class DatagridKitchenSinkDemo {
   noUsers: User[] = [];
   nameFilter = '';
   currentPageSize = 1;
-  selectedUser: User;
+  selectedUser?: User;
   nonPaginatedUsers: User[];
   users: User[];
   variableLengthUsers: User[];
@@ -33,10 +33,10 @@ export class DatagridKitchenSinkDemo {
   pokemonFilter = new PokemonFilter();
   singleSelected: User[] = [];
   _selected: User[] = [];
-  selected2: User[];
+  selected2?: User[];
   toAdd: User[] = [];
   toDelete: User[] = [];
-  toEdit: User;
+  toEdit: User | null = null;
   toExport: User[] = [];
   detail = 'default';
   replace = false;

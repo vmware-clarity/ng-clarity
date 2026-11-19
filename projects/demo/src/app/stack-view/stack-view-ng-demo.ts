@@ -13,7 +13,7 @@ export class StackViewNgDemo {
   /*
    * Lazy loading demo
    */
-  @ViewChild('lazyBlock') lazyBlock: ClrStackBlock;
+  @ViewChild('lazyBlock') lazyBlock!: ClrStackBlock;
 
   /*
    * Modal edit demo

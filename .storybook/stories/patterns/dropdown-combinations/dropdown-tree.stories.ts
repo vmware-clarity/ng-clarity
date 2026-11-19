@@ -17,7 +17,7 @@ import { type File, filesRoot } from '@storybook-helpers/files.data';
  */
 type DropdownWithTreeArgs = ClrDropdown & {
   files: File[];
-  getChildren: (file: File) => File[];
+  getChildren: (file: File) => File[] | undefined;
 };
 
 const meta = {

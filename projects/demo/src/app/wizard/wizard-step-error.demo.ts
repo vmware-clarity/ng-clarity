@@ -15,6 +15,6 @@ import { ClrWizard } from '@clr/angular';
   standalone: false,
 })
 export class WizardStepErrorDemo {
-  @ViewChild('wizard') wizard: ClrWizard;
+  @ViewChild('wizard') wizard!: ClrWizard;
   open = false;
 }
