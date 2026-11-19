@@ -155,8 +155,8 @@ export class DatagridTreeService<T = any> implements OnDestroy {
     this.cascadeSelection = !!cascadeSelection;
     this.setRoots(roots);
     // Rows selected on their own until now take their descendants along, and their ancestors settle.
-    if (this.cascading && !cascaded && this.selection.current?.length) {
-      this.setSelected(this.selection.current || [], true);
+    if (this.cascading && !cascaded && this.selection.current.length) {
+      this.setSelected(this.selection.current, true);
     }
   }
 
@@ -301,7 +301,7 @@ export class DatagridTreeService<T = any> implements OnDestroy {
    * a parent is selected only when all of its children are. Locked items keep their state.
    */
   setSelected(items: T[], selected: boolean) {
-    const selection = new Map((this.selection.current || []).map(item => [this.identify(item), item]));
+    const selection = new Map(this.selection.current.map(item => [this.identify(item), item]));
     const set = (node: DatagridTreeNode<T>, value: boolean) => {
       if (node.locked) {
         return;
@@ -356,7 +356,7 @@ export class DatagridTreeService<T = any> implements OnDestroy {
   /** A row that is not selected itself but has a selected descendant. */
   isIndeterminate(item: T): boolean {
     if (this.indeterminate?.selection !== this.selection.current) {
-      const selected = new Set((this.selection.current || []).map(selectedItem => this.identify(selectedItem)));
+      const selected = new Set(this.selection.current.map(selectedItem => this.identify(selectedItem)));
       const nodes = new Set<DatagridTreeNode<T>>();
       // Whether the node or any of its descendants is selected.
       const walk = (node: DatagridTreeNode<T>): boolean => {
@@ -391,7 +391,7 @@ export class DatagridTreeService<T = any> implements OnDestroy {
     if (node.locked) {
       const ref = this.identify(node.item);
       queueMicrotask(() => {
-        this.selection.current = (this.selection.current || []).filter(selected => this.identify(selected) !== ref);
+        this.selection.current = this.selection.current.filter(selected => this.identify(selected) !== ref);
       });
     }
   }

@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { WrappedRow } from './wrapped-row';
 
@@ -36,7 +37,7 @@ describe('Datagrid', () => {
         TestBed.configureTestingModule({ declarations: [WrappedRow, WrappedRowTest] });
         testContext.fixture = TestBed.createComponent(WrappedRowTest);
         testContext.wrapper = testContext.fixture.componentInstance.wrapper;
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
       });
 
       it('should have a rowView', () => {

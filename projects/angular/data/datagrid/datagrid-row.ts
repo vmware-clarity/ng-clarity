@@ -26,6 +26,7 @@ import {
   Output,
   QueryList,
   Renderer2,
+  signal,
   SimpleChanges,
   TemplateRef,
   ViewChild,
@@ -44,7 +45,7 @@ import { ClrDatagridCell } from './datagrid-cell';
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
 import { DatagridDisplayMode } from './enums/display-mode.enum';
 import { SelectionType } from './enums/selection-type';
-import { DatagridTreeRowCells } from './interfaces/tree-row.interface';
+import { DATAGRID_TREE_ROW, DatagridTreeRowCells } from './interfaces/tree-row.interface';
 import { ColumnsService } from './providers/columns.service';
 import { DetailService } from './providers/detail.service';
 import { DisplayModeService } from './providers/display-mode.service';
@@ -71,6 +72,7 @@ let nbRow = 0;
     DatagridIfExpandService,
     { provide: IfExpandService, useExisting: DatagridIfExpandService },
     { provide: LoadingListener, useExisting: DatagridIfExpandService },
+    { provide: DATAGRID_TREE_ROW, useExisting: ClrDatagridRow },
   ],
   standalone: false,
   changeDetection: ChangeDetectionStrategy.Eager,
@@ -132,6 +134,11 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
   private wrappedInjector: Injector;
   /** What `_tree` worked out in this check; `undefined` until it is read. */
   private treeCells: DatagridTreeRowCells<T> | null | undefined;
+  /**
+   * Counts the changes of the cells of the row. The cells rendered in a loop inside the row are
+   * checked before the row knows them, in its content hooks; reading this makes them checked again.
+   */
+  private readonly cellChanges = signal(0);
   private subscriptions: Subscription[] = [];
 
   /**
@@ -319,6 +326,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
    * when the cells are rendered in a loop inside the row; the row's `ngDoCheck` runs before them.
    */
   get _tree(): DatagridTreeRowCells<T> | null {
+    this.cellChanges();
     if (this.treeCells === undefined) {
       this.treeCells = this.workOutTreeCells();
     }
@@ -361,9 +369,9 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
   }
 
   ngAfterContentInit() {
-    this.markTreeCell();
+    this.cellsChanged();
     this.dgCells.changes.subscribe(() => {
-      this.markTreeCell();
+      this.cellsChanged();
       this.insertCellViews();
     });
   }
@@ -500,13 +508,11 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
     });
   }
 
-  /**
-   * Lets the cells of a tree row find out which of them carries the toggle. Rows of other
-   * datagrids leave their cells alone, so they pay nothing for trees.
-   */
-  private markTreeCell() {
-    const treeRow = this.tree?.enabled() ? this : null;
-    this.dgCells.forEach(cell => (cell._treeRow = treeRow));
+  private cellsChanged() {
+    if (this.tree?.enabled()) {
+      this.treeCells = undefined;
+      this.cellChanges.update(changes => changes + 1);
+    }
   }
 
   /**
