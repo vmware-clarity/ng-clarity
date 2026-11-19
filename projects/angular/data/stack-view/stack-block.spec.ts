@@ -30,8 +30,8 @@ type Spy<T extends (...args: any[]) => any = (...args: any[]) => any> = Mock<T>;
   standalone: false,
 })
 class BasicBlock {
-  @ViewChild(ClrStackBlock) blockInstance: ClrStackBlock;
-  ariaLevel: number;
+  @ViewChild(ClrStackBlock) blockInstance!: ClrStackBlock;
+  ariaLevel!: number;
 }
 
 @Component({
@@ -53,8 +53,8 @@ class BasicBlock {
   standalone: false,
 })
 class NestedBlocks {
-  @ViewChild('main') blockInstance: ClrStackBlock;
-  explicitHeadingLevels: false;
+  @ViewChild('main') blockInstance!: ClrStackBlock;
+  explicitHeadingLevels!: false;
 }
 
 @Component({
@@ -68,7 +68,7 @@ class NestedBlocks {
   standalone: false,
 })
 class DynamicBlock {
-  @ViewChild(ClrStackBlock) blockInstance: ClrStackBlock;
+  @ViewChild(ClrStackBlock) blockInstance!: ClrStackBlock;
 
   expanded = false;
 }
@@ -91,7 +91,7 @@ class DynamicBlock {
   standalone: false,
 })
 class DynamicBlockWithInput {
-  @ViewChild('main') blockInstance: ClrStackBlock;
+  @ViewChild('main') blockInstance!: ClrStackBlock;
 
   expanded = false;
 }
@@ -125,9 +125,9 @@ class DynamicBlockWithInput {
   standalone: false,
 })
 class BlocksWithIinteractiveElements {
-  @ViewChild('main') blockInstance: ClrStackBlock;
-  @ViewChild('test') testBlockInstance: ClrStackBlock;
-  @ViewChild('inner') innerBlockInstance: ClrStackBlock;
+  @ViewChild('main') blockInstance!: ClrStackBlock;
+  @ViewChild('test') testBlockInstance!: ClrStackBlock;
+  @ViewChild('inner') innerBlockInstance!: ClrStackBlock;
 
   content = '';
   expanded = true;
