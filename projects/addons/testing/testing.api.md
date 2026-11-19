@@ -353,6 +353,10 @@ export class MockAppfxDatagridComponent {
     // (undocumented)
     preSelectFirstItem: boolean;
     // (undocumented)
+    propertyFilters: any[];
+    // (undocumented)
+    propertyFiltersChange: EventEmitter<any[]>;
+    // (undocumented)
     refreshGridData: EventEmitter<any>;
     // (undocumented)
     refreshVirtualGridData: EventEmitter<any>;
@@ -468,6 +472,10 @@ export class MockAppfxDatagridComponent {
             "alias": "filterMode";
             "required": false;
         };
+        "propertyFilters": {
+            "alias": "propertyFilters";
+            "required": false;
+        };
         "listItemsCount": {
             "alias": "listItemsCount";
             "required": false;
@@ -521,6 +529,7 @@ export class MockAppfxDatagridComponent {
         "gridItemsChange": "gridItemsChange";
         "selectionChange": "selectionChange";
         "searchTermChange": "searchTermChange";
+        "propertyFiltersChange": "propertyFiltersChange";
         "refreshGridData": "refreshGridData";
         "refreshVirtualGridData": "refreshVirtualGridData";
         "actionClick": "actionClick";
