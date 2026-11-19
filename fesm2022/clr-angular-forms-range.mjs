@@ -13,6 +13,7 @@ var ClrRangeContainer = class ClrRangeContainer extends ClrAbstractContainer {
 		this.renderer = renderer;
 		this.idService = idService;
 		this._hasProgress = false;
+		this.lastRangeProgressFillWidth = "";
 	}
 	get hasProgress() {
 		return this._hasProgress;

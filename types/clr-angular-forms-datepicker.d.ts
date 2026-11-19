@@ -47,20 +47,20 @@ declare class DayModel {
   /**
    * Compares the dates and returns boolean value based on the value passed
    */
-  isBefore(day: DayModel, dayInclusive?: boolean): boolean;
+  isBefore(day: DayModel | null | undefined, dayInclusive?: boolean): boolean;
   /**
    * Compares the dates and returns boolean value based on the value passed
    */
-  isAfter(day: DayModel, dayInclusive?: boolean): boolean;
+  isAfter(day: DayModel | null | undefined, dayInclusive?: boolean): boolean;
   private pad;
 }
 interface DateRange {
-  minDate?: DayModel;
-  maxDate?: DayModel;
+  minDate: DayModel;
+  maxDate: DayModel;
 }
 interface DateRangeInput {
-  startDate: DayModel;
-  endDate?: DayModel;
+  startDate: DayModel | null | undefined;
+  endDate?: DayModel | null;
 }
 export interface DateRangeOption {
   label: string;
@@ -148,8 +148,8 @@ declare class DateIOService {
   setMaxDate(date: string): void;
   setRangeOptions(rangeOptions: DateRangeOption[]): void;
   getRangeOptions(): DateRangeOption[];
-  toLocaleDisplayFormatString(date: Date): string;
-  getDateValueFromDateString(date: string): Date;
+  toLocaleDisplayFormatString(date: Date | null | undefined): string;
+  getDateValueFromDateString(date: string): Date | null;
   private validateDateRangeOptions;
   static ɵfac: i0.ɵɵFactoryDeclaration<DateIOService, never>;
   static ɵprov: i0.ɵɵInjectableDeclaration<any>;
@@ -195,14 +195,14 @@ declare class CalendarModel {
  * 3. Managing the focused and selected day models.
  */
 declare class DateNavigationService {
-  persistedDate: DayModel;
-  persistedEndDate: DayModel;
-  selectedDay: DayModel;
-  selectedEndDay: DayModel;
-  focusedDay: DayModel;
-  hoveredDay: DayModel;
-  hoveredMonth: number;
-  hoveredYear: number;
+  persistedDate: DayModel | null | undefined;
+  persistedEndDate: DayModel | null | undefined;
+  selectedDay: DayModel | null | undefined;
+  selectedEndDay: DayModel | null | undefined;
+  focusedDay: DayModel | null | undefined;
+  hoveredDay: DayModel | undefined;
+  hoveredMonth: number | undefined;
+  hoveredYear: number | undefined;
   isRangePicker: boolean;
   hasActionButtons: boolean;
   private _displayedCalendar;
@@ -216,8 +216,8 @@ declare class DateNavigationService {
   private _focusedDayChange;
   get today(): DayModel;
   get displayedCalendar(): CalendarModel;
-  get selectedDayChange(): Observable<DayModel>;
-  get selectedEndDayChange(): Observable<DayModel>;
+  get selectedDayChange(): Observable<DayModel | null | undefined>;
+  get selectedEndDayChange(): Observable<DayModel | null | undefined>;
   /**
    * This observable lets the subscriber know that the displayed calendar has changed.
    */
@@ -237,7 +237,7 @@ declare class DateNavigationService {
   /**
    * Notifies that the selected day has changed so that the date can be emitted to the user.
    */
-  notifySelectedDayChanged(dayObject: DayModel | DateRangeInput, { emitEvent }?: {
+  notifySelectedDayChanged(dayObject: DayModel | DateRangeInput | null | undefined, { emitEvent }?: {
     emitEvent: boolean;
   }): void;
   /**
@@ -422,17 +422,17 @@ export declare abstract class ClrDateInputBase extends WrappedFormControl<ClrDat
   private focusService;
   protected datepickerFocusService: DatepickerFocusService;
   static ngAcceptInputType_date: Date | null | string;
-  placeholder: string;
+  placeholder?: string;
   protected index: number;
-  private initialClrDateInputValue;
+  private initialClrDateInputValue?;
   private previousDateChange;
-  protected abstract dateChange: EventEmitter<Date>;
+  protected abstract dateChange: EventEmitter<Date | null>;
   constructor(viewContainerRef: ViewContainerRef, injector: Injector, el: ElementRef<HTMLInputElement>, renderer: Renderer2, control: NgControl, container: ClrDateContainer, dateIOService: DateIOService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, platformId: any, focusService: FormsFocusService, datepickerFocusService: DatepickerFocusService);
-  get disabled(): boolean | string;
+  get disabled(): boolean | null;
   set disabled(value: boolean | string);
   get placeholderText(): string;
   get inputType(): string;
-  protected abstract get userSelectedDayChange(): Observable<DayModel>;
+  protected abstract get userSelectedDayChange(): Observable<DayModel | null | undefined>;
   ngOnInit(): void;
   ngAfterViewInit(): void;
   setFocusStates(): void;
@@ -460,7 +460,7 @@ export declare abstract class ClrDateInputBase extends WrappedFormControl<ClrDat
    * if either of the field gets updated
    */
   private validateDateRange;
-  protected abstract updateDayModel(dayModel: DayModel): void;
+  protected abstract updateDayModel(dayModel: DayModel | null): void;
   static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateInputBase, [null, null, null, null, {
     optional: true;
     self: true;
@@ -494,7 +494,7 @@ export declare class ClrDateInput extends ClrDateInputBase {
   set min(dateString: string);
   set max(dateString: string);
   protected get userSelectedDayChange(): import("rxjs").Observable<DayModel>;
-  protected updateDayModel(dayModel: DayModel): void;
+  protected updateDayModel(dayModel: DayModel | null): void;
   static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateInput, never>;
   static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateInput, "[clrDate]", never, {
     "date": {
@@ -520,7 +520,7 @@ export declare class ClrStartDateInput extends ClrDateInputBase {
   get inputSize(): number;
   protected get userSelectedDayChange(): import("rxjs").Observable<DayModel>;
   ngOnInit(): void;
-  protected updateDayModel(dayModel: DayModel): void;
+  protected updateDayModel(dayModel: DayModel | null): void;
   static ɵfac: i0.ɵɵFactoryDeclaration<ClrStartDateInput, never>;
   static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStartDateInput, "[clrStartDate]", never, {
     "inputWidth": {
@@ -542,7 +542,7 @@ export declare class ClrEndDateInput extends ClrDateInputBase {
   get inputSize(): number;
   protected get userSelectedDayChange(): import("rxjs").Observable<DayModel>;
   ngOnInit(): void;
-  protected updateDayModel(dayModel: DayModel): void;
+  protected updateDayModel(dayModel: DayModel | null): void;
   static ɵfac: i0.ɵɵFactoryDeclaration<ClrEndDateInput, never>;
   static ɵdir: i0.ɵɵDirectiveDeclaration<ClrEndDateInput, "[clrEndDate]", never, {
     "inputWidth": {
@@ -560,7 +560,7 @@ export declare class ClrEndDateInput extends ClrDateInputBase {
 export declare class ClrDateInputValidator implements Validator {
   private dateIOService;
   constructor(dateIOService: DateIOService);
-  validate(control: AbstractControl): ValidationErrors;
+  validate(control: AbstractControl): ValidationErrors | null;
   static ɵfac: i0.ɵɵFactoryDeclaration<ClrDateInputValidator, [{
     optional: true;
   }]>;
@@ -570,7 +570,7 @@ export declare class ClrStartDateInputValidator implements Validator {
   private dateIOService;
   private dateNavigationService;
   constructor(dateIOService: DateIOService, dateNavigationService: DateNavigationService);
-  validate(control: AbstractControl): ValidationErrors;
+  validate(control: AbstractControl): ValidationErrors | null;
   static ɵfac: i0.ɵɵFactoryDeclaration<ClrStartDateInputValidator, [{
     optional: true;
   }, {
@@ -582,7 +582,7 @@ export declare class ClrEndDateInputValidator implements Validator {
   private dateIOService;
   private dateNavigationService;
   constructor(dateIOService: DateIOService, dateNavigationService: DateNavigationService);
-  validate(control: AbstractControl): ValidationErrors;
+  validate(control: AbstractControl): ValidationErrors | null;
   static ɵfac: i0.ɵɵFactoryDeclaration<ClrEndDateInputValidator, [{
     optional: true;
   }, {
@@ -678,7 +678,7 @@ export declare class ClrMonthpicker implements AfterViewInit {
   /**
    * Gets the year which the user is currently on.
    */
-  get calendarEndMonthIndex(): number;
+  get calendarEndMonthIndex(): number | undefined;
   get yearAttrString(): string;
   /**
    * Returns the year value of the calendar.
@@ -783,8 +783,8 @@ export declare class ClrYearpicker implements AfterViewInit {
    */
   private _focusedYear;
   constructor(_dateNavigationService: DateNavigationService, _viewManagerService: ViewManagerService, _datepickerFocusService: DatepickerFocusService, _elRef: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService);
-  get selectedStartYear(): number;
-  get selectedEndYear(): number;
+  get selectedStartYear(): number | undefined;
+  get selectedEndYear(): number | undefined;
   /**
    * Gets the year which the user is currently on.
    */
@@ -856,15 +856,15 @@ declare class DayViewModel {
 }
 declare class CalendarViewModel {
   calendar: CalendarModel;
-  selectedDay: DayModel;
-  selectedEndDay: DayModel;
+  selectedDay: DayModel | null | undefined;
+  selectedEndDay: DayModel | null | undefined;
   private focusableDay;
   private today;
   firstDayOfWeek: number;
   private excludedDates;
   private currMonthDayViews;
   private _calendarView;
-  constructor(calendar: CalendarModel, selectedDay: DayModel, selectedEndDay: DayModel, focusableDay: DayModel, today: DayModel, firstDayOfWeek: number, excludedDates: DateRange);
+  constructor(calendar: CalendarModel, selectedDay: DayModel | null | undefined, selectedEndDay: DayModel | null | undefined, focusableDay: DayModel | null | undefined, today: DayModel, firstDayOfWeek: number, excludedDates: DateRange);
   /**
    * DayViewModel matrix. Size 6x7
    */
@@ -876,11 +876,11 @@ declare class CalendarViewModel {
   /**
    * Updates the selected day in the calendar
    */
-  updateSelectedDay(day: DayModel | undefined): void;
+  updateSelectedDay(day: DayModel | null | undefined): void;
   /**
    * Updates the selected end day in the calendar
    */
-  updateSelectedEndDay(day: DayModel | undefined): void;
+  updateSelectedEndDay(day: DayModel | null | undefined): void;
   /**
    * Generates a 6x7 matrix of DayViewModel based on the Calendar.
    * The 6x7 matrix is structured according to the first day of the week.
@@ -943,9 +943,9 @@ export declare class ClrCalendar implements OnDestroy {
    */
   get localeDays(): ReadonlyArray<ClrDayOfWeek>;
   get calendar(): CalendarModel;
-  get selectedDay(): DayModel;
-  get selectedEndDay(): DayModel;
-  get focusedDay(): DayModel;
+  get selectedDay(): DayModel | null | undefined;
+  get selectedEndDay(): DayModel | null | undefined;
+  get focusedDay(): DayModel | null | undefined;
   get today(): DayModel;
   /**
    * Focuses on the focusable day when the Calendar View is initialized.

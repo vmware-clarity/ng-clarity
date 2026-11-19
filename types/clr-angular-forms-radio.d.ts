@@ -24,8 +24,8 @@ export declare class ClrRadioContainer extends ClrAbstractContainer implements A
   protected layoutService: LayoutService;
   protected controlClassService: ControlClassService;
   protected ngControlService: NgControlService;
-  role: string;
-  ariaLabelledBy: string;
+  role: string | null;
+  ariaLabelledBy: string | null;
   radios: QueryList<ClrRadio>;
   private inline;
   private _generatedId;

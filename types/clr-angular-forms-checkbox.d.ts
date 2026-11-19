@@ -48,8 +48,8 @@ export declare class ClrCheckboxContainer extends ClrAbstractContainer implement
   protected layoutService: LayoutService;
   protected controlClassService: ControlClassService;
   protected ngControlService: NgControlService;
-  role: string;
-  ariaLabelledBy: string;
+  role: string | null;
+  ariaLabelledBy: string | null;
   checkboxes: QueryList<ClrCheckbox>;
   private inline;
   private _generatedId;

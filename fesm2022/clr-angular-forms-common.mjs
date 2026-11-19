@@ -98,7 +98,7 @@ const CONTROL_SUFFIX = {
 	HELPER: "helper",
 	ERROR: "error",
 	SUCCESS: "success",
-	NONE: null
+	NONE: ""
 };
 var ClrAbstractControl = class ClrAbstractControl {
 	constructor(controlIdService, containerIdService) {
@@ -1037,8 +1037,13 @@ var WrappedFormControl = class WrappedFormControl {
 		this.ngControl = ngControl;
 		this.renderer = renderer;
 		this.el = el;
+		this.ngControlService = null;
 		this.index = 0;
 		this.subscriptions = [];
+		this.controlClassService = null;
+		this.markControlService = null;
+		this.containerIdService = null;
+		this.differs = null;
 		if (injector) {
 			this.ngControlService = injector.get(NgControlService, null);
 			this.markControlService = injector.get(MarkControlService, null);
@@ -1072,7 +1077,7 @@ var WrappedFormControl = class WrappedFormControl {
 		this.containerIdService = this._containerInjector.get(ContainerIdService, null);
 		if (this._id) this.controlIdService.id = this._id;
 		else this._id = this.controlIdService.id;
-		if (this.ngControl) this.differ = this.differs.find(this.ngControl).create();
+		if (this.ngControl && this.differs) this.differ = this.differs.find(this.ngControl).create();
 		if (this.ngControlService && this.ngControl) this.ngControlService.addControl(this.ngControl);
 	}
 	ngDoCheck() {
@@ -1111,14 +1116,14 @@ var WrappedFormControl = class WrappedFormControl {
 	markAsTouched() {
 		if (this.ngControlService && this.ngControlService.hasMultipleControls) {
 			this.ngControlService.controls.forEach((ngControl) => {
-				ngControl.control.markAsTouched();
-				ngControl.control.updateValueAndValidity();
+				ngControl.control?.markAsTouched();
+				ngControl.control?.updateValueAndValidity();
 			});
 			return;
 		}
 		if (this.ngControl) {
-			this.ngControl.control.markAsTouched();
-			this.ngControl.control.updateValueAndValidity();
+			this.ngControl.control?.markAsTouched();
+			this.ngControl.control?.updateValueAndValidity();
 		}
 	}
 	static {
@@ -1388,6 +1393,7 @@ var ClrIfError = class ClrIfError extends AbstractIfState {
 		super(ngControlService);
 		this.template = template;
 		this.container = container;
+		this._error = "";
 		if (!ngControlService) throw new Error("clrIfError can only be used within a form control container element like clr-input-container");
 	}
 	get error() {

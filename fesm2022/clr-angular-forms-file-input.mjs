@@ -284,14 +284,16 @@ var ClrFileList = class ClrFileList {
 		this.contextCache = /* @__PURE__ */ new Map();
 		this.injector = inject(Injector);
 		this.commonStrings = inject(ClrCommonStringsService);
-		this.ngControlService = inject(NgControlService, { optional: true });
-		this.fileInputContainer = inject(ClrFileInputContainer, { optional: true });
-		if (!this.ngControlService || !this.fileInputContainer) throw new Error("The clr-file-list component can only be used within a clr-file-input-container.");
+		const ngControlService = inject(NgControlService, { optional: true });
+		const fileInputContainer = inject(ClrFileInputContainer, { optional: true });
+		if (!ngControlService || !fileInputContainer) throw new Error("The clr-file-list component can only be used within a clr-file-input-container.");
+		this.ngControlService = ngControlService;
+		this.fileInputContainer = fileInputContainer;
 	}
 	get files() {
 		if (!this.fileInputContainer.fileInput) return [];
 		const fileInputElement = this.fileInputContainer.fileInput.elementRef.nativeElement;
-		return Array.from(fileInputElement.files).sort((a, b) => a.name.localeCompare(b.name));
+		return Array.from(fileInputElement.files ?? []).sort((a, b) => a.name.localeCompare(b.name));
 	}
 	getClearFileLabel(filename) {
 		return this.commonStrings.parse(this.commonStrings.keys.clearFile, { FILE: filename });
@@ -299,7 +301,7 @@ var ClrFileList = class ClrFileList {
 	clearFile(fileToRemove) {
 		if (!this.fileInputContainer.fileInput) return;
 		const fileInputElement = this.fileInputContainer.fileInput.elementRef.nativeElement;
-		selectFiles(fileInputElement, Array.from(fileInputElement.files).filter((file) => file !== fileToRemove));
+		selectFiles(fileInputElement, Array.from(fileInputElement.files ?? []).filter((file) => file !== fileToRemove));
 		this.fileInputContainer.focusBrowseButton();
 	}
 	createFileMessagesTemplateContext(file) {
@@ -533,9 +535,9 @@ var ClrFileInputContainer = class ClrFileInputContainer extends ClrAbstractConta
 		this.focusBrowseButton();
 	}
 	addFilesToSelection(newFiles) {
-		if (!newFiles.length) return;
+		if (!newFiles?.length) return;
 		const mergedFiles = [...newFiles];
-		for (const existingFile of this.fileInput.elementRef.nativeElement.files) if (!mergedFiles.some((file) => file.name === existingFile.name)) mergedFiles.push(existingFile);
+		for (const existingFile of this.fileInput.elementRef.nativeElement.files ?? []) if (!mergedFiles.some((file) => file.name === existingFile.name)) mergedFiles.push(existingFile);
 		selectFiles(this.fileInput.elementRef.nativeElement, mergedFiles);
 	}
 	static {
@@ -833,13 +835,14 @@ var ClrFileInput = class ClrFileInput extends WrappedFormControl {
 	}
 	updateSelection() {
 		const files = this.elementRef.nativeElement.files;
-		let selectionButtonLabel;
-		let clearFilesButtonLabel;
-		if (files?.length === 1) {
+		if (!files) return;
+		let selectionButtonLabel = "";
+		let clearFilesButtonLabel = "";
+		if (files.length === 1) {
 			const filename = files[0].name;
 			selectionButtonLabel = filename;
 			clearFilesButtonLabel = this.commonStrings.parse(this.commonStrings.keys.clearFile, { FILE: filename });
-		} else if (files?.length > 1) {
+		} else if (files.length > 1) {
 			const fileCount = files.length.toString();
 			selectionButtonLabel = this.commonStrings.parse(this.commonStrings.keys.fileCount, { COUNT: fileCount });
 			clearFilesButtonLabel = this.commonStrings.parse(this.commonStrings.keys.clearFiles, { COUNT: fileCount });
@@ -935,7 +938,7 @@ var ClrFileInputValidator = class ClrFileInputValidator {
 		if (fileInputElement.required && files?.length === 0) errors.required = true;
 		const accept = fileInputElement.accept ? fileInputElement.accept.split(",").map((type) => type.trim()) : null;
 		if (files?.length > 0 && (accept || this.minFileSize || this.maxFileSize)) for (let i = 0; i < files.length; i++) {
-			const file = files.item(i);
+			const file = files[i];
 			if (accept && accept.length) {
 				if (!this.validateAccept(file, accept)) {
 					errors.accept = errors.accept || [];
@@ -1056,7 +1059,7 @@ var ClrFileInputValueAccessor = class ClrFileInputValueAccessor {
 	writeValue(value) {
 		if (value !== void 0 && value !== null && !(value instanceof FileList)) throw new Error("The value of a file input control must be a FileList.");
 		if (value) selectFiles(this.elementRef.nativeElement, value);
-		else if (this.elementRef.nativeElement.files.length) clearFiles(this.elementRef.nativeElement);
+		else if (this.elementRef.nativeElement.files?.length) clearFiles(this.elementRef.nativeElement);
 	}
 	registerOnChange(fn) {
 		this.onChange = fn;

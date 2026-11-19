@@ -148,6 +148,8 @@ var ClrRadioContainer = class ClrRadioContainer extends ClrAbstractContainer {
 		this.layoutService = layoutService;
 		this.controlClassService = controlClassService;
 		this.ngControlService = ngControlService;
+		this.role = null;
+		this.ariaLabelledBy = null;
 		this.inline = false;
 		this._generatedId = uniqueIdFactory();
 	}
@@ -167,7 +169,7 @@ var ClrRadioContainer = class ClrRadioContainer extends ClrAbstractContainer {
 	}
 	setAriaLabelledBy() {
 		if (this.label && !this.label.idAttr) this.label.idAttr = this._generatedId;
-		this.ariaLabelledBy = this.radios?.length && this.label ? this.label.idAttr : null;
+		this.ariaLabelledBy = this.radios?.length && this.label?.idAttr ? this.label.idAttr : null;
 	}
 	static {
 		this.ɵfac = i0.ɵɵngDeclareFactory({

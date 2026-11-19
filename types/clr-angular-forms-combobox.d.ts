@@ -15,7 +15,7 @@ import * as i10 from "@clr/angular/icon";
 import * as i14 from "@clr/angular/progress/spinner";
 declare class ComboboxContainerService {
   labelOffset: number;
-  labelText: string;
+  labelText?: string;
   static ɵfac: i0.ɵɵFactoryDeclaration<ComboboxContainerService, never>;
   static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
@@ -34,7 +34,7 @@ export declare class ClrComboboxContainer extends ClrAbstractContainer implement
 export type ClrComboboxIdentityFunction<T> = (item: T) => any;
 export type ClrComboboxResolverFunction<T> = (input: string) => T;
 declare abstract class ComboboxModel<T> {
-  model: T | T[];
+  model: T | T[] | null | undefined;
   displayField?: string;
   identityFn: ClrComboboxIdentityFunction<T>;
   abstract containsItem(item: T): boolean;
@@ -42,13 +42,13 @@ declare abstract class ComboboxModel<T> {
   abstract unselect(item: T): void;
   abstract toString(displayField?: string, index?: number): string;
   abstract isEmpty(): boolean;
-  abstract pop(): T;
+  abstract pop(): T | null | undefined;
 }
 export declare class ClrOptionSelected<T> {
   template: TemplateRef<{
     $implicit: T;
   }>;
-  selected: T;
+  selected?: T;
   constructor(template: TemplateRef<{
     $implicit: T;
   }>);
@@ -68,13 +68,13 @@ declare class OptionSelectionService<T> {
   inputChanged: Observable<string>;
   showAllOptions: boolean;
   private _currentInput;
-  private _displayField;
+  private _displayField?;
   private _inputChanged;
   private _selectionChanged;
   private _selectAllRequested;
   constructor();
-  get displayField(): string;
-  set displayField(value: string);
+  get displayField(): string | undefined;
+  set displayField(value: string | undefined);
   get currentInput(): string;
   set currentInput(input: string);
   get selectionChanged(): Observable<ComboboxModel<T>>;
@@ -83,9 +83,9 @@ declare class OptionSelectionService<T> {
   set identityFn(value: ClrComboboxIdentityFunction<T>);
   get selectAllRequested(): Observable<void>;
   requestSelectAll(): void;
-  editableResolver: ClrComboboxResolverFunction<T>;
-  select(item: T): void;
-  toggle(item: T): void;
+  editableResolver: ClrComboboxResolverFunction<T> | undefined;
+  select(item: T | null | undefined): void;
+  toggle(item: T | null | undefined): void;
   selectMany(items: T[]): void;
   unselectMany(items: T[]): void;
   unselect(item: T): void;
@@ -93,24 +93,24 @@ declare class OptionSelectionService<T> {
    * Checks whether all given items are currently selected, using identityFn for comparison.
    */
   containsAll(items: T[]): boolean;
-  setSelectionValue(value: T | T[]): void;
+  setSelectionValue(value: T | T[] | null | undefined): void;
   private _identityFn;
   private valuesEqualByIdentity;
   static ɵfac: i0.ɵɵFactoryDeclaration<OptionSelectionService<any>, never>;
   static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 declare class SingleSelectComboboxModel<T> extends ComboboxModel<T> {
-  model: T;
+  model: T | null | undefined;
   containsItem(item: T): boolean;
   select(item: T): void;
   unselect(item: T): void;
   isEmpty(): boolean;
-  pop(): T;
+  pop(): T | null | undefined;
   toString(displayField?: string): string;
 }
 declare class PseudoFocusModel<T> extends SingleSelectComboboxModel<T> {
   private _focusChanged;
-  get focusChanged(): Observable<T>;
+  get focusChanged(): Observable<T | null>;
   select(item: T): void;
 }
 declare class ComboboxFocusHandler<T> implements OnDestroy {
@@ -151,11 +151,11 @@ declare class ComboboxFocusHandler<T> implements OnDestroy {
   static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 declare class OptionData<T> {
-  id: string;
-  value: T;
+  id: string | null;
+  value: T | null;
   el: HTMLElement;
-  constructor(id: string, value: T);
-  equals(other: OptionData<T>): boolean;
+  constructor(id: string | null, value: T | null);
+  equals(other: OptionData<T> | null | undefined): boolean;
 }
 export declare class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> implements ControlValueAccessor, LoadingListener, AfterContentInit {
   control: NgControl;
@@ -192,13 +192,13 @@ export declare class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContai
   protected calculatedLimit: number | undefined;
   protected shouldCalculate: boolean;
   protected isTotalSelection: boolean;
-  private resizeObserver;
+  private resizeObserver?;
   private readonly renderInjector;
   private containerWidthChange;
   private options;
   private _searchText;
-  private onTouchedCallback;
-  private onChangeCallback;
+  private onTouchedCallback?;
+  private onChangeCallback?;
   constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLElement>, optionSelectionService: OptionSelectionService<T>, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, containerService: ComboboxContainerService, platformId: any, focusHandler: ComboboxFocusHandler<T>, cdr: ChangeDetectorRef, zone: NgZone, container: ClrComboboxContainer);
   get showSelectAll(): boolean;
   set showSelectAll(value: boolean);
@@ -213,11 +213,11 @@ export declare class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContai
   get searchText(): string;
   set searchText(text: string);
   get openState(): boolean;
-  get multiSelectModel(): T[];
+  get multiSelectModel(): T[] | null | undefined;
   get ariaControls(): string;
   get ariaOwns(): string;
   get ariaDescribedBySelection(): string;
-  get displayField(): string;
+  get displayField(): string | undefined;
   get showAllText(): string;
   get allSelectedText(): string;
   get showIndividualPills(): boolean;
@@ -352,7 +352,7 @@ export declare class ClrOptions<T> implements AfterViewInit, LoadingListener, On
   get showSelectAll(): boolean;
   get allVisibleSelected(): boolean;
   get isSelectAllFocused(): boolean;
-  toggleSelectAll(event?: Event): void;
+  toggleSelectAll(event?: Event | null): void;
   ngAfterViewInit(): void;
   ngOnDestroy(): void;
   searchText(input: string): string;
@@ -373,8 +373,8 @@ export declare class ClrOptionItems<T> implements DoCheck, OnDestroy {
   private differs;
   private optionService;
   private iterableProxy;
-  private _rawItems;
-  private filteredItems;
+  private _rawItems?;
+  private filteredItems?;
   private subscriptions;
   private filter;
   private _filterField;

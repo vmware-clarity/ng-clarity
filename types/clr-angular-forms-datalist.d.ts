@@ -17,7 +17,7 @@ export declare class DatalistIdService {
 }
 export declare class ClrDatalist implements AfterContentInit {
   private datalistIdService;
-  datalistId: string;
+  datalistId?: string;
   private subscriptions;
   constructor(datalistIdService: DatalistIdService);
   set id(idValue: string);

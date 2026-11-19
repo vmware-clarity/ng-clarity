@@ -11,7 +11,7 @@ import * as i4 from "@clr/angular/icon";
 import { ClarityIcons, ClrIcon, errorStandardIcon, eyeHideIcon, eyeIcon, successStandardIcon } from "@clr/angular/icon";
 import * as i1 from "@angular/forms";
 import { FormsModule } from "@angular/forms";
-const TOGGLE_SERVICE = new InjectionToken(void 0);
+const TOGGLE_SERVICE = new InjectionToken("TOGGLE_SERVICE");
 function ToggleServiceFactory() {
 	return new BehaviorSubject(false);
 }

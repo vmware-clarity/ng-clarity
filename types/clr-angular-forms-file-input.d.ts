@@ -93,7 +93,7 @@ export declare class ClrFileList {
   static ɵcmp: i0.ɵɵComponentDeclaration<ClrFileList, "clr-file-list", never, {}, {}, ["fileMessagesTemplate"], never, false, never>;
 }
 export declare class ClrFileInputContainer extends ClrAbstractContainer {
-  customButtonLabel: string;
+  customButtonLabel?: string;
   readonly fileInput: ClrFileInput;
   protected readonly fileList: ClrFileList;
   private browseButtonElementRef;
@@ -111,7 +111,7 @@ export declare class ClrFileInputContainer extends ClrAbstractContainer {
   focusBrowseButton(): void;
   protected browse(): void;
   protected clearSelectedFiles(): void;
-  protected addFilesToSelection(newFiles: FileList): void;
+  protected addFilesToSelection(newFiles: FileList | null): void;
   static ɵfac: i0.ɵɵFactoryDeclaration<ClrFileInputContainer, never>;
   static ɵcmp: i0.ɵɵComponentDeclaration<ClrFileInputContainer, "clr-file-input-container", never, {
     "customButtonLabel": {
@@ -129,7 +129,7 @@ export declare class ClrFileInput extends WrappedFormControl<ClrFileInputContain
   readonly elementRef: ElementRef<HTMLInputElement>;
   private readonly control;
   private readonly commonStrings;
-  selection: ClrFileInputSelection;
+  selection: ClrFileInputSelection | undefined;
   constructor(injector: Injector, renderer: Renderer2, viewContainerRef: ViewContainerRef, elementRef: ElementRef<HTMLInputElement>, control: NgControl, commonStrings: ClrCommonStringsService);
   private handleChange;
   private updateSelection;
@@ -141,10 +141,10 @@ export declare class ClrFileInput extends WrappedFormControl<ClrFileInputContain
 }
 export declare class ClrFileInputValidator implements Validator {
   private readonly elementRef;
-  minFileSize: number;
-  maxFileSize: number;
+  minFileSize?: number;
+  maxFileSize?: number;
   constructor(elementRef: ElementRef<HTMLInputElement>);
-  validate(control: AbstractControl<FileList>): ValidationErrors;
+  validate(control: AbstractControl<FileList>): ValidationErrors | null;
   private getSuffixByDepth;
   private validateAccept;
   static ɵfac: i0.ɵɵFactoryDeclaration<ClrFileInputValidator, never>;
@@ -162,8 +162,8 @@ export declare class ClrFileInputValidator implements Validator {
 export declare class ClrFileInputValueAccessor implements ControlValueAccessor {
   private readonly elementRef;
   constructor(elementRef: ElementRef<HTMLInputElement>);
-  writeValue(value: FileList): void;
-  registerOnChange(fn: (value: FileList) => void): void;
+  writeValue(value: FileList | null | undefined): void;
+  registerOnChange(fn: (value: FileList | null) => void): void;
   registerOnTouched(fn: () => void): void;
   setDisabledState(isDisabled: boolean): void;
   private handleChange;

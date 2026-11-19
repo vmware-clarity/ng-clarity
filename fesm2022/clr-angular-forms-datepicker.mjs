@@ -6,10 +6,10 @@ import * as i7 from "@clr/angular/forms/common";
 import { ClrAbstractContainer, ClrCommonFormsModule, ControlClassService, ControlIdService, FormsFocusService, NgControlService, WrappedFormControl } from "@clr/angular/forms/common";
 import * as i5$1 from "@clr/angular/utils";
 import { CdkTrapFocusModule, ClrConditionalModule, ClrHostWrappingModule, DATEPICKER_ENABLE_BREAKPOINT, Keys, isBooleanAttributeSet } from "@clr/angular/utils";
+import { Subject, Subscription, tap } from "rxjs";
 import { filter, startWith } from "rxjs/operators";
 import * as i6$1 from "@clr/angular/popover/common";
 import { ClrPopoverHostDirective, ClrPopoverModuleNext, ClrPopoverPosition, ClrPopoverType, DROPDOWN_POSITIONS } from "@clr/angular/popover/common";
-import { Subject, tap } from "rxjs";
 import * as i6$2 from "@clr/angular/icon";
 import { ClarityIcons, ClrIcon, angleIcon, calendarIcon, errorStandardIcon, eventIcon, successStandardIcon } from "@clr/angular/icon";
 import * as i6 from "@clr/angular/layout/vertical-nav";
@@ -18,6 +18,7 @@ import * as i1 from "@angular/forms";
 import { NG_VALIDATORS } from "@angular/forms";
 var DateFormControlService = class DateFormControlService {
 	constructor() {
+		this.disabled = false;
 		this._touchedChange = new Subject();
 		this._dirtyChange = new Subject();
 	}
@@ -94,10 +95,12 @@ var DayModel = class DayModel {
 		});
 	}
 	isBefore(day, dayInclusive = false) {
-		return dayInclusive ? this.toDate().getTime() <= day?.toDate().getTime() : this.toDate().getTime() < day?.toDate().getTime();
+		if (!day) return false;
+		return dayInclusive ? this.toDate().getTime() <= day.toDate().getTime() : this.toDate().getTime() < day.toDate().getTime();
 	}
 	isAfter(day, dayInclusive = false) {
-		return dayInclusive ? this.toDate().getTime() >= day?.toDate().getTime() : this.toDate().getTime() > day?.toDate().getTime();
+		if (!day) return false;
+		return dayInclusive ? this.toDate().getTime() >= day.toDate().getTime() : this.toDate().getTime() > day.toDate().getTime();
 	}
 	pad(num) {
 		return num < 10 ? `0${num}` : `${num}`;
@@ -512,6 +515,7 @@ var DateNavigationService = class DateNavigationService {
 		if (!this.displayedCalendar.isDayInCalendar(day)) this.setDisplayedCalendar(new CalendarModel(day.year, day.month));
 	}
 	incrementFocusDay(value) {
+		if (!this.focusedDay) return;
 		this.hoveredDay = this.focusedDay = this.focusedDay.incrementBy(value);
 		if (this._displayedCalendar.isDayInCalendar(this.focusedDay)) this._focusedDayChange.next(this.focusedDay);
 		else this.setDisplayedCalendar(new CalendarModel(this.focusedDay.year, this.focusedDay.month));
@@ -572,6 +576,7 @@ var DatepickerEnabledService = class DatepickerEnabledService {
 	constructor(_document) {
 		this._document = _document;
 		this._isUserAgentMobile = false;
+		this._innerWidth = 0;
 		if (_document) {
 			this._isUserAgentMobile = MOBILE_USERAGENT_REGEX.test(_document.defaultView.navigator.userAgent);
 			this._innerWidth = _document.defaultView.innerWidth;
@@ -802,7 +807,7 @@ var ClrMonthpicker = class ClrMonthpicker {
 	isInRange(monthIndex) {
 		if (!this._dateNavigationService.isRangePicker) return false;
 		if (this._dateNavigationService.selectedDay && this._dateNavigationService.selectedEndDay) return this.calendarYear === this._dateNavigationService.selectedDay.year && monthIndex > this._dateNavigationService.selectedDay.month && this.calendarYear === this._dateNavigationService.selectedEndDay.year && monthIndex < this._dateNavigationService.selectedEndDay.month || this._dateNavigationService.selectedDay.year !== this._dateNavigationService.selectedEndDay.year && this.calendarYear === this._dateNavigationService.selectedDay.year && monthIndex > this._dateNavigationService.selectedDay.month || this._dateNavigationService.selectedDay.year !== this._dateNavigationService.selectedEndDay.year && this.calendarYear === this._dateNavigationService.selectedEndDay.year && monthIndex < this._dateNavigationService.selectedEndDay.month || this.calendarYear > this._dateNavigationService.selectedDay.year && this.calendarYear < this._dateNavigationService.selectedEndDay.year;
-		else if (this._dateNavigationService.selectedDay && !this._dateNavigationService.selectedEndDay) return this.calendarYear === this._dateNavigationService.selectedDay.year && monthIndex > this._dateNavigationService.selectedDay.month && monthIndex < this._dateNavigationService.hoveredMonth || this.calendarYear > this._dateNavigationService.selectedDay.year && monthIndex < this._dateNavigationService.hoveredMonth;
+		else if (this._dateNavigationService.selectedDay && !this._dateNavigationService.selectedEndDay && this._dateNavigationService.hoveredMonth !== void 0) return this.calendarYear === this._dateNavigationService.selectedDay.year && monthIndex > this._dateNavigationService.selectedDay.month && monthIndex < this._dateNavigationService.hoveredMonth || this.calendarYear > this._dateNavigationService.selectedDay.year && monthIndex < this._dateNavigationService.hoveredMonth;
 		else return false;
 	}
 	static {
@@ -1105,15 +1110,18 @@ var ClrYearpicker = class ClrYearpicker {
 	getTabIndex(year) {
 		if (!this.yearRangeModel.inRange(this._focusedYear)) {
 			if (this.yearRangeModel.inRange(this.calendarYear)) this._focusedYear = this.calendarYear;
-			else if (this.yearRangeModel.inRange(this.selectedEndYear)) this._focusedYear = this.selectedEndYear;
+			else if (this.selectedEndYear !== void 0 && this.yearRangeModel.inRange(this.selectedEndYear)) this._focusedYear = this.selectedEndYear;
 			else this._focusedYear = this.yearRangeModel.middleYear;
 		}
 		return this._focusedYear === year ? 0 : -1;
 	}
 	isInRange(year) {
 		if (!this._dateNavigationService.isRangePicker) return false;
-		if (this._dateNavigationService.selectedDay?.year && this.selectedEndYear) return year > this.selectedStartYear && year < this.selectedEndYear;
-		else if (this._dateNavigationService.selectedDay?.year && !this.selectedEndYear) return year > this.selectedStartYear && year < this._dateNavigationService.hoveredYear;
+		const startYear = this.selectedStartYear;
+		const endYear = this.selectedEndYear;
+		const hoveredYear = this._dateNavigationService.hoveredYear;
+		if (startYear && endYear) return year > startYear && year < endYear;
+		else if (startYear && !endYear && hoveredYear !== void 0) return year > startYear && year < hoveredYear;
 		else return false;
 	}
 	changeToDayView() {
@@ -2619,7 +2627,7 @@ var ClrDateInputBase = class ClrDateInputBase extends WrappedFormControl {
 			if (this.usingNativeDatepicker()) {
 				date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
 				this.renderer.setProperty(this.el.nativeElement, "valueAsDate", date);
-			} else if (this.datepickerHasFormControl() && dateString !== this.control.value) this.control.control.setValue(dateString);
+			} else if (this.datepickerHasFormControl() && dateString !== this.control.value) this.control.control?.setValue(dateString);
 			else this.renderer.setProperty(this.el.nativeElement, "value", dateString);
 			this.validateDateRange();
 		} else this.renderer.setProperty(this.el.nativeElement, "value", "");
@@ -2640,17 +2648,17 @@ var ClrDateInputBase = class ClrDateInputBase extends WrappedFormControl {
 		}
 	}
 	listenForControlValueChanges() {
-		if (this.datepickerHasFormControl()) return this.control.valueChanges.pipe(filter(() => !this.datepickerFocusService.elementIsFocused(this.el.nativeElement))).subscribe((value) => this.updateDate(this.dateIOService.getDateValueFromDateString(value)));
-		else return null;
+		if (!this.datepickerHasFormControl() || !this.control.valueChanges) return Subscription.EMPTY;
+		return this.control.valueChanges.pipe(filter(() => !this.datepickerFocusService.elementIsFocused(this.el.nativeElement))).subscribe((value) => this.updateDate(this.dateIOService.getDateValueFromDateString(value)));
 	}
 	listenForUserSelectedDayChanges() {
 		return this.userSelectedDayChange.subscribe((dayModel) => this.updateDate(dayModel?.toDate(), true));
 	}
 	listenForTouchChanges() {
-		return this.dateFormControlService.touchedChange.pipe(filter(() => this.datepickerHasFormControl())).subscribe(() => this.control.control.markAsTouched());
+		return this.dateFormControlService.touchedChange.pipe(filter(() => this.datepickerHasFormControl())).subscribe(() => this.control.control?.markAsTouched());
 	}
 	listenForDirtyChanges() {
-		return this.dateFormControlService.dirtyChange.pipe(filter(() => this.datepickerHasFormControl())).subscribe(() => this.control.control.markAsDirty());
+		return this.dateFormControlService.dirtyChange.pipe(filter(() => this.datepickerHasFormControl())).subscribe(() => this.control.control?.markAsDirty());
 	}
 	listenForInputRefocus() {
 		return this.dateNavigationService.selectedDayChange.pipe(filter((date) => !!date && !this.dateNavigationService.isRangePicker)).subscribe(() => this.datepickerFocusService.focusInput(this.el.nativeElement));

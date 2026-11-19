@@ -37,7 +37,7 @@ declare abstract class ClrAbstractControl {
    */
   controlIdSuffix: string;
   protected constructor(controlIdService: ControlIdService, containerIdService: ContainerIdService);
-  get id(): string;
+  get id(): string | null;
   static ɵfac: i0.ɵɵFactoryDeclaration<ClrAbstractControl, [{
     optional: true;
   }, {
@@ -110,7 +110,7 @@ export interface Helpers {
   showHelper?: boolean;
 }
 export declare class NgControlService {
-  container: ClrAbstractContainer;
+  container?: ClrAbstractContainer;
   private _controls;
   private _controlsChanges;
   get controls(): NgControl[];
@@ -127,10 +127,10 @@ export declare class ClrControlLabel implements OnInit, OnDestroy {
   private ngControlService;
   private renderer;
   private el;
-  idInput: string;
-  idAttr: string;
-  forAttr: string;
-  private signpost;
+  idInput?: string;
+  idAttr?: string;
+  forAttr?: string;
+  private signpost?;
   private enableGrid;
   private subscriptions;
   constructor(controlIdService: ControlIdService, layoutService: LayoutService, ngControlService: NgControlService, renderer: Renderer2, el: ElementRef<HTMLLabelElement>);
@@ -167,7 +167,7 @@ export declare class ControlClassService {
   private layoutService;
   className: string;
   constructor(layoutService: LayoutService);
-  controlClass(state: string, grid?: boolean, additional?: string): string;
+  controlClass(state: string | null, grid?: boolean, additional?: string): string;
   initControlClass(renderer: Renderer2, element: HTMLElement): void;
   static ɵfac: i0.ɵɵFactoryDeclaration<ControlClassService, [{
     optional: true;
@@ -225,9 +225,9 @@ declare enum CONTROL_STATE {
 }
 export declare abstract class AbstractIfState {
   protected ngControlService: NgControlService;
-  protected state: CONTROL_STATE;
+  protected state: CONTROL_STATE | undefined;
   protected displayedContent: boolean;
-  protected controls: NgControl[];
+  protected controls: NgControl[] | undefined;
   protected constructor(ngControlService: NgControlService);
   protected handleState(_state: any): void;
   private getControlStatusChangesObservable;
@@ -247,7 +247,7 @@ export declare class ClrIfError extends AbstractIfState {
   /**
    * @param state CONTROL_STATE
    */
-  protected handleState(state: CONTROL_STATE): void;
+  protected handleState(state: CONTROL_STATE | undefined): void;
   private displayError;
   static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfError, [{
     optional: true;
@@ -324,7 +324,7 @@ export declare class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy
   protected el: ElementRef<HTMLElement>;
   _id: string;
   protected controlIdService: ControlIdService;
-  protected ngControlService: NgControlService;
+  protected ngControlService: NgControlService | null;
   protected index: number;
   protected subscriptions: Subscription[];
   private controlClassService;
