@@ -9,6 +9,7 @@
 @use '../mixins.buttons' as button-mixins;
 @use '../variables.buttons' as buttons-variables;
 @use '../../styles/variables/variables.density' as density;
+@use '../../styles/core/tokens/variables.tokens' as tokens;
 
 @include mixins.exports('button-group.clarity') {
   .btn-group {
@@ -61,6 +62,13 @@
         @include mixins.equilateral(100%);
         // using cds-alias-object-interaction-outline token will be better when focus state get implemented
         border: Highlight solid 2px;
+      }
+
+      // Checkbox/radio group button: the native input is hidden, the keyboard focus ring is on the button wrapper instead.
+      &:has(> input:is([type='checkbox'], [type='radio']):focus-visible) {
+        outline: buttons-variables.$clr-btn-group-focus-outline;
+        outline-color: -webkit-focus-ring-color;
+        outline-offset: calc(-3 * tokens.$cds-alias-object-interaction-outline-offset);
       }
     }
 
