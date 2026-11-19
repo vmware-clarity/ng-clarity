@@ -18,7 +18,7 @@ import { ColumnState } from '../interfaces/column-state.interface';
   standalone: false,
 })
 export class DatagridCellRenderer implements OnDestroy {
-  private stateSubscription: Subscription;
+  private stateSubscription?: Subscription;
   private subscriptions: Subscription[] = [];
 
   constructor(
