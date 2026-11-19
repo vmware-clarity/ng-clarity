@@ -46,7 +46,7 @@ export function highlightStaticCode(): void {
           }
         })
         // A failed chunk load leaves the code readable, just not highlighted.
-        .catch(() => undefined);
+        .catch((): void => undefined);
     },
   });
 }

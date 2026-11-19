@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ButtonHubService } from './providers/button-hub.service';
 import { ButtonHubMock } from './providers/button-hub.service.mock';
@@ -53,14 +54,14 @@ class ViewTestComponent {
   }
 }
 
-export default function (): void {
+describe('New Wizard Tests', () => {
   describe('New Wizard Button', () => {
     describe('Typescript API', () => {
       let fixture: ComponentFixture<any>;
       let buttonDebugEl: DebugElement;
       let buttonComponent: ClrWizardButton;
-      const navService = new NavServiceMock();
-      const buttonHub = new ButtonHubMock();
+      let navService: NavServiceMock;
+      let buttonHub: ButtonHubMock;
 
       @Component({
         changeDetection: ChangeDetectionStrategy.Eager,
@@ -71,16 +72,16 @@ export default function (): void {
 
       function runTypeConstantCheck(component: any, fnToTest: any, buttonType: string, typeConstant: any) {
         buttonComponent.type = 'next';
-        fixture.detectChanges();
-        expect(buttonComponent.isCancel).toBe(false, 'next button type is not cancel');
+        renderFixture(fixture);
+        expect(buttonComponent.isCancel, 'next button type is not cancel').toBe(false);
 
         for (const key in typeConstant) {
           if (Object.prototype.hasOwnProperty.call(typeConstant, key) && key !== buttonType) {
             const typeToTest = typeConstant[key];
             const testMsg = typeToTest + ' button type is not ' + buttonType;
             component.type = typeToTest;
-            fixture.detectChanges();
-            expect(fnToTest).toBe(false, testMsg);
+            renderFixture(fixture);
+            expect(fnToTest, testMsg).toBe(false);
           }
         }
       }
@@ -98,18 +99,20 @@ export default function (): void {
         const myFn: any = component[FUNCTIONS_TO_TEST[buttonType]];
 
         component.type = EMPTY_BUTTON_TYPE;
-        fixture.detectChanges();
-        expect(myFn).toBe(false, 'empty button type is not ' + buttonType);
+        renderFixture(fixture);
+        expect(myFn, 'empty button type is not ' + buttonType).toBe(false);
 
         runTypeConstantCheck(component, myFn, buttonType, DEFAULT_BUTTON_TYPES);
         runTypeConstantCheck(component, myFn, buttonType, CUSTOM_BUTTON_TYPES);
 
         component.type = UNKNOWN_BUTTON_TYPE;
-        fixture.detectChanges();
-        expect(myFn).toBe(false, 'unknown button type is not ' + buttonType);
+        renderFixture(fixture);
+        expect(myFn, 'unknown button type is not ' + buttonType).toBe(false);
       }
 
       beforeEach(() => {
+        navService = new NavServiceMock();
+        buttonHub = new ButtonHubMock();
         navService.currentPage = new MockPage(0);
 
         TestBed.configureTestingModule({
@@ -122,7 +125,7 @@ export default function (): void {
         });
         fixture = TestBed.createComponent(TestComponent);
         buttonHub.buttonsReady = true;
-        fixture.detectChanges();
+        renderFixture(fixture);
         buttonDebugEl = fixture.debugElement.query(By.directive(ClrWizardButton));
         buttonComponent = buttonDebugEl.componentInstance;
       });
@@ -134,13 +137,13 @@ export default function (): void {
       describe('isCancel', () => {
         it('returns true for button type cancel', () => {
           buttonComponent.type = DEFAULT_BUTTON_TYPES.cancel;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(buttonComponent.isCancel).toBe(true);
         });
 
         it('returns true for button type custom-cancel', () => {
           buttonComponent.type = CUSTOM_BUTTON_TYPES.cancel;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(buttonComponent.isCancel).toBe(true);
         });
 
@@ -152,13 +155,13 @@ export default function (): void {
       describe('isNext', () => {
         it('returns true for button type next', () => {
           buttonComponent.type = DEFAULT_BUTTON_TYPES.next;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(buttonComponent.isNext).toBe(true);
         });
 
         it('returns true for button type custom-next', () => {
           buttonComponent.type = CUSTOM_BUTTON_TYPES.next;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(buttonComponent.isNext).toBe(true);
         });
 
@@ -170,13 +173,13 @@ export default function (): void {
       describe('isPrevious', () => {
         it('returns true for button type previous', () => {
           buttonComponent.type = DEFAULT_BUTTON_TYPES.previous;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(buttonComponent.isPrevious).toBe(true);
         });
 
         it('returns true for button type custom-previous', () => {
           buttonComponent.type = CUSTOM_BUTTON_TYPES.previous;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(buttonComponent.isPrevious).toBe(true);
         });
 
@@ -188,13 +191,13 @@ export default function (): void {
       describe('isFinish', () => {
         it('returns true for button type finish', () => {
           buttonComponent.type = DEFAULT_BUTTON_TYPES.finish;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(buttonComponent.isFinish).toBe(true);
         });
 
         it('returns true for button type custom-finish', () => {
           buttonComponent.type = CUSTOM_BUTTON_TYPES.finish;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(buttonComponent.isFinish).toBe(true);
         });
 
@@ -206,13 +209,13 @@ export default function (): void {
       describe('isDanger', () => {
         it('returns true for button type danger', () => {
           buttonComponent.type = DEFAULT_BUTTON_TYPES.danger;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(buttonComponent.isDanger).toBe(true);
         });
 
         it('returns true for button type custom-danger', () => {
           buttonComponent.type = CUSTOM_BUTTON_TYPES.danger;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(buttonComponent.isDanger).toBe(true);
         });
 
@@ -224,64 +227,64 @@ export default function (): void {
       describe('isPrimaryAction', () => {
         it('returns true for button type next', () => {
           buttonComponent.type = DEFAULT_BUTTON_TYPES.next;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(buttonComponent.isPrimaryAction).toBe(true);
         });
 
         it('returns true for button type custom-next', () => {
           buttonComponent.type = CUSTOM_BUTTON_TYPES.next;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(buttonComponent.isPrimaryAction).toBe(true);
         });
 
         it('returns true for button type danger', () => {
           buttonComponent.type = DEFAULT_BUTTON_TYPES.danger;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(buttonComponent.isPrimaryAction).toBe(true);
         });
 
         it('returns true for button type custom-danger', () => {
           buttonComponent.type = CUSTOM_BUTTON_TYPES.danger;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(buttonComponent.isPrimaryAction).toBe(true);
         });
 
         it('returns true for button type finish', () => {
           buttonComponent.type = DEFAULT_BUTTON_TYPES.finish;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(buttonComponent.isPrimaryAction).toBe(true);
         });
 
         it('returns true for button type custom-finish', () => {
           buttonComponent.type = CUSTOM_BUTTON_TYPES.finish;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(buttonComponent.isPrimaryAction).toBe(true);
         });
 
         it('returns false for all other button types', () => {
           buttonComponent.type = 'custom-custom';
-          fixture.detectChanges();
-          expect(buttonComponent.isPrimaryAction).toBe(false, 'unknown button type is not primary');
+          renderFixture(fixture);
+          expect(buttonComponent.isPrimaryAction, 'unknown button type is not primary').toBe(false);
 
           buttonComponent.type = DEFAULT_BUTTON_TYPES.cancel;
-          fixture.detectChanges();
-          expect(buttonComponent.isPrimaryAction).toBe(false, 'cancel button is not primary');
+          renderFixture(fixture);
+          expect(buttonComponent.isPrimaryAction, 'cancel button is not primary').toBe(false);
 
           buttonComponent.type = CUSTOM_BUTTON_TYPES.cancel;
-          fixture.detectChanges();
-          expect(buttonComponent.isPrimaryAction).toBe(false, 'custom cancel button is not primary');
+          renderFixture(fixture);
+          expect(buttonComponent.isPrimaryAction, 'custom cancel button is not primary').toBe(false);
 
           buttonComponent.type = DEFAULT_BUTTON_TYPES.previous;
-          fixture.detectChanges();
-          expect(buttonComponent.isPrimaryAction).toBe(false, 'previous button is not primary');
+          renderFixture(fixture);
+          expect(buttonComponent.isPrimaryAction, 'previous button is not primary').toBe(false);
 
           buttonComponent.type = CUSTOM_BUTTON_TYPES.previous;
-          fixture.detectChanges();
-          expect(buttonComponent.isPrimaryAction).toBe(false, 'custom previous button is not primary');
+          renderFixture(fixture);
+          expect(buttonComponent.isPrimaryAction, 'custom previous button is not primary').toBe(false);
 
           buttonComponent.type = '';
-          fixture.detectChanges();
-          expect(buttonComponent.isPrimaryAction).toBe(false, 'empty button type is not primary');
+          renderFixture(fixture);
+          expect(buttonComponent.isPrimaryAction, 'empty button type is not primary').toBe(false);
         });
       });
 
@@ -289,7 +292,7 @@ export default function (): void {
         describe('disabled override', () => {
           it('returns true if disabled', () => {
             buttonComponent.disabled = true;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(true);
           });
         });
@@ -297,7 +300,7 @@ export default function (): void {
         describe('stopNavigation override', () => {
           it('returns true if stopNavigation is true in navService', () => {
             navService.wizardStopNavigation = true;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(true);
             // reset here just this once...
             navService.wizardStopNavigation = false;
@@ -308,28 +311,28 @@ export default function (): void {
           it('returns false for button of type cancel that is NOT disabled', () => {
             buttonComponent.disabled = false;
             buttonComponent.type = DEFAULT_BUTTON_TYPES.cancel;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(false);
           });
 
           it('returns false for button of type custom-cancel that is NOT disabled', () => {
             buttonComponent.disabled = false;
             buttonComponent.type = CUSTOM_BUTTON_TYPES.cancel;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(false);
           });
 
           it('returns true for button of type cancel that is disabled', () => {
             buttonComponent.disabled = true;
             buttonComponent.type = DEFAULT_BUTTON_TYPES.cancel;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(true);
           });
 
           it('returns true for button of type custom-cancel that is disabled', () => {
             buttonComponent.disabled = true;
             buttonComponent.type = CUSTOM_BUTTON_TYPES.cancel;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(true);
           });
         });
@@ -339,7 +342,7 @@ export default function (): void {
             buttonComponent.disabled = false;
             buttonComponent.type = DEFAULT_BUTTON_TYPES.danger;
             navService.currentPage.readyToComplete = true;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(false);
           });
 
@@ -347,7 +350,7 @@ export default function (): void {
             buttonComponent.disabled = false;
             buttonComponent.type = CUSTOM_BUTTON_TYPES.danger;
             navService.currentPage.readyToComplete = true;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(false);
           });
 
@@ -355,7 +358,7 @@ export default function (): void {
             buttonComponent.disabled = false;
             buttonComponent.type = DEFAULT_BUTTON_TYPES.danger;
             navService.currentPage.readyToComplete = false;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(true);
           });
 
@@ -363,7 +366,7 @@ export default function (): void {
             buttonComponent.disabled = false;
             buttonComponent.type = CUSTOM_BUTTON_TYPES.danger;
             navService.currentPage.readyToComplete = false;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(true);
           });
 
@@ -373,7 +376,7 @@ export default function (): void {
               buttonComponent.disabled = true;
               buttonComponent.type = DEFAULT_BUTTON_TYPES.danger;
               navService.currentPage.readyToComplete = true;
-              fixture.detectChanges();
+              renderFixture(fixture);
               expect(buttonComponent.isDisabled).toBe(true);
             }
           );
@@ -385,7 +388,7 @@ export default function (): void {
               buttonComponent.disabled = true;
               buttonComponent.type = CUSTOM_BUTTON_TYPES.danger;
               navService.currentPage.readyToComplete = true;
-              fixture.detectChanges();
+              renderFixture(fixture);
               expect(buttonComponent.isDisabled).toBe(true);
             }
           );
@@ -397,7 +400,7 @@ export default function (): void {
             buttonComponent.type = DEFAULT_BUTTON_TYPES.next;
             navService.currentPage.readyToComplete = true;
             navService.currentPageIsLast = false;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(false);
           });
 
@@ -408,7 +411,7 @@ export default function (): void {
               buttonComponent.type = CUSTOM_BUTTON_TYPES.next;
               navService.currentPage.readyToComplete = true;
               navService.currentPageIsLast = false;
-              fixture.detectChanges();
+              renderFixture(fixture);
               expect(buttonComponent.isDisabled).toBe(false);
             }
           );
@@ -418,7 +421,7 @@ export default function (): void {
             buttonComponent.type = DEFAULT_BUTTON_TYPES.next;
             navService.currentPage.readyToComplete = true;
             navService.currentPageIsLast = true;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(true);
           });
 
@@ -427,7 +430,7 @@ export default function (): void {
             buttonComponent.type = CUSTOM_BUTTON_TYPES.next;
             navService.currentPage.readyToComplete = true;
             navService.currentPageIsLast = true;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(true);
           });
 
@@ -436,7 +439,7 @@ export default function (): void {
             buttonComponent.type = DEFAULT_BUTTON_TYPES.next;
             navService.currentPage.readyToComplete = false;
             navService.currentPageIsLast = false;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(true);
           });
 
@@ -445,7 +448,7 @@ export default function (): void {
             buttonComponent.type = CUSTOM_BUTTON_TYPES.next;
             navService.currentPage.readyToComplete = false;
             navService.currentPageIsLast = false;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(true);
           });
 
@@ -457,7 +460,7 @@ export default function (): void {
               buttonComponent.type = DEFAULT_BUTTON_TYPES.next;
               navService.currentPage.readyToComplete = true;
               navService.currentPageIsLast = false;
-              fixture.detectChanges();
+              renderFixture(fixture);
               expect(buttonComponent.isDisabled).toBe(true);
             }
           );
@@ -470,7 +473,7 @@ export default function (): void {
               buttonComponent.type = CUSTOM_BUTTON_TYPES.next;
               navService.currentPage.readyToComplete = true;
               navService.currentPageIsLast = false;
-              fixture.detectChanges();
+              renderFixture(fixture);
               expect(buttonComponent.isDisabled).toBe(true);
             }
           );
@@ -482,7 +485,7 @@ export default function (): void {
             buttonComponent.type = DEFAULT_BUTTON_TYPES.finish;
             navService.currentPage.readyToComplete = true;
             navService.currentPageIsLast = true;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(false);
           });
 
@@ -493,7 +496,7 @@ export default function (): void {
               buttonComponent.type = CUSTOM_BUTTON_TYPES.finish;
               navService.currentPage.readyToComplete = true;
               navService.currentPageIsLast = true;
-              fixture.detectChanges();
+              renderFixture(fixture);
               expect(buttonComponent.isDisabled).toBe(false);
             }
           );
@@ -503,7 +506,7 @@ export default function (): void {
             buttonComponent.type = DEFAULT_BUTTON_TYPES.finish;
             navService.currentPage.readyToComplete = true;
             navService.currentPageIsLast = false;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(true);
           });
 
@@ -512,7 +515,7 @@ export default function (): void {
             buttonComponent.type = CUSTOM_BUTTON_TYPES.finish;
             navService.currentPage.readyToComplete = true;
             navService.currentPageIsLast = false;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(true);
           });
 
@@ -521,7 +524,7 @@ export default function (): void {
             buttonComponent.type = DEFAULT_BUTTON_TYPES.finish;
             navService.currentPage.readyToComplete = false;
             navService.currentPageIsLast = true;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(true);
           });
 
@@ -530,7 +533,7 @@ export default function (): void {
             buttonComponent.type = CUSTOM_BUTTON_TYPES.finish;
             navService.currentPage.readyToComplete = false;
             navService.currentPageIsLast = true;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(true);
           });
 
@@ -542,7 +545,7 @@ export default function (): void {
               buttonComponent.type = DEFAULT_BUTTON_TYPES.finish;
               navService.currentPage.readyToComplete = true;
               navService.currentPageIsLast = true;
-              fixture.detectChanges();
+              renderFixture(fixture);
               expect(buttonComponent.isDisabled).toBe(true);
             }
           );
@@ -555,7 +558,7 @@ export default function (): void {
               buttonComponent.type = CUSTOM_BUTTON_TYPES.finish;
               navService.currentPage.readyToComplete = true;
               navService.currentPageIsLast = true;
-              fixture.detectChanges();
+              renderFixture(fixture);
               expect(buttonComponent.isDisabled).toBe(true);
             }
           );
@@ -565,14 +568,14 @@ export default function (): void {
           it('returns false for button of unknown type that is not set to disabled', () => {
             buttonComponent.disabled = false;
             buttonComponent.type = 'custom-jabberwocky';
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(false);
           });
 
           it('returns true for button of unknown type that is set to disabled', () => {
             buttonComponent.disabled = true;
             buttonComponent.type = 'custom-jabberwocky';
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isDisabled).toBe(true);
           });
         });
@@ -582,7 +585,7 @@ export default function (): void {
         describe('hidden override', () => {
           it('returns true if hidden', () => {
             buttonComponent.hidden = true;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(true);
           });
         });
@@ -591,28 +594,28 @@ export default function (): void {
           it('always returns false for cancel buttons that are not explicitly hidden', () => {
             buttonComponent.hidden = false;
             buttonComponent.type = DEFAULT_BUTTON_TYPES.cancel;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(false);
           });
 
           it('always returns false for custom-cancel buttons that are not explicitly hidden', () => {
             buttonComponent.hidden = false;
             buttonComponent.type = CUSTOM_BUTTON_TYPES.cancel;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(false);
           });
 
           it('returns true for cancel buttons that are explicitly hidden', () => {
             buttonComponent.hidden = true;
             buttonComponent.type = DEFAULT_BUTTON_TYPES.cancel;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(true);
           });
 
           it('always returns true for custom-cancel buttons that are explicitly hidden', () => {
             buttonComponent.hidden = true;
             buttonComponent.type = CUSTOM_BUTTON_TYPES.cancel;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(true);
           });
         });
@@ -622,7 +625,7 @@ export default function (): void {
             buttonComponent.hidden = false;
             buttonComponent.type = DEFAULT_BUTTON_TYPES.previous;
             navService.currentPageIsFirst = false;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(false);
           });
 
@@ -630,7 +633,7 @@ export default function (): void {
             buttonComponent.hidden = false;
             buttonComponent.type = CUSTOM_BUTTON_TYPES.previous;
             navService.currentPageIsFirst = false;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(false);
           });
 
@@ -638,7 +641,7 @@ export default function (): void {
             buttonComponent.hidden = false;
             buttonComponent.type = DEFAULT_BUTTON_TYPES.previous;
             navService.currentPageIsFirst = true;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(true);
           });
 
@@ -646,7 +649,7 @@ export default function (): void {
             buttonComponent.hidden = false;
             buttonComponent.type = CUSTOM_BUTTON_TYPES.previous;
             navService.currentPageIsFirst = true;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(true);
           });
 
@@ -657,7 +660,7 @@ export default function (): void {
               buttonComponent.hidden = true;
               buttonComponent.type = DEFAULT_BUTTON_TYPES.previous;
               navService.currentPageIsFirst = false;
-              fixture.detectChanges();
+              renderFixture(fixture);
               expect(buttonComponent.isHidden).toBe(true);
             }
           );
@@ -669,7 +672,7 @@ export default function (): void {
               buttonComponent.hidden = true;
               buttonComponent.type = CUSTOM_BUTTON_TYPES.previous;
               navService.currentPageIsFirst = false;
-              fixture.detectChanges();
+              renderFixture(fixture);
               expect(buttonComponent.isHidden).toBe(true);
             }
           );
@@ -680,7 +683,7 @@ export default function (): void {
             buttonComponent.hidden = false;
             buttonComponent.type = DEFAULT_BUTTON_TYPES.next;
             navService.currentPageIsLast = false;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(false);
           });
 
@@ -688,7 +691,7 @@ export default function (): void {
             buttonComponent.hidden = false;
             buttonComponent.type = CUSTOM_BUTTON_TYPES.next;
             navService.currentPageIsLast = false;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(false);
           });
 
@@ -696,7 +699,7 @@ export default function (): void {
             buttonComponent.hidden = false;
             buttonComponent.type = DEFAULT_BUTTON_TYPES.next;
             navService.currentPageIsLast = true;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(true);
           });
 
@@ -704,7 +707,7 @@ export default function (): void {
             buttonComponent.hidden = false;
             buttonComponent.type = CUSTOM_BUTTON_TYPES.next;
             navService.currentPageIsLast = true;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(true);
           });
 
@@ -712,7 +715,7 @@ export default function (): void {
             buttonComponent.hidden = true;
             buttonComponent.type = DEFAULT_BUTTON_TYPES.next;
             navService.currentPageIsLast = false;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(true);
           });
 
@@ -722,7 +725,7 @@ export default function (): void {
               buttonComponent.hidden = true;
               buttonComponent.type = CUSTOM_BUTTON_TYPES.next;
               navService.currentPageIsLast = false;
-              fixture.detectChanges();
+              renderFixture(fixture);
               expect(buttonComponent.isHidden).toBe(true);
             }
           );
@@ -733,7 +736,7 @@ export default function (): void {
             buttonComponent.hidden = false;
             buttonComponent.type = DEFAULT_BUTTON_TYPES.finish;
             navService.currentPageIsLast = true;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(false);
           });
 
@@ -741,7 +744,7 @@ export default function (): void {
             buttonComponent.hidden = false;
             buttonComponent.type = CUSTOM_BUTTON_TYPES.finish;
             navService.currentPageIsLast = true;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(false);
           });
 
@@ -749,7 +752,7 @@ export default function (): void {
             buttonComponent.hidden = false;
             buttonComponent.type = DEFAULT_BUTTON_TYPES.finish;
             navService.currentPageIsLast = false;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(true);
           });
 
@@ -757,7 +760,7 @@ export default function (): void {
             buttonComponent.hidden = false;
             buttonComponent.type = CUSTOM_BUTTON_TYPES.finish;
             navService.currentPageIsLast = false;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(true);
           });
 
@@ -765,7 +768,7 @@ export default function (): void {
             buttonComponent.hidden = true;
             buttonComponent.type = DEFAULT_BUTTON_TYPES.finish;
             navService.currentPageIsLast = true;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(true);
           });
 
@@ -775,7 +778,7 @@ export default function (): void {
               buttonComponent.hidden = true;
               buttonComponent.type = CUSTOM_BUTTON_TYPES.finish;
               navService.currentPageIsLast = true;
-              fixture.detectChanges();
+              renderFixture(fixture);
               expect(buttonComponent.isHidden).toBe(true);
             }
           );
@@ -785,14 +788,14 @@ export default function (): void {
           it('returns false for button of unknown type that is not set to be hidden', () => {
             buttonComponent.hidden = false;
             buttonComponent.type = 'onoez';
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(false);
           });
 
           it('returns true for button of unknown type that is set to be hidden', () => {
             buttonComponent.hidden = true;
             buttonComponent.type = 'onoez';
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(buttonComponent.isHidden).toBe(true);
           });
         });
@@ -804,11 +807,13 @@ export default function (): void {
       let fixture: ComponentFixture<any>;
       let buttonDebugEl: DebugElement;
       let buttonComponent: ClrWizardButton;
-      const navService = new NavServiceMock();
-      const buttonHub = new ButtonHubMock();
+      let navService: NavServiceMock;
+      let buttonHub: ButtonHubMock;
       let myTestComponent: ViewTestComponent;
 
       beforeEach(() => {
+        navService = new NavServiceMock();
+        buttonHub = new ButtonHubMock();
         navService.currentPage = new MockPage(0);
 
         TestBed.configureTestingModule({
@@ -821,7 +826,7 @@ export default function (): void {
         });
         fixture = TestBed.createComponent(ViewTestComponent);
         buttonHub.buttonsReady = true;
-        fixture.detectChanges();
+        renderFixture(fixture);
         buttonDebugEl = fixture.debugElement.query(By.directive(ClrWizardButton));
         buttonComponent = buttonDebugEl.componentInstance;
         myTestComponent = fixture.componentInstance;
@@ -834,37 +839,37 @@ export default function (): void {
       describe('type input', () => {
         it('should reflect initted type', () => {
           // button is initted with no type
-          expect(buttonComponent.isPrimaryAction).toBe(false, 'empty type not primary');
-          expect(buttonComponent.isDanger).toBe(false, 'empty type not danger');
-          expect(buttonComponent.isPrevious).toBe(false, 'empty type not previous');
-          expect(buttonComponent.isCancel).toBe(false, 'empty type not cancel');
-          expect(buttonComponent.type).toBe('', 'button type should reflect input value');
+          expect(buttonComponent.isPrimaryAction, 'empty type not primary').toBe(false);
+          expect(buttonComponent.isDanger, 'empty type not danger').toBe(false);
+          expect(buttonComponent.isPrevious, 'empty type not previous').toBe(false);
+          expect(buttonComponent.isCancel, 'empty type not cancel').toBe(false);
+          expect(buttonComponent.type, 'button type should reflect input value').toBe('');
         });
 
         it('should reflect input type it is set to', () => {
           myTestComponent.btnType = 'danger';
-          fixture.detectChanges();
-          expect(buttonComponent.type).toBe('danger', 'button type should reflect input value');
-          expect(buttonComponent.isPrimaryAction).toBe(true, 'danger type is primary');
+          renderFixture(fixture);
+          expect(buttonComponent.type, 'button type should reflect input value').toBe('danger');
+          expect(buttonComponent.isPrimaryAction, 'danger type is primary').toBe(true);
         });
 
         it('should update type as required', () => {
           myTestComponent.btnType = 'next';
-          fixture.detectChanges();
-          expect(buttonComponent.type).toBe('next', 'button type should reflect input value');
-          expect(buttonComponent.isPrimaryAction).toBe(true, 'next type is primary');
+          renderFixture(fixture);
+          expect(buttonComponent.type, 'button type should reflect input value').toBe('next');
+          expect(buttonComponent.isPrimaryAction, 'next type is primary').toBe(true);
 
           myTestComponent.btnType = 'danger';
-          fixture.detectChanges();
-          expect(buttonComponent.type).toBe('danger', 'button type should reflect input value');
-          expect(buttonComponent.isPrimaryAction).toBe(true, 'danger type is primary');
+          renderFixture(fixture);
+          expect(buttonComponent.type, 'button type should reflect input value').toBe('danger');
+          expect(buttonComponent.isPrimaryAction, 'danger type is primary').toBe(true);
         });
 
         it("should not error out if type isn't truthy", () => {
           myTestComponent.btnType = null;
-          fixture.detectChanges();
-          expect(buttonComponent.type).toBe(null, 'button type should reflect input');
-          expect(buttonComponent.isPrimaryAction).toBe(false, 'null button type should not be primary');
+          renderFixture(fixture);
+          expect(buttonComponent.type, 'button type should reflect input').toBe(null);
+          expect(buttonComponent.isPrimaryAction, 'null button type should not be primary').toBe(false);
         });
       });
 
@@ -876,25 +881,25 @@ export default function (): void {
 
         it('should update disabled value', () => {
           myTestComponent.disableBtn = true;
-          fixture.detectChanges();
-          expect(buttonComponent.isDisabled).toBe(true, 'updates when set');
+          renderFixture(fixture);
+          expect(buttonComponent.isDisabled, 'updates when set').toBe(true);
           myTestComponent.disableBtn = false;
-          fixture.detectChanges();
-          expect(buttonComponent.isDisabled).toBe(false, 'updates when set back');
+          renderFixture(fixture);
+          expect(buttonComponent.isDisabled, 'updates when set back').toBe(false);
         });
 
         it('should render properly even with ngIf is applied', () => {
           // Test when buttons are not ready
           buttonHub.buttonsReady = false;
-          expect(buttonComponent.isDisabled).toBe(false, "should always be false if buttons aren't ready");
+          expect(buttonComponent.isDisabled, "should always be false if buttons aren't ready").toBe(false);
           // Test with buttons ready.
           buttonHub.buttonsReady = true;
-          fixture.detectChanges();
-          expect(buttonComponent.isDisabled).toBe(false, 'should be the default value');
+          renderFixture(fixture);
+          expect(buttonComponent.isDisabled, 'should be the default value').toBe(false);
           // Test setting to hide
           myTestComponent.disableBtn = true;
-          fixture.detectChanges();
-          expect(buttonComponent.isDisabled).toBe(true, 'should now be disabled');
+          renderFixture(fixture);
+          expect(buttonComponent.isDisabled, 'should now be disabled').toBe(true);
         });
       });
 
@@ -906,67 +911,67 @@ export default function (): void {
 
         it('should update hidden value', () => {
           myTestComponent.hideBtn = true;
-          fixture.detectChanges();
-          expect(buttonComponent.isHidden).toBe(true, 'updates when set');
+          renderFixture(fixture);
+          expect(buttonComponent.isHidden, 'updates when set').toBe(true);
           myTestComponent.hideBtn = false;
-          fixture.detectChanges();
-          expect(buttonComponent.isHidden).toBe(false, 'updates when set back');
+          renderFixture(fixture);
+          expect(buttonComponent.isHidden, 'updates when set back').toBe(false);
         });
 
         it('binds to the host even with ngIf is applied', () => {
           // Test when buttons are not ready
           buttonHub.buttonsReady = false;
-          expect(buttonComponent.isHidden).toBe(false, "should always be false if buttons aren't ready");
+          expect(buttonComponent.isHidden, "should always be false if buttons aren't ready").toBe(false);
           // Test with buttons ready.
           buttonHub.buttonsReady = true;
-          fixture.detectChanges();
-          expect(buttonComponent.isHidden).toBe(false, 'should be the default value');
+          renderFixture(fixture);
+          expect(buttonComponent.isHidden, 'should be the default value').toBe(false);
           // Test setting to hide
           myTestComponent.hideBtn = true;
-          fixture.detectChanges();
-          expect(buttonComponent.isHidden).toBe(true, 'should now be hidden');
+          renderFixture(fixture);
+          expect(buttonComponent.isHidden, 'should now be hidden').toBe(true);
         });
       });
 
       describe('button clicked output', () => {
         it('should not emit event on disabled button', () => {
           myTestComponent.disableBtn = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           buttonComponent.click();
-          expect(myTestComponent.clickCount).toBe(0, 'does not emit click event when set to disabled');
+          expect(myTestComponent.clickCount, 'does not emit click event when set to disabled').toBe(0);
 
           myTestComponent.disableBtn = false;
           navService.currentPage.readyToComplete = false;
           myTestComponent.btnType = 'next';
-          fixture.detectChanges();
-          expect(buttonComponent.isDisabled).toBe(true, 'verify that circumstantial disablement occurs');
+          renderFixture(fixture);
+          expect(buttonComponent.isDisabled, 'verify that circumstantial disablement occurs').toBe(true);
           buttonComponent.click();
-          expect(myTestComponent.clickCount).toBe(0, 'does not emit click event when set to disabled');
+          expect(myTestComponent.clickCount, 'does not emit click event when set to disabled').toBe(0);
         });
 
         it('should emit event as expected', () => {
           myTestComponent.btnType = 'ohai';
-          fixture.detectChanges();
-          expect(buttonComponent.type).toBe('ohai', 'verify custom button type is set');
+          renderFixture(fixture);
+          expect(buttonComponent.type, 'verify custom button type is set').toBe('ohai');
           buttonComponent.click();
-          expect(myTestComponent.clickCount).toBe(1, 'emits click event as expected');
-          expect(myTestComponent.lastBtnClicked).toBe('ohai', 'sends button type with event');
+          expect(myTestComponent.clickCount, 'emits click event as expected').toBe(1);
+          expect(myTestComponent.lastBtnClicked, 'sends button type with event').toBe('ohai');
 
           myTestComponent.disableBtn = false;
           navService.currentPage.readyToComplete = true;
           myTestComponent.btnType = 'next';
-          fixture.detectChanges();
-          expect(buttonComponent.isDisabled).toBe(false, 'verify button enabled state');
+          renderFixture(fixture);
+          expect(buttonComponent.isDisabled, 'verify button enabled state').toBe(false);
           buttonComponent.click();
-          expect(myTestComponent.clickCount).toBe(2, 'emits click event when circumstances allow');
-          expect(myTestComponent.lastBtnClicked).toBe('next', 'sends button type with event');
+          expect(myTestComponent.clickCount, 'emits click event when circumstances allow').toBe(2);
+          expect(myTestComponent.lastBtnClicked, 'sends button type with event').toBe('next');
 
           myTestComponent.btnType = 'danger';
-          fixture.detectChanges();
+          renderFixture(fixture);
           navService.currentPage.readyToComplete = false;
           buttonComponent.click();
-          expect(myTestComponent.clickCount).toBe(2, 'does not emit click event when' + ' circumstances do not allow');
-          expect(myTestComponent.lastBtnClicked).not.toBe('danger', 'did not send button type');
+          expect(myTestComponent.clickCount, 'does not emit click event when' + ' circumstances do not allow').toBe(2);
+          expect(myTestComponent.lastBtnClicked, 'did not send button type').not.toBe('danger');
         });
       });
     });
@@ -975,13 +980,15 @@ export default function (): void {
       let fixture: ComponentFixture<any>;
       let buttonDebugEl: DebugElement;
       let buttonComponent: ClrWizardButton;
-      const navService = new NavServiceMock();
-      const buttonHub = new ButtonHubMock();
+      let navService: NavServiceMock;
+      let buttonHub: ButtonHubMock;
       let myTestComponent: ViewTestComponent;
       let buttonElement: HTMLElement;
       let actualButton: HTMLElement;
 
       beforeEach(() => {
+        navService = new NavServiceMock();
+        buttonHub = new ButtonHubMock();
         navService.currentPage = new MockPage(0);
 
         TestBed.configureTestingModule({
@@ -994,7 +1001,7 @@ export default function (): void {
         });
         fixture = TestBed.createComponent(ViewTestComponent);
         buttonHub.buttonsReady = true;
-        fixture.detectChanges();
+        renderFixture(fixture);
         buttonDebugEl = fixture.debugElement.query(By.directive(ClrWizardButton));
         buttonComponent = buttonDebugEl.componentInstance;
         buttonElement = buttonDebugEl.nativeElement;
@@ -1009,85 +1016,85 @@ export default function (): void {
       describe('Button types render as expected', () => {
         it('cancel buttons should have .btn-link class', () => {
           myTestComponent.btnType = 'cancel';
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(actualButton.classList.contains('btn-link')).toBe(true);
         });
 
         it('cancel buttons should have .clr-wizard-btn--tertiary class', () => {
           myTestComponent.btnType = 'cancel';
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(actualButton.classList.contains('clr-wizard-btn--tertiary')).toBe(true);
         });
 
         it('previous buttons should have .btn-outline class', () => {
           myTestComponent.btnType = 'previous';
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(actualButton.classList.contains('btn-outline')).toBe(true);
         });
 
         it('previous buttons should have .clr-wizard-btn--secondary class', () => {
           myTestComponent.btnType = 'previous';
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(actualButton.classList.contains('clr-wizard-btn--secondary')).toBe(true);
         });
 
         it('next buttons should have .btn-primary class', () => {
           myTestComponent.btnType = 'next';
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(actualButton.classList.contains('btn-primary')).toBe(true);
         });
 
         it('next buttons should have .clr-wizard-btn--primary class', () => {
           myTestComponent.btnType = 'next';
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(actualButton.classList.contains('clr-wizard-btn--primary')).toBe(true);
         });
 
         it('finish buttons should have .btn-primary class', () => {
           myTestComponent.btnType = 'finish';
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(actualButton.classList.contains('btn-primary')).toBe(true);
         });
 
         it('finish buttons should have .clr-wizard-btn--primary class', () => {
           myTestComponent.btnType = 'finish';
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(actualButton.classList.contains('clr-wizard-btn--primary')).toBe(true);
         });
 
         it('finish buttons should have .btn-success class', () => {
           myTestComponent.btnType = 'finish';
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(actualButton.classList.contains('btn-success')).toBe(true);
         });
 
         it('danger buttons should have .btn-primary class', () => {
           myTestComponent.btnType = 'danger';
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(actualButton.classList.contains('btn-primary')).toBe(true);
         });
 
         it('danger buttons should have .clr-wizard-btn--primary class', () => {
           myTestComponent.btnType = 'danger';
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(actualButton.classList.contains('clr-wizard-btn--primary')).toBe(true);
         });
 
         it('danger buttons should have .btn-danger class', () => {
           myTestComponent.btnType = 'danger';
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(actualButton.classList.contains('btn-danger')).toBe(true);
         });
 
         it('disabled buttons should have .disabled class', () => {
           myTestComponent.disableBtn = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(actualButton.classList.contains('disabled')).toBe(true);
         });
 
         it('disabled buttons should have disabled attribute set', () => {
           myTestComponent.disableBtn = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(actualButton.getAttribute('disabled')).toBe('');
         });
 
@@ -1103,7 +1110,7 @@ export default function (): void {
 
         it('hidden button wrappers should have aria-hidden set to true', () => {
           myTestComponent.hideBtn = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           const myVal = buttonElement.getAttribute('aria-hidden');
           expect(myVal).toBe('true');
         });
@@ -1117,29 +1124,33 @@ export default function (): void {
         it('projected content should update', () => {
           expect(buttonElement.textContent.trim().toLowerCase()).toBe('hello mundo');
           myTestComponent.projector = 'world';
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(buttonElement.textContent.trim().toLowerCase()).toBe('hello world');
         });
       });
 
       describe('Buttons emit as expected', () => {
         it('enabled buttons should register a click with the buttonService', () => {
-          const buttonHubSpy = spyOn(buttonComponent.buttonService, 'buttonClicked');
+          const buttonHubSpy = vi
+            .spyOn(buttonComponent.buttonService, 'buttonClicked')
+            .mockImplementation(() => undefined);
           myTestComponent.btnType = 'ohai';
           myTestComponent.disableBtn = false;
-          fixture.detectChanges();
+          renderFixture(fixture);
           buttonComponent.click();
           expect(buttonHubSpy).toHaveBeenCalledWith('ohai');
         });
 
         it('disabled buttons should NOT register a click with the buttonService', () => {
-          const buttonHubSpy = spyOn(buttonComponent.buttonService, 'buttonClicked');
+          const buttonHubSpy = vi
+            .spyOn(buttonComponent.buttonService, 'buttonClicked')
+            .mockImplementation(() => undefined);
           myTestComponent.disableBtn = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           buttonComponent.click();
           expect(buttonHubSpy).not.toHaveBeenCalled();
         });
       });
     });
   });
-}
+});

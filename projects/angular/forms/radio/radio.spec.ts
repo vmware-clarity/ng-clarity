@@ -10,7 +10,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ClrRadio } from './radio';
 import { ClrRadioWrapper } from './radio-wrapper';
-import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
+import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control';
 
 @Component({
   template: `<input type="radio" clrRadio />`,
@@ -41,10 +41,10 @@ class ReactiveTest {
   });
 }
 
-export default function (): void {
+describe('Radio component', () => {
   describe('ClrRadio directive', () => {
     ControlStandaloneSpec(StandaloneUseTest);
     TemplateDrivenSpec(ClrRadioWrapper, ClrRadio, TemplateDrivenTest, 'clr-radio');
     ReactiveSpec(ClrRadioWrapper, ClrRadio, ReactiveTest, 'clr-radio');
   });
-}
+});

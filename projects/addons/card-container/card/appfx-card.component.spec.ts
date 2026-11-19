@@ -22,6 +22,7 @@ import {
 import { AppfxTranslateModule } from '@clr/addons/translate';
 import { ClrIcon } from '@clr/angular/icon';
 import { enableCssAnimations } from '@clr/angular/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { AppfxCardInternal } from '../appfx-card-container.interface';
 import { AppfxCardComponent } from './appfx-card.component';
@@ -55,8 +56,8 @@ describe('AppfxCardComponent', () => {
     layoutService = TestBed.inject(LayoutService);
     a11yService = TestBed.inject(A11yService);
     dragDropService = TestBed.inject(DragDropService);
-    component.card = sampleCards[0];
-    component.dropGroup = 'container-1';
+    fixture.componentRef.setInput('card', sampleCards[0]);
+    fixture.componentRef.setInput('dropGroup', 'container-1');
     zoomLevelService = TestBed.inject(ZoomLevelService);
   });
 
@@ -64,59 +65,57 @@ describe('AppfxCardComponent', () => {
     expect(component).toBeDefined();
   });
 
-  it('should throw error when card id is missing', () => {
-    component.card = {} as AppfxCardInternal;
-    expect(() => {
-      component.ngOnInit();
-    }).toThrowError('Missing Input property for card - id');
+  it('should throw error when card id is missing', async () => {
+    fixture.componentRef.setInput('card', {} as AppfxCardInternal);
+    await expect(fixture.whenStable()).rejects.toThrowError('Missing Input property for card - id');
   });
 
-  it('should create component card when id and componentClass is present', () => {
+  it('should create component card when id and componentClass is present', async () => {
     const cardViewContainer = (component as any).cardViewContainer;
-    spyOn(cardViewContainer, 'createComponent').and.callThrough();
+    vi.spyOn(cardViewContainer, 'createComponent');
 
-    component.card = {
+    fixture.componentRef.setInput('card', {
       id: sampleCardId,
       componentClass: SampleCardComponent,
       context: {},
-    } as unknown as AppfxCardInternal;
-    component.ngOnInit();
+    } as unknown as AppfxCardInternal);
+    await fixture.whenStable();
 
     expect(cardViewContainer.createComponent).toHaveBeenCalledWith(SampleCardComponent);
   });
 
-  it('should not create component card when id and componentClass is not present', () => {
+  it('should not create component card when id and componentClass is not present', async () => {
     const cardViewContainer = (component as any).cardViewContainer;
-    spyOn(cardViewContainer, 'createComponent').and.callThrough();
+    vi.spyOn(cardViewContainer, 'createComponent');
 
-    component.card = { id: sampleCardId } as AppfxCardInternal;
-    component.ngOnInit();
+    fixture.componentRef.setInput('card', { id: sampleCardId } as AppfxCardInternal);
+    await fixture.whenStable();
 
     expect(cardViewContainer.createComponent).not.toHaveBeenCalled();
   });
 
   it('when called isSelectedCard should call a11yService isSelectedCard', () => {
-    spyOn(a11yService, 'isSelected').and.callThrough();
+    vi.spyOn(a11yService, 'isSelected');
     const isSelected = component.isSelected;
     expect(isSelected).toBeFalsy();
     expect(a11yService.isSelected).toHaveBeenCalledWith(sampleCardId);
   });
 
   it('when called isDraggableOver should call a11yService isDraggableOver', () => {
-    spyOn(a11yService, 'isDraggableOver').and.callThrough();
+    vi.spyOn(a11yService, 'isDraggableOver');
     const isDraggableOver = component.isDraggableOver;
     expect(isDraggableOver).toBeFalsy();
     expect(a11yService.isDraggableOver).toHaveBeenCalledWith(sampleCardId);
   });
 
   it('when called ngAfterViewInit should call layoutService updateCardSize to update card sizes', () => {
-    spyOn(layoutService, 'updateCardSize').and.callThrough();
+    vi.spyOn(layoutService, 'updateCardSize');
     component.ngAfterViewInit();
     expect(layoutService.updateCardSize).toHaveBeenCalled();
   });
 
-  it('when zoom level is change and cardZoomSize is define the updateCardSize method of layoutService is called', () => {
-    component.card = {
+  it('when zoom level is change and cardZoomSize is define the updateCardSize method of layoutService is called', async () => {
+    fixture.componentRef.setInput('card', {
       id: sampleCardId,
       componentClass: SampleCardComponent,
       context: {},
@@ -128,15 +127,15 @@ describe('AppfxCardComponent', () => {
           unitHeight: 5,
         },
       },
-    } as unknown as AppfxCardInternal;
-    component.ngOnInit();
-    spyOn(layoutService, 'updateCardSize').and.callThrough();
+    } as unknown as AppfxCardInternal);
+    await fixture.whenStable();
+    vi.spyOn(layoutService, 'updateCardSize');
     zoomLevelService['resizeSubject'].next(ZoomLevel.x2);
     expect(layoutService.updateCardSize).toHaveBeenCalled();
   });
 
-  it('when zoom level is change and cardZoomSize is not define the updateCardSize method of layoutService is not called', () => {
-    component.card = {
+  it('when zoom level is change and cardZoomSize is not define the updateCardSize method of layoutService is not called', async () => {
+    fixture.componentRef.setInput('card', {
       id: sampleCardId,
       componentClass: SampleCardComponent,
       context: {},
@@ -148,27 +147,27 @@ describe('AppfxCardComponent', () => {
           unitHeight: 1,
         },
       },
-    } as unknown as AppfxCardInternal;
-    component.ngOnInit();
-    spyOn(layoutService, 'updateCardSize').and.callThrough();
+    } as unknown as AppfxCardInternal);
+    await fixture.whenStable();
+    vi.spyOn(layoutService, 'updateCardSize');
     zoomLevelService['resizeSubject'].next(ZoomLevel.x2);
     expect(layoutService.updateCardSize).not.toHaveBeenCalled();
   });
 
   it('when called onDragStart should call dragDropService onDragStart', () => {
-    spyOn(dragDropService, 'onDragStart').and.callThrough();
+    vi.spyOn(dragDropService, 'onDragStart');
     component.onDragStart();
     expect(dragDropService.onDragStart).toHaveBeenCalledWith(sampleCardId);
   });
 
   it('when called onDrop should call dragDropService onDragDrop', () => {
-    spyOn(dragDropService, 'onDragDrop').and.callThrough();
+    vi.spyOn(dragDropService, 'onDragDrop');
     component.onDrop();
     expect(dragDropService.onDragDrop).toHaveBeenCalledWith(sampleCardId);
   });
 
   it('when called selectCard should call a11yService selectCard', () => {
-    spyOn(a11yService, 'selectCard').and.callThrough();
+    vi.spyOn(a11yService, 'selectCard');
     const keyEvent: any = document.createEvent('CustomEvent');
     keyEvent.key = a11ykeys.enter; // Enter Key
     keyEvent.initEvent('keyup', true, true);
@@ -177,7 +176,7 @@ describe('AppfxCardComponent', () => {
   });
 
   it('when called moveDropPositionBackwards should call a11yService moveDropPosition', () => {
-    spyOn(a11yService, 'moveDropPosition').and.callThrough();
+    vi.spyOn(a11yService, 'moveDropPosition');
     const keyEvent: any = document.createEvent('CustomEvent');
     keyEvent.key = a11ykeys.arrowLeft; // Enter Key
     keyEvent.initEvent('keyup', true, true);
@@ -186,7 +185,7 @@ describe('AppfxCardComponent', () => {
   });
 
   it('when called moveDropPositionForwards should call a11yService moveDropPosition', () => {
-    spyOn(a11yService, 'moveDropPosition').and.callThrough();
+    vi.spyOn(a11yService, 'moveDropPosition');
     const keyEvent: any = document.createEvent('CustomEvent');
     keyEvent.key = a11ykeys.arrowRight; // Enter Key
     keyEvent.initEvent('keyup', true, true);
@@ -195,7 +194,7 @@ describe('AppfxCardComponent', () => {
   });
 
   it('when called onDropHandleKeyUp should call a11yService selectCard', () => {
-    spyOn(a11yService, 'selectCard').and.callFake(() => {});
+    vi.spyOn(a11yService, 'selectCard').mockImplementation(() => {});
     const keyEvent = new KeyboardEvent('keyup', {
       key: 'Enter',
     });
@@ -225,9 +224,9 @@ describe('AppfxCardComponent animations', () => {
       animationsEnabled: true,
     });
     const fixture = TestBed.createComponent(AppfxCardComponent);
-    fixture.componentInstance.card = sampleCards[0];
-    fixture.componentInstance.dropGroup = 'container-1';
-    fixture.detectChanges();
+    fixture.componentRef.setInput('card', sampleCards[0]);
+    fixture.componentRef.setInput('dropGroup', 'container-1');
+    renderFixture(fixture);
     return fixture.nativeElement.querySelector('.droppable');
   }
 

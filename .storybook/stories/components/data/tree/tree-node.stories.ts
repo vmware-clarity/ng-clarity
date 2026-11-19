@@ -50,7 +50,7 @@ const meta = {
       control: { type: 'inline-radio' },
       options: ['not selectable', 'UNSELECTED', 'INDETERMINATE', 'SELECTED'],
       mapping: {
-        'not selectable': undefined,
+        'not selectable': undefined as ClrSelectedState | undefined,
         UNSELECTED: ClrSelectedState.UNSELECTED,
         INDETERMINATE: ClrSelectedState.INDETERMINATE,
         SELECTED: ClrSelectedState.SELECTED,

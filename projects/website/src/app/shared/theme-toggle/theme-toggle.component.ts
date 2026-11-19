@@ -5,7 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, effect, inject, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  effect,
+  inject,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { ClarityIcons, ClrIcon, moonIcon, sunIcon, ThemeType } from '@clr/angular';
 import { Observable, Subscription } from 'rxjs';
 
@@ -73,6 +81,7 @@ export class ThemeToggleComponent implements OnInit, OnDestroy {
   protected readonly themeLockService = inject(ThemeLockService);
 
   private toggleThemeOnSystemThemeChangeSubscription: Subscription | undefined;
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   constructor() {
     ClarityIcons.addIcons(moonIcon, sunIcon);
@@ -109,6 +118,7 @@ export class ThemeToggleComponent implements OnInit, OnDestroy {
   /** Records `theme` as the user's actual preference, then applies it to the DOM. */
   private setTheme(theme: ThemeType) {
     this.theme = theme;
+    this.changeDetectorRef.markForCheck();
 
     this.applyThemeToDom(theme);
   }

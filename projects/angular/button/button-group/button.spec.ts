@@ -10,6 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ClrLoadingModule, ClrLoadingState } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrButton } from './button';
 import { ClrButtonGroupModule } from './button-group.module';
@@ -77,7 +78,7 @@ export class ButtonViewTestComponent {
 })
 class TestButtonWithRouterLinkActiveComponent {}
 
-export default function (): void {
+describe('Button Group Directives', () => {
   describe('Buttons', () => {
     let fixture: ComponentFixture<any>;
     let debugEl: DebugElement;
@@ -108,7 +109,7 @@ export default function (): void {
         });
 
         fixture = TestBed.createComponent(TestButtonComponent);
-        fixture.detectChanges();
+        renderFixture(fixture);
         debugEl = fixture.debugElement;
         componentInstance = debugEl.componentInstance;
       });
@@ -213,7 +214,7 @@ export default function (): void {
       it('updates the button in group service when the inMenu input changes', () => {
         const buttonInGroupService: ButtonInGroupService =
           debugEl.injector.get<ButtonInGroupService>(ButtonInGroupService);
-        spyOn(buttonInGroupService, 'updateButtonGroup');
+        vi.spyOn(buttonInGroupService, 'updateButtonGroup').mockImplementation(() => undefined);
 
         componentInstance.button1.inMenu = true;
         expect(buttonInGroupService.updateButtonGroup).toHaveBeenCalled();
@@ -232,7 +233,7 @@ export default function (): void {
         });
 
         fixture = TestBed.createComponent(ButtonViewTestComponent);
-        fixture.detectChanges();
+        renderFixture(fixture);
         debugEl = fixture.debugElement;
         componentInstance = debugEl.componentInstance;
         buttons = debugEl.nativeElement.querySelectorAll('button');
@@ -278,7 +279,7 @@ export default function (): void {
         expect(buttons[2].querySelector('span.spinner')).toBe(null);
 
         componentInstance.load = false;
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         const newButtons: HTMLButtonElement[] = debugEl.nativeElement.querySelectorAll('button');
         expect(newButtons[0].querySelector('span.spinner')).toBe(null);
@@ -293,27 +294,27 @@ export default function (): void {
         });
 
         fixture = TestBed.createComponent(TestButtonWithRouterLinkActiveComponent);
-        fixture.detectChanges();
+        renderFixture(fixture);
         debugEl = fixture.debugElement;
         componentInstance = debugEl.componentInstance;
         buttons = debugEl.nativeElement.querySelectorAll('button');
       });
 
       it('does not set the routerLinkActive classes when no button is active', async () => {
-        expect(buttons[0].classList.contains('btn-primary')).toBeFalse();
-        expect(buttons[1].classList.contains('btn-primary')).toBeFalse();
-        expect(buttons[2].classList.contains('btn-primary')).toBeFalse();
+        expect(buttons[0].classList.contains('btn-primary')).toBe(false);
+        expect(buttons[1].classList.contains('btn-primary')).toBe(false);
+        expect(buttons[2].classList.contains('btn-primary')).toBe(false);
       });
 
       it('sets the routerLinkActive classes only on the active button', async () => {
         buttons[0].click();
         await fixture.whenStable();
-        fixture.detectChanges();
+        renderFixture(fixture);
 
-        expect(buttons[0].classList.contains('btn-primary')).toBeTrue();
-        expect(buttons[1].classList.contains('btn-primary')).toBeFalse();
-        expect(buttons[2].classList.contains('btn-primary')).toBeFalse();
+        expect(buttons[0].classList.contains('btn-primary')).toBe(true);
+        expect(buttons[1].classList.contains('btn-primary')).toBe(false);
+        expect(buttons[2].classList.contains('btn-primary')).toBe(false);
       });
     });
   });
-}
+});

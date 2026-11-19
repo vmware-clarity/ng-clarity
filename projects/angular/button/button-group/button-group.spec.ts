@@ -7,11 +7,12 @@
 
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrButtonGroup } from './button-group';
 import { ClrButtonGroupModule } from './button-group.module';
 
-export default function (): void {
+describe('Button Group Directives', () => {
   describe('Button Group', () => {
     let fixture: ComponentFixture<any>;
     let compiled: any;
@@ -35,7 +36,7 @@ export default function (): void {
     describe('Buttons in Inline Buttons View Container', () => {
       beforeEach(() => {
         fixture = TestBed.createComponent(BtnGroupInlineViewContainer);
-        fixture.detectChanges();
+        renderFixture(fixture);
         compiled = fixture.nativeElement;
         testBtnGroup = fixture.componentInstance.btnGroup;
       });
@@ -73,7 +74,7 @@ export default function (): void {
     describe('Buttons in both View Containers', () => {
       beforeEach(() => {
         fixture = TestBed.createComponent(BtnGroupBothViewContainersTest);
-        fixture.detectChanges();
+        renderFixture(fixture);
         compiled = fixture.nativeElement;
         testBtnGroup = fixture.componentInstance.btnGroup;
       });
@@ -122,7 +123,7 @@ export default function (): void {
         const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
         dropdownToggle.click();
 
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         const dropdownMenu: HTMLElement = document.querySelector('.dropdown-menu');
         expect(dropdownMenu.children.length).toBe(3);
@@ -137,7 +138,7 @@ export default function (): void {
     describe('Flip Test 1', () => {
       beforeEach(() => {
         fixture = TestBed.createComponent(BtnGroupFlipTest1);
-        fixture.detectChanges();
+        renderFixture(fixture);
         compiled = fixture.nativeElement;
         testBtnGroup = fixture.componentInstance.btnGroup;
       });
@@ -179,7 +180,7 @@ export default function (): void {
       it('re-initializes the buttons correctly when the clrInMenu Input is set to true', () => {
         fixture.componentInstance.flip = true;
 
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         expect(testBtnGroup.inlineButtons.length).toBe(4);
         expect(testBtnGroup.menuButtons.length).toBe(1);
@@ -191,7 +192,7 @@ export default function (): void {
 
         fixture.componentInstance.flip = true;
 
-        fixture.detectChanges();
+        renderFixture(fixture);
         overflow = compiled.querySelector('.btn-group-overflow');
         expect(overflow).not.toBeNull();
       });
@@ -202,7 +203,7 @@ export default function (): void {
 
         fixture.componentInstance.flip = true;
 
-        fixture.detectChanges();
+        renderFixture(fixture);
         overflow = compiled.querySelector('.btn-group-overflow');
         expect(overflow).not.toBeNull();
       });
@@ -210,7 +211,7 @@ export default function (): void {
       it('renders only the inline buttons in the menu view container', () => {
         fixture.componentInstance.flip = true;
 
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         expect(compiled.textContent).toMatch(/Button 1/);
         expect(compiled.textContent).toMatch(/Button 2/);
@@ -221,12 +222,12 @@ export default function (): void {
       it('renders all buttons in the menu view container', () => {
         fixture.componentInstance.flip = true;
 
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
         dropdownToggle.click();
 
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         const overflowMenu: HTMLElement = document.querySelector('.dropdown-menu');
 
@@ -241,7 +242,7 @@ export default function (): void {
     describe('Flip Test 2', () => {
       beforeEach(() => {
         fixture = TestBed.createComponent(BtnGroupFlipTest2);
-        fixture.detectChanges();
+        renderFixture(fixture);
         compiled = fixture.nativeElement;
         testBtnGroup = fixture.componentInstance.btnGroup;
       });
@@ -262,7 +263,7 @@ export default function (): void {
         const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
         dropdownToggle.click();
 
-        fixture.detectChanges();
+        renderFixture(fixture);
         const overflow = document.querySelector('.dropdown-menu');
 
         expect(overflow.textContent).toMatch(/Button 5/);
@@ -284,12 +285,12 @@ export default function (): void {
 
         fixture.componentInstance.flip = true;
 
-        fixture.detectChanges();
+        renderFixture(fixture);
         overflow = compiled.querySelector('.btn-group-overflow');
         expect(overflow).not.toBeNull();
 
         fixture.componentInstance.flip = true;
-        fixture.detectChanges();
+        renderFixture(fixture);
         overflow = compiled.querySelector('.btn-group-overflow');
         expect(overflow).not.toBeNull();
       });
@@ -298,7 +299,7 @@ export default function (): void {
     describe('Content Projection Update', () => {
       beforeEach(() => {
         fixture = TestBed.createComponent(BtnGroupProjectionUpdateTest);
-        fixture.detectChanges();
+        renderFixture(fixture);
         compiled = fixture.nativeElement;
         testBtnGroup = fixture.componentInstance.btnGroup;
       });
@@ -328,7 +329,7 @@ export default function (): void {
       it('hides the overflow when there are no buttons in it', () => {
         fixture.componentInstance.show = false;
 
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         const overflow: HTMLElement = compiled.querySelector('.btn-group-overflow');
         expect(overflow).toBeNull();
@@ -337,14 +338,14 @@ export default function (): void {
       it('shows only the projected buttons', () => {
         fixture.componentInstance.show = false;
 
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         expect(compiled.textContent).toMatch(/Button 1/);
         expect(compiled.textContent).toMatch(/Button 3/);
 
         fixture.componentInstance.show = true;
 
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         expect(compiled.textContent).toMatch(/Button 1/);
         expect(compiled.textContent).toMatch(/Button 2/);
@@ -354,7 +355,7 @@ export default function (): void {
       it('re-initializes the buttons correctly when the content projection is updated', () => {
         fixture.componentInstance.show = false;
 
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         expect(testBtnGroup.inlineButtons.length).toBe(2);
         expect(testBtnGroup.menuButtons.length).toBe(0);
@@ -365,7 +366,7 @@ export default function (): void {
     describe('Buttons in Menu View Container', () => {
       beforeEach(() => {
         fixture = TestBed.createComponent(BtnGroupMenuViewContainer);
-        fixture.detectChanges();
+        renderFixture(fixture);
         compiled = fixture.nativeElement;
         testBtnGroup = fixture.componentInstance.btnGroup;
       });
@@ -391,7 +392,7 @@ export default function (): void {
         const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
         dropdownToggle.click();
 
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         const overflowMenu: HTMLElement = document.querySelector('.dropdown-menu');
         expect(overflowMenu.children.length).toBe(5);
@@ -428,7 +429,7 @@ export default function (): void {
     describe('Toggling Button Group Overflow Menus', () => {
       beforeEach(() => {
         fixture = TestBed.createComponent(BtnGroupEHCAIWCTest);
-        fixture.detectChanges();
+        renderFixture(fixture);
         compiled = fixture.nativeElement;
       });
 
@@ -442,7 +443,7 @@ export default function (): void {
 
         // In this case only the first dropdown is opened
         dropdownToggle1.click();
-        fixture.detectChanges();
+        renderFixture(fixture);
         let overflowMenu = document.querySelector('.dropdown-menu');
 
         expect(compiled.textContent).toMatch(/Button 1/);
@@ -459,7 +460,7 @@ export default function (): void {
 
         // Now second is opened, first is closed
         dropdownToggle2.click();
-        fixture.detectChanges();
+        renderFixture(fixture);
         overflowMenu = document.querySelector('.dropdown-menu');
 
         expect(compiled.textContent).toMatch(/Button 1/);
@@ -476,7 +477,7 @@ export default function (): void {
 
         // Back to the first, second is closed
         dropdownToggle1.click();
-        fixture.detectChanges();
+        renderFixture(fixture);
         overflowMenu = document.querySelector('.dropdown-menu');
 
         expect(compiled.textContent).toMatch(/Button 1/);
@@ -493,7 +494,7 @@ export default function (): void {
       });
     });
   });
-}
+});
 
 @Component({
   template: `

@@ -36,7 +36,7 @@ export class TabsActionsAngularDemo {
     });
   }
 
-  removeTab(index) {
+  removeTab(index: number) {
     this.tabs.splice(index, 1);
   }
 }

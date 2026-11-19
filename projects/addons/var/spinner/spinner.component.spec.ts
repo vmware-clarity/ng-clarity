@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { SpinnerComponent } from './spinner.component';
 
@@ -17,65 +18,70 @@ interface ThisTest {
   component: MockComponent;
 }
 describe('appfx-spinner', () => {
-  beforeEach(function (this: ThisTest) {
+  let testContext: ThisTest;
+  beforeEach(() => {
+    testContext = {} as ThisTest;
+  });
+
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ClrSpinnerModule],
       declarations: [SpinnerComponent, MockComponent],
     });
-    this.fixture = TestBed.createComponent(MockComponent);
-    this.component = this.fixture.componentInstance;
-    this.component.loading = true;
-    this.fixture.detectChanges();
+    testContext.fixture = TestBed.createComponent(MockComponent);
+    testContext.component = testContext.fixture.componentInstance;
+    testContext.component.loading = true;
+    renderFixture(testContext.fixture);
   });
 
-  it('should show clarity spinner', function (this: ThisTest) {
-    expect(this.fixture.debugElement.query(By.css('clr-spinner'))).toBeTruthy();
+  it('should show clarity spinner', () => {
+    expect(testContext.fixture.debugElement.query(By.css('clr-spinner'))).toBeTruthy();
   });
 
   describe('WHEN there is a message', () => {
-    beforeEach(function (this: ThisTest) {
-      this.component.message = 'loading';
-      this.fixture.detectChanges();
+    beforeEach(() => {
+      testContext.component.message = 'loading';
+      renderFixture(testContext.fixture);
     });
 
-    it('THEN, should have loading message', function (this: ThisTest) {
-      expect(this.fixture.debugElement.query(By.css('span')).nativeElement.innerText).toEqual('loading');
+    it('THEN, should have loading message', () => {
+      expect(testContext.fixture.debugElement.query(By.css('span')).nativeElement.innerText).toEqual('loading');
     });
 
-    it('THEN, should have aria-live attribute set', function (this: ThisTest) {
-      expect(this.fixture.debugElement.query(By.css('span')).attributes['aria-live']).toEqual('assertive');
-      this.component.politeness = 'polite';
-      this.fixture.detectChanges();
-      expect(this.fixture.debugElement.query(By.css('span')).attributes['aria-live']).toEqual('polite');
+    it('THEN, should have aria-live attribute set', () => {
+      expect(testContext.fixture.debugElement.query(By.css('span')).attributes['aria-live']).toEqual('assertive');
+      testContext.component.politeness = 'polite';
+      renderFixture(testContext.fixture);
+      expect(testContext.fixture.debugElement.query(By.css('span')).attributes['aria-live']).toEqual('polite');
     });
   });
 
-  it('should show progress status message', function (this: ThisTest) {
-    expect(this.fixture.debugElement.query(By.css('span.progress-item'))).toBeFalsy();
-    this.component.progressDetails = 'progress 50%';
-    this.fixture.detectChanges();
-    expect(this.fixture.debugElement.query(By.css('span.progress-item')).nativeElement.innerText).toEqual(
+  it('should show progress status message', () => {
+    expect(testContext.fixture.debugElement.query(By.css('span.progress-item'))).toBeFalsy();
+    testContext.component.progressDetails = 'progress 50%';
+    renderFixture(testContext.fixture);
+    expect(testContext.fixture.debugElement.query(By.css('span.progress-item')).nativeElement.innerText).toEqual(
       'progress 50%'
     );
   });
 
   describe('WHEN there is custom action', () => {
-    it('THEN, should render the action button', function (this: ThisTest) {
+    it('THEN, should render the action button', () => {
       const actionButtonSelector = 'button.btn';
-      expect(this.fixture.debugElement.query(By.css(actionButtonSelector))).toBeFalsy();
+      expect(testContext.fixture.debugElement.query(By.css(actionButtonSelector))).toBeFalsy();
 
-      this.component.showActionButton = true;
-      this.component.actionButtonLabel = 'cancel';
-      this.fixture.detectChanges();
+      testContext.component.showActionButton = true;
+      testContext.component.actionButtonLabel = 'cancel';
+      renderFixture(testContext.fixture);
 
       // `.btn` applies text-transform: uppercase, so innerText reflects the rendered case.
       expect(
-        this.fixture.debugElement.query(By.css(actionButtonSelector)).nativeElement.innerText.toLowerCase()
+        testContext.fixture.debugElement.query(By.css(actionButtonSelector)).nativeElement.innerText.toLowerCase()
       ).toEqual('cancel');
-      expect(this.component.actionInvoked).toBe(0);
+      expect(testContext.component.actionInvoked).toBe(0);
 
-      this.fixture.debugElement.query(By.css(actionButtonSelector)).nativeElement.click();
-      expect(this.component.actionInvoked).toBe(1);
+      testContext.fixture.debugElement.query(By.css(actionButtonSelector)).nativeElement.click();
+      expect(testContext.component.actionInvoked).toBe(1);
     });
   });
 });

@@ -63,5 +63,11 @@ projects/website/src/compiled-ai/
 projects/website/src/assets/clarity-icons.zip
 projects/website/src/index.vrt.html
 
+# Demo
+projects/demo/src/index.vrt.html
+
 #Storybook
 debug-storybook.log
+
+# Vitest browser failure attachments
+.vitest-attachments/
