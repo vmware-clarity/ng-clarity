@@ -600,7 +600,7 @@ export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
     set flip(value: Orientations);
     // (undocumented)
     iconSVG: string;
-    get innerOffset(): number;
+    get innerOffset(): number | undefined;
     set innerOffset(value: number);
     // (undocumented)
     get inverse(): boolean;
@@ -621,9 +621,9 @@ export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
     ngOnInit(): void;
     // (undocumented)
     get shape(): string;
-    set shape(value: string);
+    set shape(value: string | undefined);
     // (undocumented)
-    get size(): string;
+    get size(): string | undefined;
     set size(value: string);
     // (undocumented)
     get solid(): boolean;

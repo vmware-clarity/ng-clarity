@@ -18,7 +18,7 @@ export class ModalStackService implements OnDestroy {
   private readonly modalStack: Closable[] = [];
   private readonly keyUpEventListener = this.onKeyUp.bind(this);
 
-  constructor(@Inject(PLATFORM_ID) private readonly platformId: unknown) {}
+  constructor(@Inject(PLATFORM_ID) private readonly platformId: Object) {}
 
   ngOnDestroy() {
     // Modals that are still open when the injector goes away must not keep handling the Escape key.

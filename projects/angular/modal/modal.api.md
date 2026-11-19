@@ -81,7 +81,7 @@ export class ClrModal implements OnChanges, OnDestroy {
     set fadeMove(move: string);
     inOverlay: boolean | undefined;
     // (undocumented)
-    labelledBy: string;
+    labelledBy?: string;
     // (undocumented)
     protected readonly modalContentTemplate: TemplateRef<any>;
     // (undocumented)
@@ -215,7 +215,7 @@ export class ClrSidePanel implements OnInit, OnDestroy {
     // (undocumented)
     close(): void;
     // (undocumented)
-    closeButtonAriaLabel: string | undefined;
+    closeButtonAriaLabel: string;
     // (undocumented)
     get clrSidePanelBackdrop(): boolean;
     set clrSidePanelBackdrop(backdrop: boolean);
@@ -227,7 +227,7 @@ export class ClrSidePanel implements OnInit, OnDestroy {
     // (undocumented)
     handleModalOpen(open: boolean): void;
     // (undocumented)
-    labelledById: string;
+    labelledById?: string;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -327,7 +327,7 @@ export class ClrSidePanelModule {
 
 // @public (undocumented)
 export class ModalStackService implements OnDestroy {
-    constructor(platformId: unknown);
+    constructor(platformId: Object);
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
