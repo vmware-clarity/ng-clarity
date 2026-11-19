@@ -588,16 +588,16 @@ export const CLR_ICON_DIRECTIVES: Type<any>[];
 export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
     constructor(el: ElementRef<HTMLElement>, cdr: ChangeDetectorRef);
     // (undocumented)
-    get badge(): string | boolean;
-    set badge(value: string | boolean);
+    get badge(): string | boolean | undefined;
+    set badge(value: string | boolean | undefined);
     // (undocumented)
-    get direction(): string;
-    set direction(value: string);
+    get direction(): string | undefined;
+    set direction(value: string | undefined);
     // (undocumented)
     el: ElementRef<HTMLElement>;
     // (undocumented)
-    get flip(): Orientations;
-    set flip(value: Orientations);
+    get flip(): Orientations | undefined;
+    set flip(value: Orientations | undefined);
     // (undocumented)
     iconSVG: string;
     get innerOffset(): number | undefined;
@@ -629,8 +629,8 @@ export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
     get solid(): boolean;
     set solid(value: boolean);
     // (undocumented)
-    get status(): string;
-    set status(value: string);
+    get status(): string | null | undefined;
+    set status(value: string | null | undefined);
     // (undocumented)
     updateIcon(): void;
     // (undocumented)

@@ -70,7 +70,7 @@ export type DefaultButton = 'submit' | 'close';
 class DialogComponent implements OnInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "ZoomLevelService" needs to be exported by the entry point clr-addons-dialog.d.ts
     constructor(cdr: ChangeDetectorRef, workflowStrings: WorkflowStrings, configService: WorkflowConfigurationService,
-    openModalComponent?: boolean, zoomLevelService?: ZoomLevelService);
+    openModalComponent?: boolean, zoomLevelService?: ZoomLevelService | undefined);
     cancelButtonLabel: string;
     // Warning: (ae-forgotten-export) The symbol "CloseHandler" needs to be exported by the entry point clr-addons-dialog.d.ts
     closeHandler: CloseHandler;

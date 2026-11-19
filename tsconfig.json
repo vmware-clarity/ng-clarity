@@ -15,7 +15,7 @@
     "noImplicitThis": true,
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
-    "strict": false,
+    "strict": true,
     "alwaysStrict": true,
     "strictBindCallApply": true,
     "strictBuiltinIteratorReturn": true,

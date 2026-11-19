@@ -106,7 +106,7 @@ export class GridFooterTestHelper {
 
 // @public (undocumented)
 export class GridHelper {
-    constructor(contextDebugElement: DebugElement, indexedEntry?: number);
+    constructor(contextDebugElement: DebugElement, indexedEntry?: number | undefined);
     static assertEmpty(gridParentDebugElement: DebugElement): void;
     // (undocumented)
     assertHeaderLabels(includeLabelList: Array<string>, excludeLabelList?: Array<string>): void;
@@ -153,7 +153,7 @@ export class GridHelper {
     // (undocumented)
     getTestId(): string | undefined;
     // (undocumented)
-    indexedEntry?: number;
+    indexedEntry?: number | undefined;
     // (undocumented)
     isActionBarButtonDisabled(label: string): boolean;
     // (undocumented)
