@@ -54,7 +54,7 @@ class MockElementRef extends ElementRef {
   standalone: false,
 })
 class RenderAsButtonDirective {
-  @Input() renderAsButton: boolean;
+  @Input() renderAsButton!: boolean;
 }
 
 interface ThisTest {

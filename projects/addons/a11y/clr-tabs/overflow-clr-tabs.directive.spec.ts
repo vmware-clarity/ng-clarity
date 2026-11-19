@@ -62,9 +62,9 @@ export class ClrTabsHostComponent {
   readonly width = signal(160);
   readonly tab4Visible = signal(false);
 
-  @ViewChild(ClrTabs) tabs: ClrTabs;
+  @ViewChild(ClrTabs) tabs!: ClrTabs;
 
-  @ViewChildren(ClrTabLink) tabLinks: QueryList<ClrTabLink>;
+  @ViewChildren(ClrTabLink) tabLinks!: QueryList<ClrTabLink>;
 
   get tabsInOverflow(): boolean[] {
     if (!this.tabLinks) {
@@ -88,7 +88,7 @@ export class ClrTabsHostComponent {
   standalone: true,
 })
 export class ComponentWithoutDirective {
-  @ViewChild(ClrTabs) tabs: ClrTabs;
+  @ViewChild(ClrTabs) tabs!: ClrTabs;
 }
 
 export class MockElementResizeService {

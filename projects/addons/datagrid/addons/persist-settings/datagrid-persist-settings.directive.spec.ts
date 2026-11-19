@@ -191,8 +191,8 @@ describe('DatagridPersistSettingsDirective', () => {
         column: columns[2],
       });
       expect(persistedData.sorting).toBeTruthy();
-      expect(persistedData.sorting.sortOrder).toEqual(ClrDatagridSortOrder.DESC);
-      expect(persistedData.sorting.column.uid).toEqual(columns[2].displayName);
+      expect(persistedData.sorting!.sortOrder).toEqual(ClrDatagridSortOrder.DESC);
+      expect(persistedData.sorting!.column.uid).toEqual(columns[2].displayName);
     });
 
     it('when column visible state is changes ', async () => {
@@ -207,13 +207,13 @@ describe('DatagridPersistSettingsDirective', () => {
       });
       await vi.advanceTimersByTimeAsync(100);
       expect(persistedData.columns).toBeTruthy();
-      expect(persistedData.columns.length).toEqual(3);
-      expect(persistedData.columns[0].visible).toEqual(true);
-      expect(persistedData.columns[0].uid).toEqual(columns[0].uid as string);
-      expect(persistedData.columns[1].visible).toEqual(false);
-      expect(persistedData.columns[1].uid).toEqual(columns[1].field);
-      expect(persistedData.columns[2].visible).toEqual(true);
-      expect(persistedData.columns[2].uid).toEqual(columns[2].displayName);
+      expect(persistedData.columns!.length).toEqual(3);
+      expect(persistedData.columns![0].visible).toEqual(true);
+      expect(persistedData.columns![0].uid).toEqual(columns[0].uid as string);
+      expect(persistedData.columns![1].visible).toEqual(false);
+      expect(persistedData.columns![1].uid).toEqual(columns[1].field);
+      expect(persistedData.columns![2].visible).toEqual(true);
+      expect(persistedData.columns![2].uid).toEqual(columns[2].displayName);
     });
 
     it('when column is resized state is changes ', async () => {
@@ -229,10 +229,10 @@ describe('DatagridPersistSettingsDirective', () => {
       });
       await vi.advanceTimersByTimeAsync(100);
       expect(persistedData.columns).toBeTruthy();
-      expect(persistedData.columns.length).toEqual(3);
-      expect(persistedData.columns[0].visible).toEqual(true);
-      expect(persistedData.columns[0].uid).toEqual(columns[0].uid as string);
-      expect(persistedData.columns[0].width).toEqual(101);
+      expect(persistedData.columns!.length).toEqual(3);
+      expect(persistedData.columns![0].visible).toEqual(true);
+      expect(persistedData.columns![0].uid).toEqual(columns[0].uid as string);
+      expect(persistedData.columns![0].width).toEqual(101);
     });
 
     it('when column order is changes ', async () => {
@@ -249,9 +249,9 @@ describe('DatagridPersistSettingsDirective', () => {
       });
       await vi.advanceTimersByTimeAsync(100);
       expect(persistedData.columns).toBeTruthy();
-      expect(persistedData.columns.length).toEqual(3);
-      expect(persistedData.columns[0].visible).toEqual(true);
-      expect(persistedData.columns[0].uid).toEqual(columns[0].uid as string);
+      expect(persistedData.columns!.length).toEqual(3);
+      expect(persistedData.columns![0].visible).toEqual(true);
+      expect(persistedData.columns![0].uid).toEqual(columns[0].uid as string);
     });
   });
 
@@ -359,11 +359,11 @@ describe('DatagridPersistSettingsDirective', () => {
   `,
 })
 class DatagridHostComponent {
-  @ViewChild(DatagridComponent, { static: true }) appfxDatagridComponent: DatagridComponent<unknown>;
+  @ViewChild(DatagridComponent, { static: true }) appfxDatagridComponent!: DatagridComponent<unknown>;
 
-  @ViewChild(DatagridPersistSettingsDirective, { static: true }) directive: DatagridPersistSettingsDirective;
+  @ViewChild(DatagridPersistSettingsDirective, { static: true }) directive!: DatagridPersistSettingsDirective;
 
-  @Input() pageSize: number;
+  @Input() pageSize!: number;
   data: any[] = [
     {
       status: 'unknown',
@@ -372,7 +372,7 @@ class DatagridHostComponent {
       host: '10.23.45.68',
     },
   ];
-  @Input() columnDefs: ColumnDefinition<any>[];
+  @Input() columnDefs!: ColumnDefinition<any>[];
   @Input() persistPageSize = true;
   @Input() persistSortOrder = true;
 }

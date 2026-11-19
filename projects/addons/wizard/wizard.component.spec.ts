@@ -72,13 +72,13 @@ class MockPage1Model implements StepModel {
   activateCallsCount = 0;
   validateCallsCount = 0;
   var1Value = 0;
-  changes: ModelChanges;
+  changes!: ModelChanges;
 
   @In() vmId?: string;
 
   @Out() newVmId?: string;
 
-  @Out() showPage2: boolean;
+  @Out() showPage2!: boolean;
 
   @Out() var1 = Var.of<number>(this.var1Value);
 }
@@ -89,8 +89,8 @@ class MockPage2Model implements StepModel {
   activateCallsCount = 0;
   validateCallsCount = 0;
   validationState = new StepValidationState();
-  readyToComplete: boolean;
-  changes: ModelChanges;
+  readyToComplete!: boolean;
+  changes!: ModelChanges;
 
   @In() newVmId?: string;
 }
@@ -119,7 +119,7 @@ class MockPage4Model implements StepModel {
   template: `<div>Page 1 Content</div>`,
 })
 class MockPage1Component implements StepComponent {
-  model: MockPage1Model;
+  model!: MockPage1Model;
 
   activate(changes: ModelChanges) {
     this.model.activateCallsCount += 1;
@@ -140,7 +140,7 @@ class MockPage1Component implements StepComponent {
   template: `<div>Page 2 Content</div>`,
 })
 class MockPage2Component implements StepComponent {
-  model: MockPage2Model;
+  model!: MockPage2Model;
 
   activate(changes: ModelChanges) {
     this.model.activateCallsCount += 1;
@@ -160,7 +160,7 @@ class MockPage2Component implements StepComponent {
   template: `<div>Page 3 Content</div>`,
 })
 class MockPage3Component implements StepModelHolder {
-  model: MockPage3Model;
+  model!: MockPage3Model;
 
   activate() {
     this.model.activateCallsCount += 1;
@@ -178,7 +178,7 @@ class MockPage3Component implements StepModelHolder {
   template: `<div>Page 4 Content</div>`,
 })
 class MockPage4Component implements StepModelHolder {
-  model: MockPage4Model;
+  model!: MockPage4Model;
 
   validate(): Observable<boolean> {
     this.model.cancelableValidation = {
@@ -201,9 +201,9 @@ class MockPage4Component implements StepModelHolder {
   template: `<span>Footer: {{ currentStep?.title }}</span>`,
 })
 class MockFooterComponent implements WizardFooter {
-  @Input() currentStep: Step;
-  @Input() steps: Step[];
-  @Input() workflowModel: WorkflowModel;
+  @Input() currentStep!: Step;
+  @Input() steps!: Step[];
+  @Input() workflowModel!: WorkflowModel;
 }
 
 function isLoadingIndicatorVisible(wizardElement: DebugElement): boolean {

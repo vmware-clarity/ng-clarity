@@ -54,8 +54,8 @@ class MockStep1Model implements StepModel {
   loading = false;
   activateCallsCount = 0;
   validateCallsCount = 0;
-  readyToComplete: boolean;
-  changes: ModelChanges;
+  readyToComplete!: boolean;
+  changes!: ModelChanges;
 
   @In() vmId?: string;
 
@@ -69,7 +69,7 @@ class MockStep1Model implements StepModel {
   template: `<div>Step 1 Content</div>`,
 })
 class MockStep1Component implements StepModelHolder, OnStepActivate, OnStepValidate {
-  model: MockStep1Model;
+  model!: MockStep1Model;
 
   activate(changes: ModelChanges) {
     this.model.activateCallsCount += 1;
@@ -87,9 +87,9 @@ class MockStep2Model {
   activateCallsCount = 0;
   validateCallsCount = 0;
   nextValidationResult = false;
-  changes: ModelChanges;
+  changes!: ModelChanges;
 
-  @In() newVmId: string;
+  @In() newVmId!: string;
 }
 
 @Component({
@@ -99,7 +99,7 @@ class MockStep2Model {
   template: `<div>Step 2 Content</div>`,
 })
 class MockStep2Component implements StepModelHolder, OnStepActivate, OnStepValidate {
-  model: MockStep2Model;
+  model!: MockStep2Model;
 
   activate(changes: ModelChanges) {
     this.model.activateCallsCount += 1;
@@ -116,7 +116,7 @@ class MockStep3Model {
   loading = false;
   activateCallsCount = 0;
   validateCallsCount = 0;
-  changes: ModelChanges;
+  changes!: ModelChanges;
 }
 
 @Component({
@@ -126,7 +126,7 @@ class MockStep3Model {
   template: `<div>Step 3 Content</div>`,
 })
 class MockStep3Component implements StepModelHolder, OnStepActivate, OnStepValidate {
-  model: MockStep3Model;
+  model!: MockStep3Model;
 
   activate(changes: ModelChanges) {
     this.model.activateCallsCount += 1;
@@ -154,7 +154,7 @@ class MockStep4Model implements StepModel {
   template: `<div>Step 4 Content</div>`,
 })
 class MockStep4Component implements StepModelHolder {
-  model: MockStep4Model;
+  model!: MockStep4Model;
 
   validate(): Observable<boolean> {
     this.model.cancelableValidation = {

@@ -16,12 +16,12 @@ import { Reason } from '@clr/addons/wizard';
   template: '',
 })
 export class MockAppfxWizardComponent {
-  @Input() title: string;
-  @Input() pages: Step[];
-  @Input() wizardModel: WorkflowModel;
-  @Input() loading: boolean;
-  @Input() size: string;
-  @Input() opened: boolean;
+  @Input() title!: string;
+  @Input() pages!: Step[];
+  @Input() wizardModel!: WorkflowModel;
+  @Input() loading!: boolean;
+  @Input() size!: string;
+  @Input() opened!: boolean;
 
   @Output() openedChange = new EventEmitter<boolean>();
   @Output() onModelChange: EventEmitter<ModelChange[]> = new EventEmitter<ModelChange[]>();
