@@ -21,7 +21,7 @@ import { DatepickerFocusService } from './providers/datepicker-focus.service';
   standalone: false,
 })
 export class ClrEndDateInput extends ClrDateInputBase {
-  @Output('clrEndDateChange') override dateChange = new EventEmitter<Date>(false);
+  @Output('clrEndDateChange') override dateChange = new EventEmitter<Date | null>(false);
 
   @Input('inputWidth') inputWidth = 13;
 
@@ -44,7 +44,7 @@ export class ClrEndDateInput extends ClrDateInputBase {
     this.subscriptions.push(this.dateIOService.maxDateChange.subscribe(() => this.triggerControlInputValidation()));
   }
 
-  protected override updateDayModel(dayModel: DayModel) {
+  protected override updateDayModel(dayModel: DayModel | null) {
     this.dateNavigationService.persistedEndDate = this.dateNavigationService.selectedEndDay = dayModel;
   }
 }

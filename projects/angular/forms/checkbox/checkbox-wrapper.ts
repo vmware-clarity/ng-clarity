@@ -45,8 +45,8 @@ export const IS_TOGGLE_PROVIDER = { provide: IS_TOGGLE, useFactory: isToggleFact
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrCheckboxWrapper implements OnInit, OnDestroy {
-  @ContentChild(ClrControlLabel, { static: true }) label: ClrControlLabel;
-  @ContentChild(forwardRef(() => ClrCheckbox), { static: true }) checkbox: ClrCheckbox;
+  @ContentChild(ClrControlLabel, { static: true }) label!: ClrControlLabel;
+  @ContentChild(forwardRef(() => ClrCheckbox), { static: true }) checkbox!: ClrCheckbox;
   toggle = false;
   private subscriptions: Subscription[] = [];
 
