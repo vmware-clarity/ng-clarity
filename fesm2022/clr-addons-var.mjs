@@ -1024,6 +1024,7 @@ var SpinnerComponent = class SpinnerComponent {
 	constructor() {
 		this.politeness = "assertive";
 		this.isModal = true;
+		this.showActionButton = false;
 		this.actionClick = new EventEmitter();
 	}
 	invokeAction() {
@@ -1511,7 +1512,7 @@ var StepContainerComponent = class StepContainerComponent {
 				static: true
 			}],
 			ngImport: i0,
-			template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n<div class=\"pr-1 clr-flex-grow-0 clr-flex-shrink-0\">\n  <span *ngIf=\"description\">{{ description }}</span>\n  <appfx-validation-banner\n    *ngIf=\"step.modelInstance?.validationState?.isEmpty() === false\"\n    [state]=\"step.modelInstance?.validationState ?? null\"\n  >\n  </appfx-validation-banner>\n</div>\n<div class=\"content-container clr-flex-column clr-flex-grow-1 clr-flex-shrink-1\">\n  <ng-template #componentContainer> </ng-template>\n</div>\n",
+			template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n<div class=\"pr-1 clr-flex-grow-0 clr-flex-shrink-0\">\n  <span *ngIf=\"description\">{{ description }}</span>\n  <appfx-validation-banner\n    *ngIf=\"step.modelInstance?.validationState?.isEmpty() === false\"\n    [state]=\"step.modelInstance?.validationState\"\n  >\n  </appfx-validation-banner>\n</div>\n<div class=\"content-container clr-flex-column clr-flex-grow-1 clr-flex-shrink-1\">\n  <ng-template #componentContainer> </ng-template>\n</div>\n",
 			dependencies: [{
 				kind: "directive",
 				type: i3$1.NgIf,
@@ -1542,7 +1543,7 @@ i0.ɵɵngDeclareClassMetadata({
 			selector: "appfx-step-container",
 			standalone: false,
 			changeDetection: ChangeDetectionStrategy.Eager,
-			template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n<div class=\"pr-1 clr-flex-grow-0 clr-flex-shrink-0\">\n  <span *ngIf=\"description\">{{ description }}</span>\n  <appfx-validation-banner\n    *ngIf=\"step.modelInstance?.validationState?.isEmpty() === false\"\n    [state]=\"step.modelInstance?.validationState ?? null\"\n  >\n  </appfx-validation-banner>\n</div>\n<div class=\"content-container clr-flex-column clr-flex-grow-1 clr-flex-shrink-1\">\n  <ng-template #componentContainer> </ng-template>\n</div>\n"
+			template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n<div class=\"pr-1 clr-flex-grow-0 clr-flex-shrink-0\">\n  <span *ngIf=\"description\">{{ description }}</span>\n  <appfx-validation-banner\n    *ngIf=\"step.modelInstance?.validationState?.isEmpty() === false\"\n    [state]=\"step.modelInstance?.validationState\"\n  >\n  </appfx-validation-banner>\n</div>\n<div class=\"content-container clr-flex-column clr-flex-grow-1 clr-flex-shrink-1\">\n  <ng-template #componentContainer> </ng-template>\n</div>\n"
 		}]
 	}],
 	propDecorators: {

@@ -191,7 +191,7 @@ export declare class StepperComponent implements OnDestroy, AfterViewInit, After
   private awaitingWizardPageOnLoad$;
   private componentAfterViewInit$;
   private readonly subscriptions;
-  private retrySubscription;
+  private retrySubscription?;
   private stepperService;
   private errorActivatingStep;
   constructor(stateService: StepperStateService, workflowStrings: WorkflowStrings, modelMgr: WorkflowModelManager, relevanceService: RelevanceService, formBuilder: UntypedFormBuilder, cdr: ChangeDetectorRef, summaryService: SummaryService);

@@ -260,6 +260,7 @@ var TabsComponent = class TabsComponent {
 		this.workflowStrings = workflowStrings;
 		this.configService = configService;
 		this.zoomLevelService = zoomLevelService;
+		this.disableTabsContent = false;
 		this.loading = false;
 		this.tabLayout = TabLayout.horizontal;
 		this.showLoadingIndicator = true;

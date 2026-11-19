@@ -268,7 +268,7 @@ var WizardComponent = class WizardComponent {
 				const propertyViewModel = propertyViewModelBuilder.build();
 				const categoryBuilder = propertyViewModelBuilder.generateAllCategory("");
 				const category = categoryBuilder.build();
-				category.content = this.#pages.filter((step) => !step.isSkipped && !!step.summary).map((step) => step.summary?.(categoryBuilder.section(step.title).title(step.navTitle || step.title), step.modelInstance));
+				category.content = this.#pages.flatMap((step) => !step.isSkipped && step.summary ? [step.summary(categoryBuilder.section(step.title).title(step.navTitle || step.title), step.modelInstance)] : []);
 				propertyViewModel.categories = [category];
 				summaryModel.data = propertyViewModel;
 				return summaryModel;

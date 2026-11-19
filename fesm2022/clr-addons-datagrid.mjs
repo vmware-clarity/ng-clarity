@@ -1155,6 +1155,10 @@ i0.ɵɵngDeclareClassMetadata({
 	}
 });
 var DatagridCellContainerComponent = class DatagridCellContainerComponent {
+	constructor() {
+		this.componentRef = null;
+		this.instance = null;
+	}
 	ngOnChanges() {
 		if (this.instance && typeof this.instance.onChange === "function") this.instance.onChange(this.item || {}, this.column);
 	}
@@ -1472,6 +1476,8 @@ var DatagridFilterContainerComponent = class DatagridFilterContainerComponent {
 	constructor(filterContainer) {
 		this.filterContainer = filterContainer;
 		this.filterValueChange = new EventEmitter();
+		this.componentRef = null;
+		this.filterChangeSub = null;
 	}
 	ngAfterViewInit() {
 		if (this.filterType) {
@@ -1566,6 +1572,9 @@ var ExportDatagridComponent = class ExportDatagridComponent {
 		this.filteredItemsCount = 0;
 		this.selectedItemsCount = 0;
 		this.exportEventEmitter = new EventEmitter();
+		this.allRowsCount = "";
+		this.selectedRowsCount = "";
+		this.matchedFilterRowsCount = "";
 		this.exportStatus = {
 			inProgress: false,
 			exportType: ExportType.ALL
@@ -1778,9 +1787,12 @@ var DatagridComponent = class DatagridComponent {
 		this.detailState = null;
 		this.detailStateChange = new EventEmitter(true);
 		this.filterableProperties = [];
+		this.singleRowActions = null;
+		this.preserveExistingSelectionOnFilter = false;
 		this.virtualScrolling = false;
 		this.disableUnsort = true;
 		this.enableColumnActions = false;
+		this.columnActions = null;
 		this.dataRange = {
 			total: 100,
 			skip: 0,
@@ -3022,6 +3034,7 @@ var DatagridPageDirective = class DatagridPageDirective {
 	constructor(datagrid) {
 		this.datagridPageChange = new EventEmitter(false);
 		this.initCompleted = false;
+		this.initialPage = 0;
 		this.component = datagrid;
 	}
 	set datagridPage(value) {

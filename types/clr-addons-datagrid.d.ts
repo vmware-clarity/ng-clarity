@@ -707,7 +707,7 @@ export interface TreeExpandedState<T> {
 }
 export interface PreselectableComponent {
   trackByGridItemProperty: string;
-  trackByFunction: TrackByFunction<any>;
+  trackByFunction?: TrackByFunction<any>;
   selectionType: SelectionType;
   selectedItems: any[];
   serverDrivenDatagrid: boolean;
@@ -763,8 +763,8 @@ export declare class DatagridPreserveSelectionDirective implements AfterViewInit
   preserveExistingSelection: boolean;
   selectedItemsUpdated: EventEmitter<any[]>;
   private component;
-  private selectBy;
-  private gridItemChangeSub;
+  private selectBy?;
+  private gridItemChangeSub?;
   constructor(preselectableComponent: PreselectableComponent);
   ngAfterViewInit(): void;
   ngOnDestroy(): void;
@@ -981,7 +981,7 @@ export declare class DatagridComponent<T> implements OnInit, OnDestroy, AfterVie
   /**
    * A function that defines how to be tracked the changes for items in the grid.
    */
-  trackByFunction: TrackByFunction<T>;
+  trackByFunction?: TrackByFunction<T>;
   /**
    * property expression which defines the item property which to be
    * used for tracking changes of items in in the grid. May be deep with "a.b.c" notation.
@@ -1600,7 +1600,7 @@ export declare class DatagridPageDirective implements AfterViewInit, OnDestroy {
   private component;
   private initCompleted;
   private initialPage;
-  private subscription;
+  private subscription?;
   constructor(datagrid: DatagridComponent<unknown>);
   set datagridPage(value: number);
   ngAfterViewInit(): void;
@@ -1632,8 +1632,8 @@ export declare class DatagridPersistSettingsDirective implements OnDestroy, Afte
   private persistDatagridSettingsService;
   private subs;
   private datagridKeyChange$;
-  private saveColumnsStateTimerId;
-  private datagridKey;
+  private saveColumnsStateTimerId?;
+  private datagridKey?;
   private storePageSize;
   private storeSortOrder;
   constructor(grid: DatagridComponent<unknown>, persistDatagridSettingsService: PersistDatagridSettingsService);
@@ -1853,7 +1853,7 @@ declare class DatagridFilterContainerComponent implements AfterViewInit, OnDestr
    */
   filterValueChange: EventEmitter<any>;
   private componentRef;
-  private filter;
+  private filter?;
   private filterChangeSub;
   constructor(filterContainer: ClrDatagridFilter);
   ngAfterViewInit(): void;

@@ -1702,13 +1702,11 @@ var GeneralFilterComponent = class GeneralFilterComponent {
 	}
 	initUnit(index) {
 		if (this.isNumericUnitProperty) {
-			if (this.propertyFilter?.criteria[index]) return this.getSelectedUnit(index);
+			const predicate = this.propertyFilter?.criteria[index];
+			if (predicate) return predicate.filterableProperty.selectedUnit[index];
 			else return this.units.length > 0 ? this.units[0] : Unit.MB;
 		}
 		return Unit.MB;
-	}
-	getSelectedUnit(index) {
-		return this.propertyFilter.criteria[index].filterableProperty.selectedUnit[index];
 	}
 	initValue(index) {
 		if (this.isNumericUnitProperty) return this.propertyFilter?.criteria[index]?.filterableProperty.selectedValue[index] || "";

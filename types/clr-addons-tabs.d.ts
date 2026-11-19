@@ -23,7 +23,7 @@ export declare class IfTabActiveDirective implements OnInit, OnDestroy {
   private renderer;
   appfxIfTabActiveChange: EventEmitter<boolean>;
   activeClass: string;
-  private subscription;
+  private subscription?;
   constructor(tab: ClrTab, renderer: Renderer2);
   /** Programmatically activate the tab when set to true. */
   set activateTab(value: boolean);
@@ -127,7 +127,7 @@ export declare class TabsComponent implements OnInit, OnChanges, AfterViewInit, 
   private componentAfterViewInit$;
   private subscriptions;
   private errorActivatingStep;
-  private retrySubscription;
+  private retrySubscription?;
   private stepsValidationMap;
   constructor(modelMgr: WorkflowModelManager, relevanceService: RelevanceService, cdr: ChangeDetectorRef, workflowStrings: WorkflowStrings, configService: WorkflowConfigurationService, zoomLevelService?: ZoomLevelService);
   get tabs(): Step[];

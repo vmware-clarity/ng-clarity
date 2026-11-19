@@ -149,7 +149,7 @@ export declare class DialogComponent implements OnInit, OnDestroy {
   currentZoomLevel: ZoomLevel;
   ZoomLevel: typeof ZoomLevel;
   tabLinksOpened: boolean;
-  private debugPopup;
+  private debugPopup?;
   private subscriptions;
   private readonly defaultMinHeight;
   constructor(cdr: ChangeDetectorRef, workflowStrings: WorkflowStrings, configService: WorkflowConfigurationService,

@@ -27,6 +27,7 @@ var DialogComponent = class DialogComponent {
 		this.configService = configService;
 		this.zoomLevelService = zoomLevelService;
 		this.tabLayout = TabLayout.horizontal;
+		this.disableTabsContent = false;
 		this.loading = false;
 		this.showTabLinks = true;
 		this.onModelChange = new EventEmitter();

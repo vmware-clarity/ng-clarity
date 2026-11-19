@@ -586,6 +586,7 @@ var ThemeBuilderComponent = class ThemeBuilderComponent {
 		];
 		this.wizardOpen = false;
 		this.rows = SAMPLE_ROWS;
+		this.description = "";
 		this.stepperForm = {
 			account: { fullName: "" },
 			confirm: { agree: false }
@@ -719,7 +720,7 @@ var ThemeBuilderComponent = class ThemeBuilderComponent {
 		if (!colorGroup) return;
 		const base = overrides.find((c) => TOKEN_KEYS.baseTokens.includes(c.name));
 		const activeBase = base ? colorGroup.find((c) => c.name === base.name) : void 0;
-		if (activeBase) {
+		if (base && activeBase) {
 			activeBase.color = base.color;
 			this.colorBuilder(activeBase, colorGroup, theme === "dark");
 		}
@@ -756,6 +757,7 @@ var ThemeBuilderComponent = class ThemeBuilderComponent {
 		for (const key of Object.keys(colorGroups)) {
 			const colorGroup = colorGroups[key];
 			const baseColor = colorGroup.find((c) => c.label === "Base");
+			if (!baseColor) continue;
 			themeColors.push({
 				key,
 				base: baseColor,

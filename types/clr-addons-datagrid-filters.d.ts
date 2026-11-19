@@ -423,7 +423,7 @@ export declare class CompositeFiltersComponent implements OnInit {
   filterStrings: DatagridFiltersStrings;
   private cdr;
   filterableProperties: FilterablePropertyDefinition[];
-  presetFilters: PropertyFilter[];
+  presetFilters?: PropertyFilter[];
   /**
    * Event emitter to tell hosting view that the filtering conditions have changed
    */
@@ -505,7 +505,7 @@ export declare class DataGridFiltersComponent implements OnDestroy, AfterViewIni
   /**
    * Array of pre-selected filters
    */
-  presetFilters: PropertyFilter[];
+  presetFilters?: PropertyFilter[];
   /**
    * Event emitter to tell hosting view that search term, used for filtering
    * has changed.
@@ -587,7 +587,7 @@ declare class DateTimeFilterComponent implements OnInit, OnChanges {
   /**
    * In case the component is used for filter editing
    */
-  propertyFilter: PropertyFilter;
+  propertyFilter?: PropertyFilter;
   /**
    * Event emitter to tell hosting view that filtering criteria have changed
    */
@@ -692,7 +692,7 @@ declare class EnumFilterComponent implements OnInit, OnChanges {
   /**
    * In case the component is used for filter editing
    */
-  propertyFilter: PropertyFilter;
+  propertyFilter?: PropertyFilter;
   /**
    * Event emitter to tell hosting view that filtering criteria have changed
    */
@@ -807,7 +807,7 @@ declare class GeneralFilterComponent implements OnInit, OnChanges {
   /**
    * In case the component is used for filter editing
    */
-  propertyFilter: PropertyFilter;
+  propertyFilter?: PropertyFilter;
   /**
    * Event emitter to tell hosting view that filtering criteria have changed
    */
@@ -834,7 +834,6 @@ declare class GeneralFilterComponent implements OnInit, OnChanges {
   private isNumericUnitFilterProperty;
   private applicableUnits;
   private initUnit;
-  private getSelectedUnit;
   private initValue;
   private convertValue;
   static ɵfac: i0.ɵɵFactoryDeclaration<GeneralFilterComponent, never>;
@@ -928,7 +927,7 @@ declare class UsersFilterComponent implements OnInit, OnDestroy, OnChanges {
   filterStrings: DatagridFiltersStrings;
   private userService;
   filterProperty: UserPropertyDefinition;
-  propertyFilter: PropertyFilter;
+  propertyFilter?: PropertyFilter;
   filterCriteriaChange: EventEmitter<PropertyFilter>;
   usersSelectionForm: FormGroup;
   isLoading: boolean;

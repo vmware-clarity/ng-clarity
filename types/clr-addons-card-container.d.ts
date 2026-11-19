@@ -371,7 +371,7 @@ export declare class AppfxCardComponent implements OnInit, AfterViewInit, OnDest
   dragDropEnabled: boolean;
   /** Cards slide in, unless the application turned animations off with `provideNoopAnimations()`. */
   protected readonly enterClass: string;
-  private cdkDragElementRefs;
+  private cdkDragElementRefs?;
   private cardViewContainer;
   private currentUnitWidth;
   private currentUnitHeight;

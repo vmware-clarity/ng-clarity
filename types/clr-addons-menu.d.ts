@@ -116,7 +116,7 @@ export declare class MenuComponent extends NestedMenu implements Menu, OnInit, O
   private cdr;
   private zoomLevelService?;
   private trigger?;
-  private openingEvent;
+  private openingEvent?;
   itemTypes: typeof MenuItemType;
   anchorPoint: ClrPopoverPoint;
   /**
@@ -128,7 +128,7 @@ export declare class MenuComponent extends NestedMenu implements Menu, OnInit, O
   dropdown: ClrDropdown;
   dropdownElRef: ElementRef<HTMLElement>;
   menuItems: QueryList<MenuItem>;
-  currentZoomLevel: ZoomLevel;
+  currentZoomLevel?: ZoomLevel;
   ZoomLevel: typeof ZoomLevel;
   private subscriptions;
   constructor(cdr: ChangeDetectorRef, zoomLevelService?: ZoomLevelService);

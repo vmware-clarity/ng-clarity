@@ -724,7 +724,7 @@ export declare class StepContainerComponent implements OnInit, OnDestroy {
   onRetry: EventEmitter<StepInternal>;
   private componentContainer;
   private pageComponent?;
-  private retrySubscription;
+  private retrySubscription?;
   get readyToComplete(): boolean;
   private get isValid();
   private get isPageStateValid();

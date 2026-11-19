@@ -78,23 +78,23 @@ export declare class WizardComponent implements OnInit, OnDestroy, AfterViewInit
    * or the cancel button or the finish button)
    */
   onClose: EventEmitter<Reason>;
-  footerComponentInputs: Record<string, unknown>;
-  currentZoomLevel: ZoomLevel;
+  footerComponentInputs?: Record<string, unknown>;
+  currentZoomLevel?: ZoomLevel;
   ZoomLevel: typeof ZoomLevel;
   showNav: boolean;
   activeStepIndex: number;
   protected closeHandlerValidationState: StepValidationState;
   private wizard;
-  private debugPopup;
+  private debugPopup?;
   private pagesContainers;
   private activeStep;
   private activePage;
   private awaitingWizardPageOnLoad$;
   private componentAfterViewInit$;
   private subscriptions;
-  private retrySubscription;
+  private retrySubscription?;
   private errorActivatingStep;
-  private summaryStep;
+  private summaryStep?;
   constructor(cdr: ChangeDetectorRef, modelMgr: WorkflowModelManager, relevanceService: RelevanceService, configService: WorkflowConfigurationService, workflowStrings: WorkflowStrings, zoomLevelService?: ZoomLevelService,
   /**
    * openModalComponent = undefined - Wizard is used without ModalService

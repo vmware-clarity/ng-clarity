@@ -47,7 +47,7 @@ export declare class OverflowClrTabsDirective implements AfterViewInit, OnDestro
   private elementResizeService;
   private readonly subscription;
   private parentElement;
-  private tabOverflowEl;
+  private tabOverflowEl?;
   constructor(cdr: ChangeDetectorRef, element: ElementRef, renderer: Renderer2, clrTabsComponent: ClrTabs, elementResizeService: ElementResizeService);
   ngAfterViewInit(): void;
   ngOnDestroy(): void;
@@ -162,8 +162,8 @@ export declare class ZoomLevelService implements OnDestroy {
 }
 export declare class ZoomLevelIndicatorDirective implements OnInit, OnDestroy {
   private zoomLevelService;
-  zoomLevel: ZoomLevel;
-  private subscription;
+  zoomLevel?: ZoomLevel;
+  private subscription?;
   private readonly changeDetectorRef;
   constructor(zoomLevelService: ZoomLevelService);
   ngOnInit(): void;
