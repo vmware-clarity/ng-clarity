@@ -42,10 +42,10 @@ import { DEFAULT_DETAIL_WIDTH, DetailService, MAX_DETAIL_WIDTH, MIN_DETAIL_WIDTH
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDatagridDetail {
-  @Input('clrDetailAriaLabelledBy') ariaLabelledBy: string;
-  @Input('clrDetailAriaLabel') ariaLabel: string;
+  @Input('clrDetailAriaLabelledBy') ariaLabelledBy?: string;
+  @Input('clrDetailAriaLabel') ariaLabel?: string;
 
-  @ContentChild(ClrDatagridDetailHeader) header: ClrDatagridDetailHeader;
+  @ContentChild(ClrDatagridDetailHeader) header!: ClrDatagridDetailHeader;
 
   constructor(
     public detailService: DetailService,
@@ -85,7 +85,7 @@ export class ClrDatagridDetail {
     return this.detailWidth !== MAX_DETAIL_WIDTH ? this.detailWidth : null;
   }
 
-  get labelledBy(): string {
+  get labelledBy(): string | null {
     if (this.ariaLabelledBy) {
       return this.header ? `${this.header.titleId} ${this.ariaLabelledBy}` : this.ariaLabelledBy;
     } else if (this.ariaLabel) {
@@ -96,7 +96,7 @@ export class ClrDatagridDetail {
     }
   }
 
-  get label(): string {
+  get label(): string | null {
     if (!this.ariaLabelledBy) {
       return this.ariaLabel || null;
     } else {

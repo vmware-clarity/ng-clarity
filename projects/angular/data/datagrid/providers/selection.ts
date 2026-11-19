@@ -23,7 +23,7 @@ export class Selection<T = any> {
   /**
    * Last selection, for use in range selection.
    */
-  rangeStart: T;
+  rangeStart: T | null = null;
 
   /**
    * Shift key state, for use in range selection.
@@ -115,7 +115,7 @@ export class Selection<T = any> {
           }
 
           case SelectionType.Multi: {
-            let leftOver: any[] = this.current.slice();
+            let leftOver = this.current.slice();
             let selectionUpdated = false;
 
             // Duplicate loop, when the issue is issue#2342 is revisited keep in mind that
@@ -197,7 +197,7 @@ export class Selection<T = any> {
     this.updateCurrentSelectionRefs();
   }
 
-  get currentSingle(): T {
+  get currentSingle(): T | undefined {
     return this._current.length ? this._current[0] : undefined;
   }
 

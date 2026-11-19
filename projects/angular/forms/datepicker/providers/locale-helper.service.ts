@@ -23,9 +23,9 @@ import { ClrDayOfWeek } from '../interfaces/day-of-week.interface';
 @Injectable()
 export class LocaleHelperService {
   private _firstDayOfWeek: number = ClrWeekday.Sunday;
-  private _localeDays: ReadonlyArray<ClrDayOfWeek>;
-  private _localeMonthsAbbreviated: ReadonlyArray<string>;
-  private _localeMonthsWide: ReadonlyArray<string>;
+  private _localeDays!: ReadonlyArray<ClrDayOfWeek>;
+  private _localeMonthsAbbreviated!: ReadonlyArray<string>;
+  private _localeMonthsWide!: ReadonlyArray<string>;
 
   constructor(@Inject(LOCALE_ID) public locale: string) {
     this.initializeLocaleData();
@@ -87,7 +87,7 @@ export class LocaleHelperService {
    */
   private initializeLocaleDays(): void {
     // Get locale day names starting with Sunday
-    const tempArr = [];
+    const tempArr: ClrDayOfWeek[] = [];
     const tempWideArr: string[] = getLocaleDayNames(this.locale, FormStyle.Standalone, TranslationWidth.Wide).slice();
     const tempNarrowArr: string[] = getLocaleDayNames(
       this.locale,

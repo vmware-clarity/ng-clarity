@@ -15,7 +15,7 @@ export class DatagridNumericFilterImpl<T = any> implements ClrDatagridFilterInte
   /**
    * The Observable required as part of the Filter interface
    */
-  private _changes = new Subject<[number, number]>();
+  private _changes = new Subject<[number | null, number | null]>();
 
   /**
    * Internal values and accessor
@@ -26,14 +26,14 @@ export class DatagridNumericFilterImpl<T = any> implements ClrDatagridFilterInte
   constructor(public filterFn: ClrDatagridNumericFilterInterface<T>) {}
 
   // We do not want to expose the Subject itself, but the Observable which is read-only
-  get changes(): Observable<[number, number]> {
+  get changes(): Observable<[number | null, number | null]> {
     return this._changes.asObservable();
   }
 
-  get value(): [number, number] {
+  get value(): [number | null, number | null] {
     return [this._low, this._high];
   }
-  set value(vals: [number, number]) {
+  set value(vals: [number | null, number | null]) {
     const low = vals[0];
     const high = vals[1];
     if (low !== this._low || high !== this._high) {
@@ -46,7 +46,7 @@ export class DatagridNumericFilterImpl<T = any> implements ClrDatagridFilterInte
   get low() {
     return this._low;
   }
-  set low(low: number) {
+  set low(low: number | null) {
     if (low !== this._low) {
       this._low = low;
       this._changes.next([this._low, this._high]);
@@ -56,7 +56,7 @@ export class DatagridNumericFilterImpl<T = any> implements ClrDatagridFilterInte
   get high() {
     return this._high;
   }
-  set high(high: number) {
+  set high(high: number | null) {
     if (high !== this._high) {
       this._high = high;
       this._changes.next([this._low, this._high]);
