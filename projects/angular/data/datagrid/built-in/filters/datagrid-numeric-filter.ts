@@ -71,10 +71,10 @@ export class DatagridNumericFilter<T = any>
   extends DatagridFilterRegistrar<T, DatagridNumericFilterImpl<T>>
   implements CustomFilter, AfterViewInit
 {
-  @Input('clrFilterMinPlaceholder') minPlaceholder: string;
-  @Input('clrFilterMaxPlaceholder') maxPlaceholder: string;
-  @Input('clrFilterFromLabel') fromLabel: string;
-  @Input('clrFilterToLabel') toLabel: string;
+  @Input('clrFilterMinPlaceholder') minPlaceholder?: string;
+  @Input('clrFilterMaxPlaceholder') maxPlaceholder?: string;
+  @Input('clrFilterFromLabel') fromLabel?: string;
+  @Input('clrFilterToLabel') toLabel?: string;
 
   @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
 
@@ -86,14 +86,14 @@ export class DatagridNumericFilter<T = any>
   /**
    * We need the actual input element to automatically focus on it
    */
-  @ViewChild('input_low') input: ElementRef<HTMLInputElement>;
+  @ViewChild('input_low') input!: ElementRef<HTMLInputElement>;
 
   /**
    * We grab the ClrDatagridFilter we wrap to register this StringFilter to it.
    */
-  @ViewChild(ClrDatagridFilter) filterContainer: ClrDatagridFilter<T>;
+  @ViewChild(ClrDatagridFilter) filterContainer!: ClrDatagridFilter<T>;
 
-  private initFilterValues: [number, number];
+  private initFilterValues?: [number | null, number | null];
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -113,7 +113,7 @@ export class DatagridNumericFilter<T = any>
   get value() {
     return [this.filter.low, this.filter.high];
   }
-  set value(values: [number, number]) {
+  set value(values: [number | null, number | null]) {
     if (this.filter && Array.isArray(values)) {
       if (values && (values[0] !== this.filter.low || values[1] !== this.filter.high)) {
         if (typeof values[0] === 'number') {
@@ -178,7 +178,7 @@ export class DatagridNumericFilter<T = any>
       return null;
     }
   }
-  set low(low: number | string) {
+  set low(low: number | string | null) {
     if (typeof low === 'number' && low !== this.filter.low) {
       this.filter.low = low;
       this.filterValueChange.emit([this.filter.low, this.filter.high]);
@@ -196,7 +196,7 @@ export class DatagridNumericFilter<T = any>
       return null;
     }
   }
-  set high(high: number | string) {
+  set high(high: number | string | null) {
     if (typeof high === 'number' && high !== this.filter.high) {
       this.filter.high = high;
       this.filterValueChange.emit([this.filter.low, this.filter.high]);

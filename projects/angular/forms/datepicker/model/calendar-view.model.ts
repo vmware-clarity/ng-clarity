@@ -14,13 +14,13 @@ import { getDay } from '../utils/date-utils';
 
 export class CalendarViewModel {
   private currMonthDayViews: DayViewModel[] = [];
-  private _calendarView: DayViewModel[][];
+  private _calendarView!: DayViewModel[][];
 
   constructor(
     public calendar: CalendarModel,
-    public selectedDay: DayModel,
-    public selectedEndDay: DayModel,
-    private focusableDay: DayModel,
+    public selectedDay: DayModel | null | undefined,
+    public selectedEndDay: DayModel | null | undefined,
+    private focusableDay: DayModel | null | undefined,
     private today: DayModel,
     public firstDayOfWeek: number,
     private excludedDates: DateRange
@@ -47,7 +47,7 @@ export class CalendarViewModel {
   /**
    * Updates the selected day in the calendar
    */
-  updateSelectedDay(day: DayModel | undefined): void {
+  updateSelectedDay(day: DayModel | null | undefined): void {
     this.setSelectedDay(this.selectedDay, false);
     this.selectedDay = day;
     this.setSelectedDay(day, true);
@@ -56,7 +56,7 @@ export class CalendarViewModel {
   /**
    * Updates the selected end day in the calendar
    */
-  updateSelectedEndDay(day: DayModel | undefined): void {
+  updateSelectedEndDay(day: DayModel | null | undefined): void {
     this.setSelectedDay(this.selectedEndDay, false);
     this.selectedEndDay = day;
     this.setSelectedDay(day, true);
@@ -110,7 +110,7 @@ export class CalendarViewModel {
   }
 
   private isDateExcluded(date: DayModel) {
-    const { minDate, maxDate }: DateRange = this.excludedDates;
+    const { minDate, maxDate } = this.excludedDates;
     const from = minDate.toComparisonString();
     const to = maxDate.toComparisonString();
     const today = date.toComparisonString();
@@ -204,13 +204,13 @@ export class CalendarViewModel {
     }
   }
 
-  private setFocusableFlag(day: DayModel, flag: boolean): void {
+  private setFocusableFlag(day: DayModel | null | undefined, flag: boolean): void {
     if (day) {
       this.currMonthDayViews[day.date - 1].isFocusable = flag;
     }
   }
 
-  private setSelectedDay(day: DayModel, flag: boolean) {
+  private setSelectedDay(day: DayModel | null | undefined, flag: boolean) {
     if (day && this.isDayInCalendarView(day)) {
       this.currMonthDayViews[day?.date - 1].isSelected = flag;
     }

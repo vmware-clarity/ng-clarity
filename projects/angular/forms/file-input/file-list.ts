@@ -63,20 +63,26 @@ import {
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrFileList {
-  @ContentChild(ClrFileMessagesTemplate) protected readonly fileMessagesTemplate: ClrFileMessagesTemplate;
+  @ContentChild(ClrFileMessagesTemplate) protected readonly fileMessagesTemplate!: ClrFileMessagesTemplate;
 
   protected injectorCache = new Map<File, Injector>();
   private contextCache = new Map<File, ClrFileMessagesTemplateContext>();
 
   private readonly injector = inject(Injector);
   private readonly commonStrings = inject(ClrCommonStringsService);
-  private readonly ngControlService = inject(NgControlService, { optional: true });
-  private readonly fileInputContainer = inject(ClrFileInputContainer, { optional: true });
+  private readonly ngControlService: NgControlService;
+  private readonly fileInputContainer: ClrFileInputContainer;
 
   constructor() {
-    if (!this.ngControlService || !this.fileInputContainer) {
+    const ngControlService = inject(NgControlService, { optional: true });
+    const fileInputContainer = inject(ClrFileInputContainer, { optional: true });
+
+    if (!ngControlService || !fileInputContainer) {
       throw new Error('The clr-file-list component can only be used within a clr-file-input-container.');
     }
+
+    this.ngControlService = ngControlService;
+    this.fileInputContainer = fileInputContainer;
   }
 
   protected get files() {
@@ -86,7 +92,7 @@ export class ClrFileList {
 
     const fileInputElement = this.fileInputContainer.fileInput.elementRef.nativeElement;
 
-    return Array.from(fileInputElement.files).sort((a, b) => a.name.localeCompare(b.name));
+    return Array.from(fileInputElement.files ?? []).sort((a, b) => a.name.localeCompare(b.name));
   }
 
   protected getClearFileLabel(filename: string) {
@@ -101,7 +107,7 @@ export class ClrFileList {
     }
 
     const fileInputElement = this.fileInputContainer.fileInput.elementRef.nativeElement;
-    const files = Array.from(fileInputElement.files);
+    const files = Array.from(fileInputElement.files ?? []);
     const newFiles = files.filter(file => file !== fileToRemove);
 
     selectFiles(fileInputElement, newFiles);

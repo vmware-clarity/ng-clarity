@@ -58,9 +58,9 @@ export class ClrDatagridCell implements OnInit {
    * On the host, we set the .datagrid-signpost-trigger class on the cell when signpost.length is greater than 0.
    *
    */
-  @ContentChildren(ClrSignpost) signpost: QueryList<ClrSignpost>;
+  @ContentChildren(ClrSignpost) signpost!: QueryList<ClrSignpost>;
 
-  private wrappedInjector: Injector;
+  private wrappedInjector!: Injector;
   private el = inject<ElementRef<HTMLElement>>(ElementRef);
   // Found by injection rather than set by the row, so the cell knows its row when it is first checked:
   // cells rendered in a loop inside the row are checked before the row's content hooks run.
