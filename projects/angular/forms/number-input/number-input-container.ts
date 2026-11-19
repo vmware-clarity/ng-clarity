@@ -73,7 +73,7 @@ import { ClrNumberInput } from './number-input';
 export class ClrNumberInputContainer extends ClrAbstractContainer {
   focus = false;
 
-  @ContentChild(forwardRef(() => ClrNumberInput)) protected readonly input: ClrNumberInput;
+  @ContentChild(forwardRef(() => ClrNumberInput)) protected readonly input!: ClrNumberInput;
 
   constructor(
     controlClassService: ControlClassService,

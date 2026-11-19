@@ -13,14 +13,14 @@ width of the component, after being wrapped to a new line -->
   clrPopoverOrigin
   (click)="onWrapperClick($event)"
   [class.multi]="multiSelect"
-  [class.invalid]="(control?.control.touched && control?.invalid)"
+  [class.invalid]="(control?.control?.touched && control?.invalid)"
   [class.disabled]="control?.disabled"
 >
   @if (multiSelect && multiSelectModel && multiSelectModel.length > 0) {
   <span
     role="grid"
     clrRovingTabindex
-    [clrRovingTabindexDisabled]="(control?.disabled ?? null)"
+    [clrRovingTabindexDisabled]="!!control?.disabled"
     clrDirection="both"
     [attr.aria-label]="getSelectionAriaLabel()"
     [attr.aria-disabled]="control?.disabled? true: null"
@@ -138,7 +138,7 @@ width of the component, after being wrapped to a new line -->
     aria-autocomplete="list"
     autocomplete="off"
     [attr.aria-invalid]="control?.invalid? true: null"
-    [disabled]="control?.disabled? true: null"
+    [disabled]="!!control?.disabled"
     [attr.aria-activedescendant]="getActiveDescendant()"
     [attr.placeholder]="placeholder"
   />
