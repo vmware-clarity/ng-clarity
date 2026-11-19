@@ -97,13 +97,13 @@ export class RuntimeAcceptance {
   readonly css = signal('');
   readonly roots: Node[] = [{ name: 'Runtime root', children: [{ name: 'Runtime child' }] }];
   kind: 'observable' | 'promise' = 'observable';
-  completeRequest: () => void;
+  completeRequest!: () => void;
   cancellations = 0;
-  retainedTreeModel: ClrTreeNode<Node>['_model'];
+  retainedTreeModel!: ClrTreeNode<Node>['_model'];
   loadingEmissions = 0;
-  @ViewChild(ClrTreeNode) private treeNode: ClrTreeNode<Node>;
-  @ViewChild(ThemeBuilderComponent) private themeBuilder: ThemeBuilderComponent;
-  @ViewChildren(ClrDatagridColumn) private gridColumns: QueryList<ClrDatagridColumn>;
+  @ViewChild(ClrTreeNode) private treeNode!: ClrTreeNode<Node>;
+  @ViewChild(ThemeBuilderComponent) private themeBuilder!: ThemeBuilderComponent;
+  @ViewChildren(ClrDatagridColumn) private gridColumns!: QueryList<ClrDatagridColumn>;
 
   constructor() {
     Object.assign(window, { runtimeAcceptance: this });
