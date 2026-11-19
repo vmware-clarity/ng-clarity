@@ -10775,8 +10775,10 @@ export class MockFocusableItem implements FocusableItem {
 }
 
 // @public (undocumented)
-export class ModalStackService {
+export class ModalStackService implements OnDestroy {
     constructor(platformId: Object);
+    // (undocumented)
+    ngOnDestroy(): void;
     // (undocumented)
     trackModalClose(closedModal: Closable): void;
     // (undocumented)
