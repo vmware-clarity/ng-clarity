@@ -12,6 +12,10 @@ var ModalStackService = class ModalStackService {
 		this.modalStack = [];
 		this.keyUpEventListener = this.onKeyUp.bind(this);
 	}
+	ngOnDestroy() {
+		this.modalStack.length = 0;
+		if (isPlatformBrowser(this.platformId)) document.body.removeEventListener("keyup", this.keyUpEventListener);
+	}
 	trackModalOpen(openedModal) {
 		if (this.modalStack.includes(openedModal) === false) this.modalStack.unshift(openedModal);
 		if (isPlatformBrowser(this.platformId)) document.body.addEventListener("keyup", this.keyUpEventListener);

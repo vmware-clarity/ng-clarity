@@ -13,11 +13,12 @@ export declare class ClrModalConfigurationService {
 export interface Closable {
   close(): void;
 }
-export declare class ModalStackService {
+export declare class ModalStackService implements OnDestroy {
   private readonly platformId;
   private readonly modalStack;
   private readonly keyUpEventListener;
   constructor(platformId: unknown);
+  ngOnDestroy(): void;
   trackModalOpen(openedModal: Closable): void;
   trackModalClose(closedModal: Closable): void;
   private onKeyUp;
