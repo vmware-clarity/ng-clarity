@@ -75,7 +75,7 @@ import { ClarityModule, ClrModal, ClrPopoverService, ClrSidePanelModule } from '
 export class OverlayAcceptance {
   readonly mounted = signal(true);
   readonly date = signal('10/15/2026');
-  readonly selection = signal<string>(null);
+  readonly selection = signal<string | null>(null);
   readonly modal = signal(false);
   readonly second = signal(false);
   readonly panel = signal(false);
@@ -85,13 +85,13 @@ export class OverlayAcceptance {
 
   readonly visibility: Record<string, boolean[]> = {};
 
-  @ViewChild('acceptanceModal') private modalInstance: ClrModal;
-  private retainedModal: ClrModal;
+  @ViewChild('acceptanceModal') private modalInstance!: ClrModal;
+  private retainedModal!: ClrModal;
   private readonly destroyRef = inject(DestroyRef);
 
-  @ViewChild('menu', { read: ClrPopoverService }) private menu: ClrPopoverService;
-  @ViewChild('signpost', { read: ClrPopoverService }) private signpost: ClrPopoverService;
-  @ViewChild('combo', { read: ClrPopoverService }) private combo: ClrPopoverService;
+  @ViewChild('menu', { read: ClrPopoverService }) private menu!: ClrPopoverService;
+  @ViewChild('signpost', { read: ClrPopoverService }) private signpost!: ClrPopoverService;
+  @ViewChild('combo', { read: ClrPopoverService }) private combo!: ClrPopoverService;
 
   constructor() {
     Object.assign(window, { overlayAcceptance: this });
