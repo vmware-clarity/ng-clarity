@@ -1129,7 +1129,7 @@ export class MockStepModel implements StepModel {
     // (undocumented)
     mockPropertyValue: string;
     // (undocumented)
-    readyToComplete: boolean;
+    readyToComplete?: boolean;
     // Warning: (ae-forgotten-export) The symbol "StepValidationState" needs to be exported by the entry point clr-addons-testing.d.ts
     //
     // (undocumented)
@@ -1278,7 +1278,7 @@ export class TabsHelper {
     findLinkIcon(linkIndex: number): DebugElement | undefined;
     findLinkText(linkIndex: number): string | undefined;
     // Warning: (ae-forgotten-export) The symbol "ClrTab" needs to be exported by the entry point clr-addons-testing.d.ts
-    getActiveTab(): ClrTab;
+    getActiveTab(): ClrTab | undefined;
     getActiveTabContentElement(): HTMLElement | undefined;
     getActiveTabIndex(): number;
     getLinkList(): Array<DebugElement>;

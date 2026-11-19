@@ -53,7 +53,7 @@ describe(`Column toggle (zoneless, OnPush host)`, () => {
     const id = trigger.getAttribute('aria-controls');
     expect(id).toBeTruthy();
     expect(trigger.getAttribute('aria-owns')).toBe(id);
-    expect(document.getElementById(id).querySelector('[role="dialog"]')).not.toBeNull();
+    expect(document.getElementById(id!)!.querySelector('[role="dialog"]')).not.toBeNull();
     (document.querySelector('.switch-header button') as HTMLButtonElement).click();
     await fixture.whenStable();
     expect(trigger.getAttribute('aria-controls')).toBeNull();
@@ -67,13 +67,13 @@ describe(`Column toggle (zoneless, OnPush host)`, () => {
     const id = trigger.getAttribute('aria-controls');
     expect(id).toBeTruthy();
     document
-      .getElementById(id)
+      .getElementById(id!)!
       .dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', code: 'Escape', keyCode: 27, bubbles: true }));
     await fixture.whenStable();
     expect(trigger.getAttribute('aria-expanded')).toBe('false');
     expect(trigger.getAttribute('aria-controls')).toBeNull();
     expect(trigger.getAttribute('aria-owns')).toBeNull();
-    expect(document.getElementById(id)?.querySelector('[role="dialog"]')).toBeFalsy();
+    expect(document.getElementById(id!)?.querySelector('[role="dialog"]')).toBeFalsy();
   });
 
   it('clears the overlay relationship after a native backdrop click', async () => {

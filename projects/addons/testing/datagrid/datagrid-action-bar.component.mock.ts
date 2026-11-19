@@ -26,7 +26,7 @@ import { ActionDefinition } from '@clr/addons/datagrid';
   `,
 })
 export class MockDatagridActionBarComponent {
-  @Input() actions: ActionDefinition[];
+  @Input() actions!: ActionDefinition[];
 
   @Output() invokeAction: EventEmitter<ActionDefinition> = new EventEmitter();
 

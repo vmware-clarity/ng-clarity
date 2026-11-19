@@ -27,7 +27,7 @@ describe('Pipe: DateTime', () => {
   it('calls the dateTimeService', inject(
     [DateTimePipe, DateTimeService],
     (pipe: DateTimePipe, service: DateTimeService) => {
-      const spy = vi.spyOn(service, 'format').mockImplementation(() => undefined);
+      const spy = vi.spyOn(service, 'format').mockImplementation(() => undefined as unknown as string);
       const options = {
         dateTimeKind: DateTimeKind.LongDateTime,
       };

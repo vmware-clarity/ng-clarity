@@ -45,7 +45,7 @@ describe('Directive: DismissableDirective', () => {
     component = fixture.componentInstance;
     renderFixture(fixture);
     badge = fixture.nativeElement.querySelector('.badge');
-    icon = badge.querySelector('cds-icon.remove-filter');
+    icon = badge.querySelector('cds-icon.remove-filter')!;
   });
 
   afterEach(() => {
@@ -64,7 +64,7 @@ describe('Directive: DismissableDirective', () => {
   it('renders the icon SVG (the icon is an Angular component, not an empty element)', () => {
     const svg = icon.shadowRoot ? icon.shadowRoot.querySelector('svg') : icon.querySelector('svg');
     expect(svg).toBeTruthy();
-    expect(svg.innerHTML).toContain('path');
+    expect(svg!.innerHTML).toContain('path');
   });
 
   it('emits dismiss on click', () => {

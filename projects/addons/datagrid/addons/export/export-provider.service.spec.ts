@@ -26,7 +26,7 @@ import { appfxDatagridErrorNotifiableToken } from '../../interfaces/tokens';
   standalone: true,
 })
 class ClrDatagridHostComponent {
-  @ViewChild(ClrDatagrid, { static: true }) clrDatagrid: ClrDatagrid;
+  @ViewChild(ClrDatagrid, { static: true }) clrDatagrid!: ClrDatagrid;
 
   serialKeyLicenseItems: any[] = [
     {
@@ -151,7 +151,7 @@ describe('ExportProviderService', () => {
       exportType: ExportType.ALL,
     };
 
-    vi.spyOn(csvHelperService, 'getData').mockImplementation(() => undefined);
+    vi.spyOn(csvHelperService, 'getData').mockImplementation(() => undefined as unknown as string);
     vi.spyOn(exportProviderService, 'downloadFile').mockImplementation(() => undefined);
     exportProviderService.exportUIOnlyData(testContext.exportProperties, exportStatus, testContext.datagridItemSet);
 
@@ -175,7 +175,7 @@ describe('ExportProviderService', () => {
       exportType: ExportType.SELECTED_ONLY,
     };
 
-    vi.spyOn(csvHelperService, 'getData').mockImplementation(() => undefined);
+    vi.spyOn(csvHelperService, 'getData').mockImplementation(() => undefined as unknown as string);
     vi.spyOn(exportProviderService, 'downloadFile').mockImplementation(() => undefined);
     exportProviderService.exportUIOnlyData(testContext.exportProperties, exportStatus, testContext.datagridItemSet);
 
@@ -201,7 +201,7 @@ describe('ExportProviderService', () => {
         inProgress: false,
         exportType: ExportType.MATCHING_FILTERS,
       };
-      vi.spyOn(csvHelperService, 'getData').mockImplementation(() => undefined);
+      vi.spyOn(csvHelperService, 'getData').mockImplementation(() => undefined as unknown as string);
       vi.spyOn(exportProviderService, 'downloadFile').mockImplementation(() => undefined);
       exportProviderService.exportUIOnlyData(testContext.exportProperties, exportStatus, testContext.datagridItemSet);
 
@@ -254,7 +254,7 @@ describe('ExportProviderService', () => {
       sortOrder: ClrDatagridSortOrder.DESC,
     };
 
-    vi.spyOn(csvHelperService, 'getData').mockImplementation(() => undefined);
+    vi.spyOn(csvHelperService, 'getData').mockImplementation(() => undefined as unknown as string);
     vi.spyOn(exportProviderService, 'downloadFile').mockImplementation(() => undefined);
 
     exportProviderService.exportUIOnlyData(testContext.exportProperties, exportStatus, testContext.datagridItemSet);
@@ -305,7 +305,7 @@ describe('ExportProviderService', () => {
       sortOrder: ClrDatagridSortOrder.ASC,
     };
 
-    vi.spyOn(csvHelperService, 'getData').mockImplementation(() => undefined);
+    vi.spyOn(csvHelperService, 'getData').mockImplementation(() => undefined as unknown as string);
     vi.spyOn(exportProviderService, 'downloadFile').mockImplementation(() => undefined);
 
     exportProviderService.exportUIOnlyData(testContext.exportProperties, exportStatus, testContext.datagridItemSet);
@@ -336,7 +336,7 @@ describe('ExportProviderService', () => {
       sortOrder: ClrDatagridSortOrder.ASC,
     };
 
-    vi.spyOn(csvHelperService, 'getData').mockImplementation(() => undefined);
+    vi.spyOn(csvHelperService, 'getData').mockImplementation(() => undefined as unknown as string);
     vi.spyOn(exportProviderService, 'downloadFile').mockImplementation(() => undefined);
 
     exportProviderService.exportUIOnlyData(testContext.exportProperties, exportStatus, testContext.datagridItemSet);

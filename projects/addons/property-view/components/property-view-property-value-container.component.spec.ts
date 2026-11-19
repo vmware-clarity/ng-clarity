@@ -83,7 +83,7 @@ interface MockModel {
   template: `{{ model.text }}`,
 })
 class MockComponent implements PropertyViewPropertyValueComponent<MockModel> {
-  model: MockModel;
+  model!: MockModel;
 }
 
 @Component({
@@ -93,7 +93,7 @@ class MockComponent implements PropertyViewPropertyValueComponent<MockModel> {
   template: `{{ model.text }}`,
 })
 class Mock2Component implements PropertyViewPropertyValueComponent<MockModel> {
-  model: MockModel;
+  model!: MockModel;
 }
 
 @NgModule({

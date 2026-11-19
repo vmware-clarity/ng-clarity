@@ -23,7 +23,7 @@ const firstName = 'First Name';
 
 // A pinned column is projected into the datagrid's sticky container, so reading it back is how these
 // tests tell a real pinned column from one that only has `pinned` set on its definition.
-function pinnedHeaders(context: any): string[] {
+function pinnedHeaders(context: any): (string | undefined)[] {
   return Array.from(
     (context.fixture.nativeElement as HTMLElement).querySelectorAll<HTMLElement>('.datagrid-pinned-cells clr-dg-column')
   ).map((column: HTMLElement) => column.querySelector('.datagrid-column-title')?.textContent.trim());
@@ -500,9 +500,9 @@ describe('DatagridColumnsOrderDirective', () => {
   `,
 })
 class TestClrDatagridHostComponent {
-  @ViewChild(DatagridColumnsOrderDirective) dgColumnsOrderDirective: DatagridColumnsOrderDirective;
+  @ViewChild(DatagridColumnsOrderDirective) dgColumnsOrderDirective!: DatagridColumnsOrderDirective;
 
-  @ViewChild(CdkDropList) cdkDropListDirective: CdkDropList;
+  @ViewChild(CdkDropList) cdkDropListDirective!: CdkDropList;
 
   data: any[] = [
     {
