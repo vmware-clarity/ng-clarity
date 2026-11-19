@@ -9,7 +9,7 @@ metadata:
 
 ## When to use it
 
-Inside `appfx-datagrid`, the filter bar is built in; configure it on the grid (see the appfx-datagrid skill). Use `appfx-datagrid-filters` directly when you host it yourself, for example in a `clr-datagrid` action bar, or when you need inputs the grid does not pass on: `presetFilters`, `predefinedFilters`, `semiPredefinedFilters`, `toggleFilters`, `propertyFilters`.
+Inside `appfx-datagrid`, the filter bar is built in; configure it on the grid (see the appfx-datagrid skill). Use `appfx-datagrid-filters` directly when you host it yourself, for example in a `clr-datagrid` action bar, or when you need inputs the grid does not pass on: `presetFilters`, `predefinedFilters`, `semiPredefinedFilters`, `toggleFilters`. The grid does pass on `[(propertyFilters)]`.
 
 ## Setup
 
@@ -77,7 +77,7 @@ The component only **emits** filters. Apply `PropertyFilter[]` (each `{ criteria
 - `PropertyPredicate.value` is `undefined` for `ComparisonOperator.IsEmpty` — check the operator first.
 - `DateTimePropertyDefinition`'s fourth argument `includeSeconds` shows seconds in the time inputs and makes **Equals** match one second instead of one minute.
 - `DateTimePropertyDefinition`'s fifth argument `rangeOptions: DateRangeOption[]` (`{ label, value: [start, end] }`, both inclusive) adds preset ranges to **Custom range**. Dates are used as given; a `Date` at 00:00 means the whole day.
-- Date-time values are local date-times with the local UTC offset (`2026-03-29T00:00:00+02:00`). **Equals** a day is emitted as `>= day 00:00` AND `< next day 00:00`.
+- Date-time values are the local date and time the user picked, usually followed by the browser's UTC offset (`2026-03-29T00:00:00+02:00`; no offset in a UTC browser). **Equals** a day is emitted as `>= day 00:00` AND `< next day 00:00`. The filters do not convert time zones or adjust for daylight saving; the app interprets the values. Where the clock skips midnight (e.g. America/Santiago), the browser moves times computed from that day's 00:00 to 01:00.
 - `UserPropertyDefinition` requires providing `DatagridFiltersUserService`.
 - Localize by providing `DatagridFiltersStrings`.
 

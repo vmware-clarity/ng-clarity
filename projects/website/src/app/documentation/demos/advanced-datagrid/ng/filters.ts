@@ -167,9 +167,10 @@ export class FiltersGridComponent {
   protected selectedFilterMode: FilterMode | undefined = FilterMode.AdvancedOnly;
   protected errorRetrievingDomains = false;
   protected errorRetrievingUsers = false;
-  // The latest search term and filters. Combined mode applies both; in the other modes the latest one replaces the other.
+  // The latest filters and search term. Combined mode applies both; in the other modes the latest one replaces the other.
+  // The filters are bound to the grid, so clearing them here also clears its pills.
+  protected propertyFilters: PropertyFilter[] = [];
   private searchTerm = '';
-  private propertyFilters: PropertyFilter[] = [];
 
   constructor(
     private inventory: Inventory,

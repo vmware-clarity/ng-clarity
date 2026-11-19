@@ -161,7 +161,9 @@ Extends FilterablePropertyDefinition. Default supported operators:
 11. ComparisonOperator.LastYear
 12. ComparisonOperator.TimeSpan
 
-Date-time filters emit local date-times followed by the local UTC offset, e.g. `2026-03-29T00:00:00+02:00`. **Equals** a date is emitted as `>= that day 00:00` AND `< next day 00:00`, and a custom range ends before the midnight after its end date. A day always runs from midnight to the next midnight, also on the days daylight saving starts or ends (23 or 25 hours). **Last day**, **Last week** and **Time span** count back a fixed length from now.
+Date-time filters emit the local date and time the user picked, usually followed by the browser's UTC offset, e.g. `2026-03-29T00:00:00+02:00`. In a UTC browser no offset is added. **Equals** a date is emitted as `>= that day 00:00` AND `< next day 00:00`, and a custom range ends before the midnight after its end date. A day runs from midnight to the next midnight, also on the days daylight saving starts or ends (23 or 25 hours). **Last day**, **Last week** and **Time span** count back a fixed length from now.
+
+The filters do not convert time zones or adjust for daylight saving: interpreting the values, e.g. against server time, is up to the application. In time zones where the clock skips midnight when daylight saving starts (e.g. America/Santiago), 00:00 does not exist on that day. The browser then moves the times computed from it (the end of an **Equals** day, or of a custom range ending that day) to 01:00, and a pill restored without its editor state can show such a day as a time range.
 
 #### Preset ranges
 

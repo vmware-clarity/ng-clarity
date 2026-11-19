@@ -23,7 +23,15 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ZoomLevelService } from '@clr/addons/a11y';
-import { DatagridFiltersStrings, FilterMode, PropertyFilter } from '@clr/addons/datagrid-filters';
+import {
+  ComparisonOperator,
+  DataGridFiltersComponent,
+  DatagridFiltersStrings,
+  FilterMode,
+  LogicalOperator,
+  PropertyFilter,
+  StringPropertyDefinition,
+} from '@clr/addons/datagrid-filters';
 import { DragAndDropGroupService } from '@clr/addons/drag-and-drop';
 import {
   FilterInputTestHelper,
@@ -2690,6 +2698,35 @@ describe('DatagridComponent', () => {
       this.component.appfxDatagridComponent.onAdvancedFilterCriteriaChange(propertyFilters);
       this.fixture.detectChanges();
       expect(this.component.onAdvancedFilterChange).toHaveBeenCalledWith(propertyFilters);
+    });
+
+    it('passes propertyFilters to the filter bar without emitting, and emits them on change', function (this: any) {
+      const grid = this.component.appfxDatagridComponent;
+      grid.filterMode = FilterMode.AdvancedOnly;
+      const nameProperty = new StringPropertyDefinition('Name', 'name');
+      grid.filterableProperties = [nameProperty];
+      const propertyFilters: PropertyFilter[] = [
+        {
+          operator: LogicalOperator.And,
+          criteria: [{ filterableProperty: nameProperty, operator: ComparisonOperator.Contains, value: 'vm' }],
+        },
+      ];
+      spyOn(grid.propertyFiltersChange, 'emit');
+      spyOn(grid.advancedFilterChange, 'emit');
+      grid.propertyFilters = propertyFilters;
+      this.fixture.detectChanges(false);
+      const bar: DataGridFiltersComponent = this.fixture.debugElement.query(
+        By.directive(DataGridFiltersComponent)
+      ).componentInstance;
+      expect(bar.propertyFilters).toBe(propertyFilters);
+      expect(grid.propertyFiltersChange.emit).not.toHaveBeenCalled();
+      expect(grid.advancedFilterChange.emit).not.toHaveBeenCalled();
+
+      const changed: PropertyFilter[] = [];
+      grid.onAdvancedFilterCriteriaChange(changed);
+      expect(grid.propertyFiltersChange.emit).toHaveBeenCalledWith(changed);
+      expect(grid.advancedFilterChange.emit).toHaveBeenCalledWith(changed);
+      expect(grid.propertyFilters).toBe(changed);
     });
 
     afterEach(function (this: any) {
