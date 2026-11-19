@@ -17,7 +17,7 @@ describe('Vertical Nav', () => {
       });
 
       afterEach(() => {
-        vertNavService = null;
+        vertNavService = null!;
       });
 
       it('supports registration of icons', () => {

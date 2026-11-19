@@ -32,7 +32,7 @@ import { ClrWizard } from '../wizard';
   standalone: false,
 })
 export class DynamicWizardTestComponent {
-  @ViewChild('wizard', { static: true }) wizard: ClrWizard;
+  @ViewChild('wizard', { static: true }) wizard!: ClrWizard;
   open = true;
   pages = [1, 2, 4];
   showSecondPage = true;

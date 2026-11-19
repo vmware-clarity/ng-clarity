@@ -177,7 +177,7 @@ describe('Modal notifications (zoneless, OnPush host)', () => {
     await fixture.whenStable();
     const modal = fixture.debugElement
       .queryAll(By.directive(ClrModal))
-      .find(el => el.nativeElement.classList.contains('imperative')).componentInstance as ClrModal;
+      .find(el => el.nativeElement.classList.contains('imperative'))!.componentInstance as ClrModal;
     modal._openChanged.subscribe(open => {
       if (open) {
         modal.close();
@@ -236,7 +236,7 @@ describe('Modal notifications (zoneless, OnPush host)', () => {
   it('supports repeated imperative opening and closing without an input binding', async () => {
     const modal = fixture.debugElement
       .queryAll(By.directive(ClrModal))
-      .find(el => el.nativeElement.classList.contains('imperative')).componentInstance as ClrModal;
+      .find(el => el.nativeElement.classList.contains('imperative'))!.componentInstance as ClrModal;
     const changes: boolean[] = [];
     modal._openChanged.subscribe(open => changes.push(open));
     for (let i = 0; i < 2; i++) {
@@ -258,7 +258,7 @@ describe('Modal notifications (zoneless, OnPush host)', () => {
   it('does not retain an overlay closed before its first render', async () => {
     const modal = fixture.debugElement
       .queryAll(By.directive(ClrModal))
-      .find(el => el.nativeElement.classList.contains('imperative')).componentInstance as ClrModal;
+      .find(el => el.nativeElement.classList.contains('imperative'))!.componentInstance as ClrModal;
     modal.open();
     modal.close();
     await fixture.whenStable();
@@ -273,7 +273,7 @@ describe('Modal notifications (zoneless, OnPush host)', () => {
   it('does not reopen a destroyed instance or reacquire its scroll lock', () => {
     const modal = fixture.debugElement
       .queryAll(By.directive(ClrModal))
-      .find(el => el.nativeElement.classList.contains('imperative')).componentInstance as ClrModal;
+      .find(el => el.nativeElement.classList.contains('imperative'))!.componentInstance as ClrModal;
     const emit = vi.spyOn(modal._openChanged, 'emit');
     fixture.destroy();
     expect(() => modal.open()).not.toThrow();

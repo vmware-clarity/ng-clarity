@@ -93,7 +93,7 @@ describe('Vertical Nav', () => {
 
           renderFixture(fixture);
 
-          const vertNav: HTMLElement = compiled.querySelector('.nav-btn');
+          const vertNav: HTMLElement = compiled.querySelector('.nav-btn')!;
           vertNav.click();
 
           renderFixture(fixture);
@@ -106,7 +106,7 @@ describe('Vertical Nav', () => {
           vertNavService.collapsed = true;
           renderFixture(fixture);
 
-          const toggleVertNavBtn: HTMLElement = compiled.querySelector('.nav-trigger');
+          const toggleVertNavBtn: HTMLElement = compiled.querySelector('.nav-trigger')!;
 
           expect(toggleVertNavBtn.getAttribute('aria-expanded')).toBe('false');
 
@@ -120,7 +120,7 @@ describe('Vertical Nav', () => {
           vertNavService.collapsible = true;
           vertNavService.collapsed = true;
           renderFixture(fixture);
-          const toggleVertNavBtnHelper: HTMLElement = compiled.querySelector('.nav-btn');
+          const toggleVertNavBtnHelper: HTMLElement = compiled.querySelector('.nav-btn')!;
           expect(toggleVertNavBtnHelper.getAttribute('tabindex')).toBe('-1');
           expect(toggleVertNavBtnHelper.getAttribute('aria-hidden')).toBe('true');
         });
@@ -248,7 +248,7 @@ describe('Vertical Nav', () => {
 
           renderFixture(fixture);
 
-          const navGroupTrigger: HTMLElement = compiled.querySelector('.nav-group-trigger');
+          const navGroupTrigger: HTMLElement = compiled.querySelector('.nav-group-trigger')!;
           navGroupTrigger.click();
 
           renderFixture(fixture);
@@ -339,7 +339,7 @@ describe('Vertical Nav', () => {
 
           renderFixture(fixture);
 
-          const nav: HTMLElement = compiled.querySelector('clr-vertical-nav');
+          const nav: HTMLElement = compiled.querySelector('clr-vertical-nav')!;
 
           expect(nav.classList.contains('is-collapsed')).toBe(true);
         });
@@ -350,7 +350,7 @@ describe('Vertical Nav', () => {
 
           renderFixture(fixture);
 
-          const nav: HTMLElement = compiled.querySelector('clr-vertical-nav');
+          const nav: HTMLElement = compiled.querySelector('clr-vertical-nav')!;
 
           expect(nav.classList.contains('is-collapsed')).toBe(true);
 
@@ -362,13 +362,13 @@ describe('Vertical Nav', () => {
         });
 
         it('adds the .has-icons class when the nav has icons', () => {
-          const nav: HTMLElement = compiled.querySelector('clr-vertical-nav');
+          const nav: HTMLElement = compiled.querySelector('clr-vertical-nav')!;
 
           expect(nav.classList.contains('has-icons')).toBe(true);
         });
 
         it('removes the .has-icons class when the nav has icons', () => {
-          const nav: HTMLElement = compiled.querySelector('clr-vertical-nav');
+          const nav: HTMLElement = compiled.querySelector('clr-vertical-nav')!;
 
           expect(nav.classList.contains('has-icons')).toBe(true);
 
@@ -381,13 +381,13 @@ describe('Vertical Nav', () => {
         });
 
         it('adds the .has-nav-groups class when the nav has icons', () => {
-          const nav: HTMLElement = compiled.querySelector('clr-vertical-nav');
+          const nav: HTMLElement = compiled.querySelector('clr-vertical-nav')!;
 
           expect(nav.classList.contains('has-nav-groups')).toBe(true);
         });
 
         it('removes the .has-nav-groups class when the nav has icons', () => {
-          const nav: HTMLElement = compiled.querySelector('clr-vertical-nav');
+          const nav: HTMLElement = compiled.querySelector('clr-vertical-nav')!;
 
           expect(nav.classList.contains('has-nav-groups')).toBe(true);
 
@@ -490,8 +490,8 @@ describe('Vertical Nav', () => {
           fixture.componentInstance.collapsed = true;
           renderFixture(fixture);
 
-          const trigger: HTMLElement = compiled.querySelector('.nav-trigger');
-          const vertNav: HTMLElement = compiled.querySelector('.nav-btn');
+          const trigger: HTMLElement = compiled.querySelector('.nav-trigger')!;
+          const vertNav: HTMLElement = compiled.querySelector('.nav-btn')!;
 
           expect(trigger.getAttribute('aria-label')).toBe(commonStringsDefault.verticalNavToggle);
           expect(vertNav.getAttribute('aria-label')).toBe(commonStringsDefault.verticalNavToggle);
@@ -509,9 +509,9 @@ describe('Vertical Nav', () => {
           fixture.componentInstance.collapsed = true;
           renderFixture(fixture);
 
-          const trigger: HTMLElement = compiled.querySelector('.nav-trigger');
-          const vertNav: HTMLElement = compiled.querySelector('.nav-btn');
-          const content: HTMLElement = compiled.querySelector('.nav-content');
+          const trigger: HTMLElement = compiled.querySelector('.nav-trigger')!;
+          const vertNav: HTMLElement = compiled.querySelector('.nav-btn')!;
+          const content: HTMLElement = compiled.querySelector('.nav-content')!;
 
           expect(trigger.getAttribute('aria-controls')).toBe(content.id);
           expect(vertNav.getAttribute('aria-controls')).toBe(content.id);
@@ -551,7 +551,7 @@ describe('Vertical Nav', () => {
 
           renderFixture(fixture);
 
-          const trigger: HTMLElement = compiled.querySelector('.nav-trigger');
+          const trigger: HTMLElement = compiled.querySelector('.nav-trigger')!;
           trigger.click();
 
           renderFixture(fixture);
@@ -589,8 +589,8 @@ describe('Vertical Nav', () => {
 
           renderFixture(fixture);
 
-          const toggleVertNavBtn: HTMLElement = compiled.querySelector('.nav-trigger');
-          const navBtn: HTMLElement = compiled.querySelector('.nav-btn');
+          const toggleVertNavBtn: HTMLElement = compiled.querySelector('.nav-trigger')!;
+          const navBtn: HTMLElement = compiled.querySelector('.nav-btn')!;
 
           expect(toggleVertNavBtn.getAttribute('aria-label')).toBe('Toggle vertical navigation');
           expect(navBtn.getAttribute('aria-label')).toBe('Toggle vertical navigation');
@@ -681,7 +681,7 @@ class IconsAndNavGroupTestComponent {}
   standalone: false,
 })
 class ViewBasicsTestComponent {
-  @ViewChild('nav') nav: ClrVerticalNav;
+  @ViewChild('nav') nav!: ClrVerticalNav;
 
   groupToggle = true;
   iconToggle = true;
@@ -703,10 +703,10 @@ class ViewBasicsTestComponent {
 class APITestComponent {
   collapsible = false;
   collapsed = false;
-  toggleLabel: string;
-  collapsedChange: boolean;
+  toggleLabel!: string;
+  collapsedChange!: boolean;
 
-  @ViewChild('nav') nav: ClrVerticalNav;
+  @ViewChild('nav') nav!: ClrVerticalNav;
 
   updateCollapsed(val: boolean) {
     this.collapsedChange = val;

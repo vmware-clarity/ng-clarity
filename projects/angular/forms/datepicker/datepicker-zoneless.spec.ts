@@ -45,13 +45,13 @@ describe('Datepicker focus (zoneless, OnPush host)', () => {
     toggle.click();
     await fixture.whenStable();
 
-    const day: HTMLButtonElement = document.querySelector('.day-btn[tabindex="0"]');
+    const day: HTMLButtonElement = document.querySelector('.day-btn[tabindex="0"]')!;
     expect(day).not.toBeNull();
     expect(document.activeElement).toBe(day);
 
     day.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
     await fixture.whenStable();
-    const nextDay: HTMLButtonElement = document.querySelector('.day-btn[tabindex="0"]');
+    const nextDay: HTMLButtonElement = document.querySelector('.day-btn[tabindex="0"]')!;
     expect(nextDay).not.toBe(day);
     expect(document.activeElement).toBe(nextDay);
 

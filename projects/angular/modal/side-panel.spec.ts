@@ -37,11 +37,11 @@ import { ClrSidePanelModule } from './side-panel.module';
   standalone: false,
 })
 class TestComponent {
-  @ViewChild(ClrSidePanel) sidePanelInstance: ClrSidePanel;
+  @ViewChild(ClrSidePanel) sidePanelInstance!: ClrSidePanel;
 
   opened = true;
   closable = true;
-  closeButtonAriaLabel: string = undefined;
+  closeButtonAriaLabel: string | undefined = undefined;
   size = '';
 }
 
@@ -122,7 +122,7 @@ describe('Side Panel', () => {
     // open modal
     sidePanel.open();
     renderFixture(fixture);
-    expect(compiled.querySelector('.modal-dialog').getAttribute('aria-hidden')).toBe('false');
+    expect(compiled.querySelector('.modal-dialog')!.getAttribute('aria-hidden')).toBe('false');
   });
 
   it('shows and hides the side panel based on the clrSidePanelOpen input', async () => {
@@ -204,7 +204,7 @@ describe('Side Panel', () => {
     renderFixture(defaultsFixture);
     compiled = defaultsFixture.nativeElement;
 
-    const backdrop: HTMLElement = compiled.querySelector('.modal-backdrop');
+    const backdrop: HTMLElement = compiled.querySelector('.modal-backdrop')!;
 
     backdrop.click();
     await flushAndExpectOpen(defaultsFixture, false);
@@ -219,21 +219,21 @@ describe('Side Panel', () => {
   });
 
   it('close button should have default aria-label', () => {
-    expect(compiled.querySelector('.close').getAttribute('aria-label')).toBe('Close');
+    expect(compiled.querySelector('.close')!.getAttribute('aria-label')).toBe('Close');
   });
 
   it('close button should have customizable aria-label', () => {
     fixture.componentInstance.closeButtonAriaLabel = 'custom close label';
     renderFixture(fixture);
 
-    expect(compiled.querySelector('.close').getAttribute('aria-label')).toBe('custom close label');
+    expect(compiled.querySelector('.close')!.getAttribute('aria-label')).toBe('custom close label');
   });
 
   it('should add expected aria-labelledby', () => {
     // open side panel
     sidePanel.open();
     renderFixture(fixture);
-    expect(compiled.querySelector('.modal-dialog').getAttribute('aria-labelledby')).toBeTruthy();
+    expect(compiled.querySelector('.modal-dialog')!.getAttribute('aria-labelledby')).toBeTruthy();
   });
 
   it('should have text based boundaries for screen readers', async () => {
@@ -248,7 +248,7 @@ describe('Side Panel', () => {
   });
 
   it('renders the title before the close button', async () => {
-    const modalHeader = compiled.querySelector('.modal-header--accessible');
+    const modalHeader = compiled.querySelector('.modal-header--accessible')!;
     expect(modalHeader.children.length).toBeGreaterThanOrEqual(2);
 
     const maybeTitleWrapper = modalHeader.children[0];

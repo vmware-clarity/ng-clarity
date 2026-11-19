@@ -39,7 +39,7 @@ class DefaultTest {}
   standalone: false,
 })
 class IdTest {
-  idValue: string;
+  idValue: string | null | undefined;
 }
 
 @Component({
@@ -56,8 +56,8 @@ class IdTest {
   standalone: false,
 })
 class SimpleTest {
-  position: ClrPopoverPosition;
-  size: string;
+  position!: ClrPopoverPosition;
+  size!: string;
 }
 
 describe('Tooltip', () => {
@@ -91,7 +91,7 @@ describe('Tooltip', () => {
         it('sets the correct default classes', () => {
           expect(tooltipContent.classList).toContain('tooltip-content');
           expect(tooltipContent.classList).toContain('tooltip-sm');
-          expect(tooltipContent.parentElement.classList).toContain('right');
+          expect(tooltipContent.parentElement!.classList).toContain('right');
         });
       });
 
@@ -169,7 +169,7 @@ describe('Tooltip', () => {
         });
 
         it('accepts a [clrPosition] input', () => {
-          const tooltipContainer = tooltipContent.parentElement;
+          const tooltipContainer = tooltipContent.parentElement!;
           // Default is right
           expect(tooltipContainer.classList).toContain(ClrPopoverPosition.RIGHT);
 

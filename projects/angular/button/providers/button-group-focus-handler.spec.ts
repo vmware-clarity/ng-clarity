@@ -32,7 +32,7 @@ import { ClrButtonGroup } from '../button-group/button-group';
   standalone: false,
 })
 class BtnGroupViewContainer {
-  @ViewChild(ClrButtonGroup) btnGroup: ClrButtonGroup;
+  @ViewChild(ClrButtonGroup) btnGroup!: ClrButtonGroup;
 }
 
 interface TestContext {

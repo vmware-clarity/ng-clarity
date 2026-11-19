@@ -125,7 +125,7 @@ describe('Button Group Directives', () => {
 
         renderFixture(fixture);
 
-        const dropdownMenu: HTMLElement = document.querySelector('.dropdown-menu');
+        const dropdownMenu: HTMLElement = document.querySelector('.dropdown-menu')!;
         expect(dropdownMenu.children.length).toBe(3);
 
         // Should be a button
@@ -229,7 +229,7 @@ describe('Button Group Directives', () => {
 
         renderFixture(fixture);
 
-        const overflowMenu: HTMLElement = document.querySelector('.dropdown-menu');
+        const overflowMenu: HTMLElement = document.querySelector('.dropdown-menu')!;
 
         expect(overflowMenu.children.length).toBe(1);
 
@@ -266,7 +266,7 @@ describe('Button Group Directives', () => {
         renderFixture(fixture);
         const overflow = document.querySelector('.dropdown-menu');
 
-        expect(overflow.textContent).toMatch(/Button 5/);
+        expect(overflow!.textContent).toMatch(/Button 5/);
       });
 
       it('renders the overflow initially', () => {
@@ -394,7 +394,7 @@ describe('Button Group Directives', () => {
 
         renderFixture(fixture);
 
-        const overflowMenu: HTMLElement = document.querySelector('.dropdown-menu');
+        const overflowMenu: HTMLElement = document.querySelector('.dropdown-menu')!;
         expect(overflowMenu.children.length).toBe(5);
 
         // Should be a button
@@ -419,8 +419,8 @@ describe('Button Group Directives', () => {
         // unguarded threw "Cannot read properties of undefined (reading 'nativeElement')"
         // and aborted the handler.
         const popoverService = (testBtnGroup as any).popoverService;
-        testBtnGroup.menu = undefined;
-        testBtnGroup.menuToggle = undefined;
+        testBtnGroup.menu = undefined!;
+        testBtnGroup.menuToggle = undefined!;
 
         expect(() => popoverService.popoverVisibleEmit(true)).not.toThrow();
       });
@@ -449,14 +449,14 @@ describe('Button Group Directives', () => {
         expect(compiled.textContent).toMatch(/Button 1/);
         expect(compiled.textContent).toMatch(/Button 2/);
         expect(compiled.textContent).toMatch(/Button 3/);
-        expect(overflowMenu.textContent).toMatch(/Button 4/);
-        expect(overflowMenu.textContent).toMatch(/Button 5/);
+        expect(overflowMenu!.textContent).toMatch(/Button 4/);
+        expect(overflowMenu!.textContent).toMatch(/Button 5/);
 
         expect(compiled.textContent).toMatch(/Button 6/);
         expect(compiled.textContent).toMatch(/Button 7/);
         expect(compiled.textContent).toMatch(/Button 8/);
-        expect(overflowMenu.textContent).not.toMatch(/Button 9/);
-        expect(overflowMenu.textContent).not.toMatch(/Button 10/);
+        expect(overflowMenu!.textContent).not.toMatch(/Button 9/);
+        expect(overflowMenu!.textContent).not.toMatch(/Button 10/);
 
         // Now second is opened, first is closed
         dropdownToggle2.click();
@@ -466,14 +466,14 @@ describe('Button Group Directives', () => {
         expect(compiled.textContent).toMatch(/Button 1/);
         expect(compiled.textContent).toMatch(/Button 2/);
         expect(compiled.textContent).toMatch(/Button 3/);
-        expect(overflowMenu.textContent).not.toMatch(/Button 4/);
-        expect(overflowMenu.textContent).not.toMatch(/Button 5/);
+        expect(overflowMenu!.textContent).not.toMatch(/Button 4/);
+        expect(overflowMenu!.textContent).not.toMatch(/Button 5/);
 
         expect(compiled.textContent).toMatch(/Button 6/);
         expect(compiled.textContent).toMatch(/Button 7/);
         expect(compiled.textContent).toMatch(/Button 8/);
-        expect(overflowMenu.textContent).toMatch(/Button 9/);
-        expect(overflowMenu.textContent).toMatch(/Button 10/);
+        expect(overflowMenu!.textContent).toMatch(/Button 9/);
+        expect(overflowMenu!.textContent).toMatch(/Button 10/);
 
         // Back to the first, second is closed
         dropdownToggle1.click();
@@ -483,14 +483,14 @@ describe('Button Group Directives', () => {
         expect(compiled.textContent).toMatch(/Button 1/);
         expect(compiled.textContent).toMatch(/Button 2/);
         expect(compiled.textContent).toMatch(/Button 3/);
-        expect(overflowMenu.textContent).toMatch(/Button 4/);
-        expect(overflowMenu.textContent).toMatch(/Button 5/);
+        expect(overflowMenu!.textContent).toMatch(/Button 4/);
+        expect(overflowMenu!.textContent).toMatch(/Button 5/);
 
         expect(compiled.textContent).toMatch(/Button 6/);
         expect(compiled.textContent).toMatch(/Button 7/);
         expect(compiled.textContent).toMatch(/Button 8/);
-        expect(overflowMenu.textContent).not.toMatch(/Button 9/);
-        expect(overflowMenu.textContent).not.toMatch(/Button 10/);
+        expect(overflowMenu!.textContent).not.toMatch(/Button 9/);
+        expect(overflowMenu!.textContent).not.toMatch(/Button 10/);
       });
     });
   });
@@ -510,7 +510,7 @@ describe('Button Group Directives', () => {
   standalone: false,
 })
 class BtnGroupInlineViewContainer {
-  @ViewChild(ClrButtonGroup) btnGroup: ClrButtonGroup;
+  @ViewChild(ClrButtonGroup) btnGroup!: ClrButtonGroup;
 }
 
 @Component({
@@ -527,7 +527,7 @@ class BtnGroupInlineViewContainer {
   standalone: false,
 })
 class BtnGroupBothViewContainersTest {
-  @ViewChild(ClrButtonGroup) btnGroup: ClrButtonGroup;
+  @ViewChild(ClrButtonGroup) btnGroup!: ClrButtonGroup;
 
   clrToggleButtonAriaLabel = 'Button Group Menu Toggle';
 }
@@ -546,7 +546,7 @@ class BtnGroupBothViewContainersTest {
   standalone: false,
 })
 class BtnGroupFlipTest1 {
-  @ViewChild(ClrButtonGroup) btnGroup: ClrButtonGroup;
+  @ViewChild(ClrButtonGroup) btnGroup!: ClrButtonGroup;
 
   flip = false;
 }
@@ -565,7 +565,7 @@ class BtnGroupFlipTest1 {
   standalone: false,
 })
 class BtnGroupFlipTest2 {
-  @ViewChild(ClrButtonGroup) btnGroup: ClrButtonGroup;
+  @ViewChild(ClrButtonGroup) btnGroup!: ClrButtonGroup;
 
   flip = false;
 }
@@ -590,7 +590,7 @@ class BtnGroupFlipTest2 {
   standalone: false,
 })
 class BtnGroupProjectionUpdateTest {
-  @ViewChild(ClrButtonGroup) btnGroup: ClrButtonGroup;
+  @ViewChild(ClrButtonGroup) btnGroup!: ClrButtonGroup;
 
   show = true;
 }
@@ -610,7 +610,7 @@ class BtnGroupProjectionUpdateTest {
   standalone: false,
 })
 class BtnGroupMenuViewContainer {
-  @ViewChild(ClrButtonGroup) btnGroup: ClrButtonGroup;
+  @ViewChild(ClrButtonGroup) btnGroup!: ClrButtonGroup;
 }
 
 /*
@@ -639,6 +639,6 @@ class BtnGroupMenuViewContainer {
   standalone: false,
 })
 class BtnGroupEHCAIWCTest {
-  @ViewChild('btnGroup1') btnGroup1: ClrButtonGroup;
-  @ViewChild('btnGroup2') btnGroup2: ClrButtonGroup;
+  @ViewChild('btnGroup1') btnGroup1!: ClrButtonGroup;
+  @ViewChild('btnGroup2') btnGroup2!: ClrButtonGroup;
 }

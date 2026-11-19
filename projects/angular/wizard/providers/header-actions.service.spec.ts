@@ -32,7 +32,7 @@ describe('New Wizard Tests', () => {
     });
 
     it('.currentPageHasHeaderActions indicates if the current page has header actions', () => {
-      const lastPage = wizardNavigationService.pageCollection.lastPage;
+      const lastPage = wizardNavigationService.pageCollection.lastPage!;
 
       expect(headerActionService.currentPageHasHeaderActions).toBe(true);
       wizardNavigationService.currentPage = lastPage;
@@ -40,7 +40,7 @@ describe('New Wizard Tests', () => {
     });
 
     it('.showWizardHeaderActions indicates if other pages have the header actions', () => {
-      const lastPage = wizardNavigationService.pageCollection.lastPage;
+      const lastPage = wizardNavigationService.pageCollection.lastPage!;
       expect(headerActionService.showWizardHeaderActions).toBe(false);
 
       wizardNavigationService.currentPage = lastPage;

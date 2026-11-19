@@ -95,11 +95,11 @@ describe('ClrPassword', () => {
       });
 
       it('toggles the visibility of the password', () => {
-        const button = containerEl.querySelector('button');
-        expect(containerEl.querySelector('input').type).toEqual('password');
+        const button = containerEl.querySelector('button')!;
+        expect(containerEl.querySelector('input')!.type).toEqual('password');
         button.click();
         renderFixture(fixture);
-        expect(containerEl.querySelector('input').type).toEqual('text');
+        expect(containerEl.querySelector('input')!.type).toEqual('text');
       });
 
       it('should disable toggling', () => {
@@ -110,7 +110,7 @@ describe('ClrPassword', () => {
       });
 
       it('should provide screen-reader only text for toggle button', () => {
-        const button: HTMLButtonElement = containerEl.querySelector('button');
+        const button: HTMLButtonElement = containerEl.querySelector('button')!;
         expect(button.textContent.trim()).toEqual('Show password for Hello World');
         button.click();
         renderFixture(fixture);

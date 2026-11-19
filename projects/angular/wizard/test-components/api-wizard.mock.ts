@@ -59,14 +59,14 @@ import { ClrWizard } from '../wizard';
   standalone: false,
 })
 export class TemplateApiWizardTestComponent {
-  @ViewChild('wizard', { static: true }) wizard: ClrWizard;
+  @ViewChild('wizard', { static: true }) wizard!: ClrWizard;
 
-  mySize: string;
+  mySize!: string;
   stepnavAriaLabel = 'Label for stepnav';
   projectedTitle = 'My Great Title';
   projectedPageTitle = 'Title for Page 2';
-  titleHeadingLevel: HeadingLevel;
-  pageTitleHeadingLevel: HeadingLevel;
+  titleHeadingLevel!: HeadingLevel;
+  pageTitleHeadingLevel!: HeadingLevel;
   open = true;
   lazyLoadContent = 'Loading';
   projectedContent = 'Projection Projection';

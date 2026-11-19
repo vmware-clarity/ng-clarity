@@ -13,7 +13,7 @@ describe('Deprecations', () => {
 
   describe('2.0', () => {
     it('should deprecate but still support clrDgRowSelection', () => {
-      const propTest = Object.getOwnPropertyDescriptor(ClrDatagrid.prototype, 'rowSelectionMode');
+      const propTest = Object.getOwnPropertyDescriptor(ClrDatagrid.prototype, 'rowSelectionMode')!;
       expect(propTest.set).toBeDefined();
     });
   });

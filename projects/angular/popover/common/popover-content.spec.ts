@@ -38,7 +38,7 @@ import { ClrPopoverPosition } from './utils/popover-positions';
   standalone: false,
 })
 class SimpleContent {
-  @ViewChild(ClrPopoverContent, { read: ClrPopoverContent, static: true }) content: ClrPopoverContent;
+  @ViewChild(ClrPopoverContent, { read: ClrPopoverContent, static: true }) content!: ClrPopoverContent;
   popoverPosition = ClrPopoverPosition.BOTTOM_LEFT;
   openState = false;
   closeClick = true;
@@ -140,7 +140,7 @@ describe('ClrPopover', () => {
       describe('Template API', () => {
         it('binds to [clrPopoverContent] open state', () => {
           expect(testContext.testComponent.openState).toBe(testContext.popoverService.open);
-          testContext.testComponent.openState = undefined;
+          testContext.testComponent.openState = undefined!;
           expect(testContext.popoverService.open).toBe(false);
           testContext.testComponent.openState = false;
           expect(testContext.popoverService.open).toBe(false);
@@ -177,8 +177,8 @@ describe('ClrPopover', () => {
           renderFixture(testContext.fixture);
           const content: HTMLCollectionOf<Element> = document.body.getElementsByClassName('clr-popover-content');
           const testElement = content[0] as HTMLElement;
-          expect(testElement.parentElement.style.top).toMatch(/\d+px/);
-          expect(testElement.parentElement.style.left).toMatch(/\d+px/);
+          expect(testElement.parentElement!.style.top).toMatch(/\d+px/);
+          expect(testElement.parentElement!.style.left).toMatch(/\d+px/);
         });
 
         it('does not fail when the popup view is immediately destroyed', async () => {
@@ -211,11 +211,11 @@ describe('ClrPopover', () => {
           const iframe = document.createElement('iframe');
           document.body.appendChild(iframe);
           cleanupFns.push(() => iframe.remove());
-          const iframeDoc = iframe.contentDocument;
+          const iframeDoc = iframe.contentDocument!;
           iframeDoc.open();
           iframeDoc.write('<!DOCTYPE html><html><body><div id="host"></div></body></html>');
           iframeDoc.close();
-          const host = iframeDoc.getElementById('host');
+          const host = iframeDoc.getElementById('host')!;
           const shadowRoot = host.attachShadow({ mode: 'open' });
           const trigger = iframeDoc.createElement('button');
           shadowRoot.appendChild(trigger);
@@ -254,14 +254,14 @@ describe('ClrPopover', () => {
           outerScrollable.appendChild(iframe);
           cleanupFns.push(() => iframe.remove());
 
-          const iframeDoc = iframe.contentDocument;
+          const iframeDoc = iframe.contentDocument!;
           iframeDoc.open();
           iframeDoc.write(
             '<!DOCTYPE html><html><body><div id="inner-scrollable" style="overflow-y:auto;"><div id="host"></div></div></body></html>'
           );
           iframeDoc.close();
           const innerScrollable = iframeDoc.getElementById('inner-scrollable');
-          const host = iframeDoc.getElementById('host');
+          const host = iframeDoc.getElementById('host')!;
           const shadowRoot = host.attachShadow({ mode: 'open' });
           const trigger = iframeDoc.createElement('button');
           shadowRoot.appendChild(trigger);
@@ -285,7 +285,7 @@ describe('ClrPopover', () => {
 
         // Delivers one callback with an entry per given visible ratio of the origin. isIntersecting
         // mirrors what Chromium reports for a single 0.8 threshold.
-        function notify(visibleRatios: number[], rootBounds = viewport) {
+        function notify(visibleRatios: number[], rootBounds: DOMRectReadOnly | null = viewport) {
           observerCallback(
             visibleRatios.map(
               intersectionRatio =>
@@ -295,7 +295,7 @@ describe('ClrPopover', () => {
                   rootBounds,
                 }) as IntersectionObserverEntry
             ),
-            null
+            null!
           );
         }
 
@@ -396,7 +396,7 @@ describe('ClrPopover', () => {
               { intersectionRatio: 0, isIntersecting: false, rootBounds: collapsedViewport },
               { intersectionRatio: 1, isIntersecting: true, rootBounds: viewport },
             ] as IntersectionObserverEntry[],
-            null
+            null!
           );
           expect(testContext.popoverService.open).toBe(true);
 
@@ -436,7 +436,7 @@ describe('ClrPopover', () => {
           await nextFrames();
           expect(testContext.popoverService.open).toBe(true);
 
-          const origin = testContext.popoverService.originElement.nativeElement as HTMLElement;
+          const origin = testContext.popoverService.originElement!.nativeElement as HTMLElement;
           window.scrollTo(0, window.scrollY + origin.getBoundingClientRect().bottom + window.innerHeight);
           await nextFrames();
 
@@ -451,7 +451,7 @@ describe('ClrPopover', () => {
           await nextFrames();
           expect(testContext.popoverService.open).toBe(true);
 
-          const origin = testContext.popoverService.originElement.nativeElement as HTMLElement;
+          const origin = testContext.popoverService.originElement!.nativeElement as HTMLElement;
           const rect = origin.getBoundingClientRect();
           // scroll the top 40% of the origin above the viewport - 60% stays visible
           window.scrollTo(0, window.scrollY + rect.top + rect.height * 0.4);
@@ -472,7 +472,7 @@ describe('ClrPopover', () => {
           await nextFrames();
           expect(testContext.popoverService.open).toBe(true);
 
-          const origin = testContext.popoverService.originElement.nativeElement as HTMLElement;
+          const origin = testContext.popoverService.originElement!.nativeElement as HTMLElement;
           window.scrollTo(0, window.scrollY + origin.getBoundingClientRect().bottom + window.innerHeight);
           await nextFrames();
 
@@ -570,7 +570,7 @@ describe('ClrPopover', () => {
         beforeEach(() => {
           iframe = document.createElement('iframe');
           document.body.appendChild(iframe);
-          iframeDoc = iframe.contentDocument;
+          iframeDoc = iframe.contentDocument!;
           iframeDoc.open();
           iframeDoc.write('<!DOCTYPE html><html><body></body></html>');
           iframeDoc.close();
@@ -676,7 +676,7 @@ describe('ClrPopover', () => {
         beforeEach(() => {
           iframe = document.createElement('iframe');
           document.body.appendChild(iframe);
-          iframeDoc = iframe.contentDocument;
+          iframeDoc = iframe.contentDocument!;
           iframeDoc.open();
           iframeDoc.write('<!DOCTYPE html><html><body></body></html>');
           iframeDoc.close();
@@ -742,7 +742,7 @@ describe('ClrPopover', () => {
           iframe.style.border = 'none';
           document.body.appendChild(iframe);
 
-          const iframeDoc = iframe.contentDocument;
+          const iframeDoc = iframe.contentDocument!;
           iframeDoc.open();
           iframeDoc.write('<!DOCTYPE html><html><body style="margin:0"></body></html>');
           iframeDoc.close();
@@ -874,7 +874,7 @@ describe('ClrPopover', () => {
 
         iframe = document.createElement('iframe');
         document.body.appendChild(iframe);
-        iframeDoc = iframe.contentDocument;
+        iframeDoc = iframe.contentDocument!;
         iframeDoc.open();
         iframeDoc.write('<!DOCTYPE html><html><body></body></html>');
         iframeDoc.close();

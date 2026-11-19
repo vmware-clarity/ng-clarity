@@ -25,7 +25,7 @@ describe('CollapsiblePanelService', () => {
     panelService
       .getPanelChanges(panel1Id)
       .pipe(take(1))
-      .subscribe(panel => expect(panel.id).toBe(panel1Id));
+      .subscribe(panel => expect(panel!.id).toBe(panel1Id));
   });
 
   it('should toggle a panel open', () => {
@@ -33,7 +33,7 @@ describe('CollapsiblePanelService', () => {
     panelService
       .getPanelChanges(panel1Id)
       .pipe(take(1))
-      .subscribe(panel => expect(panel.open).toBe(true));
+      .subscribe(panel => expect(panel!.open).toBe(true));
   });
 
   it('should update panel disabled state', () => {
@@ -41,7 +41,7 @@ describe('CollapsiblePanelService', () => {
     panelService
       .getPanelChanges(panel1Id)
       .pipe(take(1))
-      .subscribe(panel => expect(panel.disabled).toBe(true));
+      .subscribe(panel => expect(panel!.disabled).toBe(true));
   });
 
   it('should notify of panel changes when panel order has changed', () => {
@@ -49,7 +49,7 @@ describe('CollapsiblePanelService', () => {
     panelService
       .getPanelChanges(panel1Id)
       .pipe(take(1))
-      .subscribe(panel => expect(panel.index).toBe(1));
+      .subscribe(panel => expect(panel!.index).toBe(1));
   });
 
   it('should return undefined from getPanelChanges for an unregistered panel id', () => {
@@ -72,6 +72,6 @@ describe('CollapsiblePanelService', () => {
     panelService
       .getPanelChanges(panel1Id)
       .pipe(take(1))
-      .subscribe(panel => expect(panel.open).toBe(false));
+      .subscribe(panel => expect(panel!.open).toBe(false));
   });
 });

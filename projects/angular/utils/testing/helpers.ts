@@ -17,16 +17,18 @@ export function renderFixture(fixture: ComponentFixture<unknown>): void {
 }
 
 export class TestContext<D, C> {
-  fixture: ComponentFixture<C>;
+  // The `declare` fields are assigned by init(), which the constructor calls unless autoInit is false (then they stay
+  // undefined until the test calls init()).
+  declare fixture: ComponentFixture<C>;
   testComponentType: Type<C>;
   clarityDirectiveType: Type<D>;
-  testingModule: TestBed;
-  testComponent: C;
+  testingModule?: TestBed;
+  declare testComponent: C;
   testElement: any;
-  clarityDirective: D;
+  declare clarityDirective: D;
   clarityElement: any;
 
-  private clarityDebugElement: DebugElement;
+  declare private clarityDebugElement: DebugElement;
 
   constructor(directiveType: Type<D>, componentType: Type<C>, autoInit = true) {
     this.clarityDirectiveType = directiveType;
