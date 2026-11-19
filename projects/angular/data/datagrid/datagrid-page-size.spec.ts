@@ -156,6 +156,6 @@ class FormTest {}
   standalone: false,
 })
 class FullTest {
-  pageSizeOptions: number[];
-  pageSizeOptionsId: string;
+  pageSizeOptions!: number[];
+  pageSizeOptionsId!: string;
 }

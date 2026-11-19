@@ -97,8 +97,8 @@ describe('Datagrid', () => {
 
       it('exposes an Observable to follow sort changes', () => {
         let nbChanges = 0;
-        let latestComparator: ClrDatagridComparatorInterface<number>;
-        let latestReverse: boolean;
+        let latestComparator: ClrDatagridComparatorInterface<number> | null | undefined;
+        let latestReverse!: boolean;
         testContext.sortInstance.change.subscribe((sort: Sort<number>) => {
           nbChanges++;
           latestComparator = sort.comparator;

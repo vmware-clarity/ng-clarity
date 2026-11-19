@@ -49,7 +49,7 @@ describe('DetailService provider', function () {
   });
 
   it('exposes a stageChange observable that responds to open and close', () => {
-    let state: boolean;
+    let state: boolean | null | undefined;
     subscription = provider.stateChange.subscribe(updated => (state = updated));
     expect(state).toBe(false);
     provider.open('one');

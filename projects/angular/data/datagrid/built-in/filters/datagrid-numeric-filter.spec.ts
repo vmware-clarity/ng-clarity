@@ -46,7 +46,7 @@ describe('Datagrid', () => {
         context.testComponent.clrFilterMinPlaceholder = 'min demo placeholder';
 
         openFilter();
-        const inputMin: HTMLInputElement = document.querySelector('input[name=low]');
+        const inputMin: HTMLInputElement = document.querySelector('input[name=low]')!;
         expect(inputMin.getAttribute('placeholder')).toBe('min demo placeholder');
         expect(inputMin.getAttribute('aria-label')).toBe('min demo placeholder');
         await delay();
@@ -57,7 +57,7 @@ describe('Datagrid', () => {
         context.testComponent.clrFilterMaxPlaceholder = 'max demo placeholder';
 
         openFilter();
-        const inputMax: HTMLInputElement = document.querySelector('input[name=high]');
+        const inputMax: HTMLInputElement = document.querySelector('input[name=high]')!;
         expect(inputMax.getAttribute('placeholder')).toBe('max demo placeholder');
         expect(inputMax.getAttribute('aria-label')).toBe('max demo placeholder');
         await delay();
@@ -123,7 +123,7 @@ describe('Datagrid', () => {
 
       it('focuses on the input when the filter opens', async () => {
         openFilter();
-        const input: HTMLInputElement = document.querySelector("input[type='number']");
+        const input: HTMLInputElement = document.querySelector("input[type='number']")!;
         vi.spyOn(input, 'focus');
         expect(input.focus).not.toHaveBeenCalled();
         await animationFrameTick();
@@ -158,10 +158,10 @@ class TestFilter implements ClrDatagridNumericFilterInterface<number> {
   standalone: false,
 })
 class FullTest {
-  @ViewChild(CustomFilter) customFilter: CustomFilter;
+  @ViewChild(CustomFilter) customFilter!: CustomFilter;
 
-  filter: ClrDatagridNumericFilterInterface<number>;
-  filterValue: [number, number];
+  filter!: ClrDatagridNumericFilterInterface<number>;
+  filterValue!: [number | null, number | null];
 }
 
 @Component({
@@ -177,10 +177,10 @@ class FullTest {
   standalone: false,
 })
 class AccessibilityTest {
-  @ViewChild(CustomFilter) customFilter: CustomFilter;
+  @ViewChild(CustomFilter) customFilter!: CustomFilter;
 
-  filter: ClrDatagridNumericFilterInterface<string>;
-  filterValue: [number, number];
-  clrFilterMaxPlaceholder: string;
-  clrFilterMinPlaceholder: string;
+  filter!: ClrDatagridNumericFilterInterface<string>;
+  filterValue!: [number | null, number | null];
+  clrFilterMaxPlaceholder!: string;
+  clrFilterMinPlaceholder!: string;
 }

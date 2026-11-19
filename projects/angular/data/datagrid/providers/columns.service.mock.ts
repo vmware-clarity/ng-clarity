@@ -13,9 +13,9 @@ import { ColumnsService } from './columns.service';
 import { DatagridColumnChanges } from '../enums/column-changes.enum';
 
 class MockHideableColumnTemplateRef extends TemplateRef<ClrDatagridHideableColumn> {
-  elementRef: ElementRef = null;
+  elementRef = null as unknown as ElementRef;
   createEmbeddedView(): EmbeddedViewRef<any> {
-    return null;
+    return null as unknown as EmbeddedViewRef<any>;
   }
 }
 
@@ -24,7 +24,7 @@ export class MockColumnsService extends ColumnsService {
   // Sometimes we have to use an actual template ref.
   // In that case, this service should be injected into the test component,
   // and we need to assign the template ref from there.
-  templateRef: TemplateRef<any>;
+  templateRef!: TemplateRef<any>;
 
   mockColumns(columnNumber: number) {
     for (let i = 0; i < columnNumber; i++) {

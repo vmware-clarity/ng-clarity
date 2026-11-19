@@ -15,7 +15,7 @@ class TestModel extends TreeNodeModel<string> {
   children: TestModel[] = [];
   parent: TestModel | null;
 
-  constructor(name: string, parent: TestModel) {
+  constructor(name: string, parent: TestModel | null) {
     super();
     this.model = name;
     this.parent = parent;
@@ -210,17 +210,17 @@ describe('Tree View', () => {
           nodes.forEach(node => expect(node.expanded).toBe(true));
 
           child._setExpandedRecursive(false);
-          expect(nodes.get(root).expanded).toBe(true);
-          expect(nodes.get(child).expanded).toBe(false);
-          child.children.forEach(c => expect(nodes.get(c).expanded).toBe(false));
+          expect(nodes.get(root)!.expanded).toBe(true);
+          expect(nodes.get(child)!.expanded).toBe(false);
+          child.children.forEach(c => expect(nodes.get(c)!.expanded).toBe(false));
         });
 
         it('leaves disabled nodes and their descendants untouched', function () {
           child.disabled = true;
           root._setExpandedRecursive(true);
-          expect(nodes.get(root).expanded).toBe(true);
-          expect(nodes.get(child).expanded).toBe(false);
-          child.children.forEach(c => expect(nodes.get(c).expanded).toBe(false));
+          expect(nodes.get(root)!.expanded).toBe(true);
+          expect(nodes.get(child)!.expanded).toBe(false);
+          child.children.forEach(c => expect(nodes.get(c)!.expanded).toBe(false));
         });
 
         it('does nothing for a node that is not rendered', function () {

@@ -29,7 +29,7 @@ describe('Datagrid', () => {
       describe('Typescript API', () => {
         beforeEach(() => {
           testContext.pageProvider = new Page(new StateDebouncer());
-          testContext.itemsProvider = new Items(null, null, testContext.pageProvider);
+          testContext.itemsProvider = new Items(null!, null!, testContext.pageProvider);
           testContext.component = new ClrDatagridPlaceholder(testContext.itemsProvider);
         });
 

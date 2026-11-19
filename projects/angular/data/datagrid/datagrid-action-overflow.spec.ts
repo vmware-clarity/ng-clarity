@@ -82,7 +82,7 @@ describe('Datagrid', () => {
       it('projects menu content when open', () => {
         toggle.click();
         context.detectChanges();
-        const popoverContent = document.querySelector('.datagrid-action-overflow');
+        const popoverContent = document.querySelector('.datagrid-action-overflow')!;
         expect(popoverContent.textContent.trim()).toMatch('Hello world');
       });
 
@@ -101,7 +101,7 @@ describe('Datagrid', () => {
         toggle.click();
         context.detectChanges();
 
-        const actionItem: HTMLElement = document.querySelector('.datagrid-action-overflow .action-item');
+        const actionItem: HTMLElement = document.querySelector('.datagrid-action-overflow .action-item')!;
         actionItem.click();
         context.detectChanges();
         expect(context.clarityDirective.open).toBe(false);
@@ -147,10 +147,10 @@ describe('Datagrid', () => {
   standalone: false,
 })
 class SimpleTest {
-  open: boolean;
-  buttonLabel: string;
+  open!: boolean;
+  buttonLabel!: string;
 
-  @ViewChild('actionItem', { read: ElementRef, static: true }) actionItem: ElementRef<HTMLButtonElement>;
+  @ViewChild('actionItem', { read: ElementRef, static: true }) actionItem!: ElementRef<HTMLButtonElement>;
 
   clrDgActionOverflowOpenChangeFn(_$event: boolean) {
     // Do nothing

@@ -11,8 +11,8 @@ import { TreeNodeModel } from './models/tree-node.model';
 import { TreeFocusManagerService } from './tree-focus-manager.service';
 
 class TreeNodeModelMock extends TreeNodeModel<void> {
-  parent: TreeNodeModel<void> | null;
-  children: TreeNodeModel<void>[];
+  parent!: TreeNodeModel<void> | null;
+  children!: TreeNodeModel<void>[];
   expanded = false;
   constructor(nodeId: string) {
     super();
@@ -43,7 +43,7 @@ const treeIdModelRefs: {
 } = {};
 
 // this method will create an actual tree model based on treeScheme
-const createTree = (model: any, parent: TreeNodeModelMock): TreeNodeModelMock[] => {
+const createTree = (model: any, parent: TreeNodeModelMock | null): TreeNodeModelMock[] => {
   return Object.keys(model).map(key => {
     const nodeModel = new TreeNodeModelMock(key);
     treeIdModelRefs[key] = nodeModel;
@@ -58,8 +58,8 @@ describe('Tree View', () => {
   describe('Services', () => {
     describe('Tree Focus Manager', () => {
       let treeFocusManager: TreeFocusManagerService<void>;
-      let focusRequestedOnId: string;
-      let focusSetOnId: string;
+      let focusRequestedOnId: string | null;
+      let focusSetOnId: string | null;
       let focusRequestedSub: Subscription;
       let focusChangeSub: Subscription;
 

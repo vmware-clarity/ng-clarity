@@ -116,7 +116,7 @@ class TestFilter implements ClrDatagridNumericFilterInterface<number> {
 }
 
 class IncompatibleFilter implements ClrDatagridFilterInterface<number> {
-  changes: Observable<any>;
+  changes!: Observable<any>;
 
   accepts(_item: number): boolean {
     return true;
