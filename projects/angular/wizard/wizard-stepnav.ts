@@ -97,11 +97,12 @@ export class ClrWizardStepnav implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     if (this.stepnavLayout === ClrWizardStepnavLayout.HORIZONTAL) {
-      this.setupIntersectionObserver();
+      const intersectionObserver = this.createIntersectionObserver();
+      this.intersectionObserver = intersectionObserver;
 
       this.stepnavItems.notifyOnChanges();
       this.subscription = this.stepnavItems.changes.pipe(startWith(undefined)).subscribe(() => {
-        this.observeEdgeItems();
+        this.observeEdgeItems(intersectionObserver);
       });
     }
   }
@@ -119,10 +120,10 @@ export class ClrWizardStepnav implements AfterViewInit, OnDestroy {
     this.scroll('right');
   }
 
-  private setupIntersectionObserver() {
+  private createIntersectionObserver() {
     const scrollContainer = this.elementRef.nativeElement.querySelector('.clr-wizard-stepnav-list');
 
-    this.intersectionObserver = new IntersectionObserver(
+    return new IntersectionObserver(
       entries => {
         for (const entry of entries) {
           const target = entry.target as HTMLElement;
@@ -146,12 +147,7 @@ export class ClrWizardStepnav implements AfterViewInit, OnDestroy {
     );
   }
 
-  private observeEdgeItems() {
-    const intersectionObserver = this.intersectionObserver;
-    if (!intersectionObserver) {
-      return;
-    }
-
+  private observeEdgeItems(intersectionObserver: IntersectionObserver) {
     intersectionObserver.disconnect();
     this.firstItemVisible = true;
     this.lastItemVisible = true;
