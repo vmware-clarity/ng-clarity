@@ -6,10 +6,11 @@
  */
 
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
 import { ZoomLevelServiceMock } from '@clr/addons/testing';
 import { ClrDropdownModule } from '@clr/angular/popover/dropdown';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { MenuComponent } from './menu.component';
 import { MenuActionComponent } from './model/menu-action.component';
@@ -34,7 +35,7 @@ describe('MenuComponent', () => {
     fixture = TestBed.createComponent(MenuComponent);
     component = fixture.componentInstance;
     overlayContainer = TestBed.inject(OverlayContainer);
-    fixture.detectChanges();
+    renderFixture(fixture);
   });
 
   afterEach(() => {
@@ -109,18 +110,19 @@ describe('MenuComponent', () => {
     const zoomLevelService = TestBed.inject(ZoomLevelService);
     zoomLevelService['resizeSubject'].next(ZoomLevel.x4);
 
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(component.currentZoomLevel).toEqual(ZoomLevel.x4);
   });
 
-  it('should throw an error when menu items change', fakeAsync(() => {
+  it('should throw an error when menu items change', async () => {
+    vi.useFakeTimers();
     component.menuItems.reset([{} as any]);
 
-    expect(() => {
+    await expect(async () => {
       component.menuItems.notifyOnChanges();
       component.ngAfterContentInit();
-      tick();
-    }).toThrowError();
-  }));
+      await vi.advanceTimersByTimeAsync(0);
+    }).rejects.toThrowError();
+  });
 });

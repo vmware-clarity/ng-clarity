@@ -6,6 +6,7 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { MockDatagridFiltersComponent } from './datagrid-filters.component.mock';
 
@@ -20,7 +21,7 @@ describe('MockAppfxMenuComponent', () => {
 
     fixture = TestBed.createComponent(MockDatagridFiltersComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    renderFixture(fixture);
   });
 
   it('should create an instance of MockDatagridFiltersComponent', () => {

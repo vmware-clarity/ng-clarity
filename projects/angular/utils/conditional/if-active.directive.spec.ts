@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrIfActive } from './if-active.directive';
 import { IF_ACTIVE_ID_PROVIDER, IfActiveService } from './if-active.service';
@@ -27,7 +28,7 @@ describe('Conditional Utils', () => {
             providers: [IfActiveService, IF_ACTIVE_ID_PROVIDER],
           });
           testContext.fixture = TestBed.createComponent(IfActiveTest);
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           testContext.testComponent = testContext.fixture.componentInstance;
           testContext.testElement = testContext.fixture.nativeElement;
           testContext.clarityDirective = testContext.fixture.componentInstance.directive;
@@ -40,13 +41,13 @@ describe('Conditional Utils', () => {
 
         it('sets the active state of the directive', () => {
           testContext.testComponent.activeState = true;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.clarityDirective.active).toEqual(true);
         });
 
         it('gets the current value of the active state', () => {
           testContext.ifActiveService.current = new Object();
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.testComponent.activeState).toEqual(false);
         });
 
@@ -73,25 +74,25 @@ describe('Conditional Utils', () => {
 
           // setting the current to something other than the test directive's id
           testContext.ifActiveService.current = testContext.testComponent.directive.id + 1;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(nbChanges).toBe(0);
           expect(currentChange).toBeUndefined();
 
           // setting the current to the test directive's id
           testContext.ifActiveService.current = testContext.testComponent.directive.id;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(nbChanges).toBe(1);
           expect(currentChange).toBe(true);
 
           // setting the current to the test directive's id again
           testContext.ifActiveService.current = testContext.testComponent.directive.id;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(nbChanges).toBe(1);
           expect(currentChange).toBe(true);
 
           // setting the current to something other than the test directive's id again
           testContext.ifActiveService.current = testContext.testComponent.directive.id + 1;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(nbChanges).toBe(2);
           expect(currentChange).toBe(false);
         });
@@ -105,7 +106,7 @@ describe('Conditional Utils', () => {
             providers: [IfActiveService, IF_ACTIVE_ID_PROVIDER],
           });
           testContext.fixture = TestBed.createComponent(IfActiveTest);
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           testContext.testComponent = testContext.fixture.componentInstance;
           testContext.testElement = testContext.fixture.nativeElement;
           testContext.clarityDirective = testContext.fixture.componentInstance.directive;
@@ -123,7 +124,7 @@ describe('Conditional Utils', () => {
 
         it('projects content when this directive is set to current', () => {
           testContext.ifActiveService.current = testContext.clarityDirective.id;
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.testElement.textContent.trim()).toBe('Hello Template!');
         });
       });
