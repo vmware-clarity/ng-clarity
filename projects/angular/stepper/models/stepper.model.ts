@@ -63,13 +63,13 @@ export class StepperModel extends CollapsiblePanelGroupModel {
 
   overrideInitialPanel(panelId: string) {
     this.initialPanel = panelId;
-    const initialPanel = this._panels[panelId];
-    if (!initialPanel) {
+    const panelOverride = this._panels[panelId];
+    if (!panelOverride) {
       return;
     }
 
     this.panels.forEach(panel => {
-      if (this.getPanelIndex(panel) < this.getPanelIndex(initialPanel)) {
+      if (this.getPanelIndex(panel) < this.getPanelIndex(panelOverride)) {
         this.completePanel(panel.id);
       } else if (panel.id === panelId) {
         this._panels[panel.id].open = true;
