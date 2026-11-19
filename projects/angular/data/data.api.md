@@ -617,9 +617,6 @@ export class ClrDatagridColumnToggle implements OnDestroy {
     // (undocumented)
     allColumnsSelected(): void;
     // (undocumented)
-    get allColumnsVisible(): boolean;
-    set allColumnsVisible(value: boolean);
-    // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
     get hasOnlyOneVisibleColumn(): boolean;

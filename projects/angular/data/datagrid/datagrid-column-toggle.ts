@@ -103,7 +103,6 @@ export class ClrDatagridColumnToggle implements OnDestroy {
   // to loss of focus after checkbox toggle.
   readonly trackByFn = columnToggleTrackByFn;
 
-  private _allColumnsVisible: boolean;
   private subscription: Subscription;
 
   @ViewChild('allSelected', { read: ElementRef }) private allSelectedElement: ElementRef<HTMLElement>;
@@ -114,13 +113,6 @@ export class ClrDatagridColumnToggle implements OnDestroy {
     popoverService: ClrPopoverService
   ) {
     this.subscription = popoverService.openChange.subscribe(change => (this.openState = change));
-  }
-
-  get allColumnsVisible(): boolean {
-    return this._allColumnsVisible;
-  }
-  set allColumnsVisible(value: boolean) {
-    this._allColumnsVisible = value;
   }
 
   get hideableColumnStates(): ColumnState[] {
