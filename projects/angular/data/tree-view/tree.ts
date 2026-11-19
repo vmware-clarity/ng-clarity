@@ -41,7 +41,7 @@ import { ClrTreeNode } from './tree-node';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrTree<T> implements AfterContentInit, OnDestroy {
-  @ContentChildren(ClrTreeNode) private rootNodes: QueryList<ClrTreeNode<T>>;
+  @ContentChildren(ClrTreeNode) private rootNodes!: QueryList<ClrTreeNode<T>>;
 
   private rootModels: TreeNodeModel<T>[] = [];
   private subscriptions: Subscription[] = [];

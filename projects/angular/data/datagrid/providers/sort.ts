@@ -86,7 +86,11 @@ export class Sort<T = any> {
    * Compares two objects according to the current comparator
    */
   compare(a: T, b: T): number {
-    return (this.reverse ? -1 : 1) * this.comparator.compare(a, b);
+    const comparator = this.comparator;
+    if (!comparator) {
+      throw new Error('Cannot compare items without a comparator.');
+    }
+    return (this.reverse ? -1 : 1) * comparator.compare(a, b);
   }
 
   private emitChange() {
