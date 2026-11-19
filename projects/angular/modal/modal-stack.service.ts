@@ -6,7 +6,7 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Inject, Injectable, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { Keys } from '@clr/angular/utils';
 
 export interface Closable {
@@ -14,11 +14,19 @@ export interface Closable {
 }
 
 @Injectable({ providedIn: 'root' })
-export class ModalStackService {
+export class ModalStackService implements OnDestroy {
   private readonly modalStack: Closable[] = [];
   private readonly keyUpEventListener = this.onKeyUp.bind(this);
 
   constructor(@Inject(PLATFORM_ID) private readonly platformId: unknown) {}
+
+  ngOnDestroy() {
+    // Modals that are still open when the injector goes away must not keep handling the Escape key.
+    this.modalStack.length = 0;
+    if (isPlatformBrowser(this.platformId)) {
+      document.body.removeEventListener('keyup', this.keyUpEventListener);
+    }
+  }
 
   trackModalOpen(openedModal: Closable) {
     if (this.modalStack.includes(openedModal) === false) {
