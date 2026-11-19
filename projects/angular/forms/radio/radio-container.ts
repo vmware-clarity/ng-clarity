@@ -59,10 +59,10 @@ import { ClrRadio } from './radio';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
-  role: string;
-  ariaLabelledBy: string;
+  role: string | null = null;
+  ariaLabelledBy: string | null = null;
 
-  @ContentChildren(ClrRadio, { descendants: true }) radios: QueryList<ClrRadio>;
+  @ContentChildren(ClrRadio, { descendants: true }) radios!: QueryList<ClrRadio>;
 
   private inline = false;
   private _generatedId = uniqueIdFactory();
@@ -107,6 +107,6 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
       this.label.idAttr = this._generatedId;
     }
 
-    this.ariaLabelledBy = this.radios?.length && this.label ? this.label.idAttr : null;
+    this.ariaLabelledBy = this.radios?.length && this.label?.idAttr ? this.label.idAttr : null;
   }
 }
