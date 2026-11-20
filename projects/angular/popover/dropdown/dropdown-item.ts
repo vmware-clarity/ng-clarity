@@ -43,7 +43,7 @@ export class ClrDropdownItem {
   ) {}
 
   @Input('clrDisabled')
-  get disabled() {
+  get disabled(): boolean | undefined {
     return this.focusableItem.disabled;
   }
   set disabled(value: boolean | string) {

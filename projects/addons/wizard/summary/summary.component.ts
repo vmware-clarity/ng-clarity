@@ -22,5 +22,5 @@ import { SummaryModel } from './summary.model';
   styleUrls: ['summary.component.scss'],
 })
 export class SummaryComponent implements StepModelHolder {
-  model: SummaryModel;
+  model!: SummaryModel;
 }

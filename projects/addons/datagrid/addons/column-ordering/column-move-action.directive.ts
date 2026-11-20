@@ -28,9 +28,9 @@ import { ColumnMoveDirection, DatagridColumnsOrderDirective } from './datagrid-c
   standalone: false,
 })
 export class ColumnMoveActionDirective {
-  @Input('appfxColumnMoveAction') direction: ColumnMoveDirection;
+  @Input('appfxColumnMoveAction') direction!: ColumnMoveDirection;
 
-  @Input() columnIndex: number;
+  @Input() columnIndex!: number;
 
   constructor(private readonly columnsOrderDirective: DatagridColumnsOrderDirective) {}
 
