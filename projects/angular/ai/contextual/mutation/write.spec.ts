@@ -27,7 +27,7 @@ import { publishElementContext } from '@clr/angular/utils';
 import type { Mock } from 'vitest';
 
 import { allRefs, findNode, refOf, settle } from './helpers.mock';
-import { ClrMutationEngineService } from './mutation-engine.service';
+import { ClrMutationService } from './mutation-engine.service';
 import {
   ClrElementMutationResult,
   ClrMutationConsequence,
@@ -364,11 +364,11 @@ class Host {
 
 const DECLARATIONS = [Host, AppToggle, AppRating, AppBroken, AppStars, AppCount, AppOwner, AppSize, AppRename];
 
-describe('ClrMutationEngineService write path', () => {
+describe('ClrMutationService write path', () => {
   let fixture: ComponentFixture<Host>;
   let host: Host;
   let contextEngine: ClrContextService;
-  let engine: ClrMutationEngineService;
+  let engine: ClrMutationService;
   let classify: Mock<(target: ClrMutationTarget) => ClrMutationConsequence>;
   let confirm: Mock<(target: ClrMutationTarget) => boolean | Promise<boolean>>;
   let announce: Mock<(report: ClrMutationReport) => void>;
@@ -401,7 +401,7 @@ describe('ClrMutationEngineService write path', () => {
     host = fixture.componentInstance;
     await settle(fixture);
     contextEngine = TestBed.inject(ClrContextService);
-    engine = TestBed.inject(ClrMutationEngineService);
+    engine = TestBed.inject(ClrMutationService);
   });
 
   afterEach(() => fixture.destroy());
@@ -904,7 +904,7 @@ describe('ClrMutationEngineService write path', () => {
       unconfirmed.detectChanges();
       await unconfirmed.whenStable();
       const page = TestBed.inject(ClrContextService)['read'](undefined);
-      const mutation = TestBed.inject(ClrMutationEngineService);
+      const mutation = TestBed.inject(ClrMutationService);
       const operation = { operation: 'setValue' as const, ref: refOf(page, 'Name'), description: 'Name', value: 'x' };
 
       expect(mutation.plan([operation])[0].refused).toBe('unconfirmed');

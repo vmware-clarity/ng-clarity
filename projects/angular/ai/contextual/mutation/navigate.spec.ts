@@ -11,7 +11,7 @@ import { DefaultUrlSerializer, provideRouter, Router } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import type { Mock } from 'vitest';
 
-import { ClrMutationEngineService } from './mutation-engine.service';
+import { ClrMutationService } from './mutation-engine.service';
 import {
   ClrMutationConsequence,
   ClrMutationTarget,
@@ -60,12 +60,12 @@ describe('urlTreeFor', () => {
   });
 });
 
-describe('ClrMutationEngineService navigate', () => {
+describe('ClrMutationService navigate', () => {
   @Component({ template: 'routed', standalone: true, changeDetection: ChangeDetectionStrategy.Eager })
   class Routed {}
 
   let harness: RouterTestingHarness;
-  let engine: ClrMutationEngineService;
+  let engine: ClrMutationService;
   let router: Router;
   let classify: Mock<(target: ClrMutationTarget) => ClrMutationConsequence>;
   let releaseSlowGuard: (allowed: boolean) => void;
@@ -99,7 +99,7 @@ describe('ClrMutationEngineService navigate', () => {
       ],
     });
     harness = await RouterTestingHarness.create('/');
-    engine = TestBed.inject(ClrMutationEngineService);
+    engine = TestBed.inject(ClrMutationService);
     router = TestBed.inject(Router);
   });
 

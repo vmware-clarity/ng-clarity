@@ -13,7 +13,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {
   ClrContextService,
   ClrElementMutationResult,
-  ClrMutationEngineService,
+  ClrMutationService,
   ClrPageContext,
   provideClrMutationPolicy,
 } from '@clr/angular/ai';
@@ -374,7 +374,7 @@ describe('ClrDateInput element mutator', () => {
     describe('through the mutation engine', () => {
       async function set(value: unknown): Promise<ClrElementMutationResult> {
         const ref = refOf(TestBed.inject(ClrContextService)['read'](undefined), 'When');
-        const report = await TestBed.inject(ClrMutationEngineService).apply([
+        const report = await TestBed.inject(ClrMutationService).apply([
           { operation: 'setValue', ref, description: 'When', value },
         ]);
         await settle();
@@ -393,7 +393,7 @@ describe('ClrDateInput element mutator', () => {
 
       it('shows the policy the date as the field shows it, whatever form the agent gave it in', () => {
         const ref = refOf(TestBed.inject(ClrContextService)['read'](undefined), 'When');
-        const engine = TestBed.inject(ClrMutationEngineService);
+        const engine = TestBed.inject(ClrMutationService);
 
         for (const value of ['2026-03-05T23:30:00-05:00', '2026-03-05', new Date(2026, 2, 5, 18)]) {
           const [planned] = engine.plan([{ operation: 'setValue', ref, description: 'When', value }]);
@@ -501,7 +501,7 @@ describe('ClrDateInput element mutator', () => {
     it('shows the policy the date as the field shows it, not the ISO date it holds', () => {
       const ref = refOf(TestBed.inject(ClrContextService)['read'](undefined), 'When');
 
-      const [planned] = TestBed.inject(ClrMutationEngineService).plan([
+      const [planned] = TestBed.inject(ClrMutationService).plan([
         { operation: 'setValue', ref, description: 'When', value: '2026-11-02' },
       ]);
 
@@ -511,7 +511,7 @@ describe('ClrDateInput element mutator', () => {
     it('writes through the mutation engine and keeps the field', async () => {
       const ref = refOf(TestBed.inject(ClrContextService)['read'](undefined), 'When');
 
-      const report = await TestBed.inject(ClrMutationEngineService).apply([
+      const report = await TestBed.inject(ClrMutationService).apply([
         { operation: 'setValue', ref, description: 'When', value: '2026-11-02' },
       ]);
       await settle();

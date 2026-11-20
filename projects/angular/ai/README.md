@@ -66,11 +66,11 @@ export const appConfig: ApplicationConfig = {
 Then, in the same component that reads the page, plan and apply the operations the agent proposes:
 
 ```ts
-import { ClrMutationEngineService, ClrMutationOperation } from '@clr/angular/ai';
+import { ClrMutationService, ClrMutationOperation } from '@clr/angular/ai';
 
 export class AssistantComponent {
   // ...the engine above.
-  private readonly mutationEngine = inject(ClrMutationEngineService);
+  private readonly mutationEngine = inject(ClrMutationService);
 
   async act(operations: ClrMutationOperation[]) {
     // Refs and labels copied verbatim from the latest snapshot, such as
@@ -100,7 +100,7 @@ component that publishes context does not depend on this entry point.
 
 Through custom extractors it also reaches other UI libraries.
 
-The engine's write half, the **mutation engine** (`ClrMutationEngineService`), lets an agent act on
+The engine's write half, the **mutation engine** (`ClrMutationService`), lets an agent act on
 what it read: fill Angular-bound form controls (reactive and template-driven) and navigate to any
 route of the application's router configuration (as `availableRoutes` lists them), addressing
 controls by the `ref` each snapshot node carries — random, and stable for an element while it is on

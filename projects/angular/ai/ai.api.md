@@ -417,16 +417,6 @@ export type ClrMutationChanges = Omit<ClrContextChange, 'previous' | 'current'>;
 export type ClrMutationConsequence = 'reversible' | 'consequential' | 'forbidden';
 
 // @public
-export class ClrMutationEngineService {
-    apply(operations: ClrMutationOperation[], snapshotOptions?: ClrContextSnapshotOptions): Promise<ClrMutationReport>;
-    plan(operations: ClrMutationOperation[], snapshotOptions?: ClrContextSnapshotOptions): ClrMutationPlanEntry[];
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrMutationEngineService, never>;
-    // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
-}
-
-// @public
 export type ClrMutationOperation = ClrSetValueOperation | ClrClearOperation | ClrNavigateOperation;
 
 // @public
@@ -458,6 +448,16 @@ export interface ClrMutationReport {
 
 // @public
 export type ClrMutationResult = ClrElementMutationResult | ClrNavigationMutationResult;
+
+// @public
+export class ClrMutationService {
+    apply(operations: ClrMutationOperation[], snapshotOptions?: ClrContextSnapshotOptions): Promise<ClrMutationReport>;
+    plan(operations: ClrMutationOperation[], snapshotOptions?: ClrContextSnapshotOptions): ClrMutationPlanEntry[];
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrMutationService, never>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
+}
 
 // @public
 export interface ClrMutationTarget {

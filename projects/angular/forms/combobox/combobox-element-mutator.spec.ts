@@ -12,7 +12,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {
   ClrContextService,
   ClrElementMutationResult,
-  ClrMutationEngineService,
+  ClrMutationService,
   ClrPageContext,
   provideClrMutationPolicy,
 } from '@clr/angular/ai';
@@ -209,7 +209,7 @@ describe('ClrCombobox element mutator', () => {
 
   async function set(label: string, value: unknown): Promise<ClrElementMutationResult> {
     const ref = refOf(TestBed.inject(ClrContextService)['read'](undefined), label);
-    const report = await TestBed.inject(ClrMutationEngineService).apply([
+    const report = await TestBed.inject(ClrMutationService).apply([
       { operation: 'setValue', ref, description: label, value },
     ]);
     await settle();
@@ -392,7 +392,7 @@ describe('ClrCombobox element mutator', () => {
   describe('what the policy is shown', () => {
     function plan(operation: 'setValue' | 'clear', label: string, value?: unknown) {
       const ref = refOf(TestBed.inject(ClrContextService)['read'](undefined), label);
-      return TestBed.inject(ClrMutationEngineService).plan([
+      return TestBed.inject(ClrMutationService).plan([
         operation === 'clear' ? { operation, ref, description: label } : { operation, ref, description: label, value },
       ]);
     }

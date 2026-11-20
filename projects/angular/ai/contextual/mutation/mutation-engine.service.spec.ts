@@ -21,7 +21,7 @@ import { ClrSelectModule } from '@clr/angular/forms/select';
 import type { Mock } from 'vitest';
 
 import { allNodes, allRefs, findNode, nodeOf, refOf, settle } from './helpers.mock';
-import { ClrMutationEngineService } from './mutation-engine.service';
+import { ClrMutationService } from './mutation-engine.service';
 import {
   ClrElementMutationResult,
   ClrMutationConsequence,
@@ -184,7 +184,7 @@ const IMPORTS = [
   ClrDatagridModule,
 ];
 
-describe('ClrMutationEngineService', () => {
+describe('ClrMutationService', () => {
   describe('without a policy', () => {
     let fixture: ComponentFixture<Host>;
 
@@ -200,7 +200,7 @@ describe('ClrMutationEngineService', () => {
       const snapshot = TestBed.inject(ClrContextService)['read'](undefined);
       expect(allRefs(snapshot.components)).toEqual([]);
 
-      const report = await TestBed.inject(ClrMutationEngineService).apply([
+      const report = await TestBed.inject(ClrMutationService).apply([
         { operation: 'setValue', ref: 'e1', description: 'Name', value: 'x' },
         { operation: 'navigate', path: '/' },
       ]);
@@ -214,7 +214,7 @@ describe('ClrMutationEngineService', () => {
     let fixture: ComponentFixture<Host>;
     let host: Host;
     let contextEngine: ClrContextService;
-    let engine: ClrMutationEngineService;
+    let engine: ClrMutationService;
     let classify: Mock<(target: ClrMutationTarget) => ClrMutationConsequence>;
     let confirm: Mock<(target: ClrMutationTarget) => boolean | Promise<boolean>>;
 
@@ -231,7 +231,7 @@ describe('ClrMutationEngineService', () => {
       host = fixture.componentInstance;
       await settle(fixture);
       contextEngine = TestBed.inject(ClrContextService);
-      engine = TestBed.inject(ClrMutationEngineService);
+      engine = TestBed.inject(ClrMutationService);
     });
 
     afterEach(() => fixture.destroy());

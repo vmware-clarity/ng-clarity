@@ -12,7 +12,7 @@ import {
   ClrComponentContext,
   ClrContext,
   ClrContextService,
-  ClrMutationEngineService,
+  ClrMutationService,
   ClrMutationOperation,
 } from '@clr/angular/ai';
 
@@ -62,7 +62,7 @@ export class ContextualMutationDemo implements OnInit {
 
   constructor(
     private context: ClrContextService,
-    private mutationEngine: ClrMutationEngineService,
+    private mutationEngine: ClrMutationService,
     private changeDetectorRef: ChangeDetectorRef
   ) {}
 
