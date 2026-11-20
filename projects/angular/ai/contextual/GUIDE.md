@@ -35,7 +35,7 @@ Configure once at startup: `context.configure({ scope: 'interactive', routes: tr
 | Need                                             | Use                                                               |
 | ------------------------------------------------ | ----------------------------------------------------------------- |
 | Say what an element of a view is for             | `[clrContext]` directive, bound to a value from the class         |
-| Context no element shows, from a service         | `ClrContextProvider` registered on `ClrContextRegistryService`    |
+| Context no element shows, maybe asynchronous     | `ClrContextProvider` registered on `ClrContextRegistryService`    |
 | A component's state the DOM cannot show          | `publishElementContext(host, callback)` from `@clr/angular/utils` |
 | Markup from another library with no role or name | `configure({ extractors: [{ selector, extract }] })`              |
 
@@ -63,4 +63,5 @@ export class Firewall {
 - A grid is summarised, not walked: its `rows` list each row's cells in one string, such as `esx-01 | ok`, up to `maxItemsPerCollection`, so there is no need to publish them.
 - `root: 'modal'` reads only the open modal dialog, such as a wizard, and reads the whole page while none is open, so it can be set once for the application.
 - Prefer semantic HTML and ARIA over annotations: the engine reads the accessibility tree, so an unlabelled control is unnamed to the agent too.
+- A provider may answer with a promise: `snapshot()` waits for it (`configure({ timeoutMs })`, default 2000).
 - Unrendered virtual-scroll rows, canvas content, shadow roots and cross-origin frames are invisible to it.

@@ -63,8 +63,11 @@ export interface ClrPageContext {
 
 /**
  * Contributes context to snapshots. Asked once per snapshot; return `null` when there is nothing to report.
+ * A promise is awaited by `snapshot()`.
+ * While it is pending, later snapshots wait for it instead of asking again. A promise that rejects or
+ * outlasts the timeout is reported as `{ type: 'clr-unavailable' }`.
  */
 export interface ClrContextProvider {
   /** The provider's context as it is now, or `null` when it has nothing to report. */
-  getClrContext(): ClrPublishedContext | null;
+  getClrContext(): ClrPublishedContext | null | Promise<ClrPublishedContext | null>;
 }

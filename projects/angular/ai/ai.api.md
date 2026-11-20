@@ -23,10 +23,16 @@ export const CLR_CONTEXT_DIRECTIVES: Type<any>[];
 export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
 
 // @public
+export const CLR_CONTEXT_LOADING_TYPE = "clr-loading";
+
+// @public
 export const CLR_CONTEXT_PRESETS: Readonly<Record<ClrContextPreset, Readonly<ClrContextSnapshotOptions>>>;
 
 // @public
 export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
+
+// @public
+export const CLR_CONTEXT_UNAVAILABLE_TYPE = "clr-unavailable";
 
 // @public
 export interface ClrAvailableRoute {
@@ -73,6 +79,11 @@ export class ClrContext implements OnInit, OnDestroy {
 export type ClrContextAnnotation = Partial<ClrPublishedContext> | (() => Partial<ClrPublishedContext> | null | undefined);
 
 // @public
+export interface ClrContextAsyncCollectOptions extends ClrContextCollectOptions {
+    timeoutMs?: number;
+}
+
+// @public
 export type ClrContextCategory = 'layout' | 'actions' | 'forms' | 'headings' | 'collections' | 'dialogs' | 'status' | 'images' | 'text' | 'frames';
 
 // @public
@@ -97,6 +108,7 @@ export interface ClrContextConfig {
     extractors?: ClrContextDomExtractor[];
     routes?: boolean;
     scope?: ClrContextPreset | ClrContextSnapshotOptions;
+    timeoutMs?: number;
 }
 
 // @public
@@ -120,7 +132,7 @@ export type ClrContextPreset = 'full' | 'interactive' | 'minimal';
 
 // @public
 export interface ClrContextProvider {
-    getClrContext(): ClrPublishedContext | null;
+    getClrContext(): ClrPublishedContext | null | Promise<ClrPublishedContext | null>;
 }
 
 // Warning: (ae-forgotten-export) The symbol "ResolvedSnapshotOptions" needs to be exported by the entry point clr-angular-ai.d.ts
@@ -131,6 +143,7 @@ export type ClrContextRegionLimits = Pick<ResolvedSnapshotOptions, 'maxTextLengt
 // @public
 export class ClrContextRegistryService {
     collect(options?: ClrContextCollectOptions): ClrComponentContext[];
+    collectAsync(options?: ClrContextAsyncCollectOptions): Promise<ClrComponentContext[]>;
     register(provider: ClrContextProvider): () => void;
     unregister(provider: ClrContextProvider): void;
     // (undocumented)

@@ -38,7 +38,8 @@
       <td class="left clr-hidden-xs-down"><code cds-text="code">Promise&lt;ClrPageContext&gt;</code></td>
       <td class="left">
         Describes the page as it is now. <code cds-text="code">options</code> apply over the configured
-        <code cds-text="code">scope</code> (see Snapshot options below).
+        <code cds-text="code">scope</code> (see Snapshot options below). It first waits for providers that answer with a
+        promise, up to <code cds-text="code">timeoutMs</code> each.
       </td>
     </tr>
   </tbody>
@@ -81,6 +82,14 @@
         Its answer replaces the element and everything inside it.
       </td>
     </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">timeoutMs</b></td>
+      <td class="left clr-hidden-xs-down">2000</td>
+      <td class="left">
+        How long a snapshot waits for each provider that answers with a promise. A provider that fails or is too slow
+        appears as a region of type <code cds-text="code">'clr-unavailable'</code>.
+      </td>
+    </tr>
   </tbody>
 </table>
 
@@ -109,7 +118,7 @@
       <td class="left">
         Adds a provider and returns a function that removes it. <code cds-text="code">getClrContext()</code> returns a
         <code cds-text="code">ClrPublishedContext</code>, or <code cds-text="code">null</code> when there is nothing to
-        say.
+        say. It may also return a promise, which <code cds-text="code">snapshot()</code> waits for.
       </td>
     </tr>
     <tr>
@@ -305,7 +314,8 @@
       <td class="left clr-hidden-xs-down"><code cds-text="code">ClrComponentContext[]</code></td>
       <td class="left">
         What providers registered with <code cds-text="code">ClrContextRegistryService</code> said: context that no
-        element shows.
+        element shows. A provider still answering is a region of type <code cds-text="code">'clr-loading'</code>, and
+        one that failed or was too slow is <code cds-text="code">'clr-unavailable'</code>.
       </td>
     </tr>
     <tr>
@@ -442,8 +452,18 @@
       <td class="left">The roles each <code cds-text="code">excludeCategories</code> entry stands for.</td>
     </tr>
     <tr>
+      <td class="left"><b cds-text="medium">CLR_CONTEXT_LOADING_TYPE, CLR_CONTEXT_UNAVAILABLE_TYPE</b></td>
+      <td class="left">
+        <code cds-text="code">'clr-loading'</code> and <code cds-text="code">'clr-unavailable'</code>, the region types
+        for a provider that has not answered.
+      </td>
+    </tr>
+    <tr>
       <td class="left"><b cds-text="medium">ClrContextRegistryService.collect(options?)</b></td>
-      <td class="left">What the registered providers say now. The service calls these itself.</td>
+      <td class="left">
+        What the registered providers say now; <code cds-text="code">collectAsync(options?)</code> waits for the ones
+        that answer with a promise. The service calls these itself.
+      </td>
     </tr>
     <tr>
       <td class="left"><b cds-text="medium">CLR_CONTEXT_HIDDEN_SELECTOR</b></td>
