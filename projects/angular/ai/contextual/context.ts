@@ -29,8 +29,6 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy {
   @Input('clrContextType') type = '';
   /** Current application state an agent should know about, as a small serializable object. */
   @Input('clrContextState') state: Record<string, unknown> | null = null;
-  /** State keys untrusted callers (such as embedded frames) may see; every other key is withheld. */
-  @Input('clrContextPublicKeys') publicKeys: readonly string[] | null = null;
 
   private lastReported = '';
   private annotated: Element | null = null;
@@ -86,9 +84,6 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy {
     }
     if (this.state && Object.keys(this.state).length) {
       context.state = this.state;
-    }
-    if (this.publicKeys?.length) {
-      context.publicKeys = this.publicKeys;
     }
     return context;
   }

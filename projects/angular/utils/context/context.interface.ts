@@ -19,14 +19,9 @@ export interface ClrComponentContext {
   children?: ClrComponentContext[];
 }
 
-/**
- * Context that application code publishes. Its state is shared only with trusted callers, except the keys
- * listed in `publicKeys`, which untrusted ones (such as embedded frames) see too.
- */
+/** Context that application code publishes. */
 export interface ClrPublishedContext extends ClrComponentContext {
-  /** State keys untrusted callers may see; every other key is withheld from them. Default none. */
-  publicKeys?: readonly string[];
-  /** Nested contexts, each listing its own public keys. */
+  /** Nested contexts. */
   children?: ClrPublishedContext[];
 }
 
