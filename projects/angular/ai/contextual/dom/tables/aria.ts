@@ -105,18 +105,3 @@ export const CONTENT_STATE_KEYS: readonly string[] = [
   'href',
   'url',
 ];
-
-/**
- * State keys the engine derives that are withheld from untrusted consumers because they reveal what the user
- * chose; published state is withheld unless marked public, so it needs no entry here.
- */
-export const UNTRUSTED_WITHHELD_STATE_KEYS: readonly string[] = Object.freeze([
-  'rows',
-  'filteredColumns',
-  'hiddenColumns',
-  'fileCount',
-  'matchingOptions',
-  'redactedMatchingOptions',
-  'matchingOptionsPending',
-  'matchingOptionCount',
-]);

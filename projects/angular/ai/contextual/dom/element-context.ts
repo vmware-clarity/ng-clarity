@@ -10,7 +10,6 @@ import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrComponentContext, ClrPublishedContext 
 
 import { truncate } from './text';
 import { defineOwn, jsonSafe, STATE_DEPTH } from '../json-safe';
-import { publicState } from '../public-keys';
 import type { ResolvedSnapshotOptions } from '../snapshot-options';
 
 /** Reads an element's published context. A callback that throws counts as nothing, with a dev-mode warning. */
@@ -42,14 +41,13 @@ function warnLeftOut(element: Element, error: unknown): void {
 
 /**
  * Merges the element's annotation, then its published context, over the DOM-extracted one; published values
- * win. For an `untrusted` caller, each source's state is cut to the keys that source marks public.
+ * win.
  */
 export function mergeElementContext(
   base: ClrComponentContext,
   element: Element,
   options: ResolvedSnapshotOptions,
-  annotation: Partial<ClrPublishedContext> | null = null,
-  untrusted = false
+  annotation: Partial<ClrPublishedContext> | null = null
 ): ClrComponentContext {
   const published = readClrElementContext(element, options);
   if (!published && !annotation) {
@@ -57,8 +55,8 @@ export function mergeElementContext(
   }
   let own: Partial<ClrComponentContext>;
   try {
-    const annotated = annotation ? publishedParts(annotation, options, untrusted, PUBLISHED_DEPTH) : {};
-    const component = published ? publishedParts(published, options, untrusted, PUBLISHED_DEPTH) : {};
+    const annotated = annotation ? publishedParts(annotation, options, PUBLISHED_DEPTH) : {};
+    const component = published ? publishedParts(published, options, PUBLISHED_DEPTH) : {};
     own = { ...annotated, ...component, state: { ...annotated.state, ...component.state } };
   } catch (error) {
     warnLeftOut(element, error);
@@ -89,12 +87,11 @@ const PUBLISHED_DEPTH = 4;
 export function publishedNode(
   value: unknown,
   options: ResolvedSnapshotOptions,
-  untrusted = false,
   depth = PUBLISHED_DEPTH
 ): ClrComponentContext | null {
   let parts: Partial<ClrComponentContext>;
   try {
-    parts = publishedParts(value, options, untrusted, depth);
+    parts = publishedParts(value, options, depth);
   } catch {
     return null;
   }
@@ -117,12 +114,7 @@ export function publishedNode(
   return node;
 }
 
-function publishedParts(
-  value: unknown,
-  options: ResolvedSnapshotOptions,
-  untrusted: boolean,
-  depth: number
-): Partial<ClrComponentContext> {
+function publishedParts(value: unknown, options: ResolvedSnapshotOptions, depth: number): Partial<ClrComponentContext> {
   if (!value || typeof value !== 'object') {
     return {};
   }
@@ -140,8 +132,7 @@ function publishedParts(
   }
   const state = source['state'];
   if (state && typeof state === 'object' && !Array.isArray(state)) {
-    const shared = untrusted ? publicState(source, state as Record<string, unknown>) : state;
-    for (const [key, entry] of Object.entries(shared)) {
+    for (const [key, entry] of Object.entries(state)) {
       const safe = jsonSafe(entry, STATE_DEPTH, true, options);
       if (safe !== undefined) {
         defineOwn(ownState, key, safe);
@@ -152,7 +143,7 @@ function publishedParts(
     // Published children are not walked, so the collection budget bounds them instead.
     parts.children = source['children']
       .slice(0, options.maxItemsPerCollection)
-      .map(child => publishedNode(child, options, untrusted, depth - 1))
+      .map(child => publishedNode(child, options, depth - 1))
       .filter((child): child is ClrComponentContext => child !== null);
   }
   return parts;
