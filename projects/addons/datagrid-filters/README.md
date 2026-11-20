@@ -74,6 +74,8 @@ Use `[(propertyFilters)]` when the host keeps the active filters, for example to
 
 Filters built by the editors carry an `editorState`, which keeps the choices the criteria cannot express (e.g. _Last week_, or a value typed in another unit). Keep it when storing filters in memory. When it is missing, for example in a host preset or after storing only the criteria, the filter bar derives what it can from the criteria.
 
+Relative date-time filters (_Last week_, _Time span_) are a rolling window computed from the moment the user applies them, and are not recomputed when the filter is passed back in. Updating them is the user's responsibility, by editing and applying the filter again.
+
 ### Field precedence
 
 Each field can be used only once per filter bar. Fields are claimed from left to right: `predefinedFilters` first, then `semiPredefinedFilters`, then `toggleFilters` (the first toggle per field wins). Later entries for an already claimed field are ignored, with a console warning. A toggle's field accepts only the toggle's own filter: a preset or `propertyFilters` entry with other criteria on it is removed, with a console warning. Fields used by any of these inputs are not offered in **Add filter**.

@@ -69,7 +69,7 @@ The component only **emits** filters. Apply `PropertyFilter[]` (each `{ criteria
 - `presetFilters` is read **once** at start-up; later changes are ignored. For the same field a preset wins over `propertyFilters`. When the start-up result differs from what was passed in, `propertyFiltersChange` emits once after the first change detection.
 - Quick mode clears the filters and emits `[]`.
 - `FilterMode.Combined`: search and filters are separate outputs, applied together (AND). **Clear all** emits `propertyFiltersChange` and then `searchTermChange` in the same turn; to load from a server once, store both values and load at the end of the turn (e.g. `queueMicrotask`).
-- Keep `PropertyFilter.editorState` when storing filters in memory: it restores editor choices the criteria cannot express (e.g. _Last week_). Filters without it (host presets) are read from their criteria.
+- Keep `PropertyFilter.editorState` when storing filters in memory: it restores editor choices the criteria cannot express (e.g. _Last week_). Filters without it (host presets) are read from their criteria. Relative filters (_Last week_, _Time span_) are a rolling window computed from the moment the user applies them, and are not recomputed on restore; updating them is the user's responsibility.
 
 ## Rules
 
