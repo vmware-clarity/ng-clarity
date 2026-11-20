@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrElementContextCallback, publishElementContext } from './element-context';
+import { ClrElementContextCallback, elementContextOf, publishElementContext } from './element-context';
 
 describe('publishElementContext', () => {
   let host: HTMLElement;
@@ -14,27 +14,21 @@ describe('publishElementContext', () => {
     host = document.createElement('div');
   });
 
-  function publishedOn(element: HTMLElement): ClrElementContextCallback | undefined {
-    return (element as HTMLElement & { [CLR_ELEMENT_CONTEXT_PROPERTY]?: ClrElementContextCallback })[
-      CLR_ELEMENT_CONTEXT_PROPERTY
-    ];
-  }
-
-  it('makes the callback discoverable on the host element', () => {
+  it('makes the callback discoverable for the host element', () => {
     const callback: ClrElementContextCallback = () => ({ type: 'combobox' });
 
     publishElementContext(host, callback);
 
-    expect(publishedOn(host)).toBe(callback);
+    expect(elementContextOf(host)).toBe(callback);
   });
 
   it('removes the callback when the returned teardown runs', () => {
     const teardown = publishElementContext(host, () => ({ type: 'combobox' }));
-    expect(CLR_ELEMENT_CONTEXT_PROPERTY in host, 'expected the callback to be published first').toBe(true);
+    expect(elementContextOf(host), 'expected the callback to be published first').toBeDefined();
 
     teardown();
 
-    expect(CLR_ELEMENT_CONTEXT_PROPERTY in host).toBe(false);
+    expect(elementContextOf(host)).toBeUndefined();
   });
 
   it('replaces a previously published callback', () => {
@@ -43,7 +37,14 @@ describe('publishElementContext', () => {
     publishElementContext(host, () => ({ type: 'combobox' }));
     publishElementContext(host, second);
 
-    expect(publishedOn(host)).toBe(second);
+    expect(elementContextOf(host)).toBe(second);
+  });
+
+  it('leaves nothing on the element itself', () => {
+    publishElementContext(host, () => ({ type: 'combobox' }));
+
+    expect(Object.keys(host)).toEqual([]);
+    expect(host.attributes.length).toBe(0);
   });
 
   it('leaves a newer callback in place when an older teardown runs', () => {
@@ -53,6 +54,6 @@ describe('publishElementContext', () => {
     publishElementContext(host, newer);
     staleTeardown();
 
-    expect(publishedOn(host)).toBe(newer);
+    expect(elementContextOf(host)).toBe(newer);
   });
 });
