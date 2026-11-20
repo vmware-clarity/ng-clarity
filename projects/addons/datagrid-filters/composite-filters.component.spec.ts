@@ -515,6 +515,50 @@ describe('CompositeFiltersComponent', () => {
       host.destroy();
     });
 
+    it('restores filters saved as JSON with the field definitions of the filter bar', async () => {
+      const host = TestBed.createComponent(TwoWayHostComponent);
+      renderFixture(host);
+      vi.spyOn(bar(host).propertyFiltersChange, 'emit');
+
+      // A saved view: the field definitions are plain objects now, and the enum values Map is lost.
+      const restored: PropertyFilter[] = JSON.parse(JSON.stringify([stringPropertyFilter, enumPropertyFilter]));
+      host.componentInstance.filters = restored;
+      renderFixture(host);
+
+      const [stringFilter, enumFilter] = bar(host).propertyFilters;
+      stringFilter.criteria.forEach(predicate => expect(predicate.filterableProperty).toBe(stringProperty));
+      expect(enumFilter.criteria[0].filterableProperty).toBe(enumProperty);
+      expect(stringFilter.criteria[0].value).toBe('vm 1');
+      expect(stringFilter.operator).toBe(LogicalOperator.And);
+      // The host's restored array is not changed, and nothing is emitted: the filters are the same.
+      expect(restored[0].criteria[0].filterableProperty).not.toBeInstanceOf(StringPropertyDefinition);
+      expect(bar(host).propertyFiltersChange.emit).not.toHaveBeenCalled();
+
+      // The pill opens its editor.
+      (host.nativeElement as HTMLElement).querySelector<HTMLButtonElement>('appfx-manage-filter .filter-pill')!.click();
+      renderFixture(host);
+      await host.whenStable();
+      renderFixture(host);
+      expect(document.querySelector('appfx-general-filter')).not.toBeNull();
+      host.destroy();
+    });
+
+    it('keeps restored filters on fields it does not know as they are', () => {
+      const host = TestBed.createComponent(TwoWayHostComponent);
+      renderFixture(host);
+      const unknown: PropertyFilter = JSON.parse(
+        JSON.stringify({
+          operator: LogicalOperator.And,
+          criteria: [{ filterableProperty: { property: 'other' }, operator: ComparisonOperator.Equals, value: 'x' }],
+        })
+      );
+      host.componentInstance.filters = [unknown];
+      renderFixture(host);
+      expect(bar(host).propertyFilters).toEqual([unknown]);
+      expect(bar(host).propertyFilters[0]).toBe(unknown);
+      host.destroy();
+    });
+
     it('turns a toggle ON when the host value contains its criteria, and OFF when it no longer does', () => {
       const host = TestBed.createComponent(TwoWayHostComponent);
       host.componentInstance.toggleFilters = asToggles(redToggle());

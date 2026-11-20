@@ -202,6 +202,58 @@ describe('DataGridFiltersComponent', () => {
     expect(testContext.component.searchTerm).toEqual('Key press');
     expect(testContext.component.searchTermChange.emit).toHaveBeenCalledWith('Key press');
   });
+  describe('searchTerm input', () => {
+    const searchInput = (): HTMLInputElement => testContext.fixture.nativeElement.querySelector('input[clrInput]');
+
+    beforeEach(() => {
+      testContext.fixture.componentRef.setInput('filterMode', FilterMode.Combined);
+      vi.spyOn(testContext.component.searchTermChange, 'emit').mockImplementation(() => undefined);
+    });
+
+    it('shows a restored search without emitting it', async () => {
+      testContext.fixture.componentRef.setInput('searchTerm', 'vm');
+      renderFixture(testContext.fixture);
+      await testContext.fixture.whenStable();
+      expect(searchInput().value).toBe('vm');
+
+      // Applying the same term again is not a change.
+      applySearch(testContext.fixture, 'vm');
+      expect(testContext.component.searchTermChange.emit).not.toHaveBeenCalled();
+
+      applySearch(testContext.fixture, 'vm-1');
+      expect(testContext.component.searchTermChange.emit).toHaveBeenCalledExactlyOnceWith('vm-1');
+    });
+
+    it('treats null as no search', () => {
+      testContext.fixture.componentRef.setInput('searchTerm', null);
+      expect(testContext.component.searchTerm).toBe('');
+    });
+
+    it('replaces text the user typed but that was not emitted yet', async () => {
+      vi.useFakeTimers();
+      renderFixture(testContext.fixture);
+      searchInput().value = 'typed';
+      searchInput().dispatchEvent(new Event('input'));
+
+      testContext.fixture.componentRef.setInput('searchTerm', 'saved');
+      renderFixture(testContext.fixture);
+      await vi.advanceTimersByTimeAsync(2000);
+      expect(testContext.component.searchTerm).toBe('saved');
+      expect(testContext.component.searchTermChange.emit).not.toHaveBeenCalled();
+    });
+
+    it('emits the cleared search on Clear all after a restore', () => {
+      testContext.fixture.componentRef.setInput('searchTerm', 'vm');
+      renderFixture(testContext.fixture);
+      const clearAll: HTMLButtonElement = testContext.fixture.nativeElement.querySelector(
+        '[data-test-id="clear-all-button"]'
+      );
+      clearAll.click();
+      renderFixture(testContext.fixture);
+      expect(testContext.component.searchTerm).toBe('');
+      expect(testContext.component.searchTermChange.emit).toHaveBeenCalledExactlyOnceWith('');
+    });
+  });
   it('is properly initialized in advanced only mode', () => {
     testContext.component.mode = FilterMode.AdvancedOnly;
     testContext.component.filterableProperties = [];

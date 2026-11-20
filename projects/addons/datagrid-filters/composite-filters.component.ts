@@ -574,18 +574,59 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
    */
   private applyFilters(filters: PropertyFilter[]): void {
     const toggleKeys = new Set(this.toggleFilters.map(toggle => this.toggleKey(toggle.filter)));
+    const knownProperties = this.knownProperties();
     this.activeToggleKeys.clear();
-    this.propertyFilters = filters.filter(filter => {
-      if (!filter?.criteria?.length) {
-        return false;
+    this.propertyFilters = filters
+      .filter(filter => {
+        if (!filter?.criteria?.length) {
+          return false;
+        }
+        const key = this.toggleKey(filter);
+        if (toggleKeys.has(key)) {
+          this.activeToggleKeys.add(key);
+          return false;
+        }
+        return true;
+      })
+      .map(filter => this.withKnownProperties(filter, knownProperties));
+  }
+
+  /** The field definitions of this filter bar, by `property` key. The first input that has a field wins. */
+  private knownProperties(): Map<string, FilterablePropertyDefinition> {
+    const properties = new Map<string, FilterablePropertyDefinition>();
+    for (const property of [
+      ...this.predefinedFilters,
+      ...this.semiPredefinedFilters,
+      ...this.toggleProperties(),
+      ...(this.filterableProperties || []),
+    ]) {
+      if (!properties.has(property.property)) {
+        properties.set(property.property, property);
       }
-      const key = this.toggleKey(filter);
-      if (toggleKeys.has(key)) {
-        this.activeToggleKeys.add(key);
-        return false;
-      }
-      return true;
+    }
+    return properties;
+  }
+
+  /**
+   * Uses this filter bar's field definitions in the filter's criteria, matched by `property` key. Filters restored from
+   * JSON (saved views, URLs) have plain objects there, which the editors don't recognize. Returns a copy when a
+   * definition was replaced, so the host's filter is never changed; filters with unknown fields are kept as they are.
+   */
+  private withKnownProperties(
+    filter: PropertyFilter,
+    knownProperties: Map<string, FilterablePropertyDefinition>
+  ): PropertyFilter {
+    const known = (predicate: PropertyPredicate) => knownProperties.get(predicate?.filterableProperty?.property);
+    if (filter.criteria.every(predicate => !known(predicate) || known(predicate) === predicate.filterableProperty)) {
+      return filter;
+    }
+    const criteria = filter.criteria.map(predicate => {
+      const property = known(predicate);
+      return property && property !== predicate.filterableProperty
+        ? Object.assign(new PropertyPredicate(), predicate, { filterableProperty: property })
+        : predicate;
     });
+    return Object.assign(new PropertyFilter(), filter, { criteria });
   }
 
   /** Emits the user filters plus the toggle filters that are ON. */

@@ -52,8 +52,6 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
 
   selectedFilterMode: FilterMode = FilterMode.Quick;
 
-  searchTerm: string = '';
-
   /**
    * Array of filterable properties
    */
@@ -105,6 +103,8 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
 
   private _propertyFilters: PropertyFilter[] = [];
 
+  private _searchTerm = '';
+
   constructor(public filterStrings: DatagridFiltersStrings) {}
 
   /**
@@ -131,6 +131,23 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
     this._propertyFilters = filters ?? [];
   }
 
+  /**
+   * The quick search text. Supports two-way binding: `[(searchTerm)]="search"`, e.g. to restore a saved view.
+   * A new value replaces the search text without emitting `searchTermChange`.
+   */
+  @Input()
+  get searchTerm(): string {
+    return this._searchTerm;
+  }
+
+  set searchTerm(searchTerm: string | null | undefined) {
+    this._searchTerm = searchTerm ?? '';
+    // The host already has this term, so only a different one typed later is emitted.
+    this.lastSearchTerm = this._searchTerm.trim();
+    // Replaces text the user typed but that was not emitted yet.
+    this.searchTermDebouncer.next(this._searchTerm);
+  }
+
   ngAfterViewInit() {
     this.searchTermDebouncer
       .pipe(debounceTime(searchTermDebounceTimeMs), distinctUntilChanged(), takeUntil(this.unsubscribeSubject))
@@ -147,7 +164,7 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
   onFilterModeChange() {
     // Reset quick search data when switching to advanced mode
     if (this.selectedFilterMode === FilterMode.Advanced && !!this.searchTerm) {
-      this.searchTerm = '';
+      this._searchTerm = '';
       this.doSearch(this.searchTerm);
       // Clear debouncer last value
       this.searchTermDebouncer.next(this.searchTerm);
@@ -172,14 +189,14 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
   }
 
   onSearchTermChanged(searchTerm: string): void {
-    this.searchTerm = searchTerm;
+    this._searchTerm = searchTerm;
     this.searchTermDebouncer.next(this.searchTerm);
   }
 
   /** Combined mode: Clear all also clears the quick search text. */
   protected onClearAll(): void {
     if (this.mode === FilterMode.Combined && this.searchTerm) {
-      this.searchTerm = '';
+      this._searchTerm = '';
       this.searchTermDebouncer.next(this.searchTerm);
       this.doSearch(this.searchTerm);
     }

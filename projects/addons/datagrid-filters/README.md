@@ -64,15 +64,18 @@ Use `[(propertyFilters)]` when the host keeps the active filters, for example to
   [filterableProperties]="filterableProperties"
   [toggleFilters]="toggleFilters"
   [(propertyFilters)]="filters"
+  [(searchTerm)]="search"
 ></appfx-datagrid-filters>
 ```
 
+- Filters can be stored as JSON. When they are passed back in, each `criteria[].filterableProperty` is replaced with the filter bar's field definition that has the same `property` key, so a plain object from `JSON.parse` works. Filters on a field the filter bar doesn't know are kept as they are.
+- `[(searchTerm)]` holds the quick search text. Setting it does not emit `searchTermChange`.
 - A new `propertyFilters` value replaces the active filters. A filter with exactly a toggle's criteria turns that toggle ON; a toggle missing from the value turns OFF. The filter bar copies the array and never changes it.
 - Setting `propertyFilters` does not emit `propertyFiltersChange`, so passing the emitted value back does not loop. The exceptions are a filter on a semi-predefined or toggle field that had to be removed, and a toggle that was ON and is no longer configured (or lost its field to another input). The corrected list is then emitted once, after change detection, so a `[(propertyFilters)]` binding stays safe.
 - `presetFilters` are applied once, at start-up. For the same field, a preset wins over a `propertyFilters` filter. If the start-up result differs from what `propertyFilters` passed in (or there is no `propertyFilters` binding and presets are set), `propertyFiltersChange` emits it once, after the first change detection, so the host is in sync from the start.
 - Switching `appfx-datagrid-filters` to quick mode clears the filters and emits `[]`.
 
-Filters built by the editors carry an `editorState`, which keeps the choices the criteria cannot express (e.g. _Last week_, or a value typed in another unit). Keep it when storing filters in memory. When it is missing, for example in a host preset or after storing only the criteria, the filter bar derives what it can from the criteria.
+Filters built by the editors carry an `editorState`, which keeps the choices the criteria cannot express (e.g. _Last week_, or a value typed in another unit). Keep it when storing filters. When it is missing, for example in a host preset or after storing only the criteria, the filter bar derives what it can from the criteria.
 
 Relative date-time filters (_Last week_, _Time span_) are a rolling window computed from the moment the user applies them, and are not recomputed when the filter is passed back in. Updating them is the user's responsibility, by editing and applying the filter again.
 

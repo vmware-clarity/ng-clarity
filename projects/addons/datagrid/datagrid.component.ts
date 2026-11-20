@@ -193,7 +193,11 @@ export interface GridFooterModel {
   ],
 })
 export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, OnChanges, PreselectableComponent {
-  searchTerm = '';
+  /**
+   * The quick search text, passed on to the filter bar. Supports two-way binding: `[(searchTerm)]="search"`,
+   * e.g. to restore a saved view. Setting it does not emit `searchTermChange`.
+   */
+  @Input() searchTerm = '';
   visibleColumns!: ColumnDefinition<T>[];
   draggedItems: T[] = [];
 

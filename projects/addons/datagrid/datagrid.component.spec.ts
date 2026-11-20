@@ -2916,6 +2916,24 @@ describe('DatagridComponent', () => {
       expect(grid.propertyFilters).toBe(changed);
     });
 
+    it('passes searchTerm to the filter bar without emitting, and emits it on change', () => {
+      const grid: DatagridComponent<unknown> = testContext.component.appfxDatagridComponent;
+      grid.filterMode = FilterMode.Combined;
+      grid.filterableProperties = [new StringPropertyDefinition('Name', 'name')];
+      vi.spyOn(grid.searchTermChange, 'emit');
+      grid.searchTerm = 'vm';
+      renderFixture(testContext.fixture);
+      const bar: DataGridFiltersComponent = testContext.fixture.debugElement.query(
+        By.directive(DataGridFiltersComponent)
+      ).componentInstance;
+      expect(bar.searchTerm).toBe('vm');
+      expect(grid.searchTermChange.emit).not.toHaveBeenCalled();
+
+      bar.searchTermChange.emit('vm-1');
+      expect(grid.searchTermChange.emit).toHaveBeenCalledExactlyOnceWith('vm-1');
+      expect(grid.searchTerm).toBe('vm-1');
+    });
+
     afterEach(() => {
       const untypedContext: any = testContext;
 

@@ -131,6 +131,7 @@ onSearch(term: string): void {}
 - Enum filter labels should match what the column renders, or render the column through the same map.
 - The grid only **emits** filters — `advancedFilterChange` carries a `PropertyFilter[]` (each `{ criteria: PropertyPredicate[], operator }`); apply them to the data yourself and pass the result as `gridItems`.
 - `[(propertyFilters)]="filters"` keeps the pills and your filters in sync, e.g. to restore a saved view or keep them across `filterMode` switches. Setting it does not emit; `propertyFiltersChange` fires together with `advancedFilterChange`.
+- `[(searchTerm)]="search"` does the same for the quick search text. Setting it does not emit `searchTermChange`.
 - Other definitions: `DateTimePropertyDefinition`, `UserPropertyDefinition` (requires providing `DatagridFiltersUserService`).
 - Per-column filters: `ColumnDefinition.stringFilter` or `ColumnDefinition.filter` (a `ColumnFilter<T>` component type).
 
