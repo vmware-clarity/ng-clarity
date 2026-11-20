@@ -1,6 +1,6 @@
 ---
 name: clr-contextual-engine
-description: Clarity contextual engine (`@clr/angular/ai`) — gives an AI agent a structured snapshot of the page (route, rendered components and their state, app annotations). Use when wiring page context into an assistant or chat, annotating a view with `clrContext`, publishing component state, keeping user data away from a model, or exposing `window.clrContext()` to a browser agent.
+description: Clarity contextual engine (`@clr/angular/ai`) — gives an AI agent a structured snapshot of the page (route, rendered components and their state, app annotations). Use when wiring page context into an assistant or chat, annotating a view with `clrContext`, publishing component state, or keeping user data away from a model.
 metadata:
   docs: /documentation/contextual-engine
 ---
@@ -29,7 +29,7 @@ Configure once at startup: `context.configure({ scope: 'interactive', routes: tr
 - A snapshot holds the rendered page, text included, and may hold personal data. Send it to a model as data, delimited from the prompt, never as instructions.
 - Put `data-clr-context-redact` on regions whose values must never leave the page (their fields keep their shape, values are withheld). Put `data-clr-context-ignore` on UI the agent should not see at all.
 - Password and file inputs, and fields whose `autocomplete` is `current-password`, `new-password`, `one-time-code` or a `cc-*` token, are always withheld. Redact the other secrets, such as tokens or keys typed into plain text fields.
-- `enableGlobalAccess()` exposes `window.clrContext()` to any script on the page. Untrusted callers get no form values, only the route pattern, and only published state keys marked public.
+- Callers the application does not control, such as embedded frames, get no form values, only the route pattern, and only published state keys marked public.
 
 ## Adding context
 

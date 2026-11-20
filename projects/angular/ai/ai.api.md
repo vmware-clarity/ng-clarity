@@ -128,12 +128,6 @@ export interface ClrContextDomExtractor {
 }
 
 // @public
-export interface ClrContextGlobalAccessOptions extends ClrContextSnapshotOptions {
-    shareFormValues?: boolean;
-    shareFullUrl?: boolean;
-}
-
-// @public
 export class ClrContextModule {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextModule, never>;
@@ -171,12 +165,8 @@ export class ClrContextRegistryService {
 }
 
 // @public
-export class ClrContextService implements OnDestroy {
+export class ClrContextService {
     configure(config: ClrContextConfig): void;
-    disableGlobalAccess(): void;
-    enableGlobalAccess(propertyName?: string, hostOptions?: ClrContextGlobalAccessOptions): void;
-    // (undocumented)
-    ngOnDestroy(): void;
     snapshot(options?: ClrContextSnapshotOptions): Promise<ClrPageContext>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextService, never>;
