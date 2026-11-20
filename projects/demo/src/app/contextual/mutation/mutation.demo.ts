@@ -12,8 +12,8 @@ import {
   ClrComponentContext,
   ClrContext,
   ClrContextService,
-  ClrMutationService,
   ClrMutationOperation,
+  ClrMutationService,
 } from '@clr/angular/ai';
 
 import { DEMO_HOSTS, DemoHost } from '../hosts';
