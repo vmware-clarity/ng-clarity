@@ -30,7 +30,9 @@ if (errors.length) {
   process.exit(1);
 }
 
-fs.rmSync(dest, { recursive: true, force: true });
+// `ai` is also the `@clr/angular/ai` entry point, so only what this script writes is replaced.
+fs.rmSync(path.join(dest, 'skills'), { recursive: true, force: true });
+fs.rmSync(path.join(dest, 'AGENTS.md'), { force: true });
 const referencesDir = path.join(dest, 'skills', skill.name, 'references');
 fs.mkdirSync(referencesDir, { recursive: true });
 

@@ -1,0 +1,54 @@
+# `@clr/angular/ai`
+
+AI building blocks for Clarity applications, shipped as a secondary entry point of
+`@clr/angular` — available to any application already on a Clarity version that includes it,
+with nothing extra to install.
+
+The entry point currently ships the **contextual engine**: it gives AI agents structured,
+up-to-date context about the page an application is currently showing — the active route, the
+components rendered right now and their state, as a tree in which every control sits where it is
+on the page, and any semantic annotations the application provides. UI building blocks for AI chat
+surfaces are planned under the same entry point.
+
+## Quickstart
+
+Inject `ClrContextService` and call `snapshot()` for the page now; call `configure()` once at startup to set the scope. The "Contextual Engine" guide on the
+Clarity website (`/documentation/contextual-engine`) has a complete example and a privacy checklist to read
+before a snapshot goes to a model.
+
+### Annotating the application
+
+The `[clrContext]` directive adds what only the application knows, such as what a section is for, to
+the node of the element it sits on. It takes a property binding only, so nothing it says is written to the DOM. It is standalone: a standalone component imports `ClrContext` directly, and an NgModule application can
+keep importing `ClrContextModule`.
+
+```ts
+import { Component } from '@angular/core';
+import { ClrContext } from '@clr/angular/ai';
+
+@Component({
+  selector: 'app-firewall',
+  imports: [ClrContext],
+  template: `<section [clrContext]="rules">...</section>`,
+})
+export class FirewallComponent {
+  cluster = 'alpha';
+  rules = () => ({ label: 'Firewall rules for the selected cluster', state: { cluster: this.cluster } });
+}
+```
+
+## How it works
+
+The engine describes UI by reading the **accessibility tree** rather than Clarity-specific
+selectors, so it covers Clarity Angular components, `@clr/ui` CSS-only markup, other component
+libraries and plain semantic HTML with one implementation. Components publish only the state ARIA
+cannot express, through `publishElementContext` from `@clr/angular/utils` — which is why a
+component that publishes context does not depend on this entry point.
+
+Through custom extractors it also reaches other UI libraries.
+
+A snapshot carries the page's text as shown, including what users wrote, so it is data for a
+model, never instructions: delimit it in prompts.
+
+The full guide, option reference and a live playground are on the Clarity website under "Contextual Engine"
+(`/documentation/contextual-engine`).
