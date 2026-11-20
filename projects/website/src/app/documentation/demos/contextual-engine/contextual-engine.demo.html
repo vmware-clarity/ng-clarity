@@ -788,8 +788,8 @@
         <code cds-text="code">unbound</code>. What the model does not know about, the engine does not touch.
       </li>
       <li>
-        <b cds-text="medium">Leave the application.</b> The global accessor does not expose the mutation engine, and the
-        snapshots it serves carry no refs. Writing is available to application code only, and only to controls of the
+        <b cds-text="medium">Leave the application.</b> Callers the application does not control, such as embedded
+        frames, get snapshots without refs. Writing is available to application code only, and only to controls of the
         application whose engine it is.
       </li>
     </ul>

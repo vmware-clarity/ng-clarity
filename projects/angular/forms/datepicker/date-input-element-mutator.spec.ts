@@ -32,6 +32,7 @@ import { DayModel } from './model/day.model';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
+import { untrustedSnapshot } from '../../ai/contextual/untrusted-snapshot.mock';
 
 function readElementMutator(element: Element): ClrElementMutator | null {
   return ((element as Element & Record<string, unknown>)[CLR_ELEMENT_MUTATOR_PROPERTY] as ClrElementMutator) ?? null;
@@ -202,10 +203,6 @@ describe('ClrDateInput element mutator', () => {
     });
 
     describe('as page-context tooling sees it', () => {
-      const accessorName = 'testDateClrContext';
-
-      afterEach(() => TestBed.inject(ClrContextService).disableGlobalAccess());
-
       /** Picks 6 March 1981 as the calendar does, which is what names the toggle by it. */
       function pickDate() {
         dateNavigationService.notifySelectedDayChanged(new DayModel(1981, 2, 6));
@@ -224,18 +221,13 @@ describe('ClrDateInput element mutator', () => {
 
       it('keeps the selected date from untrusted consumers', () => {
         pickDate();
-        TestBed.inject(ClrContextService).enableGlobalAccess(accessorName);
-        const accessor = (window as unknown as Record<string, () => ClrPageContext>)[accessorName];
-
-        expect(JSON.stringify(accessor())).not.toContain('1981');
+        expect(JSON.stringify(untrustedSnapshot(TestBed.inject(ClrContextService)))).not.toContain('1981');
       });
 
       it('does not describe the open calendar, which shows the picked month and year', async () => {
         pickDate();
         (fixture.nativeElement.querySelector('button.clr-input-group-icon-action') as HTMLElement).click();
         await settle();
-        TestBed.inject(ClrContextService).enableGlobalAccess(accessorName);
-        const accessor = (window as unknown as Record<string, () => ClrPageContext>)[accessorName];
         const types: string[] = [];
         const visit = (nodes: ClrComponentContext[]) =>
           nodes.forEach(node => {
@@ -250,7 +242,7 @@ describe('ClrDateInput element mutator', () => {
         expect(types).not.toContain('grid');
         // The application is told the date as the field's value, not again as the month shown.
         expect(JSON.stringify(snapshot)).not.toContain('March');
-        expect(JSON.stringify(accessor())).not.toMatch(/1981|March/);
+        expect(JSON.stringify(untrustedSnapshot(TestBed.inject(ClrContextService)))).not.toMatch(/1981|March/);
       });
     });
 
