@@ -4,9 +4,7 @@
 
 ```ts
 
-import { DoCheck } from '@angular/core';
 import * as i0 from '@angular/core';
-import { Observable } from 'rxjs';
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { Type } from '@angular/core';
@@ -55,11 +53,9 @@ export interface ClrComponentContextChange {
 }
 
 // @public
-export class ClrContext implements OnInit, DoCheck, OnDestroy {
+export class ClrContext implements OnInit, OnDestroy {
     getClrContext(): Partial<ClrPublishedContext> | null;
     label: string;
-    // (undocumented)
-    ngDoCheck(): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -143,10 +139,7 @@ export type ClrContextRegionLimits = Pick<ResolvedSnapshotOptions, 'maxTextLengt
 
 // @public
 export class ClrContextRegistryService {
-    constructor();
-    readonly changes$: Observable<void>;
     collect(options?: ClrContextCollectOptions): ClrComponentContext[];
-    notifyChanged(): void;
     register(provider: ClrContextProvider): () => void;
     unregister(provider: ClrContextProvider): void;
     // (undocumented)
