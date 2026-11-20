@@ -41,7 +41,7 @@ export interface ClrAvailableRoute {
 
 /** A snapshot of the page context, always computed on demand from the live application. */
 export interface ClrPageContext {
-  /** The document title; empty for an untrusted caller unless it shares the full URL. */
+  /** The document title. */
   title: string;
   /** The current URL (browser location, or router URL when available). */
   url?: string;
@@ -63,7 +63,6 @@ export interface ClrPageContext {
 
 /**
  * Contributes context to snapshots. Asked once per snapshot; return `null` when there is nothing to report.
- * Untrusted consumers see only the state keys listed in `publicKeys`.
  */
 export interface ClrContextProvider {
   /** The provider's context as it is now, or `null` when it has nothing to report. */

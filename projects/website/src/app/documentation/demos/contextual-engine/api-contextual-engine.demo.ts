@@ -24,8 +24,6 @@ export class CreateVmWorkflow {
         type: 'workflow',
         label: 'Create virtual machine',
         state: { step: this.step, vmName: this.vmName },
-        // Untrusted callers, such as embedded frames, see only these keys.
-        publicKeys: ['step'],
       }),
     });
     inject(DestroyRef).onDestroy(unregister);
