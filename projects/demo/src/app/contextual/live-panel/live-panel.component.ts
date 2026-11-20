@@ -5,13 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import { CLR_CONTEXT_PRESETS, ClrContextPreset, ClrContextService, ClrPageContext } from '@clr/angular/ai';
-import { Subscription } from 'rxjs';
 
-/** The live page snapshot; `data-clr-context-ignore` keeps it out of tracking and the context. */
+/** A snapshot of the page, read again on Refresh; `data-clr-context-ignore` keeps it out of the context. */
 @Component({
   changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'clr-context-live-panel',
@@ -20,7 +19,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './live-panel.component.html',
   styleUrls: ['./live-panel.component.scss'],
 })
-export class ContextLivePanelComponent implements OnInit, OnDestroy {
+export class ContextLivePanelComponent implements OnInit {
   /** The demo pages are busy, so they need more than the default budget. */
   @Input() maxComponents = 500;
 
@@ -31,31 +30,19 @@ export class ContextLivePanelComponent implements OnInit, OnDestroy {
   snapshotFocus: string | null = null;
   profile: ClrContextPreset = 'full';
 
-  private trackingSubscription: Subscription | null = null;
-
   constructor(private readonly context: ClrContextService) {}
 
   ngOnInit(): void {
-    this.track();
-  }
-
-  ngOnDestroy(): void {
-    this.trackingSubscription?.unsubscribe();
+    this.refreshNow();
   }
 
   setProfile(profile: ClrContextPreset): void {
     this.profile = profile;
-    this.track();
+    this.refreshNow();
   }
 
   async refreshNow(): Promise<void> {
     this.render(await this.context.snapshot(this.options()));
-  }
-
-  /** Through `watch()`, so watching stops with the subscription when the panel goes away. */
-  private track(): void {
-    this.trackingSubscription?.unsubscribe();
-    this.trackingSubscription = this.context.watch(this.options()).subscribe(snapshot => this.render(snapshot));
   }
 
   private render(snapshot: ClrPageContext): void {
