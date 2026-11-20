@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, QueryList, Type, ViewChild, ViewChildren } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrEmphasisModule } from '../emphasis.module';
 import { ClrAlert } from './alert';
@@ -66,51 +67,51 @@ describe('Alert Tests', () => {
       it('offers two way binding on the alert index', () => {
         testContext.create(TestComponent);
         const testComponent = fixture.componentInstance;
-        fixture.detectChanges();
+        renderFixture(fixture);
         testComponent.currentAlertIndex = 0;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(testComponent.alertsInstance.currentAlertIndex).toEqual(0);
         testComponent.alertsInstance.currentAlertIndex = 1;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(testComponent.currentAlertIndex).toEqual(1);
       });
 
       it('allows changing alert index from 1 to 0', () => {
         testContext.create(TestComponent);
         const testComponent = fixture.componentInstance;
-        fixture.detectChanges();
+        renderFixture(fixture);
         testComponent.currentAlertIndex = 1;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(testComponent.alertsInstance.currentAlertIndex).toEqual(1);
         testComponent.currentAlertIndex = 0;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(testComponent.alertsInstance.currentAlertIndex).toEqual(0);
       });
 
       it('does not allow invalid indexes (undefined, null, -1, 1.5, string)', () => {
         testContext.create(TestComponent);
         const testComponent = fixture.componentInstance;
-        fixture.detectChanges();
+        renderFixture(fixture);
         testComponent.currentAlertIndex = undefined;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(testComponent.alertsInstance.currentAlertIndex).toEqual(0);
         testComponent.currentAlertIndex = null;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(testComponent.alertsInstance.currentAlertIndex).toEqual(0);
         testComponent.currentAlertIndex = -1;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(testComponent.alertsInstance.currentAlertIndex).toEqual(0);
         testComponent.currentAlertIndex = 1.5;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(testComponent.alertsInstance.currentAlertIndex).toEqual(0);
         testComponent.currentAlertIndex = 'string';
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(testComponent.alertsInstance.currentAlertIndex).toEqual(0);
       });
 
       it('offers two way binding on the alert instance', () => {
         testContext.create(TestAlertInstance);
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         const clarityComponent = fixture.componentInstance.alertsInstance;
         const testComponent = fixture.componentInstance;
@@ -120,11 +121,11 @@ describe('Alert Tests', () => {
         expect(testComponent.alertInstances.last).toBeTruthy();
 
         testComponent.currentAlert = testComponent.alertInstances.first;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(clarityComponent.currentAlert).toEqual(testComponent.currentAlert);
 
         clarityComponent.currentAlert = testComponent.alertInstances.last;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(testComponent.currentAlert).toEqual(clarityComponent.currentAlert);
       });
     });
@@ -138,7 +139,7 @@ describe('Alert Tests', () => {
         TestBed.configureTestingModule({ imports: [ClrEmphasisModule], declarations: [TestComponent] });
 
         fixture = TestBed.createComponent(TestComponent);
-        fixture.detectChanges();
+        renderFixture(fixture);
         compiled = fixture.nativeElement;
         alertElements = compiled.querySelectorAll('clr-alert');
         expect(alertElements.length).toEqual(2);
@@ -154,7 +155,7 @@ describe('Alert Tests', () => {
         expect(alertElements[1].classList).toContain('alert-hidden');
 
         fixture.componentInstance.currentAlertIndex = 1;
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         expect(alertElements[1].textContent).toMatch(/This is the second alert/);
         expect(alertElements[1].classList).not.toContain('alert-hidden');
@@ -163,18 +164,18 @@ describe('Alert Tests', () => {
 
       it('makes the previous alert active when the current alert is closed', () => {
         fixture.componentInstance.currentAlertIndex = 1;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(alertElements[0].classList).toContain('alert-hidden');
 
         fixture.componentInstance.alertInstances.toArray()[1].close();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(alertElements[0].classList).not.toContain('alert-hidden');
       });
 
       it('shows the pager only when there is more than one alert', () => {
         expect(compiled.querySelectorAll('clr-alerts-pager').length).toBe(1);
         fixture.componentInstance.alertInstances.toArray()[0].close();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(compiled.querySelectorAll('clr-alerts-pager').length).toBe(0);
       });
 
@@ -183,7 +184,7 @@ describe('Alert Tests', () => {
           const alertsContainer: Element = fixture.nativeElement.querySelector('.alerts');
           const myAlert: ClrAlert = fixture.componentInstance.alertsInstance.currentAlert;
           myAlert.alertType = 'danger';
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           expect(alertsContainer.classList.contains('alert-danger')).toBe(true);
         });
@@ -192,7 +193,7 @@ describe('Alert Tests', () => {
           const alertsContainer: Element = fixture.nativeElement.querySelector('.alerts');
           const myAlert: ClrAlert = fixture.componentInstance.alertsInstance.currentAlert;
           myAlert.alertType = 'info';
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           expect(alertsContainer.classList.contains('alert-info')).toBe(true);
         });
@@ -201,7 +202,7 @@ describe('Alert Tests', () => {
           const alertsContainer: Element = fixture.nativeElement.querySelector('.alerts');
           const myAlert: ClrAlert = fixture.componentInstance.alertsInstance.currentAlert;
           myAlert.alertType = 'success';
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           expect(alertsContainer.classList.contains('alert-success')).toBe(true);
         });
@@ -210,7 +211,7 @@ describe('Alert Tests', () => {
           const alertsContainer: Element = fixture.nativeElement.querySelector('.alerts');
           const myAlert: ClrAlert = fixture.componentInstance.alertsInstance.currentAlert;
           myAlert.alertType = 'warning';
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           expect(alertsContainer.classList.contains('alert-warning')).toBe(true);
         });
@@ -221,7 +222,7 @@ describe('Alert Tests', () => {
       it('sets an aria label on the icon', () => {
         const myAlert: ClrAlert = fixture.componentInstance.alertsInstance.currentAlert;
         myAlert.alertType = 'warning';
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         const icon: Element = fixture.nativeElement.querySelector('cds-icon[role="img"]');
         expect(icon.getAttribute('aria-label')).toEqual('Warning');
@@ -234,7 +235,7 @@ describe('Alert Tests', () => {
 
         testContext.fixture = TestBed.createComponent(DynamicAlerts);
         testContext.compiled = testContext.fixture.nativeElement;
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
       });
 
       it('contains dynamic alerts and set an initial index', () => {
@@ -269,7 +270,7 @@ describe('Alert Tests', () => {
 
     it('does not throw an error', () => {
       const fixture = TestBed.createComponent(InitiallyClosedAlertTestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       // test will pass if no error is thrown
     });

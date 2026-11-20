@@ -20,7 +20,7 @@ import { Inventory } from '../inventory/inventory';
   providers: [Inventory],
 })
 export class CustomColumnDefinitionsDemoComponent {
-  allItems: unknown[];
+  allItems: object[];
 
   protected contentText = 'New column text';
 

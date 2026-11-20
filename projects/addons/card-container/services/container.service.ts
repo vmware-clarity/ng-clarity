@@ -19,7 +19,7 @@ import { PersistenceService } from './persistence.service';
  */
 @Injectable()
 export class ContainerService {
-  private cardContainer: ViewContainerRef;
+  private cardContainer!: ViewContainerRef;
   private containerCards: AppfxCardInternal[] = [];
 
   constructor(private persistenceService: PersistenceService) {}
