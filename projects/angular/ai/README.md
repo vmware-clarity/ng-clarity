@@ -101,7 +101,7 @@ component that publishes context does not depend on this entry point.
 Through custom extractors it also reaches other UI libraries, and a framework-agnostic `postMessage`
 protocol lets UI embedded in an iframe, such as a chat component, read the page hosting it; the host
 does not read its frames that way, though it describes a same-origin frame in place. Callers the
-application does not control, embedded frames and the optional `window.clrContext()` accessor, are
+application does not control, such as embedded frames, are
 held to the application's budgets and the defaults, and see neither what the user entered nor the
 page's full address (only its route pattern) unless the application shares them. Of the state that
 application code publishes, they see only the keys the publisher lists in `publicKeys`

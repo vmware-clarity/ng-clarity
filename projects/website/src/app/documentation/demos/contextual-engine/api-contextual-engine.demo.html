@@ -64,23 +64,6 @@
       </td>
     </tr>
     <tr>
-      <td class="left"><b cds-text="medium">enableGlobalAccess(propertyName?, options?)</b></td>
-      <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
-      <td class="left">
-        Adds <code cds-text="code">window.clrContext()</code>, for browser agents and extensions. Any script can call
-        it, so the caller is untrusted (see Untrusted callers below). <code cds-text="code">options</code> (<code
-          cds-text="code"
-          >ClrContextGlobalAccessOptions</code
-        >) take <code cds-text="code">shareFormValues</code>, <code cds-text="code">shareFullUrl</code> and snapshot
-        options that cap what callers may ask for. An assistant built into the application does not need it.
-      </td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">disableGlobalAccess()</b></td>
-      <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
-      <td class="left">Removes <code cds-text="code">window.clrContext()</code>.</td>
-    </tr>
-    <tr>
       <td class="left"><b cds-text="medium">enableFrameBridge(options?)</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
       <td class="left">
@@ -312,7 +295,7 @@
     <tr>
       <td class="left"><b cds-text="medium">shareFormValues, shareFullUrl</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">false</code></td>
-      <td class="left">As for <code cds-text="code">enableGlobalAccess()</code> (see Untrusted callers below).</td>
+      <td class="left">Share what the user entered, or the full address and title (see Untrusted callers below).</td>
     </tr>
     <tr>
       <td class="left"><b cds-text="medium">snapshot</b></td>
@@ -795,18 +778,18 @@
 
 <h2 id="untrusted" cds-text="title" class="clr-mt-48px">Untrusted callers</h2>
 <p class="clr-mt-16px" cds-text="body">
-  The application's own code sees everything. Embedded frames and <code cds-text="code">window.clrContext()</code> are
-  untrusted, because the application does not control them. They get less:
+  The application's own code sees everything. Embedded frames are untrusted, because the application does not control
+  them. They get less:
 </p>
 <ul class="list clr-mt-16px">
   <li>
     No values the user entered or chose (typed text, selected options and rows, ticked boxes), unless the application
-    sets <code cds-text="code">shareFormValues</code>. A withheld value is marked
+    shares them. A withheld value is marked
     <code cds-text="code">withheld: true</code>.
   </li>
   <li>
     No full URL or page title, only the route pattern such as <code cds-text="code">clusters/:id</code>, unless the
-    application sets <code cds-text="code">shareFullUrl</code>.
+    application shares it.
   </li>
   <li>
     Published state only under the keys listed in <code cds-text="code">publicKeys</code>, and the same for view

@@ -125,7 +125,7 @@ const IGNORE_EXAMPLE = `
 `;
 
 const DIRECTIVE_EXAMPLE = `
-<!-- Your own code sees all of the state. window.clrContext() sees only ruleCount. -->
+<!-- Your own code sees all of the state. Untrusted callers see only ruleCount. -->
 <section
   clrContext="Firewall rules for the selected cluster"
   [clrContextState]="{ cluster: clusterName, ruleCount: rules.length }"
@@ -225,7 +225,7 @@ this.context.configure({
       extract: element => ({
         type: 'chat-log',
         state: { messages: element.children.length },
-        publicKeys: ['messages'], // shared with window.clrContext() too
+        publicKeys: ['messages'], // shared with untrusted callers too
       }),
     },
   ],
@@ -299,16 +299,6 @@ const REDACT_EXAMPLE = `
 
 <!-- A whole region works too. -->
 <section data-clr-context-redact>...</section>
-`;
-
-const GLOBAL_ACCESS_EXAMPLE = `
-this.context.enableGlobalAccess();
-// Browser-driving agents can now call window.clrContext() for a fresh snapshot.
-// Values the user typed are withheld, because any script on the page can call it.
-// Published state reaches it only under the keys its publisher lists in publicKeys.
-
-// Share them deliberately, if that is what you mean:
-this.context.enableGlobalAccess('clrContext', { shareFormValues: true });
 `;
 
 const OPTIONS_EXAMPLE = `
@@ -542,7 +532,6 @@ export class ContextualEngineDemo extends ClarityDocComponent {
   redactExample = REDACT_EXAMPLE;
   frameHostExample = FRAME_HOST_EXAMPLE;
   frameClientExample = FRAME_CLIENT_EXAMPLE;
-  globalAccessExample = GLOBAL_ACCESS_EXAMPLE;
   budgetsExample = BUDGETS_EXAMPLE;
   optionsExample = OPTIONS_EXAMPLE;
   provideExample = PROVIDE_EXAMPLE;

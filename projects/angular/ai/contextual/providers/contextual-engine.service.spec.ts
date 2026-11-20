@@ -10,11 +10,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router, withHashLocation } from '@angular/router';
 import { ClrPublishedContext, publishElementContext } from '@clr/angular/utils';
-import type { Mock } from 'vitest';
+import { type Mock, onTestFinished } from 'vitest';
 
 import { ClrContextRegistryService } from './context-registry.service';
 import { ClrContextConfig, ClrContextService } from './contextual-engine.service';
-import { CLR_CONTEXT_PROTOCOL } from '../iframe/context-frame-bridge';
+import { CLR_CONTEXT_PROTOCOL, ClrContextFrameHostOptions } from '../iframe/context-frame-bridge';
 import {
   ClrComponentContext,
   ClrContextCategory,
@@ -22,19 +22,42 @@ import {
   ClrPageContext,
 } from '../interfaces/context.interface';
 import { CLR_CONTEXT_CATEGORIES, CLR_CONTEXT_DEFAULT_OPTIONS, CLR_CONTEXT_PRESETS } from '../snapshot-options';
+import { untrustedSnapshot } from '../untrusted-snapshot.mock';
 
 @Component({ template: '', changeDetection: ChangeDetectionStrategy.Eager })
 class RoutedComponent {}
 
-type Accessor = (options?: unknown) => ClrPageContext;
-
-/** The global accessor an engine installed on `window` under `name`. */
-function globalAccessor(name = 'testClrContext'): Accessor {
-  return (window as unknown as Record<string, Accessor>)[name];
-}
-
-function removeGlobal(name: string): void {
-  delete (window as unknown as Record<string, unknown>)[name];
+/**
+ * Asks `engine` for context the way an embedded frame does, through a frame bridge enabled with `options`.
+ * The frame is left out of the snapshots, and the bridge stops when the spec ends.
+ */
+function frameAccessor(
+  engine: ClrContextService,
+  options: ClrContextFrameHostOptions = {}
+): (request?: unknown) => Promise<ClrPageContext> {
+  const frame = document.createElement('iframe');
+  frame.setAttribute('data-clr-context-ignore', '');
+  document.body.appendChild(frame);
+  const postMessage = vi.spyOn(frame.contentWindow as Window, 'postMessage').mockImplementation(() => undefined);
+  engine.enableFrameBridge({ minRequestIntervalMs: 0, ...options });
+  onTestFinished(() => {
+    engine.disableFrameBridge();
+    frame.remove();
+  });
+  let requests = 0;
+  return async request => {
+    const requestId = `frame-accessor-${++requests}`;
+    window.dispatchEvent(
+      new MessageEvent('message', {
+        data: { protocol: CLR_CONTEXT_PROTOCOL, kind: 'context-request', requestId, options: request },
+        origin: window.location.origin,
+        source: frame.contentWindow,
+      })
+    );
+    const answer = () => postMessage.mock.calls.find(([message]) => message.requestId === requestId)?.[0];
+    await vi.waitFor(() => expect(answer()).toBeDefined());
+    return answer().context as ClrPageContext;
+  };
 }
 
 describe('ClrContextService', () => {
@@ -44,10 +67,6 @@ describe('ClrContextService', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({});
       engine = TestBed.inject(ClrContextService);
-    });
-
-    afterEach(() => {
-      removeGlobal('testClrContext');
     });
 
     it('snapshots the document and reports no route for an unconfigured router', async () => {
@@ -87,109 +106,8 @@ describe('ClrContextService', () => {
       }
     });
 
-    it('exposes and removes a global accessor for browser-driving agents', () => {
-      engine.enableGlobalAccess('testClrContext');
-
-      const accessor = globalAccessor();
-      expect(typeof accessor).toBe('function');
-      // Withheld with the address unless the application shares the full URL.
-      expect(accessor().title).toBe('');
-
-      engine.disableGlobalAccess();
-      expect(globalAccessor()).toBeUndefined();
-    });
-
-    describe('the global accessor', () => {
-      let form: HTMLElement;
-
-      function snapshotVia(options?: unknown) {
-        return globalAccessor()(options);
-      }
-
-      function reportedValue(snapshot: { components: { type: string; state?: Record<string, unknown> }[] }) {
-        return snapshot.components.find(component => component.type === 'textbox')?.state?.value;
-      }
-
-      beforeEach(() => {
-        form = document.createElement('div');
-        form.innerHTML = '<label for="secret">Token</label><input id="secret" value="user-typed-secret" />';
-        document.body.appendChild(form);
-      });
-
-      afterEach(() => {
-        engine.disableGlobalAccess();
-        form.remove();
-      });
-
-      it('withholds what the user typed, because any script on the page can call it', () => {
-        // Including a third-party tag, so this cannot be the caller's decision.
-        engine.enableGlobalAccess('testClrContext');
-
-        expect(reportedValue(snapshotVia({ shareFormValues: true }))).toBeUndefined();
-      });
-
-      it('still describes the field whose value it withholds', () => {
-        engine.enableGlobalAccess('testClrContext');
-
-        expect(snapshotVia().components.some(component => component.type === 'textbox')).toBe(true);
-      });
-
-      it('withholds what the user chose or ticked as much as what they typed', () => {
-        form.innerHTML +=
-          '<select multiple aria-label="Roles"><option selected>admin</option><option>viewer</option></select>' +
-          '<input type="checkbox" aria-label="Remember" checked />';
-        engine.enableGlobalAccess('testClrContext');
-
-        const json = JSON.stringify(snapshotVia());
-        expect(json).not.toContain('"selected"');
-        expect(json).not.toContain('"checked"');
-        expect(json).toContain('"optionCount":2');
-      });
-
-      it('withholds which toggle buttons the user pressed, a choice like a ticked box', async () => {
-        form.innerHTML +=
-          '<button type="button" aria-pressed="true">Pay anonymously</button>' +
-          '<div role="group" aria-label="Billing"><button type="button" aria-pressed="false">Monthly</button>' +
-          '<button type="button" aria-pressed="true">Annual</button></div>';
-        engine.enableGlobalAccess('testClrContext');
-
-        const json = JSON.stringify(snapshotVia());
-        expect(json).toContain('Pay anonymously');
-        expect(json).not.toContain('"pressed"');
-        expect(JSON.stringify(await engine.snapshot())).toContain('"pressed":true');
-      });
-
-      it('shares what the user typed only when the application says so', () => {
-        engine.enableGlobalAccess('testClrContext', { shareFormValues: true });
-
-        expect(reportedValue(snapshotVia())).toBe('user-typed-secret');
-      });
-
-      it('still honours a caller budget the host left open', () => {
-        engine.enableGlobalAccess('testClrContext');
-
-        expect(snapshotVia({ maxComponents: 1 }).components.length).toBe(1);
-      });
-    });
-
     it('resolves host context with null when the page is not embedded', async () => {
       expect(await engine.requestHostContext()).toBeNull();
-    });
-
-    it('defines the global accessor so that assigning to it does not replace it, and still removes it', () => {
-      engine.enableGlobalAccess('testClrContext');
-      const installed = globalAccessor();
-      const host = window as unknown as Record<string, unknown>;
-
-      // Specs run as modules, in strict mode, where assigning to a read-only property throws.
-      expect(() => (host['testClrContext'] = () => ({ components: [] as unknown[] }))).toThrowError(TypeError);
-      expect(globalAccessor()).toBe(installed);
-
-      engine.disableGlobalAccess();
-      expect(globalAccessor()).toBeUndefined();
-      engine.enableGlobalAccess('testClrContext');
-      expect(globalAccessor()).toEqual(expect.any(Function));
-      engine.disableGlobalAccess();
     });
 
     describe('frame bridge', () => {
@@ -250,40 +168,6 @@ describe('ClrContextService', () => {
         expect(postMessage).toHaveBeenCalledTimes(1);
       });
 
-      it('serves a frame what the global accessor serves, withheld markers included', async () => {
-        const form = document.createElement('div');
-        form.innerHTML =
-          '<label for="filled">Token</label><input id="filled" value="user-typed-secret" />' +
-          '<label for="empty">Note</label><input id="empty" />' +
-          '<a href="/invoices/4711?token=secret">Invoice</a><div class="search">Find</div>';
-        document.body.appendChild(form);
-        const unpublish = publishElementContext(form.querySelector('.search') as HTMLElement, () => ({
-          type: 'search',
-          state: { query: 'published-secret', resultCount: 2 },
-          publicKeys: ['resultCount'],
-        }));
-
-        try {
-          engine.enableFrameBridge();
-          engine.enableGlobalAccess('testClrContext');
-          requestFrom('frame-request-parity');
-          await answered();
-          const viaAccessor = globalAccessor()();
-          const viaFrame = postMessage.mock.lastCall[0].context as ClrPageContext;
-
-          const textboxes = viaFrame.components.filter(component => component.type === 'textbox');
-          expect(textboxes.map(textbox => textbox.state?.['withheld'])).toEqual([true, undefined]);
-          expect(JSON.stringify(viaFrame)).not.toContain('secret');
-          // Collected moments apart, so only the time may differ.
-          expect(JSON.stringify(viaFrame)).toContain('resultCount');
-          expect({ ...viaFrame, collectedAt: '' }).toEqual({ ...viaAccessor, collectedAt: '' });
-        } finally {
-          unpublish();
-          form.remove();
-          engine.disableGlobalAccess();
-        }
-      });
-
       it('keeps the running frame bridge when a new configuration is refused', async () => {
         engine.enableFrameBridge();
         expect(() => engine.enableFrameBridge({ allowedOrigins: ['chat.example'] })).toThrowError(/not an origin/);
@@ -316,15 +200,13 @@ describe('ClrContextService', () => {
         );
       });
 
-      it('cleans up the frame bridge and global accessor when destroyed', () => {
+      it('stops the frame bridge when destroyed', () => {
         engine.enableFrameBridge();
-        engine.enableGlobalAccess('testClrContext');
         engine.ngOnDestroy();
 
         requestFrom('frame-request-2');
 
         expect(postMessage).not.toHaveBeenCalled();
-        expect(globalAccessor()).toBeUndefined();
       });
     });
   });
@@ -384,63 +266,57 @@ describe('ClrContextService', () => {
   });
 });
 
-describe('ClrContextService, the global accessor as a boundary', () => {
+describe('ClrContextService, what a caller the application does not control is told about fields', () => {
   let engine: ClrContextService;
   let form: HTMLElement;
 
-  function snapshotVia(options?: unknown): ClrPageContext {
-    return globalAccessor()(options);
+  function reportedValue(snapshot: ClrPageContext): unknown {
+    return snapshot.components.find(component => component.type === 'textbox')?.state?.['value'];
   }
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
     engine = TestBed.inject(ClrContextService);
     form = document.createElement('div');
-    form.innerHTML = '<button>one</button><button>two</button><button>three</button>';
+    form.innerHTML = '<label for="secret">Token</label><input id="secret" value="user-typed-secret" />';
     document.body.appendChild(form);
   });
 
-  afterEach(() => {
-    engine.disableGlobalAccess();
-    removeGlobal('testClrContext');
-    removeGlobal('testClrContextTaken');
-    form.remove();
+  afterEach(() => form.remove());
+
+  it('withholds what the user typed, even when the caller asks for it', () => {
+    expect(reportedValue(untrustedSnapshot(engine, { shareFormValues: true }))).toBeUndefined();
   });
 
-  it('refuses a name that is not a plain identifier', () => {
-    expect(() => engine.enableGlobalAccess('clr.context')).toThrowError(/not a valid name/);
-    expect(() => engine.enableGlobalAccess('')).toThrowError(/not a valid name/);
+  it('still describes the field whose value it withholds', () => {
+    expect(untrustedSnapshot(engine).components.some(component => component.type === 'textbox')).toBe(true);
   });
 
-  it('refuses to overwrite something the page already has under that name', () => {
-    (window as unknown as Record<string, unknown>)['testClrContextTaken'] = () => 'someone else';
+  it('withholds what the user chose or ticked as much as what they typed', () => {
+    form.innerHTML +=
+      '<select multiple aria-label="Roles"><option selected>admin</option><option>viewer</option></select>' +
+      '<input type="checkbox" aria-label="Remember" checked />';
 
-    expect(() => engine.enableGlobalAccess('testClrContextTaken')).toThrowError(/already exists/);
+    const json = JSON.stringify(untrustedSnapshot(engine));
+    expect(json).not.toContain('"selected"');
+    expect(json).not.toContain('"checked"');
+    expect(json).toContain('"optionCount":2');
   });
 
-  it('can be re-enabled under the same name, replacing only its own accessor', () => {
-    engine.enableGlobalAccess('testClrContext');
-    expect(() => engine.enableGlobalAccess('testClrContext')).not.toThrow();
-    expect(typeof globalAccessor()).toBe('function');
+  it('withholds which toggle buttons the user pressed, a choice like a ticked box', async () => {
+    form.innerHTML +=
+      '<button type="button" aria-pressed="true">Pay anonymously</button>' +
+      '<div role="group" aria-label="Billing"><button type="button" aria-pressed="false">Monthly</button>' +
+      '<button type="button" aria-pressed="true">Annual</button></div>';
+
+    const json = JSON.stringify(untrustedSnapshot(engine));
+    expect(json).toContain('Pay anonymously');
+    expect(json).not.toContain('"pressed"');
+    expect(JSON.stringify(await engine.snapshot())).toContain('"pressed":true');
   });
 
-  function nodeCount(snapshot: ClrPageContext): number {
-    const count = (nodes: ClrComponentContext[]): number =>
-      nodes.reduce((total, node) => total + 1 + count(node.children ?? []), 0);
-    return count(snapshot.components);
-  }
-
-  it('lets a caller ask for less than the application allows, never for more', () => {
-    engine.enableGlobalAccess('testClrContext', { maxComponents: 2 });
-
-    expect(nodeCount(snapshotVia({ maxComponents: 1 }))).toBe(1);
-    expect(nodeCount(snapshotVia({ maxComponents: 50 }))).toBe(2);
-  });
-
-  it('drops a budget that is not a finite number rather than walking without bound', () => {
-    engine.enableGlobalAccess('testClrContext', { maxComponents: 2 });
-
-    expect(nodeCount(snapshotVia({ maxComponents: Number.NaN }))).toBe(2);
+  it('still honours a smaller budget the caller asks for', () => {
+    expect(untrustedSnapshot(engine, { maxComponents: 1 }).components.length).toBe(1);
   });
 });
 
@@ -555,67 +431,31 @@ describe('ClrContextService, configured once for the application', () => {
     const engine = engineWith({
       scope: { excludeCategories: ['text', 'layout'], root: 'main, nav', maxComponents: 5 },
     });
-    engine.enableGlobalAccess('testClrContextCeiling');
-    try {
-      const accessor = globalAccessor('testClrContextCeiling');
-      const snapshot = accessor({ excludeCategories: [], root: 'page', maxComponents: 10_000 });
-      expect(types(snapshot)).toEqual(['main']);
-      expect(snapshot.components[0].children?.map(node => node.type)).toEqual(['button']);
-    } finally {
-      engine.disableGlobalAccess();
-    }
-  });
-
-  it('keeps the application exclusions when an untrusted caller sends as many of its own as a list may hold', () => {
-    const engine = engineWith({ scope: { excludeCategories: ['layout'], root: 'main, nav' } });
-    engine.enableGlobalAccess('testClrContextPadding', { excludeCategories: ['dialogs'] });
-    try {
-      const accessor = globalAccessor('testClrContextPadding');
-      const junk = Array.from({ length: 60 }, (_, index) => `junk-${index}`);
-
-      expect(types(accessor({ excludeCategories: junk }))).toEqual(['main']);
-    } finally {
-      engine.disableGlobalAccess();
-    }
-  });
-
-  it('ignores an exclusion list or a selector an untrusted caller sends, rather than failing', () => {
-    const engine = engineWith({ scope: { excludeCategories: ['layout'], root: 'main, nav' } });
-    engine.enableGlobalAccess('testClrContextStringList', { excludeCategories: ['dialogs'] });
-    try {
-      const accessor = globalAccessor('testClrContextStringList');
-
-      expect(types(accessor({ excludeCategories: 'text', root: 'nav' }))).toEqual(['main']);
-    } finally {
-      engine.disableGlobalAccess();
-    }
+    const snapshot = untrustedSnapshot(engine, { excludeCategories: [], root: 'page', maxComponents: 10_000 });
+    expect(types(snapshot)).toEqual(['main']);
+    expect(snapshot.components[0].children?.map(node => node.type)).toEqual(['button']);
   });
 
   it('does not let an untrusted caller set off a warning about the application’s options', () => {
     const engine = engineWith({ scope: { excludeCategories: ['layout'], root: 'main, nav' } });
-    engine.enableGlobalAccess('testClrContextWrongKinds');
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
-    try {
-      const accessor = globalAccessor('testClrContextWrongKinds');
-
-      expect(types(accessor({ excludeCategories: true, excludeSelectors: 1 }))).toEqual(['main']);
-      expect(warn).not.toHaveBeenCalled();
-    } finally {
-      engine.disableGlobalAccess();
-    }
+    expect(types(untrustedSnapshot(engine, { excludeCategories: true, excludeSelectors: 1 }))).toEqual(['main']);
+    expect(warn).not.toHaveBeenCalled();
   });
 
-  it('says when the global accessor’s own ceiling has an exclusion list that is not one', () => {
-    const engine = engineWith({});
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
-    engine.enableGlobalAccess('testClrContextBadCeiling', { excludeSelectors: 'grid' } as unknown as Parameters<
-      typeof engine.enableGlobalAccess
-    >[1]);
-    engine.disableGlobalAccess();
+  it('keeps the application exclusions when a frame sends as many of its own as a list may hold', async () => {
+    const engine = engineWith({ scope: { excludeCategories: ['layout'], root: 'main, nav' } });
+    const ask = frameAccessor(engine, { snapshot: { excludeCategories: ['dialogs'] } });
+    const junk = Array.from({ length: 60 }, (_, index) => `junk-${index}`);
 
-    expect(warn).toHaveBeenCalledExactlyOnceWith(
-      'Clarity context options: excludeSelectors must be a list, so "grid" was ignored.'
-    );
+    expect(types(await ask({ excludeCategories: junk }))).toEqual(['main']);
+  });
+
+  it('ignores an exclusion list or a selector a frame sends, rather than failing', async () => {
+    const engine = engineWith({ scope: { excludeCategories: ['layout'], root: 'main, nav' } });
+    const ask = frameAccessor(engine, { snapshot: { excludeCategories: ['dialogs'] } });
+
+    expect(types(await ask({ excludeCategories: 'text', root: 'nav' }))).toEqual(['main']);
   });
 });
 
@@ -715,84 +555,10 @@ describe('ClrContextService, the routes an application can navigate to', () => {
     expect('availableRoutes' in (await engine.snapshot())).toBe(false);
   });
 
-  describe('for the global accessor', () => {
-    function accessorWith(config: ClrContextConfig): Accessor {
-      TestBed.configureTestingModule({ providers: [provideRouter([{ path: 'hosts', component: RoutedComponent }])] });
-      const engine = TestBed.inject(ClrContextService);
-      engine.configure(config);
-      engine.enableGlobalAccess('testClrContextRoutes');
-      return globalAccessor('testClrContextRoutes');
-    }
-
-    afterEach(() => TestBed.inject(ClrContextService).disableGlobalAccess());
-
-    it('lists the routes when the application turned them on', () => {
-      expect(accessorWith({ routes: true })().availableRoutes).toEqual([{ path: 'hosts' }]);
-    });
-
-    it('does not let a caller turn on routes the application left off', () => {
-      expect(accessorWith({})({ routes: true }).availableRoutes).toBeUndefined();
-    });
-  });
-});
-
-describe('ClrContextService, links for the global accessor under other routing setups', () => {
-  let page: HTMLElement;
-
-  function hrefs(engine: ClrContextService): unknown[] {
-    engine.enableGlobalAccess('testClrContext');
-    const snapshot = globalAccessor()();
-    engine.disableGlobalAccess();
-    return snapshot.components.filter(node => node.type === 'link').map(node => node.state?.['href']);
-  }
-
-  beforeEach(() => {
-    document.querySelectorAll('body > [ng-version]').forEach(root => root.remove());
-    page = document.createElement('div');
-    document.body.appendChild(page);
-  });
-
-  afterEach(() => page.remove());
-
-  it('reads routes below the base href the router uses, without a <base> element', () => {
-    TestBed.configureTestingModule({
-      providers: [
-        provideRouter([{ path: 'clusters/:id', component: RoutedComponent }]),
-        { provide: APP_BASE_HREF, useValue: '/app/' },
-      ],
-    });
-    page.innerHTML = '<a href="/app/clusters/7?token=x">In the app</a><a href="/clusters/7">Outside it</a>';
-
-    expect(hrefs(TestBed.inject(ClrContextService))).toEqual(['/clusters/:id', undefined]);
-  });
-
-  it('reads routes from the fragment with hash routing', () => {
-    TestBed.configureTestingModule({
-      providers: [provideRouter([{ path: 'clusters/:id', component: RoutedComponent }], withHashLocation())],
-    });
-    page.innerHTML = '<a href="#/clusters/7?token=x">Cluster</a><a href="#/nowhere/at/all">Nowhere</a>';
-
-    expect(hrefs(TestBed.inject(ClrContextService))).toEqual(['/clusters/:id', undefined]);
-  });
-});
-
-describe('ClrContextService, what the global accessor keeps back', () => {
-  let engine: ClrContextService;
-  let page: HTMLElement;
-
-  function accessor(): Accessor {
-    return globalAccessor();
-  }
-
-  function find(nodes: ClrComponentContext[], match: (node: ClrComponentContext) => boolean): ClrComponentContext[] {
-    return nodes.flatMap(node => [...(match(node) ? [node] : []), ...find(node.children ?? [], match)]);
-  }
-
-  beforeEach(async () => {
+  it('lists the routes of a lazy module once it has loaded', async () => {
     TestBed.configureTestingModule({
       providers: [
         provideRouter([
-          { path: 'clusters/:id', component: RoutedComponent },
           {
             path: 'billing',
             loadChildren: () => Promise.resolve([{ path: 'invoices', component: RoutedComponent, title: 'Invoices' }]),
@@ -800,48 +566,39 @@ describe('ClrContextService, what the global accessor keeps back', () => {
         ]),
       ],
     });
+    const engine = TestBed.inject(ClrContextService);
+    engine.configure({ routes: true });
+    const before = (await engine.snapshot()).availableRoutes;
+    expect(before).toContainEqual({ path: 'billing', lazy: true });
+
+    await TestBed.inject(Router).navigateByUrl('/billing/invoices');
+
+    const after = (await engine.snapshot()).availableRoutes;
+    expect(after).toContainEqual({ path: 'billing/invoices', title: 'Invoices' });
+    expect(after?.some(route => route.lazy)).toBe(false);
+  });
+});
+
+describe('ClrContextService, what a caller the application does not control is told about published state', () => {
+  let engine: ClrContextService;
+  let page: HTMLElement;
+
+  function find(nodes: ClrComponentContext[], match: (node: ClrComponentContext) => boolean): ClrComponentContext[] {
+    return nodes.flatMap(node => [...(match(node) ? [node] : []), ...find(node.children ?? [], match)]);
+  }
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
     engine = TestBed.inject(ClrContextService);
-    // The accessor describes the whole page, and fixtures are not torn down after each
+    // The snapshot describes the whole page, and fixtures are not torn down after each
     // spec here (`destroyAfterEach: false`): an earlier spec's root would be described too.
     document.querySelectorAll('body > [ng-version]').forEach(root => root.remove());
     page = document.createElement('div');
-    page.innerHTML =
-      '<a href="/download?signature=s3cr3t#part">Download</a><a href="/clusters/7?token=s3cr3t">Cluster seven</a>' +
-      '<a href="/billing/invoices/2026-s3cr3t">Invoice</a>';
+    page.innerHTML = '<a href="/clusters/7">Cluster seven</a>';
     document.body.appendChild(page);
-    await TestBed.inject(Router).navigateByUrl('/clusters/42?token=s3cr3t');
   });
 
-  afterEach(() => {
-    engine.disableGlobalAccess();
-    page.remove();
-  });
-
-  it('reports the route pattern instead of the address, and links as the route they lead to', () => {
-    engine.enableGlobalAccess('testClrContext');
-
-    const snapshot = accessor()();
-
-    expect(snapshot.route).toEqual({ url: '/clusters/:id', path: 'clusters/:id' });
-    expect(snapshot.url).toBe(`${location.origin}/clusters/:id`);
-    expect(find(snapshot.components, node => node.type === 'link').map(link => link.state?.['href'])).toEqual([
-      undefined,
-      '/clusters/:id',
-      '/billing/*/*',
-    ]);
-    expect(JSON.stringify(snapshot)).not.toContain('s3cr3t');
-    expect(JSON.stringify({ url: snapshot.url, route: snapshot.route })).not.toContain('42');
-  });
-
-  it('shares the full address only when the application says so', () => {
-    engine.enableGlobalAccess('testClrContext', { shareFullUrl: true });
-
-    const snapshot = accessor()();
-
-    expect(snapshot.route?.url).toBe('/clusters/42?token=s3cr3t');
-    expect(JSON.stringify(snapshot.components)).toContain('signature=s3cr3t');
-    expect(snapshot.title).toBe(document.title);
-  });
+  afterEach(() => page.remove());
 
   it('withholds a selection as much as a typed value', () => {
     engine.configure({
@@ -857,9 +614,8 @@ describe('ClrContextService, what the global accessor keeps back', () => {
         },
       ],
     });
-    engine.enableGlobalAccess('testClrContext');
 
-    const grid = find(accessor()().components, node => node.type === 'grid')[0];
+    const grid = find(untrustedSnapshot(engine).components, node => node.type === 'grid')[0];
     expect(grid.state).toEqual({ rowCount: 3, withheld: true });
   });
 
@@ -877,10 +633,9 @@ describe('ClrContextService, what the global accessor keeps back', () => {
       getClrContext: () => ({ type: 'region', label: 'Cart', state: { coupon: 's3cr3t', items: 2 } }),
     };
     const unregister = registry.register(annotation);
-    engine.enableGlobalAccess('testClrContext');
 
     try {
-      const shared = accessor()();
+      const shared = untrustedSnapshot(engine);
       expect(find(shared.components, node => node.type === 'search')[0].state).toEqual({
         resultCount: 2,
         withheld: true,
@@ -906,10 +661,9 @@ describe('ClrContextService, what the global accessor keeps back', () => {
       label: 'Card 4111',
       state: { redacted: true },
     }));
-    engine.enableGlobalAccess('testClrContext');
 
     try {
-      expect(JSON.stringify(accessor()().components)).not.toContain('4111');
+      expect(JSON.stringify(untrustedSnapshot(engine).components)).not.toContain('4111');
     } finally {
       unpublish();
     }
@@ -925,48 +679,28 @@ describe('ClrContextService, what the global accessor keeps back', () => {
         publicKeys: ['items'],
       }),
     });
-    engine.enableGlobalAccess('testClrContext');
 
     try {
-      expect(accessor()().regions).toEqual([{ type: 'region', label: 'Cart', state: { items: 2, withheld: true } }]);
+      expect(untrustedSnapshot(engine).regions).toEqual([
+        { type: 'region', label: 'Cart', state: { items: 2, withheld: true } },
+      ]);
     } finally {
       unregister();
     }
   });
 
-  it('does not let a caller turn on routes the application left off', () => {
-    engine.enableGlobalAccess('testClrContext');
-
-    expect(accessor()({ routes: true }).availableRoutes).toBeUndefined();
-  });
-
   it('reads the scope only as the page or the modal, never as a selector', () => {
-    engine.enableGlobalAccess('testClrContext');
-
-    expect(accessor()({ root: 'main' }).components.length).toBeGreaterThan(0);
-    expect(accessor()({ root: 7 }).components.length).toBeGreaterThan(0);
+    expect(untrustedSnapshot(engine, { root: 'main' }).components.length).toBeGreaterThan(0);
+    expect(untrustedSnapshot(engine, { root: 7 }).components.length).toBeGreaterThan(0);
   });
 
   it('does not let a caller raise a budget past the default', () => {
     page.innerHTML = Array.from({ length: 320 }, (_, index) => `<button>Button ${index}</button>`).join('');
-    engine.enableGlobalAccess('testClrContext');
 
-    const snapshot = accessor()({ maxComponents: 5000 });
+    const snapshot = untrustedSnapshot(engine, { maxComponents: 5000 });
 
     expect(find(snapshot.components, () => true).length).toBeLessThanOrEqual(CLR_CONTEXT_DEFAULT_OPTIONS.maxComponents);
     expect(snapshot.truncated).toBe(true);
-  });
-
-  it('lists the routes of a lazy module once it has loaded', async () => {
-    engine.configure({ routes: true });
-    const before = (await engine.snapshot()).availableRoutes;
-    expect(before).toContainEqual({ path: 'billing', lazy: true });
-
-    await TestBed.inject(Router).navigateByUrl('/billing/invoices');
-
-    const after = (await engine.snapshot()).availableRoutes;
-    expect(after).toContainEqual({ path: 'billing/invoices', title: 'Invoices' });
-    expect(after?.some(route => route.lazy)).toBe(false);
   });
 });
 
@@ -979,8 +713,6 @@ function configuredService(config: ClrContextConfig): ClrContextService {
 
 describe('ClrContextService, identifying the application and view', () => {
   const quiet = { excludeCategories: Object.keys(CLR_CONTEXT_CATEGORIES) as ClrContextCategory[] };
-
-  afterEach(() => removeGlobal('testClrContext'));
 
   it('versions every snapshot and names the host when no application is configured', async () => {
     TestBed.configureTestingModule({});
@@ -1065,12 +797,12 @@ describe('ClrContextService, identifying the application and view', () => {
     expect(snapshot.metadata).toBeUndefined();
   });
 
-  it('shares the application and view id with the global accessor', () => {
+  it('shares the application and view id with untrusted callers', () => {
     TestBed.configureTestingModule({});
-    configuredService({
+    const engine = configuredService({
       application: { id: 'inventory', version: '2.4.0', viewId: () => 'host-list' },
-    }).enableGlobalAccess('testClrContext');
-    const snapshot = globalAccessor()(quiet);
+    });
+    const snapshot = untrustedSnapshot(engine, quiet);
 
     expect(snapshot.application).toEqual({ id: 'inventory', version: '2.4.0' });
     expect(snapshot.viewId).toBe('host-list');
@@ -1095,25 +827,20 @@ describe('ClrContextService, reading only enabled views', () => {
   it('reports a view without metadata as not enabled, with nothing about the page', async () => {
     const provider = vi.fn().mockReturnValue({ type: 'region', label: 'Hosts' });
     registry.register({ getClrContext: provider });
-    engine.enableGlobalAccess('testClrContext');
 
-    try {
-      for (const snapshot of [globalAccessor()(), await engine.snapshot()]) {
-        expect(snapshot).toEqual({
-          schemaVersion: '1',
-          application: { id: 'inventory' },
-          viewId: 'host-list',
-          enabled: false,
-          title: '',
-          regions: [],
-          components: [],
-          collectedAt: expect.any(String),
-        });
-      }
-      expect(provider).not.toHaveBeenCalled();
-    } finally {
-      removeGlobal('testClrContext');
+    for (const snapshot of [untrustedSnapshot(engine), await engine.snapshot()]) {
+      expect(snapshot).toEqual({
+        schemaVersion: '1',
+        application: { id: 'inventory' },
+        viewId: 'host-list',
+        enabled: false,
+        title: '',
+        regions: [],
+        components: [],
+        collectedAt: expect.any(String),
+      });
     }
+    expect(provider).not.toHaveBeenCalled();
   });
 
   it('reads a view once it has metadata', async () => {
@@ -1212,7 +939,7 @@ describe('ClrContextService, asynchronous providers', () => {
     registry = TestBed.inject(ClrContextRegistryService);
   });
 
-  /** The snapshot `window.clrContext()` and `watch()` take at once, reporting pending providers as loading. */
+  /** The snapshot `watch()` takes at once, reporting pending providers as loading. */
   function readNow(options: ClrContextSnapshotOptions): ClrPageContext {
     return engine['read'](options, false);
   }
@@ -1421,5 +1148,150 @@ describe('ClrContextService, slotted content', () => {
 
     expect(text).toContain('Pay');
     expect(text).not.toContain('4111111111111111');
+  });
+});
+
+describe('ClrContextService, the frame bridge as a boundary', () => {
+  let engine: ClrContextService;
+  let form: HTMLElement;
+
+  function nodeCount(snapshot: ClrPageContext): number {
+    const count = (nodes: ClrComponentContext[]): number =>
+      nodes.reduce((total, node) => total + 1 + count(node.children ?? []), 0);
+    return count(snapshot.components);
+  }
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    engine = TestBed.inject(ClrContextService);
+    // Fixtures are not torn down after each spec here (`destroyAfterEach: false`).
+    document.querySelectorAll('body > [ng-version]').forEach(root => root.remove());
+    form = document.createElement('div');
+    form.innerHTML = '<button>one</button><button>two</button><button>three</button>';
+    document.body.appendChild(form);
+  });
+
+  afterEach(() => form.remove());
+
+  it('lets a frame ask for less than the host allows, never for more', async () => {
+    const ask = frameAccessor(engine, { snapshot: { maxComponents: 2 } });
+
+    expect(nodeCount(await ask({ maxComponents: 1 }))).toBe(1);
+    expect(nodeCount(await ask({ maxComponents: 50 }))).toBe(2);
+  });
+
+  it('drops a budget that is not a finite number rather than walking without bound', async () => {
+    const ask = frameAccessor(engine, { snapshot: { maxComponents: 2 } });
+
+    expect(nodeCount(await ask({ maxComponents: Number.NaN }))).toBe(2);
+  });
+
+  it('shares what the user typed only when the host says so', async () => {
+    form.innerHTML = '<label for="secret">Token</label><input id="secret" value="user-typed-secret" />';
+    const ask = frameAccessor(engine, { shareFormValues: true });
+
+    expect(JSON.stringify(await ask())).toContain('user-typed-secret');
+  });
+});
+
+describe('ClrContextService, the addresses an embedded frame is told', () => {
+  let engine: ClrContextService;
+  let page: HTMLElement;
+
+  function find(nodes: ClrComponentContext[], match: (node: ClrComponentContext) => boolean): ClrComponentContext[] {
+    return nodes.flatMap(node => [...(match(node) ? [node] : []), ...find(node.children ?? [], match)]);
+  }
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter([
+          { path: 'clusters/:id', component: RoutedComponent },
+          {
+            path: 'billing',
+            loadChildren: () => Promise.resolve([{ path: 'invoices', component: RoutedComponent, title: 'Invoices' }]),
+          },
+        ]),
+      ],
+    });
+    engine = TestBed.inject(ClrContextService);
+    // The frame is told about the whole page, and fixtures are not torn down after each
+    // spec here (`destroyAfterEach: false`): an earlier spec's root would be described too.
+    document.querySelectorAll('body > [ng-version]').forEach(root => root.remove());
+    page = document.createElement('div');
+    page.innerHTML =
+      '<a href="/download?signature=s3cr3t#part">Download</a><a href="/clusters/7?token=s3cr3t">Cluster seven</a>' +
+      '<a href="/billing/invoices/2026-s3cr3t">Invoice</a>';
+    document.body.appendChild(page);
+    await TestBed.inject(Router).navigateByUrl('/clusters/42?token=s3cr3t');
+  });
+
+  afterEach(() => page.remove());
+
+  it('reports the route pattern instead of the address, and links as the route they lead to', async () => {
+    const snapshot = await frameAccessor(engine)();
+
+    expect(snapshot.route).toEqual({ url: '/clusters/:id', path: 'clusters/:id' });
+    expect(snapshot.url).toBe(`${location.origin}/clusters/:id`);
+    expect(find(snapshot.components, node => node.type === 'link').map(link => link.state?.['href'])).toEqual([
+      undefined,
+      '/clusters/:id',
+      '/billing/*/*',
+    ]);
+    expect(JSON.stringify(snapshot)).not.toContain('s3cr3t');
+    expect(JSON.stringify({ url: snapshot.url, route: snapshot.route })).not.toContain('42');
+  });
+
+  it('shares the full address only when the host says so', async () => {
+    const snapshot = await frameAccessor(engine, { shareFullUrl: true })();
+
+    expect(snapshot.route?.url).toBe('/clusters/42?token=s3cr3t');
+    expect(JSON.stringify(snapshot.components)).toContain('signature=s3cr3t');
+    expect(snapshot.title).toBe(document.title);
+  });
+
+  it('lists the routes when the application turned them on, and never when a frame asks for them', async () => {
+    expect((await frameAccessor(engine)({ routes: true })).availableRoutes).toBeUndefined();
+
+    engine.configure({ routes: true });
+    expect((await frameAccessor(engine)()).availableRoutes).toContainEqual({ path: 'clusters/:id' });
+  });
+});
+
+describe('ClrContextService, links an embedded frame is told about under other routing setups', () => {
+  let page: HTMLElement;
+
+  async function hrefs(engine: ClrContextService): Promise<unknown[]> {
+    const snapshot = await frameAccessor(engine)();
+    return snapshot.components.filter(node => node.type === 'link').map(node => node.state?.['href']);
+  }
+
+  beforeEach(() => {
+    document.querySelectorAll('body > [ng-version]').forEach(root => root.remove());
+    page = document.createElement('div');
+    document.body.appendChild(page);
+  });
+
+  afterEach(() => page.remove());
+
+  it('reads routes below the base href the router uses, without a <base> element', async () => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter([{ path: 'clusters/:id', component: RoutedComponent }]),
+        { provide: APP_BASE_HREF, useValue: '/app/' },
+      ],
+    });
+    page.innerHTML = '<a href="/app/clusters/7?token=x">In the app</a><a href="/clusters/7">Outside it</a>';
+
+    expect(await hrefs(TestBed.inject(ClrContextService))).toEqual(['/clusters/:id', undefined]);
+  });
+
+  it('reads routes from the fragment with hash routing', async () => {
+    TestBed.configureTestingModule({
+      providers: [provideRouter([{ path: 'clusters/:id', component: RoutedComponent }], withHashLocation())],
+    });
+    page.innerHTML = '<a href="#/clusters/7?token=x">Cluster</a><a href="#/nowhere/at/all">Nowhere</a>';
+
+    expect(await hrefs(TestBed.inject(ClrContextService))).toEqual(['/clusters/:id', undefined]);
   });
 });
