@@ -65,7 +65,7 @@ The component only **emits** filters. Apply `PropertyFilter[]` (each `{ criteria
 ## Keeping filters in sync
 
 - `[(propertyFilters)]` holds the active filters, toggles that are ON included. Use it to restore a saved view or URL.
-- Setting `propertyFilters` does not emit `propertyFiltersChange`, so passing the emitted value back does not loop.
+- Setting `propertyFilters` does not emit `propertyFiltersChange`, so passing the emitted value back does not loop. The exception is when the filter bar had to drop something you passed in, such as an invalid filter on a semi-predefined field or a toggle that is no longer configured. It then emits the corrected list once, after change detection.
 - `presetFilters` is read **once** at start-up; later changes are ignored. For the same field a preset wins over `propertyFilters`. When the start-up result differs from what was passed in, `propertyFiltersChange` emits once after the first change detection.
 - Quick mode clears the filters and emits `[]`.
 - `FilterMode.Combined`: search and filters are separate outputs, applied together (AND). **Clear all** emits `propertyFiltersChange` and then `searchTermChange` in the same turn; to load from a server once, store both values and load at the end of the turn (e.g. `queueMicrotask`).
