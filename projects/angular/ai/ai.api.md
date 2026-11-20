@@ -5,6 +5,7 @@
 ```ts
 
 import * as i0 from '@angular/core';
+import { InputSignal } from '@angular/core';
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { Type } from '@angular/core';
@@ -34,9 +35,6 @@ export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
 export const CLR_CONTEXT_UNAVAILABLE_TYPE = "clr-unavailable";
 
 // @public
-export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
-
-// @public
 export interface ClrAvailableRoute {
     lazy?: boolean;
     path: string;
@@ -60,32 +58,25 @@ export interface ClrComponentContextChange {
 
 // @public
 export class ClrContext implements OnInit, OnDestroy {
-    getClrContext(): Partial<ClrPublishedContext> | null;
-    label: string;
+    readonly clrContext: InputSignal<ClrContextAnnotation>;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
     ngOnInit(): void;
-    state: Record<string, unknown> | null;
-    type: string;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContext, "[clrContext]", never, {
-        "label": {
+        "clrContext": {
             "alias": "clrContext";
-            "required": false;
-        };
-        "type": {
-            "alias": "clrContextType";
-            "required": false;
-        };
-        "state": {
-            "alias": "clrContextState";
-            "required": false;
+            "required": true;
+            "isSignal": true;
         };
     }, {}, never, never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContext, never>;
 }
+
+// @public
+export type ClrContextAnnotation = Partial<ClrPublishedContext> | (() => Partial<ClrPublishedContext> | null | undefined);
 
 // @public
 export interface ClrContextAsyncCollectOptions extends ClrContextCollectOptions {
