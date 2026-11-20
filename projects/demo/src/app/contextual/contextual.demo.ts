@@ -5,8 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { ClrContextService } from '@clr/angular/ai';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.Eager,
@@ -15,19 +14,4 @@ import { ClrContextService } from '@clr/angular/ai';
   templateUrl: './contextual.demo.html',
   standalone: false,
 })
-export class ContextualDemo implements OnInit, OnDestroy {
-  constructor(private context: ClrContextService) {}
-
-  ngOnInit(): void {
-    // The engine won't replace a global it does not own, e.g. an element with that id.
-    try {
-      this.context.enableGlobalAccess();
-    } catch (error) {
-      console.warn(error);
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.context.disableGlobalAccess();
-  }
-}
+export class ContextualDemo {}

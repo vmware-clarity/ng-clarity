@@ -32,6 +32,7 @@ import {
 import { resolveWriteTarget } from './write';
 import { ClrPageContext } from '../interfaces/context.interface';
 import { ClrContextService } from '../providers/contextual-engine.service';
+import { untrustedSnapshot } from '../untrusted-snapshot.mock';
 
 interface Item {
   id: number;
@@ -289,14 +290,8 @@ describe('ClrMutationEngineService', () => {
         expect(refOf(snapshot(), 'Name')).toBe(first);
       });
 
-      it('are not handed to the global accessor', () => {
-        contextEngine.enableGlobalAccess('clrMutationSpecAccessor');
-        try {
-          const served = (window as unknown as Record<string, () => ClrPageContext>)['clrMutationSpecAccessor']();
-          expect(allRefs(served.components)).toEqual([]);
-        } finally {
-          contextEngine.disableGlobalAccess();
-        }
+      it('are not handed to untrusted callers', () => {
+        expect(allRefs(untrustedSnapshot(contextEngine).components)).toEqual([]);
       });
     });
 
