@@ -27,6 +27,11 @@ export class ContextInventoryComponent {
   addHostOpen = false;
   newHostName = '';
 
+  /** What the grid cannot show; merged into the grid's `state`. */
+  readonly gridContext = {
+    state: { owner: 'Infrastructure team', statusValues: ['Connected', 'Maintenance', 'Disconnected'] },
+  };
+
   readonly inventoryContext = () => ({
     label: 'Host inventory for the selected datacenter',
     type: 'section',
@@ -37,9 +42,4 @@ export class ContextInventoryComponent {
       tasks: ['Find disconnected hosts', 'Put hosts into maintenance', 'Add a host'],
     },
   });
-
-  /** What the grid cannot show; merged into the grid's `state`. */
-  readonly gridContext = {
-    state: { owner: 'Infrastructure team', statusValues: ['Connected', 'Maintenance', 'Disconnected'] },
-  };
 }
