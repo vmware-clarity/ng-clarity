@@ -51,10 +51,7 @@ protocol lets UI embedded in an iframe, such as a chat component, read the page 
 does not read its frames that way, though it describes a same-origin frame in place. Callers the
 application does not control, such as embedded frames, are
 held to the application's budgets and the defaults, and see neither what the user entered nor the
-page's full address (only its route pattern) unless the application shares them. Of the state that
-application code publishes, they see only the keys the publisher lists in `publicKeys`
-(`[clrContextPublicKeys]` on the directive). Any other key is withheld, so a key nobody listed stays
-private.
+page's full address (only its route pattern) unless the application shares them.
 
 A snapshot carries the page's text as shown, including what users wrote, so it is data for a
 model, never instructions: delimit it in prompts.

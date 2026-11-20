@@ -338,15 +338,6 @@
         a new object when it changes.
       </td>
     </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">[clrContextPublicKeys]</b></td>
-      <td class="left clr-hidden-xs-down">String[]</td>
-      <td class="left clr-hidden-xs-down"><code cds-text="code">null</code></td>
-      <td class="left">
-        The state keys untrusted callers may see. Without it they see none of this state (see Untrusted callers below).
-        It does not affect what the component publishes, which lists its own.
-      </td>
-    </tr>
   </tbody>
 </table>
 
@@ -467,10 +458,6 @@
   <li>
     No full URL or page title, only the route pattern such as <code cds-text="code">clusters/:id</code>, unless the
     application shares it.
-  </li>
-  <li>
-    Published state only under the keys listed in <code cds-text="code">publicKeys</code>. A key nobody listed stays
-    private.
   </li>
   <li>
     Only safe options: <code cds-text="code">maxComponents</code>, <code cds-text="code">maxItemsPerCollection</code>,
@@ -665,28 +652,9 @@
 
 <h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrPublishedContext</code></h3>
 <p class="clr-mt-16px" cds-text="body">
-  What publishers, extractors and providers return: a <code cds-text="code">ClrComponentContext</code> with one more
-  field.
+  What publishers, extractors and providers return: a <code cds-text="code">ClrComponentContext</code> whose children
+  are published contexts too.
 </p>
-<table class="table">
-  <thead>
-    <tr>
-      <th class="left">Property</th>
-      <th class="left clr-hidden-xs-down">Type</th>
-      <th class="left">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="left"><b cds-text="medium">publicKeys</b></td>
-      <td class="left clr-hidden-xs-down"><code cds-text="code">readonly string[]</code></td>
-      <td class="left">
-        The state keys untrusted callers may see. None by default. Each child lists its own, and each source (an
-        annotation, a component) covers only its own state.
-      </td>
-    </tr>
-  </tbody>
-</table>
 
 <h2 id="lower-level" cds-text="title" class="clr-mt-48px">Lower-level helpers</h2>
 <table class="table">

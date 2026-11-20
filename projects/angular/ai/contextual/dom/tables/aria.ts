@@ -107,8 +107,8 @@ export const CONTENT_STATE_KEYS: readonly string[] = [
 ];
 
 /**
- * State keys the engine derives that are withheld from untrusted consumers because they reveal what the user
- * chose; published state is withheld unless marked public, so it needs no entry here.
+ * State keys that are withheld from untrusted consumers, with the value keys, because they reveal what the
+ * user chose.
  */
 export const UNTRUSTED_WITHHELD_STATE_KEYS: readonly string[] = Object.freeze([
   'rows',

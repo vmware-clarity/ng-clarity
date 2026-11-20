@@ -235,7 +235,6 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy {
     ngOnDestroy(): void;
     // (undocumented)
     ngOnInit(): void;
-    publicKeys: readonly string[] | null;
     state: Record<string, unknown> | null;
     type: string;
     // (undocumented)
@@ -250,10 +249,6 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy {
         };
         "state": {
             "alias": "clrContextState";
-            "required": false;
-        };
-        "publicKeys": {
-            "alias": "clrContextPublicKeys";
             "required": false;
         };
     }, {}, never, never, true, never>;
@@ -291,7 +286,6 @@ export interface ClrContextChange {
 // @public
 export interface ClrContextCollectOptions {
     limits?: ClrContextRegionLimits;
-    untrusted?: boolean;
 }
 
 // @public
@@ -347,12 +341,6 @@ export interface ClrContextFrameResponse {
 }
 
 // @public
-export interface ClrContextGlobalAccessOptions extends ClrContextSnapshotOptions {
-    shareFormValues?: boolean;
-    shareFullUrl?: boolean;
-}
-
-// @public
 export class ClrContextModule {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextModule, never>;
@@ -395,9 +383,7 @@ export class ClrContextService implements OnDestroy {
     changes(options?: ClrContextSnapshotOptions): Observable<ClrContextChange>;
     configure(config: ClrContextConfig): void;
     disableFrameBridge(): void;
-    disableGlobalAccess(): void;
     enableFrameBridge(options?: ClrContextFrameHostOptions): void;
-    enableGlobalAccess(propertyName?: string, hostOptions?: ClrContextGlobalAccessOptions): void;
     // (undocumented)
     ngOnDestroy(): void;
     requestHostContext(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null>;
@@ -448,7 +434,6 @@ export interface ClrPageContext {
 // @public
 export interface ClrPublishedContext extends ClrComponentContext {
     children?: ClrPublishedContext[];
-    publicKeys?: readonly string[];
 }
 
 // @public
