@@ -20,7 +20,7 @@ import { MenuOutletService } from './menu-outlet.service';
  * Determines the location of a menu shown through instance of MenuOutletService.
  */
 export class MenuOutletComponent implements MenuOutlet, OnInit {
-  @ViewChild('vc', { read: ViewContainerRef }) vc: ViewContainerRef;
+  @ViewChild('vc', { read: ViewContainerRef }) vc!: ViewContainerRef;
 
   constructor(private menuOutletService: MenuOutletService) {}
 

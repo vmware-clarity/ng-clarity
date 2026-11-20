@@ -38,12 +38,25 @@ Each library has a dedicated application build target for its test-specific styl
 
 Shared configuration:
 
-- `vitest.config.mts`: mock restoration, shuffled execution, seed selection, browser execution, and slow-test reporting.
-- `projects/test-setup.ts`: the `cds-theme` body attribute and timer cleanup.
-- `projects/test-providers.ts`: the Zone-based change detection scheduler used by the existing tests.
+- `vitest.config.mts`: mock restoration, the timers to fake, shuffled execution, seed selection, browser execution, and slow-test reporting.
+- `projects/test-setup.ts`: the `cds-theme` body attribute, the animation defaults and timer cleanup.
+- `projects/test-providers.ts`: zoneless scheduling and exhaustive check-no-changes validation for both library suites.
 - `angular.json`: browser viewport, coverage, setup files, and CI targets.
 
-The existing `fakeAsync`, `tick`, `flush`, and `waitForAsync` tests use the documented `zone.js/plugins/vitest-patch` integration. Tests that use native asynchronous callbacks explicitly await their work. New tests can use native async functions and Vitest timers.
+The browser test bundles do not load `zone.js`, its testing support, or its Vitest patch. Use native `async` tests and await every assertion-bearing callback. For scheduled component rendering, use `await fixture.whenStable()` after changing signals, setting inputs through `fixture.componentRef.setInput()`, or dispatching DOM events. A direct assignment to an OnPush component's plain field is not a rendering notification; model the application's input or event instead.
+
+New specs should use `fixture.autoDetectChanges()` for setup and await `fixture.whenStable()`. The `TestContext.detectChanges()` and `renderFixture(fixture)` helpers mark their host for checking and then render, for existing unit tests that mutate plain host fields. That is a forced check, not proof that the application would have rendered, so tests of rendering notifications must use `fixture.whenStable()` instead. Do not add forced renders to make a missing notification disappear.
+
+When testing debounce or timeout behavior, use Vitest timers and await advancement:
+
+```typescript
+vi.useFakeTimers();
+// Trigger the behavior under test.
+await vi.advanceTimersByTimeAsync(300);
+await fixture.whenStable();
+```
+
+`vitest.config.mts` fakes only `setTimeout`, `setInterval` and `Date`, so `requestAnimationFrame` and microtasks stay real and Angular can still schedule rendering. Pass `toFake` when a spec needs fewer (`vi.useFakeTimers({ toFake: ['Date'] })`). `projects/test-setup.ts` restores the real timers after every test. Prefer advancing the specific timeout to draining all timers, especially when a component has repeating timers. Zone compatibility belongs in the separate consumer smoke tests; the library suites always test the absence of Zone.
 
 Each spec file registers its own suites. The old `all.spec.ts` aggregators are removed, with their suite names retained in the individual files. Support-only modules use ordinary `.ts` filenames. This avoids empty suites and duplicate registration under Vitest and also enables previously unregistered spec factories.
 

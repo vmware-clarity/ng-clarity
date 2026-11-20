@@ -6,9 +6,7 @@
  */
 
 import { ChangeDetectorRef, QueryList, SimpleChange } from '@angular/core';
-import { fakeAsync, flush } from '@angular/core/testing';
 import { ClrDatagrid, SelectionType } from '@clr/angular/data/datagrid';
-import type { MockInstance } from 'vitest';
 
 import { ExportProviderService } from './addons/export/export-provider.service';
 import { DatagridComponent } from './datagrid.component';
@@ -16,7 +14,7 @@ import { DatagridStrings } from './i18n/datagrid-strings.service';
 
 describe('Datagrid deferred row notifications', () => {
   let component: DatagridComponent<unknown>;
-  let notify: MockInstance;
+  let notify: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
     component = new DatagridComponent(
@@ -49,12 +47,17 @@ describe('Datagrid deferred row notifications', () => {
     expect(notify).toHaveBeenCalledTimes(1);
   });
 
-  it('preserves fakeAsync flush compatibility for queued row notifications', fakeAsync(() => {
-    updateItems();
-    expect(notify).not.toHaveBeenCalled();
-    flush();
-    expect(notify).toHaveBeenCalledTimes(1);
-  }));
+  it('drains queued row notifications with the runner timers', async () => {
+    vi.useFakeTimers();
+    try {
+      updateItems();
+      expect(notify).not.toHaveBeenCalled();
+      await vi.runAllTimersAsync();
+      expect(notify).toHaveBeenCalledTimes(1);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
 
   it('cancels every pending row notification when destroyed', async () => {
     updateItems();

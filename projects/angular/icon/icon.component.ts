@@ -48,19 +48,19 @@ import { getIconBadgeSVG, getIconSVG } from './utils/icon.svg-helpers';
   providers: [IconHtmlPipe],
 })
 export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
-  iconSVG: string;
+  iconSVG = '';
   isStringIcon = false;
 
   private _shape: string = 'unknown';
-  private _size: string;
-  private _direction: Directions | string;
-  private _flip: Orientations;
+  private _size: string | undefined;
+  private _direction: Directions | string | undefined;
+  private _flip: Orientations | undefined;
   private _solid: boolean = false;
-  private _status: StatusTypes | string;
+  private _status: StatusTypes | string | null | undefined;
   private _inverse: boolean = false;
-  private _badge: string | StatusTypes | 'inherit' | 'warning-triangle' | 'inherit-triangle' | true | false;
-  private _innerOffset: number;
-  private subscription: Subscription;
+  private _badge: string | StatusTypes | 'inherit' | 'warning-triangle' | 'inherit-triangle' | true | false | undefined;
+  private _innerOffset: number | undefined;
+  private subscription: Subscription | undefined;
   private _priorShape = 'unknown';
 
   constructor(
@@ -69,10 +69,10 @@ export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
   ) {}
 
   @Input()
-  get shape() {
+  get shape(): string {
     return this._shape;
   }
-  set shape(value) {
+  set shape(value: string | undefined) {
     if ((value || (value && value.length)) && this._shape !== value) {
       this._priorShape = this._shape;
       this._shape = value;
@@ -80,10 +80,10 @@ export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
     }
   }
   @Input()
-  get size() {
+  get size(): string | undefined {
     return this._size;
   }
-  set size(value) {
+  set size(value: string) {
     if (value !== this._size) {
       this._size = value;
       this.updateIconSize(value);
@@ -154,7 +154,7 @@ export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
    * growing it outward by that amount on every side so the visible glyph fills its box.
    */
   @Input({ transform: numberAttribute })
-  get innerOffset() {
+  get innerOffset(): number | undefined {
     return this._innerOffset;
   }
   set innerOffset(value: number) {

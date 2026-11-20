@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angu
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { Keys } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { COMBOBOX_FOCUS_HANDLER_PROVIDER, ComboboxFocusHandler, OptionData } from './combobox-focus-handler.service';
 import { OptionSelectionService } from './option-selection.service';
@@ -62,7 +63,7 @@ describe('Combobox component', () => {
         testContext.popoverService = testContext.fixture.debugElement.injector.get(ClrPopoverService);
         testContext.selectionService = testContext.fixture.debugElement.injector.get(OptionSelectionService);
 
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
 
         testContext.focusHandler.textInput = testContext.testComponent.textInput.nativeElement;
         testContext.focusHandler.trigger = testContext.testComponent.trigger.nativeElement;

@@ -51,8 +51,8 @@ export const resources = {
 })
 export class OverflowClrTabsDirective implements AfterViewInit, OnDestroy {
   private readonly subscription: Subscription = new Subscription();
-  private parentElement: HTMLElement;
-  private tabOverflowEl: HTMLElement;
+  private parentElement!: HTMLElement;
+  private tabOverflowEl?: HTMLElement;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -182,6 +182,9 @@ export class OverflowClrTabsDirective implements AfterViewInit, OnDestroy {
 
     // as tabs may have shifted position in/out of menu, synchronize view
     this.cdr.detectChanges();
+    // That only refreshes the view of ClrTabs. The host bindings of the tab links belong to the view
+    // declaring them, which has to be told that `inOverflow` changed.
+    this.cdr.markForCheck();
   }
 
   private isTabLinkOverflowing(container: HTMLElement, clrTabLinkMargin: number, tabLink: ClrTabLink): boolean {

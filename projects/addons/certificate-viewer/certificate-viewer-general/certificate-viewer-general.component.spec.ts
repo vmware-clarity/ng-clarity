@@ -7,6 +7,7 @@
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppfxTranslateModule } from '@clr/addons/translate';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { CertificateViewerGeneralComponent } from './certificate-viewer-general.component';
 import { CertificateViewerTranslateFieldPipeMock } from '../certificate-viewer-translate-field/certificate-viewer-translate-field.pipe.mock';
@@ -25,7 +26,7 @@ describe('CertificateViewerGeneralComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CertificateViewerGeneralComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    renderFixture(fixture);
   });
 
   afterEach(() => {
