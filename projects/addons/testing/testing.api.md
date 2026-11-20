@@ -1278,7 +1278,7 @@ export class TabsHelper {
     findLinkIcon(linkIndex: number): DebugElement | undefined;
     findLinkText(linkIndex: number): string | undefined;
     // Warning: (ae-forgotten-export) The symbol "ClrTab" needs to be exported by the entry point clr-addons-testing.d.ts
-    getActiveTab(): ClrTab | undefined;
+    getActiveTab(): ClrTab;
     getActiveTabContentElement(): HTMLElement | undefined;
     getActiveTabIndex(): number;
     getLinkList(): Array<DebugElement>;
