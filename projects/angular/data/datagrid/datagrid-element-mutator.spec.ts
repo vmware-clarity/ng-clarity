@@ -382,7 +382,7 @@ describe('ClrDatagrid element mutator', () => {
   }
 
   function grid(): ClrComponentContext {
-    return gridOf(contextEngine['read'](undefined, false));
+    return gridOf(contextEngine['read'](undefined));
   }
 
   async function write(ref: string, value: unknown, description = ''): Promise<ClrElementMutationResult> {
@@ -402,7 +402,7 @@ describe('ClrDatagrid element mutator', () => {
       const state = grid().state;
 
       expect(state?.['rows']).toEqual(['Checking', 'Savings']);
-      expect(JSON.stringify(contextEngine['read'](undefined, false))).not.toContain('4111');
+      expect(JSON.stringify(contextEngine['read'](undefined))).not.toContain('4111');
     });
 
     it('lists no row whose every cell is withheld, and keeps it selected through a write', async () => {
@@ -431,7 +431,7 @@ describe('ClrDatagrid element mutator', () => {
       await create(WithheldCellHost);
       contextEngine.configure({ scope: { excludeSelectors: ['.internal'] } });
 
-      const snapshot = contextEngine['read'](undefined, false);
+      const snapshot = contextEngine['read'](undefined);
       expect(gridOf(snapshot).state?.['rows']).toEqual(['Checking', 'Savings']);
       ['ign-', 'inert-', 'int-'].forEach(text => expect(JSON.stringify(snapshot)).not.toContain(text));
       // An editor in a cell is a field of its own, reported with its value; it is not part of the row's label.
@@ -445,7 +445,7 @@ describe('ClrDatagrid element mutator', () => {
     it('keeps its state and its selection writable when forms are excluded', async () => {
       const host = await create(MultiHost);
       const options = { excludeCategories: ['forms' as const] };
-      const node = gridOf(contextEngine['read'](options, false));
+      const node = gridOf(contextEngine['read'](options));
 
       // The select-all checkbox is in the grid's ignored header: it is no form inside the grid.
       expect(node.state?.['rows']).toEqual(['esx-01 | Running', 'esx-02 | Running', 'esx-03 | Stopped']);
@@ -462,7 +462,7 @@ describe('ClrDatagrid element mutator', () => {
     it('keeps its selection writable when forms are excluded and a cell holds a field', async () => {
       const host = await create(InputHost);
       const options = { excludeCategories: ['forms' as const] };
-      const node = gridOf(contextEngine['read'](options, false));
+      const node = gridOf(contextEngine['read'](options));
 
       // The input belongs to its cell, the application's content: the snapshot still shows the grid.
       expect(node.ref).toBeDefined();
@@ -701,7 +701,7 @@ describe('ClrDatagrid element mutator', () => {
   describe('publishing', () => {
     it('reports only the application’s columns, not the grid’s own selection column', async () => {
       await create(SingleHost);
-      const table = findNode(contextEngine['read'](undefined, false).components, node => node.type === 'grid');
+      const table = findNode(contextEngine['read'](undefined).components, node => node.type === 'grid');
 
       expect(table?.state?.['columns']).toEqual(['Name']);
     });
@@ -768,7 +768,7 @@ describe('ClrDatagrid element mutator', () => {
   describe('contents', () => {
     it('gives an input in a cell a ref of its own, and writes it', async () => {
       const host = await create(InputHost);
-      const page = contextEngine['read'](undefined, false);
+      const page = contextEngine['read'](undefined);
       const input = findNode(page.components, node => node.label === 'Note for esx-02' && !!node.ref);
 
       expect(input?.ref).toBeDefined();
@@ -785,7 +785,7 @@ describe('ClrDatagrid element mutator', () => {
     it('does not offer the grid’s own selection checkboxes as controls of their own', async () => {
       await create(InputHost);
       const checkboxes = findNode(
-        contextEngine['read'](undefined, false).components,
+        contextEngine['read'](undefined).components,
         node => node.type === 'checkbox' || node.label === 'Select'
       );
 
@@ -818,7 +818,7 @@ describe('ClrDatagrid element mutator', () => {
   describe('redaction', () => {
     it('publishes neither the rows nor the selection of a grid in a redacted region', async () => {
       await create(RedactedHost);
-      const page = contextEngine['read'](undefined, false);
+      const page = contextEngine['read'](undefined);
       const redacted = gridOf(page);
 
       expect(redacted.state?.['redacted']).toBe(true);

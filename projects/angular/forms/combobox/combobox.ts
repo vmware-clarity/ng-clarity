@@ -625,7 +625,7 @@ export class ClrCombobox<T>
       const options = (items?.toArray() ?? []).map(option => ({ option, shown: this.optionShown(option, excluded) }));
       const listed = options.filter(entry => entry.shown !== 'excluded');
       const named = listed.filter(entry => entry.shown === 'shown');
-      // A narrowed list reveals what the user typed, so it goes under keys withheld from untrusted consumers.
+      // A narrowed list reveals what the user typed, so it goes under keys of its own.
       const keys = narrowed
         ? { list: 'matchingOptions', redacted: 'redactedMatchingOptions', count: 'matchingOptionCount' }
         : { list: 'options', redacted: 'redactedOptions', count: 'optionCount' };
@@ -642,7 +642,7 @@ export class ClrCombobox<T>
       state.optionsAvailable = false;
     }
     if (this.optionSelectionService.loading) {
-      // A pending search for typed text goes under the withheld key too.
+      // A pending search for typed text goes under a matching key too.
       if (narrowed && this.optionSelectionService.currentInput) {
         state.matchingOptionsPending = true;
       } else {
@@ -650,16 +650,7 @@ export class ClrCombobox<T>
       }
     }
     state.value = this.selectedLabels(excluded);
-    // Not the matching options or the value: they say what the user typed or chose.
-    const publicKeys = [
-      'multiSelect',
-      'options',
-      'redactedOptions',
-      'optionCount',
-      'optionsAvailable',
-      'optionsPending',
-    ];
-    return { type: 'combobox', state, publicKeys };
+    return { type: 'combobox', state };
   }
 
   /**

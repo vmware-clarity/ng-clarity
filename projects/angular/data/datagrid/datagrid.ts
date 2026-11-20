@@ -943,8 +943,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       state.hiddenColumns = hidden;
     }
 
-    // Rows, selection and filters say what the user chose, so callers the app does not control see none of them.
-    return Object.keys(state).length ? { state, publicKeys: ['totalRows', 'selectionMode'] } : null;
+    return Object.keys(state).length ? { state } : null;
   }
 
   /** Not named when kept out or when its header text is withheld: the field would name what is withheld. */

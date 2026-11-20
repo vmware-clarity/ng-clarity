@@ -38,9 +38,6 @@ export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
 export const CLR_CONTEXT_UNAVAILABLE_TYPE = "clr-unavailable";
 
 // @public
-export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: readonly (keyof ClrContextSnapshotOptions)[];
-
-// @public
 export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
 
 // @public
@@ -251,7 +248,6 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy {
     ngOnDestroy(): void;
     // (undocumented)
     ngOnInit(): void;
-    publicKeys: readonly string[] | null;
     state: Record<string, unknown> | null;
     type: string;
     // (undocumented)
@@ -266,10 +262,6 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy {
         };
         "state": {
             "alias": "clrContextState";
-            "required": false;
-        };
-        "publicKeys": {
-            "alias": "clrContextPublicKeys";
             "required": false;
         };
     }, {}, never, never, true, never>;
@@ -307,7 +299,6 @@ export interface ClrContextChange {
 // @public
 export interface ClrContextCollectOptions {
     limits?: ClrContextRegionLimits;
-    untrusted?: boolean;
 }
 
 // @public
@@ -326,12 +317,6 @@ export interface ClrContextConfig {
 export interface ClrContextDomExtractor {
     extract(element: HTMLElement, options: Required<ClrContextSnapshotOptions>): ClrPublishedContext | null;
     selector: string;
-}
-
-// @public
-export interface ClrContextGlobalAccessOptions extends ClrContextSnapshotOptions {
-    shareFormValues?: boolean;
-    shareFullUrl?: boolean;
 }
 
 // @public
@@ -376,8 +361,6 @@ export class ClrContextRegistryService {
 export class ClrContextService implements OnDestroy {
     changes(options?: ClrContextSnapshotOptions): Observable<ClrContextChange>;
     configure(config: ClrContextConfig): void;
-    disableGlobalAccess(): void;
-    enableGlobalAccess(propertyName?: string, hostOptions?: ClrContextGlobalAccessOptions): void;
     // (undocumented)
     ngOnDestroy(): void;
     // @internal
@@ -546,7 +529,6 @@ export interface ClrPageContext {
 // @public
 export interface ClrPublishedContext extends ClrComponentContext {
     children?: ClrPublishedContext[];
-    publicKeys?: readonly string[];
 }
 
 // @public

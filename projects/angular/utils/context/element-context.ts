@@ -11,10 +11,7 @@ import { publishOnElement } from './publish';
 /** Host element property through which a component publishes state the DOM cannot show. */
 export const CLR_ELEMENT_CONTEXT_PROPERTY = 'clrElementContext';
 
-/**
- * Returns context to merge into the host's description, or `null`. Untrusted consumers see only the state
- * keys listed in `publicKeys`, so user input stays private unless it is listed.
- */
+/** Returns context to merge into the host's description, or `null`. */
 export type ClrElementContextCallback = (
   options?: Required<ClrContextSnapshotOptions>
 ) => Partial<ClrPublishedContext> | null | undefined;

@@ -853,7 +853,6 @@ export enum ClrPosition {
 // @public
 export interface ClrPublishedContext extends ClrComponentContext {
     children?: ClrPublishedContext[];
-    publicKeys?: readonly string[];
 }
 
 // @public (undocumented)

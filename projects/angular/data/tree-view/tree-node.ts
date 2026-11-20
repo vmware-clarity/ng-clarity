@@ -219,7 +219,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
       if (this.expandService.loading || this.isModelLoading) {
         state.loading = true;
       }
-      return { state, publicKeys: ['expandable', 'loading'] };
+      return { state };
     });
 
     this._model.expanded = this.expanded;

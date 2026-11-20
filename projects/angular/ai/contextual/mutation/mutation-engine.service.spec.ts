@@ -32,7 +32,6 @@ import {
 import { resolveWriteTarget } from './write';
 import { ClrPageContext } from '../interfaces/context.interface';
 import { ClrContextService } from '../providers/contextual-engine.service';
-import { untrustedSnapshot } from '../untrusted-snapshot.mock';
 
 interface Item {
   id: number;
@@ -198,7 +197,7 @@ describe('ClrMutationEngineService', () => {
     afterEach(() => fixture.destroy());
 
     it('hands out no refs and refuses everything as unclassified', async () => {
-      const snapshot = TestBed.inject(ClrContextService)['read'](undefined, false);
+      const snapshot = TestBed.inject(ClrContextService)['read'](undefined);
       expect(allRefs(snapshot.components)).toEqual([]);
 
       const report = await TestBed.inject(ClrMutationEngineService).apply([
@@ -238,7 +237,7 @@ describe('ClrMutationEngineService', () => {
     afterEach(() => fixture.destroy());
 
     function snapshot(): ClrPageContext {
-      return contextEngine['read'](undefined, false);
+      return contextEngine['read'](undefined);
     }
 
     async function set(ref: string, description: string, value: unknown): Promise<ClrElementMutationResult> {
@@ -288,10 +287,6 @@ describe('ClrMutationEngineService', () => {
       it('are stable from one snapshot to the next', () => {
         const first = refOf(snapshot(), 'Name');
         expect(refOf(snapshot(), 'Name')).toBe(first);
-      });
-
-      it('are not handed to untrusted callers', () => {
-        expect(allRefs(untrustedSnapshot(contextEngine).components)).toEqual([]);
       });
     });
 

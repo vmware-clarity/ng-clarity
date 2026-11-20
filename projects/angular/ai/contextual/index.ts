@@ -25,6 +25,5 @@ export type { ClrElementContextCallback, ClrElementMutation, ClrElementMutator }
 export { CLR_CONTEXT_IGNORE_ATTRIBUTE, CLR_CONTEXT_REDACT_ATTRIBUTE } from '@clr/angular/utils';
 export * from './context';
 export * from './contextual.module';
-export { CLR_CONTEXT_UNTRUSTED_OPTION_KEYS } from './untrusted-options';
 export * from './mutation/mutation.interface';
 export * from './mutation/mutation-engine.service';

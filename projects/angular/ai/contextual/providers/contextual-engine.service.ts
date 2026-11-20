@@ -128,7 +128,7 @@ export class ClrContextService implements OnDestroy {
 
   /** A fresh snapshot of the page, with `options` applied over the configured scope. */
   snapshot(options?: ClrContextSnapshotOptions): Promise<ClrPageContext> {
-    return this.readAsync(options, false);
+    return this.readAsync(options);
   }
 
   /**
@@ -164,8 +164,8 @@ export class ClrContextService implements OnDestroy {
       this.injector,
       () =>
         new ContextTracker(
-          options => this.read(options, false),
-          options => this.readAsync(options, false),
+          options => this.read(options),
+          options => this.readAsync(options),
           () => this.pacing()
         )
     );
@@ -210,27 +210,22 @@ export class ClrContextService implements OnDestroy {
     return snapshot;
   }
 
-  /** With `untrusted`, what application code published is cut to the state keys it marks public. */
-  private read(options: ClrContextSnapshotOptions | undefined, untrusted: boolean): ClrPageContext {
+  private read(options: ClrContextSnapshotOptions | undefined): ClrPageContext {
     this.snapshotTaken = true;
     const snapshot = this.viewSnapshot();
     if (!snapshot.enabled) {
       return snapshot;
     }
     const resolved = this.resolveScope(options);
-    const regions = this.contextRegistry.collect({ limits: resolved, untrusted });
-    return this.describePage(snapshot, resolved, regions, untrusted);
+    const regions = this.contextRegistry.collect({ limits: resolved });
+    return this.describePage(snapshot, resolved, regions);
   }
 
   /**
    * Like `read`, awaiting asynchronous providers for up to `timeoutMs` each. After a navigation, the new view's
    * providers are awaited once more; then it settles for a snapshot that reports them as loading.
    */
-  private async readAsync(
-    options: ClrContextSnapshotOptions | undefined,
-    untrusted: boolean,
-    retries = 1
-  ): Promise<ClrPageContext> {
+  private async readAsync(options: ClrContextSnapshotOptions | undefined, retries = 1): Promise<ClrPageContext> {
     this.snapshotTaken = true;
     const view = this.viewSnapshot();
     if (!view.enabled) {
@@ -241,22 +236,20 @@ export class ClrContextService implements OnDestroy {
     const regions = await this.contextRegistry.collectAsync({
       timeoutMs: usableTimeout(this.config.timeoutMs, DEFAULT_SOURCE_TIMEOUT_MS),
       limits: resolved,
-      untrusted,
     });
     const snapshot = this.viewSnapshot();
     // The answers are the old view's: a view id is optional, so the address is compared too.
     if (snapshot.viewId !== view.viewId || snapshot.enabled !== view.enabled || this.address() !== address) {
-      return retries > 0 ? this.readAsync(options, untrusted, retries - 1) : this.read(options, untrusted);
+      return retries > 0 ? this.readAsync(options, retries - 1) : this.read(options);
     }
     // The page is read once providers have answered, so a region redacted meanwhile is read as it is now.
-    return this.describePage(snapshot, resolved, regions, untrusted);
+    return this.describePage(snapshot, resolved, regions);
   }
 
   private describePage(
     snapshot: ClrPageContext,
     resolved: ResolvedSnapshotOptions,
-    regions: ClrComponentContext[],
-    untrusted: boolean
+    regions: ClrComponentContext[]
   ): ClrPageContext {
     snapshot.title = this.document.title;
     snapshot.url = this.currentUrl();
@@ -266,9 +259,8 @@ export class ClrContextService implements OnDestroy {
       snapshot.availableRoutes = availableRoutes(this.router.config, limit);
     }
     if (isPlatformBrowser(this.platformId)) {
-      // Untrusted callers never get refs: they cannot write.
-      const refs = !untrusted && this.mutationPolicy ? this.refs.begin() : null;
-      const tree = collectContextTreeWithin(this.document, resolved, this.config.extractors ?? [], refs, untrusted);
+      const refs = this.mutationPolicy ? this.refs.begin() : null;
+      const tree = collectContextTreeWithin(this.document, resolved, this.config.extractors ?? [], refs);
       refs?.commit(tree.components);
       snapshot.components = tree.components;
       if (tree.truncated) {

@@ -32,7 +32,6 @@ import { DayModel } from './model/day.model';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
-import { untrustedSnapshot } from '../../ai/contextual/untrusted-snapshot.mock';
 
 function readElementMutator(element: Element): ClrElementMutator | null {
   return ((element as Element & Record<string, unknown>)[CLR_ELEMENT_MUTATOR_PROPERTY] as ClrElementMutator) ?? null;
@@ -212,16 +211,11 @@ describe('ClrDateInput element mutator', () => {
       it('names the toggle without the selected date, which the field reports as its value', () => {
         pickDate();
         const toggle = fixture.nativeElement.querySelector('button.clr-input-group-icon-action') as HTMLElement;
-        const snapshot = TestBed.inject(ClrContextService)['read'](undefined, false);
+        const snapshot = TestBed.inject(ClrContextService)['read'](undefined);
 
         expect(toggle.getAttribute('aria-label')).toContain('03/06/1981');
         expect(findNode(snapshot.components, node => node.type === 'button')?.label).toBe('Choose date');
         expect(findNode(snapshot.components, node => node.type === 'textbox')?.state?.['value']).toBe('03/06/1981');
-      });
-
-      it('keeps the selected date from untrusted consumers', () => {
-        pickDate();
-        expect(JSON.stringify(untrustedSnapshot(TestBed.inject(ClrContextService)))).not.toContain('1981');
       });
 
       it('does not describe the open calendar, which shows the picked month and year', async () => {
@@ -234,7 +228,7 @@ describe('ClrDateInput element mutator', () => {
             types.push(node.type);
             visit(node.children ?? []);
           });
-        const snapshot = TestBed.inject(ClrContextService)['read'](undefined, false);
+        const snapshot = TestBed.inject(ClrContextService)['read'](undefined);
         visit(snapshot.components);
 
         expect(document.querySelector('clr-datepicker-view-manager')).not.toBeNull();
@@ -242,7 +236,6 @@ describe('ClrDateInput element mutator', () => {
         expect(types).not.toContain('grid');
         // The application is told the date as the field's value, not again as the month shown.
         expect(JSON.stringify(snapshot)).not.toContain('March');
-        expect(JSON.stringify(untrustedSnapshot(TestBed.inject(ClrContextService)))).not.toMatch(/1981|March/);
       });
     });
 
@@ -380,7 +373,7 @@ describe('ClrDateInput element mutator', () => {
 
     describe('through the mutation engine', () => {
       async function set(value: unknown): Promise<ClrElementMutationResult> {
-        const ref = refOf(TestBed.inject(ClrContextService)['read'](undefined, false), 'When');
+        const ref = refOf(TestBed.inject(ClrContextService)['read'](undefined), 'When');
         const report = await TestBed.inject(ClrMutationEngineService).apply([
           { operation: 'setValue', ref, description: 'When', value },
         ]);
@@ -399,7 +392,7 @@ describe('ClrDateInput element mutator', () => {
       });
 
       it('shows the policy the date as the field shows it, whatever form the agent gave it in', () => {
-        const ref = refOf(TestBed.inject(ClrContextService)['read'](undefined, false), 'When');
+        const ref = refOf(TestBed.inject(ClrContextService)['read'](undefined), 'When');
         const engine = TestBed.inject(ClrMutationEngineService);
 
         for (const value of ['2026-03-05T23:30:00-05:00', '2026-03-05', new Date(2026, 2, 5, 18)]) {
@@ -506,7 +499,7 @@ describe('ClrDateInput element mutator', () => {
     });
 
     it('shows the policy the date as the field shows it, not the ISO date it holds', () => {
-      const ref = refOf(TestBed.inject(ClrContextService)['read'](undefined, false), 'When');
+      const ref = refOf(TestBed.inject(ClrContextService)['read'](undefined), 'When');
 
       const [planned] = TestBed.inject(ClrMutationEngineService).plan([
         { operation: 'setValue', ref, description: 'When', value: '2026-11-02' },
@@ -516,7 +509,7 @@ describe('ClrDateInput element mutator', () => {
     });
 
     it('writes through the mutation engine and keeps the field', async () => {
-      const ref = refOf(TestBed.inject(ClrContextService)['read'](undefined, false), 'When');
+      const ref = refOf(TestBed.inject(ClrContextService)['read'](undefined), 'When');
 
       const report = await TestBed.inject(ClrMutationEngineService).apply([
         { operation: 'setValue', ref, description: 'When', value: '2026-11-02' },

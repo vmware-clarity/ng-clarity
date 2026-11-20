@@ -407,7 +407,7 @@ describe('ClrMutationEngineService write path', () => {
   afterEach(() => fixture.destroy());
 
   async function set(label: string, value: unknown, description = label): Promise<ClrElementMutationResult> {
-    const ref = refOf(contextEngine['read'](undefined, false), label);
+    const ref = refOf(contextEngine['read'](undefined), label);
     const report = await engine.apply([{ operation: 'setValue', ref, description, value }]);
     await settle(fixture);
     return report.results[0] as ClrElementMutationResult;
@@ -432,7 +432,7 @@ describe('ClrMutationEngineService write path', () => {
     });
 
     it('refuses a number outside the bounds a custom slider or spinbutton states through ARIA', async () => {
-      const page = contextEngine['read'](undefined, false);
+      const page = contextEngine['read'](undefined);
       expect(findNode(page.components, node => node.label === 'Stars')?.state).toEqual(
         expect.objectContaining({ min: 1, max: 5 })
       );
@@ -478,7 +478,7 @@ describe('ClrMutationEngineService write path', () => {
       const component = fixture.debugElement.query(debug => debug.componentInstance instanceof AppBroken)
         .componentInstance as AppBroken;
       component.armed = true;
-      const page = contextEngine['read'](undefined, false);
+      const page = contextEngine['read'](undefined);
 
       const report = await engine.apply([
         { operation: 'setValue', ref: refOf(page, 'Broken'), description: 'Broken', value: 'x' },
@@ -569,7 +569,7 @@ describe('ClrMutationEngineService write path', () => {
     });
 
     it('clears a select with no empty option to nothing, never to its first option', async () => {
-      const ref = refOf(contextEngine['read'](undefined, false), 'Office');
+      const ref = refOf(contextEngine['read'](undefined), 'Office');
       const report = await engine.apply([{ operation: 'clear', ref, description: 'Office' }]);
       await settle(fixture);
       const result = report.results[0] as ClrElementMutationResult;
@@ -613,15 +613,15 @@ describe('ClrMutationEngineService write path', () => {
 
     it('reports a number field as a number in the snapshot, the result and the snapshot after', async () => {
       const valueOf = (page: ClrPageContext) => findNode(page.components, node => node.label === 'CPU count')?.state;
-      expect(valueOf(contextEngine['read'](undefined, false))?.['value']).toBe(2);
+      expect(valueOf(contextEngine['read'](undefined))?.['value']).toBe(2);
 
-      const ref = refOf(contextEngine['read'](undefined, false), 'CPU count');
+      const ref = refOf(contextEngine['read'](undefined), 'CPU count');
       const report = await engine.apply([{ operation: 'setValue', ref, description: 'CPU count', value: '8' }]);
       await settle(fixture);
 
       expect(report.results[0]).toEqual(expect.objectContaining({ applied: true, value: 8, previous: 2 }));
       expect(valueOf(report.snapshot)?.['value']).toBe(8);
-      expect(valueOf(contextEngine['read'](undefined, false))?.['value']).toBe(8);
+      expect(valueOf(contextEngine['read'](undefined))?.['value']).toBe(8);
       expect(host.form.value.cpus).toBe(8);
     });
 
@@ -705,7 +705,7 @@ describe('ClrMutationEngineService write path', () => {
     const options = { excludeSelectors: ['.secret'] };
 
     async function setWith(label: string, value: unknown): Promise<ClrElementMutationResult> {
-      const ref = refOf(contextEngine['read'](options, false), label);
+      const ref = refOf(contextEngine['read'](options), label);
       const report = await engine.apply([{ operation: 'setValue', ref, description: label, value }], options);
       await settle(fixture);
       return report.results[0] as ClrElementMutationResult;
@@ -749,7 +749,7 @@ describe('ClrMutationEngineService write path', () => {
 
   describe('scope', () => {
     it('does not write what a snapshot with the options of the write would leave out, whatever snapshot the ref came from', async () => {
-      const ref = refOf(contextEngine['read'](undefined, false), 'Name');
+      const ref = refOf(contextEngine['read'](undefined), 'Name');
       const write = async (snapshotOptions: ClrContextSnapshotOptions) =>
         (await engine.apply([{ operation: 'setValue', ref, description: 'Name', value: 'Ada' }], snapshotOptions))
           .results[0];
@@ -764,10 +764,10 @@ describe('ClrMutationEngineService write path', () => {
     });
 
     it('does not write a custom control whose rendered input the options leave out', async () => {
-      const ref = refOf(contextEngine['read'](undefined, false), 'Enabled');
+      const ref = refOf(contextEngine['read'](undefined), 'Enabled');
       const options = { excludeSelectors: ['input[role="switch"]'] };
 
-      expect(JSON.stringify(contextEngine['read'](options, false).components)).not.toContain('Enabled');
+      expect(JSON.stringify(contextEngine['read'](options).components)).not.toContain('Enabled');
       const report = await engine.apply(
         [{ operation: 'setValue', ref, description: 'Enabled', value: false }],
         options
@@ -778,7 +778,7 @@ describe('ClrMutationEngineService write path', () => {
     });
 
     it('refuses a field behind an open modal dialog, and writes the one inside it', async () => {
-      const page = contextEngine['read'](undefined, false);
+      const page = contextEngine['read'](undefined);
       const behind = refOf(page, 'Name');
       host.modalOpen = true;
       await settle(fixture);
@@ -787,7 +787,7 @@ describe('ClrMutationEngineService write path', () => {
         { operation: 'setValue', ref: behind, description: 'Name', value: 'x' },
         {
           operation: 'setValue',
-          ref: refOf(contextEngine['read'](undefined, false), 'Inside'),
+          ref: refOf(contextEngine['read'](undefined), 'Inside'),
           description: 'Inside',
           value: 'y',
         },
@@ -801,7 +801,7 @@ describe('ClrMutationEngineService write path', () => {
     it('hands out no ref behind an open modal dialog, even in a snapshot of the whole page', async () => {
       host.modalOpen = true;
       await settle(fixture);
-      const page = contextEngine['read'](undefined, false);
+      const page = contextEngine['read'](undefined);
 
       expect(findNode(page.components, node => node.label === 'Name')?.ref).toBeUndefined();
       expect(findNode(page.components, node => node.label === 'Inside')?.ref).toBeDefined();
@@ -810,7 +810,7 @@ describe('ClrMutationEngineService write path', () => {
     it('hands out refs only inside the dialog of a modal-focused snapshot that starts at the component around it', async () => {
       host.renameOpen = true;
       await settle(fixture);
-      const modal = contextEngine['read']({ root: 'modal' }, false);
+      const modal = contextEngine['read']({ root: 'modal' });
 
       // The walk starts at the component, so the state it publishes lands on the dialog's
       // node. That node carries no ref, and the only one handed out is inside the dialog.
@@ -833,8 +833,8 @@ describe('ClrMutationEngineService write path', () => {
     });
 
     it('keeps a ref valid across a narrower snapshot taken by someone else', async () => {
-      const ref = refOf(contextEngine['read'](undefined, false), 'Name');
-      contextEngine['read']({ root: 'app-toggle' }, false);
+      const ref = refOf(contextEngine['read'](undefined), 'Name');
+      contextEngine['read']({ root: 'app-toggle' });
 
       const report = await engine.apply([{ operation: 'setValue', ref, description: 'Name', value: 'Ada' }]);
 
@@ -842,7 +842,7 @@ describe('ClrMutationEngineService write path', () => {
     });
 
     it('never hands out a ref an agent could work out from another', () => {
-      const refs = allRefs(contextEngine['read'](undefined, false).components);
+      const refs = allRefs(contextEngine['read'](undefined).components);
 
       expect(refs.length).toBeGreaterThan(3);
       expect(refs.every(ref => /^e[0-9a-z]{8}$/.test(ref))).toBe(true);
@@ -866,7 +866,7 @@ describe('ClrMutationEngineService write path', () => {
       classify.mockReturnValue('consequential');
       let answer: (value: boolean) => void = () => undefined;
       confirm.mockReturnValue(new Promise<boolean>(resolve => (answer = resolve)));
-      const ref = refOf(contextEngine['read'](undefined, false), 'Plan');
+      const ref = refOf(contextEngine['read'](undefined), 'Plan');
 
       const pending = engine.apply([{ operation: 'setValue', ref, description: 'Plan', value: 'Team' }]);
       await new Promise(resolve => setTimeout(resolve));
@@ -903,7 +903,7 @@ describe('ClrMutationEngineService write path', () => {
       const unconfirmed = TestBed.createComponent(Host);
       unconfirmed.detectChanges();
       await unconfirmed.whenStable();
-      const page = TestBed.inject(ClrContextService)['read'](undefined, false);
+      const page = TestBed.inject(ClrContextService)['read'](undefined);
       const mutation = TestBed.inject(ClrMutationEngineService);
       const operation = { operation: 'setValue' as const, ref: refOf(page, 'Name'), description: 'Name', value: 'x' };
 
@@ -926,7 +926,7 @@ describe('ClrMutationEngineService write path', () => {
     it('declines an operation whose confirmation is not answered in time, and goes on with the next call', async () => {
       classify.mockImplementation(target => (target.label === 'Name' ? 'consequential' : 'reversible'));
       confirm.mockReturnValue(new Promise<boolean>(() => undefined));
-      const page = contextEngine['read'](undefined, false);
+      const page = contextEngine['read'](undefined);
 
       const stuck = engine.apply([
         { operation: 'setValue', ref: refOf(page, 'Name'), description: 'Name', value: 'x' },
@@ -946,7 +946,7 @@ describe('ClrMutationEngineService write path', () => {
       classify.mockReturnValue('consequential');
       let answer: (value: boolean) => void = () => undefined;
       confirm.mockReturnValue(new Promise<boolean>(resolve => (answer = resolve)));
-      const ref = refOf(contextEngine['read'](undefined, false), 'Name');
+      const ref = refOf(contextEngine['read'](undefined), 'Name');
 
       const pending = engine.apply([{ operation: 'setValue', ref, description: 'Name', value: 'written too late' }]);
       await new Promise(resolve => setTimeout(resolve));

@@ -6652,7 +6652,6 @@ export class ClrProgressBarModule {
 // @public
 export interface ClrPublishedContext extends ClrComponentContext {
     children?: ClrPublishedContext[];
-    publicKeys?: readonly string[];
 }
 
 // @public (undocumented)
