@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { isPlatformBrowser } from '@angular/common';
-import { DOCUMENT, inject, Injectable, isDevMode, PLATFORM_ID } from '@angular/core';
+import { HashLocationStrategy, isPlatformBrowser, LocationStrategy } from '@angular/common';
+import { DOCUMENT, inject, Injectable, isDevMode, NgZone, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 
 import { ClrContextRegistryService } from './context-registry.service';
@@ -15,6 +15,12 @@ import { charged } from '../budget';
 import { ClrContextDomExtractor } from '../dom/dom-context-collector';
 import { collectContextTreeWithin } from '../dom/walk';
 import {
+  ClrContextFrameHost,
+  ClrContextFrameHostOptions,
+  ClrContextFrameRequestOptions,
+  clrRequestHostContext,
+} from '../iframe/context-frame-bridge';
+import {
   ClrApplicationContext,
   ClrComponentContext,
   ClrContextSnapshotOptions,
@@ -22,9 +28,10 @@ import {
   ClrRouteContext,
 } from '../interfaces/context.interface';
 import { jsonSafe, REGION_DEPTH, ROUTE_DATA_DEPTH } from '../json-safe';
-import { availableRoutes } from '../routes';
+import { availableRoutes, routePatternFor } from '../routes';
 import { CLR_PAGE_CONTEXT_SCHEMA_VERSION } from '../schema';
 import {
+  capSnapshotOptions,
   ClrContextPreset,
   presetOrOptions,
   ResolvedSnapshotOptions,
@@ -34,6 +41,9 @@ import {
 
 /** How long a snapshot waits for each asynchronous provider by default. */
 const DEFAULT_SOURCE_TIMEOUT_MS = 2000;
+
+/** Shorter than a frame waits for its answer, so a slow provider is reported rather than the request lost. */
+const FRAME_SOURCE_TIMEOUT_MS = 1000;
 
 /** A route map cut to a handful of entries would misdescribe where the app can go. */
 const MIN_ROUTE_LIMIT = 50;
@@ -67,15 +77,22 @@ export interface ClrContextConfig {
 
 /** Reads the current page for an AI agent: route, rendered components and registered context. */
 @Injectable({ providedIn: 'root' })
-export class ClrContextService {
+export class ClrContextService implements OnDestroy {
   private config: ClrContextConfig = {};
   private scope: ClrContextSnapshotOptions = {};
   private configured = false;
   private snapshotTaken = false;
+  private readonly locationStrategy = inject(LocationStrategy, { optional: true });
   private readonly platformId = inject(PLATFORM_ID);
   private readonly document = inject(DOCUMENT);
   private readonly contextRegistry = inject(ClrContextRegistryService);
   private readonly router = inject(Router, { optional: true });
+  private readonly zone = inject(NgZone);
+  private frameHost: ClrContextFrameHost | null = null;
+
+  ngOnDestroy(): void {
+    this.disableFrameBridge();
+  }
 
   /**
    * Sets how the application wants its context read. Call it once, at startup: a snapshot taken before uses the
@@ -102,6 +119,41 @@ export class ClrContextService {
   /** A fresh snapshot of the page, with `options` applied over the configured scope. */
   snapshot(options?: ClrContextSnapshotOptions): Promise<ClrPageContext> {
     return this.readAsync(options);
+  }
+
+  /** Answers context requests from embedded frames over `postMessage`; by default only same-origin frames. */
+  enableFrameBridge(options?: ClrContextFrameHostOptions): void {
+    const window = this.browserWindow();
+    if (!window) {
+      return;
+    }
+    // The application's options cap what the host allows, so a frame cannot undo them either.
+    const ceiling = this.untrustedCeiling(options?.snapshot);
+    // Built before the running bridge stops, so a refused configuration leaves current frames served.
+    const frameHost = new ClrContextFrameHost(
+      snapshotOptions => this.readAsync(capSnapshotOptions(snapshotOptions, ceiling), FRAME_SOURCE_TIMEOUT_MS),
+      window,
+      options,
+      url => this.routePattern(url)
+    );
+    this.disableFrameBridge();
+    this.frameHost = frameHost;
+    // Every `message` on the page reaches the listener, and answering renders nothing.
+    this.zone.runOutsideAngular(() => frameHost.start());
+  }
+
+  /** Stops answering embedded frames. */
+  disableFrameBridge(): void {
+    this.frameHost?.stop();
+    this.frameHost = null;
+  }
+
+  /** Requests the hosting page's context from inside an iframe; `null` when there is none or it does not answer. */
+  requestHostContext(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null> {
+    if (!this.browserWindow()) {
+      return Promise.resolve(null);
+    }
+    return clrRequestHostContext(options);
   }
 
   /**
@@ -153,7 +205,11 @@ export class ClrContextService {
    * Like `read`, awaiting asynchronous providers for up to `timeoutMs` each. After a navigation, the new view's
    * providers are awaited once more; then it settles for a snapshot that reports them as loading.
    */
-  private async readAsync(options: ClrContextSnapshotOptions | undefined, retries = 1): Promise<ClrPageContext> {
+  private async readAsync(
+    options: ClrContextSnapshotOptions | undefined,
+    timeoutMs = this.config.timeoutMs,
+    retries = 1
+  ): Promise<ClrPageContext> {
     this.snapshotTaken = true;
     const view = this.viewSnapshot();
     if (!view.enabled) {
@@ -162,13 +218,13 @@ export class ClrContextService {
     const address = this.address();
     const resolved = resolveSnapshotOptions(withCallOptions(this.scope, options));
     const regions = await this.contextRegistry.collectAsync({
-      timeoutMs: usableTimeout(this.config.timeoutMs, DEFAULT_SOURCE_TIMEOUT_MS),
+      timeoutMs: usableTimeout(timeoutMs, DEFAULT_SOURCE_TIMEOUT_MS),
       limits: resolved,
     });
     const snapshot = this.viewSnapshot();
     // The answers are the old view's: a view id is optional, so the address is compared too.
     if (snapshot.viewId !== view.viewId || snapshot.enabled !== view.enabled || this.address() !== address) {
-      return retries > 0 ? this.readAsync(options, retries - 1) : this.read(options);
+      return retries > 0 ? this.readAsync(options, timeoutMs, retries - 1) : this.read(options);
     }
     // The page is read once providers have answered, so a region redacted meanwhile is read as it is now.
     return this.describePage(snapshot, resolved, regions);
@@ -223,6 +279,15 @@ export class ClrContextService {
     return typeof routed === 'string' && routed ? routed : undefined;
   }
 
+  /** The most an untrusted caller may get: the host can narrow the application's options, never widen them. */
+  private untrustedCeiling(hostCeiling?: ClrContextSnapshotOptions): ClrContextSnapshotOptions {
+    return resolveSnapshotOptions(capSnapshotOptions(withCallOptions(this.scope, hostCeiling), this.scope));
+  }
+
+  private browserWindow(): Window | null {
+    return isPlatformBrowser(this.platformId) ? this.document.defaultView : null;
+  }
+
   /** Where the application is, as its router sees it. */
   private address(): string | undefined {
     return this.router?.url ?? this.currentUrl();
@@ -233,6 +298,32 @@ export class ClrContextService {
       return this.document.location.href;
     }
     return this.router?.url;
+  }
+
+  private routePattern(url: URL): string | null {
+    if (!this.router || !this.router.config.length) {
+      return null;
+    }
+    if (this.locationStrategy instanceof HashLocationStrategy) {
+      const page = this.document.location?.pathname;
+      return page !== undefined && url.pathname === page && url.hash.startsWith('#/')
+        ? routePatternFor(this.router.config, url.hash.slice(1))
+        : null;
+    }
+    const base = this.basePath();
+    return url.pathname.startsWith(base)
+      ? routePatternFor(this.router.config, url.pathname.slice(base.length - 1))
+      : null;
+  }
+
+  private basePath(): string {
+    try {
+      const href = this.locationStrategy?.getBaseHref() || new URL('.', this.document.baseURI).href;
+      const path = new URL(href, this.document.baseURI).pathname;
+      return path.endsWith('/') ? path : `${path}/`;
+    } catch {
+      return '/';
+    }
   }
 
   private routeContext(): ClrRouteContext | undefined {
