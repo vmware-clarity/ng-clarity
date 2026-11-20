@@ -42,7 +42,7 @@ export class ClrStackHeader {
   /**
    * Depth of the stack view header starting from 1 for first level
    */
-  @Input('clrStackHeaderLevel') ariaLevel: HeadingLevel;
+  @Input('clrStackHeaderLevel') ariaLevel?: HeadingLevel;
 
   constructor(public stackView: ClrStackView) {}
 }

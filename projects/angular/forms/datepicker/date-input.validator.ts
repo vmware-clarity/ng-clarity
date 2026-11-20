@@ -19,7 +19,7 @@ import { DateNavigationService } from './providers/date-navigation.service';
 export class ClrDateInputValidator implements Validator {
   constructor(@Optional() private dateIOService: DateIOService) {}
 
-  validate(control: AbstractControl): ValidationErrors {
+  validate(control: AbstractControl): ValidationErrors | null {
     if (this.dateIOService) {
       const value = this.dateIOService.getDateValueFromDateString(control.value);
       const minDate = this.dateIOService.disabledDates.minDate.toDate();
@@ -47,7 +47,7 @@ export class ClrStartDateInputValidator implements Validator {
     @Optional() private dateNavigationService: DateNavigationService
   ) {}
 
-  validate(control: AbstractControl): ValidationErrors {
+  validate(control: AbstractControl): ValidationErrors | null {
     if (this.dateIOService) {
       const value = this.dateIOService.getDateValueFromDateString(control.value);
       const endDate = this.dateNavigationService?.selectedEndDay?.toDate();
@@ -72,7 +72,7 @@ export class ClrEndDateInputValidator implements Validator {
     @Optional() private dateNavigationService: DateNavigationService
   ) {}
 
-  validate(control: AbstractControl): ValidationErrors {
+  validate(control: AbstractControl): ValidationErrors | null {
     if (this.dateIOService) {
       const value = this.dateIOService.getDateValueFromDateString(control.value);
       const startDate = this.dateNavigationService?.selectedDay?.toDate();

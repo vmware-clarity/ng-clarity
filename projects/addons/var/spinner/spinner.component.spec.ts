@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { SpinnerComponent } from './spinner.component';
 
@@ -30,7 +31,7 @@ describe('appfx-spinner', () => {
     testContext.fixture = TestBed.createComponent(MockComponent);
     testContext.component = testContext.fixture.componentInstance;
     testContext.component.loading = true;
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
   });
 
   it('should show clarity spinner', () => {
@@ -40,7 +41,7 @@ describe('appfx-spinner', () => {
   describe('WHEN there is a message', () => {
     beforeEach(() => {
       testContext.component.message = 'loading';
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
     });
 
     it('THEN, should have loading message', () => {
@@ -50,7 +51,7 @@ describe('appfx-spinner', () => {
     it('THEN, should have aria-live attribute set', () => {
       expect(testContext.fixture.debugElement.query(By.css('span')).attributes['aria-live']).toEqual('assertive');
       testContext.component.politeness = 'polite';
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.fixture.debugElement.query(By.css('span')).attributes['aria-live']).toEqual('polite');
     });
   });
@@ -58,7 +59,7 @@ describe('appfx-spinner', () => {
   it('should show progress status message', () => {
     expect(testContext.fixture.debugElement.query(By.css('span.progress-item'))).toBeFalsy();
     testContext.component.progressDetails = 'progress 50%';
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.fixture.debugElement.query(By.css('span.progress-item')).nativeElement.innerText).toEqual(
       'progress 50%'
     );
@@ -71,7 +72,7 @@ describe('appfx-spinner', () => {
 
       testContext.component.showActionButton = true;
       testContext.component.actionButtonLabel = 'cancel';
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
       // `.btn` applies text-transform: uppercase, so innerText reflects the rendered case.
       expect(

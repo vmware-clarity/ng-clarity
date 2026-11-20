@@ -10,7 +10,7 @@ export type ClrComboboxIdentityFunction<T> = (item: T) => any;
 export type ClrComboboxResolverFunction<T> = (input: string) => T;
 
 export abstract class ComboboxModel<T> {
-  model: T | T[];
+  model: T | T[] | null | undefined;
   displayField?: string;
   identityFn: ClrComboboxIdentityFunction<T> = (item: T) => item;
   abstract containsItem(item: T): boolean;
@@ -18,5 +18,5 @@ export abstract class ComboboxModel<T> {
   abstract unselect(item: T): void;
   abstract toString(displayField?: string, index?: number): string;
   abstract isEmpty(): boolean;
-  abstract pop(): T; // pops the last item
+  abstract pop(): T | null | undefined; // pops the last item
 }

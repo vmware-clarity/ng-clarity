@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { createTestHelpers, TestContext } from '@clr/angular/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrDatepickerViewManager } from './datepicker-view-manager';
 import { DateFormControlService } from './providers/date-form-control.service';
@@ -47,7 +48,7 @@ describe('Datepicker', () => {
       it('shows the daypicker when dayView is set to true with range options', () => {
         dateNavigationService.isRangePicker = true;
         dateIOService.setRangeOptions([{ label: 'Today', value: [new Date(), new Date()] }]);
-        context.fixture.detectChanges();
+        renderFixture(context.fixture);
         testElement = context.clarityElement.querySelector('.datepicker-view-manager');
         expect(context.clarityDirective.isDayView).toBe(true);
         expect(testElement.children.length).toBe(1);

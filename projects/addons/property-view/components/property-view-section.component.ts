@@ -20,11 +20,11 @@ import { PropertyViewActionModel, PropertyViewModelType, PropertyViewSectionMode
 export class PropertyViewSectionComponent {
   readonly PropertyViewModelType = PropertyViewModelType;
 
-  @Input() data: PropertyViewSectionModel;
+  @Input() data!: PropertyViewSectionModel;
 
-  @Input() expanded: boolean;
+  @Input() expanded!: boolean;
 
-  @Input() componentId: string;
+  @Input() componentId!: string;
 
   @Output() expandedChange: EventEmitter<boolean>;
 

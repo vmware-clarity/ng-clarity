@@ -31,8 +31,8 @@ const spaceKey = 'Space';
 })
 export class ManageFilterComponent implements OnInit {
   // The filter to be managed
-  @Input() propertyFilter: PropertyFilter;
-  managedProperty: FilterablePropertyDefinition;
+  @Input() propertyFilter!: PropertyFilter;
+  managedProperty!: FilterablePropertyDefinition;
 
   /**
    * Event emitter to tell hosting view that filtering criteria have changed
@@ -45,12 +45,12 @@ export class ManageFilterComponent implements OnInit {
   readonly dateTimePropertyType: PropertyType = PropertyType.DateTime;
   readonly userPropertyType: PropertyType = PropertyType.User;
 
-  managedPropertyType: PropertyType;
-  stringProperty: StringPropertyDefinition;
-  numericProperty: NumericPropertyDefinition;
-  enumProperty: EnumPropertyDefinition;
-  dateTimeProperty: DateTimePropertyDefinition;
-  userProperty: UserPropertyDefinition;
+  managedPropertyType!: PropertyType;
+  stringProperty!: StringPropertyDefinition;
+  numericProperty!: NumericPropertyDefinition;
+  enumProperty!: EnumPropertyDefinition;
+  dateTimeProperty!: DateTimePropertyDefinition;
+  userProperty!: UserPropertyDefinition;
   openPrimaryConditionSignPost = false;
   openSecondaryConditionSignPost = false;
   primaryConditionDisplayText = '';

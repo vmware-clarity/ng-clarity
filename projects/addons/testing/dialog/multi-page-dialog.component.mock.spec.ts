@@ -6,6 +6,7 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { MockAppfxDialogComponent } from './multi-page-dialog.component.mock';
 
@@ -20,7 +21,7 @@ describe('MockAppfxDialogComponent', () => {
 
     fixture = TestBed.createComponent(MockAppfxDialogComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    renderFixture(fixture);
   });
 
   it('should create an instance of MockAppfxDialogComponent', () => {
