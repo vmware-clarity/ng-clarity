@@ -26,4 +26,10 @@ export class ContextInventoryComponent {
   alertVisible = true;
   addHostOpen = false;
   newHostName = '';
+
+  readonly inventoryContext = () => ({
+    label: 'Host inventory for the selected datacenter',
+    type: 'section',
+    state: { datacenter: 'eu-west', selectedHosts: this.selectedHosts.length },
+  });
 }
