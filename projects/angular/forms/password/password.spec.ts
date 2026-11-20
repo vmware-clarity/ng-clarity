@@ -12,6 +12,7 @@ import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule, LayoutService, NgControlService } from '@clr/angular/forms/common';
 import { ClrIcon } from '@clr/angular/icon';
 import { CLR_CONTEXT_REDACT_ATTRIBUTE } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrPassword } from './password';
 import { ClrPasswordContainer, TOGGLE_SERVICE } from './password-container';
@@ -64,7 +65,7 @@ describe('ClrPassword', () => {
         });
         expect(() => {
           const fixture = TestBed.createComponent(InvalidUseTest);
-          fixture.detectChanges();
+          renderFixture(fixture);
         }).toThrow();
       });
     });
@@ -85,7 +86,7 @@ describe('ClrPassword', () => {
         fixture = TestBed.createComponent(TemplateDrivenTest);
         containerDE = fixture.debugElement.query(By.directive(ClrPasswordContainer));
         containerEl = containerDE.nativeElement;
-        fixture.detectChanges();
+        renderFixture(fixture);
       });
 
       it('should set the password type attribute', () => {

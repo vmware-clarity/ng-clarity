@@ -11,6 +11,7 @@ import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms'
 import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule, LayoutService, NgControlService } from '@clr/angular/forms/common';
 import { ClrIcon } from '@clr/angular/icon';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrRadio } from './radio';
 import { ClrRadioContainer } from './radio-container';
@@ -153,7 +154,7 @@ describe('Radio component', () => {
 
       it('sets aria-labelledby on the host pointing to a generated label id', () => {
         const { fixture, containerEl } = createFixture(AriaLabelledByTest);
-        fixture.detectChanges();
+        renderFixture(fixture);
         const label = containerEl.querySelector('label');
         expect(label.id).toBeTruthy();
         expect(containerEl.getAttribute('aria-labelledby')).toBe(label.id);
@@ -162,7 +163,7 @@ describe('Radio component', () => {
       it('preserves an existing label id instead of overwriting it', () => {
         const { fixture, containerEl } = createFixture(AriaLabelledByTest);
         fixture.componentInstance.labelId = 'my-label';
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(containerEl.getAttribute('aria-labelledby')).toBe('my-label');
       });
 
@@ -184,13 +185,13 @@ describe('Radio component', () => {
 
       it('does not set aria-labelledby when there are no radios', () => {
         const { fixture, containerEl } = createFixture(AriaLabelledByNoRadiosTest);
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(containerEl.getAttribute('aria-labelledby')).toBeNull();
       });
 
       it('does not throw and leaves aria-labelledby unset when there is no label', () => {
         const { fixture, containerEl } = createFixture(NoLabelTest);
-        expect(() => fixture.detectChanges()).not.toThrow();
+        expect(() => renderFixture(fixture)).not.toThrow();
         expect(containerEl.getAttribute('aria-labelledby')).toBeNull();
       });
     });
@@ -210,13 +211,13 @@ describe('Radio component', () => {
 
         containerDE = fixture.debugElement.query(By.directive(ClrRadioContainer));
         containerEl = containerDE.nativeElement;
-        fixture.detectChanges();
+        renderFixture(fixture);
       });
 
       it('sets the inline class', () => {
         expect(containerEl.querySelector('.clr-control-container').className).not.toContain('clr-control-inline');
         fixture.debugElement.componentInstance.inline = true;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(containerEl.querySelector('.clr-control-container').className).toContain('clr-control-inline');
       });
     });

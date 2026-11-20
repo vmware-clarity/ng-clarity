@@ -40,21 +40,21 @@ export enum CHANGE_KEYS {
 
 @Directive()
 export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
-  _id: string;
+  _id!: string;
 
-  protected controlIdService: ControlIdService;
-  protected ngControlService: NgControlService;
+  protected controlIdService!: ControlIdService;
+  protected ngControlService: NgControlService | null = null;
   protected index = 0;
   protected subscriptions: Subscription[] = [];
 
-  private controlClassService: ControlClassService;
+  private controlClassService: ControlClassService | null = null;
   private readonly ariaInvalidAttribute: ClrHostAttribute;
   private readonly ariaRequiredAttribute: ClrHostAttribute;
-  private markControlService: MarkControlService;
-  private containerIdService: ContainerIdService;
-  private _containerInjector: Injector;
-  private differs: KeyValueDiffers;
-  private differ: KeyValueDiffer<any, any>;
+  private markControlService: MarkControlService | null = null;
+  private containerIdService: ContainerIdService | null = null;
+  private _containerInjector!: Injector;
+  private differs: KeyValueDiffers | null = null;
+  private differ: KeyValueDiffer<any, any> | undefined;
 
   // I lost way too much time trying to make this work without injecting the ViewContainerRef and the Injector,
   // I'm giving up. So we have to inject these two manually for now.
@@ -166,7 +166,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     // 3. YES ngControlService and NO  ngControl
     // 4. YES ngControlService and YES ngControl
 
-    if (this.ngControl) {
+    if (this.ngControl && this.differs) {
       this.differ = this.differs.find(this.ngControl).create();
     }
 
@@ -213,7 +213,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
       return this._containerInjector.get(token, notFoundValue);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {
-      return notFoundValue;
+      return notFoundValue as T;
     }
   }
 
@@ -226,7 +226,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     }
   }
 
-  private triggerDoCheck(differ: KeyValueDiffer<any, any>, ngControl: NgControl) {
+  private triggerDoCheck(differ: KeyValueDiffer<any, any> | undefined, ngControl: NgControl) {
     if (differ) {
       const changes = differ.diff(ngControl);
       if (changes) {
@@ -249,16 +249,16 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   private markAsTouched(): void {
     if (this.ngControlService && this.ngControlService.hasMultipleControls) {
       this.ngControlService.controls.forEach((ngControl: NgControl) => {
-        ngControl.control.markAsTouched();
-        ngControl.control.updateValueAndValidity();
+        ngControl.control?.markAsTouched();
+        ngControl.control?.updateValueAndValidity();
       });
 
       return;
     }
 
     if (this.ngControl) {
-      this.ngControl.control.markAsTouched();
-      this.ngControl.control.updateValueAndValidity();
+      this.ngControl.control?.markAsTouched();
+      this.ngControl.control?.updateValueAndValidity();
     }
   }
 }

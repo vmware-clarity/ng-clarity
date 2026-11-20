@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, HostListener, Input, Vi
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClrModal, ClrModalModule } from '@clr/angular/modal';
 import { Keys } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrPopoverService } from './providers/popover.service';
 import { ClrStopEscapePropagationDirective } from './stop-escape-propagation.directive';
@@ -25,12 +26,12 @@ describe('ClrPopover', () => {
         });
 
         fixture = TestBed.createComponent(TestComponent);
-        fixture.detectChanges();
+        renderFixture(fixture);
       });
 
       it('should allow a modal to be closed via the escape key', async () => {
-        fixture.componentInstance.modalOpen = true;
-        fixture.detectChanges();
+        fixture.componentRef.setInput('modalOpen', true);
+        renderFixture(fixture);
 
         await pressEscapeKey(fixture, fixture.nativeElement);
 
@@ -38,9 +39,9 @@ describe('ClrPopover', () => {
       });
 
       it('should allow a nested popover to be closed via the escape key', async () => {
-        fixture.componentInstance.modalOpen = true;
+        fixture.componentRef.setInput('modalOpen', true);
         fixture.componentInstance.popoverHostComponent.popoverService.open = true;
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         await pressEscapeKey(fixture, fixture.componentInstance.popoverHostComponent.elementRef.nativeElement);
 
@@ -48,9 +49,9 @@ describe('ClrPopover', () => {
       });
 
       it('should prevent a modal from being closed when escape is pressed on a nested popover', async () => {
-        fixture.componentInstance.modalOpen = true;
+        fixture.componentRef.setInput('modalOpen', true);
         fixture.componentInstance.popoverHostComponent.popoverService.open = true;
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         await pressEscapeKey(fixture, fixture.componentInstance.popoverHostComponent.elementRef.nativeElement);
 
@@ -65,7 +66,7 @@ async function pressEscapeKey(fixture: ComponentFixture<TestComponent>, element:
   element.dispatchEvent(new KeyboardEvent('keyup', { key: Keys.Escape, bubbles: true }));
 
   await fixture.whenStable();
-  fixture.detectChanges();
+  renderFixture(fixture);
 }
 
 @Component({

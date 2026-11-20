@@ -73,16 +73,16 @@ import { DefaultButton, ModalSize } from './multi-page-dialog.model';
 })
 export class DialogComponent implements OnInit, OnDestroy {
   /** The title of the dialog. */
-  @Input() title: string;
+  @Input() title!: string;
 
   /** Dialog's clarity size ("xl" | "lg" | "md" | "sm" | "full-screen"). */
   @Input() size: ModalSize;
 
   /** Specifies the height of the dialog. */
-  @Input() height: string;
+  @Input() height!: string;
 
   /** Set default button - submit or close. The default value is close if it is not specified. */
-  @Input() defaultButton: DefaultButton;
+  @Input() defaultButton!: DefaultButton;
 
   /** The cancel button label. */
   @Input() cancelButtonLabel: string;
@@ -94,12 +94,12 @@ export class DialogComponent implements OnInit, OnDestroy {
   @Input() tabLayout: TabLayout = TabLayout.horizontal;
 
   /** Disable the content of the tabs. */
-  @Input() disableTabsContent: boolean;
+  @Input() disableTabsContent = false;
 
   /** Display loading indicator. */
   @Input() loading = false;
 
-  @Input() steps: Step[];
+  @Input() steps!: Step[];
 
   /**
    * You can supply here any structure you like. As long as it has the
@@ -109,7 +109,7 @@ export class DialogComponent implements OnInit, OnDestroy {
    * If not specified, the steps will simply stay disconnected from each other,
    * so you would need other means of communication between them.
    */
-  @Input() model: WorkflowModel;
+  @Input() model!: WorkflowModel;
 
   /**
    * Object containing callback methods that will be invoked when the Dialog is Submitted or Cancelled.
@@ -119,7 +119,7 @@ export class DialogComponent implements OnInit, OnDestroy {
    * Dialog will wait for the result and then will close.
    * If there is an error, it will be displayed in the dialog that will remain open.
    */
-  @Input() closeHandler: CloseHandler;
+  @Input() closeHandler!: CloseHandler;
 
   /**
    * Show Tab Links (true by default)
@@ -140,7 +140,7 @@ export class DialogComponent implements OnInit, OnDestroy {
   /** Emits when opened input is changed. */
   @Output() openedChange = new EventEmitter<boolean>();
 
-  @ViewChild(Tabs, { static: true }) tabs: Tabs;
+  @ViewChild(Tabs, { static: true }) tabs!: Tabs;
 
   errorIconVisibleList: boolean[] = [];
   closeHandlerValidationState = new StepValidationState();
@@ -148,13 +148,13 @@ export class DialogComponent implements OnInit, OnDestroy {
   ZoomLevel = ZoomLevel;
   tabLinksOpened = false;
 
-  @ViewChild(WorkflowModelMonitor, { static: false }) private debugPopup: WorkflowModelMonitor;
+  @ViewChild(WorkflowModelMonitor, { static: false }) private debugPopup?: WorkflowModelMonitor;
 
   private subscriptions = new Subscription();
   private readonly defaultMinHeight = '545px';
 
   #opened = true;
-  #subTitle$: Observable<string>;
+  #subTitle$!: Observable<string>;
 
   constructor(
     private cdr: ChangeDetectorRef,

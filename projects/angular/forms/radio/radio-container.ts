@@ -64,10 +64,10 @@ import { ClrRadio } from './radio';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
-  role: string;
-  ariaLabelledBy: string;
+  role: string | null = null;
+  ariaLabelledBy: string | null = null;
 
-  @ContentChildren(ClrRadio, { descendants: true }) radios: QueryList<ClrRadio>;
+  @ContentChildren(ClrRadio, { descendants: true }) radios!: QueryList<ClrRadio>;
 
   // Only a direct-child label names the group; the inherited query also matches each radio label.
   @ContentChildren(ClrControlLabel, { descendants: false }) private groupLabels: QueryList<ClrControlLabel>;
@@ -132,6 +132,6 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
       groupLabel.idAttr = this._generatedId;
     }
 
-    this.ariaLabelledBy = this.radios?.length && groupLabel ? groupLabel.idAttr : null;
+    this.ariaLabelledBy = this.radios?.length && groupLabel?.idAttr ? groupLabel.idAttr : null;
   }
 }

@@ -11,6 +11,7 @@ import { By } from '@angular/platform-browser';
 import { ClarityIcons, pinIcon, unpinIcon } from '@clr/angular/icon';
 import { delay, enableCssAnimations, expectActiveElementToBe } from '@clr/angular/testing';
 import { CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrSidePanel } from './side-panel';
 import { ClrSidePanelModule } from './side-panel.module';
@@ -89,7 +90,7 @@ describe('Side Panel', () => {
     });
 
     fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
     compiled = fixture.nativeElement;
     sidePanel = fixture.componentInstance.sidePanelInstance;
 
@@ -97,7 +98,7 @@ describe('Side Panel', () => {
   });
 
   async function flushAndExpectOpen(componentFixture: ComponentFixture<any>, open: boolean) {
-    componentFixture.detectChanges();
+    renderFixture(componentFixture);
     await delay();
 
     const text: string = componentFixture.nativeElement.textContent.trim();
@@ -116,11 +117,11 @@ describe('Side Panel', () => {
 
   it('should set aria-hidden attribute to false if opened', async () => {
     fixture.componentInstance.opened = false;
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(compiled.querySelector('.modal-dialog')).toBeNull();
     // open modal
     sidePanel.open();
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(compiled.querySelector('.modal-dialog').getAttribute('aria-hidden')).toBe('false');
   });
 
@@ -155,18 +156,18 @@ describe('Side Panel', () => {
   it('should not throw an error when close is called on an already closed side panel', async () => {
     // Close the test side panel
     fixture.componentInstance.sidePanelInstance.close();
-    fixture.detectChanges();
+    renderFixture(fixture);
     // App should not throw an error when already closed.
     expect(() => {
       fixture.componentInstance.sidePanelInstance.close();
-      fixture.detectChanges();
+      renderFixture(fixture);
     }).not.toThrow();
   });
 
   it('offers two-way binding on clrSidePanelOpen', async () => {
     expect(fixture.componentInstance.opened).toBe(true);
     sidePanel.close();
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
     expect(fixture.componentInstance.opened).toBe(false);
   });
@@ -180,19 +181,19 @@ describe('Side Panel', () => {
     expect(compiled.querySelector('.modal-lg')).toBeNull();
 
     fixture.componentInstance.size = 'sm';
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(compiled.querySelector('.modal-sm')).not.toBeNull();
     expect(compiled.querySelector('.modal-lg')).toBeNull();
 
     fixture.componentInstance.size = 'lg';
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(compiled.querySelector('.modal-sm')).toBeNull();
     expect(compiled.querySelector('.modal-lg')).not.toBeNull();
 
     fixture.componentInstance.size = 'full-screen';
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(compiled.querySelector('.modal-lg')).toBeNull();
     expect(compiled.querySelector('.modal-full-screen')).not.toBeNull();
@@ -200,7 +201,7 @@ describe('Side Panel', () => {
 
   it('should be closed on backdrop click by default', async () => {
     const defaultsFixture = TestBed.createComponent(TestDefaultsComponent);
-    defaultsFixture.detectChanges();
+    renderFixture(defaultsFixture);
     compiled = defaultsFixture.nativeElement;
 
     const backdrop: HTMLElement = compiled.querySelector('.modal-backdrop');
@@ -211,7 +212,7 @@ describe('Side Panel', () => {
   });
 
   it('traps user focus', () => {
-    fixture.detectChanges();
+    renderFixture(fixture);
     const focusTrap = fixture.debugElement.query(By.directive(CdkTrapFocusModule_CdkTrapFocus));
 
     expect(focusTrap).toBeTruthy();
@@ -223,7 +224,7 @@ describe('Side Panel', () => {
 
   it('close button should have customizable aria-label', () => {
     fixture.componentInstance.closeButtonAriaLabel = 'custom close label';
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(compiled.querySelector('.close').getAttribute('aria-label')).toBe('custom close label');
   });
@@ -231,7 +232,7 @@ describe('Side Panel', () => {
   it('should add expected aria-labelledby', () => {
     // open side panel
     sidePanel.open();
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(compiled.querySelector('.modal-dialog').getAttribute('aria-labelledby')).toBeTruthy();
   });
 
@@ -240,7 +241,7 @@ describe('Side Panel', () => {
     // we must give screen reader users text based warnings when they
     // are entering and leaving side panel content.
     sidePanel.open();
-    fixture.detectChanges();
+    renderFixture(fixture);
     const messages = compiled.querySelectorAll<HTMLElement>('.clr-sr-only');
     expect(messages[0].innerText).toBe('Beginning of Modal Content');
     expect(messages[1].innerText).toBe('End of Modal Content');
@@ -260,11 +261,11 @@ describe('Side Panel', () => {
     const testFixture = TestBed.createComponent(TestComponent);
     const testComponent = testFixture.componentInstance;
     testComponent.opened = false;
-    testFixture.detectChanges();
+    renderFixture(testFixture);
 
     // Set pinned=true while panel is closed
     testComponent.sidePanelInstance.pinned = true;
-    testFixture.detectChanges();
+    renderFixture(testFixture);
 
     const host = document.body;
     const hasPinnedClass = Array.from(host.classList).some(c => c.startsWith('clr-side-panel-pinned-'));
@@ -276,11 +277,11 @@ describe('Side Panel', () => {
     const testFixture = TestBed.createComponent(TestComponent);
     const testComponent = testFixture.componentInstance;
     testComponent.opened = true;
-    testFixture.detectChanges();
+    renderFixture(testFixture);
 
     // Set pinned=true while panel is open
     testComponent.sidePanelInstance.pinned = true;
-    testFixture.detectChanges();
+    renderFixture(testFixture);
 
     const host = document.body;
     const hasPinnedClass = Array.from(host.classList).some(c => c.startsWith('clr-side-panel-pinned-'));
@@ -318,9 +319,9 @@ describe('Side Panel with animations', () => {
 
   async function openAt(position: string) {
     fixture.componentInstance.position = position;
-    fixture.detectChanges();
+    renderFixture(fixture);
     fixture.componentInstance.opened = true;
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
   }
 
