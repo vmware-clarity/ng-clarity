@@ -11,6 +11,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrContextService } from '@clr/angular/ai';
 import { publishedOn, publishedState } from '@clr/angular/testing';
 import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrComponentContext } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrWizardModule } from './wizard.module';
 
@@ -161,7 +162,7 @@ describe('ClrWizard element context', () => {
 
   it('publishes nothing while the wizard is closed, which is not on the page', () => {
     fixture.componentInstance.open = false;
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(publishedOn(wizard())).toBeNull();
   });

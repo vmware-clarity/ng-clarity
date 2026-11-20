@@ -521,7 +521,9 @@ class FilteredOptionsTestComponent {
 describe('ClrCombobox element context, options narrowed to what the user typed', () => {
   let fixture: ComponentFixture<FilteredOptionsTestComponent>;
 
+  /** Renders what the test changed on the host, as the application would after changing its own fields. */
   async function settle() {
+    fixture.changeDetectorRef.markForCheck();
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();

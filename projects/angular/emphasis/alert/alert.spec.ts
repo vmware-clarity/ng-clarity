@@ -72,7 +72,7 @@ describe('Alert Tests', () => {
 
       fixture.componentInstance.isClosable = true;
       fixture.componentInstance.closed = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(host.clrElementContext?.()).toBeNull();
     });
 
