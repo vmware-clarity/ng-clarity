@@ -17,18 +17,20 @@ import {
   provideClrMutationPolicy,
 } from '@clr/angular/ai';
 import { ClrCommonFormsModule } from '@clr/angular/forms/common';
-import { ClrComponentContext, ClrElementMutation, ClrElementMutator, elementMutatorOf } from '@clr/angular/utils';
+import {
+  ClrComponentContext,
+  ClrContextSnapshotOptions,
+  ClrElementMutation,
+  ClrElementMutator,
+  elementContextOf,
+  elementMutatorOf,
+} from '@clr/angular/utils';
 
 import { ClrComboboxModule } from './combobox.module';
 
 function readElementMutator(element: Element): ClrElementMutator | null {
   return elementMutatorOf(element) ?? null;
 }
-
-type ElementContextCallback = (options: { maxItemsPerCollection?: number }) => {
-  type: string;
-  state: Record<string, unknown>;
-};
 
 @Component({
   changeDetection: ChangeDetectionStrategy.Eager,
@@ -182,11 +184,11 @@ describe('ClrCombobox element mutator', () => {
   }
 
   function publishedValue(name: string): unknown {
-    const callback = (element(name) as HTMLElement & { clrElementContext?: ElementContextCallback }).clrElementContext;
+    const callback = elementContextOf(element(name));
     if (!callback) {
-      throw new Error(`expected the ${name} combobox to publish a clrElementContext callback`);
+      throw new Error(`expected the ${name} combobox to publish an element context callback`);
     }
-    return callback({}).state.value;
+    return callback({} as Required<ClrContextSnapshotOptions>)?.state?.['value'];
   }
 
   /** Writes the way the mutation engine does: coerce, then set the form control. */
