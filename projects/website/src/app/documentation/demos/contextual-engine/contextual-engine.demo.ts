@@ -92,12 +92,19 @@ const IGNORE_EXAMPLE = `
 `;
 
 const DIRECTIVE_EXAMPLE = `
-<section
-  clrContext="Firewall rules for the selected cluster"
-  [clrContextState]="{ cluster: clusterName, ruleCount: rules.length }"
->
-  ...
-</section>
+@Component({
+  template: \`<section [clrContext]="rulesContext">...</section>\`,
+})
+export class FirewallRulesComponent {
+  clusterName = 'alpha';
+  rules: FirewallRule[] = [];
+
+  // A constant works too; a function is read each time a snapshot is taken.
+  readonly rulesContext = () => ({
+    label: 'Firewall rules for the selected cluster',
+    state: { cluster: this.clusterName, ruleCount: this.rules.length },
+  });
+}
 `;
 
 const DIRECTIVE_STANDALONE_EXAMPLE = `
@@ -105,9 +112,11 @@ import { ClrContext } from '@clr/angular/ai';
 
 @Component({
   imports: [ClrContext],
-  template: \`<section clrContext="Firewall rules for the selected cluster">...</section>\`,
+  template: \`<section [clrContext]="rulesContext">...</section>\`,
 })
-export class FirewallComponent {}
+export class FirewallComponent {
+  readonly rulesContext = { label: 'Firewall rules for the selected cluster' };
+}
 `;
 
 const DIRECTIVE_MODULE_EXAMPLE = `
