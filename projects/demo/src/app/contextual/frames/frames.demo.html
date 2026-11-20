@@ -13,7 +13,7 @@
 
 <div class="clr-row">
   <div class="clr-col-lg-7 clr-col-12">
-    <section clrContext="Chat assistant embedded from another UI library" clrContextType="section">
+    <section [clrContext]="chatContext">
       <h3>Embedded frame (chat UI) receiving host context</h3>
       <iframe
         class="embedded-frame"
@@ -23,7 +23,7 @@
       ></iframe>
     </section>
 
-    <section clrContext="Page assembled from plugin frames" clrContextType="section">
+    <section [clrContext]="pluginsContext">
       <h3>Plugins in frames, described as one page</h3>
       <p>
         Each tab below is an iframe loading a plain static page, the way a plugin-based shell composes its UI, with the

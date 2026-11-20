@@ -104,6 +104,8 @@ export class ContextualFramesDemo implements OnInit, OnDestroy {
   thirdPartyOrigin = '';
   thirdPartyProbed = false;
   readonly servedLocally = servedFromLoopback();
+  readonly chatContext = { label: 'Chat assistant embedded from another UI library', type: 'section' };
+  readonly pluginsContext = { label: 'Page assembled from plugin frames', type: 'section' };
 
   private destroyed = false;
 
