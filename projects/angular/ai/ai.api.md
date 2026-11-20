@@ -7,6 +7,7 @@
 import { EnvironmentProviders } from '@angular/core';
 import * as i0 from '@angular/core';
 import { InjectionToken } from '@angular/core';
+import { InputSignal } from '@angular/core';
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { Type } from '@angular/core';
@@ -24,9 +25,6 @@ export const CLR_CONTEXT_DIRECTIVES: Type<any>[];
 export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
 
 // @public
-export const CLR_CONTEXT_LABEL_ATTRIBUTE = "data-clr-context";
-
-// @public
 export const CLR_CONTEXT_LOADING_TYPE = "clr-loading";
 
 // @public
@@ -39,25 +37,10 @@ export const CLR_CONTEXT_PROTOCOL = "ui-context/v1";
 export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
 
 // @public
-export const CLR_CONTEXT_STATE_ATTRIBUTE = "data-clr-context-state";
-
-// @public
-export const CLR_CONTEXT_TYPE_ATTRIBUTE = "data-clr-context-type";
-
-// @public
 export const CLR_CONTEXT_UNAVAILABLE_TYPE = "clr-unavailable";
 
 // @public
 export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: readonly (keyof ClrContextSnapshotOptions)[];
-
-// @public
-export const CLR_CONTEXT_URL_ATTRIBUTE = "data-clr-context-url";
-
-// @public
-export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
-
-// @public
-export const CLR_ELEMENT_MUTATOR_PROPERTY = "clrElementMutator";
 
 // @public
 export const CLR_MUTATION_POLICY: InjectionToken<ClrMutationPolicy>;
@@ -259,32 +242,25 @@ export interface ClrComponentContextChange {
 
 // @public
 export class ClrContext implements OnInit, OnDestroy {
-    getClrContext(): Partial<ClrPublishedContext> | null;
-    label: string;
+    readonly clrContext: InputSignal<ClrContextAnnotation>;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
     ngOnInit(): void;
-    state: Record<string, unknown> | null;
-    type: string;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContext, "[clrContext]", never, {
-        "label": {
+        "clrContext": {
             "alias": "clrContext";
-            "required": false;
-        };
-        "type": {
-            "alias": "clrContextType";
-            "required": false;
-        };
-        "state": {
-            "alias": "clrContextState";
-            "required": false;
+            "required": true;
+            "isSignal": true;
         };
     }, {}, never, never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContext, never>;
 }
+
+// @public
+export type ClrContextAnnotation = Partial<ClrPublishedContext> | (() => Partial<ClrPublishedContext> | null | undefined);
 
 // @public
 export interface ClrContextApplicationOptions extends ClrApplicationContext {
@@ -406,7 +382,7 @@ export class ClrContextRegistryService {
 }
 
 // @public
-export class ClrContextService {
+export class ClrContextService implements OnDestroy {
     configure(config: ClrContextConfig): void;
     disableFrameBridge(): void;
     enableFrameBridge(options?: ClrContextFrameHostOptions): void;

@@ -167,12 +167,6 @@ export const CLR_CONTEXT_REDACT_SELECTOR = "[data-clr-context-redact]";
 // @public
 export const CLR_CONTEXT_WITHHELD_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore], [data-clr-context-redact], [contenteditable]:not([contenteditable=\"false\" i])";
 
-// @public
-export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
-
-// @public
-export const CLR_ELEMENT_MUTATOR_PROPERTY = "clrElementMutator";
-
 // @public (undocumented)
 export const CLR_LOADING_DIRECTIVES: Type<any>[];
 
@@ -963,6 +957,12 @@ export class DomAdapter {
     // (undocumented)
     static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
+
+// @public
+export function elementContextOf(host: Element): ClrElementContextCallback | undefined;
+
+// @public
+export function elementMutatorOf(host: Element): ClrElementMutator | undefined;
 
 // @public (undocumented)
 export class EmptyAnchor {
