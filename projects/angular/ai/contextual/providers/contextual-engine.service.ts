@@ -53,7 +53,6 @@ import {
 import { jsonSafe, REGION_DEPTH, ROUTE_DATA_DEPTH } from '../json-safe';
 import { ContextRefRegistryService } from '../mutation/context-ref-registry.service';
 import { CLR_MUTATION_POLICY } from '../mutation/mutation.interface';
-import { publicState } from '../public-keys';
 import { availableRoutes, routePatternFor } from '../routes';
 import { CLR_PAGE_CONTEXT_SCHEMA_VERSION } from '../schema';
 import {
@@ -179,7 +178,7 @@ export class ClrContextService implements OnDestroy {
 
   /** A fresh snapshot of the page, with `options` applied over the configured scope. */
   snapshot(options?: ClrContextSnapshotOptions): Promise<ClrPageContext> {
-    return this.readAsync(options, false);
+    return this.readAsync(options);
   }
 
   /**
@@ -250,8 +249,8 @@ export class ClrContextService implements OnDestroy {
       this.injector,
       () =>
         new ContextTracker(
-          options => this.read(options, false),
-          options => this.readAsync(options, false),
+          options => this.read(options),
+          options => this.readAsync(options),
           () => this.pacing()
         )
     );
@@ -267,7 +266,7 @@ export class ClrContextService implements OnDestroy {
    * disables it, while a `viewConfig` URL has not loaded, or, with `views: 'enabled'`, when nothing gives it
    * metadata. Once `settled`, a metadata URL that has not loaded is reported as unavailable.
    */
-  private viewSnapshot(options: ResolvedSnapshotOptions, settled: boolean, untrusted: boolean): ClrPageContext {
+  private viewSnapshot(options: ResolvedSnapshotOptions, settled: boolean): ClrPageContext {
     const route = this.routeContext();
     const snapshot: ClrPageContext = {
       schemaVersion: CLR_PAGE_CONTEXT_SCHEMA_VERSION,
@@ -290,14 +289,13 @@ export class ClrContextService implements OnDestroy {
     }
     const config = this.matchingView(route);
     const provided = attempt(() => this.config.application?.metadata?.(), undefined);
-    const fromPage = this.pageMetadata(options, false);
+    const fromPage = this.pageMetadata(options);
     // A copy, so a consumer cannot change the configuration or the loaded metadata, and a cycle cannot break it.
     const viewMetadata = (page: Record<string, unknown>) =>
       recordOrEmpty(
         jsonSafe({ ...recordOrEmpty(config?.metadata), ...recordOrEmpty(provided), ...page }, REGION_DEPTH, true)
       );
-    // What a view is and whether it is read do not depend on who asks; only what its annotations say does.
-    const metadata = viewMetadata(untrusted ? this.pageMetadata(options, true) : fromPage);
+    const metadata = viewMetadata(fromPage);
     const enabled =
       typeof config?.enabled === 'boolean'
         ? config.enabled
@@ -327,19 +325,14 @@ export class ClrContextService implements OnDestroy {
 
   /**
    * The annotations on the view's roots and their ancestors, inner winning: their state is the view's metadata,
-   * with `label` when one is given. For an `untrusted` caller, each is cut to the keys it marks public.
+   * with `label` when one is given.
    */
-  private pageMetadata(options: ResolvedSnapshotOptions, untrusted: boolean): Record<string, unknown> {
+  private pageMetadata(options: ResolvedSnapshotOptions): Record<string, unknown> {
     const metadata: Record<string, unknown> = {};
     for (const host of this.metadataHosts(options)) {
       const url = host.getAttribute(CLR_CONTEXT_URL_ATTRIBUTE);
       for (const annotation of [url ? annotationFrom(this.metadataLoader.read(url)) : null, annotationContext(host)]) {
-        const state = annotation?.state ?? {};
-        Object.assign(
-          metadata,
-          annotation?.label ? { label: annotation.label } : null,
-          annotation && untrusted ? publicState(annotation, state) : state
-        );
+        Object.assign(metadata, annotation?.label ? { label: annotation.label } : null, annotation?.state);
       }
     }
     return metadata;
@@ -386,15 +379,15 @@ export class ClrContextService implements OnDestroy {
     });
   }
 
-  /** With `untrusted`, what application code published is cut to the state keys it marks public. */
-  private read(options: ClrContextSnapshotOptions | undefined, untrusted: boolean): ClrPageContext {
+  /** With `untrusted`, for a caller the application does not control, no refs are handed out. */
+  private read(options: ClrContextSnapshotOptions | undefined, untrusted = false): ClrPageContext {
     this.snapshotTaken = true;
     const resolved = this.resolveScope(options);
-    const snapshot = this.viewSnapshot(resolved, false, untrusted);
+    const snapshot = this.viewSnapshot(resolved, false);
     if (!snapshot.enabled) {
       return snapshot;
     }
-    const regions = this.contextRegistry.collect({ limits: resolved, untrusted });
+    const regions = this.contextRegistry.collect({ limits: resolved });
     return this.describePage(snapshot, resolved, regions, untrusted);
   }
 
@@ -404,7 +397,7 @@ export class ClrContextService implements OnDestroy {
    */
   private async readAsync(
     options: ClrContextSnapshotOptions | undefined,
-    untrusted: boolean,
+    untrusted = false,
     timeoutMs = this.config.timeoutMs,
     retries = 1
   ): Promise<ClrPageContext> {
@@ -415,7 +408,7 @@ export class ClrContextService implements OnDestroy {
     if (urls.length) {
       await this.metadataLoader.settle(urls, waitMs);
     }
-    const view = this.viewSnapshot(resolved, true, untrusted);
+    const view = this.viewSnapshot(resolved, true);
     if (!view.enabled) {
       return view;
     }
@@ -423,9 +416,8 @@ export class ClrContextService implements OnDestroy {
     const regions = await this.contextRegistry.collectAsync({
       timeoutMs: waitMs,
       limits: resolved,
-      untrusted,
     });
-    const snapshot = this.viewSnapshot(resolved, true, untrusted);
+    const snapshot = this.viewSnapshot(resolved, true);
     // The answers are the old view's: a view id is optional, so the address is compared too.
     if (snapshot.viewId !== view.viewId || snapshot.enabled !== view.enabled || this.address() !== address) {
       return retries > 0 ? this.readAsync(options, untrusted, timeoutMs, retries - 1) : this.read(options, untrusted);
@@ -450,7 +442,7 @@ export class ClrContextService implements OnDestroy {
     if (isPlatformBrowser(this.platformId)) {
       // Untrusted callers never get refs: they cannot write.
       const refs = !untrusted && this.mutationPolicy ? this.refs.begin() : null;
-      const tree = collectContextTreeWithin(this.document, resolved, this.config.extractors ?? [], refs, untrusted);
+      const tree = collectContextTreeWithin(this.document, resolved, this.config.extractors ?? [], refs);
       refs?.commit(tree.components);
       snapshot.components = tree.components;
       if (tree.truncated) {

@@ -62,7 +62,6 @@ import { stripQueryAndFragment } from '../url';
 
 /**
  * Describes markup that has neither a role nor an accessible name, such as a bare `<div class="card">`.
- * Untrusted consumers see only the state keys it lists in `publicKeys`.
  */
 export interface ClrContextDomExtractor {
   /** CSS selector matching the elements this extractor understands. */
@@ -84,8 +83,6 @@ const MAX_ELEMENTS_VISITED = 25_000;
 
 interface Walk {
   readonly options: ResolvedSnapshotOptions;
-  /** For a caller the application does not control: published state is cut to the keys marked public. */
-  readonly untrusted: boolean;
   readonly extractors: ClrContextDomExtractor[];
   readonly excludeRoles: ReadonlySet<string>;
   readonly excludeRoleCandidates: string;
@@ -127,13 +124,11 @@ export function collectContextTreeWithin(
   root: ParentNode,
   options: ResolvedSnapshotOptions,
   extractors: ClrContextDomExtractor[] = [],
-  refs: ClrContextRefSink | null = null,
-  untrusted = false
+  refs: ClrContextRefSink | null = null
 ): ClrContextTreeResult {
   const excludeRoles = new Set(options.excludeRoles);
   const walk: Walk = {
     options,
-    untrusted,
     extractors: extractors.filter(extractor => usableSelectors(root, [extractor.selector])),
     excludeRoles,
     excludeRoleCandidates: roleCandidateSelector(excludeRoles),
@@ -465,7 +460,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
   if (extractor) {
     const extracted = attempt(() => extractor.extract(element as HTMLElement, walk.options), null);
     // Only the walk hands out refs: an extractor's node cannot claim another node's.
-    const described = extracted ? publishedNode(extracted, walk.options, walk.untrusted) : null;
+    const described = extracted ? publishedNode(extracted, walk.options) : null;
     if (!described) {
       return describeChildren(element, walk, owner);
     }
@@ -912,7 +907,7 @@ function finish(
   if (published) {
     described = redacted
       ? withoutOverriddenLabel(node, element, walk)
-      : mergeElementContext(node, element, walk.options, annotationOf(element, walk), walk.untrusted);
+      : mergeElementContext(node, element, walk.options, annotationOf(element, walk));
   }
   if (walk.excludeRoles.has(described.type)) {
     walk.remaining++;

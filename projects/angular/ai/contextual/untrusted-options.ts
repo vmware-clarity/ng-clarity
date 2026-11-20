@@ -58,8 +58,7 @@ function acceptedValue(key: OptionKey, value: unknown): unknown {
 
 /**
  * The context without what the user entered, for a consumer the application does not control.
- * Fields keep their shape and are marked `withheld: true`. Published state is cut while the snapshot is
- * taken, to the keys its publisher marks public.
+ * Fields keep their shape and are marked `withheld: true`, and so do published nodes that held such values.
  */
 export function withoutFormValues(context: ClrPageContext): ClrPageContext {
   const withheld = (node: ClrComponentContext) =>
