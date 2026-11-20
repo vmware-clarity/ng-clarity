@@ -24,7 +24,7 @@ export class CreateVmWorkflow {
         type: 'workflow',
         label: 'Create virtual machine',
         state: { step: this.step, vmName: this.vmName },
-        // Untrusted callers, such as window.clrContext(), see only these keys.
+        // Untrusted callers, such as embedded frames, see only these keys.
         publicKeys: ['step'],
       }),
     });
