@@ -206,8 +206,8 @@
       <app-code-snippet [code]="directiveExample" language="html"></app-code-snippet>
     </div>
     <p class="clr-mt-16px" cds-text="body">
-      The directive serialises its state on every change detection, to notice an object that was changed in place. Keep
-      the state small, and treat it as immutable: pass a new object when something changes.
+      The state is serialised into every snapshot, so keep it small. It is read when the snapshot is taken, so an
+      object changed in place is reported as it is then.
     </p>
     <p class="clr-mt-16px" cds-text="body">
       The directive is standalone, so a standalone component imports <code cds-text="code">ClrContext</code> directly:
