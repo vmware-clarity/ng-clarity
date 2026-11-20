@@ -9,7 +9,7 @@ import { ChangeDetectionStrategy, Component, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { publishedState } from '@clr/angular/testing';
-import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrContextSnapshotOptions } from '@clr/angular/utils';
+import { ClrContextSnapshotOptions, elementContextOf } from '@clr/angular/utils';
 import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrDatagridModule } from './datagrid.module';
@@ -105,7 +105,7 @@ describe('ClrDatagrid element context', () => {
     const host = fixture.nativeElement.querySelector('clr-datagrid');
     fixture.destroy();
 
-    expect(CLR_ELEMENT_CONTEXT_PROPERTY in host).toBe(false);
+    expect(elementContextOf(host)).toBeUndefined();
   });
 });
 

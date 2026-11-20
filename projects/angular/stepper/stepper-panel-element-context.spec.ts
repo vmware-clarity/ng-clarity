@@ -10,7 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { publishedState } from '@clr/angular/testing';
-import { CLR_ELEMENT_CONTEXT_PROPERTY } from '@clr/angular/utils';
+import { elementContextOf } from '@clr/angular/utils';
 
 import { ClrStepperModule } from './stepper.module';
 
@@ -69,6 +69,6 @@ describe('ClrStepperPanel element context', () => {
     const panel = panels()[0];
     fixture.destroy();
 
-    expect(CLR_ELEMENT_CONTEXT_PROPERTY in panel).toBe(false);
+    expect(elementContextOf(panel)).toBeUndefined();
   });
 });

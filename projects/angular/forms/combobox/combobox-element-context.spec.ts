@@ -12,12 +12,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrContextService } from '@clr/angular/ai';
 import { publishedOn } from '@clr/angular/testing';
-import {
-  CLR_ELEMENT_CONTEXT_PROPERTY,
-  ClrComponentContext,
-  ClrContextSnapshotOptions,
-  ClrLoadingModule,
-} from '@clr/angular/utils';
+import { ClrComponentContext, ClrContextSnapshotOptions, ClrLoadingModule, elementContextOf } from '@clr/angular/utils';
 
 import { ClrCombobox } from './combobox';
 import { ClrComboboxModule } from './combobox.module';
@@ -128,7 +123,7 @@ describe('ClrCombobox element context', () => {
   it('removes the callback when the combobox is destroyed', () => {
     fixture.destroy();
 
-    expect(CLR_ELEMENT_CONTEXT_PROPERTY in host).toBe(false);
+    expect(elementContextOf(host)).toBeUndefined();
   });
 });
 
