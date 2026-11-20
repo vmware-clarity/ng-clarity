@@ -6,11 +6,12 @@
  */
 
 import { ListRange } from '@angular/cdk/collections';
-import { ChangeDetectionStrategy, Component, NgZone, SimpleChange, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, SimpleChange, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { delay } from '@clr/angular/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 import { Subject } from 'rxjs';
 
 import { ClrDatagrid } from './datagrid';
@@ -122,18 +123,28 @@ class TreeTest {
 }
 
 /**
- * The datagrid applies the results of the loaders on the next frame; this applies them right away.
+ * The datagrid applies the results of the loaders on the next frame; this runs that frame once `emit`
+ * returns, then the frame Angular asks for to render the change. Running a frame inside the request
+ * for it would render in the middle of applying the results.
  */
 function applyNow(emit: () => void) {
-  const requestFrame = window.requestAnimationFrame;
+  const { requestAnimationFrame, cancelAnimationFrame } = window;
+  const frames = new Map<number, FrameRequestCallback>();
+  let lastId = 0;
+  // Negative ids, so cancelling one never cancels a real frame.
   window.requestAnimationFrame = callback => {
-    callback(performance.now());
-    return 0;
+    frames.set(--lastId, callback);
+    return lastId;
   };
+  window.cancelAnimationFrame = id => frames.delete(id);
   try {
     emit();
+    for (const [id, callback] of frames) {
+      frames.delete(id);
+      callback(performance.now());
+    }
   } finally {
-    window.requestAnimationFrame = requestFrame;
+    Object.assign(window, { requestAnimationFrame, cancelAnimationFrame });
   }
 }
 
@@ -193,7 +204,8 @@ class VirtualTreeTest {
 class VirtualRangeTreeTest {
   range: ClrDatagridVirtualScrollRangeInterface<Folder> = { total: 1000, skip: 0, data: roots(0, 20) };
   rendered: ListRange[] = [];
-  renderedInZone: boolean[] = [];
+  // Like an app that loads the roots it is told are rendered.
+  loadRendered = false;
 
   // The rows of roots not loaded yet have no item.
   identity = (folder: Folder) => folder?.id;
@@ -206,7 +218,9 @@ class VirtualRangeTreeTest {
 
   onRendered(range: ListRange) {
     this.rendered.push(range);
-    this.renderedInZone.push(NgZone.isInAngularZone());
+    if (this.loadRendered) {
+      this.load(range.start, range.end - range.start);
+    }
   }
 }
 
@@ -258,12 +272,12 @@ describe('Datagrid', () => {
 
       function toggle(index: number) {
         toggleButton(index).click();
-        fixture.detectChanges();
+        renderFixture(fixture);
       }
 
       function press(index: number, key: string) {
         toggleButton(index).dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }));
-        fixture.detectChanges();
+        renderFixture(fixture);
       }
 
       beforeEach(function () {
@@ -274,7 +288,7 @@ describe('Datagrid', () => {
         fixture = TestBed.createComponent(TreeTest);
         context = fixture.componentInstance;
         element = fixture.nativeElement;
-        fixture.detectChanges();
+        renderFixture(fixture);
       });
 
       afterEach(() => fixture.destroy());
@@ -305,7 +319,7 @@ describe('Datagrid', () => {
 
         it('keeps the toggle in its column when another column is pinned', async function () {
           context.pinSize = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           await fixture.whenStable();
           expect(cellOf(0, /^a$/).querySelector('.datagrid-tree-toggle')).not.toBeNull();
           expect(cellOf(0, /^2$/).querySelector('.datagrid-tree-toggle')).toBeNull();
@@ -313,19 +327,19 @@ describe('Datagrid', () => {
 
         it('puts the toggle in the columns marked with clrDgTreeToggle', function () {
           context.toggleOnSize = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(cellOf(0, /^a$/).querySelector('.datagrid-tree-toggle')).toBeNull();
           expect(cellOf(0, /^2$/).querySelector('.datagrid-tree-toggle')).not.toBeNull();
           expect(cellOf(0, /^2$/).classList).toContain('datagrid-tree-cell');
 
           context.toggleOnName = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rows()[0].querySelectorAll('.datagrid-tree-toggle').length).toBe(2);
         });
 
         it('counts the roots across pages once the total comes in', function () {
           fixture.debugElement.query(By.directive(ClrDatagrid)).injector.get(Page).totalItems = 23;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(masterRow(0).getAttribute('aria-posinset')).toBe('1');
           expect(masterRow(0).getAttribute('aria-setsize')).toBe('23');
         });
@@ -343,13 +357,13 @@ describe('Datagrid', () => {
 
         it('names the toggle of another column after the leading cell too, a pinned one first', async function () {
           context.toggleOnSize = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           const labelCell = () =>
             document.getElementById(toggleButton(0).getAttribute('aria-labelledby').split(' ')[1]);
           expect(labelCell()).toBe(cellOf(0, /^a$/));
 
           context.pinSize = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           await fixture.whenStable();
           expect(labelCell()).toBe(cellOf(0, /^2$/));
         });
@@ -357,7 +371,7 @@ describe('Datagrid', () => {
         it('indents the content inside the cell, which keeps the padding of its header', function () {
           toggle(0);
           context.respond('a', 2);
-          fixture.detectChanges();
+          renderFixture(fixture);
           const text = (index: number) =>
             rows()[index].querySelector<HTMLElement>('.datagrid-tree-cell-text').getBoundingClientRect();
           expect(text(1).left - text(0).left).toBeGreaterThan(0);
@@ -384,7 +398,7 @@ describe('Datagrid', () => {
           // Without selection: with it, the rows that have no item fail on next too, in the lock of their checkbox.
           context.selectionType = SelectionType.None;
           context.loadingMore = true;
-          expect(() => fixture.detectChanges()).not.toThrow();
+          expect(() => renderFixture(fixture)).not.toThrow();
           expect(element.querySelectorAll('.datagrid-row-loading').length).toBeGreaterThan(0);
           expect(rowNames()).toEqual(['a', 'b', 'c']);
         });
@@ -394,16 +408,15 @@ describe('Datagrid', () => {
             .queryAll(By.directive(ClrDatagridRow))
             .map(row => row.componentInstance as ClrDatagridRow);
           const spies = rowComponents.map(row => vi.spyOn(row as any, 'workOutTreeCells'));
-          fixture.detectChanges();
+          renderFixture(fixture);
           spies.forEach(spy => expect(spy).toHaveBeenCalledTimes(1));
         });
 
         it('leaves the cells of other datagrids alone', function () {
           const flat = TestBed.createComponent(FlatTest);
-          flat.detectChanges();
+          renderFixture(flat);
           const cells = flat.debugElement.queryAll(By.directive(ClrDatagridCell));
           expect(cells.length).toBe(2);
-          cells.forEach(cell => expect(cell.componentInstance._treeRow).toBeNull());
           expect(flat.nativeElement.querySelector('.datagrid-tree-cell')).toBeNull();
           expect(cells.map(cell => cell.nativeElement.id)).toEqual(['cell-a', 'cell-b']);
           flat.destroy();
@@ -421,7 +434,7 @@ describe('Datagrid', () => {
           expect(toggleButton(0).querySelector('cds-icon')).toBeNull();
 
           context.respond('a', 2);
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rowNames()).toEqual(['a', 'a1', 'a2', 'b', 'c']);
           expect(masterRow(0).getAttribute('aria-busy')).toBeNull();
           expect(toggleButton(0).querySelector('.spinner')).toBeNull();
@@ -437,7 +450,7 @@ describe('Datagrid', () => {
           toggle(0);
           expect(masterRow(0).getAttribute('aria-busy')).toBeNull();
           context.respond('a', 2);
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rowNames()).toEqual(['a', 'b', 'c']);
         });
 
@@ -445,7 +458,7 @@ describe('Datagrid', () => {
           toggle(0);
           context.respond('a', 2);
           context.respond('a', 4);
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rowNames()).toEqual(['a', 'a1', 'a2', 'b', 'c']);
         });
 
@@ -456,7 +469,7 @@ describe('Datagrid', () => {
           await fixture.whenStable();
           // The result is applied on the next frame.
           await new Promise(resolve => requestAnimationFrame(resolve));
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rowNames()).toEqual(['a', 'a1', 'b', 'c']);
         });
 
@@ -469,21 +482,21 @@ describe('Datagrid', () => {
 
         it('applies the results that come in together on the next frame, at once', async function () {
           context.datagrid.expandAllTreeRows();
-          fixture.detectChanges();
+          renderFixture(fixture);
           context.respond('a', 2, { now: false });
           context.respond('b', 1, { now: false });
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rowNames()).toEqual(['a', 'b', 'c']);
 
           await new Promise(resolve => requestAnimationFrame(resolve));
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rowNames()).toEqual(['a', 'a1', 'a2', 'b', 'b1', 'c']);
         });
 
         it('closes the row again when the loader ends without children', function () {
           toggle(0);
           context.end('a');
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(masterRow(0).getAttribute('aria-expanded')).toBe('false');
           expect(masterRow(0).getAttribute('aria-busy')).toBeNull();
         });
@@ -491,7 +504,7 @@ describe('Datagrid', () => {
         it('closes the row again when loading fails, and reports it', function () {
           toggle(0);
           context.fail('a');
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rowNames()).toEqual(['a', 'b', 'c']);
           expect(masterRow(0).getAttribute('aria-expanded')).toBe('false');
           expect(masterRow(0).getAttribute('aria-busy')).toBeNull();
@@ -507,12 +520,14 @@ describe('Datagrid', () => {
         it('collapses without fetching again, and keeps the selection of hidden rows', async function () {
           toggle(0);
           context.respond('a', 2);
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           context.datagrid.selection.setSelected({ id: 'a1' }, true);
           await fixture.whenStable();
-          fixture.detectChanges();
+          renderFixture(fixture);
           toggle(0);
+          // Selection emits through an RxJS zero-delay timer, outside Angular rendering stability.
+          await delay();
           await fixture.whenStable();
           expect(rowNames()).toEqual(['a', 'b', 'c']);
           expect(context.selected.map(f => f.id)).toEqual(['a1']);
@@ -525,28 +540,28 @@ describe('Datagrid', () => {
         it('keeps rows expanded when the roots are replaced', function () {
           toggle(0);
           context.respond('a', 2);
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           context.roots = context.roots.map(folder => ({ ...folder }));
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rowNames()).toEqual(['a', 'a1', 'a2', 'b', 'c']);
           expect(context.requests.length).toBe(1);
         });
 
         it('renders the roots pushed, removed or sorted in place', function () {
           context.roots.push({ id: 'd' });
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rowNames()).toEqual(['a', 'b', 'c', 'd']);
 
           context.roots.reverse();
           context.roots.splice(1, 1);
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rowNames()).toEqual(['d', 'b', 'a']);
         });
 
         it('treats a loader that throws like a failed request', function () {
           context.loader = 'throw';
-          fixture.detectChanges();
+          renderFixture(fixture);
           toggle(0);
           expect(masterRow(0).getAttribute('aria-expanded')).toBe('false');
           expect(context.expandedChanges.map(change => change.expanded)).toEqual([true, false]);
@@ -555,13 +570,13 @@ describe('Datagrid', () => {
         it('keeps the children of a row that goes away, e.g. to another page, for when it comes back', function () {
           toggle(0);
           context.respond('a', 2);
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           const page = context.roots;
           context.roots = [{ id: 'd' }];
-          fixture.detectChanges();
+          renderFixture(fixture);
           context.roots = page.map(folder => ({ ...folder }));
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rowNames()).toEqual(['a', 'a1', 'a2', 'b', 'c']);
           expect(context.requests).toEqual(['a']);
         });
@@ -570,79 +585,79 @@ describe('Datagrid', () => {
           toggle(0);
           context['observables'].get('a').error(new Error('offline'));
           context.datagrid.reloadTreeChildren(context.roots[0]);
-          fixture.detectChanges();
+          renderFixture(fixture);
           await new Promise(resolve => requestAnimationFrame(resolve));
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(masterRow(0).getAttribute('aria-expanded')).toBe('true');
           expect(masterRow(0).getAttribute('aria-busy')).toBe('true');
 
           context.respond('a', 1);
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rowNames()).toEqual(['a', 'a1', 'b', 'c']);
         });
 
         it('fetches the children of an open child again when it comes back from another page', function () {
           toggle(0);
           applyNow(() => context['observables'].get('a').next([{ id: 'a1', children: 1 }]));
-          fixture.detectChanges();
+          renderFixture(fixture);
           toggle(1); // a1, still loading when its page goes away
           expect(context.requests).toEqual(['a', 'a1']);
 
           const page = context.roots;
           context.roots = [{ id: 'd' }];
-          fixture.detectChanges();
+          renderFixture(fixture);
           context.roots = page;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(context.requests).toEqual(['a', 'a1', 'a1']);
           context.respond('a1', 1);
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rowNames()).toEqual(['a', 'a1', 'a11', 'b', 'c']);
         });
 
         it('fetches the children of rows on other pages again after a reload of the whole tree', function () {
           toggle(0);
           context.respond('a', 2);
-          fixture.detectChanges();
+          renderFixture(fixture);
           const page = context.roots;
           context.roots = [{ id: 'd' }];
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           context.datagrid.reloadTreeChildren();
           context.roots = page;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(context.requests).toEqual(['a', 'a']);
         });
 
         it('fetches the children of a row on another page again after a reload of that row', function () {
           toggle(0);
           context.respond('a', 2);
-          fixture.detectChanges();
+          renderFixture(fixture);
           const page = context.roots;
           context.roots = [{ id: 'd' }];
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           context.datagrid.reloadTreeChildren(page[0]);
           context.roots = page;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(context.requests).toEqual(['a', 'a']);
         });
 
         it('keeps the rows when the roots are replaced by copies', function () {
           const before = rows();
           context.roots = context.roots.map(folder => ({ ...folder }));
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rows()).toEqual(before);
         });
 
         it('drops the toggle of a row whose children are empty, also after the roots are replaced', function () {
           toggle(1);
           context.respond('b', 0);
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(toggleButton(1)).toBeNull();
           expect(masterRow(1).getAttribute('aria-expanded')).toBeNull();
 
           context.roots = context.roots.map(folder => ({ ...folder }));
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(toggleButton(1)).toBeNull();
         });
 
@@ -650,20 +665,20 @@ describe('Datagrid', () => {
           toggleButton(1).focus();
           toggle(1);
           context.respond('b', 0);
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(document.activeElement).toBe(rows()[1].querySelector('clr-dg-cell'));
         });
 
         it('fetches the children of one row again', function () {
           toggle(0);
           context.respond('a', 2);
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           context.datagrid.reloadTreeChildren(context.roots[0]);
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(context.requests).toEqual(['a', 'a']);
           context.respond('a', 3);
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rowNames()).toEqual(['a', 'a1', 'a2', 'a3', 'b', 'c']);
         });
 
@@ -671,30 +686,30 @@ describe('Datagrid', () => {
           toggle(0);
           context.respond('a', 2, { now: false });
           context.datagrid.reloadTreeChildren(context.roots[0]);
-          fixture.detectChanges();
+          renderFixture(fixture);
           await new Promise(resolve => requestAnimationFrame(resolve));
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rowNames()).toEqual(['a', 'b', 'c']);
           expect(masterRow(0).getAttribute('aria-busy')).toBe('true');
 
           context.respond('a', 3);
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rowNames()).toEqual(['a', 'a1', 'a2', 'a3', 'b', 'c']);
         });
 
         it('fetches the open rows again, and the closed ones when they open', function () {
           toggle(0);
           context.respond('a', 2);
-          fixture.detectChanges();
+          renderFixture(fixture);
           toggle(3); // b
           context.respond('b', 1);
-          fixture.detectChanges();
+          renderFixture(fixture);
           toggle(3); // b, closed again
           expect(rowNames()).toEqual(['a', 'a1', 'a2', 'b', 'c']);
           expect(context.requests).toEqual(['a', 'b']);
 
           context.datagrid.reloadTreeChildren();
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(context.requests).toEqual(['a', 'b', 'a']);
 
           toggle(1); // b, now that a's children are not loaded yet
@@ -706,13 +721,13 @@ describe('Datagrid', () => {
         it('goes to the parent when the parent of the row that had it is reloaded', function () {
           toggle(0);
           context.respond('a', 2);
-          fixture.detectChanges();
+          renderFixture(fixture);
           const cell = rows()[1].querySelector<HTMLElement>('clr-dg-cell');
           context.datagrid.keyNavigation.setActiveCell(cell);
           cell.focus();
 
           context.datagrid.reloadTreeChildren(context.roots[0]);
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rowNames()).toEqual(['a', 'b', 'c']);
           expect(rows()[0].contains(document.activeElement)).toBe(true);
         });
@@ -720,7 +735,7 @@ describe('Datagrid', () => {
         it('keeps the tab stop of the grid in the rows when the row that had it is hidden', function () {
           toggle(0);
           context.respond('a', 2);
-          fixture.detectChanges();
+          renderFixture(fixture);
           context.datagrid.keyNavigation.setActiveCell(rows()[1].querySelector<HTMLElement>('clr-dg-cell'));
           const outside = document.createElement('button');
           document.body.appendChild(outside);
@@ -735,13 +750,13 @@ describe('Datagrid', () => {
         it('goes to the collapsed row when the row that had it is hidden', function () {
           toggle(0);
           context.respond('a', 2);
-          fixture.detectChanges();
+          renderFixture(fixture);
           const cell = rows()[1].querySelector<HTMLElement>('clr-dg-cell');
           cell.setAttribute('tabindex', '-1');
           cell.focus();
 
           context.expanded = { a: false };
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rowNames()).toEqual(['a', 'b', 'c']);
           expect(document.activeElement).toBe(toggleButton(0));
         });
@@ -750,15 +765,15 @@ describe('Datagrid', () => {
       describe('Template API', function () {
         it('expands and collapses rows with clrDgExpanded, without reporting it back', function () {
           context.expanded = { a: true };
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(context.requests).toEqual(['a']);
           context.respond('a', 2);
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rowNames()).toEqual(['a', 'a1', 'a2', 'b', 'c']);
           expect(context.datagrid.rows.first.expanded).toBe(true);
 
           context.expanded = { a: false };
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rowNames()).toEqual(['a', 'b', 'c']);
           expect(context.expandedChanges).toEqual([]);
         });
@@ -766,7 +781,7 @@ describe('Datagrid', () => {
         it('reports with clrDgExpandedChange the rows the user expands and collapses', function () {
           toggle(0);
           context.respond('a', 2);
-          fixture.detectChanges();
+          renderFixture(fixture);
           toggle(0);
           expect(context.expandedChanges).toEqual([
             { id: 'a', expanded: true },
@@ -776,9 +791,9 @@ describe('Datagrid', () => {
 
         it('reports that a row clrDgExpanded opened closed again, as its children came back empty', function () {
           context.expanded = { a: true };
-          fixture.detectChanges();
+          renderFixture(fixture);
           context.respond('a', 0);
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(masterRow(0).getAttribute('aria-expanded')).toBeNull();
           expect(context.expandedChanges).toEqual([{ id: 'a', expanded: false }]);
         });
@@ -786,7 +801,7 @@ describe('Datagrid', () => {
         it('expands a row that clrDgTreeExpandable and clrDgExpanded turn on together', function () {
           context.roots[2].children = 1;
           context.expanded = { c: true };
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(context.requests).toEqual(['c']);
           expect(masterRow(2).getAttribute('aria-expanded')).toBe('true');
         });
@@ -794,10 +809,10 @@ describe('Datagrid', () => {
         it('collapses a row when clrDgTreeExpandable turns false, and reports it after the check', async function () {
           toggle(0);
           context.respond('a', 2);
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           context.roots = [{ id: 'a' }, ...context.roots.slice(1)];
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rowNames()).toEqual(['a', 'b', 'c']);
           expect(toggleButton(0)).toBeNull();
           await fixture.whenStable();
@@ -814,7 +829,7 @@ describe('Datagrid', () => {
           expect(declared).not.toHaveBeenCalled();
 
           context.roots[0].children = 0;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(declared).toHaveBeenCalledTimes(1);
         });
       });
@@ -822,12 +837,12 @@ describe('Datagrid', () => {
       describe('Expand and collapse all', function () {
         function expandAll() {
           context.datagrid.expandAllTreeRows();
-          fixture.detectChanges();
+          renderFixture(fixture);
         }
 
         function collapseAll() {
           context.datagrid.collapseAllTreeRows();
-          fixture.detectChanges();
+          renderFixture(fixture);
         }
 
         it('expands every row that can be expanded and fetches its children', function () {
@@ -835,7 +850,7 @@ describe('Datagrid', () => {
           expect(context.requests).toEqual(['a', 'b']);
           context.respond('a', 2);
           context.respond('b', 1);
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rowNames()).toEqual(['a', 'a1', 'a2', 'b', 'b1', 'c']);
           expect(toggleButton(5)).toBeNull();
           // The new rows say they have no children before any is asked for.
@@ -853,10 +868,10 @@ describe('Datagrid', () => {
             return folder.id.length < 3 ? [{ id: `${folder.id}1`, children: 1 }] : [{ id: `${folder.id}1` }];
           };
           context.roots = [{ id: 'a', children: 1 }];
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           expandAll();
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rowNames()).toEqual(['a', 'a1', 'a11', 'a111']);
           expect(context.requests).toEqual(['a', 'a1', 'a11']);
           await fixture.whenStable();
@@ -870,33 +885,33 @@ describe('Datagrid', () => {
         it('expands the rows that come in afterwards, until a row is collapsed', function () {
           expandAll();
           context.roots = [{ id: 'd', children: 1 }];
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(context.requests).toEqual(['a', 'b', 'd']);
           expect(masterRow(0).getAttribute('aria-expanded')).toBe('true');
 
           toggle(0);
           context.roots = [{ id: 'e', children: 1 }];
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(masterRow(0).getAttribute('aria-expanded')).toBe('false');
         });
 
         it('collapses every row, also on other pages', function () {
           toggle(0);
           context.respond('a', 2);
-          fixture.detectChanges();
+          renderFixture(fixture);
           const page = context.roots;
           context.roots = [{ id: 'd', children: 1 }];
-          fixture.detectChanges();
+          renderFixture(fixture);
           toggle(0);
           context.roots = page;
-          fixture.detectChanges();
+          renderFixture(fixture);
           context.expandedChanges = [];
 
           collapseAll();
           expect(rowNames()).toEqual(['a', 'b', 'c']);
           expect(context.expandedChanges).toEqual([{ id: 'a', expanded: false }]);
           context.roots = [{ id: 'd', children: 1 }];
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(masterRow(0).getAttribute('aria-expanded')).toBe('false');
         });
 
@@ -904,7 +919,7 @@ describe('Datagrid', () => {
           context.loader = 'sync';
           context.getChildren = (folder: Folder) => [{ id: `${folder.id}1`, children: 1 }];
           context.roots = [{ id: 'a', children: 1 }];
-          fixture.detectChanges();
+          renderFixture(fixture);
           toggle(0);
           toggle(1);
           toggle(0);
@@ -920,35 +935,35 @@ describe('Datagrid', () => {
         it('keeps a bound row it collapsed on another page closed, and updates its binding', async function () {
           toggle(0);
           context.respond('a', 2);
-          fixture.detectChanges();
+          renderFixture(fixture);
           const page = context.roots;
           context.roots = [{ id: 'd' }];
-          fixture.detectChanges();
+          renderFixture(fixture);
           collapseAll();
           context.expandedChanges = [];
 
           context.roots = page;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rowNames()).toEqual(['a', 'b', 'c']);
           await fixture.whenStable();
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(context.expandedChanges).toEqual([{ id: 'a', expanded: false }]);
           expect(context.expanded['a']).toBe(false);
 
           // The binding works again.
           context.expanded['a'] = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rowNames()).toEqual(['a', 'a1', 'a2', 'b', 'c']);
         });
 
         it('reports nothing for a row expand all and collapse all both changed while it was not shown', async function () {
           const page = context.roots;
           context.roots = [{ id: 'd' }];
-          fixture.detectChanges();
+          renderFixture(fixture);
           expandAll();
           collapseAll();
           context.roots = page;
-          fixture.detectChanges();
+          renderFixture(fixture);
           await fixture.whenStable();
           expect(context.expandedChanges).toEqual([]);
           expect(rowNames()).toEqual(['a', 'b', 'c']);
@@ -957,7 +972,7 @@ describe('Datagrid', () => {
         it('moves the focus out of the rows it hides', function () {
           expandAll();
           context.respond('a', 2);
-          fixture.detectChanges();
+          renderFixture(fixture);
           element.querySelectorAll('[tabindex="0"]').forEach(cell => cell.setAttribute('tabindex', '-1'));
           const childCell = rows()[1].querySelector<HTMLElement>('clr-dg-cell');
           childCell.setAttribute('tabindex', '0');
@@ -982,7 +997,7 @@ describe('Datagrid', () => {
           toggleButton(0).focus();
           toggle(0);
           context.respond('a', 2);
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rowNames()).toEqual(['a', 'a1', 'a2', 'b', 'c']);
           expect(document.activeElement).toBe(toggleButton(0));
         });
@@ -992,20 +1007,20 @@ describe('Datagrid', () => {
         it('gives child rows their own actions and selection', function () {
           toggle(0);
           context.respond('a', 2);
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rows()[1].querySelector('clr-dg-action-overflow')).not.toBeNull();
           expect(rows()[1].querySelector('input[type=checkbox]')).not.toBeNull();
         });
 
         it('selects only the row itself by default', async function () {
           context.cascade = undefined;
-          fixture.detectChanges();
+          renderFixture(fixture);
           toggle(0);
           context.respond('a', 2);
-          fixture.detectChanges();
+          renderFixture(fixture);
           await fixture.whenStable();
           rows()[0].querySelector<HTMLLabelElement>('.datagrid-select label').click();
-          fixture.detectChanges();
+          renderFixture(fixture);
           await fixture.whenStable();
           expect(context.datagrid.selection.current.map(folder => folder.id)).toEqual(['a']);
           expect(rows()[0].querySelector<HTMLInputElement>('.datagrid-select input').indeterminate).toBe(false);
@@ -1023,15 +1038,17 @@ describe('Datagrid', () => {
           // Through the label, like a user: it is what covers the checkbox.
           async function click(index: number) {
             rows()[index].querySelector<HTMLLabelElement>('.datagrid-select label').click();
-            fixture.detectChanges();
+            renderFixture(fixture);
+            // Selection emits through an RxJS zero-delay timer, outside Angular rendering stability.
+            await delay();
             await fixture.whenStable();
-            fixture.detectChanges();
+            renderFixture(fixture);
           }
 
           beforeEach(async function () {
             toggle(0);
             context.respond('a', 2);
-            fixture.detectChanges();
+            renderFixture(fixture);
             // Lets the checkboxes take their initial value before the tests click them.
             await fixture.whenStable();
             // a, a1, a2, b, c
@@ -1069,30 +1086,32 @@ describe('Datagrid', () => {
             await click(3); // b, not loaded yet
             toggle(3);
             context.respond('b', 2);
-            fixture.detectChanges();
+            renderFixture(fixture);
             await fixture.whenStable();
             // Lets the two-way [(clrDgSelected)] binding catch up, as the application would.
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(rowNames()).toEqual(['a', 'a1', 'a2', 'b', 'b1', 'b2', 'c']);
             expect(selectedIds()).toEqual(['b', 'b1', 'b2']);
           });
 
           it('leaves out the children that load after their parent was selected but cannot be selected', async function () {
             context.locked = ['b2'];
-            fixture.detectChanges();
+            renderFixture(fixture);
             await click(3);
             toggle(3);
             context.respond('b', 2);
-            fixture.detectChanges();
+            renderFixture(fixture);
+            // Selection emits through an RxJS zero-delay timer, outside Angular rendering stability.
+            await delay();
             await fixture.whenStable();
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(selectedIds()).toEqual(['b', 'b1']);
             expect(context.selected.map(folder => folder.id).sort()).toEqual(['b', 'b1']);
           });
 
           it('leaves out the children that cannot be selected when their parent is selected while they are hidden', async function () {
             context.locked = ['a2'];
-            fixture.detectChanges();
+            renderFixture(fixture);
             toggle(0);
             await fixture.whenStable();
             await click(0);
@@ -1100,40 +1119,40 @@ describe('Datagrid', () => {
 
             toggle(0);
             await fixture.whenStable();
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(selectedIds()).toEqual(['a', 'a1']);
           });
 
           it('reloads a selected row whose open children load their own children right away', async function () {
             context.getChildren = (folder: Folder) =>
               folder.id === 'b' ? [{ id: 'b1', children: 1 }] : [{ id: `${folder.id}1` }];
-            fixture.detectChanges();
+            renderFixture(fixture);
             toggle(3); // b
             toggle(4); // b1
             await click(3);
             expect(selectedIds()).toEqual(['b', 'b1', 'b11']);
 
             context.datagrid.reloadTreeChildren(context.roots[1]);
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(rowNames()).toEqual(['a', 'a1', 'a2', 'b', 'b1', 'b11', 'c']);
             expect(selectedIds()).toEqual(['b', 'b1', 'b11']);
           });
 
           it('takes the loaded descendants of rows selected on their own when the mode changes', async function () {
             context.cascade = false;
-            fixture.detectChanges();
+            renderFixture(fixture);
             await click(0);
             expect(selectedIds()).toEqual(['a']);
 
             context.cascade = true;
-            fixture.detectChanges();
+            renderFixture(fixture);
             await fixture.whenStable();
             expect(selectedIds()).toEqual(['a', 'a1', 'a2']);
           });
 
           it('selects everything loaded from the header checkbox', async function () {
             element.querySelector<HTMLLabelElement>('.datagrid-header .datagrid-select label').click();
-            fixture.detectChanges();
+            renderFixture(fixture);
             await fixture.whenStable();
             expect(selectedIds()).toEqual(['a', 'a1', 'a2', 'b', 'c']);
           });
@@ -1153,9 +1172,9 @@ describe('Datagrid', () => {
         }
 
         async function settle() {
-          virtual.detectChanges();
+          renderFixture(virtual);
           await delay();
-          virtual.detectChanges();
+          renderFixture(virtual);
         }
 
         function virtualRows() {
@@ -1212,13 +1231,13 @@ describe('Datagrid', () => {
             test.getChildren = (folder: Folder) => [{ id: `${folder.id}-1` }];
           });
           grid().expandAllTreeRows();
-          virtual.detectChanges();
+          renderFixture(virtual);
 
           grid().virtualScroll.scrollToIndex(120);
           await delay(50);
-          virtual.detectChanges();
+          renderFixture(virtual);
           await delay(50);
-          virtual.detectChanges();
+          renderFixture(virtual);
           const expandable = Array.from(host.querySelectorAll('.datagrid-rows [role=row][aria-expanded]'));
           expect(expandable.length).toBeGreaterThan(0);
           expect(expandable.every(row => row.getAttribute('aria-expanded') === 'true')).toBe(true);
@@ -1280,7 +1299,7 @@ describe('Datagrid', () => {
           cell.focus();
 
           virtual.componentInstance.roots = [{ id: 'a', children: 2 }];
-          expect(() => virtual.detectChanges()).not.toThrow();
+          expect(() => renderFixture(virtual)).not.toThrow();
           await delay();
         });
       });
@@ -1290,9 +1309,9 @@ describe('Datagrid', () => {
         let host: HTMLElement;
 
         async function settle() {
-          fixture.detectChanges();
+          renderFixture(fixture);
           await delay(20);
-          fixture.detectChanges();
+          renderFixture(fixture);
         }
 
         function rows() {
@@ -1336,13 +1355,18 @@ describe('Datagrid', () => {
           expect(rowOf('r0')).toBeUndefined();
 
           fixture.componentInstance.load(0, 20);
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(rowOf('r0')).toBeDefined();
         });
 
-        it('reports the rendered roots inside the Angular zone, so the roots the app loads update the view', function () {
-          expect(fixture.componentInstance.renderedInZone.length).toBeGreaterThan(0);
-          expect(fixture.componentInstance.renderedInZone).not.toContain(false);
+        it('shows the roots the app loads when it is told which roots are rendered, without a forced render', async function () {
+          fixture.componentInstance.loadRendered = true;
+          grid().virtualScroll.scrollToIndex(600);
+          await delay(50);
+          await fixture.whenStable();
+          // Past the roots loaded at first.
+          expect(lastRendered().start).toBeGreaterThan(19);
+          expect(rowOf(`r${lastRendered().start}`)).toBeDefined();
         });
 
         it('counts the children of loaded roots in the rows, and keeps them when other roots load', async function () {

@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core'
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DomAdapter } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrDatagridModule } from './datagrid.module';
 import { DatagridColumnChanges } from './enums/column-changes.enum';
@@ -90,7 +91,7 @@ describe('Datagrid', () => {
         it('sets its template and hidden state to column state', function () {
           testSugaredComponent.hideFirst = true;
 
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(columnsService.columns[0].value.titleTemplateRef).not.toBeUndefined();
           expect(columnsService.columns[0].value.hidden).toBeTruthy();
           expect(columnsService.columns[1].value.titleTemplateRef).not.toBeUndefined();
@@ -100,10 +101,10 @@ describe('Datagrid', () => {
 
         it('set hidden state through clrDgHideableColumn input', function () {
           testSugaredComponent.hideFirst = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(columnsService.columns[0].value.hidden).toBeTruthy();
           testSugaredComponent.hideFirst = false;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(columnsService.columns[0].value.hidden).toBeFalsy();
         });
       });
@@ -134,7 +135,7 @@ describe('Datagrid', () => {
         it('sets its template and hidden state to column state', function () {
           testDesugaredComponent.hideSecond = true;
 
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(columnsService.columns[0].value.titleTemplateRef).not.toBeUndefined();
           expect(columnsService.columns[0].value.hidden, 'Defaults to false if given no input value.').toBeFalsy();
           expect(columnsService.columns[1].value.titleTemplateRef).not.toBeUndefined();
@@ -143,23 +144,23 @@ describe('Datagrid', () => {
 
         it('can emit its state from desuraged template', function () {
           testDesugaredComponent.hideSecond = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(columnsService.columns[1].value.titleTemplateRef).not.toBeUndefined();
           expect(columnsService.columns[1].value.hidden).toBeTruthy();
           columnsService.emitStateChangeAt(1, { hidden: false, changes: [DatagridColumnChanges.HIDDEN] });
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testDesugaredComponent.hideSecond).toBeFalsy();
           columnsService.emitStateChangeAt(1, { hidden: true, changes: [DatagridColumnChanges.HIDDEN] });
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(testDesugaredComponent.hideSecond).toBeTruthy();
         });
 
         it('set hidden state through clrDgHidden input', function () {
           testDesugaredComponent.hideSecond = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(columnsService.columns[1].value.hidden).toBeTruthy();
           testDesugaredComponent.hideSecond = false;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(columnsService.columns[1].value.hidden).toBeFalsy();
         });
       });

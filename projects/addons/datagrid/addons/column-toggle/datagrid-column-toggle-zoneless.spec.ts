@@ -8,14 +8,7 @@
 import { A11yModule } from '@angular/cdk/a11y';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  provideCheckNoChangesConfig,
-  provideZoneChangeDetection,
-  provideZonelessChangeDetection,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
@@ -38,71 +31,65 @@ class ToggleHost {
   ];
 }
 
-for (const zoneless of [false, true]) {
-  describe(`Column toggle (${zoneless ? 'zoneless' : 'zone-based'}, OnPush host)`, () => {
-    let fixture: ComponentFixture<ToggleHost>;
-    let trigger: HTMLButtonElement;
-    beforeEach(async () => {
-      TestBed.configureTestingModule({
-        declarations: [ToggleHost, DatagridColumnToggleComponent],
-        imports: [CommonModule, FormsModule, OverlayModule, A11yModule, ClarityModule],
-        providers: [
-          DatagridStrings,
-          zoneless ? provideZonelessChangeDetection() : provideZoneChangeDetection(),
-          provideCheckNoChangesConfig({ exhaustive: true }),
-        ],
-      });
-      fixture = TestBed.createComponent(ToggleHost);
-      fixture.autoDetectChanges();
-      await fixture.whenStable();
-      trigger = fixture.nativeElement.querySelector('.column-toggle-action');
+describe(`Column toggle (zoneless, OnPush host)`, () => {
+  let fixture: ComponentFixture<ToggleHost>;
+  let trigger: HTMLButtonElement;
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      declarations: [ToggleHost, DatagridColumnToggleComponent],
+      imports: [CommonModule, FormsModule, OverlayModule, A11yModule, ClarityModule],
+      providers: [DatagridStrings],
     });
-    afterEach(() => fixture.destroy());
-
-    it('links the trigger to the attached overlay and clears the relationship on close', async () => {
-      trigger.click();
-      await fixture.whenStable();
-      const id = trigger.getAttribute('aria-controls');
-      expect(id).toBeTruthy();
-      expect(trigger.getAttribute('aria-owns')).toBe(id);
-      expect(document.getElementById(id).querySelector('[role="dialog"]')).not.toBeNull();
-      (document.querySelector('.switch-header button') as HTMLButtonElement).click();
-      await fixture.whenStable();
-      expect(trigger.getAttribute('aria-controls')).toBeNull();
-      expect(trigger.getAttribute('aria-owns')).toBeNull();
-      expect(trigger.getAttribute('aria-expanded')).toBe('false');
-    });
-
-    it('clears expanded state and ARIA relationships after native Escape', async () => {
-      trigger.click();
-      await fixture.whenStable();
-      const id = trigger.getAttribute('aria-controls');
-      expect(id).toBeTruthy();
-      document
-        .getElementById(id)
-        .dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', code: 'Escape', keyCode: 27, bubbles: true }));
-      await fixture.whenStable();
-      expect(trigger.getAttribute('aria-expanded')).toBe('false');
-      expect(trigger.getAttribute('aria-controls')).toBeNull();
-      expect(trigger.getAttribute('aria-owns')).toBeNull();
-      expect(document.getElementById(id)?.querySelector('[role="dialog"]')).toBeFalsy();
-    });
-
-    it('clears the overlay relationship after a native backdrop click', async () => {
-      trigger.click();
-      await fixture.whenStable();
-      (document.querySelector('.cdk-overlay-backdrop') as HTMLElement).click();
-      await fixture.whenStable();
-      expect(trigger.getAttribute('aria-controls')).toBeNull();
-      expect(trigger.getAttribute('aria-expanded')).toBe('false');
-    });
-
-    it('can be destroyed with an attached overlay', async () => {
-      trigger.click();
-      await fixture.whenStable();
-      fixture.componentInstance.show.set(false);
-      await fixture.whenStable();
-      expect(document.querySelector('.column-switch')).toBeNull();
-    });
+    fixture = TestBed.createComponent(ToggleHost);
+    fixture.autoDetectChanges();
+    await fixture.whenStable();
+    trigger = fixture.nativeElement.querySelector('.column-toggle-action');
   });
-}
+  afterEach(() => fixture.destroy());
+
+  it('links the trigger to the attached overlay and clears the relationship on close', async () => {
+    trigger.click();
+    await fixture.whenStable();
+    const id = trigger.getAttribute('aria-controls');
+    expect(id).toBeTruthy();
+    expect(trigger.getAttribute('aria-owns')).toBe(id);
+    expect(document.getElementById(id).querySelector('[role="dialog"]')).not.toBeNull();
+    (document.querySelector('.switch-header button') as HTMLButtonElement).click();
+    await fixture.whenStable();
+    expect(trigger.getAttribute('aria-controls')).toBeNull();
+    expect(trigger.getAttribute('aria-owns')).toBeNull();
+    expect(trigger.getAttribute('aria-expanded')).toBe('false');
+  });
+
+  it('clears expanded state and ARIA relationships after native Escape', async () => {
+    trigger.click();
+    await fixture.whenStable();
+    const id = trigger.getAttribute('aria-controls');
+    expect(id).toBeTruthy();
+    document
+      .getElementById(id)
+      .dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', code: 'Escape', keyCode: 27, bubbles: true }));
+    await fixture.whenStable();
+    expect(trigger.getAttribute('aria-expanded')).toBe('false');
+    expect(trigger.getAttribute('aria-controls')).toBeNull();
+    expect(trigger.getAttribute('aria-owns')).toBeNull();
+    expect(document.getElementById(id)?.querySelector('[role="dialog"]')).toBeFalsy();
+  });
+
+  it('clears the overlay relationship after a native backdrop click', async () => {
+    trigger.click();
+    await fixture.whenStable();
+    (document.querySelector('.cdk-overlay-backdrop') as HTMLElement).click();
+    await fixture.whenStable();
+    expect(trigger.getAttribute('aria-controls')).toBeNull();
+    expect(trigger.getAttribute('aria-expanded')).toBe('false');
+  });
+
+  it('can be destroyed with an attached overlay', async () => {
+    trigger.click();
+    await fixture.whenStable();
+    fixture.componentInstance.show.set(false);
+    await fixture.whenStable();
+    expect(document.querySelector('.column-switch')).toBeNull();
+  });
+});

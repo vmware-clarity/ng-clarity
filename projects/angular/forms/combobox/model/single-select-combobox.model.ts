@@ -8,7 +8,7 @@
 import { ComboboxModel } from './combobox.model';
 
 export class SingleSelectComboboxModel<T> extends ComboboxModel<T> {
-  override model: T;
+  override model: T | null | undefined;
 
   containsItem(item: T): boolean {
     if (this.model === null || this.model === undefined) {
@@ -31,7 +31,7 @@ export class SingleSelectComboboxModel<T> extends ComboboxModel<T> {
     return !this.model;
   }
 
-  pop(): T {
+  pop(): T | null | undefined {
     const item = this.model;
     this.model = null;
     return item;

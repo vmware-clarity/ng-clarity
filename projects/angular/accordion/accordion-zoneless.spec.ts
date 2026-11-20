@@ -5,13 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  provideCheckNoChangesConfig,
-  provideZonelessChangeDetection,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { IfExpandService } from '@clr/angular/utils';
@@ -75,7 +69,6 @@ describe('ClrAccordion (zoneless, OnPush host)', () => {
     TestBed.configureTestingModule({
       declarations: [ZonelessAccordionHost, ExpandedProbe],
       imports: [ClrAccordionModule],
-      providers: [provideZonelessChangeDetection(), provideCheckNoChangesConfig({ exhaustive: true })],
     });
 
     fixture = TestBed.createComponent(ZonelessAccordionHost);
