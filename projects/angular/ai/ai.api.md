@@ -391,7 +391,6 @@ export interface ClrElementMutationResult {
 export interface ClrElementMutator {
     coerce?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
     ownsContents?: boolean;
-    read?(options?: Required<ClrContextSnapshotOptions>): unknown;
     write?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
 }
 
