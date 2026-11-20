@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component, DebugElement, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { MockPropertyViewStrings } from '../../testing';
 import { PropertyViewSectionsExpandedStateManager } from '../property-view-sections-expanded-state.manager';
@@ -130,8 +131,8 @@ describe('PropertyViewCategoryComponent', () => {
   });
 
   it('should not render content when input data content is empty', () => {
-    testContext.component.data = testContext.createData({});
-    testContext.fixture.detectChanges();
+    testContext.fixture.componentRef.setInput('data', testContext.createData({}));
+    renderFixture(testContext.fixture);
     expect(testContext.getTableElement()).toEqual(null);
     expect(testContext.getSectionsDebugElements()).toEqual([]);
   });
@@ -142,10 +143,13 @@ describe('PropertyViewCategoryComponent', () => {
       ' for each section in input data content' +
       ' when input data content is not empty',
     () => {
-      testContext.component.data = testContext.createData({
-        content: [sec1Data, sec2Data, sec3Data],
-      });
-      testContext.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          content: [sec1Data, sec2Data, sec3Data],
+        })
+      );
+      renderFixture(testContext.fixture);
       expect(testContext.getTableElement()).not.toEqual(null);
       expect(testContext.getSectionsDebugElements().length).toEqual(3);
       expect(testContext.getSectionsDebugElements()[0].componentInstance).toEqual(
@@ -164,28 +168,37 @@ describe('PropertyViewCategoryComponent', () => {
   );
 
   it('should update its content when input data changes', () => {
-    testContext.component.data = testContext.createData({
-      content: [sec1Data],
-    });
-    testContext.fixture.detectChanges();
+    testContext.fixture.componentRef.setInput(
+      'data',
+      testContext.createData({
+        content: [sec1Data],
+      })
+    );
+    renderFixture(testContext.fixture);
     expect(testContext.getTableElement()).not.toEqual(null);
     expect(testContext.getSectionsDebugElements().length).toEqual(1);
     expect(testContext.getSectionsDebugElements()[0].componentInstance.data).toBe(sec1Data);
 
-    testContext.component.data = testContext.createData({
-      content: [sec1Data, sec2Data, sec3Data],
-    });
-    testContext.fixture.detectChanges();
+    testContext.fixture.componentRef.setInput(
+      'data',
+      testContext.createData({
+        content: [sec1Data, sec2Data, sec3Data],
+      })
+    );
+    renderFixture(testContext.fixture);
     expect(testContext.getTableElement()).not.toEqual(null);
     expect(testContext.getSectionsDebugElements().length).toEqual(3);
     expect(testContext.getSectionsDebugElements()[0].componentInstance.data).toBe(sec1Data);
     expect(testContext.getSectionsDebugElements()[1].componentInstance.data).toBe(sec2Data);
     expect(testContext.getSectionsDebugElements()[2].componentInstance.data).toBe(sec3Data);
 
-    testContext.component.data = testContext.createData({
-      content: [sec1Data, sec3Data],
-    });
-    testContext.fixture.detectChanges();
+    testContext.fixture.componentRef.setInput(
+      'data',
+      testContext.createData({
+        content: [sec1Data, sec3Data],
+      })
+    );
+    renderFixture(testContext.fixture);
     expect(testContext.getTableElement()).not.toEqual(null);
     expect(testContext.getSectionsDebugElements().length).toEqual(2);
     expect(testContext.getSectionsDebugElements()[0].componentInstance.data).toBe(sec1Data);
@@ -200,16 +213,19 @@ describe('PropertyViewCategoryComponent', () => {
     ) => {
       return sectionsExpandedState[categoryId][sectionId];
     }));
-    testContext.component.data = testContext.createData({
-      content: [sec1Data, sec2Data, sec3Data],
-    });
+    testContext.fixture.componentRef.setInput(
+      'data',
+      testContext.createData({
+        content: [sec1Data, sec2Data, sec3Data],
+      })
+    );
 
     sectionsExpandedState['cat'] = {
       'sec-1': false,
       'sec-2': true,
       'sec-3': false,
     };
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.getTableElement()).not.toEqual(null);
     expect(testContext.getSectionsDebugElements().length).toEqual(3);
     expect(testContext.getSectionsDebugElements()[0].componentInstance.expanded).toBe(false);
@@ -221,7 +237,7 @@ describe('PropertyViewCategoryComponent', () => {
       'sec-2': false,
       'sec-3': true,
     };
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.getTableElement()).not.toEqual(null);
     expect(testContext.getSectionsDebugElements().length).toEqual(3);
     expect(testContext.getSectionsDebugElements()[0].componentInstance.expanded).toBe(true);
@@ -233,11 +249,14 @@ describe('PropertyViewCategoryComponent', () => {
     const setSectionExpandedUserStateSpy = vi
       .spyOn(testContext.expandedStateManager, 'setSectionExpandedUserState')
       .mockImplementation(() => undefined);
-    testContext.component.data = testContext.createData({
-      content: [sec1Data, sec2Data, sec3Data],
-    });
+    testContext.fixture.componentRef.setInput(
+      'data',
+      testContext.createData({
+        content: [sec1Data, sec2Data, sec3Data],
+      })
+    );
 
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.getTableElement()).not.toEqual(null);
     expect(testContext.getSectionsDebugElements().length).toEqual(3);
 

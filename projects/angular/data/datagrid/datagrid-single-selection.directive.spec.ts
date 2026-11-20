@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ClrRadioModule } from '@clr/angular/forms/radio';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrDatagridSingleSelectionValueAccessor } from './datagrid-single-selection.directive';
 
@@ -64,7 +65,7 @@ describe('Datagrid', () => {
       it('does not mark the radio as checked when there is no selection and the row item is a placeholder', async () => {
         host.rowItem = undefined;
         host.selected = undefined;
-        fixture.detectChanges();
+        renderFixture(fixture);
         await fixture.whenStable();
         expect(radio.checked).toBe(false);
       });
@@ -72,7 +73,7 @@ describe('Datagrid', () => {
       it('does not mark the radio as checked when there is no selection but the row item is real', async () => {
         host.rowItem = { id: 1, name: 'a' };
         host.selected = undefined;
-        fixture.detectChanges();
+        renderFixture(fixture);
         await fixture.whenStable();
         expect(radio.checked).toBe(false);
       });
@@ -80,7 +81,7 @@ describe('Datagrid', () => {
       it('does not mark the radio as checked when row item is a placeholder even if selection exists', async () => {
         host.rowItem = undefined;
         host.selected = { id: 1, name: 'a' };
-        fixture.detectChanges();
+        renderFixture(fixture);
         await fixture.whenStable();
         expect(radio.checked).toBe(false);
       });
@@ -89,7 +90,7 @@ describe('Datagrid', () => {
         const item = { id: 1, name: 'a' };
         host.rowItem = item;
         host.selected = item;
-        fixture.detectChanges();
+        renderFixture(fixture);
         await fixture.whenStable();
         expect(radio.checked).toBe(true);
       });
@@ -97,7 +98,7 @@ describe('Datagrid', () => {
       it('marks the radio as checked when selection matches the row item by identifyBy id (different reference)', async () => {
         host.rowItem = { id: 1, name: 'a' };
         host.selected = { id: 1, name: 'a-clone' };
-        fixture.detectChanges();
+        renderFixture(fixture);
         await fixture.whenStable();
         expect(radio.checked).toBe(true);
       });
@@ -105,7 +106,7 @@ describe('Datagrid', () => {
       it('does not mark the radio as checked when identities differ', async () => {
         host.rowItem = { id: 1, name: 'a' };
         host.selected = { id: 2, name: 'b' };
-        fixture.detectChanges();
+        renderFixture(fixture);
         await fixture.whenStable();
         expect(radio.checked).toBe(false);
       });
@@ -115,12 +116,12 @@ describe('Datagrid', () => {
         const item = { id: 1, name: 'a' };
         host.rowItem = item;
         host.selected = item;
-        fixture.detectChanges();
+        renderFixture(fixture);
         await fixture.whenStable();
         expect(radio.checked).toBe(true);
 
         host.selected = { id: 1, name: 'a' };
-        fixture.detectChanges();
+        renderFixture(fixture);
         await fixture.whenStable();
         expect(radio.checked).toBe(false);
       });

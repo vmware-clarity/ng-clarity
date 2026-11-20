@@ -5,14 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  provideCheckNoChangesConfig,
-  provideZoneChangeDetection,
-  provideZonelessChangeDetection,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ClrDatagridModule } from '@clr/angular/data/datagrid';
 import { ClrModalModule } from '@clr/angular/modal';
@@ -45,47 +38,41 @@ class ModalActionsHost {
   readonly open = signal(true);
 }
 
-for (const zoneless of [false, true]) {
-  describe(`Popover focus in a ${zoneless ? 'zoneless' : 'zone-based'} modal`, () => {
-    let fixture: ComponentFixture<ModalActionsHost>;
-    let restoreAnimations: () => void;
+describe('Popover focus in a zoneless modal', () => {
+  let fixture: ComponentFixture<ModalActionsHost>;
+  let restoreAnimations: () => void;
 
-    beforeEach(async () => {
-      restoreAnimations = enableCssAnimations();
-      TestBed.configureTestingModule({
-        declarations: [ModalActionsHost],
-        animationsEnabled: true,
-        imports: [ClrModalModule, ClrDatagridModule],
-        providers: [
-          zoneless ? provideZonelessChangeDetection() : provideZoneChangeDetection(),
-          provideCheckNoChangesConfig({ exhaustive: true }),
-        ],
-      });
-      fixture = TestBed.createComponent(ModalActionsHost);
-      fixture.autoDetectChanges();
-      await fixture.whenStable();
+  beforeEach(async () => {
+    restoreAnimations = enableCssAnimations();
+    TestBed.configureTestingModule({
+      declarations: [ModalActionsHost],
+      animationsEnabled: true,
+      imports: [ClrModalModule, ClrDatagridModule],
     });
-    afterEach(() => {
-      fixture.destroy();
-      restoreAnimations();
-    });
-
-    it('keeps the initial action focused after the animated modal settles', async () => {
-      const animations = fixture.nativeElement.querySelector('.modal-dialog').getAnimations();
-      expect(animations.length).toBeGreaterThan(0);
-      await Promise.all(animations.map((animation: Animation) => animation.finished));
-      await fixture.whenStable();
-      expect(document.activeElement).toBe(document.querySelector('.datagrid-action-overflow .action-item'));
-      expect(document.activeElement.textContent).toBe('Edit');
-    });
-
-    it('keeps the action menu focused when modal and menu are recreated together', async () => {
-      fixture.componentInstance.open.set(false);
-      await fixture.whenStable();
-      fixture.componentInstance.open.set(true);
-      await fixture.whenStable();
-      expect(document.activeElement).toBe(document.querySelector('.datagrid-action-overflow .action-item'));
-      expect(document.activeElement.textContent).toBe('Edit');
-    });
+    fixture = TestBed.createComponent(ModalActionsHost);
+    fixture.autoDetectChanges();
+    await fixture.whenStable();
   });
-}
+  afterEach(() => {
+    fixture.destroy();
+    restoreAnimations();
+  });
+
+  it('keeps the initial action focused after the animated modal settles', async () => {
+    const animations = fixture.nativeElement.querySelector('.modal-dialog').getAnimations();
+    expect(animations.length).toBeGreaterThan(0);
+    await Promise.all(animations.map((animation: Animation) => animation.finished));
+    await fixture.whenStable();
+    expect(document.activeElement).toBe(document.querySelector('.datagrid-action-overflow .action-item'));
+    expect(document.activeElement.textContent).toBe('Edit');
+  });
+
+  it('keeps the action menu focused when modal and menu are recreated together', async () => {
+    fixture.componentInstance.open.set(false);
+    await fixture.whenStable();
+    fixture.componentInstance.open.set(true);
+    await fixture.whenStable();
+    expect(document.activeElement).toBe(document.querySelector('.datagrid-action-overflow .action-item'));
+    expect(document.activeElement.textContent).toBe('Edit');
+  });
+});

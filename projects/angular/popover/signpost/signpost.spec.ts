@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
 import { ClrPopoverPosition, ClrPopoverService, SIGNPOST_POSITIONS } from '@clr/angular/popover/common';
 import { delay, expectActiveElementNotToBe, expectActiveElementToBe, spec, TestContext } from '@clr/angular/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { SignpostIdService } from './providers/signpost-id.service';
 import { ClrSignpost } from './signpost';
@@ -274,17 +275,17 @@ describe('Signpost', () => {
 
         // First open
         testContext.triggerButton.click();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
 
         checkAriaControlsId(currentId, document.body.querySelector('.clr-signpost-container'));
 
         // Close it
         testContext.triggerButton.click();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
 
         // Second open
         testContext.triggerButton.click();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
 
         checkAriaControlsId(currentId, document.body.querySelector('.clr-signpost-container'));
       });

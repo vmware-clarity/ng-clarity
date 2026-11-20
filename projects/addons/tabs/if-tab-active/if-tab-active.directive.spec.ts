@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TabsHelper } from '@clr/addons/testing';
 import { ClrTabsModule } from '@clr/angular/layout/tabs';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { AppfxTabsModule } from '../tabs.module';
 
@@ -48,7 +49,7 @@ describe('Directive: IfTabActive', () => {
     TestBed.configureTestingModule({ imports: [TestComponent] });
     fixture = TestBed.createComponent(TestComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    renderFixture(fixture);
     tabHelper = new TabsHelper(fixture.debugElement);
   });
 
@@ -68,7 +69,7 @@ describe('Directive: IfTabActive', () => {
       expect(tab2.nativeElement.className).not.toContain(toggleClass);
 
       tabHelper.clickLink(1);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(tab1.nativeElement.className).not.toContain(toggleClass);
       expect(tab2.nativeElement.className).toContain(toggleClass);
@@ -77,10 +78,10 @@ describe('Directive: IfTabActive', () => {
     it('notifies subscribers for active tab change', () => {
       vi.spyOn(component, 'onTabActiveChange');
       tabHelper.clickLink(1);
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.onTabActiveChange).toHaveBeenCalledWith(true);
       tabHelper.clickLink(0);
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(component.onTabActiveChange).toHaveBeenCalledWith(false);
     });
   });
@@ -92,13 +93,13 @@ describe('Directive: IfTabActive', () => {
     const toggleClass = 'activeTab';
 
     fixture.componentRef.setInput('activate', 'second');
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(component.onTabActiveChange).toHaveBeenCalledWith(true);
     expect(tab1.nativeElement.className).not.toContain(toggleClass);
     expect(tab2.nativeElement.className).toContain(toggleClass);
 
     fixture.componentRef.setInput('activate', 'first');
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(tab1.nativeElement.className).toContain(toggleClass);
     expect(tab2.nativeElement.className).not.toContain(toggleClass);
   });
