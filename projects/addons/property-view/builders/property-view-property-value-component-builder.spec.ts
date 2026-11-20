@@ -119,5 +119,5 @@ interface MockModel {
 }
 
 class MockComponent implements PropertyViewPropertyValueComponent<MockModel> {
-  model: MockModel;
+  model!: MockModel;
 }

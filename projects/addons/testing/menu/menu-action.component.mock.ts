@@ -14,7 +14,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
   template: '<ng-content></ng-content>',
 })
 export class MockAppfxMenuActionComponent {
-  @Input() actionId: string;
+  @Input() actionId!: string;
 
   @Input() iconClass?: string;
 

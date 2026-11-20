@@ -12,5 +12,5 @@ import { Directive, Input } from '@angular/core';
   standalone: false,
 })
 export class MockDatagridPreserveSelectionDirective {
-  @Input() preserveExistingSelection: boolean;
+  @Input() preserveExistingSelection!: boolean;
 }

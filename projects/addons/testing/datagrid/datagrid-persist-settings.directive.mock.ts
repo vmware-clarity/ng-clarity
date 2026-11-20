@@ -12,9 +12,9 @@ import { Directive, Input } from '@angular/core';
   standalone: false,
 })
 export class MockDatagridPersistSettingsDirective {
-  @Input() appfxPersistDatagridSettings: string;
+  @Input() appfxPersistDatagridSettings!: string;
 
-  @Input() persistPageSize: boolean;
+  @Input() persistPageSize!: boolean;
 
-  @Input() persistSortOrder: boolean;
+  @Input() persistSortOrder!: boolean;
 }

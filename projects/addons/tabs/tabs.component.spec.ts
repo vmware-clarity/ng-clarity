@@ -70,7 +70,7 @@ class MockElementRef extends ElementRef {
   standalone: false,
 })
 class DummyIfTabActiveDirective {
-  @Input() activeClass: string;
+  @Input() activeClass!: string;
 
   constructor(
     @Host()

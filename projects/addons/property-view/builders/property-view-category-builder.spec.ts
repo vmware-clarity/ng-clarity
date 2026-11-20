@@ -151,7 +151,9 @@ describe('PropertyViewCategoryBuilder', function () {
   describe('cloneAndAddBuilders() method', function () {
     it('should invoke cloneAndAddBuilder() method for each argument PropertyViewSectionBuilder instance', function () {
       const categoryBuilder = new PropertyViewCategoryBuilder(nullPropertyViewBuilder, 'id');
-      const cloneAndAddBuilderSpy = vi.spyOn(categoryBuilder, 'cloneAndAddBuilder').mockImplementation(() => undefined);
+      const cloneAndAddBuilderSpy = vi
+        .spyOn(categoryBuilder, 'cloneAndAddBuilder')
+        .mockImplementation(() => undefined as unknown as PropertyViewCategoryBuilder);
 
       categoryBuilder.cloneAndAddBuilders(<any>['section-1', 'section-2']);
       expect(vi.mocked(cloneAndAddBuilderSpy).mock.calls.length).toEqual(2);

@@ -1129,7 +1129,7 @@ export class MockStepModel implements StepModel {
     // (undocumented)
     mockPropertyValue: string;
     // (undocumented)
-    readyToComplete: boolean;
+    readyToComplete?: boolean;
     // Warning: (ae-forgotten-export) The symbol "StepValidationState" needs to be exported by the entry point clr-addons-testing.d.ts
     //
     // (undocumented)
