@@ -18,12 +18,7 @@ import {
   provideClrMutationPolicy,
 } from '@clr/angular/ai';
 import { ClrCommonFormsModule } from '@clr/angular/forms/common';
-import {
-  CLR_ELEMENT_MUTATOR_PROPERTY,
-  ClrComponentContext,
-  ClrElementMutation,
-  ClrElementMutator,
-} from '@clr/angular/utils';
+import { ClrComponentContext, ClrElementMutation, ClrElementMutator, elementMutatorOf } from '@clr/angular/utils';
 
 import { ClrDateContainer } from './date-container';
 import { ClrDateInput } from './date-single-input';
@@ -34,7 +29,7 @@ import { DatepickerEnabledService } from './providers/datepicker-enabled.service
 import { DatepickerFocusService } from './providers/datepicker-focus.service';
 
 function readElementMutator(element: Element): ClrElementMutator | null {
-  return ((element as Element & Record<string, unknown>)[CLR_ELEMENT_MUTATOR_PROPERTY] as ClrElementMutator) ?? null;
+  return elementMutatorOf(element) ?? null;
 }
 
 /** The picker a small-screen mobile browser gets: the browser's own, not Clarity's. */

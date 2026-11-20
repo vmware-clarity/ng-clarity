@@ -5,9 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CLR_ELEMENT_MUTATOR_PROPERTY, ClrElementMutator } from '@clr/angular/utils';
+import { ClrElementMutator, elementMutatorOf } from '@clr/angular/utils';
 
 export function readElementMutator(element: Element): ClrElementMutator | null {
-  const mutator = (element as Element & { [CLR_ELEMENT_MUTATOR_PROPERTY]?: unknown })[CLR_ELEMENT_MUTATOR_PROPERTY];
-  return mutator && typeof mutator === 'object' ? (mutator as ClrElementMutator) : null;
+  return elementMutatorOf(element) ?? null;
 }

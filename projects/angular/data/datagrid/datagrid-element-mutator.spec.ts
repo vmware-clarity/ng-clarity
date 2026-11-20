@@ -17,7 +17,7 @@ import {
   ClrPageContext,
   provideClrMutationPolicy,
 } from '@clr/angular/ai';
-import { CLR_ELEMENT_MUTATOR_PROPERTY, ClrComponentContext } from '@clr/angular/utils';
+import { ClrComponentContext, elementMutatorOf } from '@clr/angular/utils';
 
 import { ClrDatagrid } from './datagrid';
 import { ClrDatagridModule } from './datagrid.module';
@@ -712,14 +712,14 @@ describe('ClrDatagrid element mutator', () => {
       const host = await create(ToggleHost);
       const element: HTMLElement = fixture.nativeElement.querySelector('clr-datagrid');
 
-      expect(CLR_ELEMENT_MUTATOR_PROPERTY in element).toBe(false);
+      expect(elementMutatorOf(element)).toBeUndefined();
       expect(grid().ref).toBeUndefined();
       expect(grid().state?.['selectionMode']).toBeUndefined();
 
       host.mode = 'multi';
       await settle();
 
-      expect(CLR_ELEMENT_MUTATOR_PROPERTY in element).toBe(true);
+      expect(elementMutatorOf(element)).toBeDefined();
       const ref = grid().ref;
       expect(ref).toBeDefined();
       expect(grid().state?.['selectionMode']).toBe('multi');
@@ -736,7 +736,7 @@ describe('ClrDatagrid element mutator', () => {
       host.mode = 'none';
       await settle();
 
-      expect(CLR_ELEMENT_MUTATOR_PROPERTY in fixture.nativeElement.querySelector('clr-datagrid')).toBe(false);
+      expect(elementMutatorOf(fixture.nativeElement.querySelector('clr-datagrid'))).toBeUndefined();
       expect(grid().ref).toBeUndefined();
       expect((await write(ref, 'esx-01')).applied).toBe(false);
       expect(host.selected).toEqual([]);
@@ -745,11 +745,11 @@ describe('ClrDatagrid element mutator', () => {
     it('stops publishing the mutator once the datagrid is destroyed', async () => {
       await create(MultiHost);
       const element: HTMLElement = fixture.nativeElement.querySelector('clr-datagrid');
-      expect(CLR_ELEMENT_MUTATOR_PROPERTY in element).toBe(true);
+      expect(elementMutatorOf(element)).toBeDefined();
 
       fixture.destroy();
 
-      expect(CLR_ELEMENT_MUTATOR_PROPERTY in element).toBe(false);
+      expect(elementMutatorOf(element)).toBeUndefined();
     });
 
     it('lets a plan see the refusal a selection would meet, without selecting anything', async () => {

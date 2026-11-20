@@ -9,7 +9,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { publishedState } from '@clr/angular/testing';
-import { CLR_ELEMENT_CONTEXT_PROPERTY } from '@clr/angular/utils';
+import { elementContextOf } from '@clr/angular/utils';
 import { Observable } from 'rxjs';
 
 import { ClrTreeViewModule } from './tree-view.module';
@@ -61,7 +61,7 @@ describe('ClrTreeNode element context', () => {
     const node = nodes()[0];
     fixture.destroy();
 
-    expect(CLR_ELEMENT_CONTEXT_PROPERTY in node).toBe(false);
+    expect(elementContextOf(node)).toBeUndefined();
   });
 });
 

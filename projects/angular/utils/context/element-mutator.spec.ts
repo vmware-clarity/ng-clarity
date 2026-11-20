@@ -5,10 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CLR_ELEMENT_MUTATOR_PROPERTY, ClrElementMutator, publishElementMutator } from './element-mutator';
+import { elementMutatorOf, publishElementMutator } from './element-mutator';
 
-function readElementMutator(element: Element): ClrElementMutator | null {
-  return ((element as Element & Record<string, unknown>)[CLR_ELEMENT_MUTATOR_PROPERTY] as ClrElementMutator) ?? null;
+function readElementMutator(element: Element) {
+  return elementMutatorOf(element) ?? null;
 }
 
 describe('publishElementMutator', () => {
@@ -18,7 +18,7 @@ describe('publishElementMutator', () => {
     host = document.createElement('div');
   });
 
-  it('makes the mutator discoverable on the host element', () => {
+  it('makes the mutator discoverable for the host element', () => {
     const mutator = { coerce: (proposed: unknown) => ({ value: proposed }) };
 
     publishElementMutator(host, mutator);
@@ -31,7 +31,6 @@ describe('publishElementMutator', () => {
 
     teardown();
 
-    expect(CLR_ELEMENT_MUTATOR_PROPERTY in host).toBe(false);
     expect(readElementMutator(host)).toBeNull();
   });
 
