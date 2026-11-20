@@ -251,11 +251,11 @@ describe('CompositeFiltersComponent', () => {
     renderFixture(testContext.fixture);
     await testContext.fixture.whenStable();
     renderFixture(testContext.fixture);
-    const input: HTMLInputElement = document.querySelector('input[formControlName="value"]');
+    const input: HTMLInputElement = document.querySelector('input[formControlName="value"]')!;
     input.value = 'Demo';
     input.dispatchEvent(new Event('input'));
     renderFixture(testContext.fixture);
-    document.querySelector<HTMLButtonElement>('[data-test-id="submitBtn"]').click();
+    document.querySelector<HTMLButtonElement>('[data-test-id="submitBtn"]')!.click();
     renderFixture(testContext.fixture);
     await testContext.fixture.whenStable();
     renderFixture(testContext.fixture);
@@ -266,7 +266,7 @@ describe('CompositeFiltersComponent', () => {
     renderFixture(testContext.fixture);
     await testContext.fixture.whenStable();
     renderFixture(testContext.fixture);
-    document.querySelector<HTMLButtonElement>('[data-test-id="clear-filter"]').click();
+    document.querySelector<HTMLButtonElement>('[data-test-id="clear-filter"]')!.click();
     renderFixture(testContext.fixture);
     await testContext.fixture.whenStable();
     renderFixture(testContext.fixture);
@@ -300,21 +300,21 @@ describe('CompositeFiltersComponent', () => {
     testContext.component.filterableProperties = [stringProperty, otherProperty];
     vi.spyOn(testContext.component.propertyFiltersChange, 'emit').mockImplementation(() => undefined);
     await openAddFilter(testContext.fixture);
-    const input: HTMLInputElement = document.querySelector('input[formControlName="value"]');
+    const input: HTMLInputElement = document.querySelector('input[formControlName="value"]')!;
     input.value = 'Draft name';
     input.dispatchEvent(new Event('input'));
     renderFixture(testContext.fixture);
-    document.querySelector<HTMLButtonElement>('.filter-popover [data-test-id="add-button"]').click();
+    document.querySelector<HTMLButtonElement>('.filter-popover [data-test-id="add-button"]')!.click();
     renderFixture(testContext.fixture);
     await testContext.fixture.whenStable();
     renderFixture(testContext.fixture);
 
     await selectField(testContext.fixture, otherProperty.displayName);
 
-    expect(document.querySelector<HTMLInputElement>('input[formControlName="value"]').value).toBe('');
+    expect(document.querySelector<HTMLInputElement>('input[formControlName="value"]')!.value).toBe('');
     expect(document.querySelectorAll('.filter-condition-row').length).toBe(1);
-    expect(document.querySelector<HTMLSelectElement>('select[formControlName="operator"]').options.length).toBe(1);
-    expect(document.querySelector<HTMLButtonElement>('[data-test-id="submitBtn"]').disabled).toBe(true);
+    expect(document.querySelector<HTMLSelectElement>('select[formControlName="operator"]')!.options.length).toBe(1);
+    expect(document.querySelector<HTMLButtonElement>('[data-test-id="submitBtn"]')!.disabled).toBe(true);
     expect(testContext.component.propertyFiltersChange.emit).not.toHaveBeenCalled();
     expect(document.activeElement).toBe(document.querySelector('.filter-popover .clr-combobox-input'));
   });
@@ -326,7 +326,7 @@ describe('CompositeFiltersComponent', () => {
     await testContext.fixture.whenStable();
     renderFixture(testContext.fixture);
     expect(document.querySelector('appfx-general-filter')).toBeNull();
-    expect(document.querySelector<HTMLButtonElement>('[data-test-id="submitBtn"]').disabled).toBe(true);
+    expect(document.querySelector<HTMLButtonElement>('[data-test-id="submitBtn"]')!.disabled).toBe(true);
     expect(document.querySelector('[data-test-id="cancelBtn"]')).not.toBeNull();
     expect(document.querySelector('.filter-popover clr-combobox')).not.toBeNull();
     expect(document.activeElement).toBe(document.querySelector('.filter-popover .clr-combobox-input'));
@@ -648,8 +648,8 @@ describe('CompositeFiltersComponent', () => {
     renderFixture(testContext.fixture);
     const element: HTMLElement = separator();
     expect(element.getAttribute('role')).toBe('separator');
-    expect(element.previousElementSibling.tagName).toBe('APPFX-MANAGE-FILTER');
-    expect(element.nextElementSibling.textContent).toContain(enumProperty.displayName);
+    expect(element.previousElementSibling!.tagName).toBe('APPFX-MANAGE-FILTER');
+    expect(element.nextElementSibling!.textContent).toContain(enumProperty.displayName);
   });
 
   it('reads Clear all once: its tooltip is visual only', () => {
@@ -762,14 +762,14 @@ describe('CompositeFiltersComponent', () => {
       renderFixture(testContext.fixture);
       vi.spyOn(testContext.component.propertyFiltersChange, 'emit').mockImplementation(() => undefined);
       expect(toggles()[0].getAttribute('aria-pressed')).toBe('false');
-      expect(toggles()[0].closest('clr-label').classList).not.toContain('label-info');
+      expect(toggles()[0].closest('clr-label')!.classList).not.toContain('label-info');
 
       toggles()[0].click();
       renderFixture(testContext.fixture);
       expect(testContext.component.propertyFiltersChange.emit).toHaveBeenCalledWith([toggle]);
       expect(toggles()[0].getAttribute('aria-pressed')).toBe('true');
       expect(toggles()[0].querySelector('cds-icon[shape="check"]')).toBeTruthy();
-      expect(toggles()[0].closest('clr-label').classList).toContain('label-info');
+      expect(toggles()[0].closest('clr-label')!.classList).toContain('label-info');
 
       toggles()[0].click();
       renderFixture(testContext.fixture);
@@ -966,7 +966,7 @@ describe('CompositeFiltersComponent', () => {
       renderFixture(testContext.fixture);
       expect(testContext.component.propertyFilters).toEqual([selection]);
       renderFixture(testContext.fixture);
-      expect(optionPressed(enumProperty.values.get(first))).toBe('true');
+      expect(optionPressed(enumProperty.values.get(first)!)).toBe('true');
     });
 
     it('removes a filter that becomes invalid when its field turns semi-predefined', async () => {
@@ -1007,7 +1007,7 @@ describe('CompositeFiltersComponent', () => {
       renderFixture(testContext.fixture);
       expect(testContext.component.propertyFilters).toEqual([equals]);
       expect(testContext.component.propertyFiltersChange.emit).not.toHaveBeenCalled();
-      expect(optionPressed(enumProperty.values.get(key))).toBe('true');
+      expect(optionPressed(enumProperty.values.get(key)!)).toBe('true');
     });
 
     it('does not warn without conflicts', () => {
@@ -1031,9 +1031,9 @@ describe('CompositeFiltersComponent', () => {
 
     it('renders the field label and one pill per option, after the predefined pills', async () => {
       const group: HTMLElement = testContext.fixture.nativeElement.querySelector('[data-test-id="semi-filter-group"]');
-      expect(group.querySelector('.semi-filter-label').textContent.trim()).toBe(enumProperty.displayName + ':');
+      expect(group.querySelector('.semi-filter-label')!.textContent!.trim()).toBe(enumProperty.displayName + ':');
       expect(options().map(option => option.textContent.trim())).toEqual(Array.from(enumProperty.values.values()));
-      expect(group.previousElementSibling.getAttribute('role')).toBe('separator');
+      expect(group.previousElementSibling!.getAttribute('role')).toBe('separator');
       // Name is predefined and Status semi-predefined, so Add filter has nothing to offer.
       expect(await offeredFields(testContext.fixture)).toEqual([]);
     });
@@ -1061,7 +1061,7 @@ describe('CompositeFiltersComponent', () => {
       expect(filter.criteria.map(predicate => predicate.value)).toEqual(keys.slice(0, 2));
       expect(options()[0].getAttribute('aria-pressed')).toBe('true');
       expect(options()[0].querySelector('cds-icon[shape="check"]')).toBeTruthy();
-      expect(options()[0].closest('clr-label').classList).toContain('label-info');
+      expect(options()[0].closest('clr-label')!.classList).toContain('label-info');
       // Semi-predefined filters are not user-added pills.
       expect(testContext.fixture.nativeElement.querySelector('[data-test-id="hide-filters"]')).toBeNull();
       expect(testContext.fixture.nativeElement.querySelectorAll('appfx-manage-filter').length).toBe(1);
@@ -1174,7 +1174,7 @@ async function offeredFields(fixture: ComponentFixture<CompositeFiltersComponent
     return [];
   }
   await openAddFilter(fixture);
-  document.querySelector<HTMLButtonElement>('.filter-popover .clr-combobox-trigger').click();
+  document.querySelector<HTMLButtonElement>('.filter-popover .clr-combobox-trigger')!.click();
   renderFixture(fixture);
   await fixture.whenStable();
   renderFixture(fixture);
@@ -1195,11 +1195,11 @@ async function openAddFilter(fixture: ComponentFixture<CompositeFiltersComponent
 }
 
 async function selectField(fixture: ComponentFixture<CompositeFiltersComponent>, displayName: string): Promise<void> {
-  document.querySelector<HTMLButtonElement>('.filter-popover .clr-combobox-trigger').click();
+  document.querySelector<HTMLButtonElement>('.filter-popover .clr-combobox-trigger')!.click();
   renderFixture(fixture);
   await fixture.whenStable();
   renderFixture(fixture);
-  const input = document.querySelector<HTMLInputElement>('.filter-popover .clr-combobox-input');
+  const input = document.querySelector<HTMLInputElement>('.filter-popover .clr-combobox-input')!;
   input.value = displayName;
   input.dispatchEvent(new Event('input'));
   renderFixture(fixture);

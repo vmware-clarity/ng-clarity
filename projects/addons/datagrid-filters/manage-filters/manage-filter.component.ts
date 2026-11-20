@@ -28,7 +28,7 @@ import {
 import { uniqueIdFactory } from '@clr/angular/utils';
 
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
-import { ComparisonOperator, PropertyType } from '../model/datagrid-filters.enums';
+import { ComparisonOperator, PropertyType, TimeSpan } from '../model/datagrid-filters.enums';
 import {
   DateTimePropertyDefinition,
   EnumPropertyDefinition,
@@ -51,7 +51,7 @@ import { dateTimeEditorState, parseLocalDateTime } from '../model/date-time-edit
 export class ManageFilterComponent implements OnInit, OnChanges {
   // The filter to be managed
   @Input() propertyFilter!: PropertyFilter;
-  @Input() filterProperty: FilterablePropertyDefinition;
+  @Input() filterProperty!: FilterablePropertyDefinition;
   @Input() predefined = false;
 
   @Output() filterRemoved = new EventEmitter<void>();
@@ -246,7 +246,9 @@ export class ManageFilterComponent implements OnInit, OnChanges {
   private displayDateTimeFilter(compact = false): string {
     const separator = compact ? ' ' : ': ';
     const state = dateTimeEditorState(this.propertyFilter);
-    if (!state) {
+
+    // dateTimeEditorState always sets the operator; the check only narrows the type.
+    if (!state || state.operator === undefined) {
       // Criteria with no date-time meaning (e.g. a custom preset): show them as they are.
       const predicate = this.propertyFilter.criteria[0];
       return this.operatorDisplayName(predicate.operator) + separator + this.formatDateTimeValue(predicate.value);
@@ -270,7 +272,7 @@ export class ManageFilterComponent implements OnInit, OnChanges {
         separator +
         state.timeSpanValue +
         ' ' +
-        this.filterStrings.getTimeSpanDisplayName(state.timeSpan)
+        this.filterStrings.getTimeSpanDisplayName(state.timeSpan as TimeSpan)
       );
     }
     return this.operatorDisplayName(operator) + separator + this.formatDateTimeValue(state.value);
@@ -280,7 +282,7 @@ export class ManageFilterComponent implements OnInit, OnChanges {
     return this.noDisplayValueOperators.includes(operator);
   }
 
-  private formatDateTimeValue(dateTime: string): string {
+  private formatDateTimeValue(dateTime: string | undefined): string {
     const parsed = parseLocalDateTime(dateTime);
     if (!parsed) {
       return dateTime ?? '';

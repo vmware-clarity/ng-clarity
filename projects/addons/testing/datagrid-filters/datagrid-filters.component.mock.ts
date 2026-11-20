@@ -31,7 +31,7 @@ export class MockDatagridFiltersComponent {
 
   @Input() toggleFilters: ToggleFilter[] = [];
 
-  @Input() presetFilters: PropertyFilter[];
+  @Input() presetFilters!: PropertyFilter[];
 
   @Input() propertyFilters: PropertyFilter[] = [];
 

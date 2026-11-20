@@ -56,7 +56,7 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
   comparisonOperators!: ComparisonOperator[];
   units: Unit[] = [];
   isNumericUnitProperty = false;
-  @Input() filterProperty: StringPropertyDefinition | NumericPropertyDefinition;
+  @Input() filterProperty!: StringPropertyDefinition | NumericPropertyDefinition;
   /**
    * In case the component is used for filter editing
    */
@@ -278,7 +278,7 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
 
   private getSelectedUnit(index: number): Unit {
     const selectedUnit: Unit =
-      this.propertyFilter.editorState?.units?.[index] ?? (this.filterProperty as NumericPropertyDefinition).unit;
+      this.propertyFilter?.editorState?.units?.[index] ?? (this.filterProperty as NumericPropertyDefinition).unit;
     return selectedUnit;
   }
 

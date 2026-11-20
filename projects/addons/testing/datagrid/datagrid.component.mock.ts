@@ -34,7 +34,7 @@ export class MockAppfxDatagridComponent {
   @Input() loading: boolean;
   @Input() serverDrivenDatagrid: boolean;
   @Input() filterMode: any;
-  @Input() propertyFilters: any[];
+  @Input() propertyFilters!: any[];
   @Input() listItemsCount: number;
   @Input() trackByGridItemProperty: string;
   @Input() isRowLocked: (rowItem: any) => boolean;

@@ -382,9 +382,9 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
   }
 
   private enableTimeSpanPredicate(): void {
-    const timeSpanValue: number = this.storedState?.timeSpanValue;
+    const timeSpanValue: number | undefined = this.storedState?.timeSpanValue;
     this.dateTimeFilterForm.addControl('timeSpanValue', new FormControl(timeSpanValue || '', requiredValidators));
-    const timeSpan: TimeSpan = this.storedState?.timeSpan;
+    const timeSpan: TimeSpan | undefined = this.storedState?.timeSpan;
     this.dateTimeFilterForm.addControl('timeSpan', new FormControl(timeSpan || TimeSpan.Minutes));
   }
 

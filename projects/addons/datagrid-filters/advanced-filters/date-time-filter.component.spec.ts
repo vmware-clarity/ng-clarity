@@ -296,12 +296,12 @@ describe('DateTimeFilterComponent', () => {
       vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
       renderFixture(testContext.fixture);
       const element: HTMLElement = testContext.fixture.nativeElement;
-      const operatorSelect: HTMLSelectElement = element.querySelector(operatorSelector);
+      const operatorSelect: HTMLSelectElement = element.querySelector(operatorSelector)!;
       operatorSelect.value = operatorSelect.options[5].value;
       operatorSelect.dispatchEvent(new Event('change'));
       renderFixture(testContext.fixture);
 
-      const range = element.querySelector('clr-date-range-container');
+      const range = element.querySelector('clr-date-range-container')!;
       expect(range).not.toBeNull();
       expect(range.querySelector('input[formControlName=dateValue][clrStartDate]')).not.toBeNull();
       expect(range.querySelector('input[formControlName=dateValueTo][clrEndDate]')).not.toBeNull();
@@ -326,7 +326,7 @@ describe('DateTimeFilterComponent', () => {
     it('switches to separate date pickers when a custom range uses times', () => {
       renderFixture(testContext.fixture);
       const element: HTMLElement = testContext.fixture.nativeElement;
-      const operatorSelect: HTMLSelectElement = element.querySelector(operatorSelector);
+      const operatorSelect: HTMLSelectElement = element.querySelector(operatorSelector)!;
       operatorSelect.value = operatorSelect.options[5].value;
       operatorSelect.dispatchEvent(new Event('change'));
       renderFixture(testContext.fixture);
@@ -694,7 +694,7 @@ describe('DateTimeFilterComponent', () => {
       );
       renderFixture(testContext.fixture);
       const element: HTMLElement = testContext.fixture.nativeElement;
-      const operatorSelect: HTMLSelectElement = element.querySelector(operatorSelector);
+      const operatorSelect: HTMLSelectElement = element.querySelector(operatorSelector)!;
       operatorSelect.value = operatorSelect.options[5].value;
       operatorSelect.dispatchEvent(new Event('change'));
       renderFixture(testContext.fixture);
@@ -717,7 +717,7 @@ describe('DateTimeFilterComponent', () => {
       const buttons = rangeButtons(element);
       expect(buttons.map(button => button.textContent.trim())).toEqual([wholeWeek.label, workingHours.label]);
       expect(buttons.every(button => button.type === 'button')).toBe(true);
-      expect(element.querySelector('.date-range-options').getAttribute('aria-label')).toBe('Preset ranges');
+      expect(element.querySelector('.date-range-options')!.getAttribute('aria-label')!).toBe('Preset ranges');
     });
 
     it('fills whole days as 00:00 to 23:59 and emits up to the next midnight', () => {
@@ -758,7 +758,7 @@ describe('DateTimeFilterComponent', () => {
     function openCustomRangeWithTime(): HTMLElement {
       renderFixture(testContext.fixture);
       const element: HTMLElement = testContext.fixture.nativeElement;
-      const operatorSelect: HTMLSelectElement = element.querySelector(operatorSelector);
+      const operatorSelect: HTMLSelectElement = element.querySelector(operatorSelector)!;
       operatorSelect.value = operatorSelect.options[5].value;
       operatorSelect.dispatchEvent(new Event('change'));
       renderFixture(testContext.fixture);
@@ -781,7 +781,7 @@ describe('DateTimeFilterComponent', () => {
       const element = openCustomRangeWithTime();
       setRange('2023-08-15', '10:00', '2023-08-11', '10:00');
 
-      const dateValueTo = testContext.component.dateTimeFilterForm.get('dateValueTo');
+      const dateValueTo = testContext.component.dateTimeFilterForm.get('dateValueTo')!;
       expect(dateValueTo.hasError('range')).toBe(true);
       expect(testContext.component.dateTimeFilterForm.valid).toBe(false);
       expect(element.textContent).toContain('End date must not be before start date');
@@ -790,14 +790,14 @@ describe('DateTimeFilterComponent', () => {
     it('rejects a From time later than the To time on the same day', () => {
       openCustomRangeWithTime();
       setRange('2023-08-11', '15:00', '2023-08-11', '09:00');
-      expect(testContext.component.dateTimeFilterForm.get('dateValueTo').hasError('range')).toBe(true);
+      expect(testContext.component.dateTimeFilterForm.get('dateValueTo')!.hasError('range')).toBe(true);
     });
 
     it('accepts equal From and To, and clears the error once the order is fixed', () => {
       openCustomRangeWithTime();
       setRange('2023-08-11', '15:00', '2023-08-11', '09:00');
       setRange('2023-08-11', '09:00', '2023-08-11', '09:00');
-      expect(testContext.component.dateTimeFilterForm.get('dateValueTo').hasError('range')).toBe(false);
+      expect(testContext.component.dateTimeFilterForm.get('dateValueTo')!.hasError('range')).toBe(false);
       expect(testContext.component.dateTimeFilterForm.valid).toBe(true);
     });
   });

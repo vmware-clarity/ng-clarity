@@ -280,7 +280,7 @@ describe('GeneralFilterComponent', () => {
         ComparisonOperator.StartsWith,
       ]);
       testContext.fixture.nativeElement.querySelector(submitBtnSelector).click();
-      expect(emitted.mock.lastCall![0].criteria.map(predicate => predicate.operator)).toEqual([
+      expect(emitted.mock.lastCall![0]!.criteria.map(predicate => predicate.operator)).toEqual([
         ComparisonOperator.StartsWith,
         ComparisonOperator.StartsWith,
       ]);
@@ -314,7 +314,7 @@ describe('GeneralFilterComponent', () => {
         expect(testContext.fixture.nativeElement.querySelector(addButtonSelector)).not.toBeNull();
         testContext.fixture.nativeElement.querySelector(submitBtnSelector).click();
 
-        const filter = emitted.mock.lastCall![0];
+        const filter = emitted.mock.lastCall![0]!;
         expect(filter.operator).toBe(logic);
         expect(filter.criteria.map(predicate => predicate.value)).toEqual(['vm', 'test', 'prod', '01']);
         expect(filter.criteria.map(predicate => predicate.operator)).toEqual([
@@ -434,7 +434,7 @@ describe('GeneralFilterComponent', () => {
       testContext.component.removeCondition(1);
       renderFixture(testContext.fixture);
       testContext.fixture.nativeElement.querySelector(submitBtnSelector).click();
-      const filter = emitted.mock.lastCall![0];
+      const filter = emitted.mock.lastCall![0]!;
       expect(filter.criteria.map(predicate => predicate.value)).toEqual([0, 2 * 1024 ** 2, 3 * 1024 ** 3]);
       expect(filter.editorState).toEqual({ values: [0, 2, 3], units: [Unit.Byte, Unit.MB, Unit.GB] });
       // The shared definition is not written to.
@@ -480,7 +480,7 @@ describe('GeneralFilterComponent', () => {
       ]);
       expect(testContext.component.generalFilterForm.valid).toBe(true);
       testContext.fixture.nativeElement.querySelector(submitBtnSelector).click();
-      expect(emitted.mock.lastCall![0].criteria.map(predicate => predicate.value)).toEqual(values);
+      expect(emitted.mock.lastCall![0]!.criteria.map(predicate => predicate.value)).toEqual(values);
     });
 
     it('rejects an invalid numeric value in a later row', () => {
@@ -692,7 +692,7 @@ describe('GeneralFilterComponent', () => {
       testContext.component.ngOnChanges();
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual('100');
 
       const primaryUnitSelect: HTMLSelectElement =
         testContext.fixture.debugElement.nativeElement.querySelector(primaryUnitSelector);
@@ -700,265 +700,265 @@ describe('GeneralFilterComponent', () => {
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(102400);
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual(102400);
 
       primaryUnitSelect.value = primaryUnitSelect.options[2].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(104857600);
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual(104857600);
 
       primaryUnitSelect.value = primaryUnitSelect.options[3].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(107374182400);
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual(107374182400);
 
       primaryUnitSelect.value = primaryUnitSelect.options[4].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(109951162777600);
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual(109951162777600);
 
       testContext.component.filterProperty.unit = Unit.HZ;
       testContext.component.ngOnChanges();
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000);
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual(100000);
 
       primaryUnitSelect.value = primaryUnitSelect.options[2].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000000);
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual(100000000);
 
       primaryUnitSelect.value = primaryUnitSelect.options[3].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000000000);
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual(100000000000);
 
       testContext.component.filterProperty.unit = Unit.BytePS;
       testContext.component.ngOnChanges();
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000);
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual(100000);
 
       primaryUnitSelect.value = primaryUnitSelect.options[2].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000000);
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual(100000000);
 
       primaryUnitSelect.value = primaryUnitSelect.options[3].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000000000);
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual(100000000000);
 
       testContext.component.filterProperty.unit = Unit.KB;
       testContext.component.ngOnChanges();
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(102400);
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual(102400);
 
       primaryUnitSelect.value = primaryUnitSelect.options[2].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(104857600);
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual(104857600);
 
       primaryUnitSelect.value = primaryUnitSelect.options[3].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(107374182400);
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual(107374182400);
 
       testContext.component.filterProperty.unit = Unit.MB;
       testContext.component.ngOnChanges();
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(102400);
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual(102400);
 
       primaryUnitSelect.value = primaryUnitSelect.options[2].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(104857600);
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual(104857600);
 
       testContext.component.filterProperty.unit = Unit.GB;
       testContext.component.ngOnChanges();
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(102400);
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual(102400);
 
       testContext.component.filterProperty.unit = Unit.TB;
       testContext.component.ngOnChanges();
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual('100');
 
       testContext.component.filterProperty.unit = Unit.KHZ;
       testContext.component.ngOnChanges();
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000);
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual(100000);
 
       primaryUnitSelect.value = primaryUnitSelect.options[2].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000000);
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual(100000000);
 
       testContext.component.filterProperty.unit = Unit.MHZ;
       testContext.component.ngOnChanges();
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000);
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual(100000);
 
       testContext.component.filterProperty.unit = Unit.GHZ;
       testContext.component.ngOnChanges();
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual('100');
 
       testContext.component.filterProperty.unit = Unit.KBytePS;
       testContext.component.ngOnChanges();
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000);
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual(100000);
 
       primaryUnitSelect.value = primaryUnitSelect.options[2].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000000);
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual(100000000);
 
       testContext.component.filterProperty.unit = Unit.MBytePS;
       testContext.component.ngOnChanges();
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000);
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual(100000);
 
       testContext.component.filterProperty.unit = Unit.GBytePS;
       testContext.component.ngOnChanges();
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual('100');
 
       testContext.component.filterProperty.unit = Unit.BitPS;
       testContext.component.ngOnChanges();
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000);
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual(100000);
 
       primaryUnitSelect.value = primaryUnitSelect.options[2].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000000);
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual(100000000);
 
       primaryUnitSelect.value = primaryUnitSelect.options[3].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000000000);
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual(100000000000);
 
       testContext.component.filterProperty.unit = Unit.KBitPS;
       testContext.component.ngOnChanges();
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000);
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual(100000);
 
       primaryUnitSelect.value = primaryUnitSelect.options[2].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000000);
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual(100000000);
 
       testContext.component.filterProperty.unit = Unit.MBitPS;
       testContext.component.ngOnChanges();
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000);
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual(100000);
 
       testContext.component.filterProperty.unit = Unit.GBitPS;
       testContext.component.ngOnChanges();
       submitButton.click();
       renderFixture(testContext.fixture);
-      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
+      expect(emitted.mock.lastCall![0]!.criteria[0].value).toEqual('100');
     });
   });
   describe('in edit mode with string property', () => {

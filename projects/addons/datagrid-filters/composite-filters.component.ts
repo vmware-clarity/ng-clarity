@@ -118,7 +118,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
 
   selectedFilterableProperty!: FilterablePropertyDefinition;
 
-  propertyType!: PropertyType;
+  propertyType?: PropertyType;
 
   stringProperty!: StringPropertyDefinition;
 
@@ -144,11 +144,11 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
 
   protected readonly popoverType = ClrPopoverType.DROPDOWN;
 
-  @ViewChild(ClrCombobox) private fieldCombobox: ClrCombobox<FilterablePropertyDefinition>;
+  @ViewChild(ClrCombobox) private fieldCombobox!: ClrCombobox<FilterablePropertyDefinition>;
 
-  @ViewChild('addButton', { static: true }) private addButton: ElementRef<HTMLButtonElement>;
+  @ViewChild('addButton', { static: true }) private addButton!: ElementRef<HTMLButtonElement>;
 
-  @ViewChild('filterContainer') private filterContainer: ElementRef<HTMLElement>;
+  @ViewChild('filterContainer') private filterContainer!: ElementRef<HTMLElement>;
 
   private readonly injector = inject(Injector);
 
@@ -776,6 +776,12 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     const property = this.semiPredefinedFilters.find(
       semi => semi.property === filter.criteria[0].filterableProperty.property
     );
+
+    // Only called for filters on a semi-predefined field, so it is always found.
+    if (!property) {
+      return false;
+    }
+
     return (
       (filter.criteria.length === 1 || filter.operator === LogicalOperator.Or) &&
       filter.criteria.every(

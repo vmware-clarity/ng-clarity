@@ -78,8 +78,8 @@ describe('DataGridFiltersComponent', () => {
     // Search comes first, then the pills.
     expect(
       element
-        .querySelector('clr-input-container')
-        .compareDocumentPosition(element.querySelector('appfx-composite-filter'))
+        .querySelector('clr-input-container')!
+        .compareDocumentPosition(element.querySelector('appfx-composite-filter')!)
     ).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
   });
   it('keeps the search when property filters change in combined mode', () => {

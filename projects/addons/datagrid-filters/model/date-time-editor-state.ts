@@ -33,7 +33,7 @@ function isMidnight(date: Date): boolean {
  * A stored or emitted date-time ("2003-05-01", "2003-05-01T10:30", "2003-05-01T00:00:00+03:00") as a local `Date`.
  * A trailing UTC offset is ignored: the editors write local times followed by the local offset.
  */
-export function parseLocalDateTime(value: string): { date: Date; hasTime: boolean } | null {
+export function parseLocalDateTime(value: string | undefined): { date: Date; hasTime: boolean } | null {
   const match = LOCAL_DATE_TIME.exec(value || '');
   if (!match) {
     return null;
@@ -93,12 +93,12 @@ export function dateTimeEditorState(filter: PropertyFilter | undefined): FilterE
     const value = normalize(predicate.value);
     return operator !== undefined && value ? { operator, value } : null;
   }
-  if (criteria.length === 2 && filter.operator === LogicalOperator.And) {
+  if (criteria.length === 2 && filter?.operator === LogicalOperator.And) {
     const from = criteria.find(predicate => predicate.operator === ComparisonOperator.GreaterThanOrEqualTo);
     const to = criteria.find(predicate => predicate.operator === ComparisonOperator.LessThan);
     const start = parseLocalDateTime(from?.value);
     const end = parseLocalDateTime(to?.value);
-    if (!start || !end) {
+    if (!from || !to || !start || !end) {
       return null;
     }
     // The editor steps by a second on a field with seconds, otherwise by a minute.

@@ -165,7 +165,7 @@ describe('ManageFilterComponent', () => {
 
     trigger.dispatchEvent(new Event('focus'));
     renderFixture(testContext.fixture);
-    const tooltip = document.querySelector<HTMLElement>('.tooltip-content');
+    const tooltip = document.querySelector<HTMLElement>('.tooltip-content')!;
     expect(tooltip.textContent.trim()).toBe(testContext.component.tooltipText);
 
     trigger.click();
@@ -177,17 +177,17 @@ describe('ManageFilterComponent', () => {
     testContext.component.propertyFilter = stringPropertyFilter;
     renderFixture(testContext.fixture);
     const trigger: HTMLButtonElement = testContext.fixture.nativeElement.querySelector('.filter-pill');
-    const visibleText = trigger.querySelector('.filter-pill-text').textContent.trim().replace(/\s+/g, ' ');
+    const visibleText = trigger.querySelector('.filter-pill-text')!.textContent!.trim().replace(/\s+/g, ' ');
     const otherConditions = ' And ' + testContext.component.secondaryConditionDisplayText;
 
     // Name: the visible text first (WCAG 2.5.3), then the condition behind the +1 badge, then the hint.
-    const label = trigger.getAttribute('aria-label');
+    const label = trigger.getAttribute('aria-label')!;
     expect(label.startsWith(visibleText), label).toBe(true);
     expect(label).toBe(testContext.component.pillText + otherConditions + ', Edit filter');
 
     trigger.dispatchEvent(new Event('focus'));
     renderFixture(testContext.fixture);
-    const tooltip = document.querySelector<HTMLElement>('.tooltip-content');
+    const tooltip = document.querySelector<HTMLElement>('.tooltip-content')!;
     expect(tooltip.textContent.trim()).toBe(
       stringProperty.displayName + ' ' + testContext.component.primaryConditionDisplayText + otherConditions
     );
@@ -223,7 +223,7 @@ describe('ManageFilterComponent', () => {
     const input = document.querySelector<HTMLInputElement>('.filter-popover .clr-combobox-input')!;
     expect(input.value).toBe(stringProperty.displayName);
     expect(input.disabled).toBe(true);
-    expect(document.querySelector<HTMLButtonElement>('.filter-popover .clr-combobox-trigger').disabled).toBe(true);
+    expect(document.querySelector<HTMLButtonElement>('.filter-popover .clr-combobox-trigger')!.disabled).toBe(true);
     expect(document.querySelector('.filter-form-actions [data-test-id="clear-filter"]')).not.toBeNull();
   });
   it('hides the field combobox for predefined pills', async () => {
@@ -237,7 +237,7 @@ describe('ManageFilterComponent', () => {
 
     expect(document.querySelector('.filter-popover')).toBeTruthy();
     expect(document.querySelector('.filter-popover clr-combobox')).toBeNull();
-    expect(getComputedStyle(document.querySelector('.filter-popover .filter-field-row')).display).toBe('none');
+    expect(getComputedStyle(document.querySelector('.filter-popover .filter-field-row')!).display).toBe('none');
   });
   it('shows a minimal enum editor for predefined pills', async () => {
     testContext.component.filterProperty = enumProperty;
@@ -248,13 +248,13 @@ describe('ManageFilterComponent', () => {
     await testContext.fixture.whenStable();
     renderFixture(testContext.fixture);
 
-    const popover = document.querySelector('.filter-popover');
+    const popover = document.querySelector('.filter-popover')!;
     expect(popover.classList).toContain('filter-popover-minimal');
     expect(popover.querySelector('.selection-counter')).toBeNull();
     expect(popover.textContent).not.toContain(testContext.component.filterStrings.valueLabel);
     expect(popover.querySelectorAll('input[type="checkbox"]').length).toBeGreaterThan(0);
-    expect(popover.querySelector('.filter-options').hasAttribute('cds-layout')).toBe(false);
-    expect(popover.querySelector('.filter-options').classList).toContain('filter-options-minimal');
+    expect(popover.querySelector('.filter-options')!.hasAttribute('cds-layout')).toBe(false);
+    expect(popover.querySelector('.filter-options')!.classList).toContain('filter-options-minimal');
   });
   it('removes a user-added pill with its X button', () => {
     vi.spyOn(testContext.component.filterRemoved, 'emit').mockImplementation(() => undefined);
@@ -306,11 +306,11 @@ describe('ManageFilterComponent', () => {
     renderFixture(testContext.fixture);
     const trigger: HTMLButtonElement = testContext.fixture.nativeElement.querySelector('.filter-pill');
     expect(trigger.tagName).toBe('BUTTON');
-    expect(trigger.closest('clr-label').classList.contains('label-info')).toBe(false);
+    expect(trigger.closest('clr-label')!.classList.contains('label-info')).toBe(false);
     expect(trigger.textContent.trim()).toBe(stringProperty.displayName);
     expect(trigger.classList.contains('filter-pill-active')).toBe(false);
     expect(trigger.querySelector('.filter-pill-count')).toBeNull();
-    expect(trigger.querySelector('cds-icon').getAttribute('direction')).toBe('down');
+    expect(trigger.querySelector('cds-icon')!.getAttribute('direction')!).toBe('down');
   });
 
   it('shows the first value and counts all additional selections', () => {
@@ -321,12 +321,12 @@ describe('ManageFilterComponent', () => {
     renderFixture(testContext.fixture);
     const trigger: HTMLButtonElement = testContext.fixture.nativeElement.querySelector('.filter-pill');
     expect(trigger.classList.contains('filter-pill-active')).toBe(true);
-    expect(trigger.closest('clr-label').classList.contains('label-info')).toBe(true);
-    expect(trigger.querySelector('clr-badge').textContent).toBe('+3');
-    expect(trigger.querySelector('.filter-pill-text').textContent.trim()).toBe(
+    expect(trigger.closest('clr-label')!.classList.contains('label-info')).toBe(true);
+    expect(trigger.querySelector('clr-badge')!.textContent!).toBe('+3');
+    expect(trigger.querySelector('.filter-pill-text')!.textContent!.trim()).toBe(
       `${enumProperty.displayName}: Equals Alert`
     );
-    expect(trigger.querySelector('.filter-pill-count').textContent).toBe('+3');
+    expect(trigger.querySelector('.filter-pill-count')!.textContent!).toBe('+3');
     expect(trigger.getAttribute('aria-label')).toContain('Equals: Normal');
   });
 
@@ -341,11 +341,11 @@ describe('ManageFilterComponent', () => {
     };
     renderFixture(testContext.fixture);
     const trigger: HTMLButtonElement = testContext.fixture.nativeElement.querySelector('.filter-pill');
-    expect(trigger.querySelector('.filter-pill-text').textContent.trim()).toBe(
+    expect(trigger.querySelector('.filter-pill-text')!.textContent!.trim()).toBe(
       `${stringProperty.displayName}: Contains linux`
     );
-    expect(trigger.querySelector('.filter-pill-condition').textContent).toBe('Contains linux');
-    expect(trigger.querySelector('.filter-pill-count').textContent).toBe('+2');
+    expect(trigger.querySelector('.filter-pill-condition')!.textContent!).toBe('Contains linux');
+    expect(trigger.querySelector('.filter-pill-count')!.textContent!).toBe('+2');
   });
 
   it('shows only the field name on an empty pill', () => {
@@ -390,7 +390,7 @@ describe('ManageFilterComponent', () => {
     renderFixture(testContext.fixture);
     await testContext.fixture.whenStable();
     renderFixture(testContext.fixture);
-    const clear: HTMLButtonElement = document.querySelector('[data-test-id="clear-filter"]');
+    const clear: HTMLButtonElement = document.querySelector('[data-test-id="clear-filter"]')!;
     expect(clear.textContent.trim()).toBe('Clear filter');
     clear.click();
     renderFixture(testContext.fixture);
@@ -408,7 +408,7 @@ describe('ManageFilterComponent', () => {
     renderFixture(testContext.fixture);
     await testContext.fixture.whenStable();
     renderFixture(testContext.fixture);
-    const remove: HTMLButtonElement = document.querySelector('[data-test-id="clear-filter"]');
+    const remove: HTMLButtonElement = document.querySelector('[data-test-id="clear-filter"]')!;
     expect(remove.textContent.trim()).toBe(testContext.component.filterStrings.removeFilterText);
     remove.click();
     expect(testContext.component.filterRemoved.emit).toHaveBeenCalledTimes(1);
@@ -426,7 +426,7 @@ describe('ManageFilterComponent', () => {
     const emitted = vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
     renderFixture(testContext.fixture);
     const trigger: HTMLButtonElement = testContext.fixture.nativeElement.querySelector('.filter-pill');
-    expect(trigger.querySelector('clr-badge').textContent).toBe('+3');
+    expect(trigger.querySelector('clr-badge')!.textContent!).toBe('+3');
     for (const value of values) {
       expect(trigger.getAttribute('aria-label')).toContain(value);
     }
@@ -439,14 +439,14 @@ describe('ManageFilterComponent', () => {
     inputs[2].value = 'changed';
     inputs[2].dispatchEvent(new Event('input'));
     renderFixture(testContext.fixture);
-    document.querySelector<HTMLButtonElement>('[data-test-id="submitBtn"]').click();
+    document.querySelector<HTMLButtonElement>('[data-test-id="submitBtn"]')!.click();
     renderFixture(testContext.fixture);
-    const updated = emitted.mock.lastCall![0];
+    const updated = emitted.mock.lastCall![0]!;
     expect(updated.criteria.map(predicate => predicate.value)).toEqual(['first', 'second', 'changed', 'fourth']);
     expect(originalFilter.criteria.map(predicate => predicate.value)).toEqual(values);
     testContext.fixture.componentRef.setInput('propertyFilter', updated);
     renderFixture(testContext.fixture);
-    expect(trigger.querySelector('clr-badge').textContent).toBe('+3');
+    expect(trigger.querySelector('clr-badge')!.textContent!).toBe('+3');
   });
 
   it('summarizes and opens numeric presets without display metadata', async () => {
@@ -458,8 +458,8 @@ describe('ManageFilterComponent', () => {
     };
     renderFixture(testContext.fixture);
     const trigger: HTMLButtonElement = testContext.fixture.nativeElement.querySelector('.filter-pill');
-    expect(trigger.querySelector('.filter-pill-text').textContent.trim()).toBe(`${field.displayName}: Equals 0 MB`);
-    expect(trigger.querySelector('clr-badge').textContent).toBe('+2');
+    expect(trigger.querySelector('.filter-pill-text')!.textContent!.trim()).toBe(`${field.displayName}: Equals 0 MB`);
+    expect(trigger.querySelector('clr-badge')!.textContent!).toBe('+2');
     for (const value of values) {
       expect(trigger.getAttribute('aria-label')).toContain(`${value} MB`);
     }
@@ -481,7 +481,7 @@ describe('ManageFilterComponent', () => {
       renderFixture(testContext.fixture);
       await testContext.fixture.whenStable();
       renderFixture(testContext.fixture);
-      const input: HTMLInputElement = document.querySelector('input[formControlName="value"]');
+      const input: HTMLInputElement = document.querySelector('input[formControlName="value"]')!;
       input.value = 'unsaved';
       input.dispatchEvent(new Event('input'));
       if (dismiss === 'escape') {
@@ -489,7 +489,7 @@ describe('ManageFilterComponent', () => {
       } else if (dismiss === 'outside') {
         document.body.dispatchEvent(new MouseEvent('click', { bubbles: true }));
       } else {
-        document.querySelector<HTMLButtonElement>('[data-test-id="cancelBtn"]').click();
+        document.querySelector<HTMLButtonElement>('[data-test-id="cancelBtn"]')!.click();
       }
       renderFixture(testContext.fixture);
       await testContext.fixture.whenStable();
