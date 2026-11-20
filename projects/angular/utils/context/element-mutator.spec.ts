@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { elementMutatorOf, publishElementMutator } from './element-mutator';
+import { ClrElementMutator, elementMutatorOf, publishElementMutator } from './element-mutator';
 
 function readElementMutator(element: Element) {
   return elementMutatorOf(element) ?? null;
