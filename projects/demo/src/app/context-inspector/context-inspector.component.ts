@@ -5,9 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrContextService, ClrPageContext } from '@clr/angular/ai';
-import { Subscription } from 'rxjs';
 
 /** App-shell panel showing what the context engine sees, on every demo page. */
 @Component({
@@ -17,13 +16,11 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./context-inspector.component.scss'],
   standalone: false,
 })
-export class ContextInspectorComponent implements OnDestroy {
+export class ContextInspectorComponent {
   open = false;
   snapshotJson = '';
   snapshotBytes = 0;
   snapshotCount = 0;
-
-  private subscription?: Subscription;
 
   constructor(private context: ClrContextService) {}
 
@@ -33,19 +30,13 @@ export class ContextInspectorComponent implements OnDestroy {
 
   setOpen(open: boolean): void {
     this.open = open;
-    this.subscription?.unsubscribe();
-    this.subscription = undefined;
     if (open) {
-      this.subscription = this.context.watch().subscribe(snapshot => this.render(snapshot));
+      this.refresh();
     }
   }
 
   async refresh(): Promise<void> {
     this.render(await this.context.snapshot());
-  }
-
-  ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
   }
 
   private render(snapshot: ClrPageContext): void {
