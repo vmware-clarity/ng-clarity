@@ -5,8 +5,7 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<!-- data-clr-context-ignore: this panel renders the context, so the engine must not
-     describe it and the tracker must not react to its own re-renders. -->
+<!-- data-clr-context-ignore: this panel renders the context, so the engine must not describe it. -->
 <clr-side-panel
   [clrSidePanelOpen]="open"
   (clrSidePanelOpenChange)="setOpen($event)"
@@ -23,7 +22,7 @@
       different page in the header nav.
     </p>
     <div class="context-inspector-toolbar">
-      <span class="label">update #{{ snapshotCount }}</span>
+      <span class="label">read #{{ snapshotCount }}</span>
       <span class="label">{{ snapshotBytes }} bytes</span>
       <button type="button" class="btn btn-sm btn-link" (click)="refresh()">Refresh now</button>
     </div>

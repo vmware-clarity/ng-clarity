@@ -12,7 +12,7 @@ surfaces are planned under the same entry point.
 
 ## Quickstart
 
-Inject `ClrContextService` and call `snapshot()` for the page now or `watch()` for the page as it changes; call `configure()` once at startup to set the scope. The "Contextual Engine" guide on the
+Inject `ClrContextService` and call `snapshot()` for the page now; call `configure()` once at startup to set the scope. The "Contextual Engine" guide on the
 Clarity website (`/documentation/contextual-engine`) has a complete example and a privacy checklist to read
 before a snapshot goes to a model.
 
@@ -69,7 +69,7 @@ Then, in the same component that reads the page, plan and apply the operations t
 import { ClrMutationEngineService, ClrMutationOperation } from '@clr/angular/ai';
 
 export class AssistantComponent {
-  // ...the engine and tracker above.
+  // ...the engine above.
   private readonly mutationEngine = inject(ClrMutationEngineService);
 
   async act(operations: ClrMutationOperation[]) {

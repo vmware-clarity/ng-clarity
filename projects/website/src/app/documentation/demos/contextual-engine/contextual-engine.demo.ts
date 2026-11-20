@@ -17,8 +17,7 @@ import { ContextPlaygroundComponent } from './context-playground.component';
 const INSTALL_EXAMPLE = `npm install @clr/angular --save`;
 
 const QUICKSTART_EXAMPLE = `
-import { Component, DestroyRef, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, inject } from '@angular/core';
 import { ClrContextService } from '@clr/angular/ai';
 
 @Component({
@@ -28,16 +27,8 @@ import { ClrContextService } from '@clr/angular/ai';
 export class AssistantComponent {
   private readonly context = inject(ClrContextService);
 
-  constructor() {
-    // The current page, kept up to date: emits whenever what is on screen changes.
-    this.context
-      .watch()
-      .pipe(takeUntilDestroyed(inject(DestroyRef)))
-      .subscribe(page => console.log(page.components));
-  }
-
   async ask(question: string) {
-    // Or one snapshot, taken now. Send it to your model as data, delimited from your prompt.
+    // One snapshot, taken now. Send it to your model as data, delimited from your prompt.
     return { question, page: await this.context.snapshot() };
   }
 }
@@ -95,32 +86,8 @@ const SNAPSHOT_SHAPE_EXAMPLE = `
 }
 `;
 
-const WATCH_EXAMPLE = `
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ClrContextService } from '@clr/angular/ai';
-
-@Component({
-  // ...
-})
-export class AssistantPanelComponent implements OnInit {
-  private readonly context = inject(ClrContextService);
-  private readonly destroyRef = inject(DestroyRef);
-
-  ngOnInit() {
-    // One watcher is shared: watch() starts it if nobody has, and stops it once the
-    // last subscriber is gone.
-    this.context
-      .watch({ maxComponents: 50 })
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(context => this.setPageContext(context));
-  }
-}
-`;
-
 const IGNORE_EXAMPLE = `
-<!-- The assistant panel renders the context, so the engine must not describe it
-     and watch() must not react to its re-renders. -->
+<!-- The assistant panel renders the context, so the engine must not describe it. -->
 <aside class="assistant-panel" data-clr-context-ignore>...</aside>
 `;
 
@@ -234,19 +201,15 @@ inject(ClrContextService).configure({
 `;
 
 const CHANGES_EXAMPLE = `
-this.context.changes().subscribe(change => {
-  // change.added   — nodes that were not there before, with their subtrees
-  // change.removed — nodes that are gone
-  // change.changed — nodes whose own state differs: { before, after }
-  // change.viewChanged — application, view id, enabled or metadata
-  // change.routeChanged / titleChanged / regionsChanged
-  if (!clrIsEmptyContextChange(change)) {
-    assistant.send({ pageChanged: change });
-  }
-});
-
-// The same comparison for snapshots obtained any other way:
 const change = clrDiffContext(previousSnapshot, currentSnapshot);
+// change.added   — nodes that were not there before, with their subtrees
+// change.removed — nodes that are gone
+// change.changed — nodes whose own state differs: { before, after }
+// change.viewChanged — application, view id, enabled or metadata
+// change.routeChanged / titleChanged / regionsChanged
+if (!clrIsEmptyContextChange(change)) {
+  assistant.send({ pageChanged: change });
+}
 `;
 
 const BUDGETS_EXAMPLE = `
@@ -425,7 +388,6 @@ export class ContextualEngineDemo extends ClarityDocComponent {
   quickstartExample = QUICKSTART_EXAMPLE;
   snapshotExample = SNAPSHOT_EXAMPLE;
   snapshotShapeExample = SNAPSHOT_SHAPE_EXAMPLE;
-  watchExample = WATCH_EXAMPLE;
   ignoreExample = IGNORE_EXAMPLE;
   directiveExample = DIRECTIVE_EXAMPLE;
   directiveStandaloneExample = DIRECTIVE_STANDALONE_EXAMPLE;

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import {
@@ -15,7 +15,6 @@ import {
   ClrMutationEngineService,
   ClrMutationOperation,
 } from '@clr/angular/ai';
-import { Subscription } from 'rxjs';
 
 import { DEMO_HOSTS, DemoHost } from '../hosts';
 
@@ -34,7 +33,7 @@ interface WritableTarget {
   templateUrl: './mutation.demo.html',
   styleUrls: ['./mutation.demo.scss'],
 })
-export class ContextualMutationDemo implements OnInit, OnDestroy {
+export class ContextualMutationDemo implements OnInit {
   hosts: DemoHost[] = DEMO_HOSTS;
   selectedHosts: DemoHost[] = [];
   note = '';
@@ -61,8 +60,6 @@ export class ContextualMutationDemo implements OnInit, OnDestroy {
     range: new FormControl(50),
   });
 
-  private trackingSubscription: Subscription | null = null;
-
   constructor(
     private context: ClrContextService,
     private mutationEngine: ClrMutationEngineService,
@@ -70,17 +67,17 @@ export class ContextualMutationDemo implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // The watcher is shared with the app-shell inspector and stops once neither needs it.
-    this.trackingSubscription = this.context.watch({ maxComponents: 500 }).subscribe(snapshot => {
-      this.writableTargets = writableTargets(snapshot.components);
-      if (!this.writableTargets.some(target => target.ref === this.targetRef)) {
-        this.targetRef = this.writableTargets[0]?.ref ?? '';
-      }
-    });
+    this.readTargets();
   }
 
-  ngOnDestroy(): void {
-    this.trackingSubscription?.unsubscribe();
+  /** Reads the page for the controls an agent could write to. */
+  async readTargets(): Promise<void> {
+    const snapshot = await this.context.snapshot({ maxComponents: 500 });
+    this.writableTargets = writableTargets(snapshot.components);
+    if (!this.writableTargets.some(target => target.ref === this.targetRef)) {
+      this.targetRef = this.writableTargets[0]?.ref ?? '';
+    }
+    this.changeDetectorRef.markForCheck();
   }
 
   setValue(): void {
@@ -128,6 +125,7 @@ export class ContextualMutationDemo implements OnInit, OnDestroy {
     this.mutationEngine.apply([operation]).then(report => {
       this.mutationResult = JSON.stringify(report.results, null, 2);
       this.changeDetectorRef.markForCheck();
+      this.readTargets();
     });
   }
 }

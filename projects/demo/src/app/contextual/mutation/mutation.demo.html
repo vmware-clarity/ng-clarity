@@ -40,6 +40,7 @@
       <div class="mutation-actions">
         <button type="submit" class="btn btn-primary btn-sm" [disabled]="!targetRef">Set value</button>
         <button type="button" class="btn btn-sm" [disabled]="!targetRef" (click)="clearValue()">Clear</button>
+        <button type="button" class="btn btn-sm btn-link" (click)="readTargets()">Read the page again</button>
       </div>
     </form>
     <form clrForm clrLayout="vertical" (ngSubmit)="navigate()">

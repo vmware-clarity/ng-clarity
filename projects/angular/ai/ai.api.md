@@ -4,11 +4,9 @@
 
 ```ts
 
-import { DoCheck } from '@angular/core';
 import { EnvironmentProviders } from '@angular/core';
 import * as i0 from '@angular/core';
 import { InjectionToken } from '@angular/core';
-import { Observable } from 'rxjs';
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { Type } from '@angular/core';
@@ -239,11 +237,9 @@ export interface ClrComponentContextChange {
 }
 
 // @public
-export class ClrContext implements OnInit, DoCheck, OnDestroy {
+export class ClrContext implements OnInit, OnDestroy {
     getClrContext(): Partial<ClrPublishedContext> | null;
     label: string;
-    // (undocumented)
-    ngDoCheck(): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -304,9 +300,7 @@ export interface ClrContextCollectOptions {
 // @public
 export interface ClrContextConfig {
     application?: ClrContextApplicationOptions;
-    debounceMs?: number;
     extractors?: ClrContextDomExtractor[];
-    maxWaitMs?: number;
     routes?: boolean;
     scope?: ClrContextPreset | ClrContextSnapshotOptions;
     timeoutMs?: number;
@@ -344,11 +338,8 @@ export type ClrContextRegionLimits = Pick<ResolvedSnapshotOptions, 'maxTextLengt
 
 // @public
 export class ClrContextRegistryService {
-    constructor();
-    readonly changes$: Observable<void>;
     collect(options?: ClrContextCollectOptions): ClrComponentContext[];
     collectAsync(options?: ClrContextAsyncCollectOptions): Promise<ClrComponentContext[]>;
-    notifyChanged(): void;
     register(provider: ClrContextProvider): () => void;
     unregister(provider: ClrContextProvider): void;
     // (undocumented)
@@ -358,15 +349,11 @@ export class ClrContextRegistryService {
 }
 
 // @public
-export class ClrContextService implements OnDestroy {
-    changes(options?: ClrContextSnapshotOptions): Observable<ClrContextChange>;
+export class ClrContextService {
     configure(config: ClrContextConfig): void;
-    // (undocumented)
-    ngOnDestroy(): void;
     // @internal
     resolveScope(options?: ClrContextSnapshotOptions): ResolvedSnapshotOptions;
     snapshot(options?: ClrContextSnapshotOptions): Promise<ClrPageContext>;
-    watch(options?: ClrContextSnapshotOptions): Observable<ClrPageContext>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextService, never>;
     // (undocumented)
