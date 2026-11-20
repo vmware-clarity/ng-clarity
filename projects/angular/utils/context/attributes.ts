@@ -12,7 +12,7 @@
 export const CLR_CONTEXT_REDACT_ATTRIBUTE = 'data-clr-context-redact';
 
 /**
- * Elements carrying this attribute, and everything inside them, are invisible to the engine and the tracker.
+ * Elements carrying this attribute, and everything inside them, are invisible to the engine.
  * Put it on UI that consumes context, such as a chat panel, to avoid feedback loops.
  */
 export const CLR_CONTEXT_IGNORE_ATTRIBUTE = 'data-clr-context-ignore';
