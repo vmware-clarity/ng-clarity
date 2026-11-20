@@ -5,7 +5,8 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 <p class="clr-mt-24px" cds-text="body">
-  Most applications need only a few of these: <code cds-text="code">ClrContextService</code> to read the page, and
+  Most applications need only a few of these: <code cds-text="code">ClrContextService</code> to read the page,
+  <code cds-text="code">configure(&#123; application &#125;)</code> to name the application, and
   <code cds-text="code">data-clr-context-redact</code> for fields that hold secrets. Everything else is for finer
   control.
 </p>
@@ -89,6 +90,59 @@
         How long a snapshot waits for each provider that answers with a promise. A provider that fails or is too slow
         appears as a region of type <code cds-text="code">'clr-unavailable'</code>.
       </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">application</b></td>
+      <td class="left clr-hidden-xs-down">the host name</td>
+      <td class="left">
+        Names the application and its views, as a <code cds-text="code">ClrContextApplicationOptions</code>. See the
+        table below.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">views</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">'all'</code></td>
+      <td class="left">
+        <code cds-text="code">'all'</code> reads every view. <code cds-text="code">'enabled'</code> reads only views
+        that have metadata, and reports the rest as <code cds-text="code">enabled: false</code> with nothing about the
+        page.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 cds-text="subsection" class="clr-mt-24px"><code cds-text="code">application</code></h4>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Option</th>
+      <th class="left clr-hidden-xs-down">Type</th>
+      <th class="left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">id</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">A stable id for the application, such as <code cds-text="code">'inventory'</code>.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">version</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">The application's version.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">viewId</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; string | null | undefined</code></td>
+      <td class="left">
+        A function that returns the current view's id, called on every snapshot. Often not needed: put
+        <code cds-text="code">data: &#123; viewId: 'vm-list' &#125;</code> on each route instead.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">metadata</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; object | null | undefined</code></td>
+      <td class="left">A function that returns a small object about the current view, called on every snapshot.</td>
     </tr>
   </tbody>
 </table>
@@ -273,7 +327,10 @@
 </p>
 
 <h2 id="context-shape" cds-text="title" class="clr-mt-48px">Snapshot</h2>
-<p class="clr-mt-16px" cds-text="body">What <code cds-text="code">snapshot()</code> returns.</p>
+<p class="clr-mt-16px" cds-text="body">
+  What <code cds-text="code">snapshot()</code> returns. <code cds-text="code">CLR_PAGE_CONTEXT_SCHEMA</code> is its JSON
+  Schema, for validating snapshots outside TypeScript.
+</p>
 
 <h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrPageContext</code></h3>
 <table class="table">
@@ -285,6 +342,37 @@
     </tr>
   </thead>
   <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">schemaVersion</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">The snapshot format's version. New fields can appear without it changing.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">application</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ClrApplicationContext</code></td>
+      <td class="left">
+        The application's <code cds-text="code">id</code> and <code cds-text="code">version</code>. The id is the page's
+        host name when none is configured.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">viewId</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">The view the user is on, when the application names it.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">metadata</b></td>
+      <td class="left clr-hidden-xs-down">Object</td>
+      <td class="left">What the application says about the current view.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">enabled</b></td>
+      <td class="left clr-hidden-xs-down">Boolean</td>
+      <td class="left">
+        <code cds-text="code">false</code> when the application turned the engine off for this view; the snapshot then
+        describes nothing on the page.
+      </td>
+    </tr>
     <tr>
       <td class="left"><b cds-text="medium">title, url</b></td>
       <td class="left clr-hidden-xs-down">String</td>

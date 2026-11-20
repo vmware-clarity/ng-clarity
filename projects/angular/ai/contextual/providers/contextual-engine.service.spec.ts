@@ -353,6 +353,218 @@ describe('ClrContextService, the routes an application can navigate to', () => {
   });
 });
 
+/** The service, configured with `config` once the testing module is set up. */
+function configuredService(config: ClrContextConfig): ClrContextService {
+  const service = TestBed.inject(ClrContextService);
+  service.configure(config);
+  return service;
+}
+
+describe('ClrContextService, identifying the application and view', () => {
+  const quiet = { excludeCategories: Object.keys(CLR_CONTEXT_CATEGORIES) as ClrContextCategory[] };
+
+  it('versions every snapshot and names the host when no application is configured', async () => {
+    TestBed.configureTestingModule({});
+    const snapshot = await TestBed.inject(ClrContextService).snapshot(quiet);
+
+    expect(snapshot.schemaVersion).toBe('1');
+    expect(snapshot.application).toEqual({ id: document.location.hostname });
+    expect(snapshot.viewId).toBeUndefined();
+    expect(snapshot.metadata).toBeUndefined();
+  });
+
+  it('reports the configured application, view id and serializable metadata', async () => {
+    TestBed.configureTestingModule({});
+    const snapshot = await configuredService({
+      application: {
+        id: 'inventory',
+        version: '2.4.0',
+        viewId: () => 'host-list',
+        metadata: () => ({ purpose: 'Lists hosts', load: () => 'not serializable' }),
+      },
+    }).snapshot(quiet);
+
+    expect(snapshot.application).toEqual({ id: 'inventory', version: '2.4.0' });
+    expect(snapshot.viewId).toBe('host-list');
+    expect(snapshot.metadata).toEqual({ purpose: 'Lists hosts' });
+  });
+
+  it('takes the view id from the application first, then from the deepest route', async () => {
+    let provided: string | undefined = 'from-provider';
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter([
+          {
+            path: 'hosts',
+            data: { viewId: 'hosts' },
+            children: [{ path: ':id', component: RoutedComponent, data: { viewId: 'host-detail' } }],
+          },
+        ]),
+      ],
+    });
+    const engine = configuredService({ application: { id: 'inventory', viewId: () => provided } });
+    await TestBed.inject(Router).navigateByUrl('/hosts/7');
+
+    expect((await engine.snapshot(quiet)).viewId).toBe('from-provider');
+    provided = undefined;
+    expect((await engine.snapshot(quiet)).viewId).toBe('host-detail');
+  });
+
+  it('does not give a child route the view id of its parent route', async () => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter([
+          {
+            path: 'hosts',
+            data: { viewId: 'hosts' },
+            children: [{ path: ':id', component: RoutedComponent }],
+          },
+        ]),
+      ],
+    });
+    const engine = configuredService({ application: { id: 'inventory' } });
+    await TestBed.inject(Router).navigateByUrl('/hosts/7');
+
+    expect((await engine.snapshot(quiet)).viewId).toBeUndefined();
+  });
+
+  it('survives an application callback that throws', async () => {
+    TestBed.configureTestingModule({});
+    const snapshot = await configuredService({
+      application: {
+        id: 'inventory',
+        viewId: () => {
+          throw new Error('broken');
+        },
+        metadata: () => {
+          throw new Error('broken');
+        },
+      },
+    }).snapshot(quiet);
+
+    expect(snapshot.viewId).toBeUndefined();
+    expect(snapshot.metadata).toBeUndefined();
+  });
+});
+
+describe('ClrContextService, reading only enabled views', () => {
+  let metadata: Record<string, unknown> | null;
+  let engine: ClrContextService;
+  let registry: ClrContextRegistryService;
+
+  beforeEach(() => {
+    metadata = null;
+    TestBed.configureTestingModule({});
+    engine = configuredService({
+      application: { id: 'inventory', viewId: () => 'host-list', metadata: () => metadata },
+      views: 'enabled',
+    });
+    registry = TestBed.inject(ClrContextRegistryService);
+  });
+
+  it('reports a view without metadata as not enabled, with nothing about the page', async () => {
+    const provider = vi.fn().mockReturnValue({ type: 'region', label: 'Hosts' });
+    registry.register({ getClrContext: provider });
+
+    const snapshot = await engine.snapshot();
+    expect(snapshot).toEqual({
+      schemaVersion: '1',
+      application: { id: 'inventory' },
+      viewId: 'host-list',
+      enabled: false,
+      title: '',
+      regions: [],
+      components: [],
+      collectedAt: expect.any(String),
+    });
+    expect(provider).not.toHaveBeenCalled();
+  });
+
+  it('reads a view once it has metadata', async () => {
+    metadata = { purpose: 'Lists hosts' };
+    registry.register({ getClrContext: () => ({ type: 'region', label: 'Hosts' }) });
+
+    const snapshot = await engine.snapshot();
+
+    expect(snapshot.enabled).toBe(true);
+    expect(snapshot.metadata).toEqual({ purpose: 'Lists hosts' });
+    expect(snapshot.title).toBe(document.title);
+    expect(snapshot.regions).toEqual([{ type: 'region', label: 'Hosts' }]);
+  });
+
+  it('reads a view whose metadata is an empty object', async () => {
+    metadata = {};
+
+    expect((await engine.snapshot()).enabled).toBe(true);
+  });
+});
+
+describe('ClrContextService, a view that changes while providers answer', () => {
+  const quiet = { excludeCategories: Object.keys(CLR_CONTEXT_CATEGORIES) as ClrContextCategory[] };
+
+  it('describes the new view instead of mixing answers from the old one into it', async () => {
+    let view = 'hosts';
+    TestBed.configureTestingModule({});
+    const engine = configuredService({ application: { id: 'inventory', viewId: () => view } });
+    let answer: (context: ClrComponentContext) => void = () => undefined;
+    TestBed.inject(ClrContextRegistryService).register({
+      getClrContext: () =>
+        view === 'hosts' ? new Promise(resolve => (answer = resolve)) : { type: 'region', label: 'VMs' },
+    });
+
+    const snapshot = engine.snapshot(quiet);
+    view = 'vms';
+    answer({ type: 'region', label: 'Hosts' });
+
+    expect((await snapshot).viewId).toBe('vms');
+  });
+
+  it('awaits the new view’s providers after a navigation between routes without view ids', async () => {
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter([
+          { path: 'hosts', children: [] },
+          { path: 'vms', children: [] },
+        ]),
+      ],
+    });
+    const engine = TestBed.inject(ClrContextService);
+    const router = TestBed.inject(Router);
+    const answers: ((context: ClrComponentContext) => void)[] = [];
+    TestBed.inject(ClrContextRegistryService).register({
+      getClrContext: () => new Promise(resolve => answers.push(resolve)),
+    });
+    await router.navigateByUrl('/hosts');
+
+    const snapshot = engine.snapshot(quiet);
+    await router.navigateByUrl('/vms');
+    answers[0]({ type: 'region', label: 'Hosts' });
+    for (let wait = 0; answers.length < 2 && wait < 50; wait++) {
+      await new Promise(resolve => setTimeout(resolve));
+    }
+    answers[1]?.({ type: 'region', label: 'VMs' });
+
+    const result = await snapshot;
+    expect(result.route?.url).toBe('/vms');
+    expect(result.regions).toEqual([{ type: 'region', label: 'VMs' }]);
+  });
+});
+
+describe('ClrContextService, an unrecognised views setting', () => {
+  it('reads only enabled views, with a dev-mode warning', async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    TestBed.configureTestingModule({});
+    const engine = configuredService({
+      application: { id: 'inventory' },
+      views: 'enable' as unknown as ClrContextConfig['views'],
+    });
+
+    expect((await engine.snapshot()).enabled).toBe(false);
+    expect(console.warn).toHaveBeenCalled();
+  });
+});
+
 describe('ClrContextService, asynchronous providers', () => {
   let engine: ClrContextService;
   let registry: ClrContextRegistryService;

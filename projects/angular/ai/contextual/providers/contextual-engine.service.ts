@@ -10,18 +10,20 @@ import { DOCUMENT, inject, Injectable, isDevMode, PLATFORM_ID } from '@angular/c
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 
 import { ClrContextRegistryService } from './context-registry.service';
-import { usableTimeout } from '../attempt';
+import { attempt, usableTimeout } from '../attempt';
 import { charged } from '../budget';
 import { ClrContextDomExtractor } from '../dom/dom-context-collector';
 import { collectContextTreeWithin } from '../dom/walk';
 import {
+  ClrApplicationContext,
   ClrComponentContext,
   ClrContextSnapshotOptions,
   ClrPageContext,
   ClrRouteContext,
 } from '../interfaces/context.interface';
-import { jsonSafe, ROUTE_DATA_DEPTH } from '../json-safe';
+import { jsonSafe, REGION_DEPTH, ROUTE_DATA_DEPTH } from '../json-safe';
 import { availableRoutes } from '../routes';
+import { CLR_PAGE_CONTEXT_SCHEMA_VERSION } from '../schema';
 import {
   ClrContextPreset,
   presetOrOptions,
@@ -36,8 +38,23 @@ const DEFAULT_SOURCE_TIMEOUT_MS = 2000;
 /** A route map cut to a handful of entries would misdescribe where the app can go. */
 const MIN_ROUTE_LIMIT = 50;
 
+/** The application's identity, and where its view id and metadata come from. */
+export interface ClrContextApplicationOptions extends ClrApplicationContext {
+  /** The current view's id; checked before the route's `data.viewId`. */
+  viewId?: () => string | null | undefined;
+  /** Metadata about the current view, as a small serializable object. */
+  metadata?: () => Record<string, unknown> | null | undefined;
+}
+
 /** How the application wants its context read; set once with `ClrContextService.configure`. */
 export interface ClrContextConfig {
+  /** The application every snapshot describes. Default: the page's host name. */
+  application?: ClrContextApplicationOptions;
+  /**
+   * Which views are read: `'all'` (the default) reads every view; `'enabled'` reads only views with metadata and
+   * reports the others as `enabled: false`, with nothing about the page.
+   */
+  views?: 'all' | 'enabled';
   /** What every snapshot reads: a preset name, or snapshot options. Default: the whole page. */
   scope?: ClrContextPreset | ClrContextSnapshotOptions;
   /** List the router's routes in `availableRoutes`. Default `false`. */
@@ -72,6 +89,11 @@ export class ClrContextService {
           : 'ClrContextService.configure: called after a snapshot was taken; that snapshot used the defaults.'
       );
     }
+    if (isDevMode() && config.views !== undefined && config.views !== 'all' && config.views !== 'enabled') {
+      console.warn(
+        `ClrContextService.configure: views "${config.views}" is neither 'all' nor 'enabled'; only enabled views are read.`
+      );
+    }
     this.config = { ...config };
     this.scope = presetOrOptions(config.scope);
     this.configured = true;
@@ -82,15 +104,34 @@ export class ClrContextService {
     return this.readAsync(options);
   }
 
-  /** The route, with nothing about the page yet. */
-  private emptySnapshot(): ClrPageContext {
+  /**
+   * The application and view, with nothing about the page yet; with `views: 'enabled'`, a view
+   * without metadata is reported as not enabled and nothing else is read.
+   */
+  private viewSnapshot(): ClrPageContext {
+    const route = this.routeContext();
     const snapshot: ClrPageContext = {
+      schemaVersion: CLR_PAGE_CONTEXT_SCHEMA_VERSION,
+      application: this.applicationContext(),
+      enabled: true,
       title: '',
       regions: [],
       components: [],
       collectedAt: new Date().toISOString(),
     };
-    const route = this.routeContext();
+    const viewId = this.viewId();
+    if (viewId) {
+      snapshot.viewId = viewId;
+    }
+    const provided = attempt(() => this.config.application?.metadata?.(), undefined);
+    // An empty object still enables the view.
+    const metadata = provided === null || provided === undefined ? undefined : jsonSafe(provided, REGION_DEPTH, true);
+    if (metadata && typeof metadata === 'object' && !Array.isArray(metadata)) {
+      snapshot.metadata = metadata as Record<string, unknown>;
+    } else if (readsEnabledViewsOnly(this.config.views)) {
+      snapshot.enabled = false;
+      return snapshot;
+    }
     if (route) {
       snapshot.route = route;
     }
@@ -99,22 +140,38 @@ export class ClrContextService {
 
   private read(options: ClrContextSnapshotOptions | undefined): ClrPageContext {
     this.snapshotTaken = true;
-    const snapshot = this.emptySnapshot();
+    const snapshot = this.viewSnapshot();
+    if (!snapshot.enabled) {
+      return snapshot;
+    }
     const resolved = resolveSnapshotOptions(withCallOptions(this.scope, options));
     const regions = this.contextRegistry.collect({ limits: resolved });
     return this.describePage(snapshot, resolved, regions);
   }
 
-  /** Like `read`, awaiting asynchronous providers for up to `timeoutMs` each. */
-  private async readAsync(options: ClrContextSnapshotOptions | undefined): Promise<ClrPageContext> {
+  /**
+   * Like `read`, awaiting asynchronous providers for up to `timeoutMs` each. After a navigation, the new view's
+   * providers are awaited once more; then it settles for a snapshot that reports them as loading.
+   */
+  private async readAsync(options: ClrContextSnapshotOptions | undefined, retries = 1): Promise<ClrPageContext> {
     this.snapshotTaken = true;
+    const view = this.viewSnapshot();
+    if (!view.enabled) {
+      return view;
+    }
+    const address = this.address();
     const resolved = resolveSnapshotOptions(withCallOptions(this.scope, options));
     const regions = await this.contextRegistry.collectAsync({
       timeoutMs: usableTimeout(this.config.timeoutMs, DEFAULT_SOURCE_TIMEOUT_MS),
       limits: resolved,
     });
+    const snapshot = this.viewSnapshot();
+    // The answers are the old view's: a view id is optional, so the address is compared too.
+    if (snapshot.viewId !== view.viewId || snapshot.enabled !== view.enabled || this.address() !== address) {
+      return retries > 0 ? this.readAsync(options, retries - 1) : this.read(options);
+    }
     // The page is read once providers have answered, so a region redacted meanwhile is read as it is now.
-    return this.describePage(this.emptySnapshot(), resolved, regions);
+    return this.describePage(snapshot, resolved, regions);
   }
 
   private describePage(
@@ -140,6 +197,35 @@ export class ClrContextService {
       }
     }
     return snapshot;
+  }
+
+  private applicationContext(): ClrApplicationContext {
+    const application = this.config.application;
+    if (!application) {
+      return { id: this.document.location?.hostname ?? '' };
+    }
+    const { id, version } = application;
+    return version ? { id, version } : { id };
+  }
+
+  /** The application's own view id first, then the deepest route's `data.viewId`. */
+  private viewId(): string | undefined {
+    const provided = attempt(() => this.config.application?.viewId?.(), undefined);
+    if (typeof provided === 'string' && provided) {
+      return provided;
+    }
+    // The deepest route's own data only: a child route does not inherit its parent's view.
+    let route = this.router?.config.length ? this.router.routerState.snapshot.root : null;
+    while (route?.firstChild) {
+      route = route.firstChild;
+    }
+    const routed = route?.routeConfig?.data?.['viewId'];
+    return typeof routed === 'string' && routed ? routed : undefined;
+  }
+
+  /** Where the application is, as its router sees it. */
+  private address(): string | undefined {
+    return this.router?.url ?? this.currentUrl();
   }
 
   private currentUrl(): string | undefined {
@@ -188,6 +274,11 @@ export class ClrContextService {
     }
     return context;
   }
+}
+
+/** Whether only enabled views are read; an unrecognised `views` value reads only those, failing closed. */
+function readsEnabledViewsOnly(views: string | undefined): boolean {
+  return views !== undefined && views !== 'all';
 }
 
 /** Regions are not walked, so they get a component budget of their own. */

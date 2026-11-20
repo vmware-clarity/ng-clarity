@@ -35,6 +35,165 @@ export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
 export const CLR_CONTEXT_UNAVAILABLE_TYPE = "clr-unavailable";
 
 // @public
+export const CLR_PAGE_CONTEXT_SCHEMA: {
+    readonly $schema: "http://json-schema.org/draft-07/schema#";
+    readonly $id: "https://clarity.design/schemas/page-context/1.json";
+    readonly title: "ClrPageContext";
+    readonly type: "object";
+    readonly required: readonly ["schemaVersion", "application", "enabled", "title", "regions", "components", "collectedAt"];
+    readonly properties: {
+        readonly schemaVersion: {
+            readonly const: "1";
+        };
+        readonly application: {
+            readonly type: "object";
+            readonly required: readonly ["id"];
+            readonly additionalProperties: false;
+            readonly properties: {
+                readonly id: {
+                    readonly type: "string";
+                };
+                readonly version: {
+                    readonly type: "string";
+                };
+            };
+        };
+        readonly viewId: {
+            readonly type: "string";
+        };
+        readonly metadata: {
+            readonly type: "object";
+        };
+        readonly enabled: {
+            readonly type: "boolean";
+        };
+        readonly title: {
+            readonly type: "string";
+        };
+        readonly url: {
+            readonly type: "string";
+        };
+        readonly route: {
+            readonly type: "object";
+            readonly required: readonly ["url"];
+            readonly additionalProperties: false;
+            readonly properties: {
+                readonly url: {
+                    readonly type: "string";
+                };
+                readonly path: {
+                    readonly type: "string";
+                };
+                readonly params: {
+                    readonly $ref: "#/definitions/strings";
+                };
+                readonly queryParams: {
+                    readonly $ref: "#/definitions/queryParams";
+                };
+                readonly data: {
+                    readonly type: "object";
+                };
+            };
+        };
+        readonly availableRoutes: {
+            readonly type: "array";
+            readonly items: {
+                readonly type: "object";
+                readonly required: readonly ["path"];
+                readonly additionalProperties: false;
+                readonly properties: {
+                    readonly path: {
+                        readonly type: "string";
+                    };
+                    readonly title: {
+                        readonly type: "string";
+                    };
+                    readonly lazy: {
+                        readonly type: "boolean";
+                    };
+                };
+            };
+        };
+        readonly regions: {
+            readonly type: "array";
+            readonly items: {
+                readonly $ref: "#/definitions/component";
+            };
+        };
+        readonly components: {
+            readonly type: "array";
+            readonly items: {
+                readonly $ref: "#/definitions/component";
+            };
+        };
+        readonly truncated: {
+            readonly type: "boolean";
+        };
+        readonly focus: {
+            readonly const: "modal";
+        };
+        readonly collectedAt: {
+            readonly type: "string";
+        };
+    };
+    readonly definitions: {
+        readonly strings: {
+            readonly type: "object";
+            readonly additionalProperties: {
+                readonly type: "string";
+            };
+        };
+        readonly queryParams: {
+            readonly type: "object";
+            readonly additionalProperties: {
+                readonly anyOf: readonly [{
+                    readonly type: "string";
+                }, {
+                    readonly type: "array";
+                    readonly items: {
+                        readonly type: "string";
+                    };
+                }];
+            };
+        };
+        readonly component: {
+            readonly type: "object";
+            readonly required: readonly ["type"];
+            readonly additionalProperties: false;
+            readonly properties: {
+                readonly type: {
+                    readonly type: "string";
+                };
+                readonly element: {
+                    readonly type: "string";
+                };
+                readonly label: {
+                    readonly type: "string";
+                };
+                readonly state: {
+                    readonly type: "object";
+                };
+                readonly children: {
+                    readonly type: "array";
+                    readonly items: {
+                        readonly $ref: "#/definitions/component";
+                    };
+                };
+            };
+        };
+    };
+};
+
+// @public
+export const CLR_PAGE_CONTEXT_SCHEMA_VERSION = "1";
+
+// @public
+export interface ClrApplicationContext {
+    id: string;
+    version?: string;
+}
+
+// @public
 export interface ClrAvailableRoute {
     lazy?: boolean;
     path: string;
@@ -79,6 +238,12 @@ export class ClrContext implements OnInit, OnDestroy {
 export type ClrContextAnnotation = Partial<ClrPublishedContext> | (() => Partial<ClrPublishedContext> | null | undefined);
 
 // @public
+export interface ClrContextApplicationOptions extends ClrApplicationContext {
+    metadata?: () => Record<string, unknown> | null | undefined;
+    viewId?: () => string | null | undefined;
+}
+
+// @public
 export interface ClrContextAsyncCollectOptions extends ClrContextCollectOptions {
     timeoutMs?: number;
 }
@@ -96,6 +261,7 @@ export interface ClrContextChange {
     removed: ClrComponentContext[];
     routeChanged: boolean;
     titleChanged: boolean;
+    viewChanged: boolean;
 }
 
 // @public
@@ -105,10 +271,12 @@ export interface ClrContextCollectOptions {
 
 // @public
 export interface ClrContextConfig {
+    application?: ClrContextApplicationOptions;
     extractors?: ClrContextDomExtractor[];
     routes?: boolean;
     scope?: ClrContextPreset | ClrContextSnapshotOptions;
     timeoutMs?: number;
+    views?: 'all' | 'enabled';
 }
 
 // @public
@@ -182,15 +350,20 @@ export function clrIsEmptyContextChange(change: ClrContextChange): boolean;
 
 // @public
 export interface ClrPageContext {
+    application: ClrApplicationContext;
     availableRoutes?: ClrAvailableRoute[];
     collectedAt: string;
     components: ClrComponentContext[];
+    enabled: boolean;
     focus?: 'modal';
+    metadata?: Record<string, unknown>;
     regions: ClrComponentContext[];
     route?: ClrRouteContext;
+    schemaVersion: string;
     title: string;
     truncated?: boolean;
     url?: string;
+    viewId?: string;
 }
 
 // @public

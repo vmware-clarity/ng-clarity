@@ -39,8 +39,29 @@ export interface ClrAvailableRoute {
   lazy?: boolean;
 }
 
+/** Identifies the application a snapshot describes. */
+export interface ClrApplicationContext {
+  /** A stable id for the application, e.g. `vcenter-ui`. */
+  id: string;
+  /** The application's version, when it reports one. */
+  version?: string;
+}
+
 /** A snapshot of the page context, always computed on demand from the live application. */
 export interface ClrPageContext {
+  /** Version of the snapshot format; it changes when a field changes meaning. */
+  schemaVersion: string;
+  /** The application, from `configure({ application })`; the page's host name when none is configured. */
+  application: ClrApplicationContext;
+  /** The view the user is on, from `application.viewId` or the route's `data.viewId`. */
+  viewId?: string;
+  /** Application metadata about the current view, from `application.metadata`. */
+  metadata?: Record<string, unknown>;
+  /**
+   * Whether the engine reads this view: `false` when the application reads only enabled views and this one
+   * has no metadata, and then nothing else is read. It gates this engine only, not what the page renders.
+   */
+  enabled: boolean;
   /** The document title. */
   title: string;
   /** The current URL (browser location, or router URL when available). */
