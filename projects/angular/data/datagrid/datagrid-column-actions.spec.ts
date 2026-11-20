@@ -756,7 +756,7 @@ describe('Datagrid', () => {
         }
 
         function filterPanel(): HTMLElement | null {
-          return document.querySelector<HTMLElement>('.datagrid-filter')!;
+          return document.querySelector<HTMLElement>('.datagrid-filter');
         }
 
         beforeEach(() => {
