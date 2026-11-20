@@ -5,11 +5,7 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<section
-  clrContext="Host inventory for the selected datacenter"
-  clrContextType="section"
-  [clrContextState]="{ datacenter: 'eu-west', selectedHosts: selectedHosts.length }"
->
+<section [clrContext]="inventoryContext">
   <h3>Host inventory</h3>
 
   @if (alertVisible) {
