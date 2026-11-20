@@ -122,8 +122,7 @@
       <td class="left"><b cds-text="medium">metadataOrigins</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">[]</code></td>
       <td class="left">
-        Other origins that <code cds-text="code">data-clr-context-url</code> and a
-        <code cds-text="code">viewConfig</code> URL may load from, such as
+        Other origins that a <code cds-text="code">viewConfig</code> URL may load from, such as
         <code cds-text="code">'https://help.example.com'</code>. The page's own origin is always allowed.
       </td>
     </tr>
@@ -255,9 +254,11 @@
 <h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">[clrContext]</code></h3>
 <p class="clr-mt-16px" cds-text="body">
   Adds what only the application knows to the element it sits on (on an <code cds-text="code">ng-container</code>, the
-  element around it). It is reported on that element's node in <code cds-text="code">components</code>, merged with what
-  a component there publishes. Where both set the same key, the component's value wins. On a view's root, it describes
-  the view instead (see View metadata below). Standalone: import <code cds-text="code">ClrContext</code>, or
+  element around it). It takes a property binding only, such as <code cds-text="code">[clrContext]="rules"</code>:
+  static text would be readable in the DOM, so it is a type error and throws in dev mode. Nothing it says is written to
+  the element. It is reported on that element's node in <code cds-text="code">components</code>, merged with what a
+  component there publishes. Where both set the same key, the component's value wins. On a view's root, it describes the
+  view instead (see View metadata below). Standalone: import <code cds-text="code">ClrContext</code>, or
   <code cds-text="code">ClrContextModule</code> in an NgModule.
   <code cds-text="code">CLR_CONTEXT_DIRECTIVES</code> lists the directives.
 </p>
@@ -272,24 +273,18 @@
   </thead>
   <tbody>
     <tr>
-      <td class="left"><b cds-text="medium">clrContext</b></td>
-      <td class="left clr-hidden-xs-down">String</td>
-      <td class="left clr-hidden-xs-down">—</td>
-      <td class="left">What this part of the page is about, in plain words. It becomes the node's label.</td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">clrContextType</b></td>
-      <td class="left clr-hidden-xs-down">String</td>
-      <td class="left clr-hidden-xs-down">the element's role, or <code cds-text="code">'group'</code></td>
-      <td class="left">What kind of UI it is.</td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">[clrContextState]</b></td>
-      <td class="left clr-hidden-xs-down">Object</td>
-      <td class="left clr-hidden-xs-down"><code cds-text="code">null</code></td>
+      <td class="left"><b cds-text="medium">[clrContext]</b></td>
+      <td class="left clr-hidden-xs-down">
+        <code cds-text="code">ClrContextAnnotation</code>: <code cds-text="code">{ label, type, state }</code>, or a
+        function returning it
+      </td>
+      <td class="left clr-hidden-xs-down">required</td>
       <td class="left">
-        Application state worth knowing, added to the node's <code cds-text="code">state</code>. Keep it small, and pass
-        a new object when it changes.
+        <code cds-text="code">label</code> says what this part of the page is about and becomes the node's label.
+        <code cds-text="code">type</code> is what kind of UI it is (the element's role, or
+        <code cds-text="code">'group'</code>, by default). <code cds-text="code">state</code> is application state worth
+        knowing, added to the node's <code cds-text="code">state</code>; keep it small. A function is read each time a
+        snapshot is taken.
       </td>
     </tr>
   </tbody>
@@ -297,63 +292,25 @@
 
 <h2 id="attributes" cds-text="title" class="clr-mt-48px">Attributes</h2>
 
-<h3 cds-text="section" class="clr-mt-32px">Annotations in markup</h3>
-<p class="clr-mt-16px" cds-text="body">
-  The same as <code cds-text="code">[clrContext]</code>, for markup not built with Angular, such as a same-origin frame
-  or HTML from a server. <code cds-text="code">[clrContext]</code> wins when an element has both.
-</p>
-<table class="table">
-  <thead>
-    <tr>
-      <th class="left">Attribute</th>
-      <th class="left">Effect</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="left"><b cds-text="medium">data-clr-context</b></td>
-      <td class="left">What this part of the page is about, like <code cds-text="code">clrContext</code>.</td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">data-clr-context-type</b></td>
-      <td class="left">What kind of UI it is, like <code cds-text="code">clrContextType</code>.</td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">data-clr-context-state</b></td>
-      <td class="left">State as a JSON object, like <code cds-text="code">clrContextState</code>.</td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">data-clr-context-url</b></td>
-      <td class="left">
-        Loads an annotation as JSON, <code cds-text="code">&#123; label, type, state &#125;</code>, from a URL on the
-        page's origin or one listed in <code cds-text="code">metadataOrigins</code>. It is loaded once and read only on
-        a view's root, where it describes the view.
-      </td>
-    </tr>
-  </tbody>
-</table>
-<p class="clr-mt-16px" cds-text="body">
-  The names are exported as <code cds-text="code">CLR_CONTEXT_LABEL_ATTRIBUTE</code>,
-  <code cds-text="code">CLR_CONTEXT_TYPE_ATTRIBUTE</code>, <code cds-text="code">CLR_CONTEXT_STATE_ATTRIBUTE</code> and
-  <code cds-text="code">CLR_CONTEXT_URL_ATTRIBUTE</code>.
-</p>
-
 <h3 id="metadata" cds-text="section" class="clr-mt-32px">View metadata</h3>
 <p class="clr-mt-16px" cds-text="body">
-  An annotation on a view's root describes the view, not a node. The view's root is the element a snapshot starts from:
-  the body, the element <code cds-text="code">root</code> selects, or the open modal. Its ancestors count too, the inner
-  one winning. The annotation's state, with its <code cds-text="code">label</code>, becomes the snapshot's
-  <code cds-text="code">metadata</code>, and a <code cds-text="code">viewId</code> key in it names the view.
+  A <code cds-text="code">[clrContext]</code> annotation on a view's root describes the view, not a node. The view's
+  root is the element a snapshot starts from: the body, the element <code cds-text="code">root</code> selects, or the
+  open modal. Its ancestors count too, the inner one winning. A template cannot bind on the body, so describe a
+  whole-page view with <code cds-text="code">viewConfig</code> or <code cds-text="code">application.metadata</code>, or
+  set <code cds-text="code">root</code> to the element that carries the annotation. The annotation's state, with its
+  <code cds-text="code">label</code>, becomes the snapshot's <code cds-text="code">metadata</code>, and a
+  <code cds-text="code">viewId</code> key in it names the view.
 </p>
 <div class="clr-mt-16px">
-  <app-code-snippet [code]="viewMetadataExample" language="html"></app-code-snippet>
+  <app-code-snippet [code]="viewMetadataExample" language="typescript"></app-code-snippet>
 </div>
 <p class="clr-mt-16px" cds-text="body">
-  When several sources describe the same view, the most specific wins: the annotation itself, then
-  <code cds-text="code">data-clr-context-url</code>, then <code cds-text="code">application.metadata</code>, then the
-  matching <code cds-text="code">viewConfig</code> entry. The view id comes from the annotation, then
-  <code cds-text="code">application.viewId</code>, then the route's <code cds-text="code">data.viewId</code>, then
-  <code cds-text="code">viewConfig</code>. While a URL loads, or if it fails, the snapshot's
+  When several sources describe the same view, the most specific wins: the annotation, then
+  <code cds-text="code">application.metadata</code>, then the matching <code cds-text="code">viewConfig</code> entry.
+  The view id comes from the annotation, then <code cds-text="code">application.viewId</code>, then the route's
+  <code cds-text="code">data.viewId</code>, then <code cds-text="code">viewConfig</code>. While a
+  <code cds-text="code">viewConfig</code> URL loads, or if it fails, the snapshot's
   <code cds-text="code">metadataState</code> is <code cds-text="code">'loading'</code> or
   <code cds-text="code">'unavailable'</code>.
 </p>

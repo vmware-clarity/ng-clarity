@@ -91,34 +91,35 @@ const IGNORE_EXAMPLE = `
 `;
 
 const DIRECTIVE_EXAMPLE = `
-<section
-  clrContext="Firewall rules for the selected cluster"
-  [clrContextState]="{ cluster: clusterName, ruleCount: rules.length }"
->
-  ...
-</section>
-`;
+@Component({
+  template: \`<section [clrContext]="rulesContext">...</section>\`,
+})
+export class FirewallRulesComponent {
+  clusterName = 'alpha';
+  rules: FirewallRule[] = [];
 
-const ATTRIBUTES_EXAMPLE = `
-<section
-  data-clr-context="Firewall rules for the selected cluster"
-  data-clr-context-state='{"cluster": "east"}'
->
-  ...
-</section>
+  // A constant works too; a function is read each time a snapshot is taken.
+  readonly rulesContext = () => ({
+    label: 'Firewall rules for the selected cluster',
+    state: { cluster: this.clusterName, ruleCount: this.rules.length },
+  });
+}
 `;
 
 const VIEW_METADATA_EXAMPLE = `
-<!-- With root: 'main', main is the view root: this annotation describes the view. -->
-<main data-clr-context-state='{"viewId": "host-list", "purpose": "Lists the hosts of a cluster"}'>
-  ...
-  <!-- Anywhere else, an annotation describes its element. -->
-  <clr-datagrid [clrContextState]="{ help: 'https://docs.example.com/hosts' }">...</clr-datagrid>
-</main>
-
-<!-- Or loaded from the same origin, and cached for the session:
-     { "state": { "viewId": "host-list", "purpose": "..." } } -->
-<main data-clr-context-url="/assets/ai/host-list.json">...</main>
+// With scope: { root: 'main' }, <main> is the view root: its annotation describes the view.
+// Anywhere else, an annotation describes its element.
+@Component({
+  template: \`
+    <main [clrContext]="hostList">
+      <clr-datagrid [clrContext]="hostGrid">...</clr-datagrid>
+    </main>
+  \`,
+})
+export class HostListComponent {
+  readonly hostList = { state: { viewId: 'host-list', purpose: 'Lists the hosts of a cluster' } };
+  readonly hostGrid = { state: { help: 'https://docs.example.com/hosts' } };
+}
 `;
 
 const VIEW_CONFIG_EXAMPLE = `
@@ -148,9 +149,11 @@ import { ClrContext } from '@clr/angular/ai';
 
 @Component({
   imports: [ClrContext],
-  template: \`<section clrContext="Firewall rules for the selected cluster">...</section>\`,
+  template: \`<section [clrContext]="rulesContext">...</section>\`,
 })
-export class FirewallComponent {}
+export class FirewallComponent {
+  readonly rulesContext = { label: 'Firewall rules for the selected cluster' };
+}
 `;
 
 const DIRECTIVE_MODULE_EXAMPLE = `
@@ -284,7 +287,6 @@ export class ContextualEngineDemo extends ClarityDocComponent {
   snapshotShapeExample = SNAPSHOT_SHAPE_EXAMPLE;
   ignoreExample = IGNORE_EXAMPLE;
   directiveExample = DIRECTIVE_EXAMPLE;
-  attributesExample = ATTRIBUTES_EXAMPLE;
   viewMetadataExample = VIEW_METADATA_EXAMPLE;
   viewConfigExample = VIEW_CONFIG_EXAMPLE;
   aiConfigExample = AI_CONFIG_EXAMPLE;

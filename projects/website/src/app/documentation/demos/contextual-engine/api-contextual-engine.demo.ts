@@ -32,12 +32,13 @@ export class CreateVmWorkflow {
 `;
 
 const VIEW_METADATA_EXAMPLE = `
-<main
-  data-clr-context="Virtual machines"
-  data-clr-context-state='{ "viewId": "vm-list", "purpose": "Manage the cluster VMs" }'
->
-  ...
-</main>
+// The snapshot starts from <main> (scope: { root: 'main' }), so its annotation describes the view.
+@Component({
+  template: \`<main [clrContext]="vmList">...</main>\`,
+})
+export class VmListComponent {
+  readonly vmList = { label: 'Virtual machines', state: { viewId: 'vm-list', purpose: 'Manage the cluster VMs' } };
+}
 `;
 
 @Component({

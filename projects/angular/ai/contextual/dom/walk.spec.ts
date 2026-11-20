@@ -7,6 +7,7 @@
 
 import { ClrComponentContext, ClrContextSnapshotOptions, publishElementContext } from '@clr/angular/utils';
 
+import { annotate } from './annotations';
 import { withoutValues } from './aria-state';
 import { ClrContextTreeResult, collectContextTreeWithin } from './walk';
 import { ResolvedSnapshotOptions, resolveSnapshotOptions } from '../snapshot-options';
@@ -491,9 +492,9 @@ describe('collectContextTreeWithin, what a summary must not hide', () => {
 
   it('keeps a list item that has state of its own to report', () => {
     container.innerHTML = '<ul><li>Provision</li><li>Configure</li></ul>';
-    (container.querySelector('li') as HTMLElement & { clrElementContext?: unknown }).clrElementContext = () => ({
+    publishElementContext(container.querySelector('li') as Element, () => ({
       state: { status: 'success' },
-    });
+    }));
     const [list] = collectContextTreeWithin(container, budgets()).components;
     expect(list.children?.length).toBe(1);
     expect(list.children?.[0]).toEqual({ type: 'listitem', label: 'Provision', state: { status: 'success' } });
@@ -550,9 +551,9 @@ describe('collectContextTreeWithin, what a summary must not hide', () => {
 
   it('merges what a multi-part component publishes onto the component, not onto each part', () => {
     container.innerHTML = '<my-grid><div role="grid"></div><my-grid-footer>2 of 40</my-grid-footer></my-grid>';
-    (container.querySelector('my-grid') as HTMLElement & { clrElementContext?: unknown }).clrElementContext = () => ({
+    publishElementContext(container.querySelector('my-grid') as Element, () => ({
       state: { rowCount: 40 },
-    });
+    }));
     const [widget] = collectContextTreeWithin(container, budgets()).components;
     expect(widget.type).toBe('group');
     expect(widget.element).toBe('my-grid');
@@ -592,9 +593,9 @@ describe('collectContextTreeWithin, what a summary must not hide', () => {
 
   it('gives what a single-part component publishes to the part that stands in for it', () => {
     container.innerHTML = '<my-picker><input role="combobox" aria-label="Cluster" /></my-picker>';
-    (container.querySelector('my-picker') as HTMLElement & { clrElementContext?: unknown }).clrElementContext = () => ({
+    publishElementContext(container.querySelector('my-picker') as Element, () => ({
       state: { options: ['Alpha', 'Beta'] },
-    });
+    }));
     const [node] = collectContextTreeWithin(container, budgets()).components;
     expect(node.type).toBe('combobox');
     expect(node.element).toBe('my-picker');
@@ -1748,55 +1749,40 @@ describe('collectContextTreeWithin, open shadow roots', () => {
   });
 });
 
-describe('collectContextTree, annotation attributes', () => {
+describe('collectContextTree, annotations', () => {
   useContainer();
 
-  it('describes an element annotated with data-clr-context like one with [clrContext]', () => {
+  function annotated(selector: string, context: Partial<ClrComponentContext>): void {
+    annotate(container.querySelector(selector) ?? container, () => context);
+  }
+
+  it('reads nothing from annotation attributes in the markup', () => {
     const nodes = collect(
       `<div data-clr-context="Firewall rules" data-clr-context-type="region"
             data-clr-context-state='{"cluster":"east"}'><button>Add rule</button></div>`
     );
 
-    expect(nodes).toEqual([
-      {
-        type: 'region',
-        label: 'Firewall rules',
-        state: { cluster: 'east' },
-        children: [{ type: 'button', label: 'Add rule' }],
-      },
-    ]);
+    expect(nodes).toEqual([{ type: 'button', label: 'Add rule' }]);
   });
 
   it('reports an annotation inside the view as the state of the node it sits on', () => {
-    const nodes = collect(
-      `<nav aria-label="Hosts" data-clr-context-state='{"purpose":"Pick a host"}'><a href="#">h1</a></nav>`
-    );
+    container.innerHTML = '<nav aria-label="Hosts"><a href="#">h1</a></nav>';
+    annotated('nav', { state: { purpose: 'Pick a host' } });
 
-    expect(nodes[0].state).toEqual({ purpose: 'Pick a host' });
+    expect(collectContextTreeWithin(container, budgets()).components[0].state).toEqual({ purpose: 'Pick a host' });
   });
 
   it('leaves the annotation on the view root to the snapshot', () => {
-    container.setAttribute('data-clr-context-state', '{"purpose":"Hosts"}');
+    container.innerHTML = '<button>Add</button>';
+    annotated('#none', { state: { purpose: 'Hosts' } });
 
-    expect(collect('<button>Add</button>')).toEqual([{ type: 'button', label: 'Add' }]);
-  });
-
-  it('leaves out invalid JSON and keeps the rest of the annotation', () => {
-    vi.spyOn(console, 'warn').mockImplementation(() => undefined);
-
-    const nodes = collect(`<div data-clr-context="Rules" data-clr-context-state="{oops"><button>Add</button></div>`);
-
-    expect(nodes[0].label).toBe('Rules');
-    expect(nodes[0].state).toBeUndefined();
-    expect(console.warn).toHaveBeenCalled();
+    expect(collectContextTreeWithin(container, budgets()).components).toEqual([{ type: 'button', label: 'Add' }]);
   });
 
   it('withholds the annotated state inside a redacted region', () => {
-    const nodes = collect(
-      `<div data-clr-context-redact><div data-clr-context="Card" data-clr-context-state='{"card":"4111"}'>
-        <button>Pay</button></div></div>`
-    );
+    container.innerHTML = '<div data-clr-context-redact><div id="card"><button>Pay</button></div></div>';
+    annotated('#card', { label: 'Card', state: { card: '4111' } });
 
-    expect(JSON.stringify(nodes)).not.toContain('4111');
+    expect(JSON.stringify(collectContextTreeWithin(container, budgets()).components)).not.toContain('4111');
   });
 });

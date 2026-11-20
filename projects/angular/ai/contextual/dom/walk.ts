@@ -10,7 +10,6 @@ import {
   CLR_CONTEXT_IGNORE_SELECTOR,
   CLR_CONTEXT_REDACT_ATTRIBUTE,
   CLR_CONTEXT_REDACT_SELECTOR,
-  CLR_ELEMENT_CONTEXT_PROPERTY,
   ClrComponentContext,
   ClrContextSnapshotOptions,
   ClrPublishedContext,
@@ -20,7 +19,7 @@ import {
 import { accessibleName } from './accessible-name';
 import { annotationContext, hasAnnotation } from './annotations';
 import { ariaEnumValue, ariaState, isContentEditable, isRedacted, redactNode } from './aria-state';
-import { mergeElementContext, publishedNode, readClrElementContext } from './element-context';
+import { hasElementContext, mergeElementContext, publishedNode, readClrElementContext } from './element-context';
 import { withinReadScope } from './read-scope';
 import {
   isLeafRole,
@@ -241,7 +240,7 @@ function rendersOnly(parent: Element, part: Element, excludeSelector: string): b
       return true;
     }
     if (
-      CLR_ELEMENT_CONTEXT_PROPERTY in element ||
+      hasElementContext(element) ||
       hasAnnotation(element) ||
       element.matches(DESCRIBABLE_SELECTOR) ||
       hasRendered(element, DESCRIBABLE_SELECTOR)
@@ -432,7 +431,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
   if (
     role === 'listitem' &&
     walk.summarizedListDepth > 0 &&
-    !(CLR_ELEMENT_CONTEXT_PROPERTY in element) &&
+    !hasElementContext(element) &&
     !hasAnnotation(element) &&
     !Array.from(element.attributes).some(attribute => attribute.name.startsWith('aria-')) &&
     !hasRendered(element, CONTROL_SELECTOR)
@@ -790,7 +789,7 @@ function isPhrasing(element: Element, walk: Walk): boolean {
     !element.hasAttribute('title') &&
     !element.hasAttribute('aria-live') &&
     !element.hasAttribute(CLR_CONTEXT_REDACT_ATTRIBUTE) &&
-    !(CLR_ELEMENT_CONTEXT_PROPERTY in element) &&
+    !hasElementContext(element) &&
     !hasAnnotation(element) &&
     !isLabel(element, walk) &&
     !element.matches(DESCRIBABLE_SELECTOR) &&

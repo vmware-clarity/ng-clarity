@@ -12,16 +12,10 @@ export { CLR_CONTEXT_DEFAULT_OPTIONS } from './dom/dom-context-collector';
 export type { ClrContextDomExtractor } from './dom/dom-context-collector';
 export * from './diff';
 export * from './schema';
-export {
-  CLR_CONTEXT_LABEL_ATTRIBUTE,
-  CLR_CONTEXT_STATE_ATTRIBUTE,
-  CLR_CONTEXT_TYPE_ATTRIBUTE,
-  CLR_CONTEXT_URL_ATTRIBUTE,
-} from './dom/annotations';
 export { CLR_CONTEXT_CATEGORIES, CLR_CONTEXT_PRESETS } from './snapshot-options';
 export type { ClrContextPreset } from './snapshot-options';
 // Re-exported from @clr/angular/utils, where components publish without depending on this entry point.
-export { CLR_ELEMENT_CONTEXT_PROPERTY, publishElementContext } from '@clr/angular/utils';
+export { publishElementContext } from '@clr/angular/utils';
 export type { ClrElementContextCallback } from '@clr/angular/utils';
 export { CLR_CONTEXT_IGNORE_ATTRIBUTE, CLR_CONTEXT_REDACT_ATTRIBUTE } from '@clr/angular/utils';
 export * from './context';
