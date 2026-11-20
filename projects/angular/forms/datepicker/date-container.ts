@@ -30,7 +30,7 @@ import {
   ClrPopoverType,
   DROPDOWN_POSITIONS,
 } from '@clr/angular/popover/common';
-import { ClrCommonStringsService } from '@clr/angular/utils';
+import { ClrCommonStringsService, publishElementContext } from '@clr/angular/utils';
 import { startWith } from 'rxjs/operators';
 
 import { ClrWeekday } from './enums/weekday.enum';
@@ -81,6 +81,7 @@ import { ViewManagerService } from './providers/view-manager.service';
               scrollToClose: true
             "
             cdkTrapFocus
+            data-clr-context-ignore
           ></clr-datepicker-view-manager>
         </div>
       </div>
@@ -122,6 +123,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
 
   protected popoverType = ClrPopoverType.DROPDOWN;
   private toggleButton!: ElementRef<HTMLButtonElement>;
+  private teardownToggleContext: (() => void) | undefined;
 
   constructor(
     protected renderer: Renderer2,
@@ -227,6 +229,13 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
   @ViewChild('actionButton')
   set actionButton(button: ElementRef<HTMLButtonElement>) {
     this.toggleButton = button;
+    this.teardownToggleContext?.();
+    // The toggle's name contains the selected date, which is user input; the date input reports it as a value.
+    this.teardownToggleContext = button
+      ? publishElementContext(button.nativeElement, () => ({
+          label: this.commonStrings.keys.datepickerToggleChooseDateLabel,
+        }))
+      : undefined;
   }
 
   get popoverPosition(): ClrPopoverPosition {
@@ -272,6 +281,11 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     );
 
     this.subscriptions.push(this.listenForDateChanges());
+  }
+
+  override ngOnDestroy() {
+    this.teardownToggleContext?.();
+    super.ngOnDestroy();
   }
 
   /**

@@ -4,6 +4,7 @@
 
 ```ts
 
+import { AbstractControl } from '@angular/forms';
 import { AfterViewInit } from '@angular/core';
 import { AnimationCallbackEvent } from '@angular/core';
 import { CdkDrag } from '@angular/cdk/drag-drop';
@@ -141,6 +142,30 @@ export class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<CdkTrapFocusModule_CdkTrapFocus, never>;
 }
+
+// @public
+export const CLR_CONTEXT_DEFAULT_MAX_ITEMS = 25;
+
+// @public
+export const CLR_CONTEXT_EDITING_HOST_SELECTOR = "[contenteditable]:not([contenteditable=\"false\" i])";
+
+// @public
+export const CLR_CONTEXT_HIDDEN_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore]";
+
+// @public
+export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
+
+// @public
+export const CLR_CONTEXT_IGNORE_SELECTOR = "[data-clr-context-ignore]";
+
+// @public
+export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
+
+// @public
+export const CLR_CONTEXT_REDACT_SELECTOR = "[data-clr-context-redact]";
+
+// @public
+export const CLR_CONTEXT_WITHHELD_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore], [data-clr-context-redact], [contenteditable]:not([contenteditable=\"false\" i])";
 
 // @public (undocumented)
 export const CLR_LOADING_DIRECTIVES: Type<any>[];
@@ -401,6 +426,7 @@ export interface ClrCommonStrings {
     unpinColumn: string;
     // (undocumented)
     unselectedTreeNode: string;
+    verticalNavLabel: string;
     // (undocumented)
     verticalNavToggle: string;
     warning: string;
@@ -424,6 +450,16 @@ export class ClrCommonStringsService {
     static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
+// @public
+export interface ClrComponentContext {
+    children?: ClrComponentContext[];
+    element?: string;
+    label?: string;
+    ref?: string;
+    state?: Record<string, unknown>;
+    type: string;
+}
+
 // @public (undocumented)
 export class ClrConditionalModule {
     // (undocumented)
@@ -435,6 +471,18 @@ export class ClrConditionalModule {
 }
 
 // @public
+export type ClrContextCategory = 'layout' | 'actions' | 'forms' | 'headings' | 'collections' | 'dialogs' | 'status' | 'images' | 'text' | 'frames';
+
+// @public
+export interface ClrContextSnapshotOptions {
+    excludeCategories?: ClrContextCategory[];
+    excludeSelectors?: string[];
+    maxComponents?: number;
+    maxItemsPerCollection?: number;
+    root?: string;
+}
+
+// @public
 export class ClrDestroyService extends Subject<void> implements OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
@@ -442,6 +490,27 @@ export class ClrDestroyService extends Subject<void> implements OnDestroy {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDestroyService, never>;
     // (undocumented)
     static ɵprov: i0.ɵɵInjectableDeclaration<any>;
+}
+
+// @public
+export type ClrElementContextCallback = (options?: Required<ClrContextSnapshotOptions>) => Partial<ClrPublishedContext> | null | undefined;
+
+// @public
+export type ClrElementMutation = {
+    value: unknown;
+    display?: unknown;
+    refused?: undefined;
+} | {
+    refused: string;
+    value?: undefined;
+    display?: undefined;
+};
+
+// @public
+export interface ClrElementMutator {
+    coerce?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
+    ownsContents?: boolean;
+    write?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
 }
 
 // @public (undocumented)
@@ -540,6 +609,16 @@ export class ClrFocusOnViewInitModule {
 
 // @public (undocumented)
 export function clrFocusServiceFactory(existing: FocusService, renderer: Renderer2): FocusService;
+
+// @public
+export function clrHasRequiredValidator(control: AbstractControl | null | undefined): boolean;
+
+// @public
+export class ClrHostAttribute {
+    constructor(element: Element | null | undefined, name: string);
+    get current(): string | null;
+    value(computed: string | boolean | null): string | null;
+}
 
 // @public
 export class ClrHostWrappingModule {
@@ -776,6 +855,11 @@ export enum ClrPosition {
     TOP_RIGHT = 2
 }
 
+// @public
+export interface ClrPublishedContext extends ClrComponentContext {
+    children?: ClrPublishedContext[];
+}
+
 // @public (undocumented)
 export class ClrRovingTabindex extends ClrKeyFocus {
     constructor(elementRef: ElementRef<HTMLElement>, renderer: Renderer2);
@@ -833,6 +917,9 @@ export const commonStringsDefault: ClrCommonStrings;
 // @public (undocumented)
 export const CONDITIONAL_DIRECTIVES: Type<any>[];
 
+// @public
+export function contextText(element: Element, skip?: (descendant: Element) => boolean): string;
+
 // @public (undocumented)
 export function customFocusableItemProvider<T>(implementation: Type<T>): (Type<T> | {
     provide: typeof FocusableItem;
@@ -869,6 +956,12 @@ export class DomAdapter {
     // (undocumented)
     static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
+
+// @public
+export function elementContextOf(host: Element): ClrElementContextCallback | undefined;
+
+// @public
+export function elementMutatorOf(host: Element): ClrElementMutator | undefined;
 
 // @public (undocumented)
 export class EmptyAnchor {
@@ -1124,6 +1217,9 @@ export class MockFocusableItem implements FocusableItem {
 // @public
 export function noopAnimations(): boolean;
 
+// @public
+export function normalizeContextText(text: string, lowercase?: boolean): string;
+
 // @public (undocumented)
 export const OUSTIDE_CLICK_DIRECTIVES: Type<any>[];
 
@@ -1151,6 +1247,12 @@ export class OutsideClick implements OnDestroy {
 
 // @public (undocumented)
 export function preventArrowKeyScroll(event: KeyboardEvent): void;
+
+// @public
+export function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
+
+// @public
+export function publishElementMutator(host: Element, mutator: ClrElementMutator): () => void;
 
 // @public (undocumented)
 export class ScrollingService {
@@ -1192,6 +1294,9 @@ export function triggerAllFormControlValidation(formGroup: FormGroup): void;
 
 // @public (undocumented)
 export function uniqueIdFactory(): string;
+
+// @public
+export function usableSelectors(root: ParentNode, selectors: readonly string[]): string;
 
 // @public (undocumented)
 export function wrapObservable<T>(observable: Observable<T>, onSubscribe?: (observer: Observer<T>) => void, onUnsubscribe?: (observer: Observer<T>) => void): Observable<T>;

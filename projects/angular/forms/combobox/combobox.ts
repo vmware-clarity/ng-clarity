@@ -14,6 +14,7 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
+  DestroyRef,
   ElementRef,
   EventEmitter,
   Host,
@@ -42,12 +43,27 @@ import {
   ClrPopoverType,
 } from '@clr/angular/popover/common';
 import {
+  CLR_CONTEXT_DEFAULT_MAX_ITEMS,
+  CLR_CONTEXT_EDITING_HOST_SELECTOR,
+  CLR_CONTEXT_HIDDEN_SELECTOR,
+  CLR_CONTEXT_IGNORE_SELECTOR,
+  CLR_CONTEXT_REDACT_SELECTOR,
+  CLR_CONTEXT_WITHHELD_SELECTOR,
   ClrCommonStringsService,
+  ClrContextSnapshotOptions,
+  ClrElementMutation,
+  clrHasRequiredValidator,
   ClrLoadingState,
+  ClrPublishedContext,
+  contextText,
   FOCUS_SERVICE_PROVIDER,
   IF_ACTIVE_ID_PROVIDER,
   Keys,
   LoadingListener,
+  normalizeContextText,
+  publishElementContext,
+  publishElementMutator,
+  usableSelectors,
 } from '@clr/angular/utils';
 import { debounceTime, Subject } from 'rxjs';
 
@@ -55,6 +71,8 @@ import { ClrComboboxContainer } from './combobox-container';
 import { ClrComboboxIdentityFunction, ClrComboboxResolverFunction, ComboboxModel } from './model/combobox.model';
 import { MultiSelectComboboxModel } from './model/multi-select-combobox.model';
 import { SingleSelectComboboxModel } from './model/single-select-combobox.model';
+import { ClrOption } from './option';
+import { ClrOptionItems } from './option-items.directive';
 import { ClrOptionSelected } from './option-selected.directive';
 import { ClrOptions } from './options';
 import { ComboboxContainerService } from './providers/combobox-container.service';
@@ -73,6 +91,7 @@ import { OptionSelectionService } from './providers/option-selection.service';
   ],
   hostDirectives: [ClrPopoverHostDirective],
   host: {
+    // @deprecated since v18, remove in v19: select on `aria-required` on the input instead.
     '[class.aria-required]': 'true',
     '[class.clr-combobox]': 'true',
     '[class.clr-combobox-disabled]': 'control?.disabled',
@@ -118,8 +137,13 @@ export class ClrCombobox<T>
 
   private resizeObserver?: ResizeObserver;
   private readonly renderInjector = inject(Injector);
+  private readonly destroyRef = inject(DestroyRef);
   private containerWidthChange = new Subject();
   @ContentChild(ClrOptions) private options!: ClrOptions<T>;
+  @ContentChild(ClrOptionItems) private optionItems: ClrOptionItems<T> | undefined;
+
+  private teardownElementContext?: () => void;
+  private teardownElementMutator?: () => void;
 
   private _searchText = '';
   private onTouchedCallback?: () => any;
@@ -272,12 +296,21 @@ export class ClrCombobox<T>
     );
   }
 
+  /** ARIA requires `aria-required` and `aria-invalid` on the `role="combobox"` element, not the host. */
+  protected get isRequired(): boolean {
+    return clrHasRequiredValidator(this.control?.control);
+  }
+
   private get disabled() {
     return this.control?.disabled;
   }
 
   ngAfterContentInit() {
     this.initializeSubscriptions();
+    this.teardownElementContext = publishElementContext(this.el.nativeElement, snapshotOptions =>
+      this.describeForContext(snapshotOptions)
+    );
+    this.publishMutator(this.el.nativeElement);
 
     // Initialize with preselected value
     if (!this.optionSelectionService.selectionModel.isEmpty()) {
@@ -304,6 +337,8 @@ export class ClrCombobox<T>
 
   override ngOnDestroy(): void {
     super.ngOnDestroy();
+    this.teardownElementContext?.();
+    this.teardownElementMutator?.();
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
     }
@@ -354,7 +389,8 @@ export class ClrCombobox<T>
   loadingStateChange(state: ClrLoadingState): void {
     this.optionSelectionService.loading = state === ClrLoadingState.LOADING;
 
-    if (state !== ClrLoadingState.LOADING && isPlatformBrowser(this.platformId)) {
+    // ClrLoading reports DEFAULT from its own ngOnDestroy, after this view is gone.
+    if (state !== ClrLoadingState.LOADING && isPlatformBrowser(this.platformId) && !this.destroyRef.destroyed) {
       afterNextRender(() => this.popoverService?.resetPositions(), { injector: this.renderInjector });
       this.focusFirstActive();
     }
@@ -444,6 +480,16 @@ export class ClrCombobox<T>
     } else {
       this.containerWidthChange.next(this.containerWidth);
     }
+  }
+
+  /** Suppressed on the host: the combobox input reports it (see `isRequired`). */
+  protected override reportsAriaInvalid(): boolean {
+    return false;
+  }
+
+  /** Suppressed on the host: the combobox input reports it (see `isRequired`). */
+  protected override reportsAriaRequired(): boolean {
+    return false;
   }
 
   private initialiseObserver() {
@@ -596,6 +642,261 @@ export class ClrCombobox<T>
     if (this.onChangeCallback) {
       this.onChangeCallback(this.optionSelectionService.selectionModel.model);
     }
+  }
+
+  /** What the combobox publishes beyond its ARIA: the selection and, while there are options, the option list. */
+  private describeForContext(snapshotOptions?: ClrContextSnapshotOptions): ClrPublishedContext {
+    const maxItems = snapshotOptions?.maxItemsPerCollection ?? CLR_CONTEXT_DEFAULT_MAX_ITEMS;
+    const excluded = this.excludedBy(snapshotOptions);
+    const state: Record<string, unknown> = { multiSelect: this.multiSelect };
+    const items = this.options?.items;
+    const narrowed = this.optionsNarrowed();
+    if (items?.length || narrowed) {
+      // Option content children exist even while the popover is closed.
+      const options = (items?.toArray() ?? []).map(option => ({ option, shown: this.optionShown(option, excluded) }));
+      const listed = options.filter(entry => entry.shown !== 'excluded');
+      const named = listed.filter(entry => entry.shown === 'shown');
+      // A narrowed list reveals what the user typed, so it goes under keys of its own.
+      const keys = narrowed
+        ? { list: 'matchingOptions', redacted: 'redactedMatchingOptions', count: 'matchingOptionCount' }
+        : { list: 'options', redacted: 'redactedOptions', count: 'optionCount' };
+      // `0` asks for counts and the selection only.
+      if (maxItems === 0) {
+        state[keys.count] = listed.length;
+      } else {
+        state[keys.list] = named.slice(0, maxItems).map(entry => this.optionLabel(entry.option, excluded));
+        if (named.length < listed.length) {
+          state[keys.redacted] = listed.length - named.length;
+        }
+      }
+    } else {
+      state.optionsAvailable = false;
+    }
+    if (this.optionSelectionService.loading) {
+      // A pending search for typed text goes under a matching key too.
+      if (narrowed && this.optionSelectionService.currentInput) {
+        state.matchingOptionsPending = true;
+      } else {
+        state.optionsPending = true;
+      }
+    }
+    state.value = this.selectedLabels(excluded);
+    return { type: 'combobox', state };
+  }
+
+  /**
+   * Whether the rendered options may be only those matching text the user entered
+   * (`*clrOptionItems` filtering, or an app loading options on `clrInputChange`).
+   */
+  private optionsNarrowed(): boolean {
+    const typed = !!this.optionSelectionService.currentInput;
+    if (this.clrInputChange.observed) {
+      return typed || !!this.options?.items?.length;
+    }
+    return !!this.optionItems && !this.optionSelectionService.showAllOptions && typed;
+  }
+
+  /**
+   * Mutator: the form control holds an option's value while an agent knows its label, so labels are
+   * mapped to values and unknown labels are refused with the options named.
+   */
+  private publishMutator(host: HTMLElement) {
+    this.teardownElementMutator = publishElementMutator(host, {
+      // The search input inside carries a form binding of its own, which is not the value.
+      ownsContents: true,
+      coerce: (proposed: unknown, options?: Required<ClrContextSnapshotOptions>) =>
+        this.coerceSelection(proposed, options),
+    });
+  }
+
+  private coerceSelection(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation {
+    const excluded = this.excludedBy(options);
+    const hidden = this.selectedValues().filter(value => {
+      const option = this.optionFor(value);
+      return !!option && this.optionShown(option, excluded) !== 'shown';
+    });
+    // Replacing a choice the agent was never shown would change what it cannot see or undo.
+    if (!this.multiSelect && hidden.length) {
+      return { refused: 'The current choice is kept from agents, and cannot be changed by one.' };
+    }
+    // The selection the agent was never shown stays in the value and out of the display.
+    if (proposed === null || proposed === undefined || proposed === '') {
+      return { value: this.multiSelect ? hidden : null, display: this.multiSelect ? [] : null };
+    }
+    const proposals = Array.isArray(proposed) ? proposed : [proposed];
+    if (!this.multiSelect && proposals.length > 1) {
+      return { refused: 'The combobox takes one option.' };
+    }
+    const items = (this.options?.items?.toArray() ?? []).filter(
+      option => this.optionShown(option, excluded) === 'shown'
+    );
+    const values: T[] = [...hidden];
+    const labels: string[] = [];
+    const choose = (value: T, label: string) => {
+      if (!values.some(chosen => this.sameValue(chosen, value))) {
+        values.push(value);
+        labels.push(label);
+      }
+    };
+    for (const proposal of proposals) {
+      const matches = this.matchingOptions(items, proposal, excluded);
+      if (matches.length > 1) {
+        return {
+          refused: `Several options read "${String(proposal)}", and nothing tells which one is meant. Leave this choice to the user.`,
+        };
+      }
+      const option = matches[0];
+      if (option) {
+        choose(option.value, this.optionLabel(option, excluded));
+      } else if (this.editable && typeof proposal === 'string' && proposal.trim()) {
+        const text = proposal.trim();
+        choose(this.optionSelectionService.editableResolver(text), text);
+      } else if (!items.length) {
+        return { refused: 'No options are loaded: the combobox loads them as the user types.' };
+      } else {
+        const named = items
+          .slice(0, CLR_CONTEXT_DEFAULT_MAX_ITEMS)
+          .map(candidate => `"${this.optionLabel(candidate, excluded)}"`);
+        return { refused: `No such option. The options are: ${named.join(', ')}.` };
+      }
+    }
+    return this.multiSelect ? { value: values, display: labels } : { value: values[0], display: labels[0] };
+  }
+
+  private excludedBy(options?: ClrContextSnapshotOptions): string {
+    return usableSelectors(this.el.nativeElement.ownerDocument, options?.excludeSelectors ?? []);
+  }
+
+  /** `'excluded'` where the walk would leave the option out, `'withheld'` where it is counted but unnamed. */
+  private optionShown(option: ClrOption<T>, excluded: string): 'shown' | 'withheld' | 'excluded' {
+    const element: Element = option.elRef.nativeElement;
+    const list = element.closest('clr-options');
+    let verdict: 'shown' | 'withheld' = 'shown';
+    for (let current: Element | null = element; current; current = current.parentElement) {
+      if (
+        (excluded && current.matches(excluded)) ||
+        // The list itself may be hidden while closed, but not kept from agents.
+        current.matches(current === list ? CLR_CONTEXT_IGNORE_SELECTOR : CLR_CONTEXT_HIDDEN_SELECTOR)
+      ) {
+        return 'excluded';
+      }
+      if (current.matches(CLR_CONTEXT_REDACT_SELECTOR) || current.matches(CLR_CONTEXT_EDITING_HOST_SELECTOR)) {
+        verdict = 'withheld';
+      }
+      if (current === list) {
+        break;
+      }
+    }
+    if (
+      verdict === 'shown' &&
+      this.optionLabel(option, excluded) === '' &&
+      element.querySelector(CLR_CONTEXT_WITHHELD_SELECTOR)
+    ) {
+      // Named, it would be listed as `''`: there, but with nothing to tell it apart.
+      verdict = 'withheld';
+    }
+    return verdict;
+  }
+
+  /** Matched by `clrComboboxIdentityFn` too, so a model loaded apart from the options still finds its option. */
+  private optionFor(value: unknown): ClrOption<T> | undefined {
+    return this.options?.items?.find(candidate => this.sameValue(candidate.value, value));
+  }
+
+  private sameValue(option: T, value: unknown): boolean {
+    if (option === value) {
+      return true;
+    }
+    if (option === null || option === undefined || value === null || value === undefined) {
+      return false;
+    }
+    try {
+      const identity = this.optionSelectionService.identityFn(option);
+      return identity !== undefined && identity === this.optionSelectionService.identityFn(value as T);
+    } catch {
+      // An identity function written for the model's shape may not take anything else.
+      return false;
+    }
+  }
+
+  private selectedValues(): T[] {
+    const model = this.optionSelectionService.selectionModel?.model;
+    if (model === null || model === undefined) {
+      return [];
+    }
+    return Array.isArray(model) ? model : [model];
+  }
+
+  /** The selection as the user sees it; `[]` or `null` when nothing is selected. */
+  private selectedLabels(excluded: string): (string | null)[] | string | null {
+    const names = this.selectedValues()
+      .map(value => {
+        const option = this.optionFor(value);
+        return { value, option, shown: option ? this.optionShown(option, excluded) : 'shown' };
+      })
+      .filter(entry => entry.shown !== 'excluded')
+      .map(entry => (entry.shown === 'shown' ? this.selectedValueLabel(entry.value, entry.option, excluded) : null));
+    return this.multiSelect ? names : (names[0] ?? null);
+  }
+
+  /** Two options can read the same; prefer an exact label match, then an exact value match. */
+  private matchingOptions(items: ClrOption<T>[], proposal: unknown, excluded: string): ClrOption<T>[] {
+    let matches = items.filter(candidate => this.optionMatches(candidate, proposal, excluded));
+    if (matches.length > 1 && typeof proposal === 'string') {
+      const wanted = normalizeContextText(proposal);
+      const byLabel = matches.filter(
+        candidate => normalizeContextText(this.optionLabel(candidate, excluded)) === wanted
+      );
+      matches = byLabel.length ? byLabel : matches;
+      const byValue = matches.filter(
+        candidate =>
+          (typeof candidate.value === 'string' || typeof candidate.value === 'number') &&
+          normalizeContextText(String(candidate.value)) === wanted
+      );
+      matches = byValue.length ? byValue : matches;
+    }
+    return matches;
+  }
+
+  private optionMatches(option: ClrOption<T>, proposal: unknown, excluded: string): boolean {
+    if (typeof proposal !== 'string') {
+      return this.sameValue(option.value, proposal);
+    }
+    const wanted = normalizeContextText(proposal);
+    if (normalizeContextText(this.optionLabel(option, excluded)) === wanted) {
+      return true;
+    }
+    const value = option.value;
+    if (typeof value === 'string' || typeof value === 'number') {
+      return normalizeContextText(String(value)) === wanted;
+    }
+    const display = this.selectedValueLabel(value, this.optionFor(value), excluded);
+    return typeof display === 'string' && normalizeContextText(display) === wanted;
+  }
+
+  /**
+   * An option's visible label, without what the snapshot excludes. Not named by its value when its text was
+   * withheld: the value may be the secret.
+   */
+  private optionLabel(option: ClrOption<T>, excluded: string): string {
+    const element: HTMLElement = option.elRef.nativeElement;
+    const text = contextText(
+      element,
+      descendant => descendant.classList.contains('clr-sr-only') || (!!excluded && descendant.matches(excluded))
+    );
+    if (text || element.querySelector(CLR_CONTEXT_WITHHELD_SELECTOR)) {
+      return text;
+    }
+    return String(option.value);
+  }
+
+  /** Never the model object itself, which holds fields the user never sees. */
+  private selectedValueLabel(value: T, option: ClrOption<T> | undefined, excluded: string): string | null {
+    if (option) {
+      return this.optionLabel(option, excluded);
+    }
+    const shown = this.displayField && value ? (value as Record<string, unknown>)[this.displayField] : value;
+    return typeof shown === 'string' || typeof shown === 'number' || typeof shown === 'boolean' ? String(shown) : null;
   }
 
   private getDisplayNames(model: T | T[] | null | undefined) {

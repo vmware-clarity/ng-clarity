@@ -68,6 +68,11 @@
       "type": "component"
     },
     {
+      "url": "contextual-engine",
+      "text": "Contextual Engine",
+      "type": "pattern"
+    },
+    {
       "url": "datagrid",
       "text": "Datagrid",
       "type": "component"

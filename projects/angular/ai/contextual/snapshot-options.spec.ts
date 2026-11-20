@@ -1,0 +1,243 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import {
+  capSnapshotOptions,
+  CLR_CONTEXT_CATEGORIES,
+  CLR_CONTEXT_DEFAULT_OPTIONS,
+  CLR_CONTEXT_PRESETS,
+  presetOrOptions,
+  resolveSnapshotOptions,
+  withCallOptions,
+} from './snapshot-options';
+import { CLR_CONTEXT_UNTRUSTED_OPTION_KEYS, sanitizeUntrustedSnapshotOptions } from './untrusted-options';
+
+describe('snapshot options', () => {
+  describe('resolveSnapshotOptions', () => {
+    it('applies the defaults when nothing was asked', () => {
+      expect(resolveSnapshotOptions()).toEqual(expect.objectContaining(CLR_CONTEXT_DEFAULT_OPTIONS));
+      expect(resolveSnapshotOptions({})).toEqual(resolveSnapshotOptions());
+    });
+
+    it('describes the whole page with prose, frames and item lists by default', () => {
+      const resolved = resolveSnapshotOptions();
+      expect(resolved.focus).toBe('page');
+      expect(resolved.rootSelector).toBe('');
+      expect(resolved.includeText).toBe(true);
+      expect(resolved.includeFrames).toBe(true);
+      expect(resolved.collectionItems).toBe('all');
+      expect(resolved.excludeRoles).toEqual([]);
+      expect(resolved.maxTextLength).toBe(100);
+    });
+
+    it('honours budgets inside their ranges', () => {
+      const resolved = resolveSnapshotOptions({ maxComponents: 7, maxItemsPerCollection: 3 });
+      expect(resolved.maxComponents).toBe(7);
+      expect(resolved.maxItemsPerCollection).toBe(3);
+    });
+
+    it('falls back to the default for a budget that is not a finite number, never to unbounded', () => {
+      expect(resolveSnapshotOptions({ maxComponents: Number.NaN }).maxComponents).toBe(300);
+      expect(resolveSnapshotOptions({ maxComponents: Number.POSITIVE_INFINITY }).maxComponents).toBe(300);
+      expect(resolveSnapshotOptions({ maxItemsPerCollection: '5' as unknown as number }).maxItemsPerCollection).toBe(
+        25
+      );
+    });
+
+    it('holds a budget to its range', () => {
+      expect(resolveSnapshotOptions({ maxComponents: -5 }).maxComponents).toBe(0);
+      expect(resolveSnapshotOptions({ maxComponents: 1e9 }).maxComponents).toBe(10_000);
+      expect(resolveSnapshotOptions({ maxItemsPerCollection: 2.9 }).maxItemsPerCollection).toBe(2);
+      expect(resolveSnapshotOptions({ maxItemsPerCollection: -1 }).maxItemsPerCollection).toBe(0);
+    });
+
+    it('reports counts and selection only when no items are asked for', () => {
+      expect(resolveSnapshotOptions({ maxItemsPerCollection: 0 }).collectionItems).toBe('summary');
+    });
+
+    it('reads root as the page, the open modal, or a selector', () => {
+      expect(resolveSnapshotOptions({ root: 'page' })).toEqual(
+        expect.objectContaining({ focus: 'page', rootSelector: '' })
+      );
+      expect(resolveSnapshotOptions({ root: 'modal' })).toEqual(
+        expect.objectContaining({ focus: 'modal', rootSelector: '' })
+      );
+      expect(resolveSnapshotOptions({ root: ' main ' })).toEqual(
+        expect.objectContaining({ root: 'main', focus: 'page', rootSelector: 'main' })
+      );
+      expect(resolveSnapshotOptions({ root: '  ' }).root).toBe('page');
+      expect(resolveSnapshotOptions({ root: 7 as unknown as string }).root).toBe('page');
+    });
+
+    it('keeps only usable selectors and known categories', () => {
+      const resolved = resolveSnapshotOptions({
+        excludeSelectors: [' .ads ', '', 7 as unknown as string],
+        excludeCategories: ['layout', 'nonsense' as never],
+      });
+      expect(resolved.excludeSelectors).toEqual(['.ads']);
+      expect(resolved.excludeCategories).toEqual(['layout']);
+    });
+  });
+
+  describe('categories', () => {
+    it('expand into the roles they stand for', () => {
+      expect(resolveSnapshotOptions({ excludeCategories: ['layout', 'headings'] }).excludeRoles).toEqual([
+        ...CLR_CONTEXT_CATEGORIES.layout,
+        'heading',
+      ]);
+    });
+
+    it('leave out prose and frames', () => {
+      const resolved = resolveSnapshotOptions({ excludeCategories: ['text', 'frames'] });
+      expect(resolved.includeText).toBe(false);
+      expect(resolved.includeFrames).toBe(false);
+      expect(resolved.excludeRoles).toEqual([]);
+    });
+  });
+
+  describe('presets', () => {
+    it('narrow from the full defaults', () => {
+      expect(CLR_CONTEXT_PRESETS.full).toEqual({});
+      expect(CLR_CONTEXT_PRESETS.interactive).toEqual({ excludeCategories: ['layout', 'text'] });
+      expect(resolveSnapshotOptions(CLR_CONTEXT_PRESETS.minimal)).toEqual(
+        expect.objectContaining({ focus: 'modal', collectionItems: 'summary', maxComponents: 150 })
+      );
+    });
+
+    it('are handed out as copies the caller may change', () => {
+      const options = presetOrOptions('interactive');
+      options.maxComponents = 1;
+      expect(CLR_CONTEXT_PRESETS.interactive.maxComponents).toBeUndefined();
+    });
+
+    it('report a name that is not a preset, and give no options for it', () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+      expect(presetOrOptions('everything' as never)).toEqual({});
+      expect(warn).toHaveBeenCalledTimes(1);
+    });
+
+    it('say that an exclusion list given as something else will be ignored', () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+      presetOrOptions({ excludeSelectors: '.secret' as unknown as string[] });
+      expect(warn).toHaveBeenCalledExactlyOnceWith(
+        'Clarity context options: excludeSelectors must be a list, so ".secret" was ignored.'
+      );
+    });
+  });
+
+  describe('withCallOptions', () => {
+    it('lets a call set budgets and the root over the application’s', () => {
+      expect(withCallOptions({ maxComponents: 10, root: 'main' }, { maxComponents: 20, root: 'modal' })).toEqual({
+        maxComponents: 20,
+        root: 'modal',
+      });
+    });
+
+    it('ignores what a call left undefined', () => {
+      expect(withCallOptions({ maxComponents: 10 }, { maxComponents: undefined })).toEqual({ maxComponents: 10 });
+    });
+
+    it('adds a call’s exclusions to the application’s, so an empty list removes none', () => {
+      const application = { excludeSelectors: ['nav'], excludeCategories: ['layout' as const] };
+      expect(withCallOptions(application, { excludeSelectors: ['aside'], excludeCategories: [] })).toEqual({
+        excludeSelectors: ['nav', 'aside'],
+        excludeCategories: ['layout'],
+      });
+    });
+
+    it('ignores an exclusion list that is not a list, so the application’s stays', () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+      expect(
+        withCallOptions({ excludeSelectors: ['nav'] }, { excludeSelectors: 'aside' as unknown as string[] })
+      ).toEqual({ excludeSelectors: ['nav'] });
+      expect(warn).toHaveBeenCalledTimes(1);
+    });
+
+    it('says a value it cannot print was ignored, rather than throwing while saying so', () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+      const circular: Record<string, unknown> = {};
+      circular['self'] = circular;
+      withCallOptions({}, { excludeSelectors: circular as never });
+      withCallOptions({}, { excludeSelectors: BigInt(1) as never });
+      expect(warn.mock.calls).toEqual([
+        ['Clarity context options: excludeSelectors must be a list, so an object was ignored.'],
+        ['Clarity context options: excludeSelectors must be a list, so a bigint was ignored.'],
+      ]);
+    });
+  });
+
+  describe('capSnapshotOptions', () => {
+    it('lets a caller ask for less than the ceiling, never more', () => {
+      expect(capSnapshotOptions({ maxComponents: 5 }, { maxComponents: 50 })).toEqual({ maxComponents: 5 });
+      expect(capSnapshotOptions({ maxComponents: 500 }, { maxComponents: 50 })).toEqual({ maxComponents: 50 });
+    });
+
+    it('applies the ceiling where the caller asked for nothing', () => {
+      expect(capSnapshotOptions({}, { maxItemsPerCollection: 0 })).toEqual({ maxItemsPerCollection: 0 });
+    });
+
+    it('leaves the request alone where there is no ceiling', () => {
+      expect(capSnapshotOptions({ maxComponents: 5 }, undefined)).toEqual({ maxComponents: 5 });
+    });
+
+    it('adds exclusions up and keeps the ceiling’s exclusions when the request’s list is not one', () => {
+      expect(capSnapshotOptions({ excludeCategories: ['text'] }, { excludeCategories: ['layout'] })).toEqual({
+        excludeCategories: ['layout', 'text'],
+      });
+      expect(
+        capSnapshotOptions({ excludeSelectors: 'x' as unknown as string[] }, { excludeSelectors: ['nav'] })
+      ).toEqual({ excludeSelectors: ['nav'] });
+    });
+
+    it('keeps a narrowing the ceiling chose', () => {
+      expect(capSnapshotOptions({ root: 'page' }, { root: 'main' }).root).toBe('main');
+      expect(capSnapshotOptions({ root: 'page' }, { root: 'modal' }).root).toBe('modal');
+      expect(capSnapshotOptions({ root: 'modal' }, { root: 'page' }).root).toBe('modal');
+    });
+  });
+
+  describe('sanitizeUntrustedSnapshotOptions', () => {
+    it('takes budgets, categories and the page or modal scope only', () => {
+      expect(CLR_CONTEXT_UNTRUSTED_OPTION_KEYS).toEqual([
+        'maxComponents',
+        'maxItemsPerCollection',
+        'excludeCategories',
+        'root',
+      ]);
+      expect(
+        sanitizeUntrustedSnapshotOptions({
+          maxComponents: 5,
+          maxItemsPerCollection: Number.NaN,
+          excludeCategories: ['layout', 7, 'x'.repeat(40)],
+          excludeSelectors: ['nav'],
+          root: 'modal',
+        })
+      ).toEqual({ maxComponents: 5, excludeCategories: ['layout'], root: 'modal' });
+    });
+
+    it('refuses a selector as the scope, and a value of the wrong kind', () => {
+      expect(sanitizeUntrustedSnapshotOptions({ root: 'main', maxComponents: '5', excludeCategories: 'text' })).toEqual(
+        {}
+      );
+      expect(sanitizeUntrustedSnapshotOptions('nonsense')).toBeUndefined();
+    });
+
+    it('bounds the category list an untrusted caller may send', () => {
+      const junk = Array.from({ length: 60 }, (_, index) => `junk-${index}`);
+      expect(sanitizeUntrustedSnapshotOptions({ excludeCategories: junk })?.excludeCategories?.length).toBe(50);
+    });
+  });
+
+  describe('the exported constants', () => {
+    it('cannot be changed by an application, since they decide what every snapshot and caller gets', () => {
+      expect(Object.isFrozen(CLR_CONTEXT_DEFAULT_OPTIONS)).toBe(true);
+      expect(Object.isFrozen(CLR_CONTEXT_PRESETS.minimal)).toBe(true);
+      expect(Object.isFrozen(CLR_CONTEXT_CATEGORIES.layout)).toBe(true);
+      expect(Object.isFrozen(CLR_CONTEXT_UNTRUSTED_OPTION_KEYS)).toBe(true);
+    });
+  });
+});
