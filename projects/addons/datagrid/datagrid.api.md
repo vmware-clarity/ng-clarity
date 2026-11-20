@@ -483,6 +483,9 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     pageSizeOptions: number[];
     preSelectFirstItem: boolean;
     preserveExistingSelectionOnFilter: boolean;
+    get propertyFilters(): PropertyFilter[];
+    set propertyFilters(value: PropertyFilter[]);
+    propertyFiltersChange: EventEmitter<PropertyFilter[]>;
     // (undocumented)
     protected refreshGrid(state: ClrDatagridStateInterface): void;
     // Warning: (ae-forgotten-export) The symbol "ClrDatagridStateInterface" needs to be exported by the entry point clr-addons-datagrid.d.ts
@@ -501,7 +504,6 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     // (undocumented)
     rowsExpandedByDefault: boolean;
     scrollToIndex(index: number, behavior?: ScrollBehavior): void;
-    // (undocumented)
     searchTerm: string;
     searchTermChange: EventEmitter<string>;
     get selectedItems(): T[];
@@ -539,6 +541,10 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     protected zoomLevel: ZoomLevel;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<DatagridComponent<any>, "appfx-datagrid", never, {
+        "searchTerm": {
+            "alias": "searchTerm";
+            "required": false;
+        };
         "loading": {
             "alias": "loading";
             "required": false;
@@ -659,6 +665,10 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
             "alias": "footerModel";
             "required": false;
         };
+        "propertyFilters": {
+            "alias": "propertyFilters";
+            "required": false;
+        };
         "columns": {
             "alias": "columns";
             "required": false;
@@ -692,6 +702,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
         "pageSizeChange": "pageSizeChange";
         "gridItemsChange": "gridItemsChange";
         "advancedFilterChange": "advancedFilterChange";
+        "propertyFiltersChange": "propertyFiltersChange";
         "columnDefsChange": "columnDefsChange";
         "selectedItemsChange": "selectedItemsChange";
         "exportDataEvent": "exportDataEvent";

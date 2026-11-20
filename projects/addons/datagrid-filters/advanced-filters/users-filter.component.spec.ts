@@ -328,6 +328,21 @@ describe('UsersFilterComponent', () => {
       expect(component.visibleUsers.length).toBe(60); // 50 + 10 remaining
       expect(component.hasMoreItems).toBe(false);
     });
+
+    it('renders Load more as a plain button, so it never submits the filter form', () => {
+      renderFixture(fixture);
+      const form: HTMLFormElement = fixture.nativeElement.querySelector('form');
+      const submit = vi.fn((event: Event) => event.preventDefault());
+      form.addEventListener('submit', submit);
+      const loadMore = Array.from<HTMLButtonElement>(fixture.nativeElement.querySelectorAll('button')).find(
+        button => button.textContent!.trim() === component.filterStrings.loadMore
+      )!;
+      expect(loadMore.type).toBe('button');
+
+      loadMore.click();
+      expect(submit).not.toHaveBeenCalled();
+      expect(component.visibleUsers.length).toBe(60);
+    });
   });
 
   describe('Custom Search Term Logic', () => {

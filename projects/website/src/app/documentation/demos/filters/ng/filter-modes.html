@@ -1,0 +1,28 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<form clrForm>
+  <clr-select-container>
+    <label>Filter mode</label>
+    <select clrSelect name="filter-mode" [(ngModel)]="filterMode">
+      <option [ngValue]="FilterMode.Quick">Quick</option>
+      <option [ngValue]="FilterMode.Advanced">Advanced</option>
+      <option [ngValue]="FilterMode.AdvancedOnly">Advanced only</option>
+      <option [ngValue]="FilterMode.Combined">Combined</option>
+    </select>
+  </clr-select-container>
+</form>
+
+<div cds-layout="m-t:md">
+  <appfx-datagrid-filters
+    [filterMode]="filterMode"
+    [filterableProperties]="filterableProperties"
+    (searchTermChange)="searchTerm = $event"
+    (propertyFiltersChange)="filters = $event"
+  ></appfx-datagrid-filters>
+</div>
+
+<app-applied-filters [filters]="filters" [searchTerm]="searchTerm" [showSearchTerm]="true"></app-applied-filters>

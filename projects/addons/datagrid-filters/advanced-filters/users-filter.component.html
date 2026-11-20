@@ -10,36 +10,40 @@
   (cancel)="onCancelButtonClick()"
   (apply)="onApplyButtonClick()"
 >
-  <div class="user-filter-wrapper" cds-layout="p-b:xxxs">
+  <div class="filter-field-row">
+    <ng-content select="[filterField]"></ng-content>
+  </div>
+  <ng-content select="[filterActions]" ngProjectAs="[filterActions]"></ng-content>
+  <div class="user-filter-wrapper filter-scroll-region">
     <div *ngIf="isLoading" class="loading-overlay">
       <div class="loading-content">
         <clr-spinner clrMedium>{{ filterStrings.loading }}</clr-spinner>
       </div>
     </div>
-    <!-- Operator -->
-    <clr-select-container class="mt-compact">
-      <label class="clr-control-label">
-        {{ filterStrings.operatorLabel }}
-      </label>
-      <select clrSelect formControlName="userOperator">
-        <option
-          *ngFor="let operator of filterProperty.supportedOperators; trackBy: trackByOperator"
-          [ngValue]="operator"
-        >
-          {{ filterStrings.getOperatorDisplayName(operator) }}
-        </option>
-      </select>
-    </clr-select-container>
+    <div class="filter-condition-row">
+      <clr-select-container class="filter-operator">
+        <label class="clr-sr-only">
+          {{ filterStrings.operatorLabel }}
+        </label>
+        <select clrSelect formControlName="userOperator">
+          <option
+            *ngFor="let operator of filterProperty.supportedOperators; trackBy: trackByOperator"
+            [ngValue]="operator"
+          >
+            {{ filterStrings.getOperatorDisplayName(operator) }}
+          </option>
+        </select>
+      </clr-select-container>
 
-    <!-- Domain -->
-    <clr-select-container *ngIf="domains && domains.length > 0">
-      <label>{{ filterStrings.domain }}</label>
-      <select clrSelect name="domain" formControlName="domain">
-        <option *ngFor="let domain of domains; trackBy: trackByDomain" [value]="domain">
-          {{ domain }}
-        </option>
-      </select>
-    </clr-select-container>
+      <clr-select-container *ngIf="domains && domains.length > 0" class="filter-value">
+        <label class="clr-sr-only">{{ filterStrings.domain }}</label>
+        <select clrSelect name="domain" formControlName="domain">
+          <option *ngFor="let domain of domains; trackBy: trackByDomain" [value]="domain">
+            {{ domain }}
+          </option>
+        </select>
+      </clr-select-container>
+    </div>
 
     <!-- User -->
     <label class="clr-control-label text-left mt-compact">
@@ -64,7 +68,7 @@
       </span>
     </div>
 
-    <div cds-layout="m-t:xs">
+    <div cds-layout="m-t:xs" class="filter-options">
       <clr-checkbox-container class="enum-options">
         <clr-checkbox-wrapper *ngIf="visibleUsers.length > 0" cds-layout="m-b:xs">
           <input type="checkbox" clrCheckbox formControlName="selectAll" (change)="onSelectAllChange()" />
@@ -95,7 +99,7 @@
       </div>
     </div>
 
-    <button *ngIf="hasMoreItems" class="btn btn-link" (click)="loadMore($event)">
+    <button *ngIf="hasMoreItems" type="button" class="btn btn-link" (click)="loadMore($event)">
       {{ filterStrings.loadMore }}
     </button>
   </div>

@@ -193,7 +193,11 @@ export interface GridFooterModel {
   ],
 })
 export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, OnChanges, PreselectableComponent {
-  searchTerm = '';
+  /**
+   * The quick search text, passed on to the filter bar. Supports two-way binding: `[(searchTerm)]="search"`,
+   * e.g. to restore a saved view. Setting it does not emit `searchTermChange`.
+   */
+  @Input() searchTerm = '';
   visibleColumns!: ColumnDefinition<T>[];
   draggedItems: T[] = [];
 
@@ -323,6 +327,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    * - `FilterMode.Quick`: Enables the quick filter.
    * - `FilterMode.Advanced`: Enables the advanced filter.
    * - `FilterMode.AdvancedOnly`: Enables only the advanced filter.
+   * - `FilterMode.Combined`: Enables the quick and advanced filters together (combined with AND by the host).
    *
    * When the filter is enabled, the component will emit the `searchTermChange`/`advancedFilterChange` event whenever the filter changes.
    * If not set, no filter will be displayed.
@@ -439,6 +444,12 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    * Emits when advanced filter criteria changes.
    */
   @Output() advancedFilterChange: EventEmitter<PropertyFilter[]> = new EventEmitter<PropertyFilter[]>();
+
+  /**
+   * Emits the active advanced filters when the user changes them, together with `advancedFilterChange`.
+   * The change event of `[(propertyFilters)]`.
+   */
+  @Output() propertyFiltersChange: EventEmitter<PropertyFilter[]> = new EventEmitter<PropertyFilter[]>();
 
   /**
    * Emits the updated column definitions {@link columns} to the parent component when changed.
@@ -580,6 +591,8 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    * Whether there are applied advanced filters
    */
   #hasAdvancedFilters = false;
+
+  #propertyFilters: PropertyFilter[] = [];
   #wrapCellText = true;
 
   constructor(
@@ -631,6 +644,21 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
       ...config,
       showFooter: config?.showFooter ?? true,
     };
+  }
+
+  /**
+   * The active advanced filters, passed on to the filter bar. Supports two-way binding:
+   * `[(propertyFilters)]="filters"`, e.g. to restore a saved view or keep the grid's data in sync with the pills.
+   * Setting it does not emit `propertyFiltersChange` or `advancedFilterChange`.
+   */
+  @Input()
+  get propertyFilters(): PropertyFilter[] {
+    return this.#propertyFilters;
+  }
+
+  set propertyFilters(value: PropertyFilter[]) {
+    this.#propertyFilters = value ?? [];
+    this.#hasAdvancedFilters = this.#propertyFilters.length > 0;
   }
 
   /**
@@ -963,7 +991,10 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   onAdvancedFilterCriteriaChange(filterCriteria: PropertyFilter[]): void {
     // We need to know if there are filters, because of filteredItemsCount
     this.#hasAdvancedFilters = filterCriteria ? filterCriteria.length > 0 : false;
+    // Keep the last emitted state, so the filter bar starts from it when it is shown again.
+    this.#propertyFilters = filterCriteria ?? [];
     this.advancedFilterChange.emit(filterCriteria);
+    this.propertyFiltersChange.emit(filterCriteria);
   }
 
   /**

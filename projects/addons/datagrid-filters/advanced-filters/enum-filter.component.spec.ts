@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClrCheckboxModule, ClrInputModule, ClrRadioModule, ClrSelectModule } from '@clr/angular/forms';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
+import { renderFixture } from '@clr/angular/utils/testing';
 import type { Mock } from 'vitest';
 
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
@@ -169,6 +170,24 @@ describe('EnumFilterComponent', () => {
       // 50 + 100 step
       expect(component.filteredOptions.length).toBe(150);
       expect(component.isProcessing).toBe(false);
+    });
+
+    it('renders Load more as a plain button, so it never submits the filter form', async () => {
+      await fixture.whenStable();
+      await vi.advanceTimersByTimeAsync(50);
+      renderFixture(fixture);
+      const form: HTMLFormElement = fixture.nativeElement.querySelector('form');
+      const submit = vi.fn((event: Event) => event.preventDefault());
+      form.addEventListener('submit', submit);
+      const loadMore = Array.from<HTMLButtonElement>(fixture.nativeElement.querySelectorAll('button')).find(
+        button => button.textContent!.trim() === component.filterStrings.loadMore
+      )!;
+      expect(loadMore.type).toBe('button');
+
+      loadMore.click();
+      await vi.advanceTimersByTimeAsync(50);
+      expect(submit).not.toHaveBeenCalled();
+      expect(component.filteredOptions.length).toBe(150);
     });
   });
 

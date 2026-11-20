@@ -73,3 +73,53 @@ Some fields became accessors: `IfExpandService.expandable`, `hasExpandTemplate`,
 `isNavLevel2OnPage`. This is source compatible unless a subclass redeclares them as fields.
 
 When upgrading through v18, remove any `*WillyWonka` / `*OompaLoompa` imports left by the v18 rename schematic.
+
+## Datagrid Filters (Addons)
+
+Three `DatagridFiltersStrings` keys from `@clr/addons/datagrid-filters` have been removed, because the filter bar no
+longer uses them:
+
+- `clearAllButtonLabel` ("Clear all"): Clear all is now an icon button. Its accessible name and tooltip use
+  `clearAllButtonAriaLabel`.
+- `appliedText` ("applied"): a pill with several conditions now shows the first condition and a `+N` badge instead of
+  "N applied".
+- `dateFormat` ("YYYY-MM-DD"): the date input's screen reader label is now `dateLabel`, and its placeholder comes from
+  the date picker, in the locale's format.
+
+Remove any overrides or translations of these keys.
+
+New keys name the date and time inputs for screen readers: `dateLabel` ("Date"), `timeLabel` ("Time"), `fromTimeLabel`
+("From time") and `toTimeLabel` ("To time"). Apps that translate the strings show English for them until they are added.
+
+The defaults of three keys have changed. Apps that provide their own `DatagridFiltersStrings` are not affected, but
+tests that look for the old text are:
+
+- `addNew`: "Add new" is now "Add filter".
+- `addNewAriaLabel`: "Add new filter" is now "Add filter".
+- `removeConditionAriaLabel`: "Remove second condition" is now "Remove condition". The condition number is now added
+  after it ("Remove condition 2"), so remove any ordinal from translations.
+
+`appfx-datagrid-filters` and `appfx-datagrid` now accept `[(searchTerm)]` and `[(propertyFilters)]`, e.g. to restore a
+saved view. Setting them does not emit `searchTermChange` or `propertyFiltersChange`. Filters restored from JSON are
+matched to the filter bar's field definitions by their `property` key. `CompositeFiltersComponent.propertyType` is now
+optional (`PropertyType | undefined`), since it is unset until a field is selected.
+
+`presetFilters` can now emit at start-up. If the start-up filters differ from what `propertyFilters` passed in, for
+example presets without a `propertyFilters` binding, `propertyFiltersChange` emits them once, after the first change
+detection. Hosts that load data on every `propertyFiltersChange` load once more at start-up.
+
+The filter pills have new markup. CSS overrides and e2e selectors that target the old elements need updating:
+
+- A pill is a `button.filter-pill` inside a `clr-label`, instead of a `.label.label-blue` with a `.badge` and an
+  `.edit-filter` element.
+- A pill's editor opens in a popover (`.filter-popover`) instead of a `clr-signpost`.
+- Pills are capped at 280px. Longer text is truncated, and the full filter is shown in a tooltip.
+- **Add filter** and **Clear all** are now inside `.manage-filter-container`, after the pills, instead of direct
+  children of `.composite-filter-container`. They wrap with the pills on narrow screens.
+
+In the editors, **Cancel** now comes before **Apply** in the DOM and in keyboard order. The buttons no longer use
+`btn-right`.
+
+`AppfxDatagridFiltersModule` no longer registers the `filter-grid` icon (`filterGridIcon`), because the filter bar no
+longer uses it. Apps that show it with `<clr-icon shape="filter-grid">` need to register it themselves, unless they also
+import `ClrDatagridModule`, which registers it.

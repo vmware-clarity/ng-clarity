@@ -5,7 +5,27 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { formatDate } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  inject,
+  Input,
+  LOCALE_ID,
+  OnChanges,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import {
+  ClrPopoverHostDirective,
+  ClrPopoverPosition,
+  ClrPopoverService,
+  ClrPopoverType,
+} from '@clr/angular/popover/common';
+import { uniqueIdFactory } from '@clr/angular/utils';
 
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
 import { ComparisonOperator, PropertyType, TimeSpan } from '../model/datagrid-filters.enums';
@@ -18,9 +38,7 @@ import {
   StringPropertyDefinition,
   UserPropertyDefinition,
 } from '../model/datagrid-filters.interfaces';
-
-const enterKey = 'Enter';
-const spaceKey = 'Space';
+import { dateTimeEditorState, parseLocalDateTime } from '../model/date-time-editor-state';
 
 @Component({
   selector: 'appfx-manage-filter',
@@ -28,10 +46,19 @@ const spaceKey = 'Space';
   templateUrl: 'manage-filter.component.html',
   styleUrls: ['manage-filter.component.scss', '../common-styles.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [ClrPopoverHostDirective],
 })
-export class ManageFilterComponent implements OnInit {
+export class ManageFilterComponent implements OnInit, OnChanges {
   // The filter to be managed
   @Input() propertyFilter!: PropertyFilter;
+  @Input() filterProperty!: FilterablePropertyDefinition;
+  @Input() predefined = false;
+
+  @Output() filterRemoved = new EventEmitter<void>();
+
+  readonly popoverId = uniqueIdFactory();
+  readonly popoverPosition = ClrPopoverPosition.BOTTOM_LEFT;
+  readonly popoverType = ClrPopoverType.DROPDOWN;
   managedProperty!: FilterablePropertyDefinition;
 
   /**
@@ -51,12 +78,18 @@ export class ManageFilterComponent implements OnInit {
   enumProperty!: EnumPropertyDefinition;
   dateTimeProperty!: DateTimePropertyDefinition;
   userProperty!: UserPropertyDefinition;
-  openPrimaryConditionSignPost = false;
-  openSecondaryConditionSignPost = false;
   primaryConditionDisplayText = '';
   secondaryConditionDisplayText = '';
+  /**
+   * The pill's accessible name: the visible pill text first (WCAG 2.5.3), then the other conditions in place of the
+   * +N badge, then the edit hint, e.g. "VM Name: Contains web And Equals: db, Edit filter".
+   */
   editFilterAriaLabel = '';
+  /** The full filter shown in the pill's tooltip, e.g. "VM Name Contains: web And Equals: db". Visual only. */
+  tooltipText = '';
 
+  private readonly locale = inject(LOCALE_ID);
+  private readonly popoverService = inject(ClrPopoverService);
   private readonly noDisplayValueOperators: ComparisonOperator[] = [
     ComparisonOperator.IsEmpty,
     ComparisonOperator.LastDay,
@@ -67,8 +100,50 @@ export class ManageFilterComponent implements OnInit {
 
   constructor(public filterStrings: DatagridFiltersStrings) {}
 
+  /**
+   * The pill button sits inside clr-tooltip, which provides its own popover service.
+   * Register it as the filter popover origin here instead of using clrPopoverOrigin.
+   */
+  @ViewChild('pillButton', { static: true })
+  set pillButton(button: ElementRef<HTMLButtonElement>) {
+    if (button) {
+      this.popoverService.origin = button;
+    }
+  }
+
+  get open(): boolean {
+    return this.popoverService.open;
+  }
+
+  get active(): boolean {
+    return !!this.propertyFilter?.criteria.length;
+  }
+
+  get additionalConditions(): number {
+    return this.managedPropertyType === PropertyType.DateTime
+      ? 0
+      : Math.max(0, (this.propertyFilter?.criteria.length || 0) - 1);
+  }
+
+  get pillText(): string {
+    if (!this.active) {
+      return this.managedProperty.displayName;
+    }
+    // FIELD_NAME: CONDITION VALUE, e.g. "VM Name: Contains linux". The +N badge is rendered separately.
+    return this.managedProperty.displayName + ': ' + this.pillCondition;
+  }
+
+  /** The CONDITION VALUE part of an active pill, e.g. "Contains linux". Empty for an inactive pill. */
+  get pillCondition(): string {
+    return this.active ? this.displayFilterValue(0, true) : '';
+  }
+
+  ngOnChanges(): void {
+    this.ngOnInit();
+  }
+
   ngOnInit() {
-    this.managedProperty = this.propertyFilter.criteria[0].filterableProperty;
+    this.managedProperty = this.propertyFilter?.criteria[0]?.filterableProperty || this.filterProperty;
     if (this.isStringProperty(this.managedProperty)) {
       this.managedPropertyType = PropertyType.String;
       this.stringProperty = this.castStringProperty();
@@ -88,71 +163,63 @@ export class ManageFilterComponent implements OnInit {
     this.updateDisplayValues();
   }
 
-  onEditFilterKeyPress(event: KeyboardEvent, index: number) {
-    if (event.target instanceof Element) {
-      const targetElement: Element = event.target as Element;
-      if (targetElement.classList.contains('edit-filter') && (event.key === enterKey || event.key === spaceKey)) {
-        if (index === 0) {
-          this.openPrimaryConditionSignPost = !this.openPrimaryConditionSignPost;
-        } else if (index === 1) {
-          this.openSecondaryConditionSignPost = !this.openSecondaryConditionSignPost;
-        }
-      }
-    }
+  togglePopover(event: MouseEvent): void {
+    this.popoverService.toggleWithEvent(event);
   }
 
-  removeFilter(index: number): void {
-    // 3 or more criteria are displayed as one group
-    // For this reason, they are removed together
-    if (this.propertyFilter.criteria.length > 2 || this.managedPropertyType === PropertyType.DateTime) {
-      this.propertyFilter.criteria = [];
-    } else {
-      this.propertyFilter.criteria.splice(index, 1);
-      if (this.propertyFilter.criteria.length > 0) {
-        const property = this.propertyFilter.criteria[0].filterableProperty;
-        if (this.isNumericUnitFilterProperty(property)) {
-          property.selectedValue.splice(index, 1);
-          property.selectedUnit.splice(index, 1);
-        }
-        this.updateDisplayValues();
-      }
-    }
-    this.filterCriteriaChange.emit(this.propertyFilter);
+  removeFilter(): void {
+    this.close();
+    this.filterRemoved.emit();
   }
 
   onFilterCriteriaChange(propertyFilter: PropertyFilter) {
+    this.close();
     if (propertyFilter) {
-      this.filterCriteriaChange.emit(propertyFilter);
+      if (propertyFilter.criteria.length) {
+        this.filterCriteriaChange.emit(propertyFilter);
+      } else {
+        this.filterRemoved.emit();
+      }
     }
-    this.openPrimaryConditionSignPost = false;
-    this.openSecondaryConditionSignPost = false;
+  }
+
+  private close(): void {
+    this.popoverService.open = false;
+    this.popoverService.focusOrigin();
   }
 
   private updateDisplayValues(): void {
-    this.primaryConditionDisplayText = this.displayFilterValue(0);
-    this.editFilterAriaLabel =
-      this.filterStrings.editFilterText +
-      ' ' +
-      this.managedProperty.displayName +
-      ' ' +
-      this.primaryConditionDisplayText;
-    if (this.propertyFilter.criteria.length === 2) {
-      this.secondaryConditionDisplayText = this.displayFilterValue(1);
-      this.editFilterAriaLabel +=
-        ' ' +
-        this.filterStrings.getConjoinerDisplayName(this.propertyFilter.operator) +
-        ' ' +
-        this.secondaryConditionDisplayText;
+    const editHint = ', ' + this.filterStrings.editFilterText;
+    if (!this.active) {
+      this.primaryConditionDisplayText = '';
+      this.secondaryConditionDisplayText = '';
+      this.tooltipText = this.managedProperty.displayName;
+      this.editFilterAriaLabel = this.pillText + editHint;
+      return;
     }
+    this.primaryConditionDisplayText = this.displayFilterValue(0);
+    this.secondaryConditionDisplayText = '';
+    let otherConditions = '';
+    if (this.propertyFilter.criteria.length > 1 && this.managedPropertyType !== PropertyType.DateTime) {
+      this.secondaryConditionDisplayText = this.displayFilterValue(1);
+      const conjoiner = ' ' + this.filterStrings.getConjoinerDisplayName(this.propertyFilter.operator) + ' ';
+      otherConditions =
+        conjoiner +
+        this.propertyFilter.criteria
+          .slice(1)
+          .map((_, index) => this.displayFilterValue(index + 1))
+          .join(conjoiner);
+    }
+    this.tooltipText = this.managedProperty.displayName + ' ' + this.primaryConditionDisplayText + otherConditions;
+    this.editFilterAriaLabel = this.pillText + otherConditions + editHint;
   }
 
-  private displayFilterValue(index: number): string {
+  /**
+   * @param compact Pill format without the colon after the operator: "Contains linux" instead of "Contains: linux".
+   */
+  private displayFilterValue(index: number, compact = false): string {
     if (this.isDateTimeProperty(this.managedProperty)) {
-      return this.displayDateTimeFilter();
-    }
-    const appliedConditions: number = this.propertyFilter.criteria.length;
-    if (appliedConditions > 2) {
-      return appliedConditions + ' ' + this.filterStrings.appliedText;
+      return this.displayDateTimeFilter(compact);
     }
     if (this.propertyFilter.criteria[index].operator === ComparisonOperator.IsEmpty) {
       return this.operatorDisplayName(this.propertyFilter.criteria[index].operator);
@@ -161,54 +228,70 @@ export class ManageFilterComponent implements OnInit {
     let value = this.propertyFilter.criteria[index].value;
     if (this.isEnumProperty(property)) {
       const enumProperty: EnumPropertyDefinition = property as EnumPropertyDefinition;
-      value = enumProperty.values.get(this.propertyFilter.criteria[index].value);
+      value = enumProperty.values.get(this.propertyFilter.criteria[index].value) ?? value;
     } else if (this.isNumericUnitFilterProperty(property)) {
-      value = property.selectedValue[index] + ' ' + this.filterStrings.getUnitDisplayName(property.selectedUnit[index]);
+      const state = this.propertyFilter.editorState;
+      value =
+        (state?.values?.[index] ?? value) +
+        ' ' +
+        this.filterStrings.getUnitDisplayName(state?.units?.[index] ?? property.unit);
     }
-    return this.operatorDisplayName(this.propertyFilter.criteria[index].operator) + ': ' + value;
+    return this.operatorDisplayName(this.propertyFilter.criteria[index].operator) + (compact ? ' ' : ': ') + value;
   }
 
-  private displayDateTimeFilter(): string {
-    const operator: ComparisonOperator = this.propertyFilter.criteria[0].filterableProperty.selectedOperator;
+  /**
+   * Date-time pill text, built from this filter only (its editor state, or what its criteria express),
+   * never from the shared field definition. Dates use the locale's medium date format.
+   */
+  private displayDateTimeFilter(compact = false): string {
+    const separator = compact ? ' ' : ': ';
+    const state = dateTimeEditorState(this.propertyFilter);
+
+    // dateTimeEditorState always sets the operator; the check only narrows the type.
+    if (!state || state.operator === undefined) {
+      // Criteria with no date-time meaning (e.g. a custom preset): show them as they are.
+      const predicate = this.propertyFilter.criteria[0];
+      return this.operatorDisplayName(predicate.operator) + separator + this.formatDateTimeValue(predicate.value);
+    }
+    const operator = state.operator;
     if (operator === ComparisonOperator.CustomRange) {
-      const displayValue: string =
+      return (
         this.filterStrings.fromLabel +
-        ': ' +
-        this.formatDateTimeValue(this.propertyFilter.criteria[0].filterableProperty.selectedValue) +
+        separator +
+        this.formatDateTimeValue(state.value) +
         ' ' +
         this.filterStrings.toLabel +
-        ': ' +
-        this.formatDateTimeValue(this.propertyFilter.criteria[0].filterableProperty.selectedValueTo);
-      return displayValue;
+        separator +
+        this.formatDateTimeValue(state.valueTo)
+      );
     } else if (this.isNoDisplayValueOperator(operator)) {
       return this.operatorDisplayName(operator);
     } else if (operator === ComparisonOperator.TimeSpan) {
-      const timeSpanValue: number = this.propertyFilter.criteria[0].filterableProperty.selectedTimeSpanValue;
-      const timeSpan: TimeSpan = this.propertyFilter.criteria[0].filterableProperty.selectedTimeSpan;
       return (
         this.operatorDisplayName(operator) +
-        ': ' +
-        timeSpanValue +
+        separator +
+        state.timeSpanValue +
         ' ' +
-        this.filterStrings.getTimeSpanDisplayName(timeSpan)
+        this.filterStrings.getTimeSpanDisplayName(state.timeSpan as TimeSpan)
       );
-    } else {
-      const filterValue: string = this.formatDateTimeValue(
-        this.propertyFilter.criteria[0].filterableProperty.selectedValue
-      );
-      return this.operatorDisplayName(operator) + ': ' + filterValue;
     }
+    return this.operatorDisplayName(operator) + separator + this.formatDateTimeValue(state.value);
   }
 
   private isNoDisplayValueOperator(operator: ComparisonOperator): boolean {
     return this.noDisplayValueOperators.includes(operator);
   }
 
-  private formatDateTimeValue(dateTime: string): string {
-    if (!dateTime) {
-      return dateTime;
+  private formatDateTimeValue(dateTime: string | undefined): string {
+    const parsed = parseLocalDateTime(dateTime);
+    if (!parsed) {
+      return dateTime ?? '';
     }
-    return dateTime.replace('T', ' ');
+    const includeSeconds = (this.managedProperty as DateTimePropertyDefinition).includeSeconds;
+    const date = formatDate(parsed.date, 'mediumDate', this.locale);
+    return parsed.hasTime
+      ? date + ' ' + formatDate(parsed.date, includeSeconds ? 'mediumTime' : 'shortTime', this.locale)
+      : date;
   }
 
   private isStringProperty(property: FilterablePropertyDefinition): property is StringPropertyDefinition {
