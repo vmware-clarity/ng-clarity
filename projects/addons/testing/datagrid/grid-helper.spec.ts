@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ClrDatagridModule } from '@clr/angular/data/datagrid';
+import { renderFixture } from '@clr/angular/utils/testing';
 import { expect as assert } from 'vitest';
 
 import { GridHelper, GridRowTestHelper } from './grid-helper';
@@ -35,7 +36,7 @@ describe('Published datagrid assertion helpers', () => {
   it('checks included and excluded headers with a single-argument expect', () => {
     TestBed.configureTestingModule({ imports: [ClrDatagridModule], declarations: [TestGrid] });
     const fixture = TestBed.createComponent(TestGrid);
-    fixture.detectChanges();
+    renderFixture(fixture);
     const grid = new GridHelper(fixture.debugElement);
 
     assert(() => grid.assertHeaderLabels(['Name'], ['Missing'])).not.toThrow();

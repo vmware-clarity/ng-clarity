@@ -159,7 +159,7 @@ describe('Tree View', () => {
         });
         expect(testContext.clarityElement.querySelectorAll('[aria-expanded="true"]').length).toBe(0);
 
-        const focusManager = testContext.getClarityProvider(TreeFocusManagerService);
+        const focusManager = testContext.getClarityProvider<TreeFocusManagerService<PerfNode>>(TreeFocusManagerService);
         const roots = testContext.fixture.debugElement
           .queryAll(By.directive(ClrTreeNode))
           .filter(de => !(de.componentInstance as ClrTreeNode<PerfNode>)._model.parent);

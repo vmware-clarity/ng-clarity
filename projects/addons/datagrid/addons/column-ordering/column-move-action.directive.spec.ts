@@ -12,6 +12,7 @@ import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { GridHelper } from '@clr/addons/testing';
 import { ClrDatagrid, ClrDatagridModule } from '@clr/angular/data/datagrid';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ColumnMoveDirection } from './datagrid-columns-order.directive';
 import { DatagridColumnsOrderModule } from './datagrid-columns-order.module';
@@ -33,12 +34,12 @@ describe('ColumnMoveActionDirective', () => {
     });
 
     testContext.fixture = TestBed.createComponent(TestClrDatagridHostComponent);
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
   });
 
   function toggleMenu(context: any, columnIndex: number) {
     context.fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle'))[columnIndex].nativeElement.click();
-    context.fixture.detectChanges();
+    renderFixture(context.fixture);
   }
 
   function moveButton(label: string): HTMLElement {
@@ -69,7 +70,7 @@ describe('ColumnMoveActionDirective', () => {
 
     toggleMenu(testContext, 0);
     moveButton('Move Right').click();
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
 
     expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['State', 'Name', 'Status']);
   });
@@ -77,7 +78,7 @@ describe('ColumnMoveActionDirective', () => {
   it('does nothing when a disabled action is clicked', () => {
     toggleMenu(testContext, 0);
     moveButton('Move Left').click();
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
 
     expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['Name', 'State', 'Status']);
   });

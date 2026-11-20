@@ -18,19 +18,19 @@ import { clearFiles, selectFiles } from './file-input.helpers';
 export class ClrFileInputValueAccessor implements ControlValueAccessor {
   constructor(private readonly elementRef: ElementRef<HTMLInputElement>) {}
 
-  writeValue(value: FileList) {
+  writeValue(value: FileList | null | undefined) {
     if (value !== undefined && value !== null && !(value instanceof FileList)) {
       throw new Error('The value of a file input control must be a FileList.');
     }
 
     if (value) {
       selectFiles(this.elementRef.nativeElement, value);
-    } else if (this.elementRef.nativeElement.files.length) {
+    } else if (this.elementRef.nativeElement.files?.length) {
       clearFiles(this.elementRef.nativeElement);
     }
   }
 
-  registerOnChange(fn: (value: FileList) => void) {
+  registerOnChange(fn: (value: FileList | null) => void) {
     this.onChange = fn;
   }
 
@@ -48,7 +48,7 @@ export class ClrFileInputValueAccessor implements ControlValueAccessor {
     this.onChange(this.elementRef.nativeElement.files);
   }
 
-  private onChange = (_value: FileList) => {};
+  private onChange = (_value: FileList | null) => {};
 
   private onTouched = () => {};
 }

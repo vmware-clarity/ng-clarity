@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, Injectable, ViewChild } from '@angu
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { StepperService } from './providers/stepper.service';
 import { ClrStepButton, ClrStepButtonType } from './step-button';
@@ -70,14 +71,14 @@ describe('ClrStepButton Next', () => {
     });
 
     fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
     testComponent = fixture.componentInstance;
   });
 
   it('should update ClrStepButton type', () => {
     expect(testComponent.button.type).toBe(ClrStepButtonType.Next);
     testComponent.buttonType = ClrStepButtonType.Submit;
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(testComponent.button.type).toBe(ClrStepButtonType.Submit);
   });
 
@@ -86,7 +87,7 @@ describe('ClrStepButton Next', () => {
     vi.spyOn(stepperService, 'navigateToNextPanel').mockImplementation(() => undefined);
 
     fixture.nativeElement.querySelector('.clr-step-button').click();
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(stepperService.navigateToNextPanel).toHaveBeenCalled();
   });
 });
@@ -102,7 +103,7 @@ describe('ClrStepButton Previous', () => {
     });
 
     fixture = TestBed.createComponent(TestPreviousButtonComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
   });
 
   it('should trigger click that sets the previous step', () => {
@@ -110,7 +111,7 @@ describe('ClrStepButton Previous', () => {
     vi.spyOn(stepperService, 'navigateToPreviousPanel').mockImplementation(() => undefined);
 
     fixture.nativeElement.querySelector('.clr-step-button').click();
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(stepperService.navigateToPreviousPanel).toHaveBeenCalled();
   });
 });

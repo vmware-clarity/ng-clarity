@@ -108,13 +108,13 @@ export class ClrCombobox<T>
    */
   @Output('clrSelectionChange') clrSelectionChange = this.optionSelectionService.selectionChanged;
 
-  @ViewChild('textboxInput') textbox: ElementRef<HTMLInputElement>;
-  @ViewChild('trigger') trigger: ElementRef<HTMLButtonElement>;
-  @ContentChild(ClrOptionSelected) optionSelected: ClrOptionSelected<T>;
+  @ViewChild('textboxInput') textbox!: ElementRef<HTMLInputElement>;
+  @ViewChild('trigger') trigger!: ElementRef<HTMLButtonElement>;
+  @ContentChild(ClrOptionSelected) optionSelected!: ClrOptionSelected<T>;
 
-  @ViewChild('truncationButton') truncationButton: ElementRef;
-  @ViewChild('wrapper', { static: true }) wrapper: ElementRef;
-  @ViewChildren('pill') calculationPills: QueryList<ElementRef<HTMLElement>>;
+  @ViewChild('truncationButton') truncationButton!: ElementRef;
+  @ViewChild('wrapper', { static: true }) wrapper!: ElementRef;
+  @ViewChildren('pill') calculationPills!: QueryList<ElementRef<HTMLElement>>;
 
   focused = false;
 
@@ -130,18 +130,18 @@ export class ClrCombobox<T>
   protected shouldCalculate = true;
   protected isTotalSelection = false;
 
-  private resizeObserver: ResizeObserver;
+  private resizeObserver?: ResizeObserver;
   private readonly renderInjector = inject(Injector);
   private readonly destroyRef = inject(DestroyRef);
   private containerWidthChange = new Subject();
-  @ContentChild(ClrOptions) private options: ClrOptions<T>;
+  @ContentChild(ClrOptions) private options!: ClrOptions<T>;
   @ContentChild(ClrOptionItems) private optionItems: ClrOptionItems<T> | undefined;
 
   private teardownElementContext?: () => void;
 
   private _searchText = '';
-  private onTouchedCallback: () => any;
-  private onChangeCallback: (model: T | T[]) => any;
+  private onTouchedCallback?: () => any;
+  private onChangeCallback?: (model: T | T[] | null | undefined) => any;
 
   constructor(
     vcr: ViewContainerRef,
@@ -243,7 +243,7 @@ export class ClrCombobox<T>
     return this.popoverService.open;
   }
 
-  get multiSelectModel(): T[] {
+  get multiSelectModel(): T[] | null | undefined {
     if (!this.multiSelect) {
       throw Error('multiSelectModel is not available in single selection context');
     }
@@ -262,19 +262,19 @@ export class ClrCombobox<T>
     return 'selection-' + this.id;
   }
 
-  get displayField(): string {
+  get displayField(): string | undefined {
     return this.optionSelectionService.displayField;
   }
 
   get showAllText() {
     return this.commonStrings.parse(this.commonStrings.keys.comboboxShowAll, {
-      ITEMS: this.multiSelectModel?.length.toString(),
+      ITEMS: String(this.multiSelectModel?.length),
     });
   }
 
   get allSelectedText() {
     return this.commonStrings.parse(this.commonStrings.keys.comboboxAllSelected, {
-      ITEMS: this.multiSelectModel?.length.toString(),
+      ITEMS: String(this.multiSelectModel?.length),
     });
   }
 
@@ -286,7 +286,7 @@ export class ClrCombobox<T>
     return (
       this.selectionExpanded ||
       this.isTotalSelection ||
-      (this.calculatedLimit !== null && this.calculatedLimit < this.multiSelectModel.length)
+      (this.calculatedLimit !== undefined && this.calculatedLimit < (this.multiSelectModel?.length ?? 0))
     );
   }
 
@@ -316,7 +316,7 @@ export class ClrCombobox<T>
     // We calculate on the initial load to prevent flickering
     this.el = this.textbox;
     if (this.showSelectAll) {
-      if (this.multiSelect && this.multiSelectModel?.length > 0) {
+      if (this.multiSelect && this.multiSelectModel?.length) {
         this.calculateLimit();
       }
       this.initialiseObserver();
@@ -347,15 +347,20 @@ export class ClrCombobox<T>
           if (!this._searchText.length) {
             if (multiModel && multiModel.length > 0) {
               const lastItem: T = multiModel[multiModel.length - 1];
-              this.control?.control.markAsTouched();
+              this.control?.control?.markAsTouched();
               this.optionSelectionService.unselect(lastItem);
             }
           }
           break;
         case Keys.Enter:
-          if (this.editable && this._searchText.length > 0 && this.options.emptyOptions) {
+          if (
+            this.editable &&
+            this._searchText.length > 0 &&
+            this.options.emptyOptions &&
+            this.optionSelectionService.editableResolver
+          ) {
             const parsedInput = this.optionSelectionService.editableResolver(this._searchText);
-            this.control?.control.markAsTouched();
+            this.control?.control?.markAsTouched();
             this.optionSelectionService.select(parsedInput);
             this.searchText = '';
           }
@@ -401,7 +406,12 @@ export class ClrCombobox<T>
   }
 
   onChange() {
-    if (this.editable && !this.multiSelect && this.options.emptyOptions) {
+    if (
+      this.editable &&
+      !this.multiSelect &&
+      this.options.emptyOptions &&
+      this.optionSelectionService.editableResolver
+    ) {
       const parsedInput = this.optionSelectionService.editableResolver(this._searchText);
       this.optionSelectionService.setSelectionValue(parsedInput);
     }
@@ -453,7 +463,7 @@ export class ClrCombobox<T>
   toggleSelectionExpand() {
     this.selectionExpanded = !this.selectionExpanded;
     if (this.selectionExpanded) {
-      this.applyLimit(this.multiSelectModel.length);
+      this.applyLimit(this.multiSelectModel?.length);
     } else {
       this.containerWidthChange.next(this.containerWidth);
     }
@@ -461,6 +471,10 @@ export class ClrCombobox<T>
 
   private initialiseObserver() {
     const container = this.container ? this.container.el.nativeElement : this.el.nativeElement.parentElement;
+    if (!container) {
+      return;
+    }
+
     this.containerWidth = container.offsetWidth;
     this.resizeObserver = new ResizeObserver(entries => {
       this.zone.runOutsideAngular(() => {
@@ -500,7 +514,7 @@ export class ClrCombobox<T>
     const firstPill = pillDimensions[0];
     const buttonWidth = this.truncationButton?.nativeElement?.offsetWidth || 100;
     const textboxWidth = this.textbox.nativeElement.offsetWidth;
-    const expectedWidth = this.containerWidth - textboxWidth - buttonWidth;
+    const expectedWidth = (this.containerWidth ?? 0) - textboxWidth - buttonWidth;
 
     let fitCount = 0;
 
@@ -552,7 +566,7 @@ export class ClrCombobox<T>
 
         this.updateControlValue();
         if (this.selectionExpanded) {
-          this.applyLimit(this.multiSelectModel.length);
+          this.applyLimit(this.multiSelectModel?.length);
         } else {
           this.calculateLimit();
         }
@@ -756,12 +770,11 @@ export class ClrCombobox<T>
     return typeof shown === 'string' || typeof shown === 'number' || typeof shown === 'boolean' ? String(shown) : null;
   }
 
-  private getDisplayNames(model: T | T[]) {
-    if (this.displayField) {
-      if (!Array.isArray(model)) {
-        model = [model];
-      }
-      return model.map(item => (item ? (item as any)[this.displayField] : null));
+  private getDisplayNames(model: T | T[] | null | undefined) {
+    const displayField = this.displayField;
+    if (displayField) {
+      const items = Array.isArray(model) ? model : [model];
+      return items.map(item => (item ? (item as any)[displayField] : null));
     }
     return [this.optionSelectionService.selectionModel.model];
   }

@@ -105,7 +105,7 @@ import { CellCoordinates, KeyNavigationGridController } from './utils/key-naviga
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy, DoCheck {
-  @Input('clrLoadingMoreItems') loadingMoreItems: boolean;
+  @Input('clrLoadingMoreItems') loadingMoreItems = false;
 
   @Input() clrDgSingleSelectionAriaLabel: string = this.commonStrings.keys.singleSelectionAriaLabel;
   @Input() clrDgSingleActionableAriaLabel: string = this.commonStrings.keys.singleActionableAriaLabel;
@@ -131,47 +131,47 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   /**
    * Expose virtual scroll directive for applications to access its public methods
    */
-  @ContentChildren(forwardRef(() => ClrDatagridVirtualScrollDirective)) _virtualScroll: QueryList<
+  @ContentChildren(forwardRef(() => ClrDatagridVirtualScrollDirective)) _virtualScroll!: QueryList<
     ClrDatagridVirtualScrollDirective<any>
   >;
   /**
    * We grab the smart iterator from projected content
    */
-  @ContentChild(ClrDatagridItems) iterator: ClrDatagridItems<T>;
+  @ContentChild(ClrDatagridItems) iterator!: ClrDatagridItems<T>;
 
   /**
    * Custom placeholder detection
    */
-  @ContentChild(ClrDatagridPlaceholder) placeholder: ClrDatagridPlaceholder<T>;
+  @ContentChild(ClrDatagridPlaceholder) placeholder!: ClrDatagridPlaceholder<T>;
 
   /**
    * Hideable Column data source / detection.
    */
-  @ContentChildren(ClrDatagridColumn) columns: QueryList<ClrDatagridColumn<T>>;
+  @ContentChildren(ClrDatagridColumn) columns!: QueryList<ClrDatagridColumn<T>>;
 
   /**
    * When the datagrid is user-managed without the smart iterator, we get the items displayed
    * by querying the projected content. This is needed to keep track of the models currently
    * displayed, typically for selection.
    */
-  @ContentChildren(ClrDatagridRow, { emitDistinctChangesOnly: false }) rows: QueryList<ClrDatagridRow<T>>;
+  @ContentChildren(ClrDatagridRow, { emitDistinctChangesOnly: false }) rows!: QueryList<ClrDatagridRow<T>>;
 
-  @ViewChild('datagrid', { read: ElementRef }) datagrid: ElementRef<HTMLElement>;
-  @ViewChild('datagridTable', { read: ElementRef }) datagridTable: ElementRef<HTMLElement>;
-  @ViewChild('datagridHeader', { read: ElementRef }) datagridHeader: ElementRef<HTMLElement>;
-  @ViewChild('contentWrapper', { read: ElementRef, static: true }) contentWrapper: ElementRef<HTMLElement>;
-  @ViewChild('rowsWrapper', { read: ElementRef, static: true }) rowsWrapper: ElementRef<HTMLElement>;
-  @ViewChild('scrollableColumns', { read: ViewContainerRef }) scrollableColumns: ViewContainerRef;
-  @ViewChild('projectedDisplayColumns', { read: ViewContainerRef }) _projectedDisplayColumns: ViewContainerRef;
-  @ViewChild('projectedStickyColumns', { read: ViewContainerRef }) _projectedStickyColumns: ViewContainerRef;
-  @ViewChild('projectedCalculationColumns', { read: ViewContainerRef }) _projectedCalculationColumns: ViewContainerRef;
-  @ViewChild('displayedRows', { read: ViewContainerRef }) _displayedRows: ViewContainerRef;
-  @ViewChild('calculationRows', { read: ViewContainerRef }) _calculationRows: ViewContainerRef;
-  @ViewChild('fixedColumnTemplate') _fixedColumnTemplate: TemplateRef<any>;
-  @ViewChildren('stickyHeader', { emitDistinctChangesOnly: true }) stickyHeaders: QueryList<ElementRef>;
+  @ViewChild('datagrid', { read: ElementRef }) datagrid!: ElementRef<HTMLElement>;
+  @ViewChild('datagridTable', { read: ElementRef }) datagridTable!: ElementRef<HTMLElement>;
+  @ViewChild('datagridHeader', { read: ElementRef }) datagridHeader!: ElementRef<HTMLElement>;
+  @ViewChild('contentWrapper', { read: ElementRef, static: true }) contentWrapper!: ElementRef<HTMLElement>;
+  @ViewChild('rowsWrapper', { read: ElementRef, static: true }) rowsWrapper!: ElementRef<HTMLElement>;
+  @ViewChild('scrollableColumns', { read: ViewContainerRef }) scrollableColumns!: ViewContainerRef;
+  @ViewChild('projectedDisplayColumns', { read: ViewContainerRef }) _projectedDisplayColumns!: ViewContainerRef;
+  @ViewChild('projectedStickyColumns', { read: ViewContainerRef }) _projectedStickyColumns!: ViewContainerRef;
+  @ViewChild('projectedCalculationColumns', { read: ViewContainerRef }) _projectedCalculationColumns!: ViewContainerRef;
+  @ViewChild('displayedRows', { read: ViewContainerRef }) _displayedRows!: ViewContainerRef;
+  @ViewChild('calculationRows', { read: ViewContainerRef }) _calculationRows!: ViewContainerRef;
+  @ViewChild('fixedColumnTemplate') _fixedColumnTemplate!: TemplateRef<any>;
+  @ViewChildren('stickyHeader', { emitDistinctChangesOnly: true }) stickyHeaders!: QueryList<ElementRef>;
 
   selectAllId: string;
-  activeCellCoords: CellCoordinates;
+  activeCellCoords?: CellCoordinates;
 
   /* reference to the enum so that template can access */
   SELECTION_TYPE = SelectionType;
@@ -180,8 +180,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
   private teardownElementContext?: () => void;
 
-  @ViewChild('selectAllCheckbox') private selectAllCheckbox: ElementRef<HTMLInputElement>;
-  @ViewChild('rowControls', { read: ElementRef }) private rowControls: ElementRef<HTMLElement>;
+  @ViewChild('selectAllCheckbox') private selectAllCheckbox!: ElementRef<HTMLInputElement>;
+  @ViewChild('rowControls', { read: ElementRef }) private rowControls!: ElementRef<HTMLElement>;
 
   /**
    * Subscriptions to all the services and queries changes
@@ -320,7 +320,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     }
   }
 
-  get virtualScroll(): ClrDatagridVirtualScrollDirective<any> {
+  get virtualScroll(): ClrDatagridVirtualScrollDirective<any> | undefined {
     return this._virtualScroll?.get(0);
   }
 
@@ -384,10 +384,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         this.updateDetailState();
 
         // retain active cell when navigating with Up/Down Arrows, PageUp and PageDown buttons in virtual scroller
-        if (this.virtualScroll && this.activeCellCoords) {
+        const activeCellCoords = this.activeCellCoords;
+        if (this.virtualScroll && activeCellCoords) {
           this.zone.runOutsideAngular(() => {
             const row = Array.from(this.rows).find(row => {
-              return row.el.nativeElement.children[0].ariaRowIndex === this.activeCellCoords.ariaRowIndex;
+              return row.el.nativeElement.children[0].ariaRowIndex === activeCellCoords.ariaRowIndex;
             });
 
             if (!row) {
@@ -395,7 +396,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
             }
 
             const activeCell = row.el.nativeElement.querySelectorAll(this.keyNavigation.config.keyGridCells)[
-              this.activeCellCoords.x
+              activeCellCoords.x
             ] as HTMLElement;
 
             this.keyNavigation.setActiveCell(activeCell);
@@ -516,12 +517,12 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // that triggered the change. This helps us to easily resolve the k/b only case together with the mouse selection case.
     this.zone.runOutsideAngular(() => {
       this._subscriptions.push(
-        fromEvent(this.document.body, 'keydown').subscribe((event: KeyboardEvent) => {
+        fromEvent<KeyboardEvent>(this.document.body, 'keydown').subscribe((event: KeyboardEvent) => {
           if (event.key === 'Shift') {
             this.selection.shiftPressed = true;
           }
         }),
-        fromEvent(this.document.body, 'keyup').subscribe((event: KeyboardEvent) => {
+        fromEvent<KeyboardEvent>(this.document.body, 'keyup').subscribe((event: KeyboardEvent) => {
           if (event.key === 'Shift') {
             this.selection.shiftPressed = false;
           }
@@ -682,7 +683,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         }),
         this.keyNavigation.nextCellCoordsEmitter.subscribe(cellCoords => {
           if (!cellCoords?.ariaRowIndex) {
-            this.activeCellCoords = null;
+            this.activeCellCoords = undefined;
             return;
           }
 
@@ -696,7 +697,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
           // aria-rowindex is always + 1. Check virtual scroller updateAriaRowIndexes method.
           const rowIndex = Number(cellCoords.ariaRowIndex) - 1;
 
-          this.virtualScroll.scrollToIndex(rowIndex);
+          this.virtualScroll?.scrollToIndex(rowIndex);
         })
       );
     } else if (!hasVirtualScroll) {
@@ -730,7 +731,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     if (!headerControls || !this.datagridHeader || !this.columnsService.hasPinnedColumns) {
       return;
     }
-    const rowControls: HTMLElement = this.rowsWrapper.nativeElement.querySelector(
+    const rowControls = this.rowsWrapper.nativeElement.querySelector<HTMLElement>(
       '.datagrid-row-master > .datagrid-row-sticky:not(.datagrid-row-sticky-scroll)'
     );
 
