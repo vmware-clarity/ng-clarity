@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClrInputModule, ClrRadioModule, ClrSelectModule } from '@clr/angular/forms';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrSignpostModule } from '@clr/angular/popover/signpost';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { DismissableDirective } from './dismissable.directive';
 import { ManageFilterComponent } from './manage-filter.component';
@@ -159,9 +160,9 @@ describe('ManageFilterComponent', () => {
   });
   it('manages string property filter', () => {
     vi.spyOn(testContext.component.filterStrings, 'getConjoinerDisplayName').mockImplementation(() => undefined);
-    testContext.component.propertyFilter = stringPropertyFilter;
+    testContext.fixture.componentRef.setInput('propertyFilter', stringPropertyFilter);
     stringPropertyFilter.criteria = [stringPredicate1, stringPredicate2];
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.component.managedProperty).toEqual(stringProperty);
     expect(testContext.component.managedPropertyType).toEqual(PropertyType.String);
     expect(testContext.component.stringProperty).toEqual(stringProperty);
@@ -176,15 +177,15 @@ describe('ManageFilterComponent', () => {
     expect(editFilterSignpostTrigger.length).toEqual(2);
 
     editFilterSignpostTrigger[0].click();
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.component.openPrimaryConditionSignPost).toBeTruthy();
     editFilterSignpostTrigger[1].click();
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.component.openSecondaryConditionSignPost).toBeTruthy();
   });
   it('manages enum property filter', () => {
-    testContext.component.propertyFilter = enumPropertyFilter;
-    testContext.fixture.detectChanges();
+    testContext.fixture.componentRef.setInput('propertyFilter', enumPropertyFilter);
+    renderFixture(testContext.fixture);
     expect(testContext.component.managedProperty).toEqual(enumProperty);
     expect(testContext.component.managedPropertyType).toEqual(PropertyType.Enum);
     expect(testContext.component.enumProperty).toEqual(enumProperty);
@@ -193,11 +194,11 @@ describe('ManageFilterComponent', () => {
   });
   it('manages numeric property filter', () => {
     vi.spyOn(testContext.component.filterStrings, 'getConjoinerDisplayName').mockImplementation(() => undefined);
-    testContext.component.propertyFilter = numericPropertyFilter;
+    testContext.fixture.componentRef.setInput('propertyFilter', numericPropertyFilter);
     numericPropertyFilter.criteria = [numericPredicate1, numericPredicate2];
     numericProperty.selectedValue = [176, 50];
     numericProperty.selectedUnit = [Unit.MB, Unit.GB];
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.component.managedProperty).toEqual(numericProperty);
     expect(testContext.component.managedPropertyType).toEqual(PropertyType.Numeric);
     expect(testContext.component.numericProperty).toEqual(numericProperty);
@@ -208,9 +209,9 @@ describe('ManageFilterComponent', () => {
     );
   });
   it('renders the remove filter icons with their SVG content', () => {
-    testContext.component.propertyFilter = stringPropertyFilter;
+    testContext.fixture.componentRef.setInput('propertyFilter', stringPropertyFilter);
     stringPropertyFilter.criteria = [stringPredicate1, stringPredicate2];
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     const removeFilterIcons: NodeListOf<HTMLElement> =
       testContext.fixture.debugElement.nativeElement.querySelectorAll(removeFilterSelector);
     expect(removeFilterIcons.length).toEqual(2);
@@ -225,9 +226,9 @@ describe('ManageFilterComponent', () => {
   });
   it('removes string property filter', () => {
     vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
-    testContext.component.propertyFilter = stringPropertyFilter;
+    testContext.fixture.componentRef.setInput('propertyFilter', stringPropertyFilter);
     stringPropertyFilter.criteria = [stringPredicate1, stringPredicate2];
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     let removeFilterIcon: HTMLElement[] =
       testContext.fixture.debugElement.nativeElement.querySelectorAll(removeFilterSelector);
     expect(removeFilterIcon.length).toEqual(2);
@@ -236,21 +237,21 @@ describe('ManageFilterComponent', () => {
     modifiedPropertyFilter.criteria = [stringPredicate2];
     modifiedPropertyFilter.operator = LogicalOperator.And;
     removeFilterIcon[0].click();
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(modifiedPropertyFilter);
 
     modifiedPropertyFilter.criteria = [];
     removeFilterIcon = testContext.fixture.debugElement.nativeElement.querySelectorAll(removeFilterSelector);
     expect(removeFilterIcon.length).toEqual(1);
     removeFilterIcon[0].click();
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(modifiedPropertyFilter);
   });
   it('removes numeric property filter', () => {
     vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
-    testContext.component.propertyFilter = numericPropertyFilter;
+    testContext.fixture.componentRef.setInput('propertyFilter', numericPropertyFilter);
     numericPropertyFilter.criteria = [numericPredicate1, numericPredicate2];
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     const removeFilterIcon: HTMLElement[] =
       testContext.fixture.debugElement.nativeElement.querySelectorAll(removeFilterSelector);
     expect(removeFilterIcon.length).toEqual(2);
@@ -259,21 +260,21 @@ describe('ManageFilterComponent', () => {
     modifiedPropertyFilter.criteria = [numericPredicate2];
     modifiedPropertyFilter.operator = LogicalOperator.Or;
     removeFilterIcon[0].click();
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(numericProperty.selectedValue).toEqual([50]);
     expect(numericProperty.selectedUnit).toEqual([Unit.GB]);
     expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(modifiedPropertyFilter);
 
     removeFilterIcon[0].click();
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     modifiedPropertyFilter.criteria = [];
     expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(modifiedPropertyFilter);
   });
   it('manages date-time property filter normal operator', () => {
-    testContext.component.propertyFilter = dateTimePropertyFilter;
+    testContext.fixture.componentRef.setInput('propertyFilter', dateTimePropertyFilter);
     dateTimeProperty.selectedOperator = ComparisonOperator.BeforeOrEqualTo;
     dateTimeProperty.selectedValue = '2023-02-02T13:23';
-    testContext.fixture.detectChanges();
+    renderFixture(testContext.fixture);
     expect(testContext.component.managedProperty).toEqual(dateTimeProperty);
     expect(testContext.component.managedPropertyType).toEqual(PropertyType.DateTime);
     expect(testContext.component.dateTimeProperty).toEqual(dateTimeProperty);
@@ -283,8 +284,8 @@ describe('ManageFilterComponent', () => {
   it('manages date-time property filter custom range operator', () => {
     dateTimeProperty.selectedOperator = ComparisonOperator.CustomRange;
     dateTimeProperty.selectedValueTo = '2023-02-07T13:28';
-    testContext.component.propertyFilter = dateTimePropertyFilter;
-    testContext.fixture.detectChanges();
+    testContext.fixture.componentRef.setInput('propertyFilter', dateTimePropertyFilter);
+    renderFixture(testContext.fixture);
 
     expect(testContext.component.primaryConditionDisplayText).toEqual(
       '' + 'From: 2023-02-02 13:23 ' + 'To: 2023-02-07 13:28'
@@ -292,8 +293,8 @@ describe('ManageFilterComponent', () => {
   });
   it('manages date-time property filter relative operator', () => {
     dateTimeProperty.selectedOperator = ComparisonOperator.LastYear;
-    testContext.component.propertyFilter = dateTimePropertyFilter;
-    testContext.fixture.detectChanges();
+    testContext.fixture.componentRef.setInput('propertyFilter', dateTimePropertyFilter);
+    renderFixture(testContext.fixture);
 
     expect(testContext.component.primaryConditionDisplayText).toEqual('Last year');
   });
@@ -301,8 +302,8 @@ describe('ManageFilterComponent', () => {
     dateTimeProperty.selectedOperator = ComparisonOperator.TimeSpan;
     dateTimeProperty.selectedTimeSpanValue = '300';
     dateTimeProperty.selectedTimeSpan = TimeSpan.Weeks;
-    testContext.component.propertyFilter = dateTimePropertyFilter;
-    testContext.fixture.detectChanges();
+    testContext.fixture.componentRef.setInput('propertyFilter', dateTimePropertyFilter);
+    renderFixture(testContext.fixture);
 
     expect(testContext.component.primaryConditionDisplayText).toEqual('Time span: 300 Weeks');
   });

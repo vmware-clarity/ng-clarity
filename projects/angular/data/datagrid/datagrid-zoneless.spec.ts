@@ -5,14 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  provideCheckNoChangesConfig,
-  provideZonelessChangeDetection,
-  signal,
-  Type,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrDatagridModule } from './datagrid.module';
@@ -115,7 +108,6 @@ hosts.forEach(([iterator, hostType]) => {
       TestBed.configureTestingModule({
         declarations: [hostType],
         imports: [ClrDatagridModule],
-        providers: [provideZonelessChangeDetection(), provideCheckNoChangesConfig({ exhaustive: true })],
       });
 
       fixture = TestBed.createComponent(hostType);

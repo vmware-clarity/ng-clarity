@@ -10,6 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
+import { renderFixture } from '@clr/angular/utils/testing';
 import type { Mock } from 'vitest';
 
 import { ClrDatagridTreeToggleButton } from './datagrid-tree-toggle-button';
@@ -59,7 +60,7 @@ describe('Datagrid', () => {
         });
         fixture = TestBed.createComponent(TestComponent);
         document.body.appendChild(fixture.nativeElement);
-        fixture.detectChanges();
+        renderFixture(fixture);
       }
 
       beforeEach(function () {
@@ -77,7 +78,7 @@ describe('Datagrid', () => {
         expect(button().getAttribute('aria-expanded')).toBe('false');
 
         fixture.componentInstance.node.expanded = true;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(name()).toBe('Collapse vm0');
         expect(button().getAttribute('aria-expanded')).toBe('true');
       });
@@ -96,16 +97,16 @@ describe('Datagrid', () => {
       it('shows a spinner instead of the icon while the children of its expanded row load', function () {
         const node = fixture.componentInstance.node;
         node.request = {};
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(button().querySelector('clr-spinner')).toBeNull();
 
         node.expanded = true;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(button().querySelector('clr-spinner')).not.toBeNull();
         expect(button().querySelector('cds-icon')).toBeNull();
 
         node.request = null;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(button().querySelector('clr-spinner')).toBeNull();
         expect(button().querySelector('cds-icon')).not.toBeNull();
       });
@@ -123,7 +124,7 @@ describe('Datagrid', () => {
           it('gives the focus to its cell when it goes away with the focus', function () {
             button().focus();
             fixture.componentInstance.shown = false;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(document.activeElement).toBe(cell());
             expect(cell().getAttribute('tabindex')).toBe('-1');
           });
@@ -133,7 +134,7 @@ describe('Datagrid', () => {
             button().focus();
             elsewhere.focus();
             fixture.componentInstance.shown = false;
-            fixture.detectChanges();
+            renderFixture(fixture);
             expect(document.activeElement).toBe(elsewhere);
             expect(cell().hasAttribute('tabindex')).toBe(false);
           });

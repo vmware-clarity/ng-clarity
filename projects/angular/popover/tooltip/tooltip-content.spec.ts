@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrPopoverPosition, ClrPopoverService } from '@clr/angular/popover/common';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { ClrTooltipContent } from './tooltip-content';
@@ -78,7 +79,7 @@ describe('Tooltip', () => {
           popoverService = fixture.debugElement.query(By.directive(ClrTooltipTrigger)).injector.get(ClrPopoverService);
 
           popoverService.open = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           tooltipContent = document.body.querySelector('clr-tooltip-content') as HTMLElement;
         });
@@ -110,7 +111,7 @@ describe('Tooltip', () => {
           popoverService = fixture.debugElement.query(By.directive(ClrTooltipTrigger)).injector.get(ClrPopoverService);
 
           popoverService.open = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           tooltipContent = document.body.querySelector('clr-tooltip-content') as HTMLElement;
         });
@@ -122,19 +123,19 @@ describe('Tooltip', () => {
 
         it('accepts an [id] when a null id is provided', () => {
           fixture.componentInstance.idValue = null;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(tooltipContent.getAttribute('id')).toEqual('');
         });
 
         it('accepts an [id] when an empty string id is provided', () => {
           fixture.componentInstance.idValue = '';
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(tooltipContent.getAttribute('id')).toEqual('');
         });
 
         it('accepts an [id] when an custom string id is provided', () => {
           fixture.componentInstance.idValue = 'custom-id';
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(tooltipContent.getAttribute('id')).toEqual('custom-id');
         });
       });
@@ -155,7 +156,7 @@ describe('Tooltip', () => {
           popoverService = fixture.debugElement.query(By.directive(ClrTooltipTrigger)).injector.get(ClrPopoverService);
 
           popoverService.open = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           tooltipContent = document.body.querySelector('clr-tooltip-content') as HTMLElement;
         });
@@ -173,13 +174,13 @@ describe('Tooltip', () => {
           expect(tooltipContainer.classList).toContain(ClrPopoverPosition.RIGHT);
 
           fixture.componentInstance.position = ClrPopoverPosition.BOTTOM_RIGHT;
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           expect(tooltipContainer.classList).not.toContain(ClrPopoverPosition.RIGHT);
           expect(tooltipContainer.classList).toContain(ClrPopoverPosition.BOTTOM_RIGHT);
 
           fixture.componentInstance.position = ClrPopoverPosition.TOP_LEFT;
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           expect(tooltipContainer.classList).not.toContain(ClrPopoverPosition.BOTTOM_RIGHT);
           expect(tooltipContainer.classList).toContain(ClrPopoverPosition.TOP_LEFT);
@@ -194,7 +195,7 @@ describe('Tooltip', () => {
           expect(tooltipContent.classList).toContain('tooltip-sm');
 
           fixture.componentInstance.size = 'lg';
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           expect(clrTooltipContent.size).toEqual('lg');
           expect(tooltipContent.classList).not.toContain('tooltip-sm');
@@ -219,7 +220,7 @@ describe('Tooltip', () => {
         popoverService = fixture.debugElement.query(By.directive(ClrTooltipTrigger)).injector.get(ClrPopoverService);
 
         popoverService.open = true;
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         tooltipContent = document.body.querySelector('clr-tooltip-content') as HTMLElement;
       });
