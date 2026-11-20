@@ -42,9 +42,9 @@ import { ClrTimelineStepTitle } from './timeline-step-title';
 export class ClrTimelineStep {
   @Input('clrState') state: ClrTimelineStepState = ClrTimelineStepState.NOT_STARTED;
 
-  @ContentChild(ClrTimelineStepTitle, { read: ElementRef }) stepTitle: ElementRef<HTMLElement>;
+  @ContentChild(ClrTimelineStepTitle, { read: ElementRef }) stepTitle!: ElementRef<HTMLElement>;
 
-  stepTitleText: string;
+  stepTitleText = '';
 
   constructor(
     private iconAttributeService: TimelineIconAttributeService,
@@ -55,11 +55,11 @@ export class ClrTimelineStep {
     return this.iconAttributeService.getAriaLabel(this.state);
   }
 
-  get iconShape(): string {
+  get iconShape(): string | undefined {
     return this.iconAttributeService.getIconShape(this.state);
   }
 
-  get iconStatus(): string {
+  get iconStatus(): string | null {
     return this.iconAttributeService.getIconStatus(this.state);
   }
 

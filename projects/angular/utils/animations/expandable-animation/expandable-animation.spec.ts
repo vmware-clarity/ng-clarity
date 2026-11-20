@@ -10,6 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { delay } from '@clr/angular/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { BaseExpandableAnimation } from './base-expandable-animation';
 import { ClrExpandableAnimationDirective } from './expandable-animation.directive';
@@ -86,7 +87,7 @@ function noopAnimationsSpec(testComponent: Type<unknown>, component: Type<BaseEx
       animationsEnabled: true,
     });
     fixture = TestBed.createComponent(testComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
     const debugElement = fixture.debugElement.query(By.directive(component));
     const element: HTMLElement = debugElement.nativeElement;
@@ -96,7 +97,7 @@ function noopAnimationsSpec(testComponent: Type<unknown>, component: Type<BaseEx
     const collapsedHeight = expandable.startHeight;
     fixture.componentInstance.data.push({ id: 2, value: 'two' });
     fixture.componentInstance.expanded = true;
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
 
     expect(element.getAnimations()).toEqual([]);
@@ -116,7 +117,7 @@ function heightAnimationSpec(testComponent: Type<unknown>, component: Type<BaseE
       animationsEnabled: true,
     });
     fixture = TestBed.createComponent(testComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
 
     const debugElement = fixture.debugElement.query(By.directive(component));
@@ -139,7 +140,7 @@ function heightAnimationSpec(testComponent: Type<unknown>, component: Type<BaseE
     const collapsedHeight = expandable.startHeight;
     fixture.componentInstance.data.push({ id: 2, value: 'two' });
     fixture.componentInstance.expanded = true;
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
 
     expect(heightKeyframes()).toEqual([`${collapsedHeight}px`, `${collapsedHeight * 2}px`]);
@@ -151,7 +152,7 @@ function heightAnimationSpec(testComponent: Type<unknown>, component: Type<BaseE
 
   it('does not animate when the trigger does not change', async () => {
     fixture.componentInstance.data.push({ id: 2, value: 'two' });
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
 
     expect(element.getAnimations()).toEqual([]);
@@ -169,7 +170,7 @@ function expandableAnimationSpec(
       providers: [DomAdapter],
     });
     fixture = TestBed.createComponent(testComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     componentInstance = fixture.componentInstance;
 
@@ -192,14 +193,14 @@ function expandableAnimationSpec(
       const collapsedHeight = clarityDirective.startHeight;
       componentInstance.data.push({ id: 2, value: 'two' });
       componentInstance.expanded = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(clarityDirective.startHeight).toEqual(collapsedHeight);
       await delay();
       expect(clarityDirective.startHeight).toEqual(collapsedHeight * 2);
       const expandedHeight = clarityDirective.startHeight;
       componentInstance.data.pop();
       componentInstance.expanded = false;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(clarityDirective.startHeight).toEqual(expandedHeight);
       await delay();
       expect(clarityDirective.startHeight).toEqual(collapsedHeight);
@@ -211,11 +212,11 @@ function expandableAnimationSpec(
       const collapsedHeight = clarityElement.clientHeight;
       expect(collapsedHeight).toBeGreaterThan(0);
       componentInstance.data.push({ id: 2, value: 'two' });
-      fixture.detectChanges();
+      renderFixture(fixture);
       await delay();
       expect(clarityElement.clientHeight).toEqual(collapsedHeight * 2);
       componentInstance.data.pop();
-      fixture.detectChanges();
+      renderFixture(fixture);
       await delay();
       expect(clarityElement.clientHeight).toEqual(collapsedHeight);
     });

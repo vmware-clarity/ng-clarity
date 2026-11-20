@@ -60,10 +60,10 @@ import { ClrCheckbox } from './checkbox';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterContentInit {
-  role: string;
-  ariaLabelledBy: string;
+  role: string | null = null;
+  ariaLabelledBy: string | null = null;
 
-  @ContentChildren(ClrCheckbox, { descendants: true }) checkboxes: QueryList<ClrCheckbox>;
+  @ContentChildren(ClrCheckbox, { descendants: true }) checkboxes!: QueryList<ClrCheckbox>;
 
   // Only a direct-child label names the group; the inherited query also matches each checkbox label.
   @ContentChildren(ClrControlLabel, { descendants: false }) private groupLabels: QueryList<ClrControlLabel>;
@@ -121,6 +121,6 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
       groupLabel.idAttr = this._generatedId;
     }
 
-    this.ariaLabelledBy = this.checkboxes?.length && groupLabel ? groupLabel.idAttr : null;
+    this.ariaLabelledBy = this.checkboxes?.length && groupLabel?.idAttr ? groupLabel.idAttr : null;
   }
 }

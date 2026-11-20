@@ -15,7 +15,7 @@ export abstract class MenuItem {
    */
   id?: string;
   hidden: boolean = false;
-  type: MenuItemType;
+  type!: MenuItemType;
 }
 
 export enum MenuItemType {

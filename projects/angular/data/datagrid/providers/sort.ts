@@ -16,7 +16,7 @@ export class Sort<T = any> {
   /**
    * Currently active comparator
    */
-  private _comparator: ClrDatagridComparatorInterface<T>;
+  private _comparator: ClrDatagridComparatorInterface<T> | null = null;
 
   /**
    * Ascending order if false, descending if true
@@ -30,10 +30,10 @@ export class Sort<T = any> {
 
   constructor(private stateDebouncer: StateDebouncer) {}
 
-  get comparator(): ClrDatagridComparatorInterface<T> {
+  get comparator(): ClrDatagridComparatorInterface<T> | null {
     return this._comparator;
   }
-  set comparator(value: ClrDatagridComparatorInterface<T>) {
+  set comparator(value: ClrDatagridComparatorInterface<T> | null) {
     this.stateDebouncer.changeStart();
     this._comparator = value;
     this.emitChange();
@@ -86,7 +86,11 @@ export class Sort<T = any> {
    * Compares two objects according to the current comparator
    */
   compare(a: T, b: T): number {
-    return (this.reverse ? -1 : 1) * this.comparator.compare(a, b);
+    const comparator = this.comparator;
+    if (!comparator) {
+      throw new Error('Cannot compare items without a comparator.');
+    }
+    return (this.reverse ? -1 : 1) * comparator.compare(a, b);
   }
 
   private emitChange() {

@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrAlert } from './alert';
 import { ClrAlertModule } from './alert.module';
@@ -72,7 +73,7 @@ describe('Alert Tests', () => {
       });
 
       fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
       compiled = fixture.nativeElement;
     });
 
@@ -156,23 +157,23 @@ describe('Alert Tests', () => {
       const newAlertMsg = 'OHAI';
       expect(compiled.textContent).toMatch(/This is an alert!/);
       fixture.componentInstance.alertMsg = newAlertMsg;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(compiled.textContent).toContain(newAlertMsg);
     });
 
     it('Extends the alert-sm class when clrAlertSizeSmall is set to true', () => {
       expect(compiled.querySelector('.alert-sm')).toBeNull();
       fixture.componentInstance.isSmall = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(compiled.querySelector('.alert-sm')).not.toBeNull();
     });
 
     it('supports a clrAlertClosable option', () => {
       fixture.componentInstance.isClosable = false;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(compiled.querySelector('.close')).toBeNull();
       fixture.componentInstance.isClosable = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(compiled.querySelector('.close')).not.toBeNull();
     });
 
@@ -182,28 +183,28 @@ describe('Alert Tests', () => {
 
       // set danger
       fixture.componentInstance.type = 'danger';
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(compiled.querySelector('.alert-info')).toBeNull();
       expect(compiled.querySelector('.alert-danger')).not.toBeNull();
 
       // set warning
       fixture.componentInstance.type = 'warning';
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(compiled.querySelector('.alert-danger')).toBeNull();
       expect(compiled.querySelector('.alert-warning')).not.toBeNull();
 
       // set success
       fixture.componentInstance.type = 'success';
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(compiled.querySelector('.alert-warning')).toBeNull();
       expect(compiled.querySelector('.alert-success')).not.toBeNull();
 
       // set neutral
       fixture.componentInstance.type = 'neutral';
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(compiled.querySelector('.alert-success')).toBeNull();
       expect(compiled.querySelector('.alert-neutral')).not.toBeNull();
@@ -216,7 +217,7 @@ describe('Alert Tests', () => {
       // set lightweight loading
       fixture.componentInstance.type = 'loading';
       fixture.componentInstance.isLightweight = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(compiled.querySelector('.alert-info')).toBeNull();
       expect(compiled.querySelector('.alert-neutral')).not.toBeNull();
@@ -224,14 +225,14 @@ describe('Alert Tests', () => {
 
       // set lightweight unknown
       fixture.componentInstance.type = 'unknown';
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(compiled.querySelector('.alert-neutral')).not.toBeNull();
       expect(compiled.querySelector('.alert-lightweight')).not.toBeNull();
 
       // remove lightweight and leave only unknown -> should not behave like regular info
       fixture.componentInstance.isLightweight = false;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(compiled.querySelector('.alert-neutral')).not.toBeNull();
       expect(compiled.querySelector('.alert-lightweight')).toBeNull();
@@ -243,16 +244,16 @@ describe('Alert Tests', () => {
 
       expect(compiled.querySelector('.alert')).not.toBeNull();
       fixture.componentInstance.isClosable = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       instance.close();
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(compiled.querySelector('.alert')).toBeNull();
     });
 
     it('should be able to set close button text', () => {
       fixture.componentInstance.isClosable = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(compiled.querySelector('.close').getAttribute('aria-label')).toBe(CLOSE_ARIA_LABEL);
     });
 
@@ -260,30 +261,30 @@ describe('Alert Tests', () => {
       fixture.componentInstance.isClosable = true;
       expect(compiled.querySelector('.alert')).not.toBeNull();
       fixture.componentInstance.closed = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(compiled.querySelector('.alert')).toBeNull();
       fixture.componentInstance.closed = false;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(compiled.querySelector('.alert')).not.toBeNull();
     });
 
     it('supports a clrAlertAppLevel option', () => {
       fixture.componentInstance.isAppLevel = false;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(compiled.querySelector('.alert-app-level')).toBeNull();
 
       fixture.componentInstance.isAppLevel = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(compiled.querySelector('.alert-app-level')).not.toBeNull();
     });
 
     it('supports a clrAlertLightweight option', () => {
       fixture.componentInstance.isLightweight = false;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(compiled.querySelector('.alert-lightweight')).toBeNull();
 
       fixture.componentInstance.isLightweight = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(compiled.querySelector('.alert-lightweight')).not.toBeNull();
     });
   });

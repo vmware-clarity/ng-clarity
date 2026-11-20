@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { VerticalNavIconService } from './providers/vertical-nav-icon.service';
 import { ClrVerticalNavIcon } from './vertical-nav-icon';
@@ -24,7 +25,7 @@ describe('Vertical Nav', () => {
         });
         verticalNavIconService = TestBed.inject(VerticalNavIconService);
         fixture = TestBed.createComponent(TestComponent);
-        fixture.detectChanges();
+        renderFixture(fixture);
       });
 
       it('registers itself on the service', () => {

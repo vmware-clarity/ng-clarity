@@ -42,7 +42,7 @@ const LANDMARK_SELECTOR = 'nav, [role="navigation"]';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrVerticalNav implements OnInit, AfterViewChecked, OnDestroy {
-  @Input('clrVerticalNavToggleLabel') toggleLabel: string;
+  @Input('clrVerticalNavToggleLabel') toggleLabel?: string;
   contentId = uniqueIdFactory();
 
   @Output('clrVerticalNavCollapsedChange') private _collapsedChanged = new EventEmitter<boolean>(true);
@@ -92,7 +92,7 @@ export class ClrVerticalNav implements OnInit, AfterViewChecked, OnDestroy {
     return this._navIconService.hasIcons;
   }
 
-  get ariaExpanded(): string {
+  get ariaExpanded(): string | null {
     if (!this.collapsible) {
       return null;
     }
