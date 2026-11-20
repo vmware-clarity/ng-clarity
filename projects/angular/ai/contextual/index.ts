@@ -14,7 +14,6 @@ export * from './diff';
 export * from './schema';
 export {
   CLR_CONTEXT_LABEL_ATTRIBUTE,
-  CLR_CONTEXT_PUBLIC_KEYS_ATTRIBUTE,
   CLR_CONTEXT_STATE_ATTRIBUTE,
   CLR_CONTEXT_TYPE_ATTRIBUTE,
   CLR_CONTEXT_URL_ATTRIBUTE,
@@ -27,4 +26,3 @@ export type { ClrElementContextCallback } from '@clr/angular/utils';
 export { CLR_CONTEXT_IGNORE_ATTRIBUTE, CLR_CONTEXT_REDACT_ATTRIBUTE } from '@clr/angular/utils';
 export * from './context';
 export * from './contextual.module';
-export { CLR_CONTEXT_UNTRUSTED_OPTION_KEYS } from './untrusted-options';

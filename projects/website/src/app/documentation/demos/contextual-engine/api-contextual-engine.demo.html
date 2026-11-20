@@ -333,15 +333,6 @@
         a new object when it changes.
       </td>
     </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">[clrContextPublicKeys]</b></td>
-      <td class="left clr-hidden-xs-down">String[]</td>
-      <td class="left clr-hidden-xs-down"><code cds-text="code">null</code></td>
-      <td class="left">
-        The state keys untrusted callers may see. Without it they see none of this state (see Untrusted callers below).
-        It does not affect what the component publishes, which lists its own.
-      </td>
-    </tr>
   </tbody>
 </table>
 
@@ -373,26 +364,18 @@
       <td class="left">State as a JSON object, like <code cds-text="code">clrContextState</code>.</td>
     </tr>
     <tr>
-      <td class="left"><b cds-text="medium">data-clr-context-public-keys</b></td>
-      <td class="left">
-        The state keys untrusted callers may see, separated by spaces, like
-        <code cds-text="code">clrContextPublicKeys</code>.
-      </td>
-    </tr>
-    <tr>
       <td class="left"><b cds-text="medium">data-clr-context-url</b></td>
       <td class="left">
-        Loads an annotation as JSON, <code cds-text="code">&#123; label, type, state, publicKeys &#125;</code>, from a
-        URL on the page's origin or one listed in <code cds-text="code">metadataOrigins</code>. It is loaded once and
-        read only on a view's root, where it describes the view.
+        Loads an annotation as JSON, <code cds-text="code">&#123; label, type, state &#125;</code>, from a URL on the
+        page's origin or one listed in <code cds-text="code">metadataOrigins</code>. It is loaded once and read only on
+        a view's root, where it describes the view.
       </td>
     </tr>
   </tbody>
 </table>
 <p class="clr-mt-16px" cds-text="body">
   The names are exported as <code cds-text="code">CLR_CONTEXT_LABEL_ATTRIBUTE</code>,
-  <code cds-text="code">CLR_CONTEXT_TYPE_ATTRIBUTE</code>, <code cds-text="code">CLR_CONTEXT_STATE_ATTRIBUTE</code>,
-  <code cds-text="code">CLR_CONTEXT_PUBLIC_KEYS_ATTRIBUTE</code> and
+  <code cds-text="code">CLR_CONTEXT_TYPE_ATTRIBUTE</code>, <code cds-text="code">CLR_CONTEXT_STATE_ATTRIBUTE</code> and
   <code cds-text="code">CLR_CONTEXT_URL_ATTRIBUTE</code>.
 </p>
 
@@ -401,8 +384,7 @@
   An annotation on a view's root describes the view, not a node. The view's root is the element a snapshot starts from:
   the body, the element <code cds-text="code">root</code> selects, or the open modal. Its ancestors count too, the inner
   one winning. The annotation's state, with its <code cds-text="code">label</code>, becomes the snapshot's
-  <code cds-text="code">metadata</code>, and a <code cds-text="code">viewId</code> key in it names the view. Untrusted
-  callers see only the keys it marks public.
+  <code cds-text="code">metadata</code>, and a <code cds-text="code">viewId</code> key in it names the view.
 </p>
 <div class="clr-mt-16px">
   <app-code-snippet [code]="viewMetadataExample" language="html"></app-code-snippet>
@@ -517,33 +499,6 @@
   <code cds-text="code">'interactive'</code> (no plain text, no layout) and <code cds-text="code">'minimal'</code> (also
   counts instead of items, 150 nodes and <code cds-text="code">root: 'modal'</code>).
 </p>
-
-<h2 id="untrusted" cds-text="title" class="clr-mt-48px">Untrusted callers</h2>
-<p class="clr-mt-16px" cds-text="body">
-  The application's own code sees everything. Callers it does not control, such as embedded frames, are untrusted and
-  get less:
-</p>
-<ul class="list clr-mt-16px">
-  <li>
-    No values the user entered or chose (typed text, selected options and rows, ticked boxes), unless the application
-    shares them. A withheld value is marked
-    <code cds-text="code">withheld: true</code>.
-  </li>
-  <li>
-    No full URL or page title, only the route pattern such as <code cds-text="code">clusters/:id</code>, unless the
-    application shares it.
-  </li>
-  <li>
-    Published state only under the keys listed in <code cds-text="code">publicKeys</code>, and the same for view
-    metadata from annotations. A key nobody listed stays private.
-  </li>
-  <li>
-    Only safe options: <code cds-text="code">maxComponents</code>, <code cds-text="code">maxItemsPerCollection</code>,
-    <code cds-text="code">excludeCategories</code>, and <code cds-text="code">root</code> set to
-    <code cds-text="code">'page'</code> or <code cds-text="code">'modal'</code>. Never selectors, and never more than
-    the application allows.
-  </li>
-</ul>
 
 <h2 id="context-shape" cds-text="title" class="clr-mt-48px">Snapshot</h2>
 <p class="clr-mt-16px" cds-text="body">
@@ -735,28 +690,9 @@
 
 <h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrPublishedContext</code></h3>
 <p class="clr-mt-16px" cds-text="body">
-  What publishers, extractors and providers return: a <code cds-text="code">ClrComponentContext</code> with one more
-  field.
+  What publishers, extractors and providers return: a <code cds-text="code">ClrComponentContext</code> whose children
+  are published contexts too.
 </p>
-<table class="table">
-  <thead>
-    <tr>
-      <th class="left">Property</th>
-      <th class="left clr-hidden-xs-down">Type</th>
-      <th class="left">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="left"><b cds-text="medium">publicKeys</b></td>
-      <td class="left clr-hidden-xs-down"><code cds-text="code">readonly string[]</code></td>
-      <td class="left">
-        The state keys untrusted callers may see. None by default. Each child lists its own, and each source (an
-        annotation, a component) covers only its own state.
-      </td>
-    </tr>
-  </tbody>
-</table>
 
 <h2 id="lower-level" cds-text="title" class="clr-mt-48px">Lower-level helpers</h2>
 <table class="table">
@@ -782,10 +718,6 @@
     <tr>
       <td class="left"><b cds-text="medium">CLR_CONTEXT_CATEGORIES</b></td>
       <td class="left">The roles each <code cds-text="code">excludeCategories</code> entry stands for.</td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">CLR_CONTEXT_UNTRUSTED_OPTION_KEYS</b></td>
-      <td class="left">The snapshot options an untrusted caller may set.</td>
     </tr>
     <tr>
       <td class="left"><b cds-text="medium">CLR_CONTEXT_LOADING_TYPE, CLR_CONTEXT_UNAVAILABLE_TYPE</b></td>

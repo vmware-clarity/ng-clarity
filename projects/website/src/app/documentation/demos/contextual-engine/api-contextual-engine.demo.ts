@@ -24,8 +24,6 @@ export class CreateVmWorkflow {
         type: 'workflow',
         label: 'Create virtual machine',
         state: { step: this.step, vmName: this.vmName },
-        // Untrusted callers, such as embedded frames, see only these keys.
-        publicKeys: ['step'],
       }),
     });
     inject(DestroyRef).onDestroy(unregister);
@@ -37,7 +35,6 @@ const VIEW_METADATA_EXAMPLE = `
 <main
   data-clr-context="Virtual machines"
   data-clr-context-state='{ "viewId": "vm-list", "purpose": "Manage the cluster VMs" }'
-  data-clr-context-public-keys="viewId purpose"
 >
   ...
 </main>

@@ -60,7 +60,6 @@ import { stripQueryAndFragment } from '../url';
 
 /**
  * Describes markup that has neither a role nor an accessible name, such as a bare `<div class="card">`.
- * Untrusted consumers see only the state keys it lists in `publicKeys`.
  */
 export interface ClrContextDomExtractor {
   /** CSS selector matching the elements this extractor understands. */
@@ -74,8 +73,6 @@ const MAX_ELEMENTS_VISITED = 25_000;
 
 interface Walk {
   readonly options: ResolvedSnapshotOptions;
-  /** For a caller the application does not control: published state is cut to the keys marked public. */
-  readonly untrusted: boolean;
   readonly extractors: ClrContextDomExtractor[];
   readonly excludeRoles: ReadonlySet<string>;
   readonly excludeRoleCandidates: string;
@@ -112,13 +109,11 @@ export interface ClrContextTreeResult {
 export function collectContextTreeWithin(
   root: ParentNode,
   options: ResolvedSnapshotOptions,
-  extractors: ClrContextDomExtractor[] = [],
-  untrusted = false
+  extractors: ClrContextDomExtractor[] = []
 ): ClrContextTreeResult {
   const excludeRoles = new Set(options.excludeRoles);
   const walk: Walk = {
     options,
-    untrusted,
     extractors: extractors.filter(extractor => usableSelectors(root, [extractor.selector])),
     excludeRoles,
     excludeRoleCandidates: roleCandidateSelector(excludeRoles),
@@ -414,7 +409,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
     walk.redactedDepth > 0 ? undefined : walk.extractors.find(candidate => element.matches(candidate.selector));
   if (extractor) {
     const extracted = attempt(() => extractor.extract(element as HTMLElement, walk.options), null);
-    const described = extracted ? publishedNode(extracted, walk.options, walk.untrusted) : null;
+    const described = extracted ? publishedNode(extracted, walk.options) : null;
     if (!described) {
       return describeChildren(element, walk, owner);
     }
@@ -846,9 +841,7 @@ function finish(
   const redacted = isRedacted(element, walk.redactedDepth > 0);
   // Published context is not merged inside a redacted region: it would carry the component's state straight out.
   let described =
-    redacted || !published
-      ? node
-      : mergeElementContext(node, element, walk.options, annotationOf(element, walk), walk.untrusted);
+    redacted || !published ? node : mergeElementContext(node, element, walk.options, annotationOf(element, walk));
   if (walk.excludeRoles.has(described.type)) {
     walk.remaining++;
     return null;

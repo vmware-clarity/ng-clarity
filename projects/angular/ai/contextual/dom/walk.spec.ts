@@ -513,14 +513,11 @@ describe('collectContextTreeWithin, what a summary must not hide', () => {
       extract: (element: HTMLElement) => ({
         type: 'textbox',
         state: { value: element.getAttribute('data-value'), secret: 's3cr3t' },
-        publicKeys: ['value', 'secret'],
       }),
     };
-    for (const untrusted of [false, true]) {
-      const tree = collectContextTreeWithin(container, budgets(), [extractor], untrusted);
-      expect(JSON.stringify(tree)).not.toContain('4111');
-      expect(JSON.stringify(tree)).not.toContain('s3cr3t');
-    }
+    const tree = collectContextTreeWithin(container, budgets(), [extractor]);
+    expect(JSON.stringify(tree)).not.toContain('4111');
+    expect(JSON.stringify(tree)).not.toContain('s3cr3t');
   });
 
   it('leaves out an element of an excluded role before an extractor describes it as something else', () => {
@@ -1776,15 +1773,6 @@ describe('collectContextTree, annotation attributes', () => {
     );
 
     expect(nodes[0].state).toEqual({ purpose: 'Pick a host' });
-  });
-
-  it('cuts an annotation to the keys its attribute marks public for an untrusted caller', () => {
-    const html = `<nav aria-label="Hosts" data-clr-context-state='{"purpose":"Pick a host","owner":"ada"}'
-      data-clr-context-public-keys="purpose"><a href="#">h1</a></nav>`;
-    container.innerHTML = html;
-    const { components } = collectContextTreeWithin(container, resolveSnapshotOptions(), [], true);
-
-    expect(components[0].state).toEqual({ purpose: 'Pick a host', withheld: true });
   });
 
   it('leaves the annotation on the view root to the snapshot', () => {

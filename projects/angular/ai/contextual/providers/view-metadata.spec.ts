@@ -44,7 +44,7 @@ describe('ClrContextService, view metadata', () => {
 
   /** The snapshot `watch()` takes at once, reporting what still loads as loading. */
   function now(engine: ClrContextService, options?: ClrContextSnapshotOptions): ClrPageContext {
-    return engine['read'](options, false);
+    return engine['read'](options);
   }
 
   function respondWith(...bodies: (object | null)[]): Mock {
@@ -83,10 +83,9 @@ describe('ClrContextService, view metadata', () => {
       expect(snapshot.metadata).toEqual({ viewId: 'hosts', purpose: 'Hosts', owner: 'core', team: 'infra' });
     });
 
-    it('adds the label, and gives an untrusted caller only the state keys marked public', () => {
+    it('adds the label to the metadata', () => {
       document.body.setAttribute('data-clr-context', 'Host list');
       document.body.setAttribute('data-clr-context-state', '{"viewId":"hosts","owner":"ada","purpose":"Hosts"}');
-      document.body.setAttribute('data-clr-context-public-keys', 'purpose');
       const engine = engineWith();
 
       expect(now(engine, quiet).metadata).toEqual({
@@ -95,10 +94,6 @@ describe('ClrContextService, view metadata', () => {
         owner: 'ada',
         purpose: 'Hosts',
       });
-      const shared: ClrPageContext = engine['read'](quiet, true);
-      expect(shared.metadata).toEqual({ label: 'Host list', purpose: 'Hosts', withheld: true });
-      expect(shared.viewId).toBe('hosts');
-      document.body.removeAttribute('data-clr-context-public-keys');
     });
 
     it('ignores metadata outside the view root', () => {
