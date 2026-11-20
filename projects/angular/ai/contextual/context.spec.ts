@@ -11,6 +11,7 @@ import { publishElementContext } from '@clr/angular/utils';
 
 import { ClrContext } from './context';
 import { ClrContextModule } from './contextual.module';
+import { hasAnnotation } from './dom/annotations';
 import { ClrComponentContext, ClrContextSnapshotOptions, ClrPageContext } from './interfaces/context.interface';
 import { ClrContextRegistryService } from './providers/context-registry.service';
 import { ClrContextService } from './providers/contextual-engine.service';
@@ -34,9 +35,9 @@ function labels(options?: ClrContextSnapshotOptions): string[] {
   changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     @if (show()) {
-      <section clrContext="User management" clrContextType="section" [clrContextState]="state()"></section>
+      <section [clrContext]="userContext"></section>
     }
-    <div [clrContext]="emptyLabel()"></div>
+    <div [clrContext]="emptyContext"></div>
   `,
   standalone: false,
 })
@@ -44,6 +45,8 @@ class TestComponent {
   readonly show = signal(true);
   readonly state = signal<Record<string, unknown> | null>({ cluster: 'alpha' });
   readonly emptyLabel = signal('');
+  readonly userContext = () => ({ label: 'User management', type: 'section', state: this.state() ?? undefined });
+  readonly emptyContext = () => ({ label: this.emptyLabel() });
 }
 
 describe('ClrContext directive', () => {
@@ -76,9 +79,8 @@ describe('ClrContext directive', () => {
     unpublish();
   });
 
-  it('reads its inputs at snapshot time', () => {
+  it('reads its binding at snapshot time', () => {
     fixture.componentInstance.state.set({ cluster: 'omega' });
-    fixture.detectChanges();
 
     expect(nodeLabelled('User management')?.state).toEqual({ cluster: 'omega' });
   });
@@ -93,7 +95,7 @@ describe('ClrContext directive', () => {
     fixture.componentInstance.emptyLabel.set('still here');
     fixture.detectChanges();
 
-    expect('clrContextAnnotation' in section).toBe(false);
+    expect(hasAnnotation(section)).toBe(false);
     expect(labels()).toEqual(['still here']);
     expect(nodeLabelled('still here')?.type).toBe('group');
   });
@@ -126,13 +128,13 @@ describe('ClrContext directive, reading its state', () => {
     expect(nodeLabelled('User management')?.state).not.toBe(state);
   });
 
-  it('neither throws nor contributes while its state cannot be serialised', () => {
-    const circular: Record<string, unknown> = {};
+  it('neither throws nor loops while its state refers to itself', () => {
+    const circular: Record<string, unknown> = { cluster: 'alpha' };
     circular['self'] = circular;
     fixture.componentInstance.state.set(circular);
 
     expect(() => fixture.detectChanges()).not.toThrow();
-    expect(labels()).not.toContain('User management');
+    expect(nodeLabelled('User management')?.state?.['cluster']).toBe('alpha');
   });
 });
 
@@ -140,20 +142,20 @@ describe('ClrContext directive, reading its state', () => {
   changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div id="main">
-      <section clrContext="Visible" [clrContextState]="{ step: 1 }"></section>
+      <section [clrContext]="{ label: 'Visible', state: { step: 1 } }"></section>
       <section data-clr-context-redact>
-        <div clrContext="Payment" [clrContextState]="{ card: '4111' }"></div>
+        <div [clrContext]="{ label: 'Payment', state: { card: '4111' } }"></div>
       </section>
     </div>
     <aside data-clr-context-ignore>
-      <div clrContext="Chat" [clrContextState]="chat()"></div>
+      <div [clrContext]="{ label: 'Chat', state: chat() }"></div>
     </aside>
-    <footer><div clrContext="Footer notes"></div></footer>
+    <footer><div [clrContext]="{ label: 'Footer notes' }"></div></footer>
     <div id="plain">
-      <ng-container clrContext="Inside a container" [clrContextState]="{ open: true }"></ng-container>
+      <ng-container [clrContext]="{ label: 'Inside a container', state: { open: true } }"></ng-container>
     </div>
     <div data-clr-context-redact>
-      <ng-container clrContext="Redacted container" [clrContextState]="{ card: '5500' }"></ng-container>
+      <ng-container [clrContext]="{ label: 'Redacted container', state: { card: '5500' } }"></ng-container>
     </div>
   `,
   standalone: false,
@@ -203,7 +205,7 @@ describe('ClrContext directive, following the element it annotates', () => {
 // A standalone component imports the directive class itself; no module is involved.
 @Component({
   changeDetection: ChangeDetectionStrategy.Eager,
-  template: `<section clrContext="Standalone annotation" [clrContextState]="{ step: 2 }"></section>`,
+  template: `<section [clrContext]="{ label: 'Standalone annotation', state: { step: 2 } }"></section>`,
   imports: [ClrContext],
 })
 class StandaloneHostComponent {}
@@ -218,5 +220,47 @@ describe('ClrContext directive, imported by a standalone component', () => {
       expect.objectContaining({ type: 'group', label: 'Standalone annotation', state: { step: 2 } })
     );
     fixture.destroy();
+  });
+});
+
+const INVENTORY_CONTEXT = { label: 'Inventory', state: { owner: 'Infrastructure team' } };
+
+@Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
+  template: `<section [clrContext]="inventory"></section>`,
+  imports: [ClrContext],
+})
+class ConstantHostComponent {
+  readonly inventory = INVENTORY_CONTEXT;
+}
+
+describe('ClrContext directive, kept out of the DOM', () => {
+  afterEach(() => TestBed.resetTestingModule());
+
+  it('takes a constant from the component class and writes nothing to the element', () => {
+    TestBed.configureTestingModule({ imports: [ConstantHostComponent] });
+    const fixture = TestBed.createComponent(ConstantHostComponent);
+    fixture.detectChanges();
+    const section: HTMLElement = fixture.nativeElement.querySelector('section');
+
+    expect(nodeLabelled('Inventory')?.state).toEqual({ owner: 'Infrastructure team' });
+    expect(section.attributes.length).toBe(0);
+    expect(Object.keys(section).filter(key => !key.startsWith('__ng'))).toEqual([]);
+    fixture.destroy();
+  });
+
+  it('refuses static text, which would be readable in the DOM', () => {
+    @Component({
+      changeDetection: ChangeDetectionStrategy.Eager,
+      template: `<section clrContext="Readable in the DOM"></section>`,
+      imports: [ClrContext],
+    })
+    class StaticTextComponent {}
+
+    TestBed.configureTestingModule({ imports: [StaticTextComponent] });
+    const fixture = TestBed.createComponent(StaticTextComponent);
+
+    expect(() => fixture.detectChanges()).toThrowError(/property binding/);
+    expect(labels()).not.toContain('Readable in the DOM');
   });
 });

@@ -5,14 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-/** Assigns `host[property]`; the teardown removes it only while it is still this value. */
-export function publishOnElement<T>(host: Element, property: string, value: T): () => void {
-  const carrier = host as unknown as Record<string, T | undefined>;
-  carrier[property] = value;
-
+/**
+ * Stores `value` for `host` in `store`; the teardown removes it only while it is still this value.
+ * Kept in a `WeakMap` rather than on the element, so nothing is readable from the DOM.
+ */
+export function publishFor<T>(store: WeakMap<Element, T>, host: Element, value: T): () => void {
+  store.set(host, value);
   return () => {
-    if (carrier[property] === value) {
-      delete carrier[property];
+    if (store.get(host) === value) {
+      store.delete(host);
     }
   };
 }
