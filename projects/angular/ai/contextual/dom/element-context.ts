@@ -6,18 +6,23 @@
  */
 
 import { isDevMode } from '@angular/core';
-import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrComponentContext, ClrPublishedContext } from '@clr/angular/utils';
+import { ClrComponentContext, ClrPublishedContext, elementContextOf } from '@clr/angular/utils';
 
 import { truncate } from './text';
 import { defineOwn, jsonSafe, STATE_DEPTH } from '../json-safe';
 import type { ResolvedSnapshotOptions } from '../snapshot-options';
+
+/** Whether a component published context for the element. */
+export function hasElementContext(element: Element): boolean {
+  return elementContextOf(element) !== undefined;
+}
 
 /** Reads an element's published context. A callback that throws counts as nothing, with a dev-mode warning. */
 export function readClrElementContext(
   element: Element,
   options: ResolvedSnapshotOptions
 ): Partial<ClrComponentContext> | null {
-  const callback = (element as Element & { [CLR_ELEMENT_CONTEXT_PROPERTY]?: unknown })[CLR_ELEMENT_CONTEXT_PROPERTY];
+  const callback = elementContextOf(element);
   if (typeof callback !== 'function') {
     return null;
   }

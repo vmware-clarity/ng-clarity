@@ -163,9 +163,6 @@ export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
 // @public
 export const CLR_CONTEXT_REDACT_SELECTOR = "[data-clr-context-redact]";
 
-// @public
-export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
-
 // @public (undocumented)
 export const CLR_LOADING_DIRECTIVES: Type<any>[];
 
@@ -922,6 +919,9 @@ export class DomAdapter {
     // (undocumented)
     static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
+
+// @public
+export function elementContextOf(host: Element): ClrElementContextCallback | undefined;
 
 // @public (undocumented)
 export class EmptyAnchor {

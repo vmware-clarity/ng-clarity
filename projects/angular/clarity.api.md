@@ -902,9 +902,6 @@ export const CLR_DATEPICKER_DIRECTIVES: Type<any>[];
 // @public (undocumented)
 export const CLR_DROPDOWN_DIRECTIVES: Type<any>[];
 
-// @public
-export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
-
 // @public (undocumented)
 export const CLR_FILE_MESSAGES_TEMPLATE_CONTEXT: InjectionToken<ClrFileMessagesTemplateContext>;
 
@@ -9735,6 +9732,9 @@ export const eCheckIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const eCheckIconName = "e-check";
+
+// @public
+export function elementContextOf(host: Element): ClrElementContextCallback | undefined;
 
 // @public (undocumented)
 export const ellipsisGridCircleIcon: IconShapeTuple;

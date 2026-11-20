@@ -491,9 +491,9 @@ describe('collectContextTreeWithin, what a summary must not hide', () => {
 
   it('keeps a list item that has state of its own to report', () => {
     container.innerHTML = '<ul><li>Provision</li><li>Configure</li></ul>';
-    (container.querySelector('li') as HTMLElement & { clrElementContext?: unknown }).clrElementContext = () => ({
+    publishElementContext(container.querySelector('li') as Element, () => ({
       state: { status: 'success' },
-    });
+    }));
     const [list] = collectContextTreeWithin(container, budgets()).components;
     expect(list.children?.length).toBe(1);
     expect(list.children?.[0]).toEqual({ type: 'listitem', label: 'Provision', state: { status: 'success' } });
@@ -550,9 +550,9 @@ describe('collectContextTreeWithin, what a summary must not hide', () => {
 
   it('merges what a multi-part component publishes onto the component, not onto each part', () => {
     container.innerHTML = '<my-grid><div role="grid"></div><my-grid-footer>2 of 40</my-grid-footer></my-grid>';
-    (container.querySelector('my-grid') as HTMLElement & { clrElementContext?: unknown }).clrElementContext = () => ({
+    publishElementContext(container.querySelector('my-grid') as Element, () => ({
       state: { rowCount: 40 },
-    });
+    }));
     const [widget] = collectContextTreeWithin(container, budgets()).components;
     expect(widget.type).toBe('group');
     expect(widget.element).toBe('my-grid');
@@ -592,9 +592,9 @@ describe('collectContextTreeWithin, what a summary must not hide', () => {
 
   it('gives what a single-part component publishes to the part that stands in for it', () => {
     container.innerHTML = '<my-picker><input role="combobox" aria-label="Cluster" /></my-picker>';
-    (container.querySelector('my-picker') as HTMLElement & { clrElementContext?: unknown }).clrElementContext = () => ({
+    publishElementContext(container.querySelector('my-picker') as Element, () => ({
       state: { options: ['Alpha', 'Beta'] },
-    });
+    }));
     const [node] = collectContextTreeWithin(container, budgets()).components;
     expect(node.type).toBe('combobox');
     expect(node.element).toBe('my-picker');
