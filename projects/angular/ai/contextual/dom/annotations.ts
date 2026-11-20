@@ -24,11 +24,8 @@ export const CLR_CONTEXT_TYPE_ATTRIBUTE = 'data-clr-context-type';
 /** The annotated UI's state as a JSON object, as `[clrContextState]` sets it. */
 export const CLR_CONTEXT_STATE_ATTRIBUTE = 'data-clr-context-state';
 
-/** The state keys untrusted callers may see, separated by spaces, as `[clrContextPublicKeys]` sets them. */
-export const CLR_CONTEXT_PUBLIC_KEYS_ATTRIBUTE = 'data-clr-context-public-keys';
-
 /**
- * The URL of an annotation as JSON (`{ "label", "type", "state", "publicKeys" }`), loaded once per session.
+ * The URL of an annotation as JSON (`{ "label", "type", "state" }`), loaded once per session.
  * Read on the view's root and its ancestors, where it describes the view.
  */
 export const CLR_CONTEXT_URL_ATTRIBUTE = 'data-clr-context-url';
@@ -89,7 +86,7 @@ export function hasAnnotation(element: Element): boolean {
 }
 
 /**
- * What the application says about the element: its label, type, state and the state keys that are public.
+ * What the application says about the element: its label, type and state.
  * `[clrContext]` wins over the attributes, which are for markup without Angular.
  */
 export function annotationContext(element: Element): Partial<ClrPublishedContext> | null {
@@ -105,31 +102,27 @@ export function annotationFrom(value: unknown): Partial<ClrPublishedContext> | n
   if (!isRecord(value)) {
     return null;
   }
-  const { label, type, state, publicKeys } = value;
+  const { label, type, state } = value;
   return annotation(
     typeof label === 'string' ? label : null,
     typeof type === 'string' ? type : null,
-    isRecord(state) ? state : null,
-    Array.isArray(publicKeys) ? publicKeys.filter((key): key is string => typeof key === 'string') : []
+    isRecord(state) ? state : null
   );
 }
 
 function attributeAnnotation(element: Element): Partial<ClrPublishedContext> | null {
   const state = parseJsonObject(element.getAttribute(CLR_CONTEXT_STATE_ATTRIBUTE), CLR_CONTEXT_STATE_ATTRIBUTE);
-  const publicKeys = element.getAttribute(CLR_CONTEXT_PUBLIC_KEYS_ATTRIBUTE)?.split(/\s+/).filter(Boolean) ?? [];
   return annotation(
     element.getAttribute(CLR_CONTEXT_LABEL_ATTRIBUTE),
     element.getAttribute(CLR_CONTEXT_TYPE_ATTRIBUTE),
-    state,
-    publicKeys
+    state
   );
 }
 
 function annotation(
   label: string | null,
   type: string | null,
-  state: Record<string, unknown> | null,
-  publicKeys: string[]
+  state: Record<string, unknown> | null
 ): Partial<ClrPublishedContext> | null {
   if (!label && !type && !state) {
     return null;
@@ -143,9 +136,6 @@ function annotation(
   }
   if (state) {
     context.state = state;
-  }
-  if (publicKeys.length) {
-    context.publicKeys = publicKeys;
   }
   return context;
 }

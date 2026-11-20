@@ -35,7 +35,6 @@ const VIEW_METADATA_EXAMPLE = `
 <main
   data-clr-context="Virtual machines"
   data-clr-context-state='{ "viewId": "vm-list", "purpose": "Manage the cluster VMs" }'
-  data-clr-context-public-keys="viewId purpose"
 >
   ...
 </main>

@@ -38,9 +38,6 @@ export const CLR_CONTEXT_PRESETS: Readonly<Record<ClrContextPreset, Readonly<Clr
 export const CLR_CONTEXT_PROTOCOL = "ui-context/v1";
 
 // @public
-export const CLR_CONTEXT_PUBLIC_KEYS_ATTRIBUTE = "data-clr-context-public-keys";
-
-// @public
 export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
 
 // @public

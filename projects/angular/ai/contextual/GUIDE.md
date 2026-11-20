@@ -37,14 +37,14 @@ Configure once at startup: `context.configure({ scope: 'interactive', routes: tr
 
 ## Adding context
 
-| Need                                             | Use                                                                    |
-| ------------------------------------------------ | ---------------------------------------------------------------------- |
-| Say what an element of a view is for             | `clrContext` directive (`[clrContextState]`, `[clrContextPublicKeys]`) |
-| Context no element shows, maybe asynchronous     | `ClrContextProvider` registered on `ClrContextRegistryService`         |
-| A component's state the DOM cannot show          | `publishElementContext(host, callback)` from `@clr/angular/utils`      |
-| Markup from another library with no role or name | `configure({ extractors: [{ selector, extract }] })`                   |
-| The same annotation in markup without Angular    | `data-clr-context`, `-type`, `-state` (JSON), `-public-keys`           |
-| Describe the view (metadata, `viewId`)           | The annotation on the view root, `data-clr-context-url`, `viewConfig`  |
+| Need                                             | Use                                                                   |
+| ------------------------------------------------ | --------------------------------------------------------------------- |
+| Say what an element of a view is for             | `clrContext` directive (`[clrContextState]`)                          |
+| Context no element shows, maybe asynchronous     | `ClrContextProvider` registered on `ClrContextRegistryService`        |
+| A component's state the DOM cannot show          | `publishElementContext(host, callback)` from `@clr/angular/utils`     |
+| Markup from another library with no role or name | `configure({ extractors: [{ selector, extract }] })`                  |
+| The same annotation in markup without Angular    | `data-clr-context`, `-type`, `-state` (JSON)                          |
+| Describe the view (metadata, `viewId`)           | The annotation on the view root, `data-clr-context-url`, `viewConfig` |
 
 ```ts
 import { ClrContext } from '@clr/angular/ai';

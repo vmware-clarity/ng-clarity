@@ -1786,15 +1786,6 @@ describe('collectContextTree, annotation attributes', () => {
     expect(nodes[0].state).toEqual({ purpose: 'Pick a host' });
   });
 
-  it('cuts an annotation to the keys its attribute marks public for an untrusted caller', () => {
-    const html = `<nav aria-label="Hosts" data-clr-context-state='{"purpose":"Pick a host","owner":"ada"}'
-      data-clr-context-public-keys="purpose"><a href="#">h1</a></nav>`;
-    container.innerHTML = html;
-    const { components } = collectContextTreeWithin(container, resolveSnapshotOptions(), [], null, true);
-
-    expect(components[0].state).toEqual({ purpose: 'Pick a host', withheld: true });
-  });
-
   it('leaves the annotation on the view root to the snapshot', () => {
     container.setAttribute('data-clr-context-state', '{"purpose":"Hosts"}');
 

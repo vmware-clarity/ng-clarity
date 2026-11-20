@@ -61,7 +61,6 @@ export interface ClrPageContext {
   /**
    * Metadata about the current view, merged from the configured views, `application.metadata` and the
    * annotation on the view root (`data-clr-context-url`, then the annotation itself), later ones winning.
-   * An untrusted caller sees only the annotation state keys marked public.
    */
   metadata?: Record<string, unknown>;
   /** Set while a metadata URL is loading, or when one could not be loaded. */
