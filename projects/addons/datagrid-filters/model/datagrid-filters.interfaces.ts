@@ -144,7 +144,7 @@ export class NumericPropertyDefinition extends FilterablePropertyDefinition {
   /**
    * Default unit of the metric
    */
-  unit: Unit;
+  unit!: Unit;
   /**
    * Indicates that the property can be used with single condition only.
    */
@@ -278,11 +278,11 @@ export class PropertyFilter {
   /**
    *  Filter criteria
    */
-  criteria: PropertyPredicate[];
+  criteria!: PropertyPredicate[];
   /**
    *  Logical operator. Supported values are AND/OR
    */
-  operator: LogicalOperator;
+  operator!: LogicalOperator;
   /**
    * Set by the built-in editors. Optional for host-built filters such as presets; without it the
    * editor and pill derive what they can from the criteria.
@@ -294,12 +294,12 @@ export class PropertyPredicate {
   /**
    *  Property that is used for filtering
    */
-  filterableProperty: FilterablePropertyDefinition;
+  filterableProperty!: FilterablePropertyDefinition;
 
   /**
    *  Filtering operator
    */
-  operator: ComparisonOperator;
+  operator!: ComparisonOperator;
 
   /**
    *  Filter value

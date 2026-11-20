@@ -17,9 +17,10 @@ import {
 
 describe('DatagridFiltersModule', () => {
   it('registers clarity icons on initialization', () => {
-    spyOn(ClarityIcons, 'addIcons').and.returnValue();
+    vi.spyOn(ClarityIcons, 'addIcons').mockReturnValue();
     new AppfxDatagridFiltersModule();
-    expect(ClarityIcons.addIcons).toHaveBeenCalledOnceWith(angleIcon, checkIcon, plusIcon, searchIcon, windowCloseIcon);
+    expect(ClarityIcons.addIcons).toHaveBeenCalledTimes(1);
+    expect(ClarityIcons.addIcons).toHaveBeenCalledWith(angleIcon, checkIcon, plusIcon, searchIcon, windowCloseIcon);
   });
 
   it('provides filters strings service factory', () => {

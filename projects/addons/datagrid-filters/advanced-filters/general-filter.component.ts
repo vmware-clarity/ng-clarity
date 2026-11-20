@@ -52,15 +52,15 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
   readonly logicalOperators: LogicalOperator[];
   readonly isEmptyOperator: ComparisonOperator = ComparisonOperator.IsEmpty;
 
-  generalFilterForm: FormGroup;
-  comparisonOperators: ComparisonOperator[];
+  generalFilterForm!: FormGroup;
+  comparisonOperators!: ComparisonOperator[];
   units: Unit[] = [];
   isNumericUnitProperty = false;
   @Input() filterProperty: StringPropertyDefinition | NumericPropertyDefinition;
   /**
    * In case the component is used for filter editing
    */
-  @Input() propertyFilter: PropertyFilter;
+  @Input() propertyFilter?: PropertyFilter;
 
   /**
    * Event emitter to tell hosting view that filtering criteria have changed
@@ -199,7 +199,7 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
   }
 
   private initOperator(index: number): ComparisonOperator {
-    const selectedOperator: ComparisonOperator = this.propertyFilter?.criteria[index]?.operator;
+    const selectedOperator: ComparisonOperator | undefined = this.propertyFilter?.criteria[index]?.operator;
     const defaultOperator: ComparisonOperator =
       this.filterProperty instanceof StringPropertyDefinition ? ComparisonOperator.Contains : ComparisonOperator.Equals;
     return (

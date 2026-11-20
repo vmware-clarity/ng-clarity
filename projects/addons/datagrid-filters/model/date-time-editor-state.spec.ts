@@ -8,20 +8,7 @@
 import { ComparisonOperator, LogicalOperator } from './datagrid-filters.enums';
 import { DateTimePropertyDefinition, PropertyFilter } from './datagrid-filters.interfaces';
 import { addDays, dateTimeEditorState, toIsoDate } from './date-time-editor-state';
-
-/**
- * The days of a year whose local midnight-to-midnight span is not 24 hours, i.e. the days the clocks change.
- * Empty in a time zone without daylight saving (e.g. UTC).
- */
-export function clockChangeDays(year: number): string[] {
-  const days: string[] = [];
-  for (let day = new Date(year, 0, 1); day.getFullYear() === year; day = addDays(day, 1)) {
-    if (addDays(day, 1).getTime() - day.getTime() !== 24 * 60 * 60 * 1000) {
-      days.push(toIsoDate(day));
-    }
-  }
-  return days;
-}
+import { clockChangeDays } from './date-time-editor-state.mock';
 
 const property = new DateTimePropertyDefinition('Created', 'created');
 const range = (from: string, to: string): PropertyFilter => ({
@@ -77,28 +64,26 @@ describe('dateTimeEditorState', () => {
     });
   });
 
-  describe('on the days the clocks change', () => {
-    const days = clockChangeDays(2026);
+  const days = clockChangeDays(2026);
 
-    beforeEach(() => {
-      if (!days.length) {
-        pending('The time zone of this run has no daylight saving');
-      }
-    });
-
+  // Skipped in a time zone without daylight saving (e.g. UTC).
+  describe.skipIf(!days.length)('on the days the clocks change', () => {
     it('reads midnight to the next midnight as Equals, however many hours the day has', () => {
       days.forEach(day => {
-        expect(dateTimeEditorState(range(`${day}T00:00:00`, `${nextDay(day)}T00:00:00`)))
-          .withContext(day)
-          .toEqual({ operator: ComparisonOperator.Equals, value: day });
+        expect(dateTimeEditorState(range(`${day}T00:00:00`, `${nextDay(day)}T00:00:00`)), day).toEqual({
+          operator: ComparisonOperator.Equals,
+          value: day,
+        });
       });
     });
 
     it('reads the end date of a custom range that ends the day after a clock change', () => {
       days.forEach(day => {
-        expect(dateTimeEditorState(range('2026-01-01T00:00:00', `${nextDay(day)}T00:00:00`)))
-          .withContext(day)
-          .toEqual({ operator: ComparisonOperator.CustomRange, value: '2026-01-01', valueTo: day });
+        expect(dateTimeEditorState(range('2026-01-01T00:00:00', `${nextDay(day)}T00:00:00`)), day).toEqual({
+          operator: ComparisonOperator.CustomRange,
+          value: '2026-01-01',
+          valueTo: day,
+        });
       });
     });
   });

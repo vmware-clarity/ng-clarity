@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component, ElementRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DomAdapter } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrDatagridModule } from '../datagrid.module';
 import { ColumnsService } from './columns.service';
@@ -55,31 +56,40 @@ const PROVIDERS_NEEDED = [
   ColumnsService,
 ];
 
-export default function (): void {
-  describe('TableSizeService', function () {
-    beforeEach(function (this: TestContext) {
-      TestBed.configureTestingModule({
-        imports: [ClrDatagridModule],
-        declarations: [TestComponent],
-        providers: [PROVIDERS_NEEDED],
+describe('Datagrid', () => {
+  describe('Providers', () => {
+    describe('TableSizeService', () => {
+      let testContext: TestContext;
+      beforeEach(() => {
+        testContext = {} as TestContext;
       });
-      this.fixture = TestBed.createComponent(TestComponent);
-      this.sizeService = this.fixture.debugElement.injector.get(TableSizeService);
-      this.fixture.detectChanges();
-      this.table = this.fixture.elementRef.nativeElement.children[0]; // reference to the TestComponnt table
-      this.sizeService.tableRef = this.table; // setting service up with the component table for testing
-    });
 
-    it('sets a tableRef property with an elementReference', function () {
-      // sizeService.tableRef is set in beforeEach
-      expect(this.sizeService.tableRef).toBeDefined();
-    });
+      beforeEach(() => {
+        TestBed.configureTestingModule({
+          imports: [ClrDatagridModule],
+          declarations: [TestComponent],
+          providers: [PROVIDERS_NEEDED],
+        });
+        testContext.fixture = TestBed.createComponent(TestComponent);
+        testContext.sizeService = testContext.fixture.debugElement.injector.get(TableSizeService);
+        renderFixture(testContext.fixture);
+        testContext.table = testContext.fixture.elementRef.nativeElement.children[0]; // reference to the TestComponnt table
+        testContext.sizeService.tableRef = testContext.table; // setting service up with the component table for testing
+      });
 
-    it('calculates the correct column drag height', function (this: TestContext) {
-      expect(this.sizeService.getColumnDragHeight()).toEqual('300px');
-      this.fixture.componentInstance.height = 422;
-      this.fixture.detectChanges();
-      expect(this.sizeService.getColumnDragHeight()).toEqual('422px');
+      it('sets a tableRef property with an elementReference', () => {
+        const untypedContext: any = testContext;
+
+        // sizeService.tableRef is set in beforeEach
+        expect(untypedContext.sizeService.tableRef).toBeDefined();
+      });
+
+      it('calculates the correct column drag height', () => {
+        expect(testContext.sizeService.getColumnDragHeight()).toEqual('300px');
+        testContext.fixture.componentInstance.height = 422;
+        renderFixture(testContext.fixture);
+        expect(testContext.sizeService.getColumnDragHeight()).toEqual('422px');
+      });
     });
   });
-}
+});

@@ -7,96 +7,107 @@
 
 import { ChangeDetectionStrategy, Component, Injectable, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrLoading, ClrLoadingState } from './loading';
 import { LoadingListener } from './loading-listener';
 
-describe('Loading directive', function () {
-  beforeEach(function () {
+describe('Loading directive', () => {
+  let testContext: any;
+  beforeEach(() => {
+    testContext = {};
+  });
+
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ClrLoading, FullTest],
       providers: [{ provide: LoadingListener, useClass: DummyListener }],
     });
-    this.fixture = TestBed.createComponent(FullTest);
-    this.fixture.detectChanges();
-    this.testComponent = this.fixture.componentInstance;
-    this.clarityDirective = this.fixture.componentInstance.loadingDirective;
-    this.listener = TestBed.inject(LoadingListener);
+    testContext.fixture = TestBed.createComponent(FullTest);
+    renderFixture(testContext.fixture);
+    testContext.testComponent = testContext.fixture.componentInstance;
+    testContext.clarityDirective = testContext.fixture.componentInstance.loadingDirective;
+    testContext.listener = TestBed.inject(LoadingListener);
   });
 
-  afterEach(function () {
-    this.fixture.destroy();
+  afterEach(() => {
+    testContext.fixture.destroy();
   });
 
-  it('notifies the listener when the [clrLoading] input changes', function () {
-    expect(this.listener.loading).toBe(false);
-    this.testComponent.loading = true;
-    this.fixture.detectChanges();
-    expect(this.listener.loading).toBe(true);
-    this.testComponent.loading = false;
-    this.fixture.detectChanges();
-    expect(this.listener.loading).toBe(false);
+  it('notifies the listener when the [clrLoading] input changes', () => {
+    expect(testContext.listener.loading).toBe(false);
+    testContext.testComponent.loading = true;
+    renderFixture(testContext.fixture);
+    expect(testContext.listener.loading).toBe(true);
+    testContext.testComponent.loading = false;
+    renderFixture(testContext.fixture);
+    expect(testContext.listener.loading).toBe(false);
   });
 
-  it('ignores successive inputs with the same value', function () {
-    spyOn(this.listener, 'loadingStateChange');
-    this.testComponent.loading = false;
-    this.fixture.detectChanges();
-    this.testComponent.loading = false;
-    this.fixture.detectChanges();
-    expect(this.listener.loadingStateChange).toHaveBeenCalledTimes(0);
-    this.testComponent.loading = true;
-    this.fixture.detectChanges();
-    this.testComponent.loading = true;
-    this.fixture.detectChanges();
-    expect(this.listener.loadingStateChange).toHaveBeenCalledTimes(1);
+  it('ignores successive inputs with the same value', () => {
+    vi.spyOn(testContext.listener, 'loadingStateChange').mockImplementation(() => undefined);
+    testContext.testComponent.loading = false;
+    renderFixture(testContext.fixture);
+    testContext.testComponent.loading = false;
+    renderFixture(testContext.fixture);
+    expect(testContext.listener.loadingStateChange).toHaveBeenCalledTimes(0);
+    testContext.testComponent.loading = true;
+    renderFixture(testContext.fixture);
+    testContext.testComponent.loading = true;
+    renderFixture(testContext.fixture);
+    expect(testContext.listener.loadingStateChange).toHaveBeenCalledTimes(1);
   });
 
-  it('handles null or other falsy values as false', function () {
-    this.testComponent.loading = null;
-    this.fixture.detectChanges();
-    expect(this.clarityDirective.loadingState).toEqual(ClrLoadingState.DEFAULT);
-    this.testComponent.loading = undefined;
-    this.fixture.detectChanges();
-    expect(this.clarityDirective.loadingState).toEqual(ClrLoadingState.DEFAULT);
-    this.testComponent.loading = 0;
-    this.fixture.detectChanges();
-    expect(this.clarityDirective.loadingState).toEqual(ClrLoadingState.DEFAULT);
+  it('handles null or other falsy values as false', () => {
+    testContext.testComponent.loading = null;
+    renderFixture(testContext.fixture);
+    expect(testContext.clarityDirective.loadingState).toEqual(ClrLoadingState.DEFAULT);
+    testContext.testComponent.loading = undefined;
+    renderFixture(testContext.fixture);
+    expect(testContext.clarityDirective.loadingState).toEqual(ClrLoadingState.DEFAULT);
+    testContext.testComponent.loading = 0;
+    renderFixture(testContext.fixture);
+    expect(testContext.clarityDirective.loadingState).toEqual(ClrLoadingState.DEFAULT);
   });
 
-  it('stops loading when destroyed', function () {
-    this.testComponent.loading = true;
-    this.fixture.detectChanges();
-    expect(this.listener.loading).toBe(true);
-    this.testComponent.displayed = false;
-    this.fixture.detectChanges();
-    expect(this.listener.loading).toBe(false);
+  it('stops loading when destroyed', () => {
+    testContext.testComponent.loading = true;
+    renderFixture(testContext.fixture);
+    expect(testContext.listener.loading).toBe(true);
+    testContext.testComponent.displayed = false;
+    renderFixture(testContext.fixture);
+    expect(testContext.listener.loading).toBe(false);
   });
 });
 
-describe('Loading directive without listener', function () {
-  beforeEach(function () {
+describe('Loading directive without listener', () => {
+  let testContext: any;
+  beforeEach(() => {
+    testContext = {};
+  });
+
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ClrLoading, FullTest],
     });
-    this.fixture = TestBed.createComponent(FullTest);
-    this.fixture.detectChanges();
-    this.testComponent = this.fixture.componentInstance;
-    this.clarityDirective = this.fixture.componentInstance.loadingDirective;
+    testContext.fixture = TestBed.createComponent(FullTest);
+    renderFixture(testContext.fixture);
+    testContext.testComponent = testContext.fixture.componentInstance;
+    testContext.clarityDirective = testContext.fixture.componentInstance.loadingDirective;
   });
 
-  afterEach(function () {
-    this.fixture.destroy();
+  afterEach(() => {
+    testContext.fixture.destroy();
   });
 
-  it('keeps loading state without exceptions', function () {
-    expect(this.clarityDirective.loadingState).toEqual(ClrLoadingState.DEFAULT);
-    this.testComponent.loading = true;
-    this.fixture.detectChanges();
-    expect(this.clarityDirective.loadingState).toEqual(ClrLoadingState.LOADING);
-    this.testComponent.loading = false;
-    this.fixture.detectChanges();
-    expect(this.clarityDirective.loadingState).toEqual(ClrLoadingState.DEFAULT);
+  it('keeps loading state without exceptions', () => {
+    expect(testContext.clarityDirective.loadingState).toEqual(ClrLoadingState.DEFAULT);
+    testContext.testComponent.loading = true;
+    renderFixture(testContext.fixture);
+    expect(testContext.clarityDirective.loadingState).toEqual(ClrLoadingState.LOADING);
+    testContext.testComponent.loading = false;
+    renderFixture(testContext.fixture);
+    expect(testContext.clarityDirective.loadingState).toEqual(ClrLoadingState.DEFAULT);
   });
 });
 

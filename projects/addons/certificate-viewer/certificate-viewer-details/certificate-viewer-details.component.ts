@@ -34,7 +34,7 @@ import { TopHeadingLevel } from '../models/heading-level.model';
 export class CertificateViewerDetailsComponent implements OnChanges {
   @Input() certificateChain?: CertificateChain;
   @Input() topHeadingLevel: TopHeadingLevel = 5;
-  @Input() headingTemplate: TemplateRef<unknown>;
+  @Input() headingTemplate!: TemplateRef<unknown>;
 
   selectedCertificate?: Certificate;
   selectedCertificateField?: CertificateField;

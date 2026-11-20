@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestContext } from '@clr/angular/testing';
+import { createTestHelpers, TestContext } from '@clr/angular/testing';
 
 import { ClrDatagridActionBar } from './datagrid-action-bar';
 import { FiltersProvider } from './providers/filters';
@@ -15,25 +15,29 @@ import { Page } from './providers/page';
 import { Selection } from './providers/selection';
 import { Sort } from './providers/sort';
 
-export default function (): void {
-  describe('DatagridActionBar component', function () {
-    let context: TestContext<ClrDatagridActionBar, SimpleTest>;
+describe('Datagrid', () => {
+  describe('Components', () => {
+    describe('DatagridActionBar component', () => {
+      const helpers = createTestHelpers();
 
-    beforeEach(function () {
-      context = this.create(ClrDatagridActionBar, SimpleTest, [Selection, Items, FiltersProvider, Sort, Page]);
-    });
+      let context: TestContext<ClrDatagridActionBar, SimpleTest>;
 
-    afterEach(() => {
-      context.fixture.destroy();
-      const popoverContent = document.querySelectorAll('.clr-popover-content');
-      popoverContent.forEach(content => document.body.removeChild(content));
-    });
+      beforeEach(() => {
+        context = helpers.create(ClrDatagridActionBar, SimpleTest, [Selection, Items, FiltersProvider, Sort, Page]);
+      });
 
-    it('projects content', function () {
-      expect(context.clarityElement.textContent.trim()).toMatch('Hello world');
+      afterEach(() => {
+        context.fixture.destroy();
+        const popoverContent = document.querySelectorAll('.clr-popover-content');
+        popoverContent.forEach(content => document.body.removeChild(content));
+      });
+
+      it('projects content', () => {
+        expect(context.clarityElement.textContent.trim()).toMatch('Hello world');
+      });
     });
   });
-}
+});
 
 @Component({
   template: `<clr-dg-action-bar>Hello world</clr-dg-action-bar>`,

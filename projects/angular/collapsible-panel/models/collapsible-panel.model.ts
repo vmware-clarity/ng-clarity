@@ -8,7 +8,7 @@
 let panelGroupCount = 0;
 
 export class CollapsiblePanelModel {
-  index: number = null;
+  index: number | null = null;
   disabled = false;
   open = false;
   templateId = `${this.id}-${this.groupId}`;

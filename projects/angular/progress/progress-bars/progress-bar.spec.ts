@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrProgressBar } from './progress-bar';
 import { ClrProgressBarModule } from './progress-bar.module';
@@ -53,7 +54,7 @@ class TestStylesComponent {}
 describe('ClrProgressBar component', () => {
   describe('View', () => {
     let fixture: ComponentFixture<any>;
-    let clrProgressBar;
+    let clrProgressBar: HTMLElement;
 
     beforeEach(function () {
       TestBed.configureTestingModule({
@@ -66,7 +67,7 @@ describe('ClrProgressBar component', () => {
       beforeEach(() => {
         fixture = TestBed.createComponent(TestComponent);
         fixture.componentInstance.progressValue = 20;
-        fixture.detectChanges();
+        renderFixture(fixture);
       });
 
       it('expect to project content', () => {
@@ -81,7 +82,7 @@ describe('ClrProgressBar component', () => {
       fixture = TestBed.createComponent(TestDisplayValueComponent);
       fixture.componentInstance.progressValue = 40;
       fixture.componentInstance.displayValue = 'Uploading';
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(
         fixture.debugElement.query(By.directive(ClrProgressBar)).nativeElement.querySelector('span').innerText
       ).toBe(fixture.componentInstance.displayValue);
@@ -95,14 +96,14 @@ describe('ClrProgressBar component', () => {
       fixture.componentInstance.displayValue = undefined;
       fixture.componentInstance.maxValue = 105;
 
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(clrProgressBar.querySelector('span').innerText).toBe('100%');
     });
 
     describe('Style & Animations', () => {
       beforeEach(() => {
         fixture = TestBed.createComponent(TestStylesComponent);
-        fixture.detectChanges();
+        renderFixture(fixture);
         clrProgressBar = fixture.debugElement.query(By.directive(ClrProgressBar)).nativeElement;
       });
 

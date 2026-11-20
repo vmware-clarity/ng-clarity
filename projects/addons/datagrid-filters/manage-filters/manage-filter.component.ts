@@ -50,7 +50,7 @@ import { dateTimeEditorState, parseLocalDateTime } from '../model/date-time-edit
 })
 export class ManageFilterComponent implements OnInit, OnChanges {
   // The filter to be managed
-  @Input() propertyFilter: PropertyFilter;
+  @Input() propertyFilter!: PropertyFilter;
   @Input() filterProperty: FilterablePropertyDefinition;
   @Input() predefined = false;
 
@@ -59,7 +59,7 @@ export class ManageFilterComponent implements OnInit, OnChanges {
   readonly popoverId = uniqueIdFactory();
   readonly popoverPosition = ClrPopoverPosition.BOTTOM_LEFT;
   readonly popoverType = ClrPopoverType.DROPDOWN;
-  managedProperty: FilterablePropertyDefinition;
+  managedProperty!: FilterablePropertyDefinition;
 
   /**
    * Event emitter to tell hosting view that filtering criteria have changed
@@ -72,12 +72,12 @@ export class ManageFilterComponent implements OnInit, OnChanges {
   readonly dateTimePropertyType: PropertyType = PropertyType.DateTime;
   readonly userPropertyType: PropertyType = PropertyType.User;
 
-  managedPropertyType: PropertyType;
-  stringProperty: StringPropertyDefinition;
-  numericProperty: NumericPropertyDefinition;
-  enumProperty: EnumPropertyDefinition;
-  dateTimeProperty: DateTimePropertyDefinition;
-  userProperty: UserPropertyDefinition;
+  managedPropertyType!: PropertyType;
+  stringProperty!: StringPropertyDefinition;
+  numericProperty!: NumericPropertyDefinition;
+  enumProperty!: EnumPropertyDefinition;
+  dateTimeProperty!: DateTimePropertyDefinition;
+  userProperty!: UserPropertyDefinition;
   primaryConditionDisplayText = '';
   secondaryConditionDisplayText = '';
   /**

@@ -14,9 +14,9 @@ import { InitialFocus } from './button-group-focus.enum';
 export class ButtonGroupFocusHandler {
   initialFocus: InitialFocus = InitialFocus.FIRST_ITEM;
 
-  private menu: HTMLElement;
-  private menuToggle: HTMLElement;
-  private buttons: FocusableItem[];
+  private menu!: HTMLElement;
+  private menuToggle!: HTMLElement;
+  private buttons!: FocusableItem[];
   private _unlistenFuncs: (() => void)[] = [];
 
   constructor(

@@ -5,7 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { of, Subject, throwError } from 'rxjs';
 import { delay, take, tap } from 'rxjs/operators';
 
@@ -99,7 +98,7 @@ describe('computed-var.spec', () => {
   });
 
   describe('ComputedVar without dependencies', () => {
-    it("'value$' emits immediately", done => {
+    it("'value$' emits immediately", () => {
       const model = new MockWorkflowModel();
       model.cp1 = new ComputedVar<string>({
         dependsOn: [],
@@ -109,13 +108,14 @@ describe('computed-var.spec', () => {
         },
       });
 
-      const subscription = model.cp1.value$.subscribe(result => {
-        expect(result).toEqual(fnResult);
-        done();
-      });
-
-      expect(model.cp1InvocationCount).toEqual(1);
-      subscription.unsubscribe();
+      const values: string[] = [];
+      const subscription = model.cp1.value$.subscribe(value => values.push(value));
+      try {
+        expect(values).toEqual([fnResult]);
+        expect(model.cp1InvocationCount).toEqual(1);
+      } finally {
+        subscription.unsubscribe();
+      }
     });
 
     it('2 subscriptions will invoke fn only once', () => {
@@ -170,7 +170,7 @@ describe('computed-var.spec', () => {
       expect(err).toBeDefined();
     });
 
-    it('throws error if compute function throws error', waitForAsync(() => {
+    it('throws error if compute function throws error', () => {
       const model = new MockWorkflowModel();
       model.cp1 = new ComputedVar<string>({
         dependsOn: [],
@@ -178,15 +178,16 @@ describe('computed-var.spec', () => {
           return throwError('error');
         },
       });
-      model.cp1.value$.subscribe({
-        next() {
-          fail('should never reach here');
-        },
-        error(err: unknown) {
-          expect(err).toEqual('error');
-        },
-      });
-    }));
+      const next = vi.fn();
+      const error = vi.fn();
+      const subscription = model.cp1.value$.subscribe({ next, error });
+      try {
+        expect(next).not.toHaveBeenCalled();
+        expect(error).toHaveBeenCalledExactlyOnceWith('error');
+      } finally {
+        subscription.unsubscribe();
+      }
+    });
   });
 
   describe('ComputedVar --> SimpleVar', () => {
@@ -413,7 +414,8 @@ describe('computed-var.spec', () => {
   });
 
   describe('eager evaluation', () => {
-    it('when there is a second subscription, compute function should not be invoked again', fakeAsync(() => {
+    it('when there is a second subscription, compute function should not be invoked again', async () => {
+      vi.useFakeTimers();
       const model = new MockWorkflowModel();
       model.delay = Var.of<boolean>();
       model.delayedVar = Var.from(model.delay)
@@ -430,17 +432,17 @@ describe('computed-var.spec', () => {
         result1 = r;
       });
       model.delay.value = false; // should trigger computeFn, which takes 300 ms
-      tick(300); // wait for 300ms
+      await vi.advanceTimersByTimeAsync(300); // wait for 300ms
       expect(result1).toEqual('not delayed');
       model.delay.value = true; // should trigger computeFn again
-      tick(100); // wait for 100ms and subscribe to same value again.
+      await vi.advanceTimersByTimeAsync(100); // wait for 100ms and subscribe to same value again.
       let result2 = '';
       const subscription2 = (<ComputedVar<string>>model.delayedVar).value$.subscribe(r => {
         result2 = r;
       });
       // Since computation in progress, it should NOT return the previously computed ("not delayed")
       expect(result2).toEqual('');
-      tick(3000);
+      await vi.advanceTimersByTimeAsync(3000);
       expect(result1).toEqual('delayed');
       expect(result2).toEqual('delayed');
 
@@ -448,6 +450,6 @@ describe('computed-var.spec', () => {
       expect(model.cp1InvocationCount).toEqual(2);
       subscription1.unsubscribe();
       subscription2.unsubscribe();
-    }));
+    });
   });
 });

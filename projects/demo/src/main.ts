@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ApplicationRef, enableProdMode, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationRef, enableProdMode, provideZonelessChangeDetection } from '@angular/core';
 import { enableDebugTools, platformBrowser } from '@angular/platform-browser';
 
 import { AppModule } from './app/app.module';
@@ -16,7 +16,7 @@ if (environment.production) {
 }
 
 platformBrowser()
-  .bootstrapModule(AppModule, { applicationProviders: [provideZoneChangeDetection()] })
+  .bootstrapModule(AppModule, { applicationProviders: [provideZonelessChangeDetection()] })
   .then(moduleRef =>
     // allows to run `ng.profiler.timeChangeDetection();`
     enableDebugTools(moduleRef.injector.get(ApplicationRef).components[0])

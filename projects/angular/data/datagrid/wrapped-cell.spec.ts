@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { WrappedCell } from './wrapped-cell';
 
@@ -24,25 +25,32 @@ interface TestContext {
   wrapper: WrappedCell;
 }
 
-export default function (): void {
-  describe('WrappedCell', () => {
-    beforeEach(function (this: TestContext) {
-      TestBed.configureTestingModule({ declarations: [WrappedCell, WrappedCellTest] });
-      this.fixture = TestBed.createComponent(WrappedCellTest);
-      this.wrapper = this.fixture.componentInstance.wrapper;
-      this.fixture.detectChanges();
-    });
+describe('Datagrid', () => {
+  describe('Components', () => {
+    describe('WrappedCell', () => {
+      let testContext: TestContext;
+      beforeEach(() => {
+        testContext = {} as TestContext;
+      });
 
-    it('should have a cellView', function (this: TestContext) {
-      expect(this.wrapper.cellView).toBeDefined();
-    });
+      beforeEach(() => {
+        TestBed.configureTestingModule({ declarations: [WrappedCell, WrappedCellTest] });
+        testContext.fixture = TestBed.createComponent(WrappedCellTest);
+        testContext.wrapper = testContext.fixture.componentInstance.wrapper;
+        renderFixture(testContext.fixture);
+      });
 
-    it('should have a templateRef to the portal', function (this: TestContext) {
-      expect(this.wrapper.templateRef).toBeDefined();
-    });
+      it('should have a cellView', () => {
+        expect(testContext.wrapper.cellView).toBeDefined();
+      });
 
-    it('projects content into the template', function (this: TestContext) {
-      expect(this.wrapper.cellView.rootNodes[0].textContent.trim()).toBe('Hello World!');
+      it('should have a templateRef to the portal', () => {
+        expect(testContext.wrapper.templateRef).toBeDefined();
+      });
+
+      it('projects content into the template', () => {
+        expect(testContext.wrapper.cellView.rootNodes[0].textContent.trim()).toBe('Hello World!');
+      });
     });
   });
-}
+});

@@ -15,7 +15,7 @@ import { MenuOutlet } from './menu-outlet';
  * Exposes an imperative way to display a menu.
  */
 export class MenuOutletService {
-  menuOutlet: MenuOutlet;
+  menuOutlet!: MenuOutlet;
 
   /**
    * Shows and attaches the menu component.

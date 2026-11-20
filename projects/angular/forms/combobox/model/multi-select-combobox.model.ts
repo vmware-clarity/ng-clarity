@@ -8,8 +8,8 @@
 import { ComboboxModel } from './combobox.model';
 
 export class MultiSelectComboboxModel<T> extends ComboboxModel<T> {
-  override model: T[];
-  override displayField: string;
+  override model: T[] | null | undefined;
+  override displayField?: string;
 
   containsItem(item: T): boolean {
     if (this.model === null || this.model === undefined) {
@@ -30,8 +30,8 @@ export class MultiSelectComboboxModel<T> extends ComboboxModel<T> {
     return !(this.model && this.model.length > 0);
   }
 
-  pop(): T {
-    let item;
+  pop(): T | undefined {
+    let item: T | undefined;
     if (this.model && this.model.length > 0) {
       item = this.model[this.model.length - 1];
       this.removeItem(item);
@@ -63,7 +63,7 @@ export class MultiSelectComboboxModel<T> extends ComboboxModel<T> {
           } else {
             // If we don't have a defined display field, we'll use the toString representation of the
             // model as display value.
-            displayString += model.toString();
+            displayString += String(model);
           }
           displayString += ' ';
         });

@@ -12,10 +12,11 @@ import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule } from '@clr/angular/forms/common';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrPopoverContent } from '@clr/angular/popover/common';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrCombobox } from './combobox';
 import { ClrComboboxContainer } from './combobox-container';
-import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
+import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container';
 import { ComboboxContainerService } from './providers/combobox-container.service';
 
 @Component({
@@ -45,7 +46,7 @@ class NoLabelTest {}
 class TemplateDrivenTest {
   inline = false;
   disabled = false;
-  model = [];
+  model: string[] = [];
 }
 
 @Component({
@@ -70,30 +71,37 @@ class ReactiveTest {
   });
 }
 
-export default function (): void {
-  describe('ClrComboboxContainer', () => {
-    ContainerNoLabelSpec(ClrComboboxContainer, [ClrCombobox], NoLabelTest);
-    TemplateDrivenSpec(ClrComboboxContainer, [ClrCombobox], TemplateDrivenTest, '.clr-control-container clr-combobox');
-    ReactiveSpec(ClrComboboxContainer, [ClrCombobox], TemplateDrivenTest, '.clr-control-container clr-combobox');
+describe('Combobox component', () => {
+  describe('Directives', () => {
+    describe('ClrComboboxContainer', () => {
+      ContainerNoLabelSpec(ClrComboboxContainer, [ClrCombobox], NoLabelTest);
+      TemplateDrivenSpec(
+        ClrComboboxContainer,
+        [ClrCombobox],
+        TemplateDrivenTest,
+        '.clr-control-container clr-combobox'
+      );
+      ReactiveSpec(ClrComboboxContainer, [ClrCombobox], TemplateDrivenTest, '.clr-control-container clr-combobox');
 
-    describe('label offset', () => {
-      let fixture, containerDE;
-      let containerService: ComboboxContainerService;
+      describe('label offset', () => {
+        let fixture, containerDE;
+        let containerService: ComboboxContainerService;
 
-      beforeEach(() => {
-        TestBed.configureTestingModule({
-          imports: [ClrIcon, ClrCommonFormsModule, FormsModule, ClrPopoverContent],
-          declarations: [ClrComboboxContainer, ClrCombobox, ReactiveTest, TemplateDrivenTest],
+        beforeEach(() => {
+          TestBed.configureTestingModule({
+            imports: [ClrIcon, ClrCommonFormsModule, FormsModule, ClrPopoverContent],
+            declarations: [ClrComboboxContainer, ClrCombobox, ReactiveTest, TemplateDrivenTest],
+          });
+          fixture = TestBed.createComponent(TemplateDrivenTest);
+          containerDE = fixture.debugElement.query(By.directive(ClrComboboxContainer));
+          containerService = containerDE.injector.get(ComboboxContainerService);
+          renderFixture(fixture);
         });
-        fixture = TestBed.createComponent(TemplateDrivenTest);
-        containerDE = fixture.debugElement.query(By.directive(ClrComboboxContainer));
-        containerService = containerDE.injector.get(ComboboxContainerService);
-        fixture.detectChanges();
-      });
 
-      it('adds label offset', () => {
-        expect(containerService.labelOffset).not.toBe(0);
+        it('adds label offset', () => {
+          expect(containerService.labelOffset).not.toBe(0);
+        });
       });
     });
   });
-}
+});

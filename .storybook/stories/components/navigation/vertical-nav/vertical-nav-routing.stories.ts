@@ -49,7 +49,7 @@ type VerticalNavRoutingArgs = Pick<ClrVerticalNav, 'toggleByButton'> & {
 
 const childLinks: { text: string }[] = [{ text: 'Route 1' }, { text: 'Route 1' }, { text: 'Route 1' }];
 
-const navLinks: { iconShapeTuple: IconShapeTuple; text: string; children }[] = [
+const navLinks: { iconShapeTuple: IconShapeTuple; text: string; children: { text: string }[] }[] = [
   { iconShapeTuple: bellIcon, text: 'Notifications', children: childLinks },
   { iconShapeTuple: homeIcon, text: 'Dashboard', children: childLinks },
   { iconShapeTuple: searchIcon, text: 'Search', children: childLinks },

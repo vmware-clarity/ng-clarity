@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component, Type, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgModel, ReactiveFormsModule, Validators } from '@angular/forms';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrFormsModule } from '../forms.module';
 import { buildFileList, selectFiles } from './file-input.helpers';
@@ -114,31 +115,31 @@ function fileInputValueAccessorSpec(testComponent: Type<TestComponent>) {
     nativeElement = fixture.nativeElement;
     fileInputElement = nativeElement.querySelector('input[type="file"]');
 
-    fixture.detectChanges();
+    renderFixture(fixture);
   });
 
   it('should sync disabled state to the native input when the control is toggled', () => {
     fixture.componentInstance.control.disable();
-    fixture.detectChanges();
-    expect(fileInputElement.disabled).toBeTrue();
+    renderFixture(fixture);
+    expect(fileInputElement.disabled).toBe(true);
 
     fixture.componentInstance.control.enable();
-    fixture.detectChanges();
-    expect(fileInputElement.disabled).toBeFalse();
+    renderFixture(fixture);
+    expect(fileInputElement.disabled).toBe(false);
   });
 
   it('should mark the control touched when a file is selected', () => {
     selectFiles(fileInputElement, [new File(['+'.repeat(100)], 'file.txt')]);
-    fixture.detectChanges();
+    renderFixture(fixture);
 
-    expect(fixture.componentInstance.control.touched).toBeTrue();
+    expect(fixture.componentInstance.control.touched).toBe(true);
   });
 
   it('should set the control value when a file is selected', () => {
     const files = buildFileList([new File(['+'.repeat(100)], 'file.txt')]);
 
     selectFiles(fileInputElement, files);
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(fixture.componentInstance.control.value).toBe(files);
   });

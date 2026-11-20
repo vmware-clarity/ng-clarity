@@ -27,9 +27,9 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
   down?: Observable<FocusableItem>;
   up?: Observable<FocusableItem>;
 
-  private _trigger: HTMLElement;
-  private _container: HTMLElement;
-  private children: ReplaySubject<FocusableItem[]>;
+  private _trigger: HTMLElement | undefined;
+  private _container: HTMLElement | undefined;
+  private children!: ReplaySubject<FocusableItem[]>;
   private _unlistenFuncs: (() => void)[] = [];
   private readonly subscriptions = new Subscription();
   private readonly recoverFocus = new Subject<void>();
@@ -53,7 +53,9 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
               ? this.recoverFocus.pipe(
                   switchMap(() => timer(0)),
                   switchMap(() =>
-                    document.activeElement === document.body ? (parent ? this.right : this.down).pipe(take(1)) : EMPTY
+                    document.activeElement === document.body
+                      ? ((parent ? this.right : this.down)?.pipe(take(1)) ?? EMPTY)
+                      : EMPTY
                   )
                 )
               : EMPTY
@@ -63,7 +65,7 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
     );
   }
 
-  get trigger() {
+  get trigger(): HTMLElement | undefined {
     return this._trigger;
   }
   set trigger(el: HTMLElement) {
@@ -83,7 +85,7 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
     }
   }
 
-  get container() {
+  get container(): HTMLElement | undefined {
     return this._container;
   }
 
@@ -118,7 +120,9 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
     this.subscriptions.unsubscribe();
     this._unlistenFuncs.forEach((unlisten: () => void) => unlisten());
 
-    this.focusService.detachListeners(this.container);
+    if (this.container) {
+      this.focusService.detachListeners(this.container);
+    }
   }
 
   /**
@@ -148,7 +152,7 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
   }
 
   activate() {
-    if (isPlatformBrowser(this.platformId)) {
+    if (this.trigger && isPlatformBrowser(this.platformId)) {
       this.trigger.click();
     }
   }

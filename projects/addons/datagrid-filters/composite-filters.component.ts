@@ -82,7 +82,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
    * Filters applied when the filter bar starts, e.g. a fixed default view. Read once, in `ngOnInit`:
    * later changes are ignored. For filters the host keeps in sync, use `propertyFilters`.
    */
-  @Input() presetFilters: PropertyFilter[];
+  @Input() presetFilters?: PropertyFilter[];
 
   /**
    * The active filters, including toggle filters that are ON. Supports two-way binding:
@@ -116,19 +116,19 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
 
   readonly userPropertyType: PropertyType = PropertyType.User;
 
-  selectedFilterableProperty: FilterablePropertyDefinition;
+  selectedFilterableProperty!: FilterablePropertyDefinition;
 
-  propertyType: PropertyType;
+  propertyType!: PropertyType;
 
-  stringProperty: StringPropertyDefinition;
+  stringProperty!: StringPropertyDefinition;
 
-  enumProperty: EnumPropertyDefinition;
+  enumProperty!: EnumPropertyDefinition;
 
-  numericProperty: NumericPropertyDefinition;
+  numericProperty!: NumericPropertyDefinition;
 
-  dateTimeProperty: DateTimePropertyDefinition;
+  dateTimeProperty!: DateTimePropertyDefinition;
 
-  userProperty: UserPropertyDefinition;
+  userProperty!: UserPropertyDefinition;
 
   collapsedFilters = false;
 

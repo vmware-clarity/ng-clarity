@@ -57,14 +57,14 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
   /**
    * Array of filterable properties
    */
-  @Input() filterableProperties: FilterablePropertyDefinition[];
+  @Input() filterableProperties!: FilterablePropertyDefinition[];
 
   /**
    * Filters applied when the filter bar starts, e.g. a fixed default view. Read once at start-up:
    * later changes are ignored. For filters the host keeps in sync, use `propertyFilters`.
    * `presetFilters` have precedence over `propertyFilters` on initial load.
    */
-  @Input() presetFilters: PropertyFilter[];
+  @Input() presetFilters?: PropertyFilter[];
 
   /**
    * Properties whose filter pills stay visible even without active criteria.

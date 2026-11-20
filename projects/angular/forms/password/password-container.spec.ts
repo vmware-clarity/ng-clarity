@@ -5,16 +5,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule, LayoutService, NgControlService } from '@clr/angular/forms/common';
 import { ClrIcon } from '@clr/angular/icon';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrPassword } from './password';
 import { ClrPasswordContainer } from './password-container';
-import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
+import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container';
 
 @Component({
   template: `
@@ -69,14 +70,16 @@ class ReactiveTest {
   });
 }
 
-export default function (): void {
+describe('ClrPassword', () => {
   describe('ClrPasswordContainer', () => {
     ContainerNoLabelSpec(ClrPasswordContainer, ClrPassword, NoLabelTest);
     TemplateDrivenSpec(ClrPasswordContainer, ClrPassword, TemplateDrivenTest, '.clr-input-wrapper [clrPassword]');
     ReactiveSpec(ClrPasswordContainer, ClrPassword, ReactiveTest, '.clr-input-wrapper [clrPassword]');
 
     describe('password toggle', () => {
-      let fixture, containerDE, containerEl;
+      let fixture: ComponentFixture<TemplateDrivenTest>;
+      let containerDE: DebugElement;
+      let containerEl: HTMLElement;
 
       beforeEach(() => {
         TestBed.configureTestingModule({
@@ -88,21 +91,21 @@ export default function (): void {
 
         containerDE = fixture.debugElement.query(By.directive(ClrPasswordContainer));
         containerEl = containerDE.nativeElement;
-        fixture.detectChanges();
+        renderFixture(fixture);
       });
 
       it('toggles the visibility of the password', () => {
         const button = containerEl.querySelector('button');
         expect(containerEl.querySelector('input').type).toEqual('password');
         button.click();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(containerEl.querySelector('input').type).toEqual('text');
       });
 
       it('should disable toggling', () => {
         expect(containerEl.querySelector('button')).toBeTruthy();
         fixture.componentInstance.toggler = false;
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(containerEl.querySelector('button')).toBeFalsy();
       });
 
@@ -110,9 +113,9 @@ export default function (): void {
         const button: HTMLButtonElement = containerEl.querySelector('button');
         expect(button.textContent.trim()).toEqual('Show password for Hello World');
         button.click();
-        fixture.detectChanges();
+        renderFixture(fixture);
         expect(button.textContent.trim()).toEqual('Hide password for Hello World');
       });
     });
   });
-}
+});

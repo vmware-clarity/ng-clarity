@@ -6,7 +6,15 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { AppfxDatagridFiltersModule, DataGridFiltersComponent, FilterMode } from '@clr/addons/datagrid-filters';
+import {
+  AppfxDatagridFiltersModule,
+  DataGridFiltersComponent,
+  EnumPropertyDefinition,
+  FilterablePropertyDefinition,
+  FilterMode,
+  PropertyFilter,
+  ToggleFilter,
+} from '@clr/addons/datagrid-filters';
 import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
 
 import {
@@ -55,11 +63,11 @@ const meta = {
   },
   args: {
     filterMode: FilterMode.Advanced,
-    presetFilters: [],
-    predefinedFilters: [],
-    semiPredefinedFilters: [],
-    toggleFilters: [],
-    savedView: [],
+    presetFilters: [] as PropertyFilter[],
+    predefinedFilters: [] as FilterablePropertyDefinition[],
+    semiPredefinedFilters: [] as EnumPropertyDefinition[],
+    toggleFilters: [] as ToggleFilter[],
+    savedView: [] as PropertyFilter[],
   },
   render: args => ({
     props: args,

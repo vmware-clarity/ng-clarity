@@ -65,8 +65,8 @@ const requiredValidators: ValidatorFn[] = [Validators.required];
 })
 export class DateTimeFilterComponent implements OnInit, OnChanges {
   readonly timeSpans: TimeSpan[];
-  dateTimeFilterForm: FormGroup;
-  comparisonOperators: ComparisonOperator[];
+  dateTimeFilterForm!: FormGroup;
+  comparisonOperators!: ComparisonOperator[];
   isEmptyPredicate = false;
   isCustomRangePredicate = false;
   isRelativePredicate = false;
@@ -78,7 +78,7 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
   /**
    * In case the component is used for filter editing
    */
-  @Input() propertyFilter: PropertyFilter;
+  @Input() propertyFilter?: PropertyFilter;
 
   /**
    * Event emitter to tell hosting view that filtering criteria have changed
@@ -114,7 +114,7 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
   /**
    * Property used for filtering
    */
-  #filterProperty: DateTimePropertyDefinition;
+  #filterProperty!: DateTimePropertyDefinition;
 
   constructor(
     private formBuilder: FormBuilder,

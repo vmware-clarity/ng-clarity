@@ -10,6 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClrInputModule, ClrSelectModule } from '@clr/angular/forms';
 import { ClrIcon } from '@clr/angular/icon';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
 import { FilterFormComponent } from './filter-form.component';
@@ -96,74 +97,82 @@ export interface ThisTest {
 }
 
 describe('GeneralFilterComponent', () => {
-  beforeEach(function (this: ThisTest) {
+  let testContext: ThisTest;
+  beforeEach(() => {
+    testContext = {} as ThisTest;
+  });
+
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ClrInputModule, ClrSelectModule, CommonModule, FormsModule, ReactiveFormsModule, ClrIcon],
       declarations: [FilterFormComponent, GeneralFilterComponent],
       providers: [DatagridFiltersStrings],
     });
-    this.fixture = TestBed.createComponent(GeneralFilterComponent);
-    this.component = this.fixture.componentInstance;
+    testContext.fixture = TestBed.createComponent(GeneralFilterComponent);
+    testContext.component = testContext.fixture.componentInstance;
   });
 
-  afterEach(function (this: ThisTest) {
-    this.fixture.destroy();
+  afterEach(() => {
+    testContext.fixture.destroy();
   });
   describe('in normal mode with string property', () => {
-    beforeEach(function (this: ThisTest) {
-      this.component.filterProperty = stringProperty;
-      this.fixture.detectChanges();
+    beforeEach(() => {
+      testContext.component.filterProperty = stringProperty;
+      renderFixture(testContext.fixture);
     });
-    it(isInitializedExpectation, function (this: ThisTest) {
-      expect(this.component).toBeTruthy();
-      expect(this.component.comparisonOperators).toEqual(comparisonOperators);
+    it(isInitializedExpectation, () => {
+      expect(testContext.component).toBeTruthy();
+      expect(testContext.component.comparisonOperators).toEqual(comparisonOperators);
 
-      expect(this.component.conditions.at(0).controls.operator.value).toEqual(ComparisonOperator.Contains);
-      expect(this.component.conditions.at(0).controls.value.value).toEqual('');
-      expect(this.component.generalFilterForm.controls['logicalOperator'].value).toEqual(LogicalOperator.And);
+      expect(testContext.component.conditions.at(0).controls.operator.value).toEqual(ComparisonOperator.Contains);
+      expect(testContext.component.conditions.at(0).controls.value.value).toEqual('');
+      expect(testContext.component.generalFilterForm.controls['logicalOperator'].value).toEqual(LogicalOperator.And);
     });
-    it('emits an empty event on cancel', function (this: ThisTest) {
-      spyOn(this.component.filterCriteriaChange, 'emit');
-      const cancelButton = this.fixture.debugElement.nativeElement.querySelector('button[data-test-id=cancelBtn]');
+    it('emits an empty event on cancel', () => {
+      vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
+      const cancelButton = testContext.fixture.debugElement.nativeElement.querySelector(
+        'button[data-test-id=cancelBtn]'
+      );
       expect(cancelButton).toBeTruthy();
 
       cancelButton.click();
-      this.fixture.detectChanges();
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(1);
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith();
+      renderFixture(testContext.fixture);
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(1);
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith();
     });
-    it('emits a property filter event on submit', function (this: ThisTest) {
-      spyOn(this.component.filterCriteriaChange, 'emit');
-      const submitButton: HTMLButtonElement = this.fixture.debugElement.nativeElement.querySelector(submitBtnSelector);
+    it('emits a property filter event on submit', () => {
+      vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
+      const submitButton: HTMLButtonElement =
+        testContext.fixture.debugElement.nativeElement.querySelector(submitBtnSelector);
       expect(submitButton).toBeTruthy();
       expect(submitButton.disabled).toBeTruthy();
-      expect(this.component.generalFilterForm.valid).toBeFalsy();
+      expect(testContext.component.generalFilterForm.valid).toBeFalsy();
 
       const primaryOperatorSelect: HTMLSelectElement =
-        this.fixture.debugElement.nativeElement.querySelector(primaryOperatorSelector);
+        testContext.fixture.debugElement.nativeElement.querySelector(primaryOperatorSelector);
       expect(primaryOperatorSelect).toBeTruthy();
       expect(primaryOperatorSelect.options.length).toEqual(3);
 
       primaryOperatorSelect.value = primaryOperatorSelect.options[0].value;
       primaryOperatorSelect.dispatchEvent(new Event('change'));
-      this.fixture.detectChanges();
-      expect(this.component.conditions.at(0).controls.operator.value).toEqual(ComparisonOperator.Equals);
+      renderFixture(testContext.fixture);
+      expect(testContext.component.conditions.at(0).controls.operator.value).toEqual(ComparisonOperator.Equals);
 
       const primaryValueInput: HTMLInputElement =
-        this.fixture.debugElement.nativeElement.querySelector(primaryValueSelector);
+        testContext.fixture.debugElement.nativeElement.querySelector(primaryValueSelector);
       primaryValueInput.value = 'vm 1';
       primaryValueInput.dispatchEvent(new Event('input'));
-      this.fixture.detectChanges();
-      expect(this.component.conditions.at(0).controls.value.value).toEqual('vm 1');
+      renderFixture(testContext.fixture);
+      expect(testContext.component.conditions.at(0).controls.value.value).toEqual('vm 1');
       expect(submitButton.disabled).toBeFalsy();
-      expect(this.component.generalFilterForm.valid).toBeTruthy();
+      expect(testContext.component.generalFilterForm.valid).toBeTruthy();
 
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(1);
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(propertyFilter1);
+      renderFixture(testContext.fixture);
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(1);
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(propertyFilter1);
     });
-    it('updates comparison operators on property change ', function (this: ThisTest) {
+    it('updates comparison operators on property change ', () => {
       const testProperty = 'vmIpAddress';
       const testPropertyDisplayName = 'Ip Address';
       const testComparisonOperators = [ComparisonOperator.Contains, ComparisonOperator.IsEmpty];
@@ -173,101 +182,105 @@ describe('GeneralFilterComponent', () => {
         testComparisonOperators
       );
 
-      expect(this.component.comparisonOperators).toEqual(comparisonOperators);
-      this.component.filterProperty = testStringProperty;
-      this.component.ngOnChanges();
-      expect(this.component.comparisonOperators).toEqual(testComparisonOperators);
+      expect(testContext.component.comparisonOperators).toEqual(comparisonOperators);
+      testContext.component.filterProperty = testStringProperty;
+      testContext.component.ngOnChanges();
+      expect(testContext.component.comparisonOperators).toEqual(testComparisonOperators);
     });
 
-    it('applies the logic selected in the segmented buttons', function (this: ThisTest) {
-      spyOn(this.component.filterCriteriaChange, 'emit');
+    it('applies the logic selected in the segmented buttons', () => {
+      vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
       const logicInputs: NodeListOf<HTMLInputElement> =
-        this.fixture.nativeElement.querySelectorAll('.filter-logic input');
+        testContext.fixture.nativeElement.querySelectorAll('.filter-logic input');
       expect(logicInputs.length).toBe(2);
-      expect(logicInputs[0].checked).toBeTrue();
+      expect(logicInputs[0].checked).toBe(true);
 
       logicInputs[1].click();
-      this.fixture.nativeElement.querySelector(addButtonSelector).click();
-      this.fixture.detectChanges();
-      expect(logicInputs[1].checked).toBeTrue();
-      expect(this.fixture.nativeElement.querySelector('[data-test-id=logical-operator]').textContent.trim()).toBe('Or');
+      testContext.fixture.nativeElement.querySelector(addButtonSelector).click();
+      renderFixture(testContext.fixture);
+      expect(logicInputs[1].checked).toBe(true);
+      expect(
+        testContext.fixture.nativeElement.querySelector('[data-test-id=logical-operator]').textContent.trim()
+      ).toBe('Or');
 
-      this.component.conditions.patchValue([{ value: 'vm' }, { value: 'host' }]);
-      this.fixture.detectChanges();
-      this.fixture.nativeElement.querySelector(submitBtnSelector).click();
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(
-        jasmine.objectContaining({ operator: LogicalOperator.Or, criteria: jasmine.any(Array) })
+      testContext.component.conditions.patchValue([{ value: 'vm' }, { value: 'host' }]);
+      renderFixture(testContext.fixture);
+      testContext.fixture.nativeElement.querySelector(submitBtnSelector).click();
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(
+        expect.objectContaining({ operator: LogicalOperator.Or, criteria: expect.any(Array) })
       );
-      expect(this.component.generalFilterForm.value.logicalOperator).toBe(LogicalOperator.Or);
+      expect(testContext.component.generalFilterForm.value.logicalOperator).toBe(LogicalOperator.Or);
     });
 
-    it('disables AND for an empty primary condition and restores it for a value condition', function (this: ThisTest) {
-      const andInput: HTMLInputElement = this.fixture.nativeElement.querySelector('.filter-logic input');
-      this.component.conditions.at(0).controls.operator.setValue(ComparisonOperator.IsEmpty);
-      this.fixture.detectChanges();
-      expect(andInput.disabled).toBeTrue();
+    it('disables AND for an empty primary condition and restores it for a value condition', () => {
+      const andInput: HTMLInputElement = testContext.fixture.nativeElement.querySelector('.filter-logic input');
+      testContext.component.conditions.at(0).controls.operator.setValue(ComparisonOperator.IsEmpty);
+      renderFixture(testContext.fixture);
+      expect(andInput.disabled).toBe(true);
       // The input is hidden, so the visible button carries the disabled state; Or stays enabled.
-      const [andButton, orButton] = this.fixture.nativeElement.querySelectorAll('.filter-logic .radio.btn');
+      const [andButton, orButton] = testContext.fixture.nativeElement.querySelectorAll('.filter-logic .radio.btn');
       expect(andButton.classList).toContain('disabled');
       expect(orButton.classList).not.toContain('disabled');
-      expect(this.component.generalFilterForm.value.logicalOperator).toBe(LogicalOperator.Or);
+      expect(testContext.component.generalFilterForm.value.logicalOperator).toBe(LogicalOperator.Or);
 
       andInput.click();
-      expect(this.component.generalFilterForm.value.logicalOperator).toBe(LogicalOperator.Or);
+      expect(testContext.component.generalFilterForm.value.logicalOperator).toBe(LogicalOperator.Or);
 
-      this.component.conditions.at(0).controls.operator.setValue(ComparisonOperator.Equals);
-      this.fixture.detectChanges();
-      expect(andInput.disabled).toBeFalse();
+      testContext.component.conditions.at(0).controls.operator.setValue(ComparisonOperator.Equals);
+      renderFixture(testContext.fixture);
+      expect(andInput.disabled).toBe(false);
       expect(andButton.classList).not.toContain('disabled');
       andInput.click();
-      expect(this.component.generalFilterForm.value.logicalOperator).toBe(LogicalOperator.And);
+      expect(testContext.component.generalFilterForm.value.logicalOperator).toBe(LogicalOperator.And);
     });
 
-    it('restores AND after removing an empty secondary condition', function (this: ThisTest) {
-      this.fixture.nativeElement.querySelector(addButtonSelector).click();
-      this.fixture.detectChanges();
-      this.component.conditions.at(1).controls.operator.setValue(ComparisonOperator.IsEmpty);
-      this.fixture.detectChanges();
-      const andInput: HTMLInputElement = this.fixture.nativeElement.querySelector('.filter-logic input');
-      expect(andInput.disabled).toBeTrue();
+    it('restores AND after removing an empty secondary condition', () => {
+      testContext.fixture.nativeElement.querySelector(addButtonSelector).click();
+      renderFixture(testContext.fixture);
+      testContext.component.conditions.at(1).controls.operator.setValue(ComparisonOperator.IsEmpty);
+      renderFixture(testContext.fixture);
+      const andInput: HTMLInputElement = testContext.fixture.nativeElement.querySelector('.filter-logic input');
+      expect(andInput.disabled).toBe(true);
 
-      this.fixture.nativeElement.querySelectorAll('[data-test-id=close-button]')[1].click();
-      this.fixture.detectChanges();
-      expect(andInput.disabled).toBeFalse();
+      testContext.fixture.nativeElement.querySelectorAll('[data-test-id=close-button]')[1].click();
+      renderFixture(testContext.fixture);
+      expect(andInput.disabled).toBe(false);
       andInput.click();
-      expect(this.component.generalFilterForm.value.logicalOperator).toBe(LogicalOperator.And);
-      expect(this.fixture.nativeElement.querySelector('[data-test-id=logical-operator]')).toBeNull();
+      expect(testContext.component.generalFilterForm.value.logicalOperator).toBe(LogicalOperator.And);
+      expect(testContext.fixture.nativeElement.querySelector('[data-test-id=logical-operator]')).toBeNull();
     });
   });
   describe('with restricted comparison operators', () => {
-    it('does not apply a value when no comparison operators are available', function (this: ThisTest) {
-      this.component.filterProperty = new StringPropertyDefinition('Name', 'name', []);
-      const emitted = spyOn(this.component.filterCriteriaChange, 'emit');
-      this.fixture.detectChanges();
-      this.component.conditions.at(0).controls.value.setValue('vm');
-      this.fixture.detectChanges();
-      expect(this.component.conditions.at(0).controls.operator.hasError('required')).toBeTrue();
-      expect(this.component.generalFilterForm.valid).toBeFalse();
-      const submit: HTMLButtonElement = this.fixture.nativeElement.querySelector(submitBtnSelector);
-      expect(submit.disabled).toBeTrue();
+    it('does not apply a value when no comparison operators are available', () => {
+      testContext.component.filterProperty = new StringPropertyDefinition('Name', 'name', []);
+      const emitted = vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
+      renderFixture(testContext.fixture);
+      testContext.component.conditions.at(0).controls.value.setValue('vm');
+      renderFixture(testContext.fixture);
+      expect(testContext.component.conditions.at(0).controls.operator.hasError('required')).toBe(true);
+      expect(testContext.component.generalFilterForm.valid).toBe(false);
+      const submit: HTMLButtonElement = testContext.fixture.nativeElement.querySelector(submitBtnSelector);
+      expect(submit.disabled).toBe(true);
       submit.click();
-      this.component.onApplyButtonClick();
+      testContext.component.onApplyButtonClick();
       expect(emitted).not.toHaveBeenCalled();
     });
 
-    it('uses the only supported operator for both initial and added conditions', function (this: ThisTest) {
-      this.component.filterProperty = new StringPropertyDefinition('Name', 'name', [ComparisonOperator.StartsWith]);
-      const emitted = spyOn(this.component.filterCriteriaChange, 'emit');
-      this.fixture.detectChanges();
-      this.component.addCondition();
-      this.component.conditions.patchValue([{ value: 'vm' }, { value: 'host' }]);
-      this.fixture.detectChanges();
-      expect(this.component.conditions.value.map(condition => condition.operator)).toEqual([
+    it('uses the only supported operator for both initial and added conditions', () => {
+      testContext.component.filterProperty = new StringPropertyDefinition('Name', 'name', [
+        ComparisonOperator.StartsWith,
+      ]);
+      const emitted = vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
+      renderFixture(testContext.fixture);
+      testContext.component.addCondition();
+      testContext.component.conditions.patchValue([{ value: 'vm' }, { value: 'host' }]);
+      renderFixture(testContext.fixture);
+      expect(testContext.component.conditions.value.map(condition => condition.operator)).toEqual([
         ComparisonOperator.StartsWith,
         ComparisonOperator.StartsWith,
       ]);
-      this.fixture.nativeElement.querySelector(submitBtnSelector).click();
-      expect(emitted.calls.mostRecent().args[0].criteria.map(predicate => predicate.operator)).toEqual([
+      testContext.fixture.nativeElement.querySelector(submitBtnSelector).click();
+      expect(emitted.mock.lastCall![0].criteria.map(predicate => predicate.operator)).toEqual([
         ComparisonOperator.StartsWith,
         ComparisonOperator.StartsWith,
       ]);
@@ -276,15 +289,17 @@ describe('GeneralFilterComponent', () => {
 
   describe('with multiple conditions', () => {
     for (const logic of [LogicalOperator.And, LogicalOperator.Or]) {
-      it(`applies and reopens four conditions with ${LogicalOperator[logic]}`, function (this: ThisTest) {
-        this.component.filterProperty = new StringPropertyDefinition('Name', 'name');
-        this.fixture.detectChanges();
-        const emitted = spyOn(this.component.filterCriteriaChange, 'emit');
+      it(`applies and reopens four conditions with ${LogicalOperator[logic]}`, () => {
+        testContext.component.filterProperty = new StringPropertyDefinition('Name', 'name');
+        renderFixture(testContext.fixture);
+        const emitted = vi
+          .spyOn(testContext.component.filterCriteriaChange, 'emit')
+          .mockImplementation(() => undefined);
         for (let index = 0; index < 3; index++) {
-          this.fixture.nativeElement.querySelector(addButtonSelector).click();
-          this.fixture.detectChanges();
+          testContext.fixture.nativeElement.querySelector(addButtonSelector).click();
+          renderFixture(testContext.fixture);
         }
-        this.component.generalFilterForm.patchValue({
+        testContext.component.generalFilterForm.patchValue({
           logicalOperator: logic,
           conditions: [
             { operator: ComparisonOperator.Contains, value: 'vm' },
@@ -293,13 +308,13 @@ describe('GeneralFilterComponent', () => {
             { operator: ComparisonOperator.EndsWith, value: '01' },
           ],
         });
-        this.fixture.detectChanges();
-        expect(this.fixture.nativeElement.querySelectorAll('.filter-condition-row').length).toBe(4);
-        expect(this.fixture.nativeElement.querySelectorAll('[data-test-id=logical-operator]').length).toBe(3);
-        expect(this.fixture.nativeElement.querySelector(addButtonSelector)).not.toBeNull();
-        this.fixture.nativeElement.querySelector(submitBtnSelector).click();
+        renderFixture(testContext.fixture);
+        expect(testContext.fixture.nativeElement.querySelectorAll('.filter-condition-row').length).toBe(4);
+        expect(testContext.fixture.nativeElement.querySelectorAll('[data-test-id=logical-operator]').length).toBe(3);
+        expect(testContext.fixture.nativeElement.querySelector(addButtonSelector)).not.toBeNull();
+        testContext.fixture.nativeElement.querySelector(submitBtnSelector).click();
 
-        const filter = emitted.calls.mostRecent().args[0];
+        const filter = emitted.mock.lastCall![0];
         expect(filter.operator).toBe(logic);
         expect(filter.criteria.map(predicate => predicate.value)).toEqual(['vm', 'test', 'prod', '01']);
         expect(filter.criteria.map(predicate => predicate.operator)).toEqual([
@@ -311,9 +326,9 @@ describe('GeneralFilterComponent', () => {
 
         const reopened = TestBed.createComponent(GeneralFilterComponent);
         try {
-          reopened.componentInstance.filterProperty = this.component.filterProperty;
+          reopened.componentInstance.filterProperty = testContext.component.filterProperty;
           reopened.componentInstance.propertyFilter = filter;
-          reopened.detectChanges();
+          renderFixture(reopened);
           expect(reopened.componentInstance.conditions.length).toBe(4);
           expect(reopened.componentInstance.generalFilterForm.value.logicalOperator).toBe(logic);
           expect(reopened.componentInstance.conditions.value.map(condition => condition.value)).toEqual([
@@ -331,59 +346,63 @@ describe('GeneralFilterComponent', () => {
       });
     }
 
-    it('removes middle, first, and last rows while preserving survivors and at least one row', function (this: ThisTest) {
-      this.component.filterProperty = new StringPropertyDefinition('Name', 'name');
-      this.fixture.detectChanges();
+    it('removes middle, first, and last rows while preserving survivors and at least one row', () => {
+      testContext.component.filterProperty = new StringPropertyDefinition('Name', 'name');
+      renderFixture(testContext.fixture);
       for (let index = 0; index < 3; index++) {
-        this.component.addCondition();
+        testContext.component.addCondition();
       }
-      this.component.conditions.patchValue(['first', 'second', 'third', 'fourth'].map(value => ({ value })));
-      const thirdRow = this.component.conditions.at(2);
-      this.fixture.detectChanges();
-      this.fixture.nativeElement.querySelectorAll('[data-test-id=close-button]')[1].click();
-      this.fixture.detectChanges();
-      expect(this.component.conditions.value.map(condition => condition.value)).toEqual(['first', 'third', 'fourth']);
-      this.fixture.nativeElement.querySelectorAll('[data-test-id=close-button]')[0].click();
-      this.fixture.detectChanges();
-      expect(this.component.conditions.value.map(condition => condition.value)).toEqual(['third', 'fourth']);
-      this.fixture.nativeElement.querySelectorAll('[data-test-id=close-button]')[1].click();
-      this.fixture.detectChanges();
-      expect(this.component.conditions.value.map(condition => condition.value)).toEqual(['third']);
-      expect(this.component.conditions.at(0)).toBe(thirdRow);
-      expect(this.fixture.nativeElement.querySelector('[data-test-id=close-button]').disabled).toBeTrue();
-      this.component.removeCondition(0);
-      expect(this.component.conditions.length).toBe(1);
+      testContext.component.conditions.patchValue(['first', 'second', 'third', 'fourth'].map(value => ({ value })));
+      const thirdRow = testContext.component.conditions.at(2);
+      renderFixture(testContext.fixture);
+      testContext.fixture.nativeElement.querySelectorAll('[data-test-id=close-button]')[1].click();
+      renderFixture(testContext.fixture);
+      expect(testContext.component.conditions.value.map(condition => condition.value)).toEqual([
+        'first',
+        'third',
+        'fourth',
+      ]);
+      testContext.fixture.nativeElement.querySelectorAll('[data-test-id=close-button]')[0].click();
+      renderFixture(testContext.fixture);
+      expect(testContext.component.conditions.value.map(condition => condition.value)).toEqual(['third', 'fourth']);
+      testContext.fixture.nativeElement.querySelectorAll('[data-test-id=close-button]')[1].click();
+      renderFixture(testContext.fixture);
+      expect(testContext.component.conditions.value.map(condition => condition.value)).toEqual(['third']);
+      expect(testContext.component.conditions.at(0)).toBe(thirdRow);
+      expect(testContext.fixture.nativeElement.querySelector('[data-test-id=close-button]').disabled).toBe(true);
+      testContext.component.removeCondition(0);
+      expect(testContext.component.conditions.length).toBe(1);
     });
 
-    it('validates the third row and restores required validation after Is empty', function (this: ThisTest) {
-      this.component.filterProperty = new StringPropertyDefinition('Name', 'name');
-      this.fixture.detectChanges();
-      this.component.addCondition();
-      this.component.addCondition();
-      this.component.conditions.patchValue([{ value: 'first' }, { value: 'second' }, { value: '' }]);
-      this.fixture.detectChanges();
-      const submit: HTMLButtonElement = this.fixture.nativeElement.querySelector(submitBtnSelector);
-      expect(submit.disabled).toBeTrue();
-      const thirdOperator = this.component.conditions.at(2).controls.operator;
+    it('validates the third row and restores required validation after Is empty', () => {
+      testContext.component.filterProperty = new StringPropertyDefinition('Name', 'name');
+      renderFixture(testContext.fixture);
+      testContext.component.addCondition();
+      testContext.component.addCondition();
+      testContext.component.conditions.patchValue([{ value: 'first' }, { value: 'second' }, { value: '' }]);
+      renderFixture(testContext.fixture);
+      const submit: HTMLButtonElement = testContext.fixture.nativeElement.querySelector(submitBtnSelector);
+      expect(submit.disabled).toBe(true);
+      const thirdOperator = testContext.component.conditions.at(2).controls.operator;
       thirdOperator.setValue(ComparisonOperator.IsEmpty);
-      this.fixture.detectChanges();
-      expect(submit.disabled).toBeFalse();
-      expect(this.fixture.nativeElement.querySelector('.filter-logic input').disabled).toBeTrue();
-      expect(this.component.generalFilterForm.value.logicalOperator).toBe(LogicalOperator.Or);
+      renderFixture(testContext.fixture);
+      expect(submit.disabled).toBe(false);
+      expect(testContext.fixture.nativeElement.querySelector('.filter-logic input').disabled).toBe(true);
+      expect(testContext.component.generalFilterForm.value.logicalOperator).toBe(LogicalOperator.Or);
       thirdOperator.setValue(ComparisonOperator.Equals);
-      this.fixture.detectChanges();
-      expect(submit.disabled).toBeTrue();
-      expect(this.component.conditions.at(2).controls.value.hasError('required')).toBeTrue();
-      expect(this.fixture.nativeElement.querySelector('.filter-logic input').disabled).toBeFalse();
-      this.component.conditions.at(2).controls.value.setValue('third');
-      this.fixture.detectChanges();
-      expect(submit.disabled).toBeFalse();
+      renderFixture(testContext.fixture);
+      expect(submit.disabled).toBe(true);
+      expect(testContext.component.conditions.at(2).controls.value.hasError('required')).toBe(true);
+      expect(testContext.fixture.nativeElement.querySelector('.filter-logic input').disabled).toBe(false);
+      testContext.component.conditions.at(2).controls.value.setValue('third');
+      renderFixture(testContext.fixture);
+      expect(submit.disabled).toBe(false);
     });
 
-    it('restores required validation when a preset empty condition becomes a value condition', function (this: ThisTest) {
+    it('restores required validation when a preset empty condition becomes a value condition', () => {
       const field = new StringPropertyDefinition('Name', 'name');
-      this.component.filterProperty = field;
-      this.component.propertyFilter = {
+      testContext.component.filterProperty = field;
+      testContext.component.propertyFilter = {
         operator: LogicalOperator.Or,
         criteria: [
           { filterableProperty: field, operator: ComparisonOperator.Contains, value: 'vm' },
@@ -391,31 +410,31 @@ describe('GeneralFilterComponent', () => {
           { filterableProperty: field, operator: ComparisonOperator.IsEmpty, value: '' },
         ],
       };
-      this.fixture.detectChanges();
-      expect(this.component.generalFilterForm.valid).toBeTrue();
-      this.component.conditions.at(2).controls.operator.setValue(ComparisonOperator.Contains);
-      expect(this.component.conditions.at(2).controls.value.hasError('required')).toBeTrue();
-      expect(this.component.generalFilterForm.valid).toBeFalse();
+      renderFixture(testContext.fixture);
+      expect(testContext.component.generalFilterForm.valid).toBe(true);
+      testContext.component.conditions.at(2).controls.operator.setValue(ComparisonOperator.Contains);
+      expect(testContext.component.conditions.at(2).controls.value.hasError('required')).toBe(true);
+      expect(testContext.component.generalFilterForm.valid).toBe(false);
     });
 
-    it('preserves zero and per-row numeric units through removal, apply, and reopening', function (this: ThisTest) {
+    it('preserves zero and per-row numeric units through removal, apply, and reopening', () => {
       const field = new NumericPropertyDefinition('Memory', 'memory', undefined, Unit.Byte);
-      this.component.filterProperty = field;
-      this.fixture.detectChanges();
-      const emitted = spyOn(this.component.filterCriteriaChange, 'emit');
+      testContext.component.filterProperty = field;
+      renderFixture(testContext.fixture);
+      const emitted = vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
       for (let index = 0; index < 3; index++) {
-        this.component.addCondition();
+        testContext.component.addCondition();
       }
-      this.component.conditions.patchValue([
+      testContext.component.conditions.patchValue([
         { value: 0, unit: Unit.Byte },
         { value: 1, unit: Unit.KB },
         { value: 2, unit: Unit.MB },
         { value: 3, unit: Unit.GB },
       ]);
-      this.component.removeCondition(1);
-      this.fixture.detectChanges();
-      this.fixture.nativeElement.querySelector(submitBtnSelector).click();
-      const filter = emitted.calls.mostRecent().args[0];
+      testContext.component.removeCondition(1);
+      renderFixture(testContext.fixture);
+      testContext.fixture.nativeElement.querySelector(submitBtnSelector).click();
+      const filter = emitted.mock.lastCall![0];
       expect(filter.criteria.map(predicate => predicate.value)).toEqual([0, 2 * 1024 ** 2, 3 * 1024 ** 3]);
       expect(filter.editorState).toEqual({ values: [0, 2, 3], units: [Unit.Byte, Unit.MB, Unit.GB] });
       // The shared definition is not written to.
@@ -425,7 +444,7 @@ describe('GeneralFilterComponent', () => {
       try {
         reopened.componentInstance.filterProperty = filter.criteria[0].filterableProperty as NumericPropertyDefinition;
         reopened.componentInstance.propertyFilter = filter;
-        reopened.detectChanges();
+        renderFixture(reopened);
         expect(reopened.componentInstance.conditions.value.map(condition => condition.value)).toEqual([0, 2, 3]);
         expect(reopened.componentInstance.conditions.value.map(condition => condition.unit)).toEqual([
           Unit.Byte,
@@ -441,56 +460,60 @@ describe('GeneralFilterComponent', () => {
       }
     });
 
-    it('loads numeric presets without display metadata in their base unit, including zero', function (this: ThisTest) {
+    it('loads numeric presets without display metadata in their base unit, including zero', () => {
       const field = new NumericPropertyDefinition('Memory', 'memory', undefined, Unit.MB);
       const values = [0, 1024, 2048];
-      this.component.filterProperty = field;
-      this.component.propertyFilter = {
+      testContext.component.filterProperty = field;
+      testContext.component.propertyFilter = {
         operator: LogicalOperator.Or,
         criteria: values.map(value => ({ filterableProperty: field, operator: ComparisonOperator.Equals, value })),
       };
-      const emitted = spyOn(this.component.filterCriteriaChange, 'emit');
-      this.fixture.detectChanges();
+      const emitted = vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
+      renderFixture(testContext.fixture);
       expect(field['selectedValue']).toBeUndefined();
       expect(field['selectedUnit']).toBeUndefined();
-      expect(this.component.conditions.value.map(condition => condition.value)).toEqual(values);
-      expect(this.component.conditions.value.map(condition => condition.unit)).toEqual([Unit.MB, Unit.MB, Unit.MB]);
-      expect(this.component.generalFilterForm.valid).toBeTrue();
-      this.fixture.nativeElement.querySelector(submitBtnSelector).click();
-      expect(emitted.calls.mostRecent().args[0].criteria.map(predicate => predicate.value)).toEqual(values);
+      expect(testContext.component.conditions.value.map(condition => condition.value)).toEqual(values);
+      expect(testContext.component.conditions.value.map(condition => condition.unit)).toEqual([
+        Unit.MB,
+        Unit.MB,
+        Unit.MB,
+      ]);
+      expect(testContext.component.generalFilterForm.valid).toBe(true);
+      testContext.fixture.nativeElement.querySelector(submitBtnSelector).click();
+      expect(emitted.mock.lastCall![0].criteria.map(predicate => predicate.value)).toEqual(values);
     });
 
-    it('rejects an invalid numeric value in a later row', function (this: ThisTest) {
-      this.component.filterProperty = new NumericPropertyDefinition('Memory', 'memory');
-      this.fixture.detectChanges();
-      this.component.addCondition();
-      this.component.addCondition();
-      this.component.conditions.patchValue([{ value: '10' }, { value: '20' }, { value: 'not a number' }]);
-      this.fixture.detectChanges();
-      expect(this.component.conditions.at(2).controls.value.hasError('pattern')).toBeTrue();
-      expect(this.fixture.nativeElement.querySelector(submitBtnSelector).disabled).toBeTrue();
-      this.component.conditions.at(2).controls.value.setValue(0);
-      this.fixture.detectChanges();
-      expect(this.component.generalFilterForm.valid).toBeTrue();
+    it('rejects an invalid numeric value in a later row', () => {
+      testContext.component.filterProperty = new NumericPropertyDefinition('Memory', 'memory');
+      renderFixture(testContext.fixture);
+      testContext.component.addCondition();
+      testContext.component.addCondition();
+      testContext.component.conditions.patchValue([{ value: '10' }, { value: '20' }, { value: 'not a number' }]);
+      renderFixture(testContext.fixture);
+      expect(testContext.component.conditions.at(2).controls.value.hasError('pattern')).toBe(true);
+      expect(testContext.fixture.nativeElement.querySelector(submitBtnSelector).disabled).toBe(true);
+      testContext.component.conditions.at(2).controls.value.setValue(0);
+      renderFixture(testContext.fixture);
+      expect(testContext.component.generalFilterForm.valid).toBe(true);
     });
   });
 
   describe('in normal mode with numeric property', () => {
-    beforeEach(function (this: ThisTest) {
+    beforeEach(() => {
       numericProperty.unit = Unit.Byte;
-      this.component.filterProperty = numericProperty;
-      this.fixture.detectChanges();
+      testContext.component.filterProperty = numericProperty;
+      renderFixture(testContext.fixture);
     });
-    it(isInitializedExpectation, function (this: ThisTest) {
-      expect(this.component.comparisonOperators).toEqual(numericOperators);
+    it(isInitializedExpectation, () => {
+      expect(testContext.component.comparisonOperators).toEqual(numericOperators);
 
-      expect(this.component.conditions.at(0).controls.operator.value).toEqual(ComparisonOperator.Equals);
-      expect(this.component.conditions.at(0).controls.value.value).toEqual('');
-      expect(this.component.generalFilterForm.controls['logicalOperator'].value).toEqual(LogicalOperator.And);
+      expect(testContext.component.conditions.at(0).controls.operator.value).toEqual(ComparisonOperator.Equals);
+      expect(testContext.component.conditions.at(0).controls.value.value).toEqual('');
+      expect(testContext.component.generalFilterForm.controls['logicalOperator'].value).toEqual(LogicalOperator.And);
     });
-    it('correctly updates units on property change', function (this: ThisTest) {
+    it('correctly updates units on property change', () => {
       const primaryUnitSelect: HTMLSelectElement =
-        this.fixture.debugElement.nativeElement.querySelector(primaryUnitSelector);
+        testContext.fixture.debugElement.nativeElement.querySelector(primaryUnitSelector);
       expect(primaryUnitSelect.options.length).toEqual(5);
       expect(primaryUnitSelect.options[0].text).toEqual('B');
       expect(primaryUnitSelect.options[1].text).toEqual('KB');
@@ -498,479 +521,483 @@ describe('GeneralFilterComponent', () => {
       expect(primaryUnitSelect.options[3].text).toEqual('GB');
       expect(primaryUnitSelect.options[4].text).toEqual('TB');
 
-      this.component.filterProperty.unit = Unit.Byte;
-      this.component.ngOnChanges();
-      expect(this.component.units.length).toEqual(5);
-      expect(this.component.units[0]).toEqual(Unit.Byte);
-      expect(this.component.units[1]).toEqual(Unit.KB);
-      expect(this.component.units[2]).toEqual(Unit.MB);
-      expect(this.component.units[3]).toEqual(Unit.GB);
-      expect(this.component.units[4]).toEqual(Unit.TB);
+      testContext.component.filterProperty.unit = Unit.Byte;
+      testContext.component.ngOnChanges();
+      expect(testContext.component.units.length).toEqual(5);
+      expect(testContext.component.units[0]).toEqual(Unit.Byte);
+      expect(testContext.component.units[1]).toEqual(Unit.KB);
+      expect(testContext.component.units[2]).toEqual(Unit.MB);
+      expect(testContext.component.units[3]).toEqual(Unit.GB);
+      expect(testContext.component.units[4]).toEqual(Unit.TB);
 
-      this.component.filterProperty.unit = Unit.KB;
-      this.component.ngOnChanges();
-      expect(this.component.units.length).toEqual(4);
-      expect(this.component.units[0]).toEqual(Unit.KB);
-      expect(this.component.units[1]).toEqual(Unit.MB);
-      expect(this.component.units[2]).toEqual(Unit.GB);
-      expect(this.component.units[3]).toEqual(Unit.TB);
+      testContext.component.filterProperty.unit = Unit.KB;
+      testContext.component.ngOnChanges();
+      expect(testContext.component.units.length).toEqual(4);
+      expect(testContext.component.units[0]).toEqual(Unit.KB);
+      expect(testContext.component.units[1]).toEqual(Unit.MB);
+      expect(testContext.component.units[2]).toEqual(Unit.GB);
+      expect(testContext.component.units[3]).toEqual(Unit.TB);
 
-      this.component.filterProperty.unit = Unit.MB;
-      this.component.ngOnChanges();
-      expect(this.component.units.length).toEqual(3);
-      expect(this.component.units[0]).toEqual(Unit.MB);
-      expect(this.component.units[1]).toEqual(Unit.GB);
-      expect(this.component.units[2]).toEqual(Unit.TB);
+      testContext.component.filterProperty.unit = Unit.MB;
+      testContext.component.ngOnChanges();
+      expect(testContext.component.units.length).toEqual(3);
+      expect(testContext.component.units[0]).toEqual(Unit.MB);
+      expect(testContext.component.units[1]).toEqual(Unit.GB);
+      expect(testContext.component.units[2]).toEqual(Unit.TB);
 
-      this.component.filterProperty.unit = Unit.GB;
-      this.component.ngOnChanges();
-      expect(this.component.units.length).toEqual(2);
-      expect(this.component.units[0]).toEqual(Unit.GB);
-      expect(this.component.units[1]).toEqual(Unit.TB);
+      testContext.component.filterProperty.unit = Unit.GB;
+      testContext.component.ngOnChanges();
+      expect(testContext.component.units.length).toEqual(2);
+      expect(testContext.component.units[0]).toEqual(Unit.GB);
+      expect(testContext.component.units[1]).toEqual(Unit.TB);
 
-      this.component.filterProperty.unit = Unit.TB;
-      this.component.ngOnChanges();
-      expect(this.component.units.length).toEqual(1);
-      expect(this.component.units[0]).toEqual(Unit.TB);
+      testContext.component.filterProperty.unit = Unit.TB;
+      testContext.component.ngOnChanges();
+      expect(testContext.component.units.length).toEqual(1);
+      expect(testContext.component.units[0]).toEqual(Unit.TB);
 
-      this.component.filterProperty.unit = Unit.HZ;
-      this.component.ngOnChanges();
-      expect(this.component.units.length).toEqual(4);
-      expect(this.component.units[0]).toEqual(Unit.HZ);
-      expect(this.component.units[1]).toEqual(Unit.KHZ);
-      expect(this.component.units[2]).toEqual(Unit.MHZ);
-      expect(this.component.units[3]).toEqual(Unit.GHZ);
+      testContext.component.filterProperty.unit = Unit.HZ;
+      testContext.component.ngOnChanges();
+      expect(testContext.component.units.length).toEqual(4);
+      expect(testContext.component.units[0]).toEqual(Unit.HZ);
+      expect(testContext.component.units[1]).toEqual(Unit.KHZ);
+      expect(testContext.component.units[2]).toEqual(Unit.MHZ);
+      expect(testContext.component.units[3]).toEqual(Unit.GHZ);
 
-      this.component.filterProperty.unit = Unit.KHZ;
-      this.component.ngOnChanges();
-      expect(this.component.units.length).toEqual(3);
-      expect(this.component.units[0]).toEqual(Unit.KHZ);
-      expect(this.component.units[1]).toEqual(Unit.MHZ);
-      expect(this.component.units[2]).toEqual(Unit.GHZ);
+      testContext.component.filterProperty.unit = Unit.KHZ;
+      testContext.component.ngOnChanges();
+      expect(testContext.component.units.length).toEqual(3);
+      expect(testContext.component.units[0]).toEqual(Unit.KHZ);
+      expect(testContext.component.units[1]).toEqual(Unit.MHZ);
+      expect(testContext.component.units[2]).toEqual(Unit.GHZ);
 
-      this.component.filterProperty.unit = Unit.MHZ;
-      this.component.ngOnChanges();
-      expect(this.component.units.length).toEqual(2);
-      expect(this.component.units[0]).toEqual(Unit.MHZ);
-      expect(this.component.units[1]).toEqual(Unit.GHZ);
+      testContext.component.filterProperty.unit = Unit.MHZ;
+      testContext.component.ngOnChanges();
+      expect(testContext.component.units.length).toEqual(2);
+      expect(testContext.component.units[0]).toEqual(Unit.MHZ);
+      expect(testContext.component.units[1]).toEqual(Unit.GHZ);
 
-      this.component.filterProperty.unit = Unit.GHZ;
-      this.component.ngOnChanges();
-      expect(this.component.units.length).toEqual(1);
-      expect(this.component.units[0]).toEqual(Unit.GHZ);
+      testContext.component.filterProperty.unit = Unit.GHZ;
+      testContext.component.ngOnChanges();
+      expect(testContext.component.units.length).toEqual(1);
+      expect(testContext.component.units[0]).toEqual(Unit.GHZ);
 
-      this.component.filterProperty.unit = Unit.BytePS;
-      this.component.ngOnChanges();
-      expect(this.component.units.length).toEqual(4);
-      expect(this.component.units[0]).toEqual(Unit.BytePS);
-      expect(this.component.units[1]).toEqual(Unit.KBytePS);
-      expect(this.component.units[2]).toEqual(Unit.MBytePS);
-      expect(this.component.units[3]).toEqual(Unit.GBytePS);
+      testContext.component.filterProperty.unit = Unit.BytePS;
+      testContext.component.ngOnChanges();
+      expect(testContext.component.units.length).toEqual(4);
+      expect(testContext.component.units[0]).toEqual(Unit.BytePS);
+      expect(testContext.component.units[1]).toEqual(Unit.KBytePS);
+      expect(testContext.component.units[2]).toEqual(Unit.MBytePS);
+      expect(testContext.component.units[3]).toEqual(Unit.GBytePS);
 
-      this.component.filterProperty.unit = Unit.KBytePS;
-      this.component.ngOnChanges();
-      expect(this.component.units.length).toEqual(3);
-      expect(this.component.units[0]).toEqual(Unit.KBytePS);
-      expect(this.component.units[1]).toEqual(Unit.MBytePS);
-      expect(this.component.units[2]).toEqual(Unit.GBytePS);
+      testContext.component.filterProperty.unit = Unit.KBytePS;
+      testContext.component.ngOnChanges();
+      expect(testContext.component.units.length).toEqual(3);
+      expect(testContext.component.units[0]).toEqual(Unit.KBytePS);
+      expect(testContext.component.units[1]).toEqual(Unit.MBytePS);
+      expect(testContext.component.units[2]).toEqual(Unit.GBytePS);
 
-      this.component.filterProperty.unit = Unit.MBytePS;
-      this.component.ngOnChanges();
-      expect(this.component.units.length).toEqual(2);
-      expect(this.component.units[0]).toEqual(Unit.MBytePS);
-      expect(this.component.units[1]).toEqual(Unit.GBytePS);
+      testContext.component.filterProperty.unit = Unit.MBytePS;
+      testContext.component.ngOnChanges();
+      expect(testContext.component.units.length).toEqual(2);
+      expect(testContext.component.units[0]).toEqual(Unit.MBytePS);
+      expect(testContext.component.units[1]).toEqual(Unit.GBytePS);
 
-      this.component.filterProperty.unit = Unit.GBytePS;
-      this.component.ngOnChanges();
-      expect(this.component.units.length).toEqual(1);
-      expect(this.component.units[0]).toEqual(Unit.GBytePS);
+      testContext.component.filterProperty.unit = Unit.GBytePS;
+      testContext.component.ngOnChanges();
+      expect(testContext.component.units.length).toEqual(1);
+      expect(testContext.component.units[0]).toEqual(Unit.GBytePS);
 
-      this.component.filterProperty.unit = Unit.BitPS;
-      this.component.ngOnChanges();
-      expect(this.component.units.length).toEqual(4);
-      expect(this.component.units[0]).toEqual(Unit.BitPS);
-      expect(this.component.units[1]).toEqual(Unit.KBitPS);
-      expect(this.component.units[2]).toEqual(Unit.MBitPS);
-      expect(this.component.units[3]).toEqual(Unit.GBitPS);
+      testContext.component.filterProperty.unit = Unit.BitPS;
+      testContext.component.ngOnChanges();
+      expect(testContext.component.units.length).toEqual(4);
+      expect(testContext.component.units[0]).toEqual(Unit.BitPS);
+      expect(testContext.component.units[1]).toEqual(Unit.KBitPS);
+      expect(testContext.component.units[2]).toEqual(Unit.MBitPS);
+      expect(testContext.component.units[3]).toEqual(Unit.GBitPS);
 
-      this.component.filterProperty.unit = Unit.KBitPS;
-      this.component.ngOnChanges();
-      expect(this.component.units.length).toEqual(3);
-      expect(this.component.units[0]).toEqual(Unit.KBitPS);
-      expect(this.component.units[1]).toEqual(Unit.MBitPS);
-      expect(this.component.units[2]).toEqual(Unit.GBitPS);
+      testContext.component.filterProperty.unit = Unit.KBitPS;
+      testContext.component.ngOnChanges();
+      expect(testContext.component.units.length).toEqual(3);
+      expect(testContext.component.units[0]).toEqual(Unit.KBitPS);
+      expect(testContext.component.units[1]).toEqual(Unit.MBitPS);
+      expect(testContext.component.units[2]).toEqual(Unit.GBitPS);
 
-      this.component.filterProperty.unit = Unit.MBitPS;
-      this.component.ngOnChanges();
-      expect(this.component.units.length).toEqual(2);
-      expect(this.component.units[0]).toEqual(Unit.MBitPS);
-      expect(this.component.units[1]).toEqual(Unit.GBitPS);
+      testContext.component.filterProperty.unit = Unit.MBitPS;
+      testContext.component.ngOnChanges();
+      expect(testContext.component.units.length).toEqual(2);
+      expect(testContext.component.units[0]).toEqual(Unit.MBitPS);
+      expect(testContext.component.units[1]).toEqual(Unit.GBitPS);
 
-      this.component.filterProperty.unit = Unit.GBitPS;
-      this.component.ngOnChanges();
-      expect(this.component.units.length).toEqual(1);
-      expect(this.component.units[0]).toEqual(Unit.GBitPS);
+      testContext.component.filterProperty.unit = Unit.GBitPS;
+      testContext.component.ngOnChanges();
+      expect(testContext.component.units.length).toEqual(1);
+      expect(testContext.component.units[0]).toEqual(Unit.GBitPS);
     });
-    it('emits a property filter event on submit', function (this: ThisTest) {
-      spyOn(this.component.filterCriteriaChange, 'emit');
-      const submitButton: HTMLButtonElement = this.fixture.debugElement.nativeElement.querySelector(submitBtnSelector);
+    it('emits a property filter event on submit', () => {
+      vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
+      const submitButton: HTMLButtonElement =
+        testContext.fixture.debugElement.nativeElement.querySelector(submitBtnSelector);
       expect(submitButton).toBeTruthy();
       expect(submitButton.disabled).toBeTruthy();
-      expect(this.component.generalFilterForm.valid).toBeFalsy();
+      expect(testContext.component.generalFilterForm.valid).toBeFalsy();
 
       const primaryOperatorSelect: HTMLSelectElement =
-        this.fixture.debugElement.nativeElement.querySelector(primaryOperatorSelector);
+        testContext.fixture.debugElement.nativeElement.querySelector(primaryOperatorSelector);
       expect(primaryOperatorSelect).toBeTruthy();
       expect(primaryOperatorSelect.options.length).toEqual(7);
 
       primaryOperatorSelect.value = primaryOperatorSelect.options[2].value;
       primaryOperatorSelect.dispatchEvent(new Event('change'));
-      this.fixture.detectChanges();
-      expect(this.component.conditions.at(0).controls.operator.value).toEqual(ComparisonOperator.GreaterThan);
+      renderFixture(testContext.fixture);
+      expect(testContext.component.conditions.at(0).controls.operator.value).toEqual(ComparisonOperator.GreaterThan);
 
       const primaryValueInput: HTMLInputElement =
-        this.fixture.debugElement.nativeElement.querySelector(primaryValueSelector);
+        testContext.fixture.debugElement.nativeElement.querySelector(primaryValueSelector);
       primaryValueInput.value = 'text';
       primaryValueInput.dispatchEvent(new Event('input'));
-      this.fixture.detectChanges();
-      expect(this.component.conditions.at(0).controls.value.value).toEqual('text');
+      renderFixture(testContext.fixture);
+      expect(testContext.component.conditions.at(0).controls.value.value).toEqual('text');
       expect(submitButton.disabled).toBeTruthy();
-      expect(this.component.generalFilterForm.valid).toBeFalsy();
+      expect(testContext.component.generalFilterForm.valid).toBeFalsy();
 
       primaryValueInput.value = '500';
       primaryValueInput.dispatchEvent(new Event('input'));
-      this.fixture.detectChanges();
-      expect(this.component.conditions.at(0).controls.value.value).toEqual('500');
+      renderFixture(testContext.fixture);
+      expect(testContext.component.conditions.at(0).controls.value.value).toEqual('500');
       expect(submitButton.disabled).toBeFalsy();
-      expect(this.component.generalFilterForm.valid).toBeTruthy();
+      expect(testContext.component.generalFilterForm.valid).toBeTruthy();
 
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(1);
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(
-        jasmine.objectContaining({
+      renderFixture(testContext.fixture);
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(1);
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(
+        expect.objectContaining({
           criteria: numericPropertyFilter1.criteria,
           operator: numericPropertyFilter1.operator,
         })
       );
     });
-    it('converts filter values to the corresponding property unit', function (this: ThisTest) {
-      const emitted = spyOn(this.component.filterCriteriaChange, 'emit');
-      const submitButton: HTMLButtonElement = this.fixture.debugElement.nativeElement.querySelector(submitBtnSelector);
+    it('converts filter values to the corresponding property unit', () => {
+      const emitted = vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
+      const submitButton: HTMLButtonElement =
+        testContext.fixture.debugElement.nativeElement.querySelector(submitBtnSelector);
       const primaryValueInput: HTMLInputElement =
-        this.fixture.debugElement.nativeElement.querySelector(primaryValueSelector);
+        testContext.fixture.debugElement.nativeElement.querySelector(primaryValueSelector);
       primaryValueInput.value = '100';
       primaryValueInput.dispatchEvent(new Event('input'));
-      this.fixture.detectChanges();
+      renderFixture(testContext.fixture);
 
-      this.component.filterProperty.unit = Unit.Byte;
-      this.component.ngOnChanges();
+      testContext.component.filterProperty.unit = Unit.Byte;
+      testContext.component.ngOnChanges();
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual('100');
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
 
       const primaryUnitSelect: HTMLSelectElement =
-        this.fixture.debugElement.nativeElement.querySelector(primaryUnitSelector);
+        testContext.fixture.debugElement.nativeElement.querySelector(primaryUnitSelector);
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual(102400);
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(102400);
 
       primaryUnitSelect.value = primaryUnitSelect.options[2].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual(104857600);
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(104857600);
 
       primaryUnitSelect.value = primaryUnitSelect.options[3].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual(107374182400);
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(107374182400);
 
       primaryUnitSelect.value = primaryUnitSelect.options[4].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual(109951162777600);
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(109951162777600);
 
-      this.component.filterProperty.unit = Unit.HZ;
-      this.component.ngOnChanges();
+      testContext.component.filterProperty.unit = Unit.HZ;
+      testContext.component.ngOnChanges();
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual('100');
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual(100000);
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000);
 
       primaryUnitSelect.value = primaryUnitSelect.options[2].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual(100000000);
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000000);
 
       primaryUnitSelect.value = primaryUnitSelect.options[3].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual(100000000000);
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000000000);
 
-      this.component.filterProperty.unit = Unit.BytePS;
-      this.component.ngOnChanges();
+      testContext.component.filterProperty.unit = Unit.BytePS;
+      testContext.component.ngOnChanges();
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual('100');
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual(100000);
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000);
 
       primaryUnitSelect.value = primaryUnitSelect.options[2].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual(100000000);
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000000);
 
       primaryUnitSelect.value = primaryUnitSelect.options[3].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual(100000000000);
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000000000);
 
-      this.component.filterProperty.unit = Unit.KB;
-      this.component.ngOnChanges();
+      testContext.component.filterProperty.unit = Unit.KB;
+      testContext.component.ngOnChanges();
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual('100');
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual(102400);
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(102400);
 
       primaryUnitSelect.value = primaryUnitSelect.options[2].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual(104857600);
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(104857600);
 
       primaryUnitSelect.value = primaryUnitSelect.options[3].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual(107374182400);
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(107374182400);
 
-      this.component.filterProperty.unit = Unit.MB;
-      this.component.ngOnChanges();
+      testContext.component.filterProperty.unit = Unit.MB;
+      testContext.component.ngOnChanges();
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual('100');
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual(102400);
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(102400);
 
       primaryUnitSelect.value = primaryUnitSelect.options[2].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual(104857600);
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(104857600);
 
-      this.component.filterProperty.unit = Unit.GB;
-      this.component.ngOnChanges();
+      testContext.component.filterProperty.unit = Unit.GB;
+      testContext.component.ngOnChanges();
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual('100');
-
-      primaryUnitSelect.value = primaryUnitSelect.options[1].value;
-      primaryUnitSelect.dispatchEvent(new Event('change'));
-      submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual(102400);
-
-      this.component.filterProperty.unit = Unit.TB;
-      this.component.ngOnChanges();
-      submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual('100');
-
-      this.component.filterProperty.unit = Unit.KHZ;
-      this.component.ngOnChanges();
-      submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual('100');
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual(100000);
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(102400);
+
+      testContext.component.filterProperty.unit = Unit.TB;
+      testContext.component.ngOnChanges();
+      submitButton.click();
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
+
+      testContext.component.filterProperty.unit = Unit.KHZ;
+      testContext.component.ngOnChanges();
+      submitButton.click();
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
+
+      primaryUnitSelect.value = primaryUnitSelect.options[1].value;
+      primaryUnitSelect.dispatchEvent(new Event('change'));
+      submitButton.click();
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000);
 
       primaryUnitSelect.value = primaryUnitSelect.options[2].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual(100000000);
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000000);
 
-      this.component.filterProperty.unit = Unit.MHZ;
-      this.component.ngOnChanges();
+      testContext.component.filterProperty.unit = Unit.MHZ;
+      testContext.component.ngOnChanges();
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual('100');
-
-      primaryUnitSelect.value = primaryUnitSelect.options[1].value;
-      primaryUnitSelect.dispatchEvent(new Event('change'));
-      submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual(100000);
-
-      this.component.filterProperty.unit = Unit.GHZ;
-      this.component.ngOnChanges();
-      submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual('100');
-
-      this.component.filterProperty.unit = Unit.KBytePS;
-      this.component.ngOnChanges();
-      submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual('100');
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual(100000);
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000);
+
+      testContext.component.filterProperty.unit = Unit.GHZ;
+      testContext.component.ngOnChanges();
+      submitButton.click();
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
+
+      testContext.component.filterProperty.unit = Unit.KBytePS;
+      testContext.component.ngOnChanges();
+      submitButton.click();
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
+
+      primaryUnitSelect.value = primaryUnitSelect.options[1].value;
+      primaryUnitSelect.dispatchEvent(new Event('change'));
+      submitButton.click();
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000);
 
       primaryUnitSelect.value = primaryUnitSelect.options[2].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual(100000000);
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000000);
 
-      this.component.filterProperty.unit = Unit.MBytePS;
-      this.component.ngOnChanges();
+      testContext.component.filterProperty.unit = Unit.MBytePS;
+      testContext.component.ngOnChanges();
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual('100');
-
-      primaryUnitSelect.value = primaryUnitSelect.options[1].value;
-      primaryUnitSelect.dispatchEvent(new Event('change'));
-      submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual(100000);
-
-      this.component.filterProperty.unit = Unit.GBytePS;
-      this.component.ngOnChanges();
-      submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual('100');
-
-      this.component.filterProperty.unit = Unit.BitPS;
-      this.component.ngOnChanges();
-      submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual('100');
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual(100000);
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000);
+
+      testContext.component.filterProperty.unit = Unit.GBytePS;
+      testContext.component.ngOnChanges();
+      submitButton.click();
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
+
+      testContext.component.filterProperty.unit = Unit.BitPS;
+      testContext.component.ngOnChanges();
+      submitButton.click();
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
+
+      primaryUnitSelect.value = primaryUnitSelect.options[1].value;
+      primaryUnitSelect.dispatchEvent(new Event('change'));
+      submitButton.click();
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000);
 
       primaryUnitSelect.value = primaryUnitSelect.options[2].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual(100000000);
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000000);
 
       primaryUnitSelect.value = primaryUnitSelect.options[3].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual(100000000000);
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000000000);
 
-      this.component.filterProperty.unit = Unit.KBitPS;
-      this.component.ngOnChanges();
+      testContext.component.filterProperty.unit = Unit.KBitPS;
+      testContext.component.ngOnChanges();
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual('100');
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual(100000);
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000);
 
       primaryUnitSelect.value = primaryUnitSelect.options[2].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual(100000000);
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000000);
 
-      this.component.filterProperty.unit = Unit.MBitPS;
-      this.component.ngOnChanges();
+      testContext.component.filterProperty.unit = Unit.MBitPS;
+      testContext.component.ngOnChanges();
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual('100');
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
 
       primaryUnitSelect.value = primaryUnitSelect.options[1].value;
       primaryUnitSelect.dispatchEvent(new Event('change'));
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual(100000);
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual(100000);
 
-      this.component.filterProperty.unit = Unit.GBitPS;
-      this.component.ngOnChanges();
+      testContext.component.filterProperty.unit = Unit.GBitPS;
+      testContext.component.ngOnChanges();
       submitButton.click();
-      this.fixture.detectChanges();
-      expect(emitted.calls.mostRecent().args[0].criteria[0].value).toEqual('100');
+      renderFixture(testContext.fixture);
+      expect(emitted.mock.lastCall![0].criteria[0].value).toEqual('100');
     });
   });
   describe('in edit mode with string property', () => {
-    beforeEach(function (this: ThisTest) {
-      this.component.filterProperty = stringProperty;
-      this.component.propertyFilter = propertyFilter2;
-      this.fixture.detectChanges();
+    beforeEach(() => {
+      testContext.component.filterProperty = stringProperty;
+      testContext.component.propertyFilter = propertyFilter2;
+      renderFixture(testContext.fixture);
     });
-    it(isInitializedExpectation, function (this: ThisTest) {
-      expect(this.component.conditions.at(0).controls.operator.value).toEqual(ComparisonOperator.Equals);
-      expect(this.component.conditions.at(0).controls.value.value).toEqual('vm 1');
-      expect(this.component.generalFilterForm.controls['logicalOperator'].value).toEqual(LogicalOperator.Or);
-      expect(this.component.conditions.at(1).controls.operator.value).toEqual(ComparisonOperator.IsEmpty);
+    it(isInitializedExpectation, () => {
+      expect(testContext.component.conditions.at(0).controls.operator.value).toEqual(ComparisonOperator.Equals);
+      expect(testContext.component.conditions.at(0).controls.value.value).toEqual('vm 1');
+      expect(testContext.component.generalFilterForm.controls['logicalOperator'].value).toEqual(LogicalOperator.Or);
+      expect(testContext.component.conditions.at(1).controls.operator.value).toEqual(ComparisonOperator.IsEmpty);
     });
   });
   describe('in edit mode with numeric property', () => {
-    beforeEach(function (this: ThisTest) {
+    beforeEach(() => {
       numericProperty.unit = Unit.MB;
-      this.component.filterProperty = numericProperty;
-      this.component.propertyFilter = {
+      testContext.component.filterProperty = numericProperty;
+      testContext.component.propertyFilter = {
         ...numericPropertyFilter2,
         editorState: { values: [800, 700], units: [Unit.MB, Unit.KB] },
       };
-      this.fixture.detectChanges();
+      renderFixture(testContext.fixture);
     });
-    it(isInitializedExpectation, function (this: ThisTest) {
-      expect(this.component.conditions.at(0).controls.operator.value).toEqual(ComparisonOperator.GreaterThan);
-      expect(this.component.conditions.at(0).controls.value.value).toEqual(800);
-      expect(this.component.conditions.at(0).controls.unit.value).toEqual(Unit.MB);
-      expect(this.component.generalFilterForm.controls['logicalOperator'].value).toEqual(LogicalOperator.Or);
-      expect(this.component.conditions.at(1).controls.operator.value).toEqual(ComparisonOperator.LessThanOrEqualTo);
-      expect(this.component.conditions.at(1).controls.value.value).toEqual(700);
-      expect(this.component.conditions.at(1).controls.unit.value).toEqual(Unit.KB);
+    it(isInitializedExpectation, () => {
+      expect(testContext.component.conditions.at(0).controls.operator.value).toEqual(ComparisonOperator.GreaterThan);
+      expect(testContext.component.conditions.at(0).controls.value.value).toEqual(800);
+      expect(testContext.component.conditions.at(0).controls.unit.value).toEqual(Unit.MB);
+      expect(testContext.component.generalFilterForm.controls['logicalOperator'].value).toEqual(LogicalOperator.Or);
+      expect(testContext.component.conditions.at(1).controls.operator.value).toEqual(
+        ComparisonOperator.LessThanOrEqualTo
+      );
+      expect(testContext.component.conditions.at(1).controls.value.value).toEqual(700);
+      expect(testContext.component.conditions.at(1).controls.unit.value).toEqual(Unit.KB);
     });
   });
   describe('with single condition property', () => {
-    beforeEach(function (this: ThisTest) {
+    beforeEach(() => {
       const singleProperty = 'singleConditionProperty';
       const singlePropertyName = 'singleConditionPropertyName';
       const singlePropertyComparisonOperators = [ComparisonOperator.Contains, ComparisonOperator.Equals];
@@ -980,21 +1007,21 @@ describe('GeneralFilterComponent', () => {
         singlePropertyComparisonOperators,
         true
       );
-      this.component.filterProperty = singleConditionStringProperty;
-      this.fixture.detectChanges();
+      testContext.component.filterProperty = singleConditionStringProperty;
+      renderFixture(testContext.fixture);
     });
-    it(isInitializedExpectation, function (this: ThisTest) {
-      const addConditionButton = this.fixture.debugElement.nativeElement.querySelector(addButtonSelector);
+    it(isInitializedExpectation, () => {
+      const addConditionButton = testContext.fixture.debugElement.nativeElement.querySelector(addButtonSelector);
       expect(addConditionButton).toBeNull();
-      expect(this.fixture.nativeElement.querySelector('.filter-logic')).toBeNull();
-      this.component.addCondition();
-      expect(this.component.conditions.length).toBe(1);
+      expect(testContext.fixture.nativeElement.querySelector('.filter-logic')).toBeNull();
+      testContext.component.addCondition();
+      expect(testContext.component.conditions.length).toBe(1);
     });
   });
 
   describe('with only one logical operator', () => {
     let singleConditionStringProperty: StringPropertyDefinition;
-    beforeEach(function (this: ThisTest) {
+    beforeEach(() => {
       const singleProperty = 'singleConditionProperty';
       const singlePropertyName = 'singleConditionPropertyName';
       const singlePropertyComparisonOperators = [ComparisonOperator.Contains, ComparisonOperator.Equals];
@@ -1006,47 +1033,47 @@ describe('GeneralFilterComponent', () => {
         LogicalOperator.And
       );
     });
-    it(' which is AND is displayed correctly', function (this: ThisTest) {
-      this.component.filterProperty = singleConditionStringProperty;
-      this.fixture.detectChanges();
-      const addConditionButton = this.fixture.debugElement.nativeElement.querySelector(addButtonSelector);
+    it(' which is AND is displayed correctly', () => {
+      testContext.component.filterProperty = singleConditionStringProperty;
+      renderFixture(testContext.fixture);
+      const addConditionButton = testContext.fixture.debugElement.nativeElement.querySelector(addButtonSelector);
       addConditionButton.click();
-      this.fixture.detectChanges();
-      const logicalOperatorLabel = this.fixture.debugElement.nativeElement.querySelector(
+      renderFixture(testContext.fixture);
+      const logicalOperatorLabel = testContext.fixture.debugElement.nativeElement.querySelector(
         'button[data-test-id=logical-operator]'
       );
 
       expect(logicalOperatorLabel).toBeTruthy();
       expect(logicalOperatorLabel.textContent.trim()).toEqual('And');
-      expect(logicalOperatorLabel.disabled).toBeTrue();
-      expect(this.fixture.nativeElement.querySelector('.filter-logic')).toBeNull();
+      expect(logicalOperatorLabel.disabled).toBe(true);
+      expect(testContext.fixture.nativeElement.querySelector('.filter-logic')).toBeNull();
     });
 
-    it('which is OR is displayed correctly', function (this: ThisTest) {
+    it('which is OR is displayed correctly', () => {
       singleConditionStringProperty.logicalOperator = LogicalOperator.Or;
-      this.component.filterProperty = singleConditionStringProperty;
-      this.fixture.detectChanges();
-      const addConditionButton = this.fixture.debugElement.nativeElement.querySelector(addButtonSelector);
+      testContext.component.filterProperty = singleConditionStringProperty;
+      renderFixture(testContext.fixture);
+      const addConditionButton = testContext.fixture.debugElement.nativeElement.querySelector(addButtonSelector);
       addConditionButton.click();
       addConditionButton.click();
-      this.fixture.detectChanges();
-      const logicalOperatorLabel = this.fixture.debugElement.nativeElement.querySelector(
+      renderFixture(testContext.fixture);
+      const logicalOperatorLabel = testContext.fixture.debugElement.nativeElement.querySelector(
         'button[data-test-id=logical-operator]'
       );
 
       expect(logicalOperatorLabel).toBeTruthy();
       expect(logicalOperatorLabel.textContent.trim()).toEqual('Or');
-      expect(logicalOperatorLabel.disabled).toBeTrue();
-      expect(this.fixture.nativeElement.querySelector('.filter-logic')).toBeNull();
-      spyOn(this.component.filterCriteriaChange, 'emit');
-      this.component.generalFilterForm.patchValue({
+      expect(logicalOperatorLabel.disabled).toBe(true);
+      expect(testContext.fixture.nativeElement.querySelector('.filter-logic')).toBeNull();
+      vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
+      testContext.component.generalFilterForm.patchValue({
         logicalOperator: LogicalOperator.And,
         conditions: [{ value: 'vm' }, { value: 'host' }, { value: 'server' }],
       });
-      this.fixture.detectChanges();
-      this.fixture.nativeElement.querySelector(submitBtnSelector).click();
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(
-        jasmine.objectContaining({ operator: LogicalOperator.Or })
+      renderFixture(testContext.fixture);
+      testContext.fixture.nativeElement.querySelector(submitBtnSelector).click();
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(
+        expect.objectContaining({ operator: LogicalOperator.Or })
       );
     });
   });

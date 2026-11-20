@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrStackViewModule } from './stack-view.module';
 
@@ -20,7 +21,7 @@ import { ClrStackViewModule } from './stack-view.module';
 })
 class TestComponent {}
 
-export default function (): void {
+describe('Stack View directives', () => {
   'use strict';
   describe('StackView Label', () => {
     let fixture: ComponentFixture<any>;
@@ -32,7 +33,7 @@ export default function (): void {
         declarations: [TestComponent],
       });
       fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
       compiled = fixture.nativeElement;
     });
 
@@ -56,4 +57,4 @@ export default function (): void {
       expect(testme.getAttribute('id')).toBe('ohai');
     });
   });
-}
+});

@@ -49,6 +49,8 @@ import {
 import { CdsThemeStructure, ContrastResult, DataRow, HslColor, ThemeColor, ThemePreset } from './utils/types';
 import { contrastRatio, wcagScore } from './utils/wcag';
 
+const THEMES: readonly ThemeType[] = ['light', 'dark'];
+
 @Component({
   changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'clr-theme-builder',
@@ -86,13 +88,13 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
 
   // State backing the built-in default preview content.
   breadcrumbs = [
-    { label: 'Framework', href: 'javascript://' },
-    { label: 'Angular', href: 'javascript://' },
-    { label: 'Clarity', href: 'javascript://' },
+    { label: 'Framework', href: '#' },
+    { label: 'Angular', href: '#' },
+    { label: 'Clarity', href: '#' },
   ];
   wizardOpen = false;
   rows: DataRow[] = SAMPLE_ROWS;
-  description: string;
+  description = '';
   stepperForm = {
     account: { fullName: '' },
     confirm: { agree: false },
@@ -192,7 +194,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     }
     this.activePreset = preset;
 
-    for (const theme of ['light', 'dark'] as const) {
+    for (const theme of THEMES) {
       this.resetAllThemeColors(theme);
 
       const themeColors = preset[theme];
@@ -201,8 +203,8 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
         continue;
       }
 
-      for (const key of Object.keys(themeColors)) {
-        this.applyGroupOverrides(theme, key, themeColors[key]);
+      for (const [key, colors] of Object.entries(themeColors)) {
+        this.applyGroupOverrides(theme, key, colors);
       }
     }
 
@@ -243,7 +245,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
 
     const parsed = parseGeneratedCSS(css);
 
-    for (const theme of ['light', 'dark'] as const) {
+    for (const theme of THEMES) {
       this.resetAllThemeColors(theme);
 
       for (const key of Object.keys(parsed[theme])) {
@@ -258,7 +260,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     return true;
   }
 
-  resetAllThemeColors(theme: string) {
+  resetAllThemeColors(theme: ThemeType) {
     for (const key of Object.keys(this.colorStruct[theme])) {
       const tokenGroup = this.colorStruct[theme][key];
 
@@ -343,7 +345,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     const base = overrides.find(c => TOKEN_KEYS.baseTokens.includes(c.name));
     const activeBase = base ? colorGroup.find(c => c.name === base.name) : undefined;
 
-    if (activeBase) {
+    if (base && activeBase) {
       activeBase.color = base.color;
       this.colorBuilder(activeBase, colorGroup, theme === 'dark');
     }
@@ -394,6 +396,10 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     for (const key of Object.keys(colorGroups)) {
       const colorGroup = colorGroups[key];
       const baseColor = colorGroup.find(c => c.label === 'Base');
+
+      if (!baseColor) {
+        continue;
+      }
 
       themeColors.push({
         key,

@@ -26,6 +26,7 @@ import {
   Output,
   QueryList,
   Renderer2,
+  signal,
   SimpleChanges,
   TemplateRef,
   ViewChild,
@@ -44,7 +45,7 @@ import { ClrDatagridCell } from './datagrid-cell';
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
 import { DatagridDisplayMode } from './enums/display-mode.enum';
 import { SelectionType } from './enums/selection-type';
-import { DatagridTreeRowCells } from './interfaces/tree-row.interface';
+import { DATAGRID_TREE_ROW, DatagridTreeRowCells } from './interfaces/tree-row.interface';
 import { ColumnsService } from './providers/columns.service';
 import { DetailService } from './providers/detail.service';
 import { DisplayModeService } from './providers/display-mode.service';
@@ -71,6 +72,7 @@ let nbRow = 0;
     DatagridIfExpandService,
     { provide: IfExpandService, useExisting: DatagridIfExpandService },
     { provide: LoadingListener, useExisting: DatagridIfExpandService },
+    { provide: DATAGRID_TREE_ROW, useExisting: ClrDatagridRow },
   ],
   standalone: false,
   changeDetection: ChangeDetectionStrategy.Eager,
@@ -93,7 +95,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
   radioId: string;
   checkboxId: string;
   expandableId: string;
-  replaced: boolean;
+  replaced = false;
   displayCells = false;
   expandAnimationTrigger = false;
 
@@ -112,26 +114,31 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
    * A Query List of the ClrDatagrid cells in this row.
    *
    */
-  @ContentChildren(ClrDatagridCell) dgCells: QueryList<ClrDatagridCell>;
+  @ContentChildren(ClrDatagridCell) dgCells!: QueryList<ClrDatagridCell>;
 
-  @ViewChild(ClrExpandableAnimationDirective) expandAnimation: ClrExpandableAnimationDirective;
-  @ViewChild('detailButton') detailButton: ElementRef<HTMLButtonElement>;
-  @ViewChild('stickyCells', { read: ViewContainerRef }) _stickyCells: ViewContainerRef;
-  @ViewChild('pinnedCells', { read: ViewContainerRef }) _pinnedCells: ViewContainerRef;
-  @ViewChild('scrollableCells', { read: ViewContainerRef }) _scrollableCells: ViewContainerRef;
-  @ViewChild('calculatedCells', { read: ViewContainerRef }) _calculatedCells: ViewContainerRef;
-  @ViewChild('fixedCellTemplate') _fixedCellTemplate: TemplateRef<any>;
+  @ViewChild(ClrExpandableAnimationDirective) expandAnimation!: ClrExpandableAnimationDirective;
+  @ViewChild('detailButton') detailButton!: ElementRef<HTMLButtonElement>;
+  @ViewChild('stickyCells', { read: ViewContainerRef }) _stickyCells!: ViewContainerRef;
+  @ViewChild('pinnedCells', { read: ViewContainerRef }) _pinnedCells!: ViewContainerRef;
+  @ViewChild('scrollableCells', { read: ViewContainerRef }) _scrollableCells!: ViewContainerRef;
+  @ViewChild('calculatedCells', { read: ViewContainerRef }) _calculatedCells!: ViewContainerRef;
+  @ViewChild('fixedCellTemplate') _fixedCellTemplate!: TemplateRef<any>;
 
   protected readonly tree = inject<DatagridTreeService<T>>(DatagridTreeService, { optional: true });
 
-  private _item: T;
+  private _item!: T;
   private _selected = false;
   private _detailOpenLabel = '';
   private _detailCloseLabel = '';
   private _rowSelectionLabel = '';
-  private wrappedInjector: Injector;
+  private wrappedInjector!: Injector;
   /** What `_tree` worked out in this check; `undefined` until it is read. */
   private treeCells: DatagridTreeRowCells<T> | null | undefined;
+  /**
+   * Counts the changes of the cells of the row. The cells rendered in a loop inside the row are
+   * checked before the row knows them, in its content hooks; reading this makes them checked again.
+   */
+  private readonly cellChanges = signal(0);
   private subscriptions: Subscription[] = [];
 
   /**
@@ -194,11 +201,12 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
         }
       })
     );
-    if (this.tree) {
+    const tree = this.tree;
+    if (tree) {
       // In a tree, the rows report their expanded state like expandable rows do.
       this.subscriptions.push(
-        this.tree.expandedChange.subscribe(({ item, expanded }) => {
-          if (this.item !== undefined && this.tree.identify(item) === this.tree.identify(this.item)) {
+        tree.expandedChange.subscribe(({ item, expanded }) => {
+          if (this.item !== undefined && tree.identify(item) === tree.identify(this.item)) {
             this.expandedChange.emit(expanded);
           }
         })
@@ -319,6 +327,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
    * when the cells are rendered in a loop inside the row; the row's `ngDoCheck` runs before them.
    */
   get _tree(): DatagridTreeRowCells<T> | null {
+    this.cellChanges();
     if (this.treeCells === undefined) {
       this.treeCells = this.workOutTreeCells();
     }
@@ -361,9 +370,9 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
   }
 
   ngAfterContentInit() {
-    this.markTreeCell();
+    this.cellsChanged();
     this.dgCells.changes.subscribe(() => {
-      this.markTreeCell();
+      this.cellsChanged();
       this.insertCellViews();
     });
   }
@@ -459,10 +468,10 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
   /**
    * @deprecated related to clrDgRowSelection, which is deprecated
    */
-  protected selectRow(selected = !this.selected, $event) {
+  protected selectRow(selected = !this.selected, $event: MouseEvent) {
     // The label also captures clicks that bubble up to the row event listener, causing
     // this handler to run twice. This exits early to prevent toggling the checkbox twice.
-    if (!this.selection.rowSelectionMode || $event.target.tagName === 'LABEL' || !this._selectable) {
+    if (!this.selection.rowSelectionMode || ($event.target as HTMLElement).tagName === 'LABEL' || !this._selectable) {
       return;
     }
     if (this.selection.selectionType === this.SELECTION_TYPE.Single) {
@@ -500,13 +509,11 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
     });
   }
 
-  /**
-   * Lets the cells of a tree row find out which of them carries the toggle. Rows of other
-   * datagrids leave their cells alone, so they pay nothing for trees.
-   */
-  private markTreeCell() {
-    const treeRow = this.tree?.enabled() ? this : null;
-    this.dgCells.forEach(cell => (cell._treeRow = treeRow));
+  private cellsChanged() {
+    if (this.tree?.enabled()) {
+      this.treeCells = undefined;
+      this.cellChanges.update(changes => changes + 1);
+    }
   }
 
   /**
@@ -519,7 +526,11 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
    */
   private workOutTreeCells(): DatagridTreeRowCells<T> | null {
     // The rows the datagrid shows while more items load have no item.
-    const node = this.tree?.enabled() && this.item !== undefined ? this.tree.nodeFor(this.item) : undefined;
+    const tree = this.tree;
+    if (!tree?.enabled() || this.item === undefined) {
+      return null;
+    }
+    const node = tree.nodeFor(this.item);
     if (!node) {
       return null;
     }
@@ -536,7 +547,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
       if (column?.value.pinned) {
         pinned ??= cell;
       }
-      if (this.tree.toggleColumns.has(column)) {
+      if (tree.toggleColumns.has(column)) {
         marked.add(cell);
       }
     });
