@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { HashLocationStrategy, isPlatformBrowser, LocationStrategy } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import {
   DOCUMENT,
   inject,
@@ -33,35 +33,20 @@ import {
   ClrRouteContext,
 } from '../interfaces/context.interface';
 import { jsonSafe, ROUTE_DATA_DEPTH } from '../json-safe';
-import { availableRoutes, routePatternFor } from '../routes';
+import { availableRoutes } from '../routes';
 import {
-  capSnapshotOptions,
   ClrContextPreset,
   presetOrOptions,
   ResolvedSnapshotOptions,
   resolveSnapshotOptions,
   withCallOptions,
 } from '../snapshot-options';
-import { sanitizeUntrustedSnapshotOptions, withoutFormValues, withoutUrlDetails } from '../untrusted-options';
-
-const DEFAULT_GLOBAL_PROPERTY = 'clrContext';
 
 /** How long a snapshot waits for each asynchronous provider by default. */
 const DEFAULT_SOURCE_TIMEOUT_MS = 2000;
 
 /** A route map cut to a handful of entries would misdescribe where the app can go. */
 const MIN_ROUTE_LIMIT = 50;
-
-/** A plain identifier, so it is reachable as `window.<name>()`. */
-const GLOBAL_PROPERTY_PATTERN = /^[A-Za-z_$][\w$]*$/;
-
-/** How the engine should behave when exposed on `window`. */
-export interface ClrContextGlobalAccessOptions extends ClrContextSnapshotOptions {
-  /** Include what the user has typed. Off by default. */
-  shareFormValues?: boolean;
-  /** Include the full URL, route parameters and data, and the document title. Off by default. */
-  shareFullUrl?: boolean;
-}
 
 /** How the application wants its context read; set once with `ClrContextService.configure`. */
 export interface ClrContextConfig {
@@ -86,17 +71,14 @@ export class ClrContextService implements OnDestroy {
   private scope: ClrContextSnapshotOptions = {};
   private configured = false;
   private snapshotTaken = false;
-  private readonly locationStrategy = inject(LocationStrategy, { optional: true });
   private readonly platformId = inject(PLATFORM_ID);
   private readonly document = inject(DOCUMENT);
   private readonly contextRegistry = inject(ClrContextRegistryService);
   private readonly router = inject(Router, { optional: true });
   private readonly injector = inject(Injector);
-  private globalProperty: string | null = null;
   private tracker: ContextTracker | null = null;
 
   ngOnDestroy(): void {
-    this.disableGlobalAccess();
     this.tracker?.destroy();
   }
 
@@ -143,54 +125,6 @@ export class ClrContextService implements OnDestroy {
         })
       );
     });
-  }
-
-  /**
-   * Exposes the engine on `window` (`window.clrContext()` by default) for agents driving the browser.
-   * Any script on the page can call it, so form values and the full URL are withheld unless allowed.
-   */
-  enableGlobalAccess(
-    propertyName: string = DEFAULT_GLOBAL_PROPERTY,
-    hostOptions: ClrContextGlobalAccessOptions = {}
-  ): void {
-    if (!GLOBAL_PROPERTY_PATTERN.test(propertyName)) {
-      throw new Error(`ClrContextService: "${propertyName}" is not a valid name for a global accessor.`);
-    }
-    const window = this.browserWindow();
-    if (!window) {
-      return;
-    }
-    const { shareFormValues, shareFullUrl, ...budgets } = hostOptions;
-    const host = window as unknown as Record<string, unknown>;
-    // A refused name leaves the existing accessor in place.
-    if (propertyName in host && propertyName !== this.globalProperty) {
-      throw new Error(`ClrContextService: window.${propertyName} already exists and will not be replaced.`);
-    }
-    this.disableGlobalAccess();
-    this.globalProperty = propertyName;
-    const ceiling = this.untrustedCeiling(budgets);
-    const accessor = (options?: unknown) => {
-      // The caller may ask for less than the application allows, never for more.
-      const snapshot = this.read(capSnapshotOptions(sanitizeUntrustedSnapshotOptions(options), ceiling), true);
-      const shared = shareFormValues ? snapshot : withoutFormValues(snapshot);
-      return shareFullUrl ? shared : withoutUrlDetails(shared, url => this.routePattern(url), this.document.baseURI);
-    };
-    // Read-only so assignment cannot replace it; configurable so `disableGlobalAccess` can delete it.
-    Object.defineProperty(host, propertyName, {
-      value: accessor,
-      writable: false,
-      enumerable: true,
-      configurable: true,
-    });
-  }
-
-  /** Removes the accessor added by `enableGlobalAccess`. */
-  disableGlobalAccess(): void {
-    const window = this.browserWindow();
-    if (window && this.globalProperty) {
-      delete (window as unknown as Record<string, unknown>)[this.globalProperty];
-    }
-    this.globalProperty = null;
   }
 
   private contextTracker(): ContextTracker {
@@ -273,46 +207,11 @@ export class ClrContextService implements OnDestroy {
     return snapshot;
   }
 
-  /** The most an untrusted caller may get: the host can narrow the application's options, never widen them. */
-  private untrustedCeiling(hostCeiling?: ClrContextSnapshotOptions): ClrContextSnapshotOptions {
-    return resolveSnapshotOptions(capSnapshotOptions(withCallOptions(this.scope, hostCeiling), this.scope));
-  }
-
-  private browserWindow(): Window | null {
-    return isPlatformBrowser(this.platformId) ? this.document.defaultView : null;
-  }
-
   private currentUrl(): string | undefined {
     if (isPlatformBrowser(this.platformId) && this.document.location) {
       return this.document.location.href;
     }
     return this.router?.url;
-  }
-
-  private routePattern(url: URL): string | null {
-    if (!this.router || !this.router.config.length) {
-      return null;
-    }
-    if (this.locationStrategy instanceof HashLocationStrategy) {
-      const page = this.document.location?.pathname;
-      return page !== undefined && url.pathname === page && url.hash.startsWith('#/')
-        ? routePatternFor(this.router.config, url.hash.slice(1))
-        : null;
-    }
-    const base = this.basePath();
-    return url.pathname.startsWith(base)
-      ? routePatternFor(this.router.config, url.pathname.slice(base.length - 1))
-      : null;
-  }
-
-  private basePath(): string {
-    try {
-      const href = this.locationStrategy?.getBaseHref() || new URL('.', this.document.baseURI).href;
-      const path = new URL(href, this.document.baseURI).pathname;
-      return path.endsWith('/') ? path : `${path}/`;
-    } catch {
-      return '/';
-    }
   }
 
   private routeContext(): ClrRouteContext | undefined {
