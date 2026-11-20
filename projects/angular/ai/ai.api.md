@@ -107,9 +107,7 @@ export interface ClrContextCollectOptions {
 
 // @public
 export interface ClrContextConfig {
-    debounceMs?: number;
     extractors?: ClrContextDomExtractor[];
-    maxWaitMs?: number;
     routes?: boolean;
     scope?: ClrContextPreset | ClrContextSnapshotOptions;
 }
@@ -158,13 +156,9 @@ export class ClrContextRegistryService {
 }
 
 // @public
-export class ClrContextService implements OnDestroy {
-    changes(options?: ClrContextSnapshotOptions): Observable<ClrContextChange>;
+export class ClrContextService {
     configure(config: ClrContextConfig): void;
-    // (undocumented)
-    ngOnDestroy(): void;
     snapshot(options?: ClrContextSnapshotOptions): Promise<ClrPageContext>;
-    watch(options?: ClrContextSnapshotOptions): Observable<ClrPageContext>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextService, never>;
     // (undocumented)

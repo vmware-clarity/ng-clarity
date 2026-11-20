@@ -19,10 +19,6 @@ export class Assistant {
   snapshot() {
     return this.context.snapshot(); // a Promise of one snapshot, now
   }
-
-  live() {
-    return this.context.watch(); // Observable<ClrPageContext>, re-emits when the page changes
-  }
 }
 ```
 
