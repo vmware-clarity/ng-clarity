@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrCommonStringsService } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
 import { VerticalNavIconService } from './providers/vertical-nav-icon.service';
@@ -130,7 +131,7 @@ describe('Vertical nav, as assistive technology sees it', () => {
     const toggle = async (show: boolean) => {
       fixture.componentInstance.showNav = show;
       for (let pass = 0; pass < 3; pass++) {
-        fixture.detectChanges();
+        renderFixture(fixture);
         await fixture.whenStable();
       }
     };
@@ -158,15 +159,15 @@ describe('Vertical nav, as assistive technology sees it', () => {
 
   it('keeps following the role the application binds when it changes later', () => {
     fixture.componentInstance.boundRole = 'complementary';
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(nav('.bound').getAttribute('role')).toBe('complementary');
 
     fixture.componentInstance.boundRole = null;
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(nav('.bound').hasAttribute('role')).toBe(false);
 
     fixture.componentInstance.boundRole = 'region';
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(nav('.bound').getAttribute('role')).toBe('region');
   });
 });

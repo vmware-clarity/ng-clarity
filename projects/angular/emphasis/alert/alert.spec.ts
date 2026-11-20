@@ -96,7 +96,7 @@ describe('Alert Tests', () => {
     it('announces an inline alert politely, and only what changed in it, not the whole alert again', () => {
       for (const type of ['info', 'success', 'neutral', 'danger', 'warning']) {
         fixture.componentInstance.type = type;
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         const alert = compiled.querySelector('.alert');
         expect(alert.getAttribute('role'), type).toBe('status');
@@ -108,7 +108,7 @@ describe('Alert Tests', () => {
       for (const type of ['danger', 'warning']) {
         fixture.componentInstance.type = type;
         fixture.componentInstance.isAppLevel = true;
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         const alert = compiled.querySelector('.alert');
         expect(alert.getAttribute('role'), type).toBe('alert');
@@ -119,26 +119,26 @@ describe('Alert Tests', () => {
     it('updates aria-atomic when an alert turns from assertive to polite and back', () => {
       fixture.componentInstance.type = 'danger';
       fixture.componentInstance.isAppLevel = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(compiled.querySelector('.alert').hasAttribute('aria-atomic')).toBe(false);
 
       fixture.componentInstance.type = 'info';
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(compiled.querySelector('.alert').getAttribute('aria-atomic')).toBe('false');
 
       fixture.componentInstance.type = 'warning';
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(compiled.querySelector('.alert').hasAttribute('aria-atomic')).toBe(false);
     });
 
     it('takes the role the application asks for, including none', () => {
       fixture.componentInstance.type = 'info';
       fixture.componentInstance.role = 'alert';
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(compiled.querySelector('.alert').getAttribute('role')).toBe('alert');
 
       fixture.componentInstance.role = null;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(compiled.querySelector('.alert').hasAttribute('role')).toBe(false);
       expect(compiled.querySelector('.alert').hasAttribute('aria-atomic')).toBe(false);
     });
@@ -147,11 +147,11 @@ describe('Alert Tests', () => {
       fixture.componentInstance.type = 'danger';
       fixture.componentInstance.isAppLevel = true;
       fixture.componentInstance.role = 'none';
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(compiled.querySelector('.alert').hasAttribute('role')).toBe(false);
 
       fixture.componentInstance.role = '';
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(compiled.querySelector('.alert').getAttribute('role')).toBe('alert');
     });
 
