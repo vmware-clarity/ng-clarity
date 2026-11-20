@@ -74,7 +74,7 @@ function firstChildren<T>(children: Observable<TreeChildren<T>>): Observable<T[]
 export class DatagridTreeService<T = any> implements OnDestroy {
   /** Whether the datagrid renders a tree, while a tree directive is in it. */
   readonly enabled = signal(false);
-  getChildren: ClrDatagridTreeChildrenFunction<T>;
+  getChildren!: ClrDatagridTreeChildrenFunction<T>;
   /** Selecting a row also selects its loaded descendants, in multi-selection. */
   cascadeSelection = false;
   /** The columns marked with `clrDgTreeToggle`, which carry the toggle; the first column when none is. */
@@ -149,18 +149,18 @@ export class DatagridTreeService<T = any> implements OnDestroy {
    * Applies the inputs of the directive that renders the tree, all at once, so the roots are built
    * with the final loader.
    */
-  configure(roots: T[], getChildren: ClrDatagridTreeChildrenFunction<T>, cascadeSelection: boolean) {
+  configure(roots: T[] | undefined, getChildren: ClrDatagridTreeChildrenFunction<T>, cascadeSelection: boolean) {
     const cascaded = this.cascading;
     this.getChildren = getChildren;
     this.cascadeSelection = !!cascadeSelection;
     this.setRoots(roots);
     // Rows selected on their own until now take their descendants along, and their ancestors settle.
-    if (this.cascading && !cascaded && this.selection.current?.length) {
-      this.setSelected(this.selection.current || [], true);
+    if (this.cascading && !cascaded && this.selection.current.length) {
+      this.setSelected(this.selection.current, true);
     }
   }
 
-  setRoots(items: T[]) {
+  setRoots(items: T[] | undefined) {
     const previous = this.loadedRoots();
     this.roots = Array.from(items || [], item => (item === undefined ? undefined : this.toNode(item, null)));
     this.loadOpen(this.loadedRoots());
@@ -301,7 +301,7 @@ export class DatagridTreeService<T = any> implements OnDestroy {
    * a parent is selected only when all of its children are. Locked items keep their state.
    */
   setSelected(items: T[], selected: boolean) {
-    const selection = new Map((this.selection.current || []).map(item => [this.identify(item), item]));
+    const selection = new Map(this.selection.current.map(item => [this.identify(item), item]));
     const set = (node: DatagridTreeNode<T>, value: boolean) => {
       if (node.locked) {
         return;
@@ -314,14 +314,11 @@ export class DatagridTreeService<T = any> implements OnDestroy {
     };
     items
       .map(item => this.nodeFor(item))
-      .filter(Boolean)
+      .filter(node => node !== undefined)
       .forEach(node => {
         node.descendants().forEach(descendant => set(descendant, selected));
         for (let parent = node.parent; parent; parent = parent.parent) {
-          set(
-            parent,
-            parent.children.every(child => child.locked || selection.has(this.identify(child.item)))
-          );
+          set(parent, !!parent.children?.every(child => child.locked || selection.has(this.identify(child.item))));
         }
       });
     this.selection.current = Array.from(selection.values());
@@ -350,13 +347,13 @@ export class DatagridTreeService<T = any> implements OnDestroy {
 
   setSize(node: DatagridTreeNode<T>): number {
     // `totalItems` is 0 until the server says how many roots there are.
-    return node.parent ? node.parent.children.length : Math.max(this.page.totalItems, this.roots.length);
+    return node.parent ? (node.parent.children?.length ?? 0) : Math.max(this.page.totalItems, this.roots.length);
   }
 
   /** A row that is not selected itself but has a selected descendant. */
   isIndeterminate(item: T): boolean {
     if (this.indeterminate?.selection !== this.selection.current) {
-      const selected = new Set((this.selection.current || []).map(selectedItem => this.identify(selectedItem)));
+      const selected = new Set(this.selection.current.map(selectedItem => this.identify(selectedItem)));
       const nodes = new Set<DatagridTreeNode<T>>();
       // Whether the node or any of its descendants is selected.
       const walk = (node: DatagridTreeNode<T>): boolean => {
@@ -370,7 +367,8 @@ export class DatagridTreeService<T = any> implements OnDestroy {
       this.loadedRoots().forEach(walk);
       this.indeterminate = { selection: this.selection.current, nodes };
     }
-    return this.indeterminate.nodes.has(this.nodeFor(item));
+    const node = this.nodeFor(item);
+    return !!node && this.indeterminate.nodes.has(node);
   }
 
   ngOnDestroy() {
@@ -391,7 +389,7 @@ export class DatagridTreeService<T = any> implements OnDestroy {
     if (node.locked) {
       const ref = this.identify(node.item);
       queueMicrotask(() => {
-        this.selection.current = (this.selection.current || []).filter(selected => this.identify(selected) !== ref);
+        this.selection.current = this.selection.current.filter(selected => this.identify(selected) !== ref);
       });
     }
   }
@@ -434,7 +432,7 @@ export class DatagridTreeService<T = any> implements OnDestroy {
   }
 
   private loadedRoots(): DatagridTreeNode<T>[] {
-    return this.roots.filter(Boolean);
+    return this.roots.filter(root => root !== undefined);
   }
 
   /**
@@ -585,7 +583,7 @@ export class DatagridTreeService<T = any> implements OnDestroy {
    */
   private update() {
     const visible: T[] = [];
-    const walk = (siblings: (DatagridTreeNode<T> | undefined)[], sorted: boolean) => {
+    const walk = (siblings: DatagridTreeNode<T>[], sorted: boolean) => {
       const ordered =
         sorted && this.sort.comparator ? siblings.slice().sort((a, b) => this.sort.compare(a.item, b.item)) : siblings;
       // entries() also visits the roots not loaded yet, which forEach would skip.
@@ -599,7 +597,7 @@ export class DatagridTreeService<T = any> implements OnDestroy {
         }
       }
     };
-    walk(this.roots, false);
+    walk(this.roots as DatagridTreeNode<T>[], false);
     // The tree changed under the selection.
     this.indeterminate = null;
     this._change.next(visible);
