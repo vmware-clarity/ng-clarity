@@ -39,7 +39,10 @@ export interface ClrContextSnapshotOptions {
    * none is open), or a CSS selector for the element(s) to describe.
    */
   root?: string;
-  /** CSS selectors for elements to leave out with their subtree. Default none. */
+  /**
+   * CSS selectors for elements to leave out with their subtree, shadow content included. A selector matches
+   * within one tree, so `main .secret` does not reach into a shadow root; select the host instead. Default none.
+   */
   excludeSelectors?: string[];
   /** Kinds of content to leave out, e.g. `['layout', 'text']`. Default none. */
   excludeCategories?: ClrContextCategory[];

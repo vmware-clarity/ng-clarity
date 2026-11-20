@@ -29,6 +29,16 @@ import {
   resolveRole,
   roleCandidateSelector,
 } from './roles';
+import {
+  closestAcrossShadow,
+  containsAcrossShadow,
+  hasRendered,
+  idScope,
+  IdScope,
+  parentAcrossShadow,
+  queryRendered,
+  renderedChildNodes,
+} from './shadow';
 import { summarizeRole } from './summarizers';
 import type { ResolvedSnapshotOptions } from '../snapshot-options';
 import { WRITABLE_ROLES } from './tables/roles';
@@ -66,8 +76,8 @@ interface Walk {
   readonly excludeRoles: ReadonlySet<string>;
   readonly excludeRoleCandidates: string;
   readonly excludeSelector: string;
-  /** Ids that `aria-describedby` and `aria-labelledby` point at, per document, so a frame gets its own. */
-  referencedIds: Map<Document, ReferencedIds>;
+  /** Ids that `aria-describedby` and `aria-labelledby` point at, per document or shadow root. */
+  referencedIds: Map<IdScope, ReferencedIds>;
   /** Component budget left; a probe has its own. */
   remaining: number;
   truncated: boolean;
@@ -117,7 +127,7 @@ export function collectContextTreeWithin(
     visited: { count: 0 },
   };
   return withinReadScope(() => {
-    const rootScope = root.nodeType === Node.ELEMENT_NODE ? (root as Element).ownerDocument : (root as Document);
+    const rootScope = root.nodeType === Node.ELEMENT_NODE ? idScope(root as Element) : (root as IdScope);
     walk.referencedIds.set(rootScope, collectReferencedIds(root, walk));
     const scope = engineScope(root, walk.options);
     const components = describeScope(root, scope.roots, walk);
@@ -146,7 +156,8 @@ export function engineScope(root: ParentNode, options: ResolvedSnapshotOptions):
   const roots = options.rootSelector ? selectedRoots(root, options.rootSelector, excludeSelector, excludedRoles) : null;
   if (options.focus === 'modal') {
     const dialogs = openModalDialogs(root, excludeSelector).filter(
-      dialog => !hasExcludedRole(dialog, excludedRoles) && (!roots || roots.some(scope => scope.contains(dialog)))
+      dialog =>
+        !hasExcludedRole(dialog, excludedRoles) && (!roots || roots.some(scope => containsAcrossShadow(scope, dialog)))
     );
     if (dialogs.length) {
       return { roots: [modalRoot(dialogs[dialogs.length - 1], roots, excludeSelector)], focus: 'modal' };
@@ -163,13 +174,13 @@ function selectedRoots(
   excludedRoles: ReadonlySet<string>
 ): Element[] {
   const selector = usableSelectors(root, [rootSelector]);
-  const roots = selector ? Array.from(root.querySelectorAll(selector)) : [];
+  const roots = selector ? queryRendered(root, selector) : [];
   // What keeps a region from the engine holds however the walk is pointed at it.
   return roots.filter(
     element =>
       !isHiddenFromEngine(element, excludeSelector) &&
       !hasExcludedRole(element, excludedRoles) &&
-      !roots.some(other => other !== element && other.contains(element))
+      !roots.some(other => other !== element && containsAcrossShadow(other, element))
   );
 }
 
@@ -177,7 +188,7 @@ function hasExcludedRole(element: Element, excludedRoles: ReadonlySet<string>): 
   if (!excludedRoles.size) {
     return false;
   }
-  for (let current: Element | null = element; current; current = current.parentElement) {
+  for (let current: Element | null = element; current; current = parentAcrossShadow(current)) {
     const role = resolveRole(current);
     if (role && excludedRoles.has(role)) {
       return true;
@@ -190,8 +201,12 @@ function hasExcludedRole(element: Element, excludedRoles: ReadonlySet<string>): 
 function modalRoot(dialog: Element, roots: Element[] | null, excludeSelector: string): Element {
   let root = dialog;
   const body = dialog.ownerDocument.body;
-  for (let part = dialog, parent = dialog.parentElement; parent && parent !== body; parent = parent.parentElement) {
-    if (roots && !roots.some(scope => scope.contains(parent))) {
+  for (
+    let part = dialog, parent = parentAcrossShadow(dialog);
+    parent && parent !== body;
+    parent = parentAcrossShadow(parent)
+  ) {
+    if (roots && !roots.some(scope => containsAcrossShadow(scope, parent))) {
       break;
     }
     if (resolveRole(parent) || accessibleName(parent, null, 1) || !rendersOnly(parent, part, excludeSelector)) {
@@ -206,7 +221,7 @@ function modalRoot(dialog: Element, roots: Element[] | null, excludeSelector: st
 }
 
 function rendersOnly(parent: Element, part: Element, excludeSelector: string): boolean {
-  return Array.from(parent.childNodes).every(node => {
+  return renderedChildNodes(parent).every(node => {
     if (node === part) {
       return true;
     }
@@ -224,7 +239,7 @@ function rendersOnly(parent: Element, part: Element, excludeSelector: string): b
       hasElementContext(element) ||
       hasAnnotation(element) ||
       element.matches(DESCRIBABLE_SELECTOR) ||
-      !!element.querySelector(DESCRIBABLE_SELECTOR)
+      hasRendered(element, DESCRIBABLE_SELECTOR)
     ) {
       return false;
     }
@@ -239,9 +254,9 @@ function openModalDialogs(root: ParentNode, excludeSelector = ''): Element[] {
 
 function modalDialogs(root: ParentNode): Element[] {
   try {
-    return Array.from(root.querySelectorAll(MODAL_SELECTOR));
+    return queryRendered(root, MODAL_SELECTOR);
   } catch {
-    return Array.from(root.querySelectorAll(LEGACY_MODAL_SELECTOR));
+    return queryRendered(root, LEGACY_MODAL_SELECTOR);
   }
 }
 
@@ -273,8 +288,11 @@ function noteUndescribed(element: Element, walk: Walk, owner: Element | null): v
 }
 
 function withinRedactedAncestry<T>(node: ParentNode, walk: Walk, describe: () => T): T {
-  const ancestor = node.nodeType === Node.ELEMENT_NODE ? (node as Element).parentElement : null;
-  return within(walk, ancestor?.closest(CLR_CONTEXT_REDACT_SELECTOR) ? ['redactedDepth'] : [], describe);
+  // A walk started at a shadow root continues past it to its host's ancestry.
+  const ancestor =
+    node.nodeType === Node.ELEMENT_NODE ? parentAcrossShadow(node as Element) : ((node as ShadowRoot).host ?? null);
+  const redacted = !!ancestor && !!closestAcrossShadow(ancestor, CLR_CONTEXT_REDACT_SELECTOR);
+  return within(walk, redacted ? ['redactedDepth'] : [], describe);
 }
 
 type DepthCounter = 'depth' | 'elementDepth' | 'redactedDepth' | 'summarizedListDepth' | 'textDepth';
@@ -324,9 +342,9 @@ function collectReferencedIds(root: ParentNode, walk: Walk): ReferencedIds {
   return ids;
 }
 
-/** Ids are scoped to a document, so each gets its own sets, collected when first reached. */
+/** Ids are scoped to a document or shadow root, so each gets its own sets, collected when first reached. */
 function referencedIds(element: Element, walk: Walk): ReferencedIds {
-  const scope = element.ownerDocument;
+  const scope = idScope(element);
   let ids = walk.referencedIds.get(scope);
   if (!ids) {
     ids = collectReferencedIds(scope, walk);
@@ -412,7 +430,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
     !hasElementContext(element) &&
     !hasAnnotation(element) &&
     !Array.from(element.attributes).some(attribute => attribute.name.startsWith('aria-')) &&
-    !element.querySelector(CONTROL_SELECTOR)
+    !hasRendered(element, CONTROL_SELECTOR)
   ) {
     return [];
   }
@@ -543,10 +561,10 @@ function describeCellControls(collection: Element, walk: Walk): ClrComponentCont
   }
   // Hidden, inert, ignored or excluded cells are skipped, as the walk would skip them.
   const cells = new Map<Element, boolean>();
-  for (const control of Array.from(collection.querySelectorAll(VALUE_CONTROL_SELECTOR))) {
+  for (const control of queryRendered(collection, VALUE_CONTROL_SELECTOR)) {
     const role = resolveRole(control);
-    const cell = role && WRITABLE_ROLES.has(role) ? control.closest(CELL_SELECTOR) : null;
-    if (!cell || cells.has(cell) || !collection.contains(cell)) {
+    const cell = role && WRITABLE_ROLES.has(role) ? closestAcrossShadow(control, CELL_SELECTOR) : null;
+    if (!cell || cells.has(cell) || !containsAcrossShadow(collection, cell)) {
       continue;
     }
     const path = ancestryUntil(cell, collection);
@@ -572,7 +590,7 @@ function describeCellControls(collection: Element, walk: Walk): ClrComponentCont
 
 function ancestryUntil(element: Element, boundary: Element): Element[] {
   const path: Element[] = [];
-  for (let current: Element | null = element; current && current !== boundary; current = current.parentElement) {
+  for (let current: Element | null = element; current && current !== boundary; current = parentAcrossShadow(current)) {
     path.push(current);
   }
   return path;
@@ -585,7 +603,7 @@ function isTextBlock(element: Element, walk: Walk): boolean {
   if (NAMING_TAGS.has(element.tagName.toLowerCase()) || isLabel(element, walk)) {
     return false;
   }
-  const hasOwnText = Array.from(element.childNodes).some(
+  const hasOwnText = renderedChildNodes(element).some(
     node => node.nodeType === Node.TEXT_NODE && !!node.textContent?.trim()
   );
   return hasOwnText && !isVisuallyHidden(element);
@@ -619,7 +637,7 @@ function describeTextBlock(element: Element, walk: Walk, owner: Element | null):
 }
 
 function liveSetting(element: Element): string | null {
-  const region = element.closest('[aria-live]');
+  const region = closestAcrossShadow(element, '[aria-live]');
   return region && (region === element || !resolveRole(region)) ? ariaEnumValue(region, 'aria-live') : null;
 }
 
@@ -726,7 +744,8 @@ function describeChildren(
 ): ClrComponentContext[] {
   const nodes: ClrComponentContext[] = [];
   const withText = !!looseText && walk.options.includeText && walk.textDepth === 0 && walk.redactedDepth === 0;
-  const children = Array.from(parent.childNodes).filter(node => withText || node.nodeType === Node.ELEMENT_NODE);
+  // An open shadow root renders in place of the light DOM, which shows only through its slots.
+  const children = renderedChildNodes(parent).filter(node => withText || node.nodeType === Node.ELEMENT_NODE);
   let text = '';
   for (let index = 0; index < children.length; index++) {
     const child = children[index];
@@ -770,7 +789,7 @@ function isPhrasing(element: Element, walk: Walk): boolean {
     !hasAnnotation(element) &&
     !isLabel(element, walk) &&
     !element.matches(DESCRIBABLE_SELECTOR) &&
-    !element.querySelector(DESCRIBABLE_SELECTOR) &&
+    !hasRendered(element, DESCRIBABLE_SELECTOR) &&
     !walk.extractors.some(extractor => element.matches(extractor.selector))
   );
 }
@@ -853,7 +872,7 @@ function holdsExcludedRole(element: Element, walk: Walk, renderedOnly = false): 
   if (!walk.excludeRoleCandidates) {
     return false;
   }
-  return Array.from(element.querySelectorAll(walk.excludeRoleCandidates)).some(descendant => {
+  return queryRendered(element, walk.excludeRoleCandidates).some(descendant => {
     const role = resolveRole(descendant);
     return (
       !!role &&
@@ -866,15 +885,18 @@ function holdsExcludedRole(element: Element, walk: Walk, renderedOnly = false): 
 
 /** No custom element between them: a datagrid renders its grid, not the input in one of its cells. */
 function isRenderedBy(descendant: Element, element: Element): boolean {
-  let owner: Element | null = descendant.parentElement;
+  let owner: Element | null = parentAcrossShadow(descendant);
   while (owner && owner !== element && !isCustomElementTag(owner)) {
-    owner = owner.parentElement;
+    owner = parentAcrossShadow(owner);
   }
   return owner === element;
 }
 
 function isLeftOutAnyway(element: Element, excludeSelector: string): boolean {
-  return !!element.closest(CLR_CONTEXT_IGNORE_SELECTOR) || (!!excludeSelector && !!element.closest(excludeSelector));
+  return (
+    !!closestAcrossShadow(element, CLR_CONTEXT_IGNORE_SELECTOR) ||
+    (!!excludeSelector && !!closestAcrossShadow(element, excludeSelector))
+  );
 }
 
 function shouldSkipSubtree(element: Element, walk: Walk): boolean {
@@ -886,7 +908,7 @@ function shouldSkipSubtree(element: Element, walk: Walk): boolean {
   }
   // Only role-less text without controls folds into a description; page content can point
   // `aria-describedby` at any id.
-  if (isDescription(element, walk) && !element.querySelector(CONTROL_SELECTOR) && !resolveRole(element)) {
+  if (isDescription(element, walk) && !hasRendered(element, CONTROL_SELECTOR) && !resolveRole(element)) {
     return true;
   }
   return !isVisible(element);
