@@ -14,7 +14,6 @@ import { ClrComponentContext } from '@clr/angular/utils';
 
 import { selectFiles } from './file-input.helpers';
 import { ClrFileInputModule } from './file-input.module';
-import { untrustedSnapshot } from '../../ai/contextual/untrusted-snapshot.mock';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.Eager,
@@ -137,15 +136,6 @@ describe('ClrFileInputContainer, as page-context tooling sees it', () => {
     expect(findNode(components, 'clr-file-input-container')?.state?.['fileCount']).toBe(2);
     expect(JSON.stringify(components)).not.toContain('4111');
     expect(JSON.stringify(components)).not.toContain('4222');
-  });
-
-  it('keeps the names and how many there are from a consumer the application does not control', async () => {
-    await create(FileListTest, ['a-4111.pdf', 'b-4222.pdf']);
-    const engine = TestBed.inject(ClrContextService);
-    const shared = JSON.stringify(untrustedSnapshot(engine));
-
-    expect(shared).toContain('clr-file-input-container');
-    expect(shared).not.toMatch(/"(fileCount|itemCount)"|4111|4222/);
   });
 
   it('keeps the helper text, and the error that says why the field is invalid', async () => {

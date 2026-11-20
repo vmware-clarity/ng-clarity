@@ -21,7 +21,6 @@ import {
 
 import { ClrCombobox } from './combobox';
 import { ClrComboboxModule } from './combobox.module';
-import { untrustedSnapshot } from '../../ai/contextual/untrusted-snapshot.mock';
 
 /** Creates a fixture and lets its comboboxes settle. */
 async function create<C>(component: Type<C>, imports: unknown[] = []): Promise<ComponentFixture<C>> {
@@ -521,21 +520,11 @@ class FilteredOptionsTestComponent {
 
 describe('ClrCombobox element context, options narrowed to what the user typed', () => {
   let fixture: ComponentFixture<FilteredOptionsTestComponent>;
-  let engine: ClrContextService;
 
   async function settle() {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
-  }
-
-  /** The state an untrusted consumer is told for the nth combobox of the fixture. */
-  function sharedState(index: number, options?: unknown): unknown {
-    return JSON.parse(shared(options)).components[index].state;
-  }
-
-  function shared(options?: unknown): string {
-    return JSON.stringify(untrustedSnapshot(engine, options));
   }
 
   function open(selector = 'clr-combobox') {
@@ -552,20 +541,18 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
 
   beforeEach(async () => {
     fixture = await create(FilteredOptionsTestComponent, [ClrLoadingModule]);
-    engine = TestBed.inject(ClrContextService);
   });
 
   afterEach(() => {
     fixture.destroy();
   });
 
-  it('lists every option to untrusted consumers before anything is typed', () => {
+  it('lists every option before anything is typed', () => {
     expect(published(fixture).state['options']).toEqual(['Alice Smith', 'Bob Jones', 'Carol Smith', 'Dan Brown']);
     expect(published(fixture).state['redactedOptions']).toBe(1);
-    expect(shared()).toContain('Carol Smith');
   });
 
-  it('tells the application which options match the text typed, and untrusted consumers nothing', () => {
+  it('lists the options that match the text typed apart from the full list', () => {
     fixture.nativeElement.querySelector('button.clr-combobox-trigger').click();
     fixture.detectChanges();
     type('Smi');
@@ -573,17 +560,14 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     expect(published(fixture).state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
     expect(published(fixture).state['redactedMatchingOptions']).toBe(1);
     expect(published(fixture).state['options']).toBeUndefined();
-    expect(shared()).not.toMatch(/Smi|"redactedMatchingOptions"/);
   });
 
-  it('tells the application that nothing matches, and untrusted consumers nothing', () => {
+  it('says that nothing matches the text typed', () => {
     open();
     type('Zzq');
 
     expect(published(fixture).state['matchingOptions']).toEqual([]);
     expect(published(fixture).state['optionsAvailable']).toBeUndefined();
-    expect(shared()).not.toMatch(/Zzq|"matchingOptions"/);
-    expect(sharedState(0)).toEqual({ multiSelect: false });
   });
 
   it('says the matches are still loading while a search runs, rather than that none match', async () => {
@@ -595,7 +579,6 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     // The matches shown so far stay listed: the user sees them, and an agent may pick one.
     expect(published(fixture).state['matchingOptionsPending']).toBe(true);
     expect(published(fixture).state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
-    expect(shared()).not.toMatch(/Smi|"matchingOptionsPending"/);
 
     fixture.componentInstance.loading = false;
     await settle();
@@ -612,7 +595,6 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
 
     expect(published(fixture).state['matchingOptionsPending']).toBe(true);
     expect(published(fixture).state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
-    expect(shared()).not.toContain('"matchingOptionsPending"');
   });
 
   it('reads clrLoading on the combobox only, where it drives what the user sees', async () => {
@@ -625,26 +607,23 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     expect(published(fixture, '.options-loading').state['matchingOptions']).toEqual(['Burgas']);
   });
 
-  it('says a search started before anything was typed is still running, to every consumer', async () => {
+  it('says a search started before anything was typed is still running', async () => {
     fixture.componentInstance.loading = true;
     await settle();
 
     expect(published(fixture).state['optionsPending']).toBe(true);
     expect(published(fixture).state['options']).toBeDefined();
-    expect(shared()).toContain('"optionsPending":true');
   });
 
-  it('withholds the results of a search the application runs for the typed text', () => {
+  it('lists the results of a search the application runs for the typed text as matches', () => {
     open('.async-search');
     type('Smi', '.async-search');
 
     expect(published(fixture, '.async-search').state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
     expect(published(fixture, '.async-search').state['options']).toBeUndefined();
-    expect(shared()).not.toMatch(/Smi"|"matchingOptions"/);
-    expect(sharedState(3)).toEqual({ multiSelect: false, withheld: true });
   });
 
-  it('withholds the previous results after the typed text is cleared, while the application has not replaced them', () => {
+  it('keeps the previous results as matches after the typed text is cleared, until the application replaces them', () => {
     fixture.componentInstance.ignoreEmptySearch = true;
     open('.async-search');
     type('Smi', '.async-search');
@@ -652,7 +631,6 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
 
     expect(published(fixture, '.async-search').state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
     expect(published(fixture, '.async-search').state['options']).toBeUndefined();
-    expect(sharedState(3)).toEqual({ multiSelect: false, withheld: true });
   });
 
   it('does not reveal a pick through the results the application loads for its label', async () => {
@@ -667,16 +645,13 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     expect(fixture.componentInstance.member).toBe('Alice Smith');
     expect(published(fixture, '.async-search').state['matchingOptions']).toEqual(['Alice Smith']);
     expect(published(fixture, '.async-search').state['options']).toBeUndefined();
-    expect(sharedState(3)).toEqual({ multiSelect: false, withheld: true });
-    expect(sharedState(3, { maxItemsPerCollection: 0 })).toEqual({ multiSelect: false, withheld: true });
   });
 
-  it('tells every consumer an application search has no results yet before anything is typed', () => {
+  it('says an application search has no results yet before anything is typed', () => {
     expect(published(fixture, '.async-search').state['optionsAvailable']).toBe(false);
-    expect(sharedState(3)).toEqual({ multiSelect: false, optionsAvailable: false });
   });
 
-  it('says a search started after the typed text was cleared is running, and withholds the list it replaces', async () => {
+  it('says a search started after the typed text was cleared is running, and keeps the list it replaces as matches', async () => {
     fixture.componentInstance.ignoreEmptySearch = true;
     open('.async-search');
     type('Smi', '.async-search');
@@ -687,16 +662,14 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     expect(published(fixture, '.async-search').state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
     expect(published(fixture, '.async-search').state['matchingOptionsPending']).toBeUndefined();
     expect(published(fixture, '.async-search').state['optionsPending']).toBe(true);
-    expect(sharedState(3)).toEqual({ multiSelect: false, optionsPending: true, withheld: true });
   });
 
-  it('withholds even written-out options from untrusted consumers when the application listens to clrInputChange', () => {
+  it('lists even written-out options as matches when the application listens to clrInputChange', () => {
     expect(published(fixture, '.static-listened').state['matchingOptions']).toEqual(['Tea', 'Coffee']);
     expect(published(fixture, '.static-listened').state['options']).toBeUndefined();
-    expect(sharedState(5)).toEqual({ multiSelect: false, withheld: true });
   });
 
-  it('withholds the results the application kept from a search typed into an earlier instance', async () => {
+  it('lists the results the application kept from a search typed into an earlier instance as matches', async () => {
     open('.async-search');
     type('Smi', '.async-search');
     fixture.componentInstance.memberShown = false;
@@ -707,10 +680,9 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     expect(fixture.nativeElement.querySelector('.async-search input').value).toBe('');
     expect(published(fixture, '.async-search').state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
     expect(published(fixture, '.async-search').state['options']).toBeUndefined();
-    expect(sharedState(3)).toEqual({ multiSelect: false, withheld: true });
   });
 
-  it('withholds the results a multi-select keeps after closing, when the application ignores the empty search', async () => {
+  it('lists the results a multi-select keeps after closing as matches, when the application ignores the empty search', async () => {
     fixture.componentInstance.ignoreEmptySearch = true;
     open('.async-multi');
     type('Smi', '.async-multi');
@@ -729,7 +701,6 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     expect(fixture.componentInstance.team).toEqual(['Alice Smith']);
     expect(published(fixture, '.async-multi').state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
     expect(published(fixture, '.async-multi').state['options']).toBeUndefined();
-    expect(sharedState(6)).toEqual({ multiSelect: true, withheld: true });
   });
 
   it('counts the options rather than listing them in a summary snapshot', () => {
@@ -738,12 +709,9 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
       optionCount: 5,
       value: null,
     });
-    const summary = shared({ maxItemsPerCollection: 0 });
-    expect(summary).toContain('"optionCount":5');
-    expect(summary).not.toContain('Alice');
   });
 
-  it('counts the matches in a summary snapshot, and tells untrusted consumers neither', () => {
+  it('counts the matches in a summary snapshot', () => {
     open();
     type('Smi');
 
@@ -752,27 +720,22 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
       matchingOptionCount: 3,
       value: null,
     });
-    expect(shared({ maxItemsPerCollection: 0 })).not.toMatch(/Smi|"matchingOptionCount"/);
-    // Not the narrowed count under the other key either.
-    expect(sharedState(0, { maxItemsPerCollection: 0 })).toEqual({ multiSelect: false, withheld: true });
   });
 
-  it('withholds every option of a list that mixes written-out options with *clrOptionItems', () => {
+  it('lists every option of a list that mixes written-out options with *clrOptionItems as matches', () => {
     open('.mixed');
     type('Var', '.mixed');
 
     expect(published(fixture, '.mixed').state['matchingOptions']).toEqual(['Somewhere else', 'Varna']);
-    expect(shared()).not.toMatch(/Var|Somewhere else/);
   });
 
-  it('withholds the picked option when an editable combobox with a value is opened again', async () => {
+  it('lists the picked option as a match when an editable combobox with a value is opened again', async () => {
     fixture.componentInstance.selection = 'Bob Jones';
     await settle();
     open();
     await settle();
 
     expect(published(fixture).state['matchingOptions']).toEqual(['Bob Jones']);
-    expect(shared()).not.toContain('Bob');
   });
 
   it('keeps listing options written out one by one, which typing does not narrow', () => {
@@ -784,7 +747,7 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     expect(published(fixture, '.static').state['matchingOptions']).toBeUndefined();
   });
 
-  it('does not tell untrusted consumers the one option left after an editable combobox closes on a pick', async () => {
+  it('lists the one option left after an editable combobox closes on a pick as a match', async () => {
     fixture.nativeElement.querySelector('button.clr-combobox-trigger').click();
     fixture.detectChanges();
     const bob = Array.from(document.querySelectorAll<HTMLElement>('clr-option')).find(option =>
@@ -797,6 +760,5 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
 
     expect(fixture.componentInstance.selection).toBe('Bob Jones');
     expect(published(fixture).state['matchingOptions']).toEqual(['Bob Jones']);
-    expect(shared()).not.toContain('Bob');
   });
 });

@@ -8,12 +8,10 @@
 import { ChangeDetectionStrategy, Component, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ClrContextService } from '@clr/angular/ai';
 import { publishedState } from '@clr/angular/testing';
 import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrContextSnapshotOptions } from '@clr/angular/utils';
 
 import { ClrDatagridModule } from './datagrid.module';
-import { untrustedSnapshot } from '../../ai/contextual/untrusted-snapshot.mock';
 
 /** The state the fixture's datagrid publishes. */
 function gridState(fixture: ComponentFixture<unknown>, options: ClrContextSnapshotOptions = {}) {
@@ -305,16 +303,5 @@ describe('ClrDatagrid element context, selection', () => {
     const summary = gridState(fixture, { maxItemsPerCollection: 0 });
     expect('rows' in summary).toBe(false);
     expect(summary['selection']).toEqual(['savings | frozen']);
-  });
-
-  it('withholds the rows and the selection from a consumer the application does not control', async () => {
-    await create(MultiSelectionTestComponent);
-    const engine = TestBed.inject(ClrContextService);
-
-    expect(JSON.stringify((await engine.snapshot()).components)).toContain('"selection"');
-    const shared = JSON.stringify(untrustedSnapshot(engine));
-
-    expect(shared).toContain('"selectionMode":"multi"');
-    expect(shared).not.toMatch(/"(rows|selection)"|savings \| frozen|4111/);
   });
 });

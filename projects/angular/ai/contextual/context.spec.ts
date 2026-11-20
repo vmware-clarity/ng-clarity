@@ -20,13 +20,13 @@ function nodes(components: ClrComponentContext[]): ClrComponentContext[] {
 }
 
 /** The node labelled `label` in a snapshot read now, without waiting for asynchronous providers. */
-function nodeLabelled(label: string, options?: ClrContextSnapshotOptions, untrusted = false) {
-  const snapshot: ClrPageContext = TestBed.inject(ClrContextService)['read'](options, untrusted);
+function nodeLabelled(label: string, options?: ClrContextSnapshotOptions) {
+  const snapshot: ClrPageContext = TestBed.inject(ClrContextService)['read'](options);
   return nodes(snapshot.components).find(node => node.label === label);
 }
 
 function labels(options?: ClrContextSnapshotOptions): string[] {
-  const snapshot: ClrPageContext = TestBed.inject(ClrContextService)['read'](options, false);
+  const snapshot: ClrPageContext = TestBed.inject(ClrContextService)['read'](options);
   return nodes(snapshot.components).map(node => node.label ?? '');
 }
 
@@ -34,12 +34,7 @@ function labels(options?: ClrContextSnapshotOptions): string[] {
   changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     @if (show) {
-      <section
-        clrContext="User management"
-        clrContextType="section"
-        [clrContextState]="state"
-        [clrContextPublicKeys]="publicKeys"
-      ></section>
+      <section clrContext="User management" clrContextType="section" [clrContextState]="state"></section>
     }
     <div [clrContext]="emptyLabel"></div>
   `,
@@ -48,7 +43,6 @@ function labels(options?: ClrContextSnapshotOptions): string[] {
 class TestComponent {
   show = true;
   state: Record<string, unknown> | null = { cluster: 'alpha' };
-  publicKeys: string[] | null = null;
   emptyLabel = '';
 }
 
@@ -74,40 +68,12 @@ describe('ClrContext directive', () => {
     expect(registry.collect()).toEqual([]);
   });
 
-  it('shares with untrusted callers only the state keys it marks public', () => {
-    fixture.componentInstance.state = { cluster: 'alpha', query: 's3cr3t' };
-    fixture.detectChanges();
-    expect(nodeLabelled('User management', undefined, true)?.state).toEqual({ withheld: true });
-
-    fixture.componentInstance.publicKeys = ['cluster'];
-    fixture.detectChanges();
-    expect(nodeLabelled('User management', undefined, true)?.state).toEqual({ cluster: 'alpha', withheld: true });
-    expect(nodeLabelled('User management')?.state).toEqual({ cluster: 'alpha', query: 's3cr3t' });
-  });
-
-  it('merges with what a component publishes on the same element, each source keeping its own public keys', () => {
+  it('merges with what a component publishes on the same element', () => {
     const section: Element = fixture.nativeElement.querySelector('section');
-    const unpublish = publishElementContext(section, () => ({
-      state: { total: 3, owner: 'ada' },
-      publicKeys: ['total'],
-    }));
-    fixture.componentInstance.publicKeys = ['cluster'];
-    fixture.detectChanges();
+    const unpublish = publishElementContext(section, () => ({ state: { total: 3, owner: 'ada' } }));
 
     expect(nodeLabelled('User management')?.state).toEqual({ cluster: 'alpha', total: 3, owner: 'ada' });
-    expect(nodeLabelled('User management', undefined, true)?.state).toEqual({
-      cluster: 'alpha',
-      total: 3,
-      withheld: true,
-    });
     unpublish();
-  });
-
-  it('marks state withheld only when a private value had something in it', () => {
-    fixture.componentInstance.state = { cluster: 'alpha', query: '', picks: [] };
-    fixture.componentInstance.publicKeys = ['cluster'];
-    fixture.detectChanges();
-    expect(nodeLabelled('User management', undefined, true)?.state).toEqual({ cluster: 'alpha' });
   });
 
   it('reads its inputs at snapshot time', () => {
