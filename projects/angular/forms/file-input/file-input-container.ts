@@ -144,7 +144,6 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
       element: 'clr-file-input-container',
       label: shown ? contextText(label, descendant => !!excluded && descendant.matches(excluded)) : '',
       state,
-      publicKeys: ['disabled'],
     };
   });
 

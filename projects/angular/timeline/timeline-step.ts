@@ -83,7 +83,6 @@ export class ClrTimelineStep implements OnDestroy {
     if (this.hostElement) {
       this.teardownElementContext = publishElementContext(this.hostElement.nativeElement, () => ({
         state: { status: this.state },
-        publicKeys: ['status'],
       }));
     }
   }

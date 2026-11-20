@@ -48,7 +48,7 @@ const CONFIRM_TIMEOUT_MS = 120_000;
 
 /**
  * Fills form controls and navigates for an AI agent, from the refs and routes in snapshots; never submits or clicks.
- * For application code only: results carry unwithheld page values, so no untrusted surface exposes it.
+ * For application code only: results carry the page's values.
  */
 @Injectable({ providedIn: 'root' })
 export class ClrMutationEngineService {

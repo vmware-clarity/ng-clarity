@@ -84,7 +84,7 @@ describe('Alert Tests', () => {
       const host = compiled.querySelector('clr-alert') as Element & {
         clrElementContext?: () => unknown;
       };
-      expect(host.clrElementContext?.()).toEqual({ state: { severity: 'info' }, publicKeys: ['severity'] });
+      expect(host.clrElementContext?.()).toEqual({ state: { severity: 'info' } });
 
       fixture.componentInstance.isClosable = true;
       fixture.componentInstance.closed = true;

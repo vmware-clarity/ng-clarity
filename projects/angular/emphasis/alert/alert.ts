@@ -128,7 +128,7 @@ export class ClrAlert implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
     // The alert type is only a CSS class, so the component reports it.
     this.teardownElementContext = publishElementContext(this.hostElement.nativeElement, () =>
-      this._closed ? null : { state: { severity: this.alertType }, publicKeys: ['severity'] }
+      this._closed ? null : { state: { severity: this.alertType } }
     );
 
     // ngOnChanges does not run for an alert with no bound inputs.
