@@ -10,7 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ClrContextService } from '@clr/angular/ai';
+import { CLR_CONTEXT_DEFAULT_OPTIONS, ClrContextService } from '@clr/angular/ai';
 import { publishedOn } from '@clr/angular/testing';
 import {
   ClrComponentContext,
@@ -320,7 +320,7 @@ class MarkedOptionTestComponent {
 
 describe('ClrCombobox element context, options marked or excluded themselves', () => {
   let fixture: ComponentFixture<MarkedOptionTestComponent>;
-  const options = { excludeSelectors: ['.secret'], maxItemsPerCollection: 25 };
+  const options = { ...CLR_CONTEXT_DEFAULT_OPTIONS, excludeSelectors: ['.secret'], maxItemsPerCollection: 25 };
 
   beforeEach(async () => {
     fixture = await create(MarkedOptionTestComponent);
@@ -424,7 +424,7 @@ describe('ClrCombobox element context, options matched by identity', () => {
   });
 
   it('refuses to replace that selection', () => {
-    expect(publishedMutator()?.coerce('Ops budget', {}).refused).toBe(
+    expect(publishedMutator()?.coerce('Ops budget', CLR_CONTEXT_DEFAULT_OPTIONS).refused).toBe(
       'The current choice is kept from agents, and cannot be changed by one.'
     );
   });
@@ -436,7 +436,9 @@ describe('ClrCombobox element context, options matched by identity', () => {
     fixture.detectChanges();
 
     expect(published(fixture).state['value']).toBe('Ops budget');
-    expect(publishedMutator()?.coerce({ id: 1 }, {}).value).toBe(fixture.componentInstance.accounts[0]);
+    expect(publishedMutator()?.coerce({ id: 1 }, CLR_CONTEXT_DEFAULT_OPTIONS).value).toBe(
+      fixture.componentInstance.accounts[0]
+    );
   });
 });
 
