@@ -60,10 +60,10 @@ export interface ClrPageContext {
   viewId?: string;
   /**
    * Metadata about the current view, merged from the configured views, `application.metadata` and the
-   * annotation on the view root (`data-clr-context-url`, then the annotation itself), later ones winning.
+   * `[clrContext]` annotation on the view root, later ones winning.
    */
   metadata?: Record<string, unknown>;
-  /** Set while a metadata URL is loading, or when one could not be loaded. */
+  /** Set while the `viewConfig` URL is loading, or when it could not be loaded. */
   metadataState?: 'loading' | 'unavailable';
   /**
    * Whether the engine reads this view: `false` when a configured view disables it, or the application

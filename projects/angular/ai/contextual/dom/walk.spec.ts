@@ -7,6 +7,7 @@
 
 import { ClrComponentContext, ClrContextSnapshotOptions, publishElementContext } from '@clr/angular/utils';
 
+import { annotate } from './annotations';
 import { withoutValues } from './aria-state';
 import { ClrContextTreeResult, collectContextTreeWithin, isOutsideSnapshot } from './walk';
 import { ResolvedSnapshotOptions, resolveSnapshotOptions } from '../snapshot-options';
@@ -1759,55 +1760,40 @@ describe('collectContextTreeWithin, open shadow roots', () => {
   });
 });
 
-describe('collectContextTree, annotation attributes', () => {
+describe('collectContextTree, annotations', () => {
   useContainer();
 
-  it('describes an element annotated with data-clr-context like one with [clrContext]', () => {
+  function annotated(selector: string, context: Partial<ClrComponentContext>): void {
+    annotate(container.querySelector(selector) ?? container, () => context);
+  }
+
+  it('reads nothing from annotation attributes in the markup', () => {
     const nodes = collect(
       `<div data-clr-context="Firewall rules" data-clr-context-type="region"
             data-clr-context-state='{"cluster":"east"}'><button>Add rule</button></div>`
     );
 
-    expect(nodes).toEqual([
-      {
-        type: 'region',
-        label: 'Firewall rules',
-        state: { cluster: 'east' },
-        children: [{ type: 'button', label: 'Add rule' }],
-      },
-    ]);
+    expect(nodes).toEqual([{ type: 'button', label: 'Add rule' }]);
   });
 
   it('reports an annotation inside the view as the state of the node it sits on', () => {
-    const nodes = collect(
-      `<nav aria-label="Hosts" data-clr-context-state='{"purpose":"Pick a host"}'><a href="#">h1</a></nav>`
-    );
+    container.innerHTML = '<nav aria-label="Hosts"><a href="#">h1</a></nav>';
+    annotated('nav', { state: { purpose: 'Pick a host' } });
 
-    expect(nodes[0].state).toEqual({ purpose: 'Pick a host' });
+    expect(collectContextTreeWithin(container, budgets()).components[0].state).toEqual({ purpose: 'Pick a host' });
   });
 
   it('leaves the annotation on the view root to the snapshot', () => {
-    container.setAttribute('data-clr-context-state', '{"purpose":"Hosts"}');
+    container.innerHTML = '<button>Add</button>';
+    annotated('#none', { state: { purpose: 'Hosts' } });
 
-    expect(collect('<button>Add</button>')).toEqual([{ type: 'button', label: 'Add' }]);
-  });
-
-  it('leaves out invalid JSON and keeps the rest of the annotation', () => {
-    vi.spyOn(console, 'warn').mockImplementation(() => undefined);
-
-    const nodes = collect(`<div data-clr-context="Rules" data-clr-context-state="{oops"><button>Add</button></div>`);
-
-    expect(nodes[0].label).toBe('Rules');
-    expect(nodes[0].state).toBeUndefined();
-    expect(console.warn).toHaveBeenCalled();
+    expect(collectContextTreeWithin(container, budgets()).components).toEqual([{ type: 'button', label: 'Add' }]);
   });
 
   it('withholds the annotated state inside a redacted region', () => {
-    const nodes = collect(
-      `<div data-clr-context-redact><div data-clr-context="Card" data-clr-context-state='{"card":"4111"}'>
-        <button>Pay</button></div></div>`
-    );
+    container.innerHTML = '<div data-clr-context-redact><div id="card"><button>Pay</button></div></div>';
+    annotated('#card', { label: 'Card', state: { card: '4111' } });
 
-    expect(JSON.stringify(nodes)).not.toContain('4111');
+    expect(JSON.stringify(collectContextTreeWithin(container, budgets()).components)).not.toContain('4111');
   });
 });

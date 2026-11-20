@@ -14,13 +14,7 @@ import { ContextMetadataLoader } from './context-metadata-loader';
 import { ClrContextRegistryService } from './context-registry.service';
 import { attempt, usableTimeout } from '../attempt';
 import { charged } from '../budget';
-import {
-  annotationContext,
-  annotationFrom,
-  CLR_CONTEXT_URL_ATTRIBUTE,
-  isRecord,
-  viewAnnotationHosts,
-} from '../dom/annotations';
+import { annotationContext, isRecord, viewAnnotationHosts } from '../dom/annotations';
 import { ClrContextDomExtractor } from '../dom/dom-context-collector';
 import { closestAcrossShadow } from '../dom/shadow';
 import { collectContextTreeWithin, engineScope } from '../dom/walk';
@@ -97,7 +91,7 @@ export interface ClrContextConfig {
    */
   viewConfig?: ClrContextViewConfig[] | string;
   /**
-   * Origins other than the page's own that `data-clr-context-url` and a `viewConfig` URL may load from,
+   * Origins other than the page's own that a `viewConfig` URL may load from,
    * e.g. `['https://help.example.com']`.
    */
   metadataOrigins?: string[];
@@ -204,7 +198,7 @@ export class ClrContextService implements OnDestroy {
   /**
    * The application and view, with nothing about the page yet. A view is not read when a configured view
    * disables it, while a `viewConfig` URL has not loaded, or, with `views: 'enabled'`, when nothing gives it
-   * metadata. Once `settled`, a metadata URL that has not loaded is reported as unavailable.
+   * metadata. Once `settled`, a `viewConfig` URL that has not loaded is reported as unavailable.
    */
   private viewSnapshot(options: ResolvedSnapshotOptions, settled: boolean): ClrPageContext {
     const route = this.routeContext();
@@ -217,7 +211,7 @@ export class ClrContextService implements OnDestroy {
       components: [],
       collectedAt: new Date().toISOString(),
     };
-    const loads = this.metadataUrls(options).map(url => this.metadataLoader.read(url));
+    const loads = this.metadataUrls().map(url => this.metadataLoader.read(url));
     if (loads.includes(undefined) || loads.includes(null)) {
       snapshot.metadataState = settled || loads.includes(null) ? 'unavailable' : 'loading';
     }
@@ -270,10 +264,8 @@ export class ClrContextService implements OnDestroy {
   private pageMetadata(options: ResolvedSnapshotOptions): Record<string, unknown> {
     const metadata: Record<string, unknown> = {};
     for (const host of this.metadataHosts(options)) {
-      const url = host.getAttribute(CLR_CONTEXT_URL_ATTRIBUTE);
-      for (const annotation of [url ? annotationFrom(this.metadataLoader.read(url)) : null, annotationContext(host)]) {
-        Object.assign(metadata, annotation?.label ? { label: annotation.label } : null, annotation?.state);
-      }
+      const annotation = annotationContext(host);
+      Object.assign(metadata, annotation?.label ? { label: annotation.label } : null, annotation?.state);
     }
     return metadata;
   }
@@ -292,13 +284,10 @@ export class ClrContextService implements OnDestroy {
     );
   }
 
-  /** The configuration and metadata URLs the view's description depends on. */
-  private metadataUrls(options: ResolvedSnapshotOptions): string[] {
-    const urls = this.metadataHosts(options)
-      .map(host => host.getAttribute(CLR_CONTEXT_URL_ATTRIBUTE))
-      .filter((url): url is string => !!url);
+  /** The configuration URL the view's description depends on. */
+  private metadataUrls(): string[] {
     const source = this.config.viewConfig;
-    return typeof source === 'string' ? [source, ...urls] : urls;
+    return typeof source === 'string' ? [source] : [];
   }
 
   /** The first configured view matching the route and the page. */
@@ -332,7 +321,7 @@ export class ClrContextService implements OnDestroy {
   }
 
   /**
-   * Like `read`, awaiting asynchronous providers and metadata URLs for up to `timeoutMs` each. After a navigation, the new view's
+   * Like `read`, awaiting asynchronous providers and the `viewConfig` URL for up to `timeoutMs` each. After a navigation, the new view's
    * providers are awaited once more; then it settles for a snapshot that reports them as loading.
    */
   private async readAsync(
@@ -343,7 +332,7 @@ export class ClrContextService implements OnDestroy {
   ): Promise<ClrPageContext> {
     this.snapshotTaken = true;
     const resolved = this.resolveScope(options);
-    const urls = this.metadataUrls(resolved);
+    const urls = this.metadataUrls();
     const waitMs = usableTimeout(timeoutMs, DEFAULT_SOURCE_TIMEOUT_MS);
     if (urls.length) {
       await this.metadataLoader.settle(urls, waitMs);
