@@ -15,8 +15,10 @@ export * from './schema';
 export { CLR_CONTEXT_CATEGORIES, CLR_CONTEXT_PRESETS } from './snapshot-options';
 export type { ClrContextPreset } from './snapshot-options';
 // Re-exported from @clr/angular/utils, where components publish without depending on this entry point.
-export { publishElementContext } from '@clr/angular/utils';
-export type { ClrElementContextCallback } from '@clr/angular/utils';
+export { publishElementContext, publishElementMutator } from '@clr/angular/utils';
+export type { ClrElementContextCallback, ClrElementMutation, ClrElementMutator } from '@clr/angular/utils';
 export { CLR_CONTEXT_IGNORE_ATTRIBUTE, CLR_CONTEXT_REDACT_ATTRIBUTE } from '@clr/angular/utils';
 export * from './context';
 export * from './contextual.module';
+export * from './mutation/mutation.interface';
+export * from './mutation/mutation-engine.service';

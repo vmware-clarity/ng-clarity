@@ -10,9 +10,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ClrContextService } from '@clr/angular/ai';
+import { CLR_CONTEXT_DEFAULT_OPTIONS, ClrContextService } from '@clr/angular/ai';
 import { publishedOn } from '@clr/angular/testing';
-import { ClrComponentContext, ClrContextSnapshotOptions, ClrLoadingModule, elementContextOf } from '@clr/angular/utils';
+import {
+  ClrComponentContext,
+  ClrContextSnapshotOptions,
+  ClrLoadingModule,
+  elementContextOf,
+  elementMutatorOf,
+} from '@clr/angular/utils';
 
 import { ClrCombobox } from './combobox';
 import { ClrComboboxModule } from './combobox.module';
@@ -314,13 +320,17 @@ class MarkedOptionTestComponent {
 
 describe('ClrCombobox element context, options marked or excluded themselves', () => {
   let fixture: ComponentFixture<MarkedOptionTestComponent>;
-  const options = { excludeSelectors: ['.secret'], maxItemsPerCollection: 25 };
+  const options = { ...CLR_CONTEXT_DEFAULT_OPTIONS, excludeSelectors: ['.secret'], maxItemsPerCollection: 25 };
 
   beforeEach(async () => {
     fixture = await create(MarkedOptionTestComponent);
   });
 
   afterEach(() => fixture.destroy());
+
+  function publishedMutator() {
+    return elementMutatorOf(fixture.nativeElement.querySelector('clr-combobox') as Element);
+  }
 
   it('counts a redacted option without naming it, and leaves an excluded one out', () => {
     const context = published(fixture, 'clr-combobox', options);
@@ -330,6 +340,19 @@ describe('ClrCombobox element context, options marked or excluded themselves', (
     expect(context.state['value']).toEqual([null, 'Savings']);
     expect(JSON.stringify(context)).not.toContain('998877');
     expect(JSON.stringify(context)).not.toContain('trust fund');
+  });
+
+  it('neither lists nor takes them in a write, and keeps them selected', () => {
+    const mutator = publishedMutator();
+    const refused = mutator?.coerce('Nope', options);
+    expect(refused?.refused).toContain('"Checking"');
+    expect(refused?.refused).not.toContain('998877');
+    expect(refused?.refused).not.toContain('trust fund');
+    expect(refused?.refused).not.toContain('ACC-42');
+    expect(mutator?.coerce('Hidden trust fund', options).refused).toBeDefined();
+
+    expect(mutator?.coerce('Checking', options).value).toEqual(['acct', 'trust', 'checking']);
+    expect(mutator?.coerce(null, options).value).toEqual(['acct', 'trust']);
   });
 
   it('leaves excluded text inside an option out of its label and out of the selection', () => {
@@ -388,12 +411,22 @@ describe('ClrCombobox element context, options matched by identity', () => {
 
   afterEach(() => fixture.destroy());
 
+  function publishedMutator() {
+    return elementMutatorOf(fixture.nativeElement.querySelector('clr-combobox') as Element);
+  }
+
   it('withholds a redacted selection matched by clrComboboxIdentityFn rather than by reference', () => {
     const context = published(fixture);
 
     expect(context.state['value']).toBeNull();
     expect(context.state['redactedOptions']).toBe(1);
     expect(JSON.stringify(context)).not.toContain('998877');
+  });
+
+  it('refuses to replace that selection', () => {
+    expect(publishedMutator()?.coerce('Ops budget', CLR_CONTEXT_DEFAULT_OPTIONS).refused).toBe(
+      'The current choice is kept from agents, and cannot be changed by one.'
+    );
   });
 
   it('names a selection the agent may see when it matches an option by identity', async () => {
@@ -403,6 +436,9 @@ describe('ClrCombobox element context, options matched by identity', () => {
     fixture.detectChanges();
 
     expect(published(fixture).state['value']).toBe('Ops budget');
+    expect(publishedMutator()?.coerce({ id: 1 }, CLR_CONTEXT_DEFAULT_OPTIONS).value).toBe(
+      fixture.componentInstance.accounts[0]
+    );
   });
 });
 

@@ -1,0 +1,961 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { ChangeDetectionStrategy, Component, ElementRef, forwardRef, inject, Input, OnDestroy } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  AbstractControl,
+  ControlValueAccessor,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  NG_VALUE_ACCESSOR,
+  NgControl,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ClrCommonFormsModule } from '@clr/angular/forms/common';
+import { ClrInputModule } from '@clr/angular/forms/input';
+import { ClrRadioModule } from '@clr/angular/forms/radio';
+import { ClrSelectModule } from '@clr/angular/forms/select';
+import { publishElementContext } from '@clr/angular/utils';
+import type { Mock } from 'vitest';
+
+import { allRefs, findNode, refOf, settle } from './helpers.mock';
+import { ClrMutationService } from './mutation-engine.service';
+import {
+  ClrElementMutationResult,
+  ClrMutationConsequence,
+  ClrMutationReport,
+  ClrMutationTarget,
+  provideClrMutationPolicy,
+} from './mutation.interface';
+import { descriptionMatches } from './write';
+import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
+import { ClrContextService } from '../providers/contextual-engine.service';
+
+/** A third-party toggle: a custom element carrying the binding, rendering a checkbox. */
+@Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
+  selector: 'app-toggle',
+  template: '<input type="checkbox" role="switch" aria-label="Enabled" [checked]="on" (change)="flip($event)" />',
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => AppToggle), multi: true }],
+  standalone: false,
+})
+class AppToggle implements ControlValueAccessor {
+  on = false;
+  private onChange?: (value: boolean) => void;
+  writeValue(value: boolean): void {
+    this.on = !!value;
+  }
+  registerOnChange(fn: (value: boolean) => void): void {
+    this.onChange = fn;
+  }
+  registerOnTouched(): void {
+    // Not needed here.
+  }
+  flip(event: Event): void {
+    this.on = (event.target as HTMLInputElement).checked;
+    this.onChange?.(this.on);
+  }
+}
+
+/** A custom control whose role says nothing about the value it takes. */
+@Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
+  selector: 'app-rating',
+  template: '<span aria-label="Rating">★★★</span>',
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => AppRating), multi: true }],
+  standalone: false,
+})
+class AppRating implements ControlValueAccessor {
+  writeValue(): void {
+    // Nothing to render.
+  }
+  registerOnChange(): void {
+    // Not needed here.
+  }
+  registerOnTouched(): void {
+    // Not needed here.
+  }
+}
+
+/** A value accessor whose write throws, as a buggy third-party control's might. */
+@Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
+  selector: 'app-broken',
+  template: '<input aria-label="Broken" />',
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => AppBroken), multi: true }],
+  standalone: false,
+})
+class AppBroken implements ControlValueAccessor {
+  armed = false;
+  writeValue(): void {
+    if (this.armed) {
+      throw new Error('The broken control refused.');
+    }
+  }
+  registerOnChange(): void {
+    // Not needed here.
+  }
+  registerOnTouched(): void {
+    // Not needed here.
+  }
+}
+
+/** A value accessor that keeps what it is given, for the custom controls below. */
+abstract class KeptValue<T> implements ControlValueAccessor {
+  value: T | null = null;
+  writeValue(value: T | null): void {
+    this.value = value;
+  }
+  registerOnChange(): void {
+    // Not needed here.
+  }
+  registerOnTouched(): void {
+    // Not needed here.
+  }
+}
+
+/** A custom slider stating its bounds through ARIA on its own host. */
+@Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
+  selector: 'app-stars',
+  template: '{{ value }}',
+  host: {
+    role: 'slider',
+    'aria-label': 'Stars',
+    'aria-valuemin': '1',
+    'aria-valuemax': '5',
+    '[attr.aria-valuenow]': 'value',
+  },
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => AppStars), multi: true }],
+  standalone: false,
+})
+class AppStars extends KeptValue<number> {}
+
+/** A custom element carrying the binding, rendering a spinbutton that states its bounds. */
+@Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
+  selector: 'app-count',
+  template:
+    '<div role="spinbutton" aria-label="Count" aria-valuemin="0" aria-valuemax="10" [attr.aria-valuenow]="value"></div>',
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => AppCount), multi: true }],
+  standalone: false,
+})
+class AppCount extends KeptValue<number> {}
+
+/** A third-party autocomplete rendering a text input, whose model is the chosen record. */
+@Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
+  selector: 'app-owner',
+  template: '<input aria-label="Owner" [value]="value?.name ?? \'\'" />',
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => AppOwner), multi: true }],
+  standalone: false,
+})
+class AppOwner extends KeptValue<{ id: number; name: string }> {}
+
+/**
+ * A component that renders nothing but a modal dialog and publishes state about it on its
+ * host, as a wizard does.
+ */
+@Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
+  selector: 'app-rename',
+  template: `
+    <div role="dialog" aria-modal="true" aria-label="Rename">
+      <label for="renamed">New name</label>
+      <input id="renamed" [formControl]="control" />
+    </div>
+  `,
+  standalone: false,
+})
+class AppRename implements OnDestroy {
+  @Input() control = new FormControl('');
+  private readonly unpublish = publishElementContext(inject(ElementRef).nativeElement, () => ({
+    state: { step: 1 },
+  }));
+
+  ngOnDestroy() {
+    this.unpublish();
+  }
+}
+
+/** A custom radio group, its radios named by their text. */
+@Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
+  selector: 'app-size',
+  template: `
+    @for (size of sizes; track size) {
+      <div role="radio" [attr.aria-checked]="size === value" [attr.aria-disabled]="size === 'XL' || null">
+        {{ size }}
+      </div>
+    }
+  `,
+  host: { role: 'radiogroup' },
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => AppSize), multi: true }],
+  standalone: false,
+})
+class AppSize extends KeptValue<unknown> {
+  sizes = ['S', 'M', 'L', 'XL'];
+}
+
+@Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
+  template: `
+    <form [formGroup]="form">
+      <app-toggle formControlName="enabled"></app-toggle>
+      <app-stars formControlName="stars"></app-stars>
+      <app-count formControlName="count"></app-count>
+      <app-owner formControlName="owner"></app-owner>
+      <app-size formControlName="size" aria-label="Size"></app-size>
+      <app-size formControlName="sizeCode" aria-label="Size code"></app-size>
+      <app-rating formControlName="rating" role="listbox" aria-label="Rating"></app-rating>
+      <app-broken formControlName="broken"></app-broken>
+      <clr-input-container>
+        <label>Name</label>
+        <input clrInput formControlName="name" />
+      </clr-input-container>
+      <clr-select-container>
+        <label>Plan</label>
+        <select clrSelect formControlName="plan">
+          <option value="free">Free</option>
+          <option value="gold" disabled>Gold</option>
+          <option value="team">Team</option>
+        </select>
+      </clr-select-container>
+      <clr-select-container>
+        <label>Colour</label>
+        <select
+          clrSelect
+          formControlName="colour"
+          (change)="colourEvents = colourEvents + 1"
+          (blur)="colourEvents = colourEvents + 1"
+        >
+          <option value="red">Red</option>
+          <option value="blue">Blue</option>
+        </select>
+      </clr-select-container>
+      <clr-select-container>
+        <label>Region</label>
+        <select clrSelect formControlName="region">
+          <option value="eu">Europe</option>
+          <option value="us">Americas</option>
+        </select>
+      </clr-select-container>
+      <clr-select-container>
+        <label>Office</label>
+        <select clrSelect formControlName="office">
+          <option value="lon">Main</option>
+          <option value="par">Main</option>
+          <option value="ber">Berlin</option>
+        </select>
+      </clr-select-container>
+      <clr-radio-container>
+        <label>Tier</label>
+        <clr-radio-wrapper>
+          <input type="radio" clrRadio formControlName="tier" value="basic" />
+          <label>Basic</label>
+        </clr-radio-wrapper>
+        <clr-radio-wrapper>
+          <input type="radio" clrRadio formControlName="tier" value="premium" [attr.disabled]="true" />
+          <label>Premium</label>
+        </clr-radio-wrapper>
+      </clr-radio-container>
+      <label for="due">Due</label>
+      <input id="due" type="date" formControlName="due" />
+      <label for="tint">Tint</label>
+      <!-- A colour input has no role of its own; one given a role is offered for writing. -->
+      <input id="tint" type="color" role="textbox" formControlName="tint" />
+      <label for="volume">Volume</label>
+      <input id="volume" type="range" min="0" max="10" step="2" formControlName="volume" />
+      <label for="cpus">CPU count</label>
+      <input id="cpus" type="number" min="1" max="64" formControlName="cpus" />
+      <label for="locked">Locked</label>
+      <input id="locked" formControlName="locked" />
+      <label for="code">Code</label>
+      <input id="code" maxlength="4" formControlName="code" />
+      <label for="strict">Strict</label>
+      <input id="strict" formControlName="strict" />
+      <clr-radio-container>
+        <label>Card</label>
+        <clr-radio-wrapper>
+          <input type="radio" clrRadio formControlName="card" value="visa" />
+          <label>Visa <span class="secret">4111</span></label>
+        </clr-radio-wrapper>
+        <clr-radio-wrapper>
+          <input type="radio" clrRadio formControlName="card" value="amex" />
+          <label>Amex <span class="secret">3782</span></label>
+        </clr-radio-wrapper>
+      </clr-radio-container>
+      <clr-select-container>
+        <label>Grade</label>
+        <select clrSelect formControlName="grade">
+          <option value="" hidden>Choose</option>
+          <option value="basic">Basic</option>
+          <option value="gold" class="secret">Gold</option>
+        </select>
+      </clr-select-container>
+      <clr-select-container>
+        <label>Seats</label>
+        <select clrSelect multiple formControlName="seats">
+          <option value="free">Free</option>
+          <option value="staff" class="secret">Internal staff plan</option>
+          <option value="team">Team</option>
+        </select>
+      </clr-select-container>
+    </form>
+    @if (renameOpen) {
+      <app-rename [control]="renamed"></app-rename>
+    }
+    @if (modalOpen) {
+      <div role="dialog" aria-modal="true" aria-label="Confirm">
+        <label for="inside">Inside</label>
+        <input id="inside" [formControl]="inside" />
+      </div>
+    }
+  `,
+  standalone: false,
+})
+class Host {
+  form = new FormGroup({
+    enabled: new FormControl(true),
+    stars: new FormControl(3),
+    count: new FormControl(2),
+    owner: new FormControl<{ id: number; name: string } | null>({ id: 7, name: 'Grace' }),
+    size: new FormControl('M'),
+    // A group whose model is a code rather than the label a radio shows.
+    sizeCode: new FormControl<unknown>(2),
+    rating: new FormControl(3),
+    broken: new FormControl(''),
+    name: new FormControl('', Validators.required),
+    plan: new FormControl('free'),
+    colour: new FormControl('red', { updateOn: 'blur' }),
+    region: new FormControl('eu', { updateOn: 'submit' }),
+    office: new FormControl('ber'),
+    tier: new FormControl('basic'),
+    due: new FormControl(''),
+    tint: new FormControl('#000000'),
+    volume: new FormControl(4),
+    cpus: new FormControl(2),
+    locked: new FormControl({ value: 'fixed', disabled: true }),
+    code: new FormControl(''),
+    card: new FormControl<string | null>(null),
+    seats: new FormControl<string[]>(['staff']),
+    grade: new FormControl('gold'),
+    strict: new FormControl('', (control: AbstractControl): null => {
+      if (control.value === 'boom') {
+        throw new Error('The validator exploded.');
+      }
+      return null;
+    }),
+  });
+  inside = new FormControl('');
+  renamed = new FormControl('');
+  renameOpen = false;
+  colourEvents = 0;
+  modalOpen = false;
+}
+
+const DECLARATIONS = [Host, AppToggle, AppRating, AppBroken, AppStars, AppCount, AppOwner, AppSize, AppRename];
+
+describe('ClrMutationService write path', () => {
+  let fixture: ComponentFixture<Host>;
+  let host: Host;
+  let contextEngine: ClrContextService;
+  let engine: ClrMutationService;
+  let classify: Mock<(target: ClrMutationTarget) => ClrMutationConsequence>;
+  let confirm: Mock<(target: ClrMutationTarget) => boolean | Promise<boolean>>;
+  let announce: Mock<(report: ClrMutationReport) => void>;
+
+  beforeEach(async () => {
+    classify = vi.fn().mockReturnValue('reversible');
+    confirm = vi.fn().mockReturnValue(true);
+    announce = vi.fn();
+    TestBed.configureTestingModule({
+      imports: [
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        FormsModule,
+        ClrCommonFormsModule,
+        ClrInputModule,
+        ClrSelectModule,
+        ClrRadioModule,
+      ],
+      declarations: DECLARATIONS,
+      providers: [
+        provideClrMutationPolicy({
+          classify: target => classify(target),
+          confirm: target => confirm(target),
+          announce: report => announce(report),
+          confirmTimeoutMs: 200,
+        }),
+      ],
+    });
+    fixture = TestBed.createComponent(Host);
+    host = fixture.componentInstance;
+    await settle(fixture);
+    contextEngine = TestBed.inject(ClrContextService);
+    engine = TestBed.inject(ClrMutationService);
+  });
+
+  afterEach(() => fixture.destroy());
+
+  async function set(label: string, value: unknown, description = label): Promise<ClrElementMutationResult> {
+    const ref = refOf(contextEngine['read'](undefined), label);
+    const report = await engine.apply([{ operation: 'setValue', ref, description, value }]);
+    await settle(fixture);
+    return report.results[0] as ClrElementMutationResult;
+  }
+
+  describe('custom controls', () => {
+    it('writes a boolean to a custom toggle judged by the role it renders, and unticks it', async () => {
+      const result = await set('Enabled', false);
+
+      expect(result.applied).toBe(true);
+      expect(host.form.value.enabled).toBe(false);
+      expect(fixture.nativeElement.querySelector('app-toggle input').checked).toBe(false);
+      expect((await set('Enabled', 'maybe')).refused).toBe('invalid');
+    });
+
+    it('refuses a custom control whose role says nothing about its value', async () => {
+      const result = await set('Rating', 5);
+
+      expect(result.refused).toBe('unsupported');
+      expect(result.detail).toContain('publishElementMutator');
+      expect(host.form.value.rating).toBe(3);
+    });
+
+    it('refuses a number outside the bounds a custom slider or spinbutton states through ARIA', async () => {
+      const page = contextEngine['read'](undefined);
+      expect(findNode(page.components, node => node.label === 'Stars')?.state).toEqual(
+        expect.objectContaining({ min: 1, max: 5 })
+      );
+
+      const high = await set('Stars', 9);
+      expect(high.refused).toBe('invalid');
+      expect(high.detail).toBe('The number must be at least 1 and at most 5.');
+      expect((await set('Count', -1)).detail).toBe('The number must be at least 0 and at most 10.');
+      expect(host.form.value.stars).toBe(3);
+      expect(host.form.value.count).toBe(2);
+
+      expect((await set('Stars', 5)).applied).toBe(true);
+      expect(host.form.value.stars).toBe(5);
+    });
+
+    it('refuses to write text over a custom control holding an object', async () => {
+      const result = await set('Owner', 'Ada');
+
+      expect(result.refused).toBe('unsupported');
+      expect(result.detail).toContain('publishElementMutator');
+      expect(host.form.value.owner).toEqual({ id: 7, name: 'Grace' });
+    });
+
+    it('chooses a radio of a custom radio group by its label', async () => {
+      const result = await set('Size', 'l');
+
+      expect(result).toEqual(expect.objectContaining({ applied: true, value: 'L', previous: 'M' }));
+      expect(host.form.value.size).toBe('L');
+      expect((await set('Size', 'XXL')).detail).toBe('No such option. The options are: "S", "M", "L".');
+      expect((await set('Size', 'XL')).detail).toBe('The option "XL" cannot be chosen right now.');
+      expect(host.form.value.size).toBe('L');
+    });
+
+    it('refuses a custom radio group whose model is not the label of a radio', async () => {
+      const result = await set('Size code', 'L');
+
+      expect(result.refused).toBe('unsupported');
+      expect(result.detail).toContain('publishElementMutator');
+      expect(host.form.value.sizeCode).toBe(2);
+    });
+
+    it('reports a control that throws as refused, and still applies the operations after it', async () => {
+      const component = fixture.debugElement.query(debug => debug.componentInstance instanceof AppBroken)
+        .componentInstance as AppBroken;
+      component.armed = true;
+      const page = contextEngine['read'](undefined);
+
+      const report = await engine.apply([
+        { operation: 'setValue', ref: refOf(page, 'Broken'), description: 'Broken', value: 'x' },
+        { operation: 'setValue', ref: refOf(page, 'Name'), description: 'Name', value: 'Ada' },
+      ]);
+
+      expect(report.results[0]).toEqual(
+        expect.objectContaining({ applied: false, refused: 'invalid', detail: 'The broken control refused.' })
+      );
+      expect(report.results[1].applied).toBe(true);
+      expect(host.form.value.name).toBe('Ada');
+      // The refused write leaves the control as the user left it, value included.
+      expect(host.form.controls.broken.value).toBe('');
+      expect(host.form.getRawValue().broken).toBe('');
+      expect(host.form.controls.broken.touched).toBe(false);
+      expect(host.form.controls.broken.dirty).toBe(false);
+    });
+
+    it('puts the view back too when a validator throws on the value', async () => {
+      const result = await set('Strict', 'boom');
+
+      expect(result).toEqual(expect.objectContaining({ applied: false, refused: 'invalid' }));
+      expect(host.form.controls.strict.value).toBe('');
+      expect((fixture.nativeElement.querySelector('#strict') as HTMLInputElement).value).toBe('');
+    });
+  });
+
+  describe('choices', () => {
+    it('refuses a disabled option and lists only the ones that can be chosen', async () => {
+      const disabled = await set('Plan', 'Gold');
+      expect(disabled.refused).toBe('invalid');
+      expect(host.form.value.plan).toBe('free');
+
+      const unknown = await set('Plan', 'Platinum');
+      expect(unknown.detail).toContain('"Free", "Team"');
+      expect(unknown.detail).not.toContain('Gold');
+    });
+
+    it('refuses an option label several options share, unless a value names one of them', async () => {
+      const ambiguous = await set('Office', 'Main');
+      expect(ambiguous.refused).toBe('invalid');
+      expect(ambiguous.detail).toContain('Several options read "Main"');
+      expect(host.form.value.office).toBe('ber');
+
+      expect((await set('Office', 'par')).applied).toBe(true);
+      expect(host.form.value.office).toBe('par');
+    });
+
+    it('refuses a disabled radio in a group', async () => {
+      const result = await set('Tier', 'Premium');
+
+      expect(result.refused).toBe('invalid');
+      expect(host.form.value.tier).toBe('basic');
+    });
+
+    it('refuses a control whose form control is disabled, whatever the DOM says', async () => {
+      host.form.controls.tier.disable();
+      await settle(fixture);
+
+      expect((await set('Tier', 'Basic')).refused).toBe('disabled');
+    });
+
+    it('takes a select value that updates on blur, and reads it back from the model', async () => {
+      const result = await set('Colour', 'Blue');
+
+      expect(result).toEqual(expect.objectContaining({ applied: true, value: 'Blue', previous: 'Red' }));
+      expect(host.form.value.colour).toBe('blue');
+    });
+
+    it('writes a select without running the application’s own change or blur handlers', async () => {
+      expect((await set('Colour', 'Blue')).applied).toBe(true);
+      expect((await set('Plan', 'Team')).applied).toBe(true);
+
+      expect(host.colourEvents).toBe(0);
+      expect(host.form.value.plan).toBe('team');
+    });
+
+    it("relies on Angular's select accessors keeping onChange and onTouched", () => {
+      // Not documented API: should Angular rename them, every select write is refused as
+      // unsupported, and this says why.
+      const select = fixture.debugElement.query(
+        debug => debug.nativeElement.getAttribute?.('formControlName') === 'plan'
+      );
+      const accessor = select.injector.get(NgControl).valueAccessor as unknown as Record<string, unknown>;
+
+      expect(typeof accessor['onChange']).toBe('function');
+      expect(typeof accessor['onTouched']).toBe('function');
+    });
+
+    it('clears a select with no empty option to nothing, never to its first option', async () => {
+      const ref = refOf(contextEngine['read'](undefined), 'Office');
+      const report = await engine.apply([{ operation: 'clear', ref, description: 'Office' }]);
+      await settle(fixture);
+      const result = report.results[0] as ClrElementMutationResult;
+
+      expect(result).toEqual(expect.objectContaining({ applied: true, value: null, previous: 'Berlin' }));
+      expect(classify).toHaveBeenCalledWith(expect.objectContaining({ label: 'Office', value: null }));
+      expect(host.form.value.office).toBeNull();
+      expect(fixture.nativeElement.querySelector('select[formControlName="office"]').selectedIndex).toBe(-1);
+    });
+
+    it('refuses a select that applies its value only on submit', async () => {
+      const result = await set('Region', 'Americas');
+
+      expect(result.refused).toBe('unsupported');
+      expect(host.form.getRawValue().region).toBe('eu');
+    });
+  });
+
+  describe('typed and bounded values', () => {
+    it('takes a date input only in the format the browser accepts', async () => {
+      expect((await set('Due', 'next Tuesday')).refused).toBe('invalid');
+      expect(host.form.value.due).toBe('');
+      expect((await set('Due', '2026-03-06')).applied).toBe(true);
+      expect(host.form.value.due).toBe('2026-03-06');
+    });
+
+    it('takes a colour in either case, as the lower-case value the field shows', async () => {
+      const result = await set('Tint', '#AABBCC');
+
+      expect(result).toEqual(expect.objectContaining({ applied: true, value: '#aabbcc' }));
+      expect(host.form.value.tint).toBe('#aabbcc');
+      expect((await set('Tint', 'teal')).refused).toBe('invalid');
+    });
+
+    it('refuses a number outside the input’s bounds or off its step', async () => {
+      expect((await set('Volume', 20)).detail).toContain('at most 10');
+      expect((await set('Volume', 3)).detail).toContain('multiple of 2');
+      expect((await set('Volume', 8)).applied).toBe(true);
+      expect(host.form.value.volume).toBe(8);
+    });
+
+    it('reports a number field as a number in the snapshot, the result and the snapshot after', async () => {
+      const valueOf = (page: ClrPageContext) => findNode(page.components, node => node.label === 'CPU count')?.state;
+      expect(valueOf(contextEngine['read'](undefined))?.['value']).toBe(2);
+
+      const ref = refOf(contextEngine['read'](undefined), 'CPU count');
+      const report = await engine.apply([{ operation: 'setValue', ref, description: 'CPU count', value: '8' }]);
+      await settle(fixture);
+
+      expect(report.results[0]).toEqual(expect.objectContaining({ applied: true, value: 8, previous: 2 }));
+      expect(valueOf(report.snapshot)?.['value']).toBe(8);
+      expect(valueOf(contextEngine['read'](undefined))?.['value']).toBe(8);
+      expect(host.form.value.cpus).toBe(8);
+    });
+
+    it('refuses text longer than the field lets a person type', async () => {
+      const long = await set('Code', 'ABCDE');
+      expect(long.refused).toBe('invalid');
+      expect(long.detail).toContain('at most 4 characters');
+      expect(host.form.value.code).toBe('');
+
+      expect((await set('Code', 'ABCD')).applied).toBe(true);
+      expect(host.form.value.code).toBe('ABCD');
+    });
+  });
+
+  describe('emissions', () => {
+    it('emits valueChanges once per write', async () => {
+      const emitted: unknown[] = [];
+      const subscription = host.form.controls.name.valueChanges.subscribe(value => emitted.push(value));
+
+      await set('Name', 'Ada');
+      subscription.unsubscribe();
+
+      expect(emitted).toEqual(['Ada']);
+    });
+
+    it('tells the application what an apply did', async () => {
+      await set('Name', 'Ada');
+
+      expect(announce).toHaveBeenCalledTimes(1);
+      expect(announce.mock.lastCall[0].results[0].applied).toBe(true);
+    });
+  });
+
+  describe('descriptions', () => {
+    it('matches whole words, not fragments', async () => {
+      expect((await set('Name', 'Ada', 'the name field')).applied).toBe(true);
+      expect((await set('Name', 'Bob', 'e')).refused).toBe('mismatch');
+      expect((await set('Name', 'Bob', '')).refused).toBe('mismatch');
+    });
+
+    it('refuses a description that warns it is about something else', async () => {
+      expect((await set('Name', 'Ada', 'the wrong name')).refused).toBe('mismatch');
+      expect((await set('Name', 'Ada', 'no name')).refused).toBe('mismatch');
+      expect((await set('Name', 'Ada', 'the name input field')).applied).toBe(true);
+    });
+
+    it('tells a field from its pair, and writes to a field whose own name negates', () => {
+      expect(descriptionMatches('email', 'Email address')).toBe(false);
+      expect(descriptionMatches('the email address field', 'Email address')).toBe(true);
+      expect(descriptionMatches('Confirm email', 'Email')).toBe(false);
+      expect(descriptionMatches('email', 'Confirm email')).toBe(false);
+      expect(descriptionMatches('the confirm email field', 'Confirm email')).toBe(true);
+      expect(descriptionMatches('last name', 'Name')).toBe(false);
+      expect(descriptionMatches('Other income', 'Other income')).toBe(true);
+      expect(descriptionMatches('income', 'Other income')).toBe(false);
+      expect(descriptionMatches('No. of seats', 'No. of seats')).toBe(true);
+      expect(descriptionMatches('Never expires', 'Never expires')).toBe(true);
+      expect(descriptionMatches('not the other income', 'Other income')).toBe(false);
+    });
+
+    it('tells a field from its pair in a language the word lists do not know', () => {
+      expect(descriptionMatches('E-Mail', 'E-Mail bestätigen')).toBe(false);
+      expect(descriptionMatches('Mot de passe', 'Nouveau mot de passe')).toBe(false);
+      expect(descriptionMatches('Парола', 'Потвърди парола')).toBe(false);
+      expect(descriptionMatches('E-Mail bestätigen', 'E-Mail bestätigen')).toBe(true);
+      expect(descriptionMatches('nouveau mot de passe', 'Nouveau mot de passe')).toBe(true);
+    });
+
+    it('matches a label the snapshot cut short on the words it kept', () => {
+      expect(descriptionMatches('Street address of the head office', 'Street address of…')).toBe(true);
+      expect(descriptionMatches('Phone number', 'Street address of…')).toBe(false);
+    });
+
+    it('refuses a description that only mentions the label among other words', async () => {
+      expect((await set('Name', 'Ada', 'not the name, the password')).refused).toBe('mismatch');
+      expect((await set('Name', 'Ada', 'the name textbox')).applied).toBe(true);
+    });
+  });
+
+  describe('choices the snapshot leaves out', () => {
+    const options = { excludeSelectors: ['.secret'] };
+
+    async function setWith(label: string, value: unknown): Promise<ClrElementMutationResult> {
+      const ref = refOf(contextEngine['read'](options), label);
+      const report = await engine.apply([{ operation: 'setValue', ref, description: label, value }], options);
+      await settle(fixture);
+      return report.results[0] as ClrElementMutationResult;
+    }
+
+    it('takes a radio by the label the snapshot showed, and quotes nothing it left out', async () => {
+      const refused = await setWith('Card', 'Diners');
+      expect(refused.detail).toContain('"Visa", "Amex"');
+      expect(JSON.stringify(refused)).not.toContain('4111');
+
+      const result = await setWith('Card', 'Visa');
+      expect(result.applied).toBe(true);
+      expect(JSON.stringify(result)).not.toContain('4111');
+      expect(host.form.value.card).toBe('visa');
+    });
+
+    it('does not replace a single choice the snapshot left out, and does replace a hidden placeholder', async () => {
+      const refused = await setWith('Grade', 'Basic');
+      expect(refused.refused).toBe('invalid');
+      expect(refused.detail).toContain('kept from agents');
+      expect(host.form.value.grade).toBe('gold');
+
+      host.form.controls.grade.setValue('');
+      await settle(fixture);
+      expect((await setWith('Grade', 'Basic')).applied).toBe(true);
+      expect(host.form.value.grade).toBe('basic');
+    });
+
+    it('neither lists nor takes an excluded option, and keeps it selected', async () => {
+      const refused = await setWith('Seats', ['Gold']);
+      expect(refused.detail).toContain('"Free", "Team"');
+      expect(refused.detail).not.toContain('staff');
+      expect((await setWith('Seats', ['Internal staff plan'])).refused).toBe('invalid');
+
+      const result = await setWith('Seats', ['Team']);
+      expect(result.applied).toBe(true);
+      expect(result.value).toEqual(['Team']);
+      expect(host.form.value.seats).toEqual(['staff', 'team']);
+    });
+  });
+
+  describe('scope', () => {
+    it('does not write what a snapshot with the options of the write would leave out, whatever snapshot the ref came from', async () => {
+      const ref = refOf(contextEngine['read'](undefined), 'Name');
+      const write = async (snapshotOptions: ClrContextSnapshotOptions) =>
+        (await engine.apply([{ operation: 'setValue', ref, description: 'Name', value: 'Ada' }], snapshotOptions))
+          .results[0];
+
+      expect((await write({ excludeSelectors: ['clr-input-container'] })).refused).toBe('hidden');
+      expect((await write({ excludeCategories: ['forms'] })).refused).toBe('hidden');
+      expect((await write({ root: 'clr-select-container' })).refused).toBe('hidden');
+      expect(host.form.value.name).toBe('');
+
+      expect((await write({})).applied).toBe(true);
+      expect(host.form.value.name).toBe('Ada');
+    });
+
+    it('does not write a custom control whose rendered input the options leave out', async () => {
+      const ref = refOf(contextEngine['read'](undefined), 'Enabled');
+      const options = { excludeSelectors: ['input[role="switch"]'] };
+
+      expect(JSON.stringify(contextEngine['read'](options).components)).not.toContain('Enabled');
+      const report = await engine.apply(
+        [{ operation: 'setValue', ref, description: 'Enabled', value: false }],
+        options
+      );
+
+      expect(report.results[0].refused).toBe('hidden');
+      expect(host.form.value.enabled).toBe(true);
+    });
+
+    it('refuses a field behind an open modal dialog, and writes the one inside it', async () => {
+      const page = contextEngine['read'](undefined);
+      const behind = refOf(page, 'Name');
+      host.modalOpen = true;
+      await settle(fixture);
+
+      const report = await engine.apply([
+        { operation: 'setValue', ref: behind, description: 'Name', value: 'x' },
+        {
+          operation: 'setValue',
+          ref: refOf(contextEngine['read'](undefined), 'Inside'),
+          description: 'Inside',
+          value: 'y',
+        },
+      ]);
+
+      expect(report.results[0].refused).toBe('hidden');
+      expect(report.results[1].applied).toBe(true);
+      expect(host.inside.value).toBe('y');
+    });
+
+    it('hands out no ref behind an open modal dialog, even in a snapshot of the whole page', async () => {
+      host.modalOpen = true;
+      await settle(fixture);
+      const page = contextEngine['read'](undefined);
+
+      expect(findNode(page.components, node => node.label === 'Name')?.ref).toBeUndefined();
+      expect(findNode(page.components, node => node.label === 'Inside')?.ref).toBeDefined();
+    });
+
+    it('hands out refs only inside the dialog of a modal-focused snapshot that starts at the component around it', async () => {
+      host.renameOpen = true;
+      await settle(fixture);
+      const modal = contextEngine['read']({ root: 'modal' });
+
+      // The walk starts at the component, so the state it publishes lands on the dialog's
+      // node. That node carries no ref, and the only one handed out is inside the dialog.
+      expect(modal.focus).toBe('modal');
+      expect(modal.components[0]).toEqual(
+        expect.objectContaining({
+          type: 'dialog',
+          element: 'app-rename',
+          state: expect.objectContaining({ step: 1 }),
+        })
+      );
+      expect(allRefs(modal.components).length).toBe(1);
+
+      const report = await engine.apply([
+        { operation: 'setValue', ref: refOf(modal, 'New name'), description: 'New name', value: 'web-02' },
+      ]);
+
+      expect(report.results[0].applied).toBe(true);
+      expect(host.renamed.value).toBe('web-02');
+    });
+
+    it('keeps a ref valid across a narrower snapshot taken by someone else', async () => {
+      const ref = refOf(contextEngine['read'](undefined), 'Name');
+      contextEngine['read']({ root: 'app-toggle' });
+
+      const report = await engine.apply([{ operation: 'setValue', ref, description: 'Name', value: 'Ada' }]);
+
+      expect(report.results[0].applied).toBe(true);
+    });
+
+    it('never hands out a ref an agent could work out from another', () => {
+      const refs = allRefs(contextEngine['read'](undefined).components);
+
+      expect(refs.length).toBeGreaterThan(3);
+      expect(refs.every(ref => /^e[0-9a-z]{8}$/.test(ref))).toBe(true);
+      expect(refs).not.toContain('e1');
+    });
+  });
+
+  describe('policy', () => {
+    it('shows the policy the value in a person’s terms and the model value apart', async () => {
+      await set('Plan', 'Team');
+
+      expect(classify).toHaveBeenCalledWith(expect.objectContaining({ value: 'Team', label: 'Plan' }));
+      // A native select's model value is only known once Angular's accessor maps the option.
+      expect('modelValue' in classify.mock.lastCall[0]).toBe(false);
+
+      await set('Tier', 'Basic');
+      expect(classify.mock.lastCall[0]).toEqual(expect.objectContaining({ value: 'Basic', modelValue: 'basic' }));
+    });
+
+    it('refuses as stale a choice whose option was replaced by another with the same label while confirming', async () => {
+      classify.mockReturnValue('consequential');
+      let answer: (value: boolean) => void = () => undefined;
+      confirm.mockReturnValue(new Promise<boolean>(resolve => (answer = resolve)));
+      const ref = refOf(contextEngine['read'](undefined), 'Plan');
+
+      const pending = engine.apply([{ operation: 'setValue', ref, description: 'Plan', value: 'Team' }]);
+      await new Promise(resolve => setTimeout(resolve));
+      const select = fixture.nativeElement.querySelector('select[formControlName="plan"]') as HTMLSelectElement;
+      const impostor = document.createElement('option');
+      impostor.value = 'enterprise';
+      impostor.textContent = 'Team';
+      select.replaceChild(
+        impostor,
+        Array.from(select.options).find(option => option.value === 'team') as HTMLOptionElement
+      );
+      answer(true);
+
+      expect((await pending).results[0].refused).toBe('stale');
+      expect(host.form.value.plan).toBe('free');
+    });
+
+    it('refuses a consequential operation when the policy cannot confirm, in plan() and apply() alike', async () => {
+      fixture.destroy();
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [
+          NoopAnimationsModule,
+          ReactiveFormsModule,
+          FormsModule,
+          ClrCommonFormsModule,
+          ClrInputModule,
+          ClrSelectModule,
+          ClrRadioModule,
+        ],
+        declarations: DECLARATIONS,
+        providers: [provideClrMutationPolicy({ classify: () => 'consequential' })],
+      });
+      const unconfirmed = TestBed.createComponent(Host);
+      unconfirmed.detectChanges();
+      await unconfirmed.whenStable();
+      const page = TestBed.inject(ClrContextService)['read'](undefined);
+      const mutation = TestBed.inject(ClrMutationService);
+      const operation = { operation: 'setValue' as const, ref: refOf(page, 'Name'), description: 'Name', value: 'x' };
+
+      expect(mutation.plan([operation])[0].refused).toBe('unconfirmed');
+      expect((await mutation.apply([operation])).results[0].refused).toBe('unconfirmed');
+      expect(unconfirmed.componentInstance.form.value.name).toBe('');
+      unconfirmed.destroy();
+    });
+
+    it('treats a confirmation that throws as declined, and an unknown verdict as forbidden', async () => {
+      classify.mockReturnValue('consequential');
+      confirm.mockImplementation(() => Promise.reject(new Error('dialog failed')));
+      expect((await set('Name', 'x')).refused).toBe('declined');
+
+      classify.mockReturnValue('maybe' as never);
+      expect((await set('Name', 'x')).refused).toBe('forbidden');
+      expect(host.form.value.name).toBe('');
+    });
+
+    it('declines an operation whose confirmation is not answered in time, and goes on with the next call', async () => {
+      classify.mockImplementation(target => (target.label === 'Name' ? 'consequential' : 'reversible'));
+      confirm.mockReturnValue(new Promise<boolean>(() => undefined));
+      const page = contextEngine['read'](undefined);
+
+      const stuck = engine.apply([
+        { operation: 'setValue', ref: refOf(page, 'Name'), description: 'Name', value: 'x' },
+      ]);
+      const next = engine.apply([
+        { operation: 'setValue', ref: refOf(page, 'Enabled'), description: 'Enabled', value: false },
+      ]);
+
+      const declined = (await stuck).results[0];
+      expect(declined.refused).toBe('declined');
+      expect(declined.detail).toContain('not answered in time');
+      expect((await next).results[0].applied).toBe(true);
+      expect(host.form.value.name).toBe('');
+    });
+
+    it('checks the field again after confirmation, and does not write one disabled meanwhile', async () => {
+      classify.mockReturnValue('consequential');
+      let answer: (value: boolean) => void = () => undefined;
+      confirm.mockReturnValue(new Promise<boolean>(resolve => (answer = resolve)));
+      const ref = refOf(contextEngine['read'](undefined), 'Name');
+
+      const pending = engine.apply([{ operation: 'setValue', ref, description: 'Name', value: 'written too late' }]);
+      await new Promise(resolve => setTimeout(resolve));
+      host.form.controls.name.disable();
+      await settle(fixture);
+      answer(true);
+
+      expect((await pending).results[0].refused).toBe('disabled');
+      expect(host.form.getRawValue().name).toBe('');
+    });
+  });
+});

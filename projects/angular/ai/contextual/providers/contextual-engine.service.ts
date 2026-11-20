@@ -22,6 +22,8 @@ import {
   ClrRouteContext,
 } from '../interfaces/context.interface';
 import { jsonSafe, REGION_DEPTH, ROUTE_DATA_DEPTH } from '../json-safe';
+import { ContextRefRegistryService } from '../mutation/context-ref-registry.service';
+import { CLR_MUTATION_POLICY } from '../mutation/mutation.interface';
 import { availableRoutes } from '../routes';
 import { CLR_PAGE_CONTEXT_SCHEMA_VERSION } from '../schema';
 import {
@@ -72,6 +74,9 @@ export class ClrContextService {
   private scope: ClrContextSnapshotOptions = {};
   private configured = false;
   private snapshotTaken = false;
+  // Refs are handed out only under a policy, so readers who never write pay nothing.
+  private readonly mutationPolicy = inject(CLR_MUTATION_POLICY, { optional: true });
+  private readonly refs = inject(ContextRefRegistryService);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly document = inject(DOCUMENT);
   private readonly contextRegistry = inject(ClrContextRegistryService);
@@ -102,6 +107,11 @@ export class ClrContextService {
   /** A fresh snapshot of the page, with `options` applied over the configured scope. */
   snapshot(options?: ClrContextSnapshotOptions): Promise<ClrPageContext> {
     return this.readAsync(options);
+  }
+
+  /** @internal The scope snapshots are read in, with `options` over it; the mutation engine writes in the same one. */
+  resolveScope(options?: ClrContextSnapshotOptions): ResolvedSnapshotOptions {
+    return resolveSnapshotOptions(withCallOptions(this.scope, options));
   }
 
   /**
@@ -144,7 +154,7 @@ export class ClrContextService {
     if (!snapshot.enabled) {
       return snapshot;
     }
-    const resolved = resolveSnapshotOptions(withCallOptions(this.scope, options));
+    const resolved = this.resolveScope(options);
     const regions = this.contextRegistry.collect({ limits: resolved });
     return this.describePage(snapshot, resolved, regions);
   }
@@ -160,7 +170,7 @@ export class ClrContextService {
       return view;
     }
     const address = this.address();
-    const resolved = resolveSnapshotOptions(withCallOptions(this.scope, options));
+    const resolved = this.resolveScope(options);
     const regions = await this.contextRegistry.collectAsync({
       timeoutMs: usableTimeout(this.config.timeoutMs, DEFAULT_SOURCE_TIMEOUT_MS),
       limits: resolved,
@@ -187,7 +197,9 @@ export class ClrContextService {
       snapshot.availableRoutes = availableRoutes(this.router.config, limit);
     }
     if (isPlatformBrowser(this.platformId)) {
-      const tree = collectContextTreeWithin(this.document, resolved, this.config.extractors ?? []);
+      const refs = this.mutationPolicy ? this.refs.begin() : null;
+      const tree = collectContextTreeWithin(this.document, resolved, this.config.extractors ?? [], refs);
+      refs?.commit(tree.components);
       snapshot.components = tree.components;
       if (tree.truncated) {
         snapshot.truncated = true;
