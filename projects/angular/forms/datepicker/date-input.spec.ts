@@ -800,8 +800,8 @@ describe('Datepicker', () => {
 })
 class TestComponent {
   date!: Date;
-  minDate?: string | null = '2019-11-15';
-  maxDate?: string | null = '2019-11-20';
+  minDate: string | null | undefined = '2019-11-15';
+  maxDate: string | null | undefined = '2019-11-20';
   dateChanged(date: Date) {
     this.date = date;
   }
@@ -827,7 +827,7 @@ class TestComponentWithNgModel {
   standalone: false,
 })
 class TestComponentWithClrDate {
-  date?: Date | null;
+  date: Date | null | undefined;
   disabled = false;
 }
 
