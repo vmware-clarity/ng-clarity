@@ -99,42 +99,20 @@ describe('ClrContext directive', () => {
   });
 });
 
-describe('ClrContext directive, announcing its changes', () => {
+describe('ClrContext directive, reading its state', () => {
   let fixture: ComponentFixture<TestComponent>;
-  let registry: ClrContextRegistryService;
-  let changes: number;
 
   beforeEach(() => {
     TestBed.configureTestingModule({ imports: [ClrContextModule], declarations: [TestComponent] });
-    registry = TestBed.inject(ClrContextRegistryService);
-    changes = 0;
-    registry.changes$.subscribe(() => changes++);
     fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();
   });
 
   afterEach(() => fixture.destroy());
 
-  /** An edit in place notifies nothing: something else on the page has to run change detection. */
-  function renderPage() {
-    fixture.changeDetectorRef.markForCheck();
-    fixture.detectChanges();
-  }
-
-  it('announces a state object replaced by the application', () => {
-    const before = changes;
-    fixture.componentInstance.state.set({ cluster: 'omega' });
-    fixture.detectChanges();
-
-    expect(changes).toBe(before + 1);
-  });
-
-  it('announces a state object edited in place, which no input setter sees', () => {
-    const before = changes;
+  it('reads a state object edited in place, which no input setter sees', () => {
     (fixture.componentInstance.state() as Record<string, unknown>).cluster = 'omega';
-    renderPage();
 
-    expect(changes).toBe(before + 1);
     expect(nodeLabelled('User management')?.state).toEqual({ cluster: 'omega' });
   });
 
@@ -142,7 +120,6 @@ describe('ClrContext directive, announcing its changes', () => {
     const state = fixture.componentInstance.state() as Record<string, unknown>;
     const earlier = nodeLabelled('User management')?.state;
     state.cluster = 'omega';
-    renderPage();
 
     expect(earlier).toEqual({ cluster: 'alpha' });
     expect(nodeLabelled('User management')?.state).toEqual({ cluster: 'omega' });
@@ -156,17 +133,6 @@ describe('ClrContext directive, announcing its changes', () => {
 
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(labels()).not.toContain('User management');
-    const before = changes;
-    fixture.detectChanges();
-    expect(changes).toBe(before);
-  });
-
-  it('stays quiet while nothing changed', () => {
-    const before = changes;
-    fixture.detectChanges();
-    fixture.detectChanges();
-
-    expect(changes).toBe(before);
   });
 });
 
@@ -231,17 +197,6 @@ describe('ClrContext directive, following the element it annotates', () => {
   it('leaves out an annotation outside the snapshot root', () => {
     expect(labels({ root: '#main' })).toContain('Visible');
     expect(labels({ root: '#main' })).not.toContain('Footer notes');
-  });
-
-  it('does not announce changes to an annotation inside an ignored region', () => {
-    const registry = TestBed.inject(ClrContextRegistryService);
-    let changes = 0;
-    registry.changes$.subscribe(() => changes++);
-
-    fixture.componentInstance.chat.set({ unread: 2 });
-    fixture.detectChanges();
-
-    expect(changes).toBe(0);
   });
 });
 

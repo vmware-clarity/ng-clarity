@@ -19,10 +19,6 @@ export class Assistant {
   snapshot() {
     return this.context.snapshot(); // a Promise of one snapshot, now
   }
-
-  live() {
-    return this.context.watch(); // Observable<ClrPageContext>, re-emits when the page changes
-  }
 }
 ```
 
@@ -64,5 +60,5 @@ export class Firewall {
 - A grid is summarised, not walked: its `rows` list each row's cells in one string, such as `esx-01 | ok`, up to `maxItemsPerCollection`, so there is no need to publish them.
 - `root: 'modal'` reads only the open modal dialog, such as a wizard, and reads the whole page while none is open, so it can be set once for the application.
 - Prefer semantic HTML and ARIA over annotations: the engine reads the accessibility tree, so an unlabelled control is unnamed to the agent too.
-- A provider may answer with a promise: `snapshot()` waits for it (`configure({ timeoutMs })`, default 2000), `watch()` first reports it as `{ type: 'clr-loading' }`.
+- A provider may answer with a promise: `snapshot()` waits for it (`configure({ timeoutMs })`, default 2000).
 - Unrendered virtual-scroll rows, canvas content, shadow roots and cross-origin frames are invisible to it.
