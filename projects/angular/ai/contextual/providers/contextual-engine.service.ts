@@ -77,7 +77,7 @@ export interface ClrContextConfig {
 
 /** Reads the current page for an AI agent: route, rendered components and registered context. */
 @Injectable({ providedIn: 'root' })
-export class ClrContextService {
+export class ClrContextService implements OnDestroy {
   private config: ClrContextConfig = {};
   private scope: ClrContextSnapshotOptions = {};
   private configured = false;
