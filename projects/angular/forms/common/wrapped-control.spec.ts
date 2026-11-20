@@ -22,6 +22,7 @@ import { By } from '@angular/platform-browser';
 import { ClrIcon } from '@clr/angular/icon';
 import { delay } from '@clr/angular/testing';
 import { ClrHostWrappingModule, HostWrapper } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrAbstractContainer } from './abstract-container';
 import { ClrControlError } from './control-subtexts/error';
@@ -303,7 +304,7 @@ describe('Forms common utilities', () => {
         providers: includeProviders ? [MarkControlService, ControlClassService, NgControlService, LayoutService] : [],
       });
       testContext.fixture = TestBed.createComponent(testComponent);
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       const wrapperDebugElement =
         testContext.fixture.debugElement.query(By.directive(TestWrapper)) ||
         testContext.fixture.debugElement.query(By.directive(TestWrapper3));
@@ -393,7 +394,7 @@ describe('Forms common utilities', () => {
         setupTest(testContext, WithControl, TestControl3);
         expect(testContext.input.className).not.toContain('ng-touched');
         testContext.markControlService.markAsTouched();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.input.className).toContain('ng-touched');
       });
 
@@ -408,7 +409,7 @@ describe('Forms common utilities', () => {
         vi.spyOn(TestControl3.prototype, 'triggerValidation');
         testContext.input.focus();
         testContext.input.blur();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(TestControl3.prototype.triggerValidation).toHaveBeenCalled();
       });
 
@@ -416,7 +417,7 @@ describe('Forms common utilities', () => {
         setupTest(testContext, WithNumberControl, TestControl3);
         testContext.input.focus();
         testContext.input.blur();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.input.className).toContain('ng-touched');
         expect(testContext.fixture.nativeElement.querySelector('#control2').className).toContain('ng-untouched');
       });
@@ -432,7 +433,7 @@ describe('Forms common utilities', () => {
         setupTest(testContext, WithDynamicFormControl, TestControl3);
         vi.spyOn<any, any>(TestControl3.prototype, 'triggerValidation');
         testContext.fixture.componentInstance.addControl();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(TestControl3.prototype.triggerValidation).toHaveBeenCalled();
       });
 
@@ -440,7 +441,7 @@ describe('Forms common utilities', () => {
         setupTest(testContext, WithDynamicNgControl, TestControl3);
         vi.spyOn(TestControl3.prototype, 'triggerValidation');
         testContext.fixture.componentInstance.addControl();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(TestControl3.prototype.triggerValidation).toHaveBeenCalled();
       });
     });
@@ -466,7 +467,7 @@ describe('Forms common utilities', () => {
         setupTest(testContext, WithControlAndError, TestControl3);
         testContext.input.focus();
         testContext.input.blur();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         await delay();
         expect(testContext.input.getAttribute('aria-describedby')).toEqual(
           `${testContext.input.id}-helper ${testContext.input.id}-error`
@@ -477,7 +478,7 @@ describe('Forms common utilities', () => {
         setupTest(testContext, WithControlAndError, TestControl3);
         testContext.input.focus();
         testContext.input.blur();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         await delay();
         expect(testContext.input.getAttribute('aria-describedby')).toContain('-error');
       });
@@ -488,7 +489,7 @@ describe('Forms common utilities', () => {
         setupTest(untypedContext, WithControl, TestControl3);
         untypedContext.input.focus();
         untypedContext.input.blur();
-        untypedContext.fixture.detectChanges();
+        renderFixture(untypedContext.fixture);
 
         expect(untypedContext.input.getAttribute('aria-describedby')).toBe(null);
       });
@@ -497,11 +498,11 @@ describe('Forms common utilities', () => {
         setupTest(testContext, WithControlAndSuccess, TestControl3);
         testContext.input.focus();
         testContext.fixture.componentInstance.model = 'test';
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         await delay();
 
         testContext.input.blur();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         await delay();
 
         expect(testContext.input.getAttribute('aria-describedby')).toContain('-success');
@@ -511,11 +512,11 @@ describe('Forms common utilities', () => {
         setupTest(testContext, WithControlAndSuccess, TestControl3);
         testContext.input.focus();
         testContext.fixture.componentInstance.model = 'test';
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         await delay();
 
         testContext.input.blur();
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         await delay();
 
         expect(testContext.input.getAttribute('aria-describedby')).toEqual(
@@ -530,7 +531,7 @@ describe('Forms common utilities', () => {
         untypedContext.input.focus();
         untypedContext.fixture.componentInstance.model = 'test';
         untypedContext.input.blur();
-        untypedContext.fixture.detectChanges();
+        renderFixture(untypedContext.fixture);
         await delay();
 
         expect(untypedContext.input.getAttribute('aria-describedby')).toBe(null);

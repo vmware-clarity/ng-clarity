@@ -924,6 +924,16 @@ describe('Datagrid', () => {
           expect(detailPlainCells(element)).toEqual(['dB1', 'dC1']);
         });
 
+        // The loader creates the cells from a timer and tells nobody, the way an application does. The
+        // detail has to ask for the check that finds them, without a forced one from the test.
+        it('finds the loaded cells in the render Angular schedules itself', async () => {
+          await delay();
+          await context.fixture.whenStable();
+
+          expect(detailPinnedCells(element)).toEqual(['dA1']);
+          expect(detailPlainCells(element)).toEqual(['dB1', 'dC1']);
+        });
+
         it('lines the loaded detail cells up with the cells of the row', async () => {
           await load();
 

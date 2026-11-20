@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { publishElementContext } from '@clr/angular/utils';
 
@@ -33,17 +33,17 @@ function labels(options?: ClrContextSnapshotOptions): string[] {
 @Component({
   changeDetection: ChangeDetectionStrategy.Eager,
   template: `
-    @if (show) {
-      <section clrContext="User management" clrContextType="section" [clrContextState]="state"></section>
+    @if (show()) {
+      <section clrContext="User management" clrContextType="section" [clrContextState]="state()"></section>
     }
-    <div [clrContext]="emptyLabel"></div>
+    <div [clrContext]="emptyLabel()"></div>
   `,
   standalone: false,
 })
 class TestComponent {
-  show = true;
-  state: Record<string, unknown> | null = { cluster: 'alpha' };
-  emptyLabel = '';
+  readonly show = signal(true);
+  readonly state = signal<Record<string, unknown> | null>({ cluster: 'alpha' });
+  readonly emptyLabel = signal('');
 }
 
 describe('ClrContext directive', () => {
@@ -77,7 +77,7 @@ describe('ClrContext directive', () => {
   });
 
   it('reads its inputs at snapshot time', () => {
-    fixture.componentInstance.state = { cluster: 'omega' };
+    fixture.componentInstance.state.set({ cluster: 'omega' });
     fixture.detectChanges();
 
     expect(nodeLabelled('User management')?.state).toEqual({ cluster: 'omega' });
@@ -89,8 +89,8 @@ describe('ClrContext directive', () => {
 
   it('leaves the element when it is destroyed, and a label given later shows', () => {
     const section = fixture.nativeElement.querySelector('section');
-    fixture.componentInstance.show = false;
-    fixture.componentInstance.emptyLabel = 'still here';
+    fixture.componentInstance.show.set(false);
+    fixture.componentInstance.emptyLabel.set('still here');
     fixture.detectChanges();
 
     expect('clrContextAnnotation' in section).toBe(false);
@@ -115,9 +115,15 @@ describe('ClrContext directive, announcing its changes', () => {
 
   afterEach(() => fixture.destroy());
 
+  /** An edit in place notifies nothing: something else on the page has to run change detection. */
+  function renderPage() {
+    fixture.changeDetectorRef.markForCheck();
+    fixture.detectChanges();
+  }
+
   it('announces a state object replaced by the application', () => {
     const before = changes;
-    fixture.componentInstance.state = { cluster: 'omega' };
+    fixture.componentInstance.state.set({ cluster: 'omega' });
     fixture.detectChanges();
 
     expect(changes).toBe(before + 1);
@@ -125,18 +131,18 @@ describe('ClrContext directive, announcing its changes', () => {
 
   it('announces a state object edited in place, which no input setter sees', () => {
     const before = changes;
-    (fixture.componentInstance.state as Record<string, unknown>).cluster = 'omega';
-    fixture.detectChanges();
+    (fixture.componentInstance.state() as Record<string, unknown>).cluster = 'omega';
+    renderPage();
 
     expect(changes).toBe(before + 1);
     expect(nodeLabelled('User management')?.state).toEqual({ cluster: 'omega' });
   });
 
   it('hands out a copy of its state, so an in-place edit reads as a change between two snapshots', () => {
-    const state = fixture.componentInstance.state as Record<string, unknown>;
+    const state = fixture.componentInstance.state() as Record<string, unknown>;
     const earlier = nodeLabelled('User management')?.state;
     state.cluster = 'omega';
-    fixture.detectChanges();
+    renderPage();
 
     expect(earlier).toEqual({ cluster: 'alpha' });
     expect(nodeLabelled('User management')?.state).toEqual({ cluster: 'omega' });
@@ -146,7 +152,7 @@ describe('ClrContext directive, announcing its changes', () => {
   it('neither throws nor contributes while its state cannot be serialised', () => {
     const circular: Record<string, unknown> = {};
     circular['self'] = circular;
-    fixture.componentInstance.state = circular;
+    fixture.componentInstance.state.set(circular);
 
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(labels()).not.toContain('User management');
@@ -174,7 +180,7 @@ describe('ClrContext directive, announcing its changes', () => {
       </section>
     </div>
     <aside data-clr-context-ignore>
-      <div clrContext="Chat" [clrContextState]="chat"></div>
+      <div clrContext="Chat" [clrContextState]="chat()"></div>
     </aside>
     <footer><div clrContext="Footer notes"></div></footer>
     <div id="plain">
@@ -187,7 +193,7 @@ describe('ClrContext directive, announcing its changes', () => {
   standalone: false,
 })
 class RegionsComponent {
-  chat: Record<string, unknown> = { unread: 1 };
+  readonly chat = signal<Record<string, unknown>>({ unread: 1 });
 }
 
 describe('ClrContext directive, following the element it annotates', () => {
@@ -232,7 +238,7 @@ describe('ClrContext directive, following the element it annotates', () => {
     let changes = 0;
     registry.changes$.subscribe(() => changes++);
 
-    fixture.componentInstance.chat = { unread: 2 };
+    fixture.componentInstance.chat.set({ unread: 2 });
     fixture.detectChanges();
 
     expect(changes).toBe(0);

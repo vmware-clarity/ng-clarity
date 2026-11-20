@@ -10,6 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { publishedState } from '@clr/angular/testing';
 import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrContextSnapshotOptions } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrDatagridModule } from './datagrid.module';
 
@@ -291,7 +292,7 @@ describe('ClrDatagrid element context, selection', () => {
   it('says nothing is selected by leaving the selection out', async () => {
     await create(MultiSelectionTestComponent);
     (fixture.componentInstance as MultiSelectionTestComponent).selected = [];
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect('selection' in gridState(fixture)).toBe(false);
   });

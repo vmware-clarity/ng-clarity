@@ -10,7 +10,7 @@ import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { ClrDropdown, ClrDropdownItem } from '@clr/angular/popover/dropdown';
-import { createTestHelpers, TestContext } from '@clr/angular/testing';
+import { createTestHelpers, delay, TestContext } from '@clr/angular/testing';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { ClrDatagrid } from './datagrid';
@@ -550,6 +550,12 @@ describe('Datagrid', () => {
           }
         }
 
+        // The menu moves and recovers focus from timers, which whenStable() does not wait for.
+        async function settle() {
+          await context.fixture.whenStable();
+          await delay();
+        }
+
         function invoke(label: string) {
           openMenu();
           itemLabelled(label).click();
@@ -572,12 +578,12 @@ describe('Datagrid', () => {
         it('keeps focus on the item that was clicked, rather than snapping back to the first one', async () => {
           context.fixture.autoDetectChanges(true);
           openMenu();
-          await context.fixture.whenStable();
+          await settle();
 
           const descendingButton = itemLabelled(commonStrings.keys.sortColumnDescending);
           descendingButton.focus();
           descendingButton.click();
-          await context.fixture.whenStable();
+          await settle();
 
           expect(document.activeElement).toBe(descendingButton);
         });
@@ -585,17 +591,17 @@ describe('Datagrid', () => {
         it('moves focus to the first item once the focused one removes itself', async () => {
           context.fixture.autoDetectChanges(true);
           openMenu();
-          await context.fixture.whenStable();
+          await settle();
 
           const ascendingButton = itemLabelled(commonStrings.keys.sortColumnAscending);
           ascendingButton.focus();
           ascendingButton.click();
-          await context.fixture.whenStable();
+          await settle();
 
           const clearButton = itemLabelled(commonStrings.keys.clearColumnSort);
           clearButton.focus();
           clearButton.click();
-          await context.fixture.whenStable();
+          await settle();
 
           expect(document.activeElement).toBe(ascendingButton);
         });

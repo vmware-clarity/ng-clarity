@@ -173,7 +173,7 @@
             "tsConfig": "projects/angular/tsconfig.spec.json",
             "outputPath": "dist/test-build/angular",
             "styles": ["projects/ui/src/clr-ui.scss"],
-            "polyfills": ["zone.js", "zone.js/testing", "zone.js/plugins/vitest-patch"],
+            "polyfills": [],
             "aot": false
           }
         }
@@ -330,7 +330,7 @@
             "tsConfig": "projects/addons/tsconfig.spec.json",
             "outputPath": "dist/test-build/addons",
             "styles": ["projects/ui/src/clr-ui.scss"],
-            "polyfills": ["zone.js", "zone.js/testing", "zone.js/plugins/vitest-patch"],
+            "polyfills": [],
             "aot": false
           }
         }

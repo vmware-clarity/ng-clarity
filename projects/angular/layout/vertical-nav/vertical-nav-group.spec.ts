@@ -12,6 +12,7 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { ClrIcon } from '@clr/angular/icon';
 import { delay } from '@clr/angular/testing';
 import { IfExpandService } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
 import { VerticalNavService } from './providers/vertical-nav.service';
@@ -39,7 +40,7 @@ describe('Vertical Nav', () => {
 
         beforeEach(() => {
           fixture = TestBed.createComponent(GroupInternalsTestComponent);
-          fixture.detectChanges();
+          renderFixture(fixture);
           compiled = fixture.nativeElement;
           navGroup = fixture.componentInstance.navGroup;
           expandService = fixture.debugElement.query(By.directive(ClrVerticalNavGroup)).injector.get(IfExpandService);
@@ -54,11 +55,11 @@ describe('Vertical Nav', () => {
           expect(navGroup.expanded).toBe(false);
 
           navGroup.expanded = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(expandService.expanded).toBe(true);
 
           navGroup.expanded = false;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(expandService.expanded).toBe(false);
         });
 
@@ -66,12 +67,12 @@ describe('Vertical Nav', () => {
           expect(navGroup.expandAnimationState).toBe('collapsed');
 
           navGroup.toggleExpand();
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           expect(navGroup.expandAnimationState).toBe('expanded');
 
           navGroup.toggleExpand();
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           expect(navGroup.expandAnimationState).toBe('collapsed');
         });
@@ -80,12 +81,12 @@ describe('Vertical Nav', () => {
           expect(navGroup.expanded).toBe(false);
 
           navGroup.toggleExpand();
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(navGroup.expanded).toBe(true);
           expect(expandService.expanded).toBe(true);
 
           navGroup.toggleExpand();
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(navGroup.expandAnimationState).toBe('collapsed');
 
           await fixture.whenStable();
@@ -97,12 +98,12 @@ describe('Vertical Nav', () => {
           vertNavService.collapsible = true;
 
           navGroup.toggleExpand();
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(navGroup.expanded).toBe(true);
 
           vertNavService.collapsed = true;
 
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           await fixture.whenStable();
           expect(navGroup.expandAnimationState).toBe('collapsed');
@@ -123,7 +124,7 @@ describe('Vertical Nav', () => {
 
         beforeEach(() => {
           fixture = TestBed.createComponent(IfExpandedTestComponent);
-          fixture.detectChanges();
+          renderFixture(fixture);
           compiled = fixture.nativeElement;
           navGroup = fixture.componentInstance.navGroup;
         });
@@ -145,7 +146,7 @@ describe('Vertical Nav', () => {
           expect(compiled.querySelector('.nav-group-children').children.length).toBe(0);
 
           navGroup.expanded = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           expect(compiled.querySelector('.nav-group-children').children.length).toBeGreaterThan(0);
         });
@@ -157,7 +158,7 @@ describe('Vertical Nav', () => {
 
         beforeEach(() => {
           fixture = TestBed.createComponent(TemplateAPITestComponent);
-          fixture.detectChanges();
+          renderFixture(fixture);
           compiled = fixture.nativeElement;
           navGroup = fixture.componentInstance.navGroup;
           expandService = fixture.debugElement.query(By.directive(ClrVerticalNavGroup)).injector.get(IfExpandService);
@@ -171,13 +172,13 @@ describe('Vertical Nav', () => {
           expect(fixture.componentInstance.expanded).toBe(false);
 
           fixture.componentInstance.expanded = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           expect(navGroup.expanded).toBe(true);
           expect(expandService.expanded).toBe(true);
 
           fixture.componentInstance.expanded = false;
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           // when stable because collapse animation happens first.
           // need when stable for the nav group to complete the animation.
@@ -193,7 +194,7 @@ describe('Vertical Nav', () => {
           expect(fixture.componentInstance.expandedChange).toBeUndefined();
 
           navGroup.toggleExpand();
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           await delay();
 
@@ -206,7 +207,7 @@ describe('Vertical Nav', () => {
 
         beforeEach(() => {
           fixture = TestBed.createComponent(TemplateAPITestComponent);
-          fixture.detectChanges();
+          renderFixture(fixture);
           compiled = fixture.nativeElement;
           navGroup = fixture.componentInstance.navGroup;
         });
@@ -222,7 +223,7 @@ describe('Vertical Nav', () => {
 
           button.click();
 
-          fixture.detectChanges();
+          renderFixture(fixture);
 
           expect(navGroup.expanded).toBe(true);
         });
@@ -231,7 +232,7 @@ describe('Vertical Nav', () => {
           const button: HTMLButtonElement = compiled.querySelector('.nav-group-trigger');
           expect(button.getAttribute('aria-expanded')).toBe('false');
           navGroup.expanded = true;
-          fixture.detectChanges();
+          renderFixture(fixture);
           expect(button.getAttribute('aria-expanded')).toBe('true');
         });
       });
@@ -331,7 +332,7 @@ describe('Vertical Nav Group animations', () => {
       animationsEnabled: true,
     });
     fixture = TestBed.createComponent(AnimatedGroupTestComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
   });
 
@@ -351,7 +352,7 @@ describe('Vertical Nav Group animations', () => {
 
   async function toggle() {
     fixture.componentInstance.navGroup.toggleExpand();
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
   }
 
@@ -379,7 +380,7 @@ describe('Vertical Nav Group animations', () => {
       .getAnimations()
       .forEach(animation => animation.finish());
     await delay();
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(navGroup.expanded).toBe(false);
     expect(fixture.nativeElement.querySelector('clr-vertical-nav-group-children')).toBeNull();
@@ -406,7 +407,7 @@ describe('Vertical Nav Group animations', () => {
       .getAnimations()
       .forEach(animation => animation.finish());
     await delay();
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(navGroup.expanded).toBe(true);
     expect(fixture.nativeElement.querySelector('clr-vertical-nav-group-children')).not.toBeNull();
@@ -419,11 +420,11 @@ describe('Vertical Nav Group animations', () => {
     await toggle();
 
     navGroup.userExpandedInput = false;
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
     finishChildrenAnimations();
     await delay();
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(navGroup.expanded).toBe(false);
   });
@@ -436,18 +437,18 @@ describe('Vertical Nav Group animations', () => {
     navGroup.toggleExpand();
     navGroup.toggleExpand();
     navGroup.toggleExpand();
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
     finishChildrenAnimations();
     await delay();
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(navGroup.expanded).toBe(false);
   });
 
   it('expands the children when clrIfExpanded is set', async () => {
     fixture.componentInstance.expanded = true;
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
 
     const [from, to] = heightKeyframes();
@@ -471,19 +472,19 @@ describe('Vertical Nav Group with the noop animations', () => {
       animationsEnabled: true,
     });
     const fixture = TestBed.createComponent(AnimatedGroupTestComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
     const navGroup = fixture.componentInstance.navGroup;
     const children: HTMLElement = fixture.nativeElement.querySelector('.nav-group-children');
 
     navGroup.toggleExpand();
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
     expect(children.getAnimations().length).toBe(0);
     expect(navGroup.expanded).toBe(true);
 
     navGroup.toggleExpand();
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(children.getAnimations().length).toBe(0);
     expect(navGroup.expanded).toBe(false);
     expect(fixture.nativeElement.querySelector('clr-vertical-nav-group-children')).toBeNull();

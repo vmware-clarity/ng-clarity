@@ -8,6 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, NgModule, SimpleChange, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 import type { Mock } from 'vitest';
 
 import { PropertyViewConfigProvider } from '../property-view-config-provider';
@@ -77,7 +78,7 @@ describe('PropertyViewPropertyComponent', () => {
         content: [],
       };
 
-      testContext.component.data = Object.assign({}, defaultData, overrides);
+      testContext.fixture.componentRef.setInput('data', Object.assign({}, defaultData, overrides));
       testContext.component.ngOnChanges({
         data: new SimpleChange(undefined, testContext.component.data, false),
       });
@@ -186,7 +187,7 @@ describe('PropertyViewPropertyComponent', () => {
           icon: null,
         }),
       });
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.getKeyContainerElements().length).toEqual(1);
       expect(testContext.getKeyContainerElements()[0].textContent?.trim()).toEqual('');
     });
@@ -198,7 +199,7 @@ describe('PropertyViewPropertyComponent', () => {
           icon: null,
         }),
       });
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.getKeyContainerElements().length).toEqual(1);
       expect(testContext.getKeyContainerElements()[0].textContent?.trim()).toEqual('key-text');
     });
@@ -210,7 +211,7 @@ describe('PropertyViewPropertyComponent', () => {
             icon: null,
           }),
         });
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.getKeyIconElements().length).toEqual(0);
       });
 
@@ -220,7 +221,7 @@ describe('PropertyViewPropertyComponent', () => {
             icon: '',
           }),
         });
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.getKeyIconElements().length).toEqual(0);
       });
 
@@ -230,7 +231,7 @@ describe('PropertyViewPropertyComponent', () => {
             icon: 'key-icon',
           }),
         });
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.getKeyIconElements().length).toEqual(1);
         expect(testContext.getKeyIconElements()[0].classList.contains('key-icon')).toEqual(true);
       });
@@ -241,7 +242,7 @@ describe('PropertyViewPropertyComponent', () => {
             icon: 'key-icon-1',
           }),
         });
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.getKeyIconElements().length).toEqual(1);
         expect(testContext.getKeyIconElements()[0].classList.contains('key-icon-1')).toEqual(true);
 
@@ -250,7 +251,7 @@ describe('PropertyViewPropertyComponent', () => {
             icon: null,
           }),
         });
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.getKeyIconElements().length).toEqual(0);
 
         testContext.setData({
@@ -258,7 +259,7 @@ describe('PropertyViewPropertyComponent', () => {
             icon: 'key-icon-2',
           }),
         });
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.getKeyIconElements().length).toEqual(1);
         expect(testContext.getKeyIconElements()[0].classList.contains('key-icon-2')).toEqual(true);
       });
@@ -271,7 +272,7 @@ describe('PropertyViewPropertyComponent', () => {
             text: 'key-text',
           }),
         });
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.getKeyTextElement().length).toEqual(1);
         expect(testContext.getKeyTextElement()[0].textContent?.trim()).toEqual('key-text');
       });
@@ -283,7 +284,7 @@ describe('PropertyViewPropertyComponent', () => {
             icon: 'key-icon',
           }),
         });
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         const iconElement = testContext.getKeyIconElements()[0];
         const textElement = testContext.getKeyTextElement()[0];
         expect(textElement.previousElementSibling).toBe(iconElement);
@@ -295,7 +296,7 @@ describe('PropertyViewPropertyComponent', () => {
             text: 'key-text-1',
           }),
         });
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.getKeyTextElement().length).toEqual(1);
         expect(testContext.getKeyTextElement()[0].textContent?.trim()).toEqual('key-text-1');
 
@@ -304,7 +305,7 @@ describe('PropertyViewPropertyComponent', () => {
             text: 'key-text-2',
           }),
         });
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.getKeyTextElement().length).toEqual(1);
         expect(testContext.getKeyTextElement()[0].textContent?.trim()).toEqual('key-text-2');
       });
@@ -318,12 +319,12 @@ describe('PropertyViewPropertyComponent', () => {
             icon: 'key-icon',
           }),
         });
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
       });
 
       it('should be the default one when PropertyViewConfigProvider.getConfig() returns undefined', () => {
         testContext.propertyViewConfigProvider.getConfig.mockReturnValue(undefined);
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.getKeyContentElements()[0].style.width).toEqual('');
       });
 
@@ -331,7 +332,7 @@ describe('PropertyViewPropertyComponent', () => {
         testContext.propertyViewConfigProvider.getConfig.mockReturnValue({
           propertyKeyWidthInRem: undefined,
         });
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.getKeyContentElements()[0].style.width).toEqual('');
       });
 
@@ -339,7 +340,7 @@ describe('PropertyViewPropertyComponent', () => {
         testContext.propertyViewConfigProvider.getConfig.mockReturnValue({
           propertyKeyWidthInRem: 10,
         });
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.getKeyContentElements()[0].style.width).toEqual('10rem');
       });
     });
@@ -350,7 +351,7 @@ describe('PropertyViewPropertyComponent', () => {
       testContext.setData({
         content: [],
       });
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.getValuesContainerElements().length).toEqual(1);
     });
 
@@ -358,7 +359,7 @@ describe('PropertyViewPropertyComponent', () => {
       testContext.setData({
         content: [],
       });
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.getValuesListElements().length).toEqual(0);
       expect(testContext.getValuesElements().length).toEqual(0);
     });
@@ -386,7 +387,7 @@ describe('PropertyViewPropertyComponent', () => {
             }),
           ],
         });
-        testContext.fixture.detectChanges();
+        renderFixture(testContext.fixture);
         expect(testContext.getValuesListElements().length).toEqual(1);
         expect(testContext.getValuesElements().length).toEqual(3);
         expect(testContext.getValuesElements()[0].textContent?.trim()).toEqual(valueText1);
@@ -405,7 +406,7 @@ describe('PropertyViewPropertyComponent', () => {
         }),
         content: [testContext.createValueData({})],
       });
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       const keyContainerElement = testContext.getKeyContainerElements()[0];
       const valuesContainerElement = testContext.getValuesContainerElements()[0];
       expect(valuesContainerElement.previousElementSibling).toBe(keyContainerElement);
@@ -419,7 +420,7 @@ describe('PropertyViewPropertyComponent', () => {
           }),
         ],
       });
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.getValuesListElements().length).toEqual(1);
       expect(testContext.getValuesElements().length).toEqual(1);
       expect(testContext.getValuesElements()[0].textContent?.trim()).toEqual(valueText1);
@@ -434,7 +435,7 @@ describe('PropertyViewPropertyComponent', () => {
           }),
         ],
       });
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.getValuesListElements().length).toEqual(1);
       expect(testContext.getValuesElements().length).toEqual(2);
       expect(testContext.getValuesElements()[0].textContent?.trim()).toEqual(valueText2);
@@ -443,7 +444,7 @@ describe('PropertyViewPropertyComponent', () => {
       testContext.setData({
         content: [],
       });
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.getValuesListElements().length).toEqual(0);
       expect(testContext.getValuesElements().length).toEqual(0);
 
@@ -454,7 +455,7 @@ describe('PropertyViewPropertyComponent', () => {
           }),
         ],
       });
-      testContext.fixture.detectChanges();
+      renderFixture(testContext.fixture);
       expect(testContext.getValuesListElements().length).toEqual(1);
       expect(testContext.getValuesElements().length).toEqual(1);
       expect(testContext.getValuesElements()[0].textContent?.trim()).toEqual('value-text-3');
@@ -471,7 +472,7 @@ describe('PropertyViewPropertyComponent', () => {
               }),
             ],
           });
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.getValueIconElements(0).length).toEqual(0);
         });
 
@@ -483,7 +484,7 @@ describe('PropertyViewPropertyComponent', () => {
               }),
             ],
           });
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.getValueIconElements(0).length).toEqual(0);
         });
 
@@ -495,7 +496,7 @@ describe('PropertyViewPropertyComponent', () => {
               }),
             ],
           });
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.getValueIconElements(0).length).toEqual(1);
           expect(testContext.getValueIconElements(0)[0].classList.contains(valueIcon)).toEqual(true);
         });
@@ -508,7 +509,7 @@ describe('PropertyViewPropertyComponent', () => {
               }),
             ],
           });
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.getValueIconElements(0).length).toEqual(1);
           expect(testContext.getValueIconElements(0)[0].classList.contains('value-icon-1')).toEqual(true);
 
@@ -519,7 +520,7 @@ describe('PropertyViewPropertyComponent', () => {
               }),
             ],
           });
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.getValueIconElements(0).length).toEqual(0);
 
           testContext.setData({
@@ -529,7 +530,7 @@ describe('PropertyViewPropertyComponent', () => {
               }),
             ],
           });
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.getValueIconElements(0).length).toEqual(1);
           expect(testContext.getValueIconElements(0)[0].classList.contains('value-icon-2')).toEqual(true);
         });
@@ -549,7 +550,7 @@ describe('PropertyViewPropertyComponent', () => {
           testContext.component.ngOnChanges({
             data: new SimpleChange(undefined, testContext.component.data, false),
           });
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.getValuesElements()[0].textContent?.trim()).toEqual(valueText);
           expect(testContext.getValueTextElements(0).length).toEqual(1);
           expect(testContext.getValueTextElements(0)[0].textContent?.trim()).toEqual(valueText);
@@ -566,7 +567,7 @@ describe('PropertyViewPropertyComponent', () => {
               }),
             ],
           });
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.getValuesElements()[0].textContent?.trim()).toEqual(valueLinkText);
           expect(testContext.getValueTextElements(0).length).toEqual(0);
           expect(testContext.getValueLinkElements(0).length).toEqual(1);
@@ -591,7 +592,7 @@ describe('PropertyViewPropertyComponent', () => {
               }),
             ],
           });
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.getValueLinkElements(0).length).toEqual(1);
           testContext.getValueLinkElements(0)[0].click();
           expect(vi.mocked(link1ClickHandlerSpy).mock.calls.length).toEqual(1);
@@ -612,7 +613,7 @@ describe('PropertyViewPropertyComponent', () => {
               }),
             ],
           });
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           const iconElement = testContext.getValueIconElements(0)[0];
           const textElement = testContext.getValueTextElements(0)[0];
           expect(textElement.previousElementSibling).toBe(iconElement);
@@ -626,7 +627,7 @@ describe('PropertyViewPropertyComponent', () => {
               }),
             ],
           });
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           const iconElement2 = testContext.getValueIconElements(0)[0];
           const linkElement = testContext.getValueLinkElements(0)[0];
           expect(linkElement.previousElementSibling).toBe(iconElement2);
@@ -641,7 +642,7 @@ describe('PropertyViewPropertyComponent', () => {
               }),
             ],
           });
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.getValuesElements()[0].textContent?.trim()).toEqual(valueText);
           expect(testContext.getValueTextElements(0).length).toEqual(1);
           expect(testContext.getValueTextElements(0)[0].textContent?.trim()).toEqual(valueText);
@@ -655,7 +656,7 @@ describe('PropertyViewPropertyComponent', () => {
               }),
             ],
           });
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.getValuesElements()[0].textContent?.trim()).toEqual(valueLinkText);
           expect(testContext.getValueTextElements(0).length).toEqual(0);
           expect(testContext.getValueLinkElements(0).length).toEqual(1);
@@ -669,7 +670,7 @@ describe('PropertyViewPropertyComponent', () => {
               }),
             ],
           });
-          testContext.fixture.detectChanges();
+          renderFixture(testContext.fixture);
           expect(testContext.getValuesElements()[0].textContent?.trim()).toEqual(valueText2);
           expect(testContext.getValueTextElements(0).length).toEqual(1);
           expect(testContext.getValueTextElements(0)[0].textContent?.trim()).toEqual(valueText2);

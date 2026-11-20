@@ -59,10 +59,10 @@ import { ClrCheckbox } from './checkbox';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterContentInit {
-  role: string;
-  ariaLabelledBy: string;
+  role: string | null = null;
+  ariaLabelledBy: string | null = null;
 
-  @ContentChildren(ClrCheckbox, { descendants: true }) checkboxes: QueryList<ClrCheckbox>;
+  @ContentChildren(ClrCheckbox, { descendants: true }) checkboxes!: QueryList<ClrCheckbox>;
 
   private inline = false;
   private _generatedId = uniqueIdFactory();
@@ -115,6 +115,6 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
       this.label.idAttr = this._generatedId;
     }
 
-    this.ariaLabelledBy = this.checkboxes?.length && this.label ? this.label.idAttr : null;
+    this.ariaLabelledBy = this.checkboxes?.length && this.label?.idAttr ? this.label.idAttr : null;
   }
 }

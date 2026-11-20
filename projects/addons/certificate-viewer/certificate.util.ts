@@ -45,7 +45,7 @@ function formatHexByte(byte: number): string {
 }
 
 function formatHexArray(bytes: string[], bytesPerLine = 16): string {
-  const lines = [];
+  const lines: string[] = [];
   for (let i = 0; i < bytes.length; i += bytesPerLine) {
     lines.push(bytes.slice(i, i + bytesPerLine).join(' '));
   }
@@ -130,7 +130,7 @@ export function filterMapOverString<U>(
   str: string,
   callback: (element: string, index: number, arr: string) => NonNullable<U> | null | undefined
 ): NonNullable<U>[] {
-  const result = [];
+  const result: NonNullable<U>[] = [];
   for (let index = 0; index < str.length; index++) {
     const value = callback(str.charAt(index), index, str);
     if (value !== null && value !== undefined) {

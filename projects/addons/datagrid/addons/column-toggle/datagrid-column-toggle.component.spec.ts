@@ -41,7 +41,7 @@ describe('DatagridColumnToggleComponent', () => {
       { uid: 'status', displayName: 'Status', field: 'status', hideable: false, width: '100px' },
     ] as Array<ColumnDefinition<any>>;
     component.columnHiddenStateChange = new EventEmitter<ColumnHiddenState>();
-    component.columns = [...columnsDefs];
+    fixture.componentRef.setInput('columns', [...columnsDefs]);
   });
 
   it('does not show non-hideable columns', () => {
@@ -81,11 +81,11 @@ describe('DatagridColumnToggleComponent', () => {
   });
 
   it('should have only one visible column when conditions apply', () => {
-    component.columns = [
+    fixture.componentRef.setInput('columns', [
       { displayName: 'Name', field: 'name', hidden: false },
       { displayName: 'State', field: 'state', hidden: true },
       { displayName: 'Status', field: 'status', hidden: true },
-    ];
+    ]);
     expect(component.hasOnlyOneVisibleColumn).toBe(true);
 
     // If more than one column is visible, it should return false

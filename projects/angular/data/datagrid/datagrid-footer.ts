@@ -16,7 +16,7 @@ import { Selection } from './providers/selection';
 @Component({
   selector: 'clr-dg-footer',
   template: `
-    @if (selection.selectionType === SELECTION_TYPE.Multi && selection.current?.length > 0) {
+    @if (selection.selectionType === SELECTION_TYPE.Multi && selection.current.length > 0) {
       <!-- The grid's own count of selected rows, drawn as a checkbox; the datagrid publishes the selection. -->
       <div class="clr-form-control-disabled" data-clr-context-ignore>
         <clr-checkbox-wrapper class="datagrid-footer-select">
