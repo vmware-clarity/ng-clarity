@@ -61,7 +61,9 @@ export function allRefs(nodes: ClrComponentContext[]): string[] {
   return allNodes(nodes).flatMap(node => (node.ref ? [node.ref] : []));
 }
 
+/** Renders what the test changed on the host, as the application would after changing its own fields. */
 export async function settle(fixture: ComponentFixture<unknown>): Promise<void> {
+  fixture.changeDetectorRef.markForCheck();
   fixture.detectChanges();
   await fixture.whenStable();
   fixture.detectChanges();

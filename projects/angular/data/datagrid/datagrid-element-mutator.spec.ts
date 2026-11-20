@@ -367,7 +367,9 @@ describe('ClrDatagrid element mutator', () => {
 
   afterEach(() => fixture?.destroy());
 
+  /** Renders what the test changed on the host, as the application would after changing its own fields. */
   async function settle() {
+    fixture.changeDetectorRef.markForCheck();
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();

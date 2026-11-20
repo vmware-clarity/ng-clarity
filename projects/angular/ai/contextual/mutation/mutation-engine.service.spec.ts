@@ -736,6 +736,7 @@ describe('ClrMutationEngineService', () => {
         confirm.mockImplementation(() => {
           // Tracked by id, the option element stays and only its ngValue changes.
           host.items = [ITEMS[0], replacement];
+          fixture.changeDetectorRef.markForCheck();
           fixture.detectChanges();
           return true;
         });
