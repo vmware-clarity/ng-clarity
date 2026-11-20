@@ -5,13 +5,12 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<!-- data-clr-context-ignore: the panel renders the context, so the engine must not
-     describe it and the tracker must not react to its re-renders. -->
+<!-- data-clr-context-ignore: the panel renders the context, so the engine must not describe it. -->
 <div class="snapshot-panel card" data-clr-context-ignore>
   <div class="card-header">
-    Live context — updates as the page changes
+    Page context
     <span class="label">{{ snapshotBytes }} bytes</span>
-    <span class="label">update #{{ snapshotCount }}</span>
+    <span class="label">read #{{ snapshotCount }}</span>
     @if (snapshotTruncated) {
       <span class="label label-warning">truncated — raise maxComponents</span>
     }

@@ -870,7 +870,7 @@ describe('ClrContextService, asynchronous providers', () => {
     registry = TestBed.inject(ClrContextRegistryService);
   });
 
-  /** The snapshot `watch()` takes at once, reporting pending providers as loading. */
+  /** A snapshot taken at once, reporting pending providers as loading. */
   function readNow(options: ClrContextSnapshotOptions): ClrPageContext {
     return engine['read'](options);
   }

@@ -42,7 +42,7 @@ describe('ClrContextService, view metadata', () => {
     return engine;
   }
 
-  /** The snapshot `watch()` takes at once, reporting what still loads as loading. */
+  /** A snapshot taken at once, reporting what still loads as loading. */
   function now(engine: ClrContextService, options?: ClrContextSnapshotOptions): ClrPageContext {
     return engine['read'](options);
   }

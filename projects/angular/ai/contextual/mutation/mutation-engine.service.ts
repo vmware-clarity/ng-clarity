@@ -51,7 +51,7 @@ const CONFIRM_TIMEOUT_MS = 120_000;
  * For application code only: results carry the page's values.
  */
 @Injectable({ providedIn: 'root' })
-export class ClrMutationEngineService {
+export class ClrMutationService {
   private readonly context = inject(ClrContextService);
   private readonly refs = inject(ContextRefRegistryService);
   private readonly policy = inject(CLR_MUTATION_POLICY, { optional: true });

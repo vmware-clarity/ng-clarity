@@ -6,27 +6,14 @@
  */
 
 import { HashLocationStrategy, isPlatformBrowser, LocationStrategy } from '@angular/common';
-import {
-  DOCUMENT,
-  inject,
-  Injectable,
-  Injector,
-  isDevMode,
-  NgZone,
-  OnDestroy,
-  PLATFORM_ID,
-  runInInjectionContext,
-} from '@angular/core';
+import { DOCUMENT, inject, Injectable, isDevMode, NgZone, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { CLR_CONTEXT_IGNORE_SELECTOR, CLR_CONTEXT_REDACT_SELECTOR, usableSelectors } from '@clr/angular/utils';
-import { defer, map, Observable } from 'rxjs';
 
 import { ContextMetadataLoader } from './context-metadata-loader';
 import { ClrContextRegistryService } from './context-registry.service';
 import { attempt, usableTimeout } from '../attempt';
-import { ContextTracker } from './context-tracker';
 import { charged } from '../budget';
-import { ClrContextChange, clrDiffContext } from '../diff';
 import {
   annotationContext,
   annotationFrom,
@@ -120,17 +107,13 @@ export interface ClrContextConfig {
   routes?: boolean;
   /** Describe markup with neither a role nor an accessible name, such as other libraries' components. */
   extractors?: ClrContextDomExtractor[];
-  /** How long `snapshot()` and `watch()` wait for each provider that answers with a promise. Default `2000`. */
+  /** How long `snapshot()` waits for each provider that answers with a promise. Default `2000`. */
   timeoutMs?: number;
-  /** For `watch()`: milliseconds of quiet after the last change before the page is read again. Default `300`. */
-  debounceMs?: number;
-  /** For `watch()`: the longest a change waits to be read while the page never goes quiet. Default `2000`. */
-  maxWaitMs?: number;
 }
 
 /** Reads the current page for an AI agent: route, rendered components and registered context. */
 @Injectable({ providedIn: 'root' })
-export class ClrContextService implements OnDestroy {
+export class ClrContextService {
   private config: ClrContextConfig = {};
   private scope: ClrContextSnapshotOptions = {};
   private configured = false;
@@ -145,13 +128,10 @@ export class ClrContextService implements OnDestroy {
   private readonly router = inject(Router, { optional: true });
   private readonly zone = inject(NgZone);
   private frameHost: ClrContextFrameHost | null = null;
-  private readonly injector = inject(Injector);
   private readonly metadataLoader = new ContextMetadataLoader(this.document, () => this.config.metadataOrigins ?? []);
-  private tracker: ContextTracker | null = null;
 
   ngOnDestroy(): void {
     this.disableFrameBridge();
-    this.tracker?.destroy();
   }
 
   /**
@@ -179,29 +159,6 @@ export class ClrContextService implements OnDestroy {
   /** A fresh snapshot of the page, with `options` applied over the configured scope. */
   snapshot(options?: ClrContextSnapshotOptions): Promise<ClrPageContext> {
     return this.readAsync(options);
-  }
-
-  /**
-   * The page as it changes: a snapshot now, and another after each change to the DOM, a value, an annotation or
-   * the route. The page is watched while anyone subscribes, and every subscriber shares one watcher, so `options`
-   * given here apply to all of them.
-   */
-  watch(options?: ClrContextSnapshotOptions): Observable<ClrPageContext> {
-    return defer(() => this.contextTracker().track(options && { ...this.pacing(), snapshot: options }));
-  }
-
-  /** What changed with each `watch()` snapshot: the first lists everything as added. */
-  changes(options?: ClrContextSnapshotOptions): Observable<ClrContextChange> {
-    return defer(() => {
-      let previous: ClrPageContext | null = null;
-      return this.watch(options).pipe(
-        map(current => {
-          const change = clrDiffContext(previous, current);
-          previous = current;
-          return change;
-        })
-      );
-    });
   }
 
   /** @internal The scope snapshots are read in, with `options` over it; the mutation engine writes in the same one. */
@@ -242,23 +199,6 @@ export class ClrContextService implements OnDestroy {
       return Promise.resolve(null);
     }
     return clrRequestHostContext(options);
-  }
-
-  private contextTracker(): ContextTracker {
-    this.tracker ??= runInInjectionContext(
-      this.injector,
-      () =>
-        new ContextTracker(
-          options => this.read(options),
-          options => this.readAsync(options),
-          () => this.pacing()
-        )
-    );
-    return this.tracker;
-  }
-
-  private pacing() {
-    return { debounceMs: this.config.debounceMs, maxWaitMs: this.config.maxWaitMs };
   }
 
   /**

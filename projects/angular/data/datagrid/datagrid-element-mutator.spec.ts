@@ -13,7 +13,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {
   ClrContextService,
   ClrElementMutationResult,
-  ClrMutationEngineService,
+  ClrMutationService,
   ClrPageContext,
   provideClrMutationPolicy,
 } from '@clr/angular/ai';
@@ -341,7 +341,7 @@ function names(selected: Server[]): string[] {
 describe('ClrDatagrid element mutator', () => {
   let fixture: ComponentFixture<unknown>;
   let contextEngine: ClrContextService;
-  let engine: ClrMutationEngineService;
+  let engine: ClrMutationService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -379,7 +379,7 @@ describe('ClrDatagrid element mutator', () => {
     fixture = TestBed.createComponent(component);
     await settle();
     contextEngine = TestBed.inject(ClrContextService);
-    engine = TestBed.inject(ClrMutationEngineService);
+    engine = TestBed.inject(ClrMutationService);
     return fixture.componentInstance as C;
   }
 

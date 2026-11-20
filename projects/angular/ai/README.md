@@ -12,7 +12,7 @@ surfaces are planned under the same entry point.
 
 ## Quickstart
 
-Inject `ClrContextService` and call `snapshot()` for the page now or `watch()` for the page as it changes; call `configure()` once at startup to set the scope. The "Contextual Engine" guide on the
+Inject `ClrContextService` and call `snapshot()` for the page now; call `configure()` once at startup to set the scope. The "Contextual Engine" guide on the
 Clarity website (`/documentation/contextual-engine`) has a complete example and a privacy checklist to read
 before a snapshot goes to a model.
 
@@ -66,11 +66,11 @@ export const appConfig: ApplicationConfig = {
 Then, in the same component that reads the page, plan and apply the operations the agent proposes:
 
 ```ts
-import { ClrMutationEngineService, ClrMutationOperation } from '@clr/angular/ai';
+import { ClrMutationService, ClrMutationOperation } from '@clr/angular/ai';
 
 export class AssistantComponent {
-  // ...the engine and tracker above.
-  private readonly mutationEngine = inject(ClrMutationEngineService);
+  // ...the engine above.
+  private readonly mutationEngine = inject(ClrMutationService);
 
   async act(operations: ClrMutationOperation[]) {
     // Refs and labels copied verbatim from the latest snapshot, such as
@@ -105,7 +105,7 @@ application does not control, such as embedded frames, are
 held to the application's budgets and the defaults, and see neither what the user entered nor the
 page's full address (only its route pattern) unless the application shares them.
 
-The engine's write half, the **mutation engine** (`ClrMutationEngineService`), lets an agent act on
+The engine's write half, the **mutation engine** (`ClrMutationService`), lets an agent act on
 what it read: fill Angular-bound form controls (reactive and template-driven) and navigate to any
 route of the application's router configuration (as `availableRoutes` lists them), addressing
 controls by the `ref` each snapshot node carries — random, and stable for an element while it is on
