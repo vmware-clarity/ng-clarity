@@ -41,7 +41,7 @@ export interface ClrAvailableRoute {
 
 /** A snapshot of the page context, always computed on demand from the live application. */
 export interface ClrPageContext {
-  /** The document title; empty for an untrusted caller unless it shares the full URL. */
+  /** The document title. */
   title: string;
   /** The current URL (browser location, or router URL when available). */
   url?: string;
@@ -65,8 +65,7 @@ export interface ClrPageContext {
  * Contributes context to snapshots. Asked once per snapshot; return `null` when there is nothing to report.
  * A promise is awaited by `snapshot()` and `watch()`; `watch()` first reports it as `{ type: 'clr-loading' }`.
  * While it is pending, later snapshots wait for it instead of asking again. A promise that rejects or
- * outlasts the timeout is reported as `{ type: 'clr-unavailable' }`. Untrusted consumers see only the
- * state keys listed in `publicKeys`.
+ * outlasts the timeout is reported as `{ type: 'clr-unavailable' }`.
  */
 export interface ClrContextProvider {
   /** The provider's context as it is now, or `null` when it has nothing to report. */

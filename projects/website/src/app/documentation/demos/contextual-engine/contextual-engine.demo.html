@@ -147,12 +147,7 @@
       <code cds-text="code">autocomplete</code> declares a credential or a payment card are reported as
       <code cds-text="code">redacted</code> rather than by value, as is anything marked
       <code cds-text="code">data-clr-context-redact</code>. Every other field is reported by value to the application's
-      own code, so mark what an agent should not see before a snapshot goes to a model. Callers the application does not
-      control, such as embedded frames, are not given what the user entered — typed values, chosen options, ticked
-      boxes, selected rows — unless the application deliberately shares it. The page's text is still shared, helper and
-      validation text included. State the application publishes reaches them only under the keys it marks public.
-      <code cds-text="code">withheld: true</code> marks a field whose value was withheld; an empty field carries no
-      marker, so an agent can still tell which fields are filled.
+      own code, so mark what an agent should not see before a snapshot goes to a model.
     </p>
 
     <h2 id="who-it-is-for" class="clr-mt-48px" cds-text="title">Who consumes it</h2>
@@ -162,13 +157,8 @@
       redacted, with the full URL, route parameters and data, and the title.
     </p>
     <p class="clr-mt-16px" cds-text="body">
-      Every consumer gets the page's text, its helper and error text, and the labels of the application's own
-      <code cds-text="code">clrContext</code> annotations. State that application code publishes is different. Callers
-      the application does not control see only the state keys the publisher lists in
-      <code cds-text="code">publicKeys</code>. Every other key is withheld, and the state is marked
-      <code cds-text="code">withheld: true</code>. A key nobody listed stays private, so forgetting to list one hides it
-      rather than leaking it. What is marked <code cds-text="code">data-clr-context-redact</code> or
-      <code cds-text="code">data-clr-context-ignore</code> reaches none of them.
+      What is marked <code cds-text="code">data-clr-context-redact</code> or
+      <code cds-text="code">data-clr-context-ignore</code> reaches no consumer.
     </p>
   </app-doc-tab>
 
@@ -246,12 +236,6 @@
       <app-code-snippet [code]="directiveExample" language="html"></app-code-snippet>
     </div>
     <p class="clr-mt-16px" cds-text="body">
-      Callers the application does not control, such as embedded frames, see the annotation's label but only the state
-      keys listed in <code cds-text="code">[clrContextPublicKeys]</code>. Any other key is withheld, and the state is
-      marked <code cds-text="code">withheld: true</code>. Without the input, they see none of the state. The
-      application's own code always sees all of it.
-    </p>
-    <p class="clr-mt-16px" cds-text="body">
       The directive serialises its state on every change detection, to notice an object that was changed in place. Keep
       the state small, and treat it as immutable: pass a new object when something changes.
     </p>
@@ -270,11 +254,7 @@
     </div>
 
     <h4 id="contributing" class="clr-mt-24px" cds-text="subsection">Choosing how to contribute context</h4>
-    <p class="clr-mt-16px" cds-text="body">
-      There are four ways to add to what the engine reads. All four follow the same
-      <code cds-text="code">publicKeys</code>
-      rule for callers the application does not control.
-    </p>
+    <p class="clr-mt-16px" cds-text="body">There are four ways to add to what the engine reads.</p>
     <table class="table">
       <thead>
         <tr>
@@ -289,10 +269,7 @@
           <td class="left">
             A template knows what a section is for, or holds a little state about it. This is the usual choice.
           </td>
-          <td class="left">
-            The element's node in <code cds-text="code">components</code>, with
-            <code cds-text="code">[clrContextPublicKeys]</code>
-          </td>
+          <td class="left">The element's node in <code cds-text="code">components</code></td>
         </tr>
         <tr>
           <td class="left">
@@ -303,9 +280,7 @@
             The knowledge lives in a service and belongs to no element, such as the user's role, or has to be fetched. A
             provider may answer with a promise.
           </td>
-          <td class="left">
-            A node in <code cds-text="code">regions</code>, with <code cds-text="code">publicKeys</code>
-          </td>
+          <td class="left">A node in <code cds-text="code">regions</code></td>
         </tr>
         <tr>
           <td class="left"><code cds-text="code">publishElementContext</code></td>
@@ -314,14 +289,14 @@
             <code cds-text="code">&#64;clr/angular/utils</code>, so a component library can publish without depending on
             the engine.
           </td>
-          <td class="left">Merged into its host element's node, with <code cds-text="code">publicKeys</code></td>
+          <td class="left">Merged into its host element's node</td>
         </tr>
         <tr>
           <td class="left"><code cds-text="code">extractors</code> in <code cds-text="code">configure()</code></td>
           <td class="left">
             Markup you do not own carries no role or name, and you cannot change it to publish anything.
           </td>
-          <td class="left">Replaces the matched element's node, with <code cds-text="code">publicKeys</code></td>
+          <td class="left">Replaces the matched element's node</td>
         </tr>
       </tbody>
     </table>
@@ -359,16 +334,9 @@
       <app-code-snippet [code]="elementContextExample" language="typescript"></app-code-snippet>
     </div>
     <p class="clr-mt-16px" cds-text="body">
-      What a component publishes is a <code cds-text="code">ClrPublishedContext</code>: a
-      <code cds-text="code">ClrComponentContext</code> with an optional <code cds-text="code">publicKeys</code> list.
-      The application's own code sees all of the state. Callers it does not control, such as embedded frames, see only
-      the state keys listed in <code cds-text="code">publicKeys</code>. Any other key is withheld, and the state is
-      marked <code cds-text="code">withheld: true</code>. This fails closed: a key you forget to list is hidden, not
-      shared. Values the engine derives itself, such as what the user typed or selected, stay withheld from those
-      callers unless the application shares them. On a page element, that includes the keys the engine uses for them,
-      such as <code cds-text="code">value</code> and <code cds-text="code">selected</code>, even when you list them. The
-      same rule applies to what a <code cds-text="code">ClrContextProvider</code> returns and to what an extractor
-      returns.
+      What a component publishes is a <code cds-text="code">ClrPublishedContext</code>, the same shape as a
+      <code cds-text="code">ClrComponentContext</code>. A <code cds-text="code">ClrContextProvider</code> and an
+      extractor return the same.
     </p>
 
     <h3 id="other-ui-libraries" class="clr-mt-32px" cds-text="section">Markup that carries no semantics</h3>

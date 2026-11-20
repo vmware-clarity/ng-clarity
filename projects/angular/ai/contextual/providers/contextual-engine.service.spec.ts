@@ -8,7 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
-import { ClrPublishedContext, publishElementContext } from '@clr/angular/utils';
+import { ClrPublishedContext } from '@clr/angular/utils';
 
 import { ClrContextRegistryService } from './context-registry.service';
 import { ClrContextConfig, ClrContextService } from './contextual-engine.service';
@@ -18,8 +18,7 @@ import {
   ClrContextSnapshotOptions,
   ClrPageContext,
 } from '../interfaces/context.interface';
-import { CLR_CONTEXT_CATEGORIES, CLR_CONTEXT_DEFAULT_OPTIONS, CLR_CONTEXT_PRESETS } from '../snapshot-options';
-import { untrustedSnapshot } from '../untrusted-snapshot.mock';
+import { CLR_CONTEXT_CATEGORIES, CLR_CONTEXT_PRESETS } from '../snapshot-options';
 
 @Component({ template: '', changeDetection: ChangeDetectionStrategy.Eager })
 class RoutedComponent {}
@@ -123,60 +122,6 @@ describe('ClrContextService', () => {
       expect(snapshot.route?.data).toEqual({ section: 'account' });
       expect(JSON.stringify(snapshot.route)).not.toContain('secret');
     });
-  });
-});
-
-describe('ClrContextService, what a caller the application does not control is told about fields', () => {
-  let engine: ClrContextService;
-  let form: HTMLElement;
-
-  function reportedValue(snapshot: ClrPageContext): unknown {
-    return snapshot.components.find(component => component.type === 'textbox')?.state?.['value'];
-  }
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    engine = TestBed.inject(ClrContextService);
-    form = document.createElement('div');
-    form.innerHTML = '<label for="secret">Token</label><input id="secret" value="user-typed-secret" />';
-    document.body.appendChild(form);
-  });
-
-  afterEach(() => form.remove());
-
-  it('withholds what the user typed, even when the caller asks for it', () => {
-    expect(reportedValue(untrustedSnapshot(engine, { shareFormValues: true }))).toBeUndefined();
-  });
-
-  it('still describes the field whose value it withholds', () => {
-    expect(untrustedSnapshot(engine).components.some(component => component.type === 'textbox')).toBe(true);
-  });
-
-  it('withholds what the user chose or ticked as much as what they typed', () => {
-    form.innerHTML +=
-      '<select multiple aria-label="Roles"><option selected>admin</option><option>viewer</option></select>' +
-      '<input type="checkbox" aria-label="Remember" checked />';
-
-    const json = JSON.stringify(untrustedSnapshot(engine));
-    expect(json).not.toContain('"selected"');
-    expect(json).not.toContain('"checked"');
-    expect(json).toContain('"optionCount":2');
-  });
-
-  it('withholds which toggle buttons the user pressed, a choice like a ticked box', async () => {
-    form.innerHTML +=
-      '<button type="button" aria-pressed="true">Pay anonymously</button>' +
-      '<div role="group" aria-label="Billing"><button type="button" aria-pressed="false">Monthly</button>' +
-      '<button type="button" aria-pressed="true">Annual</button></div>';
-
-    const json = JSON.stringify(untrustedSnapshot(engine));
-    expect(json).toContain('Pay anonymously');
-    expect(json).not.toContain('"pressed"');
-    expect(JSON.stringify(await engine.snapshot())).toContain('"pressed":true');
-  });
-
-  it('still honours a smaller budget the caller asks for', () => {
-    expect(untrustedSnapshot(engine, { maxComponents: 1 }).components.length).toBe(1);
   });
 });
 
@@ -285,22 +230,6 @@ describe('ClrContextService, configured once for the application', () => {
       'Clarity context options: "everything" is not a preset; use one of full, interactive, minimal.'
     );
     expect(types(await engine.snapshot())).toContain('main');
-  });
-
-  it('holds a caller the application does not control to the application options', () => {
-    const engine = engineWith({
-      scope: { excludeCategories: ['text', 'layout'], root: 'main, nav', maxComponents: 5 },
-    });
-    const snapshot = untrustedSnapshot(engine, { excludeCategories: [], root: 'page', maxComponents: 10_000 });
-    expect(types(snapshot)).toEqual(['main']);
-    expect(snapshot.components[0].children?.map(node => node.type)).toEqual(['button']);
-  });
-
-  it('does not let an untrusted caller set off a warning about the application’s options', () => {
-    const engine = engineWith({ scope: { excludeCategories: ['layout'], root: 'main, nav' } });
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
-    expect(types(untrustedSnapshot(engine, { excludeCategories: true, excludeSelectors: 1 }))).toEqual(['main']);
-    expect(warn).not.toHaveBeenCalled();
   });
 });
 
@@ -424,131 +353,6 @@ describe('ClrContextService, the routes an application can navigate to', () => {
   });
 });
 
-describe('ClrContextService, what a caller the application does not control is told about published state', () => {
-  let engine: ClrContextService;
-  let page: HTMLElement;
-
-  function find(nodes: ClrComponentContext[], match: (node: ClrComponentContext) => boolean): ClrComponentContext[] {
-    return nodes.flatMap(node => [...(match(node) ? [node] : []), ...find(node.children ?? [], match)]);
-  }
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    engine = TestBed.inject(ClrContextService);
-    // The snapshot describes the whole page, and fixtures are not torn down after each
-    // spec here (`destroyAfterEach: false`): an earlier spec's root would be described too.
-    document.querySelectorAll('body > [ng-version]').forEach(root => root.remove());
-    page = document.createElement('div');
-    page.innerHTML = '<a href="/clusters/7">Cluster seven</a>';
-    document.body.appendChild(page);
-  });
-
-  afterEach(() => page.remove());
-
-  it('withholds a selection as much as a typed value', () => {
-    engine.configure({
-      extractors: [
-        {
-          selector: 'a',
-          extract: () => ({
-            type: 'grid',
-            label: 'Users',
-            state: { selection: ['Ada'], rowCount: 3 },
-            publicKeys: ['rowCount', 'selection'],
-          }),
-        },
-      ],
-    });
-
-    const grid = find(untrustedSnapshot(engine).components, node => node.type === 'grid')[0];
-    expect(grid.state).toEqual({ rowCount: 3, withheld: true });
-  });
-
-  it('withholds published state its publisher did not mark public', async () => {
-    page.innerHTML = '<div class="search">Find hosts</div>';
-    const search = page.querySelector('.search') as HTMLElement;
-    const unpublish = publishElementContext(search, () => ({
-      type: 'search',
-      state: { query: '4111 1111', resultCount: 2 },
-      publicKeys: ['resultCount'],
-      children: [{ type: 'group', label: 'Filter', state: { filter: 's3cr3t' } }],
-    }));
-    const registry = TestBed.inject(ClrContextRegistryService);
-    const annotation = {
-      getClrContext: () => ({ type: 'region', label: 'Cart', state: { coupon: 's3cr3t', items: 2 } }),
-    };
-    const unregister = registry.register(annotation);
-
-    try {
-      const shared = untrustedSnapshot(engine);
-      expect(find(shared.components, node => node.type === 'search')[0].state).toEqual({
-        resultCount: 2,
-        withheld: true,
-      });
-      expect(find(shared.components, node => node.label === 'Filter')[0].state).toEqual({ withheld: true });
-      expect(shared.regions).toEqual([{ type: 'region', label: 'Cart', state: { withheld: true } }]);
-      expect(JSON.stringify(shared)).not.toContain('s3cr3t');
-      expect(JSON.stringify(shared)).not.toContain('4111');
-
-      const trusted = await engine.snapshot();
-      expect(find(trusted.components, node => node.type === 'search')[0].state?.['query']).toBe('4111 1111');
-      expect(trusted.regions[0].state).toEqual({ coupon: 's3cr3t', items: 2 });
-    } finally {
-      unpublish();
-      unregister();
-    }
-  });
-
-  it('redacts a node its publisher marks redacted, without listing the key', () => {
-    page.innerHTML = '<div class="card"><label>Card <input value="4111" /></label></div>';
-    const unpublish = publishElementContext(page.querySelector('.card') as HTMLElement, () => ({
-      type: 'group',
-      label: 'Card 4111',
-      state: { redacted: true },
-    }));
-
-    try {
-      expect(JSON.stringify(untrustedSnapshot(engine).components)).not.toContain('4111');
-    } finally {
-      unpublish();
-    }
-  });
-
-  it('shares the state keys an annotation marks public', () => {
-    const registry = TestBed.inject(ClrContextRegistryService);
-    const unregister = registry.register({
-      getClrContext: () => ({
-        type: 'region',
-        label: 'Cart',
-        state: { coupon: 's3cr3t', items: 2 },
-        publicKeys: ['items'],
-      }),
-    });
-
-    try {
-      expect(untrustedSnapshot(engine).regions).toEqual([
-        { type: 'region', label: 'Cart', state: { items: 2, withheld: true } },
-      ]);
-    } finally {
-      unregister();
-    }
-  });
-
-  it('reads the scope only as the page or the modal, never as a selector', () => {
-    expect(untrustedSnapshot(engine, { root: 'main' }).components.length).toBeGreaterThan(0);
-    expect(untrustedSnapshot(engine, { root: 7 }).components.length).toBeGreaterThan(0);
-  });
-
-  it('does not let a caller raise a budget past the default', () => {
-    page.innerHTML = Array.from({ length: 320 }, (_, index) => `<button>Button ${index}</button>`).join('');
-
-    const snapshot = untrustedSnapshot(engine, { maxComponents: 5000 });
-
-    expect(find(snapshot.components, () => true).length).toBeLessThanOrEqual(CLR_CONTEXT_DEFAULT_OPTIONS.maxComponents);
-    expect(snapshot.truncated).toBe(true);
-  });
-});
-
 describe('ClrContextService, asynchronous providers', () => {
   let engine: ClrContextService;
   let registry: ClrContextRegistryService;
@@ -562,7 +366,7 @@ describe('ClrContextService, asynchronous providers', () => {
 
   /** The snapshot `watch()` takes at once, reporting pending providers as loading. */
   function readNow(options: ClrContextSnapshotOptions): ClrPageContext {
-    return engine['read'](options, false);
+    return engine['read'](options);
   }
 
   it('reports a pending provider as loading in a synchronous snapshot', () => {

@@ -101,7 +101,7 @@ export class ClrContextService implements OnDestroy {
 
   /** A fresh snapshot of the page, with `options` applied over the configured scope. */
   snapshot(options?: ClrContextSnapshotOptions): Promise<ClrPageContext> {
-    return this.readAsync(options, false);
+    return this.readAsync(options);
   }
 
   /**
@@ -132,8 +132,8 @@ export class ClrContextService implements OnDestroy {
       this.injector,
       () =>
         new ContextTracker(
-          options => this.read(options, false),
-          options => this.readAsync(options, false),
+          options => this.read(options),
+          options => this.readAsync(options),
           () => this.pacing()
         )
     );
@@ -159,33 +159,30 @@ export class ClrContextService implements OnDestroy {
     return snapshot;
   }
 
-  /** With `untrusted`, what application code published is cut to the state keys it marks public. */
-  private read(options: ClrContextSnapshotOptions | undefined, untrusted: boolean): ClrPageContext {
+  private read(options: ClrContextSnapshotOptions | undefined): ClrPageContext {
     this.snapshotTaken = true;
     const snapshot = this.emptySnapshot();
     const resolved = resolveSnapshotOptions(withCallOptions(this.scope, options));
-    const regions = this.contextRegistry.collect({ limits: resolved, untrusted });
-    return this.describePage(snapshot, resolved, regions, untrusted);
+    const regions = this.contextRegistry.collect({ limits: resolved });
+    return this.describePage(snapshot, resolved, regions);
   }
 
   /** Like `read`, awaiting asynchronous providers for up to `timeoutMs` each. */
-  private async readAsync(options: ClrContextSnapshotOptions | undefined, untrusted: boolean): Promise<ClrPageContext> {
+  private async readAsync(options: ClrContextSnapshotOptions | undefined): Promise<ClrPageContext> {
     this.snapshotTaken = true;
     const resolved = resolveSnapshotOptions(withCallOptions(this.scope, options));
     const regions = await this.contextRegistry.collectAsync({
       timeoutMs: usableTimeout(this.config.timeoutMs, DEFAULT_SOURCE_TIMEOUT_MS),
       limits: resolved,
-      untrusted,
     });
     // The page is read once providers have answered, so a region redacted meanwhile is read as it is now.
-    return this.describePage(this.emptySnapshot(), resolved, regions, untrusted);
+    return this.describePage(this.emptySnapshot(), resolved, regions);
   }
 
   private describePage(
     snapshot: ClrPageContext,
     resolved: ResolvedSnapshotOptions,
-    regions: ClrComponentContext[],
-    untrusted: boolean
+    regions: ClrComponentContext[]
   ): ClrPageContext {
     snapshot.title = this.document.title;
     snapshot.url = this.currentUrl();
@@ -195,7 +192,7 @@ export class ClrContextService implements OnDestroy {
       snapshot.availableRoutes = availableRoutes(this.router.config, limit);
     }
     if (isPlatformBrowser(this.platformId)) {
-      const tree = collectContextTreeWithin(this.document, resolved, this.config.extractors ?? [], untrusted);
+      const tree = collectContextTreeWithin(this.document, resolved, this.config.extractors ?? []);
       snapshot.components = tree.components;
       if (tree.truncated) {
         snapshot.truncated = true;
