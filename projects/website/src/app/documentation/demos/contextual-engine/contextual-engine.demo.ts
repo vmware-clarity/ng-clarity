@@ -354,7 +354,14 @@ report.results[0];
 `;
 
 const ELEMENT_MUTATOR_EXAMPLE = `
-import { publishElementMutator } from '@clr/angular/utils';
+import { publishElementContext, publishElementMutator } from '@clr/angular/utils';
+
+// A writable component publishes its current value, in the agent's terms, as state.value.
+// The engine reads it before and after a write.
+this.teardownContext = publishElementContext(this.host.nativeElement, () => ({
+  type: 'combobox',
+  state: { value: this.selectedOption()?.label ?? null },
+}));
 
 // A component whose form control takes something other than what an agent sees.
 this.teardown = publishElementMutator(this.host.nativeElement, {
@@ -366,14 +373,11 @@ this.teardown = publishElementMutator(this.host.nativeElement, {
       ? { value: option.id, display: option.label }
       : { refused: \`No such option. The options are: \${this.labels()}.\` };
   },
-  // Read the current value back in the agent's terms.
-  read: () => this.selectedOption()?.label ?? null,
 });
 
 // A component whose state is not a form control at all writes it itself.
 publishElementMutator(host, {
   write: rows => { this.select(rows); return { value: this.selectedRowLabels() }; },
-  read: () => this.selectedRowLabels(),
 });
 `;
 

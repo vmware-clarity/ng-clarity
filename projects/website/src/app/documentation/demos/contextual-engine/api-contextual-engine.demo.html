@@ -695,10 +695,11 @@
       <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; void</code></td>
       <td class="left">
         Makes a custom control writable by <code cds-text="code">setValue</code>. The
-        <code cds-text="code">ClrElementMutator</code> has three functions:
-        <code cds-text="code">coerce(proposed)</code> turns what the agent asked for into the model value,
-        <code cds-text="code">write(proposed)</code> writes state that is not a form control, and
-        <code cds-text="code">read()</code> reads the value back. All are optional.
+        <code cds-text="code">ClrElementMutator</code> has two functions:
+        <code cds-text="code">coerce(proposed)</code> turns what the agent asked for into the model value, and
+        <code cds-text="code">write(proposed)</code> writes state that is not a form control. Both are optional. The
+        value after a write is read from the <code cds-text="code">state.value</code> the component publishes with
+        <code cds-text="code">publishElementContext</code>.
       </td>
     </tr>
     <tr>

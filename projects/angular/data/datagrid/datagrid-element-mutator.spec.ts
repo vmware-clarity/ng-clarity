@@ -411,7 +411,7 @@ describe('ClrDatagrid element mutator', () => {
       const host = await create(WithheldRowHost);
 
       expect(grid().state?.['rows']).toEqual(['esx-01']);
-      expect(grid().state?.['selection']).toBeUndefined();
+      expect(grid().state?.['value']).toEqual([]);
 
       const result = await select(['esx-01']);
       expect(result.applied).toBe(true);
@@ -494,7 +494,7 @@ describe('ClrDatagrid element mutator', () => {
       expect(result.detail).toContain('"esx-01 | Running"');
       expect(result.detail).toContain('"esx-02 | Running"');
       expect(names(host.selected)).toEqual(['esx-03']);
-      expect(grid().state?.['selection']).toEqual(['esx-03 | Stopped']);
+      expect(grid().state?.['value']).toEqual(['esx-03 | Stopped']);
     });
 
     it('applies none of a write when one of the rows it names is ambiguous', async () => {
@@ -621,7 +621,7 @@ describe('ClrDatagrid element mutator', () => {
       host.items[0].locked = true;
       host.selected = [host.items[0]];
       await settle();
-      expect(grid().state?.['selection']).toEqual(['esx-01']);
+      expect(grid().state?.['value']).toBe('esx-01');
 
       const replaced = await select('esx-02');
       expect(replaced.refused).toBe('invalid');
@@ -631,7 +631,7 @@ describe('ClrDatagrid element mutator', () => {
       const cleared = await select(null);
       expect(cleared.refused).toBe('invalid');
       expect(names(host.selected)).toEqual(['esx-01']);
-      expect(grid().state?.['selection']).toEqual(['esx-01']);
+      expect(grid().state?.['value']).toBe('esx-01');
     });
 
     it('replaces a single selection that is not locked', async () => {
@@ -654,7 +654,7 @@ describe('ClrDatagrid element mutator', () => {
       host.selected = [{ ...host.items[2] }, { ...host.items[0] }];
       await settle();
       expect(fixture.nativeElement.querySelectorAll('clr-dg-row').length).toBe(2);
-      expect(grid().state?.['selection']).toEqual(['esx-01 | Running']);
+      expect(grid().state?.['value']).toEqual(['esx-01 | Running']);
 
       const result = await select(['esx-02']);
 
@@ -681,7 +681,7 @@ describe('ClrDatagrid element mutator', () => {
       const host = await create(SinglePagedHost);
       host.selected = [host.items[3]];
       await settle();
-      expect(grid().state?.['selection']).toBeUndefined();
+      expect(grid().state?.['value']).toBeNull();
 
       const replaced = await select('esx-02');
       expect(replaced.refused).toBe('invalid');
@@ -825,7 +825,7 @@ describe('ClrDatagrid element mutator', () => {
 
       expect(redacted.state?.['redacted']).toBe(true);
       expect(redacted.state?.['rows']).toBeUndefined();
-      expect(redacted.state?.['selection']).toBeUndefined();
+      expect(redacted.state?.['value']).toBeUndefined();
       expect(redacted.ref).toBeUndefined();
       expect(JSON.stringify(page.components)).not.toContain('esx-0');
     });

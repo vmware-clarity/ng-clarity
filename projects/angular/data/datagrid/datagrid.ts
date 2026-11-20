@@ -810,7 +810,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         }),
       write: (proposed, options): ClrElementMutation =>
         this.withRowCells(() => this.writeSelection(proposed, this.excludedBy(options), this.budgetOf(options))),
-      read: options => this.withRowCells(() => this.readSelection(this.excludedBy(options), this.budgetOf(options))),
     });
   }
 
