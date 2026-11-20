@@ -211,7 +211,7 @@ describe('Datepicker', () => {
           expect(context.clarityDirective.yearRangeModel.inRange(new Date().getFullYear())).toBe(true);
 
           // Move again and check
-          vi.spyOn(context.clarityDirective.yearRangeModel, 'currentDecade').mockImplementation(() => undefined);
+          vi.spyOn(context.clarityDirective.yearRangeModel, 'currentDecade').mockReturnThis();
           context.clarityDirective.currentDecade();
           expect(context.clarityDirective.yearRangeModel.currentDecade).not.toHaveBeenCalled();
         });

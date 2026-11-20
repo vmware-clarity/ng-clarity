@@ -30,7 +30,7 @@ describe('StepperService', () => {
     stepperService
       .getPanelChanges(panel1Id)
       .pipe(take(1))
-      .subscribe(step => expect(step.open).toBe(true));
+      .subscribe(step => expect(step!.open).toBe(true));
   });
 
   it('should notify of step changes when navigating to next step', () => {
@@ -39,7 +39,7 @@ describe('StepperService', () => {
     stepperService
       .getPanelChanges(panel2Id)
       .pipe(take(1))
-      .subscribe(step => expect(step.open).toBe(true));
+      .subscribe(step => expect(step!.open).toBe(true));
   });
 
   it('should notify when all steps have completed', () => {
@@ -61,7 +61,7 @@ describe('StepperService', () => {
     stepperService
       .getPanelChanges(panel2Id)
       .pipe(take(1))
-      .subscribe(step => expect(step.open).toBe(true));
+      .subscribe(step => expect(step!.open).toBe(true));
   });
 
   it('should notify when the next panel has opened', () => {
@@ -79,6 +79,6 @@ describe('StepperService', () => {
     stepperService
       .getPanelChanges(panel1Id)
       .pipe(take(1))
-      .subscribe(step => expect(step.open).toBe(true));
+      .subscribe(step => expect(step!.open).toBe(true));
   });
 });

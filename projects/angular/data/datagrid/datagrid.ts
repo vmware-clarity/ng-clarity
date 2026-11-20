@@ -252,7 +252,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    * Array of all selected items
    */
   @Input('clrDgSelected')
-  set selected(value: T[] | undefined) {
+  set selected(value: T[] | null | undefined) {
     value = value || [];
 
     if (value === this.selection.current) {

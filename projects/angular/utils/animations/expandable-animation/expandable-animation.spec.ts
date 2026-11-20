@@ -31,7 +31,7 @@ import { ClrExpandableAnimation } from './index';
   standalone: false,
 })
 class TestComponent {
-  @ViewChild(ClrExpandableAnimation, { static: true }) expandable: ClrExpandableAnimation;
+  @ViewChild(ClrExpandableAnimation, { static: true }) expandable!: ClrExpandableAnimation;
   expanded = false;
   data = [{ id: 1, value: 'one' }];
 }
@@ -47,7 +47,7 @@ class TestComponent {
   standalone: false,
 })
 class TestComponentDirective {
-  @ViewChild(ClrExpandableAnimationDirective, { static: true }) expandable: ClrExpandableAnimationDirective;
+  @ViewChild(ClrExpandableAnimationDirective, { static: true }) expandable!: ClrExpandableAnimationDirective;
   expanded = false;
   data = [{ id: 1, value: 'one' }];
 }

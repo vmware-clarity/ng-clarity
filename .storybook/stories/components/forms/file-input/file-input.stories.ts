@@ -115,6 +115,6 @@ export const VerticalFileInputWithSelectionInConstrainedContainer: Story = {
 };
 
 function selectFile({ canvasElement }: StoryContext) {
-  const fileInputElement = canvasElement.querySelector<HTMLInputElement>('input[type="file"]');
+  const fileInputElement = canvasElement.querySelector('input[type="file"]') as HTMLInputElement;
   selectFiles(fileInputElement, [new File([''], 'file.txt')]);
 }

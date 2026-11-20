@@ -20,7 +20,7 @@ import { SelectHostModel } from './select-host.model';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class SelectHostComponent implements StepModelHolder, OnStepValidate {
-  model: SelectHostModel;
+  model!: SelectHostModel;
 
   constructor() {
     ClarityIcons.addIcons(hostIcon, clusterIcon, buildingIcon);

@@ -28,7 +28,7 @@ export class DatagridTreeDemo implements OnDestroy {
   cascadeSelection = true;
   pinName = true;
   log: string[] = [];
-  private request: Subscription;
+  private request?: Subscription;
 
   get selectedNames() {
     return this.selected.map(resource => resource.id).join(', ');

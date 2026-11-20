@@ -37,25 +37,25 @@ export class TypographyFontAutopsyDemo {
   fontField = 'Metropolis';
 
   get descenderValue() {
-    let myVal = 1 - this.model.value.topGap - this.model.value.ascender - this.model.value.xHeight;
+    let myVal = 1 - (this.model.value.topGap ?? 0) - (this.model.value.ascender ?? 0) - (this.model.value.xHeight ?? 0);
     myVal = myVal > 0 ? myVal : 0;
     return myVal.toString().substr(0, 6);
   }
 
   get topGapHeight() {
-    return pixelifyValues(millifyValues(this.model.value.topGap));
+    return pixelifyValues(millifyValues(this.model.value.topGap ?? 0));
   }
 
   get ascenderHeight() {
-    return pixelifyValues(millifyValues(this.model.value.ascender));
+    return pixelifyValues(millifyValues(this.model.value.ascender ?? 0));
   }
 
   get xHeightHeight() {
-    return pixelifyValues(millifyValues(this.model.value.xHeight));
+    return pixelifyValues(millifyValues(this.model.value.xHeight ?? 0));
   }
 
   get descenderOverageHeight() {
-    return pixelifyValues(millifyValues(this.model.value.descenderOverage));
+    return pixelifyValues(millifyValues(this.model.value.descenderOverage ?? 0));
   }
 
   noop() {

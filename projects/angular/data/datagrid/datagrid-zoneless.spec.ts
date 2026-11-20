@@ -48,7 +48,7 @@ abstract class ZonelessDatagridHost {
   readonly details = signal(false);
   readonly detailPane = signal(false);
   readonly replacementPane = signal(false);
-  detailState: number = null;
+  detailState: number | null = null;
 }
 
 @Component({
@@ -221,7 +221,7 @@ hosts.forEach(([iterator, hostType]) => {
       await fixture.whenStable();
       expect(rowsWith('datagrid-detail-caret')).toBe(3);
 
-      rows()[1].querySelector<HTMLButtonElement>('.datagrid-detail-caret-button').click();
+      rows()[1].querySelector<HTMLButtonElement>('.datagrid-detail-caret-button')!.click();
       await fixture.whenStable();
       expect(fixture.nativeElement.querySelector('clr-dg-detail-body').textContent).toContain('Replacement for 2');
       expect(fixture.nativeElement.querySelector('.datagrid').getAttribute('aria-hidden')).toBe('true');
@@ -236,7 +236,7 @@ hosts.forEach(([iterator, hostType]) => {
       host.detailPane.set(true);
       host.details.set(true);
       await fixture.whenStable();
-      rows()[0].querySelector<HTMLButtonElement>('.datagrid-detail-caret-button').click();
+      rows()[0].querySelector<HTMLButtonElement>('.datagrid-detail-caret-button')!.click();
       await fixture.whenStable();
       expect(fixture.nativeElement.querySelector('.datagrid').getAttribute('aria-hidden')).toBe('true');
 
@@ -257,13 +257,13 @@ hosts.forEach(([iterator, hostType]) => {
       expect(headerHas('datagrid-expandable-caret')).toBe(true);
       expect(rowsWith('datagrid-detail-caret')).toBe(3);
 
-      rows()[1].querySelector<HTMLButtonElement>('.datagrid-detail-caret-button').click();
+      rows()[1].querySelector<HTMLButtonElement>('.datagrid-detail-caret-button')!.click();
       await fixture.whenStable();
 
       expect(fixture.nativeElement.querySelector('clr-dg-detail-body').textContent).toContain('Pane for 2');
 
       (fixture.nativeElement as HTMLElement)
-        .querySelector<HTMLButtonElement>('.datagrid-detail-pane-close button')
+        .querySelector<HTMLButtonElement>('.datagrid-detail-pane-close button')!
         .click();
       await fixture.whenStable();
 

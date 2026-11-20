@@ -108,17 +108,17 @@ export class FormsStoryComponent {
 
   setControlsState() {
     this.form.enable();
-    Object.keys(this.form.controls).forEach(control => {
+    Object.values(this.form.controls).forEach(control => {
       if (this._isDisabled) {
-        this.form.get(control)?.disable();
+        control.disable();
       } else {
         if (this._isError && !this._isSuccess) {
-          this.form.get(control).setErrors({ required: true });
-          this.form.get(control).markAsTouched();
-          this.form.get(control).markAsDirty();
+          control.setErrors({ required: true });
+          control.markAsTouched();
+          control.markAsDirty();
         } else if (this._isSuccess) {
-          this.form.get(control).setErrors(null);
-          this.form.get(control).markAsTouched();
+          control.setErrors(null);
+          control.markAsTouched();
         }
       }
     });

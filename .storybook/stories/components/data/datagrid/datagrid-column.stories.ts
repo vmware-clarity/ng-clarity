@@ -173,14 +173,18 @@ export const ColumnFilter: Story = {};
 
 export const ColumnNameFilterOpened: Story = {
   play: async ({ canvasElement, userEvent }) => {
-    const stringFilterToggle = await canvasElement.querySelector('clr-dg-string-filter .datagrid-filter-toggle');
+    const stringFilterToggle = (await canvasElement.querySelector(
+      'clr-dg-string-filter .datagrid-filter-toggle'
+    )) as HTMLElement;
     await userEvent.click(stringFilterToggle);
   },
 };
 
 export const ColumnNumberFilterOpened: Story = {
   play: async ({ canvasElement, userEvent }) => {
-    const numericFilterToggle = await canvasElement.querySelector('clr-dg-numeric-filter .datagrid-filter-toggle');
+    const numericFilterToggle = (await canvasElement.querySelector(
+      'clr-dg-numeric-filter .datagrid-filter-toggle'
+    )) as HTMLElement;
     await userEvent.click(numericFilterToggle);
   },
 };

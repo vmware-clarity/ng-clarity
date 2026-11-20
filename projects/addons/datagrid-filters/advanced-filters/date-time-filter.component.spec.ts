@@ -481,28 +481,28 @@ describe('DateTimeFilterComponent', () => {
       await testContext.fixture.whenStable();
 
       const element: HTMLElement = testContext.fixture.nativeElement;
-      element.querySelector<HTMLButtonElement>('button[data-test-id=add-button]').click();
+      element.querySelector<HTMLButtonElement>('button[data-test-id=add-button]')!.click();
       await testContext.fixture.whenStable();
 
       const operator = element.querySelector<HTMLSelectElement>(operatorSelector);
-      operator.value = operator.options[0].value;
-      operator.dispatchEvent(new Event('change'));
+      operator!.value = operator!.options[0].value;
+      operator!.dispatchEvent(new Event('change'));
       await testContext.fixture.whenStable();
 
       const date = element.querySelector<HTMLInputElement>(dateInputSelector);
-      date.value = augustNinth;
-      date.dispatchEvent(new Event('input'));
+      date!.value = augustNinth;
+      date!.dispatchEvent(new Event('input'));
       const time = element.querySelector<HTMLInputElement>('input[formControlName=timeValue]');
-      time.value = '12:30:45';
-      time.dispatchEvent(new Event('input'));
+      time!.value = '12:30:45';
+      time!.dispatchEvent(new Event('input'));
       await testContext.fixture.whenStable();
 
       vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
-      element.querySelector<HTMLButtonElement>(submitBtnSelector).click();
+      element.querySelector<HTMLButtonElement>(submitBtnSelector)!.click();
 
       // Assert
       const emitSpy = testContext.component.filterCriteriaChange.emit as Mock;
-      const emittedFilter = vi.mocked(emitSpy).mock.lastCall[0] as PropertyFilter;
+      const emittedFilter = vi.mocked(emitSpy).mock.lastCall![0] as PropertyFilter;
       const primaryPredicate = emittedFilter.criteria[0];
 
       // Should contain the explicit seconds provided, not appended with :00
@@ -572,7 +572,7 @@ describe('DateTimeFilterComponent', () => {
 
         // Assert
         const emitSpy = testContext.component.filterCriteriaChange.emit as Mock;
-        const filter = vi.mocked(emitSpy).mock.lastCall[0] as PropertyFilter;
+        const filter = vi.mocked(emitSpy).mock.lastCall![0] as PropertyFilter;
 
         // Before 2023-08-09 means < 2023-08-09T00:00:00
         expect(filter.criteria[0].operator).toEqual(ComparisonOperator.LessThan);
@@ -589,7 +589,7 @@ describe('DateTimeFilterComponent', () => {
 
         // Assert
         const emitSpy = testContext.component.filterCriteriaChange.emit as Mock;
-        const filter = vi.mocked(emitSpy).mock.lastCall[0] as PropertyFilter;
+        const filter = vi.mocked(emitSpy).mock.lastCall![0] as PropertyFilter;
 
         // BeforeOrEqualTo uses getFromDateTimePredicate(true), which adds 1 day (if no time)
         // So <= 08-09 effectively becomes < 08-10
@@ -607,7 +607,7 @@ describe('DateTimeFilterComponent', () => {
 
         // Assert
         const emitSpy = testContext.component.filterCriteriaChange.emit as Mock;
-        const filter = vi.mocked(emitSpy).mock.lastCall[0] as PropertyFilter;
+        const filter = vi.mocked(emitSpy).mock.lastCall![0] as PropertyFilter;
 
         // After uses getFromDateTimePredicate(true), adding 1 day
         // After 08-09 effectively means >= 08-10
@@ -635,7 +635,7 @@ describe('DateTimeFilterComponent', () => {
 
       // Assert
       const emitSpy = testContext.component.filterCriteriaChange.emit as Mock;
-      const filter = vi.mocked(emitSpy).mock.lastCall[0] as PropertyFilter;
+      const filter = vi.mocked(emitSpy).mock.lastCall![0] as PropertyFilter;
 
       // Index 0 is Primary (From), Index 1 is Secondary (To)
       const toPredicate = filter.criteria[1];

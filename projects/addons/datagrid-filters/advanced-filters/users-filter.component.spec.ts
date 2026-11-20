@@ -125,7 +125,7 @@ describe('UsersFilterComponent', () => {
       component.onApplyButtonClick();
 
       expect(spy).toHaveBeenCalled();
-      const emittedFilter = vi.mocked(spy).mock.lastCall[0];
+      const emittedFilter = vi.mocked(spy).mock.lastCall![0];
 
       // Verify it emits both the original and the newly added predicate
       expect(emittedFilter?.criteria.length).toBe(2);
@@ -164,7 +164,7 @@ describe('UsersFilterComponent', () => {
       component.onApplyButtonClick();
 
       expect(spy).toHaveBeenCalled();
-      const emittedFilter = vi.mocked(spy).mock.lastCall[0];
+      const emittedFilter = vi.mocked(spy).mock.lastCall![0];
 
       // Verify the top-level operator changed to 'And' (mapping for DoesNotEqual)
       expect(emittedFilter?.operator).toBe(LogicalOperator.And);
@@ -368,7 +368,7 @@ describe('UsersFilterComponent', () => {
       component.onApplyButtonClick();
 
       expect(spy).toHaveBeenCalled();
-      const emittedFilter = vi.mocked(spy).mock.lastCall[0];
+      const emittedFilter = vi.mocked(spy).mock.lastCall![0];
       expect(emittedFilter?.operator).toBe(LogicalOperator.Or); // Equals -> OR
       expect(emittedFilter?.criteria.length).toBe(1);
       expect(emittedFilter?.criteria[0].value).toBe(alice);

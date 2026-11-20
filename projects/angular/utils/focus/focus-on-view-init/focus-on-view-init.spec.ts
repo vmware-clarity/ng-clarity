@@ -43,9 +43,9 @@ class TestComponent {
   displayExistingTabindex = false;
   displayDisabled = false;
 
-  @ViewChild('dummyButton', { static: true }) buttonElRef: ElementRef<HTMLButtonElement>;
+  @ViewChild('dummyButton', { static: true }) buttonElRef!: ElementRef<HTMLButtonElement>;
 
-  @ViewChild(ClrFocusOnViewInit, { read: ElementRef }) focusOnItElRef: ElementRef<HTMLElement>;
+  @ViewChild(ClrFocusOnViewInit, { read: ElementRef }) focusOnItElRef!: ElementRef<HTMLElement>;
 }
 
 @Component({
@@ -63,8 +63,8 @@ class TestComponent {
 })
 class TestDisablingViaInjection {
   display = false;
-  @ViewChild('dummyButton', { static: true }) buttonElRef: ElementRef<HTMLButtonElement>;
-  @ViewChild(ClrFocusOnViewInit, { read: ElementRef }) focusOnItElRef: ElementRef<HTMLElement>;
+  @ViewChild('dummyButton', { static: true }) buttonElRef!: ElementRef<HTMLButtonElement>;
+  @ViewChild(ClrFocusOnViewInit, { read: ElementRef }) focusOnItElRef!: ElementRef<HTMLElement>;
 }
 
 describe('ClrFocusOnViewInit', () => {

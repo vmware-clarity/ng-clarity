@@ -54,7 +54,7 @@ describe('DomAdapter', () => {
     const child = document.createElement('div');
     child.style.width = '10px';
     child.style.height = '1234px';
-    testContext.element.replaceChild(child, testContext.element.firstChild);
+    testContext.element.replaceChild(child, testContext.element.firstChild!);
     expect(testContext.domAdapter.computedHeight(testContext.element)).toBe(1234);
   });
 

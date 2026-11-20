@@ -62,8 +62,8 @@ describe('StepperStateService', () => {
   describe('#markStepValid', () => {
     it('sets the valid flag in the step state according to the passed state', async function () {
       vi.useFakeTimers();
-      let stepState1: StepState;
-      let stepState2: StepState;
+      let stepState1!: StepState;
+      let stepState2!: StepState;
 
       const stepperStateService: StepperStateService = new StepperStateService(new SummaryService());
       stepperStateService.onStepActivated$.pipe(take(1)).subscribe((stepState: StepState) => {

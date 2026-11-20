@@ -31,11 +31,11 @@ import { ClrWizardModule } from './wizard.module';
   standalone: false,
 })
 class TestComponent {
-  @ViewChild('unset', { static: true }) plainDefaultHA: ClrWizardHeaderAction;
-  @ViewChild('disabled', { static: true }) disabledHA: ClrWizardHeaderAction;
-  @ViewChild('identified', { static: true }) idHA: ClrWizardHeaderAction;
-  @ViewChild('projected', { static: true }) projectedHA: ClrWizardHeaderAction;
-  @ViewChild('clicker', { static: true }) clickedHA: ClrWizardHeaderAction;
+  @ViewChild('unset', { static: true }) plainDefaultHA!: ClrWizardHeaderAction;
+  @ViewChild('disabled', { static: true }) disabledHA!: ClrWizardHeaderAction;
+  @ViewChild('identified', { static: true }) idHA!: ClrWizardHeaderAction;
+  @ViewChild('projected', { static: true }) projectedHA!: ClrWizardHeaderAction;
+  @ViewChild('clicker', { static: true }) clickedHA!: ClrWizardHeaderAction;
 
   projector = 'montana';
   myId = 'ohai';
@@ -156,7 +156,7 @@ describe('New Wizard Tests', () => {
           const unsetHA = testComponent.plainDefaultHA;
           expect(unsetHA.id, 'id exists on unset header action').toBeTruthy();
           expect(unsetHA.id, 'id should have ' + 'format of header action id').toContain('clr-wizard-header-action-');
-          testComponent.myId = null;
+          testComponent.myId = null!;
           renderFixture(fixture);
           expect(haToTest.id, 'nulling id should change id').not.toBe(haToTestDefaultId);
           expect(unsetHA.id, 'id exists on null id header action').toBeTruthy();
@@ -207,7 +207,7 @@ describe('New Wizard Tests', () => {
 
         beforeEach(() => {
           lookupEl = debugEl.nativeElement;
-          projectedEl = lookupEl.querySelector('#clr-wizard-header-action-projection');
+          projectedEl = lookupEl.querySelector('#clr-wizard-header-action-projection')!;
         });
 
         it('projects as expected', () => {

@@ -114,7 +114,7 @@ describe('Datagrid', () => {
 
       it('exposes an Observable to follow page changes', () => {
         let nbChanges = 0;
-        let currentPage: number;
+        let currentPage!: number;
         subscriptions.push(
           testContext.pageInstance.change.subscribe((page: number) => {
             nbChanges++;
@@ -134,7 +134,7 @@ describe('Datagrid', () => {
       it('does not emit changes when resetPageSize if set to preventEmit', () => {
         // This test is a bit convoluted perhaps, but testing all ways to emit changes
         let nbChanges = 0;
-        let currentPage: number;
+        let currentPage!: number;
         testContext.pageInstance.size = 10; // Emit avoided by setting before subscribe
         subscriptions.push(
           testContext.pageInstance.change.subscribe((page: number) => {

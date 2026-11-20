@@ -21,7 +21,7 @@ const scrollingPageNumbers = [
   standalone: false,
 })
 export class WizardBasicDemo {
-  @ViewChild('wizard') wizard: ClrWizard;
+  @ViewChild('wizard') wizard!: ClrWizard;
   open = false;
   fullScreen = false;
   scrollingSteps = false;

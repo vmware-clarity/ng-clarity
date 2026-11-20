@@ -22,7 +22,7 @@ describe('Button Group Directives', () => {
         testButton = button;
       });
 
-      const mockButton: ClrButton = new ClrButton(null, null);
+      const mockButton: ClrButton = new ClrButton(null!, null!);
       mockButton.inMenu = true;
 
       buttonInGroupService.updateButtonGroup(mockButton);

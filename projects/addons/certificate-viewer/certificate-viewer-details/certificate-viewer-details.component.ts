@@ -36,8 +36,8 @@ export class CertificateViewerDetailsComponent implements OnChanges {
   @Input() topHeadingLevel: TopHeadingLevel = 5;
   @Input() headingTemplate!: TemplateRef<unknown>;
 
-  selectedCertificate?: Certificate;
-  selectedCertificateField?: CertificateField;
+  selectedCertificate?: Certificate | null;
+  selectedCertificateField?: CertificateField | null;
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.certificateChain) {
@@ -46,31 +46,31 @@ export class CertificateViewerDetailsComponent implements OnChanges {
     }
   }
 
-  selectCertificate(certificate?: Certificate) {
+  selectCertificate(certificate?: Certificate | null) {
     if (this.selectedCertificate !== certificate) {
       this.selectedCertificateField = undefined;
     }
     this.selectedCertificate = certificate;
   }
 
-  selectCertificateField(certificateField?: CertificateField) {
+  selectCertificateField(certificateField?: CertificateField | null) {
     this.selectedCertificateField = certificateField;
   }
 
-  isSelected(certificate?: Certificate): boolean {
+  isSelected(certificate?: Certificate | null): boolean {
     return certificate === this.selectedCertificate;
   }
 
-  isSelectedField(certificateField?: CertificateField): boolean {
+  isSelectedField(certificateField?: CertificateField | null): boolean {
     return certificateField === this.selectedCertificateField;
   }
 
-  getNextCertificate = (certificate?: Certificate): Certificate[] => {
-    const next = this.certificateChain?.nextCertificateInChain(certificate);
+  getNextCertificate = (certificate?: Certificate | null): Certificate[] => {
+    const next = this.certificateChain?.nextCertificateInChain(certificate ?? undefined);
     return next ? [next] : [];
   };
 
-  getFieldsChildren = (certificateField?: CertificateField): CertificateField[] => {
+  getFieldsChildren = (certificateField?: CertificateField | null): CertificateField[] => {
     return certificateField?.children ?? [];
   };
 }

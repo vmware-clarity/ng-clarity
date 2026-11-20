@@ -34,7 +34,7 @@ class SeparatorHost {
     { id: 'Third', pinned: false },
   ]);
   readonly items = [1];
-  @ViewChildren(ClrDatagridColumn) columnComponents: QueryList<ClrDatagridColumn>;
+  @ViewChildren(ClrDatagridColumn) columnComponents!: QueryList<ClrDatagridColumn>;
 }
 
 describe(`column separators in a zoneless OnPush host`, () => {

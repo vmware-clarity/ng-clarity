@@ -34,7 +34,7 @@ export class TestClrStepperComponent {
   readonly form: UntypedFormGroup;
   readonly stepPanelOverriddenStrings: Partial<ClrCommonStrings>;
 
-  @ViewChildren(ClrStepperPanel) stepperPanels: QueryList<ClrStepperPanel>;
+  @ViewChildren(ClrStepperPanel) stepperPanels!: QueryList<ClrStepperPanel>;
 
   constructor(private readonly formBuilder: UntypedFormBuilder) {
     this.form = formBuilder.group({

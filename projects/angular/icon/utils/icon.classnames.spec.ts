@@ -29,7 +29,7 @@ describe('Icon classname helpers: ', () => {
       expect(getSizeValue('')).toEqual('');
     });
     it('should handle nil values', () => {
-      expect(getSizeValue(void 0)).toEqual('');
+      expect(getSizeValue(undefined!)).toEqual('');
     });
     it('should remove "fit" values', () => {
       expect(getSizeValue('fit')).toEqual('');
@@ -56,8 +56,8 @@ describe('Icon classname helpers: ', () => {
       expect(getUpdateSizeStrategy('')).toEqual(SizeUpdateStrategies.NilSizeValue);
     });
     it('should return "value-is-nil" if passed null or undefined as the size', () => {
-      expect(getUpdateSizeStrategy(null)).toEqual(SizeUpdateStrategies.NilSizeValue);
-      expect(getUpdateSizeStrategy(void 0)).toEqual(SizeUpdateStrategies.NilSizeValue);
+      expect(getUpdateSizeStrategy(null!)).toEqual(SizeUpdateStrategies.NilSizeValue);
+      expect(getUpdateSizeStrategy(undefined!)).toEqual(SizeUpdateStrategies.NilSizeValue);
     });
     it('should return "value-is-numeric" if passed a string that is also a number', () => {
       expect(getUpdateSizeStrategy('10')).toEqual(SizeUpdateStrategies.ValidNumericString);
@@ -89,12 +89,12 @@ describe('Icon classname helpers: ', () => {
     });
 
     it('should set width and height to rem value if size is undefined', () => {
-      const testme = getIconSizeStylesToUpdate(void 0, myRem);
+      const testme = getIconSizeStylesToUpdate(undefined!, myRem);
       testStyles(testme);
     });
 
     it('should set width and height to rem value if size is null', () => {
-      const testme = getIconSizeStylesToUpdate(null, myRem);
+      const testme = getIconSizeStylesToUpdate(null!, myRem);
       testStyles(testme);
     });
 
@@ -185,7 +185,7 @@ describe('Icon classname helpers: ', () => {
     it('should remove size styles if passed a nil value', async () => {
       updateIconSizeStyle(nativeElement, 'lg fit');
       renderFixture(fixture);
-      updateIconSizeStyle(nativeElement, null);
+      updateIconSizeStyle(nativeElement, null!);
       renderFixture(fixture);
       expect(nativeElement.style.width).toEqual('');
       expect(nativeElement.style.height).toEqual('');
@@ -196,7 +196,7 @@ describe('Icon classname helpers: ', () => {
       expect(nativeElement.style.minWidth).toEqual(expectedSize);
       expect(nativeElement.style.height).toEqual(expectedSize);
       expect(nativeElement.style.minHeight).toEqual(expectedSize);
-      updateIconSizeStyle(nativeElement, void 0);
+      updateIconSizeStyle(nativeElement, undefined!);
       renderFixture(fixture);
       expect(nativeElement.style.width).toEqual('');
       expect(nativeElement.style.minWidth).toEqual('');
@@ -251,5 +251,5 @@ describe('Icon classname helpers: ', () => {
   standalone: false,
 })
 class TestComponent {
-  @ViewChild(ClrIcon) icon: ClrIcon;
+  @ViewChild(ClrIcon) icon!: ClrIcon;
 }

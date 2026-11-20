@@ -44,7 +44,7 @@ export class TabsHelper {
    * Retrieves the active Clarity Tab instance.
    */
   getActiveTab(): ClrTab {
-    return this.component.tabsService.activeTab;
+    return this.component.tabsService.activeTab as ClrTab;
   }
 
   /**
@@ -52,7 +52,7 @@ export class TabsHelper {
    */
   getActiveTabIndex(): number {
     return this.component.tabLinkDirectives.findIndex(
-      tabLink => tabLink.tabLinkId === this.component.tabsService.activeTab.tabLink.tabLinkId
+      tabLink => tabLink.tabLinkId === this.getActiveTab().tabLink.tabLinkId
     );
   }
 

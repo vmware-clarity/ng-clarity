@@ -17,7 +17,7 @@ import { AppfxMenuModule, MenuComponent } from '@clr/addons/menu';
   templateUrl: 'basic-menu.html',
 })
 export class BasicMenuDemoComponent {
-  @ViewChild('demoMenu') demoMenu: MenuComponent;
+  @ViewChild('demoMenu') demoMenu!: MenuComponent;
 
   onContextMenu(event: MouseEvent) {
     event.preventDefault();

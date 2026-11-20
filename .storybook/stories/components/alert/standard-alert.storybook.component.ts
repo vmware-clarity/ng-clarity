@@ -68,7 +68,7 @@ import { RenderComponentStorybook } from '@storybook-helpers/render-component';
 export class StandardAlertStorybookComponent extends RenderComponentStorybook {
   @Input() componentDescription: string | null = null;
   @Input() clrAlertClosable = false;
-  @Input() clrAlertIcon: string;
+  @Input() clrAlertIcon = '';
   @Input() clrAlertLightweight = false;
   @Input() clrAlertSizeSmall = false;
   @Input() clrCloseButtonAriaLabel = commonStringsDefault.alertCloseButtonAriaLabel;

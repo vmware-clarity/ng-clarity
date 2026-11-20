@@ -173,7 +173,7 @@ export class ClrHeader implements OnDestroy {
     // (undocumented)
     get responsiveOverflowCommonString(): string;
     // (undocumented)
-    role: string;
+    role: string | undefined;
     // @deprecated (undocumented)
     toggleNav(navLevel: number): void;
     // (undocumented)

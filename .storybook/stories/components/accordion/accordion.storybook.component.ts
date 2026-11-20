@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ClrAccordionModule } from '@clr/angular';
+import { ClrAccordionModule, HeadingLevel } from '@clr/angular';
 import { createArray } from '@storybook-helpers/common';
 
 @Component({
@@ -41,7 +41,7 @@ import { createArray } from '@storybook-helpers/common';
 export class AccordionStorybookComponent {
   @Input() componentDescription: string | null = null;
   @Input() clrAccordionMultiPanel = false;
-  @Input() clrAccordionPanelHeadingLevel = 1;
+  @Input() clrAccordionPanelHeadingLevel: HeadingLevel = 1;
   @Input() clrAccordionPanelDisabled = false;
   @Input() panelCount = 5;
   @Input() title = 'Title';

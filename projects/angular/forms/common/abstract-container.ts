@@ -94,11 +94,11 @@ export abstract class ClrAbstractContainer implements OnDestroy {
     return this.touched && this.state === CONTROL_STATE.INVALID && this.errorMessagePresent;
   }
 
-  protected get successMessagePresent() {
+  protected get successMessagePresent(): boolean {
     return !!this.controlSuccessComponent;
   }
 
-  protected get errorMessagePresent() {
+  protected get errorMessagePresent(): boolean {
     return !!this.controlErrorComponent;
   }
 

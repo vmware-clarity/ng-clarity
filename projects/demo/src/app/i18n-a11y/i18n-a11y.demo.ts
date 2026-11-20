@@ -22,7 +22,7 @@ import { USERS } from './users';
 export class I18nA11yDemo implements OnDestroy {
   users = USERS;
   selected: any[] = [];
-  test: ClrCommonStrings;
+  test?: ClrCommonStrings;
 
   constructor(private commonStrings: ClrCommonStringsService) {
     commonStrings.localize(frenchTranslation);

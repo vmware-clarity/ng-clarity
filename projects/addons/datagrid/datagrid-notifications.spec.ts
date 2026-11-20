@@ -22,8 +22,8 @@ describe('Datagrid deferred row notifications', () => {
       'test',
       {} as ChangeDetectorRef,
       {} as ExportProviderService,
-      null,
-      null
+      null!,
+      null!
     );
     component.serverDrivenDatagrid = true;
     component.selectionType = SelectionType.Multi;

@@ -149,7 +149,7 @@ describe('Datagrid', () => {
 
       it('exposes an Observable to follow items changes', () => {
         let nbChanges = 0;
-        let latestDisplayed: number[];
+        let latestDisplayed!: number[];
         testContext.itemsInstance.change.subscribe((items: number[]) => {
           nbChanges++;
           latestDisplayed = items;

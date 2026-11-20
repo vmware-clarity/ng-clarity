@@ -68,9 +68,9 @@ describe('Datepicker focus on the server', () => {
       providers: [DatepickerFocusService, { provide: PLATFORM_ID, useValue: 'server' }],
     });
     const service = TestBed.inject(DatepickerFocusService);
-    service.focusCell(new ElementRef(null));
-    service.focusInput(null);
-    expect(service.elementIsFocused(null)).toBe(false);
+    service.focusCell(new ElementRef<HTMLElement>(null!));
+    service.focusInput(null!);
+    expect(service.elementIsFocused(null!)).toBe(false);
   });
 });
 

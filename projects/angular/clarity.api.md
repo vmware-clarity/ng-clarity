@@ -1889,7 +1889,7 @@ export class ClrCardModule {
 export class ClrCheckbox extends WrappedFormControl<ClrCheckboxWrapper> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>, toggle: string);
     // (undocumented)
-    get controlDisabled(): boolean;
+    get controlDisabled(): boolean | null;
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
@@ -2017,14 +2017,14 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     focusFirstActive(): void;
     // (undocumented)
-    getActiveDescendant(): string;
+    getActiveDescendant(): string | null;
     // (undocumented)
     getSelectionAriaLabel(): string;
     // (undocumented)
     get id(): string;
     set id(id: string);
     // (undocumented)
-    set identityFn(value: ClrComboboxIdentityFunction<T>);
+    set identityFn(value: ClrComboboxIdentityFunction<T> | undefined);
     // (undocumented)
     protected index: number;
     // (undocumented)
@@ -2629,7 +2629,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     selectAllDisabled: boolean;
     // (undocumented)
     selectAllId: string;
-    set selected(value: T[] | undefined);
+    set selected(value: T[] | null | undefined);
     // (undocumented)
     selectedChanged: EventEmitter<T[]>;
     // (undocumented)
@@ -3554,7 +3554,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
     // (undocumented)
     SELECTION_TYPE: typeof SelectionType;
     // @deprecated (undocumented)
-    protected selectRow(selected: boolean, $event: MouseEvent): void;
+    protected selectRow(selected: boolean | undefined, $event: MouseEvent): void;
     // (undocumented)
     skeletonLoading: boolean;
     // (undocumented)
@@ -3564,7 +3564,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
     // (undocumented)
     toggleExpand(event: MouseEvent): void;
     // (undocumented)
-    protected readonly tree: DatagridTreeService<T>;
+    protected readonly tree: DatagridTreeService<T> | null;
     // Warning: (ae-forgotten-export) The symbol "DatagridTreeRowCells" needs to be exported by the entry point clr-angular.d.ts
     get _tree(): DatagridTreeRowCells<T> | null;
     treeExpandable: boolean;
@@ -4157,7 +4157,7 @@ export class ClrDateInput extends ClrDateInputBase {
     // (undocumented)
     set date(date: Date | string);
     // (undocumented)
-    dateChange: EventEmitter<Date>;
+    dateChange: EventEmitter<Date | null>;
     // (undocumented)
     set max(dateString: string);
     // (undocumented)
@@ -4165,7 +4165,7 @@ export class ClrDateInput extends ClrDateInputBase {
     // (undocumented)
     protected updateDayModel(dayModel: DayModel | null): void;
     // (undocumented)
-    protected get userSelectedDayChange(): Observable<DayModel>;
+    protected get userSelectedDayChange(): Observable<DayModel | null | undefined>;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDateInput, "[clrDate]", never, {
         "date": {
@@ -4541,7 +4541,7 @@ export class ClrEndDateInput extends ClrDateInputBase {
     // (undocumented)
     set date(date: Date | string);
     // (undocumented)
-    dateChange: EventEmitter<Date>;
+    dateChange: EventEmitter<Date | null>;
     // (undocumented)
     get inputSize(): number;
     // (undocumented)
@@ -4551,7 +4551,7 @@ export class ClrEndDateInput extends ClrDateInputBase {
     // (undocumented)
     protected updateDayModel(dayModel: DayModel | null): void;
     // (undocumented)
-    protected get userSelectedDayChange(): Observable<DayModel>;
+    protected get userSelectedDayChange(): Observable<DayModel | null | undefined>;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrEndDateInput, "[clrEndDate]", never, {
         "inputWidth": {
@@ -4705,7 +4705,7 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
     // (undocumented)
     customButtonLabel?: string;
     // (undocumented)
-    protected get disabled(): boolean;
+    protected get disabled(): boolean | null;
     // (undocumented)
     protected get errorMessagePresent(): boolean;
     // (undocumented)
@@ -4985,7 +4985,7 @@ export class ClrHeader implements OnDestroy {
     // (undocumented)
     get responsiveOverflowCommonString(): string;
     // (undocumented)
-    role: string;
+    role: string | undefined;
     // @deprecated (undocumented)
     toggleNav(navLevel: number): void;
     // (undocumented)
@@ -5013,16 +5013,16 @@ export class ClrHostWrappingModule {
 export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
     constructor(el: ElementRef<HTMLElement>, cdr: ChangeDetectorRef);
     // (undocumented)
-    get badge(): string | boolean;
-    set badge(value: string | boolean);
+    get badge(): string | boolean | undefined;
+    set badge(value: string | boolean | undefined);
     // (undocumented)
-    get direction(): string;
-    set direction(value: string);
+    get direction(): string | undefined;
+    set direction(value: string | undefined);
     // (undocumented)
     el: ElementRef<HTMLElement>;
     // (undocumented)
-    get flip(): Orientations;
-    set flip(value: Orientations);
+    get flip(): Orientations | undefined;
+    set flip(value: Orientations | undefined);
     // (undocumented)
     iconSVG: string;
     get innerOffset(): number | undefined;
@@ -5054,8 +5054,8 @@ export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
     get solid(): boolean;
     set solid(value: boolean);
     // (undocumented)
-    get status(): string;
-    set status(value: string);
+    get status(): string | null | undefined;
+    set status(value: string | null | undefined);
     // (undocumented)
     updateIcon(): void;
     // (undocumented)
@@ -5993,9 +5993,9 @@ export class ClrOptionGroup<T> {
 export class ClrOptionItems<T> implements DoCheck, OnDestroy {
     constructor(template: TemplateRef<NgForOfContext<T>>, differs: IterableDiffers, optionService: OptionSelectionService<T>, vcr: ViewContainerRef);
     // (undocumented)
-    set field(field: string);
+    set field(field: string | undefined);
     // (undocumented)
-    get hasResults(): number;
+    get hasResults(): number | undefined;
     // (undocumented)
     ngDoCheck(): void;
     // (undocumented)
@@ -7125,7 +7125,7 @@ export class ClrStackBlock implements OnInit {
     // (undocumented)
     get getChangedValue(): boolean;
     // (undocumented)
-    getStackChildrenId(): string;
+    getStackChildrenId(): string | null;
     // (undocumented)
     get labelledById(): any;
     // (undocumented)
@@ -7260,7 +7260,7 @@ export class ClrStartDateInput extends ClrDateInputBase {
     // (undocumented)
     set date(date: Date | string);
     // (undocumented)
-    dateChange: EventEmitter<Date>;
+    dateChange: EventEmitter<Date | null>;
     // (undocumented)
     get inputSize(): number;
     // (undocumented)
@@ -7270,7 +7270,7 @@ export class ClrStartDateInput extends ClrDateInputBase {
     // (undocumented)
     protected updateDayModel(dayModel: DayModel | null): void;
     // (undocumented)
-    protected get userSelectedDayChange(): Observable<DayModel>;
+    protected get userSelectedDayChange(): Observable<DayModel | null | undefined>;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStartDateInput, "[clrStartDate]", never, {
         "inputWidth": {
@@ -7865,7 +7865,7 @@ export class ClrTooltipContent implements OnInit {
     el: ElementRef;
     // (undocumented)
     get id(): string;
-    set id(value: string);
+    set id(value: string | null | undefined);
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
@@ -10001,7 +10001,7 @@ export class FocusService {
     // (undocumented)
     activateCurrent(): boolean;
     // (undocumented)
-    get current(): FocusableItem;
+    get current(): FocusableItem | undefined;
     // (undocumented)
     detachListeners(el: HTMLElement): void;
     // (undocumented)

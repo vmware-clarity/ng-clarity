@@ -7,7 +7,7 @@
 
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { AppfxMultiPageDialogModule } from '@clr/addons/dialog';
+import { AppfxMultiPageDialogModule, ModalSize } from '@clr/addons/dialog';
 import { Step, StepModel, StepModelHolder, TabLayout, Var } from '@clr/addons/var';
 
 class NameModel implements StepModel {
@@ -39,7 +39,7 @@ class DialogWorkflowModel {}
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DialogNameStepComponent implements StepModelHolder {
-  model: NameModel;
+  model!: NameModel;
 }
 
 @Component({
@@ -73,7 +73,7 @@ export class DialogReviewStepComponent {}
 export class DialogStoryWrapperComponent implements OnInit {
   title = 'Dialog Title';
   @Input() tabLayout: TabLayout = TabLayout.horizontal;
-  @Input() size: string;
+  @Input() size: ModalSize;
   @Input() defaultButton: 'submit' | 'close' = 'close';
   @Input() showTabLinks = true;
   @Input() opened = true;

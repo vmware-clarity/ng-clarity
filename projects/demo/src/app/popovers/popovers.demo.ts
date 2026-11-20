@@ -33,7 +33,7 @@ export class PopoversDemo {
   positions: ClrPopoverPosition[] = [];
   availablePositions: ConnectedPosition[] = [];
 
-  private _type: ClrPopoverType;
+  private _type!: ClrPopoverType;
 
   constructor() {
     this.type = ClrPopoverType.DROPDOWN;

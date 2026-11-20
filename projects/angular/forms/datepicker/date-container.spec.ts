@@ -340,7 +340,7 @@ describe('Datepicker', () => {
 class TestComponent {
   model = '';
   disabled = false;
-  position: ClrPopoverPosition;
+  position!: ClrPopoverPosition;
 }
 
 @Component({
@@ -355,5 +355,5 @@ class TestComponent {
 })
 class TestComponentWithFirstDay {
   model = '';
-  firstDayOfWeek: ClrWeekday = null;
+  firstDayOfWeek: ClrWeekday | null = null;
 }

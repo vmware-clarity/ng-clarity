@@ -37,7 +37,7 @@ describe('New Wizard Tests', () => {
     });
 
     it("'previous' calls wizardNavigationService.previous", () => {
-      wizardNavigationService.currentPage = pageCollectionService.lastPage;
+      wizardNavigationService.currentPage = pageCollectionService.lastPage!;
       vi.spyOn(wizardNavigationService, 'previous').mockImplementation(() => undefined);
       buttonHubService.buttonClicked('previous');
       expect(wizardNavigationService.previous).toHaveBeenCalled();
@@ -57,7 +57,7 @@ describe('New Wizard Tests', () => {
 
     it("'finish' calls wizard.close, emit wizardFinished", () => {
       const wizard = context.clarityDirective;
-      const finalPage = wizard.pageCollection.lastPage;
+      const finalPage = wizard.pageCollection.lastPage!;
 
       vi.spyOn(wizard.wizardFinished, 'emit').mockImplementation(() => undefined);
       vi.spyOn(wizard, 'close').mockImplementation(() => undefined);
@@ -73,10 +73,10 @@ describe('New Wizard Tests', () => {
       expect(wizard.close).toHaveBeenCalled();
     });
 
-    it('.custom calls wizardNavigationService.currentPage.customButtonClicked', () => {
-      vi.spyOn(wizardNavigationService.currentPage.customButtonClicked, 'emit').mockImplementation(() => undefined);
+    it('.custom calls wizardNavigationService.currentPage!.customButtonClicked', () => {
+      vi.spyOn(wizardNavigationService.currentPage!.customButtonClicked, 'emit').mockImplementation(() => undefined);
       buttonHubService.buttonClicked('custom');
-      expect(wizardNavigationService.currentPage.customButtonClicked.emit).toHaveBeenCalled();
+      expect(wizardNavigationService.currentPage!.customButtonClicked.emit).toHaveBeenCalled();
     });
   });
 });

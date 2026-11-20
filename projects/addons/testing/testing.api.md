@@ -106,7 +106,7 @@ export class GridFooterTestHelper {
 
 // @public (undocumented)
 export class GridHelper {
-    constructor(contextDebugElement: DebugElement, indexedEntry?: number);
+    constructor(contextDebugElement: DebugElement, indexedEntry?: number | undefined);
     static assertEmpty(gridParentDebugElement: DebugElement): void;
     // (undocumented)
     assertHeaderLabels(includeLabelList: Array<string>, excludeLabelList?: Array<string>): void;
@@ -153,7 +153,7 @@ export class GridHelper {
     // (undocumented)
     getTestId(): string | undefined;
     // (undocumented)
-    indexedEntry?: number;
+    indexedEntry?: number | undefined;
     // (undocumented)
     isActionBarButtonDisabled(label: string): boolean;
     // (undocumented)
@@ -1129,7 +1129,7 @@ export class MockStepModel implements StepModel {
     // (undocumented)
     mockPropertyValue: string;
     // (undocumented)
-    readyToComplete: boolean;
+    readyToComplete?: boolean;
     // Warning: (ae-forgotten-export) The symbol "StepValidationState" needs to be exported by the entry point clr-addons-testing.d.ts
     //
     // (undocumented)

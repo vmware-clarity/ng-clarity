@@ -23,7 +23,7 @@ export class DatepickerMinMaxDemo {
 
   toggleMaxDate() {
     if (this.maxDate) {
-      this.maxDate = null;
+      this.maxDate = '';
     } else {
       this.maxDate = '2019-11-19';
     }
@@ -31,7 +31,7 @@ export class DatepickerMinMaxDemo {
 
   toggleMinDate() {
     if (this.minDate) {
-      this.minDate = null;
+      this.minDate = '';
     } else {
       this.minDate = '2019-11-17';
     }

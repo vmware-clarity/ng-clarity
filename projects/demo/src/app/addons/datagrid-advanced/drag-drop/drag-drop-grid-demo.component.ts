@@ -60,12 +60,12 @@ export class DragDropGridDemoComponent {
 
   protected receivedItems: string[] = [];
 
-  protected dragConfig: DatagridDragConfig = {
+  protected dragConfig = {
     fieldName: 'name',
     dragGroup: 'vm-group',
-  };
+  } satisfies DatagridDragConfig;
 
-  #droppables: QueryList<CdkDropList>;
+  #droppables?: QueryList<CdkDropList>;
 
   constructor(
     private groupService: DragAndDropGroupService,

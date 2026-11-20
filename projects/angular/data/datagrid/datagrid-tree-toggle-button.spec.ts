@@ -46,9 +46,9 @@ describe('Datagrid', () => {
       const cell = () => fixture.nativeElement.querySelector('[role=gridcell]') as HTMLElement;
       const name = () =>
         button()
-          .getAttribute('aria-labelledby')
+          .getAttribute('aria-labelledby')!
           .split(' ')
-          .map(id => document.getElementById(id).textContent.trim())
+          .map(id => document.getElementById(id)!.textContent.trim())
           .join(' ');
 
       function setup(animations: boolean) {
