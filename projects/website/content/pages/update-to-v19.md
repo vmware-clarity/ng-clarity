@@ -76,15 +76,20 @@ When upgrading through v18, remove any `*WillyWonka` / `*OompaLoompa` imports le
 
 ## Datagrid Filters (Addons)
 
-Two `DatagridFiltersStrings` keys from `@clr/addons/datagrid-filters` have been removed, because the new filter pills no
-longer show them:
+Three `DatagridFiltersStrings` keys from `@clr/addons/datagrid-filters` have been removed, because the filter bar no
+longer uses them:
 
 - `clearAllButtonLabel` ("Clear all"): Clear all is now an icon button. Its accessible name and tooltip use
   `clearAllButtonAriaLabel`.
 - `appliedText` ("applied"): a pill with several conditions now shows the first condition and a `+N` badge instead of
   "N applied".
+- `dateFormat` ("YYYY-MM-DD"): the date input's screen reader label is now `dateLabel`, and its placeholder comes from
+  the date picker, in the locale's format.
 
 Remove any overrides or translations of these keys.
+
+New keys name the date and time inputs for screen readers: `dateLabel` ("Date"), `timeLabel` ("Time"), `fromTimeLabel`
+("From time") and `toTimeLabel` ("To time"). Apps that translate the strings show English for them until they are added.
 
 The defaults of three keys have changed. Apps that provide their own `DatagridFiltersStrings` are not affected, but
 tests that look for the old text are:
@@ -93,3 +98,8 @@ tests that look for the old text are:
 - `addNewAriaLabel`: "Add new filter" is now "Add filter".
 - `removeConditionAriaLabel`: "Remove second condition" is now "Remove condition". The condition number is now added
   after it ("Remove condition 2"), so remove any ordinal from translations.
+
+`appfx-datagrid-filters` and `appfx-datagrid` now accept `[(searchTerm)]` and `[(propertyFilters)]`, e.g. to restore a
+saved view. Setting them does not emit `searchTermChange` or `propertyFiltersChange`. Filters restored from JSON are
+matched to the filter bar's field definitions by their `property` key. `CompositeFiltersComponent.propertyType` is now
+optional (`PropertyType | undefined`), since it is unset until a field is selected.

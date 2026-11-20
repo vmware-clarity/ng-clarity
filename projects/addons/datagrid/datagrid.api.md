@@ -504,7 +504,6 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     // (undocumented)
     rowsExpandedByDefault: boolean;
     scrollToIndex(index: number, behavior?: ScrollBehavior): void;
-    // (undocumented)
     searchTerm: string;
     searchTermChange: EventEmitter<string>;
     get selectedItems(): T[];
@@ -542,6 +541,10 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     protected zoomLevel: ZoomLevel;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<DatagridComponent<any>, "appfx-datagrid", never, {
+        "searchTerm": {
+            "alias": "searchTerm";
+            "required": false;
+        };
         "loading": {
             "alias": "loading";
             "required": false;

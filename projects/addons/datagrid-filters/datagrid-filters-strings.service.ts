@@ -227,14 +227,29 @@ export class DatagridFiltersStrings {
   readonly addTimeFilter: string = 'Filter by time';
 
   /**
-   * Date input placeholder.
-   */
-  readonly dateFormat: string = 'YYYY-MM-DD';
-
-  /**
    * Time input placeholder.
    */
   readonly timeFormat: string = 'HH:mm';
+
+  /**
+   * Screen reader label of the date input of single-date operators (e.g. Equals, Before).
+   */
+  readonly dateLabel: string = 'Date';
+
+  /**
+   * Screen reader label of the time input of single-date operators.
+   */
+  readonly timeLabel: string = 'Time';
+
+  /**
+   * Screen reader label of the start time input of a custom range.
+   */
+  readonly fromTimeLabel: string = 'From time';
+
+  /**
+   * Screen reader label of the end time input of a custom range.
+   */
+  readonly toTimeLabel: string = 'To time';
 
   /**
    * Date input validator error message

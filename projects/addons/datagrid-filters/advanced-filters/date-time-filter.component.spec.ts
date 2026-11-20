@@ -802,6 +802,42 @@ describe('DateTimeFilterComponent', () => {
     });
   });
 
+  describe('input labels', () => {
+    /** The label text of each date and time input, in order. Checks the label is linked to its input. */
+    const inputLabels = (): string[] =>
+      Array.from<HTMLInputElement>(
+        testContext.fixture.nativeElement.querySelectorAll(
+          'input[formControlName^=dateValue], input[formControlName^=timeValue]'
+        )
+      ).map(input => {
+        const label = testContext.fixture.nativeElement.querySelector(`label[for="${input.id}"]`)!;
+        return label.textContent.trim();
+      });
+
+    function showInputs(operator: ComparisonOperator): void {
+      renderFixture(testContext.fixture);
+      testContext.component.dateTimeFilterForm.controls['operator'].setValue(operator);
+      testContext.component.enableTimePredicate();
+      markComponentForCheck();
+      renderFixture(testContext.fixture);
+    }
+
+    it('names the date and time inputs of a single date', () => {
+      showInputs(ComparisonOperator.Equals);
+      expect(inputLabels()).toEqual(['Date', 'Time']);
+    });
+
+    it('gives the start and end inputs of a custom range different names', () => {
+      showInputs(ComparisonOperator.CustomRange);
+      expect(inputLabels()).toEqual(['From', 'From time', 'To', 'To time']);
+    });
+
+    it('keeps the time format as the time placeholder', () => {
+      showInputs(ComparisonOperator.Equals);
+      expect(testContext.fixture.nativeElement.querySelector('input[type=time]').placeholder).toBe('HH:mm');
+    });
+  });
+
   describe('additional coverage', () => {
     beforeEach(() => {
       renderFixture(testContext.fixture);

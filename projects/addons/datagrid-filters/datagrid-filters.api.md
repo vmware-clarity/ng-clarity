@@ -198,7 +198,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     propertyFilters: PropertyFilter[];
     propertyFiltersChange: EventEmitter<PropertyFilter[]>;
     // (undocumented)
-    propertyType: PropertyType;
+    propertyType?: PropertyType;
     // (undocumented)
     selectedFilterableProperty: FilterablePropertyDefinition;
     protected semiOptions(property: EnumPropertyDefinition): {
@@ -319,8 +319,8 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
     propertyFiltersChange: EventEmitter<PropertyFilter[]>;
     // (undocumented)
     readonly quickMode: FilterMode;
-    // (undocumented)
-    searchTerm: string;
+    get searchTerm(): string;
+    set searchTerm(searchTerm: string | null | undefined);
     searchTermChange: EventEmitter<string>;
     // (undocumented)
     selectedFilterMode: FilterMode;
@@ -356,6 +356,10 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
             "alias": "propertyFilters";
             "required": false;
         };
+        "searchTerm": {
+            "alias": "searchTerm";
+            "required": false;
+        };
     }, {
         "searchTermChange": "searchTermChange";
         "propertyFiltersChange": "propertyFiltersChange";
@@ -378,7 +382,7 @@ export class DatagridFiltersStrings {
     // (undocumented)
     readonly clearAllButtonAriaLabel: string;
     readonly clearFilter: string;
-    readonly dateFormat: string;
+    readonly dateLabel: string;
     readonly dateRangeLabel: string;
     readonly dateRangeOptionsLabel: string;
     readonly dateRangeValidatorMessage: string;
@@ -406,6 +410,7 @@ export class DatagridFiltersStrings {
     formatString(stringFormat: string, args: string[]): string;
     // (undocumented)
     readonly fromLabel: string;
+    readonly fromTimeLabel: string;
     // (undocumented)
     getConjoinerDisplayName(conjoiner: LogicalOperator): string;
     // (undocumented)
@@ -469,6 +474,7 @@ export class DatagridFiltersStrings {
     // (undocumented)
     readonly showingFormat: string;
     readonly timeFormat: string;
+    readonly timeLabel: string;
     // (undocumented)
     readonly timeSpan: {
         minutes: string;
@@ -484,6 +490,7 @@ export class DatagridFiltersStrings {
     readonly timeValidatorMessage: string;
     // (undocumented)
     readonly toLabel: string;
+    readonly toTimeLabel: string;
     // (undocumented)
     readonly unit: {
         byte: string;

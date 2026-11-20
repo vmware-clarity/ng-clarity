@@ -369,6 +369,8 @@ export class MockAppfxDatagridComponent {
     // (undocumented)
     rowsExpandedByDefault: boolean;
     // (undocumented)
+    searchTerm: string;
+    // (undocumented)
     searchTermChange: EventEmitter<string>;
     // (undocumented)
     selectedItems: any;
@@ -474,6 +476,10 @@ export class MockAppfxDatagridComponent {
         };
         "propertyFilters": {
             "alias": "propertyFilters";
+            "required": false;
+        };
+        "searchTerm": {
+            "alias": "searchTerm";
             "required": false;
         };
         "listItemsCount": {

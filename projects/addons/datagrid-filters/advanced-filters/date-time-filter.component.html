@@ -81,7 +81,7 @@
         <div class="date-filter-value-row">
           <clr-date-container class="filter-value">
             <label [class.clr-sr-only]="!isCustomRangePredicate">
-              {{ isCustomRangePredicate ? filterStrings.fromLabel : filterStrings.dateFormat }}
+              {{ isCustomRangePredicate ? filterStrings.fromLabel : filterStrings.dateLabel }}
             </label>
             <input
               type="date"
@@ -102,7 +102,9 @@
       @if (timePredicate) {
         <div class="date-filter-value-row">
           <clr-input-container class="filter-value">
-            <label class="clr-sr-only">{{ filterStrings.timeFormat }}</label>
+            <label class="clr-sr-only">{{
+              isCustomRangePredicate ? filterStrings.fromTimeLabel : filterStrings.timeLabel
+            }}</label>
             <input
               type="time"
               [step]="includeSeconds ? 1 : 60"
@@ -158,7 +160,7 @@
       @if (timePredicate && isCustomRangePredicate) {
         <div class="date-filter-value-row">
           <clr-input-container class="filter-value">
-            <label class="clr-sr-only">{{ filterStrings.timeFormat }}</label>
+            <label class="clr-sr-only">{{ filterStrings.toTimeLabel }}</label>
             <input
               type="time"
               [step]="includeSeconds ? 1 : 60"
