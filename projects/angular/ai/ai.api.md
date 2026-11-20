@@ -5,6 +5,7 @@
 ```ts
 
 import * as i0 from '@angular/core';
+import { InputSignal } from '@angular/core';
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { Type } from '@angular/core';
@@ -38,9 +39,6 @@ export const CLR_CONTEXT_UNAVAILABLE_TYPE = "clr-unavailable";
 
 // @public
 export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: readonly (keyof ClrContextSnapshotOptions)[];
-
-// @public
-export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
 
 // @public
 export const CLR_PAGE_CONTEXT_SCHEMA: {
@@ -225,32 +223,25 @@ export interface ClrComponentContextChange {
 
 // @public
 export class ClrContext implements OnInit, OnDestroy {
-    getClrContext(): Partial<ClrPublishedContext> | null;
-    label: string;
+    readonly clrContext: InputSignal<ClrContextAnnotation>;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
     ngOnInit(): void;
-    state: Record<string, unknown> | null;
-    type: string;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContext, "[clrContext]", never, {
-        "label": {
+        "clrContext": {
             "alias": "clrContext";
-            "required": false;
-        };
-        "type": {
-            "alias": "clrContextType";
-            "required": false;
-        };
-        "state": {
-            "alias": "clrContextState";
-            "required": false;
+            "required": true;
+            "isSignal": true;
         };
     }, {}, never, never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContext, never>;
 }
+
+// @public
+export type ClrContextAnnotation = Partial<ClrPublishedContext> | (() => Partial<ClrPublishedContext> | null | undefined);
 
 // @public
 export interface ClrContextApplicationOptions extends ClrApplicationContext {
@@ -370,7 +361,7 @@ export class ClrContextRegistryService {
 }
 
 // @public
-export class ClrContextService {
+export class ClrContextService implements OnDestroy {
     configure(config: ClrContextConfig): void;
     disableFrameBridge(): void;
     enableFrameBridge(options?: ClrContextFrameHostOptions): void;
