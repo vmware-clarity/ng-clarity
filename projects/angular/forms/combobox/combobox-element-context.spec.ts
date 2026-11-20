@@ -13,10 +13,11 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrContextService } from '@clr/angular/ai';
 import { publishedOn } from '@clr/angular/testing';
 import {
-  CLR_ELEMENT_CONTEXT_PROPERTY,
   ClrComponentContext,
   ClrContextSnapshotOptions,
   ClrLoadingModule,
+  elementContextOf,
+  elementMutatorOf,
 } from '@clr/angular/utils';
 
 import { ClrCombobox } from './combobox';
@@ -128,7 +129,7 @@ describe('ClrCombobox element context', () => {
   it('removes the callback when the combobox is destroyed', () => {
     fixture.destroy();
 
-    expect(CLR_ELEMENT_CONTEXT_PROPERTY in host).toBe(false);
+    expect(elementContextOf(host)).toBeUndefined();
   });
 });
 
@@ -327,13 +328,8 @@ describe('ClrCombobox element context, options marked or excluded themselves', (
 
   afterEach(() => fixture.destroy());
 
-  function host() {
-    return fixture.nativeElement.querySelector('clr-combobox') as HTMLElement & {
-      clrElementMutator?: {
-        coerce: (proposed: unknown, options?: unknown) => { value?: unknown; refused?: string };
-        read: (options?: unknown) => unknown;
-      };
-    };
+  function publishedMutator() {
+    return elementMutatorOf(fixture.nativeElement.querySelector('clr-combobox') as Element);
   }
 
   it('counts a redacted option without naming it, and leaves an excluded one out', () => {
@@ -347,7 +343,7 @@ describe('ClrCombobox element context, options marked or excluded themselves', (
   });
 
   it('neither lists nor takes them in a write, and keeps them selected', () => {
-    const mutator = host().clrElementMutator;
+    const mutator = publishedMutator();
     const refused = mutator?.coerce('Nope', options);
     expect(refused?.refused).toContain('"Checking"');
     expect(refused?.refused).not.toContain('998877');
@@ -415,10 +411,8 @@ describe('ClrCombobox element context, options matched by identity', () => {
 
   afterEach(() => fixture.destroy());
 
-  function host() {
-    return fixture.nativeElement.querySelector('clr-combobox') as HTMLElement & {
-      clrElementMutator?: { coerce: (proposed: unknown, options?: unknown) => { value?: unknown; refused?: string } };
-    };
+  function publishedMutator() {
+    return elementMutatorOf(fixture.nativeElement.querySelector('clr-combobox') as Element);
   }
 
   it('withholds a redacted selection matched by clrComboboxIdentityFn rather than by reference', () => {
@@ -430,7 +424,7 @@ describe('ClrCombobox element context, options matched by identity', () => {
   });
 
   it('refuses to replace that selection', () => {
-    expect(host().clrElementMutator?.coerce('Ops budget', {}).refused).toBe(
+    expect(publishedMutator()?.coerce('Ops budget', {}).refused).toBe(
       'The current choice is kept from agents, and cannot be changed by one.'
     );
   });
@@ -442,7 +436,7 @@ describe('ClrCombobox element context, options matched by identity', () => {
     fixture.detectChanges();
 
     expect(published(fixture).state['value']).toBe('Ops budget');
-    expect(host().clrElementMutator?.coerce({ id: 1 }, {}).value).toBe(fixture.componentInstance.accounts[0]);
+    expect(publishedMutator()?.coerce({ id: 1 }, {}).value).toBe(fixture.componentInstance.accounts[0]);
   });
 });
 

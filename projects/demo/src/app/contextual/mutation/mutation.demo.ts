@@ -36,6 +36,7 @@ interface WritableTarget {
 export class ContextualMutationDemo implements OnInit {
   hosts: DemoHost[] = DEMO_HOSTS;
   selectedHosts: DemoHost[] = [];
+  readonly requestContext = { label: 'Host maintenance request', type: 'section' };
   note = '';
   noteChanges = 0;
   writableTargets: WritableTarget[] = [];

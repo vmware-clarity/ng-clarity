@@ -18,8 +18,8 @@ before a snapshot goes to a model.
 
 ### Annotating the application
 
-The `clrContext` directive adds what only the application knows, such as what a section is for, to
-the node of the element it sits on. It is standalone: a standalone component imports `ClrContext` directly, and an NgModule application can
+The `[clrContext]` directive adds what only the application knows, such as what a section is for, to
+the node of the element it sits on. It takes a property binding only, so nothing it says is written to the DOM. It is standalone: a standalone component imports `ClrContext` directly, and an NgModule application can
 keep importing `ClrContextModule`.
 
 ```ts
@@ -29,12 +29,11 @@ import { ClrContext } from '@clr/angular/ai';
 @Component({
   selector: 'app-firewall',
   imports: [ClrContext],
-  template: `<section clrContext="Firewall rules for the selected cluster" [clrContextState]="{ cluster }">
-    ...
-  </section>`,
+  template: `<section [clrContext]="rules">...</section>`,
 })
 export class FirewallComponent {
   cluster = 'alpha';
+  rules = () => ({ label: 'Firewall rules for the selected cluster', state: { cluster: this.cluster } });
 }
 ```
 

@@ -10,7 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrContextService } from '@clr/angular/ai';
 import { publishedOn, publishedState } from '@clr/angular/testing';
-import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrComponentContext } from '@clr/angular/utils';
+import { ClrComponentContext, elementContextOf } from '@clr/angular/utils';
 import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrWizardModule } from './wizard.module';
@@ -171,6 +171,6 @@ describe('ClrWizard element context', () => {
     const host = wizard();
     fixture.destroy();
 
-    expect(CLR_ELEMENT_CONTEXT_PROPERTY in host).toBe(false);
+    expect(elementContextOf(host)).toBeUndefined();
   });
 });

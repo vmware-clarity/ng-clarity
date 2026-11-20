@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrContextSnapshotOptions, ClrElementContextCallback } from '@clr/angular/utils';
+import { ClrContextSnapshotOptions, ClrElementContextCallback, elementContextOf } from '@clr/angular/utils';
 
 /**
  * Calls the context callback a component published on `element`, and fails when there is
@@ -15,9 +15,7 @@ export function publishedOn(
   element: Element,
   options: ClrContextSnapshotOptions = {}
 ): ReturnType<ClrElementContextCallback> {
-  const callback = (element as Element & { [CLR_ELEMENT_CONTEXT_PROPERTY]?: ClrElementContextCallback })[
-    CLR_ELEMENT_CONTEXT_PROPERTY
-  ];
+  const callback = elementContextOf(element);
   if (!callback) {
     throw new Error(`expected <${element.tagName.toLowerCase()}> to publish an element context callback`);
   }

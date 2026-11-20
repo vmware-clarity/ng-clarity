@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CLR_ELEMENT_MUTATOR_PROPERTY, publishElementMutator } from '@clr/angular/utils';
+import { publishElementMutator } from '@clr/angular/utils';
 
 import { readElementMutator } from './element-mutator';
 
@@ -18,10 +18,10 @@ describe('readElementMutator', () => {
     expect(readElementMutator(host)).toBe(mutator);
   });
 
-  it('reads nothing from an element that publishes nothing, or something that is not a mutator', () => {
+  it('reads nothing from an element that publishes nothing, or one a page script planted on it', () => {
     const host = document.createElement('div');
     expect(readElementMutator(host)).toBeNull();
-    (host as unknown as Record<string, unknown>)[CLR_ELEMENT_MUTATOR_PROPERTY] = 'not a mutator';
+    (host as unknown as Record<string, unknown>)['clrElementMutator'] = { read: () => 'planted' };
     expect(readElementMutator(host)).toBeNull();
   });
 });

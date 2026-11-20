@@ -6,13 +6,7 @@
  */
 
 import { ClrContextSnapshotOptions } from './context.interface';
-import { publishOnElement } from './publish';
-
-/**
- * Host element property through which a component says how it is written to, when its model is not
- * what an agent sees (a combobox's option value, a date input's locale string, datagrid selection).
- */
-export const CLR_ELEMENT_MUTATOR_PROPERTY = 'clrElementMutator';
+import { publishFor } from './publish';
 
 /**
  * A coerced or written value, or an actionable refusal. `display` is the value in agent terms, shown to
@@ -22,7 +16,10 @@ export type ClrElementMutation =
   | { value: unknown; display?: unknown; refused?: undefined }
   | { refused: string; value?: undefined; display?: undefined };
 
-/** What a component publishes through {@link CLR_ELEMENT_MUTATOR_PROPERTY}; every member is optional. */
+/**
+ * How a component says it is written to, when its model is not what an agent sees (a combobox's option value, a
+ * date input's locale string, datagrid selection). Every member is optional.
+ */
 export interface ClrElementMutator {
   /** `true` when the component is written as one thing and its rendered controls are internals. */
   ownsContents?: boolean;
@@ -34,7 +31,17 @@ export interface ClrElementMutator {
   read?(options?: Required<ClrContextSnapshotOptions>): unknown;
 }
 
-/** Publishes a mutator on the host element. The teardown only removes the mutator it published. */
+const mutators = new WeakMap<Element, ClrElementMutator>();
+
+/**
+ * Publishes a mutator for the host element. It is kept off the element, so other scripts on the page can neither
+ * read nor replace it. The teardown only removes the mutator it published.
+ */
 export function publishElementMutator(host: Element, mutator: ClrElementMutator): () => void {
-  return publishOnElement(host, CLR_ELEMENT_MUTATOR_PROPERTY, mutator);
+  return publishFor(mutators, host, mutator);
+}
+
+/** The mutator published for the element, if any. */
+export function elementMutatorOf(host: Element): ClrElementMutator | undefined {
+  return mutators.get(host);
 }

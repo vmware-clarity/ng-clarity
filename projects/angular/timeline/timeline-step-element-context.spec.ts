@@ -8,7 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { publishedState } from '@clr/angular/testing';
-import { CLR_ELEMENT_CONTEXT_PROPERTY } from '@clr/angular/utils';
+import { elementContextOf } from '@clr/angular/utils';
 
 import { ClrTimelineModule } from './timeline.module';
 
@@ -56,6 +56,6 @@ describe('ClrTimelineStep element context', () => {
     const step = steps()[0];
     fixture.destroy();
 
-    expect(CLR_ELEMENT_CONTEXT_PROPERTY in step).toBe(false);
+    expect(elementContextOf(step)).toBeUndefined();
   });
 });

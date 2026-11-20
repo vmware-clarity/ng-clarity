@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { elementContextOf } from '@clr/angular/utils';
 import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrAlert } from './alert';
@@ -82,15 +83,13 @@ describe('Alert Tests', () => {
     });
 
     it('publishes nothing about itself once dismissed', () => {
-      const host = compiled.querySelector('clr-alert') as Element & {
-        clrElementContext?: () => unknown;
-      };
-      expect(host.clrElementContext?.()).toEqual({ state: { severity: 'info' } });
+      const host = compiled.querySelector('clr-alert') as Element;
+      expect(elementContextOf(host)?.()).toEqual({ state: { severity: 'info' } });
 
       fixture.componentInstance.isClosable = true;
       fixture.componentInstance.closed = true;
       renderFixture(fixture);
-      expect(host.clrElementContext?.()).toBeNull();
+      expect(elementContextOf(host)?.()).toBeNull();
     });
 
     it('announces an inline alert politely, and only what changed in it, not the whole alert again', () => {
