@@ -450,7 +450,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
         "clrInputChange": "clrInputChange";
         "clrOpenChange": "clrOpenChange";
         "clrSelectionChange": "clrSelectionChange";
-    }, ["optionSelected", "options"], ["*"], false, [{
+    }, ["optionSelected", "options", "optionItems"], ["*"], false, [{
         directive: typeof i1_2.ClrPopoverHostDirective;
         inputs: {};
         outputs: {};
@@ -741,6 +741,8 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     ngAfterViewInit(): void;
     // (undocumented)
     protected ngControlService: NgControlService;
+    // (undocumented)
+    ngOnDestroy(): void;
     // (undocumented)
     get open(): boolean;
     // (undocumented)
@@ -1144,6 +1146,8 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
     focusBrowseButton(): void;
     // (undocumented)
     protected get multiple(): boolean;
+    // (undocumented)
+    ngOnDestroy(): void;
     // (undocumented)
     protected get successMessagePresent(): boolean;
     // (undocumented)
@@ -2313,7 +2317,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-forms-combobox.d.ts:293:5 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-forms.d.ts
+// dist/clr-angular/types/clr-angular-forms-combobox.d.ts:318:5 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-forms.d.ts
 
 // (No @packageDocumentation comment for this package)
 

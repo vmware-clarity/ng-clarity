@@ -28,3 +28,6 @@ export const CLR_CONTEXT_HIDDEN_SELECTOR = `[hidden], [aria-hidden="true"], [ine
 
 /** An editing host; what it holds is user input, never text to read into a name. */
 export const CLR_CONTEXT_EDITING_HOST_SELECTOR = '[contenteditable]:not([contenteditable="false" i])';
+
+/** What page-context tooling never reads text from: hidden, redacted and editing-host content. */
+export const CLR_CONTEXT_WITHHELD_SELECTOR = `${CLR_CONTEXT_HIDDEN_SELECTOR}, ${CLR_CONTEXT_REDACT_SELECTOR}, ${CLR_CONTEXT_EDITING_HOST_SELECTOR}`;
