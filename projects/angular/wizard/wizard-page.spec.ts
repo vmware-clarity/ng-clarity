@@ -24,7 +24,7 @@ import { MockPage } from './wizard-page.mock';
 import { ClrWizardModule } from './wizard.module';
 
 class MyPageCollectionMock extends PageCollectionMock {
-  previousPage?: MockPage | null;
+  previousPage: MockPage | null = null;
 
   getPreviousPage(): MockPage | null {
     if (this.previousPage) {
