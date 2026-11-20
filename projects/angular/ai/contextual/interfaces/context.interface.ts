@@ -63,7 +63,7 @@ export interface ClrPageContext {
 
 /**
  * Contributes context to snapshots. Asked once per snapshot; return `null` when there is nothing to report.
- * A promise is awaited by `snapshot()` and `watch()`; `watch()` first reports it as `{ type: 'clr-loading' }`.
+ * A promise is awaited by `snapshot()`.
  * While it is pending, later snapshots wait for it instead of asking again. A promise that rejects or
  * outlasts the timeout is reported as `{ type: 'clr-unavailable' }`.
  */

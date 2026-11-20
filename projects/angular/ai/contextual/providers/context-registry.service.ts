@@ -6,7 +6,6 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
 
 import { attempt, TIMED_OUT, usableTimeout, withTimeout } from '../attempt';
 import { ClrComponentContext, ClrContextProvider, ClrPublishedContext } from '../interfaces/context.interface';
@@ -19,23 +18,14 @@ import type { ResolvedSnapshotOptions } from '../snapshot-options';
  */
 @Injectable({ providedIn: 'root' })
 export class ClrContextRegistryService {
-  /** Emits when a provider joins, leaves or reports a change, which may not touch the DOM. */
-  readonly changes$: Observable<void>;
-
   private readonly providers: ClrContextProvider[] = [];
-  private readonly changesSubject = new Subject<void>();
   /** Answers still pending, shared by every snapshot taken until they settle. */
   private readonly pending = new Map<ClrContextProvider, Promise<ClrPublishedContext | null>>();
-
-  constructor() {
-    this.changes$ = this.changesSubject.asObservable();
-  }
 
   /** Registers a provider and returns its teardown. */
   register(provider: ClrContextProvider): () => void {
     if (!this.providers.includes(provider)) {
       this.providers.push(provider);
-      this.changesSubject.next();
     }
     return () => this.unregister(provider);
   }
@@ -46,13 +36,7 @@ export class ClrContextRegistryService {
     if (index > -1) {
       this.providers.splice(index, 1);
       this.pending.delete(provider);
-      this.changesSubject.next();
     }
-  }
-
-  /** Tells whoever is keeping a snapshot current that a provider's contribution changed. */
-  notifyChanged(): void {
-    this.changesSubject.next();
   }
 
   /** Polls live providers, skipping ones that return `null` or throw; a pending one is reported as loading. */

@@ -14,8 +14,7 @@
 
 <h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrContextService</code></h3>
 <p class="clr-mt-16px" cds-text="body">
-  Reads the page and returns it as a snapshot. It can also keep the snapshot up to date as the page changes. Nothing is
-  cached: every snapshot reads the page as it is.
+  Reads the page and returns it as a snapshot. Nothing is cached: every snapshot reads the page as it is.
 </p>
 <table class="table">
   <thead>
@@ -41,24 +40,6 @@
         Describes the page as it is now. <code cds-text="code">options</code> apply over the configured
         <code cds-text="code">scope</code> (see Snapshot options below). It first waits for providers that answer with a
         promise, up to <code cds-text="code">timeoutMs</code> each.
-      </td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">watch(options?)</b></td>
-      <td class="left clr-hidden-xs-down"><code cds-text="code">Observable&lt;ClrPageContext&gt;</code></td>
-      <td class="left">
-        A snapshot now, and a new one each time the page, a value, an annotation or the route changes. Use it for a chat
-        panel that always needs the current page. The page is watched while anyone subscribes. All subscribers share one
-        watcher, so <code cds-text="code">options</code> apply to all of them. A provider that answers with a promise is
-        first reported as <code cds-text="code">'clr-loading'</code>.
-      </td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">changes(options?)</b></td>
-      <td class="left clr-hidden-xs-down"><code cds-text="code">Observable&lt;ClrContextChange&gt;</code></td>
-      <td class="left">
-        What changed with each <code cds-text="code">watch()</code> snapshot (nodes added, removed and changed), so a
-        conversation can send the difference instead of the whole page. The first lists everything as added.
       </td>
     </tr>
   </tbody>
@@ -109,20 +90,6 @@
         appears as a region of type <code cds-text="code">'clr-unavailable'</code>.
       </td>
     </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">debounceMs</b></td>
-      <td class="left clr-hidden-xs-down">300</td>
-      <td class="left">
-        For <code cds-text="code">watch()</code>: how long the page must be quiet before it is read again.
-      </td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">maxWaitMs</b></td>
-      <td class="left clr-hidden-xs-down">2000</td>
-      <td class="left">
-        For <code cds-text="code">watch()</code>: the longest a change waits to be read while the page keeps changing.
-      </td>
-    </tr>
   </tbody>
 </table>
 
@@ -158,14 +125,6 @@
       <td class="left"><b cds-text="medium">unregister(provider)</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
       <td class="left">Removes a provider, typically in <code cds-text="code">ngOnDestroy</code>.</td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">notifyChanged()</b></td>
-      <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
-      <td class="left">
-        Says that a provider's answer changed.
-        <code cds-text="code">watch()</code> then reads the page again, even when the DOM did not change.
-      </td>
     </tr>
   </tbody>
 </table>
@@ -319,7 +278,7 @@
 
 <h2 id="context-shape" cds-text="title" class="clr-mt-48px">Snapshot</h2>
 <p class="clr-mt-16px" cds-text="body">
-  What <code cds-text="code">snapshot()</code> returns and <code cds-text="code">watch()</code> emits.
+  What <code cds-text="code">snapshot()</code> returns.
 </p>
 
 <h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrPageContext</code></h3>
@@ -486,9 +445,8 @@
     <tr>
       <td class="left"><b cds-text="medium">clrDiffContext(previous, current)</b></td>
       <td class="left">
-        What changed between two snapshots, as a <code cds-text="code">ClrContextChange</code> like
-        <code cds-text="code">changes()</code> emits. <code cds-text="code">clrIsEmptyContextChange(change)</code> says
-        whether nothing did.
+        What changed between two snapshots, as a <code cds-text="code">ClrContextChange</code>.
+        <code cds-text="code">clrIsEmptyContextChange(change)</code> says whether nothing did.
       </td>
     </tr>
     <tr>

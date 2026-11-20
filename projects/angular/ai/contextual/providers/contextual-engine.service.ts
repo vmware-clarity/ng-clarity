@@ -6,24 +6,12 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import {
-  DOCUMENT,
-  inject,
-  Injectable,
-  Injector,
-  isDevMode,
-  OnDestroy,
-  PLATFORM_ID,
-  runInInjectionContext,
-} from '@angular/core';
+import { DOCUMENT, inject, Injectable, isDevMode, PLATFORM_ID } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
-import { defer, map, Observable } from 'rxjs';
 
 import { ClrContextRegistryService } from './context-registry.service';
 import { usableTimeout } from '../attempt';
-import { ContextTracker } from './context-tracker';
 import { charged } from '../budget';
-import { ClrContextChange, clrDiffContext } from '../diff';
 import { ClrContextDomExtractor } from '../dom/dom-context-collector';
 import { collectContextTreeWithin } from '../dom/walk';
 import {
@@ -56,17 +44,13 @@ export interface ClrContextConfig {
   routes?: boolean;
   /** Describe markup with neither a role nor an accessible name, such as other libraries' components. */
   extractors?: ClrContextDomExtractor[];
-  /** How long `snapshot()` and `watch()` wait for each provider that answers with a promise. Default `2000`. */
+  /** How long `snapshot()` waits for each provider that answers with a promise. Default `2000`. */
   timeoutMs?: number;
-  /** For `watch()`: milliseconds of quiet after the last change before the page is read again. Default `300`. */
-  debounceMs?: number;
-  /** For `watch()`: the longest a change waits to be read while the page never goes quiet. Default `2000`. */
-  maxWaitMs?: number;
 }
 
 /** Reads the current page for an AI agent: route, rendered components and registered context. */
 @Injectable({ providedIn: 'root' })
-export class ClrContextService implements OnDestroy {
+export class ClrContextService {
   private config: ClrContextConfig = {};
   private scope: ClrContextSnapshotOptions = {};
   private configured = false;
@@ -75,12 +59,6 @@ export class ClrContextService implements OnDestroy {
   private readonly document = inject(DOCUMENT);
   private readonly contextRegistry = inject(ClrContextRegistryService);
   private readonly router = inject(Router, { optional: true });
-  private readonly injector = inject(Injector);
-  private tracker: ContextTracker | null = null;
-
-  ngOnDestroy(): void {
-    this.tracker?.destroy();
-  }
 
   /**
    * Sets how the application wants its context read. Call it once, at startup: a snapshot taken before uses the
@@ -102,46 +80,6 @@ export class ClrContextService implements OnDestroy {
   /** A fresh snapshot of the page, with `options` applied over the configured scope. */
   snapshot(options?: ClrContextSnapshotOptions): Promise<ClrPageContext> {
     return this.readAsync(options);
-  }
-
-  /**
-   * The page as it changes: a snapshot now, and another after each change to the DOM, a value, an annotation or
-   * the route. The page is watched while anyone subscribes, and every subscriber shares one watcher, so `options`
-   * given here apply to all of them.
-   */
-  watch(options?: ClrContextSnapshotOptions): Observable<ClrPageContext> {
-    return defer(() => this.contextTracker().track(options && { ...this.pacing(), snapshot: options }));
-  }
-
-  /** What changed with each `watch()` snapshot: the first lists everything as added. */
-  changes(options?: ClrContextSnapshotOptions): Observable<ClrContextChange> {
-    return defer(() => {
-      let previous: ClrPageContext | null = null;
-      return this.watch(options).pipe(
-        map(current => {
-          const change = clrDiffContext(previous, current);
-          previous = current;
-          return change;
-        })
-      );
-    });
-  }
-
-  private contextTracker(): ContextTracker {
-    this.tracker ??= runInInjectionContext(
-      this.injector,
-      () =>
-        new ContextTracker(
-          options => this.read(options),
-          options => this.readAsync(options),
-          () => this.pacing()
-        )
-    );
-    return this.tracker;
-  }
-
-  private pacing() {
-    return { debounceMs: this.config.debounceMs, maxWaitMs: this.config.maxWaitMs };
   }
 
   /** The route, with nothing about the page yet. */
