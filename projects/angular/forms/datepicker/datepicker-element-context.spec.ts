@@ -17,6 +17,7 @@ import { ClrDateContainer } from './date-container';
 import { ClrDatepickerModule } from './datepicker.module';
 import { DayModel } from './model/day.model';
 import { DateNavigationService } from './providers/date-navigation.service';
+import { untrustedSnapshot } from '../../ai/contextual/untrusted-snapshot.mock';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.Eager,
@@ -101,13 +102,7 @@ describe('ClrDateContainer, as page-context tooling sees it', () => {
   it('keeps the selected date from a consumer the application does not control', async () => {
     await snapshot(true);
     const engine = TestBed.inject(ClrContextService);
-    engine.enableGlobalAccess('testDatepickerClrContext');
-    try {
-      const accessor = (window as unknown as Record<string, () => unknown>)['testDatepickerClrContext'];
 
-      expect(JSON.stringify(accessor())).not.toContain('1984');
-    } finally {
-      engine.disableGlobalAccess();
-    }
+    expect(JSON.stringify(untrustedSnapshot(engine))).not.toContain('1984');
   });
 });

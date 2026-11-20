@@ -21,6 +21,7 @@ import {
 
 import { ClrCombobox } from './combobox';
 import { ClrComboboxModule } from './combobox.module';
+import { untrustedSnapshot } from '../../ai/contextual/untrusted-snapshot.mock';
 
 /** Creates a fixture and lets its comboboxes settle. */
 async function create<C>(component: Type<C>, imports: unknown[] = []): Promise<ComponentFixture<C>> {
@@ -519,7 +520,6 @@ class FilteredOptionsTestComponent {
 }
 
 describe('ClrCombobox element context, options narrowed to what the user typed', () => {
-  const accessorName = 'testComboboxClrContext';
   let fixture: ComponentFixture<FilteredOptionsTestComponent>;
   let engine: ClrContextService;
 
@@ -535,8 +535,7 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
   }
 
   function shared(options?: unknown): string {
-    engine.enableGlobalAccess(accessorName);
-    return JSON.stringify((window as unknown as Record<string, (options?: unknown) => unknown>)[accessorName](options));
+    return JSON.stringify(untrustedSnapshot(engine, options));
   }
 
   function open(selector = 'clr-combobox') {
@@ -557,7 +556,6 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
   });
 
   afterEach(() => {
-    engine.disableGlobalAccess();
     fixture.destroy();
   });
 

@@ -52,7 +52,7 @@ Each guide is `references/<guide>.md`, next to this file. Design rules: https://
 | `clr-button-group`      | Related actions in a group with an overflow menu (`clr-button-group`, `clrInMenu`, `clrMenuPosition`)                                    |
 | `clr-card`              | Cards (`clr-card` parts, media, collapsible, clickable cards)                                                                            |
 | `clr-collapsible-panel` | Custom collapsible panel groups (`CollapsiblePanel` base, service, models)                                                               |
-| `clr-contextual-engine` | Page context for AI agents (`@clr/angular/ai`): snapshots, `clrContext`, redaction, `window.clrContext()`                                |
+| `clr-contextual-engine` | Page context for AI agents (`@clr/angular/ai`): snapshots, `clrContext`, redaction                                                       |
 | `clr-combobox`          | Filterable single/multi-select (`clr-combobox`, `clrMulti`, `*clrOptionItems`), async options                                            |
 | `clr-datagrid`          | Data tables: `clr-datagrid`, client/server-driven, selection, row details, custom filters, virtual scroll (`ClrVirtualScroll`)           |
 | `clr-datepicker`        | Date and date range pickers (`clrDate`, `clrStartDate`/`clrEndDate`)                                                                     |

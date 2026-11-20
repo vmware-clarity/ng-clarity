@@ -13,6 +13,7 @@ import { publishedState } from '@clr/angular/testing';
 import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrContextSnapshotOptions } from '@clr/angular/utils';
 
 import { ClrDatagridModule } from './datagrid.module';
+import { untrustedSnapshot } from '../../ai/contextual/untrusted-snapshot.mock';
 
 /** The state the fixture's datagrid publishes. */
 function gridState(fixture: ComponentFixture<unknown>, options: ClrContextSnapshotOptions = {}) {
@@ -311,15 +312,9 @@ describe('ClrDatagrid element context, selection', () => {
     const engine = TestBed.inject(ClrContextService);
 
     expect(JSON.stringify((await engine.snapshot()).components)).toContain('"selection"');
-    engine.enableGlobalAccess('testDatagridClrContext');
-    try {
-      const accessor = (window as unknown as Record<string, () => unknown>)['testDatagridClrContext'];
-      const shared = JSON.stringify(accessor());
+    const shared = JSON.stringify(untrustedSnapshot(engine));
 
-      expect(shared).toContain('"selectionMode":"multi"');
-      expect(shared).not.toMatch(/"(rows|selection)"|savings \| frozen|4111/);
-    } finally {
-      engine.disableGlobalAccess();
-    }
+    expect(shared).toContain('"selectionMode":"multi"');
+    expect(shared).not.toMatch(/"(rows|selection)"|savings \| frozen|4111/);
   });
 });
