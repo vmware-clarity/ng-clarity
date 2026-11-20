@@ -194,7 +194,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     set predefinedFilters(value: FilterablePropertyDefinition[]);
     // (undocumented)
     protected get predefinedProperties(): FilterablePropertyDefinition[];
-    presetFilters: PropertyFilter[];
+    presetFilters?: PropertyFilter[];
     propertyFilters: PropertyFilter[];
     propertyFiltersChange: EventEmitter<PropertyFilter[]>;
     // (undocumented)
@@ -312,7 +312,7 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
     // (undocumented)
     onSearchTermChanged(searchTerm: string): void;
     predefinedFilters: FilterablePropertyDefinition[];
-    presetFilters: PropertyFilter[];
+    presetFilters?: PropertyFilter[];
     get propertyFilters(): PropertyFilter[];
     set propertyFilters(filters: PropertyFilter[] | null | undefined);
     // (undocumented)
