@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrInputModule } from '../input/input.module';
 import { ClrRangeModule } from '../range/range.module';
@@ -120,17 +121,17 @@ describe('Wrapped form control, as assistive technology sees it', () => {
   it('keeps following aria-invalid the application binds when it changes later', () => {
     fixture.componentInstance.boundInvalid = 'false';
     fixture.componentInstance.form.controls.bound.markAsTouched();
-    fixture.detectChanges();
+    renderFixture(fixture);
     // Touched and invalid, the control itself would report 'true'.
     expect(input('bound').getAttribute('aria-invalid')).toBe('false');
 
     fixture.componentInstance.boundInvalid = null;
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(input('bound').hasAttribute('aria-invalid')).toBe(false);
 
     fixture.componentInstance.boundInvalid = 'grammar';
     fixture.componentInstance.form.controls.bound.setValue('fixed');
-    fixture.detectChanges();
+    renderFixture(fixture);
     expect(input('bound').getAttribute('aria-invalid')).toBe('grammar');
   });
 

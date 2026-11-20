@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrComboboxModule } from './combobox.module';
 
@@ -49,14 +50,14 @@ describe('ClrCombobox required state', () => {
 
   it('tells assistive technology when a value is required', () => {
     fixture.componentInstance.fruit = new FormControl<string | null>(null, Validators.required);
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(comboboxInput().getAttribute('aria-required')).toBe('true');
   });
 
   it('reports the field invalid once touched while a required value is missing', () => {
     fixture.componentInstance.fruit = new FormControl<string | null>(null, Validators.required);
-    fixture.detectChanges();
+    renderFixture(fixture);
     fixture.componentInstance.fruit.markAsTouched();
     fixture.detectChanges();
     expect(comboboxInput().getAttribute('aria-invalid')).toBe('true');
@@ -116,7 +117,7 @@ describe('ClrCombobox required state, template-driven', () => {
 
   it('drops the requirement when the binding turns false', async () => {
     fixture.componentInstance.mandatory = false;
-    fixture.detectChanges();
+    renderFixture(fixture);
     await fixture.whenStable();
     fixture.detectChanges();
 

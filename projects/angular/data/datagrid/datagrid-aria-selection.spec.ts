@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrDatagridModule } from './datagrid.module';
 
@@ -82,21 +83,21 @@ describe('ClrDatagrid selection, as assistive technology sees it', () => {
       { ...second, locked: true },
     ];
     fixture.componentInstance.selected = [fixture.componentInstance.items[1]];
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(dataRows().map(row => row.getAttribute('aria-selected'))).toEqual([null, 'true']);
   });
 
   it('reports a row as selected once it is chosen', () => {
     fixture.componentInstance.selected = [fixture.componentInstance.items[0]];
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(dataRows().map(row => row.getAttribute('aria-selected'))).toEqual(['true', 'false']);
   });
 
   it('says nothing about selection in a grid whose rows cannot be selected', () => {
     fixture.componentInstance.selectable = false;
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     expect(grid().hasAttribute('aria-multiselectable')).toBe(false);
     expect(dataRows().every(row => !row.hasAttribute('aria-selected'))).toBe(true);
@@ -124,7 +125,7 @@ describe('ClrDatagrid single selection, as assistive technology sees it', () => 
   it('reports which row is selected, and does not claim several may be', () => {
     const fixture = render(SingleTestComponent, [ClrDatagridModule]);
     fixture.componentInstance.single = [fixture.componentInstance.items[1]];
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     const rows = Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('clr-dg-row [role="row"]'));
     expect(rows.map(row => row.getAttribute('aria-selected'))).toEqual(['false', 'true']);

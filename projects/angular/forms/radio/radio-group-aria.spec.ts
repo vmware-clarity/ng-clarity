@@ -10,6 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgModel, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrRadioModule } from './radio.module';
 
@@ -206,7 +207,7 @@ describe('Radio group whose radios render after it', () => {
   it('reports no requirement or validity on a container that has no radiogroup role', () => {
     const fixture = render(LateRadiosComponent, [ClrRadioModule, ReactiveFormsModule]);
     fixture.componentInstance.show = true;
-    fixture.detectChanges();
+    renderFixture(fixture);
     fixture.componentInstance.form.controls.later.markAsTouched();
     fixture.detectChanges();
     const group: HTMLElement = fixture.nativeElement.querySelector('clr-radio-container');
