@@ -640,6 +640,21 @@ describe('CompositeFiltersComponent', () => {
     expect(element.nextElementSibling.textContent).toContain(enumProperty.displayName);
   });
 
+  it('reads Clear all once: its tooltip is visual only', function (this: ThisTest) {
+    this.component.onFilterCriteriaChange(enumPropertyFilter);
+    this.fixture.detectChanges();
+    const clearAll: HTMLButtonElement = this.fixture.nativeElement.querySelector('[data-test-id="clear-all-button"]');
+    clearAll.dispatchEvent(new Event('focus'));
+    this.fixture.detectChanges();
+    // The tooltip opened last (other tooltips may still be in the shared overlay container).
+    const tooltips = document.querySelectorAll<HTMLElement>('.tooltip-content');
+    const tooltip = tooltips[tooltips.length - 1];
+    expect(clearAll.getAttribute('aria-label')).toBe(this.component.filterStrings.clearAllButtonAriaLabel);
+    expect(tooltip.textContent.trim()).toBe(this.component.filterStrings.clearAllButtonAriaLabel);
+    expect(tooltip.getAttribute('aria-hidden')).toBe('true');
+    expect(clearAll.getAttribute('aria-describedby')).toBe('');
+  });
+
   it('moves focus to Add filter after Clear all', async function (this: ThisTest) {
     this.component.onFilterCriteriaChange(enumPropertyFilter);
     this.fixture.detectChanges();

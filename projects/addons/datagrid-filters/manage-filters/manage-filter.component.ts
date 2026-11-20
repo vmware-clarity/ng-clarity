@@ -80,7 +80,13 @@ export class ManageFilterComponent implements OnInit, OnChanges {
   userProperty: UserPropertyDefinition;
   primaryConditionDisplayText = '';
   secondaryConditionDisplayText = '';
+  /**
+   * The pill's accessible name: the visible pill text first (WCAG 2.5.3), then the other conditions in place of the
+   * +N badge, then the edit hint, e.g. "VM Name: Contains web And Equals: db, Edit filter".
+   */
   editFilterAriaLabel = '';
+  /** The full filter shown in the pill's tooltip, e.g. "VM Name Contains: web And Equals: db". Visual only. */
+  tooltipText = '';
 
   private readonly locale = inject(LOCALE_ID);
   private readonly popoverService = inject(ClrPopoverService);
@@ -183,30 +189,29 @@ export class ManageFilterComponent implements OnInit, OnChanges {
   }
 
   private updateDisplayValues(): void {
+    const editHint = ', ' + this.filterStrings.editFilterText;
     if (!this.active) {
       this.primaryConditionDisplayText = '';
       this.secondaryConditionDisplayText = '';
-      this.editFilterAriaLabel = this.filterStrings.editFilterText + ' ' + this.managedProperty.displayName;
+      this.tooltipText = this.managedProperty.displayName;
+      this.editFilterAriaLabel = this.pillText + editHint;
       return;
     }
     this.primaryConditionDisplayText = this.displayFilterValue(0);
-    this.editFilterAriaLabel =
-      this.filterStrings.editFilterText +
-      ' ' +
-      this.managedProperty.displayName +
-      ' ' +
-      this.primaryConditionDisplayText;
     this.secondaryConditionDisplayText = '';
+    let otherConditions = '';
     if (this.propertyFilter.criteria.length > 1 && this.managedPropertyType !== PropertyType.DateTime) {
       this.secondaryConditionDisplayText = this.displayFilterValue(1);
       const conjoiner = ' ' + this.filterStrings.getConjoinerDisplayName(this.propertyFilter.operator) + ' ';
-      this.editFilterAriaLabel +=
+      otherConditions =
         conjoiner +
         this.propertyFilter.criteria
           .slice(1)
           .map((_, index) => this.displayFilterValue(index + 1))
           .join(conjoiner);
     }
+    this.tooltipText = this.managedProperty.displayName + ' ' + this.primaryConditionDisplayText + otherConditions;
+    this.editFilterAriaLabel = this.pillText + otherConditions + editHint;
   }
 
   /**

@@ -219,7 +219,8 @@
       >
         <cds-icon shape="window-close" size="20" aria-hidden="true"></cds-icon>
       </button>
-      <clr-tooltip-content clrPosition="top-right" clrSize="sm">{{
+      <!-- Visual only: the button's aria-label is the same text. -->
+      <clr-tooltip-content [id]="''" aria-hidden="true" clrPosition="top-right" clrSize="sm">{{
         filterStrings.clearAllButtonAriaLabel
       }}</clr-tooltip-content>
     </clr-tooltip>

@@ -32,7 +32,11 @@
       <cds-icon shape="angle" direction="down" size="16" aria-hidden="true"></cds-icon>
     </button>
     @if (!open) {
-      <clr-tooltip-content clrPosition="top-right" clrSize="lg">{{ editFilterAriaLabel }}</clr-tooltip-content>
+      <!-- Visual only: the pill's aria-label already holds the full filter. The empty id removes the trigger's
+           aria-describedby, which would be read even with aria-hidden. -->
+      <clr-tooltip-content [id]="''" aria-hidden="true" clrPosition="top-right" clrSize="lg">{{
+        tooltipText
+      }}</clr-tooltip-content>
     }
   </clr-tooltip>
   @if (!predefined) {

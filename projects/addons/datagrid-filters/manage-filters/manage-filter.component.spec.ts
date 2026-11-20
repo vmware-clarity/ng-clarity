@@ -158,13 +158,40 @@ describe('ManageFilterComponent', () => {
     trigger.dispatchEvent(new Event('focus'));
     this.fixture.detectChanges();
     const tooltip = document.querySelector<HTMLElement>('.tooltip-content');
-    expect(tooltip.textContent.trim()).toBe(this.component.editFilterAriaLabel);
-    expect(trigger.getAttribute('aria-describedby')).toBe(tooltip.id);
+    expect(tooltip.textContent.trim()).toBe(this.component.tooltipText);
 
     trigger.click();
     this.fixture.detectChanges();
     expect(this.component.open).toBeTrue();
     expect(document.querySelector('.tooltip-content')).toBeNull();
+  });
+  it('names the pill by its visible text and shows the full filter in a tooltip that is not read', function (this: ThisTest) {
+    this.component.propertyFilter = stringPropertyFilter;
+    this.fixture.detectChanges();
+    const trigger: HTMLButtonElement = this.fixture.nativeElement.querySelector('.filter-pill');
+    const visibleText = trigger.querySelector('.filter-pill-text').textContent.trim().replace(/\s+/g, ' ');
+    const otherConditions = ' And ' + this.component.secondaryConditionDisplayText;
+
+    // Name: the visible text first (WCAG 2.5.3), then the condition behind the +1 badge, then the hint.
+    const label = trigger.getAttribute('aria-label');
+    expect(label.startsWith(visibleText)).withContext(label).toBeTrue();
+    expect(label).toBe(this.component.pillText + otherConditions + ', Edit filter');
+
+    trigger.dispatchEvent(new Event('focus'));
+    this.fixture.detectChanges();
+    const tooltip = document.querySelector<HTMLElement>('.tooltip-content');
+    expect(tooltip.textContent.trim()).toBe(
+      stringProperty.displayName + ' ' + this.component.primaryConditionDisplayText + otherConditions
+    );
+    // Visual only: hidden from the accessibility tree, and not linked as the description.
+    expect(tooltip.getAttribute('aria-hidden')).toBe('true');
+    expect(trigger.getAttribute('aria-describedby')).toBe('');
+  });
+  it('names an empty pill by its field', function (this: ThisTest) {
+    this.component.filterProperty = stringProperty;
+    this.fixture.detectChanges();
+    expect(this.component.editFilterAriaLabel).toBe(stringProperty.displayName + ', Edit filter');
+    expect(this.component.tooltipText).toBe(stringProperty.displayName);
   });
   it('manages enum property filter', function (this: ThisTest) {
     this.component.propertyFilter = enumPropertyFilter;
