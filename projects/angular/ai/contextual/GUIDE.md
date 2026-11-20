@@ -29,6 +29,7 @@ Configure once at startup: `context.configure({ scope: 'interactive', routes: tr
 - A snapshot holds the rendered page, text included, and may hold personal data. Send it to a model as data, delimited from the prompt, never as instructions.
 - Put `data-clr-context-redact` on regions whose values must never leave the page (their fields keep their shape, values are withheld). Put `data-clr-context-ignore` on UI the agent should not see at all.
 - Password and file inputs, and fields whose `autocomplete` is `current-password`, `new-password`, `one-time-code` or a `cc-*` token, are always withheld. Redact the other secrets, such as tokens or keys typed into plain text fields.
+- Callers the application does not control, such as embedded frames, get no form values and only the route pattern.
 
 ## Adding context
 
@@ -66,3 +67,11 @@ export class Firewall {
 - Prefer semantic HTML and ARIA over annotations: the engine reads the accessibility tree, so an unlabelled control is unnamed to the agent too.
 - A provider may answer with a promise: `snapshot()` waits for it (`configure({ timeoutMs })`, default 2000).
 - Unrendered virtual-scroll rows, canvas content, closed shadow roots and cross-origin frames are invisible to it.
+- The frame bridge goes one way: `enableFrameBridge()` lets an embedded frame, such as a chat UI or a plugin, read this page with `clrRequestHostContext()`. It does not read the frames. A same-origin frame is described in place; a cross-origin one, or one behind a closed shadow root, is not.
+
+## Writing back
+
+- Nothing is written until the application provides `provideClrMutationPolicy({ classify })`; `confirm` is asked before a `consequential` operation.
+- `mutationEngine.apply(operations)` resolves with a result per operation; a refusal carries `refused` and a `detail`, so show it to the user. `announce` on the policy hears the same report.
+- The combobox, the date input and the datagrid's row selection can be written as they are. A custom control whose value is not what the agent sees is refused as `unsupported` until it publishes `publishElementMutator(host, { coerce, write })` and its current value as `state.value` with `publishElementContext`.
+- Password and other always-withheld fields, and controls without an Angular form binding, are never written (`redacted`, `unbound`).
