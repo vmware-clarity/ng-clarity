@@ -59,7 +59,7 @@ describe('Datagrid', () => {
       });
 
       it('provides a filtering utility that targets one step', () => {
-        let currentStep: DatagridRenderStep = null;
+        let currentStep: DatagridRenderStep | null = null;
         testContext.organizer
           .filterRenderSteps(DatagridRenderStep.ALIGN_COLUMNS)
           .subscribe(step => (currentStep = step));

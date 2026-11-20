@@ -46,7 +46,7 @@ describe('Datagrid', () => {
       });
 
       it('properly updates the view mode when organizer resizes', () => {
-        let currentChange: DatagridDisplayMode;
+        let currentChange!: DatagridDisplayMode;
         let displayChangeCount = 0;
         testContext.displayViewServiceSubscription = testContext.displayService.view.subscribe(
           (viewChange: DatagridDisplayMode) => {

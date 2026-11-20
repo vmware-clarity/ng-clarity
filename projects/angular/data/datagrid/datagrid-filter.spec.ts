@@ -49,8 +49,8 @@ describe('Datagrid', () => {
             filterService,
             new ClrCommonStringsService(),
             popoverService,
-            undefined,
-            undefined
+            undefined!,
+            undefined!
           );
         });
 
@@ -96,7 +96,7 @@ describe('Datagrid', () => {
             new ClrCommonStringsService(),
             popoverService,
             keyNavigation,
-            undefined
+            undefined!
           );
         });
 
@@ -172,7 +172,7 @@ describe('Datagrid', () => {
           const toggle: HTMLButtonElement = context.clarityElement.querySelector('.datagrid-filter-toggle');
           toggle.click();
           context.detectChanges();
-          const popover: HTMLDivElement = document.querySelector('.datagrid-filter');
+          const popover: HTMLDivElement = document.querySelector('.datagrid-filter')!;
           expect(toggle.getAttribute('aria-controls')).toEqual(popover.getAttribute('id'));
         });
 
@@ -195,7 +195,7 @@ describe('Datagrid', () => {
           const openBtn: HTMLButtonElement = context.clarityElement.querySelector('.clr-smart-open-close');
           openBtn.click();
           context.detectChanges();
-          const popoverContent = document.querySelector('.datagrid-filter');
+          const popoverContent = document.querySelector('.datagrid-filter')!;
           expect(popoverContent.getAttribute('role')).toBe('dialog');
           expect(popoverContent.getAttribute('aria-label')).toBe('Filter');
         });
@@ -206,7 +206,7 @@ describe('Datagrid', () => {
           expect(prePopoverContent).toBeNull();
           openBtn.click();
           context.detectChanges();
-          const popoverContent = document.querySelector('.datagrid-filter');
+          const popoverContent = document.querySelector('.datagrid-filter')!;
           expect(popoverContent.textContent.trim()).toMatch('Filter content');
         });
 
@@ -264,9 +264,9 @@ class TestFilter implements ClrDatagridFilterInterface<number> {
   standalone: false,
 })
 class FullTest {
-  @ViewChild(CustomFilter) customFilter: CustomFilter;
+  @ViewChild(CustomFilter) customFilter!: CustomFilter;
 
-  filter: ClrDatagridFilterInterface<number>;
+  filter!: ClrDatagridFilterInterface<number>;
   open = false;
 
   clrDgFilterOpenChangeFn = (_$event: boolean) => {
