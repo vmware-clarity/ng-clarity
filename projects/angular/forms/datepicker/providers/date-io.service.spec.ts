@@ -82,35 +82,35 @@ describe('Datepicker', () => {
 
         it('ignores just text', () => {
           const inputDate = 'abc';
-          const date: Date = dateIOService.getDateValueFromDateString(inputDate);
+          const date: Date | null = dateIOService.getDateValueFromDateString(inputDate);
           expect(date).toBeNull();
         });
 
         it('ignores invalid dates', () => {
           let inputDate = '10/21/test';
-          const date1: Date = dateIOService.getDateValueFromDateString(inputDate);
+          const date1: Date | null = dateIOService.getDateValueFromDateString(inputDate);
           expect(date1).toBeNull();
 
           inputDate = 'test/1/1';
-          const date2: Date = dateIOService.getDateValueFromDateString(inputDate);
+          const date2: Date | null = dateIOService.getDateValueFromDateString(inputDate);
           expect(date2).toBeNull();
 
           inputDate = 'test test test';
-          const date3: Date = dateIOService.getDateValueFromDateString(inputDate);
+          const date3: Date | null = dateIOService.getDateValueFromDateString(inputDate);
           expect(date3).toBeNull();
         });
 
         it('ignores empty strings', () => {
           const inputDate = '';
-          const date: Date = dateIOService.getDateValueFromDateString(inputDate);
+          const date: Date | null = dateIOService.getDateValueFromDateString(inputDate);
           expect(date).toBeNull();
         });
 
         it('parse a two digit year', () => {
           let inputDate = '01/02/20';
-          let date: Date = dateIOService.getDateValueFromDateString(inputDate);
+          let date: Date | null = dateIOService.getDateValueFromDateString(inputDate);
           expect(date).not.toBeNull();
-          expect(assertEqualDates(date, new Date(2020, 0, 2))).toBe(true);
+          expect(assertEqualDates(date!, new Date(2020, 0, 2))).toBe(true);
 
           // Invalid date with 2 digit year
           inputDate = '51/02/20';
@@ -135,29 +135,29 @@ describe('Datepicker', () => {
 
         it('parse a 1 digit date', () => {
           const inputDate = '01/2/2015';
-          const date: Date = dateIOService.getDateValueFromDateString(inputDate);
+          const date: Date = dateIOService.getDateValueFromDateString(inputDate)!;
           expect(date).not.toBeNull();
           expect(assertEqualDates(date, new Date(2015, 0, 2))).toBe(true);
         });
 
         it('ignores invalid dates', () => {
           let inputDate = '01/55/2015';
-          const date: Date = dateIOService.getDateValueFromDateString(inputDate);
+          const date: Date | null = dateIOService.getDateValueFromDateString(inputDate);
           expect(date).toBeNull();
 
           inputDate = '02/29/2015';
-          const date1: Date = dateIOService.getDateValueFromDateString(inputDate);
+          const date1: Date | null = dateIOService.getDateValueFromDateString(inputDate);
           expect(date1).toBeNull();
 
           // Leap Year
           inputDate = '02/29/2016';
-          const date2: Date = dateIOService.getDateValueFromDateString(inputDate);
+          const date2: Date = dateIOService.getDateValueFromDateString(inputDate)!;
           expect(assertEqualDates(date2, new Date(2016, 1, 29))).toBe(true);
         });
 
         it('parses a 1 digit month', () => {
           const inputDate = '1/02/2015';
-          const date: Date = dateIOService.getDateValueFromDateString(inputDate);
+          const date: Date = dateIOService.getDateValueFromDateString(inputDate)!;
           expect(date).not.toBeNull();
           expect(assertEqualDates(date, new Date(2015, 0, 2))).toBe(true);
         });
@@ -169,25 +169,25 @@ describe('Datepicker', () => {
 
         it('ignores the minus sign and considers it as a delimiter', () => {
           let inputDate = '1/-2/2015';
-          let date: Date = dateIOService.getDateValueFromDateString(inputDate);
+          let date: Date = dateIOService.getDateValueFromDateString(inputDate)!;
           expect(assertEqualDates(date, new Date(2015, 0, 2)));
 
           inputDate = '-2/5/2015';
-          date = dateIOService.getDateValueFromDateString(inputDate);
+          date = dateIOService.getDateValueFromDateString(inputDate)!;
           expect(assertEqualDates(date, new Date(2015, 1, 5)));
 
           inputDate = '1/2/-2015';
-          date = dateIOService.getDateValueFromDateString(inputDate);
+          date = dateIOService.getDateValueFromDateString(inputDate)!;
           expect(assertEqualDates(date, new Date(2015, 0, 2)));
         });
 
         it('processes dates with different delimiters', () => {
           let inputDate = '1/ 2/2015';
-          let date: Date = dateIOService.getDateValueFromDateString(inputDate);
+          let date: Date = dateIOService.getDateValueFromDateString(inputDate)!;
           expect(assertEqualDates(date, new Date(2015, 0, 2)));
 
           inputDate = '1.3 .2016';
-          date = dateIOService.getDateValueFromDateString(inputDate);
+          date = dateIOService.getDateValueFromDateString(inputDate)!;
           expect(assertEqualDates(date, new Date(2016, 0, 3)));
         });
       });
@@ -201,18 +201,18 @@ describe('Datepicker', () => {
         it('handles adding minDate inputs', () => {
           const testDateModel = new DayModel(2019, 10, 11);
           const thereIsNoDateModel = new DayModel(0, 0, 1);
-          let minInput = '2019-11-11';
+          let minInput: string | null | undefined = '2019-11-11';
           dateIOService.setMinDate(minInput);
           expect(testDateModel).toEqual(dateIOService.disabledDates.minDate);
 
           // handles undefined
           minInput = undefined;
-          dateIOService.setMinDate(minInput);
+          dateIOService.setMinDate(minInput!);
           expect(thereIsNoDateModel).toEqual(dateIOService.disabledDates.minDate);
 
           // handles null
           minInput = null;
-          dateIOService.setMinDate(minInput);
+          dateIOService.setMinDate(minInput!);
           expect(thereIsNoDateModel).toEqual(dateIOService.disabledDates.minDate);
 
           // handles empty string
@@ -225,18 +225,18 @@ describe('Datepicker', () => {
           const testDateModel = new DayModel(2019, 10, 11);
           const thereIsNoDateModel = new DayModel(9999, 11, 31);
 
-          let maxInput = '2019-11-11';
+          let maxInput: string | null | undefined = '2019-11-11';
           dateIOService.setMaxDate(maxInput);
           expect(testDateModel).toEqual(dateIOService.disabledDates.maxDate);
 
           // handles undefined
           maxInput = undefined;
-          dateIOService.setMaxDate(maxInput);
+          dateIOService.setMaxDate(maxInput!);
           expect(thereIsNoDateModel).toEqual(dateIOService.disabledDates.maxDate);
 
           // handles null
           maxInput = null;
-          dateIOService.setMaxDate(maxInput);
+          dateIOService.setMaxDate(maxInput!);
           expect(thereIsNoDateModel).toEqual(dateIOService.disabledDates.maxDate);
 
           // handles empty string

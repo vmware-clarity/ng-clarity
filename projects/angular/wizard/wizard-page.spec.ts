@@ -24,9 +24,9 @@ import { MockPage } from './wizard-page.mock';
 import { ClrWizardModule } from './wizard.module';
 
 class MyPageCollectionMock extends PageCollectionMock {
-  previousPage: MockPage;
+  previousPage: MockPage | null = null;
 
-  getPreviousPage(): MockPage {
+  getPreviousPage(): MockPage | null {
     if (this.previousPage) {
       return this.previousPage;
     }
@@ -56,7 +56,7 @@ class MyPageCollectionMock extends PageCollectionMock {
   standalone: false,
 })
 class TypescriptTestComponent {
-  @ViewChildren(ClrWizardPage) wizardPageChildren: QueryList<ClrWizardPage>;
+  @ViewChildren(ClrWizardPage) wizardPageChildren!: QueryList<ClrWizardPage>;
 }
 
 @Component({
@@ -80,9 +80,9 @@ class TypescriptTestComponent {
   standalone: false,
 })
 class TemplateTestComponent {
-  @ViewChild('nav') navigationTemplateTester: ClrWizardPage;
-  @ViewChild('lifecycle') lifecycleTemplateTester: ClrWizardPage;
-  @ViewChild('other') otherTemplateTester: ClrWizardPage;
+  @ViewChild('nav') navigationTemplateTester!: ClrWizardPage;
+  @ViewChild('lifecycle') lifecycleTemplateTester!: ClrWizardPage;
+  @ViewChild('other') otherTemplateTester!: ClrWizardPage;
 
   testId = 'ohai';
   loadedPageId = '';
@@ -202,21 +202,21 @@ class TemplateTestComponent {
   standalone: false,
 })
 class ViewTestComponent {
-  @ViewChild('viewTestWizard') testWizard: ClrWizard;
-  @ViewChild('viewTestWizardPageOne') pageOne: ClrWizardPage;
-  @ViewChild('viewTestWizardPageTwo') pageTwo: ClrWizardPage;
-  @ViewChild('viewTestWizardPageThree') pageThree: ClrWizardPage;
-  @ViewChild('viewTestWizardPageFour') pageFour: ClrWizardPage;
-  @ViewChild('wizardPreviousBtn') wizardPreviousBtn: ClrWizardButton;
-  @ViewChild('pagePreviousBtn') pagePreviousBtn: ClrWizardButton;
-  @ViewChild('wizardCancelBtn') wizardCancelBtn: ClrWizardButton;
-  @ViewChild('pageCancelBtn') pageCancelBtn: ClrWizardButton;
+  @ViewChild('viewTestWizard') testWizard!: ClrWizard;
+  @ViewChild('viewTestWizardPageOne') pageOne!: ClrWizardPage;
+  @ViewChild('viewTestWizardPageTwo') pageTwo!: ClrWizardPage;
+  @ViewChild('viewTestWizardPageThree') pageThree!: ClrWizardPage;
+  @ViewChild('viewTestWizardPageFour') pageFour!: ClrWizardPage;
+  @ViewChild('wizardPreviousBtn') wizardPreviousBtn!: ClrWizardButton;
+  @ViewChild('pagePreviousBtn') pagePreviousBtn!: ClrWizardButton;
+  @ViewChild('wizardCancelBtn') wizardCancelBtn!: ClrWizardButton;
+  @ViewChild('pageCancelBtn') pageCancelBtn!: ClrWizardButton;
 
   projector = 'my projected content';
   innerProjector = 12;
   asyncLoaded = false;
   asyncContent = '';
-  testId = 'ohai';
+  testId: string | null = 'ohai';
   disablePrevious = false;
   preventCancel = false;
   altCancelRan = false;
@@ -246,7 +246,7 @@ class ViewTestComponent {
   standalone: false,
 })
 class IdTestComponent {
-  @ViewChildren(ClrWizardPage) pages: QueryList<ClrWizardPage>;
+  @ViewChildren(ClrWizardPage) pages!: QueryList<ClrWizardPage>;
 }
 
 describe('New Wizard Tests', () => {
@@ -1053,7 +1053,7 @@ describe('New Wizard Tests', () => {
           viewTestComponent.testWizard.next();
           renderFixture(fixture);
 
-          const currentPage = viewTestComponent.testWizard.navService.currentPage;
+          const currentPage = viewTestComponent.testWizard.navService.currentPage!;
           const pageOneTest = pageOne.nativeElement.getAttribute('aria-hidden');
           const pageTwoTest = pageTwo.nativeElement.getAttribute('aria-hidden');
           const currentPageIdTest = currentPage.id === expectedPage.id;

@@ -41,7 +41,7 @@ describe('ClrPopover', () => {
             declarations: [TestHost],
           });
           const fixture = TestBed.createComponent(TestHost);
-          testContext.popoverService = fixture.debugElement.injector.get(ClrPopoverService, null);
+          testContext.popoverService = fixture.debugElement.injector.get(ClrPopoverService, null)!;
         });
 
         it('exposes an observable for the open change events', () => {
@@ -64,14 +64,14 @@ describe('ClrPopover', () => {
           const subscription = visibleObservable.subscribe(() => {
             visible = true;
           });
-          testContext.popoverService.popoverVisibleEmit(null);
+          testContext.popoverService.popoverVisibleEmit(null!);
           expect(visible).toBe(true);
           subscription.unsubscribe();
         });
 
         it('updates and notifies when the openEvent changes', () => {
           const clickEvent: Event = new MouseEvent('click');
-          let testEvent: Event;
+          let testEvent: Event | undefined;
           const eventSubscription = testContext.popoverService.getEventChange().subscribe(event => {
             testEvent = event;
           });
@@ -83,7 +83,7 @@ describe('ClrPopover', () => {
         });
 
         it('updates and notifies when the open value changes', () => {
-          let openValue: boolean;
+          let openValue: boolean | undefined;
           const openSubscription = testContext.popoverService.openChange.subscribe(change => {
             openValue = change;
           });

@@ -29,7 +29,7 @@ class TestComponent {}
 describe('NavLevelDirective', () => {
   let testContext: any;
 
-  const getContext = spec(ClrNavLevel, TestComponent, ClrNavigationModule, null, true);
+  const getContext = spec(ClrNavLevel, TestComponent, ClrNavigationModule, null!, true);
   beforeEach(() => {
     testContext = getContext();
   });

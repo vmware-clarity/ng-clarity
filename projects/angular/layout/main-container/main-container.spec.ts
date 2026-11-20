@@ -19,7 +19,7 @@ import { ClrMainContainerModule } from './main-container.module';
   standalone: false,
 })
 class TestComponent {
-  @ViewChild(ClrMainContainer) mainContainerInstance: ClrMainContainer;
+  @ViewChild(ClrMainContainer) mainContainerInstance!: ClrMainContainer;
 }
 
 describe('MainContainer', () => {

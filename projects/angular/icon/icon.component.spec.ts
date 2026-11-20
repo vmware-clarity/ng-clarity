@@ -22,7 +22,7 @@ const testIcon = renderIcon('test');
   standalone: false,
 })
 class TestComponent {
-  @ViewChild(ClrIcon) icon: ClrIcon;
+  @ViewChild(ClrIcon) icon!: ClrIcon;
 }
 
 describe('icon element', () => {
@@ -96,7 +96,7 @@ describe('icon element', () => {
       renderFixture(fixture);
       expect(component.updateIcon).not.toHaveBeenCalled();
 
-      component.shape = null;
+      component.shape = null!;
       renderFixture(fixture);
       expect(component.updateIcon).not.toHaveBeenCalled();
 
@@ -157,7 +157,7 @@ describe('icon element', () => {
       renderFixture(fixture);
       expect(component.el.nativeElement.hasAttribute('size')).toBe(true);
 
-      component.size = void 0;
+      component.size = undefined!;
       renderFixture(fixture);
       expect(component.el.nativeElement.hasAttribute('size')).toBe(false);
     });
@@ -167,7 +167,7 @@ describe('icon element', () => {
       renderFixture(fixture);
       expect(component.el.nativeElement.hasAttribute('size')).toBe(true);
 
-      component.size = null;
+      component.size = null!;
       renderFixture(fixture);
       expect(component.el.nativeElement.hasAttribute('size')).toBe(false);
     });
@@ -227,7 +227,7 @@ describe('icon element', () => {
       component.badge = 'danger';
       renderFixture(fixture);
       expect(component.el.nativeElement.hasAttribute('badge')).toBe(true);
-      component.badge = null;
+      component.badge = null!;
       renderFixture(fixture);
       expect(component.el.nativeElement.hasAttribute('badge')).toBe(false);
     });
@@ -276,7 +276,7 @@ describe('icon element', () => {
       renderFixture(fixture);
       expect(component.el.nativeElement.hasAttribute('inner-offset')).toBe(true);
 
-      component.innerOffset = void 0;
+      component.innerOffset = undefined!;
       renderFixture(fixture);
       expect(component.el.nativeElement.hasAttribute('inner-offset')).toBe(false);
       expect(component.el.nativeElement.style.getPropertyValue('--inner-offset')).toBe('');

@@ -83,12 +83,12 @@ class DynamicErrorTypeTest implements OnInit {
   ngOnInit() {
     if (this.undefinedErrorForm) {
       const ctrl = this.undefinedErrorForm.get('password');
-      ctrl.setValidators([
+      ctrl!.setValidators([
         Validators.required,
         Validators.maxLength(this.maxLength),
         Validators.minLength(this.minLength),
       ]);
-      ctrl.updateValueAndValidity();
+      ctrl!.updateValueAndValidity();
     }
   }
 
@@ -206,7 +206,7 @@ describe('Forms common utilities', () => {
       });
 
       it('should show error only when they are required', async () => {
-        const control = new FormControl(undefined, [
+        const control = new FormControl<string | undefined>(undefined, [
           Validators.required,
           Validators.minLength(4),
           Validators.maxLength(5),
@@ -270,7 +270,7 @@ describe('Forms common utilities', () => {
       });
 
       it('hides all errors when the value satisfies all validators after submit', async () => {
-        fixture.componentInstance.undefinedErrorForm.get('password').setValue('abcdefgh');
+        fixture.componentInstance.undefinedErrorForm.get('password')!.setValue('abcdefgh');
         fixture.componentInstance.onSubmit();
         await delay();
         renderFixture(fixture);
@@ -290,7 +290,7 @@ describe('Forms common utilities', () => {
       });
 
       it('does not show required or maxlength errors when only the minlength error is active', async () => {
-        fixture.componentInstance.undefinedErrorForm.get('password').setValue('abc');
+        fixture.componentInstance.undefinedErrorForm.get('password')!.setValue('abc');
         fixture.componentInstance.onSubmit();
         await delay();
         renderFixture(fixture);
@@ -300,7 +300,7 @@ describe('Forms common utilities', () => {
       });
 
       it('does not show required or minlength errors when only the maxlength error is active', async () => {
-        fixture.componentInstance.undefinedErrorForm.get('password').setValue('abcdefghijk');
+        fixture.componentInstance.undefinedErrorForm.get('password')!.setValue('abcdefghijk');
         fixture.componentInstance.onSubmit();
         await delay();
         renderFixture(fixture);

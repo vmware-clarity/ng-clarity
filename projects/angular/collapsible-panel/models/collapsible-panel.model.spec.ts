@@ -26,9 +26,9 @@ describe('CollapsiblePanelGroupModel', () => {
   });
 
   it('should disable or enable a panel', () => {
-    expect(panelGroup.panels.find(p => p.id === panel1Id).disabled).toBe(false);
+    expect(panelGroup.panels.find(p => p.id === panel1Id)!.disabled).toBe(false);
     panelGroup.disablePanel(panel1Id, true);
-    expect(panelGroup.panels.find(p => p.id === panel1Id).disabled).toBe(true);
+    expect(panelGroup.panels.find(p => p.id === panel1Id)!.disabled).toBe(true);
   });
 
   it('should remove panels from collection when re-synced with ContentChildren', () => {
@@ -82,12 +82,12 @@ describe('CollapsiblePanelGroupModel', () => {
 
   it('should not throw when updatePanelOrder contains an unregistered id', () => {
     expect(() => panelGroup.updatePanelOrder(['nonexistent', panel1Id])).not.toThrow();
-    expect(panelGroup.panels.find(p => p.id === panel1Id).index).toBe(1);
+    expect(panelGroup.panels.find(p => p.id === panel1Id)!.index).toBe(1);
   });
 
   it('should preserve existing panels when updatePanelOrder skips unknown ids', () => {
     panelGroup.togglePanel(panel1Id, true);
     panelGroup.updatePanelOrder(['nonexistent', panel1Id, panel2Id]);
-    expect(panelGroup.panels.find(p => p.id === panel1Id).open).toBe(true);
+    expect(panelGroup.panels.find(p => p.id === panel1Id)!.open).toBe(true);
   });
 });

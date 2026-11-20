@@ -40,11 +40,11 @@ import { ClrModalModule } from './modal.module';
   standalone: false,
 })
 class TestComponent {
-  @ViewChild(ClrModal) modalInstance: ClrModal;
+  @ViewChild(ClrModal) modalInstance!: ClrModal;
 
   opened = true;
   closable = true;
-  closeButtonAriaLabel: string = undefined;
+  closeButtonAriaLabel: string = undefined!;
   size = '';
   staticBackdrop = false;
 }
@@ -112,7 +112,7 @@ describe('Modal', () => {
     // open modal
     modal.open();
     renderFixture(fixture);
-    expect(compiled.querySelector('.modal-dialog').getAttribute('aria-hidden')).toBe('false');
+    expect(compiled.querySelector('.modal-dialog')!.getAttribute('aria-hidden')).toBe('false');
   });
 
   it('shows and hides the modal based on the clrModalOpen input', async () => {
@@ -245,7 +245,7 @@ describe('Modal', () => {
     renderFixture(defaultsFixture);
     compiled = defaultsFixture.nativeElement;
 
-    const backdrop: HTMLElement = compiled.querySelector('.modal-backdrop');
+    const backdrop: HTMLElement = compiled.querySelector('.modal-backdrop')!;
 
     backdrop.click();
     await flushAndExpectOpen(defaultsFixture, true);
@@ -253,7 +253,7 @@ describe('Modal', () => {
   });
 
   it('supports a clrModalStaticBackdrop option', async () => {
-    const backdrop: HTMLElement = compiled.querySelector('.modal-backdrop');
+    const backdrop: HTMLElement = compiled.querySelector('.modal-backdrop')!;
 
     fixture.componentInstance.staticBackdrop = true;
     renderFixture(fixture);
@@ -276,8 +276,8 @@ describe('Modal', () => {
     fixture.componentInstance.staticBackdrop = true;
     renderFixture(fixture);
 
-    const backdrop: HTMLElement = compiled.querySelector('div.modal-backdrop');
-    const modalDialog: HTMLElement = compiled.querySelector('.modal-dialog');
+    const backdrop: HTMLElement = compiled.querySelector('div.modal-backdrop')!;
+    const modalDialog: HTMLElement = compiled.querySelector('.modal-dialog')!;
 
     expect(backdrop.classList.contains('static')).toBe(true);
 
@@ -300,21 +300,21 @@ describe('Modal', () => {
   });
 
   it('close button should have default aria-label', () => {
-    expect(compiled.querySelector('.close').getAttribute('aria-label')).toBe('Close');
+    expect(compiled.querySelector('.close')!.getAttribute('aria-label')).toBe('Close');
   });
 
   it('close button should have customizable aria-label', () => {
     fixture.componentInstance.closeButtonAriaLabel = 'custom close label';
     renderFixture(fixture);
 
-    expect(compiled.querySelector('.close').getAttribute('aria-label')).toBe('custom close label');
+    expect(compiled.querySelector('.close')!.getAttribute('aria-label')).toBe('custom close label');
   });
 
   it('should use modal id for aria-labelledby by default', () => {
     modal.open();
     renderFixture(fixture);
 
-    expect(compiled.querySelector('.modal-dialog').getAttribute('aria-labelledby')).toBe(modal.modalId);
+    expect(compiled.querySelector('.modal-dialog')!.getAttribute('aria-labelledby')).toBe(modal.modalId);
   });
 
   it('should allow a custom aria-labelledby attribute value', () => {
@@ -323,7 +323,7 @@ describe('Modal', () => {
     modal.open();
     renderFixture(fixture);
 
-    expect(compiled.querySelector('.modal-dialog').getAttribute('aria-labelledby')).toBe('custom-id');
+    expect(compiled.querySelector('.modal-dialog')!.getAttribute('aria-labelledby')).toBe('custom-id');
   });
 
   it('should fall back to the modal id for the aria-labelledby attribute value', () => {
@@ -333,7 +333,7 @@ describe('Modal', () => {
     modal.open();
     renderFixture(fixture);
 
-    expect(compiled.querySelector('.modal-dialog').getAttribute('aria-labelledby')).toBe(modal.modalId);
+    expect(compiled.querySelector('.modal-dialog')!.getAttribute('aria-labelledby')).toBe(modal.modalId);
   });
 
   it('should have text based boundaries for screen readers', async () => {
@@ -348,7 +348,7 @@ describe('Modal', () => {
   });
 
   it('renders the title before the close button', async () => {
-    const modalHeader = compiled.querySelector('.modal-header--accessible');
+    const modalHeader = compiled.querySelector('.modal-header--accessible')!;
     expect(modalHeader.children.length).toBeGreaterThanOrEqual(2);
 
     const maybeTitleWrapper = modalHeader.children[0];
@@ -393,14 +393,14 @@ describe('Modal with animations', () => {
 
   it('fades the dialog and the backdrop in', async () => {
     await open();
-    expect(query('.modal-dialog').classList).toContain('clr-fade-slide-down-enter');
-    expect(query('.modal-backdrop').classList).toContain('clr-fade-enter');
+    expect(query('.modal-dialog')!.classList).toContain('clr-fade-slide-down-enter');
+    expect(query('.modal-backdrop')!.classList).toContain('clr-fade-enter');
   });
 
   it('does not animate the dialog when animations are skipped', async () => {
     modal.skipAnimation = true;
     await open();
-    expect(query('.modal-dialog').classList).not.toContain('clr-fade-slide-down-enter');
+    expect(query('.modal-dialog')!.classList).not.toContain('clr-fade-slide-down-enter');
   });
 
   it('disappears at once when closed, and notifies the closing', async () => {
@@ -418,11 +418,11 @@ describe('Modal with animations', () => {
   });
 
   it('gives the focus back when it closes', async () => {
-    const opener = query('.to-focus');
+    const opener = query('.to-focus')!;
     opener.focus();
     await open();
     await fixture.whenStable();
-    expect(query('.modal-dialog').contains(document.activeElement)).toBe(true);
+    expect(query('.modal-dialog')!.contains(document.activeElement)).toBe(true);
 
     modal.close();
     renderFixture(fixture);
@@ -433,7 +433,7 @@ describe('Modal with animations', () => {
   it('keeps the focus a clrModalOpenChange handler moves elsewhere', async () => {
     const handlerTarget = document.createElement('button');
     document.body.appendChild(handlerTarget);
-    query('.to-focus').focus();
+    query('.to-focus')!.focus();
     await open();
     await fixture.whenStable();
     modal._openChanged.subscribe((opened: boolean) => {
@@ -452,7 +452,7 @@ describe('Modal with animations', () => {
   });
 
   it('gives the focus back when destroyed while open', async () => {
-    const opener = query('.to-focus');
+    const opener = query('.to-focus')!;
     opener.focus();
     await open();
     await fixture.whenStable();
