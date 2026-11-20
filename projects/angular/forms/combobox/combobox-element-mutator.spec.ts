@@ -175,14 +175,6 @@ describe('ClrCombobox element mutator', () => {
     return mutator.coerce(proposed);
   }
 
-  function read(name: string): unknown {
-    const mutator = readElementMutator(element(name));
-    if (!mutator?.read) {
-      throw new Error(`expected the ${name} combobox to publish a mutator with read`);
-    }
-    return mutator.read();
-  }
-
   function publishedValue(name: string): unknown {
     const callback = elementContextOf(element(name));
     if (!callback) {
@@ -233,7 +225,7 @@ describe('ClrCombobox element mutator', () => {
       expect(host.resolve).toHaveBeenCalledExactlyOnceWith('Lisbon');
       expect(result).toEqual({ value: 'custom:LISBON', display: 'Lisbon' });
       expect(host.form.value.city).toBe('custom:LISBON');
-      expect(read('city')).toBe('custom:LISBON');
+      expect(publishedValue('city')).toBe('custom:LISBON');
     });
 
     it('trims free text before resolving it', () => {
@@ -247,7 +239,7 @@ describe('ClrCombobox element mutator', () => {
 
       expect(result).toEqual({ value: 'rome', display: 'Rome' });
       expect(host.resolve).not.toHaveBeenCalled();
-      expect(read('city')).toBe('Rome');
+      expect(publishedValue('city')).toBe('Rome');
     });
 
     it('takes free text as it is with the default resolver', async () => {
@@ -255,7 +247,7 @@ describe('ClrCombobox element mutator', () => {
 
       expect(result).toEqual({ value: 'Bergen', display: 'Bergen' });
       expect(host.form.value.town).toBe('Bergen');
-      expect(read('town')).toBe('Bergen');
+      expect(publishedValue('town')).toBe('Bergen');
     });
 
     it('refuses text that is only whitespace', () => {
@@ -280,22 +272,22 @@ describe('ClrCombobox element mutator', () => {
   describe('empty multi-select', () => {
     it('reads [] when its model is an empty array', () => {
       expect(publishedValue('fruits')).toEqual([]);
-      expect(read('fruits')).toEqual([]);
+      expect(publishedValue('fruits')).toEqual([]);
     });
 
     it('reads [] when its model is null', () => {
       expect(publishedValue('berries')).toEqual([]);
-      expect(read('berries')).toEqual([]);
+      expect(publishedValue('berries')).toEqual([]);
     });
 
     it('reads [] again after being cleared', async () => {
       await write('fruits', ['Apple']);
-      expect(read('fruits')).toEqual(['Apple']);
+      expect(publishedValue('fruits')).toEqual(['Apple']);
 
       expect(await write('fruits', null)).toEqual({ value: [], display: [] });
       expect(host.form.value.fruits).toEqual([]);
       expect(publishedValue('fruits')).toEqual([]);
-      expect(read('fruits')).toEqual([]);
+      expect(publishedValue('fruits')).toEqual([]);
     });
 
     it('reports [] as the previous value through the mutation engine', async () => {
@@ -312,13 +304,13 @@ describe('ClrCombobox element mutator', () => {
 
       expect(result).toEqual({ value: ['apple', 'plum', 'pear'], display: ['Apple', 'Plum', 'Pear'] });
       expect(host.form.value.fruits).toEqual(['apple', 'plum', 'pear']);
-      expect(read('fruits')).toEqual(['Apple', 'Plum', 'Pear']);
+      expect(publishedValue('fruits')).toEqual(['Apple', 'Plum', 'Pear']);
       expect(publishedValue('fruits')).toEqual(['Apple', 'Plum', 'Pear']);
     });
 
     it('takes a single label as a selection of one', async () => {
       expect(await write('fruits', 'Pear')).toEqual({ value: ['pear'], display: ['Pear'] });
-      expect(read('fruits')).toEqual(['Pear']);
+      expect(publishedValue('fruits')).toEqual(['Pear']);
     });
 
     it('refuses the whole write when one label is unknown, naming the options', async () => {
@@ -328,7 +320,7 @@ describe('ClrCombobox element mutator', () => {
 
       expect(result.refused).toContain('"Apple", "Pear", "Plum"');
       expect(host.form.value.fruits).toEqual(['apple']);
-      expect(read('fruits')).toEqual(['Apple']);
+      expect(publishedValue('fruits')).toEqual(['Apple']);
     });
 
     it('refuses several labels for a single-select combobox', () => {
@@ -340,7 +332,7 @@ describe('ClrCombobox element mutator', () => {
 
       expect(result).toEqual({ value: ['apple', 'pear'], display: ['Apple', 'Pear'] });
       expect(host.form.value.fruits).toEqual(['apple', 'pear']);
-      expect(read('fruits')).toEqual(['Apple', 'Pear']);
+      expect(publishedValue('fruits')).toEqual(['Apple', 'Pear']);
     });
 
     it('takes the same free text once, and an option it names once', async () => {

@@ -22,12 +22,13 @@ import { DISTINGUISHING_WORDS, FILLER_WORDS, NATIVE_CONTROLS, NEGATING_WORDS, TY
 import { writeObstacle } from './writability';
 import { attempt } from '../attempt';
 import { accessibleName } from '../dom/accessible-name';
+import { readClrElementContext } from '../dom/element-context';
 import { readElementMutator } from '../dom/element-mutator';
 import { resolveRole } from '../dom/roles';
 import { isRedactedWithin } from '../dom/visibility';
 import { jsonSafe, STATE_DEPTH } from '../json-safe';
 import { ownEntry } from '../lookup';
-import { MAX_TEXT_LENGTH, ResolvedSnapshotOptions } from '../snapshot-options';
+import { MAX_TEXT_LENGTH, ResolvedSnapshotOptions, resolveSnapshotOptions } from '../snapshot-options';
 
 const MAX_LABEL_LENGTH = MAX_TEXT_LENGTH;
 
@@ -328,7 +329,8 @@ export function writeValue(target: WriteTarget, coerced: { value: unknown; displ
     if (written.refused !== undefined) {
       return { applied: false, refused: 'invalid', detail: written.refused };
     }
-    return { applied: true, previous, value: mutator?.read ? readValue(target) : plain(written.value) };
+    const value = publishedValue(target);
+    return { applied: true, previous, value: value === undefined ? plain(written.value) : value };
   }
 
   let control = target.ngControl?.control ?? null;
@@ -435,9 +437,9 @@ function writeSelect(
 }
 
 export function readValue(target: WriteTarget): unknown {
-  const mutator = target.mutator;
-  if (mutator?.read) {
-    return attempt(() => plain(mutator.read?.(target.options)), null);
+  const published = publishedValue(target);
+  if (published !== undefined) {
+    return published;
   }
   switch (target.kind) {
     case 'select': {
@@ -457,6 +459,15 @@ export function readValue(target: WriteTarget): unknown {
     default:
       return plain(target.ngControl?.control?.value);
   }
+}
+
+/**
+ * A component's value in agent terms, as its published context shows it: `undefined` when the element publishes no
+ * `state.value`, as a native control does.
+ */
+function publishedValue(target: WriteTarget): unknown {
+  const state = readClrElementContext(target.element, target.options ?? resolveSnapshotOptions())?.state;
+  return state && Object.hasOwn(state, 'value') ? plain(state['value']) : undefined;
 }
 
 /** Marks the view for check, which an `OnPush` parent would otherwise skip. */

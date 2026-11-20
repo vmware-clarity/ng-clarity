@@ -277,7 +277,7 @@ describe('ClrDatagrid element context, selection', () => {
     // By the cells the user sees, without the selection cell the grid adds and without
     // a cell the application redacts.
     expect(state['rows']).toEqual(['checking | open', 'savings | frozen', 'brokerage | open']);
-    expect(state['selection']).toEqual(['savings | frozen']);
+    expect(state['value']).toEqual(['savings | frozen']);
     expect(JSON.stringify(state)).not.toContain('4111');
   });
 
@@ -286,15 +286,15 @@ describe('ClrDatagrid element context, selection', () => {
     const state = gridState(fixture);
 
     expect(state['selectionMode']).toBe('single');
-    expect(state['selection']).toEqual(['brokerage | open']);
+    expect(state['value']).toBe('brokerage | open');
   });
 
-  it('says nothing is selected by leaving the selection out', async () => {
+  it('says nothing is selected with an empty value', async () => {
     await create(MultiSelectionTestComponent);
     (fixture.componentInstance as MultiSelectionTestComponent).selected = [];
     renderFixture(fixture);
 
-    expect('selection' in gridState(fixture)).toBe(false);
+    expect(gridState(fixture)['value']).toEqual([]);
   });
 
   it('holds the rows to the collection budget, and leaves them out of a summary snapshot', async () => {
@@ -303,6 +303,6 @@ describe('ClrDatagrid element context, selection', () => {
     expect(gridState(fixture, { maxItemsPerCollection: 2 })['rows']).toEqual(['checking | open', 'savings | frozen']);
     const summary = gridState(fixture, { maxItemsPerCollection: 0 });
     expect('rows' in summary).toBe(false);
-    expect(summary['selection']).toEqual(['savings | frozen']);
+    expect(summary['value']).toEqual(['savings | frozen']);
   });
 });

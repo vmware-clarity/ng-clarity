@@ -12,7 +12,7 @@ import { readElementMutator } from './element-mutator';
 describe('readElementMutator', () => {
   it('reads the mutator an element publishes', () => {
     const host = document.createElement('div');
-    const mutator = { read: () => 'value' };
+    const mutator = { ownsContents: true };
     publishElementMutator(host, mutator);
 
     expect(readElementMutator(host)).toBe(mutator);
@@ -21,7 +21,7 @@ describe('readElementMutator', () => {
   it('reads nothing from an element that publishes nothing, or one a page script planted on it', () => {
     const host = document.createElement('div');
     expect(readElementMutator(host)).toBeNull();
-    (host as unknown as Record<string, unknown>)['clrElementMutator'] = { read: () => 'planted' };
+    (host as unknown as Record<string, unknown>)['clrElementMutator'] = { ownsContents: true };
     expect(readElementMutator(host)).toBeNull();
   });
 });

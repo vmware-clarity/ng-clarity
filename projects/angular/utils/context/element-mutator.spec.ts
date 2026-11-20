@@ -27,7 +27,7 @@ describe('publishElementMutator', () => {
   });
 
   it('removes the mutator when the returned teardown runs', () => {
-    const teardown = publishElementMutator(host, { read: () => null });
+    const teardown = publishElementMutator(host, { ownsContents: true });
 
     teardown();
 
@@ -35,8 +35,8 @@ describe('publishElementMutator', () => {
   });
 
   it('does not let a stale teardown remove a newer mutator', () => {
-    const staleTeardown = publishElementMutator(host, { read: () => 'old' });
-    const newer = { read: () => 'new' };
+    const staleTeardown = publishElementMutator(host, { ownsContents: true });
+    const newer = { ownsContents: false };
     publishElementMutator(host, newer);
 
     staleTeardown();

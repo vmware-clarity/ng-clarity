@@ -18,7 +18,8 @@ export type ClrElementMutation =
 
 /**
  * How a component says it is written to, when its model is not what an agent sees (a combobox's option value, a
- * date input's locale string, datagrid selection). Every member is optional.
+ * date input's locale string, datagrid selection). Every member is optional. The value after a write is read
+ * from the `state.value` the component publishes with `publishElementContext`.
  */
 export interface ClrElementMutator {
   /** `true` when the component is written as one thing and its rendered controls are internals. */
@@ -27,8 +28,6 @@ export interface ClrElementMutator {
   coerce?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
   /** Writes the proposal directly, for state no form control holds, such as datagrid selection. */
   write?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
-  /** The current value in agent terms, read back after a write. */
-  read?(options?: Required<ClrContextSnapshotOptions>): unknown;
 }
 
 const mutators = new WeakMap<Element, ClrElementMutator>();

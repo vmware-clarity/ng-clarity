@@ -519,7 +519,7 @@ describe('ClrMutationService', () => {
           node => node.element === 'clr-datagrid' && node.state?.['selectionMode'] === 'multi',
           'multi grid'
         );
-        expect(grid.state?.['selection']).toEqual(['esx-01 | Running', 'esx-02 | Stopped']);
+        expect(grid.state?.['value']).toEqual(['esx-01 | Running', 'esx-02 | Stopped']);
 
         const report = await engine.apply([{ operation: 'clear', ref: String(grid.ref), description: '' }]);
 

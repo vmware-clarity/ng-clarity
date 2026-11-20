@@ -706,7 +706,6 @@ export class ClrCombobox<T>
       ownsContents: true,
       coerce: (proposed: unknown, options?: Required<ClrContextSnapshotOptions>) =>
         this.coerceSelection(proposed, options),
-      read: (options?: Required<ClrContextSnapshotOptions>) => this.selectedLabels(this.excludedBy(options)),
     });
   }
 
