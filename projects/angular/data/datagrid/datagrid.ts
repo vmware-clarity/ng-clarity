@@ -804,15 +804,15 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     }
 
     if (this.selection.selectable) {
-      state.selectionMode = this.selection.selectionType === SelectionType.Single ? 'single' : 'multi';
+      const single = this.selection.selectionType === SelectionType.Single;
+      state.selectionMode = single ? 'single' : 'multi';
       const selected = firstRowLabels(
         rows.filter(row => this.selection.isSelected(row.item)),
         label,
         maxItems || CLR_CONTEXT_DEFAULT_MAX_ITEMS
       );
-      if (selected.length) {
-        state.selection = selected;
-      }
+      // The selection is the grid's value, under the key every writable component uses.
+      state.value = single ? (selected[0] ?? null) : selected;
     }
 
     const columnNames = (keep: (column: ClrDatagridColumn<T>) => boolean) =>
