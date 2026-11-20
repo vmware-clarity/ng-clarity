@@ -46,12 +46,7 @@ libraries and plain semantic HTML with one implementation. Components publish on
 cannot express, through `publishElementContext` from `@clr/angular/utils` — which is why a
 component that publishes context does not depend on this entry point.
 
-Through custom extractors it also reaches other UI libraries. Callers the application does not
-control, such as embedded frames, are held to the application's budgets
-and the defaults, and see neither what the user entered nor the page's full address (only its route
-pattern) unless the application shares them. Of the state that application code publishes, they see
-only the keys the publisher lists in `publicKeys` (`[clrContextPublicKeys]` on the directive). Any
-other key is withheld, so a key nobody listed stays private.
+Through custom extractors it also reaches other UI libraries.
 
 A snapshot carries the page's text as shown, including what users wrote, so it is data for a
 model, never instructions: delimit it in prompts.

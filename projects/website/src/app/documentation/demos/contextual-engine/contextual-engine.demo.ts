@@ -87,11 +87,9 @@ const IGNORE_EXAMPLE = `
 `;
 
 const DIRECTIVE_EXAMPLE = `
-<!-- Your own code sees all of the state. Untrusted callers see only ruleCount. -->
 <section
   clrContext="Firewall rules for the selected cluster"
   [clrContextState]="{ cluster: clusterName, ruleCount: rules.length }"
-  [clrContextPublicKeys]="['ruleCount']"
 >
   ...
 </section>
@@ -126,9 +124,6 @@ this.teardown = publishElementContext(hostElement, () => ({
     options: this.choices.map(choice => choice.label),
     value: this.selection,
   },
-  // Callers the application does not control see only these keys.
-  // The value is withheld from them in any case, unless the application shares form values.
-  publicKeys: ['options'],
 }));
 
 // ...and on destroy:
@@ -143,7 +138,6 @@ this.context.configure({
       extract: element => ({
         type: 'chat-log',
         state: { messages: element.children.length },
-        publicKeys: ['messages'], // shared with untrusted callers too
       }),
     },
   ],

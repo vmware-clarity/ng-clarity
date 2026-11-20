@@ -73,7 +73,7 @@ export class ClrContextService {
 
   /** A fresh snapshot of the page, with `options` applied over the configured scope. */
   snapshot(options?: ClrContextSnapshotOptions): Promise<ClrPageContext> {
-    return Promise.resolve(this.read(options, false));
+    return Promise.resolve(this.read(options));
   }
 
   /** The route, with nothing about the page yet. */
@@ -91,20 +91,18 @@ export class ClrContextService {
     return snapshot;
   }
 
-  /** With `untrusted`, what application code published is cut to the state keys it marks public. */
-  private read(options: ClrContextSnapshotOptions | undefined, untrusted: boolean): ClrPageContext {
+  private read(options: ClrContextSnapshotOptions | undefined): ClrPageContext {
     this.snapshotTaken = true;
     const snapshot = this.emptySnapshot();
     const resolved = resolveSnapshotOptions(withCallOptions(this.scope, options));
-    const regions = this.contextRegistry.collect({ limits: resolved, untrusted });
-    return this.describePage(snapshot, resolved, regions, untrusted);
+    const regions = this.contextRegistry.collect({ limits: resolved });
+    return this.describePage(snapshot, resolved, regions);
   }
 
   private describePage(
     snapshot: ClrPageContext,
     resolved: ResolvedSnapshotOptions,
-    regions: ClrComponentContext[],
-    untrusted: boolean
+    regions: ClrComponentContext[]
   ): ClrPageContext {
     snapshot.title = this.document.title;
     snapshot.url = this.currentUrl();
@@ -114,7 +112,7 @@ export class ClrContextService {
       snapshot.availableRoutes = availableRoutes(this.router.config, limit);
     }
     if (isPlatformBrowser(this.platformId)) {
-      const tree = collectContextTreeWithin(this.document, resolved, this.config.extractors ?? [], untrusted);
+      const tree = collectContextTreeWithin(this.document, resolved, this.config.extractors ?? []);
       snapshot.components = tree.components;
       if (tree.truncated) {
         snapshot.truncated = true;

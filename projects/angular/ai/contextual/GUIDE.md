@@ -29,29 +29,22 @@ Configure once at startup: `context.configure({ scope: 'interactive', routes: tr
 - A snapshot holds the rendered page, text included, and may hold personal data. Send it to a model as data, delimited from the prompt, never as instructions.
 - Put `data-clr-context-redact` on regions whose values must never leave the page (their fields keep their shape, values are withheld). Put `data-clr-context-ignore` on UI the agent should not see at all.
 - Password and file inputs, and fields whose `autocomplete` is `current-password`, `new-password`, `one-time-code` or a `cc-*` token, are always withheld. Redact the other secrets, such as tokens or keys typed into plain text fields.
-- Callers the application does not control, such as embedded frames, get no form values, only the route pattern, and only published state keys marked public.
 
 ## Adding context
 
-| Need                                             | Use                                                                    |
-| ------------------------------------------------ | ---------------------------------------------------------------------- |
-| Say what an element of a view is for             | `clrContext` directive (`[clrContextState]`, `[clrContextPublicKeys]`) |
-| Context no element shows, from a service         | `ClrContextProvider` registered on `ClrContextRegistryService`         |
-| A component's state the DOM cannot show          | `publishElementContext(host, callback)` from `@clr/angular/utils`      |
-| Markup from another library with no role or name | `configure({ extractors: [{ selector, extract }] })`                   |
+| Need                                             | Use                                                               |
+| ------------------------------------------------ | ----------------------------------------------------------------- |
+| Say what an element of a view is for             | `clrContext` directive (`[clrContextState]`)                      |
+| Context no element shows, from a service         | `ClrContextProvider` registered on `ClrContextRegistryService`    |
+| A component's state the DOM cannot show          | `publishElementContext(host, callback)` from `@clr/angular/utils` |
+| Markup from another library with no role or name | `configure({ extractors: [{ selector, extract }] })`              |
 
 ```ts
 import { ClrContext } from '@clr/angular/ai';
 
 @Component({
   imports: [ClrContext],
-  template: `<section
-    clrContext="Firewall rules"
-    [clrContextState]="{ cluster, ruleCount }"
-    [clrContextPublicKeys]="['ruleCount']"
-  >
-    ...
-  </section>`,
+  template: `<section clrContext="Firewall rules" [clrContextState]="{ cluster, ruleCount }">...</section>`,
 })
 export class Firewall {
   cluster = 'alpha';
@@ -61,7 +54,6 @@ export class Firewall {
 
 ## Pitfalls
 
-- Published state is private to untrusted callers unless its key is in `publicKeys`; list only keys that carry no user data.
 - Keep `[clrContextState]` small and replace the object instead of mutating it: the directive serialises it on every change detection.
 - `clrContext` is reported on the node of the element it sits on (on an `<ng-container>`, the element around it), merged with what a Clarity component there publishes; the component's values win where both set a key. Registered providers are reported in `regions`.
 - An element holds one published context: `publishElementContext` on the host of a Clarity component replaces what the component publishes, or is replaced by it. Publish from an element of your own.
