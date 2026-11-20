@@ -19,10 +19,6 @@ export class Assistant {
   snapshot() {
     return this.context.snapshot(); // a Promise of one snapshot, now
   }
-
-  live() {
-    return this.context.watch(); // Observable<ClrPageContext>, re-emits when the page changes
-  }
 }
 ```
 
@@ -59,12 +55,12 @@ export class Firewall {
 
 ## Pitfalls
 
-- Keep `[clrContextState]` small and replace the object instead of mutating it: the directive serialises it on every change detection.
+- Keep `[clrContextState]` small: it is serialised into every snapshot.
 - `clrContext` is reported on the node of the element it sits on (on an `<ng-container>`, the element around it), merged with what a Clarity component there publishes; the component's values win where both set a key. Registered providers are reported in `regions`.
 - An element holds one published context: `publishElementContext` on the host of a Clarity component replaces what the component publishes, or is replaced by it. Publish from an element of your own.
 - A grid is summarised, not walked: its `rows` list each row's cells in one string, such as `esx-01 | ok`, up to `maxItemsPerCollection`, so there is no need to publish them.
 - `root: 'modal'` reads only the open modal dialog, such as a wizard, and reads the whole page while none is open, so it can be set once for the application.
 - Prefer semantic HTML and ARIA over annotations: the engine reads the accessibility tree, so an unlabelled control is unnamed to the agent too.
-- A provider may answer with a promise: `snapshot()` waits for it (`configure({ timeoutMs })`, default 2000), `watch()` first reports it as `{ type: 'clr-loading' }`.
+- A provider may answer with a promise: `snapshot()` waits for it (`configure({ timeoutMs })`, default 2000).
 - Unrendered virtual-scroll rows, canvas content, closed shadow roots and cross-origin frames are invisible to it.
 - The frame bridge goes one way: `enableFrameBridge()` lets an embedded frame, such as a chat UI or a plugin, read this page with `clrRequestHostContext()`. It does not read the frames. A same-origin frame is described in place; a cross-origin one, or one behind a closed shadow root, is not.
