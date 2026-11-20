@@ -698,7 +698,12 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
           addButton.focus();
           return;
         }
-        this.filterContainer?.nativeElement.querySelector<HTMLButtonElement>('button:not([disabled])')?.focus();
+        // A pill or toggle; not Clear all or a button in the Add filter popover, which share the container.
+        Array.from(
+          this.filterContainer?.nativeElement.querySelectorAll<HTMLButtonElement>('button:not([disabled])') ?? []
+        )
+          .find(button => !button.matches('.clear-all-button') && !button.closest('.filter-popover'))
+          ?.focus();
       },
       { injector: this.injector }
     );

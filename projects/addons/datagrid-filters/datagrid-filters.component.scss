@@ -7,6 +7,7 @@
 
 .filter-container {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--clr-base-gap-m);
   margin-left: var(--clr-base-horizontal-offset-xs);
@@ -17,10 +18,6 @@
 }
 
 :host-context(.zoom2x, .zoom4x) {
-  .filter-container {
-    flex-wrap: wrap;
-  }
-
   .filter-contents {
     display: contents;
   }

@@ -8,21 +8,22 @@
 .composite-filter-container {
   display: flex;
   align-items: center;
-  gap: var(--clr-base-gap-s);
-
-  // Add filter and Clear all keep their size; only the pill area shrinks and wraps.
-  > .btn,
-  > clr-tooltip {
-    flex-shrink: 0;
-  }
+  min-width: 0;
 }
 
+// Pills and the Hide, Add filter and Clear all buttons share one row, which wraps on narrow screens.
 .manage-filter-container {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--clr-base-gap-m);
   min-width: 0;
+
+  // The buttons keep their size; pills shrink to their max-width.
+  > .btn,
+  > clr-tooltip {
+    flex-shrink: 0;
+  }
 }
 
 // Separates the predefined pills from the user-added ones.
@@ -42,7 +43,7 @@
 }
 
 .semi-filter-option-label {
-  max-width: 300px;
+  max-width: 280px;
   padding: 0;
   margin: 0;
 }
@@ -83,7 +84,7 @@
 appfx-manage-filter {
   // A fixed cap (no percentage): percentage max-widths are ignored when the browser measures the
   // pill row's preferred width, which would reserve space for the full text and push the buttons away.
-  max-width: 300px;
+  max-width: 280px;
 
   &:not([hidden]) {
     display: inline-flex;

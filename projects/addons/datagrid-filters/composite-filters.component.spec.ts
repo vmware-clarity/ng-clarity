@@ -180,6 +180,41 @@ describe('CompositeFiltersComponent', () => {
     testContext.fixture.destroy();
   });
 
+  describe('layout', () => {
+    const container = (): HTMLElement => testContext.fixture.nativeElement.querySelector('.manage-filter-container');
+
+    it('shows Add filter in the pill row even without pills', () => {
+      renderFixture(testContext.fixture);
+      expect(container().querySelector('[data-test-id="add-button"]')).not.toBeNull();
+    });
+
+    it('puts the pills first, then Add filter and Clear all, in one row', () => {
+      testContext.component.presetFilters = [stringPropertyFilter];
+      renderFixture(testContext.fixture);
+      const items = Array.from(container().children)
+        .map(child =>
+          child.matches('appfx-manage-filter')
+            ? 'pill'
+            : (child.querySelector('[data-test-id]') ?? child).getAttribute('data-test-id')
+        )
+        .filter(Boolean);
+      expect(items).toEqual(['pill', 'hide-filters', 'add-button', 'clear-all-button']);
+    });
+
+    it('wraps the buttons with the pills at phone width, so Clear all stays on screen', () => {
+      const host: HTMLElement = testContext.fixture.nativeElement;
+      host.style.display = 'block';
+      host.style.width = '375px';
+      testContext.component.presetFilters = [stringPropertyFilter, enumPropertyFilter];
+      renderFixture(testContext.fixture);
+      const clearAll = host.querySelector('[data-test-id="clear-all-button"]')!.getBoundingClientRect();
+      const add = host.querySelector('[data-test-id="add-button"]')!.getBoundingClientRect();
+      const right = host.getBoundingClientRect().right;
+      expect(clearAll.right).toBeLessThanOrEqual(right);
+      expect(add.right).toBeLessThanOrEqual(right);
+    });
+  });
+
   it('shows empty predefined pills without emitting active filters', async () => {
     testContext.component.predefinedFilters = [stringProperty];
     vi.spyOn(testContext.component.propertyFiltersChange, 'emit').mockImplementation(() => undefined);
