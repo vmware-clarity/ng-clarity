@@ -487,8 +487,15 @@
 
 <h2 id="context-shape" cds-text="title" class="clr-mt-48px">Snapshot</h2>
 <p class="clr-mt-16px" cds-text="body">
-  What <code cds-text="code">snapshot()</code> returns. <code cds-text="code">CLR_PAGE_CONTEXT_SCHEMA</code> is its JSON
-  Schema, for validating snapshots outside TypeScript.
+  What <code cds-text="code">snapshot()</code> returns. Its JSON Schema ships as a file,
+  <code cds-text="code">&#64;clr/angular/ai/schemas/page-context-1.schema.json</code>, and as
+  <code cds-text="code">CLR_PAGE_CONTEXT_SCHEMA</code>. A backend validates snapshots with that file and any JSON Schema
+  validator, picking the file by the snapshot's <code cds-text="code">schemaVersion</code>.
+</p>
+<p class="clr-mt-16px" cds-text="body">
+  The page validates with the same schema: <code cds-text="code">snapshot()</code> leaves out any node or optional field
+  that does not match it, with a warning in dev mode, so what it returns always passes the backend's check. A released
+  schema version never changes; a change to the format comes as a new version and a new file.
 </p>
 
 <h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrPageContext</code></h3>

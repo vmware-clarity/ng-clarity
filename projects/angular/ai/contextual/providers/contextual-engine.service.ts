@@ -18,6 +18,7 @@ import {
 import { ClrContextRegistryService } from './context-registry.service';
 import { usableTimeout } from '../attempt';
 import { charged } from '../budget';
+import { conformingSnapshot } from '../conform';
 import { annotationContext, viewAnnotationHosts } from '../dom/annotations';
 import { ClrContextDomExtractor } from '../dom/dom-context-collector';
 import { closestAcrossShadow } from '../dom/shadow';
@@ -115,7 +116,8 @@ export class ClrContextService {
 
   /** A fresh snapshot of the page, with `options` applied over the configured scope. */
   snapshot(options?: ClrContextSnapshotOptions): Promise<ClrPageContext> {
-    return this.readAsync(options);
+    // What leaves the page always matches the schema a backend validates with.
+    return this.readAsync(options).then(conformingSnapshot);
   }
 
   /** @internal The scope snapshots are read in, with `options` over it; the mutation engine writes in the same one. */

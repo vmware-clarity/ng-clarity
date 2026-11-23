@@ -46,4 +46,14 @@ for (const guide of guides) {
   fs.writeFileSync(path.join(referencesDir, `${guide.name}.md`), guide.body.trimStart());
 }
 
+// The JSON Schemas a backend validates snapshots and operations with, as `@clr/angular/ai/schemas/<file>`.
+const schemasDir = `projects/${lib}/ai/contextual/schemas`;
+if (fs.existsSync(schemasDir)) {
+  fs.rmSync(path.join(dest, 'schemas'), { recursive: true, force: true });
+  fs.mkdirSync(path.join(dest, 'schemas'), { recursive: true });
+  for (const file of fs.readdirSync(schemasDir).filter(name => name.endsWith('.schema.json'))) {
+    fs.copyFileSync(path.join(schemasDir, file), path.join(dest, 'schemas', file));
+  }
+}
+
 console.log(`Copied the ${skill.name} skill with ${guides.length} guide(s) to ${dest}`);
