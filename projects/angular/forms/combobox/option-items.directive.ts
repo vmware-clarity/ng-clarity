@@ -26,11 +26,11 @@ import { OptionSelectionService } from './providers/option-selection.service';
 })
 export class ClrOptionItems<T> implements DoCheck, OnDestroy {
   private iterableProxy: NgForOf<T>;
-  private _rawItems: T[];
-  private filteredItems: T[];
+  private _rawItems?: T[];
+  private filteredItems?: T[];
   private subscriptions: Subscription[] = [];
   private filter = '';
-  private _filterField: string;
+  private _filterField = '';
   private differ: IterableDiffer<T> | null = null;
 
   constructor(
@@ -102,7 +102,7 @@ export class ClrOptionItems<T> implements DoCheck, OnDestroy {
     } else {
       // Filter by all item object values
       this.filteredItems = this._rawItems.filter(item => {
-        if (typeof item !== 'object') {
+        if (item === null || typeof item !== 'object') {
           return normalizeValue(item).includes(normalizedFilterValue);
         }
         const objValues = Object.values(item).filter(value => {

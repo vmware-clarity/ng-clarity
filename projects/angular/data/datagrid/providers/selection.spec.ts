@@ -64,9 +64,9 @@ describe('Datagrid', () => {
 
         it('starts inactive', function () {
           expect(selectionInstance.selectionType).toBe(SelectionType.None);
-          expect(selectionInstance.current).toBeUndefined();
+          expect(selectionInstance.current).toEqual([]);
           selectionInstance.setSelected(4, true);
-          expect(selectionInstance.current).toBeUndefined();
+          expect(selectionInstance.current).toEqual([]);
         });
 
         it('can select/deselect items in multi selection type', function () {

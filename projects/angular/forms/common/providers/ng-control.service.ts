@@ -20,7 +20,7 @@ export interface Helpers {
 
 @Injectable()
 export class NgControlService {
-  container: ClrAbstractContainer;
+  container?: ClrAbstractContainer;
   private _controls: NgControl[] = [];
 
   // Observable to subscribe to the control, since its not available immediately for projected content
