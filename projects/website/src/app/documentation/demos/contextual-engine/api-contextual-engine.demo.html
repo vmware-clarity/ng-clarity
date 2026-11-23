@@ -236,13 +236,15 @@
 <p class="clr-mt-16px" cds-text="body">
   <code cds-text="code">ClrContextSnapshotOptions</code>. Set them for every snapshot with
   <code cds-text="code">configure(&#123; scope &#125;)</code>, and pass them to a single call to change them for that
-  call. Exclusion lists add up, so a call can only leave out more.
+  call. A call's value replaces the application's, except exclusion lists, which add up, so a call can only leave out
+  more. A call value of the wrong type is ignored, so the application's value stays.
 </p>
 <table class="table">
   <thead>
     <tr>
       <th class="left">Option</th>
       <th class="left clr-hidden-xs-down">Default</th>
+      <th class="left clr-hidden-xs-down">A call's value</th>
       <th class="left">Effect</th>
     </tr>
   </thead>
@@ -250,6 +252,7 @@
     <tr>
       <td class="left"><b cds-text="medium">root</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">'page'</code></td>
+      <td class="left clr-hidden-xs-down">Replaces the application's</td>
       <td class="left">
         The part of the page to describe. <code cds-text="code">'modal'</code> describes only the open modal dialog, or
         the whole page when no dialog is open, so it can be set once for the whole application. Anything else is a CSS
@@ -259,6 +262,7 @@
     <tr>
       <td class="left"><b cds-text="medium">excludeCategories</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">[]</code></td>
+      <td class="left clr-hidden-xs-down">Adds to the application's</td>
       <td class="left">
         Kinds of content to leave out: <code cds-text="code">layout</code> (header, navigation, footer, side panels),
         <code cds-text="code">actions</code>, <code cds-text="code">forms</code>, <code cds-text="code">headings</code>,
@@ -270,6 +274,7 @@
     <tr>
       <td class="left"><b cds-text="medium">excludeSelectors</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">[]</code></td>
+      <td class="left clr-hidden-xs-down">Adds to the application's</td>
       <td class="left">
         CSS selectors for elements to leave out, with everything inside them. This only trims the snapshot; to keep
         something from agents, use <code cds-text="code">data-clr-context-redact</code> or
@@ -279,6 +284,7 @@
     <tr>
       <td class="left"><b cds-text="medium">maxComponents</b></td>
       <td class="left clr-hidden-xs-down">300</td>
+      <td class="left clr-hidden-xs-down">Replaces the application's</td>
       <td class="left">
         The most nodes to describe. When it runs out, the rest of the page is left out and the snapshot has
         <code cds-text="code">truncated: true</code>.
@@ -287,6 +293,7 @@
     <tr>
       <td class="left"><b cds-text="medium">maxItemsPerCollection</b></td>
       <td class="left clr-hidden-xs-down">25</td>
+      <td class="left clr-hidden-xs-down">Replaces the application's</td>
       <td class="left">
         The most items to list per collection: rows, tabs, list items, options, menu items.
         <code cds-text="code">0</code> gives counts and the selection only.
