@@ -8,6 +8,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { DOCUMENT, inject, Injectable, isDevMode, PLATFORM_ID } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
+import { publishElementContext } from '@clr/angular/utils';
 
 import { ClrContextRegistryService } from './context-registry.service';
 import { charged } from '../budget';
@@ -17,6 +18,7 @@ import {
   ClrComponentContext,
   ClrContextSnapshotOptions,
   ClrPageContext,
+  ClrPublishedContext,
   ClrRouteContext,
 } from '../interfaces/context.interface';
 import { jsonSafe, ROUTE_DATA_DEPTH } from '../json-safe';
@@ -69,6 +71,14 @@ export class ClrContextService {
     this.config = { ...config };
     this.scope = presetOrOptions(config.scope);
     this.configured = true;
+  }
+
+  /**
+   * Publishes what the DOM cannot show about `element`, such as a component's own host: `read` is called on every
+   * snapshot and merged into the element's node. A `[clrContext]` on the element merges on top. Returns the teardown.
+   */
+  publish(element: Element, read: () => Partial<ClrPublishedContext> | null | undefined): () => void {
+    return publishElementContext(element, () => read());
   }
 
   /** A fresh snapshot of the page, with `options` applied over the configured scope. */
