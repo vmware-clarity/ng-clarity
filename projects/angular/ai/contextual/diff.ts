@@ -30,7 +30,7 @@ export interface ClrContextChange {
   changed: ClrComponentContextChange[];
   /** Whether the route or URL differs. */
   routeChanged: boolean;
-  /** Whether the application, view id, view metadata or whether the view is enabled differs. */
+  /** Whether the application, the view metadata or whether the view is enabled differs. */
   viewChanged: boolean;
   /** Whether the application's annotations differ. */
   regionsChanged: boolean;
@@ -50,7 +50,6 @@ export function clrDiffContext(previous: ClrPageContext | null, current: ClrPage
     viewChanged:
       !previous ||
       serialize(previous.application) !== serialize(current.application) ||
-      previous.viewId !== current.viewId ||
       previous.enabled !== current.enabled ||
       serialize(previous.metadata) !== serialize(current.metadata),
     regionsChanged: !previous || serialize(previous.regions) !== serialize(current.regions),
