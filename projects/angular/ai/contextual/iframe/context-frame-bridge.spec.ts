@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import type { Mock } from 'vitest';
+import { type Mock, onTestFinished } from 'vitest';
 
 import {
   CLR_CONTEXT_PROTOCOL,
@@ -670,10 +670,16 @@ describe('Context frame bridge', () => {
       expect(target.postMessage).not.toHaveBeenCalled();
     });
 
-    it('ignores a response that carries no context', async () => {
-      const target = answering(pageContext, { response: { context: undefined as unknown as ClrPageContext } });
+    it('resolves with null at once, warning, when the host answers with a context that does not match the schema', async () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+      onTestFinished(() => warn.mockRestore());
+      const broken = [undefined, { ...pageContext, components: [{ type: 'button', script: 'alert(1)' }] }];
 
-      expect(await ask(target, { timeoutMs: 40 })).toBeNull();
+      for (const context of broken) {
+        // A timeout longer than the test's own: only an answer at once passes.
+        expect(await ask(answering(context as ClrPageContext), { timeoutMs: 60000 })).toBeNull();
+      }
+      expect(warn).toHaveBeenCalledWith(expect.stringContaining('does not match the schema'));
     });
 
     it('ignores responses for other requests until the right one arrives', async () => {
