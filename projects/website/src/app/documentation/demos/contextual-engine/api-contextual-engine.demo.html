@@ -44,6 +44,15 @@
       </td>
     </tr>
     <tr>
+      <td class="left"><b cds-text="medium">publish(element, read)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; void</code></td>
+      <td class="left">
+        Publishes what the DOM cannot show about an element, such as a component's own host.
+        <code cds-text="code">read</code> is called on every snapshot and merged into the element's node; a
+        <code cds-text="code">[clrContext]</code> on the element merges on top. Returns the teardown.
+      </td>
+    </tr>
+    <tr>
       <td class="left"><b cds-text="medium">enableFrameBridge(options?)</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
       <td class="left">
@@ -742,26 +751,6 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td class="left"><b cds-text="medium">publishElementContext(host, callback)</b></td>
-      <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; void</code></td>
-      <td class="left">
-        The engine calls <code cds-text="code">callback</code> on every snapshot and merges its answer into the host's
-        node. Returns a function to call on destroy.
-      </td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">publishElementMutator(host, mutator)</b></td>
-      <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; void</code></td>
-      <td class="left">
-        Makes a custom control writable by <code cds-text="code">setValue</code>. The
-        <code cds-text="code">ClrElementMutator</code> has two functions:
-        <code cds-text="code">coerce(proposed)</code> turns what the agent asked for into the model value, and
-        <code cds-text="code">write(proposed)</code> writes state that is not a form control. Both are optional. The
-        value after a write is read from the <code cds-text="code">state.value</code> the component publishes with
-        <code cds-text="code">publishElementContext</code>.
-      </td>
-    </tr>
     <tr>
       <td class="left"><b cds-text="medium">contextText(element, skip?)</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">string</code></td>

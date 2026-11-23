@@ -33,6 +33,7 @@ export interface ClrElementMutator {
 const mutators = new WeakMap<Element, ClrElementMutator>();
 
 /**
+ * Internal to Clarity's components; an application's own control is written through its form binding.
  * Publishes a mutator for the host element. It is kept off the element, so other scripts on the page can neither
  * read nor replace it. The teardown only removes the mutator it published.
  */

@@ -94,8 +94,8 @@ in front of the model could then fill any bound field on the page, including one
 The engine describes UI by reading the **accessibility tree** rather than Clarity-specific
 selectors, so it covers Clarity Angular components, `@clr/ui` CSS-only markup, other component
 libraries and plain semantic HTML with one implementation. Components publish only the state ARIA
-cannot express, through `publishElementContext` from `@clr/angular/utils` — which is why a
-component that publishes context does not depend on this entry point.
+cannot express, through `ClrContextService.publish()`. Clarity's own components use an internal
+equivalent in `@clr/angular/utils`, so they do not depend on this entry point.
 
 Through custom extractors it also reaches other UI libraries, and a framework-agnostic `postMessage`
 protocol lets UI embedded in an iframe, such as a chat component, read the page hosting it; the host
@@ -111,9 +111,10 @@ controls by the `ref` each snapshot node carries — random, and stable for an e
 the page. It never submits, clicks or invokes; never writes what a snapshot would not show (an
 excluded or redacted control, option, radio or row; size budgets and summary mode shorten what a
 snapshot lists, not what can be written); and does nothing at all until the application provides a
-`ClrMutationPolicy` classifying what each operation would do. Components whose value is not what an
-agent sees — the combobox, the date input, the datagrid's row selection — say how they are written
-to through `publishElementMutator` from `@clr/angular/utils`.
+`ClrMutationPolicy` classifying what each operation would do. Clarity components whose value is not what
+an agent sees — the combobox, the date input, the datagrid's row selection — say how they are
+written to internally. An application's own control is written through its form binding when it
+renders a role the engine knows and its model holds what it shows.
 
 A snapshot carries the page's text as shown, including what users wrote, so it is data for a
 model, never instructions: delimit it in prompts, and let the policy judge each operation's target
