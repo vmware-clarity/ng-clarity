@@ -139,6 +139,16 @@ describe('snapshot options', () => {
       expect(withCallOptions({ maxComponents: 10 }, { maxComponents: undefined })).toEqual({ maxComponents: 10 });
     });
 
+    it('keeps the application’s value, not the default, when a call gives one of the wrong type', () => {
+      const application = { maxComponents: 10, maxItemsPerCollection: 5, root: 'main' };
+      const call = { maxComponents: Number.NaN, maxItemsPerCollection: '3' as never, root: '  ' };
+
+      expect(withCallOptions(application, call)).toEqual(application);
+      expect(resolveSnapshotOptions(withCallOptions(application, call))).toEqual(
+        expect.objectContaining({ maxComponents: 10, maxItemsPerCollection: 5, root: 'main' })
+      );
+    });
+
     it('adds a call’s exclusions to the application’s, so an empty list removes none', () => {
       const application = { excludeSelectors: ['nav'], excludeCategories: ['layout' as const] };
       expect(withCallOptions(application, { excludeSelectors: ['aside'], excludeCategories: [] })).toEqual({
