@@ -65,7 +65,7 @@ export interface ClrPageContext {
    * root has no `[clrContext]`, and then nothing else is read. It gates this engine only, not what the page renders.
    */
   enabled: boolean;
-  /** The document title. */
+  /** The document title; empty for an untrusted caller unless it shares the full URL. */
   title: string;
   /** The current URL (browser location, or router URL when available). */
   url?: string;
