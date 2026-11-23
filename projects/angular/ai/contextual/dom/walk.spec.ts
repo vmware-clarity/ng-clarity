@@ -7,6 +7,7 @@
 
 import { ClrComponentContext, ClrContextSnapshotOptions, publishElementContext } from '@clr/angular/utils';
 
+import { annotate } from './annotations';
 import { withoutValues } from './aria-state';
 import { ClrContextTreeResult, collectContextTreeWithin } from './walk';
 import { ResolvedSnapshotOptions, resolveSnapshotOptions } from '../snapshot-options';
@@ -69,6 +70,22 @@ describe('collectContextTreeWithin', () => {
     expect(node.type).toBe('group');
     expect(node.element).toBe('my-widget');
     expect(node.label).toBe('3 hosts');
+  });
+
+  it('merges an annotation on a custom element onto what it renders, without naming it from its content', () => {
+    container.innerHTML = `<my-grid><div role="grid"><div role="row"><span role="columnheader">Name</span></div>
+      <div role="row"><span role="gridcell">esx-01</span></div></div></my-grid>`;
+    const unannotate = annotate(container.querySelector('my-grid')!, () => ({ state: { owner: 'Infra' } }));
+    const [node] = collectContextTreeWithin(container, budgets()).components;
+    unannotate();
+    expect(node.type).toBe('grid');
+    expect(node.element).toBe('my-grid');
+    expect(node.label).toBeUndefined();
+    expect(node.state?.['owner']).toBe('Infra');
+  });
+
+  it('leaves out a container that says nothing, but keeps a widget whose role alone is news', () => {
+    expect(collect('<div role="group"></div><section role="region"></section><hr />')).toEqual([{ type: 'separator' }]);
   });
 
   it('skips a custom element that renders nothing, such as a closed modal or an icon', () => {
