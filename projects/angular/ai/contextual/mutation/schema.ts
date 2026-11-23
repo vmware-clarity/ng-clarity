@@ -20,7 +20,7 @@ const strings = { type: 'object', additionalProperties: { type: 'string' } } as 
  */
 export const CLR_MUTATION_OPERATIONS_SCHEMA = {
   $schema: 'http://json-schema.org/draft-07/schema#',
-  $id: 'https://clarity.design/schemas/mutation-operations/1.json',
+  $id: 'https://clarity.design/schemas/mutation-operations-1.schema.json',
   title: 'ClrMutationOperations',
   type: 'array',
   maxItems: CLR_MUTATION_MAX_OPERATIONS,

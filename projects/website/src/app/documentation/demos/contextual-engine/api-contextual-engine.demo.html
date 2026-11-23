@@ -273,7 +273,10 @@
 <p class="clr-mt-16px" cds-text="body">
   Their JSON Schema ships as
   <code cds-text="code">&#64;clr/angular/ai/schemas/mutation-operations-1.schema.json</code> and as
-  <code cds-text="code">CLR_MUTATION_OPERATIONS_SCHEMA</code>. It holds no references, so it fits a tool definition as
+  <code cds-text="code">CLR_MUTATION_OPERATIONS_SCHEMA</code>, and is served at its <code cds-text="code">$id</code>,
+  <a href="https://clarity.design/schemas/mutation-operations-1.schema.json"
+    >clarity.design/schemas/mutation-operations-1.schema.json</a
+  >. It holds no references, so it fits a tool definition as
   <code cds-text="code"
     >&#123; type: 'object', properties: &#123; operations: CLR_MUTATION_OPERATIONS_SCHEMA &#125; &#125;</code
   >, and a backend validates what a model proposes with it. <code cds-text="code">apply()</code> and
@@ -595,10 +598,13 @@
 
 <h2 id="context-shape" cds-text="title" class="clr-mt-48px">Snapshot</h2>
 <p class="clr-mt-16px" cds-text="body">
-  What <code cds-text="code">snapshot()</code> returns. Its JSON Schema ships as a file,
-  <code cds-text="code">&#64;clr/angular/ai/schemas/page-context-1.schema.json</code>, and as
-  <code cds-text="code">CLR_PAGE_CONTEXT_SCHEMA</code>. A backend validates snapshots with that file and any JSON Schema
-  validator, picking the file by the snapshot's <code cds-text="code">schemaVersion</code>.
+  What <code cds-text="code">snapshot()</code> returns. Its JSON Schema ships in the package as
+  <code cds-text="code">&#64;clr/angular/ai/schemas/page-context-1.schema.json</code> and as
+  <code cds-text="code">CLR_PAGE_CONTEXT_SCHEMA</code>, and is served at its <code cds-text="code">$id</code>,
+  <a href="https://clarity.design/schemas/page-context-1.schema.json"
+    >clarity.design/schemas/page-context-1.schema.json</a
+  >. A backend validates snapshots with that file and any JSON Schema validator, picking the file by the snapshot's
+  <code cds-text="code">schemaVersion</code>.
 </p>
 <p class="clr-mt-16px" cds-text="body">
   The page validates with the same schema: <code cds-text="code">snapshot()</code> leaves out any node or optional field
