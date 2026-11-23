@@ -32,12 +32,12 @@ Configure once at startup: `context.configure({ scope: 'interactive', routes: tr
 
 ## Adding context
 
-| Need                                             | Use                                                               |
-| ------------------------------------------------ | ----------------------------------------------------------------- |
-| Say what an element of a view is for             | `[clrContext]` directive, bound to a value from the class         |
-| Context no element shows, maybe asynchronous     | `ClrContextProvider` registered on `ClrContextRegistryService`    |
-| A component's state the DOM cannot show          | `publishElementContext(host, callback)` from `@clr/angular/utils` |
-| Markup from another library with no role or name | `configure({ extractors: [{ selector, extract }] })`              |
+| Need                                             | Use                                                            |
+| ------------------------------------------------ | -------------------------------------------------------------- |
+| Say what an element of a view is for             | `[clrContext]` directive, bound to a value from the class      |
+| Context no element shows, maybe asynchronous     | `ClrContextProvider` registered on `ClrContextRegistryService` |
+| A component's state the DOM cannot show          | `context.publish(host, read)` on `ClrContextService`           |
+| Markup from another library with no role or name | `configure({ extractors: [{ selector, extract }] })`           |
 
 ```ts
 import { ClrContext } from '@clr/angular/ai';
@@ -59,7 +59,7 @@ export class Firewall {
 - `[clrContext]` takes a property binding only. Static text (`clrContext="..."`) would be readable in the DOM, so it is a type error and throws in dev mode. The annotation is kept off the element, so other scripts on the page can neither read nor plant it.
 - Keep the annotation's `state` small: it is serialised into every snapshot.
 - `[clrContext]` is reported on the node of the element it sits on (on an `<ng-container>`, the element around it), merged with what a Clarity component there publishes; the component's values win where both set a key. Registered providers are reported in `regions`.
-- An element holds one published context: `publishElementContext` on the host of a Clarity component replaces what the component publishes, or is replaced by it. Publish from an element of your own.
+- An element holds one published context: `publish` on the host of a Clarity component replaces what the component publishes, or is replaced by it. Publish from an element of your own; a `[clrContext]` on it merges on top.
 - A grid is summarised, not walked: its `rows` list each row's cells in one string, such as `esx-01 | ok`, up to `maxItemsPerCollection`, so there is no need to publish them.
 - `root: 'modal'` reads only the open modal dialog, such as a wizard, and reads the whole page while none is open, so it can be set once for the application.
 - Prefer semantic HTML and ARIA over annotations: the engine reads the accessibility tree, so an unlabelled control is unnamed to the agent too.
