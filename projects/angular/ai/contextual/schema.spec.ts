@@ -53,7 +53,7 @@ describe('CLR_PAGE_CONTEXT_SCHEMA', () => {
       getClrContext: () => ({ type: 'region', label: 'Hosts', state: { count: 3 }, extra: 'dropped' }) as never,
     });
     const engine = TestBed.inject(ClrContextService);
-    engine.configure({ application: { id: 'inventory', viewId: () => 'host-list' }, views });
+    engine.configure({ application: { id: 'inventory' }, views });
     return engine;
   }
 
