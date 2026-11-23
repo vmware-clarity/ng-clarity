@@ -41,6 +41,15 @@
         <code cds-text="code">scope</code> (see Snapshot options below).
       </td>
     </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">publish(element, read)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; void</code></td>
+      <td class="left">
+        Publishes what the DOM cannot show about an element, such as a component's own host.
+        <code cds-text="code">read</code> is called on every snapshot and merged into the element's node; a
+        <code cds-text="code">[clrContext]</code> on the element merges on top. Returns the teardown.
+      </td>
+    </tr>
   </tbody>
 </table>
 
