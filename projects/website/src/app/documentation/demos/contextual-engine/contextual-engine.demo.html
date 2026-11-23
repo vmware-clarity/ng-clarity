@@ -78,7 +78,7 @@
     </p>
     <p class="clr-mt-16px" cds-text="body">
       A component adds only what a role cannot express — state that lives in the component instance rather than in the
-      DOM, published through <code cds-text="code">publishElementContext</code>.
+      DOM, published through <code cds-text="code">ClrContextService.publish()</code>.
     </p>
     <p class="clr-mt-16px" cds-text="body">
       The engine reads the document it is in and the same-origin frames inside it, and walks into open shadow roots, so
@@ -100,7 +100,7 @@
       <li>
         Only what is rendered can be read. Rows a virtual scroller has not rendered are invisible, and so is anything
         drawn on a <code cds-text="code">canvas</code>, such as most charts. Publish what matters through
-        <code cds-text="code">publishElementContext</code> or an annotation.
+        <code cds-text="code">ClrContextService.publish()</code> or an annotation.
       </li>
       <li>Closed shadow roots cannot be read. Open shadow roots are read.</li>
       <li>
@@ -257,12 +257,8 @@
           <td class="left">A node in <code cds-text="code">regions</code></td>
         </tr>
         <tr>
-          <td class="left"><code cds-text="code">publishElementContext</code></td>
-          <td class="left">
-            A component holds state its markup cannot show. It needs only
-            <code cds-text="code">&#64;clr/angular/utils</code>, so a component library can publish without depending on
-            the engine.
-          </td>
+          <td class="left"><code cds-text="code">ClrContextService.publish()</code></td>
+          <td class="left">A component holds state its markup cannot show, on its own host.</td>
           <td class="left">Merged into its host element's node</td>
         </tr>
         <tr>
@@ -300,9 +296,8 @@
     <h3 id="element-context" class="clr-mt-32px" cds-text="section">State the DOM cannot show</h3>
     <p class="clr-mt-16px" cds-text="body">
       Some state lives only inside component instances, where the DOM does not show it. Any component can publish that
-      truth with <code cds-text="code">publishElementContext</code> from
-      <code cds-text="code">&#64;clr/angular/utils</code>. The collector calls it while scraping and merges the result
-      over what the DOM showed.
+      truth with <code cds-text="code">publish()</code> on <code cds-text="code">ClrContextService</code>. The collector
+      calls it while scraping and merges the result over what the DOM showed.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="elementContextExample" language="typescript"></app-code-snippet>
