@@ -22,7 +22,7 @@ export class Assistant {
 }
 ```
 
-Configure once at startup: `context.configure({ scope: 'interactive', routes: true })`. `scope` is a preset (`full`, `interactive`, `minimal`) or options: `root` (`'page'`, `'modal'` or a selector), `excludeSelectors`, `excludeCategories`, `maxComponents`, `maxItemsPerCollection` (0 summarizes collections). Name the app with `configure({ application: { id: 'inventory' } })`. Describe a view with `[clrContext]` on its root (the element `scope.root` selects): its state, with `viewId` naming the view, becomes the snapshot's `metadata`.
+Configure once at startup: `context.configure({ scope: 'interactive', routes: true })`. `scope` is a preset (`full`, `interactive`, `minimal`) or options: `root` (`'page'`, `'modal'` or a selector), `excludeSelectors`, `excludeCategories`, `maxComponents`, `maxItemsPerCollection` (0 summarizes collections). Name the app with `configure({ application: { id: 'inventory' } })`. Describe a view with `[clrContext]` on its root (the element `scope.root` selects): its state becomes the snapshot's `metadata`.
 
 ## Privacy first
 

@@ -63,9 +63,6 @@ export const CLR_PAGE_CONTEXT_SCHEMA: {
                 };
             };
         };
-        readonly viewId: {
-            readonly type: "string";
-        };
         readonly metadata: {
             readonly type: "object";
         };
@@ -491,7 +488,6 @@ export interface ClrPageContext {
     title: string;
     truncated?: boolean;
     url?: string;
-    viewId?: string;
 }
 
 // @public
