@@ -136,7 +136,7 @@ export class ClrContextService implements OnDestroy {
     const ceiling = this.untrustedCeiling(options?.snapshot);
     // Built before the running bridge stops, so a refused configuration leaves current frames served.
     const frameHost = new ClrContextFrameHost(
-      snapshotOptions => this.readAsync(capSnapshotOptions(snapshotOptions, ceiling), FRAME_SOURCE_TIMEOUT_MS),
+      snapshotOptions => this.readAsync(capSnapshotOptions(snapshotOptions, ceiling), true, FRAME_SOURCE_TIMEOUT_MS),
       window,
       options,
       url => this.routePattern(url)
@@ -223,7 +223,8 @@ export class ClrContextService implements OnDestroy {
     );
   }
 
-  private read(options: ClrContextSnapshotOptions | undefined): ClrPageContext {
+  /** With `untrusted`, for a caller the application does not control, no refs are handed out. */
+  private read(options: ClrContextSnapshotOptions | undefined, untrusted = false): ClrPageContext {
     this.snapshotTaken = true;
     const resolved = this.resolveScope(options);
     const snapshot = this.viewSnapshot(resolved);
@@ -231,7 +232,7 @@ export class ClrContextService implements OnDestroy {
       return snapshot;
     }
     const regions = this.contextRegistry.collect({ limits: resolved });
-    return this.describePage(snapshot, resolved, regions);
+    return this.describePage(snapshot, resolved, regions, untrusted);
   }
 
   /**
@@ -240,6 +241,7 @@ export class ClrContextService implements OnDestroy {
    */
   private async readAsync(
     options: ClrContextSnapshotOptions | undefined,
+    untrusted = false,
     timeoutMs = this.config.timeoutMs,
     retries = 1
   ): Promise<ClrPageContext> {
@@ -261,16 +263,17 @@ export class ClrContextService implements OnDestroy {
       snapshot.enabled !== view.enabled ||
       JSON.stringify(snapshot.metadata) !== JSON.stringify(view.metadata)
     ) {
-      return retries > 0 ? this.readAsync(options, timeoutMs, retries - 1) : this.read(options);
+      return retries > 0 ? this.readAsync(options, untrusted, timeoutMs, retries - 1) : this.read(options, untrusted);
     }
     // The page is read once providers have answered, so a region redacted meanwhile is read as it is now.
-    return this.describePage(snapshot, resolved, regions);
+    return this.describePage(snapshot, resolved, regions, untrusted);
   }
 
   private describePage(
     snapshot: ClrPageContext,
     resolved: ResolvedSnapshotOptions,
-    regions: ClrComponentContext[]
+    regions: ClrComponentContext[],
+    untrusted: boolean
   ): ClrPageContext {
     snapshot.title = this.document.title;
     snapshot.url = this.currentUrl();
@@ -280,7 +283,8 @@ export class ClrContextService implements OnDestroy {
       snapshot.availableRoutes = availableRoutes(this.router.config, limit);
     }
     if (isPlatformBrowser(this.platformId)) {
-      const refs = this.mutationPolicy ? this.refs.begin() : null;
+      // Untrusted callers never get refs: they cannot write.
+      const refs = !untrusted && this.mutationPolicy ? this.refs.begin() : null;
       const tree = collectContextTreeWithin(this.document, resolved, this.config.extractors ?? [], refs);
       refs?.commit(tree.components);
       snapshot.components = tree.components;
