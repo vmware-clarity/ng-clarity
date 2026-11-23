@@ -167,11 +167,7 @@ export class ClrContextService implements OnDestroy {
       collectedAt: new Date().toISOString(),
     };
     const metadata = this.viewMetadata(options);
-    const viewId = metadata?.['viewId'];
-    if (typeof viewId === 'string' && viewId) {
-      snapshot.viewId = viewId;
-    }
-    // A disabled view says which view it is, and nothing more.
+    // A disabled view says nothing about itself.
     if (!metadata && readsEnabledViewsOnly(this.config.views)) {
       snapshot.enabled = false;
       return snapshot;
@@ -249,8 +245,12 @@ export class ClrContextService implements OnDestroy {
       limits: resolved,
     });
     const snapshot = this.viewSnapshot(resolved);
-    // The answers are the old view's: a view id is optional, so the address is compared too.
-    if (snapshot.viewId !== view.viewId || snapshot.enabled !== view.enabled || this.address() !== address) {
+    // The answers are the old view's when the address or the view's description changed meanwhile.
+    if (
+      this.address() !== address ||
+      snapshot.enabled !== view.enabled ||
+      JSON.stringify(snapshot.metadata) !== JSON.stringify(view.metadata)
+    ) {
       return retries > 0 ? this.readAsync(options, timeoutMs, retries - 1) : this.read(options);
     }
     // The page is read once providers have answered, so a region redacted meanwhile is read as it is now.
