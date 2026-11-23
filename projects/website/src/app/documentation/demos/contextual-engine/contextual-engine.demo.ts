@@ -367,34 +367,6 @@ report.results[0];
 // or: { applied: false, outcome: 'rejected', url: '/', detail: 'A route guard refused the navigation.' }
 `;
 
-const ELEMENT_MUTATOR_EXAMPLE = `
-import { publishElementContext, publishElementMutator } from '@clr/angular/utils';
-
-// A writable component publishes its current value, in the agent's terms, as state.value.
-// The engine reads it before and after a write.
-this.teardownContext = publishElementContext(this.host.nativeElement, () => ({
-  type: 'combobox',
-  state: { value: this.selectedOption()?.label ?? null },
-}));
-
-// A component whose form control takes something other than what an agent sees.
-this.teardown = publishElementMutator(this.host.nativeElement, {
-  // Turn the agent's proposal into what the control takes, and what the policy and a
-  // confirmation show, or refuse with what would do.
-  coerce: proposed => {
-    const option = this.options.find(option => option.label === proposed);
-    return option
-      ? { value: option.id, display: option.label }
-      : { refused: \`No such option. The options are: \${this.labels()}.\` };
-  },
-});
-
-// A component whose state is not a form control at all writes it itself.
-publishElementMutator(host, {
-  write: rows => { this.select(rows); return { value: this.selectedRowLabels() }; },
-});
-`;
-
 @Component({
   changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './contextual-engine.demo.html',
@@ -433,7 +405,6 @@ export class ContextualEngineDemo extends ClarityDocComponent {
   applyExample = APPLY_EXAMPLE;
   resultExample = RESULT_EXAMPLE;
   navigateExample = NAVIGATE_EXAMPLE;
-  elementMutatorExample = ELEMENT_MUTATOR_EXAMPLE;
 
   constructor() {
     super('contextual-engine');

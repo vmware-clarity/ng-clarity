@@ -614,15 +614,13 @@
       </li>
     </ul>
     <p class="clr-mt-16px" cds-text="body">
-      A component whose value is not what an agent sees, or whose state is not a form control at all, says how it is
-      written to with <code cds-text="code">publishElementMutator</code> from
-      <code cds-text="code">&#64;clr/angular/utils</code> — the mirror of
-      <code cds-text="code">publishElementContext</code>. <code cds-text="code">ClrCombobox</code>,
-      <code cds-text="code">ClrDateInput</code> and <code cds-text="code">ClrDatagrid</code> ship this built in.
+      <code cds-text="code">ClrCombobox</code>, <code cds-text="code">ClrDateInput</code> and the row selection of
+      <code cds-text="code">ClrDatagrid</code> can be written as they are. A control of your own is written through its
+      form binding when it renders a role the engine knows (a textbox, a checkbox or switch, a spinbutton or slider, or
+      a radio group of radios) and its model holds what it shows. Publish that value as
+      <code cds-text="code">state.value</code> with <code cds-text="code">ClrContextService.publish()</code>, so the
+      engine can report it before and after a write.
     </p>
-    <div class="clr-mt-16px">
-      <app-code-snippet [code]="elementMutatorExample" language="typescript"></app-code-snippet>
-    </div>
   </app-doc-tab>
 
   <app-doc-tab tab="api">

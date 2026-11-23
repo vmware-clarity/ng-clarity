@@ -70,5 +70,5 @@ export class Firewall {
 
 - Nothing is written until the application provides `provideClrMutationPolicy({ classify })`; `confirm` is asked before a `consequential` operation.
 - `mutationEngine.apply(operations)` resolves with a result per operation; a refusal carries `refused` and a `detail`, so show it to the user. `announce` on the policy hears the same report.
-- The combobox, the date input and the datagrid's row selection can be written as they are. A custom control whose value is not what the agent sees is refused as `unsupported` until it publishes `publishElementMutator(host, { coerce, write })` and its current value as `state.value` with `publishElementContext`.
+- The combobox, the date input and the datagrid's row selection can be written as they are. A custom control of the application is written through its form binding when it renders a role the engine knows (textbox, checkbox or switch, spinbutton or slider, a radio group of radios) and its model holds what it shows; publish that value as `state.value` with `context.publish`. Any other control is refused as `unsupported`.
 - Password and other always-withheld fields, and controls without an Angular form binding, are never written (`redacted`, `unbound`).
