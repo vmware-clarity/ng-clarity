@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { parentAcrossShadow } from './shadow';
 import { ClrPublishedContext } from '../interfaces/context.interface';
 
 /** Reads what `[clrContext]` says about the element it sits on. */
@@ -41,4 +42,19 @@ export function annotationContext(element: Element): Partial<ClrPublishedContext
 
 function saysSomething({ label, type, state }: Partial<ClrPublishedContext>): boolean {
   return !!label || !!type || (!!state && typeof state === 'object' && Object.keys(state).length > 0);
+}
+
+/** Elements whose annotation describes the view: each root and its annotated ancestors, outermost first. */
+export function viewAnnotationHosts(roots: Element[]): Element[] {
+  const hosts: Element[] = [];
+  for (const root of roots) {
+    const chain: Element[] = [];
+    for (let element: Element | null = root; element; element = parentAcrossShadow(element)) {
+      if (hasAnnotation(element) && !hosts.includes(element)) {
+        chain.unshift(element);
+      }
+    }
+    hosts.push(...chain);
+  }
+  return hosts;
 }

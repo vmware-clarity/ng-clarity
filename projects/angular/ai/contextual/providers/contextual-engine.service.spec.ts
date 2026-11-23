@@ -9,9 +9,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { ClrPublishedContext } from '@clr/angular/utils';
+import { onTestFinished } from 'vitest';
 
 import { ClrContextRegistryService } from './context-registry.service';
 import { ClrContextConfig, ClrContextService } from './contextual-engine.service';
+import { annotate } from '../dom/annotations';
 import {
   ClrComponentContext,
   ClrContextCategory,
@@ -362,9 +364,27 @@ function configuredService(config: ClrContextConfig): ClrContextService {
 
 describe('ClrContextService, identifying the application and view', () => {
   const quiet = { excludeCategories: Object.keys(CLR_CONTEXT_CATEGORIES) as ClrContextCategory[] };
+  const annotations: (() => void)[] = [];
+  let page: HTMLElement;
+
+  /** What `[clrContext]` on the element would say. */
+  function annotateWith(element: Element, context: () => Partial<ClrPublishedContext> | null): void {
+    annotations.push(annotate(element, context));
+  }
+
+  beforeEach(() => {
+    page = document.createElement('main');
+    page.className = 'test-page';
+    document.body.appendChild(page);
+    TestBed.configureTestingModule({});
+  });
+
+  afterEach(() => {
+    page.remove();
+    annotations.splice(0).forEach(remove => remove());
+  });
 
   it('versions every snapshot and names the host when no application is configured', async () => {
-    TestBed.configureTestingModule({});
     const snapshot = await TestBed.inject(ClrContextService).snapshot(quiet);
 
     expect(snapshot.schemaVersion).toBe('1');
@@ -373,74 +393,88 @@ describe('ClrContextService, identifying the application and view', () => {
     expect(snapshot.metadata).toBeUndefined();
   });
 
-  it('reports the configured application, view id and serializable metadata', async () => {
-    TestBed.configureTestingModule({});
+  it('reports the configured application, and the view from the annotation on the view root', async () => {
+    annotateWith(page, () => ({
+      label: 'Host list',
+      state: { viewId: 'host-list', purpose: 'Lists hosts', load: () => 'not serializable' },
+    }));
     const snapshot = await configuredService({
-      application: {
-        id: 'inventory',
-        version: '2.4.0',
-        viewId: () => 'host-list',
-        metadata: () => ({ purpose: 'Lists hosts', load: () => 'not serializable' }),
-      },
+      application: { id: 'inventory', version: '2.4.0' },
+      scope: { root: '.test-page' },
     }).snapshot(quiet);
 
     expect(snapshot.application).toEqual({ id: 'inventory', version: '2.4.0' });
     expect(snapshot.viewId).toBe('host-list');
-    expect(snapshot.metadata).toEqual({ purpose: 'Lists hosts' });
+    expect(snapshot.metadata).toEqual({ label: 'Host list', viewId: 'host-list', purpose: 'Lists hosts' });
   });
 
-  it('takes the view id from the application first, then from the deepest route', async () => {
-    let provided: string | undefined = 'from-provider';
-    TestBed.configureTestingModule({
-      providers: [
-        provideRouter([
-          {
-            path: 'hosts',
-            data: { viewId: 'hosts' },
-            children: [{ path: ':id', component: RoutedComponent, data: { viewId: 'host-detail' } }],
-          },
-        ]),
-      ],
-    });
-    const engine = configuredService({ application: { id: 'inventory', viewId: () => provided } });
-    await TestBed.inject(Router).navigateByUrl('/hosts/7');
+  it('merges the view root and its ancestors, inner winning', async () => {
+    annotateWith(document.body, () => ({ state: { viewId: 'page', purpose: 'Page', owner: 'core' } }));
+    annotateWith(page, () => ({ state: { viewId: 'hosts', purpose: 'Hosts' } }));
 
-    expect((await engine.snapshot(quiet)).viewId).toBe('from-provider');
-    provided = undefined;
-    expect((await engine.snapshot(quiet)).viewId).toBe('host-detail');
+    const snapshot = await configuredService({ scope: { root: '.test-page' } }).snapshot(quiet);
+
+    expect(snapshot.viewId).toBe('hosts');
+    expect(snapshot.metadata).toEqual({ viewId: 'hosts', purpose: 'Hosts', owner: 'core' });
   });
 
-  it('does not give a child route the view id of its parent route', async () => {
+  it('reports an annotation inside the view on its node, not as the view metadata', async () => {
+    page.innerHTML = '<nav aria-label="Hosts"><a href="#">h1</a></nav>';
+    annotateWith(page.querySelector('nav')!, () => ({ state: { purpose: 'Pick a host' } }));
+
+    const snapshot = await configuredService({}).snapshot();
+
+    expect(snapshot.metadata).toBeUndefined();
+    expect(JSON.stringify(snapshot.components)).toContain('Pick a host');
+  });
+
+  it('takes no view id from the route', async () => {
+    TestBed.resetTestingModule();
     TestBed.configureTestingModule({
-      providers: [
-        provideRouter([
-          {
-            path: 'hosts',
-            data: { viewId: 'hosts' },
-            children: [{ path: ':id', component: RoutedComponent }],
-          },
-        ]),
-      ],
+      providers: [provideRouter([{ path: 'hosts', component: RoutedComponent, data: { viewId: 'hosts' } }])],
     });
     const engine = configuredService({ application: { id: 'inventory' } });
-    await TestBed.inject(Router).navigateByUrl('/hosts/7');
+    await TestBed.inject(Router).navigateByUrl('/hosts');
 
     expect((await engine.snapshot(quiet)).viewId).toBeUndefined();
   });
 
-  it('survives an application callback that throws', async () => {
-    TestBed.configureTestingModule({});
-    const snapshot = await configuredService({
-      application: {
-        id: 'inventory',
-        viewId: () => {
-          throw new Error('broken');
-        },
-        metadata: () => {
-          throw new Error('broken');
-        },
-      },
-    }).snapshot(quiet);
+  it('leaves out view metadata in an ignored, redacted or excluded region', async () => {
+    annotateWith(page, () => ({ state: { accountSecret: 's3cr3t' } }));
+    const engine = configuredService({ scope: { root: '.test-page' } });
+    for (const marker of ['data-clr-context-ignore', 'data-clr-context-redact']) {
+      document.body.setAttribute(marker, '');
+      try {
+        expect(JSON.stringify(await engine.snapshot(quiet)), marker).not.toContain('s3cr3t');
+      } finally {
+        document.body.removeAttribute(marker);
+      }
+    }
+    expect(JSON.stringify(await engine.snapshot({ ...quiet, excludeSelectors: ['.test-page'] }))).not.toContain(
+      's3cr3t'
+    );
+  });
+
+  it('gives each snapshot its own copy of the metadata, so a consumer cannot change the next one', async () => {
+    const settings: Record<string, unknown> = { allowed: true };
+    settings['self'] = settings;
+    annotateWith(page, () => ({ state: { settings } }));
+    const engine = configuredService({ scope: { root: '.test-page' } });
+
+    const snapshot = await engine.snapshot(quiet);
+    (snapshot.metadata?.['settings'] as Record<string, unknown>)['allowed'] = false;
+
+    expect(() => JSON.stringify(snapshot)).not.toThrow();
+    expect(settings['allowed']).toBe(true);
+    expect(((await engine.snapshot(quiet)).metadata?.['settings'] as Record<string, unknown>)['allowed']).toBe(true);
+  });
+
+  it('survives an annotation callback that throws', async () => {
+    annotateWith(page, () => {
+      throw new Error('broken');
+    });
+
+    const snapshot = await configuredService({ scope: { root: '.test-page' } }).snapshot(quiet);
 
     expect(snapshot.viewId).toBeUndefined();
     expect(snapshot.metadata).toBeUndefined();
@@ -448,21 +482,22 @@ describe('ClrContextService, identifying the application and view', () => {
 });
 
 describe('ClrContextService, reading only enabled views', () => {
-  let metadata: Record<string, unknown> | null;
+  let annotation: Partial<ClrPublishedContext> | null;
+  let removeAnnotation: () => void;
   let engine: ClrContextService;
   let registry: ClrContextRegistryService;
 
   beforeEach(() => {
-    metadata = null;
+    annotation = null;
+    removeAnnotation = annotate(document.body, () => annotation);
     TestBed.configureTestingModule({});
-    engine = configuredService({
-      application: { id: 'inventory', viewId: () => 'host-list', metadata: () => metadata },
-      views: 'enabled',
-    });
+    engine = configuredService({ application: { id: 'inventory' }, views: 'enabled' });
     registry = TestBed.inject(ClrContextRegistryService);
   });
 
-  it('reports a view without metadata as not enabled, with nothing about the page', async () => {
+  afterEach(() => removeAnnotation());
+
+  it('reports a view whose root has no annotation as not enabled, with nothing about the page', async () => {
     const provider = vi.fn().mockReturnValue({ type: 'region', label: 'Hosts' });
     registry.register({ getClrContext: provider });
 
@@ -470,7 +505,6 @@ describe('ClrContextService, reading only enabled views', () => {
     expect(snapshot).toEqual({
       schemaVersion: '1',
       application: { id: 'inventory' },
-      viewId: 'host-list',
       enabled: false,
       title: '',
       regions: [],
@@ -480,22 +514,17 @@ describe('ClrContextService, reading only enabled views', () => {
     expect(provider).not.toHaveBeenCalled();
   });
 
-  it('reads a view once it has metadata', async () => {
-    metadata = { purpose: 'Lists hosts' };
+  it('reads a view once its root is annotated', async () => {
+    annotation = { state: { viewId: 'host-list', purpose: 'Lists hosts' } };
     registry.register({ getClrContext: () => ({ type: 'region', label: 'Hosts' }) });
 
     const snapshot = await engine.snapshot();
 
     expect(snapshot.enabled).toBe(true);
-    expect(snapshot.metadata).toEqual({ purpose: 'Lists hosts' });
+    expect(snapshot.viewId).toBe('host-list');
+    expect(snapshot.metadata).toEqual({ viewId: 'host-list', purpose: 'Lists hosts' });
     expect(snapshot.title).toBe(document.title);
     expect(snapshot.regions).toEqual([{ type: 'region', label: 'Hosts' }]);
-  });
-
-  it('reads a view whose metadata is an empty object', async () => {
-    metadata = {};
-
-    expect((await engine.snapshot()).enabled).toBe(true);
   });
 });
 
@@ -504,8 +533,10 @@ describe('ClrContextService, a view that changes while providers answer', () => 
 
   it('describes the new view instead of mixing answers from the old one into it', async () => {
     let view = 'hosts';
+    const removeAnnotation = annotate(document.body, () => ({ state: { viewId: view } }));
+    onTestFinished(removeAnnotation);
     TestBed.configureTestingModule({});
-    const engine = configuredService({ application: { id: 'inventory', viewId: () => view } });
+    const engine = configuredService({ application: { id: 'inventory' } });
     let answer: (context: ClrComponentContext) => void = () => undefined;
     TestBed.inject(ClrContextRegistryService).register({
       getClrContext: () =>

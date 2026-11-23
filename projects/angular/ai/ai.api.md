@@ -254,12 +254,6 @@ export class ClrContext implements OnInit, OnDestroy {
 export type ClrContextAnnotation = Partial<ClrPublishedContext> | (() => Partial<ClrPublishedContext> | null | undefined);
 
 // @public
-export interface ClrContextApplicationOptions extends ClrApplicationContext {
-    metadata?: () => Record<string, unknown> | null | undefined;
-    viewId?: () => string | null | undefined;
-}
-
-// @public
 export interface ClrContextAsyncCollectOptions extends ClrContextCollectOptions {
     timeoutMs?: number;
 }
@@ -287,7 +281,7 @@ export interface ClrContextCollectOptions {
 
 // @public
 export interface ClrContextConfig {
-    application?: ClrContextApplicationOptions;
+    application?: ClrApplicationContext;
     extractors?: ClrContextDomExtractor[];
     routes?: boolean;
     scope?: ClrContextPreset | ClrContextSnapshotOptions;

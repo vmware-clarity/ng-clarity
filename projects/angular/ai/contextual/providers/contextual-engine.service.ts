@@ -8,12 +8,15 @@
 import { isPlatformBrowser } from '@angular/common';
 import { DOCUMENT, inject, Injectable, isDevMode, PLATFORM_ID } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
+import { CLR_CONTEXT_IGNORE_SELECTOR, CLR_CONTEXT_REDACT_SELECTOR, usableSelectors } from '@clr/angular/utils';
 
 import { ClrContextRegistryService } from './context-registry.service';
-import { attempt, usableTimeout } from '../attempt';
+import { usableTimeout } from '../attempt';
 import { charged } from '../budget';
+import { annotationContext, viewAnnotationHosts } from '../dom/annotations';
 import { ClrContextDomExtractor } from '../dom/dom-context-collector';
-import { collectContextTreeWithin } from '../dom/walk';
+import { closestAcrossShadow } from '../dom/shadow';
+import { collectContextTreeWithin, engineScope } from '../dom/walk';
 import {
   ClrApplicationContext,
   ClrComponentContext,
@@ -40,21 +43,13 @@ const DEFAULT_SOURCE_TIMEOUT_MS = 2000;
 /** A route map cut to a handful of entries would misdescribe where the app can go. */
 const MIN_ROUTE_LIMIT = 50;
 
-/** The application's identity, and where its view id and metadata come from. */
-export interface ClrContextApplicationOptions extends ClrApplicationContext {
-  /** The current view's id; checked before the route's `data.viewId`. */
-  viewId?: () => string | null | undefined;
-  /** Metadata about the current view, as a small serializable object. */
-  metadata?: () => Record<string, unknown> | null | undefined;
-}
-
 /** How the application wants its context read; set once with `ClrContextService.configure`. */
 export interface ClrContextConfig {
   /** The application every snapshot describes. Default: the page's host name. */
-  application?: ClrContextApplicationOptions;
+  application?: ClrApplicationContext;
   /**
-   * Which views are read: `'all'` (the default) reads every view; `'enabled'` reads only views with metadata and
-   * reports the others as `enabled: false`, with nothing about the page.
+   * Which views are read: `'all'` (the default) reads every view; `'enabled'` reads only views whose root has a
+   * `[clrContext]`, and reports the others as `enabled: false`, with nothing about the page.
    */
   views?: 'all' | 'enabled';
   /** What every snapshot reads: a preset name, or snapshot options. Default: the whole page. */
@@ -115,10 +110,10 @@ export class ClrContextService {
   }
 
   /**
-   * The application and view, with nothing about the page yet; with `views: 'enabled'`, a view
-   * without metadata is reported as not enabled and nothing else is read.
+   * The application and view, with nothing about the page yet. The `[clrContext]` on the view root describes the
+   * view; with `views: 'enabled'`, a view without one is reported as not enabled and nothing else is read.
    */
-  private viewSnapshot(): ClrPageContext {
+  private viewSnapshot(options: ResolvedSnapshotOptions): ClrPageContext {
     const route = this.routeContext();
     const snapshot: ClrPageContext = {
       schemaVersion: CLR_PAGE_CONTEXT_SCHEMA_VERSION,
@@ -129,18 +124,18 @@ export class ClrContextService {
       components: [],
       collectedAt: new Date().toISOString(),
     };
-    const viewId = this.viewId();
-    if (viewId) {
+    const metadata = this.viewMetadata(options);
+    const viewId = metadata?.['viewId'];
+    if (typeof viewId === 'string' && viewId) {
       snapshot.viewId = viewId;
     }
-    const provided = attempt(() => this.config.application?.metadata?.(), undefined);
-    // An empty object still enables the view.
-    const metadata = provided === null || provided === undefined ? undefined : jsonSafe(provided, REGION_DEPTH, true);
-    if (metadata && typeof metadata === 'object' && !Array.isArray(metadata)) {
-      snapshot.metadata = metadata as Record<string, unknown>;
-    } else if (readsEnabledViewsOnly(this.config.views)) {
+    // A disabled view says which view it is, and nothing more.
+    if (!metadata && readsEnabledViewsOnly(this.config.views)) {
       snapshot.enabled = false;
       return snapshot;
+    }
+    if (metadata) {
+      snapshot.metadata = metadata;
     }
     if (route) {
       snapshot.route = route;
@@ -148,13 +143,45 @@ export class ClrContextService {
     return snapshot;
   }
 
+  /**
+   * What the annotations on the view's roots and their ancestors say, inner winning: their state, with `label`
+   * when one is given. A copy, so a consumer cannot change the application's value, and a cycle cannot break it.
+   */
+  private viewMetadata(options: ResolvedSnapshotOptions): Record<string, unknown> | undefined {
+    const hosts = this.viewAnnotationHosts(options);
+    if (!hosts.length) {
+      return undefined;
+    }
+    const metadata: Record<string, unknown> = {};
+    for (const host of hosts) {
+      const annotation = annotationContext(host);
+      Object.assign(metadata, annotation?.label ? { label: annotation.label } : null, annotation?.state);
+    }
+    const safe = jsonSafe(metadata, REGION_DEPTH, true);
+    return safe && typeof safe === 'object' && !Array.isArray(safe) ? (safe as Record<string, unknown>) : {};
+  }
+
+  private viewAnnotationHosts(options: ResolvedSnapshotOptions): Element[] {
+    if (!isPlatformBrowser(this.platformId)) {
+      return [];
+    }
+    const roots = engineScope(this.document, options).roots ?? [this.document.body ?? this.document.documentElement];
+    const excludeSelector = usableSelectors(this.document, options.excludeSelectors);
+    // An annotation in a region kept from agents is kept with it.
+    return viewAnnotationHosts(roots.filter(Boolean)).filter(
+      host =>
+        !closestAcrossShadow(host, `${CLR_CONTEXT_IGNORE_SELECTOR}, ${CLR_CONTEXT_REDACT_SELECTOR}`) &&
+        !(excludeSelector && closestAcrossShadow(host, excludeSelector))
+    );
+  }
+
   private read(options: ClrContextSnapshotOptions | undefined): ClrPageContext {
     this.snapshotTaken = true;
-    const snapshot = this.viewSnapshot();
+    const resolved = this.resolveScope(options);
+    const snapshot = this.viewSnapshot(resolved);
     if (!snapshot.enabled) {
       return snapshot;
     }
-    const resolved = this.resolveScope(options);
     const regions = this.contextRegistry.collect({ limits: resolved });
     return this.describePage(snapshot, resolved, regions);
   }
@@ -165,17 +192,17 @@ export class ClrContextService {
    */
   private async readAsync(options: ClrContextSnapshotOptions | undefined, retries = 1): Promise<ClrPageContext> {
     this.snapshotTaken = true;
-    const view = this.viewSnapshot();
+    const resolved = this.resolveScope(options);
+    const view = this.viewSnapshot(resolved);
     if (!view.enabled) {
       return view;
     }
     const address = this.address();
-    const resolved = this.resolveScope(options);
     const regions = await this.contextRegistry.collectAsync({
       timeoutMs: usableTimeout(this.config.timeoutMs, DEFAULT_SOURCE_TIMEOUT_MS),
       limits: resolved,
     });
-    const snapshot = this.viewSnapshot();
+    const snapshot = this.viewSnapshot(resolved);
     // The answers are the old view's: a view id is optional, so the address is compared too.
     if (snapshot.viewId !== view.viewId || snapshot.enabled !== view.enabled || this.address() !== address) {
       return retries > 0 ? this.readAsync(options, retries - 1) : this.read(options);
@@ -218,21 +245,6 @@ export class ClrContextService {
     }
     const { id, version } = application;
     return version ? { id, version } : { id };
-  }
-
-  /** The application's own view id first, then the deepest route's `data.viewId`. */
-  private viewId(): string | undefined {
-    const provided = attempt(() => this.config.application?.viewId?.(), undefined);
-    if (typeof provided === 'string' && provided) {
-      return provided;
-    }
-    // The deepest route's own data only: a child route does not inherit its parent's view.
-    let route = this.router?.config.length ? this.router.routerState.snapshot.root : null;
-    while (route?.firstChild) {
-      route = route.firstChild;
-    }
-    const routed = route?.routeConfig?.data?.['viewId'];
-    return typeof routed === 'string' && routed ? routed : undefined;
   }
 
   /** Where the application is, as its router sees it. */

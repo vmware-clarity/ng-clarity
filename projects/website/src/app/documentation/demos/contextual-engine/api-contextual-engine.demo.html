@@ -95,8 +95,9 @@
       <td class="left"><b cds-text="medium">application</b></td>
       <td class="left clr-hidden-xs-down">the host name</td>
       <td class="left">
-        Names the application and its views, as a <code cds-text="code">ClrContextApplicationOptions</code>. See the
-        table below.
+        Names the application: a <code cds-text="code">ClrApplicationContext</code> with an
+        <code cds-text="code">id</code>, such as <code cds-text="code">'inventory'</code>, and an optional
+        <code cds-text="code">version</code>.
       </td>
     </tr>
     <tr>
@@ -104,45 +105,9 @@
       <td class="left clr-hidden-xs-down"><code cds-text="code">'all'</code></td>
       <td class="left">
         <code cds-text="code">'all'</code> reads every view. <code cds-text="code">'enabled'</code> reads only views
-        that have metadata, and reports the rest as <code cds-text="code">enabled: false</code> with nothing about the
-        page.
+        whose root has a <code cds-text="code">[clrContext]</code>, and reports the rest as
+        <code cds-text="code">enabled: false</code> with nothing about the page.
       </td>
-    </tr>
-  </tbody>
-</table>
-
-<h4 cds-text="subsection" class="clr-mt-24px"><code cds-text="code">application</code></h4>
-<table class="table">
-  <thead>
-    <tr>
-      <th class="left">Option</th>
-      <th class="left clr-hidden-xs-down">Type</th>
-      <th class="left">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="left"><b cds-text="medium">id</b></td>
-      <td class="left clr-hidden-xs-down">String</td>
-      <td class="left">A stable id for the application, such as <code cds-text="code">'inventory'</code>.</td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">version</b></td>
-      <td class="left clr-hidden-xs-down">String</td>
-      <td class="left">The application's version.</td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">viewId</b></td>
-      <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; string | null | undefined</code></td>
-      <td class="left">
-        A function that returns the current view's id, called on every snapshot. Often not needed: put
-        <code cds-text="code">data: &#123; viewId: 'vm-list' &#125;</code> on each route instead.
-      </td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">metadata</b></td>
-      <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; object | null | undefined</code></td>
-      <td class="left">A function that returns a small object about the current view, called on every snapshot.</td>
     </tr>
   </tbody>
 </table>
@@ -543,12 +508,19 @@
     <tr>
       <td class="left"><b cds-text="medium">viewId</b></td>
       <td class="left clr-hidden-xs-down">String</td>
-      <td class="left">The view the user is on, when the application names it.</td>
+      <td class="left">
+        The view the user is on: <code cds-text="code">viewId</code> in the state of the
+        <code cds-text="code">[clrContext]</code> on the view root.
+      </td>
     </tr>
     <tr>
       <td class="left"><b cds-text="medium">metadata</b></td>
       <td class="left clr-hidden-xs-down">Object</td>
-      <td class="left">What the application says about the current view.</td>
+      <td class="left">
+        What the <code cds-text="code">[clrContext]</code> on the view root and its ancestors says about the view: its
+        state, with its label, inner winning. The view root is the element <code cds-text="code">scope.root</code>
+        selects, or the body.
+      </td>
     </tr>
     <tr>
       <td class="left"><b cds-text="medium">enabled</b></td>

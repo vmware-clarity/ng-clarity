@@ -7,6 +7,7 @@
 
 import { ClrComponentContext, ClrContextSnapshotOptions, publishElementContext } from '@clr/angular/utils';
 
+import { annotate } from './annotations';
 import { withoutValues } from './aria-state';
 import { ClrContextTreeResult, collectContextTreeWithin, isOutsideSnapshot } from './walk';
 import { ResolvedSnapshotOptions, resolveSnapshotOptions } from '../snapshot-options';
@@ -1756,5 +1757,43 @@ describe('collectContextTreeWithin, open shadow roots', () => {
 
     expect(JSON.stringify(nodes)).not.toContain('color');
     expect(JSON.stringify(nodes)).toContain('Visible');
+  });
+});
+
+describe('collectContextTree, annotations', () => {
+  useContainer();
+
+  function annotated(selector: string, context: Partial<ClrComponentContext>): void {
+    annotate(container.querySelector(selector) ?? container, () => context);
+  }
+
+  it('reads nothing from annotation attributes in the markup', () => {
+    const nodes = collect(
+      `<div data-clr-context="Firewall rules" data-clr-context-type="region"
+            data-clr-context-state='{"cluster":"east"}'><button>Add rule</button></div>`
+    );
+
+    expect(nodes).toEqual([{ type: 'button', label: 'Add rule' }]);
+  });
+
+  it('reports an annotation inside the view as the state of the node it sits on', () => {
+    container.innerHTML = '<nav aria-label="Hosts"><a href="#">h1</a></nav>';
+    annotated('nav', { state: { purpose: 'Pick a host' } });
+
+    expect(collectContextTreeWithin(container, budgets()).components[0].state).toEqual({ purpose: 'Pick a host' });
+  });
+
+  it('leaves the annotation on the view root to the snapshot', () => {
+    container.innerHTML = '<button>Add</button>';
+    annotated('#none', { state: { purpose: 'Hosts' } });
+
+    expect(collectContextTreeWithin(container, budgets()).components).toEqual([{ type: 'button', label: 'Add' }]);
+  });
+
+  it('withholds the annotated state inside a redacted region', () => {
+    container.innerHTML = '<div data-clr-context-redact><div id="card"><button>Pay</button></div></div>';
+    annotated('#card', { label: 'Card', state: { card: '4111' } });
+
+    expect(JSON.stringify(collectContextTreeWithin(container, budgets()).components)).not.toContain('4111');
   });
 });
