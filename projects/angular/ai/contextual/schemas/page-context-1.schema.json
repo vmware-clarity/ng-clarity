@@ -1,0 +1,164 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://clarity.design/schemas/page-context/1.json",
+  "title": "ClrPageContext",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "application",
+    "enabled",
+    "title",
+    "regions",
+    "components",
+    "collectedAt"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1"
+    },
+    "application": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "metadata": {
+      "type": "object"
+    },
+    "enabled": {
+      "type": "boolean"
+    },
+    "title": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string"
+    },
+    "route": {
+      "type": "object",
+      "required": [
+        "url"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "params": {
+          "$ref": "#/definitions/strings"
+        },
+        "queryParams": {
+          "$ref": "#/definitions/queryParams"
+        },
+        "data": {
+          "type": "object"
+        }
+      }
+    },
+    "availableRoutes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "path"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "lazy": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "regions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/component"
+      }
+    },
+    "components": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/component"
+      }
+    },
+    "truncated": {
+      "type": "boolean"
+    },
+    "focus": {
+      "const": "modal"
+    },
+    "collectedAt": {
+      "type": "string"
+    }
+  },
+  "definitions": {
+    "strings": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "queryParams": {
+      "type": "object",
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "component": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "element": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "state": {
+          "type": "object"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/component"
+          }
+        }
+      }
+    }
+  }
+}
