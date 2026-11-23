@@ -16,7 +16,8 @@ export type ClrElementContextCallback = (
 ) => Partial<ClrPublishedContext> | null | undefined;
 
 /**
- * Publishes state the DOM cannot show for the host element. The callback is kept off the element, so other scripts
+ * Internal to Clarity's components, which cannot depend on `@clr/angular/ai`; applications use
+ * `ClrContextService.publish()`. Publishes state the DOM cannot show for the host element. The callback is kept off the element, so other scripts
  * on the page can neither read nor replace it. The teardown only removes the callback it published.
  */
 export function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void {
