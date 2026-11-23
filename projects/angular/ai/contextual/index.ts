@@ -27,4 +27,5 @@ export * from './context';
 export * from './contextual.module';
 export * from './mutation/mutation.interface';
 export * from './mutation/mutation-engine.service';
+export * from './mutation/schema';
 export { CLR_CONTEXT_UNTRUSTED_OPTION_KEYS } from './untrusted-options';

@@ -37,6 +37,79 @@ export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
 export const CLR_CONTEXT_UNAVAILABLE_TYPE = "clr-unavailable";
 
 // @public
+export const CLR_MUTATION_MAX_OPERATIONS = 50;
+
+// @public
+export const CLR_MUTATION_OPERATIONS_SCHEMA: {
+    readonly $schema: "http://json-schema.org/draft-07/schema#";
+    readonly $id: "https://clarity.design/schemas/mutation-operations/1.json";
+    readonly title: "ClrMutationOperations";
+    readonly type: "array";
+    readonly maxItems: 50;
+    readonly items: {
+        readonly oneOf: readonly [{
+            readonly type: "object";
+            readonly required: readonly ["operation", "ref", "description", "value"];
+            readonly additionalProperties: false;
+            readonly properties: {
+                readonly operation: {
+                    readonly const: "setValue";
+                };
+                readonly ref: {
+                    readonly type: "string";
+                };
+                readonly description: {
+                    readonly type: "string";
+                };
+                readonly value: {};
+            };
+        }, {
+            readonly type: "object";
+            readonly required: readonly ["operation", "ref", "description"];
+            readonly additionalProperties: false;
+            readonly properties: {
+                readonly operation: {
+                    readonly const: "clear";
+                };
+                readonly ref: {
+                    readonly type: "string";
+                };
+                readonly description: {
+                    readonly type: "string";
+                };
+            };
+        }, {
+            readonly type: "object";
+            readonly required: readonly ["operation", "path"];
+            readonly additionalProperties: false;
+            readonly properties: {
+                readonly operation: {
+                    readonly const: "navigate";
+                };
+                readonly path: {
+                    readonly type: "string";
+                };
+                readonly params: {
+                    readonly type: "object";
+                    readonly additionalProperties: {
+                        readonly type: "string";
+                    };
+                };
+                readonly queryParams: {
+                    readonly type: "object";
+                    readonly additionalProperties: {
+                        readonly type: "string";
+                    };
+                };
+            };
+        }];
+    };
+};
+
+// @public
+export const CLR_MUTATION_OPERATIONS_SCHEMA_VERSION = "1";
+
+// @public
 export const CLR_MUTATION_POLICY: InjectionToken<ClrMutationPolicy>;
 
 // @public
@@ -330,6 +403,7 @@ export class ClrContextRegistryService {
 // @public
 export class ClrContextService {
     configure(config: ClrContextConfig): void;
+    publish(element: Element, read: () => Partial<ClrPublishedContext> | null | undefined): () => void;
     // @internal
     resolveScope(options?: ClrContextSnapshotOptions): ResolvedSnapshotOptions;
     snapshot(options?: ClrContextSnapshotOptions): Promise<ClrPageContext>;
@@ -352,20 +426,6 @@ export interface ClrContextSnapshotOptions {
 export function clrDiffContext(previous: ClrPageContext | null, current: ClrPageContext): ClrContextChange;
 
 // @public
-export type ClrElementContextCallback = (options?: Required<ClrContextSnapshotOptions>) => Partial<ClrPublishedContext> | null | undefined;
-
-// @public
-export type ClrElementMutation = {
-    value: unknown;
-    display?: unknown;
-    refused?: undefined;
-} | {
-    refused: string;
-    value?: undefined;
-    display?: undefined;
-};
-
-// @public
 export interface ClrElementMutationResult {
     applied: boolean;
     detail?: string;
@@ -376,13 +436,6 @@ export interface ClrElementMutationResult {
     refused?: ClrMutationRefusal;
     status?: string;
     value?: unknown;
-}
-
-// @public
-export interface ClrElementMutator {
-    coerce?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
-    ownsContents?: boolean;
-    write?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
 }
 
 // @public
@@ -514,12 +567,6 @@ export interface ClrSetValueOperation {
 
 // @public
 export function provideClrMutationPolicy(policy: ClrMutationPolicy): EnvironmentProviders;
-
-// @public
-export function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
-
-// @public
-export function publishElementMutator(host: Element, mutator: ClrElementMutator): () => void;
 
 // (No @packageDocumentation comment for this package)
 
