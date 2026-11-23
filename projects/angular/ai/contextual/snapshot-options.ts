@@ -72,6 +72,20 @@ function isExclusionKey(key: string): key is (typeof EXCLUSION_KEYS)[number] {
   return (EXCLUSION_KEYS as readonly string[]).includes(key);
 }
 
+/** Whether a call's value can replace the application's: the type `resolveSnapshotOptions` would accept. */
+function isUsable(key: string, value: unknown): boolean {
+  if (isExclusionKey(key)) {
+    return Array.isArray(value);
+  }
+  if ((BUDGET_KEYS as readonly string[]).includes(key)) {
+    return typeof value === 'number' && Number.isFinite(value);
+  }
+  if (key === 'root') {
+    return typeof value === 'string' && !!value.trim();
+  }
+  return value !== undefined;
+}
+
 function listOrNothing(value: unknown): readonly unknown[] {
   return Array.isArray(value) ? value : [];
 }
@@ -145,7 +159,11 @@ export function presetOrOptions(
   return { ...options };
 }
 
-/** One call's options over the application's; exclusion lists add up, so a call can only leave out more. */
+/**
+ * One call's options over the application's: a call's root and budgets replace the application's, and its exclusion
+ * lists add to them, so a call can only leave out more. A call value of the wrong type is ignored, keeping the
+ * application's value rather than falling back to the default.
+ */
 export function withCallOptions(
   application: ClrContextSnapshotOptions | null | undefined,
   call: ClrContextSnapshotOptions | undefined
@@ -155,7 +173,7 @@ export function withCallOptions(
     if (isExclusionKey(key)) {
       warnIfNotAList(key, value);
     }
-    if (value !== undefined && (!isExclusionKey(key) || Array.isArray(value))) {
+    if (isUsable(key, value)) {
       (effective as Record<string, unknown>)[key] = value;
     }
   }
