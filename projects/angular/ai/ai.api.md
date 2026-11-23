@@ -31,10 +31,16 @@ export const CLR_CONTEXT_LOADING_TYPE = "clr-loading";
 export const CLR_CONTEXT_PRESETS: Readonly<Record<ClrContextPreset, Readonly<ClrContextSnapshotOptions>>>;
 
 // @public
+export const CLR_CONTEXT_PROTOCOL = "ui-context/v1";
+
+// @public
 export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
 
 // @public
 export const CLR_CONTEXT_UNAVAILABLE_TYPE = "clr-unavailable";
+
+// @public
+export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: readonly (keyof ClrContextSnapshotOptions)[];
 
 // @public
 export const CLR_MUTATION_POLICY: InjectionToken<ClrMutationPolicy>;
@@ -296,6 +302,40 @@ export interface ClrContextDomExtractor {
 }
 
 // @public
+export interface ClrContextFrameHostOptions {
+    allowAnyOrigin?: boolean;
+    allowedOrigins?: string[];
+    minRequestIntervalMs?: number;
+    shareFormValues?: boolean;
+    shareFullUrl?: boolean;
+    snapshot?: ClrContextSnapshotOptions;
+}
+
+// @public
+export interface ClrContextFrameRequest {
+    kind: 'context-request';
+    options?: ClrContextSnapshotOptions;
+    protocol: typeof CLR_CONTEXT_PROTOCOL;
+    requestId: string;
+}
+
+// @public
+export interface ClrContextFrameRequestOptions {
+    hostOrigin?: string;
+    options?: ClrContextSnapshotOptions;
+    targetWindow?: Window;
+    timeoutMs?: number;
+}
+
+// @public
+export interface ClrContextFrameResponse {
+    context: ClrPageContext;
+    kind: 'context-response';
+    protocol: typeof CLR_CONTEXT_PROTOCOL;
+    requestId: string;
+}
+
+// @public
 export class ClrContextModule {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextModule, never>;
@@ -331,8 +371,13 @@ export class ClrContextRegistryService {
 }
 
 // @public
-export class ClrContextService {
+export class ClrContextService implements OnDestroy {
     configure(config: ClrContextConfig): void;
+    disableFrameBridge(): void;
+    enableFrameBridge(options?: ClrContextFrameHostOptions): void;
+    // (undocumented)
+    ngOnDestroy(): void;
+    requestHostContext(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null>;
     // @internal
     resolveScope(options?: ClrContextSnapshotOptions): ResolvedSnapshotOptions;
     snapshot(options?: ClrContextSnapshotOptions): Promise<ClrPageContext>;
@@ -498,6 +543,9 @@ export interface ClrPageContext {
 export interface ClrPublishedContext extends ClrComponentContext {
     children?: ClrPublishedContext[];
 }
+
+// @public
+export function clrRequestHostContext(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null>;
 
 // @public
 export interface ClrRouteContext {
