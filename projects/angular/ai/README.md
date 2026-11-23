@@ -94,8 +94,8 @@ in front of the model could then fill any bound field on the page, including one
 The engine describes UI by reading the **accessibility tree** rather than Clarity-specific
 selectors, so it covers Clarity Angular components, `@clr/ui` CSS-only markup, other component
 libraries and plain semantic HTML with one implementation. Components publish only the state ARIA
-cannot express, through `publishElementContext` from `@clr/angular/utils` — which is why a
-component that publishes context does not depend on this entry point.
+cannot express, through `ClrContextService.publish()`. Clarity's own components use an internal
+equivalent in `@clr/angular/utils`, so they do not depend on this entry point.
 
 Through custom extractors it also reaches other UI libraries.
 
