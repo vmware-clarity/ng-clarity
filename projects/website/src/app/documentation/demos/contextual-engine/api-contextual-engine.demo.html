@@ -70,7 +70,8 @@
       <td class="left clr-hidden-xs-down"><code cds-text="code">Promise&lt;ClrPageContext | null&gt;</code></td>
       <td class="left">
         For an application running inside a frame: asks the page that embeds it for its context. Resolves with
-        <code cds-text="code">null</code> when the host does not answer.
+        <code cds-text="code">null</code> when the host does not answer, or answers with a context that does not match
+        the snapshot schema, as a host on another Clarity version might.
       </td>
     </tr>
   </tbody>

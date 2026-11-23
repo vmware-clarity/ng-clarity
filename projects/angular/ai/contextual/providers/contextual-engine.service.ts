@@ -152,7 +152,8 @@ export class ClrContextService implements OnDestroy {
     const ceiling = this.untrustedCeiling(options?.snapshot);
     // Built before the running bridge stops, so a refused configuration leaves current frames served.
     const frameHost = new ClrContextFrameHost(
-      snapshotOptions => this.readAsync(capSnapshotOptions(snapshotOptions, ceiling), FRAME_SOURCE_TIMEOUT_MS),
+      snapshotOptions =>
+        this.readAsync(capSnapshotOptions(snapshotOptions, ceiling), FRAME_SOURCE_TIMEOUT_MS).then(conformingSnapshot),
       window,
       options,
       url => this.routePattern(url)
