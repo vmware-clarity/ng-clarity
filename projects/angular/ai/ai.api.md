@@ -155,6 +155,7 @@ export class ClrContextRegistryService {
 // @public
 export class ClrContextService {
     configure(config: ClrContextConfig): void;
+    publish(element: Element, read: () => Partial<ClrPublishedContext> | null | undefined): () => void;
     snapshot(options?: ClrContextSnapshotOptions): Promise<ClrPageContext>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextService, never>;
@@ -173,9 +174,6 @@ export interface ClrContextSnapshotOptions {
 
 // @public
 export function clrDiffContext(previous: ClrPageContext | null, current: ClrPageContext): ClrContextChange;
-
-// @public
-export type ClrElementContextCallback = (options?: Required<ClrContextSnapshotOptions>) => Partial<ClrPublishedContext> | null | undefined;
 
 // @public
 export function clrIsEmptyContextChange(change: ClrContextChange): boolean;
@@ -206,9 +204,6 @@ export interface ClrRouteContext {
     queryParams?: Record<string, string | string[]>;
     url: string;
 }
-
-// @public
-export function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
 
 // (No @packageDocumentation comment for this package)
 
