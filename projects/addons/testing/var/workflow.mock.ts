@@ -5,8 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, NgModule } from '@angular/core';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ANIMATION_MODULE_TYPE, ChangeDetectionStrategy, Component, NgModule } from '@angular/core';
 import { OnStepActivate, OnStepValidate, StepModel, StepValidationState } from '@clr/addons/var';
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -72,8 +71,9 @@ export class MockWorkflowConfigurationService {
   }
 }
 
+/** Turns Clarity's animations off, as `provideNoopAnimations()` does, without needing `@angular/animations`. */
 @NgModule({
-  imports: [NoopAnimationsModule],
   declarations: [InvalidMockComponent, MockStepComponent],
+  providers: [{ provide: ANIMATION_MODULE_TYPE, useValue: 'NoopAnimations' }],
 })
 export class MockWorkflowTestModule {}

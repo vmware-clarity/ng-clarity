@@ -8,4 +8,3 @@
 export * from './collapsible-panel';
 export * from './models/collapsible-panel.model';
 export * from './providers/collapsible-panel.service';
-export * from './utils/animation';

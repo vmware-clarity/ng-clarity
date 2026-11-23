@@ -73,3 +73,39 @@ Some fields became accessors: `IfExpandService.expandable`, `hasExpandTemplate`,
 `isNavLevel2OnPage`. This is source compatible unless a subclass redeclares them as fields.
 
 When upgrading through v18, remove any `*WillyWonka` / `*OompaLoompa` imports left by the v18 rename schematic.
+
+## Removed animation helpers
+
+Clarity animates with CSS and the Web Animations API and does not use `@angular/animations`. The
+animation helpers it kept for compatibility, deprecated in v18.5.0, have been removed:
+
+- From `@clr/angular/utils`: `fade`, `fadeSlide`, `slide`, `collapse`, `defaultAnimationTiming`,
+  `defaultExpandAnimation`, the `animationStyle`, `animationAnimate`, `animationState`, `animationTransition`,
+  `animationReference` and `animationTrigger` functions, and the `ClrAnimation*` metadata types
+  (`ClrAnimationMetadata`, `ClrAnimationTriggerMetadata`, `ClrAnimationStyles`, ...).
+- From `@clr/angular/collapsible-panel`: `collapsiblePanelAnimation`, `collapsiblePanelExpandAnimation`,
+  `skipInitialRenderTrigger`, `panelExpandTransition` and `panelCollapseTransition`.
+- From `CollapsiblePanel`: the `collapsePanelOnAnimationDone` method, which was called on `@toggle.done`. The panel
+  now removes its content when it closes, so remove the call.
+- From `ClrExpandableAnimation`: the `expandAnimation` getter and the `animationStart` and `animationDone` methods.
+- From `ClrExpandableAnimationDirective`: the fourth, ignored constructor parameter and the empty `ngOnDestroy`.
+  Subclasses pass the first three parameters to `super()` and no longer call `super.ngOnDestroy()`.
+
+Use the CSS replacements instead:
+
+| Removed                                | Replacement                                                                               |
+| -------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `fade()`                               | The `clr-fade-enter` and `clr-fade-leave` classes, with `animate.enter` / `animate.leave` |
+| `slide(direction)`                     | The `clr-slide-<direction>-enter` and `-leave` classes                                    |
+| `fadeSlide(direction)`                 | The `clr-fade-slide-<direction>-enter` and `-leave` classes                               |
+| `collapse()`, `defaultExpandAnimation` | `animateHeight()` or `ClrExpandableAnimation` from `@clr/angular/utils`                   |
+| `defaultAnimationTiming`               | The `--cds-global-animation-*` tokens                                                     |
+| Collapsible panel animations           | `(animate.enter)="expandContent($event)"` on the panel content                            |
+
+`provideNoopAnimations()` and `NoopAnimationsModule` still turn Clarity's animations off. Applications that
+use `@angular/animations` themselves keep it as their own dependency.
+
+`@clr/addons` no longer declares `@angular/animations` as a peer dependency. `MockWorkflowTestModule` in
+`@clr/addons/testing` no longer imports `NoopAnimationsModule`; it turns Clarity's animations off through the
+`ANIMATION_MODULE_TYPE` token instead. Tests that relied on it to import `NoopAnimationsModule` for their own
+`@angular/animations` animations must import it themselves.

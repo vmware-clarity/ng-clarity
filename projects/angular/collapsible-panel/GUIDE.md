@@ -1,6 +1,6 @@
 ---
 name: clr-collapsible-panel
-description: Base classes for building custom Clarity collapsible components from `@clr/angular/collapsible-panel` — the abstract `CollapsiblePanel`, `CollapsiblePanelService`, `CollapsiblePanelModel` / `CollapsiblePanelGroupModel` and the expand/collapse animations. Use when writing a custom expand/collapse panel group that `clr-accordion` or `clr-stepper` can't express.
+description: Base classes for building custom Clarity collapsible components from `@clr/angular/collapsible-panel` — the abstract `CollapsiblePanel`, `CollapsiblePanelService`, `CollapsiblePanelModel` / `CollapsiblePanelGroupModel` and the expand/collapse animation. Use when writing a custom expand/collapse panel group that `clr-accordion` or `clr-stepper` can't express.
 ---
 
 # Clarity collapsible panel (base classes)
@@ -16,12 +16,7 @@ A lower-level building block: `ClrAccordionPanel` and `ClrStepperPanel` both ext
 ## Setup
 
 ```ts
-import {
-  CollapsiblePanel,
-  CollapsiblePanelModel,
-  CollapsiblePanelService,
-  collapsiblePanelExpandAnimation,
-} from '@clr/angular/collapsible-panel';
+import { CollapsiblePanel, CollapsiblePanelModel, CollapsiblePanelService } from '@clr/angular/collapsible-panel';
 import { ClrIcon } from '@clr/angular/icon';
 import { IfExpandService } from '@clr/angular/utils';
 ```
@@ -76,7 +71,6 @@ import { startWith } from 'rxjs/operators';
           </button>
         </div>
         <div
-          @skipInitialRender
           role="region"
           class="app-collapsible-content-region"
           [id]="getContentId(panel.templateId)"
@@ -84,7 +78,7 @@ import { startWith } from 'rxjs/operators';
           [attr.aria-labelledby]="getHeaderId(panel.templateId)"
         >
           @if (panel.open) {
-            <div @toggle (@toggle.done)="collapsePanelOnAnimationDone(panel)" class="app-collapsible-content">
+            <div class="app-collapsible-content" (animate.enter)="expandContent($event)">
               <div class="app-collapsible-inner-content"><ng-content></ng-content></div>
             </div>
           }
@@ -93,7 +87,6 @@ import { startWith } from 'rxjs/operators';
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: collapsiblePanelExpandAnimation,
   providers: [IfExpandService],
   host: { '[class.app-collapsible-panel]': 'true' },
 })
@@ -160,8 +153,8 @@ export class AppPanelGroup implements AfterContentInit, OnDestroy {
 ## Rules
 
 - The base `CollapsiblePanelGroupModel` lets panels open independently (multi-open). For single-open, subclass it (override `togglePanel`) and a `CollapsiblePanelService` whose `panelGroup` is your model, provided as `{ provide: CollapsiblePanelService, useExisting: MyService }` — the accordion's `AccordionModel` / `AccordionService` do exactly this.
-- Animations: `collapsiblePanelExpandAnimation` animates expand only; `collapsiblePanelAnimation` animates both directions (used by the stepper). Both register triggers `skipInitialRender` and `toggle`; build custom triggers from `panelExpandTransition`, `panelCollapseTransition` and `skipInitialRenderTrigger`.
-- Always call `collapsePanelOnAnimationDone(panel)` on `@toggle.done`, so `*clrIfExpanded` content is torn down after collapse.
+- Animations: bind `(animate.enter)="expandContent($event)"` on the content, as above, to animate its height when the panel opens. A panel open on the first render shows without animation, and `provideNoopAnimations()` turns the animation off. No `@angular/animations` and no `animations` metadata are needed.
+- The content collapses at once by default. To animate the collapse too, set `protected override animatesCollapse = true` and keep the content while it collapses: `@if (panel.open || contentCollapsing)`, with the content shown (`[style.display]="contentCollapsing ? 'block' : null"`) and `inert` during the collapse, as `ClrStepperPanel` does.
 - Keep `CollapsiblePanelService` on the group, never on the panel — each panel would become its own group.
 - A11y: the header is a real `<button type="button">` with `aria-expanded` and `aria-controls` (only while open and enabled); the content is `role="region"` with `aria-labelledby` the header id. Tab / Enter / Space come from the native button. Wrap the header in `role="heading"` + `aria-level` when it acts as a section heading (as `ClrAccordionPanel` does). No interactive elements inside the header button.
 - Header/content ids must be unique: derive them from `panel.templateId`.

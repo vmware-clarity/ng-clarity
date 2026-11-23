@@ -1295,100 +1295,6 @@ export class ClrAlertText {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlertText, never>;
 }
 
-// @public @deprecated (undocumented)
-export interface ClrAnimationAnimateMetadata {
-    // (undocumented)
-    styles: ClrAnimationStyleMetadata | null;
-    // (undocumented)
-    timings: string | number;
-    // (undocumented)
-    type: 4;
-}
-
-// @public @deprecated (undocumented)
-export type ClrAnimationMetadata = ClrAnimationStyleMetadata | ClrAnimationAnimateMetadata | ClrAnimationStateMetadata | ClrAnimationTransitionMetadata | ClrAnimationReferenceMetadata | ClrAnimationTriggerMetadata;
-
-// @public @deprecated (undocumented)
-export interface ClrAnimationOptions {
-    // (undocumented)
-    delay?: number | string;
-    // (undocumented)
-    params?: {
-        [name: string]: any;
-    };
-}
-
-// @public @deprecated (undocumented)
-export interface ClrAnimationReferenceMetadata {
-    // (undocumented)
-    animation: ClrAnimationMetadata | ClrAnimationMetadata[];
-    // (undocumented)
-    options: ClrAnimationOptions | null;
-    // (undocumented)
-    type: 8;
-}
-
-// @public @deprecated (undocumented)
-export interface ClrAnimationStateMetadata {
-    // (undocumented)
-    name: string;
-    // (undocumented)
-    options?: {
-        params: {
-            [name: string]: any;
-        };
-    };
-    // (undocumented)
-    styles: ClrAnimationStyleMetadata;
-    // (undocumented)
-    type: 0;
-}
-
-// @public @deprecated (undocumented)
-export interface ClrAnimationStyleMetadata {
-    // (undocumented)
-    offset: number | null;
-    // (undocumented)
-    styles: ClrAnimationStyles;
-    // (undocumented)
-    type: 6;
-}
-
-// @public @deprecated
-export type ClrAnimationStyles = '*' | {
-    [key: string]: string | number;
-} | Array<{
-    [key: string]: string | number;
-} | '*'>;
-
-// @public @deprecated (undocumented)
-export interface ClrAnimationTransitionMetadata {
-    // (undocumented)
-    animation: ClrAnimationMetadata | ClrAnimationMetadata[];
-    // (undocumented)
-    expr: string;
-    // (undocumented)
-    options: ClrAnimationOptions | null;
-    // (undocumented)
-    type: 1;
-}
-
-// @public @deprecated (undocumented)
-export interface ClrAnimationTriggerMetadata {
-    // (undocumented)
-    definitions: ClrAnimationMetadata[];
-    // (undocumented)
-    name: string;
-    // (undocumented)
-    options: {
-        params?: {
-            [name: string]: any;
-        };
-    } | null;
-    // (undocumented)
-    type: 7;
-}
-
 // @public (undocumented)
 export class ClrAriaCurrentLink implements OnInit, OnDestroy {
     constructor(rla: RouterLinkActive);
@@ -4586,22 +4492,7 @@ export class ClrEndDateInputValidator implements Validator {
 
 // @public (undocumented)
 export class ClrExpandableAnimation extends BaseExpandableAnimation implements OnChanges {
-    // @deprecated (undocumented)
-    animationDone(_event: {
-        fromState: string;
-    }): void;
-    // @deprecated (undocumented)
-    animationStart(_event: {
-        fromState: string;
-    }): void;
     clrExpandTrigger: boolean;
-    // @deprecated (undocumented)
-    get expandAnimation(): {
-        value: boolean;
-        params: {
-            startHeight: number;
-        };
-    };
     // (undocumented)
     ngOnChanges(changes: SimpleChanges): void;
     // (undocumented)
@@ -4616,13 +4507,10 @@ export class ClrExpandableAnimation extends BaseExpandableAnimation implements O
 }
 
 // @public (undocumented)
-export class ClrExpandableAnimationDirective extends BaseExpandableAnimation implements OnChanges, OnDestroy {
-    constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2, _builder?: unknown);
+export class ClrExpandableAnimationDirective extends BaseExpandableAnimation implements OnChanges {
     expanded: boolean;
     // (undocumented)
     ngOnChanges(changes: SimpleChanges): void;
-    // @deprecated (undocumented)
-    ngOnDestroy(): void;
     // (undocumented)
     playAnimation(): void;
     // (undocumented)
@@ -4633,9 +4521,7 @@ export class ClrExpandableAnimationDirective extends BaseExpandableAnimation imp
         };
     }, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimationDirective, [null, null, null, {
-        optional: true;
-    }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimationDirective, never>;
 }
 
 // @public (undocumented)
@@ -8858,9 +8744,6 @@ export const coinBagIcon: IconShapeTuple;
 // @public (undocumented)
 export const coinBagIconName = "coin-bag";
 
-// @public @deprecated (undocumented)
-export function collapse(): ClrAnimationMetadata[];
-
 // @public (undocumented)
 export const collapseCardIcon: IconShapeTuple;
 
@@ -8873,8 +8756,6 @@ export abstract class CollapsiblePanel implements OnInit {
     protected animatesCollapse: boolean;
     // (undocumented)
     protected cdr: ChangeDetectorRef;
-    // (undocumented)
-    collapsePanelOnAnimationDone(panel: CollapsiblePanelModel): void;
     protected contentCollapsing: boolean;
     // (undocumented)
     abstract get disabled(): boolean;
@@ -8911,12 +8792,6 @@ export abstract class CollapsiblePanel implements OnInit {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<CollapsiblePanel, never>;
 }
-
-// @public @deprecated (undocumented)
-export const collapsiblePanelAnimation: ClrAnimationTriggerMetadata[];
-
-// @public @deprecated (undocumented)
-export const collapsiblePanelExpandAnimation: ClrAnimationTriggerMetadata[];
 
 // @public (undocumented)
 export class CollapsiblePanelGroupModel {
@@ -9507,12 +9382,6 @@ export class DeclarativeTreeNodeModel<T> extends TreeNodeModel<T> {
 // @public (undocumented)
 export const DEFAULT_BUTTON_TYPES: any;
 
-// @public @deprecated (undocumented)
-export const defaultAnimationTiming = "0.2s ease-in-out";
-
-// @public @deprecated (undocumented)
-export const defaultExpandAnimation: ClrAnimationReferenceMetadata;
-
 // @public (undocumented)
 export const deployIcon: IconShapeTuple;
 
@@ -9819,12 +9688,6 @@ export const factoryIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const factoryIconName = "factory";
-
-// @public @deprecated (undocumented)
-export function fade(opacity?: number): ClrAnimationMetadata[];
-
-// @public @deprecated (undocumented)
-export function fadeSlide(direction: string): ClrAnimationMetadata[];
 
 // @public (undocumented)
 export const fastForwardIcon: IconShapeTuple;
@@ -10972,12 +10835,6 @@ export const paintRollerIcon: IconShapeTuple;
 // @public (undocumented)
 export const paintRollerIconName = "paint-roller";
 
-// @public @deprecated (undocumented)
-export const panelCollapseTransition: ClrAnimationTransitionMetadata;
-
-// @public @deprecated (undocumented)
-export const panelExpandTransition: ClrAnimationTransitionMetadata;
-
 // @public (undocumented)
 export const paperclipIcon: IconShapeTuple;
 
@@ -11493,12 +11350,6 @@ export const shuffleIconName = "shuffle";
 
 // @public (undocumented)
 export const SIGNPOST_POSITIONS: ClrPopoverPosition[];
-
-// @public @deprecated (undocumented)
-export const skipInitialRenderTrigger: ClrAnimationTriggerMetadata;
-
-// @public @deprecated (undocumented)
-export function slide(direction: string): ClrAnimationMetadata[];
 
 // @public (undocumented)
 export const sliderIcon: IconShapeTuple;

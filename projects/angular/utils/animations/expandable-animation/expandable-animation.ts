@@ -29,25 +29,10 @@ export class ClrExpandableAnimation extends BaseExpandableAnimation implements O
   /** Animates the height of the element, from `startHeight` to its new height, each time it changes. */
   @Input() clrExpandTrigger = false;
 
-  /** @deprecated No longer used: the height animates without Angular animations. To be removed in a future major version. */
-  get expandAnimation() {
-    return { value: this.clrExpandTrigger, params: { startHeight: this.startHeight } };
-  }
-
   ngOnChanges(changes: SimpleChanges) {
     if (changes['clrExpandTrigger'] && !changes['clrExpandTrigger'].firstChange) {
       // Once the change is rendered.
       Promise.resolve().then(() => this.animateFromStartHeight());
     }
-  }
-
-  /** @deprecated No longer called. To be removed in a future major version. */
-  animationStart(_event: { fromState: string }) {
-    // Nothing to do.
-  }
-
-  /** @deprecated No longer called. To be removed in a future major version. */
-  animationDone(_event: { fromState: string }) {
-    // Nothing to do.
   }
 }

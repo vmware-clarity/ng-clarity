@@ -37,6 +37,7 @@ export const SYMBOL_REPLACEMENTS: readonly SymbolReplacement[] = [
   // #2207 - Accordion/Stepper decoupling
   { old: 'AccordionPanelModel', new: 'CollapsiblePanelModel', context: 'accordion-stepper-decoupling' },
   { old: 'AccordionStatus', new: 'StepperPanelStatus', context: 'accordion-stepper-decoupling' },
+  // collapsiblePanelAnimation is removed in v19 (CDE-3250); its v19 removal is tracked for the v19 migration (CDE-3257).
   { old: 'panelAnimation', new: 'collapsiblePanelAnimation', context: 'accordion-stepper-decoupling' },
   { old: 'getAccordionContentId', new: 'getContentId', context: 'accordion-stepper-decoupling' },
   { old: 'getAccordionHeaderId', new: 'getHeaderId', context: 'accordion-stepper-decoupling' },

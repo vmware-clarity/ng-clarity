@@ -13,12 +13,12 @@ import { CommonModules } from '@storybook-helpers/common';
 import { AccordionPanelStorybookComponent } from './accordion-panel.storybook.component';
 
 /**
- * The args drive `<storybook-accordion-panel>`. The three `ClrAccordionPanel` methods are not args -- they
+ * The args drive `<storybook-accordion-panel>`. The two `ClrAccordionPanel` methods are not args -- they
  * are picked up in `argTypes` only so the controls table generated from `component: ClrAccordionPanel` can
  * hide them, so they are named here to keep `argTypes` type-checked.
  */
 type AccordionPanelArgs = AccordionPanelStorybookComponent &
-  Pick<ClrAccordionPanel, 'togglePanel' | 'collapsePanelOnAnimationDone' | 'getPanelStateClasses'>;
+  Pick<ClrAccordionPanel, 'togglePanel' | 'getPanelStateClasses'>;
 
 const meta = {
   title: 'Components/Accordion/Panel',
@@ -33,7 +33,7 @@ const meta = {
     content: { description: 'Rendered within the `<clr-accordion-content>` element' },
     // methods
     togglePanel: { control: { disable: true } },
-    ...hideControls('collapsePanelOnAnimationDone', 'getPanelStateClasses'),
+    ...hideControls('getPanelStateClasses'),
   },
   args: {
     // story helpers
