@@ -55,7 +55,7 @@ const SNAPSHOT_SHAPE_EXAMPLE = `
 {
   "schemaVersion": "1",
   "application": { "id": "inventory", "version": "2.4.0" },
-  "viewId": "cluster-overview",
+  "metadata": { "purpose": "Cluster health and capacity" },
   "enabled": true,
   "title": "Cluster overview",
   "url": "https://app.example/clusters/42",
@@ -118,7 +118,7 @@ const VIEW_METADATA_EXAMPLE = `
   \`,
 })
 export class HostListComponent {
-  readonly hostList = { state: { viewId: 'host-list', purpose: 'Lists the hosts of a cluster' } };
+  readonly hostList = { state: { purpose: 'Lists the hosts of a cluster' } };
   readonly hostGrid = { state: { help: 'https://docs.example.com/hosts' } };
 }
 `;
@@ -230,7 +230,7 @@ const change = clrDiffContext(previousSnapshot, currentSnapshot);
 // change.added   — nodes that were not there before, with their subtrees
 // change.removed — nodes that are gone
 // change.changed — nodes whose own state differs: { before, after }
-// change.viewChanged — application, view id, enabled or metadata
+// change.viewChanged — application, enabled or metadata
 // change.routeChanged / titleChanged / regionsChanged
 if (!clrIsEmptyContextChange(change)) {
   assistant.send({ pageChanged: change });
