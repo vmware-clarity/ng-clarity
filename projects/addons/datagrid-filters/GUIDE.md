@@ -80,7 +80,7 @@ The component only **emits** filters. Apply `PropertyFilter[]` (each `{ criteria
 - `DateTimePropertyDefinition`'s fifth argument `rangeOptions: DateRangeOption[]` (`{ label, value: [start, end] }`, both inclusive) adds preset ranges to **Custom range**. Dates are used as given; a `Date` at 00:00 means the whole day.
 - Date-time values are the local date and time the user picked, usually followed by the browser's UTC offset (`2026-03-29T00:00:00+02:00`; no offset in a UTC browser). **Equals** a day is emitted as `>= day 00:00` AND `< next day 00:00`. The filters do not convert time zones or adjust for daylight saving; the app interprets the values. Where the clock skips midnight (e.g. America/Santiago), the browser moves times computed from that day's 00:00 to 01:00.
 - `UserPropertyDefinition` requires providing `DatagridFiltersUserService`.
-- Localize by providing `DatagridFiltersStrings`.
+- Localize by providing `DatagridFiltersStrings`. There is no `appliedText`, `clearAllButtonLabel` or `dateFormat` (removed in v19).
 
 ## References
 

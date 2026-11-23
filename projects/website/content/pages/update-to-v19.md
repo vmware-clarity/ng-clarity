@@ -120,6 +120,11 @@ The filter pills have new markup. CSS overrides and e2e selectors that target th
 In the editors, **Cancel** now comes before **Apply** in the DOM and in keyboard order. The buttons no longer use
 `btn-right`.
 
+String and numeric filters now accept more than two conditions. The AND/OR choice moved from the radio buttons between
+the two conditions to **And** / **Or** buttons next to the field, and applies to all conditions. Between conditions,
+`[data-test-id="logical-operator"]` is now a `div` with the operator in uppercase text followed by a line, instead of
+the radio buttons (or, when the field fixes the operator, a `span`).
+
 `AppfxDatagridFiltersModule` no longer registers the `filter-grid` icon (`filterGridIcon`), because the filter bar no
 longer uses it. Apps that show it with `<clr-icon shape="filter-grid">` need to register it themselves, unless they also
 import `ClrDatagridModule`, which registers it.
