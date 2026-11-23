@@ -43,7 +43,7 @@ export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: readonly (keyof ClrContextSnapsh
 // @public
 export const CLR_PAGE_CONTEXT_SCHEMA: {
     readonly $schema: "http://json-schema.org/draft-07/schema#";
-    readonly $id: "https://clarity.design/schemas/page-context/1.json";
+    readonly $id: "https://clarity.design/schemas/page-context-1.schema.json";
     readonly title: "ClrPageContext";
     readonly type: "object";
     readonly required: readonly ["schemaVersion", "application", "enabled", "title", "regions", "components", "collectedAt"];
