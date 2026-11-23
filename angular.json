@@ -222,6 +222,11 @@
                 "input": "projects/website/src/compiled-ai/",
                 "output": "/"
               },
+              {
+                "glob": "*.schema.json",
+                "input": "projects/angular/ai/contextual/schemas/",
+                "output": "/schemas/"
+              },
               "projects/website/src/assets"
             ],
             "styles": ["projects/angular/main.scss", "projects/website/src/styles/main.scss"],
