@@ -58,6 +58,7 @@ import { attempt } from '../attempt';
 import { charged } from '../budget';
 import { stripQueryAndFragment } from '../url';
 
+const EMPTY_CONTAINER_ROLES = new Set(['group', 'region', 'generic']);
 /**
  * Describes markup that has neither a role nor an accessible name, such as a bare `<div class="card">`.
  */
@@ -494,16 +495,16 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
   const redacted = walk.redactedDepth > 0;
   const label = nameSafely(element, redacted ? null : role, walk);
 
-  if (!role && !label && !annotationOf(element, walk)) {
-    if (!isCustomElement) {
-      return isTextBlock(element, walk)
-        ? describeTextBlock(element, walk, owner)
-        : describeChildren(element, walk, owner);
-    }
+  // An annotation on a custom element merges onto what it renders, so it never turns the content into a name.
+  if (!role && !label && isCustomElement) {
     const parts = describeAnonymousCustomElement(element, tagName, walk);
     if (parts) {
       return parts;
     }
+  } else if (!role && !label && !annotationOf(element, walk)) {
+    return isTextBlock(element, walk)
+      ? describeTextBlock(element, walk, owner)
+      : describeChildren(element, walk, owner);
   }
 
   if (walk.remaining <= 0) {
@@ -925,7 +926,16 @@ function finish(
   if (published) {
     noteRef(pruned, element, walk);
   }
+  if (!pruned.ref && isEmptyContainer(pruned)) {
+    walk.remaining++;
+    return null;
+  }
   return pruned;
+}
+
+/** A container with no name, state or children tells an agent nothing, unlike a widget, whose role alone is news. */
+function isEmptyContainer(node: ClrComponentContext): boolean {
+  return EMPTY_CONTAINER_ROLES.has(node.type) && !node.label && !node.state && !node.children;
 }
 
 /** In a redacted region, a markup name the element overrides is dropped; both may be the withheld content. */

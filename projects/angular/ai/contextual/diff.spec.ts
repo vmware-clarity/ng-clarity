@@ -123,12 +123,11 @@ describe('clrDiffContext', () => {
   });
 
   it('notices the view changing apart from the route and the annotations', () => {
-    const before = page([], { viewId: 'hosts', metadata: { purpose: 'Hosts' } });
+    const before = page([], { metadata: { purpose: 'Hosts' } });
     for (const after of [
-      page([], { viewId: 'host-detail', metadata: { purpose: 'Hosts' } }),
-      page([], { viewId: 'hosts', metadata: { purpose: 'One host' } }),
-      page([], { viewId: 'hosts', metadata: { purpose: 'Hosts' }, enabled: false }),
-      page([], { viewId: 'hosts', metadata: { purpose: 'Hosts' }, application: { id: 'billing' } }),
+      page([], { metadata: { purpose: 'One host' } }),
+      page([], { metadata: { purpose: 'Hosts' }, enabled: false }),
+      page([], { metadata: { purpose: 'Hosts' }, application: { id: 'billing' } }),
     ]) {
       const change = clrDiffContext(before, after);
       expect(change.viewChanged).toBe(true);

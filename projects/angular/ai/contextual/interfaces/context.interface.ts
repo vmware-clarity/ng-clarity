@@ -53,8 +53,6 @@ export interface ClrPageContext {
   schemaVersion: string;
   /** The application, from `configure({ application })`; the page's host name when none is configured. */
   application: ClrApplicationContext;
-  /** The view the user is on: `viewId` in the state of the `[clrContext]` on the view root. */
-  viewId?: string;
   /**
    * What the `[clrContext]` on the view root and its ancestors says about the view: its state, with its label,
    * inner winning. The view root is the element `scope.root` selects, or the body.
