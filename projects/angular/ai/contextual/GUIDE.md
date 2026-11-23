@@ -27,6 +27,7 @@ Configure once at startup: `context.configure({ scope: 'interactive', routes: tr
 ## Privacy first
 
 - A snapshot holds the rendered page, text included, and may hold personal data. Send it to a model as data, delimited from the prompt, never as instructions.
+- A backend validates snapshots with `@clr/angular/ai/schemas/page-context-<schemaVersion>.schema.json`; `snapshot()` already leaves out what does not match it.
 - Put `data-clr-context-redact` on regions whose values must never leave the page (their fields keep their shape, values are withheld). Put `data-clr-context-ignore` on UI the agent should not see at all.
 - Password and file inputs, and fields whose `autocomplete` is `current-password`, `new-password`, `one-time-code` or a `cc-*` token, are always withheld. Redact the other secrets, such as tokens or keys typed into plain text fields.
 - Callers the application does not control, such as embedded frames, get no form values and only the route pattern.
@@ -72,5 +73,6 @@ export class Firewall {
 
 - Nothing is written until the application provides `provideClrMutationPolicy({ classify })`; `confirm` is asked before a `consequential` operation.
 - `mutationEngine.apply(operations)` resolves with a result per operation; a refusal carries `refused` and a `detail`, so show it to the user. `announce` on the policy hears the same report.
+- Give the model `CLR_MUTATION_OPERATIONS_SCHEMA` as its tool's input (`@clr/angular/ai/schemas/mutation-operations-1.schema.json` on a backend); an operation that does not match it, and any past the first 50, is refused.
 - The combobox, the date input and the datagrid's row selection can be written as they are. A custom control of the application is written through its form binding when it renders a role the engine knows (textbox, checkbox or switch, spinbutton or slider, a radio group of radios) and its model holds what it shows; publish that value as `state.value` with `context.publish`. Any other control is refused as `unsupported`.
 - Password and other always-withheld fields, and controls without an Angular form binding, are never written (`redacted`, `unbound`).

@@ -5,8 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { isDevMode } from '@angular/core';
+
 import { attempt } from '../attempt';
+import { SchemaValidator } from '../conform';
 import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
+import { validate } from '../schemas/page-context.validator';
 import { capSnapshotOptions, resolveSnapshotOptions } from '../snapshot-options';
 import { contextForUntrustedCaller, sanitizeUntrustedSnapshotOptions } from '../untrusted-options';
 import { warnNoHostOrigin } from './host-origin-warning';
@@ -228,8 +232,8 @@ export class ClrContextFrameHost {
 }
 
 /**
- * Requests the host page's context from inside a frame. Resolves `null` when the host does not answer;
- * rejects when the request cannot be made. Answers are accepted only from the asked window and origin.
+ * Requests the host page's context from inside a frame. Resolves `null` when the host does not answer, or
+ * answers with a context that does not match `CLR_PAGE_CONTEXT_SCHEMA`; rejects when the request cannot be made. Answers are accepted only from the asked window and origin.
  */
 export async function clrRequestHostContext(
   options: ClrContextFrameRequestOptions = {}
@@ -264,7 +268,7 @@ export async function clrRequestHostContext(
         return;
       }
       cleanup();
-      resolve(event.data.context);
+      resolve(conformingAnswer(event.data.context));
     };
     const timeout = setTimeout(() => {
       cleanup();
@@ -334,10 +338,24 @@ function isContextResponse(value: unknown, requestId: string): value is ClrConte
   return (
     candidate.protocol === CLR_CONTEXT_PROTOCOL &&
     candidate.kind === 'context-response' &&
-    candidate.requestId === requestId &&
-    !!candidate.context &&
-    typeof candidate.context === 'object'
+    candidate.requestId === requestId
   );
+}
+
+const validatePage = validate as SchemaValidator;
+
+/** The host may run another Clarity version, or be hostile: only a context that matches the schema is passed on. */
+function conformingAnswer(context: unknown): ClrPageContext | null {
+  if (validatePage(context)) {
+    return context as ClrPageContext;
+  }
+  if (isDevMode()) {
+    const error = validatePage.errors?.[0];
+    console.warn(
+      `clrRequestHostContext: the host answered with a context that does not match the schema: ${error?.instancePath || 'the context'} ${error?.message}.`
+    );
+  }
+  return null;
 }
 
 /** Unguessable, so a sibling frame cannot answer a request it cannot see. `randomUUID` needs a secure context. */

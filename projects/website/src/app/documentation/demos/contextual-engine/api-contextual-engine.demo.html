@@ -70,7 +70,8 @@
       <td class="left clr-hidden-xs-down"><code cds-text="code">Promise&lt;ClrPageContext | null&gt;</code></td>
       <td class="left">
         For an application running inside a frame: asks the page that embeds it for its context. Resolves with
-        <code cds-text="code">null</code> when the host does not answer.
+        <code cds-text="code">null</code> when the host does not answer, or answers with a context that does not match
+        the snapshot schema, as a host on another Clarity version might.
       </td>
     </tr>
   </tbody>
@@ -268,6 +269,17 @@
 <p class="clr-mt-16px" cds-text="body">
   Each is a <code cds-text="code">ClrMutationOperation</code>, with <code cds-text="code">operation</code> set to its
   name.
+</p>
+<p class="clr-mt-16px" cds-text="body">
+  Their JSON Schema ships as
+  <code cds-text="code">&#64;clr/angular/ai/schemas/mutation-operations-1.schema.json</code> and as
+  <code cds-text="code">CLR_MUTATION_OPERATIONS_SCHEMA</code>. It holds no references, so it fits a tool definition as
+  <code cds-text="code"
+    >&#123; type: 'object', properties: &#123; operations: CLR_MUTATION_OPERATIONS_SCHEMA &#125; &#125;</code
+  >, and a backend validates what a model proposes with it. <code cds-text="code">apply()</code> and
+  <code cds-text="code">plan()</code> refuse an operation that does not match it as
+  <code cds-text="code">unsupported</code>, naming the field, and every operation past the first
+  <code cds-text="code">CLR_MUTATION_MAX_OPERATIONS</code> (50).
 </p>
 <table class="table">
   <thead>
@@ -583,8 +595,15 @@
 
 <h2 id="context-shape" cds-text="title" class="clr-mt-48px">Snapshot</h2>
 <p class="clr-mt-16px" cds-text="body">
-  What <code cds-text="code">snapshot()</code> returns. <code cds-text="code">CLR_PAGE_CONTEXT_SCHEMA</code> is its JSON
-  Schema, for validating snapshots outside TypeScript.
+  What <code cds-text="code">snapshot()</code> returns. Its JSON Schema ships as a file,
+  <code cds-text="code">&#64;clr/angular/ai/schemas/page-context-1.schema.json</code>, and as
+  <code cds-text="code">CLR_PAGE_CONTEXT_SCHEMA</code>. A backend validates snapshots with that file and any JSON Schema
+  validator, picking the file by the snapshot's <code cds-text="code">schemaVersion</code>.
+</p>
+<p class="clr-mt-16px" cds-text="body">
+  The page validates with the same schema: <code cds-text="code">snapshot()</code> leaves out any node or optional field
+  that does not match it, with a warning in dev mode, so what it returns always passes the backend's check. A released
+  schema version never changes; a change to the format comes as a new version and a new file.
 </p>
 
 <h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrPageContext</code></h3>
