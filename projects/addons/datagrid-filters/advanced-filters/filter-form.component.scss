@@ -108,9 +108,29 @@ form {
     }
   }
 
-  .filter-add-condition,
-  .filter-logic-label {
+  // The form is a column flexbox, which stretches its children; the button keeps its own width.
+  .filter-add-condition {
+    align-self: flex-start;
     margin: var(--clr-base-vertical-offset-l) 0 0;
+  }
+
+  // AND/OR between conditions: the operator followed by a thin line.
+  .filter-logic-divider {
+    display: flex;
+    align-items: center;
+    gap: var(--clr-base-gap-s);
+    margin: var(--clr-base-vertical-offset-l) 0 0;
+
+    &::after {
+      content: '';
+      flex: 1;
+      border-top: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
+    }
+  }
+
+  .filter-logic-label {
+    padding: 0 var(--clr-base-horizontal-offset-s);
+    text-transform: uppercase;
   }
 
   .filter-form-actions {

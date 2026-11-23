@@ -92,18 +92,19 @@
         }
       </div>
       @if (!last) {
-        <button
-          type="button"
-          class="btn btn-sm btn-outline filter-logic-label"
+        <div
+          class="filter-logic-divider"
           data-test-id="logical-operator"
-          disabled
+          [attr.aria-hidden]="
+            !filterProperty.singleCondition && filterProperty.logicalOperator == undefined ? 'true' : null
+          "
         >
-          {{
+          <span class="filter-logic-label">{{
             filterStrings.getConjoinerDisplayName(
               filterProperty.logicalOperator ?? generalFilterForm.value.logicalOperator
             )
-          }}
-        </button>
+          }}</span>
+        </div>
       }
     }
   </div>

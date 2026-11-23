@@ -188,6 +188,19 @@ describe('GeneralFilterComponent', () => {
       expect(testContext.component.comparisonOperators).toEqual(testComparisonOperators);
     });
 
+    it('shows the operator between conditions as a divider label, not a button', () => {
+      testContext.fixture.nativeElement.querySelector(addButtonSelector).click();
+      renderFixture(testContext.fixture);
+      const divider: HTMLElement = testContext.fixture.nativeElement.querySelector('[data-test-id=logical-operator]');
+      expect(divider.tagName).not.toBe('BUTTON');
+      expect(divider.querySelector('button')).toBeNull();
+      const label = divider.querySelector<HTMLElement>('span.filter-logic-label')!;
+      expect(label.textContent!.trim()).toBe('And');
+      expect(getComputedStyle(label).textTransform).toBe('uppercase');
+      // The And/Or buttons above name the operator, so screen readers skip the divider.
+      expect(divider.getAttribute('aria-hidden')).toBe('true');
+    });
+
     it('applies the logic selected in the segmented buttons', () => {
       vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
       const logicInputs: NodeListOf<HTMLInputElement> =
@@ -1040,12 +1053,13 @@ describe('GeneralFilterComponent', () => {
       addConditionButton.click();
       renderFixture(testContext.fixture);
       const logicalOperatorLabel = testContext.fixture.debugElement.nativeElement.querySelector(
-        'button[data-test-id=logical-operator]'
+        '[data-test-id=logical-operator]'
       );
 
       expect(logicalOperatorLabel).toBeTruthy();
       expect(logicalOperatorLabel.textContent.trim()).toEqual('And');
-      expect(logicalOperatorLabel.disabled).toBe(true);
+      // A fixed operator has no And/Or buttons, so the divider text is read.
+      expect(logicalOperatorLabel.getAttribute('aria-hidden')).toBeNull();
       expect(testContext.fixture.nativeElement.querySelector('.filter-logic')).toBeNull();
     });
 
@@ -1058,12 +1072,12 @@ describe('GeneralFilterComponent', () => {
       addConditionButton.click();
       renderFixture(testContext.fixture);
       const logicalOperatorLabel = testContext.fixture.debugElement.nativeElement.querySelector(
-        'button[data-test-id=logical-operator]'
+        '[data-test-id=logical-operator]'
       );
 
       expect(logicalOperatorLabel).toBeTruthy();
       expect(logicalOperatorLabel.textContent.trim()).toEqual('Or');
-      expect(logicalOperatorLabel.disabled).toBe(true);
+      expect(logicalOperatorLabel.getAttribute('aria-hidden')).toBeNull();
       expect(testContext.fixture.nativeElement.querySelector('.filter-logic')).toBeNull();
       vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
       testContext.component.generalFilterForm.patchValue({
