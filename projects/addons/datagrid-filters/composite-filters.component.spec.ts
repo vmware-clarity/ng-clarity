@@ -815,6 +815,26 @@ describe('CompositeFiltersComponent', () => {
       expect(await offeredFields(testContext.fixture)).toEqual([]);
     });
 
+    it('gives toggle and field pill buttons the pill shape, for their hover background and focus outline', () => {
+      testContext.component.toggleFilters = asToggles(equalsToggle());
+      testContext.component.predefinedFilters = [stringProperty];
+      renderFixture(testContext.fixture);
+      const buttons = [toggles()[0], testContext.fixture.nativeElement.querySelector('.filter-pill')];
+      for (const button of buttons) {
+        const label = button.closest('clr-label')!;
+        const labelStyle = getComputedStyle(label);
+        const buttonStyle = getComputedStyle(button);
+        expect(labelStyle.borderTopLeftRadius).not.toBe('0px');
+        expect(buttonStyle.borderTopLeftRadius).toBe(labelStyle.borderTopLeftRadius);
+        // The button fills the label's height inside its border, so all pill outlines line up.
+        const borderHeight = parseFloat(labelStyle.borderTopWidth) + parseFloat(labelStyle.borderBottomWidth);
+        expect(button.getBoundingClientRect().height).toBeCloseTo(
+          label.getBoundingClientRect().height - borderHeight,
+          0
+        );
+      }
+    });
+
     it('shows Is empty without a value and joins criteria with the logical operator', () => {
       const isEmpty: PropertyFilter = {
         operator: LogicalOperator.And,

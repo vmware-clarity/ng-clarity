@@ -13,6 +13,8 @@
 
   .clr-tooltip-container {
     display: inline-flex;
+    // Fill the label's height, so the pill button's hover background and focus outline match the other pills.
+    align-self: stretch;
     max-width: 100%;
     // Shrink to leave room for the remove button, so the text truncates inside the 280px cap.
     min-width: 0;

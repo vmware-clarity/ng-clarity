@@ -46,6 +46,16 @@
   max-width: 280px;
   padding: 0;
   margin: 0;
+
+  // Toggle pills wrap the button in a tooltip. Pass the label's height and radius through to the button,
+  // so its hover background and focus outline follow the pill shape.
+  .clr-tooltip-container {
+    display: inline-flex;
+    align-self: stretch;
+    max-width: 100%;
+    min-width: 0;
+    border-radius: inherit;
+  }
 }
 
 .semi-filter-option {
