@@ -144,19 +144,17 @@ export class AppModule {}
 `;
 
 const ELEMENT_CONTEXT_EXAMPLE = `
-import { publishElementContext } from '@clr/angular/utils';
+import { ClrContextService } from '@clr/angular/ai';
 
-// In the component that knows more than its markup shows:
-this.teardown = publishElementContext(hostElement, () => ({
+// In the constructor of the component that knows more than its markup shows:
+const unpublish = inject(ClrContextService).publish(inject(ElementRef).nativeElement, () => ({
   type: 'combobox',
   state: {
     options: this.choices.map(choice => choice.label),
     value: this.selection,
   },
 }));
-
-// ...and on destroy:
-this.teardown?.();
+inject(DestroyRef).onDestroy(unpublish);
 `;
 
 const EXTRACTOR_EXAMPLE = `

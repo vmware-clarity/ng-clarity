@@ -88,6 +88,22 @@ describe('ClrContextService', () => {
       expect((await engine.snapshot()).regions).toEqual([]);
     });
 
+    it('merges what a component publishes on its host into the node of its host, until it unpublishes', async () => {
+      const host = document.createElement('app-cluster-picker');
+      host.setAttribute('role', 'radiogroup');
+      host.setAttribute('aria-label', 'Cluster');
+      document.body.appendChild(host);
+      onTestFinished(() => host.remove());
+      const unpublish = engine.publish(host, () => ({ state: { help: 'Where new hosts go' } }));
+
+      expect((await engine.snapshot()).components).toContainEqual(
+        expect.objectContaining({ type: 'radiogroup', label: 'Cluster', state: { help: 'Where new hosts go' } })
+      );
+
+      unpublish();
+      expect((await engine.snapshot()).components.find(node => node.label === 'Cluster')?.state).toBeUndefined();
+    });
+
     it('lets other UI libraries register their own DOM extractors', async () => {
       const widget = document.createElement('div');
       widget.className = 'chat-widget';
