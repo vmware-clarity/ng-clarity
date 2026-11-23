@@ -48,7 +48,7 @@ export const CLR_MUTATION_MAX_OPERATIONS = 50;
 // @public
 export const CLR_MUTATION_OPERATIONS_SCHEMA: {
     readonly $schema: "http://json-schema.org/draft-07/schema#";
-    readonly $id: "https://clarity.design/schemas/mutation-operations/1.json";
+    readonly $id: "https://clarity.design/schemas/mutation-operations-1.schema.json";
     readonly title: "ClrMutationOperations";
     readonly type: "array";
     readonly maxItems: 50;
