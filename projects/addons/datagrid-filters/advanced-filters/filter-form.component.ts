@@ -27,6 +27,11 @@ export class FilterFormComponent {
   @Input() valid!: boolean;
 
   /**
+   * The filter in words, shown above the actions while the form is valid
+   */
+  @Input() readBack = '';
+
+  /**
    * Event emitter to tell hosting view that cancel button was clicked
    */
   @Output() cancel: EventEmitter<void> = new EventEmitter<void>();

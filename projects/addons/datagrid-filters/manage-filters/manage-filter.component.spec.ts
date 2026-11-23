@@ -6,7 +6,7 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { animationFrameTick, renderFixture } from '@clr/angular/utils/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ManageFilterComponent } from './manage-filter.component';
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
@@ -210,23 +210,24 @@ describe('ManageFilterComponent', () => {
     expect(testContext.component.primaryConditionDisplayText).toEqual('Equals: Alert');
     expect(testContext.component.secondaryConditionDisplayText).toEqual('Equals: Normal');
   });
-  it('locks the field combobox while editing a pill', async () => {
+  it('names the edited field and its type in the popover heading', async () => {
     testContext.component.propertyFilter = { operator: LogicalOperator.And, criteria: [stringPredicate1] };
     renderFixture(testContext.fixture);
     testContext.fixture.nativeElement.querySelector('.filter-pill').click();
     renderFixture(testContext.fixture);
     await testContext.fixture.whenStable();
     renderFixture(testContext.fixture);
-    // Zoneless: the combobox writes its display value a frame after it renders.
-    await animationFrameTick(testContext.fixture);
 
-    const input = document.querySelector<HTMLInputElement>('.filter-popover .clr-combobox-input')!;
-    expect(input.value).toBe(stringProperty.displayName);
-    expect(input.disabled).toBe(true);
-    expect(document.querySelector<HTMLButtonElement>('.filter-popover .clr-combobox-trigger')!.disabled).toBe(true);
+    expect(document.querySelector('.filter-popover clr-combobox')).toBeNull();
+    expect(document.querySelector('.filter-popover .filter-heading-name')!.textContent!.trim()).toBe(
+      stringProperty.displayName
+    );
+    expect(document.querySelector('.filter-popover .filter-heading-type')!.textContent!.trim()).toBe(
+      testContext.component.filterStrings.propertyType.string
+    );
     expect(document.querySelector('.filter-form-actions [data-test-id="clear-filter"]')).not.toBeNull();
   });
-  it('hides the field combobox for predefined pills', async () => {
+  it('hides the field heading for predefined pills', async () => {
     testContext.component.filterProperty = enumProperty;
     testContext.component.predefined = true;
     renderFixture(testContext.fixture);
@@ -236,7 +237,7 @@ describe('ManageFilterComponent', () => {
     renderFixture(testContext.fixture);
 
     expect(document.querySelector('.filter-popover')).toBeTruthy();
-    expect(document.querySelector('.filter-popover clr-combobox')).toBeNull();
+    expect(document.querySelector('.filter-popover .filter-heading')).toBeNull();
     expect(getComputedStyle(document.querySelector('.filter-popover .filter-field-row')!).display).toBe('none');
   });
   it('shows a minimal enum editor for predefined pills', async () => {

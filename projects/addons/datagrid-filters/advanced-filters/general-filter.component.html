@@ -7,38 +7,45 @@
 <appfx-filter-form
   [formGroup]="generalFilterForm"
   [valid]="generalFilterForm.valid"
+  [readBack]="readBack"
   (cancel)="onCancelButtonClick()"
   (apply)="onApplyButtonClick()"
 >
   <div class="filter-field-row">
     <ng-content select="[filterField]"></ng-content>
-    @if (!filterProperty.singleCondition && filterProperty.logicalOperator == undefined) {
-      <div
-        class="btn-group btn-sm filter-logic"
-        role="radiogroup"
-        [attr.aria-label]="
-          filterStrings.getConjoinerDisplayName(LogicalOperator.And) +
-          ' / ' +
-          filterStrings.getConjoinerDisplayName(LogicalOperator.Or)
-        "
-      >
+  </div>
+  @if (conditions.length > 1) {
+    @if (filterProperty.logicalOperator == undefined) {
+      <div class="filter-logic" role="radiogroup" [attr.aria-label]="filterStrings.conditionsCombinedWithText">
         @for (operator of logicalOperators; track operator) {
-          <!-- The input is hidden, so the button shows the disabled state (And is not allowed with Is empty). -->
-          <div class="radio btn" [class.disabled]="operator === LogicalOperator.And && hasEmptyPredicate">
+          <!-- And is not allowed with Is empty. -->
+          <div class="clr-radio-wrapper">
             <input
               type="radio"
+              class="clr-radio"
               [id]="id + '-logic-' + operator"
               [name]="id + '-logic'"
               [checked]="generalFilterForm.value.logicalOperator === operator"
               [disabled]="operator === LogicalOperator.And && hasEmptyPredicate"
               (change)="generalFilterForm.controls.logicalOperator.setValue(operator)"
             />
-            <label [for]="id + '-logic-' + operator">{{ filterStrings.getConjoinerDisplayName(operator) }}</label>
+            <label class="clr-control-label" [for]="id + '-logic-' + operator">{{
+              filterStrings.getConjoinerDisplayName(operator)
+            }}</label>
           </div>
         }
       </div>
+    } @else {
+      <p class="filter-logic-fixed">
+        {{ filterStrings.conditionsCombinedWithText }}
+        <strong>{{
+          filterStrings.getConjoinerDisplayName(
+            filterProperty.logicalOperator ?? generalFilterForm.value.logicalOperator
+          )
+        }}</strong>
+      </p>
     }
-  </div>
+  }
   <div formArrayName="conditions">
     @for (condition of conditions.controls; track condition; let index = $index; let last = $last) {
       <div class="filter-condition-row" [formGroupName]="index">
@@ -92,29 +99,24 @@
         }
       </div>
       @if (!last) {
-        <button
-          type="button"
-          class="btn btn-sm btn-outline filter-logic-label"
-          data-test-id="logical-operator"
-          disabled
-        >
+        <div class="filter-logic-divider" data-test-id="logical-operator">
           {{
             filterStrings.getConjoinerDisplayName(
               filterProperty.logicalOperator ?? generalFilterForm.value.logicalOperator
             )
           }}
-        </button>
+        </div>
       }
     }
   </div>
   @if (!filterProperty.singleCondition) {
     <button
       type="button"
-      class="btn btn-sm btn-outline filter-add-condition"
+      class="btn btn-sm btn-link filter-add-condition"
       data-test-id="add-button"
-      [attr.aria-label]="filterStrings.addCondition"
       (click)="addCondition()"
     >
+      <cds-icon shape="plus" aria-hidden="true"></cds-icon>
       {{ filterStrings.addCondition }}
     </button>
   }

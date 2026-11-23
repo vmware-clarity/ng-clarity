@@ -10,7 +10,9 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
+  inject,
   Input,
+  LOCALE_ID,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -33,6 +35,7 @@ import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
 import { DatagridFiltersUserService } from '../datagrid-filters-user-service';
 import { ComparisonOperator, LogicalOperator } from '../model/datagrid-filters.enums';
 import { PropertyFilter, PropertyPredicate, UserPropertyDefinition } from '../model/datagrid-filters.interfaces';
+import { describeConditions } from '../model/filter-description';
 
 export enum ErrorType {
   DOMAIN,
@@ -65,6 +68,7 @@ export class UsersFilterComponent implements OnInit, OnDestroy, OnChanges {
   #selectedFilterCriteria = new PropertyFilter();
   readonly #searchTermDebounceTime = 200;
   #destroy$ = new Subject<void>();
+  readonly #locale = inject(LOCALE_ID);
 
   constructor(
     private fb: FormBuilder,
@@ -79,6 +83,19 @@ export class UsersFilterComponent implements OnInit, OnDestroy, OnChanges {
 
   get hasMoreItems(): boolean {
     return this.visibleUsers.length < this.allFetchedUsers.length;
+  }
+
+  /** The filter in words, as the pill will show it, e.g. "Owner Equals: alice Or Equals: bob". */
+  get readBack(): string {
+    if (!this.selectedValues.size) {
+      return '';
+    }
+    const filter = this.selectedFilter();
+    return (
+      this.filterProperty.displayName +
+      ' ' +
+      describeConditions(this.filterStrings, this.#locale, this.filterProperty, filter)
+    );
   }
 
   trackByOperator(_index: number, operator: ComparisonOperator): ComparisonOperator {
@@ -193,13 +210,20 @@ export class UsersFilterComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   onApplyButtonClick(): void {
+    const filter = this.selectedFilter();
+    this.#selectedFilterCriteria.criteria = filter.criteria;
+    this.#selectedFilterCriteria.operator = filter.operator;
+    this.filterCriteriaChange.emit(this.#selectedFilterCriteria);
+  }
+
+  private selectedFilter(): PropertyFilter {
     const comparisonOperator = this.usersSelectionForm.get('userOperator')?.value || ComparisonOperator.Equals;
-    this.#selectedFilterCriteria.criteria = Array.from(this.selectedValues).map((userValue: string) =>
+    const filter = new PropertyFilter();
+    filter.criteria = Array.from(this.selectedValues).map((userValue: string) =>
       this.createUserPropertyPredicate(userValue, comparisonOperator)
     );
-    this.#selectedFilterCriteria.operator =
-      comparisonOperator === ComparisonOperator.Equals ? LogicalOperator.Or : LogicalOperator.And;
-    this.filterCriteriaChange.emit(this.#selectedFilterCriteria);
+    filter.operator = comparisonOperator === ComparisonOperator.Equals ? LogicalOperator.Or : LogicalOperator.And;
+    return filter;
   }
 
   private setupListeners(): void {

@@ -46,6 +46,7 @@ import {
   oneYearMs,
 } from '../model/date-time-constants';
 import { addDays, dateTimeEditorState, parseLocalDateTime, toIsoDate } from '../model/date-time-editor-state';
+import { describeConditions } from '../model/filter-description';
 
 const enterKey = 'Enter';
 const dateTimeFormat = 'yyyy-MM-ddTHH:mm:ss';
@@ -86,7 +87,8 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
   @Output() filterCriteriaChange: EventEmitter<PropertyFilter> = new EventEmitter<PropertyFilter>();
 
   // The clrDate inputs hold locale date strings; predicates and stored values use yyyy-MM-dd.
-  private readonly dateFormat = new ClrLocaleDateFormat(inject(LOCALE_ID));
+  private readonly locale = inject(LOCALE_ID);
+  private readonly dateFormat = new ClrLocaleDateFormat(this.locale);
   /** Flags a typed date that cannot be read in the current locale with the `pattern` error. */
   private readonly dateValidators: ValidatorFn[] = [
     Validators.required,
@@ -130,6 +132,21 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
   }
   set filterProperty(filterProperty: DateTimePropertyDefinition) {
     this.#filterProperty = filterProperty;
+  }
+
+  /** The filter in words, as the pill will show it, e.g. "Created From: Nov 16, 2026 To: Nov 23, 2026". */
+  get readBack(): string {
+    if (!this.dateTimeFilterForm?.valid) {
+      return '';
+    }
+    const filter = new PropertyFilter();
+    filter.criteria = [];
+    filter.editorState = this.formState();
+    return (
+      this.filterProperty.displayName +
+      ' ' +
+      describeConditions(this.filterStrings, this.locale, this.filterProperty, filter)
+    );
   }
 
   /**
@@ -577,6 +594,11 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
 
   /** Keeps the editor choices on the emitted filter, so the pill and a later edit read them from there. */
   private storeSelectedValues(): void {
+    this.selectedFilterCriteria.editorState = this.formState();
+  }
+
+  /** The editor choices the form holds now. */
+  private formState(): FilterEditorState {
     const value = this.dateTimeFilterForm.value;
     const state: FilterEditorState = { operator: value.operator };
     if (!this.noDateTimeInputNeeded()) {
@@ -589,7 +611,7 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
       state.timeSpanValue = value.timeSpanValue;
       state.timeSpan = value.timeSpan;
     }
-    this.selectedFilterCriteria.editorState = state;
+    return state;
   }
 
   private getStoredDateTimeValue(): string {

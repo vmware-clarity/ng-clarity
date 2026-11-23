@@ -7,6 +7,7 @@
 <appfx-filter-form
   [formGroup]="enumFilterForm"
   [valid]="enumFilterForm.valid"
+  [readBack]="readBack"
   (cancel)="onCancelButtonClick()"
   (apply)="onApplyButtonClick()"
 >
@@ -51,18 +52,6 @@
       </clr-input-container>
     </div>
 
-    @if (!minimal) {
-      <label class="clr-control-label text-left mt-compact">
-        {{ filterStrings.valueLabel }}
-      </label>
-
-      <div *ngIf="filteredOptions.length" cds-layout="m-t:xs m-l:xxs" class="selection-counter">
-        <span *ngIf="!filterProperty.singleSelect" class="clr-subtext" cds-text="body medium">
-          {{ filterStrings.formatString(filterStrings.elementsSelectedFormat, [selectedCount.toString()]) }}
-        </span>
-      </div>
-    }
-
     <div *ngIf="isProcessing" class="loading-overlay">
       <div class="loading-content">
         <clr-spinner clrMedium>{{ filterStrings.loading }}</clr-spinner>
@@ -71,12 +60,25 @@
 
     <div class="filter-options" [class.filter-options-minimal]="minimal" [attr.cds-layout]="minimal ? null : 'm-t:xs'">
       <clr-checkbox-container *ngIf="!filterProperty.singleSelect" class="enum-options">
-        <clr-checkbox-wrapper *ngIf="filterProperty.enableSelectAll" cds-layout="m-b:xs">
-          <input type="checkbox" clrCheckbox formControlName="selectAll" (change)="onSelectAllChange()" />
-          <label>
-            {{ enumFilterForm.get('searchTerm')?.value ? filterStrings.allSearchResults : filterStrings.selectAll }}
-          </label>
-        </clr-checkbox-wrapper>
+        <!-- Projected as a wrapper so the count can sit on the Select all line. -->
+        <div
+          class="filter-select-all"
+          ngProjectAs="clr-checkbox-wrapper"
+          *ngIf="filterProperty.enableSelectAll"
+          cds-layout="m-b:xs"
+        >
+          <clr-checkbox-wrapper>
+            <input type="checkbox" clrCheckbox formControlName="selectAll" (change)="onSelectAllChange()" />
+            <label>
+              {{ enumFilterForm.get('searchTerm')?.value ? filterStrings.allSearchResults : filterStrings.selectAll }}
+            </label>
+          </clr-checkbox-wrapper>
+          @if (!minimal) {
+            <span class="selection-counter">
+              {{ filterStrings.formatString(filterStrings.elementsSelectedFormat, [selectedCount.toString()]) }}
+            </span>
+          }
+        </div>
 
         <clr-checkbox-wrapper *ngFor="let item of filteredOptions; trackBy: trackByFilteredOption">
           <input

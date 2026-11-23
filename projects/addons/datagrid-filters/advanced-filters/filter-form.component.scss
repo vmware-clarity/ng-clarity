@@ -51,13 +51,60 @@ form {
     display: flex;
     align-items: center;
     gap: var(--clr-base-gap-s);
-    padding-bottom: var(--clr-base-vertical-offset-l);
-    border-bottom: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
   }
 
+  // Field name and type, in place of the locked field picker.
+  .filter-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--clr-base-gap-s);
+    width: 100%;
+  }
+
+  .filter-heading-name {
+    font-weight: var(--cds-alias-typography-font-weight-semibold);
+    color: var(--cds-alias-typography-color-400);
+  }
+
+  .filter-heading-type {
+    font-size: var(--cds-alias-typography-caption-font-size);
+    color: var(--cds-alias-typography-color-200);
+  }
+
+  // And / Or as inline radio buttons, as in the editor before the redesign.
   .filter-logic {
-    flex: 0 0 auto;
-    margin: 0;
+    display: flex;
+    gap: var(--clr-base-gap-l);
+    margin-top: var(--clr-base-vertical-offset-l);
+
+    .clr-radio-wrapper {
+      margin: 0;
+    }
+  }
+
+  .filter-logic-fixed {
+    margin: var(--clr-base-vertical-offset-l) 0 0;
+    color: var(--cds-alias-typography-color-200);
+  }
+
+  // The conjoiner between two conditions: a small label followed by a hairline.
+  .filter-logic-divider {
+    display: flex;
+    align-items: center;
+    gap: var(--clr-base-gap-s);
+    margin-top: var(--clr-base-vertical-offset-m);
+    font-size: var(--cds-alias-typography-smallcaption-font-size);
+    font-weight: var(--cds-alias-typography-font-weight-semibold);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--cds-alias-typography-color-200);
+
+    &::after {
+      content: '';
+      flex: 1;
+      border-top: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
+    }
   }
 
   .filter-condition-row {
@@ -108,9 +155,51 @@ form {
     }
   }
 
-  .filter-add-condition,
-  .filter-logic-label {
+  .filter-add-condition {
+    align-self: flex-start;
     margin: var(--clr-base-vertical-offset-l) 0 0;
+    padding-left: 0;
+
+    cds-icon {
+      margin-right: var(--clr-base-gap-xs);
+    }
+  }
+
+  .filter-condition-remove cds-icon {
+    color: var(--cds-global-color-construction-500);
+  }
+
+  .filter-condition-remove:hover cds-icon {
+    color: var(--cds-alias-status-info);
+  }
+
+  // The filter in words, above the actions.
+  // List and user editors: Select all carries the selected count on its right and a hairline below it.
+  .enum-options > .clr-control-container {
+    align-self: stretch;
+  }
+
+  .filter-select-all {
+    display: flex;
+    align-items: center;
+    gap: var(--clr-base-gap-s);
+    padding-bottom: var(--clr-base-vertical-offset-xs);
+    border-bottom: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
+  }
+
+  .selection-counter {
+    margin-left: auto;
+    font-size: var(--cds-alias-typography-caption-font-size);
+    color: var(--cds-alias-typography-color-200);
+  }
+
+  .filter-read-back {
+    margin: var(--clr-base-vertical-offset-xl) 0 0;
+    padding: var(--clr-base-vertical-offset-m) var(--clr-base-gap-m);
+    border-radius: var(--cds-alias-object-border-radius-100);
+    background: var(--cds-alias-object-app-background);
+    color: var(--cds-alias-typography-color-400);
+    overflow-wrap: anywhere;
   }
 
   .filter-form-actions {
@@ -120,6 +209,8 @@ form {
     flex-wrap: wrap;
     gap: var(--clr-base-gap-s);
     margin-top: var(--clr-base-vertical-offset-xl);
+    padding-top: var(--clr-base-vertical-offset-l);
+    border-top: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
 
     .btn {
       margin: 0;

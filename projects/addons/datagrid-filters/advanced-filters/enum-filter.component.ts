@@ -10,7 +10,9 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
+  inject,
   Input,
+  LOCALE_ID,
   OnChanges,
   OnInit,
   Output,
@@ -26,6 +28,7 @@ import {
   PropertyFilter,
   PropertyPredicate,
 } from '../model/datagrid-filters.interfaces';
+import { describeConditions } from '../model/filter-description';
 
 /**
  * Enum filter component collects filtering criteria for enum based properties
@@ -69,6 +72,8 @@ export class EnumFilterComponent implements OnInit, OnChanges {
   searchResultsLen = 0;
   selectedCount = 0;
 
+  private readonly locale = inject(LOCALE_ID);
+
   readonly #maxInitiallyShownItems = 50;
   readonly #loadingTimeoutDelayMs = 50;
   #maxShownItems = this.#maxInitiallyShownItems;
@@ -79,6 +84,24 @@ export class EnumFilterComponent implements OnInit, OnChanges {
     public filterStrings: DatagridFiltersStrings,
     private cdr: ChangeDetectorRef
   ) {}
+
+  /** The filter in words, as the pill will show it, e.g. "Status Equals: Alert Or Equals: Warning". */
+  get readBack(): string {
+    const criteria = this.enumFilterForm?.valid
+      ? this.selectedPredicates().filter(predicate => predicate.value !== null && predicate.value !== undefined)
+      : [];
+    if (!criteria.length) {
+      return '';
+    }
+    const filter = new PropertyFilter();
+    filter.operator = this.#selectedFilterCriteria.operator;
+    filter.criteria = criteria;
+    return (
+      this.filterProperty.displayName +
+      ' ' +
+      describeConditions(this.filterStrings, this.locale, this.filterProperty, filter)
+    );
+  }
 
   get additionalOperators(): boolean {
     return this.filterProperty.supportedOperators?.length === 2;
@@ -172,23 +195,22 @@ export class EnumFilterComponent implements OnInit, OnChanges {
   }
 
   onApplyButtonClick(): void {
-    const propertyPredicates: PropertyPredicate[] = [];
-    if (this.filterProperty.singleSelect) {
-      propertyPredicates.push(this.createEnumPropertyPredicate(this.enumFilterForm.value.singleSelectOption));
-    } else {
-      const selectedOptionsKeys: string[] = this.enumFilterForm.value.options
-        .map((checked: boolean, i: number) => (checked ? this.optionsData[i].key : null))
-        .filter((v: string | null) => v !== null);
-      selectedOptionsKeys.forEach(value => {
-        propertyPredicates.push(this.createEnumPropertyPredicate(value));
-      });
-    }
-    this.#selectedFilterCriteria.criteria = propertyPredicates;
+    this.#selectedFilterCriteria.criteria = this.selectedPredicates();
     this.filterCriteriaChange.emit(this.#selectedFilterCriteria);
   }
 
   onCancelButtonClick(): void {
     this.filterCriteriaChange.emit();
+  }
+
+  private selectedPredicates(): PropertyPredicate[] {
+    if (this.filterProperty.singleSelect) {
+      return [this.createEnumPropertyPredicate(this.enumFilterForm.value.singleSelectOption)];
+    }
+    return this.enumFilterForm.value.options
+      .map((checked: boolean, i: number) => (checked ? this.optionsData[i].key : null))
+      .filter((v: string | null) => v !== null)
+      .map((value: string) => this.createEnumPropertyPredicate(value));
   }
 
   private runAsyncOperation(action: () => void): void {

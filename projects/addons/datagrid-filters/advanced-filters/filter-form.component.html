@@ -8,6 +8,9 @@
   <div class="form-max-height">
     <ng-content></ng-content>
   </div>
+  @if (readBack) {
+    <p class="filter-read-back" aria-live="polite">{{ readBack }}</p>
+  }
   <div class="filter-form-actions">
     <div class="filter-extra-actions">
       <ng-content select="[filterActions]"></ng-content>

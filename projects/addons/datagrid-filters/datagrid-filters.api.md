@@ -382,6 +382,7 @@ export class DatagridFiltersStrings {
     // (undocumented)
     readonly clearAllButtonAriaLabel: string;
     readonly clearFilter: string;
+    readonly conditionsCombinedWithText: string;
     readonly dateLabel: string;
     readonly dateRangeLabel: string;
     readonly dateRangeOptionsLabel: string;
@@ -415,6 +416,8 @@ export class DatagridFiltersStrings {
     getConjoinerDisplayName(conjoiner: LogicalOperator): string;
     // (undocumented)
     getOperatorDisplayName(operator: ComparisonOperator): string;
+    // (undocumented)
+    getPropertyTypeDisplayName(type: PropertyType): string;
     // (undocumented)
     getTimeSpanDisplayName(timeSpan: TimeSpan): string;
     // (undocumented)
@@ -458,6 +461,13 @@ export class DatagridFiltersStrings {
         timeSpan: string;
     };
     readonly operatorLabel: string;
+    readonly propertyType: {
+        string: string;
+        numeric: string;
+        enum: string;
+        dateTime: string;
+        user: string;
+    };
     readonly quickFilter: string;
     readonly removeConditionAriaLabel: string;
     // (undocumented)
@@ -585,11 +595,16 @@ export class FilterFormComponent {
     onApplyButtonClick(): void;
     // (undocumented)
     onCancelButtonClick(): void;
+    readBack: string;
     valid: boolean;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<FilterFormComponent, "appfx-filter-form", never, {
         "valid": {
             "alias": "valid";
+            "required": false;
+        };
+        "readBack": {
+            "alias": "readBack";
             "required": false;
         };
     }, {

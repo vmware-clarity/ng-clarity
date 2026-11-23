@@ -7,7 +7,7 @@
 
 import { Injectable } from '@angular/core';
 
-import { ComparisonOperator, LogicalOperator, TimeSpan, Unit } from './model/datagrid-filters.enums';
+import { ComparisonOperator, LogicalOperator, PropertyType, TimeSpan, Unit } from './model/datagrid-filters.enums';
 
 /**
  * User-visible strings used in the 'appfx-datagrid-filters' library.
@@ -157,6 +157,29 @@ export class DatagridFiltersStrings {
   } = {
     and: 'And',
     or: 'Or',
+  };
+
+  /**
+   * Shown when the field fixes how its conditions are combined, followed by the conjoiner, e.g. "Conditions are
+   * combined with Or".
+   */
+  readonly conditionsCombinedWithText: string = 'Conditions are combined with';
+
+  /**
+   * Property type names, shown next to the field name in the filter editor.
+   */
+  readonly propertyType: {
+    string: string;
+    numeric: string;
+    enum: string;
+    dateTime: string;
+    user: string;
+  } = {
+    string: 'Text',
+    numeric: 'Number',
+    enum: 'List',
+    dateTime: 'Date and time',
+    user: 'User',
   };
 
   /**
@@ -400,6 +423,21 @@ export class DatagridFiltersStrings {
         return this.operator.timeSpan;
       default:
         return 'Unknown operator!';
+    }
+  }
+
+  getPropertyTypeDisplayName(type: PropertyType): string {
+    switch (type) {
+      case PropertyType.String:
+        return this.propertyType.string;
+      case PropertyType.Numeric:
+        return this.propertyType.numeric;
+      case PropertyType.Enum:
+        return this.propertyType.enum;
+      case PropertyType.DateTime:
+        return this.propertyType.dateTime;
+      case PropertyType.User:
+        return this.propertyType.user;
     }
   }
 

@@ -15,6 +15,7 @@ import {
   inject,
   Injector,
   Input,
+  LOCALE_ID,
   OnChanges,
   OnInit,
   Output,
@@ -31,6 +32,7 @@ import {
   PropertyPredicate,
   StringPropertyDefinition,
 } from '../model/datagrid-filters.interfaces';
+import { describeConditions } from '../model/filter-description';
 
 const enterKey = 'Enter';
 const unmericPatternRegex = '^-?[0-9]+$';
@@ -71,6 +73,7 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
   private readonly destroyRef = inject(DestroyRef);
   private readonly injector = inject(Injector);
   private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly locale = inject(LOCALE_ID);
 
   constructor(
     private formBuilder: FormBuilder,
@@ -81,6 +84,15 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
 
   get conditions(): FormArray<FormGroup> {
     return this.generalFilterForm.controls.conditions as FormArray<FormGroup>;
+  }
+
+  /** The filter in words, as the pill will show it, e.g. "VM Name Contains: web Or Starts with: db". */
+  get readBack(): string {
+    if (!this.generalFilterForm?.valid) {
+      return '';
+    }
+    const conditions = describeConditions(this.filterStrings, this.locale, this.filterProperty, this.currentFilter());
+    return this.filterProperty.displayName + ' ' + conditions;
   }
 
   get hasEmptyPredicate(): boolean {
@@ -145,6 +157,15 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
     if (!this.generalFilterForm.valid) {
       return;
     }
+    this.filterCriteriaChange.emit(this.currentFilter());
+  }
+
+  onCancelButtonClick(): void {
+    this.filterCriteriaChange.emit();
+  }
+
+  /** The filter the form describes now. */
+  private currentFilter(): PropertyFilter {
     const rows = this.conditions.getRawValue();
     const filter = new PropertyFilter();
     if (this.isNumericUnitProperty) {
@@ -159,11 +180,7 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
       predicate.value = row.operator === this.isEmptyOperator ? undefined : this.convertValue(row.value, row.unit);
       return predicate;
     });
-    this.filterCriteriaChange.emit(filter);
-  }
-
-  onCancelButtonClick(): void {
-    this.filterCriteriaChange.emit();
+    return filter;
   }
 
   private createCondition(index = -1): FormGroup {

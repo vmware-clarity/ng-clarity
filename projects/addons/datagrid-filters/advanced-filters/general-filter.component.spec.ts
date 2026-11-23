@@ -188,15 +188,19 @@ describe('GeneralFilterComponent', () => {
       expect(testContext.component.comparisonOperators).toEqual(testComparisonOperators);
     });
 
-    it('applies the logic selected in the segmented buttons', () => {
+    it('shows the And/Or choice once there are two conditions and applies the selected one', () => {
       vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
-      const logicInputs: NodeListOf<HTMLInputElement> =
-        testContext.fixture.nativeElement.querySelectorAll('.filter-logic input');
+      expect(testContext.fixture.nativeElement.querySelector('.filter-logic')).toBeNull();
+
+      testContext.fixture.nativeElement.querySelector(addButtonSelector).click();
+      renderFixture(testContext.fixture);
+      const logicInputs: NodeListOf<HTMLInputElement> = testContext.fixture.nativeElement.querySelectorAll(
+        '.filter-logic input.clr-radio'
+      );
       expect(logicInputs.length).toBe(2);
       expect(logicInputs[0].checked).toBe(true);
 
       logicInputs[1].click();
-      testContext.fixture.nativeElement.querySelector(addButtonSelector).click();
       renderFixture(testContext.fixture);
       expect(logicInputs[1].checked).toBe(true);
       expect(
@@ -213,14 +217,15 @@ describe('GeneralFilterComponent', () => {
     });
 
     it('disables AND for an empty primary condition and restores it for a value condition', () => {
-      const andInput: HTMLInputElement = testContext.fixture.nativeElement.querySelector('.filter-logic input');
+      testContext.fixture.nativeElement.querySelector(addButtonSelector).click();
+      renderFixture(testContext.fixture);
+      const [andInput, orInput]: HTMLInputElement[] = Array.from(
+        testContext.fixture.nativeElement.querySelectorAll('.filter-logic input')
+      );
       testContext.component.conditions.at(0).controls.operator.setValue(ComparisonOperator.IsEmpty);
       renderFixture(testContext.fixture);
       expect(andInput.disabled).toBe(true);
-      // The input is hidden, so the visible button carries the disabled state; Or stays enabled.
-      const [andButton, orButton] = testContext.fixture.nativeElement.querySelectorAll('.filter-logic .radio.btn');
-      expect(andButton.classList).toContain('disabled');
-      expect(orButton.classList).not.toContain('disabled');
+      expect(orInput.disabled).toBe(false);
       expect(testContext.component.generalFilterForm.value.logicalOperator).toBe(LogicalOperator.Or);
 
       andInput.click();
@@ -229,7 +234,6 @@ describe('GeneralFilterComponent', () => {
       testContext.component.conditions.at(0).controls.operator.setValue(ComparisonOperator.Equals);
       renderFixture(testContext.fixture);
       expect(andInput.disabled).toBe(false);
-      expect(andButton.classList).not.toContain('disabled');
       andInput.click();
       expect(testContext.component.generalFilterForm.value.logicalOperator).toBe(LogicalOperator.And);
     });
@@ -242,12 +246,18 @@ describe('GeneralFilterComponent', () => {
       const andInput: HTMLInputElement = testContext.fixture.nativeElement.querySelector('.filter-logic input');
       expect(andInput.disabled).toBe(true);
 
+      // One condition left: no choice is shown; a new value condition can use And again.
       testContext.fixture.nativeElement.querySelectorAll('[data-test-id=close-button]')[1].click();
       renderFixture(testContext.fixture);
-      expect(andInput.disabled).toBe(false);
-      andInput.click();
-      expect(testContext.component.generalFilterForm.value.logicalOperator).toBe(LogicalOperator.And);
+      expect(testContext.fixture.nativeElement.querySelector('.filter-logic')).toBeNull();
       expect(testContext.fixture.nativeElement.querySelector('[data-test-id=logical-operator]')).toBeNull();
+
+      testContext.fixture.nativeElement.querySelector(addButtonSelector).click();
+      renderFixture(testContext.fixture);
+      const restoredAnd: HTMLInputElement = testContext.fixture.nativeElement.querySelector('.filter-logic input');
+      expect(restoredAnd.disabled).toBe(false);
+      restoredAnd.click();
+      expect(testContext.component.generalFilterForm.value.logicalOperator).toBe(LogicalOperator.And);
     });
   });
   describe('with restricted comparison operators', () => {
@@ -1040,12 +1050,14 @@ describe('GeneralFilterComponent', () => {
       addConditionButton.click();
       renderFixture(testContext.fixture);
       const logicalOperatorLabel = testContext.fixture.debugElement.nativeElement.querySelector(
-        'button[data-test-id=logical-operator]'
+        '[data-test-id=logical-operator]'
       );
 
       expect(logicalOperatorLabel).toBeTruthy();
       expect(logicalOperatorLabel.textContent.trim()).toEqual('And');
-      expect(logicalOperatorLabel.disabled).toBe(true);
+      expect(testContext.fixture.nativeElement.querySelector('.filter-logic-fixed strong').textContent.trim()).toEqual(
+        'And'
+      );
       expect(testContext.fixture.nativeElement.querySelector('.filter-logic')).toBeNull();
     });
 
@@ -1058,12 +1070,14 @@ describe('GeneralFilterComponent', () => {
       addConditionButton.click();
       renderFixture(testContext.fixture);
       const logicalOperatorLabel = testContext.fixture.debugElement.nativeElement.querySelector(
-        'button[data-test-id=logical-operator]'
+        '[data-test-id=logical-operator]'
       );
 
       expect(logicalOperatorLabel).toBeTruthy();
       expect(logicalOperatorLabel.textContent.trim()).toEqual('Or');
-      expect(logicalOperatorLabel.disabled).toBe(true);
+      expect(testContext.fixture.nativeElement.querySelector('.filter-logic-fixed strong').textContent.trim()).toEqual(
+        'Or'
+      );
       expect(testContext.fixture.nativeElement.querySelector('.filter-logic')).toBeNull();
       vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
       testContext.component.generalFilterForm.patchValue({
