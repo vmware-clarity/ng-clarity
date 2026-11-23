@@ -47,7 +47,12 @@ export const CLR_MUTATION_OPERATIONS_SCHEMA = {
         type: 'object',
         required: ['operation', 'path'],
         additionalProperties: false,
-        properties: { operation: { const: 'navigate' }, path: { type: 'string' }, params: strings, queryParams: strings },
+        properties: {
+          operation: { const: 'navigate' },
+          path: { type: 'string' },
+          params: strings,
+          queryParams: strings,
+        },
       },
     ],
   },
