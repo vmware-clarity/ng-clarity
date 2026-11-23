@@ -22,7 +22,7 @@ export class Assistant {
 }
 ```
 
-Configure once at startup: `context.configure({ scope: 'interactive', routes: true })`. `scope` is a preset (`full`, `interactive`, `minimal`) or options: `root` (`'page'`, `'modal'` or a selector), `excludeSelectors`, `excludeCategories`, `maxComponents`, `maxItemsPerCollection` (0 summarizes collections). Name the app with `configure({ application: { id: 'inventory' } })`. Name each view with `data: { viewId: 'vm-list' }` on its route; `application.viewId` and `application.metadata` are functions, read on every snapshot.
+Configure once at startup: `context.configure({ scope: 'interactive', routes: true })`. `scope` is a preset (`full`, `interactive`, `minimal`) or options: `root` (`'page'`, `'modal'` or a selector), `excludeSelectors`, `excludeCategories`, `maxComponents`, `maxItemsPerCollection` (0 summarizes collections). Name the app with `configure({ application: { id: 'inventory' } })`. Describe a view with `[clrContext]` on its root (the element `scope.root` selects): its state, with `viewId` naming the view, becomes the snapshot's `metadata`.
 
 ## Privacy first
 
@@ -38,7 +38,6 @@ Configure once at startup: `context.configure({ scope: 'interactive', routes: tr
 | Context no element shows, maybe asynchronous     | `ClrContextProvider` registered on `ClrContextRegistryService`    |
 | A component's state the DOM cannot show          | `publishElementContext(host, callback)` from `@clr/angular/utils` |
 | Markup from another library with no role or name | `configure({ extractors: [{ selector, extract }] })`              |
-| Describe the view (metadata, `viewId`)           | `[clrContext]` on the view root, or `viewConfig`                  |
 
 ```ts
 import { ClrContext } from '@clr/angular/ai';

@@ -17,7 +17,7 @@ const ROUTES: Routes = [
     component: ContextualDemo,
     children: [
       { path: '', redirectTo: 'live', pathMatch: 'full' },
-      { path: 'live', component: ContextualLiveDemo, data: { viewId: 'host-inventory' } },
+      { path: 'live', component: ContextualLiveDemo },
     ],
   },
 ];

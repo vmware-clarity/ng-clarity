@@ -5,12 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { isDevMode } from '@angular/core';
-
 import { parentAcrossShadow } from './shadow';
-import { attempt } from '../attempt';
 import { ClrPublishedContext } from '../interfaces/context.interface';
-import { jsonSafe, REGION_DEPTH } from '../json-safe';
 
 /** Reads what `[clrContext]` says about the element it sits on. */
 export type ClrAnnotationReader = () => Partial<ClrPublishedContext> | null;
@@ -61,36 +57,4 @@ export function viewAnnotationHosts(roots: Element[]): Element[] {
     hosts.push(...chain);
   }
   return hosts;
-}
-
-/** The JSON object in `text`, such as a loaded file; `null`, with a dev-mode warning, when it is too long, invalid or not an object. */
-export function parseJsonObject(
-  text: string | null,
-  source: string,
-  maxLength: number
-): Record<string, unknown> | null {
-  if (text === null) {
-    return null;
-  }
-  if (text.length > maxLength) {
-    warnLeftOut(`${source} is longer than ${maxLength} characters`);
-    return null;
-  }
-  const parsed: unknown = attempt(() => JSON.parse(text), undefined);
-  if (!isRecord(parsed)) {
-    warnLeftOut(`${source} is not a JSON object`);
-    return null;
-  }
-  const safe = jsonSafe(parsed, REGION_DEPTH);
-  return isRecord(safe) ? safe : null;
-}
-
-export function isRecord(value: unknown): value is Record<string, unknown> {
-  return !!value && typeof value === 'object' && !Array.isArray(value);
-}
-
-function warnLeftOut(message: string): void {
-  if (isDevMode()) {
-    console.warn(`${message} and was left out of the snapshot.`);
-  }
 }

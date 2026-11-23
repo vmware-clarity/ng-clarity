@@ -64,9 +64,6 @@ export const CLR_PAGE_CONTEXT_SCHEMA: {
         readonly metadata: {
             readonly type: "object";
         };
-        readonly metadataState: {
-            readonly enum: readonly ["loading", "unavailable"];
-        };
         readonly enabled: {
             readonly type: "boolean";
         };
@@ -241,12 +238,6 @@ export class ClrContext implements OnInit, OnDestroy {
 export type ClrContextAnnotation = Partial<ClrPublishedContext> | (() => Partial<ClrPublishedContext> | null | undefined);
 
 // @public
-export interface ClrContextApplicationOptions extends ClrApplicationContext {
-    metadata?: () => Record<string, unknown> | null | undefined;
-    viewId?: () => string | null | undefined;
-}
-
-// @public
 export interface ClrContextAsyncCollectOptions extends ClrContextCollectOptions {
     timeoutMs?: number;
 }
@@ -274,13 +265,11 @@ export interface ClrContextCollectOptions {
 
 // @public
 export interface ClrContextConfig {
-    application?: ClrContextApplicationOptions;
+    application?: ClrApplicationContext;
     extractors?: ClrContextDomExtractor[];
-    metadataOrigins?: string[];
     routes?: boolean;
     scope?: ClrContextPreset | ClrContextSnapshotOptions;
     timeoutMs?: number;
-    viewConfig?: ClrContextViewConfig[] | string;
     views?: 'all' | 'enabled';
 }
 
@@ -345,15 +334,6 @@ export interface ClrContextSnapshotOptions {
 }
 
 // @public
-export interface ClrContextViewConfig {
-    enabled?: boolean;
-    metadata?: Record<string, unknown>;
-    route?: string;
-    selector?: string;
-    viewId?: string;
-}
-
-// @public
 export function clrDiffContext(previous: ClrPageContext | null, current: ClrPageContext): ClrContextChange;
 
 // @public
@@ -371,7 +351,6 @@ export interface ClrPageContext {
     enabled: boolean;
     focus?: 'modal';
     metadata?: Record<string, unknown>;
-    metadataState?: 'loading' | 'unavailable';
     regions: ClrComponentContext[];
     route?: ClrRouteContext;
     schemaVersion: string;

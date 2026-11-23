@@ -53,22 +53,16 @@ export interface ClrPageContext {
   schemaVersion: string;
   /** The application, from `configure({ application })`; the page's host name when none is configured. */
   application: ClrApplicationContext;
-  /**
-   * The view the user is on: `viewId` in the state of the view root's annotation, then `application.viewId`,
-   * the route's `data.viewId` and the configured views.
-   */
+  /** The view the user is on: `viewId` in the state of the `[clrContext]` on the view root. */
   viewId?: string;
   /**
-   * Metadata about the current view, merged from the configured views, `application.metadata` and the
-   * `[clrContext]` annotation on the view root, later ones winning.
+   * What the `[clrContext]` on the view root and its ancestors says about the view: its state, with its label,
+   * inner winning. The view root is the element `scope.root` selects, or the body.
    */
   metadata?: Record<string, unknown>;
-  /** Set while the `viewConfig` URL is loading, or when it could not be loaded. */
-  metadataState?: 'loading' | 'unavailable';
   /**
-   * Whether the engine reads this view: `false` when a configured view disables it, or the application
-   * reads only enabled views and this one has no metadata, and then nothing else is read. It gates this engine
-   * only, not what the page renders.
+   * Whether the engine reads this view: `false` when the application reads only enabled views and this one's
+   * root has no `[clrContext]`, and then nothing else is read. It gates this engine only, not what the page renders.
    */
   enabled: boolean;
   /** The document title. */

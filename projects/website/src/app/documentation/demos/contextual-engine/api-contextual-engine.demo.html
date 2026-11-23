@@ -6,8 +6,7 @@
   -->
 <p class="clr-mt-24px" cds-text="body">
   Most applications need only a few of these: <code cds-text="code">ClrContextService</code> to read the page,
-  <code cds-text="code">configure(&#123; application &#125;)</code> to name the application,
-  <code cds-text="code">data-clr-context</code> on a view's root to describe the view, and
+  <code cds-text="code">configure(&#123; application &#125;)</code> to name the application, and
   <code cds-text="code">data-clr-context-redact</code> for fields that hold secrets. Everything else is for finer
   control.
 </p>
@@ -96,8 +95,9 @@
       <td class="left"><b cds-text="medium">application</b></td>
       <td class="left clr-hidden-xs-down">the host name</td>
       <td class="left">
-        Names the application and its views, as a <code cds-text="code">ClrContextApplicationOptions</code>. See the
-        table below.
+        Names the application: a <code cds-text="code">ClrApplicationContext</code> with an
+        <code cds-text="code">id</code>, such as <code cds-text="code">'inventory'</code>, and an optional
+        <code cds-text="code">version</code>.
       </td>
     </tr>
     <tr>
@@ -105,109 +105,8 @@
       <td class="left clr-hidden-xs-down"><code cds-text="code">'all'</code></td>
       <td class="left">
         <code cds-text="code">'all'</code> reads every view. <code cds-text="code">'enabled'</code> reads only views
-        that have metadata, and reports the rest as <code cds-text="code">enabled: false</code> with nothing about the
-        page.
-      </td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">viewConfig</b></td>
-      <td class="left clr-hidden-xs-down"><code cds-text="code">[]</code></td>
-      <td class="left">
-        Describes views without editing them: a list of <code cds-text="code">ClrContextViewConfig</code>, or the URL of
-        a JSON file that holds it as <code cds-text="code">&#123; "views": [...] &#125;</code>. See View configuration
-        below.
-      </td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">metadataOrigins</b></td>
-      <td class="left clr-hidden-xs-down"><code cds-text="code">[]</code></td>
-      <td class="left">
-        Other origins that a <code cds-text="code">viewConfig</code> URL may load from, such as
-        <code cds-text="code">'https://help.example.com'</code>. The page's own origin is always allowed.
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<h4 cds-text="subsection" class="clr-mt-24px"><code cds-text="code">application</code></h4>
-<table class="table">
-  <thead>
-    <tr>
-      <th class="left">Option</th>
-      <th class="left clr-hidden-xs-down">Type</th>
-      <th class="left">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="left"><b cds-text="medium">id</b></td>
-      <td class="left clr-hidden-xs-down">String</td>
-      <td class="left">A stable id for the application, such as <code cds-text="code">'inventory'</code>.</td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">version</b></td>
-      <td class="left clr-hidden-xs-down">String</td>
-      <td class="left">The application's version.</td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">viewId</b></td>
-      <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; string | null | undefined</code></td>
-      <td class="left">
-        A function that returns the current view's id, called on every snapshot. Often not needed: put
-        <code cds-text="code">data: &#123; viewId: 'vm-list' &#125;</code> on each route instead.
-      </td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">metadata</b></td>
-      <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; object | null | undefined</code></td>
-      <td class="left">A function that returns a small object about the current view, called on every snapshot.</td>
-    </tr>
-  </tbody>
-</table>
-
-<h4 cds-text="subsection" class="clr-mt-24px">View configuration</h4>
-<p class="clr-mt-16px" cds-text="body">
-  Each entry in <code cds-text="code">viewConfig</code> matches by <code cds-text="code">route</code> pattern and/or
-  <code cds-text="code">selector</code>. The first match applies.
-</p>
-<table class="table">
-  <thead>
-    <tr>
-      <th class="left">Key</th>
-      <th class="left clr-hidden-xs-down">Type</th>
-      <th class="left">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="left"><b cds-text="medium">route</b></td>
-      <td class="left clr-hidden-xs-down">String</td>
-      <td class="left">
-        The route pattern, as <code cds-text="code">route.path</code> reports it, such as
-        <code cds-text="code">'hosts/:id'</code>.
-      </td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">selector</b></td>
-      <td class="left clr-hidden-xs-down">String</td>
-      <td class="left">Matches while an element matching this CSS selector is on the page.</td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">viewId</b></td>
-      <td class="left clr-hidden-xs-down">String</td>
-      <td class="left">The view's id, used when nothing on the page or the route names one.</td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">metadata</b></td>
-      <td class="left clr-hidden-xs-down">Object</td>
-      <td class="left">What to say about the view. Metadata from the page wins over it.</td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">enabled</b></td>
-      <td class="left clr-hidden-xs-down">Boolean</td>
-      <td class="left">
-        <code cds-text="code">false</code> means nothing on that view is read. <code cds-text="code">true</code> reads
-        it with <code cds-text="code">views: 'enabled'</code> even without metadata.
+        whose root has a <code cds-text="code">[clrContext]</code>, and reports the rest as
+        <code cds-text="code">enabled: false</code> with nothing about the page.
       </td>
     </tr>
   </tbody>
@@ -257,9 +156,8 @@
   element around it). It takes a property binding only, such as <code cds-text="code">[clrContext]="rules"</code>:
   static text would be readable in the DOM, so it is a type error and throws in dev mode. Nothing it says is written to
   the element. It is reported on that element's node in <code cds-text="code">components</code>, merged with what a
-  component there publishes. Where both set the same key, the component's value wins. On a view's root, it describes the
-  view instead (see View metadata below). Standalone: import <code cds-text="code">ClrContext</code>, or
-  <code cds-text="code">ClrContextModule</code> in an NgModule.
+  component there publishes. Where both set the same key, the component's value wins. Standalone: import
+  <code cds-text="code">ClrContext</code>, or <code cds-text="code">ClrContextModule</code> in an NgModule.
   <code cds-text="code">CLR_CONTEXT_DIRECTIVES</code> lists the directives.
 </p>
 <table class="table">
@@ -291,29 +189,6 @@
 </table>
 
 <h2 id="attributes" cds-text="title" class="clr-mt-48px">Attributes</h2>
-
-<h3 id="metadata" cds-text="section" class="clr-mt-32px">View metadata</h3>
-<p class="clr-mt-16px" cds-text="body">
-  A <code cds-text="code">[clrContext]</code> annotation on a view's root describes the view, not a node. The view's
-  root is the element a snapshot starts from: the body, the element <code cds-text="code">root</code> selects, or the
-  open modal. Its ancestors count too, the inner one winning. A template cannot bind on the body, so describe a
-  whole-page view with <code cds-text="code">viewConfig</code> or <code cds-text="code">application.metadata</code>, or
-  set <code cds-text="code">root</code> to the element that carries the annotation. The annotation's state, with its
-  <code cds-text="code">label</code>, becomes the snapshot's <code cds-text="code">metadata</code>, and a
-  <code cds-text="code">viewId</code> key in it names the view.
-</p>
-<div class="clr-mt-16px">
-  <app-code-snippet [code]="viewMetadataExample" language="typescript"></app-code-snippet>
-</div>
-<p class="clr-mt-16px" cds-text="body">
-  When several sources describe the same view, the most specific wins: the annotation, then
-  <code cds-text="code">application.metadata</code>, then the matching <code cds-text="code">viewConfig</code> entry.
-  The view id comes from the annotation, then <code cds-text="code">application.viewId</code>, then the route's
-  <code cds-text="code">data.viewId</code>, then <code cds-text="code">viewConfig</code>. While a
-  <code cds-text="code">viewConfig</code> URL loads, or if it fails, the snapshot's
-  <code cds-text="code">metadataState</code> is <code cds-text="code">'loading'</code> or
-  <code cds-text="code">'unavailable'</code>.
-</p>
 
 <h3 cds-text="section" class="clr-mt-32px">Hiding content</h3>
 <p class="clr-mt-16px" cds-text="body">
@@ -448,17 +323,19 @@
     <tr>
       <td class="left"><b cds-text="medium">viewId</b></td>
       <td class="left clr-hidden-xs-down">String</td>
-      <td class="left">The view the user is on, when the application names it.</td>
+      <td class="left">
+        The view the user is on: <code cds-text="code">viewId</code> in the state of the
+        <code cds-text="code">[clrContext]</code> on the view root.
+      </td>
     </tr>
     <tr>
       <td class="left"><b cds-text="medium">metadata</b></td>
       <td class="left clr-hidden-xs-down">Object</td>
-      <td class="left">What the application says about the current view.</td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">metadataState</b></td>
-      <td class="left clr-hidden-xs-down"><code cds-text="code">'loading' | 'unavailable'</code></td>
-      <td class="left">Present while metadata from a URL is loading, or when it could not be loaded.</td>
+      <td class="left">
+        What the <code cds-text="code">[clrContext]</code> on the view root and its ancestors says about the view: its
+        state, with its label, inner winning. The view root is the element <code cds-text="code">scope.root</code>
+        selects, or the body.
+      </td>
     </tr>
     <tr>
       <td class="left"><b cds-text="medium">enabled</b></td>
