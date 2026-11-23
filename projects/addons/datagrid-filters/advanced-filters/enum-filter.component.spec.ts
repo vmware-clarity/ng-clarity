@@ -189,6 +189,31 @@ describe('EnumFilterComponent', () => {
       expect(submit).not.toHaveBeenCalled();
       expect(component.filteredOptions.length).toBe(150);
     });
+
+    it('puts Load more at the end of the scrolling options list', async () => {
+      await fixture.whenStable();
+      await vi.advanceTimersByTimeAsync(50);
+      renderFixture(fixture);
+      const options: HTMLElement = fixture.nativeElement.querySelector('.filter-options');
+      expect(options.lastElementChild).toBe(fixture.nativeElement.querySelector('[data-test-id="load-more"]'));
+    });
+  });
+
+  describe('Layout', () => {
+    it('shows the search under Value, not in the operator row', async () => {
+      await fixture.whenStable();
+      await vi.advanceTimersByTimeAsync(50);
+      renderFixture(fixture);
+      const host: HTMLElement = fixture.nativeElement;
+      const search = host.querySelector('[data-test-id="enum-search"]')!;
+      const operator = host.querySelector('select[formControlName="enumOperator"]')!;
+      const value = Array.from(host.querySelectorAll('label')).find(
+        label => label.textContent!.trim() === component.filterStrings.valueLabel
+      )!;
+      expect(search.contains(operator)).toBe(false);
+      expect(operator.compareDocumentPosition(value) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+      expect(value.compareDocumentPosition(search) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    });
   });
 
   describe('Search Logic', () => {

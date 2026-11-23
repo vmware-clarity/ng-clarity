@@ -15,8 +15,8 @@
   </div>
   <ng-content select="[filterActions]" ngProjectAs="[filterActions]"></ng-content>
   <div class="enum-filter-wrapper filter-scroll-region">
-    <div *ngIf="additionalOperators || filterProperty.searchable" class="filter-condition-row">
-      <clr-select-container *ngIf="additionalOperators" class="filter-operator">
+    <div *ngIf="additionalOperators" class="filter-condition-row">
+      <clr-select-container class="enum-operator">
         <label class="clr-sr-only">
           {{ filterStrings.operatorLabel }}
         </label>
@@ -26,8 +26,17 @@
           </option>
         </select>
       </clr-select-container>
+    </div>
 
-      <clr-input-container *ngIf="filterProperty.searchable" class="filter-value">
+    @if (!minimal) {
+      <label class="clr-control-label text-left mt-compact">
+        {{ filterStrings.valueLabel }}
+      </label>
+    }
+
+    <!-- The search narrows the options below; it is not part of the condition, so it sits under Value. -->
+    <div *ngIf="filterProperty.searchable" class="filter-condition-row enum-search" data-test-id="enum-search">
+      <clr-input-container class="filter-value">
         <label class="clr-sr-only">{{ filterStrings.searchOptions }}</label>
         <input clrInput type="text" [placeholder]="filterStrings.searchPlaceholder" formControlName="searchTerm" />
         <cds-icon shape="search" clrInputPrefix></cds-icon>
@@ -52,10 +61,6 @@
     </div>
 
     @if (!minimal) {
-      <label class="clr-control-label text-left mt-compact">
-        {{ filterStrings.valueLabel }}
-      </label>
-
       <div *ngIf="filteredOptions.length" cds-layout="m-t:xs m-l:xxs" class="selection-counter">
         <span *ngIf="!filterProperty.singleSelect" class="clr-subtext" cds-text="body medium">
           {{ filterStrings.formatString(filterStrings.elementsSelectedFormat, [selectedCount.toString()]) }}
@@ -99,10 +104,17 @@
           </label>
         </clr-radio-wrapper>
       </clr-radio-container>
-    </div>
 
-    <button *ngIf="filteredOptions.length < searchResultsLen" type="button" class="btn btn-link" (click)="loadMore()">
-      {{ filterStrings.loadMore }}
-    </button>
+      <!-- At the end of the scrolling list, so it shows once the user reaches the last loaded option. -->
+      <button
+        *ngIf="filteredOptions.length < searchResultsLen"
+        type="button"
+        class="btn btn-link enum-load-more"
+        data-test-id="load-more"
+        (click)="loadMore()"
+      >
+        {{ filterStrings.loadMore }}
+      </button>
+    </div>
   </div>
 </appfx-filter-form>

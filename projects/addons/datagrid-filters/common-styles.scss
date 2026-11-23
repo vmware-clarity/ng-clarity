@@ -80,9 +80,9 @@ select {
 }
 // in order to display properties with longer names.
 .filter-popover {
-  width: min(24rem, calc(100vw - 2 * var(--clr-base-horizontal-offset-l)));
-  min-width: min(16.5rem, calc(100vw - 2 * var(--clr-base-horizontal-offset-l)));
-  max-width: min(24rem, calc(100vw - 2 * var(--clr-base-horizontal-offset-l)));
+  width: min(360px, calc(100vw - 2 * var(--clr-base-horizontal-offset-l)));
+  min-width: min(320px, calc(100vw - 2 * var(--clr-base-horizontal-offset-l)));
+  max-width: min(360px, calc(100vw - 2 * var(--clr-base-horizontal-offset-l)));
   max-height: 400px;
   // The popover does not scroll. Its height limit is passed down to the editor,
   // so only the inner scroll region (e.g. the options list) scrolls.

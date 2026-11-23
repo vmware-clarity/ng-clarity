@@ -27,6 +27,20 @@
   }
 }
 
+// Alone in its row, the operator takes the full width.
+.enum-operator {
+  flex: 1 1 auto;
+}
+
+// The search belongs to the Value section, so it sits close to its label.
+.filter-condition-row.enum-search {
+  margin-top: var(--clr-base-vertical-offset-xs);
+}
+
+.enum-load-more {
+  margin: var(--clr-base-vertical-offset-xs) 0 0;
+}
+
 clr-checkbox-container:not(.clr-default-style) {
   margin-top: 0 !important;
   margin-bottom: 0 !important;

@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="filter-condition-row">
-      <clr-select-container class="filter-operator">
+      <clr-select-container class="user-filter-select">
         <label class="clr-sr-only">
           {{ filterStrings.operatorLabel }}
         </label>
@@ -34,9 +34,12 @@
           </option>
         </select>
       </clr-select-container>
+    </div>
 
-      <clr-select-container *ngIf="domains && domains.length > 0" class="filter-value">
-        <label class="clr-sr-only">{{ filterStrings.domain }}</label>
+    <!-- The domain narrows the user search; it is not part of the condition, so it has its own labelled row. -->
+    <div *ngIf="domains && domains.length > 0" class="filter-condition-row" data-test-id="user-domain">
+      <clr-select-container class="user-filter-select">
+        <label>{{ filterStrings.domain }}</label>
         <select clrSelect name="domain" formControlName="domain">
           <option *ngFor="let domain of domains; trackBy: trackByDomain" [value]="domain">
             {{ domain }}
@@ -90,6 +93,17 @@
         </clr-checkbox-wrapper>
       </clr-checkbox-container>
 
+      <!-- At the end of the scrolling list, so it shows once the user reaches the last loaded user. -->
+      <button
+        *ngIf="hasMoreItems"
+        type="button"
+        class="btn btn-link user-load-more"
+        data-test-id="load-more"
+        (click)="loadMore($event)"
+      >
+        {{ filterStrings.loadMore }}
+      </button>
+
       <div *ngIf="errorSearchingUsers" class="clr-subtext clr-error error">
         {{ errorSearchingUsers }}
       </div>
@@ -98,9 +112,5 @@
         {{ errorRetrievingDomains }}
       </div>
     </div>
-
-    <button *ngIf="hasMoreItems" type="button" class="btn btn-link" (click)="loadMore($event)">
-      {{ filterStrings.loadMore }}
-    </button>
   </div>
 </appfx-filter-form>

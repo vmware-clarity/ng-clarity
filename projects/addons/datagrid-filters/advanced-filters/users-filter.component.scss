@@ -21,3 +21,12 @@
     overflow-y: auto;
   }
 }
+
+// The operator and the domain each have their own row and take its full width.
+.user-filter-select {
+  flex: 1 1 auto;
+}
+
+.user-load-more {
+  margin: var(--clr-base-vertical-offset-xs) 0 0;
+}
