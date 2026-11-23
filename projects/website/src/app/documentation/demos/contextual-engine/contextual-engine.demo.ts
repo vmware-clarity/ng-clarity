@@ -106,6 +106,22 @@ export class FirewallRulesComponent {
 }
 `;
 
+const VIEW_METADATA_EXAMPLE = `
+// With scope: { root: 'main' }, <main> is the view root: its annotation describes the view.
+// Anywhere else, an annotation describes its element.
+@Component({
+  template: \`
+    <main [clrContext]="hostList">
+      <clr-datagrid [clrContext]="hostGrid">...</clr-datagrid>
+    </main>
+  \`,
+})
+export class HostListComponent {
+  readonly hostList = { state: { viewId: 'host-list', purpose: 'Lists the hosts of a cluster' } };
+  readonly hostGrid = { state: { help: 'https://docs.example.com/hosts' } };
+}
+`;
+
 const DIRECTIVE_STANDALONE_EXAMPLE = `
 import { ClrContext } from '@clr/angular/ai';
 
@@ -291,6 +307,7 @@ export class ContextualEngineDemo extends ClarityDocComponent {
   snapshotShapeExample = SNAPSHOT_SHAPE_EXAMPLE;
   ignoreExample = IGNORE_EXAMPLE;
   directiveExample = DIRECTIVE_EXAMPLE;
+  viewMetadataExample = VIEW_METADATA_EXAMPLE;
   directiveStandaloneExample = DIRECTIVE_STANDALONE_EXAMPLE;
   directiveModuleExample = DIRECTIVE_MODULE_EXAMPLE;
   elementContextExample = ELEMENT_CONTEXT_EXAMPLE;
