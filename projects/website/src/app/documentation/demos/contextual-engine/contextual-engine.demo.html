@@ -276,30 +276,18 @@
     <p class="clr-mt-16px" cds-text="body">
       The same annotation describes the view when it sits on the view's root or an ancestor of it: its state, with its
       label, is reported as the snapshot's <code cds-text="code">metadata</code>, and a
-      <code cds-text="code">viewId</code> in it names the view. A template cannot bind on the body, so a whole-page view
-      is described by the views configuration below, or by an annotation on the element
-      <code cds-text="code">root</code>
-      selects.
+      <code cds-text="code">viewId</code> in it names the view. The view root is the element
+      <code cds-text="code">scope.root</code> selects. A template cannot bind on the body, so for a whole-page view set
+      <code cds-text="code">root</code> to the element that carries the annotation, such as
+      <code cds-text="code">'main'</code>.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="viewMetadataExample" language="typescript"></app-code-snippet>
     </div>
     <p class="clr-mt-16px" cds-text="body">
-      With <code cds-text="code">views: 'enabled'</code>, only views with metadata are read; any other view is reported
-      as <code cds-text="code">enabled: false</code> with nothing about the page. A views configuration describes views
-      by route pattern or selector without editing them, and can enable or disable a view in either mode. Metadata on
-      the page wins over the application provider, which wins over the configuration.
+      With <code cds-text="code">views: 'enabled'</code>, only views whose root has an annotation are read; any other
+      view is reported as <code cds-text="code">enabled: false</code> with nothing about the page.
     </p>
-    <div class="clr-mt-16px">
-      <app-code-snippet [code]="viewConfigExample" language="typescript"></app-code-snippet>
-    </div>
-    <p class="clr-mt-16px" cds-text="body">
-      In <code cds-text="code">ai-config.json</code>, the first view whose route pattern and selector both match
-      applies:
-    </p>
-    <div class="clr-mt-16px">
-      <app-code-snippet [code]="aiConfigExample" language="json"></app-code-snippet>
-    </div>
 
     <h4 id="contributing" class="clr-mt-24px" cds-text="subsection">Choosing how to contribute context</h4>
     <p class="clr-mt-16px" cds-text="body">There are four ways to add to what the engine reads.</p>

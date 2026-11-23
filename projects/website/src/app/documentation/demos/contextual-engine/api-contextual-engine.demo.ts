@@ -31,16 +31,6 @@ export class CreateVmWorkflow {
 }
 `;
 
-const VIEW_METADATA_EXAMPLE = `
-// The snapshot starts from <main> (scope: { root: 'main' }), so its annotation describes the view.
-@Component({
-  template: \`<main [clrContext]="vmList">...</main>\`,
-})
-export class VmListComponent {
-  readonly vmList = { label: 'Virtual machines', state: { viewId: 'vm-list', purpose: 'Manage the cluster VMs' } };
-}
-`;
-
 @Component({
   changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'clr-api-contextual-engine-demo',
@@ -49,5 +39,4 @@ export class VmListComponent {
 })
 export class ApiContextualEngineDemo {
   registryExample = REGISTRY_EXAMPLE;
-  viewMetadataExample = VIEW_METADATA_EXAMPLE;
 }

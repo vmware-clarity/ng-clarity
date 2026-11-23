@@ -28,6 +28,6 @@ export type {
 } from './iframe/context-frame-bridge';
 export * from './context';
 export * from './contextual.module';
-export { CLR_CONTEXT_UNTRUSTED_OPTION_KEYS } from './untrusted-options';
 export * from './mutation/mutation.interface';
 export * from './mutation/mutation-engine.service';
+export { CLR_CONTEXT_UNTRUSTED_OPTION_KEYS } from './untrusted-options';

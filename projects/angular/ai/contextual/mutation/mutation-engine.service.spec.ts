@@ -288,14 +288,6 @@ describe('ClrMutationService', () => {
         const first = refOf(snapshot(), 'Name');
         expect(refOf(snapshot(), 'Name')).toBe(first);
       });
-
-      it('are not handed to untrusted callers, such as embedded frames', () => {
-        const first = refOf(snapshot(), 'Name');
-
-        expect(allRefs(contextEngine['read'](undefined, true).components)).toEqual([]);
-        // The trusted refs stay valid.
-        expect(refOf(snapshot(), 'Name')).toBe(first);
-      });
     });
 
     describe('setValue', () => {

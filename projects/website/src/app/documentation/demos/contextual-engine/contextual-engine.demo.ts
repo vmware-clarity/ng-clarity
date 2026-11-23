@@ -123,28 +123,6 @@ export class HostListComponent {
 }
 `;
 
-const VIEW_CONFIG_EXAMPLE = `
-// Read only the views that have metadata, and describe views without editing them.
-inject(ClrContextService).configure({
-  application: { id: 'inventory', version: '2.4.0' },
-  views: 'enabled',
-  viewConfig: '/assets/ai-config.json',
-});
-`;
-
-const AI_CONFIG_EXAMPLE = `
-{
-  "views": [
-    {
-      "route": "hosts/:id",
-      "viewId": "host-detail",
-      "metadata": { "purpose": "One host and its VMs" }
-    },
-    { "selector": "app-billing", "enabled": false }
-  ]
-}
-`;
-
 const DIRECTIVE_STANDALONE_EXAMPLE = `
 import { ClrContext } from '@clr/angular/ai';
 
@@ -484,8 +462,6 @@ export class ContextualEngineDemo extends ClarityDocComponent {
   ignoreExample = IGNORE_EXAMPLE;
   directiveExample = DIRECTIVE_EXAMPLE;
   viewMetadataExample = VIEW_METADATA_EXAMPLE;
-  viewConfigExample = VIEW_CONFIG_EXAMPLE;
-  aiConfigExample = AI_CONFIG_EXAMPLE;
   directiveStandaloneExample = DIRECTIVE_STANDALONE_EXAMPLE;
   directiveModuleExample = DIRECTIVE_MODULE_EXAMPLE;
   elementContextExample = ELEMENT_CONTEXT_EXAMPLE;
