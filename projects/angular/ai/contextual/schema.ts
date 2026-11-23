@@ -19,7 +19,7 @@ export const CLR_PAGE_CONTEXT_SCHEMA_VERSION = '1';
  */
 export const CLR_PAGE_CONTEXT_SCHEMA = {
   $schema: 'http://json-schema.org/draft-07/schema#',
-  $id: 'https://clarity.design/schemas/page-context/1.json',
+  $id: 'https://clarity.design/schemas/page-context-1.schema.json',
   title: 'ClrPageContext',
   type: 'object',
   required: ['schemaVersion', 'application', 'enabled', 'title', 'regions', 'components', 'collectedAt'],
