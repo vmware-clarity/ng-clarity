@@ -26,6 +26,7 @@ import {
   ClrSetValueOperation,
 } from './mutation.interface';
 import { fillRoutePath, navigateAndReport, urlTreeFor } from './navigate';
+import { CLR_MUTATION_MAX_OPERATIONS } from './schema';
 import {
   coerceValue,
   descriptionMatches,
@@ -37,11 +38,13 @@ import {
   writeValue,
 } from './write';
 import { attempt } from '../attempt';
+import { SchemaValidator } from '../conform';
 import { ClrContextChange, clrDiffContext } from '../diff';
 import { isOutsideSnapshot, openModalDialogs } from '../dom/walk';
 import { ClrContextSnapshotOptions } from '../interfaces/context.interface';
 import { ClrContextService } from '../providers/contextual-engine.service';
 import { availableRoutes } from '../routes';
+import { validate } from '../schemas/mutation-operations.validator';
 import { ResolvedSnapshotOptions } from '../snapshot-options';
 
 const CONFIRM_TIMEOUT_MS = 120_000;
@@ -64,7 +67,10 @@ export class ClrMutationService {
   /** What applying the operations would do, without doing it. Pass the same `snapshotOptions` as `apply()`. */
   plan(operations: ClrMutationOperation[], snapshotOptions?: ClrContextSnapshotOptions): ClrMutationPlanEntry[] {
     const options = this.scopeOptions(snapshotOptions);
-    return listOf(operations).map(operation => {
+    return listOf(operations).map((operation, index) => {
+      if (index >= CLR_MUTATION_MAX_OPERATIONS) {
+        return { operation, ...TOO_MANY };
+      }
       const prepared = this.prepareSafely(operation, options);
       if ('refused' in prepared) {
         return { operation, refused: prepared.refused, detail: prepared.detail };
@@ -93,7 +99,11 @@ export class ClrMutationService {
     const before = await this.context.snapshot(snapshotOptions);
     const options = this.scopeOptions(snapshotOptions);
     const results: ClrMutationResult[] = [];
-    for (const operation of listOf(operations)) {
+    for (const [index, operation] of listOf(operations).entries()) {
+      if (index >= CLR_MUTATION_MAX_OPERATIONS) {
+        results.push(refusal(operation, TOO_MANY.refused, TOO_MANY.detail));
+        continue;
+      }
       try {
         results.push(await this.applyOne(operation, options));
       } catch (error) {
@@ -232,21 +242,25 @@ export class ClrMutationService {
     if (!operation || typeof operation !== 'object') {
       return { refused: 'unsupported', detail: 'An operation is expected.' };
     }
-    if (operation.operation === 'navigate') {
-      return this.prepareNavigation(operation);
-    }
-    if (operation.operation !== 'setValue' && operation.operation !== 'clear') {
+    const branch = OPERATIONS.indexOf(operation.operation);
+    if (branch < 0) {
       return { refused: 'unsupported', detail: 'Supported operations are setValue, clear and navigate.' };
     }
     // A missing value is malformed, not a request to clear: `clear` says that.
     if (operation.operation === 'setValue' && operation.value === undefined) {
       return { refused: 'unsupported', detail: 'setValue needs a value; use clear to empty the control.' };
     }
-    if (typeof operation.ref !== 'string' || !operation.ref) {
+    if (operation.operation !== 'navigate' && (typeof operation.ref !== 'string' || !operation.ref)) {
       return {
         refused: 'unsupported',
         detail: 'The operation names no ref; only a node with a ref can be written to.',
       };
+    }
+    if (!validateOperations([operation])) {
+      return { refused: 'unsupported', detail: schemaMismatch(operation.operation, branch) };
+    }
+    if (operation.operation === 'navigate') {
+      return this.prepareNavigation(operation);
     }
     const ref = this.refs.resolve(operation.ref);
     if (!ref) {
@@ -456,6 +470,22 @@ function refusal(operation: ClrMutationOperation, refused: ClrMutationRefusal, d
     detail,
   };
   return result;
+}
+
+const validateOperations = validate as SchemaValidator;
+// In the order of the schema's `oneOf`, so an operation's errors are told apart from the other branches'.
+const OPERATIONS: string[] = ['setValue', 'clear', 'navigate'];
+const TOO_MANY = {
+  refused: 'unsupported',
+  detail: `One call takes at most ${CLR_MUTATION_MAX_OPERATIONS} operations.`,
+} as const;
+
+/** Names what the operation's own branch of the schema refused, such as a property it does not have. */
+function schemaMismatch(operation: string, branch: number): string {
+  const error = validateOperations.errors?.find(found => found.schemaPath?.startsWith(`#/items/oneOf/${branch}/`));
+  const field = error?.instancePath.replace(/^\/0\/?/, '') || operation;
+  const extra = error?.params?.['additionalProperty'];
+  return `The ${operation} operation does not match CLR_MUTATION_OPERATIONS_SCHEMA: ${field} ${error?.message}${extra ? ` (${extra})` : ''}.`;
 }
 
 function listOf(operations: unknown): ClrMutationOperation[] {

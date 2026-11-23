@@ -196,6 +196,17 @@
   Each is a <code cds-text="code">ClrMutationOperation</code>, with <code cds-text="code">operation</code> set to its
   name.
 </p>
+<p class="clr-mt-16px" cds-text="body">
+  Their JSON Schema ships as
+  <code cds-text="code">&#64;clr/angular/ai/schemas/mutation-operations-1.schema.json</code> and as
+  <code cds-text="code">CLR_MUTATION_OPERATIONS_SCHEMA</code>. It holds no references, so it fits a tool definition as
+  <code cds-text="code"
+    >&#123; type: 'object', properties: &#123; operations: CLR_MUTATION_OPERATIONS_SCHEMA &#125; &#125;</code
+  >, and a backend validates what a model proposes with it. <code cds-text="code">apply()</code> and
+  <code cds-text="code">plan()</code> refuse an operation that does not match it as
+  <code cds-text="code">unsupported</code>, naming the field, and every operation past the first
+  <code cds-text="code">CLR_MUTATION_MAX_OPERATIONS</code> (50).
+</p>
 <table class="table">
   <thead>
     <tr>

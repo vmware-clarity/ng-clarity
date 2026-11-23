@@ -12,7 +12,7 @@ import { validate } from './schemas/page-context.validator';
 
 /** A validator compiled from a JSON Schema by scripts/ai-schemas.js. */
 export type SchemaValidator = ((data: unknown) => boolean) & {
-  errors?: { instancePath: string; message?: string }[] | null;
+  errors?: { instancePath: string; schemaPath?: string; message?: string; params?: Record<string, unknown> }[] | null;
 };
 
 const validatePage = validate as SchemaValidator;

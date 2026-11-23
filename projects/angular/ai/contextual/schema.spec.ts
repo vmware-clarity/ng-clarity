@@ -127,7 +127,14 @@ describe('CLR_PAGE_CONTEXT_SCHEMA and the TypeScript types', () => {
     focus: true,
     collectedAt: true,
   };
-  const component: Keys<ClrComponentContext> = { type: true, element: true, label: true, state: true, children: true };
+  const component: Keys<ClrComponentContext> = {
+    type: true,
+    element: true,
+    ref: true,
+    label: true,
+    state: true,
+    children: true,
+  };
   const required: Record<RequiredKeys<ClrPageContext>, true> = {
     schemaVersion: true,
     application: true,
