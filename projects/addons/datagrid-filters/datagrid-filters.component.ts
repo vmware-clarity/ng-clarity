@@ -142,7 +142,9 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
 
   set searchTerm(searchTerm: string | null | undefined) {
     this._searchTerm = searchTerm ?? '';
-    // The host already has this term, so only a different one typed later is emitted.
+    // The host already has this term, so only a different one typed later is emitted. The search box keeps the
+    // text as given; only this "last emitted" value is trimmed, because doSearch trims before comparing.
+    // Untrimmed, restoring " web " would emit "web".
     this.lastSearchTerm = this._searchTerm.trim();
     // Replaces text the user typed but that was not emitted yet.
     this.searchTermDebouncer.next(this._searchTerm);

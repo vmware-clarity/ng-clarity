@@ -58,6 +58,11 @@ form {
   .filter-logic {
     flex: 0 0 auto;
     margin: 0;
+
+    // Clarity's 72px minimum button width leaves And/Or mostly empty. 48px by default, 40px in compact density.
+    .btn {
+      min-width: var(--clr-base-layout-space-3xl);
+    }
   }
 
   .filter-condition-row {
