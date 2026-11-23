@@ -31,7 +31,6 @@ export const CLR_PAGE_CONTEXT_SCHEMA = {
       additionalProperties: false,
       properties: { id: { type: 'string' }, version: { type: 'string' } },
     },
-    viewId: { type: 'string' },
     metadata: { type: 'object' },
     enabled: { type: 'boolean' },
     title: { type: 'string' },
