@@ -8,7 +8,12 @@
 import { HashLocationStrategy, isPlatformBrowser, LocationStrategy } from '@angular/common';
 import { DOCUMENT, inject, Injectable, isDevMode, NgZone, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
-import { CLR_CONTEXT_IGNORE_SELECTOR, CLR_CONTEXT_REDACT_SELECTOR, usableSelectors } from '@clr/angular/utils';
+import {
+  CLR_CONTEXT_IGNORE_SELECTOR,
+  CLR_CONTEXT_REDACT_SELECTOR,
+  publishElementContext,
+  usableSelectors,
+} from '@clr/angular/utils';
 
 import { ClrContextRegistryService } from './context-registry.service';
 import { usableTimeout } from '../attempt';
@@ -28,6 +33,7 @@ import {
   ClrComponentContext,
   ClrContextSnapshotOptions,
   ClrPageContext,
+  ClrPublishedContext,
   ClrRouteContext,
 } from '../interfaces/context.interface';
 import { jsonSafe, REGION_DEPTH, ROUTE_DATA_DEPTH } from '../json-safe';
@@ -114,6 +120,14 @@ export class ClrContextService implements OnDestroy {
     this.config = { ...config };
     this.scope = presetOrOptions(config.scope);
     this.configured = true;
+  }
+
+  /**
+   * Publishes what the DOM cannot show about `element`, such as a component's own host: `read` is called on every
+   * snapshot and merged into the element's node. A `[clrContext]` on the element merges on top. Returns the teardown.
+   */
+  publish(element: Element, read: () => Partial<ClrPublishedContext> | null | undefined): () => void {
+    return publishElementContext(element, () => read());
   }
 
   /** A fresh snapshot of the page, with `options` applied over the configured scope. */

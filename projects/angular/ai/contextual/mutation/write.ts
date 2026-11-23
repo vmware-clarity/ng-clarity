@@ -92,10 +92,10 @@ const UNBOUND_DETAIL =
 const KEPT_CHOICE_DETAIL = 'The current choice is kept from agents, and cannot be changed by one.';
 
 const STRUCTURED_VALUE_DETAIL =
-  'The control holds an object or a list, which the value its role suggests would replace. It can publish a mutator (publishElementMutator from @clr/angular/utils).';
+  'The control holds an object or a list, which the value its role suggests would replace.';
 
 const CHOICE_VALUE_DETAIL =
-  'The group holds something other than one of its radios’ labels, so choosing one by its label would store the wrong thing. It can publish a mutator (publishElementMutator from @clr/angular/utils).';
+  'The group holds something other than one of its radios’ labels, so choosing one by its label would store the wrong thing.';
 
 const OBSTACLE_DETAILS = {
   hidden: 'The control is not currently shown to the user, or sits behind an open modal dialog.',
@@ -148,7 +148,7 @@ export function resolveWriteTarget(
       return {
         refused: 'unsupported',
         detail:
-          'This custom control does not say how it is written to. It can publish a mutator (publishElementMutator from @clr/angular/utils).',
+          'This custom control renders no role the engine can write, such as a textbox, a checkbox or a radio group.',
       };
     }
     if (kind === 'select' && bound?.updateOn === 'submit') {

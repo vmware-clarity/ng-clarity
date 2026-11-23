@@ -14,9 +14,6 @@ export * from './diff';
 export * from './schema';
 export { CLR_CONTEXT_CATEGORIES, CLR_CONTEXT_PRESETS } from './snapshot-options';
 export type { ClrContextPreset } from './snapshot-options';
-// Re-exported from @clr/angular/utils, where components publish without depending on this entry point.
-export { publishElementContext, publishElementMutator } from '@clr/angular/utils';
-export type { ClrElementContextCallback, ClrElementMutation, ClrElementMutator } from '@clr/angular/utils';
 export { CLR_CONTEXT_IGNORE_ATTRIBUTE, CLR_CONTEXT_REDACT_ATTRIBUTE } from '@clr/angular/utils';
 // The host class stays internal so the application-wide options always apply.
 export { CLR_CONTEXT_PROTOCOL, clrRequestHostContext } from './iframe/context-frame-bridge';
