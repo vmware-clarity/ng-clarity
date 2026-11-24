@@ -13,7 +13,7 @@ export const oneMinuteMs: number = 60 * oneSecondMs;
 export const oneHourMs: number = 60 * oneMinuteMs;
 /**
  * A fixed 24 hours Time span, not a calendar day.
- * For calendar days calculation use `addDays()`, since a day can have 23 or 25 hours when daylight saving changes.
+ * For calendar days use `Date.setDate()`, since a day can have 23 or 25 hours when daylight saving changes.
  */
 export const oneDayMs: number = 24 * oneHourMs;
 export const oneWeekMs: number = 7 * oneDayMs;

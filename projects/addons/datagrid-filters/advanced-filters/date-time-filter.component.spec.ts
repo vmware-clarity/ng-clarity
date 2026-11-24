@@ -19,8 +19,7 @@ import { DateTimeFilterComponent } from './date-time-filter.component';
 import { FilterFormComponent } from './filter-form.component';
 import { ComparisonOperator, LogicalOperator, TimeSpan } from '../model/datagrid-filters.enums';
 import { DateTimePropertyDefinition, PropertyFilter, PropertyPredicate } from '../model/datagrid-filters.interfaces';
-import { addDays, toIsoDate } from '../model/date-time-editor-state';
-import { clockChangeDays } from '../model/date-time-editor-state.mock';
+import { clockChangeDays, nextIsoDay } from '../model/date-time-editor-state.mock';
 
 const augustNinth = '2023-08-09';
 // The clrDate inputs hold en-US locale strings (MM/dd/yyyy) in tests.
@@ -565,7 +564,6 @@ describe('DateTimeFilterComponent', () => {
 
   // Skipped in a time zone without daylight saving (e.g. UTC).
   describe.skipIf(!days.length)('on the days the clocks change', () => {
-    const nextDay = (iso: string) => toIsoDate(addDays(new Date(`${iso}T00:00:00`), 1));
     // Emitted values end with the local UTC offset; the local date and time come first.
     const localPart = (value: string) => value.substring(0, 19);
     const emittedCriteria = (component: DateTimeFilterComponent): PropertyPredicate[] =>
@@ -584,7 +582,7 @@ describe('DateTimeFilterComponent', () => {
         expect(
           emittedCriteria(testContext.component).map(predicate => localPart(predicate.value)),
           day
-        ).toEqual([`${day}T00:00:00`, `${nextDay(day)}T00:00:00`]);
+        ).toEqual([`${day}T00:00:00`, `${nextIsoDay(day)}T00:00:00`]);
       });
     });
 
@@ -596,7 +594,7 @@ describe('DateTimeFilterComponent', () => {
         expect(
           emittedCriteria(testContext.component).map(predicate => localPart(predicate.value)),
           day
-        ).toEqual([`${nextDay(day)}T00:00:00`]);
+        ).toEqual([`${nextIsoDay(day)}T00:00:00`]);
       });
     });
 
@@ -610,7 +608,7 @@ describe('DateTimeFilterComponent', () => {
         expect(
           emittedCriteria(testContext.component).map(predicate => localPart(predicate.value)),
           day
-        ).toEqual(['2026-01-01T00:00:00', `${nextDay(day)}T00:00:00`]);
+        ).toEqual(['2026-01-01T00:00:00', `${nextIsoDay(day)}T00:00:00`]);
       });
     });
   });

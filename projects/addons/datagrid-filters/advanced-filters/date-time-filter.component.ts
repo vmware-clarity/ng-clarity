@@ -45,7 +45,7 @@ import {
   oneWeekMs,
   oneYearMs,
 } from '../model/date-time-constants';
-import { addDays, dateTimeEditorState, parseLocalDateTime, toIsoDate } from '../model/date-time-editor-state';
+import { dateTimeEditorState, parseLocalDateTime } from '../model/date-time-editor-state';
 
 const enterKey = 'Enter';
 const dateTimeFormat = 'yyyy-MM-ddTHH:mm:ss';
@@ -537,7 +537,12 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
    */
   private getNextDay(baseDate: string): string {
     const parsed = parseLocalDateTime(baseDate);
-    return parsed ? this.datePipe.transform(addDays(parsed.date, 1), dateTimeFormat) || baseDate : baseDate;
+    if (!parsed) {
+      return baseDate;
+    }
+    const nextDay = new Date(parsed.date);
+    nextDay.setDate(nextDay.getDate() + 1);
+    return this.datePipe.transform(nextDay, dateTimeFormat) || baseDate;
   }
 
   private getCustomDate(baseDate: string, timePeriod: number): string {
@@ -608,7 +613,7 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
   /** The date picker's locale date string as yyyy-MM-dd. */
   private isoDate(controlName: 'dateValue' | 'dateValueTo'): string {
     const date = this.dateFormat.parse(this.dateTimeFilterForm.value[controlName]);
-    return date ? toIsoDate(date) : '';
+    return (date && this.datePipe.transform(date, 'yyyy-MM-dd')) || '';
   }
 
   /**
@@ -616,15 +621,11 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
    * day: the start of the day for From, its last minute (or second) for To, since To is inclusive.
    */
   private timeInputValue(date: Date, isEnd: boolean): string {
-    const pad = (value: number) => value.toString().padStart(2, '0');
-    if (!date.getHours() && !date.getMinutes() && !date.getSeconds()) {
-      if (isEnd) {
-        return this.includeSeconds ? '23:59:59' : '23:59';
-      }
-      return this.includeSeconds ? '00:00:00' : '00:00';
+    const format = this.includeSeconds ? 'HH:mm:ss' : 'HH:mm';
+    if (isEnd && !date.getHours() && !date.getMinutes() && !date.getSeconds()) {
+      return this.includeSeconds ? '23:59:59' : '23:59';
     }
-    const time = `${pad(date.getHours())}:${pad(date.getMinutes())}`;
-    return this.includeSeconds ? `${time}:${pad(date.getSeconds())}` : time;
+    return this.datePipe.transform(date, format) || '';
   }
 
   /**
