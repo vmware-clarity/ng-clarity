@@ -43,7 +43,6 @@ import {
   ClrPopoverType,
 } from '@clr/angular/popover/common';
 import {
-  CLR_CONTEXT_DEFAULT_MAX_ITEMS,
   CLR_CONTEXT_EDITING_HOST_SELECTOR,
   CLR_CONTEXT_HIDDEN_SELECTOR,
   CLR_CONTEXT_IGNORE_SELECTOR,
@@ -646,7 +645,6 @@ export class ClrCombobox<T>
 
   /** What the combobox publishes beyond its ARIA: the selection and, while there are options, the option list. */
   private describeForContext(snapshotOptions?: ClrContextSnapshotOptions): ClrPublishedContext {
-    const maxItems = snapshotOptions?.maxItemsPerCollection ?? CLR_CONTEXT_DEFAULT_MAX_ITEMS;
     const excluded = this.excludedBy(snapshotOptions);
     const state: Record<string, unknown> = { multiSelect: this.multiSelect };
     const items = this.options?.items;
@@ -658,16 +656,11 @@ export class ClrCombobox<T>
       const named = listed.filter(entry => entry.shown === 'shown');
       // A narrowed list reveals what the user typed, so it goes under keys of its own.
       const keys = narrowed
-        ? { list: 'matchingOptions', redacted: 'redactedMatchingOptions', count: 'matchingOptionCount' }
-        : { list: 'options', redacted: 'redactedOptions', count: 'optionCount' };
-      // `0` asks for counts and the selection only.
-      if (maxItems === 0) {
-        state[keys.count] = listed.length;
-      } else {
-        state[keys.list] = named.slice(0, maxItems).map(entry => this.optionLabel(entry.option, excluded));
-        if (named.length < listed.length) {
-          state[keys.redacted] = listed.length - named.length;
-        }
+        ? { list: 'matchingOptions', redacted: 'redactedMatchingOptions' }
+        : { list: 'options', redacted: 'redactedOptions' };
+      state[keys.list] = named.map(entry => this.optionLabel(entry.option, excluded));
+      if (named.length < listed.length) {
+        state[keys.redacted] = listed.length - named.length;
       }
     } else {
       state.optionsAvailable = false;
@@ -754,9 +747,7 @@ export class ClrCombobox<T>
       } else if (!items.length) {
         return { refused: 'No options are loaded: the combobox loads them as the user types.' };
       } else {
-        const named = items
-          .slice(0, CLR_CONTEXT_DEFAULT_MAX_ITEMS)
-          .map(candidate => `"${this.optionLabel(candidate, excluded)}"`);
+        const named = items.map(candidate => `"${this.optionLabel(candidate, excluded)}"`);
         return { refused: `No such option. The options are: ${named.join(', ')}.` };
       }
     }

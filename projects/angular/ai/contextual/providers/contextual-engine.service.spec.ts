@@ -22,7 +22,7 @@ import {
   ClrContextSnapshotOptions,
   ClrPageContext,
 } from '../interfaces/context.interface';
-import { CLR_CONTEXT_CATEGORIES, CLR_CONTEXT_DEFAULT_OPTIONS, CLR_CONTEXT_PRESETS } from '../snapshot-options';
+import { CLR_CONTEXT_CATEGORIES, CLR_CONTEXT_PRESETS } from '../snapshot-options';
 
 @Component({ template: '', changeDetection: ChangeDetectionStrategy.Eager })
 class RoutedComponent {}
@@ -282,29 +282,6 @@ describe('ClrContextService', () => {
   });
 });
 
-describe('ClrContextService, saying when a snapshot is cut off', () => {
-  let engine: ClrContextService;
-  let widgets: HTMLElement;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    engine = TestBed.inject(ClrContextService);
-    widgets = document.createElement('div');
-    widgets.innerHTML = '<button>one</button><button>two</button><button>three</button>';
-    document.body.appendChild(widgets);
-  });
-
-  afterEach(() => widgets.remove());
-
-  it('flags a snapshot whose component budget ran out', async () => {
-    expect((await engine.snapshot({ maxComponents: 1 })).truncated).toBe(true);
-  });
-
-  it('carries no flag when everything fit', async () => {
-    expect('truncated' in (await engine.snapshot({ maxComponents: 5000 }))).toBe(false);
-  });
-});
-
 describe('ClrContextService, configured once for the application', () => {
   let widgets: HTMLElement;
 
@@ -336,10 +313,10 @@ describe('ClrContextService, configured once for the application', () => {
     expect(snapshot.components[0].children?.map(node => node.type)).toEqual(['button']);
   });
 
-  it('lets a call override the application’s budgets', async () => {
-    const engine = engineWith({ scope: { root: 'main', maxComponents: 1 } });
-    expect((await engine.snapshot()).truncated).toBe(true);
-    expect((await engine.snapshot({ maxComponents: 50 })).truncated).toBeUndefined();
+  it('lets a call override the application’s depth', async () => {
+    const engine = engineWith({ scope: { root: 'main', depth: 1 } });
+    expect((await engine.snapshot()).components[0].children).toBeUndefined();
+    expect((await engine.snapshot({ depth: 2 })).components[0].children?.length).toBe(2);
   });
 
   it('adds a call’s exclusions to the application’s rather than replacing them', async () => {
@@ -391,9 +368,9 @@ describe('ClrContextService, configured once for the application', () => {
 
   it('holds a caller the application does not control to the application options', async () => {
     const engine = engineWith({
-      scope: { excludeCategories: ['text', 'layout'], root: 'main, nav', maxComponents: 5 },
+      scope: { excludeCategories: ['text', 'layout'], root: 'main, nav', depth: 2 },
     });
-    const snapshot = await frameAccessor(engine)({ excludeCategories: [], root: 'page', maxComponents: 10_000 });
+    const snapshot = await frameAccessor(engine)({ excludeCategories: [], root: 'page', depth: 10 });
     expect(types(snapshot)).toEqual(['main']);
     expect(snapshot.components[0].children?.map(node => node.type)).toEqual(['button']);
   });
@@ -470,8 +447,8 @@ describe('ClrContextService, what a caller the application does not control is t
     expect(JSON.stringify(await engine.snapshot())).toContain('"pressed":true');
   });
 
-  it('still honours a smaller budget the caller asks for', async () => {
-    expect((await frameAccessor(engine)({ maxComponents: 1 })).components.length).toBe(1);
+  it('still honours a smaller depth the caller asks for', async () => {
+    expect((await frameAccessor(engine)({ depth: 1 })).components.every(node => !node.children)).toBe(true);
   });
 });
 
@@ -533,15 +510,6 @@ describe('ClrContextService, what a caller the application does not control is t
     expect((await frameAccessor(engine)({ root: 'main' })).components.length).toBeGreaterThan(0);
     expect((await frameAccessor(engine)({ root: 7 })).components.length).toBeGreaterThan(0);
   });
-
-  it('does not let a caller raise a budget past the default', async () => {
-    page.innerHTML = Array.from({ length: 320 }, (_, index) => `<button>Button ${index}</button>`).join('');
-
-    const snapshot = await frameAccessor(engine)({ maxComponents: 5000 });
-
-    expect(find(snapshot.components, () => true).length).toBeLessThanOrEqual(CLR_CONTEXT_DEFAULT_OPTIONS.maxComponents);
-    expect(snapshot.truncated).toBe(true);
-  });
 });
 
 describe('ClrContextService, the routes an application can navigate to', () => {
@@ -575,7 +543,7 @@ describe('ClrContextService, the routes an application can navigate to', () => {
     ]);
   });
 
-  it('lists the root path as "/", and never fewer than fifty routes however small the collection budget', async () => {
+  it('lists the root path as "/", and every route', async () => {
     const many = Array.from({ length: 70 }, (_, index) => ({ path: `page-${index}`, component: RoutedComponent }));
     TestBed.configureTestingModule({
       providers: [provideRouter([{ path: '', component: RoutedComponent, title: 'Home' }, ...many])],
@@ -583,11 +551,9 @@ describe('ClrContextService, the routes an application can navigate to', () => {
     const engine = TestBed.inject(ClrContextService);
     engine.configure({ routes: true });
 
-    const few = await engine.snapshot({ maxItemsPerCollection: 5 });
-    expect(few.availableRoutes?.[0]).toEqual({ path: '/', title: 'Home' });
-    expect(few.availableRoutes?.length).toBe(50);
-    const more = await engine.snapshot({ maxItemsPerCollection: 60 });
-    expect(more.availableRoutes?.length).toBe(60);
+    const snapshot = await engine.snapshot();
+    expect(snapshot.availableRoutes?.[0]).toEqual({ path: '/', title: 'Home' });
+    expect(snapshot.availableRoutes?.length).toBe(71);
   });
 
   it('leaves out routes matched by a custom matcher, which have no pattern to navigate by, and lists each path once', async () => {
@@ -932,16 +898,14 @@ describe('ClrContextService, asynchronous providers', () => {
     expect(snapshot.regions).toEqual([{ type: 'clr-unavailable' }]);
   });
 
-  it('holds what providers report to the snapshot budgets', () => {
-    const rows = Array.from({ length: 5000 }, (_, index) => ({ type: 'row', label: `${index} ${'x'.repeat(2000)}` }));
+  it('cuts long text in what providers report', () => {
+    const rows = Array.from({ length: 3 }, (_, index) => ({ type: 'row', label: `${index} ${'x'.repeat(2000)}` }));
     registry.register({ getClrContext: () => ({ type: 'region', label: 'Hosts', children: rows }) });
 
-    const snapshot = readNow({ ...quiet, maxComponents: 20, maxItemsPerCollection: 100 });
+    const snapshot = readNow(quiet);
 
-    expect(snapshot.truncated).toBe(true);
-    expect(snapshot.regions[0].children?.length).toBe(19);
+    expect(snapshot.regions[0].children?.length).toBe(3);
     expect(snapshot.regions[0].children?.[0].label?.length).toBeLessThanOrEqual(100);
-    expect(JSON.stringify(snapshot).length).toBeLessThan(5000);
   });
 
   it('stops at a cycle in what a provider reports', () => {
@@ -1134,17 +1098,21 @@ describe('ClrContextService, the frame bridge as a boundary', () => {
 
   afterEach(() => form.remove());
 
-  it('lets a frame ask for less than the host allows, never for more', async () => {
-    const ask = frameAccessor(engine, { snapshot: { maxComponents: 2 } });
+  it('lets a frame ask for less depth than the host allows, never for more', async () => {
+    form.innerHTML =
+      '<div role="group" aria-label="A"><div role="group" aria-label="B"><button>one</button></div></div>';
+    const ask = frameAccessor(engine, { snapshot: { depth: 2 } });
 
-    expect(nodeCount(await ask({ maxComponents: 1 }))).toBe(1);
-    expect(nodeCount(await ask({ maxComponents: 50 }))).toBe(2);
+    expect(nodeCount(await ask({ depth: 1 }))).toBe(1);
+    expect(nodeCount(await ask({ depth: 5 }))).toBe(2);
   });
 
-  it('drops a budget that is not a finite number rather than walking without bound', async () => {
-    const ask = frameAccessor(engine, { snapshot: { maxComponents: 2 } });
+  it('drops a depth that is not a number of one or more', async () => {
+    form.innerHTML =
+      '<div role="group" aria-label="A"><div role="group" aria-label="B"><button>one</button></div></div>';
+    const ask = frameAccessor(engine, { snapshot: { depth: 2 } });
 
-    expect(nodeCount(await ask({ maxComponents: Number.NaN }))).toBe(2);
+    expect(nodeCount(await ask({ depth: Number.NaN }))).toBe(2);
   });
 
   it('shares what the user typed only when the host says so', async () => {

@@ -26,7 +26,7 @@ function useContainer(): void {
 
 /** Resolved options with internal ones (`excludeRoles`, `rootSelector`...) set directly, to test the walk itself. */
 function budgets(overrides: Partial<ResolvedSnapshotOptions> = {}): ResolvedSnapshotOptions {
-  return { ...resolveSnapshotOptions({ maxComponents: 100, ...overrides }), ...overrides };
+  return { ...resolveSnapshotOptions(), ...overrides };
 }
 
 /** Renders `html` into the container and walks it. */
@@ -359,13 +359,6 @@ describe('collectContextTreeWithin', () => {
     expect(button.children).toBeUndefined();
   });
 
-  it('honours the component budget', () => {
-    const nodes = collect('<div role="grid"></div><div role="grid"></div><div role="grid"></div>', {
-      maxComponents: 2,
-    });
-    expect(nodes.length).toBe(2);
-  });
-
   it('lets a custom extractor describe an element the collector would not understand', () => {
     container.innerHTML = '<chat-log><div>a</div><div>b</div></chat-log>';
     const nodes = collectContextTreeWithin(container, budgets(), [
@@ -554,17 +547,6 @@ describe('collectContextTreeWithin, what a summary must not hide', () => {
     expect(JSON.stringify(nodes)).toContain('Total due');
   });
 
-  it('counts a wrapper node against the budget, so the budget is a real bound', () => {
-    const nodes = collect(
-      `<my-widget><div role="grid"></div><my-widget-footer>1</my-widget-footer></my-widget>
-       <my-widget><div role="grid"></div><my-widget-footer>2</my-widget-footer></my-widget>`,
-      { maxComponents: 3 }
-    );
-    const count = (list: ClrComponentContext[]): number =>
-      list.reduce((total, node) => total + 1 + count(node.children ?? []), 0);
-    expect(count(nodes)).toBeLessThanOrEqual(3);
-  });
-
   it('merges what a multi-part component publishes onto the component, not onto each part', () => {
     container.innerHTML = '<my-grid><div role="grid"></div><my-grid-footer>2 of 40</my-grid-footer></my-grid>';
     publishElementContext(container.querySelector('my-grid') as Element, () => ({
@@ -577,23 +559,19 @@ describe('collectContextTreeWithin, what a summary must not hide', () => {
     expect(widget.children?.[1].state).toBeUndefined();
   });
 
-  it('charges published children to the component budget, leaving out excluded types', () => {
-    const tree = (depth: number): ClrComponentContext[] =>
-      Array.from({ length: 25 }, (_, index) => ({
-        type: index === 0 ? 'table' : 'row',
-        label: `Row ${index}`,
-        children: depth > 1 ? tree(depth - 1) : undefined,
-      }));
+  it('leaves excluded types out of published children, with their own children', () => {
     container.innerHTML = '<my-tree aria-label="Tree"></my-tree>';
-    publishElementContext(container.querySelector('my-tree') as Element, () => ({ type: 'tree', children: tree(3) }));
+    publishElementContext(container.querySelector('my-tree') as Element, () => ({
+      type: 'tree',
+      children: [
+        { type: 'table', label: 'Hidden', children: [{ type: 'row', label: 'Inside hidden' }] },
+        { type: 'row', label: 'Kept', children: [{ type: 'table', label: 'Nested hidden' }] },
+      ],
+    }));
 
-    const result = collectContextTreeWithin(container, budgets({ maxComponents: 5, excludeRoles: ['table'] }));
-    const count = (nodes: ClrComponentContext[] = []): number =>
-      nodes.reduce((total, node) => total + 1 + count(node.children), 0);
+    const [tree] = collectContextTreeWithin(container, budgets({ excludeRoles: ['table'] })).components;
 
-    expect(result.truncated).toBe(true);
-    expect(count(result.components)).toBe(5);
-    expect(JSON.stringify(result.components)).not.toContain('"table"');
+    expect(tree.children).toEqual([{ type: 'row', label: 'Kept' }]);
   });
 
   it('leaves out what a component fails to publish, and says so on the console in development', () => {
@@ -739,11 +717,6 @@ describe('collectContextTreeWithin, text and frames', () => {
         { type: 'button', label: 'Go' },
       ]);
     });
-
-    it('counts text against the budget like any other node', () => {
-      const nodes = collect('<p>one</p><p>two</p><p>three</p>', { maxComponents: 2 });
-      expect(nodes.length).toBe(2);
-    });
   });
 
   describe('frames', () => {
@@ -862,13 +835,6 @@ describe('collectContextTreeWithin, text and frames', () => {
       });
     });
 
-    it('shares one budget between the page and its frames', async () => {
-      await frameWith('<button>a</button><button>b</button><button>c</button>');
-      const [frame] = collectContextTreeWithin(container, budgets({ maxComponents: 3 })).components;
-
-      expect(frame.children?.length).toBe(2);
-    });
-
     it('honours redaction inside a frame', async () => {
       await frameWith('<input type="password" value="hunter2" aria-label="Password" />');
       const [frame] = collectContextTreeWithin(container, budgets()).components;
@@ -887,17 +853,10 @@ describe('collectContextTreeWithin, text and frames', () => {
 describe('collectContextTreeWithin, its result', () => {
   useContainer();
 
-  it('says when the budget ran out before the page did', () => {
-    container.innerHTML = '<button>a</button><button>b</button><button>c</button>';
-    const result = collectContextTreeWithin(container, budgets({ maxComponents: 2 }));
-    expect(result.components.length).toBe(2);
-    expect(result.truncated).toBe(true);
-  });
-
-  it('does not call a page that fits exactly truncated', () => {
-    container.innerHTML = '<button>a</button><button>b</button>';
-    const result = collectContextTreeWithin(container, budgets({ maxComponents: 2 }));
-    expect(result.components.length).toBe(2);
+  it('describes every node of a large page, and is not truncated', () => {
+    container.innerHTML = Array.from({ length: 400 }, (_, index) => `<button>b${index}</button>`).join('');
+    const result = collectContextTreeWithin(container, budgets());
+    expect(result.components.length).toBe(400);
     expect(result.truncated).toBe(false);
   });
 
@@ -1015,19 +974,6 @@ describe('collectContextTreeWithin, choosing what to collect', () => {
     expect(json).toContain('"redacted":true');
   });
 
-  it('says the snapshot is cut off when a grid has more cells with controls than the collection budget', () => {
-    const grid = (count: number) =>
-      `<div role="grid" aria-label="Hosts">${Array.from(
-        { length: count },
-        (_, i) => `<div role="row"><div role="gridcell"><input aria-label="Note ${i}" /></div></div>`
-      ).join('')}</div>`;
-
-    expect(collectTree(grid(2), { maxItemsPerCollection: 2 }).truncated).toBe(false);
-    const capped = collectTree(grid(3), { maxItemsPerCollection: 2 });
-    expect(capped.truncated).toBe(true);
-    expect(capped.components[0].children?.length).toBe(2);
-  });
-
   it('describes only the open modal dialog under modal focus', () => {
     const result = collectTree(
       `${PAGE}<div role="dialog" aria-modal="true" aria-label="Add host"><input aria-label="Name" /><button>Add</button></div>`,
@@ -1106,16 +1052,17 @@ describe('collectContextTreeWithin, choosing what to collect', () => {
     expect(types(result.components)).toEqual(['banner', 'main', 'contentinfo']);
   });
 
-  it('reduces collections to counts and selection in summary mode', () => {
-    const { components } = collectTree(
-      `<div role="tablist"><button role="tab">One</button><button role="tab" aria-selected="true">Two</button></div>
-       <select aria-label="Size"><option>S</option><option selected>M</option></select>
-       <ul><li>a</li><li>b</li></ul>`,
-      { collectionItems: 'summary' }
-    );
-    expect(components[0].state).toEqual({ tabCount: 2, activeTab: 'Two' });
-    expect(components[1].state).toEqual({ value: 'M', optionCount: 2 });
-    expect(components[2].state).toEqual({ itemCount: 2 });
+  it('describes only as many levels below the root as depth allows', () => {
+    const html = `<nav aria-label="Main"><ul><li><a href="/a">A</a></li></ul></nav><button>Save</button>`;
+    const top = collectTree(html, { depth: 1 }).components;
+    expect(top.map(node => [node.type, node.children])).toEqual([
+      ['navigation', undefined],
+      ['button', undefined],
+    ]);
+
+    const two = collectTree(html, { depth: 2 }).components;
+    expect(two[0].children?.map(node => [node.type, node.children])).toEqual([['list', undefined]]);
+    expect(collectTree(html, { depth: 2 }).truncated).toBe(false);
   });
 });
 
@@ -1451,12 +1398,6 @@ describe('collectContextTreeWithin, names, text and state an agent would otherwi
       { type: 'link', label: 'the docs', state: { href: '/docs' } },
       { type: 'text', label: 'first.' },
     ]);
-  });
-
-  it('says the snapshot is cut off when the budget runs out before loose text', () => {
-    const result = collectTree('<div role="dialog" aria-label="D">Bare text.</div>', { maxComponents: 1 });
-    expect(result.components).toEqual([{ type: 'dialog', label: 'D' }]);
-    expect(result.truncated).toBe(true);
   });
 
   it('names an alert or a status by its message, leaving out the actions inside it', () => {

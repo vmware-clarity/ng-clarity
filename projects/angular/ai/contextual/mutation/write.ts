@@ -8,7 +8,6 @@
 import { ApplicationRef, ChangeDetectorRef, getDebugNode } from '@angular/core';
 import { AbstractControl, NgControl } from '@angular/forms';
 import {
-  CLR_CONTEXT_DEFAULT_MAX_ITEMS,
   CLR_CONTEXT_WITHHELD_SELECTOR,
   ClrElementMutation,
   ClrElementMutator,
@@ -766,11 +765,10 @@ function optionLabel(option: HTMLOptionElement): string {
 }
 
 function listLabels(labels: string[]): string {
-  const named = labels.filter(Boolean);
-  const listed = named.slice(0, CLR_CONTEXT_DEFAULT_MAX_ITEMS).map(label => `"${label}"`);
-  return named.length > CLR_CONTEXT_DEFAULT_MAX_ITEMS
-    ? `${listed.join(', ')} and ${named.length - CLR_CONTEXT_DEFAULT_MAX_ITEMS} more`
-    : listed.join(', ');
+  return labels
+    .filter(Boolean)
+    .map(label => `"${label}"`)
+    .join(', ');
 }
 
 function words(text: string): string[] {

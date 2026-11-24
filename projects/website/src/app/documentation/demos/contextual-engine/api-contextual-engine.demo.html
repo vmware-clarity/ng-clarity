@@ -555,21 +555,12 @@
       </td>
     </tr>
     <tr>
-      <td class="left"><b cds-text="medium">maxComponents</b></td>
-      <td class="left clr-hidden-xs-down">300</td>
+      <td class="left"><b cds-text="medium">depth</b></td>
+      <td class="left clr-hidden-xs-down">every level</td>
       <td class="left clr-hidden-xs-down">Replaces the application's</td>
       <td class="left">
-        The most nodes to describe. When it runs out, the rest of the page is left out and the snapshot has
-        <code cds-text="code">truncated: true</code>.
-      </td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">maxItemsPerCollection</b></td>
-      <td class="left clr-hidden-xs-down">25</td>
-      <td class="left clr-hidden-xs-down">Replaces the application's</td>
-      <td class="left">
-        The most items to list per collection: rows, tabs, list items, options, menu items.
-        <code cds-text="code">0</code> gives counts and the selection only.
+        How many levels below <code cds-text="code">root</code> to describe: <code cds-text="code">1</code> gives the
+        top-level nodes only, <code cds-text="code">2</code> their children too.
       </td>
     </tr>
   </tbody>
@@ -577,7 +568,7 @@
 <p class="clr-mt-16px" cds-text="body">
   Presets for <code cds-text="code">scope</code>: <code cds-text="code">'full'</code> (the defaults),
   <code cds-text="code">'interactive'</code> (no plain text, no layout) and <code cds-text="code">'minimal'</code> (also
-  counts instead of items, 150 nodes and <code cds-text="code">root: 'modal'</code>).
+  <code cds-text="code">root: 'modal'</code>).
 </p>
 
 <h2 id="untrusted" cds-text="title" class="clr-mt-48px">Untrusted callers</h2>
@@ -596,10 +587,9 @@
     application shares it.
   </li>
   <li>
-    Only safe options: <code cds-text="code">maxComponents</code>, <code cds-text="code">maxItemsPerCollection</code>,
-    <code cds-text="code">excludeCategories</code>, and <code cds-text="code">root</code> set to
-    <code cds-text="code">'page'</code> or <code cds-text="code">'modal'</code>. Never selectors, and never more than
-    the application allows.
+    Only safe options: <code cds-text="code">depth</code>, <code cds-text="code">excludeCategories</code>, and
+    <code cds-text="code">root</code> set to <code cds-text="code">'page'</code> or
+    <code cds-text="code">'modal'</code>. Never selectors, and never more than the application allows.
   </li>
 </ul>
 
@@ -700,7 +690,9 @@
     <tr>
       <td class="left"><b cds-text="medium">truncated</b></td>
       <td class="left clr-hidden-xs-down">Boolean</td>
-      <td class="left"><code cds-text="code">true</code> when something was left out because a limit was reached.</td>
+      <td class="left">
+        <code cds-text="code">true</code> when the page was too large or too deeply nested to read in full.
+      </td>
     </tr>
     <tr>
       <td class="left"><b cds-text="medium">focus</b></td>
@@ -800,11 +792,6 @@
       <td class="left"><b cds-text="medium">usableSelectors(root, selectors)</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">string</code></td>
       <td class="left">Joins the valid selectors into one and drops invalid ones.</td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">CLR_CONTEXT_DEFAULT_MAX_ITEMS</b></td>
-      <td class="left clr-hidden-xs-down"><code cds-text="code">number</code></td>
-      <td class="left">How many items to list when the caller sets no limit: 25.</td>
     </tr>
   </tbody>
 </table>

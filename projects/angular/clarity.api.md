@@ -873,9 +873,6 @@ export const CLR_ALERT_DIRECTIVES: Type<any>[];
 export const CLR_BUTTON_GROUP_DIRECTIVES: Type<any>[];
 
 // @public
-export const CLR_CONTEXT_DEFAULT_MAX_ITEMS = 25;
-
-// @public
 export const CLR_CONTEXT_EDITING_HOST_SELECTOR = "[contenteditable]:not([contenteditable=\"false\" i])";
 
 // @public
@@ -2452,10 +2449,9 @@ export type ClrContextCategory = 'layout' | 'actions' | 'forms' | 'headings' | '
 
 // @public
 export interface ClrContextSnapshotOptions {
+    depth?: number;
     excludeCategories?: ClrContextCategory[];
     excludeSelectors?: string[];
-    maxComponents?: number;
-    maxItemsPerCollection?: number;
     root?: string;
 }
 

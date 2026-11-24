@@ -122,10 +122,6 @@ describe('ClrCombobox element context', () => {
     expect(types).not.toContain('dialog');
   });
 
-  it('caps the option list to the collection budget', () => {
-    expect(published(fixture, 'clr-combobox', { maxItemsPerCollection: 1 }).state.options).toEqual(['Apple']);
-  });
-
   it('removes the callback when the combobox is destroyed', () => {
     fixture.destroy();
 
@@ -320,7 +316,7 @@ class MarkedOptionTestComponent {
 
 describe('ClrCombobox element context, options marked or excluded themselves', () => {
   let fixture: ComponentFixture<MarkedOptionTestComponent>;
-  const options = { ...CLR_CONTEXT_DEFAULT_OPTIONS, excludeSelectors: ['.secret'], maxItemsPerCollection: 25 };
+  const options = { ...CLR_CONTEXT_DEFAULT_OPTIONS, excludeSelectors: ['.secret'] };
 
   beforeEach(async () => {
     fixture = await create(MarkedOptionTestComponent);
@@ -734,25 +730,6 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     expect(fixture.componentInstance.team).toEqual(['Alice Smith']);
     expect(published(fixture, '.async-multi').state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
     expect(published(fixture, '.async-multi').state['options']).toBeUndefined();
-  });
-
-  it('counts the options rather than listing them in a summary snapshot', () => {
-    expect(published(fixture, 'clr-combobox', { maxItemsPerCollection: 0 }).state).toEqual({
-      multiSelect: false,
-      optionCount: 5,
-      value: null,
-    });
-  });
-
-  it('counts the matches in a summary snapshot', () => {
-    open();
-    type('Smi');
-
-    expect(published(fixture, 'clr-combobox', { maxItemsPerCollection: 0 }).state).toEqual({
-      multiSelect: false,
-      matchingOptionCount: 3,
-      value: null,
-    });
   });
 
   it('lists every option of a list that mixes written-out options with *clrOptionItems as matches', () => {
