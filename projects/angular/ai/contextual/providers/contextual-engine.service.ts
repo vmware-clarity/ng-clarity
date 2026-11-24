@@ -17,7 +17,6 @@ import {
 
 import { ClrContextRegistryService } from './context-registry.service';
 import { usableTimeout } from '../attempt';
-import { charged } from '../budget';
 import { conformingSnapshot } from '../conform';
 import { annotationContext, viewAnnotationHosts } from '../dom/annotations';
 import { ClrContextDomExtractor } from '../dom/dom-context-collector';
@@ -57,9 +56,6 @@ const DEFAULT_SOURCE_TIMEOUT_MS = 2000;
 /** Shorter than a frame waits for its answer, so a slow provider is reported rather than the request lost. */
 const FRAME_SOURCE_TIMEOUT_MS = 1000;
 
-/** A route map cut to a handful of entries would misdescribe where the app can go. */
-const MIN_ROUTE_LIMIT = 50;
-
 /** How the application wants its context read; set once with `ClrContextService.configure`. */
 export interface ClrContextConfig {
   /** The application every snapshot describes. Default: the page's host name. */
@@ -86,10 +82,10 @@ export class ClrContextService implements OnDestroy {
   private scope: ClrContextSnapshotOptions = {};
   private configured = false;
   private snapshotTaken = false;
+  private readonly locationStrategy = inject(LocationStrategy, { optional: true });
   // Refs are handed out only under a policy, so readers who never write pay nothing.
   private readonly mutationPolicy = inject(CLR_MUTATION_POLICY, { optional: true });
   private readonly refs = inject(ContextRefRegistryService);
-  private readonly locationStrategy = inject(LocationStrategy, { optional: true });
   private readonly platformId = inject(PLATFORM_ID);
   private readonly document = inject(DOCUMENT);
   private readonly contextRegistry = inject(ClrContextRegistryService);
@@ -137,11 +133,6 @@ export class ClrContextService implements OnDestroy {
     return this.readAsync(options).then(conformingSnapshot);
   }
 
-  /** @internal The scope snapshots are read in, with `options` over it; the mutation engine writes in the same one. */
-  resolveScope(options?: ClrContextSnapshotOptions): ResolvedSnapshotOptions {
-    return resolveSnapshotOptions(withCallOptions(this.scope, options));
-  }
-
   /** Answers context requests from embedded frames over `postMessage`; by default only same-origin frames. */
   enableFrameBridge(options?: ClrContextFrameHostOptions): void {
     const window = this.browserWindow();
@@ -176,6 +167,11 @@ export class ClrContextService implements OnDestroy {
       return Promise.resolve(null);
     }
     return clrRequestHostContext(options);
+  }
+
+  /** @internal The scope snapshots are read in, with `options` over it; the mutation engine writes in the same one. */
+  resolveScope(options?: ClrContextSnapshotOptions): ResolvedSnapshotOptions {
+    return resolveSnapshotOptions(withCallOptions(this.scope, options));
   }
 
   /**
@@ -291,10 +287,9 @@ export class ClrContextService implements OnDestroy {
   ): ClrPageContext {
     snapshot.title = this.document.title;
     snapshot.url = this.currentUrl();
-    setRegions(snapshot, regions, resolved);
+    snapshot.regions = regions;
     if (this.config.routes && this.router?.config.length) {
-      const limit = Math.max(resolved.maxItemsPerCollection, MIN_ROUTE_LIMIT);
-      snapshot.availableRoutes = availableRoutes(this.router.config, limit);
+      snapshot.availableRoutes = availableRoutes(this.router.config);
     }
     if (isPlatformBrowser(this.platformId)) {
       const refs = this.mutationPolicy ? this.refs.begin() : null;
@@ -411,13 +406,4 @@ export class ClrContextService implements OnDestroy {
 /** Whether only enabled views are read; an unrecognised `views` value reads only those, failing closed. */
 function readsEnabledViewsOnly(views: string | undefined): boolean {
   return views !== undefined && views !== 'all';
-}
-
-/** Regions are not walked, so they get a component budget of their own. */
-function setRegions(snapshot: ClrPageContext, regions: ClrComponentContext[], options: ResolvedSnapshotOptions): void {
-  const budget = { remaining: options.maxComponents, truncated: false };
-  snapshot.regions = charged(regions, budget);
-  if (budget.truncated) {
-    snapshot.truncated = true;
-  }
 }

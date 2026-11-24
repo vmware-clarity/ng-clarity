@@ -9,7 +9,7 @@ import { ariaState } from './aria-state';
 import { ResolvedSnapshotOptions, resolveSnapshotOptions } from '../snapshot-options';
 
 describe('ariaState', () => {
-  const budgets = (): ResolvedSnapshotOptions => resolveSnapshotOptions({ maxComponents: 100 });
+  const budgets = (): ResolvedSnapshotOptions => resolveSnapshotOptions();
 
   let container: HTMLElement;
 
@@ -217,7 +217,7 @@ describe('ariaState', () => {
 });
 
 describe('ariaState, native values as an agent should read them', () => {
-  const budgets = (): ResolvedSnapshotOptions => resolveSnapshotOptions({ maxComponents: 100 });
+  const budgets = (): ResolvedSnapshotOptions => resolveSnapshotOptions();
 
   let container: HTMLElement;
 
