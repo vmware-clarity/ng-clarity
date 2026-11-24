@@ -570,7 +570,7 @@ function describeAnonymousCustomElement(element: Element, tagName: string, walk:
         wrapper.label = named.label;
       }
       const finished = finish(wrapper, element, walk, { published });
-      return listOf(finished && foldRenderedControl(finished, walk));
+      return listOf(finished && foldRenderedControl(finished));
     }
     return listOf(finish(wrapper, element, walk, { published }));
   }
@@ -1005,7 +1005,7 @@ function noteRef(node: ClrComponentContext, element: Element, walk: Walk): void 
 }
 
 /** Folds a host's rendered part with the same role and name into the host, so the control is not listed twice. */
-function foldRenderedControl(node: ClrComponentContext, walk: Walk): ClrComponentContext {
+function foldRenderedControl(node: ClrComponentContext): ClrComponentContext {
   const children = node.children ?? [];
   const index = children.findIndex(
     child => child.type === node.type && child.label === node.label && WRITABLE_ROLES.has(child.type)
