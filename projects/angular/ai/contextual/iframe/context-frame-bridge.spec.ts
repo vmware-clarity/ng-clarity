@@ -149,14 +149,14 @@ describe('Context frame bridge', () => {
     });
 
     it('only forwards known snapshot options from the embedded frame', () => {
-      dispatchRequest(frameRequest('request-2', { maxComponents: 5, excludeCategories: ['text'], injected: 'nope' }));
+      dispatchRequest(frameRequest('request-2', { depth: 2, excludeCategories: ['text'], injected: 'nope' }));
 
       const requested = getSnapshot.mock.lastCall[0];
-      expect(requested).toEqual(expect.objectContaining({ maxComponents: 5, excludeCategories: ['text'] }));
+      expect(requested).toEqual(expect.objectContaining({ depth: 2, excludeCategories: ['text'] }));
       expect('injected' in requested).toBe(false);
     });
 
-    it('discards anything in the request that is not a budget', () => {
+    it('discards anything in the request that is not a snapshot option a frame may set', () => {
       dispatchRequest(frameRequest('request-2b', { shareFormValues: true, shareFullUrl: true }));
 
       const requested = getSnapshot.mock.lastCall[0];
@@ -164,27 +164,21 @@ describe('Context frame bridge', () => {
       expect('shareFullUrl' in requested).toBe(false);
     });
 
-    it('holds a frame to the default budgets when the host sets no ceiling', () => {
-      dispatchRequest(frameRequest('request-2c', { maxComponents: 100_000 }));
+    it('caps the depth a frame asks for at what the host allows', () => {
+      restartHost({ snapshot: { depth: 2 } });
 
-      expect(getSnapshot.mock.lastCall[0]).toEqual(expect.objectContaining({ maxComponents: 300 }));
+      dispatchRequest(frameRequest('deep', { depth: 5 }));
+      expect(getSnapshot.mock.lastCall[0].depth).toBe(2);
+
+      dispatchRequest(frameRequest('shallow', { depth: 1 }));
+      expect(getSnapshot.mock.lastCall[0].depth).toBe(1);
     });
 
-    it('caps the budgets a frame asks for at what the host allows', () => {
-      restartHost({ snapshot: { maxComponents: 20 } });
+    it('drops a depth that is not a number of one or more', () => {
+      restartHost({ snapshot: { depth: 2 } });
 
-      dispatchRequest(frameRequest('big', { maxComponents: 5000 }));
-      expect(getSnapshot.mock.lastCall[0].maxComponents).toBe(20);
-
-      dispatchRequest(frameRequest('small', { maxComponents: 3 }));
-      expect(getSnapshot.mock.lastCall[0].maxComponents).toBe(3);
-    });
-
-    it('drops a budget that is not a finite number rather than walking without bound', () => {
-      dispatchRequest(frameRequest('nan', { maxComponents: Number.NaN }));
-
-      // Dropped, so the default ceiling applies.
-      expect(getSnapshot.mock.lastCall[0].maxComponents).toBe(300);
+      dispatchRequest(frameRequest('nan', { depth: Number.NaN }));
+      expect(getSnapshot.mock.lastCall[0].depth).toBe(2);
     });
 
     it('ignores requests from origins that are not allowed', () => {

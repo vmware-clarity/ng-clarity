@@ -52,7 +52,7 @@ const EMBEDDED_CHAT_PAGE = `
         document.getElementById('ask').addEventListener('click', function () {
           requestId = newRequestId();
           parent.postMessage(
-            { protocol: 'ui-context/v1', kind: 'context-request', requestId: requestId, options: { maxComponents: 30 } },
+            { protocol: 'ui-context/v1', kind: 'context-request', requestId: requestId, options: { excludeCategories: ['text'] } },
             hostOrigin
           );
         });

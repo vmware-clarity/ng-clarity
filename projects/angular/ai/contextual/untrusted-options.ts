@@ -9,7 +9,7 @@ import { attempt } from './attempt';
 import { withoutStateKeys, withoutValues } from './dom/aria-state';
 import { UNTRUSTED_WITHHELD_STATE_KEYS } from './dom/tables/aria';
 import { ClrComponentContext, ClrContextSnapshotOptions, ClrPageContext } from './interfaces/context.interface';
-import { BUDGET_KEYS, MAX_LIST_ENTRIES } from './snapshot-options';
+import { MAX_LIST_ENTRIES } from './snapshot-options';
 
 type OptionKey = keyof ClrContextSnapshotOptions;
 
@@ -18,14 +18,14 @@ const UNTRUSTED_ROOTS: readonly string[] = ['page', 'modal'];
 
 /** Snapshot options a caller the application does not control may set; content rules are not negotiable. */
 export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: readonly (keyof ClrContextSnapshotOptions)[] = Object.freeze([
-  ...BUDGET_KEYS,
+  'depth',
   'excludeCategories',
   'root',
 ] as OptionKey[]);
 
 const MAX_NAME_LENGTH = 32;
 
-/** Reduces an untrusted caller's options to typed budgets, so no getter, object, `NaN` or selector gets through. */
+/** Reduces an untrusted caller's options to typed values, so no getter, object, `NaN` or selector gets through. */
 export function sanitizeUntrustedSnapshotOptions(options?: unknown): ClrContextSnapshotOptions | undefined {
   if (!options || typeof options !== 'object') {
     return undefined;
@@ -43,7 +43,7 @@ export function sanitizeUntrustedSnapshotOptions(options?: unknown): ClrContextS
 
 function acceptedValue(key: OptionKey, value: unknown): unknown {
   if (typeof value === 'number') {
-    return Number.isFinite(value) && (BUDGET_KEYS as readonly string[]).includes(key) ? value : undefined;
+    return key === 'depth' && Number.isFinite(value) && value >= 1 ? value : undefined;
   }
   if (typeof value === 'string') {
     return key === 'root' && UNTRUSTED_ROOTS.includes(value) ? value : undefined;

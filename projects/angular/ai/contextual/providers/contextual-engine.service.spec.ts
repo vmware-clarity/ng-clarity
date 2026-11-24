@@ -22,7 +22,7 @@ import {
   ClrContextSnapshotOptions,
   ClrPageContext,
 } from '../interfaces/context.interface';
-import { CLR_CONTEXT_CATEGORIES, CLR_CONTEXT_DEFAULT_OPTIONS, CLR_CONTEXT_PRESETS } from '../snapshot-options';
+import { CLR_CONTEXT_CATEGORIES, CLR_CONTEXT_PRESETS } from '../snapshot-options';
 
 @Component({ template: '', changeDetection: ChangeDetectionStrategy.Eager })
 class RoutedComponent {}
@@ -368,9 +368,9 @@ describe('ClrContextService, configured once for the application', () => {
 
   it('holds a caller the application does not control to the application options', async () => {
     const engine = engineWith({
-      scope: { excludeCategories: ['text', 'layout'], root: 'main, nav', maxComponents: 5 },
+      scope: { excludeCategories: ['text', 'layout'], root: 'main, nav', depth: 2 },
     });
-    const snapshot = await frameAccessor(engine)({ excludeCategories: [], root: 'page', maxComponents: 10_000 });
+    const snapshot = await frameAccessor(engine)({ excludeCategories: [], root: 'page', depth: 10 });
     expect(types(snapshot)).toEqual(['main']);
     expect(snapshot.components[0].children?.map(node => node.type)).toEqual(['button']);
   });
@@ -447,8 +447,8 @@ describe('ClrContextService, what a caller the application does not control is t
     expect(JSON.stringify(await engine.snapshot())).toContain('"pressed":true');
   });
 
-  it('still honours a smaller budget the caller asks for', async () => {
-    expect((await frameAccessor(engine)({ maxComponents: 1 })).components.length).toBe(1);
+  it('still honours a smaller depth the caller asks for', async () => {
+    expect((await frameAccessor(engine)({ depth: 1 })).components.every(node => !node.children)).toBe(true);
   });
 });
 
@@ -509,15 +509,6 @@ describe('ClrContextService, what a caller the application does not control is t
   it('reads the scope only as the page or the modal, never as a selector', async () => {
     expect((await frameAccessor(engine)({ root: 'main' })).components.length).toBeGreaterThan(0);
     expect((await frameAccessor(engine)({ root: 7 })).components.length).toBeGreaterThan(0);
-  });
-
-  it('does not let a caller raise a budget past the default', async () => {
-    page.innerHTML = Array.from({ length: 320 }, (_, index) => `<button>Button ${index}</button>`).join('');
-
-    const snapshot = await frameAccessor(engine)({ maxComponents: 5000 });
-
-    expect(find(snapshot.components, () => true).length).toBeLessThanOrEqual(CLR_CONTEXT_DEFAULT_OPTIONS.maxComponents);
-    expect(snapshot.truncated).toBe(true);
   });
 });
 
@@ -1107,17 +1098,21 @@ describe('ClrContextService, the frame bridge as a boundary', () => {
 
   afterEach(() => form.remove());
 
-  it('lets a frame ask for less than the host allows, never for more', async () => {
-    const ask = frameAccessor(engine, { snapshot: { maxComponents: 2 } });
+  it('lets a frame ask for less depth than the host allows, never for more', async () => {
+    form.innerHTML =
+      '<div role="group" aria-label="A"><div role="group" aria-label="B"><button>one</button></div></div>';
+    const ask = frameAccessor(engine, { snapshot: { depth: 2 } });
 
-    expect(nodeCount(await ask({ maxComponents: 1 }))).toBe(1);
-    expect(nodeCount(await ask({ maxComponents: 50 }))).toBe(2);
+    expect(nodeCount(await ask({ depth: 1 }))).toBe(1);
+    expect(nodeCount(await ask({ depth: 5 }))).toBe(2);
   });
 
-  it('drops a budget that is not a finite number rather than walking without bound', async () => {
-    const ask = frameAccessor(engine, { snapshot: { maxComponents: 2 } });
+  it('drops a depth that is not a number of one or more', async () => {
+    form.innerHTML =
+      '<div role="group" aria-label="A"><div role="group" aria-label="B"><button>one</button></div></div>';
+    const ask = frameAccessor(engine, { snapshot: { depth: 2 } });
 
-    expect(nodeCount(await ask({ maxComponents: Number.NaN }))).toBe(2);
+    expect(nodeCount(await ask({ depth: Number.NaN }))).toBe(2);
   });
 
   it('shares what the user typed only when the host says so', async () => {

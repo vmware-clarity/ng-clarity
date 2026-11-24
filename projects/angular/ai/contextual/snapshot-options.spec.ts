@@ -168,16 +168,16 @@ describe('snapshot options', () => {
 
   describe('capSnapshotOptions', () => {
     it('lets a caller ask for less than the ceiling, never more', () => {
-      expect(capSnapshotOptions({ maxComponents: 5 }, { maxComponents: 50 })).toEqual({ maxComponents: 5 });
-      expect(capSnapshotOptions({ maxComponents: 500 }, { maxComponents: 50 })).toEqual({ maxComponents: 50 });
+      expect(capSnapshotOptions({ depth: 1 }, { depth: 3 })).toEqual({ depth: 1 });
+      expect(capSnapshotOptions({ depth: 5 }, { depth: 3 })).toEqual({ depth: 3 });
     });
 
     it('applies the ceiling where the caller asked for nothing', () => {
-      expect(capSnapshotOptions({}, { maxItemsPerCollection: 0 })).toEqual({ maxItemsPerCollection: 0 });
+      expect(capSnapshotOptions({}, { depth: 2 })).toEqual({ depth: 2 });
     });
 
     it('leaves the request alone where there is no ceiling', () => {
-      expect(capSnapshotOptions({ maxComponents: 5 }, undefined)).toEqual({ maxComponents: 5 });
+      expect(capSnapshotOptions({ depth: 5 }, undefined)).toEqual({ depth: 5 });
     });
 
     it('adds exclusions up and keeps the ceiling’s exclusions when the request’s list is not one', () => {
@@ -197,28 +197,21 @@ describe('snapshot options', () => {
   });
 
   describe('sanitizeUntrustedSnapshotOptions', () => {
-    it('takes budgets, categories and the page or modal scope only', () => {
-      expect(CLR_CONTEXT_UNTRUSTED_OPTION_KEYS).toEqual([
-        'maxComponents',
-        'maxItemsPerCollection',
-        'excludeCategories',
-        'root',
-      ]);
+    it('takes the depth, categories and the page or modal scope only', () => {
+      expect(CLR_CONTEXT_UNTRUSTED_OPTION_KEYS).toEqual(['depth', 'excludeCategories', 'root']);
       expect(
         sanitizeUntrustedSnapshotOptions({
-          maxComponents: 5,
-          maxItemsPerCollection: Number.NaN,
+          depth: 2,
           excludeCategories: ['layout', 7, 'x'.repeat(40)],
           excludeSelectors: ['nav'],
           root: 'modal',
         })
-      ).toEqual({ maxComponents: 5, excludeCategories: ['layout'], root: 'modal' });
+      ).toEqual({ depth: 2, excludeCategories: ['layout'], root: 'modal' });
+      expect(sanitizeUntrustedSnapshotOptions({ depth: 0 })).toEqual({});
     });
 
     it('refuses a selector as the scope, and a value of the wrong kind', () => {
-      expect(sanitizeUntrustedSnapshotOptions({ root: 'main', maxComponents: '5', excludeCategories: 'text' })).toEqual(
-        {}
-      );
+      expect(sanitizeUntrustedSnapshotOptions({ root: 'main', depth: '5', excludeCategories: 'text' })).toEqual({});
       expect(sanitizeUntrustedSnapshotOptions('nonsense')).toBeUndefined();
     });
 
