@@ -410,10 +410,10 @@ describe('DOM context collector - hand-authored markup', () => {
     expect(contexts.map(context => context.label)).toEqual(['Page grid']);
   });
 
-  it('applies the component budget', () => {
-    root.innerHTML = '<div role="grid"></div><div role="grid"></div><div role="grid"></div>';
+  it('describes only as many levels as depth allows', () => {
+    root.innerHTML = '<nav aria-label="Main"><a href="/">Home</a></nav>';
 
-    expect(collectComponents(root, { maxComponents: 2 }).length).toBe(2);
+    expect(collectComponents(root, { depth: 1 })).toEqual([{ type: 'navigation', label: 'Main' }]);
   });
 
   it('truncates long text to 100 characters', () => {
@@ -440,11 +440,11 @@ describe('DOM context collector - component-published context', () => {
       state: { options: ['a', 'b', 'c'], loaded: true },
     }));
 
-    const widget = collectComponents(root, { maxItemsPerCollection: 2 })[0];
+    const widget = collectComponents(root)[0];
 
     expect(widget.label).toBe('Component label');
     expect(widget.state?.loaded).toBe(true);
-    expect(widget.state?.options).toEqual(['a', 'b']);
+    expect(widget.state?.options).toEqual(['a', 'b', 'c']);
   });
 
   it('lets a publisher supply the options a closed popover does not render', () => {

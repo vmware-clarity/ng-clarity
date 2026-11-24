@@ -13,7 +13,7 @@ import { ClrAvailableRoute } from './interfaces/context.interface';
  * The router configuration flattened to navigable path patterns, without wildcards, redirects or custom matchers.
  * An unloaded lazy route is reported as `lazy`.
  */
-export function availableRoutes(config: Route[], limit: number): ClrAvailableRoute[] {
+export function availableRoutes(config: Route[]): ClrAvailableRoute[] {
   const routes: ClrAvailableRoute[] = [];
   const listed = new Set<string>();
   const add = (route: ClrAvailableRoute) => {
@@ -24,9 +24,6 @@ export function availableRoutes(config: Route[], limit: number): ClrAvailableRou
   };
   const visit = (entries: Route[], prefix: string) => {
     for (const entry of entries) {
-      if (routes.length >= limit) {
-        return;
-      }
       const segment = entry.path ?? '';
       if (segment === '**' || entry.redirectTo !== undefined || (entry.matcher && entry.path === undefined)) {
         continue;
