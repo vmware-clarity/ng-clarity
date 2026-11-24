@@ -55,12 +55,12 @@ export class ClrContextRegistryService {
 
 /** How {@link ClrContextRegistryService.collect} collects. */
 export interface ClrContextCollectOptions {
-  /** Cuts text and lists in what providers report. */
+  /** Cuts text in what providers report. */
   limits?: ClrContextRegionLimits;
 }
 
-/** How long text and lists in a provider's report may be. */
-export type ClrContextRegionLimits = Pick<ResolvedSnapshotOptions, 'maxTextLength' | 'maxItemsPerCollection'>;
+/** How long text in a provider's report may be. */
+export type ClrContextRegionLimits = Pick<ResolvedSnapshotOptions, 'maxTextLength'>;
 
 function copied(context: ClrPublishedContext | null, options: ClrContextCollectOptions): ClrComponentContext | null {
   return componentNode(jsonSafe(context, REGION_DEPTH, true, options.limits));

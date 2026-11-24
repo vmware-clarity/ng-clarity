@@ -28,12 +28,12 @@ describe('jsonSafe', () => {
     expect(jsonSafe({ list: [], map: {}, n: 0 }, 3, true)).toEqual({ list: [], map: {}, n: 0 });
   });
 
-  it('cuts strings and lists to the limits', () => {
-    const limits = { maxTextLength: 5, maxItemsPerCollection: 2 };
+  it('cuts strings to the limit, and keeps whole lists', () => {
+    const limits = { maxTextLength: 5 };
 
     expect(jsonSafe({ text: 'abcdefgh', list: [1, 2, 3, 4] }, 3, false, limits)).toEqual({
       text: 'abcd…',
-      list: [1, 2],
+      list: [1, 2, 3, 4],
     });
   });
 

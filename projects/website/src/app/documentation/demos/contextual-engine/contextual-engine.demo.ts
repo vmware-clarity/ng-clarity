@@ -116,7 +116,7 @@ const OPTIONS_EXAMPLE = `
 const page = await this.context.snapshot({
   root: 'main', // describe only what is inside <main>
   excludeCategories: ['actions'], // no buttons, links or menus
-  maxItemsPerCollection: 0, // counts and selection instead of item lists
+  depth: 2, // the top-level nodes and their children, nothing deeper
 });
 `;
 
@@ -166,8 +166,8 @@ export class PageContextForChat {
       return {};
     }
     // Send the difference only: change.previous and change.current are whole snapshots.
-    const { added, removed, changed, routeChanged, titleChanged } = change;
-    return { pageChanged: { added, removed, changed, routeChanged, titleChanged } };
+    const { added, removed, changed, routeChanged, regionsChanged, titleChanged } = change;
+    return { pageChanged: { added, removed, changed, routeChanged, regionsChanged, titleChanged } };
   }
 }
 `;

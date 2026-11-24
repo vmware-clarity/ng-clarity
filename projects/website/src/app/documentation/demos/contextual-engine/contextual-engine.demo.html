@@ -41,8 +41,8 @@
     <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
       <li>Hidden elements.</li>
       <li>
-        Table rows beyond a summary. A table or datagrid is reported by its columns, row count and selection, plus the
-        form controls in its cells.
+        Table cells as nodes of their own. A table or datagrid is reported by its columns, its rows (one line each), row
+        count and selection, plus the form controls in its cells.
       </li>
       <li>
         Text past 100 characters, and elements past the first 25,000. A cut snapshot has
@@ -171,8 +171,7 @@
         <tr>
           <td class="left"><code cds-text="code">minimal</code></td>
           <td class="left">
-            What <code cds-text="code">interactive</code> sends, with counts instead of lists, a smaller budget, and
-            only the open modal while one is open.
+            What <code cds-text="code">interactive</code> sends, and only the open modal while one is open.
           </td>
         </tr>
       </tbody>
@@ -184,8 +183,8 @@
       <app-code-snippet [code]="optionsExample" language="typescript"></app-code-snippet>
     </div>
     <p class="clr-mt-16px" cds-text="body">
-      <code cds-text="code">maxComponents</code> stops reading when it is reached, so it drops the end of the page. To
-      keep the part that matters, narrow <code cds-text="code">root</code> instead. The
+      A snapshot describes everything that is rendered, so a long list or grid is sent whole. To send less, narrow
+      <code cds-text="code">root</code> or lower <code cds-text="code">depth</code>. The
       <a routerLink="/documentation/contextual-engine/api" fragment="snapshot-options">API tab</a> lists every option.
     </p>
 
