@@ -297,7 +297,7 @@ export interface ClrContextProvider {
 // Warning: (ae-forgotten-export) The symbol "ResolvedSnapshotOptions" needs to be exported by the entry point clr-angular-ai.d.ts
 //
 // @public
-export type ClrContextRegionLimits = Pick<ResolvedSnapshotOptions, 'maxTextLength' | 'maxItemsPerCollection'>;
+export type ClrContextRegionLimits = Pick<ResolvedSnapshotOptions, 'maxTextLength'>;
 
 // @public
 export class ClrContextRegistryService {
@@ -324,10 +324,9 @@ export class ClrContextService {
 
 // @public
 export interface ClrContextSnapshotOptions {
+    depth?: number;
     excludeCategories?: ClrContextCategory[];
     excludeSelectors?: string[];
-    maxComponents?: number;
-    maxItemsPerCollection?: number;
     root?: string;
 }
 

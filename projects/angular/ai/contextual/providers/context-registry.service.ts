@@ -115,7 +115,7 @@ export class ClrContextRegistryService {
 
 /** How {@link ClrContextRegistryService.collect} collects. */
 export interface ClrContextCollectOptions {
-  /** Cuts text and lists in what providers report. */
+  /** Cuts text in what providers report. */
   limits?: ClrContextRegionLimits;
 }
 
@@ -125,8 +125,8 @@ export interface ClrContextAsyncCollectOptions extends ClrContextCollectOptions 
   timeoutMs?: number;
 }
 
-/** How long text and lists in a provider's report may be. */
-export type ClrContextRegionLimits = Pick<ResolvedSnapshotOptions, 'maxTextLength' | 'maxItemsPerCollection'>;
+/** How long text in a provider's report may be. */
+export type ClrContextRegionLimits = Pick<ResolvedSnapshotOptions, 'maxTextLength'>;
 
 /** Type of the placeholder region reported for a provider whose answer is pending. */
 export const CLR_CONTEXT_LOADING_TYPE = 'clr-loading';

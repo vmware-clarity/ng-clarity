@@ -33,7 +33,6 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import {
-  CLR_CONTEXT_DEFAULT_MAX_ITEMS,
   CLR_CONTEXT_IGNORE_SELECTOR,
   CLR_CONTEXT_REDACT_SELECTOR,
   CLR_CONTEXT_WITHHELD_SELECTOR,
@@ -782,7 +781,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       state.totalRows = total;
     }
 
-    const maxItems = snapshotOptions?.maxItemsPerCollection ?? CLR_CONTEXT_DEFAULT_MAX_ITEMS;
     // Labelling a row reads the style of everything in it, so each row is read at most once.
     const labels = new Map<ClrDatagridRow<T>, string>();
     const label = (row: ClrDatagridRow<T>) => {
@@ -795,21 +793,17 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     };
     const rows = this.rows.toArray();
     // The cells are not walked, so the rows are where their data shows; selection names rows the same way.
-    // `0` asks for counts and the selection only.
-    if (maxItems > 0) {
-      const listed = firstRowLabels(rows, label, maxItems);
-      if (listed.length) {
-        state.rows = listed;
-      }
+    const listed = rowLabels(rows, label);
+    if (listed.length) {
+      state.rows = listed;
     }
 
     if (this.selection.selectable) {
       const single = this.selection.selectionType === SelectionType.Single;
       state.selectionMode = single ? 'single' : 'multi';
-      const selected = firstRowLabels(
+      const selected = rowLabels(
         rows.filter(row => this.selection.isSelected(row.item)),
-        label,
-        maxItems || CLR_CONTEXT_DEFAULT_MAX_ITEMS
+        label
       );
       // The selection is the grid's value, under the key every writable component uses.
       state.value = single ? (selected[0] ?? null) : selected;
@@ -899,18 +893,8 @@ function selectorList(...selectors: string[]): string {
 }
 
 /** A row with an empty label is left out: listing it would still say it is there. */
-function firstRowLabels<R>(rows: R[], label: (row: R) => string, limit: number): string[] {
-  const labels: string[] = [];
-  for (const row of rows) {
-    if (labels.length >= limit) {
-      break;
-    }
-    const text = label(row);
-    if (text) {
-      labels.push(text);
-    }
-  }
-  return labels;
+function rowLabels<R>(rows: R[], label: (row: R) => string): string[] {
+  return rows.map(label).filter(Boolean);
 }
 
 function headerText(title: Element, excluded: string): string {

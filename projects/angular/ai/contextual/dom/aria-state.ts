@@ -189,7 +189,7 @@ function assignValueState(
       .filter(option => !isHiddenFromContext(option, withheld) && !isRedactedWithin(option, element))
       .map(option => truncate(option.label || option.text, options.maxTextLength));
     if ((element as HTMLSelectElement).multiple) {
-      state.value = chosen.slice(0, options.maxItemsPerCollection);
+      state.value = chosen;
     } else if (chosen.length) {
       state.value = chosen[0];
     }
