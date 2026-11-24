@@ -164,7 +164,6 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
 
   private readonly popoverService = inject(ClrPopoverService);
 
-  /** Keys (see toggleKey) of the toggle filters that are ON. */
   private rawPredefinedFilters: FilterablePropertyDefinition[] = [];
 
   private rawSemiPredefinedFilters: EnumPropertyDefinition[] = [];
@@ -182,6 +181,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
 
   private initialized = false;
 
+  /** Keys (see toggleKey) of the toggle filters that are ON. */
   private readonly activeToggleKeys = new Set<string>();
 
   constructor(
