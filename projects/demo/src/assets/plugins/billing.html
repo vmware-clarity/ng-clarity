@@ -80,7 +80,12 @@
         }
         requestId = newRequestId();
         window.parent.postMessage(
-          { protocol: 'ui-context/v1', kind: 'context-request', requestId: requestId, options: { maxComponents: 40 } },
+          {
+            protocol: 'ui-context/v1',
+            kind: 'context-request',
+            requestId: requestId,
+            options: { excludeCategories: ['text'] },
+          },
           hostOrigin
         );
       });

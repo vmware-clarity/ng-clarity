@@ -6,19 +6,17 @@
  */
 
 import { isDevMode } from '@angular/core';
-import { CLR_CONTEXT_DEFAULT_MAX_ITEMS } from '@clr/angular/utils';
 
 import { WRITABLE_ROLES } from './dom/tables/roles';
 import { ClrContextCategory, ClrContextSnapshotOptions } from './interfaces/context.interface';
 import { ownEntry } from './lookup';
 
-/** Default snapshot options, sized for an AI agent's context window. */
+/** Default snapshot options. */
 export const CLR_CONTEXT_DEFAULT_OPTIONS: Readonly<Required<ClrContextSnapshotOptions>> = deepFreeze({
   root: 'page',
   excludeSelectors: [],
   excludeCategories: [],
-  maxComponents: 300,
-  maxItemsPerCollection: CLR_CONTEXT_DEFAULT_MAX_ITEMS,
+  depth: Infinity,
 });
 
 /** Longest text value in a snapshot; longer text is truncated. */
@@ -36,8 +34,6 @@ export interface ResolvedSnapshotOptions extends Required<ClrContextSnapshotOpti
   includeText: boolean;
   /** `false` when the `frames` category is excluded. */
   includeFrames: boolean;
-  /** `'summary'` when `maxItemsPerCollection` is `0`. */
-  collectionItems: 'all' | 'summary';
   maxTextLength: number;
 }
 
@@ -57,15 +53,6 @@ export const CLR_CONTEXT_CATEGORIES: Readonly<Record<ClrContextCategory, readonl
 
 const CATEGORY_NAMES = Object.keys(CLR_CONTEXT_CATEGORIES) as ClrContextCategory[];
 
-type BudgetKey = 'maxComponents' | 'maxItemsPerCollection';
-
-/** A non-finite budget would never run out and the whole document would be walked. */
-const BUDGET_RANGES: Record<BudgetKey, { min: number; max: number }> = {
-  maxComponents: { min: 0, max: 10_000 },
-  maxItemsPerCollection: { min: 0, max: 1_000 },
-};
-
-export const BUDGET_KEYS = Object.keys(BUDGET_RANGES) as BudgetKey[];
 const EXCLUSION_KEYS = ['excludeCategories', 'excludeSelectors'] as const;
 
 function isExclusionKey(key: string): key is (typeof EXCLUSION_KEYS)[number] {
@@ -77,8 +64,8 @@ function isUsable(key: string, value: unknown): boolean {
   if (isExclusionKey(key)) {
     return Array.isArray(value);
   }
-  if ((BUDGET_KEYS as readonly string[]).includes(key)) {
-    return typeof value === 'number' && Number.isFinite(value);
+  if (key === 'depth') {
+    return typeof value === 'number' && value >= 1;
   }
   if (key === 'root') {
     return typeof value === 'string' && !!value.trim();
@@ -133,8 +120,6 @@ export const CLR_CONTEXT_PRESETS: Readonly<Record<ClrContextPreset, Readonly<Clr
   },
   minimal: {
     excludeCategories: ['layout', 'text'],
-    maxItemsPerCollection: 0,
-    maxComponents: 150,
     root: 'modal',
   },
 });
@@ -160,7 +145,7 @@ export function presetOrOptions(
 }
 
 /**
- * One call's options over the application's: a call's root and budgets replace the application's, and its exclusion
+ * One call's options over the application's: a call's root and depth replace the application's, and its exclusion
  * lists add to them, so a call can only leave out more. A call value of the wrong type is ignored, keeping the
  * application's value rather than falling back to the default.
  */
@@ -192,11 +177,8 @@ export const MAX_LIST_ENTRIES = 50;
 /** The caller's options over the defaults, each held to its type and range or else defaulted. */
 export function resolveSnapshotOptions(options?: ClrContextSnapshotOptions): ResolvedSnapshotOptions {
   const resolved: Required<ClrContextSnapshotOptions> = { ...CLR_CONTEXT_DEFAULT_OPTIONS };
-  for (const key of BUDGET_KEYS) {
-    const value = options?.[key];
-    if (typeof value === 'number' && Number.isFinite(value)) {
-      resolved[key] = clamp(Math.floor(value), BUDGET_RANGES[key]);
-    }
+  if (typeof options?.depth === 'number' && options.depth >= 1) {
+    resolved.depth = Math.floor(options.depth);
   }
   if (Array.isArray(options?.excludeSelectors)) {
     resolved.excludeSelectors = stringList(options.excludeSelectors);
@@ -218,12 +200,11 @@ export function resolveSnapshotOptions(options?: ClrContextSnapshotOptions): Res
     excludeRoles: categoryRoles(resolved.excludeCategories),
     includeText: !resolved.excludeCategories.includes('text'),
     includeFrames: !resolved.excludeCategories.includes('frames'),
-    collectionItems: resolved.maxItemsPerCollection === 0 ? 'summary' : 'all',
     maxTextLength: MAX_TEXT_LENGTH,
   };
 }
 
-/** Options asked by one party capped by another's ceiling: the smaller budget wins and exclusions add up. */
+/** Options asked by one party capped by another's ceiling: the shallower depth wins and exclusions add up. */
 export function capSnapshotOptions(
   requested: ClrContextSnapshotOptions | undefined,
   ceiling: ClrContextSnapshotOptions | undefined
@@ -232,13 +213,9 @@ export function capSnapshotOptions(
   if (!ceiling) {
     return capped;
   }
-  for (const key of BUDGET_KEYS) {
-    const limit = ceiling[key];
-    if (typeof limit !== 'number' || !Number.isFinite(limit)) {
-      continue;
-    }
-    const asked = capped[key];
-    capped[key] = typeof asked === 'number' && Number.isFinite(asked) ? Math.min(asked, limit) : limit;
+  if (typeof ceiling.depth === 'number' && Number.isFinite(ceiling.depth)) {
+    const asked = capped.depth;
+    capped.depth = typeof asked === 'number' && asked >= 1 ? Math.min(asked, ceiling.depth) : ceiling.depth;
   }
   for (const key of EXCLUSION_KEYS) {
     const limit = ceiling[key];
@@ -258,10 +235,6 @@ function stringList(value: readonly unknown[]): string[] {
     .filter((entry): entry is string => typeof entry === 'string')
     .map(entry => entry.trim())
     .filter(entry => entry.length > 0);
-}
-
-function clamp(value: number, range: { min: number; max: number }): number {
-  return Math.min(range.max, Math.max(range.min, value));
 }
 
 /** The exported option constants feed the untrusted allow-list, so they must not be mutable. */
