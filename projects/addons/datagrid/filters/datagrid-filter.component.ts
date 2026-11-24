@@ -27,7 +27,7 @@ import { DatagridStrings } from '../i18n/datagrid-strings.service';
   selector: 'appfx-datagrid-filter',
   standalone: false,
   template: `
-    <clr-input-container class="mt-0">
+    <clr-input-container>
       <input
         #input
         clrInput
