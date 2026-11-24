@@ -145,9 +145,7 @@ function publishedParts(value: unknown, options: ResolvedSnapshotOptions, depth:
     }
   }
   if (depth > 0 && Array.isArray(source['children'])) {
-    // Published children are not walked, so the collection budget bounds them instead.
     parts.children = source['children']
-      .slice(0, options.maxItemsPerCollection)
       .map(child => publishedNode(child, options, depth - 1))
       .filter((child): child is ClrComponentContext => child !== null);
   }

@@ -72,11 +72,9 @@ function summarizeGrid(element: Element, scope: SummaryScope): Record<string, un
   state.rowCount = Number.isFinite(total) && total >= 0 ? total : records.length;
 
   // The cells are not walked, so their data is listed here, as other collections list their items.
-  if (listsItems(scope.options)) {
-    const listed = rowTexts(records, element, scope);
-    if (listed.length) {
-      state.rows = listed;
-    }
+  const listed = rowTexts(records, element, scope);
+  if (listed.length) {
+    state.rows = listed;
   }
 
   const selected = rows.filter(row => row.getAttribute('aria-selected') === 'true').length;
@@ -93,10 +91,6 @@ function summarizeGrid(element: Element, scope: SummaryScope): Record<string, un
   return state;
 }
 
-function listsItems(options: ResolvedSnapshotOptions): boolean {
-  return options.collectionItems !== 'summary';
-}
-
 function counted(
   entries: Element[],
   countKey: string,
@@ -104,11 +98,7 @@ function counted(
   collection: Element,
   scope: SummaryScope
 ): Record<string, unknown> {
-  const state: Record<string, unknown> = { [countKey]: entries.length };
-  if (listsItems(scope.options)) {
-    state[listKey] = namesOf(entries, collection, scope);
-  }
-  return state;
+  return { [countKey]: entries.length, [listKey]: namesOf(entries, collection, scope) };
 }
 
 function summarizeTablist(element: Element, scope: SummaryScope): Record<string, unknown> {
@@ -140,9 +130,6 @@ function summarizeCombobox(element: Element, scope: SummaryScope): Record<string
   const choices = comboboxChoices(element, scope);
   if (!choices.length) {
     return {};
-  }
-  if (!listsItems(scope.options)) {
-    return { optionCount: choices.length };
   }
   return { options: namesOf(choices, element, scope) };
 }
@@ -210,7 +197,7 @@ function summarizeChoices(
     collection,
     scope
   );
-  if (disabled.length && listsItems(scope.options)) {
+  if (disabled.length) {
     state.disabledOptions = disabled;
   }
   return state;
@@ -249,9 +236,6 @@ function dataRows(rows: Element[]): Element[] {
 function rowTexts(rows: Element[], grid: Element, scope: SummaryScope): string[] {
   const texts: string[] = [];
   for (const row of rows) {
-    if (texts.length >= scope.options.maxItemsPerCollection) {
-      break;
-    }
     const text = cellsOf(row, scope)
       .map(cell => nameOf(cell, grid, scope))
       .filter(Boolean)
@@ -300,10 +284,7 @@ function nameOf(item: Element, collection: Element, scope: SummaryScope): string
 }
 
 function namesOf(items: Element[], collection: Element, scope: SummaryScope): string[] {
-  return items
-    .slice(0, scope.options.maxItemsPerCollection)
-    .map(item => nameOf(item, collection, scope))
-    .filter((name): name is string => name !== null);
+  return items.map(item => nameOf(item, collection, scope)).filter((name): name is string => name !== null);
 }
 
 function closestContainer(item: Element, container: string): Element | null {
