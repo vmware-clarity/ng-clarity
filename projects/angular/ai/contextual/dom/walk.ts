@@ -44,7 +44,7 @@ import { NAMING_TAGS, PHRASING_TAGS, SKIPPED_TAGS } from './tables/tags';
 import { accessibleText, isVisuallyHidden, MAX_NESTING_DEPTH, truncate } from './text';
 import { hidesFromContext, isHiddenFromContext, isVisible } from './visibility';
 import { attempt } from '../attempt';
-import { charged } from '../budget';
+import { withoutTypes } from '../budget';
 import { stripQueryAndFragment } from '../url';
 
 const EMPTY_CONTAINER_ROLES = new Set(['group', 'region', 'generic']);
@@ -69,15 +69,12 @@ interface Walk {
   readonly excludeSelector: string;
   /** Ids that `aria-describedby` and `aria-labelledby` point at, per document, so a frame gets its own. */
   referencedIds: Map<Document, ReferencedIds>;
-  /** Component budget left; a probe has its own. */
-  remaining: number;
   truncated: boolean;
-  /** A probe only checks whether anything is left to describe. */
-  readonly probing: boolean;
   redactedDepth: number;
   summarizedListDepth: number;
   /** Inside a node whose label already carries the text below it. */
   textDepth: number;
+  /** Levels of described nodes above the one being described. */
   depth: number;
   elementDepth: number;
   /** Shared across the whole walk, probes included. */
@@ -107,9 +104,7 @@ export function collectContextTreeWithin(
     excludeRoleCandidates: roleCandidateSelector(excludeRoles),
     excludeSelector: usableSelectors(root, options.excludeSelectors),
     referencedIds: new Map(),
-    remaining: options.maxComponents,
     truncated: false,
-    probing: false,
     redactedDepth: 0,
     summarizedListDepth: 0,
     textDepth: 0,
@@ -253,24 +248,9 @@ function describeScope(root: ParentNode, roots: Element[] | null, walk: Walk): C
   }
   const nodes: ClrComponentContext[] = [];
   for (const element of roots) {
-    if (walk.remaining <= 0) {
-      noteUndescribed(element, walk, null);
-      break;
-    }
     nodes.push(...withinRedactedAncestry(element, walk, () => describeElement(element, walk, null)));
   }
   return nodes;
-}
-
-/** Probes the leftovers with a budget of one: the snapshot is only truncated if they would produce a node. */
-function noteUndescribed(element: Element, walk: Walk, owner: Element | null): void {
-  if (walk.probing || walk.truncated) {
-    return;
-  }
-  const probe: Walk = { ...walk, remaining: 1, truncated: false, probing: true };
-  if (describeElement(element, probe, owner).length) {
-    walk.truncated = true;
-  }
 }
 
 function withinRedactedAncestry<T>(node: ParentNode, walk: Walk, describe: () => T): T {
@@ -391,10 +371,6 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
     if (!described) {
       return describeChildren(element, walk, owner);
     }
-    if (walk.remaining <= 0) {
-      return [];
-    }
-    walk.remaining--;
     return listOf(finish(described, element, walk, { foreign: true }));
   }
 
@@ -434,11 +410,6 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
       ? describeTextBlock(element, walk, owner)
       : describeChildren(element, walk, owner);
   }
-
-  if (walk.remaining <= 0) {
-    return [];
-  }
-  walk.remaining--;
 
   const fallbackLabel =
     !role && !label && isCustomElement && !redacted
@@ -497,7 +468,6 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
   }
 
   if (role === 'listitem' && walk.summarizedListDepth > 0 && !described.state) {
-    walk.remaining++;
     return described.children ?? [];
   }
   return [described];
@@ -518,10 +488,6 @@ function describeAnonymousCustomElement(element: Element, tagName: string, walk:
     return listOf(finish(only, element, walk, { published }));
   }
   if (rendered.length > 1) {
-    if (walk.remaining <= 0) {
-      return rendered;
-    }
-    walk.remaining--;
     return listOf(finish({ type: 'group', element: tagName, children: rendered }, element, walk, { published }));
   }
   if (holdsExcludedRole(element, walk)) {
@@ -539,9 +505,6 @@ function describeAnonymousCustomElement(element: Element, tagName: string, walk:
 
 /** Application controls in a summarised collection's cells, which the summary does not cover. */
 function describeCellControls(collection: Element, walk: Walk): ClrComponentContext[] {
-  if (walk.options.collectionItems === 'summary') {
-    return [];
-  }
   // Hidden, inert, ignored or excluded cells are skipped, as the walk would skip them.
   const cells = new Map<Element, boolean>();
   for (const control of Array.from(collection.querySelectorAll(VALUE_CONTROL_SELECTOR))) {
@@ -553,10 +516,6 @@ function describeCellControls(collection: Element, walk: Walk): ClrComponentCont
     const path = ancestryUntil(cell, collection);
     if (path.some(element => shouldSkipSubtree(element, walk))) {
       continue;
-    }
-    if (cells.size >= walk.options.maxItemsPerCollection) {
-      walk.truncated = true;
-      break;
     }
     cells.set(
       cell,
@@ -593,10 +552,6 @@ function isTextBlock(element: Element, walk: Walk): boolean {
 }
 
 function describeTextBlock(element: Element, walk: Walk, owner: Element | null): ClrComponentContext[] {
-  if (walk.remaining <= 0) {
-    return [];
-  }
-  walk.remaining--;
   const node: ClrComponentContext = { type: 'text' };
   if (owner) {
     node.element = owner.tagName.toLowerCase();
@@ -625,14 +580,13 @@ function liveSetting(element: Element): string | null {
 }
 
 /**
- * A same-origin frame is walked in place against the same budget; a cross-origin one is reported
+ * A same-origin frame is walked in place; a cross-origin one is reported
  * as an empty frame so an agent knows there is UI it cannot see.
  */
 function describeFrame(frame: HTMLIFrameElement, walk: Walk): ClrComponentContext[] {
-  if (!walk.options.includeFrames || walk.remaining <= 0) {
+  if (!walk.options.includeFrames) {
     return [];
   }
-  walk.remaining--;
 
   const node: ClrComponentContext = { type: 'frame', element: frame.tagName.toLowerCase() };
   const state: Record<string, unknown> = {};
@@ -712,6 +666,10 @@ function describeNested(
   owner: Element | null,
   looseText?: LooseText
 ): ClrComponentContext[] {
+  // The parent is at level `depth + 1`, so its children would be one level past that.
+  if (walk.depth + 1 >= walk.options.depth) {
+    return [];
+  }
   return within(walk, ['depth'], () => describeChildren(parent, walk, owner, looseText));
 }
 
@@ -729,8 +687,7 @@ function describeChildren(
   const withText = !!looseText && walk.options.includeText && walk.textDepth === 0 && walk.redactedDepth === 0;
   const children = Array.from(parent.childNodes).filter(node => withText || node.nodeType === Node.ELEMENT_NODE);
   let text = '';
-  for (let index = 0; index < children.length; index++) {
-    const child = children[index];
+  for (const child of children) {
     if (child.nodeType === Node.TEXT_NODE) {
       text += child.textContent ?? '';
       continue;
@@ -744,16 +701,6 @@ function describeChildren(
     }
     nodes.push(...describeLooseText(text, looseText, walk));
     text = '';
-    if (walk.remaining <= 0) {
-      for (const leftover of children.slice(index)) {
-        if (leftover.nodeType === Node.ELEMENT_NODE) {
-          noteUndescribed(leftover as Element, walk, owner);
-        } else if (leftover.nodeType === Node.TEXT_NODE) {
-          describeLooseText(leftover.textContent ?? '', looseText, walk);
-        }
-      }
-      return nodes;
-    }
     nodes.push(...describeElement(child as Element, walk, owner));
   }
   nodes.push(...describeLooseText(text, looseText, walk));
@@ -793,13 +740,6 @@ function describeLooseText(text: string, looseText: LooseText | undefined, walk:
   if (label === looseText.label) {
     return [];
   }
-  if (walk.remaining <= 0) {
-    if (!walk.probing) {
-      walk.truncated = true;
-    }
-    return [];
-  }
-  walk.remaining--;
   return [{ type: 'text', label }];
 }
 
@@ -820,12 +760,11 @@ function finish(
   let described =
     redacted || !published ? node : mergeElementContext(node, element, walk.options, annotationContext(element));
   if (walk.excludeRoles.has(described.type)) {
-    walk.remaining++;
     return null;
   }
-  // Published children are not walked, so they are charged to the budget here.
+  // Published children are not walked, so excluded categories are dropped from them here.
   if (described.children && (foreign || described.children !== node.children)) {
-    described = { ...described, children: charged(described.children, walk, walk.excludeRoles) };
+    described = { ...described, children: withoutTypes(described.children, walk.excludeRoles) };
   }
   const unpruned = foreign || described !== node;
 
@@ -835,7 +774,6 @@ function finish(
 
   const pruned = pruneEmpty(described, { foreign: unpruned });
   if (isEmptyContainer(pruned)) {
-    walk.remaining++;
     return null;
   }
   return pruned;

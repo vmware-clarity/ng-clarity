@@ -142,29 +142,6 @@ describe('ClrContextService', () => {
   });
 });
 
-describe('ClrContextService, saying when a snapshot is cut off', () => {
-  let engine: ClrContextService;
-  let widgets: HTMLElement;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    engine = TestBed.inject(ClrContextService);
-    widgets = document.createElement('div');
-    widgets.innerHTML = '<button>one</button><button>two</button><button>three</button>';
-    document.body.appendChild(widgets);
-  });
-
-  afterEach(() => widgets.remove());
-
-  it('flags a snapshot whose component budget ran out', async () => {
-    expect((await engine.snapshot({ maxComponents: 1 })).truncated).toBe(true);
-  });
-
-  it('carries no flag when everything fit', async () => {
-    expect('truncated' in (await engine.snapshot({ maxComponents: 5000 }))).toBe(false);
-  });
-});
-
 describe('ClrContextService, configured once for the application', () => {
   let widgets: HTMLElement;
 
@@ -196,10 +173,10 @@ describe('ClrContextService, configured once for the application', () => {
     expect(snapshot.components[0].children?.map(node => node.type)).toEqual(['button']);
   });
 
-  it('lets a call override the application’s budgets', async () => {
-    const engine = engineWith({ scope: { root: 'main', maxComponents: 1 } });
-    expect((await engine.snapshot()).truncated).toBe(true);
-    expect((await engine.snapshot({ maxComponents: 50 })).truncated).toBeUndefined();
+  it('lets a call override the application’s depth', async () => {
+    const engine = engineWith({ scope: { root: 'main', depth: 1 } });
+    expect((await engine.snapshot()).components[0].children).toBeUndefined();
+    expect((await engine.snapshot({ depth: 2 })).components[0].children?.length).toBe(2);
   });
 
   it('adds a call’s exclusions to the application’s rather than replacing them', async () => {
@@ -281,7 +258,7 @@ describe('ClrContextService, the routes an application can navigate to', () => {
     ]);
   });
 
-  it('lists the root path as "/", and never fewer than fifty routes however small the collection budget', async () => {
+  it('lists the root path as "/", and every route', async () => {
     const many = Array.from({ length: 70 }, (_, index) => ({ path: `page-${index}`, component: RoutedComponent }));
     TestBed.configureTestingModule({
       providers: [provideRouter([{ path: '', component: RoutedComponent, title: 'Home' }, ...many])],
@@ -289,11 +266,9 @@ describe('ClrContextService, the routes an application can navigate to', () => {
     const engine = TestBed.inject(ClrContextService);
     engine.configure({ routes: true });
 
-    const few = await engine.snapshot({ maxItemsPerCollection: 5 });
-    expect(few.availableRoutes?.[0]).toEqual({ path: '/', title: 'Home' });
-    expect(few.availableRoutes?.length).toBe(50);
-    const more = await engine.snapshot({ maxItemsPerCollection: 60 });
-    expect(more.availableRoutes?.length).toBe(60);
+    const snapshot = await engine.snapshot();
+    expect(snapshot.availableRoutes?.[0]).toEqual({ path: '/', title: 'Home' });
+    expect(snapshot.availableRoutes?.length).toBe(71);
   });
 
   it('leaves out routes matched by a custom matcher, which have no pattern to navigate by, and lists each path once', async () => {
@@ -413,16 +388,14 @@ describe('ClrContextService, asynchronous providers', () => {
     expect(snapshot.regions).toEqual([{ type: 'clr-unavailable' }]);
   });
 
-  it('holds what providers report to the snapshot budgets', () => {
-    const rows = Array.from({ length: 5000 }, (_, index) => ({ type: 'row', label: `${index} ${'x'.repeat(2000)}` }));
+  it('cuts long text in what providers report', () => {
+    const rows = Array.from({ length: 3 }, (_, index) => ({ type: 'row', label: `${index} ${'x'.repeat(2000)}` }));
     registry.register({ getClrContext: () => ({ type: 'region', label: 'Hosts', children: rows }) });
 
-    const snapshot = readNow({ ...quiet, maxComponents: 20, maxItemsPerCollection: 100 });
+    const snapshot = readNow(quiet);
 
-    expect(snapshot.truncated).toBe(true);
-    expect(snapshot.regions[0].children?.length).toBe(19);
+    expect(snapshot.regions[0].children?.length).toBe(3);
     expect(snapshot.regions[0].children?.[0].label?.length).toBeLessThanOrEqual(100);
-    expect(JSON.stringify(snapshot).length).toBeLessThan(5000);
   });
 
   it('stops at a cycle in what a provider reports', () => {
