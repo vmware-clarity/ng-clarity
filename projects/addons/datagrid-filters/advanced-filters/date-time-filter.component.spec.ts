@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CommonModule, DatePipe } from '@angular/common';
-import { ChangeDetectorRef } from '@angular/core';
+import { CommonModule, DATE_PIPE_DEFAULT_OPTIONS, DatePipe } from '@angular/common';
+import { ChangeDetectorRef, Provider } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClrDatepickerModule, ClrInputModule, ClrLocaleDateFormat, ClrSelectModule } from '@clr/angular/forms';
@@ -19,8 +19,7 @@ import { DateTimeFilterComponent } from './date-time-filter.component';
 import { FilterFormComponent } from './filter-form.component';
 import { ComparisonOperator, LogicalOperator, TimeSpan } from '../model/datagrid-filters.enums';
 import { DateTimePropertyDefinition, PropertyFilter, PropertyPredicate } from '../model/datagrid-filters.interfaces';
-import { addDays, toIsoDate } from '../model/date-time-editor-state';
-import { clockChangeDays } from '../model/date-time-editor-state.mock';
+import { clockChangeDays, nextIsoDay } from '../model/date-time-editor-state.mock';
 
 const augustNinth = '2023-08-09';
 // The clrDate inputs hold en-US locale strings (MM/dd/yyyy) in tests.
@@ -184,7 +183,7 @@ describe('DateTimeFilterComponent', () => {
   // view, so the next render refreshes it instead of failing the exhaustive no-changes check.
   const markComponentForCheck = () => testContext.fixture.componentRef.injector.get(ChangeDetectorRef).markForCheck();
 
-  beforeEach(() => {
+  function createComponent(providers: Provider[] = []): void {
     TestBed.configureTestingModule({
       imports: [
         ClrDatepickerModule,
@@ -196,11 +195,15 @@ describe('DateTimeFilterComponent', () => {
         ClrIcon,
       ],
       declarations: [DateTimeFilterComponent, FilterFormComponent],
-      providers: [DatagridFiltersStrings, DatePipe],
+      providers: [DatagridFiltersStrings, DatePipe, ...providers],
     });
     testContext.fixture = TestBed.createComponent(DateTimeFilterComponent);
     testContext.component = testContext.fixture.componentInstance;
     testContext.component.filterProperty = dateTimeProperty;
+  }
+
+  beforeEach(() => {
+    createComponent();
     testContext.dateOffsetSpy = vi.spyOn(Date.prototype, 'getTimezoneOffset').mockReturnValue(-360);
     mockCurrentTime();
   });
@@ -565,7 +568,6 @@ describe('DateTimeFilterComponent', () => {
 
   // Skipped in a time zone without daylight saving (e.g. UTC).
   describe.skipIf(!days.length)('on the days the clocks change', () => {
-    const nextDay = (iso: string) => toIsoDate(addDays(new Date(`${iso}T00:00:00`), 1));
     // Emitted values end with the local UTC offset; the local date and time come first.
     const localPart = (value: string) => value.substring(0, 19);
     const emittedCriteria = (component: DateTimeFilterComponent): PropertyPredicate[] =>
@@ -584,7 +586,7 @@ describe('DateTimeFilterComponent', () => {
         expect(
           emittedCriteria(testContext.component).map(predicate => localPart(predicate.value)),
           day
-        ).toEqual([`${day}T00:00:00`, `${nextDay(day)}T00:00:00`]);
+        ).toEqual([`${day}T00:00:00`, `${nextIsoDay(day)}T00:00:00`]);
       });
     });
 
@@ -596,7 +598,7 @@ describe('DateTimeFilterComponent', () => {
         expect(
           emittedCriteria(testContext.component).map(predicate => localPart(predicate.value)),
           day
-        ).toEqual([`${nextDay(day)}T00:00:00`]);
+        ).toEqual([`${nextIsoDay(day)}T00:00:00`]);
       });
     });
 
@@ -610,7 +612,7 @@ describe('DateTimeFilterComponent', () => {
         expect(
           emittedCriteria(testContext.component).map(predicate => localPart(predicate.value)),
           day
-        ).toEqual(['2026-01-01T00:00:00', `${nextDay(day)}T00:00:00`]);
+        ).toEqual(['2026-01-01T00:00:00', `${nextIsoDay(day)}T00:00:00`]);
       });
     });
   });
@@ -667,6 +669,52 @@ describe('DateTimeFilterComponent', () => {
       renderFixture(testContext.fixture);
       expect(testContext.component.dateTimeFilterForm.controls['operator'].value).toEqual(ComparisonOperator.Before);
       expect(testContext.component.dateTimeFilterForm.controls['dateValue'].value).toEqual(toInput('2026-01-01'));
+    });
+  });
+
+  // An app can give DatePipe a default time zone. The picked date and times are local and must not move with it.
+  describe('with a default DatePipe time zone', () => {
+    beforeEach(() => {
+      testContext.fixture.destroy();
+      TestBed.resetTestingModule();
+      createComponent([{ provide: DATE_PIPE_DEFAULT_OPTIONS, useValue: { timezone: '+0000' } }]);
+      vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
+    });
+
+    it('keeps the picked date in the From value and the editor state', () => {
+      renderFixture(testContext.fixture);
+      testContext.component.dateTimeFilterForm.controls['operator'].setValue(ComparisonOperator.Equals);
+      testContext.component.dateTimeFilterForm.controls['dateValue'].setValue(toInput(augustNinth));
+      testContext.component.onApplyButtonClick();
+
+      const emitted = (testContext.component.filterCriteriaChange.emit as Mock).mock.lastCall![0] as PropertyFilter;
+      expect(emitted.criteria[0].value).toBe(`${augustNinth}T00:00:00+06:00`);
+      expect(emitted.editorState?.value).toBe(augustNinth);
+    });
+
+    it('fills the time inputs from a preset range with its local times', () => {
+      const workingHours = {
+        label: 'Working hours',
+        value: [new Date(2023, 7, 11, 9, 0), new Date(2023, 7, 11, 17, 30)],
+      };
+      testContext.component.filterProperty = new DateTimePropertyDefinition(
+        dateTimePropertyDisplayName,
+        dateTimePropertyName,
+        undefined,
+        false,
+        [workingHours]
+      );
+      renderFixture(testContext.fixture);
+      testContext.component.dateTimeFilterForm.controls['operator'].setValue(ComparisonOperator.CustomRange);
+      renderFixture(testContext.fixture);
+      const element: HTMLElement = testContext.fixture.nativeElement;
+      element.querySelector<HTMLButtonElement>('[data-test-id="add-button"]')!.click();
+      renderFixture(testContext.fixture);
+      element.querySelector<HTMLButtonElement>('[data-test-id="date-range-option"]')!.click();
+      renderFixture(testContext.fixture);
+
+      expect(testContext.component.dateTimeFilterForm.value.timeValue).toBe('09:00');
+      expect(testContext.component.dateTimeFilterForm.value.timeValueTo).toBe('17:30');
     });
   });
 

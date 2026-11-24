@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DatePipe } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 import {
   afterNextRender,
   ChangeDetectionStrategy,
@@ -41,6 +41,9 @@ import {
   PropertyPredicate,
 } from '../model/datagrid-filters.interfaces';
 import {
+  dateFormat,
+  dateTimeWithSecondsFormat,
+  formatLocale,
   oneDayMs,
   oneHourMs,
   oneMinuteMs,
@@ -48,11 +51,12 @@ import {
   oneSecondMs,
   oneWeekMs,
   oneYearMs,
+  timeFormat,
+  timeWithSecondsFormat,
 } from '../model/date-time-constants';
-import { addDays, dateTimeEditorState, parseLocalDateTime, toIsoDate } from '../model/date-time-editor-state';
+import { dateTimeEditorState, parseLocalDateTime } from '../model/date-time-editor-state';
 
 const enterKey = 'Enter';
-const dateTimeFormat = 'yyyy-MM-ddTHH:mm:ss';
 const requiredValidators: ValidatorFn[] = [Validators.required];
 
 /**
@@ -546,7 +550,7 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
 
   private getcurrentTimePredicate(): PropertyPredicate {
     const predicate: PropertyPredicate = new PropertyPredicate();
-    predicate.value = this.datePipe.transform(new Date(), dateTimeFormat);
+    predicate.value = this.datePipe.transform(new Date(), dateTimeWithSecondsFormat);
     predicate.operator = ComparisonOperator.LessThanOrEqualTo;
     return predicate;
   }
@@ -554,7 +558,7 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
   private getPastDate(timePeriod: number): string | null {
     const now: Date = new Date();
     const prevDate: Date = new Date(new Date().setTime(now.getTime() - timePeriod));
-    return this.datePipe.transform(prevDate, dateTimeFormat);
+    return this.datePipe.transform(prevDate, dateTimeWithSecondsFormat);
   }
 
   /**
@@ -563,13 +567,18 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
    */
   private getNextDay(baseDate: string): string {
     const parsed = parseLocalDateTime(baseDate);
-    return parsed ? this.datePipe.transform(addDays(parsed.date, 1), dateTimeFormat) || baseDate : baseDate;
+    if (!parsed) {
+      return baseDate;
+    }
+    const nextDay = new Date(parsed.date);
+    nextDay.setDate(nextDay.getDate() + 1);
+    return this.datePipe.transform(nextDay, dateTimeWithSecondsFormat) || baseDate;
   }
 
   private getCustomDate(baseDate: string, timePeriod: number): string {
     const date: Date = new Date(baseDate);
     const newDate: Date = new Date(new Date().setTime(date.getTime() + timePeriod));
-    return this.datePipe.transform(newDate, dateTimeFormat) || baseDate;
+    return this.datePipe.transform(newDate, dateTimeWithSecondsFormat) || baseDate;
   }
 
   private adjustTimeZone(utcDate: string): string {
@@ -634,7 +643,8 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
   /** The date picker's locale date string as yyyy-MM-dd. */
   private isoDate(controlName: 'dateValue' | 'dateValueTo'): string {
     const date = this.dateFormat.parse(this.dateTimeFilterForm.value[controlName]);
-    return date ? toIsoDate(date) : '';
+    // Not the injected DatePipe: it applies an app's default DatePipe time zone, which can move the date to another day.
+    return date ? formatDate(date, dateFormat, formatLocale) : '';
   }
 
   /**
@@ -642,15 +652,11 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
    * day: the start of the day for From, its last minute (or second) for To, since To is inclusive.
    */
   private timeInputValue(date: Date, isEnd: boolean): string {
-    const pad = (value: number) => value.toString().padStart(2, '0');
-    if (!date.getHours() && !date.getMinutes() && !date.getSeconds()) {
-      if (isEnd) {
-        return this.includeSeconds ? '23:59:59' : '23:59';
-      }
-      return this.includeSeconds ? '00:00:00' : '00:00';
+    if (isEnd && !date.getHours() && !date.getMinutes() && !date.getSeconds()) {
+      return this.includeSeconds ? '23:59:59' : '23:59';
     }
-    const time = `${pad(date.getHours())}:${pad(date.getMinutes())}`;
-    return this.includeSeconds ? `${time}:${pad(date.getSeconds())}` : time;
+    // Local time, like isoDate: not affected by a default DatePipe time zone.
+    return formatDate(date, this.includeSeconds ? timeWithSecondsFormat : timeFormat, formatLocale);
   }
 
   /**

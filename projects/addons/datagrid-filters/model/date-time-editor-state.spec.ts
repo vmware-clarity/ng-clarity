@@ -7,8 +7,8 @@
 
 import { ComparisonOperator, LogicalOperator } from './datagrid-filters.enums';
 import { DateTimePropertyDefinition, PropertyFilter } from './datagrid-filters.interfaces';
-import { addDays, dateTimeEditorState, toIsoDate } from './date-time-editor-state';
-import { clockChangeDays } from './date-time-editor-state.mock';
+import { dateTimeEditorState } from './date-time-editor-state';
+import { clockChangeDays, nextIsoDay } from './date-time-editor-state.mock';
 
 const property = new DateTimePropertyDefinition('Created', 'created');
 const range = (from: string, to: string): PropertyFilter => ({
@@ -18,7 +18,6 @@ const range = (from: string, to: string): PropertyFilter => ({
     { filterableProperty: property, operator: ComparisonOperator.LessThan, value: to },
   ],
 });
-const nextDay = (iso: string) => toIsoDate(addDays(new Date(`${iso}T00:00:00`), 1));
 
 describe('dateTimeEditorState', () => {
   it('reads [day, next day) as Equals on a normal day', () => {
@@ -70,7 +69,7 @@ describe('dateTimeEditorState', () => {
   describe.skipIf(!days.length)('on the days the clocks change', () => {
     it('reads midnight to the next midnight as Equals, however many hours the day has', () => {
       days.forEach(day => {
-        expect(dateTimeEditorState(range(`${day}T00:00:00`, `${nextDay(day)}T00:00:00`)), day).toEqual({
+        expect(dateTimeEditorState(range(`${day}T00:00:00`, `${nextIsoDay(day)}T00:00:00`)), day).toEqual({
           operator: ComparisonOperator.Equals,
           value: day,
         });
@@ -79,7 +78,7 @@ describe('dateTimeEditorState', () => {
 
     it('reads the end date of a custom range that ends the day after a clock change', () => {
       days.forEach(day => {
-        expect(dateTimeEditorState(range('2026-01-01T00:00:00', `${nextDay(day)}T00:00:00`)), day).toEqual({
+        expect(dateTimeEditorState(range('2026-01-01T00:00:00', `${nextIsoDay(day)}T00:00:00`)), day).toEqual({
           operator: ComparisonOperator.CustomRange,
           value: '2026-01-01',
           valueTo: day,
