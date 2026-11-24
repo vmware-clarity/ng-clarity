@@ -18,6 +18,8 @@ import {
   OnChanges,
   OnInit,
   Output,
+  QueryList,
+  ViewChildren,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
@@ -70,7 +72,8 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
   protected LogicalOperator = LogicalOperator;
   private readonly destroyRef = inject(DestroyRef);
   private readonly injector = inject(Injector);
-  private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+
+  @ViewChildren('operatorSelect') private operatorSelects!: QueryList<ElementRef<HTMLSelectElement>>;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -186,16 +189,9 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
     }
   }
 
+  // The added or removed row renders on the next change detection, which also updates the query.
   private focusCondition(index: number): void {
-    afterNextRender(
-      () => {
-        this.elementRef.nativeElement
-          .querySelectorAll<HTMLElement>('.filter-condition-row')
-          [index]?.querySelector<HTMLInputElement | HTMLSelectElement>('input, select')
-          ?.focus();
-      },
-      { injector: this.injector }
-    );
+    afterNextRender(() => this.operatorSelects.get(index)?.nativeElement.focus(), { injector: this.injector });
   }
 
   private initOperator(index: number): ComparisonOperator {

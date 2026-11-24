@@ -44,7 +44,7 @@
       <div class="filter-condition-row" [formGroupName]="index">
         <clr-select-container class="filter-operator">
           <label class="clr-sr-only">{{ filterStrings.operatorLabel }}</label>
-          <select clrSelect formControlName="operator">
+          <select #operatorSelect clrSelect formControlName="operator">
             @for (operator of comparisonOperators; track operator) {
               <option [ngValue]="operator">{{ filterStrings.getOperatorDisplayName(operator) }}</option>
             }

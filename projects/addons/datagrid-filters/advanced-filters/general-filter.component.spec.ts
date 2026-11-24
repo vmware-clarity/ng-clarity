@@ -387,6 +387,47 @@ describe('GeneralFilterComponent', () => {
       expect(testContext.component.conditions.length).toBe(1);
     });
 
+    describe('focus', () => {
+      const host = (): HTMLElement => testContext.fixture.nativeElement;
+      const operatorSelects = () => Array.from(host().querySelectorAll('select[formControlName=operator]'));
+
+      beforeEach(() => {
+        // Attached to the document, so focus can move.
+        document.body.appendChild(host());
+        testContext.component.filterProperty = new StringPropertyDefinition('Name', 'name');
+        renderFixture(testContext.fixture);
+      });
+
+      it('moves focus to the operator of a new condition', async () => {
+        const add = host().querySelector<HTMLButtonElement>(addButtonSelector)!;
+        add.focus();
+        add.click();
+        renderFixture(testContext.fixture);
+        await testContext.fixture.whenStable();
+        expect(document.activeElement).toBe(operatorSelects()[1]);
+      });
+
+      it('moves focus to the operator of the condition that takes the removed one’s place, or the last one', async () => {
+        for (let index = 0; index < 2; index++) {
+          host().querySelector<HTMLButtonElement>(addButtonSelector)!.click();
+          renderFixture(testContext.fixture);
+        }
+        const removeButtons = () => host().querySelectorAll<HTMLButtonElement>('[data-test-id=close-button]');
+
+        removeButtons()[1].focus();
+        removeButtons()[1].click();
+        renderFixture(testContext.fixture);
+        await testContext.fixture.whenStable();
+        expect(document.activeElement).toBe(operatorSelects()[1]);
+
+        removeButtons()[1].focus();
+        removeButtons()[1].click();
+        renderFixture(testContext.fixture);
+        await testContext.fixture.whenStable();
+        expect(document.activeElement).toBe(operatorSelects()[0]);
+      });
+    });
+
     it('validates the third row and restores required validation after Is empty', () => {
       testContext.component.filterProperty = new StringPropertyDefinition('Name', 'name');
       renderFixture(testContext.fixture);

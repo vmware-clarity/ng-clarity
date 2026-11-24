@@ -19,8 +19,10 @@ import {
   OnChanges,
   OnInit,
   Output,
+  QueryList,
   SimpleChanges,
   ViewChild,
+  ViewChildren,
 } from '@angular/core';
 import { ClrCombobox } from '@clr/angular/forms';
 import {
@@ -32,6 +34,7 @@ import {
 import { uniqueIdFactory } from '@clr/angular/utils';
 
 import { DatagridFiltersStrings } from './datagrid-filters-strings.service';
+import { ManageFilterComponent } from './manage-filters/manage-filter.component';
 import { ComparisonOperator, LogicalOperator, PropertyType } from './model/datagrid-filters.enums';
 import {
   DateTimePropertyDefinition,
@@ -148,7 +151,12 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
 
   @ViewChild('addButton', { static: true }) private addButton!: ElementRef<HTMLButtonElement>;
 
-  @ViewChild('filterContainer') private filterContainer!: ElementRef<HTMLElement>;
+  // The filter buttons that can take focus when Add filter is disabled, in page order (see moveFocusToActiveButton).
+  @ViewChildren('toggleButton') private toggleButtons!: QueryList<ElementRef<HTMLButtonElement>>;
+
+  @ViewChildren('predefinedPill') private predefinedPills!: QueryList<ManageFilterComponent>;
+
+  @ViewChildren('semiOptionButton') private semiOptionButtons!: QueryList<ElementRef<HTMLButtonElement>>;
 
   private readonly injector = inject(Injector);
 
@@ -686,14 +694,13 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
         const addButton = this.addButton?.nativeElement;
         if (addButton && !addButton.disabled) {
           addButton.focus();
-          return;
+        } else if (this.toggleButtons.length) {
+          this.toggleButtons.first.nativeElement.focus();
+        } else if (this.predefinedPills.length) {
+          this.predefinedPills.first.focus();
+        } else if (this.semiOptionButtons.length) {
+          this.semiOptionButtons.first.nativeElement.focus();
         }
-        // A pill or toggle; not Clear all or a button in the Add filter popover, which share the container.
-        Array.from(
-          this.filterContainer?.nativeElement.querySelectorAll<HTMLButtonElement>('button:not([disabled])') ?? []
-        )
-          .find(button => !button.matches('.clear-all-button') && !button.closest('.filter-popover'))
-          ?.focus();
       },
       { injector: this.injector }
     );

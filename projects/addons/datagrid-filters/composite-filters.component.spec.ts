@@ -781,6 +781,48 @@ describe('CompositeFiltersComponent', () => {
     expect(document.activeElement).toBe(firstPill);
   });
 
+  it('moves focus to the first toggle, before a predefined pill, after Clear all when Add filter is disabled', async () => {
+    testContext.component.toggleFilters = asToggles({
+      operator: LogicalOperator.Or,
+      criteria: [{ filterableProperty: enumProperty, operator: ComparisonOperator.Equals, value: 'red' }],
+    });
+    testContext.component.predefinedFilters = [stringProperty];
+    renderFixture(testContext.fixture);
+    const toggle: HTMLButtonElement = testContext.fixture.nativeElement.querySelector('[data-test-id="toggle-filter"]');
+    toggle.click();
+    renderFixture(testContext.fixture);
+    const clearAll: HTMLButtonElement = testContext.fixture.nativeElement.querySelector(
+      '[data-test-id="clear-all-button"]'
+    );
+    clearAll.focus();
+    clearAll.click();
+    renderFixture(testContext.fixture);
+    await testContext.fixture.whenStable();
+    expect(testContext.fixture.nativeElement.querySelector('[data-test-id="add-button"]').disabled).toBe(true);
+    expect(document.activeElement).toBe(
+      testContext.fixture.nativeElement.querySelector('[data-test-id="toggle-filter"]')
+    );
+  });
+
+  it('moves focus to the first semi-predefined option after Clear all when it is the only filter', async () => {
+    testContext.component.filterableProperties = [enumProperty];
+    testContext.component.semiPredefinedFilters = [enumProperty];
+    renderFixture(testContext.fixture);
+    const options = (): HTMLButtonElement[] =>
+      Array.from(testContext.fixture.nativeElement.querySelectorAll('[data-test-id="semi-filter-option"]'));
+    options()[1].click();
+    renderFixture(testContext.fixture);
+    const clearAll: HTMLButtonElement = testContext.fixture.nativeElement.querySelector(
+      '[data-test-id="clear-all-button"]'
+    );
+    clearAll.focus();
+    clearAll.click();
+    renderFixture(testContext.fixture);
+    await testContext.fixture.whenStable();
+    expect(testContext.fixture.nativeElement.querySelector('[data-test-id="add-button"]').disabled).toBe(true);
+    expect(document.activeElement).toBe(options()[0]);
+  });
+
   it('moves focus to Add filter after a user-added pill is removed', async () => {
     testContext.component.onFilterCriteriaChange(enumPropertyFilter);
     renderFixture(testContext.fixture);

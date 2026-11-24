@@ -90,6 +90,7 @@ export class ManageFilterComponent implements OnInit, OnChanges {
 
   private readonly locale = inject(LOCALE_ID);
   private readonly popoverService = inject(ClrPopoverService);
+  private pillButtonRef?: ElementRef<HTMLButtonElement>;
   private readonly noDisplayValueOperators: ComparisonOperator[] = [
     ComparisonOperator.IsEmpty,
     ComparisonOperator.LastDay,
@@ -106,6 +107,7 @@ export class ManageFilterComponent implements OnInit, OnChanges {
    */
   @ViewChild('pillButton', { static: true })
   set pillButton(button: ElementRef<HTMLButtonElement>) {
+    this.pillButtonRef = button;
     if (button) {
       this.popoverService.origin = button;
     }
@@ -170,6 +172,11 @@ export class ManageFilterComponent implements OnInit, OnChanges {
   removeFilter(): void {
     this.close();
     this.filterRemoved.emit();
+  }
+
+  /** Focuses the pill button, e.g. when the filter bar moves focus to the first pill. */
+  focus(): void {
+    this.pillButtonRef?.nativeElement.focus();
   }
 
   onFilterCriteriaChange(propertyFilter: PropertyFilter) {

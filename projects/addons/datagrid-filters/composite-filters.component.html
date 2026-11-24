@@ -6,7 +6,7 @@
   -->
 <div class="composite-filter-container">
   <!-- One wrapping flow: pills, then Hide, Add filter and Clear all, so the buttons wrap with the pills on narrow screens. -->
-  <div #filterContainer class="manage-filter-container">
+  <div class="manage-filter-container">
     <ng-template #separator>
       <span
         class="filter-group-separator"
@@ -19,6 +19,7 @@
       <clr-label class="semi-filter-option-label" [clrColor]="isToggleOn(toggle) ? 'info' : ''">
         <clr-tooltip>
           <button
+            #toggleButton
             type="button"
             class="semi-filter-option"
             data-test-id="toggle-filter"
@@ -40,6 +41,7 @@
     }
     @for (property of predefinedProperties; track property.property) {
       <appfx-manage-filter
+        #predefinedPill
         [filterProperty]="property"
         [propertyFilter]="filterFor(property)"
         [predefined]="true"
@@ -65,6 +67,7 @@
         @for (option of semiOptions(property); track option.key) {
           <clr-label class="semi-filter-option-label" [clrColor]="isOptionSelected(property, option.key) ? 'info' : ''">
             <button
+              #semiOptionButton
               type="button"
               class="semi-filter-option"
               data-test-id="semi-filter-option"
