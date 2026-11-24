@@ -224,6 +224,22 @@ describe('DataGridFiltersComponent', () => {
       expect(testContext.component.searchTermChange.emit).toHaveBeenCalledExactlyOnceWith('vm-1');
     });
 
+    it('keeps the typed text when the host binds back the trimmed term', async () => {
+      // Like [(searchTerm)] or appfx-datagrid: the host stores the emitted term and passes it back in.
+      vi.mocked(testContext.component.searchTermChange.emit).mockImplementation((term?: string) =>
+        testContext.fixture.componentRef.setInput('searchTerm', term)
+      );
+      renderFixture(testContext.fixture);
+      // ngModel writes the initial empty value asynchronously; type only after that.
+      await testContext.fixture.whenStable();
+
+      applySearch(testContext.fixture, 'linux   ');
+      await testContext.fixture.whenStable();
+
+      expect(testContext.component.searchTermChange.emit).toHaveBeenCalledExactlyOnceWith('linux');
+      expect(searchInput().value).toBe('linux   ');
+    });
+
     it('treats null as no search', () => {
       testContext.fixture.componentRef.setInput('searchTerm', null);
       expect(testContext.component.searchTerm).toBe('');
