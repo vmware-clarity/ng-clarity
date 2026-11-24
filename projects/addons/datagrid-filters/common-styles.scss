@@ -21,28 +21,8 @@
   margin: 0;
 }
 
-.mt-half {
-  margin-top: var(--clr-base-vertical-offset-m);
-}
-
 .mt-compact {
   margin-top: var(--clr-base-vertical-offset-l);
-}
-
-.mb-compact {
-  margin-bottom: var(--clr-base-vertical-offset-l);
-}
-
-.ml-half {
-  margin-left: var(--clr-base-horizontal-offset-m);
-}
-
-.mt-0 {
-  margin-top: 0;
-}
-
-.mb-0 {
-  margin-bottom: 0;
 }
 
 .filter-options {
@@ -130,15 +110,6 @@ select {
   .clr-combobox-wrapper {
     display: flex;
   }
-}
-
-.flex-end-container {
-  display: flex;
-  align-items: flex-end;
-}
-
-.flex-container {
-  display: flex;
 }
 
 .loading-overlay {

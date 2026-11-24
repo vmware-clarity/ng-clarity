@@ -76,7 +76,7 @@ function toToggleArray(value: ToggleFilter[] | null | undefined): ToggleFilter[]
 })
 export class CompositeFiltersComponent implements OnInit, OnChanges {
   // Array of filterable properties
-  @Input() filterableProperties: FilterablePropertyDefinition[] = [];
+  @Input({ transform: toPropertyArray }) filterableProperties: FilterablePropertyDefinition[] = [];
 
   /**
    * Filters applied when the filter bar starts, e.g. a fixed default view. Read once, in `ngOnInit`:
@@ -156,8 +156,6 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
 
   private readonly popoverService = inject(ClrPopoverService);
 
-  private destroyed = false;
-
   /** Keys (see toggleKey) of the toggle filters that are ON. */
   private rawPredefinedFilters: FilterablePropertyDefinition[] = [];
 
@@ -184,7 +182,6 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   ) {
     this.showHideFiltersLabel = filterStrings.hideButtonLabel;
     this.showHideFiltersAriaLabel = filterStrings.hideButtonAriaLabel;
-    this.destroyRef.onDestroy(() => (this.destroyed = true));
   }
 
   /**
@@ -261,7 +258,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
         property => property.property
       )
     );
-    return (this.filterableProperties || []).filter(property => !visibleKeys.has(property.property));
+    return this.filterableProperties.filter(property => !visibleKeys.has(property.property));
   }
 
   protected get userAddedFiltersCount(): number {
@@ -557,10 +554,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     return this.predefinedFilters.some(predefined => predefined.property === property.property);
   }
 
-  /**
-   * Active filters are not displayed in the new filters list.
-   * We want to preselect the first displayed property
-   */
+  /** The fields used by the toggle filters. */
   private toggleProperties(): FilterablePropertyDefinition[] {
     return this.toggleFilters
       .map(toggle => toggle.filter.criteria[0]?.filterableProperty)
@@ -598,7 +592,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
       ...this.predefinedFilters,
       ...this.semiPredefinedFilters,
       ...this.toggleProperties(),
-      ...(this.filterableProperties || []),
+      ...this.filterableProperties,
     ]) {
       if (!properties.has(property.property)) {
         properties.set(property.property, property);
@@ -640,7 +634,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
    */
   private emitFiltersLater(): void {
     Promise.resolve().then(() => {
-      if (!this.destroyed) {
+      if (!this.destroyRef.destroyed) {
         this.emitFilters();
       }
     });
