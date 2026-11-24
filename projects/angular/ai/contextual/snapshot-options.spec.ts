@@ -21,40 +21,26 @@ describe('snapshot options', () => {
       expect(resolveSnapshotOptions({})).toEqual(resolveSnapshotOptions());
     });
 
-    it('describes the whole page with prose, frames and item lists by default', () => {
+    it('describes the whole page with prose and frames, at any depth, by default', () => {
       const resolved = resolveSnapshotOptions();
       expect(resolved.focus).toBe('page');
       expect(resolved.rootSelector).toBe('');
       expect(resolved.includeText).toBe(true);
       expect(resolved.includeFrames).toBe(true);
-      expect(resolved.collectionItems).toBe('all');
+      expect(resolved.depth).toBe(Infinity);
       expect(resolved.excludeRoles).toEqual([]);
       expect(resolved.maxTextLength).toBe(100);
     });
 
-    it('honours budgets inside their ranges', () => {
-      const resolved = resolveSnapshotOptions({ maxComponents: 7, maxItemsPerCollection: 3 });
-      expect(resolved.maxComponents).toBe(7);
-      expect(resolved.maxItemsPerCollection).toBe(3);
+    it('takes a depth of one level or more, in whole levels', () => {
+      expect(resolveSnapshotOptions({ depth: 2 }).depth).toBe(2);
+      expect(resolveSnapshotOptions({ depth: 2.9 }).depth).toBe(2);
     });
 
-    it('falls back to the default for a budget that is not a finite number, never to unbounded', () => {
-      expect(resolveSnapshotOptions({ maxComponents: Number.NaN }).maxComponents).toBe(300);
-      expect(resolveSnapshotOptions({ maxComponents: Number.POSITIVE_INFINITY }).maxComponents).toBe(300);
-      expect(resolveSnapshotOptions({ maxItemsPerCollection: '5' as unknown as number }).maxItemsPerCollection).toBe(
-        25
-      );
-    });
-
-    it('holds a budget to its range', () => {
-      expect(resolveSnapshotOptions({ maxComponents: -5 }).maxComponents).toBe(0);
-      expect(resolveSnapshotOptions({ maxComponents: 1e9 }).maxComponents).toBe(10_000);
-      expect(resolveSnapshotOptions({ maxItemsPerCollection: 2.9 }).maxItemsPerCollection).toBe(2);
-      expect(resolveSnapshotOptions({ maxItemsPerCollection: -1 }).maxItemsPerCollection).toBe(0);
-    });
-
-    it('reports counts and selection only when no items are asked for', () => {
-      expect(resolveSnapshotOptions({ maxItemsPerCollection: 0 }).collectionItems).toBe('summary');
+    it('describes every level for a depth below one or not a number', () => {
+      expect(resolveSnapshotOptions({ depth: 0 }).depth).toBe(Infinity);
+      expect(resolveSnapshotOptions({ depth: Number.NaN }).depth).toBe(Infinity);
+      expect(resolveSnapshotOptions({ depth: '2' as unknown as number }).depth).toBe(Infinity);
     });
 
     it('reads root as the page, the open modal, or a selector', () => {
@@ -102,14 +88,14 @@ describe('snapshot options', () => {
       expect(CLR_CONTEXT_PRESETS.full).toEqual({});
       expect(CLR_CONTEXT_PRESETS.interactive).toEqual({ excludeCategories: ['layout', 'text'] });
       expect(resolveSnapshotOptions(CLR_CONTEXT_PRESETS.minimal)).toEqual(
-        expect.objectContaining({ focus: 'modal', collectionItems: 'summary', maxComponents: 150 })
+        expect.objectContaining({ focus: 'modal', excludeRoles: [...CLR_CONTEXT_CATEGORIES.layout] })
       );
     });
 
     it('are handed out as copies the caller may change', () => {
       const options = presetOrOptions('interactive');
-      options.maxComponents = 1;
-      expect(CLR_CONTEXT_PRESETS.interactive.maxComponents).toBeUndefined();
+      options.depth = 1;
+      expect(CLR_CONTEXT_PRESETS.interactive.depth).toBeUndefined();
     });
 
     it('report a name that is not a preset, and give no options for it', () => {
@@ -128,24 +114,24 @@ describe('snapshot options', () => {
   });
 
   describe('withCallOptions', () => {
-    it('lets a call set budgets and the root over the application’s', () => {
-      expect(withCallOptions({ maxComponents: 10, root: 'main' }, { maxComponents: 20, root: 'modal' })).toEqual({
-        maxComponents: 20,
+    it('lets a call set the depth and the root over the application’s', () => {
+      expect(withCallOptions({ depth: 1, root: 'main' }, { depth: 3, root: 'modal' })).toEqual({
+        depth: 3,
         root: 'modal',
       });
     });
 
     it('ignores what a call left undefined', () => {
-      expect(withCallOptions({ maxComponents: 10 }, { maxComponents: undefined })).toEqual({ maxComponents: 10 });
+      expect(withCallOptions({ depth: 2 }, { depth: undefined })).toEqual({ depth: 2 });
     });
 
     it('keeps the application’s value, not the default, when a call gives one of the wrong type', () => {
-      const application = { maxComponents: 10, maxItemsPerCollection: 5, root: 'main' };
-      const call = { maxComponents: Number.NaN, maxItemsPerCollection: '3' as never, root: '  ' };
+      const application = { depth: 2, root: 'main' };
+      const call = { depth: '3' as never, root: '  ' };
 
       expect(withCallOptions(application, call)).toEqual(application);
       expect(resolveSnapshotOptions(withCallOptions(application, call))).toEqual(
-        expect.objectContaining({ maxComponents: 10, maxItemsPerCollection: 5, root: 'main' })
+        expect.objectContaining({ depth: 2, root: 'main' })
       );
     });
 

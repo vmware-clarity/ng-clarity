@@ -13,7 +13,7 @@
         <select clrSelect name="preset" [ngModel]="preset" (ngModelChange)="applyPreset($event)">
           <option value="full">full — everything visible, prose included</option>
           <option value="interactive">interactive — no prose, no header/navigation/footer</option>
-          <option value="minimal">minimal — counts and selection only, modal focus</option>
+          <option value="minimal">minimal — interactive, only the open modal while one is open</option>
           <option value="custom">custom</option>
         </select>
         <clr-control-helper
@@ -21,37 +21,22 @@
         >
       </clr-select-container>
 
-      <div class="clr-row">
-        <div class="clr-col-6">
-          <clr-number-input-container>
-            <label>maxComponents</label>
-            <input
-              clrNumberInput
-              type="number"
-              name="maxComponents"
-              min="0"
-              [max]="maxBudget"
-              [(ngModel)]="maxComponents"
-              (ngModelChange)="edited()"
-            />
-          </clr-number-input-container>
-        </div>
-        <div class="clr-col-6">
-          <clr-number-input-container>
-            <label>maxItemsPerCollection</label>
-            <input
-              clrNumberInput
-              type="number"
-              name="maxItemsPerCollection"
-              min="0"
-              max="200"
-              [(ngModel)]="maxItemsPerCollection"
-              (ngModelChange)="edited()"
-            />
-            <clr-control-helper>0 reports counts and selection only.</clr-control-helper>
-          </clr-number-input-container>
-        </div>
-      </div>
+      <clr-number-input-container>
+        <label>depth</label>
+        <input
+          clrNumberInput
+          type="number"
+          name="depth"
+          min="1"
+          placeholder="all levels"
+          [(ngModel)]="depth"
+          (ngModelChange)="edited()"
+        />
+        <clr-control-helper
+          ><code class="clr-code">1</code> describes the top-level nodes only, <code class="clr-code">2</code> their
+          children too. Empty describes every level.</clr-control-helper
+        >
+      </clr-number-input-container>
 
       <clr-input-container>
         <label>root</label>
@@ -110,7 +95,7 @@
       <span class="label label-info">{{ bytes }} bytes</span>
       <span class="label">{{ nodes }} nodes</span>
       @if (truncated) {
-        <span class="label label-warning">truncated — raise maxComponents</span>
+        <span class="label label-warning">truncated</span>
       }
       @if (focus) {
         <span class="label label-success">focus: {{ focus }}</span>

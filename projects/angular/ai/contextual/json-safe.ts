@@ -14,15 +14,14 @@ export const ROUTE_DATA_DEPTH = 2;
 
 export const REGION_DEPTH = 10;
 
-/** Text and list budgets applied while reducing a value. */
+/** The text length applied while reducing a value. */
 export interface JsonSafeLimits {
   maxTextLength: number;
-  maxItemsPerCollection: number;
 }
 
 /**
  * Reduces a value to its JSON-serializable subset, at most `depth` levels deep, with strings and arrays
- * cut to `limits` when given. Empty arrays and objects are dropped unless `keepEmpty` is set, and so is
+ * strings cut to `limits` when given. Empty arrays and objects are dropped unless `keepEmpty` is set, and so is
  * a reference back to a value being reduced, so a `parent` pointer cannot copy the tree it points into.
  */
 export function jsonSafe(value: unknown, depth: number, keepEmpty = false, limits?: JsonSafeLimits): unknown {
@@ -49,7 +48,6 @@ function reduced(
   try {
     if (Array.isArray(value)) {
       const items = value
-        .slice(0, limits?.maxItemsPerCollection)
         .map(item => reduced(item, depth - 1, keepEmpty, limits, ancestors))
         .filter(item => item !== undefined);
       return items.length || keepEmpty ? items : undefined;

@@ -12,7 +12,6 @@ import { publishElementContext } from '@clr/angular/utils';
 
 import { ClrContextRegistryService } from './context-registry.service';
 import { usableTimeout } from '../attempt';
-import { charged } from '../budget';
 import { ClrContextDomExtractor } from '../dom/dom-context-collector';
 import { collectContextTreeWithin } from '../dom/walk';
 import {
@@ -34,9 +33,6 @@ import {
 
 /** How long a snapshot waits for each asynchronous provider by default. */
 const DEFAULT_SOURCE_TIMEOUT_MS = 2000;
-
-/** A route map cut to a handful of entries would misdescribe where the app can go. */
-const MIN_ROUTE_LIMIT = 50;
 
 /** How the application wants its context read; set once with `ClrContextService.configure`. */
 export interface ClrContextConfig {
@@ -134,10 +130,9 @@ export class ClrContextService {
   ): ClrPageContext {
     snapshot.title = this.document.title;
     snapshot.url = this.currentUrl();
-    setRegions(snapshot, regions, resolved);
+    snapshot.regions = regions;
     if (this.config.routes && this.router?.config.length) {
-      const limit = Math.max(resolved.maxItemsPerCollection, MIN_ROUTE_LIMIT);
-      snapshot.availableRoutes = availableRoutes(this.router.config, limit);
+      snapshot.availableRoutes = availableRoutes(this.router.config);
     }
     if (isPlatformBrowser(this.platformId)) {
       const tree = collectContextTreeWithin(this.document, resolved, this.config.extractors ?? []);
@@ -197,14 +192,5 @@ export class ClrContextService {
       context.data = data;
     }
     return context;
-  }
-}
-
-/** Regions are not walked, so they get a component budget of their own. */
-function setRegions(snapshot: ClrPageContext, regions: ClrComponentContext[], options: ResolvedSnapshotOptions): void {
-  const budget = { remaining: options.maxComponents, truncated: false };
-  snapshot.regions = charged(regions, budget);
-  if (budget.truncated) {
-    snapshot.truncated = true;
   }
 }

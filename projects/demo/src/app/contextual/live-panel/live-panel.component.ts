@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import { CLR_CONTEXT_PRESETS, ClrContextPreset, ClrContextService, ClrPageContext } from '@clr/angular/ai';
@@ -20,9 +20,6 @@ import { CLR_CONTEXT_PRESETS, ClrContextPreset, ClrContextService, ClrPageContex
   styleUrls: ['./live-panel.component.scss'],
 })
 export class ContextLivePanelComponent implements OnInit {
-  /** The demo pages are busy, so they need more than the default budget. */
-  @Input() maxComponents = 500;
-
   snapshotJson = '';
   snapshotBytes = 0;
   snapshotCount = 0;
@@ -54,6 +51,6 @@ export class ContextLivePanelComponent implements OnInit {
   }
 
   private options() {
-    return { ...CLR_CONTEXT_PRESETS[this.profile], maxComponents: this.maxComponents };
+    return CLR_CONTEXT_PRESETS[this.profile];
   }
 }
