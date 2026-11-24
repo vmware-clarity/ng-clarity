@@ -33,7 +33,6 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import {
-  CLR_CONTEXT_DEFAULT_MAX_ITEMS,
   CLR_CONTEXT_IGNORE_SELECTOR,
   CLR_CONTEXT_REDACT_SELECTOR,
   CLR_CONTEXT_WITHHELD_SELECTOR,
@@ -809,7 +808,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
           return { value: resolved.single ? (labels[0] ?? null) : labels };
         }),
       write: (proposed, options): ClrElementMutation =>
-        this.withRowCells(() => this.writeSelection(proposed, this.excludedBy(options), this.budgetOf(options))),
+        this.withRowCells(() => this.writeSelection(proposed, this.excludedBy(options))),
     });
   }
 
@@ -857,7 +856,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     return { rows, single, replacing };
   }
 
-  private writeSelection(proposed: unknown, excluded: string, limit: number): ClrElementMutation {
+  private writeSelection(proposed: unknown, excluded: string): ClrElementMutation {
     const resolved = this.resolveSelection(proposed, excluded);
     if ('refused' in resolved) {
       return resolved;
@@ -868,7 +867,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       const unchanged = rows.length ? current !== null && !replacing : current === null;
       // Repeating a write changes nothing, so it does not tell the application it did.
       if (unchanged) {
-        return { value: this.readSelection(excluded, limit) };
+        return { value: this.readSelection(excluded) };
       }
       if (rows.length) {
         this.selection.setSelected(rows[0].item, true);
@@ -892,7 +891,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         this.selection.current = next;
       }
     }
-    return { value: this.readSelection(excluded, limit) };
+    return { value: this.readSelection(excluded) };
   }
 
   /** What the grid publishes beyond its ARIA: the total, the rows and selection, filters and hidden columns. */
@@ -907,20 +906,16 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       state.totalRows = total;
     }
 
-    const maxItems = this.budgetOf(snapshotOptions);
     // The cells are not walked, so the rows are where their data shows; selection names rows the same way.
-    // `0` asks for counts and the selection only.
-    if (maxItems > 0) {
-      const listed = firstRowLabels(this.rows.toArray(), row => this.rowLabel(row, excluded), maxItems);
-      if (listed.length) {
-        state.rows = listed;
-      }
+    const listed = rowLabels(this.rows.toArray(), row => this.rowLabel(row, excluded));
+    if (listed.length) {
+      state.rows = listed;
     }
 
     if (this.selection.selectable) {
       state.selectionMode = this.selection.selectionType === SelectionType.Single ? 'single' : 'multi';
       // The selection is the grid's value, under the key every writable component uses.
-      state.value = this.readSelection(excluded, maxItems || CLR_CONTEXT_DEFAULT_MAX_ITEMS);
+      state.value = this.readSelection(excluded);
     }
 
     const columnNames = (keep: (column: ClrDatagridColumn<T>) => boolean) =>
@@ -964,10 +959,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     return hasWithheldText ? null : column.field || null;
   }
 
-  private budgetOf(options: { maxItemsPerCollection?: number } | null | undefined): number {
-    return options?.maxItemsPerCollection ?? CLR_CONTEXT_DEFAULT_MAX_ITEMS;
-  }
-
   private isWithheldRow(item: T, excluded: string): boolean {
     const row = this.rows.find(candidate => this.identify(candidate.item) === this.identify(item));
     return !!row && !this.rowLabel(row, excluded);
@@ -995,10 +986,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       return { row: matches[0] };
     }
     const quote = (candidates: ClrDatagridRow<T>[]) =>
-      candidates
-        .slice(0, CLR_CONTEXT_DEFAULT_MAX_ITEMS)
-        .map(row => `"${this.rowLabel(row, excluded)}"`)
-        .join(', ');
+      candidates.map(row => `"${this.rowLabel(row, excluded)}"`).join(', ');
     if (matches.length > 1) {
       return {
         refused: `"${String(label)}" fits ${matches.length} rows: ${quote(matches)}. Name the row by more of its content.`,
@@ -1007,16 +995,15 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     return { refused: `No such row on this page. The rows are: ${quote(rows)}.` };
   }
 
-  private readSelection(excluded: string, limit = CLR_CONTEXT_DEFAULT_MAX_ITEMS): string | string[] | null {
-    const selected = this.selectedRowLabels(excluded, limit);
+  private readSelection(excluded: string): string | string[] | null {
+    const selected = this.selectedRowLabels(excluded);
     return this.selection.selectionType === SelectionType.Single ? (selected[0] ?? null) : selected;
   }
 
-  private selectedRowLabels(excluded: string, limit: number): string[] {
-    return firstRowLabels(
+  private selectedRowLabels(excluded: string): string[] {
+    return rowLabels(
       this.rows.toArray().filter(row => this.selection.isSelected(row.item)),
-      row => this.rowLabel(row, excluded),
-      limit
+      row => this.rowLabel(row, excluded)
     );
   }
 
@@ -1090,18 +1077,8 @@ function selectorList(...selectors: string[]): string {
 }
 
 /** A row with an empty label is left out: listing it would still say it is there. */
-function firstRowLabels<R>(rows: R[], label: (row: R) => string, limit: number): string[] {
-  const labels: string[] = [];
-  for (const row of rows) {
-    if (labels.length >= limit) {
-      break;
-    }
-    const text = label(row);
-    if (text) {
-      labels.push(text);
-    }
-  }
-  return labels;
+function rowLabels<R>(rows: R[], label: (row: R) => string): string[] {
+  return rows.map(label).filter(Boolean);
 }
 
 function headerText(title: Element, excluded: string): string {

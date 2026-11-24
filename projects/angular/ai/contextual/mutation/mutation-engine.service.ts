@@ -320,7 +320,7 @@ export class ClrMutationService {
     if (!this.router?.config.length) {
       return { refused: 'noRoute', detail: 'The application has no routes.' };
     }
-    const routes = availableRoutes(this.router.config, Number.MAX_SAFE_INTEGER);
+    const routes = availableRoutes(this.router.config);
     if (typeof operation.path !== 'string' || !routes.some(route => route.path === operation.path)) {
       return {
         refused: 'noRoute',

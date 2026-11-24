@@ -17,7 +17,6 @@ import {
 
 import { ClrContextRegistryService } from './context-registry.service';
 import { usableTimeout } from '../attempt';
-import { charged } from '../budget';
 import { conformingSnapshot } from '../conform';
 import { annotationContext, viewAnnotationHosts } from '../dom/annotations';
 import { ClrContextDomExtractor } from '../dom/dom-context-collector';
@@ -46,9 +45,6 @@ import {
 
 /** How long a snapshot waits for each asynchronous provider by default. */
 const DEFAULT_SOURCE_TIMEOUT_MS = 2000;
-
-/** A route map cut to a handful of entries would misdescribe where the app can go. */
-const MIN_ROUTE_LIMIT = 50;
 
 /** How the application wants its context read; set once with `ClrContextService.configure`. */
 export interface ClrContextConfig {
@@ -234,10 +230,9 @@ export class ClrContextService {
   ): ClrPageContext {
     snapshot.title = this.document.title;
     snapshot.url = this.currentUrl();
-    setRegions(snapshot, regions, resolved);
+    snapshot.regions = regions;
     if (this.config.routes && this.router?.config.length) {
-      const limit = Math.max(resolved.maxItemsPerCollection, MIN_ROUTE_LIMIT);
-      snapshot.availableRoutes = availableRoutes(this.router.config, limit);
+      snapshot.availableRoutes = availableRoutes(this.router.config);
     }
     if (isPlatformBrowser(this.platformId)) {
       const refs = this.mutationPolicy ? this.refs.begin() : null;
@@ -319,13 +314,4 @@ export class ClrContextService {
 /** Whether only enabled views are read; an unrecognised `views` value reads only those, failing closed. */
 function readsEnabledViewsOnly(views: string | undefined): boolean {
   return views !== undefined && views !== 'all';
-}
-
-/** Regions are not walked, so they get a component budget of their own. */
-function setRegions(snapshot: ClrPageContext, regions: ClrComponentContext[], options: ResolvedSnapshotOptions): void {
-  const budget = { remaining: options.maxComponents, truncated: false };
-  snapshot.regions = charged(regions, budget);
-  if (budget.truncated) {
-    snapshot.truncated = true;
-  }
 }

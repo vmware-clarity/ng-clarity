@@ -31,10 +31,7 @@ export interface ClrPublishedContext extends ClrComponentContext {
 export type ClrContextCategory =
   'layout' | 'actions' | 'forms' | 'headings' | 'collections' | 'dialogs' | 'status' | 'images' | 'text' | 'frames';
 
-/** Default for `maxItemsPerCollection`, shared with page tooling that calls a publisher directly. */
-export const CLR_CONTEXT_DEFAULT_MAX_ITEMS = 25;
-
-/** Budgets applied while building a snapshot, conservative so it fits an agent's context window. */
+/** What a snapshot describes. */
 export interface ClrContextSnapshotOptions {
   /**
    * What to describe: `'page'` (default) for the whole page, `'modal'` for the open modal dialog (the page when
@@ -48,8 +45,9 @@ export interface ClrContextSnapshotOptions {
   excludeSelectors?: string[];
   /** Kinds of content to leave out, e.g. `['layout', 'text']`. Default none. */
   excludeCategories?: ClrContextCategory[];
-  /** Maximum number of components reported. Default `300`; past it the snapshot has `truncated: true`. */
-  maxComponents?: number;
-  /** Items listed per collection (rows, tabs, options...); `0` reports counts and selection only. Default `25`. */
-  maxItemsPerCollection?: number;
+  /**
+   * How many levels of the snapshot tree below `root` to describe: `1` describes only the top-level nodes, `2` their
+   * children too. Default: no limit.
+   */
+  depth?: number;
 }

@@ -73,7 +73,7 @@ export class ContextualMutationDemo implements OnInit {
 
   /** Reads the page for the controls an agent could write to. */
   async readTargets(): Promise<void> {
-    const snapshot = await this.context.snapshot({ maxComponents: 500 });
+    const snapshot = await this.context.snapshot();
     this.writableTargets = writableTargets(snapshot.components);
     if (!this.writableTargets.some(target => target.ref === this.targetRef)) {
       this.targetRef = this.writableTargets[0]?.ref ?? '';
