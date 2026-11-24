@@ -6,6 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
@@ -104,7 +105,10 @@ import { inject, provideAppInitializer } from '@angular/core';
 import { ClrContextService } from '@clr/angular/ai';
 
 export const appConfig = {
-  providers: [provideAppInitializer(() => inject(ClrContextService).configure({ scope: 'interactive' }))],
+  providers: [
+    // Every snapshot starts from this scope.
+    provideAppInitializer(() => inject(ClrContextService).configure({ scope: 'interactive' })),
+  ],
 };
 `;
 
@@ -199,6 +203,7 @@ inject(ClrContextService).configure({
     '[class.dox-content-panel]': 'true',
   },
   imports: [
+    RouterLink,
     DocTabsComponent,
     DocTabComponent,
     CodeSnippetComponent,
