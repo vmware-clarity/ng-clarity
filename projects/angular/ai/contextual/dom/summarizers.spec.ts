@@ -5,16 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrContextSnapshotOptions } from '@clr/angular/utils';
-
 import { summarizeRole } from './summarizers';
 import { ResolvedSnapshotOptions, resolveSnapshotOptions } from '../snapshot-options';
 
 describe('summarizeRole', () => {
   let container: HTMLElement;
 
-  const budgets = (overrides: Partial<ClrContextSnapshotOptions> = {}): ResolvedSnapshotOptions =>
-    resolveSnapshotOptions({ maxComponents: 100, ...overrides });
+  const budgets = (overrides: Partial<ResolvedSnapshotOptions> = {}): ResolvedSnapshotOptions => ({
+    ...resolveSnapshotOptions(),
+    ...overrides,
+  });
 
   beforeEach(() => {
     container = document.createElement('div');
@@ -23,7 +23,7 @@ describe('summarizeRole', () => {
 
   afterEach(() => container.remove());
 
-  function summarize(html: string, role: string, overrides: Partial<ClrContextSnapshotOptions> = {}) {
+  function summarize(html: string, role: string, overrides: Partial<ResolvedSnapshotOptions> = {}) {
     container.innerHTML = html;
     const element = container.firstElementChild as HTMLElement;
     return summarizeRole(element, role, budgets(overrides));
@@ -53,15 +53,11 @@ describe('summarizeRole', () => {
     expect(state?.rows).toEqual(['a | up', 'b | down']);
   });
 
-  it('lists only the first rows, and none when only a summary is asked for', () => {
-    const html = `<table><tr><th>Name</th></tr><tr><td>a</td></tr><tr><td>b</td></tr><tr><td>c</td></tr></table>`;
-    const first = summarize(html, 'table', { maxItemsPerCollection: 2 });
-    expect(first?.rowCount).toBe(3);
-    expect(first?.rows).toEqual(['a', 'b']);
-
-    const summary = summarize(html, 'table', { maxItemsPerCollection: 0 });
-    expect(summary?.rowCount).toBe(3);
-    expect('rows' in (summary ?? {})).toBe(false);
+  it('lists every rendered row', () => {
+    const body = Array.from({ length: 30 }, (_, index) => `<tr><td>r${index}</td></tr>`).join('');
+    const state = summarize(`<table><tr><th>Name</th></tr>${body}</table>`, 'table');
+    expect(state?.rowCount).toBe(30);
+    expect((state?.rows as string[]).length).toBe(30);
   });
 
   it('counts only rows the user can see, and only this table’s own', () => {
@@ -97,12 +93,10 @@ describe('summarizeRole', () => {
     expect(state?.activeTab).toBe('Details');
   });
 
-  it('summarises a list by its size and its first items', () => {
-    const state = summarize('<ul><li>one</li><li>two</li><li>three</li></ul>', 'list', {
-      maxItemsPerCollection: 2,
-    });
+  it('summarises a list by its size and its items', () => {
+    const state = summarize('<ul><li>one</li><li>two</li><li>three</li></ul>', 'list');
     expect(state?.itemCount).toBe(3);
-    expect(state?.items).toEqual(['one', 'two']);
+    expect(state?.items).toEqual(['one', 'two', 'three']);
   });
 
   it('summarises a listbox by its options and the selected one', () => {
@@ -274,8 +268,10 @@ describe('summarizeRole', () => {
 describe('summarizeRole, collections the first version misread', () => {
   let container: HTMLElement;
 
-  const budgets = (overrides: Partial<ClrContextSnapshotOptions> = {}): ResolvedSnapshotOptions =>
-    resolveSnapshotOptions({ maxComponents: 100, ...overrides });
+  const budgets = (overrides: Partial<ResolvedSnapshotOptions> = {}): ResolvedSnapshotOptions => ({
+    ...resolveSnapshotOptions(),
+    ...overrides,
+  });
 
   beforeEach(() => {
     container = document.createElement('div');
@@ -284,7 +280,7 @@ describe('summarizeRole, collections the first version misread', () => {
 
   afterEach(() => container.remove());
 
-  function summarize(html: string, role: string, overrides: Partial<ClrContextSnapshotOptions> = {}) {
+  function summarize(html: string, role: string, overrides: Partial<ResolvedSnapshotOptions> = {}) {
     container.innerHTML = html;
     const element = container.firstElementChild as HTMLElement;
     return summarizeRole(element, role, budgets(overrides));
@@ -312,18 +308,6 @@ describe('summarizeRole, collections the first version misread', () => {
       'listbox'
     );
     expect(state?.selected).toEqual(['alpha', 'gamma']);
-  });
-
-  it('finds the active tab even when it lies beyond the reported few', () => {
-    const state = summarize(
-      `<div role="tablist">
-         <button role="tab">One</button><button role="tab">Two</button><button role="tab" aria-selected="true">Three</button>
-       </div>`,
-      'tablist',
-      { maxItemsPerCollection: 2 }
-    );
-    expect(state?.tabs).toEqual(['One', 'Two']);
-    expect(state?.activeTab).toBe('Three');
   });
 
   it('counts rows that start with a row header as data rows', () => {

@@ -53,7 +53,7 @@ export interface ClrPageContext {
   regions: ClrComponentContext[];
   /** Everything rendered with a role, name or text, as a tree; collections are summarised. */
   components: ClrComponentContext[];
-  /** `true` when something was left out for size; raise the budget or narrow the scope. */
+  /** `true` when the page was too large or too deeply nested to read in full; narrow `root` to read the part that matters. */
   truncated?: boolean;
   /** `'modal'` when only the open modal dialog is described. */
   focus?: 'modal';
