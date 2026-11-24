@@ -312,10 +312,6 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    if (this.filterableProperties && this.filterableProperties.length > 0) {
-      this.selectedFilterableProperty = this.filterableProperties[0];
-      this.onPropertyChange();
-    }
     // A preset wins over a propertyFilters filter for the same field.
     const presets = this.presetFilters ?? [];
     const presetFields = new Set(presets.map(filter => filter.criteria?.[0]?.filterableProperty?.property));
