@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import {
@@ -44,14 +44,11 @@ const CATEGORIES: { name: ClrContextCategory; covers: string }[] = [
   styleUrls: ['./context-playground.component.scss'],
 })
 export class ContextPlaygroundComponent implements OnInit {
-  /** Caps the component budget so a playground cannot flood a page. */
-  @Input() maxBudget = 1000;
-
   readonly categories = CATEGORIES;
 
   preset: ClrContextPreset | 'custom' = 'full';
-  maxComponents = CLR_CONTEXT_DEFAULT_OPTIONS.maxComponents;
-  maxItemsPerCollection = CLR_CONTEXT_DEFAULT_OPTIONS.maxItemsPerCollection;
+  /** Empty describes every level. */
+  depth: number | null = null;
   root = '';
   excluded: Record<string, boolean> = {};
   excludeSelectors = '';
@@ -78,8 +75,7 @@ export class ContextPlaygroundComponent implements OnInit {
       return;
     }
     const options = { ...CLR_CONTEXT_DEFAULT_OPTIONS, ...CLR_CONTEXT_PRESETS[preset] };
-    this.maxComponents = options.maxComponents;
-    this.maxItemsPerCollection = options.maxItemsPerCollection;
+    this.depth = Number.isFinite(options.depth) ? options.depth : null;
     this.root = options.root === 'page' ? '' : options.root;
     const categories = new Set<string>(options.excludeCategories);
     for (const { name } of CATEGORIES) {
@@ -95,10 +91,10 @@ export class ContextPlaygroundComponent implements OnInit {
   }
 
   currentOptions(): ClrContextSnapshotOptions {
-    const options: ClrContextSnapshotOptions = {
-      maxComponents: Math.min(this.maxComponents, this.maxBudget),
-      maxItemsPerCollection: this.maxItemsPerCollection,
-    };
+    const options: ClrContextSnapshotOptions = {};
+    if (this.depth) {
+      options.depth = this.depth;
+    }
     if (this.root.trim()) {
       options.root = this.root.trim();
     }
