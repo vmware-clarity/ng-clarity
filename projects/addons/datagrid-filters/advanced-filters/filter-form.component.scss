@@ -70,7 +70,11 @@ form {
     align-items: flex-start;
     gap: var(--clr-base-gap-s);
     margin-top: var(--clr-base-vertical-offset-l);
+  }
 
+  // Value inputs in a condition row, or in a block of value rows under it (e.g. the date-time From and To).
+  .filter-condition-row,
+  .filter-values {
     .clr-form-control {
       margin-top: 0;
       min-width: 0;
@@ -93,9 +97,12 @@ form {
   .filter-condition-remove {
     flex: 0 0 auto;
     margin: 0;
+    padding: 0 var(--clr-base-horizontal-offset-2xs);
   }
 
-  .filter-condition-row .clr-control-container {
+  // Controls fill their container, from edge to edge.
+  .filter-condition-row .clr-control-container,
+  .filter-values .clr-control-container {
     width: 100%;
 
     .clr-select-wrapper,
@@ -105,7 +112,8 @@ form {
       width: 100%;
     }
 
-    select,
+    // Not a select inside an input group (e.g. the time span unit), which keeps its own width.
+    .clr-select-wrapper > select,
     input.clr-input {
       flex: 1 1 auto;
       min-width: 0;

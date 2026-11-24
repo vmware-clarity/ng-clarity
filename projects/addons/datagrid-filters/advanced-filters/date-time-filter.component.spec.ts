@@ -836,6 +836,86 @@ describe('DateTimeFilterComponent', () => {
       showInputs(ComparisonOperator.Equals);
       expect(testContext.fixture.nativeElement.querySelector('input[type=time]').placeholder).toBe('HH:mm');
     });
+
+    it('shows "In the last" as the visible label of the time span value', () => {
+      renderFixture(testContext.fixture);
+      testContext.component.dateTimeFilterForm.controls['operator'].setValue(ComparisonOperator.TimeSpan);
+      markComponentForCheck();
+      renderFixture(testContext.fixture);
+      const input = testContext.fixture.nativeElement.querySelector('input[formControlName=timeSpanValue]');
+      const label = testContext.fixture.nativeElement.querySelector(`label[for="${input.id}"]`);
+      expect(label.textContent.trim()).toBe(testContext.component.filterStrings.timeSpanInputLabel);
+      expect(label.classList).not.toContain('clr-sr-only');
+    });
+
+    it('puts the time span value and its unit in one input group', () => {
+      renderFixture(testContext.fixture);
+      testContext.component.dateTimeFilterForm.controls['operator'].setValue(ComparisonOperator.TimeSpan);
+      markComponentForCheck();
+      renderFixture(testContext.fixture);
+      const host: HTMLElement = testContext.fixture.nativeElement;
+      const group = host.querySelector('input[formControlName=timeSpanValue]')!.closest('.clr-input-group')!;
+      const unit = host.querySelector<HTMLSelectElement>(timeSpanSelector)!;
+      expect(group.contains(unit)).toBe(true);
+      expect(unit.getAttribute('aria-label')).toBe(testContext.component.filterStrings.timeSpanAriaLabel);
+    });
+  });
+
+  describe('focus when adding or removing the time', () => {
+    const host = (): HTMLElement => testContext.fixture.nativeElement;
+
+    function showOperator(operator: ComparisonOperator): void {
+      // Attached to the document, so focus can move.
+      document.body.appendChild(host());
+      renderFixture(testContext.fixture);
+      testContext.component.dateTimeFilterForm.controls['operator'].setValue(operator);
+      markComponentForCheck();
+      renderFixture(testContext.fixture);
+    }
+
+    for (const operator of [ComparisonOperator.Equals, ComparisonOperator.CustomRange]) {
+      it(`moves focus to the first time input after Filter by time (${ComparisonOperator[operator]})`, async () => {
+        showOperator(operator);
+        const add = host().querySelector<HTMLButtonElement>('[data-test-id="add-button"]')!;
+        add.focus();
+        add.click();
+        renderFixture(testContext.fixture);
+        await testContext.fixture.whenStable();
+        expect(document.activeElement).toBe(host().querySelector('input[formControlName=timeValue]'));
+      });
+
+      it(`moves focus to the date input after removing the time (${ComparisonOperator[operator]})`, async () => {
+        showOperator(operator);
+        host().querySelector<HTMLButtonElement>('[data-test-id="add-button"]')!.click();
+        renderFixture(testContext.fixture);
+        const remove = host().querySelector<HTMLButtonElement>('[data-test-id="close-button"]')!;
+        remove.focus();
+        remove.click();
+        renderFixture(testContext.fixture);
+        await testContext.fixture.whenStable();
+        expect(document.activeElement).toBe(host().querySelector('input[formControlName=dateValue]'));
+      });
+    }
+  });
+
+  describe('layout', () => {
+    it('puts the operator alone on its row, with the date and time inputs under it', () => {
+      renderFixture(testContext.fixture);
+      testContext.component.dateTimeFilterForm.controls['operator'].setValue(ComparisonOperator.CustomRange);
+      testContext.component.enableTimePredicate();
+      markComponentForCheck();
+      renderFixture(testContext.fixture);
+      const host: HTMLElement = testContext.fixture.nativeElement;
+      const operator = host.querySelector('select[formControlName=operator]')!;
+      const operatorRow = operator.closest('.filter-condition-row')!;
+      expect(operatorRow.querySelectorAll('input').length).toBe(0);
+      const inputs = Array.from(host.querySelectorAll<HTMLInputElement>('input[formControlName]'));
+      expect(inputs.length).toBe(4);
+      const operatorBottom = operator.getBoundingClientRect().bottom;
+      for (const input of inputs) {
+        expect(input.getBoundingClientRect().top).toBeGreaterThanOrEqual(operatorBottom);
+      }
+    });
   });
 
   describe('additional coverage', () => {

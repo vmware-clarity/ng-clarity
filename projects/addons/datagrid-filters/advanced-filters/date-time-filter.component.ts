@@ -7,15 +7,19 @@
 
 import { DatePipe } from '@angular/common';
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   EventEmitter,
   inject,
+  Injector,
   Input,
   LOCALE_ID,
   OnChanges,
   OnInit,
   Output,
+  ViewChild,
 } from '@angular/core';
 import {
   AbstractControl,
@@ -87,6 +91,13 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
 
   // The clrDate inputs hold locale date strings; predicates and stored values use yyyy-MM-dd.
   private readonly dateFormat = new ClrLocaleDateFormat(inject(LOCALE_ID));
+  private readonly injector = inject(Injector);
+  // The range picker's From input, shown for Custom range without times.
+  @ViewChild('startDateInput', { read: ElementRef }) private startDateInput?: ElementRef<HTMLInputElement>;
+  // The date input shown on its own: a single date, or the From date with times.
+  @ViewChild('dateInput', { read: ElementRef }) private dateInput?: ElementRef<HTMLInputElement>;
+  // The first time input, shown after Filter by time.
+  @ViewChild('timeInput', { read: ElementRef }) private timeInput?: ElementRef<HTMLInputElement>;
   /** Flags a typed date that cannot be read in the current locale with the `pattern` error. */
   private readonly dateValidators: ValidatorFn[] = [
     Validators.required,
@@ -283,6 +294,21 @@ export class DateTimeFilterComponent implements OnInit, OnChanges {
 
   onCancelButtonClick(): void {
     this.filterCriteriaChange.emit();
+  }
+
+  /** Filter by time: the clicked button is removed, so focus moves to the first time input. */
+  protected onAddTimeClick(): void {
+    this.enableTimePredicate();
+    afterNextRender(() => this.timeInput?.nativeElement.focus(), { injector: this.injector });
+  }
+
+  /** Removing the time also removes the clicked button, so focus moves back to the date input. */
+  protected onRemoveTimeClick(): void {
+    this.disableTimePredicate();
+    // Custom range shows the range picker again; other operators keep the single date input.
+    afterNextRender(() => (this.startDateInput ?? this.dateInput)?.nativeElement.focus(), {
+      injector: this.injector,
+    });
   }
 
   private onOperatorChange(): void {
