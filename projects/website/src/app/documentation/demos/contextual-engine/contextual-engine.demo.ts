@@ -186,7 +186,9 @@ export class PageContextForChat {
     }
     // Send the difference only: change.previous and change.current are whole snapshots.
     const { added, removed, changed, routeChanged, regionsChanged, titleChanged, viewChanged } = change;
-    return { pageChanged: { added, removed, changed, routeChanged, regionsChanged, titleChanged, viewChanged } };
+    return {
+      pageChanged: { added, removed, changed, routeChanged, regionsChanged, titleChanged, viewChanged },
+    };
   }
 }
 `;
