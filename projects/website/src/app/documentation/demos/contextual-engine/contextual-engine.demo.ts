@@ -140,25 +140,35 @@ export class FirewallRulesComponent {
 `;
 
 const CHANGES_EXAMPLE = `
-import { clrDiffContext, clrIsEmptyContextChange, ClrPageContext } from '@clr/angular/ai';
+import { inject, Injectable } from '@angular/core';
+import {
+  clrDiffContext,
+  clrIsEmptyContextChange,
+  ClrContextService,
+  ClrPageContext,
+} from '@clr/angular/ai';
 
-private previous: ClrPageContext | null = null;
+@Injectable({ providedIn: 'root' })
+export class PageContextForChat {
+  private readonly context = inject(ClrContextService);
+  private previous: ClrPageContext | null = null;
 
-async pageForThisTurn() {
-  const current = await this.context.snapshot();
-  const previous = this.previous;
-  this.previous = current;
+  async forThisTurn() {
+    const current = await this.context.snapshot();
+    const previous = this.previous;
+    this.previous = current;
 
-  if (!previous) {
-    return { page: current };
+    if (!previous) {
+      return { page: current };
+    }
+    const change = clrDiffContext(previous, current);
+    if (clrIsEmptyContextChange(change)) {
+      return {};
+    }
+    // Send the difference only: change.previous and change.current are whole snapshots.
+    const { added, removed, changed, routeChanged, titleChanged } = change;
+    return { pageChanged: { added, removed, changed, routeChanged, titleChanged } };
   }
-  const change = clrDiffContext(previous, current);
-  if (clrIsEmptyContextChange(change)) {
-    return {};
-  }
-  // Send the difference only: change.previous and change.current are whole snapshots.
-  const { added, removed, changed, routeChanged, titleChanged } = change;
-  return { pageChanged: { added, removed, changed, routeChanged, titleChanged } };
 }
 `;
 
