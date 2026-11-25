@@ -13,6 +13,7 @@ import {
   CLR_CONTEXT_PRESETS,
   ClrContextCategory,
   ClrContextChange,
+  ClrContextIgnore,
   ClrContextPreset,
   ClrContextService,
   ClrContextSnapshotOptions,
@@ -33,13 +34,14 @@ const CATEGORIES: { name: ClrContextCategory; covers: string }[] = [
   { name: 'frames', covers: 'embedded frames' },
 ];
 
-/** Live playground for the snapshot options; marked `data-clr-context-ignore` so it never describes itself. */
+/** Live playground for the snapshot options; marked `clrContextIgnore` so it never describes itself. */
 @Component({
   changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'clr-context-playground',
   standalone: true,
   imports: [FormsModule, ClarityModule],
-  host: { 'data-clr-context-ignore': '', class: 'clr-context-playground' },
+  hostDirectives: [ClrContextIgnore],
+  host: { class: 'clr-context-playground' },
   templateUrl: './context-playground.component.html',
   styleUrls: ['./context-playground.component.scss'],
 })
