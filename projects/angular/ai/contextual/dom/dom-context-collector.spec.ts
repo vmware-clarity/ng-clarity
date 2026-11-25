@@ -66,7 +66,7 @@ function findContext(
       <clr-dg-footer>{{ items.length }} items</clr-dg-footer>
     </clr-datagrid>
 
-    <form clrForm>
+    <form clrForm aria-label="Account">
       <clr-input-container>
         <label>Username</label>
         <input clrInput required name="username" [(ngModel)]="username" />
@@ -469,7 +469,7 @@ describe('DOM context collector - component-published context', () => {
 
     expect(collectComponents(root)).toEqual([
       {
-        type: 'group',
+        type: 'generic',
         element: 'clr-fake-widget',
         label: 'DOM label',
         children: [{ type: 'text', label: 'content' }],

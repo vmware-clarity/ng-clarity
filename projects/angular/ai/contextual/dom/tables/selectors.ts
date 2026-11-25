@@ -86,6 +86,9 @@ export const LEGACY_MODAL_SELECTOR =
 /** Only a page-level `<header>`/`<footer>` is a landmark, per HTML-AAM. */
 export const SECTIONING_SELECTOR = 'article, aside, main, nav, section';
 
+/** HTML sectioning content, which scopes an `aside`; `main` is not part of it. */
+export const SECTIONING_CONTENT_SELECTOR = 'article, aside, nav, section';
+
 /** Never read into names: regions kept from agents, and editing hosts, whose text is a value. */
 export const UNREADABLE_SELECTOR = `${CLR_CONTEXT_IGNORE_SELECTOR}, ${CLR_CONTEXT_REDACT_SELECTOR}, ${CLR_CONTEXT_EDITING_HOST_SELECTOR}`;
 

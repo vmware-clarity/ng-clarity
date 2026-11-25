@@ -169,7 +169,7 @@ export interface ClrPageContext {
     availableRoutes?: ClrAvailableRoute[];
     collectedAt: string;
     components: ClrComponentContext[];
-    focus?: 'modal';
+    modal?: true;
     regions: ClrComponentContext[];
     route?: ClrRouteContext;
     title: string;

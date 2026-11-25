@@ -63,4 +63,6 @@ export class Firewall {
 - A grid is summarised, not walked: its `rows` list each row's cells in one string, such as `esx-01 | ok`, for every rendered row, so there is no need to publish them.
 - `root: 'modal'` reads only the open modal dialog, such as a wizard, and reads the whole page while none is open, so it can be set once for the application.
 - Prefer semantic HTML and ARIA over annotations: the engine reads the accessibility tree, so an unlabelled control is unnamed to the agent too.
+- Roles follow HTML-AAM and names Accessible Name Computation 1.2. State keys are ARIA attribute names without `aria-` (`readonly`, `haspopup`, `multiselectable`, `posinset`); `focused: true` marks the element with focus. An element with no role is `generic`.
+- A `<form>` or `<section>` without a name has no role, so its fields read as part of the page: give a `clrForm` an `aria-label` to keep it as a `form` node.
 - Unrendered virtual-scroll rows, canvas content, shadow roots and cross-origin frames are invisible to it.

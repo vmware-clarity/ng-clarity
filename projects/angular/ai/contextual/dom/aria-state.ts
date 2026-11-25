@@ -12,8 +12,10 @@ import {
   CONTENT_STATE_KEYS,
   ENUM_ATTRIBUTES,
   FLAG_ATTRIBUTES,
+  NUMBER_ATTRIBUTES,
   REDACTED_AUTOCOMPLETE_TOKENS,
   REDACTED_INPUT_TYPES,
+  TEXT_ATTRIBUTES,
   TRISTATE_ATTRIBUTES,
   VALUE_STATE_KEYS,
   VALUELESS_INPUT_TYPES,
@@ -59,24 +61,35 @@ export function ariaState(
   for (const { attribute, key } of ENUM_ATTRIBUTES) {
     const value = ariaEnumValue(element, attribute);
     if (value !== null) {
-      state[key] = key === 'invalid' ? true : value;
+      // `aria-invalid` keeps its `grammar` and `spelling` tokens; any other invalid value is `true`.
+      state[key] = key === 'invalid' && value === 'true' ? true : value;
     }
   }
 
-  const level = numberAttribute(element, 'aria-level');
-  if (level !== undefined) {
-    state.level = level;
+  for (const attribute of NUMBER_ATTRIBUTES) {
+    const value = numberAttribute(element, `aria-${attribute}`);
+    if (value !== undefined) {
+      state[attribute] = value;
+    }
   }
 
-  const roleDescription = element.getAttribute('aria-roledescription')?.trim();
-  if (roleDescription) {
-    state.roleDescription = truncate(roleDescription, options.maxTextLength);
+  for (const attribute of TEXT_ATTRIBUTES) {
+    const value = element.getAttribute(`aria-${attribute}`)?.trim();
+    if (value) {
+      state[attribute] = truncate(value, options.maxTextLength);
+    }
   }
 
   // Messages wired by `aria-describedby` are read there, so they do not show up as stray nodes;
   // `aria-errormessage` becomes `error` and only while the field is invalid.
-  const errorIds = state.invalid === true ? getAriaReferenceIds(element, 'aria-errormessage') : [];
-  const description = truncate(referencedText(element, 'aria-describedby', withheld, errorIds), options.maxTextLength);
+  const errorIds = state.invalid ? getAriaReferenceIds(element, 'aria-errormessage') : [];
+  // As in AccName, `aria-describedby` comes before `aria-description`; the walk falls back to `title` after both.
+  const description = truncate(
+    referencedText(element, 'aria-describedby', withheld, errorIds) ||
+      element.getAttribute('aria-description')?.trim() ||
+      '',
+    options.maxTextLength
+  );
   if (description) {
     state.description = description;
   }
@@ -119,7 +132,7 @@ function assignNativeState(element: Element, state: Record<string, unknown>, opt
   }
   const maxLength = numberAttribute(element, 'maxlength');
   if (maxLength !== undefined) {
-    state.maxLength = maxLength;
+    state.maxlength = maxLength;
   }
 
   const href = element.getAttribute('href');
