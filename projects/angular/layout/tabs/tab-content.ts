@@ -45,7 +45,7 @@ let nbTabContentComponents = 0;
 export class ClrTabContent implements OnDestroy {
   @Input('id') tabContentId: string;
 
-  private viewRef: EmbeddedViewRef<ClrTabContent>;
+  private viewRef!: EmbeddedViewRef<ClrTabContent>;
 
   constructor(
     @Optional() public ifActiveService: IfActiveService,
@@ -55,16 +55,14 @@ export class ClrTabContent implements OnDestroy {
     if (!ifActiveService || !tabsService || id === null || id === undefined) {
       throw new Error('clrTabLink and clr-tab-content should only be used inside of a clr-tabs');
     }
-    if (!this.tabContentId) {
-      this.tabContentId = 'clr-tab-content-' + nbTabContentComponents++;
-    }
+    this.tabContentId = 'clr-tab-content-' + nbTabContentComponents++;
   }
 
   get active() {
     return this.ifActiveService.current === this.id;
   }
 
-  get ariaLabelledBy(): string {
+  get ariaLabelledBy(): string | undefined {
     return this.tabsService.children.find(tab => tab.tabLink.id === this.id)?.tabLink?.tabLinkId;
   }
 

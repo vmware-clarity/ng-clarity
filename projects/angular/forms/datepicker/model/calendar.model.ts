@@ -9,7 +9,7 @@ import { DayModel } from './day.model';
 import { getNumberOfDaysInTheMonth } from '../utils/date-utils';
 
 export class CalendarModel {
-  days: DayModel[];
+  days!: DayModel[];
 
   constructor(
     readonly year: number,

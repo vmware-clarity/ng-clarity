@@ -16,7 +16,7 @@ export class CollapsiblePanelService {
   protected panelGroup = new CollapsiblePanelGroupModel();
   protected readonly _panelsChanges = new BehaviorSubject(this.panelGroup.panels);
 
-  getPanelChanges(panelId: string): Observable<CollapsiblePanelModel> {
+  getPanelChanges(panelId: string): Observable<CollapsiblePanelModel | undefined> {
     return this._panelsChanges.pipe(map(panels => panels.find(s => s.id === panelId)));
   }
 
@@ -30,7 +30,7 @@ export class CollapsiblePanelService {
     this.emitUpdatedPanels();
   }
 
-  disablePanel(panelId: string, disabled?: boolean) {
+  disablePanel(panelId: string, disabled = false) {
     this.panelGroup.disablePanel(panelId, disabled);
     this.emitUpdatedPanels();
   }

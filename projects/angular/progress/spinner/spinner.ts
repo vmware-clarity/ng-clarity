@@ -18,10 +18,10 @@ import { isBooleanAttributeSet } from '@clr/angular/utils';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrSpinner {
-  private _inline: boolean;
-  private _inverse: boolean;
-  private _small: boolean;
-  private _medium: boolean;
+  private _inline = false;
+  private _inverse = false;
+  private _small = false;
+  private _medium = false;
 
   /**
    * Default class for all spinners. This class is always true
