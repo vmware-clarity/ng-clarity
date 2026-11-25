@@ -25,9 +25,9 @@ import { NestedMenu } from './nested-menu';
 export class MenuHeaderComponent extends MenuItem implements OnChanges {
   override type = MenuItemType.header;
 
-  @Input() iconClass: string;
+  @Input() iconClass!: string;
 
-  @Input() text: string;
+  @Input() text!: string;
 
   private readonly menu = inject(NestedMenu, { optional: true });
 

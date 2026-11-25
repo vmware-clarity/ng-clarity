@@ -32,7 +32,7 @@ describe('Service: DateTime', () => {
     const toLocaleString = Date.prototype.toLocaleString;
     vi.spyOn(Date.prototype, 'toLocaleString').mockImplementation(function (
       this: Date,
-      locales?: string | string[],
+      locales?: Intl.LocalesArgument,
       options?: Intl.DateTimeFormatOptions
     ): string {
       return toLocaleString.call(this, locales, {

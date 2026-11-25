@@ -18,7 +18,7 @@ export class SpinnerComponent {
   /**
    * String that should be announced
    */
-  @Input() message: string;
+  @Input() message!: string;
 
   /**
    * Politeness when announcing, This could be 'polite', 'assertive' or 'off'
@@ -37,19 +37,19 @@ export class SpinnerComponent {
    * Optional message to be shown below the spinner. It can be used to
    * report progress details.
    */
-  @Input() progressDetails: string;
+  @Input() progressDetails!: string;
 
   /**
    * Optional flag, when set to true an Action button will be rendered below the spinner and
    * the progress details text. For example, this can be used to render a "cancel" button
    * below the spinner.
    */
-  @Input() showActionButton: boolean;
+  @Input() showActionButton = false;
 
   /**
    * The label of the action button. Applicable only when showActionButton is set to True.
    */
-  @Input() actionButtonLabel: string;
+  @Input() actionButtonLabel!: string;
 
   /**
    * Emits when the action button is clicked.

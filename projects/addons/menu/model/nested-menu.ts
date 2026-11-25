@@ -17,7 +17,7 @@ export class NestedMenu extends MenuItem {
 
   iconClass?: string;
 
-  menuItems: Iterable<MenuItem>;
+  menuItems!: Iterable<MenuItem>;
 
   /**
    * Called when an input of one of the nested items changes, so that the menu renders the change.

@@ -22,9 +22,9 @@ import { PropertyViewCategoryModel, PropertyViewModelType, PropertyViewSectionMo
 export class PropertyViewCategoryComponent {
   readonly PropertyViewModelType = PropertyViewModelType;
 
-  @Input() data: PropertyViewCategoryModel;
+  @Input() data!: PropertyViewCategoryModel;
 
-  @Input() componentId: string;
+  @Input() componentId!: string;
 
   constructor(
     private expandedStateManager: PropertyViewSectionsExpandedStateManager,

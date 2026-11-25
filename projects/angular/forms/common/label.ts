@@ -29,12 +29,12 @@ import { NgControlService } from './providers/ng-control.service';
   standalone: false,
 })
 export class ClrControlLabel implements OnInit, OnDestroy {
-  @Input('id') idInput: string;
-  @HostBinding('attr.id') idAttr: string;
+  @Input('id') idInput?: string;
+  @HostBinding('attr.id') idAttr?: string;
 
-  @Input('for') @HostBinding('attr.for') forAttr: string;
+  @Input('for') @HostBinding('attr.for') forAttr?: string;
 
-  @ContentChild(ClrSignpost, { read: ElementRef }) private signpost: ElementRef;
+  @ContentChild(ClrSignpost, { read: ElementRef }) private signpost?: ElementRef;
   private enableGrid = true;
   private subscriptions: Subscription[] = [];
 
