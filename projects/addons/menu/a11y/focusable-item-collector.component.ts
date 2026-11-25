@@ -22,9 +22,9 @@ import { FocusableItemProvider } from './focusable-item-provider';
  * because they are not in the content but in a nested template. see menu.component.html
  */
 export class FocusableItemCollectorComponent implements AfterContentInit {
-  @Input() parentMenu: ClrDropdownMenu;
+  @Input() parentMenu!: ClrDropdownMenu;
 
-  @ContentChildren(FocusableItemProvider, { descendants: true }) items: QueryList<FocusableItemProvider>;
+  @ContentChildren(FocusableItemProvider, { descendants: true }) items!: QueryList<FocusableItemProvider>;
 
   ngAfterContentInit(): void {
     const focusHandler = (this.parentMenu as unknown as ClrDropdownMenuPrivate).focusHandler;

@@ -38,11 +38,11 @@ import {
 export class PropertyViewPropertyComponent implements OnInit, OnChanges, OnDestroy {
   readonly PropertyViewModelType = PropertyViewModelType;
 
-  @Input() data: PropertyViewPropertyModel;
+  @Input() data!: PropertyViewPropertyModel;
 
-  propertyValueModelContent: PropertyViewPropertyValueModel[];
+  propertyValueModelContent!: PropertyViewPropertyValueModel[];
 
-  propertyValueComponentModelContent: PropertyViewPropertyValueComponentModel<unknown>[];
+  propertyValueComponentModelContent!: PropertyViewPropertyValueComponentModel<unknown>[];
 
   @HostBinding('class.zoom4x') is4xZoomed = false;
 

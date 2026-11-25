@@ -17,9 +17,11 @@ import { TreeNodeModel } from './tree-node.model';
  * Recursive = Model dictates the tree node components
  */
 export class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
+  // Override for a more precise type
+  override model: T;
   parent: RecursiveTreeNodeModel<T> | null;
 
-  private subscription: Subscription;
+  private subscription?: Subscription;
   private childrenFetched = false;
   private destroyed = false;
   // A signal, so that the node is refreshed when its children arrive or get cleared.

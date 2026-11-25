@@ -17,5 +17,5 @@ import { PropertyViewMessageModel } from '../property-view.model';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class PropertyViewMessageComponent {
-  @Input() data: PropertyViewMessageModel;
+  @Input() data!: PropertyViewMessageModel;
 }

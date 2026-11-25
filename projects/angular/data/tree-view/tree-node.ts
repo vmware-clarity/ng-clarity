@@ -86,7 +86,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   protected animatesChildren = false;
   protected readonly noopAnimations = noopAnimations();
   /** The latest expand or collapse of the children, so that an earlier one does not start its animation after it. */
-  private childrenHeightChange: object;
+  private childrenHeightChange?: object;
 
   private bulkChange = false;
   private skipAnimation = false;
@@ -95,8 +95,8 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   private typeAheadKeyEvent = new Subject<string>();
   private subscriptions: Subscription[] = [];
 
-  @ViewChild('contentContainer', { read: ElementRef, static: true }) private contentContainer: ElementRef<HTMLElement>;
-  @ViewChild('children', { static: true }) private children: ElementRef<HTMLElement>;
+  @ViewChild('contentContainer', { read: ElementRef, static: true }) private contentContainer!: ElementRef<HTMLElement>;
+  @ViewChild('children', { static: true }) private children!: ElementRef<HTMLElement>;
 
   // Only the links of this node, not the ones of nested nodes. A signal query, so that a link added later is rendered.
   private readonly treeNodeLinks = contentChildren(ClrTreeNodeLink, { descendants: false });
@@ -178,7 +178,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     this._model.textContent = trimAndLowerCase(value || this.elementRef.nativeElement.textContent);
   }
 
-  get ariaSelected(): boolean {
+  get ariaSelected(): boolean | null {
     if (this.isSelectable()) {
       return this._model.selected.value === ClrSelectedState.SELECTED;
     } else if (this.treeNodeLink?.active) {
