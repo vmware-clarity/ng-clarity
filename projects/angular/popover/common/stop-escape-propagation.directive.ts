@@ -14,7 +14,7 @@ import { ClrPopoverService } from './providers/popover.service';
   standalone: true,
 })
 export class ClrStopEscapePropagationDirective implements OnInit, OnDestroy {
-  private subscription: Subscription;
+  private subscription: Subscription | undefined;
   private lastOpenChange: boolean | null = null;
 
   constructor(private popoverService: ClrPopoverService) {}

@@ -23,7 +23,7 @@ import { TooltipMouseService } from './providers/tooltip-mouse.service';
   standalone: false,
 })
 export class ClrTooltipTrigger {
-  ariaDescribedBy: string;
+  ariaDescribedBy?: string;
   private subs: Subscription[] = [];
 
   constructor(

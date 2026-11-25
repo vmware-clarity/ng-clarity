@@ -16,12 +16,12 @@ import { ClrFileListValidationErrors } from './file-input-validator-errors';
   standalone: false,
 })
 export class ClrFileInputValidator implements Validator {
-  @Input('clrMinFileSize') minFileSize: number;
-  @Input('clrMaxFileSize') maxFileSize: number;
+  @Input('clrMinFileSize') minFileSize?: number;
+  @Input('clrMaxFileSize') maxFileSize?: number;
 
   constructor(private readonly elementRef: ElementRef<HTMLInputElement>) {}
 
-  validate(control: AbstractControl<FileList>): ValidationErrors {
+  validate(control: AbstractControl<FileList>): ValidationErrors | null {
     const files = control.value;
     const fileInputElement = this.elementRef.nativeElement;
 
@@ -36,7 +36,7 @@ export class ClrFileInputValidator implements Validator {
 
     if (files?.length > 0 && (accept || this.minFileSize || this.maxFileSize)) {
       for (let i = 0; i < files.length; i++) {
-        const file = files.item(i);
+        const file = files[i];
 
         // accept validation (native attribute)
         if (accept && accept.length) {

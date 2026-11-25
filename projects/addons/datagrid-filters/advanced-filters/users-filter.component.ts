@@ -48,11 +48,11 @@ export enum ErrorType {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UsersFilterComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() filterProperty: UserPropertyDefinition;
-  @Input() propertyFilter: PropertyFilter;
+  @Input() filterProperty!: UserPropertyDefinition;
+  @Input() propertyFilter?: PropertyFilter;
   @Output() filterCriteriaChange: EventEmitter<PropertyFilter> = new EventEmitter<PropertyFilter>();
 
-  usersSelectionForm: FormGroup;
+  usersSelectionForm!: FormGroup;
   // Signals, because the user service answers asynchronously and the host view is OnPush.
   readonly isLoading = signal(false);
   readonly domains = signal<string[]>(['']);

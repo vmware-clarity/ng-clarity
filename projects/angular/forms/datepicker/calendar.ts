@@ -32,7 +32,7 @@ export class ClrCalendar implements OnDestroy {
   /**
    * Calendar View Model to generate the Calendar.
    */
-  calendarViewModel: CalendarViewModel;
+  calendarViewModel!: CalendarViewModel;
 
   private _subs: Subscription[] = [];
 
@@ -60,15 +60,15 @@ export class ClrCalendar implements OnDestroy {
     return this._dateNavigationService.displayedCalendar;
   }
 
-  get selectedDay(): DayModel {
+  get selectedDay(): DayModel | null | undefined {
     return this._dateNavigationService.selectedDay;
   }
 
-  get selectedEndDay(): DayModel {
+  get selectedEndDay(): DayModel | null | undefined {
     return this._dateNavigationService.selectedEndDay;
   }
 
-  get focusedDay(): DayModel {
+  get focusedDay(): DayModel | null | undefined {
     return this._dateNavigationService.focusedDay;
   }
 
@@ -121,7 +121,7 @@ export class ClrCalendar implements OnDestroy {
 
   setSelectedDay(day: DayModel) {
     const hasActionButtons = this._dateNavigationService.hasActionButtons;
-    const selectedDates: DayModel | DateRangeInput = this.updateCalendarViewModal(day);
+    const selectedDates = this.updateCalendarViewModal(day);
     this._dateNavigationService.notifySelectedDayChanged(selectedDates, { emitEvent: !hasActionButtons });
     if (!hasActionButtons) {
       this._dateFormControlService.markAsDirty();
@@ -172,10 +172,10 @@ export class ClrCalendar implements OnDestroy {
     }
   }
 
-  private updateCalendarViewModal(day: DayModel): DayModel | DateRangeInput {
+  private updateCalendarViewModal(day: DayModel): DayModel | null | undefined | DateRangeInput {
     const startDate = this.calendarViewModel.selectedDay || null,
       isRangePicker = this._dateNavigationService.isRangePicker;
-    let endDate = this.calendarViewModel.selectedEndDay || null;
+    let endDate: DayModel | null | undefined = this.calendarViewModel.selectedEndDay || null;
 
     if (isRangePicker) {
       if (!startDate || (!!startDate && !!endDate) || (!!startDate && day?.isBefore(startDate))) {
