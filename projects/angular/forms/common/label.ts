@@ -30,9 +30,9 @@ import { NgControlService } from './providers/ng-control.service';
   standalone: false,
 })
 export class ClrControlLabel implements OnInit, OnDestroy {
-  @Input('id') idInput: string;
+  @Input('id') idInput?: string;
 
-  @ContentChild(ClrSignpost, { read: ElementRef }) private signpost: ElementRef;
+  @ContentChild(ClrSignpost, { read: ElementRef }) private signpost?: ElementRef;
   private enableGrid = true;
   private subscriptions: Subscription[] = [];
 
@@ -49,19 +49,19 @@ export class ClrControlLabel implements OnInit, OnDestroy {
   ) {}
 
   @HostBinding('attr.id')
-  get idAttr(): string {
+  get idAttr(): string | undefined {
     return this._idAttr();
   }
-  set idAttr(id: string) {
+  set idAttr(id: string | undefined) {
     this._idAttr.set(id);
   }
 
   @Input('for')
   @HostBinding('attr.for')
-  get forAttr(): string {
+  get forAttr(): string | undefined {
     return this._forAttr();
   }
-  set forAttr(id: string) {
+  set forAttr(id: string | undefined) {
     this._forAttr.set(id);
   }
 

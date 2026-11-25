@@ -9,7 +9,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class SignpostFocusManager {
-  private _triggerEl: HTMLElement;
+  private _triggerEl: HTMLElement | undefined;
 
   set triggerEl(value: HTMLElement) {
     this._triggerEl = value;

@@ -57,10 +57,10 @@ export class ClrHeader {
   ) {}
 
   // The open level lives in ResponsiveNavigationService. It stays writable here to keep the public field working.
-  get openNavLevel(): number {
+  get openNavLevel(): number | null {
     return this.responsiveNavService.openNavLevel();
   }
-  set openNavLevel(value: number) {
+  set openNavLevel(value: number | null) {
     this.responsiveNavService.openNavLevel.set(value);
   }
 
