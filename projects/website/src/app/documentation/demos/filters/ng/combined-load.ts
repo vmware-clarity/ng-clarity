@@ -5,10 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { AppfxDatagridFiltersModule, FilterMode, PropertyFilter } from '@clr/addons/datagrid-filters';
+import { AfterViewInit, ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import {
+  AppfxDatagridFiltersModule,
+  ComparisonOperator,
+  FilterMode,
+  LogicalOperator,
+  PropertyFilter,
+} from '@clr/addons/datagrid-filters';
 
-import { vmProperties } from './vm-properties';
+import { createPredicate, createPropertyFilter, stateProperty, vmProperties } from './vm-properties';
 
 @Component({
   selector: 'app-datagrid-filters-combined-load-demo',
@@ -16,9 +22,12 @@ import { vmProperties } from './vm-properties';
   imports: [AppfxDatagridFiltersModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DatagridFiltersCombinedLoadDemoComponent {
+export class DatagridFiltersCombinedLoadDemoComponent implements AfterViewInit {
   readonly FilterMode = FilterMode;
   readonly filterableProperties = vmProperties;
+  readonly presetFilters: PropertyFilter[] = [
+    createPropertyFilter(LogicalOperator.And, createPredicate(stateProperty, ComparisonOperator.Equals, 'Powered On')),
+  ];
 
   /** One line per load, newest first. */
   readonly loads = signal<string[]>([]);
@@ -26,6 +35,12 @@ export class DatagridFiltersCombinedLoadDemoComponent {
   private searchTerm = '';
   private filters: PropertyFilter[] = [];
   private loadPending = false;
+
+  // The first load is scheduled here, not in ngOnInit: the filter bar emits the presets at start-up, and that emit
+  // joins this load, so start-up loads once, with the presets.
+  ngAfterViewInit(): void {
+    this.scheduleLoad();
+  }
 
   onSearchTermChange(searchTerm: string): void {
     this.searchTerm = searchTerm;
@@ -37,8 +52,8 @@ export class DatagridFiltersCombinedLoadDemoComponent {
     this.scheduleLoad();
   }
 
-  // Clear all emits propertyFiltersChange and then searchTermChange in the same turn.
-  // Loading at the end of the turn sends one request with both values.
+  // Clear all emits propertyFiltersChange and then searchTermChange in the same turn, and the start-up emit comes right
+  // after ngAfterViewInit. Loading at the end of the turn sends one request with the latest values.
   private scheduleLoad(): void {
     if (this.loadPending) {
       return;

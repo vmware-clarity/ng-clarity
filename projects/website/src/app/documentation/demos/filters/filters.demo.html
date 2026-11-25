@@ -173,6 +173,12 @@
       >
       and <code cds-text="code">debounceTime(0)</code>) or signals.
     </p>
+    <p cds-text="body" class="clr-mt-16px">
+      The same pattern covers start-up: with <code cds-text="code">presetFilters</code>, the filter bar emits the
+      presets once after the first change detection. Scheduling the first load in
+      <code cds-text="code">ngAfterViewInit</code> instead of <code cds-text="code">ngOnInit</code> joins it with that
+      emit, so start-up loads once, with the presets.
+    </p>
     <div class="clr-mt-24px">
       <app-datagrid-filters-combined-load-demo></app-datagrid-filters-combined-load-demo>
     </div>

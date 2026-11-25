@@ -106,7 +106,10 @@ optional (`PropertyType | undefined`), since it is unset until a field is select
 
 `presetFilters` can now emit at start-up. If the start-up filters differ from what `propertyFilters` passed in, for
 example presets without a `propertyFilters` binding, `propertyFiltersChange` emits them once, after the first change
-detection. Hosts that load data on every `propertyFiltersChange` load once more at start-up.
+detection. Hosts that load data on every `propertyFiltersChange` load once more at start-up. To keep one load, schedule
+the first load in the host's `ngAfterViewInit` instead of `ngOnInit`, and coalesce loads in a microtask
+(`queueMicrotask`): the start-up emit and the host's own first load then become one load. The "Combined mode: one load
+per change" example on the Filters page shows this.
 
 The filter pills have new markup. CSS overrides and e2e selectors that target the old elements need updating:
 
