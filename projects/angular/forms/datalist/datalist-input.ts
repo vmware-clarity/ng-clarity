@@ -31,7 +31,7 @@ import { DatalistIdService } from './providers/datalist-id.service';
   standalone: false,
 })
 export class ClrDatalistInput extends WrappedFormControl<ClrDatalistContainer> implements AfterContentInit {
-  listValue: string;
+  listValue!: string;
 
   constructor(
     @Optional() private focusService: FormsFocusService,

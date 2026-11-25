@@ -35,9 +35,9 @@ import { ClrModalConfigurationService } from './modal-configuration.service';
 })
 export class ClrSidePanel implements OnInit, OnDestroy {
   @Output('clrSidePanelOpenChange') openChange = new EventEmitter<boolean>(false);
-  @Input('clrSidePanelCloseButtonAriaLabel') closeButtonAriaLabel: string | undefined;
+  @Input('clrSidePanelCloseButtonAriaLabel') closeButtonAriaLabel = this.commonStrings.keys.close;
   @Input('clrSidePanelSkipAnimation') skipAnimation = false;
-  @Input('clrSidePanelLabelledById') labelledById: string;
+  @Input('clrSidePanelLabelledById') labelledById?: string;
   @Input('clrSidePanelStaticBackdrop') staticBackdrop = false;
   @Input('clrSidePanelClosable') closable = true;
   @Input('clrSidePanelPreventClose') preventClose = false;
@@ -46,9 +46,9 @@ export class ClrSidePanel implements OnInit, OnDestroy {
   private _pinnable = false;
   /** Whether the panel is pinned: a signal, so that togglePinned() also renders when called from code. */
   private readonly isPinned = signal(false);
-  private originalStopClose: boolean;
+  private originalStopClose!: boolean;
   private _position = 'right';
-  private _modal: ClrModal;
+  private _modal!: ClrModal;
   private __open = false;
 
   private _size = 'md';

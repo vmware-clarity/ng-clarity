@@ -113,7 +113,7 @@ export class ClrMonthpicker implements AfterViewInit {
   /**
    * Gets the year which the user is currently on.
    */
-  get calendarEndMonthIndex(): number {
+  get calendarEndMonthIndex(): number | undefined {
     return this._dateNavigationService.selectedEndDay?.month;
   }
 
@@ -274,7 +274,11 @@ export class ClrMonthpicker implements AfterViewInit {
         (this.calendarYear > this._dateNavigationService.selectedDay.year &&
           this.calendarYear < this._dateNavigationService.selectedEndDay.year)
       );
-    } else if (this._dateNavigationService.selectedDay && !this._dateNavigationService.selectedEndDay) {
+    } else if (
+      this._dateNavigationService.selectedDay &&
+      !this._dateNavigationService.selectedEndDay &&
+      this._dateNavigationService.hoveredMonth !== undefined
+    ) {
       return (
         (this.calendarYear === this._dateNavigationService.selectedDay.year &&
           monthIndex > this._dateNavigationService.selectedDay.month &&

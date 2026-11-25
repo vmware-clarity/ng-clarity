@@ -26,7 +26,7 @@ import { ModelChange, StepWithChanges, WorkflowModelManager } from '../model/wor
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class WorkflowModelMonitorComponent implements OnInit, OnDestroy {
-  @Input() modelMgr: WorkflowModelManager;
+  @Input() modelMgr!: WorkflowModelManager;
 
   isOpen = false;
   debugModel: NameValue[] = [];

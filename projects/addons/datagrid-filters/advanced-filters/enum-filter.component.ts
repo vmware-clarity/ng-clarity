@@ -43,19 +43,19 @@ export class EnumFilterComponent implements OnInit, OnChanges {
   /**
    * Property used for filtering
    */
-  @Input() filterProperty: EnumPropertyDefinition;
+  @Input() filterProperty!: EnumPropertyDefinition;
 
   /**
    * In case the component is used for filter editing
    */
-  @Input() propertyFilter: PropertyFilter;
+  @Input() propertyFilter?: PropertyFilter;
 
   /**
    * Event emitter to tell hosting view that filtering criteria have changed
    */
   @Output() filterCriteriaChange: EventEmitter<PropertyFilter> = new EventEmitter<PropertyFilter>();
 
-  enumFilterForm: FormGroup;
+  enumFilterForm!: FormGroup;
   optionsData: EnumPropertyData[] = [];
   filteredOptions: { data: EnumPropertyData; index: number }[] = [];
   enumOperators = [ComparisonOperator.DoesNotEqual, ComparisonOperator.Equals];

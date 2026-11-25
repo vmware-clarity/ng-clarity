@@ -6,5 +6,5 @@
  */
 
 export interface ClrDatagridNumericFilterInterface<T> {
-  accepts(item: T, low: number, high: number): boolean;
+  accepts(item: T, low: number | null, high: number | null): boolean;
 }
