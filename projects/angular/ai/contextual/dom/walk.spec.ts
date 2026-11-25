@@ -1763,8 +1763,7 @@ describe('collectContextTree, annotations', () => {
   });
 
   it('withholds the annotated state inside a redacted region', () => {
-    container.innerHTML = '<div clrContextRedact><div id="card"><button>Pay</button></div></div>';
-    applyContextMarks(container);
+    container.innerHTML = '<div data-clr-context-redact><div id="card"><button>Pay</button></div></div>';
     annotated('#card', { label: 'Card', state: { card: '4111' } });
 
     expect(JSON.stringify(collectContextTreeWithin(container, budgets()).components)).not.toContain('4111');
