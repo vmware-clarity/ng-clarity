@@ -836,6 +836,9 @@ export interface Closable {
     close(): void;
 }
 
+// @public
+export function closestContextMark(element: Element, mark: ClrContextMark): Element | null;
+
 // @public (undocumented)
 export const cloudChartIcon: IconShapeTuple;
 
@@ -876,19 +879,7 @@ export const CLR_BUTTON_GROUP_DIRECTIVES: Type<any>[];
 export const CLR_CONTEXT_EDITING_HOST_SELECTOR = "[contenteditable]:not([contenteditable=\"false\" i])";
 
 // @public
-export const CLR_CONTEXT_HIDDEN_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore]";
-
-// @public
-export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
-
-// @public
-export const CLR_CONTEXT_IGNORE_SELECTOR = "[data-clr-context-ignore]";
-
-// @public
-export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
-
-// @public
-export const CLR_CONTEXT_REDACT_SELECTOR = "[data-clr-context-redact]";
+export const CLR_CONTEXT_HIDDEN_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert]";
 
 // @public (undocumented)
 export const CLR_DATAGRID_DIRECTIVES: Type<any>[];
@@ -2426,6 +2417,27 @@ export class ClrConditionalModule {
 
 // @public
 export type ClrContextCategory = 'layout' | 'actions' | 'forms' | 'headings' | 'collections' | 'dialogs' | 'status' | 'images' | 'text' | 'frames';
+
+// @public
+export class ClrContextIgnore {
+    constructor();
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContextIgnore, "[clrContextIgnore]", never, {}, {}, never, never, true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextIgnore, never>;
+}
+
+// @public
+export type ClrContextMark = 'ignore' | 'redact';
+
+// @public
+export class ClrContextRedact {
+    constructor();
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContextRedact, "[clrContextRedact]", never, {}, {}, never, never, true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextRedact, never>;
+}
 
 // @public
 export interface ClrContextSnapshotOptions {
@@ -10178,6 +10190,9 @@ export const hardDriveIcon: IconShapeTuple;
 // @public (undocumented)
 export const hardDriveIconName = "hard-drive";
 
+// @public
+export function hasContextMark(element: Element, mark: ClrContextMark): boolean;
+
 // @public (undocumented)
 export const hashtagIcon: IconShapeTuple;
 
@@ -10475,11 +10490,17 @@ export const IS_TOGGLE_PROVIDER: {
 // @public (undocumented)
 export function isBooleanAttributeSet(value: string | boolean): boolean;
 
+// @public
+export function isContextHidden(element: Element): boolean;
+
 // @public (undocumented)
 export function isKeyEitherLetterOrNumber(event: KeyboardEvent): boolean;
 
 // @public (undocumented)
 export function isToggleFactory(): BehaviorSubject<boolean>;
+
+// @public
+export function isWithinContextHidden(element: Element): boolean;
 
 // @public (undocumented)
 export const italicIcon: IconShapeTuple;
@@ -10697,6 +10718,9 @@ export const mapMarkerIconName = "map-marker";
 
 // @public (undocumented)
 export function mapPopoverKeyToPosition(key: ClrPopoverPosition, type: ClrPopoverType): ConnectedPosition;
+
+// @public
+export function markContext(element: Element, mark: ClrContextMark): () => void;
 
 // @public (undocumented)
 export class MarkControlService {

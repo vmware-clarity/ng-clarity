@@ -143,22 +143,13 @@ export class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
 }
 
 // @public
+export function closestContextMark(element: Element, mark: ClrContextMark): Element | null;
+
+// @public
 export const CLR_CONTEXT_EDITING_HOST_SELECTOR = "[contenteditable]:not([contenteditable=\"false\" i])";
 
 // @public
-export const CLR_CONTEXT_HIDDEN_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore]";
-
-// @public
-export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
-
-// @public
-export const CLR_CONTEXT_IGNORE_SELECTOR = "[data-clr-context-ignore]";
-
-// @public
-export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
-
-// @public
-export const CLR_CONTEXT_REDACT_SELECTOR = "[data-clr-context-redact]";
+export const CLR_CONTEXT_HIDDEN_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert]";
 
 // @public (undocumented)
 export const CLR_LOADING_DIRECTIVES: Type<any>[];
@@ -463,6 +454,27 @@ export class ClrConditionalModule {
 
 // @public
 export type ClrContextCategory = 'layout' | 'actions' | 'forms' | 'headings' | 'collections' | 'dialogs' | 'status' | 'images' | 'text' | 'frames';
+
+// @public
+export class ClrContextIgnore {
+    constructor();
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContextIgnore, "[clrContextIgnore]", never, {}, {}, never, never, true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextIgnore, never>;
+}
+
+// @public
+export type ClrContextMark = 'ignore' | 'redact';
+
+// @public
+export class ClrContextRedact {
+    constructor();
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContextRedact, "[clrContextRedact]", never, {}, {}, never, never, true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextRedact, never>;
+}
 
 // @public
 export interface ClrContextSnapshotOptions {
@@ -996,6 +1008,9 @@ export class FocusService {
     static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
+// @public
+export function hasContextMark(element: Element, mark: ClrContextMark): boolean;
+
 // @public (undocumented)
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6 | '1' | '2' | '3' | '4' | '5' | '6';
 
@@ -1061,8 +1076,14 @@ export class IfExpandService implements LoadingListener {
 // @public (undocumented)
 export function isBooleanAttributeSet(value: string | boolean): boolean;
 
+// @public
+export function isContextHidden(element: Element): boolean;
+
 // @public (undocumented)
 export function isKeyEitherLetterOrNumber(event: KeyboardEvent): boolean;
+
+// @public
+export function isWithinContextHidden(element: Element): boolean;
 
 // @public (undocumented)
 export enum Keys {
@@ -1110,6 +1131,9 @@ export abstract class LoadingListener {
     // (undocumented)
     abstract loadingStateChange(state: ClrLoadingState | string): void;
 }
+
+// @public
+export function markContext(element: Element, mark: ClrContextMark): () => void;
 
 // @public
 export function measureHeight(element: HTMLElement): number;

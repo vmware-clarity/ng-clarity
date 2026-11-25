@@ -6,7 +6,7 @@
  */
 
 import { getAriaReferenceIds } from '@angular/cdk/a11y';
-import { CLR_CONTEXT_REDACT_SELECTOR, ClrComponentContext } from '@clr/angular/utils';
+import { closestContextMark, ClrComponentContext } from '@clr/angular/utils';
 
 import {
   CONTENT_STATE_KEYS,
@@ -210,7 +210,7 @@ function assignValueState(
 
 /** Whether this control's value must be withheld, whatever the caller asked for. */
 export function isRedacted(element: Element, insideRedactedRegion?: boolean): boolean {
-  if (insideRedactedRegion ?? !!element.closest(CLR_CONTEXT_REDACT_SELECTOR)) {
+  if (insideRedactedRegion ?? !!closestContextMark(element, 'redact')) {
     return true;
   }
   const type = element.getAttribute('type')?.toLowerCase();

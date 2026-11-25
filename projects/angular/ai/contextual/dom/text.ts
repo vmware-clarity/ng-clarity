@@ -6,12 +6,12 @@
  */
 
 import { getAriaReferenceIds } from '@angular/cdk/a11y';
-import { CLR_CONTEXT_HIDDEN_SELECTOR } from '@clr/angular/utils';
+import { isContextHidden } from '@clr/angular/utils';
 
 import { readScope } from './read-scope';
-import { ACTION_SELECTOR, UNREADABLE_SELECTOR } from './tables/selectors';
+import { ACTION_SELECTOR } from './tables/selectors';
 import { SKIPPED_TAGS } from './tables/tags';
-import { isHiddenFromContext, isVisible } from './visibility';
+import { isHiddenFromContext, isUnreadable, isVisible, isWithinUnreadable } from './visibility';
 
 /** Normalizes whitespace and truncates to `maxLength`, ending shortened text with an ellipsis. */
 export function truncate(text: string, maxLength: number): string {
@@ -44,7 +44,7 @@ function computedStyle(element: Element): CSSStyleDeclaration | null {
 }
 
 function isExcludedFromName(element: Element, style: CSSStyleDeclaration | null, includeClipped: boolean): boolean {
-  if (element.matches(CLR_CONTEXT_HIDDEN_SELECTOR)) {
+  if (isContextHidden(element)) {
     return true;
   }
   if (!style) {
@@ -117,7 +117,7 @@ function textFor(
     // A `<style>` or `<script>` is text in the DOM, never on screen.
     if (
       SKIPPED_TAGS.has(child.tagName.toLowerCase()) ||
-      child.matches(UNREADABLE_SELECTOR) ||
+      isUnreadable(child) ||
       child.matches(CHOICE_LIST_SELECTOR) ||
       (withheld && child.matches(withheld)) ||
       withholds?.(child)
@@ -194,7 +194,7 @@ function textOfReferences(scope: Document, ids: string[], withheld: string, skip
       .filter(
         (referenced): referenced is HTMLElement =>
           !!referenced &&
-          !referenced.closest(UNREADABLE_SELECTOR) &&
+          !isWithinUnreadable(referenced) &&
           !isHiddenFromContext(referenced, withheld) &&
           !isUnrendered(referenced)
       )

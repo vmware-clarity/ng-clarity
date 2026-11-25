@@ -5,14 +5,14 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<!-- data-clr-context-ignore: this panel renders the context, so the engine must not describe it. -->
+<!-- clrContextIgnore: this panel renders the context, so the engine must not describe it. -->
 <clr-side-panel
   [clrSidePanelOpen]="open"
   (clrSidePanelOpenChange)="setOpen($event)"
   clrSidePanelSize="lg"
   [clrSidePanelBackdrop]="false"
   [clrSidePanelPinnable]="true"
-  data-clr-context-ignore
+  clrContextIgnore
 >
   <div class="side-panel-title">Context inspector</div>
   <div class="side-panel-body">
