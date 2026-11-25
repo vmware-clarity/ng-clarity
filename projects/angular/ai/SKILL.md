@@ -35,7 +35,8 @@ Follow these rules whenever you add or change Clarity UI.
 - Use `@for (...; track ...)` and `@if`, not `*ngFor` / `*ngIf`.
 - Never invent `clr*` inputs. If unsure, read the matching guide below before writing code.
 - When page context goes to an AI model (`@clr/angular/ai`), mark private regions with
-  `clrContextRedact` and hidden ones with `clrContextIgnore` first.
+  `clrContextRedact` and hidden ones with `clrContextIgnore` first (outside Angular templates, the
+  `data-clr-context-redact` and `data-clr-context-ignore` attributes they set).
 
 ## Component guides — read before using the component
 
