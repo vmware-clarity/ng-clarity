@@ -152,9 +152,6 @@ export const CLR_CONTEXT_EDITING_HOST_SELECTOR = "[contenteditable]:not([content
 // @public
 export const CLR_CONTEXT_HIDDEN_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert]";
 
-// @public
-export const CLR_CONTEXT_WITHHELD_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore], [data-clr-context-redact], [contenteditable]:not([contenteditable=\"false\" i])";
-
 // @public (undocumented)
 export const CLR_LOADING_DIRECTIVES: Type<any>[];
 
@@ -1036,6 +1033,9 @@ export function hasContextMark(element: Element, mark: ClrContextMark): boolean;
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6 | '1' | '2' | '3' | '4' | '5' | '6';
 
 // @public
+export function holdsContextWithheld(element: Element): boolean;
+
+// @public
 export class HostWrapper<W> implements Injector {
     constructor(containerType: Type<W>, vcr: ViewContainerRef, index?: number);
     // (undocumented)
@@ -1099,6 +1099,9 @@ export function isBooleanAttributeSet(value: string | boolean): boolean;
 
 // @public
 export function isContextHidden(element: Element): boolean;
+
+// @public
+export function isContextWithheld(element: Element): boolean;
 
 // @public (undocumented)
 export function isKeyEitherLetterOrNumber(event: KeyboardEvent): boolean;
