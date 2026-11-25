@@ -5,8 +5,8 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<!-- data-clr-context-ignore: the panel renders the context, so the engine must not describe it. -->
-<div class="snapshot-panel card" data-clr-context-ignore>
+<!-- clrContextIgnore: the panel renders the context, so the engine must not describe it. -->
+<div class="snapshot-panel card" clrContextIgnore>
   <div class="card-header">
     Page context
     <span class="label">{{ snapshotBytes }} bytes</span>
@@ -14,8 +14,8 @@
     @if (snapshotTruncated) {
       <span class="label label-warning">truncated</span>
     }
-    @if (snapshotFocus) {
-      <span class="label label-info">focus: {{ snapshotFocus }}</span>
+    @if (snapshotModal) {
+      <span class="label label-info">modal</span>
     }
   </div>
   <div class="card-block">

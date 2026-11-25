@@ -21,7 +21,7 @@ import {
   SUGGESTING_INPUT_TYPES,
   TEXT_ENTRY_ROLES,
 } from './tables/roles';
-import { SECTIONING_SELECTOR } from './tables/selectors';
+import { SECTIONING_CONTENT_SELECTOR, SECTIONING_SELECTOR } from './tables/selectors';
 
 /**
  * The element's explicit or implicit ARIA role, or `null`. As for AT, the first recognised token of `role` counts,
@@ -30,7 +30,8 @@ import { SECTIONING_SELECTOR } from './tables/selectors';
 export function resolveRole(element: Element): string | null {
   const explicit = element.getAttribute('role')?.toLowerCase().split(/\s+/).find(isAriaRole);
   if (explicit && (TEXT_ENTRY_ROLES.has(explicit) || !isContentEditable(element))) {
-    return explicit;
+    // ARIA 1.2 deprecates `directory`; browsers expose it as a list.
+    return explicit === 'directory' ? 'list' : explicit;
   }
   return implicitRole(element);
 }
@@ -88,10 +89,10 @@ export function roleCandidateSelector(roles: ReadonlySet<string>): string {
   if (anyOf('columnheader', 'rowheader')) {
     selectors.add('th');
   }
-  if (anyOf('banner')) {
+  if (anyOf('banner', 'sectionheader')) {
     selectors.add('header');
   }
-  if (anyOf('contentinfo')) {
+  if (anyOf('contentinfo', 'sectionfooter')) {
     selectors.add('footer');
   }
   return Array.from(selectors).join(', ');
@@ -119,19 +120,22 @@ function implicitRole(element: Element): string | null {
       // `alt=""` marks the image decorative.
       return element.getAttribute('alt') === '' ? 'presentation' : 'img';
     case 'section':
+    case 'form':
+      // Unnamed, a section is not a region and a form not a landmark, or every wrapper would surface as one.
+      return hasNameAttribute(element) ? (ownEntry(IMPLICIT_ROLES_BY_TAG, tagName) ?? null) : null;
     case 'aside':
-      // An unnamed section is not a region, or every wrapper would surface as one.
-      return tagName === 'aside' || hasNameAttribute(element)
-        ? (ownEntry(IMPLICIT_ROLES_BY_TAG, tagName) ?? null)
+      // Inside sectioning content, only a named aside is complementary; inside `main` any aside is.
+      return hasNameAttribute(element) || !closestAncestor(element, SECTIONING_CONTENT_SELECTOR)
+        ? 'complementary'
         : null;
     case 'th': {
       const scope = element.getAttribute('scope')?.toLowerCase() ?? '';
       return ROW_HEADER_SCOPES.includes(scope) ? 'rowheader' : 'columnheader';
     }
     case 'header':
-      return closestAncestor(element, SECTIONING_SELECTOR) ? null : 'banner';
+      return closestAncestor(element, SECTIONING_SELECTOR) ? 'sectionheader' : 'banner';
     case 'footer':
-      return closestAncestor(element, SECTIONING_SELECTOR) ? null : 'contentinfo';
+      return closestAncestor(element, SECTIONING_SELECTOR) ? 'sectionfooter' : 'contentinfo';
     default:
       return ownEntry(IMPLICIT_ROLES_BY_TAG, tagName) ?? null;
   }

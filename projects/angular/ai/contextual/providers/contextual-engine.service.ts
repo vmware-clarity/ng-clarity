@@ -8,19 +8,14 @@
 import { isPlatformBrowser } from '@angular/common';
 import { DOCUMENT, inject, Injectable, isDevMode, PLATFORM_ID } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
-import {
-  CLR_CONTEXT_IGNORE_SELECTOR,
-  CLR_CONTEXT_REDACT_SELECTOR,
-  publishElementContext,
-  usableSelectors,
-} from '@clr/angular/utils';
+import { publishElementContext, usableSelectors } from '@clr/angular/utils';
 
 import { ClrContextRegistryService } from './context-registry.service';
 import { usableTimeout } from '../attempt';
 import { conformingSnapshot } from '../conform';
 import { annotationContext, viewAnnotationHosts } from '../dom/annotations';
 import { ClrContextDomExtractor } from '../dom/dom-context-collector';
-import { closestAcrossShadow } from '../dom/shadow';
+import { closestAcrossShadow, closestMarkAcrossShadow } from '../dom/shadow';
 import { collectContextTreeWithin, engineScope } from '../dom/walk';
 import {
   ClrApplicationContext,
@@ -168,7 +163,8 @@ export class ClrContextService {
     // An annotation in a region kept from agents is kept with it.
     return viewAnnotationHosts(roots.filter(Boolean)).filter(
       host =>
-        !closestAcrossShadow(host, `${CLR_CONTEXT_IGNORE_SELECTOR}, ${CLR_CONTEXT_REDACT_SELECTOR}`) &&
+        !closestMarkAcrossShadow(host, 'ignore') &&
+        !closestMarkAcrossShadow(host, 'redact') &&
         !(excludeSelector && closestAcrossShadow(host, excludeSelector))
     );
   }
@@ -230,8 +226,8 @@ export class ClrContextService {
       if (tree.truncated) {
         snapshot.truncated = true;
       }
-      if (tree.focus) {
-        snapshot.focus = tree.focus;
+      if (tree.modal) {
+        snapshot.modal = true;
       }
     }
     return snapshot;

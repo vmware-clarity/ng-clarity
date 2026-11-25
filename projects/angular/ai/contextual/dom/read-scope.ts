@@ -10,7 +10,7 @@ import type { IdScope } from './shadow';
 /** Per-walk cache of styles and labels; nothing outlives the walk, as jsdom styles go stale. */
 interface ReadScope {
   styles: WeakMap<Element, CSSStyleDeclaration>;
-  labels: WeakMap<IdScope, Map<Element, HTMLLabelElement>>;
+  labels: WeakMap<IdScope, Map<Element, HTMLLabelElement[]>>;
   shadowRoots: WeakMap<ParentNode, ShadowRoot[]>;
 }
 
