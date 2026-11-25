@@ -17,7 +17,7 @@ import { isBooleanAttributeSet } from '@clr/angular/utils';
     }
   `,
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrProgressBar {
   @Input('clrMax') max: number | string = 100;

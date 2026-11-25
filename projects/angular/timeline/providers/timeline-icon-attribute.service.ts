@@ -11,49 +11,36 @@ import { ClrCommonStringsService } from '@clr/angular/utils';
 import { ClrTimelineStepState } from '../enums/timeline-step-state.enum';
 import { IconAttributes } from '../interface/icon-attribute.interface';
 
+const STEP_ICONS: Record<ClrTimelineStepState, IconAttributes> = {
+  [ClrTimelineStepState.NOT_STARTED]: { iconShape: 'circle', iconStatus: null, ariaLabelKey: 'timelineStepNotStarted' },
+  [ClrTimelineStepState.CURRENT]: { iconShape: 'dot-circle', iconStatus: null, ariaLabelKey: 'timelineStepCurrent' },
+  [ClrTimelineStepState.PROCESSING]: { iconShape: undefined, iconStatus: null, ariaLabelKey: 'timelineStepProcessing' },
+  [ClrTimelineStepState.SUCCESS]: {
+    iconShape: 'success-standard',
+    iconStatus: 'success',
+    ariaLabelKey: 'timelineStepSuccess',
+  },
+  [ClrTimelineStepState.ERROR]: {
+    iconShape: 'error-standard',
+    iconStatus: 'danger',
+    ariaLabelKey: 'timelineStepError',
+  },
+};
+
 @Injectable()
 export class TimelineIconAttributeService {
-  private attributeMap: Record<ClrTimelineStepState, IconAttributes>;
+  constructor(private commonStrings: ClrCommonStringsService) {}
 
-  constructor(commonStrings: ClrCommonStringsService) {
-    this.attributeMap = {
-      [ClrTimelineStepState.NOT_STARTED]: {
-        iconShape: 'circle',
-        iconStatus: null,
-        ariaLabel: commonStrings.keys.timelineStepNotStarted,
-      },
-      [ClrTimelineStepState.CURRENT]: {
-        iconShape: 'dot-circle',
-        iconStatus: null,
-        ariaLabel: commonStrings.keys.timelineStepCurrent,
-      },
-      [ClrTimelineStepState.PROCESSING]: {
-        iconShape: undefined,
-        iconStatus: null,
-        ariaLabel: commonStrings.keys.timelineStepProcessing,
-      },
-      [ClrTimelineStepState.SUCCESS]: {
-        iconShape: 'success-standard',
-        iconStatus: 'success',
-        ariaLabel: commonStrings.keys.timelineStepSuccess,
-      },
-      [ClrTimelineStepState.ERROR]: {
-        iconShape: 'error-standard',
-        iconStatus: 'danger',
-        ariaLabel: commonStrings.keys.timelineStepError,
-      },
-    };
-  }
-
+  // Read the label on each call, so strings changed with `localize()` after the first render are used.
   getAriaLabel(step: ClrTimelineStepState): string {
-    return this.attributeMap[step].ariaLabel;
+    return this.commonStrings.keys[STEP_ICONS[step].ariaLabelKey];
   }
 
   getIconShape(step: ClrTimelineStepState): string | undefined {
-    return this.attributeMap[step].iconShape;
+    return STEP_ICONS[step].iconShape;
   }
 
   getIconStatus(step: ClrTimelineStepState): string | null {
-    return this.attributeMap[step].iconStatus;
+    return STEP_ICONS[step].iconStatus;
   }
 }

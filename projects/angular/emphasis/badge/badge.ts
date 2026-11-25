@@ -29,7 +29,7 @@ export enum ClrBadgeColors {
     '[class.outlined]': 'isOutlined',
     '[class]': 'colorClass',
   },
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrBadge {
   @Input('clrColor') color: ClrBadgeColors | string = ClrBadgeColors.None;
