@@ -21,8 +21,8 @@ import { isBooleanAttributeSet } from '@clr/angular/utils';
 })
 export class ClrProgressBar {
   @Input('clrMax') max: number | string = 100;
-  @Input('clrDisplayval') displayval: string;
-  @Input('clrColor') color: string;
+  @Input('clrDisplayval') displayval?: string;
+  @Input('clrColor') color?: string;
 
   /*
    * No need to convert to `number` cause we could have
@@ -33,18 +33,18 @@ export class ClrProgressBar {
    */
   @Input('clrValue') value: number | string = 0;
 
-  @HostBinding('attr.id') externalId = '';
+  @HostBinding('attr.id') externalId: string | null = '';
 
-  private _ID: string;
-  private _labeled: boolean;
-  private _fade: boolean;
-  private _loop: boolean;
-  private _flash: boolean;
-  private _flashDanger: boolean;
-  private _compact: boolean;
+  private _ID: string | undefined;
+  private _labeled = false;
+  private _fade = false;
+  private _loop = false;
+  private _flash = false;
+  private _flashDanger = false;
+  private _compact = false;
 
   @Input()
-  get id() {
+  get id(): string | undefined {
     return this._ID;
   }
   set id(value: string) {

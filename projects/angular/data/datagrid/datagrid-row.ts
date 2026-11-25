@@ -95,7 +95,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
   radioId: string;
   checkboxId: string;
   expandableId: string;
-  replaced: boolean;
+  replaced = false;
   displayCells = false;
   expandAnimationTrigger = false;
 
@@ -114,24 +114,24 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
    * A Query List of the ClrDatagrid cells in this row.
    *
    */
-  @ContentChildren(ClrDatagridCell) dgCells: QueryList<ClrDatagridCell>;
+  @ContentChildren(ClrDatagridCell) dgCells!: QueryList<ClrDatagridCell>;
 
-  @ViewChild(ClrExpandableAnimationDirective) expandAnimation: ClrExpandableAnimationDirective;
-  @ViewChild('detailButton') detailButton: ElementRef<HTMLButtonElement>;
-  @ViewChild('stickyCells', { read: ViewContainerRef }) _stickyCells: ViewContainerRef;
-  @ViewChild('pinnedCells', { read: ViewContainerRef }) _pinnedCells: ViewContainerRef;
-  @ViewChild('scrollableCells', { read: ViewContainerRef }) _scrollableCells: ViewContainerRef;
-  @ViewChild('calculatedCells', { read: ViewContainerRef }) _calculatedCells: ViewContainerRef;
-  @ViewChild('fixedCellTemplate') _fixedCellTemplate: TemplateRef<any>;
+  @ViewChild(ClrExpandableAnimationDirective) expandAnimation!: ClrExpandableAnimationDirective;
+  @ViewChild('detailButton') detailButton!: ElementRef<HTMLButtonElement>;
+  @ViewChild('stickyCells', { read: ViewContainerRef }) _stickyCells!: ViewContainerRef;
+  @ViewChild('pinnedCells', { read: ViewContainerRef }) _pinnedCells!: ViewContainerRef;
+  @ViewChild('scrollableCells', { read: ViewContainerRef }) _scrollableCells!: ViewContainerRef;
+  @ViewChild('calculatedCells', { read: ViewContainerRef }) _calculatedCells!: ViewContainerRef;
+  @ViewChild('fixedCellTemplate') _fixedCellTemplate!: TemplateRef<any>;
 
   protected readonly tree = inject<DatagridTreeService<T>>(DatagridTreeService, { optional: true });
 
-  private _item: T;
+  private _item!: T;
   private _selected = false;
   private _detailOpenLabel = '';
   private _detailCloseLabel = '';
   private _rowSelectionLabel = '';
-  private wrappedInjector: Injector;
+  private wrappedInjector!: Injector;
   /** What `_tree` worked out in this check; `undefined` until it is read. */
   private treeCells: DatagridTreeRowCells<T> | null | undefined;
   /**
@@ -201,11 +201,12 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
         }
       })
     );
-    if (this.tree) {
+    const tree = this.tree;
+    if (tree) {
       // In a tree, the rows report their expanded state like expandable rows do.
       this.subscriptions.push(
-        this.tree.expandedChange.subscribe(({ item, expanded }) => {
-          if (this.item !== undefined && this.tree.identify(item) === this.tree.identify(this.item)) {
+        tree.expandedChange.subscribe(({ item, expanded }) => {
+          if (this.item !== undefined && tree.identify(item) === tree.identify(this.item)) {
             this.expandedChange.emit(expanded);
           }
         })
@@ -525,7 +526,11 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
    */
   private workOutTreeCells(): DatagridTreeRowCells<T> | null {
     // The rows the datagrid shows while more items load have no item.
-    const node = this.tree?.enabled() && this.item !== undefined ? this.tree.nodeFor(this.item) : undefined;
+    const tree = this.tree;
+    if (!tree?.enabled() || this.item === undefined) {
+      return null;
+    }
+    const node = tree.nodeFor(this.item);
     if (!node) {
       return null;
     }
@@ -542,7 +547,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
       if (column?.value.pinned) {
         pinned ??= cell;
       }
-      if (this.tree.toggleColumns.has(column)) {
+      if (tree.toggleColumns.has(column)) {
         marked.add(cell);
       }
     });

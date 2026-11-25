@@ -71,7 +71,7 @@ import { ClrNumberInput } from './number-input';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrNumberInputContainer extends ClrAbstractContainer {
-  @ContentChild(forwardRef(() => ClrNumberInput)) protected readonly input: ClrNumberInput;
+  @ContentChild(forwardRef(() => ClrNumberInput)) protected readonly input!: ClrNumberInput;
 
   constructor(
     controlClassService: ControlClassService,

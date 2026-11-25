@@ -64,7 +64,7 @@ export class ClrRangeContainer extends ClrAbstractContainer implements AfterCont
   private _hasProgress = false;
   private readonly track = signal<RangeTrack | null>(null, { equal: sameTrack });
 
-  @ContentChild(forwardRef(() => ClrRange), { read: ElementRef }) private input: ElementRef<HTMLInputElement>;
+  @ContentChild(forwardRef(() => ClrRange), { read: ElementRef }) private input!: ElementRef<HTMLInputElement>;
 
   constructor(
     @Optional() layoutService: LayoutService,

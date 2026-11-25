@@ -103,17 +103,17 @@ import { ClrFileError, ClrFileSuccess } from './file-messages';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrFileInputContainer extends ClrAbstractContainer {
-  @Input('clrButtonLabel') customButtonLabel: string;
+  @Input('clrButtonLabel') customButtonLabel?: string;
 
-  @ContentChild(forwardRef(() => ClrFileInput)) readonly fileInput: ClrFileInput;
-  @ContentChild(forwardRef(() => ClrFileList)) protected readonly fileList: ClrFileList;
+  @ContentChild(forwardRef(() => ClrFileInput)) readonly fileInput!: ClrFileInput;
+  @ContentChild(forwardRef(() => ClrFileList)) protected readonly fileList!: ClrFileList;
 
-  @ViewChild('browseButton') private browseButtonElementRef: ElementRef<HTMLButtonElement>;
-  @ViewChild('fileListFileInput') private fileListFileInputElementRef: ElementRef<HTMLInputElement>;
+  @ViewChild('browseButton') private browseButtonElementRef!: ElementRef<HTMLButtonElement>;
+  @ViewChild('fileListFileInput') private fileListFileInputElementRef!: ElementRef<HTMLInputElement>;
 
   // These are for the "message present" override properties
-  @ContentChild(ClrFileSuccess) private readonly fileSuccessComponent: ClrFileSuccess;
-  @ContentChild(ClrFileError) private readonly fileErrorComponent: ClrFileError;
+  @ContentChild(ClrFileSuccess) private readonly fileSuccessComponent!: ClrFileSuccess;
+  @ContentChild(ClrFileError) private readonly fileErrorComponent!: ClrFileError;
 
   private readonly commonStrings = inject(ClrCommonStringsService);
 
@@ -165,8 +165,8 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
     this.focusBrowseButton();
   }
 
-  protected addFilesToSelection(newFiles: FileList) {
-    if (!newFiles.length) {
+  protected addFilesToSelection(newFiles: FileList | null) {
+    if (!newFiles?.length) {
       return;
     }
 
@@ -174,7 +174,7 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
     const mergedFiles = [...newFiles];
 
     // add existing files if a new file doesn't have the same name
-    for (const existingFile of this.fileInput.elementRef.nativeElement.files) {
+    for (const existingFile of this.fileInput.elementRef.nativeElement.files ?? []) {
       if (!mergedFiles.some(file => file.name === existingFile.name)) {
         mergedFiles.push(existingFile);
       }
