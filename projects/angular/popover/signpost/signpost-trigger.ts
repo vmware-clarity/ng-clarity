@@ -58,7 +58,7 @@ export class ClrSignpostTrigger implements OnDestroy {
   /**
    * The id of the signpost content, which the trigger controls.
    */
-  get ariaControl(): string {
+  get ariaControl(): string | undefined {
     return this.signpostIdService.id();
   }
 

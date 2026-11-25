@@ -91,7 +91,7 @@ export class ClrDropdown implements OnDestroy {
 export class ClrDropdownItem {
     constructor(dropdown: ClrDropdown, _dropdownService: RootDropdownService, focusableItem: FocusableItem, el: ElementRef, renderer: Renderer2);
     // (undocumented)
-    get disabled(): boolean | string;
+    get disabled(): boolean | undefined;
     set disabled(value: boolean | string);
     get dropdownItemId(): string;
     set dropdownItemId(value: string);
@@ -407,7 +407,7 @@ export class ClrPopoverService {
     // (undocumented)
     get openChange(): Observable<boolean>;
     // (undocumented)
-    get openEvent(): Event;
+    get openEvent(): Event | undefined;
     set openEvent(event: Event);
     // (undocumented)
     origin: FlexibleConnectedPositionStrategyOrigin;
@@ -418,7 +418,7 @@ export class ClrPopoverService {
     // (undocumented)
     panelClass: string[];
     // (undocumented)
-    parent: ClrPopoverContent;
+    parent: ClrPopoverContent | null;
     // (undocumented)
     pointTargetElement: HTMLElement | undefined;
     // (undocumented)
@@ -471,7 +471,7 @@ export class ClrSignpost {
     // (undocumented)
     get showDefaultTrigger(): boolean;
     // (undocumented)
-    signpostTriggerAriaLabel: string;
+    signpostTriggerAriaLabel?: string;
     get useCustomTrigger(): boolean;
     set useCustomTrigger(value: boolean);
     // (undocumented)
@@ -514,7 +514,7 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
     get position(): string | ClrPopoverPosition;
     set position(position: string | ClrPopoverPosition);
     // (undocumented)
-    signpostCloseAriaLabel: string;
+    signpostCloseAriaLabel?: string;
     // (undocumented)
     signpostContentId: string;
     // (undocumented)
@@ -562,7 +562,7 @@ export class ClrSignpostTitle {
 // @public (undocumented)
 export class ClrSignpostTrigger implements OnDestroy {
     constructor(popoverService: ClrPopoverService, el: ElementRef<HTMLElement>, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, document: any, platformId: any);
-    get ariaControl(): string;
+    get ariaControl(): string | undefined;
     // (undocumented)
     get ariaExpanded(): boolean;
     // (undocumented)
@@ -661,7 +661,7 @@ export class ClrTooltipModule {
 // @public (undocumented)
 export class ClrTooltipTrigger {
     constructor(popoverService: ClrPopoverService, tooltipIdService: TooltipIdService, tooltipMouseService: TooltipMouseService, element: ElementRef);
-    get ariaDescribedBy(): string;
+    get ariaDescribedBy(): string | undefined;
     // (undocumented)
     hideTooltip(): void;
     // (undocumented)
@@ -692,7 +692,7 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
     // (undocumented)
     blur(): void;
     // (undocumented)
-    get container(): HTMLElement;
+    get container(): HTMLElement | undefined;
     set container(el: HTMLElement);
     // (undocumented)
     down?: Observable<FocusableItem>;
@@ -709,7 +709,7 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
     // (undocumented)
     right?: Observable<FocusableItem>;
     // (undocumented)
-    get trigger(): HTMLElement;
+    get trigger(): HTMLElement | undefined;
     set trigger(el: HTMLElement);
     // (undocumented)
     up?: Observable<FocusableItem>;

@@ -34,7 +34,7 @@ export class ClrTooltipTrigger {
   /**
    * The id of the tooltip content, which describes the trigger.
    */
-  get ariaDescribedBy(): string {
+  get ariaDescribedBy(): string | undefined {
     return this.tooltipIdService.id();
   }
 
