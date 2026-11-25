@@ -6,8 +6,7 @@
   -->
 <p class="clr-mt-24px" cds-text="body">
   Most applications need only a few of these: <code cds-text="code">ClrContextService</code> to read the page, and
-  <code cds-text="code">data-clr-context-redact</code> for fields that hold secrets. Everything else is for finer
-  control.
+  <code cds-text="code">clrContextRedact</code> for fields that hold secrets. Everything else is for finer control.
 </p>
 
 <h2 id="services" cds-text="title" class="clr-mt-24px">Services</h2>
@@ -170,9 +169,9 @@
       <td class="left">
         <code cds-text="code">label</code> says what this part of the page is about and becomes the node's label.
         <code cds-text="code">type</code> is what kind of UI it is (the element's role, or
-        <code cds-text="code">'group'</code>, by default). <code cds-text="code">state</code> is application state worth
-        knowing, added to the node's <code cds-text="code">state</code>; keep it small. A function is read each time a
-        snapshot is taken.
+        <code cds-text="code">'generic'</code>, by default). <code cds-text="code">state</code> is application state
+        worth knowing, added to the node's <code cds-text="code">state</code>; keep it small. A function is read each
+        time a snapshot is taken.
       </td>
     </tr>
   </tbody>
@@ -190,24 +189,23 @@
 <table class="table">
   <thead>
     <tr>
-      <th class="left">Attribute</th>
+      <th class="left">Directive</th>
       <th class="left">Effect</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td class="left"><b cds-text="medium">data-clr-context-redact</b></td>
+      <td class="left"><b cds-text="medium">clrContextRedact</b></td>
       <td class="left">
         The field, or every field inside the element, is still described (its label and type), but its value and the
-        text it shows are never read. Exported as <code cds-text="code">CLR_CONTEXT_REDACT_ATTRIBUTE</code>.
+        text it shows are never read. Exported as <code cds-text="code">ClrContextRedact</code>.
       </td>
     </tr>
     <tr>
-      <td class="left"><b cds-text="medium">data-clr-context-ignore</b></td>
+      <td class="left"><b cds-text="medium">clrContextIgnore</b></td>
       <td class="left">
         The element and everything inside it is invisible to the engine. Put it on the chat panel itself, so the
-        assistant does not describe its own conversation. Exported as
-        <code cds-text="code">CLR_CONTEXT_IGNORE_ATTRIBUTE</code>.
+        assistant does not describe its own conversation. Exported as <code cds-text="code">ClrContextIgnore</code>.
       </td>
     </tr>
   </tbody>
@@ -258,8 +256,8 @@
       <td class="left clr-hidden-xs-down">Adds to the application's</td>
       <td class="left">
         CSS selectors for elements to leave out, with everything inside them. This only trims the snapshot; to keep
-        something from agents, use <code cds-text="code">data-clr-context-redact</code> or
-        <code cds-text="code">data-clr-context-ignore</code>.
+        something from agents, use <code cds-text="code">clrContextRedact</code> or
+        <code cds-text="code">clrContextIgnore</code>.
       </td>
     </tr>
     <tr>
@@ -462,9 +460,10 @@
       </td>
     </tr>
     <tr>
-      <td class="left"><b cds-text="medium">CLR_CONTEXT_HIDDEN_SELECTOR</b></td>
+      <td class="left"><b cds-text="medium">isWithinContextHidden(element)</b></td>
       <td class="left">
-        A selector for what the engine treats as hidden, for publishers that label things from their content.
+        Whether the engine treats the element as hidden: hidden, inert, or inside a
+        <code cds-text="code">clrContextIgnore</code> region. For publishers that label things from their content.
       </td>
     </tr>
   </tbody>

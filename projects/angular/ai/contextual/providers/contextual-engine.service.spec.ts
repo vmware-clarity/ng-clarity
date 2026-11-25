@@ -8,7 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
-import { ClrPublishedContext } from '@clr/angular/utils';
+import { ClrPublishedContext, markContext } from '@clr/angular/utils';
 import { onTestFinished } from 'vitest';
 
 import { ClrContextRegistryService } from './context-registry.service';
@@ -190,7 +190,7 @@ describe('ClrContextService, configured once for the application', () => {
   it('narrows to the open modal and says so', async () => {
     const engine = engineWith({ scope: 'minimal' });
     const snapshot = await engine.snapshot();
-    expect(snapshot.focus).toBe('modal');
+    expect(snapshot.modal).toBe(true);
     expect(types(snapshot)).toEqual(['dialog']);
   });
 
@@ -487,7 +487,7 @@ describe('ClrContextService, asynchronous providers', () => {
     try {
       engine.configure({ timeoutMs: 1000 });
       const snapshot = engine.snapshot();
-      page.setAttribute('data-clr-context-redact', '');
+      markContext(page, 'redact');
       answer(null);
 
       expect(JSON.stringify((await snapshot).components)).not.toContain('4111');
@@ -552,7 +552,8 @@ describe('ClrContextService, slotted content', () => {
     page.innerHTML = '<card-host><input aria-label="Card number" value="4111111111111111" /></card-host>';
     document.body.appendChild(page);
     const root = (page.querySelector('card-host') as HTMLElement).attachShadow({ mode: 'open' });
-    root.innerHTML = '<div data-clr-context-redact><slot></slot></div><button>Pay</button>';
+    root.innerHTML = '<div><slot></slot></div><button>Pay</button>';
+    markContext(root.querySelector('div') as Element, 'redact');
   });
 
   afterEach(() => page.remove());

@@ -87,17 +87,17 @@ const message = \`<page>\${JSON.stringify(page)}</page>
 `;
 
 const IGNORE_EXAMPLE = `
-<aside class="assistant-panel" data-clr-context-ignore>
+<aside class="assistant-panel" clrContextIgnore>
   <!-- The conversation renders here. -->
 </aside>
 `;
 
 const REDACT_EXAMPLE = `
 <!-- The field is described, its value is not. -->
-<input clrInput formControlName="apiToken" data-clr-context-redact />
+<input clrInput formControlName="apiToken" clrContextRedact />
 
 <!-- Every value inside the region is withheld. -->
-<section data-clr-context-redact>...</section>
+<section clrContextRedact>...</section>
 `;
 
 const PROVIDE_EXAMPLE = `
