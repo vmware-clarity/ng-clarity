@@ -43,10 +43,16 @@ export const CLR_CONTEXT_DEFAULT_OPTIONS: Readonly<Required<ClrContextSnapshotOp
 export const CLR_CONTEXT_DIRECTIVES: Type<any>[];
 
 // @public
+export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
+
+// @public
 export const CLR_CONTEXT_LOADING_TYPE = "clr-loading";
 
 // @public
 export const CLR_CONTEXT_PRESETS: Readonly<Record<ClrContextPreset, Readonly<ClrContextSnapshotOptions>>>;
+
+// @public
+export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
 
 // @public
 export const CLR_CONTEXT_UNAVAILABLE_TYPE = "clr-unavailable";
@@ -136,7 +142,6 @@ export interface ClrContextDomExtractor {
 
 // @public
 export class ClrContextIgnore {
-    constructor();
     readonly clrContextIgnore: InputSignalWithTransform<boolean, unknown>;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContextIgnore, "[clrContextIgnore]", never, {
@@ -172,7 +177,6 @@ export interface ClrContextProvider {
 
 // @public
 export class ClrContextRedact {
-    constructor();
     readonly clrContextRedact: InputSignalWithTransform<boolean, unknown>;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContextRedact, "[clrContextRedact]", never, {
