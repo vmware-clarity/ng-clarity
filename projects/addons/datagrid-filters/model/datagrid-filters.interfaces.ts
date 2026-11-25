@@ -7,6 +7,7 @@
 
 /* eslint-disable @typescript-eslint/parameter-properties */
 
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { DateRangeOption } from '@clr/angular/forms';
 
 import { ComparisonOperator, LogicalOperator, TimeSpan, Unit } from './datagrid-filters.enums';
@@ -310,4 +311,18 @@ export class PropertyPredicate {
 export interface EnumPropertyData {
   key: string;
   value: string;
+}
+
+/** The controls of one condition row of the string and numeric editor. Internal, not exported from the package. */
+export interface ConditionControls {
+  operator: FormControl<ComparisonOperator>;
+  /** The input's text, or the stored value when a filter is edited. */
+  value: FormControl<string | number>;
+  unit: FormControl<Unit>;
+}
+
+/** The controls of the string and numeric editor's form. Internal, not exported from the package. */
+export interface GeneralFilterControls {
+  conditions: FormArray<FormGroup<ConditionControls>>;
+  logicalOperator: FormControl<LogicalOperator>;
 }

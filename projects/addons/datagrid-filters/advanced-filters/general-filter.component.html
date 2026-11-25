@@ -29,7 +29,7 @@
               type="radio"
               [id]="id + '-logic-' + operator"
               [name]="id + '-logic'"
-              [checked]="generalFilterForm.value.logicalOperator === operator"
+              [checked]="generalFilterForm.controls.logicalOperator.value === operator"
               [disabled]="operator === LogicalOperator.And && hasEmptyPredicate"
               (change)="generalFilterForm.controls.logicalOperator.setValue(operator)"
             />
@@ -101,7 +101,7 @@
         >
           <span class="filter-logic-label">{{
             filterStrings.getConjoinerDisplayName(
-              filterProperty.logicalOperator ?? generalFilterForm.value.logicalOperator
+              filterProperty.logicalOperator ?? generalFilterForm.controls.logicalOperator.value
             )
           }}</span>
         </div>

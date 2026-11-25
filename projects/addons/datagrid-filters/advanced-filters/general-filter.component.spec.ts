@@ -552,6 +552,49 @@ describe('GeneralFilterComponent', () => {
     });
   });
 
+  // Pins today's values: the typed text is emitted as is, and only a unit conversion turns it into a number.
+  describe('emitted value of typed text', () => {
+    function applyTyped(text: string, unit?: Unit): unknown {
+      const emitted = vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
+      renderFixture(testContext.fixture);
+      const input: HTMLInputElement = testContext.fixture.nativeElement.querySelector(primaryValueSelector);
+      input.value = text;
+      input.dispatchEvent(new Event('input'));
+      if (unit !== undefined) {
+        const unitSelect: HTMLSelectElement = testContext.fixture.nativeElement.querySelector(primaryUnitSelector);
+        unitSelect.value = unitSelect.options[testContext.component.units.indexOf(unit)].value;
+        unitSelect.dispatchEvent(new Event('change'));
+      }
+      renderFixture(testContext.fixture);
+      testContext.fixture.nativeElement.querySelector(submitBtnSelector).click();
+      return emitted.mock.lastCall![0]!.criteria[0].value;
+    }
+
+    it('keeps the text for a string field', () => {
+      testContext.component.filterProperty = new StringPropertyDefinition('Name', 'name', [ComparisonOperator.Equals]);
+      expect(applyTyped('5')).toBe('5');
+    });
+
+    it('keeps the text for a numeric field without a unit', () => {
+      testContext.component.filterProperty = new NumericPropertyDefinition('Count', 'count', [
+        ComparisonOperator.Equals,
+      ]);
+      expect(applyTyped('5')).toBe('5');
+    });
+
+    it("keeps the text in the field's own unit and converts other units to a number", () => {
+      const memory = () => new NumericPropertyDefinition('Memory', 'memory', [ComparisonOperator.Equals], Unit.MB);
+      testContext.component.filterProperty = memory();
+      expect(applyTyped('5', Unit.MB)).toBe('5');
+
+      testContext.fixture.destroy();
+      testContext.fixture = TestBed.createComponent(GeneralFilterComponent);
+      testContext.component = testContext.fixture.componentInstance;
+      testContext.component.filterProperty = memory();
+      expect(applyTyped('5', Unit.GB)).toBe(5 * 1024);
+    });
+  });
+
   describe('in normal mode with numeric property', () => {
     beforeEach(() => {
       numericProperty.unit = Unit.Byte;

@@ -28,6 +28,8 @@ import { uniqueIdFactory } from '@clr/angular/utils';
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
 import { ComparisonOperator, LogicalOperator, Unit } from '../model/datagrid-filters.enums';
 import {
+  ConditionControls,
+  GeneralFilterControls,
   NumericPropertyDefinition,
   PropertyFilter,
   PropertyPredicate,
@@ -54,7 +56,7 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
   readonly logicalOperators: LogicalOperator[];
   readonly isEmptyOperator: ComparisonOperator = ComparisonOperator.IsEmpty;
 
-  generalFilterForm!: FormGroup;
+  generalFilterForm!: FormGroup<GeneralFilterControls>;
   comparisonOperators!: ComparisonOperator[];
   units: Unit[] = [];
   isNumericUnitProperty = false;
@@ -82,8 +84,8 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
     this.logicalOperators = [LogicalOperator.And, LogicalOperator.Or];
   }
 
-  get conditions(): FormArray<FormGroup> {
-    return this.generalFilterForm.controls.conditions as FormArray<FormGroup>;
+  get conditions(): FormArray<FormGroup<ConditionControls>> {
+    return this.generalFilterForm.controls.conditions;
   }
 
   get hasEmptyPredicate(): boolean {
@@ -98,8 +100,8 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
     const conditionCount = this.filterProperty.singleCondition
       ? 1
       : Math.max(1, this.propertyFilter?.criteria.length ?? 0);
-    this.generalFilterForm = this.formBuilder.group({
-      conditions: this.formBuilder.array(
+    this.generalFilterForm = this.formBuilder.nonNullable.group({
+      conditions: this.formBuilder.nonNullable.array(
         Array.from({ length: conditionCount }, (_, index) => this.createCondition(index))
       ),
       logicalOperator: [this.filterProperty.logicalOperator ?? this.propertyFilter?.operator ?? LogicalOperator.And],
@@ -154,7 +156,7 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
       // Typed values and units stay on this filter (aligned with its criteria), not on the shared definition.
       filter.editorState = { values: rows.map(row => row.value), units: rows.map(row => row.unit) };
     }
-    filter.operator = this.filterProperty.logicalOperator ?? this.generalFilterForm.value.logicalOperator;
+    filter.operator = this.filterProperty.logicalOperator ?? this.generalFilterForm.controls.logicalOperator.value;
     filter.criteria = rows.map(row => {
       const predicate = new PropertyPredicate();
       predicate.filterableProperty = this.filterProperty;
@@ -171,8 +173,8 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
 
   // The value's validators depend on the operator;
   // updateConditionValidators sets them, also for added rows (push emits valueChanges).
-  private createCondition(index = -1): FormGroup {
-    return this.formBuilder.group({
+  private createCondition(index = -1): FormGroup<ConditionControls> {
+    return this.formBuilder.nonNullable.group({
       operator: [this.initOperator(index), Validators.required],
       value: [this.initValue(index)],
       unit: [this.initUnit(index)],
@@ -279,7 +281,7 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
     return selectedUnit;
   }
 
-  private initValue(index: number): any {
+  private initValue(index: number): string | number {
     if (this.isNumericUnitProperty) {
       return this.propertyFilter?.editorState?.values?.[index] ?? this.propertyFilter?.criteria[index]?.value ?? '';
     } else {
@@ -287,131 +289,136 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
     }
   }
 
-  private convertValue(value: number, sourceUnit: Unit): number {
+  /**
+   * The value in the field's unit. The value is the input's text (or a stored value); it is returned as it is when no
+   * conversion is needed, and as a number when it is converted.
+   */
+  private convertValue(value: string | number, sourceUnit: Unit): string | number {
     if (this.isNumericUnitProperty) {
       const targetUnit = (this.filterProperty as NumericPropertyDefinition).unit;
       if (targetUnit === sourceUnit) {
         return value;
       }
+      const amount = Number(value);
       switch (targetUnit) {
         case Unit.Byte:
           switch (sourceUnit) {
             case Unit.KB:
-              return value * 1024;
+              return amount * 1024;
             case Unit.MB:
-              return value * 1024 * 1024;
+              return amount * 1024 * 1024;
             case Unit.GB:
-              return value * 1024 * 1024 * 1024;
+              return amount * 1024 * 1024 * 1024;
             case Unit.TB:
-              return value * 1024 * 1024 * 1024 * 1024;
+              return amount * 1024 * 1024 * 1024 * 1024;
             default:
               return value;
           }
         case Unit.KB:
           switch (sourceUnit) {
             case Unit.MB:
-              return value * 1024;
+              return amount * 1024;
             case Unit.GB:
-              return value * 1024 * 1024;
+              return amount * 1024 * 1024;
             case Unit.TB:
-              return value * 1024 * 1024 * 1024;
+              return amount * 1024 * 1024 * 1024;
             default:
               return value;
           }
         case Unit.MB:
           switch (sourceUnit) {
             case Unit.GB:
-              return value * 1024;
+              return amount * 1024;
             case Unit.TB:
-              return value * 1024 * 1024;
+              return amount * 1024 * 1024;
             default:
               return value;
           }
         case Unit.GB:
           switch (sourceUnit) {
             case Unit.TB:
-              return value * 1024;
+              return amount * 1024;
             default:
               return value;
           }
         case Unit.HZ:
           switch (sourceUnit) {
             case Unit.KHZ:
-              return value * 1000;
+              return amount * 1000;
             case Unit.MHZ:
-              return value * 1000 * 1000;
+              return amount * 1000 * 1000;
             case Unit.GHZ:
-              return value * 1000 * 1000 * 1000;
+              return amount * 1000 * 1000 * 1000;
             default:
               return value;
           }
         case Unit.KHZ:
           switch (sourceUnit) {
             case Unit.MHZ:
-              return value * 1000;
+              return amount * 1000;
             case Unit.GHZ:
-              return value * 1000 * 1000;
+              return amount * 1000 * 1000;
             default:
               return value;
           }
         case Unit.MHZ:
           switch (sourceUnit) {
             case Unit.GHZ:
-              return value * 1000;
+              return amount * 1000;
             default:
               return value;
           }
         case Unit.BytePS:
           switch (sourceUnit) {
             case Unit.KBytePS:
-              return value * 1000;
+              return amount * 1000;
             case Unit.MBytePS:
-              return value * 1000 * 1000;
+              return amount * 1000 * 1000;
             case Unit.GBytePS:
-              return value * 1000 * 1000 * 1000;
+              return amount * 1000 * 1000 * 1000;
             default:
               return value;
           }
         case Unit.KBytePS:
           switch (sourceUnit) {
             case Unit.MBytePS:
-              return value * 1000;
+              return amount * 1000;
             case Unit.GBytePS:
-              return value * 1000 * 1000;
+              return amount * 1000 * 1000;
             default:
               return value;
           }
         case Unit.MBytePS:
           switch (sourceUnit) {
             case Unit.GBytePS:
-              return value * 1000;
+              return amount * 1000;
             default:
               return value;
           }
         case Unit.BitPS:
           switch (sourceUnit) {
             case Unit.KBitPS:
-              return value * 1000;
+              return amount * 1000;
             case Unit.MBitPS:
-              return value * 1000 * 1000;
+              return amount * 1000 * 1000;
             case Unit.GBitPS:
-              return value * 1000 * 1000 * 1000;
+              return amount * 1000 * 1000 * 1000;
             default:
               return value;
           }
         case Unit.KBitPS:
           switch (sourceUnit) {
             case Unit.MBitPS:
-              return value * 1000;
+              return amount * 1000;
             case Unit.GBitPS:
-              return value * 1000 * 1000;
+              return amount * 1000 * 1000;
             default:
               return value;
           }
         case Unit.MBitPS:
           switch (sourceUnit) {
             case Unit.GBitPS:
-              return value * 1000;
+              return amount * 1000;
             default:
               return value;
           }
