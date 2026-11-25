@@ -27,7 +27,7 @@ import { Items } from './providers/items';
 })
 export class ClrDatagridItems<T> implements DoCheck, OnDestroy {
   private iterableProxy: NgForOf<T>;
-  private _rawItems: T[];
+  private _rawItems!: T[];
   private differ: IterableDiffer<T> | null = null;
   private subscriptions: Subscription[] = [];
 

@@ -80,7 +80,7 @@ export class ClrCardBodyText {
 // @public (undocumented)
 export class ClrCardBodyTitle {
     // Warning: (ae-forgotten-export) The symbol "HeadingLevel" needs to be exported by the entry point clr-angular-card.d.ts
-    explicitHeadingLevel: HeadingLevel;
+    explicitHeadingLevel?: HeadingLevel;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrCardBodyTitle, "clr-card-body-title", never, {
         "explicitHeadingLevel": {
@@ -117,7 +117,7 @@ export class ClrCardHeader {
     //
     // (undocumented)
     protected readonly commonStrings: ClrCommonStringsService;
-    explicitHeadingLevel: HeadingLevel;
+    explicitHeadingLevel?: HeadingLevel;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrCardHeader, "clr-card-header", never, {
         "explicitHeadingLevel": {

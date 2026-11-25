@@ -156,10 +156,10 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    */
   @Output('clrWizardOnPrevious') onMovePrevious = new EventEmitter<any>(false);
 
-  @ViewChild('pageTitle') pageTitle: ElementRef<HTMLElement>;
-  @ContentChildren(ClrWizardPage) pages: QueryList<ClrWizardPage>;
-  @ContentChildren(ClrWizardButton, { descendants: false }) wizardButtons: QueryList<ClrWizardButton>;
-  @ContentChildren(ClrWizardHeaderAction) headerActions: QueryList<ClrWizardHeaderAction>;
+  @ViewChild('pageTitle') pageTitle!: ElementRef<HTMLElement>;
+  @ContentChildren(ClrWizardPage) pages!: QueryList<ClrWizardPage>;
+  @ContentChildren(ClrWizardButton, { descendants: false }) wizardButtons!: QueryList<ClrWizardButton>;
+  @ContentChildren(ClrWizardHeaderAction) headerActions!: QueryList<ClrWizardHeaderAction>;
 
   wizardId = uniqueIdFactory();
 
@@ -167,7 +167,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   protected ClrWizardFooterAlign = ClrWizardFooterAlign;
   protected ClrWizardStepnavLayout = ClrWizardStepnavLayout;
 
-  @ViewChild('body') private readonly bodyElementRef: ElementRef<HTMLElement>;
+  @ViewChild('body') private readonly bodyElementRef!: ElementRef<HTMLElement>;
 
   // Views read these, so they are signals. The navigation flags live in the WizardNavigationService.
   private readonly opened = signal(false);
@@ -194,7 +194,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
       this.listenForPageChanges()
     );
 
-    this.differ = differs.find([]).create(null);
+    this.differ = differs.find([]).create();
   }
 
   /**
@@ -289,7 +289,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     this.navService.wizardDisableStepnav = !!value;
   }
 
-  get currentPage(): ClrWizardPage {
+  get currentPage(): ClrWizardPage | null {
     return this.navService.currentPage;
   }
   set currentPage(page: ClrWizardPage) {
@@ -495,11 +495,11 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    */
   checkAndCancel(): void {
     const currentPage = this.currentPage;
-    const currentPageHasOverrides = currentPage.stopCancel || currentPage.preventDefault;
-
-    if (this.stopNavigation) {
+    if (!currentPage || this.stopNavigation) {
       return;
     }
+
+    const currentPageHasOverrides = currentPage.stopCancel || currentPage.preventDefault;
 
     currentPage.pageOnCancel.emit();
     if (!currentPageHasOverrides) {

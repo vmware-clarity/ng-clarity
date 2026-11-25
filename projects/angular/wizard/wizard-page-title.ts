@@ -14,15 +14,15 @@ import { HeadingLevel } from '@clr/angular/utils';
 })
 export class ClrWizardPageTitle {
   // The wizard renders the level, so it is a signal.
-  private readonly level = signal<HeadingLevel>(undefined);
+  private readonly level = signal<HeadingLevel | undefined>(undefined);
 
   constructor(public pageTitleTemplateRef: TemplateRef<any>) {}
 
   @Input('clrHeadingLevel')
-  get headingLevel(): HeadingLevel {
+  get headingLevel(): HeadingLevel | undefined {
     return this.level();
   }
-  set headingLevel(value: HeadingLevel) {
+  set headingLevel(value: HeadingLevel | undefined) {
     this.level.set(value);
   }
 }

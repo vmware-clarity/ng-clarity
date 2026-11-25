@@ -15,7 +15,7 @@ export class HeaderActionService {
   // this service communicates information about the presence/display of header actions
   // across the wizard
 
-  private _wizardHeaderActions: QueryList<ClrWizardHeaderAction>;
+  private _wizardHeaderActions!: QueryList<ClrWizardHeaderAction>;
   private readonly headerActionCount = signal(0);
 
   constructor(public navService: WizardNavigationService) {}

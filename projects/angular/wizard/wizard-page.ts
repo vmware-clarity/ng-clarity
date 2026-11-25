@@ -238,7 +238,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  @ContentChild(ClrWizardPageTitle, { static: true, descendants: false }) pageTitle: ClrWizardPageTitle;
+  @ContentChild(ClrWizardPageTitle, { static: true, descendants: false }) pageTitle!: ClrWizardPageTitle;
 
   /**
    * Contains a reference to the desired title for the page's step in the
@@ -250,7 +250,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  @ContentChild(ClrWizardPageNavTitle, { static: true, descendants: false }) pageNavTitle: ClrWizardPageNavTitle;
+  @ContentChild(ClrWizardPageNavTitle, { static: true, descendants: false }) pageNavTitle!: ClrWizardPageNavTitle;
 
   /**
    * Contains a reference to the buttons defined within the page. If not defined,
@@ -260,7 +260,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  @ContentChild(ClrWizardPageButtons, { static: true, descendants: false }) _buttons: ClrWizardPageButtons;
+  @ContentChild(ClrWizardPageButtons, { static: true, descendants: false }) _buttons!: ClrWizardPageButtons;
 
   /**
    * Contains a reference to the header actions defined within the page. If not defined,
@@ -270,7 +270,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  @ContentChild(ClrWizardPageHeaderActions, { static: true }) _headerActions: ClrWizardPageHeaderActions;
+  @ContentChild(ClrWizardPageHeaderActions, { static: true }) _headerActions!: ClrWizardPageHeaderActions;
 
   // The stepnav and the buttons show these, so they are signals.
   private readonly pageId = signal<any>((wizardPageIndex++).toString());
@@ -574,7 +574,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  get headerActions(): TemplateRef<any> {
+  get headerActions(): TemplateRef<any> | undefined {
     if (!this._headerActions) {
       return undefined;
     }
@@ -595,7 +595,7 @@ export class ClrWizardPage implements OnInit {
    * @memberof WizardPage
    *
    */
-  get buttons(): TemplateRef<any> {
+  get buttons(): TemplateRef<any> | undefined {
     if (!this._buttons) {
       return undefined;
     }

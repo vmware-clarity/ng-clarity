@@ -112,4 +112,14 @@ describe('ModalStackService', () => {
       .map(([, listener]) => listener);
     expect(removedKeyUpListeners).toContain(addEventListenerSpy.mock.calls[0][1]);
   });
+
+  it('stops handling the escape key when it is destroyed with an open modal', () => {
+    const modal: Closable = { close: vi.fn() };
+
+    modalStackService.trackModalOpen(modal);
+    modalStackService.ngOnDestroy();
+    document.body.dispatchEvent(new KeyboardEvent('keyup', { key: 'Escape' }));
+
+    expect(modal.close).not.toHaveBeenCalled();
+  });
 });

@@ -70,7 +70,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
-    get currentPage(): ClrWizardPage;
+    get currentPage(): ClrWizardPage | null;
     set currentPage(page: ClrWizardPage);
     currentPageChange: EventEmitter<any>;
     get disableStepnav(): boolean;
@@ -350,7 +350,7 @@ export class ClrWizardModule {
 // @public
 export class ClrWizardPage implements OnInit {
     constructor(navService: WizardNavigationService, pageCollection: PageCollectionService, buttonService: ButtonHubService);
-    get buttons(): TemplateRef<any>;
+    get buttons(): TemplateRef<any> | undefined;
     _buttons: ClrWizardPageButtons;
     // (undocumented)
     buttonService: ButtonHubService;
@@ -368,7 +368,7 @@ export class ClrWizardPage implements OnInit {
     get hasError(): boolean;
     set hasError(val: boolean);
     get hasHeaderActions(): boolean;
-    get headerActions(): TemplateRef<any>;
+    get headerActions(): TemplateRef<any> | undefined;
     _headerActions: ClrWizardPageHeaderActions;
     get id(): string;
     get _id(): any;
@@ -489,8 +489,8 @@ export class ClrWizardPageTitle {
     // Warning: (ae-forgotten-export) The symbol "HeadingLevel" needs to be exported by the entry point clr-angular-wizard.d.ts
     //
     // (undocumented)
-    get headingLevel(): HeadingLevel;
-    set headingLevel(value: HeadingLevel);
+    get headingLevel(): HeadingLevel | undefined;
+    set headingLevel(value: HeadingLevel | undefined);
     // (undocumented)
     pageTitleTemplateRef: TemplateRef<any>;
     // (undocumented)
@@ -508,7 +508,7 @@ export class ClrWizardPageTitle {
 export class ClrWizardStepnav implements AfterViewInit, OnDestroy {
     constructor(pageService: PageCollectionService, navService: WizardNavigationService, elementRef: ElementRef<HTMLElement>);
     // (undocumented)
-    label: string;
+    label?: string;
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
@@ -577,7 +577,7 @@ export class ClrWizardStepnavItem implements OnInit, OnDestroy {
     // (undocumented)
     protected scrollIntoView(): void;
     // (undocumented)
-    get stepAriaCurrent(): string;
+    get stepAriaCurrent(): 'step' | false;
     // (undocumented)
     protected get stepIconId(): string;
     // (undocumented)
@@ -608,8 +608,8 @@ export enum ClrWizardStepnavLayout {
 // @public (undocumented)
 export class ClrWizardTitle {
     // (undocumented)
-    get headingLevel(): HeadingLevel;
-    set headingLevel(value: HeadingLevel);
+    get headingLevel(): HeadingLevel | undefined;
+    set headingLevel(value: HeadingLevel | undefined);
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardTitle, "clr-wizard-title", never, {
         "headingLevel": {
