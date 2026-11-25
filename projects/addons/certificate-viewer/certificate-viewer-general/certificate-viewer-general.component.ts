@@ -37,5 +37,5 @@ export class CertificateViewerGeneralComponent {
 
   @Input() certificate?: Certificate;
   @Input() topHeadingLevel: TopHeadingLevel = 5;
-  @Input() headingTemplate: TemplateRef<unknown>;
+  @Input() headingTemplate!: TemplateRef<unknown>;
 }

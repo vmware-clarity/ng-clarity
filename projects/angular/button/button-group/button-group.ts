@@ -49,8 +49,8 @@ import { InitialFocus } from '../providers/button-group-focus.enum';
 export class ClrButtonGroup implements AfterViewInit {
   @Input('clrToggleButtonAriaLabel') clrToggleButtonAriaLabel: string = this.commonStrings.keys.rowActions;
 
-  @ViewChild('menuToggle') menuToggle: ElementRef<HTMLElement>;
-  @ViewChild('menu') menu: ElementRef<HTMLElement>;
+  @ViewChild('menuToggle') menuToggle!: ElementRef<HTMLElement>;
+  @ViewChild('menu') menu!: ElementRef<HTMLElement>;
 
   popoverId = uniqueIdFactory();
   InitialFocus = InitialFocus;

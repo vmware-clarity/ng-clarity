@@ -56,7 +56,7 @@ const MIN_BUTTON_WIDTH = 42;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrLoadingButton implements LoadingListener {
-  @Input('disabled') disabled: boolean;
+  @Input('disabled') disabled = false;
 
   @Output('clrLoadingChange') clrLoadingChange = new EventEmitter<ClrLoadingState>(false);
 

@@ -45,15 +45,15 @@ import { ClrLoadingState, LoadingListener, uniqueIdFactory } from '@clr/angular/
 })
 export class ClrButton implements LoadingListener {
   @Output('click') _click = new EventEmitter<boolean>(false);
-  @Input('routerLinkActive') routerLinkActiveClasses: string;
+  @Input('routerLinkActive') routerLinkActiveClasses?: string;
 
-  @ViewChild('buttonProjectedRef', { static: true }) templateRef: TemplateRef<ClrButton>;
+  @ViewChild('buttonProjectedRef', { static: true }) templateRef!: TemplateRef<ClrButton>;
 
   private readonly _inMenu = signal(false);
   private readonly _loading = signal(false);
   private _classNames = 'btn';
-  private _name: string = null;
-  private _type: string = null;
+  private _name: string | null = null;
+  private _type: string | null = null;
   private _disabled: any = null;
   private _id: string = uniqueIdFactory();
 
@@ -87,7 +87,7 @@ export class ClrButton implements LoadingListener {
   }
 
   @Input('name')
-  get name(): string {
+  get name(): string | null {
     return this._name;
   }
   set name(value: string) {
@@ -97,7 +97,7 @@ export class ClrButton implements LoadingListener {
   }
 
   @Input('type')
-  get type(): string {
+  get type(): string | null {
     return this._type;
   }
   set type(value: string) {
@@ -128,7 +128,7 @@ export class ClrButton implements LoadingListener {
     }
   }
 
-  get role(): string {
+  get role(): string | null {
     return this.inMenu ? 'menuitem' : null;
   }
 

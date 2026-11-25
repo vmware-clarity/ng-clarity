@@ -27,7 +27,7 @@ import { StepValidationState } from '../../model/step-validation-state';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ValidationBannerInternalComponent {
-  @Input() type: string;
+  @Input() type!: string;
 
   @Input() closable = true;
 

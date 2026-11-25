@@ -14,7 +14,7 @@ import { FocusableItem } from './focusable-item/focusable-item';
 
 @Injectable()
 export class FocusService {
-  private _current: FocusableItem;
+  private _current: FocusableItem | undefined;
   private _unlistenFuncsMap: Map<FocusableItem, (() => void)[]> = new Map();
 
   constructor(private renderer: Renderer2) {}
@@ -30,7 +30,7 @@ export class FocusService {
   registerContainer(el: HTMLElement) {
     // The following listeners return false when there was an action to take for the key pressed,
     // in order to prevent the default behavior of that key.
-    const unlistenFuncs = [];
+    const unlistenFuncs: (() => void)[] = [];
 
     unlistenFuncs.push(this.renderer.listen(el, 'keydown.arrowup', () => !this.move(ArrowKeyDirection.UP)));
     unlistenFuncs.push(this.renderer.listen(el, 'keydown.arrowdown', () => !this.move(ArrowKeyDirection.DOWN)));

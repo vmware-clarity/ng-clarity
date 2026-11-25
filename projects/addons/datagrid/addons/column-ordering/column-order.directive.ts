@@ -31,9 +31,9 @@ import { ColumnDefinition } from '../../shared/column/column-definitions';
 export class ColumnOrderDirective implements OnDestroy, OnInit {
   @HostBinding('class.grabbed') isGrabbed = false;
 
-  @Input() columnData: ColumnDefinition<any>;
+  @Input() columnData!: ColumnDefinition<any>;
 
-  @Input() columnIndex: number;
+  @Input() columnIndex!: number;
 
   private subs = new Subscription();
 

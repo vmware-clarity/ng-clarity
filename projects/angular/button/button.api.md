@@ -63,16 +63,16 @@ export class ClrButton implements LoadingListener {
     // (undocumented)
     loadingStateChange(state: ClrLoadingState): void;
     // (undocumented)
-    get name(): string;
+    get name(): string | null;
     set name(value: string);
     // (undocumented)
-    get role(): string;
+    get role(): string | null;
     // (undocumented)
-    routerLinkActiveClasses: string;
+    routerLinkActiveClasses?: string;
     // (undocumented)
     templateRef: TemplateRef<ClrButton>;
     // (undocumented)
-    get type(): string;
+    get type(): string | null;
     set type(value: string);
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrButton, "clr-button", never, {
