@@ -1,6 +1,6 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://clarity.design/schemas/page-context-1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://clarity.design/schemas/page-context-2.schema.json",
   "title": "ClrPageContext",
   "type": "object",
   "required": [
@@ -14,7 +14,7 @@
   ],
   "properties": {
     "schemaVersion": {
-      "const": "1"
+      "const": "2"
     },
     "application": {
       "type": "object",
@@ -57,10 +57,10 @@
           "type": "string"
         },
         "params": {
-          "$ref": "#/definitions/strings"
+          "$ref": "#/$defs/strings"
         },
         "queryParams": {
-          "$ref": "#/definitions/queryParams"
+          "$ref": "#/$defs/queryParams"
         },
         "data": {
           "type": "object"
@@ -91,26 +91,26 @@
     "regions": {
       "type": "array",
       "items": {
-        "$ref": "#/definitions/component"
+        "$ref": "#/$defs/component"
       }
     },
     "components": {
       "type": "array",
       "items": {
-        "$ref": "#/definitions/component"
+        "$ref": "#/$defs/component"
       }
     },
     "truncated": {
       "type": "boolean"
     },
-    "focus": {
-      "const": "modal"
+    "modal": {
+      "const": true
     },
     "collectedAt": {
       "type": "string"
     }
   },
-  "definitions": {
+  "$defs": {
     "strings": {
       "type": "object",
       "additionalProperties": {
@@ -155,7 +155,7 @@
         "children": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/component"
+            "$ref": "#/$defs/component"
           }
         }
       }

@@ -8,14 +8,20 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
-import { CLR_CONTEXT_PRESETS, ClrContextPreset, ClrContextService, ClrPageContext } from '@clr/angular/ai';
+import {
+  CLR_CONTEXT_PRESETS,
+  ClrContextIgnore,
+  ClrContextPreset,
+  ClrContextService,
+  ClrPageContext,
+} from '@clr/angular/ai';
 
-/** A snapshot of the page, read again on Refresh; `data-clr-context-ignore` keeps it out of the context. */
+/** A snapshot of the page, read again on Refresh; `clrContextIgnore` keeps it out of the context. */
 @Component({
   changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'clr-context-live-panel',
   standalone: true,
-  imports: [FormsModule, ClarityModule],
+  imports: [FormsModule, ClarityModule, ClrContextIgnore],
   templateUrl: './live-panel.component.html',
   styleUrls: ['./live-panel.component.scss'],
 })
@@ -24,7 +30,7 @@ export class ContextLivePanelComponent implements OnInit {
   snapshotBytes = 0;
   snapshotCount = 0;
   snapshotTruncated = false;
-  snapshotFocus: string | null = null;
+  snapshotModal = false;
   profile: ClrContextPreset = 'full';
 
   constructor(private readonly context: ClrContextService) {}
@@ -45,7 +51,7 @@ export class ContextLivePanelComponent implements OnInit {
   private render(snapshot: ClrPageContext): void {
     this.snapshotCount++;
     this.snapshotTruncated = snapshot.truncated === true;
-    this.snapshotFocus = snapshot.focus ?? null;
+    this.snapshotModal = !!snapshot.modal;
     this.snapshotBytes = JSON.stringify(snapshot).length;
     this.snapshotJson = JSON.stringify(snapshot, null, 2);
   }

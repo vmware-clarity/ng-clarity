@@ -178,9 +178,26 @@ describe('resolveRole, beyond HTML-AAM where an agent needs it', () => {
     expect(roleOf('<table><tr><th>a</th></tr></table>', 'th')).toBe('columnheader');
   });
 
-  it('only treats a page-level header or footer as a landmark', () => {
+  it('treats a page-level header or footer as a landmark, and one inside a section as its header or footer', () => {
     expect(roleOf('<header>top</header>', 'header')).toBe('banner');
-    expect(roleOf('<article><footer>meta</footer></article>', 'footer')).toBeNull();
+    expect(roleOf('<article><footer>meta</footer></article>', 'footer')).toBe('sectionfooter');
+    expect(roleOf('<section><header>meta</header></section>', 'header')).toBe('sectionheader');
+  });
+
+  it('gives a section, form or nested aside its landmark role only when it is named', () => {
+    expect(roleOf('<section>a</section>', 'section')).toBeNull();
+    expect(roleOf('<section aria-label="Hosts">a</section>', 'section')).toBe('region');
+    expect(roleOf('<form>a</form>', 'form')).toBeNull();
+    expect(roleOf('<form aria-label="Filters">a</form>', 'form')).toBe('form');
+    expect(roleOf('<aside>a</aside>', 'aside')).toBe('complementary');
+    expect(roleOf('<main><aside>a</aside></main>', 'aside')).toBe('complementary');
+    expect(roleOf('<article><aside>a</aside></article>', 'aside')).toBeNull();
+    expect(roleOf('<article><aside aria-label="Notes">a</aside></article>', 'aside')).toBe('complementary');
+  });
+
+  it('maps the deprecated directory role to list, and a paragraph to paragraph', () => {
+    expect(roleOf('<div role="directory">a</div>', 'div')).toBe('list');
+    expect(roleOf('<p>a</p>', 'p')).toBe('paragraph');
   });
 });
 

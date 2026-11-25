@@ -9,17 +9,17 @@
  * Version of the {@link ClrPageContext} format; it changes only when a field changes meaning or is removed.
  * New top-level fields are added without changing it.
  */
-export const CLR_PAGE_CONTEXT_SCHEMA_VERSION = '1';
+export const CLR_PAGE_CONTEXT_SCHEMA_VERSION = '2';
 
 /**
- * JSON Schema (draft-07) of {@link ClrPageContext} at `schemaVersion` `'1'`, for consumers that validate
+ * JSON Schema (2020-12) of {@link ClrPageContext} at `schemaVersion` `'2'`, for consumers that validate
  * snapshots outside TypeScript. The top level accepts fields a later release adds, so ignore the ones you do
  * not know; everything below it is strict. Component `state` and the view's `metadata` are
  * application-specific and left open.
  */
 export const CLR_PAGE_CONTEXT_SCHEMA = {
-  $schema: 'http://json-schema.org/draft-07/schema#',
-  $id: 'https://clarity.design/schemas/page-context-1.schema.json',
+  $schema: 'https://json-schema.org/draft/2020-12/schema',
+  $id: 'https://clarity.design/schemas/page-context-2.schema.json',
   title: 'ClrPageContext',
   type: 'object',
   required: ['schemaVersion', 'application', 'enabled', 'title', 'regions', 'components', 'collectedAt'],
@@ -42,8 +42,8 @@ export const CLR_PAGE_CONTEXT_SCHEMA = {
       properties: {
         url: { type: 'string' },
         path: { type: 'string' },
-        params: { $ref: '#/definitions/strings' },
-        queryParams: { $ref: '#/definitions/queryParams' },
+        params: { $ref: '#/$defs/strings' },
+        queryParams: { $ref: '#/$defs/queryParams' },
         data: { type: 'object' },
       },
     },
@@ -56,13 +56,13 @@ export const CLR_PAGE_CONTEXT_SCHEMA = {
         properties: { path: { type: 'string' }, title: { type: 'string' }, lazy: { type: 'boolean' } },
       },
     },
-    regions: { type: 'array', items: { $ref: '#/definitions/component' } },
-    components: { type: 'array', items: { $ref: '#/definitions/component' } },
+    regions: { type: 'array', items: { $ref: '#/$defs/component' } },
+    components: { type: 'array', items: { $ref: '#/$defs/component' } },
     truncated: { type: 'boolean' },
-    focus: { const: 'modal' },
+    modal: { const: true },
     collectedAt: { type: 'string' },
   },
-  definitions: {
+  $defs: {
     strings: { type: 'object', additionalProperties: { type: 'string' } },
     // A repeated query key is reported as a list.
     queryParams: {
@@ -78,7 +78,7 @@ export const CLR_PAGE_CONTEXT_SCHEMA = {
         element: { type: 'string' },
         label: { type: 'string' },
         state: { type: 'object' },
-        children: { type: 'array', items: { $ref: '#/definitions/component' } },
+        children: { type: 'array', items: { $ref: '#/$defs/component' } },
       },
     },
   },
