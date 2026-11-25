@@ -100,12 +100,6 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
 
   collapsedFilters = false;
 
-  showHideFiltersArrowDir = 'left';
-
-  showHideFiltersLabel: string;
-
-  showHideFiltersAriaLabel: string;
-
   protected readonly popoverId = uniqueIdFactory();
 
   protected readonly popoverPosition = ClrPopoverPosition.BOTTOM_LEFT;
@@ -198,10 +192,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   constructor(
     public filterStrings: DatagridFiltersStrings,
     private cdr: ChangeDetectorRef
-  ) {
-    this.showHideFiltersLabel = filterStrings.hideButtonLabel;
-    this.showHideFiltersAriaLabel = filterStrings.hideButtonAriaLabel;
-  }
+  ) {}
 
   // Array of filterable properties
   @Input({ transform: toPropertyArray })
@@ -278,6 +269,25 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     this.resolveFieldOwners();
   }
 
+  // Show/Hide button text, derived from collapsedFilters and the number of user-added filters.
+  get showHideFiltersArrowDir(): string {
+    return this.collapsedFilters ? 'right' : 'left';
+  }
+
+  get showHideFiltersLabel(): string {
+    return this.collapsedFilters
+      ? this.filterStrings.showButtonLabel + '(' + this.userAddedFiltersCount + ')'
+      : this.filterStrings.hideButtonLabel;
+  }
+
+  get showHideFiltersAriaLabel(): string {
+    const count = this.userAddedFiltersCount;
+    const noun = count > 1 ? this.filterStrings.filtersText : this.filterStrings.filterText;
+    return this.collapsedFilters
+      ? `${this.filterStrings.showButtonLabel} ${count} ${noun}`
+      : this.filterStrings.hideButtonAriaLabel;
+  }
+
   get signPostOpened(): boolean {
     return this.popoverService.open;
   }
@@ -326,7 +336,6 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     if (filtersChanged && this.initialized) {
       // The host replaced the active filters. The value is the full state, so it also sets which toggles are ON.
       this.applyFilters(changes['propertyFilters'].currentValue ?? []);
-      this.updateShowHideLabel();
     }
     if (fieldsChanged || filtersChanged) {
       // Precedence can hand a field to another input after init: a semi-predefined field's filter may no longer be
@@ -396,7 +405,6 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
       this.popoverService.focusOrigin();
     }
     this.preselectFirstProperty();
-    this.updateShowHideLabel();
     // The filter sometimes fails to close, necessitating
     // a check to detect this state change.
     this.cdr.markForCheck();
@@ -421,8 +429,6 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     this.emitFilters();
     this.preselectFirstProperty();
     this.collapsedFilters = false;
-    this.updateShowHideLabel();
-    this.showHideFiltersArrowDir = 'left';
     this.clearAll.emit();
 
     // Clear all hides itself once nothing is active,
@@ -432,8 +438,6 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
 
   showHideAllFilters(): void {
     this.collapsedFilters = !this.collapsedFilters;
-    this.updateShowHideLabel();
-    this.showHideFiltersArrowDir = this.collapsedFilters ? 'right' : 'left';
   }
 
   /**
@@ -532,7 +536,6 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     );
     this.emitFilters();
     this.preselectFirstProperty();
-    this.updateShowHideLabel();
     if (!this.isPredefined(property) && !this.isSemiPredefined(property)) {
       // The removed pill held focus and no longer exists, so move focus to Add filter.
       this.moveFocusToActiveButton();
@@ -716,20 +719,6 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     if (this.selectedFilterableProperty) {
       this.onPropertyChange();
     }
-  }
-
-  private updateShowHideLabel(): void {
-    const count = this.userAddedFiltersCount;
-    this.showHideFiltersLabel = this.collapsedFilters
-      ? this.filterStrings.showButtonLabel + '(' + count + ')'
-      : this.filterStrings.hideButtonLabel;
-    this.showHideFiltersAriaLabel = this.collapsedFilters
-      ? this.filterStrings.showButtonLabel +
-        ' ' +
-        count +
-        ' ' +
-        (count > 1 ? this.filterStrings.filtersText : this.filterStrings.filterText)
-      : this.filterStrings.hideButtonAriaLabel;
   }
 
   /**
