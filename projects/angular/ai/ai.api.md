@@ -4,11 +4,33 @@
 
 ```ts
 
+import { AfterViewInit } from '@angular/core';
+import { AnimationCallbackEvent } from '@angular/core';
+import { CdkDrag } from '@angular/cdk/drag-drop';
+import { CdkTrapFocus } from '@angular/cdk/a11y';
+import { ElementRef } from '@angular/core';
+import { EventEmitter } from '@angular/core';
+import { FactoryProvider } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
+import * as i2_2 from '@angular/common';
+import { InjectionToken } from '@angular/core';
+import { Injector } from '@angular/core';
 import { InputSignal } from '@angular/core';
+import { NgZone } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Observer } from 'rxjs';
+import { OnChanges } from '@angular/core';
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
+import { QueryList } from '@angular/core';
+import { Renderer2 } from '@angular/core';
+import { SimpleChanges } from '@angular/core';
+import { Subject } from 'rxjs';
+import { Subscription } from 'rxjs';
+import { TemplateRef } from '@angular/core';
 import { Type } from '@angular/core';
+import { ViewContainerRef } from '@angular/core';
 
 // @public
 export const CLR_CONTEXT_CATEGORIES: Readonly<Record<ClrContextCategory, readonly string[]>>;
@@ -20,30 +42,24 @@ export const CLR_CONTEXT_DEFAULT_OPTIONS: Readonly<Required<ClrContextSnapshotOp
 export const CLR_CONTEXT_DIRECTIVES: Type<any>[];
 
 // @public
-export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
-
-// @public
 export const CLR_CONTEXT_LOADING_TYPE = "clr-loading";
 
 // @public
 export const CLR_CONTEXT_PRESETS: Readonly<Record<ClrContextPreset, Readonly<ClrContextSnapshotOptions>>>;
 
 // @public
-export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
-
-// @public
 export const CLR_CONTEXT_UNAVAILABLE_TYPE = "clr-unavailable";
 
 // @public
 export const CLR_PAGE_CONTEXT_SCHEMA: {
-    readonly $schema: "http://json-schema.org/draft-07/schema#";
-    readonly $id: "https://clarity.design/schemas/page-context-1.schema.json";
+    readonly $schema: "https://json-schema.org/draft/2020-12/schema";
+    readonly $id: "https://clarity.design/schemas/page-context-2.schema.json";
     readonly title: "ClrPageContext";
     readonly type: "object";
     readonly required: readonly ["schemaVersion", "application", "enabled", "title", "regions", "components", "collectedAt"];
     readonly properties: {
         readonly schemaVersion: {
-            readonly const: "1";
+            readonly const: "2";
         };
         readonly application: {
             readonly type: "object";
@@ -82,10 +98,10 @@ export const CLR_PAGE_CONTEXT_SCHEMA: {
                     readonly type: "string";
                 };
                 readonly params: {
-                    readonly $ref: "#/definitions/strings";
+                    readonly $ref: "#/$defs/strings";
                 };
                 readonly queryParams: {
-                    readonly $ref: "#/definitions/queryParams";
+                    readonly $ref: "#/$defs/queryParams";
                 };
                 readonly data: {
                     readonly type: "object";
@@ -114,26 +130,26 @@ export const CLR_PAGE_CONTEXT_SCHEMA: {
         readonly regions: {
             readonly type: "array";
             readonly items: {
-                readonly $ref: "#/definitions/component";
+                readonly $ref: "#/$defs/component";
             };
         };
         readonly components: {
             readonly type: "array";
             readonly items: {
-                readonly $ref: "#/definitions/component";
+                readonly $ref: "#/$defs/component";
             };
         };
         readonly truncated: {
             readonly type: "boolean";
         };
-        readonly focus: {
-            readonly const: "modal";
+        readonly modal: {
+            readonly const: true;
         };
         readonly collectedAt: {
             readonly type: "string";
         };
     };
-    readonly definitions: {
+    readonly $defs: {
         readonly strings: {
             readonly type: "object";
             readonly additionalProperties: {
@@ -173,7 +189,7 @@ export const CLR_PAGE_CONTEXT_SCHEMA: {
                 readonly children: {
                     readonly type: "array";
                     readonly items: {
-                        readonly $ref: "#/definitions/component";
+                        readonly $ref: "#/$defs/component";
                     };
                 };
             };
@@ -182,7 +198,7 @@ export const CLR_PAGE_CONTEXT_SCHEMA: {
 };
 
 // @public
-export const CLR_PAGE_CONTEXT_SCHEMA_VERSION = "1";
+export const CLR_PAGE_CONTEXT_SCHEMA_VERSION = "2";
 
 // @public
 export interface ClrApplicationContext {
@@ -277,13 +293,24 @@ export interface ClrContextDomExtractor {
 }
 
 // @public
+export class ClrContextIgnore {
+    constructor();
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContextIgnore, "[clrContextIgnore]", never, {}, {}, never, never, true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextIgnore, never>;
+}
+
+// @public
 export class ClrContextModule {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrContextModule>;
+    // Warning: (ae-forgotten-export) The symbol "i2" needs to be exported by the entry point clr-angular-ai.d.ts
+    //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrContextModule, never, [typeof ClrContext], [typeof ClrContext]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrContextModule, never, [typeof ClrContext, typeof i2.ClrContextIgnore, typeof i2.ClrContextRedact], [typeof ClrContext, typeof i2.ClrContextIgnore, typeof i2.ClrContextRedact]>;
 }
 
 // @public
@@ -292,6 +319,15 @@ export type ClrContextPreset = 'full' | 'interactive' | 'minimal';
 // @public
 export interface ClrContextProvider {
     getClrContext(): ClrPublishedContext | null | Promise<ClrPublishedContext | null>;
+}
+
+// @public
+export class ClrContextRedact {
+    constructor();
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContextRedact, "[clrContextRedact]", never, {}, {}, never, never, true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextRedact, never>;
 }
 
 // Warning: (ae-forgotten-export) The symbol "ResolvedSnapshotOptions" needs to be exported by the entry point clr-angular-ai.d.ts
@@ -343,8 +379,8 @@ export interface ClrPageContext {
     collectedAt: string;
     components: ClrComponentContext[];
     enabled: boolean;
-    focus?: 'modal';
     metadata?: Record<string, unknown>;
+    modal?: true;
     regions: ClrComponentContext[];
     route?: ClrRouteContext;
     schemaVersion: string;
