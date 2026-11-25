@@ -17,7 +17,7 @@ import { MultiAlertService } from './providers/multi-alert.service';
   templateUrl: './alerts-pager.html',
   host: { '[class.alerts-pager]': 'true' },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrAlertsPager implements OnInit, OnDestroy {
   @Output('clrCurrentAlertChange') currentAlertChange = new EventEmitter<ClrAlert>(false);
