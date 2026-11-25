@@ -58,7 +58,7 @@ import { AppfxCardContainerStore } from '../utils/appfx-card-container-store';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class AppfxCardContainerComponent implements OnInit, DoCheck {
-  @Input() containerId: string;
+  @Input() containerId!: string;
 
   @Input() cards: AppfxCard[] = [];
 
@@ -70,7 +70,7 @@ export class AppfxCardContainerComponent implements OnInit, DoCheck {
 
   containerCards: AppfxCardInternal[] = [];
 
-  @ViewChild('cardContainer', { read: ViewContainerRef, static: true }) private cardContainer: ViewContainerRef;
+  @ViewChild('cardContainer', { read: ViewContainerRef, static: true }) private cardContainer!: ViewContainerRef;
 
   private readonly differ: IterableDiffer<AppfxCard>;
 

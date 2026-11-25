@@ -66,7 +66,7 @@ import { NestedMenu } from './model/nested-menu';
 export class MenuComponent extends NestedMenu implements Menu, OnChanges, OnInit, OnDestroy, AfterContentInit {
   private trigger?: HTMLElement;
 
-  private openingEvent: Event;
+  private openingEvent?: Event;
 
   itemTypes = MenuItemType;
 
@@ -81,9 +81,9 @@ export class MenuComponent extends NestedMenu implements Menu, OnChanges, OnInit
 
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();
 
-  @ViewChild(ClrDropdown) dropdown: ClrDropdown;
+  @ViewChild(ClrDropdown) dropdown!: ClrDropdown;
 
-  @ViewChild(ClrDropdown, { read: ElementRef }) dropdownElRef: ElementRef<HTMLElement>;
+  @ViewChild(ClrDropdown, { read: ElementRef }) dropdownElRef!: ElementRef<HTMLElement>;
 
   @ContentChildren(MenuItem) declare menuItems: QueryList<MenuItem>;
 

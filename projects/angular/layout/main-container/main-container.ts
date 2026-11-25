@@ -15,8 +15,8 @@ import { Subscription } from 'rxjs';
   standalone: false,
 })
 export class ClrMainContainer implements OnDestroy, OnInit {
-  private _subscription: Subscription;
-  private _classList: DOMTokenList;
+  private _subscription!: Subscription;
+  private _classList!: DOMTokenList;
 
   constructor(
     private elRef: ElementRef<HTMLElement>,

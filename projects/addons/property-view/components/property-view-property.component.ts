@@ -36,11 +36,11 @@ import {
 export class PropertyViewPropertyComponent implements OnChanges {
   readonly PropertyViewModelType = PropertyViewModelType;
 
-  @Input() data: PropertyViewPropertyModel;
+  @Input() data!: PropertyViewPropertyModel;
 
-  propertyValueModelContent: PropertyViewPropertyValueModel[];
+  propertyValueModelContent!: PropertyViewPropertyValueModel[];
 
-  propertyValueComponentModelContent: PropertyViewPropertyValueComponentModel<unknown>[];
+  propertyValueComponentModelContent!: PropertyViewPropertyValueComponentModel<unknown>[];
 
   constructor(
     public propertyViewConfigProvider: PropertyViewConfigProvider,

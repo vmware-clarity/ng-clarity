@@ -96,7 +96,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
   ];
   wizardOpen = false;
   rows: DataRow[] = SAMPLE_ROWS;
-  description: string;
+  description = '';
   stepperForm = {
     account: { fullName: '' },
     confirm: { agree: false },
@@ -347,7 +347,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     const base = overrides.find(c => TOKEN_KEYS.baseTokens.includes(c.name));
     const activeBase = base ? colorGroup.find(c => c.name === base.name) : undefined;
 
-    if (activeBase) {
+    if (base && activeBase) {
       activeBase.color = base.color;
       this.colorBuilder(activeBase, colorGroup, theme === 'dark');
     }
@@ -398,6 +398,10 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     for (const key of Object.keys(colorGroups)) {
       const colorGroup = colorGroups[key];
       const baseColor = colorGroup.find(c => c.label === 'Base');
+
+      if (!baseColor) {
+        continue;
+      }
 
       themeColors.push({
         key,

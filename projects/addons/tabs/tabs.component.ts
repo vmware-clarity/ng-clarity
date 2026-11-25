@@ -69,7 +69,7 @@ import { debounceTime, filter, map, shareReplay, switchMap, take, tap } from 'rx
 })
 export class TabsComponent implements OnChanges, AfterViewInit, AfterContentInit, OnDestroy {
   /** Disable the content of the tabs. */
-  @Input() disableTabsContent: boolean;
+  @Input() disableTabsContent = false;
 
   /** Display loading indicator. */
   @Input() loading = false;
@@ -94,21 +94,21 @@ export class TabsComponent implements OnChanges, AfterViewInit, AfterContentInit
   /** Emits with the activated step when the active tab changes. */
   @Output() activeTabChange = new EventEmitter<Step>();
 
-  clrTabsLayout: TabLayout;
+  clrTabsLayout!: TabLayout;
   TabLayout = TabLayout;
   ZoomLevel = ZoomLevel;
   tabLinksOpened = false;
-  isVerticalLayout: boolean;
-  isSecondaryLayout: boolean;
+  isVerticalLayout!: boolean;
+  isSecondaryLayout!: boolean;
 
-  @ViewChildren(StepContainer) private pagesContainers: QueryList<StepContainer>;
-  @ViewChildren(ClrTabLink) private tabLinks: QueryList<ClrTabLink>;
+  @ViewChildren(StepContainer) private pagesContainers!: QueryList<StepContainer>;
+  @ViewChildren(ClrTabLink) private tabLinks!: QueryList<ClrTabLink>;
 
-  private tabsModel: WorkflowModel;
+  private tabsModel!: WorkflowModel;
   private awaitingActivePageOnLoad$: ReplaySubject<StepInternal> = new ReplaySubject(1);
   private componentAfterViewInit$: Subject<void> = new Subject();
   private subscriptions = new Subscription();
-  private retrySubscription: Subscription;
+  private retrySubscription?: Subscription;
   private stepsValidationMap = new Map<Step, Observable<boolean>>();
   private readonly managerLoading: Signal<boolean>;
 

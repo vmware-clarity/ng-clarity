@@ -70,7 +70,7 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
   /**
    * The wizard title. It's mandatory.
    */
-  @Input() title: string;
+  @Input() title!: string;
 
   @Input() loading = false;
 
@@ -82,14 +82,14 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
    * Wizard will wait for the successful result and then will close.
    * If there is an error, it will be displayed in the wizard that will remain open.
    */
-  @Input() closeHandler: CloseHandler;
+  @Input() closeHandler!: CloseHandler;
 
   /**
    * Optional footer configuration. The component specified in {@link WizardFooterConfig.componentClass}
    * is rendered in the wizard footer before the action buttons.
    * The wizard injects the current step, all steps, and the {@link WorkflowModel} whenever the active step changes.
    */
-  @Input() footer: WizardFooterConfig;
+  @Input() footer!: WizardFooterConfig;
 
   /**
    * Clarity Wizard size - 'md', 'lg', 'xl' and 'full-screen'.
@@ -124,17 +124,17 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
 
   protected closeHandlerValidationState = new StepValidationState();
 
-  @ViewChild('wizard', { static: true }) private wizard: ClrWizard;
+  @ViewChild('wizard', { static: true }) private wizard!: ClrWizard;
 
-  @ViewChild(WorkflowModelMonitor, { static: false }) private debugPopup: WorkflowModelMonitor;
+  @ViewChild(WorkflowModelMonitor, { static: false }) private debugPopup?: WorkflowModelMonitor;
 
-  @ViewChildren(StepContainer) private pagesContainers: QueryList<StepContainer>;
+  @ViewChildren(StepContainer) private pagesContainers!: QueryList<StepContainer>;
 
   private awaitingWizardPageOnLoad$: ReplaySubject<StepInternal> = new ReplaySubject(Infinity);
   private componentAfterViewInit$: Subject<void> = new Subject();
   private subscriptions = new Subscription();
-  private retrySubscription: Subscription;
-  private summaryStep: StepInternal;
+  private retrySubscription?: Subscription;
+  private summaryStep?: StepInternal;
   private readonly managerLoading: Signal<boolean>;
 
   readonly #pages = signal<StepInternal[]>([]);
@@ -448,11 +448,11 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
         const propertyViewModel = propertyViewModelBuilder.build();
         const categoryBuilder = propertyViewModelBuilder.generateAllCategory(''); // No title for category.
         const category = categoryBuilder.build();
-        const sections = this.#pages()
-          .filter(step => !step.isSkipped && !!step.summary)
-          .map(step =>
-            step.summary?.(categoryBuilder.section(step.title).title(step.navTitle || step.title), step.modelInstance)
-          );
+        const sections = this.#pages().flatMap(step =>
+          !step.isSkipped && step.summary
+            ? [step.summary(categoryBuilder.section(step.title).title(step.navTitle || step.title), step.modelInstance)]
+            : []
+        );
         category.content = sections;
         propertyViewModel.categories = [category];
         summaryModel.data = propertyViewModel;

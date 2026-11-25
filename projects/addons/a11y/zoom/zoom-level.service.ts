@@ -26,7 +26,7 @@ export class ZoomLevelService implements OnDestroy {
    */
   readonly level: Signal<ZoomLevel | undefined>;
 
-  private observer: ResizeObserver;
+  private observer!: ResizeObserver;
   private resizeSubject = new ReplaySubject<ZoomLevel>(1);
   private readonly currentLevel = signal<ZoomLevel | undefined>(undefined);
 
