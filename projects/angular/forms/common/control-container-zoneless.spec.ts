@@ -77,6 +77,12 @@ class TemplateDrivenHost {
 }
 
 describe('ClrControlContainer (zoneless, OnPush host)', () => {
+  // Other spec files declare the subtexts in their own testing modules. Importing the module here gives them
+  // their module scope back, because the browser test files share one environment.
+  beforeEach(() => {
+    TestBed.configureTestingModule({ imports: [ClrCommonFormsModule] });
+  });
+
   function container(fixture: ComponentFixture<unknown>): HTMLElement {
     return fixture.nativeElement.querySelector('clr-control-container');
   }
