@@ -914,9 +914,6 @@ function headerText(title: Element, excluded: string): string {
   const descendants = Array.from(title.querySelectorAll('*'));
   const copy = title.cloneNode(true) as Element;
   const copies = Array.from(copy.querySelectorAll('*'));
-  // Marks stay with the originals, so a marked original skips its copy.
-  const skipped = new Set(
-    copies.filter((_, index) => descendants[index].matches(skip) || isMarked(descendants[index]))
-  );
+  const skipped = new Set(copies.filter((_, index) => descendants[index].matches(skip)));
   return contextText(copy, descendant => skipped.has(descendant));
 }
