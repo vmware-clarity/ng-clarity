@@ -38,7 +38,7 @@ import { ClrTreeNode } from './tree-node';
     '[attr.role]': '"tree"',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrTree<T> implements AfterContentInit, OnDestroy {
   @ContentChildren(ClrTreeNode) private rootNodes!: QueryList<ClrTreeNode<T>>;

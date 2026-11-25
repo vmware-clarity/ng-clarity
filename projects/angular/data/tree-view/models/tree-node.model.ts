@@ -5,10 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { signal } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 import type { ClrTreeNode } from '../tree-node';
 import { ClrSelectedState } from './selected-state.enum';
+import { SignalBehaviorSubject } from './signal-behavior-subject';
 
 export abstract class TreeNodeModel<T> {
   nodeId!: string;
@@ -27,16 +29,19 @@ export abstract class TreeNodeModel<T> {
   _node: ClrTreeNode<T> | null = null;
   model: T | null = null;
   textContent!: string;
-  loading$ = new BehaviorSubject(false);
-  selected = new BehaviorSubject(ClrSelectedState.UNSELECTED);
+  // The state that the node templates read is held in signals, so that a node is refreshed when another node
+  // changes it: selection propagating up and down the tree, a parent getting disabled, children loading.
+  loading$: BehaviorSubject<boolean> = new SignalBehaviorSubject<boolean>(false);
+  selected: BehaviorSubject<ClrSelectedState> = new SignalBehaviorSubject<ClrSelectedState>(
+    ClrSelectedState.UNSELECTED
+  );
 
   /*
    * Being able to push this down to the RecursiveTreeNodeModel would require too much work on the angular components
    * right now for them to know which kind of model they are using. So I'm lifting the public properties to this
    * abstract parent class for now and we can revisit it later, when we're not facing such a close deadline.
    */
-  private _loading = false;
-  private _disabled = false;
+  private readonly _disabled = signal(false);
 
   /*
    * Ideally, I would like to use a polymorphic this type here to ensure homogeneity of the tree, something like:
@@ -49,10 +54,9 @@ export abstract class TreeNodeModel<T> {
   abstract children: TreeNodeModel<T>[];
 
   get loading() {
-    return this._loading;
+    return this.loading$.value;
   }
   set loading(isLoading: boolean) {
-    this._loading = isLoading;
     this.loading$.next(isLoading);
   }
 
@@ -65,10 +69,10 @@ export abstract class TreeNodeModel<T> {
 
   get disabled() {
     // when both parameters are undefined, double negative is needed to cast to false, otherwise will return undefined.
-    return !!(this._disabled || this.parent?.disabled);
+    return !!(this._disabled() || this.parent?.disabled);
   }
   set disabled(value: boolean) {
-    this._disabled = value;
+    this._disabled.set(!!value);
   }
 
   destroy() {

@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { signal, untracked } from '@angular/core';
 import { isObservable, Subscription } from 'rxjs';
 
 import { TreeFeaturesService } from '../tree-features.service';
@@ -23,13 +24,15 @@ export class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
   private subscription?: Subscription;
   private childrenFetched = false;
   private destroyed = false;
-  private _children: RecursiveTreeNodeModel<T>[] = [];
+  // A signal, so that the node is refreshed when its children arrive or get cleared.
+  private readonly _children = signal<RecursiveTreeNodeModel<T>[]>([]);
 
   constructor(
     model: T,
     parent: RecursiveTreeNodeModel<T> | null,
     private getChildren: (node: T) => AsyncArray<T> | undefined,
-    private featuresService: TreeFeaturesService<T> | undefined
+    // No longer used: the children are a signal now. Kept so that the constructor signature does not change.
+    _featuresService?: TreeFeaturesService<T>
   ) {
     super();
     this.model = model;
@@ -37,15 +40,17 @@ export class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
   }
 
   get children(): RecursiveTreeNodeModel<T>[] {
-    this.fetchChildren();
-    return this._children;
+    // The children are fetched the first time they are read, often by a template while Angular renders it, and
+    // fetching writes the loading state. The app's getChildren function is not a dependency of that template either.
+    untracked(() => this.fetchChildren());
+    return this._children();
   }
   set children(value: RecursiveTreeNodeModel<T>[]) {
-    this._children = value;
+    this._children.set(value);
   }
 
   override get _loadedChildren(): RecursiveTreeNodeModel<T>[] {
-    return this._children || [];
+    return this._children();
   }
 
   override destroy() {
@@ -57,8 +62,8 @@ export class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
   }
 
   clearChildren() {
-    this._children.forEach(child => child.destroy());
-    this._children = [];
+    this._children().forEach(child => child.destroy());
+    this._children.set([]);
     this.childrenFetched = false;
   }
 
@@ -74,28 +79,25 @@ export class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
         if (this.destroyed) {
           return;
         }
-        this._children = this.wrapChildren(raw);
+        this._children.set(this.wrapChildren(raw));
         this.loading = false;
       });
     } else if (isObservable(asyncChildren)) {
       this.loading = true;
       this.subscription = asyncChildren.subscribe(raw => {
-        this._children = this.wrapChildren(raw);
+        this._children.set(this.wrapChildren(raw));
         this.loading = false;
       });
     } else if (asyncChildren) {
       // Synchronous case
-      this._children = this.wrapChildren(asyncChildren);
+      this._children.set(this.wrapChildren(asyncChildren));
     } else {
-      this._children = [];
+      this._children.set([]);
     }
     this.childrenFetched = true;
-    if (this.featuresService) {
-      this.featuresService.childrenFetched.next();
-    }
   }
 
   private wrapChildren(rawModels: T[] | null | undefined) {
-    return (rawModels || []).map(m => new RecursiveTreeNodeModel(m, this, this.getChildren, this.featuresService));
+    return (rawModels || []).map(m => new RecursiveTreeNodeModel(m, this, this.getChildren));
   }
 }

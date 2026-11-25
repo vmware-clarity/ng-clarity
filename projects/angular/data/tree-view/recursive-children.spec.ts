@@ -105,7 +105,7 @@ describe('Tree View', () => {
       });
 
       it('does not render anything if the tree is not recursive', () => {
-        delete testContext.featuresService.recursion;
+        testContext.featuresService.recursion = undefined;
         testContext.detectChanges();
         expect(testContext.clarityElement.textContent.trim()).toBe('');
       });

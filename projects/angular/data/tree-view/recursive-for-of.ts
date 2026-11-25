@@ -5,9 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Directive, Input, OnChanges, OnDestroy, TemplateRef } from '@angular/core';
-import { asapScheduler, Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { Directive, Input, OnChanges, TemplateRef } from '@angular/core';
 
 import { AsyncArray } from './models/async-array';
 import { RecursiveTreeNodeModel } from './models/recursive-tree-node.model';
@@ -23,48 +21,29 @@ export interface ClrRecursiveForOfContext<T> {
   selector: '[clrRecursiveFor][clrRecursiveForOf]',
   standalone: false,
 })
-export class ClrRecursiveForOf<T> implements OnChanges, OnDestroy {
+export class ClrRecursiveForOf<T> implements OnChanges {
   // TODO: accept NgIterable<T>
   @Input('clrRecursiveForOf') nodes!: T | T[];
 
   // TODO: accept NgIterable<T> return type
   @Input('clrRecursiveForGetChildren') getChildren!: (node: T) => AsyncArray<T>;
 
-  private childrenFetchSubscription?: Subscription;
-
   constructor(
     private template: TemplateRef<ClrRecursiveForOfContext<T>>,
-    private featuresService: TreeFeaturesService<T>,
-    private cdr: ChangeDetectorRef
+    private featuresService: TreeFeaturesService<T>
   ) {}
 
   // I'm using OnChanges instead of OnInit to easily keep up to date with dynamic trees. Maybe optimizable later.
   ngOnChanges() {
     let wrapped: RecursiveTreeNodeModel<T>[];
     if (Array.isArray(this.nodes)) {
-      wrapped = this.nodes.map(node => new RecursiveTreeNodeModel(node, null, this.getChildren, this.featuresService));
+      wrapped = this.nodes.map(node => new RecursiveTreeNodeModel(node, null, this.getChildren));
     } else {
-      wrapped = [new RecursiveTreeNodeModel(this.nodes, null, this.getChildren, this.featuresService)];
+      wrapped = [new RecursiveTreeNodeModel(this.nodes, null, this.getChildren)];
     }
-    if (!this.childrenFetchSubscription) {
-      // Children fetched synchronously while the tree renders are picked up once, in a microtask,
-      // instead of one macrotask timer (and its own change detection pass) per node.
-      this.childrenFetchSubscription = this.featuresService.childrenFetched
-        .pipe(debounceTime(0, asapScheduler))
-        .subscribe(() => {
-          this.cdr.detectChanges();
-        });
-    }
-
     this.featuresService.recursion = {
       template: this.template,
       root: wrapped,
     };
-  }
-
-  ngOnDestroy() {
-    if (this.childrenFetchSubscription) {
-      this.childrenFetchSubscription.unsubscribe();
-    }
   }
 }

@@ -355,21 +355,10 @@ describe('Tree View', () => {
         });
 
         it('replaces the caret with a spinner when the model is loading', () => {
-          testContext.clarityDirective.isModelLoading = true;
-          testContext.detectChanges();
-          expect(testContext.clarityElement.querySelector('.clr-treenode-caret')).toBeNull();
-          expect(testContext.clarityElement.querySelector('.clr-treenode-spinner')).not.toBeNull();
-        });
-
-        it('shows the spinner once the model starts loading, in a microtask', async () => {
-          vi.useFakeTimers();
-          // The loading state can flip in the middle of a change detection pass, so it is not applied synchronously.
           testContext.clarityDirective._model.loading = true;
-          expect(testContext.clarityDirective.isModelLoading).toBe(false);
-          // A microtask is enough: no timer per node when a large tree gets created.
-          await Promise.resolve();
           expect(testContext.clarityDirective.isModelLoading).toBe(true);
           testContext.detectChanges();
+          expect(testContext.clarityElement.querySelector('.clr-treenode-caret')).toBeNull();
           expect(testContext.clarityElement.querySelector('.clr-treenode-spinner')).not.toBeNull();
         });
 
@@ -718,8 +707,11 @@ describe('Tree View', () => {
           contentContainer = untypedContext.clarityElement.querySelector('.clr-tree-node-content-container');
         });
 
-        it('adds the aria-selected attribute and screen reader text for active tree node links', () => {
+        it('adds the aria-selected attribute and screen reader text for active tree node links', async () => {
           testContext.testComponent.active = true;
+          testContext.detectChanges();
+          // The link reports its class change from a mutation observer, in a microtask.
+          await Promise.resolve();
           testContext.detectChanges();
           expect(contentContainer.getAttribute('aria-selected')).toBe('true');
           expect(contentContainer.textContent.trim().replace(/\s+/g, ' ')).toBe('Hello world selected');

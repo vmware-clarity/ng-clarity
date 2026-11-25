@@ -29,7 +29,7 @@ import { TreeFeaturesService } from './tree-features.service';
     '[attr.role]': 'role', // Safari + VO needs direct relationship between treeitem and group; no element should exist between them
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 /**
  * Internal component, do not export!
