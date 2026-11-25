@@ -29,7 +29,7 @@ export class SingleSelectComboboxModel<T> extends ComboboxModel<T, T> {
     return !this.model;
   }
 
-  pop(): T {
+  pop(): T | null | undefined {
     const item = this.model;
     this.model = null;
     return item;

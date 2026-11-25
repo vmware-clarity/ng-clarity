@@ -54,7 +54,7 @@ import { ComboboxContainerService } from './providers/combobox-container.service
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrComboboxContainer extends ClrAbstractContainer implements AfterContentInit, AfterViewInit {
-  @ViewChild('controlContainer') controlContainer: ElementRef<HTMLElement>;
+  @ViewChild('controlContainer') controlContainer!: ElementRef<HTMLElement>;
 
   constructor(
     @Optional() layoutService: LayoutService,

@@ -37,7 +37,7 @@ export class ClrTabLink {
 
   templateRefContainer: TemplateRefContainer;
 
-  private _inOverflow: boolean;
+  private _inOverflow = false;
 
   constructor(
     @Optional() public ifActiveService: IfActiveService,
@@ -50,9 +50,7 @@ export class ClrTabLink {
     if (!ifActiveService || !tabsService || id === null || id === undefined) {
       throw new Error('clrTabLink and clr-tab-content should only be used inside of a clr-tabs');
     }
-    if (!this.tabLinkId) {
-      this.tabLinkId = 'clr-tab-link-' + nbTabLinkComponents++;
-    }
+    this.tabLinkId = 'clr-tab-link-' + nbTabLinkComponents++;
 
     // Tab links can be rendered in one of two places: in the main area or inside the overflow dropdown menu.
     // Here, we create a container so that its template can be used to create embeddedView on the fly.
@@ -77,7 +75,7 @@ export class ClrTabLink {
   }
 
   @HostBinding('attr.aria-controls')
-  get ariaControls(): string {
+  get ariaControls(): string | undefined {
     return this.tabsService.children.find(tab => tab.tabLink === this)?.tabContent?.tabContentId;
   }
 

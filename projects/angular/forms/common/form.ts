@@ -22,7 +22,7 @@ import { MarkControlService } from './providers/mark-control.service';
   standalone: false,
 })
 export class ClrForm {
-  @ContentChildren(ClrControlLabel, { descendants: true }) labels: QueryList<ClrControlLabel>;
+  @ContentChildren(ClrControlLabel, { descendants: true }) labels!: QueryList<ClrControlLabel>;
 
   constructor(
     public layoutService: LayoutService,

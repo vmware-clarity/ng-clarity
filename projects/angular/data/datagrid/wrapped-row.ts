@@ -26,8 +26,8 @@ import {
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class WrappedRow implements AfterViewInit, OnDestroy {
-  @ViewChild('rowPortal') templateRef: TemplateRef<void>;
-  rowView: EmbeddedViewRef<void>; // the rows projected view (in memory)
+  @ViewChild('rowPortal') templateRef!: TemplateRef<null>;
+  rowView!: EmbeddedViewRef<null>; // the rows projected view (in memory)
 
   ngAfterViewInit() {
     // Create the cells view in memory, not the DOM.

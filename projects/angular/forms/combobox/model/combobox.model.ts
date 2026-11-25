@@ -30,5 +30,5 @@ export abstract class ComboboxModel<T, M extends T | T[] = T | T[]> {
   abstract unselect(item: T): void;
   abstract toString(displayField?: string, index?: number): string;
   abstract isEmpty(): boolean;
-  abstract pop(): T; // pops the last item
+  abstract pop(): T | null | undefined; // pops the last item
 }

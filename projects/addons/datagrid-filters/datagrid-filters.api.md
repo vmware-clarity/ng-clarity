@@ -164,7 +164,7 @@ export class CompositeFiltersComponent implements OnInit {
     // (undocumented)
     onPropertyChange(): void;
     // (undocumented)
-    presetFilters: PropertyFilter[];
+    presetFilters?: PropertyFilter[];
     // (undocumented)
     propertyFilters: PropertyFilter[];
     propertyFiltersChange: EventEmitter<PropertyFilter[]>;
@@ -232,7 +232,7 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
     onSearchInputKeyPress(event: KeyboardEvent): void;
     // (undocumented)
     onSearchTermChanged(searchTerm: string): void;
-    presetFilters: PropertyFilter[];
+    presetFilters?: PropertyFilter[];
     // (undocumented)
     propertyFiltersChange: EventEmitter<PropertyFilter[]>;
     // (undocumented)
