@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrContextService } from '@clr/angular/ai';
-import { ClrComponentContext } from '@clr/angular/utils';
+import { ClrComponentContext, ClrContextRedact } from '@clr/angular/utils';
 
 import { ClrDateContainer } from './date-container';
 import { ClrDatepickerModule } from './datepicker.module';
@@ -21,7 +21,7 @@ import { DateNavigationService } from './providers/date-navigation.service';
 @Component({
   changeDetection: ChangeDetectionStrategy.Eager,
   template: `
-    <form [attr.data-clr-context-redact]="redacted ? '' : null">
+    <form [clrContextRedact]="redacted">
       <clr-date-container>
         <label>Date of birth</label>
         <input name="dob" clrDate [(ngModel)]="dob" />
@@ -50,7 +50,7 @@ describe('ClrDateContainer, as page-context tooling sees it', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ClrDatepickerModule, FormsModule, NoopAnimationsModule],
+      imports: [ClrDatepickerModule, ClrContextRedact, FormsModule, NoopAnimationsModule],
       declarations: [DatepickerTestComponent],
     });
   });

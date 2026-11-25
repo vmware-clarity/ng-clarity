@@ -8,9 +8,9 @@
 import { ApplicationRef, ChangeDetectorRef, getDebugNode } from '@angular/core';
 import { AbstractControl, NgControl } from '@angular/forms';
 import {
-  CLR_CONTEXT_WITHHELD_SELECTOR,
   ClrElementMutation,
   ClrElementMutator,
+  isContextWithheld,
   normalizeContextText,
   usableSelectors,
 } from '@clr/angular/utils';
@@ -717,7 +717,7 @@ function choiceKept(choice: Element, target: WriteTarget): boolean {
 }
 
 function choiceShown(choice: Element, target: WriteTarget): boolean {
-  return !choiceKept(choice, target) && !choice.matches(CLR_CONTEXT_WITHHELD_SELECTOR);
+  return !choiceKept(choice, target) && !isContextWithheld(choice);
 }
 
 function optionUsable(option: HTMLOptionElement): boolean {

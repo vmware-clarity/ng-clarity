@@ -37,6 +37,7 @@ import {
   CdkDragModule,
   CdkTrapFocusModule,
   ClrConditionalModule,
+  ClrContextIgnore,
   ClrExpandableAnimationModule,
   ClrIfExpanded,
   ClrKeyFocusModule,
@@ -139,6 +140,7 @@ const CLR_DATAGRID_SHARED_DIRECTIVES = [ClrIfExpanded];
 
 @NgModule({
   imports: [
+    ClrContextIgnore,
     CommonModule,
     CdkDragModule,
     CdkTrapFocusModule,

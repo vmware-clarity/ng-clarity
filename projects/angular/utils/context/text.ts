@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CLR_CONTEXT_WITHHELD_SELECTOR } from './attributes';
+import { isContextWithheld } from './marks';
 import { BLOCK_TAGS } from './tags';
 
 /** Text as page-context tooling compares it, shared so components and the engine agree on matches. */
@@ -39,7 +39,7 @@ function textWithin(element: Element, skip: ((descendant: Element) => boolean) |
       return;
     }
     const child = node as Element;
-    if (child.matches(CLR_CONTEXT_WITHHELD_SELECTOR) || skip?.(child)) {
+    if (isContextWithheld(child) || skip?.(child)) {
       return;
     }
     const style = renderedStyle(child);

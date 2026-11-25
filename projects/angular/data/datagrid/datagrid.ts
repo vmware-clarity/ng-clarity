@@ -33,14 +33,13 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import {
-  CLR_CONTEXT_IGNORE_SELECTOR,
-  CLR_CONTEXT_REDACT_SELECTOR,
-  CLR_CONTEXT_WITHHELD_SELECTOR,
   ClrCommonStringsService,
   ClrContextSnapshotOptions,
   ClrElementMutation,
   ClrPublishedContext,
   contextText,
+  hasContextMark,
+  isContextWithheld,
   normalizeContextText,
   publishElementContext,
   publishElementMutator,
@@ -952,9 +951,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     if (text) {
       return text;
     }
-    const withheld = selectorList(CLR_CONTEXT_WITHHELD_SELECTOR, excluded);
-    const hasWithheldText = Array.from(title.querySelectorAll(withheld)).some(
-      descendant => !!descendant.textContent?.trim()
+    const withheld = withheldBy(excluded);
+    const hasWithheldText = Array.from(title.querySelectorAll('*')).some(
+      descendant => withheld(descendant) && !!descendant.textContent?.trim()
     );
     return hasWithheldText ? null : column.field || null;
   }
@@ -1015,10 +1014,10 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   private columnKeptOut(title: Element, excluded: string): boolean {
     const column = title.closest('clr-dg-column');
     const grid: HTMLElement = this.el.nativeElement;
-    const withheld = selectorList(CLR_CONTEXT_WITHHELD_SELECTOR, excluded);
-    const marked = selectorList(CLR_CONTEXT_MARKED_SELECTOR, excluded);
+    const withheld = withheldBy(excluded);
+    const marked = (element: Element) => isMarked(element) || (!!excluded && element.matches(excluded));
     for (let current: Element | null = title; current && current !== grid; current = current.parentElement) {
-      if (current.matches(column?.contains(current) ? withheld : marked)) {
+      if ((column?.contains(current) ? withheld : marked)(current)) {
         return true;
       }
     }
@@ -1055,22 +1054,34 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
   private readRowCells(row: ClrDatagridRow<T>, excluded: string): string[] {
     const host: HTMLElement = row.el.nativeElement;
-    const withheld = selectorList(CLR_CONTEXT_WITHHELD_SELECTOR, excluded);
-    const leftOut = selectorList('clr-dg-row-detail', withheld);
+    const withheld = withheldBy(excluded);
+    const leftOut = (element: Element) => element.matches('clr-dg-row-detail') || withheld(element);
     return Array.from(host.querySelectorAll('clr-dg-cell'))
       .filter(cell => {
         if (cell.closest('clr-dg-row') !== host || cell.classList.contains(HIDDEN_COLUMN_CLASS)) {
           return false;
         }
-        const nearest = cell.closest(leftOut);
-        return !nearest || !host.contains(nearest);
+        for (let current: Element | null = cell; current && host.contains(current); current = current.parentElement) {
+          if (leftOut(current)) {
+            return false;
+          }
+        }
+        return true;
       })
-      .map(cell => contextText(cell, element => element.matches(withheld)))
+      .map(cell => contextText(cell, withheld))
       .filter(Boolean);
   }
 }
 
-const CLR_CONTEXT_MARKED_SELECTOR = `${CLR_CONTEXT_REDACT_SELECTOR}, ${CLR_CONTEXT_IGNORE_SELECTOR}`;
+/** Marked `clrContextRedact` or `clrContextIgnore`. */
+function isMarked(element: Element): boolean {
+  return hasContextMark(element, 'redact') || hasContextMark(element, 'ignore');
+}
+
+/** What the engine reads no text from, or the snapshot's `excludeSelectors` leave out. */
+function withheldBy(excluded: string): (element: Element) => boolean {
+  return element => isContextWithheld(element) || (!!excluded && element.matches(excluded));
+}
 
 function selectorList(...selectors: string[]): string {
   return selectors.filter(Boolean).join(', ');
@@ -1087,6 +1098,9 @@ function headerText(title: Element, excluded: string): string {
   const descendants = Array.from(title.querySelectorAll('*'));
   const copy = title.cloneNode(true) as Element;
   const copies = Array.from(copy.querySelectorAll('*'));
-  const skipped = new Set(copies.filter((_, index) => descendants[index].matches(skip)));
+  // Marks stay with the originals, so a marked original skips its copy.
+  const skipped = new Set(
+    copies.filter((_, index) => descendants[index].matches(skip) || isMarked(descendants[index]))
+  );
   return contextText(copy, descendant => skipped.has(descendant));
 }

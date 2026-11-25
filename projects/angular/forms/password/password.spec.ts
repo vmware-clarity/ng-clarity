@@ -11,7 +11,7 @@ import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms'
 import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule, LayoutService, NgControlService } from '@clr/angular/forms/common';
 import { ClrIcon } from '@clr/angular/icon';
-import { CLR_CONTEXT_REDACT_ATTRIBUTE } from '@clr/angular/utils';
+import { hasContextMark } from '@clr/angular/utils';
 import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrPassword } from './password';
@@ -95,14 +95,14 @@ describe('ClrPassword', () => {
 
       it('marks itself as holding a secret whatever type it currently shows', () => {
         const input = containerEl.querySelector('input');
-        expect(input.getAttribute(CLR_CONTEXT_REDACT_ATTRIBUTE)).toBe('');
+        expect(hasContextMark(input, 'redact')).toBe(true);
 
         // The reveal toggle switches the field to plain text; a context snapshot taken then
         // must still withhold what it holds.
         containerDE.injector.get(TOGGLE_SERVICE).next(true);
         fixture.detectChanges();
         expect(input.type).toEqual('text');
-        expect(input.getAttribute(CLR_CONTEXT_REDACT_ATTRIBUTE)).toBe('');
+        expect(hasContextMark(input, 'redact')).toBe(true);
       });
     });
   });

@@ -18,7 +18,7 @@ import { Selection } from './providers/selection';
   template: `
     @if (selection.selectionType === SELECTION_TYPE.Multi && selection.current.length > 0) {
       <!-- The grid's own count of selected rows, drawn as a checkbox; the datagrid publishes the selection. -->
-      <div class="clr-form-control-disabled" data-clr-context-ignore>
+      <div class="clr-form-control-disabled" clrContextIgnore>
         <clr-checkbox-wrapper class="datagrid-footer-select">
           <input clrCheckbox type="checkbox" checked="checked" disabled />
           <label>{{ selection.current.length }}</label>

@@ -7,7 +7,7 @@
 
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import Ajv from 'ajv';
+import Ajv from 'ajv/dist/2020';
 
 import { ClrMutationService } from './mutation-engine.service';
 import {

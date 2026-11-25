@@ -23,7 +23,7 @@ const OPTIONAL_FIELDS = new Set<keyof ClrPageContext>([
   'route',
   'availableRoutes',
   'truncated',
-  'focus',
+  'modal',
 ]);
 // Each pass removes one part; a snapshot with more broken parts than this is a bug, not data.
 const MAX_REMOVALS = 100;

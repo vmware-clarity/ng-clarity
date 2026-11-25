@@ -19,7 +19,7 @@ import {
 } from '@clr/angular/icon';
 import { ClrPopoverModuleNext } from '@clr/angular/popover/common';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
-import { ClrConditionalModule, ClrKeyFocusModule } from '@clr/angular/utils';
+import { ClrConditionalModule, ClrContextIgnore, ClrKeyFocusModule } from '@clr/angular/utils';
 
 import { ClrCombobox } from './combobox';
 import { ClrComboboxContainer } from './combobox-container';
@@ -31,6 +31,7 @@ import { ClrOptions } from './options';
 
 @NgModule({
   imports: [
+    ClrContextIgnore,
     CommonModule,
     FormsModule,
     ClrIcon,

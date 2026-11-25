@@ -19,7 +19,7 @@ width of the component, after being wrapped to a new line -->
   @if (multiSelect && multiSelectModel && multiSelectModel.length > 0) {
   <span
     role="grid"
-    data-clr-context-ignore
+    clrContextIgnore
     clrRovingTabindex
     [clrRovingTabindexDisabled]="!!control?.disabled"
     clrDirection="both"
@@ -165,6 +165,6 @@ width of the component, after being wrapped to a new line -->
 to be manual due to the component architecture -->
 <!-- The combobox publishes its options itself (see publishContext); page-context tooling
 must not describe the open list again as a free-standing listbox in the overlay. -->
-<div role="dialog" data-clr-context-ignore *clrPopoverContent="openState; at popoverPosition; type: popoverType;">
+<div role="dialog" clrContextIgnore *clrPopoverContent="openState; at popoverPosition; type: popoverType;">
   <ng-content></ng-content>
 </div>

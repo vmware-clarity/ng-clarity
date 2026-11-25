@@ -8,7 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
-import Ajv from 'ajv';
+import Ajv from 'ajv/dist/2020';
 import { onTestFinished } from 'vitest';
 
 import { conformingSnapshot } from './conform';
@@ -102,7 +102,7 @@ describe('CLR_PAGE_CONTEXT_SCHEMA', () => {
     expect(validate({ ...snapshot, application: { ...snapshot.application, extra: true } })).toBe(false);
     expect(validate({ ...snapshot, components: [{ type: 'button', extra: true }] })).toBe(false);
     expect(validate(withoutEnabled)).toBe(false);
-    expect(validate({ ...snapshot, schemaVersion: '2' })).toBe(false);
+    expect(validate({ ...snapshot, schemaVersion: '1' })).toBe(false);
   });
 });
 
@@ -124,7 +124,7 @@ describe('CLR_PAGE_CONTEXT_SCHEMA and the TypeScript types', () => {
     regions: true,
     components: true,
     truncated: true,
-    focus: true,
+    modal: true,
     collectedAt: true,
   };
   const component: Keys<ClrComponentContext> = {
@@ -147,7 +147,7 @@ describe('CLR_PAGE_CONTEXT_SCHEMA and the TypeScript types', () => {
 
   it('lists the same fields as ClrPageContext and ClrComponentContext', () => {
     expect(Object.keys(CLR_PAGE_CONTEXT_SCHEMA.properties).sort()).toEqual(Object.keys(page).sort());
-    expect(Object.keys(CLR_PAGE_CONTEXT_SCHEMA.definitions.component.properties).sort()).toEqual(
+    expect(Object.keys(CLR_PAGE_CONTEXT_SCHEMA.$defs.component.properties).sort()).toEqual(
       Object.keys(component).sort()
     );
     expect([...CLR_PAGE_CONTEXT_SCHEMA.required].sort()).toEqual(Object.keys(required).sort());
@@ -159,7 +159,7 @@ describe('ClrContextService, sending only what matches the schema', () => {
 
   function page(overrides: Partial<ClrPageContext>): ClrPageContext {
     return {
-      schemaVersion: '1',
+      schemaVersion: '2',
       application: { id: 'inventory' },
       enabled: true,
       title: 'Hosts',
