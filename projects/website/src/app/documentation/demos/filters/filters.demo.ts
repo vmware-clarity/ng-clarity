@@ -7,7 +7,7 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ClrAccordionModule, ClrIfExpanded } from '@clr/angular';
+import { ClrAccordionModule } from '@clr/angular';
 
 import { DatagridFiltersCombinedLoadDemoComponent } from './ng/combined-load';
 import { DatagridFiltersDateTimeDemoComponent } from './ng/date-time-filters';
@@ -18,7 +18,6 @@ import { DatagridFiltersSemiPredefinedDemoComponent } from './ng/semi-predefined
 import { DatagridFiltersToggleDemoComponent } from './ng/toggle-filters';
 import { DatagridFiltersTwoWayDemoComponent } from './ng/two-way-binding';
 import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
-import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -69,12 +68,10 @@ const additionalFiles = {
     DocTabsComponent,
     DocTabComponent,
     ThemedImageComponent,
-    CodeSnippetComponent,
     StackblitzExampleComponent,
     AiSkillComponent,
     RouterLink,
     ClrAccordionModule,
-    ClrIfExpanded,
     DatagridFiltersModesDemoComponent,
     DatagridFiltersCombinedLoadDemoComponent,
     DatagridFiltersPredefinedDemoComponent,
@@ -100,8 +97,6 @@ export class FiltersDemo extends ClarityDocComponent {
   twoWayTs = TwoWayTs;
   dateTimeHtml = DateTimeHtml;
   dateTimeTs = DateTimeTs;
-  vmPropertiesTs = VmPropertiesTs;
-  appliedFiltersTs = AppliedFiltersTs;
   additionalFiles = additionalFiles;
   propertyDefinitionsHtml = PropertyDefinitionsHtml;
   propertyDefinitionsTs = PropertyDefinitionsTs;
