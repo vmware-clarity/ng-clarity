@@ -5,27 +5,33 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CLR_CONTEXT_HIDDEN_SELECTOR, CLR_CONTEXT_REDACT_SELECTOR } from '@clr/angular/utils';
+import { CLR_CONTEXT_EDITING_HOST_SELECTOR, hasContextMark, isContextHidden } from '@clr/angular/utils';
 
-import { closestAcrossShadow, containsAcrossShadow, hasRendered } from './shadow';
+import { closestAcrossShadow, closestMarkAcrossShadow, containsAcrossShadow, hasRendered } from './shadow';
 import { CONTROL_SELECTOR } from './tables/selectors';
 
 /** Whether the element is in hidden, inert or ignored markup, or in a region `withheld` selects. */
 export function isHiddenFromContext(element: Element, withheld = ''): boolean {
-  return (
-    !!closestAcrossShadow(element, CLR_CONTEXT_HIDDEN_SELECTOR) ||
-    (!!withheld && !!closestAcrossShadow(element, withheld))
-  );
+  return !!closestAcrossShadow(element, isContextHidden) || (!!withheld && !!closestAcrossShadow(element, withheld));
 }
 
 /** {@link isHiddenFromContext} judged on the element alone, for a walk that has already judged its ancestors. */
 export function hidesFromContext(element: Element, withheld = ''): boolean {
-  return element.matches(CLR_CONTEXT_HIDDEN_SELECTOR) || (!!withheld && element.matches(withheld));
+  return isContextHidden(element) || (!!withheld && element.matches(withheld));
+}
+
+/** Never read into names: ignored or redacted regions, and editing hosts, whose text is a value. */
+export function isUnreadable(element: Element): boolean {
+  return (
+    hasContextMark(element, 'ignore') ||
+    hasContextMark(element, 'redact') ||
+    element.matches(CLR_CONTEXT_EDITING_HOST_SELECTOR)
+  );
 }
 
 /** Whether a redacted region holds `item` but not `container`, so the item's text is withheld from it. */
 export function isRedactedWithin(item: Element, container: Element): boolean {
-  const redacting = closestAcrossShadow(item, CLR_CONTEXT_REDACT_SELECTOR);
+  const redacting = closestMarkAcrossShadow(item, 'redact');
   return !!redacting && !containsAcrossShadow(redacting, container);
 }
 

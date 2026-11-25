@@ -16,8 +16,8 @@
 </p>
 
 <div class="clr-row">
-  <!-- data-clr-context-ignore: a tool for driving the engine, not part of the page it describes. -->
-  <div class="clr-col-lg-5 clr-col-12 mutation-panel" data-clr-context-ignore>
+  <!-- clrContextIgnore: a tool for driving the engine, not part of the page it describes. -->
+  <div class="clr-col-lg-5 clr-col-12 mutation-panel" clrContextIgnore>
     <h3>Agent</h3>
     <form clrForm clrLayout="vertical" (ngSubmit)="setValue()">
       <clr-select-container>
@@ -194,8 +194,8 @@
       </form>
     </section>
 
-    <!-- data-clr-context-ignore: the readout repeats the form's own state. -->
-    <div class="card mutation-readout" data-clr-context-ignore>
+    <!-- clrContextIgnore: the readout repeats the form's own state. -->
+    <div class="card mutation-readout" clrContextIgnore>
       <div class="card-header">What the application sees</div>
       <div class="card-block">
         <pre class="mutation-readout-json context-json" tabindex="0" role="region" aria-label="Form readout">

@@ -10,7 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrContextService } from '@clr/angular/ai';
 import { publishedOn, publishedState } from '@clr/angular/testing';
-import { ClrComponentContext, elementContextOf } from '@clr/angular/utils';
+import { ClrComponentContext, elementContextOf, markContext } from '@clr/angular/utils';
 import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrWizardModule } from './wizard.module';
@@ -95,16 +95,16 @@ describe('ClrWizard element context', () => {
   });
 
   it('publishes no title from a stepnav kept from agents', () => {
-    for (const marker of ['data-clr-context-ignore', 'data-clr-context-redact']) {
+    for (const mark of ['ignore', 'redact'] as const) {
       const stepnav = wizard().querySelector('clr-wizard-stepnav') as HTMLElement;
-      stepnav.setAttribute(marker, '');
+      const unmark = markContext(stepnav, mark);
 
       const steps = publishedState(wizard()).steps as Record<string, unknown>[];
       expect(
         steps.some(step => 'title' in step),
-        marker
+        mark
       ).toBe(false);
-      stepnav.removeAttribute(marker);
+      unmark();
     }
   });
 
@@ -130,7 +130,7 @@ describe('ClrWizard element context', () => {
   // so the state the wizard publishes on its host reaches the snapshot.
   it('puts the published steps on the dialog node of a modal-focused snapshot', async () => {
     const snapshot = await TestBed.inject(ClrContextService).snapshot({ root: 'modal' });
-    expect(snapshot.focus).toBe('modal');
+    expect(snapshot.modal).toBe(true);
 
     const dialogs: ClrComponentContext[] = [];
     const visit = (nodes: ClrComponentContext[] | undefined) =>

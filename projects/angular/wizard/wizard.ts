@@ -25,8 +25,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import {
-  CLR_CONTEXT_IGNORE_SELECTOR,
-  CLR_CONTEXT_REDACT_SELECTOR,
+  closestContextMark,
   ClrCommonStringsService,
   contextText,
   publishElementContext,
@@ -628,7 +627,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     const id = `${this.pageCollection.getStepItemIdForPage(page)}-step-title`;
     const element: Element | null = this.elementRef.nativeElement.querySelector(`#${CSS.escape(id)}`);
     // Titles are published apart from the stepnav, so a stepnav kept from agents keeps them too.
-    const kept = element?.closest(`${CLR_CONTEXT_IGNORE_SELECTOR}, ${CLR_CONTEXT_REDACT_SELECTOR}`);
+    const kept = element && (closestContextMark(element, 'ignore') || closestContextMark(element, 'redact'));
     const title =
       element && !kept ? contextText(element, descendant => !!excluded && descendant.matches(excluded)) : '';
     return title ? { title } : {};

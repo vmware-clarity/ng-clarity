@@ -5,13 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-/** Reported only when on: `aria-disabled="false"` says nothing. */
+/**
+ * State keys are the ARIA or HTML attribute names without `aria-`, so a model can map them back without a table.
+ * Flags are reported only when on: `aria-disabled="false"` says nothing.
+ */
 export const FLAG_ATTRIBUTES: Readonly<Record<string, string>> = {
   'aria-disabled': 'disabled',
-  'aria-readonly': 'readOnly',
+  'aria-readonly': 'readonly',
   'aria-required': 'required',
   'aria-modal': 'modal',
-  'aria-multiselectable': 'multiSelectable',
+  'aria-multiselectable': 'multiselectable',
   'aria-busy': 'busy',
 };
 
@@ -44,13 +47,26 @@ export const ENUM_ATTRIBUTES: readonly EnumAttribute[] = [
   { attribute: 'aria-live', key: 'live', empty: 'off', values: ['polite', 'assertive'], other: null },
   {
     attribute: 'aria-haspopup',
-    key: 'hasPopup',
+    key: 'haspopup',
     empty: 'false',
     values: ['true', 'menu', 'listbox', 'tree', 'grid', 'dialog'],
     other: 'true',
   },
-  { attribute: 'aria-invalid', key: 'invalid', empty: 'false', values: [], other: 'true' },
+  { attribute: 'aria-invalid', key: 'invalid', empty: 'false', values: ['grammar', 'spelling'], other: 'true' },
+  {
+    attribute: 'aria-orientation',
+    key: 'orientation',
+    empty: 'undefined',
+    values: ['horizontal', 'vertical'],
+    other: null,
+  },
 ];
+
+/** Numeric ARIA properties, reported under their names without `aria-`. */
+export const NUMBER_ATTRIBUTES: readonly string[] = ['level', 'posinset', 'setsize'];
+
+/** ARIA properties holding author text, reported under their names without `aria-`. */
+export const TEXT_ATTRIBUTES: readonly string[] = ['roledescription', 'keyshortcuts'];
 
 export const REDACTED_INPUT_TYPES: ReadonlySet<string> = new Set(['password', 'file']);
 

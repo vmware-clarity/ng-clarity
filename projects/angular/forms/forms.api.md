@@ -23,9 +23,10 @@ import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
 import { FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
 import * as i1 from '@angular/common';
-import * as i9 from '@angular/forms';
+import * as i10 from '@angular/forms';
 import { InjectionToken } from '@angular/core';
 import { Injector } from '@angular/core';
+import { InputSignalWithTransform } from '@angular/core';
 import { IterableDiffers } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { NgForOfContext } from '@angular/common';
@@ -499,7 +500,7 @@ export class ClrComboboxModule {
     // Warning: (ae-forgotten-export) The symbol "i14" needs to be exported by the entry point clr-angular-forms.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrComboboxModule, [typeof ClrCombobox, typeof ClrComboboxContainer, typeof ClrOptions, typeof ClrOption, typeof ClrOptionGroup, typeof ClrOptionSelected, typeof ClrOptionItems], [typeof i1.CommonModule, typeof i9.FormsModule, typeof i12.ClrIcon, typeof i7.ClrKeyFocusModule, typeof i2.ClrCommonFormsModule, typeof i7.ClrConditionalModule, typeof i1_2.ClrPopoverModuleNext, typeof i14.ClrSpinnerModule], [typeof i2.ClrCommonFormsModule, typeof ClrCombobox, typeof ClrComboboxContainer, typeof ClrOptions, typeof ClrOption, typeof ClrOptionGroup, typeof ClrOptionSelected, typeof i7.ClrConditionalModule, typeof ClrOptionItems]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrComboboxModule, [typeof ClrCombobox, typeof ClrComboboxContainer, typeof ClrOptions, typeof ClrOption, typeof ClrOptionGroup, typeof ClrOptionSelected, typeof ClrOptionItems], [typeof i7.ClrContextIgnore, typeof i1.CommonModule, typeof i10.FormsModule, typeof i12.ClrIcon, typeof i7.ClrKeyFocusModule, typeof i2.ClrCommonFormsModule, typeof i7.ClrConditionalModule, typeof i1_2.ClrPopoverModuleNext, typeof i14.ClrSpinnerModule], [typeof i2.ClrCommonFormsModule, typeof ClrCombobox, typeof ClrComboboxContainer, typeof ClrOptions, typeof ClrOption, typeof ClrOptionGroup, typeof ClrOptionSelected, typeof i7.ClrConditionalModule, typeof ClrOptionItems]>;
 }
 
 // @public (undocumented)
@@ -946,7 +947,7 @@ export class ClrDatepickerModule {
     // Warning: (ae-forgotten-export) The symbol "i18" needs to be exported by the entry point clr-angular-forms.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatepickerModule, [typeof ClrDateInput, typeof ClrDay, typeof ClrDateContainer, typeof ClrDateInputValidator, typeof ClrStartDateInput, typeof ClrEndDateInput, typeof ClrStartDateInputValidator, typeof ClrEndDateInputValidator, typeof ClrDatepickerViewManager, typeof ClrMonthpicker, typeof ClrYearpicker, typeof ClrDaypicker, typeof ClrCalendar, typeof ClrDatepickerActions], [typeof i1.CommonModule, typeof i7.CdkTrapFocusModule, typeof i7.ClrHostWrappingModule, typeof i7.ClrConditionalModule, typeof i1_2.ClrPopoverModuleNext, typeof i12.ClrIcon, typeof i2.ClrCommonFormsModule, typeof i18.ClrVerticalNavModule], [typeof ClrDateInput, typeof ClrDay, typeof ClrDateContainer, typeof ClrDateInputValidator, typeof ClrStartDateInput, typeof ClrEndDateInput, typeof ClrStartDateInputValidator, typeof ClrEndDateInputValidator, typeof ClrDatepickerViewManager, typeof ClrMonthpicker, typeof ClrYearpicker, typeof ClrDaypicker, typeof ClrCalendar, typeof ClrDatepickerActions]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatepickerModule, [typeof ClrDateInput, typeof ClrDay, typeof ClrDateContainer, typeof ClrDateInputValidator, typeof ClrStartDateInput, typeof ClrEndDateInput, typeof ClrStartDateInputValidator, typeof ClrEndDateInputValidator, typeof ClrDatepickerViewManager, typeof ClrMonthpicker, typeof ClrYearpicker, typeof ClrDaypicker, typeof ClrCalendar, typeof ClrDatepickerActions], [typeof i7.ClrContextIgnore, typeof i1.CommonModule, typeof i7.CdkTrapFocusModule, typeof i7.ClrHostWrappingModule, typeof i7.ClrConditionalModule, typeof i1_2.ClrPopoverModuleNext, typeof i12.ClrIcon, typeof i2.ClrCommonFormsModule, typeof i18.ClrVerticalNavModule], [typeof ClrDateInput, typeof ClrDay, typeof ClrDateContainer, typeof ClrDateInputValidator, typeof ClrStartDateInput, typeof ClrEndDateInput, typeof ClrStartDateInputValidator, typeof ClrEndDateInputValidator, typeof ClrDatepickerViewManager, typeof ClrMonthpicker, typeof ClrYearpicker, typeof ClrDaypicker, typeof ClrCalendar, typeof ClrDatepickerActions]>;
 }
 
 // @public (undocumented)
@@ -1171,7 +1172,7 @@ export class ClrFileInputModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrFileInputModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFileInputModule, [typeof ClrFileInput, typeof ClrFileInputContainer, typeof ClrFileInputValidator, typeof ClrFileInputValueAccessor, typeof ClrFileList, typeof ClrFileMessagesTemplate, typeof ClrFileInfo, typeof ClrFileSuccess, typeof ClrFileError], [typeof i1.CommonModule, typeof i12.ClrIcon, typeof i2.ClrCommonFormsModule], [typeof i2.ClrCommonFormsModule, typeof ClrFileInput, typeof ClrFileInputContainer, typeof ClrFileInputValidator, typeof ClrFileInputValueAccessor, typeof ClrFileList, typeof ClrFileMessagesTemplate, typeof ClrFileInfo, typeof ClrFileSuccess, typeof ClrFileError]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFileInputModule, [typeof ClrFileInput, typeof ClrFileInputContainer, typeof ClrFileInputValidator, typeof ClrFileInputValueAccessor, typeof ClrFileList, typeof ClrFileMessagesTemplate, typeof ClrFileInfo, typeof ClrFileSuccess, typeof ClrFileError], [typeof i7.ClrContextIgnore, typeof i7.ClrContextRedact, typeof i1.CommonModule, typeof i12.ClrIcon, typeof i2.ClrCommonFormsModule], [typeof i2.ClrCommonFormsModule, typeof ClrFileInput, typeof ClrFileInputContainer, typeof ClrFileInputValidator, typeof ClrFileInputValueAccessor, typeof ClrFileList, typeof ClrFileMessagesTemplate, typeof ClrFileInfo, typeof ClrFileSuccess, typeof ClrFileError]>;
 }
 
 // @public (undocumented)
@@ -1241,7 +1242,11 @@ export class ClrFileList {
     // (undocumented)
     protected injectorCache: Map<File, Injector>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrFileList, "clr-file-list", never, {}, {}, ["fileMessagesTemplate"], never, false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrFileList, "clr-file-list", never, {}, {}, ["fileMessagesTemplate"], never, false, [{
+        directive: typeof i7.ClrContextIgnore;
+        inputs: {};
+        outputs: {};
+    }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrFileList, never>;
 }
@@ -1349,15 +1354,15 @@ export class ClrFormsModule {
     // Warning: (ae-forgotten-export) The symbol "i5" needs to be exported by the entry point clr-angular-forms.d.ts
     // Warning: (ae-forgotten-export) The symbol "i6" needs to be exported by the entry point clr-angular-forms.d.ts
     // Warning: (ae-forgotten-export) The symbol "i8" needs to be exported by the entry point clr-angular-forms.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i9_2" needs to be exported by the entry point clr-angular-forms.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i10" needs to be exported by the entry point clr-angular-forms.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i9" needs to be exported by the entry point clr-angular-forms.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i10_2" needs to be exported by the entry point clr-angular-forms.d.ts
     // Warning: (ae-forgotten-export) The symbol "i11" needs to be exported by the entry point clr-angular-forms.d.ts
     // Warning: (ae-forgotten-export) The symbol "i12_2" needs to be exported by the entry point clr-angular-forms.d.ts
     // Warning: (ae-forgotten-export) The symbol "i13" needs to be exported by the entry point clr-angular-forms.d.ts
     // Warning: (ae-forgotten-export) The symbol "i14_2" needs to be exported by the entry point clr-angular-forms.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFormsModule, never, [typeof i1.CommonModule], [typeof i2.ClrCommonFormsModule, typeof i3.ClrCheckboxModule, typeof i4.ClrComboboxModule, typeof i5.ClrDatepickerModule, typeof i6.ClrFileInputModule, typeof i7_2.ClrInputModule, typeof i8.ClrPasswordModule, typeof i9_2.ClrRadioModule, typeof i10.ClrSelectModule, typeof i11.ClrTextareaModule, typeof i12_2.ClrRangeModule, typeof i13.ClrDatalistModule, typeof i14_2.ClrNumberInputModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFormsModule, never, [typeof i1.CommonModule], [typeof i2.ClrCommonFormsModule, typeof i3.ClrCheckboxModule, typeof i4.ClrComboboxModule, typeof i5.ClrDatepickerModule, typeof i6.ClrFileInputModule, typeof i7_2.ClrInputModule, typeof i8.ClrPasswordModule, typeof i9.ClrRadioModule, typeof i10_2.ClrSelectModule, typeof i11.ClrTextareaModule, typeof i12_2.ClrRangeModule, typeof i13.ClrDatalistModule, typeof i14_2.ClrNumberInputModule]>;
 }
 
 // @public (undocumented)
@@ -1424,7 +1429,7 @@ export class ClrInputModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrInputModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrInputModule, [typeof ClrInput, typeof ClrInputContainer], [typeof i1.CommonModule, typeof i9.FormsModule, typeof i12.ClrIcon, typeof i2.ClrCommonFormsModule], [typeof i2.ClrCommonFormsModule, typeof ClrInput, typeof ClrInputContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrInputModule, [typeof ClrInput, typeof ClrInputContainer], [typeof i1.CommonModule, typeof i10.FormsModule, typeof i12.ClrIcon, typeof i2.ClrCommonFormsModule], [typeof i2.ClrCommonFormsModule, typeof ClrInput, typeof ClrInputContainer]>;
 }
 
 // @public (undocumented)
@@ -1549,7 +1554,7 @@ export class ClrNumberInputModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrNumberInputModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNumberInputModule, [typeof ClrNumberInput, typeof ClrNumberInputContainer], [typeof i1.CommonModule, typeof i9.FormsModule, typeof i12.ClrIcon, typeof i2.ClrCommonFormsModule], [typeof i2.ClrCommonFormsModule, typeof ClrNumberInput, typeof ClrNumberInputContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNumberInputModule, [typeof ClrNumberInput, typeof ClrNumberInputContainer], [typeof i1.CommonModule, typeof i10.FormsModule, typeof i12.ClrIcon, typeof i2.ClrCommonFormsModule], [typeof i2.ClrCommonFormsModule, typeof ClrNumberInput, typeof ClrNumberInputContainer]>;
 }
 
 // @public (undocumented)
@@ -1735,7 +1740,11 @@ export class ClrPassword extends WrappedFormControl<ClrPasswordContainer> implem
     // (undocumented)
     triggerValidation(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPassword, "[clrPassword]", never, {}, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrPassword, "[clrPassword]", never, {}, {}, never, never, false, [{
+        directive: typeof i7.ClrContextRedact;
+        inputs: {};
+        outputs: {};
+    }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrPassword, [null, null, {
         optional: true;
@@ -1788,7 +1797,7 @@ export class ClrPasswordModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrPasswordModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPasswordModule, [typeof ClrPassword, typeof ClrPasswordContainer], [typeof i1.CommonModule, typeof i9.FormsModule, typeof i12.ClrIcon, typeof i2.ClrCommonFormsModule], [typeof i2.ClrCommonFormsModule, typeof ClrPassword, typeof ClrPasswordContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrPasswordModule, [typeof ClrPassword, typeof ClrPasswordContainer], [typeof i1.CommonModule, typeof i10.FormsModule, typeof i12.ClrIcon, typeof i2.ClrCommonFormsModule], [typeof i2.ClrCommonFormsModule, typeof ClrPassword, typeof ClrPasswordContainer]>;
 }
 
 // @public (undocumented)
@@ -1946,7 +1955,7 @@ export class ClrSelectModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrSelectModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSelectModule, [typeof ClrSelect, typeof ClrSelectContainer], [typeof i1.CommonModule, typeof i9.FormsModule, typeof i12.ClrIcon, typeof i2.ClrCommonFormsModule], [typeof i2.ClrCommonFormsModule, typeof ClrSelect, typeof ClrSelectContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSelectModule, [typeof ClrSelect, typeof ClrSelectContainer], [typeof i1.CommonModule, typeof i10.FormsModule, typeof i12.ClrIcon, typeof i2.ClrCommonFormsModule], [typeof i2.ClrCommonFormsModule, typeof ClrSelect, typeof ClrSelectContainer]>;
 }
 
 // @public (undocumented)
@@ -2037,7 +2046,7 @@ export class ClrTextareaModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTextareaModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTextareaModule, [typeof ClrTextarea, typeof ClrTextareaContainer], [typeof i1.CommonModule, typeof i9.FormsModule, typeof i12.ClrIcon, typeof i2.ClrCommonFormsModule], [typeof i2.ClrCommonFormsModule, typeof ClrTextarea, typeof ClrTextareaContainer]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTextareaModule, [typeof ClrTextarea, typeof ClrTextareaContainer], [typeof i1.CommonModule, typeof i10.FormsModule, typeof i12.ClrIcon, typeof i2.ClrCommonFormsModule], [typeof i2.ClrCommonFormsModule, typeof ClrTextarea, typeof ClrTextareaContainer]>;
 }
 
 // @public

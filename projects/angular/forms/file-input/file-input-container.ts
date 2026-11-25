@@ -22,9 +22,9 @@ import {
   NgControlService,
 } from '@clr/angular/forms/common';
 import {
-  CLR_CONTEXT_WITHHELD_SELECTOR,
   ClrCommonStringsService,
   contextText,
+  isContextWithheld,
   publishElementContext,
   usableSelectors,
 } from '@clr/angular/utils';
@@ -43,7 +43,7 @@ import { ClrFileError, ClrFileSuccess } from './file-messages';
     }
     <div class="clr-control-container" [ngClass]="controlClass()">
       <!-- The browse button is labelled with the chosen file's name, which is what the user entered. -->
-      <div class="clr-file-input-wrapper" data-clr-context-redact>
+      <div class="clr-file-input-wrapper" clrContextRedact>
         <ng-content select="[clrFileInput]"></ng-content>
 
         <!-- file input to handle adding new files to selection when file list is present (prevent replacing selected files on the main file input) -->
@@ -76,7 +76,7 @@ import { ClrFileError, ClrFileSuccess } from './file-messages';
           <button
             type="button"
             class="btn btn-sm clr-file-input-clear-button"
-            data-clr-context-ignore
+            clrContextIgnore
             [attr.aria-label]="fileInput?.selection?.clearFilesButtonLabel"
             (click)="clearSelectedFiles()"
           >
@@ -138,7 +138,7 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
     const label = this.hostElement.nativeElement.querySelector(':scope > label');
     const excluded = usableSelectors(this.hostElement.nativeElement.ownerDocument, options?.excludeSelectors ?? []);
     // A label kept from agents, or excluded from the snapshot, is not read; nor is excluded text inside it.
-    const shown = label && !label.matches(CLR_CONTEXT_WITHHELD_SELECTOR) && !(excluded && label.matches(excluded));
+    const shown = label && !isContextWithheld(label) && !(excluded && label.matches(excluded));
     return {
       type: 'group',
       element: 'clr-file-input-container',

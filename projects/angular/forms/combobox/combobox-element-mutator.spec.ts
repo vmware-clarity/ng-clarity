@@ -19,6 +19,7 @@ import {
 import { ClrCommonFormsModule } from '@clr/angular/forms/common';
 import {
   ClrComponentContext,
+  ClrContextRedact,
   ClrContextSnapshotOptions,
   ClrElementMutation,
   ClrElementMutator,
@@ -86,7 +87,7 @@ function readElementMutator(element: Element): ClrElementMutator | null {
         <clr-combobox class="cards" formControlName="cards" clrMulti="true">
           <clr-options>
             <clr-option clrValue="visa">Visa</clr-option>
-            <clr-option clrValue="6011 0000" data-clr-context-redact>6011 0000</clr-option>
+            <clr-option clrValue="6011 0000" clrContextRedact>6011 0000</clr-option>
           </clr-options>
         </clr-combobox>
       </clr-combobox-container>
@@ -207,7 +208,7 @@ describe('ClrCombobox element mutator', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, ReactiveFormsModule, ClrCommonFormsModule, ClrComboboxModule],
+      imports: [NoopAnimationsModule, ReactiveFormsModule, ClrCommonFormsModule, ClrComboboxModule, ClrContextRedact],
       declarations: [ComboboxMutatorHost],
       providers: [provideClrMutationPolicy({ classify: () => 'reversible' })],
     });
