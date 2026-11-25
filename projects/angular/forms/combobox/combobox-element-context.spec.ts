@@ -12,7 +12,15 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrContextService } from '@clr/angular/ai';
 import { publishedOn } from '@clr/angular/testing';
-import { ClrComponentContext, ClrContextSnapshotOptions, ClrLoadingModule, elementContextOf } from '@clr/angular/utils';
+import {
+  ClrComponentContext,
+  ClrContextIgnore,
+  ClrContextRedact,
+  ClrContextSnapshotOptions,
+  ClrLoadingModule,
+  elementContextOf,
+  markContext,
+} from '@clr/angular/utils';
 
 import { ClrCombobox } from './combobox';
 import { ClrComboboxModule } from './combobox.module';
@@ -20,7 +28,7 @@ import { ClrComboboxModule } from './combobox.module';
 /** Creates a fixture and lets its comboboxes settle. */
 async function create<C>(component: Type<C>, imports: unknown[] = []): Promise<ComponentFixture<C>> {
   TestBed.configureTestingModule({
-    imports: [ClrComboboxModule, FormsModule, NoopAnimationsModule, ...imports],
+    imports: [ClrComboboxModule, ClrContextIgnore, ClrContextRedact, FormsModule, NoopAnimationsModule, ...imports],
     declarations: [component],
   });
   const fixture = TestBed.createComponent(component);
@@ -194,9 +202,9 @@ describe('ClrCombobox element context, other shapes', () => {
   template: `
     <clr-combobox name="card" [(ngModel)]="selection">
       <clr-options>
-        <clr-option clrValue="visa">Visa <span data-clr-context-redact>4111 1111</span></clr-option>
-        <clr-option clrValue="amex">Amex <span data-clr-context-redact>3782 8224</span></clr-option>
-        <clr-option clrValue="6011 0000"><span data-clr-context-redact>6011 0000</span></clr-option>
+        <clr-option clrValue="visa">Visa <span clrContextRedact>4111 1111</span></clr-option>
+        <clr-option clrValue="amex">Amex <span clrContextRedact>3782 8224</span></clr-option>
+        <clr-option clrValue="6011 0000"><span clrContextRedact>6011 0000</span></clr-option>
       </clr-options>
     </clr-combobox>
   `,
@@ -249,7 +257,7 @@ describe('ClrCombobox element context, withheld option text', () => {
         <clr-option-group clrOptionGroupLabel="Public">
           <clr-option *clrOptionItems="let plan of publicPlans" [clrValue]="plan">{{ plan }}</clr-option>
         </clr-option-group>
-        <clr-option-group clrOptionGroupLabel="Internal" data-clr-context-ignore>
+        <clr-option-group clrOptionGroupLabel="Internal" clrContextIgnore>
           <clr-option *clrOptionItems="let plan of internalPlans" [clrValue]="plan">{{ plan }}</clr-option>
         </clr-option-group>
         <clr-option-group clrOptionGroupLabel="Retired" hidden>
@@ -296,7 +304,7 @@ describe('ClrCombobox element context, options in a group page-context tooling d
     <clr-combobox name="account" [(ngModel)]="selection" clrMulti="true">
       <clr-options>
         <clr-option clrValue="checking">Checking</clr-option>
-        <clr-option clrValue="acct" data-clr-context-redact>Acct 998877</clr-option>
+        <clr-option clrValue="acct" clrContextRedact>Acct 998877</clr-option>
         <clr-option clrValue="trust" class="secret">Hidden trust fund</clr-option>
         <clr-option clrValue="savings"><span class="secret">ACC-42</span> Savings</clr-option>
       </clr-options>
@@ -336,7 +344,7 @@ describe('ClrCombobox element context, options marked or excluded themselves', (
     // The list is not in the page while the popover is closed, so it is reached through the component.
     const combobox: ClrCombobox<string> = fixture.debugElement.query(By.directive(ClrCombobox)).componentInstance;
     const list: HTMLElement = combobox['options'].el.nativeElement;
-    list.setAttribute('data-clr-context-ignore', '');
+    markContext(list, 'ignore');
 
     expect(JSON.stringify(published(fixture, 'clr-combobox', options))).not.toMatch(/Checking|Savings/);
   });
@@ -356,7 +364,7 @@ interface Account {
         <clr-option
           *clrOptionItems="let account of accounts; field: 'label'"
           [clrValue]="account"
-          [attr.data-clr-context-redact]="account.id === 2 ? '' : null"
+          [clrContextRedact]="account.id === 2"
         >
           {{ account.label }}
         </clr-option>
@@ -410,7 +418,7 @@ describe('ClrCombobox element context, options matched by identity', () => {
         <clr-option
           *clrOptionItems="let person of people"
           [clrValue]="person"
-          [attr.data-clr-context-redact]="person === 'Eve Smithers' ? '' : null"
+          [clrContextRedact]="person === 'Eve Smithers'"
           >{{ person }}</clr-option
         >
       </clr-options>

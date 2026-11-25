@@ -44,17 +44,16 @@ import {
 } from '@clr/angular/popover/common';
 import {
   CLR_CONTEXT_EDITING_HOST_SELECTOR,
-  CLR_CONTEXT_HIDDEN_SELECTOR,
-  CLR_CONTEXT_IGNORE_SELECTOR,
-  CLR_CONTEXT_REDACT_SELECTOR,
-  CLR_CONTEXT_WITHHELD_SELECTOR,
   ClrCommonStringsService,
   ClrContextSnapshotOptions,
   ClrLoadingState,
   ClrPublishedContext,
   contextText,
   FOCUS_SERVICE_PROVIDER,
+  hasContextMark,
+  holdsContextWithheld,
   IF_ACTIVE_ID_PROVIDER,
+  isContextHidden,
   Keys,
   LoadingListener,
   publishElementContext,
@@ -679,22 +678,18 @@ export class ClrCombobox<T>
       if (
         (excluded && current.matches(excluded)) ||
         // The list itself may be hidden while closed, but not kept from agents.
-        current.matches(current === list ? CLR_CONTEXT_IGNORE_SELECTOR : CLR_CONTEXT_HIDDEN_SELECTOR)
+        (current === list ? hasContextMark(current, 'ignore') : isContextHidden(current))
       ) {
         return 'excluded';
       }
-      if (current.matches(CLR_CONTEXT_REDACT_SELECTOR) || current.matches(CLR_CONTEXT_EDITING_HOST_SELECTOR)) {
+      if (hasContextMark(current, 'redact') || current.matches(CLR_CONTEXT_EDITING_HOST_SELECTOR)) {
         verdict = 'withheld';
       }
       if (current === list) {
         break;
       }
     }
-    if (
-      verdict === 'shown' &&
-      this.optionLabel(option, excluded) === '' &&
-      element.querySelector(CLR_CONTEXT_WITHHELD_SELECTOR)
-    ) {
+    if (verdict === 'shown' && this.optionLabel(option, excluded) === '' && holdsContextWithheld(element)) {
       // Named, it would be listed as `''`: there, but with nothing to tell it apart.
       verdict = 'withheld';
     }
@@ -748,7 +743,7 @@ export class ClrCombobox<T>
       element,
       descendant => descendant.classList.contains('clr-sr-only') || (!!excluded && descendant.matches(excluded))
     );
-    if (text || element.querySelector(CLR_CONTEXT_WITHHELD_SELECTOR)) {
+    if (text || holdsContextWithheld(element)) {
       return text;
     }
     return String(option.value);

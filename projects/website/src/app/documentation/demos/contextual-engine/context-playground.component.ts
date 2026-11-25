@@ -13,6 +13,7 @@ import {
   CLR_CONTEXT_PRESETS,
   ClrContextCategory,
   ClrContextChange,
+  ClrContextIgnore,
   ClrContextPreset,
   ClrContextService,
   ClrContextSnapshotOptions,
@@ -33,13 +34,14 @@ const CATEGORIES: { name: ClrContextCategory; covers: string }[] = [
   { name: 'frames', covers: 'embedded frames' },
 ];
 
-/** Live playground for the snapshot options; marked `data-clr-context-ignore` so it never describes itself. */
+/** Live playground for the snapshot options; marked `clrContextIgnore` so it never describes itself. */
 @Component({
   changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'clr-context-playground',
   standalone: true,
   imports: [FormsModule, ClarityModule],
-  host: { 'data-clr-context-ignore': '', class: 'clr-context-playground' },
+  hostDirectives: [ClrContextIgnore],
+  host: { class: 'clr-context-playground' },
   templateUrl: './context-playground.component.html',
   styleUrls: ['./context-playground.component.scss'],
 })
@@ -57,7 +59,7 @@ export class ContextPlaygroundComponent implements OnInit {
   bytes = 0;
   nodes = 0;
   truncated = false;
-  focus: string | null = null;
+  modal = false;
   change: ClrContextChange | null = null;
   optionsJson = '{}';
 
@@ -117,7 +119,7 @@ export class ContextPlaygroundComponent implements OnInit {
     this.bytes = JSON.stringify(snapshot).length;
     this.nodes = snapshot.components.reduce((total, node) => total + countNodes(node), 0);
     this.truncated = snapshot.truncated === true;
-    this.focus = snapshot.focus ?? null;
+    this.modal = !!snapshot.modal;
     this.change = this.previous ? clrDiffContext(this.previous, snapshot) : null;
     this.previous = snapshot;
   }

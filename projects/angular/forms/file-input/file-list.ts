@@ -7,7 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, ContentChild, inject, Injector } from '@angular/core';
 import { NgControlService } from '@clr/angular/forms/common';
-import { ClrCommonStringsService } from '@clr/angular/utils';
+import { ClrCommonStringsService, ClrContextIgnore } from '@clr/angular/utils';
 
 import { ClrFileInputContainer } from './file-input-container';
 import { ClrFileListValidationErrors } from './file-input-validator-errors';
@@ -37,7 +37,7 @@ import {
               {{ file.name }}
               <button
                 class="btn btn-sm btn-link-neutral btn-icon clr-file-clear-button"
-                data-clr-context-ignore
+                clrContextIgnore
                 [attr.aria-label]="getClearFileLabel(file.name)"
                 (click)="clearFile(file)"
               >
@@ -59,9 +59,9 @@ import {
   host: {
     '[attr.role]': '"list"',
     '[class.clr-file-list]': 'true',
-    // Each entry names a file the user chose; the container publishes the count instead.
-    'data-clr-context-ignore': '',
   },
+  // Each entry names a file the user chose; the container publishes the count instead.
+  hostDirectives: [ClrContextIgnore],
   standalone: false,
   changeDetection: ChangeDetectionStrategy.Eager,
 })

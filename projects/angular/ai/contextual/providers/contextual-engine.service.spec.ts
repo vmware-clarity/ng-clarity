@@ -8,7 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
-import { ClrPublishedContext } from '@clr/angular/utils';
+import { ClrPublishedContext, markContext } from '@clr/angular/utils';
 import { onTestFinished } from 'vitest';
 
 import { ClrContextRegistryService } from './context-registry.service';
@@ -191,7 +191,7 @@ describe('ClrContextService, configured once for the application', () => {
   it('narrows to the open modal and says so', async () => {
     const engine = engineWith({ scope: 'minimal' });
     const snapshot = await engine.snapshot();
-    expect(snapshot.focus).toBe('modal');
+    expect(snapshot.modal).toBe(true);
     expect(types(snapshot)).toEqual(['dialog']);
   });
 
@@ -378,7 +378,7 @@ describe('ClrContextService, identifying the application and view', () => {
   it('versions every snapshot and names the host when no application is configured', async () => {
     const snapshot = await TestBed.inject(ClrContextService).snapshot(quiet);
 
-    expect(snapshot.schemaVersion).toBe('1');
+    expect(snapshot.schemaVersion).toBe('2');
     expect(snapshot.application).toEqual({ id: document.location.hostname });
     expect(snapshot.metadata).toBeUndefined();
   });
@@ -419,12 +419,12 @@ describe('ClrContextService, identifying the application and view', () => {
   it('leaves out view metadata in an ignored, redacted or excluded region', async () => {
     annotateWith(page, () => ({ state: { accountSecret: 's3cr3t' } }));
     const engine = configuredService({ scope: { root: '.test-page' } });
-    for (const marker of ['data-clr-context-ignore', 'data-clr-context-redact']) {
-      document.body.setAttribute(marker, '');
+    for (const mark of ['ignore', 'redact'] as const) {
+      const unmark = markContext(document.body, mark);
       try {
-        expect(JSON.stringify(await engine.snapshot(quiet)), marker).not.toContain('s3cr3t');
+        expect(JSON.stringify(await engine.snapshot(quiet)), mark).not.toContain('s3cr3t');
       } finally {
-        document.body.removeAttribute(marker);
+        unmark();
       }
     }
     expect(JSON.stringify(await engine.snapshot({ ...quiet, excludeSelectors: ['.test-page'] }))).not.toContain(
@@ -479,7 +479,7 @@ describe('ClrContextService, reading only enabled views', () => {
 
     const snapshot = await engine.snapshot();
     expect(snapshot).toEqual({
-      schemaVersion: '1',
+      schemaVersion: '2',
       application: { id: 'inventory' },
       enabled: false,
       title: '',
@@ -713,7 +713,7 @@ describe('ClrContextService, asynchronous providers', () => {
     try {
       engine.configure({ timeoutMs: 1000 });
       const snapshot = engine.snapshot();
-      page.setAttribute('data-clr-context-redact', '');
+      markContext(page, 'redact');
       answer(null);
 
       expect(JSON.stringify((await snapshot).components)).not.toContain('4111');
@@ -778,7 +778,8 @@ describe('ClrContextService, slotted content', () => {
     page.innerHTML = '<card-host><input aria-label="Card number" value="4111111111111111" /></card-host>';
     document.body.appendChild(page);
     const root = (page.querySelector('card-host') as HTMLElement).attachShadow({ mode: 'open' });
-    root.innerHTML = '<div data-clr-context-redact><slot></slot></div><button>Pay</button>';
+    root.innerHTML = '<div><slot></slot></div><button>Pay</button>';
+    markContext(root.querySelector('div') as Element, 'redact');
   });
 
   afterEach(() => page.remove());

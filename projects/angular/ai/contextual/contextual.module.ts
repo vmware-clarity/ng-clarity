@@ -6,13 +6,14 @@
  */
 
 import { NgModule, Type } from '@angular/core';
+import { ClrContextIgnore, ClrContextRedact } from '@clr/angular/utils';
 
 import { ClrContext } from './context';
 
 /** The standalone directives {@link ClrContextModule} imports and exports. */
-export const CLR_CONTEXT_DIRECTIVES: Type<any>[] = [ClrContext];
+export const CLR_CONTEXT_DIRECTIVES: Type<any>[] = [ClrContext, ClrContextIgnore, ClrContextRedact];
 
-/** Makes the standalone `clrContext` directive available to NgModule applications. */
+/** Makes the standalone `clrContext`, `clrContextIgnore` and `clrContextRedact` directives available to NgModule applications. */
 @NgModule({
   imports: [CLR_CONTEXT_DIRECTIVES],
   exports: [CLR_CONTEXT_DIRECTIVES],

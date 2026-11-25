@@ -81,7 +81,7 @@ import { ViewManagerService } from './providers/view-manager.service';
               scrollToClose: true
             "
             cdkTrapFocus
-            data-clr-context-ignore
+            clrContextIgnore
           ></clr-datepicker-view-manager>
         </div>
       </div>

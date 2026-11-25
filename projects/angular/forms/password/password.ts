@@ -20,6 +20,7 @@ import {
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { FormsFocusService, WrappedFormControl } from '@clr/angular/forms/common';
+import { ClrContextRedact } from '@clr/angular/utils';
 import { BehaviorSubject } from 'rxjs';
 
 import { ClrPasswordContainer, TOGGLE_SERVICE } from './password-container';
@@ -28,9 +29,9 @@ import { ClrPasswordContainer, TOGGLE_SERVICE } from './password-container';
   selector: '[clrPassword]',
   host: {
     '[class.clr-input]': 'true',
-    // A secret even while revealed as text; this is CLR_CONTEXT_REDACT_ATTRIBUTE.
-    'data-clr-context-redact': '',
   },
+  // A secret even while revealed as text.
+  hostDirectives: [ClrContextRedact],
   standalone: false,
 })
 export class ClrPassword extends WrappedFormControl<ClrPasswordContainer> implements OnInit, OnDestroy {

@@ -16,6 +16,7 @@ import * as i0 from '@angular/core';
 import * as i2 from '@angular/common';
 import { InjectionToken } from '@angular/core';
 import { Injector } from '@angular/core';
+import { InputSignalWithTransform } from '@angular/core';
 import { NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Observer } from 'rxjs';
@@ -143,22 +144,13 @@ export class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
 }
 
 // @public
+export function closestContextMark(element: Element, mark: ClrContextMark): Element | null;
+
+// @public
 export const CLR_CONTEXT_EDITING_HOST_SELECTOR = "[contenteditable]:not([contenteditable=\"false\" i])";
 
 // @public
-export const CLR_CONTEXT_HIDDEN_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore]";
-
-// @public
-export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
-
-// @public
-export const CLR_CONTEXT_IGNORE_SELECTOR = "[data-clr-context-ignore]";
-
-// @public
-export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
-
-// @public
-export const CLR_CONTEXT_REDACT_SELECTOR = "[data-clr-context-redact]";
+export const CLR_CONTEXT_HIDDEN_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert]";
 
 // @public
 export const CLR_CONTEXT_WITHHELD_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore], [data-clr-context-redact], [contenteditable]:not([contenteditable=\"false\" i])";
@@ -466,6 +458,41 @@ export class ClrConditionalModule {
 
 // @public
 export type ClrContextCategory = 'layout' | 'actions' | 'forms' | 'headings' | 'collections' | 'dialogs' | 'status' | 'images' | 'text' | 'frames';
+
+// @public
+export class ClrContextIgnore {
+    constructor();
+    readonly clrContextIgnore: InputSignalWithTransform<boolean, unknown>;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContextIgnore, "[clrContextIgnore]", never, {
+        "clrContextIgnore": {
+            "alias": "clrContextIgnore";
+            "required": false;
+            "isSignal": true;
+        };
+    }, {}, never, never, true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextIgnore, never>;
+}
+
+// @public
+export type ClrContextMark = 'ignore' | 'redact';
+
+// @public
+export class ClrContextRedact {
+    constructor();
+    readonly clrContextRedact: InputSignalWithTransform<boolean, unknown>;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContextRedact, "[clrContextRedact]", never, {
+        "clrContextRedact": {
+            "alias": "clrContextRedact";
+            "required": false;
+            "isSignal": true;
+        };
+    }, {}, never, never, true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextRedact, never>;
+}
 
 // @public
 export interface ClrContextSnapshotOptions {
@@ -1002,6 +1029,9 @@ export class FocusService {
     static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
+// @public
+export function hasContextMark(element: Element, mark: ClrContextMark): boolean;
+
 // @public (undocumented)
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6 | '1' | '2' | '3' | '4' | '5' | '6';
 
@@ -1067,8 +1097,14 @@ export class IfExpandService implements LoadingListener {
 // @public (undocumented)
 export function isBooleanAttributeSet(value: string | boolean): boolean;
 
+// @public
+export function isContextHidden(element: Element): boolean;
+
 // @public (undocumented)
 export function isKeyEitherLetterOrNumber(event: KeyboardEvent): boolean;
+
+// @public
+export function isWithinContextHidden(element: Element): boolean;
 
 // @public (undocumented)
 export enum Keys {
@@ -1116,6 +1152,9 @@ export abstract class LoadingListener {
     // (undocumented)
     abstract loadingStateChange(state: ClrLoadingState | string): void;
 }
+
+// @public
+export function markContext(element: Element, mark: ClrContextMark): () => void;
 
 // @public
 export function measureHeight(element: HTMLElement): number;
