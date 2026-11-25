@@ -25,7 +25,7 @@ import { ControlIdService } from '../providers/control-id.service';
     '[attr.id]': 'id',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrControlError extends ClrAbstractControl {
   override controlIdSuffix = CONTROL_SUFFIX.ERROR;

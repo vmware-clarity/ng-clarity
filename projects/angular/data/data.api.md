@@ -26,6 +26,7 @@ import { EnvironmentInjector } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { FactoryProvider } from '@angular/core';
 import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
+import { FormControlStatus } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
 import * as i40 from '@angular/common';
@@ -52,12 +53,14 @@ import { ReplaySubject } from 'rxjs';
 import { SafeHtml } from '@angular/platform-browser';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
+import { Signal } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Subscription } from 'rxjs';
 import { TemplateRef } from '@angular/core';
 import { TrackByFunction } from '@angular/core';
 import { Type } from '@angular/core';
+import { ValidationErrors } from '@angular/forms';
 import { ViewContainerRef } from '@angular/core';
 import { ViewportRuler } from '@angular/cdk/scrolling';
 import { WritableSignal } from '@angular/core';
@@ -1667,9 +1670,11 @@ export class ClrStackBlock implements OnInit {
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
-    expandable: boolean;
+    get expandable(): boolean;
+    set expandable(value: boolean);
     // (undocumented)
-    expanded: boolean;
+    get expanded(): boolean;
+    set expanded(value: boolean);
     // (undocumented)
     expandedChange: EventEmitter<boolean>;
     // (undocumented)
@@ -1679,7 +1684,7 @@ export class ClrStackBlock implements OnInit {
     // (undocumented)
     getStackChildrenId(): string;
     // (undocumented)
-    get labelledById(): any;
+    get labelledById(): string;
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
@@ -1691,7 +1696,7 @@ export class ClrStackBlock implements OnInit {
     // (undocumented)
     set setChangedValue(value: boolean);
     // (undocumented)
-    stackBlockTitle: any;
+    get stackBlockTitle(): ClrStackViewLabel;
     // (undocumented)
     get tabIndex(): string | null;
     // (undocumented)
@@ -1700,6 +1705,10 @@ export class ClrStackBlock implements OnInit {
     uniqueId: string;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrStackBlock, "clr-stack-block", never, {
+        "ariaLevel": {
+            "alias": "clrStackViewLevel";
+            "required": false;
+        };
         "expanded": {
             "alias": "clrSbExpanded";
             "required": false;
@@ -1708,17 +1717,13 @@ export class ClrStackBlock implements OnInit {
             "alias": "clrSbExpandable";
             "required": false;
         };
-        "ariaLevel": {
-            "alias": "clrStackViewLevel";
-            "required": false;
-        };
         "setChangedValue": {
             "alias": "clrSbNotifyChange";
             "required": false;
         };
     }, {
         "expandedChange": "clrSbExpandedChange";
-    }, ["stackBlockTitle"], ["clr-stack-label", "*", "clr-stack-block"], false, never>;
+    }, ["stackLabel"], ["clr-stack-label", "*", "clr-stack-block"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStackBlock, [{
         optional: true;
