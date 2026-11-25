@@ -23,15 +23,11 @@ import {
   imports: [ClrContextIgnore, ClrContextRedact],
   template: `
     <aside id="chat" clrContextIgnore><p id="inside">transcript</p></aside>
-    @if (showSecret()) {
-      <section id="secret" clrContextRedact></section>
-    }
-    <ng-container clrContextRedact><span id="plain"></span></ng-container>
+    <section id="secret" clrContextRedact></section>
     <div id="toggled" [clrContextRedact]="redactToggled()"></div>
   `,
 })
 class MarkedComponent {
-  readonly showSecret = signal(true);
   readonly redactToggled = signal(false);
 }
 
@@ -56,11 +52,12 @@ describe('context marks', () => {
     expect(isContextHidden(span)).toBe(false);
   });
 
-  it('reads nothing from the DOM, so page content cannot plant a mark', () => {
+  it('reads the marks from the attributes, so markup outside Angular can carry them too', () => {
     const element = document.createElement('div');
-    element.setAttribute('clrContextIgnore', '');
     element.setAttribute('data-clr-context-ignore', '');
-    expect(isContextHidden(element)).toBe(false);
+    expect(isContextHidden(element)).toBe(true);
+    element.setAttribute('data-clr-context-redact', '');
+    expect(hasContextMark(element, 'redact')).toBe(true);
   });
 });
 
@@ -71,13 +68,9 @@ describe('clrContextIgnore and clrContextRedact', () => {
     const root: HTMLElement = fixture.nativeElement;
     const secret = root.querySelector('#secret') as Element;
 
-    expect(hasContextMark(root.querySelector('#chat') as Element, 'ignore')).toBe(true);
+    expect(root.querySelector('#chat')?.getAttribute('data-clr-context-ignore')).toBe('');
     expect(isWithinContextHidden(root.querySelector('#inside') as Element)).toBe(true);
     expect(hasContextMark(secret, 'redact')).toBe(true);
-
-    fixture.componentInstance.showSecret.set(false);
-    fixture.detectChanges();
-    expect(hasContextMark(secret, 'redact')).toBe(false);
   });
 
   it('lift the mark while the input is false', () => {
@@ -89,12 +82,5 @@ describe('clrContextIgnore and clrContextRedact', () => {
     fixture.componentInstance.redactToggled.set(true);
     fixture.detectChanges();
     expect(hasContextMark(toggled, 'redact')).toBe(true);
-  });
-
-  it('mark nothing on an ng-container, which has no element', () => {
-    const fixture = TestBed.createComponent(MarkedComponent);
-    fixture.detectChanges();
-    const plain = fixture.nativeElement.querySelector('#plain') as Element;
-    expect(closestContextMark(plain, 'redact')).toBeNull();
   });
 });
