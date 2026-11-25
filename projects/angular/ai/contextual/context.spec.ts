@@ -143,18 +143,18 @@ describe('ClrContext directive, reading its state', () => {
   template: `
     <div id="main">
       <section [clrContext]="{ label: 'Visible', state: { step: 1 } }"></section>
-      <section data-clr-context-redact>
+      <section clrContextRedact>
         <div [clrContext]="{ label: 'Payment', state: { card: '4111' } }"></div>
       </section>
     </div>
-    <aside data-clr-context-ignore>
+    <aside clrContextIgnore>
       <div [clrContext]="{ label: 'Chat', state: chat() }"></div>
     </aside>
     <footer><div [clrContext]="{ label: 'Footer notes' }"></div></footer>
     <div id="plain">
       <ng-container [clrContext]="{ label: 'Inside a container', state: { open: true } }"></ng-container>
     </div>
-    <div data-clr-context-redact>
+    <div clrContextRedact>
       <ng-container [clrContext]="{ label: 'Redacted container', state: { card: '5500' } }"></ng-container>
     </div>
   `,

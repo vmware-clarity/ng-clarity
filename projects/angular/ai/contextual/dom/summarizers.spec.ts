@@ -7,6 +7,7 @@
 
 import { summarizeRole } from './summarizers';
 import { ResolvedSnapshotOptions, resolveSnapshotOptions } from '../snapshot-options';
+import { applyContextMarks } from './marks.mock';
 
 describe('summarizeRole', () => {
   let container: HTMLElement;
@@ -25,6 +26,7 @@ describe('summarizeRole', () => {
 
   function summarize(html: string, role: string, overrides: Partial<ResolvedSnapshotOptions> = {}) {
     container.innerHTML = html;
+    applyContextMarks(container);
     const element = container.firstElementChild as HTMLElement;
     return summarizeRole(element, role, budgets(overrides));
   }
@@ -173,7 +175,7 @@ describe('summarizeRole', () => {
   describe('what the application keeps from agents', () => {
     it('counts a redacted item but withholds what it says', () => {
       const list = summarize(
-        '<ul><li>Public</li><li data-clr-context-redact>ACC-1234</li><li><span data-clr-context-redact>ACC-9</span></li></ul>',
+        '<ul><li>Public</li><li clrContextRedact>ACC-1234</li><li><span clrContextRedact>ACC-9</span></li></ul>',
         'list'
       );
       expect(list?.itemCount).toBe(3);
@@ -184,14 +186,14 @@ describe('summarizeRole', () => {
 
     it('withholds a redacted tab, option and column header, and what is selected among them', () => {
       const tabs = summarize(
-        '<div role="tablist"><button role="tab">Summary</button><button role="tab" aria-selected="true" data-clr-context-redact>ACC-1234</button></div>',
+        '<div role="tablist"><button role="tab">Summary</button><button role="tab" aria-selected="true" clrContextRedact>ACC-1234</button></div>',
         'tablist'
       );
       expect(tabs?.tabs).toEqual(['Summary']);
       expect('activeTab' in (tabs ?? {})).toBe(false);
 
       const options = summarize(
-        '<div role="listbox"><div role="option">Gold</div><div role="option" aria-selected="true" data-clr-context-redact>ACC-1234</div></div>',
+        '<div role="listbox"><div role="option">Gold</div><div role="option" aria-selected="true" clrContextRedact>ACC-1234</div></div>',
         'listbox'
       );
       expect(options?.optionCount).toBe(2);
@@ -199,7 +201,7 @@ describe('summarizeRole', () => {
       expect('selected' in (options ?? {})).toBe(false);
 
       const grid = summarize(
-        `<table><thead><tr><th>Name</th><th aria-sort="ascending" data-clr-context-redact>ACC-1234</th></tr></thead>
+        `<table><thead><tr><th>Name</th><th aria-sort="ascending" clrContextRedact>ACC-1234</th></tr></thead>
          <tbody><tr><td>a</td><td>b</td></tr></tbody></table>`,
         'table'
       );
@@ -208,7 +210,7 @@ describe('summarizeRole', () => {
 
       const cells = summarize(
         `<table><tr><th>Name</th><th>Account</th></tr>
-         <tr><td>a</td><td data-clr-context-redact>ACC-1</td></tr><tr><td data-clr-context-redact>ACC-2</td></tr></table>`,
+         <tr><td>a</td><td clrContextRedact>ACC-1</td></tr><tr><td clrContextRedact>ACC-2</td></tr></table>`,
         'table'
       );
       expect(cells?.rowCount).toBe(2);
@@ -218,7 +220,8 @@ describe('summarizeRole', () => {
 
     it('keeps column names when the whole grid is redacted, for the walk to reduce', () => {
       container.innerHTML =
-        '<div data-clr-context-redact><table><tr><th>Account</th></tr><tr><td>ACC-1</td></tr></table></div>';
+        '<div clrContextRedact><table><tr><th>Account</th></tr><tr><td>ACC-1</td></tr></table></div>';
+      applyContextMarks(container);
       const table = container.querySelector('table') as HTMLElement;
       expect(summarizeRole(table, 'table', budgets())?.columns).toEqual(['Account']);
     });
@@ -256,9 +259,10 @@ describe('summarizeRole', () => {
       container.innerHTML = `
         <div>
           <input role="combobox" list="codes" />
-          <datalist id="codes"><option>Gold</option><option data-clr-context-ignore>Internal</option><option hidden>Old</option></datalist>
+          <datalist id="codes"><option>Gold</option><option clrContextIgnore>Internal</option><option hidden>Old</option></datalist>
         </div>
       `;
+      applyContextMarks(container);
       const input = container.querySelector('[role="combobox"]') as HTMLElement;
       expect(summarizeRole(input, 'combobox', budgets())?.options).toEqual(['Gold']);
     });
@@ -282,6 +286,7 @@ describe('summarizeRole, collections the first version misread', () => {
 
   function summarize(html: string, role: string, overrides: Partial<ResolvedSnapshotOptions> = {}) {
     container.innerHTML = html;
+    applyContextMarks(container);
     const element = container.firstElementChild as HTMLElement;
     return summarizeRole(element, role, budgets(overrides));
   }

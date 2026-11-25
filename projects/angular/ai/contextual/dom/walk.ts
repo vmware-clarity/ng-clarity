@@ -7,12 +7,11 @@
 
 import { getAriaReferenceIds } from '@angular/cdk/a11y';
 import {
-  CLR_CONTEXT_IGNORE_SELECTOR,
-  CLR_CONTEXT_REDACT_ATTRIBUTE,
-  CLR_CONTEXT_REDACT_SELECTOR,
+  closestContextMark,
   ClrComponentContext,
   ClrContextSnapshotOptions,
   ClrPublishedContext,
+  hasContextMark,
   usableSelectors,
 } from '@clr/angular/utils';
 
@@ -270,7 +269,7 @@ function describeScope(root: ParentNode, roots: Element[] | null, walk: Walk): C
 
 function withinRedactedAncestry<T>(node: ParentNode, walk: Walk, describe: () => T): T {
   const ancestor = node.nodeType === Node.ELEMENT_NODE ? (node as Element).parentElement : null;
-  return within(walk, ancestor?.closest(CLR_CONTEXT_REDACT_SELECTOR) ? ['redactedDepth'] : [], describe);
+  return within(walk, ancestor && closestContextMark(ancestor, 'redact') ? ['redactedDepth'] : [], describe);
 }
 
 type DepthCounter = 'depth' | 'elementDepth' | 'redactedDepth' | 'summarizedListDepth' | 'textDepth';
@@ -362,7 +361,7 @@ function describeElement(element: Element, walk: Walk, owner: Element | null): C
   }
   walk.visited.count++;
   const counters: DepthCounter[] = ['elementDepth'];
-  if (element.hasAttribute(CLR_CONTEXT_REDACT_ATTRIBUTE)) {
+  if (hasContextMark(element, 'redact')) {
     counters.push('redactedDepth');
   }
   if (isDescription(element, walk)) {
@@ -537,7 +536,7 @@ function describeCellControls(collection: Element, walk: Walk): ClrComponentCont
     }
     cells.set(
       cell,
-      path.some(element => element.hasAttribute(CLR_CONTEXT_REDACT_ATTRIBUTE))
+      path.some(element => hasContextMark(element, 'redact'))
     );
   }
   const nodes: ClrComponentContext[] = [];
@@ -616,7 +615,7 @@ function describeFrame(frame: HTMLIFrameElement, walk: Walk): ClrComponentContex
   const contents = attempt(() => frame.contentDocument, null);
   const roots = contents ? [contents.documentElement, contents.body].filter(root => !!root) : [];
   const ignored = roots.some(root => hidesFromContext(root, walk.excludeSelector));
-  const redacted = walk.redactedDepth > 0 || roots.some(root => root.hasAttribute(CLR_CONTEXT_REDACT_ATTRIBUTE));
+  const redacted = walk.redactedDepth > 0 || roots.some(root => hasContextMark(root, 'redact'));
   // The document title may be a record's name, so it is kept apart as `title` and withheld when redacted.
   const label = nameSafely(frame, null, walk);
   if (label) {
@@ -736,7 +735,7 @@ function isPhrasing(element: Element, walk: Walk): boolean {
     !resolveRole(element) &&
     !element.hasAttribute('title') &&
     !element.hasAttribute('aria-live') &&
-    !element.hasAttribute(CLR_CONTEXT_REDACT_ATTRIBUTE) &&
+    !hasContextMark(element, 'redact') &&
     !hasElementContext(element) &&
     !hasAnnotation(element) &&
     !isLabel(element, walk) &&
@@ -846,7 +845,7 @@ function isRenderedBy(descendant: Element, element: Element): boolean {
 }
 
 function isLeftOutAnyway(element: Element, excludeSelector: string): boolean {
-  return !!element.closest(CLR_CONTEXT_IGNORE_SELECTOR) || (!!excludeSelector && !!element.closest(excludeSelector));
+  return !!closestContextMark(element, 'ignore') || (!!excludeSelector && !!element.closest(excludeSelector));
 }
 
 function shouldSkipSubtree(element: Element, walk: Walk): boolean {

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CLR_CONTEXT_EDITING_HOST_SELECTOR, CLR_CONTEXT_REDACT_SELECTOR } from '@clr/angular/utils';
+import { CLR_CONTEXT_EDITING_HOST_SELECTOR, hasContextMark } from '@clr/angular/utils';
 
 import { readScope } from './read-scope';
 import { isNameFromContents } from './roles';
@@ -120,7 +120,7 @@ function readableNameSource(source: Element, named: Element, withheld: string): 
     !source.closest(CLR_CONTEXT_EDITING_HOST_SELECTOR) &&
     // Like the control it names, a transparent label is still read by assistive technology.
     !isUnrendered(source, false) &&
-    !source.matches(CLR_CONTEXT_REDACT_SELECTOR) &&
+    !hasContextMark(source, 'redact') &&
     !isRedactedWithin(source, named)
   );
 }
