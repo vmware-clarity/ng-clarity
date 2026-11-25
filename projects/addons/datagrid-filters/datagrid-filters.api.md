@@ -26,9 +26,9 @@ import { FormBuilder } from '@angular/forms';
 import { FormControl } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
-import * as i17 from '@angular/common';
-import * as i18 from '@angular/forms';
-import * as i9 from '@angular/cdk/a11y';
+import * as i10 from '@angular/cdk/a11y';
+import * as i18 from '@angular/common';
+import * as i19 from '@angular/forms';
 import { InjectionToken } from '@angular/core';
 import { Injector } from '@angular/core';
 import { IterableDiffers } from '@angular/core';
@@ -67,19 +67,20 @@ class AppfxDatagridFiltersModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<AppfxDatagridFiltersModule>;
     // Warning: (ae-forgotten-export) The symbol "DateTimeFilterComponent" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
     // Warning: (ae-forgotten-export) The symbol "EnumFilterComponent" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "FilterEditorComponent" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
     // Warning: (ae-forgotten-export) The symbol "GeneralFilterComponent" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
     // Warning: (ae-forgotten-export) The symbol "ManageFilterComponent" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
     // Warning: (ae-forgotten-export) The symbol "UsersFilterComponent" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i10" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
     // Warning: (ae-forgotten-export) The symbol "i11" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
     // Warning: (ae-forgotten-export) The symbol "i12" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
     // Warning: (ae-forgotten-export) The symbol "i13" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i14" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
     // Warning: (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i15" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
     // Warning: (ae-forgotten-export) The symbol "i16" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i17" needs to be exported by the entry point clr-addons-datagrid-filters.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridFiltersModule, [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof DateTimeFilterComponent, typeof EnumFilterComponent, typeof FilterFormComponent, typeof GeneralFilterComponent, typeof ManageFilterComponent, typeof UsersFilterComponent], [typeof i9.A11yModule, typeof i10.ClrBadge, typeof i11.ClrLabel, typeof i12.ClrCheckboxModule, typeof i12.ClrComboboxModule, typeof i12.ClrDatepickerModule, typeof i13.ClrIcon, typeof i12.ClrInputModule, typeof i12.ClrRadioModule, typeof i12.ClrSelectModule, typeof i1.ClrPopoverModuleNext, typeof i15.ClrSpinnerModule, typeof i16.ClrTooltipModule, typeof i17.CommonModule, typeof i18.FormsModule, typeof i18.ReactiveFormsModule], [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof FilterFormComponent]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridFiltersModule, [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof DateTimeFilterComponent, typeof EnumFilterComponent, typeof FilterEditorComponent, typeof FilterFormComponent, typeof GeneralFilterComponent, typeof ManageFilterComponent, typeof UsersFilterComponent], [typeof i10.A11yModule, typeof i11.ClrBadge, typeof i12.ClrLabel, typeof i13.ClrCheckboxModule, typeof i13.ClrComboboxModule, typeof i13.ClrDatepickerModule, typeof i14.ClrIcon, typeof i13.ClrInputModule, typeof i13.ClrRadioModule, typeof i13.ClrSelectModule, typeof i1.ClrPopoverModuleNext, typeof i16.ClrSpinnerModule, typeof i17.ClrTooltipModule, typeof i18.CommonModule, typeof i19.FormsModule, typeof i19.ReactiveFormsModule], [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof FilterFormComponent]>;
 }
 export { AppfxDatagridFiltersModule }
 export { AppfxDatagridFiltersModule as DatagridFiltersModule }
@@ -143,14 +144,6 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     protected clearFilter(property: FilterablePropertyDefinition): void;
     // (undocumented)
     collapsedFilters: boolean;
-    // (undocumented)
-    dateTimeProperty: DateTimePropertyDefinition;
-    // (undocumented)
-    readonly dateTimePropertyType: PropertyType;
-    // (undocumented)
-    enumProperty: EnumPropertyDefinition;
-    // (undocumented)
-    readonly enumPropertyType: PropertyType;
     externalCriteriaActive: boolean;
     // (undocumented)
     get filterableProperties(): FilterablePropertyDefinition[];
@@ -181,12 +174,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
-    numericProperty: NumericPropertyDefinition;
-    // (undocumented)
-    readonly numericPropertyType: PropertyType;
-    // (undocumented)
     onFilterCriteriaChange(propertyFilter: PropertyFilter): void;
-    // (undocumented)
     onPropertyChange(): void;
     // (undocumented)
     protected readonly popoverId: string;
@@ -203,8 +191,6 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     set propertyFilters(filters: PropertyFilter[]);
     propertyFiltersChange: EventEmitter<PropertyFilter[]>;
     // (undocumented)
-    propertyType?: PropertyType;
-    // (undocumented)
     selectedFilterableProperty: FilterablePropertyDefinition;
     protected semiOptions(property: EnumPropertyDefinition): {
         key: string;
@@ -215,18 +201,14 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     // (undocumented)
     showHideAllFilters(): void;
     // (undocumented)
-    showHideFiltersAriaLabel: string;
+    get showHideFiltersAriaLabel(): string;
     // (undocumented)
-    showHideFiltersArrowDir: string;
+    get showHideFiltersArrowDir(): string;
     // (undocumented)
-    showHideFiltersLabel: string;
+    get showHideFiltersLabel(): string;
     // (undocumented)
     get signPostOpened(): boolean;
     set signPostOpened(open: boolean);
-    // (undocumented)
-    stringProperty: StringPropertyDefinition;
-    // (undocumented)
-    readonly stringPropertyType: PropertyType;
     protected toggleCriteriaText(toggle: PropertyFilter): string;
     // (undocumented)
     protected toggleFilter(toggle: ToggleFilter): void;
@@ -240,10 +222,6 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     protected get userAddedFiltersCount(): number;
     // (undocumented)
     protected get userAddedProperties(): FilterablePropertyDefinition[];
-    // (undocumented)
-    userProperty: UserPropertyDefinition;
-    // (undocumented)
-    readonly userPropertyType: PropertyType;
     // (undocumented)
     protected get visibleProperties(): FilterablePropertyDefinition[];
     // (undocumented)
