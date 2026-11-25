@@ -140,8 +140,8 @@ export class ClrContextService {
       if (tree.truncated) {
         snapshot.truncated = true;
       }
-      if (tree.focus) {
-        snapshot.focus = tree.focus;
+      if (tree.modal) {
+        snapshot.modal = true;
       }
     }
     return snapshot;

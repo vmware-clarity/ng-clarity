@@ -79,6 +79,8 @@ interface Walk {
   elementDepth: number;
   /** Shared across the whole walk, probes included. */
   visited: { count: number };
+  /** Where assistive technology puts focus: the active descendant, else the focused element. */
+  readonly focused: Element | null;
 }
 
 /** The result of a walk, and whether it ran out of budget before it ran out of page. */
@@ -87,8 +89,8 @@ export interface ClrContextTreeResult {
   components: ClrComponentContext[];
   /** Whether a budget ran out before the page did. */
   truncated: boolean;
-  /** Present when the walk was narrowed to the open modal dialog. */
-  focus?: 'modal';
+  /** `true` when the walk was narrowed to the open modal dialog. */
+  modal?: true;
 }
 
 export function collectContextTreeWithin(
@@ -111,6 +113,7 @@ export function collectContextTreeWithin(
     depth: 0,
     elementDepth: 0,
     visited: { count: 0 },
+    focused: focusedElement(root),
   };
   return withinReadScope(() => {
     const rootScope = root.nodeType === Node.ELEMENT_NODE ? (root as Element).ownerDocument : (root as Document);
@@ -118,11 +121,23 @@ export function collectContextTreeWithin(
     const scope = engineScope(root, walk.options);
     const components = describeScope(root, scope.roots, walk);
     const result: ClrContextTreeResult = { components, truncated: walk.truncated };
-    if (scope.focus) {
-      result.focus = scope.focus;
+    if (scope.modal) {
+      result.modal = true;
     }
     return result;
   });
+}
+
+/** The focused element through open shadow roots, or the element its `aria-activedescendant` names. */
+function focusedElement(root: ParentNode): Element | null {
+  const document = root.nodeType === Node.DOCUMENT_NODE ? (root as Document) : (root as Element).ownerDocument;
+  let focused = document?.activeElement ?? null;
+  while (focused?.shadowRoot?.activeElement) {
+    focused = focused.shadowRoot.activeElement;
+  }
+  const activeId = focused?.getAttribute('aria-activedescendant')?.trim();
+  const scope = focused?.getRootNode() as Document | ShadowRoot | undefined;
+  return (activeId && scope?.getElementById?.(activeId)) || focused;
 }
 
 /** Whether the walk would leave this element out, judged from the element and its ancestry. */
@@ -132,7 +147,7 @@ export function isHiddenFromEngine(element: Element, excludeSelector = ''): bool
 
 export interface ClrContextScope {
   roots: Element[] | null;
-  focus?: 'modal';
+  modal?: true;
 }
 
 /** The whole page, the `rootSelector` roots, or with modal focus the topmost open dialog inside them. */
@@ -145,7 +160,7 @@ export function engineScope(root: ParentNode, options: ResolvedSnapshotOptions):
       dialog => !hasExcludedRole(dialog, excludedRoles) && (!roots || roots.some(scope => scope.contains(dialog)))
     );
     if (dialogs.length) {
-      return { roots: [modalRoot(dialogs[dialogs.length - 1], roots, excludeSelector)], focus: 'modal' };
+      return { roots: [modalRoot(dialogs[dialogs.length - 1], roots, excludeSelector)], modal: true };
     }
   }
   return { roots };
@@ -405,9 +420,9 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
     if (parts) {
       return parts;
     }
-  } else if (!role && !label && !hasAnnotation(element)) {
+  } else if ((!role || role === 'paragraph') && !label && !hasAnnotation(element)) {
     return isTextBlock(element, walk)
-      ? describeTextBlock(element, walk, owner)
+      ? describeTextBlock(element, walk, owner, role === 'paragraph' ? role : 'text')
       : describeChildren(element, walk, owner);
   }
 
@@ -419,7 +434,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
         )
       : label;
 
-  const node: ClrComponentContext = { type: role ?? 'group' };
+  const node: ClrComponentContext = { type: role ?? 'generic' };
   const attribution = isCustomElement ? tagName : owner?.tagName.toLowerCase();
   if (attribution) {
     node.element = attribution;
@@ -433,6 +448,9 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
   const title = element.getAttribute('title')?.trim();
   if (title && !redacted && !state['description'] && title !== label) {
     state['description'] = truncate(title, walk.options.maxTextLength);
+  }
+  if (element === walk.focused) {
+    state['focused'] = true;
   }
   if (Object.keys(state).length) {
     node.state = state;
@@ -483,12 +501,12 @@ function describeAnonymousCustomElement(element: Element, tagName: string, walk:
   if (rendered.length === 1) {
     const only = rendered[0];
     if (only.type === 'text' && !only.children && !only.state) {
-      return listOf(finish({ type: 'group', element: tagName, label: only.label }, element, walk, { published }));
+      return listOf(finish({ type: 'generic', element: tagName, label: only.label }, element, walk, { published }));
     }
     return listOf(finish(only, element, walk, { published }));
   }
   if (rendered.length > 1) {
-    return listOf(finish({ type: 'group', element: tagName, children: rendered }, element, walk, { published }));
+    return listOf(finish({ type: 'generic', element: tagName, children: rendered }, element, walk, { published }));
   }
   if (holdsExcludedRole(element, walk)) {
     return [];
@@ -551,8 +569,13 @@ function isTextBlock(element: Element, walk: Walk): boolean {
   return hasOwnText && !isVisuallyHidden(element);
 }
 
-function describeTextBlock(element: Element, walk: Walk, owner: Element | null): ClrComponentContext[] {
-  const node: ClrComponentContext = { type: 'text' };
+function describeTextBlock(
+  element: Element,
+  walk: Walk,
+  owner: Element | null,
+  type: 'text' | 'paragraph'
+): ClrComponentContext[] {
+  const node: ClrComponentContext = { type };
   if (owner) {
     node.element = owner.tagName.toLowerCase();
   }

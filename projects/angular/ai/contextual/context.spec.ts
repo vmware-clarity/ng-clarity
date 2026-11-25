@@ -97,7 +97,7 @@ describe('ClrContext directive', () => {
 
     expect(hasAnnotation(section)).toBe(false);
     expect(labels()).toEqual(['still here']);
-    expect(nodeLabelled('still here')?.type).toBe('group');
+    expect(nodeLabelled('still here')?.type).toBe('generic');
   });
 });
 
@@ -217,7 +217,7 @@ describe('ClrContext directive, imported by a standalone component', () => {
     fixture.detectChanges();
 
     expect(nodeLabelled('Standalone annotation')).toEqual(
-      expect.objectContaining({ type: 'group', label: 'Standalone annotation', state: { step: 2 } })
+      expect.objectContaining({ type: 'generic', label: 'Standalone annotation', state: { step: 2 } })
     );
     fixture.destroy();
   });

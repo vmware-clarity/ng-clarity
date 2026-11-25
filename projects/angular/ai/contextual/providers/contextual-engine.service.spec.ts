@@ -190,7 +190,7 @@ describe('ClrContextService, configured once for the application', () => {
   it('narrows to the open modal and says so', async () => {
     const engine = engineWith({ scope: 'minimal' });
     const snapshot = await engine.snapshot();
-    expect(snapshot.focus).toBe('modal');
+    expect(snapshot.modal).toBe(true);
     expect(types(snapshot)).toEqual(['dialog']);
   });
 
