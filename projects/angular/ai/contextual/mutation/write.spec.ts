@@ -814,7 +814,7 @@ describe('ClrMutationService write path', () => {
 
       // The walk starts at the component, so the state it publishes lands on the dialog's
       // node. That node carries no ref, and the only one handed out is inside the dialog.
-      expect(modal.focus).toBe('modal');
+      expect(modal.modal).toBe(true);
       expect(modal.components[0]).toEqual(
         expect.objectContaining({
           type: 'dialog',

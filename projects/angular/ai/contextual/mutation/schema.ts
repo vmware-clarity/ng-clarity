@@ -14,12 +14,12 @@ export const CLR_MUTATION_MAX_OPERATIONS = 50;
 const strings = { type: 'object', additionalProperties: { type: 'string' } } as const;
 
 /**
- * JSON Schema (draft-07) of the operations `apply()` takes, at version `'1'`. A backend validates what a model
+ * JSON Schema (2020-12) of the operations `apply()` takes, at version `'1'`. A backend validates what a model
  * proposes with it before the page applies it, and it fits a tool definition's input as
  * `{ type: 'object', properties: { operations: CLR_MUTATION_OPERATIONS_SCHEMA } }`, since it holds no `$ref`.
  */
 export const CLR_MUTATION_OPERATIONS_SCHEMA = {
-  $schema: 'http://json-schema.org/draft-07/schema#',
+  $schema: 'https://json-schema.org/draft/2020-12/schema',
   $id: 'https://clarity.design/schemas/mutation-operations-1.schema.json',
   title: 'ClrMutationOperations',
   type: 'array',

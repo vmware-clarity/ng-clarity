@@ -13,6 +13,7 @@ import { ClarityModule } from '@clr/angular';
 import { ClrComponentContext, ClrContextSnapshotOptions, publishElementContext } from '@clr/angular/utils';
 
 import { clrCollectDomContextTree } from './dom-context-collector';
+import { applyContextMarks } from './marks.mock';
 
 /** What the collector describes under `root`, without whether a budget ran out. */
 function collectComponents(root: ParentNode, options?: ClrContextSnapshotOptions): ClrComponentContext[] {
@@ -66,7 +67,7 @@ function findContext(
       <clr-dg-footer>{{ items.length }} items</clr-dg-footer>
     </clr-datagrid>
 
-    <form clrForm>
+    <form clrForm aria-label="Account">
       <clr-input-container>
         <label>Username</label>
         <input clrInput required name="username" [(ngModel)]="username" />
@@ -379,9 +380,10 @@ describe('DOM context collector - hand-authored markup', () => {
   it('never puts a password or a marked field into a snapshot, however values were asked for', () => {
     root.innerHTML = `
       <label for="p">Password</label><input id="p" type="password" value="hunter2" />
-      <label for="t">API token</label><input id="t" data-clr-context-redact value="tok_live_abc123" />
+      <label for="t">API token</label><input id="t" clrContextRedact value="tok_live_abc123" />
       <label for="h">Host</label><input id="h" value="esx-prod-04" />
     `;
+    applyContextMarks(root);
     const json = JSON.stringify(collectComponents(root));
 
     expect(json).not.toContain('hunter2');
@@ -397,12 +399,13 @@ describe('DOM context collector - hand-authored markup', () => {
 
   it('never describes elements inside ignore-marked regions', () => {
     root.innerHTML = `
-      <div data-clr-context-ignore>
+      <div clrContextIgnore>
         <div role="dialog" aria-label="Chat panel"></div>
         <button type="button">Panel action</button>
       </div>
       <div role="grid" aria-label="Page grid"></div>
     `;
+    applyContextMarks(root);
     const contexts = collectComponents(root);
 
     // Ignored means ignored end to end: neither the dialog nor its button contributes
@@ -469,7 +472,7 @@ describe('DOM context collector - component-published context', () => {
 
     expect(collectComponents(root)).toEqual([
       {
-        type: 'group',
+        type: 'generic',
         element: 'clr-fake-widget',
         label: 'DOM label',
         children: [{ type: 'text', label: 'content' }],
@@ -561,8 +564,8 @@ describe('DOM context collector - component-published context', () => {
   });
 
   it('publishes nothing but the redaction from inside a redacted region', () => {
-    root.innerHTML =
-      '<div data-clr-context-redact><clr-fake-widget aria-label="Payment card">content</clr-fake-widget></div>';
+    root.innerHTML = '<div clrContextRedact><clr-fake-widget aria-label="Payment card">content</clr-fake-widget></div>';
+    applyContextMarks(root);
     publishElementContext(root.querySelector('clr-fake-widget') as Element, () => ({
       label: 'Visa ending 4111',
       state: { value: '4111 1111 1111 1111', options: ['4111 1111 1111 1111'] },

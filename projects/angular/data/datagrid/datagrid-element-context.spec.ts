@@ -9,7 +9,7 @@ import { ChangeDetectionStrategy, Component, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { publishedState } from '@clr/angular/testing';
-import { ClrContextSnapshotOptions, elementContextOf } from '@clr/angular/utils';
+import { ClrContextRedact, ClrContextSnapshotOptions, elementContextOf } from '@clr/angular/utils';
 import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrDatagridModule } from './datagrid.module';
@@ -58,7 +58,7 @@ describe('ClrDatagrid element context', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ClrDatagridModule, NoopAnimationsModule],
+      imports: [ClrDatagridModule, ClrContextRedact, NoopAnimationsModule],
       declarations: [TestComponent],
     });
     fixture = TestBed.createComponent(TestComponent);
@@ -128,7 +128,7 @@ class UnpaginatedTestComponent {
 describe('ClrDatagrid element context without pagination', () => {
   it('publishes no total, since the rows on the page are the rows', () => {
     TestBed.configureTestingModule({
-      imports: [ClrDatagridModule, NoopAnimationsModule],
+      imports: [ClrDatagridModule, ClrContextRedact, NoopAnimationsModule],
       declarations: [UnpaginatedTestComponent],
     });
     const fixture = TestBed.createComponent(UnpaginatedTestComponent);
@@ -144,11 +144,11 @@ describe('ClrDatagrid element context without pagination', () => {
   template: `
     <clr-datagrid>
       <clr-dg-column [clrDgField]="'name'" [clrFilterValue]="filter">Name</clr-dg-column>
-      <clr-dg-column [clrDgField]="'salary'" data-clr-context-redact [clrFilterValue]="filter">
+      <clr-dg-column [clrDgField]="'salary'" clrContextRedact [clrFilterValue]="filter">
         <ng-container *clrDgHideableColumn="{ hidden: true }">Salary</ng-container>
       </clr-dg-column>
       <clr-dg-column [clrDgField]="'ssn'" [clrFilterValue]="filter">
-        <span data-clr-context-redact>Social security number</span>
+        <span clrContextRedact>Social security number</span>
       </clr-dg-column>
       <clr-dg-column [clrDgField]="'code'" class="internal">
         <ng-container *clrDgHideableColumn="{ hidden: true }">Code</ng-container>
@@ -174,7 +174,7 @@ describe('ClrDatagrid element context, columns the application keeps from agents
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [ClrDatagridModule, NoopAnimationsModule],
+      imports: [ClrDatagridModule, ClrContextRedact, NoopAnimationsModule],
       declarations: [WithheldColumnTestComponent],
     });
     fixture = TestBed.createComponent(WithheldColumnTestComponent);
@@ -220,7 +220,7 @@ const ACCOUNTS: Account[] = [
       <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
         <clr-dg-cell>{{ item.name }}</clr-dg-cell>
         <clr-dg-cell>{{ item.status }}</clr-dg-cell>
-        <clr-dg-cell data-clr-context-redact>{{ item.number }}</clr-dg-cell>
+        <clr-dg-cell clrContextRedact>{{ item.number }}</clr-dg-cell>
       </clr-dg-row>
     </clr-datagrid>
   `,
@@ -255,7 +255,7 @@ describe('ClrDatagrid element context, selection', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ClrDatagridModule, NoopAnimationsModule],
+      imports: [ClrDatagridModule, ClrContextRedact, NoopAnimationsModule],
       declarations: [MultiSelectionTestComponent, SingleSelectionTestComponent],
     });
   });

@@ -17,7 +17,7 @@ import {
   ClrPageContext,
   provideClrMutationPolicy,
 } from '@clr/angular/ai';
-import { ClrComponentContext, elementMutatorOf } from '@clr/angular/utils';
+import { ClrComponentContext, ClrContextIgnore, ClrContextRedact, elementMutatorOf } from '@clr/angular/utils';
 
 import { ClrDatagrid } from './datagrid';
 import { ClrDatagridModule } from './datagrid.module';
@@ -160,7 +160,7 @@ class InputHost {
 @Component({
   changeDetection: ChangeDetectionStrategy.Eager,
   template: `
-    <div data-clr-context-redact>
+    <div clrContextRedact>
       <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'">
         <clr-dg-column>Name</clr-dg-column>
         <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
@@ -208,11 +208,7 @@ class HiddenColumnHost {
   template: `
     <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'">
       <clr-dg-column>Name</clr-dg-column>
-      <clr-dg-row
-        *clrDgItems="let item of items"
-        [clrDgItem]="item"
-        [attr.data-clr-context-redact]="item.id === 2 ? '' : null"
-      >
+      <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item" [clrContextRedact]="item.id === 2">
         <clr-dg-cell>{{ item.name }}</clr-dg-cell>
       </clr-dg-row>
     </clr-datagrid>
@@ -231,7 +227,7 @@ class WithheldRowHost {
       <clr-dg-column>Account</clr-dg-column>
       <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
         <clr-dg-cell
-          >{{ item.name }} <span data-clr-context-redact>{{ item.secret }}</span></clr-dg-cell
+          >{{ item.name }} <span clrContextRedact>{{ item.secret }}</span></clr-dg-cell
         >
       </clr-dg-row>
     </clr-datagrid>
@@ -253,7 +249,7 @@ class SecretCellHost {
       <clr-dg-column>Account</clr-dg-column>
       <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
         <clr-dg-cell
-          >{{ item.name }} <span data-clr-context-ignore>ign-{{ item.id }}</span> <span inert>inert-{{ item.id }}</span>
+          >{{ item.name }} <span clrContextIgnore>ign-{{ item.id }}</span> <span inert>inert-{{ item.id }}</span>
           <span class="internal">int-{{ item.id }}</span>
           <span contenteditable="true">typed-{{ item.id }}</span></clr-dg-cell
         >
@@ -345,7 +341,7 @@ describe('ClrDatagrid element mutator', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ClrDatagridModule, NoopAnimationsModule, ReactiveFormsModule],
+      imports: [ClrDatagridModule, ClrContextIgnore, ClrContextRedact, NoopAnimationsModule, ReactiveFormsModule],
       declarations: [
         MultiHost,
         SingleHost,

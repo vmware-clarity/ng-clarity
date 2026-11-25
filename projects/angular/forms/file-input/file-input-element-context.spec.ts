@@ -10,7 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, NgModel } from '@angular/forms';
 import { ClrContextService } from '@clr/angular/ai';
 import { publishedOn } from '@clr/angular/testing';
-import { ClrComponentContext } from '@clr/angular/utils';
+import { ClrComponentContext, markContext } from '@clr/angular/utils';
 
 import { selectFiles } from './file-input.helpers';
 import { ClrFileInputModule } from './file-input.module';
@@ -120,7 +120,7 @@ describe('ClrFileInputContainer, as page-context tooling sees it', () => {
     label.insertAdjacentHTML('beforeend', '<span class="secret"> ACC-42</span>');
 
     expect(publishedOn(host, { excludeSelectors: ['.secret'] })?.label).toBe('Statement');
-    label.setAttribute('data-clr-context-redact', '');
+    markContext(label, 'redact');
     expect(publishedOn(host)?.label).toBe('');
   });
 

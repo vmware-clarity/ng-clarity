@@ -11,6 +11,7 @@ import { ClarityModule } from '@clr/angular';
 import {
   ClrComponentContext,
   ClrContext,
+  ClrContextIgnore,
   ClrContextService,
   ClrMutationOperation,
   ClrMutationService,
@@ -29,7 +30,7 @@ interface WritableTarget {
   changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'clr-contextual-mutation-demo',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, ClarityModule, ClrContext],
+  imports: [FormsModule, ReactiveFormsModule, ClarityModule, ClrContext, ClrContextIgnore],
   templateUrl: './mutation.demo.html',
   styleUrls: ['./mutation.demo.scss'],
 })

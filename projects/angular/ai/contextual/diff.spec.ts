@@ -11,7 +11,7 @@ import { ClrComponentContext, ClrPageContext } from './interfaces/context.interf
 describe('clrDiffContext', () => {
   function page(components: ClrComponentContext[], overrides: Partial<ClrPageContext> = {}): ClrPageContext {
     return {
-      schemaVersion: '1',
+      schemaVersion: '2',
       application: { id: 'inventory' },
       enabled: true,
       title: 'Hosts',
