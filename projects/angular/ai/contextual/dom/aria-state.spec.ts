@@ -7,7 +7,6 @@
 
 import { ariaState } from './aria-state';
 import { ResolvedSnapshotOptions, resolveSnapshotOptions } from '../snapshot-options';
-import { applyContextMarks } from './marks.mock';
 
 describe('ariaState', () => {
   const budgets = (): ResolvedSnapshotOptions => resolveSnapshotOptions();
@@ -23,14 +22,12 @@ describe('ariaState', () => {
 
   function stateOf(html: string): Record<string, unknown> {
     container.innerHTML = html;
-    applyContextMarks(container);
     const element = container.firstElementChild as HTMLElement;
     return ariaState(element, budgets());
   }
 
   function stateOfSelected(html: string, selector: string): Record<string, unknown> {
     container.innerHTML = html;
-    applyContextMarks(container);
     const element = container.querySelector(selector) as HTMLElement;
     return ariaState(element, budgets());
   }
@@ -206,15 +203,14 @@ describe('ariaState', () => {
     });
 
     it('withholds a value the application marked as sensitive', () => {
-      const state = stateOf('<input clrContextRedact value="tok_live_abc123" />');
+      const state = stateOf('<input data-clr-context-redact value="tok_live_abc123" />');
 
       expect(state.value).toBeUndefined();
       expect(state.redacted).toBe(true);
     });
 
     it('withholds a value inside a region the application marked as sensitive', () => {
-      container.innerHTML = '<div clrContextRedact><input id="t" value="tok_live_abc123" /></div>';
-      applyContextMarks(container);
+      container.innerHTML = '<div data-clr-context-redact><input id="t" value="tok_live_abc123" /></div>';
       const input = container.querySelector('#t') as HTMLElement;
       const state = ariaState(input, budgets());
 
@@ -253,7 +249,6 @@ describe('ariaState, native values as an agent should read them', () => {
 
   function stateOf(html: string): Record<string, unknown> {
     container.innerHTML = html;
-    applyContextMarks(container);
     return ariaState(container.firstElementChild as HTMLElement, budgets());
   }
 
