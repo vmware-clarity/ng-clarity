@@ -152,8 +152,10 @@
       snapshot does not describe the conversation back to the model. Both
       <code cds-text="code">clrContextIgnore</code> and <code cds-text="code">clrContextRedact</code> are directives:
       import <code cds-text="code">ClrContextIgnore</code> and <code cds-text="code">ClrContextRedact</code>, or
-      <code cds-text="code">ClrContextModule</code>. The marks are kept off the DOM, so page content cannot plant one to
-      hide itself.
+      <code cds-text="code">ClrContextModule</code>. They set the
+      <code cds-text="code">data-clr-context-ignore</code> and
+      <code cds-text="code">data-clr-context-redact</code> attributes, which markup outside Angular templates can carry
+      itself.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="ignoreExample" language="html"></app-code-snippet>
