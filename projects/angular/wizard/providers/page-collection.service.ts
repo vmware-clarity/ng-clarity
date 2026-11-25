@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable, QueryList } from '@angular/core';
+import { Injectable, QueryList, signal } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 import { ClrWizardPage } from '../wizard-page';
@@ -35,19 +35,30 @@ import { ClrWizardPage } from '../wizard-page';
 @Injectable()
 export class PageCollectionService {
   /**
-   * A reference to the Wizard.pages QueryList.
-   *
-   * Populated when the wizard is created.
-   *
-   * @memberof PageCollectionService
-   */
-  pages!: QueryList<ClrWizardPage>;
-
-  /**
    *
    * @memberof PageCollectionService
    */
   private _pagesReset = new Subject<boolean>();
+
+  private _pages!: QueryList<ClrWizardPage>;
+
+  // The pages in order. A signal, so the stepnav and buttons refresh when pages are added or removed.
+  private readonly pageList = signal<ClrWizardPage[]>([]);
+
+  /**
+   * A reference to the Wizard.pages QueryList.
+   *
+   * Populated when the wizard is created, and assigned again by the wizard each time the list changes.
+   *
+   * @memberof PageCollectionService
+   */
+  get pages(): QueryList<ClrWizardPage> {
+    return this._pages;
+  }
+  set pages(pages: QueryList<ClrWizardPage>) {
+    this._pages = pages;
+    this.pageList.set(pages ? pages.toArray() : []);
+  }
 
   /**
    * Converts the PageCollectionService.pages QueryList to an array and returns it.
@@ -57,7 +68,7 @@ export class PageCollectionService {
    * @memberof PageCollectionService
    */
   get pagesAsArray(): ClrWizardPage[] {
-    return this.pages ? this.pages.toArray() : [];
+    return this.pageList();
   }
 
   /**
@@ -66,7 +77,7 @@ export class PageCollectionService {
    * @memberof PageCollectionService
    */
   get pagesCount(): number {
-    return this.pages ? this.pages.length : 0;
+    return this.pagesAsArray.length;
   }
 
   /**

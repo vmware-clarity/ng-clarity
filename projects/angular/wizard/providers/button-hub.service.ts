@@ -5,12 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 @Injectable()
 export class ButtonHubService {
-  buttonsReady = false;
+  // A signal, so the buttons refresh when the wizard opens.
+  private readonly _buttonsReady = signal(false);
 
   private _previousBtnClicked = new Subject<void>();
   private _nextBtnClicked = new Subject<void>();
@@ -18,6 +19,13 @@ export class ButtonHubService {
   private _cancelBtnClicked = new Subject<void>();
   private _finishBtnClicked = new Subject<void>();
   private _customBtnClicked = new Subject<string>();
+
+  get buttonsReady(): boolean {
+    return this._buttonsReady();
+  }
+  set buttonsReady(value: boolean) {
+    this._buttonsReady.set(value);
+  }
 
   get previousBtnClicked(): Observable<void> {
     return this._previousBtnClicked.asObservable();

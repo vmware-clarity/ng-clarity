@@ -83,9 +83,7 @@ describe('New Wizard Tests', () => {
     describe('Typescript API', () => {
       describe('id', () => {
         it('should call page collection service for step item id', () => {
-          const pageCollectionSpy = vi
-            .spyOn(testItemComponent.pageCollection, 'getStepItemIdForPage')
-            .mockImplementation(() => undefined);
+          const pageCollectionSpy = vi.spyOn(testItemComponent.pageCollection, 'getStepItemIdForPage');
           testItemComponent.page._id = 'try-a-different-id';
           renderFixture(fixture);
           expect(pageCollectionSpy).toHaveBeenCalledWith(testItemComponent.page);

@@ -10,7 +10,7 @@ import {
   AfterContentInit,
   ChangeDetectionStrategy,
   Component,
-  ContentChild,
+  contentChild,
   ContentChildren,
   DoCheck,
   ElementRef,
@@ -22,11 +22,12 @@ import {
   Output,
   PLATFORM_ID,
   QueryList,
+  signal,
   ViewChild,
 } from '@angular/core';
 import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, startWith } from 'rxjs/operators';
 
 import { ClrWizardFooterAlign, footerAlignAttribute } from './interfaces/wizard-footer-align';
 import { ClrWizardStepnavLayout, stepnavLayoutAttribute } from './interfaces/wizard-stepnav-layout';
@@ -53,7 +54,7 @@ import { ClrWizardTitle } from './wizard-title';
     '[class.wizard-horizontal]': 'stepnavLayout === ClrWizardStepnavLayout.HORIZONTAL',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   /**
@@ -160,20 +161,18 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   @ContentChildren(ClrWizardButton, { descendants: false }) wizardButtons!: QueryList<ClrWizardButton>;
   @ContentChildren(ClrWizardHeaderAction) headerActions!: QueryList<ClrWizardHeaderAction>;
 
-  _open = false;
   wizardId = uniqueIdFactory();
 
-  @ContentChild(ClrWizardTitle) protected wizardTitle!: ClrWizardTitle;
+  protected readonly wizardTitle = contentChild(ClrWizardTitle);
   protected ClrWizardFooterAlign = ClrWizardFooterAlign;
   protected ClrWizardStepnavLayout = ClrWizardStepnavLayout;
 
   @ViewChild('body') private readonly bodyElementRef!: ElementRef<HTMLElement>;
 
-  private _forceForward = false;
-  private _stopNext = false;
-  private _stopCancel = false;
-  private _stopNavigation = false;
-  private _disableStepnav = false;
+  // Views read these, so they are signals. The navigation flags live in the WizardNavigationService.
+  private readonly opened = signal(false);
+  private readonly hasWizardButtons = signal(false);
+
   private differ: any; // for marking when the collection of wizard pages has been added to or deleted from
   private subscriptions: Subscription[] = [];
 
@@ -204,11 +203,10 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    */
   @Input('clrWizardForceForwardNavigation')
   get forceForward(): boolean {
-    return this._forceForward;
+    return this.navService.forceForwardNavigation;
   }
   set forceForward(value: boolean) {
-    this._forceForward = !!value;
-    this.navService.forceForwardNavigation = value;
+    this.navService.forceForwardNavigation = !!value;
   }
 
   /**
@@ -223,6 +221,13 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     this._open = open;
   }
 
+  get _open(): boolean {
+    return this.opened();
+  }
+  set _open(open: boolean) {
+    this.opened.set(open);
+  }
+
   /**
    * Prevents ClrWizard from moving to the next page or closing itself on finishing.
    * Set using the `[clrWizardPreventDefaultNext]` input. Note that using stopNext
@@ -231,11 +236,10 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    */
   @Input('clrWizardPreventDefaultNext')
   get stopNext(): boolean {
-    return this._stopNext;
+    return this.navService.wizardHasAltNext;
   }
   set stopNext(value: boolean) {
-    this._stopNext = !!value;
-    this.navService.wizardHasAltNext = value;
+    this.navService.wizardHasAltNext = !!value;
   }
 
   /**
@@ -248,11 +252,10 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    */
   @Input('clrWizardPreventDefaultCancel')
   get stopCancel(): boolean {
-    return this._stopCancel;
+    return this.navService.wizardHasAltCancel;
   }
   set stopCancel(value: boolean) {
-    this._stopCancel = !!value;
-    this.navService.wizardHasAltCancel = value;
+    this.navService.wizardHasAltCancel = !!value;
   }
 
   /**
@@ -265,11 +268,10 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    */
   @Input('clrWizardPreventNavigation')
   get stopNavigation(): boolean {
-    return this._stopNavigation;
+    return this.navService.wizardStopNavigation;
   }
   set stopNavigation(value: boolean) {
-    this._stopNavigation = !!value;
-    this.navService.wizardStopNavigation = value;
+    this.navService.wizardStopNavigation = !!value;
   }
 
   /**
@@ -281,11 +283,10 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
    */
   @Input('clrWizardDisableStepnav')
   get disableStepnav(): boolean {
-    return this._disableStepnav;
+    return this.navService.wizardDisableStepnav;
   }
   set disableStepnav(value: boolean) {
-    this._disableStepnav = !!value;
-    this.navService.wizardDisableStepnav = value;
+    this.navService.wizardDisableStepnav = !!value;
   }
 
   get currentPage(): ClrWizardPage | null {
@@ -315,7 +316,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   }
 
   get showFooter(): boolean {
-    return !this.hideFooter && (this.navService.currentPage?.hasButtons || this.wizardButtons?.length > 0);
+    return !this.hideFooter && (this.navService.currentPage?.hasButtons || this.hasWizardButtons());
   }
 
   get footerAlign(): ClrWizardFooterAlign {
@@ -331,8 +332,15 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
 
   ngAfterContentInit(): void {
     this.navService.stepnavLayout = this.stepnavLayout;
-    this.pageCollection.pages = this.pages;
-    this.headerActionService.wizardHeaderActions = this.headerActions;
+    this.subscriptions.push(
+      this.pages.changes.pipe(startWith(this.pages)).subscribe(pages => (this.pageCollection.pages = pages)),
+      this.headerActions.changes
+        .pipe(startWith(this.headerActions))
+        .subscribe(headerActions => (this.headerActionService.wizardHeaderActions = headerActions)),
+      this.wizardButtons.changes
+        .pipe(startWith(this.wizardButtons))
+        .subscribe(buttons => this.hasWizardButtons.set(buttons.length > 0))
+    );
 
     if (this.inPage) {
       this.open();

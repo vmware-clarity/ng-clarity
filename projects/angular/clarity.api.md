@@ -28,6 +28,7 @@ import { EnvironmentInjector } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { FactoryProvider } from '@angular/core';
 import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
+import { FormControlStatus } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { FormGroupDirective } from '@angular/forms';
 import { FormGroupName } from '@angular/forms';
@@ -61,6 +62,7 @@ import { RouterLinkActive } from '@angular/router';
 import { SafeHtml } from '@angular/platform-browser';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
+import { Signal } from '@angular/core';
 import { SimpleChange } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
@@ -947,13 +949,14 @@ export abstract class ClrAbstractContainer implements OnDestroy {
     // (undocumented)
     protected controlClassService: ControlClassService;
     // (undocumented)
-    controlErrorComponent: ClrControlError;
+    get controlErrorComponent(): ClrControlError | undefined;
     // (undocumented)
-    controlHelperComponent: ClrControlHelper;
+    get controlHelperComponent(): ClrControlHelper | undefined;
     // (undocumented)
     controls: NgControl[];
+    protected readonly controlState: Signal<ControlState>;
     // (undocumented)
-    controlSuccessComponent: ClrControlSuccess;
+    get controlSuccessComponent(): ClrControlSuccess | undefined;
     // (undocumented)
     protected get errorMessagePresent(): boolean;
     get helpers(): {
@@ -963,7 +966,7 @@ export abstract class ClrAbstractContainer implements OnDestroy {
         showValid: boolean;
     };
     // (undocumented)
-    label: ClrControlLabel;
+    get label(): ClrControlLabel | undefined;
     // (undocumented)
     protected layoutService: LayoutService;
     // (undocumented)
@@ -980,7 +983,7 @@ export abstract class ClrAbstractContainer implements OnDestroy {
     // (undocumented)
     protected get successMessagePresent(): boolean;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAbstractContainer, never, never, {}, {}, ["label", "controlSuccessComponent", "controlErrorComponent", "controlHelperComponent"], never, true, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAbstractContainer, never, never, {}, {}, ["labelQuery", "successQuery", "errorQuery", "helperQuery"], never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAbstractContainer, [{
         optional: true;
@@ -2465,9 +2468,11 @@ export class ClrControlLabel implements OnInit, OnDestroy {
     // (undocumented)
     disableGrid(): void;
     // (undocumented)
-    forAttr?: string;
+    get forAttr(): string | undefined;
+    set forAttr(id: string | undefined);
     // (undocumented)
-    idAttr?: string;
+    get idAttr(): string | undefined;
+    set idAttr(id: string | undefined);
     // (undocumented)
     idInput?: string;
     // (undocumented)
@@ -8309,7 +8314,8 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     onReset: EventEmitter<any>;
     open(): void;
     // (undocumented)
-    _open: boolean;
+    get _open(): boolean;
+    set _open(open: boolean);
     _openChanged: EventEmitter<boolean>;
     // Warning: (ae-forgotten-export) The symbol "PageCollectionService" needs to be exported by the entry point clr-angular.d.ts
     //
@@ -8344,7 +8350,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     // (undocumented)
     wizardId: string;
     // (undocumented)
-    protected wizardTitle: ClrWizardTitle;
+    protected readonly wizardTitle: Signal<ClrWizardTitle>;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizard, "clr-wizard", never, {
         "stepnavAriaLabel": {
@@ -8554,7 +8560,8 @@ export class ClrWizardPage implements OnInit {
     get headerActions(): TemplateRef<any> | undefined;
     _headerActions: ClrWizardPageHeaderActions;
     get id(): string;
-    _id: any;
+    get _id(): any;
+    set _id(value: any);
     makeCurrent(): void;
     get navTitle(): TemplateRef<any>;
     nextButtonClicked: EventEmitter<ClrWizardPage>;
@@ -8586,12 +8593,12 @@ export class ClrWizardPage implements OnInit {
     get title(): TemplateRef<any>;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrWizardPage, "clr-wizard-page", never, {
-        "_id": {
-            "alias": "id";
-            "required": false;
-        };
         "preventDefault": {
             "alias": "clrWizardPagePreventDefault";
+            "required": false;
+        };
+        "_id": {
+            "alias": "id";
             "required": false;
         };
         "nextStepDisabled": {
@@ -8669,7 +8676,8 @@ export class ClrWizardPageNavTitle {
 export class ClrWizardPageTitle {
     constructor(pageTitleTemplateRef: TemplateRef<any>);
     // (undocumented)
-    headingLevel?: HeadingLevel;
+    get headingLevel(): HeadingLevel | undefined;
+    set headingLevel(value: HeadingLevel | undefined);
     // (undocumented)
     pageTitleTemplateRef: TemplateRef<any>;
     // (undocumented)
@@ -8699,9 +8707,9 @@ export class ClrWizardStepnav implements AfterViewInit, OnDestroy {
     // (undocumented)
     protected scrollRight(): void;
     // (undocumented)
-    protected showScrollLeftButton: boolean;
+    protected readonly showScrollLeftButton: WritableSignal<boolean>;
     // (undocumented)
-    protected showScrollRightButton: boolean;
+    protected readonly showScrollRightButton: WritableSignal<boolean>;
     // (undocumented)
     protected get stepnavLayout(): ClrWizardStepnavLayout;
     // (undocumented)
@@ -8787,7 +8795,8 @@ export enum ClrWizardStepnavLayout {
 // @public (undocumented)
 export class ClrWizardTitle {
     // (undocumented)
-    headingLevel?: HeadingLevel;
+    get headingLevel(): HeadingLevel | undefined;
+    set headingLevel(value: HeadingLevel | undefined);
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrWizardTitle, "clr-wizard-title", never, {
         "headingLevel": {
@@ -9093,6 +9102,22 @@ export const controlLunIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const controlLunIconName = "control-lun";
+
+// @public
+export interface ControlState {
+    // (undocumented)
+    readonly disabled: boolean;
+    // (undocumented)
+    readonly errors: ValidationErrors | null;
+    // (undocumented)
+    readonly invalid: boolean;
+    // (undocumented)
+    readonly status: FormControlStatus | null;
+    // (undocumented)
+    readonly touched: boolean;
+    // (undocumented)
+    readonly value: unknown;
+}
 
 // @public (undocumented)
 export const copyIcon: IconShapeTuple;
@@ -10531,7 +10556,8 @@ export class LayoutService {
     // (undocumented)
     labelSizeIsValid(labelSize: number): boolean;
     // (undocumented)
-    layout: ClrFormLayout | string;
+    get layout(): ClrFormLayout | string;
+    set layout(layout: ClrFormLayout | string);
     // (undocumented)
     get layoutClass(): string;
     // (undocumented)
@@ -10844,7 +10870,7 @@ export const newIcon: IconShapeTuple;
 export const newIconName = "new";
 
 // @public (undocumented)
-export class NgControlService {
+export class NgControlService implements OnDestroy {
     // (undocumented)
     addControl(control: NgControl): void;
     // (undocumented)
@@ -10857,6 +10883,9 @@ export class NgControlService {
     emitControlsChange(controls: NgControl[]): void;
     // (undocumented)
     get hasMultipleControls(): boolean;
+    // (undocumented)
+    ngOnDestroy(): void;
+    get states(): Signal<readonly ControlState[]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<NgControlService, never>;
     // (undocumented)
@@ -12213,6 +12242,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     constructor(vcr: ViewContainerRef, wrapperType: Type<W>, injector: Injector, ngControl: NgControl | null, renderer: Renderer2, el: ElementRef<HTMLElement>);
     // (undocumented)
     protected controlIdService: ControlIdService;
+    protected get controlState(): Signal<ControlState>;
     // (undocumented)
     protected el: ElementRef<HTMLElement>;
     // (undocumented)

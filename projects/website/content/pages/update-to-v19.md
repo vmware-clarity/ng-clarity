@@ -73,3 +73,16 @@ Some fields became accessors: `IfExpandService.expandable`, `hasExpandTemplate`,
 `isNavLevel2OnPage`. This is source compatible unless a subclass redeclares them as fields.
 
 When upgrading through v18, remove any `*WillyWonka` / `*OompaLoompa` imports left by the v18 rename schematic.
+
+## OnPush wizard
+
+The wizard components (`clr-wizard`, `clr-wizard-page`, `clr-wizard-stepnav`, `clr-wizard-button` and
+`clr-wizard-header-action`) use `ChangeDetectionStrategy.OnPush`. Their state is held in signals, so the wizard
+methods (`open()`, `next()`, `previous()`, `goTo()`, `reset()`), `wizard.navService.currentPage = page` and page
+state such as `ClrWizardPage.completed` keep the view up to date in Zone.js and zoneless applications.
+
+Writing an input property directly on a component instance, for example `wizardButton.disabled = true` through a
+`@ViewChild`, no longer re-renders that component. Bind the input in the template instead.
+
+`ClrWizard._open`, `ClrWizardPage._id`, `ClrWizardTitle.headingLevel` and `ClrWizardPageTitle.headingLevel` became
+accessors. This is source compatible unless a subclass redeclares them as fields.

@@ -25,7 +25,7 @@ let wizardHeaderActionIndex = 0;
   `,
   host: { class: 'clr-wizard-header-action-wrapper' },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrWizardHeaderAction {
   // title is explanatory text added to the header action

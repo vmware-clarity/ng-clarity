@@ -8,13 +8,12 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
-  inject,
   Input,
   OnDestroy,
   QueryList,
+  signal,
   ViewChildren,
 } from '@angular/core';
 import { startWith, Subscription } from 'rxjs';
@@ -27,7 +26,7 @@ import { ClrWizardStepnavItem } from './wizard-stepnav-item';
 @Component({
   selector: 'clr-wizard-stepnav',
   template: `
-    @if (showScrollLeftButton && stepnavLayout === 'horizontal') {
+    @if (showScrollLeftButton() && stepnavLayout === 'horizontal') {
       <button
         type="button"
         class="btn btn-sm btn-icon clr-wizard-stepnav-scroll-button-left"
@@ -41,13 +40,13 @@ import { ClrWizardStepnavItem } from './wizard-stepnav-item';
     <nav
       class="clr-wizard-stepnav-nav"
       [ngClass]="{
-        'clr-wizard-stepnav-nav--with-one-scroll-button': showScrollLeftButton || showScrollRightButton,
-        'clr-wizard-stepnav-nav--with-two-scroll-buttons': showScrollLeftButton && showScrollRightButton,
+        'clr-wizard-stepnav-nav--with-one-scroll-button': showScrollLeftButton() || showScrollRightButton(),
+        'clr-wizard-stepnav-nav--with-two-scroll-buttons': showScrollLeftButton() && showScrollRightButton(),
       }"
       [attr.aria-label]="label"
     >
       <ol class="clr-wizard-stepnav-list">
-        @for (page of pageService.pages; track page; let i = $index) {
+        @for (page of pageService.pagesAsArray; track page; let i = $index) {
           <li clr-wizard-stepnav-item [page]="page" class="clr-wizard-stepnav-item">
             {{ i + 1 }}
           </li>
@@ -55,7 +54,7 @@ import { ClrWizardStepnavItem } from './wizard-stepnav-item';
       </ol>
     </nav>
 
-    @if (showScrollRightButton && stepnavLayout === 'horizontal') {
+    @if (showScrollRightButton() && stepnavLayout === 'horizontal') {
       <button
         type="button"
         class="btn btn-sm btn-icon clr-wizard-stepnav-scroll-button-right"
@@ -68,13 +67,13 @@ import { ClrWizardStepnavItem } from './wizard-stepnav-item';
   `,
   host: { class: 'clr-wizard-stepnav' },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrWizardStepnav implements AfterViewInit, OnDestroy {
   @Input() label?: string;
 
-  protected showScrollLeftButton = false;
-  protected showScrollRightButton = false;
+  protected readonly showScrollLeftButton = signal(false);
+  protected readonly showScrollRightButton = signal(false);
 
   @ViewChildren(ClrWizardStepnavItem) private readonly stepnavItems!: QueryList<ClrWizardStepnavItem>;
 
@@ -82,8 +81,6 @@ export class ClrWizardStepnav implements AfterViewInit, OnDestroy {
   private intersectionObserver: IntersectionObserver | undefined;
   private firstItemVisible = true;
   private lastItemVisible = true;
-
-  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   constructor(
     public pageService: PageCollectionService,
@@ -138,10 +135,8 @@ export class ClrWizardStepnav implements AfterViewInit, OnDestroy {
           }
         }
 
-        this.showScrollLeftButton = !this.firstItemVisible;
-        this.showScrollRightButton = !this.lastItemVisible;
-        // IntersectionObserver callbacks are not template events, so they do not schedule change detection.
-        this.changeDetectorRef.markForCheck();
+        this.showScrollLeftButton.set(!this.firstItemVisible);
+        this.showScrollRightButton.set(!this.lastItemVisible);
       },
       { root: scrollContainer, threshold: 0.99 }
     );

@@ -19,6 +19,7 @@ import { ClarityModule } from '@clr/angular';
 
 import { OverlayAcceptance } from './overlay-acceptance';
 import { RuntimeAcceptance } from './runtime-acceptance';
+import { WizardAcceptance } from './wizard-acceptance';
 
 @Component({
   selector: 'consumer-app',
@@ -110,9 +111,13 @@ class ConsumerApp {
 
 async function main() {
   const useZone = new URLSearchParams(location.search).get('mode') === 'zone';
-  await bootstrapApplication(ConsumerApp, {
+  const appRef = await bootstrapApplication(ConsumerApp, {
     providers: [useZone ? provideZoneChangeDetection() : provideZonelessChangeDetection()],
   });
+  // A root of its own, so this Eager consumer is checked on every tick like a Zone.js application root.
+  // Under the OnPush ConsumerApp it would only be checked after its own template events.
+  document.body.appendChild(document.createElement('wizard-acceptance'));
+  appRef.bootstrap(WizardAcceptance);
 }
 
 main().catch(error => console.error(error));
