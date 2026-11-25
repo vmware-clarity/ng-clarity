@@ -224,8 +224,8 @@ describe('ClrFileInputContainer (zoneless, OnPush host)', () => {
       return Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('.clr-file-list-item')).map(item => {
         const name = item.querySelector('.clr-file-label').textContent.trim();
         const state = item.classList.contains('clr-success') ? 'success' : 'error';
-        const messages = Array.from(item.querySelectorAll('clr-file-success, clr-file-error'))
-          .filter((message: HTMLElement) => message.style.display !== 'none')
+        const messages = Array.from(item.querySelectorAll<HTMLElement>('clr-file-success, clr-file-error'))
+          .filter(message => message.style.display !== 'none')
           .map(message => message.textContent.trim());
 
         return [name, state, ...messages].join(' | ');

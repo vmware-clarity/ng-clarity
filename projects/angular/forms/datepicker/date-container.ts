@@ -121,7 +121,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
   focus = false;
 
   protected popoverType = ClrPopoverType.DROPDOWN;
-  private toggleButton: ElementRef<HTMLButtonElement>;
+  private toggleButton!: ElementRef<HTMLButtonElement>;
 
   constructor(
     protected renderer: Renderer2,
@@ -278,7 +278,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
    * Return the label for the toggle button.
    * If there's a selected date, the date is included in the label.
    */
-  private getToggleButtonLabel(day: DayModel): string {
+  private getToggleButtonLabel(day: DayModel | null | undefined): string {
     if (day) {
       const formattedDate = this.dateIOService.toLocaleDisplayFormatString(day.toDate());
 

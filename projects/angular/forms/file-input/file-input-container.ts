@@ -105,14 +105,14 @@ import { ClrFileError, ClrFileSuccess } from './file-messages';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrFileInputContainer extends ClrAbstractContainer implements AfterContentChecked {
-  @Input('clrButtonLabel') customButtonLabel: string;
+  @Input('clrButtonLabel') customButtonLabel?: string;
 
   protected readonly fileList = contentChild<ClrFileList>(forwardRef(() => ClrFileList));
 
   private readonly fileInputQuery = contentChild<ClrFileInput>(forwardRef(() => ClrFileInput));
 
-  @ViewChild('browseButton') private browseButtonElementRef: ElementRef<HTMLButtonElement>;
-  @ViewChild('fileListFileInput') private fileListFileInputElementRef: ElementRef<HTMLInputElement>;
+  @ViewChild('browseButton') private browseButtonElementRef!: ElementRef<HTMLButtonElement>;
+  @ViewChild('fileListFileInput') private fileListFileInputElementRef!: ElementRef<HTMLInputElement>;
 
   // These are for the "message present" override properties
   private readonly fileSuccessComponent = contentChild(ClrFileSuccess);
@@ -187,8 +187,8 @@ export class ClrFileInputContainer extends ClrAbstractContainer implements After
     this.focusBrowseButton();
   }
 
-  protected addFilesToSelection(newFiles: FileList) {
-    if (!newFiles.length) {
+  protected addFilesToSelection(newFiles: FileList | null) {
+    if (!newFiles?.length) {
       return;
     }
 

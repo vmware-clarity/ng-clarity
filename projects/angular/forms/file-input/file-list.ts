@@ -70,13 +70,19 @@ export class ClrFileList {
 
   private readonly injector = inject(Injector);
   private readonly commonStrings = inject(ClrCommonStringsService);
-  private readonly ngControlService = inject(NgControlService, { optional: true });
-  private readonly fileInputContainer = inject(ClrFileInputContainer, { optional: true });
+  private readonly ngControlService: NgControlService;
+  private readonly fileInputContainer: ClrFileInputContainer;
 
   constructor() {
-    if (!this.ngControlService || !this.fileInputContainer) {
+    const ngControlService = inject(NgControlService, { optional: true });
+    const fileInputContainer = inject(ClrFileInputContainer, { optional: true });
+
+    if (!ngControlService || !fileInputContainer) {
       throw new Error('The clr-file-list component can only be used within a clr-file-input-container.');
     }
+
+    this.ngControlService = ngControlService;
+    this.fileInputContainer = fileInputContainer;
   }
 
   protected get files() {
