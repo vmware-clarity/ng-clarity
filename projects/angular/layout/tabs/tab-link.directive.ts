@@ -84,7 +84,7 @@ export class ClrTabLink {
   }
 
   @HostBinding('attr.aria-controls')
-  get ariaControls(): string {
+  get ariaControls(): string | undefined {
     return this.tabsService.children.find(tab => tab.tabLink === this)?.tabContent?.tabContentId;
   }
 

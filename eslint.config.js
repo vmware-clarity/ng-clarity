@@ -191,6 +191,16 @@ module.exports = [
     },
   },
 
+  // Specs may assert that a queried element or a test value exists: a wrong assertion fails the test.
+  // TODO: turn the rule back on for specs once they assert through a helper that fails with a clear message instead of
+  // using `!` (about 1000 places in 120 spec files).
+  {
+    files: ['**/*.spec.ts'],
+    rules: {
+      '@typescript-eslint/no-non-null-assertion': 'off',
+    },
+  },
+
   // Angular 22 makes OnPush the default, so every component declares its strategy explicitly. The Storybook block below
   // repeats the selector because the last matching block replaces the no-restricted-syntax options.
   {

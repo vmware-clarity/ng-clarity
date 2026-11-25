@@ -10,5 +10,5 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class ComboboxContainerService {
   labelOffset = 0;
-  labelText: string;
+  labelText?: string;
 }

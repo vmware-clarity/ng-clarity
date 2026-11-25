@@ -104,13 +104,13 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
   // we are using this _mousedown flag
   _mousedown = false;
 
-  @ViewChild(ClrKeyFocus, { static: true }) keyFocus: ClrKeyFocus;
+  @ViewChild(ClrKeyFocus, { static: true }) keyFocus!: ClrKeyFocus;
 
-  @ContentChildren(ClrTabAction, { read: ElementRef, descendants: true }) tabsActions: QueryList<ElementRef>;
-  @ContentChildren(ClrTab) private tabs: QueryList<ClrTab>;
+  @ContentChildren(ClrTabAction, { read: ElementRef, descendants: true }) tabsActions!: QueryList<ElementRef>;
+  @ContentChildren(ClrTab) private tabs!: QueryList<ClrTab>;
 
   private subscriptions: Subscription[] = [];
-  private _tabOverflowEl: HTMLElement;
+  private _tabOverflowEl!: HTMLElement;
 
   // Signals, so that this OnPush view is refreshed when tabs or tab actions are added or removed.
   private readonly _tabLinkDirectives = signal<ClrTabLink[]>([]);
@@ -149,7 +149,7 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
   }
 
   get activeTabInOverflow() {
-    return this.tabsService.overflowTabs.indexOf(this.tabsService.activeTab) > -1;
+    return this.tabsService.overflowTabs.indexOf(this.tabsService.activeTab as ClrTab) > -1;
   }
 
   get activeTabPosition() {

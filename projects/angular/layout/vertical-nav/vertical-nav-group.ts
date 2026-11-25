@@ -61,7 +61,7 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
   private readonly injector = inject(Injector);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  @ViewChild('children', { static: true }) private children: ElementRef<HTMLElement>;
+  @ViewChild('children', { static: true }) private children!: ElementRef<HTMLElement>;
 
   constructor(
     private _itemExpand: IfExpandService,
