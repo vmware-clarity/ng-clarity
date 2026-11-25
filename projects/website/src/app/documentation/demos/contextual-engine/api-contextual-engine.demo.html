@@ -198,14 +198,17 @@
       <td class="left"><b cds-text="medium">clrContextRedact</b></td>
       <td class="left">
         The field, or every field inside the element, is still described (its label and type), but its value and the
-        text it shows are never read. Exported as <code cds-text="code">ClrContextRedact</code>.
+        text it shows are never read. Bind <code cds-text="code">false</code> to lift it, such as
+        <code cds-text="code">[clrContextRedact]="row.private"</code>. Exported as
+        <code cds-text="code">ClrContextRedact</code>.
       </td>
     </tr>
     <tr>
       <td class="left"><b cds-text="medium">clrContextIgnore</b></td>
       <td class="left">
         The element and everything inside it is invisible to the engine. Put it on the chat panel itself, so the
-        assistant does not describe its own conversation. Exported as <code cds-text="code">ClrContextIgnore</code>.
+        assistant does not describe its own conversation. Bind <code cds-text="code">false</code> to lift it. Exported
+        as <code cds-text="code">ClrContextIgnore</code>.
       </td>
     </tr>
   </tbody>
