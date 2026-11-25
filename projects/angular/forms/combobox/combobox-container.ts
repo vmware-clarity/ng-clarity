@@ -46,12 +46,12 @@ import { ComboboxContainerService } from './providers/combobox-container.service
   host: {
     '[class.clr-form-control]': 'true',
     '[class.clr-combobox-form-control]': 'true',
-    '[class.clr-form-control-disabled]': 'control?.disabled',
+    '[class.clr-form-control-disabled]': 'controlState().disabled',
     '[class.clr-row]': 'addGrid()',
   },
   providers: [NgControlService, ControlIdService, ControlClassService, ComboboxContainerService],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrComboboxContainer extends ClrAbstractContainer implements AfterContentInit, AfterViewInit {
   @ViewChild('controlContainer') controlContainer!: ElementRef<HTMLElement>;

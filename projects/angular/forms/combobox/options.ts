@@ -17,6 +17,7 @@ import {
   OnDestroy,
   Optional,
   QueryList,
+  signal,
   ViewChild,
 } from '@angular/core';
 import { ClrPopoverService, POPOVER_HOST_ORIGIN } from '@clr/angular/popover/common';
@@ -81,7 +82,7 @@ export const SELECT_ALL_ID = 'select-all-id';
     '[id]': 'optionsId',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy {
   @Input('id') optionsId = 'clr-options-' + nbOptionsComponents++;
@@ -91,6 +92,8 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
 
   private subscriptions: Subscription[] = [];
   private _selectAllOption: OptionData<T> | null = null;
+  // The projected options, kept as a signal so this view re-renders when they change.
+  private readonly options = signal<readonly ClrOption<T>[]>([]);
 
   constructor(
     public optionSelectionService: OptionSelectionService<T>,
@@ -126,6 +129,7 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
   }
   set items(items: QueryList<ClrOption<T>>) {
     this._items = items;
+    this.options.set(items.toArray());
     this.updateFocusableItems();
   }
 
@@ -133,7 +137,7 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
    * Tests if the list of options is empty, meaning it doesn't contain any items
    */
   get emptyOptions() {
-    return !this.optionSelectionService.loading && this.items.length === 0;
+    return !this.optionSelectionService.loading && this.options().length === 0;
   }
 
   get editable() {
@@ -149,15 +153,13 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
       this.optionSelectionService.showSelectAll &&
       this.optionSelectionService.multiselectable &&
       !this.optionSelectionService.loading &&
-      this.items.length > 0
+      this.options().length > 0
     );
   }
 
   get allVisibleSelected(): boolean {
-    if (!this.items || this.items.length === 0) {
-      return false;
-    }
-    return this.optionSelectionService.containsAll(this.items.map(option => option.value));
+    const options = this.options();
+    return options.length > 0 && this.optionSelectionService.containsAll(options.map(option => option.value));
   }
 
   get isSelectAllFocused() {
@@ -169,7 +171,7 @@ export class ClrOptions<T> implements AfterViewInit, LoadingListener, OnDestroy 
       event.stopPropagation();
       this.focusHandler.focusInput();
     }
-    const visibleValues = this.items.map(option => option.value);
+    const visibleValues = this.options().map(option => option.value);
 
     if (this.allVisibleSelected) {
       this.optionSelectionService.unselectMany(visibleValues);

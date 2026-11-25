@@ -13,17 +13,17 @@ width of the component, after being wrapped to a new line -->
   clrPopoverOrigin
   (click)="onWrapperClick($event)"
   [class.multi]="multiSelect"
-  [class.invalid]="(control?.control?.touched && control?.invalid)"
-  [class.disabled]="control?.disabled"
+  [class.invalid]="controlState().touched && controlState().invalid"
+  [class.disabled]="controlState().disabled"
 >
   @if (multiSelect && multiSelectModel && multiSelectModel.length > 0) {
   <span
     role="grid"
     clrRovingTabindex
-    [clrRovingTabindexDisabled]="!!control?.disabled"
+    [clrRovingTabindexDisabled]="controlState().disabled"
     clrDirection="both"
     [attr.aria-label]="getSelectionAriaLabel()"
-    [attr.aria-disabled]="control?.disabled? true: null"
+    [attr.aria-disabled]="controlState().disabled ? true : null"
     class="clr-combobox-pills"
   >
     <ng-template #pillTemplate let-item let-i="index">
@@ -43,7 +43,7 @@ width of the component, after being wrapped to a new line -->
             clrKeyFocusItem
             type="button"
             class="clr-combobox-remove-btn"
-            [disabled]="control?.disabled ? true : null"
+            [disabled]="controlState().disabled ? true : null"
             [attr.aria-label]="commonStrings.keys.comboboxDelete + ' ' + optionSelectionService.selectionModel.toString(displayField, i)"
             (click)="unselect(item)"
           >
@@ -53,7 +53,7 @@ width of the component, after being wrapped to a new line -->
       </span>
     </ng-template>
 
-    @if (showSelectAll) { @if (isTotalSelection && !selectionExpanded) {
+    @if (showSelectAll) { @if (isTotalSelection() && !selectionExpanded()) {
     <span class="label label-combobox-pill" role="row">
       <span role="gridcell">
         <span class="clr-combobox-pill-content" clrKeyFocusItem>{{ allSelectedText }}</span>
@@ -70,8 +70,8 @@ width of the component, after being wrapped to a new line -->
         </button>
       </span>
     </span>
-    } @if (showIndividualPills) { @for (item of multiSelectModel | slice:0:calculatedLimit; track item; let i = $index)
-    {
+    } @if (showIndividualPills) { @for (item of multiSelectModel | slice:0:calculatedLimit(); track item; let i =
+    $index) {
     <ng-container
       [ngTemplateOutlet]="pillTemplate"
       [ngTemplateOutletContext]="{$implicit: item, index: i}"
@@ -86,10 +86,10 @@ width of the component, after being wrapped to a new line -->
             type="button"
             class="btn btn-link clr-combobox-show-more-btn"
             (click)="toggleSelectionExpand()"
-            [attr.aria-expanded]="selectionExpanded"
+            [attr.aria-expanded]="selectionExpanded()"
             [attr.aria-controls]="'expanded-selection-' + id"
           >
-            @if (!selectionExpanded) { {{ showAllText }} } @else { {{ commonStrings.keys.comboboxShowLess }} }
+            @if (!selectionExpanded()) { {{ showAllText }} } @else { {{ commonStrings.keys.comboboxShowLess }} }
           </button>
         </span>
       </span>
@@ -102,7 +102,7 @@ width of the component, after being wrapped to a new line -->
     } }
   </span>
 
-  @if (showSelectAll && shouldCalculate) {
+  @if (showSelectAll && shouldCalculate()) {
   <span class="clr-combobox-pills-calculation" aria-hidden="true">
     @for (item of multiSelectModel; track item) {
     <span class="label label-combobox-pill" #pill>
@@ -137,8 +137,8 @@ width of the component, after being wrapped to a new line -->
     aria-haspopup="listbox"
     aria-autocomplete="list"
     autocomplete="off"
-    [attr.aria-invalid]="control?.invalid? true: null"
-    [disabled]="!!control?.disabled"
+    [attr.aria-invalid]="controlState().invalid ? true : null"
+    [disabled]="controlState().disabled ? true : null"
     [attr.aria-activedescendant]="getActiveDescendant()"
     [attr.placeholder]="placeholder"
   />
@@ -149,7 +149,7 @@ width of the component, after being wrapped to a new line -->
     type="button"
     class="clr-combobox-trigger"
     tabindex="-1"
-    [disabled]="control?.disabled || null"
+    [disabled]="controlState().disabled || null"
     [attr.aria-label]="commonStrings.keys.comboboxOpen"
   >
     <cds-icon shape="angle" direction="down"></cds-icon>

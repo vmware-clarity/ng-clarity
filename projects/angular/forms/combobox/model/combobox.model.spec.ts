@@ -5,6 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { computed } from '@angular/core';
+
 import { ComboboxModel } from './combobox.model';
 import { MultiSelectComboboxModel } from './multi-select-combobox.model';
 import { PseudoFocusModel } from './pseudo-focus.model';
@@ -152,13 +154,27 @@ describe('Combobox component', () => {
         expect(multiModel.toString('fish', 1)).toEqual('frog');
       });
 
-      it('pseudo-focus model has focusChanged observable', () => {
-        let changeValue: string = null;
-        pseudoFocusModel.focusChanged.subscribe(value => {
-          changeValue = value;
-        });
+      it('notifies signal readers on every change, including in-place multi-select changes', () => {
+        const singleText = computed(() => singleModel.toString());
+        const focusText = computed(() => pseudoFocusModel.toString());
+        const multiText = computed(() => multiModel.toString());
+
+        singleModel.select('giant squid');
         pseudoFocusModel.select('giant squid');
-        expect(changeValue).toBe('giant squid');
+        multiModel.select('giant squid');
+        expect([singleText(), focusText(), multiText()]).toEqual(['giant squid', 'giant squid', 'giant squid']);
+
+        multiModel.select('octopus');
+        expect(multiText()).toBe('giant squid octopus');
+        multiModel.unselect('giant squid');
+        expect(multiText()).toBe('octopus');
+        multiModel.pop();
+        expect(multiText()).toBe('');
+        expect(multiModel.model).toBeNull();
+
+        singleModel.unselect('giant squid');
+        pseudoFocusModel.model = null;
+        expect([singleText(), focusText()]).toEqual(['', '']);
       });
 
       describe('identityFn', () => {

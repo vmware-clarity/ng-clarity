@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { BehaviorSubject, Observable, ReplaySubject, Subject } from 'rxjs';
 
 import { ClrComboboxIdentityFunction, ClrComboboxResolverFunction, ComboboxModel } from '../model/combobox.model';
@@ -13,17 +13,17 @@ import { MultiSelectComboboxModel } from '../model/multi-select-combobox.model';
 
 @Injectable()
 export class OptionSelectionService<T> {
-  loading = false;
-  editable = false;
-  showSelectAll = false;
-  selectionModel!: ComboboxModel<T>;
   inputChanged: Observable<string>;
   // Display all options on first open, even if filter text exists.
   // https://github.com/vmware-clarity/ng-clarity/issues/386
   showAllOptions = true;
 
-  private _currentInput = '';
-  private _displayField?: string;
+  private readonly _loading = signal(false);
+  private readonly _editable = signal(false);
+  private readonly _showSelectAll = signal(false);
+  private readonly _selectionModel = signal<ComboboxModel<T>>(undefined);
+  private readonly _currentInput = signal('');
+  private readonly _displayField = signal<string | undefined>(undefined);
   private _inputChanged = new BehaviorSubject('');
   private _selectionChanged = new ReplaySubject<ComboboxModel<T>>(1);
   private _selectAllRequested = new Subject<void>();
@@ -32,25 +32,53 @@ export class OptionSelectionService<T> {
     this.inputChanged = this._inputChanged.asObservable();
   }
 
+  get loading() {
+    return this._loading();
+  }
+  set loading(value: boolean) {
+    this._loading.set(value);
+  }
+
+  get editable() {
+    return this._editable();
+  }
+  set editable(value: boolean) {
+    this._editable.set(value);
+  }
+
+  get showSelectAll() {
+    return this._showSelectAll();
+  }
+  set showSelectAll(value: boolean) {
+    this._showSelectAll.set(value);
+  }
+
+  get selectionModel() {
+    return this._selectionModel();
+  }
+  set selectionModel(model: ComboboxModel<T>) {
+    this._selectionModel.set(model);
+  }
+
   get displayField() {
-    return this._displayField;
+    return this._displayField();
   }
   set displayField(value: string | undefined) {
-    this._displayField = value;
+    this._displayField.set(value);
     if (this.selectionModel) {
       this.selectionModel.displayField = value;
     }
   }
 
   get currentInput(): string {
-    return this._currentInput;
+    return this._currentInput();
   }
   set currentInput(input) {
     // clear value in single selection model when input is empty
     if (input === '' && !this.multiselectable) {
       this.setSelectionValue(null);
     }
-    this._currentInput = input;
+    this._currentInput.set(input);
     this._inputChanged.next(input);
   }
 

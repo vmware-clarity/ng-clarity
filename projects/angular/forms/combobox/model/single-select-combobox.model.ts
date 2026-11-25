@@ -7,9 +7,7 @@
 
 import { ComboboxModel } from './combobox.model';
 
-export class SingleSelectComboboxModel<T> extends ComboboxModel<T> {
-  override model: T | null | undefined;
-
+export class SingleSelectComboboxModel<T> extends ComboboxModel<T, T> {
   containsItem(item: T): boolean {
     if (this.model === null || this.model === undefined) {
       return false;
