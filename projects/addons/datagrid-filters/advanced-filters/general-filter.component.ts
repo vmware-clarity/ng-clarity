@@ -169,11 +169,12 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
     this.filterCriteriaChange.emit();
   }
 
+  // The value's validators depend on the operator;
+  // updateConditionValidators sets them, also for added rows (push emits valueChanges).
   private createCondition(index = -1): FormGroup {
-    const operator = this.initOperator(index);
     return this.formBuilder.group({
-      operator: [operator, Validators.required],
-      value: [this.initValue(index), operator === this.isEmptyOperator ? [] : this.initValidators()],
+      operator: [this.initOperator(index), Validators.required],
+      value: [this.initValue(index)],
       unit: [this.initUnit(index)],
     });
   }
