@@ -5,6 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { ClrContextMark, hasContextMark } from '@clr/angular/utils';
+
 import { readScope } from './read-scope';
 
 /** Where ids resolve and labels are found: the element's shadow root, or its document. */
@@ -33,13 +35,18 @@ export function parentAcrossShadow(element: Element): Element | null {
 }
 
 /** `element.closest(selector)` along the rendered tree, through slots and shadow root hosts. */
-export function closestAcrossShadow(element: Element, selector: string): Element | null {
+export function closestAcrossShadow(element: Element, test: string | ((element: Element) => boolean)): Element | null {
   for (let current: Element | null = element; current; current = parentAcrossShadow(current)) {
-    if (current.matches(selector)) {
+    if (typeof test === 'string' ? current.matches(test) : test(current)) {
       return current;
     }
   }
   return null;
+}
+
+/** The element, or its closest ancestor along the rendered tree, that carries the mark. */
+export function closestMarkAcrossShadow(element: Element, mark: ClrContextMark): Element | null {
+  return closestAcrossShadow(element, current => hasContextMark(current, mark));
 }
 
 /** `ancestor.contains(node)` along the rendered tree, through slots and shadow root hosts. */

@@ -13,7 +13,7 @@
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
-const Ajv = require('ajv').default;
+const Ajv = require('ajv/dist/2020').default;
 const standaloneCode = require('ajv/dist/standalone').default;
 
 const DIR = 'projects/angular/ai/contextual/schemas';
