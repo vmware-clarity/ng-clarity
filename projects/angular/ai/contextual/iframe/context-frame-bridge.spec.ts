@@ -57,7 +57,7 @@ function dispatchMessage(init: { data: unknown; origin?: string; source?: unknow
 
 describe('Context frame bridge', () => {
   const pageContext: ClrPageContext = {
-    schemaVersion: '1',
+    schemaVersion: '2',
     application: { id: 'inventory' },
     enabled: true,
     title: 'Host page',
@@ -408,7 +408,7 @@ describe('Context frame bridge', () => {
         restartHost(
           {},
           () => ({
-            schemaVersion: '1',
+            schemaVersion: '2',
             application: { id: 'inventory' },
             enabled: true,
             title: 'Host page',
