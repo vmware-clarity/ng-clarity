@@ -27,10 +27,12 @@ import {
       <section id="secret" clrContextRedact></section>
     }
     <ng-container clrContextRedact><span id="plain"></span></ng-container>
+    <div id="toggled" [clrContextRedact]="redactToggled()"></div>
   `,
 })
 class MarkedComponent {
   readonly showSecret = signal(true);
+  readonly redactToggled = signal(false);
 }
 
 describe('context marks', () => {
@@ -76,6 +78,17 @@ describe('clrContextIgnore and clrContextRedact', () => {
     fixture.componentInstance.showSecret.set(false);
     fixture.detectChanges();
     expect(hasContextMark(secret, 'redact')).toBe(false);
+  });
+
+  it('lift the mark while the input is false', () => {
+    const fixture = TestBed.createComponent(MarkedComponent);
+    fixture.detectChanges();
+    const toggled = fixture.nativeElement.querySelector('#toggled') as Element;
+    expect(hasContextMark(toggled, 'redact')).toBe(false);
+
+    fixture.componentInstance.redactToggled.set(true);
+    fixture.detectChanges();
+    expect(hasContextMark(toggled, 'redact')).toBe(true);
   });
 
   it('mark nothing on an ng-container, which has no element', () => {

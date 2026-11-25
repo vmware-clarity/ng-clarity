@@ -28,7 +28,7 @@ Configure once at startup: `context.configure({ scope: 'interactive', routes: tr
 
 - A snapshot holds the rendered page, text included, and may hold personal data. Send it to a model as data, delimited from the prompt, never as instructions.
 - A backend validates snapshots with `@clr/angular/ai/schemas/page-context-<schemaVersion>.schema.json`, also served at `https://clarity.design/schemas/page-context-<schemaVersion>.schema.json`; `snapshot()` already leaves out what does not match it.
-- Put `clrContextRedact` on regions whose values must never leave the page (their fields keep their shape, values are withheld). Put `clrContextIgnore` on UI the agent should not see at all. Both are directives from `@clr/angular/ai` (`ClrContextRedact`, `ClrContextIgnore`, or `ClrContextModule`); the marks are kept off the DOM, so page content cannot plant one to hide itself. For markup outside Angular templates, use `configure({ scope: { excludeSelectors } })`.
+- Put `clrContextRedact` on regions whose values must never leave the page (their fields keep their shape, values are withheld). Put `clrContextIgnore` on UI the agent should not see at all. Bind `false` to lift either one, such as `[clrContextRedact]="row.private"`. Both are directives from `@clr/angular/ai` (`ClrContextRedact`, `ClrContextIgnore`, or `ClrContextModule`); the marks are kept off the DOM, so page content cannot plant one to hide itself. For markup outside Angular templates, use `configure({ scope: { excludeSelectors } })`.
 - Password and file inputs, and fields whose `autocomplete` is `current-password`, `new-password`, `one-time-code` or a `cc-*` token, are always withheld. Redact the other secrets, such as tokens or keys typed into plain text fields.
 
 ## Adding context
