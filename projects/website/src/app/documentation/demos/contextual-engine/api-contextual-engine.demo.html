@@ -200,7 +200,7 @@
         The field, or every field inside the element, is still described (its label and type), but its value and the
         text it shows are never read. Bind <code cds-text="code">false</code> to lift it, such as
         <code cds-text="code">[clrContextRedact]="row.private"</code>. Exported as
-        <code cds-text="code">ClrContextRedact</code>.
+        <code cds-text="code">ClrContextRedact</code>; it sets <code cds-text="code">data-clr-context-redact</code>.
       </td>
     </tr>
     <tr>
@@ -208,7 +208,7 @@
       <td class="left">
         The element and everything inside it is invisible to the engine. Put it on the chat panel itself, so the
         assistant does not describe its own conversation. Bind <code cds-text="code">false</code> to lift it. Exported
-        as <code cds-text="code">ClrContextIgnore</code>.
+        as <code cds-text="code">ClrContextIgnore</code>; it sets <code cds-text="code">data-clr-context-ignore</code>.
       </td>
     </tr>
   </tbody>
