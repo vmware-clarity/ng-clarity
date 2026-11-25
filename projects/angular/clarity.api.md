@@ -37,6 +37,7 @@ import * as i48 from '@angular/forms';
 import * as i6_4 from '@angular/router';
 import { InjectionToken } from '@angular/core';
 import { Injector } from '@angular/core';
+import { InputSignalWithTransform } from '@angular/core';
 import { IterableDiffers } from '@angular/core';
 import { ListRange } from '@angular/cdk/collections';
 import { NgControl } from '@angular/forms';
@@ -2421,8 +2422,15 @@ export type ClrContextCategory = 'layout' | 'actions' | 'forms' | 'headings' | '
 // @public
 export class ClrContextIgnore {
     constructor();
+    readonly clrContextIgnore: InputSignalWithTransform<boolean, unknown>;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContextIgnore, "[clrContextIgnore]", never, {}, {}, never, never, true, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContextIgnore, "[clrContextIgnore]", never, {
+        "clrContextIgnore": {
+            "alias": "clrContextIgnore";
+            "required": false;
+            "isSignal": true;
+        };
+    }, {}, never, never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextIgnore, never>;
 }
@@ -2433,8 +2441,15 @@ export type ClrContextMark = 'ignore' | 'redact';
 // @public
 export class ClrContextRedact {
     constructor();
+    readonly clrContextRedact: InputSignalWithTransform<boolean, unknown>;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContextRedact, "[clrContextRedact]", never, {}, {}, never, never, true, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContextRedact, "[clrContextRedact]", never, {
+        "clrContextRedact": {
+            "alias": "clrContextRedact";
+            "required": false;
+            "isSignal": true;
+        };
+    }, {}, never, never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextRedact, never>;
 }
