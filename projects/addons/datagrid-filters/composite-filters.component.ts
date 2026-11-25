@@ -371,34 +371,15 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   onFilterCriteriaChange(propertyFilter: PropertyFilter) {
     if (propertyFilter) {
       if (propertyFilter.criteria.length > 0) {
-        // The property filter contains several filtering criteria.
-        // This is either a new filter, or some of the criteria are modified
-        let i = this.propertyFilters.length;
-        let modified = false;
-        while (i--) {
-          // Check whether there is an existing filter for the same property.
-          // If found, replace it with the new filter
-          if (
-            this.propertyFilters[i].criteria[0]?.filterableProperty.property ===
-            propertyFilter.criteria[0].filterableProperty.property
-          ) {
-            this.propertyFilters[i] = propertyFilter;
-            modified = true;
-          }
-        }
-        // If no existing filter was found, add the new one to the active filters list
-        if (!modified) {
-          this.propertyFilters.push(propertyFilter);
-        }
+        // One filter per field: replace the field's filter, or add it when the field has none yet.
+        const field = propertyFilter.criteria[0].filterableProperty.property;
+        const sameField = (filter: PropertyFilter) => filter.criteria[0]?.filterableProperty.property === field;
+        this.propertyFilters = this.propertyFilters.some(sameField)
+          ? this.propertyFilters.map(filter => (sameField(filter) ? propertyFilter : filter))
+          : [...this.propertyFilters, propertyFilter];
       } else {
-        // The property filter does not contain any criteria.
-        // It should be removed from the active filters list
-        let j = this.propertyFilters.length;
-        while (j--) {
-          if (this.propertyFilters[j].criteria.length === 0) {
-            this.propertyFilters.splice(j, 1);
-          }
-        }
+        // No criteria: drop the filters left without criteria (e.g. a caller emptied a filter it had passed in).
+        this.propertyFilters = this.propertyFilters.filter(filter => filter.criteria.length > 0);
       }
       this.emitFilters();
     }
