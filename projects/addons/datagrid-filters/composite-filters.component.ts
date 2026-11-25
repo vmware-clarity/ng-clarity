@@ -10,6 +10,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  computed,
   DestroyRef,
   ElementRef,
   EventEmitter,
@@ -20,6 +21,7 @@ import {
   OnInit,
   Output,
   QueryList,
+  signal,
   SimpleChanges,
   ViewChild,
   ViewChildren,
@@ -78,22 +80,11 @@ function toToggleArray(value: ToggleFilter[] | null | undefined): ToggleFilter[]
   hostDirectives: [ClrPopoverHostDirective],
 })
 export class CompositeFiltersComponent implements OnInit, OnChanges {
-  // Array of filterable properties
-  @Input({ transform: toPropertyArray }) filterableProperties: FilterablePropertyDefinition[] = [];
-
   /**
    * Filters applied when the filter bar starts, e.g. a fixed default view. Read once, in `ngOnInit`:
    * later changes are ignored. For filters the host keeps in sync, use `propertyFilters`.
    */
   @Input() presetFilters?: PropertyFilter[];
-
-  /**
-   * The active filters, including toggle filters that are ON. Supports two-way binding:
-   * `[(propertyFilters)]="filters"`. A new value replaces the active filters without emitting
-   * `propertyFiltersChange`, unless invalid filters on semi-predefined fields had to be removed.
-   * At start-up, a `presetFilters` filter wins over one here for the same field.
-   */
-  @Input({ transform: toFilterArray }) propertyFilters: PropertyFilter[] = [];
 
   /**
    * Other criteria (e.g. the quick search in combined mode) are active, so Clear all stays available
@@ -170,11 +161,57 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
 
   private rawToggleFilters: ToggleFilter[] = [];
 
-  private resolvedPredefinedFilters: FilterablePropertyDefinition[] = [];
+  // The state the pill groups below are computed from, as signals, so the groups update when any of it changes.
+  private readonly filterablePropertiesState = signal<FilterablePropertyDefinition[]>([]);
 
-  private resolvedSemiPredefinedFilters: EnumPropertyDefinition[] = [];
+  private readonly propertyFiltersState = signal<PropertyFilter[]>([]);
 
-  private resolvedToggleFilters: ToggleFilter[] = [];
+  private readonly resolvedPredefinedFilters = signal<FilterablePropertyDefinition[]>([]);
+
+  private readonly resolvedSemiPredefinedFilters = signal<EnumPropertyDefinition[]>([]);
+
+  private readonly resolvedToggleFilters = signal<ToggleFilter[]>([]);
+
+  /** The input that owns each predefined and semi-predefined field. The lists are without duplicates. */
+  private readonly fieldOwners = computed(() => {
+    const owners = new Map<string, 'predefined' | 'semi'>();
+    this.resolvedPredefinedFilters().forEach(property => owners.set(property.property, 'predefined'));
+    this.resolvedSemiPredefinedFilters().forEach(property => owners.set(property.property, 'semi'));
+    return owners;
+  });
+
+  // Pill groups, recomputed only when the filters, the fields or the inputs above change.
+  private readonly visiblePropertiesCache = computed(() => {
+    const properties = new Map<string, FilterablePropertyDefinition>();
+    for (const property of [...this.predefinedFilters, ...this.activeFilters()]) {
+      if (!properties.has(property.property) && !this.isSemiPredefined(property)) {
+        properties.set(property.property, property);
+      }
+    }
+    return [...properties.values()];
+  });
+
+  private readonly availablePropertiesCache = computed(() => {
+    const visibleKeys = new Set(
+      [...this.visibleProperties, ...this.semiPredefinedFilters, ...this.toggleProperties()].map(
+        property => property.property
+      )
+    );
+    return this.filterableProperties.filter(property => !visibleKeys.has(property.property));
+  });
+
+  private readonly userAddedFiltersCountCache = computed(
+    () =>
+      this.activeFilters().filter(property => !this.isPredefined(property) && !this.isSemiPredefined(property)).length
+  );
+
+  private readonly predefinedPropertiesCache = computed(() =>
+    this.visibleProperties.filter(property => this.isPredefined(property))
+  );
+
+  private readonly userAddedPropertiesCache = computed(() =>
+    this.visibleProperties.filter(property => !this.isPredefined(property))
+  );
 
   /** Fields ignored by the last resolution, reported with console.warn. */
   private ignoredFieldEntries: string[] = [];
@@ -192,6 +229,31 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     this.showHideFiltersAriaLabel = filterStrings.hideButtonAriaLabel;
   }
 
+  // Array of filterable properties
+  @Input({ transform: toPropertyArray })
+  get filterableProperties(): FilterablePropertyDefinition[] {
+    return this.filterablePropertiesState();
+  }
+
+  set filterableProperties(value: FilterablePropertyDefinition[]) {
+    this.filterablePropertiesState.set(value);
+  }
+
+  /**
+   * The active filters, including toggle filters that are ON. Supports two-way binding:
+   * `[(propertyFilters)]="filters"`. A new value replaces the active filters without emitting
+   * `propertyFiltersChange`, unless invalid filters on semi-predefined fields had to be removed.
+   * At start-up, a `presetFilters` filter wins over one here for the same field.
+   */
+  @Input({ transform: toFilterArray })
+  get propertyFilters(): PropertyFilter[] {
+    return this.propertyFiltersState();
+  }
+
+  set propertyFilters(filters: PropertyFilter[]) {
+    this.propertyFiltersState.set(filters);
+  }
+
   /**
    * Properties whose pills remain visible when their criteria are cleared.
    *
@@ -201,7 +263,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
    */
   @Input({ transform: toPropertyArray })
   get predefinedFilters(): FilterablePropertyDefinition[] {
-    return this.resolvedPredefinedFilters;
+    return this.resolvedPredefinedFilters();
   }
 
   set predefinedFilters(value: FilterablePropertyDefinition[]) {
@@ -216,7 +278,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
    */
   @Input({ transform: toEnumPropertyArray })
   get semiPredefinedFilters(): EnumPropertyDefinition[] {
-    return this.resolvedSemiPredefinedFilters;
+    return this.resolvedSemiPredefinedFilters();
   }
 
   set semiPredefinedFilters(value: EnumPropertyDefinition[]) {
@@ -234,7 +296,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
    */
   @Input({ transform: toToggleArray })
   get toggleFilters(): ToggleFilter[] {
-    return this.resolvedToggleFilters;
+    return this.resolvedToggleFilters();
   }
 
   set toggleFilters(value: ToggleFilter[]) {
@@ -251,35 +313,23 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   }
 
   protected get visibleProperties(): FilterablePropertyDefinition[] {
-    const properties = new Map<string, FilterablePropertyDefinition>();
-    for (const property of [...this.predefinedFilters, ...this.activeFilters()]) {
-      if (!properties.has(property.property) && !this.isSemiPredefined(property)) {
-        properties.set(property.property, property);
-      }
-    }
-    return [...properties.values()];
+    return this.visiblePropertiesCache();
   }
 
   protected get availableProperties(): FilterablePropertyDefinition[] {
-    const visibleKeys = new Set(
-      [...this.visibleProperties, ...this.semiPredefinedFilters, ...this.toggleProperties()].map(
-        property => property.property
-      )
-    );
-    return this.filterableProperties.filter(property => !visibleKeys.has(property.property));
+    return this.availablePropertiesCache();
   }
 
   protected get userAddedFiltersCount(): number {
-    return this.activeFilters().filter(property => !this.isPredefined(property) && !this.isSemiPredefined(property))
-      .length;
+    return this.userAddedFiltersCountCache();
   }
 
   protected get predefinedProperties(): FilterablePropertyDefinition[] {
-    return this.visibleProperties.filter(property => this.isPredefined(property));
+    return this.predefinedPropertiesCache();
   }
 
   protected get userAddedProperties(): FilterablePropertyDefinition[] {
-    return this.visibleProperties.filter(property => !this.isPredefined(property));
+    return this.userAddedPropertiesCache();
   }
 
   /** True when the predefined group has content (toggles or predefined pills). */
@@ -532,11 +582,11 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
   }
 
   private isSemiPredefined(property: FilterablePropertyDefinition): boolean {
-    return this.semiPredefinedFilters.some(semi => semi.property === property.property);
+    return this.fieldOwners().get(property.property) === 'semi';
   }
 
   private isPredefined(property: FilterablePropertyDefinition): boolean {
-    return this.predefinedFilters.some(predefined => predefined.property === property.property);
+    return this.fieldOwners().get(property.property) === 'predefined';
   }
 
   /** The fields used by the toggle filters. */
@@ -780,16 +830,18 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
       fields.forEach(field => claimed.add(field));
       return true;
     };
-    this.resolvedPredefinedFilters = this.rawPredefinedFilters.filter(property =>
-      claim([property.property], 'predefinedFilters')
+    this.resolvedPredefinedFilters.set(
+      this.rawPredefinedFilters.filter(property => claim([property.property], 'predefinedFilters'))
     );
-    this.resolvedSemiPredefinedFilters = this.rawSemiPredefinedFilters.filter(property =>
-      claim([property.property], 'semiPredefinedFilters')
+    this.resolvedSemiPredefinedFilters.set(
+      this.rawSemiPredefinedFilters.filter(property => claim([property.property], 'semiPredefinedFilters'))
     );
-    this.resolvedToggleFilters = this.rawToggleFilters.filter(toggle =>
-      claim(
-        [...new Set(toggle.filter.criteria.map(predicate => predicate.filterableProperty?.property).filter(Boolean))],
-        'toggleFilters'
+    this.resolvedToggleFilters.set(
+      this.rawToggleFilters.filter(toggle =>
+        claim(
+          [...new Set(toggle.filter.criteria.map(predicate => predicate.filterableProperty?.property).filter(Boolean))],
+          'toggleFilters'
+        )
       )
     );
     this.ignoredFieldEntries = ignored;
@@ -822,19 +874,10 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
    * and writes a console warning. Returns true when something was removed.
    */
   private removeInvalidSemiFilters(): boolean {
-    const invalid = this.propertyFilters.filter(
-      filter => this.isSemiPredefined(filter.criteria[0].filterableProperty) && !this.isOptionSelection(filter)
+    return this.removeFilters(
+      filter => this.isSemiPredefined(filter.criteria[0].filterableProperty) && !this.isOptionSelection(filter),
+      'filters on semiPredefinedFilters fields must select options (Equals on option keys, combined with OR).'
     );
-    if (!invalid.length) {
-      return false;
-    }
-    this.propertyFilters = this.propertyFilters.filter(filter => !invalid.includes(filter));
-    console.warn(
-      'appfx-composite-filter: filters on semiPredefinedFilters fields must select options ' +
-        '(Equals on option keys, combined with OR). Removed filters for: ' +
-        invalid.map(filter => filter.criteria[0].filterableProperty.property).join(', ')
-    );
-    return true;
   }
 
   /** Removes filters that their field's owner does not allow. Returns true when something was removed. */
@@ -851,16 +894,22 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
    */
   private removeToggleFieldFilters(): boolean {
     const toggleFields = new Set(this.toggleProperties().map(property => property.property));
-    const invalid = this.propertyFilters.filter(filter =>
-      filter.criteria.some(predicate => toggleFields.has(predicate.filterableProperty?.property))
+    return this.removeFilters(
+      filter => filter.criteria.some(predicate => toggleFields.has(predicate.filterableProperty?.property)),
+      'a toggleFilters field accepts only the toggle filter itself.'
     );
-    if (!invalid.length) {
+  }
+
+  /** Removes the filters `invalid` matches and writes a console warning. Returns true when something was removed. */
+  private removeFilters(invalid: (filter: PropertyFilter) => boolean, message: string): boolean {
+    const removed = this.propertyFilters.filter(invalid);
+    if (!removed.length) {
       return false;
     }
-    this.propertyFilters = this.propertyFilters.filter(filter => !invalid.includes(filter));
+    this.propertyFilters = this.propertyFilters.filter(filter => !removed.includes(filter));
     console.warn(
-      'appfx-composite-filter: a toggleFilters field accepts only the toggle filter itself. Removed filters for: ' +
-        invalid.map(filter => filter.criteria[0].filterableProperty.property).join(', ')
+      `appfx-composite-filter: ${message} Removed filters for: ` +
+        removed.map(filter => filter.criteria[0].filterableProperty.property).join(', ')
     );
     return true;
   }

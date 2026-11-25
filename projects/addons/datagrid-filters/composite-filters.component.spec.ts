@@ -1224,8 +1224,7 @@ describe('CompositeFiltersComponent', () => {
   });
 
   it('displays property filters', () => {
-    testContext.component.propertyFilters.push(stringPropertyFilter);
-    testContext.component.propertyFilters.push(enumPropertyFilter);
+    testContext.component.propertyFilters = [stringPropertyFilter, enumPropertyFilter];
     renderFixture(testContext.fixture);
     expect(testContext.component.propertyFilters.length).toEqual(2);
     const propertyFilterElements: HTMLElement[] =
@@ -1265,8 +1264,7 @@ describe('CompositeFiltersComponent', () => {
   });
   it('removes all filters on clear all click', () => {
     vi.spyOn(testContext.component.propertyFiltersChange, 'emit').mockImplementation(() => undefined);
-    testContext.component.propertyFilters.push(stringPropertyFilter);
-    testContext.component.propertyFilters.push(enumPropertyFilter);
+    testContext.component.propertyFilters = [stringPropertyFilter, enumPropertyFilter];
     renderFixture(testContext.fixture);
     const clearAllButtonElement: HTMLButtonElement = testContext.fixture.debugElement.nativeElement.querySelector(
       'button[data-test-id="clear-all-button"]'
@@ -1278,8 +1276,7 @@ describe('CompositeFiltersComponent', () => {
     expect(testContext.component.propertyFiltersChange.emit).toHaveBeenCalledWith([]);
   });
   it('shows/hides the display filters on show/hide button click', () => {
-    testContext.component.propertyFilters.push(stringPropertyFilter);
-    testContext.component.propertyFilters.push(enumPropertyFilter);
+    testContext.component.propertyFilters = [stringPropertyFilter, enumPropertyFilter];
     renderFixture(testContext.fixture);
     const hideButtonElement: HTMLButtonElement = testContext.fixture.debugElement.nativeElement.querySelector(
       'button[data-test-id="hide-filters"]'

@@ -23,6 +23,7 @@ import { FactoryProvider } from '@angular/core';
 import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
 import { FormArray } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
 import * as i17 from '@angular/common';
@@ -152,7 +153,8 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     readonly enumPropertyType: PropertyType;
     externalCriteriaActive: boolean;
     // (undocumented)
-    filterableProperties: FilterablePropertyDefinition[];
+    get filterableProperties(): FilterablePropertyDefinition[];
+    set filterableProperties(value: FilterablePropertyDefinition[]);
     // (undocumented)
     protected filterFor(property: FilterablePropertyDefinition): PropertyFilter | undefined;
     // (undocumented)
@@ -164,6 +166,8 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     protected isOptionSelected(property: EnumPropertyDefinition, key: string): boolean;
     // (undocumented)
     protected isToggleOn(toggle: ToggleFilter): boolean;
+    // (undocumented)
+    static ngAcceptInputType_filterableProperties: FilterablePropertyDefinition[] | null | undefined;
     // (undocumented)
     static ngAcceptInputType_predefinedFilters: FilterablePropertyDefinition[] | null | undefined;
     // (undocumented)
@@ -195,7 +199,8 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     // (undocumented)
     protected get predefinedProperties(): FilterablePropertyDefinition[];
     presetFilters?: PropertyFilter[];
-    propertyFilters: PropertyFilter[];
+    get propertyFilters(): PropertyFilter[];
+    set propertyFilters(filters: PropertyFilter[]);
     propertyFiltersChange: EventEmitter<PropertyFilter[]>;
     // (undocumented)
     propertyType?: PropertyType;
@@ -243,20 +248,20 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     protected get visibleProperties(): FilterablePropertyDefinition[];
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<CompositeFiltersComponent, "appfx-composite-filter", never, {
-        "filterableProperties": {
-            "alias": "filterableProperties";
-            "required": false;
-        };
         "presetFilters": {
             "alias": "presetFilters";
             "required": false;
         };
-        "propertyFilters": {
-            "alias": "propertyFilters";
-            "required": false;
-        };
         "externalCriteriaActive": {
             "alias": "externalCriteriaActive";
+            "required": false;
+        };
+        "filterableProperties": {
+            "alias": "filterableProperties";
+            "required": false;
+        };
+        "propertyFilters": {
+            "alias": "propertyFilters";
             "required": false;
         };
         "predefinedFilters": {
