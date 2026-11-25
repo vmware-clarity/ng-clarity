@@ -24,6 +24,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { uniqueIdFactory } from '@clr/angular/utils';
+import { distinctUntilChanged, map } from 'rxjs';
 
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
 import { ComparisonOperator, LogicalOperator, Unit } from '../model/datagrid-filters.enums';
@@ -106,8 +107,13 @@ export class GeneralFilterComponent implements OnInit, OnChanges {
       ),
       logicalOperator: [this.filterProperty.logicalOperator ?? this.propertyFilter?.operator ?? LogicalOperator.And],
     });
+    // The value's validators depend only on the operators, so re-check them when an operator changes, not per keystroke.
     this.conditions.valueChanges
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(
+        map(rows => rows.map(row => row.operator).join()),
+        distinctUntilChanged(),
+        takeUntilDestroyed(this.destroyRef)
+      )
       .subscribe(() => this.updateConditionValidators());
     this.updateConditionValidators();
   }
