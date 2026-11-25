@@ -59,7 +59,7 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
   private _expandAnimationState: string = COLLAPSED_STATE;
   private readonly injector = inject(Injector);
 
-  @ViewChild('children', { static: true }) private children: ElementRef<HTMLElement>;
+  @ViewChild('children', { static: true }) private children!: ElementRef<HTMLElement>;
 
   constructor(
     private _itemExpand: IfExpandService,

@@ -16,7 +16,7 @@ import { ContainerService } from './container.service';
  */
 @Injectable()
 export class A11yService {
-  private a11yMode: boolean;
+  private a11yMode = false;
   private a11yDragOrder: number = cardDefaults.order;
   private a11yDropOrder: number = cardDefaults.order;
 

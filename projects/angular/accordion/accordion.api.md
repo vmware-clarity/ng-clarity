@@ -120,7 +120,7 @@ export class ClrAccordionPanel extends CollapsiblePanel implements OnChanges {
     // (undocumented)
     disabled: boolean;
     // Warning: (ae-forgotten-export) The symbol "HeadingLevel" needs to be exported by the entry point clr-angular-accordion.d.ts
-    explicitHeadingLevel: HeadingLevel;
+    explicitHeadingLevel?: HeadingLevel;
     // (undocumented)
     getContentId(id: string): string;
     // (undocumented)
