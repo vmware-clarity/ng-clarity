@@ -128,6 +128,7 @@ export const IMPLICIT_ROLES_BY_TAG: Readonly<Record<string, string>> = {
   optgroup: 'group',
   option: 'option',
   output: 'status',
+  p: 'paragraph',
   progress: 'progressbar',
   search: 'search',
   section: 'region',

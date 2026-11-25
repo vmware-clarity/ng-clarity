@@ -57,7 +57,7 @@ export class ContextPlaygroundComponent implements OnInit {
   bytes = 0;
   nodes = 0;
   truncated = false;
-  focus: string | null = null;
+  modal = false;
   change: ClrContextChange | null = null;
   optionsJson = '{}';
 
@@ -117,7 +117,7 @@ export class ContextPlaygroundComponent implements OnInit {
     this.bytes = JSON.stringify(snapshot).length;
     this.nodes = snapshot.components.reduce((total, node) => total + countNodes(node), 0);
     this.truncated = snapshot.truncated === true;
-    this.focus = snapshot.focus ?? null;
+    this.modal = !!snapshot.modal;
     this.change = this.previous ? clrDiffContext(this.previous, snapshot) : null;
     this.previous = snapshot;
   }

@@ -125,22 +125,24 @@ function readableNameSource(source: Element, named: Element, withheld: string): 
   );
 }
 
+/** Every label of the control, joined in document order, as HTML-AAM names it. */
 function labelText(control: Element, withheld: string): string | null {
-  const label = labelOf(control);
-  if (!label || !readableNameSource(label, control, withheld)) {
-    return null;
-  }
-  return accessibleText(label, control, withheld);
+  const texts = labelsOf(control)
+    .filter(label => readableNameSource(label, control, withheld))
+    .map(label => accessibleText(label, control, withheld))
+    .filter(text => !!text);
+  return texts.length ? texts.join(' ') : null;
 }
 
 /** `labels` searches the document on every read, which makes a walk quadratic; the walk maps labels once. */
-function labelOf(control: Element): Element | null {
+function labelsOf(control: Element): Element[] {
   if (!('labels' in control) || !(control as HTMLInputElement).labels) {
-    return control.closest('label');
+    const label = control.closest('label');
+    return label ? [label] : [];
   }
   const scope = readScope();
   if (!scope) {
-    return (control as HTMLInputElement).labels?.[0] ?? null;
+    return Array.from((control as HTMLInputElement).labels ?? []);
   }
   const root = control.ownerDocument;
   let labels = scope.labels.get(root);
@@ -148,11 +150,11 @@ function labelOf(control: Element): Element | null {
     labels = new Map();
     for (const label of Array.from(root.querySelectorAll('label'))) {
       const labelled = label.control;
-      if (labelled && !labels.has(labelled)) {
-        labels.set(labelled, label);
+      if (labelled) {
+        labels.set(labelled, [...(labels.get(labelled) ?? []), label]);
       }
     }
     scope.labels.set(root, labels);
   }
-  return labels.get(control) ?? null;
+  return labels.get(control) ?? [];
 }

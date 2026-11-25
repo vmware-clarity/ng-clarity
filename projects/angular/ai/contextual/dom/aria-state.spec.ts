@@ -49,8 +49,8 @@ describe('ariaState', () => {
     const long = 'x'.repeat(5000);
     expect(stateOf(`<a href="/" aria-current="${long}">x</a>`).current).toBe('true');
     expect(stateOf('<a href="/" aria-current="page">x</a>').current).toBe('page');
-    expect(stateOf(`<button aria-haspopup="${long}">x</button>`).hasPopup).toBe('true');
-    expect(stateOf('<button aria-haspopup="menu">x</button>').hasPopup).toBe('menu');
+    expect(stateOf(`<button aria-haspopup="${long}">x</button>`).haspopup).toBe('true');
+    expect(stateOf('<button aria-haspopup="menu">x</button>').haspopup).toBe('menu');
     expect('live' in stateOf(`<div aria-live="${long}">x</div>`)).toBe(false);
     expect('sort' in stateOf(`<div role="columnheader" aria-sort="${long}"></div>`)).toBe(false);
   });
@@ -70,6 +70,32 @@ describe('ariaState', () => {
 
   it('reports what kind of thing aria-current marks', () => {
     expect(stateOf('<a href="/x" aria-current="page">x</a>').current).toBe('page');
+  });
+
+  it('reports the ARIA position, set size, orientation and shortcuts an element declares', () => {
+    expect(
+      stateOf(
+        '<div role="option" aria-posinset="2" aria-setsize="5" aria-orientation="vertical" aria-keyshortcuts="Alt+N">x</div>'
+      )
+    ).toEqual(expect.objectContaining({ posinset: 2, setsize: 5, orientation: 'vertical', keyshortcuts: 'Alt+N' }));
+    expect(stateOf('<div role="slider" aria-orientation="diagonal">x</div>').orientation).toBeUndefined();
+  });
+
+  it('reports which kind of error aria-invalid names, and true for any other value', () => {
+    expect(stateOf('<input aria-invalid="spelling" />').invalid).toBe('spelling');
+    expect(stateOf('<input aria-invalid="grammar" />').invalid).toBe('grammar');
+    expect(stateOf('<input aria-invalid="true" />').invalid).toBe(true);
+    expect(stateOf('<input aria-invalid="false" />').invalid).toBeUndefined();
+  });
+
+  it('falls back to aria-description when nothing describes the control', () => {
+    expect(stateOf('<button aria-description="Deletes the host">Delete</button>').description).toBe('Deletes the host');
+    expect(
+      stateOfSelected(
+        '<span id="d">From describedby</span><button aria-describedby="d" aria-description="ignored">x</button>',
+        'button'
+      ).description
+    ).toBe('From describedby');
   });
 
   it('reports aria-level as a number', () => {
@@ -108,7 +134,7 @@ describe('ariaState', () => {
   it('reports format constraints so an agent cannot propose an invalid value', () => {
     const state = stateOf('<input pattern="^[a-z-]{3,24}$" maxlength="24" />');
     expect(state.pattern).toBe('^[a-z-]{3,24}$');
-    expect(state.maxLength).toBe(24);
+    expect(state.maxlength).toBe(24);
   });
 
   it("reports a control's current value", () => {

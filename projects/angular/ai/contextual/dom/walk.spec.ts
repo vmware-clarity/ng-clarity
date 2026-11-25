@@ -61,13 +61,13 @@ describe('collectContextTreeWithin', () => {
 
   it('includes a role-less element that carries an accessible name', () => {
     const [node] = collect('<div aria-label="Usage summary"></div>');
-    expect(node.type).toBe('group');
+    expect(node.type).toBe('generic');
     expect(node.label).toBe('Usage summary');
   });
 
-  it('includes a custom element that has no role as a group, naming its tag in element', () => {
+  it('includes a custom element that has no role as a generic node, naming its tag in element', () => {
     const [node] = collect('<my-widget>3 hosts</my-widget>');
-    expect(node.type).toBe('group');
+    expect(node.type).toBe('generic');
     expect(node.element).toBe('my-widget');
     expect(node.label).toBe('3 hosts');
   });
@@ -111,7 +111,7 @@ describe('collectContextTreeWithin', () => {
     const nodes = collect('<div contenteditable="true" aria-label="Notes"><p>my <b>secret</b> note</p></div>');
     expect(nodes).toEqual([{ type: 'textbox', label: 'Notes', state: { value: 'my secret note' } }]);
     expect(collect('<div contenteditable="false"><p>plain prose</p></div>')).toEqual([
-      { type: 'text', label: 'plain prose' },
+      { type: 'paragraph', label: 'plain prose' },
     ]);
   });
 
@@ -380,7 +380,7 @@ describe('collectContextTreeWithin', () => {
 
   it('labels an anonymous custom element with the text it renders', () => {
     const [node] = collect('<clr-dg-footer>2 items</clr-dg-footer>');
-    expect(node).toEqual({ type: 'group', element: 'clr-dg-footer', label: '2 items' });
+    expect(node).toEqual({ type: 'generic', element: 'clr-dg-footer', label: '2 items' });
   });
 
   it('does not describe text that exists only to describe another element', () => {
@@ -437,7 +437,7 @@ describe('collectContextTreeWithin', () => {
     const nodes = collect('<my-widget><div role="grid"></div><my-widget-footer>3 items</my-widget-footer></my-widget>');
 
     expect(nodes.length).toBe(1);
-    expect(nodes[0].type).toBe('group');
+    expect(nodes[0].type).toBe('generic');
     expect(nodes[0].element).toBe('my-widget');
     expect(nodes[0].children?.map(child => child.element)).toEqual(['my-widget', 'my-widget-footer']);
     expect(nodes[0].children?.[1].label).toBe('3 items');
@@ -549,7 +549,7 @@ describe('collectContextTreeWithin, what a summary must not hide', () => {
       state: { rowCount: 40 },
     }));
     const [widget] = collectContextTreeWithin(container, budgets()).components;
-    expect(widget.type).toBe('group');
+    expect(widget.type).toBe('generic');
     expect(widget.element).toBe('my-grid');
     expect(widget.state).toEqual({ rowCount: 40 });
     expect(widget.children?.[1].state).toBeUndefined();
@@ -655,9 +655,9 @@ describe('collectContextTreeWithin, text and frames', () => {
   }
 
   describe('text that carries no role', () => {
-    it('reports a paragraph as text, so what a page says reaches an agent', () => {
+    it('reports a paragraph by its role, so what a page says reaches an agent', () => {
       expect(collect('<p>Hosts are provisioned nightly.</p>')).toEqual([
-        { type: 'text', label: 'Hosts are provisioned nightly.' },
+        { type: 'paragraph', label: 'Hosts are provisioned nightly.' },
       ]);
     });
 
@@ -668,7 +668,7 @@ describe('collectContextTreeWithin, text and frames', () => {
 
     it('keeps a control inside a sentence as the text block’s child', () => {
       const [text] = collect('<p>Need help? <a href="/docs">Read the docs</a>.</p>');
-      expect(text.type).toBe('text');
+      expect(text.type).toBe('paragraph');
       expect(text.label).toBe('Need help? Read the docs.');
       expect(types(text.children)).toEqual(['link']);
     });
@@ -705,7 +705,7 @@ describe('collectContextTreeWithin, text and frames', () => {
 
     it('labels a component by the text it renders, rather than nesting a text node inside it', () => {
       const [node] = collect('<clr-dg-footer><div>2 items</div></clr-dg-footer>');
-      expect(node).toEqual({ type: 'group', element: 'clr-dg-footer', label: '2 items' });
+      expect(node).toEqual({ type: 'generic', element: 'clr-dg-footer', label: '2 items' });
     });
 
     it('can be turned off', () => {
@@ -864,7 +864,7 @@ describe('collectContextTreeWithin, its result', () => {
     await loaded;
 
     const [node] = collectContextTreeWithin(container, budgets()).components;
-    expect(node.children?.[0]).toEqual({ type: 'text', label: 'Cluster health: degraded.' });
+    expect(node.children?.[0]).toEqual({ type: 'paragraph', label: 'Cluster health: degraded.' });
   });
 });
 
@@ -876,7 +876,7 @@ describe('collectContextTreeWithin, choosing what to collect', () => {
     <main>
       <h1>Hosts</h1>
       <p>Four hosts in this datacenter.</p>
-      <form><input aria-label="Filter" /><button>Apply</button></form>
+      <form aria-label="Filters"><input aria-label="Filter" /><button>Apply</button></form>
     </main>
     <footer>v2.0</footer>`;
 
@@ -884,7 +884,7 @@ describe('collectContextTreeWithin, choosing what to collect', () => {
     const { components } = collectTree(PAGE, { excludeRoles: ['navigation', 'contentinfo'] });
     expect(types(components)).toEqual(['banner', 'main']);
     expect(components[0].children).toBeUndefined();
-    expect(types(components[1].children)).toEqual(['heading', 'text', 'form']);
+    expect(types(components[1].children)).toEqual(['heading', 'paragraph', 'form']);
   });
 
   it('leaves out whole subtrees by selector, for layout that cannot be annotated', () => {
@@ -900,7 +900,7 @@ describe('collectContextTreeWithin, choosing what to collect', () => {
   it('describes only what the root selector picks out', () => {
     const { components } = collectTree(PAGE, { rootSelector: 'main' });
     expect(types(components)).toEqual(['main']);
-    expect(types(components[0].children)).toEqual(['heading', 'text', 'form']);
+    expect(types(components[0].children)).toEqual(['heading', 'paragraph', 'form']);
   });
 
   it('does not let a root selector reach into an ignored region', () => {
@@ -975,7 +975,7 @@ describe('collectContextTreeWithin, choosing what to collect', () => {
       `${PAGE}<div role="dialog" aria-modal="true" aria-label="Add host"><input aria-label="Name" /><button>Add</button></div>`,
       { focus: 'modal' }
     );
-    expect(result.focus).toBe('modal');
+    expect(result.modal).toBe(true);
     expect(types(result.components)).toEqual(['dialog']);
     expect(types(result.components[0].children)).toEqual(['textbox', 'button']);
   });
@@ -994,13 +994,13 @@ describe('collectContextTreeWithin, choosing what to collect', () => {
     // A dialog opened with show(), and an alert dialog that does not say it is modal,
     // leave the page in use.
     dialog.show();
-    expect(collectContextTreeWithin(container, resolveSnapshotOptions({ root: 'modal' })).focus).toBeUndefined();
+    expect(collectContextTreeWithin(container, resolveSnapshotOptions({ root: 'modal' })).modal).toBeUndefined();
 
     dialog.close();
     dialog.showModal();
     try {
       const result = collectContextTreeWithin(container, resolveSnapshotOptions({ root: 'modal' }));
-      expect(result.focus).toBe('modal');
+      expect(result.modal).toBe(true);
       expect(result.components.map(node => node.label)).toEqual(['Tip']);
     } finally {
       dialog.close();
@@ -1012,7 +1012,7 @@ describe('collectContextTreeWithin, choosing what to collect', () => {
       `${PAGE}<div role="dialog" aria-modal="true" aria-label="Elsewhere"><button>Leave</button></div>`,
       { rootSelector: 'main', focus: 'modal' }
     );
-    expect(result.focus).toBeUndefined();
+    expect(result.modal).toBeUndefined();
     expect(types(result.components)).toEqual(['main']);
     expect(JSON.stringify(result.components)).not.toContain('Leave');
   });
@@ -1023,7 +1023,7 @@ describe('collectContextTreeWithin, choosing what to collect', () => {
        <div role="dialog" aria-modal="true" aria-label="Outside"><button>Leave</button></div>`,
       { rootSelector: 'main', focus: 'modal' }
     );
-    expect(result.focus).toBe('modal');
+    expect(result.modal).toBe(true);
     expect(result.components.map(node => node.label)).toEqual(['Inside']);
   });
 
@@ -1037,14 +1037,14 @@ describe('collectContextTreeWithin, choosing what to collect', () => {
       `${PAGE}<aside><div role="dialog" aria-modal="true" aria-label="Panel"><button>Hidden</button></div></aside>`,
       { focus: 'modal', excludeRoles: ['complementary'] }
     );
-    expect(result.focus).toBeUndefined();
+    expect(result.modal).toBeUndefined();
     expect(types(result.components)).toEqual(['banner', 'main', 'contentinfo']);
     expect(JSON.stringify(result.components)).not.toContain('Hidden');
   });
 
   it('describes the whole page under modal focus while no modal is open', () => {
     const result = collectTree(`${PAGE}<div role="dialog" aria-modal="true" hidden></div>`, { focus: 'modal' });
-    expect(result.focus).toBeUndefined();
+    expect(result.modal).toBeUndefined();
     expect(types(result.components)).toEqual(['banner', 'main', 'contentinfo']);
   });
 
@@ -1075,7 +1075,7 @@ describe('collectContextTreeWithin, leaving out whole kinds of content', () => {
   const PAGE = `
     <h2>Hosts</h2>
     <p>Four hosts.</p>
-    <form><input aria-label="Filter" /><button>Apply</button></form>
+    <form aria-label="Filters"><input aria-label="Filter" /><button>Apply</button></form>
     <a href="/vms">VMs</a>
     <div role="alert">Disk full</div>
     <ul><li><a href="/a">a</a></li></ul>`;
@@ -1090,7 +1090,7 @@ describe('collectContextTreeWithin, leaving out whole kinds of content', () => {
 
   it('drops forms with their controls, headings, status and collections by category', () => {
     const found = collectTypes(PAGE, { excludeCategories: ['forms', 'headings', 'status', 'collections'] });
-    expect(found).toEqual(['text', 'link']);
+    expect(found).toEqual(['paragraph', 'link']);
   });
 
   it('drops prose with the text category', () => {
@@ -1422,29 +1422,44 @@ describe('collectContextTreeWithin, names, text and state an agent would otherwi
       { type: 'text', label: 'Connection lost', state: { live: 'polite' } },
     ]);
     expect(collect('<div aria-live="assertive"><p>Saved</p></div>')).toEqual([
-      { type: 'text', label: 'Saved', state: { live: 'assertive' } },
+      { type: 'paragraph', label: 'Saved', state: { live: 'assertive' } },
     ]);
+  });
+
+  it('marks the element that has focus, following aria-activedescendant', () => {
+    container.innerHTML = '<input aria-label="Host" /><button>Go</button>';
+    (container.querySelector('input') as HTMLInputElement).focus();
+    const nodes = collectContextTreeWithin(container, budgets()).components;
+    expect(nodes.map(node => node.state?.['focused'])).toEqual([true, undefined]);
+
+    container.innerHTML =
+      '<div role="tree" tabindex="0" aria-label="Hosts" aria-activedescendant="b">' +
+      '<div role="treeitem" id="a">a</div><div role="treeitem" id="b">b</div></div>';
+    (container.querySelector('[role="tree"]') as HTMLElement).focus();
+    const [tree] = collectContextTreeWithin(container, budgets()).components;
+    expect(tree.state?.['focused']).toBeUndefined();
+    expect(tree.children?.map(node => node.state?.['focused'])).toEqual([undefined, true]);
   });
 
   it('reports an author’s own word for what an element is', () => {
     const [slide] = collect('<div role="group" aria-roledescription="slide" aria-label="2 of 5"></div>');
-    expect(slide).toEqual({ type: 'group', label: '2 of 5', state: { roleDescription: 'slide' } });
+    expect(slide).toEqual({ type: 'group', label: '2 of 5', state: { roledescription: 'slide' } });
   });
 
-  it('types a role-less component as a group, keeping its tag in element', () => {
+  it('types a role-less component as generic, keeping its tag in element', () => {
     const nodes = collect(
       `<my-footer>3 items</my-footer>
        <my-widget aria-label="Named"><button>Go</button></my-widget>
        <my-pair><div role="grid"></div><my-footer>2 items</my-footer></my-pair>`
     );
     expect(nodes.map(node => [node.type, node.element])).toEqual([
-      ['group', 'my-footer'],
-      ['group', 'my-widget'],
-      ['group', 'my-pair'],
+      ['generic', 'my-footer'],
+      ['generic', 'my-widget'],
+      ['generic', 'my-pair'],
     ]);
     expect(nodes[2].children?.map(node => [node.type, node.element])).toEqual([
       ['grid', 'my-pair'],
-      ['group', 'my-footer'],
+      ['generic', 'my-footer'],
     ]);
   });
 
@@ -1465,7 +1480,7 @@ describe('collectContextTreeWithin, names, text and state an agent would otherwi
       container.innerHTML = FLOW;
       publishSteps();
       const result = collectContextTreeWithin(container, budgets({ focus: 'modal' }));
-      expect(result.focus).toBe('modal');
+      expect(result.modal).toBe(true);
       expect(result.components).toEqual([
         {
           type: 'dialog',

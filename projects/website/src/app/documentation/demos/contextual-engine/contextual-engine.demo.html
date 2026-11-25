@@ -29,6 +29,17 @@
         reported as a <code cds-text="code">grid</code>, a modal as a <code cds-text="code">dialog</code>.
       </li>
       <li>
+        Roles follow HTML-AAM and names follow Accessible Name Computation 1.2, as a screen reader gets them. State keys
+        are the ARIA attribute names without <code cds-text="code">aria-</code>, such as
+        <code cds-text="code">readonly</code> and <code cds-text="code">haspopup</code>. The element with focus has
+        <code cds-text="code">focused: true</code>.
+      </li>
+      <li>
+        A <code cds-text="code">&lt;form&gt;</code> or <code cds-text="code">&lt;section&gt;</code> without a name has
+        no role, so its fields are reported as part of the page. Give a form an
+        <code cds-text="code">aria-label</code> to keep it as one node.
+      </li>
+      <li>
         A component can add state the DOM does not show, such as a combobox's options while it is closed. See
         <a routerLink="/documentation/contextual-engine/code" fragment="element-context">Publish a component's state</a
         >.
