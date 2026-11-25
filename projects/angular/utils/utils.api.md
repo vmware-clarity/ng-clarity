@@ -150,7 +150,13 @@ export function closestContextMark(element: Element, mark: ClrContextMark): Elem
 export const CLR_CONTEXT_EDITING_HOST_SELECTOR = "[contenteditable]:not([contenteditable=\"false\" i])";
 
 // @public
-export const CLR_CONTEXT_HIDDEN_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert]";
+export const CLR_CONTEXT_HIDDEN_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore]";
+
+// @public
+export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
+
+// @public
+export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
 
 // @public (undocumented)
 export const CLR_LOADING_DIRECTIVES: Type<any>[];
@@ -459,7 +465,6 @@ export type ClrContextCategory = 'layout' | 'actions' | 'forms' | 'headings' | '
 
 // @public
 export class ClrContextIgnore {
-    constructor();
     readonly clrContextIgnore: InputSignalWithTransform<boolean, unknown>;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContextIgnore, "[clrContextIgnore]", never, {
@@ -478,7 +483,6 @@ export type ClrContextMark = 'ignore' | 'redact';
 
 // @public
 export class ClrContextRedact {
-    constructor();
     readonly clrContextRedact: InputSignalWithTransform<boolean, unknown>;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContextRedact, "[clrContextRedact]", never, {
