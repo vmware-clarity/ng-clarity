@@ -36,11 +36,11 @@ export class TimelineIconAttributeService {
     return this.commonStrings.keys[STEP_ICONS[step].ariaLabelKey];
   }
 
-  getIconShape(step: ClrTimelineStepState): string {
+  getIconShape(step: ClrTimelineStepState): string | undefined {
     return STEP_ICONS[step].iconShape;
   }
 
-  getIconStatus(step: ClrTimelineStepState): string {
+  getIconStatus(step: ClrTimelineStepState): string | null {
     return STEP_ICONS[step].iconStatus;
   }
 }

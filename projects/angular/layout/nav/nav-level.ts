@@ -35,11 +35,11 @@ import { ResponsiveNavCodes } from './responsive-nav-codes';
   standalone: false,
 })
 export class ClrNavLevel implements OnInit {
-  @Input('clr-nav-level') _level: number;
-  @Input('closeAriaLabel') closeButtonAriaLabel: string;
+  @Input('clr-nav-level') _level!: number;
+  @Input('closeAriaLabel') closeButtonAriaLabel!: string;
 
   private _isOpen = false;
-  private _document: Document;
+  private _document!: Document;
   private _subscription: Subscription;
 
   constructor(

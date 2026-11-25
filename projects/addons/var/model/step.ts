@@ -81,19 +81,20 @@ export interface Step {
   mappings?: Mappings<any, any>;
 
   /**
-   * Function that is invoked after the step is successfully validated.
-   * In case of Wizard - the result will be displayed in "Ready to Complete" page.
-   * In case of Stepper - this result will be displayed on the right of the step
-   * title (after the user navigates to the next step).
-   * @returns {PropertyViewSectionModel}
-   */
-  summary?: (builder: PropertyViewSectionBuilder, stepModel?: StepModel) => PropertyViewSectionModel;
-
-  /**
    * Recreates the step component if the function returns true
    * If defined, {@link model} should be factory function.
    */
   recreateComponent?: (stepModelChanges?: ModelChanges) => boolean;
+
+  /**
+   * Function that is invoked after the step is successfully validated.
+   * In case of Wizard - the result will be displayed in "Ready to Complete" page.
+   * In case of Stepper - this result will be displayed on the right of the step
+   * title (after the user navigates to the next step).
+   * Declared as a method so a step can type its own model: `summary: (builder, model: MyStepModel) => ...`.
+   * @returns {PropertyViewSectionModel}
+   */
+  summary?(builder: PropertyViewSectionBuilder, stepModel?: StepModel): PropertyViewSectionModel;
 }
 
 /**

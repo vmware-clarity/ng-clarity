@@ -10,6 +10,6 @@ import { ClrCommonStrings } from '@clr/angular/utils';
 
 export interface IconAttributes {
   iconShape: string | undefined;
-  iconStatus: StatusTypes;
+  iconStatus: StatusTypes | null;
   ariaLabelKey: keyof ClrCommonStrings;
 }
