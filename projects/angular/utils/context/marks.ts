@@ -5,9 +5,20 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { booleanAttribute, DestroyRef, Directive, effect, ElementRef, inject, input, Signal } from '@angular/core';
+import { booleanAttribute, Directive, input } from '@angular/core';
 
-import { publishFor } from './publish';
+/**
+ * Marks an element whose value, and everything inside it, never appears in a snapshot.
+ * The element is still described, so an agent knows the value is withheld rather than absent.
+ * In a template, prefer the `clrContextRedact` directive, which sets it.
+ */
+export const CLR_CONTEXT_REDACT_ATTRIBUTE = 'data-clr-context-redact';
+
+/**
+ * Elements carrying this attribute, and everything inside them, are invisible to the engine.
+ * In a template, prefer the `clrContextIgnore` directive, which sets it.
+ */
+export const CLR_CONTEXT_IGNORE_ATTRIBUTE = 'data-clr-context-ignore';
 
 /**
  * How page-context tooling treats an element and everything inside it. `ignore`: invisible to it.
@@ -15,43 +26,41 @@ import { publishFor } from './publish';
  */
 export type ClrContextMark = 'ignore' | 'redact';
 
-// Kept off the elements, so page content can neither read a mark nor plant one to hide itself.
-const marks: Record<ClrContextMark, WeakMap<Element, object>> = { ignore: new WeakMap(), redact: new WeakMap() };
+const MARK_ATTRIBUTES: Record<ClrContextMark, string> = {
+  ignore: CLR_CONTEXT_IGNORE_ATTRIBUTE,
+  redact: CLR_CONTEXT_REDACT_ATTRIBUTE,
+};
 
-/** Marks the element; the teardown removes only this mark. */
+/** Marks the element; the teardown removes the mark. */
 export function markContext(element: Element, mark: ClrContextMark): () => void {
-  return publishFor(marks[mark], element, {});
+  element.setAttribute(MARK_ATTRIBUTES[mark], '');
+  return () => element.removeAttribute(MARK_ATTRIBUTES[mark]);
 }
 
 /** Whether the element itself carries the mark. */
 export function hasContextMark(element: Element, mark: ClrContextMark): boolean {
-  return marks[mark].has(element);
+  return element.hasAttribute(MARK_ATTRIBUTES[mark]);
 }
 
 /** The element, or its closest ancestor, that carries the mark. */
 export function closestContextMark(element: Element, mark: ClrContextMark): Element | null {
-  for (let current: Element | null = element; current; current = current.parentElement) {
-    if (marks[mark].has(current)) {
-      return current;
-    }
-  }
-  return null;
+  return element.closest(`[${MARK_ATTRIBUTES[mark]}]`);
 }
 
-/** What page-context tooling treats as not on the page, along with `ignore` marks. */
-export const CLR_CONTEXT_HIDDEN_SELECTOR = '[hidden], [aria-hidden="true"], [inert]';
+/** What page-context tooling treats as not on the page; shared so the engine and components agree. */
+export const CLR_CONTEXT_HIDDEN_SELECTOR = `[hidden], [aria-hidden="true"], [inert], [${CLR_CONTEXT_IGNORE_ATTRIBUTE}]`;
 
 /** An editing host; what it holds is user input, never text to read into a name. */
 export const CLR_CONTEXT_EDITING_HOST_SELECTOR = '[contenteditable]:not([contenteditable="false" i])';
 
 /** Whether the element is hidden from page-context tooling: hidden, inert or marked `ignore`. */
 export function isContextHidden(element: Element): boolean {
-  return element.matches(CLR_CONTEXT_HIDDEN_SELECTOR) || hasContextMark(element, 'ignore');
+  return element.matches(CLR_CONTEXT_HIDDEN_SELECTOR);
 }
 
 /** Whether the element, or an ancestor, is hidden from page-context tooling. */
 export function isWithinContextHidden(element: Element): boolean {
-  return !!element.closest(CLR_CONTEXT_HIDDEN_SELECTOR) || !!closestContextMark(element, 'ignore');
+  return !!element.closest(CLR_CONTEXT_HIDDEN_SELECTOR);
 }
 
 /** Whether page-context tooling reads no text from the element: hidden, ignored, redacted or an editing host. */
@@ -66,48 +75,28 @@ export function holdsContextWithheld(element: Element): boolean {
   return Array.from(element.querySelectorAll('*')).some(isContextWithheld);
 }
 
-/** Marks the host element while `active` is true; a mark is set until the input is first read, so it fails closed. */
-function markHostWhile(mark: ClrContextMark, active: Signal<boolean>): void {
-  const host: Node = inject(ElementRef).nativeElement;
-  if (host.nodeType !== Node.ELEMENT_NODE) {
-    return;
-  }
-  let unmark: (() => void) | null = markContext(host as Element, mark);
-  effect(() => {
-    if (active() && !unmark) {
-      unmark = markContext(host as Element, mark);
-    } else if (!active() && unmark) {
-      unmark();
-      unmark = null;
-    }
-  });
-  inject(DestroyRef).onDestroy(() => unmark?.());
-}
-
 /**
- * Hides the element and everything inside it from AI page context. Put it on UI that consumes
- * context, such as a chat panel, to avoid feedback loops.
+ * Hides the element and everything inside it from AI page context, by setting `data-clr-context-ignore`.
+ * Put it on UI that consumes context, such as a chat panel, to avoid feedback loops.
  */
-@Directive({ selector: '[clrContextIgnore]' })
+@Directive({
+  selector: '[clrContextIgnore]',
+  host: { '[attr.data-clr-context-ignore]': 'clrContextIgnore() ? "" : null' },
+})
 export class ClrContextIgnore {
   /** `false` lifts the mark, such as `[clrContextIgnore]="isInternal(item)"` on one item of a list. */
   readonly clrContextIgnore = input(true, { transform: booleanAttribute });
-
-  constructor() {
-    markHostWhile('ignore', this.clrContextIgnore);
-  }
 }
 
 /**
- * Withholds the values and text of the element and everything inside it from AI page context.
- * The element is still described, so an agent knows the value is withheld rather than absent.
+ * Withholds the values and text of the element and everything inside it from AI page context, by setting
+ * `data-clr-context-redact`. The element is still described, so an agent knows the value is withheld.
  */
-@Directive({ selector: '[clrContextRedact]' })
+@Directive({
+  selector: '[clrContextRedact]',
+  host: { '[attr.data-clr-context-redact]': 'clrContextRedact() ? "" : null' },
+})
 export class ClrContextRedact {
   /** `false` lifts the mark, such as `[clrContextRedact]="account.private"` on one row of a grid. */
   readonly clrContextRedact = input(true, { transform: booleanAttribute });
-
-  constructor() {
-    markHostWhile('redact', this.clrContextRedact);
-  }
 }

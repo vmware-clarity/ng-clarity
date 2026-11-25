@@ -14,7 +14,12 @@ export * from './diff';
 export * from './schema';
 export { CLR_CONTEXT_CATEGORIES, CLR_CONTEXT_PRESETS } from './snapshot-options';
 export type { ClrContextPreset } from './snapshot-options';
-export { ClrContextIgnore, ClrContextRedact } from '@clr/angular/utils';
+export {
+  CLR_CONTEXT_IGNORE_ATTRIBUTE,
+  CLR_CONTEXT_REDACT_ATTRIBUTE,
+  ClrContextIgnore,
+  ClrContextRedact,
+} from '@clr/angular/utils';
 // The host class stays internal so the application-wide options always apply.
 export { CLR_CONTEXT_PROTOCOL, clrRequestHostContext } from './iframe/context-frame-bridge';
 export type {
