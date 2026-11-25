@@ -20,8 +20,8 @@ import { ClrTabLink } from './tab-link.directive';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrTab {
-  @ContentChild(ClrTabLink, { static: true }) tabLink: ClrTabLink;
-  @ContentChild(ClrTabContent, { static: true }) tabContent: ClrTabContent;
+  @ContentChild(ClrTabLink, { static: true }) tabLink!: ClrTabLink;
+  @ContentChild(ClrTabContent, { static: true }) tabContent!: ClrTabContent;
 
   constructor(
     public ifActiveService: IfActiveService,

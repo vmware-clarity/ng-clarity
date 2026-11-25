@@ -25,7 +25,7 @@ import { ClrControlLabel, ControlIdService } from '@clr/angular/forms/common';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrRadioWrapper implements OnInit {
-  @ContentChild(ClrControlLabel, { static: true }) label: ClrControlLabel;
+  @ContentChild(ClrControlLabel, { static: true }) label!: ClrControlLabel;
 
   ngOnInit() {
     if (this.label) {

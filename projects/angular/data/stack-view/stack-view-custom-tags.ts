@@ -27,12 +27,12 @@ export class ClrStackViewCustomTags {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrStackViewLabel implements OnInit {
-  private _generatedId: string = null;
+  private _generatedId: string | null = null;
 
-  private readonly _id = signal<string>(null);
+  private readonly _id = signal<string | null>(null);
 
   @Input()
-  get id() {
+  get id(): string | null {
     return this._id();
   }
   set id(val: string) {

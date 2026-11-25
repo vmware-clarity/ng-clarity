@@ -51,8 +51,8 @@ export const resources = {
 })
 export class OverflowClrTabsDirective implements AfterViewInit, OnDestroy {
   private readonly subscription: Subscription = new Subscription();
-  private parentElement: HTMLElement;
-  private tabOverflowEl: HTMLElement;
+  private parentElement!: HTMLElement;
+  private tabOverflowEl?: HTMLElement;
 
   constructor(
     private cdr: ChangeDetectorRef,
