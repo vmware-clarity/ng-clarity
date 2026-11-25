@@ -27,6 +27,7 @@ describe('ClrCommonStringsService', () => {
   let service: ClrCommonStringsService;
 
   beforeEach(() => {
+    TestBed.configureTestingModule({ imports: [OnPushCardHost] });
     service = TestBed.inject(ClrCommonStringsService);
   });
 
