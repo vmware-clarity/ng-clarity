@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DestroyRef, Directive, ElementRef, inject } from '@angular/core';
+import { booleanAttribute, DestroyRef, Directive, effect, ElementRef, inject, input, Signal } from '@angular/core';
 
 import { publishFor } from './publish';
 
@@ -54,11 +54,22 @@ export function isWithinContextHidden(element: Element): boolean {
   return !!element.closest(CLR_CONTEXT_HIDDEN_SELECTOR) || !!closestContextMark(element, 'ignore');
 }
 
-function markHost(mark: ClrContextMark): void {
+/** Marks the host element while `active` is true; a mark is set until the input is first read, so it fails closed. */
+function markHostWhile(mark: ClrContextMark, active: Signal<boolean>): void {
   const host: Node = inject(ElementRef).nativeElement;
-  if (host.nodeType === Node.ELEMENT_NODE) {
-    inject(DestroyRef).onDestroy(markContext(host as Element, mark));
+  if (host.nodeType !== Node.ELEMENT_NODE) {
+    return;
   }
+  let unmark: (() => void) | null = markContext(host as Element, mark);
+  effect(() => {
+    if (active() && !unmark) {
+      unmark = markContext(host as Element, mark);
+    } else if (!active() && unmark) {
+      unmark();
+      unmark = null;
+    }
+  });
+  inject(DestroyRef).onDestroy(() => unmark?.());
 }
 
 /**
@@ -67,8 +78,11 @@ function markHost(mark: ClrContextMark): void {
  */
 @Directive({ selector: '[clrContextIgnore]' })
 export class ClrContextIgnore {
+  /** `false` lifts the mark, such as `[clrContextIgnore]="isInternal(item)"` on one item of a list. */
+  readonly clrContextIgnore = input(true, { transform: booleanAttribute });
+
   constructor() {
-    markHost('ignore');
+    markHostWhile('ignore', this.clrContextIgnore);
   }
 }
 
@@ -78,7 +92,10 @@ export class ClrContextIgnore {
  */
 @Directive({ selector: '[clrContextRedact]' })
 export class ClrContextRedact {
+  /** `false` lifts the mark, such as `[clrContextRedact]="account.private"` on one row of a grid. */
+  readonly clrContextRedact = input(true, { transform: booleanAttribute });
+
   constructor() {
-    markHost('redact');
+    markHostWhile('redact', this.clrContextRedact);
   }
 }

@@ -16,6 +16,7 @@ import * as i0 from '@angular/core';
 import * as i2 from '@angular/common';
 import { InjectionToken } from '@angular/core';
 import { Injector } from '@angular/core';
+import { InputSignalWithTransform } from '@angular/core';
 import { NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Observer } from 'rxjs';
@@ -458,8 +459,15 @@ export type ClrContextCategory = 'layout' | 'actions' | 'forms' | 'headings' | '
 // @public
 export class ClrContextIgnore {
     constructor();
+    readonly clrContextIgnore: InputSignalWithTransform<boolean, unknown>;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContextIgnore, "[clrContextIgnore]", never, {}, {}, never, never, true, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContextIgnore, "[clrContextIgnore]", never, {
+        "clrContextIgnore": {
+            "alias": "clrContextIgnore";
+            "required": false;
+            "isSignal": true;
+        };
+    }, {}, never, never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextIgnore, never>;
 }
@@ -470,8 +478,15 @@ export type ClrContextMark = 'ignore' | 'redact';
 // @public
 export class ClrContextRedact {
     constructor();
+    readonly clrContextRedact: InputSignalWithTransform<boolean, unknown>;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContextRedact, "[clrContextRedact]", never, {}, {}, never, never, true, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContextRedact, "[clrContextRedact]", never, {
+        "clrContextRedact": {
+            "alias": "clrContextRedact";
+            "required": false;
+            "isSignal": true;
+        };
+    }, {}, never, never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextRedact, never>;
 }
