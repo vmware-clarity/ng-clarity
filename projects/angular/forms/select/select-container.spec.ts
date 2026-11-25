@@ -6,11 +6,15 @@
  */
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { TestBed } from '@angular/core/testing';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrSelect } from './select';
 import { ClrSelectContainer } from './select-container';
+import { ClrSelectModule } from './select.module';
 import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container';
+import { ContainerChangeDetectionSpec } from '../tests/onpush-container';
 
 @Component({
   template: `
@@ -137,5 +141,70 @@ describe('Select component', () => {
       );
       ReactiveSpec(ClrSelectContainer, ClrSelect, ReactiveMultipleTest, '.clr-multiselect-wrapper [clrSelect]');
     });
+  });
+
+  ContainerChangeDetectionSpec({
+    imports: [ClrSelectModule],
+    container: 'clr-select-container',
+    controlMarkup:
+      '<select clrSelect [formControl]="control"><option value="">None</option><option value="one">One</option></select>',
+    initialValue: '',
+    validValue: 'one',
+    validator: Validators.required,
+  });
+
+  describe('multi-select wrapper on the first render', () => {
+    const template = `
+      <form clrForm>
+        <clr-select-container>
+          <label>Options</label>
+          <select clrSelect name="options" [(ngModel)]="model" multiple>
+            <option value="one">One</option>
+          </select>
+          <clr-control-helper>Helper</clr-control-helper>
+        </clr-select-container>
+        <clr-select-container>
+          <label>Options</label>
+          <select clrSelect [formControl]="control" multiple>
+            <option value="one">One</option>
+          </select>
+        </clr-select-container>
+      </form>
+    `;
+
+    @Component({
+      imports: [FormsModule, ReactiveFormsModule, ClrSelectModule],
+      template,
+      changeDetection: ChangeDetectionStrategy.Eager,
+    })
+    class EagerMultiSelectTest {
+      model: string[] = [];
+      control = new FormControl<string[]>([]);
+    }
+
+    @Component({
+      imports: [FormsModule, ReactiveFormsModule, ClrSelectModule],
+      template,
+      changeDetection: ChangeDetectionStrategy.OnPush,
+    })
+    class OnPushMultiSelectTest {
+      model: string[] = [];
+      control = new FormControl<string[]>([]);
+    }
+
+    for (const host of [EagerMultiSelectTest, OnPushMultiSelectTest]) {
+      it(`uses the multi-select wrapper (${host.name})`, async () => {
+        TestBed.configureTestingModule({ imports: [host] });
+        const fixture = TestBed.createComponent(host);
+        renderFixture(fixture);
+        await fixture.whenStable();
+
+        const wrappers = Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('select')).map(
+          select => select.parentElement.className
+        );
+        expect(wrappers).toEqual(['clr-multiselect-wrapper', 'clr-multiselect-wrapper']);
+        fixture.destroy();
+      });
+    }
   });
 });

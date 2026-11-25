@@ -49,14 +49,14 @@ import { ClrRadio } from './radio';
   `,
   host: {
     '[class.clr-form-control]': 'true',
-    '[class.clr-form-control-disabled]': 'control?.disabled',
+    '[class.clr-form-control-disabled]': 'controlState().disabled',
     '[class.clr-row]': 'addGrid()',
     '[attr.role]': 'role',
     '[attr.aria-labelledby]': 'ariaLabelledBy',
   },
   providers: [NgControlService, ControlClassService, ContainerIdService],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
   role: string | null = null;

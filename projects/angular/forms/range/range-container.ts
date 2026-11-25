@@ -5,7 +5,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, Input, Optional, Renderer2 } from '@angular/core';
+import {
+  AfterContentChecked,
+  ChangeDetectionStrategy,
+  Component,
+  ContentChild,
+  ElementRef,
+  forwardRef,
+  Input,
+  Optional,
+  signal,
+} from '@angular/core';
 import {
   ClrAbstractContainer,
   ControlClassService,
@@ -13,6 +23,8 @@ import {
   LayoutService,
   NgControlService,
 } from '@clr/angular/forms/common';
+
+import { ClrRange } from './range';
 
 @Component({
   selector: 'clr-range-container',
@@ -41,23 +53,23 @@ import {
   `,
   host: {
     '[class.clr-form-control]': 'true',
-    '[class.clr-form-control-disabled]': 'control?.disabled',
+    '[class.clr-form-control-disabled]': 'controlState().disabled',
     '[class.clr-row]': 'addGrid()',
   },
   providers: [NgControlService, ControlIdService, ControlClassService],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClrRangeContainer extends ClrAbstractContainer {
+export class ClrRangeContainer extends ClrAbstractContainer implements AfterContentChecked {
   private _hasProgress = false;
-  private lastRangeProgressFillWidth = '';
+  private readonly track = signal<RangeTrack | null>(null, { equal: sameTrack });
+
+  @ContentChild(forwardRef(() => ClrRange), { read: ElementRef }) private input!: ElementRef<HTMLInputElement>;
 
   constructor(
     @Optional() layoutService: LayoutService,
     controlClassService: ControlClassService,
-    ngControlService: NgControlService,
-    private renderer: Renderer2,
-    private idService: ControlIdService
+    ngControlService: NgControlService
   ) {
     super(layoutService, controlClassService, ngControlService);
   }
@@ -73,35 +85,38 @@ export class ClrRangeContainer extends ClrAbstractContainer {
     }
   }
 
+  // The fill depends on the input's min, max and width, which consumer bindings and layout change.
+  // Reading them here, during the consumer's check, keeps this OnPush view in step with them.
+  ngAfterContentChecked() {
+    const input = this.input?.nativeElement;
+    if (this.hasProgress && input) {
+      this.track.set({ min: +input.min, max: +input.max, width: input.offsetWidth });
+    }
+  }
+
   getRangeProgressFillWidth(): string {
-    const input = this.selectRangeElement();
-
-    if (!input) {
-      return this.lastRangeProgressFillWidth;
-    }
-
-    const inputWidth = input.offsetWidth;
-    const inputMinValue = +input.min;
-    let inputMaxValue = +input.max;
-
-    if (inputMinValue === 0 && inputMaxValue === 0) {
-      inputMaxValue = 100;
-    }
-
-    const inputMiddle = (inputMinValue + inputMaxValue) / 2;
-    const inputValue = !!this.control && this.control.value !== undefined ? this.control.value : inputMiddle;
-    const valueAsPercent = ((inputValue - inputMinValue) * 100) / (inputMaxValue - inputMinValue);
-
-    this.lastRangeProgressFillWidth = (valueAsPercent * inputWidth) / 100 + 'px';
-
-    return this.lastRangeProgressFillWidth;
+    const track = this.track();
+    const value = this.control ? (this.controlState().value as number) : undefined;
+    return track ? rangeFillWidth(track, value) : undefined;
   }
+}
 
-  private selectRangeElement() {
-    try {
-      return this.renderer.selectRootElement('[clrRange]#' + this.idService.id);
-    } catch {
-      return undefined;
-    }
+interface RangeTrack {
+  min: number;
+  max: number;
+  width: number;
+}
+
+function sameTrack(a: RangeTrack | null, b: RangeTrack | null) {
+  return a?.min === b?.min && a?.max === b?.max && a?.width === b?.width;
+}
+
+/** Width in pixels of the progress fill for a range input. Without a value the thumb sits in the middle. */
+function rangeFillWidth({ min, max, width }: RangeTrack, value: number | undefined): string {
+  if (min === 0 && max === 0) {
+    max = 100;
   }
+  const current = value !== undefined ? value : (min + max) / 2;
+  const percent = ((current - min) * 100) / (max - min);
+  return (percent * width) / 100 + 'px';
 }

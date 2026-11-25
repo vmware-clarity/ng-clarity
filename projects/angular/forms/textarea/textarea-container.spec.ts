@@ -10,7 +10,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ClrTextarea } from './textarea';
 import { ClrTextareaContainer } from './textarea-container';
+import { ClrTextareaModule } from './textarea.module';
 import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container';
+import { ContainerChangeDetectionSpec } from '../tests/onpush-container';
 
 @Component({
   template: `
@@ -69,5 +71,14 @@ describe('Textarea component', () => {
     ContainerNoLabelSpec(ClrTextareaContainer, ClrTextarea, NoLabelTest);
     TemplateDrivenSpec(ClrTextareaContainer, ClrTextarea, SimpleTest, '.clr-textarea-wrapper [clrTextarea]');
     ReactiveSpec(ClrTextareaContainer, ClrTextarea, ReactiveTest, '.clr-textarea-wrapper [clrTextarea]');
+  });
+
+  ContainerChangeDetectionSpec({
+    imports: [ClrTextareaModule],
+    container: 'clr-textarea-container',
+    controlMarkup: '<textarea clrTextarea [formControl]="control"></textarea>',
+    initialValue: '',
+    validValue: 'value',
+    validator: Validators.required,
   });
 });

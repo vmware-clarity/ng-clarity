@@ -22,7 +22,14 @@ import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrNumberInput } from './number-input';
 import { ClrNumberInputContainer } from './number-input-container';
+import { ClrNumberInputModule } from './number-input.module';
 import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container';
+import {
+  ContainerChangeDetectionSpec,
+  ContainerTestHostOptions,
+  containerTestHosts,
+  eachContainerHost,
+} from '../tests/onpush-container';
 
 @Component({
   template: `
@@ -89,6 +96,15 @@ class ReactiveTest {
 })
 class NoInputTest {}
 
+const hostOptions: ContainerTestHostOptions = {
+  imports: [ClrNumberInputModule],
+  container: 'clr-number-input-container',
+  controlMarkup: '<input type="number" clrNumberInput [formControl]="control" />',
+  initialValue: null,
+  validValue: 5,
+  validator: Validators.required,
+};
+
 describe('Number Input component', () => {
   describe('ClrNumberInput', () => {
     ContainerNoLabelSpec(ClrNumberInputContainer, ClrNumberInput, NoLabelTest);
@@ -117,6 +133,52 @@ describe('Number Input component', () => {
       it('should not throw when input ContentChild is undefined', () => {
         expect(() => renderFixture(fixture)).not.toThrow();
         expect(containerEl.classList.contains('clr-form-control-readonly')).toBe(false);
+      });
+    });
+  });
+
+  ContainerChangeDetectionSpec(hostOptions);
+
+  describe('ClrNumberInputContainer change detection', () => {
+    eachContainerHost('clr-number-input-container', containerTestHosts(hostOptions), context => {
+      function stepButtons() {
+        return Array.from(context().containerEl.querySelectorAll('button'));
+      }
+
+      it('shows the focus state while the input has focus', async () => {
+        const { containerEl, settle } = context();
+        const input = containerEl.querySelector('input');
+        const group = containerEl.querySelector('.clr-input-group');
+
+        input.dispatchEvent(new Event('focus'));
+        await settle();
+        expect(group.classList).toContain('clr-focus');
+
+        input.dispatchEvent(new Event('blur'));
+        await settle();
+        expect(group.classList).not.toContain('clr-focus');
+      });
+
+      it('disables the step buttons when consumer code disables the control', async () => {
+        const { host, settle } = context();
+
+        host.control.disable();
+        await settle();
+        expect(stepButtons().map(button => button.disabled)).toEqual([true, true]);
+
+        host.control.enable();
+        await settle();
+        expect(stepButtons().map(button => button.disabled)).toEqual([false, false]);
+      });
+
+      it('updates the control from the step buttons', async () => {
+        const { host, settle } = context();
+        host.control.setValue(5);
+        await settle();
+
+        stepButtons()[1].click();
+        await settle();
+        expect(host.control.value).toBe(6);
       });
     });
   });

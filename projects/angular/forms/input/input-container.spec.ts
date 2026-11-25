@@ -10,7 +10,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ClrInput } from './input';
 import { ClrInputContainer } from './input-container';
+import { ClrInputModule } from './input.module';
 import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container';
+import { ContainerChangeDetectionSpec } from '../tests/onpush-container';
 
 @Component({
   template: `
@@ -71,5 +73,14 @@ describe('Input component', () => {
     ContainerNoLabelSpec(ClrInputContainer, ClrInput, NoLabelTest);
     TemplateDrivenSpec(ClrInputContainer, ClrInput, SimpleTest, '.clr-input-wrapper [clrInput]');
     ReactiveSpec(ClrInputContainer, ClrInput, ReactiveTest, '.clr-input-wrapper [clrInput]');
+  });
+
+  ContainerChangeDetectionSpec({
+    imports: [ClrInputModule],
+    container: 'clr-input-container',
+    controlMarkup: '<input clrInput [formControl]="control" />',
+    initialValue: '',
+    validValue: 'value',
+    validator: Validators.required,
   });
 });
