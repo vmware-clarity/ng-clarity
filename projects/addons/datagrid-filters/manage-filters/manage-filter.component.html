@@ -53,7 +53,7 @@
 </clr-label>
 <div
   class="filter-popover"
-  [class.filter-popover-minimal]="predefined && managedPropertyType === enumPropertyType"
+  [class.filter-popover-minimal]="predefined && isEnumField"
   role="dialog"
   [id]="popoverId"
   [attr.aria-label]="filterStrings.editFilterText + ' ' + managedProperty.displayName"
@@ -88,57 +88,12 @@
       </button>
     }
   </ng-template>
-  @switch (managedPropertyType) {
-    @case (stringPropertyType) {
-      <appfx-general-filter
-        [filterProperty]="stringProperty"
-        [propertyFilter]="propertyFilter"
-        (filterCriteriaChange)="onFilterCriteriaChange($event)"
-      >
-        <ng-container filterField [ngTemplateOutlet]="fieldSelector"></ng-container>
-        <ng-container filterActions [ngTemplateOutlet]="filterActions"></ng-container>
-      </appfx-general-filter>
-    }
-    @case (numericPropertyType) {
-      <appfx-general-filter
-        [filterProperty]="numericProperty"
-        [propertyFilter]="propertyFilter"
-        (filterCriteriaChange)="onFilterCriteriaChange($event)"
-      >
-        <ng-container filterField [ngTemplateOutlet]="fieldSelector"></ng-container>
-        <ng-container filterActions [ngTemplateOutlet]="filterActions"></ng-container>
-      </appfx-general-filter>
-    }
-    @case (enumPropertyType) {
-      <appfx-enum-filter
-        [filterProperty]="enumProperty"
-        [propertyFilter]="propertyFilter"
-        [minimal]="predefined"
-        (filterCriteriaChange)="onFilterCriteriaChange($event)"
-      >
-        <ng-container filterField [ngTemplateOutlet]="fieldSelector"></ng-container>
-        <ng-container filterActions [ngTemplateOutlet]="filterActions"></ng-container>
-      </appfx-enum-filter>
-    }
-    @case (dateTimePropertyType) {
-      <appfx-datetime-filter
-        [filterProperty]="dateTimeProperty"
-        [propertyFilter]="propertyFilter"
-        (filterCriteriaChange)="onFilterCriteriaChange($event)"
-      >
-        <ng-container filterField [ngTemplateOutlet]="fieldSelector"></ng-container>
-        <ng-container filterActions [ngTemplateOutlet]="filterActions"></ng-container>
-      </appfx-datetime-filter>
-    }
-    @case (userPropertyType) {
-      <appfx-users-filter
-        [filterProperty]="userProperty"
-        [propertyFilter]="propertyFilter"
-        (filterCriteriaChange)="onFilterCriteriaChange($event)"
-      >
-        <ng-container filterField [ngTemplateOutlet]="fieldSelector"></ng-container>
-        <ng-container filterActions [ngTemplateOutlet]="filterActions"></ng-container>
-      </appfx-users-filter>
-    }
-  }
+  <appfx-filter-editor
+    [property]="managedProperty"
+    [propertyFilter]="propertyFilter"
+    [minimal]="predefined"
+    [fieldTemplate]="fieldSelector"
+    [actionsTemplate]="filterActions"
+    (filterCriteriaChange)="onFilterCriteriaChange($event)"
+  ></appfx-filter-editor>
 </div>

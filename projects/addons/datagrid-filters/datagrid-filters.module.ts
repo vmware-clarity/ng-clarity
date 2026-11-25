@@ -26,6 +26,7 @@ import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
 
 import { DateTimeFilterComponent } from './advanced-filters/date-time-filter.component';
 import { EnumFilterComponent } from './advanced-filters/enum-filter.component';
+import { FilterEditorComponent } from './advanced-filters/filter-editor.component';
 import { FilterFormComponent } from './advanced-filters/filter-form.component';
 import { GeneralFilterComponent } from './advanced-filters/general-filter.component';
 import { UsersFilterComponent } from './advanced-filters/users-filter.component';
@@ -49,6 +50,7 @@ export function datagridFiltersUserServiceFactory(existing: DatagridFiltersUserS
     DataGridFiltersComponent,
     DateTimeFilterComponent,
     EnumFilterComponent,
+    FilterEditorComponent,
     FilterFormComponent,
     GeneralFilterComponent,
     ManageFilterComponent,

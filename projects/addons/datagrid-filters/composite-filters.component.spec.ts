@@ -21,12 +21,13 @@ import { renderFixture } from '@clr/angular/utils/testing';
 import type { Mock } from 'vitest';
 
 import { EnumFilterComponent } from './advanced-filters/enum-filter.component';
+import { FilterEditorComponent } from './advanced-filters/filter-editor.component';
 import { FilterFormComponent } from './advanced-filters/filter-form.component';
 import { GeneralFilterComponent } from './advanced-filters/general-filter.component';
 import { CompositeFiltersComponent } from './composite-filters.component';
 import { DatagridFiltersStrings } from './datagrid-filters-strings.service';
 import { ManageFilterComponent } from './manage-filters/manage-filter.component';
-import { ComparisonOperator, LogicalOperator, PropertyType } from './model/datagrid-filters.enums';
+import { ComparisonOperator, LogicalOperator } from './model/datagrid-filters.enums';
 import {
   EnumPropertyDefinition,
   FilterablePropertyDefinition,
@@ -165,6 +166,7 @@ describe('CompositeFiltersComponent', () => {
         CompositeFiltersHostComponent,
         TwoWayHostComponent,
         EnumFilterComponent,
+        FilterEditorComponent,
         FilterFormComponent,
         ManageFilterComponent,
         GeneralFilterComponent,
@@ -315,16 +317,12 @@ describe('CompositeFiltersComponent', () => {
     renderFixture(testContext.fixture);
     expect(testContext.component).toBeTruthy();
     expect(testContext.component.selectedFilterableProperty).toEqual(stringProperty);
-    expect(testContext.component.propertyType).toEqual(PropertyType.String);
-    expect(testContext.component.stringProperty).toEqual(stringProperty);
   });
   it('searches fields in the combobox and switches to the selected editor', async () => {
     await openAddFilter(testContext.fixture);
     expect(testContext.component.signPostOpened).toBeTruthy();
     await selectField(testContext.fixture, enumProperty.displayName);
     expect(testContext.component.selectedFilterableProperty).toEqual(filterableProperties[1]);
-    expect(testContext.component.propertyType).toEqual(PropertyType.Enum);
-    expect(testContext.component.enumProperty).toEqual(enumProperty);
     expect(document.querySelector('appfx-general-filter')).toBeNull();
     expect(document.querySelector('appfx-enum-filter')).not.toBeNull();
     expect(testContext.component.signPostOpened).toBe(true);

@@ -101,8 +101,12 @@ tests that look for the old text are:
 
 `appfx-datagrid-filters` and `appfx-datagrid` now accept `[(searchTerm)]` and `[(propertyFilters)]`, e.g. to restore a
 saved view. Setting them does not emit `searchTermChange` or `propertyFiltersChange`. Filters restored from JSON are
-matched to the filter bar's field definitions by their `property` key. `CompositeFiltersComponent.propertyType` is now
-optional (`PropertyType | undefined`), since it is unset until a field is selected.
+matched to the filter bar's field definitions by their `property` key.
+
+`CompositeFiltersComponent` no longer has the members it used to pick the editor: `propertyType`, `stringPropertyType`,
+`enumPropertyType`, `numericPropertyType`, `dateTimePropertyType`, `userPropertyType`, `stringProperty`,
+`enumProperty`, `numericProperty`, `dateTimeProperty` and `userProperty`. The editor for the selected field is now
+chosen internally. Remove any code that reads them.
 
 `presetFilters` can now emit at start-up. If the start-up filters differ from what `propertyFilters` passed in, for
 example presets without a `propertyFilters` binding, `propertyFiltersChange` emits them once, after the first change

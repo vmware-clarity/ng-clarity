@@ -11,7 +11,7 @@ import { animationFrameTick, renderFixture } from '@clr/angular/utils/testing';
 import { ManageFilterComponent } from './manage-filter.component';
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
 import { AppfxDatagridFiltersModule } from '../datagrid-filters.module';
-import { ComparisonOperator, LogicalOperator, PropertyType, TimeSpan, Unit } from '../model/datagrid-filters.enums';
+import { ComparisonOperator, LogicalOperator, TimeSpan, Unit } from '../model/datagrid-filters.enums';
 import {
   DateTimePropertyDefinition,
   EnumPropertyDefinition,
@@ -140,8 +140,6 @@ describe('ManageFilterComponent', () => {
     stringPropertyFilter.criteria = [stringPredicate1, stringPredicate2];
     renderFixture(testContext.fixture);
     expect(testContext.component.managedProperty).toEqual(stringProperty);
-    expect(testContext.component.managedPropertyType).toEqual(PropertyType.String);
-    expect(testContext.component.stringProperty).toEqual(stringProperty);
     expect(testContext.component.primaryConditionDisplayText).toEqual('Equals: vm 1');
     expect(testContext.component.secondaryConditionDisplayText).toEqual('Is empty');
     expect(testContext.component.filterStrings.getConjoinerDisplayName).toHaveBeenCalledWith(
@@ -205,8 +203,6 @@ describe('ManageFilterComponent', () => {
     testContext.component.propertyFilter = enumPropertyFilter;
     renderFixture(testContext.fixture);
     expect(testContext.component.managedProperty).toEqual(enumProperty);
-    expect(testContext.component.managedPropertyType).toEqual(PropertyType.Enum);
-    expect(testContext.component.enumProperty).toEqual(enumProperty);
     expect(testContext.component.primaryConditionDisplayText).toEqual('Equals: Alert');
     expect(testContext.component.secondaryConditionDisplayText).toEqual('Equals: Normal');
   });
@@ -292,8 +288,6 @@ describe('ManageFilterComponent', () => {
     numericPropertyFilter.criteria = [numericPredicate1, numericPredicate2];
     renderFixture(testContext.fixture);
     expect(testContext.component.managedProperty).toEqual(numericProperty);
-    expect(testContext.component.managedPropertyType).toEqual(PropertyType.Numeric);
-    expect(testContext.component.numericProperty).toEqual(numericProperty);
     expect(testContext.component.primaryConditionDisplayText).toEqual('Equals: 176 MB');
     expect(testContext.component.secondaryConditionDisplayText).toEqual('Greater than: 50 GB');
     expect(testContext.component.filterStrings.getConjoinerDisplayName).toHaveBeenCalledWith(
@@ -513,8 +507,6 @@ describe('ManageFilterComponent', () => {
     });
     renderFixture(testContext.fixture);
     expect(testContext.component.managedProperty).toEqual(dateTimeProperty);
-    expect(testContext.component.managedPropertyType).toEqual(PropertyType.DateTime);
-    expect(testContext.component.dateTimeProperty).toEqual(dateTimeProperty);
 
     // Angular formats times with a narrow no-break space before AM/PM.
     expect(testContext.component.primaryConditionDisplayText.replace(/\u202f/g, ' ')).toEqual(

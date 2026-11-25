@@ -1,0 +1,46 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<!-- One editor per field type; the caller's field picker and actions are rendered in its slots. -->
+@if (generalProperty; as property) {
+  <appfx-general-filter
+    [filterProperty]="property"
+    [propertyFilter]="propertyFilter"
+    (filterCriteriaChange)="filterCriteriaChange.emit($event)"
+  >
+    <ng-container filterField [ngTemplateOutlet]="fieldTemplate ?? null"></ng-container>
+    <ng-container filterActions [ngTemplateOutlet]="actionsTemplate ?? null"></ng-container>
+  </appfx-general-filter>
+} @else if (enumProperty; as property) {
+  <appfx-enum-filter
+    [filterProperty]="property"
+    [propertyFilter]="propertyFilter"
+    [minimal]="minimal"
+    (filterCriteriaChange)="filterCriteriaChange.emit($event)"
+  >
+    <ng-container filterField [ngTemplateOutlet]="fieldTemplate ?? null"></ng-container>
+    <ng-container filterActions [ngTemplateOutlet]="actionsTemplate ?? null"></ng-container>
+  </appfx-enum-filter>
+} @else if (dateTimeProperty; as property) {
+  <appfx-datetime-filter
+    [filterProperty]="property"
+    [propertyFilter]="propertyFilter"
+    (filterCriteriaChange)="filterCriteriaChange.emit($event)"
+  >
+    <ng-container filterField [ngTemplateOutlet]="fieldTemplate ?? null"></ng-container>
+    <ng-container filterActions [ngTemplateOutlet]="actionsTemplate ?? null"></ng-container>
+  </appfx-datetime-filter>
+} @else if (userProperty; as property) {
+  <appfx-users-filter
+    [filterProperty]="property"
+    [propertyFilter]="propertyFilter"
+    (filterCriteriaChange)="filterCriteriaChange.emit($event)"
+  >
+    <ng-container filterField [ngTemplateOutlet]="fieldTemplate ?? null"></ng-container>
+    <ng-container filterActions [ngTemplateOutlet]="actionsTemplate ?? null"></ng-container>
+  </appfx-users-filter>
+}

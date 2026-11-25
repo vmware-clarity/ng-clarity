@@ -166,43 +166,13 @@
           </div>
         </appfx-filter-form>
       }
+      <!-- Tracked by field, so changing the field creates a new editor without the previous field's draft. -->
       @for (property of selectedFilterableProperty ? [selectedFilterableProperty] : []; track property.property) {
-        @switch (propertyType) {
-          @case (stringPropertyType) {
-            <appfx-general-filter
-              [filterProperty]="stringProperty"
-              (filterCriteriaChange)="onFilterCriteriaChange($event)"
-            >
-              <ng-container filterField [ngTemplateOutlet]="fieldSelector"></ng-container>
-            </appfx-general-filter>
-          }
-          @case (numericPropertyType) {
-            <appfx-general-filter
-              [filterProperty]="numericProperty"
-              (filterCriteriaChange)="onFilterCriteriaChange($event)"
-            >
-              <ng-container filterField [ngTemplateOutlet]="fieldSelector"></ng-container>
-            </appfx-general-filter>
-          }
-          @case (enumPropertyType) {
-            <appfx-enum-filter [filterProperty]="enumProperty" (filterCriteriaChange)="onFilterCriteriaChange($event)">
-              <ng-container filterField [ngTemplateOutlet]="fieldSelector"></ng-container>
-            </appfx-enum-filter>
-          }
-          @case (dateTimePropertyType) {
-            <appfx-datetime-filter
-              [filterProperty]="dateTimeProperty"
-              (filterCriteriaChange)="onFilterCriteriaChange($event)"
-            >
-              <ng-container filterField [ngTemplateOutlet]="fieldSelector"></ng-container>
-            </appfx-datetime-filter>
-          }
-          @case (userPropertyType) {
-            <appfx-users-filter [filterProperty]="userProperty" (filterCriteriaChange)="onFilterCriteriaChange($event)">
-              <ng-container filterField [ngTemplateOutlet]="fieldSelector"></ng-container>
-            </appfx-users-filter>
-          }
-        }
+        <appfx-filter-editor
+          [property]="property"
+          [fieldTemplate]="fieldSelector"
+          (filterCriteriaChange)="onFilterCriteriaChange($event)"
+        ></appfx-filter-editor>
       }
     </div>
     @if (hasActiveCriteria || externalCriteriaActive) {

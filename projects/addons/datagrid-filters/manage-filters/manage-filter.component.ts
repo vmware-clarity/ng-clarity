@@ -28,15 +28,13 @@ import {
 import { uniqueIdFactory } from '@clr/angular/utils';
 
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
-import { ComparisonOperator, PropertyType, TimeSpan } from '../model/datagrid-filters.enums';
+import { ComparisonOperator, TimeSpan } from '../model/datagrid-filters.enums';
 import {
   DateTimePropertyDefinition,
   EnumPropertyDefinition,
   FilterablePropertyDefinition,
   NumericPropertyDefinition,
   PropertyFilter,
-  StringPropertyDefinition,
-  UserPropertyDefinition,
 } from '../model/datagrid-filters.interfaces';
 import { dateTimeEditorState, parseLocalDateTime } from '../model/date-time-editor-state';
 
@@ -66,18 +64,6 @@ export class ManageFilterComponent implements OnInit, OnChanges {
    */
   @Output() filterCriteriaChange: EventEmitter<PropertyFilter> = new EventEmitter<PropertyFilter>();
 
-  readonly stringPropertyType: PropertyType = PropertyType.String;
-  readonly enumPropertyType: PropertyType = PropertyType.Enum;
-  readonly numericPropertyType: PropertyType = PropertyType.Numeric;
-  readonly dateTimePropertyType: PropertyType = PropertyType.DateTime;
-  readonly userPropertyType: PropertyType = PropertyType.User;
-
-  managedPropertyType!: PropertyType;
-  stringProperty!: StringPropertyDefinition;
-  numericProperty!: NumericPropertyDefinition;
-  enumProperty!: EnumPropertyDefinition;
-  dateTimeProperty!: DateTimePropertyDefinition;
-  userProperty!: UserPropertyDefinition;
   primaryConditionDisplayText = '';
   secondaryConditionDisplayText = '';
   /**
@@ -122,7 +108,7 @@ export class ManageFilterComponent implements OnInit, OnChanges {
   }
 
   get additionalConditions(): number {
-    return this.managedPropertyType === PropertyType.DateTime
+    return this.isDateTimeProperty(this.managedProperty)
       ? 0
       : Math.max(0, (this.propertyFilter?.criteria.length || 0) - 1);
   }
@@ -140,28 +126,18 @@ export class ManageFilterComponent implements OnInit, OnChanges {
     return this.active ? this.displayFilterValue(0, true) : '';
   }
 
+  /** A predefined enum pill uses the narrow popover with the minimal editor. */
+  protected get isEnumField(): boolean {
+    return this.isEnumProperty(this.managedProperty);
+  }
+
   ngOnChanges(): void {
     this.ngOnInit();
   }
 
   ngOnInit() {
+    // The editor for the field's type is chosen by appfx-filter-editor.
     this.managedProperty = this.propertyFilter?.criteria[0]?.filterableProperty || this.filterProperty;
-    if (this.isStringProperty(this.managedProperty)) {
-      this.managedPropertyType = PropertyType.String;
-      this.stringProperty = this.castStringProperty();
-    } else if (this.isEnumProperty(this.managedProperty)) {
-      this.managedPropertyType = PropertyType.Enum;
-      this.enumProperty = this.castEnumProperty();
-    } else if (this.isNumericProperty(this.managedProperty)) {
-      this.managedPropertyType = PropertyType.Numeric;
-      this.numericProperty = this.castNumericProperty();
-    } else if (this.isDateTimeProperty(this.managedProperty)) {
-      this.managedPropertyType = PropertyType.DateTime;
-      this.dateTimeProperty = this.castDateTimeProperty();
-    } else if (this.isUserProperty(this.managedProperty)) {
-      this.managedPropertyType = PropertyType.User;
-      this.userProperty = this.castUserProperty();
-    }
     this.updateDisplayValues();
   }
 
@@ -207,7 +183,7 @@ export class ManageFilterComponent implements OnInit, OnChanges {
     this.primaryConditionDisplayText = this.displayFilterValue(0);
     this.secondaryConditionDisplayText = '';
     let otherConditions = '';
-    if (this.propertyFilter.criteria.length > 1 && this.managedPropertyType !== PropertyType.DateTime) {
+    if (this.propertyFilter.criteria.length > 1 && !this.isDateTimeProperty(this.managedProperty)) {
       this.secondaryConditionDisplayText = this.displayFilterValue(1);
       const conjoiner = ' ' + this.filterStrings.getConjoinerDisplayName(this.propertyFilter.operator) + ' ';
       otherConditions =
@@ -301,10 +277,6 @@ export class ManageFilterComponent implements OnInit, OnChanges {
       : date;
   }
 
-  private isStringProperty(property: FilterablePropertyDefinition): property is StringPropertyDefinition {
-    return property instanceof StringPropertyDefinition;
-  }
-
   private isEnumProperty(property: FilterablePropertyDefinition): property is EnumPropertyDefinition {
     return property instanceof EnumPropertyDefinition;
   }
@@ -317,32 +289,8 @@ export class ManageFilterComponent implements OnInit, OnChanges {
     return property instanceof DateTimePropertyDefinition;
   }
 
-  private isUserProperty(property: FilterablePropertyDefinition): property is UserPropertyDefinition {
-    return property instanceof UserPropertyDefinition;
-  }
-
   private isNumericUnitFilterProperty(property: FilterablePropertyDefinition): boolean {
     return this.isNumericProperty(property) && property.unit !== undefined;
-  }
-
-  private castStringProperty(): StringPropertyDefinition {
-    return this.managedProperty as StringPropertyDefinition;
-  }
-
-  private castEnumProperty(): EnumPropertyDefinition {
-    return this.managedProperty as EnumPropertyDefinition;
-  }
-
-  private castNumericProperty(): NumericPropertyDefinition {
-    return this.managedProperty as NumericPropertyDefinition;
-  }
-
-  private castDateTimeProperty(): DateTimePropertyDefinition {
-    return this.managedProperty as DateTimePropertyDefinition;
-  }
-
-  private castUserProperty(): UserPropertyDefinition {
-    return this.managedProperty as UserPropertyDefinition;
   }
 
   private operatorDisplayName(operator: ComparisonOperator): string {

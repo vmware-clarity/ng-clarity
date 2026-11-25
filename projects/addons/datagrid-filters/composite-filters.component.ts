@@ -37,17 +37,13 @@ import { uniqueIdFactory } from '@clr/angular/utils';
 
 import { DatagridFiltersStrings } from './datagrid-filters-strings.service';
 import { ManageFilterComponent } from './manage-filters/manage-filter.component';
-import { ComparisonOperator, LogicalOperator, PropertyType } from './model/datagrid-filters.enums';
+import { ComparisonOperator, LogicalOperator } from './model/datagrid-filters.enums';
 import {
-  DateTimePropertyDefinition,
   EnumPropertyDefinition,
   FilterablePropertyDefinition,
-  NumericPropertyDefinition,
   PropertyFilter,
   PropertyPredicate,
-  StringPropertyDefinition,
   ToggleFilter,
-  UserPropertyDefinition,
 } from './model/datagrid-filters.interfaces';
 
 // The array inputs below accept null/undefined (e.g. `[toggleFilters]="config?.toggles"` before the config loads).
@@ -100,29 +96,7 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
    */
   @Output() propertyFiltersChange: EventEmitter<PropertyFilter[]> = new EventEmitter<PropertyFilter[]>();
 
-  readonly stringPropertyType: PropertyType = PropertyType.String;
-
-  readonly enumPropertyType: PropertyType = PropertyType.Enum;
-
-  readonly numericPropertyType: PropertyType = PropertyType.Numeric;
-
-  readonly dateTimePropertyType: PropertyType = PropertyType.DateTime;
-
-  readonly userPropertyType: PropertyType = PropertyType.User;
-
   selectedFilterableProperty!: FilterablePropertyDefinition;
-
-  propertyType?: PropertyType;
-
-  stringProperty!: StringPropertyDefinition;
-
-  enumProperty!: EnumPropertyDefinition;
-
-  numericProperty!: NumericPropertyDefinition;
-
-  dateTimeProperty!: DateTimePropertyDefinition;
-
-  userProperty!: UserPropertyDefinition;
 
   collapsedFilters = false;
 
@@ -387,24 +361,8 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
     this.preselectFirstProperty();
   }
 
+  /** The field in Add filter changed. The editor for it is chosen by `appfx-filter-editor`. */
   onPropertyChange() {
-    this.propertyType = undefined;
-    if (this.isStringProperty(this.selectedFilterableProperty)) {
-      this.propertyType = PropertyType.String;
-      this.stringProperty = this.castStringProperty();
-    } else if (this.isEnumProperty(this.selectedFilterableProperty)) {
-      this.propertyType = PropertyType.Enum;
-      this.enumProperty = this.castEnumProperty();
-    } else if (this.isNumericProperty(this.selectedFilterableProperty)) {
-      this.propertyType = PropertyType.Numeric;
-      this.numericProperty = this.castNumericProperty();
-    } else if (this.isDateTimeProperty(this.selectedFilterableProperty)) {
-      this.propertyType = PropertyType.DateTime;
-      this.dateTimeProperty = this.castDateTimeProperty();
-    } else if (this.isUserProperty(this.selectedFilterableProperty)) {
-      this.propertyType = PropertyType.User;
-      this.userProperty = this.castUserProperty();
-    }
     if (this.signPostOpened) {
       // Changing fields recreates the editor and its field picker. Keep keyboard focus in the new picker.
       afterNextRender(
@@ -772,46 +730,6 @@ export class CompositeFiltersComponent implements OnInit, OnChanges {
         ' ' +
         (count > 1 ? this.filterStrings.filtersText : this.filterStrings.filterText)
       : this.filterStrings.hideButtonAriaLabel;
-  }
-
-  private isStringProperty(property: FilterablePropertyDefinition): property is StringPropertyDefinition {
-    return property instanceof StringPropertyDefinition;
-  }
-
-  private isEnumProperty(property: FilterablePropertyDefinition): property is EnumPropertyDefinition {
-    return property instanceof EnumPropertyDefinition;
-  }
-
-  private isNumericProperty(property: FilterablePropertyDefinition): property is NumericPropertyDefinition {
-    return property instanceof NumericPropertyDefinition;
-  }
-
-  private isDateTimeProperty(property: FilterablePropertyDefinition): property is DateTimePropertyDefinition {
-    return property instanceof DateTimePropertyDefinition;
-  }
-
-  private isUserProperty(property: FilterablePropertyDefinition): property is UserPropertyDefinition {
-    return property instanceof UserPropertyDefinition;
-  }
-
-  private castStringProperty(): StringPropertyDefinition {
-    return this.selectedFilterableProperty as StringPropertyDefinition;
-  }
-
-  private castEnumProperty(): EnumPropertyDefinition {
-    return this.selectedFilterableProperty as EnumPropertyDefinition;
-  }
-
-  private castNumericProperty(): NumericPropertyDefinition {
-    return this.selectedFilterableProperty as NumericPropertyDefinition;
-  }
-
-  private castDateTimeProperty(): DateTimePropertyDefinition {
-    return this.selectedFilterableProperty as DateTimePropertyDefinition;
-  }
-
-  private castUserProperty(): UserPropertyDefinition {
-    return this.selectedFilterableProperty as UserPropertyDefinition;
   }
 
   /**
