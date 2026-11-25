@@ -24,6 +24,7 @@ import * as i2 from '@angular/common';
 import * as i6_2 from '@angular/router';
 import { InjectionToken } from '@angular/core';
 import { Injector } from '@angular/core';
+import { InputSignalWithTransform } from '@angular/core';
 import { NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Observer } from 'rxjs';
