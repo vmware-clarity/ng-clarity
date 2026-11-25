@@ -5,15 +5,18 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 @Injectable()
 export class DateFormControlService {
-  disabled = false;
-
+  private readonly _disabled = signal(false);
   private _touchedChange = new Subject<void>();
   private _dirtyChange = new Subject<void>();
+
+  get disabled(): boolean {
+    return this._disabled();
+  }
 
   get touchedChange(): Observable<void> {
     return this._touchedChange.asObservable();
@@ -33,6 +36,6 @@ export class DateFormControlService {
 
   // friendly wrapper
   setDisabled(state: boolean) {
-    this.disabled = state;
+    this._disabled.set(state);
   }
 }

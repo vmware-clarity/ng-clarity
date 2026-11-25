@@ -25,6 +25,18 @@ describe('Datepicker', () => {
 
       let context: TestContext<ClrDay, TestComponent>;
 
+      // These flags never change on a rendered day view: the calendar creates a new view instead.
+      function setDayView(flags: { isTodaysDate?: boolean; isExcluded?: boolean; isDisabled?: boolean }) {
+        const { isTodaysDate = false, isExcluded = false, isDisabled = false } = flags;
+        context.testComponent.dayView = new DayViewModel(
+          new DayModel(2018, 0, 1),
+          isTodaysDate,
+          isExcluded,
+          isDisabled
+        );
+        context.detectChanges();
+      }
+
       beforeEach(() => {
         context = helpers.create(ClrDay, TestComponent, [
           LocaleHelperService,
@@ -61,14 +73,10 @@ describe('Datepicker', () => {
         it("adds the .is-today class to the button when the input provided is today's day view", () => {
           const button: HTMLButtonElement = context.clarityElement.children[0];
           expect(button.classList.contains('is-today')).toBe(false);
-          context.testComponent.dayView.isTodaysDate = true;
-
-          context.detectChanges();
+          setDayView({ isTodaysDate: true });
           expect(button.classList.contains('is-today')).toBe(true);
 
-          context.testComponent.dayView.isTodaysDate = false;
-
-          context.detectChanges();
+          setDayView({ isTodaysDate: false });
           expect(button.classList.contains('is-today')).toBe(false);
         });
 
@@ -89,28 +97,20 @@ describe('Datepicker', () => {
         it('adds the .is-excluded class to the button when the input day view is excluded', () => {
           const button: HTMLButtonElement = context.clarityElement.children[0];
           expect(button.classList.contains('is-excluded')).toBe(false);
-          context.testComponent.dayView.isExcluded = true;
-
-          context.detectChanges();
+          setDayView({ isExcluded: true });
           expect(button.classList.contains('is-excluded')).toBe(true);
 
-          context.testComponent.dayView.isExcluded = false;
-
-          context.detectChanges();
+          setDayView({ isExcluded: false });
           expect(button.classList.contains('is-excluded')).toBe(false);
         });
 
         it('adds the .is-disabled class to the button when the input day view is disabled', () => {
           const button: HTMLButtonElement = context.clarityElement.children[0];
           expect(button.classList.contains('is-disabled')).toBe(false);
-          context.testComponent.dayView.isDisabled = true;
-
-          context.detectChanges();
+          setDayView({ isDisabled: true });
           expect(button.classList.contains('is-disabled')).toBe(true);
 
-          context.testComponent.dayView.isDisabled = false;
-
-          context.detectChanges();
+          setDayView({ isDisabled: false });
           expect(button.classList.contains('is-disabled')).toBe(false);
         });
 
@@ -140,14 +140,10 @@ describe('Datepicker', () => {
         it('sets arria-current on the button correctly', () => {
           const button: HTMLButtonElement = context.clarityElement.children[0];
 
-          context.testComponent.dayView.isTodaysDate = true;
-
-          context.detectChanges();
+          setDayView({ isTodaysDate: true });
           expect(button.getAttribute('aria-current')).toBe('date');
 
-          context.testComponent.dayView.isTodaysDate = false;
-
-          context.detectChanges();
+          setDayView({ isTodaysDate: false });
           expect(button.getAttribute('aria-current')).toBe('false');
         });
 

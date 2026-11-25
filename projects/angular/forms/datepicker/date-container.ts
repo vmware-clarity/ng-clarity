@@ -115,11 +115,9 @@ import { ViewManagerService } from './providers/view-manager.service';
     '[class.clr-row]': 'addGrid()',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrDateContainer extends ClrAbstractContainer implements AfterViewInit {
-  focus = false;
-
   protected popoverType = ClrPopoverType.DROPDOWN;
   private toggleButton!: ElementRef<HTMLButtonElement>;
 
@@ -132,7 +130,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     private dateFormControlService: DateFormControlService,
     private dateIOService: DateIOService,
     public commonStrings: ClrCommonStringsService,
-    focusService: FormsFocusService,
+    private focusService: FormsFocusService,
     private viewManagerService: ViewManagerService,
     protected override controlClassService: ControlClassService,
     @Optional() protected override layoutService: LayoutService,
@@ -140,12 +138,6 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     private localeHelperService: LocaleHelperService
   ) {
     super(layoutService, controlClassService, ngControlService);
-
-    this.subscriptions.push(
-      focusService.focusChange.subscribe(state => {
-        this.focus = state;
-      })
-    );
 
     this.subscriptions.push(
       popoverService.openChange.subscribe(() => {
@@ -229,6 +221,10 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     this.toggleButton = button;
   }
 
+  get focus(): boolean {
+    return this.focusService.isFocused();
+  }
+
   get popoverPosition(): ClrPopoverPosition {
     return this.viewManagerService.position;
   }
@@ -249,9 +245,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
    */
   get isInputDateDisabled(): boolean {
     /* clrForm wrapper or without clrForm */
-    return (
-      (this.control && this.control.disabled) || (this.dateFormControlService && this.dateFormControlService.disabled)
-    );
+    return this.controlState().disabled || this.dateFormControlService.disabled;
   }
 
   protected get isRangePicker(): boolean {
