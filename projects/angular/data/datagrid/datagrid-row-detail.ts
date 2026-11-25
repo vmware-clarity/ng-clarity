@@ -82,8 +82,8 @@ import { Selection } from './providers/selection';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
-  @Input('clrRowDetailBeginningAriaText') _beginningOfExpandableContentAriaText: string;
-  @Input('clrRowDetailEndAriaText') _endOfExpandableContentAriaText: string;
+  @Input('clrRowDetailBeginningAriaText') _beginningOfExpandableContentAriaText?: string;
+  @Input('clrRowDetailEndAriaText') _endOfExpandableContentAriaText?: string;
 
   /**
    * Whether the detail lays its cells out in the same columns as the row, which it does when it
@@ -95,19 +95,19 @@ export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, Af
   /* reference to the enum so that template can access it */
   SELECTION_TYPE = SelectionType;
 
-  @ContentChildren(ClrDatagridCell) cells: QueryList<ClrDatagridCell>;
+  @ContentChildren(ClrDatagridCell) cells!: QueryList<ClrDatagridCell>;
 
   /** Whether the detail has cells of its own, which can come in after it is rendered. */
   protected readonly hasCells = signal(false);
 
-  @ViewChild('pinnedCells', { read: ViewContainerRef }) private _pinnedCells: ViewContainerRef;
-  @ViewChild('scrollableCells', { read: ViewContainerRef }) private _scrollableCells: ViewContainerRef;
-  @ViewChild('plainCells', { read: ViewContainerRef }) private _plainCells: ViewContainerRef;
+  @ViewChild('pinnedCells', { read: ViewContainerRef }) private _pinnedCells!: ViewContainerRef;
+  @ViewChild('scrollableCells', { read: ViewContainerRef }) private _scrollableCells!: ViewContainerRef;
+  @ViewChild('plainCells', { read: ViewContainerRef }) private _plainCells!: ViewContainerRef;
 
   private subscriptions: Subscription[] = [];
   private cellsMoved = false;
-  private lastLayout: string;
-  private hadCells: boolean;
+  private lastLayout?: string;
+  private hadCells = false;
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   constructor(

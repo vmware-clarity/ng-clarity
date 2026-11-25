@@ -399,8 +399,8 @@ describe('ClrDatagrid OnPush (Eager host with plain fields, checked like a Zone.
 
   it('shows items selected with clrDgSelected.push() and removed with splice()', async () => {
     const checked = () =>
-      Array.from(fixture.nativeElement.querySelectorAll('.datagrid-rows .datagrid-select input')).map(
-        (checkbox: HTMLInputElement) => checkbox.checked
+      Array.from<HTMLInputElement>(fixture.nativeElement.querySelectorAll('.datagrid-rows .datagrid-select input')).map(
+        checkbox => checkbox.checked
       );
 
     await change(host => host.selected.push(ITEMS[2]));
@@ -419,8 +419,8 @@ describe('ClrDatagrid OnPush (Eager host with plain fields, checked like a Zone.
 
   it('expands a row from code', async () => {
     await change(host => (host.expanded = ITEMS[1]));
-    const carets = Array.from(fixture.nativeElement.querySelectorAll('.datagrid-expandable-caret-button'));
-    expect(carets.map((caret: HTMLElement) => caret.getAttribute('aria-expanded'))).toEqual(['false', 'true', 'false']);
+    const carets = Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('.datagrid-expandable-caret-button'));
+    expect(carets.map(caret => caret.getAttribute('aria-expanded'))).toEqual(['false', 'true', 'false']);
     expect(fixture.nativeElement.querySelector('clr-dg-row-detail').textContent).toContain('Detail of b1');
   });
 });

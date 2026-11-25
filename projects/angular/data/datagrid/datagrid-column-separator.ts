@@ -55,11 +55,11 @@ export class ClrDatagridColumnSeparator implements AfterViewInit, OnDestroy {
   columnSeparatorId = uniqueIdFactory();
 
   private resizeStartedOnKeyDown = false;
-  private isWithinMaxResizeRange: boolean;
+  private isWithinMaxResizeRange?: boolean;
   private unlisteners: (() => void)[] = [];
 
-  @ViewChild('resizeTracker') private resizeTrackerRef: ElementRef<HTMLElement>;
-  @ViewChild('columnHandle') private columnHandleRef: ElementRef<HTMLElement>;
+  @ViewChild('resizeTracker') private resizeTrackerRef!: ElementRef<HTMLElement>;
+  @ViewChild('columnHandle') private columnHandleRef!: ElementRef<HTMLElement>;
 
   constructor(
     private columnResizerService: ColumnResizerService,

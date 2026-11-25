@@ -133,16 +133,16 @@ import { Page } from './providers/page';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrDatagridPagination implements OnDestroy, OnInit {
-  @Input('clrDgPageInputDisabled') disableCurrentPageInput: boolean;
+  @Input('clrDgPageInputDisabled') disableCurrentPageInput = false;
 
   @Output('clrDgPageChange') currentChanged = new EventEmitter<number>(false);
 
-  @ViewChild('currentPageInput') currentPageInputRef: ElementRef<HTMLInputElement>;
+  @ViewChild('currentPageInput') currentPageInputRef!: ElementRef<HTMLInputElement>;
 
   /**
    * Subscription to the page service changes
    */
-  private _pageSubscription: Subscription;
+  private _pageSubscription?: Subscription;
   // A query the template reads, so it is held in a signal for a page size added later.
   private readonly pageSizeComponent = signal<ClrDatagridPageSize | undefined>(undefined);
 

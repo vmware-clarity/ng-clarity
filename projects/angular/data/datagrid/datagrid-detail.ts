@@ -42,8 +42,8 @@ import { DEFAULT_DETAIL_WIDTH, DetailService, MAX_DETAIL_WIDTH, MIN_DETAIL_WIDTH
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrDatagridDetail {
-  @Input('clrDetailAriaLabelledBy') ariaLabelledBy: string;
-  @Input('clrDetailAriaLabel') ariaLabel: string;
+  @Input('clrDetailAriaLabelledBy') ariaLabelledBy?: string;
+  @Input('clrDetailAriaLabel') ariaLabel?: string;
 
   // A query the template reads, so it is held in a signal for a header added later.
   private readonly _header = signal<ClrDatagridDetailHeader | undefined>(undefined);
@@ -94,7 +94,7 @@ export class ClrDatagridDetail {
     return this.detailWidth !== MAX_DETAIL_WIDTH ? this.detailWidth : null;
   }
 
-  get labelledBy(): string {
+  get labelledBy(): string | null {
     if (this.ariaLabelledBy) {
       return this.header ? `${this.header.titleId} ${this.ariaLabelledBy}` : this.ariaLabelledBy;
     } else if (this.ariaLabel) {
@@ -105,7 +105,7 @@ export class ClrDatagridDetail {
     }
   }
 
-  get label(): string {
+  get label(): string | null {
     if (!this.ariaLabelledBy) {
       return this.ariaLabel || null;
     } else {

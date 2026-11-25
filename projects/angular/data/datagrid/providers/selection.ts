@@ -23,7 +23,7 @@ export class Selection<T = any> {
   /**
    * Last selection, for use in range selection.
    */
-  rangeStart: T;
+  rangeStart: T | null = null;
 
   /**
    * Shift key state, for use in range selection.
@@ -79,7 +79,7 @@ export class Selection<T = any> {
   ) {
     this.id = 'clr-dg-selection' + nbSelection++;
     this.identifyBy = _items.identifyBy;
-    this._differ = differs.find(this._current()).create<T>(this.identifyBy as TrackByFunction<T>);
+    this._differ = differs.find(this._current()).create<T>(this.trackBy);
 
     this.subscriptions.push(
       filters.change.subscribe(() => {
@@ -128,7 +128,7 @@ export class Selection<T = any> {
           }
 
           case SelectionType.Multi: {
-            let leftOver: any[] = this.current.slice();
+            let leftOver = this.current.slice();
             let selectionUpdated = false;
 
             // Duplicate loop, when the issue is issue#2342 is revisited keep in mind that
@@ -214,7 +214,7 @@ export class Selection<T = any> {
     this.updateCurrentSelectionRefs();
   }
 
-  get currentSingle(): T {
+  get currentSingle(): T | undefined {
     const current = this._current();
     return current.length ? current[0] : undefined;
   }
@@ -388,6 +388,12 @@ export class Selection<T = any> {
       });
     }
   }
+
+  /**
+   * The differ calls its trackBy with `(index, item)`, while `identifyBy` takes only the item.
+   * It reads `identifyBy` on every call, so the differ follows a new identity function set through `clrDgItemsIdentityFn`.
+   */
+  private readonly trackBy: TrackByFunction<T> = (_index, item) => this.identifyBy(item);
 
   /**
    * Selects an item

@@ -15,7 +15,7 @@ export const MIN_DETAIL_WIDTH = 0;
 
 @Injectable()
 export class DetailService {
-  id: string;
+  id!: string;
   /** Width of the pane, in percent of the datagrid. */
   readonly detailWidth = signal(DEFAULT_DETAIL_WIDTH);
 
@@ -25,7 +25,7 @@ export class DetailService {
   /** Whether the pane is open, and the item it shows, which is kept after it closes. */
   private readonly toggleState = signal(false);
   private readonly cache = signal<any>(undefined);
-  private button: HTMLButtonElement;
+  private button?: HTMLButtonElement;
   private readonly _enabled = signal(false);
   private _state = new BehaviorSubject<boolean | null>(false);
 
@@ -77,7 +77,7 @@ export class DetailService {
           this.close();
         }
         this.cache.set(undefined);
-        this.button = null;
+        this.button = undefined;
       }
     };
   }
@@ -100,7 +100,7 @@ export class DetailService {
   returnFocus() {
     if (this.button) {
       this.button.focus({ preventScroll: this.preventFocusScroll });
-      this.button = null;
+      this.button = undefined;
     }
   }
 

@@ -18,7 +18,7 @@ export class ColumnsService {
    * that `columnStates` follows.
    */
   columns: BehaviorSubject<ColumnState>[] = [];
-  columnsStateChange: BehaviorSubject<ColumnState> = new BehaviorSubject(null);
+  columnsStateChange = new BehaviorSubject<ColumnState | null>(null);
 
   private _cache: ColumnState[] = [];
 
@@ -116,8 +116,8 @@ export class ColumnsService {
   }
 
   // Helper method to emit a change to a column only when there is an actual diff to process for that column
-  emitStateChangeAt(columnIndex: number, diff: ColumnStateDiff) {
-    if (!this.columns[columnIndex]) {
+  emitStateChangeAt(columnIndex: number | undefined, diff: ColumnStateDiff) {
+    if (columnIndex === undefined || !this.columns[columnIndex]) {
       return;
     }
     this.emitStateChange(this.columns[columnIndex], diff);

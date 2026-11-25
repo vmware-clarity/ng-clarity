@@ -23,7 +23,7 @@ export class ClrFilterHighlight<T> implements AfterViewInit, OnDestroy {
   @HostBinding('class') elementClass = 'clr-filter-highlight';
 
   private subscriptions: Subscription[] = [];
-  private initialHtml: string;
+  private initialHtml = '';
   private filter = '';
 
   constructor(

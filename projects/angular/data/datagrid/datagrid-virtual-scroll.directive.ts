@@ -14,7 +14,6 @@ import {
   CdkVirtualForOf,
   CdkVirtualForOfContext,
   CdkVirtualScrollable,
-  CdkVirtualScrollableElement,
   CdkVirtualScrollViewport,
   FixedSizeVirtualScrollStrategy,
   ScrollDispatcher,
@@ -81,7 +80,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   private readonly virtualScrollStrategy: FixedSizeVirtualScrollStrategy;
   /** Created after the view, so the datagrid's view is told when it is there. */
   private readonly virtualScrollViewport = signal<CdkVirtualScrollViewport | undefined>(undefined);
-  private cdkVirtualFor: CdkVirtualForOf<T>;
+  private cdkVirtualFor!: CdkVirtualForOf<T>;
   private subscriptions: Subscription[] = [];
   private topIndex = 0;
 
@@ -111,7 +110,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   private cdkVirtualForInputs: CdkVirtualForInputs<T> = {
     cdkVirtualForTrackBy: index => index,
   };
-  private _totalItems: number;
+  private _totalItems?: number;
 
   constructor(
     private readonly changeDetectorRef: ChangeDetectorRef,
@@ -136,10 +135,10 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     this.cdkVirtualForTemplateCacheSize = 20;
 
     const cellHeightToken = window.getComputedStyle(document.body).getPropertyValue('--clr-table-cell-height');
-    const cellHeightValue = +/calc\(([0-9]+) \* calc\(\(1rem \/ 20\) \* 1\)\)/.exec(cellHeightToken)?.[1];
+    const cellHeightValue = Number(/calc\(([0-9]+) \* calc\(\(1rem \/ 20\) \* 1\)\)/.exec(cellHeightToken)?.[1]);
 
     const borderWidthToken = window.getComputedStyle(document.body).getPropertyValue('--clr-table-borderwidth');
-    const borderWidthValue = +/calc\(([0-9]+) \* \(1rem \/ 20\)\)/.exec(borderWidthToken)?.[1];
+    const borderWidthValue = Number(/calc\(([0-9]+) \* \(1rem \/ 20\)\)/.exec(borderWidthToken)?.[1]);
 
     // initially rowHeightValue is calculated based on `--clr-table-row-height` that had a discreet value.
     // currently `--clr-table-row-height` is calculated based on `--clr-table-cell-height` + `--clr-table-borderwidth`
@@ -241,7 +240,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     this.updateDataRange(range.skip, range.data);
   }
 
-  get totalItems() {
+  get totalItems(): number | undefined {
     return this._totalItems;
   }
 
@@ -252,15 +251,18 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   ngAfterViewInit() {
     runInInjectionContext(this.injector, () => {
       this.virtualScrollViewport.set(
-        this.createVirtualScrollViewportForDatagrid(
+        this.createCdkVirtualScrollViewport(
+          this.datagrid.contentWrapper,
+          this.datagrid.rowsWrapper,
           this.changeDetectorRef,
           this.ngZone,
           this.renderer2,
+          this.virtualScrollStrategy,
           this.directionality,
           this.scrollDispatcher,
           this.viewportRuler,
-          this.datagridElementRef,
-          this.virtualScrollStrategy
+          // No separate scrollable element: the viewport scrolls the datagrid content itself.
+          null
         )
       );
 
@@ -401,33 +403,6 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     }
   }
 
-  private createVirtualScrollViewportForDatagrid(
-    changeDetectorRef: ChangeDetectorRef,
-    ngZone: NgZone,
-    renderer2: Renderer2,
-    directionality: Directionality,
-    scrollDispatcher: ScrollDispatcher,
-    viewportRuler: ViewportRuler,
-    datagridElementRef: ElementRef<HTMLElement>,
-    virtualScrollStrategy: FixedSizeVirtualScrollStrategy
-  ) {
-    const datagridContentElement = datagridElementRef.nativeElement.querySelector<HTMLElement>('.datagrid-content');
-    const datagridRowsElement = datagridElementRef.nativeElement.querySelector<HTMLElement>('.datagrid-rows');
-
-    return this.createCdkVirtualScrollViewport(
-      new ElementRef(datagridContentElement),
-      new ElementRef(datagridRowsElement),
-      changeDetectorRef,
-      ngZone,
-      renderer2,
-      virtualScrollStrategy,
-      directionality,
-      scrollDispatcher,
-      viewportRuler,
-      null as any as CdkVirtualScrollableElement
-    );
-  }
-
   private createCdkVirtualScrollViewport(
     datagridDivElementRef: ElementRef<HTMLElement>,
     contentWrapper: ElementRef<HTMLElement>,
@@ -438,7 +413,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     directionality: Directionality,
     scrollDispatcher: ScrollDispatcher,
     viewportRuler: ViewportRuler,
-    scrollable: CdkVirtualScrollable
+    scrollable: CdkVirtualScrollable | null
   ) {
     const injector = createEnvironmentInjector(
       [
