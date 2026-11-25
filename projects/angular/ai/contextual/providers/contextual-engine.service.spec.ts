@@ -8,7 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
-import { ClrPublishedContext } from '@clr/angular/utils';
+import { ClrPublishedContext, markContext } from '@clr/angular/utils';
 import { onTestFinished } from 'vitest';
 
 import { ClrContextRegistryService } from './context-registry.service';
@@ -487,7 +487,7 @@ describe('ClrContextService, asynchronous providers', () => {
     try {
       engine.configure({ timeoutMs: 1000 });
       const snapshot = engine.snapshot();
-      page.setAttribute('data-clr-context-redact', '');
+      markContext(page, 'redact');
       answer(null);
 
       expect(JSON.stringify((await snapshot).components)).not.toContain('4111');
