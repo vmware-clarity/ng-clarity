@@ -8,6 +8,8 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  createComponent,
+  NgZone,
   provideZoneChangeDetection,
   provideZonelessChangeDetection,
   signal,
@@ -17,6 +19,7 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { AppfxPropertyViewModule, PropertyViewBuilder } from '@clr/addons/property-view';
 import { ClarityModule } from '@clr/angular';
 
+import { ButtonAcceptance } from './button-acceptance';
 import { OverlayAcceptance } from './overlay-acceptance';
 import { RuntimeAcceptance } from './runtime-acceptance';
 
@@ -109,10 +112,18 @@ class ConsumerApp {
 }
 
 async function main() {
-  const useZone = new URLSearchParams(location.search).get('mode') === 'zone';
-  await bootstrapApplication(ConsumerApp, {
-    providers: [useZone ? provideZoneChangeDetection() : provideZonelessChangeDetection()],
+  const params = new URLSearchParams(location.search);
+  const app = await bootstrapApplication(ConsumerApp, {
+    providers: [params.get('mode') === 'zone' ? provideZoneChangeDetection() : provideZonelessChangeDetection()],
   });
+  if (params.get('suite') === 'buttons') {
+    // Inside the Angular zone, as for a bootstrapped component, so that Zone.js refreshes the application after its
+    // events and timeouts.
+    app.injector.get(NgZone).run(() => {
+      const hostElement = document.body.appendChild(document.createElement('button-acceptance'));
+      app.attachView(createComponent(ButtonAcceptance, { environmentInjector: app.injector, hostElement }).hostView);
+    });
+  }
 }
 
 main().catch(error => console.error(error));

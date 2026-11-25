@@ -20,13 +20,8 @@ import { CommonModules } from '@storybook-helpers/common';
 
 import { ButtonGroupStorybookComponent } from './button-group.storybook.component';
 
-/**
- * The args drive `<storybook-button-group>`, so the args type is that component. The three
- * `ClrButtonGroup` methods are picked from the class: they appear in `argTypes` only to quieten the
- * controls table generated from `component: ClrButtonGroup`.
- */
-type ButtonGroupArgs = ButtonGroupStorybookComponent &
-  Pick<ClrButtonGroup, 'getMoveIndex' | 'initializeButtons' | 'rearrangeButton'>;
+/** The args drive `<storybook-button-group>`, so the args type is that component. */
+type ButtonGroupArgs = ButtonGroupStorybookComponent;
 
 const meta = {
   title: 'Components/Button/Group',
@@ -39,8 +34,6 @@ const meta = {
   argTypes: {
     // inputs
     clrMenuPosition: { control: { type: 'radio' }, options: CLR_MENU_POSITIONS },
-    // methods
-    ...hideControls('getMoveIndex', 'initializeButtons', 'rearrangeButton'),
     buttonCount: { control: { type: 'number', min: 1, max: 100 } },
     inMenuButtonCount: { control: { type: 'number', min: 1, max: 100 } },
     disabledButtonsPosition: {

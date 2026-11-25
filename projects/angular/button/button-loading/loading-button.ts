@@ -8,7 +8,6 @@
 import {
   afterNextRender,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   DestroyRef,
   ElementRef,
@@ -18,6 +17,8 @@ import {
   Input,
   Output,
   Renderer2,
+  signal,
+  untracked,
   ViewChild,
 } from '@angular/core';
 import { ClrLoadingState, LoadingListener, noopAnimations } from '@clr/angular/utils';
@@ -52,7 +53,7 @@ const MIN_BUTTON_WIDTH = 42;
   providers: [{ provide: LoadingListener, useExisting: ClrLoadingButton }],
   host: { '[attr.disabled]': "disabled? '' : null" },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrLoadingButton implements LoadingListener {
   @Input('disabled') disabled = false;
@@ -60,7 +61,6 @@ export class ClrLoadingButton implements LoadingListener {
   @Output('clrLoadingChange') clrLoadingChange = new EventEmitter<ClrLoadingState>(false);
 
   buttonState = ClrLoadingState;
-  state: ClrLoadingState = ClrLoadingState.DEFAULT;
 
   /** Enter animation of the spinner and the button content: none on the first render. */
   protected enterClass = '';
@@ -68,7 +68,7 @@ export class ClrLoadingButton implements LoadingListener {
   protected readonly checkMarkClass: string;
 
   private readonly injector = inject(Injector);
-  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly _state = signal(ClrLoadingState.DEFAULT);
   private checkMarkElement: HTMLElement | undefined;
 
   constructor(
@@ -83,6 +83,10 @@ export class ClrLoadingButton implements LoadingListener {
       afterNextRender(() => (this.enterClass = 'clr-loading-btn-enter'));
     }
     inject(DestroyRef).onDestroy(() => (this.checkMarkElement = undefined));
+  }
+
+  get state(): ClrLoadingState {
+    return this._state();
   }
 
   // The button goes back to its default state once the check mark animation (see `_buttons.clarity.scss`) is over:
@@ -103,11 +107,12 @@ export class ClrLoadingButton implements LoadingListener {
     }
   }
 
+  // Called while the parent view sets the `clrLoading` input: untracked, so that view does not depend on the state.
   loadingStateChange(state: ClrLoadingState): void {
-    if (state === this.state) {
+    if (state === untracked(this._state)) {
       return;
     }
-    this.state = state;
+    this._state.set(state);
 
     switch (state) {
       case ClrLoadingState.DEFAULT:
@@ -138,7 +143,6 @@ export class ClrLoadingButton implements LoadingListener {
   private checkMarkDone(checkMark: HTMLElement) {
     if (checkMark === this.checkMarkElement && this.state === ClrLoadingState.SUCCESS) {
       this.loadingStateChange(ClrLoadingState.DEFAULT);
-      this.cdr.markForCheck();
     }
   }
 

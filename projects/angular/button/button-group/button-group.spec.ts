@@ -92,8 +92,8 @@ describe('Button Group Directives', () => {
       });
 
       it('initializes the button groups based on the clrInMenu input', () => {
-        expect(testBtnGroup.inlineButtons.length).toBe(2);
-        expect(testBtnGroup.menuButtons.length).toBe(3);
+        expect(testBtnGroup['inlineButtons']().length).toBe(2);
+        expect(testBtnGroup['menuButtons']().length).toBe(3);
       });
 
       it('should be able to set toggle button aria-label text', async () => {
@@ -156,8 +156,8 @@ describe('Button Group Directives', () => {
       });
 
       it('initializes the buttons correctly', () => {
-        expect(testBtnGroup.inlineButtons.length).toBe(5);
-        expect(testBtnGroup.menuButtons.length).toBe(0);
+        expect(testBtnGroup['inlineButtons']().length).toBe(5);
+        expect(testBtnGroup['menuButtons']().length).toBe(0);
       });
 
       it('does not render the overflow initially', () => {
@@ -182,8 +182,8 @@ describe('Button Group Directives', () => {
 
         renderFixture(fixture);
 
-        expect(testBtnGroup.inlineButtons.length).toBe(4);
-        expect(testBtnGroup.menuButtons.length).toBe(1);
+        expect(testBtnGroup['inlineButtons']().length).toBe(4);
+        expect(testBtnGroup['menuButtons']().length).toBe(1);
       });
 
       it('renders the overflow when the clrInMenu Input is set to true', () => {
@@ -275,8 +275,8 @@ describe('Button Group Directives', () => {
       });
 
       it('initializes the buttons correctly', () => {
-        expect(testBtnGroup.inlineButtons.length).toBe(4);
-        expect(testBtnGroup.menuButtons.length).toBe(1);
+        expect(testBtnGroup['inlineButtons']().length).toBe(4);
+        expect(testBtnGroup['menuButtons']().length).toBe(1);
       });
 
       it('does not hide the overflow clrInMenu Input is set to toggled', () => {
@@ -309,8 +309,8 @@ describe('Button Group Directives', () => {
       });
 
       it('initializes the buttons correctly', () => {
-        expect(testBtnGroup.inlineButtons.length).toBe(3);
-        expect(testBtnGroup.menuButtons.length).toBe(2);
+        expect(testBtnGroup['inlineButtons']().length).toBe(3);
+        expect(testBtnGroup['menuButtons']().length).toBe(2);
       });
 
       it('projects the inline buttons', () => {
@@ -357,8 +357,8 @@ describe('Button Group Directives', () => {
 
         renderFixture(fixture);
 
-        expect(testBtnGroup.inlineButtons.length).toBe(2);
-        expect(testBtnGroup.menuButtons.length).toBe(0);
+        expect(testBtnGroup['inlineButtons']().length).toBe(2);
+        expect(testBtnGroup['menuButtons']().length).toBe(0);
       });
     });
 
