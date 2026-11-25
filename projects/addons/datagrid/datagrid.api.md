@@ -43,6 +43,7 @@ import * as i5_2 from '@angular/common';
 import * as i6_2 from '@angular/cdk/drag-drop';
 import { InjectionToken } from '@angular/core';
 import { Injector } from '@angular/core';
+import { InputSignalWithTransform } from '@angular/core';
 import { IterableDiffers } from '@angular/core';
 import { ListRange } from '@angular/cdk/collections';
 import { ModuleWithProviders } from '@angular/core';

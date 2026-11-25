@@ -77,8 +77,8 @@ export interface ClrPageContext {
   components: ClrComponentContext[];
   /** `true` when the page was too large or too deeply nested to read in full; narrow `root` to read the part that matters. */
   truncated?: boolean;
-  /** `'modal'` when only the open modal dialog is described. */
-  focus?: 'modal';
+  /** `true` when only the open modal dialog is described. */
+  modal?: true;
   /** ISO timestamp of the moment the snapshot was taken. */
   collectedAt: string;
 }

@@ -46,12 +46,12 @@ describe('a walk’s lookups', () => {
     return collectContextTreeWithin(container, options).components.map(node => node.label);
   }
 
-  it('names every control by its first label, associated or wrapping', () => {
+  it('names every control by all its labels, associated or wrapping', () => {
     container.innerHTML =
       '<label for="a">First</label><label for="a">Second</label><input id="a" />' +
       '<label>Wrapped <input /></label><input id="none" />';
 
-    expect(labels()).toEqual(['First', 'Wrapped', undefined]);
+    expect(labels()).toEqual(['First Second', 'Wrapped', undefined]);
   });
 
   it('reads labels and styles afresh on the next walk', () => {

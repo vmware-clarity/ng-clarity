@@ -28,7 +28,7 @@ Configure once at startup: `context.configure({ scope: 'interactive', routes: tr
 
 - A snapshot holds the rendered page, text included, and may hold personal data. Send it to a model as data, delimited from the prompt, never as instructions.
 - A backend validates snapshots with `@clr/angular/ai/schemas/page-context-<schemaVersion>.schema.json`, also served at `https://clarity.design/schemas/page-context-<schemaVersion>.schema.json`; `snapshot()` already leaves out what does not match it.
-- Put `data-clr-context-redact` on regions whose values must never leave the page (their fields keep their shape, values are withheld). Put `data-clr-context-ignore` on UI the agent should not see at all.
+- Put `clrContextRedact` on regions whose values must never leave the page (their fields keep their shape, values are withheld). Put `clrContextIgnore` on UI the agent should not see at all. Bind `false` to lift either one, such as `[clrContextRedact]="row.private"`. Both are directives from `@clr/angular/ai` (`ClrContextRedact`, `ClrContextIgnore`, or `ClrContextModule`); the marks are kept off the DOM, so page content cannot plant one to hide itself. For markup outside Angular templates, use `configure({ scope: { excludeSelectors } })`.
 - Password and file inputs, and fields whose `autocomplete` is `current-password`, `new-password`, `one-time-code` or a `cc-*` token, are always withheld. Redact the other secrets, such as tokens or keys typed into plain text fields.
 - Callers the application does not control, such as embedded frames, get no form values and only the route pattern.
 
@@ -66,5 +66,7 @@ export class Firewall {
 - `root: 'modal'` reads only the open modal dialog, such as a wizard, and reads the whole page while none is open, so it can be set once for the application.
 - Prefer semantic HTML and ARIA over annotations: the engine reads the accessibility tree, so an unlabelled control is unnamed to the agent too.
 - A provider may answer with a promise: `snapshot()` waits for it (`configure({ timeoutMs })`, default 2000).
+- Roles follow HTML-AAM and names Accessible Name Computation 1.2. State keys are ARIA attribute names without `aria-` (`readonly`, `haspopup`, `multiselectable`, `posinset`); `focused: true` marks the element with focus. An element with no role is `generic`.
+- A `<form>` or `<section>` without a name has no role, so its fields read as part of the page: give a `clrForm` an `aria-label` to keep it as a `form` node.
 - Unrendered virtual-scroll rows, canvas content, closed shadow roots and cross-origin frames are invisible to it.
 - The frame bridge goes one way: `enableFrameBridge()` lets an embedded frame, such as a chat UI or a plugin, read this page with `clrRequestHostContext()`. It does not read the frames. A same-origin frame is described in place; a cross-origin one, or one behind a closed shadow root, is not.
