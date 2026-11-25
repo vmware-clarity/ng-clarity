@@ -16,7 +16,7 @@ import { Subscription } from 'rxjs';
 })
 export class ClrAriaCurrentLink implements OnInit, OnDestroy {
   ariaCurrent: string | undefined;
-  private subscription: Subscription;
+  private subscription!: Subscription;
 
   constructor(private rla: RouterLinkActive) {}
 

@@ -75,7 +75,7 @@ let clrDgActionId = 0;
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDatagridActionOverflow implements OnDestroy {
-  @Input('clrDgActionOverflowButtonLabel') buttonLabel: string;
+  @Input('clrDgActionOverflowButtonLabel') buttonLabel?: string;
 
   @Output('clrDgActionOverflowOpenChange') openChange = new EventEmitter<boolean>(false);
 
@@ -141,6 +141,9 @@ export class ClrDatagridActionOverflow implements OnDestroy {
 
       if (buttons.length) {
         const keyFocus = this.keyFocus();
+        if (!keyFocus) {
+          return;
+        }
         keyFocus.current = 0;
         keyFocus.focusableItems = buttons;
 

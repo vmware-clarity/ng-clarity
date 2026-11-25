@@ -25,8 +25,8 @@ export class LocaleHelperService {
   // Signals, because `clrFirstDayOfWeek` can change them after the calendar has rendered.
   private readonly _firstDayOfWeek = signal<number>(ClrWeekday.Sunday);
   private readonly _localeDays = signal<ReadonlyArray<ClrDayOfWeek>>([]);
-  private _localeMonthsAbbreviated: ReadonlyArray<string>;
-  private _localeMonthsWide: ReadonlyArray<string>;
+  private _localeMonthsAbbreviated!: ReadonlyArray<string>;
+  private _localeMonthsWide!: ReadonlyArray<string>;
 
   constructor(@Inject(LOCALE_ID) public locale: string) {
     this.initializeLocaleData();
@@ -88,7 +88,7 @@ export class LocaleHelperService {
    */
   private initializeLocaleDays(): void {
     // Get locale day names starting with Sunday
-    const tempArr = [];
+    const tempArr: ClrDayOfWeek[] = [];
     const tempWideArr: string[] = getLocaleDayNames(this.locale, FormStyle.Standalone, TranslationWidth.Wide).slice();
     const tempNarrowArr: string[] = getLocaleDayNames(
       this.locale,
