@@ -67,8 +67,8 @@ import { SignpostIdService } from './providers/signpost-id.service';
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrSignpostContent implements OnDestroy, AfterViewInit {
-  @Input('clrSignpostCloseAriaLabel') signpostCloseAriaLabel: string;
-  @ViewChild('closeButton', { read: ElementRef }) closeButton: ElementRef<HTMLButtonElement>;
+  @Input('clrSignpostCloseAriaLabel') signpostCloseAriaLabel?: string;
+  @ViewChild('closeButton', { read: ElementRef }) closeButton!: ElementRef<HTMLButtonElement>;
 
   signpostContentId = uniqueIdFactory();
 

@@ -44,7 +44,7 @@ export class ClrAlert {
     () => !!this.multiAlertService && this.multiAlertService.currentAlert !== this
   );
   private _isLightweight = false;
-  private _origAlertType: string;
+  private _origAlertType = '';
 
   constructor(
     private iconService: AlertIconAndTypesService,

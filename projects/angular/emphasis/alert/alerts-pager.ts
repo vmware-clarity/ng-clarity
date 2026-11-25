@@ -23,7 +23,7 @@ export class ClrAlertsPager implements OnInit, OnDestroy {
   @Output('clrCurrentAlertChange') currentAlertChange = new EventEmitter<ClrAlert>(false);
   @Output('clrCurrentAlertIndexChange') currentAlertIndexChange = new EventEmitter<number>();
 
-  private multiAlertServiceChanges: Subscription;
+  private multiAlertServiceChanges!: Subscription;
 
   constructor(
     public multiAlertService: MultiAlertService,

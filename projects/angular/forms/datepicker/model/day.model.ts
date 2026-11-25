@@ -60,19 +60,25 @@ export class DayModel {
   /**
    * Compares the dates and returns boolean value based on the value passed
    */
-  isBefore(day: DayModel, dayInclusive = false) {
+  isBefore(day: DayModel | null | undefined, dayInclusive = false) {
+    if (!day) {
+      return false;
+    }
     return dayInclusive
-      ? this.toDate().getTime() <= day?.toDate().getTime()
-      : this.toDate().getTime() < day?.toDate().getTime();
+      ? this.toDate().getTime() <= day.toDate().getTime()
+      : this.toDate().getTime() < day.toDate().getTime();
   }
 
   /**
    * Compares the dates and returns boolean value based on the value passed
    */
-  isAfter(day: DayModel, dayInclusive = false) {
+  isAfter(day: DayModel | null | undefined, dayInclusive = false) {
+    if (!day) {
+      return false;
+    }
     return dayInclusive
-      ? this.toDate().getTime() >= day?.toDate().getTime()
-      : this.toDate().getTime() > day?.toDate().getTime();
+      ? this.toDate().getTime() >= day.toDate().getTime()
+      : this.toDate().getTime() > day.toDate().getTime();
   }
 
   private pad(num: number): string {

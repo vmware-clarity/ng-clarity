@@ -12,7 +12,7 @@ import { ClrAlert } from '../alert';
 
 @Injectable()
 export class MultiAlertService {
-  private subscription: Subscription;
+  private subscription: Subscription | undefined;
   private readonly alerts = signal<ClrAlert[]>([]);
   private readonly index = signal<number>(undefined);
   private readonly openAlerts = computed(() => this.alerts().filter(alert => !alert._closed));
