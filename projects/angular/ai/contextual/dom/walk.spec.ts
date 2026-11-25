@@ -5,13 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrComponentContext, ClrContextSnapshotOptions, markContext, publishElementContext } from '@clr/angular/utils';
+import { ClrComponentContext, ClrContextSnapshotOptions, publishElementContext } from '@clr/angular/utils';
 
 import { annotate } from './annotations';
 import { withoutValues } from './aria-state';
 import { ClrContextTreeResult, collectContextTreeWithin, isOutsideSnapshot } from './walk';
 import { ResolvedSnapshotOptions, resolveSnapshotOptions } from '../snapshot-options';
-import { applyContextMarks } from './marks.mock';
 
 /** The element each spec renders into, attached to the page for the spec's duration. */
 let container: HTMLElement;
@@ -33,7 +32,6 @@ function budgets(overrides: Partial<ResolvedSnapshotOptions> = {}): ResolvedSnap
 /** Renders `html` into the container and walks it. */
 function collectTree(html: string, overrides: Partial<ResolvedSnapshotOptions> = {}): ClrContextTreeResult {
   container.innerHTML = html;
-  applyContextMarks(container);
   return collectContextTreeWithin(container, budgets(overrides));
 }
 
@@ -100,7 +98,7 @@ describe('collectContextTreeWithin', () => {
 
   it('withholds what was chosen or ticked in a redacted region, not only what was typed', () => {
     const nodes = collect(
-      `<div clrContextRedact>
+      `<div data-clr-context-redact>
          <select multiple aria-label="Roles"><option selected>admin</option><option>viewer</option></select>
          <input type="checkbox" aria-label="Remember me" checked />
        </div>`
@@ -122,7 +120,9 @@ describe('collectContextTreeWithin', () => {
   });
 
   it('withholds what a redacted rich-text editor holds', () => {
-    const [node] = collect('<div clrContextRedact><div contenteditable="true"><p>my secret note</p></div></div>');
+    const [node] = collect(
+      '<div data-clr-context-redact><div contenteditable="true"><p>my secret note</p></div></div>'
+    );
     expect(node.state).toEqual({ redacted: true });
   });
 
@@ -137,8 +137,8 @@ describe('collectContextTreeWithin', () => {
 
   it('does not borrow a name or description from an ignored or redacted region', () => {
     const nodes = collect(
-      `<div clrContextIgnore><span id="hint">hidden hint</span></div>
-       <div clrContextRedact><span id="secret">4111 1111</span></div>
+      `<div data-clr-context-ignore><span id="hint">hidden hint</span></div>
+       <div data-clr-context-redact><span id="secret">4111 1111</span></div>
        <button aria-describedby="hint" aria-labelledby="secret">Go</button>`
     );
     expect(types(nodes)).toEqual(['button']);
@@ -149,11 +149,11 @@ describe('collectContextTreeWithin', () => {
 
   it('never borrows text from a redacted or ignored element inside what it names', () => {
     const nodes = collect(
-      `<p>Your IBAN is <span clrContextRedact>DE89370400440532013000</span></p>
-       <h2>Account <span clrContextRedact>sk-heading</span></h2>
-       <ul><li>Key <span clrContextRedact>sk-item</span></li><li>Other</li></ul>
-       <button>Copy <span clrContextIgnore>x-button</span></button>
-       <span id="help">Call us <span clrContextRedact>555-0100</span></span>
+      `<p>Your IBAN is <span data-clr-context-redact>DE89370400440532013000</span></p>
+       <h2>Account <span data-clr-context-redact>sk-heading</span></h2>
+       <ul><li>Key <span data-clr-context-redact>sk-item</span></li><li>Other</li></ul>
+       <button>Copy <span data-clr-context-ignore>x-button</span></button>
+       <span id="help">Call us <span data-clr-context-redact>555-0100</span></span>
        <input aria-label="Phone" aria-describedby="help" />`
     );
     const json = JSON.stringify(nodes);
@@ -172,7 +172,7 @@ describe('collectContextTreeWithin', () => {
 
   it('withholds the address of a link inside a redacted region', () => {
     const [link] = collect(
-      '<div clrContextRedact><a href="/accounts/4111/statement?token=abc">View statement</a></div>'
+      '<div data-clr-context-redact><a href="/accounts/4111/statement?token=abc">View statement</a></div>'
     );
 
     expect(link.state?.['redacted']).toBe(true);
@@ -215,12 +215,12 @@ describe('collectContextTreeWithin', () => {
 
   it('does not name a control by a label, legend or caption the application redacted', () => {
     const nodes = collect(
-      `<div clrContextRedact><label for="a">Account 4111</label></div><input id="a" />
-       <label clrContextRedact for="b">Account 4222</label><input id="b" />
-       <fieldset><legend clrContextRedact>Account 4333</legend><input aria-label="x" /></fieldset>
-       <table><caption clrContextRedact>Account 4444</caption><tr><td>1</td></tr></table>
-       <figure><figcaption clrContextRedact>Account 4555</figcaption><img alt="" src="" /></figure>
-       <div clrContextRedact><label>Owner <input value="x" /></label></div>`
+      `<div data-clr-context-redact><label for="a">Account 4111</label></div><input id="a" />
+       <label data-clr-context-redact for="b">Account 4222</label><input id="b" />
+       <fieldset><legend data-clr-context-redact>Account 4333</legend><input aria-label="x" /></fieldset>
+       <table><caption data-clr-context-redact>Account 4444</caption><tr><td>1</td></tr></table>
+       <figure><figcaption data-clr-context-redact>Account 4555</figcaption><img alt="" src="" /></figure>
+       <div data-clr-context-redact><label>Owner <input value="x" /></label></div>`
     );
     const json = JSON.stringify(nodes);
 
@@ -245,7 +245,7 @@ describe('collectContextTreeWithin', () => {
 
   it('names a link or button in a redacted region only by what an author gave it, never by its content', () => {
     const nodes = collect(
-      `<div clrContextRedact>
+      `<div data-clr-context-redact>
          <a href="/a">ACC-4111</a>
          <button>Delete ACC-4222</button>
          <button aria-label="Copy account number">ACC-4333</button>
@@ -263,10 +263,10 @@ describe('collectContextTreeWithin', () => {
   it('walks into a summarised grid’s cells only where the walk itself would go', () => {
     const nodes = collect(
       `<div role="grid" aria-label="Accounts">
-         <div role="row" clrContextRedact><div role="gridcell"><input aria-label="Secret" value="x-redacted" /></div></div>
+         <div role="row" data-clr-context-redact><div role="gridcell"><input aria-label="Secret" value="x-redacted" /></div></div>
          <div role="row" aria-hidden="true"><div role="gridcell"><input aria-label="Hidden" value="x-hidden" /></div></div>
          <div role="row" inert><div role="gridcell"><input aria-label="Inert" value="x-inert" /></div></div>
-         <div role="row"><div role="gridcell" clrContextIgnore><input type="checkbox" aria-label="Select" /></div></div>
+         <div role="row"><div role="gridcell" data-clr-context-ignore><input type="checkbox" aria-label="Select" /></div></div>
          <div role="row"><div role="gridcell"><input aria-label="Note" value="x-visible" /></div></div>
        </div>`,
       { shareFormValues: true } as never
@@ -320,7 +320,7 @@ describe('collectContextTreeWithin', () => {
   });
 
   it('skips an ignored region entirely', () => {
-    expect(collect('<div clrContextIgnore><div role="grid"></div></div>')).toEqual([]);
+    expect(collect('<div data-clr-context-ignore><div role="grid"></div></div>')).toEqual([]);
   });
 
   it('skips content hidden from assistive technology', () => {
@@ -517,10 +517,9 @@ describe('collectContextTreeWithin, what a summary must not hide', () => {
   });
 
   it('does not run an extractor inside a sensitive region, so none of its state gets out', () => {
-    container.innerHTML = '<div clrContextRedact><my-field data-value="4111 1111"></my-field></div>';
-    applyContextMarks(container);
+    container.innerHTML = '<div data-clr-context-redact><my-field data-value="4111 1111"></my-field></div>';
     const extractor = {
-      selector: 'my-field, [clrContextRedact]',
+      selector: 'my-field, [data-clr-context-redact]',
       extract: (element: HTMLElement) => ({
         type: 'textbox',
         state: { value: element.getAttribute('data-value'), secret: 's3cr3t' },
@@ -609,7 +608,7 @@ describe('collectContextTreeWithin, what a summary must not hide', () => {
   it('does not let an ignored region hide the content it describes itself with', () => {
     const nodes = collect(
       `<h1 id="title">Hosts</h1>
-       <div clrContextIgnore aria-describedby="title">assistant</div>`
+       <div data-clr-context-ignore aria-describedby="title">assistant</div>`
     );
     expect(types(nodes)).toEqual(['heading']);
   });
@@ -653,14 +652,7 @@ describe('collectContextTreeWithin, text and frames', () => {
     for (const [name, value] of Object.entries(attributes)) {
       frame.setAttribute(name, value);
     }
-    const loaded = new Promise<HTMLIFrameElement>(resolve =>
-      frame.addEventListener('load', () => {
-        if (frame.contentDocument) {
-          applyContextMarks(frame.contentDocument);
-        }
-        resolve(frame);
-      })
-    );
+    const loaded = new Promise<HTMLIFrameElement>(resolve => frame.addEventListener('load', () => resolve(frame)));
     frame.srcdoc = html;
     parent.appendChild(frame);
     return loaded;
@@ -709,7 +701,9 @@ describe('collectContextTreeWithin, text and frames', () => {
     });
 
     it('reports no text inside a sensitive region, whose content is not for a snapshot', () => {
-      const nodes = collect('<div clrContextRedact><p>Card 4111 1111 1111 1111</p><input aria-label="CVC" /></div>');
+      const nodes = collect(
+        '<div data-clr-context-redact><p>Card 4111 1111 1111 1111</p><input aria-label="CVC" /></div>'
+      );
       expect(types(nodes)).toEqual(['textbox']);
     });
 
@@ -746,7 +740,7 @@ describe('collectContextTreeWithin, text and frames', () => {
 
     it('does not take a name from the document title of a frame in a redacted region', async () => {
       const region = document.createElement('div');
-      markContext(region, 'redact');
+      region.setAttribute('data-clr-context-redact', '');
       container.appendChild(region);
       await frameWith('<title>Statement 4111-2222</title><p>Balance</p>', {}, region);
 
@@ -755,9 +749,9 @@ describe('collectContextTreeWithin, text and frames', () => {
 
     it('honours a redaction marked on a frame document’s body or root', async () => {
       await frameWith(
-        '<title>Account ACC-T</title><body clrContextRedact><label>Account <input value="ACC-1" /></label><p>ACC-P</p></body>'
+        '<title>Account ACC-T</title><body data-clr-context-redact><label>Account <input value="ACC-1" /></label><p>ACC-P</p></body>'
       );
-      await frameWith('<html clrContextRedact><body><input aria-label="Code" value="ACC-2" /></body></html>');
+      await frameWith('<html data-clr-context-redact><body><input aria-label="Code" value="ACC-2" /></body></html>');
       const described = collectContextTreeWithin(container, budgets()).components;
 
       expect(JSON.stringify(described)).not.toContain('ACC-');
@@ -766,8 +760,8 @@ describe('collectContextTreeWithin, text and frames', () => {
     });
 
     it('reports nothing inside a frame whose document ignores itself', async () => {
-      await frameWith('<body clrContextIgnore><p>chat transcript</p><button>Send</button></body>');
-      await frameWith('<html clrContextIgnore><title>Chat</title><body><p>chat transcript</p></body></html>');
+      await frameWith('<body data-clr-context-ignore><p>chat transcript</p><button>Send</button></body>');
+      await frameWith('<html data-clr-context-ignore><title>Chat</title><body><p>chat transcript</p></body></html>');
       const described = collectContextTreeWithin(container, budgets()).components;
 
       expect(JSON.stringify(described)).not.toContain('chat');
@@ -775,7 +769,7 @@ describe('collectContextTreeWithin, text and frames', () => {
     });
 
     it('withholds the value of an editable frame whose document is redacted', async () => {
-      await frameWith('<body contenteditable clrContextRedact>Dear ACC-3</body>');
+      await frameWith('<body contenteditable data-clr-context-redact>Dear ACC-3</body>');
       const [frame] = collectContextTreeWithin(container, budgets()).components;
 
       expect(frame.type).toBe('textbox');
@@ -914,16 +908,19 @@ describe('collectContextTreeWithin, choosing what to collect', () => {
   });
 
   it('does not let a root selector reach into an ignored region', () => {
-    const { components } = collectTree(`${PAGE}<div clrContextIgnore><form><button>Secret</button></form></div>`, {
-      rootSelector: 'form',
-    });
+    const { components } = collectTree(
+      `${PAGE}<div data-clr-context-ignore><form><button>Secret</button></form></div>`,
+      {
+        rootSelector: 'form',
+      }
+    );
     expect(components.length).toBe(1);
     expect(types(components[0].children)).toEqual(['textbox', 'button']);
   });
 
   it('does not let a root selector reach into a redacted region', () => {
     const { components } = collectTree(
-      `${PAGE}<div clrContextRedact><main><label for="c">Card</label><input id="c" value="4111 1111" /><p>CVC 123</p></main></div>`,
+      `${PAGE}<div data-clr-context-redact><main><label for="c">Card</label><input id="c" value="4111 1111" /><p>CVC 123</p></main></div>`,
       { rootSelector: 'main' }
     );
     const json = JSON.stringify(components);
@@ -968,7 +965,7 @@ describe('collectContextTreeWithin, choosing what to collect', () => {
 
   it('does not let modal focus reach into a redacted region', () => {
     const { components } = collectTree(
-      `${PAGE}<div clrContextRedact><div role="dialog" aria-modal="true" aria-label="Pay"><input aria-label="Card" value="4111 1111" /></div></div>`,
+      `${PAGE}<div data-clr-context-redact><div role="dialog" aria-modal="true" aria-label="Pay"><input aria-label="Card" value="4111 1111" /></div></div>`,
       { focus: 'modal' }
     );
     const json = JSON.stringify(components);
@@ -1074,7 +1071,6 @@ describe('collectContextTreeWithin, leaving out whole kinds of content', () => {
 
   function collectTypes(html: string, options: ClrContextSnapshotOptions): string[] {
     container.innerHTML = html;
-    applyContextMarks(container);
     const flatten = (nodes: ClrComponentContext[]): string[] =>
       nodes.flatMap(node => [node.type, ...flatten(node.children ?? [])]);
     return flatten(collectContextTreeWithin(container, resolveSnapshotOptions(options)).components);
@@ -1303,9 +1299,9 @@ describe('collectContextTreeWithin, markup it did not expect', () => {
 
   it('never names a hidden, redacted or excluded selected option as a select’s value', () => {
     const { components } = collectTree(
-      `<select aria-label="Account"><option clrContextRedact selected>ACC-1234</option><option>Other</option></select>
+      `<select aria-label="Account"><option data-clr-context-redact selected>ACC-1234</option><option>Other</option></select>
        <select aria-label="Plan"><option class="x" selected>Gold</option><option>Basic</option></select>
-       <select aria-label="Tier"><optgroup clrContextRedact><option selected>SECRET-TIER</option></optgroup><option>Open</option></select>
+       <select aria-label="Tier"><optgroup data-clr-context-redact><option selected>SECRET-TIER</option></optgroup><option>Open</option></select>
        <select aria-label="Pick"><option hidden selected value="">HIDDEN-PLACEHOLDER</option><option>One</option></select>
        <div contenteditable aria-label="Notes">Visible <span class="x">EXCLUDED-NOTE</span></div>`,
       { excludeSelectors: ['.x'] }
@@ -1319,8 +1315,8 @@ describe('collectContextTreeWithin, markup it did not expect', () => {
 
   it('takes no name from a label that is itself marked redacted, even wrapped around its field', () => {
     const { components } = collectTree(
-      `<label clrContextRedact><input type="checkbox" /> Account 4111-SECRET</label>
-       <div clrContextRedact><label for="x">Card holder</label><input id="x" /></div>`
+      `<label data-clr-context-redact><input type="checkbox" /> Account 4111-SECRET</label>
+       <div data-clr-context-redact><label for="x">Card holder</label><input id="x" /></div>`
     );
     const json = JSON.stringify(components);
     expect(json).not.toContain('4111');
@@ -1385,7 +1381,7 @@ describe('collectContextTreeWithin, names, text and state an agent would otherwi
     expect(nodes.map(node => types(node.children))).toEqual([[], [], ['link', 'link']]);
     expect(collect('<div role="dialog" aria-label="D">Text</div>', { includeText: false })[0].children).toBeUndefined();
     expect(
-      collect('<div clrContextRedact><div role="region" aria-label="R">Secret</div></div>')[0].children
+      collect('<div data-clr-context-redact><div role="region" aria-label="R">Secret</div></div>')[0].children
     ).toBeUndefined();
   });
 
@@ -1393,7 +1389,7 @@ describe('collectContextTreeWithin, names, text and state an agent would otherwi
     const [dialog] = collect(
       `<div role="dialog" aria-label="Confirm">Delete <b>vm-01</b> from <em>cluster <code>c2</code></em>?<button>OK</button>
        Read <a href="/docs">the docs</a> <strong>first</strong>.<span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">(hidden hint)</span>
-       <span clrContextRedact>SECRET</span></div>`
+       <span data-clr-context-redact>SECRET</span></div>`
     );
     expect(dialog.children).toEqual([
       { type: 'text', label: 'Delete vm-01 from cluster c2?' },
@@ -1486,7 +1482,6 @@ describe('collectContextTreeWithin, names, text and state an agent would otherwi
 
     it('starts from the outermost component the dialog is all of, keeping what it publishes and its tag', () => {
       container.innerHTML = FLOW;
-      applyContextMarks(container);
       publishSteps();
       const result = collectContextTreeWithin(container, budgets({ focus: 'modal' }));
       expect(result.modal).toBe(true);
@@ -1503,14 +1498,12 @@ describe('collectContextTreeWithin, names, text and state an agent would otherwi
 
     it('stops at a component that renders something beside the dialog, or that has a name', () => {
       container.innerHTML = FLOW.replace('<my-dialog-host>', '<my-dialog-host><button>Help</button>');
-      applyContextMarks(container);
       publishSteps();
       const [beside] = collectContextTreeWithin(container, budgets({ focus: 'modal' })).components;
       expect(beside.element).toBeUndefined();
       expect(beside.state).toEqual({ modal: true });
 
       container.innerHTML = FLOW.replace('<my-flow>', '<my-flow aria-label="Flow">');
-      applyContextMarks(container);
       publishSteps();
       const [named] = collectContextTreeWithin(container, budgets({ focus: 'modal' })).components;
       expect(named.element).toBe('my-dialog-host');
@@ -1519,7 +1512,6 @@ describe('collectContextTreeWithin, names, text and state an agent would otherwi
 
     it('does not climb out of the roots a root selector picked', () => {
       container.innerHTML = FLOW;
-      applyContextMarks(container);
       publishSteps();
       const [dialog] = collectContextTreeWithin(
         container,
@@ -1539,7 +1531,6 @@ describe('collectContextTreeWithin, open shadow roots', () => {
     container.innerHTML = `<shadow-host>${light}</shadow-host>`;
     const root = (container.querySelector('shadow-host') as HTMLElement).attachShadow({ mode: 'open' });
     root.innerHTML = shadow;
-    applyContextMarks(root);
     return collectContextTreeWithin(container, budgets()).components;
   }
 
@@ -1575,8 +1566,7 @@ describe('collectContextTreeWithin, open shadow roots', () => {
   });
 
   it('withholds values inside a shadow root under a redacted host', () => {
-    container.innerHTML = '<div clrContextRedact><shadow-host></shadow-host></div>';
-    applyContextMarks(container);
+    container.innerHTML = '<div data-clr-context-redact><shadow-host></shadow-host></div>';
     const root = (container.querySelector('shadow-host') as HTMLElement).attachShadow({ mode: 'open' });
     root.innerHTML = '<input aria-label="Secret" value="hunter2" />';
 
@@ -1590,8 +1580,8 @@ describe('collectContextTreeWithin, open shadow roots', () => {
     const card = '<input aria-label="Card number" value="4111111111111111" />';
 
     for (const [what, shadow] of [
-      ['a redacted slot', '<slot clrContextRedact></slot>'],
-      ['a redacted wrapper around the slot', '<div clrContextRedact><slot></slot></div>'],
+      ['a redacted slot', '<slot data-clr-context-redact></slot>'],
+      ['a redacted wrapper around the slot', '<div data-clr-context-redact><slot></slot></div>'],
     ]) {
       it(`withholds slotted values under ${what}`, () => {
         const nodes = all(host(shadow, card));
@@ -1602,9 +1592,9 @@ describe('collectContextTreeWithin, open shadow roots', () => {
     }
 
     for (const [what, shadow] of [
-      ['an ignored slot', '<slot clrContextIgnore></slot>'],
+      ['an ignored slot', '<slot data-clr-context-ignore></slot>'],
       ['an aria-hidden slot', '<slot aria-hidden="true"></slot>'],
-      ['an ignored wrapper around the slot', '<div clrContextIgnore><slot></slot></div>'],
+      ['an ignored wrapper around the slot', '<div data-clr-context-ignore><slot></slot></div>'],
     ]) {
       it(`leaves out what ${what} shows`, () => {
         const nodes = all(host(shadow, card));
