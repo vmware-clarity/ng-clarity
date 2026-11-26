@@ -49,6 +49,15 @@ class Test1Component {}
 })
 class Test2Component {}
 
+@Component({
+  selector: 'test-translate-on-push-component',
+  imports: [AppfxTranslateModule],
+  template: "{{ 'key' | translate }}",
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [AppfxTranslateService, { provide: appfxTranslationsToken, useValue: testTranslations1 }],
+})
+class OnPushComponent {}
+
 @NgModule({
   declarations: [Test1Component],
   imports: [AppfxTranslateModule],
@@ -167,6 +176,21 @@ describe('Pipe: Translate', () => {
       it('translates component 2 with the proper appfxTranslations instance', () => {
         expect((component2.nativeElement as HTMLElement).textContent?.trim()).toBe('t2-es');
       });
+    });
+  });
+
+  describe('when used in an OnPush component', () => {
+    it('renders the new locale when it changes after the view was checked', async () => {
+      const fixture = TestBed.createComponent(OnPushComponent);
+      fixture.autoDetectChanges();
+      await fixture.whenStable();
+      expect((fixture.nativeElement as HTMLElement).textContent?.trim()).toBe('t1');
+
+      fixture.debugElement.injector.get(AppfxTranslateService).locale = AppfxLocale.Es;
+      await fixture.whenStable();
+
+      expect((fixture.nativeElement as HTMLElement).textContent?.trim()).toBe('t1-es');
+      fixture.destroy();
     });
   });
 });

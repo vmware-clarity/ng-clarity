@@ -5,34 +5,34 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Directive, HostBinding, inject, OnDestroy, OnInit, Optional } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Directive, HostBinding, OnDestroy, OnInit, Optional, signal } from '@angular/core';
 
 import { ZoomLevel } from './zoom-level.model';
 import { ZoomLevelService } from './zoom-level.service';
 
 @Directive({ selector: '[zoomLevelIndicator]', standalone: false })
 export class ZoomLevelIndicatorDirective implements OnInit, OnDestroy {
-  @HostBinding('class') zoomLevel?: ZoomLevel;
-
-  private subscription?: Subscription;
-  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+  private readonly assignedZoomLevel = signal<ZoomLevel | undefined>(undefined);
 
   constructor(@Optional() private zoomLevelService: ZoomLevelService) {}
 
-  ngOnInit() {
-    if (this.zoomLevelService) {
-      this.subscription = this.zoomLevelService.onChange.subscribe(v => {
-        this.zoomLevel = v;
-        // The service emits from a ResizeObserver callback, which does not schedule change detection.
-        this.changeDetectorRef.markForCheck();
-      });
-    }
+  @HostBinding('class')
+  get zoomLevel(): ZoomLevel | undefined {
+    // A zoom level assigned from code wins. `level?.()` tolerates test doubles of ZoomLevelService without `level`.
+    return this.assignedZoomLevel() ?? this.zoomLevelService?.level?.();
   }
 
-  ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+  set zoomLevel(zoomLevel: ZoomLevel | undefined) {
+    this.assignedZoomLevel.set(zoomLevel);
+  }
+
+  /** @deprecated The directive no longer needs initialization. Kept so that `super.ngOnInit()` calls compile. */
+  ngOnInit(): void {
+    // Intentionally empty.
+  }
+
+  /** @deprecated The directive holds no subscription anymore. Kept so that `super.ngOnDestroy()` calls compile. */
+  ngOnDestroy(): void {
+    // Intentionally empty.
   }
 }

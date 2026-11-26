@@ -39,6 +39,7 @@ import { PipeTransform } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
+import { Signal } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Subscription } from 'rxjs';
@@ -495,7 +496,8 @@ class WorkflowModelMonitorComponent implements OnInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "NameValue" needs to be exported by the entry point clr-addons-var.d.ts
     //
     // (undocumented)
-    debugModel: NameValue[];
+    get debugModel(): NameValue[];
+    set debugModel(entries: NameValue[]);
     // (undocumented)
     isOpen: boolean;
     // (undocumented)

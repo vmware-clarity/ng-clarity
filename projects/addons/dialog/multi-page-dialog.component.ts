@@ -16,6 +16,7 @@ import {
   OnInit,
   Optional,
   Output,
+  signal,
   ViewChild,
 } from '@angular/core';
 import { ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
@@ -33,7 +34,7 @@ import {
   WorkflowModelMonitor,
 } from '@clr/addons/var';
 import { WorkflowStrings } from '@clr/addons/workflow/strings';
-import { isObservable, Observable, of, Subscription } from 'rxjs';
+import { isObservable, Observable, of } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 
 import { DefaultButton, ModalSize } from './multi-page-dialog.model';
@@ -66,6 +67,8 @@ import { DefaultButton, ModalSize } from './multi-page-dialog.model';
  */
 @Component({
   selector: 'appfx-dialog',
+  // Stays Eager: the dialog renders consumer step components (through appfx-tabs). In a Zone app they refresh
+  // with every change detection, and an OnPush dialog would skip them when they change asynchronously.
   changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
   templateUrl: 'multi-page-dialog.component.html',
@@ -144,20 +147,20 @@ export class DialogComponent implements OnInit, OnDestroy {
 
   errorIconVisibleList: boolean[] = [];
   closeHandlerValidationState = new StepValidationState();
-  currentZoomLevel = ZoomLevel.none;
   ZoomLevel = ZoomLevel;
   tabLinksOpened = false;
 
   @ViewChild(WorkflowModelMonitor, { static: false }) private debugPopup?: WorkflowModelMonitor;
 
-  private subscriptions = new Subscription();
   private readonly defaultMinHeight = '545px';
+  private readonly assignedZoomLevel = signal<ZoomLevel | undefined>(undefined);
 
   #opened = true;
   #subTitle$!: Observable<string>;
 
   constructor(
-    private cdr: ChangeDetectorRef,
+    /** @deprecated Unused, kept so that subclasses calling `super(cdr, ...)` compile. */
+    _cdr: ChangeDetectorRef,
     readonly workflowStrings: WorkflowStrings,
     readonly configService: WorkflowConfigurationService,
     /**
@@ -201,6 +204,15 @@ export class DialogComponent implements OnInit, OnDestroy {
     }
   }
 
+  get currentZoomLevel(): ZoomLevel {
+    // `level?.()` tolerates test doubles of ZoomLevelService without `level`.
+    return this.assignedZoomLevel() ?? this.zoomLevelService?.level?.() ?? ZoomLevel.none;
+  }
+
+  set currentZoomLevel(zoomLevel: ZoomLevel) {
+    this.assignedZoomLevel.set(zoomLevel);
+  }
+
   get subTitle$(): Observable<string> {
     return this.#subTitle$;
   }
@@ -239,19 +251,14 @@ export class DialogComponent implements OnInit, OnDestroy {
     return !!(this.debugPopup && this.debugPopup.isOpen);
   }
 
+  /** @deprecated The dialog no longer needs initialization. Kept so that `super.ngOnInit()` calls compile. */
   ngOnInit(): void {
-    if (this.zoomLevelService) {
-      this.subscriptions.add(
-        this.zoomLevelService.onChange.subscribe((level: ZoomLevel) => {
-          this.currentZoomLevel = level;
-          this.cdr.detectChanges();
-        })
-      );
-    }
+    // Intentionally empty.
   }
 
-  ngOnDestroy() {
-    this.subscriptions.unsubscribe();
+  /** @deprecated The dialog holds no subscription anymore. Kept so that `super.ngOnDestroy()` calls compile. */
+  ngOnDestroy(): void {
+    // Intentionally empty.
   }
 
   onOkButtonClick(): void {

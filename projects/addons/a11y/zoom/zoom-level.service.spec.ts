@@ -72,6 +72,16 @@ describe('ZoomLevelService', () => {
     });
   });
 
+  describe('#level', () => {
+    it('follows the measured zoom level', async () => {
+      document.documentElement.style.width = '575px';
+      await vi.waitFor(() => expect(testContext.zoomLevelService.level()).toBe(ZoomLevel.x4));
+
+      document.documentElement.style.width = '1200px';
+      await vi.waitFor(() => expect(testContext.zoomLevelService.level()).toBe(ZoomLevel.none));
+    });
+  });
+
   describe('#ngOnDestroy', () => {
     it('unobserves the document element for resize and completes the `onChange` observable', () => {
       let onChangeObservableCompleted = false;

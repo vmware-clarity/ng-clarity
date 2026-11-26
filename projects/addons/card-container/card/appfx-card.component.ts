@@ -60,6 +60,7 @@ import { LayoutService } from '../services/layout.service';
       useValue: translations,
     },
   ],
+  // Stays Eager: the card hosts a consumer component. See AppfxCardContainerComponent.
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class AppfxCardComponent implements OnInit, AfterViewInit, OnDestroy {

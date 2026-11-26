@@ -40,6 +40,7 @@ import { PipeTransform } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
+import { Signal } from '@angular/core';
 import { SimpleChange } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
@@ -69,7 +70,8 @@ export type DefaultButton = 'submit' | 'close';
 // @public
 class DialogComponent implements OnInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "ZoomLevelService" needs to be exported by the entry point clr-addons-dialog.d.ts
-    constructor(cdr: ChangeDetectorRef, workflowStrings: WorkflowStrings, configService: WorkflowConfigurationService,
+    constructor(
+    _cdr: ChangeDetectorRef, workflowStrings: WorkflowStrings, configService: WorkflowConfigurationService,
     openModalComponent?: boolean, zoomLevelService?: ZoomLevelService);
     cancelButtonLabel: string;
     // Warning: (ae-forgotten-export) The symbol "CloseHandler" needs to be exported by the entry point clr-addons-dialog.d.ts
@@ -82,10 +84,9 @@ class DialogComponent implements OnInit, OnDestroy {
     //
     // (undocumented)
     readonly configService: WorkflowConfigurationService;
-    // Warning: (ae-forgotten-export) The symbol "ZoomLevel" needs to be exported by the entry point clr-addons-dialog.d.ts
-    //
     // (undocumented)
-    currentZoomLevel: ZoomLevel;
+    get currentZoomLevel(): ZoomLevel;
+    set currentZoomLevel(zoomLevel: ZoomLevel);
     defaultButton: DefaultButton;
     disableTabsContent: boolean;
     // (undocumented)
@@ -104,9 +105,9 @@ class DialogComponent implements OnInit, OnDestroy {
     loading: boolean;
     // Warning: (ae-forgotten-export) The symbol "WorkflowModel" needs to be exported by the entry point clr-addons-dialog.d.ts
     model: WorkflowModel;
-    // (undocumented)
+    // @deprecated (undocumented)
     ngOnDestroy(): void;
-    // (undocumented)
+    // @deprecated (undocumented)
     ngOnInit(): void;
     okButtonLabel: string;
     // (undocumented)
@@ -147,6 +148,8 @@ class DialogComponent implements OnInit, OnDestroy {
     //
     // (undocumented)
     readonly workflowStrings: WorkflowStrings;
+    // Warning: (ae-forgotten-export) The symbol "ZoomLevel" needs to be exported by the entry point clr-addons-dialog.d.ts
+    //
     // (undocumented)
     ZoomLevel: typeof ZoomLevel;
     // (undocumented)

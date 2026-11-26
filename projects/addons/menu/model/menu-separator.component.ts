@@ -19,7 +19,7 @@ import { MenuItem, MenuItemType } from './menu-item.token';
       useExisting: forwardRef(() => MenuSeparatorComponent),
     },
   ],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MenuSeparatorComponent extends MenuItem {
   override type = MenuItemType.separator;

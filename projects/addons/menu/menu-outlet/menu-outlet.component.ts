@@ -14,6 +14,8 @@ import { MenuOutletService } from './menu-outlet.service';
   selector: 'menu-outlet',
   standalone: false,
   template: ` <ng-container #vc></ng-container>`,
+  // Stays Eager: the outlet hosts the consumer component given to MenuOutletService.showMenu(). In a Zone app it
+  // refreshes with every change detection; an OnPush outlet would skip it.
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 /**

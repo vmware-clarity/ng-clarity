@@ -113,6 +113,18 @@ The mapping between zoom levels and Bootstrap breakpoints is:
 
 A service for detecting zoom level based on document body size. Uses ResizeObserver for detecting body size changes.
 
+`level` is a signal with the current zoom level (`undefined` until the page is first measured). Read it in a template or a `computed()`: the views that read it refresh when it changes, OnPush views included.
+
+```ts
+export class MyComponent {
+  private readonly zoomLevelService = inject(ZoomLevelService);
+
+  readonly fullScreen = computed(() => this.zoomLevelService.level() === ZoomLevel.x4);
+}
+```
+
+`onChange` emits the same changes as an observable. It emits outside Angular, so a subscriber has to trigger change detection itself.
+
 #### Example Usage
 
 ```ts

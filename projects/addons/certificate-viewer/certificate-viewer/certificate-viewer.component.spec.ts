@@ -5,10 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, Input, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, signal, TemplateRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppfxTranslateModule } from '@clr/addons/translate';
-import { ClrSpinnerModule, ClrTabsModule } from '@clr/angular';
+import { ClrAlertModule, ClrSpinnerModule, ClrTabsModule } from '@clr/angular';
 import { renderFixture } from '@clr/angular/utils/testing';
 
 import { CertificateViewerComponent } from './certificate-viewer.component';
@@ -87,5 +87,71 @@ describe('CertificateViewerComponent', () => {
     ).certificateChainPromise;
 
     expect(component.certificateChain).toEqual(certificateChainResult);
+  });
+});
+
+@Component({
+  standalone: false,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: '<appfx-certificate-viewer [pemEncodedCertificatesChain]="chain()"></appfx-certificate-viewer>',
+})
+class OnPushHostComponent {
+  readonly chain = signal(['first']);
+}
+
+describe('CertificateViewerComponent in an OnPush host', () => {
+  let fixture: ComponentFixture<OnPushHostComponent>;
+  let parse: ReturnType<typeof vi.spyOn>;
+
+  function chainOf(commonName: string): CertificateChain {
+    return { leafCertificate: { subject: { commonName } } } as unknown as CertificateChain;
+  }
+
+  function title(): string {
+    return fixture.nativeElement.querySelector('.certificate-viewer-title')?.textContent ?? '';
+  }
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      imports: [AppfxTranslateModule, ClrAlertModule, ClrTabsModule, ClrSpinnerModule],
+      declarations: [CertificateViewerComponent, CertificateViewerGeneralMockComponent, OnPushHostComponent],
+    });
+    parse = vi.spyOn(CertificateChain, 'fromPemEncodedCertificatesChain');
+  });
+
+  afterEach(() => fixture.destroy());
+
+  async function render(result: Promise<CertificateChain>) {
+    parse.mockReturnValueOnce(result);
+    fixture = TestBed.createComponent(OnPushHostComponent);
+    fixture.autoDetectChanges();
+    await fixture.whenStable();
+  }
+
+  it('renders the chain once it is parsed', async () => {
+    let resolve!: (chain: CertificateChain) => void;
+    await render(new Promise(done => (resolve = done)));
+    expect(fixture.nativeElement.querySelector('clr-spinner')).not.toBeNull();
+
+    resolve(chainOf('first.example.com'));
+
+    await vi.waitFor(() => expect(title()).toContain('first.example.com'));
+    expect(fixture.nativeElement.querySelector('clr-spinner')).toBeNull();
+  });
+
+  it('renders a parse error', async () => {
+    await render(Promise.reject(new Error('Invalid PEM')));
+
+    await vi.waitFor(() => expect(fixture.nativeElement.querySelector('.alert-text')?.textContent).toBe('Invalid PEM'));
+  });
+
+  it('renders a new chain given after the first one', async () => {
+    await render(Promise.resolve(chainOf('first.example.com')));
+    await vi.waitFor(() => expect(title()).toContain('first.example.com'));
+
+    parse.mockReturnValueOnce(Promise.resolve(chainOf('second.example.com')));
+    fixture.componentInstance.chain.set(['second']);
+
+    await vi.waitFor(() => expect(title()).toContain('second.example.com'));
   });
 });

@@ -6,7 +6,7 @@
  */
 
 import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable, OnDestroy } from '@angular/core';
+import { Inject, Injectable, OnDestroy, Signal, signal } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
@@ -20,15 +20,21 @@ import { zoomBreakpoints, ZoomLevel } from './zoom-level.model';
  */
 @Injectable()
 export class ZoomLevelService implements OnDestroy {
+  /**
+   * The current zoom level, `undefined` until the document is first measured.
+   * Read it in a template or a `computed()`: views that read it refresh when it changes, OnPush ones included.
+   */
+  readonly level: Signal<ZoomLevel | undefined>;
+
   private observer!: ResizeObserver;
   private resizeSubject = new ReplaySubject<ZoomLevel>(1);
-  private lastZoomLevel: ZoomLevel | undefined;
+  private readonly currentLevel = signal<ZoomLevel | undefined>(undefined);
 
   /**
    * Emits when the zoom level is changed.
    *
-   * NOTE: This observable emits <b>outside Angular</b>. You might need to explicitly invoke
-   * <code>ChangeDetectorRef.detectChanges()</code> to trigger Angular change detection.
+   * NOTE: This observable emits <b>outside Angular</b>. To render the zoom level, read
+   * <code>level</code> instead: it needs no explicit change detection.
    */
   // debounceTime() operator is added to avoid the following error:
   // "ResizeObserver loop limit exceeded thrown"
@@ -37,6 +43,7 @@ export class ZoomLevelService implements OnDestroy {
   private _onChange: Observable<ZoomLevel> = this.resizeSubject.pipe(debounceTime(10));
 
   constructor(@Inject(DOCUMENT) private document: Document) {
+    this.level = this.currentLevel.asReadonly();
     this.observe();
   }
 
@@ -74,11 +81,12 @@ export class ZoomLevelService implements OnDestroy {
       return breakpoint.maxWidth >= docCurrentWidth;
     });
 
-    if (newResponsiveBreakpoint?.zoomLevel === this.lastZoomLevel) {
+    const zoomLevel = newResponsiveBreakpoint?.zoomLevel;
+    if (zoomLevel === this.currentLevel()) {
       return;
     }
 
-    this.lastZoomLevel = newResponsiveBreakpoint?.zoomLevel;
-    this.resizeSubject.next(this.lastZoomLevel as ZoomLevel);
+    this.currentLevel.set(zoomLevel);
+    this.resizeSubject.next(zoomLevel as ZoomLevel);
   }
 }
