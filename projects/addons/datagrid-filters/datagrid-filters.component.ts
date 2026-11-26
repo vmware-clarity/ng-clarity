@@ -19,7 +19,12 @@ import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 import { DatagridFiltersStrings } from './datagrid-filters-strings.service';
 import { FilterMode } from './model/datagrid-filters.enums';
-import { FilterablePropertyDefinition, PropertyFilter } from './model/datagrid-filters.interfaces';
+import {
+  EnumPropertyDefinition,
+  FilterablePropertyDefinition,
+  PropertyFilter,
+  ToggleFilter,
+} from './model/datagrid-filters.interfaces';
 
 const enterKey = 'Enter';
 const searchTermDebounceTimeMs = 2000;
@@ -38,12 +43,14 @@ const searchTermDebounceTimeMs = 2000;
 })
 export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
   readonly quickMode: FilterMode = FilterMode.Quick;
+
   readonly advancedMode: FilterMode = FilterMode.Advanced;
+
   readonly advancedOnlyMode: FilterMode = FilterMode.AdvancedOnly;
 
   mode: FilterMode = FilterMode.Quick;
+
   selectedFilterMode: FilterMode = FilterMode.Quick;
-  searchTerm: string = '';
 
   /**
    * Array of filterable properties
@@ -51,35 +58,101 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
   @Input() filterableProperties!: FilterablePropertyDefinition[];
 
   /**
-   * Array of pre-selected filters
+   * Filters applied when the filter bar starts, e.g. a fixed default view. Read once at start-up:
+   * later changes are ignored. For filters the host keeps in sync, use `propertyFilters`.
+   * `presetFilters` have precedence over `propertyFilters` on initial load.
    */
   @Input() presetFilters?: PropertyFilter[];
+
+  /**
+   * Properties whose filter pills stay visible even without active criteria.
+   * Use presetFilters to supply their initial values.
+   */
+  @Input() predefinedFilters: FilterablePropertyDefinition[] = [];
+
+  /**
+   * Enum properties shown as a field label with toggleable option pills, between the
+   * predefined and the user-added pills. Selected options are combined with OR.
+   */
+  @Input() semiPredefinedFilters: EnumPropertyDefinition[] = [];
+
+  /**
+   * Ready-made filters shown as on/off pills in the predefined group. OFF means not applied;
+   * ON applies the filter as configured.
+   */
+  @Input() toggleFilters: ToggleFilter[] = [];
 
   /**
    * Event emitter to tell hosting view that search term, used for filtering
    * has changed.
    */
   @Output() searchTermChange: EventEmitter<string> = new EventEmitter<string>();
+
   @Output() propertyFiltersChange: EventEmitter<PropertyFilter[]> = new EventEmitter<PropertyFilter[]>();
 
+  protected readonly combinedMode: FilterMode = FilterMode.Combined;
+
   private lastSearchTerm = '';
+
   // When the user is typing in the search input (filter)
   // the search term change event will be fired
   // on every 2 sec.
   private searchTermDebouncer: Subject<string> = new Subject<string>();
+
   private unsubscribeSubject: Subject<void> = new Subject<void>();
-  private appliedFiltersCount = 0;
+
+  private _propertyFilters: PropertyFilter[] = [];
+
+  private _searchTerm = '';
 
   constructor(public filterStrings: DatagridFiltersStrings) {}
 
   /**
-   * Quick, Advanced or AdvancedOnly. Default Quick.
+   * Quick, Advanced, AdvancedOnly or Combined. Default Quick.
    */
   @Input()
   set filterMode(filterMode: FilterMode) {
     if (filterMode !== null && filterMode !== undefined) {
       this.mode = filterMode;
     }
+  }
+
+  /**
+   * The active filters, including toggle filters that are ON. Supports two-way binding:
+   * `[(propertyFilters)]="filters"`. A new value replaces the active filters without emitting
+   * `propertyFiltersChange`.
+   */
+  @Input()
+  get propertyFilters(): PropertyFilter[] {
+    return this._propertyFilters;
+  }
+
+  set propertyFilters(filters: PropertyFilter[] | null | undefined) {
+    this._propertyFilters = filters ?? [];
+  }
+
+  /**
+   * The quick search text. Supports two-way binding: `[(searchTerm)]="search"`, e.g. to restore a saved view.
+   * A new value replaces the search text without emitting `searchTermChange`.
+   */
+  @Input()
+  get searchTerm(): string {
+    return this._searchTerm;
+  }
+
+  set searchTerm(searchTerm: string | null | undefined) {
+    // The host passes back the term just emitted (e.g. [(searchTerm)]), which doSearch trimmed. The search box
+    // keeps the text as typed, e.g. "web   " instead of "web".
+    if (searchTerm === this.lastSearchTerm && searchTerm === this._searchTerm.trim()) {
+      return;
+    }
+    this._searchTerm = searchTerm ?? '';
+    // The host already has this term, so only a different one typed later is emitted. The search box keeps the
+    // text as given; only this "last emitted" value is trimmed, because doSearch trims before comparing.
+    // Untrimmed, restoring " web " would emit "web".
+    this.lastSearchTerm = this._searchTerm.trim();
+    // Replaces text the user typed but that was not emitted yet.
+    this.searchTermDebouncer.next(this._searchTerm);
   }
 
   ngAfterViewInit() {
@@ -98,20 +171,21 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
   onFilterModeChange() {
     // Reset quick search data when switching to advanced mode
     if (this.selectedFilterMode === FilterMode.Advanced && !!this.searchTerm) {
-      this.searchTerm = '';
+      this._searchTerm = '';
       this.doSearch(this.searchTerm);
       // Clear debouncer last value
       this.searchTermDebouncer.next(this.searchTerm);
     }
     // Clear applied filters when switching to quick mode
-    if (this.selectedFilterMode === FilterMode.Quick && this.appliedFiltersCount > 0) {
-      this.appliedFiltersCount = 0;
+    if (this.selectedFilterMode === FilterMode.Quick && this.propertyFilters.length > 0) {
+      this.propertyFilters = [];
       this.propertyFiltersChange.emit([]);
     }
   }
 
   onFilterCriteriaChange(propertyFilters: PropertyFilter[]) {
-    this.appliedFiltersCount = propertyFilters.length;
+    // Keep the last emitted state, so the filter bar starts from it when it is shown again (e.g. after Quick mode).
+    this.propertyFilters = propertyFilters;
     this.propertyFiltersChange.emit(propertyFilters);
   }
 
@@ -122,8 +196,17 @@ export class DataGridFiltersComponent implements OnDestroy, AfterViewInit {
   }
 
   onSearchTermChanged(searchTerm: string): void {
-    this.searchTerm = searchTerm;
+    this._searchTerm = searchTerm;
     this.searchTermDebouncer.next(this.searchTerm);
+  }
+
+  /** Combined mode: Clear all also clears the quick search text. */
+  protected onClearAll(): void {
+    if (this.mode === FilterMode.Combined && this.searchTerm) {
+      this._searchTerm = '';
+      this.searchTermDebouncer.next(this.searchTerm);
+      this.doSearch(this.searchTerm);
+    }
   }
 
   private doSearch(search: string) {
