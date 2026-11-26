@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { combineLatest, Observable, of, Subject, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
@@ -14,12 +14,22 @@ import { ComputedVar, SimpleVar } from './var';
 
 @Injectable()
 export class RelevanceService {
-  loading = false;
-
   private isRelevantSubs: Subscription[] = [];
   private stepRelevanceChange$ = new Subject<StepInternal>();
 
   #steps: StepInternal[] = [];
+  readonly #loading = signal(false);
+
+  /**
+   * True while a relevance check is in progress.
+   */
+  get loading(): boolean {
+    return this.#loading();
+  }
+
+  set loading(loading: boolean) {
+    this.#loading.set(loading);
+  }
 
   /**
    * Workflow steps.
@@ -39,10 +49,10 @@ export class RelevanceService {
       .map(step => (<ComputedVar<boolean>>step.isRelevant).value$);
     let stepsObservable: Observable<StepInternal[]>;
     if (relevantVarValues.length) {
-      this.loading = true;
+      this.#loading.set(true);
       stepsObservable = combineLatest(relevantVarValues).pipe(
         map(() => {
-          this.loading = false;
+          this.#loading.set(false);
           return this.#steps;
         })
       );

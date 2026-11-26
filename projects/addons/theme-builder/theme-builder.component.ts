@@ -52,6 +52,8 @@ import { contrastRatio, wcagScore } from './utils/wcag';
 const THEMES: readonly ThemeType[] = ['light', 'dark'];
 
 @Component({
+  // Stays Eager for now: the preview renders Clarity components that are not migrated yet (datagrid, wizard,
+  // forms). Their asynchronous updates would be skipped under an OnPush builder in a Zone app.
   changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'clr-theme-builder',
   templateUrl: './theme-builder.component.html',

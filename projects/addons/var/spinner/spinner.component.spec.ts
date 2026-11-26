@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
@@ -116,3 +116,51 @@ class MockComponent {
     this.actionInvoked++;
   }
 }
+
+@Component({
+  standalone: false,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `<appfx-spinner
+    [message]="message()"
+    [progressDetails]="progressDetails()"
+    [showActionButton]="true"
+    actionButtonLabel="Cancel"
+    (actionClick)="actions = actions + 1"
+  ></appfx-spinner>`,
+})
+class OnPushHostComponent {
+  readonly message = signal('Loading');
+  readonly progressDetails = signal('');
+  actions = 0;
+}
+
+describe('appfx-spinner in an OnPush host', () => {
+  let fixture: ComponentFixture<OnPushHostComponent>;
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      imports: [ClrSpinnerModule],
+      declarations: [SpinnerComponent, OnPushHostComponent],
+    });
+    fixture = TestBed.createComponent(OnPushHostComponent);
+    fixture.autoDetectChanges();
+    await fixture.whenStable();
+  });
+
+  afterEach(() => fixture.destroy());
+
+  it('renders input changes made after it was rendered', async () => {
+    fixture.componentInstance.message.set('Saving');
+    fixture.componentInstance.progressDetails.set('2 of 3');
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('clr-spinner').textContent.trim()).toBe('Saving');
+    expect(fixture.nativeElement.querySelector('.progress-item').textContent.trim()).toBe('2 of 3');
+  });
+
+  it('emits the action click', () => {
+    fixture.nativeElement.querySelector('button').click();
+
+    expect(fixture.componentInstance.actions).toBe(1);
+  });
+});

@@ -8,7 +8,9 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, NgModule, SimpleChange, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
 import { renderFixture } from '@clr/angular/utils/testing';
+import { of } from 'rxjs';
 import type { Mock } from 'vitest';
 
 import { PropertyViewConfigProvider } from '../property-view-config-provider';
@@ -713,3 +715,27 @@ class PropertyViewPropertyValueContainerMockComponent<T> {
   exports: [MockComponent],
 })
 class TestModule {}
+
+describe('PropertyViewPropertyComponent API compatibility', () => {
+  const configProvider = {} as PropertyViewConfigProvider;
+
+  it('tolerates a ZoomLevelService test double without `level`', () => {
+    const component = new PropertyViewPropertyComponent(configProvider, {
+      onChange: of(ZoomLevel.x4),
+    } as unknown as ZoomLevelService);
+
+    expect(component.is4xZoomed).toBe(false);
+  });
+
+  it('keeps `is4xZoomed` writable and the lifecycle methods callable', () => {
+    const component = new PropertyViewPropertyComponent(configProvider);
+
+    component.is4xZoomed = true;
+
+    expect(component.is4xZoomed).toBe(true);
+    expect(() => {
+      component.ngOnInit();
+      component.ngOnDestroy();
+    }).not.toThrow();
+  });
+});

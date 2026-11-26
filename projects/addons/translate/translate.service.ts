@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Inject, Injectable, InjectionToken } from '@angular/core';
+import { Inject, Injectable, InjectionToken, signal } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 export type AppfxTranslations = Readonly<Record<AppfxLocale, Readonly<Record<string, string>>>>;
@@ -91,6 +91,9 @@ const placeholderRegex = /{{\s*?([^{}\s]*?)\s*?}}/g;
  */
 @Injectable()
 export class AppfxTranslateService {
+  // The locale is shared by every instance. Templates that translate read the signal, so a locale change
+  // refreshes OnPush views too. The subject only notifies `localeChanged$` subscribers.
+  private static readonly currentLocale = signal(AppfxLocale.En);
   private static readonly localeSubject = new BehaviorSubject<AppfxLocale>(AppfxLocale.En);
 
   readonly localeChanged$: Observable<AppfxLocale> = AppfxTranslateService.localeSubject.asObservable();
@@ -102,10 +105,11 @@ export class AppfxTranslateService {
   ) {}
 
   get locale(): AppfxLocale {
-    return AppfxTranslateService.localeSubject.value;
+    return AppfxTranslateService.currentLocale();
   }
 
   set locale(locale: AppfxLocale) {
+    AppfxTranslateService.currentLocale.set(locale);
     AppfxTranslateService.localeSubject.next(locale);
   }
 

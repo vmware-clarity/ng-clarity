@@ -16,9 +16,12 @@ import {
   Input,
   OnDestroy,
   Output,
+  Signal,
+  signal,
   ViewChild,
   ViewChildren,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import {
   InjectPropertiesResult,
@@ -51,6 +54,7 @@ import { SummaryService } from './summary/summary.service';
   standalone: false,
   templateUrl: 'stepper.component.html',
   styleUrls: ['stepper.component.scss'],
+  // Eager: the stepper hosts consumer step components and reads their step models, which consumers change directly.
   changeDetection: ChangeDetectionStrategy.Eager,
   providers: [RelevanceService, StepperStateService, SummaryService, WorkflowModelManager],
 })
@@ -103,16 +107,18 @@ export class StepperComponent implements OnDestroy, AfterViewInit, AfterContentI
 
   @ViewChildren(ClrStepperPanel) private stepperPanels!: QueryList<ClrStepperPanel>;
 
-  private activeStep: Step | undefined;
-  private activePage: StepContainer | undefined;
   private awaitingWizardPageOnLoad$: ReplaySubject<Step> = new ReplaySubject(Infinity);
   private componentAfterViewInit$: Subject<void> = new Subject();
   private readonly subscriptions = new Subscription();
   private retrySubscription?: Subscription;
   private stepperService!: StepperService;
-  private errorActivatingStep = false;
+  private readonly managerLoading: Signal<boolean>;
 
-  #steps!: StepInternal[];
+  readonly #steps = signal<StepInternal[]>([]);
+  readonly #activeStep = signal<Step | undefined>(undefined);
+  readonly #activePage = signal<StepContainer | undefined>(undefined);
+  readonly #errorActivatingStep = signal(false);
+  readonly #busy = signal(false);
   #wizardModel: any;
 
   constructor(
@@ -132,7 +138,7 @@ export class StepperComponent implements OnDestroy, AfterViewInit, AfterContentI
         this.invalidateNextSteps();
       })
     );
-    this.subscriptions.add(modelMgr.loading$.subscribe(loading => (this.loading = loading)));
+    this.managerLoading = toSignal(modelMgr.loading$, { requireSync: true });
     this.subscriptions.add(
       stateService.onStepActivated$.subscribe((stepState: StepState) => {
         // When navigated back to a previous step and user clicks next without doing any changes
@@ -178,7 +184,7 @@ export class StepperComponent implements OnDestroy, AfterViewInit, AfterContentI
    * The descriptions of the pages that are visualized.
    */
   get steps(): Step[] {
-    return this.#steps;
+    return this.#steps();
   }
 
   @Input()
@@ -188,15 +194,15 @@ export class StepperComponent implements OnDestroy, AfterViewInit, AfterContentI
       .checkComplete$()
       .pipe(take(1))
       .subscribe((steps: Step[]) => {
-        this.#steps = steps;
+        this.#steps.set(steps);
         this.modelMgr.steps = steps;
         this.initForm(steps);
-        this.#steps.forEach(step => (step.initialDescription = this.summaryService.getDescription(step)));
+        this.#steps().forEach(step => (step.initialDescription = this.summaryService.getDescription(step)));
       });
   }
 
   get stepsInternal(): StepInternal[] {
-    return this.#steps;
+    return this.#steps();
   }
 
   /**
@@ -237,6 +243,8 @@ export class StepperComponent implements OnDestroy, AfterViewInit, AfterContentI
   get isLoading(): boolean {
     return (
       this.loading || // explicitly set as busy
+      this.#busy() || // committing a step
+      this.managerLoading() || // injecting properties into a step
       this.relevanceService.loading || // check if relevanceCheck computation in progress
       // additionally inspect pages containers and see if any one is loading
       (!!this.pagesContainers &&
@@ -247,31 +255,33 @@ export class StepperComponent implements OnDestroy, AfterViewInit, AfterContentI
   }
 
   get pageProgressDetails(): string {
-    return this.activePage?.step?.modelInstance?.progressStatus || '';
+    return this.#activePage()?.step?.modelInstance?.progressStatus || '';
   }
 
   get showProgressCancelButton(): boolean {
-    return typeof this.activePage?.step?.modelInstance?.cancelableValidation?.cancelValidation === 'function';
+    return typeof this.#activePage()?.step?.modelInstance?.cancelableValidation?.cancelValidation === 'function';
   }
 
   get cancelValidationButtonLabel(): string {
-    return this.activePage?.step?.modelInstance?.cancelableValidation?.cancelButtonLabel || '';
+    return this.#activePage()?.step?.modelInstance?.cancelableValidation?.cancelButtonLabel || '';
   }
 
   cancelPageValidation(): void {
-    if (typeof this.activePage?.step?.modelInstance?.cancelableValidation?.cancelValidation === 'function') {
-      this.activePage?.step?.modelInstance?.cancelableValidation.cancelValidation();
+    if (typeof this.#activePage()?.step?.modelInstance?.cancelableValidation?.cancelValidation === 'function') {
+      this.#activePage()?.step?.modelInstance?.cancelableValidation.cancelValidation();
     }
   }
 
   isNextButtonDisabled(step: Step) {
     const activeContainer = this.pagesContainers && this.pagesContainers.find(item => item.step === step);
-    return this.isLoading || this.errorActivatingStep || (activeContainer ? !activeContainer.readyToComplete : false);
+    return (
+      this.isLoading || this.#errorActivatingStep() || (activeContainer ? !activeContainer.readyToComplete : false)
+    );
   }
 
   ngOnDestroy() {
-    this.#steps = [];
-    this.activeStep = undefined;
+    this.#steps.set([]);
+    this.#activeStep.set(undefined);
     this.subscriptions.unsubscribe();
     this.unsubscribeRetry();
     this.modelMgr.destroy();
@@ -297,7 +307,7 @@ export class StepperComponent implements OnDestroy, AfterViewInit, AfterContentI
           switchMap(([, pendingStep]) => this.modelMgr.injectPropertiesToPendingStep(pendingStep))
         )
         .subscribe(result => {
-          this.errorActivatingStep = !!result.error;
+          this.#errorActivatingStep.set(!!result.error);
           this.activatePendingContainer(result);
         })
     );
@@ -350,7 +360,7 @@ export class StepperComponent implements OnDestroy, AfterViewInit, AfterContentI
     if (!(this.stepperService as any)['togglePanelPatched']) {
       this.stepperService.togglePanel = (...args: [panelId: string, open?: boolean | undefined]) => {
         const firstIncompleteContainerIndex = this.stateService.getFirstIncompleteStepContainerIndex();
-        const activeContainerIndex = this.pagesContainers.toArray().findIndex(item => item === this.activePage);
+        const activeContainerIndex = this.pagesContainers.toArray().indexOf(this.#activePage() as StepContainer);
         if (firstIncompleteContainerIndex === activeContainerIndex) {
           // When moving from incomplete step to previous steps, do not call commit
           originalTogglePanelFunc.apply(this.stepperService, args);
@@ -370,13 +380,14 @@ export class StepperComponent implements OnDestroy, AfterViewInit, AfterContentI
   }
 
   private commitActiveStep(): Observable<boolean> {
-    if (!this.activePage) {
+    const activePage = this.#activePage();
+    if (!activePage) {
       return of(false);
     }
-    this.loading = true;
-    return this.activePage.onCommit().pipe(
+    this.#busy.set(true);
+    return activePage.onCommit().pipe(
       tap(isValid => {
-        const activeStep = (this.activePage as StepContainer).step;
+        const activeStep = activePage.step;
         // Mark the current step as valid/invalid.
         this.stateService.markStepValid(activeStep, isValid);
         // If not valid, mark the next steps as invalid too.
@@ -394,13 +405,14 @@ export class StepperComponent implements OnDestroy, AfterViewInit, AfterContentI
       }),
       switchMap((isValid: boolean) => {
         if (isValid) {
-          this.modelMgr.ejectPropertiesFromCurrentStep(this.activeStep);
+          this.modelMgr.ejectPropertiesFromCurrentStep(this.#activeStep());
           return this.relevanceService.checkComplete$().pipe(switchMap(() => of(isValid)));
         }
         return of(isValid);
       }),
       tap(() => {
-        this.loading = false;
+        this.#busy.set(false);
+        // Render steps that became relevant now, before the stepper moves to the next panel.
         this.cdr.detectChanges();
       })
     );
@@ -416,14 +428,14 @@ export class StepperComponent implements OnDestroy, AfterViewInit, AfterContentI
           .pipe(take(1))
           .subscribe((step: StepInternal) => this.retryStepTransition(step));
       } else {
-        this.activeStep = result.pendingStep;
-        this.activePage = this.pagesContainers.find(item => item.step === this.activeStep);
+        this.#activeStep.set(result.pendingStep);
+        this.#activePage.set(pendingPage);
       }
 
       // Finally activate the container
       pendingPage.onActivate(result.error, result.stepModelChanges, result.recreateComponent);
 
-      // Force digest as activation trigger changes Clarity wizard. template conditionals must re-evaluate
+      // Render the activated step now, so it is in the DOM as soon as the navigation call returns.
       this.cdr.detectChanges();
     }
   }
@@ -433,10 +445,11 @@ export class StepperComponent implements OnDestroy, AfterViewInit, AfterContentI
   }
 
   private invalidateNextSteps(): void {
-    if (!this.activeStep) {
+    const activeStep = this.#activeStep();
+    if (!activeStep) {
       return;
     }
-    this.stateService.resetNextStepsValidStates(this.activeStep);
+    this.stateService.resetNextStepsValidStates(activeStep);
     this.stepperService.resetPanels();
     this.stepperService.overrideInitialPanel(this.initialStep);
   }
@@ -517,7 +530,7 @@ export class StepperComponent implements OnDestroy, AfterViewInit, AfterContentI
         panels.forEach((panelModel: CollapsiblePanelModel) => {
           const panelId = panelModel.id;
           const stepIndex: number = +panelId.replace('step', '');
-          const step: StepInternal = this.#steps[stepIndex];
+          const step: StepInternal = this.#steps()[stepIndex];
           this.stateService.stepActivated(step, panelModel.open, stepIndex);
         });
       })

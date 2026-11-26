@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { DebugElement } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { WorkflowStrings } from '@clr/addons/workflow/strings';
@@ -133,5 +133,52 @@ describe('ErrorComponent', () => {
       button.click();
       expect(testContext.component.onRetry.emit).toHaveBeenCalled();
     });
+  });
+});
+
+@Component({
+  standalone: false,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: '<appfx-error [error]="error()" (onRetry)="retries = retries + 1"></appfx-error>',
+})
+class OnPushHostComponent {
+  readonly error = signal<ActivationError>({ data: { message: 'First error' } } as ActivationError);
+  retries = 0;
+}
+
+describe('ErrorComponent in an OnPush host', () => {
+  let fixture: ComponentFixture<OnPushHostComponent>;
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      imports: [ClrStackViewModule, ClrIcon, CommonModule],
+      declarations: [ErrorComponent, OnPushHostComponent],
+      providers: [WorkflowStrings],
+    });
+    fixture = TestBed.createComponent(OnPushHostComponent);
+    fixture.autoDetectChanges();
+    await fixture.whenStable();
+    fixture.nativeElement.querySelector('.stack-block-label').click();
+    await fixture.whenStable();
+  });
+
+  afterEach(() => fixture.destroy());
+
+  it('renders a new error given after it was rendered', async () => {
+    expect(fixture.nativeElement.querySelector('.error-details-block').textContent).toContain('First error');
+
+    fixture.componentInstance.error.set({
+      data: { message: 'Second error', stackTrace: 'at step' },
+    } as ActivationError);
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelector('.error-details-block').textContent).toContain('Second error');
+    expect(fixture.nativeElement.querySelector('.stack-trace').textContent.trim()).toBe('at step');
+  });
+
+  it('emits retry', () => {
+    fixture.nativeElement.querySelector('.card-footer button').click();
+
+    expect(fixture.componentInstance.retries).toBe(1);
   });
 });

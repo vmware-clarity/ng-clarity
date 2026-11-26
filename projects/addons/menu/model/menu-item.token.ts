@@ -5,6 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { signal } from '@angular/core';
+
 /**
  * Base class for all items that can be shown as children of a menu.
  * Used as type injection token used to query heterogeneous list of menu items.
@@ -14,8 +16,20 @@ export abstract class MenuItem {
    * Optional ID of the menu item.
    */
   id?: string;
-  hidden: boolean = false;
   type!: MenuItemType;
+
+  readonly #hidden = signal(false);
+
+  /**
+   * Hides the item. Signal-backed, so that an OnPush menu renders a change made while it is open.
+   */
+  get hidden(): boolean {
+    return this.#hidden();
+  }
+
+  set hidden(hidden: boolean) {
+    this.#hidden.set(hidden);
+  }
 }
 
 export enum MenuItemType {

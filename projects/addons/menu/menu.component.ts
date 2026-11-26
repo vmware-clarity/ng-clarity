@@ -17,19 +17,22 @@ import {
   EventEmitter,
   forwardRef,
   HostListener,
+  inject,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Optional,
   Output,
   QueryList,
+  signal,
   ViewChild,
 } from '@angular/core';
 import { ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
 import type { ClrPopoverPoint } from '@clr/angular/popover/common';
 import { ClrDropdown } from '@clr/angular/popover/dropdown';
 import { Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { distinctUntilChanged, first, skip } from 'rxjs/operators';
 
 import { Menu } from './menu.interface';
 import { MenuActionComponent } from './model/menu-action.component';
@@ -46,8 +49,12 @@ import { NestedMenu } from './model/nested-menu';
       provide: MenuItem,
       useExisting: forwardRef(() => MenuComponent),
     },
+    {
+      provide: NestedMenu,
+      useExisting: forwardRef(() => MenuComponent),
+    },
   ],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 /**
  * A contextual menu based on `clr-dropdown`
@@ -57,7 +64,7 @@ import { NestedMenu } from './model/nested-menu';
  * + positioning and scrolling taking into account an encompassing container which in the primary use-case is the viewport
  * + domain specific declarative interface instead of custom HTML markup
  */
-export class MenuComponent extends NestedMenu implements Menu, OnInit, OnDestroy, AfterContentInit {
+export class MenuComponent extends NestedMenu implements Menu, OnChanges, OnInit, OnDestroy, AfterContentInit {
   private trigger?: HTMLElement;
 
   private openingEvent?: Event;
@@ -81,36 +88,50 @@ export class MenuComponent extends NestedMenu implements Menu, OnInit, OnDestroy
 
   @ContentChildren(MenuItem) declare menuItems: QueryList<MenuItem>;
 
-  currentZoomLevel?: ZoomLevel;
   ZoomLevel = ZoomLevel;
 
   private subscriptions = new Subscription();
+  private readonly assignedZoomLevel = signal<ZoomLevel | undefined>(undefined);
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+  // Set when this menu is nested in another one, which renders it.
+  private readonly parentMenu = inject(NestedMenu, { optional: true, skipSelf: true });
 
   constructor(
-    private cdr: ChangeDetectorRef,
+    /** @deprecated Unused, kept so that subclasses calling `super(cdr, zoomLevelService)` compile. */
+    @Optional() _cdr?: ChangeDetectorRef,
     @Optional() private zoomLevelService?: ZoomLevelService
   ) {
     super();
+  }
+
+  get currentZoomLevel(): ZoomLevel | undefined {
+    // `level?.()` tolerates test doubles of ZoomLevelService without `level`.
+    return this.assignedZoomLevel() ?? this.zoomLevelService?.level?.();
+  }
+
+  set currentZoomLevel(zoomLevel: ZoomLevel | undefined) {
+    this.assignedZoomLevel.set(zoomLevel);
   }
 
   ngOnInit(): void {
     if (!this.zoomLevelService) {
       return;
     }
+    // Close the action menu if zoom happens.
+    // The user will need to reopen it in which case the menu calculations
+    // will be done and it will be displayed correctly.
     this.subscriptions.add(
-      this.zoomLevelService.onChange.subscribe((zoomLevel: ZoomLevel) => {
-        const prevZoomLevel = this.currentZoomLevel;
-        this.currentZoomLevel = zoomLevel;
-
-        // Close the action menu if zoom happens.
-        // The user will need to reopen it in which case the menu calculations
-        // will be done and it will be displayed correctly.
-        if (prevZoomLevel !== undefined && prevZoomLevel !== this.currentZoomLevel) {
-          this.closed.emit();
-        }
-        this.cdr.detectChanges();
-      })
+      this.zoomLevelService.onChange.pipe(distinctUntilChanged(), skip(1)).subscribe(() => this.closed.emit())
     );
+  }
+
+  ngOnChanges(): void {
+    this.parentMenu?.itemChanged();
+  }
+
+  override itemChanged(): void {
+    this.changeDetectorRef.markForCheck();
+    this.parentMenu?.itemChanged();
   }
 
   ngOnDestroy(): void {
@@ -132,6 +153,8 @@ export class MenuComponent extends NestedMenu implements Menu, OnInit, OnDestroy
 
   ngAfterContentInit(): void {
     this.menuItems.changes.subscribe(() => {
+      // Render the new item set (also for items without inputs, like separators) before reporting the problem.
+      this.itemChanged();
       throw new Error(
         `Dear developer.
 

@@ -29,7 +29,7 @@ import { TopHeadingLevel } from '../models/heading-level.model';
   standalone: false,
   templateUrl: 'certificate-viewer-details.component.html',
   styleUrls: ['certificate-viewer-details.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CertificateViewerDetailsComponent implements OnChanges {
   @Input() certificateChain?: CertificateChain;

@@ -41,7 +41,7 @@ import { TopHeadingLevel } from '../models/heading-level.model';
     { provide: appfxMissingTranslationToken, useValue: missingTranslation },
     { provide: appfxTranslationsToken, useValue: translations },
   ],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CertificateViewerComponent implements OnChanges {
   readonly KnownOids = KnownOids;

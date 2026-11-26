@@ -18,7 +18,7 @@ import { ZoomLevel } from '@clr/addons/a11y';
 import { WorkflowStrings } from '@clr/addons/workflow/strings';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'appfx-tab-links',
   standalone: false,
   templateUrl: 'tab-links.component.html',
@@ -37,12 +37,12 @@ export class TabLinksComponent {
 
   constructor(
     public workflowStrings: WorkflowStrings,
-    private cdr: ChangeDetectorRef
+    /** @deprecated Unused, kept so that subclasses calling `super(workflowStrings, cdr)` compile. */
+    _cdr?: ChangeDetectorRef
   ) {}
 
   changeOpened(opened: boolean) {
     this.opened = opened;
     this.openedChange.emit(this.opened);
-    this.cdr.detectChanges(); // without this HostBinding not working
   }
 }

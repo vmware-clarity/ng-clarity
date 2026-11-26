@@ -19,9 +19,12 @@ import {
   OnInit,
   Optional,
   Output,
+  Signal,
+  signal,
   ViewChild,
   ViewChildren,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
 import { PropertyViewBuilder } from '@clr/addons/property-view';
 import {
@@ -56,6 +59,7 @@ import { SummaryModel } from './summary/summary.model';
  */
 @Component({
   selector: 'appfx-wizard',
+  // Eager: the wizard hosts consumer step components and reads their step models, which consumers change directly.
   changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
   templateUrl: 'wizard.component.html',
@@ -115,11 +119,8 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
    */
   @Output() onClose: EventEmitter<Reason> = new EventEmitter<Reason>();
 
-  footerComponentInputs?: Record<string, unknown>;
-  currentZoomLevel?: ZoomLevel;
   ZoomLevel = ZoomLevel;
   showNav = false;
-  activeStepIndex = 1;
 
   protected closeHandlerValidationState = new StepValidationState();
 
@@ -129,16 +130,21 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
 
   @ViewChildren(StepContainer) private pagesContainers!: QueryList<StepContainer>;
 
-  private activeStep: StepInternal | undefined;
-  private activePage: StepContainer | undefined;
   private awaitingWizardPageOnLoad$: ReplaySubject<StepInternal> = new ReplaySubject(Infinity);
   private componentAfterViewInit$: Subject<void> = new Subject();
   private subscriptions = new Subscription();
   private retrySubscription?: Subscription;
-  private errorActivatingStep = false;
   private summaryStep?: StepInternal;
+  private readonly managerLoading: Signal<boolean>;
 
-  #pages!: StepInternal[];
+  readonly #pages = signal<StepInternal[]>([]);
+  readonly #activeStep = signal<StepInternal | undefined>(undefined);
+  readonly #activePage = signal<StepContainer | undefined>(undefined);
+  readonly #activeStepIndex = signal(1);
+  readonly #assignedZoomLevel = signal<ZoomLevel | undefined>(undefined);
+  readonly #footerComponentInputs = signal<Record<string, unknown>>({});
+  readonly #errorActivatingStep = signal(false);
+  readonly #busy = signal(false);
   #opened: boolean = true;
   #wizardModel: any;
 
@@ -161,6 +167,8 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
       throw new Error('AppFx Wizard must be opened using ModalService.openModalComponent method.');
     }
 
+    this.managerLoading = toSignal(modelMgr.loading$, { requireSync: true });
+
     ClarityIcons.addIcons(dotCircleIcon);
   }
 
@@ -168,7 +176,7 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
    * The descriptions of the pages that are visualized.
    */
   get pages(): Step[] {
-    return this.#pages;
+    return this.#pages();
   }
 
   @Input()
@@ -189,15 +197,40 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
         .checkComplete$()
         .pipe(take(1))
         .subscribe((steps: Step[]) => {
-          this.#pages = steps;
+          this.#pages.set(steps);
           this.modelMgr.steps = steps;
           this.recalculateSummaryPageSkipState();
         })
     );
   }
 
+  get currentZoomLevel(): ZoomLevel | undefined {
+    // `level?.()` tolerates test doubles of ZoomLevelService without `level`.
+    return this.#assignedZoomLevel() ?? this.zoomLevelService?.level?.();
+  }
+
+  set currentZoomLevel(zoomLevel: ZoomLevel | undefined) {
+    this.#assignedZoomLevel.set(zoomLevel);
+  }
+
   get pagesInternal(): StepInternal[] {
-    return this.#pages;
+    return this.#pages();
+  }
+
+  get footerComponentInputs(): Record<string, unknown> {
+    return this.#footerComponentInputs();
+  }
+
+  set footerComponentInputs(inputs: Record<string, unknown>) {
+    this.#footerComponentInputs.set(inputs);
+  }
+
+  get activeStepIndex(): number {
+    return this.#activeStepIndex();
+  }
+
+  set activeStepIndex(index: number) {
+    this.#activeStepIndex.set(index);
   }
 
   /**
@@ -243,6 +276,8 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
   get isLoading(): boolean {
     return (
       this.loading || // explicitly set as busy
+      this.#busy() || // committing a step or closing
+      this.managerLoading() || // injecting properties into a step
       this.relevanceService.loading || // check if relevanceCheck computation in progress
       // additionally inspect pages containers and see if any one is loading
       (!!this.pagesContainers &&
@@ -253,15 +288,15 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
   }
 
   get pageProgressDetails(): string {
-    return this.activeStep?.modelInstance?.progressStatus || '';
+    return this.#activeStep()?.modelInstance?.progressStatus || '';
   }
 
   get showProgressCancelButton(): boolean {
-    return typeof this.activeStep?.modelInstance?.cancelableValidation?.cancelValidation === 'function';
+    return typeof this.#activeStep()?.modelInstance?.cancelableValidation?.cancelValidation === 'function';
   }
 
   get cancelValidationButtonLabel(): string {
-    return this.activeStep?.modelInstance?.cancelableValidation?.cancelButtonLabel || '';
+    return this.#activeStep()?.modelInstance?.cancelableValidation?.cancelButtonLabel || '';
   }
 
   get isSignPostOpen(): boolean {
@@ -269,12 +304,13 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
   }
 
   get isNextButtonDisabled(): boolean {
-    return this.isLoading || this.errorActivatingStep || (this.activePage ? !this.activePage.readyToComplete : false);
+    const activePage = this.#activePage();
+    return this.isLoading || this.#errorActivatingStep() || (activePage ? !activePage.readyToComplete : false);
   }
 
   cancelPageValidation(): void {
-    if (typeof this.activeStep?.modelInstance?.cancelableValidation?.cancelValidation === 'function') {
-      this.activeStep?.modelInstance?.cancelableValidation.cancelValidation();
+    if (typeof this.#activeStep()?.modelInstance?.cancelableValidation?.cancelValidation === 'function') {
+      this.#activeStep()?.modelInstance?.cancelableValidation.cancelValidation();
     }
   }
 
@@ -285,25 +321,11 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
         this.invalidateNextSteps();
       })
     );
-    this.subscriptions.add(
-      this.modelMgr.loading$.subscribe((loading: boolean) => {
-        this.loading = loading;
-        this.cdr.detectChanges();
-      })
-    );
-    if (this.zoomLevelService) {
-      this.subscriptions.add(
-        this.zoomLevelService.onChange.subscribe((level: ZoomLevel) => {
-          this.currentZoomLevel = level;
-          this.cdr.detectChanges();
-        })
-      );
-    }
   }
 
   ngOnDestroy() {
     this.pages = [];
-    this.activeStep = undefined;
+    this.#activeStep.set(undefined);
     this.subscriptions.unsubscribe();
     this.unsubscribeRetry();
     this.relevanceService.destroy();
@@ -331,7 +353,7 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
           switchMap(([, pendingStep]) => this.modelMgr.injectPropertiesToPendingStep(pendingStep))
         )
         .subscribe(result => {
-          this.errorActivatingStep = !!result.error;
+          this.#errorActivatingStep.set(!!result.error);
           this.activatePendingContainer(result);
         })
     );
@@ -372,8 +394,9 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
     }
 
     // Hide the loading indicator of the current page, if any.
-    if (this.activeStep && this.activeStep.modelInstance) {
-      this.activeStep.modelInstance.loading = false;
+    const activeStep = this.#activeStep();
+    if (activeStep?.modelInstance) {
+      activeStep.modelInstance.loading = false;
     }
 
     this.wizard.navService.previous();
@@ -384,46 +407,42 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
   }
 
   private subscribeForFinishHandler(finish$: Observable<any>): void {
-    this.loading = true;
+    this.#busy.set(true);
     finish$.subscribe({
       error: (error: unknown) => {
-        this.loading = false;
+        this.#busy.set(false);
         if (error !== preventDisplayingWizardError) {
           this.closeHandlerValidationState.errors = [
             formatError(error).data.message || this.workflowStrings.defaultWizardSubmitError,
           ];
         }
-        this.cdr.markForCheck();
       },
       complete: () => {
-        this.loading = false;
+        this.#busy.set(false);
         this.closeHandlerValidationState.errors = [];
         this.onFinish.emit();
         this.wizard.forceFinish();
         this.closeWizard(Reason.finish);
-        this.cdr.markForCheck();
       },
     });
   }
 
   private subscribeForCloseHandler(close$: Observable<any>): void {
-    this.loading = true;
+    this.#busy.set(true);
     close$.subscribe({
       error: (error: unknown) => {
-        this.loading = false;
+        this.#busy.set(false);
         if (error !== preventDisplayingWizardError) {
           this.closeHandlerValidationState.errors = [
             formatError(error).data.message || this.workflowStrings.defaultWizardSubmitError,
           ];
         }
-        this.cdr.markForCheck();
       },
       complete: () => {
-        this.loading = false;
+        this.#busy.set(false);
         this.closeHandlerValidationState.errors = [];
         this.wizard.close();
         this.closeWizard(Reason.cancel);
-        this.cdr.markForCheck();
       },
     });
   }
@@ -443,7 +462,7 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
         const propertyViewModel = propertyViewModelBuilder.build();
         const categoryBuilder = propertyViewModelBuilder.generateAllCategory(''); // No title for category.
         const category = categoryBuilder.build();
-        const sections = this.#pages.flatMap(step =>
+        const sections = this.#pages().flatMap(step =>
           !step.isSkipped && step.summary
             ? [step.summary(categoryBuilder.section(step.title).title(step.navTitle || step.title), step.modelInstance)]
             : []
@@ -460,14 +479,15 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
   }
 
   private commitActiveStep(): Observable<boolean> {
-    if (!this.activePage) {
+    const activePage = this.#activePage();
+    if (!activePage) {
       return of(false);
     }
-    this.loading = true;
-    return this.activePage.onCommit().pipe(
+    this.#busy.set(true);
+    return activePage.onCommit().pipe(
       switchMap(isValid => {
         if (isValid) {
-          this.modelMgr.ejectPropertiesFromCurrentStep(this.activeStep);
+          this.modelMgr.ejectPropertiesFromCurrentStep(this.#activeStep());
           return this.relevanceService.checkComplete$().pipe(
             map(() => {
               return isValid;
@@ -477,7 +497,8 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
         return of(isValid);
       }),
       tap(() => {
-        this.loading = false;
+        this.#busy.set(false);
+        // Render pages that became relevant now, so the caller sees them when it checks for the last page.
         this.cdr.detectChanges();
       })
     );
@@ -493,16 +514,16 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
           .pipe(take(1))
           .subscribe((step: StepInternal) => this.retryStepTransition(step));
       } else {
-        this.activeStep = result.pendingStep;
-        this.setActiveStepIndex();
-        this.activePage = this.pagesContainers.find(item => item.step === this.activeStep);
+        this.#activeStep.set(result.pendingStep);
+        this.#activeStepIndex.set(this.visiblePageIndex(result.pendingStep) + 1);
+        this.#activePage.set(pendingPage);
         this.updateFooterComponent();
       }
 
       // Finally activate the container
       pendingPage.onActivate(result.error, result.stepModelChanges, result.recreateComponent);
 
-      // Force digest as activation trigger changes Clarity wizard. template conditionals must re-evaluate
+      // Render the activated step now, so it is in the DOM as soon as the navigation call returns.
       this.cdr.detectChanges();
     }
   }
@@ -512,11 +533,11 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
       return;
     }
 
-    this.footerComponentInputs = {
-      currentStep: this.activeStep,
-      steps: this.#pages,
+    this.#footerComponentInputs.set({
+      currentStep: this.#activeStep(),
+      steps: this.#pages(),
       workflowModel: this.wizardModel,
-    };
+    });
   }
 
   private retryStepTransition(step: StepInternal): void {
@@ -548,7 +569,7 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
       let firstIncompletePageIndex = pages.findIndex(p => !p.enabled) - 1;
       // if firstIncompletePageIndex is negative, Currently in last page, set firstIncompletePageIndex = pages.length - 1
       firstIncompletePageIndex = firstIncompletePageIndex < 0 ? pages.length - 1 : firstIncompletePageIndex;
-      const activeContainerIndex = this.pagesContainers.toArray().findIndex(item => item === this.activePage);
+      const activeContainerIndex = this.pagesContainers.toArray().indexOf(this.#activePage() as StepContainer);
       if (firstIncompletePageIndex === activeContainerIndex) {
         // When moving from incomplete step to previous steps, do not call commit
         originalGoToFunction.apply(navService, args);
@@ -565,13 +586,10 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
     };
   }
 
-  private setActiveStepIndex(): void {
-    this.activeStepIndex =
-      this.#pages
-        .filter(page => {
-          return !page.isSkipped;
-        })
-        .indexOf(this.activeStep as StepInternal) + 1;
+  private visiblePageIndex(step: StepInternal): number {
+    return this.#pages()
+      .filter(page => !page.isSkipped)
+      .indexOf(step);
   }
 
   /**
@@ -597,8 +615,8 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
       return;
     }
     const showDefaultPage =
-      this.#pages &&
-      this.#pages.some((step: StepInternal) => {
+      this.#pages() &&
+      this.#pages().some((step: StepInternal) => {
         return !step.isSkipped && step.summary;
       });
 

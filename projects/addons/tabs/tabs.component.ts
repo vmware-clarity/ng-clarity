@@ -20,9 +20,12 @@ import {
   Optional,
   Output,
   QueryList,
+  Signal,
+  signal,
   SimpleChanges,
   ViewChildren,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
 import {
   InjectPropertiesResult,
@@ -58,6 +61,7 @@ import { debounceTime, filter, map, shareReplay, switchMap, take, tap } from 'rx
  */
 @Component({
   selector: 'appfx-tabs',
+  // Eager: the tabs host consumer step components and read their step models, which consumers change directly.
   changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
   templateUrl: 'tabs.component.html',
@@ -69,9 +73,7 @@ export class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterCon
   @Input() disableTabsContent = false;
 
   /** Display loading indicator. */
-  @Input()
-  @HostBinding('class.loading')
-  loading = false;
+  @Input() loading = false;
 
   /** The tabs layout. Defaults to horizontal. */
   @Input() tabLayout: TabLayout = TabLayout.horizontal;
@@ -93,27 +95,30 @@ export class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterCon
   /** Emits with the activated step when the active tab changes. */
   @Output() activeTabChange = new EventEmitter<Step>();
 
-  errorIconVisibleList: boolean[] = [];
   clrTabsLayout!: TabLayout;
   TabLayout = TabLayout;
-  currentZoomLevel = ZoomLevel.none;
   ZoomLevel = ZoomLevel;
   tabLinksOpened = false;
-  activeTabStep: Step = <Step>{};
   isVerticalLayout!: boolean;
   isSecondaryLayout!: boolean;
 
   @ViewChildren(StepContainer) private pagesContainers!: QueryList<StepContainer>;
   @ViewChildren(ClrTabLink) private tabLinks!: QueryList<ClrTabLink>;
 
-  private steps!: StepInternal[];
   private tabsModel!: WorkflowModel;
   private awaitingActivePageOnLoad$: ReplaySubject<StepInternal> = new ReplaySubject(1);
   private componentAfterViewInit$: Subject<void> = new Subject();
   private subscriptions = new Subscription();
-  private errorActivatingStep = false;
   private retrySubscription?: Subscription;
   private stepsValidationMap = new Map<Step, Observable<boolean>>();
+  private readonly managerLoading: Signal<boolean>;
+
+  readonly #steps = signal<StepInternal[] | undefined>(undefined);
+  readonly #activeTabStep = signal<Step>(<Step>{});
+  readonly #assignedZoomLevel = signal<ZoomLevel | undefined>(undefined);
+  readonly #errorIconVisibleList = signal<boolean[]>([]);
+  readonly #errorActivatingStep = signal(false);
+  readonly #validating = signal(false);
 
   constructor(
     public modelMgr: WorkflowModelManager,
@@ -123,7 +128,7 @@ export class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterCon
     public configService: WorkflowConfigurationService,
     @Optional() private zoomLevelService?: ZoomLevelService
   ) {
-    this.subscriptions.add(modelMgr.loading$.pipe(debounceTime(10)).subscribe(loading => (this.loading = loading)));
+    this.managerLoading = toSignal(modelMgr.loading$.pipe(debounceTime(10)), { initialValue: false });
     this.subscriptions.add(
       modelMgr.onModelChange$.subscribe((changes: ModelChange[]) => {
         this.onModelChange.emit(changes);
@@ -132,7 +137,7 @@ export class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterCon
   }
 
   get tabs(): Step[] {
-    return this.steps;
+    return this.#steps() as Step[];
   }
 
   @Input()
@@ -142,7 +147,7 @@ export class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterCon
       .checkComplete$()
       .pipe(take(1))
       .subscribe((checkedSteps: Step[]) => {
-        this.steps = checkedSteps;
+        this.#steps.set(checkedSteps);
         this.activateFirstTab();
         this.modelMgr.steps = checkedSteps;
         this.onStepsOrModelChange();
@@ -165,12 +170,36 @@ export class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterCon
   }
 
   get tabsInternal(): StepInternal[] {
-    return this.steps;
+    return this.#steps() as StepInternal[];
+  }
+
+  /** The step of the active tab. */
+  get activeTabStep(): Step {
+    return this.#activeTabStep();
+  }
+
+  set activeTabStep(step: Step) {
+    this.#activeTabStep.set(step);
+  }
+
+  /** Per tab: true when its last validation failed. */
+  get errorIconVisibleList(): boolean[] {
+    return this.#errorIconVisibleList();
+  }
+
+  set errorIconVisibleList(list: boolean[]) {
+    this.#errorIconVisibleList.set(list);
+  }
+
+  /** True while the tabs, the workflow model or a tab validation is loading. */
+  @HostBinding('class.loading')
+  get busy(): boolean {
+    return this.loading || this.#validating() || this.managerLoading();
   }
 
   get isLoading(): boolean {
     return (
-      this.loading ||
+      this.busy ||
       this.relevanceService.loading ||
       (!!this.pagesContainers &&
         this.pagesContainers.some(
@@ -181,6 +210,15 @@ export class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterCon
 
   get showTabNav(): boolean {
     return this.showTabLinks && (this.showAppfxTabLinks ? this.tabLinksOpened : true);
+  }
+
+  get currentZoomLevel(): ZoomLevel {
+    // `level?.()` tolerates test doubles of ZoomLevelService without `level`.
+    return this.#assignedZoomLevel() ?? this.zoomLevelService?.level?.() ?? ZoomLevel.none;
+  }
+
+  set currentZoomLevel(zoomLevel: ZoomLevel) {
+    this.#assignedZoomLevel.set(zoomLevel);
   }
 
   get showTabContent(): boolean {
@@ -201,18 +239,12 @@ export class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterCon
     if (this.pagesContainers) {
       hasIncompletePage = this.pagesContainers.some(p => !p.readyToComplete);
     }
-    return !(hasIncompletePage || this.isLoading || this.errorActivatingStep);
+    return !(hasIncompletePage || this.isLoading || this.#errorActivatingStep());
   }
 
+  /** @deprecated The tabs no longer need initialization. Kept so that `super.ngOnInit()` calls compile. */
   ngOnInit(): void {
-    if (this.zoomLevelService) {
-      this.subscriptions.add(
-        this.zoomLevelService.onChange.subscribe((level: ZoomLevel) => {
-          this.currentZoomLevel = level;
-          this.cdr.detectChanges();
-        })
-      );
-    }
+    // Intentionally empty.
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -241,7 +273,7 @@ export class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterCon
           switchMap(([, pendingStep]) => this.modelMgr.injectPropertiesToPendingStep(pendingStep))
         )
         .subscribe(result => {
-          this.errorActivatingStep = !!result.error;
+          this.#errorActivatingStep.set(!!result.error);
           this.activateStep(result);
         })
     );
@@ -266,7 +298,7 @@ export class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterCon
     this.tabLinksOpenedChange.emit(this.tabLinksOpened);
     if (isStepActive) {
       this.activeTabChange.emit(step);
-      const previousStep: StepInternal = this.activeTabStep;
+      const previousStep: StepInternal = this.#activeTabStep();
 
       this.validateStep(previousStep)
         .pipe(
@@ -274,16 +306,16 @@ export class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterCon
           take(1)
         )
         .subscribe(() => {
-          this.activeTabStep = step;
-          this.awaitingActivePageOnLoad$.next(this.activeTabStep);
+          this.#activeTabStep.set(step);
+          this.awaitingActivePageOnLoad$.next(step);
         });
     }
   }
 
   /** Validates only the active tab. */
   validateActiveTab$(): Observable<boolean> {
-    return this.validateStep(this.activeTabStep).pipe(
-      tap(() => this.modelMgr.ejectPropertiesFromCurrentStep(this.activeTabStep)),
+    return this.validateStep(this.#activeTabStep()).pipe(
+      tap(() => this.modelMgr.ejectPropertiesFromCurrentStep(this.#activeTabStep())),
       switchMap((validationResult: boolean) => {
         return this.disableTabsContent ? of(true) : of(validationResult);
       })
@@ -298,7 +330,7 @@ export class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterCon
           ? [of(true)]
           : Array.from(this.stepsValidationMap.values());
 
-        this.loading = this.showLoadingIndicator;
+        this.#validating.set(this.showLoadingIndicator);
         return combineLatest(stepsValidate$).pipe(
           map((values: boolean[]) => {
             if (this.disableTabsContent) {
@@ -307,7 +339,7 @@ export class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterCon
             return values.every(value => value);
           }),
           tap(isValid => {
-            this.loading = false;
+            this.#validating.set(false);
             if (!isValid) {
               this.navigateToTabWithErrors();
             }
@@ -318,13 +350,11 @@ export class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterCon
   }
 
   private activateFirstTab(): void {
-    if (this.steps?.length) {
-      const firstNotSkippedStepIndex: number = this.steps.findIndex(item => !item.isSkipped);
-      if (firstNotSkippedStepIndex !== -1) {
-        this.steps[firstNotSkippedStepIndex].instantiateLazy = false;
-        this.activeTabStep = this.steps[firstNotSkippedStepIndex];
-        this.activeTabChange.emit(this.activeTabStep);
-      }
+    const firstTab = this.#steps()?.find(item => !item.isSkipped);
+    if (firstTab) {
+      firstTab.instantiateLazy = false;
+      this.#activeTabStep.set(firstTab);
+      this.activeTabChange.emit(firstTab);
     }
   }
 
@@ -332,7 +362,7 @@ export class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterCon
     if (!this.pagesContainers) {
       return;
     }
-    const activeStepIndex: number = this.tabs.indexOf(this.activeTabStep);
+    const activeStepIndex: number = this.tabs.indexOf(this.#activeTabStep());
     const activeStepHasError: boolean = activeStepIndex !== -1 && this.errorIconVisibleList[activeStepIndex];
     if (activeStepHasError) {
       return;
@@ -361,6 +391,7 @@ export class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterCon
           .subscribe((step: StepInternal) => this.retryStepTransition(step));
       }
       pendingPage.onActivate(result.error, result.stepModelChanges, result.recreateComponent);
+      // Render the activated step now, so it is in the DOM as soon as the activation returns.
       this.cdr.detectChanges();
     }
   }
@@ -376,11 +407,11 @@ export class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterCon
       const pageIndex: number = this.tabs.indexOf(step);
       const validate$ = pageToValidate.onCommit().pipe(shareReplay(1));
       this.stepsValidationMap.set(step, validate$);
-      this.loading = true;
+      this.#validating.set(true);
       return validate$.pipe(
         tap(success => {
-          this.errorIconVisibleList[pageIndex] = !success;
-          this.loading = false;
+          this.#errorIconVisibleList.update(list => Object.assign([...list], { [pageIndex]: !success }));
+          this.#validating.set(false);
         })
       );
     }
@@ -388,10 +419,10 @@ export class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterCon
   }
 
   private onStepsOrModelChange(): void {
-    if (!this.activeTabStep || !this.model) {
+    if (!this.#activeTabStep() || !this.model) {
       return;
     }
-    this.awaitingActivePageOnLoad$.next(this.activeTabStep);
+    this.awaitingActivePageOnLoad$.next(this.#activeTabStep());
   }
 
   private unsubscribeRetry() {
