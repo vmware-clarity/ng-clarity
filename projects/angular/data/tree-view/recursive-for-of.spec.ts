@@ -105,6 +105,13 @@ describe('Tree View', () => {
         expectRoots([TEST_ROOT.children[0]]);
       });
 
+      it('keeps accepting the deprecated ChangeDetectorRef constructor argument and ngOnDestroy', () => {
+        const template = testContext.testComponent.template;
+        const directive = new ClrRecursiveForOf<TestNode>(template, testContext.featuresService, undefined);
+        expect(directive).toBeTruthy();
+        expect(() => directive.ngOnDestroy()).not.toThrow();
+      });
+
       it('accepts multiple roots', () => {
         testContext.testComponent.root = [TEST_ROOT, TEST_ROOT];
         renderFixture(testContext.fixture);

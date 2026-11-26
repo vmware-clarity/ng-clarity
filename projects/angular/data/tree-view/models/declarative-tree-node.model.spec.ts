@@ -5,6 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { computed } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+
 import { DeclarativeTreeNodeModel } from './declarative-tree-node.model';
 import { TreeNodeModel } from './tree-node.model';
 
@@ -40,6 +43,29 @@ describe('Tree View', () => {
         expect(parent.children).toEqual([child2]);
         child2.destroy();
         expect(parent.children).toEqual([]);
+      });
+
+      it('lets a computed signal follow the children being added, removed and replaced', function () {
+        const count = TestBed.runInInjectionContext(() => computed(() => parent.children.length));
+        expect(count()).toBe(0);
+        const child1 = new DeclarativeTreeNodeModel<void>(parent);
+        const child2 = new DeclarativeTreeNodeModel<void>(parent);
+        expect(count()).toBe(2);
+        child1.destroy();
+        expect(count()).toBe(1);
+        parent.children = [];
+        expect(count()).toBe(0);
+        child2.destroy();
+      });
+
+      it('adds and removes many siblings without copying the children each time', function () {
+        const children = Array.from({ length: 5000 }, () => new DeclarativeTreeNodeModel<void>(parent));
+        const held = parent.children;
+        expect(held.length).toBe(5000);
+        children.forEach(child => child.destroy());
+        // The same array is kept and changed in place.
+        expect(parent.children).toBe(held);
+        expect(parent.children.length).toBe(0);
       });
     });
   });

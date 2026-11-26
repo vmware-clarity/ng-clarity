@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, Input, OnChanges, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, Directive, Input, OnChanges, OnDestroy, TemplateRef } from '@angular/core';
 
 import { AsyncArray } from './models/async-array';
 import { RecursiveTreeNodeModel } from './models/recursive-tree-node.model';
@@ -21,16 +21,23 @@ export interface ClrRecursiveForOfContext<T> {
   selector: '[clrRecursiveFor][clrRecursiveForOf]',
   standalone: false,
 })
-export class ClrRecursiveForOf<T> implements OnChanges {
+export class ClrRecursiveForOf<T> implements OnChanges, OnDestroy {
   // TODO: accept NgIterable<T>
   @Input('clrRecursiveForOf') nodes!: T | T[];
 
+  /**
+   * Called to get the children of a node. The children of a node are fetched once, when the node first reads them,
+   * and again only after the node is collapsed (lazy trees) or new root nodes are set. The function is not tracked:
+   * a signal that it reads does not refresh the tree, so set new `clrRecursiveForOf` nodes to refetch.
+   */
   // TODO: accept NgIterable<T> return type
   @Input('clrRecursiveForGetChildren') getChildren!: (node: T) => AsyncArray<T>;
 
   constructor(
     private template: TemplateRef<ClrRecursiveForOfContext<T>>,
-    private featuresService: TreeFeaturesService<T>
+    private featuresService: TreeFeaturesService<T>,
+    /** @deprecated No longer used. Kept so that subclasses calling `super()` keep compiling. To be removed in a future major version. */
+    _cdr?: ChangeDetectorRef
   ) {}
 
   // I'm using OnChanges instead of OnInit to easily keep up to date with dynamic trees. Maybe optimizable later.
@@ -45,5 +52,10 @@ export class ClrRecursiveForOf<T> implements OnChanges {
       template: this.template,
       root: wrapped,
     };
+  }
+
+  /** @deprecated No longer needed, there is nothing to clean up. To be removed in a future major version. */
+  ngOnDestroy() {
+    // Intentionally empty.
   }
 }

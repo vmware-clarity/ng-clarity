@@ -31,7 +31,7 @@ export class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
     model: T,
     parent: RecursiveTreeNodeModel<T> | null,
     private getChildren: (node: T) => AsyncArray<T> | undefined,
-    // No longer used: the children are a signal now. Kept so that the constructor signature does not change.
+    /** @deprecated No longer used, the children are a signal now. To be removed in a future major version. */
     _featuresService?: TreeFeaturesService<T>
   ) {
     super();

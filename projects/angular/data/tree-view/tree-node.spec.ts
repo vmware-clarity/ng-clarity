@@ -354,6 +354,15 @@ describe('Tree View', () => {
           expect(testContext.clarityElement.querySelector('.clr-treenode-spinner')).not.toBeNull();
         });
 
+        it('keeps isModelLoading writable', () => {
+          testContext.clarityDirective.isModelLoading = true;
+          expect(testContext.clarityDirective._model.loading).toBe(true);
+          testContext.detectChanges();
+          expect(testContext.clarityElement.querySelector('.clr-treenode-spinner')).not.toBeNull();
+          testContext.clarityDirective.isModelLoading = false;
+          expect(testContext.clarityDirective.isModelLoading).toBe(false);
+        });
+
         it('replaces the caret with a spinner when the model is loading', () => {
           testContext.clarityDirective._model.loading = true;
           expect(testContext.clarityDirective.isModelLoading).toBe(true);

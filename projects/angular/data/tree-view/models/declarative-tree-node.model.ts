@@ -17,8 +17,10 @@ export class DeclarativeTreeNodeModel<T> extends TreeNodeModel<T> {
   // Override for a more precise type
   parent: DeclarativeTreeNodeModel<T> | null;
 
-  // A signal, so that the parent node is refreshed when a child node is added or removed after it was checked.
-  private readonly _children = signal<DeclarativeTreeNodeModel<T>[]>([]);
+  // The children are held in a plain array that is changed in place, so that adding or removing n siblings is not
+  // O(n^2). A version signal tells the parent node to refresh when a child node is added or removed after it was checked.
+  private _children: DeclarativeTreeNodeModel<T>[] = [];
+  private readonly childrenVersion = signal(0);
 
   constructor(parent: DeclarativeTreeNodeModel<T> | null) {
     super();
@@ -29,10 +31,12 @@ export class DeclarativeTreeNodeModel<T> extends TreeNodeModel<T> {
   }
 
   get children(): DeclarativeTreeNodeModel<T>[] {
-    return this._children();
+    this.childrenVersion();
+    return this._children;
   }
   set children(value: DeclarativeTreeNodeModel<T>[]) {
-    this._children.set(value);
+    this._children = value;
+    this.notifyChildrenChange();
   }
 
   override destroy() {
@@ -43,10 +47,19 @@ export class DeclarativeTreeNodeModel<T> extends TreeNodeModel<T> {
   }
 
   _addChild(child: DeclarativeTreeNodeModel<T>) {
-    this._children.update(children => [...children, child]);
+    this._children.push(child);
+    this.notifyChildrenChange();
   }
 
   _removeChild(child: DeclarativeTreeNodeModel<T>) {
-    this._children.update(children => children.filter(existing => existing !== child));
+    const index = this._children.indexOf(child);
+    if (index > -1) {
+      this._children.splice(index, 1);
+      this.notifyChildrenChange();
+    }
+  }
+
+  private notifyChildrenChange() {
+    this.childrenVersion.update(version => version + 1);
   }
 }

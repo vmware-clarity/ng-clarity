@@ -195,6 +195,9 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   get isModelLoading(): boolean {
     return this._model.loading;
   }
+  set isModelLoading(value: boolean) {
+    this._model.loading = value;
+  }
 
   /** @deprecated No longer used: the children animate without Angular animations. To be removed in a future major version. */
   get childrenAnimationState(): string {

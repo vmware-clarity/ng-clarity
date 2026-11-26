@@ -6689,15 +6689,16 @@ export class ClrRangeModule {
 }
 
 // @public (undocumented)
-export class ClrRecursiveForOf<T> implements OnChanges {
+export class ClrRecursiveForOf<T> implements OnChanges, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "TreeFeaturesService" needs to be exported by the entry point clr-angular.d.ts
-    constructor(template: TemplateRef<ClrRecursiveForOfContext<T>>, featuresService: TreeFeaturesService<T>);
+    constructor(template: TemplateRef<ClrRecursiveForOfContext<T>>, featuresService: TreeFeaturesService<T>,
+    _cdr?: ChangeDetectorRef);
     // Warning: (ae-forgotten-export) The symbol "AsyncArray" needs to be exported by the entry point clr-angular.d.ts
-    //
-    // (undocumented)
     getChildren: (node: T) => AsyncArray<T>;
     // (undocumented)
     ngOnChanges(): void;
+    // @deprecated (undocumented)
+    ngOnDestroy(): void;
     // (undocumented)
     nodes: T | T[];
     // (undocumented)
@@ -7998,6 +7999,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     isExpandable(): boolean;
     // (undocumented)
     get isModelLoading(): boolean;
+    set isModelLoading(value: boolean);
     // (undocumented)
     isSelectable(): boolean;
     // (undocumented)
@@ -11168,7 +11170,8 @@ export const radarIconName = "radar";
 
 // @public (undocumented)
 export class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
-    constructor(model: T, parent: RecursiveTreeNodeModel<T> | null, getChildren: (node: T) => AsyncArray<T> | undefined, _featuresService?: TreeFeaturesService<T>);
+    constructor(model: T, parent: RecursiveTreeNodeModel<T> | null, getChildren: (node: T) => AsyncArray<T> | undefined,
+    _featuresService?: TreeFeaturesService<T>);
     // (undocumented)
     get children(): RecursiveTreeNodeModel<T>[];
     set children(value: RecursiveTreeNodeModel<T>[]);
