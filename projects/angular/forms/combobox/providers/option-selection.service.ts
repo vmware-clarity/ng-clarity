@@ -100,6 +100,8 @@ export class OptionSelectionService<T> {
     this._identityFn = value || ((item: T) => item);
     if (this.selectionModel) {
       this.selectionModel.identityFn = this._identityFn;
+      // Re-notify, so OnPush options and pills compare again with the new function.
+      this.selectionModel.model = this.selectionModel.model;
     }
   }
 

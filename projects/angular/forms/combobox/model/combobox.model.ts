@@ -11,7 +11,7 @@ export type ClrComboboxIdentityFunction<T> = (item: T) => any;
 
 export type ClrComboboxResolverFunction<T> = (input: string) => T;
 
-export abstract class ComboboxModel<T, M extends T | T[] = T | T[]> {
+export abstract class ComboboxModel<T, M = T | T[] | null | undefined> {
   displayField?: string;
   // Every write notifies, because the multi-select model changes its array in place.
   private readonly value = signal<M>(undefined, { equal: () => false });

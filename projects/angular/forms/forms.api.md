@@ -54,7 +54,6 @@ import { Type } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
 import { Validator } from '@angular/forms';
 import { ViewContainerRef } from '@angular/core';
-import { WritableSignal } from '@angular/core';
 
 // @public (undocumented)
 export abstract class AbstractIfState {
@@ -298,7 +297,8 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     get ariaOwns(): string;
     // (undocumented)
-    protected readonly calculatedLimit: WritableSignal<number>;
+    protected get calculatedLimit(): number | undefined;
+    protected set calculatedLimit(value: number | undefined);
     // (undocumented)
     calculationPills: QueryList<ElementRef<HTMLElement>>;
     // (undocumented)
@@ -317,6 +317,11 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     protected containerWidth: number | null;
     // (undocumented)
     control: NgControl;
+    protected get controlState(): Signal<{
+        readonly disabled: boolean;
+        readonly invalid: boolean;
+        readonly touched: boolean;
+    }>;
     // (undocumented)
     get displayField(): string | undefined;
     // (undocumented)
@@ -344,7 +349,8 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     inputId(): string;
     // (undocumented)
-    protected readonly isTotalSelection: WritableSignal<boolean>;
+    protected get isTotalSelection(): boolean;
+    protected set isTotalSelection(value: boolean);
     // Warning: (ae-forgotten-export) The symbol "ClrLoadingState" needs to be exported by the entry point clr-angular-forms.d.ts
     //
     // (undocumented)
@@ -360,6 +366,8 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     ngAfterContentInit(): void;
     // (undocumented)
     ngAfterViewInit(): void;
+    // (undocumented)
+    ngDoCheck(): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -400,11 +408,13 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     get searchText(): string;
     set searchText(text: string);
     // (undocumented)
-    protected readonly selectionExpanded: WritableSignal<boolean>;
+    protected get selectionExpanded(): boolean;
+    protected set selectionExpanded(value: boolean);
     // (undocumented)
     setDisabledState(): void;
     // (undocumented)
-    protected readonly shouldCalculate: WritableSignal<boolean>;
+    protected get shouldCalculate(): boolean;
+    protected set shouldCalculate(value: boolean);
     // (undocumented)
     get showAllText(): string;
     // (undocumented)
@@ -2339,7 +2349,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-forms-combobox.d.ts:300:5 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-forms.d.ts
+// dist/clr-angular/types/clr-angular-forms-combobox.d.ts:322:5 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-forms.d.ts
 
 // (No @packageDocumentation comment for this package)
 

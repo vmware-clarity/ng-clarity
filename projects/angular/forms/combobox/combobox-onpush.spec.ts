@@ -16,6 +16,7 @@ import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrCombobox } from './combobox';
 import { ClrComboboxModule } from './combobox.module';
+import { ClrComboboxIdentityFunction } from './model/combobox.model';
 import { OptionSelectionService } from './providers/option-selection.service';
 
 const FRUITS = ['Apple', 'Banana', 'Cherry'];
@@ -75,6 +76,44 @@ class SignalHost {
   readonly multi = signal(false);
   readonly loading = signal(false);
   readonly items = signal(FRUITS);
+}
+
+interface Fruit {
+  id: number;
+  name: string;
+}
+
+const FRUIT_OBJECTS: Fruit[] = [
+  { id: 1, name: 'Apple' },
+  { id: 2, name: 'Banana' },
+  { id: 3, name: 'Cherry' },
+];
+
+@Component({
+  template: `
+    <clr-combobox
+      [ngModel]="value()"
+      (ngModelChange)="value.set($event)"
+      [clrMulti]="multi()"
+      [showSelectAll]="multi()"
+      [clrEditable]="editable()"
+      [clrComboboxIdentityFn]="identityFn()"
+    >
+      <ng-container *clrOptionSelected="let item">{{ item.name }}</ng-container>
+      <clr-options>
+        <clr-option *clrOptionItems="let item of items(); field: 'name'" [clrValue]="item">{{ item.name }}</clr-option>
+      </clr-options>
+    </clr-combobox>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
+})
+class OptionItemsHost {
+  readonly value = signal<Fruit | Fruit[]>(null);
+  readonly multi = signal(false);
+  readonly editable = signal(false);
+  readonly items = signal(FRUIT_OBJECTS);
+  readonly identityFn = signal<ClrComboboxIdentityFunction<Fruit>>(item => item);
 }
 
 function setup<H>(host: new () => H) {
@@ -304,6 +343,112 @@ describe('Combobox under OnPush', () => {
 
       expect(valueChanges).toEqual([]);
       expect(t.popoverService.open).toBe(false);
+    });
+  });
+
+  describe('in an OnPush host using *clrOptionItems', () => {
+    let fixture: ComponentFixture<OptionItemsHost>;
+    let t: ReturnType<typeof setup<OptionItemsHost>>;
+
+    beforeEach(async () => {
+      t = setup(OptionItemsHost);
+      fixture = t.fixture;
+      await fixture.whenStable();
+    });
+
+    afterEach(() => fixture.destroy());
+
+    it('renders the options and filters them while typing', async () => {
+      t.popoverService.open = true;
+      await fixture.whenStable();
+      expect(optionTexts()).toEqual(['Apple', 'Banana', 'Cherry']);
+
+      t.selectionService.showAllOptions = false;
+      t.input.value = 'an';
+      t.input.dispatchEvent(new Event('input'));
+      await fixture.whenStable();
+      expect(optionTexts()).toEqual(['Banana']);
+
+      t.input.value = 'zzz';
+      t.input.dispatchEvent(new Event('input'));
+      await fixture.whenStable();
+      expect(panel().textContent).toContain('No results');
+    });
+
+    it('moves the pseudo focus with the arrow keys', async () => {
+      t.popoverService.open = true;
+      await fixture.whenStable();
+      expect(document.querySelector('clr-option.clr-focus')).toBeNull();
+
+      t.input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+      await fixture.whenStable();
+      const first = document.querySelectorAll('clr-option')[0];
+      expect(first.classList).toContain('clr-focus');
+      expect(t.input.getAttribute('aria-activedescendant')).toBe(first.id);
+
+      t.input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+      await fixture.whenStable();
+      const second = document.querySelectorAll('clr-option')[1];
+      expect(first.classList).not.toContain('clr-focus');
+      expect(second.classList).toContain('clr-focus');
+      expect(t.input.getAttribute('aria-activedescendant')).toBe(second.id);
+    });
+
+    it('truncates the pills of a total selection and expands them with the toggle', async () => {
+      fixture.componentInstance.multi.set(true);
+      await fixture.whenStable();
+      t.popoverService.open = true;
+      await fixture.whenStable();
+
+      selectAllButton().click();
+      await fixture.whenStable();
+      const toggle = () => t.host.querySelector<HTMLButtonElement>('.clr-combobox-show-more-btn');
+      expect(t.pills().join(' ')).toContain('All 3 selected');
+      expect(toggle().getAttribute('aria-expanded')).toBe('false');
+
+      toggle().click();
+      await fixture.whenStable();
+      expect(toggle().getAttribute('aria-expanded')).toBe('true');
+      expect(t.pills()).toEqual(expect.arrayContaining(['Apple', 'Banana', 'Cherry']));
+
+      toggle().click();
+      await fixture.whenStable();
+      expect(toggle().getAttribute('aria-expanded')).toBe('false');
+      expect(t.pills().join(' ')).toContain('All 3 selected');
+    });
+
+    it('resolves typed text into a selection when it is editable', async () => {
+      fixture.componentInstance.multi.set(true);
+      fixture.componentInstance.editable.set(true);
+      (t.combobox as ClrCombobox<any>).editableResolver = (input: string) => ({ id: 99, name: input });
+      await fixture.whenStable();
+      t.popoverService.open = true;
+      await fixture.whenStable();
+
+      t.selectionService.showAllOptions = false;
+      t.input.value = 'Plum';
+      t.input.dispatchEvent(new Event('input'));
+      await fixture.whenStable();
+      t.input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+      await fixture.whenStable();
+
+      expect(fixture.componentInstance.value()).toEqual([{ id: 99, name: 'Plum' }]);
+      expect(t.pills()).toEqual(['Plum']);
+      expect(t.input.value).toBe('');
+    });
+
+    it('re-renders the selection when the identity function changes', async () => {
+      fixture.componentInstance.value.set({ id: 2, name: 'Banana (copy)' });
+      await fixture.whenStable();
+      await delay();
+      t.popoverService.open = true;
+      await fixture.whenStable();
+      const banana = () => document.querySelectorAll('clr-option')[1];
+      expect(banana().classList).not.toContain('active');
+
+      fixture.componentInstance.identityFn.set(item => item.id);
+      await fixture.whenStable();
+      expect(banana().classList).toContain('active');
     });
   });
 });

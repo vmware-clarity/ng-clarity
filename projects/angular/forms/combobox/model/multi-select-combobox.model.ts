@@ -7,7 +7,7 @@
 
 import { ComboboxModel } from './combobox.model';
 
-export class MultiSelectComboboxModel<T> extends ComboboxModel<T, T[]> {
+export class MultiSelectComboboxModel<T> extends ComboboxModel<T, T[] | null | undefined> {
   override displayField?: string;
 
   containsItem(item: T): boolean {

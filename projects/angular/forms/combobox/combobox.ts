@@ -29,12 +29,13 @@ import {
   QueryList,
   Renderer2,
   Self,
+  Signal,
   signal,
   ViewChild,
   ViewChildren,
   ViewContainerRef,
 } from '@angular/core';
-import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { AbstractControl, ControlValueAccessor, NgControl } from '@angular/forms';
 import { WrappedFormControl } from '@clr/angular/forms/common';
 import {
   ClrPopoverHostDirective,
@@ -50,7 +51,7 @@ import {
   Keys,
   LoadingListener,
 } from '@clr/angular/utils';
-import { debounceTime, Subject } from 'rxjs';
+import { debounceTime, Subject, Subscription } from 'rxjs';
 
 import { ClrComboboxContainer } from './combobox-container';
 import { ClrComboboxIdentityFunction, ClrComboboxResolverFunction, ComboboxModel } from './model/combobox.model';
@@ -61,6 +62,10 @@ import { ClrOptions } from './options';
 import { ComboboxContainerService } from './providers/combobox-container.service';
 import { COMBOBOX_FOCUS_HANDLER_PROVIDER, ComboboxFocusHandler } from './providers/combobox-focus-handler.service';
 import { OptionSelectionService } from './providers/option-selection.service';
+
+type ComboboxControlState = { readonly disabled: boolean; readonly invalid: boolean; readonly touched: boolean };
+
+const NO_COMBOBOX_CONTROL_STATE: ComboboxControlState = { disabled: false, invalid: false, touched: false };
 
 @Component({
   selector: 'clr-combobox',
@@ -112,15 +117,20 @@ export class ClrCombobox<T>
   protected popoverType = ClrPopoverType.DROPDOWN;
 
   protected containerWidth: number | null = null;
-  protected readonly selectionExpanded = signal(false);
-  protected readonly calculatedLimit = signal<number | undefined>(undefined);
-  protected readonly shouldCalculate = signal(true);
-  protected readonly isTotalSelection = signal(false);
+  // Backed by signals so the OnPush view follows them; the plain accessors keep the pre-signal member shapes.
+  private readonly _selectionExpanded = signal(false);
+  private readonly _calculatedLimit = signal<number | undefined>(undefined);
+  private readonly _shouldCalculate = signal(true);
+  private readonly _isTotalSelection = signal(false);
 
   private resizeObserver?: ResizeObserver;
   private readonly renderInjector = inject(Injector);
   private containerWidthChange = new Subject();
   @ContentChild(ClrOptions) private options!: ClrOptions<T>;
+
+  private readonly _controlState = signal<ComboboxControlState>(NO_COMBOBOX_CONTROL_STATE);
+  private watchedStateControl: AbstractControl | null = null;
+  private controlStateSubscription?: Subscription;
 
   private readonly _searchText = signal('');
   private onTouchedCallback?: () => any;
@@ -262,15 +272,54 @@ export class ClrCombobox<T>
   }
 
   get showIndividualPills(): boolean {
-    return !this.isTotalSelection() || this.selectionExpanded();
+    return !this.isTotalSelection || this.selectionExpanded;
   }
 
   get showTruncationToggle(): boolean {
     return (
-      this.selectionExpanded() ||
-      this.isTotalSelection() ||
-      (this.calculatedLimit() !== undefined && this.calculatedLimit() < (this.multiSelectModel?.length ?? 0))
+      this.selectionExpanded ||
+      this.isTotalSelection ||
+      (this.calculatedLimit !== undefined && this.calculatedLimit < (this.multiSelectModel?.length ?? 0))
     );
+  }
+
+  protected get selectionExpanded(): boolean {
+    return this._selectionExpanded();
+  }
+  protected set selectionExpanded(value: boolean) {
+    this._selectionExpanded.set(value);
+  }
+
+  protected get calculatedLimit(): number | undefined {
+    return this._calculatedLimit();
+  }
+  protected set calculatedLimit(value: number | undefined) {
+    this._calculatedLimit.set(value);
+  }
+
+  protected get shouldCalculate(): boolean {
+    return this._shouldCalculate();
+  }
+  protected set shouldCalculate(value: boolean) {
+    this._shouldCalculate.set(value);
+  }
+
+  protected get isTotalSelection(): boolean {
+    return this._isTotalSelection();
+  }
+  protected set isTotalSelection(value: boolean) {
+    this._isTotalSelection.set(value);
+  }
+
+  /**
+   * The state of this element's own control, with or without a container.
+   */
+  protected get controlState(): Signal<{
+    readonly disabled: boolean;
+    readonly invalid: boolean;
+    readonly touched: boolean;
+  }> {
+    return this._controlState.asReadonly();
   }
 
   private get disabled() {
@@ -303,8 +352,16 @@ export class ClrCombobox<T>
     }
   }
 
+  override ngDoCheck() {
+    super.ngDoCheck();
+    this.watchControlState();
+    // Changes made with `emitEvent: false` fire no control event.
+    this.refreshControlState();
+  }
+
   override ngOnDestroy(): void {
     super.ngOnDestroy();
+    this.controlStateSubscription?.unsubscribe();
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
     }
@@ -439,8 +496,8 @@ export class ClrCombobox<T>
   }
 
   toggleSelectionExpand() {
-    this.selectionExpanded.update(expanded => !expanded);
-    if (this.selectionExpanded()) {
+    this._selectionExpanded.update(expanded => !expanded);
+    if (this.selectionExpanded) {
       this.applyLimit(this.multiSelectModel?.length);
     } else {
       this.containerWidthChange.next(this.containerWidth);
@@ -476,8 +533,33 @@ export class ClrCombobox<T>
     this.resizeObserver.observe(this.wrapper.nativeElement);
   }
 
+  private watchControlState() {
+    const control = this.control?.control ?? null;
+    if (!control || control === this.watchedStateControl) {
+      return;
+    }
+    this.watchedStateControl = control;
+    this.controlStateSubscription?.unsubscribe();
+    this.controlStateSubscription = control.events.subscribe(() => this.refreshControlState());
+  }
+
+  private refreshControlState() {
+    const control = this.control?.control;
+    if (!control) {
+      return;
+    }
+    const current = this._controlState();
+    if (
+      current.disabled !== control.disabled ||
+      current.invalid !== control.invalid ||
+      current.touched !== control.touched
+    ) {
+      this._controlState.set({ disabled: control.disabled, invalid: control.invalid, touched: control.touched });
+    }
+  }
+
   private calculateLimit() {
-    this.shouldCalculate.set(true);
+    this._shouldCalculate.set(true);
     this.cdr.detectChanges();
     if (!this.calculationPills || this.calculationPills.length === 0) {
       this.applyLimit();
@@ -507,14 +589,14 @@ export class ClrCombobox<T>
 
   private applyLimit(limit?: number) {
     this.zone.run(() => {
-      this.calculatedLimit.set(limit === 0 ? 1 : limit);
-      this.shouldCalculate.set(false);
+      this._calculatedLimit.set(limit === 0 ? 1 : limit);
+      this._shouldCalculate.set(false);
     });
   }
 
   private updateTotalSelection() {
     if (!this.multiSelect || !this.multiSelectModel?.length) {
-      this.isTotalSelection.set(false);
+      this._isTotalSelection.set(false);
       return;
     }
     // Skip recalculation when items are filtered to zero (e.g. "no results")
@@ -522,7 +604,7 @@ export class ClrCombobox<T>
     if (!this.options?.items?.length) {
       return;
     }
-    this.isTotalSelection.set(this.optionSelectionService.containsAll(this.options.items.map(option => option.value)));
+    this._isTotalSelection.set(this.optionSelectionService.containsAll(this.options.items.map(option => option.value)));
   }
 
   private initializeSubscriptions(): void {
@@ -530,8 +612,8 @@ export class ClrCombobox<T>
       this.optionSelectionService.selectionChanged.subscribe((newSelection: ComboboxModel<T>) => {
         this.updateInputValue(newSelection);
         if (newSelection.isEmpty()) {
-          this.selectionExpanded.set(false);
-          this.isTotalSelection.set(false);
+          this._selectionExpanded.set(false);
+          this._isTotalSelection.set(false);
         } else {
           if (!this.multiSelect) {
             this.popoverService.open = false;
@@ -540,7 +622,7 @@ export class ClrCombobox<T>
         }
 
         this.updateControlValue();
-        if (this.selectionExpanded()) {
+        if (this.selectionExpanded) {
           this.applyLimit(this.multiSelectModel?.length);
         } else {
           this.calculateLimit();
@@ -573,7 +655,7 @@ export class ClrCombobox<T>
         }
       }),
       this.containerWidthChange.pipe(debounceTime(0)).subscribe(() => {
-        if (!this.selectionExpanded() && !this.isTotalSelection()) {
+        if (!this.selectionExpanded && !this.isTotalSelection) {
           this.calculateLimit();
         }
       })
