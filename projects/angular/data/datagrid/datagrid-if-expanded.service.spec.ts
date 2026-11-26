@@ -20,10 +20,24 @@ describe('Expand provider', () => {
   });
 
   it('starts with the correct default settings', () => {
+    let doesReplace = null;
+    testContext.expand.replace.subscribe((expandChange: boolean) => {
+      doesReplace = expandChange;
+    });
     expect(testContext.expand.expandable, 'not expandable').toBe(0);
-    expect(testContext.expand.replace(), 'not replacing the row').toBe(false);
+    expect(doesReplace, 'not replacing the row').toBe(false);
     expect(testContext.expand.loading, 'already loaded').toBe(false);
     expect(testContext.expand.expanded, 'collapsed').toBe(false);
+  });
+
+  it('notifies when cells are replaced', () => {
+    let isReplaced = null;
+    testContext.expand.replace.subscribe((replaceChange: boolean) => {
+      isReplaced = replaceChange;
+    });
+    expect(isReplaced).toBe(false);
+    testContext.expand.setReplace(true);
+    expect(isReplaced).toBe(true);
   });
 
   it('implements LoadingListener', () => {
