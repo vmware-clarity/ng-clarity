@@ -170,6 +170,7 @@ export class ClrCalendar implements OnDestroy {
     get calendar(): CalendarModel;
     // Warning: (ae-forgotten-export) The symbol "CalendarViewModel" needs to be exported by the entry point clr-angular-forms.d.ts
     get calendarViewModel(): CalendarViewModel;
+    set calendarViewModel(value: CalendarViewModel);
     // (undocumented)
     get focusedDay(): DayModel | null | undefined;
     get localeDays(): ReadonlyArray<ClrDayOfWeek>;
@@ -736,6 +737,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     set firstDayOfWeek(value: ClrWeekday | null);
     // (undocumented)
     get focus(): boolean;
+    set focus(value: boolean);
     get isEnabled(): boolean;
     get isInputDateDisabled(): boolean;
     // (undocumented)
@@ -2182,7 +2184,6 @@ export class FormsFocusService {
     get focusChange(): Observable<boolean>;
     // (undocumented)
     set focused(state: boolean);
-    get isFocused(): Signal<boolean>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<FormsFocusService, never>;
     // (undocumented)

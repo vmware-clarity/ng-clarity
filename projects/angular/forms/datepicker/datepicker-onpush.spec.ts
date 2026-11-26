@@ -8,11 +8,17 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule } from '@clr/angular/forms/common';
 
+import { ClrCalendar } from './calendar';
+import { ClrDateContainer } from './date-container';
 import { ClrDatepickerModule } from './datepicker.module';
 import { ClrWeekday } from './enums/weekday.enum';
 import { DateRangeOption } from './interfaces/date-range.interface';
+import { CalendarViewModel } from './model/calendar-view.model';
+import { CalendarModel } from './model/calendar.model';
+import { DayModel } from './model/day.model';
 
 // The datepicker views are OnPush. Their state lives in signals on the datepicker services,
 // so the views refresh whatever the host strategy is. The hosts below cover both kinds of consumer:
@@ -408,5 +414,52 @@ describe('Datepicker OnPush views', () => {
 
     expect(overlay()).toBeNull();
     expect(document.querySelector('.day-btn')).toBeNull();
+  });
+
+  describe('public members consumers could assign before the OnPush migration', () => {
+    it('keeps ClrDateContainer.focus assignable and in sync with the input focus', async () => {
+      const fixture = TestBed.createComponent(OnPushDateHost);
+      await fixture.whenStable();
+      const containerDebug = fixture.debugElement.query(By.directive(ClrDateContainer));
+      const container: ClrDateContainer = containerDebug.componentInstance;
+      const group: HTMLElement = fixture.nativeElement.querySelector('.clr-input-group');
+
+      expect(container.focus).toBe(false);
+
+      container.focus = true;
+      await fixture.whenStable();
+      expect(container.focus).toBe(true);
+      expect(group.classList).toContain('clr-focus');
+
+      container.focus = false;
+      const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
+      input.focus();
+      await fixture.whenStable();
+      expect(container.focus).toBe(true);
+      fixture.destroy();
+    });
+
+    it('keeps ClrCalendar.calendarViewModel assignable', async () => {
+      const fixture = TestBed.createComponent(OnPushDateHost);
+      await fixture.whenStable();
+      fixture.nativeElement.querySelector('.clr-input-group-icon-action').click();
+      await fixture.whenStable();
+      const calendar: ClrCalendar = fixture.debugElement.query(By.directive(ClrCalendar))?.componentInstance;
+      const original = calendar.calendarViewModel;
+      expect(original).toBeDefined();
+
+      const replacement = new CalendarViewModel(
+        new CalendarModel(2020, 0),
+        undefined,
+        undefined,
+        undefined,
+        new DayModel(2020, 0, 1),
+        ClrWeekday.Sunday,
+        { minDate: new DayModel(1900, 0, 1), maxDate: new DayModel(2100, 0, 1) }
+      );
+      calendar.calendarViewModel = replacement;
+      expect(calendar.calendarViewModel).toBe(replacement);
+      fixture.destroy();
+    });
   });
 });

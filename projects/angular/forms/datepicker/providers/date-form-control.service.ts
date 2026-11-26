@@ -17,6 +17,9 @@ export class DateFormControlService {
   get disabled(): boolean {
     return this._disabled();
   }
+  set disabled(state: boolean) {
+    this._disabled.set(state);
+  }
 
   get touchedChange(): Observable<void> {
     return this._touchedChange.asObservable();

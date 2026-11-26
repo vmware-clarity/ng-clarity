@@ -8,9 +8,9 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
   ElementRef,
   HostListener,
+  linkedSignal,
   OnDestroy,
   untracked,
 } from '@angular/core';
@@ -43,7 +43,7 @@ export class ClrCalendar implements OnDestroy {
    * Builds a new calendar view each time the displayed month or the first day of the week changes.
    * Selection and focus are read once here and kept up to date on the view by the subscriptions below.
    */
-  private readonly _calendarViewModel = computed(() => {
+  private readonly _calendarViewModel = linkedSignal(() => {
     const calendar = this._dateNavigationService.displayedCalendar;
     const firstDayOfWeek = this._localeHelperService.firstDayOfWeek;
     return untracked(
@@ -77,6 +77,9 @@ export class ClrCalendar implements OnDestroy {
    */
   get calendarViewModel(): CalendarViewModel {
     return this._calendarViewModel();
+  }
+  set calendarViewModel(value: CalendarViewModel) {
+    this._calendarViewModel.set(value);
   }
 
   /**

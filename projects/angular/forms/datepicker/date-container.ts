@@ -13,6 +13,7 @@ import {
   Input,
   Optional,
   Renderer2,
+  signal,
   ViewChild,
 } from '@angular/core';
 import {
@@ -119,6 +120,7 @@ import { ViewManagerService } from './providers/view-manager.service';
 })
 export class ClrDateContainer extends ClrAbstractContainer implements AfterViewInit {
   protected popoverType = ClrPopoverType.DROPDOWN;
+  private readonly _focus = signal(false);
   private toggleButton!: ElementRef<HTMLButtonElement>;
 
   constructor(
@@ -130,7 +132,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     private dateFormControlService: DateFormControlService,
     private dateIOService: DateIOService,
     public commonStrings: ClrCommonStringsService,
-    private focusService: FormsFocusService,
+    focusService: FormsFocusService,
     private viewManagerService: ViewManagerService,
     protected override controlClassService: ControlClassService,
     @Optional() protected override layoutService: LayoutService,
@@ -138,6 +140,12 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     private localeHelperService: LocaleHelperService
   ) {
     super(layoutService, controlClassService, ngControlService);
+
+    this.subscriptions.push(
+      focusService.focusChange.subscribe(state => {
+        this.focus = state;
+      })
+    );
 
     this.subscriptions.push(
       popoverService.openChange.subscribe(() => {
@@ -222,7 +230,10 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
   }
 
   get focus(): boolean {
-    return this.focusService.isFocused();
+    return this._focus();
+  }
+  set focus(value: boolean) {
+    this._focus.set(value);
   }
 
   get popoverPosition(): ClrPopoverPosition {
