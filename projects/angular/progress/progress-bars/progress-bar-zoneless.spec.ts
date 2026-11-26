@@ -7,7 +7,9 @@
 
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 
+import { ClrProgressBar } from './progress-bar';
 import { ClrProgressBarModule } from './progress-bar.module';
 
 @Component({
@@ -164,5 +166,24 @@ describe('ClrProgressBar (Eager host, Zone tick)', () => {
     expect(progress.getAttribute('value')).toBe('30');
     expect(progress.getAttribute('max')).toBe('60');
     expect(fixture.nativeElement.querySelector('clr-progress-bar span').textContent).toBe('Half');
+  });
+});
+
+describe('ClrProgressBar (programmatic writes)', () => {
+  it('renders values written to the component instance', async () => {
+    const fixture = TestBed.createComponent(OnPushHost);
+    await fixture.whenStable();
+    const bar: ClrProgressBar = fixture.debugElement.query(By.directive(ClrProgressBar)).componentInstance;
+
+    bar.value = 55;
+    bar.max = 200;
+    bar.color = 'danger';
+    await fixture.whenStable();
+
+    const element: HTMLElement = fixture.nativeElement.querySelector('clr-progress-bar');
+    const progress = element.querySelector('progress');
+    expect(progress.getAttribute('value')).toBe('55');
+    expect(progress.getAttribute('max')).toBe('200');
+    expect(element.classList).toContain('danger');
   });
 });

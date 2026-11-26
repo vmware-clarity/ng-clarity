@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, inject, Input } from '@angular/core';
 import { isBooleanAttributeSet } from '@clr/angular/utils';
 
 @Component({
@@ -20,21 +20,9 @@ import { isBooleanAttributeSet } from '@clr/angular/utils';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrProgressBar {
-  @Input('clrMax') max: number | string = 100;
-  @Input('clrDisplayval') displayval?: string;
-  @Input('clrColor') color?: string;
-
-  /*
-   * No need to convert to `number` cause we could have
-   * floating point and parseInt will round the numbers
-   *
-   * working with string won't have any side-effects,
-   * we don't do any math so string will do the job.
-   */
-  @Input('clrValue') value: number | string = 0;
-
   @HostBinding('attr.id') externalId: string | null = '';
-
+  // Programmatic writes (e.g. through a ViewChild) must still render under OnPush.
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
   private _ID: string | undefined;
   private _labeled = false;
   private _fade = false;
@@ -42,7 +30,50 @@ export class ClrProgressBar {
   private _flash = false;
   private _flashDanger = false;
   private _compact = false;
+  private _max: number | string = 100;
+  private _displayval: string | undefined = undefined;
+  private _color: string | undefined = undefined;
+  private _value: number | string = 0;
 
+  @Input('clrMax')
+  get max(): number | string {
+    return this._max;
+  }
+  set max(value: number | string) {
+    this._max = value;
+    this.changeDetectorRef.markForCheck();
+  }
+  @Input('clrDisplayval')
+  get displayval(): string | undefined {
+    return this._displayval;
+  }
+  set displayval(value: string | undefined) {
+    this._displayval = value;
+    this.changeDetectorRef.markForCheck();
+  }
+  @Input('clrColor')
+  get color(): string | undefined {
+    return this._color;
+  }
+  set color(value: string | undefined) {
+    this._color = value;
+    this.changeDetectorRef.markForCheck();
+  }
+  /*
+   * No need to convert to `number` cause we could have
+   * floating point and parseInt will round the numbers
+   *
+   * working with string won't have any side-effects,
+   * we don't do any math so string will do the job.
+   */
+  @Input('clrValue')
+  get value(): number | string {
+    return this._value;
+  }
+  set value(value: number | string) {
+    this._value = value;
+    this.changeDetectorRef.markForCheck();
+  }
   @Input()
   get id(): string | undefined {
     return this._ID;

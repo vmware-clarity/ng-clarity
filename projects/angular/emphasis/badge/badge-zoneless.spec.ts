@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { Type } from '@clr/angular/emphasis/common';
 
 import { ClrBadge } from './badge';
@@ -96,5 +97,21 @@ describe('ClrBadge (Eager host, Zone tick)', () => {
     const badge: HTMLElement = fixture.nativeElement.querySelector('clr-badge');
     expect(badge.classList).toContain('badge-success');
     expect(badge.textContent).toBe('3');
+  });
+});
+
+describe('ClrBadge (programmatic writes)', () => {
+  it('renders values written to the component instance', async () => {
+    const fixture = TestBed.createComponent(OnPushHost);
+    await fixture.whenStable();
+    const badge: ClrBadge = fixture.debugElement.query(By.directive(ClrBadge)).componentInstance;
+
+    badge.color = 'warning';
+    badge.type = Type.Outlined;
+    await fixture.whenStable();
+
+    const element: HTMLElement = fixture.nativeElement.querySelector('clr-badge');
+    expect(element.classList).toContain('badge-warning');
+    expect(element.classList).toContain('outlined');
   });
 });

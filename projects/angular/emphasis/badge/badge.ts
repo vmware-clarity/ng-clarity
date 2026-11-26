@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input } from '@angular/core';
 import { Type } from '@clr/angular/emphasis/common';
 
 export enum ClrBadgeColors {
@@ -32,9 +32,27 @@ export enum ClrBadgeColors {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrBadge {
-  @Input('clrColor') color: ClrBadgeColors | string = ClrBadgeColors.None;
-  @Input('clrType') type: Type | string = Type.Solid;
+  // Programmatic writes (e.g. through a ViewChild) must still render under OnPush.
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+  private _color: ClrBadgeColors | string = ClrBadgeColors.None;
+  private _type: Type | string = Type.Solid;
 
+  @Input('clrColor')
+  get color(): ClrBadgeColors | string {
+    return this._color;
+  }
+  set color(value: ClrBadgeColors | string) {
+    this._color = value;
+    this.changeDetectorRef.markForCheck();
+  }
+  @Input('clrType')
+  get type(): Type | string {
+    return this._type;
+  }
+  set type(value: Type | string) {
+    this._type = value;
+    this.changeDetectorRef.markForCheck();
+  }
   get isOutlined() {
     return this.type === Type.Outlined;
   }

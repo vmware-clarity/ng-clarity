@@ -1414,7 +1414,8 @@ export class ClrAriaCurrentLink implements OnInit, OnDestroy {
 // @public (undocumented)
 export class ClrBadge {
     // (undocumented)
-    color: ClrBadgeColors | string;
+    get color(): ClrBadgeColors | string;
+    set color(value: ClrBadgeColors | string);
     // (undocumented)
     get colorClass(): string;
     // (undocumented)
@@ -1422,7 +1423,8 @@ export class ClrBadge {
     // Warning: (ae-forgotten-export) The symbol "Type_2" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    type: Type_2 | string;
+    get type(): Type_2 | string;
+    set type(value: Type_2 | string);
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrBadge, "clr-badge", never, {
         "color": {
@@ -1471,7 +1473,7 @@ export class ClrBreadcrumbItem {
 }
 
 // @public (undocumented)
-export class ClrBreadcrumbs {
+export class ClrBreadcrumbs implements DoCheck {
     constructor(commonStrings: ClrCommonStringsService);
     // (undocumented)
     clrBreadcrumbItemClick: EventEmitter<BreadcrumbItem>;
@@ -1484,11 +1486,14 @@ export class ClrBreadcrumbs {
     // (undocumented)
     isExpanded: boolean;
     // (undocumented)
-    items: BreadcrumbItem[];
+    get items(): BreadcrumbItem[];
+    set items(value: BreadcrumbItem[]);
     // (undocumented)
     protected limit: number;
     // (undocumented)
     protected max: number;
+    // (undocumented)
+    ngDoCheck(): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrBreadcrumbs, "clr-breadcrumbs", never, {
         "items": {
@@ -5397,21 +5402,27 @@ export class ClrKeyFocusModule {
 export class ClrLabel {
     constructor(el: ElementRef<HTMLElement>);
     // (undocumented)
-    badgeText: string;
+    get badgeText(): string;
+    set badgeText(value: string);
     // (undocumented)
-    clickable: boolean;
+    get clickable(): boolean;
+    set clickable(value: boolean);
     // (undocumented)
-    color: ClrLabelColors | string;
+    get color(): ClrLabelColors | string;
+    set color(value: ClrLabelColors | string);
     // (undocumented)
     get colorClass(): string;
     // (undocumented)
-    disabled: boolean;
+    get disabled(): boolean;
+    set disabled(value: boolean);
     // (undocumented)
     get isSolid(): boolean;
     // (undocumented)
-    textContent: string;
+    get textContent(): string;
+    set textContent(value: string);
     // (undocumented)
-    type: Type_2 | string;
+    get type(): Type_2 | string;
+    set type(value: Type_2 | string);
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrLabel, "clr-label", never, {
         "color": {
@@ -6481,14 +6492,16 @@ export class ClrProgressBar {
     // (undocumented)
     set clrLoop(value: boolean | string);
     // (undocumented)
-    color?: string;
+    get color(): string | undefined;
+    set color(value: string | undefined);
     // (undocumented)
     get compactClass(): boolean;
     // (undocumented)
     get dangerClass(): boolean;
     displayStringValue(): boolean;
     // (undocumented)
-    displayval?: string;
+    get displayval(): string | undefined;
+    set displayval(value: string | undefined);
     get displayValue(): string;
     // (undocumented)
     externalId: string | null;
@@ -6506,13 +6519,15 @@ export class ClrProgressBar {
     // (undocumented)
     get loopClass(): boolean;
     // (undocumented)
-    max: number | string;
+    get max(): number | string;
+    set max(value: number | string);
     // (undocumented)
     get progressClass(): boolean;
     // (undocumented)
     get successClass(): boolean;
     // (undocumented)
-    value: number | string;
+    get value(): number | string;
+    set value(value: number | string);
     // (undocumented)
     get warningClass(): boolean;
     // (undocumented)

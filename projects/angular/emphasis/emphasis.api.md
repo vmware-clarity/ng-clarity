@@ -246,7 +246,8 @@ export class ClrAlertText {
 // @public (undocumented)
 export class ClrBadge {
     // (undocumented)
-    color: ClrBadgeColors | string;
+    get color(): ClrBadgeColors | string;
+    set color(value: ClrBadgeColors | string);
     // (undocumented)
     get colorClass(): string;
     // (undocumented)
@@ -254,7 +255,8 @@ export class ClrBadge {
     // Warning: (ae-forgotten-export) The symbol "Type" needs to be exported by the entry point clr-angular-emphasis.d.ts
     //
     // (undocumented)
-    type: Type | string;
+    get type(): Type | string;
+    set type(value: Type | string);
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrBadge, "clr-badge", never, {
         "color": {
@@ -312,21 +314,27 @@ export class ClrEmphasisModule {
 export class ClrLabel {
     constructor(el: ElementRef<HTMLElement>);
     // (undocumented)
-    badgeText: string;
+    get badgeText(): string;
+    set badgeText(value: string);
     // (undocumented)
-    clickable: boolean;
+    get clickable(): boolean;
+    set clickable(value: boolean);
     // (undocumented)
-    color: ClrLabelColors | string;
+    get color(): ClrLabelColors | string;
+    set color(value: ClrLabelColors | string);
     // (undocumented)
     get colorClass(): string;
     // (undocumented)
-    disabled: boolean;
+    get disabled(): boolean;
+    set disabled(value: boolean);
     // (undocumented)
     get isSolid(): boolean;
     // (undocumented)
-    textContent: string;
+    get textContent(): string;
+    set textContent(value: string);
     // (undocumented)
-    type: Type | string;
+    get type(): Type | string;
+    set type(value: Type | string);
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrLabel, "clr-label", never, {
         "color": {

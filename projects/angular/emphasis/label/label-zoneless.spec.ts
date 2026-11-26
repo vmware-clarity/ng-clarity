@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { Type } from '@clr/angular/emphasis/common';
 
 import { ClrLabel } from './label';
@@ -156,5 +157,23 @@ describe('ClrLabel (Eager host, Zone tick)', () => {
     expect(element.querySelector('clr-badge').textContent).toBe('3');
     expect(element.classList).toContain('label-info');
     expect(element.textContent).toContain('Changed');
+  });
+});
+
+describe('ClrLabel (programmatic writes)', () => {
+  it('renders values written to the component instance', async () => {
+    const fixture = TestBed.createComponent(OnPushHost);
+    await fixture.whenStable();
+    const label: ClrLabel = fixture.debugElement.query(By.directive(ClrLabel)).componentInstance;
+
+    label.textContent = 'Written';
+    label.badgeText = '7';
+    label.color = 'success';
+    await fixture.whenStable();
+
+    const element: HTMLElement = fixture.nativeElement.querySelector('clr-label');
+    expect(element.querySelector('.text').textContent).toBe('Written');
+    expect(element.querySelector('clr-badge').textContent).toBe('7');
+    expect(element.classList).toContain('label-success');
   });
 });

@@ -5,7 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, ElementRef, HostListener, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  HostListener,
+  inject,
+  Input,
+} from '@angular/core';
 import { ClrBadge } from '@clr/angular/emphasis/badge';
 import { Type } from '@clr/angular/emphasis/common';
 
@@ -47,12 +55,14 @@ export enum ClrLabelColors {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrLabel {
-  @Input('clrColor') color: ClrLabelColors | string = ClrLabelColors.None;
-  @Input('clrBadgeText') badgeText = '';
-  @Input('clrText') textContent = '';
-  @Input('clrClickable') clickable = false;
-  @Input('clrDisabled') disabled = false;
-  @Input('clrType') type: Type | string = Type.Outlined;
+  // Programmatic writes (e.g. through a ViewChild) must still render under OnPush.
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+  private _color: ClrLabelColors | string = ClrLabelColors.None;
+  private _badgeText: string = '';
+  private _textContent: string = '';
+  private _clickable: boolean = false;
+  private _disabled: boolean = false;
+  private _type: Type | string = Type.Outlined;
 
   constructor(private el: ElementRef<HTMLElement>) {
     // Capture phase, so it runs before the click handlers that the app binds on the same element.
@@ -61,6 +71,54 @@ export class ClrLabel {
     el.nativeElement.addEventListener('click', this.stopClickIfDisabled, true);
   }
 
+  @Input('clrColor')
+  get color(): ClrLabelColors | string {
+    return this._color;
+  }
+  set color(value: ClrLabelColors | string) {
+    this._color = value;
+    this.changeDetectorRef.markForCheck();
+  }
+  @Input('clrBadgeText')
+  get badgeText(): string {
+    return this._badgeText;
+  }
+  set badgeText(value: string) {
+    this._badgeText = value;
+    this.changeDetectorRef.markForCheck();
+  }
+  @Input('clrText')
+  get textContent(): string {
+    return this._textContent;
+  }
+  set textContent(value: string) {
+    this._textContent = value;
+    this.changeDetectorRef.markForCheck();
+  }
+  @Input('clrClickable')
+  get clickable(): boolean {
+    return this._clickable;
+  }
+  set clickable(value: boolean) {
+    this._clickable = value;
+    this.changeDetectorRef.markForCheck();
+  }
+  @Input('clrDisabled')
+  get disabled(): boolean {
+    return this._disabled;
+  }
+  set disabled(value: boolean) {
+    this._disabled = value;
+    this.changeDetectorRef.markForCheck();
+  }
+  @Input('clrType')
+  get type(): Type | string {
+    return this._type;
+  }
+  set type(value: Type | string) {
+    this._type = value;
+    this.changeDetectorRef.markForCheck();
+  }
   get isSolid() {
     return this.type === Type.Solid;
   }

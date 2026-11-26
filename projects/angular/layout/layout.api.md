@@ -12,6 +12,7 @@ import { CdkDrag } from '@angular/cdk/drag-drop';
 import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { ChangeDetectorRef } from '@angular/core';
 import { ConnectedPosition } from '@angular/cdk/overlay';
+import { DoCheck } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ElementRef } from '@angular/core';
 import { EnvironmentInjector } from '@angular/core';
@@ -97,7 +98,7 @@ export class ClrBreadcrumbItem {
 }
 
 // @public (undocumented)
-export class ClrBreadcrumbs {
+export class ClrBreadcrumbs implements DoCheck {
     constructor(commonStrings: ClrCommonStringsService);
     // (undocumented)
     clrBreadcrumbItemClick: EventEmitter<BreadcrumbItem>;
@@ -112,11 +113,14 @@ export class ClrBreadcrumbs {
     // (undocumented)
     isExpanded: boolean;
     // (undocumented)
-    items: BreadcrumbItem[];
+    get items(): BreadcrumbItem[];
+    set items(value: BreadcrumbItem[]);
     // (undocumented)
     protected limit: number;
     // (undocumented)
     protected max: number;
+    // (undocumented)
+    ngDoCheck(): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrBreadcrumbs, "clr-breadcrumbs", never, {
         "items": {

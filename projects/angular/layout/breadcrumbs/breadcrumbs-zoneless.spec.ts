@@ -7,9 +7,11 @@
 
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
+import { ClrBreadcrumbs } from './breadcrumbs';
 import { ClrBreadcrumbsModule } from './breadcrumbs.module';
 import { BreadcrumbItem } from './model/breadcrumbs.model';
 
@@ -92,6 +94,16 @@ describe('ClrBreadcrumbs (zoneless, OnPush host)', () => {
     expect(labels(fixture)).toEqual(['Home', 'A', 'B', 'Hosts', 'host-01']);
   });
 
+  it('expands from the keyboard', async () => {
+    host.items.set([HOME, { label: 'A', href: '/a' }, { label: 'B', href: '/b' }, HOSTS, HOST]);
+    await fixture.whenStable();
+
+    expandButton(fixture).dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    await fixture.whenStable();
+    expect(expandButton(fixture)).toBeNull();
+    expect(labels(fixture).length).toBe(5);
+  });
+
   it('renders items that arrive after an async task, starting from none', async () => {
     host.items.set([]);
     await fixture.whenStable();
@@ -155,6 +167,21 @@ describe('ClrBreadcrumbs (Eager host, Zone tick)', () => {
     zoneTick(fixture);
     expect(labels(fixture)).toEqual(['Clusters', 'cluster-01']);
     expect(expandButton(fixture)).toBeNull();
+  });
+
+  it('renders in-place changes to the items array and writes to the component instance', () => {
+    host.items.splice(1, 0, { label: 'Clusters', href: '/clusters' });
+    zoneTick(fixture);
+    expect(labels(fixture)).toEqual(['Clusters', 'Hosts', 'host-01']);
+
+    host.items.length = 2;
+    zoneTick(fixture);
+    expect(labels(fixture)).toEqual(['Home', 'Clusters']);
+
+    const breadcrumbs: ClrBreadcrumbs = fixture.debugElement.query(By.directive(ClrBreadcrumbs)).componentInstance;
+    breadcrumbs.items = [{ label: 'Only' }];
+    zoneTick(fixture);
+    expect(labels(fixture)).toEqual(['Only']);
   });
 
   it('expands on click and stays expanded on the next tick', () => {
