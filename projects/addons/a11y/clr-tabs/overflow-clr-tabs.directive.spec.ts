@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ChangeDetectionStrategy, Component, QueryList, signal, ViewChild, ViewChildren } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrTab, ClrTabLink, ClrTabs, ClrTabsModule } from '@clr/angular/layout/tabs';
 import { Observable, Subject } from 'rxjs';
@@ -18,7 +18,7 @@ import { ElementResizeService } from '../resize/element-resize.service';
 @Component({
   imports: [AppfxA11yModule, ClrTabsModule],
   template: `
-    <div [style.width]="width + 'px'">
+    <div [style.width]="width() + 'px'">
       <clr-tabs appfxOverflowTabs>
         <clr-tab>
           <button clrTabLink [clrTabLinkInOverflow]="false" style="width: 50px">Tab 1</button>
@@ -35,7 +35,7 @@ import { ElementResizeService } from '../resize/element-resize.service';
           <clr-tab-content></clr-tab-content>
         </clr-tab>
 
-        @if (tab4Visible) {
+        @if (tab4Visible()) {
           <clr-tab>
             <button clrTabLink [clrTabLinkInOverflow]="false" style="width: 50px">Tab 4</button>
             <clr-tab-content></clr-tab-content>
@@ -59,8 +59,8 @@ import { ElementResizeService } from '../resize/element-resize.service';
 })
 export class ClrTabsHostComponent {
   // gap is set to 0 in styles to remove tabs gap and improve calculation of tests
-  width = 160;
-  tab4Visible = false;
+  readonly width = signal(160);
+  readonly tab4Visible = signal(false);
 
   @ViewChild(ClrTabs) tabs: ClrTabs;
 
@@ -136,6 +136,11 @@ function createThisTest(): ThisTest {
 }
 
 describe('OverflowClrTabsDirective', () => {
+  let testContext: ThisTest;
+  beforeEach(() => {
+    testContext = {} as ThisTest;
+  });
+
   // OverflowClrTabsDirective uses some private fields of ClrTabs component.
   // This group of tests are added to detect if ClrTabs internals change in future versions.
   describe('Verify ClrTabs private fields used by OverflowClrTabsDirective', () => {
@@ -148,13 +153,13 @@ describe('OverflowClrTabsDirective', () => {
       expect(tabs.length).toEqual(1);
     });
 
-    it('ClrTabs has field _tabOverflowEl: HTMLElement', function (this: ThisTest) {
+    it('ClrTabs has field _tabOverflowEl: HTMLElement', () => {
       const fixture = createComponentWithoutDirective();
       const clrTabs: ClrTabs = fixture.componentInstance.tabs;
       expect(Object.prototype.hasOwnProperty.call(clrTabs, '_tabOverflowEl')).toBeTruthy();
     });
 
-    it('ClrTabs._tabOverflowEl is set when More button is clicked', function (this: ThisTest) {
+    it('ClrTabs._tabOverflowEl is set when More button is clicked', () => {
       const fixture = createComponentWithoutDirective();
       // Open the "More" button.
       const clrTabs: ClrTabs = fixture.componentInstance.tabs;
@@ -167,83 +172,89 @@ describe('OverflowClrTabsDirective', () => {
   });
 
   describe('ClrTabs integration tests', () => {
-    afterEach(function (this: ThisTest) {
-      if (this.fixture) {
-        this.fixture.destroy();
+    afterEach(() => {
+      if (testContext.fixture) {
+        testContext.fixture.destroy();
       }
     });
 
-    it('WHEN there is enough width THEN all tabs should be visible', function (this: ThisTest) {
-      Object.assign(this, createThisTest());
-      expect(this.component.tabsInOverflow).toEqual([false, false, false]);
+    it('WHEN there is enough width THEN all tabs should be visible', () => {
+      Object.assign(testContext, createThisTest());
+      expect(testContext.component.tabsInOverflow).toEqual([false, false, false]);
     });
 
-    it('1 tab in overflow', fakeAsync(function (this: ThisTest) {
-      Object.assign(this, createThisTest());
-      this.component.width = 140;
-      this.fixture.detectChanges();
+    it('1 tab in overflow', async () => {
+      vi.useFakeTimers();
+      Object.assign(testContext, createThisTest());
+      testContext.component.width.set(140);
+      testContext.fixture.detectChanges();
 
-      this.resizeService.resize.next();
-      tick(resources.layoutChangesDebounceDuration);
-      expect(this.component.tabsInOverflow).toEqual([false, false, true]);
-      tick(resources.initialLoadDelay);
-    }));
+      testContext.resizeService.resize.next();
+      await vi.advanceTimersByTimeAsync(resources.layoutChangesDebounceDuration);
+      expect(testContext.component.tabsInOverflow).toEqual([false, false, true]);
+      await vi.advanceTimersByTimeAsync(resources.initialLoadDelay);
+    });
 
-    it('2 tabs in overflow', fakeAsync(function (this: ThisTest) {
-      Object.assign(this, createThisTest());
-      this.component.width = 90;
-      this.fixture.detectChanges();
+    it('2 tabs in overflow', async () => {
+      vi.useFakeTimers();
+      Object.assign(testContext, createThisTest());
+      testContext.component.width.set(90);
+      testContext.fixture.detectChanges();
 
-      this.resizeService.resize.next();
-      tick(resources.layoutChangesDebounceDuration);
+      testContext.resizeService.resize.next();
+      await vi.advanceTimersByTimeAsync(resources.layoutChangesDebounceDuration);
 
-      expect(this.component.tabsInOverflow).toEqual([false, true, true]);
-      tick(resources.initialLoadDelay);
-    }));
+      expect(testContext.component.tabsInOverflow).toEqual([false, true, true]);
+      await vi.advanceTimersByTimeAsync(resources.initialLoadDelay);
+    });
 
-    it('All tabs in overflow', fakeAsync(function (this: ThisTest) {
-      Object.assign(this, createThisTest());
-      this.component.width = 41;
-      this.fixture.detectChanges();
+    it('All tabs in overflow', async () => {
+      vi.useFakeTimers();
+      Object.assign(testContext, createThisTest());
+      testContext.component.width.set(41);
+      testContext.fixture.detectChanges();
 
-      this.resizeService.resize.next();
-      tick(resources.layoutChangesDebounceDuration);
+      testContext.resizeService.resize.next();
+      await vi.advanceTimersByTimeAsync(resources.layoutChangesDebounceDuration);
 
-      expect(this.component.tabsInOverflow).toEqual([true, true, true]);
-      tick(resources.initialLoadDelay);
-    }));
+      expect(testContext.component.tabsInOverflow).toEqual([true, true, true]);
+      await vi.advanceTimersByTimeAsync(resources.initialLoadDelay);
+    });
 
-    it('Adding new tab in overflow', fakeAsync(function (this: ThisTest) {
-      Object.assign(this, createThisTest());
-      this.component.tab4Visible = true;
-      this.fixture.detectChanges();
+    it('Adding new tab in overflow', async () => {
+      vi.useFakeTimers();
+      Object.assign(testContext, createThisTest());
+      testContext.component.tab4Visible.set(true);
+      testContext.fixture.detectChanges();
 
-      tick(resources.layoutChangesDebounceDuration);
-      expect(this.component.tabsInOverflow).toEqual([false, false, false, true]);
-      tick(resources.initialLoadDelay);
-    }));
+      await vi.advanceTimersByTimeAsync(resources.layoutChangesDebounceDuration);
+      expect(testContext.component.tabsInOverflow).toEqual([false, false, false, true]);
+      await vi.advanceTimersByTimeAsync(resources.initialLoadDelay);
+    });
 
-    it('Adding new tab without overflow', fakeAsync(function (this: ThisTest) {
-      Object.assign(this, createThisTest());
-      this.component.width = 250;
-      this.component.tab4Visible = true;
-      this.fixture.detectChanges();
+    it('Adding new tab without overflow', async () => {
+      vi.useFakeTimers();
+      Object.assign(testContext, createThisTest());
+      testContext.component.width.set(250);
+      testContext.component.tab4Visible.set(true);
+      testContext.fixture.detectChanges();
 
-      tick(resources.layoutChangesDebounceDuration);
-      expect(this.component.tabsInOverflow).toEqual([false, false, false, false]);
-      tick(resources.initialLoadDelay);
-    }));
+      await vi.advanceTimersByTimeAsync(resources.layoutChangesDebounceDuration);
+      expect(testContext.component.tabsInOverflow).toEqual([false, false, false, false]);
+      await vi.advanceTimersByTimeAsync(resources.initialLoadDelay);
+    });
 
-    it('add proper classes to the buttons', fakeAsync(function (this: ThisTest) {
-      Object.assign(this, createThisTest());
+    it('add proper classes to the buttons', async () => {
+      vi.useFakeTimers();
+      Object.assign(testContext, createThisTest());
       // The first 2 buttons are visible, 3rd is in overflow.
-      this.component.width = 140;
-      this.fixture.detectChanges();
+      testContext.component.width.set(140);
+      testContext.fixture.detectChanges();
 
-      this.resizeService.resize.next();
-      tick(resources.layoutChangesDebounceDuration);
+      testContext.resizeService.resize.next();
+      await vi.advanceTimersByTimeAsync(resources.layoutChangesDebounceDuration);
 
-      let debugElements = this.fixture.debugElement.queryAll(By.css('button[clrTabLink]'));
+      let debugElements = testContext.fixture.debugElement.queryAll(By.css('button[clrTabLink]'));
       expect(debugElements.length).toEqual(2); // only the first 2 are visible
 
       // Verify the styles of the visible buttons.
@@ -253,43 +264,43 @@ describe('OverflowClrTabsDirective', () => {
       expect(debugElements[1].classes['btn-link']).toEqual(true);
 
       // Open the "More" button.
-      const clrTabs: ClrTabs = this.fixture.componentInstance.tabs;
+      const clrTabs: ClrTabs = testContext.fixture.componentInstance.tabs;
       clrTabs.toggleOverflowOnClick();
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
 
       // Now the 3 buttons should be visible
-      debugElements = this.fixture.debugElement.queryAll(By.css('button[clrTabLink]'));
+      debugElements = testContext.fixture.debugElement.queryAll(By.css('button[clrTabLink]'));
       expect(debugElements.length).toEqual(3);
 
       // Verify styles of the 3rd button (in overflow)
       expect(debugElements[2].classes['nav-link']).toBeUndefined();
       expect(debugElements[2].classes['btn-link']).toBeUndefined();
-      tick(resources.initialLoadDelay);
-    }));
+      await vi.advanceTimersByTimeAsync(resources.initialLoadDelay);
+    });
 
-    it('WHEN initialLoadDelay passes THEN overflow will be updated', fakeAsync(function (this: ThisTest) {
-      Object.assign(this, createThisTest());
-      this.component.width = 140;
-      this.fixture.detectChanges();
+    it('WHEN initialLoadDelay passes THEN overflow will be updated', async () => {
+      vi.useFakeTimers();
+      Object.assign(testContext, createThisTest());
+      testContext.component.width.set(140);
+      testContext.fixture.detectChanges();
 
-      tick(resources.initialLoadDelay + resources.layoutChangesDebounceDuration);
-      expect(this.component.tabsInOverflow).toEqual([false, false, true]);
-    }));
+      await vi.advanceTimersByTimeAsync(resources.initialLoadDelay + resources.layoutChangesDebounceDuration);
+      expect(testContext.component.tabsInOverflow).toEqual([false, false, true]);
+    });
 
-    it('WHEN all tabs are in overflow THEN the Overflow dropdown has custom styling', fakeAsync(function (
-      this: ThisTest
-    ) {
-      Object.assign(this, createThisTest());
-      this.component.width = 41;
-      this.fixture.detectChanges();
+    it('WHEN all tabs are in overflow THEN the Overflow dropdown has custom styling', async () => {
+      vi.useFakeTimers();
+      Object.assign(testContext, createThisTest());
+      testContext.component.width.set(41);
+      testContext.fixture.detectChanges();
 
-      this.resizeService.resize.next();
-      tick(resources.layoutChangesDebounceDuration);
+      testContext.resizeService.resize.next();
+      await vi.advanceTimersByTimeAsync(resources.layoutChangesDebounceDuration);
 
       // Open the "More" button.
-      const clrTabs: ClrTabs = this.fixture.componentInstance.tabs;
+      const clrTabs: ClrTabs = testContext.fixture.componentInstance.tabs;
       clrTabs.toggleOverflowOnClick();
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
 
       // Verify that styles are applied to the overflow dropdown element.
       const toggleEl: HTMLElement = clrTabs['_tabOverflowEl'];
@@ -299,7 +310,7 @@ describe('OverflowClrTabsDirective', () => {
       expect(toggleEl.style.position).toEqual('fixed');
       expect(toggleEl.style.top).toEqual('auto');
 
-      tick(resources.initialLoadDelay);
-    }));
+      await vi.advanceTimersByTimeAsync(resources.initialLoadDelay);
+    });
   });
 });

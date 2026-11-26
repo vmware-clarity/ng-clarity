@@ -43,19 +43,19 @@ export class EnumFilterComponent implements OnInit, OnChanges {
   /**
    * Property used for filtering
    */
-  @Input() filterProperty: EnumPropertyDefinition;
+  @Input() filterProperty!: EnumPropertyDefinition;
 
   /**
    * In case the component is used for filter editing
    */
-  @Input() propertyFilter: PropertyFilter;
+  @Input() propertyFilter?: PropertyFilter;
 
   /**
    * Event emitter to tell hosting view that filtering criteria have changed
    */
   @Output() filterCriteriaChange: EventEmitter<PropertyFilter> = new EventEmitter<PropertyFilter>();
 
-  enumFilterForm: FormGroup;
+  enumFilterForm!: FormGroup;
   optionsData: EnumPropertyData[] = [];
   filteredOptions: { data: EnumPropertyData; index: number }[] = [];
   enumOperators = [ComparisonOperator.DoesNotEqual, ComparisonOperator.Equals];
@@ -217,6 +217,9 @@ export class EnumFilterComponent implements OnInit, OnChanges {
     this.enumFilterForm.controls.enumOperator.setValue(initialOp, { emitEvent: false });
 
     this.updateSelectedCount();
+    // The options validator reads selectedCount, which was still 0 when the option controls were added.
+    // Re-validate now, so the form is valid before the first render (Apply is not briefly disabled).
+    this.optionsFormArray.updateValueAndValidity({ emitEvent: false });
   }
 
   private performSearch(term = ''): void {

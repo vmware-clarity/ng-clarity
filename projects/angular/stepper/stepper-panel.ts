@@ -40,11 +40,11 @@ import { ClrStepDescription } from './step-description';
   standalone: false,
 })
 export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
-  @ViewChild('headerButton') headerButton: ElementRef<HTMLButtonElement>;
-  @ContentChildren(ClrStepDescription) stepDescription: QueryList<ClrStepDescription>;
+  @ViewChild('headerButton') headerButton!: ElementRef<HTMLButtonElement>;
+  @ContentChildren(ClrStepDescription) stepDescription!: QueryList<ClrStepDescription>;
   @HostBinding('class.clr-stepper-panel-disabled') disabled = false;
   readonly PanelStatus = StepperPanelStatus;
-  override panel: Observable<StepperPanelModel>;
+  override panel!: Observable<StepperPanelModel>;
   protected override animatesCollapse = true;
 
   private subscriptions: Subscription[] = [];
@@ -65,14 +65,14 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
   }
 
   override get id(): string {
-    return this.formGroupName ? this.formGroupName.name.toString() : this.ngModelGroup.name;
+    return this.formGroupName ? String(this.formGroupName.name) : this.ngModelGroup.name;
   }
   override set id(_value: string) {
     // overriding parent id required empty setter
   }
 
   get panelNumber() {
-    return this._panelIndex + 1;
+    return (this._panelIndex ?? 0) + 1;
   }
 
   get formGroup() {

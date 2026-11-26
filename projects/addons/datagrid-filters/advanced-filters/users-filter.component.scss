@@ -6,6 +6,27 @@
  */
 
 .user-filter-wrapper {
-  max-height: 18rem;
-  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+
+  > * {
+    flex-shrink: 0;
+  }
+
+  // The options list is the only part of the editor that shrinks and scrolls.
+  > .filter-options {
+    flex-shrink: 1;
+    min-height: 0;
+    overflow-y: auto;
+  }
+}
+
+// The operator and the domain each have their own row and take its full width.
+.user-filter-select {
+  flex: 1 1 auto;
+}
+
+.user-load-more {
+  margin: var(--clr-base-vertical-offset-xs) 0 0;
 }

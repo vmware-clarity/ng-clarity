@@ -41,7 +41,7 @@ describe('DatagridColumnToggleComponent', () => {
       { uid: 'status', displayName: 'Status', field: 'status', hideable: false, width: '100px' },
     ] as Array<ColumnDefinition<any>>;
     component.columnHiddenStateChange = new EventEmitter<ColumnHiddenState>();
-    component.columns = [...columnsDefs];
+    fixture.componentRef.setInput('columns', [...columnsDefs]);
   });
 
   it('does not show non-hideable columns', () => {
@@ -52,7 +52,7 @@ describe('DatagridColumnToggleComponent', () => {
   });
 
   it('emits notification and shows all columns on select all', () => {
-    spyOn(component.columnHiddenStateChange, 'emit');
+    vi.spyOn(component.columnHiddenStateChange, 'emit').mockImplementation(() => undefined);
     component.onSelectAll();
     expect(component.columns[1].hidden).toBeFalsy();
     expect(component.columnHiddenStateChange.emit).toHaveBeenCalledWith({
@@ -68,8 +68,8 @@ describe('DatagridColumnToggleComponent', () => {
   });
 
   it('should hide and show a column using showColumn and hideColumn methods', () => {
-    spyOn(component.columnsChange, 'emit');
-    spyOn(component.columnHiddenStateChange, 'emit');
+    vi.spyOn(component.columnsChange, 'emit').mockImplementation(() => undefined);
+    vi.spyOn(component.columnHiddenStateChange, 'emit').mockImplementation(() => undefined);
 
     // Hide column
     component.hideColumn(component.columns[0].field);
@@ -81,11 +81,11 @@ describe('DatagridColumnToggleComponent', () => {
   });
 
   it('should have only one visible column when conditions apply', () => {
-    component.columns = [
+    fixture.componentRef.setInput('columns', [
       { displayName: 'Name', field: 'name', hidden: false },
       { displayName: 'State', field: 'state', hidden: true },
       { displayName: 'Status', field: 'status', hidden: true },
-    ];
+    ]);
     expect(component.hasOnlyOneVisibleColumn).toBe(true);
 
     // If more than one column is visible, it should return false
@@ -103,16 +103,16 @@ describe('DatagridColumnToggleComponent', () => {
     } as unknown as CdkConnectedOverlay;
 
     component.onAttach(overlayMock);
-    expect(component.viewId).toEqual('test-id');
+    expect(component['viewId']()).toEqual('test-id');
     expect(component.overlay).toEqual(overlayMock);
   });
 
   it('should reset viewId and openState on onDetach', () => {
-    component.viewId = 'test-id';
+    component['viewId'].set('test-id');
     component.openState = true;
 
     component.onDetach();
-    expect(component.viewId).toBeUndefined();
+    expect(component['viewId']()).toBeUndefined();
     expect(component.openState).toBe(false);
   });
 

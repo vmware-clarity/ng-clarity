@@ -15,7 +15,7 @@ import {
   OnDestroy,
   Output,
   PLATFORM_ID,
-  ViewChild,
+  viewChild,
 } from '@angular/core';
 import {
   ClrPopoverHostDirective,
@@ -75,7 +75,7 @@ let clrDgActionId = 0;
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDatagridActionOverflow implements OnDestroy {
-  @Input('clrDgActionOverflowButtonLabel') buttonLabel: string;
+  @Input('clrDgActionOverflowButtonLabel') buttonLabel?: string;
 
   @Output('clrDgActionOverflowOpenChange') openChange = new EventEmitter<boolean>(false);
 
@@ -87,7 +87,7 @@ export class ClrDatagridActionOverflow implements OnDestroy {
     mapPopoverKeyToPosition(ClrPopoverPosition.RIGHT_TOP, ClrPopoverType.DROPDOWN),
   ];
 
-  @ViewChild(ClrKeyFocus) private readonly keyFocus: ClrKeyFocus;
+  private readonly keyFocus = viewChild(ClrKeyFocus);
 
   private _open = false;
   private subscriptions: Subscription[] = [];
@@ -140,10 +140,14 @@ export class ClrDatagridActionOverflow implements OnDestroy {
       const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('button.action-item'));
 
       if (buttons.length) {
-        this.keyFocus.current = 0;
-        this.keyFocus.focusableItems = buttons;
+        const keyFocus = this.keyFocus();
+        if (!keyFocus) {
+          return;
+        }
+        keyFocus.current = 0;
+        keyFocus.focusableItems = buttons;
 
-        this.keyFocus.focusCurrent();
+        keyFocus.focusCurrent();
       }
     }
   }

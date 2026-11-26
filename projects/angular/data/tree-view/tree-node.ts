@@ -11,10 +11,12 @@ import {
   afterNextRender,
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChildren,
   ElementRef,
   EventEmitter,
+  inject,
   Inject,
   Injector,
   Input,
@@ -88,7 +90,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   protected animatesChildren = false;
   protected readonly noopAnimations = noopAnimations();
   /** The latest expand or collapse of the children, so that an earlier one does not start its animation after it. */
-  private childrenHeightChange: object;
+  private childrenHeightChange?: object;
 
   private bulkChange = false;
   private skipAnimation = false;
@@ -96,13 +98,14 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   private typeAheadKeyBuffer = '';
   private typeAheadKeyEvent = new Subject<string>();
   private subscriptions: Subscription[] = [];
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
-  @ViewChild('contentContainer', { read: ElementRef, static: true }) private contentContainer: ElementRef<HTMLElement>;
-  @ViewChild('children', { static: true }) private children: ElementRef<HTMLElement>;
+  @ViewChild('contentContainer', { read: ElementRef, static: true }) private contentContainer!: ElementRef<HTMLElement>;
+  @ViewChild('children', { static: true }) private children!: ElementRef<HTMLElement>;
 
   // @ContentChild would have been more succinct
   // but it doesn't offer a way to query only an immediate child
-  @ContentChildren(ClrTreeNodeLink, { descendants: false }) private treeNodeLinkList: QueryList<ClrTreeNodeLink>;
+  @ContentChildren(ClrTreeNodeLink, { descendants: false }) private treeNodeLinkList!: QueryList<ClrTreeNodeLink>;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
@@ -181,7 +184,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     this._model.textContent = trimAndLowerCase(value || this.elementRef.nativeElement.textContent);
   }
 
-  get ariaSelected(): boolean {
+  get ariaSelected(): boolean | null {
     if (this.isSelectable()) {
       return this._model.selected.value === ClrSelectedState.SELECTED;
     } else if (this.treeNodeLink?.active) {
@@ -249,9 +252,10 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     // fetched node in lazy trees. The current value is read directly instead of debouncing the replayed initial one.
     this.isModelLoading = this._model.loading;
     this.subscriptions.push(
-      this._model.loading$
-        .pipe(skip(1), debounceTime(0, asapScheduler))
-        .subscribe(isLoading => (this.isModelLoading = isLoading))
+      this._model.loading$.pipe(skip(1), debounceTime(0, asapScheduler)).subscribe(isLoading => {
+        this.isModelLoading = isLoading;
+        this.changeDetectorRef.markForCheck();
+      })
     );
   }
 

@@ -45,7 +45,7 @@ export class AccordionService extends CollapsiblePanelService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<AccordionService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<AccordionService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // @public
@@ -70,7 +70,12 @@ export class ClrAccordion implements OnInit, OnChanges, AfterViewInit, OnDestroy
     // (undocumented)
     panels: QueryList<ClrAccordionPanel>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordion, "clr-accordion", never, { "multiPanel": { "alias": "clrAccordionMultiPanel"; "required": false; }; }, {}, ["panels"], ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordion, "clr-accordion", never, {
+        "multiPanel": {
+            "alias": "clrAccordionMultiPanel";
+            "required": false;
+        };
+    }, {}, ["panels"], ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordion, never>;
 }
@@ -115,7 +120,7 @@ export class ClrAccordionPanel extends CollapsiblePanel implements OnChanges {
     // (undocumented)
     disabled: boolean;
     // Warning: (ae-forgotten-export) The symbol "HeadingLevel" needs to be exported by the entry point clr-angular-accordion.d.ts
-    explicitHeadingLevel: HeadingLevel;
+    explicitHeadingLevel?: HeadingLevel;
     // (undocumented)
     getContentId(id: string): string;
     // (undocumented)
@@ -131,9 +136,26 @@ export class ClrAccordionPanel extends CollapsiblePanel implements OnChanges {
     // (undocumented)
     panelOpenChange: EventEmitter<boolean>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionPanel, "clr-accordion-panel", never, { "disabled": { "alias": "clrAccordionPanelDisabled"; "required": false; }; "panelOpen": { "alias": "clrAccordionPanelOpen"; "required": false; }; "explicitHeadingLevel": { "alias": "clrAccordionPanelHeadingLevel"; "required": false; }; }, { "panelOpenChange": "clrAccordionPanelOpenChange"; }, ["accordionDescription"], ["clr-accordion-title", "clr-accordion-description", "*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionPanel, "clr-accordion-panel", never, {
+        "disabled": {
+            "alias": "clrAccordionPanelDisabled";
+            "required": false;
+        };
+        "panelOpen": {
+            "alias": "clrAccordionPanelOpen";
+            "required": false;
+        };
+        "explicitHeadingLevel": {
+            "alias": "clrAccordionPanelHeadingLevel";
+            "required": false;
+        };
+    }, {
+        "panelOpenChange": "clrAccordionPanelOpenChange";
+    }, ["accordionDescription"], ["clr-accordion-title", "clr-accordion-description", "*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionPanel, [{ optional: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionPanel, [{
+        optional: true;
+    }, null, null]>;
 }
 
 // @public (undocumented)

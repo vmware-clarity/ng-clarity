@@ -6,7 +6,7 @@
  */
 
 import { provideHttpClient } from '@angular/common/http';
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { appRoutes } from './app-routes';
@@ -16,7 +16,7 @@ import { moveFocusOnContentChangeProvider } from './move-focus-on-content-change
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideZonelessChangeDetection(),
     provideHttpClient(),
     provideRouter(appRoutes),
     logPageViewOnNavigationEndProvider,

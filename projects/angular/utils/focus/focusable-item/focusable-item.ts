@@ -8,7 +8,7 @@
 import { Observable } from 'rxjs';
 
 export abstract class FocusableItem {
-  id: string;
+  id!: string;
   disabled?: boolean;
 
   up?: FocusableItem | Observable<FocusableItem>;

@@ -8,6 +8,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { renderFixture } from '@clr/angular/utils/testing';
+import type { Mock } from 'vitest';
 
 import { PropertyViewConfigProvider } from '../property-view-config-provider';
 import { PropertyViewSectionsExpandedStateManager } from '../property-view-sections-expanded-state.manager';
@@ -15,7 +17,7 @@ import { PropertyViewCategoryModel, PropertyViewModel, PropertyViewModelType } f
 import { PropertyViewCategoryComponent } from './property-view-category.component';
 import { PropertyViewComponent } from './property-view.component';
 
-import Spy = jasmine.Spy;
+type Spy<T extends (...args: any[]) => any = (...args: any[]) => any> = Mock<T>;
 
 @Component({
   selector: 'appfx-property-view-category',
@@ -55,7 +57,12 @@ interface ThisTest {
   getCategoryComponents: () => Array<PropertyViewCategoryComponent>;
 }
 
-describe('PropertyViewComponent', function () {
+describe('PropertyViewComponent', () => {
+  let testContext: ThisTest;
+  beforeEach(() => {
+    testContext = {} as ThisTest;
+  });
+
   const cat1Data: PropertyViewCategoryModel = {
     type: PropertyViewModelType.Category,
     id: 'cat-1',
@@ -75,30 +82,30 @@ describe('PropertyViewComponent', function () {
     content: [],
   };
 
-  beforeEach(function (this: ThisTest) {
-    this.createData = (overrides: Partial<PropertyViewModel>) => {
+  beforeEach(() => {
+    testContext.createData = (overrides: Partial<PropertyViewModel>) => {
       const defaultData: PropertyViewModel = {
         categories: [],
       };
       return Object.assign({}, defaultData, overrides);
     };
-    this.getTabListElement = () => {
-      return this.element.querySelector('ul');
+    testContext.getTabListElement = () => {
+      return testContext.element.querySelector('ul');
     };
-    this.getTabsElements = () => {
-      return Array.prototype.slice.call(this.element.querySelectorAll('ul > li > button'));
+    testContext.getTabsElements = () => {
+      return Array.prototype.slice.call(testContext.element.querySelectorAll('ul > li > button'));
     };
-    this.getActiveTabsElements = () => {
-      return Array.prototype.slice.call(this.element.querySelectorAll('ul > li > button.active'));
+    testContext.getActiveTabsElements = () => {
+      return Array.prototype.slice.call(testContext.element.querySelectorAll('ul > li > button.active'));
     };
-    this.getTabsLabels = () => {
-      return this.getTabsElements().map(element => element.textContent);
+    testContext.getTabsLabels = () => {
+      return testContext.getTabsElements().map(element => element.textContent);
     };
-    this.getActiveTabsLabels = () => {
-      return this.getActiveTabsElements().map(element => element.textContent);
+    testContext.getActiveTabsLabels = () => {
+      return testContext.getActiveTabsElements().map(element => element.textContent);
     };
-    this.getCategoryComponents = () => {
-      return this.fixture.debugElement
+    testContext.getCategoryComponents = () => {
+      return testContext.fixture.debugElement
         .queryAll(By.directive(PropertyViewCategoryMockComponent))
         .map(debugElement => debugElement.componentInstance);
     };
@@ -107,320 +114,389 @@ describe('PropertyViewComponent', function () {
       declarations: [PropertyViewComponent, PropertyViewCategoryMockComponent],
     });
 
-    this.expandedStateManager = new PropertyViewCategoriesSectionsExpandedStateManagerMock();
+    testContext.expandedStateManager = new PropertyViewCategoriesSectionsExpandedStateManagerMock();
     // Override the provider in PropertyViewComponent. Note that this is
     // different from changing the provider in TestBed.configureTestingModule
     TestBed.overrideProvider(PropertyViewSectionsExpandedStateManager, {
-      useValue: this.expandedStateManager,
+      useValue: testContext.expandedStateManager,
     });
 
-    this.propertyViewConfigProvider = {
-      getConfig: jasmine.createSpy('getConfig').and.returnValue(undefined),
-      setConfig: jasmine.createSpy('setConfig'),
+    testContext.propertyViewConfigProvider = {
+      getConfig: vi.fn().mockReturnValue(undefined),
+      setConfig: vi.fn(),
     };
     // Override the provider in PropertyViewPropertyComponent. Note that this is
     // different from changing the provider in TestBed.configureTestingModule
     TestBed.overrideProvider(PropertyViewConfigProvider, {
-      useValue: this.propertyViewConfigProvider,
+      useValue: testContext.propertyViewConfigProvider,
     });
 
-    this.fixture = TestBed.createComponent(PropertyViewComponent);
-    this.component = this.fixture.componentInstance;
-    this.element = this.fixture.nativeElement;
+    testContext.fixture = TestBed.createComponent(PropertyViewComponent);
+    testContext.component = testContext.fixture.componentInstance;
+    testContext.element = testContext.fixture.nativeElement;
   });
 
-  afterEach(function (this: ThisTest) {
-    this.fixture.destroy();
+  afterEach(() => {
+    testContext.fixture.destroy();
   });
 
-  describe('categories tab list', function () {
-    it('should not be rendered when input data is undefined', function (this: ThisTest) {
-      this.component.data = undefined;
-      this.fixture.detectChanges();
-      expect(this.getTabListElement()).toEqual(null);
-      expect(this.getTabsElements()).toEqual([]);
+  describe('categories tab list', () => {
+    it('should not be rendered when input data is undefined', () => {
+      testContext.fixture.componentRef.setInput('data', undefined);
+      renderFixture(testContext.fixture);
+      expect(testContext.getTabListElement()).toEqual(null);
+      expect(testContext.getTabsElements()).toEqual([]);
     });
 
-    it('should not be rendered when input data is null', function (this: ThisTest) {
-      this.component.data = null;
-      this.fixture.detectChanges();
-      expect(this.getTabListElement()).toEqual(null);
-      expect(this.getTabsElements()).toEqual([]);
+    it('should not be rendered when input data is null', () => {
+      testContext.fixture.componentRef.setInput('data', null);
+      renderFixture(testContext.fixture);
+      expect(testContext.getTabListElement()).toEqual(null);
+      expect(testContext.getTabsElements()).toEqual([]);
     });
 
-    it('should not be rendered when input data categories are empty', function (this: ThisTest) {
-      this.component.data = this.createData({
-        categories: [],
-      });
-      this.fixture.detectChanges();
-      expect(this.getTabListElement()).toEqual(null);
-      expect(this.getTabsElements()).toEqual([]);
+    it('should not be rendered when input data categories are empty', () => {
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          categories: [],
+        })
+      );
+      renderFixture(testContext.fixture);
+      expect(testContext.getTabListElement()).toEqual(null);
+      expect(testContext.getTabsElements()).toEqual([]);
     });
 
-    it('should not be rendered when input data contains a single category', function (this: ThisTest) {
-      this.component.data = this.createData({
-        categories: [cat1Data],
-      });
-      this.fixture.detectChanges();
-      expect(this.getTabListElement()).toEqual(null);
-      expect(this.getTabsElements()).toEqual([]);
+    it('should not be rendered when input data contains a single category', () => {
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          categories: [cat1Data],
+        })
+      );
+      renderFixture(testContext.fixture);
+      expect(testContext.getTabListElement()).toEqual(null);
+      expect(testContext.getTabsElements()).toEqual([]);
     });
 
-    it('should be rendered and contain a tab for each category when there is more than one category', function (this: ThisTest) {
-      this.component.data = this.createData({
-        categories: [cat1Data, cat2Data],
-      });
-      this.fixture.detectChanges();
-      expect(this.getTabListElement()).not.toEqual(null);
-      expect(this.getTabsLabels()).toEqual(['cat-1', 'cat-2']);
+    it('should be rendered and contain a tab for each category when there is more than one category', () => {
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          categories: [cat1Data, cat2Data],
+        })
+      );
+      renderFixture(testContext.fixture);
+      expect(testContext.getTabListElement()).not.toEqual(null);
+      expect(testContext.getTabsLabels()).toEqual(['cat-1', 'cat-2']);
     });
 
-    it('should update when input data changes', function (this: ThisTest) {
-      this.component.data = this.createData({
-        categories: [cat1Data, cat2Data],
-      });
-      this.fixture.detectChanges();
-      expect(this.getTabListElement()).not.toEqual(null);
-      expect(this.getTabsLabels()).toEqual(['cat-1', 'cat-2']);
+    it('should update when input data changes', () => {
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          categories: [cat1Data, cat2Data],
+        })
+      );
+      renderFixture(testContext.fixture);
+      expect(testContext.getTabListElement()).not.toEqual(null);
+      expect(testContext.getTabsLabels()).toEqual(['cat-1', 'cat-2']);
 
-      this.component.data = this.createData({
-        categories: [cat2Data, cat3Data],
-      });
-      this.fixture.detectChanges();
-      expect(this.getTabListElement()).not.toEqual(null);
-      expect(this.getTabsLabels()).toEqual(['cat-2', 'cat-3']);
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          categories: [cat2Data, cat3Data],
+        })
+      );
+      renderFixture(testContext.fixture);
+      expect(testContext.getTabListElement()).not.toEqual(null);
+      expect(testContext.getTabsLabels()).toEqual(['cat-2', 'cat-3']);
 
-      this.component.data = undefined;
-      this.fixture.detectChanges();
-      expect(this.getTabListElement()).toEqual(null);
-      expect(this.getTabsElements()).toEqual([]);
+      testContext.fixture.componentRef.setInput('data', undefined);
+      renderFixture(testContext.fixture);
+      expect(testContext.getTabListElement()).toEqual(null);
+      expect(testContext.getTabsElements()).toEqual([]);
 
-      this.component.data = this.createData({
-        categories: [cat3Data, cat1Data],
-      });
-      this.fixture.detectChanges();
-      expect(this.getTabListElement()).not.toEqual(null);
-      expect(this.getTabsLabels()).toEqual(['cat-3', 'cat-1']);
-    });
-  });
-
-  describe('category component', function () {
-    it('should not be rendered when input data is undefined', function (this: ThisTest) {
-      this.component.data = undefined;
-      this.fixture.detectChanges();
-      expect(this.getCategoryComponents().length).toEqual(0);
-    });
-
-    it('should not be rendered when input data is null', function (this: ThisTest) {
-      this.component.data = null;
-      this.fixture.detectChanges();
-      expect(this.getCategoryComponents().length).toEqual(0);
-    });
-
-    it('should not be rendered when input data categories are empty', function (this: ThisTest) {
-      this.component.data = this.createData({
-        categories: [],
-      });
-      this.fixture.detectChanges();
-      expect(this.getCategoryComponents().length).toEqual(0);
-    });
-
-    it('should be rendered when input data contains a single category', function (this: ThisTest) {
-      this.component.data = this.createData({
-        categories: [cat1Data],
-      });
-      this.fixture.detectChanges();
-      expect(this.getCategoryComponents().length).toEqual(1);
-    });
-
-    it('should be rendered when input data contains multiple categories', function (this: ThisTest) {
-      this.component.data = this.createData({
-        categories: [cat1Data, cat2Data],
-      });
-      this.fixture.detectChanges();
-      expect(this.getCategoryComponents().length).toEqual(1);
-    });
-
-    it('should update when input data changes', function (this: ThisTest) {
-      this.component.data = this.createData({
-        categories: [cat1Data, cat2Data],
-      });
-      this.fixture.detectChanges();
-      expect(this.getCategoryComponents().length).toEqual(1);
-
-      this.component.data = this.createData({
-        categories: [cat2Data, cat3Data],
-      });
-      this.fixture.detectChanges();
-      expect(this.getCategoryComponents().length).toEqual(1);
-
-      this.component.data = undefined;
-      this.fixture.detectChanges();
-      expect(this.getCategoryComponents().length).toEqual(0);
-
-      this.component.data = this.createData({
-        categories: [cat3Data, cat1Data],
-      });
-      this.fixture.detectChanges();
-      expect(this.getCategoryComponents().length).toEqual(1);
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          categories: [cat3Data, cat1Data],
+        })
+      );
+      renderFixture(testContext.fixture);
+      expect(testContext.getTabListElement()).not.toEqual(null);
+      expect(testContext.getTabsLabels()).toEqual(['cat-3', 'cat-1']);
     });
   });
 
-  describe('selected category', function () {
-    it('should be the first one by default', function (this: ThisTest) {
-      this.component.data = this.createData({
-        categories: [cat1Data, cat2Data],
-      });
-      this.fixture.detectChanges();
-      expect(this.getActiveTabsLabels()).toEqual(['cat-1']);
-      expect(this.getCategoryComponents()[0].data).toBe(cat1Data);
+  describe('category component', () => {
+    it('should not be rendered when input data is undefined', () => {
+      testContext.fixture.componentRef.setInput('data', undefined);
+      renderFixture(testContext.fixture);
+      expect(testContext.getCategoryComponents().length).toEqual(0);
     });
 
-    it('should change when a category list tab is clicked', function (this: ThisTest) {
-      this.component.data = this.createData({
-        categories: [cat1Data, cat2Data],
-      });
-      this.fixture.detectChanges();
-
-      this.getTabsElements()[1].click();
-      this.fixture.detectChanges();
-      expect(this.getActiveTabsLabels()).toEqual(['cat-2']);
-      expect(this.getCategoryComponents()[0].data).toBe(cat2Data);
+    it('should not be rendered when input data is null', () => {
+      testContext.fixture.componentRef.setInput('data', null);
+      renderFixture(testContext.fixture);
+      expect(testContext.getCategoryComponents().length).toEqual(0);
     });
 
-    it('should be retained after categories are modified and the selected category still exists', function (this: ThisTest) {
-      this.component.data = this.createData({
-        categories: [cat2Data, cat3Data],
-      });
-      this.fixture.detectChanges();
-
-      this.component.data = this.createData({
-        categories: [cat1Data, cat2Data, cat3Data],
-      });
-      this.fixture.detectChanges();
-      expect(this.getActiveTabsLabels()).toEqual(['cat-2']);
-      expect(this.getCategoryComponents()[0].data).toBe(cat2Data);
-
-      this.getTabsElements()[2].click();
-      this.fixture.detectChanges();
-      expect(this.getActiveTabsLabels()).toEqual(['cat-3']);
-      expect(this.getCategoryComponents()[0].data).toBe(cat3Data);
-
-      this.component.data = this.createData({
-        categories: [cat1Data, cat3Data],
-      });
-      this.fixture.detectChanges();
-      expect(this.getActiveTabsLabels()).toEqual(['cat-3']);
-      expect(this.getCategoryComponents()[0].data).toBe(cat3Data);
+    it('should not be rendered when input data categories are empty', () => {
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          categories: [],
+        })
+      );
+      renderFixture(testContext.fixture);
+      expect(testContext.getCategoryComponents().length).toEqual(0);
     });
 
-    it('should be reset to the first one after categories are modified and the selected category does not exist', function (this: ThisTest) {
-      this.component.data = this.createData({
-        categories: [cat1Data, cat2Data, cat3Data],
-      });
-      this.fixture.detectChanges();
+    it('should be rendered when input data contains a single category', () => {
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          categories: [cat1Data],
+        })
+      );
+      renderFixture(testContext.fixture);
+      expect(testContext.getCategoryComponents().length).toEqual(1);
+    });
 
-      this.getTabsElements()[1].click();
-      this.fixture.detectChanges();
-      expect(this.getActiveTabsLabels()).toEqual(['cat-2']);
-      expect(this.getCategoryComponents()[0].data).toBe(cat2Data);
+    it('should be rendered when input data contains multiple categories', () => {
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          categories: [cat1Data, cat2Data],
+        })
+      );
+      renderFixture(testContext.fixture);
+      expect(testContext.getCategoryComponents().length).toEqual(1);
+    });
 
-      this.component.data = this.createData({
-        categories: [cat1Data, cat3Data],
-      });
-      this.fixture.detectChanges();
-      expect(this.getActiveTabsLabels()).toEqual(['cat-1']);
-      expect(this.getCategoryComponents()[0].data).toBe(cat1Data);
+    it('should update when input data changes', () => {
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          categories: [cat1Data, cat2Data],
+        })
+      );
+      renderFixture(testContext.fixture);
+      expect(testContext.getCategoryComponents().length).toEqual(1);
 
-      this.getTabsElements()[1].click();
-      this.fixture.detectChanges();
-      expect(this.getActiveTabsLabels()).toEqual(['cat-3']);
-      expect(this.getCategoryComponents()[0].data).toBe(cat3Data);
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          categories: [cat2Data, cat3Data],
+        })
+      );
+      renderFixture(testContext.fixture);
+      expect(testContext.getCategoryComponents().length).toEqual(1);
 
-      this.component.data = undefined;
-      this.fixture.detectChanges();
-      expect(this.getTabListElement()).toEqual(null);
-      expect(this.getTabsElements()).toEqual([]);
-      expect(this.getCategoryComponents().length).toEqual(0);
+      testContext.fixture.componentRef.setInput('data', undefined);
+      renderFixture(testContext.fixture);
+      expect(testContext.getCategoryComponents().length).toEqual(0);
 
-      this.component.data = this.createData({
-        categories: [cat1Data, cat2Data, cat3Data],
-      });
-      this.fixture.detectChanges();
-      expect(this.getActiveTabsLabels()).toEqual(['cat-1']);
-      expect(this.getCategoryComponents()[0].data).toBe(cat1Data);
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          categories: [cat3Data, cat1Data],
+        })
+      );
+      renderFixture(testContext.fixture);
+      expect(testContext.getCategoryComponents().length).toEqual(1);
     });
   });
 
-  describe('expanded state manager', function () {
-    it('should be updated with empty categories when input data is undefined', function (this: ThisTest) {
-      const updateSpy = spyOn(this.expandedStateManager, 'update');
-
-      this.component.data = undefined;
-      this.fixture.detectChanges();
-      expect(updateSpy.calls.count()).toEqual(1);
-      expect(updateSpy.calls.all()[0].args).toEqual(<any>[[]]);
+  describe('selected category', () => {
+    it('should be the first one by default', () => {
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          categories: [cat1Data, cat2Data],
+        })
+      );
+      renderFixture(testContext.fixture);
+      expect(testContext.getActiveTabsLabels()).toEqual(['cat-1']);
+      expect(testContext.getCategoryComponents()[0].data).toBe(cat1Data);
     });
 
-    it('should be updated with empty categories when input data is null', function (this: ThisTest) {
-      const updateSpy = spyOn(this.expandedStateManager, 'update');
+    it('should change when a category list tab is clicked', () => {
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          categories: [cat1Data, cat2Data],
+        })
+      );
+      renderFixture(testContext.fixture);
 
-      this.component.data = null;
-      this.fixture.detectChanges();
-      expect(updateSpy.calls.count()).toEqual(1);
-      expect(updateSpy.calls.all()[0].args).toEqual(<any>[[]]);
+      testContext.getTabsElements()[1].click();
+      renderFixture(testContext.fixture);
+      expect(testContext.getActiveTabsLabels()).toEqual(['cat-2']);
+      expect(testContext.getCategoryComponents()[0].data).toBe(cat2Data);
     });
 
-    it('should be updated with correct categories when input data is defined', function (this: ThisTest) {
-      const updateSpy = spyOn(this.expandedStateManager, 'update');
+    it('should be retained after categories are modified and the selected category still exists', () => {
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          categories: [cat2Data, cat3Data],
+        })
+      );
+      renderFixture(testContext.fixture);
 
-      this.component.data = this.createData({
-        categories: [cat1Data, cat3Data],
-      });
-      this.fixture.detectChanges();
-      expect(updateSpy.calls.count()).toEqual(1);
-      expect(updateSpy.calls.all()[0].args).toEqual(<any>[[cat1Data, cat3Data]]);
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          categories: [cat1Data, cat2Data, cat3Data],
+        })
+      );
+      renderFixture(testContext.fixture);
+      expect(testContext.getActiveTabsLabels()).toEqual(['cat-2']);
+      expect(testContext.getCategoryComponents()[0].data).toBe(cat2Data);
+
+      testContext.getTabsElements()[2].click();
+      renderFixture(testContext.fixture);
+      expect(testContext.getActiveTabsLabels()).toEqual(['cat-3']);
+      expect(testContext.getCategoryComponents()[0].data).toBe(cat3Data);
+
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          categories: [cat1Data, cat3Data],
+        })
+      );
+      renderFixture(testContext.fixture);
+      expect(testContext.getActiveTabsLabels()).toEqual(['cat-3']);
+      expect(testContext.getCategoryComponents()[0].data).toBe(cat3Data);
     });
 
-    it('should be updated with correct categories when input data changes', function (this: ThisTest) {
-      const updateSpy = spyOn(this.expandedStateManager, 'update');
+    it('should be reset to the first one after categories are modified and the selected category does not exist', () => {
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          categories: [cat1Data, cat2Data, cat3Data],
+        })
+      );
+      renderFixture(testContext.fixture);
 
-      this.component.data = undefined;
-      this.fixture.detectChanges();
-      expect(updateSpy.calls.count()).toEqual(1);
-      expect(updateSpy.calls.argsFor(0)).toEqual(<any>[[]]);
+      testContext.getTabsElements()[1].click();
+      renderFixture(testContext.fixture);
+      expect(testContext.getActiveTabsLabels()).toEqual(['cat-2']);
+      expect(testContext.getCategoryComponents()[0].data).toBe(cat2Data);
 
-      this.component.data = this.createData({
-        categories: [cat2Data, cat3Data],
-      });
-      this.fixture.detectChanges();
-      expect(updateSpy.calls.count()).toEqual(2);
-      expect(updateSpy.calls.argsFor(1)).toEqual(<any>[[cat2Data, cat3Data]]);
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          categories: [cat1Data, cat3Data],
+        })
+      );
+      renderFixture(testContext.fixture);
+      expect(testContext.getActiveTabsLabels()).toEqual(['cat-1']);
+      expect(testContext.getCategoryComponents()[0].data).toBe(cat1Data);
 
-      this.component.data = this.createData({
-        categories: [cat3Data, cat1Data],
-      });
-      this.fixture.detectChanges();
-      expect(updateSpy.calls.count()).toEqual(3);
-      expect(updateSpy.calls.argsFor(2)).toEqual(<any>[[cat3Data, cat1Data]]);
+      testContext.getTabsElements()[1].click();
+      renderFixture(testContext.fixture);
+      expect(testContext.getActiveTabsLabels()).toEqual(['cat-3']);
+      expect(testContext.getCategoryComponents()[0].data).toBe(cat3Data);
 
-      this.component.data = null;
-      this.fixture.detectChanges();
-      expect(updateSpy.calls.count()).toEqual(4);
-      expect(updateSpy.calls.argsFor(3)).toEqual(<any>[[]]);
+      testContext.fixture.componentRef.setInput('data', undefined);
+      renderFixture(testContext.fixture);
+      expect(testContext.getTabListElement()).toEqual(null);
+      expect(testContext.getTabsElements()).toEqual([]);
+      expect(testContext.getCategoryComponents().length).toEqual(0);
+
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          categories: [cat1Data, cat2Data, cat3Data],
+        })
+      );
+      renderFixture(testContext.fixture);
+      expect(testContext.getActiveTabsLabels()).toEqual(['cat-1']);
+      expect(testContext.getCategoryComponents()[0].data).toBe(cat1Data);
     });
   });
 
-  describe('property view config provider', function () {
-    it('setConfig() should be called when PropertyViewComponent.config is set', function (this: ThisTest) {
-      this.fixture.detectChanges();
-      expect(this.propertyViewConfigProvider.setConfig.calls.count()).toEqual(0);
+  describe('expanded state manager', () => {
+    it('should be updated with empty categories when input data is undefined', () => {
+      const updateSpy = vi.spyOn(testContext.expandedStateManager, 'update').mockImplementation(() => undefined);
 
-      this.component.config = {
+      testContext.fixture.componentRef.setInput('data', undefined);
+      renderFixture(testContext.fixture);
+      expect(vi.mocked(updateSpy).mock.calls.length).toEqual(1);
+      expect(vi.mocked(updateSpy).mock.calls[0]).toEqual(<any>[[]]);
+    });
+
+    it('should be updated with empty categories when input data is null', () => {
+      const updateSpy = vi.spyOn(testContext.expandedStateManager, 'update').mockImplementation(() => undefined);
+
+      testContext.fixture.componentRef.setInput('data', null);
+      renderFixture(testContext.fixture);
+      expect(vi.mocked(updateSpy).mock.calls.length).toEqual(1);
+      expect(vi.mocked(updateSpy).mock.calls[0]).toEqual(<any>[[]]);
+    });
+
+    it('should be updated with correct categories when input data is defined', () => {
+      const updateSpy = vi.spyOn(testContext.expandedStateManager, 'update').mockImplementation(() => undefined);
+
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          categories: [cat1Data, cat3Data],
+        })
+      );
+      renderFixture(testContext.fixture);
+      expect(vi.mocked(updateSpy).mock.calls.length).toEqual(1);
+      expect(vi.mocked(updateSpy).mock.calls[0]).toEqual(<any>[[cat1Data, cat3Data]]);
+    });
+
+    it('should be updated with correct categories when input data changes', () => {
+      const updateSpy = vi.spyOn(testContext.expandedStateManager, 'update').mockImplementation(() => undefined);
+
+      testContext.fixture.componentRef.setInput('data', undefined);
+      renderFixture(testContext.fixture);
+      expect(vi.mocked(updateSpy).mock.calls.length).toEqual(1);
+      expect(vi.mocked(updateSpy).mock.calls[0]).toEqual(<any>[[]]);
+
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          categories: [cat2Data, cat3Data],
+        })
+      );
+      renderFixture(testContext.fixture);
+      expect(vi.mocked(updateSpy).mock.calls.length).toEqual(2);
+      expect(vi.mocked(updateSpy).mock.calls[1]).toEqual(<any>[[cat2Data, cat3Data]]);
+
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          categories: [cat3Data, cat1Data],
+        })
+      );
+      renderFixture(testContext.fixture);
+      expect(vi.mocked(updateSpy).mock.calls.length).toEqual(3);
+      expect(vi.mocked(updateSpy).mock.calls[2]).toEqual(<any>[[cat3Data, cat1Data]]);
+
+      testContext.fixture.componentRef.setInput('data', null);
+      renderFixture(testContext.fixture);
+      expect(vi.mocked(updateSpy).mock.calls.length).toEqual(4);
+      expect(vi.mocked(updateSpy).mock.calls[3]).toEqual(<any>[[]]);
+    });
+  });
+
+  describe('property view config provider', () => {
+    it('setConfig() should be called when PropertyViewComponent.config is set', () => {
+      renderFixture(testContext.fixture);
+      expect(vi.mocked(testContext.propertyViewConfigProvider.setConfig).mock.calls.length).toEqual(0);
+
+      testContext.fixture.componentRef.setInput('config', {
         propertyKeyWidthInRem: 10,
-      };
-      expect(this.propertyViewConfigProvider.setConfig.calls.count()).toEqual(1);
-      expect(this.propertyViewConfigProvider.setConfig.calls.mostRecent().args).toEqual([
+      });
+      expect(vi.mocked(testContext.propertyViewConfigProvider.setConfig).mock.calls.length).toEqual(1);
+      expect(vi.mocked(testContext.propertyViewConfigProvider.setConfig).mock.lastCall).toEqual([
         {
           propertyKeyWidthInRem: 10,
         },
@@ -429,52 +505,58 @@ describe('PropertyViewComponent', function () {
   });
 
   describe('#onTabListKeydown', () => {
-    it('should not update focusedCategoryId if data is undefined', function (this: ThisTest) {
-      this.component.data = undefined;
-      this.component.focusedCategoryId = '0';
+    it('should not update focusedCategoryId if data is undefined', () => {
+      testContext.fixture.componentRef.setInput('data', undefined);
+      testContext.component.focusedCategoryId = '0';
 
-      this.component.onTabListKeydown({ key: 'ArrowRight' } as KeyboardEvent);
+      testContext.component.onTabListKeydown({ key: 'ArrowRight' } as KeyboardEvent);
 
-      expect(this.component.focusedCategoryId).toBe('0');
+      expect(testContext.component.focusedCategoryId).toBe('0');
     });
 
-    it('should not update focusedCategoryId if data.categories is empty', function (this: ThisTest) {
-      this.component.data = { categories: [] };
-      this.component.focusedCategoryId = '0';
+    it('should not update focusedCategoryId if data.categories is empty', () => {
+      testContext.fixture.componentRef.setInput('data', { categories: [] });
+      testContext.component.focusedCategoryId = '0';
 
-      this.component.onTabListKeydown({ key: 'ArrowRight' } as KeyboardEvent);
+      testContext.component.onTabListKeydown({ key: 'ArrowRight' } as KeyboardEvent);
 
-      expect(this.component.focusedCategoryId).toBe('0');
+      expect(testContext.component.focusedCategoryId).toBe('0');
     });
 
-    it('should handle ArrowRight key press', function (this: ThisTest) {
+    it('should handle ArrowRight key press', () => {
       const mockEvent = new KeyboardEvent('keydown', { key: 'ArrowRight' });
       const initialFocusedCategoryId = 'cat-2';
 
-      this.component.data = this.createData({
-        categories: [cat1Data, cat2Data, cat3Data],
-      });
-      this.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          categories: [cat1Data, cat2Data, cat3Data],
+        })
+      );
+      renderFixture(testContext.fixture);
 
-      this.component.focusedCategoryId = initialFocusedCategoryId;
-      this.component.onTabListKeydown(mockEvent);
+      testContext.component.focusedCategoryId = initialFocusedCategoryId;
+      testContext.component.onTabListKeydown(mockEvent);
 
-      expect(this.component.focusedCategoryId).toBe('cat-3');
+      expect(testContext.component.focusedCategoryId).toBe('cat-3');
     });
 
-    it('should handle ArrowLeft key press', function (this: ThisTest) {
+    it('should handle ArrowLeft key press', () => {
       const mockEvent = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
       const initialFocusedCategoryId = 'cat-2';
 
-      this.component.data = this.createData({
-        categories: [cat1Data, cat2Data, cat3Data],
-      });
-      this.fixture.detectChanges();
+      testContext.fixture.componentRef.setInput(
+        'data',
+        testContext.createData({
+          categories: [cat1Data, cat2Data, cat3Data],
+        })
+      );
+      renderFixture(testContext.fixture);
 
-      this.component.focusedCategoryId = initialFocusedCategoryId;
-      this.component.onTabListKeydown(mockEvent);
+      testContext.component.focusedCategoryId = initialFocusedCategoryId;
+      testContext.component.onTabListKeydown(mockEvent);
 
-      expect(this.component.focusedCategoryId).toBe('cat-1');
+      expect(testContext.component.focusedCategoryId).toBe('cat-1');
     });
   });
 });

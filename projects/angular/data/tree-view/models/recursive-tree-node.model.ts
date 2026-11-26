@@ -16,10 +16,13 @@ import { TreeNodeModel } from './tree-node.model';
  * Recursive = Model dictates the tree node components
  */
 export class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
+  // Override for a more precise type
+  override model: T;
   parent: RecursiveTreeNodeModel<T> | null;
 
-  private subscription: Subscription;
+  private subscription?: Subscription;
   private childrenFetched = false;
+  private destroyed = false;
   private _children: RecursiveTreeNodeModel<T>[] = [];
 
   constructor(
@@ -46,6 +49,7 @@ export class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
   }
 
   override destroy() {
+    this.destroyed = true;
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
@@ -54,12 +58,12 @@ export class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
 
   clearChildren() {
     this._children.forEach(child => child.destroy());
-    delete this._children;
+    this._children = [];
     this.childrenFetched = false;
   }
 
   fetchChildren() {
-    if (this.childrenFetched) {
+    if (this.destroyed || this.childrenFetched) {
       return;
     }
 
@@ -67,6 +71,9 @@ export class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
     if (isPromise(asyncChildren)) {
       this.loading = true;
       asyncChildren.then(raw => {
+        if (this.destroyed) {
+          return;
+        }
         this._children = this.wrapChildren(raw);
         this.loading = false;
       });

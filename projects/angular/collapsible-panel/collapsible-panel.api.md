@@ -46,7 +46,7 @@ export abstract class CollapsiblePanel implements OnInit {
     // (undocumented)
     panel: Observable<CollapsiblePanelModel>;
     // (undocumented)
-    protected _panelIndex: number;
+    protected _panelIndex?: number | null;
     // (undocumented)
     panelOpen: boolean;
     // (undocumented)
@@ -99,7 +99,7 @@ export class CollapsiblePanelModel {
     // (undocumented)
     id: string;
     // (undocumented)
-    index: number;
+    index: number | null;
     // (undocumented)
     open: boolean;
     // (undocumented)
@@ -115,7 +115,7 @@ export class CollapsiblePanelService {
     // (undocumented)
     protected emitUpdatedPanels(): void;
     // (undocumented)
-    getPanelChanges(panelId: string): Observable<CollapsiblePanelModel>;
+    getPanelChanges(panelId: string): Observable<CollapsiblePanelModel | undefined>;
     // (undocumented)
     protected panelGroup: CollapsiblePanelGroupModel;
     // (undocumented)
@@ -127,7 +127,7 @@ export class CollapsiblePanelService {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<CollapsiblePanelService, never>;
     // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<CollapsiblePanelService>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
 // Warning: (ae-forgotten-export) The symbol "ClrAnimationTransitionMetadata" needs to be exported by the entry point clr-angular-collapsible-panel.d.ts

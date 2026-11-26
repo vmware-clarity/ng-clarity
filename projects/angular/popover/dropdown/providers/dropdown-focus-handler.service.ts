@@ -17,8 +17,8 @@ import {
   uniqueIdFactory,
   wrapObservable,
 } from '@clr/angular/utils';
-import { Observable, of, ReplaySubject } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { EMPTY, Observable, of, ReplaySubject, Subject, Subscription, timer } from 'rxjs';
+import { map, switchMap, take } from 'rxjs/operators';
 @Injectable()
 export class DropdownFocusHandler implements OnDestroy, FocusableItem {
   id = uniqueIdFactory();
@@ -27,10 +27,12 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
   down?: Observable<FocusableItem>;
   up?: Observable<FocusableItem>;
 
-  private _trigger: HTMLElement;
-  private _container: HTMLElement;
-  private children: ReplaySubject<FocusableItem[]>;
+  private _trigger: HTMLElement | undefined;
+  private _container: HTMLElement | undefined;
+  private children!: ReplaySubject<FocusableItem[]>;
   private _unlistenFuncs: (() => void)[] = [];
+  private readonly subscriptions = new Subscription();
+  private readonly recoverFocus = new Subject<void>();
 
   constructor(
     private renderer: Renderer2,
@@ -43,9 +45,27 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
   ) {
     this.resetChildren();
     this.moveToFirstItemWhenOpen();
+    this.subscriptions.add(
+      popoverService.openChange
+        .pipe(
+          switchMap(open =>
+            open
+              ? this.recoverFocus.pipe(
+                  switchMap(() => timer(0)),
+                  switchMap(() =>
+                    document.activeElement === document.body
+                      ? ((parent ? this.right : this.down)?.pipe(take(1)) ?? EMPTY)
+                      : EMPTY
+                  )
+                )
+              : EMPTY
+          )
+        )
+        .subscribe(item => item && focusService.moveTo(item))
+    );
   }
 
-  get trigger() {
+  get trigger(): HTMLElement | undefined {
     return this._trigger;
   }
   set trigger(el: HTMLElement) {
@@ -65,7 +85,7 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
     }
   }
 
-  get container() {
+  get container(): HTMLElement | undefined {
     return this._container;
   }
 
@@ -81,7 +101,7 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
     // All containers are registered to the focus service.
     this.focusService.registerContainer(el);
 
-    this._unlistenFuncs.push(this.renderer.listen(el, 'focusout', () => this.recoverFocusIfLost()));
+    this._unlistenFuncs.push(this.renderer.listen(el, 'focusout', () => this.recoverFocus.next()));
 
     if (this.parent) {
       // if it's a nested container, pressing escape has the same effect as pressing left key, which closes the current
@@ -97,31 +117,26 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
   }
 
   ngOnDestroy() {
+    this.subscriptions.unsubscribe();
     this._unlistenFuncs.forEach((unlisten: () => void) => unlisten());
 
-    this.focusService.detachListeners(this.container);
+    if (this.container) {
+      this.focusService.detachListeners(this.container);
+    }
   }
 
   /**
    * If the dropdown was opened by clicking on the trigger, we automatically move to the first item
    */
   moveToFirstItemWhenOpen() {
-    const subscription = this.popoverService.openChange.subscribe(open => {
-      if (open && this.popoverService.openEvent) {
-        // Even if we properly waited for ngAfterViewInit, the container still wouldn't be attached to the DOM.
-        // So setTimeout is the only way to wait for the container to be ready to move focus to first item.
-        setTimeout(() => {
+    this.subscriptions.add(
+      this.popoverService.openChange
+        .pipe(switchMap(open => (open && this.popoverService.openEvent ? timer(0) : EMPTY)))
+        .subscribe(() => {
           this.focusService.moveTo(this);
-          if (this.parent) {
-            this.focusService.move(ArrowKeyDirection.RIGHT);
-          } else {
-            this.focusService.move(ArrowKeyDirection.DOWN);
-          }
-        });
-      }
-    });
-
-    this._unlistenFuncs.push(() => subscription.unsubscribe());
+          this.focusService.move(this.parent ? ArrowKeyDirection.RIGHT : ArrowKeyDirection.DOWN);
+        })
+    );
   }
 
   focus() {
@@ -137,7 +152,7 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
   }
 
   activate() {
-    if (isPlatformBrowser(this.platformId)) {
+    if (this.trigger && isPlatformBrowser(this.platformId)) {
       this.trigger.click();
     }
   }
@@ -176,18 +191,6 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
       Linkers.linkParent(children, this.closeAndGetThis(), ArrowKeyDirection.LEFT);
     }
     this.children.next(children);
-  }
-
-  private recoverFocusIfLost() {
-    setTimeout(() => {
-      if (!this.popoverService.open || document.activeElement !== document.body) {
-        return;
-      }
-
-      const firstItem = this.parent ? this.right : this.down;
-
-      firstItem?.pipe(take(1)).subscribe(item => item && this.focusService.moveTo(item));
-    });
   }
 
   private openAndGetChildren() {

@@ -193,11 +193,15 @@ export interface GridFooterModel {
   ],
 })
 export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, OnChanges, PreselectableComponent {
-  searchTerm = '';
-  visibleColumns: ColumnDefinition<T>[];
+  /**
+   * The quick search text, passed on to the filter bar. Supports two-way binding: `[(searchTerm)]="search"`,
+   * e.g. to restore a saved view. Setting it does not emit `searchTermChange`.
+   */
+  @Input() searchTerm = '';
+  visibleColumns!: ColumnDefinition<T>[];
   draggedItems: T[] = [];
 
-  @ViewChild(ClrDatagridPagination) clrDatagridPagination: ClrDatagridPagination;
+  @ViewChild(ClrDatagridPagination) clrDatagridPagination!: ClrDatagridPagination;
 
   /**
    * Shows loading indicator inside the datagrid to prevent user interactions while data is loading.
@@ -223,7 +227,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    * Defines the selectable page size options displayed in the grid footer.
    * Users can choose from these options to control the number of items shown per page.
    */
-  @Input() pageSizeOptions: number[];
+  @Input() pageSizeOptions!: number[];
 
   /**
    * The totalItems should be provided when the grid is server driven datagrid
@@ -260,20 +264,20 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   /**
    * Template for the content displayed when a row expands. Enables expandable row functionality.
    */
-  @Input() rowDetailContent: TemplateRef<unknown>;
+  @Input() rowDetailContent!: TemplateRef<unknown>;
 
   @Input() rowsExpandedByDefault = false;
 
   /**
    * A function that defines how to be tracked the changes for items in the grid.
    */
-  @Input() trackByFunction: TrackByFunction<T>;
+  @Input() trackByFunction?: TrackByFunction<T>;
 
   /**
    * property expression which defines the item property which to be
    * used for tracking changes of items in in the grid. May be deep with "a.b.c" notation.
    */
-  @Input() trackByGridItemProperty: string;
+  @Input() trackByGridItemProperty!: string;
 
   /**
    * Reference to the template containing the content for the header
@@ -304,14 +308,14 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    * This function receives a row item as an argument and returns a boolean indicating
    * whether the row should be locked (`true`) or enabled (`false`).
    */
-  @Input() isRowLocked: (rowItem: T) => boolean;
+  @Input() isRowLocked!: (rowItem: T) => boolean;
 
   /**
    * Configuration for enabling drag-and-drop functionality within the datagrid.
    * By default, drag and drop is disabled. To enable it, provide a valid configuration object
    * implementing the @see DatagridDragConfig interface.
    */
-  @Input() dragConfig: DatagridDragConfig;
+  @Input() dragConfig!: DatagridDragConfig;
 
   /**
    * An array of properties used for advanced filtering in FilterMode.Advanced
@@ -323,6 +327,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    * - `FilterMode.Quick`: Enables the quick filter.
    * - `FilterMode.Advanced`: Enables the advanced filter.
    * - `FilterMode.AdvancedOnly`: Enables only the advanced filter.
+   * - `FilterMode.Combined`: Enables the quick and advanced filters together (combined with AND by the host).
    *
    * When the filter is enabled, the component will emit the `searchTermChange`/`advancedFilterChange` event whenever the filter changes.
    * If not set, no filter will be displayed.
@@ -332,12 +337,12 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   /**
    * Action definitions for the single row actions.
    */
-  @Input() singleRowActions: ActionDefinition[] | null;
+  @Input() singleRowActions: ActionDefinition[] | null = null;
 
   /**
    * Controls whether the datagrid selection should be preserved on filtering.
    */
-  @Input() preserveExistingSelectionOnFilter: boolean;
+  @Input() preserveExistingSelectionOnFilter = false;
 
   /**
    * Controls whether the datagrid uses virtual scrolling to render data.
@@ -391,7 +396,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    *
    * Requires {@link enableColumnActions}, which is what renders the menu in the first place.
    */
-  @Input() columnActions: ActionDefinition[] | null;
+  @Input() columnActions: ActionDefinition[] | null = null;
 
   /**
    * Input for providing data when virtual scrolling is enabled.
@@ -411,7 +416,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    * individual fields map to columns based on each column's `field` property
    * as defined in {@link ColumnDefinition}.
    */
-  @Input() gridItems: T[];
+  @Input() gridItems!: T[];
 
   /**
    * Renders the datagrid as a tree: `gridItems` are the roots, or `dataRange` with `virtualScrolling`,
@@ -439,6 +444,12 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    * Emits when advanced filter criteria changes.
    */
   @Output() advancedFilterChange: EventEmitter<PropertyFilter[]> = new EventEmitter<PropertyFilter[]>();
+
+  /**
+   * Emits the active advanced filters when the user changes them, together with `advancedFilterChange`.
+   * The change event of `[(propertyFilters)]`.
+   */
+  @Output() propertyFiltersChange: EventEmitter<PropertyFilter[]> = new EventEmitter<PropertyFilter[]>();
 
   /**
    * Emits the updated column definitions {@link columns} to the parent component when changed.
@@ -544,19 +555,20 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   protected readonly dgStrings: DatagridStrings;
   protected enableSingleRowActions = false;
 
-  @ViewChild(ClrDatagrid, { static: true }) private clrDatagrid: ClrDatagrid;
+  @ViewChild(ClrDatagrid, { static: true }) private clrDatagrid!: ClrDatagrid;
 
   readonly #defaultActionButtonClass: string = ActionBarLayout.flatCompact;
   readonly #interpolationExpression: RegExp = /\{(\d+)\}/g;
   readonly #unsubscribeSubject: Subject<void> = new Subject<void>();
   readonly #zoomLevelSubscription: Subscription = new Subscription();
+  readonly #pendingRowNotifications = new Set<ReturnType<typeof setTimeout>>();
 
   /**
    * Array of objects defining the properties of each column in the Datagrid.
    *
    * @type ColumnDefinition
    */
-  #dgColumns: ColumnDefinition<T>[];
+  #dgColumns!: ColumnDefinition<T>[];
   // The column defined first, which carries the tree toggle when no column is marked with `treeToggle`.
   #firstColumn: ColumnDefinition<T> | undefined;
   #selectionType: SelectionType = SelectionType.Single;
@@ -579,6 +591,8 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    * Whether there are applied advanced filters
    */
   #hasAdvancedFilters = false;
+
+  #propertyFilters: PropertyFilter[] = [];
   #wrapCellText = true;
 
   constructor(
@@ -630,6 +644,21 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
       ...config,
       showFooter: config?.showFooter ?? true,
     };
+  }
+
+  /**
+   * The active advanced filters, passed on to the filter bar. Supports two-way binding:
+   * `[(propertyFilters)]="filters"`, e.g. to restore a saved view or keep the grid's data in sync with the pills.
+   * Setting it does not emit `propertyFiltersChange` or `advancedFilterChange`.
+   */
+  @Input()
+  get propertyFilters(): PropertyFilter[] {
+    return this.#propertyFilters;
+  }
+
+  set propertyFilters(value: PropertyFilter[]) {
+    this.#propertyFilters = value ?? [];
+    this.#hasAdvancedFilters = this.#propertyFilters.length > 0;
   }
 
   /**
@@ -821,6 +850,8 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   }
 
   ngOnDestroy() {
+    this.#pendingRowNotifications.forEach(handle => clearTimeout(handle));
+    this.#pendingRowNotifications.clear();
     this.#unsubscribeSubject.next();
     this.#unsubscribeSubject.complete();
     this.#zoomLevelSubscription.unsubscribe();
@@ -960,7 +991,10 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   onAdvancedFilterCriteriaChange(filterCriteria: PropertyFilter[]): void {
     // We need to know if there are filters, because of filteredItemsCount
     this.#hasAdvancedFilters = filterCriteria ? filterCriteria.length > 0 : false;
+    // Keep the last emitted state, so the filter bar starts from it when it is shown again.
+    this.#propertyFilters = filterCriteria ?? [];
     this.advancedFilterChange.emit(filterCriteria);
+    this.propertyFiltersChange.emit(filterCriteria);
   }
 
   /**
@@ -1340,14 +1374,12 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    * does not emit <code>QueryList<T>.changes</code> in this case.
    */
   private notifyOnChanges() {
-    // Disable check for this.trackByFunction since the compiler thinks it's always assigned but that's not the case.
-    // In the PreselectComponent interface, trackByFunction is required but in the datagrid it's optional.
-
-    // @ts-ignore
     if (this.trackByGridItemProperty || this.trackByFunction) {
-      setTimeout(() => {
+      const handle = setTimeout(() => {
+        this.#pendingRowNotifications.delete(handle);
         this.clrDatagrid?.rows?.notifyOnChanges();
-      }, 0);
+      });
+      this.#pendingRowNotifications.add(handle);
     }
   }
 

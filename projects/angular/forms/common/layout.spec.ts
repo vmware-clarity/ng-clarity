@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrLayout } from './layout';
 import { ClrFormLayout, LayoutService } from './providers/layout.service';
@@ -27,14 +28,14 @@ function customTestComponentFactory(
   return TestComponent;
 }
 
-export default function (): void {
+describe('Forms common utilities', () => {
   describe('ClrLayout', () => {
     it('sets the layout selection in LayoutService on init if provided', function () {
       const testClass = customTestComponentFactory();
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.layout).toEqual(ClrFormLayout.VERTICAL);
     });
@@ -46,7 +47,7 @@ export default function (): void {
       const component = fixture.debugElement.query(By.directive(ClrLayout));
       const directive = component.injector.get(ClrLayout);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(directive.layout).toEqual(ClrFormLayout.VERTICAL);
       expect(service.layout).toEqual(ClrFormLayout.VERTICAL);
@@ -57,7 +58,7 @@ export default function (): void {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.layout).toEqual(ClrFormLayout.HORIZONTAL);
     });
@@ -67,7 +68,7 @@ export default function (): void {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.labelSize).toEqual(2);
     });
@@ -77,21 +78,21 @@ export default function (): void {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
-      expect(service.labelSizeIsValid(service.minLabelSize)).toBeTrue();
-      expect(service.labelSizeIsValid(Math.ceil((service.minLabelSize + service.maxLabelSize) / 2))).toBeTrue();
-      expect(service.labelSizeIsValid(service.maxLabelSize)).toBeTrue();
+      expect(service.labelSizeIsValid(service.minLabelSize)).toBe(true);
+      expect(service.labelSizeIsValid(Math.ceil((service.minLabelSize + service.maxLabelSize) / 2))).toBe(true);
+      expect(service.labelSizeIsValid(service.maxLabelSize)).toBe(true);
 
       // out of range integer
-      expect(service.labelSizeIsValid(0)).toBeFalse();
-      expect(service.labelSizeIsValid(13)).toBeFalse();
+      expect(service.labelSizeIsValid(0)).toBe(false);
+      expect(service.labelSizeIsValid(13)).toBe(false);
 
       // out of range float number
-      expect(service.labelSizeIsValid(0.5)).toBeFalse();
+      expect(service.labelSizeIsValid(0.5)).toBe(false);
 
       // out of range float number
-      expect(service.labelSizeIsValid(1.5)).toBeFalse();
+      expect(service.labelSizeIsValid(1.5)).toBe(false);
     });
 
     it('horizontal layout label that are out of (1, 12) range should default to size of 2', () => {
@@ -99,7 +100,7 @@ export default function (): void {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.labelSize).toEqual(2);
     });
@@ -109,7 +110,7 @@ export default function (): void {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.labelSize).toEqual(2);
     });
@@ -119,7 +120,7 @@ export default function (): void {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.labelSize).toEqual(2);
     });
@@ -129,7 +130,7 @@ export default function (): void {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.layout).toEqual(ClrFormLayout.HORIZONTAL);
       expect(service.labelSize).toEqual(2);
@@ -140,7 +141,7 @@ export default function (): void {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.layout).toEqual(ClrFormLayout.HORIZONTAL);
       expect(service.labelSize).toEqual(2);
@@ -151,7 +152,7 @@ export default function (): void {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.layout).toEqual(ClrFormLayout.HORIZONTAL);
       expect(service.labelSize).toEqual(2);
@@ -162,7 +163,7 @@ export default function (): void {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.layout).toEqual(ClrFormLayout.HORIZONTAL);
       expect(service.labelSize).toEqual(2);
@@ -173,7 +174,7 @@ export default function (): void {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.layout).toEqual(ClrFormLayout.HORIZONTAL);
       expect(service.labelSize).toEqual(2);
@@ -185,7 +186,7 @@ export default function (): void {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.layout).toEqual(ClrFormLayout.COMPACT);
       expect(service.labelSize).toEqual(2);
@@ -196,7 +197,7 @@ export default function (): void {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.layout).toEqual(ClrFormLayout.COMPACT);
       expect(service.labelSize).toEqual(2);
@@ -207,7 +208,7 @@ export default function (): void {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.layout).toEqual(ClrFormLayout.COMPACT);
       expect(service.labelSize).toEqual(2);
@@ -218,7 +219,7 @@ export default function (): void {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.layout).toEqual(ClrFormLayout.COMPACT);
       expect(service.labelSize).toEqual(2);
@@ -229,10 +230,10 @@ export default function (): void {
       TestBed.configureTestingModule({ declarations: [ClrLayout, testClass] });
       const fixture = TestBed.createComponent(testClass);
       const service = fixture.debugElement.injector.get(LayoutService);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(service.layout).toEqual(ClrFormLayout.COMPACT);
       expect(service.labelSize).toEqual(2);
     });
   });
-}
+});

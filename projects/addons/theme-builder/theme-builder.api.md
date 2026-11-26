@@ -89,7 +89,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     // (undocumented)
     previewWrapper: ElementRef<HTMLElement>;
     // (undocumented)
-    resetAllThemeColors(theme: string): void;
+    resetAllThemeColors(theme: ThemeType): void;
     // (undocumented)
     resetColor($event: Event, color: Color, colorGroup?: Color[]): void;
     // Warning: (ae-forgotten-export) The symbol "DataRow" needs to be exported by the entry point clr-addons-theme-builder.d.ts
@@ -120,7 +120,14 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     // (undocumented)
     wizardOpen: boolean;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ThemeBuilderComponent, "clr-theme-builder", never, { "presets": { "alias": "presets"; "required": false; }; }, { "generatedCSS": "generatedCSS"; }, never, ["*"], true, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ThemeBuilderComponent, "clr-theme-builder", never, {
+        "presets": {
+            "alias": "presets";
+            "required": false;
+        };
+    }, {
+        "generatedCSS": "generatedCSS";
+    }, never, ["*"], true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ThemeBuilderComponent, never>;
 }
@@ -167,9 +174,9 @@ export interface ThemeCssValidation {
 // @public (undocumented)
 export interface ThemePreset {
     // (undocumented)
-    dark: ThemeColors;
+    dark: ThemeColors | null;
     // (undocumented)
-    light: ThemeColors;
+    light: ThemeColors | null;
     // (undocumented)
     name: string;
 }

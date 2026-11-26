@@ -27,7 +27,7 @@ import { DatagridStrings } from '../i18n/datagrid-strings.service';
   selector: 'appfx-datagrid-filter',
   standalone: false,
   template: `
-    <clr-input-container class="mt-0">
+    <clr-input-container>
       <input
         #input
         clrInput
@@ -48,9 +48,9 @@ export class DatagridFilterComponent implements ClrDatagridFilterInterface<any>,
   @Input() stringFilterType?: ClrDatagridStringFilterInterface<any>;
   @Input() fieldName?: string;
   @Output() filterValueChange: EventEmitter<any> = new EventEmitter<any>();
-  @ViewChild('input') input: ElementRef;
+  @ViewChild('input') input!: ElementRef;
 
-  value: string;
+  value!: string;
   changes = new Subject<any>();
 
   constructor(

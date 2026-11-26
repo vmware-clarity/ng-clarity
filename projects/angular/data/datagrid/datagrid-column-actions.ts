@@ -185,11 +185,11 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
   private _keepFilterInHeader = false;
   private _menuPopoverContent: ClrPopoverContent | undefined;
 
-  @ViewChild('trigger', { read: ElementRef }) private trigger: ElementRef<HTMLButtonElement>;
+  @ViewChild('trigger', { read: ElementRef }) private trigger!: ElementRef<HTMLButtonElement>;
 
   // Named for this component rather than inherited: ClrDropdown keeps its own private list.
   private subs: Subscription[] = [];
-  private projectedItemsSubscription: Subscription;
+  private projectedItemsSubscription?: Subscription;
   private readonly columnActionsFocusHandler = inject(ColumnActionsFocusHandler);
 
   constructor(
@@ -236,11 +236,10 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
   }
 
   /**
-   * The menu is a live view of the column, so the label has to be read at render time rather than
-   * cached - the column title can change, and so can the sort state it reports.
+   * The title follows projected content changes while staying stable throughout each render pass.
    */
   protected get triggerLabel(): string {
-    const title = this.column.titleContainer?.nativeElement.textContent.trim();
+    const title = this.columnActions.title();
 
     return title
       ? this.commonStrings.parse(this.commonStrings.keys.datagridColumnActionsAriaLabel, { COLUMN: title })
@@ -431,7 +430,7 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
   protected openFilter(event: Event) {
     // reroute filter popover origin to filter trigger and set dropdown menu as parent.
     this.columnPopover.origin = this.trigger;
-    this.columnPopover.parent = this._menuPopoverContent;
+    this.columnPopover.parent = this._menuPopoverContent ?? null;
 
     // The popover closes on an outside click, and ignores exactly one event while doing so: the one
     // that opened it. Without this, the very click on this menu item would close the filter again.

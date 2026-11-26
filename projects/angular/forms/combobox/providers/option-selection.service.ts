@@ -16,14 +16,14 @@ export class OptionSelectionService<T> {
   loading = false;
   editable = false;
   showSelectAll = false;
-  selectionModel: ComboboxModel<T>;
+  selectionModel!: ComboboxModel<T>;
   inputChanged: Observable<string>;
   // Display all options on first open, even if filter text exists.
   // https://github.com/vmware-clarity/ng-clarity/issues/386
   showAllOptions = true;
 
   private _currentInput = '';
-  private _displayField: string;
+  private _displayField?: string;
   private _inputChanged = new BehaviorSubject('');
   private _selectionChanged = new ReplaySubject<ComboboxModel<T>>(1);
   private _selectAllRequested = new Subject<void>();
@@ -35,7 +35,7 @@ export class OptionSelectionService<T> {
   get displayField() {
     return this._displayField;
   }
-  set displayField(value: string) {
+  set displayField(value: string | undefined) {
     this._displayField = value;
     if (this.selectionModel) {
       this.selectionModel.displayField = value;
@@ -83,9 +83,9 @@ export class OptionSelectionService<T> {
     this._selectAllRequested.next();
   }
 
-  editableResolver: ClrComboboxResolverFunction<T> = (input: string) => input as T;
+  editableResolver: ClrComboboxResolverFunction<T> | undefined = (input: string) => input as T;
 
-  select(item: T) {
+  select(item: T | null | undefined) {
     if (item === null || item === undefined || this.selectionModel.containsItem(item)) {
       return;
     }
@@ -93,7 +93,7 @@ export class OptionSelectionService<T> {
     this._selectionChanged.next(this.selectionModel);
   }
 
-  toggle(item: T) {
+  toggle(item: T | null | undefined) {
     if (item === null || item === undefined) {
       return;
     }
@@ -154,7 +154,7 @@ export class OptionSelectionService<T> {
     return items.every(item => this.selectionModel.containsItem(item));
   }
 
-  setSelectionValue(value: T | T[]): void {
+  setSelectionValue(value: T | T[] | null | undefined): void {
     if (!this.selectionModel) {
       return;
     }
@@ -170,7 +170,7 @@ export class OptionSelectionService<T> {
 
   private _identityFn: ClrComboboxIdentityFunction<T> = (item: T) => item;
 
-  private valuesEqualByIdentity(current: T | T[], value: T | T[]): boolean {
+  private valuesEqualByIdentity(current: T | T[] | null | undefined, value: T | T[] | null | undefined): boolean {
     if (current === value) {
       return true;
     }

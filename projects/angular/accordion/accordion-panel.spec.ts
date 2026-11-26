@@ -13,6 +13,7 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { CollapsiblePanelModel, CollapsiblePanelService } from '@clr/angular/collapsible-panel';
 import { delay } from '@clr/angular/testing';
 import { HeadingLevel, IfExpandService } from '@clr/angular/utils';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrAccordionPanel } from './accordion-panel';
 import { ClrAccordionModule } from './accordion.module';
@@ -43,7 +44,7 @@ class TestComponent {
   disabled = false;
   showDescription = false;
   headingLevel: HeadingLevel;
-  change = state => {
+  change = (state: boolean) => {
     return state;
   };
 }
@@ -83,7 +84,7 @@ class TestNestedAccordionComponent {}
   standalone: false,
 })
 class TestNoBindingComponent {
-  change = state => {
+  change = (state: boolean) => {
     return state;
   };
 }
@@ -105,19 +106,19 @@ describe('ClrAccordionPanel', () => {
       });
 
       fixture = TestBed.createComponent(ClrAccordionPanel);
-      fixture.detectChanges();
+      renderFixture(fixture);
       accordionPanel = fixture.componentInstance;
       panelService = fixture.debugElement.injector.get(CollapsiblePanelService);
     });
 
     it('should add panel to service', () => {
-      spyOn(panelService, 'addPanel');
+      vi.spyOn(panelService, 'addPanel').mockImplementation(() => undefined);
       accordionPanel.ngOnInit();
       expect(panelService.addPanel).toHaveBeenCalled();
     });
 
     it('should toggle panel', () => {
-      spyOn(panelService, 'togglePanel');
+      vi.spyOn(panelService, 'togglePanel').mockImplementation(() => undefined);
       accordionPanel.togglePanel();
       expect(panelService.togglePanel).toHaveBeenCalled();
     });
@@ -146,7 +147,7 @@ describe('ClrAccordionPanel', () => {
       });
 
       fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
       testComponent = fixture.componentInstance;
       accordionPanelInstance = fixture.debugElement.query(By.directive(ClrAccordionPanel)).componentInstance;
     });
@@ -154,19 +155,19 @@ describe('ClrAccordionPanel', () => {
     it('offers a [(clrAccordionPanelOpen)] two-way binding', () => {
       // input
       testComponent.open = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(fixture.nativeElement.textContent).toContain('panel');
 
       // output
       accordionPanelInstance.togglePanel();
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(fixture.componentInstance.open).toBe(false);
       expect(fixture.nativeElement.textContent).toContain('');
     });
 
     it('offers a [clrAccordionPanelDisabled] one-way binding', () => {
       testComponent.disabled = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(fixture.componentInstance.disabled).toBe(true);
     });
 
@@ -179,10 +180,10 @@ describe('ClrAccordionPanel', () => {
         const fixture: ComponentFixture<TestNoBindingComponent> = TestBed.createComponent(TestNoBindingComponent);
         const component = fixture.componentInstance;
         const accordionPanel = fixture.debugElement.query(By.directive(ClrAccordionPanel)).componentInstance;
-        spyOn(component, 'change');
+        vi.spyOn(component, 'change').mockImplementation(() => undefined);
 
         // First render
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         accordionPanel.togglePanel();
         expect(component.change).toHaveBeenCalledWith(true);
@@ -198,10 +199,10 @@ describe('ClrAccordionPanel', () => {
       it('emit value for [clrAccordionPanelOpen] when there is a binding to it', () => {
         const component = fixture.componentInstance;
         const accordionPanel = fixture.debugElement.query(By.directive(ClrAccordionPanel)).componentInstance;
-        spyOn(component, 'change');
+        vi.spyOn(component, 'change').mockImplementation(() => undefined);
 
         // First render
-        fixture.detectChanges();
+        renderFixture(fixture);
 
         accordionPanel.togglePanel();
         expect(component.change).toHaveBeenCalledWith(true);
@@ -224,23 +225,23 @@ describe('ClrAccordionPanel', () => {
       });
 
       fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
       panelElement = fixture.debugElement.query(By.directive(ClrAccordionPanel)).nativeElement;
     });
 
     it('projects content', () => {
       panelElement.querySelector('button').click();
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(fixture.nativeElement.textContent.trim()).toMatch('panel');
     });
 
     it('toggles content when header button is clicked', () => {
       panelElement.querySelector('button').click();
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(fixture.nativeElement.textContent).toContain('panel');
 
       panelElement.querySelector('button').click();
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(fixture.nativeElement.textContent).toContain('');
     });
 
@@ -260,7 +261,7 @@ describe('ClrAccordionPanel', () => {
       expect(headerButton.getAttribute('disabled')).toBe(null);
 
       headerButton.click();
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(headerButton.getAttribute('aria-expanded')).toBe('true');
       expect(panelRegion.getAttribute('aria-hidden')).toBe('false');
@@ -272,7 +273,7 @@ describe('ClrAccordionPanel', () => {
       expect(headerButton.getAttribute('disabled')).toBe(null);
 
       fixture.componentInstance.disabled = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(headerButton.getAttribute('disabled')).toBe('');
     });
@@ -285,7 +286,7 @@ describe('ClrAccordionPanel', () => {
       expect(panelGroup.classList.contains('clr-accordion-panel-open')).toBe(false);
 
       headerButton.click();
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       expect(panelGroup.classList.contains('clr-accordion-panel-closed')).toBe(false);
       expect(panelGroup.classList.contains('clr-accordion-panel-open')).toBe(true);
@@ -293,13 +294,13 @@ describe('ClrAccordionPanel', () => {
 
     it('should not have the [role]="group" attribute', () => {
       const panelGroup = panelElement.querySelector('[role="group"]');
-      expect(panelGroup).toBeNull('clr-accordion-panels should not have a role');
+      expect(panelGroup, 'clr-accordion-panels should not have a role').toBeNull();
     });
 
     it('should apply the appropriate class to header if the header has a description', () => {
       expect(panelElement.querySelector('.clr-accordion-header-has-description')).toBeFalsy();
       fixture.componentInstance.showDescription = true;
-      fixture.detectChanges();
+      renderFixture(fixture);
       expect(panelElement.querySelector('.clr-accordion-header-has-description')).toBeTruthy();
     });
 
@@ -307,7 +308,7 @@ describe('ClrAccordionPanel', () => {
       expect(panelElement.querySelector('[role="heading"]')).toBeNull();
 
       fixture.componentInstance.headingLevel = 5;
-      fixture.detectChanges();
+      renderFixture(fixture);
       const panelHeading = panelElement.querySelector('[role="heading"]');
 
       expect(panelHeading).not.toBeNull();
@@ -316,7 +317,7 @@ describe('ClrAccordionPanel', () => {
 
     it('default heading aria-level should NOT be present in accordion', () => {
       const fixture = TestBed.createComponent(TestNestedAccordionComponent);
-      fixture.detectChanges();
+      renderFixture(fixture);
 
       const accordionPanel: HTMLElement = fixture.debugElement.query(By.directive(ClrAccordionPanel)).nativeElement;
       const panelHeading = accordionPanel.querySelector('[role="heading"]');
@@ -353,7 +354,7 @@ describe('ClrAccordionPanel animations', () => {
 
   async function render(open: boolean) {
     fixture.componentInstance.open = open;
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
   }
 
@@ -396,10 +397,10 @@ describe('ClrAccordionPanel with Noop animations', () => {
       animationsEnabled: true,
     });
     const fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
     fixture.componentInstance.open = true;
-    fixture.detectChanges();
+    renderFixture(fixture);
     await delay();
 
     expect(fixture.nativeElement.querySelector('.clr-accordion-content').getAnimations().length).toBe(0);

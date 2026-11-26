@@ -6,7 +6,7 @@
  */
 
 import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
-import { ElementRef, Injectable } from '@angular/core';
+import { ElementRef, Injectable, signal, untracked } from '@angular/core';
 import { preventArrowKeyScroll } from '@clr/angular/utils';
 import { Observable, Subject } from 'rxjs';
 
@@ -21,15 +21,15 @@ export interface ClrPopoverPoint {
 @Injectable()
 export class ClrPopoverService {
   // use to connect 2 unrelated (not nested) Popovers to make them nested
-  parent: ClrPopoverContent = null;
+  parent: ClrPopoverContent | null = null;
   pointTargetElement: HTMLElement | undefined;
-  origin: FlexibleConnectedPositionStrategyOrigin;
-  closeButtonRef: ElementRef;
+  origin!: FlexibleConnectedPositionStrategyOrigin;
+  closeButtonRef!: ElementRef;
   panelClass: string[] = [];
 
-  private _open = false;
+  private readonly _open = signal(false);
   private _openChange = new Subject<boolean>();
-  private _openEvent: Event;
+  private _openEvent: Event | undefined;
   private _openEventChange = new Subject<Event>();
   private _positionChange = new Subject<string>();
   private _resetPositions = new Subject<void>();
@@ -52,7 +52,7 @@ export class ClrPopoverService {
     return this._popoverVisible.asObservable();
   }
 
-  get openEvent(): Event {
+  get openEvent(): Event | undefined {
     return this._openEvent;
   }
   set openEvent(event: Event) {
@@ -61,12 +61,12 @@ export class ClrPopoverService {
   }
 
   get open(): boolean {
-    return this._open;
+    return this._open();
   }
   set open(value: boolean) {
     value = !!value;
-    if (this._open !== value) {
-      this._open = value;
+    if (untracked(this._open) !== value) {
+      this._open.set(value);
       this._openChange.next(value);
     }
   }
@@ -107,8 +107,8 @@ export class ClrPopoverService {
    * Useful for context menus where the popover should appear at the cursor position.
    */
   openAtPoint(point: ClrPopoverPoint, targetElement?: HTMLElement) {
-    if (this._open) {
-      this._open = false;
+    if (untracked(this._open)) {
+      this._open.set(false);
       this._openChange.next(false);
     }
 

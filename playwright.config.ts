@@ -21,7 +21,7 @@ const suites: Record<string, PlaywrightTestConfig> = {
   // The Storybook stories.
   storybook: {
     testDir: './tests',
-    testIgnore: '**/{website,animations}/**',
+    testIgnore: '**/{website,animations,applications,consumer}/**',
     timeout: 30 * 1000,
     expect: { timeout: 5000 },
     webServer: storybookServer,

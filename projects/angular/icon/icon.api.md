@@ -600,7 +600,7 @@ export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
     set flip(value: Orientations);
     // (undocumented)
     iconSVG: string;
-    get innerOffset(): number;
+    get innerOffset(): number | undefined;
     set innerOffset(value: number);
     // (undocumented)
     get inverse(): boolean;
@@ -621,9 +621,9 @@ export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
     ngOnInit(): void;
     // (undocumented)
     get shape(): string;
-    set shape(value: string);
+    set shape(value: string | undefined);
     // (undocumented)
-    get size(): string;
+    get size(): string | undefined;
     set size(value: string);
     // (undocumented)
     get solid(): boolean;
@@ -638,7 +638,44 @@ export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
     // (undocumented)
     updateInnerOffset(value: number): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrIcon, "clr-icon, cds-icon", never, { "shape": { "alias": "shape"; "required": false; }; "size": { "alias": "size"; "required": false; }; "direction": { "alias": "direction"; "required": false; }; "flip": { "alias": "flip"; "required": false; }; "solid": { "alias": "solid"; "required": false; }; "status": { "alias": "status"; "required": false; }; "inverse": { "alias": "inverse"; "required": false; }; "badge": { "alias": "badge"; "required": false; }; "innerOffset": { "alias": "innerOffset"; "required": false; }; }, {}, never, never, true, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrIcon, "clr-icon, cds-icon", never, {
+        "shape": {
+            "alias": "shape";
+            "required": false;
+        };
+        "size": {
+            "alias": "size";
+            "required": false;
+        };
+        "direction": {
+            "alias": "direction";
+            "required": false;
+        };
+        "flip": {
+            "alias": "flip";
+            "required": false;
+        };
+        "solid": {
+            "alias": "solid";
+            "required": false;
+        };
+        "status": {
+            "alias": "status";
+            "required": false;
+        };
+        "inverse": {
+            "alias": "inverse";
+            "required": false;
+        };
+        "badge": {
+            "alias": "badge";
+            "required": false;
+        };
+        "innerOffset": {
+            "alias": "innerOffset";
+            "required": false;
+        };
+    }, {}, never, never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIcon, never>;
 }

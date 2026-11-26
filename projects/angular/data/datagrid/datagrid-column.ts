@@ -22,6 +22,7 @@ import {
   OnInit,
   Optional,
   Output,
+  signal,
   SimpleChanges,
   ViewChild,
   ViewContainerRef,
@@ -134,9 +135,9 @@ export class ClrDatagridColumn<T = any>
   extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>>
   implements OnDestroy, OnInit, OnChanges
 {
-  @Input('clrFilterStringPlaceholder') filterStringPlaceholder: string;
-  @Input('clrFilterNumberMaxPlaceholder') filterNumberMaxPlaceholder: string;
-  @Input('clrFilterNumberMinPlaceholder') filterNumberMinPlaceholder: string;
+  @Input('clrFilterStringPlaceholder') filterStringPlaceholder?: string;
+  @Input('clrFilterNumberMaxPlaceholder') filterNumberMaxPlaceholder?: string;
+  @Input('clrFilterNumberMinPlaceholder') filterNumberMinPlaceholder?: string;
   @Input('clrDgDisableUnsort') disableUnsort = false;
 
   /**
@@ -151,7 +152,7 @@ export class ClrDatagridColumn<T = any>
   @Output('clrDgPinnedChange') pinnedChange = new EventEmitter<boolean>();
   @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
 
-  @ViewChild('titleContainer', { read: ElementRef }) titleContainer: ElementRef<HTMLElement>;
+  @ViewChild('titleContainer', { read: ElementRef }) titleContainer!: ElementRef<HTMLElement>;
 
   /**
    * A custom filter for this column that can be provided in the projected content
@@ -172,35 +173,37 @@ export class ClrDatagridColumn<T = any>
    * Simple object property shortcut, activates both sorting and filtering
    * based on native comparison of the specified property on the items.
    */
-  private _field: string;
+  private _field?: string;
 
   /**
    * ClrDatagridComparatorInterface to use when sorting the column
    */
-  private _sortBy: ClrDatagridComparatorInterface<T>;
+  private _sortBy?: ClrDatagridComparatorInterface<T>;
 
   /**
    * Indicates how the column is currently sorted
    */
   private _sortOrder: ClrDatagridSortOrder = ClrDatagridSortOrder.UNSORTED;
 
-  private _sortDirection: 'up' | 'down' | null;
+  private _sortDirection: 'up' | 'down' | null = null;
 
   // This property holds filter value temporarily while this.filter property is not yet registered
   // When this.filter is registered, this property value would be used update this.filter.value
   //
-  private initFilterValue: string | [number, number];
+  private initFilterValue?: string | [number | null, number | null];
 
-  private wrappedInjector: Injector;
+  private wrappedInjector!: Injector;
 
   /**
    * Subscription to the sort service changes
    */
   private subscriptions: Subscription[] = [];
 
-  private _showSeparator = true;
+  // The renderer updates separators while pinning or relocating column views. Track the template
+  // consumer directly so it refreshes even when that view was already checked in the current render.
+  private readonly _showSeparator = signal(true);
 
-  private _pinned = false;
+  private readonly _pinned = signal(false);
 
   private tree = inject(DatagridTreeService, { optional: true });
 
@@ -234,11 +237,10 @@ export class ClrDatagridColumn<T = any>
   }
 
   get showSeparator() {
-    return this._showSeparator;
+    return this._showSeparator();
   }
   set showSeparator(value: boolean) {
-    this._showSeparator = value;
-    this.changeDetectorRef.markForCheck();
+    this._showSeparator.set(value);
   }
 
   /**
@@ -248,14 +250,14 @@ export class ClrDatagridColumn<T = any>
    */
   @Input({ alias: 'clrDgPinned', transform: booleanAttribute })
   get pinned(): boolean {
-    return this._pinned;
+    return this._pinned();
   }
   set pinned(value: boolean) {
-    if (this._pinned === value) {
+    if (this._pinned() === value) {
       return;
     }
 
-    this._pinned = value;
+    this._pinned.set(value);
 
     // The column state is what the header and the rows read to decide where to project the
     // column and its cells. It is optional only so the column keeps working when it is used
@@ -297,7 +299,7 @@ export class ClrDatagridColumn<T = any>
   }
 
   @Input('clrDgField')
-  get field() {
+  get field(): string | undefined {
     return this._field;
   }
   set field(field: string) {
@@ -311,7 +313,7 @@ export class ClrDatagridColumn<T = any>
   }
 
   @Input('clrDgSortBy')
-  get sortBy() {
+  get sortBy(): ClrDatagridComparatorInterface<T> | undefined {
     return this._sortBy;
   }
   set sortBy(comparator: ClrDatagridComparatorInterface<T> | string) {
@@ -357,7 +359,7 @@ export class ClrDatagridColumn<T = any>
   }
 
   @Input('clrFilterValue')
-  set updateFilterValue(newValue: string | [number, number]) {
+  set updateFilterValue(newValue: string | [number | null, number | null]) {
     if (this.filter) {
       if (this.filter instanceof DatagridStringFilterImpl) {
         if (!newValue || typeof newValue !== 'string') {
@@ -440,7 +442,11 @@ export class ClrDatagridColumn<T = any>
   }
 
   ngAfterViewInit() {
-    this.setFilterToggleAriaLabel();
+    this.updateTitle();
+  }
+
+  ngAfterViewChecked() {
+    this.updateTitle();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -454,7 +460,7 @@ export class ClrDatagridColumn<T = any>
       }
     }
     if (changes.field && changes.field.currentValue && changes.field.currentValue !== changes.field.previousValue) {
-      if (!this.customFilter && this.colType) {
+      if (!this.customFilter && this.colType && this.field) {
         this.setupDefaultFilter(this.field, this.colType);
       }
     }
@@ -470,7 +476,7 @@ export class ClrDatagridColumn<T = any>
    * Sorts the datagrid based on this column
    */
   sort(reverse?: boolean) {
-    if (!this.sortable) {
+    if (!this._sortBy) {
       return;
     }
 
@@ -528,11 +534,16 @@ export class ClrDatagridColumn<T = any>
     });
   }
 
+  private updateTitle() {
+    this.columnActions.title.set(this.titleContainer?.nativeElement.textContent?.trim() ?? '');
+    this.setFilterToggleAriaLabel();
+  }
+
   private setFilterToggleAriaLabel() {
     const filterToggle = this.el.nativeElement.querySelector('.datagrid-filter-toggle');
     if (filterToggle) {
       filterToggle.ariaLabel = this.commonStrings.parse(this.commonStrings.keys.datagridFilterAriaLabel, {
-        COLUMN: this?.titleContainer?.nativeElement.textContent.trim().toLocaleLowerCase(),
+        COLUMN: this.columnActions.title().toLocaleLowerCase(),
       });
     }
   }

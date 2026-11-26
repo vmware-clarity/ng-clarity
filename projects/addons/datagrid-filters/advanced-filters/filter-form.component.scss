@@ -1,0 +1,172 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+:host {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+// Fallback scroll region for editors without their own (e.g. many conditions).
+.form-max-height {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--cds-global-space-4);
+  margin: calc(-1 * var(--cds-global-space-4));
+  scroll-padding: var(--cds-global-space-4);
+}
+
+// Projected editors and Clarity's generated control wrappers share the same layout.
+:host ::ng-deep {
+  // Projected content keeps its height; the form scrolls instead. Clarity buttons have
+  // overflow: hidden, so without this they collapse when the popover height is reached.
+  .form-max-height > * {
+    flex-shrink: 0;
+  }
+
+  // Editors with their own scroll region (e.g. the options list) shrink to fit the popover.
+  .form-max-height > .filter-scroll-region {
+    flex-shrink: 1;
+  }
+
+  .filter-field-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--clr-base-gap-s);
+    padding-bottom: var(--clr-base-vertical-offset-l);
+    border-bottom: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
+  }
+
+  .filter-logic {
+    flex: 0 0 auto;
+    margin: 0;
+
+    // Clarity's 72px minimum button width leaves And/Or mostly empty. 48px by default, 40px in compact density.
+    .btn {
+      min-width: var(--clr-base-layout-space-3xl);
+    }
+  }
+
+  .filter-condition-row {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--clr-base-gap-s);
+    margin-top: var(--clr-base-vertical-offset-l);
+  }
+
+  // Value inputs in a condition row, or in a block of value rows under it (e.g. the date-time From and To).
+  .filter-condition-row,
+  .filter-values {
+    .clr-form-control {
+      margin-top: 0;
+      min-width: 0;
+    }
+  }
+
+  .filter-operator {
+    flex: 0 1 40%;
+  }
+
+  .filter-value {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .filter-unit {
+    flex: 0 1 4rem;
+  }
+
+  .filter-condition-remove {
+    flex: 0 0 auto;
+    margin: 0;
+    padding: 0 var(--clr-base-horizontal-offset-2xs);
+  }
+
+  // Controls fill their container, from edge to edge.
+  .filter-condition-row .clr-control-container,
+  .filter-values .clr-control-container {
+    width: 100%;
+
+    .clr-select-wrapper,
+    .clr-input-wrapper,
+    .clr-input-group {
+      display: flex;
+      width: 100%;
+    }
+
+    // Not a select inside an input group (e.g. the time span unit), which keeps its own width.
+    .clr-select-wrapper > select,
+    input.clr-input {
+      flex: 1 1 auto;
+      min-width: 0;
+      width: 100%;
+    }
+  }
+
+  // The form is a column flexbox, which stretches its children; the button keeps its own width.
+  .filter-add-condition {
+    align-self: flex-start;
+    margin: var(--clr-base-vertical-offset-l) 0 0;
+  }
+
+  // AND/OR between conditions: the operator followed by a thin line.
+  .filter-logic-divider {
+    display: flex;
+    align-items: center;
+    gap: var(--clr-base-gap-s);
+    margin: var(--clr-base-vertical-offset-l) 0 0;
+
+    &::after {
+      content: '';
+      flex: 1;
+      border-top: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
+    }
+  }
+
+  .filter-logic-label {
+    padding: 0 var(--clr-base-horizontal-offset-s);
+    text-transform: uppercase;
+  }
+
+  .filter-form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: var(--clr-base-gap-s);
+    margin-top: var(--clr-base-vertical-offset-xl);
+
+    .btn {
+      margin: 0;
+    }
+  }
+
+  .filter-extra-actions {
+    margin-right: auto;
+  }
+
+  @media (width <= 480px) {
+    .filter-field-row,
+    .filter-condition-row {
+      flex-wrap: wrap;
+    }
+
+    .filter-operator {
+      flex-basis: 100%;
+    }
+  }
+}

@@ -15,6 +15,7 @@ import {
   Input,
   OnDestroy,
   Output,
+  signal,
   ViewChild,
 } from '@angular/core';
 
@@ -32,9 +33,9 @@ import { ColumnDefinition } from '../../shared/column/column-definitions';
 export class DatagridColumnToggleComponent implements OnDestroy {
   @HostBinding('class') layoutClass = 'column-switch-wrapper';
 
-  @ViewChild('closeColumnButton', { read: ElementRef }) closeColumnButtonElement: ElementRef;
+  @ViewChild('closeColumnButton', { read: ElementRef }) closeColumnButtonElement!: ElementRef;
 
-  @Input() columns: ColumnDefinition<any>[];
+  @Input() columns!: ColumnDefinition<any>[];
   @Output() columnsChange = new EventEmitter<ColumnDefinition<any>[]>();
 
   @Output() columnHiddenStateChange = new EventEmitter<ColumnHiddenState>();
@@ -53,8 +54,9 @@ export class DatagridColumnToggleComponent implements OnDestroy {
   ];
 
   openState = false;
-  viewId: string | undefined;
-  overlay: CdkConnectedOverlay;
+  overlay!: CdkConnectedOverlay;
+
+  protected readonly viewId = signal<string | undefined>(undefined);
 
   constructor(public dgStrings: DatagridStrings) {}
 
@@ -70,12 +72,12 @@ export class DatagridColumnToggleComponent implements OnDestroy {
 
   onAttach(overlay: CdkConnectedOverlay) {
     this.overlay = overlay;
-    this.viewId = overlay?.overlayRef?.overlayElement.id;
+    this.viewId.set(overlay?.overlayRef?.overlayElement.id);
   }
 
   onDetach(): void {
     this.openState = false;
-    this.viewId = undefined;
+    this.viewId.set(undefined);
   }
 
   showColumn(colUid: string) {

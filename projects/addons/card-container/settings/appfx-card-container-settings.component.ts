@@ -48,7 +48,7 @@ const sortCardsByTitleFn = (a: AppfxCardInternal, b: AppfxCardInternal) => {
   changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class AppfxCardContainerSettingsComponent {
-  cards: AppfxCardInternal[];
+  cards: AppfxCardInternal[] = [];
 
   /**
    * Event Emitter when user wants to show/hide card.

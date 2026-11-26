@@ -4,7 +4,42 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-// TODO: zpopov: refactor with calculation over CSS vars
-clr-input-container {
-  margin-top: 0.9rem;
+
+.date-filter-values {
+  display: flex;
+  flex-direction: column;
+  gap: var(--clr-base-gap-s);
+  margin-top: var(--clr-base-vertical-offset-l);
+
+  &:empty {
+    display: none;
+  }
+}
+
+.date-filter-value-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--clr-base-gap-s);
+}
+
+.date-filter-operator {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.date-range-options {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--clr-base-gap-s);
+  margin-top: var(--clr-base-gap-s);
+
+  .date-range-option {
+    display: inline-block;
+    max-width: 100%;
+    margin: 0;
+    text-align: start;
+  }
 }

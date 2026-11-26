@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { WrappedColumn } from './wrapped-column';
 
@@ -24,25 +25,32 @@ interface TestContext {
   wrapper: WrappedColumn;
 }
 
-export default function (): void {
-  describe('WrappedColumn', () => {
-    beforeEach(function (this: TestContext) {
-      TestBed.configureTestingModule({ declarations: [WrappedColumn, WrappedColumnTest] });
-      this.fixture = TestBed.createComponent(WrappedColumnTest);
-      this.wrapper = this.fixture.componentInstance.wrapper;
-      this.fixture.detectChanges();
-    });
+describe('Datagrid', () => {
+  describe('Components', () => {
+    describe('WrappedColumn', () => {
+      let testContext: TestContext;
+      beforeEach(() => {
+        testContext = {} as TestContext;
+      });
 
-    it('should have a columnView', function (this: TestContext) {
-      expect(this.wrapper.columnView).toBeDefined();
-    });
+      beforeEach(() => {
+        TestBed.configureTestingModule({ declarations: [WrappedColumn, WrappedColumnTest] });
+        testContext.fixture = TestBed.createComponent(WrappedColumnTest);
+        testContext.wrapper = testContext.fixture.componentInstance.wrapper;
+        renderFixture(testContext.fixture);
+      });
 
-    it('should have a templateRef to the portal', function (this: TestContext) {
-      expect(this.wrapper.templateRef).toBeDefined();
-    });
+      it('should have a columnView', () => {
+        expect(testContext.wrapper.columnView).toBeDefined();
+      });
 
-    it('projects content into the template', function (this: TestContext) {
-      expect(this.wrapper.columnView.rootNodes[0].textContent.trim()).toBe('Hello World!');
+      it('should have a templateRef to the portal', () => {
+        expect(testContext.wrapper.templateRef).toBeDefined();
+      });
+
+      it('projects content into the template', () => {
+        expect(testContext.wrapper.columnView.rootNodes[0].textContent.trim()).toBe('Hello World!');
+      });
     });
   });
-}
+});

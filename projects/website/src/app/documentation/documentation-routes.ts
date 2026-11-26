@@ -372,6 +372,11 @@ export const documentationRoutes: Routes = [
       },
       {
         matcher: documentationRouteMatcher,
+        data: { routePath: 'filters/:tab?' },
+        loadChildren: () => import('./demos/filters/filters.demo.module').then(m => m.FiltersDemoModule),
+      },
+      {
+        matcher: documentationRouteMatcher,
         data: { routePath: 'drag-and-drop/:tab?' },
         loadChildren: () =>
           import('./demos/drag-and-drop/drag-and-drop.demo.module').then(m => m.DragAndDropDemoModule),

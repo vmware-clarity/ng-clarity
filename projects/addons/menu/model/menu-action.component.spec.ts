@@ -6,6 +6,7 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { MenuActionComponent } from './menu-action.component';
 import { MenuItemType } from './menu-item.token';
@@ -21,17 +22,17 @@ describe('MenuActionComponent', () => {
 
     fixture = TestBed.createComponent(MenuActionComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    renderFixture(fixture);
   });
 
   it('should have the correct type and set iconClass, text, shortcut, and enabled properties', () => {
     expect(component.type).toEqual(MenuItemType.action);
 
-    component.iconClass = 'fa fa-check';
-    component.text = 'Check';
-    component.shortcut = 'Ctrl+C';
-    component.enabled = false;
+    fixture.componentRef.setInput('iconClass', 'fa fa-check');
+    fixture.componentRef.setInput('text', 'Check');
+    fixture.componentRef.setInput('shortcut', 'Ctrl+C');
+    fixture.componentRef.setInput('enabled', false);
 
-    fixture.detectChanges();
+    renderFixture(fixture);
   });
 });

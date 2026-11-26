@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, Component, ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { MenuOutletComponent } from './menu-outlet.component';
 import { MenuOutletService } from './menu-outlet.service';
@@ -24,14 +25,14 @@ describe('MenuOutletComponent', () => {
 
     fixture = TestBed.createComponent(MenuOutletComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    renderFixture(fixture);
   });
 
   it('should attach menu', () => {
     const menuComponentRef = createMockMenuComponentRef();
     component.attachMenu(menuComponentRef);
 
-    fixture.detectChanges();
+    renderFixture(fixture);
 
     const viewContainerElement: HTMLElement = fixture.debugElement.nativeElement;
     expect(viewContainerElement.innerHTML).toContain(mockMenuText);
@@ -53,7 +54,7 @@ describe('MenuOutletComponent', () => {
   function createMockMenuComponentRef(): ComponentRef<any> {
     const fixtureMenu = TestBed.createComponent(MockMenuComponent);
     const componentRef = fixtureMenu.componentRef;
-    fixtureMenu.detectChanges();
+    renderFixture(fixtureMenu);
     return componentRef;
   }
 });

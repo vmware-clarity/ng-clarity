@@ -6,146 +6,405 @@
  */
 
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  computed,
+  DestroyRef,
+  ElementRef,
   EventEmitter,
+  inject,
+  Injector,
   Input,
+  OnChanges,
   OnInit,
   Output,
+  QueryList,
+  signal,
+  SimpleChanges,
+  ViewChild,
+  ViewChildren,
 } from '@angular/core';
+import { ClrCombobox } from '@clr/angular/forms';
+import {
+  ClrPopoverHostDirective,
+  ClrPopoverPosition,
+  ClrPopoverService,
+  ClrPopoverType,
+} from '@clr/angular/popover/common';
+import { uniqueIdFactory } from '@clr/angular/utils';
 
 import { DatagridFiltersStrings } from './datagrid-filters-strings.service';
-import { PropertyType } from './model/datagrid-filters.enums';
+import { ManageFilterComponent } from './manage-filters/manage-filter.component';
+import { ComparisonOperator, LogicalOperator } from './model/datagrid-filters.enums';
 import {
-  DateTimePropertyDefinition,
   EnumPropertyDefinition,
   FilterablePropertyDefinition,
-  NumericPropertyDefinition,
   PropertyFilter,
-  StringPropertyDefinition,
-  UserPropertyDefinition,
+  PropertyPredicate,
+  ToggleFilter,
 } from './model/datagrid-filters.interfaces';
+
+// The array inputs below accept null/undefined (e.g. `[toggleFilters]="config?.toggles"` before the config loads).
+function toPropertyArray(value: FilterablePropertyDefinition[] | null | undefined): FilterablePropertyDefinition[] {
+  return value ?? [];
+}
+
+function toEnumPropertyArray(value: EnumPropertyDefinition[] | null | undefined): EnumPropertyDefinition[] {
+  return value ?? [];
+}
+
+function toFilterArray(value: PropertyFilter[] | null | undefined): PropertyFilter[] {
+  return value ?? [];
+}
+
+function toToggleArray(value: ToggleFilter[] | null | undefined): ToggleFilter[] {
+  return (value ?? []).filter(toggle => !!toggle?.filter?.criteria?.length);
+}
 
 /**
  * Composite filters component renders different filters based on the type of
  * the corresponding filterable property, e.g., string, enum, number, etc.
  */
-
 @Component({
   selector: 'appfx-composite-filter',
   standalone: false,
   templateUrl: 'composite-filters.component.html',
   styleUrls: ['composite-filters.component.scss', 'common-styles.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  hostDirectives: [ClrPopoverHostDirective],
 })
-export class CompositeFiltersComponent implements OnInit {
-  // Array of filterable properties
-  @Input() filterableProperties: FilterablePropertyDefinition[];
+export class CompositeFiltersComponent implements OnInit, OnChanges {
+  /**
+   * Filters applied when the filter bar starts, e.g. a fixed default view. Read once, in `ngOnInit`:
+   * later changes are ignored. For filters the host keeps in sync, use `propertyFilters`.
+   */
+  @Input() presetFilters?: PropertyFilter[];
 
-  @Input() presetFilters: PropertyFilter[];
+  /**
+   * Other criteria (e.g. the quick search in combined mode) are active, so Clear all stays available
+   * even without property filters.
+   */
+  @Input() externalCriteriaActive = false;
+
+  /** Emitted when the user clicks Clear all, so the host can clear its other criteria too. */
+  @Output() clearAll = new EventEmitter<void>();
 
   /**
    * Event emitter to tell hosting view that the filtering conditions have changed
    */
   @Output() propertyFiltersChange: EventEmitter<PropertyFilter[]> = new EventEmitter<PropertyFilter[]>();
 
-  readonly stringPropertyType: PropertyType = PropertyType.String;
-  readonly enumPropertyType: PropertyType = PropertyType.Enum;
-  readonly numericPropertyType: PropertyType = PropertyType.Numeric;
-  readonly dateTimePropertyType: PropertyType = PropertyType.DateTime;
-  readonly userPropertyType: PropertyType = PropertyType.User;
+  selectedFilterableProperty!: FilterablePropertyDefinition;
 
-  signPostOpened = false;
-  selectedFilterableProperty: FilterablePropertyDefinition;
-  propertyType: PropertyType;
-  stringProperty: StringPropertyDefinition;
-  enumProperty: EnumPropertyDefinition;
-  numericProperty: NumericPropertyDefinition;
-  dateTimeProperty: DateTimePropertyDefinition;
-  userProperty: UserPropertyDefinition;
-  // List of active filters to be sent to the hosting view
-  propertyFilters: PropertyFilter[] = [];
   collapsedFilters = false;
-  showHideFiltersArrowDir = 'left';
-  showHideFiltersLabel: string;
-  showHideFiltersAriaLabel: string;
+
+  protected readonly popoverId = uniqueIdFactory();
+
+  protected readonly popoverPosition = ClrPopoverPosition.BOTTOM_LEFT;
+
+  protected readonly popoverType = ClrPopoverType.DROPDOWN;
+
+  @ViewChild(ClrCombobox) private fieldCombobox!: ClrCombobox<FilterablePropertyDefinition>;
+
+  @ViewChild('addButton', { static: true }) private addButton!: ElementRef<HTMLButtonElement>;
+
+  // The filter buttons that can take focus when Add filter is disabled, in page order (see moveFocusToActiveButton).
+  @ViewChildren('toggleButton') private toggleButtons!: QueryList<ElementRef<HTMLButtonElement>>;
+
+  @ViewChildren('predefinedPill') private predefinedPills!: QueryList<ManageFilterComponent>;
+
+  @ViewChildren('semiOptionButton') private semiOptionButtons!: QueryList<ElementRef<HTMLButtonElement>>;
+
+  private readonly injector = inject(Injector);
+
+  private readonly destroyRef = inject(DestroyRef);
+
+  private readonly popoverService = inject(ClrPopoverService);
+
+  private rawPredefinedFilters: FilterablePropertyDefinition[] = [];
+
+  private rawSemiPredefinedFilters: EnumPropertyDefinition[] = [];
+
+  private rawToggleFilters: ToggleFilter[] = [];
+
+  // The state the pill groups below are computed from, as signals, so the groups update when any of it changes.
+  private readonly filterablePropertiesState = signal<FilterablePropertyDefinition[]>([]);
+
+  private readonly propertyFiltersState = signal<PropertyFilter[]>([]);
+
+  private readonly resolvedPredefinedFilters = signal<FilterablePropertyDefinition[]>([]);
+
+  private readonly resolvedSemiPredefinedFilters = signal<EnumPropertyDefinition[]>([]);
+
+  private readonly resolvedToggleFilters = signal<ToggleFilter[]>([]);
+
+  /** The input that owns each predefined and semi-predefined field. The lists are without duplicates. */
+  private readonly fieldOwners = computed(() => {
+    const owners = new Map<string, 'predefined' | 'semi'>();
+    this.resolvedPredefinedFilters().forEach(property => owners.set(property.property, 'predefined'));
+    this.resolvedSemiPredefinedFilters().forEach(property => owners.set(property.property, 'semi'));
+    return owners;
+  });
+
+  // Pill groups, recomputed only when the filters, the fields or the inputs above change.
+  private readonly visiblePropertiesCache = computed(() => {
+    const properties = new Map<string, FilterablePropertyDefinition>();
+    for (const property of [...this.predefinedFilters, ...this.activeFilters()]) {
+      if (!properties.has(property.property) && !this.isSemiPredefined(property)) {
+        properties.set(property.property, property);
+      }
+    }
+    return [...properties.values()];
+  });
+
+  private readonly availablePropertiesCache = computed(() => {
+    const visibleKeys = new Set(
+      [...this.visibleProperties, ...this.semiPredefinedFilters, ...this.toggleProperties()].map(
+        property => property.property
+      )
+    );
+    return this.filterableProperties.filter(property => !visibleKeys.has(property.property));
+  });
+
+  private readonly userAddedFiltersCountCache = computed(
+    () =>
+      this.activeFilters().filter(property => !this.isPredefined(property) && !this.isSemiPredefined(property)).length
+  );
+
+  private readonly predefinedPropertiesCache = computed(() =>
+    this.visibleProperties.filter(property => this.isPredefined(property))
+  );
+
+  private readonly userAddedPropertiesCache = computed(() =>
+    this.visibleProperties.filter(property => !this.isPredefined(property))
+  );
+
+  /** Fields ignored by the last resolution, reported with console.warn. */
+  private ignoredFieldEntries: string[] = [];
+
+  private initialized = false;
+
+  /** Keys (see toggleKey) of the toggle filters that are ON. */
+  private readonly activeToggleKeys = new Set<string>();
 
   constructor(
     public filterStrings: DatagridFiltersStrings,
     private cdr: ChangeDetectorRef
-  ) {
-    this.showHideFiltersLabel = filterStrings.hideButtonLabel;
-    this.showHideFiltersAriaLabel = filterStrings.hideButtonAriaLabel;
+  ) {}
+
+  // Array of filterable properties
+  @Input({ transform: toPropertyArray })
+  get filterableProperties(): FilterablePropertyDefinition[] {
+    return this.filterablePropertiesState();
+  }
+
+  set filterableProperties(value: FilterablePropertyDefinition[]) {
+    this.filterablePropertiesState.set(value);
+  }
+
+  /**
+   * The active filters, including toggle filters that are ON. Supports two-way binding:
+   * `[(propertyFilters)]="filters"`. A new value replaces the active filters without emitting
+   * `propertyFiltersChange`, unless invalid filters on semi-predefined fields had to be removed.
+   * At start-up, a `presetFilters` filter wins over one here for the same field.
+   */
+  @Input({ transform: toFilterArray })
+  get propertyFilters(): PropertyFilter[] {
+    return this.propertyFiltersState();
+  }
+
+  set propertyFilters(filters: PropertyFilter[]) {
+    this.propertyFiltersState.set(filters);
+  }
+
+  /**
+   * Properties whose pills remain visible when their criteria are cleared.
+   *
+   * A field can be used only once per filter bar. Fields are claimed in this order:
+   * `predefinedFilters`, then `semiPredefinedFilters`, then `toggleFilters`. A later entry
+   * for a field that is already claimed is ignored, with a console warning.
+   */
+  @Input({ transform: toPropertyArray })
+  get predefinedFilters(): FilterablePropertyDefinition[] {
+    return this.resolvedPredefinedFilters();
+  }
+
+  set predefinedFilters(value: FilterablePropertyDefinition[]) {
+    this.rawPredefinedFilters = value;
+    this.resolveFieldOwners();
+  }
+
+  /**
+   * Enum properties shown as a field label followed by toggleable option pills,
+   * between the predefined and the user-added pills. Selected options are combined with OR
+   * and applied immediately. Fields already in `predefinedFilters` are ignored.
+   */
+  @Input({ transform: toEnumPropertyArray })
+  get semiPredefinedFilters(): EnumPropertyDefinition[] {
+    return this.resolvedSemiPredefinedFilters();
+  }
+
+  set semiPredefinedFilters(value: EnumPropertyDefinition[]) {
+    this.rawSemiPredefinedFilters = value;
+    this.resolveFieldOwners();
+  }
+
+  /**
+   * Ready-made filters shown as on/off pills in the predefined group. OFF means not applied;
+   * ON applies the toggle's `filter`. A preset filter with the same criteria starts the toggle ON.
+   * Toggles are identified by their criteria, so the host may pass new but equal objects.
+   * Toggles on a field already in `predefinedFilters`, `semiPredefinedFilters` or an earlier toggle are ignored.
+   * The toggle owns its field: any other filter on it (a preset or a `propertyFilters` entry) is removed, with a
+   * console warning.
+   */
+  @Input({ transform: toToggleArray })
+  get toggleFilters(): ToggleFilter[] {
+    return this.resolvedToggleFilters();
+  }
+
+  set toggleFilters(value: ToggleFilter[]) {
+    this.rawToggleFilters = value;
+    this.resolveFieldOwners();
+  }
+
+  // Show/Hide button text, derived from collapsedFilters and the number of user-added filters.
+  get showHideFiltersArrowDir(): string {
+    return this.collapsedFilters ? 'right' : 'left';
+  }
+
+  get showHideFiltersLabel(): string {
+    return this.collapsedFilters
+      ? this.filterStrings.showButtonLabel + '(' + this.userAddedFiltersCount + ')'
+      : this.filterStrings.hideButtonLabel;
+  }
+
+  get showHideFiltersAriaLabel(): string {
+    const count = this.userAddedFiltersCount;
+    const noun = count > 1 ? this.filterStrings.filtersText : this.filterStrings.filterText;
+    return this.collapsedFilters
+      ? `${this.filterStrings.showButtonLabel} ${count} ${noun}`
+      : this.filterStrings.hideButtonAriaLabel;
+  }
+
+  get signPostOpened(): boolean {
+    return this.popoverService.open;
+  }
+
+  set signPostOpened(open: boolean) {
+    this.popoverService.open = open;
+  }
+
+  protected get visibleProperties(): FilterablePropertyDefinition[] {
+    return this.visiblePropertiesCache();
+  }
+
+  protected get availableProperties(): FilterablePropertyDefinition[] {
+    return this.availablePropertiesCache();
+  }
+
+  protected get userAddedFiltersCount(): number {
+    return this.userAddedFiltersCountCache();
+  }
+
+  protected get predefinedProperties(): FilterablePropertyDefinition[] {
+    return this.predefinedPropertiesCache();
+  }
+
+  protected get userAddedProperties(): FilterablePropertyDefinition[] {
+    return this.userAddedPropertiesCache();
+  }
+
+  /** True when the predefined group has content (toggles or predefined pills). */
+  protected get hasPredefinedGroup(): boolean {
+    return this.toggleFilters.length > 0 || this.predefinedProperties.length > 0;
+  }
+
+  protected get hasActiveCriteria(): boolean {
+    return this.propertyFilters.length > 0 || this.activeToggleKeys.size > 0;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const fieldsChanged = ['predefinedFilters', 'semiPredefinedFilters', 'toggleFilters'].some(
+      input => input in changes
+    );
+    const filtersChanged = 'propertyFilters' in changes;
+    if (fieldsChanged) {
+      this.warnIgnoredFields();
+    }
+    if (filtersChanged && this.initialized) {
+      // The host replaced the active filters. The value is the full state, so it also sets which toggles are ON.
+      this.applyFilters(changes['propertyFilters'].currentValue ?? []);
+    }
+    if (fieldsChanged || filtersChanged) {
+      // Precedence can hand a field to another input after init: a semi-predefined field's filter may no longer be
+      // valid, and a toggle that was ON may be gone. Tell the host what is still applied.
+      const removedFilters = this.initialized && this.removeInvalidFilters();
+      const removedToggle = this.removeUnresolvedToggleKeys();
+      if (this.initialized && (removedFilters || removedToggle)) {
+        this.emitFiltersLater();
+      }
+    }
+    // Only these inputs change which fields Add filter can offer.
+    if (fieldsChanged || filtersChanged || 'filterableProperties' in changes) {
+      this.keepOrPreselectProperty();
+    }
   }
 
   ngOnInit() {
-    if (this.filterableProperties && this.filterableProperties.length > 0) {
-      this.selectedFilterableProperty = this.filterableProperties[0];
-      this.onPropertyChange();
+    // A preset wins over a propertyFilters filter for the same field.
+    const presets = this.presetFilters ?? [];
+    const presetFields = new Set(presets.map(filter => filter.criteria?.[0]?.filterableProperty?.property));
+    const bound = this.propertyFilters.filter(
+      filter => !presetFields.has(filter.criteria?.[0]?.filterableProperty?.property)
+    );
+    const passedIn = this.propertyFilters;
+    this.applyFilters([...presets, ...bound]);
+    this.removeInvalidFilters();
+    this.initialized = true;
+    if (!this.sameFilters(this.currentFilters(), passedIn)) {
+      // Presets or clean-up changed what the host passed in: tell it once, so a [(propertyFilters)] binding is in sync.
+      this.emitFiltersLater();
     }
-    if (this.presetFilters) {
-      this.propertyFilters.push(...this.presetFilters);
-      this.preselectFirstProperty();
-    }
+    this.preselectFirstProperty();
   }
 
+  /** The field in Add filter changed. The editor for it is chosen by `appfx-filter-editor`. */
   onPropertyChange() {
-    if (this.isStringProperty(this.selectedFilterableProperty)) {
-      this.propertyType = PropertyType.String;
-      this.stringProperty = this.castStringProperty();
-    } else if (this.isEnumProperty(this.selectedFilterableProperty)) {
-      this.propertyType = PropertyType.Enum;
-      this.enumProperty = this.castEnumProperty();
-    } else if (this.isNumericProperty(this.selectedFilterableProperty)) {
-      this.propertyType = PropertyType.Numeric;
-      this.numericProperty = this.castNumericProperty();
-    } else if (this.isDateTimeProperty(this.selectedFilterableProperty)) {
-      this.propertyType = PropertyType.DateTime;
-      this.dateTimeProperty = this.castDateTimeProperty();
-    } else if (this.isUserProperty(this.selectedFilterableProperty)) {
-      this.propertyType = PropertyType.User;
-      this.userProperty = this.castUserProperty();
+    if (this.signPostOpened) {
+      // Changing fields recreates the editor and its field picker. Keep keyboard focus in the new picker.
+      afterNextRender(
+        () => {
+          if (this.signPostOpened) {
+            this.fieldCombobox?.textbox.nativeElement.focus();
+          }
+        },
+        { injector: this.injector }
+      );
     }
   }
 
   onFilterCriteriaChange(propertyFilter: PropertyFilter) {
     if (propertyFilter) {
       if (propertyFilter.criteria.length > 0) {
-        // The property filter contains several filtering criteria.
-        // This is either a new filter, or some of the criteria are modified
-        let i = this.propertyFilters.length;
-        let modified = false;
-        while (i--) {
-          // Check whether there is an existing filter for the same property.
-          // If found, replace it with the new filter
-          if (
-            this.propertyFilters[i].criteria[0].filterableProperty.property ===
-            propertyFilter.criteria[0].filterableProperty.property
-          ) {
-            this.propertyFilters[i] = propertyFilter;
-            modified = true;
-          }
-        }
-        // If no existing filter was found, add the new one to the active filters list
-        if (!modified) {
-          this.propertyFilters.push(propertyFilter);
-        }
+        // One filter per field: replace the field's filter, or add it when the field has none yet.
+        const field = propertyFilter.criteria[0].filterableProperty.property;
+        const sameField = (filter: PropertyFilter) => filter.criteria[0]?.filterableProperty.property === field;
+        this.propertyFilters = this.propertyFilters.some(sameField)
+          ? this.propertyFilters.map(filter => (sameField(filter) ? propertyFilter : filter))
+          : [...this.propertyFilters, propertyFilter];
       } else {
-        // The property filter does not contain any criteria.
-        // It should be removed from the active filters list
-        let j = this.propertyFilters.length;
-        while (j--) {
-          if (this.propertyFilters[j].criteria.length === 0) {
-            this.propertyFilters.splice(j, 1);
-          }
-        }
+        // No criteria: drop the filters left without criteria (e.g. a caller emptied a filter it had passed in).
+        this.propertyFilters = this.propertyFilters.filter(filter => filter.criteria.length > 0);
       }
-      this.propertyFiltersChange.emit(this.propertyFilters);
+      this.emitFilters();
     }
-    this.signPostOpened = false;
+    if (this.signPostOpened) {
+      this.signPostOpened = false;
+      this.popoverService.focusOrigin();
+    }
     this.preselectFirstProperty();
-    this.updateShowHideLabel();
     // The filter sometimes fails to close, necessitating
     // a check to detect this state change.
     this.cdr.markForCheck();
@@ -166,82 +425,409 @@ export class CompositeFiltersComponent implements OnInit {
 
   clearAllFilters(): void {
     this.propertyFilters = [];
-    this.propertyFiltersChange.emit(this.propertyFilters);
+    this.activeToggleKeys.clear();
+    this.emitFilters();
     this.preselectFirstProperty();
     this.collapsedFilters = false;
+    this.clearAll.emit();
+
+    // Clear all hides itself once nothing is active,
+    // so move focus to Add filter, or to the first filter when Add filter is disabled.
+    this.moveFocusToActiveButton();
   }
 
   showHideAllFilters(): void {
     this.collapsedFilters = !this.collapsedFilters;
-    this.updateShowHideLabel();
-    this.showHideFiltersArrowDir = this.collapsedFilters ? 'right' : 'left';
   }
 
   /**
-   * Active filters are not displayed in the new filters list.
-   * We want to preselect the first displayed property
+   * Stable identity of a toggle: field, operator and value of each criterion, plus the logical
+   * operator when there is more than one criterion.
    */
-  private preselectFirstProperty() {
-    const activeProperties: FilterablePropertyDefinition[] = this.activeFilters();
-    const remainingProperties: FilterablePropertyDefinition[] = this.filterableProperties.filter(
-      property => !activeProperties.includes(property)
+  protected toggleKey(filter: PropertyFilter): string {
+    const criteria = filter.criteria.map(predicate => [
+      predicate.filterableProperty?.property,
+      predicate.operator,
+      predicate.value,
+    ]);
+    return JSON.stringify(criteria.length > 1 ? [filter.operator, criteria] : criteria);
+  }
+
+  protected isToggleOn(toggle: ToggleFilter): boolean {
+    return this.activeToggleKeys.has(this.toggleKey(toggle.filter));
+  }
+
+  protected toggleFilter(toggle: ToggleFilter): void {
+    const key = this.toggleKey(toggle.filter);
+    if (this.activeToggleKeys.has(key)) {
+      this.activeToggleKeys.delete(key);
+    } else {
+      this.activeToggleKeys.add(key);
+    }
+    this.emitFilters();
+  }
+
+  /** The host's label as given, or the text generated from the criteria when there is no (or an empty) label. */
+  protected toggleText(toggle: ToggleFilter): string {
+    return toggle.label?.trim() ? toggle.label : this.toggleCriteriaText(toggle.filter);
+  }
+
+  /**
+   * FIELD_NAME: VALUE for Equals, FIELD_NAME: CONDITION for Is empty, FIELD_NAME: CONDITION VALUE otherwise.
+   * Multiple criteria are joined with the filter's logical operator, e.g. "Status: Running Or Stopped".
+   */
+  protected toggleCriteriaText(toggle: PropertyFilter): string {
+    const property = toggle.criteria[0]?.filterableProperty;
+    const conditions = toggle.criteria.map(predicate => {
+      if (predicate.operator === ComparisonOperator.IsEmpty) {
+        return this.filterStrings.getOperatorDisplayName(predicate.operator);
+      }
+      const value =
+        property instanceof EnumPropertyDefinition
+          ? (property.values.get(predicate.value) ?? predicate.value)
+          : predicate.value;
+      return predicate.operator === ComparisonOperator.Equals
+        ? `${value}`
+        : `${this.filterStrings.getOperatorDisplayName(predicate.operator)} ${value}`;
+    });
+    const conjoiner =
+      toggle.operator !== undefined ? ` ${this.filterStrings.getConjoinerDisplayName(toggle.operator)} ` : ', ';
+    return `${property?.displayName}: ${conditions.join(conjoiner)}`;
+  }
+
+  /** Option pills of a semi-predefined filter, in the order of the enum values map. */
+  protected semiOptions(property: EnumPropertyDefinition): { key: string; label: string }[] {
+    return Array.from(property.values, ([key, label]) => ({ key, label }));
+  }
+
+  protected isOptionSelected(property: EnumPropertyDefinition, key: string): boolean {
+    return !!this.filterFor(property)?.criteria.some(
+      predicate => predicate.operator === ComparisonOperator.Equals && predicate.value === key
     );
-    if (remainingProperties.length > 0) {
-      this.selectedFilterableProperty = remainingProperties[0];
+  }
+
+  protected toggleOption(property: EnumPropertyDefinition, key: string): void {
+    const selected = this.semiOptions(property)
+      .map(option => option.key)
+      .filter(optionKey => (optionKey === key) !== this.isOptionSelected(property, optionKey));
+    const filter = new PropertyFilter();
+    filter.operator = LogicalOperator.Or;
+    filter.criteria = selected.map(value => {
+      const predicate = new PropertyPredicate();
+      predicate.filterableProperty = property;
+      predicate.operator = ComparisonOperator.Equals;
+      predicate.value = value;
+      return predicate;
+    });
+    if (filter.criteria.length) {
+      this.onFilterCriteriaChange(filter);
+    } else {
+      this.clearFilter(property);
+    }
+  }
+
+  protected filterFor(property: FilterablePropertyDefinition): PropertyFilter | undefined {
+    return this.propertyFilters.find(filter => filter.criteria[0]?.filterableProperty.property === property.property);
+  }
+
+  protected clearFilter(property: FilterablePropertyDefinition): void {
+    this.propertyFilters = this.propertyFilters.filter(
+      filter => filter.criteria[0]?.filterableProperty.property !== property.property
+    );
+    this.emitFilters();
+    this.preselectFirstProperty();
+    if (!this.isPredefined(property) && !this.isSemiPredefined(property)) {
+      // The removed pill held focus and no longer exists, so move focus to Add filter.
+      this.moveFocusToActiveButton();
+    }
+  }
+
+  private isSemiPredefined(property: FilterablePropertyDefinition): boolean {
+    return this.fieldOwners().get(property.property) === 'semi';
+  }
+
+  private isPredefined(property: FilterablePropertyDefinition): boolean {
+    return this.fieldOwners().get(property.property) === 'predefined';
+  }
+
+  /** The fields used by the toggle filters. */
+  private toggleProperties(): FilterablePropertyDefinition[] {
+    return this.toggleFilters
+      .map(toggle => toggle.filter.criteria[0]?.filterableProperty)
+      .filter((property): property is FilterablePropertyDefinition => !!property);
+  }
+
+  /**
+   * Sets the active filters from a full list, as emitted by `propertyFiltersChange`: a filter with exactly a toggle's
+   * criteria turns that toggle ON, any other non-empty filter becomes a pill. Copies the list, so the host's array
+   * is never changed.
+   */
+  private applyFilters(filters: PropertyFilter[]): void {
+    const toggleKeys = new Set(this.toggleFilters.map(toggle => this.toggleKey(toggle.filter)));
+    const knownProperties = this.knownProperties();
+    this.activeToggleKeys.clear();
+    this.propertyFilters = filters
+      .filter(filter => {
+        if (!filter?.criteria?.length) {
+          return false;
+        }
+        const key = this.toggleKey(filter);
+        if (toggleKeys.has(key)) {
+          this.activeToggleKeys.add(key);
+          return false;
+        }
+        return true;
+      })
+      .map(filter => this.withKnownProperties(filter, knownProperties));
+  }
+
+  /** The field definitions of this filter bar, by `property` key. The first input that has a field wins. */
+  private knownProperties(): Map<string, FilterablePropertyDefinition> {
+    const properties = new Map<string, FilterablePropertyDefinition>();
+    for (const property of [
+      ...this.predefinedFilters,
+      ...this.semiPredefinedFilters,
+      ...this.toggleProperties(),
+      ...this.filterableProperties,
+    ]) {
+      if (!properties.has(property.property)) {
+        properties.set(property.property, property);
+      }
+    }
+    return properties;
+  }
+
+  /**
+   * Uses this filter bar's field definitions in the filter's criteria, matched by `property` key. Filters restored from
+   * JSON (saved views, URLs) have plain objects there, which the editors don't recognize. Returns a copy when a
+   * definition was replaced, so the host's filter is never changed; filters with unknown fields are kept as they are.
+   */
+  private withKnownProperties(
+    filter: PropertyFilter,
+    knownProperties: Map<string, FilterablePropertyDefinition>
+  ): PropertyFilter {
+    const known = (predicate: PropertyPredicate) => knownProperties.get(predicate?.filterableProperty?.property);
+    if (filter.criteria.every(predicate => !known(predicate) || known(predicate) === predicate.filterableProperty)) {
+      return filter;
+    }
+    const criteria = filter.criteria.map(predicate => {
+      const property = known(predicate);
+      return property && property !== predicate.filterableProperty
+        ? Object.assign(new PropertyPredicate(), predicate, { filterableProperty: property })
+        : predicate;
+    });
+    return Object.assign(new PropertyFilter(), filter, { criteria });
+  }
+
+  /** Emits the user filters plus the toggle filters that are ON. */
+  private emitFilters(): void {
+    this.propertyFiltersChange.emit(this.currentFilters());
+  }
+
+  /**
+   * Emits after the current change detection. Lifecycle hooks run while the parent is being checked, so emitting
+   * there would change a `[(propertyFilters)]` value Angular has already checked (NG0100).
+   */
+  private emitFiltersLater(): void {
+    Promise.resolve().then(() => {
+      if (!this.destroyRef.destroyed) {
+        this.emitFilters();
+      }
+    });
+  }
+
+  /** Drops ON states of toggles that are no longer configured or lost their field. True if any was ON. */
+  private removeUnresolvedToggleKeys(): boolean {
+    const keys = new Set(this.toggleFilters.map(toggle => this.toggleKey(toggle.filter)));
+    let removed = false;
+    this.activeToggleKeys.forEach(key => {
+      if (!keys.has(key)) {
+        this.activeToggleKeys.delete(key);
+        removed = true;
+      }
+    });
+    return removed;
+  }
+
+  /** The user filters plus the toggle filters that are ON, as emitted. */
+  private currentFilters(): PropertyFilter[] {
+    return [
+      ...this.propertyFilters,
+      ...this.toggleFilters.filter(toggle => this.isToggleOn(toggle)).map(toggle => toggle.filter),
+    ];
+  }
+
+  /** Same filters by criteria (field, operator, value and logical operator), in any order. */
+  private sameFilters(first: PropertyFilter[], second: PropertyFilter[]): boolean {
+    const keys = (filters: PropertyFilter[]) =>
+      filters
+        .filter(filter => filter?.criteria?.length)
+        .map(filter => this.toggleKey(filter))
+        .sort();
+    return JSON.stringify(keys(first)) === JSON.stringify(keys(second));
+  }
+
+  /**
+   * Moves focus after the element that had it was removed (Clear all, or removing a user-added pill). Runs after the
+   * next render, once the removed element is gone and Add filter is enabled or disabled for the remaining fields.
+   *
+   * Focus goes to:
+   * 1. Add filter, when it is enabled.
+   * 2. Otherwise the first enabled filter button, in page order:
+   *    2.1. The first toggle filter
+   *    2.2. Then the first predefined pill
+   *    2.3. then the first semi-predefined option.
+   *    Add filter is disabled when every field is taken by these fixed filters, and it cannot take focus.
+   * 3. Nowhere, when neither exists; focus then stays where the browser puts it.
+   */
+  private moveFocusToActiveButton(): void {
+    afterNextRender(
+      () => {
+        const addButton = this.addButton?.nativeElement;
+        if (addButton && !addButton.disabled) {
+          addButton.focus();
+        } else if (this.toggleButtons.length) {
+          this.toggleButtons.first.nativeElement.focus();
+        } else if (this.predefinedPills.length) {
+          this.predefinedPills.first.focus();
+        } else if (this.semiOptionButtons.length) {
+          this.semiOptionButtons.first.nativeElement.focus();
+        }
+      },
+      { injector: this.injector }
+    );
+  }
+
+  /**
+   * Keeps the field chosen in Add filter (and the editor's typed values) across input changes, as long as the field
+   * is still available. Matched by key, so a new `filterableProperties` array with equal fields keeps it too.
+   */
+  private keepOrPreselectProperty() {
+    const selectedKey = this.selectedFilterableProperty?.property;
+    const kept = this.availableProperties.find(property => property.property === selectedKey);
+    if (!kept) {
+      this.preselectFirstProperty();
+    } else if (kept !== this.selectedFilterableProperty) {
+      this.selectedFilterableProperty = kept;
       this.onPropertyChange();
     }
   }
 
-  private updateShowHideLabel(): void {
-    this.showHideFiltersLabel = this.collapsedFilters
-      ? this.filterStrings.showButtonLabel + '(' + this.propertyFilters.length + ')'
-      : this.filterStrings.hideButtonLabel;
-    this.showHideFiltersAriaLabel = this.collapsedFilters
-      ? this.filterStrings.showButtonLabel +
-        ' ' +
-        this.propertyFilters.length +
-        ' ' +
-        (this.propertyFilters.length > 1 ? this.filterStrings.filtersText : this.filterStrings.filterText)
-      : this.filterStrings.hideButtonAriaLabel;
+  private preselectFirstProperty() {
+    const remainingProperties = this.availableProperties;
+    this.selectedFilterableProperty = remainingProperties[0];
+    if (this.selectedFilterableProperty) {
+      this.onPropertyChange();
+    }
   }
 
-  private isStringProperty(property: FilterablePropertyDefinition): property is StringPropertyDefinition {
-    return property instanceof StringPropertyDefinition;
+  /**
+   * Each field may appear only once across predefined, semi-predefined and toggle filters.
+   * Fields are claimed left to right: predefined, then semi-predefined, then toggles.
+   */
+  private resolveFieldOwners(): void {
+    const claimed = new Set<string>();
+    const ignored: string[] = [];
+    const claim = (fields: string[], source: string): boolean => {
+      const taken = fields.filter(field => claimed.has(field));
+      if (taken.length) {
+        ignored.push(`${source}: ${taken.join(', ')}`);
+        return false;
+      }
+      fields.forEach(field => claimed.add(field));
+      return true;
+    };
+    this.resolvedPredefinedFilters.set(
+      this.rawPredefinedFilters.filter(property => claim([property.property], 'predefinedFilters'))
+    );
+    this.resolvedSemiPredefinedFilters.set(
+      this.rawSemiPredefinedFilters.filter(property => claim([property.property], 'semiPredefinedFilters'))
+    );
+    this.resolvedToggleFilters.set(
+      this.rawToggleFilters.filter(toggle =>
+        claim(
+          [...new Set(toggle.filter.criteria.map(predicate => predicate.filterableProperty?.property).filter(Boolean))],
+          'toggleFilters'
+        )
+      )
+    );
+    this.ignoredFieldEntries = ignored;
   }
 
-  private isEnumProperty(property: FilterablePropertyDefinition): property is EnumPropertyDefinition {
-    return property instanceof EnumPropertyDefinition;
+  /** Semi-predefined fields only support picking options: Equals on option keys of that field, joined with OR. */
+  private isOptionSelection(filter: PropertyFilter): boolean {
+    const property = this.semiPredefinedFilters.find(
+      semi => semi.property === filter.criteria[0].filterableProperty.property
+    );
+
+    // Only called for filters on a semi-predefined field, so it is always found.
+    if (!property) {
+      return false;
+    }
+
+    return (
+      (filter.criteria.length === 1 || filter.operator === LogicalOperator.Or) &&
+      filter.criteria.every(
+        predicate =>
+          predicate.filterableProperty?.property === property.property &&
+          predicate.operator === ComparisonOperator.Equals &&
+          property.values.has(predicate.value)
+      )
+    );
   }
 
-  private isNumericProperty(property: FilterablePropertyDefinition): property is NumericPropertyDefinition {
-    return property instanceof NumericPropertyDefinition;
+  /**
+   * Semi-predefined fields only support picking options. Removes any other filter on such a field
+   * and writes a console warning. Returns true when something was removed.
+   */
+  private removeInvalidSemiFilters(): boolean {
+    return this.removeFilters(
+      filter => this.isSemiPredefined(filter.criteria[0].filterableProperty) && !this.isOptionSelection(filter),
+      'filters on semiPredefinedFilters fields must select options (Equals on option keys, combined with OR).'
+    );
   }
 
-  private isDateTimeProperty(property: FilterablePropertyDefinition): property is DateTimePropertyDefinition {
-    return property instanceof DateTimePropertyDefinition;
+  /** Removes filters that their field's owner does not allow. Returns true when something was removed. */
+  private removeInvalidFilters(): boolean {
+    const removedSemi = this.removeInvalidSemiFilters();
+    const removedToggleField = this.removeToggleFieldFilters();
+    return removedSemi || removedToggleField;
   }
 
-  private isUserProperty(property: FilterablePropertyDefinition): property is UserPropertyDefinition {
-    return property instanceof UserPropertyDefinition;
+  /**
+   * A toggle owns its field. A filter with exactly a toggle's criteria turns the toggle ON (see applyFilters), so a
+   * filter still on a toggle's field has other criteria. Removes it and writes a console warning. Returns true when
+   * something was removed.
+   */
+  private removeToggleFieldFilters(): boolean {
+    const toggleFields = new Set(this.toggleProperties().map(property => property.property));
+    return this.removeFilters(
+      filter => filter.criteria.some(predicate => toggleFields.has(predicate.filterableProperty?.property)),
+      'a toggleFilters field accepts only the toggle filter itself.'
+    );
   }
 
-  private castStringProperty(): StringPropertyDefinition {
-    return this.selectedFilterableProperty as StringPropertyDefinition;
+  /** Removes the filters `invalid` matches and writes a console warning. Returns true when something was removed. */
+  private removeFilters(invalid: (filter: PropertyFilter) => boolean, message: string): boolean {
+    const removed = this.propertyFilters.filter(invalid);
+    if (!removed.length) {
+      return false;
+    }
+    this.propertyFilters = this.propertyFilters.filter(filter => !removed.includes(filter));
+    console.warn(
+      `appfx-composite-filter: ${message} Removed filters for: ` +
+        removed.map(filter => filter.criteria[0].filterableProperty.property).join(', ')
+    );
+    return true;
   }
 
-  private castEnumProperty(): EnumPropertyDefinition {
-    return this.selectedFilterableProperty as EnumPropertyDefinition;
-  }
-
-  private castNumericProperty(): NumericPropertyDefinition {
-    return this.selectedFilterableProperty as NumericPropertyDefinition;
-  }
-
-  private castDateTimeProperty(): DateTimePropertyDefinition {
-    return this.selectedFilterableProperty as DateTimePropertyDefinition;
-  }
-
-  private castUserProperty(): UserPropertyDefinition {
-    return this.selectedFilterableProperty as UserPropertyDefinition;
+  private warnIgnoredFields(): void {
+    if (this.ignoredFieldEntries.length) {
+      console.warn(
+        'appfx-composite-filter: a field can be used only once across predefinedFilters, ' +
+          'semiPredefinedFilters and toggleFilters (in that order of precedence). Ignored entries: ' +
+          this.ignoredFieldEntries.join('; ')
+      );
+    }
   }
 }

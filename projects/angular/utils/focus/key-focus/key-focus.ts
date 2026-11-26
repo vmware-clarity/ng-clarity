@@ -34,14 +34,14 @@ export class ClrKeyFocus {
   @Input('clrDirection') direction: ClrFocusDirection | string = ClrFocusDirection.VERTICAL;
   @Input('clrFocusOnLoad') focusOnLoad = false;
 
-  @ContentChildren(ClrKeyFocusItem, { descendants: true }) protected clrKeyFocusItems: QueryList<ClrKeyFocusItem>;
+  @ContentChildren(ClrKeyFocusItem, { descendants: true }) protected clrKeyFocusItems!: QueryList<ClrKeyFocusItem>;
 
   protected subscriptions: Subscription[] = [];
 
   @Output('clrFocusChange') private focusChange = new EventEmitter<number>();
 
   private _current = 0;
-  private _focusableItems: Array<FocusableItem>;
+  private _focusableItems: Array<FocusableItem> | undefined;
 
   constructor(private elementRef: ElementRef<HTMLElement>) {}
 
@@ -50,7 +50,7 @@ export class ClrKeyFocus {
    * this method will only work with array with FocusableItems anyway so any other value will be ignored.
    */
   @Input('clrKeyFocus')
-  get focusableItems() {
+  get focusableItems(): FocusableItem[] {
     if (this._focusableItems) {
       return this._focusableItems;
     } else if (this.clrKeyFocusItems) {
