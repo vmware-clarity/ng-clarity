@@ -39,7 +39,11 @@ export function openConsumerForEachTest(mode: (typeof modes)[number], query = ''
  * Runs `source` in the page, outside Angular, the way code outside the application would, with the acceptance
  * component published on `window[handle]` as `app`. `source` may `return` a value.
  */
-export function external(page: Page, handle: 'overlayAcceptance' | 'runtimeAcceptance', source: string) {
+export function external(
+  page: Page,
+  handle: 'overlayAcceptance' | 'runtimeAcceptance' | 'headerAcceptance',
+  source: string
+) {
   // A string runs as a page script. `new Function` would be eval, which the test server's Content-Security-Policy
   // blocks.
   return page.evaluate(`(app => { ${source} })(window.${handle})`);

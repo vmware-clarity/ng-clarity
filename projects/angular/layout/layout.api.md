@@ -44,6 +44,7 @@ import { Subscription } from 'rxjs';
 import { TemplateRef } from '@angular/core';
 import { Type } from '@angular/core';
 import { ViewContainerRef } from '@angular/core';
+import { WritableSignal } from '@angular/core';
 
 // @public (undocumented)
 export interface BreadcrumbItem {
@@ -158,12 +159,13 @@ export class ClrHeader implements OnDestroy {
     // (undocumented)
     get isNavLevel2OnPage(): boolean;
     set isNavLevel2OnPage(value: boolean);
-    // (undocumented)
+    // @deprecated (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
     openNav(navLevel: number): void;
     // (undocumented)
-    openNavLevel: number | null;
+    get openNavLevel(): number | null;
+    set openNavLevel(value: number | null);
     // (undocumented)
     resetNavTriggers(): void;
     // (undocumented)
@@ -713,6 +715,7 @@ export class ResponsiveNavigationService {
     isNavRegistered(navLevel: number): boolean;
     // (undocumented)
     get navControl(): Observable<ResponsiveNavControlMessage>;
+    readonly openNavLevel: WritableSignal<number>;
     // (undocumented)
     get registeredNavs(): Observable<number[]>;
     // (undocumented)

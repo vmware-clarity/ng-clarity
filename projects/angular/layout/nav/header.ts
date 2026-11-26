@@ -7,8 +7,6 @@
 
 import { ChangeDetectionStrategy, Component, HostBinding, Input, linkedSignal, OnDestroy } from '@angular/core';
 import { ClrCommonStringsService } from '@clr/angular/utils';
-import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
 
 import { ResponsiveNavigationService } from './providers/responsive-navigation.service';
 import { ResponsiveNavCodes } from './responsive-nav-codes';
@@ -41,14 +39,12 @@ import { ResponsiveNavCodes } from './responsive-nav-codes';
   `,
   host: { '[class.header]': 'true' },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrHeader implements OnDestroy {
   @Input() @HostBinding('attr.role') role = 'banner';
 
-  openNavLevel: number | null = null;
   responsiveNavCodes = ResponsiveNavCodes;
-  private _subscription: Subscription;
 
   // Derived from the signal-backed nav level list of ResponsiveNavigationService, so the triggers are updated whenever
   // a clr-nav-level is registered or unregistered, including after the header was checked. It stays writable to keep
@@ -58,17 +54,14 @@ export class ClrHeader implements OnDestroy {
   constructor(
     private responsiveNavService: ResponsiveNavigationService,
     public commonStrings: ClrCommonStringsService
-  ) {
-    this._subscription = responsiveNavService.navControl
-      .pipe(
-        filter(
-          ({ controlCode }) =>
-            controlCode === ResponsiveNavCodes.NAV_CLOSE || controlCode === ResponsiveNavCodes.NAV_CLOSE_ALL
-        )
-      )
-      .subscribe(() => {
-        this.openNavLevel = null;
-      });
+  ) {}
+
+  // The open level lives in ResponsiveNavigationService. It stays writable here to keep the public field working.
+  get openNavLevel(): number | null {
+    return this.responsiveNavService.openNavLevel();
+  }
+  set openNavLevel(value: number | null) {
+    this.responsiveNavService.openNavLevel.set(value);
   }
 
   get isNavLevel1OnPage(): boolean {
@@ -136,12 +129,15 @@ export class ClrHeader implements OnDestroy {
   }
 
   openNav(navLevel: number) {
-    this.openNavLevel = navLevel;
     this.responsiveNavService.sendControlMessage(ResponsiveNavCodes.NAV_OPEN, navLevel);
   }
 
-  ngOnDestroy() {
-    this._subscription.unsubscribe();
+  /**
+   * @deprecated The header no longer holds a subscription, so there is nothing to clean up. This no-op is kept so that
+   * subclasses calling `super.ngOnDestroy()` keep compiling. It will be removed in the next major version.
+   */
+  ngOnDestroy(): void {
+    // Intentionally empty.
   }
 }
 

@@ -96,4 +96,57 @@ describe('ResponsiveNavigationService', () => {
     service.unregisterNav(ResponsiveNavCodes.NAV_LEVEL_1);
     expect(emissions).toEqual([[ResponsiveNavCodes.NAV_LEVEL_1], []]);
   });
+
+  describe('openNavLevel', () => {
+    const { NAV_LEVEL_1, NAV_LEVEL_2, NAV_OPEN, NAV_CLOSE, NAV_TOGGLE } = ResponsiveNavCodes;
+
+    it('starts with no open nav level', () => {
+      expect(service.openNavLevel()).toBeNull();
+    });
+
+    it('is the level of the last open message', () => {
+      service.sendControlMessage(NAV_OPEN, NAV_LEVEL_1);
+      expect(service.openNavLevel()).toBe(NAV_LEVEL_1);
+      service.sendControlMessage(NAV_OPEN, NAV_LEVEL_2);
+      expect(service.openNavLevel()).toBe(NAV_LEVEL_2);
+    });
+
+    it('is cleared by a close message for the open level only', () => {
+      service.sendControlMessage(NAV_OPEN, NAV_LEVEL_2);
+      service.sendControlMessage(NAV_CLOSE, NAV_LEVEL_1);
+      expect(service.openNavLevel()).toBe(NAV_LEVEL_2);
+      service.sendControlMessage(NAV_CLOSE, NAV_LEVEL_2);
+      expect(service.openNavLevel()).toBeNull();
+    });
+
+    it('is cleared by closeAllNavs()', () => {
+      service.sendControlMessage(NAV_OPEN, NAV_LEVEL_1);
+      service.closeAllNavs();
+      expect(service.openNavLevel()).toBeNull();
+    });
+
+    it('ignores other control codes', () => {
+      service.sendControlMessage(NAV_OPEN, NAV_LEVEL_1);
+      service.sendControlMessage(NAV_TOGGLE, NAV_LEVEL_2);
+      expect(service.openNavLevel()).toBe(NAV_LEVEL_1);
+    });
+
+    it('is updated before the control message is sent', () => {
+      const seen: number[] = [];
+      service.navControl.subscribe(() => seen.push(service.openNavLevel()));
+      service.sendControlMessage(NAV_OPEN, NAV_LEVEL_1);
+      service.closeAllNavs();
+      expect(seen).toEqual([NAV_LEVEL_1, null]);
+    });
+
+    it('is cleared when the open level is unregistered', () => {
+      service.registerNav(NAV_LEVEL_1);
+      service.registerNav(NAV_LEVEL_2);
+      service.sendControlMessage(NAV_OPEN, NAV_LEVEL_1);
+      service.unregisterNav(NAV_LEVEL_2);
+      expect(service.openNavLevel()).toBe(NAV_LEVEL_1);
+      service.unregisterNav(NAV_LEVEL_1);
+      expect(service.openNavLevel()).toBeNull();
+    });
+  });
 });

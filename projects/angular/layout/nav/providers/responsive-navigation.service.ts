@@ -13,6 +13,12 @@ import { ResponsiveNavControlMessage } from '../responsive-nav-control-message';
 
 @Injectable({ providedIn: 'root' })
 export class ResponsiveNavigationService {
+  /**
+   * The nav level that is open, or `null` when none is. Every control message updates it, so the header triggers,
+   * the nav levels and any consumer reading it share one value.
+   */
+  readonly openNavLevel = signal<number | null>(null);
+
   // The list is mutated in place (its reference is what `registeredNavs` emits), so the signal is configured to
   // notify on every write rather than on reference change. Views reading `responsiveNavList` are refreshed
   // whenever a nav level is registered or unregistered.
@@ -67,20 +73,32 @@ export class ResponsiveNavigationService {
       const navList = this.responsiveNavList;
       navList.splice(index, 1);
       this._responsiveNavList.set(navList);
+      if (this.openNavLevel() === navLevel) {
+        this.openNavLevel.set(null);
+      }
       this.registerNavSubject.next(navList);
     }
   }
 
   sendControlMessage(controlCode: string, navLevel: number) {
-    const message: ResponsiveNavControlMessage = new ResponsiveNavControlMessage(controlCode, navLevel);
-    this.controlNavSubject.next(message);
+    this.openNavLevel.update(openNavLevel => openNavLevelAfter(openNavLevel, controlCode, navLevel));
+    this.controlNavSubject.next(new ResponsiveNavControlMessage(controlCode, navLevel));
   }
 
   closeAllNavs() {
-    const message: ResponsiveNavControlMessage = new ResponsiveNavControlMessage(
-      ResponsiveNavCodes.NAV_CLOSE_ALL,
-      -999
-    );
-    this.controlNavSubject.next(message);
+    this.sendControlMessage(ResponsiveNavCodes.NAV_CLOSE_ALL, -999);
+  }
+}
+
+function openNavLevelAfter(openNavLevel: number | null, controlCode: string, navLevel: number): number | null {
+  switch (controlCode) {
+    case ResponsiveNavCodes.NAV_OPEN:
+      return navLevel;
+    case ResponsiveNavCodes.NAV_CLOSE:
+      return openNavLevel === navLevel ? null : openNavLevel;
+    case ResponsiveNavCodes.NAV_CLOSE_ALL:
+      return null;
+    default:
+      return openNavLevel;
   }
 }
