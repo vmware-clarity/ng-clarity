@@ -6,7 +6,7 @@
  */
 
 import { InteractivityChecker } from '@angular/cdk/a11y';
-import { DebugElement, Directive, ElementRef, Input } from '@angular/core';
+import { ChangeDetectorRef, DebugElement, Directive, ElementRef, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
@@ -637,5 +637,33 @@ describe('Appfx Multi Page Dialog', () => {
         });
       });
     });
+  });
+});
+
+describe('Appfx Multi Page Dialog API compatibility', () => {
+  function create(zoomLevelService?: unknown) {
+    return new DialogComponent(
+      null as unknown as ChangeDetectorRef,
+      {} as WorkflowStrings,
+      {} as WorkflowConfigurationService,
+      undefined,
+      zoomLevelService as ZoomLevelService
+    );
+  }
+
+  it('tolerates a ZoomLevelService test double without `level`', () => {
+    expect(create({ onChange: of(ZoomLevel.x4) }).currentZoomLevel).toBe(ZoomLevel.none);
+  });
+
+  it('keeps `currentZoomLevel` writable and the lifecycle methods callable', () => {
+    const dialog = create(new ZoomLevelServiceMock());
+
+    dialog.currentZoomLevel = ZoomLevel.x4;
+
+    expect(dialog.currentZoomLevel).toBe(ZoomLevel.x4);
+    expect(() => {
+      dialog.ngOnInit();
+      dialog.ngOnDestroy();
+    }).not.toThrow();
   });
 });

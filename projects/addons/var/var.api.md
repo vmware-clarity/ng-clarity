@@ -497,6 +497,7 @@ class WorkflowModelMonitorComponent implements OnInit, OnDestroy {
     //
     // (undocumented)
     get debugModel(): NameValue[];
+    set debugModel(entries: NameValue[]);
     // (undocumented)
     isOpen: boolean;
     // (undocumented)

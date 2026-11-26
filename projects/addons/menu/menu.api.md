@@ -99,7 +99,8 @@ export class MenuActionComponent extends MenuItem implements OnChanges {
 // @public (undocumented)
 export class MenuComponent extends NestedMenu implements Menu, OnChanges, OnInit, OnDestroy, AfterContentInit {
     // Warning: (ae-forgotten-export) The symbol "ZoomLevelService" needs to be exported by the entry point clr-addons-menu.d.ts
-    constructor(zoomLevelService?: ZoomLevelService);
+    constructor(
+    _cdr?: ChangeDetectorRef, zoomLevelService?: ZoomLevelService);
     // Warning: (ae-forgotten-export) The symbol "ClrPopoverPoint" needs to be exported by the entry point clr-addons-menu.d.ts
     //
     // (undocumented)
@@ -110,6 +111,7 @@ export class MenuComponent extends NestedMenu implements Menu, OnChanges, OnInit
     closed: EventEmitter<void>;
     // (undocumented)
     get currentZoomLevel(): ZoomLevel | undefined;
+    set currentZoomLevel(zoomLevel: ZoomLevel | undefined);
     // (undocumented)
     documentContextMenu(event: Event): void;
     // Warning: (ae-forgotten-export) The symbol "ClrDropdown" needs to be exported by the entry point clr-addons-menu.d.ts
@@ -159,6 +161,8 @@ export class MenuComponent extends NestedMenu implements Menu, OnChanges, OnInit
     }, ["menuItems"], never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MenuComponent, [{
+        optional: true;
+    }, {
         optional: true;
     }]>;
 }

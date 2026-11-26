@@ -7,12 +7,16 @@
 
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Inject,
   Input,
+  OnDestroy,
+  OnInit,
   Optional,
   Output,
+  signal,
   ViewChild,
 } from '@angular/core';
 import { ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
@@ -70,7 +74,7 @@ import { DefaultButton, ModalSize } from './multi-page-dialog.model';
   templateUrl: 'multi-page-dialog.component.html',
   styleUrls: ['multi-page-dialog.component.scss', 'multi-page-dialog.a11y.scss'],
 })
-export class DialogComponent {
+export class DialogComponent implements OnInit, OnDestroy {
   /** The title of the dialog. */
   @Input() title!: string;
 
@@ -149,11 +153,14 @@ export class DialogComponent {
   @ViewChild(WorkflowModelMonitor, { static: false }) private debugPopup?: WorkflowModelMonitor;
 
   private readonly defaultMinHeight = '545px';
+  private readonly assignedZoomLevel = signal<ZoomLevel | undefined>(undefined);
 
   #opened = true;
   #subTitle$!: Observable<string>;
 
   constructor(
+    /** @deprecated Unused, kept so that subclasses calling `super(cdr, ...)` compile. */
+    _cdr: ChangeDetectorRef,
     readonly workflowStrings: WorkflowStrings,
     readonly configService: WorkflowConfigurationService,
     /**
@@ -198,7 +205,12 @@ export class DialogComponent {
   }
 
   get currentZoomLevel(): ZoomLevel {
-    return this.zoomLevelService?.level() ?? ZoomLevel.none;
+    // `level?.()` tolerates test doubles of ZoomLevelService without `level`.
+    return this.assignedZoomLevel() ?? this.zoomLevelService?.level?.() ?? ZoomLevel.none;
+  }
+
+  set currentZoomLevel(zoomLevel: ZoomLevel) {
+    this.assignedZoomLevel.set(zoomLevel);
   }
 
   get subTitle$(): Observable<string> {
@@ -237,6 +249,16 @@ export class DialogComponent {
 
   get isSignPostOpen(): boolean {
     return !!(this.debugPopup && this.debugPopup.isOpen);
+  }
+
+  /** @deprecated The dialog no longer needs initialization. Kept so that `super.ngOnInit()` calls compile. */
+  ngOnInit(): void {
+    // Intentionally empty.
+  }
+
+  /** @deprecated The dialog holds no subscription anymore. Kept so that `super.ngOnDestroy()` calls compile. */
+  ngOnDestroy(): void {
+    // Intentionally empty.
   }
 
   onOkButtonClick(): void {

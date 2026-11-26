@@ -73,6 +73,14 @@ describe('WorkflowModelMonitor', () => {
     expect(monitor).toBeTruthy();
   });
 
+  it('should keep debugModel writable', () => {
+    const entries = [{ name: 'custom', value: 'x', changed: false, computedVar: false, simpleVar: false }];
+
+    component.debugModel = entries;
+
+    expect(component.debugModel).toBe(entries);
+  });
+
   it('should init debugModel', () => {
     const monitor = new WorkflowModelMonitorComponent();
     monitor.modelMgr = new WorkflowModelManager();
