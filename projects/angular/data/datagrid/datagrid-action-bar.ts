@@ -12,6 +12,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   template: `<ng-content></ng-content>`,
   host: { '[class.datagrid-action-bar]': 'true' },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrDatagridActionBar {}

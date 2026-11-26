@@ -190,7 +190,7 @@ export class ClrDatagridVirtualTree<T> extends DatagridTreeRenderer<T> {
         while (node.parent) {
           node = node.parent;
         }
-        return node.index + index - row;
+        return node.index() + index - row;
       }
     }
     return index;

@@ -15,6 +15,7 @@ import {
   OnDestroy,
   Optional,
   Output,
+  signal,
   ViewChild,
 } from '@angular/core';
 import { ClrPopoverPosition, ClrPopoverService, ClrPopoverType } from '@clr/angular/popover/common';
@@ -81,7 +82,7 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
     </div>
   `,
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrDatagridFilter<T = any>
   extends DatagridFilterRegistrar<T, ClrDatagridFilterInterface<T>>
@@ -89,7 +90,6 @@ export class ClrDatagridFilter<T = any>
 {
   @Output('clrDgFilterOpenChange') openChange = new EventEmitter<boolean>(false);
 
-  ariaExpanded = false;
   popoverId = uniqueIdFactory();
 
   // Smart Popover
@@ -98,6 +98,8 @@ export class ClrDatagridFilter<T = any>
 
   @ViewChild('anchor', { read: ElementRef }) anchor!: ElementRef<HTMLButtonElement>;
 
+  // Held in a signal, so that the button is updated when the popover opens or closes.
+  private readonly _ariaExpanded = signal(false);
   private subs: Subscription[] = [];
 
   constructor(
@@ -141,10 +143,20 @@ export class ClrDatagridFilter<T = any>
     this.setFilter(filter);
   }
 
+  get ariaExpanded(): boolean {
+    return this._ariaExpanded();
+  }
+  set ariaExpanded(expanded: boolean) {
+    this._ariaExpanded.set(expanded);
+  }
+
   /**
    * Indicates if the filter is currently active
    */
   get active() {
+    // Read to be notified when a filter changes, so that an OnPush view shows it. The filter itself says if it is
+    // active, so that a custom filter is shown as active as soon as its `isActive()` returns true.
+    this.filters.active();
     return !!this.filter && this.filter.isActive();
   }
 

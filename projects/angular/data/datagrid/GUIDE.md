@@ -77,7 +77,7 @@ Pagination or virtual scroll is also a UX choice: use pagination when users jump
 - `clrDgField` (property path, e.g. `'address.city'`) enables default sort **and** a string filter. `[clrDgColType]="'number'"` switches to a numeric range filter.
 - `clrDgField` filters on the raw value as text. For boolean or enum columns (e.g. shown as Yes/No), add a custom `clr-dg-filter` or leave the column unfiltered.
 - Custom sort: `[clrDgSortBy]="comparator"` (`ClrDatagridComparatorInterface<T>` → `compare(a, b): number`), initial order via `[(clrDgSortOrder)]` (`ClrDatagridSortOrder.ASC | DESC | UNSORTED`).
-- Custom filter: `<clr-dg-string-filter [clrDgStringFilter]="f">` (`accepts(item, search)`), `<clr-dg-numeric-filter [clrDgNumericFilter]="f">`, or fully custom `<clr-dg-filter [clrDgFilter]="f">` implementing `ClrDatagridFilterInterface<T>` (`accepts`, `changes`, `isActive`, optional `state`). Form controls inside a custom filter use the Clarity directives like any other form, e.g. `<clr-checkbox-wrapper><input type="checkbox" clrCheckbox /><label>…</label></clr-checkbox-wrapper>`.
+- Custom filter: `<clr-dg-string-filter [clrDgStringFilter]="f">` (`accepts(item, search)`), `<clr-dg-numeric-filter [clrDgNumericFilter]="f">`, or fully custom `<clr-dg-filter [clrDgFilter]="f">` implementing `ClrDatagridFilterInterface<T>` (`accepts`, `changes`, `isActive`, optional `state`); emit `changes` whenever what `accepts` or `isActive` return changes, or the datagrid won't show it. Form controls inside a custom filter use the Clarity directives like any other form, e.g. `<clr-checkbox-wrapper><input type="checkbox" clrCheckbox /><label>…</label></clr-checkbox-wrapper>`.
 
 ## Server-driven
 
@@ -122,7 +122,7 @@ Clear `loading` on error too, or a failed request leaves the grid on the spinner
 ## Selection
 
 - Always set `clrDgSelectionType`. Binding `clrDgSelected` alone leaves selection off: no checkboxes, and nothing can be selected.
-- Grid: `[clrDgSelectionType]="'multi' | 'single' | 'none'"` + `[(clrDgSelected)]`. `clrDgSelected` is always a `T[]`: all selected items in `multi` mode, at most one item in `single` mode (`selected: User[] = []`, the pick is `selected[0]`). Any other selection type string throws.
+- Grid: `[clrDgSelectionType]="'multi' | 'single' | 'none'"` + `[(clrDgSelected)]`. `clrDgSelected` is always a `T[]`: all selected items in `multi` mode, at most one item in `single` mode (`selected: User[] = []`, the pick is `selected[0]`). Any other selection type string throws. Prefer assigning a new array over mutating `selected` in place (`push`, `splice`); an in-place change is only picked up when the datagrid is checked, so the component that holds the datagrid has to be checked too (default change detection, or marked for check when it is OnPush).
 - Every row needs `[clrDgItem]`.
 - Lock a row: `[clrDgSelectable]="false"` on `clr-dg-row`.
 - Keep selection across refetches: `[clrDgItemsIdentityFn]="(u) => u.id"` and `[clrDgPreserveSelection]="true"`.

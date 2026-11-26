@@ -16,16 +16,18 @@ export const MIN_DETAIL_WIDTH = 0;
 @Injectable()
 export class DetailService {
   id!: string;
-  detailWidth = DEFAULT_DETAIL_WIDTH;
+  /** Width of the pane, in percent of the datagrid. */
+  readonly detailWidth = signal(DEFAULT_DETAIL_WIDTH);
 
   private registeredPanes = 0;
 
   private preventScroll = false;
-  private toggleState = false;
-  private cache: any;
+  /** Whether the pane is open, and the item it shows, which is kept after it closes. */
+  private readonly toggleState = signal(false);
+  private readonly cache = signal<any>(undefined);
   private button?: HTMLButtonElement;
   private readonly _enabled = signal(false);
-  private _state = new BehaviorSubject<boolean | null>(this.toggleState);
+  private _state = new BehaviorSubject<boolean | null>(false);
 
   constructor(private readonly modalStackService: ModalStackService) {}
 
@@ -48,7 +50,7 @@ export class DetailService {
   }
 
   get state() {
-    return this.cache;
+    return this.cache();
   }
 
   get stateChange(): Observable<boolean | null> {
@@ -56,7 +58,7 @@ export class DetailService {
   }
 
   get isOpen() {
-    return this.toggleState === true;
+    return this.toggleState();
   }
 
   /** Register a detail outlet and release it exactly once when its directive is destroyed. */
@@ -74,24 +76,24 @@ export class DetailService {
         if (this.isOpen) {
           this.close();
         }
-        this.cache = undefined;
+        this.cache.set(undefined);
         this.button = undefined;
       }
     };
   }
 
   open(item: any, button?: HTMLButtonElement) {
-    this.cache = item;
+    this.cache.set(item);
     this.button = button;
-    this.toggleState = true;
-    this._state.next(this.toggleState);
+    this.toggleState.set(true);
+    this._state.next(true);
     this.modalStackService.trackModalOpen(this);
   }
 
   close() {
-    this.toggleState = false;
+    this.toggleState.set(false);
     this.returnFocus();
-    this._state.next(this.toggleState);
+    this._state.next(false);
     this.modalStackService.trackModalClose(this);
   }
 
@@ -111,6 +113,6 @@ export class DetailService {
   }
 
   isRowOpen(item: any) {
-    return !!(this.toggleState && this.cache === item);
+    return this.toggleState() && this.cache() === item;
   }
 }

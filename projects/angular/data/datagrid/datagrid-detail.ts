@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, ContentChild, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChild, Input, signal } from '@angular/core';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { ClrDatagridDetailHeader } from './datagrid-detail-header';
@@ -39,40 +39,49 @@ import { DEFAULT_DETAIL_WIDTH, DetailService, MAX_DETAIL_WIDTH, MIN_DETAIL_WIDTH
     }
   `,
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrDatagridDetail {
   @Input('clrDetailAriaLabelledBy') ariaLabelledBy?: string;
   @Input('clrDetailAriaLabel') ariaLabel?: string;
 
-  @ContentChild(ClrDatagridDetailHeader) header!: ClrDatagridDetailHeader;
+  // A query the template reads, so it is held in a signal for a header added later.
+  private readonly _header = signal<ClrDatagridDetailHeader | undefined>(undefined);
 
   constructor(
     public detailService: DetailService,
     public commonStrings: ClrCommonStringsService
   ) {}
 
+  @ContentChild(ClrDatagridDetailHeader)
+  get header(): ClrDatagridDetailHeader {
+    return this._header();
+  }
+  set header(header: ClrDatagridDetailHeader) {
+    this._header.set(header);
+  }
+
   @Input('clrDetailWidth')
   get detailWidth(): number {
-    return this.detailService.detailWidth;
+    return this.detailService.detailWidth();
   }
   set detailWidth(value: number | null | undefined) {
     if (value === null || value === undefined) {
-      this.detailService.detailWidth = DEFAULT_DETAIL_WIDTH;
+      this.detailService.detailWidth.set(DEFAULT_DETAIL_WIDTH);
       return;
     }
 
     if (value < MIN_DETAIL_WIDTH) {
-      this.detailService.detailWidth = MIN_DETAIL_WIDTH;
+      this.detailService.detailWidth.set(MIN_DETAIL_WIDTH);
       return;
     }
 
     if (value > MAX_DETAIL_WIDTH) {
-      this.detailService.detailWidth = MAX_DETAIL_WIDTH;
+      this.detailService.detailWidth.set(MAX_DETAIL_WIDTH);
       return;
     }
 
-    this.detailService.detailWidth = value;
+    this.detailService.detailWidth.set(value);
   }
 
   get isCustomWidth(): boolean {

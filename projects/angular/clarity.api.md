@@ -28,6 +28,7 @@ import { EnvironmentInjector } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { FactoryProvider } from '@angular/core';
 import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
+import { FormControlStatus } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { FormGroupDirective } from '@angular/forms';
 import { FormGroupName } from '@angular/forms';
@@ -61,6 +62,7 @@ import { RouterLinkActive } from '@angular/router';
 import { SafeHtml } from '@angular/platform-browser';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
+import { Signal } from '@angular/core';
 import { SimpleChange } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
@@ -947,13 +949,17 @@ export abstract class ClrAbstractContainer implements OnDestroy {
     // (undocumented)
     protected controlClassService: ControlClassService;
     // (undocumented)
-    controlErrorComponent: ClrControlError;
+    get controlErrorComponent(): ClrControlError;
+    set controlErrorComponent(value: ClrControlError);
     // (undocumented)
-    controlHelperComponent: ClrControlHelper;
+    get controlHelperComponent(): ClrControlHelper;
+    set controlHelperComponent(value: ClrControlHelper);
     // (undocumented)
     controls: NgControl[];
+    protected readonly controlState: Signal<ControlState>;
     // (undocumented)
-    controlSuccessComponent: ClrControlSuccess;
+    get controlSuccessComponent(): ClrControlSuccess;
+    set controlSuccessComponent(value: ClrControlSuccess);
     // (undocumented)
     protected get errorMessagePresent(): boolean;
     get helpers(): {
@@ -963,7 +969,8 @@ export abstract class ClrAbstractContainer implements OnDestroy {
         showValid: boolean;
     };
     // (undocumented)
-    label: ClrControlLabel;
+    get label(): ClrControlLabel;
+    set label(value: ClrControlLabel);
     // (undocumented)
     protected layoutService: LayoutService;
     // (undocumented)
@@ -980,7 +987,7 @@ export abstract class ClrAbstractContainer implements OnDestroy {
     // (undocumented)
     protected get successMessagePresent(): boolean;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAbstractContainer, never, never, {}, {}, ["label", "controlSuccessComponent", "controlErrorComponent", "controlHelperComponent"], never, true, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAbstractContainer, never, never, {}, {}, ["labelQuery", "successQuery", "errorQuery", "helperQuery"], never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAbstractContainer, [{
         optional: true;
@@ -2465,9 +2472,11 @@ export class ClrControlLabel implements OnInit, OnDestroy {
     // (undocumented)
     disableGrid(): void;
     // (undocumented)
-    forAttr?: string;
+    get forAttr(): string | undefined;
+    set forAttr(id: string | undefined);
     // (undocumented)
-    idAttr?: string;
+    get idAttr(): string | undefined;
+    set idAttr(id: string | undefined);
     // (undocumented)
     idInput?: string;
     // (undocumented)
@@ -2603,7 +2612,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     ngDoCheck(): void;
     // (undocumented)
     ngOnDestroy(): void;
-    placeholder: ClrDatagridPlaceholder<T>;
+    get placeholder(): ClrDatagridPlaceholder<T>;
+    set placeholder(placeholder: ClrDatagridPlaceholder<T>);
     // (undocumented)
     _projectedCalculationColumns: ViewContainerRef;
     // (undocumented)
@@ -3057,10 +3067,11 @@ export class ClrDatagridColumnToggle implements OnDestroy {
     get hasOnlyOneVisibleColumn(): boolean;
     // (undocumented)
     get hideableColumnStates(): ColumnState[];
-    // (undocumented)
+    // @deprecated (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    openState: boolean;
+    get openState(): boolean;
+    set openState(open: boolean);
     // (undocumented)
     popoverId: string;
     // (undocumented)
@@ -3125,7 +3136,8 @@ export class ClrDatagridDetail {
     get detailWidth(): number;
     set detailWidth(value: number | null | undefined);
     // (undocumented)
-    header: ClrDatagridDetailHeader;
+    get header(): ClrDatagridDetailHeader;
+    set header(header: ClrDatagridDetailHeader);
     // (undocumented)
     get isCustomWidth(): boolean;
     // (undocumented)
@@ -3189,7 +3201,8 @@ export class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrDa
     // (undocumented)
     anchor: ElementRef<HTMLButtonElement>;
     // (undocumented)
-    ariaExpanded: boolean;
+    get ariaExpanded(): boolean;
+    set ariaExpanded(expanded: boolean);
     // (undocumented)
     protected columnActions: ColumnActionsService;
     // (undocumented)
@@ -3409,10 +3422,11 @@ export class ClrDatagridPagination implements OnDestroy, OnInit {
     ngOnInit(): void;
     // (undocumented)
     page: Page;
+    // (undocumented)
     get pageSize(): number;
     set pageSize(size: number);
-    // (undocumented)
-    _pageSizeComponent: ClrDatagridPageSize;
+    get _pageSizeComponent(): ClrDatagridPageSize;
+    set _pageSizeComponent(pageSize: ClrDatagridPageSize);
     previous(): void;
     get totalItems(): number;
     set totalItems(total: number);
@@ -3502,7 +3516,8 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
     // (undocumented)
     expandAnimation: ClrExpandableAnimationDirective;
     // (undocumented)
-    expandAnimationTrigger: boolean;
+    get expandAnimationTrigger(): boolean;
+    set expandAnimationTrigger(trigger: boolean);
     get expanded(): boolean | string;
     set expanded(value: boolean | string);
     // (undocumented)
@@ -3525,7 +3540,7 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
     ngAfterContentInit(): void;
     // (undocumented)
     ngAfterViewInit(): void;
-    // (undocumented)
+    // @deprecated (undocumented)
     ngDoCheck(): void;
     // (undocumented)
     ngOnChanges(changes: SimpleChanges): void;
@@ -3539,8 +3554,8 @@ export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContent
     _pinnedCells: ViewContainerRef;
     // (undocumented)
     radioId: string;
-    // (undocumented)
-    replaced: boolean;
+    get replaced(): boolean;
+    set replaced(replaced: boolean);
     // (undocumented)
     rowActionService: RowActionService;
     // (undocumented)
@@ -3659,6 +3674,7 @@ export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, Af
     expand: DatagridIfExpandService;
     // (undocumented)
     expandableRows: ExpandableRowsCount;
+    protected readonly hasCells: WritableSignal<boolean>;
     // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
@@ -3670,7 +3686,8 @@ export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, Af
     // (undocumented)
     set replace(value: boolean);
     // (undocumented)
-    replacedRow: boolean;
+    get replacedRow(): boolean;
+    set replacedRow(replaced: boolean);
     // (undocumented)
     rowActionService: RowActionService;
     // (undocumented)
@@ -9094,6 +9111,16 @@ export const controlLunIcon: IconShapeTuple;
 // @public (undocumented)
 export const controlLunIconName = "control-lun";
 
+// @public
+export interface ControlState {
+    readonly disabled: boolean;
+    readonly errors: ValidationErrors | null;
+    readonly invalid: boolean;
+    readonly status: FormControlStatus | null;
+    readonly touched: boolean;
+    readonly value: unknown;
+}
+
 // @public (undocumented)
 export const copyIcon: IconShapeTuple;
 
@@ -10531,7 +10558,8 @@ export class LayoutService {
     // (undocumented)
     labelSizeIsValid(labelSize: number): boolean;
     // (undocumented)
-    layout: ClrFormLayout | string;
+    get layout(): ClrFormLayout | string;
+    set layout(layout: ClrFormLayout | string);
     // (undocumented)
     get layoutClass(): string;
     // (undocumented)
@@ -10844,7 +10872,7 @@ export const newIcon: IconShapeTuple;
 export const newIconName = "new";
 
 // @public (undocumented)
-export class NgControlService {
+export class NgControlService implements OnDestroy {
     // (undocumented)
     addControl(control: NgControl): void;
     // (undocumented)
@@ -10857,6 +10885,11 @@ export class NgControlService {
     emitControlsChange(controls: NgControl[]): void;
     // (undocumented)
     get hasMultipleControls(): boolean;
+    // (undocumented)
+    ngOnDestroy(): void;
+    // @internal
+    refreshStates(): void;
+    get states(): Signal<readonly ControlState[]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<NgControlService, never>;
     // (undocumented)
@@ -11395,7 +11428,6 @@ class Selection_2<T = any> {
     constructor(_items: Items<T>, filters: FiltersProvider<T>, differs: IterableDiffers);
     // (undocumented)
     get change(): Observable<T[]>;
-    // (undocumented)
     checkForChanges(): void;
     // (undocumented)
     clearSelection(): void;
@@ -11415,7 +11447,8 @@ class Selection_2<T = any> {
     preserveSelection: boolean;
     rangeStart: T | null;
     // @deprecated (undocumented)
-    rowSelectionMode: boolean;
+    get rowSelectionMode(): boolean;
+    set rowSelectionMode(value: boolean);
     // (undocumented)
     get selectable(): boolean;
     // (undocumented)

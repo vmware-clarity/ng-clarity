@@ -15,6 +15,7 @@ import {
   OnDestroy,
   Output,
   PLATFORM_ID,
+  signal,
   viewChild,
 } from '@angular/core';
 import {
@@ -72,7 +73,7 @@ let clrDgActionId = 0;
     </div>
   `,
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrDatagridActionOverflow implements OnDestroy {
   @Input('clrDgActionOverflowButtonLabel') buttonLabel?: string;
@@ -89,7 +90,7 @@ export class ClrDatagridActionOverflow implements OnDestroy {
 
   private readonly keyFocus = viewChild(ClrKeyFocus);
 
-  private _open = false;
+  private readonly _open = signal(false);
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -114,7 +115,7 @@ export class ClrDatagridActionOverflow implements OnDestroy {
 
   @Input('clrDgActionOverflowOpen')
   get open() {
-    return this._open;
+    return this._open();
   }
   set open(open: boolean) {
     const openState = !!open;
@@ -122,7 +123,7 @@ export class ClrDatagridActionOverflow implements OnDestroy {
       // only react to real changes so we do not re-emit openChange in the same change detection cycle
       this.popoverService.open = openState;
       this.openChange.emit(openState);
-      this._open = openState;
+      this._open.set(openState);
     }
   }
 

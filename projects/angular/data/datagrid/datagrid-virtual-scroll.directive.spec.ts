@@ -245,7 +245,7 @@ describe('Datagrid', () => {
             cdkVirtualFor: {
               ngOnDestroy(): void;
             };
-            virtualScrollViewport: {
+            virtualScrollViewport(): {
               ngOnDestroy(): void;
             };
           };
@@ -264,7 +264,7 @@ describe('Datagrid', () => {
             });
           };
           recordTeardown('cdkVirtualFor', cdk.cdkVirtualFor);
-          recordTeardown('viewport', cdk.virtualScrollViewport);
+          recordTeardown('viewport', cdk.virtualScrollViewport());
 
           fixture.destroy();
 
@@ -279,14 +279,14 @@ describe('Datagrid', () => {
 
           const viewport = (
             instance.virtualScroll as unknown as {
-              virtualScrollViewport: {
+              virtualScrollViewport(): {
                 _changeDetectionNeeded: {
                   set(value: boolean): void;
                 };
                 _doChangeDetection(): void;
               };
             }
-          ).virtualScrollViewport;
+          ).virtualScrollViewport();
           const doChangeDetection = vi.spyOn(viewport, '_doChangeDetection');
           const triggerViewportEffect = () => {
             viewport._changeDetectionNeeded.set(false);

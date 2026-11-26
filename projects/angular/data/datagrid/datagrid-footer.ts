@@ -39,7 +39,7 @@ import { Selection } from './providers/selection';
     '[class.datagrid-footer]': 'true',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrDatagridFooter<T = any> {
   /* reference to the enum so that template can access */

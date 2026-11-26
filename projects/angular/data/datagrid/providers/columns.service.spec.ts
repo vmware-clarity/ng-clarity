@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { computed } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 import { ColumnsService } from './columns.service';
@@ -21,7 +22,8 @@ describe('ColumnsService provider', function () {
   beforeEach(function () {
     provider = new ColumnsService();
     state = null;
-    provider.columns = [new BehaviorSubject<ColumnState>({ ...col1 }), new BehaviorSubject<ColumnState>({ ...col2 })];
+    provider.setColumn(0, new BehaviorSubject<ColumnState>({ ...col1 }));
+    provider.setColumn(1, new BehaviorSubject<ColumnState>({ ...col2 }));
   });
 
   afterEach(() => {
@@ -48,9 +50,27 @@ describe('ColumnsService provider', function () {
     expect(state).toEqual({ ...col1, ...diff });
   });
 
+  it('tells the views that match cells to columns when the columns are reordered, but not when one is resized', () => {
+    const [first, second] = provider.columns;
+    let runs = 0;
+    const firstColumn = computed(() => {
+      runs++;
+      return provider.columnAt(0);
+    });
+    expect(firstColumn()).toBe(first);
+
+    provider.emitStateChange(first, { changes: [DatagridColumnChanges.WIDTH], width: 120 });
+    expect(firstColumn()).toBe(first);
+    expect(runs).toBe(1);
+
+    provider.setColumn(0, second);
+    provider.setColumn(1, first);
+    expect(firstColumn()).toBe(second);
+  });
+
   it('can detect if hideable columns are enabled', () => {
     expect(provider.hasHideableColumns).toBe(true);
-    provider.columns[1] = new BehaviorSubject<ColumnState>({ hideable: false });
+    provider.setColumn(1, new BehaviorSubject<ColumnState>({ hideable: false }));
     expect(provider.hasHideableColumns).toBe(false);
   });
 

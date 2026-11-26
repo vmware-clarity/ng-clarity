@@ -68,14 +68,16 @@ describe('Datagrid', () => {
         it('shows the selection details when more than one item is selected', () => {
           const clarityDirectiveSelection = context.clarityDirective.selection;
           clarityDirectiveSelection.selectionType = SelectionType.Multi;
+          // The datagrid picks up changes made to the selection in place on every check.
           clarityDirectiveSelection.current.push(1);
-
+          clarityDirectiveSelection.checkForChanges();
           context.detectChanges();
 
           expect(context.clarityElement.querySelector('.datagrid-footer-select')).not.toBeNull();
           expect(context.clarityElement.querySelector('.datagrid-footer-select').textContent).toMatch('1');
 
           clarityDirectiveSelection.current.push(1);
+          clarityDirectiveSelection.checkForChanges();
           context.detectChanges();
 
           expect(context.clarityElement.querySelector('.datagrid-footer-select')).not.toBeNull();
@@ -99,7 +101,7 @@ describe('Datagrid', () => {
 
           // mock a hideable column
           const columnsService = context.getClarityProvider(ColumnsService) as MockColumnsService;
-          columnsService.columns.push(new BehaviorSubject({} as any));
+          columnsService.setColumn(columnsService.columns.length, new BehaviorSubject({} as any));
           columnsService.mockAllHideable();
 
           context.detectChanges();

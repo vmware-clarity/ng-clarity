@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
 
 import { FiltersProvider } from './filters';
@@ -16,10 +16,18 @@ export type ClrDatagridItemsIdentityFunction<T> = (item: T) => any;
 
 @Injectable()
 export class Items<T = any> {
-  /**
-   * Indicates if the data is currently loading
+  /*
+   * What the datagrid renders of the items is held in signals, so that every view showing it is refreshed when it
+   * changes, also when the application changes it from outside the datagrid.
    */
-  loading = false;
+  private readonly _loading = signal(false);
+
+  /**
+   * List of items currently displayed. Sorting works on the same array, so setting it again counts as a change.
+   */
+  private readonly _displayed = signal<T[]>([], { equal: () => false });
+
+  private readonly _identifyBy = signal<ClrDatagridItemsIdentityFunction<T>>(item => item);
 
   /**
    * Subscriptions to the other providers changes.
@@ -45,11 +53,6 @@ export class Items<T = any> {
   private _filtered!: T[];
 
   /**
-   * List of items currently displayed
-   */
-  private _displayed: T[] = [];
-
-  /**
    * The Observable that lets other classes subscribe to items changes
    */
   private _change = new Subject<T[]>();
@@ -61,6 +64,16 @@ export class Items<T = any> {
     private _sort: Sort<T>,
     private _page: Page
   ) {}
+
+  /**
+   * Indicates if the data is currently loading
+   */
+  get loading(): boolean {
+    return this._loading();
+  }
+  set loading(value: boolean) {
+    this._loading.set(value);
+  }
 
   get smart(): boolean {
     return this._smart;
@@ -75,14 +88,14 @@ export class Items<T = any> {
     if (this.smart) {
       this._filterItems();
     } else {
-      this._displayed = items;
+      this._displayed.set(items);
       this.emitChange();
     }
   }
 
   get displayed(): T[] {
     // Ideally we could return an immutable array, but we don't have it in Clarity yet.
-    return this._displayed;
+    return this._displayed();
   }
 
   // We do not want to expose the Subject itself, but the Observable which is read-only
@@ -95,16 +108,21 @@ export class Items<T = any> {
   }
 
   /**
+   * Tracking function to identify objects.
+   */
+  get identifyBy(): ClrDatagridItemsIdentityFunction<T> {
+    return this._identifyBy();
+  }
+  set identifyBy(value: ClrDatagridItemsIdentityFunction<T>) {
+    this._identifyBy.set(value);
+  }
+
+  /**
    * Checks if we don't have data to process yet, to abort early operations
    */
   private get uninitialized() {
     return !this._all;
   }
-
-  /**
-   * Tracking function to identify objects.
-   */
-  identifyBy: ClrDatagridItemsIdentityFunction<T> = item => item;
 
   /**
    * Cleans up our subscriptions to other providers
@@ -202,9 +220,9 @@ export class Items<T = any> {
       return;
     }
     if (this._page.size > 0) {
-      this._displayed = this._filtered.slice(this._page.firstItem, this._page.lastItem + 1);
+      this._displayed.set(this._filtered.slice(this._page.firstItem, this._page.lastItem + 1));
     } else {
-      this._displayed = this._filtered;
+      this._displayed.set(this._filtered);
     }
     this.emitChange();
   }

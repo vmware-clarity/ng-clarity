@@ -75,7 +75,9 @@ describe('Datagrid', () => {
           expect(component.active).toEqual(false);
           component.customFilter = filter;
           expect(component.active).toEqual(true);
+          // A filter tells the datagrid of its changes, which is also when the datagrid filters the items again.
           filter.active = false;
+          filter.changes.next(false);
           expect(component.active).toEqual(false);
         });
       });

@@ -17,6 +17,7 @@ import {
   Input,
   OnDestroy,
   QueryList,
+  signal,
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
@@ -52,7 +53,7 @@ import { Selection } from './providers/selection';
       <ng-container #pinnedCells></ng-container>
     </div>
     <ng-container #scrollableCells></ng-container>
-    @if (this.cells?.length > 0) {
+    @if (hasCells()) {
       <ng-container [ngTemplateOutlet]="noCells"></ng-container>
       <!--
         Where the cells go back to when the detail stops being column aligned, because a column was
@@ -60,8 +61,7 @@ import { Selection } from './providers/selection';
         projection it came from, so it needs a container of its own in the same place.
       -->
       <ng-container #plainCells></ng-container>
-    }
-    @if (this.cells?.length === 0) {
+    } @else {
       <clr-dg-cell class="datagrid-container">
         <ng-container [ngTemplateOutlet]="noCells"></ng-container>
       </clr-dg-cell>
@@ -79,13 +79,11 @@ import { Selection } from './providers/selection';
     role: 'row',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, AfterViewChecked, OnDestroy {
   @Input('clrRowDetailBeginningAriaText') _beginningOfExpandableContentAriaText?: string;
   @Input('clrRowDetailEndAriaText') _endOfExpandableContentAriaText?: string;
-
-  replacedRow = false;
 
   /**
    * Whether the detail lays its cells out in the same columns as the row, which it does when it
@@ -98,6 +96,12 @@ export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, Af
   SELECTION_TYPE = SelectionType;
 
   @ContentChildren(ClrDatagridCell) cells!: QueryList<ClrDatagridCell>;
+
+  /** Whether the detail has cells of its own, which can come in after it is rendered. */
+  protected readonly hasCells = signal(false);
+
+  /** Whether the detail replaces its row, held in a signal so that the host is updated when it changes. */
+  private readonly _replacedRow = signal(false);
 
   @ViewChild('pinnedCells', { read: ViewContainerRef }) private _pinnedCells!: ViewContainerRef;
   @ViewChild('scrollableCells', { read: ViewContainerRef }) private _scrollableCells!: ViewContainerRef;
@@ -124,6 +128,13 @@ export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, Af
     this.expand.setReplace(!!value);
   }
 
+  get replacedRow(): boolean {
+    return this._replacedRow();
+  }
+  set replacedRow(replaced: boolean) {
+    this._replacedRow.set(replaced);
+  }
+
   get beginningOfExpandableContentAriaText() {
     return (
       this._beginningOfExpandableContentAriaText ||
@@ -139,12 +150,14 @@ export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, Af
   }
 
   ngAfterContentInit() {
+    this.hasCells.set(this.cells.length > 0);
     this.subscriptions.push(
-      this.expand.replace.subscribe(replaceChange => {
-        this.replacedRow = replaceChange;
-      }),
+      this.expand.replace.subscribe(replaceChange => this._replacedRow.set(replaceChange)),
       // New cells have to be moved even when the columns did not change.
-      this.cells.changes.subscribe(() => this.syncColumnAlignment(true)),
+      this.cells.changes.subscribe(() => {
+        this.hasCells.set(this.cells.length > 0);
+        this.syncColumnAlignment(true);
+      }),
       // Content behind a `clrLoading` template is created whenever it has loaded, which nothing tells
       // Angular about. Its cells are only found once the view declaring the detail is checked again.
       this.expand.animate.subscribe(() => this.changeDetectorRef.markForCheck())

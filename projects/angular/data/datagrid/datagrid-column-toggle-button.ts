@@ -26,7 +26,7 @@ import { ColumnsService } from './providers/columns.service';
     </button>
   `,
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrDatagridColumnToggleButton {
   private allSelected: Subject<boolean> = new EventEmitter();
@@ -42,7 +42,7 @@ export class ClrDatagridColumnToggleButton {
   }
 
   get allHideablesVisible() {
-    return this.hideableColumns().filter(column => column.value.hidden).length === 0;
+    return !this.columnsService.columnStates.some(state => state.hideable && state.hidden);
   }
 
   selectAll() {

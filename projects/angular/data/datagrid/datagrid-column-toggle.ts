@@ -13,7 +13,6 @@ import {
   ClrPopoverType,
 } from '@clr/angular/popover/common';
 import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
-import { Subscription } from 'rxjs';
 
 import { columnToggleTrackByFn } from './datagrid-column-toggle-trackby';
 import { DatagridColumnChanges } from './enums/column-changes.enum';
@@ -89,11 +88,10 @@ import { ColumnsService } from './providers/columns.service';
   host: { '[class.column-switch-wrapper]': 'true', '[class.active]': 'openState' },
   hostDirectives: [ClrPopoverHostDirective],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrDatagridColumnToggle implements OnDestroy {
   popoverId = uniqueIdFactory();
-  openState = false;
 
   // Smart Popover
   popoverPosition = ClrPopoverPosition.TOP_LEFT;
@@ -104,16 +102,20 @@ export class ClrDatagridColumnToggle implements OnDestroy {
   readonly trackByFn = columnToggleTrackByFn;
 
   private _allColumnsVisible = false;
-  private subscription: Subscription;
 
   @ViewChild('allSelected', { read: ElementRef }) private allSelectedElement!: ElementRef<HTMLElement>;
 
   constructor(
     public commonStrings: ClrCommonStringsService,
     private columnsService: ColumnsService,
-    popoverService: ClrPopoverService
-  ) {
-    this.subscription = popoverService.openChange.subscribe(change => (this.openState = change));
+    private popoverService: ClrPopoverService
+  ) {}
+
+  get openState(): boolean {
+    return this.popoverService.open;
+  }
+  set openState(open: boolean) {
+    this.popoverService.open = open;
   }
 
   get allColumnsVisible(): boolean {
@@ -124,20 +126,23 @@ export class ClrDatagridColumnToggle implements OnDestroy {
   }
 
   get hideableColumnStates(): ColumnState[] {
-    const hideables = this.columnsService.columns.filter(column => column.value.hideable);
-    return hideables.map(column => column.value);
+    return this.columnsService.columnStates.filter(state => state.hideable);
   }
 
   get hasOnlyOneVisibleColumn(): boolean {
-    const nbNonHideableColumns = this.columnsService.columns.length - this.hideableColumnStates.length;
+    const nbNonHideableColumns = this.columnsService.columnStates.length - this.hideableColumnStates.length;
     // this should only return true when there is no non-hideable columns.
     return (
       nbNonHideableColumns === 0 && this.hideableColumnStates.filter(columnState => !columnState.hidden).length === 1
     );
   }
 
+  /**
+   * @deprecated Nothing is subscribed to anymore, so there is nothing to clean up. Kept so that classes extending
+   * the column toggle that call it still compile. Will be removed in the next major version.
+   */
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    // Intentionally empty.
   }
 
   toggleColumnState(columnState: ColumnState, event: boolean) {

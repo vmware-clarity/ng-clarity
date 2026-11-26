@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { signal } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 import { DatagridPropertyStringFilter } from './datagrid-property-string-filter';
@@ -25,7 +26,7 @@ export class DatagridStringFilterImpl<T = any> implements ClrDatagridFilterInter
   /**
    * Raw input value
    */
-  private _rawValue = '';
+  private readonly _rawValue = signal('');
 
   constructor(public filterFn: ClrDatagridStringFilterInterface<T>) {}
 
@@ -49,7 +50,7 @@ export class DatagridStringFilterImpl<T = any> implements ClrDatagridFilterInter
   }
 
   get value(): string {
-    return this._rawValue;
+    return this._rawValue();
   }
   /**
    * Common setter for the input value
@@ -58,8 +59,8 @@ export class DatagridStringFilterImpl<T = any> implements ClrDatagridFilterInter
     if (!value) {
       value = '';
     }
-    if (value !== this._rawValue) {
-      this._rawValue = value;
+    if (value !== this._rawValue()) {
+      this._rawValue.set(value);
       this._lowerCaseValue = value.toLowerCase().trim();
       this._changes.next(value);
     }

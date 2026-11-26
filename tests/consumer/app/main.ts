@@ -19,6 +19,7 @@ import { ClarityModule } from '@clr/angular';
 
 import { OverlayAcceptance } from './overlay-acceptance';
 import { RuntimeAcceptance } from './runtime-acceptance';
+import { ZoneDatagridAcceptance } from './zone-datagrid-acceptance';
 
 @Component({
   selector: 'consumer-app',
@@ -109,10 +110,16 @@ class ConsumerApp {
 }
 
 async function main() {
-  const useZone = new URLSearchParams(location.search).get('mode') === 'zone';
-  await bootstrapApplication(ConsumerApp, {
+  const query = new URLSearchParams(location.search);
+  const useZone = query.get('mode') === 'zone';
+  const app = await bootstrapApplication(ConsumerApp, {
     providers: [useZone ? provideZoneChangeDetection() : provideZonelessChangeDetection()],
   });
+  // A root of its own, Eager like the root of most Zone.js applications, so that Zone.js checks it after each timer.
+  if (useZone && query.get('suite') === 'zone-datagrid') {
+    document.body.appendChild(document.createElement('zone-datagrid-acceptance'));
+    app.bootstrap(ZoneDatagridAcceptance);
+  }
 }
 
 main().catch(error => console.error(error));

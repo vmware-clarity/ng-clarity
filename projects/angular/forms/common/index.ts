@@ -9,6 +9,7 @@ export * from './abstract-container';
 export * from './common.module';
 export * from './control';
 export * from './control-container';
+export type { ControlState } from './control-state';
 export * from './control-subtexts/helper';
 export * from './control-subtexts/error';
 export * from './control-subtexts/success';

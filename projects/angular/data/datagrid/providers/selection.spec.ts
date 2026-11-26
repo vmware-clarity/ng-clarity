@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { IterableDiffers } from '@angular/core';
+import { computed, IterableDiffers } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { delay } from '@clr/angular/testing';
 import { Subject } from 'rxjs';
@@ -859,6 +859,22 @@ describe('Datagrid', () => {
           itemsInstance.all = [5, 7, 8];
           await delay();
           expect(selectionInstance.isLocked(6)).toBe(false);
+        });
+
+        it('does not tell the views when the items change and the same items stay locked', async function () {
+          selectionInstance.selectionType = SelectionType.Multi;
+          selectionInstance.lockItem(6, true);
+          let runs = 0;
+          const locked = computed(() => {
+            runs++;
+            return selectionInstance.isLocked(6);
+          });
+          expect(locked()).toBe(true);
+
+          itemsInstance.all = [5, 6, 7];
+          await delay();
+          expect(locked()).toBe(true);
+          expect(runs).toBe(1);
         });
 
         it('should use trackBy to find already locked items when the list is replaced (integer)', function () {
