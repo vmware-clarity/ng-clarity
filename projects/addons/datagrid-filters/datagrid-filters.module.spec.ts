@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { angleIcon, ClarityIcons, filterGridIcon, plusIcon, searchIcon, windowCloseIcon } from '@clr/angular/icon';
+import { angleIcon, checkIcon, ClarityIcons, plusIcon, searchIcon, windowCloseIcon } from '@clr/angular/icon';
 
 import { DatagridFiltersStrings } from './datagrid-filters-strings.service';
 import { DatagridFiltersUserService } from './datagrid-filters-user-service';
@@ -20,13 +20,7 @@ describe('DatagridFiltersModule', () => {
     vi.spyOn(ClarityIcons, 'addIcons').mockReturnValue();
     new AppfxDatagridFiltersModule();
     expect(ClarityIcons.addIcons).toHaveBeenCalledTimes(1);
-    expect(ClarityIcons.addIcons).toHaveBeenCalledWith(
-      angleIcon,
-      filterGridIcon,
-      plusIcon,
-      searchIcon,
-      windowCloseIcon
-    );
+    expect(ClarityIcons.addIcons).toHaveBeenCalledWith(angleIcon, checkIcon, plusIcon, searchIcon, windowCloseIcon);
   });
 
   it('provides filters strings service factory', () => {

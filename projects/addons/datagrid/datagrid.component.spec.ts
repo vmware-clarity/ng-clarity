@@ -24,7 +24,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ZoomLevelService } from '@clr/addons/a11y';
-import { DatagridFiltersStrings, FilterMode, PropertyFilter } from '@clr/addons/datagrid-filters';
+import {
+  ComparisonOperator,
+  DataGridFiltersComponent,
+  DatagridFiltersStrings,
+  FilterMode,
+  LogicalOperator,
+  PropertyFilter,
+  StringPropertyDefinition,
+} from '@clr/addons/datagrid-filters';
 import { DragAndDropGroupService } from '@clr/addons/drag-and-drop';
 import {
   FilterInputTestHelper,
@@ -2877,6 +2885,53 @@ describe('DatagridComponent', () => {
       untypedContext.component.appfxDatagridComponent.onAdvancedFilterCriteriaChange(propertyFilters);
       renderFixture(untypedContext.fixture);
       expect(untypedContext.component.onAdvancedFilterChange).toHaveBeenCalledWith(propertyFilters);
+    });
+
+    it('passes propertyFilters to the filter bar without emitting, and emits them on change', () => {
+      const grid: DatagridComponent<unknown> = testContext.component.appfxDatagridComponent;
+      grid.filterMode = FilterMode.AdvancedOnly;
+      const nameProperty = new StringPropertyDefinition('Name', 'name');
+      grid.filterableProperties = [nameProperty];
+      const propertyFilters: PropertyFilter[] = [
+        {
+          operator: LogicalOperator.And,
+          criteria: [{ filterableProperty: nameProperty, operator: ComparisonOperator.Contains, value: 'vm' }],
+        },
+      ];
+      vi.spyOn(grid.propertyFiltersChange, 'emit');
+      vi.spyOn(grid.advancedFilterChange, 'emit');
+      grid.propertyFilters = propertyFilters;
+      renderFixture(testContext.fixture);
+      const bar: DataGridFiltersComponent = testContext.fixture.debugElement.query(
+        By.directive(DataGridFiltersComponent)
+      ).componentInstance;
+      expect(bar.propertyFilters).toBe(propertyFilters);
+      expect(grid.propertyFiltersChange.emit).not.toHaveBeenCalled();
+      expect(grid.advancedFilterChange.emit).not.toHaveBeenCalled();
+
+      const changed: PropertyFilter[] = [];
+      grid.onAdvancedFilterCriteriaChange(changed);
+      expect(grid.propertyFiltersChange.emit).toHaveBeenCalledWith(changed);
+      expect(grid.advancedFilterChange.emit).toHaveBeenCalledWith(changed);
+      expect(grid.propertyFilters).toBe(changed);
+    });
+
+    it('passes searchTerm to the filter bar without emitting, and emits it on change', () => {
+      const grid: DatagridComponent<unknown> = testContext.component.appfxDatagridComponent;
+      grid.filterMode = FilterMode.Combined;
+      grid.filterableProperties = [new StringPropertyDefinition('Name', 'name')];
+      vi.spyOn(grid.searchTermChange, 'emit');
+      grid.searchTerm = 'vm';
+      renderFixture(testContext.fixture);
+      const bar: DataGridFiltersComponent = testContext.fixture.debugElement.query(
+        By.directive(DataGridFiltersComponent)
+      ).componentInstance;
+      expect(bar.searchTerm).toBe('vm');
+      expect(grid.searchTermChange.emit).not.toHaveBeenCalled();
+
+      bar.searchTermChange.emit('vm-1');
+      expect(grid.searchTermChange.emit).toHaveBeenCalledExactlyOnceWith('vm-1');
+      expect(grid.searchTerm).toBe('vm-1');
     });
 
     afterEach(() => {
