@@ -126,9 +126,12 @@ onSearch(term: string): void {}
 </appfx-datagrid>
 ```
 
-- `FilterMode`: `Quick` = search box only; `Advanced` = selector between search box and advanced filter; `AdvancedOnly` = advanced filter only.
+- `FilterMode`: `Quick` = search box only; `Advanced` = selector between search box and advanced filter; `AdvancedOnly` = advanced filter only; `Combined` = search box and filter pills together — keep the latest `searchTermChange` and `advancedFilterChange` values and apply both (AND).
+- `PropertyPredicate.value` is `undefined` for `ComparisonOperator.IsEmpty` — check the operator before reading the value.
 - Enum filter labels should match what the column renders, or render the column through the same map.
 - The grid only **emits** filters — `advancedFilterChange` carries a `PropertyFilter[]` (each `{ criteria: PropertyPredicate[], operator }`); apply them to the data yourself and pass the result as `gridItems`.
+- `[(propertyFilters)]="filters"` keeps the pills and your filters in sync, e.g. to restore a saved view or keep them across `filterMode` switches. Setting it does not emit (except when filters are dropped or presets apply at start-up; see the appfx-datagrid-filters skill); `propertyFiltersChange` fires together with `advancedFilterChange`.
+- `[(searchTerm)]="search"` does the same for the quick search text. Setting it does not emit `searchTermChange`.
 - Other definitions: `DateTimePropertyDefinition`, `UserPropertyDefinition` (requires providing `DatagridFiltersUserService`).
 - Per-column filters: `ColumnDefinition.stringFilter` or `ColumnDefinition.filter` (a `ColumnFilter<T>` component type).
 

@@ -25,6 +25,7 @@ export class ClarityDocComponent {
       docTabs.title = component.text;
       docTabs.type = component.type;
       docTabs.storybookPath = component.storybookPath;
+      docTabs.storybookLink = !!component.storybookLink;
       docTabs.basedOn = component.basedOn ? COMPONENT_MAP.get(component.basedOn) : undefined;
       docTabs.addons = [...COMPONENT_MAP.values()].filter(addon => addon.basedOn === component.url);
     }

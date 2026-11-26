@@ -31,6 +31,9 @@ import { ComparisonOperator, LogicalOperator, TimeSpan, Unit } from './model/dat
  */
 @Injectable()
 export class DatagridFiltersStrings {
+  /** Clears the current filter's values while retaining a predefined pill. */
+  readonly clearFilter: string = 'Clear filter';
+
   /**
    * Filter type label.
    */
@@ -64,12 +67,12 @@ export class DatagridFiltersStrings {
   /**
    * Add new filter button label.
    */
-  readonly addNew: string = 'Add new';
+  readonly addNew: string = 'Add filter';
 
   /**
    * Add new filter button aria label.
    */
-  readonly addNewAriaLabel: string = 'Add new filter';
+  readonly addNewAriaLabel: string = 'Add filter';
 
   /**
    * Select filter label.
@@ -136,14 +139,14 @@ export class DatagridFiltersStrings {
   readonly unitAriaLabel: string = 'Unit';
 
   /**
-   * Add second condition button label.
+   * Add condition button label.
    */
   readonly addCondition: string = 'Add condition';
 
   /**
-   * Remove second condition button aria label.
+   * Remove condition button aria label, followed by the condition number.
    */
-  readonly removeConditionAriaLabel: string = 'Remove second condition';
+  readonly removeConditionAriaLabel: string = 'Remove condition';
 
   /**
    * Conjoiners.
@@ -176,11 +179,6 @@ export class DatagridFiltersStrings {
    */
   readonly selectAll: string = 'Select all';
 
-  /**
-   * Applied filters text.
-   */
-  readonly appliedText: string = 'applied';
-
   readonly editFilterText: string = 'Edit filter';
 
   readonly removeFilterText: string = 'Remove filter';
@@ -194,8 +192,6 @@ export class DatagridFiltersStrings {
   readonly filtersText: string = 'filters';
 
   readonly filterText: string = 'filter';
-
-  readonly clearAllButtonLabel: string = 'Clear all';
 
   readonly clearAllButtonAriaLabel: string = 'Clear all filters';
 
@@ -231,14 +227,29 @@ export class DatagridFiltersStrings {
   readonly addTimeFilter: string = 'Filter by time';
 
   /**
-   * Date input placeholder.
-   */
-  readonly dateFormat: string = 'YYYY-MM-DD';
-
-  /**
    * Time input placeholder.
    */
   readonly timeFormat: string = 'HH:mm';
+
+  /**
+   * Screen reader label of the date input of single-date operators (e.g. Equals, Before).
+   */
+  readonly dateLabel: string = 'Date';
+
+  /**
+   * Screen reader label of the time input of single-date operators.
+   */
+  readonly timeLabel: string = 'Time';
+
+  /**
+   * Screen reader label of the start time input of a custom range.
+   */
+  readonly fromTimeLabel: string = 'From time';
+
+  /**
+   * Screen reader label of the end time input of a custom range.
+   */
+  readonly toTimeLabel: string = 'To time';
 
   /**
    * Date input validator error message
@@ -246,9 +257,24 @@ export class DatagridFiltersStrings {
   readonly dateValidatorMessage: string = 'Invalid date format';
 
   /**
+   * Validation message when the end of a custom date range is before its start.
+   */
+  readonly dateRangeValidatorMessage: string = 'End date must not be before start date';
+
+  /**
    * Time input validator error message
    */
   readonly timeValidatorMessage: string = 'Invalid time format';
+
+  /**
+   * Screen reader label of the date range picker used by the custom range operator without times.
+   */
+  readonly dateRangeLabel: string = 'Date range';
+
+  /**
+   * Screen reader label of the preset range buttons shown by the custom range operator with times.
+   */
+  readonly dateRangeOptionsLabel: string = 'Preset ranges';
 
   readonly fromLabel: string = 'From';
 
