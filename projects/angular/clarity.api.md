@@ -1514,7 +1514,11 @@ export class ClrBreadcrumbsModule {
 
 // @public (undocumented)
 export class ClrButton implements LoadingListener {
-    constructor(routerLinkActive: RouterLinkActive);
+    constructor(routerLinkActive: RouterLinkActive, buttonInGroupService: ButtonInGroupService);
+    // Warning: (ae-forgotten-export) The symbol "ButtonInGroupService" needs to be exported by the entry point clr-angular.d.ts
+    //
+    // (undocumented)
+    buttonInGroupService: ButtonInGroupService;
     // (undocumented)
     get classNames(): string;
     set classNames(value: string);
@@ -1532,11 +1536,14 @@ export class ClrButton implements LoadingListener {
     set inMenu(value: boolean);
     // (undocumented)
     get loading(): boolean;
+    set loading(value: boolean | undefined);
     // (undocumented)
     loadingStateChange(state: ClrLoadingState): void;
     // (undocumented)
     get name(): string | null;
     set name(value: string);
+    // (undocumented)
+    ngAfterViewInit(): void;
     // (undocumented)
     get role(): string | null;
     // (undocumented)
@@ -1582,32 +1589,42 @@ export class ClrButton implements LoadingListener {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrButton, [{
         optional: true;
+    }, {
+        optional: true;
+        skipSelf: true;
     }]>;
 }
 
 // @public (undocumented)
-export class ClrButtonGroup implements AfterViewInit {
+export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
     // Warning: (ae-forgotten-export) The symbol "ButtonGroupFocusHandler" needs to be exported by the entry point clr-angular.d.ts
-    constructor(popoverService: ClrPopoverService, commonStrings: ClrCommonStringsService, destroy$: ClrDestroyService, focusHandler: ButtonGroupFocusHandler);
+    constructor(buttonGroupNewService: ButtonInGroupService, popoverService: ClrPopoverService, commonStrings: ClrCommonStringsService, destroy$: ClrDestroyService, focusHandler: ButtonGroupFocusHandler);
+    // (undocumented)
+    buttonGroupNewService: ButtonInGroupService;
+    // (undocumented)
+    buttons: QueryList<ClrButton>;
     // (undocumented)
     clrToggleButtonAriaLabel: string;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
+    getMoveIndex(buttonToMove: ClrButton): number;
     // Warning: (ae-forgotten-export) The symbol "InitialFocus" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
     InitialFocus: typeof InitialFocus;
+    initializeButtons(): void;
     // (undocumented)
-    protected readonly inlineButtons: Signal<ClrButton[]>;
+    get inlineButtons(): ClrButton[];
     // (undocumented)
     menu: ElementRef<HTMLElement>;
     // (undocumented)
-    protected readonly menuButtons: Signal<ClrButton[]>;
+    get menuButtons(): ClrButton[];
     // (undocumented)
     get menuPosition(): ClrPopoverPosition;
     set menuPosition(pos: ClrPopoverPosition | string);
     // (undocumented)
     menuToggle: ElementRef<HTMLElement>;
+    ngAfterContentInit(): void;
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
@@ -1618,6 +1635,8 @@ export class ClrButtonGroup implements AfterViewInit {
     popoverId: string;
     // (undocumented)
     protected popoverType: ClrPopoverType;
+    // @deprecated (undocumented)
+    rearrangeButton(button: ClrButton): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrButtonGroup, "clr-button-group", never, {
         "clrToggleButtonAriaLabel": {
@@ -5526,6 +5545,7 @@ export class ClrLoadingButton implements LoadingListener {
     loadingStateChange(state: ClrLoadingState): void;
     // (undocumented)
     get state(): ClrLoadingState;
+    set state(value: ClrLoadingState);
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrLoadingButton, "button[clrLoading]", never, {
         "disabled": {

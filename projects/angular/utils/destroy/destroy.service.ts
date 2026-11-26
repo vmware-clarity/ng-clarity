@@ -19,15 +19,15 @@ import { Subject } from 'rxjs';
  * This can be used as follows:
  * ```ts
  * @Component({
- *   selector: 'clr-button-group',
- *   templateUrl: 'button-group.html',
+ *   selector: 'my-component',
+ *   templateUrl: 'my-component.html',
  *   providers: [ClrDestroyService],
  * })
- * export class ClrButtonGroup {
- *   constructor(public buttonGroupNewService: ButtonInGroupService, private destroy$: ClrDestroyService) {}
+ * export class MyComponent implements OnInit {
+ *   constructor(private source: MySourceService, private destroy$: ClrDestroyService) {}
  *
- *   ngAfterContentInit() {
- *     this.buttonGroupNewService.changes.pipe(takeUntil(this.destroy$)).subscribe(button => this.rearrangeButton(button));
+ *   ngOnInit() {
+ *     this.source.changes.pipe(takeUntil(this.destroy$)).subscribe(change => this.handle(change));
  *   }
  * }
  * ```

@@ -4,6 +4,7 @@
 
 ```ts
 
+import { AfterContentInit } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 import { ConnectedPosition } from '@angular/cdk/overlay';
@@ -21,10 +22,10 @@ import { OnInit } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { PipeTransform } from '@angular/core';
+import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
 import { RouterLinkActive } from '@angular/router';
 import { SafeHtml } from '@angular/platform-browser';
-import { Signal } from '@angular/core';
 import { Subject } from 'rxjs';
 import { TemplateRef } from '@angular/core';
 import { Type } from '@angular/core';
@@ -40,7 +41,11 @@ export const CLR_LOADING_BUTTON_DIRECTIVES: Type<any>[];
 //
 // @public (undocumented)
 export class ClrButton implements LoadingListener {
-    constructor(routerLinkActive: RouterLinkActive);
+    constructor(routerLinkActive: RouterLinkActive, buttonInGroupService: ButtonInGroupService);
+    // Warning: (ae-forgotten-export) The symbol "ButtonInGroupService" needs to be exported by the entry point clr-angular-button.d.ts
+    //
+    // (undocumented)
+    buttonInGroupService: ButtonInGroupService;
     // (undocumented)
     get classNames(): string;
     set classNames(value: string);
@@ -58,6 +63,7 @@ export class ClrButton implements LoadingListener {
     set inMenu(value: boolean);
     // (undocumented)
     get loading(): boolean;
+    set loading(value: boolean | undefined);
     // Warning: (ae-forgotten-export) The symbol "ClrLoadingState" needs to be exported by the entry point clr-angular-button.d.ts
     //
     // (undocumented)
@@ -65,6 +71,8 @@ export class ClrButton implements LoadingListener {
     // (undocumented)
     get name(): string | null;
     set name(value: string);
+    // (undocumented)
+    ngAfterViewInit(): void;
     // (undocumented)
     get role(): string | null;
     // (undocumented)
@@ -110,31 +118,40 @@ export class ClrButton implements LoadingListener {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrButton, [{
         optional: true;
+    }, {
+        optional: true;
+        skipSelf: true;
     }]>;
 }
 
 // @public (undocumented)
-export class ClrButtonGroup implements AfterViewInit {
+export class ClrButtonGroup implements AfterContentInit, AfterViewInit {
     // Warning: (ae-forgotten-export) The symbol "ClrPopoverService" needs to be exported by the entry point clr-angular-button.d.ts
     // Warning: (ae-forgotten-export) The symbol "ClrDestroyService" needs to be exported by the entry point clr-angular-button.d.ts
     // Warning: (ae-forgotten-export) The symbol "ButtonGroupFocusHandler" needs to be exported by the entry point clr-angular-button.d.ts
-    constructor(popoverService: ClrPopoverService, commonStrings: ClrCommonStringsService, destroy$: ClrDestroyService, focusHandler: ButtonGroupFocusHandler);
+    constructor(buttonGroupNewService: ButtonInGroupService, popoverService: ClrPopoverService, commonStrings: ClrCommonStringsService, destroy$: ClrDestroyService, focusHandler: ButtonGroupFocusHandler);
+    // (undocumented)
+    buttonGroupNewService: ButtonInGroupService;
+    // (undocumented)
+    buttons: QueryList<ClrButton>;
     // (undocumented)
     clrToggleButtonAriaLabel: string;
     // Warning: (ae-forgotten-export) The symbol "ClrCommonStringsService" needs to be exported by the entry point clr-angular-button.d.ts
     //
     // (undocumented)
     commonStrings: ClrCommonStringsService;
+    getMoveIndex(buttonToMove: ClrButton): number;
     // Warning: (ae-forgotten-export) The symbol "InitialFocus" needs to be exported by the entry point clr-angular-button.d.ts
     //
     // (undocumented)
     InitialFocus: typeof InitialFocus;
+    initializeButtons(): void;
     // (undocumented)
-    protected readonly inlineButtons: Signal<ClrButton[]>;
+    get inlineButtons(): ClrButton[];
     // (undocumented)
     menu: ElementRef<HTMLElement>;
     // (undocumented)
-    protected readonly menuButtons: Signal<ClrButton[]>;
+    get menuButtons(): ClrButton[];
     // Warning: (ae-forgotten-export) The symbol "ClrPopoverPosition" needs to be exported by the entry point clr-angular-button.d.ts
     //
     // (undocumented)
@@ -142,6 +159,7 @@ export class ClrButtonGroup implements AfterViewInit {
     set menuPosition(pos: ClrPopoverPosition | string);
     // (undocumented)
     menuToggle: ElementRef<HTMLElement>;
+    ngAfterContentInit(): void;
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
@@ -154,6 +172,8 @@ export class ClrButtonGroup implements AfterViewInit {
     //
     // (undocumented)
     protected popoverType: ClrPopoverType;
+    // @deprecated (undocumented)
+    rearrangeButton(button: ClrButton): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrButtonGroup, "clr-button-group", never, {
         "clrToggleButtonAriaLabel": {
@@ -216,6 +236,7 @@ export class ClrLoadingButton implements LoadingListener {
     loadingStateChange(state: ClrLoadingState): void;
     // (undocumented)
     get state(): ClrLoadingState;
+    set state(value: ClrLoadingState);
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrLoadingButton, "button[clrLoading]", never, {
         "disabled": {
@@ -241,7 +262,7 @@ export class ClrLoadingButtonModule {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-button.d.ts:172:5 - (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-angular-button.d.ts
+// dist/clr-angular/types/clr-angular-button.d.ts:208:5 - (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-angular-button.d.ts
 
 // (No @packageDocumentation comment for this package)
 

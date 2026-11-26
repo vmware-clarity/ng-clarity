@@ -5,9 +5,9 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-@for (inlineButton of inlineButtons(); track inlineButton) {
+@for (inlineButton of inlineButtons; track inlineButton) {
 <ng-template [ngTemplateOutlet]="inlineButton.templateRef"></ng-template>
-} @if (menuButtons().length > 0) {
+} @if (menuButtons.length > 0) {
 <div class="btn-group-overflow open" [ngClass]="menuPosition">
   <button
     #menuToggle
@@ -31,7 +31,7 @@
     [attr.aria-hidden]="!open"
     *clrPopoverContent="open; at menuPosition; type: popoverType; outsideClickToClose: true; scrollToClose: true"
   >
-    @for (menuButton of menuButtons(); track menuButton) {
+    @for (menuButton of menuButtons; track menuButton) {
     <ng-template [ngTemplateOutlet]="menuButton.templateRef"></ng-template>
     }
   </div>

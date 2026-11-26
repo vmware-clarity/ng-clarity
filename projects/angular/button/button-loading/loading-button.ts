@@ -88,6 +88,9 @@ export class ClrLoadingButton implements LoadingListener {
   get state(): ClrLoadingState {
     return this._state();
   }
+  set state(value: ClrLoadingState) {
+    this._state.set(value);
+  }
 
   // The button goes back to its default state once the check mark animation (see `_buttons.clarity.scss`) is over:
   // done, canceled (hidden button) or not started at all (animations turned off).
