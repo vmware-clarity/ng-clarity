@@ -7,12 +7,17 @@
 
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   linkedSignal,
+  OnDestroy,
+  OnInit,
   Optional,
   Output,
+  Renderer2,
   signal,
 } from '@angular/core';
 import { ClrCommonStringsService } from '@clr/angular/utils';
@@ -28,7 +33,7 @@ import { MultiAlertService } from './providers/multi-alert.service';
   standalone: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClrAlert {
+export class ClrAlert implements OnInit, OnDestroy {
   @Input('clrAlertSizeSmall') isSmall = false;
   @Input('clrAlertClosable') closable = true;
   @Input('clrAlertAppLevel') isAppLevel = false;
@@ -48,8 +53,14 @@ export class ClrAlert {
 
   constructor(
     private iconService: AlertIconAndTypesService,
+    /** @deprecated No longer used. Kept for backwards compatibility with subclasses calling `super()`. */
+    _cdr: ChangeDetectorRef,
     @Optional() private multiAlertService: MultiAlertService,
-    private commonStrings: ClrCommonStringsService
+    private commonStrings: ClrCommonStringsService,
+    /** @deprecated No longer used. Kept for backwards compatibility with subclasses calling `super()`. */
+    _renderer: Renderer2,
+    /** @deprecated No longer used. Kept for backwards compatibility with subclasses calling `super()`. */
+    _hostElement: ElementRef<HTMLElement>
   ) {}
 
   @Input('clrAlertLightweight')
@@ -102,6 +113,20 @@ export class ClrAlert {
   }
   set hidden(value: boolean) {
     this.isHidden.set(value);
+  }
+
+  /**
+   * @deprecated No longer does anything. Kept for backwards compatibility with subclasses calling `super.ngOnInit()`.
+   */
+  ngOnInit() {
+    // intentionally empty
+  }
+
+  /**
+   * @deprecated No longer does anything. Kept for backwards compatibility with subclasses calling `super.ngOnDestroy()`.
+   */
+  ngOnDestroy() {
+    // intentionally empty
   }
 
   configAlertType(val: string) {

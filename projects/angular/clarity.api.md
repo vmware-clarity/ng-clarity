@@ -1099,10 +1099,13 @@ export class ClrAccordionTitle {
 }
 
 // @public (undocumented)
-export class ClrAlert {
+export class ClrAlert implements OnInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "AlertIconAndTypesService" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "MultiAlertService" needs to be exported by the entry point clr-angular.d.ts
-    constructor(iconService: AlertIconAndTypesService, multiAlertService: MultiAlertService, commonStrings: ClrCommonStringsService);
+    constructor(iconService: AlertIconAndTypesService,
+    _cdr: ChangeDetectorRef, multiAlertService: MultiAlertService, commonStrings: ClrCommonStringsService,
+    _renderer: Renderer2,
+    _hostElement: ElementRef<HTMLElement>);
     // (undocumented)
     get alertClass(): string;
     // (undocumented)
@@ -1135,6 +1138,10 @@ export class ClrAlert {
     set isLightweight(val: boolean);
     // (undocumented)
     isSmall: boolean;
+    // @deprecated (undocumented)
+    ngOnDestroy(): void;
+    // @deprecated (undocumented)
+    ngOnInit(): void;
     // (undocumented)
     open(): void;
     // (undocumented)
@@ -1175,9 +1182,9 @@ export class ClrAlert {
         "_closedChanged": "clrAlertClosedChange";
     }, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlert, [null, {
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlert, [null, null, {
         optional: true;
-    }, null]>;
+    }, null, null, null]>;
 }
 
 // @public (undocumented)

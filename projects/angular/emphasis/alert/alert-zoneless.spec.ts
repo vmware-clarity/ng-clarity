@@ -93,6 +93,21 @@ class EagerAlertsHost {
   texts = ['First', 'Second'];
 }
 
+@Component({
+  template: `
+    <clr-alert [clrAlertType]="'warning'">
+      <clr-alert-item>
+        <span class="alert-text">Lone</span>
+      </clr-alert-item>
+    </clr-alert>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
+})
+class LoneAlertHost {
+  @ViewChild(ClrAlert) alert: ClrAlert;
+}
+
 function iconShape(element: HTMLElement): string {
   return element.querySelector('cds-icon.alert-icon').getAttribute('shape');
 }
@@ -178,6 +193,16 @@ describe('ClrAlert (zoneless, OnPush host)', () => {
     host.alert.alertIconShape = 'loading';
     await fixture.whenStable();
     expect(element.querySelector('clr-spinner.alert-spinner')).not.toBeNull();
+  });
+
+  it('renders the hidden setter until the group recomputes it', async () => {
+    host.alert.hidden = true;
+    await fixture.whenStable();
+    expect(element.querySelector('clr-alert').classList).toContain('alert-hidden');
+
+    host.alert.hidden = false;
+    await fixture.whenStable();
+    expect(element.querySelector('clr-alert').classList).not.toContain('alert-hidden');
   });
 
   it('renders a close() made from an asynchronous callback', async () => {
@@ -313,6 +338,20 @@ describe('ClrAlerts (zoneless, OnPush host)', () => {
     expect(host.index()).toBe(0);
   });
 
+  it('keeps the current alert when a different, non-current alert is closed', async () => {
+    host.alerts.update(alerts => [...alerts, { type: 'success', text: 'Third' }]);
+    await fixture.whenStable();
+
+    host.alertList.get(1).close();
+    await fixture.whenStable();
+
+    expect(element.querySelectorAll('.alert').length).toBe(2);
+    expect(hiddenStates()).toEqual([false, true, true]);
+    expect(service().current).toBe(0);
+    expect(pagerText()).toBe('1 / 2');
+    expect(groupElement().classList).toContain('alert-info');
+  });
+
   it('updates the group type class when the current alert type is set on the instance', async () => {
     host.alertList.first.alertType = 'warning';
     await fixture.whenStable();
@@ -388,5 +427,33 @@ describe('ClrAlerts in a Zone app (Eager host, plain ticks)', () => {
     expect(element.querySelectorAll('.alert').length).toBe(2);
     expect(hiddenStates()).toEqual([false, true, true]);
     expect(element.querySelector('.alerts-pager-text').textContent.trim()).toBe('1 / 2');
+  });
+});
+
+describe('A lone ClrAlert (zoneless, OnPush host)', () => {
+  let fixture: ComponentFixture<LoneAlertHost>;
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({ imports: [ClrAlertModule], declarations: [LoneAlertHost] });
+    fixture = TestBed.createComponent(LoneAlertHost);
+    await fixture.whenStable();
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+  });
+
+  it('is visible and can be closed and reopened without a clr-alerts group', async () => {
+    const element: HTMLElement = fixture.nativeElement;
+    expect(element.querySelector('clr-alert').classList).not.toContain('alert-hidden');
+    expect(element.querySelector('.alert')).not.toBeNull();
+
+    fixture.componentInstance.alert.close();
+    await fixture.whenStable();
+    expect(element.querySelector('.alert')).toBeNull();
+
+    fixture.componentInstance.alert.open();
+    await fixture.whenStable();
+    expect(element.querySelector('.alert')).not.toBeNull();
   });
 });

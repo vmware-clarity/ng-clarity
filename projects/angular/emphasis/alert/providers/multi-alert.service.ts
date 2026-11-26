@@ -14,7 +14,7 @@ import { ClrAlert } from '../alert';
 export class MultiAlertService {
   private subscription: Subscription | undefined;
   private readonly alerts = signal<ClrAlert[]>([]);
-  private readonly index = signal<number>(undefined);
+  private readonly index = signal<number | undefined>(undefined);
   private readonly openAlerts = computed(() => this.alerts().filter(alert => !alert._closed));
   private _change = new Subject<number>();
 
