@@ -22,7 +22,6 @@ import {
   customRangePresetFilters,
   DatagridFiltersStoryWrapperComponent,
   equalsDayPresetFilters,
-  lastWeekPresetFilters,
   modifiedOnly,
   predefinedFilters,
   presetFilters,
@@ -174,14 +173,6 @@ export const DateTimeCustomRange: Story = {
   args: {
     filterMode: FilterMode.AdvancedOnly,
     presetFilters: customRangePresetFilters,
-  },
-};
-
-export const DateTimeLastWeek: Story = {
-  args: {
-    filterMode: FilterMode.AdvancedOnly,
-    // The pill shows "Last week" from the editor state, whatever date the criteria start at.
-    presetFilters: lastWeekPresetFilters(),
   },
 };
 
