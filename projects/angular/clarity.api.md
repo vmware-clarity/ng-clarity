@@ -28,6 +28,7 @@ import { EnvironmentInjector } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { FactoryProvider } from '@angular/core';
 import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
+import { FormControlStatus } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { FormGroupDirective } from '@angular/forms';
 import { FormGroupName } from '@angular/forms';
@@ -61,6 +62,7 @@ import { RouterLinkActive } from '@angular/router';
 import { SafeHtml } from '@angular/platform-browser';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
+import { Signal } from '@angular/core';
 import { SimpleChange } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
@@ -947,13 +949,17 @@ export abstract class ClrAbstractContainer implements OnDestroy {
     // (undocumented)
     protected controlClassService: ControlClassService;
     // (undocumented)
-    controlErrorComponent: ClrControlError;
+    get controlErrorComponent(): ClrControlError;
+    set controlErrorComponent(value: ClrControlError);
     // (undocumented)
-    controlHelperComponent: ClrControlHelper;
+    get controlHelperComponent(): ClrControlHelper;
+    set controlHelperComponent(value: ClrControlHelper);
     // (undocumented)
     controls: NgControl[];
+    protected readonly controlState: Signal<ControlState>;
     // (undocumented)
-    controlSuccessComponent: ClrControlSuccess;
+    get controlSuccessComponent(): ClrControlSuccess;
+    set controlSuccessComponent(value: ClrControlSuccess);
     // (undocumented)
     protected get errorMessagePresent(): boolean;
     get helpers(): {
@@ -963,7 +969,8 @@ export abstract class ClrAbstractContainer implements OnDestroy {
         showValid: boolean;
     };
     // (undocumented)
-    label: ClrControlLabel;
+    get label(): ClrControlLabel;
+    set label(value: ClrControlLabel);
     // (undocumented)
     protected layoutService: LayoutService;
     // (undocumented)
@@ -980,7 +987,7 @@ export abstract class ClrAbstractContainer implements OnDestroy {
     // (undocumented)
     protected get successMessagePresent(): boolean;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAbstractContainer, never, never, {}, {}, ["label", "controlSuccessComponent", "controlErrorComponent", "controlHelperComponent"], never, true, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAbstractContainer, never, never, {}, {}, ["labelQuery", "successQuery", "errorQuery", "helperQuery"], never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAbstractContainer, [{
         optional: true;
@@ -2465,9 +2472,11 @@ export class ClrControlLabel implements OnInit, OnDestroy {
     // (undocumented)
     disableGrid(): void;
     // (undocumented)
-    forAttr?: string;
+    get forAttr(): string | undefined;
+    set forAttr(id: string | undefined);
     // (undocumented)
-    idAttr?: string;
+    get idAttr(): string | undefined;
+    set idAttr(id: string | undefined);
     // (undocumented)
     idInput?: string;
     // (undocumented)
@@ -6937,7 +6946,8 @@ export class ClrSignpost {
     get showDefaultTrigger(): boolean;
     // (undocumented)
     signpostTriggerAriaLabel?: string;
-    useCustomTrigger: boolean;
+    get useCustomTrigger(): boolean;
+    set useCustomTrigger(value: boolean);
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrSignpost, "clr-signpost", never, {
         "signpostTriggerAriaLabel": {
@@ -7024,12 +7034,14 @@ export class ClrSignpostTitle {
 // @public (undocumented)
 export class ClrSignpostTrigger implements OnDestroy {
     constructor(popoverService: ClrPopoverService, el: ElementRef<HTMLElement>, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, document: any, platformId: any);
+    get ariaControl(): string | undefined;
+    set ariaControl(value: string | undefined);
     // (undocumented)
-    ariaControl?: string;
+    get ariaExpanded(): boolean;
+    set ariaExpanded(value: boolean);
     // (undocumented)
-    ariaExpanded: boolean;
-    // (undocumented)
-    isOpen: boolean;
+    get isOpen(): boolean;
+    set isOpen(value: boolean);
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -7910,13 +7922,12 @@ export class ClrTooltipModule {
 }
 
 // @public (undocumented)
-export class ClrTooltipTrigger {
+export class ClrTooltipTrigger implements OnDestroy {
     constructor(popoverService: ClrPopoverService, tooltipIdService: TooltipIdService, tooltipMouseService: TooltipMouseService, element: ElementRef);
-    // (undocumented)
-    ariaDescribedBy?: string;
+    get ariaDescribedBy(): string | undefined;
+    set ariaDescribedBy(value: string | undefined);
     // (undocumented)
     hideTooltip(): void;
-    // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
     showTooltip(): void;
@@ -9093,6 +9104,16 @@ export const controlLunIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const controlLunIconName = "control-lun";
+
+// @public
+export interface ControlState {
+    readonly disabled: boolean;
+    readonly errors: ValidationErrors | null;
+    readonly invalid: boolean;
+    readonly status: FormControlStatus | null;
+    readonly touched: boolean;
+    readonly value: unknown;
+}
 
 // @public (undocumented)
 export const copyIcon: IconShapeTuple;
@@ -10531,7 +10552,8 @@ export class LayoutService {
     // (undocumented)
     labelSizeIsValid(labelSize: number): boolean;
     // (undocumented)
-    layout: ClrFormLayout | string;
+    get layout(): ClrFormLayout | string;
+    set layout(layout: ClrFormLayout | string);
     // (undocumented)
     get layoutClass(): string;
     // (undocumented)
@@ -10844,7 +10866,7 @@ export const newIcon: IconShapeTuple;
 export const newIconName = "new";
 
 // @public (undocumented)
-export class NgControlService {
+export class NgControlService implements OnDestroy {
     // (undocumented)
     addControl(control: NgControl): void;
     // (undocumented)
@@ -10857,6 +10879,11 @@ export class NgControlService {
     emitControlsChange(controls: NgControl[]): void;
     // (undocumented)
     get hasMultipleControls(): boolean;
+    // (undocumented)
+    ngOnDestroy(): void;
+    // @internal
+    refreshStates(): void;
+    get states(): Signal<readonly ControlState[]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<NgControlService, never>;
     // (undocumented)

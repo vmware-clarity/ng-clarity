@@ -18,6 +18,7 @@ import { ElementRef } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { FactoryProvider } from '@angular/core';
 import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
+import { FormControlStatus } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { FormGroupDirective } from '@angular/forms';
 import { FormGroupName } from '@angular/forms';
@@ -43,6 +44,7 @@ import { PipeTransform } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
+import { Signal } from '@angular/core';
 import { SimpleChange } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
@@ -51,7 +53,9 @@ import { TemplateRef } from '@angular/core';
 import { Type } from '@angular/core';
 import { UntypedFormBuilder } from '@angular/forms';
 import { UntypedFormGroup } from '@angular/forms';
+import { ValidationErrors } from '@angular/forms';
 import { ViewContainerRef } from '@angular/core';
+import { WritableSignal } from '@angular/core';
 
 // @public (undocumented)
 export class AppfxWorkflowsModule {

@@ -45,6 +45,7 @@ import { Subscription } from 'rxjs';
 import { TemplateRef } from '@angular/core';
 import { Type } from '@angular/core';
 import { ViewContainerRef } from '@angular/core';
+import { WritableSignal } from '@angular/core';
 
 // @public (undocumented)
 export class AppfxTabsModule {

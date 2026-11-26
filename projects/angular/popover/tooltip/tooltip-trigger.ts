@@ -5,9 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, ElementRef, HostListener } from '@angular/core';
+import { Directive, ElementRef, HostListener, linkedSignal, OnDestroy } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import { Subscription } from 'rxjs';
 
 import { TooltipIdService } from './providers/tooltip-id.service';
 import { TooltipMouseService } from './providers/tooltip-mouse.service';
@@ -22,23 +21,34 @@ import { TooltipMouseService } from './providers/tooltip-mouse.service';
   },
   standalone: false,
 })
-export class ClrTooltipTrigger {
-  ariaDescribedBy?: string;
-  private subs: Subscription[] = [];
+export class ClrTooltipTrigger implements OnDestroy {
+  // Writable like the plain field it replaces: follows the content id until assigned directly.
+  private readonly ariaDescribedByState = linkedSignal<string | undefined>(() => this.tooltipIdService.id());
 
   constructor(
     private popoverService: ClrPopoverService,
-    tooltipIdService: TooltipIdService,
+    private tooltipIdService: TooltipIdService,
     private tooltipMouseService: TooltipMouseService,
     element: ElementRef
   ) {
-    // The aria-described by comes from the id of content. It
-    this.subs.push(tooltipIdService.id.subscribe(tooltipId => (this.ariaDescribedBy = tooltipId)));
     popoverService.origin = element;
   }
 
-  ngOnDestroy() {
-    this.subs.forEach(sub => sub.unsubscribe());
+  /**
+   * The id of the tooltip content, which describes the trigger.
+   */
+  get ariaDescribedBy(): string | undefined {
+    return this.ariaDescribedByState();
+  }
+  set ariaDescribedBy(value: string | undefined) {
+    this.ariaDescribedByState.set(value);
+  }
+
+  /**
+   * Kept so subclasses that call `super.ngOnDestroy()` keep compiling. The trigger holds no subscriptions.
+   */
+  ngOnDestroy(): void {
+    // Nothing to release.
   }
 
   @HostListener('focus')

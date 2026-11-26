@@ -12,6 +12,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   template: `<ng-content></ng-content>`,
   host: { '[class.signpost-title]': 'true' },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrSignpostTitle {}

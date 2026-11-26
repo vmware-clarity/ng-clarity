@@ -64,7 +64,7 @@ import { SignpostIdService } from './providers/signpost-id.service';
   },
   standalone: false,
   hostDirectives: [ClrPopoverContent],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrSignpostContent implements OnDestroy, AfterViewInit {
   @Input('clrSignpostCloseAriaLabel') signpostCloseAriaLabel?: string;
@@ -91,7 +91,7 @@ export class ClrSignpostContent implements OnDestroy, AfterViewInit {
       throw new Error('clr-signpost-content should only be used inside of a clr-signpost');
     }
     // Defaults
-    signpostIdService.setId(this.signpostContentId);
+    signpostIdService.id.set(this.signpostContentId);
 
     popoverService.panelClass.push('clr-signpost-container');
     popoverContent.contentType = ClrPopoverType.SIGNPOST;
