@@ -7035,10 +7035,13 @@ export class ClrSignpostTitle {
 export class ClrSignpostTrigger implements OnDestroy {
     constructor(popoverService: ClrPopoverService, el: ElementRef<HTMLElement>, signpostIdService: SignpostIdService, signpostFocusManager: SignpostFocusManager, document: any, platformId: any);
     get ariaControl(): string | undefined;
+    set ariaControl(value: string | undefined);
     // (undocumented)
     get ariaExpanded(): boolean;
+    set ariaExpanded(value: boolean);
     // (undocumented)
     get isOpen(): boolean;
+    set isOpen(value: boolean);
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -7919,11 +7922,13 @@ export class ClrTooltipModule {
 }
 
 // @public (undocumented)
-export class ClrTooltipTrigger {
+export class ClrTooltipTrigger implements OnDestroy {
     constructor(popoverService: ClrPopoverService, tooltipIdService: TooltipIdService, tooltipMouseService: TooltipMouseService, element: ElementRef);
     get ariaDescribedBy(): string | undefined;
+    set ariaDescribedBy(value: string | undefined);
     // (undocumented)
     hideTooltip(): void;
+    ngOnDestroy(): void;
     // (undocumented)
     showTooltip(): void;
     // (undocumented)

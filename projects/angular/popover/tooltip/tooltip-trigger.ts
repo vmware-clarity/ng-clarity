@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, ElementRef, HostListener } from '@angular/core';
+import { Directive, ElementRef, HostListener, linkedSignal, OnDestroy } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 
 import { TooltipIdService } from './providers/tooltip-id.service';
@@ -21,7 +21,10 @@ import { TooltipMouseService } from './providers/tooltip-mouse.service';
   },
   standalone: false,
 })
-export class ClrTooltipTrigger {
+export class ClrTooltipTrigger implements OnDestroy {
+  // Writable like the plain field it replaces: follows the content id until assigned directly.
+  private readonly ariaDescribedByState = linkedSignal<string | undefined>(() => this.tooltipIdService.id());
+
   constructor(
     private popoverService: ClrPopoverService,
     private tooltipIdService: TooltipIdService,
@@ -35,7 +38,17 @@ export class ClrTooltipTrigger {
    * The id of the tooltip content, which describes the trigger.
    */
   get ariaDescribedBy(): string | undefined {
-    return this.tooltipIdService.id();
+    return this.ariaDescribedByState();
+  }
+  set ariaDescribedBy(value: string | undefined) {
+    this.ariaDescribedByState.set(value);
+  }
+
+  /**
+   * Kept so subclasses that call `super.ngOnDestroy()` keep compiling. The trigger holds no subscriptions.
+   */
+  ngOnDestroy(): void {
+    // Nothing to release.
   }
 
   @HostListener('focus')

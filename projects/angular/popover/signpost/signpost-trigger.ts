@@ -6,7 +6,16 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import { Directive, DOCUMENT, ElementRef, HostListener, Inject, OnDestroy, PLATFORM_ID } from '@angular/core';
+import {
+  Directive,
+  DOCUMENT,
+  ElementRef,
+  HostListener,
+  Inject,
+  linkedSignal,
+  OnDestroy,
+  PLATFORM_ID,
+} from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -33,6 +42,12 @@ import { SignpostIdService } from './providers/signpost-id.service';
  *
  */
 export class ClrSignpostTrigger implements OnDestroy {
+  // Writable like the plain fields they replace. Each follows its source signal and keeps a value
+  // that is assigned directly until the source changes again.
+  private readonly isOpenState = linkedSignal(() => this.popoverService.open);
+  private readonly ariaExpandedState = linkedSignal(() => this.popoverService.open);
+  private readonly ariaControlState = linkedSignal<string | undefined>(() => this.signpostIdService.id());
+
   private document: Document;
   private subscription: Subscription;
 
@@ -48,18 +63,27 @@ export class ClrSignpostTrigger implements OnDestroy {
   }
 
   get isOpen(): boolean {
-    return this.popoverService.open;
+    return this.isOpenState();
+  }
+  set isOpen(value: boolean) {
+    this.isOpenState.set(value);
   }
 
   get ariaExpanded(): boolean {
-    return this.isOpen;
+    return this.ariaExpandedState();
+  }
+  set ariaExpanded(value: boolean) {
+    this.ariaExpandedState.set(value);
   }
 
   /**
    * The id of the signpost content, which the trigger controls.
    */
   get ariaControl(): string | undefined {
-    return this.signpostIdService.id();
+    return this.ariaControlState();
+  }
+  set ariaControl(value: string | undefined) {
+    this.ariaControlState.set(value);
   }
 
   ngOnInit() {

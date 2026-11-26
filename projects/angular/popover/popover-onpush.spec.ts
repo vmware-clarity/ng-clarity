@@ -10,8 +10,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { ClrDropdownModule } from '@clr/angular/popover/dropdown';
-import { ClrSignpost, ClrSignpostContent, ClrSignpostModule } from '@clr/angular/popover/signpost';
-import { ClrTooltipModule } from '@clr/angular/popover/tooltip';
+import { ClrSignpost, ClrSignpostContent, ClrSignpostModule, ClrSignpostTrigger } from '@clr/angular/popover/signpost';
+import { ClrTooltipModule, ClrTooltipTrigger } from '@clr/angular/popover/tooltip';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
 // These hosts are OnPush and change only through signals or through code that notifies nothing,
@@ -95,6 +95,23 @@ class DropdownHost {
   readonly closeOnItemClick = signal(true);
   readonly position = signal('bottom-left');
   readonly items = signal(['First', 'Second']);
+}
+
+@Component({
+  template: `
+    <clr-signpost>
+      <clr-signpost-content *clrIfOpen>Body</clr-signpost-content>
+    </clr-signpost>
+    <clr-tooltip>
+      <button type="button" clrTooltipTrigger>Trigger</button>
+      <clr-tooltip-content [id]="contentId()">Text</clr-tooltip-content>
+    </clr-tooltip>
+  `,
+  changeDetection: ChangeDetectionStrategy.Default,
+  standalone: false,
+})
+class DefaultHost {
+  readonly contentId = signal('default-tooltip');
 }
 
 function popoverService(fixture: ComponentFixture<unknown>, selector: string) {
@@ -375,5 +392,62 @@ describe('Popover components under an OnPush host', () => {
       expect(menu().classList).not.toContain('is-off-screen');
       expect(fixture.nativeElement.querySelector('clr-dropdown.persistent').classList).toContain('open');
     });
+  });
+});
+
+describe('Popover triggers under a Default host', () => {
+  let fixture: ComponentFixture<DefaultHost>;
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      declarations: [DefaultHost],
+      imports: [ClrSignpostModule, ClrTooltipModule],
+    });
+    fixture = TestBed.createComponent(DefaultHost);
+    fixture.autoDetectChanges();
+    await fixture.whenStable();
+  });
+  afterEach(() => fixture.destroy());
+
+  it('updates the signpost trigger attributes when the signpost opens and closes', async () => {
+    const trigger = fixture.nativeElement.querySelector('.signpost-action') as HTMLButtonElement;
+    expect(trigger.getAttribute('aria-expanded')).toBe('false');
+
+    popoverService(fixture, 'clr-signpost').open = true;
+    await fixture.whenStable();
+    expect(trigger.getAttribute('aria-expanded')).toBe('true');
+    expect(trigger.classList).toContain('active');
+    expect(trigger.getAttribute('aria-controls')).toBe(overlay('clr-signpost-content').id);
+
+    popoverService(fixture, 'clr-signpost').open = false;
+    await fixture.whenStable();
+    expect(trigger.getAttribute('aria-expanded')).toBe('false');
+    expect(trigger.classList).not.toContain('active');
+  });
+
+  it('describes the tooltip trigger with the content id', async () => {
+    const trigger = fixture.nativeElement.querySelector('[clrTooltipTrigger]') as HTMLButtonElement;
+    expect(trigger.getAttribute('aria-describedby')).toBe('default-tooltip');
+
+    fixture.componentInstance.contentId.set('default-tooltip-2');
+    await fixture.whenStable();
+    expect(trigger.getAttribute('aria-describedby')).toBe('default-tooltip-2');
+  });
+
+  it('keeps the trigger members writable and ngOnDestroy callable', async () => {
+    const signpostTrigger = fixture.debugElement
+      .query(By.directive(ClrSignpostTrigger))
+      .injector.get(ClrSignpostTrigger);
+    signpostTrigger.isOpen = true;
+    signpostTrigger.ariaExpanded = true;
+    signpostTrigger.ariaControl = 'custom-id';
+    expect(signpostTrigger.isOpen).toBe(true);
+    expect(signpostTrigger.ariaExpanded).toBe(true);
+    expect(signpostTrigger.ariaControl).toBe('custom-id');
+
+    const tooltipTrigger = fixture.debugElement.query(By.directive(ClrTooltipTrigger)).injector.get(ClrTooltipTrigger);
+    tooltipTrigger.ariaDescribedBy = 'custom-description';
+    expect(tooltipTrigger.ariaDescribedBy).toBe('custom-description');
+    expect(() => tooltipTrigger.ngOnDestroy()).not.toThrow();
   });
 });
