@@ -175,6 +175,26 @@ describe('ClrControlContainer (zoneless, OnPush host)', () => {
       expect(controlContainer(fixture).classList).toContain('clr-error');
     });
 
+    it('catches up with changes made with emitEvent: false when the host is checked', async () => {
+      host.control().disable({ emitEvent: false });
+      fixture.changeDetectorRef.markForCheck();
+      await fixture.whenStable();
+      expect(container(fixture).classList).toContain('clr-form-control-disabled');
+
+      host.control().enable({ emitEvent: false });
+      host.control().setValue('Ada', { emitEvent: false });
+      host.control().markAsTouched();
+      fixture.changeDetectorRef.markForCheck();
+      await fixture.whenStable();
+      expect(container(fixture).classList).not.toContain('clr-form-control-disabled');
+      expect(controlContainer(fixture).classList).toContain('clr-success');
+
+      host.control().setErrors({ taken: true }, { emitEvent: false });
+      fixture.changeDetectorRef.markForCheck();
+      await fixture.whenStable();
+      expect(controlContainer(fixture).classList).toContain('clr-error');
+    });
+
     it('describes the input by the error text when invalid', async () => {
       const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
       expect(input.getAttribute('aria-describedby')).not.toContain('-error');
