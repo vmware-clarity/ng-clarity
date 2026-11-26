@@ -22,7 +22,7 @@ import {
   Type,
   ViewContainerRef,
 } from '@angular/core';
-import { NgControl } from '@angular/forms';
+import { AbstractControl, NgControl } from '@angular/forms';
 import { HostWrapper } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
@@ -53,6 +53,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   private _containerInjector!: Injector;
   private differs: KeyValueDiffers | null = null;
   private differ: KeyValueDiffer<any, any> | undefined;
+  private watchedControl: AbstractControl | null = null;
 
   // I lost way too much time trying to make this work without injecting the ViewContainerRef and the Injector,
   // I'm giving up. So we have to inject these two manually for now.
@@ -148,6 +149,8 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
       this.differ = this.differs.find(this.ngControl).create();
     }
 
+    this.watchControl();
+
     if (this.ngControlService && this.ngControl) {
       this.ngControlService.addControl(this.ngControl);
     }
@@ -156,6 +159,9 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   ngDoCheck() {
     if (this.ngControl) {
       this.triggerDoCheck(this.differ, this.ngControl);
+      this.watchControl();
+      // Changes made with `emitEvent: false` fire no control event.
+      this.ngControlService?.refreshStates();
     }
   }
 
@@ -211,6 +217,23 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
           }
         });
       }
+    }
+  }
+
+  /**
+   * Notices when the control behind the NgControl is set late (formControlName) or replaced ([formControl]).
+   */
+  private watchControl() {
+    const control = this.ngControl?.control ?? null;
+    if (!control || control === this.watchedControl) {
+      return;
+    }
+
+    this.watchedControl = control;
+
+    // A container that already has this NgControl still follows its previous control.
+    if (this.ngControlService?.controls.includes(this.ngControl)) {
+      this.ngControlService.emitControlsChange(this.ngControlService.controls);
     }
   }
 

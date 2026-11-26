@@ -5,6 +5,7 @@
 ```ts
 
 import { AbstractControl } from '@angular/forms';
+import { AfterContentChecked } from '@angular/core';
 import { AfterContentInit } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
@@ -28,6 +29,7 @@ import { EnvironmentInjector } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { FactoryProvider } from '@angular/core';
 import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
+import { FormControlStatus } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { FormGroupDirective } from '@angular/forms';
 import { FormGroupName } from '@angular/forms';
@@ -61,6 +63,7 @@ import { RouterLinkActive } from '@angular/router';
 import { SafeHtml } from '@angular/platform-browser';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
+import { Signal } from '@angular/core';
 import { SimpleChange } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
@@ -947,13 +950,17 @@ export abstract class ClrAbstractContainer implements OnDestroy {
     // (undocumented)
     protected controlClassService: ControlClassService;
     // (undocumented)
-    controlErrorComponent: ClrControlError;
+    get controlErrorComponent(): ClrControlError;
+    set controlErrorComponent(value: ClrControlError);
     // (undocumented)
-    controlHelperComponent: ClrControlHelper;
+    get controlHelperComponent(): ClrControlHelper;
+    set controlHelperComponent(value: ClrControlHelper);
     // (undocumented)
     controls: NgControl[];
+    protected readonly controlState: Signal<ControlState>;
     // (undocumented)
-    controlSuccessComponent: ClrControlSuccess;
+    get controlSuccessComponent(): ClrControlSuccess;
+    set controlSuccessComponent(value: ClrControlSuccess);
     // (undocumented)
     protected get errorMessagePresent(): boolean;
     get helpers(): {
@@ -963,7 +970,8 @@ export abstract class ClrAbstractContainer implements OnDestroy {
         showValid: boolean;
     };
     // (undocumented)
-    label: ClrControlLabel;
+    get label(): ClrControlLabel;
+    set label(value: ClrControlLabel);
     // (undocumented)
     protected layoutService: LayoutService;
     // (undocumented)
@@ -980,7 +988,7 @@ export abstract class ClrAbstractContainer implements OnDestroy {
     // (undocumented)
     protected get successMessagePresent(): boolean;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAbstractContainer, never, never, {}, {}, ["label", "controlSuccessComponent", "controlErrorComponent", "controlHelperComponent"], never, true, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAbstractContainer, never, never, {}, {}, ["labelQuery", "successQuery", "errorQuery", "helperQuery"], never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAbstractContainer, [{
         optional: true;
@@ -2465,9 +2473,11 @@ export class ClrControlLabel implements OnInit, OnDestroy {
     // (undocumented)
     disableGrid(): void;
     // (undocumented)
-    forAttr?: string;
+    get forAttr(): string | undefined;
+    set forAttr(id: string | undefined);
     // (undocumented)
-    idAttr?: string;
+    get idAttr(): string | undefined;
+    set idAttr(id: string | undefined);
     // (undocumented)
     idInput?: string;
     // (undocumented)
@@ -4673,12 +4683,18 @@ export class ClrFileInfo {
 }
 
 // @public (undocumented)
-export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
+export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> implements OnInit, OnDestroy {
     constructor(injector: Injector, renderer: Renderer2, viewContainerRef: ViewContainerRef, elementRef: ElementRef<HTMLInputElement>, control: NgControl, commonStrings: ClrCommonStringsService);
     // (undocumented)
     readonly elementRef: ElementRef<HTMLInputElement>;
+    readonly files: Signal<readonly File[]>;
     // (undocumented)
-    selection: ClrFileInputSelection | undefined;
+    ngOnDestroy(): void;
+    // (undocumented)
+    ngOnInit(): void;
+    // (undocumented)
+    get selection(): ClrFileInputSelection | undefined;
+    set selection(value: ClrFileInputSelection | undefined);
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrFileInput, "input[type=\"file\"][clrFileInput]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -4689,7 +4705,7 @@ export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
 }
 
 // @public (undocumented)
-export class ClrFileInputContainer extends ClrAbstractContainer {
+export class ClrFileInputContainer extends ClrAbstractContainer implements AfterContentChecked {
     // (undocumented)
     protected get accept(): string;
     // (undocumented)
@@ -4709,13 +4725,16 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
     // (undocumented)
     protected get errorMessagePresent(): boolean;
     // (undocumented)
-    readonly fileInput: ClrFileInput;
+    get fileInput(): ClrFileInput;
+    set fileInput(value: ClrFileInput);
     // (undocumented)
-    protected readonly fileList: ClrFileList;
+    protected readonly fileList: Signal<ClrFileList>;
     // (undocumented)
     focusBrowseButton(): void;
     // (undocumented)
     protected get multiple(): boolean;
+    // (undocumented)
+    ngAfterContentChecked(): void;
     // (undocumented)
     protected get successMessagePresent(): boolean;
     // (undocumented)
@@ -4724,7 +4743,7 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
             "alias": "clrButtonLabel";
             "required": false;
         };
-    }, {}, ["fileInput", "fileList", "fileSuccessComponent", "fileErrorComponent"], ["label", "[clrFileInput]", "clr-control-helper", "clr-control-error", "clr-control-success", "clr-file-list"], false, never>;
+    }, {}, ["fileList", "fileInputQuery", "fileSuccessComponent", "fileErrorComponent"], ["label", "[clrFileInput]", "clr-control-helper", "clr-control-error", "clr-control-success", "clr-file-list"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrFileInputContainer, never>;
 }
@@ -4799,7 +4818,7 @@ export class ClrFileList {
     // (undocumented)
     protected createFileMessagesTemplateContext(file: File): ClrFileMessagesTemplateContext;
     // (undocumented)
-    protected readonly fileMessagesTemplate: ClrFileMessagesTemplate;
+    protected readonly fileMessagesTemplate: Signal<ClrFileMessagesTemplate>;
     // (undocumented)
     protected get files(): File[];
     // (undocumented)
@@ -9094,6 +9113,16 @@ export const controlLunIcon: IconShapeTuple;
 // @public (undocumented)
 export const controlLunIconName = "control-lun";
 
+// @public
+export interface ControlState {
+    readonly disabled: boolean;
+    readonly errors: ValidationErrors | null;
+    readonly invalid: boolean;
+    readonly status: FormControlStatus | null;
+    readonly touched: boolean;
+    readonly value: unknown;
+}
+
 // @public (undocumented)
 export const copyIcon: IconShapeTuple;
 
@@ -10531,7 +10560,8 @@ export class LayoutService {
     // (undocumented)
     labelSizeIsValid(labelSize: number): boolean;
     // (undocumented)
-    layout: ClrFormLayout | string;
+    get layout(): ClrFormLayout | string;
+    set layout(layout: ClrFormLayout | string);
     // (undocumented)
     get layoutClass(): string;
     // (undocumented)
@@ -10844,7 +10874,7 @@ export const newIcon: IconShapeTuple;
 export const newIconName = "new";
 
 // @public (undocumented)
-export class NgControlService {
+export class NgControlService implements OnDestroy {
     // (undocumented)
     addControl(control: NgControl): void;
     // (undocumented)
@@ -10857,6 +10887,11 @@ export class NgControlService {
     emitControlsChange(controls: NgControl[]): void;
     // (undocumented)
     get hasMultipleControls(): boolean;
+    // (undocumented)
+    ngOnDestroy(): void;
+    // @internal
+    refreshStates(): void;
+    get states(): Signal<readonly ControlState[]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<NgControlService, never>;
     // (undocumented)
