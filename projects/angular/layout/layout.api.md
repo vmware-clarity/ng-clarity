@@ -645,7 +645,7 @@ export class ClrVerticalNavIcon implements OnDestroy {
 
 // @public (undocumented)
 export class ClrVerticalNavLink implements OnDestroy {
-    constructor(host: ElementRef<HTMLElement>, _ref: ChangeDetectorRef, navGroupService: VerticalNavGroupService | null);
+    constructor(host: ElementRef<HTMLElement>, ref: ChangeDetectorRef, navGroupService: VerticalNavGroupService | null);
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)

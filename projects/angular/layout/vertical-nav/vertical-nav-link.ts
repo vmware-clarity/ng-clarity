@@ -38,7 +38,7 @@ export class ClrVerticalNavLink implements OnDestroy {
 
   constructor(
     host: ElementRef<HTMLElement>,
-    _ref: ChangeDetectorRef,
+    ref: ChangeDetectorRef,
     @Optional() @Inject(VerticalNavGroupService) navGroupService: VerticalNavGroupService | null
   ) {
     // Note: since the `VerticalNavGroupService` is an optional provider, we'll setup the event

@@ -87,6 +87,82 @@ class OnPushVerticalNavApiHost {
   readonly navGroup = viewChild.required(ClrVerticalNavGroup);
 }
 
+/**
+ * Host that registers its groups and icons from nested embedded views (an `@if` inside an `@for` inside an `@if`),
+ * created after the nav's host bindings were evaluated. `ChangeDetectionStrategy.Default` is the consumer case that
+ * runs the dev mode checkNoChanges pass over the nav host bindings (NG0100 if they were already stale).
+ */
+@Component({
+  template: `
+    <clr-vertical-nav>
+      @if (outer()) {
+        @for (item of items; track item) {
+          @if (inner()) {
+            <cds-icon shape="home" clrVerticalNavIcon></cds-icon>
+            <clr-vertical-nav-group>
+              Group {{ item }}
+              <clr-vertical-nav-group-children *clrIfExpanded>
+                <a clrVerticalNavLink href="#">Child {{ item }}</a>
+              </clr-vertical-nav-group-children>
+            </clr-vertical-nav-group>
+          }
+        }
+      }
+    </clr-vertical-nav>
+  `,
+  changeDetection: ChangeDetectionStrategy.Default,
+  standalone: false,
+})
+class NestedEmbeddedViewHost {
+  readonly outer = signal(false);
+  readonly inner = signal(false);
+  readonly items = [1, 2];
+}
+
+describe('ClrVerticalNav (groups and icons registered from nested embedded views)', () => {
+  let fixture: ComponentFixture<NestedEmbeddedViewHost>;
+
+  function navClasses(): string[] {
+    const nav: HTMLElement = fixture.nativeElement.querySelector('clr-vertical-nav');
+    return ['has-nav-groups', 'has-icons'].filter(name => nav.classList.contains(name));
+  }
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      imports: [ClrVerticalNavModule, ClrIcon],
+      declarations: [NestedEmbeddedViewHost],
+    });
+    fixture = TestBed.createComponent(NestedEmbeddedViewHost);
+    await fixture.whenStable();
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+  });
+
+  it('updates the host classes without ExpressionChangedAfterItHasBeenChecked as nested views come and go', async () => {
+    expect(navClasses()).toEqual([]);
+
+    fixture.componentInstance.outer.set(true);
+    await fixture.whenStable();
+
+    expect(navClasses()).toEqual([]);
+
+    fixture.componentInstance.inner.set(true);
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.querySelectorAll('clr-vertical-nav-group').length).toBe(2);
+    expect(navClasses()).toEqual(['has-nav-groups', 'has-icons']);
+    expect(() => fixture.detectChanges()).not.toThrow();
+
+    fixture.componentInstance.inner.set(false);
+    await fixture.whenStable();
+
+    expect(navClasses()).toEqual([]);
+    expect(() => fixture.detectChanges()).not.toThrow();
+  });
+});
+
 describe('ClrVerticalNav (zoneless, OnPush host)', () => {
   let fixture: ComponentFixture<unknown>;
   let host: OnPushVerticalNavHost;
