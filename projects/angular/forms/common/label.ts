@@ -16,6 +16,7 @@ import {
   OnInit,
   Optional,
   Renderer2,
+  signal,
 } from '@angular/core';
 import { ClrSignpost } from '@clr/angular/popover/signpost';
 import { Subscription } from 'rxjs';
@@ -30,13 +31,14 @@ import { NgControlService } from './providers/ng-control.service';
 })
 export class ClrControlLabel implements OnInit, OnDestroy {
   @Input('id') idInput?: string;
-  @HostBinding('attr.id') idAttr?: string;
-
-  @Input('for') @HostBinding('attr.for') forAttr?: string;
 
   @ContentChild(ClrSignpost, { read: ElementRef }) private signpost?: ElementRef;
   private enableGrid = true;
   private subscriptions: Subscription[] = [];
+
+  // Containers and the id service write these after the label's view was checked.
+  private readonly _idAttr = signal<string | undefined>(undefined);
+  private readonly _forAttr = signal<string | undefined>(undefined);
 
   constructor(
     @Optional() private controlIdService: ControlIdService,
@@ -45,6 +47,23 @@ export class ClrControlLabel implements OnInit, OnDestroy {
     private renderer: Renderer2,
     private el: ElementRef<HTMLLabelElement>
   ) {}
+
+  @HostBinding('attr.id')
+  get idAttr(): string | undefined {
+    return this._idAttr();
+  }
+  set idAttr(id: string | undefined) {
+    this._idAttr.set(id);
+  }
+
+  @Input('for')
+  @HostBinding('attr.for')
+  get forAttr(): string | undefined {
+    return this._forAttr();
+  }
+  set forAttr(id: string | undefined) {
+    this._forAttr.set(id);
+  }
 
   get labelText(): string {
     return this.el.nativeElement && this.el.nativeElement.textContent;
