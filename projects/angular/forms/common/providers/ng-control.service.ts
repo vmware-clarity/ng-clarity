@@ -10,7 +10,7 @@ import { NgControl } from '@angular/forms';
 import { combineLatest, Observable, of, Subject, switchMap } from 'rxjs';
 
 import { ClrAbstractContainer } from '../abstract-container';
-import { ControlState, controlStateChanges } from '../control-state';
+import { ControlState, controlStateChanges, readControlState, sameControlState } from '../control-state';
 
 export interface Helpers {
   show?: boolean;
@@ -50,6 +50,23 @@ export class NgControlService implements OnDestroy {
 
   get hasMultipleControls() {
     return this._controls?.length > 1;
+  }
+
+  /**
+   * Re-reads the state of each control. Changes made with `emitEvent: false` fire no control event,
+   * so the WrappedFormControl calls this on each check and the signal only changes when a value did.
+   * @internal
+   */
+  refreshStates() {
+    const current = this._states();
+    if (current.length !== this._controls.length) {
+      return;
+    }
+
+    const next = this._controls.map(readControlState);
+    if (next.some((state, index) => !sameControlState(state, current[index]))) {
+      this._states.set(next);
+    }
   }
 
   addControl(control: NgControl) {
