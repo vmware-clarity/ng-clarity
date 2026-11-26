@@ -34,10 +34,6 @@ import { ClrWizardPage } from '../wizard-page';
  */
 @Injectable()
 export class PageCollectionService {
-  /**
-   *
-   * @memberof PageCollectionService
-   */
   private _pagesReset = new Subject<boolean>();
 
   private _pages!: QueryList<ClrWizardPage>;
@@ -68,7 +64,8 @@ export class PageCollectionService {
    * @memberof PageCollectionService
    */
   get pagesAsArray(): ClrWizardPage[] {
-    return this.pageList();
+    // a copy, so a consumer mutating the result cannot corrupt the shared snapshot
+    return [...this.pageList()];
   }
 
   /**
@@ -77,7 +74,7 @@ export class PageCollectionService {
    * @memberof PageCollectionService
    */
   get pagesCount(): number {
-    return this.pagesAsArray.length;
+    return this.pageList().length;
   }
 
   /**
@@ -149,7 +146,7 @@ export class PageCollectionService {
    * @memberof PageCollectionService
    */
   getPageById(id: string): ClrWizardPage {
-    const foundPages: ClrWizardPage[] = this.pages.filter((page: ClrWizardPage) => id === page.id);
+    const foundPages: ClrWizardPage[] = this.pagesAsArray.filter((page: ClrWizardPage) => id === page.id);
     return this.checkResults(foundPages, id);
   }
 

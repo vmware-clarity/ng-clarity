@@ -21,15 +21,25 @@ import { ClrWizardModule } from './wizard.module';
     <clr-wizard
       [clrWizardInPage]="true"
       [clrWizardPreventNavigation]="stopNavigation()"
+      [clrWizardDisableStepnav]="disableStepnav()"
+      [clrWizardForceForwardNavigation]="forceForward()"
       (clrWizardCurrentPageChange)="pageChanges.set(pageChanges() + 1)"
     >
       <clr-wizard-title [clrHeadingLevel]="titleLevel()">Zoneless wizard</clr-wizard-title>
       @if (showHeaderAction()) {
-        <clr-wizard-header-action>Help</clr-wizard-header-action>
+        <clr-wizard-header-action [clrWizardHeaderActionDisabled]="headerActionDisabled()">
+          Help
+        </clr-wizard-header-action>
       }
       <clr-wizard-button type="cancel">Cancel</clr-wizard-button>
       <clr-wizard-button type="previous">Back</clr-wizard-button>
-      <clr-wizard-button type="next">Next</clr-wizard-button>
+      <clr-wizard-button
+        type="next"
+        [clrWizardButtonDisabled]="buttonDisabled()"
+        [clrWizardButtonHidden]="buttonHidden()"
+      >
+        Next
+      </clr-wizard-button>
       <clr-wizard-button type="finish">Finish</clr-wizard-button>
 
       @for (page of pages(); track page) {
@@ -59,11 +69,35 @@ class InPageWizardHost {
   readonly errorPage = signal('');
   readonly stopNavigation = signal(false);
   readonly showHeaderAction = signal(false);
+  readonly headerActionDisabled = signal(false);
+  readonly buttonDisabled = signal(false);
+  readonly buttonHidden = signal(false);
+  readonly disableStepnav = signal(false);
+  readonly forceForward = signal(false);
   readonly titleLevel = signal<HeadingLevel>(undefined);
   readonly pageTitleLevel = signal<HeadingLevel>(undefined);
   readonly note = signal('note');
   readonly loaded = signal('');
   readonly pageChanges = signal(0);
+}
+
+@Component({
+  template: `
+    <clr-wizard [clrWizardInPage]="true" clrWizardStepnavLayout="horizontal">
+      <clr-wizard-title>Horizontal wizard</clr-wizard-title>
+      <clr-wizard-button type="next">Next</clr-wizard-button>
+      @for (page of pages(); track page) {
+        <clr-wizard-page [id]="page">
+          <ng-template clrPageTitle>{{ page }}</ng-template>
+        </clr-wizard-page>
+      }
+    </clr-wizard>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
+})
+class HorizontalWizardHost {
+  readonly pages = signal(['one', 'two', 'three']);
 }
 
 @Component({
@@ -213,6 +247,77 @@ describe('ClrWizard (zoneless, OnPush host)', () => {
       expect(button('next').disabled).toBe(false);
     });
 
+    it('follows the disabled and hidden state of a wizard button', async () => {
+      host.buttonDisabled.set(true);
+      await fixture.whenStable();
+      expect(button('next').disabled).toBe(true);
+      expect(button('next').classList.contains('disabled')).toBe(true);
+
+      host.buttonDisabled.set(false);
+      host.buttonHidden.set(true);
+      await fixture.whenStable();
+      expect(button('next').disabled).toBe(false);
+      expect(buttonHidden('next')).toBe('true');
+
+      host.buttonHidden.set(false);
+      await fixture.whenStable();
+      expect(buttonHidden('next')).toBe('false');
+    });
+
+    it('follows the disabled state of a header action', async () => {
+      host.showHeaderAction.set(true);
+      await fixture.whenStable();
+      const action = () => element().querySelector('.clr-wizard-header-action');
+      expect(action().classList.contains('disabled')).toBe(false);
+
+      host.headerActionDisabled.set(true);
+      await fixture.whenStable();
+      expect(action().classList.contains('disabled')).toBe(true);
+
+      host.headerActionDisabled.set(false);
+      await fixture.whenStable();
+      expect(action().classList.contains('disabled')).toBe(false);
+    });
+
+    it('disables the stepnav links with clrWizardDisableStepnav', async () => {
+      wizard.next();
+      await fixture.whenStable();
+      expect(stepClasses('disabled')).toEqual([false, false, true]);
+
+      host.disableStepnav.set(true);
+      await fixture.whenStable();
+      expect(stepClasses('disabled')).toEqual([true, true, true]);
+      expect(wizard.disableStepnav).toBe(true);
+
+      host.disableStepnav.set(false);
+      await fixture.whenStable();
+      expect(stepClasses('disabled')).toEqual([false, false, true]);
+    });
+
+    it('resets completed steps when navigating back with clrWizardForceForwardNavigation', async () => {
+      host.forceForward.set(true);
+      await fixture.whenStable();
+      expect(wizard.forceForward).toBe(true);
+
+      wizard.next();
+      await fixture.whenStable();
+      expect(stepClasses('complete')).toEqual([true, false, false]);
+
+      wizard.goTo('clr-wizard-page-one');
+      await fixture.whenStable();
+      expect(stepClasses('complete')).toEqual([false, false, false]);
+      expect(stepClasses('active')).toEqual([true, false, false]);
+    });
+
+    it('keeps completed steps when navigating back without clrWizardForceForwardNavigation', async () => {
+      wizard.next();
+      await fixture.whenStable();
+      wizard.goTo('clr-wizard-page-one');
+      await fixture.whenStable();
+
+      expect(stepClasses('complete')).toEqual([true, false, false]);
+    });
+
     it('shows a page error on its step', async () => {
       wizard.next();
       host.errorPage.set('one');
@@ -299,6 +404,73 @@ describe('ClrWizard (zoneless, OnPush host)', () => {
       expect(navService.nextButtonSubscription.closed).toBe(true);
       expect(navService.pagesResetSubscription.closed).toBe(true);
       expect(subscriptions.every(subscription => subscription.closed)).toBe(true);
+    });
+  });
+
+  describe('horizontal stepnav', () => {
+    let fixture: ComponentFixture<HorizontalWizardHost>;
+    let observerCallback: IntersectionObserverCallback;
+    let observer: IntersectionObserver;
+
+    function element(): HTMLElement {
+      return fixture.nativeElement;
+    }
+
+    function items(): HTMLElement[] {
+      return Array.from(element().querySelectorAll<HTMLElement>('.clr-wizard-stepnav-item'));
+    }
+
+    function report(visible: { first: boolean; last: boolean }) {
+      const entries = [
+        { target: items()[0], isIntersecting: visible.first },
+        { target: items()[items().length - 1], isIntersecting: visible.last },
+      ] as unknown as IntersectionObserverEntry[];
+      observerCallback(entries, observer);
+    }
+
+    const leftButton = () => element().querySelector('.clr-wizard-stepnav-scroll-button-left');
+    const rightButton = () => element().querySelector('.clr-wizard-stepnav-scroll-button-right');
+
+    beforeEach(async () => {
+      observer = { observe: vi.fn(), disconnect: vi.fn() } as unknown as IntersectionObserver;
+      vi.spyOn(window, 'IntersectionObserver').mockImplementation(function (cb) {
+        observerCallback = cb;
+        return observer;
+      });
+      TestBed.configureTestingModule({ imports: [ClrWizardModule], declarations: [HorizontalWizardHost] });
+      fixture = TestBed.createComponent(HorizontalWizardHost);
+      await fixture.whenStable();
+    });
+
+    afterEach(() => {
+      fixture.destroy();
+      vi.restoreAllMocks();
+    });
+
+    it('shows no scroll buttons while every step is visible', () => {
+      expect(observer.observe).toHaveBeenCalled();
+      expect(leftButton()).toBeNull();
+      expect(rightButton()).toBeNull();
+    });
+
+    it('shows and hides the scroll buttons from the intersection observer', async () => {
+      report({ first: true, last: false });
+      await fixture.whenStable();
+      expect(leftButton()).toBeNull();
+      expect(rightButton()).not.toBeNull();
+      expect(element().querySelector('.clr-wizard-stepnav-nav--with-one-scroll-button')).not.toBeNull();
+      expect(element().querySelector('.clr-wizard-stepnav-nav--with-two-scroll-buttons')).toBeNull();
+
+      report({ first: false, last: false });
+      await fixture.whenStable();
+      expect(leftButton()).not.toBeNull();
+      expect(rightButton()).not.toBeNull();
+      expect(element().querySelector('.clr-wizard-stepnav-nav--with-two-scroll-buttons')).not.toBeNull();
+
+      report({ first: true, last: true });
+      await fixture.whenStable();
+      expect(leftButton()).toBeNull();
+      expect(rightButton()).toBeNull();
     });
   });
 
