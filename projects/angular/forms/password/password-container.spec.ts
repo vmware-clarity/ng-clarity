@@ -159,6 +159,17 @@ describe('ClrPassword', () => {
         expect(group.classList).not.toContain('clr-focus');
       });
 
+      it('keeps focus assignable, as it was a field', async () => {
+        const { fixture, containerEl, settle } = context();
+        const container = fixture.debugElement.query(By.directive(ClrPasswordContainer))
+          .componentInstance as ClrPasswordContainer;
+
+        container.focus = true;
+        await settle();
+        expect(container.focus).toBe(true);
+        expect(containerEl.querySelector('.clr-input-group').classList).toContain('clr-focus');
+      });
+
       it('disables the toggle button when consumer code disables the control', async () => {
         const { host, settle } = context();
 

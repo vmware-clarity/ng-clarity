@@ -5,7 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, Optional } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Optional, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   ClrAbstractContainer,
   ControlClassService,
@@ -53,6 +54,8 @@ import { DatalistIdService } from './providers/datalist-id.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrDatalistContainer extends ClrAbstractContainer {
+  private readonly _focus = signal(false);
+
   constructor(
     controlClassService: ControlClassService,
     @Optional() layoutService: LayoutService,
@@ -60,10 +63,15 @@ export class ClrDatalistContainer extends ClrAbstractContainer {
     private focusService: FormsFocusService
   ) {
     super(layoutService, controlClassService, ngControlService);
+
+    focusService.focusChange.pipe(takeUntilDestroyed()).subscribe(state => this._focus.set(state));
   }
 
   get focus() {
-    return this.focusService.isFocused();
+    return this._focus();
+  }
+  set focus(state: boolean) {
+    this._focus.set(state);
   }
 
   showPicker(datalist: HTMLElement) {

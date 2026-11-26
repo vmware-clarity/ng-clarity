@@ -14,6 +14,7 @@ import {
   forwardRef,
   Input,
   Optional,
+  Renderer2,
   signal,
 } from '@angular/core';
 import {
@@ -69,7 +70,13 @@ export class ClrRangeContainer extends ClrAbstractContainer implements AfterCont
   constructor(
     @Optional() layoutService: LayoutService,
     controlClassService: ControlClassService,
-    ngControlService: NgControlService
+    ngControlService: NgControlService,
+    /** @deprecated No longer used. Kept so subclasses calling `super()` with five arguments still compile. */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    renderer?: Renderer2,
+    /** @deprecated No longer used. Kept so subclasses calling `super()` with five arguments still compile. */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    idService?: ControlIdService
   ) {
     super(layoutService, controlClassService, ngControlService);
   }
@@ -97,7 +104,7 @@ export class ClrRangeContainer extends ClrAbstractContainer implements AfterCont
   getRangeProgressFillWidth(): string {
     const track = this.track();
     const value = this.control ? (this.controlState().value as number) : undefined;
-    return track ? rangeFillWidth(track, value) : undefined;
+    return track ? rangeFillWidth(track, value) : '';
   }
 }
 

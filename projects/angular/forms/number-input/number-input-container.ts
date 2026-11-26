@@ -5,7 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, ContentChild, forwardRef, Optional } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChild, forwardRef, Optional, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   ClrAbstractContainer,
   ControlClassService,
@@ -73,6 +74,8 @@ import { ClrNumberInput } from './number-input';
 export class ClrNumberInputContainer extends ClrAbstractContainer {
   @ContentChild(forwardRef(() => ClrNumberInput)) protected readonly input!: ClrNumberInput;
 
+  private readonly _focus = signal(false);
+
   constructor(
     controlClassService: ControlClassService,
     @Optional() layoutService: LayoutService,
@@ -80,10 +83,15 @@ export class ClrNumberInputContainer extends ClrAbstractContainer {
     private focusService: FormsFocusService
   ) {
     super(layoutService, controlClassService, ngControlService);
+
+    focusService.focusChange.pipe(takeUntilDestroyed()).subscribe(state => this._focus.set(state));
   }
 
   get focus() {
-    return this.focusService.isFocused();
+    return this._focus();
+  }
+  set focus(state: boolean) {
+    this._focus.set(state);
   }
 
   focusOut() {

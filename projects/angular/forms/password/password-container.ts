@@ -15,6 +15,7 @@ import {
   Optional,
   signal,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   ClrAbstractContainer,
   ControlClassService,
@@ -83,6 +84,7 @@ export class ClrPasswordContainer extends ClrAbstractContainer implements AfterC
 
   protected readonly labelText = signal<string | null>(null);
 
+  private readonly _focus = signal(false);
   private _toggle = true;
 
   constructor(
@@ -94,10 +96,15 @@ export class ClrPasswordContainer extends ClrAbstractContainer implements AfterC
     public commonStrings: ClrCommonStringsService
   ) {
     super(layoutService, controlClassService, ngControlService);
+
+    focusService.focusChange.pipe(takeUntilDestroyed()).subscribe(state => this._focus.set(state));
   }
 
   get focus() {
-    return this.focusService.isFocused();
+    return this._focus();
+  }
+  set focus(state: boolean) {
+    this._focus.set(state);
   }
 
   @Input('clrToggle')

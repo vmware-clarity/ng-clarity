@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ControlClassService, ControlIdService, LayoutService, NgControlService } from '@clr/angular/forms/common';
 import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ClrRange } from './range';
@@ -87,6 +88,26 @@ describe('Radio component', () => {
     ContainerNoLabelSpec(ClrRangeContainer, ClrRange, NoLabelTest);
     TemplateDrivenSpec(ClrRangeContainer, ClrRange, SimpleTest, '.clr-range-wrapper [clrRange]');
     ReactiveSpec(ClrRangeContainer, ClrRange, ReactiveTest, '.clr-range-wrapper [clrRange]');
+  });
+
+  const layout = new LayoutService();
+
+  it('keeps the constructor parameters that subclasses pass to super()', () => {
+    class Subclass extends ClrRangeContainer {
+      constructor(layoutService: LayoutService, classService: ControlClassService, ngControlService: NgControlService) {
+        super(layoutService, classService, ngControlService, undefined, new ControlIdService());
+      }
+    }
+    expect(() =>
+      TestBed.runInInjectionContext(() => new Subclass(layout, new ControlClassService(layout), new NgControlService()))
+    ).not.toThrow();
+  });
+
+  it('returns an empty fill width before the track is measured', () => {
+    const container = TestBed.runInInjectionContext(
+      () => new ClrRangeContainer(layout, new ControlClassService(layout), new NgControlService())
+    );
+    expect(container.getRangeProgressFillWidth()).toBe('');
   });
 
   ContainerChangeDetectionSpec(hostOptions);

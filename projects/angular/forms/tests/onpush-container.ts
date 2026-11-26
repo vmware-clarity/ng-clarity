@@ -207,6 +207,20 @@ export function ContainerChangeDetectionSpec(options: ContainerTestHostOptions):
         expect(containerEl.classList).not.toContain('clr-form-control-disabled');
       });
 
+      it('catches up with changes made with emitEvent: false when the consumer is checked', async () => {
+        const { fixture, host, containerEl, settle } = context();
+
+        host.control.disable({ emitEvent: false });
+        fixture.changeDetectorRef.markForCheck();
+        await settle();
+        expect(containerEl.classList).toContain('clr-form-control-disabled');
+
+        host.control.enable({ emitEvent: false });
+        fixture.changeDetectorRef.markForCheck();
+        await settle();
+        expect(containerEl.classList).not.toContain('clr-form-control-disabled');
+      });
+
       it('shows messages that are added after the first render', async () => {
         const { host, containerEl, settle, set } = context();
         set('messages', false);

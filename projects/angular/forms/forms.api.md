@@ -675,6 +675,7 @@ export class ClrDatalistContainer extends ClrAbstractContainer {
     constructor(controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, focusService: FormsFocusService);
     // (undocumented)
     get focus(): boolean;
+    set focus(state: boolean);
     // (undocumented)
     showPicker(datalist: HTMLElement): void;
     // (undocumented)
@@ -1534,6 +1535,7 @@ export class ClrNumberInputContainer extends ClrAbstractContainer {
     constructor(controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, focusService: FormsFocusService);
     // (undocumented)
     get focus(): boolean;
+    set focus(state: boolean);
     // (undocumented)
     focusOut(): void;
     // (undocumented)
@@ -1762,6 +1764,7 @@ export class ClrPasswordContainer extends ClrAbstractContainer implements AfterC
     commonStrings: ClrCommonStringsService;
     // (undocumented)
     get focus(): boolean;
+    set focus(state: boolean);
     // (undocumented)
     focusService: FormsFocusService;
     // (undocumented)
@@ -1882,7 +1885,9 @@ export class ClrRange extends WrappedFormControl<ClrRangeContainer> {
 
 // @public (undocumented)
 export class ClrRangeContainer extends ClrAbstractContainer implements AfterContentChecked {
-    constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
+    constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService,
+    renderer?: Renderer2,
+    idService?: ControlIdService);
     // (undocumented)
     getRangeProgressFillWidth(): string;
     // (undocumented)
@@ -1900,7 +1905,7 @@ export class ClrRangeContainer extends ClrAbstractContainer implements AfterCont
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrRangeContainer, [{
         optional: true;
-    }, null, null]>;
+    }, null, null, null, null]>;
 }
 
 // @public (undocumented)
@@ -2149,17 +2154,11 @@ export class ControlIdService {
 
 // @public
 export interface ControlState {
-    // (undocumented)
     readonly disabled: boolean;
-    // (undocumented)
     readonly errors: ValidationErrors | null;
-    // (undocumented)
     readonly invalid: boolean;
-    // (undocumented)
     readonly status: FormControlStatus | null;
-    // (undocumented)
     readonly touched: boolean;
-    // (undocumented)
     readonly value: unknown;
 }
 
@@ -2190,7 +2189,6 @@ export class FormsFocusService {
     get focusChange(): Observable<boolean>;
     // (undocumented)
     set focused(state: boolean);
-    get isFocused(): Signal<boolean>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<FormsFocusService, never>;
     // (undocumented)
@@ -2279,6 +2277,8 @@ export class NgControlService implements OnDestroy {
     get hasMultipleControls(): boolean;
     // (undocumented)
     ngOnDestroy(): void;
+    // @internal
+    refreshStates(): void;
     get states(): Signal<readonly ControlState[]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<NgControlService, never>;
