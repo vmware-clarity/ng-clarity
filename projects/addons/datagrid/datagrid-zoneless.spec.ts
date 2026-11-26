@@ -11,6 +11,7 @@ import { By } from '@angular/platform-browser';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { ClrLoading, ClrLoadingState } from '@clr/angular/utils';
 
+import { ExportType } from './addons/export/export-type';
 import { ExportStatus } from './addons/export/export.interface';
 import { GridFooterModel } from './datagrid.component';
 import { AppfxDatagridModule } from './datagrid.module';
@@ -55,6 +56,8 @@ class NameRenderer implements ColumnRenderer<Vm>, OnInit {
       [columns]="columns()"
       [actionBarActions]="actions"
       [footerModel]="footerModel"
+      [selectionType]="'multi'"
+      [selectedItems]="selected()"
       trackByGridItemProperty="id"
       (exportDataEvent)="onExport($event)"
     ></appfx-datagrid>
@@ -67,6 +70,7 @@ class OnPushGridHost {
     { id: 1, name: 'vm-1' },
     { id: 2, name: 'vm-2' },
   ]);
+  readonly selected = signal<Vm[]>([]);
   readonly columns = signal<ColumnDefinition<Vm>[]>([
     { displayName: 'Name', field: 'name', uid: 'name' },
     { displayName: 'Renderer', field: 'name', uid: 'renderer', columnRenderer: NameRenderer },
@@ -199,6 +203,41 @@ describe('appfx-datagrid in an OnPush host (zoneless)', () => {
 
     expect(document.querySelector('.column-switch')).toBeNull();
     expect(fixture.nativeElement.querySelector('.column-toggle-action').getAttribute('aria-expanded')).toBe('false');
+  });
+
+  it('shows a column hidden in place while the column toggle is open', async () => {
+    fixture.nativeElement.querySelector('.column-toggle-action').click();
+    await fixture.whenStable();
+
+    const checkboxes = Array.from<HTMLInputElement>(document.querySelectorAll('.column-switch input[type=checkbox]'));
+    expect(checkboxes.map(checkbox => checkbox.checked)).toEqual([true, true, true]);
+
+    // Apps change the column definition in place, then let the grid check (here through a new items array).
+    host.columns()[2].hidden = true;
+    host.items.set([...host.items()]);
+    await fixture.whenStable();
+
+    expect(checkboxes.map(checkbox => checkbox.checked)).toEqual([true, true, false]);
+  });
+
+  it('shows the export dropdown with counts and reports the chosen export type', async () => {
+    host.selected.set([host.items()[0]]);
+    await fixture.whenStable();
+
+    exportButton().click();
+    await fixture.whenStable();
+
+    const items = Array.from<HTMLButtonElement>(document.querySelectorAll('.export-dropdown button[clrDropdownItem]'));
+    expect(items.length).toBe(2);
+    expect(items[0].textContent).toContain('(2)');
+    expect(items[1].textContent).toContain('(1)');
+
+    items[1].click();
+    await fixture.whenStable();
+
+    expect(host.exportStatus?.exportType).toBe(ExportType.SELECTED_ONLY);
+    expect(host.exportStatus?.inProgress).toBe(true);
+    expect(exportLoading()).toBe(true);
   });
 
   it('updates the column toggle when the app hands over new columns', async () => {
