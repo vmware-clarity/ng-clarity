@@ -55,6 +55,8 @@ describe('MenuComponent in an OnPush host', () => {
   let zoomLevelService: ZoomLevelServiceMock;
 
   beforeEach(async () => {
+    // Importing the module here makes TestBed apply its scope again, after specs that declare its components.
+    TestBed.configureTestingModule({ imports: [AppfxMenuModule] });
     fixture = TestBed.createComponent(OnPushHost);
     host = fixture.componentInstance;
     zoomLevelService = fixture.debugElement.injector.get(ZoomLevelService) as unknown as ZoomLevelServiceMock;
@@ -167,6 +169,8 @@ describe('MenuComponent item set changes in an OnPush host', () => {
   let host: OnPushItemSetHost;
 
   beforeEach(async () => {
+    // Importing the module here makes TestBed apply its scope again, after specs that declare its components.
+    TestBed.configureTestingModule({ imports: [AppfxMenuModule] });
     fixture = TestBed.createComponent(OnPushItemSetHost);
     host = fixture.componentInstance;
     fixture.autoDetectChanges();
