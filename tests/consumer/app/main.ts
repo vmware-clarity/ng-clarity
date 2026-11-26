@@ -19,6 +19,7 @@ import { ClarityModule } from '@clr/angular';
 
 import { OverlayAcceptance } from './overlay-acceptance';
 import { RuntimeAcceptance } from './runtime-acceptance';
+import { VerticalNavAcceptance } from './vertical-nav-acceptance';
 
 @Component({
   selector: 'consumer-app',
@@ -110,9 +111,14 @@ class ConsumerApp {
 
 async function main() {
   const useZone = new URLSearchParams(location.search).get('mode') === 'zone';
-  await bootstrapApplication(ConsumerApp, {
+  const app = await bootstrapApplication(ConsumerApp, {
     providers: [useZone ? provideZoneChangeDetection() : provideZonelessChangeDetection()],
   });
+  if (new URLSearchParams(location.search).get('suite') === 'vertical-nav') {
+    // A second root, so that this Eager consumer is refreshed by every application tick, not skipped with the OnPush
+    // `ConsumerApp`.
+    app.bootstrap(VerticalNavAcceptance, document.body.appendChild(document.createElement('vertical-nav-acceptance')));
+  }
 }
 
 main().catch(error => console.error(error));

@@ -31,7 +31,7 @@ import { VerticalNavGroupService } from './providers/vertical-nav-group.service'
     class: 'nav-link',
   },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrVerticalNavLink implements OnDestroy {
   private destroy$ = new Subject<void>();
@@ -46,10 +46,7 @@ export class ClrVerticalNavLink implements OnDestroy {
     navGroupService &&
       fromEvent(host.nativeElement, 'click')
         .pipe(takeUntil(this.destroy$))
-        .subscribe(() => {
-          navGroupService.expand();
-          ref.markForCheck();
-        });
+        .subscribe(() => navGroupService.expand());
   }
 
   ngOnDestroy(): void {

@@ -5,21 +5,21 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 @Injectable()
 export class VerticalNavIconService {
-  private _icons = 0;
+  private readonly _icons = signal(0);
 
   get hasIcons(): boolean {
-    return this._icons > 0;
+    return this._icons() > 0;
   }
 
   registerIcon(): void {
-    this._icons++;
+    this._icons.update(count => count + 1);
   }
 
   unregisterIcon(): void {
-    this._icons--;
+    this._icons.update(count => count - 1);
   }
 }

@@ -9,7 +9,6 @@ import {
   AfterContentInit,
   afterNextRender,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -43,7 +42,7 @@ const COLLAPSED_STATE = 'collapsed';
   providers: [IfExpandService, VerticalNavGroupService],
   host: { class: 'nav-group' },
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
   @Output('clrVerticalNavGroupExpandedChange') expandedChange = new EventEmitter<boolean>(true);
@@ -59,7 +58,6 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
   private _subscriptions: Subscription[] = [];
   private _expandAnimationState: string = COLLAPSED_STATE;
   private readonly injector = inject(Injector);
-  private readonly cdr = inject(ChangeDetectorRef);
 
   @ViewChild('children', { static: true }) private children!: ElementRef<HTMLElement>;
 
@@ -225,7 +223,6 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
   private closeGroup() {
     if (this.expandAnimationState === COLLAPSED_STATE) {
       this.expanded = false;
-      this.cdr.markForCheck();
     }
   }
 }
