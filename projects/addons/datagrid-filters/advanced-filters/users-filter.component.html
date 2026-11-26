@@ -15,7 +15,7 @@
   </div>
   <ng-content select="[filterActions]" ngProjectAs="[filterActions]"></ng-content>
   <div class="user-filter-wrapper filter-scroll-region">
-    <div *ngIf="isLoading" class="loading-overlay">
+    <div *ngIf="isLoading()" class="loading-overlay">
       <div class="loading-content">
         <clr-spinner clrMedium>{{ filterStrings.loading }}</clr-spinner>
       </div>
@@ -37,11 +37,11 @@
     </div>
 
     <!-- The domain narrows the user search; it is not part of the condition, so it has its own labelled row. -->
-    <div *ngIf="domains && domains.length > 0" class="filter-condition-row" data-test-id="user-domain">
+    <div *ngIf="domains().length > 0" class="filter-condition-row" data-test-id="user-domain">
       <clr-select-container class="user-filter-select">
         <label>{{ filterStrings.domain }}</label>
         <select clrSelect name="domain" formControlName="domain">
-          <option *ngFor="let domain of domains; trackBy: trackByDomain" [value]="domain">
+          <option *ngFor="let domain of domains(); trackBy: trackByDomain" [value]="domain">
             {{ domain }}
           </option>
         </select>
@@ -73,14 +73,14 @@
 
     <div cds-layout="m-t:xs" class="filter-options">
       <clr-checkbox-container class="enum-options">
-        <clr-checkbox-wrapper *ngIf="visibleUsers.length > 0" cds-layout="m-b:xs">
+        <clr-checkbox-wrapper *ngIf="visibleUsers().length > 0" cds-layout="m-b:xs">
           <input type="checkbox" clrCheckbox formControlName="selectAll" (change)="onSelectAllChange()" />
           <label>
             {{ usersSelectionForm.get('searchTerm')?.value ? filterStrings.allSearchResults : filterStrings.selectAll }}
           </label>
         </clr-checkbox-wrapper>
 
-        <clr-checkbox-wrapper *ngFor="let user of visibleUsers; let i = index">
+        <clr-checkbox-wrapper *ngFor="let user of visibleUsers(); let i = index">
           <input
             type="checkbox"
             clrCheckbox
@@ -95,7 +95,7 @@
 
       <!-- At the end of the scrolling list, so it shows once the user reaches the last loaded user. -->
       <button
-        *ngIf="hasMoreItems"
+        *ngIf="hasMoreItems()"
         type="button"
         class="btn btn-link user-load-more"
         data-test-id="load-more"
@@ -104,12 +104,12 @@
         {{ filterStrings.loadMore }}
       </button>
 
-      <div *ngIf="errorSearchingUsers" class="clr-subtext clr-error error">
-        {{ errorSearchingUsers }}
+      <div *ngIf="errorSearchingUsers()" class="clr-subtext clr-error error">
+        {{ errorSearchingUsers() }}
       </div>
 
-      <div *ngIf="errorRetrievingDomains" class="clr-subtext clr-error error">
-        {{ errorRetrievingDomains }}
+      <div *ngIf="errorRetrievingDomains()" class="clr-subtext clr-error error">
+        {{ errorRetrievingDomains() }}
       </div>
     </div>
   </div>

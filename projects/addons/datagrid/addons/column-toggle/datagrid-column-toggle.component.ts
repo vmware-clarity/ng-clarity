@@ -8,10 +8,13 @@
 import { CdkConnectedOverlay, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  DoCheck,
   ElementRef,
   EventEmitter,
   HostBinding,
+  inject,
   Input,
   OnDestroy,
   Output,
@@ -28,9 +31,9 @@ import { ColumnDefinition } from '../../shared/column/column-definitions';
   standalone: false,
   templateUrl: 'datagrid-column-toggle.component.html',
   styleUrls: ['datagrid-column-toggle.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DatagridColumnToggleComponent implements OnDestroy {
+export class DatagridColumnToggleComponent implements DoCheck, OnDestroy {
   @HostBinding('class') layoutClass = 'column-switch-wrapper';
 
   @ViewChild('closeColumnButton', { read: ElementRef }) closeColumnButtonElement!: ElementRef;
@@ -58,12 +61,22 @@ export class DatagridColumnToggleComponent implements OnDestroy {
 
   protected readonly viewId = signal<string | undefined>(undefined);
 
+  readonly #cdr = inject(ChangeDetectorRef);
+
   constructor(public dgStrings: DatagridStrings) {}
 
   get hasOnlyOneVisibleColumn(): boolean {
     const hideableColumns = this.hideableColumns();
     const nonHideableColumns = this.columns.length - hideableColumns.length;
     return nonHideableColumns === 0 && hideableColumns.filter(column => !column.hidden).length === 1;
+  }
+
+  ngDoCheck(): void {
+    // Apps change `column.hidden` in place, which the checkboxes read. While the overlay is open, keep refreshing
+    // it with the grid as the Eager strategy did. Closed, there is nothing to refresh.
+    if (this.openState) {
+      this.#cdr.markForCheck();
+    }
   }
 
   ngOnDestroy() {
@@ -120,6 +133,7 @@ export class DatagridColumnToggleComponent implements OnDestroy {
     }
 
     columnToToggle.hidden = hide;
+    this.#cdr.markForCheck();
     this.columnsChange.emit([...this.columns]);
     this.columnHiddenStateChange.emit({
       hidden: hide,
