@@ -44,6 +44,10 @@ export class WorkflowModelMonitorComponent implements OnInit, OnDestroy {
     return this.entries();
   }
 
+  set debugModel(entries: NameValue[]) {
+    this.entries.set(entries);
+  }
+
   ngOnInit(): void {
     this.bindModelChangeListeners();
     this.bindStepChangeListeners();

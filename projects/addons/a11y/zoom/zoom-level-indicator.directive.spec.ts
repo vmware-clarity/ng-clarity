@@ -10,6 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ZoomLevelServiceMock } from '@clr/addons/testing';
 import { renderFixture } from '@clr/angular/utils/testing';
+import { of } from 'rxjs';
 
 import { ZoomLevelIndicatorDirective } from './zoom-level-indicator.directive';
 import { ZoomLevel } from './zoom-level.model';
@@ -86,5 +87,25 @@ describe('ZoomLevelIndicatorDirective', () => {
       expect(element.classList).not.toContain(ZoomLevel.none);
       fixture.destroy();
     });
+  });
+});
+
+describe('ZoomLevelIndicatorDirective API compatibility', () => {
+  it('tolerates a ZoomLevelService test double without `level`', () => {
+    const directive = new ZoomLevelIndicatorDirective({ onChange: of(ZoomLevel.x4) } as unknown as ZoomLevelService);
+
+    expect(directive.zoomLevel).toBeUndefined();
+  });
+
+  it('keeps `zoomLevel` writable and the lifecycle methods callable', () => {
+    const directive = new ZoomLevelIndicatorDirective(new ZoomLevelServiceMock() as unknown as ZoomLevelService);
+
+    directive.zoomLevel = ZoomLevel.x2;
+
+    expect(directive.zoomLevel).toBe(ZoomLevel.x2);
+    expect(() => {
+      directive.ngOnInit();
+      directive.ngOnDestroy();
+    }).not.toThrow();
   });
 });

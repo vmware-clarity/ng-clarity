@@ -6,10 +6,19 @@
  */
 
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { ChangeDetectionStrategy, Component, signal, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Injector,
+  runInInjectionContext,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
 import { ZoomLevelServiceMock } from '@clr/addons/testing';
+import { of } from 'rxjs';
 
 import { AppfxMenuModule } from './appfx-menu.module';
 import { MenuComponent } from './menu.component';
@@ -124,5 +133,27 @@ describe('MenuComponent in an OnPush host', () => {
     zoomLevelService.resizeSubject.next(ZoomLevel.x2);
 
     expect(closed).not.toHaveBeenCalled();
+  });
+});
+
+describe('MenuComponent API compatibility', () => {
+  function create(cdr: ChangeDetectorRef | undefined, zoomLevelService: unknown): MenuComponent {
+    const injector = Injector.create({
+      providers: [{ provide: ChangeDetectorRef, useValue: { markForCheck: (): void => undefined } }],
+      parent: TestBed.inject(Injector),
+    });
+    return runInInjectionContext(injector, () => new MenuComponent(cdr, zoomLevelService as ZoomLevelService));
+  }
+
+  it('tolerates a ZoomLevelService test double without `level`', () => {
+    expect(create(undefined, { onChange: of(ZoomLevel.x4) }).currentZoomLevel).toBeUndefined();
+  });
+
+  it('keeps `currentZoomLevel` writable and accepts the deprecated leading ChangeDetectorRef', () => {
+    const menu = create({} as ChangeDetectorRef, new ZoomLevelServiceMock());
+
+    menu.currentZoomLevel = ZoomLevel.x4;
+
+    expect(menu.currentZoomLevel).toBe(ZoomLevel.x4);
   });
 });

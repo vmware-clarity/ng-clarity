@@ -11,7 +11,10 @@ import {
   HostBinding,
   Input,
   OnChanges,
+  OnDestroy,
+  OnInit,
   Optional,
+  signal,
   SimpleChanges,
 } from '@angular/core';
 import { ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
@@ -33,7 +36,7 @@ import {
   // Stays Eager: see PropertyViewComponent.
   changeDetection: ChangeDetectionStrategy.Eager,
 })
-export class PropertyViewPropertyComponent implements OnChanges {
+export class PropertyViewPropertyComponent implements OnInit, OnChanges, OnDestroy {
   readonly PropertyViewModelType = PropertyViewModelType;
 
   @Input() data!: PropertyViewPropertyModel;
@@ -42,6 +45,8 @@ export class PropertyViewPropertyComponent implements OnChanges {
 
   propertyValueComponentModelContent!: PropertyViewPropertyValueComponentModel<unknown>[];
 
+  private readonly assignedIs4xZoomed = signal<boolean | undefined>(undefined);
+
   constructor(
     public propertyViewConfigProvider: PropertyViewConfigProvider,
     @Optional() private zoomLevelService?: ZoomLevelService
@@ -49,7 +54,12 @@ export class PropertyViewPropertyComponent implements OnChanges {
 
   @HostBinding('class.zoom4x')
   get is4xZoomed(): boolean {
-    return this.zoomLevelService?.level() === ZoomLevel.x4;
+    // `level?.()` tolerates test doubles of ZoomLevelService without `level`.
+    return this.assignedIs4xZoomed() ?? this.zoomLevelService?.level?.() === ZoomLevel.x4;
+  }
+
+  set is4xZoomed(value: boolean) {
+    this.assignedIs4xZoomed.set(value);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -70,5 +80,15 @@ export class PropertyViewPropertyComponent implements OnChanges {
 
   getValueTrackingId(index: number) {
     return index;
+  }
+
+  /** @deprecated The component no longer needs initialization. Kept so that `super.ngOnInit()` calls compile. */
+  ngOnInit(): void {
+    // Intentionally empty.
+  }
+
+  /** @deprecated The component holds no subscription anymore. Kept so that `super.ngOnDestroy()` calls compile. */
+  ngOnDestroy(): void {
+    // Intentionally empty.
   }
 }

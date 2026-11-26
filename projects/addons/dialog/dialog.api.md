@@ -68,9 +68,10 @@ export class AppfxMultiPageDialogModule {
 export type DefaultButton = 'submit' | 'close';
 
 // @public
-class DialogComponent {
+class DialogComponent implements OnInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "ZoomLevelService" needs to be exported by the entry point clr-addons-dialog.d.ts
-    constructor(workflowStrings: WorkflowStrings, configService: WorkflowConfigurationService,
+    constructor(
+    _cdr: ChangeDetectorRef, workflowStrings: WorkflowStrings, configService: WorkflowConfigurationService,
     openModalComponent?: boolean, zoomLevelService?: ZoomLevelService);
     cancelButtonLabel: string;
     // Warning: (ae-forgotten-export) The symbol "CloseHandler" needs to be exported by the entry point clr-addons-dialog.d.ts
@@ -85,6 +86,7 @@ class DialogComponent {
     readonly configService: WorkflowConfigurationService;
     // (undocumented)
     get currentZoomLevel(): ZoomLevel;
+    set currentZoomLevel(zoomLevel: ZoomLevel);
     defaultButton: DefaultButton;
     disableTabsContent: boolean;
     // (undocumented)
@@ -103,6 +105,10 @@ class DialogComponent {
     loading: boolean;
     // Warning: (ae-forgotten-export) The symbol "WorkflowModel" needs to be exported by the entry point clr-addons-dialog.d.ts
     model: WorkflowModel;
+    // @deprecated (undocumented)
+    ngOnDestroy(): void;
+    // @deprecated (undocumented)
+    ngOnInit(): void;
     okButtonLabel: string;
     // (undocumented)
     onCancelButtonClick(): void;
@@ -214,7 +220,7 @@ class DialogComponent {
         "openedChange": "openedChange";
     }, never, ["appfx-dialog-header"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<DialogComponent, [null, null, {
+    static ɵfac: i0.ɵɵFactoryDeclaration<DialogComponent, [null, null, null, {
         optional: true;
     }, {
         optional: true;

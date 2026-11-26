@@ -25,6 +25,7 @@ import {
   Optional,
   Output,
   QueryList,
+  signal,
   ViewChild,
 } from '@angular/core';
 import { ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
@@ -90,16 +91,26 @@ export class MenuComponent extends NestedMenu implements Menu, OnChanges, OnInit
   ZoomLevel = ZoomLevel;
 
   private subscriptions = new Subscription();
+  private readonly assignedZoomLevel = signal<ZoomLevel | undefined>(undefined);
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
   // Set when this menu is nested in another one, which renders it.
   private readonly parentMenu = inject(NestedMenu, { optional: true, skipSelf: true });
 
-  constructor(@Optional() private zoomLevelService?: ZoomLevelService) {
+  constructor(
+    /** @deprecated Unused, kept so that subclasses calling `super(cdr, zoomLevelService)` compile. */
+    @Optional() _cdr?: ChangeDetectorRef,
+    @Optional() private zoomLevelService?: ZoomLevelService
+  ) {
     super();
   }
 
   get currentZoomLevel(): ZoomLevel | undefined {
-    return this.zoomLevelService?.level();
+    // `level?.()` tolerates test doubles of ZoomLevelService without `level`.
+    return this.assignedZoomLevel() ?? this.zoomLevelService?.level?.();
+  }
+
+  set currentZoomLevel(zoomLevel: ZoomLevel | undefined) {
+    this.assignedZoomLevel.set(zoomLevel);
   }
 
   ngOnInit(): void {
