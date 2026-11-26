@@ -9105,17 +9105,11 @@ export const controlLunIconName = "control-lun";
 
 // @public
 export interface ControlState {
-    // (undocumented)
     readonly disabled: boolean;
-    // (undocumented)
     readonly errors: ValidationErrors | null;
-    // (undocumented)
     readonly invalid: boolean;
-    // (undocumented)
     readonly status: FormControlStatus | null;
-    // (undocumented)
     readonly touched: boolean;
-    // (undocumented)
     readonly value: unknown;
 }
 
@@ -10885,6 +10879,8 @@ export class NgControlService implements OnDestroy {
     get hasMultipleControls(): boolean;
     // (undocumented)
     ngOnDestroy(): void;
+    // @internal
+    refreshStates(): void;
     get states(): Signal<readonly ControlState[]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<NgControlService, never>;
