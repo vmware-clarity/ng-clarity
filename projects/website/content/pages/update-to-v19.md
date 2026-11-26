@@ -89,7 +89,10 @@ longer uses them:
 Remove any overrides or translations of these keys.
 
 New keys name the date and time inputs for screen readers: `dateLabel` ("Date"), `timeLabel` ("Time"), `fromTimeLabel`
-("From time") and `toTimeLabel` ("To time"). Apps that translate the strings show English for them until they are added.
+("From time") and `toTimeLabel` ("To time"). Custom range adds `dateRangeLabel` ("Date range") for the date range
+picker, `dateRangeOptionsLabel` ("Preset ranges") for the preset buttons, and `dateRangeValidatorMessage` ("End date
+must not be before start date"). `clearFilter` ("Clear filter") clears a predefined pill's values. Apps that translate
+the strings show English for them until they are added.
 
 The defaults of three keys have changed. Apps that provide their own `DatagridFiltersStrings` are not affected, but
 tests that look for the old text are:
