@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { computed, contentChild, Directive, OnDestroy, Optional } from '@angular/core';
+import { computed, contentChild, Directive, OnDestroy, Optional, signal } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
@@ -29,6 +29,12 @@ export abstract class ClrAbstractContainer implements OnDestroy {
    * The state of the first control, for templates. Updates on every control event.
    */
   protected readonly controlState = computed<ControlState>(() => this.ngControlService.states()[0] ?? NO_CONTROL_STATE);
+
+  // Consumers could always assign these members. An assigned value wins over the query result.
+  private readonly assignedLabel = signal<ClrControlLabel | undefined>(undefined);
+  private readonly assignedSuccess = signal<ClrControlSuccess | undefined>(undefined);
+  private readonly assignedError = signal<ClrControlError | undefined>(undefined);
+  private readonly assignedHelper = signal<ClrControlHelper | undefined>(undefined);
 
   private readonly labelQuery = contentChild(ClrControlLabel);
   private readonly successQuery = contentChild(ClrControlSuccess);
@@ -66,20 +72,32 @@ export abstract class ClrAbstractContainer implements OnDestroy {
     ngControlService.container = this;
   }
 
-  get label(): ClrControlLabel | undefined {
-    return this.labelQuery();
+  get label(): ClrControlLabel {
+    return (this.assignedLabel() ?? this.labelQuery()) as ClrControlLabel;
+  }
+  set label(value: ClrControlLabel) {
+    this.assignedLabel.set(value);
   }
 
-  get controlSuccessComponent(): ClrControlSuccess | undefined {
-    return this.successQuery();
+  get controlSuccessComponent(): ClrControlSuccess {
+    return (this.assignedSuccess() ?? this.successQuery()) as ClrControlSuccess;
+  }
+  set controlSuccessComponent(value: ClrControlSuccess) {
+    this.assignedSuccess.set(value);
   }
 
-  get controlErrorComponent(): ClrControlError | undefined {
-    return this.errorQuery();
+  get controlErrorComponent(): ClrControlError {
+    return (this.assignedError() ?? this.errorQuery()) as ClrControlError;
+  }
+  set controlErrorComponent(value: ClrControlError) {
+    this.assignedError.set(value);
   }
 
-  get controlHelperComponent(): ClrControlHelper | undefined {
-    return this.helperQuery();
+  get controlHelperComponent(): ClrControlHelper {
+    return (this.assignedHelper() ?? this.helperQuery()) as ClrControlHelper;
+  }
+  set controlHelperComponent(value: ClrControlHelper) {
+    this.assignedHelper.set(value);
   }
 
   get control() {
