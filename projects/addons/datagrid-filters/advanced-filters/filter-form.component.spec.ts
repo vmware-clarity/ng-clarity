@@ -63,29 +63,29 @@ describe('FilterFormComponent', () => {
       testContext.fixture.debugElement.nativeElement.querySelectorAll('button');
     expect(formActionButtons).toBeTruthy();
     expect(formActionButtons.length).toEqual(2);
-    expect(formActionButtons[0].innerText).toEqual('APPLY');
-    expect(formActionButtons[1].innerText).toEqual('CANCEL');
-    expect(formActionButtons[0].disabled).toBeTruthy();
+    expect(formActionButtons[0].innerText).toEqual('CANCEL');
+    expect(formActionButtons[1].innerText).toEqual('APPLY');
+    expect(formActionButtons[1].disabled).toBeTruthy();
   });
   it('emits cancel event on cancel button click', () => {
     vi.spyOn(testContext.component, 'onCancelButtonClick').mockImplementation(() => undefined);
-    const formActionButtons: HTMLInputElement[] =
-      testContext.fixture.debugElement.nativeElement.querySelectorAll('button');
-    formActionButtons[1].click();
+    const cancelButton: HTMLButtonElement =
+      testContext.fixture.nativeElement.querySelector('[data-test-id="cancelBtn"]');
+    cancelButton.click();
     renderFixture(testContext.fixture);
     expect(testContext.component.onCancelButtonClick).toHaveBeenCalledTimes(1);
   });
   it('emits apply event on apply button click ', () => {
     vi.spyOn(testContext.component, 'onApplyButtonClick').mockImplementation(() => undefined);
-    const formActionButtons: HTMLInputElement[] =
-      testContext.fixture.debugElement.nativeElement.querySelectorAll('button');
-    formActionButtons[0].click();
+    const applyButton: HTMLButtonElement =
+      testContext.fixture.nativeElement.querySelector('[data-test-id="submitBtn"]');
+    applyButton.click();
     renderFixture(testContext.fixture);
     expect(testContext.component.onApplyButtonClick).toHaveBeenCalledTimes(0);
 
     testContext.component.isFormValid = true;
     renderFixture(testContext.fixture);
-    formActionButtons[0].click();
+    applyButton.click();
     renderFixture(testContext.fixture);
     expect(testContext.component.onApplyButtonClick).toHaveBeenCalledTimes(1);
   });
