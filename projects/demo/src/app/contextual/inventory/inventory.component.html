@@ -16,7 +16,7 @@
     </clr-alert>
   }
 
-  <clr-datagrid [(clrDgSelected)]="selectedHosts" [clrDgSelectionType]="'multi'">
+  <clr-datagrid [(clrDgSelected)]="selectedHosts" [clrDgSelectionType]="'multi'" [clrContext]="gridContext">
     <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
     <clr-dg-column [clrDgField]="'cluster'">Cluster</clr-dg-column>
     <clr-dg-column>Status</clr-dg-column>
