@@ -8,7 +8,7 @@
   <div class="dox-header">
     <section>
       <h1 cds-text="headline">{{ title }}</h1>
-      @if (type === 'component') {
+      @if (type === 'component' || storybookLink) {
         <a class="storybook" href="{{ storybookURL + (storybookPath || componentPath) }}" target="_blank">
           <span class="clr-hidden-sm-down storybook-text">Explore in Storybook</span>
           <span class="clr-hidden-md-up storybook-text">Storybook</span>
