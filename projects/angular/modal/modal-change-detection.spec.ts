@@ -175,6 +175,36 @@ describe('Modal change detection: OnPush host driven by signals', () => {
     expect(query(fixture, 'clr-modal .close')).toBeNull();
   });
 
+  it('renders inputs written directly on the modal and side panel instances', async () => {
+    host.open.set(true);
+    host.panelOpen.set(true);
+    await fixture.whenStable();
+
+    const standalone = query(fixture, 'clr-modal');
+    host.modal.size = 'xl';
+    host.modal.labelledBy = 'direct-title';
+    host.modal.closable = false;
+    host.modal.closeButtonAriaLabel = 'Dismiss';
+    host.modal.staticBackdrop = false;
+    await fixture.whenStable();
+    expect(dialog(fixture).classList).toContain('modal-xl');
+    expect(dialog(fixture).getAttribute('aria-labelledby')).toBe('direct-title');
+    expect(standalone.querySelector('.close')).toBeNull();
+    expect(standalone.querySelector('.modal-backdrop').classList).not.toContain('static');
+
+    host.modal.closable = true;
+    await fixture.whenStable();
+    expect(standalone.querySelector('.close').getAttribute('aria-label')).toBe('Dismiss');
+
+    host.panel.size = 'lg';
+    host.panel.labelledById = 'panel-title';
+    host.panel.closable = false;
+    await fixture.whenStable();
+    expect(dialog(fixture, 'clr-side-panel').classList).toContain('modal-lg');
+    expect(dialog(fixture, 'clr-side-panel').getAttribute('aria-labelledby')).toBe('panel-title');
+    expect(query(fixture, 'clr-side-panel .close')).toBeNull();
+  });
+
   it('renders localized strings changed while open', async () => {
     host.open.set(true);
     host.panelOpen.set(true);
