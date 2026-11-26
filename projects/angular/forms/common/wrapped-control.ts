@@ -19,8 +19,6 @@ import {
   OnDestroy,
   OnInit,
   Renderer2,
-  Signal,
-  signal,
   Type,
   ViewContainerRef,
 } from '@angular/core';
@@ -29,7 +27,6 @@ import { HostWrapper } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { CONTROL_SUFFIX } from './abstract-control';
-import { ControlState, controlStateChanges, NO_CONTROL_STATE } from './control-state';
 import { ContainerIdService } from './providers/container-id.service';
 import { ControlClassService } from './providers/control-class.service';
 import { ControlIdService } from './providers/control-id.service';
@@ -56,9 +53,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   private _containerInjector!: Injector;
   private differs: KeyValueDiffers | null = null;
   private differ: KeyValueDiffer<any, any> | undefined;
-  private readonly _controlState = signal<ControlState>(NO_CONTROL_STATE);
   private watchedControl: AbstractControl | null = null;
-  private controlStateSubscription?: Subscription;
 
   // I lost way too much time trying to make this work without injecting the ViewContainerRef and the Injector,
   // I'm giving up. So we have to inject these two manually for now.
@@ -95,13 +90,6 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     if (this.controlIdService) {
       this.controlIdService.id = value;
     }
-  }
-
-  /**
-   * The state of this element's own control, with or without a container. Updates on every control event.
-   */
-  protected get controlState(): Signal<ControlState> {
-    return this._controlState.asReadonly();
   }
 
   @HostBinding('attr.aria-describedby')
@@ -161,7 +149,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
       this.differ = this.differs.find(this.ngControl).create();
     }
 
-    this.watchControlState();
+    this.watchControl();
 
     if (this.ngControlService && this.ngControl) {
       this.ngControlService.addControl(this.ngControl);
@@ -171,13 +159,14 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   ngDoCheck() {
     if (this.ngControl) {
       this.triggerDoCheck(this.differ, this.ngControl);
-      this.watchControlState();
+      this.watchControl();
+      // Changes made with `emitEvent: false` fire no control event.
+      this.ngControlService?.refreshStates();
     }
   }
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub?.unsubscribe());
-    this.controlStateSubscription?.unsubscribe();
   }
 
   // blur HostListener decorator MUST be 1 and on the parent.
@@ -232,19 +221,15 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   }
 
   /**
-   * Follows the control behind the NgControl. It can be set late (formControlName) or replaced ([formControl]).
+   * Notices when the control behind the NgControl is set late (formControlName) or replaced ([formControl]).
    */
-  private watchControlState() {
+  private watchControl() {
     const control = this.ngControl?.control ?? null;
     if (!control || control === this.watchedControl) {
       return;
     }
 
     this.watchedControl = control;
-    this.controlStateSubscription?.unsubscribe();
-    this.controlStateSubscription = controlStateChanges(this.ngControl).subscribe(state =>
-      this._controlState.set(state)
-    );
 
     // A container that already has this NgControl still follows its previous control.
     if (this.ngControlService?.controls.includes(this.ngControl)) {
