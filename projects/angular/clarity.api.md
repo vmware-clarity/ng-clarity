@@ -28,6 +28,7 @@ import { EnvironmentInjector } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { FactoryProvider } from '@angular/core';
 import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
+import { FormControlStatus } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { FormGroupDirective } from '@angular/forms';
 import { FormGroupName } from '@angular/forms';
@@ -61,6 +62,7 @@ import { RouterLinkActive } from '@angular/router';
 import { SafeHtml } from '@angular/platform-browser';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
+import { Signal } from '@angular/core';
 import { SimpleChange } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
@@ -947,13 +949,17 @@ export abstract class ClrAbstractContainer implements OnDestroy {
     // (undocumented)
     protected controlClassService: ControlClassService;
     // (undocumented)
-    controlErrorComponent: ClrControlError;
+    get controlErrorComponent(): ClrControlError;
+    set controlErrorComponent(value: ClrControlError);
     // (undocumented)
-    controlHelperComponent: ClrControlHelper;
+    get controlHelperComponent(): ClrControlHelper;
+    set controlHelperComponent(value: ClrControlHelper);
     // (undocumented)
     controls: NgControl[];
+    protected readonly controlState: Signal<ControlState>;
     // (undocumented)
-    controlSuccessComponent: ClrControlSuccess;
+    get controlSuccessComponent(): ClrControlSuccess;
+    set controlSuccessComponent(value: ClrControlSuccess);
     // (undocumented)
     protected get errorMessagePresent(): boolean;
     get helpers(): {
@@ -963,7 +969,8 @@ export abstract class ClrAbstractContainer implements OnDestroy {
         showValid: boolean;
     };
     // (undocumented)
-    label: ClrControlLabel;
+    get label(): ClrControlLabel;
+    set label(value: ClrControlLabel);
     // (undocumented)
     protected layoutService: LayoutService;
     // (undocumented)
@@ -980,7 +987,7 @@ export abstract class ClrAbstractContainer implements OnDestroy {
     // (undocumented)
     protected get successMessagePresent(): boolean;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAbstractContainer, never, never, {}, {}, ["label", "controlSuccessComponent", "controlErrorComponent", "controlHelperComponent"], never, true, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAbstractContainer, never, never, {}, {}, ["labelQuery", "successQuery", "errorQuery", "helperQuery"], never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAbstractContainer, [{
         optional: true;
@@ -2465,9 +2472,11 @@ export class ClrControlLabel implements OnInit, OnDestroy {
     // (undocumented)
     disableGrid(): void;
     // (undocumented)
-    forAttr?: string;
+    get forAttr(): string | undefined;
+    set forAttr(id: string | undefined);
     // (undocumented)
-    idAttr?: string;
+    get idAttr(): string | undefined;
+    set idAttr(id: string | undefined);
     // (undocumented)
     idInput?: string;
     // (undocumented)
@@ -5631,11 +5640,13 @@ export class ClrModal implements OnChanges, OnDestroy {
     // (undocumented)
     bypassScrollService: boolean;
     // (undocumented)
-    closable: boolean;
+    get closable(): boolean;
+    set closable(closable: boolean);
     // (undocumented)
     close(): void;
     // (undocumented)
-    closeButtonAriaLabel: string;
+    get closeButtonAriaLabel(): string;
+    set closeButtonAriaLabel(label: string);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     protected get dialogEnterClass(): string;
@@ -5648,7 +5659,8 @@ export class ClrModal implements OnChanges, OnDestroy {
     set fadeMove(move: string);
     inOverlay: boolean | undefined;
     // (undocumented)
-    labelledBy?: string;
+    get labelledBy(): string | undefined;
+    set labelledBy(labelledBy: string | undefined);
     // (undocumented)
     protected readonly modalContentTemplate: TemplateRef<any>;
     // (undocumented)
@@ -5662,25 +5674,37 @@ export class ClrModal implements OnChanges, OnDestroy {
     // (undocumented)
     open(): void;
     // (undocumented)
-    _open: boolean;
+    get _open(): boolean;
+    set _open(open: boolean);
     // (undocumented)
     _openChanged: EventEmitter<boolean>;
     // (undocumented)
     scrollTop(): void;
     // (undocumented)
-    size: string;
+    get size(): string;
+    set size(size: string);
     // (undocumented)
-    skipAnimation: boolean;
+    get skipAnimation(): boolean;
+    set skipAnimation(skipAnimation: boolean);
     // (undocumented)
-    staticBackdrop: boolean;
+    get staticBackdrop(): boolean;
+    set staticBackdrop(staticBackdrop: boolean);
     // (undocumented)
     stopClose: boolean;
     // (undocumented)
     title: ElementRef<HTMLElement>;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, {
-        "_open": {
-            "alias": "clrModalOpen";
+        "stopClose": {
+            "alias": "clrModalPreventClose";
+            "required": false;
+        };
+        "bypassScrollService": {
+            "alias": "clrModalOverrideScrollService";
+            "required": false;
+        };
+        "inOverlay": {
+            "alias": "clrModalInOverlay";
             "required": false;
         };
         "closable": {
@@ -5703,20 +5727,12 @@ export class ClrModal implements OnChanges, OnDestroy {
             "alias": "clrModalSkipAnimation";
             "required": false;
         };
-        "stopClose": {
-            "alias": "clrModalPreventClose";
-            "required": false;
-        };
         "labelledBy": {
             "alias": "clrModalLabelledById";
             "required": false;
         };
-        "bypassScrollService": {
-            "alias": "clrModalOverrideScrollService";
-            "required": false;
-        };
-        "inOverlay": {
-            "alias": "clrModalInOverlay";
+        "_open": {
+            "alias": "clrModalOpen";
             "required": false;
         };
     }, {
@@ -5741,9 +5757,11 @@ export class ClrModalBody implements OnDestroy {
 // @public (undocumented)
 export class ClrModalConfigurationService {
     // (undocumented)
-    backdrop: boolean;
+    get backdrop(): boolean;
+    set backdrop(backdrop: boolean);
     // (undocumented)
-    fadeMove: string;
+    get fadeMove(): string;
+    set fadeMove(fadeMove: string);
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrModalConfigurationService, never>;
     // (undocumented)
@@ -6810,11 +6828,13 @@ export class ClrSidePanel implements OnInit, OnDestroy {
     // (undocumented)
     altClose: EventEmitter<boolean>;
     // (undocumented)
-    closable: boolean;
+    get closable(): boolean;
+    set closable(value: boolean);
     // (undocumented)
     close(): void;
     // (undocumented)
-    closeButtonAriaLabel: string;
+    get closeButtonAriaLabel(): string;
+    set closeButtonAriaLabel(value: string);
     // (undocumented)
     get clrSidePanelBackdrop(): boolean;
     set clrSidePanelBackdrop(backdrop: boolean);
@@ -6826,7 +6846,8 @@ export class ClrSidePanel implements OnInit, OnDestroy {
     // (undocumented)
     handleModalOpen(open: boolean): void;
     // (undocumented)
-    labelledById?: string;
+    get labelledById(): string | undefined;
+    set labelledById(value: string | undefined);
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -6845,14 +6866,17 @@ export class ClrSidePanel implements OnInit, OnDestroy {
     get position(): string;
     set position(position: string);
     // (undocumented)
-    preventClose: boolean;
+    get preventClose(): boolean;
+    set preventClose(value: boolean);
     // (undocumented)
     get size(): string;
     set size(value: string);
     // (undocumented)
-    skipAnimation: boolean;
+    get skipAnimation(): boolean;
+    set skipAnimation(value: boolean);
     // (undocumented)
-    staticBackdrop: boolean;
+    get staticBackdrop(): boolean;
+    set staticBackdrop(value: boolean);
     // (undocumented)
     togglePinned(): void;
     // (undocumented)
@@ -9094,6 +9118,16 @@ export const controlLunIcon: IconShapeTuple;
 // @public (undocumented)
 export const controlLunIconName = "control-lun";
 
+// @public
+export interface ControlState {
+    readonly disabled: boolean;
+    readonly errors: ValidationErrors | null;
+    readonly invalid: boolean;
+    readonly status: FormControlStatus | null;
+    readonly touched: boolean;
+    readonly value: unknown;
+}
+
 // @public (undocumented)
 export const copyIcon: IconShapeTuple;
 
@@ -10531,7 +10565,8 @@ export class LayoutService {
     // (undocumented)
     labelSizeIsValid(labelSize: number): boolean;
     // (undocumented)
-    layout: ClrFormLayout | string;
+    get layout(): ClrFormLayout | string;
+    set layout(layout: ClrFormLayout | string);
     // (undocumented)
     get layoutClass(): string;
     // (undocumented)
@@ -10844,7 +10879,7 @@ export const newIcon: IconShapeTuple;
 export const newIconName = "new";
 
 // @public (undocumented)
-export class NgControlService {
+export class NgControlService implements OnDestroy {
     // (undocumented)
     addControl(control: NgControl): void;
     // (undocumented)
@@ -10857,6 +10892,11 @@ export class NgControlService {
     emitControlsChange(controls: NgControl[]): void;
     // (undocumented)
     get hasMultipleControls(): boolean;
+    // (undocumented)
+    ngOnDestroy(): void;
+    // @internal
+    refreshStates(): void;
+    get states(): Signal<readonly ControlState[]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<NgControlService, never>;
     // (undocumented)

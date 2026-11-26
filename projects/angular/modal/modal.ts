@@ -8,7 +8,6 @@
 import {
   afterNextRender,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ContentChild,
   ElementRef,
@@ -20,6 +19,7 @@ import {
   OnChanges,
   OnDestroy,
   Output,
+  signal,
   SimpleChange,
   TemplateRef,
   ViewChild,
@@ -51,25 +51,16 @@ const FADE_MOVE_ENTER_CLASSES: Record<string, string> = {
     `,
   ],
   standalone: false,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClrModal implements OnChanges, OnDestroy {
   modalId = uniqueIdFactory();
   @ViewChild('title') title!: ElementRef<HTMLElement>;
 
-  @Input('clrModalOpen') @HostBinding('class.open') _open = false;
   @Output('clrModalOpenChange') _openChanged = new EventEmitter<boolean>(false);
-
-  @Input('clrModalClosable') closable = true;
-  @Input('clrModalCloseButtonAriaLabel') closeButtonAriaLabel = this.commonStrings.keys.close;
-  @Input('clrModalSize') size = 'md';
-  @Input('clrModalStaticBackdrop') staticBackdrop = true;
-  @Input('clrModalSkipAnimation') skipAnimation = false;
 
   @Input('clrModalPreventClose') stopClose = false;
   @Output('clrModalAlternateClose') altClose = new EventEmitter<boolean>(false);
-
-  @Input('clrModalLabelledById') labelledBy?: string;
 
   // Legacy inline wizards bypass both scrolling and stack participation unless inOverlay is explicit.
   @Input('clrModalOverrideScrollService') bypassScrollService = false;
@@ -84,8 +75,15 @@ export class ClrModal implements OnChanges, OnDestroy {
   @ViewChild('dialog') private readonly dialogElementRef!: ElementRef<HTMLElement>;
 
   private readonly injector = inject(Injector);
-  private readonly changeDetectorRef = inject(ChangeDetectorRef);
   private readonly noopAnimations = noopAnimations();
+  /** Whether the modal is open: a signal, so that open() and close() also render when called from code. */
+  private readonly isOpen = signal(false);
+  private readonly closableState = signal(true);
+  private readonly closeButtonAriaLabelState = signal<string>(inject(ClrCommonStringsService).keys.close);
+  private readonly sizeState = signal('md');
+  private readonly staticBackdropState = signal(true);
+  private readonly skipAnimationState = signal(false);
+  private readonly labelledByState = signal<string | undefined>(undefined);
   private destroyed = false;
   /** Set when the modal closes, until it opens again: identifies the closing to notify. */
   private closeRequest: object | null = null;
@@ -96,6 +94,64 @@ export class ClrModal implements OnChanges, OnDestroy {
     private modalStackService: ModalStackService,
     private configuration: ClrModalConfigurationService
   ) {}
+
+  // The inputs that the template reads are signal-backed, so that writing them from code also renders under OnPush.
+  @Input('clrModalClosable')
+  get closable(): boolean {
+    return this.closableState();
+  }
+  set closable(closable: boolean) {
+    this.closableState.set(closable);
+  }
+
+  @Input('clrModalCloseButtonAriaLabel')
+  get closeButtonAriaLabel(): string {
+    return this.closeButtonAriaLabelState();
+  }
+  set closeButtonAriaLabel(label: string) {
+    this.closeButtonAriaLabelState.set(label);
+  }
+
+  @Input('clrModalSize')
+  get size(): string {
+    return this.sizeState();
+  }
+  set size(size: string) {
+    this.sizeState.set(size);
+  }
+
+  @Input('clrModalStaticBackdrop')
+  get staticBackdrop(): boolean {
+    return this.staticBackdropState();
+  }
+  set staticBackdrop(staticBackdrop: boolean) {
+    this.staticBackdropState.set(staticBackdrop);
+  }
+
+  @Input('clrModalSkipAnimation')
+  get skipAnimation(): boolean {
+    return this.skipAnimationState();
+  }
+  set skipAnimation(skipAnimation: boolean) {
+    this.skipAnimationState.set(skipAnimation);
+  }
+
+  @Input('clrModalLabelledById')
+  get labelledBy(): string | undefined {
+    return this.labelledByState();
+  }
+  set labelledBy(labelledBy: string | undefined) {
+    this.labelledByState.set(labelledBy);
+  }
+
+  @Input('clrModalOpen')
+  @HostBinding('class.open')
+  get _open(): boolean {
+    return this.isOpen();
+  }
+  set _open(open: boolean) {
+    this.isOpen.set(open);
+  }
 
   get fadeMove(): string {
     return this.skipAnimation ? '' : this.configuration.fadeMove;
@@ -145,7 +201,6 @@ export class ClrModal implements OnChanges, OnDestroy {
     this._open = true;
     this.closeRequest = null;
     this.updateOverlayState();
-    this.changeDetectorRef.markForCheck();
     this._openChanged.emit(true);
   }
 
@@ -169,7 +224,6 @@ export class ClrModal implements OnChanges, OnDestroy {
       return;
     }
     this._open = false;
-    this.changeDetectorRef.markForCheck();
     this._scrollingService.resumeScrolling();
     this.notifyClosing();
   }
