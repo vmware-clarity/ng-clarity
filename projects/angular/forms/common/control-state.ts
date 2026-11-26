@@ -13,11 +13,17 @@ import { distinctUntilChanged, map, startWith } from 'rxjs/operators';
  * A snapshot of one form control, for templates that render its state.
  */
 export interface ControlState {
+  /** The control's value. */
   readonly value: unknown;
+  /** The control's validation errors, or null. */
   readonly errors: ValidationErrors | null;
+  /** The control's validation status. */
   readonly status: FormControlStatus | null;
+  /** Whether the control is disabled. */
   readonly disabled: boolean;
+  /** Whether the control is invalid. */
   readonly invalid: boolean;
+  /** Whether the control has been touched. */
   readonly touched: boolean;
 }
 
@@ -46,7 +52,7 @@ export function readControlState(ngControl: NgControl): ControlState {
   };
 }
 
-function sameControlState(a: ControlState, b: ControlState) {
+export function sameControlState(a: ControlState, b: ControlState) {
   return (
     a.value === b.value &&
     a.errors === b.errors &&
