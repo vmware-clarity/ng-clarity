@@ -7650,6 +7650,7 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
     get tabLinkDirectives(): ClrTabLink[];
     // (undocumented)
     get tabLinkElements(): HTMLElement[];
+    set tabLinkElements(elements: HTMLElement[]);
     // (undocumented)
     set tabOverflowEl(value: ElementRef<HTMLElement>);
     // (undocumented)

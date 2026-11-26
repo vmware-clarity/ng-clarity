@@ -5,17 +5,25 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable, ViewContainerRef } from '@angular/core';
+import { Injectable, signal, ViewContainerRef } from '@angular/core';
 
 import { TabsLayout } from '../enums/tabs-layout.enum';
 import { ClrTab } from '../tab';
 
 @Injectable()
 export class TabsService {
-  layout: TabsLayout | string = TabsLayout.HORIZONTAL;
   tabContentViewContainer!: ViewContainerRef;
 
+  // A signal, so that the OnPush tabs views refresh when the layout is set from code.
+  private readonly _layout = signal<TabsLayout | string>(TabsLayout.HORIZONTAL);
   private _children: ClrTab[] = [];
+
+  get layout(): TabsLayout | string {
+    return this._layout();
+  }
+  set layout(layout: TabsLayout | string) {
+    this._layout.set(layout);
+  }
 
   get children() {
     return this._children;

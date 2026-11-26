@@ -147,6 +147,9 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
   get tabLinkElements(): HTMLElement[] {
     return this._tabLinkElements();
   }
+  set tabLinkElements(elements: HTMLElement[]) {
+    this._tabLinkElements.set(elements);
+  }
 
   get activeTabInOverflow() {
     return this.tabsService.overflowTabs.indexOf(this.tabsService.activeTab as ClrTab) > -1;

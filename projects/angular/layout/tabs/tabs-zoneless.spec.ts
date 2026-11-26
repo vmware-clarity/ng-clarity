@@ -324,6 +324,31 @@ describe('ClrTabs (zoneless, OnPush host): overflow, layout and late children', 
     expect(overflowTrigger()).not.toBeNull();
   });
 
+  it('refreshes the layout when it is set from code', async () => {
+    const tabsService = fixture.debugElement.query(By.directive(ClrTabs)).injector.get(TabsService);
+    host.lastInOverflow.set(true);
+    await fixture.whenStable();
+    expect(overflowTrigger()).not.toBeNull();
+
+    tabsService.layout = 'vertical';
+    await fixture.whenStable();
+
+    expect(overflowTrigger()).toBeNull();
+    expect(link('Last').classList).toContain('nav-link');
+
+    tabsService.layout = 'horizontal';
+    await fixture.whenStable();
+
+    expect(overflowTrigger()).not.toBeNull();
+  });
+
+  it('keeps tabLinkElements assignable', () => {
+    const elements = [document.createElement('button')];
+    host.tabs.tabLinkElements = elements;
+
+    expect(host.tabs.tabLinkElements).toBe(elements);
+  });
+
   it('renders a late tab in its place, keeps keyboard order and cleans it up when removed', async () => {
     const tabsService = fixture.debugElement.query(By.directive(ClrTabs)).injector.get(TabsService);
 
@@ -483,5 +508,73 @@ describe('ClrTabs (Eager host with plain fields, refreshed by a full tick)', () 
 
     expect(element.querySelector('clr-tabs').classList).toContain('tabs-vertical');
     expect(element.querySelector('.tabs-overflow')).toBeNull();
+  });
+});
+
+@Component({
+  template: `
+    <clr-tabs>
+      @for (tab of tabs(); track tab) {
+        <clr-tab>
+          <button clrTabLink [id]="'link-' + tab">{{ tab }}</button>
+          <clr-tab-content [id]="'content-' + tab">{{ tab }} content</clr-tab-content>
+        </clr-tab>
+      }
+    </clr-tabs>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
+})
+class ReorderTabsHost {
+  readonly tabs = signal(['a', 'b', 'c']);
+}
+
+describe('ClrTabs (zoneless, OnPush host): swapped and replaced tabs', () => {
+  let fixture: ComponentFixture<ReorderTabsHost>;
+  let element: HTMLElement;
+
+  function aria(): string[] {
+    return Array.from<HTMLElement>(element.querySelectorAll('section.tab-content')).map(
+      section => section.id + ':' + section.getAttribute('aria-labelledby')
+    );
+  }
+
+  function controls(): string[] {
+    return Array.from<HTMLElement>(element.querySelectorAll('[clrTabLink]')).map(
+      item => item.id + ':' + item.getAttribute('aria-controls')
+    );
+  }
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      declarations: [ReorderTabsHost],
+      imports: [ClrTabsModule],
+    });
+
+    fixture = TestBed.createComponent(ReorderTabsHost);
+    element = fixture.nativeElement;
+    await fixture.whenStable();
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+  });
+
+  it('keeps aria-labelledby and aria-controls correct when tabs are reordered', async () => {
+    expect(controls()).toEqual(['link-a:content-a', 'link-b:content-b', 'link-c:content-c']);
+
+    fixture.componentInstance.tabs.set(['c', 'b', 'a']);
+    await fixture.whenStable();
+
+    expect(controls()).toEqual(['link-c:content-c', 'link-b:content-b', 'link-a:content-a']);
+    expect(aria().sort()).toEqual(['content-a:link-a', 'content-b:link-b', 'content-c:link-c']);
+  });
+
+  it('keeps aria-labelledby and aria-controls correct when a tab is replaced', async () => {
+    fixture.componentInstance.tabs.set(['a', 'd', 'c']);
+    await fixture.whenStable();
+
+    expect(controls()).toEqual(['link-a:content-a', 'link-d:content-d', 'link-c:content-c']);
+    expect(aria().sort()).toEqual(['content-a:link-a', 'content-c:link-c', 'content-d:link-d']);
   });
 });

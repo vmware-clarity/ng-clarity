@@ -473,6 +473,7 @@ export class ClrTabs implements AfterContentInit, OnDestroy {
     get tabLinkDirectives(): ClrTabLink[];
     // (undocumented)
     get tabLinkElements(): HTMLElement[];
+    set tabLinkElements(elements: HTMLElement[]);
     // (undocumented)
     set tabOverflowEl(value: ElementRef<HTMLElement>);
     // (undocumented)
@@ -733,7 +734,7 @@ export class ResponsiveNavigationService {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-layout-tabs.d.ts:146:5 - (ae-forgotten-export) The symbol "i1_3" needs to be exported by the entry point clr-angular-layout.d.ts
+// dist/clr-angular/types/clr-angular-layout-tabs.d.ts:149:5 - (ae-forgotten-export) The symbol "i1_3" needs to be exported by the entry point clr-angular-layout.d.ts
 
 // (No @packageDocumentation comment for this package)
 
