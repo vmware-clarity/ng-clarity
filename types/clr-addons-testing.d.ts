@@ -6,7 +6,7 @@ import { AppfxCard } from "@clr/addons/card-container";
 import { ClrDatagrid, ClrDatagridVirtualScrollRangeInterface } from "@clr/angular/data/datagrid";
 import { ActionDefinition } from "@clr/addons/datagrid";
 import { ComponentFixture } from "@angular/core/testing";
-import { FilterMode, FilterablePropertyDefinition, PropertyFilter } from "@clr/addons/datagrid-filters";
+import { EnumPropertyDefinition, FilterMode, FilterablePropertyDefinition, PropertyFilter, ToggleFilter } from "@clr/addons/datagrid-filters";
 import { DefaultButton } from "@clr/addons/dialog";
 import { CloseHandler, ModelChange, OnStepActivate, OnStepValidate, Step, StepModel, StepValidationState, TabLayout, WorkflowModel } from "@clr/addons/var";
 import { PropertyViewMessageModel, PropertyViewPropertyModel, PropertyViewStrings } from "@clr/addons/property-view";
@@ -156,6 +156,8 @@ export declare class MockAppfxDatagridComponent {
   loading: boolean;
   serverDrivenDatagrid: boolean;
   filterMode: any;
+  propertyFilters: any[];
+  searchTerm: string;
   listItemsCount: number;
   trackByGridItemProperty: string;
   isRowLocked: (rowItem: any) => boolean;
@@ -172,6 +174,7 @@ export declare class MockAppfxDatagridComponent {
   gridItemsChange: EventEmitter<any[]>;
   selectionChange: EventEmitter<any[]>;
   searchTermChange: EventEmitter<string>;
+  propertyFiltersChange: EventEmitter<any[]>;
   refreshGridData: EventEmitter<any>;
   refreshVirtualGridData: EventEmitter<any>;
   actionClick: EventEmitter<any>;
@@ -258,6 +261,14 @@ export declare class MockAppfxDatagridComponent {
       "alias": "filterMode";
       "required": false;
     };
+    "propertyFilters": {
+      "alias": "propertyFilters";
+      "required": false;
+    };
+    "searchTerm": {
+      "alias": "searchTerm";
+      "required": false;
+    };
     "listItemsCount": {
       "alias": "listItemsCount";
       "required": false;
@@ -311,6 +322,7 @@ export declare class MockAppfxDatagridComponent {
     "gridItemsChange": "gridItemsChange";
     "selectionChange": "selectionChange";
     "searchTermChange": "searchTermChange";
+    "propertyFiltersChange": "propertyFiltersChange";
     "refreshGridData": "refreshGridData";
     "refreshVirtualGridData": "refreshVirtualGridData";
     "actionClick": "actionClick";
@@ -524,6 +536,11 @@ export declare class MockIsRowSelectablePipe implements PipeTransform {
 export declare class MockDatagridFiltersComponent {
   filterMode: FilterMode;
   filterableProperties: FilterablePropertyDefinition[];
+  predefinedFilters: FilterablePropertyDefinition[];
+  semiPredefinedFilters: EnumPropertyDefinition[];
+  toggleFilters: ToggleFilter[];
+  presetFilters: PropertyFilter[];
+  propertyFilters: PropertyFilter[];
   searchTermChange: EventEmitter<string>;
   propertyFiltersChange: EventEmitter<PropertyFilter[]>;
   static ɵfac: i0.ɵɵFactoryDeclaration<MockDatagridFiltersComponent, never>;
@@ -534,6 +551,26 @@ export declare class MockDatagridFiltersComponent {
     };
     "filterableProperties": {
       "alias": "filterableProperties";
+      "required": false;
+    };
+    "predefinedFilters": {
+      "alias": "predefinedFilters";
+      "required": false;
+    };
+    "semiPredefinedFilters": {
+      "alias": "semiPredefinedFilters";
+      "required": false;
+    };
+    "toggleFilters": {
+      "alias": "toggleFilters";
+      "required": false;
+    };
+    "presetFilters": {
+      "alias": "presetFilters";
+      "required": false;
+    };
+    "propertyFilters": {
+      "alias": "propertyFilters";
       "required": false;
     };
   }, {

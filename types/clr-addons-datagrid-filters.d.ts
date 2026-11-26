@@ -1,15 +1,20 @@
 import * as i0 from "@angular/core";
-import { AfterViewInit, ChangeDetectorRef, ElementRef, EnvironmentInjector, EventEmitter, Injector, OnChanges, OnDestroy, OnInit, PipeTransform, Renderer2, SimpleChanges, ViewContainerRef } from "@angular/core";
-import { Observable } from "rxjs";
-import * as i17 from "@angular/common";
-import { DatePipe } from "@angular/common";
-import * as i18 from "@angular/forms";
-import { FormArray, FormBuilder, FormGroup } from "@angular/forms";
-import * as i12 from "@angular/cdk/a11y";
+import { AfterViewInit, ChangeDetectorRef, ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef } from "@angular/core";
+import * as i1 from "@clr/angular/popover/common";
+import { ClrPopoverPosition, ClrPopoverType } from "@clr/angular/popover/common";
+import * as i19 from "@angular/forms";
+import { FormArray, FormBuilder, FormControl, FormGroup } from "@angular/forms";
 import * as i13 from "@clr/angular/forms";
+import { DateRangeOption } from "@clr/angular/forms";
+import { Observable } from "rxjs";
+import * as i18 from "@angular/common";
+import { DatePipe } from "@angular/common";
+import * as i10 from "@angular/cdk/a11y";
+import * as i11 from "@clr/angular/emphasis/badge";
+import * as i12 from "@clr/angular/emphasis/label";
 import * as i14 from "@clr/angular/icon";
-import * as i15 from "@clr/angular/popover/signpost";
 import * as i16 from "@clr/angular/progress/spinner";
+import * as i17 from "@clr/angular/popover/tooltip";
 export declare enum ComparisonOperator {
   Contains = 0,
   DoesNotContain = 1,
@@ -40,7 +45,12 @@ export declare enum LogicalOperator {
 export declare enum FilterMode {
   Quick = 0,
   Advanced = 1,
-  AdvancedOnly = 2
+  AdvancedOnly = 2,
+  /**
+   * Quick search and advanced filter pills are shown and applied together.
+   * The host combines `searchTermChange` and `propertyFiltersChange` with AND.
+   */
+  Combined = 3
 }
 export declare enum PropertyType {
   String = 0,
@@ -68,7 +78,7 @@ export declare enum Unit {
   MBitPS = 15,
   GBitPS = 16
 }
-declare enum TimeSpan {
+export declare enum TimeSpan {
   Minutes = 0,
   Hours = 1,
   Days = 2,
@@ -97,6 +107,8 @@ declare enum TimeSpan {
  * ```
  */
 export declare class DatagridFiltersStrings {
+  /** Clears the current filter's values while retaining a predefined pill. */
+  readonly clearFilter: string;
   /**
    * Filter type label.
    */
@@ -168,11 +180,11 @@ export declare class DatagridFiltersStrings {
    */
   readonly unitAriaLabel: string;
   /**
-   * Add second condition button label.
+   * Add condition button label.
    */
   readonly addCondition: string;
   /**
-   * Remove second condition button aria label.
+   * Remove condition button aria label, followed by the condition number.
    */
   readonly removeConditionAriaLabel: string;
   /**
@@ -198,10 +210,6 @@ export declare class DatagridFiltersStrings {
    * Select all option label.
    */
   readonly selectAll: string;
-  /**
-   * Applied filters text.
-   */
-  readonly appliedText: string;
   readonly editFilterText: string;
   readonly removeFilterText: string;
   readonly hideButtonLabel: string;
@@ -209,7 +217,6 @@ export declare class DatagridFiltersStrings {
   readonly showButtonLabel: string;
   readonly filtersText: string;
   readonly filterText: string;
-  readonly clearAllButtonLabel: string;
   readonly clearAllButtonAriaLabel: string;
   readonly searchOptions: string;
   readonly searchPlaceholder: string;
@@ -229,21 +236,45 @@ export declare class DatagridFiltersStrings {
    */
   readonly addTimeFilter: string;
   /**
-   * Date input placeholder.
-   */
-  readonly dateFormat: string;
-  /**
    * Time input placeholder.
    */
   readonly timeFormat: string;
+  /**
+   * Screen reader label of the date input of single-date operators (e.g. Equals, Before).
+   */
+  readonly dateLabel: string;
+  /**
+   * Screen reader label of the time input of single-date operators.
+   */
+  readonly timeLabel: string;
+  /**
+   * Screen reader label of the start time input of a custom range.
+   */
+  readonly fromTimeLabel: string;
+  /**
+   * Screen reader label of the end time input of a custom range.
+   */
+  readonly toTimeLabel: string;
   /**
    * Date input validator error message
    */
   readonly dateValidatorMessage: string;
   /**
+   * Validation message when the end of a custom date range is before its start.
+   */
+  readonly dateRangeValidatorMessage: string;
+  /**
    * Time input validator error message
    */
   readonly timeValidatorMessage: string;
+  /**
+   * Screen reader label of the date range picker used by the custom range operator without times.
+   */
+  readonly dateRangeLabel: string;
+  /**
+   * Screen reader label of the preset range buttons shown by the custom range operator with times.
+   */
+  readonly dateRangeOptionsLabel: string;
   readonly fromLabel: string;
   readonly toLabel: string;
   /**
@@ -383,9 +414,47 @@ export declare class DateTimePropertyDefinition extends FilterablePropertyDefini
    * Flag indicating whether to include seconds in the time selector for the DateTime filter.
    */
   includeSeconds: boolean;
+  /**
+   * Preset ranges offered by the custom range operator. Without times they are listed in the date range picker; with
+   * times they are buttons under the operator. Each `value` is `[start, end]`, both inclusive, used as given. A `Date`
+   * at exactly 00:00 means the whole day. Options whose `value` is not two valid dates are ignored.
+   */
+  rangeOptions: DateRangeOption[];
   private readonly defaultOperators;
-  constructor(displayName: string, property: string, operators?: ComparisonOperator[], includeSeconds?: boolean);
+  constructor(displayName: string, property: string, operators?: ComparisonOperator[], includeSeconds?: boolean, rangeOptions?: DateRangeOption[]);
   getOperators(): ComparisonOperator[];
+}
+/**
+ * Editor choices that the criteria alone cannot express, kept on each filter so that field definitions
+ * can be shared between filter bars. Date-time filters store the operator as chosen (e.g. Last week or
+ * Time span) and the entered dates; numeric filters with units store the typed values and units.
+ */
+export interface FilterEditorState {
+  /** Date-time operator as chosen in the editor. */
+  operator?: ComparisonOperator;
+  /** Date-time value as `yyyy-MM-dd` or `yyyy-MM-ddTHH:mm[:ss]`. The start of a custom range. */
+  value?: string;
+  /** End of a custom range, in the same format as `value`. Inclusive. */
+  valueTo?: string;
+  timeSpanValue?: number;
+  timeSpan?: TimeSpan;
+  /** Numeric with unit: the value typed for each condition, before unit conversion. */
+  values?: any[];
+  /** Numeric with unit: the unit chosen for each condition. */
+  units?: Unit[];
+}
+/**
+ * An on/off pill for `toggleFilters`: ON applies `filter`, OFF applies nothing.
+ */
+export interface ToggleFilter {
+  /**
+   * Text of the pill, shown as given (any free text, translated by the host). Without a label, or with an empty
+   * one, the text is generated from the filter's criteria, e.g. "Status: Warning". The tooltip always shows the
+   * criteria.
+   */
+  label?: string;
+  /** The filter applied while the toggle is ON. Toggles are identified by its criteria, not by the label. */
+  filter: PropertyFilter;
 }
 export declare class PropertyFilter {
   /**
@@ -396,6 +465,11 @@ export declare class PropertyFilter {
    *  Logical operator. Supported values are AND/OR
    */
   operator: LogicalOperator;
+  /**
+   * Set by the built-in editors. Optional for host-built filters such as presets; without it the
+   * editor and pill derive what they can from the criteria.
+   */
+  editorState?: FilterEditorState;
 }
 export declare class PropertyPredicate {
   /**
@@ -415,39 +489,127 @@ interface EnumPropertyData {
   key: string;
   value: string;
 }
+/** The controls of one condition row of the string and numeric editor. Internal, not exported from the package. */
+interface ConditionControls {
+  operator: FormControl<ComparisonOperator>;
+  /** The input's text, or the stored value when a filter is edited. */
+  value: FormControl<string | number>;
+  unit: FormControl<Unit>;
+}
+/** The controls of the string and numeric editor's form. Internal, not exported from the package. */
+interface GeneralFilterControls {
+  conditions: FormArray<FormGroup<ConditionControls>>;
+  logicalOperator: FormControl<LogicalOperator>;
+}
 /**
  * Composite filters component renders different filters based on the type of
  * the corresponding filterable property, e.g., string, enum, number, etc.
  */
-export declare class CompositeFiltersComponent implements OnInit {
+export declare class CompositeFiltersComponent implements OnInit, OnChanges {
   filterStrings: DatagridFiltersStrings;
   private cdr;
-  filterableProperties: FilterablePropertyDefinition[];
+  /**
+   * Filters applied when the filter bar starts, e.g. a fixed default view. Read once, in `ngOnInit`:
+   * later changes are ignored. For filters the host keeps in sync, use `propertyFilters`.
+   */
   presetFilters?: PropertyFilter[];
+  /**
+   * Other criteria (e.g. the quick search in combined mode) are active, so Clear all stays available
+   * even without property filters.
+   */
+  externalCriteriaActive: boolean;
+  /** Emitted when the user clicks Clear all, so the host can clear its other criteria too. */
+  clearAll: EventEmitter<void>;
   /**
    * Event emitter to tell hosting view that the filtering conditions have changed
    */
   propertyFiltersChange: EventEmitter<PropertyFilter[]>;
-  readonly stringPropertyType: PropertyType;
-  readonly enumPropertyType: PropertyType;
-  readonly numericPropertyType: PropertyType;
-  readonly dateTimePropertyType: PropertyType;
-  readonly userPropertyType: PropertyType;
-  signPostOpened: boolean;
   selectedFilterableProperty: FilterablePropertyDefinition;
-  propertyType: PropertyType;
-  stringProperty: StringPropertyDefinition;
-  enumProperty: EnumPropertyDefinition;
-  numericProperty: NumericPropertyDefinition;
-  dateTimeProperty: DateTimePropertyDefinition;
-  userProperty: UserPropertyDefinition;
-  propertyFilters: PropertyFilter[];
   collapsedFilters: boolean;
-  showHideFiltersArrowDir: string;
-  showHideFiltersLabel: string;
-  showHideFiltersAriaLabel: string;
+  protected readonly popoverId: string;
+  protected readonly popoverPosition = ClrPopoverPosition.BOTTOM_LEFT;
+  protected readonly popoverType = ClrPopoverType.DROPDOWN;
+  private fieldCombobox;
+  private addButton;
+  private toggleButtons;
+  private predefinedPills;
+  private semiOptionButtons;
+  private readonly injector;
+  private readonly destroyRef;
+  private readonly popoverService;
+  private rawPredefinedFilters;
+  private rawSemiPredefinedFilters;
+  private rawToggleFilters;
+  private readonly filterablePropertiesState;
+  private readonly propertyFiltersState;
+  private readonly resolvedPredefinedFilters;
+  private readonly resolvedSemiPredefinedFilters;
+  private readonly resolvedToggleFilters;
+  /** The input that owns each predefined and semi-predefined field. The lists are without duplicates. */
+  private readonly fieldOwners;
+  private readonly visiblePropertiesCache;
+  private readonly availablePropertiesCache;
+  private readonly userAddedFiltersCountCache;
+  private readonly predefinedPropertiesCache;
+  private readonly userAddedPropertiesCache;
+  /** Fields ignored by the last resolution, reported with console.warn. */
+  private ignoredFieldEntries;
+  private initialized;
+  /** Keys (see toggleKey) of the toggle filters that are ON. */
+  private readonly activeToggleKeys;
   constructor(filterStrings: DatagridFiltersStrings, cdr: ChangeDetectorRef);
+  get filterableProperties(): FilterablePropertyDefinition[];
+  set filterableProperties(value: FilterablePropertyDefinition[]);
+  /**
+   * The active filters, including toggle filters that are ON. Supports two-way binding:
+   * `[(propertyFilters)]="filters"`. A new value replaces the active filters without emitting
+   * `propertyFiltersChange`, unless invalid filters on semi-predefined fields had to be removed.
+   * At start-up, a `presetFilters` filter wins over one here for the same field.
+   */
+  get propertyFilters(): PropertyFilter[];
+  set propertyFilters(filters: PropertyFilter[]);
+  /**
+   * Properties whose pills remain visible when their criteria are cleared.
+   *
+   * A field can be used only once per filter bar. Fields are claimed in this order:
+   * `predefinedFilters`, then `semiPredefinedFilters`, then `toggleFilters`. A later entry
+   * for a field that is already claimed is ignored, with a console warning.
+   */
+  get predefinedFilters(): FilterablePropertyDefinition[];
+  set predefinedFilters(value: FilterablePropertyDefinition[]);
+  /**
+   * Enum properties shown as a field label followed by toggleable option pills,
+   * between the predefined and the user-added pills. Selected options are combined with OR
+   * and applied immediately. Fields already in `predefinedFilters` are ignored.
+   */
+  get semiPredefinedFilters(): EnumPropertyDefinition[];
+  set semiPredefinedFilters(value: EnumPropertyDefinition[]);
+  /**
+   * Ready-made filters shown as on/off pills in the predefined group. OFF means not applied;
+   * ON applies the toggle's `filter`. A preset filter with the same criteria starts the toggle ON.
+   * Toggles are identified by their criteria, so the host may pass new but equal objects.
+   * Toggles on a field already in `predefinedFilters`, `semiPredefinedFilters` or an earlier toggle are ignored.
+   * The toggle owns its field: any other filter on it (a preset or a `propertyFilters` entry) is removed, with a
+   * console warning.
+   */
+  get toggleFilters(): ToggleFilter[];
+  set toggleFilters(value: ToggleFilter[]);
+  get showHideFiltersArrowDir(): string;
+  get showHideFiltersLabel(): string;
+  get showHideFiltersAriaLabel(): string;
+  get signPostOpened(): boolean;
+  set signPostOpened(open: boolean);
+  protected get visibleProperties(): FilterablePropertyDefinition[];
+  protected get availableProperties(): FilterablePropertyDefinition[];
+  protected get userAddedFiltersCount(): number;
+  protected get predefinedProperties(): FilterablePropertyDefinition[];
+  protected get userAddedProperties(): FilterablePropertyDefinition[];
+  /** True when the predefined group has content (toggles or predefined pills). */
+  protected get hasPredefinedGroup(): boolean;
+  protected get hasActiveCriteria(): boolean;
+  ngOnChanges(changes: SimpleChanges): void;
   ngOnInit(): void;
+  /** The field in Add filter changed. The editor for it is chosen by `appfx-filter-editor`. */
   onPropertyChange(): void;
   onFilterCriteriaChange(propertyFilter: PropertyFilter): void;
   /**
@@ -457,34 +619,145 @@ export declare class CompositeFiltersComponent implements OnInit {
   clearAllFilters(): void;
   showHideAllFilters(): void;
   /**
-   * Active filters are not displayed in the new filters list.
-   * We want to preselect the first displayed property
+   * Stable identity of a toggle: field, operator and value of each criterion, plus the logical
+   * operator when there is more than one criterion.
    */
+  protected toggleKey(filter: PropertyFilter): string;
+  protected isToggleOn(toggle: ToggleFilter): boolean;
+  protected toggleFilter(toggle: ToggleFilter): void;
+  /** The host's label as given, or the text generated from the criteria when there is no (or an empty) label. */
+  protected toggleText(toggle: ToggleFilter): string;
+  /**
+   * FIELD_NAME: VALUE for Equals, FIELD_NAME: CONDITION for Is empty, FIELD_NAME: CONDITION VALUE otherwise.
+   * Multiple criteria are joined with the filter's logical operator, e.g. "Status: Running Or Stopped".
+   */
+  protected toggleCriteriaText(toggle: PropertyFilter): string;
+  /** Option pills of a semi-predefined filter, in the order of the enum values map. */
+  protected semiOptions(property: EnumPropertyDefinition): {
+    key: string;
+    label: string;
+  }[];
+  protected isOptionSelected(property: EnumPropertyDefinition, key: string): boolean;
+  protected toggleOption(property: EnumPropertyDefinition, key: string): void;
+  protected filterFor(property: FilterablePropertyDefinition): PropertyFilter | undefined;
+  protected clearFilter(property: FilterablePropertyDefinition): void;
+  private isSemiPredefined;
+  private isPredefined;
+  /** The fields used by the toggle filters. */
+  private toggleProperties;
+  /**
+   * Sets the active filters from a full list, as emitted by `propertyFiltersChange`: a filter with exactly a toggle's
+   * criteria turns that toggle ON, any other non-empty filter becomes a pill. Copies the list, so the host's array
+   * is never changed.
+   */
+  private applyFilters;
+  /** The field definitions of this filter bar, by `property` key. The first input that has a field wins. */
+  private knownProperties;
+  /**
+   * Uses this filter bar's field definitions in the filter's criteria, matched by `property` key. Filters restored from
+   * JSON (saved views, URLs) have plain objects there, which the editors don't recognize. Returns a copy when a
+   * definition was replaced, so the host's filter is never changed; filters with unknown fields are kept as they are.
+   */
+  private withKnownProperties;
+  /** Emits the user filters plus the toggle filters that are ON. */
+  private emitFilters;
+  /**
+   * Emits after the current change detection. Lifecycle hooks run while the parent is being checked, so emitting
+   * there would change a `[(propertyFilters)]` value Angular has already checked (NG0100).
+   */
+  private emitFiltersLater;
+  /** Drops ON states of toggles that are no longer configured or lost their field. True if any was ON. */
+  private removeUnresolvedToggleKeys;
+  /** The user filters plus the toggle filters that are ON, as emitted. */
+  private currentFilters;
+  /** Same filters by criteria (field, operator, value and logical operator), in any order. */
+  private sameFilters;
+  /**
+   * Moves focus after the element that had it was removed (Clear all, or removing a user-added pill). Runs after the
+   * next render, once the removed element is gone and Add filter is enabled or disabled for the remaining fields.
+   *
+   * Focus goes to:
+   * 1. Add filter, when it is enabled.
+   * 2. Otherwise the first enabled filter button, in page order:
+   *    2.1. The first toggle filter
+   *    2.2. Then the first predefined pill
+   *    2.3. then the first semi-predefined option.
+   *    Add filter is disabled when every field is taken by these fixed filters, and it cannot take focus.
+   * 3. Nowhere, when neither exists; focus then stays where the browser puts it.
+   */
+  private moveFocusToActiveButton;
+  /**
+   * Keeps the field chosen in Add filter (and the editor's typed values) across input changes, as long as the field
+   * is still available. Matched by key, so a new `filterableProperties` array with equal fields keeps it too.
+   */
+  private keepOrPreselectProperty;
   private preselectFirstProperty;
-  private updateShowHideLabel;
-  private isStringProperty;
-  private isEnumProperty;
-  private isNumericProperty;
-  private isDateTimeProperty;
-  private isUserProperty;
-  private castStringProperty;
-  private castEnumProperty;
-  private castNumericProperty;
-  private castDateTimeProperty;
-  private castUserProperty;
+  /**
+   * Each field may appear only once across predefined, semi-predefined and toggle filters.
+   * Fields are claimed left to right: predefined, then semi-predefined, then toggles.
+   */
+  private resolveFieldOwners;
+  /** Semi-predefined fields only support picking options: Equals on option keys of that field, joined with OR. */
+  private isOptionSelection;
+  /**
+   * Semi-predefined fields only support picking options. Removes any other filter on such a field
+   * and writes a console warning. Returns true when something was removed.
+   */
+  private removeInvalidSemiFilters;
+  /** Removes filters that their field's owner does not allow. Returns true when something was removed. */
+  private removeInvalidFilters;
+  /**
+   * A toggle owns its field. A filter with exactly a toggle's criteria turns the toggle ON (see applyFilters), so a
+   * filter still on a toggle's field has other criteria. Removes it and writes a console warning. Returns true when
+   * something was removed.
+   */
+  private removeToggleFieldFilters;
+  /** Removes the filters `invalid` matches and writes a console warning. Returns true when something was removed. */
+  private removeFilters;
+  private warnIgnoredFields;
   static ɵfac: i0.ɵɵFactoryDeclaration<CompositeFiltersComponent, never>;
   static ɵcmp: i0.ɵɵComponentDeclaration<CompositeFiltersComponent, "appfx-composite-filter", never, {
-    "filterableProperties": {
-      "alias": "filterableProperties";
-      "required": false;
-    };
     "presetFilters": {
       "alias": "presetFilters";
       "required": false;
     };
+    "externalCriteriaActive": {
+      "alias": "externalCriteriaActive";
+      "required": false;
+    };
+    "filterableProperties": {
+      "alias": "filterableProperties";
+      "required": false;
+    };
+    "propertyFilters": {
+      "alias": "propertyFilters";
+      "required": false;
+    };
+    "predefinedFilters": {
+      "alias": "predefinedFilters";
+      "required": false;
+    };
+    "semiPredefinedFilters": {
+      "alias": "semiPredefinedFilters";
+      "required": false;
+    };
+    "toggleFilters": {
+      "alias": "toggleFilters";
+      "required": false;
+    };
   }, {
+    "clearAll": "clearAll";
     "propertyFiltersChange": "propertyFiltersChange";
-  }, never, never, false, never>;
+  }, never, never, false, [{
+    directive: typeof i1.ClrPopoverHostDirective;
+    inputs: {};
+    outputs: {};
+  }]>;
+  static ngAcceptInputType_filterableProperties: FilterablePropertyDefinition[] | null | undefined;
+  static ngAcceptInputType_propertyFilters: PropertyFilter[] | null | undefined;
+  static ngAcceptInputType_predefinedFilters: FilterablePropertyDefinition[] | null | undefined;
+  static ngAcceptInputType_semiPredefinedFilters: EnumPropertyDefinition[] | null | undefined;
+  static ngAcceptInputType_toggleFilters: ToggleFilter[] | null | undefined;
 }
 /**
  * Component provides the ability to choose from quick filter (search)
@@ -497,36 +770,69 @@ export declare class DataGridFiltersComponent implements OnDestroy, AfterViewIni
   readonly advancedOnlyMode: FilterMode;
   mode: FilterMode;
   selectedFilterMode: FilterMode;
-  searchTerm: string;
   /**
    * Array of filterable properties
    */
   filterableProperties: FilterablePropertyDefinition[];
   /**
-   * Array of pre-selected filters
+   * Filters applied when the filter bar starts, e.g. a fixed default view. Read once at start-up:
+   * later changes are ignored. For filters the host keeps in sync, use `propertyFilters`.
+   * `presetFilters` have precedence over `propertyFilters` on initial load.
    */
   presetFilters?: PropertyFilter[];
+  /**
+   * Properties whose filter pills stay visible even without active criteria.
+   * Use presetFilters to supply their initial values.
+   */
+  predefinedFilters: FilterablePropertyDefinition[];
+  /**
+   * Enum properties shown as a field label with toggleable option pills, between the
+   * predefined and the user-added pills. Selected options are combined with OR.
+   */
+  semiPredefinedFilters: EnumPropertyDefinition[];
+  /**
+   * Ready-made filters shown as on/off pills in the predefined group. OFF means not applied;
+   * ON applies the filter as configured.
+   */
+  toggleFilters: ToggleFilter[];
   /**
    * Event emitter to tell hosting view that search term, used for filtering
    * has changed.
    */
   searchTermChange: EventEmitter<string>;
   propertyFiltersChange: EventEmitter<PropertyFilter[]>;
+  protected readonly combinedMode: FilterMode;
   private lastSearchTerm;
   private searchTermDebouncer;
   private unsubscribeSubject;
-  private appliedFiltersCount;
+  private _propertyFilters;
+  private _searchTerm;
   constructor(filterStrings: DatagridFiltersStrings);
   /**
-   * Quick, Advanced or AdvancedOnly. Default Quick.
+   * Quick, Advanced, AdvancedOnly or Combined. Default Quick.
    */
   set filterMode(filterMode: FilterMode);
+  /**
+   * The active filters, including toggle filters that are ON. Supports two-way binding:
+   * `[(propertyFilters)]="filters"`. A new value replaces the active filters without emitting
+   * `propertyFiltersChange`.
+   */
+  get propertyFilters(): PropertyFilter[];
+  set propertyFilters(filters: PropertyFilter[] | null | undefined);
+  /**
+   * The quick search text. Supports two-way binding: `[(searchTerm)]="search"`, e.g. to restore a saved view.
+   * A new value replaces the search text without emitting `searchTermChange`.
+   */
+  get searchTerm(): string;
+  set searchTerm(searchTerm: string | null | undefined);
   ngAfterViewInit(): void;
   ngOnDestroy(): void;
   onFilterModeChange(): void;
   onFilterCriteriaChange(propertyFilters: PropertyFilter[]): void;
   onSearchInputKeyPress(event: KeyboardEvent): void;
   onSearchTermChanged(searchTerm: string): void;
+  /** Combined mode: Clear all also clears the quick search text. */
+  protected onClearAll(): void;
   private doSearch;
   static ɵfac: i0.ɵɵFactoryDeclaration<DataGridFiltersComponent, never>;
   static ɵcmp: i0.ɵɵComponentDeclaration<DataGridFiltersComponent, "appfx-datagrid-filters", never, {
@@ -538,8 +844,28 @@ export declare class DataGridFiltersComponent implements OnDestroy, AfterViewIni
       "alias": "presetFilters";
       "required": false;
     };
+    "predefinedFilters": {
+      "alias": "predefinedFilters";
+      "required": false;
+    };
+    "semiPredefinedFilters": {
+      "alias": "semiPredefinedFilters";
+      "required": false;
+    };
+    "toggleFilters": {
+      "alias": "toggleFilters";
+      "required": false;
+    };
     "filterMode": {
       "alias": "filterMode";
+      "required": false;
+    };
+    "propertyFilters": {
+      "alias": "propertyFilters";
+      "required": false;
+    };
+    "searchTerm": {
+      "alias": "searchTerm";
       "required": false;
     };
   }, {
@@ -583,6 +909,8 @@ declare class DateTimeFilterComponent implements OnInit, OnChanges {
   isRelativePredicate: boolean;
   isTimeSpanPredicate: boolean;
   timePredicate: boolean;
+  /** Preset ranges of the field with valid dates, for the range picker and the time-mode buttons. */
+  rangeOptions: DateRangeOption[];
   includeSeconds: boolean;
   /**
    * In case the component is used for filter editing
@@ -592,22 +920,42 @@ declare class DateTimeFilterComponent implements OnInit, OnChanges {
    * Event emitter to tell hosting view that filtering criteria have changed
    */
   filterCriteriaChange: EventEmitter<PropertyFilter>;
+  private readonly dateFormat;
+  private readonly injector;
+  private startDateInput?;
+  private dateInput?;
+  private timeInput?;
+  /** Flags a typed date that cannot be read in the current locale with the `pattern` error. */
+  private readonly dateValidators;
   private readonly relativeOperators;
   private readonly singlePredicateOperators;
   private selectedFilterCriteria;
   private primaryPredicate;
   private secondaryPredicate;
+  /** The edited filter's own state, or one derived from its criteria (e.g. a preset). Never the shared definition. */
+  private storedState;
   constructor(formBuilder: FormBuilder, datePipe: DatePipe, filterStrings: DatagridFiltersStrings);
   get filterProperty(): DateTimePropertyDefinition;
   set filterProperty(filterProperty: DateTimePropertyDefinition);
+  /**
+   * The smallest time the inputs can express: a second with `includeSeconds`, otherwise a minute. An inclusive time
+   * becomes exclusive by adding it, so "Before or equal to 10:30:15" ends before 10:30:16, not 10:31:15.
+   */
+  private get timeStepMs();
   ngOnInit(): void;
   ngOnChanges(): void;
   onInputKeyPress(event: KeyboardEvent): void;
+  /** Fills From and To (dates and, with times, times) from a preset range. The user can still change them. */
+  applyRangeOption(option: DateRangeOption): void;
   enableTimePredicate(): void;
   disableTimePredicate(): void;
   noDateTimeInputNeeded(): boolean;
   onApplyButtonClick(): void;
   onCancelButtonClick(): void;
+  /** Filter by time: the clicked button is removed, so focus moves to the first time input. */
+  protected onAddTimeClick(): void;
+  /** Removing the time also removes the clicked button, so focus moves back to the date input. */
+  protected onRemoveTimeClick(): void;
   private onOperatorChange;
   private addValidators;
   private removeValidators;
@@ -628,13 +976,33 @@ declare class DateTimeFilterComponent implements OnInit, OnChanges {
   private getToDateTimePredicate;
   private getcurrentTimePredicate;
   private getPastDate;
+  /**
+   * The next calendar day at the same clock time, e.g. "2026-03-29T00:00:00" to "2026-03-30T00:00:00".
+   * Not 24 hours later: on the days daylight saving starts or ends that would miss midnight by an hour.
+   */
+  private getNextDay;
   private getCustomDate;
   private adjustTimeZone;
   private getUtcTimeZoneOffset;
+  /** Keeps the editor choices on the emitted filter, so the pill and a later edit read them from there. */
   private storeSelectedValues;
   private getStoredDateTimeValue;
   private getStoredDateTimeValueTo;
   private parseDateValue;
+  /** The date picker's locale date string as yyyy-MM-dd. */
+  private isoDate;
+  /**
+   * A time input value (`HH:mm`, or `HH:mm:ss` with seconds) for a preset range date. Exactly 00:00 means the whole
+   * day: the start of the day for From, its last minute (or second) for To, since To is inclusive.
+   */
+  private timeInputValue;
+  /**
+   * With times the range picker is not used, so its start-before-end rule is applied here: From must not be later than
+   * To (both inclusive, so equal is fine). Reported as the picker's `range` error on the To date.
+   */
+  private validateRangeOrder;
+  /** A From or To field pair as a local date-time; null while the date or time is missing or invalid. */
+  private localDateTime;
   private parseTimeValue;
   static ɵfac: i0.ɵɵFactoryDeclaration<DateTimeFilterComponent, never>;
   static ɵcmp: i0.ɵɵComponentDeclaration<DateTimeFilterComponent, "appfx-datetime-filter", never, {
@@ -648,33 +1016,7 @@ declare class DateTimeFilterComponent implements OnInit, OnChanges {
     };
   }, {
     "filterCriteriaChange": "filterCriteriaChange";
-  }, never, never, false, never>;
-}
-/**
- * Directive which renders a clickable "X" on the right side of a Clarity label badge.
- * A "close" event is emitted when the "X" is clicked.
- * The directive is needed in order to be able to remove filtering criteria,
- * which are displayed in Clarity label badges.
- */
-declare class DismissableDirective implements AfterViewInit {
-  private renderer;
-  private elRef;
-  private viewContainerRef;
-  private environmentInjector;
-  private injector;
-  dismissAriaLabel: string;
-  dismiss: EventEmitter<any>;
-  constructor(renderer: Renderer2, elRef: ElementRef, viewContainerRef: ViewContainerRef, environmentInjector: EnvironmentInjector, injector: Injector);
-  ngAfterViewInit(): void;
-  static ɵfac: i0.ɵɵFactoryDeclaration<DismissableDirective, never>;
-  static ɵdir: i0.ɵɵDirectiveDeclaration<DismissableDirective, "[dismissable]", never, {
-    "dismissAriaLabel": {
-      "alias": "dismissAriaLabel";
-      "required": false;
-    };
-  }, {
-    "dismiss": "dismiss";
-  }, never, never, false, never>;
+  }, never, ["[filterField]", "[filterActions]"], false, never>;
 }
 /**
  * Enum filter component collects filtering criteria for enum based properties
@@ -744,6 +1086,47 @@ declare class EnumFilterComponent implements OnInit, OnChanges {
     };
   }, {
     "filterCriteriaChange": "filterCriteriaChange";
+  }, never, ["[filterField]", "[filterActions]"], false, never>;
+}
+/**
+ * Shows the editor for a field's type: general (string and numeric), enum, date-time or users. Used by Add filter and
+ * by the pills, so the choice of editor is in one place. Internal, not exported from the package.
+ */
+declare class FilterEditorComponent {
+  /** The field to edit. */
+  property: FilterablePropertyDefinition;
+  /** The filter to edit; none for a new filter. */
+  propertyFilter?: PropertyFilter;
+  /** Rendered in the editor's field row, e.g. the field picker. */
+  fieldTemplate?: TemplateRef<unknown>;
+  /** Rendered next to the editor's Cancel and Apply, e.g. Remove filter. */
+  actionsTemplate?: TemplateRef<unknown>;
+  /** The applied filter, or nothing when the editor was cancelled. */
+  filterCriteriaChange: EventEmitter<PropertyFilter>;
+  protected get generalProperty(): StringPropertyDefinition | NumericPropertyDefinition | undefined;
+  protected get enumProperty(): EnumPropertyDefinition | undefined;
+  protected get dateTimeProperty(): DateTimePropertyDefinition | undefined;
+  protected get userProperty(): UserPropertyDefinition | undefined;
+  static ɵfac: i0.ɵɵFactoryDeclaration<FilterEditorComponent, never>;
+  static ɵcmp: i0.ɵɵComponentDeclaration<FilterEditorComponent, "appfx-filter-editor", never, {
+    "property": {
+      "alias": "property";
+      "required": false;
+    };
+    "propertyFilter": {
+      "alias": "propertyFilter";
+      "required": false;
+    };
+    "fieldTemplate": {
+      "alias": "fieldTemplate";
+      "required": false;
+    };
+    "actionsTemplate": {
+      "alias": "actionsTemplate";
+      "required": false;
+    };
+  }, {
+    "filterCriteriaChange": "filterCriteriaChange";
   }, never, never, false, never>;
 }
 /**
@@ -776,34 +1159,23 @@ export declare class FilterFormComponent {
   }, {
     "cancel": "cancel";
     "apply": "apply";
-  }, never, ["*"], false, never>;
-}
-declare class FilterPopoverRepositionDirective implements AfterViewInit {
-  private elementRef;
-  private readonly menuMinTranslateX;
-  private readonly filterContainerSelector;
-  constructor(elementRef: ElementRef);
-  ngAfterViewInit(): void;
-  static ɵfac: i0.ɵɵFactoryDeclaration<FilterPopoverRepositionDirective, never>;
-  static ɵdir: i0.ɵɵDirectiveDeclaration<FilterPopoverRepositionDirective, "[filterPopoverReposition]", never, {}, {}, never, never, false, never>;
+  }, never, ["*", "[filterActions]"], false, never>;
 }
 /**
  * General filter component collects filtering criteria for string and numeric based properties
  *
  */
 declare class GeneralFilterComponent implements OnInit, OnChanges {
-  #private;
   private formBuilder;
   filterStrings: DatagridFiltersStrings;
+  readonly id: string;
   readonly logicalOperators: LogicalOperator[];
   readonly isEmptyOperator: ComparisonOperator;
-  generalFilterForm: FormGroup;
+  generalFilterForm: FormGroup<GeneralFilterControls>;
   comparisonOperators: ComparisonOperator[];
   units: Unit[];
   isNumericUnitProperty: boolean;
-  additionalPredicate: boolean;
-  isEmptyPrimaryPredicate: boolean;
-  isEmptySecondaryPredicate: boolean;
+  filterProperty: StringPropertyDefinition | NumericPropertyDefinition;
   /**
    * In case the component is used for filter editing
    */
@@ -813,31 +1185,114 @@ declare class GeneralFilterComponent implements OnInit, OnChanges {
    */
   filterCriteriaChange: EventEmitter<PropertyFilter>;
   protected LogicalOperator: typeof LogicalOperator;
-  private selectedFilterCriteria;
-  private primaryPredicate;
-  private secondaryPredicate;
+  private readonly destroyRef;
+  private readonly injector;
+  private operatorSelects;
   constructor(formBuilder: FormBuilder, filterStrings: DatagridFiltersStrings);
-  get filterProperty(): StringPropertyDefinition | NumericPropertyDefinition;
-  set filterProperty(filterProperty: StringPropertyDefinition | NumericPropertyDefinition);
+  get conditions(): FormArray<FormGroup<ConditionControls>>;
+  get hasEmptyPredicate(): boolean;
   ngOnInit(): void;
   ngOnChanges(): void;
   onInputKeyPress(event: KeyboardEvent): void;
-  enableSecondaryPredicate(): void;
-  disableSecondaryPredicate(): void;
+  addCondition(): void;
+  removeCondition(index: number): void;
   onApplyButtonClick(): void;
   onCancelButtonClick(): void;
-  private addValidators;
-  private removeValidators;
-  private selectLogicalOperator;
+  private createCondition;
+  private updateConditionValidators;
+  private focusCondition;
   private initOperator;
   private initValidators;
   private isNumericUnitFilterProperty;
   private applicableUnits;
   private initUnit;
+  private getSelectedUnit;
   private initValue;
+  /**
+   * The value in the field's unit. The value is the input's text (or a stored value); it is returned as it is when no
+   * conversion is needed, and as a number when it is converted.
+   */
   private convertValue;
   static ɵfac: i0.ɵɵFactoryDeclaration<GeneralFilterComponent, never>;
   static ɵcmp: i0.ɵɵComponentDeclaration<GeneralFilterComponent, "appfx-general-filter", never, {
+    "filterProperty": {
+      "alias": "filterProperty";
+      "required": false;
+    };
+    "propertyFilter": {
+      "alias": "propertyFilter";
+      "required": false;
+    };
+  }, {
+    "filterCriteriaChange": "filterCriteriaChange";
+  }, never, ["[filterField]", "[filterActions]"], false, never>;
+}
+declare class ManageFilterComponent implements OnInit, OnChanges {
+  filterStrings: DatagridFiltersStrings;
+  propertyFilter: PropertyFilter;
+  filterProperty: FilterablePropertyDefinition;
+  predefined: boolean;
+  filterRemoved: EventEmitter<void>;
+  readonly popoverId: string;
+  readonly popoverPosition = ClrPopoverPosition.BOTTOM_LEFT;
+  readonly popoverType = ClrPopoverType.DROPDOWN;
+  managedProperty: FilterablePropertyDefinition;
+  /**
+   * Event emitter to tell hosting view that filtering criteria have changed
+   */
+  filterCriteriaChange: EventEmitter<PropertyFilter>;
+  primaryConditionDisplayText: string;
+  secondaryConditionDisplayText: string;
+  /**
+   * The pill's accessible name: the visible pill text first (WCAG 2.5.3), then the other conditions in place of the
+   * +N badge, then the edit hint, e.g. "VM Name: Contains web And Equals: db, Edit filter".
+   */
+  editFilterAriaLabel: string;
+  /** The full filter shown in the pill's tooltip, e.g. "VM Name Contains: web And Equals: db". Visual only. */
+  tooltipText: string;
+  private readonly locale;
+  private readonly popoverService;
+  private pillButtonRef?;
+  private readonly noDisplayValueOperators;
+  constructor(filterStrings: DatagridFiltersStrings);
+  /**
+   * The pill button sits inside clr-tooltip, which provides its own popover service.
+   * Register it as the filter popover origin here instead of using clrPopoverOrigin.
+   */
+  set pillButton(button: ElementRef<HTMLButtonElement>);
+  get open(): boolean;
+  get active(): boolean;
+  get additionalConditions(): number;
+  get pillText(): string;
+  /** The CONDITION VALUE part of an active pill, e.g. "Contains linux". Empty for an inactive pill. */
+  get pillCondition(): string;
+  ngOnChanges(): void;
+  ngOnInit(): void;
+  togglePopover(event: MouseEvent): void;
+  removeFilter(): void;
+  /** Focuses the pill button, e.g. when the filter bar moves focus to the first pill. */
+  focus(): void;
+  onFilterCriteriaChange(propertyFilter: PropertyFilter): void;
+  private close;
+  private updateDisplayValues;
+  /**
+   * @param compact Pill format without the colon after the operator: "Contains linux" instead of "Contains: linux".
+   */
+  private displayFilterValue;
+  /**
+   * Date-time pill text, built from this filter only (its editor state, or what its criteria express),
+   * never from the shared field definition. Dates use the locale's medium date format.
+   */
+  private displayDateTimeFilter;
+  private isNoDisplayValueOperator;
+  private formatDateTimeValue;
+  private isEnumProperty;
+  private isNumericProperty;
+  private isDateTimeProperty;
+  private isNumericUnitFilterProperty;
+  private operatorDisplayName;
+  static ɵfac: i0.ɵɵFactoryDeclaration<ManageFilterComponent, never>;
+  static ɵcmp: i0.ɵɵComponentDeclaration<ManageFilterComponent, "appfx-manage-filter", never, {
     "propertyFilter": {
       "alias": "propertyFilter";
       "required": false;
@@ -846,75 +1301,18 @@ declare class GeneralFilterComponent implements OnInit, OnChanges {
       "alias": "filterProperty";
       "required": false;
     };
-  }, {
-    "filterCriteriaChange": "filterCriteriaChange";
-  }, never, never, false, never>;
-}
-declare class ManageFilterComponent implements OnInit {
-  filterStrings: DatagridFiltersStrings;
-  propertyFilter: PropertyFilter;
-  managedProperty: FilterablePropertyDefinition;
-  /**
-   * Event emitter to tell hosting view that filtering criteria have changed
-   */
-  filterCriteriaChange: EventEmitter<PropertyFilter>;
-  readonly stringPropertyType: PropertyType;
-  readonly enumPropertyType: PropertyType;
-  readonly numericPropertyType: PropertyType;
-  readonly dateTimePropertyType: PropertyType;
-  readonly userPropertyType: PropertyType;
-  managedPropertyType: PropertyType;
-  stringProperty: StringPropertyDefinition;
-  numericProperty: NumericPropertyDefinition;
-  enumProperty: EnumPropertyDefinition;
-  dateTimeProperty: DateTimePropertyDefinition;
-  userProperty: UserPropertyDefinition;
-  openPrimaryConditionSignPost: boolean;
-  openSecondaryConditionSignPost: boolean;
-  primaryConditionDisplayText: string;
-  secondaryConditionDisplayText: string;
-  editFilterAriaLabel: string;
-  private readonly noDisplayValueOperators;
-  constructor(filterStrings: DatagridFiltersStrings);
-  ngOnInit(): void;
-  onEditFilterKeyPress(event: KeyboardEvent, index: number): void;
-  removeFilter(index: number): void;
-  onFilterCriteriaChange(propertyFilter: PropertyFilter): void;
-  private updateDisplayValues;
-  private displayFilterValue;
-  private displayDateTimeFilter;
-  private isNoDisplayValueOperator;
-  private formatDateTimeValue;
-  private isStringProperty;
-  private isEnumProperty;
-  private isNumericProperty;
-  private isDateTimeProperty;
-  private isUserProperty;
-  private isNumericUnitFilterProperty;
-  private castStringProperty;
-  private castEnumProperty;
-  private castNumericProperty;
-  private castDateTimeProperty;
-  private castUserProperty;
-  private operatorDisplayName;
-  static ɵfac: i0.ɵɵFactoryDeclaration<ManageFilterComponent, never>;
-  static ɵcmp: i0.ɵɵComponentDeclaration<ManageFilterComponent, "appfx-manage-filter", never, {
-    "propertyFilter": {
-      "alias": "propertyFilter";
+    "predefined": {
+      "alias": "predefined";
       "required": false;
     };
   }, {
+    "filterRemoved": "filterRemoved";
     "filterCriteriaChange": "filterCriteriaChange";
-  }, never, never, false, never>;
-}
-/**
- * Pipe used to limit available filter options in a select container.
- * This is needed in order to prevent applying the same filter more than once
- */
-declare class SkipFiltersPipe implements PipeTransform {
-  transform(items: FilterablePropertyDefinition[], propertyDefinitions?: FilterablePropertyDefinition[]): any;
-  static ɵfac: i0.ɵɵFactoryDeclaration<SkipFiltersPipe, never>;
-  static ɵpipe: i0.ɵɵPipeDeclaration<SkipFiltersPipe, "skipFilter", false>;
+  }, never, never, false, [{
+    directive: typeof i1.ClrPopoverHostDirective;
+    inputs: {};
+    outputs: {};
+  }]>;
 }
 declare enum ErrorType {
   DOMAIN = 0,
@@ -977,12 +1375,12 @@ declare class UsersFilterComponent implements OnInit, OnDestroy, OnChanges {
     };
   }, {
     "filterCriteriaChange": "filterCriteriaChange";
-  }, never, never, false, never>;
+  }, never, ["[filterField]", "[filterActions]"], false, never>;
 }
 export declare class AppfxDatagridFiltersModule {
   constructor();
   static ɵfac: i0.ɵɵFactoryDeclaration<AppfxDatagridFiltersModule, never>;
-  static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridFiltersModule, [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof DateTimeFilterComponent, typeof DismissableDirective, typeof EnumFilterComponent, typeof FilterFormComponent, typeof FilterPopoverRepositionDirective, typeof GeneralFilterComponent, typeof ManageFilterComponent, typeof SkipFiltersPipe, typeof UsersFilterComponent], [typeof i12.A11yModule, typeof i13.ClrCheckboxModule, typeof i14.ClrIcon, typeof i13.ClrInputModule, typeof i13.ClrRadioModule, typeof i13.ClrSelectModule, typeof i15.ClrSignpostModule, typeof i16.ClrSpinnerModule, typeof i17.CommonModule, typeof i18.FormsModule, typeof i18.ReactiveFormsModule], [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof FilterFormComponent]>;
+  static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridFiltersModule, [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof DateTimeFilterComponent, typeof EnumFilterComponent, typeof FilterEditorComponent, typeof FilterFormComponent, typeof GeneralFilterComponent, typeof ManageFilterComponent, typeof UsersFilterComponent], [typeof i10.A11yModule, typeof i11.ClrBadge, typeof i12.ClrLabel, typeof i13.ClrCheckboxModule, typeof i13.ClrComboboxModule, typeof i13.ClrDatepickerModule, typeof i14.ClrIcon, typeof i13.ClrInputModule, typeof i13.ClrRadioModule, typeof i13.ClrSelectModule, typeof i1.ClrPopoverModuleNext, typeof i16.ClrSpinnerModule, typeof i17.ClrTooltipModule, typeof i18.CommonModule, typeof i19.FormsModule, typeof i19.ReactiveFormsModule], [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof FilterFormComponent]>;
   static ɵinj: i0.ɵɵInjectorDeclaration<AppfxDatagridFiltersModule>;
 }
 export { AppfxDatagridFiltersModule as DatagridFiltersModule };

@@ -919,6 +919,10 @@ export declare class DatagridComponent<T> implements OnInit, OnDestroy, AfterVie
   private readonly exportProviderService;
   private readonly groupService;
   private readonly zoomLevelService;
+  /**
+   * The quick search text, passed on to the filter bar. Supports two-way binding: `[(searchTerm)]="search"`,
+   * e.g. to restore a saved view. Setting it does not emit `searchTermChange`.
+   */
   searchTerm: string;
   visibleColumns: ColumnDefinition<T>[];
   draggedItems: T[];
@@ -1028,6 +1032,7 @@ export declare class DatagridComponent<T> implements OnInit, OnDestroy, AfterVie
    * - `FilterMode.Quick`: Enables the quick filter.
    * - `FilterMode.Advanced`: Enables the advanced filter.
    * - `FilterMode.AdvancedOnly`: Enables only the advanced filter.
+   * - `FilterMode.Combined`: Enables the quick and advanced filters together (combined with AND by the host).
    *
    * When the filter is enabled, the component will emit the `searchTermChange`/`advancedFilterChange` event whenever the filter changes.
    * If not set, no filter will be displayed.
@@ -1129,6 +1134,11 @@ export declare class DatagridComponent<T> implements OnInit, OnDestroy, AfterVie
    */
   advancedFilterChange: EventEmitter<PropertyFilter[]>;
   /**
+   * Emits the active advanced filters when the user changes them, together with `advancedFilterChange`.
+   * The change event of `[(propertyFilters)]`.
+   */
+  propertyFiltersChange: EventEmitter<PropertyFilter[]>;
+  /**
    * Emits the updated column definitions {@link columns} to the parent component when changed.
    */
   columnDefsChange: EventEmitter<ColumnDefinition<T>[]>;
@@ -1223,6 +1233,13 @@ export declare class DatagridComponent<T> implements OnInit, OnDestroy, AfterVie
    */
   get footerModel(): GridFooterModel;
   set footerModel(config: GridFooterModel);
+  /**
+   * The active advanced filters, passed on to the filter bar. Supports two-way binding:
+   * `[(propertyFilters)]="filters"`, e.g. to restore a saved view or keep the grid's data in sync with the pills.
+   * Setting it does not emit `propertyFiltersChange` or `advancedFilterChange`.
+   */
+  get propertyFilters(): PropertyFilter[];
+  set propertyFilters(value: PropertyFilter[]);
   /**
    * Array of column definitions that configure the appearance and behavior of each column in the Datagrid.
    *
@@ -1418,6 +1435,10 @@ export declare class DatagridComponent<T> implements OnInit, OnDestroy, AfterVie
     optional: true;
   }]>;
   static ɵcmp: i0.ɵɵComponentDeclaration<DatagridComponent<any>, "appfx-datagrid", never, {
+    "searchTerm": {
+      "alias": "searchTerm";
+      "required": false;
+    };
     "loading": {
       "alias": "loading";
       "required": false;
@@ -1538,6 +1559,10 @@ export declare class DatagridComponent<T> implements OnInit, OnDestroy, AfterVie
       "alias": "footerModel";
       "required": false;
     };
+    "propertyFilters": {
+      "alias": "propertyFilters";
+      "required": false;
+    };
     "columns": {
       "alias": "columns";
       "required": false;
@@ -1571,6 +1596,7 @@ export declare class DatagridComponent<T> implements OnInit, OnDestroy, AfterVie
     "pageSizeChange": "pageSizeChange";
     "gridItemsChange": "gridItemsChange";
     "advancedFilterChange": "advancedFilterChange";
+    "propertyFiltersChange": "propertyFiltersChange";
     "columnDefsChange": "columnDefsChange";
     "selectedItemsChange": "selectedItemsChange";
     "exportDataEvent": "exportDataEvent";

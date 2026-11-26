@@ -531,6 +531,7 @@ var MockAppfxDatagridComponent = class MockAppfxDatagridComponent {
 		this.gridItemsChange = new EventEmitter();
 		this.selectionChange = new EventEmitter();
 		this.searchTermChange = new EventEmitter();
+		this.propertyFiltersChange = new EventEmitter();
 		this.refreshGridData = new EventEmitter();
 		this.refreshVirtualGridData = new EventEmitter();
 		this.actionClick = new EventEmitter();
@@ -576,6 +577,8 @@ var MockAppfxDatagridComponent = class MockAppfxDatagridComponent {
 				loading: "loading",
 				serverDrivenDatagrid: "serverDrivenDatagrid",
 				filterMode: "filterMode",
+				propertyFilters: "propertyFilters",
+				searchTerm: "searchTerm",
 				listItemsCount: "listItemsCount",
 				trackByGridItemProperty: "trackByGridItemProperty",
 				isRowLocked: "isRowLocked",
@@ -594,6 +597,7 @@ var MockAppfxDatagridComponent = class MockAppfxDatagridComponent {
 				gridItemsChange: "gridItemsChange",
 				selectionChange: "selectionChange",
 				searchTermChange: "searchTermChange",
+				propertyFiltersChange: "propertyFiltersChange",
 				refreshGridData: "refreshGridData",
 				refreshVirtualGridData: "refreshVirtualGridData",
 				actionClick: "actionClick",
@@ -642,6 +646,8 @@ i0.ɵɵngDeclareClassMetadata({
 		loading: [{ type: Input }],
 		serverDrivenDatagrid: [{ type: Input }],
 		filterMode: [{ type: Input }],
+		propertyFilters: [{ type: Input }],
+		searchTerm: [{ type: Input }],
 		listItemsCount: [{ type: Input }],
 		trackByGridItemProperty: [{ type: Input }],
 		isRowLocked: [{ type: Input }],
@@ -658,6 +664,7 @@ i0.ɵɵngDeclareClassMetadata({
 		gridItemsChange: [{ type: Output }],
 		selectionChange: [{ type: Output }],
 		searchTermChange: [{ type: Output }],
+		propertyFiltersChange: [{ type: Output }],
 		refreshGridData: [{ type: Output }],
 		refreshVirtualGridData: [{ type: Output }],
 		actionClick: [{ type: Output }],
@@ -1404,6 +1411,10 @@ i0.ɵɵngDeclareClassMetadata({
 var MockDatagridFiltersComponent = class MockDatagridFiltersComponent {
 	constructor() {
 		this.filterMode = FilterMode.Quick;
+		this.predefinedFilters = [];
+		this.semiPredefinedFilters = [];
+		this.toggleFilters = [];
+		this.propertyFilters = [];
 		this.searchTermChange = new EventEmitter();
 		this.propertyFiltersChange = new EventEmitter();
 	}
@@ -1426,7 +1437,12 @@ var MockDatagridFiltersComponent = class MockDatagridFiltersComponent {
 			selector: "appfx-datagrid-filters",
 			inputs: {
 				filterMode: "filterMode",
-				filterableProperties: "filterableProperties"
+				filterableProperties: "filterableProperties",
+				predefinedFilters: "predefinedFilters",
+				semiPredefinedFilters: "semiPredefinedFilters",
+				toggleFilters: "toggleFilters",
+				presetFilters: "presetFilters",
+				propertyFilters: "propertyFilters"
 			},
 			outputs: {
 				searchTermChange: "searchTermChange",
@@ -1456,6 +1472,11 @@ i0.ɵɵngDeclareClassMetadata({
 	propDecorators: {
 		filterMode: [{ type: Input }],
 		filterableProperties: [{ type: Input }],
+		predefinedFilters: [{ type: Input }],
+		semiPredefinedFilters: [{ type: Input }],
+		toggleFilters: [{ type: Input }],
+		presetFilters: [{ type: Input }],
+		propertyFilters: [{ type: Input }],
 		searchTermChange: [{ type: Output }],
 		propertyFiltersChange: [{ type: Output }]
 	}
