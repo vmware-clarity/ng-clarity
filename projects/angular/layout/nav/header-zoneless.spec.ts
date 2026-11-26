@@ -250,6 +250,25 @@ describe('ClrHeader (zoneless, OnPush host)', () => {
       expect(openLevelText()).toBe(`${NAV_LEVEL_2}`);
     });
 
+    it('shares the open nav level between headers through the root service', async () => {
+      const otherFixture = TestBed.createComponent(ClrHeader);
+      const other = otherFixture.componentInstance;
+      await otherFixture.whenStable();
+      expect(other.openNavLevel).toBeNull();
+
+      header.openNav(NAV_LEVEL_1);
+      await fixture.whenStable();
+      expect(other.openNavLevel).toBe(NAV_LEVEL_1);
+
+      other.closeOpenNav();
+      expect(header.openNavLevel).toBeNull();
+      otherFixture.destroy();
+    });
+
+    it('keeps the deprecated ngOnDestroy() callable', () => {
+      expect(() => header.ngOnDestroy()).not.toThrow();
+    });
+
     it('resets when the open nav level is destroyed and does not carry over to a new one', async () => {
       header.openNav(NAV_LEVEL_1);
       await fixture.whenStable();

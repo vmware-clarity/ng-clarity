@@ -145,7 +145,7 @@ export class ClrBreadcrumbsModule {
 }
 
 // @public (undocumented)
-export class ClrHeader {
+export class ClrHeader implements OnDestroy {
     constructor(responsiveNavService: ResponsiveNavigationService, commonStrings: ClrCommonStringsService);
     // (undocumented)
     closeOpenNav(): void;
@@ -159,6 +159,8 @@ export class ClrHeader {
     // (undocumented)
     get isNavLevel2OnPage(): boolean;
     set isNavLevel2OnPage(value: boolean);
+    // @deprecated (undocumented)
+    ngOnDestroy(): void;
     // (undocumented)
     openNav(navLevel: number): void;
     // (undocumented)

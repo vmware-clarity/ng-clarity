@@ -96,6 +96,7 @@ describe('ResponsiveNavigationService', () => {
     service.unregisterNav(ResponsiveNavCodes.NAV_LEVEL_1);
     expect(emissions).toEqual([[ResponsiveNavCodes.NAV_LEVEL_1], []]);
   });
+
   describe('openNavLevel', () => {
     const { NAV_LEVEL_1, NAV_LEVEL_2, NAV_OPEN, NAV_CLOSE, NAV_TOGGLE } = ResponsiveNavCodes;
 

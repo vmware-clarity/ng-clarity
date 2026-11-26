@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, HostBinding, Input, linkedSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input, linkedSignal, OnDestroy } from '@angular/core';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { ResponsiveNavigationService } from './providers/responsive-navigation.service';
@@ -41,7 +41,7 @@ import { ResponsiveNavCodes } from './responsive-nav-codes';
   standalone: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClrHeader {
+export class ClrHeader implements OnDestroy {
   @Input() @HostBinding('attr.role') role = 'banner';
 
   responsiveNavCodes = ResponsiveNavCodes;
@@ -130,6 +130,14 @@ export class ClrHeader {
 
   openNav(navLevel: number) {
     this.responsiveNavService.sendControlMessage(ResponsiveNavCodes.NAV_OPEN, navLevel);
+  }
+
+  /**
+   * @deprecated The header no longer holds a subscription, so there is nothing to clean up. This no-op is kept so that
+   * subclasses calling `super.ngOnDestroy()` keep compiling. It will be removed in the next major version.
+   */
+  ngOnDestroy(): void {
+    // Intentionally empty.
   }
 }
 

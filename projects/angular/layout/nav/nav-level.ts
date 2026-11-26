@@ -42,7 +42,7 @@ export class ClrNavLevel implements OnInit {
   private _isOpen = false;
   private _document!: Document;
   private _subscription: Subscription;
-  private closeIcon: ComponentRef<ClrIcon>;
+  private closeIcon?: ComponentRef<ClrIcon>;
 
   constructor(
     @Inject(PLATFORM_ID) platformId: any,

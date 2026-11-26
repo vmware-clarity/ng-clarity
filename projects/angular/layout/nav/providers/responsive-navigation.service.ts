@@ -17,7 +17,7 @@ export class ResponsiveNavigationService {
    * The nav level that is open, or `null` when none is. Every control message updates it, so the header triggers,
    * the nav levels and any consumer reading it share one value.
    */
-  readonly openNavLevel = signal<number>(null);
+  readonly openNavLevel = signal<number | null>(null);
 
   // The list is mutated in place (its reference is what `registeredNavs` emits), so the signal is configured to
   // notify on every write rather than on reference change. Views reading `responsiveNavList` are refreshed
@@ -90,7 +90,7 @@ export class ResponsiveNavigationService {
   }
 }
 
-function openNavLevelAfter(openNavLevel: number, controlCode: string, navLevel: number): number {
+function openNavLevelAfter(openNavLevel: number | null, controlCode: string, navLevel: number): number | null {
   switch (controlCode) {
     case ResponsiveNavCodes.NAV_OPEN:
       return navLevel;
