@@ -53,8 +53,8 @@
 
       // ATM after token migration (alpha or beta v17)
       // remove when detailed radio/checkbox groups are implemented
-      input[type='radio']:hover,
-      input[type='checkbox']:hover {
+      &:not(.disabled) input[type='radio']:enabled:hover,
+      &:not(.disabled) input[type='checkbox']:enabled:hover {
         appearance: none;
         opacity: 1;
         top: 0;
