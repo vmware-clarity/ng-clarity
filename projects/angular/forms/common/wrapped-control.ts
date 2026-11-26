@@ -160,6 +160,8 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     if (this.ngControl) {
       this.triggerDoCheck(this.differ, this.ngControl);
       this.watchControl();
+      // Changes made with `emitEvent: false` fire no control event.
+      this.ngControlService?.refreshStates();
     }
   }
 
