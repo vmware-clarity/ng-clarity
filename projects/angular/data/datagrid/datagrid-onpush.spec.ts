@@ -7,9 +7,12 @@
 
 import { ChangeDetectionStrategy, Component, signal, Type, WritableSignal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 import { Subject } from 'rxjs';
 
+import { ClrDatagridFilter } from './datagrid-filter';
+import { ClrDatagridRow } from './datagrid-row';
 import { ClrDatagridModule } from './datagrid.module';
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
 
@@ -296,6 +299,17 @@ hosts.forEach(([description, hostType]) => {
       expect(rows().length).toBe(3);
     });
 
+    it('reads whether a custom filter is active from the filter, also when it did not emit changes', async () => {
+      const filter = fixture.debugElement.query(By.directive(ClrDatagridFilter)).componentInstance;
+      expect(filter.active).toBe(false);
+
+      host.filter.query = 'a';
+      expect(filter.active).toBe(true);
+
+      host.filter.query = '';
+      expect(filter.active).toBe(false);
+    });
+
     it('opens and closes the detail pane from code', async () => {
       await change(() => host.set('detail', ITEMS[0]));
       expect(query('.datagrid-detail-pane-content').textContent).toContain('Pane of a1');
@@ -422,5 +436,30 @@ describe('ClrDatagrid OnPush (Eager host with plain fields, checked like a Zone.
     const carets = Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('.datagrid-expandable-caret-button'));
     expect(carets.map(caret => caret.getAttribute('aria-expanded'))).toEqual(['false', 'true', 'false']);
     expect(fixture.nativeElement.querySelector('clr-dg-row-detail').textContent).toContain('Detail of b1');
+  });
+
+  it('marks a row as replaced when its expand state is changed through the service only', async () => {
+    const row: ClrDatagridRow = fixture.debugElement.queryAll(By.directive(ClrDatagridRow))[0].componentInstance;
+    const rowElement = () => fixture.nativeElement.querySelectorAll('clr-dg-row')[0] as HTMLElement;
+
+    row.expand.setReplace(true);
+    row.expand.expanded = true;
+    await fixture.whenStable();
+    expect(rowElement().classList).toContain('datagrid-row-replaced');
+    expect(row.replaced).toBe(true);
+
+    row.expand.expanded = false;
+    await fixture.whenStable();
+    expect(rowElement().classList).not.toContain('datagrid-row-replaced');
+    expect(row.replaced).toBe(false);
+  });
+
+  it('keeps the replaced state and the expand animation trigger of a row writable', async () => {
+    const row: ClrDatagridRow = fixture.debugElement.queryAll(By.directive(ClrDatagridRow))[0].componentInstance;
+
+    row.replaced = true;
+    row.expandAnimationTrigger = true;
+    expect(row.replaced).toBe(true);
+    expect(row.expandAnimationTrigger).toBe(true);
   });
 });

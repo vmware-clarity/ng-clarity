@@ -13,6 +13,7 @@ import {
   Component,
   computed,
   ContentChildren,
+  DoCheck,
   DOCUMENT,
   ElementRef,
   EmbeddedViewRef,
@@ -25,6 +26,7 @@ import {
   Optional,
   Output,
   QueryList,
+  Renderer2,
   signal,
   SimpleChanges,
   TemplateRef,
@@ -38,7 +40,7 @@ import {
   IfExpandService,
   LoadingListener,
 } from '@clr/angular/utils';
-import { ReplaySubject, Subscription } from 'rxjs';
+import { combineLatest, ReplaySubject, Subscription } from 'rxjs';
 
 import { ClrDatagridCell } from './datagrid-cell';
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
@@ -77,7 +79,7 @@ let nbRow = 0;
   standalone: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClrDatagridRow<T = any> implements OnChanges, AfterContentInit, AfterViewInit {
+export class ClrDatagridRow<T = any> implements OnChanges, DoCheck, AfterContentInit, AfterViewInit {
   @Output('clrDgSelectedChange') selectedChanged = new EventEmitter<boolean>(false);
   @Output('clrDgExpandedChange') expandedChange = new EventEmitter<boolean>(false);
   @Input('clrDgDetailDisabled') detailDisabled = false;
@@ -154,6 +156,8 @@ export class ClrDatagridRow<T = any> implements OnChanges, AfterContentInit, Aft
 
   /** Flipped to run the expand animation. */
   private readonly animationTrigger = signal(false);
+  /** Whether the detail replaces the row while it is expanded. */
+  private readonly _replaced = signal(false);
 
   constructor(
     @Optional() public selection: Selection<T>,
@@ -163,6 +167,9 @@ export class ClrDatagridRow<T = any> implements OnChanges, AfterContentInit, Aft
     @Optional() public detailService: DetailService,
     @Optional() private displayMode: DisplayModeService,
     private vcr: ViewContainerRef,
+    // Deprecated and not used anymore, the replaced state is a host class binding. Kept so that classes extending the
+    // row that call `super(...)` still compile; it will be removed in the next major version.
+    renderer: Renderer2,
     public el: ElementRef<HTMLElement>,
     public commonStrings: ClrCommonStringsService,
     @Optional() private items: Items,
@@ -186,6 +193,13 @@ export class ClrDatagridRow<T = any> implements OnChanges, AfterContentInit, Aft
     this.checkboxId = 'clr-dg-row-cb' + nbRow;
     this.expandableId = expand.expandableId;
 
+    this.subscriptions.push(
+      combineLatest(expand.replace, expand.expandChange).subscribe(([expandReplaceValue, expandChangeValue]) => {
+        // Replaced when expanding with a detail that replaces the row; not replaced when collapsing,
+        // or when expanding a detail that does not replace the row.
+        this.replaced = expandReplaceValue && expandChangeValue;
+      })
+    );
     const tree = this.tree;
     if (tree) {
       // In a tree, the rows report their expanded state like expandable rows do.
@@ -298,11 +312,17 @@ export class ClrDatagridRow<T = any> implements OnChanges, AfterContentInit, Aft
 
   /** The detail replaces the row while it is expanded. */
   get replaced(): boolean {
-    return this.expand.replace() && this.expand.expanded;
+    return this._replaced();
+  }
+  set replaced(replaced: boolean) {
+    this._replaced.set(replaced);
   }
 
   get expandAnimationTrigger(): boolean {
     return this.animationTrigger();
+  }
+  set expandAnimationTrigger(trigger: boolean) {
+    this.animationTrigger.set(trigger);
   }
 
   get _view() {
@@ -350,6 +370,14 @@ export class ClrDatagridRow<T = any> implements OnChanges, AfterContentInit, Aft
   ngOnInit() {
     this.wrappedInjector = new HostWrapper(WrappedRow, this.vcr);
     this.selection.lockItem(this.item, this.clrDgSelectable === false);
+  }
+
+  /**
+   * @deprecated Nothing is checked here anymore, the row reads signals instead. Kept so that classes extending
+   * the row that call it still compile. Will be removed in the next major version.
+   */
+  ngDoCheck() {
+    // Intentionally empty.
   }
 
   ngAfterContentInit() {

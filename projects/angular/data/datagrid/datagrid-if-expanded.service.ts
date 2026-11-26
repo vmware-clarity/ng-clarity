@@ -5,9 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable, signal } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ClrLoadingState, IfExpandService } from '@clr/angular/utils';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 let nbRow = 0;
 
@@ -15,9 +15,7 @@ let nbRow = 0;
 export class DatagridIfExpandService extends IfExpandService {
   expandableId = '';
 
-  /** Whether the detail replaces the row while it is expanded. */
-  readonly replace = signal(false);
-
+  private _replace = new BehaviorSubject(false);
   private _animate = new Subject<void>();
 
   constructor() {
@@ -38,6 +36,10 @@ export class DatagridIfExpandService extends IfExpandService {
     }
   }
 
+  get replace(): Observable<boolean> {
+    return this._replace.asObservable();
+  }
+
   get animate(): Observable<void> {
     return this._animate.asObservable();
   }
@@ -47,5 +49,9 @@ export class DatagridIfExpandService extends IfExpandService {
     if (state !== ClrLoadingState.LOADING) {
       this._animate.next();
     }
+  }
+
+  setReplace(replaceValue: boolean) {
+    this._replace.next(replaceValue);
   }
 }

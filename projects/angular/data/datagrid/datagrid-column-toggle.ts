@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import {
   ClrPopoverHostDirective,
   ClrPopoverPosition,
@@ -90,7 +90,7 @@ import { ColumnsService } from './providers/columns.service';
   standalone: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClrDatagridColumnToggle {
+export class ClrDatagridColumnToggle implements OnDestroy {
   popoverId = uniqueIdFactory();
 
   // Smart Popover
@@ -135,6 +135,14 @@ export class ClrDatagridColumnToggle {
     return (
       nbNonHideableColumns === 0 && this.hideableColumnStates.filter(columnState => !columnState.hidden).length === 1
     );
+  }
+
+  /**
+   * @deprecated Nothing is subscribed to anymore, so there is nothing to clean up. Kept so that classes extending
+   * the column toggle that call it still compile. Will be removed in the next major version.
+   */
+  ngOnDestroy() {
+    // Intentionally empty.
   }
 
   toggleColumnState(columnState: ColumnState, event: boolean) {

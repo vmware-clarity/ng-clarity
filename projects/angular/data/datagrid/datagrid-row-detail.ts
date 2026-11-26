@@ -100,6 +100,9 @@ export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, Af
   /** Whether the detail has cells of its own, which can come in after it is rendered. */
   protected readonly hasCells = signal(false);
 
+  /** Whether the detail replaces its row, held in a signal so that the host is updated when it changes. */
+  private readonly _replacedRow = signal(false);
+
   @ViewChild('pinnedCells', { read: ViewContainerRef }) private _pinnedCells!: ViewContainerRef;
   @ViewChild('scrollableCells', { read: ViewContainerRef }) private _scrollableCells!: ViewContainerRef;
   @ViewChild('plainCells', { read: ViewContainerRef }) private _plainCells!: ViewContainerRef;
@@ -122,11 +125,14 @@ export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, Af
 
   @Input('clrDgReplace')
   set replace(value: boolean) {
-    this.expand.replace.set(!!value);
+    this.expand.setReplace(!!value);
   }
 
   get replacedRow(): boolean {
-    return this.expand.replace();
+    return this._replacedRow();
+  }
+  set replacedRow(replaced: boolean) {
+    this._replacedRow.set(replaced);
   }
 
   get beginningOfExpandableContentAriaText() {
@@ -146,6 +152,7 @@ export class ClrDatagridRowDetail implements AfterContentInit, AfterViewInit, Af
   ngAfterContentInit() {
     this.hasCells.set(this.cells.length > 0);
     this.subscriptions.push(
+      this.expand.replace.subscribe(replaceChange => this._replacedRow.set(replaceChange)),
       // New cells have to be moved even when the columns did not change.
       this.cells.changes.subscribe(() => {
         this.hasCells.set(this.cells.length > 0);

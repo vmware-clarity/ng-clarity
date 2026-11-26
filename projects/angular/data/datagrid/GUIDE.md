@@ -122,7 +122,7 @@ Clear `loading` on error too, or a failed request leaves the grid on the spinner
 ## Selection
 
 - Always set `clrDgSelectionType`. Binding `clrDgSelected` alone leaves selection off: no checkboxes, and nothing can be selected.
-- Grid: `[clrDgSelectionType]="'multi' | 'single' | 'none'"` + `[(clrDgSelected)]`. `clrDgSelected` is always a `T[]`: all selected items in `multi` mode, at most one item in `single` mode (`selected: User[] = []`, the pick is `selected[0]`). Any other selection type string throws.
+- Grid: `[clrDgSelectionType]="'multi' | 'single' | 'none'"` + `[(clrDgSelected)]`. `clrDgSelected` is always a `T[]`: all selected items in `multi` mode, at most one item in `single` mode (`selected: User[] = []`, the pick is `selected[0]`). Any other selection type string throws. Prefer assigning a new array over mutating `selected` in place (`push`, `splice`); an in-place change is only picked up when the datagrid is checked, so the component that holds the datagrid has to be checked too (default change detection, or marked for check when it is OnPush).
 - Every row needs `[clrDgItem]`.
 - Lock a row: `[clrDgSelectable]="false"` on `clr-dg-row`.
 - Keep selection across refetches: `[clrDgItemsIdentityFn]="(u) => u.id"` and `[clrDgPreserveSelection]="true"`.
