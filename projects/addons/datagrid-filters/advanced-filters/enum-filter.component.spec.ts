@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClrCheckboxModule, ClrInputModule, ClrRadioModule, ClrSelectModule } from '@clr/angular/forms';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
+import { renderFixture } from '@clr/angular/utils/testing';
 import type { Mock } from 'vitest';
 
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
@@ -169,6 +170,49 @@ describe('EnumFilterComponent', () => {
       // 50 + 100 step
       expect(component.filteredOptions.length).toBe(150);
       expect(component.isProcessing).toBe(false);
+    });
+
+    it('renders Load more as a plain button, so it never submits the filter form', async () => {
+      await fixture.whenStable();
+      await vi.advanceTimersByTimeAsync(50);
+      renderFixture(fixture);
+      const form: HTMLFormElement = fixture.nativeElement.querySelector('form');
+      const submit = vi.fn((event: Event) => event.preventDefault());
+      form.addEventListener('submit', submit);
+      const loadMore = Array.from<HTMLButtonElement>(fixture.nativeElement.querySelectorAll('button')).find(
+        button => button.textContent!.trim() === component.filterStrings.loadMore
+      )!;
+      expect(loadMore.type).toBe('button');
+
+      loadMore.click();
+      await vi.advanceTimersByTimeAsync(50);
+      expect(submit).not.toHaveBeenCalled();
+      expect(component.filteredOptions.length).toBe(150);
+    });
+
+    it('puts Load more at the end of the scrolling options list', async () => {
+      await fixture.whenStable();
+      await vi.advanceTimersByTimeAsync(50);
+      renderFixture(fixture);
+      const options: HTMLElement = fixture.nativeElement.querySelector('.filter-options');
+      expect(options.lastElementChild).toBe(fixture.nativeElement.querySelector('[data-test-id="load-more"]'));
+    });
+  });
+
+  describe('Layout', () => {
+    it('shows the search under Value, not in the operator row', async () => {
+      await fixture.whenStable();
+      await vi.advanceTimersByTimeAsync(50);
+      renderFixture(fixture);
+      const host: HTMLElement = fixture.nativeElement;
+      const search = host.querySelector('[data-test-id="enum-search"]')!;
+      const operator = host.querySelector('select[formControlName="enumOperator"]')!;
+      const value = Array.from(host.querySelectorAll('label')).find(
+        label => label.textContent!.trim() === component.filterStrings.valueLabel
+      )!;
+      expect(search.contains(operator)).toBe(false);
+      expect(operator.compareDocumentPosition(value) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+      expect(value.compareDocumentPosition(search) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     });
   });
 
