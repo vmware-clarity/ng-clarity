@@ -33,11 +33,12 @@ import { FactoryProvider } from '@angular/core';
 import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
 import { FormArray } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { FormGroupName } from '@angular/forms';
 import * as i0 from '@angular/core';
 import * as i15 from '@angular/cdk/a11y';
-import * as i17 from '@angular/cdk/overlay';
+import * as i17_2 from '@angular/cdk/overlay';
 import * as i25 from '@angular/forms';
 import * as i5_2 from '@angular/common';
 import * as i6_2 from '@angular/cdk/drag-drop';
@@ -140,7 +141,7 @@ export class AppfxDatagridModule {
     // Warning: (ae-forgotten-export) The symbol "DatagridColumnsOrderModule" needs to be exported by the entry point clr-addons-datagrid.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridModule, [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective, typeof DatagridCellContainerComponent, typeof DatagridColumnToggleComponent, typeof DatagridFilterContainerComponent, typeof ExportDatagridComponent, typeof IsRowSelectablePipe], [typeof i13.AppfxA11yModule, typeof i14.AppfxDatagridFiltersModule, typeof i15.A11yModule, typeof i6_2.DragDropModule, typeof i17.OverlayModule, typeof i18.ClrCheckboxModule, typeof i4_2.ClrDatagridModule, typeof i20.ClrDropdownModule, typeof i21.ClrIcon, typeof i18.ClrInputModule, typeof i22.ClrLoadingModule, typeof i5_2.CommonModule, typeof DatagridColumnsOrderModule, typeof i25.FormsModule], [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridModule, [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective, typeof DatagridCellContainerComponent, typeof DatagridColumnToggleComponent, typeof DatagridFilterContainerComponent, typeof ExportDatagridComponent, typeof IsRowSelectablePipe], [typeof i13.AppfxA11yModule, typeof i14.AppfxDatagridFiltersModule, typeof i15.A11yModule, typeof i6_2.DragDropModule, typeof i17_2.OverlayModule, typeof i18.ClrCheckboxModule, typeof i4_2.ClrDatagridModule, typeof i20.ClrDropdownModule, typeof i21.ClrIcon, typeof i18.ClrInputModule, typeof i22.ClrLoadingModule, typeof i5_2.CommonModule, typeof DatagridColumnsOrderModule, typeof i25.FormsModule], [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective]>;
 }
 
 // @public (undocumented)
@@ -483,6 +484,9 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     pageSizeOptions: number[];
     preSelectFirstItem: boolean;
     preserveExistingSelectionOnFilter: boolean;
+    get propertyFilters(): PropertyFilter[];
+    set propertyFilters(value: PropertyFilter[]);
+    propertyFiltersChange: EventEmitter<PropertyFilter[]>;
     // (undocumented)
     protected refreshGrid(state: ClrDatagridStateInterface): void;
     // Warning: (ae-forgotten-export) The symbol "ClrDatagridStateInterface" needs to be exported by the entry point clr-addons-datagrid.d.ts
@@ -501,7 +505,6 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     // (undocumented)
     rowsExpandedByDefault: boolean;
     scrollToIndex(index: number, behavior?: ScrollBehavior): void;
-    // (undocumented)
     searchTerm: string;
     searchTermChange: EventEmitter<string>;
     get selectedItems(): T[];
@@ -539,6 +542,10 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     protected zoomLevel: ZoomLevel;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<DatagridComponent<any>, "appfx-datagrid", never, {
+        "searchTerm": {
+            "alias": "searchTerm";
+            "required": false;
+        };
         "loading": {
             "alias": "loading";
             "required": false;
@@ -659,6 +666,10 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
             "alias": "footerModel";
             "required": false;
         };
+        "propertyFilters": {
+            "alias": "propertyFilters";
+            "required": false;
+        };
         "columns": {
             "alias": "columns";
             "required": false;
@@ -692,6 +703,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
         "pageSizeChange": "pageSizeChange";
         "gridItemsChange": "gridItemsChange";
         "advancedFilterChange": "advancedFilterChange";
+        "propertyFiltersChange": "propertyFiltersChange";
         "columnDefsChange": "columnDefsChange";
         "selectedItemsChange": "selectedItemsChange";
         "exportDataEvent": "exportDataEvent";

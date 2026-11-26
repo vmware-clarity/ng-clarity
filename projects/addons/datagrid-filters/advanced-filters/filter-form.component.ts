@@ -17,7 +17,7 @@ import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
   selector: 'appfx-filter-form',
   standalone: false,
   templateUrl: 'filter-form.component.html',
-  styleUrls: ['../common-styles.scss'],
+  styleUrls: ['../common-styles.scss', 'filter-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FilterFormComponent {

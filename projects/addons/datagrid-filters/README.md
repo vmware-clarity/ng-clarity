@@ -1,28 +1,89 @@
 ## Overview & Rationale
 
-AppFx Datagrid Filters component provides an enhanced user experience for datagrid filtering.
-It is expected to be hosted in the datagrid action bar and can be used in three modes - quick, advanced and advanced only. <br/>
-Advanced modes allow users to build and manage complex filtering queries. Quick mode is suitable for quick search filtering.
+AppFx Filters component provides an enhanced user experience for datagrid filtering.
+It is expected to be hosted in the datagrid action bar and can be used in four modes - quick, advanced, advanced only and combined. <br/>
+Advanced modes allow users to build and manage complex filtering queries. Quick mode is suitable for quick search filtering. Combined mode shows the quick search and the advanced filter pills together.
 
 #### Advanced Filter
 
-![Datagrid Filters example screen](assets/appfx/datagrid-advanced-filter-overview.png)
+![Filters example screen](../../website/src/assets/images/documentation/advanced-datagrid/datagrid-advanced-filter-overview.png)
 
 #### Quick Filter
 
-![Datagrid Filters example screen](assets/appfx/datagrid-quick-filter-overview.png)
+![Filters example screen](../../website/src/assets/images/documentation/advanced-datagrid/datagrid-quick-filter-overview.png)
 
 ## Component API
 
 #### appfx-datagrid-filters
 
-| Property                | Input/Output | Type                             | Description                                                                                                                                                                                                                         |
-| ----------------------- | ------------ | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `filterMode`            | Input        | `FilterMode`                     | Enum parameter with three options.<br/>FilterMode.Quick - only quick filter is activated.<br/>FilterMode.Advanced - both quick and advanced filters are activated.<br/>FilterMode.AdvancedOnly - Only advanced filter is activated. |
-| `filterableProperties`  | Input        | `FilterablePropertyDefinition[]` | Array of properties, which are used for advanced filtering.<br/>Supported types: StringPropertyDefinition, NumericPropertyDefinition, EnumPropertyDefinition, DateTimePropertyDefinition                                            |
-| `presetFilters`         | Input        | `PropertyFilter[]`               | Array of pre-selected filters.                                                                                                                                                                                                      |
-| `searchTermChange`      | Output       | `EventEmitter<string>`           | Emits when the quick filter changes. Triggered on `Enter` key press and/or automatically on every 2 sec when the user is typing in the search input.                                                                                |
-| `propertyFiltersChange` | Output       | `EventEmitter<PropertyFilter[]>` | Emits when the advanced filter changes.                                                                                                                                                                                             |
+| Property                | Input/Output | Type                             | Description                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| ----------------------- | ------------ | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `filterMode`            | Input        | `FilterMode`                     | Enum parameter with four options.<br/>FilterMode.Quick - only quick filter is activated.<br/>FilterMode.Advanced - both quick and advanced filters are activated.<br/>FilterMode.AdvancedOnly - Only advanced filter is activated.<br/>FilterMode.Combined - quick search and advanced filter pills are shown and applied together. The host combines `searchTermChange` and `propertyFiltersChange` with AND, and Clear all clears both. |
+| `filterableProperties`  | Input        | `FilterablePropertyDefinition[]` | Array of properties, which are used for advanced filtering.<br/>Supported types: StringPropertyDefinition, NumericPropertyDefinition, EnumPropertyDefinition, DateTimePropertyDefinition                                                                                                                                                                                                                                                  |
+| `presetFilters`         | Input        | `PropertyFilter[]`               | Filters applied when the filter bar starts, e.g. a fixed default view. Read once at start-up; later changes are ignored. See [Keeping filters in sync](#keeping-filters-in-sync).                                                                                                                                                                                                                                                         |
+| `predefinedFilters`     | Input        | `FilterablePropertyDefinition[]` | Properties whose pills remain visible without active criteria. Defaults to `[]`; initial values are supplied through `presetFilters`.                                                                                                                                                                                                                                                                                                     |
+| `semiPredefinedFilters` | Input        | `EnumPropertyDefinition[]`       | Enum fields shown as a label followed by option pills. Selected options are combined with OR and applied immediately. Only option selection is supported; see [Field precedence](#field-precedence).                                                                                                                                                                                                                                      |
+| `toggleFilters`         | Input        | `ToggleFilter[]`                 | Ready-made filters shown as on/off pills: `{ label?, filter }`. ON applies `filter`. `label` is free text shown as given; without it the text comes from the criteria, and the tooltip always shows them. A preset or `propertyFilters` entry with the same criteria turns the toggle ON; any other filter on the toggle's field is removed, with a console warning.                                                                      |
+| `searchTermChange`      | Output       | `EventEmitter<string>`           | Emits when the quick filter changes. Triggered on `Enter` key press and/or automatically on every 2 sec when the user is typing in the search input.                                                                                                                                                                                                                                                                                      |
+| `propertyFilters`       | Input        | `PropertyFilter[]`               | The active filters, including toggle filters that are ON. Supports two-way binding with `[(propertyFilters)]`. See [Keeping filters in sync](#keeping-filters-in-sync).                                                                                                                                                                                                                                                                   |
+| `propertyFiltersChange` | Output       | `EventEmitter<PropertyFilter[]>` | Emits the active filters, including toggle filters that are ON, when the user changes them. Also emits once at start-up when presets or clean-up change what `propertyFilters` passed in.                                                                                                                                                                                                                                                 |
+
+#### Predefined filters
+
+The optional `predefinedFilters: FilterablePropertyDefinition[]` input selects the properties whose pills are always visible in advanced mode. Supply their definitions in the desired display order. Properties are matched by their `property` key, so a predefined field is not offered again in **Add filter**.
+
+Predefined pills start empty and use a gray outline with the field name. Set initial criteria through the existing `presetFilters` input. Active pills use a blue outline and background, display the first condition, and show `+N` for additional conditions. The summary shows the operator, e.g. `Status: Equals Warning`.
+
+Opening a pill edits its criteria in a popover. **Clear filter** returns a predefined pill to its empty state; user-added filters can be removed. **Clear all** clears all criteria and removes user-added pills while retaining predefined pills. **Hide** only hides user-added pills. Empty pills are not included in `propertyFiltersChange`.
+
+The popover applies changes only on **Apply**. **Cancel**, Escape, and outside clicks discard unapplied edits.
+
+**Add filter** uses a searchable field combobox. Existing pills keep their field locked while editing. String and numeric filters place the **AND/OR** button group beside the field, with each condition's operator and value on one row. A label between conditions shows the selected logical operator.
+
+String and numeric filters support any number of conditions, joined by one shared **AND** or **OR** operator. **Add condition** appends another row; individual rows can be removed while keeping at least one. Setting `singleCondition` to `true` limits the field to one condition.
+
+```html
+<appfx-datagrid-filters
+  [filterMode]="filterMode"
+  [filterableProperties]="filterableProperties"
+  [predefinedFilters]="predefinedFilters"
+  [presetFilters]="presetFilters"
+  (propertyFiltersChange)="onAdvancedFilterCriteriaChange($event)"
+></appfx-datagrid-filters>
+```
+
+For example, `predefinedFilters = [nameProperty, statusProperty]` permanently shows the name and status filters independently of their initial values. Unlike a flag on `FilterablePropertyDefinition`, this input lets each grid choose visibility and order while sharing the same field definitions.
+
+### Keeping filters in sync
+
+Use `[(propertyFilters)]` when the host keeps the active filters, for example to restore a saved view or a URL:
+
+```html
+<appfx-datagrid-filters
+  [filterMode]="filterMode"
+  [filterableProperties]="filterableProperties"
+  [toggleFilters]="toggleFilters"
+  [(propertyFilters)]="filters"
+  [(searchTerm)]="search"
+></appfx-datagrid-filters>
+```
+
+- Filters can be stored as JSON. When they are passed back in, each `criteria[].filterableProperty` is replaced with the filter bar's field definition that has the same `property` key, so a plain object from `JSON.parse` works. Filters on a field the filter bar doesn't know are kept as they are.
+- `[(searchTerm)]` holds the quick search text. Setting it does not emit `searchTermChange`.
+- A new `propertyFilters` value replaces the active filters. A filter with exactly a toggle's criteria turns that toggle ON; a toggle missing from the value turns OFF. The filter bar copies the array and never changes it.
+- Setting `propertyFilters` does not emit `propertyFiltersChange`, so passing the emitted value back does not loop. The exceptions are a filter on a semi-predefined or toggle field that had to be removed, and a toggle that was ON and is no longer configured (or lost its field to another input). The corrected list is then emitted once, after change detection, so a `[(propertyFilters)]` binding stays safe.
+- `presetFilters` are applied once, at start-up. For the same field, a preset wins over a `propertyFilters` filter. If the start-up result differs from what `propertyFilters` passed in (or there is no `propertyFilters` binding and presets are set), `propertyFiltersChange` emits it once, after the first change detection, so the host is in sync from the start. To load once at start-up, schedule the first load in the host's `ngAfterViewInit` instead of `ngOnInit` and coalesce loads in a microtask (`queueMicrotask`): the start-up emit and the host's own first load then become one load.
+- Switching `appfx-datagrid-filters` to quick mode clears the filters and emits `[]`.
+
+Filters built by the editors carry an `editorState`, which keeps the choices the criteria cannot express (e.g. _Last week_, or a value typed in another unit). Keep it when storing filters. When it is missing, for example in a host preset or after storing only the criteria, the filter bar derives what it can from the criteria.
+
+Relative date-time filters (_Last week_, _Time span_) are a rolling window computed from the moment the user applies them, and are not recomputed when the filter is passed back in. Updating them is the user's responsibility, by editing and applying the filter again.
+
+### Field precedence
+
+Each field can be used only once per filter bar. Fields are claimed from left to right: `predefinedFilters` first, then `semiPredefinedFilters`, then `toggleFilters` (the first toggle per field wins). Later entries for an already claimed field are ignored, with a console warning. A toggle's field accepts only the toggle's own filter: a preset or `propertyFilters` entry with other criteria on it is removed, with a console warning. Fields used by any of these inputs are not offered in **Add filter**.
+
+Semi-predefined fields only support picking options. A preset or `propertyFilters` entry for such a field must be one or more `Equals` conditions on option keys, combined with OR; any other filter on such a field is removed, with a console warning. This also applies when a field becomes semi-predefined after init; the filter bar then emits `propertyFiltersChange` without the removed filter.
 
 #### FilterablePropertyDefinition
 
@@ -105,20 +166,48 @@ Extends FilterablePropertyDefinition. Default supported operators:
 11. ComparisonOperator.LastYear
 12. ComparisonOperator.TimeSpan
 
+Date-time filters emit the local date and time the user picked, usually followed by the browser's UTC offset, e.g. `2026-03-29T00:00:00+02:00`. In a UTC browser no offset is added. **Equals** a date is emitted as `>= that day 00:00` AND `< next day 00:00`, and a custom range ends before the midnight after its end date. A day runs from midnight to the next midnight, also on the days daylight saving starts or ends (23 or 25 hours). **Last day**, **Last week** and **Time span** count back a fixed length from now.
+
+The filters do not convert time zones or adjust for daylight saving: interpreting the values, e.g. against server time, is up to the application. In time zones where the clock skips midnight when daylight saving starts (e.g. America/Santiago), 00:00 does not exist on that day. The browser then moves the times computed from it (the end of an **Equals** day, or of a custom range ending that day) to 01:00, and a pill restored without its editor state can show such a day as a time range.
+
+#### Preset ranges
+
+Pass `rangeOptions` (Clarity's `DateRangeOption[]` from `@clr/angular`) as the fifth constructor argument to offer ready-made ranges for **Custom range**. Without times they are listed in the date range picker; with times they are buttons under the operator. A click fills From and To, which the user can still change before **Apply**; the pill then shows the dates.
+
+```ts
+// Build ranges from midnight: with times, 00:00 means the whole day. `new Date()` would keep the current time,
+// so "Today" would cover a single minute.
+const now = new Date();
+const daysAgo = (days: number) => new Date(now.getFullYear(), now.getMonth(), now.getDate() - days);
+const today = daysAgo(0);
+
+new DateTimePropertyDefinition('Created', 'created', undefined, false, [
+  { label: 'Today', value: [today, today] },
+  { label: 'Last 7 days', value: [daysAgo(6), today] },
+  { label: 'Working hours', value: [new Date(2026, 10, 12, 9, 0), new Date(2026, 10, 12, 17, 0)] },
+]);
+```
+
+- `value` is `[start, end]`, both inclusive. Options whose `value` is not exactly two valid `Date`s are ignored.
+- The dates are used as given. To change what a range covers (e.g. a new "Today"), pass a new definition with new options.
+- With times, a `Date` at exactly 00:00 means the whole day: From becomes 00:00 and To 23:59. Other times are used as they are, so `17:00` includes 17:00. Seconds are kept only with `includeSeconds`.
+- Keep the list short (4–5 options); with times the buttons are listed under the operator.
+
 ### PropertyFilter
 
-| Property   | Type                  | Description                                   |
-| ---------- | --------------------- | --------------------------------------------- |
-| `criteria` | `PropertyPredicate[]` | Filter criteria                               |
-| `operator` | `LogicalOperator`     | Logical operator. Supported values are AND/OR |
+| Property      | Type                  | Description                                                                                               |
+| ------------- | --------------------- | --------------------------------------------------------------------------------------------------------- |
+| `criteria`    | `PropertyPredicate[]` | Filter criteria                                                                                           |
+| `operator`    | `LogicalOperator`     | Logical operator. Supported values are AND/OR                                                             |
+| `editorState` | `FilterEditorState`   | Optional. Set by the built-in editors so a filter can be edited again. Not needed for host-built filters. |
 
 ### PropertyPredicate
 
-| Property             | Type                           | Description                         |
-| -------------------- | ------------------------------ | ----------------------------------- |
-| `filterableProperty` | `FilterablePropertyDefinition` | Property that is used for filtering |
-| `operator`           | `ComparisonOperator`           | Filtering operator                  |
-| `value`              | `any`                          | Filter value                        |
+| Property             | Type                           | Description                                                 |
+| -------------------- | ------------------------------ | ----------------------------------------------------------- |
+| `filterableProperty` | `FilterablePropertyDefinition` | Property that is used for filtering                         |
+| `operator`           | `ComparisonOperator`           | Filtering operator                                          |
+| `value`              | `any`                          | Filter value. `undefined` for `ComparisonOperator.IsEmpty`. |
 
 ### Example Code
 
