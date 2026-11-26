@@ -267,4 +267,14 @@ describe('ClrStackView (zoneless, OnPush host)', () => {
     expect(element('.child')).toBeNull();
     expect(region('.parent').textContent).not.toContain('Child content');
   });
+
+  it('keeps stackBlockTitle writable', () => {
+    const block = host.imperativeBlock;
+    const label = { id: 'custom-label' };
+
+    block.stackBlockTitle = label;
+
+    expect(block.stackBlockTitle).toBe(label);
+    expect(block.labelledById).toBe('custom-label');
+  });
 });

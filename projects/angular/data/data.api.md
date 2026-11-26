@@ -1684,7 +1684,7 @@ export class ClrStackBlock implements OnInit {
     // (undocumented)
     getStackChildrenId(): string;
     // (undocumented)
-    get labelledById(): string;
+    get labelledById(): any;
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)
@@ -1696,7 +1696,8 @@ export class ClrStackBlock implements OnInit {
     // (undocumented)
     set setChangedValue(value: boolean);
     // (undocumented)
-    get stackBlockTitle(): ClrStackViewLabel;
+    get stackBlockTitle(): any;
+    set stackBlockTitle(value: any);
     // (undocumented)
     get tabIndex(): string | null;
     // (undocumented)
