@@ -110,14 +110,17 @@ export abstract class ClrAbstractContainer implements OnDestroy {
     // (undocumented)
     protected controlClassService: ControlClassService;
     // (undocumented)
-    get controlErrorComponent(): ClrControlError | undefined;
+    get controlErrorComponent(): ClrControlError;
+    set controlErrorComponent(value: ClrControlError);
     // (undocumented)
-    get controlHelperComponent(): ClrControlHelper | undefined;
+    get controlHelperComponent(): ClrControlHelper;
+    set controlHelperComponent(value: ClrControlHelper);
     // (undocumented)
     controls: NgControl[];
     protected readonly controlState: Signal<ControlState>;
     // (undocumented)
-    get controlSuccessComponent(): ClrControlSuccess | undefined;
+    get controlSuccessComponent(): ClrControlSuccess;
+    set controlSuccessComponent(value: ClrControlSuccess);
     // (undocumented)
     protected get errorMessagePresent(): boolean;
     get helpers(): {
@@ -127,7 +130,8 @@ export abstract class ClrAbstractContainer implements OnDestroy {
         showValid: boolean;
     };
     // (undocumented)
-    get label(): ClrControlLabel | undefined;
+    get label(): ClrControlLabel;
+    set label(value: ClrControlLabel);
     // (undocumented)
     protected layoutService: LayoutService;
     // (undocumented)
@@ -2137,17 +2141,11 @@ export class ControlIdService {
 
 // @public
 export interface ControlState {
-    // (undocumented)
     readonly disabled: boolean;
-    // (undocumented)
     readonly errors: ValidationErrors | null;
-    // (undocumented)
     readonly invalid: boolean;
-    // (undocumented)
     readonly status: FormControlStatus | null;
-    // (undocumented)
     readonly touched: boolean;
-    // (undocumented)
     readonly value: unknown;
 }
 
@@ -2266,6 +2264,8 @@ export class NgControlService implements OnDestroy {
     get hasMultipleControls(): boolean;
     // (undocumented)
     ngOnDestroy(): void;
+    // @internal
+    refreshStates(): void;
     get states(): Signal<readonly ControlState[]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<NgControlService, never>;
@@ -2296,7 +2296,6 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     constructor(vcr: ViewContainerRef, wrapperType: Type<W>, injector: Injector, ngControl: NgControl | null, renderer: Renderer2, el: ElementRef<HTMLElement>);
     // (undocumented)
     protected controlIdService: ControlIdService;
-    protected get controlState(): Signal<ControlState>;
     // (undocumented)
     protected el: ElementRef<HTMLElement>;
     // (undocumented)
