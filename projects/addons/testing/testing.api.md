@@ -353,6 +353,10 @@ export class MockAppfxDatagridComponent {
     // (undocumented)
     preSelectFirstItem: boolean;
     // (undocumented)
+    propertyFilters: any[];
+    // (undocumented)
+    propertyFiltersChange: EventEmitter<any[]>;
+    // (undocumented)
     refreshGridData: EventEmitter<any>;
     // (undocumented)
     refreshVirtualGridData: EventEmitter<any>;
@@ -364,6 +368,8 @@ export class MockAppfxDatagridComponent {
     rowSelectionMode: boolean;
     // (undocumented)
     rowsExpandedByDefault: boolean;
+    // (undocumented)
+    searchTerm: string;
     // (undocumented)
     searchTermChange: EventEmitter<string>;
     // (undocumented)
@@ -468,6 +474,14 @@ export class MockAppfxDatagridComponent {
             "alias": "filterMode";
             "required": false;
         };
+        "propertyFilters": {
+            "alias": "propertyFilters";
+            "required": false;
+        };
+        "searchTerm": {
+            "alias": "searchTerm";
+            "required": false;
+        };
         "listItemsCount": {
             "alias": "listItemsCount";
             "required": false;
@@ -521,6 +535,7 @@ export class MockAppfxDatagridComponent {
         "gridItemsChange": "gridItemsChange";
         "selectionChange": "selectionChange";
         "searchTermChange": "searchTermChange";
+        "propertyFiltersChange": "propertyFiltersChange";
         "refreshGridData": "refreshGridData";
         "refreshVirtualGridData": "refreshVirtualGridData";
         "actionClick": "actionClick";
@@ -915,12 +930,26 @@ export class MockDatagridFiltersComponent {
     //
     // (undocumented)
     filterMode: FilterMode;
+    // (undocumented)
+    predefinedFilters: FilterablePropertyDefinition[];
     // Warning: (ae-forgotten-export) The symbol "PropertyFilter" needs to be exported by the entry point clr-addons-testing.d.ts
     //
+    // (undocumented)
+    presetFilters: PropertyFilter[];
+    // (undocumented)
+    propertyFilters: PropertyFilter[];
     // (undocumented)
     propertyFiltersChange: EventEmitter<PropertyFilter[]>;
     // (undocumented)
     searchTermChange: EventEmitter<string>;
+    // Warning: (ae-forgotten-export) The symbol "EnumPropertyDefinition" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    semiPredefinedFilters: EnumPropertyDefinition[];
+    // Warning: (ae-forgotten-export) The symbol "ToggleFilter" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    toggleFilters: ToggleFilter[];
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridFiltersComponent, "appfx-datagrid-filters", never, {
         "filterMode": {
@@ -929,6 +958,26 @@ export class MockDatagridFiltersComponent {
         };
         "filterableProperties": {
             "alias": "filterableProperties";
+            "required": false;
+        };
+        "predefinedFilters": {
+            "alias": "predefinedFilters";
+            "required": false;
+        };
+        "semiPredefinedFilters": {
+            "alias": "semiPredefinedFilters";
+            "required": false;
+        };
+        "toggleFilters": {
+            "alias": "toggleFilters";
+            "required": false;
+        };
+        "presetFilters": {
+            "alias": "presetFilters";
+            "required": false;
+        };
+        "propertyFilters": {
+            "alias": "propertyFilters";
             "required": false;
         };
     }, {

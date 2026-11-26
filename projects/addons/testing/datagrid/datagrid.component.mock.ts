@@ -34,6 +34,8 @@ export class MockAppfxDatagridComponent {
   @Input() loading: boolean;
   @Input() serverDrivenDatagrid: boolean;
   @Input() filterMode: any;
+  @Input() propertyFilters!: any[];
+  @Input() searchTerm!: string;
   @Input() listItemsCount: number;
   @Input() trackByGridItemProperty: string;
   @Input() isRowLocked: (rowItem: any) => boolean;
@@ -51,6 +53,7 @@ export class MockAppfxDatagridComponent {
   @Output() gridItemsChange = new EventEmitter<any[]>();
   @Output() selectionChange = new EventEmitter<any[]>();
   @Output() searchTermChange = new EventEmitter<string>();
+  @Output() propertyFiltersChange = new EventEmitter<any[]>();
   @Output() refreshGridData = new EventEmitter<any>();
   @Output() refreshVirtualGridData = new EventEmitter<any>();
   @Output() actionClick = new EventEmitter<any>();
