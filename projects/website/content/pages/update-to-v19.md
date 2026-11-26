@@ -167,6 +167,11 @@ Use the CSS replacements instead:
 | `defaultAnimationTiming`               | The `--cds-global-animation-*` tokens                                                     |
 | Collapsible panel animations           | `(animate.enter)="expandContent($event)"` on the panel content                            |
 
+The collapsible panel replacement animates the expand only. Panels that used `collapsiblePanelAnimation`, which
+also animated the collapse, set `protected override animatesCollapse = true` and keep the content while it
+collapses: `@if (panel.open || contentCollapsing)`, with the content shown
+(`[style.display]="contentCollapsing ? 'block' : null"`) and `inert` during the collapse, as `ClrStepperPanel` does.
+
 `provideNoopAnimations()` and `NoopAnimationsModule` still turn Clarity's animations off. Applications that
 use `@angular/animations` themselves keep it as their own dependency.
 
