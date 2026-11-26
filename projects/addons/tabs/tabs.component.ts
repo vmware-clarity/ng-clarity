@@ -16,6 +16,7 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
   Optional,
   Output,
   QueryList,
@@ -67,7 +68,7 @@ import { debounceTime, filter, map, shareReplay, switchMap, take, tap } from 'rx
   styleUrls: ['tabs.component.scss', 'tabs.a11y.scss'],
   providers: [RelevanceService, WorkflowModelManager],
 })
-export class TabsComponent implements OnChanges, AfterViewInit, AfterContentInit, OnDestroy {
+export class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterContentInit, OnDestroy {
   /** Disable the content of the tabs. */
   @Input() disableTabsContent = false;
 
@@ -114,6 +115,7 @@ export class TabsComponent implements OnChanges, AfterViewInit, AfterContentInit
 
   readonly #steps = signal<StepInternal[] | undefined>(undefined);
   readonly #activeTabStep = signal<Step>(<Step>{});
+  readonly #assignedZoomLevel = signal<ZoomLevel | undefined>(undefined);
   readonly #errorIconVisibleList = signal<boolean[]>([]);
   readonly #errorActivatingStep = signal(false);
   readonly #validating = signal(false);
@@ -176,9 +178,17 @@ export class TabsComponent implements OnChanges, AfterViewInit, AfterContentInit
     return this.#activeTabStep();
   }
 
+  set activeTabStep(step: Step) {
+    this.#activeTabStep.set(step);
+  }
+
   /** Per tab: true when its last validation failed. */
   get errorIconVisibleList(): boolean[] {
     return this.#errorIconVisibleList();
+  }
+
+  set errorIconVisibleList(list: boolean[]) {
+    this.#errorIconVisibleList.set(list);
   }
 
   /** True while the tabs, the workflow model or a tab validation is loading. */
@@ -203,7 +213,12 @@ export class TabsComponent implements OnChanges, AfterViewInit, AfterContentInit
   }
 
   get currentZoomLevel(): ZoomLevel {
-    return this.zoomLevelService?.level() ?? ZoomLevel.none;
+    // `level?.()` tolerates test doubles of ZoomLevelService without `level`.
+    return this.#assignedZoomLevel() ?? this.zoomLevelService?.level?.() ?? ZoomLevel.none;
+  }
+
+  set currentZoomLevel(zoomLevel: ZoomLevel) {
+    this.#assignedZoomLevel.set(zoomLevel);
   }
 
   get showTabContent(): boolean {
@@ -225,6 +240,11 @@ export class TabsComponent implements OnChanges, AfterViewInit, AfterContentInit
       hasIncompletePage = this.pagesContainers.some(p => !p.readyToComplete);
     }
     return !(hasIncompletePage || this.isLoading || this.#errorActivatingStep());
+  }
+
+  /** @deprecated The tabs no longer need initialization. Kept so that `super.ngOnInit()` calls compile. */
+  ngOnInit(): void {
+    // Intentionally empty.
   }
 
   ngOnChanges(changes: SimpleChanges): void {

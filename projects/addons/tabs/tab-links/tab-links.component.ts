@@ -5,7 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  HostBinding,
+  Input,
+  Output,
+} from '@angular/core';
 import { ZoomLevel } from '@clr/addons/a11y';
 import { WorkflowStrings } from '@clr/addons/workflow/strings';
 
@@ -27,7 +35,11 @@ export class TabLinksComponent {
 
   currentZoomLevel = ZoomLevel.none;
 
-  constructor(public workflowStrings: WorkflowStrings) {}
+  constructor(
+    public workflowStrings: WorkflowStrings,
+    /** @deprecated Unused, kept so that subclasses calling `super(workflowStrings, cdr)` compile. */
+    _cdr?: ChangeDetectorRef
+  ) {}
 
   changeOpened(opened: boolean) {
     this.opened = opened;

@@ -141,6 +141,7 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
   readonly #activeStep = signal<StepInternal | undefined>(undefined);
   readonly #activePage = signal<StepContainer | undefined>(undefined);
   readonly #activeStepIndex = signal(1);
+  readonly #assignedZoomLevel = signal<ZoomLevel | undefined>(undefined);
   readonly #footerComponentInputs = signal<Record<string, unknown>>({});
   readonly #errorActivatingStep = signal(false);
   readonly #busy = signal(false);
@@ -204,7 +205,12 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
   }
 
   get currentZoomLevel(): ZoomLevel | undefined {
-    return this.zoomLevelService?.level();
+    // `level?.()` tolerates test doubles of ZoomLevelService without `level`.
+    return this.#assignedZoomLevel() ?? this.zoomLevelService?.level?.();
+  }
+
+  set currentZoomLevel(zoomLevel: ZoomLevel | undefined) {
+    this.#assignedZoomLevel.set(zoomLevel);
   }
 
   get pagesInternal(): StepInternal[] {
@@ -215,8 +221,16 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
     return this.#footerComponentInputs();
   }
 
+  set footerComponentInputs(inputs: Record<string, unknown>) {
+    this.#footerComponentInputs.set(inputs);
+  }
+
   get activeStepIndex(): number {
     return this.#activeStepIndex();
+  }
+
+  set activeStepIndex(index: number) {
+    this.#activeStepIndex.set(index);
   }
 
   /**

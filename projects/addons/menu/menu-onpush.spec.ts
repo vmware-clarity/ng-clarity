@@ -22,6 +22,7 @@ import { of } from 'rxjs';
 
 import { AppfxMenuModule } from './appfx-menu.module';
 import { MenuComponent } from './menu.component';
+import { MenuActionComponent } from './model/menu-action.component';
 
 @Component({
   imports: [AppfxMenuModule],
@@ -133,6 +134,97 @@ describe('MenuComponent in an OnPush host', () => {
     zoomLevelService.resizeSubject.next(ZoomLevel.x2);
 
     expect(closed).not.toHaveBeenCalled();
+  });
+});
+
+@Component({
+  imports: [AppfxMenuModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [{ provide: ZoomLevelService, useClass: ZoomLevelServiceMock }],
+  template: `
+    <appfx-menu>
+      <appfx-menu-action text="Copy"></appfx-menu-action>
+      @if (showPaste()) {
+        <appfx-menu-action text="Paste"></appfx-menu-action>
+      }
+      @if (showSeparator()) {
+        <appfx-menu-separator></appfx-menu-separator>
+      }
+      <appfx-menu-action #cut text="Cut"></appfx-menu-action>
+    </appfx-menu>
+  `,
+})
+class OnPushItemSetHost {
+  readonly showPaste = signal(true);
+  readonly showSeparator = signal(false);
+
+  @ViewChild(MenuComponent) menu: MenuComponent;
+  @ViewChild('cut') cut: MenuActionComponent;
+}
+
+describe('MenuComponent item set changes in an OnPush host', () => {
+  let fixture: ComponentFixture<OnPushItemSetHost>;
+  let host: OnPushItemSetHost;
+
+  beforeEach(async () => {
+    fixture = TestBed.createComponent(OnPushItemSetHost);
+    host = fixture.componentInstance;
+    fixture.autoDetectChanges();
+    await fixture.whenStable();
+    host.menu.show(new Event('contextmenu'), 10, 20);
+    await fixture.whenStable();
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+    TestBed.inject(OverlayContainer).ngOnDestroy();
+  });
+
+  function texts(selector: string): string[] {
+    return Array.from(document.querySelectorAll(selector)).map(element => element.textContent?.trim() ?? '');
+  }
+
+  // Changing the set of items is reported as an error by design. The menu still has to render the new set.
+  async function changeItemSet(change: () => void) {
+    vi.useFakeTimers();
+    try {
+      await expect(async () => {
+        change();
+        fixture.detectChanges();
+        await vi.advanceTimersByTimeAsync(0);
+      }).rejects.toThrowError(/set of menu items has changed/);
+    } finally {
+      vi.useRealTimers();
+    }
+    await fixture.whenStable();
+  }
+
+  it('renders an item removed while it is open', async () => {
+    expect(texts('.menu-item-action .menu-item-text')).toEqual(['Copy', 'Paste', 'Cut']);
+
+    await changeItemSet(() => host.showPaste.set(false));
+
+    expect(texts('.menu-item-action .menu-item-text')).toEqual(['Copy', 'Cut']);
+  });
+
+  it('renders a separator added while it is open', async () => {
+    expect(document.querySelectorAll('.dropdown-divider').length).toBe(0);
+
+    await changeItemSet(() => host.showSeparator.set(true));
+
+    expect(document.querySelectorAll('.dropdown-divider').length).toBe(1);
+  });
+
+  it('renders an item hidden while it is open', async () => {
+    host.cut.hidden = true;
+    await fixture.whenStable();
+
+    expect(texts('.menu-item-action .menu-item-text')).toEqual(['Copy', 'Paste']);
+
+    host.cut.hidden = false;
+    await fixture.whenStable();
+
+    expect(texts('.menu-item-action .menu-item-text')).toEqual(['Copy', 'Paste', 'Cut']);
   });
 });
 

@@ -153,6 +153,8 @@ export class MenuComponent extends NestedMenu implements Menu, OnChanges, OnInit
 
   ngAfterContentInit(): void {
     this.menuItems.changes.subscribe(() => {
+      // Render the new item set (also for items without inputs, like separators) before reporting the problem.
+      this.itemChanged();
       throw new Error(
         `Dear developer.
 

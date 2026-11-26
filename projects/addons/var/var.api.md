@@ -175,6 +175,7 @@ export class RelevanceService {
     // (undocumented)
     destroy(): void;
     get loading(): boolean;
+    set loading(loading: boolean);
     onStepRelevanceChange$(): Observable<StepInternal>;
     set steps(steps: Step[]);
     // (undocumented)

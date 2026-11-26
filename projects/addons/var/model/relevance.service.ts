@@ -27,6 +27,10 @@ export class RelevanceService {
     return this.#loading();
   }
 
+  set loading(loading: boolean) {
+    this.#loading.set(loading);
+  }
+
   /**
    * Workflow steps.
    */

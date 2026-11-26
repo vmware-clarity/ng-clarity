@@ -194,8 +194,8 @@ export class MenuHeaderComponent extends MenuItem implements OnChanges {
 
 // @public
 export abstract class MenuItem {
-    // (undocumented)
-    hidden: boolean;
+    get hidden(): boolean;
+    set hidden(hidden: boolean);
     id?: string;
     // (undocumented)
     type: MenuItemType;
