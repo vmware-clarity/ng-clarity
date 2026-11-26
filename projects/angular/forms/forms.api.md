@@ -1111,13 +1111,18 @@ export class ClrFileInfo {
 }
 
 // @public (undocumented)
-export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
+export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> implements OnInit, OnDestroy {
     constructor(injector: Injector, renderer: Renderer2, viewContainerRef: ViewContainerRef, elementRef: ElementRef<HTMLInputElement>, control: NgControl, commonStrings: ClrCommonStringsService);
     // (undocumented)
     readonly elementRef: ElementRef<HTMLInputElement>;
     readonly files: Signal<readonly File[]>;
     // (undocumented)
-    get selection(): ClrFileInputSelection;
+    ngOnDestroy(): void;
+    // (undocumented)
+    ngOnInit(): void;
+    // (undocumented)
+    get selection(): ClrFileInputSelection | undefined;
+    set selection(value: ClrFileInputSelection | undefined);
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrFileInput, "input[type=\"file\"][clrFileInput]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -1149,6 +1154,7 @@ export class ClrFileInputContainer extends ClrAbstractContainer implements After
     protected get errorMessagePresent(): boolean;
     // (undocumented)
     get fileInput(): ClrFileInput;
+    set fileInput(value: ClrFileInput);
     // (undocumented)
     protected readonly fileList: Signal<ClrFileList>;
     // (undocumented)

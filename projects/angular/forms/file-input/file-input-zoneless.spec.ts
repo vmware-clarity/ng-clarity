@@ -8,8 +8,11 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import { ClrCommonStringsService, commonStringsDefault } from '@clr/angular/utils';
 
+import { ClrFileInput } from './file-input';
+import { ClrFileInputContainer } from './file-input-container';
 import { buildFileList, selectFiles } from './file-input.helpers';
 import { ClrFileInputModule } from './file-input.module';
 
@@ -30,6 +33,20 @@ class BasicHost {
   readonly control = new FormControl<FileList>(null);
   readonly buttonLabel = signal<string>(undefined);
 }
+
+@Component({
+  template: `
+    <form>
+      <clr-file-input-container>
+        <label>File</label>
+        <input type="file" clrFileInput />
+      </clr-file-input-container>
+    </form>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
+})
+class NativeFormHost {}
 
 @Component({
   template: `
@@ -86,6 +103,66 @@ class NativeAttributesHost {
   readonly accept = signal('');
   readonly multiple = signal(false);
 }
+
+describe('ClrFileInput API compatibility (zoneless, OnPush host)', () => {
+  function setup<T>(host: new () => T) {
+    TestBed.configureTestingModule({ imports: [ReactiveFormsModule, ClrFileInputModule], declarations: [host] });
+    return TestBed.createComponent(host);
+  }
+
+  it('updates files and the selection when a native form reset clears the input', async () => {
+    const fixture = setup(NativeFormHost);
+    await fixture.whenStable();
+
+    const input: HTMLInputElement = fixture.nativeElement.querySelector('input[clrFileInput]');
+    const directive = fixture.debugElement.query(By.directive(ClrFileInput)).injector.get(ClrFileInput);
+    const browseButton: HTMLButtonElement = fixture.nativeElement.querySelector('.clr-file-input-browse-button');
+
+    selectFiles(input, [textFile('a.txt')]);
+    await fixture.whenStable();
+    expect(directive.files().length).toBe(1);
+    expect(browseButton.textContent.trim()).toBe('a.txt');
+
+    fixture.nativeElement.querySelector('form').reset();
+    await Promise.resolve();
+    await fixture.whenStable();
+
+    expect(directive.files().length).toBe(0);
+    expect(directive.selection.fileCount).toBe(0);
+    expect(browseButton.textContent.trim()).toBe('Browse');
+  });
+
+  it('keeps selection and fileInput writable', async () => {
+    const fixture = setup(NativeFormHost);
+    await fixture.whenStable();
+
+    const directive = fixture.debugElement.query(By.directive(ClrFileInput)).injector.get(ClrFileInput);
+    const container = fixture.debugElement
+      .query(By.directive(ClrFileInputContainer))
+      .injector.get(ClrFileInputContainer);
+    const browseButton: HTMLButtonElement = fixture.nativeElement.querySelector('.clr-file-input-browse-button');
+
+    directive.selection = { fileCount: 1, buttonLabel: 'custom.txt', clearFilesButtonLabel: 'Clear custom' };
+    fixture.componentRef.changeDetectorRef.markForCheck();
+    await fixture.whenStable();
+    expect(directive.selection.buttonLabel).toBe('custom.txt');
+    expect(browseButton.textContent.trim()).toBe('custom.txt');
+
+    const replacement = {} as ClrFileInput;
+    container.fileInput = replacement;
+    expect(container.fileInput).toBe(replacement);
+  });
+
+  it('has empty labels, not undefined, for an empty selection', async () => {
+    const fixture = setup(NativeFormHost);
+    await fixture.whenStable();
+
+    const directive = fixture.debugElement.query(By.directive(ClrFileInput)).injector.get(ClrFileInput);
+
+    expect(directive.selection.buttonLabel).toBe('');
+    expect(directive.selection.clearFilesButtonLabel).toBe('');
+  });
+});
 
 describe('ClrFileInputContainer (zoneless, OnPush host)', () => {
   function setup<T>(host: new () => T) {

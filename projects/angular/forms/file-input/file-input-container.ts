@@ -126,8 +126,13 @@ export class ClrFileInputContainer extends ClrAbstractContainer implements After
 
   private readonly commonStrings = inject(ClrCommonStringsService);
 
+  private readonly fileInputOverride = signal<ClrFileInput | undefined>(undefined);
+
   get fileInput(): ClrFileInput {
-    return this.fileInputQuery();
+    return this.fileInputOverride() ?? this.fileInputQuery();
+  }
+  set fileInput(value: ClrFileInput) {
+    this.fileInputOverride.set(value);
   }
 
   protected get accept() {
