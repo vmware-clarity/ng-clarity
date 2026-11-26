@@ -167,7 +167,7 @@ describe('Datepicker', () => {
         });
 
         it('should set disabled state when dateFormControlService.disabled is true', () => {
-          dateFormControlService.setDisabled(true);
+          dateFormControlService.disabled = true;
           context.detectChanges();
           expect(context.clarityElement.className).toContain('clr-form-control-disabled');
         });

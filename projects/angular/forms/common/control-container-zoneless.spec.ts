@@ -8,11 +8,14 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { By } from '@angular/platform-browser';
 
 import { ClrCommonFormsModule } from './common.module';
+import { ClrControlContainer } from './control-container';
 import { ClrForm } from './form';
+import { ClrControlLabel } from './label';
 import { ClrFormLayout } from './providers/layout.service';
+import { NgControlService } from './providers/ng-control.service';
 
 /**
  * OnPush hosts that never mark themselves dirty: every change below comes from consumer code outside a template
@@ -74,6 +77,21 @@ class FormControlNameHost {
 class TemplateDrivenHost {
   name = '';
   readonly disabled = signal(false);
+}
+
+@Component({
+  template: `
+    <clr-control-container>
+      <label>Name</label>
+      <input clrControl [formControl]="control()" />
+      <clr-control-error *clrIfError="'required'">Required</clr-control-error>
+    </clr-control-container>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [ClrCommonFormsModule, ReactiveFormsModule],
+})
+class IfErrorHost {
+  readonly control = signal(new FormControl('', Validators.required));
 }
 
 describe('ClrControlContainer (zoneless, OnPush host)', () => {
@@ -229,14 +247,27 @@ describe('ClrControlContainer (zoneless, OnPush host)', () => {
       expect(controlContainer(fixture).classList).toContain('clr-error');
     });
 
+    it('keeps label and the subtext components assignable', () => {
+      const instance = fixture.debugElement.query(By.directive(ClrControlContainer)).componentInstance;
+      const queried = instance.label;
+      expect(queried).toBeDefined();
+
+      const replacement = {} as ClrControlLabel;
+      instance.label = replacement;
+      expect(instance.label).toBe(replacement);
+    });
+
     it('stops following the control when destroyed', () => {
-      // `events` is backed by a private Subject; it has no observers once nothing follows the control.
-      const events = (host.control() as unknown as { _events: Subject<unknown> })._events;
-      expect(events.observed).toBe(true);
+      const states = fixture.debugElement
+        .query(By.directive(ClrControlContainer))
+        .injector.get(NgControlService).states;
+      const control = host.control();
+      expect(states()[0].touched).toBe(false);
 
       fixture.destroy();
+      control.markAsTouched();
 
-      expect(events.observed).toBe(false);
+      expect(states()[0].touched).toBe(false);
     });
   });
 
@@ -250,6 +281,27 @@ describe('ClrControlContainer (zoneless, OnPush host)', () => {
 
       expect(controlContainer(fixture).classList).toContain('clr-error');
       expect(text(fixture)).toBe('Name Required');
+      fixture.destroy();
+    });
+  });
+
+  describe('clrIfError', () => {
+    it('shows the error once for a replaced control', async () => {
+      const fixture = TestBed.createComponent(IfErrorHost);
+      await fixture.whenStable();
+      fixture.componentInstance.control().markAsTouched();
+      await fixture.whenStable();
+      expect(fixture.nativeElement.querySelectorAll('clr-control-error').length).toBe(1);
+
+      const next = new FormControl('Ada', Validators.required);
+      next.markAsTouched();
+      fixture.componentInstance.control.set(next);
+      await fixture.whenStable();
+      expect(fixture.nativeElement.querySelectorAll('clr-control-error').length).toBe(0);
+
+      next.setValue('');
+      await fixture.whenStable();
+      expect(fixture.nativeElement.querySelectorAll('clr-control-error').length).toBe(1);
       fixture.destroy();
     });
   });
