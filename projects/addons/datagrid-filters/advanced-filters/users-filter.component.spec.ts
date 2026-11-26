@@ -328,6 +328,43 @@ describe('UsersFilterComponent', () => {
       expect(component.visibleUsers.length).toBe(60); // 50 + 10 remaining
       expect(component.hasMoreItems).toBe(false);
     });
+
+    it('renders Load more as a plain button, so it never submits the filter form', () => {
+      renderFixture(fixture);
+      const form: HTMLFormElement = fixture.nativeElement.querySelector('form');
+      const submit = vi.fn((event: Event) => event.preventDefault());
+      form.addEventListener('submit', submit);
+      const loadMore = Array.from<HTMLButtonElement>(fixture.nativeElement.querySelectorAll('button')).find(
+        button => button.textContent!.trim() === component.filterStrings.loadMore
+      )!;
+      expect(loadMore.type).toBe('button');
+
+      loadMore.click();
+      expect(submit).not.toHaveBeenCalled();
+      expect(component.visibleUsers.length).toBe(60);
+    });
+
+    it('puts Load more in the scrolling list, right after the users', () => {
+      renderFixture(fixture);
+      const loadMore = fixture.nativeElement.querySelector('[data-test-id="load-more"]');
+      expect(loadMore.parentElement.classList).toContain('filter-options');
+      expect(loadMore.previousElementSibling.tagName).toBe('CLR-CHECKBOX-CONTAINER');
+    });
+  });
+
+  describe('Layout', () => {
+    it('shows the domain under the operator, with a visible label', () => {
+      renderFixture(fixture);
+      const host: HTMLElement = fixture.nativeElement;
+      const domainRow = host.querySelector('[data-test-id="user-domain"]')!;
+      const operator = host.querySelector('select[formControlName="userOperator"]')!;
+      expect(domainRow.contains(operator)).toBe(false);
+      expect(operator.compareDocumentPosition(domainRow) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+      const label = domainRow.querySelector('label')!;
+      expect(label.textContent!.trim()).toBe(datagridFiltersStrings.domain);
+      expect(label.classList).not.toContain('clr-sr-only');
+      expect(label.htmlFor).toBe(domainRow.querySelector('select')!.id);
+    });
   });
 
   describe('Custom Search Term Logic', () => {

@@ -1,0 +1,15 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+// The popover passes its height limit to its direct child, now this component. Pass it on to the editor, so only the
+// editor's own scroll region (e.g. the options list) scrolls.
+:host,
+:host > * {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
