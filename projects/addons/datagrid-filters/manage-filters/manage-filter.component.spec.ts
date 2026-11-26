@@ -6,7 +6,7 @@
  */
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { animationFrameTick, renderFixture } from '@clr/angular/utils/testing';
+import { renderFixture } from '@clr/angular/utils/testing';
 
 import { ManageFilterComponent } from './manage-filter.component';
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
@@ -206,23 +206,21 @@ describe('ManageFilterComponent', () => {
     expect(testContext.component.primaryConditionDisplayText).toEqual('Equals: Alert');
     expect(testContext.component.secondaryConditionDisplayText).toEqual('Equals: Normal');
   });
-  it('locks the field combobox while editing a pill', async () => {
+  it('shows the field as a heading while editing a pill', async () => {
     testContext.component.propertyFilter = { operator: LogicalOperator.And, criteria: [stringPredicate1] };
     renderFixture(testContext.fixture);
     testContext.fixture.nativeElement.querySelector('.filter-pill').click();
     renderFixture(testContext.fixture);
     await testContext.fixture.whenStable();
     renderFixture(testContext.fixture);
-    // Zoneless: the combobox writes its display value a frame after it renders.
-    await animationFrameTick(testContext.fixture);
 
-    const input = document.querySelector<HTMLInputElement>('.filter-popover .clr-combobox-input')!;
-    expect(input.value).toBe(stringProperty.displayName);
-    expect(input.disabled).toBe(true);
-    expect(document.querySelector<HTMLButtonElement>('.filter-popover .clr-combobox-trigger')!.disabled).toBe(true);
+    const heading = document.querySelector<HTMLHeadingElement>('.filter-popover .filter-field-row h5')!;
+    expect(heading.textContent!.trim()).toBe(stringProperty.displayName);
+    expect(heading.getAttribute('cds-layout')).toBe('m-t:none');
+    expect(document.querySelector('.filter-popover clr-combobox')).toBeNull();
     expect(document.querySelector('.filter-form-actions [data-test-id="clear-filter"]')).not.toBeNull();
   });
-  it('hides the field combobox for predefined pills', async () => {
+  it('shows the field as a heading for predefined pills', async () => {
     testContext.component.filterProperty = enumProperty;
     testContext.component.predefined = true;
     renderFixture(testContext.fixture);
@@ -231,11 +229,12 @@ describe('ManageFilterComponent', () => {
     await testContext.fixture.whenStable();
     renderFixture(testContext.fixture);
 
-    expect(document.querySelector('.filter-popover')).toBeTruthy();
+    const heading = document.querySelector<HTMLHeadingElement>('.filter-popover .filter-field-row h5')!;
+    expect(heading.textContent!.trim()).toBe(enumProperty.displayName);
     expect(document.querySelector('.filter-popover clr-combobox')).toBeNull();
-    expect(getComputedStyle(document.querySelector('.filter-popover .filter-field-row')!).display).toBe('none');
+    expect(getComputedStyle(document.querySelector('.filter-popover .filter-field-row')!).display).not.toBe('none');
   });
-  it('shows a minimal enum editor for predefined pills', async () => {
+  it('shows the full enum editor for predefined pills', async () => {
     testContext.component.filterProperty = enumProperty;
     testContext.component.predefined = true;
     renderFixture(testContext.fixture);
@@ -245,12 +244,10 @@ describe('ManageFilterComponent', () => {
     renderFixture(testContext.fixture);
 
     const popover = document.querySelector('.filter-popover')!;
-    expect(popover.classList).toContain('filter-popover-minimal');
-    expect(popover.querySelector('.selection-counter')).toBeNull();
-    expect(popover.textContent).not.toContain(testContext.component.filterStrings.valueLabel);
+    expect(popover.textContent).toContain(testContext.component.filterStrings.valueLabel);
+    expect(popover.querySelector('.selection-counter')).not.toBeNull();
     expect(popover.querySelectorAll('input[type="checkbox"]').length).toBeGreaterThan(0);
-    expect(popover.querySelector('.filter-options')!.hasAttribute('cds-layout')).toBe(false);
-    expect(popover.querySelector('.filter-options')!.classList).toContain('filter-options-minimal');
+    expect(popover.querySelector('.filter-options')!.getAttribute('cds-layout')).toBe('m-t:xs');
   });
   it('removes a user-added pill with its X button', () => {
     vi.spyOn(testContext.component.filterRemoved, 'emit').mockImplementation(() => undefined);

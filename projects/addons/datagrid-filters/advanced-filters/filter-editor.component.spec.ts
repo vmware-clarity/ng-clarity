@@ -54,7 +54,6 @@ const userProperty = new UserPropertyDefinition('Owner', 'owner');
     <appfx-filter-editor
       [property]="property"
       [propertyFilter]="propertyFilter"
-      [minimal]="minimal"
       [fieldTemplate]="withSlots ? field : undefined"
       [actionsTemplate]="withSlots ? actions : undefined"
       (filterCriteriaChange)="emitted.push($event)"
@@ -66,7 +65,6 @@ const userProperty = new UserPropertyDefinition('Owner', 'owner');
 class EditorHostComponent {
   property: FilterablePropertyDefinition = stringProperty;
   propertyFilter?: PropertyFilter;
-  minimal = false;
   withSlots = true;
   emitted: (PropertyFilter | undefined)[] = [];
 }
@@ -146,18 +144,16 @@ describe('FilterEditorComponent', () => {
     expect(fixture.nativeElement.querySelector('[data-test-id="actions-slot"]')).toBeNull();
   });
 
-  it('passes the filter to edit and the minimal layout on to the editor', () => {
+  it('passes the filter to edit on to the editor', () => {
     const filter: PropertyFilter = {
       operator: LogicalOperator.Or,
       criteria: [{ filterableProperty: enumProperty, operator: ComparisonOperator.Equals, value: 'on' }],
     };
     host.property = enumProperty;
     host.propertyFilter = filter;
-    host.minimal = true;
     renderFixture(fixture);
     const editor: EnumFilterComponent = fixture.debugElement.query(By.directive(EnumFilterComponent)).componentInstance;
     expect(editor.propertyFilter).toBe(filter);
-    expect(editor.minimal).toBe(true);
   });
 
   it("passes on the editor's applied filter and its cancel", () => {

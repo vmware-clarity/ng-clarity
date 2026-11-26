@@ -42,14 +42,10 @@ form {
     flex-shrink: 1;
   }
 
-  // The row is empty when no field picker or AND/OR group is projected (e.g. predefined pills).
-  .filter-field-row:empty {
-    display: none;
-  }
-
   .filter-field-row {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: var(--clr-base-gap-s);
     padding-bottom: var(--clr-base-vertical-offset-l);
     border-bottom: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);

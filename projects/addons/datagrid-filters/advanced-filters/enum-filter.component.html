@@ -28,11 +28,9 @@
       </clr-select-container>
     </div>
 
-    @if (!minimal) {
-      <label class="clr-control-label text-left mt-compact">
-        {{ filterStrings.valueLabel }}
-      </label>
-    }
+    <label class="clr-control-label text-left mt-compact">
+      {{ filterStrings.valueLabel }}
+    </label>
 
     <!-- The search narrows the options below; it is not part of the condition, so it sits under Value. -->
     <div *ngIf="filterProperty.searchable" class="filter-condition-row enum-search" data-test-id="enum-search">
@@ -60,13 +58,11 @@
       </clr-input-container>
     </div>
 
-    @if (!minimal) {
-      <div *ngIf="filteredOptions.length" cds-layout="m-t:xs m-l:xxs" class="selection-counter">
-        <span *ngIf="!filterProperty.singleSelect" class="clr-subtext" cds-text="body medium">
-          {{ filterStrings.formatString(filterStrings.elementsSelectedFormat, [selectedCount.toString()]) }}
-        </span>
-      </div>
-    }
+    <div *ngIf="filteredOptions.length" cds-layout="m-t:xs m-l:xxs" class="selection-counter">
+      <span *ngIf="!filterProperty.singleSelect" class="clr-subtext" cds-text="body medium">
+        {{ filterStrings.formatString(filterStrings.elementsSelectedFormat, [selectedCount.toString()]) }}
+      </span>
+    </div>
 
     <div *ngIf="isProcessing" class="loading-overlay">
       <div class="loading-content">
@@ -74,7 +70,7 @@
       </div>
     </div>
 
-    <div class="filter-options" [class.filter-options-minimal]="minimal" [attr.cds-layout]="minimal ? null : 'm-t:xs'">
+    <div class="filter-options" cds-layout="m-t:xs">
       <clr-checkbox-container *ngIf="!filterProperty.singleSelect" class="enum-options">
         <clr-checkbox-wrapper *ngIf="filterProperty.enableSelectAll" cds-layout="m-b:xs">
           <input type="checkbox" clrCheckbox formControlName="selectAll" (change)="onSelectAllChange()" />

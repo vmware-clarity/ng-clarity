@@ -51,12 +51,6 @@ export class EnumFilterComponent implements OnInit, OnChanges {
   @Input() propertyFilter?: PropertyFilter;
 
   /**
-   * Minimal layout used by predefined pills: only the options and the actions, without the
-   * "Value" label and the selection counter.
-   */
-  @Input() minimal = false;
-
-  /**
    * Event emitter to tell hosting view that filtering criteria have changed
    */
   @Output() filterCriteriaChange: EventEmitter<PropertyFilter> = new EventEmitter<PropertyFilter>();

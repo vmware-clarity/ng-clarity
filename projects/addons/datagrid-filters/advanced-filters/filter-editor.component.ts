@@ -35,9 +35,6 @@ export class FilterEditorComponent {
   /** The filter to edit; none for a new filter. */
   @Input() propertyFilter?: PropertyFilter;
 
-  /** The enum editor's minimal layout, used by predefined pills. */
-  @Input() minimal = false;
-
   /** Rendered in the editor's field row, e.g. the field picker. */
   @Input() fieldTemplate?: TemplateRef<unknown>;
 

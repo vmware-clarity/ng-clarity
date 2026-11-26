@@ -19,7 +19,6 @@
   <appfx-enum-filter
     [filterProperty]="property"
     [propertyFilter]="propertyFilter"
-    [minimal]="minimal"
     (filterCriteriaChange)="filterCriteriaChange.emit($event)"
   >
     <ng-container filterField [ngTemplateOutlet]="fieldTemplate ?? null"></ng-container>

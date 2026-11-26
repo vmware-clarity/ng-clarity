@@ -53,7 +53,6 @@
 </clr-label>
 <div
   class="filter-popover"
-  [class.filter-popover-minimal]="predefined && isEnumField"
   role="dialog"
   [id]="popoverId"
   [attr.aria-label]="filterStrings.editFilterText + ' ' + managedProperty.displayName"
@@ -62,24 +61,9 @@
   *clrPopoverContent="open; at: popoverPosition; type: popoverType; outsideClickToClose: true; scrollToClose: false"
 >
   <ng-template #fieldSelector>
-    <!-- Predefined pills always edit the same field, so the locked field picker is not shown. -->
-    @if (!predefined) {
-      <clr-combobox-container class="filter-field">
-        <label class="clr-sr-only">{{ filterStrings.filterLabel }}</label>
-        <clr-combobox
-          name="field"
-          [disabled]="true"
-          [ngModel]="managedProperty"
-          [ngModelOptions]="{ standalone: true }"
-        >
-          <clr-options>
-            <clr-option *clrOptionItems="let property of [managedProperty]; field: 'displayName'" [clrValue]="property">
-              {{ property.displayName }}
-            </clr-option>
-          </clr-options>
-        </clr-combobox>
-      </clr-combobox-container>
-    }
+    <h5 cds-layout="m-t:none" data-test-id="filter-field-name">
+      {{ managedProperty.displayName }}
+    </h5>
   </ng-template>
   <ng-template #filterActions>
     @if (active) {
@@ -91,7 +75,6 @@
   <appfx-filter-editor
     [property]="managedProperty"
     [propertyFilter]="propertyFilter"
-    [minimal]="predefined"
     [fieldTemplate]="fieldSelector"
     [actionsTemplate]="filterActions"
     (filterCriteriaChange)="onFilterCriteriaChange($event)"

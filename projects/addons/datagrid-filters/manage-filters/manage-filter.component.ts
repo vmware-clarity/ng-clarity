@@ -126,11 +126,6 @@ export class ManageFilterComponent implements OnInit, OnChanges {
     return this.active ? this.displayFilterValue(0, true) : '';
   }
 
-  /** A predefined enum pill uses the narrow popover with the minimal editor. */
-  protected get isEnumField(): boolean {
-    return this.isEnumProperty(this.managedProperty);
-  }
-
   ngOnChanges(): void {
     this.ngOnInit();
   }
