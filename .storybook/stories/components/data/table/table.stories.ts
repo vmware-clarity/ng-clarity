@@ -39,7 +39,8 @@ const meta = {
     template: `
       <table
         class="table"
-        [ngClass]="{ 'table-noborder': !bordered, 'table-compact': compact, 'table-vertical': vertical }"
+        [attr.clr-density]="compact ? 'compact' : null"
+        [ngClass]="{ 'table-noborder': !bordered, 'table-vertical': vertical }"
       >
         <thead>
           <tr>

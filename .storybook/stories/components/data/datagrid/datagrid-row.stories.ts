@@ -93,7 +93,7 @@ const meta = {
         [clrDgSelected]="[]"
         [clrDgSelectionType]="clrDgSelectionType"
         ${args.rowSelectable ? '[clrDgRowSelection]="true"' : ''}
-        [ngClass]="{ 'datagrid-compact': compact }"
+        [attr.clr-density]="compact ? 'compact' : null"
       >
         <clr-dg-column [style.width.px]="250">
           <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Name</ng-container>

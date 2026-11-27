@@ -28,7 +28,7 @@ import { User } from '../inventory/user';
 import { CommonFiles } from '../utils/stackblitz-common-data';
 
 const COMPACT_EXAMPLE = `
-<clr-datagrid class="datagrid-compact">
+<clr-datagrid clr-density="compact">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Pokemon</clr-dg-column>
@@ -99,7 +99,7 @@ const FULL_EXAMPLE_HTML = `
   </clr-toggle-container>
 </form>
 
-<clr-datagrid [class.datagrid-compact]="compact" class="datagrid-overflow-ellipsis">
+<clr-datagrid [attr.clr-density]="compact ? 'compact' : null" class="datagrid-overflow-ellipsis">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column [style.width.px]="300">Long Text Static Width 300px</clr-dg-column>

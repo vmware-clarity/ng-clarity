@@ -69,16 +69,6 @@ clr-datagrid {
     }
   }
 
-  &.datagrid-compact {
-    .custom-preview {
-      .grid-ghost {
-        .drop-status {
-          margin-top: -8px;
-        }
-      }
-    }
-  }
-
   clr-dg-cell.fixed-cell-height {
     // Fixed cell height for datagrids with virtual scrolling.
     // Considering padding and border row height will be 25px

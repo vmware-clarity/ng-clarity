@@ -103,7 +103,7 @@
     <p class="clr-mt-16px" cds-text="body">
       Table row heights can be reduced by using the <code cds-text="code">compact</code> class.
     </p>
-    <table class="table table-compact clr-mt-24px">
+    <table class="table clr-mt-24px" clr-density="compact">
       <thead>
         <tr>
           <th class="left">Monster</th>
@@ -146,7 +146,7 @@
       The following table examples uses the <code cds-text="code">noborder</code> and
       <code cds-text="code">compact</code> classes.
     </p>
-    <table class="table table-compact table-noborder clr-mt-24px">
+    <table class="table table-noborder clr-mt-24px" clr-density="compact">
       <thead>
         <tr>
           <th class="left">Monster</th>
@@ -215,8 +215,8 @@
         </tr>
         <tr>
           <th>Compact tables</th>
-          <td>.table-compact</td>
-          <td>This classname changes the height of the table rows from 36px to 24px.</td>
+          <td>clr-density="compact"</td>
+          <td>This attribute applies the compact density, which reduces the height of the table rows.</td>
         </tr>
         <tr>
           <th>Vertical tables</th>
@@ -229,7 +229,7 @@
     <p class="clr-mt-24px" cds-text="body">
       The following table example shows a vertical, compact, and borderless table.
     </p>
-    <table class="table table-vertical table-noborder table-compact clr-mt-24px">
+    <table class="table table-vertical table-noborder clr-mt-24px" clr-density="compact">
       <tbody>
         <tr>
           <th>Basic table</th>
@@ -254,8 +254,8 @@
         </tr>
         <tr>
           <th>Compact tables</th>
-          <td>.table-compact</td>
-          <td>This classname changes the height of the table rows from 36px to 24px.</td>
+          <td>clr-density="compact"</td>
+          <td>This attribute applies the compact density, which reduces the height of the table rows.</td>
         </tr>
         <tr>
           <th>Vertical tables</th>
@@ -477,7 +477,7 @@
     <h2 cds-text="title" class="clr-mt-48px" id="compact-tables">Compact Tables</h2>
 
     <p cds-text="body" class="clr-mt-16px">
-      Table row heights can be reduced with the <code cds-text="code">.table-compact</code> classname.
+      Table row heights can be reduced with the <code cds-text="code">clr-density="compact"</code> attribute.
     </p>
 
     <clr-tables-compact-demo></clr-tables-compact-demo>
@@ -485,8 +485,8 @@
     <h2 cds-text="title" class="clr-mt-48px" id="compact-non-bordered-tables">Compact, Non-Bordered Tables</h2>
 
     <p cds-text="body" class="clr-mt-16px">
-      The <code cds-text="code">.table-compact</code> and <code cds-text="code">.table-noborder</code> classnames can be
-      combined.
+      The <code cds-text="code">clr-density="compact"</code> attribute and the
+      <code cds-text="code">.table-noborder</code> classname can be combined.
     </p>
 
     <clr-tables-compact-noborder-demo></clr-tables-compact-noborder-demo>

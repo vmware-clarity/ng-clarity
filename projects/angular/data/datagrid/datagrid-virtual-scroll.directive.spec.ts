@@ -47,7 +47,7 @@ export interface Cells {
         [(clrDgSelected)]="selectedRows"
         [clrDgSelectionType]="'multi'"
         style="height: 32rem"
-        class="datagrid-compact"
+        clr-density="compact"
       >
         @for (col of cols; track colByIndex($index, col)) {
           <clr-dg-column>
@@ -167,6 +167,52 @@ class FullTest implements OnInit {
   }
 }
 
+@Component({
+  template: `
+    <div [attr.clr-density]="wrapperDensity">
+      <clr-datagrid [attr.clr-density]="gridDensity" style="height: 20rem">
+        <clr-dg-column>Index</clr-dg-column>
+        <ng-template clrVirtualScroll let-row [clrVirtualRowsOf]="rows">
+          <clr-dg-row [clrDgItem]="row">
+            <clr-dg-cell>{{ row }}</clr-dg-cell>
+          </clr-dg-row>
+        </ng-template>
+      </clr-datagrid>
+    </div>
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
+})
+class DensityTest {
+  @ViewChild(ClrDatagridVirtualScrollDirective) virtualScroll: ClrDatagridVirtualScrollDirective<number>;
+  wrapperDensity: string | null = null;
+  gridDensity: string | null = null;
+  rows = Array.from({ length: 100 }, (_, index) => index);
+}
+
+@Component({
+  template: `
+    <clr-datagrid clr-density="compact" style="height: 20rem">
+      <clr-dg-column>Index</clr-dg-column>
+      <ng-template clrVirtualScroll let-row [clrVirtualRowsOf]="rows" [clrVirtualRowsItemSize]="40">
+        <clr-dg-row [clrDgItem]="row">
+          <clr-dg-cell>{{ row }}</clr-dg-cell>
+        </clr-dg-row>
+      </ng-template>
+    </clr-datagrid>
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
+})
+class DensityWithItemSizeTest {
+  @ViewChild(ClrDatagridVirtualScrollDirective) virtualScroll: ClrDatagridVirtualScrollDirective<number>;
+  rows = Array.from({ length: 100 }, (_, index) => index);
+}
+
+// Row height = `--clr-table-cell-height` + `--clr-table-borderwidth` of the density, in px.
+const DEFAULT_ROW_HEIGHT = 33;
+const COMPACT_ROW_HEIGHT = 25;
+
 describe('Datagrid', () => {
   describe('Components', () => {
     describe('ClrDatagrid virtual scroller', function () {
@@ -190,6 +236,45 @@ describe('Datagrid', () => {
         await fixture.whenRenderingDone();
         renderFixture(fixture);
       }
+
+      describe('Row height from density', function () {
+        function create<C>(component: new (...args: any[]) => C, setup?: (instance: C) => void) {
+          TestBed.configureTestingModule({
+            imports: [ClarityModule],
+            declarations: [component, ClrDatagridVirtualScrollDirective],
+            schemas: [CUSTOM_ELEMENTS_SCHEMA],
+            providers: DATAGRID_SPEC_PROVIDERS,
+          });
+          const fixture = TestBed.createComponent(component);
+          setup?.(fixture.componentInstance);
+          renderFixture(fixture);
+          return fixture;
+        }
+
+        it('uses the default row height when no clr-density is set', () => {
+          const fixture = create(DensityTest);
+          expect(fixture.componentInstance.virtualScroll.itemSize).toBe(DEFAULT_ROW_HEIGHT);
+          fixture.destroy();
+        });
+
+        it('uses the compact row height when clr-density is set on the datagrid', () => {
+          const fixture = create(DensityTest, instance => (instance.gridDensity = 'compact'));
+          expect(fixture.componentInstance.virtualScroll.itemSize).toBe(COMPACT_ROW_HEIGHT);
+          fixture.destroy();
+        });
+
+        it('uses the compact row height when clr-density is set on an ancestor', () => {
+          const fixture = create(DensityTest, instance => (instance.wrapperDensity = 'compact'));
+          expect(fixture.componentInstance.virtualScroll.itemSize).toBe(COMPACT_ROW_HEIGHT);
+          fixture.destroy();
+        });
+
+        it('keeps a provided clrVirtualRowsItemSize', () => {
+          const fixture = create(DensityWithItemSizeTest);
+          expect(fixture.componentInstance.virtualScroll.itemSize).toBe(40);
+          fixture.destroy();
+        });
+      });
 
       describe('Typescript API', function () {
         let fixture: ComponentFixture<any>;

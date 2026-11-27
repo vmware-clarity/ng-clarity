@@ -91,20 +91,6 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
    */
   private readonly cdkInjectors: EnvironmentInjector[] = [];
 
-  // @deprecated remove the mutation observer when `datagrid-compact` class is deleted
-  private mutationChanges: MutationObserver = new MutationObserver((mutations: MutationRecord[]) => {
-    mutations.forEach((mutation: MutationRecord) => {
-      // it is possible this to be called twice because the old class is removed and the new added
-      if (
-        !this._isUserProvidedItemSize &&
-        (mutation.target as HTMLElement).classList.contains('datagrid-compact') &&
-        this.itemSize > 25
-      ) {
-        this.updateItemSize(25);
-      }
-    });
-  });
-
   private cdkVirtualForInputs: CdkVirtualForInputs<T> = {
     cdkVirtualForTrackBy: index => index,
   };
@@ -131,25 +117,6 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
 
     // default
     this.cdkVirtualForTemplateCacheSize = 20;
-
-    const cellHeightToken = window.getComputedStyle(document.body).getPropertyValue('--clr-table-cell-height');
-    const cellHeightValue = Number(/calc\(([0-9]+) \* calc\(\(1rem \/ 20\) \* 1\)\)/.exec(cellHeightToken)?.[1]);
-
-    const borderWidthToken = window.getComputedStyle(document.body).getPropertyValue('--clr-table-borderwidth');
-    const borderWidthValue = Number(/calc\(([0-9]+) \* \(1rem \/ 20\)\)/.exec(borderWidthToken)?.[1]);
-
-    // initially rowHeightValue is calculated based on `--clr-table-row-height` that had a discreet value.
-    // currently `--clr-table-row-height` is calculated based on `--clr-table-cell-height` + `--clr-table-borderwidth`
-    const rowHeightValue = cellHeightValue + borderWidthValue;
-
-    if (rowHeightValue && this.itemSize > rowHeightValue) {
-      this.updateItemSize(rowHeightValue);
-    }
-
-    this.mutationChanges.observe(this.datagridElementRef.nativeElement, {
-      attributeFilter: ['class'],
-      attributeOldValue: true,
-    });
 
     this.virtualScrollStrategy = new FixedSizeVirtualScrollStrategy(this.itemSize, this.minBufferPx, this.maxBufferPx);
   }
@@ -247,6 +214,8 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   }
 
   ngAfterViewInit() {
+    this.updateItemSizeFromDensity();
+
     runInInjectionContext(this.injector, () => {
       this.virtualScrollViewport = this.createCdkVirtualScrollViewport(
         this.datagrid.contentWrapper,
@@ -315,8 +284,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
 
   ngOnDestroy() {
     // Ours first: CDK teardown emits on the streams we subscribe to, and third-party teardown that
-    // throws must not be able to leave our own observer and subscriptions behind.
-    this.mutationChanges?.disconnect();
+    // throws must not be able to leave our own subscriptions behind.
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();
     });
@@ -356,6 +324,36 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     }
 
     this.cdkVirtualForOf = Array.from(items);
+  }
+
+  /**
+   * Derives the row height from the density tokens of the first element with `clr-density`, starting
+   * at the datagrid and walking up its ancestors (usually the datagrid itself), or from `document.body`
+   * when none has it. It runs once, after the view is initialized, when the datagrid is in the DOM and
+   * its attribute bindings are applied. A density that changes later is not followed; set
+   * `clrVirtualRowsItemSize` for that.
+   */
+  private updateItemSizeFromDensity() {
+    if (this._isUserProvidedItemSize) {
+      return;
+    }
+
+    const densityElement = this.datagridElementRef.nativeElement.closest<HTMLElement>('[clr-density]') ?? document.body;
+    const styles = window.getComputedStyle(densityElement);
+
+    const cellHeightToken = styles.getPropertyValue('--clr-table-cell-height');
+    const cellHeightValue = Number(/calc\(([0-9]+) \* calc\(\(1rem \/ 20\) \* 1\)\)/.exec(cellHeightToken)?.[1]);
+
+    const borderWidthToken = styles.getPropertyValue('--clr-table-borderwidth');
+    const borderWidthValue = Number(/calc\(([0-9]+) \* \(1rem \/ 20\)\)/.exec(borderWidthToken)?.[1]);
+
+    // initially rowHeightValue is calculated based on `--clr-table-row-height` that had a discreet value.
+    // currently `--clr-table-row-height` is calculated based on `--clr-table-cell-height` + `--clr-table-borderwidth`
+    const rowHeightValue = cellHeightValue + borderWidthValue;
+
+    if (rowHeightValue && this.itemSize > rowHeightValue) {
+      this.updateItemSize(rowHeightValue);
+    }
   }
 
   private updateItemSize(value: CdkFixedSizeVirtualScrollInputs['itemSize']) {

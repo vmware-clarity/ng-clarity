@@ -9,11 +9,11 @@
 
 <p class="clr-mt-16px" cds-text="body">
   One way to increase the information density of your Datagrid or to decrease the amount of space it takes up, add the
-  <code cds-text="code">datagrid-compact</code> class to it. This class decreases the amount of whitespace paddings in
-  the default Datagrid style.
+  <code cds-text="code">clr-density="compact"</code> attribute to it. The compact density decreases the amount of
+  whitespace paddings in the default Datagrid style.
 </p>
 
-<clr-datagrid class="datagrid-compact">
+<clr-datagrid clr-density="compact">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Pokemon</clr-dg-column>
@@ -83,7 +83,7 @@
 
 <h2 class="clr-mt-48px" cds-text="subtitle">Full example</h2>
 <ul cds-text="body" cds-layout="m-t:md m-l:xs">
-  <li><code class="clr-code">datagrid-compact</code> will reduce datagrid cell vertical padding.</li>
+  <li><code class="clr-code">clr-density="compact"</code> will reduce datagrid cell vertical padding.</li>
   <li>
     <code class="clr-code">datagrid-overflow-ellipsis</code> will set datagrid cell overflow to ellipsis and will
     truncate the visible data. Because this class is visually limiting please consider one of the following examples
@@ -125,7 +125,7 @@
   </clr-toggle-container>
 </form>
 
-<clr-datagrid [class.datagrid-compact]="compact" class="datagrid-overflow-ellipsis">
+<clr-datagrid [attr.clr-density]="compact ? 'compact' : null" class="datagrid-overflow-ellipsis">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column [style.width.px]="300">Long Text Static Width 300px</clr-dg-column>

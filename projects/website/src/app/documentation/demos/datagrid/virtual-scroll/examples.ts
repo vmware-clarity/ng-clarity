@@ -105,7 +105,7 @@ const EXAMPLE_STATIC = `
   [(clrDgSelected)]="selected"
   [clrDgSelectionType]="'multi'"
   (clrDgRefresh)="refresh($event)"
-  [class.datagrid-compact]="rowSize === 'compact'"
+  [attr.clr-density]="rowSize === 'compact' ? 'compact' : null"
 >
   <clr-dg-column [clrDgField]="'id'">
     <ng-container *clrDgHideableColumn="{ hidden: false }">User ID</ng-container>
@@ -170,7 +170,7 @@ const EXAMPLE_ASYNC = `
     [(clrDgSelected)]="selected"
     [clrDgSelectionType]="'multi'"
     (clrDgRefresh)="refresh($event)"
-    [class.datagrid-compact]="rowSize === 'compact'"
+    [attr.clr-density]="rowSize === 'compact' ? 'compact' : null"
     style="height: 24rem"
   >
     <clr-dg-column [clrDgField]="'id'">
@@ -272,7 +272,7 @@ const dataDrivenHtml = `
   [clrDgSelectionType]="'multi'"
   [clrDgItemsIdentityFn]="trackItemById"
   (clrDgRefresh)="refresh($event)"
-  class="datagrid-compact"
+  clr-density="compact"
   style="height: 24rem"
 >
   <clr-dg-column [clrDgField]="'id'">User ID</clr-dg-column>

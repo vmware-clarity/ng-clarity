@@ -9,12 +9,12 @@
 
 <p>
   To increase the information density of your Datagrid, add the
-  <code class="clr-code">datagrid-compact</code> class to it. This class decreases the amount of whitespace in the
-  default Datagrid style so that you can display more rows in the fixed height. Or if your Datagrid doesn't have a fixed
-  height, you could decrease the overall amount of space that it takes.
+  <code class="clr-code">clr-density="compact"</code> attribute to it. The compact density decreases the amount of
+  whitespace in the default Datagrid style so that you can display more rows in the fixed height. Or if your Datagrid
+  doesn't have a fixed height, you could decrease the overall amount of space that it takes.
 </p>
 
-<clr-datagrid class="datagrid-compact" [style.height.px]="288">
+<clr-datagrid clr-density="compact" [style.height.px]="288">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
   <clr-dg-column>Pokemon</clr-dg-column>
@@ -34,7 +34,7 @@
 
 <h3>Basic Structure</h3>
 <div id="datagrid-compact-basic-structure">
-  <clr-datagrid class="datagrid-compact">
+  <clr-datagrid clr-density="compact">
     <clr-dg-column>User ID</clr-dg-column>
     <clr-dg-column>Name</clr-dg-column>
     <clr-dg-column>Creation date</clr-dg-column>
@@ -60,7 +60,7 @@
 
 <h3>Using smart iterator, property binding, and sorting</h3>
 <div id="datagrid-compact-smart-iterator">
-  <clr-datagrid class="datagrid-compact">
+  <clr-datagrid clr-density="compact">
     <clr-dg-column>User ID</clr-dg-column>
     <clr-dg-column [clrDgField]="'name'" [(clrFilterValue)]="nameFilter">Name</clr-dg-column>
     <clr-dg-column [clrDgField]="'creation'">Creation date</clr-dg-column>
@@ -85,7 +85,7 @@
 
 <h3>Filters and pagination</h3>
 <div id="datagrid-compact-filters-pagination">
-  <clr-datagrid class="datagrid-compact">
+  <clr-datagrid clr-density="compact">
     <clr-dg-column>User ID</clr-dg-column>
     <clr-dg-column>Name</clr-dg-column>
     <clr-dg-column>Creation date</clr-dg-column>
@@ -119,7 +119,7 @@
 
 <h3>Single selection</h3>
 <div id="datagrid-compact-single-selection">
-  <clr-datagrid [(clrDgSelected)]="singleSelected" [clrDgSelectionType]="'single'" class="datagrid-compact">
+  <clr-datagrid [(clrDgSelected)]="singleSelected" [clrDgSelectionType]="'single'" clr-density="compact">
     <clr-dg-column>User ID</clr-dg-column>
     <clr-dg-column>Name</clr-dg-column>
     <clr-dg-column>Creation date</clr-dg-column>
@@ -140,7 +140,7 @@
 
 <h3>Multi selection</h3>
 <div id="datagrid-compact-multi-selection">
-  <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'" class="datagrid-compact">
+  <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'" clr-density="compact">
     <clr-dg-column>User ID</clr-dg-column>
     <clr-dg-column>Name</clr-dg-column>
     <clr-dg-column>Creation date</clr-dg-column>
@@ -172,7 +172,7 @@
 
 <h3>Placeholder</h3>
 <div id="datagrid-compact-placeholder">
-  <clr-datagrid class="datagrid-compact">
+  <clr-datagrid clr-density="compact">
     <clr-dg-column>User ID</clr-dg-column>
     <clr-dg-column>Name</clr-dg-column>
     <clr-dg-column>Creation date</clr-dg-column>
@@ -189,7 +189,7 @@
 
 <h3>Vertical scrolling (Rows with badges)</h3>
 <div id="datagrid-compact-vertical-scrolling">
-  <clr-datagrid id="vertical-scrolling" class="datagrid-compact">
+  <clr-datagrid id="vertical-scrolling" clr-density="compact">
     <clr-dg-column>User ID</clr-dg-column>
     <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
     <clr-dg-column [clrDgField]="'creation'">Creation date</clr-dg-column>
@@ -218,7 +218,7 @@
   <div class="card" style="width: 400px" id="horizontal-scrolling">
     <div class="card-header">For instance when in a narrow card.</div>
     <div class="card-block">
-      <clr-datagrid class="datagrid-compact">
+      <clr-datagrid clr-density="compact">
         <clr-dg-column>User ID</clr-dg-column>
         <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
         <clr-dg-column [clrDgField]="'pokemon.name'">Pokemon</clr-dg-column>
@@ -243,7 +243,7 @@
 
 <h3>Smart column sizing</h3>
 <div id="datagrid-compact-smart-column-sizing">
-  <clr-datagrid class="datagrid-compact">
+  <clr-datagrid clr-density="compact">
     <clr-dg-column>This column as a long header but short data</clr-dg-column>
     <clr-dg-column>Short header</clr-dg-column>
     <clr-dg-column>Large data</clr-dg-column>
@@ -299,7 +299,7 @@
     [style.height.px]="fixedHeight ? 458 : null"
     [(clrDgSelected)]="selected2"
     [clrDgSelectionType]="'multi'"
-    class="datagrid-compact"
+    clr-density="compact"
   >
     <clr-dg-column>User ID</clr-dg-column>
     <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
@@ -344,7 +344,7 @@
 
 <h3>Hide-show columns</h3>
 <div id="datagrid-compact-hide-show-columns">
-  <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'" class="datagrid-compact">
+  <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'" clr-density="compact">
     @if (showId) {
     <clr-dg-column>
       <ng-container *clrDgHideableColumn>User ID</ng-container>
@@ -389,7 +389,7 @@
 
 <h3>Rows with Signpost</h3>
 <div id="datagrid-compact-with-signpost">
-  <clr-datagrid class="datagrid-compact">
+  <clr-datagrid clr-density="compact">
     <clr-dg-column>User ID</clr-dg-column>
     <clr-dg-column>Name</clr-dg-column>
     <clr-dg-column>Creation date</clr-dg-column>

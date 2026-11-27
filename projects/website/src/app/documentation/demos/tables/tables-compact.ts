@@ -10,7 +10,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
 const EXAMPLE = `
-<table class="table table-compact">
+<table class="table" clr-density="compact">
   <thead>
     <tr>
       <th class="left">Monster</th>

@@ -10,7 +10,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
 const EXAMPLE = `
-<table class="table table-vertical table-noborder table-compact">
+<table class="table table-vertical table-noborder" clr-density="compact">
   <tbody>
     <tr>
       <th>Basic table</th>
@@ -39,8 +39,8 @@ const EXAMPLE = `
     </tr>
     <tr>
       <th>Compact tables</th>
-      <td>.table-compact</td>
-      <td>This classname changes the height of the table rows from 36px to 24px.</td>
+      <td>clr-density="compact"</td>
+      <td>This attribute applies the compact density, which reduces the height of the table rows.</td>
     </tr>
     <tr>
       <th>Vertical tables</th>
