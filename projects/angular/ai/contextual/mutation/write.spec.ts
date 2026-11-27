@@ -282,6 +282,10 @@ class AppSize extends KeptValue<unknown> {
       <input id="code" maxlength="4" formControlName="code" />
       <label for="strict">Strict</label>
       <input id="strict" formControlName="strict" />
+      <label for="search">Search…</label>
+      <input id="search" formControlName="search" />
+      <label for="address">{{ longLabel }}</label>
+      <input id="address" formControlName="address" />
       <clr-radio-container>
         <label>Card</label>
         <clr-radio-wrapper>
@@ -323,6 +327,8 @@ class AppSize extends KeptValue<unknown> {
   standalone: false,
 })
 class Host {
+  longLabel =
+    'Street address of the head office where invoices, contracts and other signed papers are delivered on working days';
   form = new FormGroup({
     enabled: new FormControl(true),
     stars: new FormControl(3),
@@ -348,6 +354,8 @@ class Host {
     card: new FormControl<string | null>(null),
     seats: new FormControl<string[]>(['staff']),
     grade: new FormControl('gold'),
+    search: new FormControl(''),
+    address: new FormControl(''),
     strict: new FormControl('', (control: AbstractControl): null => {
       if (control.value === 'boom') {
         throw new Error('The validator exploded.');
@@ -690,9 +698,31 @@ describe('ClrMutationService write path', () => {
       expect(descriptionMatches('nouveau mot de passe', 'Nouveau mot de passe')).toBe(true);
     });
 
+    it('compares words the same way in any script and Unicode form', () => {
+      expect(descriptionMatches('नाम', 'मान')).toBe(false);
+      expect(descriptionMatches('हिन्दी नाम', 'हिन्दी नाम')).toBe(true);
+      expect(descriptionMatches('Café', 'Cafe\u0301')).toBe(true);
+      expect(descriptionMatches('Email', 'E\u200Bmail')).toBe(true);
+    });
+
     it('matches a label the snapshot cut short on the words it kept', () => {
-      expect(descriptionMatches('Street address of the head office', 'Street address of…')).toBe(true);
-      expect(descriptionMatches('Phone number', 'Street address of…')).toBe(false);
+      expect(descriptionMatches('Street address of the head office', 'Street address of…', '', true)).toBe(true);
+      expect(descriptionMatches('Phone number', 'Street address of…', '', true)).toBe(false);
+      expect(descriptionMatches('Супер', 'Суперкалифраджилистик…', '', true)).toBe(false);
+      expect(descriptionMatches('Суперкалифраджилистик', 'Суперкалифраджилистик…', '', true)).toBe(true);
+    });
+
+    it('matches a label that ends in "…" as a whole label', async () => {
+      expect(descriptionMatches('Password', 'Search…')).toBe(false);
+      expect(descriptionMatches('Delete everything', 'More…')).toBe(false);
+      expect((await set('Search…', 'x', 'Password')).refused).toBe('mismatch');
+      expect((await set('Search…', 'x', 'Search')).applied).toBe(true);
+    });
+
+    it('matches a label the snapshot cut on the words it showed', async () => {
+      const label = `${host.longLabel.slice(0, 99)}…`;
+      expect((await set(label, 'x', host.longLabel)).applied).toBe(true);
+      expect((await set(label, 'y', 'Street address')).refused).toBe('mismatch');
     });
 
     it('refuses a description that only mentions the label among other words', async () => {
