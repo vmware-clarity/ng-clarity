@@ -282,7 +282,7 @@ export class ClrMutationService {
     ) {
       return { refused: 'hidden', detail: 'The control is outside what snapshots with these options describe.' };
     }
-    if (!descriptionMatches(operation.description, write.label, write.type, write.labelCut)) {
+    if (!descriptionMatches(operation.description, write.label, write.type)) {
       return {
         refused: 'mismatch',
         detail: write.label

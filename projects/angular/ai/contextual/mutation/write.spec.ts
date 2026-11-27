@@ -705,24 +705,18 @@ describe('ClrMutationService write path', () => {
       expect(descriptionMatches('Email', 'E\u200Bmail')).toBe(true);
     });
 
-    it('matches a label the snapshot cut short on the words it kept', () => {
-      expect(descriptionMatches('Street address of the head office', 'Street address of…', '', true)).toBe(true);
-      expect(descriptionMatches('Phone number', 'Street address of…', '', true)).toBe(false);
-      expect(descriptionMatches('Супер', 'Суперкалифраджилистик…', '', true)).toBe(false);
-      expect(descriptionMatches('Суперкалифраджилистик', 'Суперкалифраджилистик…', '', true)).toBe(true);
-    });
-
-    it('matches a label that ends in "…" as a whole label', async () => {
+    it('matches a label that ends in "…" as any other label', async () => {
       expect(descriptionMatches('Password', 'Search…')).toBe(false);
       expect(descriptionMatches('Delete everything', 'More…')).toBe(false);
       expect((await set('Search…', 'x', 'Password')).refused).toBe('mismatch');
       expect((await set('Search…', 'x', 'Search')).applied).toBe(true);
     });
 
-    it('matches a label the snapshot cut on the words it showed', async () => {
+    it('matches a label the snapshot cut as the snapshot shows it', async () => {
       const label = `${host.longLabel.slice(0, 99)}…`;
-      expect((await set(label, 'x', host.longLabel)).applied).toBe(true);
+      expect((await set(label, 'x', label)).applied).toBe(true);
       expect((await set(label, 'y', 'Street address')).refused).toBe('mismatch');
+      expect((await set(label, 'z', host.longLabel)).refused).toBe('mismatch');
     });
 
     it('refuses a description that only mentions the label among other words', async () => {

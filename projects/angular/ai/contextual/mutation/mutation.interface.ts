@@ -16,7 +16,7 @@ export interface ClrSetValueOperation {
   operation: 'setValue';
   /** The `ref` of the node to write to, from the latest snapshot. */
   ref: string;
-  /** The node's label as the snapshot shows it, checked so a drifted ref is caught; a cut label may be given as the words kept. */
+  /** The node's label, copied from the snapshot; checked against the node so a drifted ref is caught. */
   description: string;
   /** The value, in the agent's terms: text, a number, `true`, an option's label, a date. */
   value: unknown;
@@ -28,7 +28,7 @@ export interface ClrClearOperation {
   operation: 'clear';
   /** The `ref` of the node to clear, from the latest snapshot. */
   ref: string;
-  /** The node's label as the snapshot shows it; checked as for `setValue`. */
+  /** The node's label, copied from the snapshot; checked as for `setValue`. */
   description: string;
 }
 
