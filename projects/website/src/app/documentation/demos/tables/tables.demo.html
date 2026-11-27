@@ -216,7 +216,15 @@
         <tr>
           <th>Compact tables</th>
           <td>.table-compact</td>
-          <td>This classname changes the height of the table rows from 36px to 24px.</td>
+          <!--
+            Review: 24px has no clr-base token. .table-compact uses --clr-table-compact-cell-height, which is set to
+            --cds-global-space-9 and does not change with density.
+          -->
+          <td>
+            This classname changes the height of the table rows from 32px (<code cds-text="code"
+              >--clr-base-dg-row-height</code
+            >) to 24px.
+          </td>
         </tr>
         <tr>
           <th>Vertical tables</th>
@@ -255,7 +263,15 @@
         <tr>
           <th>Compact tables</th>
           <td>.table-compact</td>
-          <td>This classname changes the height of the table rows from 36px to 24px.</td>
+          <!--
+            Review: 24px has no clr-base token. .table-compact uses --clr-table-compact-cell-height, which is set to
+            --cds-global-space-9 and does not change with density.
+          -->
+          <td>
+            This classname changes the height of the table rows from 32px (<code cds-text="code"
+              >--clr-base-dg-row-height</code
+            >) to 24px.
+          </td>
         </tr>
         <tr>
           <th>Vertical tables</th>

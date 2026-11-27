@@ -295,7 +295,7 @@ Stack block heading now uses `role` and `aria-level` attributes for improved acc
 
 ### Density
 
-The default density theme is now replaced with **Regular**. There are now only two density themes: default and compact.
+The default density theme is now replaced with **Regular**. There are now only two density themes: regular and compact.
 
 ### Header Styles
 

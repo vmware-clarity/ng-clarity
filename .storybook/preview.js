@@ -110,7 +110,7 @@ export const globalTypes = {
       icon: 'graphbar',
       showName: true,
       items: [
-        { value: DENSITY.NONE, title: 'None' },
+        { value: DENSITY.REGULAR, title: 'Regular' },
         { value: DENSITY.COMPACT, title: 'Compact' },
       ],
     },
@@ -132,7 +132,7 @@ const themeDecorator = (story, { globals }) => {
 };
 const densityDecorator = (story, { globals }) => {
   const { density } = globals;
-  if (density === DENSITY.NONE) {
+  if (density === DENSITY.REGULAR) {
     document.body.removeAttribute(clrDensityAttribute);
   } else {
     document.body.setAttribute(clrDensityAttribute, density);

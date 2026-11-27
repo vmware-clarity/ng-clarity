@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ClarityIcons, ClrIcon, landscapeIcon } from '@clr/angular';
+import { ClarityIcons, ClrIcon, portraitIcon } from '@clr/angular';
 
 type DensityType = '' | 'compact';
 
@@ -17,20 +17,11 @@ const densityLocalStorageKey = 'density';
   template: `
     <button
       class="btn btn-link nav-link nav-text toggle-density"
-      [class.compact-density]="density === 'compact'"
-      [attr.aria-checked]="density === 'compact'"
+      [attr.aria-label]="'Density: ' + densityLabel"
       (click)="toggleDensity()"
-      (mouseenter)="densityIconInverse = true"
-      (mouseleave)="densityIconInverse = false"
     >
-      <clr-icon
-        class="density-toggle-icon"
-        size="md"
-        shape="landscape"
-        direction="left"
-        [solid]="solidDensityIcon"
-      ></clr-icon>
-      <span>Compact</span>
+      <clr-icon class="density-toggle-icon" size="md" shape="portrait" [solid]="isCompact"></clr-icon>
+      <span>{{ densityLabel }}</span>
     </button>
   `,
   styles: [
@@ -47,10 +38,6 @@ const densityLocalStorageKey = 'density';
             color: var(--clr-header-font-color);
           }
         }
-
-        &.compact-density {
-          font-weight: var(--cds-alias-typography-font-weight-semibold);
-        }
       }
     `,
   ],
@@ -59,17 +46,17 @@ const densityLocalStorageKey = 'density';
 })
 export class DensityToggleComponent implements OnInit {
   protected density = getPreferredDensity();
-  protected densityIconInverse = true;
 
   constructor() {
-    ClarityIcons.addIcons(landscapeIcon);
+    ClarityIcons.addIcons(portraitIcon);
   }
 
-  protected get solidDensityIcon() {
-    const inCompactModeWithoutHover = this.density === 'compact' && !this.densityIconInverse;
-    const notInCompactModeWithHover = this.density !== 'compact' && this.densityIconInverse;
+  protected get isCompact() {
+    return this.density === 'compact';
+  }
 
-    return inCompactModeWithoutHover || notInCompactModeWithHover;
+  protected get densityLabel() {
+    return this.isCompact ? 'Compact' : 'Regular';
   }
 
   ngOnInit() {
@@ -77,7 +64,7 @@ export class DensityToggleComponent implements OnInit {
   }
 
   protected toggleDensity() {
-    this.setDensity(this.density === 'compact' ? '' : 'compact');
+    this.setDensity(this.isCompact ? '' : 'compact');
   }
 
   protected setDensity(density: DensityType) {
