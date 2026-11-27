@@ -145,100 +145,6 @@ export class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
 // @public (undocumented)
 export const CLR_LOADING_DIRECTIVES: Type<any>[];
 
-// @public @deprecated (undocumented)
-export interface ClrAnimationAnimateMetadata {
-    // (undocumented)
-    styles: ClrAnimationStyleMetadata | null;
-    // (undocumented)
-    timings: string | number;
-    // (undocumented)
-    type: 4;
-}
-
-// @public @deprecated (undocumented)
-export type ClrAnimationMetadata = ClrAnimationStyleMetadata | ClrAnimationAnimateMetadata | ClrAnimationStateMetadata | ClrAnimationTransitionMetadata | ClrAnimationReferenceMetadata | ClrAnimationTriggerMetadata;
-
-// @public @deprecated (undocumented)
-export interface ClrAnimationOptions {
-    // (undocumented)
-    delay?: number | string;
-    // (undocumented)
-    params?: {
-        [name: string]: any;
-    };
-}
-
-// @public @deprecated (undocumented)
-export interface ClrAnimationReferenceMetadata {
-    // (undocumented)
-    animation: ClrAnimationMetadata | ClrAnimationMetadata[];
-    // (undocumented)
-    options: ClrAnimationOptions | null;
-    // (undocumented)
-    type: 8;
-}
-
-// @public @deprecated (undocumented)
-export interface ClrAnimationStateMetadata {
-    // (undocumented)
-    name: string;
-    // (undocumented)
-    options?: {
-        params: {
-            [name: string]: any;
-        };
-    };
-    // (undocumented)
-    styles: ClrAnimationStyleMetadata;
-    // (undocumented)
-    type: 0;
-}
-
-// @public @deprecated (undocumented)
-export interface ClrAnimationStyleMetadata {
-    // (undocumented)
-    offset: number | null;
-    // (undocumented)
-    styles: ClrAnimationStyles;
-    // (undocumented)
-    type: 6;
-}
-
-// @public @deprecated
-export type ClrAnimationStyles = '*' | {
-    [key: string]: string | number;
-} | Array<{
-    [key: string]: string | number;
-} | '*'>;
-
-// @public @deprecated (undocumented)
-export interface ClrAnimationTransitionMetadata {
-    // (undocumented)
-    animation: ClrAnimationMetadata | ClrAnimationMetadata[];
-    // (undocumented)
-    expr: string;
-    // (undocumented)
-    options: ClrAnimationOptions | null;
-    // (undocumented)
-    type: 1;
-}
-
-// @public @deprecated (undocumented)
-export interface ClrAnimationTriggerMetadata {
-    // (undocumented)
-    definitions: ClrAnimationMetadata[];
-    // (undocumented)
-    name: string;
-    // (undocumented)
-    options: {
-        params?: {
-            [name: string]: any;
-        };
-    } | null;
-    // (undocumented)
-    type: 7;
-}
-
 // @public (undocumented)
 export interface ClrCommonStrings {
     alertCloseButtonAriaLabel: string;
@@ -446,22 +352,7 @@ export class ClrDestroyService extends Subject<void> implements OnDestroy {
 
 // @public (undocumented)
 export class ClrExpandableAnimation extends BaseExpandableAnimation implements OnChanges {
-    // @deprecated (undocumented)
-    animationDone(_event: {
-        fromState: string;
-    }): void;
-    // @deprecated (undocumented)
-    animationStart(_event: {
-        fromState: string;
-    }): void;
     clrExpandTrigger: boolean;
-    // @deprecated (undocumented)
-    get expandAnimation(): {
-        value: boolean;
-        params: {
-            startHeight: number;
-        };
-    };
     // (undocumented)
     ngOnChanges(changes: SimpleChanges): void;
     // (undocumented)
@@ -476,13 +367,10 @@ export class ClrExpandableAnimation extends BaseExpandableAnimation implements O
 }
 
 // @public (undocumented)
-export class ClrExpandableAnimationDirective extends BaseExpandableAnimation implements OnChanges, OnDestroy {
-    constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2, _builder?: unknown);
+export class ClrExpandableAnimationDirective extends BaseExpandableAnimation implements OnChanges {
     expanded: boolean;
     // (undocumented)
     ngOnChanges(changes: SimpleChanges): void;
-    // @deprecated (undocumented)
-    ngOnDestroy(): void;
     // (undocumented)
     playAnimation(): void;
     // (undocumented)
@@ -493,9 +381,7 @@ export class ClrExpandableAnimationDirective extends BaseExpandableAnimation imp
         };
     }, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimationDirective, [null, null, null, {
-        optional: true;
-    }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimationDirective, never>;
 }
 
 // @public (undocumented)
@@ -824,9 +710,6 @@ export class ClrTemplateRefModule {
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTemplateRefModule, [typeof TemplateRefContainer], [typeof i2.CommonModule], [typeof TemplateRefContainer]>;
 }
 
-// @public @deprecated (undocumented)
-export function collapse(): ClrAnimationMetadata[];
-
 // @public (undocumented)
 export const commonStringsDefault: ClrCommonStrings;
 
@@ -841,12 +724,6 @@ export function customFocusableItemProvider<T>(implementation: Type<T>): (Type<T
 
 // @public
 export const DATEPICKER_ENABLE_BREAKPOINT = 768;
-
-// @public @deprecated (undocumented)
-export const defaultAnimationTiming = "0.2s ease-in-out";
-
-// @public @deprecated (undocumented)
-export const defaultExpandAnimation: ClrAnimationReferenceMetadata;
 
 // @public (undocumented)
 export class DomAdapter {
@@ -886,12 +763,6 @@ export function expandHeight(input: AnimationCallbackEvent): void;
 
 // @public (undocumented)
 export const EXTRA_LARGE_BREAKPOINT = 1200;
-
-// @public @deprecated (undocumented)
-export function fade(opacity?: number): ClrAnimationMetadata[];
-
-// @public @deprecated (undocumented)
-export function fadeSlide(direction: string): ClrAnimationMetadata[];
 
 // @public (undocumented)
 export const FOCUS_ON_VIEW_INIT: InjectionToken<boolean>;
@@ -1164,9 +1035,6 @@ export class ScrollingService {
     // (undocumented)
     static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
-
-// @public @deprecated (undocumented)
-export function slide(direction: string): ClrAnimationMetadata[];
 
 // @public (undocumented)
 export const SMALL_BREAKPOINT = 576;

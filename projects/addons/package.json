@@ -18,7 +18,6 @@
     "url": "https://github.com/vmware-clarity/ng-clarity/issues"
   },
   "peerDependencies": {
-    "@angular/animations": "^22.0.0",
     "@angular/cdk": "^22.0.0",
     "@angular/common": "^22.0.0",
     "@angular/core": "^22.0.0",

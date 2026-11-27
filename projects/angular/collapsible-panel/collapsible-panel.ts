@@ -87,12 +87,6 @@ export abstract class CollapsiblePanel implements OnInit {
     this.panelService.togglePanel(this.id);
   }
 
-  collapsePanelOnAnimationDone(panel: CollapsiblePanelModel) {
-    if (!panel.open) {
-      this.ifExpandService.expanded = false;
-    }
-  }
-
   /** `animate.enter` handler of the content. */
   protected expandContent(event: AnimationCallbackEvent) {
     if (this.noopPanelAnimations) {

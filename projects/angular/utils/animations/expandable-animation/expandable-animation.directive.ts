@@ -5,24 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  Directive,
-  ElementRef,
-  Inject,
-  InjectionToken,
-  Input,
-  OnChanges,
-  OnDestroy,
-  Optional,
-  Renderer2,
-  SimpleChanges,
-} from '@angular/core';
+import { Directive, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 import { BaseExpandableAnimation } from './base-expandable-animation';
 import { DomAdapter } from '../../dom-adapter/dom-adapter';
-
-/** Never provided: stands for the `AnimationBuilder` the directive used to be injected with. */
-const UNUSED_ANIMATION_BUILDER = new InjectionToken<unknown>('UNUSED_ANIMATION_BUILDER');
 
 @Directive({
   selector: '[clrExpandableAnimation]',
@@ -33,33 +19,15 @@ const UNUSED_ANIMATION_BUILDER = new InjectionToken<unknown>('UNUSED_ANIMATION_B
   },
   standalone: false,
 })
-export class ClrExpandableAnimationDirective extends BaseExpandableAnimation implements OnChanges, OnDestroy {
+export class ClrExpandableAnimationDirective extends BaseExpandableAnimation implements OnChanges {
   /** Animates the height of the element, from `startHeight` to its new height, each time it changes. */
   @Input('clrExpandableAnimation') expanded = false;
-
-  /**
-   * @param _builder Deprecated and ignored: the height no longer animates with Angular animations. Kept so that
-   * subclasses passing an `AnimationBuilder` still compile.
-   */
-  constructor(
-    element: ElementRef<HTMLElement>,
-    domAdapter: DomAdapter,
-    renderer: Renderer2,
-    @Optional() @Inject(UNUSED_ANIMATION_BUILDER) _builder?: unknown
-  ) {
-    super(element, domAdapter, renderer);
-  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['expanded'] && !changes['expanded'].firstChange) {
       // Once the change is rendered.
       Promise.resolve().then(() => this.playAnimation());
     }
-  }
-
-  /** @deprecated Kept so that subclasses calling `super.ngOnDestroy()` still compile. */
-  ngOnDestroy() {
-    // Nothing to clean up.
   }
 
   playAnimation() {

@@ -20,8 +20,6 @@ export abstract class CollapsiblePanel implements OnInit {
     protected animatesCollapse: boolean;
     // (undocumented)
     protected cdr: ChangeDetectorRef;
-    // (undocumented)
-    collapsePanelOnAnimationDone(panel: CollapsiblePanelModel): void;
     protected contentCollapsing: boolean;
     // (undocumented)
     abstract get disabled(): boolean;
@@ -60,14 +58,6 @@ export abstract class CollapsiblePanel implements OnInit {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<CollapsiblePanel, never>;
 }
-
-// Warning: (ae-forgotten-export) The symbol "ClrAnimationTriggerMetadata" needs to be exported by the entry point clr-angular-collapsible-panel.d.ts
-//
-// @public @deprecated (undocumented)
-export const collapsiblePanelAnimation: ClrAnimationTriggerMetadata[];
-
-// @public @deprecated (undocumented)
-export const collapsiblePanelExpandAnimation: ClrAnimationTriggerMetadata[];
 
 // @public (undocumented)
 export class CollapsiblePanelGroupModel {
@@ -129,17 +119,6 @@ export class CollapsiblePanelService {
     // (undocumented)
     static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
-
-// Warning: (ae-forgotten-export) The symbol "ClrAnimationTransitionMetadata" needs to be exported by the entry point clr-angular-collapsible-panel.d.ts
-//
-// @public @deprecated (undocumented)
-export const panelCollapseTransition: ClrAnimationTransitionMetadata;
-
-// @public @deprecated (undocumented)
-export const panelExpandTransition: ClrAnimationTransitionMetadata;
-
-// @public @deprecated (undocumented)
-export const skipInitialRenderTrigger: ClrAnimationTriggerMetadata;
 
 // (No @packageDocumentation comment for this package)
 

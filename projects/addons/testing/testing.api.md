@@ -22,7 +22,6 @@ import { EnvironmentInjector } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
 import * as i0 from '@angular/core';
-import * as i1_2 from '@angular/platform-browser/animations';
 import { InjectionToken } from '@angular/core';
 import { IterableDiffers } from '@angular/core';
 import { ListRange } from '@angular/cdk/collections';
@@ -1242,14 +1241,14 @@ export class MockWorkflowConfigurationService {
     set debug(newValue: boolean);
 }
 
-// @public (undocumented)
+// @public
 export class MockWorkflowTestModule {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockWorkflowTestModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<MockWorkflowTestModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MockWorkflowTestModule, [typeof InvalidMockComponent, typeof MockStepComponent], [typeof i1_2.NoopAnimationsModule], never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<MockWorkflowTestModule, [typeof InvalidMockComponent, typeof MockStepComponent], never, never>;
 }
 
 // @public (undocumented)

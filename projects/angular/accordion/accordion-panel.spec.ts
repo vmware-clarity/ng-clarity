@@ -10,7 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
-import { CollapsiblePanelModel, CollapsiblePanelService } from '@clr/angular/collapsible-panel';
+import { CollapsiblePanelService } from '@clr/angular/collapsible-panel';
 import { delay } from '@clr/angular/testing';
 import { HeadingLevel, IfExpandService } from '@clr/angular/utils';
 import { renderFixture } from '@clr/angular/utils/testing';
@@ -123,14 +123,14 @@ describe('ClrAccordionPanel', () => {
       expect(panelService.togglePanel).toHaveBeenCalled();
     });
 
-    it('should collapse panel when animation done is triggered', () => {
+    it('should tear down the expanded content when the panel closes', () => {
       const ifExpandService = fixture.debugElement.injector.get(IfExpandService);
-      const panelModel = new CollapsiblePanelModel('0', '0');
-      panelModel.open = true;
-      ifExpandService.expanded = true;
+      accordionPanel.togglePanel();
+      renderFixture(fixture);
+      expect(ifExpandService.expanded).toBe(true);
 
-      panelModel.open = false;
-      accordionPanel.collapsePanelOnAnimationDone(panelModel);
+      accordionPanel.togglePanel();
+      renderFixture(fixture);
       expect(ifExpandService.expanded).toBe(false);
     });
   });
