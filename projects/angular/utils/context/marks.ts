@@ -63,6 +63,18 @@ export function isWithinContextHidden(element: Element): boolean {
   return !!element.closest(CLR_CONTEXT_HIDDEN_SELECTOR);
 }
 
+/** Whether page-context tooling reads no text from the element: hidden, ignored, redacted or an editing host. */
+export function isContextWithheld(element: Element): boolean {
+  return (
+    isContextHidden(element) || hasContextMark(element, 'redact') || element.matches(CLR_CONTEXT_EDITING_HOST_SELECTOR)
+  );
+}
+
+/** Whether something inside the element is {@link isContextWithheld}. */
+export function holdsContextWithheld(element: Element): boolean {
+  return Array.from(element.querySelectorAll('*')).some(isContextWithheld);
+}
+
 /**
  * Hides the element and everything inside it from AI page context, by setting `data-clr-context-ignore`.
  * Put it on UI that consumes context, such as a chat panel, to avoid feedback loops.

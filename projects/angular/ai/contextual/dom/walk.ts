@@ -802,8 +802,12 @@ function finish(
 ): ClrComponentContext | null {
   const redacted = isRedacted(element, walk.redactedDepth > 0);
   // Published context is not merged inside a redacted region: it would carry the component's state straight out.
-  let described =
-    redacted || !published ? node : mergeElementContext(node, element, walk.options, annotationOf(element, walk));
+  let described = node;
+  if (published) {
+    described = redacted
+      ? withoutOverriddenLabel(node, element, walk)
+      : mergeElementContext(node, element, walk.options, annotationOf(element, walk));
+  }
   if (walk.excludeRoles.has(described.type)) {
     return null;
   }
@@ -827,6 +831,17 @@ function finish(
 /** A container with no name, state or children tells an agent nothing, unlike a widget, whose role alone is news. */
 function isEmptyContainer(node: ClrComponentContext): boolean {
   return EMPTY_CONTAINER_ROLES.has(node.type) && !node.label && !node.state && !node.children;
+}
+
+/** In a redacted region, a markup name the element overrides is dropped; both may be the withheld content. */
+function withoutOverriddenLabel(node: ClrComponentContext, element: Element, walk: Walk): ClrComponentContext {
+  // Reading the published label runs the whole callback, so only when there is a label to lose.
+  if (node.label === undefined || typeof readClrElementContext(element, walk.options)?.label !== 'string') {
+    return node;
+  }
+  const unnamed = { ...node };
+  delete unnamed.label;
+  return unnamed;
 }
 
 /** The element's annotation; on a view root or an ancestor of one, it describes the view instead. */

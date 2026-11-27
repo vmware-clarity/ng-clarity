@@ -8,4 +8,5 @@
 export * from './marks';
 export * from './context.interface';
 export * from './element-context';
+export * from './text';
 export * from './selectors';

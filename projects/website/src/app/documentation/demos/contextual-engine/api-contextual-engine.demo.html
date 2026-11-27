@@ -446,7 +446,8 @@
       <td class="left">
         What is true of it now, such as <code cds-text="code">expanded</code>, <code cds-text="code">selected</code>,
         <code cds-text="code">invalid</code>, <code cds-text="code">value</code>, <code cds-text="code">error</code> or
-        <code cds-text="code">rows</code>, the annotation's state, and what its component published.
+        <code cds-text="code">rows</code>, the annotation's state, and what its component published (see Published
+        values below).
       </td>
     </tr>
     <tr>
@@ -461,7 +462,7 @@
 <p class="clr-mt-16px" cds-text="body">
   For component authors: say what a component knows that its markup does not show. These live in
   <code cds-text="code">&#64;clr/angular/utils</code>. An element holds one published context, so do not publish on an
-  element that already publishes; use a wrapper element.
+  element that already publishes, such as a <code cds-text="code">clr-datagrid</code>; use a wrapper element.
 </p>
 <table class="table">
   <thead>
@@ -472,6 +473,19 @@
     </tr>
   </thead>
   <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">contextText(element, skip?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">string</code></td>
+      <td class="left">
+        The text an element shows, leaving out hidden and redacted parts. Use it to label rows or options from their
+        content.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">normalizeContextText(text, lowercase?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">string</code></td>
+      <td class="left">Collapses whitespace and lowercases, to compare labels the way the engine does.</td>
+    </tr>
     <tr>
       <td class="left"><b cds-text="medium">usableSelectors(root, selectors)</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">string</code></td>
@@ -485,6 +499,87 @@
   What publishers, extractors and providers return: a <code cds-text="code">ClrComponentContext</code> whose children
   are published contexts too.
 </p>
+
+<h2 id="published-state" cds-text="title" class="clr-mt-48px">Published values</h2>
+<p class="clr-mt-16px" cds-text="body">
+  What Clarity components add to their node's <code cds-text="code">state</code>. Keys marked (value) are what the user
+  entered or chose.
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Component</th>
+      <th class="left">State</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-datagrid</b></td>
+      <td class="left">
+        <code cds-text="code">totalRows</code>, <code cds-text="code">rows</code> (each row's cells, such as
+        <code cds-text="code">esx-01 | ok</code>; value), <code cds-text="code">filteredColumns</code> (value),
+        <code cds-text="code">hiddenColumns</code> (value). When rows can be selected:
+        <code cds-text="code">selectionMode</code> and <code cds-text="code">value</code>, the selected rows (value).
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-combobox</b></td>
+      <td class="left">
+        <code cds-text="code">multiSelect</code>, <code cds-text="code">options</code>,
+        <code cds-text="code">value</code> (value). While the list is narrowed to what the user typed,
+        <code cds-text="code">matchingOptions</code> (value) replaces <code cds-text="code">options</code>.
+        <code cds-text="code">optionsPending</code> or <code cds-text="code">matchingOptionsPending</code> while
+        <code cds-text="code">clrLoading</code> is set.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-wizard</b></td>
+      <td class="left">
+        <code cds-text="code">stepCount</code>, <code cds-text="code">currentStepIndex</code>, and
+        <code cds-text="code">steps</code>, each with <code cds-text="code">title</code>,
+        <code cds-text="code">current</code>, <code cds-text="code">complete</code>,
+        <code cds-text="code">error</code> and <code cds-text="code">navigable</code>
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-stepper-panel</b></td>
+      <td class="left">
+        <code cds-text="code">status</code>: <code cds-text="code">inactive</code>,
+        <code cds-text="code">complete</code> or <code cds-text="code">error</code>
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-timeline-step</b></td>
+      <td class="left">
+        <code cds-text="code">status</code>: <code cds-text="code">not-started</code>,
+        <code cds-text="code">current</code>, <code cds-text="code">processing</code>,
+        <code cds-text="code">success</code> or <code cds-text="code">error</code>
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-tree-node</b></td>
+      <td class="left">
+        <code cds-text="code">expandable</code>, and <code cds-text="code">loading</code> while children load
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-alert</b></td>
+      <td class="left"><code cds-text="code">severity</code></td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-file-input-container</b></td>
+      <td class="left"><code cds-text="code">fileCount</code> (value). The files themselves are never described.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-date-container</b></td>
+      <td class="left">The date is the input's <code cds-text="code">value</code> (value).</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">input[clrPassword]</b></td>
+      <td class="left">Described without its value.</td>
+    </tr>
+  </tbody>
+</table>
 
 <h2 id="lower-level" cds-text="title" class="clr-mt-48px">Lower-level helpers</h2>
 <table class="table">
@@ -525,10 +620,11 @@
       </td>
     </tr>
     <tr>
-      <td class="left"><b cds-text="medium">isWithinContextHidden(element)</b></td>
+      <td class="left"><b cds-text="medium">isWithinContextHidden(element), isContextWithheld(element)</b></td>
       <td class="left">
-        Whether the engine treats the element as hidden: hidden, inert, or inside a
-        <code cds-text="code">clrContextIgnore</code> region. For publishers that label things from their content.
+        Whether the engine treats the element as hidden (hidden, inert, or inside a
+        <code cds-text="code">clrContextIgnore</code> region), and whether it reads no text from it (hidden, redacted or
+        an editing host). For publishers that label things from their content.
       </td>
     </tr>
   </tbody>

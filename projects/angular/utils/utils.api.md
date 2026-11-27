@@ -910,6 +910,9 @@ export const commonStringsDefault: ClrCommonStrings;
 // @public (undocumented)
 export const CONDITIONAL_DIRECTIVES: Type<any>[];
 
+// @public
+export function contextText(element: Element, skip?: (descendant: Element) => boolean): string;
+
 // @public (undocumented)
 export function customFocusableItemProvider<T>(implementation: Type<T>): (Type<T> | {
     provide: typeof FocusableItem;
@@ -1034,6 +1037,9 @@ export function hasContextMark(element: Element, mark: ClrContextMark): boolean;
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6 | '1' | '2' | '3' | '4' | '5' | '6';
 
 // @public
+export function holdsContextWithheld(element: Element): boolean;
+
+// @public
 export class HostWrapper<W> implements Injector {
     constructor(containerType: Type<W>, vcr: ViewContainerRef, index?: number);
     // (undocumented)
@@ -1097,6 +1103,9 @@ export function isBooleanAttributeSet(value: string | boolean): boolean;
 
 // @public
 export function isContextHidden(element: Element): boolean;
+
+// @public
+export function isContextWithheld(element: Element): boolean;
 
 // @public (undocumented)
 export function isKeyEitherLetterOrNumber(event: KeyboardEvent): boolean;
@@ -1215,6 +1224,9 @@ export class MockFocusableItem implements FocusableItem {
 
 // @public
 export function noopAnimations(): boolean;
+
+// @public
+export function normalizeContextText(text: string): string;
 
 // @public (undocumented)
 export const OUSTIDE_CLICK_DIRECTIVES: Type<any>[];
