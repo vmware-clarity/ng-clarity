@@ -14,14 +14,52 @@ import { ACTION_SELECTOR } from './tables/selectors';
 import { SKIPPED_TAGS } from './tables/tags';
 import { isHiddenFromContext, isUnreadable, isVisible } from './visibility';
 
-/** Normalizes whitespace and truncates to `maxLength`, ending shortened text with an ellipsis. */
+/** Embeddings and overrides (closed by U+202C) and isolates (closed by U+2069). */
+const OPENING_DIRECTION_MARKS = new Set(['\u202a', '\u202b', '\u202d', '\u202e', '\u2066', '\u2067', '\u2068']);
+
+/**
+ * Normalizes whitespace and truncates to `maxLength` UTF-16 code units, ending shortened text with an ellipsis.
+ * The cut falls between graphemes, so an emoji, a flag or an accented letter is kept whole or left out.
+ */
 export function truncate(text: string, maxLength: number): string {
   const normalized = text.replace(/\s+/g, ' ').trim();
   if (normalized.length <= maxLength) {
     return normalized;
   }
-  // Don't cut a surrogate pair in half.
-  return `${normalized.slice(0, maxLength - 1).replace(/[\ud800-\udbff]$/, '')}…`;
+  return `${withoutOpenDirections(graphemesWithin(normalized, maxLength - 1))}…`;
+}
+
+function graphemesWithin(text: string, maxLength: number): string {
+  if (typeof Intl.Segmenter !== 'function') {
+    // Without segmentation, at least don't cut a surrogate pair in half.
+    return text.slice(0, maxLength).replace(/[\ud800-\udbff]$/, '');
+  }
+  let end = 0;
+  for (const { index, segment } of new Intl.Segmenter(undefined, { granularity: 'grapheme' }).segment(text)) {
+    if (index + segment.length > maxLength) {
+      break;
+    }
+    end = index + segment.length;
+  }
+  return text.slice(0, end);
+}
+
+/** Drops direction marks the cut left without their closing mark, so they cannot reorder what follows the text. */
+function withoutOpenDirections(text: string): string {
+  const open: number[] = [];
+  for (let index = 0; index < text.length; index++) {
+    if (OPENING_DIRECTION_MARKS.has(text[index])) {
+      open.push(index);
+    } else if (text[index] === '\u202c' || text[index] === '\u2069') {
+      open.pop();
+    }
+  }
+  return open.length
+    ? text
+        .split('')
+        .filter((_, index) => !open.includes(index))
+        .join('')
+    : text;
 }
 
 /** Whether an element is visually hidden but available to a screen reader (any library's sr-only idiom). */
