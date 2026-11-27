@@ -23,6 +23,31 @@ describe('truncate', () => {
   it('never exceeds the budget it was given', () => {
     expect(truncate('abcdefghij', 5).length).toBe(5);
   });
+
+  it('keeps an emoji sequence whole or leaves it out', () => {
+    const family = '\u{1F468}\u200D\u{1F469}\u200D\u{1F467}';
+    expect(truncate(`ab${family}x`, 5)).toBe('ab…');
+    expect(truncate(`ab${family}xyz`, family.length + 3)).toBe(`ab${family}…`);
+  });
+
+  it('keeps a flag and a decomposed letter whole', () => {
+    expect(truncate('a\u{1F1E7}\u{1F1EC}bc', 4)).toBe('a…');
+    expect(truncate('Cafe\u0301 noir', 5)).toBe('Caf…');
+  });
+
+  it('drops a direction mark the cut left open', () => {
+    expect(truncate('ab\u2067שלום עולם\u2069', 6)).toBe('abשל…');
+    expect(truncate('a\u2067ש\u2069 bcdef', 6)).toBe('a\u2067ש\u2069 …');
+  });
+
+  it('keeps surrogate pairs whole without Intl.Segmenter', () => {
+    vi.stubGlobal('Intl', { ...Intl, Segmenter: undefined });
+    try {
+      expect(truncate('ab\u{1F600}cd', 4)).toBe('ab…');
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
 });
 
 describe('accessibleText', () => {
