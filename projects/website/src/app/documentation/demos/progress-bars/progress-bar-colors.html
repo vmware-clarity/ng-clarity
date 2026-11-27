@@ -12,15 +12,7 @@
     <progress value="{{ type.value() }}" max="100" [attr.data-displayval]="type.value() + '%'"></progress>
     {{ type.label }}
   </div>
-  <div style="min-height: 1rem">
-    @if (type.label === 'flash-danger' && type.complete()) {
-    <span class="danger-text">
-      <clr-icon shape="exclamation-circle" size="24"></clr-icon>
-      Connection to database timed out.
-      <a href="javascript://" class="btn btn-link" (click)="type.start()">Try again</a>
-    </span>
-    }
-  </div>
+  <div style="min-height: 1rem"></div>
   <p><button class="btn btn-outline" (click)="type.start()">Show</button></p>
 </div>
 }

@@ -7,7 +7,6 @@
 
 import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ClrIcon, ClrIconModule } from '@clr/angular';
 
 import { ProgBarExample } from './progbar-example';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -39,12 +38,11 @@ const EXAMPLE = `
   styleUrl: 'progress-bars.demo.scss',
   templateUrl: './progress-bar-colors.html',
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [NgClass, ClrIcon, ClrIconModule, StackblitzExampleComponent],
+  imports: [NgClass, StackblitzExampleComponent],
 })
 export class ProgressBarColorsDemo {
   example = EXAMPLE;
   colorTypes: ProgBarExample[];
-  showDangerMessage = false;
 
   constructor() {
     this.colorTypes = [
