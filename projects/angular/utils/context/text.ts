@@ -8,10 +8,12 @@
 import { isContextWithheld } from './marks';
 import { BLOCK_TAGS } from './tags';
 
-/** Text as page-context tooling compares it, shared so components and the engine agree on matches. */
-export function normalizeContextText(text: string, lowercase = true): string {
-  const collapsed = text.replace(/\s+/g, ' ').trim();
-  return lowercase ? collapsed.toLowerCase() : collapsed;
+/**
+ * Text as page-context tooling compares it, shared so components and the engine agree on matches: one Unicode
+ * form (NFC), without invisible format characters such as zero-width spaces, whitespace collapsed, lowercased.
+ */
+export function normalizeContextText(text: string): string {
+  return collapse(text.normalize('NFC').replace(/\p{Cf}/gu, '')).toLowerCase();
 }
 
 /**
@@ -19,7 +21,11 @@ export function normalizeContextText(text: string, lowercase = true): string {
  * Style is only judged while the element is on the page; a closed combobox's options are read from markup.
  */
 export function contextText(element: Element, skip?: (descendant: Element) => boolean): string {
-  return normalizeContextText(textWithin(element, skip, 0), false);
+  return collapse(textWithin(element, skip, 0));
+}
+
+function collapse(text: string): string {
+  return text.replace(/\s+/g, ' ').trim();
 }
 
 /** Script can nest deeper than the parser's 512; deeper content is dropped rather than overflow the stack. */
