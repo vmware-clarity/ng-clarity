@@ -7,12 +7,6 @@
 
 export { CompositeFiltersComponent } from './composite-filters.component';
 export { DataGridFiltersComponent } from './datagrid-filters.component';
-export {
-  /**
-   * @deprecated Use AppfxDatagridFiltersModule import instead.
-   */
-  AppfxDatagridFiltersModule as DatagridFiltersModule,
-} from './datagrid-filters.module';
 export { AppfxDatagridFiltersModule } from './datagrid-filters.module';
 export { DatagridFiltersStrings } from './datagrid-filters-strings.service';
 export { DatagridFiltersUserService } from './datagrid-filters-user-service';

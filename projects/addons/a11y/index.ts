@@ -6,12 +6,6 @@
  */
 
 export { a11ykeys } from './a11y.constants';
-export {
-  /**
-   * @deprecated Use AppfxA11yModule import instead.
-   */
-  AppfxA11yModule as A11yModule,
-} from './a11y.module';
 export { AppfxA11yModule } from './a11y.module';
 export { OverrideClrStringsDirective } from './clr-stepper-panel/override-clr-strings.directive';
 export { OverflowClrTabsDirective } from './clr-tabs/overflow-clr-tabs.directive';

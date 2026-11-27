@@ -17,7 +17,7 @@ export { CloseHandler } from './model/close-handler';
 export { RelevanceService } from './model/relevance.service';
 export { Step, StepInternal, StepModelFactory } from './model/step';
 export { CancelableStepValidation, StepModel } from './model/step.model';
-export { ModelChanges, OnStepActivate, OnStepValidate, StepComponent, StepModelHolder } from './model/step-interfaces';
+export { ModelChanges, OnStepActivate, OnStepValidate, StepModelHolder } from './model/step-interfaces';
 export { StepValidationState } from './model/step-validation-state';
 export { TabLayout, TabLayout as DialogLayout } from './model/tab-layout';
 export { Var } from './model/var';

@@ -6,25 +6,7 @@
  */
 
 export { DialogComponent, notDisplayedError } from './multi-page-dialog.component';
-export {
-  /**
-   * @deprecated Use DialogComponent import instead.
-   */
-  DialogComponent as Dialog,
-} from './multi-page-dialog.component';
 export { DialogHeaderComponent } from './multi-page-dialog-header.component';
-export {
-  /**
-   * @deprecated Use DialogHeaderComponent import instead.
-   */
-  DialogHeaderComponent as DialogHeader,
-} from './multi-page-dialog-header.component';
 export { DefaultButton, DialogOptions, ModalSize } from './multi-page-dialog.model';
 export { AppfxMultiPageDialogModule } from './multi-page-dialog.module';
 export { ToggleComponent } from './toggle-component/toggle.component';
-export {
-  /**
-   * @deprecated Use ToggleComponent import instead.
-   */
-  ToggleComponent as Toggle,
-} from './toggle-component/toggle.component';

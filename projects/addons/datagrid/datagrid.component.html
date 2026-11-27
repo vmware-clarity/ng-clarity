@@ -479,7 +479,7 @@
 
     @if (enableExportButton) {
       <appfx-dg-export
-        [allItemsCount]="gridFooterModel.clientSideExportConfig?.allItemsCount || listItemsCount"
+        [allItemsCount]="exportAllItemsCount"
         [selectedItemsCount]="selectedItemsCount"
         [filteredItemsCount]="filteredItemsCount"
         (exportEventEmitter)="onExportEvent($event)"

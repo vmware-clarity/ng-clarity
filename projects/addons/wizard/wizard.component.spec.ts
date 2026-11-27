@@ -24,10 +24,11 @@ import {
   Mappings,
   ModelChange,
   ModelChanges,
+  OnStepActivate,
+  OnStepValidate,
   Out,
   Spinner,
   Step,
-  StepComponent,
   StepContainer,
   StepInternal,
   StepModel,
@@ -118,7 +119,7 @@ class MockPage4Model implements StepModel {
   standalone: false,
   template: `<div>Page 1 Content</div>`,
 })
-class MockPage1Component implements StepComponent {
+class MockPage1Component implements StepModelHolder, OnStepActivate, OnStepValidate {
   model: MockPage1Model;
 
   activate(changes: ModelChanges) {
@@ -139,7 +140,7 @@ class MockPage1Component implements StepComponent {
   standalone: false,
   template: `<div>Page 2 Content</div>`,
 })
-class MockPage2Component implements StepComponent {
+class MockPage2Component implements StepModelHolder, OnStepActivate, OnStepValidate {
   model: MockPage2Model;
 
   activate(changes: ModelChanges) {

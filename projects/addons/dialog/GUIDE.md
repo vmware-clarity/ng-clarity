@@ -24,7 +24,7 @@ import { CloseHandler, Step, TabLayout } from '@clr/addons/var';
 @Component({ imports: [AppfxMultiPageDialogModule /* + step components */] })
 ```
 
-NgModule-declared, no `forRoot()`. Use `DialogComponent` / `DialogHeaderComponent` (the `Dialog` / `DialogHeader` aliases are deprecated).
+NgModule-declared, no `forRoot()`. Use `DialogComponent` / `DialogHeaderComponent`; there is no `Dialog` / `DialogHeader`.
 
 ## Usage
 

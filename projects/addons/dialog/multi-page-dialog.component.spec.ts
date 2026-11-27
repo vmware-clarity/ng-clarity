@@ -10,7 +10,7 @@ import { DebugElement, Directive, ElementRef, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
-import { IfTabActiveDirective, TabLinksComponent, Tabs } from '@clr/addons/tabs';
+import { IfTabActiveDirective, TabLinksComponent, TabsComponent } from '@clr/addons/tabs';
 import {
   MockStepComponent,
   MockStepModel,
@@ -82,7 +82,7 @@ describe('Appfx Multi Page Dialog', () => {
       declarations: [
         DialogComponent,
         StepContainer,
-        Tabs,
+        TabsComponent,
         TabLinksComponent,
         RenderAsButtonDirective,
         IfTabActiveDirective,

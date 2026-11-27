@@ -8,7 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { A11yModule } from '@clr/addons/a11y';
+import { AppfxA11yModule } from '@clr/addons/a11y';
 import { AppfxWorkflowCoreModule } from '@clr/addons/var';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrTabsModule } from '@clr/angular/layout/tabs';
@@ -20,7 +20,7 @@ import { TabsComponent } from './tabs.component';
 
 const components = [TabsComponent, TabLinksComponent, IfTabActiveDirective];
 const clarityDependencies = [ClrTabsModule, ClrIcon];
-const appfxDependencies = [AppfxWorkflowCoreModule, A11yModule];
+const appfxDependencies = [AppfxWorkflowCoreModule, AppfxA11yModule];
 
 @NgModule({
   imports: [...appfxDependencies, ...clarityDependencies, CommonModule, FormsModule, ReactiveFormsModule],

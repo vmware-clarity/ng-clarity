@@ -8,7 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { InjectionToken, NgModule, Optional, SkipSelf } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { A11yModule } from '@clr/addons/a11y';
+import { AppfxA11yModule } from '@clr/addons/a11y';
 import { PropertyViewModule } from '@clr/addons/property-view';
 import { WorkflowStrings } from '@clr/addons/workflow/strings';
 import { ClrStackViewModule } from '@clr/angular/data/stack-view';
@@ -66,7 +66,7 @@ const components = [
 
 const clarityDependencies = [ClrAlertModule, ClrIcon, ClrSpinnerModule, ClrStackViewModule, ClrSignpostModule];
 
-const addonsDependencies = [PropertyViewModule, A11yModule];
+const addonsDependencies = [PropertyViewModule, AppfxA11yModule];
 
 @NgModule({
   imports: [...addonsDependencies, ...clarityDependencies, CommonModule, FormsModule, ReactiveFormsModule],

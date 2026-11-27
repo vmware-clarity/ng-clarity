@@ -245,9 +245,6 @@ export interface Step {
     title: string;
 }
 
-// @public @deprecated
-export interface StepComponent extends StepModelHolder, OnStepActivate, OnStepValidate {}
-
 // @public
 class StepContainerComponent implements OnInit, OnDestroy {
     // (undocumented)

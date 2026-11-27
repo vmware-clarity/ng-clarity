@@ -55,6 +55,7 @@ export class NamePage implements StepModelHolder {
 ```
 
 - `@In()` injects a workflow property into the page model; `@Out()` writes it back. Use `Mappings` when names differ.
+- An `@Out()` property must be a `Var` or a plain value. An `Observable` property throws; use `Var.from()` instead.
 - Page components may implement `OnStepActivate.activate(changes)` and `OnStepValidate.validate(): Observable<boolean>`.
 - Set `model.loading`, `model.validationState` (`StepValidationState`) to show spinners and messages.
 - Derived/async data: `Var.from(model.host).by(host => this.api.datastores(host))`.
