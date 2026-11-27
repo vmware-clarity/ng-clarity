@@ -12,8 +12,16 @@ describe('normalizeContextText', () => {
     expect(normalizeContextText('  Beta \n  Cluster ')).toBe('beta cluster');
   });
 
-  it('keeps the case when asked to', () => {
-    expect(normalizeContextText('  Beta \t Cluster', false)).toBe('Beta Cluster');
+  it('matches the composed and decomposed forms of a letter', () => {
+    expect(normalizeContextText('Cafe\u0301')).toBe(normalizeContextText('Caf\u00e9'));
+  });
+
+  it('ignores zero-width and other invisible format characters', () => {
+    expect(normalizeContextText('E\u200Bmail\u00AD \u2067Name\u2069')).toBe('email name');
+  });
+
+  it('keeps combining marks that are part of a word', () => {
+    expect(normalizeContextText('हिन्दी नाम')).toBe('हिन्दी नाम');
   });
 });
 
