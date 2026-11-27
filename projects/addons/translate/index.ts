@@ -8,35 +8,11 @@
 export * from './date-time.pipe';
 export * from './date-time.service';
 export { AppfxTranslateModule } from './translate.module';
-export {
-  /**
-   * @deprecated Use AppfxAppLinkingModule import instead.
-   */
-  AppfxTranslateModule as TranslateModule,
-} from './translate.module';
 export * from './translate.pipe';
 export { appfxMissingTranslationToken, appfxTranslationsToken } from './translate.service';
 export { defaultMissingTranslationHandler } from './translate.service';
-export {
-  /**
-   * @deprecated Use AppfxTranslateService import instead.
-   */
-  AppfxTranslateService as TranslateService,
-} from './translate.service';
 export { AppfxTranslateService } from './translate.service';
 export { AppfxTranslations } from './translate.service';
-export {
-  /**
-   * @deprecated Use AppfxTranslations import instead.
-   */
-  AppfxTranslations as Translations,
-} from './translate.service';
 export { InterpolationParams } from './translate.service';
 export { EmptyTranslationCallback } from './translate.service';
-export {
-  /**
-   * @deprecated Use AppfxLocale import instead.
-   */
-  AppfxLocale as Locale,
-} from './translate.service';
 export { AppfxLocale } from './translate.service';

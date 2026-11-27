@@ -251,17 +251,6 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   @Input() serverDrivenDatagrid = false;
 
   /**
-   * All grid items count when no filter is added.
-   * Used for Export functionality when showExport is true.
-   * Should be provided only when the grid is server driven datagrid
-   * (serverDrivenDatagrid = true), otherwise the listItemsCount is calculated
-   * internally and shouldn't be set.
-   *
-   * @deprecated To be removed with VSUIP-4776
-   */
-  @Input() listItemsCount = 0;
-
-  /**
    * Template for the content displayed when a row expands. Enables expandable row functionality.
    */
   @Input() rowDetailContent!: TemplateRef<unknown>;
@@ -829,6 +818,14 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     return this.selectedItemsCount === 0;
   }
 
+  /**
+   * All grid items count used by the export. Taken from `footerModel.clientSideExportConfig.allItemsCount`
+   * when provided (required for server-driven grids), otherwise from the length of `gridItems`.
+   */
+  protected get exportAllItemsCount(): number {
+    return this.gridFooterModel.clientSideExportConfig?.allItemsCount || this.gridItems?.length || 0;
+  }
+
   protected get filteredItemsCount(): number {
     let filteredItemsCount = 0;
     if (this.searchTerm?.length > 0 || this.#hasAdvancedFilters) {
@@ -945,7 +942,6 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
 
       if (!this.serverDrivenDatagrid) {
         this.totalItems = this.gridItems.length;
-        this.listItemsCount = this.gridItems.length;
       } else if (!changes['gridItems'].isFirstChange() && this.selectionType === SelectionType.Multi) {
         this.notifyOnChanges();
       }

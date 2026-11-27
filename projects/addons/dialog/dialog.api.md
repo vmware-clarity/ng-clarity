@@ -67,7 +67,7 @@ export class AppfxMultiPageDialogModule {
 export type DefaultButton = 'submit' | 'close';
 
 // @public
-class DialogComponent implements OnInit, OnDestroy {
+export class DialogComponent implements OnInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "ZoomLevelService" needs to be exported by the entry point clr-addons-dialog.d.ts
     constructor(cdr: ChangeDetectorRef, workflowStrings: WorkflowStrings, configService: WorkflowConfigurationService,
     openModalComponent?: boolean, zoomLevelService?: ZoomLevelService);
@@ -223,18 +223,14 @@ class DialogComponent implements OnInit, OnDestroy {
         optional: true;
     }]>;
 }
-export { DialogComponent as Dialog }
-export { DialogComponent }
 
 // @public (undocumented)
-class DialogHeaderComponent {
+export class DialogHeaderComponent {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<DialogHeaderComponent, "appfx-dialog-header", never, {}, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DialogHeaderComponent, never>;
 }
-export { DialogHeaderComponent as DialogHeader }
-export { DialogHeaderComponent }
 
 // @public
 export interface DialogOptions {
@@ -254,7 +250,7 @@ export type ModalSize = 'full-screen' | 'xl' | 'lg' | 'md' | 'sm' | undefined;
 export const notDisplayedError: Object;
 
 // @public
-class ToggleComponent {
+export class ToggleComponent {
     constructor();
     // (undocumented)
     disabled: boolean;
@@ -287,8 +283,6 @@ class ToggleComponent {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ToggleComponent, never>;
 }
-export { ToggleComponent as Toggle }
-export { ToggleComponent }
 
 // (No @packageDocumentation comment for this package)
 

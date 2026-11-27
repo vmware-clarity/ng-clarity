@@ -22,7 +22,7 @@ import { AppfxA11yModule } from '@clr/addons/a11y';
 })
 ```
 
-Directives are NgModule-declared (not standalone). `A11yModule` is a deprecated alias.
+Directives are NgModule-declared (not standalone). `@clr/addons/a11y` has no `A11yModule`; import `AppfxA11yModule`.
 
 ## Tabs overflow
 

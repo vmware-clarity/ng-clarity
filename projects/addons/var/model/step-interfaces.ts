@@ -11,15 +11,6 @@ import { StepModel } from './step.model';
 import { ModelChange } from './workflow-model-manager.service';
 
 /**
- * Interface which has to be implemented by each component (controller) which will
- * serve as a page in the wizard
- *
- * @deprecated Use finer-grained interfaces like {@link StepModelHolder},
- *    {@link OnStepActivate}, {@link OnStepValidate}
- */
-export interface StepComponent extends StepModelHolder, OnStepActivate, OnStepValidate {}
-
-/**
  * Interface that should be implemented by step component that has a model.
  */
 export interface StepModelHolder {

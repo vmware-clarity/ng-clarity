@@ -24,7 +24,7 @@ import { AppfxTranslateModule, AppfxTranslateService, AppfxLocale } from '@clr/a
 })
 ```
 
-Use `AppfxTranslateModule`, `AppfxTranslateService`, `AppfxTranslations`, `AppfxLocale`. The unprefixed `TranslateModule`, `TranslateService`, `Translations`, `Locale` are deprecated aliases.
+Use `AppfxTranslateModule`, `AppfxTranslateService`, `AppfxTranslations`, `AppfxLocale`. There are no unprefixed `TranslateModule`, `TranslateService`, `Translations`, `Locale` exports.
 
 ## Sync the locale
 

@@ -339,8 +339,6 @@ export class MockAppfxDatagridComponent {
     // (undocumented)
     layoutModel: any;
     // (undocumented)
-    listItemsCount: number;
-    // (undocumented)
     loading: boolean;
     // (undocumented)
     noItemsFoundPlaceholder: string;
@@ -480,10 +478,6 @@ export class MockAppfxDatagridComponent {
         };
         "searchTerm": {
             "alias": "searchTerm";
-            "required": false;
-        };
-        "listItemsCount": {
-            "alias": "listItemsCount";
             "required": false;
         };
         "trackByGridItemProperty": {

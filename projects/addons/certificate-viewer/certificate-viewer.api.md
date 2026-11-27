@@ -77,7 +77,7 @@ import { ViewportRuler } from '@angular/cdk/scrolling';
 import { WritableSignal } from '@angular/core';
 
 // @public (undocumented)
-class AppfxCertificateViewerModule {
+export class AppfxCertificateViewerModule {
     constructor();
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<AppfxCertificateViewerModule, never>;
@@ -92,8 +92,6 @@ class AppfxCertificateViewerModule {
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxCertificateViewerModule, [typeof CertificateViewerComponent, typeof CertificateViewerDetailsComponent, typeof CertificateViewerGeneralComponent, typeof CertificateViewerTranslateFieldPipe], [typeof i5.AppfxTranslateModule, typeof i6.ClrAlertModule, typeof i6.ClrSpinnerModule, typeof i6.ClrTabsModule, typeof i6.ClrTreeViewModule, typeof i7.CommonModule, typeof i8_4.RouterModule], [typeof CertificateViewerComponent]>;
 }
-export { AppfxCertificateViewerModule }
-export { AppfxCertificateViewerModule as CertificateViewerModule }
 
 // @public
 export class CertificateViewerComponent implements OnChanges {

@@ -96,6 +96,12 @@ class MockStepWithOutToComputedVar implements StepModel {
   @Out() cp1 = 'value';
 }
 
+class MockStepWithObservableOut implements StepModel {
+  loading = false;
+
+  @Out() var1: unknown = of('value');
+}
+
 class MockStepModelWithoutInputProperties implements StepModel {
   loading = false;
 
@@ -562,6 +568,37 @@ describe('appfx-workflow-model-manager.service.spec', () => {
           isError = true;
         }
         expect(isError).toBeTruthy();
+      });
+    });
+
+    describe('WHEN a step model has an Observable output property', () => {
+      const expectedError =
+        'Step observable step has property var1: Observable. ' +
+        'Observable properties in Step models are not supported. Use Var.from() instead.';
+      let observableStep: StepInternal;
+
+      beforeEach(() => {
+        observableStep = {
+          title: 'observable step',
+          model: new MockStepWithObservableOut(),
+          componentClass: MockComponent,
+        };
+      });
+
+      it('THEN binding the step model listeners throws an error', () => {
+        testContext.mgr.model = testContext.wizardModel = new WorkflowModel();
+        expect(() => (testContext.mgr.steps = [observableStep])).toThrowError(expectedError);
+      });
+
+      it('THEN ejectPropertiesFromCurrentStep throws an error', () => {
+        const stepModel = new MockStepWithObservableOut();
+        stepModel.var1 = 'value';
+        observableStep.model = stepModel;
+        testContext.mgr.model = testContext.wizardModel = new WorkflowModel();
+        testContext.mgr.steps = [observableStep];
+
+        stepModel.var1 = of('changed');
+        expect(() => testContext.mgr.ejectPropertiesFromCurrentStep(observableStep)).toThrowError(expectedError);
       });
     });
 

@@ -6,10 +6,4 @@
  */
 
 export { AppfxCertificateViewerModule } from './certificate-viewer.module';
-export {
-  /**
-   * @deprecated Use AppfxCertificateViewerModule import instead.
-   */
-  AppfxCertificateViewerModule as CertificateViewerModule,
-} from './certificate-viewer.module';
 export { CertificateViewerComponent } from './certificate-viewer/certificate-viewer.component';

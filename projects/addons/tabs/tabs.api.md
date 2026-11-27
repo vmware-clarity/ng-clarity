@@ -63,7 +63,7 @@ export class AppfxTabsModule {
 }
 
 // @public
-class IfTabActiveDirective implements OnInit, OnDestroy {
+export class IfTabActiveDirective implements OnInit, OnDestroy {
     constructor(tab: ClrTab, renderer: Renderer2);
     set activateTab(value: boolean);
     // (undocumented)
@@ -97,11 +97,9 @@ class IfTabActiveDirective implements OnInit, OnDestroy {
         self: true;
     }, null]>;
 }
-export { IfTabActiveDirective as IfTabActive }
-export { IfTabActiveDirective }
 
 // @public (undocumented)
-class TabLinksComponent {
+export class TabLinksComponent {
     constructor(workflowStrings: WorkflowStrings, cdr: ChangeDetectorRef);
     // (undocumented)
     changeOpened(opened: boolean): void;
@@ -135,8 +133,6 @@ class TabLinksComponent {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<TabLinksComponent, never>;
 }
-export { TabLinksComponent as TabLinks }
-export { TabLinksComponent }
 
 // @public
 class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterContentInit, OnDestroy {
@@ -263,7 +259,6 @@ class TabsComponent implements OnInit, OnChanges, AfterViewInit, AfterContentIni
     }]>;
 }
 export { TabsComponent as AppfxTabsComponent }
-export { TabsComponent as Tabs }
 export { TabsComponent }
 
 // (No @packageDocumentation comment for this package)

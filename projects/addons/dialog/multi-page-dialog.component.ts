@@ -19,7 +19,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
-import { Tabs } from '@clr/addons/tabs';
+import { TabsComponent } from '@clr/addons/tabs';
 import {
   CloseHandler,
   formatError,
@@ -140,7 +140,7 @@ export class DialogComponent implements OnInit, OnDestroy {
   /** Emits when opened input is changed. */
   @Output() openedChange = new EventEmitter<boolean>();
 
-  @ViewChild(Tabs, { static: true }) tabs!: Tabs;
+  @ViewChild(TabsComponent, { static: true }) tabs!: TabsComponent;
 
   errorIconVisibleList: boolean[] = [];
   closeHandlerValidationState = new StepValidationState();

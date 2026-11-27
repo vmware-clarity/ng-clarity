@@ -115,6 +115,7 @@ export class WorkflowModelManager {
     const changes: (ModelChange | null)[] = [];
     for (const [key, outputMapping] of Object.entries(outputMappings)) {
       const stepModelValue = (currentStep.modelInstance as any)[key];
+      this.assertNotObservable(stepModelValue, key, currentStep.title);
       const change = this.updateWizardModel(stepModelValue, outputMapping);
       changes.push(change);
     }
@@ -212,23 +213,8 @@ export class WorkflowModelManager {
     const subscription: Subscription = new Subscription();
     for (const [propertyName, outputMapping] of Object.entries(mappings)) {
       const propertyValue = (page.modelInstance as any)[propertyName];
-      if (propertyValue instanceof Observable) {
-        // TODO: Deprecated; to be removed!
-        console.warn(
-          `Step ${page.title} has property ${propertyName}: Observable.` +
-            'Using Observable in Step models is deprecated and will be removed soon. ' +
-            'Use Var.from() instead'
-        );
-
-        subscription.add(
-          propertyValue.subscribe(value => {
-            if (this.wizardModel) {
-              const change = this.updateWizardModel(value, outputMapping);
-              this.emitModelChange([change]);
-            }
-          })
-        );
-      } else if (propertyValue instanceof SimpleVar) {
+      this.assertNotObservable(propertyValue, propertyName, page.title);
+      if (propertyValue instanceof SimpleVar) {
         subscription.add(
           propertyValue.value$.subscribe(value => {
             if (this.wizardModel) {
@@ -285,12 +271,16 @@ export class WorkflowModelManager {
     this.workflowModelSubs = [];
   }
 
-  private updateWizardModel(newValue: any, outputMapping: OutputMappingMetadata): ModelChange | null {
-    if (newValue instanceof Observable) {
-      // TODO: This case is deprecated and will be removed soon.
-      return null;
+  private assertNotObservable(value: unknown, propertyName: string, stepTitle: string): void {
+    if (value instanceof Observable) {
+      throw new Error(
+        `Step ${stepTitle} has property ${propertyName}: Observable. ` +
+          'Observable properties in Step models are not supported. Use Var.from() instead.'
+      );
     }
+  }
 
+  private updateWizardModel(newValue: any, outputMapping: OutputMappingMetadata): ModelChange | null {
     if (newValue instanceof SimpleVar) {
       // Wizard model is updated through bindings.
       // Make sure that the SimpleVar is not dirty, i.e. value is not changed without calling the "value" setter.

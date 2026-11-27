@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 import { PipeTransform } from '@angular/core';
 
 // @public
-enum AppfxLocale {
+export enum AppfxLocale {
     // (undocumented)
     En = "en",
     // (undocumented)
@@ -21,14 +21,12 @@ enum AppfxLocale {
     // (undocumented)
     Ja = "ja"
 }
-export { AppfxLocale }
-export { AppfxLocale as Locale }
 
 // @public
 export const appfxMissingTranslationToken: InjectionToken<EmptyTranslationCallback>;
 
 // @public (undocumented)
-class AppfxTranslateModule {
+export class AppfxTranslateModule {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<AppfxTranslateModule, never>;
     // (undocumented)
@@ -36,11 +34,9 @@ class AppfxTranslateModule {
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxTranslateModule, [typeof DateTimePipe, typeof TranslatePipe], [typeof i3.CommonModule], [typeof DateTimePipe, typeof TranslatePipe]>;
 }
-export { AppfxTranslateModule }
-export { AppfxTranslateModule as TranslateModule }
 
 // @public
-class AppfxTranslateService {
+export class AppfxTranslateService {
     constructor(translations: AppfxTranslations, emptyTranslationKeyCallback: EmptyTranslationCallback);
     // (undocumented)
     get locale(): AppfxLocale;
@@ -54,13 +50,9 @@ class AppfxTranslateService {
     // (undocumented)
     static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
-export { AppfxTranslateService }
-export { AppfxTranslateService as TranslateService }
 
 // @public (undocumented)
-type AppfxTranslations = Readonly<Record<AppfxLocale, Readonly<Record<string, string>>>>;
-export { AppfxTranslations }
-export { AppfxTranslations as Translations }
+export type AppfxTranslations = Readonly<Record<AppfxLocale, Readonly<Record<string, string>>>>;
 
 // @public
 export const appfxTranslationsToken: InjectionToken<Readonly<Record<AppfxLocale, Readonly<Record<string, string>>>>>;

@@ -59,7 +59,7 @@ import { Validator } from '@angular/forms';
 import { ViewContainerRef } from '@angular/core';
 
 // @public (undocumented)
-class AppfxDatagridFiltersModule {
+export class AppfxDatagridFiltersModule {
     constructor();
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<AppfxDatagridFiltersModule, never>;
@@ -82,8 +82,6 @@ class AppfxDatagridFiltersModule {
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridFiltersModule, [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof DateTimeFilterComponent, typeof EnumFilterComponent, typeof FilterEditorComponent, typeof FilterFormComponent, typeof GeneralFilterComponent, typeof ManageFilterComponent, typeof UsersFilterComponent], [typeof i10.A11yModule, typeof i11.ClrBadge, typeof i12.ClrLabel, typeof i13.ClrCheckboxModule, typeof i13.ClrComboboxModule, typeof i13.ClrDatepickerModule, typeof i14.ClrIcon, typeof i13.ClrInputModule, typeof i13.ClrRadioModule, typeof i13.ClrSelectModule, typeof i1.ClrPopoverModuleNext, typeof i16.ClrSpinnerModule, typeof i17.ClrTooltipModule, typeof i18.CommonModule, typeof i19.FormsModule, typeof i19.ReactiveFormsModule], [typeof CompositeFiltersComponent, typeof DataGridFiltersComponent, typeof FilterFormComponent]>;
 }
-export { AppfxDatagridFiltersModule }
-export { AppfxDatagridFiltersModule as DatagridFiltersModule }
 
 // @public (undocumented)
 export enum ComparisonOperator {

@@ -24,7 +24,7 @@ import { AppfxCertificateViewerModule } from '@clr/addons/certificate-viewer';
 })
 ```
 
-The component is NgModule-declared (not standalone). `CertificateViewerModule` is a deprecated alias; import `AppfxCertificateViewerModule`.
+The component is NgModule-declared (not standalone). There is no `CertificateViewerModule`; import `AppfxCertificateViewerModule`.
 
 ## Usage
 

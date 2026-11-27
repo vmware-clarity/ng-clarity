@@ -68,7 +68,7 @@ _sample-tabs.component.html_:
 _sample-tabs.component.ts_:
 
 ```ts
-import { Tabs } from '@clr/addons/tabs';
+import { TabsComponent } from '@clr/addons/tabs';
 
 @Component({
   templateUrl: 'sample-tabs.component.html',
@@ -84,8 +84,8 @@ export class SampleTabs {
    */
   tabsModel: SampleWorkflowModel;
 
-  @ViewChild(Tabs, { static: true })
-  private tabs: Tabs;
+  @ViewChild(TabsComponent, { static: true })
+  private tabs: TabsComponent;
 
   constructor() {
     this.tabsModel = new SampleTabModel();

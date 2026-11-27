@@ -401,6 +401,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     // (undocumented)
     protected get enableToolBar(): boolean;
     expandAllTreeRows(): void;
+    protected get exportAllItemsCount(): number;
     exportDataEvent: EventEmitter<ExportStatus>;
     // Warning: (ae-forgotten-export) The symbol "FilterablePropertyDefinition" needs to be exported by the entry point clr-addons-datagrid.d.ts
     filterableProperties: FilterablePropertyDefinition[];
@@ -428,8 +429,6 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     isRowLocked: (rowItem: T) => boolean;
     get layoutModel(): GridLayoutModel;
     set layoutModel(config: GridLayoutModel);
-    // @deprecated
-    listItemsCount: number;
     loading: boolean;
     loadingMoreItems: boolean;
     // (undocumented)
@@ -572,10 +571,6 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
         };
         "serverDrivenDatagrid": {
             "alias": "serverDrivenDatagrid";
-            "required": false;
-        };
-        "listItemsCount": {
-            "alias": "listItemsCount";
             "required": false;
         };
         "rowDetailContent": {

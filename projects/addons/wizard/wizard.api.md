@@ -97,7 +97,7 @@ export class SummaryModel implements StepModel {
 }
 
 // @public
-class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterContentInit {
+export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterContentInit {
     // Warning: (ae-forgotten-export) The symbol "RelevanceService" needs to be exported by the entry point clr-addons-wizard.d.ts
     // Warning: (ae-forgotten-export) The symbol "ZoomLevelService" needs to be exported by the entry point clr-addons-wizard.d.ts
     constructor(cdr: ChangeDetectorRef, modelMgr: WorkflowModelManager, relevanceService: RelevanceService, configService: WorkflowConfigurationService, workflowStrings: WorkflowStrings, zoomLevelService?: ZoomLevelService,
@@ -233,8 +233,6 @@ class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterContentI
         optional: true;
     }]>;
 }
-export { WizardComponent as Wizard }
-export { WizardComponent }
 
 // @public
 export interface WizardFooter {

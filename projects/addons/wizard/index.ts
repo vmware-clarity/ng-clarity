@@ -7,16 +7,7 @@
 
 export { WizardFooter, WizardFooterConfig } from '@clr/addons/var';
 export { AppfxWizardModule } from './wizard.module';
-export {
-  WizardComponent,
-  /**
-   * @deprecated Use WizardComponent import instead.
-   */
-  WizardComponent as Wizard,
-  Reason,
-  WizardResult,
-  preventDisplayingWizardError,
-} from './wizard.component';
+export { WizardComponent, Reason, WizardResult, preventDisplayingWizardError } from './wizard.component';
 export { WorkflowService } from './wizard-workflow.service';
 export { SummaryComponent } from './summary/summary.component';
 export { SummaryModel } from './summary/summary.model';
