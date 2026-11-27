@@ -20,8 +20,10 @@ const densityLocalStorageKey = 'density';
       [class.compact-density]="isCompact"
       [attr.aria-label]="'Density: ' + densityLabel"
       (click)="toggleDensity()"
+      (mouseenter)="densityIconInverse = true"
+      (mouseleave)="densityIconInverse = false"
     >
-      <clr-icon class="density-toggle-icon" size="md" shape="portrait" [solid]="isCompact"></clr-icon>
+      <clr-icon class="density-toggle-icon" size="md" shape="portrait" [solid]="solidDensityIcon"></clr-icon>
       <span>{{ densityLabel }}</span>
     </button>
   `,
@@ -47,6 +49,7 @@ const densityLocalStorageKey = 'density';
 })
 export class DensityToggleComponent implements OnInit {
   protected density = getPreferredDensity();
+  protected densityIconInverse = false;
 
   constructor() {
     ClarityIcons.addIcons(portraitIcon);
@@ -54,6 +57,13 @@ export class DensityToggleComponent implements OnInit {
 
   protected get isCompact() {
     return this.density === 'compact';
+  }
+
+  protected get solidDensityIcon() {
+    const inCompactModeWithoutHover = this.isCompact && !this.densityIconInverse;
+    const notInCompactModeWithHover = !this.isCompact && this.densityIconInverse;
+
+    return inCompactModeWithoutHover || notInCompactModeWithHover;
   }
 
   protected get densityLabel() {
