@@ -103,6 +103,29 @@
         replaced, with nothing withheld.
       </li>
     </ul>
+
+    <h2 id="json-safety" class="clr-mt-48px" cds-text="title">JSON safety</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Labels and values can hold any text, in any language. The engine never builds or parses JSON text, so none of it
+      can change the structure of a snapshot:
+    </p>
+    <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+      <li>
+        Annotations, providers and published state are JavaScript values. The engine keeps only strings, numbers,
+        booleans, <code cds-text="code">null</code>, arrays and plain objects. Functions, class instances and cyclic
+        references are dropped, and a <code cds-text="code">__proto__</code> key stays an ordinary key.
+      </li>
+      <li>
+        <code cds-text="code">snapshot()</code> returns an object, not a string. Serialize it with
+        <code cds-text="code">JSON.stringify</code>, which escapes quotes, backslashes and control characters. A label
+        holding <code cds-text="code">"</code>, <code cds-text="code">&#125;</code> or
+        <code cds-text="code">&lt;/script&gt;</code> stays one string value.
+      </li>
+      <li>
+        Don't escape or strip characters yourself: that corrupts localized labels and protects nothing. To show the JSON
+        in a page, set it as text, never as HTML.
+      </li>
+    </ul>
   </app-doc-tab>
 
   <app-doc-tab tab="code">
@@ -362,8 +385,10 @@
 
     <h3 data-toc-item id="frame-client" class="clr-mt-32px" cds-text="section">Step 2: Ask from inside the frame</h3>
     <p class="clr-mt-16px" cds-text="body">
-      The protocol is two plain JSON messages, so the frame needs neither Angular nor Clarity. An Angular frame can call
-      <code cds-text="code">clrRequestHostContext()</code> instead.
+      The protocol is two plain objects sent with <code cds-text="code">postMessage</code>, which copies them rather
+      than passing JSON text, so the frame needs neither Angular nor Clarity. An Angular frame can call
+      <code cds-text="code">clrRequestHostContext()</code> instead. It resolves <code cds-text="code">null</code> for an
+      answer that does not match the page schema.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="frameClientExample" language="typescript"></app-code-snippet>
@@ -455,6 +480,10 @@
         moved off-screen is still offered, so keep such fields out of the policy.
       </li>
       <li>Write a control that has no Angular form binding.</li>
+      <li>
+        Parse a value as JSON or insert it as HTML. A value is set through the form control or the component, so a value
+        holding markup or JSON stays text.
+      </li>
       <li>Write for a caller you do not control, such as an embedded frame. Those get snapshots without refs.</li>
     </ul>
     <p class="clr-mt-16px" cds-text="body">

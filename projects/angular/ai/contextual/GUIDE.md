@@ -32,6 +32,12 @@ Configure once at startup: `context.configure({ scope: 'interactive', routes: tr
 - Password and file inputs, and fields whose `autocomplete` is `current-password`, `new-password`, `one-time-code` or a `cc-*` token, are always withheld. Redact the other secrets, such as tokens or keys typed into plain text fields.
 - Callers the application does not control, such as embedded frames, get no form values and only the route pattern.
 
+## JSON safety
+
+- The engine never builds or parses JSON text. Annotations, provider results and published state are JavaScript values, reduced to plain data: strings, numbers, booleans, `null`, arrays and plain objects. Functions, class instances, cyclic references and values below the depth limit are dropped, and a `__proto__` key stays an ordinary key.
+- `snapshot()` returns an object, not a string. Serialize it with `JSON.stringify`, which escapes quotes, backslashes and control characters, so a label holding `"`, `}`, `</script>` or text in any language stays one string value and cannot change the structure.
+- Don't escape or strip characters yourself: that corrupts localized labels and protects nothing. To show the JSON in a page, set it as text, never as HTML.
+
 ## Adding context
 
 | Need                                             | Use                                                            |
@@ -69,7 +75,7 @@ export class Firewall {
 - Roles follow HTML-AAM and names Accessible Name Computation 1.2. State keys are ARIA attribute names without `aria-` (`readonly`, `haspopup`, `multiselectable`, `posinset`); `focused: true` marks the element with focus. An element with no role is `generic`.
 - A `<form>` or `<section>` without a name has no role, so its fields read as part of the page: give a `clrForm` an `aria-label` to keep it as a `form` node.
 - Unrendered virtual-scroll rows, canvas content, closed shadow roots and cross-origin frames are invisible to it.
-- The frame bridge goes one way: `enableFrameBridge()` lets an embedded frame, such as a chat UI or a plugin, read this page with `clrRequestHostContext()`. It does not read the frames. A same-origin frame is described in place; a cross-origin one, or one behind a closed shadow root, is not.
+- The frame bridge goes one way: `enableFrameBridge()` lets an embedded frame, such as a chat UI or a plugin, read this page with `clrRequestHostContext()`. It does not read the frames. A same-origin frame is described in place; a cross-origin one, or one behind a closed shadow root, is not. Requests and answers are objects sent with `postMessage`, which copies them rather than passing JSON text, and `clrRequestHostContext()` resolves `null` for an answer that does not match the page schema.
 
 ## Writing back
 
@@ -78,3 +84,4 @@ export class Firewall {
 - Give the model `CLR_MUTATION_OPERATIONS_SCHEMA` as its tool's input (`@clr/angular/ai/schemas/mutation-operations-1.schema.json` or `https://clarity.design/schemas/mutation-operations-1.schema.json` on a backend); an operation that does not match it, and any past the first 50, is refused.
 - The combobox, the date input and the datagrid's row selection can be written as they are. A custom control of the application is written through its form binding when it renders a role the engine knows (textbox, checkbox or switch, spinbutton or slider, a radio group of radios) and its model holds what it shows; publish that value as `state.value` with `context.publish`. Any other control is refused as `unsupported`.
 - Password and other always-withheld fields, and controls without an Angular form binding, are never written (`redacted`, `unbound`).
+- A value is set through the form control or the component's own writer, never parsed as JSON or inserted as HTML, so a value holding markup or JSON stays text.
