@@ -42,7 +42,7 @@ const EXAMPLE = `
     <tr>
       <th>Compact tables</th>
       <td>.table-compact</td>
-      <td>This classname changes is the height of the table rows from 36px to 24px.</td>
+      <td>This classname changes is the height of the table rows from 32px to 24px.</td>
     </tr>
     <tr>
       <th>Vertical tables</th>

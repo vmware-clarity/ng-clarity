@@ -154,7 +154,7 @@ shadow root or in a side panel.
 
 Load Clarity's styles inside the shadow root. The page's `cds-theme` and `clr-density` attributes do
 not reach into the shadow root, so set them again on an element inside it. Without them, the content
-of the shadow root uses the light theme and the default density, also on a dark or compact page.
+of the shadow root uses the light theme and the regular density, also on a dark or compact page.
 
 ```html
 <div cds-theme="dark" clr-density="compact">...</div>

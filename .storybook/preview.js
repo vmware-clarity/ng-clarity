@@ -110,7 +110,7 @@ export const globalTypes = {
       icon: 'graphbar',
       showName: true,
       items: [
-        { value: DENSITY.NONE, title: 'None' },
+        { value: DENSITY.NONE, title: 'Regular' },
         { value: DENSITY.COMPACT, title: 'Compact' },
       ],
     },
