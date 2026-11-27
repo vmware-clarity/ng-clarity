@@ -10,17 +10,25 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { ClarityModule } from '@clr/angular';
+import { ClrContextIgnore } from '@clr/angular/ai';
 
 import { AppComponent } from './app.component';
 import { ROUTING } from './app.routing';
 import { cdsThemePathLocationStrategyProvider } from './cds-theme-path-location-strategy';
 import { CdsThemeSelectComponent } from './cds-theme-select.component';
 import { AppContentContainerComponent } from './content-container.component';
+import { ContextInspectorComponent } from './context-inspector/context-inspector.component';
 import { LandingComponent } from './landing.component';
 
 @NgModule({
-  declarations: [AppComponent, LandingComponent, AppContentContainerComponent, CdsThemeSelectComponent],
-  imports: [BrowserModule, CommonModule, FormsModule, ReactiveFormsModule, ClarityModule, ROUTING],
+  declarations: [
+    AppComponent,
+    LandingComponent,
+    AppContentContainerComponent,
+    CdsThemeSelectComponent,
+    ContextInspectorComponent,
+  ],
+  imports: [BrowserModule, CommonModule, FormsModule, ReactiveFormsModule, ClarityModule, ClrContextIgnore, ROUTING],
   providers: [cdsThemePathLocationStrategyProvider],
   bootstrap: [AppComponent],
 })

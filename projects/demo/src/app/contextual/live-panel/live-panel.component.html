@@ -1,0 +1,38 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<!-- clrContextIgnore: the panel renders the context, so the engine must not describe it. -->
+<div class="snapshot-panel card" clrContextIgnore>
+  <div class="card-header">
+    Page context
+    <span class="label">{{ snapshotBytes }} bytes</span>
+    <span class="label">read #{{ snapshotCount }}</span>
+    @if (snapshotTruncated) {
+      <span class="label label-warning">truncated</span>
+    }
+    @if (snapshotModal) {
+      <span class="label label-info">modal</span>
+    }
+  </div>
+  <div class="card-block">
+    <clr-select-container>
+      <label>Profile</label>
+      <select clrSelect name="profile" [ngModel]="profile" (ngModelChange)="setProfile($event)">
+        <option value="full">full — everything visible, prose included</option>
+        <option value="interactive">interactive — no prose, no header/navigation/footer</option>
+        <option value="minimal">minimal — interactive, only the open modal while one is open</option>
+      </select>
+      <clr-control-helper>The same page, collected with a different preset; compare the size.</clr-control-helper>
+    </clr-select-container>
+  </div>
+  <div class="card-block">
+    <button type="button" class="btn btn-sm" (click)="refreshNow()">Refresh now</button>
+    <pre class="snapshot-json context-json" tabindex="0" role="region" aria-label="Snapshot JSON">{{
+      snapshotJson
+    }}</pre>
+  </div>
+</div>

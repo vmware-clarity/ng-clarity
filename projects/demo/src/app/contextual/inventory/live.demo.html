@@ -1,0 +1,25 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<p>
+  The panel on the right is a snapshot of everything on this page — including the demo app's own navigation. Select
+  rows, dismiss the alert or open the <em>Add host</em> modal, then press <em>Refresh now</em> to read the page again.
+</p>
+<p>
+  Annotations add what the page cannot show. The inventory section and the hosts grid each bind
+  <code>[clrContext]</code> to a value from the component class, merged into their node's <code>state</code>; nothing of
+  it is written to the DOM.
+</p>
+
+<div class="clr-row">
+  <div class="clr-col-lg-7 clr-col-12">
+    <clr-context-inventory></clr-context-inventory>
+  </div>
+  <div class="clr-col-lg-5 clr-col-12">
+    <clr-context-live-panel></clr-context-live-panel>
+  </div>
+</div>
