@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ClarityIcons, ClrIcon, portraitIcon } from '@clr/angular';
+import { ClarityIcons, ClrIcon, resizeIcon, shrinkIcon } from '@clr/angular';
 
 type DensityType = '' | 'compact';
 
@@ -20,7 +20,9 @@ const densityLocalStorageKey = 'density';
       [attr.aria-label]="'Density: ' + densityLabel"
       (click)="toggleDensity()"
     >
-      <clr-icon class="density-toggle-icon" size="md" shape="portrait" [solid]="isCompact"></clr-icon>
+      <span class="density-toggle-frame" aria-hidden="true">
+        <clr-icon class="density-toggle-icon" [shape]="isCompact ? 'shrink' : 'resize'"></clr-icon>
+      </span>
       <span>{{ densityLabel }}</span>
     </button>
   `,
@@ -32,12 +34,26 @@ const densityLocalStorageKey = 'density';
         position: relative;
       }
       button.toggle-density {
-        &,
-        &:hover {
-          clr-icon.density-toggle-icon {
-            color: var(--clr-header-font-color);
-          }
-        }
+        display: inline-flex;
+        align-items: center;
+        gap: var(--clr-base-gap-xs);
+      }
+      .density-toggle-frame {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        width: var(--clr-base-icon-size-m);
+        height: var(--clr-base-icon-size-m);
+        border: var(--clr-base-border-stroke) solid var(--clr-header-font-color);
+        border-radius: var(--clr-base-border-radius-xs);
+      }
+      clr-icon.density-toggle-icon {
+        width: 100%;
+        height: 100%;
+        color: var(--clr-header-font-color);
+        /* resize and shrink point diagonally; rotating them makes the arrows vertical. */
+        transform: rotate(-45deg);
       }
     `,
   ],
@@ -48,7 +64,7 @@ export class DensityToggleComponent implements OnInit {
   protected density = getPreferredDensity();
 
   constructor() {
-    ClarityIcons.addIcons(portraitIcon);
+    ClarityIcons.addIcons(resizeIcon, shrinkIcon);
   }
 
   protected get isCompact() {
