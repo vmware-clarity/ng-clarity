@@ -147,7 +147,6 @@
 
       .header-nav.clr-nav-level-1,
       .subnav.clr-nav-level-1,
-      .sub-nav.clr-nav-level-1,
       .clr-vertical-nav.clr-nav-level-1 {
         @include responsive-nav-mixins.sliding-nav-positioning();
 
@@ -157,7 +156,6 @@
 
       .header-nav.clr-nav-level-2,
       .subnav.clr-nav-level-2,
-      .sub-nav.clr-nav-level-2,
       .clr-vertical-nav.clr-nav-level-2 {
         @include responsive-nav-mixins.sliding-nav-positioning(0, 0, 0, auto);
 
@@ -166,9 +164,7 @@
       }
 
       .subnav.clr-nav-level-1,
-      .sub-nav.clr-nav-level-1,
-      .subnav.clr-nav-level-2,
-      .sub-nav.clr-nav-level-2 {
+      .subnav.clr-nav-level-2 {
         .nav,
         aside {
           flex-direction: column;
@@ -241,9 +237,6 @@
           padding-left: 0;
           margin-left: calc(-1 * density.$clr-base-horizontal-offset-m);
 
-          //TODO: deprecate .clr-icon, .logo
-          .clr-icon,
-          .logo,
           cds-icon,
           clr-icon {
             display: none;
@@ -325,9 +318,6 @@
               overflow: hidden;
             }
 
-            //deprecate .clr-icon, .logo
-            .clr-icon,
-            .logo,
             cds-icon,
             clr-icon {
               display: inline-block;
@@ -355,7 +345,6 @@
 
         .header-nav.clr-nav-level-1,
         .subnav.clr-nav-level-1,
-        .sub-nav.clr-nav-level-1,
         .clr-vertical-nav.clr-nav-level-1 {
           padding-top: calc(header-variables.$clr-header-height + density.$clr-base-gap-xl);
           transform: translateX(0);
@@ -366,15 +355,13 @@
       &.open-overflow-menu {
         .header-nav.clr-nav-level-2,
         .subnav.clr-nav-level-2,
-        .sub-nav.clr-nav-level-2,
         .clr-vertical-nav.clr-nav-level-2 {
           transform: translateX(0);
           transition: responsive-nav-variables.$clr-sliding-panel-animation;
         }
 
         .header-nav.clr-nav-level-2,
-        .subnav.clr-nav-level-2,
-        .sub-nav.clr-nav-level-2 {
+        .subnav.clr-nav-level-2 {
           padding-top: density.$clr-base-vertical-offset-2xl;
         }
 
@@ -391,7 +378,6 @@
       &.open-hamburger-menu {
         .header-nav.clr-nav-level-1,
         .subnav.clr-nav-level-1,
-        .sub-nav.clr-nav-level-1,
         .clr-vertical-nav.clr-nav-level-1 {
           overflow: inherit;
           width: responsive-nav-variables.$clr-sliding-panel-width;
@@ -410,7 +396,6 @@
       &.open-overflow-menu {
         .header-nav.clr-nav-level-2,
         .subnav.clr-nav-level-2,
-        .sub-nav.clr-nav-level-2,
         .clr-vertical-nav.clr-nav-level-2 {
           width: responsive-nav-variables.$clr-sliding-panel-width;
           max-width: responsive-nav-variables.$clr-sliding-panel-width;
@@ -430,14 +415,12 @@
 
       .header-nav.clr-nav-level-1,
       .subnav.clr-nav-level-1,
-      .sub-nav.clr-nav-level-1,
       .clr-vertical-nav.clr-nav-level-1 {
         transform: translateX(calc(-1 * #{responsive-nav-variables.$clr-sliding-panel-width-sm}));
       }
 
       .header-nav.clr-nav-level-2,
       .subnav.clr-nav-level-2,
-      .sub-nav.clr-nav-level-2,
       .clr-vertical-nav.clr-nav-level-2 {
         transform: translateX(responsive-nav-variables.$clr-sliding-panel-width-sm);
       }
@@ -454,7 +437,6 @@
 
         .header-nav.clr-nav-level-1,
         .subnav.clr-nav-level-1,
-        .sub-nav.clr-nav-level-1,
         .clr-vertical-nav.clr-nav-level-1 {
           overflow: inherit;
           width: responsive-nav-variables.$clr-sliding-panel-width-sm;
@@ -469,7 +451,6 @@
       &.open-overflow-menu {
         .header-nav.clr-nav-level-2,
         .subnav.clr-nav-level-2,
-        .sub-nav.clr-nav-level-2,
         .clr-vertical-nav.clr-nav-level-2 {
           width: responsive-nav-variables.$clr-sliding-panel-width-sm;
           max-width: responsive-nav-variables.$clr-sliding-panel-width-sm;

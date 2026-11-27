@@ -21,8 +21,7 @@
 
 All other table classes like `table, thead, tbody, th, td` are not specific to Clarity so they are not included.
 
-| Class name     | Description              |
-| -------------- | ------------------------ |
-| table-vertical | Vertical table           |
-| table-noborder | Table with no borders    |
-| table-compact  | Table with less paddings |
+| Class name     | Description           |
+| -------------- | --------------------- |
+| table-vertical | Vertical table        |
+| table-noborder | Table with no borders |

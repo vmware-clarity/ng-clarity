@@ -12,9 +12,7 @@
 
 // Usage: ../data/datagrid/_datagrid.clarity.scss
 $clr-datagrid-margin-top: var(--clr-datagrid-margin-top);
-$clr-datagrid-compact-margin-top: var(--clr-datagrid-compact-margin-top);
 $clr-datagrid-action-bar-offset: var(--clr-datagrid-action-bar-offset);
-$clr-datagrid-compact-action-bar-offset: var(--clr-datagrid-compact-action-bar-offset);
 $clr-datagrid-font-color: var(--clr-datagrid-font-color) !default;
 $clr-datagrid-default-border-color: var(--clr-datagrid-default-border-color) !default;
 $clr-datagrid-icon-color: var(--clr-datagrid-icon-color) !default;
@@ -86,14 +84,6 @@ $clr-datagrid-icon-size: var(--clr-datagrid-icon-size) !default;
 $clr-datagrid-action-arrow-size: var(--clr-datagrid-action-arrow-size) !default;
 $clr-datagrid-expandable-row-spinner-margin: calc(
   (#{tables-variables.$clr-table-cell-height} - #{spinner-variables.$clr-spinner-small-size}) / 2
-);
-// @deprecated in favor of compact mode in density theme
-// using the compact value of spinner-variables.$clr-spinner-small-size as cds-global-space-7
-$clr-datagrid-compact-expandable-row-spinner-margin: calc(
-  (#{tables-variables.$clr-table-compact-cell-height} - #{tokens.$cds-global-space-7}) / 2
-);
-$clr-datagrid-compact-fixed-column-size: calc(
-  #{tokens.$cds-global-space-7} + (#{tables-variables.$clr-table-compact-horizontal-padding} * 2)
 );
 
 $clr-datagrid-pinned-columns-max-width: var(--clr-datagrid-pinned-columns-max-width) !default;

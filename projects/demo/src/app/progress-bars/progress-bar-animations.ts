@@ -22,9 +22,7 @@ export class ProgressBarAnimationsDemo {
   constructor() {
     this.examples = [
       new ProgBarExample('progress-fade', 'Fade Out'),
-      new ProgBarExample('flash progress-fade', 'Flash Then Fade'),
-      new ProgBarExample('flash-danger', 'Flash Red, No Fade'),
-      new ProgBarExample('flash progress-fade labeled', 'Labeled With Success Flash And Fade', true),
+      new ProgBarExample('progress-fade labeled', 'Labeled With Fade', true),
     ];
   }
 }

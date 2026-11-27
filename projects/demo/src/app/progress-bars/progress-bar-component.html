@@ -40,7 +40,7 @@
     </div>
 
     <div class="clr-col-12">
-      <h1>Flash & Fade Animations</h1>
+      <h1>Fade Animation</h1>
 
       @for (example of examples; track example) {
       <div>
@@ -48,11 +48,7 @@
         <button class="btn btn-primary" (click)="toggle(example.name)">Toggle demo</button>
         @if (example.state) {
         <div>
-          <clr-progress-bar
-            [clrValue]="example.value"
-            [clrFlash]="example.setup.flash"
-            [clrFade]="example.setup.fade"
-          ></clr-progress-bar>
+          <clr-progress-bar [clrValue]="example.value" [clrFade]="example.setup.fade"></clr-progress-bar>
         </div>
         }
       </div>

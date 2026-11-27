@@ -113,7 +113,7 @@
   [(clrDgSelected)]="selected"
   [clrDgSelectionType]="'multi'"
   (clrDgRefresh)="refresh($event)"
-  [class.datagrid-compact]="rowSize === 'compact'"
+  [attr.clr-density]="rowSize === 'compact' ? 'compact' : null"
   style="height: 24rem"
 >
   <clr-dg-column [clrDgField]="'id'">
@@ -180,7 +180,7 @@
   [clrDgSelectionType]="'multi'"
   [clrDgItemsIdentityFn]="trackItemById"
   (clrDgRefresh)="refreshDataDriven($event)"
-  class="datagrid-compact"
+  clr-density="compact"
   style="height: 24rem"
 >
   <clr-dg-column [clrDgField]="'id'">User ID</clr-dg-column>

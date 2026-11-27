@@ -21,8 +21,6 @@
 | progress-meter  | The bar element in a static progress bar                                 |
 | progress-group  | Layout element for multiple progress bars                                |
 | progress-block  | Layout element for progress bar groups                                   |
-| flash           | Sets the bar color to success once value of 100 is reached               |
-| flash-danger    | Sets the bar color to danger once value of 100 is reached                |
 | labeled         | Used with `progress` to show display value next to the bar               |
 | loop            | Loop animation for non-static progress bars                              |
 | danger          | Combined with `progress loop` or `progress-static` to set progress color |

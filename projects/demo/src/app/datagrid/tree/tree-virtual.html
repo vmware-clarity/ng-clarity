@@ -72,7 +72,7 @@
 
 <clr-datagrid
   #datagrid
-  [class.datagrid-compact]="compact"
+  [attr.clr-density]="compact ? 'compact' : null"
   [clrDgSelectionType]="selectionType"
   [(clrDgSelected)]="selected"
   [clrDgItemsIdentityFn]="identity"

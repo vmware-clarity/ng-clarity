@@ -15,9 +15,9 @@
   [clrDgLoading]="loading"
   [clrLoadingMoreItems]="loadingMoreItems"
   [clrDgRowSelection]="rowSelectionMode"
+  [attr.clr-density]="gridLayoutModel.compact ? 'compact' : null"
   [ngClass]="{
     'disabled-grid': gridLayoutModel.disabled,
-    'datagrid-compact': gridLayoutModel.compact,
     'flex-clr-datagrid': gridLayoutModel.stretchToParentHeight,
     'datagrid-overflow-ellipsis': virtualScrolling || !wrapText,
   }"

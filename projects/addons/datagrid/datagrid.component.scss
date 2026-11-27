@@ -69,7 +69,7 @@ clr-datagrid {
     }
   }
 
-  &.datagrid-compact {
+  &[clr-density='compact'] {
     .custom-preview {
       .grid-ghost {
         .drop-status {

@@ -97,7 +97,6 @@
   }
 }
 @mixin header-links {
-  .settings, /* TODO: deprecated. Remove when the clarity css naming convention is implemented.*/
   .header-nav,
   .header-actions {
     .nav-text {
@@ -169,7 +168,6 @@
   }
 }
 @mixin header-actions {
-  .settings,
   .header-actions {
     flex: 1 0 auto;
     display: flex;

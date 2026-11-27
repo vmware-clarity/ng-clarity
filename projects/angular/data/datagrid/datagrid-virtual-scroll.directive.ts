@@ -66,7 +66,6 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   @Output() renderedRangeChange = new EventEmitter<ListRange>();
   @Input('clrVirtualPersistItems') persistItems = true;
 
-  private _isUserProvidedItemSize = false;
   private _itemSize = 33;
   private _minBufferPx = 200;
   private _maxBufferPx = 400;
@@ -90,20 +89,6 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
    * viewport and the entire datagrid view tree for as long as the application lives.
    */
   private readonly cdkInjectors: EnvironmentInjector[] = [];
-
-  // @deprecated remove the mutation observer when `datagrid-compact` class is deleted
-  private mutationChanges: MutationObserver = new MutationObserver((mutations: MutationRecord[]) => {
-    mutations.forEach((mutation: MutationRecord) => {
-      // it is possible this to be called twice because the old class is removed and the new added
-      if (
-        !this._isUserProvidedItemSize &&
-        (mutation.target as HTMLElement).classList.contains('datagrid-compact') &&
-        this.itemSize > 25
-      ) {
-        this.updateItemSize(25);
-      }
-    });
-  });
 
   private cdkVirtualForInputs: CdkVirtualForInputs<T> = {
     cdkVirtualForTrackBy: index => index,
@@ -145,11 +130,6 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     if (rowHeightValue && this.itemSize > rowHeightValue) {
       this.updateItemSize(rowHeightValue);
     }
-
-    this.mutationChanges.observe(this.datagridElementRef.nativeElement, {
-      attributeFilter: ['class'],
-      attributeOldValue: true,
-    });
 
     this.virtualScrollStrategy = new FixedSizeVirtualScrollStrategy(this.itemSize, this.minBufferPx, this.maxBufferPx);
   }
@@ -201,7 +181,6 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
     return this._itemSize;
   }
   set itemSize(value: CdkFixedSizeVirtualScrollInputs['itemSize']) {
-    this._isUserProvidedItemSize = true;
     this.updateItemSize(value);
   }
 
@@ -315,8 +294,7 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
 
   ngOnDestroy() {
     // Ours first: CDK teardown emits on the streams we subscribe to, and third-party teardown that
-    // throws must not be able to leave our own observer and subscriptions behind.
-    this.mutationChanges?.disconnect();
+    // throws must not be able to leave our own subscriptions behind.
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();
     });
