@@ -11,6 +11,9 @@ import { ClrComponentContext, ClrPageContext } from './interfaces/context.interf
 describe('clrDiffContext', () => {
   function page(components: ClrComponentContext[], overrides: Partial<ClrPageContext> = {}): ClrPageContext {
     return {
+      schemaVersion: '2',
+      application: { id: 'inventory' },
+      enabled: true,
       title: 'Hosts',
       url: '/hosts',
       regions: [],
@@ -116,5 +119,20 @@ describe('clrDiffContext', () => {
     expect(change.routeChanged).toBe(true);
     expect(change.titleChanged).toBe(true);
     expect(change.regionsChanged).toBe(true);
+    expect(change.viewChanged).toBe(false);
+  });
+
+  it('notices the view changing apart from the route and the annotations', () => {
+    const before = page([], { metadata: { purpose: 'Hosts' } });
+    for (const after of [
+      page([], { metadata: { purpose: 'One host' } }),
+      page([], { metadata: { purpose: 'Hosts' }, enabled: false }),
+      page([], { metadata: { purpose: 'Hosts' }, application: { id: 'billing' } }),
+    ]) {
+      const change = clrDiffContext(before, after);
+      expect(change.viewChanged).toBe(true);
+      expect(change.routeChanged).toBe(false);
+      expect(change.regionsChanged).toBe(false);
+    }
   });
 });

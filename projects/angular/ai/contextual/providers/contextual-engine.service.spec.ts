@@ -13,6 +13,7 @@ import { onTestFinished } from 'vitest';
 
 import { ClrContextRegistryService } from './context-registry.service';
 import { ClrContextConfig, ClrContextService } from './contextual-engine.service';
+import { annotate } from '../dom/annotations';
 import {
   ClrComponentContext,
   ClrContextCategory,
@@ -342,6 +343,231 @@ describe('ClrContextService, the routes an application can navigate to', () => {
     const after = (await engine.snapshot()).availableRoutes;
     expect(after).toContainEqual({ path: 'billing/invoices', title: 'Invoices' });
     expect(after?.some(route => route.lazy)).toBe(false);
+  });
+});
+
+/** The service, configured with `config` once the testing module is set up. */
+function configuredService(config: ClrContextConfig): ClrContextService {
+  const service = TestBed.inject(ClrContextService);
+  service.configure(config);
+  return service;
+}
+
+describe('ClrContextService, identifying the application and view', () => {
+  const quiet = { excludeCategories: Object.keys(CLR_CONTEXT_CATEGORIES) as ClrContextCategory[] };
+  const annotations: (() => void)[] = [];
+  let page: HTMLElement;
+
+  /** What `[clrContext]` on the element would say. */
+  function annotateWith(element: Element, context: () => Partial<ClrPublishedContext> | null): void {
+    annotations.push(annotate(element, context));
+  }
+
+  beforeEach(() => {
+    page = document.createElement('main');
+    page.className = 'test-page';
+    document.body.appendChild(page);
+    TestBed.configureTestingModule({});
+  });
+
+  afterEach(() => {
+    page.remove();
+    annotations.splice(0).forEach(remove => remove());
+  });
+
+  it('versions every snapshot and names the host when no application is configured', async () => {
+    const snapshot = await TestBed.inject(ClrContextService).snapshot(quiet);
+
+    expect(snapshot.schemaVersion).toBe('2');
+    expect(snapshot.application).toEqual({ id: document.location.hostname });
+    expect(snapshot.metadata).toBeUndefined();
+  });
+
+  it('reports the configured application, and the view from the annotation on the view root', async () => {
+    annotateWith(page, () => ({
+      label: 'Host list',
+      state: { purpose: 'Lists hosts', load: () => 'not serializable' },
+    }));
+    const snapshot = await configuredService({
+      application: { id: 'inventory', version: '2.4.0' },
+      scope: { root: '.test-page' },
+    }).snapshot(quiet);
+
+    expect(snapshot.application).toEqual({ id: 'inventory', version: '2.4.0' });
+    expect(snapshot.metadata).toEqual({ label: 'Host list', purpose: 'Lists hosts' });
+  });
+
+  it('merges the view root and its ancestors, inner winning', async () => {
+    annotateWith(document.body, () => ({ state: { purpose: 'Page', owner: 'core' } }));
+    annotateWith(page, () => ({ state: { purpose: 'Hosts' } }));
+
+    const snapshot = await configuredService({ scope: { root: '.test-page' } }).snapshot(quiet);
+
+    expect(snapshot.metadata).toEqual({ purpose: 'Hosts', owner: 'core' });
+  });
+
+  it('reports an annotation inside the view on its node, not as the view metadata', async () => {
+    page.innerHTML = '<nav aria-label="Hosts"><a href="#">h1</a></nav>';
+    annotateWith(page.querySelector('nav')!, () => ({ state: { purpose: 'Pick a host' } }));
+
+    const snapshot = await configuredService({}).snapshot();
+
+    expect(snapshot.metadata).toBeUndefined();
+    expect(JSON.stringify(snapshot.components)).toContain('Pick a host');
+  });
+
+  it('leaves out view metadata in an ignored, redacted or excluded region', async () => {
+    annotateWith(page, () => ({ state: { accountSecret: 's3cr3t' } }));
+    const engine = configuredService({ scope: { root: '.test-page' } });
+    for (const mark of ['ignore', 'redact'] as const) {
+      const unmark = markContext(document.body, mark);
+      try {
+        expect(JSON.stringify(await engine.snapshot(quiet)), mark).not.toContain('s3cr3t');
+      } finally {
+        unmark();
+      }
+    }
+    expect(JSON.stringify(await engine.snapshot({ ...quiet, excludeSelectors: ['.test-page'] }))).not.toContain(
+      's3cr3t'
+    );
+  });
+
+  it('gives each snapshot its own copy of the metadata, so a consumer cannot change the next one', async () => {
+    const settings: Record<string, unknown> = { allowed: true };
+    settings['self'] = settings;
+    annotateWith(page, () => ({ state: { settings } }));
+    const engine = configuredService({ scope: { root: '.test-page' } });
+
+    const snapshot = await engine.snapshot(quiet);
+    (snapshot.metadata?.['settings'] as Record<string, unknown>)['allowed'] = false;
+
+    expect(() => JSON.stringify(snapshot)).not.toThrow();
+    expect(settings['allowed']).toBe(true);
+    expect(((await engine.snapshot(quiet)).metadata?.['settings'] as Record<string, unknown>)['allowed']).toBe(true);
+  });
+
+  it('survives an annotation callback that throws', async () => {
+    annotateWith(page, () => {
+      throw new Error('broken');
+    });
+
+    const snapshot = await configuredService({ scope: { root: '.test-page' } }).snapshot(quiet);
+
+    expect(snapshot.metadata).toBeUndefined();
+  });
+});
+
+describe('ClrContextService, reading only enabled views', () => {
+  let annotation: Partial<ClrPublishedContext> | null;
+  let removeAnnotation: () => void;
+  let engine: ClrContextService;
+  let registry: ClrContextRegistryService;
+
+  beforeEach(() => {
+    annotation = null;
+    removeAnnotation = annotate(document.body, () => annotation);
+    TestBed.configureTestingModule({});
+    engine = configuredService({ application: { id: 'inventory' }, views: 'enabled' });
+    registry = TestBed.inject(ClrContextRegistryService);
+  });
+
+  afterEach(() => removeAnnotation());
+
+  it('reports a view whose root has no annotation as not enabled, with nothing about the page', async () => {
+    const provider = vi.fn().mockReturnValue({ type: 'region', label: 'Hosts' });
+    registry.register({ getClrContext: provider });
+
+    const snapshot = await engine.snapshot();
+    expect(snapshot).toEqual({
+      schemaVersion: '2',
+      application: { id: 'inventory' },
+      enabled: false,
+      title: '',
+      regions: [],
+      components: [],
+      collectedAt: expect.any(String),
+    });
+    expect(provider).not.toHaveBeenCalled();
+  });
+
+  it('reads a view once its root is annotated', async () => {
+    annotation = { state: { purpose: 'Lists hosts' } };
+    registry.register({ getClrContext: () => ({ type: 'region', label: 'Hosts' }) });
+
+    const snapshot = await engine.snapshot();
+
+    expect(snapshot.enabled).toBe(true);
+    expect(snapshot.metadata).toEqual({ purpose: 'Lists hosts' });
+    expect(snapshot.title).toBe(document.title);
+    expect(snapshot.regions).toEqual([{ type: 'region', label: 'Hosts' }]);
+  });
+});
+
+describe('ClrContextService, a view that changes while providers answer', () => {
+  const quiet = { excludeCategories: Object.keys(CLR_CONTEXT_CATEGORIES) as ClrContextCategory[] };
+
+  it('describes the new view instead of mixing answers from the old one into it', async () => {
+    let view = 'hosts';
+    const removeAnnotation = annotate(document.body, () => ({ state: { view } }));
+    onTestFinished(removeAnnotation);
+    TestBed.configureTestingModule({});
+    const engine = configuredService({ application: { id: 'inventory' } });
+    let answer: (context: ClrComponentContext) => void = () => undefined;
+    TestBed.inject(ClrContextRegistryService).register({
+      getClrContext: () =>
+        view === 'hosts' ? new Promise(resolve => (answer = resolve)) : { type: 'region', label: 'VMs' },
+    });
+
+    const snapshot = engine.snapshot(quiet);
+    view = 'vms';
+    answer({ type: 'region', label: 'Hosts' });
+
+    expect((await snapshot).metadata).toEqual({ view: 'vms' });
+  });
+
+  it('awaits the new view’s providers after a navigation between routes', async () => {
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter([
+          { path: 'hosts', children: [] },
+          { path: 'vms', children: [] },
+        ]),
+      ],
+    });
+    const engine = TestBed.inject(ClrContextService);
+    const router = TestBed.inject(Router);
+    const answers: ((context: ClrComponentContext) => void)[] = [];
+    TestBed.inject(ClrContextRegistryService).register({
+      getClrContext: () => new Promise(resolve => answers.push(resolve)),
+    });
+    await router.navigateByUrl('/hosts');
+
+    const snapshot = engine.snapshot(quiet);
+    await router.navigateByUrl('/vms');
+    answers[0]({ type: 'region', label: 'Hosts' });
+    for (let wait = 0; answers.length < 2 && wait < 50; wait++) {
+      await new Promise(resolve => setTimeout(resolve));
+    }
+    answers[1]?.({ type: 'region', label: 'VMs' });
+
+    const result = await snapshot;
+    expect(result.route?.url).toBe('/vms');
+    expect(result.regions).toEqual([{ type: 'region', label: 'VMs' }]);
+  });
+});
+
+describe('ClrContextService, an unrecognised views setting', () => {
+  it('reads only enabled views, with a dev-mode warning', async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    TestBed.configureTestingModule({});
+    const engine = configuredService({
+      application: { id: 'inventory' },
+      views: 'enable' as unknown as ClrContextConfig['views'],
+    });
+
+    expect((await engine.snapshot()).enabled).toBe(false);
+    expect(console.warn).toHaveBeenCalled();
   });
 });
 

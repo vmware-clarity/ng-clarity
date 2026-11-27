@@ -88,6 +88,8 @@ interface Walk {
   elementDepth: number;
   /** Shared across the whole walk, probes included. */
   visited: { count: number };
+  /** Where the view starts; an annotation on these and their ancestors describes the view, not a node. */
+  viewRoots: Element[];
   /** Where assistive technology puts focus: the active descendant, else the focused element. */
   readonly focused: Element | null;
 }
@@ -122,12 +124,14 @@ export function collectContextTreeWithin(
     depth: 0,
     elementDepth: 0,
     visited: { count: 0 },
+    viewRoots: [],
     focused: focusedElement(root),
   };
   return withinReadScope(() => {
     const rootScope = root.nodeType === Node.ELEMENT_NODE ? idScope(root as Element) : (root as IdScope);
     walk.referencedIds.set(rootScope, collectReferencedIds(root, walk));
     const scope = engineScope(root, walk.options);
+    walk.viewRoots = scope.roots ?? topOf(root);
     const components = describeScope(root, scope.roots, walk);
     const result: ClrContextTreeResult = { components, truncated: walk.truncated };
     if (scope.modal) {
@@ -437,7 +441,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
     if (parts) {
       return parts;
     }
-  } else if ((!role || role === 'paragraph') && !label && !hasAnnotation(element)) {
+  } else if ((!role || role === 'paragraph') && !label && !annotationOf(element, walk)) {
     return isTextBlock(element, walk)
       ? describeTextBlock(element, walk, owner, role === 'paragraph' ? role : 'text')
       : describeChildren(element, walk, owner);
@@ -530,7 +534,7 @@ function describeAnonymousCustomElement(element: Element, tagName: string, walk:
   }
   if (
     !readClrElementContext(element, walk.options) &&
-    !hasAnnotation(element) &&
+    !annotationOf(element, walk) &&
     !accessibleText(element, undefined, walk.excludeSelector).trim()
   ) {
     return [];
@@ -799,7 +803,7 @@ function finish(
   const redacted = isRedacted(element, walk.redactedDepth > 0);
   // Published context is not merged inside a redacted region: it would carry the component's state straight out.
   let described =
-    redacted || !published ? node : mergeElementContext(node, element, walk.options, annotationContext(element));
+    redacted || !published ? node : mergeElementContext(node, element, walk.options, annotationOf(element, walk));
   if (walk.excludeRoles.has(described.type)) {
     return null;
   }
@@ -823,6 +827,23 @@ function finish(
 /** A container with no name, state or children tells an agent nothing, unlike a widget, whose role alone is news. */
 function isEmptyContainer(node: ClrComponentContext): boolean {
   return EMPTY_CONTAINER_ROLES.has(node.type) && !node.label && !node.state && !node.children;
+}
+
+/** The element's annotation; on a view root or an ancestor of one, it describes the view instead. */
+function annotationOf(element: Element, walk: Walk): Partial<ClrPublishedContext> | null {
+  if (!hasAnnotation(element) || walk.viewRoots.some(root => containsAcrossShadow(element, root))) {
+    return null;
+  }
+  return annotationContext(element);
+}
+
+/** The element a snapshot of the whole of `root` starts from. */
+function topOf(root: ParentNode): Element[] {
+  const top =
+    root.nodeType === Node.DOCUMENT_NODE
+      ? ((root as Document).body ?? (root as Document).documentElement)
+      : (root as Element);
+  return top ? [top] : [];
 }
 
 /** Whether a label read from content leaves the element out: only its resolved role counts, not any `role`. */

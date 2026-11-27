@@ -5,7 +5,8 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 <p class="clr-mt-24px" cds-text="body">
-  Most applications need only a few of these: <code cds-text="code">ClrContextService</code> to read the page, and
+  Most applications need only a few of these: <code cds-text="code">ClrContextService</code> to read the page,
+  <code cds-text="code">configure(&#123; application &#125;)</code> to name the application, and
   <code cds-text="code">clrContextRedact</code> for fields that hold secrets. Everything else is for finer control.
 </p>
 
@@ -96,6 +97,24 @@
       <td class="left">
         How long a snapshot waits for each provider that answers with a promise. A provider that fails or is too slow
         appears as a region of type <code cds-text="code">'clr-unavailable'</code>.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">application</b></td>
+      <td class="left clr-hidden-xs-down">the host name</td>
+      <td class="left">
+        Names the application: a <code cds-text="code">ClrApplicationContext</code> with an
+        <code cds-text="code">id</code>, such as <code cds-text="code">'inventory'</code>, and an optional
+        <code cds-text="code">version</code>.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">views</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">'all'</code></td>
+      <td class="left">
+        <code cds-text="code">'all'</code> reads every view. <code cds-text="code">'enabled'</code> reads only views
+        whose root has a <code cds-text="code">[clrContext]</code>, and reports the rest as
+        <code cds-text="code">enabled: false</code> with nothing about the page.
       </td>
     </tr>
   </tbody>
@@ -281,7 +300,20 @@
 </p>
 
 <h2 id="context-shape" cds-text="title" class="clr-mt-48px">Snapshot</h2>
-<p class="clr-mt-16px" cds-text="body">What <code cds-text="code">snapshot()</code> returns.</p>
+<p class="clr-mt-16px" cds-text="body">
+  What <code cds-text="code">snapshot()</code> returns. Its JSON Schema ships in the package as
+  <code cds-text="code">&#64;clr/angular/ai/schemas/page-context-2.schema.json</code> and as
+  <code cds-text="code">CLR_PAGE_CONTEXT_SCHEMA</code>, and is served at its <code cds-text="code">$id</code>,
+  <a href="https://clarity.design/schemas/page-context-2.schema.json"
+    >clarity.design/schemas/page-context-2.schema.json</a
+  >. A backend validates snapshots with that file and any JSON Schema validator, picking the file by the snapshot's
+  <code cds-text="code">schemaVersion</code>.
+</p>
+<p class="clr-mt-16px" cds-text="body">
+  The page validates with the same schema: <code cds-text="code">snapshot()</code> leaves out any node or optional field
+  that does not match it, with a warning in dev mode, so what it returns always passes the backend's check. A released
+  schema version never changes; a change to the format comes as a new version and a new file.
+</p>
 
 <h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrPageContext</code></h3>
 <table class="table">
@@ -293,6 +325,36 @@
     </tr>
   </thead>
   <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">schemaVersion</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">The snapshot format's version. New fields can appear without it changing.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">application</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ClrApplicationContext</code></td>
+      <td class="left">
+        The application's <code cds-text="code">id</code> and <code cds-text="code">version</code>. The id is the page's
+        host name when none is configured.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">metadata</b></td>
+      <td class="left clr-hidden-xs-down">Object</td>
+      <td class="left">
+        What the <code cds-text="code">[clrContext]</code> on the view root and its ancestors says about the view: its
+        state, with its label, inner winning. The view root is the element <code cds-text="code">scope.root</code>
+        selects, or the body.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">enabled</b></td>
+      <td class="left clr-hidden-xs-down">Boolean</td>
+      <td class="left">
+        <code cds-text="code">false</code> when the application turned the engine off for this view; the snapshot then
+        describes nothing on the page.
+      </td>
+    </tr>
     <tr>
       <td class="left"><b cds-text="medium">title, url</b></td>
       <td class="left clr-hidden-xs-down">String</td>

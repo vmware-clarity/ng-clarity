@@ -58,6 +58,162 @@ export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
 export const CLR_CONTEXT_UNAVAILABLE_TYPE = "clr-unavailable";
 
 // @public
+export const CLR_PAGE_CONTEXT_SCHEMA: {
+    readonly $schema: "https://json-schema.org/draft/2020-12/schema";
+    readonly $id: "https://clarity.design/schemas/page-context-2.schema.json";
+    readonly title: "ClrPageContext";
+    readonly type: "object";
+    readonly required: readonly ["schemaVersion", "application", "enabled", "title", "regions", "components", "collectedAt"];
+    readonly properties: {
+        readonly schemaVersion: {
+            readonly const: "2";
+        };
+        readonly application: {
+            readonly type: "object";
+            readonly required: readonly ["id"];
+            readonly additionalProperties: false;
+            readonly properties: {
+                readonly id: {
+                    readonly type: "string";
+                };
+                readonly version: {
+                    readonly type: "string";
+                };
+            };
+        };
+        readonly metadata: {
+            readonly type: "object";
+        };
+        readonly enabled: {
+            readonly type: "boolean";
+        };
+        readonly title: {
+            readonly type: "string";
+        };
+        readonly url: {
+            readonly type: "string";
+        };
+        readonly route: {
+            readonly type: "object";
+            readonly required: readonly ["url"];
+            readonly additionalProperties: false;
+            readonly properties: {
+                readonly url: {
+                    readonly type: "string";
+                };
+                readonly path: {
+                    readonly type: "string";
+                };
+                readonly params: {
+                    readonly $ref: "#/$defs/strings";
+                };
+                readonly queryParams: {
+                    readonly $ref: "#/$defs/queryParams";
+                };
+                readonly data: {
+                    readonly type: "object";
+                };
+            };
+        };
+        readonly availableRoutes: {
+            readonly type: "array";
+            readonly items: {
+                readonly type: "object";
+                readonly required: readonly ["path"];
+                readonly additionalProperties: false;
+                readonly properties: {
+                    readonly path: {
+                        readonly type: "string";
+                    };
+                    readonly title: {
+                        readonly type: "string";
+                    };
+                    readonly lazy: {
+                        readonly type: "boolean";
+                    };
+                };
+            };
+        };
+        readonly regions: {
+            readonly type: "array";
+            readonly items: {
+                readonly $ref: "#/$defs/component";
+            };
+        };
+        readonly components: {
+            readonly type: "array";
+            readonly items: {
+                readonly $ref: "#/$defs/component";
+            };
+        };
+        readonly truncated: {
+            readonly type: "boolean";
+        };
+        readonly modal: {
+            readonly const: true;
+        };
+        readonly collectedAt: {
+            readonly type: "string";
+        };
+    };
+    readonly $defs: {
+        readonly strings: {
+            readonly type: "object";
+            readonly additionalProperties: {
+                readonly type: "string";
+            };
+        };
+        readonly queryParams: {
+            readonly type: "object";
+            readonly additionalProperties: {
+                readonly anyOf: readonly [{
+                    readonly type: "string";
+                }, {
+                    readonly type: "array";
+                    readonly items: {
+                        readonly type: "string";
+                    };
+                }];
+            };
+        };
+        readonly component: {
+            readonly type: "object";
+            readonly required: readonly ["type"];
+            readonly additionalProperties: false;
+            readonly properties: {
+                readonly type: {
+                    readonly type: "string";
+                };
+                readonly element: {
+                    readonly type: "string";
+                };
+                readonly label: {
+                    readonly type: "string";
+                };
+                readonly state: {
+                    readonly type: "object";
+                };
+                readonly children: {
+                    readonly type: "array";
+                    readonly items: {
+                        readonly $ref: "#/$defs/component";
+                    };
+                };
+            };
+        };
+    };
+};
+
+// @public
+export const CLR_PAGE_CONTEXT_SCHEMA_VERSION = "2";
+
+// @public
+export interface ClrApplicationContext {
+    id: string;
+    version?: string;
+}
+
+// @public
 export interface ClrAvailableRoute {
     lazy?: boolean;
     path: string;
@@ -119,6 +275,7 @@ export interface ClrContextChange {
     removed: ClrComponentContext[];
     routeChanged: boolean;
     titleChanged: boolean;
+    viewChanged: boolean;
 }
 
 // @public
@@ -128,10 +285,12 @@ export interface ClrContextCollectOptions {
 
 // @public
 export interface ClrContextConfig {
+    application?: ClrApplicationContext;
     extractors?: ClrContextDomExtractor[];
     routes?: boolean;
     scope?: ClrContextPreset | ClrContextSnapshotOptions;
     timeoutMs?: number;
+    views?: 'all' | 'enabled';
 }
 
 // @public
@@ -234,12 +393,16 @@ export function clrIsEmptyContextChange(change: ClrContextChange): boolean;
 
 // @public
 export interface ClrPageContext {
+    application: ClrApplicationContext;
     availableRoutes?: ClrAvailableRoute[];
     collectedAt: string;
     components: ClrComponentContext[];
+    enabled: boolean;
+    metadata?: Record<string, unknown>;
     modal?: true;
     regions: ClrComponentContext[];
     route?: ClrRouteContext;
+    schemaVersion: string;
     title: string;
     truncated?: boolean;
     url?: string;

@@ -22,11 +22,12 @@ export class Assistant {
 }
 ```
 
-Configure once at startup: `context.configure({ scope: 'interactive', routes: true })`. `scope` is a preset (`full`, `interactive`, `minimal`) or options: `root` (`'page'`, `'modal'` or a selector), `excludeSelectors`, `excludeCategories`, `depth` (levels below `root`; default every level).
+Configure once at startup: `context.configure({ scope: 'interactive', routes: true })`. `scope` is a preset (`full`, `interactive`, `minimal`) or options: `root` (`'page'`, `'modal'` or a selector), `excludeSelectors`, `excludeCategories`, `depth` (levels below `root`; default every level). Name the app with `configure({ application: { id: 'inventory' } })`. Describe a view with `[clrContext]` on its root (the element `scope.root` selects): its state becomes the snapshot's `metadata`.
 
 ## Privacy first
 
 - A snapshot holds the rendered page, text included, and may hold personal data. Send it to a model as data, delimited from the prompt, never as instructions.
+- A backend validates snapshots with `@clr/angular/ai/schemas/page-context-<schemaVersion>.schema.json`, also served at `https://clarity.design/schemas/page-context-<schemaVersion>.schema.json`; `snapshot()` already leaves out what does not match it.
 - Put `clrContextRedact` on regions whose values must never leave the page (their fields keep their shape, values are withheld). Put `clrContextIgnore` on UI the agent should not see at all. Bind `false` to lift either one, such as `[clrContextRedact]="row.private"`. Both are directives from `@clr/angular/ai` (`ClrContextRedact`, `ClrContextIgnore`, or `ClrContextModule`); they set `data-clr-context-redact` and `data-clr-context-ignore`, which is what the engine reads. Markup outside Angular templates can carry those attributes itself.
 - Password and file inputs, and fields whose `autocomplete` is `current-password`, `new-password`, `one-time-code` or a `cc-*` token, are always withheld. Redact the other secrets, such as tokens or keys typed into plain text fields.
 - The engine never builds or parses JSON text, so labels and values in any language cannot inject JSON. `snapshot()` returns an object; serialize it with `JSON.stringify` and don't escape the text yourself.

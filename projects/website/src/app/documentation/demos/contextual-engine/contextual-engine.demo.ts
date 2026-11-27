@@ -38,6 +38,10 @@ export class AssistantComponent {
 
 const SNAPSHOT_SHAPE_EXAMPLE = `
 {
+  "schemaVersion": "1",
+  "application": { "id": "cluster-manager", "version": "2.4.0" },
+  "metadata": { "purpose": "Cluster health and capacity" },
+  "enabled": true,
   "title": "Cluster alpha",
   "url": "https://app.example/clusters/alpha",
   "route": { "url": "/clusters/alpha", "path": "clusters/:id", "params": { "id": "alpha" } },
@@ -139,6 +143,21 @@ export class FirewallRulesComponent {
 }
 `;
 
+const VIEW_METADATA_EXAMPLE = `
+import { Component } from '@angular/core';
+import { ClrContext } from '@clr/angular/ai';
+
+// With configure({ scope: { root: 'main' } }), <main> is the view root.
+@Component({
+  selector: 'app-cluster',
+  imports: [ClrContext],
+  template: \`<main [clrContext]="view">...</main>\`,
+})
+export class ClusterComponent {
+  readonly view = { state: { purpose: 'Cluster health and capacity' } };
+}
+`;
+
 const CHANGES_EXAMPLE = `
 import { inject, Injectable } from '@angular/core';
 import {
@@ -166,8 +185,10 @@ export class PageContextForChat {
       return {};
     }
     // Send the difference only: change.previous and change.current are whole snapshots.
-    const { added, removed, changed, routeChanged, regionsChanged, titleChanged } = change;
-    return { pageChanged: { added, removed, changed, routeChanged, regionsChanged, titleChanged } };
+    const { added, removed, changed, routeChanged, regionsChanged, titleChanged, viewChanged } = change;
+    return {
+      pageChanged: { added, removed, changed, routeChanged, regionsChanged, titleChanged, viewChanged },
+    };
   }
 }
 `;
@@ -231,6 +252,7 @@ export class ContextualEngineDemo extends ClarityDocComponent {
   provideExample = PROVIDE_EXAMPLE;
   optionsExample = OPTIONS_EXAMPLE;
   directiveExample = DIRECTIVE_EXAMPLE;
+  viewMetadataExample = VIEW_METADATA_EXAMPLE;
   changesExample = CHANGES_EXAMPLE;
   elementContextExample = ELEMENT_CONTEXT_EXAMPLE;
   extractorExample = EXTRACTOR_EXAMPLE;

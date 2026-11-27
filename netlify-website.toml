@@ -15,6 +15,13 @@
   to = "/admin/index.html"
   status = 200
 
+# The AI context JSON Schemas, served at their $id so backends can fetch them.
+[[headers]]
+  for = "/schemas/*"
+    [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Content-Type = "application/schema+json"
+
 # With this, the app has full control over the routing logic
 [[redirects]]
   from = "/*"

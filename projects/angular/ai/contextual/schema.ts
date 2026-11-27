@@ -1,0 +1,85 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+/**
+ * Version of the {@link ClrPageContext} format; it changes only when a field changes meaning or is removed.
+ * New top-level fields are added without changing it.
+ */
+export const CLR_PAGE_CONTEXT_SCHEMA_VERSION = '2';
+
+/**
+ * JSON Schema (2020-12) of {@link ClrPageContext} at `schemaVersion` `'2'`, for consumers that validate
+ * snapshots outside TypeScript. The top level accepts fields a later release adds, so ignore the ones you do
+ * not know; everything below it is strict. Component `state` and the view's `metadata` are
+ * application-specific and left open.
+ */
+export const CLR_PAGE_CONTEXT_SCHEMA = {
+  $schema: 'https://json-schema.org/draft/2020-12/schema',
+  $id: 'https://clarity.design/schemas/page-context-2.schema.json',
+  title: 'ClrPageContext',
+  type: 'object',
+  required: ['schemaVersion', 'application', 'enabled', 'title', 'regions', 'components', 'collectedAt'],
+  properties: {
+    schemaVersion: { const: CLR_PAGE_CONTEXT_SCHEMA_VERSION },
+    application: {
+      type: 'object',
+      required: ['id'],
+      additionalProperties: false,
+      properties: { id: { type: 'string' }, version: { type: 'string' } },
+    },
+    metadata: { type: 'object' },
+    enabled: { type: 'boolean' },
+    title: { type: 'string' },
+    url: { type: 'string' },
+    route: {
+      type: 'object',
+      required: ['url'],
+      additionalProperties: false,
+      properties: {
+        url: { type: 'string' },
+        path: { type: 'string' },
+        params: { $ref: '#/$defs/strings' },
+        queryParams: { $ref: '#/$defs/queryParams' },
+        data: { type: 'object' },
+      },
+    },
+    availableRoutes: {
+      type: 'array',
+      items: {
+        type: 'object',
+        required: ['path'],
+        additionalProperties: false,
+        properties: { path: { type: 'string' }, title: { type: 'string' }, lazy: { type: 'boolean' } },
+      },
+    },
+    regions: { type: 'array', items: { $ref: '#/$defs/component' } },
+    components: { type: 'array', items: { $ref: '#/$defs/component' } },
+    truncated: { type: 'boolean' },
+    modal: { const: true },
+    collectedAt: { type: 'string' },
+  },
+  $defs: {
+    strings: { type: 'object', additionalProperties: { type: 'string' } },
+    // A repeated query key is reported as a list.
+    queryParams: {
+      type: 'object',
+      additionalProperties: { anyOf: [{ type: 'string' }, { type: 'array', items: { type: 'string' } }] },
+    },
+    component: {
+      type: 'object',
+      required: ['type'],
+      additionalProperties: false,
+      properties: {
+        type: { type: 'string' },
+        element: { type: 'string' },
+        label: { type: 'string' },
+        state: { type: 'object' },
+        children: { type: 'array', items: { $ref: '#/$defs/component' } },
+      },
+    },
+  },
+} as const;
