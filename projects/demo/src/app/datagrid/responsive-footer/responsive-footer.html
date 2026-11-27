@@ -27,7 +27,7 @@
     [(clrDgSelected)]="selected"
     [clrDgSelectionType]="'multi'"
     [style.max-height.px]="250"
-    [attr.clr-density]="compact ? 'compact' : null"
+    [class.datagrid-compact]="compact"
   >
     <clr-dg-column>
       <ng-container *clrDgHideableColumn>User ID</ng-container>

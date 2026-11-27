@@ -108,7 +108,7 @@ const meta = {
         ${args.height ? '[style.height.px]="height"' : ''}
         [clrDgSelected]="[]"
         [clrDgSelectionType]="clrDgSelectionType"
-        [attr.clr-density]="compact ? 'compact' : null"
+        [ngClass]="{ 'datagrid-compact': compact }"
       >
         <clr-dg-column
           [style.width.px]="250"

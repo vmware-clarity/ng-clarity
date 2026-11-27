@@ -15,8 +15,8 @@ import { Selection } from '../providers/selection';
 @Component({
   template: `
     <clr-datagrid
-      clr-density="compact"
-      [style.height.px]="172"
+      class="datagrid-compact"
+      [style.height.px]="185"
       [(clrDgSelected)]="selected"
       [clrDgSelectionType]="selected ? 'multi' : 'none'"
     >

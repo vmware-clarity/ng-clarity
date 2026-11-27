@@ -159,7 +159,7 @@ Add `[clrDgReplace]="true"` to replace the row cells with the detail. Detail pan
 
 - Hide/show: put content inside `<ng-container *clrDgHideableColumn="{ hidden: false }">Label</ng-container>` in the column. It is not an input on `clr-dg-column`.
 - Pinning: `[clrDgPinnable]="true"`, `[(clrDgPinned)]`.
-- Compact density: `clr-density="compact"` on `clr-datagrid` (attribute, not an input).
+- Compact density: `class="datagrid-compact"` on `clr-datagrid` (CSS class, not an input).
 
 ## Virtual scroll
 

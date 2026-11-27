@@ -105,8 +105,7 @@ const meta = {
         ${args.height ? '[style.height.px]="height"' : ''}
         [clrDgSelected]="[]"
         [clrDgSelectionType]="clrDgSelectionType"
-        [attr.clr-density]="compact ? 'compact' : null"
-        [ngClass]="{ 'datagrid-overflow-ellipsis': overflowEllipsis }"
+        [ngClass]="{ 'datagrid-compact': compact, 'datagrid-overflow-ellipsis': overflowEllipsis }"
       >
         <clr-dg-column [style.width.px]="250">
           <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Name</ng-container>

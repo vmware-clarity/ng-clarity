@@ -9,10 +9,10 @@
 
 <p>
   To increase the information density of your Datagrid, add the
-  <code class="clr-code">clr-density="compact"</code> attribute and/or the
-  <code class="clr-code">datagrid-overflow-ellipsis</code> class to it. Those decrease the amount of whitespace in the
-  default Datagrid style so that you can display more rows in the fixed height. Or if your Datagrid doesn't have a fixed
-  height, you could decrease the overall amount of space that it takes.
+  <code class="clr-code">datagrid-compact</code> and/or <code class="clr-code">datagrid-overflow-ellipsis</code> classes
+  to it. Those classes decrease the amount of whitespace in the default Datagrid style so that you can display more rows
+  in the fixed height. Or if your Datagrid doesn't have a fixed height, you could decrease the overall amount of space
+  that it takes.
 </p>
 
 <form clrForm>
@@ -65,7 +65,7 @@
 
 <clr-datagrid
   [style.height.px]="fixedHeight ? 500 : null"
-  [attr.clr-density]="compact ? 'compact' : null"
+  [class.datagrid-compact]="compact"
   [class.datagrid-overflow-ellipsis]="overflowEllipsis"
   [(clrDgSelected)]="selected"
   [clrDgSelectionType]="selected ? 'multi' : 'none'"

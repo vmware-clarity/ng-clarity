@@ -19,6 +19,8 @@
     --clr-datagrid-column-separator-expandby: #{tokens.$cds-global-space-6};
     --clr-datagrid-action-arrow-size: #{tokens.$cds-global-space-4};
     --clr-datagrid-cell-outline-offset: calc(-1 * #{tokens.$cds-global-space-2});
+    --clr-datagrid-compact-margin-top: #{tokens.$cds-global-space-5};
+    --clr-datagrid-compact-action-bar-offset: #{mixins.baselinePx(20)};
 
     // The largest share of the datagrid that the sticky container can occupy.
     // The unit is `cqi` resolves against the nearest inline-size container which is `.datagrid-table-wrapper`.

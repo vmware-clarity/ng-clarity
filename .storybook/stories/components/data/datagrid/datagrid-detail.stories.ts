@@ -42,6 +42,7 @@ type DetailArgs = Pick<ClrDatagridDetail, 'close'> & {
 const REMOVED_MARGIN_STYLES = `
   .removed-margin {
     --clr-datagrid-margin-top: 0px;
+    --clr-datagrid-compact-margin-top: 0px;
   }
 `;
 
@@ -139,8 +140,7 @@ const meta = {
           ${args.height ? '[style.height.px]="height"' : ''}
           [clrDgSelected]="[]"
           [clrDgSelectionType]="clrDgSelectionType"
-          [attr.clr-density]="compact ? 'compact' : null"
-          [ngClass]="{ 'removed-margin': removeMargin }"
+          [ngClass]="{ 'datagrid-compact': compact, 'removed-margin': removeMargin }"
         >
           <clr-dg-column ${args.showLongUninterruptedContent ? '' : '[style.width.px]="250"'}>
             <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Name</ng-container>

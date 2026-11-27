@@ -50,7 +50,7 @@ const meta = {
   },
   render: args => ({
     template: `
-      <clr-datagrid ${args.height ? '[style.height.px]="height"' : ''} [attr.clr-density]="compact ? 'compact' : null">
+      <clr-datagrid ${args.height ? '[style.height.px]="height"' : ''} [ngClass]="{ 'datagrid-compact': compact }">
         <clr-dg-column [style.width.px]="250">
           <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Name</ng-container>
         </clr-dg-column>

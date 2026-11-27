@@ -41,8 +41,8 @@ const EXAMPLE = `
     </tr>
     <tr>
       <th>Compact tables</th>
-      <td>clr-density="compact"</td>
-      <td>This attribute applies the compact density, which reduces the height of the table rows.</td>
+      <td>.table-compact</td>
+      <td>This classname changes is the height of the table rows from 36px to 24px.</td>
     </tr>
     <tr>
       <th>Vertical tables</th>

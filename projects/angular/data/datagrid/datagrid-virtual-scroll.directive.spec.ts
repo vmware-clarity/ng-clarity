@@ -47,7 +47,7 @@ export interface Cells {
         [(clrDgSelected)]="selectedRows"
         [clrDgSelectionType]="'multi'"
         style="height: 32rem"
-        clr-density="compact"
+        class="datagrid-compact"
       >
         @for (col of cols; track colByIndex($index, col)) {
           <clr-dg-column>
