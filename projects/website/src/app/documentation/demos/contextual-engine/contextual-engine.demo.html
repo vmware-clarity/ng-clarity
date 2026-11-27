@@ -351,17 +351,16 @@
     <h3 data-toc-item id="refs" class="clr-mt-32px" cds-text="section">Step 2: Have the model name controls by ref</h3>
     <p class="clr-mt-16px" cds-text="body">
       With a policy in place, each writable control in the snapshot has a <code cds-text="code">ref</code>. Tell the
-      model to name a control by its ref and to copy its label into <code cds-text="code">description</code>.
+      model to name a control by its ref.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="refsExample" language="json"></app-code-snippet>
     </div>
     <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
       <li>A ref stays the same for an element from one snapshot to the next, and cannot be guessed.</li>
-      <li>A ref whose element has left the page is refused as <code cds-text="code">stale</code>, never redirected.</li>
       <li>
-        A description that misses a word of the label is refused as <code cds-text="code">mismatch</code>, so a ref that
-        drifted onto another field is caught.
+        A ref whose element has left the page, or was renamed since the snapshot, is refused as
+        <code cds-text="code">stale</code>, never redirected. A renamed element gets a new ref in the next snapshot.
       </li>
     </ul>
 

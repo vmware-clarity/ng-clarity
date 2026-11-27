@@ -28,20 +28,19 @@ export const CLR_MUTATION_OPERATIONS_SCHEMA = {
     oneOf: [
       {
         type: 'object',
-        required: ['operation', 'ref', 'description', 'value'],
+        required: ['operation', 'ref', 'value'],
         additionalProperties: false,
         properties: {
           operation: { const: 'setValue' },
           ref: { type: 'string' },
-          description: { type: 'string' },
           value: {},
         },
       },
       {
         type: 'object',
-        required: ['operation', 'ref', 'description'],
+        required: ['operation', 'ref'],
         additionalProperties: false,
-        properties: { operation: { const: 'clear' }, ref: { type: 'string' }, description: { type: 'string' } },
+        properties: { operation: { const: 'clear' }, ref: { type: 'string' } },
       },
       {
         type: 'object',

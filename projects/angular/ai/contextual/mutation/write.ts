@@ -17,7 +17,7 @@ import {
 
 import { ContextRefTarget } from './context-ref-registry.service';
 import { ClrMutationRefusal } from './mutation.interface';
-import { DISTINGUISHING_WORDS, FILLER_WORDS, NATIVE_CONTROLS, NEGATING_WORDS, TYPED_INPUTS } from './tables';
+import { NATIVE_CONTROLS, TYPED_INPUTS } from './tables';
 import { writeObstacle } from './writability';
 import { attempt } from '../attempt';
 import { accessibleName } from '../dom/accessible-name';
@@ -43,8 +43,6 @@ export interface WriteTarget {
   /** The element with the role: what the user sees and what is checked for obstacles. */
   control: Element;
   label: string;
-  /** The label read from the page now; a ref keeps the one its snapshot showed. */
-  shownLabel: string;
   type: string;
   kind: ControlKind;
   ngControl: NgControl | null;
@@ -103,6 +101,11 @@ const OBSTACLE_DETAILS = {
   readOnly: 'The control is read-only.',
 } as const;
 
+/** The node's whole name as the page gives it now, to tell whether it changed since a snapshot. */
+export function nameOf(elements: Element[]): string {
+  return labelOf(elements, '', Infinity);
+}
+
 /**
  * The outermost bound element is written to; the innermost is what the user sees. A control
  * owned by another Angular application on the page is that application's to fill.
@@ -119,15 +122,14 @@ export function resolveWriteTarget(
   if (obstacle) {
     return { refused: obstacle, detail: OBSTACLE_DETAILS[obstacle] };
   }
-  const shownLabel = labelOf(elements, withheldBy(control, options));
-  const label = ref.label ?? shownLabel;
+  const label = ref.label ?? labelOf(elements, withheldBy(control, options));
   const targetOf = (
     element: Element,
     kind: ControlKind,
     ngControl: NgControl | null,
     mutator: ClrElementMutator | null
   ): TargetResolution => ({
-    target: { element, control, label, shownLabel, type, kind, ngControl, mutator, options, knownModals },
+    target: { element, control, label, type, kind, ngControl, mutator, options, knownModals },
   });
 
   const element = boundElementOf(elements);
@@ -198,32 +200,6 @@ function bindingRefusal(
     return { refused: 'unbound', detail: 'The control belongs to another Angular application on this page.' };
   }
   return bound?.disabled ? { refused: 'disabled', detail: OBSTACLE_DETAILS.disabled } : null;
-}
-
-/**
- * Whether the description names the node: every word of the label, plus only filler. Requiring every word
- * tells "Email" from "Confirm email" in any language. A label the snapshot cut is matched as it was shown.
- */
-export function descriptionMatches(description: unknown, label: string, type = ''): boolean {
-  if (typeof description !== 'string') {
-    return false;
-  }
-  const typeWords = words(type);
-  const given = words(description);
-  if (!label) {
-    return !given.length || given.every(word => typeWords.includes(word));
-  }
-  const labelWords = words(label);
-  if (!given.length || given.some(word => NEGATING_WORDS.has(word) && !labelWords.includes(word))) {
-    return false;
-  }
-  // A distinguishing word must be said even when the type contains it ("start" in `date-range-start`).
-  if (labelWords.some(word => (DISTINGUISHING_WORDS.has(word) || NEGATING_WORDS.has(word)) && !given.includes(word))) {
-    return false;
-  }
-  const said = labelWords.every(word => given.includes(word) || FILLER_WORDS.has(word) || typeWords.includes(word));
-  const extra = given.some(word => !labelWords.includes(word) && !FILLER_WORDS.has(word) && !typeWords.includes(word));
-  return said && given.some(word => labelWords.includes(word)) && !extra;
 }
 
 /**
@@ -735,10 +711,10 @@ function withheldBy(element: Element, options?: ResolvedSnapshotOptions): string
   return options ? usableSelectors(element.ownerDocument, options.excludeSelectors) : '';
 }
 
-function labelOf(elements: Element[], withheld: string): string {
+function labelOf(elements: Element[], withheld: string, maxLength = MAX_LABEL_LENGTH): string {
   for (let index = elements.length - 1; index >= 0; index--) {
     const element = elements[index];
-    const name = accessibleName(element, resolveRole(element), MAX_LABEL_LENGTH, withheld);
+    const name = accessibleName(element, resolveRole(element), maxLength, withheld);
     if (name) {
       return name;
     }
@@ -763,13 +739,6 @@ function listLabels(labels: string[]): string {
     .filter(Boolean)
     .map(label => `"${label}"`)
     .join(', ');
-}
-
-/** A combining mark belongs to its word, so Hindi or a decomposed "é" is not split into letters. */
-function words(text: string): string[] {
-  return normalizeContextText(text)
-    .split(/[^\p{L}\p{M}\p{N}]+/u)
-    .filter(Boolean);
 }
 
 function plain(value: unknown): unknown {

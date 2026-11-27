@@ -38,7 +38,12 @@ describe('ContextRefRegistryService', () => {
     expect(registry.resolve(node.ref as string)).toBeNull();
 
     sink.commit();
-    expect(registry.resolve(node.ref as string)).toEqual({ elements: [input], type: 'textbox', label: undefined });
+    expect(registry.resolve(node.ref as string)).toEqual({
+      elements: [input],
+      type: 'textbox',
+      label: undefined,
+      name: '',
+    });
   });
 
   it('keeps the same ref for the same element across snapshots', () => {
@@ -53,6 +58,24 @@ describe('ContextRefRegistryService', () => {
     second.commit();
 
     expect(again.ref).toBe(node.ref);
+  });
+
+  it('gives an element a new ref once it is renamed, so the old ref no longer resolves', () => {
+    input.setAttribute('aria-label', 'Email');
+    const first = registry.begin(anything);
+    const node: ClrComponentContext = { type: 'textbox' };
+    first.note(node, input);
+    first.commit([node]);
+
+    input.setAttribute('aria-label', 'Confirm email');
+    const second = registry.begin(anything);
+    const again: ClrComponentContext = { type: 'textbox' };
+    second.note(again, input);
+    second.commit([again]);
+
+    expect(again.ref).not.toBe(node.ref);
+    expect(registry.resolve(node.ref as string)).toBeNull();
+    expect(registry.resolve(again.ref as string)?.name).toBe('Confirm email');
   });
 
   it('gives different elements refs that cannot be derived from one another', () => {
@@ -77,6 +100,7 @@ describe('ContextRefRegistryService', () => {
       elements: [host, input],
       type: 'combobox',
       label: 'Cluster',
+      name: expect.any(String),
     });
   });
 

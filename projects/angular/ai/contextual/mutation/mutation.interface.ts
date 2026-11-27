@@ -16,8 +16,6 @@ export interface ClrSetValueOperation {
   operation: 'setValue';
   /** The `ref` of the node to write to, from the latest snapshot. */
   ref: string;
-  /** The node's label, copied from the snapshot; checked against the node so a drifted ref is caught. */
-  description: string;
   /** The value, in the agent's terms: text, a number, `true`, an option's label, a date. */
   value: unknown;
 }
@@ -28,8 +26,6 @@ export interface ClrClearOperation {
   operation: 'clear';
   /** The `ref` of the node to clear, from the latest snapshot. */
   ref: string;
-  /** The node's label, copied from the snapshot; checked as for `setValue`. */
-  description: string;
 }
 
 /** Navigates through the router, so guards run, to a pattern `availableRoutes` would list. */
@@ -109,7 +105,6 @@ export type ClrMutationRefusal =
   | 'unconfirmed'
   | 'declined'
   | 'stale'
-  | 'mismatch'
   | 'hidden'
   | 'redacted'
   | 'disabled'

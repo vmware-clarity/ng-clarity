@@ -71,7 +71,7 @@ export const CLR_MUTATION_OPERATIONS_SCHEMA: {
     readonly items: {
         readonly oneOf: readonly [{
             readonly type: "object";
-            readonly required: readonly ["operation", "ref", "description", "value"];
+            readonly required: readonly ["operation", "ref", "value"];
             readonly additionalProperties: false;
             readonly properties: {
                 readonly operation: {
@@ -80,23 +80,17 @@ export const CLR_MUTATION_OPERATIONS_SCHEMA: {
                 readonly ref: {
                     readonly type: "string";
                 };
-                readonly description: {
-                    readonly type: "string";
-                };
                 readonly value: {};
             };
         }, {
             readonly type: "object";
-            readonly required: readonly ["operation", "ref", "description"];
+            readonly required: readonly ["operation", "ref"];
             readonly additionalProperties: false;
             readonly properties: {
                 readonly operation: {
                     readonly const: "clear";
                 };
                 readonly ref: {
-                    readonly type: "string";
-                };
-                readonly description: {
                     readonly type: "string";
                 };
             };
@@ -302,7 +296,6 @@ export interface ClrAvailableRoute {
 
 // @public
 export interface ClrClearOperation {
-    description: string;
     operation: 'clear';
     ref: string;
 }
@@ -521,7 +514,7 @@ export interface ClrMutationPolicy {
 }
 
 // @public
-export type ClrMutationRefusal = 'unclassified' | 'forbidden' | 'unconfirmed' | 'declined' | 'stale' | 'mismatch' | 'hidden' | 'redacted' | 'disabled' | 'readOnly' | 'unbound' | 'unsupported' | 'invalid' | 'noRoute';
+export type ClrMutationRefusal = 'unclassified' | 'forbidden' | 'unconfirmed' | 'declined' | 'stale' | 'hidden' | 'redacted' | 'disabled' | 'readOnly' | 'unbound' | 'unsupported' | 'invalid' | 'noRoute';
 
 // @public
 export interface ClrMutationReport {
@@ -612,7 +605,6 @@ export interface ClrRouteContext {
 
 // @public
 export interface ClrSetValueOperation {
-    description: string;
     operation: 'setValue';
     ref: string;
     value: unknown;

@@ -383,8 +383,8 @@ describe('ClrDatagrid element mutator', () => {
     return gridOf(contextEngine['read'](undefined));
   }
 
-  async function write(ref: string, value: unknown, description = ''): Promise<ClrElementMutationResult> {
-    const report = await engine.apply([{ operation: 'setValue', ref, description, value }]);
+  async function write(ref: string, value: unknown): Promise<ClrElementMutationResult> {
+    const report = await engine.apply([{ operation: 'setValue', ref, value }]);
     await settle();
     return report.results[0] as ClrElementMutationResult;
   }
@@ -447,10 +447,7 @@ describe('ClrDatagrid element mutator', () => {
 
       // The select-all checkbox is in the grid's ignored header: it is no form inside the grid.
       expect(node.state?.['rows']).toEqual(['esx-01 | Running', 'esx-02 | Running', 'esx-03 | Stopped']);
-      const report = await engine.apply(
-        [{ operation: 'setValue', ref: String(node.ref), description: '', value: 'esx-02' }],
-        options
-      );
+      const report = await engine.apply([{ operation: 'setValue', ref: String(node.ref), value: 'esx-02' }], options);
       await settle();
 
       expect(report.results[0].applied).toBe(true);
@@ -464,10 +461,7 @@ describe('ClrDatagrid element mutator', () => {
 
       // The input belongs to its cell, the application's content: the snapshot still shows the grid.
       expect(node.ref).toBeDefined();
-      const report = await engine.apply(
-        [{ operation: 'setValue', ref: String(node.ref), description: '', value: 'esx-02' }],
-        options
-      );
+      const report = await engine.apply([{ operation: 'setValue', ref: String(node.ref), value: 'esx-02' }], options);
       await settle();
 
       expect(report.results[0].refused).toBeUndefined();
@@ -593,7 +587,7 @@ describe('ClrDatagrid element mutator', () => {
       host.selected = [host.items[0], host.items[1]];
       await settle();
 
-      const report = await engine.apply([{ operation: 'clear', ref: String(grid().ref), description: '' }]);
+      const report = await engine.apply([{ operation: 'clear', ref: String(grid().ref) }]);
       await settle();
 
       expect(report.results[0].applied).toBe(true);
@@ -752,11 +746,11 @@ describe('ClrDatagrid element mutator', () => {
       const host = await create(MultiHost);
       const ref = String(grid().ref);
 
-      const [refused] = engine.plan([{ operation: 'setValue', ref, description: '', value: ['esx-09'] }]);
+      const [refused] = engine.plan([{ operation: 'setValue', ref, value: ['esx-09'] }]);
       expect(refused.refused).toBe('invalid');
       expect(refused.detail).toContain('No such row on this page');
 
-      const [planned] = engine.plan([{ operation: 'setValue', ref, description: '', value: ['esx-02'] }]);
+      const [planned] = engine.plan([{ operation: 'setValue', ref, value: ['esx-02'] }]);
       expect(planned.refused).toBeUndefined();
       expect(planned.target?.value).toEqual(['esx-02 | Running']);
       expect(names(host.selected)).toEqual([]);
@@ -772,7 +766,7 @@ describe('ClrDatagrid element mutator', () => {
       expect(input?.ref).toBeDefined();
       expect(input?.ref).not.toBe(gridOf(page).ref);
 
-      const result = await write(String(input?.ref), 'rebooted', 'Note for esx-02');
+      const result = await write(String(input?.ref), 'rebooted');
 
       expect(result.applied).toBe(true);
       expect(host.notes[1].value).toBe('rebooted');
