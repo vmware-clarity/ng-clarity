@@ -11,8 +11,6 @@ export const THEMES = {
 } as const;
 
 export const DENSITY = {
-  // Review: the value stays 'default' because the VRT matrix (CLARITY_VRT_DENSITY in pr-build.yml) and the
-  // snapshot file names use it. Renaming it to 'regular' means renaming those too.
-  REGULAR: 'default',
+  NONE: 'default',
   COMPACT: 'compact',
 } as const;

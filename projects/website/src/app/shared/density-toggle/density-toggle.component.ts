@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ClarityIcons, ClrIcon, resizeIcon, shrinkIcon } from '@clr/angular';
+import { ClarityIcons, ClrIcon, portraitIcon } from '@clr/angular';
 
 type DensityType = '' | 'compact';
 
@@ -16,13 +16,12 @@ const densityLocalStorageKey = 'density';
   selector: 'app-density-toggle',
   template: `
     <button
-      class="btn btn-link nav-link nav-text toggle-density"
+      class="btn btn-link nav-link toggle-density"
+      [class.compact-density]="isCompact"
       [attr.aria-label]="'Density: ' + densityLabel"
       (click)="toggleDensity()"
     >
-      <span class="density-toggle-frame" aria-hidden="true">
-        <clr-icon class="density-toggle-icon" [shape]="isCompact ? 'shrink' : 'resize'"></clr-icon>
-      </span>
+      <clr-icon class="density-toggle-icon" size="md" shape="portrait" [solid]="isCompact"></clr-icon>
       <span>{{ densityLabel }}</span>
     </button>
   `,
@@ -34,26 +33,12 @@ const densityLocalStorageKey = 'density';
         position: relative;
       }
       button.toggle-density {
-        display: inline-flex;
-        align-items: center;
-        gap: var(--clr-base-gap-xs);
-      }
-      .density-toggle-frame {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        box-sizing: border-box;
-        width: var(--clr-base-icon-size-m);
-        height: var(--clr-base-icon-size-m);
-        border: var(--cds-alias-object-border-width-100) solid var(--clr-header-font-color);
-        border-radius: var(--clr-base-border-radius-xs);
-      }
-      clr-icon.density-toggle-icon {
-        width: 100%;
-        height: 100%;
-        color: var(--clr-header-font-color);
-        /* resize and shrink point diagonally; rotating them makes the arrows vertical. */
-        transform: rotate(-45deg);
+        &,
+        &:hover {
+          clr-icon.density-toggle-icon {
+            color: var(--clr-header-font-color);
+          }
+        }
       }
     `,
   ],
@@ -64,7 +49,7 @@ export class DensityToggleComponent implements OnInit {
   protected density = getPreferredDensity();
 
   constructor() {
-    ClarityIcons.addIcons(resizeIcon, shrinkIcon);
+    ClarityIcons.addIcons(portraitIcon);
   }
 
   protected get isCompact() {
