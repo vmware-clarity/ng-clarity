@@ -39,8 +39,6 @@ export class ClrProgressBar {
   private _labeled = false;
   private _fade = false;
   private _loop = false;
-  private _flash = false;
-  private _flashDanger = false;
   private _compact = false;
 
   @Input()
@@ -110,27 +108,6 @@ export class ClrProgressBar {
   @HostBinding('class.danger')
   get dangerClass() {
     return this.color === 'danger';
-  }
-
-  @Input('clrFlash')
-  set clrFlash(value: boolean | string) {
-    this._flash = isBooleanAttributeSet(value);
-  }
-
-  @HostBinding('class.flash')
-  get flashClass() {
-    return this._flash;
-  }
-
-  /** @deprecated since 2.0, remove in 4.0 */
-  @Input('clrFlashDanger')
-  set clrFlashDanger(value: boolean | string) {
-    this._flashDanger = isBooleanAttributeSet(value);
-  }
-
-  @HostBinding('class.flash-danger')
-  get flashDangerClass() {
-    return this._flashDanger;
   }
 
   /**

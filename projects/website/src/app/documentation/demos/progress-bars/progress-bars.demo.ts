@@ -122,13 +122,7 @@ export class ProgressBarsDemo extends ClarityDocComponent {
       name: '[clrFade]',
       type: 'Boolean',
       defaultValue: 'false',
-      description: 'Flash animation',
-    },
-    {
-      name: '[clrFlashDanger]',
-      type: 'Boolean',
-      defaultValue: 'false',
-      description: 'Flash in danger animation',
+      description: 'Fade animation',
     },
     {
       name: '[clrColor]',

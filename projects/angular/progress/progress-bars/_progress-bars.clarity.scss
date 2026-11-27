@@ -90,10 +90,6 @@
 
   // Variations
   .progress {
-    // @deprecated in 3.0
-
-    /* warning, success, and danger distinctions for progress bars are deprecated in 3.0 */
-
     @each $type, $color in (success, progress-bars-variables.$clr-progress-success-color),
       (warning, progress-bars-variables.$clr-progress-warning-color),
       (danger, progress-bars-variables.$clr-progress-danger-color)
@@ -156,52 +152,6 @@
     &,
     & + span {
       animation: clr-progress-fade 0.3s linear 0.5s forwards;
-    }
-  }
-
-  $clr-progress-flashTiming: 0.1s;
-  $clr-progress-transition:
-    width 0.23s ease-in,
-    background-color $clr-progress-flashTiming ease-out 0.3s;
-
-  %clr-progress-animatedTransition {
-    &::-webkit-progress-value {
-      transition: $clr-progress-transition;
-    }
-
-    &[value='0']::-webkit-progress-value {
-      // Prevent transition when resetting back to zero.
-      transition: none;
-    }
-
-    &::-moz-progress-bar {
-      transition: $clr-progress-transition;
-    }
-  }
-
-  /* flash progress bars are deprecated in 3.0 */
-  .progress.flash > progress {
-    @extend %clr-progress-animatedTransition;
-
-    &[value='100'] {
-      @include mixins.clr-progress-color(progress-bars-variables.$clr-progress-success-color);
-    }
-  }
-
-  /* flash progress bars are deprecated in 3.0 */
-  .progress.progress-fade.flash > progress[value='100'] {
-    &,
-    & + span {
-      animation: clr-progress-fade 0.6s linear 1s forwards;
-    }
-  }
-
-  /* flash-danger progress bars are deprecated in 3.0 */
-  .progress.flash-danger > progress {
-    @extend %clr-progress-animatedTransition;
-
-    &[value='100'] {
-      @include mixins.clr-progress-color(progress-bars-variables.$clr-progress-danger-color);
     }
   }
 
@@ -491,8 +441,6 @@
     &.labeled > .progress-meter {
       right: tokens.$cds-global-space-11;
     }
-
-    /* warning, success, and danger distinctions for progress bars are deprecated in 3.0 */
 
     @each $type, $color in (success, progress-bars-variables.$clr-progress-success-color),
       (warning, progress-bars-variables.$clr-progress-warning-color),

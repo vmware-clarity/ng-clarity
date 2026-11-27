@@ -5,9 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+@use 'sass:meta';
 @use '../../styles/mixins';
 @use 'variables.nav' as nav-variables;
 
+@include meta.load-css('properties.nav');
 @include mixins.exports('links.clarity') {
   a {
     /*

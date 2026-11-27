@@ -21,23 +21,15 @@ export class ProgressBarComponentDemo {
     state: boolean;
     value: number;
     interval: any;
-    setup: { flash: boolean; fade: boolean };
+    setup: { fade: boolean };
   }[] = [
     {
-      name: 'flash',
-      label: 'Flash only',
-      state: false,
-      value: 20,
-      interval: null,
-      setup: { flash: true, fade: false },
-    },
-    {
       name: 'demo',
-      label: 'Flash & Fade',
+      label: 'Fade',
       state: false,
       value: 20,
       interval: null,
-      setup: { flash: true, fade: true },
+      setup: { fade: true },
     },
   ];
   private readonly changeDetectorRef = inject(ChangeDetectorRef);

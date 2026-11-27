@@ -34,7 +34,6 @@ export const DEFAULT_OVERRIDES: Record<string, string[]> = {
     '--cds-alias-utility-blue-shade',
   ],
   '--cds-alias-status-info-dark': [
-    '--cds-alias-object-interaction-info-click',
     '--cds-alias-object-interaction-info-active',
     '--cds-alias-object-interaction-info-selected',
   ],
@@ -49,10 +48,7 @@ export const DEFAULT_OVERRIDES: Record<string, string[]> = {
     '--cds-alias-typography-success-hover',
     '--cds-alias-utility-green-shade',
   ],
-  '--cds-alias-status-success-dark': [
-    '--cds-alias-object-interaction-success-click',
-    '--cds-alias-object-interaction-success-active',
-  ],
+  '--cds-alias-status-success-dark': ['--cds-alias-object-interaction-success-active'],
   // warning
   '--cds-alias-status-warning': ['--cds-alias-utility-yellow'],
   '--cds-alias-status-warning-tint': [
@@ -64,10 +60,7 @@ export const DEFAULT_OVERRIDES: Record<string, string[]> = {
     '--cds-alias-typography-warning-hover',
     '--cds-alias-utility-yellow-shade',
   ],
-  '--cds-alias-status-warning-dark': [
-    '--cds-alias-object-interaction-warning-click',
-    '--cds-alias-object-interaction-warning-active',
-  ],
+  '--cds-alias-status-warning-dark': ['--cds-alias-object-interaction-warning-active'],
   //danger
   '--cds-alias-status-danger': ['--cds-alias-utility-red'],
   '--cds-alias-status-danger-tint': [
@@ -79,10 +72,7 @@ export const DEFAULT_OVERRIDES: Record<string, string[]> = {
     '--cds-alias-typography-danger-hover',
     '--cds-alias-utility-red-shade',
   ],
-  '--cds-alias-status-danger-dark': [
-    '--cds-alias-object-interaction-danger-click',
-    '--cds-alias-object-interaction-danger-active',
-  ],
+  '--cds-alias-status-danger-dark': ['--cds-alias-object-interaction-danger-active'],
 };
 
 export const BACKGROUND_TOKENS = [

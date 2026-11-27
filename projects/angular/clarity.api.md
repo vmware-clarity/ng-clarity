@@ -6464,10 +6464,6 @@ export class ClrProgressBar {
     // (undocumented)
     set clrFade(value: boolean | string);
     // (undocumented)
-    set clrFlash(value: boolean | string);
-    // @deprecated (undocumented)
-    set clrFlashDanger(value: boolean | string);
-    // (undocumented)
     set clrLabeled(value: boolean | string);
     // (undocumented)
     set clrLoop(value: boolean | string);
@@ -6485,10 +6481,6 @@ export class ClrProgressBar {
     externalId: string | null;
     // (undocumented)
     get fadeClass(): boolean;
-    // (undocumented)
-    get flashClass(): boolean;
-    // (undocumented)
-    get flashDangerClass(): boolean;
     // (undocumented)
     get id(): string | undefined;
     set id(value: string);
@@ -6542,14 +6534,6 @@ export class ClrProgressBar {
         };
         "clrLoop": {
             "alias": "clrLoop";
-            "required": false;
-        };
-        "clrFlash": {
-            "alias": "clrFlash";
-            "required": false;
-        };
-        "clrFlashDanger": {
-            "alias": "clrFlashDanger";
             "required": false;
         };
     }, {}, never, never, false, never>;

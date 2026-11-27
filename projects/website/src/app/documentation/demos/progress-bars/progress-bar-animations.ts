@@ -17,18 +17,8 @@ const EXAMPLE = `
   <progress max="100" value="0" data-displayval="0%"></progress>
 </div>
 
-<h4>Flash Then Fade</h4>
-<div class="progress flash progress-fade">
-  <progress max="100" value="0" data-displayval="0%"></progress>
-</div>
-
-<h4>Flash Red, No Fade</h4>
-<div class="progress flash-danger">
-  <progress max="100" value="0" data-displayval="0%"></progress>
-</div>
-
-<h4>Labeled With Success Flash And Fade</h4>
-<div class="progress flash progress-fade labeled">
+<h4>Labeled With Fade</h4>
+<div class="progress progress-fade labeled">
   <progress max="100" value="0" data-displayval="0%"></progress>
 </div>
 `;
@@ -45,9 +35,6 @@ export class ProgressBarAnimationsDemo {
   examples: ProgBarExample[];
 
   constructor() {
-    this.examples = [
-      new ProgBarExample('progress-fade', 'Fade Out'),
-      new ProgBarExample('flash progress-fade', 'Flash Then Fade'),
-    ];
+    this.examples = [new ProgBarExample('progress-fade', 'Fade Out')];
   }
 }

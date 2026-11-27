@@ -23,8 +23,6 @@ type ProgressBarArgs = {
   clrFade: boolean | string;
   clrLoop: boolean | string;
   clrColor: string;
-  clrFlash: boolean | string;
-  clrFlashDanger: boolean | string;
   clrCompact: boolean | string;
   TYPES: string[];
 };
@@ -44,8 +42,6 @@ const meta = {
     // inputs
     clrDisplayval: '',
     clrFade: false,
-    clrFlash: false,
-    clrFlashDanger: false,
     clrLabeled: false,
     clrLoop: false,
     clrMax: 100,
@@ -65,8 +61,6 @@ const meta = {
         [clrFade]="clrFade"
         [clrLoop]="clrLoop"
         [clrColor]="clrColor"
-        [clrFlash]="clrFlash"
-        [clrFlashDanger]="clrFlashDanger"
         [clrCompact]="clrCompact"
       ></clr-progress-bar>
     `,
@@ -96,8 +90,6 @@ export const Showcase: Story = {
             [clrFade]="clrFade"
             [clrLoop]="clrLoop"
             [clrColor]="type"
-            [clrFlash]="clrFlash"
-            [clrFlashDanger]="clrFlashDanger"
             [clrCompact]="clrCompact"
           ></clr-progress-bar>
         </div>
@@ -112,8 +104,6 @@ export const Showcase: Story = {
           [clrFade]="clrFade"
           [clrLoop]="clrLoop"
           [clrColor]="type"
-          [clrFlash]="clrFlash"
-          [clrFlashDanger]="clrFlashDanger"
           [clrCompact]="'true'"
         ></clr-progress-bar>
 
@@ -126,8 +116,6 @@ export const Showcase: Story = {
           [clrLabeled]="'true'"
           [clrLoop]="clrLoop"
           [clrColor]="type"
-          [clrFlash]="clrFlash"
-          [clrFlashDanger]="clrFlashDanger"
           [clrCompact]="clrCompact"
         ></clr-progress-bar>
 
@@ -140,8 +128,6 @@ export const Showcase: Story = {
           [clrLabeled]="clrLabeled"
           [clrLoop]="'true'"
           [clrColor]="type"
-          [clrFlash]="clrFlash"
-          [clrFlashDanger]="clrFlashDanger"
           [clrCompact]="clrCompact"
         ></clr-progress-bar>
       }

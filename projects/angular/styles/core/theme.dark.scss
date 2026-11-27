@@ -84,27 +84,21 @@
   --cds-alias-object-interaction-info-hover: #{tokens.$cds-global-color-blue-300};
   --cds-alias-object-interaction-info-active: #{tokens.$cds-global-color-blue-500};
   --cds-alias-object-interaction-info-selected: #{tokens.$cds-global-color-blue-500};
-  --cds-alias-object-interaction-info-click: #{tokens.$cds-global-color-blue-500}; // deprecated in favor of active. To be removed in next major release.
   --cds-alias-object-interaction-info-secondary-hover: #{tokens.$cds-global-color-blue-1000};
   --cds-alias-object-interaction-success-hover: #{tokens.$cds-global-color-green-400};
   --cds-alias-object-interaction-success-active: #{tokens.$cds-global-color-green-600};
-  --cds-alias-object-interaction-success-click: #{tokens.$cds-global-color-green-600}; // deprecated in favor of active. To be removed in next major release.
   --cds-alias-object-interaction-success-secondary-hover: #{tokens.$cds-global-color-green-1000};
   --cds-alias-object-interaction-warning-hover: #{tokens.$cds-global-color-yellow-300};
   --cds-alias-object-interaction-warning-active: #{tokens.$cds-global-color-yellow-500};
-  --cds-alias-object-interaction-warning-click: #{tokens.$cds-global-color-yellow-500}; // deprecated in favor of active. To be removed in next major release.
   --cds-alias-object-interaction-warning-secondary-hover: #{tokens.$cds-global-color-yellow-1000};
   --cds-alias-object-interaction-danger-hover: #{tokens.$cds-global-color-red-400};
   --cds-alias-object-interaction-danger-active: #{tokens.$cds-global-color-red-600};
-  --cds-alias-object-interaction-danger-click: #{tokens.$cds-global-color-red-600}; // deprecated in favor of active. To be removed in next major release.
   --cds-alias-object-interaction-danger-secondary-hover: #{tokens.$cds-global-color-red-1000};
   --cds-alias-object-interaction-neutral-hover: #{tokens.$cds-global-color-construction-200};
   --cds-alias-object-interaction-neutral-active: #{tokens.$cds-global-color-construction-400};
-  --cds-alias-object-interaction-neutral-click: #{tokens.$cds-global-color-construction-400}; // deprecated in favor of active. To be removed in next major release.
   --cds-alias-object-interaction-neutral-secondary-hover: #{tokens.$cds-global-color-construction-800};
   --cds-alias-object-interaction-inverse-hover: #{tokens.$cds-global-color-construction-700};
   --cds-alias-object-interaction-inverse-active: #{tokens.$cds-global-color-construction-800};
-  --cds-alias-object-interaction-inverse-click: #{tokens.$cds-global-color-construction-800}; // deprecated in favor of active. To be removed in next major release.
 
   // skeleton loading gradient
   --cds-alias-object-skeleton-loading-gradient: linear-gradient(

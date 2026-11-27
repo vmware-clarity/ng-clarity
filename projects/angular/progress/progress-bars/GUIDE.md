@@ -14,7 +14,7 @@ From the [progress bar guidance](https://guidance.clarity.design/1020):
 
 - **Determinate** when the duration or amount is known (uploads, multi-step setup). Always add descriptive text next to it, such as the file name and size. A percentage label is optional.
 - **Indeterminate** (`clrLoop`) when there's no estimated end. If space is tight, use a spinner instead — guide `clr-spinner`.
-- Colour must not carry meaning. Report completion or failure with a text label or an alert next to the bar, not with colour or flash.
+- Colour must not carry meaning. Report completion or failure with a text label or an alert next to the bar, not with colour.
 
 ## Setup
 
@@ -50,7 +50,7 @@ export class Upload {
 | --------------- | --------------------------------------------------------- |
 | `clrValue`      | Current value (default 0)                                 |
 | `clrMax`        | Maximum (default 100)                                     |
-| `clrColor`      | `success` / `warning` / `danger`, deprecated in 3.0       |
+| `clrColor`      | `success` / `warning` / `danger`                          |
 | `clrLabeled`    | Show the value label on the right                         |
 | `clrDisplayval` | Custom label text (default `{value}%`)                    |
 | `clrLoop`       | Indeterminate, looping animation                          |
@@ -59,7 +59,6 @@ export class Upload {
 | `id`            | Id of the inner `<progress>` element (for `aria-*` links) |
 
 - The label is `{value}%`, and `clrFade` only fires at a value of exactly `100`. So bind a percentage with the default `clrMax` of 100; if you set another `clrMax`, also set `clrDisplayval`.
-- `clrColor` variants, `clrFlash` and `clrFlashDanger` are deprecated; don't use them. Report completion or failure with a text label or an alert next to the bar.
 - CSS only: `<div class="progress labeled"><progress value="65" max="100"></progress><span>65%</span></div>`. Use `class="progress loop"` for indeterminate.
 
 ## References

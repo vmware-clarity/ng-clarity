@@ -39,8 +39,8 @@ export const COLOR_INTERACTION = {
         color: '--cds-alias-object-interaction-info-hover',
       },
       {
-        text: 'info-click',
-        color: '--cds-alias-object-interaction-info-click',
+        text: 'info-active',
+        color: '--cds-alias-object-interaction-info-active',
       },
       {
         text: 'info-secondary-hover',
@@ -53,8 +53,8 @@ export const COLOR_INTERACTION = {
         color: '--cds-alias-object-interaction-success-hover',
       },
       {
-        text: 'success-click',
-        color: '--cds-alias-object-interaction-success-click',
+        text: 'success-active',
+        color: '--cds-alias-object-interaction-success-active',
       },
       {
         text: 'success-secondary-hover',
@@ -67,8 +67,8 @@ export const COLOR_INTERACTION = {
         color: '--cds-alias-object-interaction-warning-hover',
       },
       {
-        text: 'warning-click',
-        color: '--cds-alias-object-interaction-warning-click',
+        text: 'warning-active',
+        color: '--cds-alias-object-interaction-warning-active',
       },
       {
         text: 'warning-secondary-hover',
@@ -81,8 +81,8 @@ export const COLOR_INTERACTION = {
         color: '--cds-alias-object-interaction-danger-hover',
       },
       {
-        text: 'danger-click',
-        color: '--cds-alias-object-interaction-danger-click',
+        text: 'danger-active',
+        color: '--cds-alias-object-interaction-danger-active',
       },
       {
         text: 'danger-secondary-hover',
@@ -95,8 +95,8 @@ export const COLOR_INTERACTION = {
         color: '--cds-alias-object-interaction-neutral-hover',
       },
       {
-        text: 'neutral-click',
-        color: '--cds-alias-object-interaction-neutral-click',
+        text: 'neutral-active',
+        color: '--cds-alias-object-interaction-neutral-active',
       },
       {
         text: 'neutral-secondary-hover',
@@ -109,8 +109,8 @@ export const COLOR_INTERACTION = {
         color: '--cds-alias-object-interaction-inverse-hover',
       },
       {
-        text: 'inverse-click',
-        color: '--cds-alias-object-interaction-inverse-click',
+        text: 'inverse-active',
+        color: '--cds-alias-object-interaction-inverse-active',
       },
     ],
   ],
