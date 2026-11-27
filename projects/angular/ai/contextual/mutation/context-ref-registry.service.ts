@@ -9,7 +9,7 @@ import { Injectable } from '@angular/core';
 import { ClrComponentContext } from '@clr/angular/utils';
 
 import { topmostModal } from './writability';
-import { offersWrite } from './write';
+import { nameOf, offersWrite } from './write';
 import { ClrContextRefSink } from '../dom/walk';
 
 export interface ContextRefTarget {
@@ -17,12 +17,15 @@ export interface ContextRefTarget {
   elements: Element[];
   type: string;
   label?: string;
+  /** The node's whole name when the snapshot was taken; see `nameOf`. */
+  name?: string;
 }
 
 interface StoredTarget {
   elements: WeakRef<Element>[];
   type: string;
   label?: string;
+  name: string;
 }
 
 /** Long enough not to be guessed, short enough to read. */
@@ -61,6 +64,7 @@ export class ContextRefRegistryService {
       },
       commit: (components = []) => {
         const withheld = new Set<string>();
+        const renamed = new Map<string, string>();
         let modal: Element | null | undefined;
         for (const [ref, target] of collected) {
           const control = target.elements[target.elements.length - 1];
@@ -69,14 +73,20 @@ export class ContextRefRegistryService {
             withheld.add(ref);
             continue;
           }
-          this.targets.set(ref, {
+          const name = nameOf(target.elements);
+          const current = this.refNamed(ref, control, name);
+          if (current !== ref) {
+            renamed.set(ref, current);
+          }
+          this.targets.set(current, {
             elements: target.elements.map(element => new WeakRef(element)),
             type: target.type,
             label: target.label,
+            name,
           });
         }
-        if (withheld.size) {
-          withoutRefs(components, withheld);
+        if (withheld.size || renamed.size) {
+          rewriteRefs(components, ref => (withheld.has(ref) ? undefined : (renamed.get(ref) ?? ref)));
         }
         this.prune();
       },
@@ -92,7 +102,7 @@ export class ContextRefRegistryService {
     if (elements.some(element => !element || !element.isConnected)) {
       return null;
     }
-    return { elements: elements as Element[], type: stored.type, label: stored.label };
+    return { elements: elements as Element[], type: stored.type, label: stored.label, name: stored.name };
   }
 
   private prune(): void {
@@ -101,6 +111,17 @@ export class ContextRefRegistryService {
         this.targets.delete(ref);
       }
     }
+  }
+
+  /** A node renamed since its ref was handed out gets a new ref, so the old one no longer resolves. */
+  private refNamed(ref: string, control: Element, name: string): string {
+    const stored = this.targets.get(ref);
+    if (!stored || stored.name === name) {
+      return ref;
+    }
+    this.targets.delete(ref);
+    this.refsByElement.delete(control);
+    return this.refFor(control);
   }
 
   private refFor(element: Element): string {
@@ -115,12 +136,17 @@ export class ContextRefRegistryService {
   }
 }
 
-function withoutRefs(nodes: ClrComponentContext[], refs: ReadonlySet<string>): void {
+function rewriteRefs(nodes: ClrComponentContext[], rewrite: (ref: string) => string | undefined): void {
   for (const node of nodes) {
-    if (node.ref && refs.has(node.ref)) {
-      delete node.ref;
+    if (node.ref) {
+      const ref = rewrite(node.ref);
+      if (ref) {
+        node.ref = ref;
+      } else {
+        delete node.ref;
+      }
     }
-    withoutRefs(node.children ?? [], refs);
+    rewriteRefs(node.children ?? [], rewrite);
   }
 }
 

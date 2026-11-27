@@ -4,7 +4,6 @@
 
 ```ts
 
-import { AbstractControl } from '@angular/forms';
 import { AfterViewInit } from '@angular/core';
 import { AnimationCallbackEvent } from '@angular/core';
 import { CdkDrag } from '@angular/cdk/drag-drop';
@@ -54,16 +53,10 @@ export const CLR_CONTEXT_LOADING_TYPE = "clr-loading";
 export const CLR_CONTEXT_PRESETS: Readonly<Record<ClrContextPreset, Readonly<ClrContextSnapshotOptions>>>;
 
 // @public
-export const CLR_CONTEXT_PROTOCOL = "ui-context/v1";
-
-// @public
 export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
 
 // @public
 export const CLR_CONTEXT_UNAVAILABLE_TYPE = "clr-unavailable";
-
-// @public
-export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: readonly (keyof ClrContextSnapshotOptions)[];
 
 // @public
 export const CLR_MUTATION_MAX_OPERATIONS = 50;
@@ -78,7 +71,7 @@ export const CLR_MUTATION_OPERATIONS_SCHEMA: {
     readonly items: {
         readonly oneOf: readonly [{
             readonly type: "object";
-            readonly required: readonly ["operation", "ref", "description", "value"];
+            readonly required: readonly ["operation", "ref", "value"];
             readonly additionalProperties: false;
             readonly properties: {
                 readonly operation: {
@@ -87,23 +80,17 @@ export const CLR_MUTATION_OPERATIONS_SCHEMA: {
                 readonly ref: {
                     readonly type: "string";
                 };
-                readonly description: {
-                    readonly type: "string";
-                };
                 readonly value: {};
             };
         }, {
             readonly type: "object";
-            readonly required: readonly ["operation", "ref", "description"];
+            readonly required: readonly ["operation", "ref"];
             readonly additionalProperties: false;
             readonly properties: {
                 readonly operation: {
                     readonly const: "clear";
                 };
                 readonly ref: {
-                    readonly type: "string";
-                };
-                readonly description: {
                     readonly type: "string";
                 };
             };
@@ -309,7 +296,6 @@ export interface ClrAvailableRoute {
 
 // @public
 export interface ClrClearOperation {
-    description: string;
     operation: 'clear';
     ref: string;
 }
@@ -395,40 +381,6 @@ export interface ClrContextDomExtractor {
 }
 
 // @public
-export interface ClrContextFrameHostOptions {
-    allowAnyOrigin?: boolean;
-    allowedOrigins?: string[];
-    minRequestIntervalMs?: number;
-    shareFormValues?: boolean;
-    shareFullUrl?: boolean;
-    snapshot?: ClrContextSnapshotOptions;
-}
-
-// @public
-export interface ClrContextFrameRequest {
-    kind: 'context-request';
-    options?: ClrContextSnapshotOptions;
-    protocol: typeof CLR_CONTEXT_PROTOCOL;
-    requestId: string;
-}
-
-// @public
-export interface ClrContextFrameRequestOptions {
-    hostOrigin?: string;
-    options?: ClrContextSnapshotOptions;
-    targetWindow?: Window;
-    timeoutMs?: number;
-}
-
-// @public
-export interface ClrContextFrameResponse {
-    context: ClrPageContext;
-    kind: 'context-response';
-    protocol: typeof CLR_CONTEXT_PROTOCOL;
-    requestId: string;
-}
-
-// @public
 export class ClrContextIgnore {
     readonly clrContextIgnore: InputSignalWithTransform<boolean, unknown>;
     // (undocumented)
@@ -496,14 +448,9 @@ export class ClrContextRegistryService {
 }
 
 // @public
-export class ClrContextService implements OnDestroy {
+export class ClrContextService {
     configure(config: ClrContextConfig): void;
-    disableFrameBridge(): void;
-    enableFrameBridge(options?: ClrContextFrameHostOptions): void;
-    // (undocumented)
-    ngOnDestroy(): void;
     publish(element: Element, read: () => Partial<ClrPublishedContext> | null | undefined): () => void;
-    requestHostContext(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null>;
     // @internal
     resolveScope(options?: ClrContextSnapshotOptions): ResolvedSnapshotOptions;
     snapshot(options?: ClrContextSnapshotOptions): Promise<ClrPageContext>;
@@ -567,7 +514,7 @@ export interface ClrMutationPolicy {
 }
 
 // @public
-export type ClrMutationRefusal = 'unclassified' | 'forbidden' | 'unconfirmed' | 'declined' | 'stale' | 'mismatch' | 'hidden' | 'redacted' | 'disabled' | 'readOnly' | 'unbound' | 'unsupported' | 'invalid' | 'noRoute';
+export type ClrMutationRefusal = 'unclassified' | 'forbidden' | 'unconfirmed' | 'declined' | 'stale' | 'hidden' | 'redacted' | 'disabled' | 'readOnly' | 'unbound' | 'unsupported' | 'invalid' | 'noRoute';
 
 // @public
 export interface ClrMutationReport {
@@ -648,9 +595,6 @@ export interface ClrPublishedContext extends ClrComponentContext {
 }
 
 // @public
-export function clrRequestHostContext(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null>;
-
-// @public
 export interface ClrRouteContext {
     data?: Record<string, unknown>;
     params?: Record<string, string>;
@@ -661,7 +605,6 @@ export interface ClrRouteContext {
 
 // @public
 export interface ClrSetValueOperation {
-    description: string;
     operation: 'setValue';
     ref: string;
     value: unknown;

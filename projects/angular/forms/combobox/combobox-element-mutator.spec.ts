@@ -199,9 +199,7 @@ describe('ClrCombobox element mutator', () => {
 
   async function set(label: string, value: unknown): Promise<ClrElementMutationResult> {
     const ref = refOf(TestBed.inject(ClrContextService)['read'](undefined), label);
-    const report = await TestBed.inject(ClrMutationService).apply([
-      { operation: 'setValue', ref, description: label, value },
-    ]);
+    const report = await TestBed.inject(ClrMutationService).apply([{ operation: 'setValue', ref, value }]);
     await settle();
     return report.results[0] as ClrElementMutationResult;
   }
@@ -383,7 +381,7 @@ describe('ClrCombobox element mutator', () => {
     function plan(operation: 'setValue' | 'clear', label: string, value?: unknown) {
       const ref = refOf(TestBed.inject(ClrContextService)['read'](undefined), label);
       return TestBed.inject(ClrMutationService).plan([
-        operation === 'clear' ? { operation, ref, description: label } : { operation, ref, description: label, value },
+        operation === 'clear' ? { operation, ref } : { operation, ref, value },
       ]);
     }
 

@@ -27,13 +27,13 @@ describe('CLR_MUTATION_OPERATIONS_SCHEMA', () => {
   // A default Ajv, as a backend would create it: unknown formats or keywords would throw here.
   const validate = new Ajv().compile(CLR_MUTATION_OPERATIONS_SCHEMA);
   const valid: ClrMutationOperation[] = [
-    { operation: 'setValue', ref: 'e1', description: 'Name', value: 'Ada' },
-    { operation: 'clear', ref: 'e2', description: 'Notes' },
+    { operation: 'setValue', ref: 'e1', value: 'Ada' },
+    { operation: 'clear', ref: 'e2' },
     { operation: 'navigate', path: 'hosts/:id', params: { id: '42' }, queryParams: { tab: 'logs' } },
   ];
   const invalid = [
-    [{ operation: 'setValue', ref: 'e1', description: 'Name' }],
-    [{ operation: 'clear', ref: 'e2', description: 'Notes', value: '' }],
+    [{ operation: 'setValue', ref: 'e1' }],
+    [{ operation: 'clear', ref: 'e2', value: '' }],
     [{ operation: 'navigate', path: 'hosts/:id', params: { id: 42 } }],
     [{ operation: 'submit', ref: 'e3' }],
     Array.from({ length: CLR_MUTATION_MAX_OPERATIONS + 1 }, () => valid[1]),
@@ -50,8 +50,8 @@ describe('CLR_MUTATION_OPERATIONS_SCHEMA', () => {
 
   it('lists the same fields as the operation types', () => {
     const fields: [Keys<ClrSetValueOperation>, Keys<ClrClearOperation>, Keys<ClrNavigateOperation>] = [
-      { operation: true, ref: true, description: true, value: true },
-      { operation: true, ref: true, description: true },
+      { operation: true, ref: true, value: true },
+      { operation: true, ref: true },
       { operation: true, path: true, params: true, queryParams: true },
     ];
 
@@ -76,7 +76,7 @@ describe('ClrMutationService, taking only what matches the schema', () => {
   });
 
   it('refuses an operation with a property the schema does not have, naming it', async () => {
-    const report = await engine.apply([{ operation: 'clear', ref: 'e1', description: 'Name', value: '' } as never]);
+    const report = await engine.apply([{ operation: 'clear', ref: 'e1', value: '' } as never]);
 
     expect(report.results[0]).toEqual(
       expect.objectContaining({
@@ -88,17 +88,16 @@ describe('ClrMutationService, taking only what matches the schema', () => {
   });
 
   it('refuses a value of the wrong type, naming its field', () => {
-    const [entry] = engine.plan([{ operation: 'setValue', ref: 'e1', description: 7, value: 'x' } as never]);
+    const [entry] = engine.plan([{ operation: 'navigate', path: 7 } as never]);
 
     expect(entry.refused).toBe('unsupported');
-    expect(entry.detail).toContain('description must be string');
+    expect(entry.detail).toContain('path must be string');
   });
 
   it(`refuses every operation past the first ${CLR_MUTATION_MAX_OPERATIONS}`, async () => {
     const operations = Array.from({ length: CLR_MUTATION_MAX_OPERATIONS + 2 }, (_, index) => ({
       operation: 'clear' as const,
       ref: `e${index}`,
-      description: 'Name',
     }));
 
     const results = (await engine.apply(operations)).results;

@@ -72,8 +72,7 @@ export class AssistantComponent {
   private readonly mutationEngine = inject(ClrMutationService);
 
   async act(operations: ClrMutationOperation[]) {
-    // Refs and labels copied verbatim from the latest snapshot, such as
-    // { operation: 'setValue', ref: 'e7mq2k4xa', description: 'VM name', value: 'web-01' }.
+    // Refs from the latest snapshot, such as { operation: 'setValue', ref: 'e7mq2k4xa', value: 'web-01' }.
     const plan = this.mutationEngine.plan(operations); // what each would do, nothing written
     const report = await this.mutationEngine.apply(operations); // results, a fresh snapshot, what changed
     return { plan, report };
