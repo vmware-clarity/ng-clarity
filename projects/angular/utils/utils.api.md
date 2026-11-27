@@ -16,6 +16,7 @@ import * as i0 from '@angular/core';
 import * as i2 from '@angular/common';
 import { InjectionToken } from '@angular/core';
 import { Injector } from '@angular/core';
+import { InputSignalWithTransform } from '@angular/core';
 import { NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Observer } from 'rxjs';
@@ -141,6 +142,21 @@ export class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<CdkTrapFocusModule_CdkTrapFocus, never>;
 }
+
+// @public
+export function closestContextMark(element: Element, mark: ClrContextMark): Element | null;
+
+// @public
+export const CLR_CONTEXT_EDITING_HOST_SELECTOR = "[contenteditable]:not([contenteditable=\"false\" i])";
+
+// @public
+export const CLR_CONTEXT_HIDDEN_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore]";
+
+// @public
+export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
+
+// @public
+export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
 
 // @public (undocumented)
 export const CLR_LOADING_DIRECTIVES: Type<any>[];
@@ -424,6 +440,15 @@ export class ClrCommonStringsService {
     static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
+// @public
+export interface ClrComponentContext {
+    children?: ClrComponentContext[];
+    element?: string;
+    label?: string;
+    state?: Record<string, unknown>;
+    type: string;
+}
+
 // @public (undocumented)
 export class ClrConditionalModule {
     // (undocumented)
@@ -435,6 +460,50 @@ export class ClrConditionalModule {
 }
 
 // @public
+export type ClrContextCategory = 'layout' | 'actions' | 'forms' | 'headings' | 'collections' | 'dialogs' | 'status' | 'images' | 'text' | 'frames';
+
+// @public
+export class ClrContextIgnore {
+    readonly clrContextIgnore: InputSignalWithTransform<boolean, unknown>;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContextIgnore, "[clrContextIgnore]", never, {
+        "clrContextIgnore": {
+            "alias": "clrContextIgnore";
+            "required": false;
+            "isSignal": true;
+        };
+    }, {}, never, never, true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextIgnore, never>;
+}
+
+// @public
+export type ClrContextMark = 'ignore' | 'redact';
+
+// @public
+export class ClrContextRedact {
+    readonly clrContextRedact: InputSignalWithTransform<boolean, unknown>;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContextRedact, "[clrContextRedact]", never, {
+        "clrContextRedact": {
+            "alias": "clrContextRedact";
+            "required": false;
+            "isSignal": true;
+        };
+    }, {}, never, never, true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextRedact, never>;
+}
+
+// @public
+export interface ClrContextSnapshotOptions {
+    depth?: number;
+    excludeCategories?: ClrContextCategory[];
+    excludeSelectors?: string[];
+    root?: string;
+}
+
+// @public
 export class ClrDestroyService extends Subject<void> implements OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
@@ -443,6 +512,9 @@ export class ClrDestroyService extends Subject<void> implements OnDestroy {
     // (undocumented)
     static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
+
+// @public
+export type ClrElementContextCallback = (options?: Required<ClrContextSnapshotOptions>) => Partial<ClrPublishedContext> | null | undefined;
 
 // @public (undocumented)
 export class ClrExpandableAnimation extends BaseExpandableAnimation implements OnChanges {
@@ -776,6 +848,11 @@ export enum ClrPosition {
     TOP_RIGHT = 2
 }
 
+// @public
+export interface ClrPublishedContext extends ClrComponentContext {
+    children?: ClrPublishedContext[];
+}
+
 // @public (undocumented)
 export class ClrRovingTabindex extends ClrKeyFocus {
     constructor(elementRef: ElementRef<HTMLElement>, renderer: Renderer2);
@@ -870,6 +947,9 @@ export class DomAdapter {
     static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
+// @public
+export function elementContextOf(host: Element): ClrElementContextCallback | undefined;
+
 // @public (undocumented)
 export class EmptyAnchor {
     // (undocumented)
@@ -947,6 +1027,9 @@ export class FocusService {
     static ɵprov: i0.ɵɵInjectableDeclaration<any>;
 }
 
+// @public
+export function hasContextMark(element: Element, mark: ClrContextMark): boolean;
+
 // @public (undocumented)
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6 | '1' | '2' | '3' | '4' | '5' | '6';
 
@@ -1012,8 +1095,14 @@ export class IfExpandService implements LoadingListener {
 // @public (undocumented)
 export function isBooleanAttributeSet(value: string | boolean): boolean;
 
+// @public
+export function isContextHidden(element: Element): boolean;
+
 // @public (undocumented)
 export function isKeyEitherLetterOrNumber(event: KeyboardEvent): boolean;
+
+// @public
+export function isWithinContextHidden(element: Element): boolean;
 
 // @public (undocumented)
 export enum Keys {
@@ -1061,6 +1150,9 @@ export abstract class LoadingListener {
     // (undocumented)
     abstract loadingStateChange(state: ClrLoadingState | string): void;
 }
+
+// @public
+export function markContext(element: Element, mark: ClrContextMark): () => void;
 
 // @public
 export function measureHeight(element: HTMLElement): number;
@@ -1152,6 +1244,9 @@ export class OutsideClick implements OnDestroy {
 // @public (undocumented)
 export function preventArrowKeyScroll(event: KeyboardEvent): void;
 
+// @public
+export function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
+
 // @public (undocumented)
 export class ScrollingService {
     constructor(_document: any);
@@ -1192,6 +1287,9 @@ export function triggerAllFormControlValidation(formGroup: FormGroup): void;
 
 // @public (undocumented)
 export function uniqueIdFactory(): string;
+
+// @public
+export function usableSelectors(root: ParentNode, selectors: readonly string[]): string;
 
 // @public (undocumented)
 export function wrapObservable<T>(observable: Observable<T>, onSubscribe?: (observer: Observer<T>) => void, onUnsubscribe?: (observer: Observer<T>) => void): Observable<T>;

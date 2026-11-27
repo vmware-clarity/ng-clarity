@@ -1,0 +1,881 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { getAriaReferenceIds } from '@angular/cdk/a11y';
+import {
+  closestContextMark,
+  ClrComponentContext,
+  ClrContextSnapshotOptions,
+  ClrPublishedContext,
+  hasContextMark,
+  usableSelectors,
+} from '@clr/angular/utils';
+
+import { accessibleName } from './accessible-name';
+import { annotationContext, hasAnnotation } from './annotations';
+import { ariaEnumValue, ariaState, isContentEditable, isRedacted, redactNode } from './aria-state';
+import { hasElementContext, mergeElementContext, publishedNode, readClrElementContext } from './element-context';
+import { withinReadScope } from './read-scope';
+import {
+  isLeafRole,
+  isNameFromContents,
+  isPresentationalRole,
+  mayContainControls,
+  resolveRole,
+  roleCandidateSelector,
+} from './roles';
+import { summarizeRole } from './summarizers';
+import type { ResolvedSnapshotOptions } from '../snapshot-options';
+import { WRITABLE_ROLES } from './tables/roles';
+import {
+  CELL_SELECTOR,
+  CONTROL_SELECTOR,
+  DESCRIBABLE_SELECTOR,
+  LEGACY_MODAL_SELECTOR,
+  MODAL_SELECTOR,
+  VALUE_CONTROL_SELECTOR,
+} from './tables/selectors';
+import { NAMING_TAGS, PHRASING_TAGS, SKIPPED_TAGS } from './tables/tags';
+import { accessibleText, isVisuallyHidden, MAX_NESTING_DEPTH, truncate } from './text';
+import { hidesFromContext, isHiddenFromContext, isVisible } from './visibility';
+import { attempt } from '../attempt';
+import { withoutTypes } from '../budget';
+import { stripQueryAndFragment } from '../url';
+
+const EMPTY_CONTAINER_ROLES = new Set(['group', 'region', 'generic']);
+/**
+ * Describes markup that has neither a role nor an accessible name, such as a bare `<div class="card">`.
+ */
+export interface ClrContextDomExtractor {
+  /** CSS selector matching the elements this extractor understands. */
+  selector: string;
+  /** Describes the element's current state, or returns `null` when there is nothing to report. */
+  extract(element: HTMLElement, options: Required<ClrContextSnapshotOptions>): ClrPublishedContext | null;
+}
+
+/** Caps the elements one walk reads, so a page of empty wrappers is not read end to end. */
+const MAX_ELEMENTS_VISITED = 25_000;
+
+interface Walk {
+  readonly options: ResolvedSnapshotOptions;
+  readonly extractors: ClrContextDomExtractor[];
+  readonly excludeRoles: ReadonlySet<string>;
+  readonly excludeRoleCandidates: string;
+  readonly excludeSelector: string;
+  /** Ids that `aria-describedby` and `aria-labelledby` point at, per document, so a frame gets its own. */
+  referencedIds: Map<Document, ReferencedIds>;
+  truncated: boolean;
+  redactedDepth: number;
+  summarizedListDepth: number;
+  /** Inside a node whose label already carries the text below it. */
+  textDepth: number;
+  /** Levels of described nodes above the one being described. */
+  depth: number;
+  elementDepth: number;
+  /** Shared across the whole walk, probes included. */
+  visited: { count: number };
+  /** Where assistive technology puts focus: the active descendant, else the focused element. */
+  readonly focused: Element | null;
+}
+
+/** The result of a walk, and whether it ran out of budget before it ran out of page. */
+export interface ClrContextTreeResult {
+  /** What was described, as a tree. */
+  components: ClrComponentContext[];
+  /** Whether a budget ran out before the page did. */
+  truncated: boolean;
+  /** `true` when the walk was narrowed to the open modal dialog. */
+  modal?: true;
+}
+
+export function collectContextTreeWithin(
+  root: ParentNode,
+  options: ResolvedSnapshotOptions,
+  extractors: ClrContextDomExtractor[] = []
+): ClrContextTreeResult {
+  const excludeRoles = new Set(options.excludeRoles);
+  const walk: Walk = {
+    options,
+    extractors: extractors.filter(extractor => usableSelectors(root, [extractor.selector])),
+    excludeRoles,
+    excludeRoleCandidates: roleCandidateSelector(excludeRoles),
+    excludeSelector: usableSelectors(root, options.excludeSelectors),
+    referencedIds: new Map(),
+    truncated: false,
+    redactedDepth: 0,
+    summarizedListDepth: 0,
+    textDepth: 0,
+    depth: 0,
+    elementDepth: 0,
+    visited: { count: 0 },
+    focused: focusedElement(root),
+  };
+  return withinReadScope(() => {
+    const rootScope = root.nodeType === Node.ELEMENT_NODE ? (root as Element).ownerDocument : (root as Document);
+    walk.referencedIds.set(rootScope, collectReferencedIds(root, walk));
+    const scope = engineScope(root, walk.options);
+    const components = describeScope(root, scope.roots, walk);
+    const result: ClrContextTreeResult = { components, truncated: walk.truncated };
+    if (scope.modal) {
+      result.modal = true;
+    }
+    return result;
+  });
+}
+
+/** The focused element through open shadow roots, or the element its `aria-activedescendant` names. */
+function focusedElement(root: ParentNode): Element | null {
+  const document = root.nodeType === Node.DOCUMENT_NODE ? (root as Document) : (root as Element).ownerDocument;
+  let focused = document?.activeElement ?? null;
+  while (focused?.shadowRoot?.activeElement) {
+    focused = focused.shadowRoot.activeElement;
+  }
+  const activeId = focused?.getAttribute('aria-activedescendant')?.trim();
+  const scope = focused?.getRootNode() as Document | ShadowRoot | undefined;
+  return (activeId && scope?.getElementById?.(activeId)) || focused;
+}
+
+/** Whether the walk would leave this element out, judged from the element and its ancestry. */
+export function isHiddenFromEngine(element: Element, excludeSelector = ''): boolean {
+  return !element.isConnected || isHiddenFromContext(element, excludeSelector) || !isVisible(element);
+}
+
+export interface ClrContextScope {
+  roots: Element[] | null;
+  modal?: true;
+}
+
+/** The whole page, the `rootSelector` roots, or with modal focus the topmost open dialog inside them. */
+export function engineScope(root: ParentNode, options: ResolvedSnapshotOptions): ClrContextScope {
+  const excludeSelector = usableSelectors(root, options.excludeSelectors);
+  const excludedRoles = new Set(options.excludeRoles);
+  const roots = options.rootSelector ? selectedRoots(root, options.rootSelector, excludeSelector, excludedRoles) : null;
+  if (options.focus === 'modal') {
+    const dialogs = openModalDialogs(root, excludeSelector).filter(
+      dialog => !hasExcludedRole(dialog, excludedRoles) && (!roots || roots.some(scope => scope.contains(dialog)))
+    );
+    if (dialogs.length) {
+      return { roots: [modalRoot(dialogs[dialogs.length - 1], roots, excludeSelector)], modal: true };
+    }
+  }
+  return { roots };
+}
+
+/** A selector the document rejects matches nothing; it must not widen the snapshot to the whole page. */
+function selectedRoots(
+  root: ParentNode,
+  rootSelector: string,
+  excludeSelector: string,
+  excludedRoles: ReadonlySet<string>
+): Element[] {
+  const selector = usableSelectors(root, [rootSelector]);
+  const roots = selector ? Array.from(root.querySelectorAll(selector)) : [];
+  // What keeps a region from the engine holds however the walk is pointed at it.
+  return roots.filter(
+    element =>
+      !isHiddenFromEngine(element, excludeSelector) &&
+      !hasExcludedRole(element, excludedRoles) &&
+      !roots.some(other => other !== element && other.contains(element))
+  );
+}
+
+function hasExcludedRole(element: Element, excludedRoles: ReadonlySet<string>): boolean {
+  if (!excludedRoles.size) {
+    return false;
+  }
+  for (let current: Element | null = element; current; current = current.parentElement) {
+    const role = resolveRole(current);
+    if (role && excludedRoles.has(role)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/** The dialog, or the anonymous custom element (e.g. a wizard) that renders nothing but it. */
+function modalRoot(dialog: Element, roots: Element[] | null, excludeSelector: string): Element {
+  let root = dialog;
+  const body = dialog.ownerDocument.body;
+  for (let part = dialog, parent = dialog.parentElement; parent && parent !== body; parent = parent.parentElement) {
+    if (roots && !roots.some(scope => scope.contains(parent))) {
+      break;
+    }
+    if (resolveRole(parent) || accessibleName(parent, null, 1) || !rendersOnly(parent, part, excludeSelector)) {
+      break;
+    }
+    if (isCustomElementTag(parent)) {
+      root = parent;
+    }
+    part = parent;
+  }
+  return root;
+}
+
+function rendersOnly(parent: Element, part: Element, excludeSelector: string): boolean {
+  return Array.from(parent.childNodes).every(node => {
+    if (node === part) {
+      return true;
+    }
+    if (node.nodeType === Node.TEXT_NODE) {
+      return !MEANINGFUL_TEXT.test(node.textContent ?? '');
+    }
+    if (node.nodeType !== Node.ELEMENT_NODE) {
+      return true;
+    }
+    const element = node as Element;
+    if (SKIPPED_TAGS.has(element.tagName.toLowerCase()) || isHiddenFromEngine(element, excludeSelector)) {
+      return true;
+    }
+    if (
+      hasElementContext(element) ||
+      hasAnnotation(element) ||
+      element.matches(DESCRIBABLE_SELECTOR) ||
+      !!element.querySelector(DESCRIBABLE_SELECTOR)
+    ) {
+      return false;
+    }
+    // A screen reader's "end of dialog" marker is not content.
+    return !MEANINGFUL_TEXT.test(element.textContent ?? '') || isVisuallyHidden(element);
+  });
+}
+
+function openModalDialogs(root: ParentNode, excludeSelector = ''): Element[] {
+  return Array.from(modalDialogs(root)).filter(dialog => !isHiddenFromEngine(dialog, excludeSelector));
+}
+
+function modalDialogs(root: ParentNode): Element[] {
+  try {
+    return Array.from(root.querySelectorAll(MODAL_SELECTOR));
+  } catch {
+    return Array.from(root.querySelectorAll(LEGACY_MODAL_SELECTOR));
+  }
+}
+
+/** Checks each root's ancestry for redaction, which a walk starting at the root cannot see. */
+function describeScope(root: ParentNode, roots: Element[] | null, walk: Walk): ClrComponentContext[] {
+  if (!roots) {
+    return withinRedactedAncestry(root, walk, () => describeChildren(root, walk, null));
+  }
+  const nodes: ClrComponentContext[] = [];
+  for (const element of roots) {
+    nodes.push(...withinRedactedAncestry(element, walk, () => describeElement(element, walk, null)));
+  }
+  return nodes;
+}
+
+function withinRedactedAncestry<T>(node: ParentNode, walk: Walk, describe: () => T): T {
+  const ancestor = node.nodeType === Node.ELEMENT_NODE ? (node as Element).parentElement : null;
+  return within(walk, ancestor && closestContextMark(ancestor, 'redact') ? ['redactedDepth'] : [], describe);
+}
+
+type DepthCounter = 'depth' | 'elementDepth' | 'redactedDepth' | 'summarizedListDepth' | 'textDepth';
+
+function within<T>(walk: Walk, counters: readonly DepthCounter[], describe: () => T): T {
+  for (const counter of counters) {
+    walk[counter]++;
+  }
+  try {
+    return describe();
+  } finally {
+    for (const counter of counters) {
+      walk[counter]--;
+    }
+  }
+}
+
+interface ReferencedIds {
+  describedBy: Set<string>;
+  labels: Set<string>;
+}
+
+/**
+ * `aria-describedby` targets are reported as their control's description, not again on their own;
+ * `aria-labelledby` targets are still described, but not as free-standing text.
+ */
+function collectReferencedIds(root: ParentNode, walk: Walk): ReferencedIds {
+  const ids: ReferencedIds = { describedBy: new Set(), labels: new Set() };
+  const collect = (attribute: string, into: Set<string>, reports: (element: Element) => boolean) => {
+    for (const element of Array.from(root.querySelectorAll(`[${attribute}]`))) {
+      if (isHiddenFromEngine(element, walk.excludeSelector) || !reports(element)) {
+        continue;
+      }
+      for (const id of getAriaReferenceIds(element, attribute)) {
+        into.add(id);
+      }
+    }
+  };
+  const describes = (element: Element) => !!resolveRole(element) || isCustomElementTag(element);
+  collect('aria-describedby', ids.describedBy, describes);
+  collect(
+    'aria-errormessage',
+    ids.describedBy,
+    element => describes(element) && ariaEnumValue(element, 'aria-invalid') !== null
+  );
+  collect('aria-labelledby', ids.labels, () => true);
+  return ids;
+}
+
+/** Ids are scoped to a document, so each gets its own sets, collected when first reached. */
+function referencedIds(element: Element, walk: Walk): ReferencedIds {
+  const scope = element.ownerDocument;
+  let ids = walk.referencedIds.get(scope);
+  if (!ids) {
+    ids = collectReferencedIds(scope, walk);
+    walk.referencedIds.set(scope, ids);
+  }
+  return ids;
+}
+
+function isDescription(element: Element, walk: Walk): boolean {
+  return !!element.id && referencedIds(element, walk).describedBy.has(element.id);
+}
+
+function isLabel(element: Element, walk: Walk): boolean {
+  return !!element.id && referencedIds(element, walk).labels.has(element.id);
+}
+
+function isCustomElementTag(element: Element): boolean {
+  return element.tagName.includes('-');
+}
+
+/**
+ * `owner` is the nearest role-less custom element above; it becomes the `element` of the
+ * next role-bearing node, so `<div role="grid">` reports itself as rendered by `clr-datagrid`.
+ */
+function describeElement(element: Element, walk: Walk, owner: Element | null): ClrComponentContext[] {
+  // Past the cap nothing is read, not even visibility, which would cost a style read per element.
+  if (walk.visited.count >= MAX_ELEMENTS_VISITED) {
+    walk.truncated = true;
+    return [];
+  }
+  if (shouldSkipSubtree(element, walk)) {
+    return [];
+  }
+  if (walk.elementDepth >= MAX_NESTING_DEPTH) {
+    walk.truncated = true;
+    return [];
+  }
+  walk.visited.count++;
+  const counters: DepthCounter[] = ['elementDepth'];
+  if (hasContextMark(element, 'redact')) {
+    counters.push('redactedDepth');
+  }
+  if (isDescription(element, walk)) {
+    counters.push('textDepth');
+  }
+  return within(walk, counters, () => describeVisible(element, walk, owner));
+}
+
+function describeVisible(element: Element, walk: Walk, owner: Element | null): ClrComponentContext[] {
+  // An excluded role is left out before an extractor could describe the element as something else.
+  const role = resolveRole(element);
+  if (role && walk.excludeRoles.has(role)) {
+    return [];
+  }
+  // Like published context, an extractor's state is not read inside a redacted region.
+  const extractor =
+    walk.redactedDepth > 0 ? undefined : walk.extractors.find(candidate => element.matches(candidate.selector));
+  if (extractor) {
+    const extracted = attempt(() => extractor.extract(element as HTMLElement, walk.options), null);
+    const described = extracted ? publishedNode(extracted, walk.options) : null;
+    if (!described) {
+      return describeChildren(element, walk, owner);
+    }
+    return listOf(finish(described, element, walk, { foreign: true }));
+  }
+
+  const tagName = element.tagName.toLowerCase();
+  if (tagName === 'iframe' || tagName === 'frame') {
+    return describeFrame(element as HTMLIFrameElement, walk);
+  }
+
+  if (role && isPresentationalRole(role)) {
+    return describeChildren(element, walk, owner);
+  }
+  // A summarised list's item with nothing to act on adds no node, so a huge list costs only its controls.
+  if (
+    role === 'listitem' &&
+    walk.summarizedListDepth > 0 &&
+    !hasElementContext(element) &&
+    !hasAnnotation(element) &&
+    !Array.from(element.attributes).some(attribute => attribute.name.startsWith('aria-')) &&
+    !element.querySelector(CONTROL_SELECTOR)
+  ) {
+    return [];
+  }
+
+  const isCustomElement = isCustomElementTag(element);
+  // In a redacted region only an author-given name is used: a name from content is that content.
+  const redacted = walk.redactedDepth > 0;
+  const label = nameSafely(element, redacted ? null : role, walk);
+
+  // An annotation on a custom element merges onto what it renders, so it never turns the content into a name.
+  if (!role && !label && isCustomElement) {
+    const parts = describeAnonymousCustomElement(element, tagName, walk);
+    if (parts) {
+      return parts;
+    }
+  } else if ((!role || role === 'paragraph') && !label && !hasAnnotation(element)) {
+    return isTextBlock(element, walk)
+      ? describeTextBlock(element, walk, owner, role === 'paragraph' ? role : 'text')
+      : describeChildren(element, walk, owner);
+  }
+
+  const fallbackLabel =
+    !role && !label && isCustomElement && !redacted
+      ? truncate(
+          accessibleText(element, undefined, walk.excludeSelector, child => isExcludedRole(child, walk)),
+          walk.options.maxTextLength
+        )
+      : label;
+
+  const node: ClrComponentContext = { type: role ?? 'generic' };
+  const attribution = isCustomElement ? tagName : owner?.tagName.toLowerCase();
+  if (attribution) {
+    node.element = attribution;
+  }
+  if (fallbackLabel) {
+    node.label = fallbackLabel;
+  }
+  // Summarising collections keeps a ten-thousand-row grid from producing ten thousand nodes.
+  const summary = attempt(() => summarizeRole(element, role, walk.options, walk.excludeSelector), null);
+  const state = { ...ariaState(element, walk.options, redacted, walk.excludeSelector), ...summary };
+  const title = element.getAttribute('title')?.trim();
+  if (title && !redacted && !state['description'] && title !== label) {
+    state['description'] = truncate(title, walk.options.maxTextLength);
+  }
+  if (element === walk.focused) {
+    state['focused'] = true;
+  }
+  if (Object.keys(state).length) {
+    node.state = state;
+  }
+
+  // Leaf widgets and summarised collections are not descended into; a summarised list still is, for its links.
+  const summarised = summary !== null;
+  const summarisedList = summarised && role === 'list';
+  const terminal = !!role && ((isLeafRole(role) && !mayContainControls(role)) || (summarised && !summarisedList));
+  if (!terminal) {
+    const counters: DepthCounter[] = [];
+    if (summarisedList) {
+      counters.push('summarizedListDepth');
+    }
+    if (role && isNameFromContents(role)) {
+      counters.push('textDepth');
+    }
+    const looseText = (role && WRITABLE_ROLES.has(role)) || (!role && !label) ? undefined : { label };
+    const children = within(walk, counters, () => describeNested(element, walk, null, looseText));
+    if (children.length) {
+      node.children = children;
+    }
+  } else if (summarised) {
+    const controls = describeCellControls(element, walk);
+    if (controls.length) {
+      node.children = controls;
+    }
+  }
+
+  const described = finish(node, element, walk);
+  if (!described) {
+    return [];
+  }
+
+  if (role === 'listitem' && walk.summarizedListDepth > 0 && !described.state) {
+    return described.children ?? [];
+  }
+  return [described];
+}
+
+/**
+ * Returns the single rendered part attributed to this element, a wrapper node for several parts,
+ * or `null` when the element is described as a node of its own.
+ */
+function describeAnonymousCustomElement(element: Element, tagName: string, walk: Walk): ClrComponentContext[] | null {
+  const rendered = describeChildren(element, walk, element);
+  const published = !rendered.length || !holdsExcludedRole(element, walk, true);
+  if (rendered.length === 1) {
+    const only = rendered[0];
+    if (only.type === 'text' && !only.children && !only.state) {
+      return listOf(finish({ type: 'generic', element: tagName, label: only.label }, element, walk, { published }));
+    }
+    return listOf(finish(only, element, walk, { published }));
+  }
+  if (rendered.length > 1) {
+    return listOf(finish({ type: 'generic', element: tagName, children: rendered }, element, walk, { published }));
+  }
+  if (holdsExcludedRole(element, walk)) {
+    return [];
+  }
+  if (
+    !readClrElementContext(element, walk.options) &&
+    !hasAnnotation(element) &&
+    !accessibleText(element, undefined, walk.excludeSelector).trim()
+  ) {
+    return [];
+  }
+  return null;
+}
+
+/** Application controls in a summarised collection's cells, which the summary does not cover. */
+function describeCellControls(collection: Element, walk: Walk): ClrComponentContext[] {
+  // Hidden, inert, ignored or excluded cells are skipped, as the walk would skip them.
+  const cells = new Map<Element, boolean>();
+  for (const control of Array.from(collection.querySelectorAll(VALUE_CONTROL_SELECTOR))) {
+    const role = resolveRole(control);
+    const cell = role && WRITABLE_ROLES.has(role) ? control.closest(CELL_SELECTOR) : null;
+    if (!cell || cells.has(cell) || !collection.contains(cell)) {
+      continue;
+    }
+    const path = ancestryUntil(cell, collection);
+    if (path.some(element => shouldSkipSubtree(element, walk))) {
+      continue;
+    }
+    cells.set(
+      cell,
+      path.some(element => hasContextMark(element, 'redact'))
+    );
+  }
+  const nodes: ClrComponentContext[] = [];
+  for (const [cell, redacted] of cells) {
+    const counters: DepthCounter[] = redacted ? ['textDepth', 'redactedDepth'] : ['textDepth'];
+    nodes.push(...within(walk, counters, () => describeNested(cell, walk, null)));
+  }
+  return nodes;
+}
+
+function ancestryUntil(element: Element, boundary: Element): Element[] {
+  const path: Element[] = [];
+  for (let current: Element | null = element; current && current !== boundary; current = current.parentElement) {
+    path.push(current);
+  }
+  return path;
+}
+
+function isTextBlock(element: Element, walk: Walk): boolean {
+  if (!walk.options.includeText || walk.textDepth > 0 || walk.redactedDepth > 0) {
+    return false;
+  }
+  if (NAMING_TAGS.has(element.tagName.toLowerCase()) || isLabel(element, walk)) {
+    return false;
+  }
+  const hasOwnText = Array.from(element.childNodes).some(
+    node => node.nodeType === Node.TEXT_NODE && !!node.textContent?.trim()
+  );
+  return hasOwnText && !isVisuallyHidden(element);
+}
+
+function describeTextBlock(
+  element: Element,
+  walk: Walk,
+  owner: Element | null,
+  type: 'text' | 'paragraph'
+): ClrComponentContext[] {
+  const node: ClrComponentContext = { type };
+  if (owner) {
+    node.element = owner.tagName.toLowerCase();
+  }
+  const label = truncate(
+    accessibleText(element, undefined, walk.excludeSelector, child => isExcludedRole(child, walk)),
+    walk.options.maxTextLength
+  );
+  if (label) {
+    node.label = label;
+  }
+  const live = liveSetting(element);
+  if (live) {
+    node.state = { live };
+  }
+  const children = within(walk, ['textDepth'], () => describeNested(element, walk, owner));
+  if (children.length) {
+    node.children = children;
+  }
+  return listOf(finish(node, element, walk));
+}
+
+function liveSetting(element: Element): string | null {
+  const region = element.closest('[aria-live]');
+  return region && (region === element || !resolveRole(region)) ? ariaEnumValue(region, 'aria-live') : null;
+}
+
+/**
+ * A same-origin frame is walked in place; a cross-origin one is reported
+ * as an empty frame so an agent knows there is UI it cannot see.
+ */
+function describeFrame(frame: HTMLIFrameElement, walk: Walk): ClrComponentContext[] {
+  if (!walk.options.includeFrames) {
+    return [];
+  }
+
+  const node: ClrComponentContext = { type: 'frame', element: frame.tagName.toLowerCase() };
+  const state: Record<string, unknown> = {};
+  const contents = attempt(() => frame.contentDocument, null);
+  const roots = contents ? [contents.documentElement, contents.body].filter(root => !!root) : [];
+  const ignored = roots.some(root => hidesFromContext(root, walk.excludeSelector));
+  const redacted = walk.redactedDepth > 0 || roots.some(root => hasContextMark(root, 'redact'));
+  // The document title may be a record's name, so it is kept apart as `title` and withheld when redacted.
+  const label = nameSafely(frame, null, walk);
+  if (label) {
+    node.label = truncate(label, walk.options.maxTextLength);
+  }
+  const title = redacted || ignored ? '' : (contents?.title ?? '');
+  if (!label && title.trim()) {
+    state.title = truncate(title, walk.options.maxTextLength);
+  }
+
+  const location = contents ? contents.location.href : (frame.getAttribute('src') ?? '');
+  if (location && !location.startsWith('about:')) {
+    state.url = truncate(stripQueryAndFragment(location), walk.options.maxTextLength);
+  }
+
+  if (contents === null) {
+    state.crossOrigin = true;
+  } else if (!contents.body) {
+    state.loading = true;
+  } else if (isStillNavigating(frame, contents)) {
+    state.loading = true;
+  } else if (ignored) {
+  } else if (contents.designMode === 'on' || contents.body.isContentEditable || isContentEditable(contents.body)) {
+    // A rich-text editor document is one text field, and its content is a value.
+    node.type = 'textbox';
+    if (redacted) {
+      state.redacted = true;
+    } else {
+      state.value = truncate(
+        accessibleText(contents.body, undefined, walk.excludeSelector),
+        walk.options.maxTextLength
+      );
+    }
+  } else {
+    const redactedRoot = redacted && walk.redactedDepth === 0;
+    const children = within(walk, redactedRoot ? ['redactedDepth'] : [], () =>
+      describeNested(contents.body, walk, null)
+    );
+    if (children.length) {
+      node.children = children;
+    }
+  }
+
+  if (Object.keys(state).length) {
+    node.state = state;
+  }
+  return listOf(finish(node, frame, walk));
+}
+
+/** The initial blank document has a body too, so the body alone does not tell. */
+function isStillNavigating(frame: HTMLIFrameElement, contents: Document): boolean {
+  const src = frame.getAttribute('src');
+  return (
+    contents.location.href === 'about:blank' && !!src && !src.startsWith('about:') && !frame.hasAttribute('srcdoc')
+  );
+}
+
+/** A name that cannot be computed truncates the snapshot rather than break it. */
+function nameSafely(element: Element, role: string | null, walk: Walk): string {
+  const name = attempt(() => accessibleName(element, role, walk.options.maxTextLength, walk.excludeSelector), null);
+  if (name === null) {
+    walk.truncated = true;
+  }
+  return name ?? '';
+}
+
+function describeNested(
+  parent: ParentNode,
+  walk: Walk,
+  owner: Element | null,
+  looseText?: LooseText
+): ClrComponentContext[] {
+  // The parent is at level `depth + 1`, so its children would be one level past that.
+  if (walk.depth + 1 >= walk.options.depth) {
+    return [];
+  }
+  return within(walk, ['depth'], () => describeChildren(parent, walk, owner, looseText));
+}
+
+interface LooseText {
+  label: string;
+}
+
+function describeChildren(
+  parent: ParentNode,
+  walk: Walk,
+  owner: Element | null,
+  looseText?: LooseText
+): ClrComponentContext[] {
+  const nodes: ClrComponentContext[] = [];
+  const withText = !!looseText && walk.options.includeText && walk.textDepth === 0 && walk.redactedDepth === 0;
+  const children = Array.from(parent.childNodes).filter(node => withText || node.nodeType === Node.ELEMENT_NODE);
+  let text = '';
+  for (const child of children) {
+    if (child.nodeType === Node.TEXT_NODE) {
+      text += child.textContent ?? '';
+      continue;
+    }
+    if (child.nodeType !== Node.ELEMENT_NODE) {
+      continue;
+    }
+    if (withText && isPhrasing(child as Element, walk)) {
+      text += phrasingText(child as Element, walk);
+      continue;
+    }
+    nodes.push(...describeLooseText(text, looseText, walk));
+    text = '';
+    nodes.push(...describeElement(child as Element, walk, owner));
+  }
+  nodes.push(...describeLooseText(text, looseText, walk));
+  return nodes;
+}
+
+function isPhrasing(element: Element, walk: Walk): boolean {
+  return (
+    PHRASING_TAGS.has(element.tagName.toLowerCase()) &&
+    !resolveRole(element) &&
+    !element.hasAttribute('title') &&
+    !element.hasAttribute('aria-live') &&
+    !hasContextMark(element, 'redact') &&
+    !hasElementContext(element) &&
+    !hasAnnotation(element) &&
+    !isLabel(element, walk) &&
+    !element.matches(DESCRIBABLE_SELECTOR) &&
+    !element.querySelector(DESCRIBABLE_SELECTOR) &&
+    !walk.extractors.some(extractor => element.matches(extractor.selector))
+  );
+}
+
+function phrasingText(element: Element, walk: Walk): string {
+  if (shouldSkipSubtree(element, walk) || isVisuallyHidden(element)) {
+    return '';
+  }
+  return accessibleText(element, undefined, walk.excludeSelector, child => isExcludedRole(child, walk));
+}
+
+const MEANINGFUL_TEXT = /[\p{L}\p{N}]/u;
+
+function describeLooseText(text: string, looseText: LooseText | undefined, walk: Walk): ClrComponentContext[] {
+  if (!looseText || !MEANINGFUL_TEXT.test(text)) {
+    return [];
+  }
+  const label = truncate(text, walk.options.maxTextLength);
+  if (label === looseText.label) {
+    return [];
+  }
+  return [{ type: 'text', label }];
+}
+
+interface FinishOptions {
+  foreign?: boolean;
+  published?: boolean;
+}
+
+/** Redaction is re-applied after merging published context, so a component cannot reinstate a withheld value. */
+function finish(
+  node: ClrComponentContext,
+  element: Element,
+  walk: Walk,
+  { foreign = false, published = true }: FinishOptions = {}
+): ClrComponentContext | null {
+  const redacted = isRedacted(element, walk.redactedDepth > 0);
+  // Published context is not merged inside a redacted region: it would carry the component's state straight out.
+  let described =
+    redacted || !published ? node : mergeElementContext(node, element, walk.options, annotationContext(element));
+  if (walk.excludeRoles.has(described.type)) {
+    return null;
+  }
+  // Published children are not walked, so excluded categories are dropped from them here.
+  if (described.children && (foreign || described.children !== node.children)) {
+    described = { ...described, children: withoutTypes(described.children, walk.excludeRoles) };
+  }
+  const unpruned = foreign || described !== node;
+
+  if (redacted || described.state?.['redacted'] === true) {
+    described = redactNode(described);
+  }
+
+  const pruned = pruneEmpty(described, { foreign: unpruned });
+  if (isEmptyContainer(pruned)) {
+    return null;
+  }
+  return pruned;
+}
+
+/** A container with no name, state or children tells an agent nothing, unlike a widget, whose role alone is news. */
+function isEmptyContainer(node: ClrComponentContext): boolean {
+  return EMPTY_CONTAINER_ROLES.has(node.type) && !node.label && !node.state && !node.children;
+}
+
+/** Whether a label read from content leaves the element out: only its resolved role counts, not any `role`. */
+function isExcludedRole(element: Element, walk: Walk): boolean {
+  const role = walk.excludeRoles.size ? resolveRole(element) : null;
+  return !!role && walk.excludeRoles.has(role);
+}
+
+function listOf(node: ClrComponentContext | null): ClrComponentContext[] {
+  return node ? [node] : [];
+}
+
+/**
+ * Whether the element holds an excluded role the walk would otherwise show; with `renderedOnly`,
+ * only one its own template renders (the grid in `clr-datagrid`).
+ */
+function holdsExcludedRole(element: Element, walk: Walk, renderedOnly = false): boolean {
+  if (!walk.excludeRoleCandidates) {
+    return false;
+  }
+  return Array.from(element.querySelectorAll(walk.excludeRoleCandidates)).some(descendant => {
+    const role = resolveRole(descendant);
+    return (
+      !!role &&
+      walk.excludeRoles.has(role) &&
+      !isLeftOutAnyway(descendant, walk.excludeSelector) &&
+      (!renderedOnly || isRenderedBy(descendant, element))
+    );
+  });
+}
+
+/** No custom element between them: a datagrid renders its grid, not the input in one of its cells. */
+function isRenderedBy(descendant: Element, element: Element): boolean {
+  let owner: Element | null = descendant.parentElement;
+  while (owner && owner !== element && !isCustomElementTag(owner)) {
+    owner = owner.parentElement;
+  }
+  return owner === element;
+}
+
+function isLeftOutAnyway(element: Element, excludeSelector: string): boolean {
+  return !!closestContextMark(element, 'ignore') || (!!excludeSelector && !!element.closest(excludeSelector));
+}
+
+function shouldSkipSubtree(element: Element, walk: Walk): boolean {
+  if (SKIPPED_TAGS.has(element.tagName.toLowerCase())) {
+    return true;
+  }
+  if (hidesFromContext(element, walk.excludeSelector)) {
+    return true;
+  }
+  // Only role-less text without controls folds into a description; page content can point
+  // `aria-describedby` at any id.
+  if (isDescription(element, walk) && !element.querySelector(CONTROL_SELECTOR) && !resolveRole(element)) {
+    return true;
+  }
+  return !isVisible(element);
+}
+
+function pruneEmpty(context: ClrComponentContext, { foreign = false } = {}): ClrComponentContext {
+  const pruned: ClrComponentContext = { type: context.type };
+  if (context.element) {
+    pruned.element = context.element;
+  }
+  if (context.label) {
+    pruned.label = context.label;
+  }
+  if (context.state && Object.keys(context.state).length) {
+    pruned.state = context.state;
+  }
+  if (context.children?.length) {
+    pruned.children = foreign ? context.children.map(child => pruneEmpty(child, { foreign: true })) : context.children;
+  }
+  return pruned;
+}
