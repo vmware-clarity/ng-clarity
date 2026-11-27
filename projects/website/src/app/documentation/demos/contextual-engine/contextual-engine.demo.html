@@ -425,6 +425,10 @@
         moved off-screen is still offered, so keep such fields out of the policy.
       </li>
       <li>Write a control that has no Angular form binding.</li>
+      <li>
+        Parse a value as JSON or insert it as HTML. A value is set through the form control or the component, so a value
+        holding markup or JSON stays text.
+      </li>
       <li>Write for a caller you do not control, such as an embedded frame. Those get snapshots without refs.</li>
     </ul>
     <p class="clr-mt-16px" cds-text="body">
