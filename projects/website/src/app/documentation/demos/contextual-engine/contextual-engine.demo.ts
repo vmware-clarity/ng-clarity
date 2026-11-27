@@ -322,11 +322,11 @@ const REFS_EXAMPLE = `
 
 const APPLY_EXAMPLE = `
 const report = await this.mutationEngine.apply([
-  { operation: 'setValue', ref: 'e7mq2k4xa', description: 'Name', value: 'Ada' },
-  { operation: 'setValue', ref: 'e0c9h3tzp', description: 'Cluster', value: 'Beta cluster' },
-  { operation: 'setValue', ref: 'e5bw81nre', description: 'When', value: '2026-03-06' },
-  { operation: 'setValue', ref: 'e2kd6v0sm', description: 'Hosts', value: ['esx-01', 'esx-02'] },
-  { operation: 'clear', ref: 'e9yx4q7lf', description: 'Notes' },
+  { operation: 'setValue', ref: 'e7mq2k4xa', value: 'Ada' },
+  { operation: 'setValue', ref: 'e0c9h3tzp', value: 'Beta cluster' },
+  { operation: 'setValue', ref: 'e5bw81nre', value: '2026-03-06' },
+  { operation: 'setValue', ref: 'e2kd6v0sm', value: ['esx-01', 'esx-02'] },
+  { operation: 'clear', ref: 'e9yx4q7lf' },
 ]);
 
 // What each operation did, then the page as it is now and what changed.
@@ -377,7 +377,7 @@ const RESULT_EXAMPLE = `
     "ref": "e8ht0r6gu",
     "applied": false,
     "refused": "stale",
-    "detail": "The ref does not name anything on the page. Take a new snapshot and use its refs."
+    "detail": "The ref names nothing on the page now: the node is gone or changed since the snapshot. Take a new snapshot and use its refs."
   }
 ]
 `;

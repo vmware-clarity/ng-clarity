@@ -9,6 +9,7 @@ import { AnimationCallbackEvent } from '@angular/core';
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { ElementRef } from '@angular/core';
+import { EnvironmentProviders } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { FactoryProvider } from '@angular/core';
 import { FormGroup } from '@angular/forms';
@@ -52,16 +53,80 @@ export const CLR_CONTEXT_LOADING_TYPE = "clr-loading";
 export const CLR_CONTEXT_PRESETS: Readonly<Record<ClrContextPreset, Readonly<ClrContextSnapshotOptions>>>;
 
 // @public
-export const CLR_CONTEXT_PROTOCOL = "ui-context/v1";
-
-// @public
 export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
 
 // @public
 export const CLR_CONTEXT_UNAVAILABLE_TYPE = "clr-unavailable";
 
 // @public
-export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: readonly (keyof ClrContextSnapshotOptions)[];
+export const CLR_MUTATION_MAX_OPERATIONS = 50;
+
+// @public
+export const CLR_MUTATION_OPERATIONS_SCHEMA: {
+    readonly $schema: "https://json-schema.org/draft/2020-12/schema";
+    readonly $id: "https://clarity.design/schemas/mutation-operations-1.schema.json";
+    readonly title: "ClrMutationOperations";
+    readonly type: "array";
+    readonly maxItems: 50;
+    readonly items: {
+        readonly oneOf: readonly [{
+            readonly type: "object";
+            readonly required: readonly ["operation", "ref", "value"];
+            readonly additionalProperties: false;
+            readonly properties: {
+                readonly operation: {
+                    readonly const: "setValue";
+                };
+                readonly ref: {
+                    readonly type: "string";
+                };
+                readonly value: {};
+            };
+        }, {
+            readonly type: "object";
+            readonly required: readonly ["operation", "ref"];
+            readonly additionalProperties: false;
+            readonly properties: {
+                readonly operation: {
+                    readonly const: "clear";
+                };
+                readonly ref: {
+                    readonly type: "string";
+                };
+            };
+        }, {
+            readonly type: "object";
+            readonly required: readonly ["operation", "path"];
+            readonly additionalProperties: false;
+            readonly properties: {
+                readonly operation: {
+                    readonly const: "navigate";
+                };
+                readonly path: {
+                    readonly type: "string";
+                };
+                readonly params: {
+                    readonly type: "object";
+                    readonly additionalProperties: {
+                        readonly type: "string";
+                    };
+                };
+                readonly queryParams: {
+                    readonly type: "object";
+                    readonly additionalProperties: {
+                        readonly type: "string";
+                    };
+                };
+            };
+        }];
+    };
+};
+
+// @public
+export const CLR_MUTATION_OPERATIONS_SCHEMA_VERSION = "1";
+
+// @public
+export const CLR_MUTATION_POLICY: InjectionToken<ClrMutationPolicy>;
 
 // @public
 export const CLR_PAGE_CONTEXT_SCHEMA: {
@@ -190,6 +255,9 @@ export const CLR_PAGE_CONTEXT_SCHEMA: {
                 readonly type: {
                     readonly type: "string";
                 };
+                readonly ref: {
+                    readonly type: "string";
+                };
                 readonly element: {
                     readonly type: "string";
                 };
@@ -227,10 +295,17 @@ export interface ClrAvailableRoute {
 }
 
 // @public
+export interface ClrClearOperation {
+    operation: 'clear';
+    ref: string;
+}
+
+// @public
 export interface ClrComponentContext {
     children?: ClrComponentContext[];
     element?: string;
     label?: string;
+    ref?: string;
     state?: Record<string, unknown>;
     type: string;
 }
@@ -306,40 +381,6 @@ export interface ClrContextDomExtractor {
 }
 
 // @public
-export interface ClrContextFrameHostOptions {
-    allowAnyOrigin?: boolean;
-    allowedOrigins?: string[];
-    minRequestIntervalMs?: number;
-    shareFormValues?: boolean;
-    shareFullUrl?: boolean;
-    snapshot?: ClrContextSnapshotOptions;
-}
-
-// @public
-export interface ClrContextFrameRequest {
-    kind: 'context-request';
-    options?: ClrContextSnapshotOptions;
-    protocol: typeof CLR_CONTEXT_PROTOCOL;
-    requestId: string;
-}
-
-// @public
-export interface ClrContextFrameRequestOptions {
-    hostOrigin?: string;
-    options?: ClrContextSnapshotOptions;
-    targetWindow?: Window;
-    timeoutMs?: number;
-}
-
-// @public
-export interface ClrContextFrameResponse {
-    context: ClrPageContext;
-    kind: 'context-response';
-    protocol: typeof CLR_CONTEXT_PROTOCOL;
-    requestId: string;
-}
-
-// @public
 export class ClrContextIgnore {
     readonly clrContextIgnore: InputSignalWithTransform<boolean, unknown>;
     // (undocumented)
@@ -407,14 +448,11 @@ export class ClrContextRegistryService {
 }
 
 // @public
-export class ClrContextService implements OnDestroy {
+export class ClrContextService {
     configure(config: ClrContextConfig): void;
-    disableFrameBridge(): void;
-    enableFrameBridge(options?: ClrContextFrameHostOptions): void;
-    // (undocumented)
-    ngOnDestroy(): void;
     publish(element: Element, read: () => Partial<ClrPublishedContext> | null | undefined): () => void;
-    requestHostContext(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null>;
+    // @internal
+    resolveScope(options?: ClrContextSnapshotOptions): ResolvedSnapshotOptions;
     snapshot(options?: ClrContextSnapshotOptions): Promise<ClrPageContext>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextService, never>;
@@ -434,7 +472,105 @@ export interface ClrContextSnapshotOptions {
 export function clrDiffContext(previous: ClrPageContext | null, current: ClrPageContext): ClrContextChange;
 
 // @public
+export interface ClrElementMutationResult {
+    applied: boolean;
+    detail?: string;
+    errors?: Record<string, unknown>;
+    operation: 'setValue' | 'clear';
+    previous?: unknown;
+    ref: string;
+    refused?: ClrMutationRefusal;
+    status?: string;
+    value?: unknown;
+}
+
+// @public
 export function clrIsEmptyContextChange(change: ClrContextChange): boolean;
+
+// @public
+export type ClrMutationChanges = Omit<ClrContextChange, 'previous' | 'current'>;
+
+// @public
+export type ClrMutationConsequence = 'reversible' | 'consequential' | 'forbidden';
+
+// @public
+export type ClrMutationOperation = ClrSetValueOperation | ClrClearOperation | ClrNavigateOperation;
+
+// @public
+export interface ClrMutationPlanEntry {
+    consequence?: ClrMutationConsequence;
+    detail?: string;
+    operation: ClrMutationOperation;
+    refused?: ClrMutationRefusal;
+    target?: ClrMutationTarget;
+}
+
+// @public
+export interface ClrMutationPolicy {
+    announce?(report: ClrMutationReport): void;
+    classify(target: ClrMutationTarget): ClrMutationConsequence;
+    confirm?(target: ClrMutationTarget): boolean | Promise<boolean>;
+    confirmTimeoutMs?: number;
+}
+
+// @public
+export type ClrMutationRefusal = 'unclassified' | 'forbidden' | 'unconfirmed' | 'declined' | 'stale' | 'hidden' | 'redacted' | 'disabled' | 'readOnly' | 'unbound' | 'unsupported' | 'invalid' | 'noRoute';
+
+// @public
+export interface ClrMutationReport {
+    changes: ClrMutationChanges;
+    results: ClrMutationResult[];
+    snapshot: ClrPageContext;
+}
+
+// @public
+export type ClrMutationResult = ClrElementMutationResult | ClrNavigationMutationResult;
+
+// @public
+export class ClrMutationService {
+    apply(operations: ClrMutationOperation[], snapshotOptions?: ClrContextSnapshotOptions): Promise<ClrMutationReport>;
+    plan(operations: ClrMutationOperation[], snapshotOptions?: ClrContextSnapshotOptions): ClrMutationPlanEntry[];
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrMutationService, never>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<any>;
+}
+
+// @public
+export interface ClrMutationTarget {
+    element?: Element;
+    label?: string;
+    modelValue?: unknown;
+    operation: ClrMutationOperation['operation'];
+    path?: string;
+    queryParams?: Record<string, string>;
+    ref?: string;
+    type?: string;
+    url?: string;
+    value?: unknown;
+}
+
+// @public
+export interface ClrNavigateOperation {
+    operation: 'navigate';
+    params?: Record<string, string>;
+    path: string;
+    queryParams?: Record<string, string>;
+}
+
+// @public
+export interface ClrNavigationMutationResult {
+    applied: boolean;
+    detail?: string;
+    operation: 'navigate';
+    outcome?: ClrNavigationOutcome;
+    path: string;
+    refused?: ClrMutationRefusal;
+    url?: string;
+}
+
+// @public
+export type ClrNavigationOutcome = 'navigated' | 'redirected' | 'unchanged' | 'rejected' | 'superseded' | 'failed';
 
 // @public
 export interface ClrPageContext {
@@ -459,9 +595,6 @@ export interface ClrPublishedContext extends ClrComponentContext {
 }
 
 // @public
-export function clrRequestHostContext(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null>;
-
-// @public
 export interface ClrRouteContext {
     data?: Record<string, unknown>;
     params?: Record<string, string>;
@@ -469,6 +602,16 @@ export interface ClrRouteContext {
     queryParams?: Record<string, string | string[]>;
     url: string;
 }
+
+// @public
+export interface ClrSetValueOperation {
+    operation: 'setValue';
+    ref: string;
+    value: unknown;
+}
+
+// @public
+export function provideClrMutationPolicy(policy: ClrMutationPolicy): EnvironmentProviders;
 
 // (No @packageDocumentation comment for this package)
 

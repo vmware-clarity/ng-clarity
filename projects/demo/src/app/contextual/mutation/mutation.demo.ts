@@ -83,16 +83,11 @@ export class ContextualMutationDemo implements OnInit {
   }
 
   setValue(): void {
-    this.applyOperation({
-      operation: 'setValue',
-      ref: this.targetRef,
-      description: this.descriptionOf(this.targetRef),
-      value: proposal(this.proposedValue),
-    });
+    this.applyOperation({ operation: 'setValue', ref: this.targetRef, value: proposal(this.proposedValue) });
   }
 
   clearValue(): void {
-    this.applyOperation({ operation: 'clear', ref: this.targetRef, description: this.descriptionOf(this.targetRef) });
+    this.applyOperation({ operation: 'clear', ref: this.targetRef });
   }
 
   navigate(): void {
@@ -116,10 +111,6 @@ export class ContextualMutationDemo implements OnInit {
       null,
       2
     );
-  }
-
-  private descriptionOf(ref: string): string {
-    return this.writableTargets.find(target => target.ref === ref)?.label ?? '';
   }
 
   private applyOperation(operation: ClrMutationOperation): void {

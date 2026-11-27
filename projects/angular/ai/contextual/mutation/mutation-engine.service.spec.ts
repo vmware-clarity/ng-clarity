@@ -201,7 +201,7 @@ describe('ClrMutationService', () => {
       expect(allRefs(snapshot.components)).toEqual([]);
 
       const report = await TestBed.inject(ClrMutationService).apply([
-        { operation: 'setValue', ref: 'e1', description: 'Name', value: 'x' },
+        { operation: 'setValue', ref: 'e1', value: 'x' },
         { operation: 'navigate', path: '/' },
       ]);
 
@@ -240,8 +240,8 @@ describe('ClrMutationService', () => {
       return contextEngine['read'](undefined);
     }
 
-    async function set(ref: string, description: string, value: unknown): Promise<ClrElementMutationResult> {
-      const report = await engine.apply([{ operation: 'setValue', ref, description, value }]);
+    async function set(ref: string, value: unknown): Promise<ClrElementMutationResult> {
+      const report = await engine.apply([{ operation: 'setValue', ref, value }]);
       await settle(fixture);
       return report.results[0] as ClrElementMutationResult;
     }
@@ -293,7 +293,7 @@ describe('ClrMutationService', () => {
     describe('setValue', () => {
       it('writes text through the form control, marks it touched and reads back validity', async () => {
         const ref = refOf(snapshot(), 'Name');
-        const result = await set(ref, 'Name', 'Ada');
+        const result = await set(ref, 'Ada');
 
         expect(result).toEqual(
           expect.objectContaining({
@@ -313,7 +313,7 @@ describe('ClrMutationService', () => {
 
       it('reports a validation failure as a result, and Clarity shows it', async () => {
         const ref = refOf(snapshot(), 'Name');
-        const result = await set(ref, 'Name', '');
+        const result = await set(ref, '');
 
         expect(result.applied).toBe(true);
         expect(result.status).toBe('INVALID');
@@ -323,10 +323,10 @@ describe('ClrMutationService', () => {
 
       it('takes a number for a number input and refuses anything else', async () => {
         const ref = refOf(snapshot(), 'Amount');
-        expect((await set(ref, 'Amount', '42')).value).toBe(42);
+        expect((await set(ref, '42')).value).toBe(42);
         expect(host.form.value.amount).toBe(42);
 
-        const refused = await set(ref, 'Amount', 'lots');
+        const refused = await set(ref, 'lots');
         expect(refused.applied).toBe(false);
         expect(refused.refused).toBe('invalid');
         expect(host.form.value.amount).toBe(42);
@@ -334,17 +334,17 @@ describe('ClrMutationService', () => {
 
       it('takes a boolean for a checkbox', async () => {
         const ref = refOf(snapshot(), 'Agree');
-        const result = await set(ref, 'Agree', true);
+        const result = await set(ref, true);
 
         expect(result.value).toBe(true);
         expect(result.previous).toBe(false);
         expect(host.form.value.agree).toBe(true);
-        expect((await set(ref, 'Agree', 'maybe')).refused).toBe('invalid');
+        expect((await set(ref, 'maybe')).refused).toBe('invalid');
       });
 
       it('chooses a radio in a group by its label', async () => {
         const ref = refOf(snapshot(), 'Size');
-        const result = await set(ref, 'Size', 'Large');
+        const result = await set(ref, 'Large');
 
         expect(result.applied).toBe(true);
         expect(result.value).toBe('Large');
@@ -352,27 +352,27 @@ describe('ClrMutationService', () => {
         expect(host.form.value.size).toBe('l');
         expect(host.form.controls.size.touched).toBe(true);
 
-        const refused = await set(ref, 'Size', 'Huge');
+        const refused = await set(ref, 'Huge');
         expect(refused.refused).toBe('invalid');
         expect(refused.detail).toContain('"Small", "Large"');
       });
 
       it('chooses a select option by label and hands the form the bound object', async () => {
         const ref = refOf(snapshot(), 'Item');
-        const result = await set(ref, 'Item', 'Two');
+        const result = await set(ref, 'Two');
 
         expect(result.value).toBe('Two');
         expect(host.form.value.item).toBe(ITEMS[1]);
         expect(host.form.controls.item.dirty).toBe(true);
 
-        const refused = await set(ref, 'Item', 'Three');
+        const refused = await set(ref, 'Three');
         expect(refused.refused).toBe('invalid');
         expect(refused.detail).toContain('"One", "Two"');
       });
 
       it('chooses a combobox option by label through the component', async () => {
         const ref = refOf(snapshot(), 'Cluster');
-        const result = await set(ref, 'Cluster', 'Beta cluster');
+        const result = await set(ref, 'Beta cluster');
 
         expect(result.value).toBe('Beta cluster');
         expect(result.previous).toBeNull();
@@ -382,7 +382,7 @@ describe('ClrMutationService', () => {
 
       it('refuses a combobox label no option has, naming the options', async () => {
         const ref = refOf(snapshot(), 'Cluster');
-        const result = await set(ref, 'Cluster', 'Gamma cluster');
+        const result = await set(ref, 'Gamma cluster');
 
         expect(result.refused).toBe('invalid');
         expect(result.detail).toContain('"Alpha cluster", "Beta cluster"');
@@ -391,7 +391,7 @@ describe('ClrMutationService', () => {
 
       it('selects several combobox options for a multi-select', async () => {
         const ref = refOf(snapshot(), 'Tags');
-        const result = await set(ref, 'Tags', ['Red', 'blue']);
+        const result = await set(ref, ['Red', 'blue']);
 
         expect(result.value).toEqual(['Red', 'Blue']);
         expect(host.form.value.tags).toEqual(['red', 'blue']);
@@ -399,7 +399,7 @@ describe('ClrMutationService', () => {
 
       it('gives a date input a date in the form its control holds', async () => {
         const ref = refOf(snapshot(), 'When');
-        const result = await set(ref, 'When', '2026-03-06');
+        const result = await set(ref, '2026-03-06');
 
         const input = fixture.nativeElement.querySelector('input[formcontrolname="when"]') as HTMLInputElement;
         expect(result.applied).toBe(true);
@@ -407,16 +407,16 @@ describe('ClrMutationService', () => {
         expect(host.form.value.when).toContain('2026');
         expect(input.value).toBe(host.form.value.when ?? '');
 
-        const asDate = await set(ref, 'When', new Date(2026, 4, 7));
+        const asDate = await set(ref, new Date(2026, 4, 7));
         expect(asDate.value).toBe(host.form.value.when);
         expect(host.form.value.when).toContain('2026');
 
-        expect((await set(ref, 'When', 'someday')).refused).toBe('invalid');
+        expect((await set(ref, 'someday')).refused).toBe('invalid');
       });
 
       it('writes a template-driven control and fires ngModelChange once', async () => {
         const ref = refOf(snapshot(), 'Nickname');
-        const result = await set(ref, 'Nickname', 'Grace');
+        const result = await set(ref, 'Grace');
 
         expect(result.applied).toBe(true);
         expect(host.tplName).toBe('Grace');
@@ -432,13 +432,13 @@ describe('ClrMutationService', () => {
         );
         expect(grid.state?.['rows']).toEqual(['esx-01 | Running', 'esx-02 | Stopped']);
 
-        const result = await set(String(grid.ref), '', ['esx-02', 'esx-01 | Running']);
+        const result = await set(String(grid.ref), ['esx-02', 'esx-01 | Running']);
 
         expect(result.applied).toBe(true);
         expect(result.value).toEqual(['esx-01 | Running', 'esx-02 | Stopped']);
         expect(host.selectedHosts.map(selected => selected.name)).toEqual(['esx-02', 'esx-01']);
 
-        const refused = await set(String(grid.ref), '', 'esx-09');
+        const refused = await set(String(grid.ref), 'esx-09');
         expect(refused.refused).toBe('invalid');
         expect(refused.detail).toContain('"esx-01 | Running"');
       });
@@ -454,8 +454,8 @@ describe('ClrMutationService', () => {
 
         const report = await engine.apply(
           [
-            { operation: 'setValue', ref: String(grid.ref), description: '', value: ['esx-02'] },
-            { operation: 'setValue', ref: cluster, description: 'Cluster', value: 'Beta cluster' },
+            { operation: 'setValue', ref: String(grid.ref), value: ['esx-02'] },
+            { operation: 'setValue', ref: cluster, value: 'Beta cluster' },
           ],
           { excludeCategories: ['collections', 'forms'] }
         );
@@ -474,11 +474,11 @@ describe('ClrMutationService', () => {
           'single grid'
         );
 
-        const result = await set(String(grid.ref), '', 'esx-02');
+        const result = await set(String(grid.ref), 'esx-02');
         expect(result.value).toBe('esx-02');
         expect(host.singleSelection.map(selected => selected.name)).toEqual(['esx-02']);
 
-        expect((await set(String(grid.ref), '', ['esx-01', 'esx-02'])).refused).toBe('invalid');
+        expect((await set(String(grid.ref), ['esx-01', 'esx-02'])).refused).toBe('invalid');
       });
     });
 
@@ -489,9 +489,9 @@ describe('ClrMutationService', () => {
         const page = snapshot();
 
         const report = await engine.apply([
-          { operation: 'clear', ref: refOf(page, 'Name'), description: 'Name' },
-          { operation: 'clear', ref: refOf(page, 'Cluster'), description: 'Cluster' },
-          { operation: 'clear', ref: refOf(page, 'Tags'), description: 'Tags' },
+          { operation: 'clear', ref: refOf(page, 'Name') },
+          { operation: 'clear', ref: refOf(page, 'Cluster') },
+          { operation: 'clear', ref: refOf(page, 'Tags') },
         ]);
 
         expect(report.results.map(result => result.applied)).toEqual([true, true, true]);
@@ -513,7 +513,7 @@ describe('ClrMutationService', () => {
         );
         expect(grid.state?.['value']).toEqual(['esx-01 | Running', 'esx-02 | Stopped']);
 
-        const report = await engine.apply([{ operation: 'clear', ref: String(grid.ref), description: '' }]);
+        const report = await engine.apply([{ operation: 'clear', ref: String(grid.ref) }]);
 
         expect(report.results[0].applied).toBe(true);
         expect(host.selectedHosts).toEqual([]);
@@ -526,15 +526,15 @@ describe('ClrMutationService', () => {
         host.showTemplate = false;
         await settle(fixture);
 
-        const gone = await set(ref, 'Nickname', 'x');
+        const gone = await set(ref, 'x');
         expect(gone.refused).toBe('stale');
-        expect((await set('e999', 'Anything', 'x')).refused).toBe('stale');
+        expect((await set('e999', 'x')).refused).toBe('stale');
       });
 
       it('refuses an operation that names no ref as unsupported, not stale', async () => {
         const report = await engine.apply([
-          { operation: 'setValue', description: 'Secret', value: 'x' } as never,
-          { operation: 'clear', ref: '', description: 'Name' },
+          { operation: 'setValue', value: 'x' } as never,
+          { operation: 'clear', ref: '' },
         ]);
 
         for (const result of report.results) {
@@ -542,21 +542,6 @@ describe('ClrMutationService', () => {
           expect(result.detail).toBe('The operation names no ref; only a node with a ref can be written to.');
         }
         expect(host.form.value.name).toBe('seed');
-      });
-
-      it('refuses a description that does not match the node', async () => {
-        const ref = refOf(snapshot(), 'Name');
-        const result = await set(ref, 'Email address', 'x');
-
-        expect(result.refused).toBe('mismatch');
-        expect(result.detail).toContain('"Name"');
-        expect(host.form.value.name).toBe('seed');
-      });
-
-      it('accepts a description that names the node loosely', async () => {
-        const ref = refOf(snapshot(), 'Name');
-        expect((await set(ref, 'the name field', 'Ada')).applied).toBe(true);
-        expect((await set(ref, '  NAME ', 'Bob')).applied).toBe(true);
       });
 
       it('refuses a control without an Angular form binding, should a ref reach one', () => {
@@ -574,11 +559,11 @@ describe('ClrMutationService', () => {
         host.hideGhost = true;
         await settle(fixture);
 
-        expect((await set(ghost, 'Ghost', 'x')).refused).toBe('hidden');
-        expect((await set(frozen, 'Frozen', 'x')).refused).toBe('disabled');
+        expect((await set(ghost, 'x')).refused).toBe('hidden');
+        expect((await set(frozen, 'x')).refused).toBe('disabled');
         // A ref names its element for as long as it is on the page; it is refused for what
         // is true of the element now, not for which snapshot came last.
-        expect((await set(ghost, 'Ghost', 'x')).refused).toBe('hidden');
+        expect((await set(ghost, 'x')).refused).toBe('hidden');
         expect(host.form.value.frozen).toBe('');
         expect(host.ghost.value).toBe('');
       });
@@ -591,13 +576,13 @@ describe('ClrMutationService', () => {
           node => node.element === 'clr-datagrid' && node.state?.['selectionMode'] === 'multi',
           'multi grid'
         );
-        await set(tags, 'Tags', ['Red']);
-        await set(String(grid.ref), '', ['esx-01']);
+        await set(tags, ['Red']);
+        await set(String(grid.ref), ['esx-01']);
 
         const report = await engine.apply([
-          { operation: 'setValue', ref: tags, description: 'Tags' } as never,
-          { operation: 'setValue', ref: String(grid.ref), description: '' } as never,
-          { operation: 'setValue', ref: refOf(page, 'Name'), description: 'Name' } as never,
+          { operation: 'setValue', ref: tags } as never,
+          { operation: 'setValue', ref: String(grid.ref) } as never,
+          { operation: 'setValue', ref: refOf(page, 'Name') } as never,
         ]);
         await settle(fixture);
 
@@ -619,7 +604,7 @@ describe('ClrMutationService', () => {
     describe('policy', () => {
       it('gives the policy the resolved target', async () => {
         const ref = refOf(snapshot(), 'Cluster');
-        await set(ref, 'Cluster', 'Alpha cluster');
+        await set(ref, 'Alpha cluster');
 
         expect(classify).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -636,7 +621,7 @@ describe('ClrMutationService', () => {
 
       it('refuses what the policy forbids', async () => {
         classify.mockReturnValue('forbidden');
-        const result = await set(refOf(snapshot(), 'Name'), 'Name', 'x');
+        const result = await set(refOf(snapshot(), 'Name'), 'x');
 
         expect(result.refused).toBe('forbidden');
         expect(host.form.value.name).toBe('seed');
@@ -647,11 +632,11 @@ describe('ClrMutationService', () => {
         const ref = refOf(snapshot(), 'Name');
 
         confirm.mockReturnValue(Promise.resolve(false));
-        expect((await set(ref, 'Name', 'x')).refused).toBe('declined');
+        expect((await set(ref, 'x')).refused).toBe('declined');
         expect(host.form.value.name).toBe('seed');
 
         confirm.mockReturnValue(true);
-        expect((await set(ref, 'Name', 'Ada')).applied).toBe(true);
+        expect((await set(ref, 'Ada')).applied).toBe(true);
         expect(confirm).toHaveBeenCalledWith(expect.objectContaining({ ref, value: 'Ada' }));
       });
 
@@ -668,7 +653,7 @@ describe('ClrMutationService', () => {
           return Promise.resolve(true);
         });
         try {
-          const result = await set(ref, 'Name', 'Ada');
+          const result = await set(ref, 'Ada');
           expect(result.applied).toBe(true);
           expect(host.form.value.name).toBe('Ada');
         } finally {
@@ -690,7 +675,7 @@ describe('ClrMutationService', () => {
         });
         document.body.appendChild(dialog);
         try {
-          expect((await set(ref, 'Name', 'Ada')).refused).toBe('hidden');
+          expect((await set(ref, 'Ada')).refused).toBe('hidden');
           expect(asked).toBe(false);
         } finally {
           dialog.remove();
@@ -708,7 +693,7 @@ describe('ClrMutationService', () => {
           return true;
         });
 
-        const result = await set(ref, 'Name', 'Ada');
+        const result = await set(ref, 'Ada');
 
         expect(result.refused).toBe('stale');
         expect(host.form.value.name).toBe('seed');
@@ -723,7 +708,7 @@ describe('ClrMutationService', () => {
           return true;
         });
 
-        const result = await set(ref, 'Name', 'Ada');
+        const result = await set(ref, 'Ada');
 
         expect(result.refused).toBe('stale');
         expect(host.form.value.name).toBe('seed');
@@ -741,7 +726,7 @@ describe('ClrMutationService', () => {
           return true;
         });
 
-        const result = await set(ref, 'Item', 'Two');
+        const result = await set(ref, 'Two');
 
         expect(result.refused).toBe('stale');
         expect(host.form.value.item).not.toBe(replacement);
@@ -751,7 +736,7 @@ describe('ClrMutationService', () => {
         classify.mockImplementation(() => {
           throw new Error('boom');
         });
-        expect((await set(refOf(snapshot(), 'Name'), 'Name', 'x')).refused).toBe('forbidden');
+        expect((await set(refOf(snapshot(), 'Name'), 'x')).refused).toBe('forbidden');
       });
     });
 
@@ -761,9 +746,9 @@ describe('ClrMutationService', () => {
         const page = snapshot();
 
         const plan = engine.plan([
-          { operation: 'setValue', ref: refOf(page, 'Name'), description: 'Name', value: 'Ada' },
-          { operation: 'setValue', ref: refOf(page, 'Agree'), description: 'Agree', value: true },
-          { operation: 'setValue', ref: refOf(page, 'Cluster'), description: 'Cluster', value: 'Nope' },
+          { operation: 'setValue', ref: refOf(page, 'Name'), value: 'Ada' },
+          { operation: 'setValue', ref: refOf(page, 'Agree'), value: true },
+          { operation: 'setValue', ref: refOf(page, 'Cluster'), value: 'Nope' },
         ]);
 
         expect(plan[0].consequence).toBe('reversible');
@@ -781,7 +766,7 @@ describe('ClrMutationService', () => {
 
       it('judges against the snapshot options apply() will get', () => {
         const ref = refOf(snapshot(), 'Name');
-        const operation = { operation: 'setValue' as const, ref, description: 'Name', value: 'Ada' };
+        const operation = { operation: 'setValue' as const, ref, value: 'Ada' };
 
         expect(engine.plan([operation])[0].refused).toBeUndefined();
         expect(engine.plan([operation], { excludeSelectors: ['form'] })[0].refused).toBe('hidden');
@@ -793,7 +778,7 @@ describe('ClrMutationService', () => {
         const page = snapshot();
         const ref = refOf(page, 'Name');
 
-        const report = await engine.apply([{ operation: 'setValue', ref, description: 'Name', value: 'Ada' }]);
+        const report = await engine.apply([{ operation: 'setValue', ref, value: 'Ada' }]);
 
         expect('previous' in report.changes).toBe(false);
         expect('current' in report.changes).toBe(false);

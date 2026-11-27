@@ -35,7 +35,6 @@ import {
   ClrMutationTarget,
   provideClrMutationPolicy,
 } from './mutation.interface';
-import { descriptionMatches } from './write';
 import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
 import { ClrContextService } from '../providers/contextual-engine.service';
 
@@ -282,8 +281,6 @@ class AppSize extends KeptValue<unknown> {
       <input id="code" maxlength="4" formControlName="code" />
       <label for="strict">Strict</label>
       <input id="strict" formControlName="strict" />
-      <label for="search">Search…</label>
-      <input id="search" formControlName="search" />
       <label for="address">{{ longLabel }}</label>
       <input id="address" formControlName="address" />
       <clr-radio-container>
@@ -354,7 +351,6 @@ class Host {
     card: new FormControl<string | null>(null),
     seats: new FormControl<string[]>(['staff']),
     grade: new FormControl('gold'),
-    search: new FormControl(''),
     address: new FormControl(''),
     strict: new FormControl('', (control: AbstractControl): null => {
       if (control.value === 'boom') {
@@ -414,9 +410,9 @@ describe('ClrMutationService write path', () => {
 
   afterEach(() => fixture.destroy());
 
-  async function set(label: string, value: unknown, description = label): Promise<ClrElementMutationResult> {
+  async function set(label: string, value: unknown): Promise<ClrElementMutationResult> {
     const ref = refOf(contextEngine['read'](undefined), label);
-    const report = await engine.apply([{ operation: 'setValue', ref, description, value }]);
+    const report = await engine.apply([{ operation: 'setValue', ref, value }]);
     await settle(fixture);
     return report.results[0] as ClrElementMutationResult;
   }
@@ -489,8 +485,8 @@ describe('ClrMutationService write path', () => {
       const page = contextEngine['read'](undefined);
 
       const report = await engine.apply([
-        { operation: 'setValue', ref: refOf(page, 'Broken'), description: 'Broken', value: 'x' },
-        { operation: 'setValue', ref: refOf(page, 'Name'), description: 'Name', value: 'Ada' },
+        { operation: 'setValue', ref: refOf(page, 'Broken'), value: 'x' },
+        { operation: 'setValue', ref: refOf(page, 'Name'), value: 'Ada' },
       ]);
 
       expect(report.results[0]).toEqual(
@@ -578,7 +574,7 @@ describe('ClrMutationService write path', () => {
 
     it('clears a select with no empty option to nothing, never to its first option', async () => {
       const ref = refOf(contextEngine['read'](undefined), 'Office');
-      const report = await engine.apply([{ operation: 'clear', ref, description: 'Office' }]);
+      const report = await engine.apply([{ operation: 'clear', ref }]);
       await settle(fixture);
       const result = report.results[0] as ClrElementMutationResult;
 
@@ -624,7 +620,7 @@ describe('ClrMutationService write path', () => {
       expect(valueOf(contextEngine['read'](undefined))?.['value']).toBe(2);
 
       const ref = refOf(contextEngine['read'](undefined), 'CPU count');
-      const report = await engine.apply([{ operation: 'setValue', ref, description: 'CPU count', value: '8' }]);
+      const report = await engine.apply([{ operation: 'setValue', ref, value: '8' }]);
       await settle(fixture);
 
       expect(report.results[0]).toEqual(expect.objectContaining({ applied: true, value: 8, previous: 2 }));
@@ -663,65 +659,43 @@ describe('ClrMutationService write path', () => {
     });
   });
 
-  describe('descriptions', () => {
-    it('matches whole words, not fragments', async () => {
-      expect((await set('Name', 'Ada', 'the name field')).applied).toBe(true);
-      expect((await set('Name', 'Bob', 'e')).refused).toBe('mismatch');
-      expect((await set('Name', 'Bob', '')).refused).toBe('mismatch');
+  describe('stale refs', () => {
+    async function setRef(ref: string, value: unknown): Promise<ClrElementMutationResult> {
+      const report = await engine.apply([{ operation: 'setValue', ref, value }]);
+      await settle(fixture);
+      return report.results[0] as ClrElementMutationResult;
+    }
+
+    function addressRef(): string {
+      return refOf(contextEngine['read'](undefined), `${host.longLabel.slice(0, 99)}…`);
+    }
+
+    it('refuses a ref whose node was renamed since the snapshot', async () => {
+      const ref = addressRef();
+      host.longLabel = 'Billing address';
+      await settle(fixture);
+
+      const result = await setRef(ref, 'x');
+
+      expect(result.refused).toBe('stale');
+      expect(result.detail).toContain('changed since the snapshot');
+      expect(host.form.controls.address.value).toBe('');
+      expect((await set('Billing address', 'x')).applied).toBe(true);
     });
 
-    it('refuses a description that warns it is about something else', async () => {
-      expect((await set('Name', 'Ada', 'the wrong name')).refused).toBe('mismatch');
-      expect((await set('Name', 'Ada', 'no name')).refused).toBe('mismatch');
-      expect((await set('Name', 'Ada', 'the name input field')).applied).toBe(true);
+    it('compares the whole name, also the part the snapshot cut', async () => {
+      const ref = addressRef();
+      host.longLabel = `${host.longLabel} and weekends`;
+      await settle(fixture);
+
+      expect((await setRef(ref, 'x')).refused).toBe('stale');
     });
 
-    it('tells a field from its pair, and writes to a field whose own name negates', () => {
-      expect(descriptionMatches('email', 'Email address')).toBe(false);
-      expect(descriptionMatches('the email address field', 'Email address')).toBe(true);
-      expect(descriptionMatches('Confirm email', 'Email')).toBe(false);
-      expect(descriptionMatches('email', 'Confirm email')).toBe(false);
-      expect(descriptionMatches('the confirm email field', 'Confirm email')).toBe(true);
-      expect(descriptionMatches('last name', 'Name')).toBe(false);
-      expect(descriptionMatches('Other income', 'Other income')).toBe(true);
-      expect(descriptionMatches('income', 'Other income')).toBe(false);
-      expect(descriptionMatches('No. of seats', 'No. of seats')).toBe(true);
-      expect(descriptionMatches('Never expires', 'Never expires')).toBe(true);
-      expect(descriptionMatches('not the other income', 'Other income')).toBe(false);
-    });
+    it('writes through a ref whose node is unchanged, again and again', async () => {
+      const ref = addressRef();
 
-    it('tells a field from its pair in a language the word lists do not know', () => {
-      expect(descriptionMatches('E-Mail', 'E-Mail bestätigen')).toBe(false);
-      expect(descriptionMatches('Mot de passe', 'Nouveau mot de passe')).toBe(false);
-      expect(descriptionMatches('Парола', 'Потвърди парола')).toBe(false);
-      expect(descriptionMatches('E-Mail bestätigen', 'E-Mail bestätigen')).toBe(true);
-      expect(descriptionMatches('nouveau mot de passe', 'Nouveau mot de passe')).toBe(true);
-    });
-
-    it('compares words the same way in any script and Unicode form', () => {
-      expect(descriptionMatches('नाम', 'मान')).toBe(false);
-      expect(descriptionMatches('हिन्दी नाम', 'हिन्दी नाम')).toBe(true);
-      expect(descriptionMatches('Café', 'Cafe\u0301')).toBe(true);
-      expect(descriptionMatches('Email', 'E\u200Bmail')).toBe(true);
-    });
-
-    it('matches a label that ends in "…" as any other label', async () => {
-      expect(descriptionMatches('Password', 'Search…')).toBe(false);
-      expect(descriptionMatches('Delete everything', 'More…')).toBe(false);
-      expect((await set('Search…', 'x', 'Password')).refused).toBe('mismatch');
-      expect((await set('Search…', 'x', 'Search')).applied).toBe(true);
-    });
-
-    it('matches a label the snapshot cut as the snapshot shows it', async () => {
-      const label = `${host.longLabel.slice(0, 99)}…`;
-      expect((await set(label, 'x', label)).applied).toBe(true);
-      expect((await set(label, 'y', 'Street address')).refused).toBe('mismatch');
-      expect((await set(label, 'z', host.longLabel)).refused).toBe('mismatch');
-    });
-
-    it('refuses a description that only mentions the label among other words', async () => {
-      expect((await set('Name', 'Ada', 'not the name, the password')).refused).toBe('mismatch');
-      expect((await set('Name', 'Ada', 'the name textbox')).applied).toBe(true);
+      expect((await setRef(ref, 'x')).applied).toBe(true);
+      expect((await setRef(ref, 'y')).applied).toBe(true);
     });
   });
 
@@ -730,7 +704,7 @@ describe('ClrMutationService write path', () => {
 
     async function setWith(label: string, value: unknown): Promise<ClrElementMutationResult> {
       const ref = refOf(contextEngine['read'](options), label);
-      const report = await engine.apply([{ operation: 'setValue', ref, description: label, value }], options);
+      const report = await engine.apply([{ operation: 'setValue', ref, value }], options);
       await settle(fixture);
       return report.results[0] as ClrElementMutationResult;
     }
@@ -775,8 +749,7 @@ describe('ClrMutationService write path', () => {
     it('does not write what a snapshot with the options of the write would leave out, whatever snapshot the ref came from', async () => {
       const ref = refOf(contextEngine['read'](undefined), 'Name');
       const write = async (snapshotOptions: ClrContextSnapshotOptions) =>
-        (await engine.apply([{ operation: 'setValue', ref, description: 'Name', value: 'Ada' }], snapshotOptions))
-          .results[0];
+        (await engine.apply([{ operation: 'setValue', ref, value: 'Ada' }], snapshotOptions)).results[0];
 
       expect((await write({ excludeSelectors: ['clr-input-container'] })).refused).toBe('hidden');
       expect((await write({ excludeCategories: ['forms'] })).refused).toBe('hidden');
@@ -792,10 +765,7 @@ describe('ClrMutationService write path', () => {
       const options = { excludeSelectors: ['input[role="switch"]'] };
 
       expect(JSON.stringify(contextEngine['read'](options).components)).not.toContain('Enabled');
-      const report = await engine.apply(
-        [{ operation: 'setValue', ref, description: 'Enabled', value: false }],
-        options
-      );
+      const report = await engine.apply([{ operation: 'setValue', ref, value: false }], options);
 
       expect(report.results[0].refused).toBe('hidden');
       expect(host.form.value.enabled).toBe(true);
@@ -808,11 +778,10 @@ describe('ClrMutationService write path', () => {
       await settle(fixture);
 
       const report = await engine.apply([
-        { operation: 'setValue', ref: behind, description: 'Name', value: 'x' },
+        { operation: 'setValue', ref: behind, value: 'x' },
         {
           operation: 'setValue',
           ref: refOf(contextEngine['read'](undefined), 'Inside'),
-          description: 'Inside',
           value: 'y',
         },
       ]);
@@ -848,9 +817,7 @@ describe('ClrMutationService write path', () => {
       );
       expect(allRefs(modal.components).length).toBe(1);
 
-      const report = await engine.apply([
-        { operation: 'setValue', ref: refOf(modal, 'New name'), description: 'New name', value: 'web-02' },
-      ]);
+      const report = await engine.apply([{ operation: 'setValue', ref: refOf(modal, 'New name'), value: 'web-02' }]);
 
       expect(report.results[0].applied).toBe(true);
       expect(host.renamed.value).toBe('web-02');
@@ -860,7 +827,7 @@ describe('ClrMutationService write path', () => {
       const ref = refOf(contextEngine['read'](undefined), 'Name');
       contextEngine['read']({ root: 'app-toggle' });
 
-      const report = await engine.apply([{ operation: 'setValue', ref, description: 'Name', value: 'Ada' }]);
+      const report = await engine.apply([{ operation: 'setValue', ref, value: 'Ada' }]);
 
       expect(report.results[0].applied).toBe(true);
     });
@@ -892,7 +859,7 @@ describe('ClrMutationService write path', () => {
       confirm.mockReturnValue(new Promise<boolean>(resolve => (answer = resolve)));
       const ref = refOf(contextEngine['read'](undefined), 'Plan');
 
-      const pending = engine.apply([{ operation: 'setValue', ref, description: 'Plan', value: 'Team' }]);
+      const pending = engine.apply([{ operation: 'setValue', ref, value: 'Team' }]);
       await new Promise(resolve => setTimeout(resolve));
       const select = fixture.nativeElement.querySelector('select[formControlName="plan"]') as HTMLSelectElement;
       const impostor = document.createElement('option');
@@ -929,7 +896,7 @@ describe('ClrMutationService write path', () => {
       await unconfirmed.whenStable();
       const page = TestBed.inject(ClrContextService)['read'](undefined);
       const mutation = TestBed.inject(ClrMutationService);
-      const operation = { operation: 'setValue' as const, ref: refOf(page, 'Name'), description: 'Name', value: 'x' };
+      const operation = { operation: 'setValue' as const, ref: refOf(page, 'Name'), value: 'x' };
 
       expect(mutation.plan([operation])[0].refused).toBe('unconfirmed');
       expect((await mutation.apply([operation])).results[0].refused).toBe('unconfirmed');
@@ -952,12 +919,8 @@ describe('ClrMutationService write path', () => {
       confirm.mockReturnValue(new Promise<boolean>(() => undefined));
       const page = contextEngine['read'](undefined);
 
-      const stuck = engine.apply([
-        { operation: 'setValue', ref: refOf(page, 'Name'), description: 'Name', value: 'x' },
-      ]);
-      const next = engine.apply([
-        { operation: 'setValue', ref: refOf(page, 'Enabled'), description: 'Enabled', value: false },
-      ]);
+      const stuck = engine.apply([{ operation: 'setValue', ref: refOf(page, 'Name'), value: 'x' }]);
+      const next = engine.apply([{ operation: 'setValue', ref: refOf(page, 'Enabled'), value: false }]);
 
       const declined = (await stuck).results[0];
       expect(declined.refused).toBe('declined');
@@ -972,7 +935,7 @@ describe('ClrMutationService write path', () => {
       confirm.mockReturnValue(new Promise<boolean>(resolve => (answer = resolve)));
       const ref = refOf(contextEngine['read'](undefined), 'Name');
 
-      const pending = engine.apply([{ operation: 'setValue', ref, description: 'Name', value: 'written too late' }]);
+      const pending = engine.apply([{ operation: 'setValue', ref, value: 'written too late' }]);
       await new Promise(resolve => setTimeout(resolve));
       host.form.controls.name.disable();
       await settle(fixture);

@@ -369,9 +369,7 @@ describe('ClrDateInput element mutator', () => {
     describe('through the mutation engine', () => {
       async function set(value: unknown): Promise<ClrElementMutationResult> {
         const ref = refOf(TestBed.inject(ClrContextService)['read'](undefined), 'When');
-        const report = await TestBed.inject(ClrMutationService).apply([
-          { operation: 'setValue', ref, description: 'When', value },
-        ]);
+        const report = await TestBed.inject(ClrMutationService).apply([{ operation: 'setValue', ref, value }]);
         await settle();
         return report.results[0] as ClrElementMutationResult;
       }
@@ -391,7 +389,7 @@ describe('ClrDateInput element mutator', () => {
         const engine = TestBed.inject(ClrMutationService);
 
         for (const value of ['2026-03-05T23:30:00-05:00', '2026-03-05', new Date(2026, 2, 5, 18)]) {
-          const [planned] = engine.plan([{ operation: 'setValue', ref, description: 'When', value }]);
+          const [planned] = engine.plan([{ operation: 'setValue', ref, value }]);
 
           expect(planned.target?.value).toBe('03/05/2026');
         }
@@ -496,9 +494,7 @@ describe('ClrDateInput element mutator', () => {
     it('shows the policy the date as the field shows it, not the ISO date it holds', () => {
       const ref = refOf(TestBed.inject(ClrContextService)['read'](undefined), 'When');
 
-      const [planned] = TestBed.inject(ClrMutationService).plan([
-        { operation: 'setValue', ref, description: 'When', value: '2026-11-02' },
-      ]);
+      const [planned] = TestBed.inject(ClrMutationService).plan([{ operation: 'setValue', ref, value: '2026-11-02' }]);
 
       expect(planned.target?.value).toBe('11/02/2026');
     });
@@ -507,7 +503,7 @@ describe('ClrDateInput element mutator', () => {
       const ref = refOf(TestBed.inject(ClrContextService)['read'](undefined), 'When');
 
       const report = await TestBed.inject(ClrMutationService).apply([
-        { operation: 'setValue', ref, description: 'When', value: '2026-11-02' },
+        { operation: 'setValue', ref, value: '2026-11-02' },
       ]);
       await settle();
 

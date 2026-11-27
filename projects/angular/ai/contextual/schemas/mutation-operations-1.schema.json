@@ -11,7 +11,6 @@
         "required": [
           "operation",
           "ref",
-          "description",
           "value"
         ],
         "additionalProperties": false,
@@ -22,9 +21,6 @@
           "ref": {
             "type": "string"
           },
-          "description": {
-            "type": "string"
-          },
           "value": {}
         }
       },
@@ -32,8 +28,7 @@
         "type": "object",
         "required": [
           "operation",
-          "ref",
-          "description"
+          "ref"
         ],
         "additionalProperties": false,
         "properties": {
@@ -41,9 +36,6 @@
             "const": "clear"
           },
           "ref": {
-            "type": "string"
-          },
-          "description": {
             "type": "string"
           }
         }

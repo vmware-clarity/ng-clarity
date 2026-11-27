@@ -294,20 +294,16 @@
   <tbody>
     <tr>
       <td class="left"><b cds-text="medium">setValue</b></td>
-      <td class="left clr-hidden-xs-down">
-        <code cds-text="code">ref</code>, <code cds-text="code">description</code>, <code cds-text="code">value</code>
-      </td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ref</code>, <code cds-text="code">value</code></td>
       <td class="left">
         Gives a field a value: text, a number, <code cds-text="code">true</code> or <code cds-text="code">false</code>,
-        an option's label, a date, or the rows to select. <code cds-text="code">ref</code> comes from the snapshot, and
-        <code cds-text="code">description</code> must repeat the field's label, which guards against writing to the
-        wrong field.
+        an option's label, a date, or the rows to select. <code cds-text="code">ref</code> comes from the snapshot.
       </td>
     </tr>
     <tr>
       <td class="left"><b cds-text="medium">clear</b></td>
       <td class="left clr-hidden-xs-down">
-        <code cds-text="code">ref</code>, <code cds-text="code">description</code>
+        <code cds-text="code">ref</code>
       </td>
       <td class="left">Empties a field.</td>
     </tr>
@@ -369,7 +365,7 @@
         <code cds-text="code">forbidden</code> (the policy said no), <code cds-text="code">declined</code> (the user
         said no), <code cds-text="code">redacted</code> (a password or secret field),
         <code cds-text="code">unbound</code> (the field has no Angular form binding) and
-        <code cds-text="code">mismatch</code> (the description does not match the label).
+        <code cds-text="code">stale</code> (the node is gone or changed since the snapshot).
       </td>
     </tr>
   </tbody>

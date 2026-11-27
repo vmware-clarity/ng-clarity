@@ -29,9 +29,9 @@ import { fillRoutePath, navigateAndReport, urlTreeFor } from './navigate';
 import { CLR_MUTATION_MAX_OPERATIONS } from './schema';
 import {
   coerceValue,
-  descriptionMatches,
   markViewForCheck,
   modelValueOf,
+  nameOf,
   resolveWriteTarget,
   WriteOutcome,
   WriteTarget,
@@ -48,6 +48,8 @@ import { validate } from '../schemas/mutation-operations.validator';
 import { ResolvedSnapshotOptions } from '../snapshot-options';
 
 const CONFIRM_TIMEOUT_MS = 120_000;
+const STALE_REF =
+  'The ref names nothing on the page now: the node is gone or changed since the snapshot. Take a new snapshot and use its refs.';
 
 /**
  * Fills form controls and navigates for an AI agent, from the refs and routes in snapshots; never submits or clicks.
@@ -263,11 +265,9 @@ export class ClrMutationService {
       return this.prepareNavigation(operation);
     }
     const ref = this.refs.resolve(operation.ref);
-    if (!ref) {
-      return {
-        refused: 'stale',
-        detail: 'The ref does not name anything on the page. Take a new snapshot and use its refs.',
-      };
+    // A node renamed since a snapshot gets a new ref there; one renamed since then is caught here.
+    if (!ref || nameOf(ref.elements) !== ref.name) {
+      return { refused: 'stale', detail: STALE_REF };
     }
     const resolution = resolveWriteTarget(ref, this.application, options, knownModals);
     if ('refused' in resolution) {
@@ -281,14 +281,6 @@ export class ClrMutationService {
       options.excludeRoles.includes(write.type)
     ) {
       return { refused: 'hidden', detail: 'The control is outside what snapshots with these options describe.' };
-    }
-    if (!descriptionMatches(operation.description, write.label, write.type)) {
-      return {
-        refused: 'mismatch',
-        detail: write.label
-          ? `The node is "${write.label}", not "${String(operation.description)}". Take a new snapshot and use its refs.`
-          : 'The node has no name; describe it by what it is, or give an empty string as the description.',
-      };
     }
     const coerced = coerceValue(write, operation.operation === 'clear' ? null : operation.value);
     if (coerced.refused !== undefined) {
@@ -419,13 +411,12 @@ function withoutSnapshots(change: ClrContextChange): ClrMutationChanges {
   return changes;
 }
 
-/** Same element, label and value: a field relabelled in place is not what the person agreed to fill. */
+/** Same element, label and value; a relabelled node is refused as stale when prepared again. */
 function sameOperation(confirmed: Prepared, now: Prepared): boolean {
   return (
     confirmed.consequence === now.consequence &&
     confirmed.target.element === now.target.element &&
     confirmed.target.label === now.target.label &&
-    (confirmed.kind !== 'write' || now.kind !== 'write' || confirmed.write.shownLabel === now.write.shownLabel) &&
     confirmed.target.type === now.target.type &&
     confirmed.target.url === now.target.url &&
     JSON.stringify(confirmed.target.value ?? null) === JSON.stringify(now.target.value ?? null) &&
