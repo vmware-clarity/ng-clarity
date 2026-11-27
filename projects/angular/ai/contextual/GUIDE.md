@@ -31,6 +31,12 @@ Configure once at startup: `context.configure({ scope: 'interactive', routes: tr
 - Put `clrContextRedact` on regions whose values must never leave the page (their fields keep their shape, values are withheld). Put `clrContextIgnore` on UI the agent should not see at all. Bind `false` to lift either one, such as `[clrContextRedact]="row.private"`. Both are directives from `@clr/angular/ai` (`ClrContextRedact`, `ClrContextIgnore`, or `ClrContextModule`); they set `data-clr-context-redact` and `data-clr-context-ignore`, which is what the engine reads. Markup outside Angular templates can carry those attributes itself.
 - Password and file inputs, and fields whose `autocomplete` is `current-password`, `new-password`, `one-time-code` or a `cc-*` token, are always withheld. Redact the other secrets, such as tokens or keys typed into plain text fields.
 
+## JSON safety
+
+- The engine never builds or parses JSON text. Annotations, provider results and published state are JavaScript values, reduced to plain data: strings, numbers, booleans, `null`, arrays and plain objects. Functions, class instances, cyclic references and values below the depth limit are dropped, and a `__proto__` key stays an ordinary key.
+- `snapshot()` returns an object, not a string. Serialize it with `JSON.stringify`, which escapes quotes, backslashes and control characters, so a label holding `"`, `}`, `</script>` or text in any language stays one string value and cannot change the structure.
+- Don't escape or strip characters yourself: that corrupts localized labels and protects nothing. To show the JSON in a page, set it as text, never as HTML.
+
 ## Adding context
 
 | Need                                             | Use                                                            |
