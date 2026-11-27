@@ -90,10 +90,6 @@
 
   // Variations
   .progress {
-    // @deprecated in 3.0
-
-    /* warning, success, and danger distinctions for progress bars are deprecated in 3.0 */
-
     @each $type, $color in (success, progress-bars-variables.$clr-progress-success-color),
       (warning, progress-bars-variables.$clr-progress-warning-color),
       (danger, progress-bars-variables.$clr-progress-danger-color)
@@ -445,8 +441,6 @@
     &.labeled > .progress-meter {
       right: tokens.$cds-global-space-11;
     }
-
-    /* warning, success, and danger distinctions for progress bars are deprecated in 3.0 */
 
     @each $type, $color in (success, progress-bars-variables.$clr-progress-success-color),
       (warning, progress-bars-variables.$clr-progress-warning-color),

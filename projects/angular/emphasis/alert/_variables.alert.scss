@@ -114,7 +114,6 @@ $clr-app-alert-danger-close-icon-hover-color: var(--clr-app-alert-danger-close-i
 
 // App Success type
 // Usage: ./_alert.clarity.scss
-// Deprecated in 3.0 for removal in 4.0
 $clr-app-alert-success-bg-color: var(--clr-app-alert-success-bg-color) !default;
 $clr-app-alert-success-icon-color: var(--clr-app-alert-success-icon-color) !default;
 $clr-app-alert-success-font-color: var(--clr-app-alert-success-font-color) !default;
@@ -346,9 +345,6 @@ $clr-alert-neutral: (
 
   @return null;
 }
-
-// Deprecated in 3.0 for removal in 4.0
-
 @function lookupAppSuccessAlertColor($property: color) {
   @if $property == color {
     @return $clr-app-alert-success-font-color;
